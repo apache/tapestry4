@@ -24,9 +24,11 @@ public class HTMLDescriberImpl implements HTMLDescriber
 {
     private DescribableAdapter _adapter;
 
+    private HTMLDescriptionReceiverStyles _styles = new HTMLDescriptionReceiverStyles();
+
     public void describeObject(Object object, IMarkupWriter writer)
     {
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, _adapter);
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, _adapter, _styles);
 
         dr.describe(object);
     }
@@ -34,5 +36,20 @@ public class HTMLDescriberImpl implements HTMLDescriber
     public void setAdapter(DescribableAdapter adapter)
     {
         _adapter = adapter;
+    }
+
+    public void setTableClass(String tableClass)
+    {
+        _styles.setTableClass(tableClass);
+    }
+
+    public void setHeaderClass(String headerClass)
+    {
+        _styles.setHeaderClass(headerClass);
+    }
+
+    public void setSubheaderClass(String subheaderClass)
+    {
+        _styles.setSubheaderClass(subheaderClass);
     }
 }

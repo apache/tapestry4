@@ -19,6 +19,7 @@ import java.util.Locale;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -206,4 +207,6 @@ public interface Infrastructure
     public String getOutputEncoding();
 
     public MarkupWriterSource getMarkupWriterSource();
+    
+    public HTMLDescriber getHTMLDescriber();
 }

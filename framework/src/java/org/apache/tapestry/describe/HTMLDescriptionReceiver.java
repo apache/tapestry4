@@ -46,13 +46,23 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
 
     private DescribableAdapter _adapter;
 
+    private HTMLDescriptionReceiverStyles _styles;
+
     public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableAdapter adapter)
+    {
+        this(writer, adapter, new HTMLDescriptionReceiverStyles());
+    }
+
+    public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableAdapter adapter,
+            HTMLDescriptionReceiverStyles styles)
     {
         Defense.notNull(writer, "writer");
         Defense.notNull(adapter, "adapter");
+        Defense.notNull(styles, "styles");
 
         _writer = writer;
         _adapter = adapter;
+        _styles = styles;
     }
 
     public void describe(Object object)
@@ -122,20 +132,20 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
             _emitDefault = false;
 
             _writer.begin("div");
-            _writer.attribute("class", "described-object-title");
+            _writer.attribute("class", _styles.getHeaderClass());
             _writer.print(_title);
             _writer.end();
             _writer.println();
 
             _writer.begin("table");
-            _writer.attribute("class", "described-object");
+            _writer.attribute("class", _styles.getTableClass());
             _writer.println();
         }
 
         if (_section != null)
         {
             _writer.begin("tr");
-            _writer.attribute("class", "section");
+            _writer.attribute("class", _styles.getSubheaderClass());
             _writer.begin("th");
             _writer.attribute("colspan", 2);
             _writer.print(_section);
@@ -188,7 +198,7 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
             return;
         }
 
-        new HTMLDescriptionReceiver(_writer, _adapter).describe(value);
+        new HTMLDescriptionReceiver(_writer, _adapter, _styles).describe(value);
     }
 
     public void property(String key, boolean value)

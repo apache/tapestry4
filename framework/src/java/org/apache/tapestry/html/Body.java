@@ -120,7 +120,7 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        TapestryUtils.storeRenderPageSupport(cycle, this);
+        TapestryUtils.storePageRenderSupport(cycle, this);
 
         IMarkupWriter nested = writer.getNestedWriter();
 

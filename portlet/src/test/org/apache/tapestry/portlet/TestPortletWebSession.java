@@ -87,21 +87,6 @@ public class TestPortletWebSession extends BasePortletWebTestCase
         verifyControls();
     }
 
-    public void testSetAttributeToNull()
-    {
-        MockControl control = newControl(PortletSession.class);
-        PortletSession session = (PortletSession) control.getMock();
-
-        session.removeAttribute("tonull");
-
-        replayControls();
-
-        WebSession ws = new PortletWebSession(session);
-
-        ws.setAttribute("tonull", null);
-
-        verifyControls();
-    }
 
     public void testGetId()
     {

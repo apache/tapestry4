@@ -113,7 +113,8 @@ public class PortletLink implements ILink
             String name = names[i];
             String[] values = _parameters.getParameterValues(name);
 
-            _portletURL.setParameter(name, values);
+            if (values != null)
+                _portletURL.setParameter(name, values);
         }
     }
 

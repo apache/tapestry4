@@ -343,10 +343,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     {
         String actionId = cycle.getNextActionId();
 
-        // Integrate the namespace into the form name;
-
-        _name = getDisplayName() + actionId + getResponse().getNamespace();
-
         boolean renderForm = !cycle.isRewinding();
         boolean rewound = cycle.isRewound(this);
 
@@ -362,10 +358,17 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         IMarkupWriter nested = writer.getNestedWriter();
 
+        // Note: not safe to invoke getNamespace() in Portlet world
+        // except during a RenderRequest.
+
+        if (renderForm)
+            _name = getDisplayName() + actionId + getResponse().getNamespace();
+
         renderBody(nested, cycle);
 
         if (renderForm)
         {
+
             ILink link = getLink(cycle, actionId);
 
             writeAttributes(writer, link);

@@ -16,6 +16,7 @@ package org.apache.tapestry.services.impl;
 
 import java.util.List;
 
+import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
@@ -42,6 +43,8 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
     private ResponseRenderer _responseRenderer;
 
     private LinkFactory _linkFactory;
+
+    private HTMLDescriber _htmlDescriber;
 
     public void storeActivator(WebActivator activator)
     {
@@ -106,5 +109,15 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
     public void storeLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+
+    public HTMLDescriber getHTMLDescriber()
+    {
+        return _htmlDescriber;
+    }
+
+    public void storeHTMLDescriber(HTMLDescriber describer)
+    {
+        _htmlDescriber = describer;
     }
 }

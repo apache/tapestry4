@@ -16,12 +16,18 @@ package org.apache.tapestry.portlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
 
 /**
@@ -38,8 +44,11 @@ public class PortletRendererImpl implements PortletRenderer
 
     private MarkupWriterSource _markupWriterSource;
 
-    public void renderPage(IRequestCycle cycle, String pageName)
-            throws IOException
+    private IEngineService _assetService;
+
+    private String _applicationId;
+
+    public void renderPage(IRequestCycle cycle, String pageName) throws IOException
     {
         cycle.activate(pageName);
 
@@ -51,7 +60,28 @@ public class PortletRendererImpl implements PortletRenderer
 
         IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
 
-        cycle.renderPage(writer);
+        PageRenderSupportImpl support = new PageRenderSupportImpl(_assetService, null);
+
+        TapestryUtils.storePageRenderSupport(cycle, support);
+
+        IMarkupWriter nested = writer.getNestedWriter();
+
+        cycle.renderPage(nested);
+
+        String id = "Tapestry Portlet " + _applicationId + " " + _response.getNamespace();
+
+        writer.comment("BEGIN " + id);
+        writer.comment("Page: " + page.getPageName());
+        writer.comment("Generated: " + new Date());
+        writer.comment("Framework version: " + Tapestry.VERSION);
+
+        support.writeBodyScript(writer, cycle);
+
+        nested.close();
+
+        support.writeInitializationScript(writer);
+
+        writer.comment("END " + id);
 
         writer.close();
 
@@ -66,5 +96,15 @@ public class PortletRendererImpl implements PortletRenderer
     public void setResponse(WebResponse response)
     {
         _response = response;
+    }
+
+    public void setAssetService(IEngineService assetService)
+    {
+        _assetService = assetService;
+    }
+
+    public void setApplicationId(String applicationId)
+    {
+        _applicationId = applicationId;
     }
 }

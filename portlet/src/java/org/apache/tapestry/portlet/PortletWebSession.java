@@ -19,6 +19,7 @@ import java.util.List;
 import javax.portlet.PortletSession;
 
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.describe.DescriptionReceiver;
 import org.apache.tapestry.web.WebSession;
 import org.apache.tapestry.web.WebUtils;
 
@@ -37,6 +38,11 @@ public class PortletWebSession implements WebSession
         Defense.notNull(portletSession, "portletSession");
 
         _portletSession = portletSession;
+    }
+
+    public void describeTo(DescriptionReceiver receiver)
+    {
+        receiver.describeAlternate(_portletSession);
     }
 
     public String getId()
@@ -61,10 +67,7 @@ public class PortletWebSession implements WebSession
 
     public void setAttribute(String name, Object attribute)
     {
-        if (attribute == null)
-            _portletSession.removeAttribute(name);
-        else
-            _portletSession.setAttribute(name, attribute);
+        _portletSession.setAttribute(name, attribute);
     }
 
 }

@@ -19,6 +19,7 @@ import java.util.Locale;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.ThreadLocale;
+import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -101,6 +102,8 @@ public class InfrastructureImpl implements Infrastructure
     private ThreadLocale _threadLocale;
 
     private MarkupWriterSource _markupWriterSource;
+
+    private HTMLDescriber _htmlDescriber;
 
     public String getApplicationId()
     {
@@ -361,5 +364,15 @@ public class InfrastructureImpl implements Infrastructure
     public void setMarkupWriterSource(MarkupWriterSource markupWriterSource)
     {
         _markupWriterSource = markupWriterSource;
+    }
+
+    public HTMLDescriber getHTMLDescriber()
+    {
+        return _htmlDescriber;
+    }
+
+    public void setHTMLDescriber(HTMLDescriber htmlDescriber)
+    {
+        _htmlDescriber = htmlDescriber;
     }
 }

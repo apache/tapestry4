@@ -19,6 +19,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.describe.DescriptionReceiver;
 
 /**
  * Adapts {@link javax.servlet.http.HttpSession}&nbsp; as
@@ -38,6 +39,11 @@ public class ServletWebSession implements WebSession
         _httpSession = session;
     }
 
+    public void describeTo(DescriptionReceiver receiver)
+    {
+        receiver.describeAlternate(_httpSession);
+    }
+    
     public List getAttributeNames()
     {
         return WebUtils.toSortedList(_httpSession.getAttributeNames());

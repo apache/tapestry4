@@ -34,5 +34,5 @@
       </description>
   </parameter>
   
-  <inject property="describer" object="service:tapestry.describe.HTMLDescriber"/>
+  <inject property="describer" object="infrastructure:HTMLDescriber"/>
 </component-specification>
