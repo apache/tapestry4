@@ -114,15 +114,26 @@
 		<para>
 			The following example
 			will construct a 'Hello World' application, where the text is
-			retreived from the pages Java object. This example will build the
+			retreived a Java object. This example will build up the
 			application specification, basic HTML tempalte (for the Home page),
 			and finally a simple Java object to return the 'hello world' string.
 		</para>
+        <para>
+            You will see more on this later, but it is worth explaining now that most
+            Tapestry pages you write will consist of an HTML template, a page specification
+            and a Java object (this is exactly what we're going to do below). If it sounds confusing
+            don't worry - it will be explained in detail later - just follow on for now :-)
+        </para>
 		<para>
 			The example code supplied contains a full implementation of this tutorial.
 			Feel free to recreate the tutorial as you go along, using the supplied development
-			environment. For each major part of this tutorial, you will find example source code within
-			<filename class="directory">c:\Tapestry-x.x\examples\Tutorial\src</filename>.
+			environment.
+            <note>
+                For each major part of this tutorial, you will find full source code within
+			<filename class="directory">c:\Tapestry-x.x\examples\Tutorial\src</filename>.    So, if
+                you don't want to construct your own version of the tutorial, you can just run
+                the examples provided.
+            </note>
 		</para>
 		<para>
 			The code for this example is in
@@ -181,7 +192,7 @@
   	&lt;load-on-startup&gt;0&lt;/load-on-startup&gt;
   &lt;/servlet&gt;
   
-	&lt;servlet-mapping&gt;
+  &lt;servlet-mapping&gt;
     &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
     &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
   &lt;/servlet-mapping&gt;

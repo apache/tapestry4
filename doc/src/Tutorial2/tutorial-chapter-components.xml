@@ -65,7 +65,7 @@
 
 		<para>This template defines a table skeleton, where the intention is to enable the rendering of headings 
 		and row data by the component itself.  Here, we intend to show a single row at the top of the component
-		as a heading <footnote>At this point, we are not going to consider aspects such as custom renderers</footnote>
+		as a heading <footnote><para>At this point, we are not going to consider aspects such as custom renderers</para></footnote>
 		, and then some number of rows (the <varname>
 		elements</varname> component) of data. Each row of data is rendered using another &Foreach; component - <varname>
 		cells</varname>. Finally we output the value of each cell using the <varname>cell</varname>, which you

@@ -203,8 +203,8 @@ Click &lt;span jwcid="google"&gt;here&lt;/span&gt; to perform a search at Google
 		<para>The last types of links introduced here are &ActionLink; and &DirectLink;. These components are 
 		very similar in that they both provide the ability for a user's action to be directed to a method on
 		some object (via a listener). The main difference between the two is that one uses the Direct service,
-		and the other the Action service. Before going further, a quick explanation is in order:<footnote>For
-		more detailed information, please see the Developer Reference</footnote></para>
+		and the other the Action service. Before going further, a quick explanation is in order:<footnote><para>For
+		more detailed information, please see the Developer Reference</para></footnote></para>
 		
 		<para>Both Action and Direct services are used to handle triggering of events, as mentioned previously.
 		The Direct service will invoke the listener <emphasis>just prior</emphasis> to rendering whereas the Action service will invoke the 
@@ -225,9 +225,9 @@ Click &lt;span jwcid="google"&gt;here&lt;/span&gt; to perform a search at Google
 		
 		<para>To demonstrate, we will create two links, using both the action and direct services.  The direct service link will
 		pass in a parameter to the listener method. In these simple examples, there will not be sufficient complexity
-		to examine the differences between the two services.<footnote>if you find yourself getting StaleLinkExceptions
+		to examine the differences between the two services.<footnote><para>if you find yourself getting StaleLinkExceptions
 		using DirectLink (or a form component setup in "direct" mode) you should examine your page dependencies,
-		and if any processing is dependent upon page state then change to using the action service</footnote></para>
+		and if any processing is dependent upon page state then change to using the action service</para></footnote></para>
 
 		<para>For this example, we must set the <varname>stateful</varname> to false, since we will not
 		be using a visit object and creating any kind of session.  Here is the HTML, component specification

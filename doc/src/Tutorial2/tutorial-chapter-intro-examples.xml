@@ -2,7 +2,7 @@
   	<title>Introductory Examples</title>
   	<para>
   	This section provides a set of examples that show some of the fundamental aspects of
-  	Tapestry. It begins with a discussion on Tapestry binding, which is the process by which you 
+  	Tapestry. It begins with a discussion on Tapestry binding, which is the process by which you
   	as a developer link your objects to the components in the HTML page, or put another way -
           it is how you provide to the compoents the values they need (think of methods that
           need arguments), as well as a way for the component to change those values.
@@ -13,7 +13,7 @@
   	<para>
   	More advanced examples can be found from <xref linkend="forms"/> onwards.
   	</para>
-  	
+
   	<section id="ex-propertybinding">
   		<title>Introduction to Tapestry Binding</title>
   		<para>
@@ -27,17 +27,17 @@
 				<varlistentry>
 					<term>Property Binding</term>
 					<listitem><para>
-					Binds a component value to something, using an &OGNL; (Object Graph Navigation Language) expression. 
+					Binds a component value to something, using an &OGNL; (Object Graph Navigation Language) expression.
 					This is the most flexible
 					binding type within Tapestry. These bindings in the most part look like JavaBean property names
 					strung together with dots. e.g: <varname>visit.name</varname>, would work against against
-					the following object graph:	<function>this.getVisit().getName()</function>.  
-					Virtually anything can be references by 
-					an &OGNL; expression, including methods, JavaBean properties and static fields 
+					the following object graph:	<function>this.getVisit().getName()</function>.
+					Virtually anything can be references by
+					an &OGNL; expression, including methods, JavaBean properties and static fields
 					(<function>Boolean.TRUE</function>).</para>
 					<para>
-					<para><emphasis>All OGNL expressions are evaluated in the context of a current object, and a chain 
-					simply uses the result of the previous link in the chain as the current object for the next one. 
+					<para><emphasis>All OGNL expressions are evaluated in the context of a current object, and a chain
+					simply uses the result of the previous link in the chain as the current object for the next one.
 					You can extend a chain as long as you like. (from &OGNL; web site)</emphasis></para></para>
                     <figure>
                       <title>OGNL binding example</title>
@@ -47,9 +47,9 @@
                       </programlisting>
                     </figure>
 					<para>
-					In Tapestry, the current object that you start with is the object for the page 
+					In Tapestry, the current object that you start with is the object for the page
 					in question. For the 'hello world' application covered previously, this is the
-					OGNL expressions must begin their evaluation somewhere. In Tapestry, this is  
+					OGNL expressions must begin their evaluation somewhere. In Tapestry, this is
 					the <classname>tutorial.hello.Home</classname> obect.
 					Lets run through a few quick examples:
 					<orderedlist>
@@ -66,7 +66,7 @@
 					</para>
 					</listitem>
 				</varlistentry>
-				
+
 				<varlistentry>
 					<term>Static Binding</term>
 					<listitem><para>
@@ -89,7 +89,7 @@
                     </para>
 					</listitem>
 				</varlistentry>
-	
+
 				<varlistentry>
 					<term>Field Binding</term>
 					<listitem><para>
@@ -114,11 +114,11 @@
                     </figure>
 					</listitem>
 				</varlistentry>
-	
+
 				<varlistentry>
 					<term>String Binding</term>
 					<listitem><para>
-					Used for localization, the value of this binding should refer to some localized string resource for this page ( 
+					Used for localization, the value of this binding should refer to some localized string resource for this page (
 					part of a resource bundle).  The binding is read only.  The example below shows a usage of a string=binding
                         to provide a value for an &Insert; component. It is assumed that the properties file for the component,
                         with at least a line along the lines of <varname>pageTitle=Super Application Title!</varname>.
@@ -134,22 +134,176 @@
 				</varlistentry>
 			</variablelist>
   		</para>
-			
+
 			<para>
 			The next section takes you through the building of slightly more complex application.
 			</para>
   	</section>
 
 		&into-examples-pagelinking;
-		
+
 		<section id="ex-actions">
 			<title>Simple Actions</title>
 			<para>
-			Show a page with multiple actions, each action implemented as a separate method.
-			If a checkbox/image can have an action (which I think it can), then show how these can be integrated as well.
-			If it's javascript related, leave until a later point.
+                You may notice a bunch more components on the second page than was really obvious
+                from the previous section. That's because I didn't want to complicate the previous
+                example.   Also note that there is lots of detail on &Form;s and other components later on.
+                What we are going to do here is give a taste of the simplicity that is Tapestry :-)
 			</para>
-		</section>
+            <para>
+                Below is the full HTML template and application specification, and Java code.
+                You will note that the code itself is really really simple, which is very cool.
+                In order to have an action called
+                on a component. You just name the method. Done.
+                <tip>
+                    The method must have a particular signature - as you will see by the code it takes
+                    a single <varname>IRequestCycle</varname> argument and is capable of throwing
+                    <varname>RequestCycleException</varname>s.
+                </tip>
+            </para>
+            <para>
+                Breaking from tradition, I will provide you the screenshot at the top of the section:
+            </para>
+            <figure>
+			    <title>Second page, showing various Actions</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="images/pagelinking-actions.png" format="PNG"/>
+                    </imageobject>
+                </mediaobject>
+		    </figure>
+
+            <figure>
+                <title>Full HTML Template (for second page)</title>
+                <programlisting>
+    &lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;
+    &lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Page Linking Tutorial (page 2)&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;h1&gt;Page Two&lt;/h1&gt;
+
+    &lt;center&gt;
+    &lt;table border=0&gt;
+        &lt;tr&gt;&lt;th&gt;Well, here we are! Let have some Action!&lt;/th&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;hr&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Click &lt;span jwcid="homePage"&gt;here&lt;/span&gt; to go back to the home page.&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Click &lt;span jwcid="linkListener"&gt;here&lt;/span&gt; to invoke a &lt;b&gt;DirectLink&lt;/b&gt; listener&lt;/td&gt;&lt;/tr&gt;
+        &lt;form jwcid="form"&gt;
+            &lt;tr&gt;&lt;td&gt;Click &lt;span jwcid="buttonListener"&gt;here&lt;/span&gt; to invoke a &lt;b&gt;Submit&lt;/b&gt; listener&lt;/td&gt;&lt;/tr&gt;
+        &lt;/form&gt;
+
+        &lt;!-- This part shows the 'result' of the listener --&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;hr&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;&lt;span jwcid="result"/&gt;&lt;/td&gt;&lt;/tr&gt;
+
+    &lt;/body&gt;
+    &lt;/html&gt;
+				</programlisting>
+			</figure>
+
+            <para>
+                The template contains one &PageLink; which takes you back to the Home page
+                , one &DirectLink; and one &Submit; button. The later two links just set some text
+                inside the Java object, which is then displayed at the bottom of the table (this is
+                just so that you can see that the action listeners are called).
+                Finally, you will note the use of a &Form; object in the template - this is
+                required for the &Submit; component to work.  As mentioned above, don't worry to
+                much about how all this works - concentrate on the use of the &DirectLink;
+                and &Submit; listener methods.
+            </para>
+            <figure>
+                <title>Full Page Specification (for second page)</title>
+                <programlisting>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;!-- $Id: Home.page,v 1.6 2002/05/13 14:00:37 scornflake Exp $ --&gt;
+    &lt;!DOCTYPE page-specification PUBLIC
+        "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+        "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
+
+    &lt;page-specification class="tutorial.pagelinking.SecondPage"&gt;
+        &lt;component id="homePage" type="PageLink"&gt;
+            &lt;static-binding name="page"&gt;Home&lt;/static-binding&gt;
+        &lt;/component&gt;
+
+        &lt;component id="form" type="Form"&gt;
+            &lt;binding name="stateful" expression="false"/&gt;
+        &lt;/component&gt;
+
+        &lt;component id="result" type="InsertText"&gt;
+            &lt;binding name="value" expression="result"/&gt;
+        &lt;/component&gt;
+
+        &lt;component id="linkListener" type="DirectLink"&gt;
+            &lt;binding name="listener" expression="<emphasis>listeners.linkListener</emphasis>"/&gt;
+            &lt;binding name="stateful" expression="false"/&gt;
+        &lt;/component&gt;
+
+        &lt;component id="buttonListener" type="Submit"&gt;
+            &lt;binding name="listener" expression="<emphasis>listeners.buttonListener</emphasis>"/&gt;
+        &lt;/component&gt;
+    &lt;/page-specification&gt;
+				</programlisting>
+			</figure>
+
+            <para>
+                And now the Java object.  You can see the listener definitions at the top - very simple.
+                The <varname>result</varname> variable and <varname>getResult()</varname> method are
+                just there to provide feedback to the user.  Of course, now that we're in Java land, you
+                can imagine that doing something more complex like calling an EJB object, or some other
+                business related method is easy. Most likely, you would then use the result of the method
+                to affect the rendering - which is what all this is really about.
+                <footnote> <para>
+                    Dynamic behavior, that is...
+                </para></footnote>
+            </para>
+
+            <figure>
+                <title>Java Object (for second page)</title>
+                <programlisting>
+    package tutorial.pagelinking;
+
+    import net.sf.tapestry.html.BasePage;
+    import net.sf.tapestry.IRequestCycle;
+    import net.sf.tapestry.RequestCycleException;
+
+    /**
+     * Provides the listeners and a place to store a simple 'result' string
+     * that can be shown back to the user.
+     */
+    public class SecondPage extends BasePage {
+        public void linkListener(IRequestCycle cycle) throws RequestCycleException {
+            result = "The link listener was called - which is a good thing.";
+        }
+
+        public void buttonListener(IRequestCycle cycle) throws RequestCycleException {
+            result = "The submit listener was called - which is also a good thing.";
+        }
+
+        public String getResult() {
+            return result;
+        }
+
+        /** Clean up */
+        public void detach() {
+            super.detach();
+            result = null;
+        }
+
+        private String result;
+    }
+
+				</programlisting>
+			</figure>
+
+            <para>
+                That should give you a taste of the ease by which Tapestry can be used to handle user
+                actions.  The next section takes a break from components and describes the types
+                of pages that a Tapestry application can have. It also shows you how to override
+                the standard Exception page.
+            </para>
+       </section>
 
   </chapter>
 

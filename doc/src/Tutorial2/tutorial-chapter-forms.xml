@@ -506,7 +506,7 @@ public class Part2 extends BasePage {
 
 		<para>Tapestry includes some more advanced form components, which are used in this example. 
 		We will use a DatePicker for the date of birth field, and a PropertySeletion for favouriteColour.<footnote>
-		DatePicker uses JavaScript to perform its work, so you will required something like IE5 (or above), Mozilla or Konqueror to use it</footnote>
+		<para>DatePicker uses JavaScript to perform its work, so you will required something like IE5 (or above), Mozilla or Konqueror to use it</para></footnote>
 		</para>
 
 		<para>This example is named <varname>Part4</varname>. It is identical to <varname>Part3</varname>

@@ -120,8 +120,8 @@
               This section will provide an example of changing the exception page.
               The example itself shows a simple error header, some basic user-friendly
               text and the text of the error. The stack trace is not shown on the form. <footnote>
-                  This sounds like an excercise for the reader :-)
-              </footnote>
+                  <para>This sounds like an excercise for the reader :-)
+              </para></footnote>
           </para>
 
           <para>
