@@ -14,11 +14,9 @@
 
 package org.apache.tapestry.contrib.components;
 
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.components.Conditional;
 
 /**
  *  This component is a container for {@link When} or Otherwise components;
@@ -30,7 +28,7 @@ import org.apache.tapestry.Tapestry;
  *  @version $Id$
  * 
  **/
-public abstract class Choose extends AbstractComponent {
+public abstract class Choose extends Conditional {
 
 
 	public void addBody(IRender element)
@@ -40,33 +38,25 @@ public abstract class Choose extends AbstractComponent {
 			((When) element).setChoose(this);	
 	}
 	
-	/**  Renders its wrapped components. */
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-	{
-		String element = getElement();
-			
-		boolean render = !cycle.isRewinding() && Tapestry.isNonBlank(element);
-			
-		if (render)
-		{
-			writer.begin(element);
-			renderInformalParameters(writer, cycle);
-		}
-
-		renderBody(writer, cycle);
-			
-		if (render)
-			writer.end(element);
-	}
-	
 	protected void cleanupAfterRender(IRequestCycle cycle)
 	{
 		setConditionMet(false);
 		super.cleanupAfterRender(cycle);
 	}
 	
+	protected boolean evaluateCondition()
+	{
+		return getCondition();
+	}
+
+	public boolean getInvert()
+	{
+		// This component doesn't require invert parameter.
+		return false;
+	}
+
+	public abstract boolean getCondition();
+	
 	public abstract boolean isConditionMet();
 	public abstract void setConditionMet(boolean value);
-
-	public abstract String getElement();
 }
