@@ -1,7 +1,6 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -65,11 +64,6 @@ public class Login extends BasePage
 
 	private final static int ONE_WEEK = 7 * 24 * 60 * 60;
 	
-	public Login(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
-
 	public void detachFromApplication()
 	{
 		super.detachFromApplication();

@@ -3,7 +3,6 @@ package tests.tapestry;
 import com.primix.tapestry.components.*;
 import com.ibm.logging.*;
 import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 
 /*
@@ -43,54 +42,58 @@ import com.primix.tapestry.*;
 
 public class HomePage extends BasePage
 {
-	private String activeSelection = "none";
+    private String activeSelection = "none";
 
-	private String currentSelection;
+    private String currentSelection;
 
-	private static final String[] selectionOptions = { "New", "Open", "Closed" };
-public HomePage(IApplication application, ComponentSpecification componentSpecification)
-{
-	super(application, componentSpecification);
-}
-public void detachFromApplication()
-{
-	super.detachFromApplication();
+    private static final String[] selectionOptions = { "New", "Open", "Closed" };
 
-	// Return page to 'pristine' state.
-	
-	activeSelection = "none";
-	currentSelection = null;
-}
-public String getActiveSelection()
-{
-	return activeSelection;
-}
-public String getCurrentSelection()
-{
-	return currentSelection;
-}
-public IActionListener getListener()
-{
-	return new IActionListener()
-	{
-		public void actionTriggered(IComponent component, IRequestCycle cycle)
-		{
-			setActiveSelection(currentSelection);
-		}
-	};
-}
-public String[] getSelectionOptions()
-{
-	return selectionOptions;
-}
-public void setActiveSelection(String value)
-{
-	activeSelection = value;
+    public void detachFromApplication()
+    {
+        super.detachFromApplication();
 
-	fireObservedChange("activeSelection", value);
+        // Return page to 'pristine' state.
+
+        activeSelection = "none";
+        currentSelection = null;
+    }
+
+    public String getActiveSelection()
+    {
+        return activeSelection;
+    }
+
+    public String getCurrentSelection()
+    {
+        return currentSelection;
+    }
+
+    public IActionListener getListener()
+    {
+        return new IActionListener()
+        {
+            public void actionTriggered(IComponent component, IRequestCycle cycle)
+            {
+                setActiveSelection(currentSelection);
+            }
+        };
+    }
+
+    public String[] getSelectionOptions()
+    {
+        return selectionOptions;
+    }
+
+    public void setActiveSelection(String value)
+    {
+        activeSelection = value;
+
+        fireObservedChange("activeSelection", value);
+    }
+
+    public void setCurrentSelection(String value)
+    {
+        currentSelection = value;
+    }
 }
-public void setCurrentSelection(String value)
-{
-	currentSelection = value;
-}
-}
+

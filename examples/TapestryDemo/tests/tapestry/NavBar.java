@@ -1,7 +1,6 @@
 package tests.tapestry;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import java.util.*;
 
 /*
@@ -57,13 +56,9 @@ public class NavBar extends BaseComponent
 		displayNames.put("history", "History");
 	}
 
-	private String currentPageName;
+	// Really should clean this up at the end of the request cycle.
 
-	public NavBar(IPage page, IComponent container, String id, 
-		ComponentSpecification spec)
-	{
-		super(page, container, id, spec);
-	}
+	private String currentPageName;
 
 	public String getCurrentPageName()
 	{

@@ -36,7 +36,6 @@ package tutorial.survey;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import java.util.*;
 
 public class SurveyPage extends BasePage
@@ -47,12 +46,6 @@ public class SurveyPage extends BasePage
 	private IPropertySelectionModel sexModel;
 	private IPropertySelectionModel raceModel;
 	
-	public SurveyPage(IApplication application, ComponentSpecification specification)
-	{
-		super(application, specification);
-	}
-	
-
 	public IPropertySelectionModel getRaceModel()
 	{
 		if (raceModel == null)

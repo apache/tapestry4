@@ -1,7 +1,6 @@
 package com.primix.vlib.components;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 
@@ -71,11 +70,6 @@ public class PersonLink extends BaseComponent
 
     private String[] context;
     private Integer primaryKey;
-
-	public PersonLink(IPage page, IComponent container, String id, ComponentSpecification spec)
-	{
-		super(page, container, id, spec);
-	}
 
     public IBinding getPrimaryKeyBinding()
     {

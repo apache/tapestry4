@@ -1,7 +1,6 @@
 package com.primix.vlib.components;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 
@@ -59,11 +58,6 @@ public class BookLink extends BaseComponent
     private IBinding bookBinding;
     private Book book;
     private String[] context;
-
-	public BookLink(IPage page, IComponent container, String id, ComponentSpecification spec)
-	{
-		super(page, container, id, spec);
-	}
 
     public IBinding getBookBinding()
     {

@@ -1,7 +1,6 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -52,11 +51,6 @@ public class Matches extends BasePage
 	private Book currentMatch;
 	private int matchCount;
 	
-	public Matches(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
-
 	public void detachFromApplication()
 	{
 		super.detachFromApplication();
