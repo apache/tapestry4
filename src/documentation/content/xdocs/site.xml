@@ -138,8 +138,9 @@
     
     <related label="Related Projects">
     	<item label="Spindle" href="http://spindle.sourceforge.net/"/>
-      <item label="HiveMind" href="http://jakarta.apache.org/hivemind/"/>
+        <item label="HiveMind" href="http://jakarta.apache.org/hivemind/"/>
     	<item label="Tacos" href="http://sf.net/projects/tacos/"/>
-    </related>  
+    	<trails label="Trails" href="https://trails.dev.java.net/"/>   
+   	</related>  
 	
 </site>
