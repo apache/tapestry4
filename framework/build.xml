@@ -20,6 +20,7 @@
     <pathelement location="${lib}/log4j-core.jar"/>
     <pathelement location="${lib}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib}/org.apache.crimson.jar"/>
+    <pathelement location="${lib}/org.mortbay.jetty.jar"/>
   </path>
   <target name="init">
     <tstamp/>
