@@ -7,8 +7,8 @@ import javax.servlet.ServletContext;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.resource.ContextResource;
 
 /**
  * For the moment, all "context:" prefixed asset paths are interpreted relative to the servlet

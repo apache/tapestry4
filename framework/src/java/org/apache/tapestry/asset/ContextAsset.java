@@ -19,11 +19,11 @@ import java.net.URL;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.resource.ContextResource;
 
 /**
  *  An asset whose path is relative to the {@link javax.servlet.ServletContext} containing

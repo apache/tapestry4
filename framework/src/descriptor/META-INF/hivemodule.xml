@@ -175,7 +175,7 @@
       
     <invoke-factory>
       <construct
-        class="org.apache.hivemind.service.impl.ObjectTranslator" initialize-method="initializeService">
+        class="org.apache.hivemind.service.impl.ObjectTranslator">
         <set-configuration configuration-id="hivemind.ObjectProviders" property="contributions"/>
       </construct>
     </invoke-factory>
