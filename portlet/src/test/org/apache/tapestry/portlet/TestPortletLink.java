@@ -14,7 +14,14 @@
 
 package org.apache.tapestry.portlet;
 
+import java.util.Map;
+
+import javax.portlet.PortletMode;
+import javax.portlet.PortletModeException;
+import javax.portlet.PortletSecurityException;
 import javax.portlet.PortletURL;
+import javax.portlet.WindowState;
+import javax.portlet.WindowStateException;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IRequestCycle;
@@ -30,6 +37,46 @@ import org.easymock.MockControl;
  */
 public class TestPortletLink extends HiveMindTestCase
 {
+    private static class PortletURLFixture implements PortletURL
+    {
+        private final String _toString;
+
+        public PortletURLFixture(String toString)
+        {
+            _toString = toString;
+        }
+
+        public String toString()
+        {
+            return _toString;
+        }
+
+        public void setWindowState(WindowState arg0) throws WindowStateException
+        {
+        }
+
+        public void setPortletMode(PortletMode arg0) throws PortletModeException
+        {
+        }
+
+        public void setParameter(String arg0, String arg1)
+        {
+        }
+
+        public void setParameter(String arg0, String[] arg1)
+        {
+        }
+
+        public void setParameters(Map arg0)
+        {
+        }
+
+        public void setSecure(boolean arg0) throws PortletSecurityException
+        {
+        }
+
+    }
+
     private IRequestCycle newCycle()
     {
         return (IRequestCycle) newMock(IRequestCycle.class);
@@ -143,6 +190,26 @@ public class TestPortletLink extends HiveMindTestCase
 
         verifyControls();
     }
+    
+    public void testGetURLUnencoding()
+    {
+        IRequestCycle cycle = newCycle();
+        PortletURL url = new PortletURLFixture("this=foo&amp;that=bar");
+
+        MockControl control = newControl(QueryParameterMap.class);
+        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+
+        parameters.getParameterNames();
+        control.setReturnValue(new String[0]);
+
+        replayControls();
+
+        ILink link = new PortletLink(cycle, url, parameters, false);
+
+        assertEquals("this=foo&that=bar", link.getURL());
+
+        verifyControls();
+    }    
 
     public void testGetURLIncludeParameters()
     {

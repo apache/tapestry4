@@ -20,40 +20,22 @@ import javax.portlet.PortletConfig;
 
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.impl.AbstractSetupApplicationGlobals;
 
 /**
- * Alternative to {@link org.apache.tapestry.engine.SetupServletEngineServices}, but for Portlets
- * and the <code>tapestry.portlet.services.FactoryServices</code> configuration point.
+ * Alternative to {@link org.apache.tapestry.services.impl.SetupServletApplicationGlobals}, but for
+ * Portlets and the <code>tapestry.portlet.services.FactoryServices</code> configuration point.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class SetupPortletEngineServices implements PortletApplicationInitializer
+public class SetupPortletApplicationGlobals extends AbstractSetupApplicationGlobals implements
+        PortletApplicationInitializer
 {
-    private ApplicationGlobals _globals;
-
-    private List _factoryServices;
-
-    private ResponseRenderer _responseRenderer;
 
     public void initialize(PortletConfig portletConfig)
     {
-        _globals.storeFactoryServices(_factoryServices);
-        _globals.storeResponseRenderer(_responseRenderer);
+        initialize();
     }
 
-    public void setFactoryServices(List factoryServices)
-    {
-        _factoryServices = factoryServices;
-    }
-
-    public void setGlobals(ApplicationGlobals globals)
-    {
-        _globals = globals;
-    }
-
-    public void setResponseRenderer(ResponseRenderer responseRenderer)
-    {
-        _responseRenderer = responseRenderer;
-    }
 }

@@ -177,4 +177,38 @@
     <invoke-factory service-id="hivemind.lib.PlaceholderFactory" model="primitive"/>
   </implementation>
   
+  <service-point id="PortletLinkFactory" interface="org.apache.tapestry.services.LinkFactory">
+    Implementation of LinkFactory for portlets that builds links using
+    the Portlet API's PortletResponse.setRenderParameter() method.
+    
+    <invoke-factory>
+      <construct class="PortletLinkFactoryImpl">
+        <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
+        <set-configuration property="contributions" configuration-id="tapestry.url.ServiceEncoders"/>
+        <set-service property="renderResponse" service-id="RenderResponse"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+ <service-point id="SetupPortletApplicationGlobals" interface="PortletApplicationInitializer">
+  
+  Contributed into the tapestry.init.ApplicationInitializers configuration point
+  to install the servlet-specific framework services and configurations into the
+  tapestry.globals.ApplicationGlobals service.
+  
+  <invoke-factory model="primitive">
+    <construct class="SetupPortletApplicationGlobals">
+      <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
+      <set-service property="responseRenderer" service-id="tapestry.portlet.services.ResponseRenderer"/>
+      <set-service property="linkFactory" service-id="PortletLinkFactory"/>
+      <set-configuration property="factoryServices" configuration-id="tapestry.portlet.services.FactoryServices"/>
+    </construct>
+  </invoke-factory>
+ </service-point>
+ 
+ <contribution configuration-id="PortletApplicationInitializers">
+  <command id="SetupServletApplicationGlobals" object="service:SetupPortletApplicationGlobals"/>
+ </contribution> 
+  
 </module>

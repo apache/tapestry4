@@ -85,25 +85,6 @@
   </invoke-factory>
  </service-point>
   
- <service-point id="SetupPortletEngineServices" interface="PortletApplicationInitializer">
-  
-  Contributed into the tapestry.init.ApplicationInitializers configuration point
-  to install the servlet-specific framework services into the
-  tapestry.globals.ApplicationGlobals service.
-  
-  <invoke-factory model="primitive">
-    <construct class="SetupPortletEngineServices">
-      <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
-      <set-configuration property="factoryServices" configuration-id="FactoryServices"/>
-      <set-service property="responseRenderer" service-id="ResponseRenderer"/>
-    </construct>
-  </invoke-factory>
- </service-point>
- 
- <contribution configuration-id="tapestry.portlet.PortletApplicationInitializers">
-  <command id="SetupPortletEngineServices" object="service:SetupPortletEngineServices"/>
- </contribution>
-  
   <contribution configuration-id="hivemind.FactoryDefaults">
     <default symbol="org.apache.tapestry.portlet.home-page" value="View"/>
   </contribution>

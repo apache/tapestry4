@@ -85,4 +85,8 @@ public interface ApplicationGlobals
     public void storeResponseRenderer(ResponseRenderer renderer);
 
     public ResponseRenderer getResponseRenderer();
+
+    public void storeLinkFactory(LinkFactory linkFactory);
+
+    public LinkFactory getLinkFactory();
 }

@@ -62,6 +62,8 @@ public class PortletLink implements ILink
 
         String url = _portletURL.toString();
 
+        url = unencode(url);
+
         if (_stateful)
             url = _cycle.encodeURL(url);
 
@@ -69,6 +71,37 @@ public class PortletLink implements ILink
             url = url + "#" + anchor;
 
         return url;
+    }
+
+    /**
+     * The PortletURL class returns a url that's already XML-escaped, ready for inclusion directly
+     * into the response stream. However, the IMarkupWriter expects to do that encoding too ... and
+     * double encoding is bad. So we back out the most likely encoding (convert '&amp;amp;' to just
+     * '&amp;').
+     */
+
+    private String unencode(String url)
+    {
+        StringBuffer buffer = new StringBuffer(url.length());
+        String text = url;
+
+        while (true)
+        {
+            int ampx = text.indexOf("&amp;");
+
+            if (ampx < 0)
+                break;
+
+            // Take up to and including the '&'
+
+            buffer.append(text.substring(0, ampx + 1));
+
+            text = text.substring(ampx + 5);
+        }
+
+        buffer.append(text);
+
+        return buffer.toString();
     }
 
     private void loadParameters()

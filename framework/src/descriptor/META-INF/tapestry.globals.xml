@@ -85,4 +85,23 @@
     
   </service-point>
   
+ <service-point id="SetupServletApplicationGlobals" interface="ApplicationInitializer">
+  
+  Contributed into the tapestry.init.ApplicationInitializers configuration point
+  to install the servlet-specific framework services and configurations into the
+  tapestry.globals.ApplicationGlobals service.
+  
+  <invoke-factory model="primitive">
+    <construct class="impl.SetupServletApplicationGlobals">
+      <set-service property="globals" service-id="ApplicationGlobals"/>
+      <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
+      <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
+      <set-configuration property="factoryServices" configuration-id="tapestry.services.FactoryServices"/>
+    </construct>
+  </invoke-factory>
+ </service-point>
+ 
+ <contribution configuration-id="tapestry.init.ApplicationInitializers">
+  <command id="SetupServletApplicationGlobals" object="service:SetupServletApplicationGlobals"/>
+ </contribution>  
 </module>
