@@ -16,5 +16,8 @@
     <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-jdbc_ext.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/lib/ext/jboss-j2ee.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/lib/ext/mail.jar"/>
+    <classpathentry kind="var" path="JBOSS_DIR/lib/jmxri.jar"/>
+    <classpathentry kind="var" path="JBOSS_DIR/lib/ext/jboss.jar"/>
+    <classpathentry kind="lib" path="lib/mckoidb.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>
