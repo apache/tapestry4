@@ -222,13 +222,18 @@ public abstract class AbstractApplication
 		throws RequestCycleException, ServletException, IOException
 		{
 			IMonitor monitor;
+			IPage home;
 			
 			monitor = cycle.getMonitor();
 			
 			if (monitor != null)
 				monitor.serviceBegin(HOME_SERVICE, null);
 
-			cycle.setPage(HOME_PAGE);
+			home = cycle.getPage(HOME_PAGE);
+
+			home.validate(cycle);
+
+			// If that worked, then render it.
 
 			render(cycle, output);
 
