@@ -11,7 +11,7 @@
 	<tr>
 		<td valign="top" align="left"><img height="44" src="images/ico_t.gif" alt="[Tapestry Logo]" width="44" align="absMiddle" border="0">&nbsp;<img height="22" alt="Tapestry" src="images/hd_tapestry.gif" width="100" align="absMiddle" vspace="17" border="0">
 
-<h3>Release 2.3-alpha-1</h3>
+<h3>Release 2.3-beta-1</h3>
 
 <p>Tapestry is now available under the terms of the Apache Software License.  Previous
 releases were released under the LGPL, but are now retroactively
@@ -20,18 +20,18 @@ licensed under the ASL as well.
 <p>Added a <a href="dev.html">Developers Page</a>.
 
 <p>
-Removed code dependency on Log4J, using
+Removeded code dependency on Log4J, using
 Jakarta's
 <a href="http://jakarta.apache.org/commons/logging.html">commons-logging</a> wrapper layer instead.
 Use the <code>Enum</code> implementation from Jakarta's
 <a href="http://jakarta.apache.org/commons/lang.html">commons-lang</a> library.
 
 <p>
-Rework dynamic code loading so that a subclass of
+Reworked dynamic code loading so that a subclass of
 <a href="doc/api/net/sf/tapestry/ApplicationServlet.html">ApplicationServlet</a>
 is no longer necessary.
 
-<p>Add methods to
+<p>Added methods to
 <a href="doc/api/net/sf/tapestry/INamespace.html">INamespace</a> and
 <a href="doc/api/net/sf/tapestry/IPage.html">IPage</a>
 to make dealing with namespaces and qualified page names easier.
@@ -43,7 +43,10 @@ Joe Panico has contributed the PopupLink component.
 <code>&lt;jwc id="..."&gt;</code> is no longer allowed in HTML templates.
 
 <p>
-Upgrade to OGNL 2.3.0.
+Upgraded to OGNL 2.3.0.
+
+<p>
+Added German translation of validation strings, contributed by Sven Homburg.
 
 <pre>
 [ 619481 ] use jakarta commons lang Enum
