@@ -20,7 +20,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 
 /**
  * Used to insert some text (from a parameter) into the HTML. [ <a
@@ -61,9 +60,10 @@ public abstract class Insert extends AbstractComponent
             }
             catch (Exception ex)
             {
-                throw new ApplicationRuntimeException(Tapestry.format(
-                        "Insert.unable-to-format",
-                        value), this, getBinding("format").getLocation(), ex);
+                throw new ApplicationRuntimeException(ComponentMessages.unableToFormat(
+                        this,
+                        value,
+                        ex), this, getBinding("format").getLocation(), ex);
             }
         }
 

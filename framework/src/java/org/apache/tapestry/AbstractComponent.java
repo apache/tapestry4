@@ -359,7 +359,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /**
      * Returns the name of the page, a slash, and this component's id path. Pages are different,
-     * they simply return their name.
+     * they override this method to simply return their page name.
      * 
      * @see #getIdPath()
      */
