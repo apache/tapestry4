@@ -246,39 +246,7 @@ implements IExternalPage
 		currentMatch = value;
 	}
 	
-	/**
-	 *  Returns true if the holder of a book doesn't match the owner of the book.
-	 *  This cleans up the output a bit.
-	 *
-	 */
-	 
-	public boolean getShowHolder()
-	{
-		Integer ownerPrimaryKey;
-		Integer holderPrimaryKey;
-		
-		ownerPrimaryKey = currentMatch.getOwnerPrimaryKey();
-		holderPrimaryKey = currentMatch.getHolderPrimaryKey();
-		
-		return ! ownerPrimaryKey.equals(holderPrimaryKey);		
-	}
-	
-	public boolean getEnableBorrow()
-	{
-		VirtualLibraryApplication app;
-      
-		app = (VirtualLibraryApplication)application;
-        
-        // Can't borrow until logged in.
-        
-        if (!app.isUserLoggedIn())
-            return false;
- 
- 		// Otherwise, can only borrow it if not already holding it.
-		
-		return ! app.isLoggedInUser(currentMatch.getHolderPrimaryKey());
-	}
-	
+
 	/**
 	 *  Removes the book query bean, if the handle to the bean
 	 *  is non-null.

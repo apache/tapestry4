@@ -26,6 +26,16 @@
 			</bindings>
 		</component>
 		<component>
+			<id>ifShowHeader</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>matchCount</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>e-match</id>
 			<type>Foreach</type>
 			<bindings>
@@ -36,16 +46,6 @@
 				<binding>
 					<name>value</name>
 					<property-path>currentMatch</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifFirstMatch</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>components.e-match.first</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -99,7 +99,7 @@
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>showHolder</property-path>
+					<property-path>currentMatch.borrowed</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -119,29 +119,21 @@
 		</component>
 		<component>
 			<id>borrow</id>
-			<type>Direct</type>
+			<type>Borrow</type>
 			<bindings>
 				<binding>
-					<name>listener</name>
-					<property-path>application.borrowListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
-					<property-path>currentMatch.primaryKey</property-path>
-				</binding>
-				<binding>
-					<name>enabled</name>
-					<property-path>enableBorrow</property-path>
+					<name>book</name>
+					<property-path>currentMatch</property-path>
 				</binding>
 			</bindings>
 		</component>
 		<component>
-			<id>ifLastMatch</id>
+			<id>ifShowTrailer</id>
 			<type>Conditional</type>
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>components.e-match.last</property-path>
+					<property-path>matchCount</property-path>
 				</binding>
 			</bindings>
 		</component>

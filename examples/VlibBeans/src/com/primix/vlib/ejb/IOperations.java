@@ -148,4 +148,14 @@ public interface IOperations extends EJBObject
 	public IPerson registerNewUser(String firstName, String lastName, 
 									String email, String password)
 	throws RegistrationException, CreateException, RemoteException;
+
+    /**
+     *  Returns a book to its owner.
+     *
+     *  @throws FinderException if the book is not known.
+     *
+     */
+
+    public IBook returnBook(Integer bookPrimaryKey)
+    throws RemoteException, FinderException;
 }

@@ -225,6 +225,39 @@ public class BookQueryBean extends OperationsBean
 	}
 
 
+    public int borrowerQuery(Integer borrowerPK)
+    {
+        IStatement statement = null;
+        Connection connection = null;
+    
+        // Forget any current results.
+    
+        results = null;
+
+        try
+        {
+    	    connection = getConnection();
+
+    	    try
+    	    {
+    		    statement = buildBorrowerQuery(connection, borrowerPK);
+    	    }
+    	    catch (SQLException e)
+    	    {
+    		    throw new XEJBException("Unable to create query statement.", e);
+    	    }
+    	
+    	    processQuery(statement);
+    	
+        }
+        finally
+        {
+    	    close(connection, statement, null);
+        }
+
+        return getResultCount();
+    }
+
 	private void processQuery(IStatement statement)
 	{
 		ResultSet set = null;
@@ -279,8 +312,6 @@ public class BookQueryBean extends OperationsBean
 	throws SQLException
 	{
 		StatementAssembly assembly;
-		int i;
-		IStatement result;
 		
 		assembly = buildBaseBookQuery();
 				
@@ -295,9 +326,7 @@ public class BookQueryBean extends OperationsBean
 		
 		assembly.newLine("ORDER BY book.TITLE");
 
-		result = assembly.createStatement(connection);
-		
-		return result;
+		return assembly.createStatement(connection);
 	}
 	
 
@@ -307,9 +336,6 @@ public class BookQueryBean extends OperationsBean
 	throws SQLException
 	{
 		StatementAssembly assembly;
-		int i;
-		IStatement result;
-		String trimmedTitle;
 		
 		assembly = buildBaseBookQuery();
 		
@@ -318,9 +344,27 @@ public class BookQueryBean extends OperationsBean
 	
 		assembly.newLine("ORDER BY book.TITLE");
 
-		result = assembly.createStatement(connection);
-		
-		return result;
+	    return assembly.createStatement(connection);
 	}
+
+    private IStatement buildBorrowerQuery(Connection connection, Integer borrowerPK)
+    throws SQLException
+    {
+        StatementAssembly assembly;
+
+        assembly = buildBaseBookQuery();
+
+        // Get books held by the borrower but not owned by the borrower.
+
+        assembly.addSep(" AND ");
+        assembly.addParameter("book.HOLDER_ID = ?", borrowerPK);
+        assembly.addSep(" AND ");
+        assembly.add("book.HOLDER_ID <> book.OWNER_ID");
+
+        assembly.newLine("ORDER BY book.TITLE");
+
+        return assembly.createStatement(connection);
+    }
+
 	
 }  

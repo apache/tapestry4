@@ -89,4 +89,12 @@ public interface IBookQuery extends EJBObject
 	 
 	public int holderQuery(Integer holderPK)
 	throws RemoteException;	
+
+    /**
+     *  Queries the list of books held by the borrower but not owned by the borrower..
+     *
+     */
+
+    public int borrowerQuery(Integer borrowerPK)
+    throws RemoteException;
 }

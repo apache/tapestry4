@@ -176,4 +176,15 @@ public class Book implements Serializable
 		
 		return buffer.toString();
 	}
+
+    /**
+     *  Returns true if the book is borrowed; that is, if its holder doesn't
+     *  match its owner.
+     *
+     */
+
+    public boolean isBorrowed()
+    {
+        return ! get(HOLDER_PK_COLUMN).equals(get(OWNER_PK_COLUMN));
+    }
 }

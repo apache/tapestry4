@@ -14,9 +14,7 @@
 
 <p><jwc id="insertMatchCount"/> books.
 
-<jwc id="e-match">
-
-<jwc id="ifFirstMatch">
+<jwc id="ifShowHeader">
 <table>
 	<tr>
 		<th>Title</th>
@@ -25,6 +23,8 @@
 		<th>Borrowed By</th>
 	</tr>
 </jwc>
+
+<jwc id="e-match">
 
 	<tr>
 		<td><jwc id="bookLink"/></td>
@@ -35,13 +35,15 @@
 			<jwc id="holderLink"/>
 		</jwc>
 		</td>
-		<td><jwc id="borrow">[Borrow]</jwc></td>
+		<td><jwc id="borrow"/></td>
 	</tr>
 
-<jwc id="ifLastMatch">
+</jwc>
+
+<jwc id="ifShowTrailer">
 </table>
 </jwc>
 
-</jwc>
+
 
 </jwc>
