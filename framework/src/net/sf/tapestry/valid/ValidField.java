@@ -309,9 +309,9 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
             return delegate.getInvalidInput();
 
         Object value = valueBinding.getObject();
-        String result = validator.toString(this, value);
+        String result = getValidator().toString(this, value);
 
-        if (Tapestry.isNull(result) && validator.isRequired())
+        if (Tapestry.isNull(result) && getValidator().isRequired())
             addSelect(getPage().getRequestCycle());
 
         return result;
@@ -324,7 +324,7 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
 
         try
         {
-            objectValue = validator.toObject(this, value);
+            objectValue = getValidator().toObject(this, value);
         }
         catch (ValidatorException ex)
         {
