@@ -1,3 +1,8 @@
+* Apr 10 2001 hship
+
+Add targets and rules in DocBook.mk to support packaging the HTML for distribution
+to a web site.
+
 * Feb 22 2001 hship
 
 No longer distribute OpenJade with the JBE.
