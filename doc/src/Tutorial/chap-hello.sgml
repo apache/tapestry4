@@ -136,7 +136,7 @@ example, our component is very simple.
 </specification>]]></programlisting></figure>
  
 <para>
-This simply says that <classname>Home</> is a kind of page.  We use the supplied Tapestry class 
+This simply says that <varname>Home</> is a kind of page.  We use the supplied Tapestry class 
 <classname>com.primix.tapestry.BasePage</> since we aren't adding any behavior to the page.
 </>
 

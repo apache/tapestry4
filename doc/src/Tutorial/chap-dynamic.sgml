@@ -113,8 +113,8 @@ creates a hyperlink that refreshes the page when clicked.</>
 <para>
 One of the goals of Tapestry is that the HTML should have the minimum amount of special 
 markup.  This is demonstrated here ... the &jwc-tag;  tags blend into the standard HTML of the 
-template.  We also don't confuse the HTML by explaining exactly what an <classname>insertDate</>
-or <classname>refresh</>
+template.  We also don't confuse the HTML by explaining exactly what an <varname>insertDate</>
+or <varname>refresh</>
 is; that comes out of the specification (described shortly).  The ids used here are meaningful only 
 to the developer
 	<footnote>
@@ -127,9 +127,9 @@ component specification.
 <para>
 Very significant is the fact that a Tapestry component can 
 <emphasis>wrap</> around other elements of the 
-template.  The <classname>refresh</> component wraps around the word "here".  
+template.  The <varname>refresh</> component wraps around the word "here".  
 What this means is that the 
-<classname>refresh</> component will get a chance to emit some HTML (an 
+<varname>refresh</> component will get a chance to emit some HTML (an 
 <sgmltag class=starttag>a</> hyperlink tag), then emit the 
 HTML it wraps (the word "here"), then get a chance to emit more HTML (the 
 <sgmltag class=endtag>a</> closing tag).
@@ -196,9 +196,9 @@ moves between the application, page and any components.
 </specification>]]></programlisting></figure>
 
 <para>
-Here's what all that means:  The <classname>Home</> page is implemented with a custom class, 
+Here's what all that means:  The <varname>Home</> page is implemented with a custom class, 
 <classname>tutorial.simple.Home</>.  It contains two components, 
-<classname>insertDate</> and <classname>refresh</>.
+<varname>insertDate</> and <varname>refresh</>.
 </>
 
 <para>
@@ -206,16 +206,16 @@ The two components used within this page are provided by the Tapestry framework.
 </>
 
 <para>
-The <classname>insertDate</> component is type <classname>Insert</>. 
+The <varname>insertDate</> component is type <classname>Insert</>. 
 <classname>Insert</> components have a <varname>value</> parameter used to 
 specify what should be inserted into the HTML produced by the page.  The 
-<classname>insertDate</>
+<varname>insertDate</>
 component has its <varname>value</> parameter bound to a JavaBeans property of its container 
 (the page), the <varname>currentDate</> property.
 </>
 
 <para>
-The <classname>refresh</> component is type <classname>Page</>, meaning it creates a 
+The <varname>refresh</> component is type <classname>Page</>, meaning it creates a 
 link to some other page in the 
 application.  <classname>Page</> components have a parameter, named <varname>page</>, 
 which defines the name of the 
@@ -251,13 +251,13 @@ public class Home extends BasePage
 <para> 
 <classname>Home</> implements a  read-only JavaBeans property, <varname>currentDate</>.  
 This is the same <varname>currentDate</>
-that the <classname>insertDate</> component needs.  When asked for the current date, the 
-<classname>Home</> object returns 
+that the <varname>insertDate</> component needs.  When asked for the current date, the 
+<varname>Home</> object returns 
 a new instance of the <classname>java.util.Date</> object.
 </>
 
 <para>
-The <classname>insertDate</> component converts objects into strings by invoking 
+The <varname>insertDate</> component converts objects into strings by invoking 
 <function>toString()</> on the object.
 </>
 
@@ -294,7 +294,7 @@ components.
 This should look very familiar, in that it is mostly the same as the HTML template for the page.
 Tapestry not only inserted simple text (the current date and time, 
 obtained from an <classname>java.util.Date</> object), but the 
-<classname>refresh</> component inserted the <sgmltag class=starttag>a</> and 
+<varname>refresh</> component inserted the <sgmltag class=starttag>a</> and 
 <sgmltag class=endtag>a</> tags, and created an appropriate URL for the href attribute.
 </>
 
