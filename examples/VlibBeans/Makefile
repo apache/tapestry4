@@ -8,8 +8,10 @@ PROJECT_NAME := VlibBeans
 
 INSTALL_DIR := ../../lib
 
-PROJ_CLASSPATH := \
-	$(INSTALL_DIR)/com.primix.tapestry.jar
+PROJ_CLASSPATH = \
+	$(INSTALL_DIR)/com.primix.tapestry.jar \
+	$(JBOSS_DIR)/lib/ext/jms.jar \
+	$(INSTALL_DIR)/log4j-core.jar
 
 META_RESOURCES := *.xml
 
@@ -33,7 +35,7 @@ INSTALLED_VLIB_PROPERTIES = $(JBOSS_CONF_DIR)/vlib.properties
 # At one time there were more libraries, but they are now already packaged in JBoss 2.2.1.
 
 RUNTIME_LIBRARIES := \
-	$(PROJ_CLASSPATH)
+	$(INSTALL_DIR)/com.primix.tapestry.jar
 	
 # Rule to configure the jBoss server for the VlibBeans
 # demo.
@@ -50,6 +52,11 @@ endif
 		$(JBOSS_CONF_DIR)/jboss.jcml, \
 		jboss/jboss.jcml.splice, \
 		-before "J2EE deployment")
+	$(call NOTE, Splicing changes to jbossmq.xml ...)
+	$(call JBE_SPLICE, PrimixVlib, \
+		$(JBOSS_CONF_DIR)/jbossmq.xml, \
+		jboss/jbossmq.xml.splice, \
+		-before "Queue")
 	$(call NOTE, Setting up JNDI properties ...)
 	$(CP) $(CP_FORCE_OPT) jboss/jndi.properties $(JBOSS_CONF_DIR)
 	$(call NOTE, Copying runtime libraries ...)

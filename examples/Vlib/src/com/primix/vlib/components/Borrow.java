@@ -62,129 +62,132 @@ import javax.ejb.*;
  */
 
 public class Borrow
-extends BaseComponent
+	extends BaseComponent
 {
     private IBinding bookBinding;
     private Book book;
-
+	
     public void setBookBinding(IBinding value)
     {
-        bookBinding = value;
+		bookBinding = value;
     }
-
+	
     public IBinding getBookBinding()
     {
-        return bookBinding;
+		return bookBinding;
     }
-
+	
     /**
-     *  Gets the book to create a link for.  This is cached for the duration of the componen's
-     * {@link #render(IResponseWriter, IRequestCycle)} method.
-     *
-     */
-
+	 *  Gets the book to create a link for.  This is cached for the duration of the componen's
+	 * {@link #render(IResponseWriter, IRequestCycle)} method.
+	 *
+	 */
+	
     public Book getBook()
     {
-        if (book == null)
-            book = (Book)bookBinding.getObject("book", Book.class);
-
-        if (book == null)
-            throw new NullValueForBindingException(bookBinding);
-
-        return book;
+		if (book == null)
+			book = (Book)bookBinding.getObject("book", Book.class);
+		
+		if (book == null)
+			throw new NullValueForBindingException(bookBinding);
+		
+		return book;
     }
-
+	
     /**
-     *  Overriden to simply clear the book property after the component finishes rendering.
-     *
-     */
-
+	 *  Overriden to simply clear the book property after the component finishes rendering.
+	 *
+	 */
+	
     public void render(IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException
+		throws RequestCycleException
     {
-        try
-        {
-            super.render(writer, cycle);
-        }
-        finally
-        {
-            book = null;
-        }
+		try
+		{
+			super.render(writer, cycle);
+		}
+		finally
+		{
+			book = null;
+		}
     }
-
+	
     public boolean isLinkEnabled()
     {
-        Visit visit = (Visit)page.getVisit();
-
-        if (!visit.isUserLoggedIn())
-            return false;
-
-        // If the user is logged in, they can borrow it if they are
-        // not already holding it and aren't the owner.
-
-        Book book = getBook();
+		Visit visit = (Visit)page.getVisit();
+		
+		if (!visit.isUserLoggedIn())
+			return false;
+		
+		// If the user is logged in, they can borrow it if they are
+		// not already holding it and aren't the owner.
+		
+		Book book = getBook();
 		
 		// If the book is not lendable, then disable the link.
-
+		
 		if (!book.isLendable())
 			return false;
 		
-        // Otherwise, can only borrow it if not already holding it.
-        
-        return ! visit.isLoggedInUser(book.getHolderPrimaryKey());
+		// Otherwise, can only borrow it if not already holding it.
+		
+		return ! visit.isLoggedInUser(book.getHolderPrimaryKey());
     }
-
+	
 	public IDirectListener getBorrowListener()
 	{
 	    return new IDirectListener()
 	    {
-	        public void directTriggered(IDirect direct, String[] context,
-	                IRequestCycle cycle)
-					throws RequestCycleException
-	        {
+			public void directTriggered(IDirect direct, String[] context,
+					IRequestCycle cycle)
+				throws RequestCycleException
+			{
 				Integer bookPK;
 				
 				// The primary key of the book to borrow is encoded in the context.
 				bookPK = new Integer(context[0]);
 				
 				borrowBook(bookPK, cycle);
-	        }
+			}
 	    };
 	}
-
+	
 	private void borrowBook(Integer bookPK, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
-        Visit visit = (Visit)page.getVisit();
-		IOperations bean;
-		Home home;
-		Integer borrowerPK;
-		IBook book;
-		home = (Home)cycle.getPage("Home");
-
-		bean = visit.getEngine().getOperations();				
-
-		try
+		Visit visit = (Visit)page.getVisit();
+		Home home = (Home)cycle.getPage("Home");
+		VirtualLibraryEngine vengine = visit.getEngine();
+		
+		for (int i = 0; i < 2; i++)
 		{
-			book = bean.borrowBook(bookPK, visit.getUserPK());
-
-			home.setMessage("Borrowed: " + book.getTitle());
+			try
+			{
+				IOperations bean = vengine.getOperations();				
+				IBook book = bean.borrowBook(bookPK, visit.getUserPK());
+				
+				// TBD:  Make borrowBook() return Book, not IBook
+				
+				home.setMessage("Borrowed: " + book.getTitle());
+				
+				break;
+			}
+			catch (BorrowException ex)
+			{
+				home.setError(ex.getMessage());
+			}
+			catch (FinderException ex)
+			{
+				throw new ApplicationRuntimeException(
+					"Unable to find book or user. ", ex);
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure("Remote exception borrowing book.", ex, i > 0);
+			}
 		}
-		catch (BorrowException ex)
-		{
-			home.setError(ex.getMessage());
-		}
-		catch (FinderException ex)
-		{
-			throw new ApplicationRuntimeException(
-				"Unable to find book or user. ", ex);
-		}
-		catch (RemoteException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
-		}
-
+		
 		cycle.setPage(home);				
 	}
-
+	
 }

@@ -134,16 +134,6 @@ public class Browser
 		fireObservedChange("currentPage", value);
 	}
 	
-	public void setJumpPage(int value)
-	{
-		jumpPage = value;
-	}
-	
-	public int getJumpPage()
-	{
-		return jumpPage;
-	}
-	
 	/**
 	 *  Invoked by the container when the query (otherwise accessed via the query
 	 *  parameter) changes.  Re-caches the number of results and sets the current page
@@ -194,43 +184,6 @@ public class Browser
 		return Math.min(currentPage + 1, getPageCount());
 	}
 	
-	private static final int RANGE = 5;
-	
-	/**
-	 * Returns a sorted {@link List} or {@link Integer}.
-	 *
-	 */
-	
-	public List getJumpPages()
-	{
-		Set pageSet = new TreeSet();
-		int pageCount = getPageCount();
-		
-		for (int i = -RANGE; i < RANGE; i++)
-		{
-			int page = currentPage + i;
-			
-			if (page >= 1 && page <= pageCount)
-				pageSet.add(new Integer(page));
-		}
-		
-		// If the current page of pages doesn't extend to the
-		// end of the list then add in the first page and
-		// every tenth page.
-		
-		if (currentPage + RANGE < pageCount)
-		{
-			pageSet.add(new Integer(1));
-			
-			for (int i = 10; i <= pageCount; i += 10)
-				pageSet.add(new Integer(i));
-		}
-		
-		// Because its a set, there are no duplicates.  Convert to a List
-		// and return.
-		
-		return new ArrayList(pageSet);		
-	}
 	
 	/**
 	 * Returns a subset of the results from the query corresponding
@@ -299,5 +252,25 @@ public class Browser
 		};
 		
 		return jumpListener;
+	}
+	
+	public String getRange()
+	{
+		int resultCount = getResultCount();
+		
+		int low = (currentPage - 1) * pageSize + 1;
+		int high = Math.min (currentPage * pageSize, resultCount);
+		
+		return low + " - " + high;
+	}
+	
+	public boolean getShowPreviousLink()
+	{
+		return currentPage > 1;
+	}
+	
+	public boolean getShowNextLink()
+	{
+		return currentPage < getPageCount();
 	}
 }

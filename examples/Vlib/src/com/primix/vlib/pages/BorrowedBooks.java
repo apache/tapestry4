@@ -86,7 +86,7 @@ public class BorrowedBooks
 	 *  A dirty little secret of Tapestry and page recorders:  persistent
 	 *  properties must be set before the render (when this method is invoked)
 	 *  and can't change during the render.  We force
-	 *  the creation of the queries and re-execute both of them whenever
+	 *  the creation of the borrowed books query and re-execute it whenever
 	 *  the BorrowedBooks page is rendered.
 	 *
 	 */
@@ -99,20 +99,30 @@ public class BorrowedBooks
 		Visit visit = (Visit)getVisit();
 		Integer userPK = visit.getUserPK();
 		
-		try
+		
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		
+		for (int i = 0; i < 2; i++)
 		{
-			IBookQuery query = getBorrowedQuery();
-			int count = query.borrowerQuery(userPK);
-			
-			if (count != browser.getResultCount())
-				browser.initializeForResultCount(count);
-		}
-		catch (RemoteException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
+			try
+			{
+				IBookQuery query = getBorrowedQuery();
+				int count = query.borrowerQuery(userPK);
+				
+				if (count != browser.getResultCount())
+					browser.initializeForResultCount(count);
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure("Remote exception finding borrowed books.", ex, i > 0);
+				
+				setBorrowedQuery(null);
+			}
 		}
     }
-		
+	
     public void setBorrowedQuery(IBookQuery value)
     {
 		borrowedQuery = value;

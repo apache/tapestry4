@@ -45,14 +45,14 @@ import javax.rmi.*;
 
 
 public class ViewBook extends BasePage
-implements IExternalPage
+	implements IExternalPage
 {
 	private Book book;	
 	
 	public void detach()
 	{
 		super.detach();
-
+		
 		book = null;
 	}
 	
@@ -64,33 +64,44 @@ implements IExternalPage
 	public void setup(Integer bookPK, IRequestCycle cycle)
 	{
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		IOperations bean = vengine.getOperations();
 		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			book = bean.getBook(bookPK);
-		}
-		catch (FinderException e)
-		{
-			Home home = (Home)cycle.getPage("Home");
-			home.setError("Book not found in database.");
 			
-			cycle.setPage(home);
-			return;
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
+			IOperations bean = vengine.getOperations();
+			
+			try
+			{
+				book = bean.getBook(bookPK);
+				
+				cycle.setPage(this);
+				
+				return;
+			}
+			catch (FinderException ex)
+			{
+				Home home = (Home)cycle.getPage("Home");
+				home.setError("Book not found in database.");
+				
+				cycle.setPage(home);
+				return;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception obtaining information for book " +
+						bookPK + ".", ex, i > 0);
+			}
 		}
 		
-		cycle.setPage(this);
+		
 	}
 	
 	/**
 	 *  Only want to show the holder if it doesn't match the owner.
 	 *
 	 */
-	 
+	
 	public boolean getShowHolder()
 	{
 		Integer ownerPK;

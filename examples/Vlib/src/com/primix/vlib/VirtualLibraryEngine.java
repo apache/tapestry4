@@ -42,6 +42,7 @@ import com.primix.vlib.pages.*;
 import javax.servlet.*;
 import java.io.*;
 import java.net.*;
+import org.apache.log4j.*;
 
 // Appease Javadoc
 import javax.servlet.http.HttpSession;
@@ -63,6 +64,9 @@ import javax.servlet.http.HttpSession;
 public class VirtualLibraryEngine
 	extends SimpleEngine
 {
+	public static final Category CAT =
+		Category.getInstance(VirtualLibraryEngine.class);
+	
 	private static boolean debugEnabled
 		= Boolean.getBoolean("com.primix.vlib.debug-enabled");
 	
@@ -137,7 +141,7 @@ public class VirtualLibraryEngine
 		}
 		
 	}
-
+	
 	/**
 	 *  Creates an instance of {@link Visit}.
 	 *
@@ -322,20 +326,28 @@ public class VirtualLibraryEngine
 	{
 		IOperationsHome home;
 		
-		if (operations == null)
+		for (int i = 0; i < 2; i++)
 		{
-			try
+			
+			if (operations == null)
 			{
-				home = getOperationsHome();
-				operations = home.create();
-			}
-			catch (CreateException e)
-			{
-				throw new ApplicationRuntimeException("Error creating operations bean: " + e, e);
-			}
-			catch (RemoteException e)
-			{
-				throw new ApplicationRuntimeException("Remote exception creating operations bean: " + e, e);
+				try
+				{
+					home = getOperationsHome();
+					operations = home.create();
+					
+					break;
+				}
+				catch (CreateException ex)
+				{
+					throw new ApplicationRuntimeException(
+						"Error creating operations bean.", ex);
+				}
+				catch (RemoteException ex)
+				{
+					rmiFailure(
+						"Remote exception creating operations bean.", ex, i > 0);
+				}
 			}
 		}
 		
@@ -344,25 +356,28 @@ public class VirtualLibraryEngine
 	
 	public Object findNamedObject(String name, Class expectedClass)
 	{
-		Object raw;
-		Object result;
+		Object result = null;
 		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			raw = getRootNamingContext().lookup(name);
-			
-			result = PortableRemoteObject.narrow(raw, expectedClass);
-		}
-		catch (ClassCastException cce)
-		{
-			throw new ApplicationRuntimeException(
-				"Object " + name + " is not type " +
-					expectedClass.getName() + ".", cce);
-		}
-		catch (NamingException e)
-		{
-			throw new ApplicationRuntimeException("Unable to resolve object " + name + ": " +
-						e.toString(), e);
+			try
+			{
+				Object raw = getRootNamingContext().lookup(name);
+				
+				result = PortableRemoteObject.narrow(raw, expectedClass);
+				
+				break;
+			}
+			catch (ClassCastException ex)
+			{
+				throw new ApplicationRuntimeException(
+					"Object " + name + " is not type " +
+						expectedClass.getName() + ".", ex);
+			}
+			catch (NamingException ex)
+			{
+				namingFailure("Unable to resolve object " + name + ".", ex, i > 0);
+			}
 		}
 		
 		return result;
@@ -370,17 +385,23 @@ public class VirtualLibraryEngine
 	
 	public Context getRootNamingContext()
 	{
-	    if (rootNamingContext == null)
-	    {
-			try
+		for (int i = 0; i < 2; i++)
+		{
+			if (rootNamingContext == null)
 			{
-				rootNamingContext = new InitialContext();
+				try
+				{
+					rootNamingContext = new InitialContext();
+					
+					break;
+				}
+				catch (NamingException ex)
+				{
+					namingFailure(
+						"Unable to locate root naming context.", ex, i > 0);
+				}
 			}
-			catch (NamingException e)
-			{
-				throw new ApplicationRuntimeException("Unable to locate root naming context.", e);
-			}
-	    }
+		}
 		
 	    return rootNamingContext;
 	}
@@ -403,32 +424,37 @@ public class VirtualLibraryEngine
 	
 	private IPropertySelectionModel buildPublisherModel()
 	{
-		IOperations bean;
-		Publisher[] publishers;
-		EntitySelectionModel model;
-		int i;
+		Publisher[] publishers = null;
 		
-		model = new EntitySelectionModel();
+		EntitySelectionModel model = new EntitySelectionModel();
 		
 		// Add in a default null value, such that the user can
 		// not select a specific Publisher.
 		
 		model.add(null, "");
 		
-		bean = getOperations();
-		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			publishers = bean.getPublishers();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e.getMessage(), e);
+			IOperations bean = getOperations();
+			
+			try
+			{
+				publishers = bean.getPublishers();
+				
+				// Exit the retry loop
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				rmiFailure(
+					"Unable to obtain list of publishers.", ex, i > 0);
+			}
 		}
 		
 		// Add in the actual publishers.  They are sorted by name.
 		
-		for (i = 0; i < publishers.length; i++)
+		for (int i = 0; i < publishers.length; i++)
 			model.add(publishers[i].getPrimaryKey(), publishers[i].getName());
 		
 		return model;		
@@ -453,7 +479,7 @@ public class VirtualLibraryEngine
 	 *  then first.  The label for the model matches the user's natural name.
 	 *
 	 */
-	 
+	
 	public IPropertySelectionModel getPersonModel()
 	{
 		if (personModel == null)
@@ -464,34 +490,37 @@ public class VirtualLibraryEngine
 	
 	private IPropertySelectionModel buildPersonModel()
 	{
-		EntitySelectionModel model;
-		IOperations bean;
-		Person[] persons;
-		int i;
+		Person[] persons = null;
 		
-		bean = getOperations();
-		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			persons = bean.getPersons();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
+			IOperations bean = getOperations();
+			
+			try
+			{
+				persons = bean.getPersons();
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				rmiFailure(
+					"Unable to obtain list of persons.", ex, i > 0);
+			}
 		}
 		
-		model = new EntitySelectionModel();
+		EntitySelectionModel model = new EntitySelectionModel();
 		
 		// On this one, we don't include a null option.
 		
-		for (i = 0; i < persons.length; i++)
+		for (int i = 0; i < persons.length; i++)
 			model.add(persons[i].getPrimaryKey(),
-					  persons[i].getNaturalName());
-				
+					persons[i].getNaturalName());
+		
 		return model;	  
 		
 	}
-
+	
 	/**
 	 *  Creates a new {@link IBookQuery} EJB instance.
 	 *
@@ -499,21 +528,78 @@ public class VirtualLibraryEngine
 	
 	public IBookQuery createNewQuery()
     {
-		IBookQueryHome home = getBookQueryHome();
+		IBookQuery result = null;
 		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			return home.create();
-		}
-		catch (CreateException e)
-		{
-			throw new ApplicationRuntimeException("Could not create BookQuery bean: " + e, e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e.getMessage(), e);
+			IBookQueryHome home = getBookQueryHome();
+			
+			try
+			{
+				result = home.create();
+				
+				break;
+			}
+			catch (CreateException ex)
+			{
+				throw new ApplicationRuntimeException(
+					"Could not create BookQuery bean.", ex);
+			}
+			catch (RemoteException ex)
+			{
+				rmiFailure("Remote exception creating BookQuery bean.", ex, i > 0);
+			}
 		}
 		
+		return result;
 	}
+	
+	/**
+	 *  Invoked after an operation on a home or remote interface
+	 *  throws a RemoteException; this clears any cache of
+	 *  home and remote interfaces.  
+	 *
+	 * @param message the message for the exception, or for the log message
+	 * @param ex the exception thrown
+	 * @param throwException if true, an {@link ApplicationRuntimeException}
+	 * is thrown after the message is logged.
+	 *
+	 */
+	
+	public void rmiFailure(String message, RemoteException ex, boolean throwException)
+	{
+		CAT.error(message, ex);
+		
+		if (throwException)
+			throw new ApplicationRuntimeException(message, ex);
 
+		clearEJBs();
+	}
+	
+	/**
+	 *  As with {@link #rmiFailure(RemoteException)}, but for
+	 * {@link NamingException}.
+	 *
+	 */
+	
+	public void namingFailure(String message, NamingException ex, boolean throwException)
+	{
+		CAT.error(message, ex);
+		
+		if (throwException)
+			throw new ApplicationRuntimeException(message, ex);
+		
+		clearEJBs();
+	}
+	
+	private void clearEJBs()
+	{
+		bookHome = null;
+		bookQueryHome = null;
+		operations = null;
+		operationsHome = null;
+		personHome = null;
+		publisherHome = null;
+		rootNamingContext = null;
+	}
 }
