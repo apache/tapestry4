@@ -58,14 +58,14 @@ public class DemoApplication extends SimpleApplication
 	
 	private transient static int activeCount = 0;
 
-	private transient String connectionURL;
-	private transient Connection connection;
-
 	private transient Context environment;
 
 	private transient ISessionTracker sessionTracker;
 
 	private transient IMonitor monitor;
+	
+	private boolean monitorEnabled;
+	private boolean initialized;
 
 	protected void setupForRequest(RequestContext context)
 	{
@@ -73,11 +73,11 @@ public class DemoApplication extends SimpleApplication
 
 		super.setupForRequest(context);
 
-		if (connectionURL == null)
+		if (!initialized)
 		{
-			config = context.getServlet().getServletConfig();
-
-			connectionURL = config.getInitParameter("connection-url");
+			monitorEnabled = context.getServlet().getInitParameter("monitor-enabled").equals("true");
+		
+			initialized = true;
 		}
 
 		try
@@ -142,26 +142,12 @@ public class DemoApplication extends SimpleApplication
 		return super.constructService(name);
 	}
 
-	public Connection getConnection()
-	{
-		if (connection != null)
-			return connection;
-
-		try
-		{
-			connection = DriverManager.getConnection(connectionURL);
-		}
-		catch (SQLException e)
-		{
-			throw new ApplicationRuntimeException(
-				"Could not open database connection for " + connectionURL + ".", e);
-		}
-
-		return connection;
-	}
 
 	public IMonitor getMonitor(RequestContext context)
 	{
+		if (!monitorEnabled)
+			return null;
+	
 		if (monitor == null)
 			monitor = new SimpleMonitor(messageLogger);
 

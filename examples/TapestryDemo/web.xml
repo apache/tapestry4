@@ -18,8 +18,8 @@
     <servlet-class>tests.tapestry.Demo</servlet-class>
 
     <init-param>
-      <param-name>com.primix.tapestry.trace-logger-events</param-name>
-      <param-value></param-value>
+      <param-name>monitor-enabled</param-name>
+      <param-value>false</param-value>
     </init-param>
 
     <init-param>

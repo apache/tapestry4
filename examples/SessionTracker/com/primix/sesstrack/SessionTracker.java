@@ -58,7 +58,7 @@ public class SessionTracker implements EntityBean, IRecordType
 	    Handler handler;
 
 	    logger = new TraceLogger();
-	    logger.setLogging(true);
+		logger.setLogging(Boolean.getBoolean("com.primix.SessionTracker.enable-logging"));
 		logger.setSynchronous(true);
 
 	    handler = new ConsoleHandler();
