@@ -58,7 +58,7 @@
 		</assert-output>
 		
 		<assert-output name="Message">
-		Component Two/$BadInsert.insert allows only formal parameters, but has inherit-informal-parameters set.	
+		Component Two/$BadBlock.block allows only formal parameters, but has inherit-informal-parameters set.	
 		</assert-output>
 	</request>
 	
