@@ -15,26 +15,26 @@
    limitations under the License.
 -->
 
-<module id="tapestry.globals" version="3.1.0">
+<module id="tapestry.globals" version="3.1.0" package="org.apache.tapestry.services">
   
   Contains global information about the application and (inside threaded
   services) about the current request. In addition, services based
   on this global information are provided.
   
-  <service-point id="ApplicationGlobals" interface="org.apache.tapestry.services.ApplicationGlobals">
-    <create-instance class="org.apache.tapestry.services.impl.ApplicationGlobalsImpl"/>
+  <service-point id="ApplicationGlobals" interface="ApplicationGlobals">
+    <create-instance class="impl.ApplicationGlobalsImpl"/>
   </service-point>
  
   
-  <service-point id="RequestGlobals" interface="org.apache.tapestry.services.RequestGlobals">
+  <service-point id="RequestGlobals" interface="RequestGlobals">
     Stores the request and response for the current thread.
     
-    <create-instance class="org.apache.tapestry.services.impl.RequestGlobalsImpl" model="threaded"/>
+    <create-instance class="impl.RequestGlobalsImpl" model="threaded"/>
   </service-point>
   
-  <service-point id="RequestGlobalsInitializer" interface="org.apache.tapestry.services.RequestServicerFilter">
+  <service-point id="RequestGlobalsInitializer" interface="RequestServicerFilter">
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.RequestGlobalsInitializer">
+      <construct class="impl.RequestGlobalsInitializer">
         <set-service property="requestGlobals" service-id="RequestGlobals"/>
       </construct>
     </invoke-factory>

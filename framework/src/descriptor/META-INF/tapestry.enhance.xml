@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.enhance" version="3.1.0">
+<module id="tapestry.enhance" version="3.1.0" package="org.apache.tapestry.enhance">
   
   Services and configurations related to component and page class enhancement.
   
@@ -35,7 +35,7 @@
     
   </service-point>
   
-  <service-point id="EnhancementWorkerChain" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="EnhancementWorkerChain" interface="EnhancementWorker">
     
     The chain of enhancement workers built from the EnhancementWorkers configuration.
     
@@ -46,12 +46,12 @@
     
   </service-point>
   
-  <service-point id="EnhancedClassValidator" interface="org.apache.tapestry.enhance.EnhancedClassValidator">
+  <service-point id="EnhancedClassValidator" interface="EnhancedClassValidator">
     
     Validates that an enhanced class does implement all abstract methods inherited from super-classes.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.EnhancedClassValidatorImpl"/>
+      <construct class="EnhancedClassValidatorImpl"/>
     </invoke-factory>
   </service-point>
   
@@ -88,121 +88,121 @@
     
   </contribution>
   
-  <service-point id="InjectMessagesWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectMessagesWorker" interface="EnhancementWorker">
     
     Injects the messages property into all components.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectMessagesWorker">
+      <construct class="InjectMessagesWorker">
         <set-object property="componentMessagesSource" value="infrastructure:componentMessagesSource"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
-  <service-point id="InjectSpecificationWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectSpecificationWorker" interface="EnhancementWorker">
     
     Injects the specification property into all components.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectSpecificationWorker"/>
+      <construct class="InjectSpecificationWorker"/>
     </invoke-factory>
     
   </service-point>
   
-  <service-point id="SpecifiedPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="SpecifiedPropertyWorker" interface="EnhancementWorker">
     
     Finds specified properties (from the specification) and constructs the corresponding properties in the enhanced class.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.SpecifiedPropertyWorker">
+      <construct class="SpecifiedPropertyWorker">
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
       </construct>
     </invoke-factory>
   </service-point>
   
-  <service-point id="ParameterPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="ParameterPropertyWorker" interface="EnhancementWorker">
     
     Adds properties for connected parameters to the enhanced class.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.ParameterPropertyWorker"/>
+      <construct class="ParameterPropertyWorker"/>
     </invoke-factory>
     
   </service-point>
   
-  <service-point id="InjectWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectWorker" interface="EnhancementWorker">
     
     Injects objects obtained from HiveMind into properties of the enhanced class.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectWorker">
+      <construct class="InjectWorker">
         <set-service property="provider" service-id="tapestry.InjectedValueProvider"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
-  <service-point id="InjectStateWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectStateWorker" interface="EnhancementWorker">
     
     Injects properties that reference application state objects.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectStateWorker">
+      <construct class="InjectStateWorker">
         <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
-  <service-point id="InjectComponentWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectComponentWorker" interface="EnhancementWorker">
     
     Injects contained components as properties of the containing component.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectComponentWorker"/>
+      <construct class="InjectComponentWorker"/>
     </invoke-factory>
     
   </service-point>
 
-  <service-point id="InjectBeanWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectBeanWorker" interface="EnhancementWorker">
     
     Injects managed beans as properties of the containing component.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectBeanWorker"/>
+      <construct class="InjectBeanWorker"/>
     </invoke-factory>
     
   </service-point>
 
-  <service-point id="InjectAssetWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectAssetWorker" interface="EnhancementWorker">
     
     Injects assets as properties of the containing component.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectAssetWorker"/>
+      <construct class="InjectAssetWorker"/>
     </invoke-factory>
     
   </service-point>
 
   
-  <service-point id="AbstractPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="AbstractPropertyWorker" interface="EnhancementWorker">
     
     Finds otherwise unclaimed abstract properties and converts them into concrete properties, as if
     they were defined in the specification.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.AbstractPropertyWorker"/>
+      <construct class="AbstractPropertyWorker"/>
     </invoke-factory>
   </service-point>
   
-  <service-point id="InjectPageDetachListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectPageDetachListenerWorker" interface="EnhancementWorker">
     
     Registers components as PageDetachListeners, if they implement
     the interface.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+      <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageDetachListener"/>
         <set property="registerMethodName" value="addPageDetachListener"/>
       </construct>
@@ -211,13 +211,13 @@
   </service-point>
   
 
-  <service-point id="InjectPageAttachListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectPageAttachListenerWorker" interface="EnhancementWorker">
     
     Registers components as PageAttachListeners, if they implement
     the interface.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+      <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageAttachListener"/>
         <set property="registerMethodName" value="addPageAttachListener"/>
       </construct>
@@ -225,13 +225,13 @@
     
   </service-point>
 
-  <service-point id="InjectPageEndRenderListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectPageEndRenderListenerWorker" interface="EnhancementWorker">
     
     Registers components as PageEndRenderListeners, if they implement
     the interface.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+      <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageEndRenderListener"/>
         <set property="registerMethodName" value="addPageEndRenderListener"/>
       </construct>
@@ -240,13 +240,13 @@
   </service-point>  
 
   
-  <service-point id="InjectPageBeginRenderListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectPageBeginRenderListenerWorker" interface="EnhancementWorker">
     
     Registers components as PageBeginRenderListeners, if they implement
     the interface.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+      <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageBeginRenderListener"/>
         <set property="registerMethodName" value="addPageBeginRenderListener"/>
       </construct>
@@ -254,13 +254,13 @@
     
   </service-point>  
   
-  <service-point id="InjectPageValidateListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+  <service-point id="InjectPageValidateListenerWorker" interface="EnhancementWorker">
     
     Registers components as PageValidateListeners, if they implement
     the interface.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+      <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageValidateListener"/>
         <set property="registerMethodName" value="addPageValidateListener"/>
       </construct>

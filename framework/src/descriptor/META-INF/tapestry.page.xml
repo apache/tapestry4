@@ -15,14 +15,14 @@
    limitations under the License.
 -->
 
-<module id="tapestry.page" version="3.1.0">
+<module id="tapestry.page" version="3.1.0" package="org.apache.tapestry.pageload">
   
   Module for services related to page loading and pooling.
   
   <service-point id="PageSource" interface="org.apache.tapestry.engine.IPageSource">
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.pageload.PageSource">
+      <construct class="PageSource">
         <set-service property="pool" service-id="PagePool"/>
         <set-service property="pageSpecificationResolver" service-id="PageSpecificationResolver"/>
         <set-service property="loader" service-id="PageLoader"/>
@@ -34,7 +34,7 @@
   <service-point id="PageLoader" interface="org.apache.tapestry.engine.IPageLoader">
     
     <invoke-factory model="threaded">
-      <construct class="org.apache.tapestry.pageload.PageLoader">
+      <construct class="PageLoader">
         <set-service property="componentConstructorFactory" service-id="tapestry.enhance.ComponentConstructorFactory"/>
         <set-service property="componentResolver" service-id="ComponentSpecificationResolver"/>      
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
@@ -52,13 +52,13 @@
     </invoke-factory>
   </service-point>
   
-  <service-point id="EstablishDefaultParameterValuesVisitor" interface="org.apache.tapestry.pageload.IComponentVisitor">
+  <service-point id="EstablishDefaultParameterValuesVisitor" interface="IComponentVisitor">
     
     Visits all the components of a page, locates unbound parameters, and plugs in a default value (if available)
     for each. Used by the PageLoader.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.pageload.EstablishDefaultParameterValuesVisitor">
+      <construct class="EstablishDefaultParameterValuesVisitor">
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
       </construct>
     </invoke-factory>

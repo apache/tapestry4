@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.state" version="3.1.0">
+<module id="tapestry.state" version="3.1.0" package="org.apache.tapestry.engine.state">
   
   Management of application state objects.
   
@@ -42,7 +42,7 @@
       </attribute>
       
       <rules>
-        <create-object class="org.apache.tapestry.engine.state.StateObjectContribution"/>
+        <create-object class="StateObjectContribution"/>
         <read-attribute attribute="name" property="name"/>
         <read-attribute attribute="scope" property="scope"/>
         <invoke-parent method="addElement"/>
@@ -56,7 +56,7 @@
           The fully qualified name of the class to instantiate.
         </attribute>
         
-        <conversion class="org.apache.tapestry.engine.state.InstantiateClassStateObjectFactory"
+        <conversion class="InstantiateClassStateObjectFactory"
           parent-method="setFactory">
           <map attribute="class" property="objectClass"/>
         </conversion>
@@ -98,10 +98,10 @@
     </state-object>
   </contribution>
   
-  <service-point id="DefaultGlobalFactory" interface="org.apache.tapestry.engine.state.StateObjectFactory">
+  <service-point id="DefaultGlobalFactory" interface="StateObjectFactory">
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.engine.state.DefaultGlobalStateObjectFactory">
+      <construct class="DefaultGlobalStateObjectFactory">
         <set-object property="className" value="app-property:org.apache.tapestry.global-class"/>
       </construct>
     </invoke-factory>
@@ -111,13 +111,13 @@
     
   </service-point>
   
-  <service-point id="DefaultVisitFactory" interface="org.apache.tapestry.engine.state.StateObjectFactory">
+  <service-point id="DefaultVisitFactory" interface="StateObjectFactory">
     
     Constructs the visit state object, based on the org.apache.tapestry.visit-class
     configuration property.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.engine.state.NamedClassStateObjectFactory">
+      <construct class="NamedClassStateObjectFactory">
         <set-object property="className" value="app-property:org.apache.tapestry.visit-class"/>
       </construct>
     </invoke-factory>
@@ -160,15 +160,15 @@
   </configuration-point>
   
   <contribution configuration-id="StateObjectPersistenceManagers">
-    <manager scope="application" object="instance:org.apache.tapestry.engine.state.ApplicationScopeManager"/>
+    <manager scope="application" object="instance:ApplicationScopeManager"/>
     <manager scope="session" object="service:SessionScopeManager"/>
   </contribution>
   
-  <service-point id="SessionScopeManager" interface="org.apache.tapestry.engine.state.StateObjectPersistenceManager">
+  <service-point id="SessionScopeManager" interface="StateObjectPersistenceManager">
     Manages application state objects in the session.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.engine.state.SessionScopeManager">
+      <construct class="SessionScopeManager">
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="applicationId" value="infrastructure:applicationId"/>
       </construct>
@@ -176,14 +176,14 @@
   </service-point>
   
   <service-point id="StateObjectManagerRegistry"
-    interface="org.apache.tapestry.engine.state.StateObjectManagerRegistry">
+    interface="StateObjectManagerRegistry">
   
     Service that organizes the information from the
     FactoryObjects, ApplicationObjects and StateObjectPersistenceManagers configuration
     points into a set of StateObjectManagers.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.engine.state.SOMRegistryImpl">
+      <construct class="SOMRegistryImpl">
         <set-configuration property="factoryContributions"
           configuration-id="FactoryObjects"/>
         <set-configuration property="applicationContributions"
@@ -195,10 +195,10 @@
     
   </service-point>
   
-  <service-point id="ApplicationStateManager" interface="org.apache.tapestry.engine.state.ApplicationStateManager">
+  <service-point id="ApplicationStateManager" interface="ApplicationStateManager">
     
     <invoke-factory model="pooled">
-      <construct class="org.apache.tapestry.engine.state.ApplicationStateManagerImpl">
+      <construct class="ApplicationStateManagerImpl">
         <set-service property="registry" service-id="StateObjectManagerRegistry"/>
       </construct>
     </invoke-factory>

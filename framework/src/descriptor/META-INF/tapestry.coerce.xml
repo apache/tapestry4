@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.coerce" version="3.1.0">
+<module id="tapestry.coerce" version="3.1.0" package="org.apache.tapestry.coerce">
   
   Module used to coerce data types from one type to another. This is used primarily to convert strings
   into other types (numbers, booleans, etc.) or to convert various types into booleans (to be used
@@ -34,7 +34,7 @@
         The object, which implements TypeConverter, to be registered for the class.
       </attribute>
       
-      <conversion class="org.apache.tapestry.coerce.TypeConverterContribution">
+      <conversion class="TypeConverterContribution">
         <map attribute="class" property="subjectClass"/>
         <map attribute="object" property="converter"/>
       </conversion>
@@ -47,18 +47,18 @@
   <configuration-point id="BooleanConverters" schema-id="Converters"/>
     
   <contribution configuration-id="BooleanConverters">
-    <converter class="java.lang.Object" object="instance:org.apache.tapestry.coerce.ObjectToBooleanConverter"/>
-    <converter class="java.lang.Number" object="instance:org.apache.tapestry.coerce.NumberToBooleanConverter"/>
-    <converter class="java.lang.String" object="instance:org.apache.tapestry.coerce.StringToBooleanConverter"/>
-    <converter class="java.util.Collection" object="instance:org.apache.tapestry.coerce.CollectionToBooleanConverter"/>
-    <converter class="java.util.Map" object="instance:org.apache.tapestry.coerce.MapToBooleanConverter"/>
+    <converter class="java.lang.Object" object="instance:ObjectToBooleanConverter"/>
+    <converter class="java.lang.Number" object="instance:NumberToBooleanConverter"/>
+    <converter class="java.lang.String" object="instance:StringToBooleanConverter"/>
+    <converter class="java.util.Collection" object="instance:CollectionToBooleanConverter"/>
+    <converter class="java.util.Map" object="instance:MapToBooleanConverter"/>
   </contribution>
   
-  <service-point id="BooleanConverter" interface="org.apache.tapestry.coerce.TypeConverter">
+  <service-point id="BooleanConverter" interface="TypeConverter">
     <invoke-factory>
-      <construct class="org.apache.tapestry.coerce.TypeConverterWrapper">
+      <construct class="TypeConverterWrapper">
         <set-configuration property="contributions" configuration-id="BooleanConverters"/>
-        <set-object property="nullConverter" value="instance:org.apache.tapestry.coerce.NullToBooleanConverter"/>
+        <set-object property="nullConverter" value="instance:NullToBooleanConverter"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -66,16 +66,16 @@
   <configuration-point id="IteratorConverters" schema-id="Converters"/>
   
   <contribution configuration-id="IteratorConverters">
-    <converter class="java.lang.Object" object="instance:org.apache.tapestry.coerce.ObjectToIteratorConverter"/>
-    <converter class="java.util.Collection" object="instance:org.apache.tapestry.coerce.CollectionToIteratorConverter"/>
-    <converter class="java.lang.Object[]" object="instance:org.apache.tapestry.coerce.ObjectArrayToIteratorConverter"/>
+    <converter class="java.lang.Object" object="instance:ObjectToIteratorConverter"/>
+    <converter class="java.util.Collection" object="instance:CollectionToIteratorConverter"/>
+    <converter class="java.lang.Object[]" object="instance:ObjectArrayToIteratorConverter"/>
   </contribution>
   
-  <service-point id="IteratorConverter" interface="org.apache.tapestry.coerce.TypeConverter">
+  <service-point id="IteratorConverter" interface="TypeConverter">
     <invoke-factory>
-      <construct class="org.apache.tapestry.coerce.TypeConverterWrapper">
+      <construct class="TypeConverterWrapper">
         <set-configuration property="contributions" configuration-id="IteratorConverters"/>
-        <set-object property="nullConverter" value="instance:org.apache.tapestry.coerce.NullToIteratorConverter"/>
+        <set-object property="nullConverter" value="instance:NullToIteratorConverter"/>
       </construct>
     </invoke-factory>
   </service-point>  
@@ -91,16 +91,16 @@
   <contribution configuration-id="TypeConverters">
     <converter class="java.lang.Boolean" object="service:BooleanConverter"/>
     <converter class="java.util.Iterator" object="service:IteratorConverter"/>
-    <converter class="java.lang.String" object="instance:org.apache.tapestry.coerce.ObjectToStringConverter"/>
+    <converter class="java.lang.String" object="instance:ObjectToStringConverter"/>
   </contribution>
   
-  <service-point id="ValueConverter" interface="org.apache.tapestry.coerce.ValueConverter">
+  <service-point id="ValueConverter" interface="ValueConverter">
     
     Used, especially by bindings, to convert arbitrary objects into instances of a particular type.
     Delegates out to various TypeConverter services defined in the TypeConverters configuration point.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.coerce.ValueConverterImpl">
+      <construct class="ValueConverterImpl">
         <set-configuration property="contributions" configuration-id="TypeConverters"/>
       </construct>
     </invoke-factory>

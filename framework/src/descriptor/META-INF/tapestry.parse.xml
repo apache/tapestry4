@@ -15,18 +15,18 @@
    limitations under the License.
 -->
 
-<module id="tapestry.parse" version="3.1.0">
+<module id="tapestry.parse" version="3.1.0" package="org.apache.tapestry.parse">
   
   Template and specification parsers.
   
-  <service-point id="SpecificationParser" interface="org.apache.tapestry.parse.ISpecificationParser">
+  <service-point id="SpecificationParser" interface="ISpecificationParser">
     
     The parser for all types of specifications (page, component, library and application).
     
     <!-- This one is constructed a little wierdly, to help maintain compatibility with Spindle. -->
     
     <invoke-factory model="pooled">
-      <construct class="org.apache.tapestry.parse.SpecificationParser" autowire-services="false">
+      <construct class="SpecificationParser" autowire-services="false">
         <error-handler/>
         <log/>
         <class-resolver/>
@@ -54,13 +54,13 @@
     
   </service-point>
   
-  <service-point id="TemplateParser" interface="org.apache.tapestry.parse.ITemplateParser">
+  <service-point id="TemplateParser" interface="ITemplateParser">
     
     Parses a template into a series of tokens that are used to construct a component's body.
     
     <invoke-factory model="threaded">
-      <construct class="org.apache.tapestry.parse.TemplateParser">
-        <set-object property="factory" value="instance:org.apache.tapestry.parse.TemplateTokenFactory"/>
+      <construct class="TemplateParser">
+        <set-object property="factory" value="instance:TemplateTokenFactory"/>
       </construct>
     </invoke-factory>
     

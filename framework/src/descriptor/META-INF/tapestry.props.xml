@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.props" version="3.1.0">
+<module id="tapestry.props" version="3.1.0" package="org.apache.tapestry.engine">
   
   Defines services for locating configuration data that may be stored in the web application
   deployment descriptor, the application specification, or elsewhere.
@@ -29,7 +29,7 @@
     
   </configuration-point>
   
-  <service-point id="GlobalPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+  <service-point id="GlobalPropertySource" interface="IPropertySource">
     
     Service point for obtaining configuration data resolved using GlobalPropertySources
     configuration point.
@@ -40,7 +40,7 @@
     
   </service-point>
   
-  <service-point id="ServletPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+  <service-point id="ServletPropertySource" interface="IPropertySource">
     
     Searches for properties in the application servlets' configuration.
     
@@ -51,7 +51,7 @@
     </invoke-factory>    
   </service-point>
   
-  <service-point id="ServletContextPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+  <service-point id="ServletContextPropertySource" interface="IPropertySource">
     
     Searches the servlet context for properties.
     
@@ -62,7 +62,7 @@
     </invoke-factory>
   </service-point>
   
-  <service-point id="SymbolSourcesPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+  <service-point id="SymbolSourcesPropertySource" interface="IPropertySource">
     
     Bridges into HiveMind's symbol sources to resolve configuration properties.
     
@@ -109,7 +109,7 @@
     
   </configuration-point>
   
-  <service-point id="ApplicationPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+  <service-point id="ApplicationPropertySource" interface="IPropertySource">
     
     Service point for obtaining configuration data resolved using ApplicationPropertySources
     configuration point.
@@ -128,7 +128,7 @@
     <command id="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
   </contribution>
   
-  <service-point id="ApplicationSpecificationPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+  <service-point id="ApplicationSpecificationPropertySource" interface="IPropertySource">
     
     Obtains property values from application specification meta-data.
     
@@ -140,7 +140,7 @@
     
   </service-point>
   
-  <service-point id="DelegatePropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+  <service-point id="DelegatePropertySource" interface="IPropertySource">
     
     Property source provided as an application extension: org.apache.tapestry.property-source.
     
