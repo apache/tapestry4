@@ -94,7 +94,8 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 abstract public class ApplicationServlet extends HttpServlet
 {
-    private static final Category CAT = Category.getInstance(ApplicationServlet.class);
+    private static final Category CAT =
+        Category.getInstance(ApplicationServlet.class);
 
     /**
      *  Name of the cookie written to the client web browser to
@@ -146,7 +147,8 @@ abstract public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    private static boolean storeEngine = Boolean.getBoolean("net.sf.tapestry.store-engine");
+    private static boolean storeEngine =
+        Boolean.getBoolean("net.sf.tapestry.store-engine");
 
     /**
      *  Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
@@ -170,7 +172,9 @@ abstract public class ApplicationServlet extends HttpServlet
      * </ul>
      **/
 
-    protected void doService(HttpServletRequest request, HttpServletResponse response)
+    protected void doService(
+        HttpServletRequest request,
+        HttpServletResponse response)
         throws IOException, ServletException
     {
         RequestContext context = null;
@@ -188,7 +192,8 @@ abstract public class ApplicationServlet extends HttpServlet
             engine = getEngine(context);
 
             if (engine == null)
-                throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
+                throw new ServletException(
+                    Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
 
             boolean dirty = engine.service(context);
 
@@ -200,8 +205,6 @@ abstract public class ApplicationServlet extends HttpServlet
 
             if (session != null)
             {
-                boolean forceStore = engine.isStateful() && (session.getAttribute(attributeName) == null);
-
                 // If the service may have changed the engine and the
                 // special storeEngine flag is on, then re-save the engine
                 // into the session.  Otherwise, we only save the engine
@@ -209,6 +212,9 @@ abstract public class ApplicationServlet extends HttpServlet
 
                 try
                 {
+
+                    boolean forceStore =
+                        engine.isStateful() && (session.getAttribute(attributeName) == null);
 
                     if (forceStore || (dirty && storeEngine))
                     {
@@ -234,7 +240,9 @@ abstract public class ApplicationServlet extends HttpServlet
             if (engine.isStateful())
             {
                 CAT.error(
-                    "Engine " + engine + " is stateful even though there is no session.  Discarding the engine.");
+                    "Engine "
+                        + engine
+                        + " is stateful even though there is no session.  Discarding the engine.");
                 return;
             }
 
@@ -279,11 +287,13 @@ abstract public class ApplicationServlet extends HttpServlet
 
     protected void show(Exception ex)
     {
-        System.err.println("\n\n**********************************************************\n\n");
+        System.err.println(
+            "\n\n**********************************************************\n\n");
 
         new ExceptionAnalyzer().reportException(ex, System.err);
 
-        System.err.println("\n**********************************************************\n");
+        System.err.println(
+            "\n**********************************************************\n");
 
     }
 
@@ -369,7 +379,8 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    protected Locale getLocaleFromRequest(RequestContext context) throws ServletException
+    protected Locale getLocaleFromRequest(RequestContext context)
+        throws ServletException
     {
         Cookie cookie = context.getCookie(LOCALE_COOKIE_NAME);
 
@@ -406,7 +417,8 @@ abstract public class ApplicationServlet extends HttpServlet
         stream = getClass().getResourceAsStream(path);
 
         if (stream == null)
-            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
+            throw new ServletException(
+                Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
 
         parser = new SpecificationParser();
 
@@ -421,7 +433,9 @@ abstract public class ApplicationServlet extends HttpServlet
         {
             show(ex);
 
-            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-parse-spec", path), ex);
+            throw new ServletException(
+                Tapestry.getString("ApplicationServlet.could-not-parse-spec", path),
+                ex);
         }
 
         attributeName = "net.sf.tapestry.engine." + specification.getName();
@@ -515,7 +529,8 @@ abstract public class ApplicationServlet extends HttpServlet
             String className = specification.getEngineClassName();
 
             if (className == null)
-                throw new ServletException(Tapestry.getString("ApplicationServlet.no-engine-class"));
+                throw new ServletException(
+                    Tapestry.getString("ApplicationServlet.no-engine-class"));
 
             if (CAT.isDebugEnabled())
                 CAT.debug("Creating engine from class " + className);
@@ -547,7 +562,10 @@ abstract public class ApplicationServlet extends HttpServlet
      *  @since 1.0.1
      **/
 
-    public void writeLocaleCookie(Locale locale, IEngine engine, RequestContext cycle)
+    public void writeLocaleCookie(
+        Locale locale,
+        IEngine engine,
+        RequestContext cycle)
     {
         if (CAT.isDebugEnabled())
             CAT.debug("Writing locale cookie " + locale);
