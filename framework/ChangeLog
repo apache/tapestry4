@@ -1,5 +1,10 @@
 * Sep 11 2000 hship
 
+Add a Java Code tab to the Inspector.
+Ship Java code for components and pages as resources.
+
+* Sep 11 2000 hship
+
 Fix some bad Javadoc links.
 
 * Sep 10 2000 hship

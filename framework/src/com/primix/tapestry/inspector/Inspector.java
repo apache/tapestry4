@@ -116,6 +116,11 @@ public class Inspector extends BasePage
 		return view == View.PROPERTIES;
 	}
 	
+	public boolean isViewJavaSource()
+	{
+		return view == View.JAVA_SOURCE;
+	}
+	
 	/**
 	 *  Method invoked by the {@link ShowInspector} component, 
 	 *  to begin inspecting a page.
