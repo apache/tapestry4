@@ -11,7 +11,8 @@ PACKAGES = \
 
 LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/Tapestry.jar \
-	$(INSTALL_DIR)/javax.servlet.jar
+	$(INSTALL_DIR)/javax.servlet.jar \
+	$(INSTALL_DIR)/log4j.jar
 
 INSTALL_DIR = ../../lib
 
@@ -33,6 +34,3 @@ run: install
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
 		com.mortbay.Jetty.Server jetty.xml)
-
-
-

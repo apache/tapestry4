@@ -2,10 +2,11 @@ package tutorial.hangman;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.engine.*;
+import javax.servlet.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -39,6 +40,7 @@ import com.primix.tapestry.engine.*;
 
 public class HangmanServlet extends ApplicationServlet
 {
+
 	protected String getApplicationSpecificationPath()
 	{
 		return "/tutorial/hangman/Hangman.application";

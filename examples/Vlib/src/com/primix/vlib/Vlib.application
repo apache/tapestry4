@@ -70,14 +70,14 @@
 		<specification-path>/com/primix/vlib/components/ShowError.jwc</specification-path>
 	</component-alias>
 	<component-alias>
+		<alias>ShowMessage</alias>
+		<specification-path>/com/primix/vlib/components/ShowMessage.jwc</specification-path>
+	</component-alias>
+	<component-alias>
 		<alias>Borrow</alias>
 		<specification-path>/com/primix/vlib/components/Borrow.jwc</specification-path>
 	</component-alias>
 	<properties>
-		<property>
-			<name/>
-			<value/>
-		</property>
 		<property>
 			<name>com.primix.tapestry.visit-class</name>
 			<value>com.primix.vlib.Visit</value>

@@ -1,3 +1,9 @@
+* Jan 9 2001 hship
+
+Change copyrights for 2001.
+Create a ShowMessage component.
+Add log4j.jar to the classpath.
+
 * Jan 4 2001 hship
 
 Modify the tutorial to use the installed copy of the Tutorial.war, to test
