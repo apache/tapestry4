@@ -1,0 +1,22 @@
+<html jwcid="@Shell" title="Home">
+<body jwcid="@Body">
+
+<a jwcid="first@DirectLink" listener="[[ listeners.link ]]">First</a>
+
+<br/>
+
+<a jwcid="second@DirectLink" renderer="[[ beans.absoluteRenderer ]]" listener="[[ listeners.link ]]">Second</a>
+
+<br/>
+
+Expecting: <span jwcid="@Insert" value="[[ beans.configuredRenderer.scheme ]]"/>://<span jwcid="@Insert" value="[[ beans.configuredRenderer.serverName ]]"/>:<span jwcid="@Insert" value="[[ beans.configuredRenderer.port ]]"/>
+
+
+<a jwcid="third@DirectLink" renderer="[[ beans.configuredRenderer ]]" listener="[[ listeners.link ]]" anchor="myanchor">Third</a>
+
+<br/>
+
+[<a jwcid="@DirectLink" disabled="true" listener="[[ listeners.link ]]">Fourth</a>]
+
+</body>
+</html>

@@ -52,81 +52,22 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.components;
+package net.sf.tapestry.junit.mock.c10;
 
-import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.engine.EngineServiceLink;
-import net.sf.tapestry.engine.ILink;
+import net.sf.tapestry.html.BasePage;
 
 /**
- *  A component that renders an HTML &lt;a&gt; element.  It exposes some
- *  properties to the components it wraps.  This is basically to facilitate
- *  the {@link net.sf.tapestry.html.Rollover} component.
+ *  Another placeholder class; page Two tests the check that ensures
+ *  that links are not nested.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
  * 
  **/
 
-public interface ILinkComponent extends IComponent
+public class Two extends Home
 {
 
-    /**
-     *  Returns whether this service link component is enabled or disabled.
-     *
-     *  @since 0.2.9
-     *
-     **/
-
-    public boolean isDisabled();
-
-    /**
-     *  Returns the anchor defined for this link, or null for no anchor.
-     * 
-     *  @since 2.4
-     * 
-     **/
-
-    public String getAnchor();
-
-    /**
-     *  Adds a new event handler.  When the event occurs, the JavaScript function
-     *  specified is executed.  Multiple functions can be specified, in which case
-     *  all of them are executed.
-     *
-     *  <p>This was created for use by
-     *  {@link net.sf.tapestry.html.Rollover} to set mouse over and mouse out handlers on
-     *  the {@link ILinkComponent} that wraps it, but can be used for
-     *  many other things as well.
-     *
-     *  @since 0.2.9
-     **/
-
-    public void addEventHandler(LinkEventType type, String functionName);
-
-    /**
-     *  Invoked by the {@link net.sf.tapestry.link.ILinkRenderer} (if
-     *  the link is not disabled) to provide a
-     *  {@link net.sf.tapestry.EngineServiceLink} that the renderer can convert
-     *  into a URL.
-     * 
-     **/
-
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException;
-
-    /**
-     *  Invoked (by the {@link net.sf.tapestry.link.ILinkRenderer})
-     *  to make the link render any additional attributes.  These
-     *  are informal parameters, plus any attributes related to events.
-     *  This is only invoked for non-disabled links.
-     * 
-     *  @since 2.4
-     * 
-     **/
-
-    public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
 }

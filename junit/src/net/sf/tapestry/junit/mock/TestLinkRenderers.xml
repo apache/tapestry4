@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c10" root="context10"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet"/>
+  	
+  	<request>
+  		
+  		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>  		
+  		</assert-output>
+  		
+  		<assert-output name="First Link">
+<![CDATA[
+<a href="/c10/app?service=direct&amp;context=0/Home/first">First</a>
+]]>  		
+  		</assert-output>
+  	
+	
+  		<assert-output name="Second Link">
+<![CDATA[
+<a href="http://junit-test/c10/app?service=direct&amp;context=0/Home/second">Second</a>
+]]>  		
+  		</assert-output>	  	  		
+  		
+  		<assert-output name="Configured Values">
+  		
+  		Expecting: https://myserver:8080
+  			
+  		</assert-output>
+  		
+  		<assert-output name="Third Link">
+<![CDATA[
+<a href="https://myserver:8080/c10/app?service=direct&amp;context=0/Home/third#myanchor">Third</a>
+]]>  		
+  		</assert-output>	
+  	  
+  		<assert-output name="Fourth Link">
+  	[Fourth]	
+  		</assert-output>	
+  	  		
+  	  		
+  	</request>
+  	
+  	<request>
+  		<parameter name="service" value="page"/>
+  		<parameter name="context" value="Two"/>
+  			
+  		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+  		</assert-output>
+  			
+  		<assert-output name="Message">
+ 		ILinkComponents may not be nested. 			
+  		</assert-output>
+  			
+  	</request>
+  	
+  	<!-- Check that ensures links with event handlers are inside a Body. -->
+  	
+  	<request>
+  		<parameter name="service" value="page"/>
+  		<parameter name="context" value="Three"/>
+  		
+  		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+  		</assert-output>
+  			
+  		<assert-output name="Message">
+ 		A link component with multiple functions for a single event type must be contained within a Body.		
+  		</assert-output>
+  		  			
+  	</request>
+  	
+  	<!-- Test same thing on a page with a Body -->
+  	
+  	<request>
+  		<parameter name="service" value="page"/>
+  		<parameter name="context" value="Four"/>
+  		
+  		<assert-output name="Page Title">
+<![CDATA[
+<title>Four</title>
+]]>	
+  		</assert-output>
+  			
+  		<assert-output name="Composite Method">
+function onClick_Link0 ()
+{
+  eventHandler1();
+  eventHandler2();
+  eventHandler3();
+}  		
+		</assert-output>
+		
+		<assert-output name="Link">
+<![CDATA[
+<a href="/c10/app?service=direct&amp;context=0/Four/link" onClick="javascript:onClick_Link0();">
+]]>	
+		</assert-output>
+  		  			
+  		  			
+  	</request>  	
+  	
+</mock-test>

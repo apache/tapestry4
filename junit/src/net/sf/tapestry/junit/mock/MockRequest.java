@@ -307,17 +307,17 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
 
     public String getScheme()
     {
-        return null;
+        return "http";
     }
 
     public String getServerName()
     {
-        return null;
+        return "junit-test";
     }
 
     public int getServerPort()
     {
-        return 0;
+        return 80;
     }
 
     public BufferedReader getReader() throws IOException

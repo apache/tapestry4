@@ -52,81 +52,83 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.components;
+package net.sf.tapestry.link;
 
-import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.engine.EngineServiceLink;
 import net.sf.tapestry.engine.ILink;
 
 /**
- *  A component that renders an HTML &lt;a&gt; element.  It exposes some
- *  properties to the components it wraps.  This is basically to facilitate
- *  the {@link net.sf.tapestry.html.Rollover} component.
+ *  Renders a link using an absolute URL, not simply a URI
+ *  (as with {@link net.sf.tapestry.link.DefaultLinkRenderer}.  In addition,
+ *  the scheme, server and port may be changed (this may be appropriate when
+ *  switching between secure and insecure portions of an application).
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
  * 
  **/
 
-public interface ILinkComponent extends IComponent
+public class AbsoluteLinkRenderer extends DefaultLinkRenderer
 {
+    private String _scheme;
+    private String _serverName;
+    private int _port;
+
+    public int getPort()
+    {
+        return _port;
+    }
+
+    public String getScheme()
+    {
+        return _scheme;
+    }
+
+    public String getServerName()
+    {
+        return _serverName;
+    }
 
     /**
-     *  Returns whether this service link component is enabled or disabled.
+     *  Used to override the port in the final URL, if specified.  If not specified,
+     *  the port provided by the {@link javax.servlet.ServletRequest#getServerPort() request}
+     *  is used (typically, the value 80).
      *
-     *  @since 0.2.9
+     **/
+
+    public void setPort(int port)
+    {
+        _port = port;
+    }
+    
+    /**
+     *  Used to override the scheme in the final URL, if specified.  If not specified,
+     *  the scheme provided by the {@link javax.servlet.ServletRequest#getScheme() request}
+     *  is used (typically, <code>http</code>).
      *
      **/
 
-    public boolean isDisabled();
+    public void setScheme(String scheme)
+    {
+        _scheme = scheme;
+    }
 
     /**
-     *  Returns the anchor defined for this link, or null for no anchor.
-     * 
-     *  @since 2.4
-     * 
-     **/
-
-    public String getAnchor();
-
-    /**
-     *  Adds a new event handler.  When the event occurs, the JavaScript function
-     *  specified is executed.  Multiple functions can be specified, in which case
-     *  all of them are executed.
+     *  Used to override the server name in the final URL, if specified.  If not specified,
+     *  the port provided by the {@link javax.servlet.ServletRequest#getServerName()) request}
+     *  is used.
      *
-     *  <p>This was created for use by
-     *  {@link net.sf.tapestry.html.Rollover} to set mouse over and mouse out handlers on
-     *  the {@link ILinkComponent} that wraps it, but can be used for
-     *  many other things as well.
-     *
-     *  @since 0.2.9
      **/
 
-    public void addEventHandler(LinkEventType type, String functionName);
+    public void setServerName(String serverName)
+    {
+        _serverName = serverName;
+    }
 
-    /**
-     *  Invoked by the {@link net.sf.tapestry.link.ILinkRenderer} (if
-     *  the link is not disabled) to provide a
-     *  {@link net.sf.tapestry.EngineServiceLink} that the renderer can convert
-     *  into a URL.
-     * 
-     **/
+    protected String constructURL(ILink link, String anchor, IRequestCycle cycle)
+    {
+        return link.getAbsoluteURL(_scheme, _serverName, _port, anchor, true);
+    }
 
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException;
-
-    /**
-     *  Invoked (by the {@link net.sf.tapestry.link.ILinkRenderer})
-     *  to make the link render any additional attributes.  These
-     *  are informal parameters, plus any attributes related to events.
-     *  This is only invoked for non-disabled links.
-     * 
-     *  @since 2.4
-     * 
-     **/
-
-    public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
 }
