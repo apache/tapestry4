@@ -72,7 +72,6 @@ import org.apache.tapestry.spec.IPropertySpecification;
  *  multithreading issues.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 
@@ -756,6 +755,11 @@ public class PageLoader implements IPageLoader
             page = instantiatePage(name, namespace, specification);
 
             page.attach(_engine);
+            
+            // As of 3.0.1, this is done now, rather than after constructing the page and its 
+            // components.
+            
+            page.setRequestCycle(cycle);
 
             constructComponent(cycle, page, page, specification, namespace);
 

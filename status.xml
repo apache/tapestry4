@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!-- $Id$ -->
 <status>
 
   <developers>
@@ -248,7 +247,15 @@ NextGen) be released as version number 3.0.
   </todo>
 
   <changes>
-  	
+  
+  <release version="3.0.1" date="unreleased">
+    
+    <action type="fix" dev="HLS" fixes-bug="29850">
+      Ensure that the page's requestCycle property is set before finishLoad() is invoked on any component.
+    </action>
+    
+  </release>	
+   
  	<release version="3.0" date="Apr 18 2004">
  	
  	<action type="fix" dev="HLS" fixes-bug="28345">
