@@ -218,7 +218,7 @@
 		
 		<invoke-factory>
 			<construct class="org.apache.tapestry.describe.HTMLDescriberImpl">
-				<set-service property="adapter" service-id="tapestry.describe.DescribeAdaptor"/>
+				<set-service property="strategy" service-id="tapestry.describe.DescribableStrategy"/>
         <set property="headerClass" value="portlet-section-header"/>
         <set property="subheaderClass" value="portlet-section-subheader"/>
         <set property="tableClass" value="portlet-section-body"/>
@@ -226,7 +226,7 @@
 		</invoke-factory>
 	</service-point>
   
-	<contribution configuration-id="tapestry.describe.DescribeAdaptors">
-    <adapter class="javax.portlet.PortletSession" object="instance:PortletSessionDescribableAdapter"/>
+	<contribution configuration-id="tapestry.describe.DescribableStrategies">
+    <strategy class="javax.portlet.PortletSession" object="instance:PortletSessionDescribableStrategy"/>
   </contribution>    
 </module>

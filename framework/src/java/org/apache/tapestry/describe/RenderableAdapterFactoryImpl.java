@@ -22,18 +22,18 @@ import org.apache.tapestry.IRender;
  */
 public class RenderableAdapterFactoryImpl implements RenderableAdapterFactory
 {
-    private RenderableAdapter _adapter;
+    private RenderStrategy _strategy;
 
     /**
      * Returns a new instance of {@link RenderBridge}.
      */
     public IRender getRenderableAdaptor(Object object)
     {
-        return new RenderBridge(object, _adapter);
+        return new RenderBridge(object, _strategy);
     }
 
-    public void setAdapter(RenderableAdapter adapter)
+    public void setStrategy(RenderStrategy adapter)
     {
-        _adapter = adapter;
+        _strategy = adapter;
     }
 }

@@ -22,12 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.tapestry.web.WebUtils;
 
 /**
- * Adapter that can describe an HttpServletRequest.
+ * Strategy for describing an {@link javax.servlet.http.HttpServletRequest}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class HttpServletRequestDescriber implements DescribableAdapter
+public class HttpServletRequestStrategy implements DescribableStrategy
 {
 
     public void describeObject(Object object, DescriptionReceiver receiver)

@@ -22,20 +22,20 @@ import org.apache.tapestry.IMarkupWriter;
  */
 public class HTMLDescriberImpl implements HTMLDescriber
 {
-    private DescribableAdapter _adapter;
+    private DescribableStrategy _strategy;
 
     private HTMLDescriptionReceiverStyles _styles = new HTMLDescriptionReceiverStyles();
 
     public void describeObject(Object object, IMarkupWriter writer)
     {
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, _adapter, _styles);
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, _strategy, _styles);
 
         dr.describe(object);
     }
 
-    public void setAdapter(DescribableAdapter adapter)
+    public void setStrategy(DescribableStrategy strategy)
     {
-        _adapter = adapter;
+        _strategy = strategy;
     }
 
     public void setTableClass(String tableClass)

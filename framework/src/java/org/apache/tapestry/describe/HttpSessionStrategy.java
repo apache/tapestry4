@@ -14,49 +14,41 @@
 
 package org.apache.tapestry.describe;
 
+import java.util.Date;
 import java.util.Iterator;
 
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.tapestry.web.WebUtils;
 
 /**
- * Describes a {@link javax.servlet.ServletContext}.
+ * Describes an {@link javax.servlet.http.HttpSession}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ServletContextDescribableAdapter implements DescribableAdapter
+public class HttpSessionStrategy implements DescribableStrategy
 {
 
     public void describeObject(Object object, DescriptionReceiver receiver)
     {
-        ServletContext context = (ServletContext) object;
+        HttpSession session = (HttpSession) object;
 
-        receiver.title("ServletContext");
+        receiver.title("HttpSession");
 
-        receiver.property("serverInfo", context.getServerInfo());
-        receiver.property("version", context.getMajorVersion() + "." + context.getMinorVersion());
+        receiver.property("creationTime", new Date(session.getCreationTime()));
+        receiver.property("id", session.getId());
+        receiver.property("lastAccessedTime", new Date(session.getLastAccessedTime()));
+        receiver.property("maxInactiveInterval", session.getMaxInactiveInterval());
+        receiver.property("new", session.isNew());
 
         receiver.section("Attributes");
-
-        Iterator i = WebUtils.toSortedList(context.getAttributeNames()).iterator();
+        Iterator i = WebUtils.toSortedList(session.getAttributeNames()).iterator();
         while (i.hasNext())
         {
             String key = (String) i.next();
-
-            receiver.property(key, context.getAttribute(key));
+            receiver.property(key, session.getAttribute(key));
         }
-
-        receiver.section("Initialization Parameters");
-        i = WebUtils.toSortedList(context.getInitParameterNames()).iterator();
-        while (i.hasNext())
-        {
-            String key = (String) i.next();
-
-            receiver.property(key, context.getInitParameter(key));
-        }
-
     }
 
 }

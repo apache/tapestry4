@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import javax.portlet.PortletSession;
 
-import org.apache.tapestry.describe.DescribableAdapter;
+import org.apache.tapestry.describe.DescribableStrategy;
 import org.apache.tapestry.describe.DescriptionReceiver;
 import org.apache.tapestry.web.WebUtils;
 
@@ -29,7 +29,7 @@ import org.apache.tapestry.web.WebUtils;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class PortletSessionDescribableAdapter implements DescribableAdapter
+public class PortletSessionDescribableStrategy implements DescribableStrategy
 {
     public void describeObject(Object object, DescriptionReceiver receiver)
     {

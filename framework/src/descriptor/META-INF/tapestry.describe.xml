@@ -19,27 +19,27 @@
 	
 	Services and adaptors for "describing" various objects into an HTML representation.
 	
-	<configuration-point id="DescribeAdaptors" schema-id="hivemind.lib.AdapterRegistry">
+	<configuration-point id="DescribableStrategies" schema-id="hivemind.lib.StrategyRegistry">
 		
-		Maps classes to DescribableAdapter instances.
+		Maps classes to DescribableStrategy instances.
 		
 	</configuration-point>
 	
-	<contribution configuration-id="DescribeAdaptors">
-		<adapter class="Describable" object="instance:NativeDescribableAdapter"/>
-		<adapter class="java.lang.Object" object="instance:DefaultDescribableAdapter"/>
-		<adapter class="javax.servlet.http.HttpServletRequest" object="instance:HttpServletRequestDescriber"/>
-		<adapter class="javax.servlet.http.Cookie" object="instance:CookieDescribableAdapter"/>
-		<adapter class="javax.servlet.http.HttpSession" object="instance:HttpSessionDescribableAdapter"/>
-		<adapter class="javax.servlet.ServletContext" object="instance:ServletContextDescribableAdapter"/>
-		<adapter class="javax.servlet.Servlet" object="instance:ServletDescribableAdapter"/>
+	<contribution configuration-id="DescribableStrategies">
+		<strategy class="Describable" object="instance:NativeStrategy"/>
+		<strategy class="java.lang.Object" object="instance:DefaultStrategy"/>
+		<strategy class="javax.servlet.http.HttpServletRequest" object="instance:HttpServletRequestStrategy"/>
+		<strategy class="javax.servlet.http.Cookie" object="instance:CookieStrategy"/>
+		<strategy class="javax.servlet.http.HttpSession" object="instance:HttpSessionStrategy"/>
+		<strategy class="javax.servlet.ServletContext" object="instance:ServletContextStrategy"/>
+		<strategy class="javax.servlet.Servlet" object="instance:ServletStrategy"/>
 	</contribution>
 	
-	<service-point id="DescribeAdaptor" interface="DescribableAdapter">
-		Adaptor registry facade for DescribableAdapter.
+	<service-point id="DescribableStrategy" interface="DescribableStrategy">
+		Strategy registry facade for DescribableStrategy.
 		
-		<invoke-factory service-id="hivemind.lib.AdapterRegistryFactory">
-			<construct configuration-id="DescribeAdaptors"/>
+		<invoke-factory service-id="hivemind.lib.StrategyFactory">
+			<construct configuration-id="DescribableStrategies"/>
 		</invoke-factory>
 	</service-point>
 	
@@ -49,40 +49,41 @@
 		
 		<invoke-factory>
 			<construct class="HTMLDescriberImpl">
-				<set-service property="adapter" service-id="DescribeAdaptor"/>
+				<set-service property="strategy" service-id="DescribableStrategy"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
 	
-	<service-point id="DefaultRenderableAdapter" interface="RenderableAdapter">
+	<service-point id="DefaultRenderStrategy" interface="RenderStrategy">
 		
 		Default adapter for objects that uses the HTMLDescriber service to do
 		the work.
 		
 		<invoke-factory>
-			<construct class="DefaultRenderableAdapter">
+			<construct class="DefaultRenderStrategy">
 				<set-object property="describer" value="infrastructure:HTMLDescriber"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
 	
-	<configuration-point id="RenderableAdapters" schema-id="hivemind.lib.AdapterRegistry">
+	<configuration-point id="RenderStrategies" schema-id="hivemind.lib.StrategyRegistry">
 		
-		Maps classes to RenderableAdapters.
+		Maps classes to RenderStrategy objects.
 		
 	</configuration-point>
 	
-	<contribution configuration-id="RenderableAdapters">
-		<adapter class="java.lang.Object" object="service:DefaultRenderableAdapter"/>
-		<adapter class="org.apache.hivemind.Location" object="instance:LocationRenderableAdapter"/>
+	<contribution configuration-id="RenderStrategies">
+		<strategy class="java.lang.Object" object="service:DefaultRenderStrategy"/>
+		<strategy class="org.apache.hivemind.Location" object="instance:LocationRenderStrategy"/>
 	</contribution>
 	
-	<service-point id="RenderableAdapter" interface="RenderableAdapter">
+	<service-point id="RenderStrategy" interface="RenderStrategy">
 		
-		Adapter registry for RenderableAdapters.
+		Strategy service based on the RenderStrategies configuration point, which
+    allows arbitrary objects to be rendered as HTML.
 		
-		<invoke-factory service-id="hivemind.lib.AdapterRegistryFactory">
-			<construct configuration-id="RenderableAdapters"/>
+		<invoke-factory service-id="hivemind.lib.StrategyFactory">
+			<construct configuration-id="RenderStrategies"/>
 		</invoke-factory>
 	</service-point>
 	
@@ -92,7 +93,7 @@
 		
 		<invoke-factory>
 			<construct class="RenderableAdapterFactoryImpl">
-				<set-service property="adapter" service-id="RenderableAdapter"/>
+				<set-service property="strategy" service-id="RenderStrategy"/>
 			</construct>
 		</invoke-factory>
 	</service-point>

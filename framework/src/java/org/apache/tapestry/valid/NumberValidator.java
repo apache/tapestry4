@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.lib.util.AdapterRegistry;
-import org.apache.hivemind.lib.util.AdapterRegistryImpl;
+import org.apache.hivemind.lib.util.StrategyRegistry;
+import org.apache.hivemind.lib.util.StrategyRegistryImpl;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -89,7 +89,7 @@ public class NumberValidator extends BaseValidator
 
     private String _numberRangeMessage;
 
-    private static AdapterRegistry _numberAdaptors = new AdapterRegistryImpl();
+    private static StrategyRegistry _numberAdaptors = new StrategyRegistryImpl();
 
     public final static int NUMBER_TYPE_INTEGER = 0;
 
@@ -99,7 +99,7 @@ public class NumberValidator extends BaseValidator
      * This class is not meant for use outside of NumberValidator; it is public only to fascilitate
      * some unit testing.
      */
-    public static abstract class NumberAdaptor
+    public static abstract class NumberStrategy
     {
         /**
          * Parses a non-empty {@link String}into the correct subclass of {@link Number}.
@@ -138,7 +138,7 @@ public class NumberValidator extends BaseValidator
         protected abstract Number coerce(Number number);
     }
 
-    private static abstract class IntegerNumberAdaptor extends NumberAdaptor
+    private static abstract class IntegerNumberAdaptor extends NumberStrategy
     {
         public int getNumberType()
         {
@@ -146,7 +146,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static abstract class RealNumberAdaptor extends NumberAdaptor
+    private static abstract class RealNumberAdaptor extends NumberStrategy
     {
         public int getNumberType()
         {
@@ -260,12 +260,12 @@ public class NumberValidator extends BaseValidator
 
     static
     {
-        NumberAdaptor byteAdaptor = new ByteAdaptor();
-        NumberAdaptor shortAdaptor = new ShortAdaptor();
-        NumberAdaptor intAdaptor = new IntAdaptor();
-        NumberAdaptor longAdaptor = new LongAdaptor();
-        NumberAdaptor floatAdaptor = new FloatAdaptor();
-        NumberAdaptor doubleAdaptor = new DoubleAdaptor();
+        NumberStrategy byteAdaptor = new ByteAdaptor();
+        NumberStrategy shortAdaptor = new ShortAdaptor();
+        NumberStrategy intAdaptor = new IntAdaptor();
+        NumberStrategy longAdaptor = new LongAdaptor();
+        NumberStrategy floatAdaptor = new FloatAdaptor();
+        NumberStrategy doubleAdaptor = new DoubleAdaptor();
 
         _numberAdaptors.register(Byte.class, byteAdaptor);
         _numberAdaptors.register(byte.class, byteAdaptor);
@@ -300,9 +300,9 @@ public class NumberValidator extends BaseValidator
         return value.toString();
     }
 
-    private NumberAdaptor getAdaptor(IFormComponent field)
+    private NumberStrategy getStrategy(IFormComponent field)
     {
-        NumberAdaptor result = getAdaptor(_valueTypeClass);
+        NumberStrategy result = getStrategy(_valueTypeClass);
 
         if (result == null)
             throw new ApplicationRuntimeException(Tapestry.format(
@@ -314,7 +314,7 @@ public class NumberValidator extends BaseValidator
     }
 
     /**
-     * Returns an adaptor for the given type.
+     * Returns an strategy for the given type.
      * <p>
      * Note: this method exists only for testing purposes. It is not meant to be invoked by user
      * code and is subject to change at any time.
@@ -324,9 +324,9 @@ public class NumberValidator extends BaseValidator
      * @return the adaptor, or null if no such adaptor may be found
      * @since 3.0
      */
-    public static NumberAdaptor getAdaptor(Class type)
+    public static NumberStrategy getStrategy(Class type)
     {
-        return (NumberAdaptor) _numberAdaptors.getAdapter(type);
+        return (NumberStrategy) _numberAdaptors.getStrategy(type);
     }
 
     public Object toObject(IFormComponent field, String value) throws ValidatorException
@@ -334,7 +334,7 @@ public class NumberValidator extends BaseValidator
         if (checkRequired(field, value))
             return null;
 
-        NumberAdaptor adaptor = getAdaptor(field);
+        NumberStrategy adaptor = getStrategy(field);
         Number result = null;
 
         try
@@ -654,10 +654,10 @@ public class NumberValidator extends BaseValidator
 
     public boolean isIntegerNumber()
     {
-        NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdapter(_valueTypeClass);
-        if (result == null)
+        NumberStrategy strategy = (NumberStrategy) _numberAdaptors.getStrategy(_valueTypeClass);
+        if (strategy == null)
             return false;
 
-        return result.getNumberType() == NUMBER_TYPE_INTEGER;
+        return strategy.getNumberType() == NUMBER_TYPE_INTEGER;
     }
 }

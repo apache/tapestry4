@@ -17,8 +17,8 @@ package org.apache.tapestry.util.io;
 import java.io.IOException;
 
 import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.lib.util.AdapterRegistry;
-import org.apache.hivemind.lib.util.AdapterRegistryImpl;
+import org.apache.hivemind.lib.util.StrategyRegistry;
+import org.apache.hivemind.lib.util.StrategyRegistryImpl;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.DataSqueezer;
 
@@ -52,7 +52,7 @@ public class DataSqueezerImpl implements DataSqueezer
      * AdaptorRegistry cache of adaptors.
      */
 
-    private AdapterRegistry _adaptors = new AdapterRegistryImpl();
+    private StrategyRegistry _adaptors = new StrategyRegistryImpl();
 
     /**
      * Resource resolver used to deserialize classes.
@@ -163,7 +163,7 @@ public class DataSqueezerImpl implements DataSqueezer
         if (data == null)
             return NULL_PREFIX;
 
-        adaptor = (ISqueezeAdaptor) _adaptors.getAdapter(data.getClass());
+        adaptor = (ISqueezeAdaptor) _adaptors.getStrategy(data.getClass());
 
         return adaptor.squeeze(this, data);
     }

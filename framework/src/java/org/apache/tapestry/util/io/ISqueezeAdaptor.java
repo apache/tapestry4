@@ -23,7 +23,12 @@ import org.apache.tapestry.services.DataSqueezer;
  * into a String format (squeeze it), or convert from a String back into a Java
  * type (unsqueeze).
  * 
+ * <p>
+ * This interface is somewhat misnamed; this is more of the GoF Strategy pattern
+ * than GoF Adaptor pattern.
+ * 
  * @author Howard Lewis Ship
+ *
  */
 
 public interface ISqueezeAdaptor

@@ -17,12 +17,12 @@ package org.apache.tapestry.coerce;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.hivemind.lib.util.AdapterRegistry;
-import org.apache.hivemind.lib.util.AdapterRegistryImpl;
+import org.apache.hivemind.lib.util.StrategyRegistry;
+import org.apache.hivemind.lib.util.StrategyRegistryImpl;
 
 /**
  * A service implementation that works around an
- * {@link org.apache.hivemind.lib.util.AdapterRegistry}. The registry is contructed from a
+ * {@link org.apache.hivemind.lib.util.StrategyRegistry}. The registry is contructed from a
  * configuration that follows the <code>tapestry.coerce.Converters</code> schema (a List of
  * {@link org.apache.tapestry.coerce.TypeConverterContribution}plus an additional converter for
  * nulls.
@@ -32,7 +32,7 @@ import org.apache.hivemind.lib.util.AdapterRegistryImpl;
  */
 public class TypeConverterWrapper implements TypeConverter
 {
-    private AdapterRegistry _registry = new AdapterRegistryImpl();
+    private StrategyRegistry _registry = new StrategyRegistryImpl();
 
     private List _contributions;
 
@@ -60,7 +60,7 @@ public class TypeConverterWrapper implements TypeConverter
             return _nullConverter.convertValue(null);
         }
 
-        TypeConverter delegate = (TypeConverter) _registry.getAdapter(value.getClass());
+        TypeConverter delegate = (TypeConverter) _registry.getStrategy(value.getClass());
 
         return delegate.convertValue(value);
     }

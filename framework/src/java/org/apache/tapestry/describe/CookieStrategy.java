@@ -20,7 +20,7 @@ import javax.servlet.http.Cookie;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class CookieDescribableAdapter implements DescribableAdapter
+public class CookieStrategy implements DescribableStrategy
 {
 
     public void describeObject(Object object, DescriptionReceiver receiver)

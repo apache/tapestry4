@@ -20,8 +20,8 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Implements {@link IRender}for a particular object by delegating to a
- * {@link org.apache.tapestry.describe.RenderableAdapter}.
+ * Implements {@link IRender}&nbsp;for a particular object by delegating to a
+ * {@link org.apache.tapestry.describe.RenderStrategy}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -30,18 +30,18 @@ public class RenderBridge implements IRender
 {
     private Object _object;
 
-    private RenderableAdapter _adapter;
+    private RenderStrategy _strategy;
 
-    public RenderBridge(Object object, RenderableAdapter adapter)
+    public RenderBridge(Object object, RenderStrategy strategy)
     {
-        Defense.notNull(adapter, "adapter");
+        Defense.notNull(strategy, "strategy");
 
         _object = object;
-        _adapter = adapter;
+        _strategy = strategy;
     }
 
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
-        _adapter.renderObject(_object, writer, cycle);
+        _strategy.renderObject(_object, writer, cycle);
     }
 }

@@ -14,21 +14,38 @@
 
 package org.apache.tapestry.describe;
 
+import java.util.Iterator;
+
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
+
+import org.apache.tapestry.web.WebUtils;
+
 /**
- * Implementation for objects that natively implement
- * {@link org.apache.tapestry.describe.Describable}.
- * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class NativeDescribableAdapter implements DescribableAdapter
+public class ServletStrategy implements DescribableStrategy
 {
 
     public void describeObject(Object object, DescriptionReceiver receiver)
     {
-        Describable d = (Describable) object;
+        Servlet servlet = (Servlet) object;
+        ServletConfig config = servlet.getServletConfig();
 
-        d.describeTo(receiver);
+        receiver.title("HttpServlet");
+        receiver.property("servletInfo", servlet.getServletInfo());
+        receiver.property("servletName", config.getServletName());
+
+        receiver.section("Initialization Parameters");
+
+        Iterator i = WebUtils.toSortedList(config.getInitParameterNames()).iterator();
+        while (i.hasNext())
+        {
+            String key = (String) i.next();
+
+            receiver.property(key, config.getInitParameter(key));
+        }
     }
 
 }

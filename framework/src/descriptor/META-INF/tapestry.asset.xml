@@ -81,13 +81,13 @@
     </invoke-factory>
   </service-point>
   
-  <configuration-point id="AssetFactoryAdapters" schema-id="hivemind.lib.AdapterRegistry"/>
+  <configuration-point id="AssetFactoryStrategies" schema-id="hivemind.lib.StrategyRegistry"/>
   
-  <contribution configuration-id="AssetFactoryAdapters">
-    <adapter class="org.apache.hivemind.util.ContextResource" 
+  <contribution configuration-id="AssetFactoryStrategies">
+    <strategy class="org.apache.hivemind.util.ContextResource" 
             object="service:ContextAssetFactory"/>
             
-    <adapter class="org.apache.hivemind.util.ClasspathResource"
+    <strategy class="org.apache.hivemind.util.ClasspathResource"
             object="service:ClasspathAssetFactory"/>
             
   </contribution>
@@ -98,8 +98,8 @@
     the type of resource.  Used when the asset path does not contain
     a prefix.
     
-    <invoke-factory service-id="hivemind.lib.AdapterRegistryFactory">
-      <construct configuration-id="AssetFactoryAdapters"/>
+    <invoke-factory service-id="hivemind.lib.StrategyFactory">
+      <construct configuration-id="AssetFactoryStrategies"/>
     </invoke-factory>
   </service-point>
   

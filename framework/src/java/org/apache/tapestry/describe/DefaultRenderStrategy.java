@@ -14,14 +14,30 @@
 
 package org.apache.tapestry.describe;
 
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+
 /**
- * Adapter class allowing objects that don't implement
- * {@link org.apache.tapestry.describe.Describable}to be described.
+ * Default implementation that delegates to the {@link org.apache.tapestry.describe.HTMLDescriber}
+ * service.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface DescribableAdapter
+public class DefaultRenderStrategy implements RenderStrategy
 {
-    public void describeObject(Object object, DescriptionReceiver receiver);
+    private HTMLDescriber _describer;
+
+    /**
+     * Invokes {@link HTMLDescriber#describeObject(Object, IMarkupWriter)}.
+     */
+    public void renderObject(Object object, IMarkupWriter writer, IRequestCycle cycle)
+    {
+        _describer.describeObject(object, writer);
+    }
+
+    public void setDescriber(HTMLDescriber describer)
+    {
+        _describer = describer;
+    }
 }

@@ -14,17 +14,17 @@
 
 package org.apache.tapestry.describe;
 
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+
 /**
- * Catch-all implementation (for java.lang.Object) that does nothing.
+ * A strategy interface for rendering an object (even if it doesn't implement
+ * {@link org.apache.tapestry.IRender}).
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class DefaultDescribableAdapter implements DescribableAdapter
+public interface RenderStrategy
 {
-    public void describeObject(Object object, DescriptionReceiver receiver)
-    {
-        // Does nothing, which results in the object's toString().
-    }
-
+    public void renderObject(Object object, IMarkupWriter writer, IRequestCycle cycle);
 }
