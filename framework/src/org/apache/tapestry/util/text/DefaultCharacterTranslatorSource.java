@@ -29,8 +29,8 @@ import java.util.Map;
  */
 public class DefaultCharacterTranslatorSource implements ICharacterTranslatorSource
 {
-	private static final ICharacterTranslator DEFAULT_TRANSLATOR = new MLCharacterTranslator();
-	private static final ICharacterTranslator UNICODE_TRANSLATOR = new MLCharacterTranslator(false);
+	private static final ICharacterTranslator DEFAULT_TRANSLATOR = new MarkupCharacterTranslator();
+	private static final ICharacterTranslator UNICODE_TRANSLATOR = new MarkupCharacterTranslator(false);
 
 	private final static Map _translators;
 	

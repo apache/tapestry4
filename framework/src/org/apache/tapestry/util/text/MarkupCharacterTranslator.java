@@ -23,7 +23,7 @@ package org.apache.tapestry.util.text;
  * @version $Id$
  * @since 3.1
  */
-public class MLCharacterTranslator implements ICharacterTranslator
+public class MarkupCharacterTranslator implements ICharacterTranslator
 {
     private static final String SAFE_CHARACTERS =
         "01234567890"
@@ -45,24 +45,24 @@ public class MLCharacterTranslator implements ICharacterTranslator
     private ICharacterMatcher _safeMatcher;
     private ICharacterTranslator _entityTranslator;
 	
-    public MLCharacterTranslator()
+    public MarkupCharacterTranslator()
     {
     	this(true);
     }
     
-    public MLCharacterTranslator(boolean encodeNonAscii)
+    public MarkupCharacterTranslator(boolean encodeNonAscii)
     {
     	this(encodeNonAscii, SAFE_MATCHER, ENTITY_TRANSLATOR);
     }
     
-    public MLCharacterTranslator(boolean encodeNonAscii, ICharacterMatcher safeMatcher, ICharacterTranslator entityTranslator)
+    public MarkupCharacterTranslator(boolean encodeNonAscii, ICharacterMatcher safeMatcher, ICharacterTranslator entityTranslator)
     {
     	_encodeNonAscii = encodeNonAscii;
     	_safeMatcher = safeMatcher;
     	_entityTranslator = entityTranslator;
     }
 
-    public MLCharacterTranslator(boolean encodeNonAscii, String safeCharacters, String[][] entities)
+    public MarkupCharacterTranslator(boolean encodeNonAscii, String safeCharacters, String[][] entities)
     {
     	_encodeNonAscii = encodeNonAscii;
     	_safeMatcher = new AsciiCharacterMatcher(safeCharacters);
