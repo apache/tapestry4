@@ -1,3 +1,7 @@
+* Mar 7 2001 hship
+
+[406819] handleXXX methods should be protected
+
 * Mar 2 2001 hship
 
 Make it easier to change the StaleLink, StaleSession and Exception page behavior.

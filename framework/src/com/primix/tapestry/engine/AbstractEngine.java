@@ -884,7 +884,7 @@ public abstract class AbstractEngine
 	 *
 	 */
 
-	void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle, 
+	protected void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle, 
 		ResponseOutputStream output)
 	throws IOException, ServletException, RequestCycleException
 	{
@@ -905,7 +905,7 @@ public abstract class AbstractEngine
 	 *
 	 */
 
-	void handleStaleSessionException(StaleSessionException ex, IRequestCycle cycle, 
+	protected void handleStaleSessionException(StaleSessionException ex, IRequestCycle cycle, 
 		ResponseOutputStream output)
 	throws IOException, ServletException, RequestCycleException
 	{
