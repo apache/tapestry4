@@ -25,43 +25,21 @@
 
 package net.sf.tapestry.contrib.table.model;
 
-import java.util.Iterator;
-
 /**
- * A model containing the data within the table.
- * This model is not necessary to be used. Implementations may choose to 
- * access its data in a way that would provide an abstraction as to the
- * true source of data.
+ * A Tapestry component that provides the current row value.
+ * This interface is used for obtaining the row source by components 
+ * wrapped by the row source
  * 
  * @version $Id$
  * @author mindbridge
  */
-public interface ITableDataModel
+public interface ITableRowSource
 {
-	/**
-	 * Method getRowCount.
-	 * @return int the number of rows in the model
-	 */
-	int getRowCount();
+    final static String TABLE_ROW_SOURCE_PROPERTY = "net.sf.tapestry.contrib.table.model.ITableRowSource";
 
 	/**
-	 * Iterates over all of the rows in the model
-	 * @return Iterator the iterator for access to the data
+	 * Method getTableRow
+	 * @return Object the current table row object
 	 */
-	Iterator getRows();
-    
-	/**
-	 * Method addTableDataModelListener
-     * Adds a listener that is notified when the data in the model is changed
-	 * @param objListener the listener to add
-	 */
-    void addTableDataModelListener(ITableDataModelListener objListener);
-
-	/**
-	 * Method removeTableDataModelListener.
-     * Removes a listener that is notified when the data in the model is changed
-	 * @param objListener the listener to remove
-	 */
-    void removeTableDataModelListener(ITableDataModelListener objListener);
-    
+    Object getTableRow();
 }

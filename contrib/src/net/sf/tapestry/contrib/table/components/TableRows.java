@@ -29,48 +29,29 @@ import java.util.Iterator;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.contrib.table.model.ITableModel;
+import net.sf.tapestry.contrib.table.model.ITableRowSource;
 
 /**
  * @author mindbridge
  * @version $Id$
  *
  */
-public class TableRows extends BaseComponent
+public class TableRows extends AbstractTableViewComponent implements ITableRowSource
 {
-
-	// Bindings    
-	private IBinding m_objTableViewBinding = null;
+    // Binding
+    private IBinding m_objValueBinding = null;
 
 	// Transient
 	private Object m_objTableRow;
 
-	/**
-	 * Returns the tableViewBinding.
-	 * @return IBinding
-	 */
-	public IBinding getTableViewBinding()
-	{
-		return m_objTableViewBinding;
-	}
 
-	/**
-	 * Sets the tableViewBinding.
-	 * @param tableViewBinding The tableViewBinding to set
-	 */
-	public void setTableViewBinding(IBinding tableViewBinding)
+	public Iterator getTableRowsIterator() throws RequestCycleException
 	{
-		m_objTableViewBinding = tableViewBinding;
-	}
-
-	public TableView getTableView()
-	{
-		return (TableView) getTableViewBinding().getObject();
-	}
-
-	public Iterator getTableRowsIterator()
-	{
-		ITableModel objTableModel = getTableView().getTableModel();
+		ITableModel objTableModel = getTableModelSource().getTableModel();
 		return objTableModel.getCurrentPageRows();
 	}
 
@@ -90,6 +71,42 @@ public class TableRows extends BaseComponent
 	public void setTableRow(Object tableRow)
 	{
 		m_objTableRow = tableRow;
+        
+        IBinding objValueBinding = getValueBinding();
+        if (objValueBinding != null)
+            objValueBinding.setObject(tableRow);
 	}
+
+    /**
+     * Returns the valueBinding.
+     * @return IBinding
+     */
+    public IBinding getValueBinding()
+    {
+        return m_objValueBinding;
+    }
+
+    /**
+     * Sets the valueBinding.
+     * @param valueBinding The valueBinding to set
+     */
+    public void setValueBinding(IBinding valueBinding)
+    {
+        m_objValueBinding = valueBinding;
+    }
+
+    /**
+	 * @see net.sf.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
+	 */
+	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+        cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_PROPERTY, this);
+
+		super.renderComponent(writer, cycle);
+
+        cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_PROPERTY, null);
+	}
+
 
 }

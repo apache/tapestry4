@@ -19,6 +19,7 @@
     <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
     <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
     <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
+	<pathelement location="${lib.ext.dir}/${ognl.jar}"/>
   </path>
   
   <target name="init">
@@ -36,12 +37,12 @@
   </target>
   
   <target name="install" depends="compile" description="Compile all classes and build the installed JAR including all package resources.">
-    <jar jarfile="${contrib.jar}">
-      <fileset dir="${classes.dir}"/>
+    <jar jarfile="${contrib.jar}" compress="false">
       <fileset dir="${src.dir}">
         <exclude name="**/*.java"/>
         <exclude name="**/package.html"/>
       </fileset>
+      <fileset dir="${classes.dir}"/>
     </jar>
   </target>
 </project>

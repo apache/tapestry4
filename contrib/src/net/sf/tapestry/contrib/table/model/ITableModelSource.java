@@ -29,7 +29,8 @@ import net.sf.tapestry.IComponent;
 
 /**
  * A Tapestry component that provides the current table model.
- * This interface is used for obtaining the table model by external renderers,
+ * This interface is used for obtaining the table model source by
+ * components wrapped by it, as well as by external renderers,
  * such as those provided by the column implementations
  * 
  * @version $Id$
@@ -37,9 +38,12 @@ import net.sf.tapestry.IComponent;
  */
 public interface ITableModelSource extends IComponent
 {
+    final static String TABLE_MODEL_SOURCE_PROPERTY = "net.sf.tapestry.contrib.table.model.ITableModelSource";
+
 	/**
 	 * Method getTableModel.
 	 * @return ITableModel the current table model
 	 */
 	ITableModel getTableModel();
+
 }

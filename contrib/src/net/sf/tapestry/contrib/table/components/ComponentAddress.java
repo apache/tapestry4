@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.contrib.table.components.inserted;
+package net.sf.tapestry.contrib.table.components;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,13 +35,13 @@ import net.sf.tapestry.IRequestCycle;
 
 /**
  *
- * @version $Id:  $
+ * @version $Id$
  * @author mindbridge
  */
 public class ComponentAddress implements Serializable
 {
 	private String m_strPageName;
-	private String[] m_arrIds;
+	private String m_strIdPath;
 
 	public ComponentAddress(IComponent objComponent)
 	{
@@ -57,37 +57,14 @@ public class ComponentAddress implements Serializable
 			strNamespace = "";
 		else
 			strNamespace = strNamespace + ":";
-		String strPageName = strNamespace + objPage.getName();
+		m_strPageName = strNamespace + objPage.getName();
 
-		ArrayList arrIdList = new ArrayList();
-		while (objComponent.getId() != null
-			&& !objComponent.getId().equals(""))
-		{
-			arrIdList.add(objComponent.getId());
-			objComponent = objComponent.getContainer();
-		}
-
-		int nCount = arrIdList.size();
-		String[] arrIds = new String[nCount];
-		for (int i = 0; i < arrIds.length; i++)
-			arrIds[i] = (String) arrIdList.get(nCount - i - 1);
-
-		init(strPageName, arrIds);
-	}
-
-	private void init(String strPageName, String[] arrIds)
-	{
-		m_strPageName = strPageName;
-		m_arrIds = arrIds;
+        m_strIdPath = objComponent.getIdPath();
 	}
 
 	public IComponent findComponent(IRequestCycle objCycle)
 	{
-		IComponent objComponent = objCycle.getPage(m_strPageName);
-		for (int i = 0; i < m_arrIds.length; i++)
-		{
-			objComponent = objComponent.getComponent(m_arrIds[i]);
-		}
-		return objComponent;
+		IPage objPage = objCycle.getPage(m_strPageName);
+		return objPage.getNestedComponent(m_strIdPath);
 	}
 }

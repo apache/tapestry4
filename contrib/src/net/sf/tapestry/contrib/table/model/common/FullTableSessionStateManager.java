@@ -38,6 +38,9 @@ import net.sf.tapestry.contrib.table.model.ITableSessionStateManager;
 public class FullTableSessionStateManager implements ITableSessionStateManager
 {
 
+    public final static FullTableSessionStateManager FULL_STATE_MANAGER =
+        new FullTableSessionStateManager();
+
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#getSessionState(ITableModel)
 	 */

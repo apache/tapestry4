@@ -30,50 +30,26 @@ import java.util.Iterator;
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRender;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.contrib.table.model.ITableColumn;
 import net.sf.tapestry.contrib.table.model.ITableColumnModel;
+import net.sf.tapestry.contrib.table.model.ITableModelSource;
 
 /**
  * @author mindbridge
  * @version $Id$
  *
  */
-public class TableColumns extends BaseComponent
+public class TableColumns extends AbstractTableViewComponent
 {
-
-	// Bindings    
-	private IBinding m_objTableViewBinding = null;
-
 	// Transient
 	private ITableColumn m_objTableColumn;
 
-	/**
-	 * Returns the tableViewBinding.
-	 * @return IBinding
-	 */
-	public IBinding getTableViewBinding()
-	{
-		return m_objTableViewBinding;
-	}
-
-	/**
-	 * Sets the tableViewBinding.
-	 * @param tableViewBinding The tableViewBinding to set
-	 */
-	public void setTableViewBinding(IBinding tableViewBinding)
-	{
-		m_objTableViewBinding = tableViewBinding;
-	}
-
-	public TableView getTableView()
-	{
-		return (TableView) getTableViewBinding().getObject();
-	}
-
-	public Iterator getTableColumnIterator()
+	public Iterator getTableColumnIterator() throws RequestCycleException
 	{
 		ITableColumnModel objColumnModel =
-			getTableView().getTableModel().getColumnModel();
+			getTableModelSource().getTableModel().getColumnModel();
 		return objColumnModel.getColumns();
 	}
 
@@ -95,11 +71,11 @@ public class TableColumns extends BaseComponent
 		m_objTableColumn = tableColumn;
 	}
 
-	public IRender getTableColumnRenderer()
+	public IRender getTableColumnRenderer() throws RequestCycleException
 	{
 		return getTableColumn().getColumnRenderer(
 			getPage().getRequestCycle(),
-			getTableView());
+			getTableModelSource());
 	}
 
 }

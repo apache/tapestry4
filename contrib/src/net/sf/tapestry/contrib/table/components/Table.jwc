@@ -55,6 +55,10 @@
 		<static-binding name="element">table</static-binding>
 	</component>
 
+	<component id="condPages" type="Conditional">
+		<binding name="condition" expression="tableModel.pageCount > 1"/>
+	</component>
+
 
 	<component id="tableView" type="TableView">
 		<inherited-binding name="tableModel" parameter-name="tableModel"/>
@@ -64,23 +68,19 @@
 	</component>
 
 	<component id="tablePages" type="TablePages">
-		<binding name="tableView" expression="components.tableView"/>
 		<inherited-binding name="pagesDisplayed" parameter-name="pagesDisplayed"/>
 		<inherited-binding name="class" parameter-name="pagesClass"/>
 	</component>
 
 	<component id="tableColumns" type="TableColumns">
-		<binding name="tableView" expression="components.tableView"/>
 		<inherited-binding name="class" parameter-name="columnsClass"/>
 	</component>
 
 	<component id="tableRows" type="TableRows">
-		<binding name="tableView" expression="components.tableView"/>
 		<inherited-binding name="class" parameter-name="rowsClass"/>
 	</component>
 
 	<component id="tableValues" type="TableValues">
-		<binding name="tableRows" expression="components.tableRows"/>
 		<inherited-binding name="class" parameter-name="valuesClass"/>
 	</component>
   

@@ -10,11 +10,6 @@
 	<description>
 	</description>
   
-	<parameter name="tableView" 
-		java-type="net.sf.tapestry.contrib.table.components.TableView" 
-		required="yes"
-		direction="custom"/>
-  
 	<parameter name="pagesDisplayed" 
 		java-type="int" 
 		required="no"
@@ -52,27 +47,27 @@
 
 	<component id="linkPage" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="displayPage"/>
+	    <binding name="parameters" expression="displayPageContext"/>
 	</component>
 
 	<component id="linkFirst" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="firstPage"/>
+	    <binding name="parameters" expression="firstPageContext"/>
 	</component>
 
 	<component id="linkBack" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="backPage"/>
+	    <binding name="parameters" expression="backPageContext"/>
 	</component>
 
 	<component id="linkFwd" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="fwdPage"/>
+	    <binding name="parameters" expression="fwdPageContext"/>
 	</component>
 	
 	<component id="linkLast" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
-	    <binding name="parameters" expression="lastPage"/>
+	    <binding name="parameters" expression="lastPageContext"/>
 	</component>
 	
 </component-specification>

@@ -26,12 +26,19 @@
 package net.sf.tapestry.contrib.table.components;
 
 import net.sf.tapestry.BaseComponent;
+import net.sf.tapestry.contrib.table.model.ITableModel;
+import net.sf.tapestry.contrib.table.model.ITableModelSource;
 
 /**
  * @author mindbridge
  * @version $Id$
  *
  */
-public class Table extends BaseComponent {
+public class Table extends BaseComponent implements ITableModelSource {
+
+    public ITableModel getTableModel() 
+    {
+        return ((ITableModelSource) getComponent("tableView")).getTableModel();
+    }
 
 }

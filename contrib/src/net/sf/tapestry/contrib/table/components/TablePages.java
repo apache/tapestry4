@@ -25,48 +25,28 @@
 
 package net.sf.tapestry.contrib.table.components;
 
+import java.awt.event.ComponentAdapter;
+
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.contrib.table.model.ITableModelSource;
 
 /**
  * @author mindbridge
  * @version $Id$
  *
  */
-public class TablePages extends BaseComponent
+public class TablePages extends AbstractTableViewComponent
 {
 	private final static int DEFAULT_PAGE_COUNT = 7;
 
 	// Bindings    
-	private IBinding m_objTableViewBinding = null;
 	private IBinding m_objPagesDisplayedBinding = null;
 
 	// Transient
 	private int m_nDisplayPage;
-
-	/**
-	 * Returns the tableViewBinding.
-	 * @return IBinding
-	 */
-	public IBinding getTableViewBinding()
-	{
-		return m_objTableViewBinding;
-	}
-
-	/**
-	 * Sets the tableViewBinding.
-	 * @param tableViewBinding The tableViewBinding to set
-	 */
-	public void setTableViewBinding(IBinding tableViewBinding)
-	{
-		m_objTableViewBinding = tableViewBinding;
-	}
-
-	public TableView getTableView()
-	{
-		return (TableView) getTableViewBinding().getObject();
-	}
 
 	/**
 	 * Returns the PagesDisplayedBinding.
@@ -112,39 +92,33 @@ public class TablePages extends BaseComponent
 		m_nDisplayPage = displayPage;
 	}
 
-	public int getCurrentPage()
+	public int getCurrentPage() throws RequestCycleException
 	{
-		return getTableView().getTableModel().getPagingState().getCurrentPage()
+		return getTableModelSource().getTableModel().getPagingState().getCurrentPage()
 			+ 1;
 	}
 
-	public void setCurrentPage(int nPage)
+	public int getPageCount() throws RequestCycleException
 	{
-		getTableView().getTableModel().getPagingState().setCurrentPage(
-			nPage - 1);
+		return getTableModelSource().getTableModel().getPageCount();
 	}
 
-	public int getPageCount()
-	{
-		return getTableView().getTableModel().getPageCount();
-	}
-
-	public boolean getCondBack()
+	public boolean getCondBack() throws RequestCycleException
 	{
 		return getCurrentPage() > 1;
 	}
 
-	public boolean getCondFwd()
+	public boolean getCondFwd() throws RequestCycleException
 	{
 		return getCurrentPage() < getPageCount();
 	}
 
-	public boolean getCondCurrent()
+	public boolean getCondCurrent() throws RequestCycleException
 	{
 		return getDisplayPage() == getCurrentPage();
 	}
 
-	public int getStartPage()
+	public int getStartPage() throws RequestCycleException
 	{
 		int nCurrent = getCurrentPage();
 		int nPagesDisplayed = getPagesDisplayed();
@@ -165,7 +139,7 @@ public class TablePages extends BaseComponent
 		return nStart;
 	}
 
-	public int getStopPage()
+	public int getStopPage() throws RequestCycleException
 	{
 		int nCurrent = getCurrentPage();
 		int nPagesDisplayed = getPagesDisplayed();
@@ -186,7 +160,7 @@ public class TablePages extends BaseComponent
 		return nStop;
 	}
 
-	public Integer[] getPageList()
+	public Integer[] getPageList() throws RequestCycleException
 	{
 		int nStart = getStartPage();
 		int nStop = getStopPage();
@@ -198,36 +172,56 @@ public class TablePages extends BaseComponent
 		return arrPages;
 	}
 
-	public int getFirstPage()
+	public Object[] getFirstPageContext() throws RequestCycleException
 	{
-		return 1;
+        ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
+		return new Object[] { objAddress, new Integer(1) };
 	}
 
-	public int getLastPage()
+	public Object[] getLastPageContext() throws RequestCycleException
 	{
-		return getPageCount();
+        ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
+        return new Object[] { objAddress, new Integer(getPageCount()) };
 	}
 
-	public int getBackPage()
+	public Object[] getBackPageContext() throws RequestCycleException
 	{
-		return getCurrentPage() - 1;
+        ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
+        return new Object[] { objAddress, new Integer(getCurrentPage() - 1) };
 	}
 
-	public int getFwdPage()
+	public Object[] getFwdPageContext() throws RequestCycleException
 	{
-		return getCurrentPage() + 1;
+        ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
+        return new Object[] { objAddress, new Integer(getCurrentPage() + 1) };
 	}
 
-	public void changePage(IRequestCycle objCycle)
+    public Object[] getDisplayPageContext() throws RequestCycleException
+    {
+        ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
+        return new Object[] { objAddress, new Integer(m_nDisplayPage) };
+    }
+
+	public void changePage(IRequestCycle objCycle) throws RequestCycleException
 	{
-		Object[] arrParamenters = objCycle.getServiceParameters();
-		if (arrParamenters.length != 1
-			&& !(arrParamenters[0] instanceof Integer))
+		Object[] arrParameters = objCycle.getServiceParameters();
+		if (arrParameters.length != 2
+            && !(arrParameters[0] instanceof ComponentAddress)
+			&& !(arrParameters[1] instanceof Integer))
 		{
 			// error
 			return;
 		}
 
-		setCurrentPage(((Integer) arrParamenters[0]).intValue());
+        ComponentAddress objAddress = (ComponentAddress) arrParameters[0];
+        ITableModelSource objSource = (ITableModelSource) objAddress.findComponent(objCycle);
+		setCurrentPage(objSource, ((Integer) arrParameters[1]).intValue());
 	}
+
+    public void setCurrentPage(ITableModelSource objSource, int nPage)  throws RequestCycleException
+    {
+        objSource.getTableModel().getPagingState().setCurrentPage(
+            nPage - 1);
+    }
+
 }
