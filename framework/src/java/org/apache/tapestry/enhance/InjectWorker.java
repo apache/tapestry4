@@ -64,7 +64,7 @@ public class InjectWorker implements EnhancementWorker
     private void performEnhancement(EnhancementOperation op, InjectSpecification is)
     {
         String name = is.getName();
-        String locator = is.getLocator();
+        String objectReference = is.getObjectReference();
 
         Class propertyType = op.getPropertyType(name);
         if (propertyType == null)
@@ -74,14 +74,14 @@ public class InjectWorker implements EnhancementWorker
 
         op.claimProperty(name);
 
-        Object injectedValue = _provider.obtainValue(locator, is.getLocation());
+        Object injectedValue = _provider.obtainValue(objectReference, is.getLocation());
 
         if (injectedValue == null)
-            throw new ApplicationRuntimeException(EnhanceMessages.locatedValueIsNull(locator));
+            throw new ApplicationRuntimeException(EnhanceMessages.locatedValueIsNull(objectReference));
 
         if (!propertyType.isAssignableFrom(injectedValue.getClass()))
             throw new ApplicationRuntimeException(EnhanceMessages.incompatibleInjectType(
-                    locator,
+                    objectReference,
                     injectedValue,
                     propertyType));
 

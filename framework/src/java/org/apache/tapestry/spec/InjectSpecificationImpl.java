@@ -24,16 +24,16 @@ public class InjectSpecificationImpl extends BaseLocatable implements InjectSpec
 {
     private String _name;
 
-    private String _locator;
+    private String _objectReference;
 
-    public String getLocator()
+    public String getObjectReference()
     {
-        return _locator;
+        return _objectReference;
     }
 
-    public void setLocator(String locator)
+    public void setObjectReference(String locator)
     {
-        _locator = locator;
+        _objectReference = locator;
     }
 
     public String getName()

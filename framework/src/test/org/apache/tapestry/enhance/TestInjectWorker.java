@@ -47,7 +47,7 @@ public class TestInjectWorker extends HiveMindTestCase
         InjectSpecification is = new InjectSpecificationImpl();
 
         is.setName(name);
-        is.setLocator(locator);
+        is.setObjectReference(locator);
         is.setLocation(location);
 
         return Collections.singletonList(is);

@@ -390,10 +390,32 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         assertEquals(Map.class, eo.getPropertyType("assets"));
         assertEquals(IPage.class, eo.getPropertyType("page"));
-        
+
         // Doesn't exist, so returns null
-        
+
         assertNull(eo.getPropertyType("foosball"));
+
+        verifyControls();
+    }
+
+    public void testForceEnhancement()
+    {
+        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        MockControl cfc = newControl(ClassFactory.class);
+        ClassFactory cf = (ClassFactory) cfc.getMock();
+
+        ClassFab fab = (ClassFab) newMock(ClassFab.class);
+
+        cf.newClass("$BaseComponent_97", BaseComponent.class, Thread.currentThread()
+                .getContextClassLoader());
+        cfc.setReturnValue(fab);
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                BaseComponent.class, cf);
+
+        eo.forceEnhancement();
 
         verifyControls();
     }

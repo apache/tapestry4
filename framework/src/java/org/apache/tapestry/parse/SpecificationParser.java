@@ -1306,12 +1306,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     private void enterInject()
     {
         String name = getValidatedAttribute("name", PROPERTY_NAME_PATTERN, "invalid-property-name");
-        String locator = getAttribute("object");
+        String objectReference = getAttribute("object");
 
         InjectSpecification spec = _factory.createInjectSpecification();
 
         spec.setName(name);
-        spec.setLocator(locator);
+        spec.setObjectReference(objectReference);
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 
         cs.addInjectSpecification(spec);
