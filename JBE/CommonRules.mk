@@ -26,15 +26,20 @@
 # Lesser General Public License for more details.
 
  
-# Rule to make sure the JBE Util class is around.  Usually executed just once, the first
-# time the JBE is used.
+# Makes sure that the JBE utility classes are compiled and upto date.
+# A stamp file is used to determine whether any of the Java sources have changed; 
+# if so ALL of them are recompiled.
 
-setup-jbe-util: $(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.class
+JBE_UTIL_STAMP = $(SYS_MAKEFILE_DIR)/.jbe_util_stamp
 
-$(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.class: $(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.java
+setup-jbe-util: $(JBE_UTIL_STAMP)
+
+$(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 	@$(ECHO) "\n*** Compiling JBE Utility ... ***\n";
+	@$(RM) -f $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.class
 	$(CD) $(SYS_MAKEFILE_DIR) ; \
-	$(JAVAC) com/primix/jbe/Util.java
+	$(JAVAC) com/primix/jbe/*.java
+	@$(TOUCH) $@
 
 # Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
 # GNU Make or JAVA is eating the backslashes under NT.
@@ -46,7 +51,9 @@ JBE_UTIL = $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util
 #	$(call JBE_CANONICALIZE,options)
 #
 # Typically, something like
-# $(call JBE_CANONICALIZE,-classpath $(CLASSPATH))
+# $(call JBE_CANONICALIZE,-classpath $(CLASSPATH)) 
+#
+# Runs the JBE_UTIL in a shell and captures the output.
 
 JBE_CANONICALIZE = $(shell $(JBE_UTIL) canonicalize $(strip $(1)))
 
