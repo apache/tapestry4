@@ -737,28 +737,12 @@ public abstract class AbstractEngine implements IEngine, Externalizable, HttpSes
 
         if (_servletPath == null)
         {
-            // Get the path *within* the servlet context
-
-            // In rare cases related to the tagsupport service, getServletPath()
-            // is wrong
-            // (its a JSP, which invokes Tapestry as an include, thus muddling
-            // what
-            // the real servlet and servlet path is). In those cases, the JSP
-            // tag
-            // will inform us.
-
-            String path = (String) request
-                    .getAttribute(Tapestry.TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE);
-
-            if (path == null)
-                path = request.getServletPath();
-
             // Get the context path, which may be the empty string
             // (but won't be null).
 
             _contextPath = request.getContextPath();
 
-            _servletPath = _contextPath + path;
+            _servletPath = _contextPath + request.getServletPath();
         }
 
         String servletName = context.getServlet().getServletName();
