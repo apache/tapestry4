@@ -25,17 +25,19 @@
 
 package net.sf.tapestry.form;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IPage;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
 
 /**
- * Provides a Form <code>Date</code> picker component for editing dates.
+ * Provides a Form <tt>java.sql.Date</tt> field component for selecting dates.
  *
  *  [<a href="../../../../../ComponentReference/DateEdit.html">Component Reference</a>]
  *
@@ -44,10 +46,13 @@ import net.sf.tapestry.IPage;
  * @version $Id$
  */
 public class DateEdit extends BaseComponent {
+    
+    private static final String CLASSNAME = DateEdit.class.getName();
 
-    private Date _value = new Date();
+    private Date _value = new Date((new java.util.Date()).getTime());
     private IBinding _valueBinding;
     private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
+    private boolean _firstTime;
 
     public IBinding getValueBinding() 
     {
@@ -80,7 +85,7 @@ public class DateEdit extends BaseComponent {
     }
 
     /**
-     *  @return a <code>String</code> long value for the date
+     *  @return a <tt>String</tt> long value for the date
      * 
      **/
     public String getLongValue() 
@@ -89,9 +94,9 @@ public class DateEdit extends BaseComponent {
     }
 
     /**
-     *  <code>setLongValue</code> sets the long value of the date
+     *  <tt>setLongValue</tt> sets the long value of the date
      *
-     *  @param v a <code>String</code> value
+     *  @param v a <tt>String</tt> value
      * 
      **/
     public void setLongValue(String v) {
@@ -120,38 +125,24 @@ public class DateEdit extends BaseComponent {
     }
 
     /**
-     *  <code>isFirstTime</code> checks if this is the first time
+     *  <tt>isFirstTime</tt> checks if this is the first time
      *  the component is in the page
      *
-     *  @return a <code>boolean</code> value
+     *  @return a <tt>boolean</tt> value
      * 
      **/
     public boolean isFirstTime() 
     {
-        IPage p = getPage();
-        Map components = p.getComponents();
+        return _firstTime;        
+    }
 
-        for (Iterator i = components.values().iterator(); i.hasNext();) 
+    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException 
+    {
+        if (cycle.getAttribute(CLASSNAME) == null) 
         {
-            Object o = i.next();
-            
-            // check if this component is a Date Edit component by comparing
-            // class names
-            if (o.getClass().getName().equals(this.getClass().getName())) 
-            {
-                // if the current component is the same instance as myself
-                // then i must be first,
-                if (o == this) 
-                {
-                    return true;
-                } 
-                else 
-                {
-                    return false;
-                }
-            }
-        }
-        
-        return false;
+            cycle.setAttribute(CLASSNAME, Boolean.TRUE);
+            _firstTime = true;
+        }        
+        super.prepareForRender(cycle);
     }
 }

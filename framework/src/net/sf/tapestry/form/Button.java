@@ -47,9 +47,7 @@ import net.sf.tapestry.RequestCycleException;
 public class Button extends AbstractFormComponent
 {
 	private String _label;
-	private IActionListener _listener;
 	private boolean _disabled;
-	private Object _tag;
 	private IBinding _selectedBinding;
 	private String _name;
 
@@ -71,7 +69,6 @@ public class Button extends AbstractFormComponent
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-
 		IForm form = getForm(cycle);
 
 		boolean rewinding = form.isRewinding();
@@ -80,36 +77,6 @@ public class Button extends AbstractFormComponent
 
 		if (rewinding)
 		{
-			// Don't bother doing anything if disabled.
-
-			if (_disabled)
-			{
-				return;
-			}
-
-			// How to know which button was actually
-			// clicked?  When submitted, it produces a request parameter
-			// with its name and value (the value serves double duty as both
-			// the label on the button, and the parameter value).
-
-			String value = cycle.getRequestContext().getParameter(_name);
-
-			// If the value isn't there, then this button wasn't
-			// selected.
-
-			if (value == null)
-			{
-				return;
-			}
-
-			if (_selectedBinding != null)
-			{
-				_selectedBinding.setObject(_tag);
-			}
-			if (_listener != null)
-			{
-				_listener.actionTriggered(this, cycle);
-			}
 			return;
 		}
 
@@ -148,25 +115,5 @@ public class Button extends AbstractFormComponent
 	public void setDisabled(boolean disabled)
 	{
 		_disabled = disabled;
-	}
-
-	public IActionListener getListener()
-	{
-		return _listener;
-	}
-
-	public void setListener(IActionListener listener)
-	{
-		_listener = listener;
-	}
-
-	public Object getTag()
-	{
-		return _tag;
-	}
-
-	public void setTag(Object tag)
-	{
-		_tag = tag;
 	}
 }
