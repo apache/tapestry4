@@ -1,10 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-	
-<specification class="com.primix.tapestry.BasePage">
+    "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+    
+<specification class="tutorial.portal.Stocks">
 
 <component id="content" type="Block"/>
+
+<component id="e" type="Foreach">
+  <binding name="source" property-path="stocks"/>
+  <binding name="value" property-path="stock"/>
+</component>
+
+<component id="evenOdd" type="EvenOdd"/>
+
+<component id="insertStock" type="Insert">
+  <binding name="value" property-path="stock.tickerId"/>
+</component>
+
+<component id="insertValue" type="Insert">
+  <binding name="value" property-path="stock.price"/>
+  <binding name="format" property-path="decimalFormat"/>
+</component>
+
+<component id="insertDelta" type="Insert">
+  <binding name="value" property-path="stock.change"/>
+  <binding name="format" property-path="decimalFormat"/>
+</component>
+
+<component id="showError" type="ShowError"/>
+
+<component id="form" type="Form">
+  <binding name="listener" property-path="formListener"/>
+</component>
+
+<component id="inputTickerId" type="ValidatingTextField">
+  <binding name="text" property-path="tickerId"/>
+  <static-binding name="displayName">Ticker ID</static-binding>
+  <binding name="delegate" property-path="validationDelegate"/>
+  <static-binding name="displayWidth">4</static-binding>
+  <static-binding name="maximumLength">4</static-binding>
+  <static-binding name="title">
+    For this demo, valid stocks are:
+    PMIX, MSFT, SUN
+  </static-binding>
+</component>
 
 </specification>

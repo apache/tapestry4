@@ -1,6 +1,27 @@
 <jwc id="content">
 
-Stocks Portlet content.
+<table class="portlet-content">
+    <tr> <th>Stock</th> <th>Price</th> <th>Change</th></tr>
+    <jwc id="e">
+        <jwc id="evenOdd">
+            <td align=right><jwc id="insertStock"/></td>
+            <td align=right><jwc id="insertValue"/></td>
+            <td align=right><jwc id="insertDelta"/></td>
+        </jwc>
+    </jwc>
+</table>
+
+<hr>
+
+<jwc id="showError"/>
+
+<jwc id="form">
+
+<jwc id="inputTickerId"/> <input type=submit value="Add">
+</jwc>
+
+<p>Note: these values are <em>entirely made up</em> for demonstration
+purposes.
 
 </jwc>
 
