@@ -5,7 +5,6 @@ import java.io.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.parse.*;
 import com.primix.tapestry.spec.*;
-import com.primix.foundation.xml.*;
 import java.util.*;
 
 /*
@@ -54,6 +53,7 @@ public class DefaultSpecificationSource
 	private IResourceResolver resolver;
 	protected ApplicationSpecification specification;
 
+	private SpecificationParser parser;
 
 	private static final int MAP_SIZE = 7;
 	
@@ -63,14 +63,6 @@ public class DefaultSpecificationSource
 	*/
 
 	protected Map cache;
-
-	/**
-	*  The {@link Assembler} configured to
-	*  parse specification documents.
-	*
-	*/
-	
-	protected Assembler assembler;
 
 	public DefaultSpecificationSource(IResourceResolver resolver,
 		ApplicationSpecification specification)
@@ -87,20 +79,6 @@ public class DefaultSpecificationSource
 	public void clear()
 	{
 		cache = null;
-	}
-
-	/**
-	*  Returns an {@link Assembler} configured to parse component specifications using
-	*  a {@link ComponentSpecificationHandler}.
-	*
-	*/
-
-	public Assembler getAssembler()
-	{
-		if (assembler == null)
-			assembler = new Assembler(new ComponentSpecificationHandler());
-
-		return assembler;
 	}
 
 	/**
@@ -150,13 +128,6 @@ public class DefaultSpecificationSource
 		return result;
 	}
 
-	/**
-	* Parses a specification using an {@link Assembler}.
-	*
-	*  @see #getAssembler()
-	*
-	*/
-
 	protected ComponentSpecification parseSpecification(String resourcePath)
 	throws ResourceUnavailableException
 	{
@@ -182,19 +153,12 @@ public class DefaultSpecificationSource
 				resourcePath + ".", e);
 		}
 
-		try
-		{
-			result = (ComponentSpecification)getAssembler().parse(inputStream,
-				resourcePath);
+		if (parser == null)
+			parser = new SpecificationParser();
 
-			result.setSpecificationResourcePath(resourcePath);
-		}
-		catch (AssemblerException e)
-		{
-			throw new ResourceUnavailableException("Error parsing " +
-				resourcePath + ".", e);
-		}
+		result = parser.parseComponentSpecification(inputStream, resourcePath);
 
+		result.setSpecificationResourcePath(resourcePath);
 
 		return result;
 	}

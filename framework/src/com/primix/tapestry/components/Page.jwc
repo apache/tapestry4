@@ -1,22 +1,26 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0"?>
 <!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 
 <specification>
 	<class>com.primix.tapestry.components.Page</class>
 		
-	<parameter>
-		<name>page</name>
-		<java-type>java.lang.String</java-type>
-		<required>yes</required>
-	</parameter>
-	
-	<parameter>
-		<name>enabled</name>
-	</parameter>
-	
-	<parameter>
-		<name>anchor</name>
-		<java-type>java.lang.String</java-type>
-	</parameter>
+	<parameters>
+		<parameter>
+			<name>page</name>
+			<java-type>java.lang.String</java-type>
+			<required>yes</required>
+		</parameter>
+		
+		<parameter>
+			<name>enabled</name>
+		</parameter>
+		
+		<parameter>
+			<name>anchor</name>
+			<java-type>java.lang.String</java-type>
+		</parameter>
+	</parameters>
 
 </specification>
