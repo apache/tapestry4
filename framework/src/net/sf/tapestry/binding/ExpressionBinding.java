@@ -40,6 +40,7 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 import net.sf.tapestry.util.prop.PropertyFinder;
 import net.sf.tapestry.util.prop.PropertyInfo;
 import ognl.Ognl;
+import ognl.OgnlException;
 
 /**
  *  Implements a dynamic binding, based on getting and fetching
@@ -147,13 +148,6 @@ public class ExpressionBinding extends AbstractBinding
 
     private boolean _initialized;
 
-    /**
-     *  Records the first type we see for the expression.
-     * 
-     **/
-
-    private Class _type;
-
     private IResourceResolver _resolver;
 
     /**
@@ -161,9 +155,9 @@ public class ExpressionBinding extends AbstractBinding
      *  for the lifespan of the binding once created.
      * 
      **/
-    
+
     private Map _context;
-    
+
     /**
      *  Creates a {@link ExpressionBinding} from the root object
      *  and an OGNL expression.
@@ -207,16 +201,9 @@ public class ExpressionBinding extends AbstractBinding
 
     private Object resolveProperty()
     {
-        Object result;
-
         try
         {
-            if (_parsedExpression == null)
-                _parsedExpression = OgnlUtils.getParsedExpression(_expression);
-
-            Map context = getOgnlContext();
-
-            result = Ognl.getValue(_parsedExpression, context, _root);
+            return Ognl.getValue(_parsedExpression, getOgnlContext(), _root);
         }
         catch (Throwable t)
         {
@@ -225,11 +212,6 @@ public class ExpressionBinding extends AbstractBinding
                 this,
                 t);
         }
-
-        if (_type == null && result != null)
-            _type = result.getClass();
-
-        return result;
     }
 
     /**
@@ -243,7 +225,7 @@ public class ExpressionBinding extends AbstractBinding
     {
         if (_context == null)
             _context = Ognl.createDefaultContext(_root, _resolver);
-            
+
         return _context;
     }
 
@@ -256,6 +238,8 @@ public class ExpressionBinding extends AbstractBinding
 
     public boolean isInvariant()
     {
+        initialize();
+
         return _invariant;
     }
 
@@ -290,7 +274,28 @@ public class ExpressionBinding extends AbstractBinding
         if (_initialized)
             return;
 
+        _parsedExpression = OgnlUtils.getParsedExpression(_expression);
+
         int i;
+
+        try
+        {
+            if (Ognl.isConstant(_parsedExpression, getOgnlContext()))
+            {
+                _invariant = true;
+
+                _cachedValue = resolveProperty();
+
+                return;
+            }
+        }
+        catch (OgnlException ex)
+        {
+            throw new BindingException(
+                Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),
+                this,
+                ex);
+        }
 
         // Split the expression into individual property names.
         // We then optimize what we can from the expression.  This will
@@ -465,12 +470,7 @@ public class ExpressionBinding extends AbstractBinding
 
         try
         {
-            if (_parsedExpression == null)
-                _parsedExpression = OgnlUtils.getParsedExpression(_expression);
-
-            Map context = getOgnlContext();
-
-            Ognl.setValue(_parsedExpression, context, _root, value);
+            Ognl.setValue(_parsedExpression, getOgnlContext(), _root, value);
         }
         catch (Throwable ex)
         {
@@ -479,7 +479,6 @@ public class ExpressionBinding extends AbstractBinding
                 this,
                 ex);
         }
-
     }
 
     /**
@@ -509,13 +508,6 @@ public class ExpressionBinding extends AbstractBinding
             buffer.append(_cachedValue);
         }
 
-        if (_type != null)
-        {
-            buffer.append(" type=");
-            // May not be pretty if array or primitive type ...
-            buffer.append(_type.getName());
-        }
-
         buffer.append(']');
 
         return buffer.toString();
@@ -532,5 +524,5 @@ public class ExpressionBinding extends AbstractBinding
     {
         return null;
     }
- 
+
 }

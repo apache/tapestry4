@@ -86,7 +86,7 @@ examples), others are used at runtime (and must be added to the servlet containe
 	</varlistentry>
 
 	<varlistentry>
-		<term><filename>ognl-<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<term><filename>ognl-<replaceable>x.x.x</replaceable>-opt.jar</filename></term>
 		<listitem>
 		<para>
 		The <ulink url="http://www.ognl.org">Object Graph Navigation Library</ulink>,
