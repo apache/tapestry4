@@ -54,6 +54,40 @@ See http://xml.apache.org/forrest/linking.html for more info
       
       <index href="index.html"/>
       
+      <ComponentReference label="ComponentReference" href="ComponentReference/">
+        <ActionLink label="ActionLink" href="ActionLink.html"/>
+        <Any label="Any" href="Any.html"/>
+        <Block label="Block" href="Block.html"/>
+        <Body label="Body" href="Body.html"/>
+        <Button label="Button" href="Button.html"/>
+        <Checkbox label="Checkbox" href="Checkbox.html"/>
+        <Conditional label="Conditional" href="Conditional.html"/>
+        <DatePicker label="DatePicker" href="DatePicker.html"/>
+        <Delegator label="Delegator" href="Delegator.html"/>
+        <DirectLink label="DirectLink" href="DirectLink.html"/>
+        <Insert label="Insert" href="Insert.html"/>
+        <InsertText label="InsertText" href="InsertText.html"/>
+        <LinkSubmit label="LinkSubmit" href="LinkSubmit.html"/>
+        <ListEdit label="ListEdit" href="ListEdit.html"/>
+        <Option label="Option" href="Option.html"/>
+        <PageLink label="PageLink" href="PageLink.html"/>
+        <PropertySelection label="PropertySelection" href="PropertySelection.html"/>
+        <Radio label="Radio" href="Radio.html"/>
+        <RadioGroup label="RadioGroup" href="RadioGroup.html"/>
+        <RenderBlock label="RenderBlock" href="RenderBlock.html"/>
+        <RenderBody label="RenderBody" href="RenderBody.html"/>
+        <Rollover label="Rollover" href="Rollover.html"/>
+        <Script label="Script" href="Script.html"/>
+        <Select label="Select" href="Select.html"/>
+        <ServiceLink label="ServiceLink" href="ServiceLink.html"/>
+        <Shell label="Shell" href="Shell.html"/>
+        <Submit label="Submit" href="Submit.html"/>
+        <TextArea label="TextArea" href="TextArea.html"/>
+        <TextField label="TextField" href="TextField.html"/>
+        <Upload label="Upload" href="Upload.html"/>
+        <ValidField label="ValidField" href="ValidField.html"/>
+      </ComponentReference>
+      
       <reports label="Reports">
         &tapestry-report-menu.ent;
       </reports>
@@ -73,8 +107,9 @@ See http://xml.apache.org/forrest/linking.html for more info
     <project label="Project">
         <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
         <item label="Bug Database"     href="http://issues.apache.org/jira/secure/BrowseProject.jspa?id=10573"/>
-        <item label="CVS Access"      href="cvs.html"/>
-        
+        <item label="CVS Access"      href="cvs.html"/>    
+        <item label="Downloads" href="downloads.html"/>
+    
         <reports label="Reports">
           &project-report-menu.ent;
         </reports>        
@@ -88,11 +123,7 @@ See http://xml.apache.org/forrest/linking.html for more info
         <item label="Tapestry and HiveMind Blog"
         	href="http://howardlewisship.com/blog/"/>
     </info>
-    
-    <downloads label="Downloads">
-      <item label="Binary" href="http://jakarta.apache.org/site/binindex.cgi#Milestone Builds"/>
-      <item label="Source" href="http://jakarta.apache.org/site/sourceindex.cgi#Milestone Source Drops"/>
-    </downloads>
+
     
 	<complete-site label="Complete Site">
 		<complete-html label="HTML" href="site.html"/>

@@ -174,10 +174,6 @@
    <exclude pattern="hivedocs/**"/>
    <exclude pattern="**/apidocs/**"/>
    <exclude pattern="**/clover/**"/>
-   
-   <!-- Temporary! -->
-   
-   <exclude pattern="ComponentReference/**"/>
 
    <!-- Exclude tokens used in URLs to ASF mirrors (interpreted by a CGI) -->
    <exclude pattern="[preferred]/**"/>

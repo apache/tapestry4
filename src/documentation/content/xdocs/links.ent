@@ -101,46 +101,46 @@
 
 <!-- Links to Component Reference -->
 
-<!ENTITY ReferenceRoot "&projectroot;ComponentReference">
-  
-<!ENTITY ActionLink '<link href="&ReferenceRoot;/ActionLink.html">ActionLink</link>'>
-<!ENTITY Any '<link href="&ReferenceRoot;/Any.html">Any</link>'>
-<!ENTITY Block '<link href="&ReferenceRoot;/Block.html">Block</link>'>
-<!ENTITY Checkbox '<link href="&ReferenceRoot;/Checkbox.html">Checkbox</link>'>
-<!ENTITY Body '<link href="&ReferenceRoot;/Body.html">Body</link>'>
-<!ENTITY Conditional '<link href="&ReferenceRoot;/Conditional.html">Conditional</link>'>
-<!ENTITY Delegator '<link href="&ReferenceRoot;/Delegator.html">Delegator</link>'>
-<!ENTITY DirectLink '<link href="&ReferenceRoot;/DirectLink.html">DirectLink</link>'>
-<!ENTITY ExceptionDisplay '<link href="&ReferenceRoot;/ExceptionDisplay.html">ExceptionDisplay</link>'>
-<!ENTITY ExternalLink '<link href="&ReferenceRoot;/ExternalLink.html">ExternalLink</link>'>
-<!ENTITY Foreach '<link href="&ReferenceRoot;/Foreach.html">Foreach</link>'>
-<!ENTITY Form '<link href="&ReferenceRoot;/Form.html">Form</link>'>
-<!ENTITY Frame '<link linkend="bultin.Frame.html">Frame</link>'>
-<!ENTITY GenericLink '<link href="&ReferenceRoot;/GenericLink.html">GenericLink</link>'>
-<!ENTITY Hidden '<link href="&ReferenceRoot;/Hidden.html">Hidden</link>'>
-<!ENTITY ListEdit '<link href="&ReferenceRoot;/ListEdit.html">ListEdit</link>'>
-<!ENTITY Image '<link href="&ReferenceRoot;/Image.html">Image</link>'>
-<!ENTITY Insert '<link href="&ReferenceRoot;/Insert.html">Insert</link>'>
-<!ENTITY InsertText '<link href="&ReferenceRoot;/InsertText.html">InsertText</link>'>
-<!ENTITY InspectorButton '<link href="&ReferenceRoot;/InspectorButton.html">InspectorButton</link>'>
-<!ENTITY Option '<link href="&ReferenceRoot;/Option.html">Option</link>'>
-<!ENTITY PageLink '<link href="&ReferenceRoot;/PageLink.html">PageLink</link>'>
-<!ENTITY Palette '<link href="&ReferenceRoot;/contrib.Palette.html">Palette</link>'>
-<!ENTITY PropertySelection '<link href="&ReferenceRoot;/PropertySelection.html">PropertySelection</link>'>
-<!ENTITY Radio '<link href="&ReferenceRoot;/Radio.html">Radio</link>'>
-<!ENTITY RadioGroup '<link href="&ReferenceRoot;/RadioGroup.html">RadioGroup</link>'>
-<!ENTITY RenderBlock '<link href="&ReferenceRoot;/RenderBlock.html">RenderBlock</link>'>
-<!ENTITY RenderBody '<link href="&ReferenceRoot;/RenderBody.html">RenderBody</link>'>
-<!ENTITY Rollover '<link href="&ReferenceRoot;/Rollover.html">Rollover</link>'>
-<!ENTITY Script '<link href="&ReferenceRoot;/Script.html">Script</link>'>
-<!ENTITY Select '<link href="&ReferenceRoot;/Select.html">Select</link>'>
-<!ENTITY ServiceLink '<link href="&ReferenceRoot;/ServiceLink.html">ServiceLink</link>'>
-<!ENTITY Shell '<link href="&ReferenceRoot;/Shell.html">Shell</link>'>
-<!ENTITY Submit '<link href="&ReferenceRoot;/Submit.html">Submit</link>'>
-<!ENTITY TextArea '<link href="&ReferenceRoot;/TextArea.html">TextArea</link>'>
-<!ENTITY TextField '<link href="&ReferenceRoot;/TextField.html">TextField</link>'>
-<!ENTITY Upload '<link href="&ReferenceRoot;/Upload.html">Upload</link>'>
-<!ENTITY ValidField '<link href="&ReferenceRoot;/ValidField.html">ValidField</link>'>
+<!ENTITY ReferenceRoot "&projectroot;tapestry/ComponentReference">
+   
+<!ENTITY ActionLink 		'<link href="&ReferenceRoot;/ActionLink.html">ActionLink</link>'>
+<!ENTITY Any				'<link href="&ReferenceRoot;/Any.html">Any</link>'>
+<!ENTITY Block 				'<link href="&ReferenceRoot;/Block.html">Block</link>'>
+<!ENTITY Checkbox 			'<link href="&ReferenceRoot;/Checkbox.html">Checkbox</link>'>
+<!ENTITY Body 				'<link href="&ReferenceRoot;/Body.html">Body</link>'>
+<!ENTITY Conditional 		'<link href="&ReferenceRoot;/Conditional.html">Conditional</link>'>
+<!ENTITY Delegator 			'<link href="&ReferenceRoot;/Delegator.html">Delegator</link>'>
+<!ENTITY DirectLink 		'<link href="&ReferenceRoot;/DirectLink.html">DirectLink</link>'>
+<!ENTITY ExceptionDisplay 	'<link href="&ReferenceRoot;/ExceptionDisplay.html">ExceptionDisplay</link>'>
+<!ENTITY ExternalLink 		'<link href="&ReferenceRoot;/ExternalLink.html">ExternalLink</link>'>
+<!ENTITY Foreach 			'<link href="&ReferenceRoot;/Foreach.html">Foreach</link>'>
+<!ENTITY Form 				'<link href="&ReferenceRoot;/Form.html">Form</link>'>
+<!ENTITY Frame 				'<link href="&ReferenceRoot;/Frame.html">Frame</link>'>
+<!ENTITY GenericLink 		'<link href="&ReferenceRoot;/GenericLink.html">GenericLink</link>'>
+<!ENTITY Hidden 			'<link href="&ReferenceRoot;/Hidden.html">Hidden</link>'>
+<!ENTITY ListEdit 			'<link href="&ReferenceRoot;/ListEdit.html">ListEdit</link>'>
+<!ENTITY Image 				'<link href="&ReferenceRoot;/Image.html">Image</link>'>
+<!ENTITY Insert 			'<link href="&ReferenceRoot;/Insert.html">Insert</link>'>
+<!ENTITY InsertText 		'<link href="&ReferenceRoot;/InsertText.html">InsertText</link>'>
+<!ENTITY InspectorButton	'<link href="&ReferenceRoot;/InspectorButton.html">InspectorButton</link>'>
+<!ENTITY Option 			'<link href="&ReferenceRoot;/Option.html">Option</link>'>
+<!ENTITY PageLink 			'<link href="&ReferenceRoot;/PageLink.html">PageLink</link>'>
+<!ENTITY Palette 			'<link href="&ReferenceRoot;/contrib.Palette.html">Palette</link>'>
+<!ENTITY PropertySelection 	'<link href="&ReferenceRoot;/PropertySelection.html">PropertySelection</link>'>
+<!ENTITY Radio 				'<link href="&ReferenceRoot;/Radio.html">Radio</link>'>
+<!ENTITY RadioGroup 		'<link href="&ReferenceRoot;/RadioGroup.html">RadioGroup</link>'>
+<!ENTITY RenderBlock 		'<link href="&ReferenceRoot;/RenderBlock.html">RenderBlock</link>'>
+<!ENTITY RenderBody 		'<link href="&ReferenceRoot;/RenderBody.html">RenderBody</link>'>
+<!ENTITY Rollover 			'<link href="&ReferenceRoot;/Rollover.html">Rollover</link>'>
+<!ENTITY Script 			'<link href="&ReferenceRoot;/Script.html">Script</link>'>
+<!ENTITY Select 			'<link href="&ReferenceRoot;/Select.html">Select</link>'>
+<!ENTITY ServiceLink 		'<link href="&ReferenceRoot;/ServiceLink.html">ServiceLink</link>'>
+<!ENTITY Shell 				'<link href="&ReferenceRoot;/Shell.html">Shell</link>'>
+<!ENTITY Submit 			'<link href="&ReferenceRoot;/Submit.html">Submit</link>'>
+<!ENTITY TextArea 			'<link href="&ReferenceRoot;/TextArea.html">TextArea</link>'>
+<!ENTITY TextField 			'<link href="&ReferenceRoot;/TextField.html">TextField</link>'>
+<!ENTITY Upload 			'<link href="&ReferenceRoot;/Upload.html">Upload</link>'>
+<!ENTITY ValidField 		'<link href="&ReferenceRoot;/ValidField.html">ValidField</link>'>
   
 <!-- External links -->
 

@@ -18,7 +18,7 @@
 <document>
 
  <header>
-  <title>Jakarta Tapestry - Welcome!</title>
+  <title>Jakarta Tapestry</title>
  </header>
 
 <body>
@@ -76,6 +76,23 @@ ensure that, when developing your applications, <em>the simplest approach is als
 <p>
 Tapestry is distributed under the terms of the Apache Software License.
 </p>
+
+<section>
+  <title>Status</title>
+  
+<p>
+Work has begun on Tapestry 3.1, which is currently in an early alpha stage.  Documentation is being converted
+from the old DocBook format, to the new Forrest format, leaving many temporary gaps. Only the framework and the contrib
+library is being built, example code is not.
+</p>
+
+<p>
+If you are using Tapestry in a production environment, it is recommended that you stick with Tapestry <strong>3.0</strong>,
+the latest stable release.
+</p>
+  
+  
+</section>
 
 <section>
 		<title>Tapestry in Print</title>
