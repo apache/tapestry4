@@ -6,4 +6,9 @@
   <parameter name="focus" java-type="com.primix.tapestry.IAsset"/>
   <parameter name="blur" java-type="com.primix.tapestry.IAsset"/>
   <parameter name="disabled" java-type="com.primix.tapestry.IAsset"/>
+  
+  <reserved-parameter name="name"/>
+  <reserved-parameter name="src"/>
+  <reserved-parameter name="border"/>
+  
 </specification>

@@ -37,7 +37,7 @@ import java.math.*;
  * 
  *  A {@link Form} component that can be used to
  *  create a text field that validates that the user
- *  has entered an numeric value (if required) and that the
+ *  has entered a numeric value (if required) and that the
  *  value is within a particular range.
  *
  *  <p>When the form is submitted, the result is filtered:  If it fails
@@ -45,14 +45,15 @@ import java.math.*;
  *  an error flag is set.  Also, the invalid text is kept so that it can
  *  be the default value for the form element when the page is rendered.
  *
- *  <p>Doesn't work inside a {@link Foreach} ... it maintains a little bit
- *  of state (invalid text, error flag) 
+ *  <p>This component doesn't work properly inside a {@link Foreach} ... 
+ *  it maintains a little bit of state (invalid text, error flag) 
  *  that will get confused if the component is re-used on the page.
  *
  * <p>This single component can be used with <em>any</em> numeric type, it can
- * convert a {@link String} to any of the subclasses of {@link Number}.  It readings
- * the value binding to get the current value and determine, from it, the
- * correct Java class to convert the String to.
+ * convert a {@link String} to any of the subclasses of {@link Number}.  It determines
+ *  the class to convert the String to from the bnding.  If the binding is
+ *  linked to a property of type double (or {@link Double}), then the string
+ *  is converted to {@link Double} before being assigned through the binding.
  *
  *  <p>The earlier component, {@link IntegerField}, exists for backwards compatibility.
  *  It also is a bit more efficient.
@@ -81,7 +82,7 @@ import java.math.*;
  *  is valid.
  *
  *  <p>When rendering, a null value will render as the empty string.  A value
- *  of zero will either render normally.
+ *  of zero will render normally.
  *
  *  <p>When the form is submitted, the {@link IBinding#getType() type} of the binding
  *  is used to determine what kind of object to convert the string to.

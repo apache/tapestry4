@@ -84,7 +84,7 @@ public class Any extends AbstractComponent
 
 			writer.begin(elementName);
 
-			generateAttributes(cycle, writer, null);
+			generateAttributes(writer, cycle);
 		}
 
 		if (wrappedCount > 0)

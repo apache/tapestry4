@@ -4,4 +4,7 @@
 <specification class="com.primix.tapestry.html.Image" allow-body="no">
   <parameter name="image" java-type="com.primix.tapestry.IAsset" required="yes"/>
   <parameter name="border"/>
+  
+  <parameter name="src"/>
+  
 </specification>

@@ -4,4 +4,7 @@
 <specification class="com.primix.tapestry.form.Option" allow-body="no">
   <parameter name="selected" java-type="java.lang.Boolean" required="yes"/>
   <parameter name="label" java-type="java.lang.String"/>
+  
+  <reserved-parameter name="value"/>
+  
 </specification>

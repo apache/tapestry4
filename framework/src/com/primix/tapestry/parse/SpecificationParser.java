@@ -737,6 +737,13 @@ public class SpecificationParser
 				continue;
 			}
 			
+			
+			if (isElement(node, "reserved-parameter"))
+			{
+				convertReservedParameter(specification, node);
+				continue;
+			}
+
 			if (isElement(node, "bean"))
 			{
 				convertBean(specification, node);
@@ -916,6 +923,18 @@ public class SpecificationParser
 		AssetSpecification asset = new AssetSpecification(type, value);
 		
 		specification.addAsset(name, asset);
+	}
+	
+	/**
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	private void convertReservedParameter(ComponentSpecification spec, Node node)
+	{
+		String name = getAttribute(node, "name");
+		
+		spec.addReservedParameterName(name);
 	}
 }
 

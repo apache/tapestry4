@@ -128,8 +128,6 @@ public class Rollover extends AbstractComponent
 	private IBinding blur;
 	private IBinding disabled;
 
-	private final static String[] reservedNames = { "name", "src", "border" };
-
 	/**
 	*  Converts an {@link IAsset} binding into a usable URL.  Returns null
 	*  if the binding does not exist or the binding's value is null.
@@ -266,7 +264,7 @@ public class Rollover extends AbstractComponent
 			writer.attribute("name", imageName);
 		}
 
-		generateAttributes(cycle, writer, reservedNames);
+		generateAttributes(writer, cycle);
 
 		writer.closeTag();
 

@@ -4,4 +4,9 @@
 <specification class="com.primix.tapestry.form.Radio" allow-body="no">
   <parameter name="value"/>
   <parameter name="disabled"/>
+  
+  <reserved-parameter name="checked"/>
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="name"/>
+  
 </specification>

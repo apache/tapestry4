@@ -65,10 +65,6 @@ public abstract class AbstractTextField extends AbstractFormComponent
 	
 	private String name;
 	
-	private static final String[] reservedNames =
-	{ "type", "size", "maxlength", "value" };
-	
-	
 	public String getName()
 	{
 		return name;
@@ -178,7 +174,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
 		if (value != null)
 			writer.attribute("value", value);
 		
-		generateAttributes(cycle, writer, reservedNames);
+		generateAttributes(writer, cycle);
 		
 		beforeCloseTag(writer, cycle);
 		

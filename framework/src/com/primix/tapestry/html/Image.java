@@ -81,8 +81,6 @@ public class Image extends AbstractComponent
 	private boolean staticBorder;
 	private int borderValue;
 
-	private final static String[] reservedNames = { "src" };
-
 	/**
 	*  Converts an {@link IAsset} binding into a usable URL.  Returns null
 	*  if the binding does not exist or the binding's value is null.
@@ -172,7 +170,7 @@ public class Image extends AbstractComponent
 
 		writer.attribute("border", border);
 
-		generateAttributes(cycle, writer, reservedNames);
+		generateAttributes(writer, cycle);
 
 		writer.closeTag();
 

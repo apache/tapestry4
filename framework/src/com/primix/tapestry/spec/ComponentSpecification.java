@@ -43,6 +43,7 @@ import java.util.*;
  * <li>Bindings for the properties of each contained component
  * <li>A set of named assets
  *  <li>Definitions for helper beans
+ *  <li>Any reserved names (used for HTML attributes)
  * </ul>
  *
  * <p>From this information, an actual component may be instantiated and
@@ -95,6 +96,18 @@ public class ComponentSpecification extends BasePropertyHolder
 	
 	private Map beans;
 	
+
+	/**
+	 *  The names of all reserved informal parameter names (as lower-case).  This
+	 *  allows the page loader to filter out any informal parameters during page load,
+	 *  rather than during render.
+	 *
+	 *   @since 1.0.5
+	 *
+	 */
+	
+	private Set reservedParameterNames;
+	
 	/**
 	 *  Is the component allowed to have a body (that is, wrap other elements?).
 	 *
@@ -109,28 +122,55 @@ public class ComponentSpecification extends BasePropertyHolder
 	
 	private boolean allowInformalParameters = true;
 	
+	/**
+	 * @throws IllegalArgumentException if the name already exists.
+	 *
+	 */
+	
 	public void addAsset(String name, AssetSpecification asset)
 	{
 		if (assets == null)
 			assets = new HashMap(MAP_SIZE);
+		else
+			if (assets.containsKey(name))
+				throw new IllegalArgumentException(this + " already contains asset " + name + ".");
 		
 		assets.put(name, asset);
 	}
+	
+	/**
+	 *  @throws IllegalArgumentException if the id is already defined.
+	 *
+	 */
 	
 	public void addComponent(String id, ContainedComponent component)
 	{
 		if (components == null)
 			components = new HashMap(MAP_SIZE);
+		else
+			if (components.containsKey(id))
+				throw new IllegalArgumentException(this + " already contains component " + id + ".");
 		
 		components.put(id, component);
 	}
+	
+	/**
+	 *  Adds the parameter.   The name is added as a reserved name.
+	 *
+	 *  @throws IllegalArgumentException if the name already exists.
+	 */
 	
 	public void addParameter(String name, ParameterSpecification spec)
 	{
 		if (parameters == null)
 			parameters = new HashMap(MAP_SIZE);
+		else
+			if (parameters.containsKey(name))
+				throw new IllegalArgumentException(this + " already contains parameter " + name + ".");
 		
 		parameters.put(name, spec);
+		
+		addReservedParameterName(name);
 	}
 	
 	/**
@@ -297,12 +337,16 @@ public class ComponentSpecification extends BasePropertyHolder
 	/**
 	 *  @since 1.0.4
 	 *
+	 *  @throws IllegalArgumentException if the bean already has a specification.
 	 */
 	
 	public void addBeanSpecification(String name, BeanSpecification specification)
 	{
 		if (beans == null)
 			beans = new HashMap(MAP_SIZE);
+		else
+			if (beans.containsKey(name))
+				throw new IllegalArgumentException(this + " already contains bean definition for " + name + ".");
 		
 		beans.put(name, specification);
 	}
@@ -334,6 +378,45 @@ public class ComponentSpecification extends BasePropertyHolder
 			return Collections.EMPTY_LIST;
 		
 		return Collections.unmodifiableCollection(beans.keySet());
+	}
+	
+
+	/**
+	 *  Adds the value as a reserved name.  Reserved names are not allowed
+	 *  as the names of informal parameters.  Since the comparison is
+	 *  caseless, the value is converted to lowercase before being
+	 *  stored.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public void addReservedParameterName(String value)
+	{
+		if (reservedParameterNames == null)
+			reservedParameterNames = new HashSet();
+		
+		reservedParameterNames.add(value.toLowerCase());
+	}
+	
+	
+	/**
+	 *  Returns true if the value specified is in the reserved name list.
+	 *  The comparison is caseless.  All formal parameters are automatically
+	 *  in the reserved name list, as well as any additional
+	 *  reserved names specified in the component specification.  The latter
+	 *  refer to HTML attributes generated directly by the component.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public boolean isReservedParameterName(String value)
+	{
+		if (reservedParameterNames == null)
+			return false;
+		
+		return reservedParameterNames.contains(value.toLowerCase());
 	}
 	
 	public String toString()

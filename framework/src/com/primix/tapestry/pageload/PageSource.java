@@ -392,10 +392,8 @@ public class PageSource
 		
 		if (pool != null)
 		{
-			buffer.append(pool.getPooledCount());
-			buffer.append(" pooled pages, ");
-			buffer.append(pool.getKeyCount());
-			buffer.append(" keys");
+			buffer.append("pool=");
+			buffer.append(pool);
 		}
 		
 		extend(buffer, fieldBindings, "field bindings");

@@ -116,9 +116,6 @@ public class Submit extends AbstractFormComponent
 
 	private String name;
 
-	private static final String[] reservedNames = 
-	{ "type", "name" };
-
 	public String getName()
 	{
 		return name;
@@ -241,7 +238,7 @@ public class Submit extends AbstractFormComponent
 		if (label != null)
 			writer.attribute("value", label);	
 
-		generateAttributes(cycle, writer, reservedNames);
+		generateAttributes(writer, cycle);
 
 		writer.closeTag();
 	}	

@@ -9,4 +9,9 @@
   <parameter name="point" java-type="java.awt.Point"/>
   <parameter name="selected"/>
   <parameter name="tag"/>
+  
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="src"/>
+  <reserved-parameter name="border"/>
+  
 </specification>

@@ -111,9 +111,6 @@ public class Text extends AbstractFormComponent
 	private IBinding disabledBinding;
 	private String name;
 
-	private static final String[] reservedNames =
-    { "name", "cols"};
-
 	public String getName()
 	{
 		return name;
@@ -203,7 +200,7 @@ public class Text extends AbstractFormComponent
 		if (columnsBinding != null)
 			writer.attribute("cols", columnsBinding.getInt());
 
-		generateAttributes(cycle, writer, reservedNames);
+		generateAttributes(writer, cycle);
 
 		value = textBinding.getString();
 		if (value != null)

@@ -152,10 +152,10 @@ public class DefaultScriptSource
 		{
 			synchronized(cache)
 			{
-				buffer.append(cache.size());
+				buffer.append(cache.keySet());
 			}
 			
-			buffer.append(" cached scripts, ");
+			buffer.append(", ");
 		}
 		
 		buffer.append(parserPool.getPooledCount());

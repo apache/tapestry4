@@ -64,6 +64,7 @@ import java.io.*;
  *
  *  <tr>
  *	<td>value</td>
+	<td>any</td>
  *	<td>R / W</td>
  *	<td>yes</td>
  *	<td>&nbsp;</td>
@@ -72,6 +73,7 @@ import java.io.*;
  *
  *  <tr>
  *	<td>index</td>
+ *  <td>int</td>
  *	<td>W</td>
  *	<td>no</td> <td>&nbsp;</td>
  *	<td>The index (starting at zero) for each iteration through the list.
@@ -79,6 +81,7 @@ import java.io.*;
  *
  * <tr>
  *  <td>element</td>
+ *  <td>{@link String}</td>
  *  <td>R</td>
  *  <td>no</td> <td>&nbsp;</td>
  *	<td>If specified, then a tag for the specified element is placed around
@@ -306,7 +309,7 @@ public class ListEdit
 			if (element != null)
 			{
 				writer.begin(element);
-				generateAttributes(cycle, writer, null);
+				generateAttributes(writer, cycle);
 			}
 			
 			renderWrapped(writer, cycle);

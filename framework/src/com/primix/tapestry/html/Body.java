@@ -75,10 +75,7 @@ public class Body extends AbstractComponent
 	
 	private static final String ATTRIBUTE_NAME = 
 		"com.primix.tapestry.active.Body";
-	
-	private static final String[] reservedNames = { "onLoad" };
-	
-	
+		
 	/**
 	 *  Tracks a particular preloaded image.
 	 *
@@ -268,7 +265,7 @@ public class Body extends AbstractComponent
 			// Start the body tag.
 			writer.println();
 			writer.begin("body");
-			generateAttributes(cycle, writer, reservedNames);
+			generateAttributes(writer, cycle);
 			
 			if (onLoadName != null)
 				writer.attribute("onLoad",

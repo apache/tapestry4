@@ -168,19 +168,6 @@ public abstract class AbstractComponent implements IComponent
 		assets.put(name, asset);
     }
 	
-	/**
-	 *  Used as a set to filter out informal parameters.  The value is
-	 *  always Boolean.TRUE (we're testing for existence).  The values
-	 *  are the names of all formal parameters and the names of all
-	 *  reserved attributes.  Each name is converted to all lower-case
-	 *  for storage.
-	 *
-	 */
-	
-	private Set maskedAttributes;
-	
-	private static Map maskedAttributesStorage;
-	
 	public void addComponent(IComponent component)
 	{
 		if (components == null)
@@ -225,45 +212,6 @@ public abstract class AbstractComponent implements IComponent
 		}
 		
 		wrapped[wrappedCount++] = element;
-	}
-	
-	private void buildMaskedAttributes(String[] reservedNames)
-	{
-		String className;
-		Iterator e;
-		String parameterName;
-		int i;
-		
-		className = getClass().getName();
-		
-		if (maskedAttributesStorage != null)
-			maskedAttributes = (Set)maskedAttributesStorage.get(className);
-		
-		if (maskedAttributes != null)
-			return;
-		
-		maskedAttributes = new HashSet(MAP_SIZE);
-		
-		e = specification.getParameterNames().iterator();
-		while (e.hasNext())
-		{
-			parameterName = (String)e.next();
-			
-			maskedAttributes.add(parameterName.toLowerCase());
-		}
-		
-		if (reservedNames != null)
-		{
-			for (i = 0; i < reservedNames.length; i++)
-				maskedAttributes.add(reservedNames[i].toLowerCase());
-		}
-		
-		// This is problematic!  It should be SYNCHRONIZED.
-		
-		if (maskedAttributesStorage == null)
-			maskedAttributesStorage = new HashMap(MAP_SIZE);
-		
-		maskedAttributesStorage.put(className, maskedAttributes);
 	}
 	
 	/**
@@ -458,10 +406,11 @@ public abstract class AbstractComponent implements IComponent
 	 *  HTML element.
 	 *
 	 *  <p>Iterates through the bindings for this component.  Filters
-	 *  out bindings when the name matches a formal parameter, or any
-	 *  value provided in the reservedNames aray (which may be null).
-	 *  Reserved names corespond to attributes that are or may be
-	 *  produced by the component.  Filtering is case-insensitive.
+	 *  out bindings when the name matches a formal parameter (as of 1.0.5,
+	 *  informal bindings are weeded out at page load / template load time,
+	 *  if they match a formal parameter, or a specificied reserved name).
+	 *  For the most part, all the bindings here are either informal parameter,
+	 *  or formal parameter without a corresponding JavaBeans property.
 	 *
 	 *  <p>For each acceptible key, the value is extracted using {@link IBinding#getObject()}.
 	 *  If the value is null, no attribute is written.
@@ -481,42 +430,35 @@ public abstract class AbstractComponent implements IComponent
 	 *  result phase; this can be skipped during the rewind phase.
 	 */
 	
-	protected void generateAttributes(IRequestCycle cycle, IResponseWriter writer,
-									  String[] reservedNames)
+	protected void generateAttributes(IResponseWriter writer, IRequestCycle cycle)
 	{
-		Iterator i;
-		String key;
-		IBinding binding;
-		Object value;
 		String attribute;
-		IAsset asset;
-		Map.Entry entry;
 		
 		if (bindings == null)
 			return;
 		
-		i = bindings.entrySet().iterator();
+		Iterator i = bindings.entrySet().iterator();
 		
 		while (i.hasNext())
-		{
-			if (maskedAttributes == null)
-				buildMaskedAttributes(reservedNames);
+		{			
+			Map.Entry entry = (Map.Entry)i.next();
+			String name = (String)entry.getKey();
 			
-			entry = (Map.Entry)i.next();
-			key = (String)entry.getKey();
+			// Skip over formal parameters stored in the bindings
+			// Map.  We're just interested in informal parameters.
 			
-			if (maskedAttributes.contains(key.toLowerCase()))
+			if (specification.getParameter(name) != null)
 				continue;
 			
-			binding = (IBinding)entry.getValue();
+			IBinding binding = (IBinding)entry.getValue();
 			
-			value = binding.getObject();
+			Object value = binding.getObject();
 			if (value == null)
 				continue;
 			
 			if (value instanceof IAsset)
 			{
-				asset = (IAsset)value;
+				IAsset asset = (IAsset)value;
 				
 				// Get the URL of the asset and insert that.
 				
@@ -525,7 +467,7 @@ public abstract class AbstractComponent implements IComponent
 			else
 				attribute = value.toString();
 			
-			writer.attribute(key, attribute);
+			writer.attribute(name, attribute);
 			
 		}
 		

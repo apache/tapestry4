@@ -4,4 +4,7 @@
 <specification class="com.primix.tapestry.form.Select">
   <parameter name="multiple"/>
   <parameter name="disabled"/>
+  
+  <reserved-parameter name="name"/>
+  
 </specification>

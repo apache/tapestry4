@@ -1,5 +1,21 @@
 * Aug 24 2001 hship
 
+framework:
+- Improve toString() in a few classes
+- Add <reserved-parameter> element to component specification
+- Revise code here and there to ignore informal parameters
+  (in the component specification, or from the HTML template)
+  that conflict against reserved names (names of foral parameters,
+  or names specified using <reserved-parameter>).
+- Modify many component specifications, adding <reserved-parameter>
+  elements
+- Update framework version to 1.0.5
+  
+vlib:
+- Display proper header graphic on the View Book page.
+
+* Aug 24 2001 hship
+
 JBE:
 - Upgrade to DocBook XSL 1.44
 
