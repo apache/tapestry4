@@ -28,19 +28,8 @@ package net.sf.tapestry.link;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
-import net.sf.tapestry.BindingException;
-import net.sf.tapestry.IActionListener;
-import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IDirect;
 import net.sf.tapestry.IEngineService;
-import net.sf.tapestry.IExternalPage;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
-import net.sf.tapestry.StaleSessionException;
-import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.engine.ExternalService;
 
 /**
@@ -75,31 +64,34 @@ public class ExternalLink extends GestureLink
 
     protected Object[] getServiceParameters(IRequestCycle cycle)
     {
-        if (_parameters == null)
-            return new Object[] { _targetPage };
-
-        if (_parameters instanceof Object[]) {
+        Object[] serviceParameters = null;
+        
+        if (_parameters == null) 
+        {
+            serviceParameters = new Object[] { _targetPage };
+        } 
+        else  if (_parameters instanceof Object[]) 
+        {
             Object[] parameters = (Object[]) _parameters;
             
-            Object[] serviceParameters = new Object[parameters.length + 1];
-            
+            serviceParameters =  new Object[parameters.length + 1];           
             serviceParameters[0] = _targetPage;
     
             System.arraycopy(parameters, 0, serviceParameters, 1, parameters.length);
-
-            return serviceParameters;            
-        }
-
-        if (_parameters instanceof List)
+        } 
+        else if (_parameters instanceof List)
         {
             List serviceList = new ArrayList();
             serviceList.add(_targetPage);
             serviceList.addAll((List) _parameters);
-
-            return serviceList.toArray();
+            serviceParameters = serviceList.toArray();
+        }
+        else 
+        {
+            serviceParameters = new Object[] { _targetPage, _parameters };
         }
 
-        return new Object[] { _targetPage, _parameters };
+        return serviceParameters;        
     }
 
     public Object getParameters()
@@ -123,3 +115,4 @@ public class ExternalLink extends GestureLink
     }
 
 }
+
