@@ -70,7 +70,7 @@ package org.apache.tapestry.form;
  *  {@link PropertySelection}.
  *  </ul>
  *
- *  <p>The option is usually either an {@link org.apache.tapestry.util.Enum} 
+ *  <p>The option is usually either an {@link org.apache.commons.lang.enum.Enum} 
  *  (see {@link EnumPropertySelectionModel})
  *  or some kind of business object.  The label is often a property of the
  *  option object (for example, for a list of customers, it could be the customer name).
