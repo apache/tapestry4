@@ -41,6 +41,24 @@ problems using Team support inside the Eclipse IDE.
 <target name="docbook-unpack-xsl" unless="docbook.xsl.available">
 	<echo>Unpacking DocBook XSL distribution ...</echo>
 	<unzip src="../common/${docbook.xsl.base}.zip" dest="../common"/>
+	<copy 
+		file="../common/Tapestry.xsl.template" 
+		tofile="../common/Tapestry-Chunked.xsl"
+		overwrite="yes">
+		<filterset>
+			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
+			<filter token="format" value="chunk"/>
+		</filterset>
+	</copy>
+	<copy 
+		file="../common/Tapestry.xsl.template" 
+		tofile="../common/Tapestry-Single.xsl"
+		overwrite="yes">
+		<filterset>
+			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
+			<filter token="format" value="docbook"/>
+		</filterset>
+	</copy>	
 </target>
 
 

@@ -1557,7 +1557,7 @@ Component specification files, which use the filename extension <literal>.jwc</l
 &lt;specification 
   allow-body="<replaceable>yes</replaceable>|<replaceable>no</replaceable>" <co id="components.spec.co.allow-body"/>
   allow-informal-parameters="<replaceable>yes</replaceable>|<replaceable>no</replaceable>" <co id="components.spec.co.informal"/>
-  class="<replaceable>java-class</replaceable>"&gt; <co id="components.spec.co.java-class"/>
+  class="<replaceable>java-type</replaceable>"&gt; <co id="components.spec.co.java-type"/>
   
   [ &lt;<link linkend="components.spec.description">description</link> ...&gt; ...]
   [ &lt;<link linkend="components.spec.parameter">parameter</link> ...&gt; ...]
@@ -1585,7 +1585,7 @@ Component specification files, which use the filename extension <literal>.jwc</l
   	The default is 'yes', so this attribute is usually ommitted.
   	</para>
             </callout>
-            <callout arearefs="components.spec.co.java-class">
+            <callout arearefs="components.spec.co.java-type">
               <para>
 	The complete class name of the component class, 
 	for example, <classname>com.skunkworx.skunkapp.Border</classname>.
@@ -1672,7 +1672,7 @@ This element is used to describe formal parameters used by a component.
           <programlisting>
 &lt;parameter
   name="<replaceable>name</replaceable>" <co id="components.spec.parameter.name"/>
-  java-class="<replaceable>text</replaceable>" <co id="components.spec.parameter.java-class"/>
+  java-type="<replaceable>text</replaceable>" <co id="components.spec.parameter.java-type"/>
   required="<replaceable>yes</replaceable>|<replaceable>no</replaceable>"&gt; <co id="components.spec.parameter.required"/>
   [ &lt;<link linkend="components.spec.description">description</link> ... &gt; ...] <co id="components.spec.parameter.description"/>
 &lt;/parameter&gt;
@@ -1687,7 +1687,7 @@ This element is used to describe formal parameters used by a component.
 		and the underscore.
 		</para>
             </callout>
-            <callout arearefs="components.spec.parameter.java-class">
+            <callout arearefs="components.spec.parameter.java-type">
               <para>
 		Identifies the Java class or type that must be provided for the parameter.
 		This is for descriptive purposes only, there is no validation by the framework.
@@ -6302,7 +6302,7 @@ This section contains a few Q's and A's gleemed from the
 		for incredibly dynamic pages.
 		</para>
           <para>
-		In tradional web applilcations, the developer is responsible for
+		In tradional web appllications, the developer is responsible for
 		naming each form element, as well as writing a servlet to
 		handle the request cycle when the form is submitted.  That turns into
 		a lot of code to extract name parameters from the &HttpServletRequest;, 
