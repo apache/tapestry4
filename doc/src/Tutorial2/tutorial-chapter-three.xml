@@ -4,7 +4,7 @@
   	This section provides a set of examples that show some of the fundamental aspects of
   	Tapestry. It begins with a discussion on Tapestry binding, which is the process by which you 
   	as a developer link your objects to the components in the HTML page. Moving on, we 
-  	create a simple multiple page application using the &Page; component, and then show
+  	create a simple multiple page application using the &PageLink; component, and then show
   	how to respond to user actions (typically Submit buttons) via the &Action; component.
   	</para>
   	<para>
