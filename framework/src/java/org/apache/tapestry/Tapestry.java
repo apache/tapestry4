@@ -166,14 +166,6 @@ public final class Tapestry
     public static final String TEMPLATE_EXTENSION_PROPERTY = "org.apache.tapestry.template-extension";
 
     /**
-     * The default extension for templates, "html".
-     * 
-     * @since 3.0
-     */
-
-    public static final String DEFAULT_TEMPLATE_EXTENSION = "html";
-
-    /**
      * The name of an {@link org.apache.tapestry.IRequestCycle}attribute in which the currently
      * rendering {@link org.apache.tapestry.components.ILinkComponent}is stored. Link components do
      * not nest.

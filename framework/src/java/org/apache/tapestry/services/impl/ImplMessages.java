@@ -26,6 +26,7 @@ import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.INamespace;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -204,5 +205,11 @@ final class ImplMessages
     {
         return _formatter.format("component-property-source-description", spec
                 .getSpecificationLocation());
+    }
+
+    public static String namespacePropertySourceDescription(INamespace namespace)
+    {
+        return _formatter
+                .format("namespace-property-source-description", namespace.getExtendedId());
     }
 }

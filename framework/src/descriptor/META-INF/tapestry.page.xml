@@ -78,6 +78,7 @@
     <invoke-factory model="threaded">
       <construct class="org.apache.tapestry.resolver.PageSpecificationResolverImpl">
         <set-object property="specificationSource" value="infrastructure:specificationSource"/>
+        <set-object property="componentPropertySource" value="infrastructure:componentPropertySource"/>
         <set-service property="delegate" service-id="SpecificationResolverDelegate"/>
         <set-object property="applicationId" value="infrastructure:applicationId"/>
         <set-object property="contextRoot" value="infrastructure:contextRoot"/>

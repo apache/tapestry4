@@ -65,6 +65,17 @@ public class TestComponentMessages extends TapestryTestCase
         {
             return null;
         }
+
+        public String getNamespaceProperty(INamespace namespace, String propertyName)
+        {
+            return null;
+        }
+
+        public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
+                String propertyName)
+        {
+            return null;
+        }
     }
 
     private void check(Messages messages, String key, String expected)
@@ -125,7 +136,6 @@ public class TestComponentMessages extends TapestryTestCase
     private Messages createMessages(String location, Locale locale)
     {
         ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
-        source.setGlobalPropertySource(new NullPropertySource());
         source.setComponentPropertySource(new NullComponentPropertySource());
 
         IComponentSpecification spec = newSpec(location);

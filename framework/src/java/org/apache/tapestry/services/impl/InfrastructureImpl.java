@@ -27,6 +27,7 @@ import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.services.ComponentMessagesSource;
+import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.LinkFactory;
@@ -90,6 +91,8 @@ public class InfrastructureImpl implements Infrastructure
     private ServletContext _context;
 
     private String _applicationId;
+
+    private ComponentPropertySource _componentPropertySource;
 
     public IScriptSource getScriptSource()
     {
@@ -315,5 +318,15 @@ public class InfrastructureImpl implements Infrastructure
     public void setGlobalPropertySource(IPropertySource globalPropertySource)
     {
         _globalPropertySource = globalPropertySource;
+    }
+
+    public ComponentPropertySource getComponentPropertySource()
+    {
+        return _componentPropertySource;
+    }
+
+    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
+    {
+        _componentPropertySource = componentPropertySource;
     }
 }
