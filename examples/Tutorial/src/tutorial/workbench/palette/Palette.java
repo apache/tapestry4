@@ -78,7 +78,7 @@ public class Palette extends BasePage
         // a library now, we need to make sure
         // the namespace id is part of the name.
 
-        Results results = (Results) cycle.getPage(getNamespace().getExtendedId() + ":palette.Results");
+        Results results = (Results) cycle.getPage(getNamespace().constructQualifiedName("palette.Results"));
 
         results.setSelectedColors(_selectedColors);
 

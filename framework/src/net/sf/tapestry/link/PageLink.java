@@ -70,15 +70,11 @@ public class PageLink extends GestureLink
     protected Object[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
     {
         String parameter = null;
-        String prefix = null;
 
-        if (_targetNamespace != null)
-            prefix = _targetNamespace.getExtendedId();
-
-        if (prefix != null)
-            parameter = prefix + ":" + _targetPage;
-        else
+        if (_targetNamespace == null)
             parameter = _targetPage;
+        else
+            parameter = _targetNamespace.constructQualifiedName(_targetPage);
 
         return new String[] { parameter };
     }

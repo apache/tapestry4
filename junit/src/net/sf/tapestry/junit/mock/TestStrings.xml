@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+
+<!-- Tests stale session exception with a DirectLink. -->
+
+<mock-test>
+    <context name="mock"/>
+    
+    <servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.application-specification"
+  			value="/net/sf/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>  	
+  	
+  	<!-- Simulate clicking the link, which should send the
+  	     user to the Protected page.  -->
+  	     
+  	<request>
+  		<parameter name="service" value="page"/>
+  		<parameter name="context" value="Strings"/>
+  		
+	
+		<assert-output name="Normal">
+<![CDATA[
+Normal: &lt;b&gt;Important Message&lt;/b&gt;
+]]>	
+		</assert-output>
+		  	
+		<assert-output name="Raw">
+<![CDATA[
+Raw: <b>Important Message</b>
+]]>	
+		</assert-output>
+	
+		<assert-output name="Span">
+<![CDATA[
+Style: <span class="custom"><b>Important Message</b></span>
+]]>	
+		</assert-output>
+	
+	</request>
+		  	
+</mock-test>

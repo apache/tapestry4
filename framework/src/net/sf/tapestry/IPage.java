@@ -102,11 +102,21 @@ public interface IPage extends IComponent
 	public void setLocale(Locale value);
 
 	/**
-	 *  The logical name is the name given by the application.
+	 *  Returns the simple name of the page within its namespace.
 	 *
 	 **/
 
 	public String getName();
+    
+    /**
+     *  Returns the fully qualified name of the page, including its
+     *  namespace prefix, if any.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
+    public String getQualifiedName();
 
 	/**
 	 *  Returns a particular component from within the page.  The path is a dotted

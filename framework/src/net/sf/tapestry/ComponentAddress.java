@@ -29,11 +29,13 @@ import java.io.Serializable;
 
 /**
  * The ComponentAddress class contains the path to a component, allowing it to  
- * locate an instance of that component in a different RequestCycle.
+ * locate an instance of that component in a different 
+ * {@link net.sf.tapestry.IRequestCycle}.
  * 
  * <p>This class needs to be used mostly when working with components
- * accessed via the IRender interface. It allows those components to serialize and
- * pass as a Service Parameter information about what component they have to 
+ * accessed via the {@link net.sf.tapestry.IRender} interface. 
+ * It allows those components to serialize and
+ * pass as a service parameter information about what component they have to 
  * talk to if control returns back to them and they have not been initialized 
  * in another way. 
  * 
@@ -43,6 +45,7 @@ import java.io.Serializable;
  * @version $Id$
  * @author mindbridge
  * @since 2.2
+ * 
  */
 public class ComponentAddress implements Serializable
 {
@@ -73,14 +76,8 @@ public class ComponentAddress implements Serializable
 	private void init(IComponent objComponent)
 	{
 		IPage objPage = objComponent.getPage();
-		INamespace objNamespace = objPage.getNamespace();
-		String strNamespace = objNamespace.getExtendedId();
-		if (strNamespace == null)
-			strNamespace = "";
-		else
-			strNamespace = strNamespace + ":";
-		m_strPageName = strNamespace + objPage.getName();
 
+		m_strPageName = objPage.getQualifiedName();
 		m_strIdPath = objComponent.getIdPath();
 	}
 

@@ -44,19 +44,28 @@ import net.sf.tapestry.Tapestry;
 
 public class TemplateToken
 {
-    private TokenType type;
+    private TokenType _type;
 
-    private String tag;
-    private String id;
+    private String _tag;
+    private String _id;
 
-    char[] templateData;
+    char[] _templateData;
 
-    private int startIndex = -1;
-    private int endIndex = -1;
+    private int _startIndex = -1;
+    private int _endIndex = -1;
 
-    private IRender render;
+    private IRender _render;
 
-    private Map attributes;
+    private Map _attributes;
+
+    /**
+     *  Used with LOCALIZATION tokens.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
+    private boolean _raw;
 
     /**
      *  Constructs a {@link TokenType#TEXT} token with the given template data.
@@ -65,11 +74,11 @@ public class TemplateToken
 
     public TemplateToken(char[] templateData, int startIndex, int endIndex)
     {
-        type = TokenType.TEXT;
+        _type = TokenType.TEXT;
 
-        this.templateData = templateData;
-        this.startIndex = startIndex;
-        this.endIndex = endIndex;
+        _templateData = templateData;
+        _startIndex = startIndex;
+        _endIndex = endIndex;
 
         if (startIndex < 0
             || endIndex < 0
@@ -112,17 +121,29 @@ public class TemplateToken
         this(TokenType.OPEN, id, tag, attributes);
     }
 
-    public TemplateToken(TokenType type, String id, String tag, Map attributes)
+    /**
+     *  Constructs a {@link TokenType#LOCALIZATION} token.  The localization key
+     *  can be retrieved via {@link #getId()}.
+     * 
+     **/
+    
+    public TemplateToken(String key, boolean raw, String tag, Map attributes)
+    {        
+        this(TokenType.LOCALIZATION, key, tag, attributes);
+        _raw = raw;
+    }
+
+    protected TemplateToken(TokenType type, String id, String tag, Map attributes)
     {
-        this.type = type;
-        this.id = id;
-        this.tag = tag;
-        this.attributes = attributes;
+        _type = type;
+        _id = id;
+        _tag = tag;
+        _attributes = attributes;
     }
 
     public int getEndIndex()
     {
-        return endIndex;
+        return _endIndex;
     }
 
     /**
@@ -134,7 +155,7 @@ public class TemplateToken
 
     public String getId()
     {
-        return id;
+        return _id;
     }
 
     /**
@@ -146,20 +167,20 @@ public class TemplateToken
 
     public String getTag()
     {
-        return tag;
+        return _tag;
     }
 
     public synchronized IRender getRender()
     {
-        if (render == null)
+        if (_render == null)
         {
-            if (type != TokenType.TEXT)
-                throw new ApplicationRuntimeException(Tapestry.getString("TemplateToken.may-not-render", type));
+            if (_type != TokenType.TEXT)
+                throw new ApplicationRuntimeException(Tapestry.getString("TemplateToken.may-not-render", _type));
 
-            render = new RenderTemplateHTML(templateData, startIndex, endIndex - startIndex + 1);
+            _render = new RenderTemplateHTML(_templateData, _startIndex, _endIndex - _startIndex + 1);
         }
 
-        return render;
+        return _render;
     }
 
     /**
@@ -170,12 +191,24 @@ public class TemplateToken
 
     public int getStartIndex()
     {
-        return startIndex;
+        return _startIndex;
     }
 
     public TokenType getType()
     {
-        return type;
+        return _type;
+    }
+
+
+    /**
+     *  Returns true for {@link TokenType#LOCALIZATION} tokens, if the
+     *  String is to be inserted into the response raw.
+     * 
+     **/
+    
+    public boolean isRaw()
+    {
+        return _raw;
     }
 
     /**
@@ -189,35 +222,35 @@ public class TemplateToken
 
     public Map getAttributes()
     {
-        return attributes;
+        return _attributes;
     }
 
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("TemplateToken[");
 
-        buffer.append(type.getName());
+        buffer.append(_type.getName());
 
-        if (id != null)
+        if (_id != null)
         {
             buffer.append(' ');
-            buffer.append(id);
+            buffer.append(_id);
         }
 
-        if (startIndex >= 0)
+        if (_startIndex >= 0)
         {
             buffer.append(" start:");
-            buffer.append(startIndex);
+            buffer.append(_startIndex);
 
             buffer.append(" end:");
-            buffer.append(endIndex);
+            buffer.append(_endIndex);
         }
 
         boolean first = true;
 
-        if (attributes != null)
+        if (_attributes != null)
         {
-            Iterator i = attributes.keySet().iterator();
+            Iterator i = _attributes.keySet().iterator();
 
             while (i.hasNext())
             {

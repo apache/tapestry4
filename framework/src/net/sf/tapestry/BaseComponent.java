@@ -69,10 +69,12 @@ public class BaseComponent extends AbstractComponent
     {
         private String _key;
         private Map _attributes;
+        private boolean _raw;
 
-        private LocalizedStringRender(String key, Map attributes)
+        private LocalizedStringRender(String key, boolean raw, Map attributes)
         {
             _key = key;
+            _raw = raw;
             _attributes = attributes;
         }
 
@@ -97,7 +99,12 @@ public class BaseComponent extends AbstractComponent
                 }
             }
 
-            writer.print(getString(_key));
+            String value = getString(_key);
+
+            if (_raw)
+                writer.printRaw(value);
+            else
+                writer.print(value);
 
             if (_attributes != null)
                 writer.end();
@@ -250,7 +257,7 @@ public class BaseComponent extends AbstractComponent
 
     private void addStringLocalization(IComponent activeComponent, TemplateToken token)
     {
-        IRender renderer = new LocalizedStringRender(token.getId(), token.getAttributes());
+        IRender renderer = new LocalizedStringRender(token.getId(), token.isRaw(), token.getAttributes());
 
         if (activeComponent == null)
             addOuter(renderer);
@@ -426,14 +433,15 @@ public class BaseComponent extends AbstractComponent
         {
             if (j == 1)
                 buffer.append(' ');
-            else if (j == count)
-            {
-                buffer.append(' ');
-                buffer.append(Tapestry.getString("BaseComponent.and"));
-                buffer.append(' ');
-            }
             else
-                buffer.append(", ");
+                if (j == count)
+                {
+                    buffer.append(' ');
+                    buffer.append(Tapestry.getString("BaseComponent.and"));
+                    buffer.append(' ');
+                }
+                else
+                    buffer.append(", ");
 
             buffer.append(i.next());
 
@@ -471,7 +479,8 @@ public class BaseComponent extends AbstractComponent
      *
      **/
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
+        throws PageLoaderException
     {
         readTemplate(cycle, loader);
 

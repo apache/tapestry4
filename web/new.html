@@ -24,12 +24,21 @@ Rework dynamic code loading so that a subclass of
 <a href="doc/api/net/sf/tapestry/ApplicationServlet.html">ApplicationServlet</a>
 is no longer necessary.
 
+<p>Add methods to
+<a href="doc/api/net/sf/tapestry/INamespace.html">INamespace</a> and
+<a href="doc/api/net/sf/tapestry/IPage.html">IPage</a>
+to make dealing with namespaces and qualified page names easier.
+
+<p>
+<code>&lt;jwc id="..."&gt;</code> is no longer allowed in HTML templates.
+
 <p>
 Upgrade to OGNL 2.2.2.
 
 <pre>
 [ 619481 ] use jakarta commons lang Enum
 [ 627478 ] Don't require servlet subclass
+[ 614324 ] Add a param "raw" in addition to "key"
 </pre>
 
 <h3>Release 2.2</h3>
