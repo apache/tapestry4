@@ -24,13 +24,16 @@
 <!ENTITY spec.component				'&lt;component&gt;'>
 <!ENTITY spec.component-specification
 									'&lt;component-specification&gt;'>
-<!ENTITY spec.component-type		'&lt;component-type;'>
+<!ENTITY spec.component-type		'&lt;component-type&gt;'>
+<!ENTITY spec.extension				'&lt;extension&gt;'>
 <!ENTITY spec.library				'&lt;library&gt;'>
 <!ENTITY spec.library-specification	'&lt;library-specification&gt;'>
+<!ENTITY spec.listener-binding		'&lt;listener-binding&gt;'>
 <!ENTITY spec.message-binding		'&lt;message-binding&gt;'>
 <!ENTITY spec.page-specification	'&lt;page-specification&gt;'>
 <!ENTITY spec.parameter				'&lt;parameter&gt;'>
 <!ENTITY spec.private-asset			'&lt;private-asset&gt;'>
+<!ENTITY spec.property				'&lt;property&gt;'>
 <!ENTITY spec.property-specification
 									'&lt;property-specification&gt;'>
 <!ENTITY spec.reserved-parameter	'&lt;reserved-parameter&gt;'>
@@ -40,4 +43,8 @@
 
 <!ENTITY listener-method			'listener method'>
 
-<!ENTITY configuration-property		'configuration property'>
+<!ENTITY configuration-property		'<link href="configuration.html#configuration.search-path">configuration property</link>'>
+<!ENTITY configuration.character-sets
+									'<link href="configuration.html#configuration.character-sets">Character Sets</link>'>
+									
+<!ENTITY init-parameter				'&lt;init-parameter&gt;'>
