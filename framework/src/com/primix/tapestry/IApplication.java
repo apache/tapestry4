@@ -155,11 +155,19 @@ public interface IApplication
      *  Returns the URL prefix that corresponds to the servlet for the application.  
      *  This is required by instances of {@link IApplicationService} that need 
      *  to construct URLs for the application.  This value will include
-     *  the context path (when deployed as a web application under Servlet API 2.2).
-     *
+     *  the context path.
      */
  
     public String getServletPrefix();
+
+    /**
+     *  Returns the context path, a string which is prepended to the names of
+     *  any assets or servlets.  This may be the empty string, but won't be null.
+     *
+     *  <p>This value is obtained from {@link HttpServletRequest#getContextPath()}.
+     */
+
+    public String getContextPath();
 
     /**
      *  Returns the application specification that defines the application

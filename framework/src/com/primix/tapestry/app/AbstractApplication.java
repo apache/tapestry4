@@ -52,8 +52,7 @@ import javax.servlet.http.*;
  *  Uses a shared instance of
  *  {@link ITemplateSource} and {@link ISpecificationSource}
  *  stored as attributes of the  {@link ServletContext} 
- *  (they will be shared by all sessions
- *  and all Tapestry applications).
+ *  (they will be shared by all sessions).
  *
  *  <p>An application is designed to be very lightweight.
  *  Particularily, it should <b>never</b> hold references to any
@@ -64,12 +63,6 @@ import javax.servlet.http.*;
  *
  * <p>Where possible, instance variables should be <code>transient</code>.  They
  * can be restored inside {@link #setupForRequest(RequestContext)}.
- *
- * <p><b>Note: the changes related to {@link IResourceResolver} mean that we can't
- * really share template and specification sources between Tapestry applications
- * (in seperate servlet contexts, loaded by seperate class loaders).  This must be
- * addressed shortly, to mantain the ability to run multiple Tapestry applications
- * within the same servlet engine. </b>
  *
  * @author Howard Ship
  * @version $Id$
@@ -1172,13 +1165,6 @@ public abstract class AbstractApplication
 	*  {@link IApplicationService services} to build URLs.  It consists
 	*  of two parts:  the context path and the servlet path.
 	*
-	*  <p>The context path is only defined under Servlet API 2.2.  It can
-	*  be accessed via the method {@link HttpServletRequest#getContextPath()}.
-	*  Since Tapestry is designed to work with Servlet API 2.1, we don't use this.
-	*  Instead, we require that the <i>context</i> initial parameter
-	* <code>com.primix.tapestry.context-path</code> be defined with the
-	* correct value, typically "/<i>webapp</i>".
-	*
 	* <p>If the parameter is not specified, then no context prefix is used,
 	* which is appropriate for Servlet API 2.1 containers.
 	*
@@ -1205,6 +1191,7 @@ public abstract class AbstractApplication
 		String name;
 		String servletPath;
 		String applicationName;
+        HttpServletRequest request;
 
 		servlet = context.getServlet();
 		
@@ -1217,15 +1204,17 @@ public abstract class AbstractApplication
 
 		if (servletPrefix == null)
 		{
-			servletPath = context.getRequest().getServletPath();
+            request = context.getRequest();
 
-			contextPath = servlet.getInitParameter(
-				"com.primix.tapestry.context-path");
+			servletPath = request.getServletPath();
+
+            // Get the context path, which may be the empty string
+            // (but won't be null).
+
+			contextPath = request.getContextPath();
+
 			
-			if (contextPath == null)
-				servletPrefix = servletPath;
-			else
-				servletPrefix = contextPath + servletPath;
+			servletPrefix = contextPath + servletPath;
 
 		    resetServiceEnabled = 
 		        Boolean.getBoolean("com.primix.tapestry.enable-reset-service");

@@ -40,6 +40,13 @@ import java.util.*;
   *
   *  <p>Uses a simple index number as the value (used to represent the option).
   *
+  *  <p>The resource bundle from which labels are extracted is usually
+  *  a resource within the Tapestry application.  Since 
+  *  {@link ResourceBundle#getBundle(String, Locale)} uses its caller's class loader,
+  *  and that classloader will be the Tapestry framework's classloader, the application's
+  *  resources won't be visible.  This requires that the application resolve
+  *  the resource to a {@link ResourceBundle} before creating this model.
+  *  
   *  @version $Id$
   *  @author Howard Ship
   */
@@ -50,10 +57,8 @@ implements IPropertySelectionModel
 	private Enum[] options;
 	private String[] labels;
 	
-	private Locale locale;
-	private String resourceBaseName;
 	private String resourcePrefix;
-	
+    private ResourceBundle bundle;
 
 	/**
 	 * Standard constructor.
@@ -77,18 +82,15 @@ implements IPropertySelectionModel
 	 *
 	 * @param   locale The {@link Locale} for which labels should be generated.
 	 *
-	 * @param   resourceBaseName The base class name of a {@link ResourceBundle} from which
-	 * labels will be loaded.
+	 * @param   bundle The {@link ResourceBundle} from which labels may be extracted.
 	 *
 	 * @param   resourcePrefix An optional prefix used when accessing keys within the bundle. 
 	 */
 	 
-	public EnumPropertySelectionModel(Enum[] options, Locale locale,
-			String resourceBaseName, String resourcePrefix)
+	public EnumPropertySelectionModel(Enum[] options, ResourceBundle bundle, String resourcePrefix)
 	{
 		this.options = options;
-		this.locale = locale;
-		this.resourceBaseName = resourceBaseName;
+		this.bundle = bundle;
 		this.resourcePrefix = resourcePrefix;
 	}
 
@@ -97,10 +99,10 @@ implements IPropertySelectionModel
 	 *
 	 */
 
-	public EnumPropertySelectionModel(Enum[] options, String resourceBaseName)
+	public EnumPropertySelectionModel(Enum[] options, ResourceBundle bundle)
 	{
 		this.options = options;
-		this.resourceBaseName = resourceBaseName;
+		this.bundle = bundle;
 	}
 	
 	public int getOptionCount()
@@ -137,18 +139,10 @@ implements IPropertySelectionModel
 	
 	private void readLabels()
 	{
-		ResourceBundle bundle;
 		int i;
 		String key;
 		String enumerationId;
 		
-		bundle = ResourceBundle.getBundle(resourceBaseName, locale);
-		
-		if (bundle == null)
-			throw new NullPointerException(
-				"Could not locate ResourceBundle " +
-				resourceBaseName + " for locale " + locale + ".");
-			
 		labels = new String[options.length];
 		
 		for (i = 0; i < options.length; i++)

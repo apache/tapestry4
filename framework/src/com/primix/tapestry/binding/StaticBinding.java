@@ -33,7 +33,7 @@ import com.primix.tapestry.*;
 /**
  * Stores a static (invariant) String as the value.
  *
- * <p>It may be useful to cache static bindings the way {@link FieldBindings} are cached.
+ * <p>It may be useful to cache static bindings the way {@link FieldBinding}s are cached.
  *
  * @author Howard Ship
  * @version $Id$
@@ -43,8 +43,9 @@ import com.primix.tapestry.*;
 public class StaticBinding extends AbstractBinding
 {
 	private String value;
-    private boolean accessed;
+    private boolean parsedInt;
     private int intValue;
+    private boolean parsedDouble;
     private double doubleValue;
 
 	public StaticBinding(String value)
@@ -52,29 +53,34 @@ public class StaticBinding extends AbstractBinding
 		this.value = value;
 	}
 
-    private void parse()
-    {
-        accessed = true;
-
-        intValue = Integer.parseInt(value);
-        doubleValue = Double.parseDouble(value);
-    }
-
 	/**
-	*  Invokes {@link #getInteger()} and converts the result.
+	*  Interprets the static value as an integer.
 	*
 	*/
 
 	public int getInt()
 	{
-        if (!accessed) parse();
+        if (!parsedInt)
+        {
+            intValue = Integer.parseInt(value);
+            parsedInt = true;
+        }
 
         return intValue;
 	}
 
+	/**
+	*  Interprets the static value as a double.
+	*
+	*/
+
     public double getDouble()
     {
-        if (!accessed) parse();
+        if (!parsedDouble)
+        {
+            doubleValue = Double.parseDouble(value);
+            parsedDouble = true;
+        }
 
         return doubleValue;
     }
