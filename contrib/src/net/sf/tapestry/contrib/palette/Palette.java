@@ -313,10 +313,7 @@ public class Palette extends BaseComponent implements IFormComponent
 
         _symbols = new HashMap(MAP_SIZE);
 
-        _symbols.put("formName", formName);
-        _symbols.put("name", _name);
-
-        runScript(cycle, _symbols);
+        runScript(cycle);
 
         // Output symbol 'formSubmitFunctionName' is the name
         // of a JavaScript function to execute when the form
@@ -349,7 +346,7 @@ public class Palette extends BaseComponent implements IFormComponent
      *
      **/
 
-    private void runScript(IRequestCycle cycle, Map symbols) throws RequestCycleException
+    private void runScript(IRequestCycle cycle) throws RequestCycleException
     {
         ScriptSession session;
 
@@ -373,24 +370,19 @@ public class Palette extends BaseComponent implements IFormComponent
         setImage(body, cycle, "deselectImage", _deselectImage);
         setImage(body, cycle, "deselectDisabledImage", _deselectDisabledImage);
 
-        if (_sort == SortMode.LABEL)
-            symbols.put("sortLabel", Boolean.TRUE);
-
-        if (_sort == SortMode.VALUE)
-            symbols.put("sortValue", Boolean.TRUE);
-
-        if (_sort == SortMode.USER)
+         if (_sort == SortMode.USER)
         {
-            symbols.put("sortUser", Boolean.TRUE);
             setImage(body, cycle, "upImage", _upImage);
             setImage(body, cycle, "upDisabledImage", _upDisabledImage);
             setImage(body, cycle, "downImage", _downImage);
             setImage(body, cycle, "downDisabledImage", _downDisabledImage);
         }
 
+        _symbols.put("palette", this);
+
         try
         {
-            session = _script.execute(symbols);
+            session = _script.execute(_symbols);
         }
         catch (ScriptException ex)
         {

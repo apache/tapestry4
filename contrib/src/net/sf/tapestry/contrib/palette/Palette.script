@@ -1,16 +1,13 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
-	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
 <script>
 <!-- 
 
 input symbols:
-  formName - the name of the form containing this Palette
-  name - the name of the selected element
-  sortLabel - if true, sort options by label
-  sortValue - if true, sort options by value
-  sortUser - if create additional controls to allow user to sort manually
+  palette - the Palette instance
   selectImage - reference to the select image
   selectDisabledImage - referece to the disabled select image  
   deselectImage - reference to the deselect image
@@ -21,7 +18,7 @@ input symbols:
   downDisabledImage - reference to the disabled move down image
 
 Note: "reference" means the result of Body.getPreloadedImageReference().  The
-up and down images are only needed if sortUser is true.
+up and down images are only needed if user sorting is enabled.
 
 output symbols:
   formSubmitFunctionName - name of a function to be executed when the form submits
@@ -38,6 +35,23 @@ output symbols:
 
 <include-script resource-path="/net/sf/tapestry/html/PracticalBrowserSniffer.js"/>
 <include-script resource-path="/net/sf/tapestry/contrib/palette/PaletteFunctions.js"/>
+
+<input-symbol key="palette" required="yes"/>
+<input-symbol key="selectImage" class="java.lang.String" required="yes"/>
+<input-symbol key="selectDisabledImage" class="java.lang.String" required="yes"/>
+<input-symbol key="deselectImage" class="java.lang.String" required="yes"/>
+<input-symbol key="deselectDisabledImage" class="java.lang.String" required="yes"/>
+<input-symbol key="upImage" class="java.lang.String"/>
+<input-symbol key="upDisabledImage" class="java.lang.String"/>
+<input-symbol key="downImage" class="java.lang.String"/>
+<input-symbol key="downDisabledImage" class="java.lang.String"/>
+
+<set key="formName" expression="palette.form.name"/>
+<set key="name" expression="palette.name"/>
+<set key="sortLabel" expression="palette.sort == @net.sf.tapestry.contrib.palette.SortMode@LABEL"/>
+<set key="sortValue" expression="palette.sort == @net.sf.tapestry.contrib.palette.SortMode@VALUE"/>
+<set key="sortUser" expression="palette.sort == @net.sf.tapestry.contrib.palette.SortMode@USER"/>
+
 
 <!-- baseName - base name from which other names are generated -->
 
@@ -173,7 +187,7 @@ output symbols:
 var ${buttons} = new Object();
 ${selectDisabled} = true;
 ${deselectDisabled} = true;
-<if property-path="sortUser">
+<if expression="sortUser">
 ${upDisabled} = true;
 ${downDisabled} = true;
 </if>
@@ -200,7 +214,7 @@ function ${updateFunctionName}()
       disabled ? ${deselectDisabledImage}
                : ${deselectImage};
          
-<if property-path="sortUser">
+<if expression="sortUser">
 
   var upImage = ${upImagePath};
   var downImage = ${downImagePath}
@@ -253,10 +267,10 @@ function ${selectFunctionName}()
      
   palette_transfer_selections(source, target);
   
-<if property-path="sortLabel">
+<if expression="sortLabel">
   palette_sort_by_label(target);
 </if>
-<if property-path="sortValue">
+<if expression="sortValue">
   palette_sort_by_value(target);
 </if>
   ${updateFunctionName}();
@@ -272,10 +286,10 @@ function ${deselectFunctionName}()
   
   palette_transfer_selections(source, target);
   
-<if property-path="sortLabel">
+<if expression="sortLabel">
   palette_sort_by_label(target);
 </if>
-<if property-path="sortValue">
+<if expression="sortValue">
   palette_sort_by_value(target);
 </if>
   ${updateFunctionName}();  
@@ -289,7 +303,7 @@ function ${formSubmitFunctionName}()
   return true;
 }
 
-<if property-path="sortUser">
+<if expression="sortUser">
 function ${moveUpFunctionName}()
 {
   if (${upDisabled})
