@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Hidden</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/Hidden.html">
+		 net.sf.tapestry.form.Hidden</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Non Visual Component</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Adds a hidden HTML &lt;input type="hidden"&gt; field to a <a href="Form.html">
+  Form</a>. This is often used to synchronize data when the form is submitted 
+  with values known when the page was rendered.   
+  <p>
+  This component may NOT wrap around other components or static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Form.html">Form</a>, 
+	<a href="ListEdit.html">ListEdit</a> 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>value</td>
+    <td>Object</td>
+    <td>in/out</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The value to be stored in the the hidden field. The parameter is read 
+    when the HTML response is generated, and then written when the form is 
+    submitted. A <a href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>
+    DataSqueezer</tt></a> is used to convert the value between an arbitrary type 
+    and a String. 
+    </td>
+	</tr>
+  <tr>
+    <td>listener</td>
+    <td><a href="../api/net/sf/tapestry/IActionListener.html">
+     <tt>IActionListener</tt></a>
+    </td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    A listener that is informed after the value parameter is updated. This 
+    allows the data set operated on by the rest of the 
+    <a href="Form.html">Form</a> components to be synchronized to the value 
+    stored in the hidden field. 
+    <p>
+    A typical use is to encode the primary key of an entity as a Hidden; when 
+    the form is submitted, the Hidden's listener re-reads the corresponding 
+    entity from the database.
+    </td>
+	</tr>
+	</table>
+  Informal parameters: NOT allowed<br>
+  Reserved parameters: "name"
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="GenericLink.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="Image.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>

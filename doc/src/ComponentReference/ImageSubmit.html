@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>ImageSubmit</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/ImageSubmit.html">
+		 net.sf.tapestry.form.ImageSubmit</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td><a href="ImageSubmit.html"><img src="images/intray.png" alt="Submit"/></a></td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Provides an image button inside a <a href="Form.html">Form</a>. Clicking the 
+  button submits the form and may notify a configured 
+  <a href="../api/net/sf/tapestry/IActionListener.html">listener</a> 
+  or select property.
+  <p>
+  The <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/awt/Point.html">
+  <tt>Point</tt></a> parameter can be used to determine where on the image 
+  the user clicked.
+  <p>   
+  This component may NOT wrap around other components or static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+  <a href="Form.html">Form</a>,
+	<a href="Image.html">Image</a>, 
+	<a href="Submit.html">Submit</a> 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>image</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The image to show.</td>
+	</tr>
+  <tr>
+    <td>name</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    The name to use for the form element. Under Netscape Navigator 4, this name 
+    becomes the tooltip. The name may be modified (by adding a number to the 
+    end) to ensure that it is unique within the form. 
+    </td>
+	</tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>
+    If set to true, the button will be disabled (will not respond to the mouse). 
+    If an alternate image is defined, it will be displayed (typically a 
+    greyed-out version of the normal image).     
+    </td>
+	</tr>
+  <tr>
+    <td>disabledImage</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    An alternate image to display if the component is disabled. If the component 
+    is disabled and this parameter is not specified, the normal image is used.     
+    </td>
+	</tr>
+  <tr>
+    <td>point</td>
+    <td>
+     <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/awt/Point.html">
+     <tt>Point</tt></a>
+    </td>
+    <td>out</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    The point at which the image was clicked; used for rare components that 
+    actually need to know (typically, using the image button list a simple image 
+    map).    
+    </td>
+	</tr>
+  <tr>
+    <td>select</td>
+    <td>Object</td>
+    <td>out</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    This parameter is bound to a property that is updated when the image button 
+    is clicked by the user (submitting the form). The property is updated to 
+    match the tag parameter.    
+    </td>
+	</tr>
+  <tr>
+    <td>tag</td>
+    <td>Object</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    Tag used with the selected parameter to indicate which image button on a 
+    form was clicked. This parameter is required if the selected paremeter is 
+    used.
+    </td>
+	</tr>
+  <tr>
+    <td>listener</td>
+    <td>
+		 <a href="../api/net/sf/tapestry/IActionListener.html">
+     <tt>IActionListener</tt></a>    
+    </td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If specified, the listener is notified. This notification occurs as the 
+    component is rewinded, i.e., prior to the <a href="Form.html">form</a>'s 
+    listener. In addition, the selected property (if bound) will be updated 
+    before the listener is notified.
+    </td>
+	</tr>
+	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: "src", "type", "border"
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="Image.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="Insert.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
