@@ -260,6 +260,9 @@ NextGen) be released as version number 3.0.
     <action type="fix" dev="HLS" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-249">
       Provide localized validation messages for Simplified Chinese (zh_CN).
     </action>
+    <action type="fix" dev="HLS" due-to="Niklas Ekman" fixes-bug="TAPESTRY-139">
+       Provide localized validation messages for Swedish.
+    </action>
       
   </release>
 
