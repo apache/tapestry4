@@ -50,7 +50,7 @@ import net.sf.tapestry.html.Body;
  *  Component that can be placed into application pages that will launch
  *  the inspector in a new window.
  *
- *  <p>Because the ShowInspector component is implemented using a {@link Rollover},
+ *  <p>Because the ShowInspector component is implemented using a {@link net.sf.tapestry.html.Rollover},
  *  the containing page must use a {@link Body} component instead of
  *  a &lt;body&gt; tag.
  *

@@ -128,7 +128,7 @@ public abstract class BaseValidator implements IValidator
 
     /**
      *  Invoked to check if the value is null.  If the value is null (or empty),
-     *  but the required flag is set, then this method throws a {@link TranslatorException}.
+     *  but the required flag is set, then this method throws a {@link ValidatorException}.
      *  Otherwise, returns true if the value is null.
      * 
      **/

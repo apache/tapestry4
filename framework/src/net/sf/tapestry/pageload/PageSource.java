@@ -55,7 +55,7 @@ import net.sf.tapestry.util.pool.Pool;
 /**
  *  A source for pages for a particular application.  Each application
  *  should have its own <code>PageSource</code>, storing it into the
- *  {@link ServletContext} using a unique key (usually built from
+ *  {@link javax.servlet.ServletContext} using a unique key (usually built from
  *  the application name).
  *
  *  <p>The <code>PageSource</code> acts as a pool for {@link IPage} instances.
@@ -70,7 +70,7 @@ import net.sf.tapestry.util.pool.Pool;
  *  <li>{@link StaticBinding}
  *  <li>{@link ExternalAsset}
  *  <li>{@link ContextAsset}
- *  <li><{@link PrivateAsset}
+ *  <li>{@link PrivateAsset}
  *  </ul>
  *
  *  <p>This caching allows common objects to be created once, and

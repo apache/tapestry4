@@ -110,7 +110,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *	<td>no</td>
  *	<td>true</td>
  *	<td>If true (the default), then the component requires an active (i.e., non-new)
- *  {@link HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
+ *  {@link javax.servlet.http.HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
  *  If false, then no check is necessary.  Generally, forms are stateful, but it is possible
  *  to put a stateless form onto the Home page of an application.</td>
  * </tr>
@@ -123,8 +123,9 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *		<td>true</td>
  *		<td>If true (the default), then the direct service is used for the form.  This
  *  decreases the amount of work required to process the form submission, and is acceptible
- *  for most forms, even those that contain {@link Foreach}es (but not those that are
- *  inside a {@link Foreach}.
+ *  for most forms, even those that contain 
+ *  {@link net.sf.tapestry.components.Foreach}es (but not those that are
+ *  inside a {@link net.sf.tapestry.components.Foreach}.
  *
  *  <p>An abbreviated form of the rewind cycle takes place, that only references the form
  *  and the components it wraps.
@@ -138,7 +139,8 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *      <td>yes</td>
  *      <td>&nbsp;</td>
  *      <td>Object used to assist in error tracking and reporting.  A single
- *  instance is shared by all {@link ValidField} and {@link FieldLabel} in a single form.</td>
+ *  instance is shared by all {@link net.sf.tapestry.valid.ValidField} and
+ *  {@link net.sf.tapestry.valid.FieldLabel} in a single form.</td>
  *  </tr>
  *
  *	</table>
@@ -342,7 +344,8 @@ public class Form
      *  its contents.
      *
      *  <p>This value is generated when the form renders, and is not cleared.
-     *  If the Form is inside a {@link Foreach}, this will be the most recently
+     *  If the Form is inside a {@link net.sf.tapestry.components.Foreach}, 
+     *  this will be the most recently
      *  generated name for the Form.
      *
      *  <p>This property is exposed so that sophisticated applications can write

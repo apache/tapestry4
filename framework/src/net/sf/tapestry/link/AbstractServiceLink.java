@@ -115,7 +115,7 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
      *  to render the contents of the link, before the link
      *  itself actually renders.
      *
-     *  <p>This is to support components such as {@link Rollover}, which
+     *  <p>This is to support components such as {@link net.sf.tapestry.html.Rollover}, which
      *  must specify some attributes of the service link 
      *  as they render in order to
      *  create some client-side JavaScript that works.  Thus the

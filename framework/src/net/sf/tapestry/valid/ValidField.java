@@ -54,7 +54,7 @@ import net.sf.tapestry.html.Body;
  * <tr>
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td>
  *    <td>Default</td>
  *    <td>Description</td>
@@ -63,11 +63,12 @@ import net.sf.tapestry.html.Body;
  *  <tr>
  *    <td>value</td>
  *    <td>java.lang.Object</td>
- *    <td>R / W</td>
+ *    <td>in-out</td>
  *   	<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The value to be displayed (on render), and updated (when the form is
- *  submitted, if the submitted value is valid).  The {@link ITranslator} converts between
+ *  submitted, if the submitted value is valid).  The {@link net.sf.tapestry.valid.IValidator}
+ *  converts between
  *  object values and Strings.
  *  </td>
  *	</tr>
@@ -75,7 +76,7 @@ import net.sf.tapestry.html.Body;
  *	<tr>
  *		<td>hidden</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>If true, then the text field is written as a
@@ -84,7 +85,7 @@ import net.sf.tapestry.html.Body;
  *  <tr>
  * 		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>Controls whether the text field is active or not.  If disabled, then
@@ -96,7 +97,7 @@ import net.sf.tapestry.html.Body;
  *	<tr>
  *		<td>displayWidth</td>
  *		<td>integer</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>Controls the display width of the text control in the client browser.  If
@@ -108,7 +109,7 @@ import net.sf.tapestry.html.Body;
  *	<tr>
  *		<td>maximumLength</td>
  *		<td>integer</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>Controls the maximum characters that the text control will accept.  If
@@ -120,7 +121,7 @@ import net.sf.tapestry.html.Body;
  *  <tr>
  *      <td>displayName</td>
  *      <td>String</td>
- *      <td>R</td>
+ *      <td>in</td>
  *      <td>yes</td>
  *      <td>&nbsp;</td>
  *      <td>A textual name for the field that is used when formulating error messages.
@@ -132,7 +133,7 @@ import net.sf.tapestry.html.Body;
  *  <tr>
  *      <td>validator</td>
  *      <td>{@link IValidator}</td>
- *      <td>R</td>
+ *      <td>in</td>
  *      <td>yes</td>
  *      <td>&nbsp;</td>
  *      <td>Object used to convert object values to Strings (for renderring)

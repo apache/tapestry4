@@ -140,7 +140,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
     /**
      *  Invoked by {@link #render(IMarkupWriter writer, IRequestCycle cycle)}
      *  when a value is obtained from the
-     *  {@link HttpServletRequest}.
+     *  {@link javax.servlet.http.HttpServletRequest}.
      *
      **/
 
@@ -150,7 +150,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
      *  Invoked by {@link #render(IMarkupWriter writer, IRequestCycle cycle)}
      *  when rendering a response.
      *
-     *  @returns the current value for the field, as a String, or null.
+     *  @return the current value for the field, as a String, or null.
      **/
 
     abstract protected String readValue() throws RequestCycleException;

@@ -40,7 +40,7 @@ public interface IPart
      *  Invoked at the end of a request cycle to delete any resources held by
      *  the part.
      * 
-     *  @see UploadFile#cleanup()
+     *  @see UploadPart#cleanup()
      * 
      **/
 

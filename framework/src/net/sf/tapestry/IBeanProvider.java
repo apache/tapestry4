@@ -51,7 +51,8 @@ public interface IBeanProvider
 	public Object getBean(String name);
 	
 	/**
-	 *  Returns the {@link IComponent} (which may be a {@link IPage}) for which
+	 *  Returns the {@link IComponent} (which may be a 
+	 *  {@link net.sf.tapestry.IPage}) for which
 	 *  this bean provider is providing beans.
 	 *
 	 *  @since 1.0.5

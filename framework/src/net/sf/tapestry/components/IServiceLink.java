@@ -30,7 +30,7 @@ import net.sf.tapestry.IComponent;
 /**
  *  A component that renders an HTML &lt;a&gt; element.  It exposes some
  *  properties to the components it wraps.  This is basically to facilitate
- *  the {@link Rollover} component.
+ *  the {@link net.sf.tapestry.html.Rollover} component.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

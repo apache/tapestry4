@@ -44,7 +44,7 @@ import net.sf.tapestry.Tapestry;
  *  <li>anchor</li>
  * </ul>
  *
- * <p>Subclasses usually need only implement {@link #getServiceName(IRequestCycle)}
+ * <p>Subclasses usually need only implement {@link #getServiceName()}
  * and {@link #getContext(IRequestCycle)}.
  * 
  *                       

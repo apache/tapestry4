@@ -47,7 +47,7 @@ public interface IStatement
     public String getSQL();
 
     /**
-     *  Returns the underlying {@link Statement} (or {@link PreparedStatement}).
+     *  Returns the underlying {@link Statement} (or {@link java.sql.PreparedStatement}).
      *
      **/
 

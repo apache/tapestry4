@@ -33,17 +33,18 @@ package net.sf.tapestry.util.pool;
  *  @version $Id$
  *  @since 1.0.4
  * 
- */
+ **/
 
 public interface IPoolable
 {
     /**
-     *  Invoked by a {@link Pool} just before the object is added to the pool.
+     *  Invoked by a {@link net.sf.tapestry.util.pool.Pool} 
+     *  just before the object is added to the pool.
      *  The object should return its state to how it was when freshly instantiated
      *  (or at least, its state should be indistinguishable from a freshly
      *  instantiated instance).
      *
-     */
+     **/
 
     public void resetForPool();
 }

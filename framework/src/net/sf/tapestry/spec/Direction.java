@@ -55,7 +55,7 @@ public class Direction extends Enum
 	/**
 	 *  Processing of the parameter is entirely the responsibility
 	 *  of the component, which must obtain an manipulate
-	 *  the {@link IBinding} (if any) for the parameter.
+	 *  the {@link net.sf.tapestry.IBinding} (if any) for the parameter.
 	 * 
 	 **/
 	
@@ -67,7 +67,7 @@ public class Direction extends Enum
     }
 
     /**
-     *  Returns a user-presentable name for the direction, i.e., "in", or "in-out".
+     *  Returns a user-presentable name for the direction.
      * 
      **/
     

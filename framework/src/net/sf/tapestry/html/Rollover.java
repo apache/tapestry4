@@ -52,7 +52,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  *
  *  A <code>Rollover</code> must be contained within a {@link Body} and within
  *  an {@link IServiceLink}.  The JavaScript handlers for dealing with mouse
- *  movement are applied to the &lt;a&gt; created by the {@link IActionListener}.  For compatibility
+ *  movement are applied to the &lt;a&gt; created by the {@link net.sf.tapestry.components.IServiceLink}.  For compatibility
  *  with Netscape 4, the handlers are attached using HTML attributes (it would cleaner
  *  and easier to do so using the DOM).
  *

@@ -245,12 +245,14 @@ public interface IEngine
      *  Returns true if the application allows the reset service.
      *
      *  @since 0.2.9
+     * 
      **/
 
     public boolean isResetServiceEnabled();
 
     /**
-     *  Returns a source for parsed {@link IScript}s.  The source is typically
+     *  Returns a source for parsed 
+     *  {@link net.sf.tapestry.IScript}s.  The source is typically
      *  shared between all sessions.
      *
      *  @since 1.0.2

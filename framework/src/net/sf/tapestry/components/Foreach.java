@@ -53,7 +53,7 @@ import net.sf.tapestry.Tapestry;
  * <tr>
  *  <td>source</td>
  *  <td>{@link Iterator}
- *		<br>{@link Collection}
+ *		<br>{@link java.util.Collection}
  *      <br>java.lang.Object[]
  *  </td>
  *  <td>in</th>

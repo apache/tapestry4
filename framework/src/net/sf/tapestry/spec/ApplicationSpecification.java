@@ -169,7 +169,7 @@ public class ApplicationSpecification extends BasePropertyHolder
      *      <td>{@link net.sf.tapestry.components.Block}</td></tr>
      *  <tr>
      *      <td>/net/sf/tapestry/html/Body.jwc</td>
-     *      <td>{@link Body}</td>
+     *      <td>{@link net.sf.tapestry.html.Body}</td>
      * </tr>
      * <tr>
      *      <td>/net/sf/tapestry/form/Checkbox.jwc</td>

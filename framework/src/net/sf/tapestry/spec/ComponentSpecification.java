@@ -55,12 +55,12 @@ import net.sf.tapestry.util.BasePropertyHolder;
  *  to initialize a container component, it is necessary to instantiate and initialize
  *  its contained components as well.
  *
- *  @see IComponent
+ *  @see net.sf.tapestry.IComponent
  *  @see ContainedComponent
- *  @see IPageLoader
+ *  @see net.sf.tapestry.IPageLoader
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
  *
  **/
 
