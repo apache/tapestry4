@@ -339,7 +339,7 @@ public class PageLoader implements IPageLoader
                         name,
                         component.getExtendedId()),
                     component,
-                    parameterSpec.getLocation(),
+                    component.getLocation(),
                     null);
         }
 
@@ -483,7 +483,7 @@ public class PageLoader implements IPageLoader
                         componentSpecification,
                         componentNamespace);
 
-                component.setLocation(container.getLocation());
+                component.setLocation(contained.getLocation());
 
                 // Add it, by name, to the container.
 
@@ -518,6 +518,10 @@ public class PageLoader implements IPageLoader
             // specified property.
 
             createPropertyInitializers(page, container, containerSpec);
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            throw ex;
         }
         catch (RuntimeException ex)
         {
@@ -584,7 +588,6 @@ public class PageLoader implements IPageLoader
         INamespace namespace)
     {
         IComponent result = null;
-
         String className = spec.getComponentClassName();
 
         if (Tapestry.isNull(className))
@@ -650,6 +653,7 @@ public class PageLoader implements IPageLoader
 
         String pageName = namespace.constructQualifiedName(name);
         String className = spec.getComponentClassName();
+        Location location = spec.getLocation();
 
         if (Tapestry.isNull(className))
         {
@@ -682,18 +686,20 @@ public class PageLoader implements IPageLoader
             result.setPageName(pageName);
             result.setPage(result);
             result.setLocale(_locale);
-            result.setLocation(spec.getLocation());
+            result.setLocation(location);
         }
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
                 Tapestry.getString("PageLoader.class-not-page", className),
+                location,
                 ex);
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
                 Tapestry.getString("PageLoader.unable-to-instantiate", className),
+                location,
                 ex);
         }
 
@@ -794,7 +800,7 @@ public class PageLoader implements IPageLoader
         {
             String name = (String) i.next();
             AssetSpecification assetSpec = specification.getAsset(name);
-            IAsset asset = convert(assetSpec, specLocation);
+            IAsset asset = convert(name, component, assetSpec, specLocation);
 
             component.addAsset(name, asset);
         }
@@ -830,17 +836,31 @@ public class PageLoader implements IPageLoader
             // property of the expression.  This may be null, or may be
             // a value set in finishLoad() (via an abstract accessor).
 
-            if (Tapestry.isNull(expression))
+            try
             {
-                initialValue = OgnlUtils.get(name, _resolver, component);
+                if (Tapestry.isNull(expression))
+                {
+                    initialValue = OgnlUtils.get(name, _resolver, component);
+                }
+                else
+                {
+                    // Evaluate the expression and update the property.
+
+                    initialValue = OgnlUtils.get(expression, _resolver, component);
+
+                    OgnlUtils.set(name, _resolver, component, initialValue);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Evaluate the expression and update the property.
-
-                initialValue = OgnlUtils.get(expression, _resolver, component);
-
-                OgnlUtils.set(name, _resolver, component, initialValue);
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString(
+                        "PageLoader.unable-to-initialize-property",
+                        name,
+                        component,
+                        ex.getMessage()),
+                    ps.getLocation(),
+                    ex);
             }
 
             PageDetachListener initializer =
@@ -856,7 +876,11 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    private IAsset convert(AssetSpecification spec, IResourceLocation specificationLocation)
+    private IAsset convert(
+        String assetName,
+        IComponent component,
+        AssetSpecification spec,
+        IResourceLocation specificationLocation)
     {
         AssetType type = spec.getType();
         String path = spec.getPath();
@@ -867,15 +891,25 @@ public class PageLoader implements IPageLoader
 
         if (type == AssetType.PRIVATE)
             return new PrivateAsset(
-                (ClasspathResourceLocation) findAsset(specificationLocation, path, location),
+                (ClasspathResourceLocation) findAsset(assetName,
+                    component,
+                    specificationLocation,
+                    path,
+                    location),
                 location);
 
         return new ContextAsset(
-            (ContextResourceLocation) findAsset(_servletLocation, path, location),
+            (ContextResourceLocation) findAsset(assetName,
+                component,
+                _servletLocation,
+                path,
+                location),
             location);
     }
 
     private IResourceLocation findAsset(
+        String assetName,
+        IComponent component,
         IResourceLocation baseLocation,
         String path,
         Location location)
@@ -885,7 +919,14 @@ public class PageLoader implements IPageLoader
 
         if (localizedLocation == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.missing-asset", assetLocation, location));
+                Tapestry.getString(
+                    "PageLoader.missing-asset",
+                    assetName,
+                    component.getExtendedId(),
+                    assetLocation),
+                component,
+                location,
+                null);
 
         return localizedLocation;
     }

@@ -68,6 +68,7 @@ import java.util.Map;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.Direction;
@@ -137,31 +138,31 @@ public class ComponentClassFactory
     {
         recordType("boolean", boolean.class, Type.BOOLEAN);
         recordType("boolean[]", boolean[].class, new ArrayType(Type.BOOLEAN, 1));
-        
+
         recordType("short", short.class, Type.SHORT);
         recordType("short[]", short[].class, new ArrayType(Type.SHORT, 1));
-        
+
         recordType("int", int.class, Type.INT);
         recordType("int[]", int[].class, new ArrayType(Type.INT, 1));
-        
+
         recordType("long", long.class, Type.LONG);
         recordType("long[]", long[].class, new ArrayType(Type.LONG, 1));
-        
+
         recordType("float", float.class, Type.FLOAT);
         recordType("float[]", float[].class, new ArrayType(Type.FLOAT, 1));
-        
+
         recordType("double", double.class, Type.DOUBLE);
         recordType("double[]", double[].class, new ArrayType(Type.DOUBLE, 1));
-        
+
         recordType("char", char.class, Type.CHAR);
         recordType("char[]", char[].class, new ArrayType(Type.CHAR, 1));
-        
+
         recordType("byte", byte.class, Type.BYTE);
         recordType("byte[]", byte.class, new ArrayType(Type.BYTE, 1));
-        
+
         recordType("java.lang.Object", Object.class, Type.OBJECT);
         recordType("java.lang.Object[]", Object[].class, new ArrayType(Type.OBJECT, 1));
-        
+
         recordType("java.lang.String", String.class, Type.STRING);
         recordType("java.lang.String[]", String[].class, new ArrayType(Type.STRING, 1));
     }
@@ -324,13 +325,24 @@ public class ComponentClassFactory
         return Modifier.isAbstract(m.getModifiers());
     }
 
-    protected Class convertPropertyType(String type)
+    protected Class convertPropertyType(String type, Location location)
     {
         Class result = (Class) _typeMap.get(type);
 
         if (result == null)
         {
-            result = _resolver.findClass(type);
+            try
+            {
+
+                result = _resolver.findClass(type);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString("ComponentClassFactory.bad-property-type", type),
+                    location,
+                    ex);
+            }
 
             _typeMap.put(type, result);
         }
@@ -496,9 +508,13 @@ public class ComponentClassFactory
        * 
        **/
 
-    protected void createProperty(String propertyName, String type, boolean persistent)
+    protected void createProperty(
+        String propertyName,
+        String type,
+        boolean persistent,
+        Location location)
     {
-        Class propertyType = convertPropertyType(type);
+        Class propertyType = convertPropertyType(type, location);
 
         String readMethodName = checkAccessors(propertyName, propertyType);
 
@@ -540,7 +556,7 @@ public class ComponentClassFactory
         if (LOG.isDebugEnabled())
             LOG.debug("Establishing connected parameter property " + propertyName);
 
-        createProperty(propertyName, ps.getType(), false);
+        createProperty(propertyName, ps.getType(), false, ps.getLocation());
     }
 
     /**
@@ -555,7 +571,7 @@ public class ComponentClassFactory
         if (LOG.isDebugEnabled())
             LOG.debug("Establishing specified property " + propertyName);
 
-        createProperty(propertyName, ps.getType(), ps.isPersistent());
+        createProperty(propertyName, ps.getType(), ps.isPersistent(), ps.getLocation());
     }
 
     /**
@@ -597,7 +613,7 @@ public class ComponentClassFactory
         return result;
     }
 
-    private void createParameterBindingProperty(String parameterName)
+    private void createParameterBindingProperty(String parameterName, Location location)
     {
         String propertyName = parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
 
@@ -607,15 +623,15 @@ public class ComponentClassFactory
         if (LOG.isDebugEnabled())
             LOG.debug("Establishing parameter binding property " + propertyName);
 
-        createProperty(propertyName, IBinding.class.getName(), false);
+        createProperty(propertyName, IBinding.class.getName(), false, location);
     }
 
-	/**
-	 *  Creates any properties related to
-	 *  {@link org.apache.tapestry.spec.PropertySpecification property specifications}.
-	 * 
-	 **/
-	
+    /**
+     *  Creates any properties related to
+     *  {@link org.apache.tapestry.spec.PropertySpecification property specifications}.
+     * 
+     **/
+
     protected void createPropertySpecificationEnhancements()
     {
         List names = _specification.getPropertySpecificationNames();
@@ -631,13 +647,13 @@ public class ComponentClassFactory
         }
     }
 
-	/**
-	 *  Creates new properties related to formal parameters.  This is one
-	 *  property to store the binding, and a second property if the parameter
-	 *  is connected.
-	 * 
-	 **/
-	
+    /**
+     *  Creates new properties related to formal parameters.  This is one
+     *  property to store the binding, and a second property if the parameter
+     *  is connected.
+     * 
+     **/
+
     protected void createParameterEnhancements()
     {
         List names = _specification.getParameterNames();
@@ -647,9 +663,9 @@ public class ComponentClassFactory
         {
             String name = (String) names.get(i);
 
-            createParameterBindingProperty(name);
-
             ParameterSpecification ps = _specification.getParameter(name);
+
+            createParameterBindingProperty(name, ps.getLocation());
 
             createConnectedParameterProperty(ps);
         }

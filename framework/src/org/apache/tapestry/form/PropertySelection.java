@@ -58,6 +58,7 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  A component used to render a drop-down list of options that
@@ -131,8 +132,8 @@ public abstract class PropertySelection extends AbstractFormComponent
     {
         IForm form = getForm(cycle);
 
-		updateDelegate(form);
-		
+        updateDelegate(form);
+
         boolean rewinding = form.isRewinding();
 
         _name = form.getElementId(this);
@@ -177,6 +178,9 @@ public abstract class PropertySelection extends AbstractFormComponent
         writer.println();
 
         IPropertySelectionModel model = getModel();
+
+        if (model == null)
+            throw Tapestry.createRequiredParameterException(this, "model");
 
         int count = model.getOptionCount();
         boolean foundSelected = false;

@@ -58,6 +58,7 @@ package org.apache.tapestry.enhance;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -125,7 +126,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
     protected synchronized Class getCachedClass(ComponentSpecification specification)
     {
-        return(Class) _cachedClasses.get(specification);
+        return (Class) _cachedClasses.get(specification);
     }
 
     /**
@@ -136,7 +137,16 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
     protected Class constructComponentClass(ComponentSpecification specification, String className)
     {
-        Class result = _resolver.findClass(className);
+        Class result = null;
+
+        try
+        {
+           result = _resolver.findClass(className);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ex.getMessage(), specification.getLocation(), ex);
+        }
 
         ComponentClassFactory factory = createComponentClassFactory(specification, result);
 
