@@ -25,9 +25,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
-# Allows for the creation of HTML from a DocBook SGML file.
+# Allows for the creation of HTML from a DocBook XML file.
 # Automatically handles installation of the necessary DocBook DTDs, the
-# DSSSL stylesheets and the jade DSSSL processor.
+# XSL stylesheets and the various processors.
 
 	
 default: documentation
@@ -35,30 +35,29 @@ default: documentation
 include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 
+DOCBOOK_XSL_DIR := $(DOCBOOK_DIR)/docbook-xsl-1.41
+DOCBOOK_DTD_DIR := $(DOCBOOK_DIR)/docbookx412
+
 HTML_DIR := html
 
 DOCUMENT_RESOURCE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/document-resources
 HTML_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/html
-VALID_PARSE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/valid-parse
 HTML_PACKAGE_FILE := $(basename $(MAIN_DOCUMENT)).tar.gz
 
 DISTRO_STAMP_FILE := $(DOCBOOK_DIR)/.distro-stamp
 
 DOCBOOK_DISTROS := \
-	$(DOCBOOK_DIR)/dtd-4.1.tar.gz \
-	$(DOCBOOK_DIR)/dsssl-1.62.tar.gz
+	$(DOCBOOK_DIR)/docbook-xsl-1.41.tar.gz \
+	$(DOCBOOK_DIR)/docbkx412.tar.gz
 
 initialize: setup-jbe-util $(DISTRO_STAMP_FILE)
-ifeq "$(OPENJADE)" ""
-	$(error DocBook modules are not supported on this platform.)
-endif
-ifeq "$(OPENJADE_DIR)" ""
-	$(error You must set OPENJADE_DIR to the OpenJade installation directory.)
+ifeq "$(XALAN_DIR)" ""
+	$(error You must set XALAN_DIR in LocalConfig.mk)
 endif
 	@$(MKDIRS) $(SYS_BUILD_DIR_NAME) $(HTML_DIR)
 
 $(DISTRO_STAMP_FILE): $(DOCBOOK_DISTROS)
-	$(call NOTE, "Unarchiving DocBook distributions ...")
+	$(call NOTE, Unarchiving DocBook distributions ...)
 	@for archive in $? ; do \
 		$(ECHO) Extracting: $$archive ; \
 		$(CAT) $$archive | \
@@ -67,44 +66,26 @@ $(DISTRO_STAMP_FILE): $(DOCBOOK_DISTROS)
 	done
 	@$(TOUCH) $@
 
-SGML_CATALOG_FILES := \
-	$(DOCBOOK_DIR)/dtd/docbook.cat \
-	$(DOCBOOK_DSSSL_DIR)/catalog \
-	$(OPENJADE_DSSSL_DIR)/catalog
+html: initialize $(HTML_STAMP_FILE)
 
-CATALOG_OPT := $(foreach cat,$(SGML_CATALOG_FILES),-c $(cat))
-
-# This rule validates the document when it (or any component) changes.
-# We use the open NSGMLs parsed distributed with OpenJade.  The -s
-# option suppresses the normal output (though errors will still be generated).
-#
-# Note: use of this rule has been disabled because ONSGMLS can't seem to
-# produce valid error messages (in the 1.3 release).  To be investigated.
-#
-
-$(VALID_PARSE_STAMP_FILE): $(MAIN_DOCUMENT) $(OTHER_DOC_FILES)
-	$(call NOTE, "Validating $(MAIN_DOCUMENT) ...")
-	$(ONSGMLS) $(CATALOG_OPT) -s $(MAIN_DOCUMENT)
-	@$(TOUCH) $@
-
-MOD_HTML_VARIABLE_DEFS := \
-	%html-ext%=.html \
-	use-output-dir \
-	%output-dir%=$(HTML_DIR) \
-	%root-filename%=$(basename $(MAIN_DOCUMENT))
-	
-FINAL_HTML_VARIABLE_DEFS = $(MOD_HTML_VARIABLE_DEFS) $(HTML_VARIABLE_DEFS) $(VARIABLE_DEFS)
-
+XSL_CLASSPATH := \
+ 	$(XALAN_DIR)/bin/xml.jar \
+ 	$(XALAN_DIR)/bin/xerces.jar \
+ 	$(XALAN_DIR)/bin/xalan.jar
+ 	
+MOD_HTML_OPTS := \
+  -param use.id.as.filename 1 
+  
 ifdef USE_STANDARD_IMAGES
 
 STANDARD_IMAGES_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/standard-images
 
 $(STANDARD_IMAGES_STAMP_FILE):
-	$(call NOTE, Copying standard images from Modular DSSSL distribution ...)
+	$(call NOTE, Copying standard images ...)
 	@$(MKDIRS) $(HTML_DIR)/standard-images
 	$(call COPY_TREE, \
-		$(DOCBOOK_DSSSL_DIR)/images,\
-		. , $(HTML_DIR)/standard-images)
+		$(DOCBOOK_XSL_DIR)/images,\
+		*.png callouts, $(HTML_DIR)/standard-images)
 	@$(TOUCH) $(STANDARD_IMAGES_STAMP_FILE)
 
 html: copy-standard-images
@@ -113,47 +94,27 @@ copy-standard-images: initialize $(STANDARD_IMAGES_STAMP_FILE)
 
 # Add rules to use the standard graphics in admonitions and callouts
 
-MOD_HTML_VARIABLE_DEFS += \
-	%admon-graphics% \
-	%admon-graphics-path%="standard-images/" \
-	%callout-graphics% \
-	%callout-graphics-path%="standard-images/callouts/"
-	
+MOD_HTML_OPTS += \
+	-param admon.graphics 1 \
+	-param admon.graphics.path standard-images/ \
+	-param callout.graphics 1 \
+	-param callout.graphics.path standard-images/callouts/
 endif
 
-FINAL_HTML_STYLESHEET := \
-	$(firstword $(HTML_STYLESHEET) $(STYLESHEET) $(DOCBOOK_DSSSL_DIR)/html/docbook.dsl)
-
-# Callable for generating documentation using OpenJade.
-#
-# Usage:
-#
-#  $(call RUN_OPENJADE, main document, type, variable defs, type-specific opts)
-#
-# Example:
-#
-#  $(call RUN_OPENJADE, sgml, \
-#		$(FINAL_HTML_VARIABLE_DEFS), -d $(FINAL_HTML_STYLESHEET) $(HTML_OPENJADE_OPT))
-#
-
-RUN_OPENJADE = \
-	$(OPENJADE) -t $(1)  $(OPENJADE_OPT) $(3) \
-	$(foreach vardef,$(2),-V $(vardef)) \
-	$(CATALOG_OPT) \
-	$(MAIN_DOCUMENT)
-
-# -t sgml-raw:  This is voodoo black magic.  sgml and sgml-raw both work
-# (sgml-raw is prettier), html takes forever and does nothing!
-
-html: initialize $(HTML_STAMP_FILE)
+FINAL_HTML_TEMPLATE := $(firstword $(HTML_TEMPLATE) $(DOCBOOK_XSL_DIR)/html/chunk.xsl)
 
 $(HTML_STAMP_FILE): $(DOCUMENT_RESOURCE_STAMP_FILE)  \
-	$(MAIN_DOCUMENT) $(FINAL_HTML_STYLESHEET) $(OTHER_DOC_FILES) $(VALID_PARSE_STAMP_FILE)
+	$(MAIN_DOCUMENT) $(FINAL_HTML_STYLESHEET) $(OTHER_DOC_FILES)
 	$(call NOTE, Generating HTML from $(MAIN_DOCUMENT) ...)
-	$(call RUN_OPENJADE, sgml-raw, \
-		$(FINAL_HTML_VARIABLE_DEFS), \
-		-d $(FINAL_HTML_STYLESHEET) \
-		$(HTML_OPENJADE_OPT))
+	$(call EXEC_JAVA, \
+		$(XSL_CLASSPATH), \
+		-Xms256mb -Xmx512mb \
+		org.apache.xalan.xslt.Process -HTML \
+			-in $(MAIN_DOCUMENT)  \
+			-xsl $(FINAL_HTML_TEMPLATE)  \
+			-param base.dir $(HTML_DIR)/ \
+			-param root.filename $(basename $(MAIN_DOCUMENT)) \
+			$(MOD_HTML_OPTS) $(HTML_XSLT_OPTS))
 	@$(TOUCH) $@
 
 clean:

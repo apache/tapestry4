@@ -70,12 +70,6 @@ CHMOD := /usr/bin/chmod
 
 CD := cd
 
-# Used with DocBook.
-
-OPENJADE := $(OPENJADE_DIR)/openjade
-ONSGMLS :=  $(OPENJADE_DIR)/onsgmls
-
-
 
 
 

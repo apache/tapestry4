@@ -41,7 +41,7 @@ import com.primix.tapestry.html.*;
  *
  *  @version $Id$
  *  @author Howard Ship
- *
+ *  @since 1.0.3
  */
 
 public abstract class AbstractFormComponent
