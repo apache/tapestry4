@@ -13,41 +13,34 @@
   <service name="home" class="tutorial.workbench.WorkbenchHomeService"/>
   <service name="chart" class="tutorial.workbench.chart.ChartService"/>
   
-  <page name="Home" specification-path="/tutorial/workbench/Home.page"/>
-    
-  <page name="Localization" specification-path="/tutorial/workbench/localization/Localization.page"/>
+  <page name="Localization" specification-path="localization/Localization.page"/>
   <page name="localization.Change" 
-  	specification-path="/tutorial/workbench/localization/Change.page"/>
+  	specification-path="localization/Change.page"/>
     
-  <page name="Fields" specification-path="/tutorial/workbench/fields/Fields.page"/>
-  <page name="fields.Results" specification-path="/tutorial/workbench/fields/Results.page"/>
+  <page name="Fields" specification-path="fields/Fields.page"/>
+  <page name="fields.Results" specification-path="fields/Results.page"/>
   
-  <page name="Upload" specification-path="/tutorial/workbench/upload/Upload.page"/>
-  <page name="upload.Results" specification-path="/tutorial/workbench/upload/Results.page"/>
+  <page name="Upload" specification-path="upload/Upload.page"/>
+  <page name="upload.Results" specification-path="upload/Results.page"/>
 
-  <page name="Chart" specification-path="/tutorial/workbench/chart/Chart.page"/>
+  <page name="Chart" specification-path="chart/Chart.page"/>
 
-  <page name="Redirect" specification-path="/tutorial/workbench/Redirect.page"/>
+  <page name="Forms" specification-path="fields/Forms.page"/>
 
-  <page name="ExceptionTab" specification-path="/tutorial/workbench/ExceptionTab.page"/>
-  <page name="ErrorFest" specification-path="/tutorial/workbench/ErrorFest.page"/>
+  <page name="Dates" specification-path="fields/Dates.page"/>
 
-  <page name="Forms" specification-path="/tutorial/workbench/fields/Forms.page"/>
+  <page name="Table" specification-path="table/Table.page"/>
+  <component-alias type="LocaleList" specification-path="table/LocaleList.jwc"/>
+  <component-alias type="LocaleSelection" specification-path="table/LocaleSelection.jwc"/>
 
-  <page name="Dates" specification-path="/tutorial/workbench/fields/Dates.page"/>
-
-  <page name="Table" specification-path="/tutorial/workbench/table/Table.page"/>
-  <component-alias type="LocaleList" specification-path="/tutorial/workbench/table/LocaleList.jwc"/>
-  <component-alias type="LocaleSelection" specification-path="/tutorial/workbench/table/LocaleSelection.jwc"/>
-
-  <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
-  <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>
+  <component-alias type="Border" specification-path="components/Border.jwc"/>
+  <component-alias type="ShowError" specification-path="components/ShowError.jwc"/>
  
   <!-- You would not, normally, ever do this, but to test
        some of the namespace functionality, we've moved
        some of the normal application to a library. -->
  
-  <library id="inner" specification-path="/tutorial/workbench/Inner.library"/>
+  <library id="inner" specification-path="Inner.library"/>
 
   <!-- We include the contrib library for the Table functionality directly -->
   <!-- The Table definitions could go into inner as well -->
