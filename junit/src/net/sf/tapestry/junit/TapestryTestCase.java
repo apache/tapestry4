@@ -92,7 +92,7 @@ public class TapestryTestCase extends TestCase
 
         IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
-         return parser.parseLibrarySpecification(location, _resolver);
+        return parser.parseLibrarySpecification(location, _resolver);
     }
 
     protected void checkList(String propertyName, String[] expected, List actual)
@@ -120,4 +120,8 @@ public class TapestryTestCase extends TestCase
         throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
     }
 
+    protected void unreachable()
+    {
+        throw new AssertionFailedError("This code should be unreachable.");
+    }
 }

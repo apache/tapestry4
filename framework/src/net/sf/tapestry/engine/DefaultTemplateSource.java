@@ -78,6 +78,10 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     private IResourceResolver _resolver;
     private TemplateParser _parser;
 
+    /** @since 2.2 **/
+    
+    private IResourceLocation _applicationRootLocation;
+
     private static class ParserDelegate implements ITemplateParserDelegate
     {
         private IComponent _component;
@@ -220,8 +224,6 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
         return result;
     }
-
-    private IResourceLocation _applicationRootLocation;
 
     private ComponentTemplate findPageTemplateInApplicationRoot(
         IRequestCycle cycle,

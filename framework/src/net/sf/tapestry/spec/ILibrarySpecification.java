@@ -122,6 +122,20 @@ public interface ILibrarySpecification extends IPropertyHolder
     public Object getExtension(String name);
 
     /**
+     *  Returns an instantiated extension, performing a check to ensure
+     *  that the extension is a subtype of the given class (or extends the given
+     *  interface).
+     * 
+     *  @throws IllegalArgumentException if no extension specification exists for
+     *  the given name, or if the extension fails the type check.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public Object getExtension(String name, Class typeConstraint);
+
+    /**
      *  Returns true if the named extension exists (or can be instantiated),
      *  returns false if the named extension has no specification.
      * 

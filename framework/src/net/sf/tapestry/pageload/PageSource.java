@@ -159,8 +159,7 @@ public class PageSource implements IPageSource
 
         if (result == null)
         {
-            if (monitor != null)
-                monitor.pageCreateBegin(pageName);
+            monitor.pageCreateBegin(pageName);
 
             if (_pageSpecificationResolver == null)
                 _pageSpecificationResolver = new PageSpecificationResolver(cycle);
@@ -187,8 +186,7 @@ public class PageSource implements IPageSource
                 discardPageLoader(loader);
             }
 
-            if (monitor != null)
-                monitor.pageCreateEnd(pageName);
+            monitor.pageCreateEnd(pageName);
         }
         else
         {

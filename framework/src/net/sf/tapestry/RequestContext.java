@@ -301,7 +301,7 @@ public class RequestContext implements IRender
         if (!spec.checkExtension(REQUEST_DECODER_EXTENSION_NAME))
             decoder = new DefaultRequestDecoder();
         else
-            decoder = (IRequestDecoder) spec.getExtension(REQUEST_DECODER_EXTENSION_NAME);
+            decoder = (IRequestDecoder) spec.getExtension(REQUEST_DECODER_EXTENSION_NAME, IRequestDecoder.class);
 
         _decodedRequest = decoder.decodeRequest(_request);
 

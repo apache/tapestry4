@@ -453,12 +453,18 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /**
      *  Overriden in subclasses that support monitoring.  Should create and return
      *  an instance of {@link IMonitor} that is appropriate for the request cycle described
-     *  by the {@link RequestContext}.  May return null.
+     *  by the {@link RequestContext}.
      *
      *  <p>The monitor is used to create a {@link RequestCycle}.
      *
-     *  <p>This implementation returns null always.  Subclasses may overide without
-     *  invoking it.
+     *  <p>This implementation returns either an application extension named
+     *  <code>net.sf.tapestry.monitor</code>, or
+     *  the shared instance of {@link NullMonitor}.
+     * 
+     *  <p>Subclasses could create their own instances of {@link IMonitor}, specific
+     *  to the individual request or session.
+     * 
+     *  <p>As of release 2.4, this method should <em>not</em> return null.
      *
      *  <p>TBD:  Lifecycle of the monitor ... should there be a commit?
      *
@@ -466,7 +472,10 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public IMonitor getMonitor(RequestContext context)
     {
-        return null;
+        if (_specification.checkExtension(MONITOR_EXTENSION_NAME))
+            return (IMonitor) _specification.getExtension(MONITOR_EXTENSION_NAME, IMonitor.class);
+
+        return NullMonitor.SHARED;
     }
 
     public IPageSource getPageSource()
@@ -747,8 +756,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
                 cycle.setService(service);
 
-                if (monitor != null)
-                    monitor.serviceBegin(service.getName(), context.getRequestURI());
+                monitor.serviceBegin(serviceName, context.getRequestURI());
 
                 return service.service(this, cycle, output);
             }
@@ -770,14 +778,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             }
             finally
             {
-                if (monitor != null)
-                    monitor.serviceEnd(service.getName());
+                monitor.serviceEnd(service.getName());
             }
         }
         catch (Exception ex)
         {
-            if (monitor != null)
-                monitor.serviceException(ex);
+            monitor.serviceException(ex);
 
             // Discard any output (if possible).  If output has already been sent to
             // the client, then things get dicey.  Note that this block
@@ -1788,7 +1794,25 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         return _propertySource;
     }
 
+    /**
+     *  Name of an application extension that can provide configuration properties.
+     * 
+     *  @see #createPropertySource(RequestContext)
+     *  @since 2.3
+     * 
+     **/
+
     private static final String EXTENSION_PROPERTY_SOURCE_NAME = "net.sf.tapestry.property-source";
+
+    /**
+     *  The name of an application extension that implements {@link IMonitor}.
+     * 
+     *  @see #getMonitor(RequestContext)
+     *  @since 2.4
+     * 
+     **/
+
+    protected static final String MONITOR_EXTENSION_NAME = "net.sf.tapestry.monitor";
 
     /**
      *  Creates a shared property source that will be stored into
@@ -1824,7 +1848,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         if (spec.checkExtension(EXTENSION_PROPERTY_SOURCE_NAME))
         {
-            IPropertySource source = (IPropertySource) spec.getExtension(EXTENSION_PROPERTY_SOURCE_NAME);
+            IPropertySource source =
+                (IPropertySource) spec.getExtension(EXTENSION_PROPERTY_SOURCE_NAME, IPropertySource.class);
 
             result.addSource(source);
         }

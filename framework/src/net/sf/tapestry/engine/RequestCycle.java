@@ -81,9 +81,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     private IComponent _targetComponent;
 
     /** @since 2.0.3 **/
-    
+
     private Object[] _serviceParameters;
-    
+
     /**
      *  Standard constructor used to render a response page.
      *
@@ -185,14 +185,13 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (name == null)
             throw new NullPointerException(Tapestry.getString("RequestCycle.invalid-null-name"));
 
-        if (_monitor != null)
-            _monitor.pageLoadBegin(name);
-
         if (_loadedPages != null)
             result = (IPage) _loadedPages.get(name);
 
         if (result == null)
         {
+            _monitor.pageLoadBegin(name);
+
             IPageSource pageSource = _engine.getPageSource();
 
             try
@@ -242,14 +241,13 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
                 result.setChangeObserver(this);
             }
 
+            _monitor.pageLoadEnd(name);
+
             if (_loadedPages == null)
                 _loadedPages = new HashMap();
 
             _loadedPages.put(name, result);
         }
-
-        if (_monitor != null)
-            _monitor.pageLoadEnd(name);
 
         return result;
     }
@@ -339,10 +337,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         // Woops.  Mismatch.
 
-        throw new StaleLinkException(
-            component,
-            Integer.toHexString(_targetActionId),
-            _targetComponent.getExtendedId());
+        throw new StaleLinkException(component, Integer.toHexString(_targetActionId), _targetComponent.getExtendedId());
     }
 
     public void removeAttribute(String name)
@@ -365,13 +360,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void renderPage(IMarkupWriter writer) throws RequestCycleException
     {
-        String pageName = null;
-
-        if (_monitor != null)
-        {
-            pageName = _page.getName();
-            _monitor.pageRenderBegin(pageName);
-        }
+        String pageName = _page.getName();
+        _monitor.pageRenderBegin(pageName);
 
         _rewinding = false;
         _actionId = -1;
@@ -411,8 +401,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             _targetActionId = 0;
         }
 
-        if (_monitor != null)
-            _monitor.pageRenderEnd(pageName);
+        _monitor.pageRenderEnd(pageName);
 
     }
 
@@ -434,13 +423,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     public void rewindForm(IForm form, String targetActionId) throws RequestCycleException
     {
         IPage page = form.getPage();
-        String pageName = null;
+        String pageName = page.getName();
 
-        if (_monitor != null)
-        {
-            pageName = page.getName();
-            _monitor.pageRewindBegin(pageName);
-        }
+        _monitor.pageRewindBegin(pageName);
 
         _rewinding = true;
 
@@ -489,12 +474,11 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             _actionId = 0;
             _targetActionId = 0;
             _targetComponent = null;
-            
+
             page.endPageRender();
         }
 
-        if (_monitor != null)
-            _monitor.pageRewindEnd(pageName);
+        _monitor.pageRewindEnd(pageName);
 
     }
 
@@ -512,16 +496,11 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      *
      **/
 
-    public void rewindPage(String targetActionId, IComponent targetComponent)
-        throws RequestCycleException
+    public void rewindPage(String targetActionId, IComponent targetComponent) throws RequestCycleException
     {
-        String pageName = null;
+        String pageName = _page.getName();
 
-        if (_monitor != null)
-        {
-            pageName = _page.getName();
-            _monitor.pageRewindBegin(pageName);
-        }
+        _monitor.pageRewindBegin(pageName);
 
         _rewinding = true;
 
@@ -568,8 +547,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             _targetComponent = null;
         }
 
-        if (_monitor != null)
-            _monitor.pageRewindEnd(pageName);
+        _monitor.pageRewindEnd(pageName);
 
     }
 
@@ -684,16 +662,16 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         recorder.markForDiscard();
     }
-    
+
     /** @since 2.0.3 **/
-    
+
     public Object[] getServiceParameters()
     {
         return _serviceParameters;
     }
-    
+
     /** @since 2.0.3 **/
-    
+
     public void setServiceParameters(Object[] serviceParameters)
     {
         _serviceParameters = serviceParameters;
