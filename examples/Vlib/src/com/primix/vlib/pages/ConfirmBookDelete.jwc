@@ -7,20 +7,20 @@
    
   <component id="border" type="Border">
     <static-binding name="title">Delete Book</static-binding>
-    <binding name="subheader" property-path="assets.subheader"/>
-  </component>
+   </component>
   
   <component id="insertBookTitle" type="Insert">
     <binding name="value" property-path="bookTitle"/>
   </component>
+  
   <component id="yes" type="Direct">
     <binding name="listener" property-path="deleteBookListener"/>
     <binding name="context" property-path="bookPrimaryKey"/>
   </component>
+  
   <component id="no" type="Page">
     <static-binding name="page">MyBooks</static-binding>
   </component>
   
-  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
-
+  
 </specification>

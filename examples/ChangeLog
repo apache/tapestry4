@@ -1,3 +1,12 @@
+* Jun 25 2001 hship
+
+VlibBeans:
+- Add IOperations.updatePublishers()
+
+Vlib:
+- Add EditPublishers and TransferBooks admin pages.
+- Add EditUsers page (not yet implemented).
+
 * Jun 22 2001 hship
 
 VlibBeans:

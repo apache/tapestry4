@@ -199,4 +199,30 @@ public interface IOperations
 	
 	public Book deleteBook(Integer bookPrimaryKey)
 		throws RemoveException, RemoteException;
+	
+	/**
+	 *  Transfers a number of books to a new owner.
+	 *
+	 */
+	
+	public void transferBooks(Integer newOwnerPrimaryKey, Integer[] books)
+		throws FinderException, RemoteException;
+	
+	
+	/**
+	 *  Updates the list of Publishers in the database.
+	 *
+	 *
+	 * @param updated an array of {@link Publisher} used to update
+	 * existing publishers (used to change their names).  May be null or
+	 * empty.
+	 * @param deleted an array of {@link Integer}, the primary key
+	 * of any publisher to be deleted.  No check is made that 
+	 * existing books aren't tied to this Publisher.  May be null or
+	 * empty.
+	 */
+	
+	public void updatePublishers(Publisher[] updated, Integer[] deleted)
+		throws FinderException, RemoveException, RemoteException;
+
 }

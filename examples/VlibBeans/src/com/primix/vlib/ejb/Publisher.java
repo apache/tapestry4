@@ -59,6 +59,19 @@ public class Publisher implements Serializable
 		return name;
 	}
 	
+	/**
+	 *  Name is a writable property of this bean, to support the
+	 *  applications' EditPublisher's page.
+	 *
+	 *  @see IOperations#updatePublishers(Publisher[],Integer[])
+	 *
+	 */
+	
+	public void setName(String value)
+	{
+		name = value;
+	}
+	
 	public String toString()
 	{
 		StringBuffer buffer;

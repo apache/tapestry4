@@ -10,7 +10,6 @@
   
   <component id="border" type="Border">
     <static-binding name="title">Borrowed Books</static-binding>
-    <binding name="subheader" property-path="assets.subheader"/>
   </component>
 
   <component id="showError" type="ShowError"/>
@@ -55,7 +54,5 @@
     <binding name="context" property-path="currentBook.primaryKey"/>
     <binding name="listener" property-path="returnListener"/>
   </component>
-
-  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
   
 </specification>

@@ -5,6 +5,7 @@ PROJECT_NAME = Vlib
 PACKAGES := \
 	com.primix.vlib \
 	com.primix.vlib.pages \
+	com.primix.vlib.pages.admin \
 	com.primix.vlib.components \
 
 INSTALL_DIR := ../../lib
@@ -13,6 +14,7 @@ PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/ejb.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/com.primix.tapestry.jar \
+	$(INSTALL_DIR)/net.sf.tapestry.contrib.jar \
 	$(INSTALL_DIR)/VlibBeans.jar \
 	$(INSTALL_DIR)/log4j-core.jar
 

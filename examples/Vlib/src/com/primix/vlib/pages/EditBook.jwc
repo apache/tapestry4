@@ -7,7 +7,6 @@
   
   <component id="border" type="Border">
     <static-binding name="title">Edit Book</static-binding>
-    <binding name="subheader" property-path="assets.subheader"/>
   </component>
   
   <component id="showError" type="ShowError"/>
@@ -101,6 +100,5 @@
   	<binding name="selected" property-path="cancel"/>
   	<field-binding name="tag" field-name="Boolean.TRUE"/>
   </component>
-  
-  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
+
 </specification>

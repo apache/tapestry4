@@ -81,4 +81,15 @@ td.clsDataTable a:link {
   color:#000000
 }
 
+TABLE.tapestry-palette SELECT
+{
+  width: 350px;
+  font-weight: bold;
+}
+
+TABLE.tapestry-palette BUTTON
+{
+  width: 60px;
+}
+
 /* Primix-JMoran2001 */

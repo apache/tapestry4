@@ -11,7 +11,6 @@
   <component id="border" type="Border">
     <static-binding name="title">My Library</static-binding>
     <static-binding name="subtitle">My Library</static-binding>
-    <binding name="subheader" property-path="assets.subheader"/>
   </component>
 
   <component id="showError" type="ShowError"/>
@@ -66,8 +65,4 @@
     <binding name="context" property-path="currentBook.primaryKey"/>
   </component>
  
- <!-- Temporary -->
-    
-  <context-asset name="subheader" path="/images/hd_searchforbooks.gif"/>
-  
 </specification>

@@ -5,7 +5,6 @@
 
   <component id="border" type="Border">
     <static-binding name="title">Matching Books</static-binding>
-    <binding name="subheader" property-path="assets.subheader"/>
   </component>
   
   <component id="insertMatchCount" type="Insert">
@@ -55,6 +54,4 @@
     <binding name="book" property-path="currentMatch"/>
   </component>
 
-  <context-asset name="subheader" path="/images/hd_matchingbooks.gif"/>
-  
 </specification>

@@ -7,7 +7,6 @@
   
   <component id="border" type="Border">
     <static-binding name="title">Add New Book</static-binding>
-    <binding name="subheader" property-path="assets.subheader"/>
   </component>
   
   <component id="showError" type="ShowError"/>
@@ -92,7 +91,5 @@
     <binding name="select" property-path="components.inputPublisher"/>
     <binding name="field" property-path="components.inputPublisherName"/>
   </component>
-  
-  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
-  
+    
 </specification>

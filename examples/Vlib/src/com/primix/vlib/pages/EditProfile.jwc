@@ -7,7 +7,6 @@
   
   <component id="border" type="Border">
     <static-binding name="title">Edit Profile</static-binding>
-    <binding name="subheader" property-path="assets.subheader"/>
   </component>
   
   <component id="showError" type="ShowError"/>
@@ -74,7 +73,5 @@
   	<field-binding name="tag" field-name="Boolean.TRUE"/>
    </component>
    
-  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
-
 
 </specification>

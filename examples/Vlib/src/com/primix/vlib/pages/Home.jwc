@@ -5,7 +5,6 @@
 
   <component id="border" type="Border">
     <static-binding name="title">Primix Virtual Library</static-binding>
-    <binding name="subheader" property-path="assets.subheader"/>
   </component>
   
   <component id="showError" type="ShowError"/>
@@ -28,7 +27,5 @@
     <binding name="value" property-path="searchPublisherPK"/>
     <binding name="model" property-path="engine.publisherModel"/>
   </component>
-  
-  <context-asset name="subheader" path="/images/hd_searchforbooks.gif"/>
-   
+     
 </specification>
