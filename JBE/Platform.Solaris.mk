@@ -39,8 +39,7 @@ MKDIRS := $(TOOLS_DIR)/mkdir -p
 TOUCH := $(TOOLS_DIR)/touch
 RM := $(TOOLS_DIR)/rm -fR
 
-CP := $(TOOLS_DIR)/cp
-CP_FORCE_OPT := -f
+CP := $(TOOLS_DIR)/cp -f
 
 CAT := $(TOOLS_DIR)/cat
 FIND := $(TOOLS_DIR)/find

@@ -25,10 +25,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
-MOD_BUILD_DIR = $(SYS_BUILD_DIR_NAME)
-
 include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 
+MOD_BUILD_DIR = .build
 
 # Get the final source directory which is either specified by the
 # SOURCE_DIR variable, or defaults to the "src" subdirectory.
@@ -38,21 +37,21 @@ FINAL_SOURCE_DIR := $(firstword $(SOURCE_DIR) src)
 # Stamp file used to control copying of top-level resources (such
 # as EJB deployment descriptors).
 
-MOD_META_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/meta-resources-stamp
+MOD_META_STAMP_FILE := $(MOD_BUILD_DIR)/meta-resources-stamp
 
 # The PROJECT_NAME is specified in the Makefile and becomes the name of
 # the ultimate file.
 
 JAR_FILE := $(PROJECT_NAME).$(JAR_EXT)
 
-MOD_JAVA_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/java-stamp
+MOD_JAVA_STAMP_FILE := $(MOD_BUILD_DIR)/java-stamp
 
-RESOURCE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/resource-stamp
+RESOURCE_STAMP_FILE := $(MOD_BUILD_DIR)/resource-stamp
 
-RMI_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/rmi-stamp
+RMI_STAMP_FILE := $(MOD_BUILD_DIR)/rmi-stamp
 
 # A file "touched" whenever anything changes inside $(MOD_CLASS_DIR),
 # signifying that the Jar should be rebuilt.
 
-MOD_DIRTY_JAR_STAMP_FILE = $(SYS_BUILD_DIR_NAME)/dirty-jar-stamp
+MOD_DIRTY_JAR_STAMP_FILE = $(MOD_BUILD_DIR)/dirty-jar-stamp
 

@@ -108,9 +108,6 @@ else
 endif
 	@$(TOUCH) $@
 
-# Read the catalog file
-
-_RMI_CLASS_NAMES := $(shell $(CAT) $(MOD_RMI_CLASS_CATALOG))
 
 # Find the name of each RMI implementation class.  This is the
 # name of the corresponding .class file, inside the $(MOD_CLASS_DIR).
@@ -118,7 +115,7 @@ _RMI_CLASS_NAMES := $(shell $(CAT) $(MOD_RMI_CLASS_CATALOG))
 _RMI_CLASS_FILES := \
 	$(addprefix $(MOD_CLASS_DIR)$(SLASH), \
 		$(addsuffix .class, \
-			$(subst $(DOT),$(SLASH),$(_RMI_CLASS_NAMES))))
+			$(subst $(DOT),$(SLASH),$(RMI_CLASS_NAMES))))
 
 # Here's where it gets real tricky; we need to reverse the prior
 # process and get BACK to the class name.
@@ -147,7 +144,7 @@ endif
 
 $(MOD_DIRTY_JAR_STAMP_FILE): $(RMI_STAMP_FILE) $(MOD_JAVA_STAMP_FILE) \
 	$(RESOURCE_STAMP_FILE) $(MOD_META_STAMP_FILE)
-	@$(if $?,$(TOUCH) $@)
+	@$(if $?, $(TOUCH) $@)
 
 # The catalog file has the path name, including the relative
 # path to the source code root directory.  Like the Java files
@@ -172,8 +169,8 @@ endif
 
 ifdef SETUP_CATALOGS
 
-inner-setup-catalogs: $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
-	@$(TOUCH) $(DUMMY_FILE)
+inner-setup-catalogs: $(MOD_JAVA_CATALOG) $(MOD_RESOURCE_CATALOG)
+	$(DUMMY_RULE)
 	
 ABSOLUTE_MOD_BUILD_DIR := $(call JBE_CANONICALIZE, $(MOD_BUILD_DIR))
 
@@ -181,15 +178,27 @@ ABSOLUTE_MOD_BUILD_DIR := $(call JBE_CANONICALIZE, $(MOD_BUILD_DIR))
 # Package.  Certain types of modules have no Java source (no PACKAGES are defined)
 # but that's OK.
 
-$(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG):
+_PACKAGE_DIRS := \
+	$(foreach package,$(PACKAGES), \
+		$(FINAL_SOURCE_DIR)$(SLASH)$(subst $(DOT),$(SLASH),$(package))$(SLASH))
+
+ifndef RESOURCE_EXTENSIONS
+RESOURCE_EXTENSIONS := html application jwc script properties
+endif
+		
+$(MOD_JAVA_CATALOG) $(MOD_RESOURCE_CATALOG):
 	@$(ECHO) > $(MOD_JAVA_CATALOG)
-	@$(ECHO) > $(MOD_RMI_CLASS_CATALOG)
 	@$(ECHO) > $(MOD_RESOURCE_CATALOG)
 ifneq "$(PACKAGES)" ""
-	@for package in $(PACKAGES) ; do \
-	  $(RECURSE) PACKAGE_RECURSE=t PACKAGE="$$package" \
-	  ABSOLUTE_MOD_BUILD_DIR="$(ABSOLUTE_MOD_BUILD_DIR)" catalog-package ; \
-	done
+	$(call NOTE, Cataloging packages ...)
+	@$(ECHO) \
+		$(wildcard $(addsuffix *.java,$(_PACKAGE_DIRS))) \
+		 > $(MOD_JAVA_CATALOG)
+	@$(ECHO) \
+		$(wildcard \
+			$(foreach ext,$(RESOURCE_EXTENSIONS), \
+				$(addsuffix *.$(ext),$(_PACKAGE_DIRS)))) \
+		> $(MOD_RESOURCE_CATALOG)
 endif
 
 # End of SETUP_CATALOGS block
@@ -245,7 +254,7 @@ $(MOD_META_STAMP_FILE): $(FINAL_META_RESOURCES)
 ifneq "$(FINAL_META_RESOURCES)" ""
 	$(call NOTE, Copying META-INF resources ...)
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) $(CP_FORCE_OPT) $? $(MOD_META_INF_DIR)
+	@$(CP) $? $(MOD_META_INF_DIR)
 	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
 	@$(TOUCH) $@ 
