@@ -11,8 +11,10 @@
   
   <component id="form" type="Form">
     <binding name="listener" property-path="listeners.attemptLogin"/>
+    <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
+   
   <component id="showError" type="ShowError"/>
   
   <component id="showValidationError" type="ShowValidationError">
@@ -21,26 +23,23 @@
   
   <component id="labelEmail" type="FieldLabel">
     <binding name="field" property-path="components.inputEmail"/>
-    <binding name="delegate" property-path="validationDelegate"/>
   </component>
+  
   <component id="inputEmail" type="ValidField">
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">60</static-binding>
     <static-binding name="displayName">Email Address</static-binding>
     <binding name="value" property-path="email"/>
-    <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
   </component>
   
   <component id="labelPassword" type="FieldLabel">
     <binding name="field" property-path="components.inputPassword"/>
-    <binding name="delegate" property-path="validationDelegate"/>
   </component>
   
   <component id="inputPassword" type="ValidField">
     <binding name="value" property-path="password"/>
     <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
-    <binding name="delegate" property-path="validationDelegate"/>
     <static-binding name="displayWidth">10</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password</static-binding>
