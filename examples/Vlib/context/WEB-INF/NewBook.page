@@ -1,63 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE page-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <page-specification class="net.sf.tapestry.vlib.pages.NewBook">
 
   <property name="page-type">library</property>
   
-  <component id="border" type="Border">
-    <static-binding name="title">Add New Book</static-binding>
-  </component>
-  
-  <component id="showError" type="ShowError"/>
   
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.addBook"/>
     <binding name="delegate" expression="validationDelegate"/>
   </component>
   
-  <component id="showValidationError" type="ShowValidationError">
-  	<binding name="delegate" expression="validationDelegate"/>
-  </component>
-  
-  
-  <component id="labelTitle" type="FieldLabel">
-    <binding name="field" expression="components.inputTitle"/>
-  </component>
+ 
   
   <component id="inputTitle" type="ValidField">
     <binding name="value" expression="attributes.title"/>
-    <static-binding name="maximumLength">100</static-binding>
-    <static-binding name="displayWidth">50</static-binding>
-    <static-binding name="displayName">Title</static-binding>
-     <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
-  </component>
-  
-  <component id="labelAuthor" type="FieldLabel">
-    <binding name="field" expression="components.inputAuthor"/>
+    <static-binding name="maximumLength" value="100"/>
+    <static-binding name="displayWidth" value="50"/>
+    <static-binding name="displayName" value="Title"/>
+    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>
   </component>
   
   <component id="inputAuthor" type="ValidField">
     <binding name="value" expression="attributes.author"/>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
-    <static-binding name="maximumLength">60</static-binding>
-    <static-binding name="displayWidth">30</static-binding>
-    <static-binding name="displayName">Author</static-binding>
+    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>    
+    <static-binding name="maximumLength" value="60"/>
+    <static-binding name="displayWidth" value="30"/>
+    <static-binding name="displayName" value="Author"/>
   </component>
   
   <component id="inputISBN" type="TextField">
-    <static-binding name="maximumLength">20</static-binding>
-    <static-binding name="displayWidth">20</static-binding>
+    <static-binding name="maximumLength" value="20"/>
+    <static-binding name="displayWidth" value="20"/>
     <binding name="value" expression="attributes.ISBN"/>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.OPTIONAL"/>
+    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@OPTIONAL"/>    
   </component>
   
-  <component id="labelPublisher" type="FieldLabel">
-    <binding name="field" expression="components.inputPublisherName"/>
-  </component>
   
   <component id="inputPublisher" type="PropertySelection">
     <binding name="value" expression="attributes.publisherPK"/>
@@ -65,17 +46,17 @@
   </component>
   
   <component id="inputPublisherName" type="ValidField">
-    <static-binding name="maximumLength">40</static-binding>
-    <static-binding name="displayWidth">20</static-binding>
+    <static-binding name="maximumLength" value="40"/>
+    <static-binding name="displayWidth" value="20"/>
     <binding name="value" expression="publisherName"/>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.OPTIONAL"/>
-    <static-binding name="displayName">Publisher</static-binding>
+    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@OPTIONAL"/>
+    <static-binding name="displayName" value="Publisher"/>
   </component>
   
   <component id="inputDescription" type="TextArea">
     <binding name="value" expression="attributes.description"/>
-    <static-binding name="columns">35</static-binding>
-    <static-binding name="rows">8</static-binding>
+    <static-binding name="columns" value="35"/>
+    <static-binding name="rows" value="8"/>
   </component>
   
   <component id="inputHidden" type="Checkbox">

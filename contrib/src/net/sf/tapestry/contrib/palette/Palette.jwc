@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  $Id$ -->
 <!DOCTYPE component-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <component-specification class="net.sf.tapestry.contrib.palette.Palette" 
 	allow-body="no" allow-informal-parameters="no">
@@ -122,13 +122,13 @@
     <binding name="name" expression="symbols.downImageName"/>
   </component>
 
-  <private-asset name="Select" resource-path="/net/sf/tapestry/contrib/palette/select_right.gif"/>
-  <private-asset name="SelectDisabled" resource-path="/net/sf/tapestry/contrib/palette/select_right_off.gif"/>
-  <private-asset name="Deselect" resource-path="/net/sf/tapestry/contrib/palette/deselect_left.gif"/>
-  <private-asset name="DeselectDisabled" resource-path="/net/sf/tapestry/contrib/palette/deselect_left_off.gif"/>
-  <private-asset name="Up" resource-path="/net/sf/tapestry/contrib/palette/move_up.gif"/>
-  <private-asset name="UpDisabled" resource-path="/net/sf/tapestry/contrib/palette/move_up_off.gif"/>
-  <private-asset name="Down" resource-path="/net/sf/tapestry/contrib/palette/move_down.gif"/>
-  <private-asset name="DownDisabled" resource-path="/net/sf/tapestry/contrib/palette/move_down_off.gif"/>
+  <private-asset name="Select" resource-path="select_right.gif"/>
+  <private-asset name="SelectDisabled" resource-path="select_right_off.gif"/>
+  <private-asset name="Deselect" resource-path="deselect_left.gif"/>
+  <private-asset name="DeselectDisabled" resource-path="deselect_left_off.gif"/>
+  <private-asset name="Up" resource-path="move_up.gif"/>
+  <private-asset name="UpDisabled" resource-path="move_up_off.gif"/>
+  <private-asset name="Down" resource-path="move_down.gif"/>
+  <private-asset name="DownDisabled" resource-path="move_down_off.gif"/>
   
 </component-specification>

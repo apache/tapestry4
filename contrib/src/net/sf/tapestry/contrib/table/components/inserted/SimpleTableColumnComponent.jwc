@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  $Id$ -->
 <!DOCTYPE component-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <component-specification class="net.sf.tapestry.contrib.table.components.inserted.SimpleTableColumnComponent" 
 	allow-informal-parameters="yes">
@@ -40,6 +40,6 @@
 		<binding name="condition" expression="isSorted"/>
 	</component>
 	
-    <private-asset name="sortDown" resource-path="/net/sf/tapestry/contrib/table/components/inserted/arrow-down.gif"/>
-    <private-asset name="sortUp" resource-path="/net/sf/tapestry/contrib/table/components/inserted/arrow-up.gif"/>
+    <private-asset name="sortDown" resource-path="arrow-down.gif"/>
+    <private-asset name="sortUp" resource-path="arrow-up.gif"/>
 </component-specification>

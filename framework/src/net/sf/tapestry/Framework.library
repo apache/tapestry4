@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE library-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <!--
  
@@ -15,46 +15,46 @@
 
 <library-specification>
 
-    <component-alias type="ActionLink" specification-path="link/ActionLink.jwc"/>
-    <component-alias type="Any" specification-path="components/Any.jwc"/>
-    <component-alias type="Block" specification-path="components/Block.jwc"/>
-    <component-alias type="Body" specification-path="html/Body.jwc"/>
-    <component-alias type="Button" specification-path="form/Button.jwc"/>
-    <component-alias type="Checkbox" specification-path="form/Checkbox.jwc"/>
-    <component-alias type="Conditional" specification-path="components/Conditional.jwc"/>
-    <component-alias type="DatePicker" specification-path="form/DatePicker.jwc"/>
-    <component-alias type="Delegator" specification-path="components/Delegator.jwc"/>
-    <component-alias type="DirectLink" specification-path="link/DirectLink.jwc"/>
-    <component-alias type="ExternalLink" specification-path="link/ExternalLink.jwc"/>
-    <component-alias type="FieldLabel" specification-path="valid/FieldLabel.jwc"/>
-    <component-alias type="Foreach" specification-path="components/Foreach.jwc"/>
-    <component-alias type="Frame" specification-path="html/Frame.jwc"/>
-    <component-alias type="ExceptionDisplay" specification-path="html/ExceptionDisplay.jwc"/>
-    <component-alias type="Form" specification-path="form/Form.jwc"/>
-    <component-alias type="GenericLink" specification-path="link/GenericLink.jwc"/>
-    <component-alias type="Hidden" specification-path="form/Hidden.jwc"/>
-    <component-alias type="Image" specification-path="html/Image.jwc"/>
-    <component-alias type="ImageSubmit" specification-path="form/ImageSubmit.jwc"/>
-	<component-alias type="Insert" specification-path="components/Insert.jwc"/>
-    <component-alias type="InsertText" specification-path="html/InsertText.jwc"/>
-    <component-alias type="ListEdit" specification-path="form/ListEdit.jwc"/>
-    <component-alias type="Option" specification-path="form/Option.jwc"/>
-    <component-alias type="PageLink" specification-path="link/PageLink.jwc"/>
-    <component-alias type="PropertySelection" specification-path="form/PropertySelection.jwc"/>
-    <component-alias type="Radio" specification-path="form/Radio.jwc"/>
-    <component-alias type="RadioGroup" specification-path="form/RadioGroup.jwc"/>
-    <component-alias type="RenderBlock" specification-path="components/RenderBlock.jwc"/>
-    <component-alias type="RenderBody" specification-path="components/RenderBody.jwc"/>
-    <component-alias type="Rollover" specification-path="html/Rollover.jwc"/>
-    <component-alias type="Select" specification-path="form/Select.jwc"/>
-    <component-alias type="ServiceLink" specification-path="link/ServiceLink.jwc"/>
-    <component-alias type="Script" specification-path="html/Script.jwc"/>
-    <component-alias type="Shell" specification-path="html/Shell.jwc"/>
-    <component-alias type="Submit" specification-path="form/Submit.jwc"/>
-    <component-alias type="TextArea" specification-path="form/TextArea.jwc"/>
-    <component-alias type="TextField" specification-path="form/TextField.jwc"/>
-    <component-alias type="Upload" specification-path="form/Upload.jwc"/>
-    <component-alias type="ValidField" specification-path="valid/ValidField.jwc"/>
+    <component-type type="ActionLink" specification-path="link/ActionLink.jwc"/>
+    <component-type type="Any" specification-path="components/Any.jwc"/>
+    <component-type type="Block" specification-path="components/Block.jwc"/>
+    <component-type type="Body" specification-path="html/Body.jwc"/>
+    <component-type type="Button" specification-path="form/Button.jwc"/>
+    <component-type type="Checkbox" specification-path="form/Checkbox.jwc"/>
+    <component-type type="Conditional" specification-path="components/Conditional.jwc"/>
+    <component-type type="DatePicker" specification-path="form/DatePicker.jwc"/>
+    <component-type type="Delegator" specification-path="components/Delegator.jwc"/>
+    <component-type type="DirectLink" specification-path="link/DirectLink.jwc"/>
+    <component-type type="ExternalLink" specification-path="link/ExternalLink.jwc"/>
+    <component-type type="FieldLabel" specification-path="valid/FieldLabel.jwc"/>
+    <component-type type="Foreach" specification-path="components/Foreach.jwc"/>
+    <component-type type="Frame" specification-path="html/Frame.jwc"/>
+    <component-type type="ExceptionDisplay" specification-path="html/ExceptionDisplay.jwc"/>
+    <component-type type="Form" specification-path="form/Form.jwc"/>
+    <component-type type="GenericLink" specification-path="link/GenericLink.jwc"/>
+    <component-type type="Hidden" specification-path="form/Hidden.jwc"/>
+    <component-type type="Image" specification-path="html/Image.jwc"/>
+    <component-type type="ImageSubmit" specification-path="form/ImageSubmit.jwc"/>
+	<component-type type="Insert" specification-path="components/Insert.jwc"/>
+    <component-type type="InsertText" specification-path="html/InsertText.jwc"/>
+    <component-type type="ListEdit" specification-path="form/ListEdit.jwc"/>
+    <component-type type="Option" specification-path="form/Option.jwc"/>
+    <component-type type="PageLink" specification-path="link/PageLink.jwc"/>
+    <component-type type="PropertySelection" specification-path="form/PropertySelection.jwc"/>
+    <component-type type="Radio" specification-path="form/Radio.jwc"/>
+    <component-type type="RadioGroup" specification-path="form/RadioGroup.jwc"/>
+    <component-type type="RenderBlock" specification-path="components/RenderBlock.jwc"/>
+    <component-type type="RenderBody" specification-path="components/RenderBody.jwc"/>
+    <component-type type="Rollover" specification-path="html/Rollover.jwc"/>
+    <component-type type="Select" specification-path="form/Select.jwc"/>
+    <component-type type="ServiceLink" specification-path="link/ServiceLink.jwc"/>
+    <component-type type="Script" specification-path="html/Script.jwc"/>
+    <component-type type="Shell" specification-path="html/Shell.jwc"/>
+    <component-type type="Submit" specification-path="form/Submit.jwc"/>
+    <component-type type="TextArea" specification-path="form/TextArea.jwc"/>
+    <component-type type="TextField" specification-path="form/TextField.jwc"/>
+    <component-type type="Upload" specification-path="form/Upload.jwc"/>
+    <component-type type="ValidField" specification-path="valid/ValidField.jwc"/>
           
     <page name="StaleLink" specification-path="pages/StaleLink.page"/>
     <page name="StaleSession" specification-path="pages/StaleSession.page"/>

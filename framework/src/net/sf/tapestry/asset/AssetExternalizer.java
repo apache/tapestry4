@@ -258,7 +258,7 @@ public class AssetExternalizer
 
         String servletName = servlet.getServletName();
         
-        String attributeName = "net.sf.tapestry.AssetExternalizer." + servletName;
+        String attributeName = "net.sf.tapestry.AssetExternalizer:" + servletName;
 
         AssetExternalizer result = (AssetExternalizer) context.getAttribute(attributeName);
 

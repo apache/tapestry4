@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE component-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <component-specification class="net.sf.tapestry.contrib.inspector.ShowEngine" allow-body="no" allow-informal-parameters="no">
 
   <component id="insertFrameworkVersion" type="Insert">
-  	<field-binding name="value" field-name="net.sf.tapestry.Tapestry.VERSION"/>
+  	<binding name="value" expression="@net.sf.tapestry.Tapestry@VERSION"/>
   </component>
   
   <component id="insertApplicationName" type="Insert">
@@ -43,7 +43,7 @@
   </component>
   
   <component id="restart" type="ServiceLink">
-    <binding name="service" expression="@net.sf.tapestry.IEngineService@RESTART_SERVICE"/>
+    <binding name="service" expression="@net.sf.tapestry.Tapestry@RESTART_SERVICE"/>
   </component>
   
   <component id="restartButton" type="Rollover">
@@ -52,7 +52,7 @@
   </component>
   
   <component id="reset" type="ServiceLink">
-    <binding name="service" expression="@net.sf.tapestry.IEngineService@RESET_SERVICE"/>
+    <binding name="service" expression="@net.sf.tapestry.Tapestry@RESET_SERVICE"/>
     <binding name="disabled" expression="! page.engine.resetServiceEnabled"/>
   </component>
   
@@ -74,9 +74,9 @@
     <binding name="delegate" expression="page.requestCycle.requestContext"/>
   </component>
   
-  <private-asset name="reset" resource-path="/net/sf/tapestry/contrib/inspector/Reset_Np1.gif"/>
-  <private-asset name="resetFocus" resource-path="/net/sf/tapestry/contrib/inspector/Reset_NRp2.gif"/>
-  <private-asset name="resetDisabled" resource-path="/net/sf/tapestry/contrib/inspector/Reset_Np1_disabled.gif"/>
-  <private-asset name="restart" resource-path="/net/sf/tapestry/contrib/inspector/Restart_Np1.gif"/>
-  <private-asset name="restartFocus" resource-path="/net/sf/tapestry/contrib/inspector/Restart_NRp2.gif"/>
+  <private-asset name="reset" resource-path="Reset_Np1.gif"/>
+  <private-asset name="resetFocus" resource-path="Reset_NRp2.gif"/>
+  <private-asset name="resetDisabled" resource-path="Reset_Np1_disabled.gif"/>
+  <private-asset name="restart" resource-path="Restart_Np1.gif"/>
+  <private-asset name="restartFocus" resource-path="Restart_NRp2.gif"/>
 </component-specification>

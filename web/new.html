@@ -11,18 +11,31 @@
 	<tr>
 		<td valign="top" align="left"><IMG alt="[Tapestry Banner]" src="images/Tapestry-Banner.png" border="0">
 		
+<h3>Releaes 2.4-alpha-3</h3>
+
+<ul>
+<li>
+Reorganized the packaging into a binary distribution (which includes documentation) and a second,
+smaller, source-only distribution.</li>
+<li>Renamed the JARs, stripping off the "net.sf." prefix.</li>
+<li>Update all examples to use the 1.4 Specification DTD
+</ul>
+		
+<pre>
+[ 665622 ] net.sf.tapestry.html.Frame uses old DOCTYPE
+</pre>		
+		
 <h3>Release 2.4-alpha-2</h3>
 
 <ul>
-<li>Made improvements to how Tapestry handles 
-        arrays of objects and scalars</li>
+<li>Made improvements to how Tapestry handles arrays of objects and scalars</li>
 <LI>Upgrade demos to deploy into JBoss 3.0.4</LI>   
 <li>Merge in changes from Tapestry 2.3</li>
 <li><code>&lt;binding&gt;</code> elements may now specify the expression as the parsed data
 instead of the expression attribute</li> 
 <li>The template extension may now be overriden using the configuration property <code>net.sf.tapestry.template-extension</code>         
 <li>Added support for declarative transient and persistent properties via
-<code>&lt;property-specification;&gt;</code> element in page and component specifications.  Tapestry
+<code>&lt;property-specification&gt;</code> element in page and component specifications.  Tapestry
 will create (on the fly) a subclass with
 the necessary accessor methods and fields, as well as any necessary notification and
 cleanup methods. </li>

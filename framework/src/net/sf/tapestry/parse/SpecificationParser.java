@@ -137,7 +137,7 @@ public class SpecificationParser extends AbstractDocumentParser
     /** @since 2.2 **/
 
     public static final String TAPESTRY_DTD_1_4_PUBLIC_ID =
-        "-//Howard Lewis Ship//Tapestry Specification 1.4//EN";
+        "-//Apache Software Foundation//Tapestry Specification 1.4//EN";
 
     /**
      *  Like modified property name, but allows periods in the name as

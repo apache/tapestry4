@@ -2,8 +2,8 @@
 <!-- $Id$ -->
 
 <!DOCTYPE component-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
 <component-specification class="net.sf.tapestry.BaseComponent" 
 	allow-body="no" 
@@ -20,6 +20,6 @@
 	  <inherited-binding name="alt" parameter-name="description"/>
 	</component>
 	
-	<private-asset name="info" resource-path="/net/sf/tapestry/contrib/inspector/info.gif"/>
+	<private-asset name="info" resource-path="info.gif"/>
 	
 </component-specification>

@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <!--$Id$-->
 <!DOCTYPE application PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
-<application name="Tapestry Component Workbench" 
-	engine-class="net.sf.tapestry.engine.SimpleEngine">
+<application name="Tapestry Component Workbench">
   <property name="net.sf.tapestry.visit-class">tutorial.workbench.Visit</property>
   
   <service name="home" class="tutorial.workbench.WorkbenchHomeService"/>
@@ -33,9 +32,9 @@
   <page name="ExceptionTab" specification-path="/tutorial/workbench/ExceptionTab.jwc"/>
   <page name="ErrorFest" specification-path="/tutorial/workbench/ErrorFest.jwc"/>
 
-  <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
-  <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
-  <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>
-  <component-alias type="Invalid$Component" specification-path="/it/just/doesnt/matter/Invalid.jwc"/>
+  <component-type type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
+  <component-type type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
+  <component-type type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>
+  <component-type type="Invalid$Component" specification-path="/it/just/doesnt/matter/Invalid.jwc"/>
   
 </application>
