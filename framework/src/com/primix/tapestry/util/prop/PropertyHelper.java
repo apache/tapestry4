@@ -98,6 +98,13 @@ public class PropertyHelper
 
 	public final static char PATH_SEPERATOR = '.';
 
+    /**
+     * A {@link StringSplitter} used for parsing apart property paths.
+     *
+     */
+
+    private static final StringSplitter splitter = new StringSplitter(PATH_SEPERATOR);
+
 	private static final int MAP_SIZE = 7;
 
 	protected PropertyHelper(Class beanClass)
@@ -142,7 +149,8 @@ public class PropertyHelper
 	*  JavaBean class.
 	*
 	*  <p>Finding the right helper class involves a sequential lookup, first for an
-	*  exact match, then for an exact match on the superclass, etc.  If not specific
+	*  exact match, then for an exact match on the superclass, the a search
+	*  by interface.  If no specific
 	*  match is found, then <code>PropertyHelper</code> itself is used, which is
 	*  the most typical case.
 	*
@@ -342,38 +350,65 @@ public class PropertyHelper
 		return result;
 	}
 
+    /**
+     *  Returns the value of the named property for the given object.
+     *
+     *  <p>propertyName must be a simple property name, not a path,
+     *  use {@link #getPath(Object,String)} to use a property path.
+     *
+     */
+
+    public Object get(Object object, String propertyName)
+    {
+    	IPropertyAccessor accessor;
+
+    	// Get the helper for the current object.
+    	// Get the accessor for the property to access
+    	// within the current object.  Get the new
+    	// current object from it.
+
+    	accessor = getAccessor(object, propertyName);
+    	if (accessor == null)
+    		throw new MissingPropertyException(object, propertyName);
+
+    	return accessor.get(object);
+    }
+
 	/**
 	*  Gets the value of a property from the given object.
-	*  The property name may be a nested property, or
-	*  a simple one.
+    *  Splits the propertyPath into an array of properties,
+    *  and invokes {@link #getPath(Object,String[]}.
 	*
 	*  @param object The object to retrieve a property from.
-	*  @param propertyPath the name of the property to get,
-	*  or a list of properties, seperated by periods.
-	*
+	*  @param propertyPath a list of properties to get, seperated
+    *  by periods
 	*/
 
-	public Object get(Object object, String propertyPath)
+	public Object getPath(Object object, String propertyPath)
 	{
+        return getPath(object, splitter.splitToArray(propertyPath));
+	}
+
+    /**
+     * Gets the object, using a pre-split property path.
+     *
+     */
+
+    public Object getPath(Object object, String[] propertyPath)
+    {
 		Object current;
 		PropertyHelper helper;
 		IPropertyAccessor accessor;
 		String propertyName;
-		StringSplitter splitter;
-		String[] properties;
 		int i;
-
-		splitter = new StringSplitter(PATH_SEPERATOR);
-
-		properties = splitter.splitToArray(propertyPath);
 
 		current = object;
 		helper = this;
 
-		for (i = 0; i < properties.length; )
+		for (i = 0; i < propertyPath.length; )
 		{
 
-			propertyName = properties[i];
+			propertyName = propertyPath[i];
 
 			// Get the helper for the current object.
 			// Get the accessor for the property to access
@@ -383,7 +418,7 @@ public class PropertyHelper
 			accessor = helper.getAccessor(current, propertyName);
 
 			if (accessor == null)
-				throw new MissingPropertyException(current, propertyName);
+				throw new MissingPropertyException(object, buildPath(propertyPath), current, propertyName);
 
 			try
 			{
@@ -391,10 +426,10 @@ public class PropertyHelper
 			}
 			catch (MissingAccessorException e)
 			{
-				throw new MissingAccessorException(object, propertyPath, current, propertyName);
+				throw new MissingAccessorException(object, buildPath(propertyPath), current, propertyName);
 			}
 
-			if (++i < properties.length)
+			if (++i < propertyPath.length)
 				helper = forClass(current.getClass());
 		}
 
@@ -445,42 +480,72 @@ public class PropertyHelper
 
 		registry.put(beanClass, helperClass);
 	}
+
+    /**
+     *  Sets the value of a property of the named object.
+     *  propertyName must be a simple propertyName, not a property path
+     *  (use {@link #setPath(Object,String,Object)} instead.
+     *
+     *  @param object the object to change
+     *  @param propertyName the name of the property to change
+     *  @param value the value to assign to the property
+     */
+
+    public void set(Object object, String propertyName, Object value)
+    {
+        IPropertyAccessor accessor;
+
+        accessor = getAccessor(object, propertyName);
+        if (accessor == null)
+        	throw new MissingPropertyException(object, propertyName);
+
+        accessor.set(object, value);
+
+    }
+
+    /**
+     *  Changes the value of a some bean's property, by following a property
+     *  path.  Splits the propertyPath and invokes
+     *  {@link #setPath(Object,String[],Object)}.
+     *
+     */
+
+    public void setPath(Object object, String propertyPath, Object value)
+    {
+        setPath(object, splitter.splitToArray(propertyPath), value);
+    }
+
 	/**
-	*  Changes the value of one of a bean's properties.
-	*  In the simple case, nestedName is simply the name of a
-	*  property of the target object.
-	*
-	*  <p>Where nestedName really is a nested name, it is more
-	*  complicated.  This method navigates through the
-	*  properties (much like get), the actual property change
-	*  only affects the final property in the nested name.
+	*  Changes the value of one of a bean's properties.  For all but the
+    *  last property in the path, this works like
+    *  just like {@link #getPath(Object,String[]), since the goal for those
+    *  properties is to traverse to the correct object.
+    *
+    *  <p>On the final property in the path, we update instead of reading,
+    *  just like {@link #set(Object,String,Object)}.
+    *
 	*
 	*/
 
-	public void set(Object object, String propertyPath, Object value)
+	public void setPath(Object object, String[] propertyPath, Object value)
 	{
 		Object current;
 		PropertyHelper helper;
 		IPropertyAccessor accessor;
 		String propertyName;
-		StringSplitter splitter;
-		String[] properties;
 		int i;
-
-		splitter = new StringSplitter(PATH_SEPERATOR);
-
-		properties = splitter.splitToArray(propertyPath);
 
 		current = object;
 		helper = this;
 
-		for (i = 0; i < properties.length - 1; i++)
+		for (i = 0; i < propertyPath.length - 1; i++)
 		{	
-			propertyName = properties[i];
+			propertyName = propertyPath[i];
 
 			accessor = helper.getAccessor(current, propertyName);
 			if (accessor == null)
-				throw new MissingAccessorException(object, propertyPath, current, propertyName);
+				throw new MissingPropertyException(object, buildPath(propertyPath), 
+				    current, propertyName);
 
 			// This property is somewhere in the middle
 			// of the nested property name.  Work through
@@ -494,7 +559,7 @@ public class PropertyHelper
 		// Get the right accessor for the last property named, which is the
 		// property to set.
 
-		propertyName = properties[properties.length - 1];
+		propertyName = propertyPath[propertyPath.length - 1];
 
 		accessor = helper.getAccessor(current, propertyName);
 
@@ -506,7 +571,8 @@ public class PropertyHelper
 		}
 		catch (MissingAccessorException e)
 		{
-			throw new MissingAccessorException(object, propertyPath, current, propertyName);
+			throw new MissingAccessorException(object, buildPath(propertyPath), 
+			    current, propertyName);
 		}
 
 
@@ -522,6 +588,31 @@ public class PropertyHelper
 
 		return buffer.toString();
 	}
+
+    /**
+     *  Used with some error messages to reconstruct a property path
+     *  from its split state.
+     *
+     */
+
+    private String buildPath(String[] path)
+    {
+        StringBuffer buffer;
+
+        if (path.length == 1)
+            return path[0];
+
+        buffer = new StringBuffer();
+        for (int i = 0; i < path.length; i++)
+        {
+            if (i > 0)
+                buffer.append(PATH_SEPERATOR);
+
+            buffer.append(path[i]);
+        }
+
+        return buffer.toString();
+    }
 }
 
 
