@@ -17,7 +17,7 @@ Tbis HTML document provides a base template for Component Reference pages.
 <!-- $Id$ --> 
 <html>
 <head>
-<title>contrib:TablePages</title>
+<title>contrib:TableFormPages</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -25,10 +25,10 @@ Tbis HTML document provides a base template for Component Reference pages.
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
   <!-- Previous component in alphabetical order. -->
-  <td align="left"><A href="contrib.TableFormRows.html"><IMG alt="contrib:TableFormRows" src="common-images/prev.png"></a></td>  
+  <td align="left"><A href="contrib.TableColumns.html"><IMG alt="contrib:TableColumns" src="common-images/prev.png"></a></td>  
   <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
   <!-- Next component in alphabetical order. -->
-  <td align="right"><a href="contrib.TableRows.html"><img alt="contrib:TableRows" src="common-images/next.png"></a></td>  
+  <td align="right"><a href="contrib.TableFormRows.html"><img alt="contrib:TableFormRows" src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -41,11 +41,11 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td>
   <table>
    <tr>
-    <td><font size="+2"><b>contrib:TablePages</b></font></td>
+    <td><font size="+2"><b>contrib:TableFormPages</b></font></td>
    </tr>
    <tr>
     <td>
-     <A href="../api/org/apache/tapestry/contrib/table/components/TablePages.html">org.apache.tapestry.contrib.table.components.TablePages</a>
+     <A href="../api/org/apache/tapestry/contrib/table/components/TableFormPages.html">org.apache.tapestry.contrib.table.components.TableFormPages</a>
     </td>
    </tr>
   </table>
@@ -79,11 +79,14 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td colspan="2">
   <b>Description</b>
   <br> 
- A low level Table component that renders the pages in the table.
+ A version of <A href="contrib.TablePages.html">TablePages</a> that is designed for 
+ operation in a form.
+ It is a low level Table component that renders the pages in the table.
  This component must be wrapped by <A HREF="../api/org/apache/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>.
  <p>
  The component generates a list of pages in the Table centered around the 
- current one and allows you to navigate to other pages.
+ current one and allows you to navigate to other pages. The links it generates
+ submit the form and thus allow its data to be preserved.
 
  </td>
 </tr>
@@ -94,9 +97,12 @@ Tbis HTML document provides a base template for Component Reference pages.
   <br>
   <A href="contrib.Table.html">Table</a>,
   <A href="contrib.TableColumns.html">TableColumns</a>, 
+  <A href="contrib.TablePages.html">TablePages</a>,
   <A href="contrib.TableRows.html">TableRows</a>,
   <A href="contrib.TableValues.html">TableValues</a>,
   <A href="contrib.TableView.html">TableView</a>
+  <A href="contrib.FormTable.html">FormTable</a>,
+  <A href="contrib.TableFormRows.html">TableFormRows</a>
  </td>
 </tr>
 

@@ -69,9 +69,130 @@ Tbis HTML document provides a base template for Component Reference pages.
   <br> 
  A low level Table component that wraps all other low level Table components.
  This component carries the <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A>
- that is used by the other Table components. Please see the documentation of
- <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A> if you need to know more
- about how a table is represented.
+ that is used by the other Table components. 
+ The information that will be displayed can be provided either via 
+ the <code>source</code> and <code>columns</code> parameters,
+ or via the <code>tableModel</code> parameters.
+ <p></p>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+   <b>Providing the data</b>
+
+<p>
+There are many ways to provide the component with the data it has to render, 
+but here are the three major ones:
+
+<ol>
+<li> The data is passed to the <code>source</code> parameter in the form of an array, 
+a collection, or an iterator, and the table columns are defined using the 
+<code>columns</code> parameter (see further for details). 
+Both of these parameters will be evaluated at every request by default, 
+so changes in the data or the table columns will be displayed immediately.
+<p>
+The example below uses this method.
+<p>
+This is the easiest and most straightforward approach. It has one performance limitation, 
+however - if the table is sorting the data according to a given column, 
+the sorting will be performed at every request. 
+The next methods provide ways to resolve this possible performance issue.
+<p></p>
+    
+<li> The data is passed to the <code>source</code> parameter via an object that
+implements the <A HREF="../api/org/apache/tapestry/contrib/table/model/IBasicTableModel.html"><CODE>IBasicTableModel</CODE></A>
+interface. Through that interface you are given the sorting column (if any) and 
+the numbers of the items that will be displayed on the current page. 
+You then need to provide the component with the corresponding data.
+<p>
+This method allows you to perform the sorting in the database and load only the data 
+that will be displayed on the current page 
+(e.g. by using the ORDER BY, LIMIT, and OFFSET clauses in SQL)
+and hence it could be far more efficient.
+<p></p>
+    
+<li> All of the information (data, columns, state) is packaged in an
+<A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A>
+and is passed to the <code>tableModel</code> parameter.
+<p>
+This approach allows greatest flexibility, but is recommended only for advanced users of the Table components. 
+    
+</ol>
+
+ <p></p>
+ </td>
+</tr>
+
+
+<tr>
+ <td colspan="2">
+   <b>Defining the columns</b>
+
+<p>
+If you define the table columns using the <code>columns</code> parameter, you can either
+provide a list of <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></A>
+objects, each defining a column in the table, or you can define the columns using 
+a string that describes each column. 
+<p>
+Please see the example below as a demonstration of the use of the latter approach.
+<p>
+The string describing the columns must be formatted in the following way:
+<ul>
+    <li>The column definitions in the string are separated by commas
+        <p>
+    <li>Each column definition must be of one of the following types:<p>
+        <dl>
+            <dd>id</dd>
+            <dd>id:expression</dd>
+            <dd>id:description:expression</dd>
+        </dl>
+        <br>
+        Here the <b>id</b> defines the identification of the column, the <b>expression</b> is an
+        OGNL expression that extracts the column value from the row object, and <b>description</b>
+        is the title of the column if it is not defined otherwise.
+        <p>
+        Each column definition may be prefixed by the <b>!</b> character, 
+        which identifies the column as non-sortable.
+        <p>
+        If defined, a Block with a name that is starts with the column id and 
+        ends with <i>ColumnValue</i> will be used to render the column values.
+        Similarly, a Block with a name that starts with the column id and 
+        ends with <i>ColumnHeader</i> will be used to render the column headers.
+        <p>
+        Finally, the title of the column will be taken from translation strings of the component
+        by using the column id as a key.
+        <p>
+        Please see the <SPAN class=code>LocaleSelection</SPAN> component for examples.
+        <p>
+    <li>A column definition may also be of the type
+        <p>
+        <dl>
+            <dd>=expression</dd>
+        </dl>
+        <br>
+        in which case it identifies an OGNL expression that returns an 
+        <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></A>
+        object defining the column.
+        <p>
+    <li>The full description string may be prefixed by the <b>*</b> character,
+        which means that the table is to be rendered within a form, and the 
+        column headers must submit the form if they are clickable (i.e. if the column is sortable).
+</ul>
+<p>
+Here is an example of the use of a description string to define columns:
+<pre>
+  columns="locale:toString(), =currencyColumn, verbosity:Verbosity:currentRowVerbosity, !delete"
+</pre>
+    
+ <p></p>
+ </td>
+</tr>
+
+ 
+<tr>
+ <td colspan="2"> 
+   <b>Saving the state in the session</b>
  <p>
  This component also handles the saving of the state of the model using an 
  <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
@@ -90,14 +211,19 @@ Tbis HTML document provides a base template for Component Reference pages.
  to load the persistent state.
  <li>The table model is recreated using the 
  <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A> that
- could be supplied using the tableSessionStateManager binding 
- (but has a default value and is therefore not required).
+ could be supplied using the tableSessionStateManager binding. 
+ This parameter has a default value and is therefore not required. The default implementation
+ stores only the Table state (sorting column and direction, as well as current page) if the
+ data is provided using the source and columns parameters, and stores the whole table model
+ if it is provided using the tableModel parameter.
  <li>If the <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
  returns null, then a table model is taken from the tableModel binding. Thus, if
  the <A HREF="../api/org/apache/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
  is used, the table model would be taken from the tableModel binding every time.
+ <li>If the tableModel parameter is not bound or returns null, the table model is generated
+ from the contents of the source and columns parameters.
  </ul>
- Just before the rendering phase the persistent state of the model is saved in
+ At the end of the rewind phase the persistent state of the model is saved in
  the session. This process occurs in reverse:
  <ul>
  <li>The persistent state of the model is taken via the 
@@ -139,23 +265,52 @@ Tbis HTML document provides a base template for Component Reference pages.
     <th>Default</th>
     <th>Description</th>
    </tr>
+
+ <tr>
+  <td>source</td>
+  <td><code><A HREF="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/Object.html">Object</A>[]</code><br>
+      <code><A HREF="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Collection.html">Collection</A></code><br>
+      <code><A HREF="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Iterator.html">Iterator</A></code><br>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/IBasicTableModel.html"><CODE>IBasicTableModel</CODE></A>
+  </td>
+  <td>in</td>
+  <td rowspan="3">You must provide either both <code>source</code> and <code>columns</code> parameters 
+      or the <code>tableModel</code> parameter</td>
+  <td>&nbsp;</td>
+  <td align="left">
+    The data to be displayed by the component. This parameter must be used 
+    in combination with the <code>columns</code> parameter. 
+    The parameter must be an array of values, a collection, an iterator, 
+    or an object implementing the IBasicTableModel interface.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>columns</td>
+  <td>
+      <code><A HREF="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/String.html">String</A></code><br>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableColumnModel.html"><code>ITableColumnModel</code></A><br>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableColumn.html"><code>ITableColumn[]</code></A><br>
+      <code><A HREF="http://java.sun.com/j2se/1.4.2/docs/api/java/util/List.html">List</A></code><br>
+      <code><A HREF="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Iterator.html">Iterator</A></code>
+  </td>
+  <td>in</td>
+  <td>&nbsp;</td>
+  <td align="left">
+    The table columns to be displayed. 
+    The parameter must be an array, a list, or an Iterator of ITableColumn objects,
+    an ITableColumnModel, or a String describing the columns (see documentation).
+  </td> 
+ </tr>
+
  <tr>
   <td>tableModel</td>
   <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A></td>
   <td>in</td>
-  <td>yes</td>
   <td>&nbsp;</td>
-  <td align="left">The TableModel to be used to render the table. 
-      This binding is typically used only once at the beginning and then the 
-      component stores the model in the session state. 
-      <p>If you want the Table to read the model every time you can use
-      a session state manager such as 
-      <A HREF="../api/org/apache/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
-      that will force it to get the TableModel from this binding every time.
-      If you do this, however, you will be responsible for saving the state of 
-      the table yourself.
-      <p> You can also call the reset() method to force the Table to abandon
-      its old model and reload a new one.
+  <td align="left">The <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A> to be used to render the table. 
+      The model contains all of the information needed to render the table and gives greatest flexibility, 
+      but it may be harder to implement than simply using the <code>source</code> and <code>columns</code> parameters. 
   </td> 
  </tr>
 
@@ -164,18 +319,16 @@ Tbis HTML document provides a base template for Component Reference pages.
   <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A></td>
   <td>in</td>
   <td>no</td>
-  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A></td>
+  <td>A custom session state manager that reloads the data at each request if it is provided
+      via the <code>source</code> and <code>columns</code> parameters or stores all 
+      of it in the session if it is provided via the <code>tableModel</code> parameter</td>
   <td align="left">This is the session state manager that will control what part of the 
       table model will be saved in the session state. 
-      It is then used to recreate the table model from
-      using what was saved in the session. By default, the 
-      <A HREF="../api/org/apache/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A>
-      is used, which just saves the entire model into the session.
-      This behaviour may not be appropriate when the data is a lot or it is not
-      <A HREF="http://java.sun.com/products/jdk/1.2/docs/api/java/io/Serializable.html"><CODE>Serializable</CODE></A>.
+      It is then used to recreate the table model by
+      using what was saved in the session. 
       <p> You can use one of the stock implementations of  
       <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
-      to determine the session state behaviour, or you can just define your own.
+      to determine the session state behaviour, or you can define your own.
   </td> 
  </tr>
 
@@ -189,6 +342,20 @@ Tbis HTML document provides a base template for Component Reference pages.
       will be saved in the session. If this parameter is null, then the state
       will be saved as a persistent property. If it is not null, then the methods
       of the interface will be used to save and load the state.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>columnSettingsContainer</td>
+  <td><A HREF="../api/org/apache/tapestry/IComponent.html"><CODE>IComponent</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td>container</td>
+  <td align="left">
+      This parameter is used only if the table columns are defined as a string in the <code>columns</code> parameter,
+      The provided component may define Blocks with particular names that will be used
+      as the header and value renderers of the corresponding columns (see documentation above),
+      and define the display names of the columns in its translation file(s).
   </td> 
  </tr>
 
