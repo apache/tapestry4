@@ -52,7 +52,7 @@ import com.primix.foundation.ejb.*;
 public class OperationsBean implements SessionBean
 {
 	private SessionContext context;
-	private Context environment;
+	private transient Context environment;
 	private transient IBookHome bookHome;
 	private transient IPersonHome personHome;
 	private transient IPublisherHome publisherHome;
@@ -65,7 +65,7 @@ public class OperationsBean implements SessionBean
 	 *
 	 */
 	 
-	private DataSource dataSource;
+	private transient DataSource dataSource;
 	
 	/**
 	 *  Sets up the bean.  Locates the {@link DataSource} for the bean

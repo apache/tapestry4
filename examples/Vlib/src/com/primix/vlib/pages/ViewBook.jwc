@@ -108,19 +108,11 @@
 		</component>
 		<component>
 			<id>borrow</id>
-			<type>Direct</type>
+			<type>Borrow</type>
 			<bindings>
 				<binding>
-					<name>listener</name>
-					<property-path>visit.borrowListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
-					<property-path>book.primaryKey</property-path>
-				</binding>
-				<binding>
-					<name>enabled</name>
-					<property-path>enableBorrow</property-path>
+					<name>book</name>
+					<property-path>book</property-path>
 				</binding>
 			</bindings>
 		</component>

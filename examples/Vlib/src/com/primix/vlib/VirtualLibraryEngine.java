@@ -59,6 +59,15 @@ import java.net.*;
 public class VirtualLibraryEngine
 extends SimpleEngine
 {
+	public VirtualLibraryEngine()
+	{
+		super();
+		
+		debugEnabled = Boolean.getBoolean("com.primix.vlib.debug-enabled");
+	}
+	
+	private transient boolean debugEnabled;
+	
     private transient boolean killSession;
 
 	/**
@@ -207,4 +216,8 @@ extends SimpleEngine
         killSession = true;
     }
 
+	public boolean isDebugEnabled()
+	{
+		return debugEnabled;
+	}
 }

@@ -1,3 +1,9 @@
+* Jan 23 2001 hship
+
+Optimize VlibBeans for performance testing.
+Remove the Inspector button from the Vlib border by default (it must be enabled).
+Hide the "[Borrow]" button on the ViewBook page intead of disabling it.
+
 * Jan 18 2001 hship
 
 Update portions of the JSP Vlib to match the Tapestry Vlib.

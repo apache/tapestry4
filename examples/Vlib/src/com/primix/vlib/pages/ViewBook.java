@@ -106,24 +106,4 @@ implements IExternalPage
 		return !ownerPK.equals(holderPK);
 	}
 	
-	/**
-	 *  Enable borrow only if logged in AND not already holding the book.
-	 *
-	 */
-	 
-	public boolean getEnableBorrow()
-	{
-		Integer userPK;
-		Integer holderPK;
-		
-        Visit visit = (Visit)getVisit();
-
-		if (!visit.isUserLoggedIn())
-			return false;
-		
-		userPK = visit.getUserPK();
-		holderPK = book.getHolderPrimaryKey();
-		
-		return !userPK.equals(holderPK);
-	}
 }
