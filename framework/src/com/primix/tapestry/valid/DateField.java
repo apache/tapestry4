@@ -80,6 +80,7 @@ import java.text.*;
  *      <td>java.util.Date</td>
  *      <td>R</td>
  *      <td>no</td>
+ *		<td>&nbsp;</td>
  *      <td>If provided, the date entered must be less than or equal to the
  *  provided maximum date.</td>
  * </tr>
@@ -95,6 +96,15 @@ import java.text.*;
  *  </tr>
  *
  *  <tr>
+ *		<td>format</td>
+ *		<td>{@link DateFormat}</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>Default format <code>MM/dd/yyyy</code></td>
+ *		<td>The format used to display and parse dates.</td>
+ *	</tr>
+ *
+ *  <tr>
  *      <td>delegate</td>
  *      <td>{@link IValidationDelegate}</td>
  *      <td>R</td>
@@ -108,6 +118,12 @@ import java.text.*;
  *  <p>Informal parameters are allowed, but are applied to
  *  the underlying {@link TextField}.  A body is not allowed.
  *
+ *  <p>As of release 0.2.10, it is possible to set the 
+ *  {@link DateFormat format} used for
+ *  displaying and enterring dates.  However, you still can't enter
+ *  a date prior to year 1000 or use a non-gregorian calendar.
+ *  Still, this is sufficient for most purposes.
+ *
  *  @author Howard Ship
  *  @version $Id$
  *
@@ -119,10 +135,10 @@ extends AbstractValidatingTextField
     private IBinding dateBinding;
     private IBinding minimumBinding;
     private IBinding maximumBinding;
+	
+	private IBinding formatBinding;
+	private DateFormat format;
 
-    // This is shared by all instances.
-
-    private static DateFormat format;
     private Calendar calendar;
 
     public IBinding getDateBinding()
@@ -155,6 +171,15 @@ extends AbstractValidatingTextField
         maximumBinding = value;
     }
 
+	public void setFormatBinding(IBinding value)
+	{
+		formatBinding = value;
+	}
+	
+	public IBinding getFormatBinding()
+	{
+		return formatBinding;
+	}
 
     protected String read()
     {
@@ -168,8 +193,13 @@ extends AbstractValidatingTextField
     }
 
     /**
-     *  Returns the {@link DateFormat} used to render and parse dates.  This is <em>not</em>
-     *  locale specific (yet), it is always MM/dd/yyyy.
+     *  Returns the {@link DateFormat} used to render and parse dates. 
+	 *  The format parameter, if non null, is read.  If the format parameter
+	 *  is not bound (or returns null), then a default format
+	 *  <code>MM/dd/yyyy</code> (with lenient set to false) is returned.
+	 *
+	 *  <p>Once determined, the format is cached for the remainder of the
+	 *  request cycle (until {@link #reset()} is invoked).
      *
      */
 
@@ -177,13 +207,32 @@ extends AbstractValidatingTextField
     {
         if (format == null)
         {
-            format = new SimpleDateFormat("MM/dd/yyyy");
-            format.setLenient(false);
+			if (formatBinding != null)
+				format = (DateFormat)formatBinding.getObject("format", DateFormat.class);
+
+			if (format == null)
+			{
+            	format = new SimpleDateFormat("MM/dd/yyyy");
+            	format.setLenient(false);
+			}
         }
 
         return format;
     }
 
+	/**
+	 *  Clears the format property, then invokes the super implementation.
+	 *
+	 *  @since 0.2.10
+	 */
+	 
+	public void reset()
+	{
+		format = null;
+		
+		super.reset();
+	}
+	
     protected void update(String value)
     {
         Date date;                   

@@ -126,7 +126,8 @@ implements ILifecycle, IValidatingTextField
 	}
 
 	/**
-	*  Gets and formats a localized string from the <code>com.worldlink.presentation.component.ValidationStrings</code>
+	*  Gets and formats a localized string from the 
+	*  <code>com.primix.tapestry.components.html.valid.ValidationStrings</code>
 	*  property bundle.
 	*
 	*/

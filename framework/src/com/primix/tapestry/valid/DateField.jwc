@@ -31,6 +31,10 @@
 		<parameter>
 			<name>required</name>
 		</parameter>
+		<parameter>
+			<name>format</name>
+			<java-type>java.text.DateFormat</java-type>
+		</parameter>
 	</parameters>
 	<components>
 		<component>
