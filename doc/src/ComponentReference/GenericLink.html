@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>GenericLink</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/link/GenericLink.html">
+		 net.sf.tapestry.link.GenericLink</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td><a href="GenericLink.html"><font color="blue">Generic Link</font></a></td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Creates a HTML &lt;a&gt; hyperlink for an arbitrary URL. 
+  <p>
+  Although a GenericLink can be 
+  accomplished using an <a href="Any.html">Any</a> component, a GenericLink is 
+  more flexible: it can be disabled, like a <a href="Direct.html">Direct</a> or 
+  <a href="Action.html">Action</a> and can also wrap around 
+  <a href="Rollover.html">Rollover</a> components. GenericLinks are often 
+  used with javascript: URLs to perform client-side scripting.
+  <p>
+  This component may wrap around other components and static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Action.html">Action</a>, 
+  <a href="Direct.html">Direct</a>,
+  <a href="Page.html">Page</a>,
+  <a href="Rollover.html">Rollover</a>,
+  <a href="Service.html">Service</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>href</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The URL to trigger when the link is clicked. This is often of the form:
+    <br>&lt;a href="javascript:functionName('param')"&gt;
+    </td>
+	</tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>Controls whether the link is produced. If disabled, the portion of the 
+    template the link surrounds is still rendered, but not the link itself.</td>
+	</tr>
+	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: none
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="Frame.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="Hidden.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
