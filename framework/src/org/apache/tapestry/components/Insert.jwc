@@ -26,7 +26,7 @@
   
   <parameter name="raw" type="boolean" direction="in">
   	<description>
-  	If false (the default), then invalid HTML characters in the value are escaped.  If
+  	If false (the default), then HTML characters in the value are escaped.  If
   	true, then value is emitted exactly as is.
   	</description>
   </parameter>
