@@ -64,7 +64,7 @@ JavaServer Page that displays part of a shopping cart.
 <para>Most of the text is static HTML that is sent directly back to the client web browser.  
 The <emphasis>emphasised</> text identifies scripting code.</>
 
-<para>The first large block is used to extract the user name from the <classname>HttpSession</>, 
+<para>The first large block is used to extract the user name from the &HttpSession;, 
 a sort of per-client scratch pad (it is part of the Java Servlet API; 
 other systems have some similar construct).  
 The second block is used to insert the value of an expression into the HTML.  
@@ -134,7 +134,7 @@ the <varname>insertUserName</> component is and what it does:
 	<callout arearefs="intro.ex.co.value-binding">
 		<para>
 		Bindings identify how the component gets the data it needs.  In this example, 
-		the <classname>Insert</> component requires a binding for its <varname>value</>
+		the &Insert; component requires a binding for its <varname>value</>
 		parameter, which is what will be inserted into the response HTML page.  This
 		type of binding (there are others), extracts the userName property from the
 		visit object (a central, application-defined object used to store most
@@ -145,7 +145,7 @@ the <varname>insertUserName</> component is and what it does:
 </informalexample>
 
 <para>Tapestry really excels when it is doing something 
-more complicated that simply producing output.  
+more complicated than simply producing output.  
 For example, let's assume that there's a checkout button that should only 
 be enabled when the user has items in their shopping cart.</>
 
@@ -175,7 +175,7 @@ be enabled when the user has items in their shopping cart.</>
 <para>This assumes that <varname>applicationObject</> exists to 
 determine whether the user has entered any checkout items.  
 Presumably, this object was provided by a controlling servlet, or placed into the 
-<classname>HttpSession</>.
+&HttpSession;.
 </para>
 
 <para>
@@ -202,11 +202,15 @@ describes the configuration of the page and all components on the page; an excer
   &lt;binding name="disabled" property-path="assets.checkout-disabled"/&gt; 
   &lt;static-binding name="alt"&gt;Checkout&lt;/static-binding&gt;
 &lt;/component&gt;
+
+&lt;external-asset name="checkout" URL="/images/Checkout.gif"/&gt; <co id="intro.ex2.co.checkout-asset">
+&lt;external-asset name="checkout-disabled" URL="/images/Checkout-disabled.gif"/&gt;
+
 </programlisting>
 <calloutlist>
   <callout arearefs="intro.ex2.co.checkoutLink">
     <para>
-    Component <varname>checkoutLink</> is a <classname>Page</>, a component that creates
+    Component <varname>checkoutLink</> is a &Page;, a component that creates
     a link to another page in the application.  Tapestry takes care of generating the
     appropriate URL.
     </>
@@ -219,13 +223,20 @@ describes the configuration of the page and all components on the page; an excer
   </callout>
   <callout arearefs="intro.ex2.co.Rollover">
     <para>
-    A <classname>Rollover</> component inserts an image; it must be inside some kind of
-    link component (such as the <classname>Page</>) and is sensitive to whether the link
+    A &Rollover; component inserts an image; it must be inside some kind of
+    link component (such as the &Page;) and is sensitive to whether the link
     is enabled or disabled; inserting a different image when disabled.  Not shown here
-    is the ability of the <varname>Rollover</> component to 
+    is the ability of the &Rollover; component to 
     generate dynamic mouse over effects as well.
     </>
   </callout>
+  <callout arearefs="intro.ex2.co.checkout-asset">
+  	<para>
+  	Tapestry uses an abstraction, <link linkend="components.assets">assets</link>,
+  	to identify images, stylesheets
+  	and other resources.  The &Rollover; component wants a reference to
+  	an asset, not a URL.
+  	</>
 </calloutlist>
 </informalexample>
 

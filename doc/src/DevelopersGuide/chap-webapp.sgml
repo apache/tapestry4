@@ -78,7 +78,7 @@ and information about the user (once logged in).
 
 <para>
 Both the engine and the visit are stored persistently between request cycles, inside the 
-<classname>HttpSession</> object.
+&HttpSession; object.
 </>
 
 <para>

@@ -21,6 +21,34 @@
 <!ENTITY start-listing "<informalexample><programlisting>">
 <!ENTITY end-listing "</programlisting></informalexample>">
 
+<!-- Common classes and components -->
+
+<!ENTITY HttpSession "<classname>HttpSession</>">
+<!ENTITY Action '<link linkend="builtin.Action"><classname>Action</classname></link>'>
+<!ENTITY Form '<link linkend="builtin.Form"><classname>Form</classname></link>'>
+<!ENTITY Page '<link linkend="builtin.Page"><classname>Page</classname></link>'>
+<!ENTITY Direct '<link linkend="builtin.Direct"><classname>Direct</classname></link>'>
+<!ENTITY InsertBlock '<link linkend="builtin.InsertBlock"><classname>InsertBlock</classname></link>'>
+<!ENTITY TextField '<link linkend="builtin.TextField"><classname>TextField</classname></link>'>
+<!ENTITY PropertySelection '<link linkend="builtin.PropertySelection"><classname>PropertySelection</classname></link>'>
+<!ENTITY Checkbox '<link linkend="builtin.Checkbox"><classname>Checkbox</classname></link>'>
+<!ENTITY Foreach '<link linkend="builtin.Foreach"><classname>Foreach</classname></link>'>
+<!ENTITY Conditional '<link linkend="builtin.Conditional"><classname>Conditional</classname></link>'>
+<!ENTITY Rollover  '<link linkend="builtin.Rollover"><classname>Rollover</classname></link>'>
+<!ENTITY Insert '<link linkend="builtin.Insert"><classname>Insert</classname></link>'>
+<!ENTITY Image '<link linkend="builtin.InsertWrapped"><classname>Image</classname></link>'>
+<!ENTITY InsertWrapped 
+	'<link linkend="builtin.InsertWrapped"><classname>InsertWrapped</classname></link>'>
+<!ENTITY Hidden '<link linkend="builtin.Hidden"><classname>Hidden</classname></link>'>
+<!ENTITY Body '<link linkend="builtin.Body"><classname>Body</classname></link>'>
+<!ENTITY Text '<link linkend="builtin.Text"><classname>Text</classname></link>'>
+<!ENTITY Radio '<link linkend="builtin.Radio"><classname>Radio</classname></link>'>
+<!ENTITY RadioGroup '<link linkend="builtin.RadioGroup"><classname>RadioGroup</classname></link>'>
+<!ENTITY ValidatingTextField 
+	'<link linkend="builtin.ValidatingTextField"><classname>ValidatingTextField</classname></link>'>
+
+<!ENTITY Log4J
+	'<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
 ]>
 
 <!-- $Id$ -->                                  
