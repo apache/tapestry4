@@ -7,7 +7,6 @@
   <parameter name="columns" java-type="java.lang.Integer"/>
   <parameter name="rows" java-type="java.lang.Integer"/>
   
-  <reserved-parameter name="cols"/>
   <reserved-parameter name="name"/>
   
 </specification>
