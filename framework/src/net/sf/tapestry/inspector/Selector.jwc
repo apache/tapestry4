@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.inspector.Selector">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.inspector.Selector">
 
   <component id="form" type="Form">
     <binding name="listener" property-path="listeners.formSubmit"/>
@@ -32,4 +35,4 @@
 
   <component id="wrapped" type="InsertWrapped"/>
 
-</specification>
+</component-specification>

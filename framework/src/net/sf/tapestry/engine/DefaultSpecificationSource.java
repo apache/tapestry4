@@ -272,15 +272,15 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     public synchronized void renderDescription(IMarkupWriter writer)
     {
-
         writer.print("DefaultSpecificationSource[");
 
         writeCacheDescription(writer, "page", _pageCache);
-        ;
         writer.beginEmpty("br");
         writer.println();
 
         writeCacheDescription(writer, "component", _componentCache);
+        writer.print("]");
+        writer.println();
     }
 
     private void writeCacheDescription(IMarkupWriter writer, String name, Map cache)
@@ -401,7 +401,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         {
             ILibrarySpecification ls = getLibrarySpecification("/net/sf/tapestry/Framework.library");
 
-            _frameworkNamespace = new Namespace(null, null, ls, this);
+            _frameworkNamespace = new Namespace(INamespace.FRAMEWORK_NAMESPACE, null, ls, this);
         }
 
         return _frameworkNamespace;

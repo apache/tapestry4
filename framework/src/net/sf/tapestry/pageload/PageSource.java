@@ -105,8 +105,6 @@ public class PageSource implements IPageSource, IRenderDescription
 
         private PageSpecificationResolver(ISpecificationSource source, String pageName)
         {
-            _namespace = source.getApplicationNamespace();
-
             int colonx = pageName.indexOf(':');
 
             if (colonx > 0)
@@ -114,7 +112,11 @@ public class PageSource implements IPageSource, IRenderDescription
                 _simplePageName = pageName.substring(colonx + 1);
                 String namespaceId = pageName.substring(0, colonx);
 
-                _namespace = source.getApplicationNamespace().getChildNamespace(namespaceId);
+
+                if (namespaceId.equals(INamespace.FRAMEWORK_NAMESPACE))
+                    _namespace = source.getFrameworkNamespace();
+                else
+                    _namespace = source.getApplicationNamespace().getChildNamespace(namespaceId);
             }
             else
             {

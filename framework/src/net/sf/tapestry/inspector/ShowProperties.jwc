@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.inspector.ShowProperties">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.inspector.ShowProperties">
 
   <bean name="persistPropertyClass" class="net.sf.tapestry.bean.EvenOdd"/>
   <bean name="propertyClass" class="net.sf.tapestry.bean.EvenOdd"/>
@@ -122,4 +125,4 @@
   
   <private-asset name="banner" resource-path="/net/sf/tapestry/inspector/PropertiesExplorer_NBanner.gif"/>
   <private-asset name="red-dot" resource-path="/net/sf/tapestry/inspector/red-dot.gif"/> 
-</specification>
+</component-specification>

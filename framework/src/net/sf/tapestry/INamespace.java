@@ -45,6 +45,13 @@ import net.sf.tapestry.util.IPropertyHolder;
 public interface INamespace
 {
     /**
+     *  Reserved name of a the implicit Framework library.
+     * 
+     **/
+    
+    public static final String FRAMEWORK_NAMESPACE = "framework";
+    
+    /**
      *  Returns an identifier for the namespace.  Identifiers
      *  are simple names (they start with a letter,
      *  and may contain letters, numbers, underscores and dashes).

@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.inspector.ViewTabs">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.inspector.ViewTabs">
+
   <component id="e" type="Foreach">
     <binding name="source" property-path="views"/>
     <binding name="value" property-path="view"/>
   </component>
+  
   <component id="select" type="Action">
     <binding name="listener" property-path="listeners.selectTab"/>
   </component>
+  
   <component id="tab" type="Rollover">
     <binding name="image" property-path="viewImage"/>
     <binding name="focus" property-path="focusImage"/>
   </component>
+  
   <component id="banner" type="Image">
     <binding name="image" property-path="bannerImage"/>
   </component>
+  
   <component id="wrapped" type="InsertWrapped"/>
+  
   <private-asset name="SPECIFICATION" resource-path="/net/sf/tapestry/inspector/Specification_Np1.gif"/>
   <private-asset name="SPECIFICATION-selected" resource-path="/net/sf/tapestry/inspector/Specification_Hp3.gif"/>
   <private-asset name="SPECIFICATION-focus" resource-path="/net/sf/tapestry/inspector/Specification_NRp2.gif"/>
@@ -42,4 +51,4 @@
   <private-asset name="LOGGING-focus" resource-path="/net/sf/tapestry/inspector/Logging_NRp2.gif"/>
   <private-asset name="LOGGING-selected-focus" resource-path="/net/sf/tapestry/inspector/Logging_HRp4.gif"/>
   <private-asset name="LOGGING-banner" resource-path="/net/sf/tapestry/inspector/Logging_NBanner.gif"/>
-</specification>
+</component-specification>

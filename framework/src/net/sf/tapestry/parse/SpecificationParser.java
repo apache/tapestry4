@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.Tapestry;
@@ -265,6 +266,25 @@ public class SpecificationParser extends AbstractDocumentParser
     public static final String EXTENSION_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     /**
+     *  Perl5 pattern for component types.  Component types are an optional
+     *  namespace prefix followed by a normal identifier.
+     * 
+     *  @since 2.2
+     **/
+
+    public static final String COMPONENT_TYPE_PATTERN = "^([a-zA-Z_](\\w|-)*:)?[a-zA-Z_](\\w|-|\\.)*$";
+
+    /**
+     *  Flag set at the start of the parse to indicate that it is a version 3 (i.e. 1.3)
+     *  or better input document.  Some validations and rules trigger off of that.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private boolean _version3 = false;
+
+    /**
      *  We can share a single map for all the XML attribute to object conversions,
      *  since the keys are unique.
      * 
@@ -449,10 +469,9 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             document = parse(new InputSource(input), resourcePath, null);
 
-            String publicId = document.getDoctype().getPublicId();
+            _version3 = checkVersion3(document);
 
-            String rootElementName =
-                publicId.equals(TAPESTRY_DTD_1_3_PUBLIC_ID) ? "component-specification" : "specification";
+            String rootElementName = _version3 ? "component-specification" : "specification";
 
             validateRootElement(document, rootElementName, resourcePath);
 
@@ -480,16 +499,13 @@ public class SpecificationParser extends AbstractDocumentParser
     public ComponentSpecification parsePageSpecification(InputStream input, String resourcePath)
         throws DocumentParseException
     {
-        Document document;
-
         try
         {
-            document = parse(new InputSource(input), resourcePath, null);
+            Document document = parse(new InputSource(input), resourcePath, null);
 
-            String publicId = document.getDoctype().getPublicId();
+            _version3 = checkVersion3(document);
 
-            String rootElementName =
-                publicId.equals(TAPESTRY_DTD_1_3_PUBLIC_ID) ? "page-specification" : "specification";
+            String rootElementName = _version3 ? "page-specification" : "specification";
 
             validateRootElement(document, rootElementName, resourcePath);
 
@@ -528,6 +544,8 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             document = parse(new InputSource(input), resourcePath, "application");
 
+            _version3 = checkVersion3(document);
+
             return convertApplicationSpecification(document, resolver);
         }
         finally
@@ -558,6 +576,8 @@ public class SpecificationParser extends AbstractDocumentParser
         try
         {
             document = parse(new InputSource(input), resourcePath, "library-specification");
+
+            _version3 = true;
 
             return convertLibrarySpecification(document, resolver);
         }
@@ -593,24 +613,18 @@ public class SpecificationParser extends AbstractDocumentParser
 
     protected String getDTDVersion(Document document)
     {
-
         String publicId = document.getDoctype().getPublicId();
 
-        String dtdVersion = null;
-
         if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID))
-        {
+            return "1.1";
 
-            dtdVersion = "1.1";
+        if (publicId.equals(TAPESTRY_DTD_1_2_PUBLIC_ID))
+            return "1.2";
 
-        }
-        else if (publicId.equals(TAPESTRY_DTD_1_2_PUBLIC_ID))
-        {
+        if (publicId.equals(TAPESTRY_DTD_1_3_PUBLIC_ID))
+            return "1.3";
 
-            dtdVersion = "1.2";
-
-        }
-        return dtdVersion;
+        return null;
     }
 
     private IApplicationSpecification convertApplicationSpecification(Document document, IResourceResolver resolver)
@@ -657,7 +671,7 @@ public class SpecificationParser extends AbstractDocumentParser
         String dtdVersion = getDTDVersion(document);
 
         specification.setDTDVersion(dtdVersion);
-        
+
         specification.setPublicId(document.getDoctype().getPublicId());
 
         specification.setResourceResolver(resolver);
@@ -678,7 +692,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 continue;
             }
 
-            if (isElement(node, "property")) 
+            if (isElement(node, "property"))
             {
                 convertProperty(specification, node);
                 continue;
@@ -719,6 +733,13 @@ public class SpecificationParser extends AbstractDocumentParser
         String id = getAttribute(node, "id");
 
         validate(id, LIBRARY_ID_PATTERN, "SpecificationParser.invalid-library-id");
+
+        if (id.equals(INamespace.FRAMEWORK_NAMESPACE))
+            throw new DocumentParseException(
+                Tapestry.getString(
+                    "SpecificationParser.framework-library-id-is-reserved",
+                    INamespace.FRAMEWORK_NAMESPACE),
+                getResourcePath());
 
         String specificationPath = getAttribute(node, "specification-path");
 
@@ -1040,6 +1061,13 @@ public class SpecificationParser extends AbstractDocumentParser
                     Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
                     getResourcePath());
 
+            // In prior versions, its more free-form, because you can specify the path to
+            // a component as well.  In version 3, you must use an alias and define it
+            // in a library.
+            
+            if (_version3)
+                validate(type, COMPONENT_TYPE_PATTERN, "SpecificationParser.invalid-component-type");
+
             c = _factory.createContainedComponent();
             c.setType(type);
         }
@@ -1138,7 +1166,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
         // As a special case, allow the exact value through (even though
         // it is not, technically, a valid asset name).
-        
+
         if (!name.equals(ITemplateSource.TEMPLATE_ASSET_NAME))
             validate(name, ASSET_NAME_PATTERN, "SpecificationParser.invalid-asset-name");
 
@@ -1266,9 +1294,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
         try
         {
-            return _patternCompiler.compile(
-                pattern,
-                Perl5Compiler.SINGLELINE_MASK);
+            return _patternCompiler.compile(pattern, Perl5Compiler.SINGLELINE_MASK);
         }
         catch (MalformedPatternException ex)
         {
@@ -1330,4 +1356,22 @@ public class SpecificationParser extends AbstractDocumentParser
 
         spec.addConfiguration(propertyName, objectValue);
     }
+
+    /**
+     *  Returns true if the DOCTYPE for the document is the 1.3 version of
+     *  the specification (or better).  This triggers some additional validation
+     *  rules.  When a later version is added, the check here will need to
+     *  be amended.
+     *   
+     *  @since 2.2
+     * 
+     **/
+
+    private boolean checkVersion3(Document document)
+    {
+        String publicId = document.getDoctype().getPublicId();
+
+        return publicId.equals(TAPESTRY_DTD_1_3_PUBLIC_ID);
+    }
+
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE library-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<library-specification>
+
+	<component-alias type="Selector" specification-path="/net/sf/tapestry/inspector/Selector.jwc"/>
+	<component-alias type="ViewTabs" specification-path="/net/sf/tapestry/inspector/ViewTabs.jwc"/>
+	<component-alias type="ShowSpecification" specification-path="/net/sf/tapestry/inspector/ShowSpecification.jwc"/>
+	<component-alias type="ShowTemplate" specification-path="/net/sf/tapestry/inspector/ShowTemplate.jwc"/>
+	<component-alias type="ShowProperties" specification-path="/net/sf/tapestry/inspector/ShowProperties.jwc"/>
+	<component-alias type="ShowEngine" specification-path="/net/sf/tapestry/inspector/ShowEngine.jwc"/>
+	<component-alias type="ShowLogging" specification-path="/net/sf/tapestry/inspector/ShowLogging.jwc"/>
+	<component-alias type="ShowDescription" specification-path="/net/sf/tapestry/inspector/ShowDescription.jwc"/>	
+	
+</library-specification>

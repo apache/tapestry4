@@ -13,6 +13,12 @@
   <page name="Palette" specification-path="/tutorial/workbench/palette/Palette.page"/>
   <page name="palette.Results" specification-path="/tutorial/workbench/palette/Results.page"/>
 
+  <!-- This duplicates the alias from the application.  There is no inheritance
+       from the application down into a library; all that's visible is what's in
+       this library, in nested libraries, and in the implicit framework library.  -->
+
+  <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
+
   <library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
    
 </library-specification>
