@@ -1,3 +1,15 @@
+* Sep 13 2001 hship
+
+framework:
+- Fix error in ShowInspector.script (to set height and width of Inspector window)
+- Make the Inspector Icon initially invisible (works in NN4, IE5, but not NN6)
+- Allow for redirections outside of Tapestry
+
+vlib:
+- Add a visible break after the Browser
+
+[ #461281 ] Redirect out of Tapestry
+
 * Sep 12 2001 hship
 
 framework:

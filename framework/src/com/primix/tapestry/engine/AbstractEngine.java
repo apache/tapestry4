@@ -977,6 +977,10 @@ public abstract class AbstractEngine
 			{
 				redirect(ex.getTargetPageName(), cycle, output, ex);
 			}
+			catch (RedirectException ex)
+			{
+				redirectOut(cycle, ex);
+			}
 			catch (StaleLinkException ex)
 			{
 				handleStaleLinkException(ex, cycle, output);
@@ -1194,7 +1198,7 @@ public abstract class AbstractEngine
 	 */
 	
 	protected void serviceDirect(IRequestCycle cycle, String[] serviceContext, String[] parameters, 
-				ResponseOutputStream output)
+			ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 	{
 		IDirect direct;
@@ -1773,4 +1777,35 @@ public abstract class AbstractEngine
 		return listeners;
 	}
 	
+	/**
+	 *  Invoked when a {@link RedirectException} is thrown during the processing of a request.
+	 *
+	 *  @throws RequestCycleException if an {@link IOException} is thrown by the redirect
+	 *
+	 *  @since 1.0.6
+	 *
+	 */
+	
+	protected void redirectOut(IRequestCycle cycle, RedirectException ex)
+		throws RequestCycleException
+	{
+		String location = ex.getLocation();
+		
+		if (CAT.isDebugEnabled())	
+			CAT.debug("Redirecting to: " + location);
+		
+		HttpServletResponse response = cycle.getRequestContext().getResponse();
+		
+		String encodedLocation = response.encodeRedirectURL(location);
+		
+		try
+		{
+			response.sendRedirect(encodedLocation);
+		}
+		catch (IOException ioEx)
+		{
+			throw new RequestCycleException("Unable to redirect to " + location + ".", null, ioEx);
+		}
+		
+	}
 }

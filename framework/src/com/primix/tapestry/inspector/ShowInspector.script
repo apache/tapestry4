@@ -53,7 +53,7 @@ function ti_positionInspector()
 	}
 	else
 	{
-	  // IE 4, 5 on PC
+	  // IE 5, 6? on PC
 	  width = document.body.clientWidth  + document.body.scrollLeft;
 	  height = document.body.clientHeight + document.body.scrollTop;
 	}
@@ -70,6 +70,7 @@ function ti_positionInspector()
     if (x != ti.oldX || y != ti.oldY)
     {
       object.moveTo(x, y);
+      object.visibility = "visible";
     }
   }
   else
@@ -84,8 +85,12 @@ function ti_positionInspector()
     	object.style.top = y + "px";
     	ti.oldY = y;
     }
+
+ 	object.style.visibility = "visible";  
   }
 
+
+    
   // Reposition it every quarter second.
   
   window.setTimeout("ti_positionInspector()", 250);
@@ -96,7 +101,7 @@ function ti_raiseInspector()
   var newWindow = window.open(
   	"<insert property-path="URL"/>",
   	"<insert property-path="windowName"/>",
-  	"titlebar,resizable,scrollbars,height=700,height=600");
+  	"titlebar,resizable,scrollbars,width=700,height=600");
   	
   newWindow.focus();
 }
