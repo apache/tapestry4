@@ -42,16 +42,17 @@
   </path>
   	  
   <target name="run" depends="compile" description="Run the test suite.">
-  	<junit printsummary="on" haltonfailure="on">
-	  <classpath refid="junit.class.path"/>
-    		
-  	  <test name="net.sf.tapestry.junit.TapestrySuite"/>
-  	</junit>
+  	<java fork="true" classname="junit.textui.TestRunner"
+		failonerror="true">
+  		<classpath refid="junit.class.path"/>
+		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
+  	</java>
   </target>
   
   <target name="gui" depends="compile" description="Run the JUnit GUI.">
-  	<java fork="true" classname="net.sf.tapestry.junit.TapestrySuite">
+  	<java fork="true" classname="junit.swingui.TestRunner">
   		<classpath refid="junit.class.path"/>
+		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
   	</java>
   	
   </target>
