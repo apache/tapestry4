@@ -58,4 +58,18 @@
     <clover-report/>
   </target>
   
+  <target name="marshall-documentation">
+    <antcall target="forrest.marshall-documentation"/>
+    
+    <property name="dtd-dir" value="${project.docs.target.dir}/dtd"/>
+    <mkdir dir="${dtd-dir}"/>
+    
+    <announce message="Copying DTDs to ${dtd-dir} ..."/>
+    
+    <copy todir="${dtd-dir}" flatten="true">
+      <fileset dir="${src.dir}" includes="**/*.dtd"/>
+    </copy>
+  </target>
+  
+  
 </project>
