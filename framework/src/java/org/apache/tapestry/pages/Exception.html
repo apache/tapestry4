@@ -27,16 +27,7 @@ An exception has occurred.
 
 <p>
 
-<span jwcid="@Describe" object="ognl:request"/>
-
-<span jwcid="@Conditional" condition="ognl:request.getSession(false) != null">
-<span jwcid="@Describe" object="ognl:request.session"/>
-</span>
-
-<span jwcid="@Describe" object="ognl:servlet"/>
-<span jwcid="@Describe" object="ognl:context"/>
-
-<span jwcid="@Delegator" delegate="ognl:systemPropertiesRenderer"/> 
+<span jwcid="@RequestDisplay"/>
 
 </body>
 </html>

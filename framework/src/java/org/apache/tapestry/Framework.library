@@ -62,6 +62,7 @@
     <component-type type="RadioGroup" specification-path="form/RadioGroup.jwc"/>
     <component-type type="RenderBlock" specification-path="components/RenderBlock.jwc"/>
     <component-type type="RenderBody" specification-path="components/RenderBody.jwc"/>
+    <component-type type="RequestDisplay" specification-path="html/RequestDisplay.jwc"/>
     <component-type type="Rollover" specification-path="html/Rollover.jwc"/>
     <component-type type="Select" specification-path="form/Select.jwc"/>
     <component-type type="ServiceLink" specification-path="link/ServiceLink.jwc"/>

@@ -37,7 +37,7 @@ public class AbsoluteURLBuilderImpl implements AbsoluteURLBuilder
 
         // Should check the length here, first.
 
-        if (URI.substring(0, 2).equals("//"))
+        if (URI.length()> 2 && URI.substring(0, 2).equals("//"))
         {
             buffer.append(scheme);
             buffer.append(':');
