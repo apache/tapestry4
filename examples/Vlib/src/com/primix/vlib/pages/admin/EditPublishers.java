@@ -133,20 +133,8 @@ public class EditPublishers
 		}
 		
 	}
-	
-	public IActionListener getFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				processForm();
-			}
-		};
-	}
-	
-	private void processForm()
+		
+	public void processForm(IRequestCycle cycle)
 	{
 		Publisher[] publishers = getPublishers();
 		List updateList = new ArrayList(publishers.length);

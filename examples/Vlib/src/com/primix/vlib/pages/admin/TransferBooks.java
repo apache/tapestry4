@@ -133,20 +133,8 @@ public class TransferBooks
 		
 		return bookQuery;
 	}
-	
-	public IActionListener getSelectFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				processSelectForm();
-			}
-		};
-	}
-	
-	private void processSelectForm()
+		
+	public void processSelectForm(IRequestCycle cycle)
 	{
 		setSelectionsOk(false);
 		

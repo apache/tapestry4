@@ -16,7 +16,7 @@
   <component id="showError" type="ShowError"/>
   
   <component id="selectForm" type="Form">
-    <binding name="listener" property-path="selectFormListener"/>  
+    <binding name="listener" property-path="listeners.processSelectForm"/>  
     <field-binding name="direct" field-name="Boolean.TRUE"/>
   </component>
   

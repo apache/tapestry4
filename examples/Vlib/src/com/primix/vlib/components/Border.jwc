@@ -84,12 +84,12 @@
   </component>
   
   <component id="addNewBook" type="Direct">
-    <binding name="listener" property-path="addNewBookListener"/>
+    <binding name="listener" property-path="listeners.addNewBook"/>
 	&leftnav;
   </component>
   
   <component id="editProfile" type="Direct">
-    <binding name="listener" property-path="editProfileListener"/>
+    <binding name="listener" property-path="listeners.editProfile"/>
 	&leftnav;
   </component>
   
@@ -100,7 +100,7 @@
  </component>
   
   <component id="login" type="Direct">
-	<binding name="listener" property-path="loginListener"/>
+	<binding name="listener" property-path="listeners.login"/>
 	<field-binding name="stateful" field-name="Boolean.FALSE"/>
 	&leftnav;
   </component>

@@ -52,7 +52,7 @@
   
   <component id="return" type="Direct">
     <binding name="context" property-path="currentBook.primaryKey"/>
-    <binding name="listener" property-path="returnListener"/>
+    <binding name="listener" property-path="listeners.returnBook"/>
   </component>
   
 </specification>

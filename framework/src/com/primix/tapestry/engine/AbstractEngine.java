@@ -32,6 +32,7 @@ import com.primix.tapestry.components.*;
 import com.primix.tapestry.util.prop.PropertyHelper;
 import com.primix.tapestry.util.exception.*;
 import com.primix.tapestry.record.PageRecorder;
+import com.primix.tapestry.listener.*;
 import java.io.*;
 import javax.servlet.*;
 import com.primix.tapestry.*;
@@ -106,6 +107,7 @@ public abstract class AbstractEngine
 	private transient String clientAddress;
 	private transient String sessionId;
 	private transient boolean stateful;
+	private transient ListenerMap listeners;
 	
 	/**
 	 *  An object used to contain application-specific server side state.
@@ -1784,4 +1786,20 @@ public abstract class AbstractEngine
 	{
 		stateful = true;
 	}
+	
+	
+	/**
+	 *  Allows subclasses to include listener methods easily.
+	 *
+	 * @since 1.0.2
+	 */
+	
+	public ListenerMap getListeners()
+	{
+		if (listeners == null)
+			listeners = new ListenerMap(this);
+		
+		return listeners;
+	}
+	
 }

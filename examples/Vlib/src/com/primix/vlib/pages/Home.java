@@ -83,7 +83,7 @@ public class Home
 	{
 		searchAuthor = value;
 	}
-
+	
 	public Object getSearchPublisherPK()
 	{
 		return searchPublisherPK;
@@ -93,7 +93,7 @@ public class Home
 	{
 		searchPublisherPK = value;
 	}
-
+	
 	public void setError(String value)
 	{
 		error = value;
@@ -113,25 +113,19 @@ public class Home
 	{
 		return message;
 	}
-
+	
 	/**
 	 *  Invokes {@link Matches#performQuery(String,String,Object,IRequestCycle)}.
 	 *
 	 */
 	
-	public IActionListener getSearchFormListener()
+	public void search(IRequestCycle cycle)
 	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			{
-				Matches matches;
-				
-				matches = (Matches)cycle.getPage("Matches");
-				
-				matches.performQuery(searchTitle, searchAuthor, searchPublisherPK, cycle);
-			}
-		};
+		Matches matches;
+		
+		matches = (Matches)cycle.getPage("Matches");
+		
+		matches.performQuery(searchTitle, searchAuthor, searchPublisherPK, cycle);
 	}
 	
 }

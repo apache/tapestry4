@@ -134,27 +134,14 @@ public class Borrow
 		return ! visit.isLoggedInUser(book.getHolderPrimaryKey());
     }
 	
-	public IDirectListener getBorrowListener()
-	{
-	    return new IDirectListener()
-	    {
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				Integer bookPK;
-				
-				// The primary key of the book to borrow is encoded in the context.
-				bookPK = new Integer(context[0]);
-				
-				borrowBook(bookPK, cycle);
-			}
-	    };
-	}
-	
-	private void borrowBook(Integer bookPK, IRequestCycle cycle)
+	public void borrow(String[] context, IRequestCycle cycle)
 		throws RequestCycleException
 	{
+		Integer bookPK;
+		
+		// The primary key of the book to borrow is encoded in the context.
+		bookPK = new Integer(context[0]);
+		
 		Visit visit = (Visit)page.getVisit();
 		Home home = (Home)cycle.getPage("Home");
 		VirtualLibraryEngine vengine = visit.getEngine();

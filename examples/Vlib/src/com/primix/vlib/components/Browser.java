@@ -234,22 +234,11 @@ public class Browser
 		setCurrentPage(page);
 	}
 	
-	public IDirectListener getJumpListener()
+	public void jump(String[] context, IRequestCycle cycle)
 	{
-		if (jumpListener == null)
-			jumpListener = new IDirectListener()
-		{
-			public void directTriggered(IDirect component, String[] context,
-					IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				int page = Integer.parseInt(context[0]);
-				
-				jump(page);
-			}
-		};
+		int page = Integer.parseInt(context[0]);
 		
-		return jumpListener;
+		jump(page);
 	}
 	
 	public String getRange()

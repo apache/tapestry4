@@ -171,51 +171,18 @@ public class MyLibrary
 		return message;
 	}
 	
-	/**
-	 *  Listener that invokes the {@link EditProfile} page to allow a user
-	 *  to edit thier name, etc.
-	 *
-	 */
-	
-	public IDirectListener getEditProfileListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				EditProfile page;
-				
-				page = (EditProfile)cycle.getPage("EditProfile");
-				
-				page.beginEdit(cycle);
-			}
-		};
-	}
 	
 	/**
 	 *  Listener invoked to allow a user to edit a book.
 	 *
-	 *  <p>Note:  Could remove this if we change {@link EditBook} to
-	 *  implement a {@link IExternalPage}, but that would require
 	 */
 	
-	public IDirectListener getEditListener()
+	public void editBook(String[] context, IRequestCycle cycle)
 	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				EditBook page;
-				Integer bookPK;
-				
-				bookPK = new Integer(context[0]);
-				page = (EditBook)cycle.getPage("EditBook");
-				
-				page.beginEdit(bookPK, cycle);
-			}
-		};
+		Integer bookPK = new Integer(context[0]);
+		EditBook page = (EditBook)cycle.getPage("EditBook");
+		
+		page.beginEdit(bookPK, cycle);
 	}
 	
 	/**
@@ -223,22 +190,12 @@ public class MyLibrary
 	 *
 	 */
 	
-	public IDirectListener getDeleteListener()
+	public void deleteBook(String[] context, IRequestCycle cycle)
 	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				Integer bookPK;
-				ConfirmBookDelete page;
-				
-				bookPK = new Integer(context[0]);
-				
-				page = (ConfirmBookDelete)cycle.getPage("ConfirmBookDelete");
-				page.selectBook(bookPK, cycle);
-			}
-		};
+		Integer bookPK = new Integer(context[0]);
+		
+		ConfirmBookDelete page = (ConfirmBookDelete)cycle.getPage("ConfirmBookDelete");
+		page.selectBook(bookPK, cycle);
 	}
 	
     private void returnBook(Integer bookPK)
@@ -268,29 +225,6 @@ public class MyLibrary
 		}
     }
     
-	
-    /**
-	 *  Listener used to return a book.
-	 *
-	 */
-	
-    public IDirectListener getAddNewBookListener()
-    {
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				NewBook page = (NewBook)cycle.getPage("NewBook");
-				
-				// Setup defaults for the new book.
-				
-				page.getAttributes().put("lendable", Boolean.TRUE);
-				
-				cycle.setPage(page);
-			}
-		};
-    }
 	
 	/**
 	 *  Removes the book query bean.

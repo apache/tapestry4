@@ -12,7 +12,7 @@
   <component id="showError" type="ShowError"/>
   
   <component id="form" type="Form">
-    <binding name="listener" property-path="formListener"/>
+    <binding name="listener" property-path="listeners.addBook"/>
   </component>
   
   <component id="labelTitle" type="FieldLabel">
