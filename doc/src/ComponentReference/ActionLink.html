@@ -24,7 +24,7 @@
  <td>
   <table>
 	 <tr>
-	  <td><font size="+2"><b>Action</b></font></td>
+	  <td><font size="+2"><b>ActionLink</b></font></td>
 	 </tr>
 	 <tr>
 	  <td>
@@ -51,7 +51,7 @@
   <b>Description</b>
 	<br>
   Creates an &lt;a&gt; hyperlink in the HTML response. If the link is 
-  triggered, then the Action retrieves its listener, and invokes 
+  triggered, then the ActionLink retrieves its listener, and invokes 
   <tt>actionTriggered()</tt> on it.
   <p>
   See the Developers Guide 
@@ -173,7 +173,145 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.</p>
+	<p>
+  In this example the ActionLink component enables users to select a Customer 
+  from the Customer List table.
+	<p>
+
+<table class="examples" cellspacing="6">
+  <tr align="left">
+   <th>ID</th>
+   <th>&nbsp;</th>
+   <th>Name</th>
+   <th>&nbsp;</th>
+   <th>Level</th>
+  </tr>
+  <tr>
+   <td colspan="5"><hr></td>
+  </tr>
+  <tr>
+   <td>10276</td>
+   <td>&nbsp;</td>
+   <td><a href="ActionLink.html" style="{color:blue;}">Ms Sophie L. Jamies</a></td>
+   <td>&nbsp;</td>
+   <td>Platinum</td>
+  </tr>
+  <tr>
+   <td>10539</td>
+   <td>&nbsp;</td>
+   <td><a href="ActionLink.html" style="{color:blue;}">Mr Albert H. Davies</a></td>
+   <td>&nbsp;</td>
+   <td>Gold</td>
+  </tr>
+  <tr>
+   <td>10552</td>
+   <td>&nbsp;</td>
+   <td><a href="ActionLink.html" style="{color:blue;}">Mrs Jan S. Flawson</a></td>
+   <td>&nbsp;</td>
+   <td>Gold</td>
+  </tr>
+  <tr>
+   <td>10863</td>
+   <td>&nbsp;</td>
+   <td><a href="ActionLink.html" style="{color:blue;}">Mr Robert J. Hassel</a></td>
+   <td>&nbsp;</td>
+   <td>Silver</td>
+  </tr>
+</table>
+
+<pre>
+&lt;table cellspacing="6"&gt;
+  &lt;tr&gt;
+   &lt;td&gt;ID&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;Name&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;Level&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td colspan="5"&gt;&lt;hr&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;span jwcid="foreachCustomer"&gt;
+  &lt;tr&gt;
+   &lt;td&gt;&lt;span jwcid="insertId"/&gt;&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="<span class="jwcid">actionLinkCustomer</span>"&gt; &lt;span jwcid="insertFullName"/&gt; &lt;/span&gt;&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="insertMemberLevel"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/span&gt;
+&lt;/table&gt;
+
+
+&lt;component id="foreachCustomer" type="<A href="Foreach.html">Foreach</a>"&gt;
+    &lt;binding name="source" expression="customerList"/&gt;
+    &lt;binding name="value" expression="customer"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">actionLinkCustomer</span>" type="<A href="ActionLink.html">ActionLink</a>"&gt;
+    &lt;binding name="listener" expression="listeners.customerSelectAction"/&gt;
+&lt;/component&gt;
+
+&lt;component id="insertId" type="<A href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" expression="customer.id"/&gt;
+&lt;/component&gt;
+
+&lt;component id="insertFullName" type="<A href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" expression="customer.fullName"/&gt;
+&lt;/component&gt;
+
+&lt;component id="insertMemberLevel" type="<A href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" expression="customer.memberLevel"/&gt;
+&lt;/component&gt;
+
+
+public class SalesPage extends BasePage {
+    private List customerList;
+    private Customer customer;
+	 
+    public List getCustomerList() { return customerList; }
+	 
+    public List setCustomerList(List value) { 
+        customerList = value;
+        fireObservedChange("customerList", value); 
+    }
+
+    public Customer getCustomer() { return customer; }
+
+    public void setCustomer(Customer value) {
+        customer = value;
+    }
+    
+    public void customerSelectAction(IRequestCycle cycle) {
+        Customer customer = getCustomer();
+        // Perform some action with the selected customer.
+    }
+
+    public void detach() {
+        customerList = null;
+        customer = null;
+        super.detach();
+    }
+}
+
+public class Customer implements Serializable {
+    private Integer id;
+    private String fullName;
+    private String memberLevel;
+
+    public Customer(Integer id, String fullName, String memberLevel) { 
+        this.id = id;
+        this.fullName = fullName;
+        this.memberLevel = memberLevel; 
+    }
+
+    public Integer getId() { return id; }
+		
+    public String getFullName() { return fullName; }
+
+    public String getMemberLevel() { return memberLevel; }
+}
+</pre>
       
  </td></tr></table>
 </td></tr>
