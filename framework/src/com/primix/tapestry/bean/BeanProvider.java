@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,12 +26,26 @@
 
 package com.primix.tapestry.bean;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-import com.primix.tapestry.util.pool.*;
-import org.apache.log4j.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Category;
+
+import com.primix.tapestry.ApplicationRuntimeException;
+import com.primix.tapestry.IBeanProvider;
+import com.primix.tapestry.IComponent;
+import com.primix.tapestry.IEngine;
+import com.primix.tapestry.IResourceResolver;
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.event.PageDetachListener;
+import com.primix.tapestry.event.PageEvent;
+import com.primix.tapestry.spec.BeanLifecycle;
+import com.primix.tapestry.spec.BeanSpecification;
+import com.primix.tapestry.spec.ComponentSpecification;
+import com.primix.tapestry.util.pool.IPoolable;
 
 /**
  *  Basic implementation of the {@link IBeanProvider} interface.
@@ -69,14 +83,6 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 	private IResourceResolver resolver;
 
 	/**
-	 *  The {@link Pool}, acquired from the {@link IEngine}.
-	 *
-     *  @de
-	 **/
-
-	private Pool helperBeanPool;
-
-	/**
 	 *  Map of beans, keyed on name.
 	 *
 	 **/
@@ -84,12 +90,10 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 	private Map beans;
 
 	public BeanProvider(IComponent component)
-	
 	{
 		this.component = component;
 		IEngine engine = component.getPage().getEngine();
 		resolver = engine.getResourceResolver();
-		helperBeanPool = engine.getHelperBeanPool();
 
 		if (CAT.isDebugEnabled())
 			CAT.debug("Created BeanProvider for " + component);
@@ -123,15 +127,11 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 		if (bean != null)
 			return bean;
 
-		// Doesn't exist, so let's create it.
-
-		BeanSpecification spec =
-			component.getSpecification().getBeanSpecification(name);
+		BeanSpecification spec = component.getSpecification().getBeanSpecification(name);
 
 		if (spec == null)
 			throw new ApplicationRuntimeException(
-			Tapestry.getString("BeanProvider.bean-not-defined",
-			component.getExtendedId(), name));
+				Tapestry.getString("BeanProvider.bean-not-defined", component.getExtendedId(), name));
 
 		bean = instantiateBean(spec);
 
@@ -164,37 +164,26 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 	private Object instantiateBean(BeanSpecification spec)
 	{
 		String className = spec.getClassName();
+        Object bean = null;
 
-		// See if there's one in the pool.
+		if (CAT.isDebugEnabled())
+			CAT.debug("Instantiating instance of " + className);
 
-		Object bean = helperBeanPool.retrieve(className);
+		// Do it the hard way!
 
-		if (bean != null)
+		Class beanClass = resolver.findClass(className);
+
+		try
 		{
-			if (CAT.isDebugEnabled())
-				CAT.debug("Obtained " + bean + " from pool.");
+			bean = beanClass.newInstance();
 		}
-		else
+		catch (IllegalAccessException ex)
 		{
-			if (CAT.isDebugEnabled())
-				CAT.debug("Instantiating instance of " + className);
-
-			// Do it the hard way!
-
-			Class beanClass = resolver.findClass(className);
-
-			try
-			{
-				bean = beanClass.newInstance();
-			}
-			catch (IllegalAccessException ex)
-			{
-				throw new ApplicationRuntimeException(ex);
-			}
-			catch (InstantiationException ex)
-			{
-				throw new ApplicationRuntimeException(ex);
-			}
+			throw new ApplicationRuntimeException(ex);
+		}
+		catch (InstantiationException ex)
+		{
+			throw new ApplicationRuntimeException(ex);
 		}
 
 		// OK, have the bean, have to initialize it.
@@ -219,9 +208,9 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 	}
 
 	/**
-	 *  Removes all beans with the REQUEST lifecycle.  If such
-	 *  beans implement {@link IPoolable} they are stored into
-	 *  the {@link IEngine}'s helper pool.
+	 *  Removes all beans with the REQUEST lifecycle.  Beans with
+     *  the PAGE lifecycle stick around, and beans with no lifecycle
+     *  were never stored in the first place.
 	 *
 	 **/
 
@@ -256,15 +245,12 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 					CAT.debug("Removing REQUEST bean " + name + ": " + bean);
 
 				i.remove();
-
-				if (bean instanceof IPoolable)
-					helperBeanPool.store(s.getClassName(), bean);
 			}
 		}
 	}
-	
+
 	/** @since 1.0.8 **/
-	
+
 	public IResourceResolver getResourceResolver()
 	{
 		return resolver;

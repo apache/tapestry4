@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,17 +26,21 @@
 
 package com.primix.tapestry.parse;
 
-import com.primix.tapestry.*;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.primix.tapestry.ApplicationRuntimeException;
+import com.primix.tapestry.IRender;
+import com.primix.tapestry.Tapestry;
 
 /**
  * A token parsed from a Tapestry HTML template.
  *
  * <p>TBD:  Use a single token to represent an bodyless component.
  *
- * @author Howard Ship
+ * @author Howard Lewis Ship
  * @version $Id$
- */
+ **/
 
 public class TemplateToken
 {
@@ -57,7 +61,7 @@ public class TemplateToken
 	/**
 	 *  Constructs a TEXT token with the given template data.
 	 *
-	 */
+	 **/
 
 	public TemplateToken(char[] templateData, int startIndex, int endIndex)
 	{
@@ -72,16 +76,13 @@ public class TemplateToken
 			|| startIndex > templateData.length
 			|| endIndex > templateData.length)
 			throw new IllegalArgumentException(
-				Tapestry.getString(
-					"TemplateToken.range-error",
-					this,
-					Integer.toString(templateData.length)));
+				Tapestry.getString("TemplateToken.range-error", this, Integer.toString(templateData.length)));
 	}
 
 	/**
 	 *  Constructs token, typically used with CLOSE.
 	 *
-	 */
+	 **/
 
 	public TemplateToken(TokenType type, String tag)
 	{
@@ -92,7 +93,7 @@ public class TemplateToken
 	/**
 	 *  Constructs an OPEN token with the given id.
 	 *
-	 */
+	 **/
 
 	public TemplateToken(String id, String tag)
 	{
@@ -103,7 +104,7 @@ public class TemplateToken
 	 *  Contructs and OPEN token with the given id and attributes.
 	 *
 	 * @since 1.0.2
-	 */
+	 **/
 
 	public TemplateToken(String id, String tag, Map attributes)
 	{
@@ -122,7 +123,7 @@ public class TemplateToken
 	 *  Returns the id of the component.  This is only valid when the type
 	 *  is OPEN.
 	 *
-	 */
+	 **/
 
 	public String getId()
 	{
@@ -133,7 +134,7 @@ public class TemplateToken
 	 *  Returns the tag (for an OPEN or CLOSE) token.
 	 *
 	 * @since 1.0.2
-	 */
+	 **/
 
 	public String getTag()
 	{
@@ -143,27 +144,22 @@ public class TemplateToken
 	public IRender getRender()
 	{
 		if (type != TokenType.TEXT)
-			throw new ApplicationRuntimeException(
-				Tapestry.getString("TemplateToken.may-not-render", type));
+			throw new ApplicationRuntimeException(Tapestry.getString("TemplateToken.may-not-render", type));
 
-		if (render == null)
+		synchronized (this)
 		{
-			synchronized (this)
-			{
-				if (render == null)
-					render =
-						new RenderTemplateHTML(templateData, startIndex, endIndex - startIndex + 1);
-			}
+			if (render == null)
+				render = new RenderTemplateHTML(templateData, startIndex, endIndex - startIndex + 1);
 		}
 
-		return render;
+			return render;
 	}
 
 	/**
 	 *  Returns the starting index of the token.  Will return -1 for any non-TEXT
 	 * token.
 	 *
-	 */
+	 **/
 
 	public int getStartIndex()
 	{
@@ -180,7 +176,7 @@ public class TemplateToken
 	 *  be null.
 	 *
 	 *  @since 1.0.2
-	 */
+	 **/
 
 	public Map getAttributes()
 	{

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -32,6 +32,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.log4j.Category;
+import org.apache.log4j.Priority;
 
 import com.primix.tapestry.BaseComponent;
 import com.primix.tapestry.IRequestCycle;
@@ -50,7 +51,7 @@ import com.primix.tapestry.valid.ValidatorException;
  *  @version $Id$
  *  @author Howard Ship
  *  @since 0.2.9
- */
+ **/
 
 public class ShowLogging extends BaseComponent implements PageDetachListener
 {
@@ -65,7 +66,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 	 *
 	 *  @since 1.0.5
 	 *
-	 */
+	 **/
 
 	protected void finishLoad()
 	{
@@ -77,7 +78,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 	 *
 	 *  @since 1.0.5
 	 *
-	 */
+	 **/
 
 	public void pageDetached(PageEvent event)
 	{
@@ -108,7 +109,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 	/**
 	 *  Returns a sorted list of all known categorys.
 	 *
-	 */
+	 **/
 
 	public List getCategoryNames()
 	{
@@ -137,7 +138,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 	 *  Returns a {@link IPropertySelectionModel} for {@link Priority}
 	 *  that does not allow a null value to be selected.
 	 *
-	 */
+	 **/
 
 	public IPropertySelectionModel getRootPriorityModel()
 	{
@@ -151,7 +152,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 	 *  Returns a {@link IPropertySelectionModel} for {@link Priority}
 	 *  include a null option.
 	 *
-	 */
+	 **/
 
 	public IPropertySelectionModel getPriorityModel()
 	{

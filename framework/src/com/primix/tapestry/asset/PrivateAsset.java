@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,11 +26,22 @@
 
 package com.primix.tapestry.asset;
 
+import java.io.InputStream;
 import java.net.URL;
-import com.primix.tapestry.*;
-import java.io.*;
-import java.util.*;
-import org.apache.log4j.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import org.apache.log4j.Category;
+
+import com.primix.tapestry.ApplicationRuntimeException;
+import com.primix.tapestry.Gesture;
+import com.primix.tapestry.IAsset;
+import com.primix.tapestry.IEngineService;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResourceResolver;
+import com.primix.tapestry.ResourceUnavailableException;
+import com.primix.tapestry.Tapestry;
 
 /**
  *  An implementation of {@link IAsset} for localizable assets within
@@ -41,7 +52,7 @@ import org.apache.log4j.*;
  *
  *  @author Howard Ship
  *  @version $Id$
- */
+ **/
 
 public class PrivateAsset implements IAsset
 {
@@ -51,16 +62,13 @@ public class PrivateAsset implements IAsset
 
 	private String resourcePath;
 
-	private static final int MAP_SIZE = 7;
-
 	/**
 	*  Map, keyed on Locale, value is the localized resourcePath (as a String)
-	*/
+	**/
 
 	private Map localizations;
 
 	public PrivateAsset(String resourcePath)
-
 	{
 		this.resourcePath = resourcePath;
 	}
@@ -71,7 +79,7 @@ public class PrivateAsset implements IAsset
 	*  {@link AssetExternalizer} is located, to copy the resource to
 	*  a directory visible to the web server.
 	*
-	*/
+	**/
 
 	public String buildURL(IRequestCycle cycle)
 	{
@@ -121,8 +129,7 @@ public class PrivateAsset implements IAsset
 		return g.getFullURL();
 	}
 
-	public InputStream getResourceAsStream(IRequestCycle cycle)
-		throws ResourceUnavailableException
+	public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException
 	{
 		try
 		{
@@ -147,10 +154,9 @@ public class PrivateAsset implements IAsset
 	* come up with a good, general, efficient way to do this search without
 	* a huge amount of mechanism.
 	*
-	*/
+	**/
 
-	private String findLocalization(IRequestCycle cycle)
-		throws ResourceUnavailableException
+	private String findLocalization(IRequestCycle cycle) throws ResourceUnavailableException
 	{
 		Locale locale = cycle.getPage().getLocale();
 		int dotx;
@@ -163,28 +169,25 @@ public class PrivateAsset implements IAsset
 		String suffix;
 		String result;
 
-		if (localizations == null)
+		synchronized (this)
 		{
-			synchronized (this)
+			if (localizations == null)
+				localizations = new HashMap();
+		}
+
+			synchronized (localizations)
 			{
-				if (localizations == null)
-					localizations = new HashMap(MAP_SIZE);
+				result = (String) localizations.get(locale);
+				if (result != null)
+					return result;
 			}
-		}
 
-		synchronized (localizations)
-		{
-			result = (String) localizations.get(locale);
-			if (result != null)
-				return result;
-		}
-
-		if (CAT.isDebugEnabled())
-			CAT.debug(
-				"Searching for localization of private asset "
-					+ resourcePath
-					+ " in locale "
-					+ locale.getDisplayName());
+				if (CAT.isDebugEnabled())
+					CAT.debug(
+						"Searching for localization of private asset "
+							+ resourcePath
+							+ " in locale "
+							+ locale.getDisplayName());
 
 		dotx = resourcePath.lastIndexOf('.');
 		suffix = resourcePath.substring(dotx);
@@ -240,8 +243,8 @@ public class PrivateAsset implements IAsset
 					localizations.put(locale, candidatePath);
 				}
 
-				if (CAT.isDebugEnabled())
-					CAT.debug("Found " + candidatePath);
+					if (CAT.isDebugEnabled())
+						CAT.debug("Found " + candidatePath);
 
 				return candidatePath;
 			}

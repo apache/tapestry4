@@ -42,6 +42,8 @@ import com.primix.tapestry.RequestCycleException;
 import com.primix.tapestry.ResponseOutputStream;
 import com.primix.tapestry.StaleSessionException;
 import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.form.Form;
+import com.primix.tapestry.link.Action;
 
 /**
  *  A context-sensitive service related to {@link Form} and {@link Action}.  Encodes
@@ -68,7 +70,7 @@ public class ActionService extends AbstractService
 		IPage responsePage = cycle.getPage();
 		int length = (componentPage == responsePage) ? 3 : 4;
 
-		String[] serviceContext = provideString(length);
+		String[] serviceContext = new String[length];
 
 		int i = 0;
 
@@ -84,12 +86,7 @@ public class ActionService extends AbstractService
 
 		serviceContext[i++] = component.getIdPath();
 
-		Gesture result = assembleGesture(cycle, ACTION_SERVICE, serviceContext, null);
-
-		discard(serviceContext);
-
-		return result;
-
+		return assembleGesture(cycle, ACTION_SERVICE, serviceContext, null);
 	}
 
 	public boolean service(

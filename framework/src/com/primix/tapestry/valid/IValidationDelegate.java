@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,17 +26,17 @@
 
 package com.primix.tapestry.valid;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.Foreach;
-import com.primix.tapestry.form.IFormComponent;
-import com.primix.tapestry.form.ListEdit;
-
 import java.util.List;
-import java.util.Map;
+
+import com.primix.tapestry.IRender;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResponseWriter;
+import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.form.IFormComponent;
 
 /**
  *  Interface used to track validation errors in forms and
- *  {@link IFormComponents} (including {@link IField}).
+ *  {@link IFormComponent}s (including {@link IField}).
  * 
  *  <p>In addition,
  *  controls how fields that are in error are presented (they can be
@@ -94,7 +94,7 @@ import java.util.Map;
  *  @author Howard Ship
  *  @version $Id$
  *
- */
+ **/
 
 public interface IValidationDelegate
 {
@@ -171,7 +171,7 @@ public interface IValidationDelegate
 	 *  {@link #record(String, ValidationConstraint, String)}, but special
 	 *  delegates may override this behavior to provide (in some cases)
 	 *  different error messages or more complicated error renderers.
-	 */
+	 **/
 
 	public void record(ValidatorException ex);
 
@@ -205,7 +205,7 @@ public interface IValidationDelegate
 	 *  the delegate may decorate the field in some way (to highlight its
 	 *  error state).
 	 *
-	 */
+	 **/
 
 	public void writePrefix(
 		IResponseWriter writer,
@@ -219,7 +219,7 @@ public interface IValidationDelegate
 	 *  differently, if in error (or required).
 	 *
 	 *  @since 1.0.5
-	 */
+	 **/
 
 	public void writeAttributes(
 		IResponseWriter writer,
@@ -230,7 +230,7 @@ public interface IValidationDelegate
 	 *  Invoked after the form component is rendered, so that the
 	 *  delegate may decorate the form component (if it is in error).
 	 *
-	 */
+	 **/
 
 	public void writeSuffix(
 		IResponseWriter writer,
@@ -241,7 +241,7 @@ public interface IValidationDelegate
 	 *  Invoked by a {@link FieldLabel} just before writing the name
 	 *  of the form component.
 	 *
-	 */
+	 **/
 
 	public void writeLabelPrefix(
 		IFormComponent component,
@@ -253,7 +253,7 @@ public interface IValidationDelegate
 	 *  Invoked by a {@link FieldLabel} just after writing the name
 	 *  of the form component.
 	 *
-	 */
+	 **/
 
 	public void writeLabelSuffix(
 		IFormComponent component,

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,20 +26,29 @@
 
 package com.primix.tapestry;
 
-import java.io.Serializable;
-import com.primix.tapestry.util.prop.*;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.listener.*;
-import com.primix.tapestry.bean.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.primix.tapestry.bean.BeanProvider;
+import com.primix.tapestry.bean.BeanProviderHelper;
+import com.primix.tapestry.event.ChangeObserver;
+import com.primix.tapestry.event.ObservedChangeEvent;
+import com.primix.tapestry.listener.ListenerMap;
+import com.primix.tapestry.spec.ComponentSpecification;
+import com.primix.tapestry.spec.ContainedComponent;
+import com.primix.tapestry.util.prop.IPropertyAccessor;
+import com.primix.tapestry.util.prop.PropertyHelper;
 
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
  *
- * @author Howard Ship
+ * @author Howard Lewis Ship
  * @version $Id$
- */
+ **/
 
 public abstract class AbstractComponent implements IComponent
 {
@@ -53,7 +62,7 @@ public abstract class AbstractComponent implements IComponent
 	/**
 	 *  The specification used to originally build the component.
 	 *
-	 */
+	 **/
 
 	protected ComponentSpecification specification;
 
@@ -61,7 +70,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  The page that contains the component, possibly itself (if the component is
 	 *  in fact, a page).
 	 *
-	 */
+	 **/
 
 	protected IPage page;
 
@@ -69,14 +78,14 @@ public abstract class AbstractComponent implements IComponent
 	 *  The component which contains the component.  This will only be
 	 *  null if the component is actually a page.
 	 *
-	 */
+	 **/
 
 	private IComponent container;
 
 	/**
 	 *  The simple id of this component.
 	 *
-	 */
+	 **/
 
 	protected String id;
 
@@ -84,7 +93,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  The fully qualified id of this component.  This is calculated the first time
 	 *  it is needed, then cached for later.
 	 *
-	 */
+	 **/
 
 	private String idPath;
 
@@ -95,7 +104,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  JavaBeans property); the keys are the names of formal and informal
 	 *  parameters.
 	 *
-	 */
+	 **/
 
 	private Map bindings;
 
@@ -108,30 +117,29 @@ public abstract class AbstractComponent implements IComponent
 	 *  Used in place of JDK 1.3's Collections.EMPTY_MAP (which is not
 	 *  available in JDK 1.2).
 	 *
-	 */
+	 **/
 
-	private static final Map EMPTY_MAP =
-		Collections.unmodifiableMap(new HashMap(1));
+	private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap(1));
 
 	/**
 	 *  The number of {@link IRender} objects wrapped by
 	 *  this component.
 	 *
-	 */
+	 **/
 
 	protected int wrappedCount = 0;
 
 	/**
 	 *  An aray of elements wrapped by this component.
 	 *
-	 */
+	 **/
 
 	protected IRender[] wrapped;
 
 	/**
 	 *  The components' asset map.
 	 *
-	 */
+	 **/
 
 	private Map assets;
 	private Map safeAssets;
@@ -142,7 +150,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  objects.
 	 *
 	 *  @since 1.0.2
-	 */
+	 **/
 
 	private ListenerMap listeners;
 
@@ -150,12 +158,11 @@ public abstract class AbstractComponent implements IComponent
 	 * A bean provider; these are lazily created as needed.
 	 *
 	 * @since 1.0.4
-	 */
+	 **/
 
 	private IBeanProvider beans;
 
 	public void addAsset(String name, IAsset asset)
-	
 	{
 		if (assets == null)
 			assets = new HashMap(MAP_SIZE);
@@ -176,7 +183,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  element of this component.  Such elements are rendered
 	 *  by {@link #renderWrapped(IResponseWriter, IRequestCycle)}.
 	 *
-	 */
+	 **/
 
 	public void addWrapped(IRender element)
 	{
@@ -211,15 +218,13 @@ public abstract class AbstractComponent implements IComponent
 
 	/**
 	 *  Invokes {@link #finishLoad()}.  Subclasses may overide as needed, but
-	 *  must invoke this implementation (or {@link #finishLoad()}.
+	 *  must invoke this implementation.
 	 *  {@link BaseComponent}
 	 * loads its HTML template. 
 	 *
-	 */
+	 **/
 
-	public void finishLoad(
-		IPageLoader loader,
-		ComponentSpecification specification)
+	public void finishLoad(IPageLoader loader, ComponentSpecification specification)
 		throws PageLoaderException
 	{
 		finishLoad();
@@ -368,7 +373,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  state of the property value is changing, even though the property
 	 *  is not.
 	 *
-	 */
+	 **/
 
 	protected void fireObservedChange()
 	{
@@ -417,7 +422,7 @@ public abstract class AbstractComponent implements IComponent
 	 *
 	 *  <p>Components are only required to generate attributes on the
 	 *  result phase; this can be skipped during the rewind phase.
-	 */
+	 **/
 
 	protected void generateAttributes(IResponseWriter writer, IRequestCycle cycle)
 	{
@@ -475,7 +480,7 @@ public abstract class AbstractComponent implements IComponent
 	 *
 	 *  @see #setBinding(String,IBinding)
 	 *
-	 */
+	 **/
 
 	public IBinding getBinding(String name)
 	{
@@ -485,9 +490,7 @@ public abstract class AbstractComponent implements IComponent
 		helper = PropertyHelper.forClass(getClass());
 		accessor = helper.getAccessor(this, name + "Binding");
 
-		if (accessor != null
-			&& accessor.isReadWrite()
-			&& accessor.getType().equals(IBinding.class))
+		if (accessor != null && accessor.isReadWrite() && accessor.getType().equals(IBinding.class))
 			return (IBinding) accessor.get(this);
 
 		if (bindings == null)
@@ -502,10 +505,9 @@ public abstract class AbstractComponent implements IComponent
 	 *
 	 *  @see IPage#getChangeObserver()
 	 *
-	 */
+	 **/
 
 	public ChangeObserver getChangeObserver()
-	
 	{
 		return page.getChangeObserver();
 	}
@@ -543,7 +545,7 @@ public abstract class AbstractComponent implements IComponent
 	 *
 	 *  @see #getIdPath()
 	 *
-	 */
+	 **/
 
 	public String getExtendedId()
 	{
@@ -569,8 +571,7 @@ public abstract class AbstractComponent implements IComponent
 		String containerIdPath;
 
 		if (container == null)
-			throw new NullPointerException(
-				Tapestry.getString("AbstractComponent.null-container", this));
+			throw new NullPointerException(Tapestry.getString("AbstractComponent.null-container", this));
 
 		containerIdPath = container.getIdPath();
 
@@ -613,10 +614,9 @@ public abstract class AbstractComponent implements IComponent
 	/**
 	 *  Renders all elements wrapped by the receiver.
 	 *
-	 */
+	 **/
 
-	public void renderWrapped(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
+	public void renderWrapped(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 		for (int i = 0; i < wrappedCount; i++)
 			wrapped[i].render(writer, cycle);
@@ -638,7 +638,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  instance variables if @link
 	 *  #generateAttribute(IResponseWriter, String[]) is to be used.
 	 *  It relies on using the collection of bindings (to store informal parameters).
-	 */
+	 **/
 
 	public void setBinding(String name, IBinding binding)
 	{
@@ -649,8 +649,7 @@ public abstract class AbstractComponent implements IComponent
 		accessor = helper.getAccessor(this, name + "Binding");
 
 		if (accessor != null && accessor.getType().equals(IBinding.class))
-		
-			{
+		{
 			accessor.set(this, binding);
 			return;
 		}
@@ -679,7 +678,7 @@ public abstract class AbstractComponent implements IComponent
 	/**
 	 *  Returns an unmodifiable {@link Map} of components, keyed on component id.
 	 *
-	 */
+	 **/
 
 	public Map getComponents()
 	{
@@ -789,7 +788,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  interfaces, but in fact, cause public instance methods to be invoked.
 	 *
 	 *  @since 1.0.2
-	 */
+	 **/
 
 	public ListenerMap getListeners()
 	{
@@ -805,7 +804,7 @@ public abstract class AbstractComponent implements IComponent
 	 *
 	 *  @since 1.0.4
 	 *
-	 */
+	 **/
 
 	public IBeanProvider getBeans()
 	{
@@ -816,105 +815,15 @@ public abstract class AbstractComponent implements IComponent
 	}
 
 	/**
-	 *  Invoked from {@link #finishLoad(IPageLoader, ComponentSpecification)}
-	 *  so that components can easily perform simple operations, such as
-	 *  registering for event notifications.  This is a convienience,
-	 *  providing a much simpler method signature to override.
-	 *
-	 *  <p>This implementation checks to
-	 *  see if the component implements {@link ILifecycle}, if
-	 *  so, the component sets up listeners to invoke
-	 *  the implementations of the {@link ILifecycle} methods.  This support
-	 *  will be removed in release 1.1.
-	 *
+	 * 
+	 *  Invoked, as a convienience, from {@link #finishLoad(IPageLoader, ComponentSpecification)}.
+     *  This implemenation does nothing.  Subclasses may override with invoking. 
+	 * 
 	 *  @since 1.0.5
 	 *
-	 */
+	 **/
 
 	protected void finishLoad()
-	{
-		if (this instanceof ILifecycle)
-		{
-			page.addPageDetachListener(new DetachListener());
-			page.addPageRenderListener(new RenderListener());
-			page.addPageCleanupListener(new CleanupListener());
-		}
-	}
-
-	private class RenderListener implements PageRenderListener
-	{
-		public void pageBeginRender(PageEvent event)
-		{
-			prepareForRender(event.getRequestCycle());
-		}
-
-		public void pageEndRender(PageEvent event)
-		{
-			cleanupAfterRender(event.getRequestCycle());
-		}
-	}
-
-	private class DetachListener implements PageDetachListener
-	{
-		public void pageDetached(PageEvent event)
-		{
-			reset();
-		}
-	}
-
-	private class CleanupListener implements PageCleanupListener
-	{
-		public void pageCleanup(PageEvent event)
-		{
-			cleanupComponent();
-		}
-	}
-
-	/**
-	 *  Does nothing.  To be removed in release 1.1.
-	 *
-	 *  @see #finishLoad()
-	 *  @see ILifecycle
-	 *
-	 */
-
-	public void cleanupAfterRender(IRequestCycle cycle)
-	{
-	}
-
-	/**
-	 *  Does nothing.  To be removed in release 1.1.
-	 *
-	 *  @see #finishLoad()
-	 *  @see ILifecycle
-	 *
-	 */
-
-	public void prepareForRender(IRequestCycle cycle)
-	{
-	}
-
-	/**
-	 *  Does nothing.  To be removed in release 1.1.
-	 *
-	 *  @see #finishLoad()
-	 *  @see ILifecycle
-	 *
-	 */
-
-	public void reset()
-	{
-	}
-
-	/**
-	 *  Does nothing.  To be removed in release 1.1.
-	 *
-	 *  @see #finishLoad()
-	 *  @see ILifecycle
-	 *
-	 */
-
-	public void cleanupComponent()
 	{
 	}
 

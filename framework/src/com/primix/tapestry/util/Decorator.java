@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,9 +26,14 @@
 
 package com.primix.tapestry.util;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+
+import org.apache.log4j.Category;
+
 import com.primix.tapestry.Tapestry;
-import java.util.*;
-import org.apache.log4j.*;
 
 /**
  *  An implementation of the Decorator pattern.  The decorator
@@ -70,65 +75,55 @@ import org.apache.log4j.*;
  *
  *  @version $Id$
  *  @author Howard Ship
- */
+ **/
 
 public class Decorator
 {
 	private static final Category CAT = Category.getInstance(Decorator.class);
 
-	private static final int REGISTRATION_MAP_SIZE = 7;
-	private static final int CACHE_MAP_SIZE = 29;
-
 	/**
 	 *  A Map of adaptor objects, keyed on registration Class.
 	 *
-	 */
+	 **/
 
-	private Map registrations;
+	private Map registrations = new HashMap();
 
 	/**
 	 *  A Map of adaptor objects, keyed on subject Class.
 	 *
-	 */
+	 **/
 
-	private Map cache;
+	private Map cache = new HashMap();
 
 	/**
 	 *  Registers an adaptor for a registration class.
 	 *
 	 *  @throws IllegalArgumentException if an adaptor has already
 	 *  been registered for the given class.
-	 */
+	 **/
 
 	public void register(Class registrationClass, Object adaptor)
-	
 	{
-		if (registrations == null)
-		{
-			synchronized (this)
-			{
-				if (registrations == null)
-					registrations = new HashMap(REGISTRATION_MAP_SIZE);
-			}
-		}
-
 		synchronized (registrations)
 		{
 			if (registrations.containsKey(registrationClass))
 				throw new IllegalArgumentException(
-				Tapestry.getString("Decorator.duplicate-registration", registrationClass.getName()));
+					Tapestry.getString("Decorator.duplicate-registration", registrationClass.getName()));
 
 			registrations.put(registrationClass, adaptor);
 		}
 
-		if (CAT.isInfoEnabled())
-			CAT.info("Registered " + adaptor + " for " + registrationClass.getName());
+			if (CAT.isInfoEnabled())
+				CAT.info("Registered " + adaptor + " for " + registrationClass.getName());
 
 		// Can't tell what is and isn't valid in the cache.
 		// Also, normally all registrations occur before any adaptors
 		// are searched for, so this is not a big deal.
 
-		cache = null;
+        synchronized (cache)
+	    {
+			cache.clear();
+	    }
 	}
 
 	/**
@@ -136,7 +131,7 @@ public class Decorator
 	 *
 	 *  @throws IllegalArgumentException if no adaptor could be found.
 	 *
-	 */
+	 **/
 
 	public Object getAdaptor(Class subjectClass)
 	{
@@ -145,42 +140,30 @@ public class Decorator
 		if (CAT.isDebugEnabled())
 			CAT.debug("Getting adaptor for class " + subjectClass.getName());
 
-		if (cache != null)
-		{
-			synchronized (cache)
-			{
-				result = cache.get(subjectClass);
-
-				if (result != null)
-				{
-					if (CAT.isDebugEnabled())
-						CAT.debug("Found " + result + " in cache");
-
-					return result;
-				}
-			}
-		}
-
-		result = searchForAdaptor(subjectClass);
-
-		// Record the result in the cache
-
-		if (cache == null)
-		{
-			synchronized (this)
-			{
-				if (cache == null)
-					cache = new HashMap(CACHE_MAP_SIZE);
-			}
-		}
-
 		synchronized (cache)
 		{
-			cache.put(subjectClass, result);
+			result = cache.get(subjectClass);
+
+			if (result != null)
+			{
+				if (CAT.isDebugEnabled())
+					CAT.debug("Found " + result + " in cache");
+
+				return result;
+			}
 		}
 
-		if (CAT.isDebugEnabled())
-			CAT.debug("Found " + result);
+			result = searchForAdaptor(subjectClass);
+
+			// Record the result in the cache
+
+			synchronized (cache)
+			{
+				cache.put(subjectClass, result);
+			}
+
+				if (CAT.isDebugEnabled())
+					CAT.debug("Found " + result);
 
 		return result;
 	}
@@ -206,7 +189,7 @@ public class Decorator
 	 * <li>Multiple checks only occur if we don't find a registration
 	 * </ul>
 	 *
-	 */
+	 **/
 
 	private Object searchForAdaptor(Class subjectClass)
 	{
@@ -232,8 +215,7 @@ public class Decorator
 			// class.
 
 			while (searchClass != Object.class && searchClass != null)
-			
-				{
+			{
 				result = registrations.get(searchClass);
 				if (result != null)
 					return result;
@@ -289,14 +271,13 @@ public class Decorator
 
 		}
 
-		// No match?  That's rare ... and an error.
+			// No match?  That's rare ... and an error.
 
-		throw new IllegalArgumentException(
-			Tapestry.getString("Decorator.adaptor-not-found", subjectClass.getName()));
+			throw new IllegalArgumentException(
+				Tapestry.getString("Decorator.adaptor-not-found", subjectClass.getName()));
 	}
 
 	public String toString()
-	
 	{
 		StringBuffer buffer;
 		Iterator i;

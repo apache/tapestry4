@@ -70,11 +70,6 @@ public class TemplateParserTest extends TestCase
 		super(name);
 	}
 
-	public static Test suite()
-	{
-		return new TestSuite(TemplateParserTest.class);
-	}
-
 	protected void setUp()
 	
 	{

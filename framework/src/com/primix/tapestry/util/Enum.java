@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,9 +26,14 @@
 
 package com.primix.tapestry.util;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.primix.tapestry.Tapestry;
-import java.io.*;
-import java.util.*;
 
 /**
  * Defines properties of enumerated types.  Enumerated types
@@ -54,7 +59,7 @@ import java.util.*;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ **/
 
 public class Enum implements Serializable
 {
@@ -63,9 +68,9 @@ public class Enum implements Serializable
 	/**
 	 *  Used to resolve tokens back to <code>Enum</code> instances during deserialization.
 	 *  The key is a {@link EnumToken} that identifies the class of the the Enum and
-	*  its serialization id.
+	 *  its serialization id.
 	 *
-	 */
+	 **/
 
 	private static Map identity = new HashMap(23);
 
@@ -136,33 +141,20 @@ public class Enum implements Serializable
 		key = new EnumToken(enum);
 
 		if (identity.containsKey(key))
-			throw new RuntimeException(
-				Tapestry.getString("Enum.duplicate-registration", key));
+			throw new RuntimeException(Tapestry.getString("Enum.duplicate-registration", key));
 
 		identity.put(new EnumToken(enum), enum);
 	}
 
 	/**
-	*  Invoked from subclass' <code>readResolve()</code> method.
-	*
-	*  <p>This is a bit of serialization black magic ... the method
-	*  <code>readResolve()</code> MUST BE implemented by the actual class, it can't
-	*  be inherited.  Subclasses should simply invoke this method:
+	 *  <p>This is a bit of serialization black magic ... the method
+	 *  <code>readResolve()</code> MUST BE implemented by the actual class, it can't
+	 *  be inherited.  Subclasses should simply invoke this method:
 	 *
-	 *  <p><pre>
-	 *  private Object readResolve()
-	 *  {
-	 *  	return getSingleton();
-	 *  }
-	 *  </pre>
 	 *
-	 * <p>Since
-	 *  <code>readResolve()</code> returns a <code>java.lang.Object</code>
-	 *  there's no reason to cast the singleton to <code>Enum</code>.
-	*
-	*/
+	 **/
 
-	protected Object getSingleton()
+	protected final Object readResolve()
 	{
 		Object result;
 		EnumToken key;
@@ -176,9 +168,8 @@ public class Enum implements Serializable
 			result = identity.get(key);
 		}
 
-		if (result == null)
-			throw new RuntimeException(
-				Tapestry.getString("Enum.deserialize-error", key, getClass().getName()));
+			if (result == null)
+				throw new RuntimeException(Tapestry.getString("Enum.deserialize-error", key, getClass().getName()));
 
 		return result;
 	}
@@ -187,7 +178,7 @@ public class Enum implements Serializable
 	 *  Writes the enumerationId (which is marked transient) to the output stream,
 	 *  using {@link ObjectOutputStream#writeUTF(String)}, which is more efficient.
 	 *
-	 */
+	 **/
 
 	private void writeObject(ObjectOutputStream out) throws IOException
 	{
@@ -197,10 +188,9 @@ public class Enum implements Serializable
 	/**
 	  *  Reads the state written by <code>writeObject</code>.
 	  *
-	  */
+	  **/
 
-	private void readObject(ObjectInputStream in)
-		throws IOException, ClassNotFoundException
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
 	{
 		enumerationId = in.readUTF();
 	}

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,16 +26,15 @@
 
 package com.primix.tapestry.inspector;
 
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.*;
+import com.primix.tapestry.util.Enum;
 
 /**
  *  Identifies different views for the inspector.
  *
  *  @version $Id$
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *
- */
+ **/
 
 public class View extends Enum
 {
@@ -44,7 +43,7 @@ public class View extends Enum
 	 *  formal and informal parameters (and related bindings), and 
 	 *  assets.
 	 *
-	 */
+	 **/
 
 	public static final View SPECIFICATION = new View("SPECIFICATION");
 
@@ -52,7 +51,7 @@ public class View extends Enum
 	 *  View that displays the HTML template for the component, if one
 	 *  exists.
 	 *
-	 */
+	 **/
 
 	public static final View TEMPLATE = new View("TEMPLATE");
 
@@ -60,21 +59,21 @@ public class View extends Enum
 	 *  View that shows the persistent properties of the page containing
 	 *  the inspected component.
 	 *
-	 */
+	 **/
 
 	public static final View PROPERTIES = new View("PROPERTIES");
 
 	/**
 	 *  View that shows information about the {@link IEngine}.
 	 *
-	 */
+	 **/
 
 	public static final View ENGINE = new View("ENGINE");
 
 	/**
 	 *  View for controlling logging of the application as it runs.
 	 *
-	 */
+	 **/
 
 	public static final View LOGGING = new View("LOGGING");
 
@@ -83,8 +82,4 @@ public class View extends Enum
 		super(enumerationId);
 	}
 
-	private Object readResolve()
-	{
-		return getSingleton();
-	}
 }

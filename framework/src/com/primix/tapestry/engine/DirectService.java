@@ -76,23 +76,19 @@ public class DirectService extends AbstractService
 
 		if (renderPage == componentPage)
 		{
-			context = provideString(2);
+			context = new String[2];
 			context[0] = componentPage.getName();
 			context[1] = component.getIdPath();
 		}
 		else
 		{
-			context = provideString(3);
+			context = new String[3];
 			context[0] = renderPage.getName();
 			context[1] = componentPage.getName();
 			context[2] = component.getIdPath();
 		}
 
-		Gesture result = assembleGesture(cycle, DIRECT_SERVICE, context, parameters);
-
-		discard(context);
-
-		return result;
+		return assembleGesture(cycle, DIRECT_SERVICE, context, parameters);
 	}
 
 	public boolean service(

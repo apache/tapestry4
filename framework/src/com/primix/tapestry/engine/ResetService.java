@@ -64,14 +64,10 @@ public class ResetService extends AbstractService
 			throw new IllegalArgumentException(
 				Tapestry.getString("service-no-parameters", RESET_SERVICE));
 
-		String[] context = provideString(1);
+		String[] context = new String[1];
 		context[0] = component.getPage().getName();
 
-		Gesture result = assembleGesture(cycle, RESET_SERVICE, context, null);
-
-		discard(context);
-
-		return result;
+		return assembleGesture(cycle, RESET_SERVICE, context, null);
 	}
 
 	public String getName()
