@@ -1,34 +1,35 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.link;
 
-import com.primix.tapestry.*;
-
-import net.sf.tapestry.*;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IEngineService;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  A component for creating a navigation link to another page, 
@@ -101,57 +102,57 @@ import net.sf.tapestry.*;
 
 public class Page extends GestureLink
 {
-	private IBinding pageBinding;
-	private String pageValue;
+    private IBinding pageBinding;
+    private String pageValue;
 
-	private String[] context;
+    private String[] context;
 
-	public IBinding getPageBinding()
-	{
-		return pageBinding;
-	}
+    public IBinding getPageBinding()
+    {
+        return pageBinding;
+    }
 
-	/**
-	 *  Returns {@link IEngineService#PAGE_SERVICE}.
-	 *
-	 **/
+    /**
+     *  Returns {@link IEngineService#PAGE_SERVICE}.
+     *
+     **/
 
-	protected String getServiceName()
-	{
-		return IEngineService.PAGE_SERVICE;
-	}
+    protected String getServiceName()
+    {
+        return IEngineService.PAGE_SERVICE;
+    }
 
-	public void setPageBinding(IBinding value)
-	{
-		pageBinding = value;
+    public void setPageBinding(IBinding value)
+    {
+        pageBinding = value;
 
-		if (value.isStatic())
-			pageValue = value.getString();
-	}
+        if (value.isStatic())
+            pageValue = value.getString();
+    }
 
-	/**
-	 *  Returns a single-element String array; the lone element is the
-	 *  name of the page, retrieved from the 'page' parameter.
-	 *
-	 **/
+    /**
+     *  Returns a single-element String array; the lone element is the
+     *  name of the page, retrieved from the 'page' parameter.
+     *
+     **/
 
-	protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
-	{
-		String pageName;
+    protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
+    {
+        String pageName;
 
-		if (pageValue != null)
-			pageName = pageValue;
-		else
-			pageName = pageBinding.getString();
+        if (pageValue != null)
+            pageName = pageValue;
+        else
+            pageName = pageBinding.getString();
 
-		if (pageName == null)
-			throw new RequiredParameterException(this, "page", pageBinding);
+        if (pageName == null)
+            throw new RequiredParameterException(this, "page", pageBinding);
 
-		if (context == null)
-			context = new String[1];
+        if (context == null)
+            context = new String[1];
 
-		context[0] = pageName;
+        context[0] = pageName;
 
-		return context;
-	}
+        return context;
+    }
 }

@@ -1,39 +1,38 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2002 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.link;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
+import java.net.URL;
 
-import net.sf.tapestry.*;
-
-import java.util.*;
-import javax.servlet.http.*;
+import net.sf.tapestry.Gesture;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IEngineService;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  Abstract super-class for components that generate some form of
@@ -52,132 +51,134 @@ import javax.servlet.http.*;
  *                       
  * @author Howard Lewis Ship
  * @version $Id$
- */
+ * 
+ **/
 
 public abstract class GestureLink extends AbstractServiceLink
 {
 
-	private IBinding anchorBinding;
-	private String anchorValue;
+    private IBinding anchorBinding;
+    private String anchorValue;
 
-	private IBinding schemeBinding;
-	private String schemeValue;
+    private IBinding schemeBinding;
+    private String schemeValue;
 
-	private IBinding portBinding;
-	private int portValue;
+    private IBinding portBinding;
+    private int portValue;
 
     /**
      *  Constructs a URL based on the service, context plus scheme, port and anchor.
      * 
      **/
-    
-	protected String getURL(IRequestCycle cycle) throws RequestCycleException
-	{
-		return buildURL(cycle, getContext(cycle));
-	}
 
-	/**
-	 *  Invoked by {@link #getURL()}.
-	 *  The default implementation returns null; other
-	 *  implementations can provide appropriate parameters as needed.
-	 *  
-	 **/
+    protected String getURL(IRequestCycle cycle) throws RequestCycleException
+    {
+        return buildURL(cycle, getContext(cycle));
+    }
 
-	protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
-	{
-		return null;
-	}
+    /**
+     *  Invoked by {@link #getURL()}.
+     *  The default implementation returns null; other
+     *  implementations can provide appropriate parameters as needed.
+     *  
+     **/
 
-	private String buildURL(IRequestCycle cycle, String[] context) throws RequestCycleException
-	{
-		String anchor = null;
-		String scheme = null;
-		int port = 0;
-		String URL = null;
+    protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
+    {
+        return null;
+    }
 
-		String serviceName = getServiceName();
-		IEngineService service = cycle.getEngine().getService(serviceName);
+    private String buildURL(IRequestCycle cycle, String[] context)
+        throws RequestCycleException
+    {
+        String anchor = null;
+        String scheme = null;
+        int port = 0;
+        String URL = null;
 
-		if (service == null)
-			throw new RequestCycleException(
-				Tapestry.getString("GestureLink.missing-service", serviceName),
-				this);
+        String serviceName = getServiceName();
+        IEngineService service = cycle.getEngine().getService(serviceName);
 
-		Gesture g = service.buildGesture(cycle, this, context);
+        if (service == null)
+            throw new RequestCycleException(
+                Tapestry.getString("GestureLink.missing-service", serviceName),
+                this);
 
-		// Now, dress up the URL with scheme, server port and anchor,
-		// as necessary.
+        Gesture g = service.buildGesture(cycle, this, context);
 
-		if (schemeValue != null)
-			scheme = schemeValue;
-		else if (schemeBinding != null)
-			scheme = schemeBinding.getString();
+        // Now, dress up the URL with scheme, server port and anchor,
+        // as necessary.
 
-		if (portValue != 0)
-			port = portValue;
-		else if (portBinding != null)
-			port = portBinding.getInt();
+        if (schemeValue != null)
+            scheme = schemeValue;
+        else if (schemeBinding != null)
+            scheme = schemeBinding.getString();
 
-		if (scheme == null && port == 0)
-			URL = g.getURL();
-		else
-			URL = g.getAbsoluteURL(scheme, null, port);
+        if (portValue != 0)
+            port = portValue;
+        else if (portBinding != null)
+            port = portBinding.getInt();
 
-		if (anchorValue != null)
-			anchor = anchorValue;
-		else if (anchorBinding != null)
-			anchor = anchorBinding.getString();
+        if (scheme == null && port == 0)
+            URL = g.getURL();
+        else
+            URL = g.getAbsoluteURL(scheme, null, port);
 
-		if (anchor == null)
-			return URL;
+        if (anchorValue != null)
+            anchor = anchorValue;
+        else if (anchorBinding != null)
+            anchor = anchorBinding.getString();
 
-		return URL + "#" + anchor;
-	}
+        if (anchor == null)
+            return URL;
 
-	public IBinding getAnchorBinding()
-	{
-		return anchorBinding;
-	}
+        return URL + "#" + anchor;
+    }
 
-	public IBinding getSchemeBinding()
-	{
-		return schemeBinding;
-	}
+    public IBinding getAnchorBinding()
+    {
+        return anchorBinding;
+    }
 
-	public void setSchemeBinding(IBinding value)
-	{
-		schemeBinding = value;
+    public IBinding getSchemeBinding()
+    {
+        return schemeBinding;
+    }
 
-		if (value.isStatic())
-			schemeValue = value.getString();
-	}
+    public void setSchemeBinding(IBinding value)
+    {
+        schemeBinding = value;
 
-	public IBinding getPortBinding()
-	{
-		return portBinding;
-	}
+        if (value.isStatic())
+            schemeValue = value.getString();
+    }
 
-	public void setPortBinding(IBinding value)
-	{
-		portBinding = value;
+    public IBinding getPortBinding()
+    {
+        return portBinding;
+    }
 
-		if (value.isStatic())
-			portValue = value.getInt();
-	}
+    public void setPortBinding(IBinding value)
+    {
+        portBinding = value;
 
-	/**
-	 *  Returns the service used to build URLs.
-	 *
-	 **/
+        if (value.isStatic())
+            portValue = value.getInt();
+    }
 
-	protected abstract String getServiceName();
+    /**
+     *  Returns the service used to build URLs.
+     *
+     **/
 
-	public void setAnchorBinding(IBinding value)
-	{
-		anchorBinding = value;
+    protected abstract String getServiceName();
 
-		if (value.isStatic())
-			anchorValue = value.getString();
-	}
+    public void setAnchorBinding(IBinding value)
+    {
+        anchorBinding = value;
+
+        if (value.isStatic())
+            anchorValue = value.getString();
+    }
 
 }

@@ -1,32 +1,30 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2002 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.inspector;
 
-import net.sf.tapestry.util.*;
 import net.sf.tapestry.util.Enum;
 
 /**
@@ -39,48 +37,48 @@ import net.sf.tapestry.util.Enum;
 
 public class View extends Enum
 {
-	/**
-	 *  View that displays the basic specification information, plus
-	 *  formal and informal parameters (and related bindings), and 
-	 *  assets.
-	 *
-	 **/
+    /**
+     *  View that displays the basic specification information, plus
+     *  formal and informal parameters (and related bindings), and 
+     *  assets.
+     *
+     **/
 
-	public static final View SPECIFICATION = new View("SPECIFICATION");
+    public static final View SPECIFICATION = new View("SPECIFICATION");
 
-	/**
-	 *  View that displays the HTML template for the component, if one
-	 *  exists.
-	 *
-	 **/
+    /**
+     *  View that displays the HTML template for the component, if one
+     *  exists.
+     *
+     **/
 
-	public static final View TEMPLATE = new View("TEMPLATE");
+    public static final View TEMPLATE = new View("TEMPLATE");
 
-	/**
-	 *  View that shows the persistent properties of the page containing
-	 *  the inspected component.
-	 *
-	 **/
+    /**
+     *  View that shows the persistent properties of the page containing
+     *  the inspected component.
+     *
+     **/
 
-	public static final View PROPERTIES = new View("PROPERTIES");
+    public static final View PROPERTIES = new View("PROPERTIES");
 
-	/**
-	 *  View that shows information about the {@link IEngine}.
-	 *
-	 **/
+    /**
+     *  View that shows information about the {@link IEngine}.
+     *
+     **/
 
-	public static final View ENGINE = new View("ENGINE");
+    public static final View ENGINE = new View("ENGINE");
 
-	/**
-	 *  View for controlling logging of the application as it runs.
-	 *
-	 **/
+    /**
+     *  View for controlling logging of the application as it runs.
+     *
+     **/
 
-	public static final View LOGGING = new View("LOGGING");
+    public static final View LOGGING = new View("LOGGING");
 
-	private View(String enumerationId)
-	{
-		super(enumerationId);
-	}
+    private View(String enumerationId)
+    {
+        super(enumerationId);
+    }
 
 }

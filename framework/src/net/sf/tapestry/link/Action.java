@@ -1,34 +1,39 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.link;
 
-import com.primix.tapestry.*;
-
-import net.sf.tapestry.*;
+import net.sf.tapestry.BindingException;
+import net.sf.tapestry.IAction;
+import net.sf.tapestry.IActionListener;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IEngineService;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RenderRewoundException;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  A component for creating a link that is handled using the action service.
@@ -101,116 +106,116 @@ import net.sf.tapestry.*;
  *
  * <p>Informal  parameters are allowed.
  *
- * @author Howard Ship
+ * @author Howard Lewis Ship
  * @version $Id$
  *
  **/
 
 public class Action extends GestureLink implements IAction
 {
-	private IBinding listenerBinding;
-	private IBinding statefulBinding;
-	private boolean staticStateful;
-	private boolean statefulValue;
+    private IBinding listenerBinding;
+    private IBinding statefulBinding;
+    private boolean staticStateful;
+    private boolean statefulValue;
 
-	// Each instance gets its own context array.
+    // Each instance gets its own context array.
 
-	private String[] context;
+    private String[] context;
 
-	public IBinding getListenerBinding()
-	{
-		return listenerBinding;
-	}
+    public IBinding getListenerBinding()
+    {
+        return listenerBinding;
+    }
 
-	public void setListenerBinding(IBinding value)
-	{
-		listenerBinding = value;
-	}
+    public void setListenerBinding(IBinding value)
+    {
+        listenerBinding = value;
+    }
 
-	private IActionListener getListener(IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		IActionListener result;
+    private IActionListener getListener(IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        IActionListener result;
 
-		try
-		{
-			result =
-				(IActionListener) listenerBinding.getObject("listener", IActionListener.class);
-		}
-		catch (BindingException ex)
-		
-			{
-			throw new RequestCycleException(this, ex);
-		}
+        try
+        {
+            result =
+                (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
+        }
+        catch (BindingException ex)
+        {
+            throw new RequestCycleException(this, ex);
+        }
 
-		if (result == null)
-			throw new RequiredParameterException(this, "listener", listenerBinding);
+        if (result == null)
+            throw new RequiredParameterException(this, "listener", listenerBinding);
 
-		return result;
-	}
+        return result;
+    }
 
-	public void setStatefulBinding(IBinding value)
-	{
-		statefulBinding = value;
+    public void setStatefulBinding(IBinding value)
+    {
+        statefulBinding = value;
 
-		staticStateful = value.isStatic();
-		if (staticStateful)
-			statefulValue = value.getBoolean();
-	}
+        staticStateful = value.isStatic();
+        if (staticStateful)
+            statefulValue = value.getBoolean();
+    }
 
-	public IBinding getStatefulBinding()
-	{
-		return statefulBinding;
-	}
+    public IBinding getStatefulBinding()
+    {
+        return statefulBinding;
+    }
 
-	/**
-	 *  Returns true if the stateful parameter is bound to
-	 *  a true value.  If stateful is not bound, also returns
-	 *  the default, true.
-	 *
-	 **/
+    /**
+     *  Returns true if the stateful parameter is bound to
+     *  a true value.  If stateful is not bound, also returns
+     *  the default, true.
+     *
+     **/
 
-	public boolean getRequiresSession()
-	{
-		if (staticStateful)
-			return statefulValue;
+    public boolean getRequiresSession()
+    {
+        if (staticStateful)
+            return statefulValue;
 
-		if (statefulBinding != null)
-			return statefulBinding.getBoolean();
+        if (statefulBinding != null)
+            return statefulBinding.getBoolean();
 
-		return true;
-	}
-    
-	/**
-	 *  Returns {@link IEngineService#ACTION_SERVICE}.
-	 **/
+        return true;
+    }
 
-	protected String getServiceName()
-	{
-		return IEngineService.ACTION_SERVICE;
-	}
+    /**
+     *  Returns {@link IEngineService#ACTION_SERVICE}.
+     * 
+     **/
 
-	protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
-	{
-		String actionId;
-		IActionListener listener;
+    protected String getServiceName()
+    {
+        return IEngineService.ACTION_SERVICE;
+    }
 
-		actionId = cycle.getNextActionId();
+    protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
+    {
+        String actionId;
+        IActionListener listener;
 
-		if (cycle.isRewound(this))
-		{
-			listener = getListener(cycle);
+        actionId = cycle.getNextActionId();
 
-			listener.actionTriggered(this, cycle);
+        if (cycle.isRewound(this))
+        {
+            listener = getListener(cycle);
 
-			throw new RenderRewoundException(this);
-		}
+            listener.actionTriggered(this, cycle);
 
-		if (context == null)
-			context = new String[1];
+            throw new RenderRewoundException(this);
+        }
 
-		context[0] = actionId;
+        if (context == null)
+            context = new String[1];
 
-		return context;
-	}
+        context[0] = actionId;
+
+        return context;
+    }
 }
