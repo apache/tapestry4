@@ -53,7 +53,7 @@ public class InjectWorker implements EnhancementWorker
             catch (Exception ex)
             {
                 _errorLog.error(EnhanceMessages.errorAddingProperty(
-                        is.getName(),
+                        is.getProperty(),
                         op.getBaseClass(),
                         ex), is.getLocation(), ex);
             }
@@ -62,7 +62,7 @@ public class InjectWorker implements EnhancementWorker
 
     private void performEnhancement(EnhancementOperation op, InjectSpecification is)
     {
-        String name = is.getName();
+        String name = is.getProperty();
         String objectReference = is.getObjectReference();
 
         Class propertyType = op.getPropertyType(name);

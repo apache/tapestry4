@@ -26,9 +26,9 @@ public interface InjectSpecification extends LocationHolder
      * Returns the name of the property to be created.
      */
 
-    public String getName();
+    public String getProperty();
 
-    public void setName(String name);
+    public void setProperty(String property);
 
     /**
      * Returns the object reference used to locate the HiveMind object to be injected into the
@@ -37,5 +37,5 @@ public interface InjectSpecification extends LocationHolder
 
     public String getObjectReference();
 
-    public void setObjectReference(String name);
+    public void setObjectReference(String locator);
 }

@@ -22,7 +22,7 @@ import org.apache.hivemind.impl.BaseLocatable;
  */
 public class InjectSpecificationImpl extends BaseLocatable implements InjectSpecification
 {
-    private String _name;
+    private String _property;
 
     private String _objectReference;
 
@@ -36,13 +36,13 @@ public class InjectSpecificationImpl extends BaseLocatable implements InjectSpec
         _objectReference = locator;
     }
 
-    public String getName()
+    public String getProperty()
     {
-        return _name;
+        return _property;
     }
 
-    public void setName(String name)
+    public void setProperty(String name)
     {
-        _name = name;
+        _property = name;
     }
 }

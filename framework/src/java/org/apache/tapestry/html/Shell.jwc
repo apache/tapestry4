@@ -82,9 +82,9 @@
     </description>
   </parameter>
   
-  <inject name="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
-  <inject name="pageService" object="engine-service:page"/>
-  <inject name="applicationSpecification" object="infrastructure:applicationSpecification"/>
-  <inject name="baseTagWriter" object="service:tapestry.url.BaseTagWriter"/>
+  <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
+  <inject property="pageService" object="engine-service:page"/>
+  <inject property="applicationSpecification" object="infrastructure:applicationSpecification"/>
+  <inject property="baseTagWriter" object="service:tapestry.url.BaseTagWriter"/>
   
 </component-specification>

@@ -45,7 +45,7 @@
       <source><![CDATA[
 <page-specification class=". . .">
 
-  <inject name="mailSender" object="service:mymodule.MailSender"/>
+  <inject property="mailSender" object="service:mymodule.MailSender"/>
   
 </page-specification>]]> </source>
       <p> This would create a new property on your page, mailSender, that would be connected to a HiveMind service, 

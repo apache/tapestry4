@@ -262,12 +262,12 @@ Defines a new property whose read-only value is an object
 obtained from HiveMind.
 
 Attributes:
-  name: The name of the property.
+  property The name of the property.
   object: The locator used to obtain the value.
 -->
 <!ELEMENT inject EMPTY>
 <!ATTLIST inject
-  name CDATA #REQUIRED
+  property CDATA #REQUIRED
   object CDATA #REQUIRED
 >
 

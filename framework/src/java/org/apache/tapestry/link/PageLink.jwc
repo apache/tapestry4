@@ -41,6 +41,6 @@
   
   <reserved-parameter name="href"/>
   
-  <inject name="pageService" object="engine-service:page"/>
+  <inject property="pageService" object="engine-service:page"/>
 
 </component-specification>

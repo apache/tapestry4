@@ -21,7 +21,7 @@
 	
 <component-specification>
 
-  <inject name="fred" object="flintstone"/>
-  <inject name="barney" object="rubble"/>
+  <inject property="fred" object="flintstone"/>
+  <inject property="barney" object="rubble"/>
   
 </component-specification>

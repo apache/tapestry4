@@ -37,8 +37,8 @@
   
   <parameter name="element"/>
   
-  <inject name="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
-  <inject name="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
+  <inject property="dataSqueezer" object="infrastructure:dataSqueezer"/>
+  <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
   
 </component-specification>
 
