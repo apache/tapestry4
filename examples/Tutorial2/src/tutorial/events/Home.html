@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title>Event Handling Tutorial</title>
+</head>
+<body>
+
+<h1>A simple Generic Link</h1>
+Click <span jwcid="google">here</span> to perform a search at Google.
+
+<h1>ActionLink and DirectLink</h1>
+<p>
+This <span jwcid="direct">direct link</span> will get the time of day,
+save it in a variable of the page, and show it underneath this paragraph
+using a InsertText component.
+</p>
+
+<p>
+This <span jwcid="action">action link</span> will do the same thing
+as the direct link (it uses the same listener method). If you would like
+to observe the difference in processing, run this example from a console
+prompt with debug enabled. The listener method will output the string
+<pre>"TIME LISTENER METHOD CALLED"</pre>. You will notice 
+the place in the render cycle in which the method is called is different
+depending upon the link type that you click.
+</p>
+
+<p>
+<center>
+<span jwcid="timeofday">Time of day (or nothing) will go here</span>
+</center>
+
+</body>
+</html>
