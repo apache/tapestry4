@@ -12,7 +12,7 @@
 		required="yes"
 		direction="custom"/>
 
-    <bean name="rowClass" class="net.sf.tapestry.bean.EvenOdd"/>
+    <bean name="rowClass" class="org.apache.tapestry.bean.EvenOdd"/>
 
 	<component id="form" type="Form">
 		<binding name="listener" expression="listeners.formSubmit"/>

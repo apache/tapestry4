@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <!-- Top-level buildfile for the Tapestry module. -->
-<project name="Tapestry Module" default="install">
+<project name="Tapestry Web Application Framework" default="install">
 	<property name="root.dir" value="./"/>
 	<property file="${root.dir}/config/Version.properties"/>
 	<property file="${root.dir}/config/build.properties"/>
@@ -11,16 +11,16 @@
 	<path id="jetty.classpath">
 		<fileset dir="${jetty.dir}">
 			<include name="lib/javax.servlet.jar"/>
-			<include name="lib/org.mortbay.jetty-jdk12.jar"/>
+			<include name="lib/org.mortbay.jetty-jdk1.2.jar"/>
 			<include name="ext/*.jar"/>
 		</fileset>
 	</path>
-	<path id="tapestry.ext.classpath">
-		<fileset dir="${tapestry.ext.dir}">
+	<path id="ext.dist.classpath">
+		<fileset dir="${ext.dist.dir}">
 			<include name="*.jar"/>
 		</fileset>
 	</path>
-	<path id="tutorial.classpath">
+	<path id="workbench.classpath">
 		<fileset dir="${lib.dir}">
 			<include name="${framework.jar}"/>
 			<include name="${contrib.jar}"/>
@@ -28,6 +28,7 @@
 			<include name="${runtime.dir}/*.jar"/>
 		</fileset>
 		<pathelement location="config"/>
+		<path refid="ext.dist.classpath"/>
 	</path>
 	<path id="vlib.classpath">
 		<pathelement location="${vlibbeans.jar}"/>
@@ -35,17 +36,14 @@
 		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
 		<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
 		<pathelement location="${jboss.client.dir}/jnp-client.jar"/>
-		<path refid="tutorial.classpath"/>
+		<path refid="workbench.classpath"/>
 	</path>
 	<target name="clean" description="Cleans all sub-projects.">
 		<ant dir="framework" target="clean"/>
 		<ant dir="contrib" target="clean"/>
 		<ant dir="junit" target="clean"/>
 		<ant dir="examples" target="clean"/>
-		<ant dir="doc/src/Tutorial" target="clean"/>
-		<ant dir="doc/src/DevelopersGuide" target="clean"/>
-		<ant dir="doc/src/UsersGuide" target="clean"/>
-		<ant dir="doc/src/ContributorsGuide" target="clean"/>
+		<ant dir="doc/src" target="clean"/>
 		<delete dir="${private.dir}" quiet="true"/>
 	</target>
 	<target name="clean-all" depends="clean"
@@ -71,19 +69,14 @@
 	</target>
 	<target name="documentation"
 		description="Builds the Tapestry documentation.">
-		<ant dir="doc/src/Tutorial" target="install" inheritAll="false"/>
-		<ant dir="doc/src/DevelopersGuide" target="install" inheritAll="false"/>
-		<ant dir="doc/src/ContributorsGuide" target="install" inheritAll="false"
-			/>
-		<ant dir="doc/src/UsersGuide" target="install" inheritAll="false"/>
-		<ant dir="doc/src/ComponentReference" target="install"
-			inheritAll="false"/>
+		<ant dir="doc/src" target="install" inheritAll="false"/>
 	</target>
-	<target name="junit" depends="check-for-jython-dir"
+
+	<target name="junit" depends="check-for-jython-dir,check-for-jetty-dir"
 		description="Run the JUnit test suite for Tapestry.">
 		<ant dir="junit" target="run" inheritAll="false"/>
 	</target>
-	<target name="clover" depends="check-for-clover-dir,check-for-jython-dir"
+	<target name="clover" depends="check-for-clover-dir,check-for-jython-dir,check-for-jetty-dir"
 		description="Execute the JUnit tests and generate Code Coverage report."
 		>
 		<ant dir="junit" target="clover" inheritAll="false"/>
@@ -118,6 +111,7 @@
 				<exclude name="web/*.html"/>
 				<include name="web/**"/>
 				<include name="config/**"/>
+				<include name="ext-dist/README.html"/>
 				<exclude name="lib/*"/>
 				<exclude name="lib/**"/>
 				<!-- Exclude class files left around by IDEs. -->
@@ -161,8 +155,8 @@
 				<exclude name="ext/junit.jar"/>
 				<exclude name="ext/jcommon*.jar"/>
 				<exclude name="ext/jfreechart*.jar"/>
-				<exclude name="Vlib.war"/>
-				<exclude name="VlibBeans.jar"/>
+				<exclude name="${vlib.war}"/>
+				<exclude name="${vlibbeans.war}"/>
 			</fileset>
 		</copy>
 		<copy todir="${dist.dir}">
@@ -223,8 +217,8 @@
 		<javadoc author="true" version="true" destdir="${javadoc.dir}"
 			splitindex="true" windowtitle="Tapestry API ${framework.version}">
 			<doctitle>Tapestry API (Release ${framework.version})</doctitle>
-			<package name="net.sf.tapestry.*"/>
-			<package name="tutorial.*"/>
+			<package name="org.apache.tapestry.*"/>
+
 			<link href="http://java.sun.com/products/jdk/1.2/docs/api/"
 				offline="true" packageListLoc="package-lists/jdk"/>
 			<link href="http://java.sun.com/j2ee/sdk_1.2.1/techdocs/api/"
@@ -239,45 +233,37 @@
 				offline="true" packageListLoc="package-lists/jfreechart"/>
 			<link href="http://jakarta.apache.org/oro/api/" offline="true"
 				packageListLoc="package-lists/jakarta-oro"/>
+				
 			<group title="Tapestry Framework"
-				packages="net.sf.tapestry:net.sf.tapestry.*"/>
+				packages="org.apache.tapestry:org.apache.tapestry.*"/>
 			<group title="Tapestry Contributions Framework"
-				packages="net.sf.tapestry.contrib.*"/>
-			<group title="Tapestry Tutorials" packages="tutorial.*"/>
-			<group title="Virtual Library"
-				packages="net.sf.tapestry.vlib:net.sf.tapestry.vlib.*"/>
-			<group title="JUnit Tests"
-				packages="net.sf.tapestry.junit,net.sf.tapestry.junit.*"/>
+				packages="org.apache.tapestry.contrib.*"/>
+
 			<sourcepath>
 				<pathelement location="framework/src"/>
 				<pathelement location="contrib/src"/>
-				<pathelement location="examples/Tutorial/src"/>
-				<pathelement location="examples/Vlib/src"/>
-				<pathelement location="examples/VlibBeans/src"/>
-				<pathelement location="junit/src"/>
 			</sourcepath>
+			
 			<classpath>
 				<path refid="vlib.classpath"/>
-				<path refid="tapestry.ext.classpath"/>
-				<pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>
-				<pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
-				<pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
+				<path refid="ext.dist.classpath"/>
+				<path refid="jetty.classpath"/>
 				<pathelement location="${jboss.server.all.lib.dir}/mail.jar"/>
 			</classpath>
 		</javadoc>
 	</target>
-	<target name="run-tutorial" depends="check-for-jetty-dir"
-		description="Runs the Tapestry Tutorial.">
+	<target name="run-workbench" depends="check-for-jetty-dir"
+		description="Runs the Tapestry Workbench using Jetty.">
 		<delete dir="${private.dir}" quiet="true"/>
 		<mkdir dir="${private.dir}"/>
-		<echo>Running Tapestry Tutorial on port 8080 ...</echo>
+		<echo>Running Tapestry Workbench on port 8080 ...</echo>
 		<java classname="org.mortbay.jetty.Server" fork="true" maxmemory="128MB"
 			>
 			<classpath>
-				<path refid="tutorial.classpath"/>
+				<path refid="workbench.classpath"/>
 				<path refid="jetty.classpath"/>
 			</classpath>
-			<arg value="config/jetty-tutorial.xml"/>
+			<arg value="config/jetty-workbench.xml"/>
 			<!-- Enable debugging when running the tutorial -->
 			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
 			<jvmarg
@@ -286,9 +272,9 @@
 			<!-- Jetty can get easily confused (under NT) unless this is turned off. -->
 			<sysproperty key="org.mortbay.util.FileResource.checkAliases"
 				value="false"/>
-			<sysproperty key="net.sf.tapestry.asset.dir" value="${private.dir}"
+			<sysproperty key="org.apache.tapestry.asset.dir" value="${private.dir}"
 				/>
-			<sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>
+			<sysproperty key="org.apache.tapestry.asset.URL" value="/private"/>
 		</java>
 	</target>
 	<!-- ===================================================================================
@@ -315,9 +301,11 @@
 	<target name="configure" depends="check-for-jboss-dir"
 		description="Configure the JBoss 3.0.4 server and setup the Tapestry database."
 		>
+		<delete dir="${tapestry.lib.dir}" quiet="true"/>
 		<mkdir dir="${tapestry.lib.dir}"/>
 		<copy todir="${tapestry.lib.dir}" flatten="true">
 			<fileset dir="${lib.dir}">
+				<include name="*-${framework.version}.jar"/>
 				<include name="${ext.dir}/*.jar"/>
 			</fileset>
 			<fileset dir="${jboss.server.default.dir}/lib">
@@ -325,6 +313,11 @@
 				 but this is good for now.  -->
 				<include name="*.jar"/>
 				<exclude name="bcel.jar"/>
+			</fileset>
+			<fileset dir="${ext.dist.dir}">
+				<include name="mckoidb*.jar"/>
+				<include name="jcommon*.jar"/>
+				<include name="jfreechart*.jar"/>
 			</fileset>
 		</copy>
 		<!-- Delete, recreate and copy -->
@@ -370,16 +363,8 @@
 		description="Deploys the demos and Tapestry frameworks into JBoss.">
 		<copy todir="${tapestry.deploy.dir}">
 			<fileset dir="${lib.dir}">
-				<include name="Vlib.ear"/>
-				<include name="tutorial.war"/>
-			</fileset>
-		</copy>
-		<copy todir="${tapestry.lib.dir}" flatten="true">
-			<fileset dir="${lib.dir}">
-				<include name="*-${framework.version}.jar"/>
-			</fileset>
-			<fileset dir="${tapestry.ext.dir}">
-				<include name="*.jar"/>
+				<include name="${vlib.ear}"/>
+				<include name="${workbench.war}"/>
 			</fileset>
 		</copy>
 	</target>
@@ -400,34 +385,35 @@
 			<jvmarg
 				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"
 				/>
-			<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"
+			<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"
 				/>
-			<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
+			<sysproperty key="org.apache.tapestry.vlib.debug-enabled" value="true"/>
 			<!-- These allow private assets to be exported as static
 	  		 files.  This coordinates with portions of
 	  		 config/deploy/jbossweb.sar/META-INF/jboss-service.xml -->
-			<sysproperty key="net.sf.tapestry.asset.dir"
+			<sysproperty key="org.apache.tapestry.asset.dir"
 				value="${tapestry.private.dir}"/>
-			<sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>
+			<sysproperty key="org.apache.tapestry.asset.URL" value="/private"/>
 			<!-- The following is probably only necessary under Windows.  Jetty gets
 	  	     tripped up by the fact that pathnames are case-insensitive.  -->
 			<sysproperty key="org.mortbay.util.FileResource.checkAliases"
 				value="false"/>
 		</java>
 	</target>
+	
 	<target name="deploy-tomcat"
-		depends="check-for-tomcat-dir,check-for-tapestry-ext-dir"
-		description="Deploys the tutorial application into Tomcat.">
-		<unjar src="lib/tutorial.war" dest="${tomcat.dir}/webapps/tutorial"/>
+		depends="check-for-tomcat-dir"
+		description="Deploys the Workbench application into Tomcat.">
+		<unjar src="${lib.dir}/${workbench.war}" dest="${tomcat.dir}/webapps/workbench"/>
 		<property name="web.lib"
-			value="${tomcat.dir}/webapps/tutorial/WEB-INF/lib"/>
+			value="${tomcat.dir}/webapps/workbench/WEB-INF/lib"/>
 		<copy todir="${web.lib}" flatten="true">
 			<fileset dir="${lib.dir}">
 				<include name="${framework.jar}"/>
 				<include name="${contrib.jar}"/>
 				<include name="${ext.dir}/*.jar"/>
 			</fileset>
-			<fileset dir="${tapestry.ext.dir}">
+			<fileset dir="${ext.dist.dir}">
 				<include name="jfreechart*.jar"/>
 				<include name="jcommon*.jar"/>
 			</fileset>
@@ -479,16 +465,6 @@
 			/>
 		<fail unless="exists.jetty.dir"
 			message="Directory ${jetty.dir} (jetty.dir from config/build.properties) does not exist."
-			/>
-	</target>
-	<target name="check-for-tapestry-ext-dir">
-		<available property="exists.tapestry.ext.dir" type="dir"
-			file="${tapestry.ext.dir}" />
-		<fail unless="tapestry.ext.dir"
-			message="Property tapestry.ext.dir not specified in config/build.properties."
-			/>
-		<fail unless="exists.tapestry.ext.dir"
-			message="Directory ${tapestry.ext.dir} (tapestry.ext.dir from config/build.properties) does not exist."
 			/>
 	</target>
 </project>

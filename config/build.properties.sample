@@ -3,19 +3,15 @@
 # Copy it as "build.properties" and fill in the necessary data.
 
 # The absolute path to the directory containing the JBoss installation.
+# Required to execute the configure and run-jboss targets.
 jboss.dir=
 
 # The absolute path to the directory containing the Tomcat installation.
+# Required to execute the deploy-tomcat target.
+# 
 tomcat.dir=
 
 # The absolute path to the directory containing the Jetty installation.
+# Required to execute the run-workbench target.
 jetty.dir=
 
-# The absolute path to the directory containing external distributions
-# needed by Tapestry (but not included due to licence conflict).
-# To run the demos, the following files are needed in the directory:
-# mckoidb*.jar			http://www.mckoi.com/database/		(version 0.94h)
-# jcommon*.jar			http://www.object-refinery.com/jcommon/
-# jfreechart*.jar		http://www.object-refinery.com/jfreechart/
-
-tapestry.ext.dir=

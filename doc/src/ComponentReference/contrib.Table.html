@@ -48,7 +48,7 @@ Tbis HTML document provides a base template for Component Reference pages.
    </tr>
    <tr>
     <td>
-     <A href="../api/net/sf/tapestry/contrib/table/components/Table.html">net.sf.tapestry.contrib.table.components.Table</a>
+     <A href="../api/org/apache/tapestry/contrib/table/components/Table.html">org.apache.tapestry.contrib.table.components.Table</a>
     </td>
    </tr>
   </table>
@@ -78,15 +78,15 @@ Tbis HTML document provides a base template for Component Reference pages.
  to define the 'class' attributes of its internal elements. If you want to change 
  the structure of the table, however, you can instead build your own using the 
  lower level components
- <A HREF="../api/net/sf/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>, 
- <A HREF="../api/net/sf/tapestry/contrib/table/components/TablePages.html"><CODE>TablePages</CODE></A>, 
- <A HREF="../api/net/sf/tapestry/contrib/table/components/TableColumns.html"><CODE>TableColumns</CODE></A>, 
- <A HREF="../api/net/sf/tapestry/contrib/table/components/TableRows.html"><CODE>TableRows</CODE></A>,
+ <A HREF="../api/org/apache/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>, 
+ <A HREF="../api/org/apache/tapestry/contrib/table/components/TablePages.html"><CODE>TablePages</CODE></A>, 
+ <A HREF="../api/org/apache/tapestry/contrib/table/components/TableColumns.html"><CODE>TableColumns</CODE></A>, 
+ <A HREF="../api/org/apache/tapestry/contrib/table/components/TableRows.html"><CODE>TableRows</CODE></A>,
  and 
- <A HREF="../api/net/sf/tapestry/contrib/table/components/TableValues.html"><CODE>TableValues</CODE></A>.
+ <A HREF="../api/org/apache/tapestry/contrib/table/components/TableValues.html"><CODE>TableValues</CODE></A>.
  <p>
  The Table component delegates the handling of the table model and related
- activities to the <A HREF="../api/net/sf/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>, 
+ activities to the <A HREF="../api/org/apache/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>, 
  and more detailed information about the process can be found in the 
  documentation of that class.
  </td>
@@ -120,7 +120,7 @@ Tbis HTML document provides a base template for Component Reference pages.
 
  <tr>
   <td>tableModel</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A></td>
   <td>in</td>
   <td>yes</td>
   <td>&nbsp;</td>
@@ -129,7 +129,7 @@ Tbis HTML document provides a base template for Component Reference pages.
       component stores the model in the session state. 
       <p>If you want the Table to read the model every time you can use
       a session state manager such as 
-      <A HREF="../api/net/sf/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
       that will force it to get the TableModel from this binding every time.
       If you do this, however, you will be responsible for saving the state of 
       the table yourself.
@@ -140,27 +140,27 @@ Tbis HTML document provides a base template for Component Reference pages.
 
  <tr>
   <td>tableSessionStateManager</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A></td>
   <td>in</td>
   <td>no</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A></td>
   <td align="left">This is the session state manager that will control what part of the 
       table model will be saved in the session state. 
       It is then used to recreate the table model from
       using what was saved in the session. By default, the 
-      <A HREF="../api/net/sf/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A>
       is used, which just saves the entire model into the session.
       This behaviour may not be appropriate when the data is a lot or it is not
       <A HREF="http://java.sun.com/products/jdk/1.2/docs/api/java/io/Serializable.html"><CODE>Serializable</CODE></A>.
       <p> You can use one of the stock implementations of  
-      <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
       to determine the session state behaviour, or you can just define your own.
   </td> 
  </tr>
 
  <tr>
   <td>tableSessionStoreManager</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A></td>
   <td>in</td>
   <td>no</td>
   <td>null</td>
@@ -182,7 +182,7 @@ Tbis HTML document provides a base template for Component Reference pages.
 
  <tr>
   <td>column</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableColumn.html"><CODE>ITableColumn</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableColumn.html"><CODE>ITableColumn</CODE></A></td>
   <td>out</td>
   <td>no</td>
   <td>&nbsp;</td>
@@ -205,7 +205,7 @@ Tbis HTML document provides a base template for Component Reference pages.
 
  <tr>
   <td>arrowUpAsset</td>
-  <td><A HREF="../api/net/sf/tapestry/IAsset.html"><CODE>IAsset</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/IAsset.html"><CODE>IAsset</CODE></A></td>
   <td>in</td>
   <td>no</td>
   <td>&nbsp;</td>
@@ -214,7 +214,7 @@ Tbis HTML document provides a base template for Component Reference pages.
 
  <tr>
   <td>arrowDownAsset</td>
-  <td><A HREF="../api/net/sf/tapestry/IAsset.html"><CODE>IAsset</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/IAsset.html"><CODE>IAsset</CODE></A></td>
   <td>in</td>
   <td>no</td>
   <td>&nbsp;</td>
@@ -424,7 +424,7 @@ href="#">&gt;&gt;</A></SPAN>
 <BR>
 
 <PRE>
-&lt;page-specification class="net.sf.tapestry.contrib.table.example.minimal.Home"&gt;
+&lt;page-specification class="org.apache.tapestry.contrib.table.example.minimal.Home"&gt;
     &lt;component id="table" type="contrib:Table"&gt;
         &lt;binding name="tableModel" expression="tableModel"/&gt; 
     &lt;/component&gt;
@@ -765,7 +765,7 @@ set the CSS class of all major elements of the table. Please have a look at
 <SPAN class=code>Table</SPAN>'s JavaDoc for details. </P>
 <P>One interesting use of this approach is to define an <SPAN 
 class=code>evenOdd</SPAN> bean of type <SPAN 
-class=code>net.sf.tapestry.bean.EvenOdd</SPAN> and bind the rowsClass parameter 
+class=code>org.apache.tapestry.bean.EvenOdd</SPAN> and bind the rowsClass parameter 
 of table to <SPAN class=code>"beans.evenOdd.next"</SPAN>. In this way odd rows 
 in the table will receive the class "odd", and even rows will receive the class 
 "even", which allows for different formatting of neighbouring rows. </P>
@@ -831,8 +831,8 @@ sections in its template to render some columns differently (see the demo). </P>
 pitfalls that the developer must avoid. If you would like to go that route, 
 please see how the <SPAN class=code>SimpleTableColumnComponent</SPAN> and the 
 <SPAN class=code>LocaleSelection</SPAN> component are implemented and read the 
-JavaDocs of <SPAN class=code>net.sf.tapestry.components.BlockRenderer</SPAN> and 
-<SPAN class=code>net.sf.tapestry.ComponentAddress</SPAN> beforehand.</P>
+JavaDocs of <SPAN class=code>org.apache.tapestry.components.BlockRenderer</SPAN> and 
+<SPAN class=code>org.apache.tapestry.ComponentAddress</SPAN> beforehand.</P>
 <P>&nbsp;</P>
 
  </td></tr></table>

@@ -135,13 +135,10 @@
   </category>
   -->
 
-  <category name="net.sf.tapestry">
+  <category name="org.apache.tapestry">
   	<priority value="ERROR"/>
   </category>
 
-  <category name="tutorial">
-  	<priority value="ERROR"/>
-  </category>
   
   <!--
      | An example of enabling the custom TRACE level priority that is used

@@ -45,7 +45,7 @@ Tbis HTML document provides a base template for Component Reference pages.
    </tr>
    <tr>
     <td>
-     <A href="../api/net/sf/tapestry/contrib/table/components/TableView.html">net.sf.tapestry.contrib.table.components.TableView</a>
+     <A href="../api/org/apache/tapestry/contrib/table/components/TableView.html">org.apache.tapestry.contrib.table.components.TableView</a>
     </td>
    </tr>
   </table>
@@ -68,15 +68,15 @@ Tbis HTML document provides a base template for Component Reference pages.
   <b>Description</b>
   <br> 
  A low level Table component that wraps all other low level Table components.
- This component carries the <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A>
+ This component carries the <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A>
  that is used by the other Table components. Please see the documentation of
- <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A> if you need to know more
+ <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A> if you need to know more
  about how a table is represented.
  <p>
  This component also handles the saving of the state of the model using an 
- <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
+ <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
  to determine what part of the model is to be saved and an 
- <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A>
+ <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A>
  to determine how to save it.
  <p>
  Upon the beginning of a new request cycle when the table model is first needed,
@@ -86,27 +86,27 @@ Tbis HTML document provides a base template for Component Reference pages.
  If the tableSessionStoreManager binding has not been bound, the state is loaded 
  from a persistent property within the component (it is null at the beginning). 
  Otherwise the supplied
- <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A> is used
+ <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A> is used
  to load the persistent state.
  <li>The table model is recreated using the 
- <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A> that
+ <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A> that
  could be supplied using the tableSessionStateManager binding 
  (but has a default value and is therefore not required).
- <li>If the <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
+ <li>If the <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
  returns null, then a table model is taken from the tableModel binding. Thus, if
- the <A HREF="../api/net/sf/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
+ the <A HREF="../api/org/apache/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
  is used, the table model would be taken from the tableModel binding every time.
  </ul>
  Just before the rendering phase the persistent state of the model is saved in
  the session. This process occurs in reverse:
  <ul>
  <li>The persistent state of the model is taken via the 
- <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>.
+ <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>.
  <li>If the tableSessionStoreManager binding has not been bound, the persistent
  state is saved as a persistent page property. Otherwise the supplied
- <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A> is used
+ <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A> is used
  to save the persistent state. Use of the 
- <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A> 
+ <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A> 
  is usually necessary when tables with the same model have to be used across 
  multiple pages, and hence the state has to be saved in the Visit, rather than
  in a persistent component property.
@@ -141,7 +141,7 @@ Tbis HTML document provides a base template for Component Reference pages.
    </tr>
  <tr>
   <td>tableModel</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A></td>
   <td>in</td>
   <td>yes</td>
   <td>&nbsp;</td>
@@ -150,7 +150,7 @@ Tbis HTML document provides a base template for Component Reference pages.
       component stores the model in the session state. 
       <p>If you want the Table to read the model every time you can use
       a session state manager such as 
-      <A HREF="../api/net/sf/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
       that will force it to get the TableModel from this binding every time.
       If you do this, however, you will be responsible for saving the state of 
       the table yourself.
@@ -161,27 +161,27 @@ Tbis HTML document provides a base template for Component Reference pages.
 
  <tr>
   <td>tableSessionStateManager</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A></td>
   <td>in</td>
   <td>no</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A></td>
   <td align="left">This is the session state manager that will control what part of the 
       table model will be saved in the session state. 
       It is then used to recreate the table model from
       using what was saved in the session. By default, the 
-      <A HREF="../api/net/sf/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A>
       is used, which just saves the entire model into the session.
       This behaviour may not be appropriate when the data is a lot or it is not
       <A HREF="../../../../../../http://java.sun.com/products/jdk/1.2/docs/api/java/io/Serializable.html"><CODE>Serializable</CODE></A>.
       <p> You can use one of the stock implementations of  
-      <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
+      <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
       to determine the session state behaviour, or you can just define your own.
   </td> 
  </tr>
 
  <tr>
   <td>tableSessionStoreManager</td>
-  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A></td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A></td>
   <td>in</td>
   <td>no</td>
   <td>null</td>

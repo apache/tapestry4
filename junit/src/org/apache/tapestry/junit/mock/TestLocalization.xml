@@ -23,6 +23,12 @@
 		<assert-output name="English Blurb">
 If it's not Scottish, it's crap!
 		</assert-output>
+		
+		<assert-output name="English Foo-Bar">
+<![CDATA[
+<foo bar="Totally Screwed!">
+]]>	
+		</assert-output>
 	</request>		
 
     <request locale="fr">
@@ -35,7 +41,13 @@ If it's not Scottish, it's crap!
 Zees ees nawt cheeze!
 		</assert-output>
 		
-	</request>
+		<assert-output name="French Foo-Bar">
+<![CDATA[
+<foo bar="Merde!">
+]]>	
+		</assert-output>
+		
+			</request>
 
 	<request>
 	  	<parameter name="service" value="page"/>

@@ -59,6 +59,12 @@ import org.apache.commons.lang.enum.Enum;
 
 /**
  *  The type of an {@link org.apache.tapestry.parse.TemplateAttribute}.
+ *  New types can be created by modifying
+ *  {@link org.apache.tapestry.parse.TemplateParser} to recognize
+ *  the attribute prefix in compnent tags, and
+ *  by modifying
+ *  {@link org.apache.tapestry.BaseComponentTemplateLoader}
+ *  to actually do something with the TemplateAttribute, based on type.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -69,7 +75,11 @@ import org.apache.commons.lang.enum.Enum;
 public class AttributeType extends Enum
 {
 	/**
-	 *  Indicates the attribute is simple, literal text.
+	 *  Indicates the attribute is simple, literal text.  This is
+	 *  the default for any attributes without a recognized
+	 *  prefix.
+	 * 
+	 *  @see org.apache.tapestry.binding.StaticBinding
 	 * 
 	 **/
 	
@@ -78,12 +88,16 @@ public class AttributeType extends Enum
 	/**
 	 *  Indicates the attribute is a OGNL expression.
 	 * 
+	 *  @see org.apache.tapestry.binding.ExpressionBinding
+	 * 
 	 **/
 	
 	public static final AttributeType OGNL_EXPRESSION = new AttributeType("OGNL_EXPRESSION");
 	
 	/**
 	 *  Indicates the attribute is a localization key.
+	 * 
+	 *  @see org.apache.tapestry.binding.StringBinding
 	 * 
 	 **/
 	

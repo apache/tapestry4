@@ -28,8 +28,8 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/form/PropertySelection.html">
-		 net.sf.tapestry.form.PropertySelection</a>
+		 <A href="../api/org/apache/tapestry/form/PropertySelection.html">
+		 org.apache.tapestry.form.PropertySelection</a>
 		</td>
 	 </tr>
   </table>
@@ -62,16 +62,16 @@
   an object to be set from a drop-down list.</P>
   <P>  
   Uses a 
-  <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">model</a> 
+  <A href="../api/org/apache/tapestry/form/IPropertySelectionModel.html">model</a> 
   to map between Java values that will be assigned, and textual labels 
   that will appear in the HTML response. 
   </P> 
 	<p>
   There are a range property selection models you can use, including 
-  <A href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html">
+  <A href="../api/org/apache/tapestry/form/StringPropertySelectionModel.html">
   <tt>StringPropertySelectionModel</tt></a>
   and
-  <A href="../api/net/sf/tapestry/form/EnumPropertySelectionModel.html">
+  <A href="../api/org/apache/tapestry/form/EnumPropertySelectionModel.html">
   <tt>EnumPropertySelectionModel</tt></a>. You can also create your own model, 
   as illustrated in the Examples below.
 	<p>
@@ -124,7 +124,7 @@
   <tr>
  		<td>model</td>
 		<td>
-		 <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html"><tt>
+		 <A href="../api/org/apache/tapestry/form/IPropertySelectionModel.html"><tt>
 		 IPropertySelectionModel</tt></a>
 		</td>
 		<td>in</td>
@@ -170,7 +170,7 @@
   <b>Examples</b>
   <p>
   The PropertySelection component provides Gender selection drop down list using a
-  <a href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html"><tt>StringPropertySelectionModel<tt></a>
+  <a href="../api/org/apache/tapestry/form/StringPropertySelectionModel.html"><tt>StringPropertySelectionModel<tt></a>
   <p>
 
 <table class="examples" valign="middle" cellspacing="8">
@@ -204,8 +204,8 @@
 package com.mycorp;
 
 public class DetailsPage extends BasePage {
-    public static final <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> GENDER_MODEL = 
-        new <A href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html">StringPropertySelectionModel</a>(new String[] { "Unspecified", "Female", "Male" });
+    public static final <A href="../api/org/apache/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> GENDER_MODEL = 
+        new <A href="../api/org/apache/tapestry/form/StringPropertySelectionModel.html">StringPropertySelectionModel</a>(new String[] { "Unspecified", "Female", "Male" });
 
     private String gender;
    
@@ -355,7 +355,7 @@ public class Item implements Serializable {
     public int getPrice() { return price;  }   
 }
 
-public class ItemSelectionModel implements <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a>, Serializable {
+public class ItemSelectionModel implements <A href="../api/org/apache/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a>, Serializable {
     private List itemList;
 
     public ItemPropertySelectionModel(List itemList) { 

@@ -20,8 +20,8 @@
   </Call>
   
   <Call name="addWebApplication">
-    <Arg>/tutorial</Arg>
-    <Arg>lib/tutorial.war</Arg>
+    <Arg>/workbench</Arg>
+    <Arg>lib/workbench.war</Arg>
     <Set name="DefaultsDescriptor">config/webdefault.xml</Set>
   </Call>
   
