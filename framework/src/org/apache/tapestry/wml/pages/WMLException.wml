@@ -13,9 +13,9 @@
 			An exception has occured.
             You may continue by <b><a jwcid="restart">restarting</a></b> the session.<br/>
             <table columns="1">
-				<p jwcid="@Foreach" source="ognl:exceptions" value="ognl:exception">
-					<tr><td><b jwcid="@Insert" value="ognl:exception.exceptionClassName">some.exception.Class</b></td></tr>
-					<tr><td><b jwcid="@Insert" value="ognl:exception.message">A message describing the exception.</b></td></tr>
+				<p jwcid="@Foreach" source="ognl:exceptions" value="ognl:current">
+					<tr><td><b jwcid="@Insert" value="ognl:current.exceptionClassName">some.exception.Class</b></td></tr>
+					<tr><td><b jwcid="@Insert" value="ognl:current.message">A message describing the exception.</b></td></tr>
 					<tr jwcid="foreachProperty">
 						<td><b jwcid="@Insert" value="ognl:components.foreachProperty.value.name">Property Name</b>:<b jwcid="@Insert" value="ognl:components.foreachProperty.value.value">Property Value</b></td>
 					</tr>
