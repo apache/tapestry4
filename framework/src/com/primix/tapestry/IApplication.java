@@ -2,6 +2,7 @@ package com.primix.tapestry;
 
 import java.io.IOException;
 import javax.servlet.*;
+import javax.servlet.http.*;
 import com.primix.tapestry.parse.ComponentTemplate;
 import com.primix.tapestry.parse.TemplateToken;
 import java.util.Locale;

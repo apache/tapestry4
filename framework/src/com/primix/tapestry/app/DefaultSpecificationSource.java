@@ -76,7 +76,7 @@ public class DefaultSpecificationSource
 	*
 	*/
 
-	public void clear()
+	public void reset()
 	{
 		cache = null;
 	}
