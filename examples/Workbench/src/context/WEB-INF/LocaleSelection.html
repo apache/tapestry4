@@ -1,0 +1,35 @@
+<span jwcid="$content$">
+
+<style>
+	.tableRowsClass { text-align: center }
+</style>
+
+
+<span jwcid="condTable">
+	<hr>
+
+	<!-- This is the simplest way to insert a table - a single line in the template.
+    	 Unlike the LocaleList component, the rendering of the table itself is left 
+    	 to the Table component -->
+	<table jwcid="table" width="100%"/>
+
+</span>
+
+
+<!-- This is a block defining how the verbosity column should look like -->
+<span jwcid="verbosityColumnValue@Block">
+	<table style="border: 1px black solid; width: 100px; height: 15px;">
+		<tr style="border: 1px black solid; width: 100px; height: 15px;">
+			<td jwcid="verbosity"></td>
+			<td></td>
+		</tr>
+	</table>
+</span>
+
+
+<!-- This is a block defining how the remove column should look like -->
+<span jwcid="deleteColumnValue@Block">
+	<a jwcid="directDelete">remove</a>
+</span>
+
+</span>

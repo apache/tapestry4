@@ -20,7 +20,7 @@
   
   <Call name="addWebApplication">
     <Arg>/workbench</Arg>
-    <Arg>lib/examples/workbench.war</Arg>
+    <Arg>target/workbench.war</Arg>
     <Set name="DefaultsDescriptor">config/webdefault.xml</Set>
   </Call>
   

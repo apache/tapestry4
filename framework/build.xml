@@ -25,7 +25,8 @@
     
   <property name="root.dir" value=".."/>
 	<property file="${root.dir}/config/build.properties"/>
-
+	<property file="${root.dir}/config/common.properties"/>
+  
 	<import file="${hivebuild.dir}/jar-module.xml"/>
 	<import file="${hivebuild.dir}/javadoc-report.xml"/>
 	<import file="${hivebuild.dir}/clover-report.xml"/>  
@@ -36,8 +37,8 @@
 		<ibiblio-dependency artifact="commons-fileupload" version="1.0"                 group="commons-fileupload"/>    
     <ibiblio-dependency artifact="commons-lang"       version="2.0"                 group="commons-lang"/>
     <ibiblio-dependency artifact="commons-logging"    version="1.0.4"               group="commons-logging"/>
-    <ibiblio-dependency artifact="hivemind"           version="1.0"                 group="hivemind"/>
-    <ibiblio-dependency artifact="hivemind-lib"       version="1.0"                 group="hivemind"/>
+    <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"/>
+    <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"/>
     <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"/>
 		<ibiblio-dependency artifact="javassist"          version="2.6"                 group="jboss"/>
 		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
