@@ -95,6 +95,18 @@ public class MockTestCase extends TapestryTestCase
     // in a static suite() method?
 
 	/**
+	 *  Test ability of the enhancer to create properties for
+	 *  connected parameters.
+	 * 
+	 **/
+	
+	public void testEnhancedParameterProperties()
+	throws Exception
+	{
+		attempt("TestEnhancedParameterProperties.xml");
+	}
+
+	/**
 	 *  Tests the Select and Option components (and a bit of Form as well).
 	 * 
 	 **/

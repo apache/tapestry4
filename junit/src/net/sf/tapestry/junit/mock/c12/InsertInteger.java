@@ -52,22 +52,31 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.junit.mock.c9;
+package net.sf.tapestry.junit.mock.c12;
 
-import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
 
 /**
- *  More testing for non-abstract accessor methods.
+ *  Used to verify that the enhancer creates a property 
+ *  with the correct name (not necessarily the parameter
+ *  name).
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *
  **/
 
-public class Five extends BasePage
+public abstract class InsertInteger extends AbstractComponent
 {
-	public String getWord()
-	{
-		return null;
-	}
+	public abstract int getIntValue();
+	
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+    	writer.print(getIntValue());
+    }
+
 }
