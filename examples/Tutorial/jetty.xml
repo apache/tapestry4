@@ -27,5 +27,19 @@
     <Set name="DefaultsDescriptor">../../config/webdefault.xml</Set>
   </Call>
   
-  
+  <Call name="addContext">
+    <Arg>/</Arg>   
+    <Set name="realmName">Jetty Demo Realm</Set>
+   
+    <Call name="addServlet">
+      <Arg>Admin</Arg>
+      <Arg>/</Arg>
+      <Arg>org.mortbay.servlet.AdminServlet</Arg>
+    </Call>
+    
+    <Call name="setAttribute">
+      <Arg>org.mortbay.http.HttpServer</Arg>
+      <Arg><Call name="getHttpServer"/></Arg>
+    </Call>
+  </Call>    
 </Configure>
