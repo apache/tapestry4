@@ -92,5 +92,21 @@ Tapestry project.
 
 </section>
 
+<section>
+	<title>External Documentation</title>		
+	
+	<p>
+	Kevin C. Dorff has created a <a href="http://dorffweb.com/?page=taptutorial">Tapestry Tutorial</a>
+	that shows off the new features in Tapestry 3.0.
+	</p>
+	
+	<p>
+	<a href="http://www.manning.com">Manning Publications</a>	 has published
+	<a href="http://www.manning.com/lewisship/">Tapestry In Action</a>, written
+	by Howard Lewis Ship, the creator of Tapestry.
+	</p>
+		
+</section>
+
 </body>
 </document>
