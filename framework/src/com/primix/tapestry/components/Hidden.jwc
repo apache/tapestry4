@@ -5,6 +5,7 @@
 	<class>com.primix.tapestry.components.Hidden</class>
 	<allow-body>no</allow-body>
 	<parameters>
+        <allow-informal-parameters>no</allow-informal-parameters>
 		<parameter>
 			<name>value</name>
 			<required>yes</required>

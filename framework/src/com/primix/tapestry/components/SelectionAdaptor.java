@@ -57,6 +57,10 @@ import java.util.*;
  *  by bound to the <code>SelectionAdaptor</code>'s 
  *  <code>selected</code> property.
  *
+ *
+ * <p>This whole mechanism exists for compatibility and for very special cases.
+ *  More generally, a {@link PropertySelection} component is used instead.
+ *
  *  @author Howard Ship
  *  @version $Id$
  */

@@ -60,9 +60,15 @@ import com.primix.tapestry.spec.*;
  *		<td>R</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
- *		<td>A listener that is informed after the value parameter is updated.</td>
- 
- 
+ *		<td>A listener that is informed after the value parameter is updated.  This
+ * allows the data set operated on by the rest of the {@link Form} components
+ * to be synchronized.
+ *
+ *  <p>A typical use is to encode the primary key of an entity as a Hidden; when the
+ *  form is submitted, the Hidden's listener re-reads the corresponding entity
+ *  from the database.</td>
+ *  </tr>
+ * 
  *	</table>
  *
  * <p>Does not allow informal parameters, and may not contain a body.
@@ -75,6 +81,7 @@ import com.primix.tapestry.spec.*;
 public class Hidden extends AbstractFormComponent
 {
 	private IBinding valueBinding;
+    private IBinding listenerBinding;
 	
 	public Hidden(IPage page, IComponent container, String id,
 		ComponentSpecification specification)
@@ -92,6 +99,16 @@ public class Hidden extends AbstractFormComponent
 		valueBinding = value;
 	}
 	
+    public IBinding getListenerBinding()
+    {
+        return listenerBinding;
+    }
+
+    public void setListenerBinding(IBinding value)
+    {
+        listenerBinding = value;
+    }
+
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
@@ -128,12 +145,23 @@ public class Hidden extends AbstractFormComponent
 		
 		value = cycle.getRequestContext().getParameter(name);
 		
+        // A listener is not always necessary ... it's easy to code
+        // the synchronization as a side-effect of the accessor method.
+
 		valueBinding.setString(value);
 		
-		listener = getListener(cycle);
+        try
+        {
+            listener = (IActionListener)listenerBinding.getValue();
+        }
+        catch (ClassCastException e)
+        {
+            throw new RequestCycleException("Parameter listener is not type IActionListener.",
+                    this, cycle, e);
+        }
+
 		if (listener != null)
 			listener.actionTriggered(this, cycle);
-		
 	}
 }
 

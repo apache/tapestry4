@@ -278,7 +278,7 @@ implements ErrorHandler, EntityResolver
 		{
 			if (isElement(node, "class"))
 			{
-				result.setComponentClassName(getValue(node));
+				result.setComponentClassName(getValue(node).trim());
 				continue;
 			}
 			

@@ -39,10 +39,6 @@ import java.awt.Point;
  *  of the HTML element), it is more commonly used to provide a graphic
  *  image for the user to click, rather than the rather plain &lt;input type=submit&gt;.
  *
- * <p>Typically, the listener for this component will set a flag which
- * will be used when the containing form's listener is notified.  To use
- * a simple button with a text label, use the {@link Submit} component.
- *
  * <table border=1>
  * <tr> 
  *    <td>Parameter</td>
@@ -81,16 +77,6 @@ import java.awt.Point;
  *	  <td>An alternate image to display if the component is disabled.</td> </tr>
  *
  * <tr>
- *		<td>listener</td>
- *		<td>{@link IActionListener}</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>A listener that can respond when this component is used to submit
- * the form.</td>
- * </tr>
- *
- * <tr>
  *		<td>point</td>
  *		<td>java.awt.Point</td>
  *		<td>W</td>
@@ -99,6 +85,30 @@ import java.awt.Point;
  *		<td>The point at which the image was clicked; used for rare
  * components that actually need to know (typically, using the image button
  * list a simple image map).</td> </tr>
+ *
+ *  <tr>
+ *      <td>selected</td>
+ *      <td>java.lang.Object</td>
+ *      <td>W</td>
+ *      <td>no</td>
+ *      <td>&nbsp;</td>
+ *      <td>This parameter is bound to a property that is
+ *    updated when the image button is clicked by the user (submitting
+ *  the form).  The property
+ *  is updated to match the tag parameter.</td>
+ *  </tr>
+ *
+ *  <tr>
+ *      <td>tag</td>
+ *      <td>java.lang.Object</td>
+ *      <td>R</td>
+ *      <td>no</td>
+ *      <td>&nbsp;</td>
+ *      <td>Tag used with the selected parameter to indicate which image button
+ *  on a form was clicked.
+ *
+ *  <p>This parameter is required if the selected paremeter is used.</td>
+ *  </tr>
  *
  * </table>
  *
@@ -116,6 +126,9 @@ public class ImageButton extends AbstractFormComponent
 	private IBinding pointBinding;
 	private IBinding disabledBinding;
 	private IBinding disabledImageBinding;
+    private IBinding selectedBinding;
+    private IBinding tagBinding;
+    private Object staticTagValue;
 	
 	private static final String[] reservedNames = 
 		{ "type", "name", "border", "src" };
@@ -166,6 +179,29 @@ public class ImageButton extends AbstractFormComponent
 		disabledImageBinding = value;
 	}
 	
+	public void setSelectedBinding(IBinding value)
+	{
+	    selectedBinding = value;
+	}
+
+	public IBinding getSelectedBinding()
+	{
+	    return selectedBinding;
+	}
+
+	public void setTagBinding(IBinding value)
+	{
+	    tagBinding = value;
+
+	    if (value.isStatic())
+	        staticTagValue = value.getValue();
+	}
+
+	public IBinding getTagBinding()
+	{
+	    return tagBinding;
+	}
+
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
@@ -177,11 +213,11 @@ public class ImageButton extends AbstractFormComponent
 		int x;
 		int y;
 		RequestContext context;
-		IActionListener listener;
 		IAsset image = null;
 		String imageURL;
 		boolean disabled = false;
-		
+		Object tagValue = staticTagValue;
+
 		form = getForm(cycle);
 		
 		rewinding = form.isRewinding();
@@ -210,6 +246,12 @@ public class ImageButton extends AbstractFormComponent
 			if (name == null)
 				return;
 			
+            // The point parameter is not really used, unless the
+            // ImageButton is used for its original purpose (as a kind
+            // of image map).  In modern usage, we only care about
+            // whether the user clicked on the image (and thus submitted
+            // the form), not where in the image.
+
 			if (pointBinding != null)
 			{
 				x = Integer.parseInt(value);
@@ -221,17 +263,29 @@ public class ImageButton extends AbstractFormComponent
 				
 				pointBinding.setValue(new Point(x, y));
 			}
-			
-			// That was a lot of work to set the point binding.
-			// In reality, what usually happens is that the ImageButton
-			// exists so that its listener may be invoked.
-			
-			listener = getListener(cycle);
-			
-			if (listener != null)
-				listener.actionTriggered(this, cycle);
-			
-			return;	
+
+            if (selectedBinding == null)
+                return;
+
+            if (tagBinding == null)
+                throw new RequestCycleException(
+                    "The tag parameter is required if the selected parameter is bound.",
+                    this, cycle);
+
+
+			 // OK, now to notify the application code (via the parameters)
+			 // that *this* ImageButton was selected.  We do this by applying
+			 // a tag (presumably, specific to the ImageButton in question)
+			 // to the selected binding.
+	
+	
+			 if (tagValue == null)
+			     tagValue = tagBinding.getValue();
+	
+             if (tagValue == null)
+                throw new RequiredParameterException(this, "tag", tagBinding, cycle);
+
+			 selectedBinding.setValue(tagValue);			
 		}
 		
 		// Not rewinding, do the real render

@@ -28,10 +28,6 @@
 			<java-type>java.lang.Integer</java-type>
 		</parameter>
 		
-		<parameter>
-			<name>listener</name>
-			<java-type>com.primix.tapestry.components.IActionListener</java-type>
-		</parameter>
 	</parameters>
 	
 </specification>
