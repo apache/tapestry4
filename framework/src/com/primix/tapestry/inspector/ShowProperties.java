@@ -64,7 +64,7 @@ implements ILifecycle
 		inspectedPage = null;
 	}
 
-	public void prepareForRender(IRequestCycle cycle)
+	private void buildProperties()
 	{
 		Inspector inspector;
 		IPageRecorder recorder;
@@ -88,6 +88,9 @@ implements ILifecycle
 	 
 	public List getProperties()
 	{
+		if (properties == null)
+			buildProperties();
+			
 		return properties;
 	}
 	

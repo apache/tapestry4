@@ -92,3 +92,22 @@ SPAN.jwc-id
 	font-style: italic;
 }
 
+TABLE.java-source
+{
+
+}
+
+TABLE.java-source TH
+{
+	text-align: right;
+	font-size: small;
+	margin-right: 4px;
+
+}
+
+TABLE.java-source TD
+{
+	font-family: monospace;
+	background-color: Silver;
+}
+	

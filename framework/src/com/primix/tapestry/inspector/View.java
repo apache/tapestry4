@@ -68,13 +68,21 @@ public class View extends Enum
 
 	/**
 	 *  View that shows the persistent properties of the page containing
-	 *  the component.
+	 *  the inspected component.
 	 *
 	 */
 	 
 	 
 	public static final View PROPERTIES = new View("PROPERTIES");
 	 
+	/**
+	 *  View that shows the Java source code for the inspected component,
+	 *  if available (in the classpath).
+	 *
+	 */
+	 
+	public static final View JAVA_SOURCE = new View("JAVA_SOURCE");
+	
 	private View(String enumerationId)
 	{
 		super(enumerationId);
