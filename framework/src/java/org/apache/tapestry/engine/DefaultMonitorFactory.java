@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.engine;
 
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.web.WebRequest;
 
 /**

@@ -34,12 +34,9 @@ import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.impl.XmlModuleDescriptorProvider;
 import org.apache.hivemind.util.ContextResource;
-import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.spec.ApplicationSpecification;
-import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 
 import com.sun.jndi.ldap.pool.Pool;

@@ -23,7 +23,6 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.RequestContext;
 
 /**
  * Used to create an image button inside a {@link Form}. Although it is occasionally useful to know

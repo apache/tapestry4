@@ -14,21 +14,15 @@
 
 package org.apache.tapestry;
 
-import java.io.IOException;
 import java.util.Locale;
-
-import javax.servlet.ServletException;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.WebRequestServicer;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.web.WebRequest;
-import org.apache.tapestry.web.WebResponse;
 
 /**
  * Defines the core, session-persistant object used to run a Tapestry application for a single

@@ -17,7 +17,6 @@ package org.apache.tapestry;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IMonitor;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.Infrastructure;
 
 /**

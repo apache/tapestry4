@@ -16,7 +16,6 @@ package org.apache.tapestry.services;
 
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
