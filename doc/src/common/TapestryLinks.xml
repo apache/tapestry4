@@ -118,27 +118,30 @@
   
 <!-- External links -->
 
-<!ENTITY Ant '<ulink url="http://jakarta.apache.org/ant">Ant</ulink>'>
-<!ENTITY BSF '<ulink url="http://jakarta.apache.org/bsf">BSF</ulink>'>
-<!ENTITY BCEL '<ulink url="http://jakarta.apache.org/bcel">BCEL</ulink>'>
-<!ENTITY DocBook '<ulink url="http://docbook.sourceforge.net/">DocBook</ulink>'>
-<!ENTITY Eclipse '<ulink url="http://www.eclipse.org">Eclipse</ulink>'>
-<!ENTITY Fop '<ulink url="http://xml.apache.org/fop">FOP</ulink>'>
-<!ENTITY Log4J '<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
-<!ENTITY Jakarta '<ulink url="http://jakarta.apache.org">Jakarta</ulink>'>
-<!ENTITY JBoss '<ulink url="http://www.jboss.org">JBoss</ulink>'>
-<!ENTITY Jetty '<ulink url="http://sf.net/projects/jetty">Jetty</ulink>'>
-<!ENTITY JUnit '<ulink url="http://www.junit.org">JUnit</ulink>'>
-<!ENTITY Jython '<ulink url="http://www.jython.org">Jython</ulink>'>
-<!ENTITY OGNL '<ulink url="http://www.ognl.org">OGNL</ulink>'>
-<!ENTITY Saxon '<ulink url="http://sf.net/projects/saxon">Saxon</ulink>'>
-<!ENTITY TapestryHomePage '<ulink url="http://jakarta.apache.org/proposals/tapestry">Tapestry Home Page</ulink>'>
+<!ENTITY Ant 			'<ulink url="http://ant.apache.org/">Ant</ulink>'>
+<!ENTITY BSF 			'<ulink url="http://jakarta.apache.org/bsf/">BSF</ulink>'>
+<!ENTITY BCEL 		'<ulink url="http://jakarta.apache.org/bcel/">BCEL</ulink>'>
+<!ENTITY DocBook 	'<ulink url="http://docbook.sourceforge.net/">DocBook</ulink>'>
+<!ENTITY Eclipse 	'<ulink url="http://www.eclipse.org">Eclipse</ulink>'>
+<!ENTITY Fop 			'<ulink url="http://xml.apache.org/fop/">FOP</ulink>'>
+<!ENTITY Log4J 		'<ulink url="http://jakarta.apache.org/log4j/">Log4J</ulink>'>
+<!ENTITY Jakarta	'<ulink url="http://jakarta.apache.org">Jakarta</ulink>'>
+<!ENTITY JBoss 		'<ulink url="http://www.jboss.org">JBoss</ulink>'>
+<!ENTITY Jetty 		'<ulink url="http://sf.net/projects/jetty/">Jetty</ulink>'>
+<!ENTITY JUnit 		'<ulink url="http://www.junit.org">JUnit</ulink>'>
+<!ENTITY Jython	  '<ulink url="http://www.jython.org">Jython</ulink>'>
+<!ENTITY OGNL 		'<ulink url="http://www.ognl.org">OGNL</ulink>'>
+<!ENTITY Saxon 		'<ulink url="http://sf.net/projects/saxon/">Saxon</ulink>'>
+
+<!ENTITY Struts 	'<ulink url="http://jakarta.apache.org/struts/">Struts</ulink>'>
+<!ENTITY WebWork 	'<ulink url="http://opensymphony.com/webwork/">WebWork</ulink>'>
+<!ENTITY Velocity '<ulink url="http://jakarta.apache.org/velocity/">Velocity</ulink>'>
+
+<!ENTITY TapestryHomePage '<ulink url="http://jakarta.apache.org/tapestry/">Tapestry Home Page</ulink>'>
 
 <!-- Other useful stuff -->
 
-<!ENTITY TapestryFrameworkJar "<filename>tapestry-<replaceable>x.x</replaceable>.jar</filename>">
-<!ENTITY TapestryContribJar "<filename>tapestry-contrib-<replaceable>x.x</replaceable>.jar</filename>">
+<!ENTITY TapestryFrameworkJar "<filename>tapestry-3.0.jar</filename>">
+<!ENTITY TapestryContribJar "<filename>tapestry-contrib-3.0.jar</filename>">
 
 <!ENTITY HowardLewisShipEmail '<ulink url="mailto:hlship@apache.org">Howard M. Lewis Ship</ulink>'>
-
-

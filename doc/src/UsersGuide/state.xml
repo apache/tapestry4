@@ -192,7 +192,7 @@ as a <sgmltag class="starttag">init-parameter</sgmltag> in the web deployment de
 <programlisting>
 <![CDATA[
 <application name="Tapestry Component Workbench">
-  <property name="org.apache.tapestry.visit-class" value="tutorial.workbench.Visit"/>
+  <property name="org.apache.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
 
   ...
 ]]>
@@ -366,8 +366,8 @@ public abstract class MyPage extends &BasePage;
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE page-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 3.0//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
 <page-specification class="MyPage">
 
@@ -481,9 +481,9 @@ using using the recorded value and whichever page instance is taken out of the p
 </para>
 
 <para>
-This notification takes the form of an invocation of the method
-<function>fireObservedChange()</function>.  This method is provided by &AbstractComponent;
-and is overloaded for all the scalar types, and for &Object;.
+This notification takes the form of an invocation of the static  method
+<function>fireObservedChange()</function> in the <classname>Tapestry</classname> class.  
+This method is overloaded for all the scalar types, and for &Object;.
 </para>
 
 <example>
@@ -502,7 +502,7 @@ public class MyPage extends &BasePage;
     {
         _itemsPerPage = itemsPerPage;
         
-        fireObservedChange("itemsPerPage", itemsPerPage);
+        Tapestry.fireObservedChange(this, "itemsPerPage", itemsPerPage);
     }
     
     protected void initialize()
@@ -561,7 +561,7 @@ public class MyComponent extends &BaseComponent; implements &PageDetachListener;
     {
         _myProperty = myProperty;
         
-        fireObservedChange("myProperty", myProperty);
+        Tapestry.fireObservedChange(this, "myProperty", myProperty);
     }
     
     public String getMyProperty()

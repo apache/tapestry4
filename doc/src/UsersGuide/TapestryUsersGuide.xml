@@ -9,6 +9,7 @@
 <!-- Each chapter is in its own file -->
   
 <!ENTITY chap-intro SYSTEM "intro.xml">
+<!ENTITY chap-template SYSTEM "template.xml">
 <!ENTITY chap-state SYSTEM "state.xml">
 <!ENTITY chap-configuration SYSTEM "configuration.xml">
   
@@ -65,6 +66,8 @@
 
 <!ENTITY WEB-INF '<filename>WEB-INF</filename>'>
 
+<!ENTITY jwc '<literal>jwc</literal>'>
+
 ]>
 <!-- Conventions:
 
@@ -89,6 +92,8 @@
   </bookinfo>
       
   &chap-intro;
+  
+  &chap-template;
   
   &chap-state;
          
