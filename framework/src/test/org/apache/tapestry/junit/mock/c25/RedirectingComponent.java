@@ -22,15 +22,17 @@ import org.apache.tapestry.event.PageValidateListener;
 /**
  * @author teo
  */
-public class RedirectingComponent extends BaseComponent implements PageValidateListener
+public abstract class RedirectingComponent extends BaseComponent implements PageValidateListener
 {
+    public abstract String getTargetPage();
 
     /**
      * @see org.apache.tapestry.event.PageValidateListener#pageValidate(org.apache.tapestry.event.PageEvent)
      */
     public void pageValidate(PageEvent event)
     {
-        String pageName = getBinding("page").getString();
+        String pageName = getTargetPage();
+
         throw new PageRedirectException(pageName);
     }
 

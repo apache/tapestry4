@@ -30,17 +30,18 @@ public interface BindingFactory
      * Creates a new binding instance.
      * 
      * @param root
-     *        the component that is the source of properties or messages (or
-     *        etc.). When the path is "evaluated", the root component provides a
-     *        context.
+     *            the component that is the source of properties or messages (or etc.). When the
+     *            path is "evaluated", the root component provides a context.
+     * @param name
+     *            The name of the parameter the binding supplies values for (used in some error
+     *            messages).
      * @param path
-     *        The path used to get (or update) a value for the path. This may be
-     *        an OGNL expression, a message key, a literal value, or otherwise
-     *        defined by the type of binding.
+     *            The path used to get (or update) a value for the path. This may be an OGNL
+     *            expression, a message key, a literal value, or otherwise defined by the type of
+     *            binding.
      * @param location
-     *        The location of the binding, used to report any errors related to
-     *        the binding, or to the component parameter the binding is bound
-     *        to.
+     *            The location of the binding, used to report any errors related to the binding, or
+     *            to the component parameter the binding is bound to.
      */
-    public IBinding createBinding(IComponent root, String path, Location location);
+    public IBinding createBinding(IComponent root, String name, String path, Location location);
 }

@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.link.DirectLink">
 
@@ -25,31 +25,22 @@
   using the context.
   </description>
 
-  <parameter name="listener" 
-  	type="org.apache.tapestry.IActionListener" 
-  	required="yes"
-  	direction="auto"/>
+  <parameter name="listener" required="yes"/>
   	
-  <parameter name="parameters" type="java.lang.Object" direction="in">
+  <parameter name="parameters">
     <description>
     An object, or list of objects, encoded into the URL
     as service parameters.
     </description>
   </parameter>
      
-  <parameter name="stateful" type="boolean" direction="custom"/>
+  <parameter name="stateful" default-value="true"/>
   
-  <parameter name="disabled"
-  	type="boolean"
-  	direction="in"/>
+  <parameter name="disabled"/>
   	  	
-  <parameter name="anchor" 
-  	type="java.lang.String"
-  	direction="in"/>
+  <parameter name="anchor"/>
   	
-  <parameter name="renderer"
-  	type="org.apache.tapestry.link.ILinkRenderer"
-  	direction="in"/>
+  <parameter name="renderer"/>
   
   <reserved-parameter name="href"/>
     

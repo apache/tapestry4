@@ -39,7 +39,6 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.listener.ListenerMap;
-import org.apache.tapestry.param.ParameterManager;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -50,23 +49,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 public abstract class AbstractComponent extends BaseLocatable implements IComponent
 {
-    /**
-     * Used to check that subclasses invoke this implementation of prepareForRender().
-     * 
-     * @see Tapestry#checkMethodInvocation(Object, String, Object)
-     * @since 3.0
-     */
-    private final static String PREPAREFORRENDER_METHOD_ID = "AbstractComponent.prepareForRender()";
-
-    /**
-     * Used to check that subclasses invoke this implementation of cleanupAfterRender().
-     * 
-     * @see Tapestry#checkMethodInvocation(Object, String, Object)
-     * @since 3.0
-     */
-
-    private final static String CLEANUPAFTERRENDER_METHOD_ID = "AbstractComponent.cleanupAfterRender()";
-
     static
     {
         // Register the BeanProviderHelper to provide access to the
@@ -165,20 +147,28 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     private IBeanProvider _beans;
 
     /**
-     * Manages setting and clearing parameter properties for the component.
-     * 
-     * @since 2.0.3
-     */
-
-    private ParameterManager _parameterManager;
-
-    /**
      * Provides access to localized Strings for this component.
      * 
      * @since 2.0.4
      */
 
     private Messages _strings;
+
+    /**
+     * Returns true if the component is currently rendering.
+     * 
+     * @see #prepareForRender(IRequestCycle)
+     * @see #cleanupAfterRender(IRequestCycle)
+     * @since 3.1
+     */
+
+    private boolean _rendering;
+
+    /**
+     * @since 3.1
+     */
+
+    private boolean _active;
 
     public void addAsset(String name, IAsset asset)
     {
@@ -356,6 +346,19 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
             return null;
 
         return (IBinding) _bindings.get(name);
+    }
+
+    /**
+     * Returns true if the specified parameter is bound.
+     * 
+     * @since 3.1
+     */
+
+    public boolean isParameterBound(String parameterName)
+    {
+        Defense.notNull(parameterName, "parameterName");
+
+        return _bindings != null && _bindings.containsKey(parameterName);
     }
 
     /**
@@ -678,51 +681,30 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         try
         {
-            Tapestry.clearMethodInvocations();
+            _rendering = true;
 
             prepareForRender(cycle);
-
-            Tapestry.checkMethodInvocation(PREPAREFORRENDER_METHOD_ID, "prepareForRender()", this);
 
             renderComponent(writer, cycle);
         }
         finally
         {
-            Tapestry.clearMethodInvocations();
+            _rendering = false;
 
             cleanupAfterRender(cycle);
-
-            Tapestry.checkMethodInvocation(
-                    CLEANUPAFTERRENDER_METHOD_ID,
-                    "cleanupAfterRender()",
-                    this);
         }
     }
 
     /**
      * Invoked by {@link #render(IMarkupWriter, IRequestCycle)}to prepare the component to render.
-     * This implementation sets JavaBeans properties from matching bound parameters. Subclasses that
-     * override this method must invoke this implementation as well.
+     * This implementation sets JavaBeans properties from matching bound parameters. This
+     * implementation does nothing.
      * 
      * @since 2.0.3
      */
 
     protected void prepareForRender(IRequestCycle cycle)
     {
-        Tapestry.addMethodInvocation(PREPAREFORRENDER_METHOD_ID);
-
-        if (_parameterManager == null)
-        {
-            // Pages inherit from this class too, but pages (by definition)
-            // never have parameters.
-
-            if (getSpecification().isPageSpecification())
-                return;
-
-            _parameterManager = new ParameterManager(this);
-        }
-
-        _parameterManager.setParameters(cycle);
     }
 
     /**
@@ -735,22 +717,14 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
-     * Invoked by {@link #render(IMarkupWriter, IRequestCycle)}after the component renders, to
-     * clear any parameters back to null (or 0, or false, or whatever the correct default is).
-     * Primarily, this is used to ensure that the component doesn't hold onto any objects that could
-     * otherwise be garbage collected.
-     * <p>
-     * Subclasses may override this implementation, but must also invoke it.
+     * Invoked by {@link #render(IMarkupWriter, IRequestCycle)}after the component renders. This
+     * implementation does nothing.
      * 
      * @since 2.0.3
      */
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        Tapestry.addMethodInvocation(CLEANUPAFTERRENDER_METHOD_ID);
-
-        if (_parameterManager != null)
-            _parameterManager.resetParameters(cycle);
     }
 
     /** @since 3.0 * */
@@ -956,5 +930,32 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     public Object getProperty(String propertyName)
     {
         return PropertyUtils.read(this, propertyName);
+    }
+
+    /**
+     * @since 3.1
+     */
+
+    public boolean isRendering()
+    {
+        return _rendering;
+    }
+
+    /**
+     * Returns true if the component has been transitioned into its active state by invoking
+     * {@link #}
+     * 
+     * @since 3.1
+     */
+
+    protected boolean isInActiveState()
+    {
+        return _active;
+    }
+
+    /** @since 3.1 */
+    public void enterActiveState()
+    {
+        _active = true;
     }
 }

@@ -36,9 +36,10 @@ import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  * Simulates an {@link IForm}for the test suite.
+ * <p>
+ * TODO: Update tests that use this to use an EasyMock instead.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.1
  */
 
@@ -264,4 +265,14 @@ public class MockForm extends BaseLocatable implements IForm
         return null;
     }
 
+    /** @since 3.1 */
+    public boolean isRendering()
+    {
+        return false;
+    }
+
+    /** @since 3.1 */
+    public void enterActiveState()
+    {
+    }
 }

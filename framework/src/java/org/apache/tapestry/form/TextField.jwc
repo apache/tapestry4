@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.form.TextField" allow-body="no">
 
@@ -24,17 +24,14 @@
   A text input field.
   </description>
   
-  <parameter name="value" type="java.lang.String" required="yes"/>
+  <parameter name="value" required="yes"/>
   
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled" />
   
-  <parameter name="hidden" type="boolean" direction="in"/>
+  <parameter name="hidden"/>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
-  
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
   
 </component-specification>

@@ -19,6 +19,7 @@ import java.util.Map;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScriptProcessor;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
@@ -45,19 +46,31 @@ public class ScriptSessionImpl implements ScriptSession
     /** @since 3.1 */
     private ExpressionEvaluator _evaluator;
 
+    /** @since 3.1 */
+    private ValueConverter _valueConverter;
+
     public ScriptSessionImpl(Resource scriptTemplateResource, IRequestCycle cycle,
-            IScriptProcessor processor, ExpressionEvaluator evaluator, Map symbols)
+            IScriptProcessor processor, ExpressionEvaluator evaluator,
+            ValueConverter valueConverter, Map symbols)
     {
         _scriptTemplateResource = scriptTemplateResource;
         _cycle = cycle;
         _processor = processor;
         _symbols = symbols;
         _evaluator = evaluator;
+        _valueConverter = valueConverter;
     }
 
     public Object evaluate(String expression)
     {
         return _evaluator.read(_symbols, expression);
+    }
+
+    public Object evaluate(String expression, Class desiredType)
+    {
+        Object raw = evaluate(expression);
+
+        return _valueConverter.coerceValue(raw, desiredType);
     }
 
     public Resource getScriptTemplateResource()

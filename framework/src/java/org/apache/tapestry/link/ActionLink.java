@@ -31,6 +31,8 @@ import org.apache.tapestry.engine.ILink;
 
 public abstract class ActionLink extends AbstractLinkComponent implements IAction
 {
+    public abstract boolean isStateful();
+    
     /**
      * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
      * also returns the default, true.
@@ -41,12 +43,7 @@ public abstract class ActionLink extends AbstractLinkComponent implements IActio
 
     public boolean getRequiresSession()
     {
-        IBinding statefulBinding = getBinding("stateful");
-
-        if (statefulBinding == null)
-            return true;
-
-        return statefulBinding.getBoolean();
+        return isStateful();
     }
 
     public ILink getLink(IRequestCycle cycle)

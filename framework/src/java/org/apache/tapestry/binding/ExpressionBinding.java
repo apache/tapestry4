@@ -14,64 +14,19 @@
 
 package org.apache.tapestry.binding;
 
-import java.util.Map;
-
-import ognl.Ognl;
-import ognl.OgnlException;
-import ognl.TypeConverter;
-
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
-import org.apache.tapestry.spec.BeanLifecycle;
-import org.apache.tapestry.spec.IBeanSpecification;
-import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.StringSplitter;
 
 /**
- * Implements a dynamic binding, based on getting and fetching values using JavaBeans property
- * access. This is built upon the <a href="http://www.ognl.org">OGNL </a> library.
- * <p>
- * <b>Optimization of the Expression </b>
- * <p>
- * There's a lot of room for optimization here because we can count on some portions of the
- * expression to be effectively static. Note that we type the root object as {@link IComponent}. We
- * have some expectations that certain properties of the root (and properties reachable from the
- * root) will be constant for the lifetime of the binding. For example, components never change
- * thier page or container. This means that certain property prefixes can be optimized:
- * <ul>
- * <li>page
- * <li>container
- * <li>components. <i>name </i>
- * </ul>
- * <p>
- * This means that once an ExpressionBinding has been triggered, the {@link #toString()}method may
- * return different values for the root component and the expression than was originally set.
- * <p>
- * <b>Identifying Invariants </b>
- * <p>
- * Most expressions are fully dynamic; they must be resolved each time they are accessed. This can
- * be somewhat inefficient. Tapestry can identify certain paths as invariant:
- * <ul>
- * <li>A component within the page hierarchy
- * <li>An {@link org.apache.tapestry.IAsset}from then assets map (property <code>assets</code>)
- * <li>A {@link org.apache.tapestry.IActionListener}from the listener map (property
- * <code>listeners</code>)
- * <li>A bean with a {@link org.apache.tapestry.spec.BeanLifecycle#PAGE}lifecycle (property
- * <code>beans</code>)
- * <li>A binding (property <code>bindings</code>)
- * </ul>
- * <p>
- * These optimizations have some inherent dangers; they assume that the components have not
- * overidden the specified properties; the last one (concerning helper beans) assumes that the
- * component does inherit from {@link org.apache.tapestry.AbstractComponent}. If this becomes a
- * problem in the future, it may be necessary to have the component itself involved in these
- * determinations.
+ * Implements a dynamic binding, based on evaluating an expression using an expression language.
+ * Tapestry's default expression language is the <a href="http://www.ognl.org/">Object Graph
+ * Navigation Language </a>.
  * 
+ * @see org.apache.tapestry.services.ExpressionEvaluator
  * @author Howard Lewis Ship
  * @since 2.2
  */
@@ -129,10 +84,11 @@ public class ExpressionBinding extends AbstractBinding
      * Creates a {@link ExpressionBinding}from the root object and an OGNL expression.
      */
 
-    public ExpressionBinding(IComponent root, String expression, Location location,
-            ExpressionEvaluator evaluator, ExpressionCache cache)
+    public ExpressionBinding(IComponent root, String parameterName, String expression,
+            ValueConverter valueConverter, Location location, ExpressionEvaluator evaluator,
+            ExpressionCache cache)
     {
-        super(location);
+        super(parameterName, valueConverter, location);
 
         _root = root;
         _expression = expression;
@@ -188,26 +144,6 @@ public class ExpressionBinding extends AbstractBinding
         initialize();
 
         return _invariant;
-    }
-
-    public void setBoolean(boolean value)
-    {
-        setObject(value ? Boolean.TRUE : Boolean.FALSE);
-    }
-
-    public void setInt(int value)
-    {
-        setObject(new Integer(value));
-    }
-
-    public void setDouble(double value)
-    {
-        setObject(new Double(value));
-    }
-
-    public void setString(String value)
-    {
-        setObject(value);
     }
 
     /**
@@ -308,4 +244,9 @@ public class ExpressionBinding extends AbstractBinding
         return buffer.toString();
     }
 
+    /** @since 3.1 */
+    protected Object getComponent()
+    {
+        return _root;
+    }
 }

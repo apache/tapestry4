@@ -24,6 +24,7 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.DataSqueezer;
 
@@ -39,7 +40,6 @@ import org.apache.tapestry.services.DataSqueezer;
 
 public abstract class ListEdit extends AbstractFormComponent
 {
-
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         Iterator i = null;
@@ -56,16 +56,18 @@ public abstract class ListEdit extends AbstractFormComponent
 
         String name = form.getElementId(this);
 
+        boolean indexBound = isParameterBound("index");
+
         if (!cycleRewinding)
         {
-            i = Tapestry.coerceToIterator(getBinding("source").getObject());
+            i = getSource();
         }
         else
         {
             RequestContext context = cycle.getRequestContext();
             String[] submittedValues = context.getParameters(name);
 
-            i = Tapestry.coerceToIterator(submittedValues);
+            i = (Iterator) getValueConverter().coerceValue(submittedValues, Iterator.class);
         }
 
         // If the source (when rendering), or the submitted values (on submit)
@@ -77,8 +79,6 @@ public abstract class ListEdit extends AbstractFormComponent
 
         int index = 0;
 
-        IBinding indexBinding = getBinding("index");
-        IBinding valueBinding = getBinding("value");
         IActionListener listener = getListener();
         String element = getElement();
 
@@ -86,8 +86,8 @@ public abstract class ListEdit extends AbstractFormComponent
         {
             Object value = null;
 
-            if (indexBinding != null)
-                indexBinding.setInt(index++);
+            if (indexBound)
+                setIndex(index++);
 
             if (cycleRewinding)
                 value = convertValue((String) i.next());
@@ -97,7 +97,7 @@ public abstract class ListEdit extends AbstractFormComponent
                 writeValue(form, name, value);
             }
 
-            valueBinding.setObject(value);
+            setValue(value);
 
             if (listener != null)
                 listener.actionTriggered(this, cycle);
@@ -150,11 +150,6 @@ public abstract class ListEdit extends AbstractFormComponent
 
     public abstract String getElement();
 
-    private DataSqueezer getDataSqueezer()
-    {
-        return getPage().getEngine().getDataSqueezer();
-    }
-
     /** @since 2.2 * */
 
     public abstract IActionListener getListener();
@@ -166,4 +161,23 @@ public abstract class ListEdit extends AbstractFormComponent
         return false;
     }
 
+    /** @since 3.1 */
+
+    public abstract Iterator getSource();
+
+    /** @since 3.1 */
+
+    public abstract void setValue(Object value);
+
+    /** @since 3.1 */
+
+    public abstract void setIndex(int index);
+
+    /** @since 3.1 */
+
+    public abstract DataSqueezer getDataSqueezer();
+
+    /** @since 3.1 */
+
+    public abstract ValueConverter getValueConverter();
 }

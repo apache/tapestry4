@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.script;
 
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.xml.BaseRule;
 import org.apache.tapestry.util.xml.RuleDirectedParser;
@@ -27,11 +28,16 @@ import org.xml.sax.Attributes;
  */
 public class ScriptRule extends BaseRule
 {
+    /** @since 3.1 */
     private ExpressionEvaluator _evaluator;
 
-    public ScriptRule(ExpressionEvaluator evaluator)
+    /** @since 3.1 */
+    private ValueConverter _valueConverter;
+
+    public ScriptRule(ExpressionEvaluator evaluator, ValueConverter valueConverter)
     {
         _evaluator = evaluator;
+        _valueConverter = valueConverter;
     }
 
     public void endElement(RuleDirectedParser parser)
@@ -41,7 +47,7 @@ public class ScriptRule extends BaseRule
 
     public void startElement(RuleDirectedParser parser, Attributes attributes)
     {
-        ParsedScript script = new ParsedScript(_evaluator, parser.getLocation());
+        ParsedScript script = new ParsedScript(_evaluator, _valueConverter, parser.getLocation());
 
         parser.push(script);
     }

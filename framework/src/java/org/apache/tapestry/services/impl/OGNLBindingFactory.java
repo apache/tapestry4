@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.ExpressionBinding;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.BindingFactory;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
@@ -36,9 +36,13 @@ public class OGNLBindingFactory implements BindingFactory
 
     private ExpressionCache _expressionCache;
 
-    public IBinding createBinding(IComponent root, String path, Location location)
+    private ValueConverter _valueConverter;
+
+    public IBinding createBinding(IComponent root, String parameterName, String path,
+            Location location)
     {
-        return new ExpressionBinding(root, path, location, _expressionEvaluator, _expressionCache);
+        return new ExpressionBinding(root, parameterName, path, _valueConverter, location,
+                _expressionEvaluator, _expressionCache);
     }
 
     public void setExpressionCache(ExpressionCache expressionCache)
@@ -49,5 +53,10 @@ public class OGNLBindingFactory implements BindingFactory
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
     {
         _expressionEvaluator = expressionEvaluator;
+    }
+
+    public void setValueConverter(ValueConverter valueConverter)
+    {
+        _valueConverter = valueConverter;
     }
 }

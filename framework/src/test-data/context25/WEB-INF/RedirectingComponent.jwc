@@ -15,11 +15,11 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <component-specification class="org.apache.tapestry.junit.mock.c25.RedirectingComponent">
 
-	<parameter name="page" required="yes" type="java.lang.String"/>
+	<parameter name="page" required="yes" property-name="targetPage"/>
 
 </component-specification>

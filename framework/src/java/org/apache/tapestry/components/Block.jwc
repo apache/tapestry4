@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <component-specification class="org.apache.tapestry.components.Block" allow-informal-parameters="no">
 	<description>

@@ -14,11 +14,10 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 
 /**
  * The setvar element specifies the variable to set in the current browser context as a side effect
@@ -36,31 +35,26 @@ public abstract class Setvar extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        boolean render = !cycle.isRewinding();
+        if (cycle.isRewinding())
+            return;
 
-        if (render)
-        {
-            writer.beginEmpty("setvar");
+        writer.beginEmpty("setvar");
 
-            writer.attribute("name", getName());
+        writer.attribute("name", getName());
 
-            renderInformalParameters(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
-            String value = readValue();
-            if (Tapestry.isNonBlank(value))
-                writer.attribute("value", value);
-            else
-                writer.attribute("value", "");
+        String value = getValue();
 
-            writer.closeTag();
-        }
+        if (HiveMind.isNonBlank(value))
+            writer.attribute("value", value);
+        else
+            writer.attribute("value", "");
+
+        writer.closeTag();
     }
 
     public abstract String getName();
 
-    public String readValue()
-    {
-        return getBinding("value").getString();
-    }
-
+    public abstract String getValue();
 }

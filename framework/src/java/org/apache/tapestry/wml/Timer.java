@@ -44,7 +44,7 @@ public abstract class Timer extends AbstractComponent
 
             writer.attribute("name", getName());
 
-            String value = readValue();
+            String value = getValue();
             if (Tapestry.isNonBlank(value))
                 writer.attribute("value", value);
             else
@@ -57,9 +57,8 @@ public abstract class Timer extends AbstractComponent
     }
 
     public abstract String getName();
-
-    public String readValue()
-    {
-        return getBinding("value").getString();
-    }
+    
+    /** @since 3.1 */
+    
+    public abstract String getValue();
 }

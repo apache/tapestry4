@@ -29,8 +29,7 @@
 	</Call>
 	<Call name="addWebApplication">
 		<Arg>/workbench</Arg>
-		<Arg>context</Arg>
-		<Set name="DefaultsDescriptor">../../config/webdefault.xml</Set>
+		<Arg>src/context</Arg>
 	</Call>
 	<Call name="addContext">
 		<Arg>/</Arg>

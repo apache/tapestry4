@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.script;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.hivemind.Resource;
@@ -52,4 +53,13 @@ public interface ScriptSession extends IScriptProcessor
      * Returns the current request cycle.
      */
     public IRequestCycle getRequestCycle();
+
+    /**
+     * Evaluates an expression and coerces the result to a particlar type.
+     * 
+     * @since 3.1
+     * @see org.apache.tapestry.coerce.ValueConverter
+     */
+
+    public Object evaluate(String expression, Class desiredType);
 }

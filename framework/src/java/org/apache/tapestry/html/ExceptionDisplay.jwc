@@ -26,7 +26,7 @@
   Used to present a detail exception description.
   </description>
   
-  <parameter name="exceptions" type="org.apache.tapestry.util.exception.ExceptionDescription[]" direction="in" required="yes">
+  <parameter name="exceptions" required="yes">
     <description>
     An array of ExceptionDescription objects.
     </description>

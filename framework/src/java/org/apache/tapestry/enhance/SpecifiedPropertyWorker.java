@@ -76,7 +76,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
 
         String propertyName = ps.getName();
 
-        Class propertyType = extractPropertyType(op, propertyName, ps.getType());
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, ps.getType());
 
         op.claimProperty(propertyName);
 
@@ -87,32 +87,14 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         // Release 3.0 would squack a bit about overriding non-abstract methods
         // if they exist. 3.1 is less picky ... it blindly adds new methods, possibly
         // overwriting methods in the base component class.
-        
+
         EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType);
-        
+
         addMutator(op, propertyName, propertyType, field, ps.isPersistent());
-        
+
         // TODO: For properties with no initializer, should use the
         // same kind of logic as AbstractPropertyWorker (and remove some logic
         // from PageLoader.
-    }
-
-    // Package private for testing purposes
-
-    Class extractPropertyType(EnhancementOperation op, String propertyName, String typeName)
-    {
-        if (typeName != null)
-        {
-            Class propertyType = op.convertTypeName(typeName);
-
-            op.validateProperty(propertyName, propertyType);
-
-            return propertyType;
-        }
-
-        Class propertyType = op.getPropertyType(propertyName);
-
-        return propertyType == null ? Object.class : propertyType;
     }
 
     private void addMutator(EnhancementOperation op, String propertyName, Class propertyType,

@@ -18,6 +18,7 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.StringBinding;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.BindingFactory;
 
 /**
@@ -28,10 +29,16 @@ import org.apache.tapestry.services.BindingFactory;
  */
 public class MessageBindingFactory implements BindingFactory
 {
+    private ValueConverter _valueConverter;
 
-    public IBinding createBinding(IComponent root, String path, Location location)
+    public IBinding createBinding(IComponent root, String parameterName, String path,
+            Location location)
     {
-        return new StringBinding(root, path, location);
+        return new StringBinding(root, parameterName, path, _valueConverter, location);
     }
 
+    public void setValueConverter(ValueConverter valueConverter)
+    {
+        _valueConverter = valueConverter;
+    }
 }

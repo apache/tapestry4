@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.table.components.TableColumns" 
 	allow-body="yes" allow-informal-parameters="yes">
@@ -26,54 +26,38 @@
         This component must be wrapped by TableView. 
 	</description>
   
-	<parameter name="column" 
-		type="org.apache.tapestry.contrib.table.model.ITableColumn" 
-		required="no"
-		direction="custom">
+	<parameter name="column">
         <description>The column currently being rendered [out]</description>
     </parameter>
 
-	<parameter name="element" 
-		type="java.lang.String" 
-		required="no"
-		direction="auto"
-    	default-value="'th'">
+	<parameter name="element" default-value="'th'">
         <description>The tag to use to wrap the column headers.</description>
     </parameter>
 
-	<parameter name="arrowUpAsset" 
-		type="org.apache.tapestry.IAsset" 
-		required="no"
-		direction="in">
+	<parameter name="arrowUpAsset">
         <description>The image to use to describe a column sorted in an ascending order.</description>
     </parameter>
 
-	<parameter name="arrowDownAsset" 
-		type="org.apache.tapestry.IAsset" 
-		required="no"
-		direction="in">
+	<parameter name="arrowDownAsset">
         <description>The image to use to describe a column sorted in a descending order.</description>
     </parameter>
 
-    <parameter name="class"
-        type="java.lang.String"
-        required="no"
-        direction="custom">
+    <parameter name="class" property-name="columnClassParameter">
         <description>The CSS class of the table columns</description>
     </parameter>
     
 	<component id="iterColumns" type="Foreach">
-		<binding name="source" expression="tableColumnIterator"/>
-		<binding name="value" expression="tableColumn"/>
+		<binding name="source" value="ognl:tableColumnIterator"/>
+		<binding name="value" value="ognl:tableColumn"/>
 	</component>
   
 	<component id="informal" type="Any" inherit-informal-parameters="yes">
-		<binding name="element" expression="element"/>
-        <binding name="class" expression="columnClass"/>
+		<binding name="element" value="ognl:element"/>
+        <binding name="class" value="ognl:columnClass"/>
 	</component>
   
 	<component id="insertColumnRenderer" type="Delegator">
-		<binding name="delegate" expression="tableColumnRenderer"/>
+		<binding name="delegate" value="ognl:tableColumnRenderer"/>
 	</component>
 
 </component-specification>

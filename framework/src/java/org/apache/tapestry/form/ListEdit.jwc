@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification allow-body="yes" allow-informal-parameters="yes"
 	class="org.apache.tapestry.form.ListEdit">
@@ -26,18 +26,18 @@
   because it stores each element as a hidden field.
   </description>
 	
-  <parameter name="source" required="yes" type="java.lang.Object"/>
+  <parameter name="source" required="yes"/>
   
-  <parameter name="listener" type="org.apache.tapestry.IActionListener" direction="in"/>
+  <parameter name="listener"/>
   
-  <parameter name="value" required="yes" type="java.lang.Object"/>
+  <parameter name="value" required="yes"/>
   
-  <parameter name="index" type="int"/>
+  <parameter name="index"/>
   
-  <parameter name="element" type="java.lang.String" direction="in"/>
-
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  <parameter name="element"/>
+  
+  <inject name="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
+  <inject name="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
   
 </component-specification>
 

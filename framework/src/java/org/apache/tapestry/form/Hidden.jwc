@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.form.Hidden" 
 	allow-body="no" 
@@ -26,35 +26,27 @@
   Stores a value in a hidden field of the form.
   </description>
   
-  <parameter name="value" 
-  	required="yes" 
-  	type="java.lang.Object"
-  	direction="custom">
+  <parameter name="value" required="yes">
     <description>
     Value to save in the form.
     </description>
   </parameter>
   
-  <parameter name="listener" 
-  	type="org.apache.tapestry.IActionListener"
-  	direction="in">
+  <parameter name="listener">
     <description>
     Listener notified after the value is restored.
     </description>
   </parameter>
   
-  <parameter name="id" 
-  	required="no" 
-  	type="java.lang.String"
-  	direction="custom">
+  <parameter name="id" property-name="elementId">
     <description>
     ID parameter of HTML hidden object.
     </description>
   </parameter>
 
-  <parameter name="encode" type="boolean" direction="in"/>
+  <parameter name="encode" default-value="true"/>
 
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  <property name="name"/>
+  <property name="form"/>
    
 </component-specification>

@@ -22,7 +22,6 @@ import java.util.Locale;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
@@ -44,9 +43,8 @@ import org.apache.tapestry.asset.ExternalAsset;
 import org.apache.tapestry.asset.PrivateAsset;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.ListenerBinding;
-import org.apache.tapestry.engine.IComponentClassEnhancer;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IPageLoader;
-import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
@@ -123,6 +121,10 @@ public class PageLoader implements IPageLoader
     /** @since 3.1 */
 
     private ComponentConstructorFactory _componentConstructorFactory;
+
+    /** @since 3.1 */
+
+    private ValueConverter _valueConverter;
 
     /**
      * The locale of the application, which is also the locale of the page being loaded.
@@ -230,8 +232,7 @@ public class PageLoader implements IPageLoader
                         name), component, bspec.getLocation(), null);
 
             // If an informal parameter that conflicts with a reserved name,
-            // then
-            // skip it.
+            // then skip it.
 
             if (!isFormal && spec.isReservedParameterName(name))
                 continue;
@@ -247,10 +248,9 @@ public class PageLoader implements IPageLoader
 
             // For inherited bindings, defer until later. This gives components
             // a chance to setup bindings from static values and expressions in
-            // the
-            // template. The order of operations is tricky, template bindings
-            // come
-            // later.
+            // the template. The order of operations is tricky, template bindings
+            // come later. Note that this is a hold over from the Tapestry 3.0 DTD
+            // and will some day no longer be supported.
 
             if (type == BindingType.INHERITED)
             {
@@ -266,19 +266,18 @@ public class PageLoader implements IPageLoader
                 continue;
             }
 
-            IBinding binding = convert(container, bspec);
+            IBinding binding = convert(container, name, bspec);
 
-            if (binding != null)
-                component.setBinding(name, binding);
+            component.setBinding(name, binding);
         }
     }
 
-    private IBinding convert(IComponent container, IBindingSpecification spec)
+    private IBinding convert(IComponent container, String parameterName, IBindingSpecification spec)
     {
         Location location = spec.getLocation();
         String locator = spec.getValue();
 
-        return _bindingSource.createBinding(container, locator, location);
+        return _bindingSource.createBinding(container, parameterName, locator, location);
     }
 
     /**
@@ -287,7 +286,7 @@ public class PageLoader implements IPageLoader
      * @since 3.0
      */
 
-    private void constructListenerBinding(IComponent component, String bindingName,
+    private void constructListenerBinding(IComponent component, String parameterName,
             IListenerBindingSpecification spec)
     {
         String language = spec.getLanguage();
@@ -302,10 +301,10 @@ public class PageLoader implements IPageLoader
         // (not the DirectLink or Form, but the page or component containing the
         // link or form).
 
-        IBinding binding = new ListenerBinding(component.getContainer(), language,
-                spec.getScript(), spec.getLocation());
+        IBinding binding = new ListenerBinding(component.getContainer(), parameterName, language,
+                spec.getScript(), _valueConverter, spec.getLocation());
 
-        component.setBinding(bindingName, binding);
+        component.setBinding(parameterName, binding);
     }
 
     /**
@@ -404,6 +403,10 @@ public class PageLoader implements IPageLoader
             // specified property.
 
             createPropertyInitializers(page, container, containerSpec);
+
+            // Have the component switch over to its active state.
+
+            container.enterActiveState();
         }
         catch (ApplicationRuntimeException ex)
         {
@@ -823,5 +826,11 @@ public class PageLoader implements IPageLoader
             ComponentConstructorFactory componentConstructorFactory)
     {
         _componentConstructorFactory = componentConstructorFactory;
+    }
+
+    /** @since 3.1 */
+    public void setValueConverter(ValueConverter valueConverter)
+    {
+        _valueConverter = valueConverter;
     }
 }

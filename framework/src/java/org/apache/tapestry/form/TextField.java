@@ -26,13 +26,19 @@ import org.apache.tapestry.IBinding;
 
 public abstract class TextField extends AbstractTextField
 {
+    /** @since 3.1 */
+    public abstract String getValue();
+
+    /** @since 3.1 */
+    public abstract void setValue(String value);
+
     public String readValue()
     {
-        return (String) getBinding("value").getObject("value", String.class);
+        return getValue();
     }
 
     public void updateValue(String value)
     {
-        getBinding("value").setString(value);
+        setValue(value);
     }
 }

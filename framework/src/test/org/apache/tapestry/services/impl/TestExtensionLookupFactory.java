@@ -20,7 +20,6 @@ import java.util.List;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.ServiceImplementationFactoryParameters;
-import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.lib.DefaultImplementationBuilder;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -88,8 +87,6 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         MockControl dibControl = newControl(DefaultImplementationBuilder.class);
         DefaultImplementationBuilder dib = (DefaultImplementationBuilder) dibControl.getMock();
 
-        Module module = (Module) newMock(Module.class);
-
         Runnable r = (Runnable) newMock(Runnable.class);
 
         MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
@@ -107,10 +104,7 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         spec.checkExtension("foo.bar");
         specControl.setReturnValue(false);
 
-        fp.getInvokingModule();
-        fpc.setReturnValue(module);
-
-        dib.buildDefaultImplementation(Runnable.class, module);
+        dib.buildDefaultImplementation(Runnable.class);
         dibControl.setReturnValue(r);
 
         replayControls();

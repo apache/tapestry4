@@ -41,8 +41,9 @@ public interface BindingSource
      * @param component the component for which the binding is created; the component is used
      * as a kind of context for certain types of bindings (for example, the root object when
      * evaluating OGNL expressions).
+     * @param name the name of the parameter to be bound
      * @param locator the binding to be created, possibly including a prefix to define the type
      * @param location location used to report errors in the binding
      */
-    public IBinding createBinding(IComponent component, String locator, Location location);
+    public IBinding createBinding(IComponent component, String name, String locator, Location location);
 }

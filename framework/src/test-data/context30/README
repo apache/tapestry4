@@ -1,4 +1,0 @@
-This context is used inside JUnit testing to handle the check for incompatible
-directions and bindings.
-
-See TestIncompatibleDirectionAndBinding.xml

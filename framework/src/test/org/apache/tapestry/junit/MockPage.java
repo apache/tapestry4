@@ -40,8 +40,10 @@ import org.apache.tapestry.spec.IComponentSpecification;
 /**
  * Fake implementation of {@link IPage}used during unit testing.
  * 
+ * <p>
+ * TODO: Update tests that use this to use an EasyMock instead.
+ * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.0.4
  */
 
@@ -333,4 +335,15 @@ public class MockPage extends BaseLocatable implements IPage
         return null;
     }
 
+    /** @since 3.1 */
+
+    public boolean isRendering()
+    {
+        return false;
+    }
+
+    /** @since 3.1 */
+    public void enterActiveState()
+    {
+    }
 }

@@ -41,16 +41,16 @@ See http://xml.apache.org/forrest/linking.html for more info
     <project-index href="index.html"/>
     
     <project label="Tapestry">
-    <home label="Home" href="index.html"/>
-    <quotes label="Quotes" href="quotes.html"/>
-    <faq label="FAQ" href="faq.html"/>
-    <todo label="TODO" href="todo.html"/>
-    <changes label="Change Log" href="changes.html"/>
-    <wiki label="Wiki" href="http://wiki.apache.org/jakarta-tapestry/"/>
-    <dev label="Developers" href="dev.html"/>
+      <home label="Home" href="index.html"/>
+      <quotes label="Quotes" href="quotes.html"/>
+      <faq label="FAQ" href="faq.html"/>
+      <todo label="TODO" href="todo.html"/>
+      <changes label="Change Log" href="changes.html"/>
+      <wiki label="Wiki" href="http://wiki.apache.org/jakarta-tapestry/"/>
+      <dev label="Developers" href="dev.html"/>
     </project>
     
-    <UsersGuide label="Users Guide" tab="UsersGuide" href="UsersGuide/">
+    <UsersGuide label="Users Guide" tab="users-guide" href="UsersGuide/">
       <intro label="Introduction" href="index.html"/>
       <templates label="Page and component templates" href="template.html"/>
       <components label="Creating Tapestry components" href="components.html"/>

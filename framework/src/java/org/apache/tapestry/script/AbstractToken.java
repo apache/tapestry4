@@ -89,4 +89,24 @@ abstract class AbstractToken implements IScriptToken
             throw new ApplicationRuntimeException(ex.getMessage(), _location, ex);
         }
     }
+
+    /**
+     * Evaluates an expression and coerces the result to a boolean.
+     * 
+     * @since 3.1
+     */
+
+    protected boolean evaluateBoolean(String expression, ScriptSession session)
+    {
+        try
+        {
+            Boolean b = (Boolean) session.evaluate(expression, Boolean.class);
+
+            return b.booleanValue();
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ex.getMessage(), _location, ex);
+        }
+    }
 }

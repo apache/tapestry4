@@ -14,12 +14,8 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.List;
-
-import org.apache.commons.logging.Log;
 import org.apache.hivemind.ServiceImplementationFactory;
 import org.apache.hivemind.ServiceImplementationFactoryParameters;
-import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.schema.Translator;
 
 /**

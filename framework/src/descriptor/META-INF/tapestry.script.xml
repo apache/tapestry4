@@ -23,6 +23,7 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.engine.DefaultScriptSource">
         <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>
     </invoke-factory>

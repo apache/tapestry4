@@ -17,46 +17,43 @@ package org.apache.tapestry.binding;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hivemind.Defense;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.coerce.TypeConverter;
+import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- *  Base class for {@link IBinding} implementations.
- *
- * @author Howard Lewis Ship
+ * Base class for {@link IBinding}implementations.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class AbstractBinding implements IBinding
 {
-    /** @since 3.0 **/
+    /** @since 3.1 */
+
+    private String _parameterName;
+
+    /** @since 3.1 */
+
+    private ValueConverter _valueConverter;
+
+    /** @since 3.0 */
 
     private Location _location;
 
-    /**
-     *  A mapping from primitive types to wrapper types.
-     * 
-     **/
+    /** @since 3.0 */
 
-    private static final Map PRIMITIVE_TYPES = new HashMap();
-
-    static {
-        PRIMITIVE_TYPES.put(boolean.class, Boolean.class);
-        PRIMITIVE_TYPES.put(byte.class, Byte.class);
-        PRIMITIVE_TYPES.put(char.class, Character.class);
-        PRIMITIVE_TYPES.put(short.class, Short.class);
-        PRIMITIVE_TYPES.put(int.class, Integer.class);
-        PRIMITIVE_TYPES.put(long.class, Long.class);
-        PRIMITIVE_TYPES.put(float.class, Float.class);
-        PRIMITIVE_TYPES.put(double.class, Double.class);
-    }
-
-    /** @since 3.0 **/
-
-    protected AbstractBinding(Location location)
+    protected AbstractBinding(String parameterName, ValueConverter valueConverter, Location location)
     {
+        Defense.notNull(parameterName, "parameterName");
+        Defense.notNull(valueConverter, "valueConverter");
+
+        _parameterName = parameterName;
+        _valueConverter = valueConverter;
         _location = location;
     }
 
@@ -66,124 +63,11 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     *  Cooerces the raw value into a true or false, according to the
-     *  rules set by {@link Tapestry#evaluateBoolean(Object)}.
-     *
-     **/
-
-    public boolean getBoolean()
-    {
-        return Tapestry.evaluateBoolean(getObject());
-    }
-
-    public int getInt()
-    {
-        Object raw;
-
-        raw = getObject();
-        if (raw == null)
-            throw Tapestry.createNullBindingException(this);
-
-        if (raw instanceof Number)
-        {
-            return ((Number) raw).intValue();
-        }
-
-        if (raw instanceof Boolean)
-        {
-            return ((Boolean) raw).booleanValue() ? 1 : 0;
-        }
-
-        // Save parsing for last.  This may also throw a number format exception.
-
-        return Integer.parseInt((String) raw);
-    }
-
-    public double getDouble()
-    {
-        Object raw;
-
-        raw = getObject();
-        if (raw == null)
-            throw Tapestry.createNullBindingException(this);
-
-        if (raw instanceof Number)
-        {
-            return ((Number) raw).doubleValue();
-        }
-
-        if (raw instanceof Boolean)
-        {
-            return ((Boolean) raw).booleanValue() ? 1 : 0;
-        }
-
-        // Save parsing for last.  This may also throw a number format exception.
-
-        return Double.parseDouble((String) raw);
-    }
-
-    /**
-     *  Gets the value for the binding.  If null, returns null,
-     *  otherwise, returns the String (<code>toString()</code>) version of
-     *  the value.
-     *
-     **/
-
-    public String getString()
-    {
-        Object value;
-
-        value = getObject();
-        if (value == null)
-            return null;
-
-        return value.toString();
-    }
-
-    /**
-     *  @throws ReadOnlyBindingException always.
-     *
-     **/
-
-    public void setBoolean(boolean value)
-    {
-        throw createReadOnlyBindingException(this);
-    }
-
-    /**
-     *  @throws ReadOnlyBindingException always.
-     *
-     **/
-
-    public void setInt(int value)
-    {
-        throw createReadOnlyBindingException(this);
-    }
-
-    /**
-     *  @throws ReadOnlyBindingException always.
-     *
-     **/
-
-    public void setDouble(double value)
-    {
-        throw createReadOnlyBindingException(this);
-    }
-
-    /**
-     *  @throws ReadOnlyBindingException always.
-     *
-     **/
-
-    public void setString(String value)
-    {
-        throw createReadOnlyBindingException(this);
-    }
-
-    /**
-     *  @throws ReadOnlyBindingException always.
-     *
-     **/
+     * Overridden in subclasses that are not invariant.
+     * 
+     * @throws ReadOnlyBindingException
+     *             always.
+     */
 
     public void setObject(Object value)
     {
@@ -191,54 +75,58 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     *  Default implementation: returns true.
+     * Default implementation: returns true.
      * 
-     *  @since 2.0.3
-     * 
-     **/
+     * @since 2.0.3
+     */
 
     public boolean isInvariant()
     {
         return true;
     }
 
-    public Object getObject(String parameterName, Class type)
+    public Object getObject(Class type)
     {
-        Object result = getObject();
+        Defense.notNull(type, "type");
 
-        if (result == null)
-            return result;
+        Object raw = getObject();
 
-        Class resultClass = result.getClass();
+        try
+        {
+            return _valueConverter.coerceValue(raw, type);
+        }
+        catch (Exception ex)
+        {
+            String message = BindingMessages.convertObjectError(this, ex);
 
-        if (type.isAssignableFrom(resultClass))
-            return result;
-
-        if (type.isPrimitive() && isWrapper(type, resultClass))
-            return result;
-
-        String key =
-            type.isInterface() ? "AbstractBinding.wrong-interface" : "AbstractBinding.wrong-type";
-
-        String message =
-            Tapestry.format(
-                key,
-                new Object[] { parameterName, result, resultClass.getName(), type.getName()});
-
-        throw new BindingException(message, this);
+            throw new BindingException(message, getComponent(), _location, this, ex);
+        }
     }
 
-    public boolean isWrapper(Class primitiveType, Class subjectClass)
+    /**
+     * Returns the component to which this binding is connected; this is currently
+     * only used when building certain exceptions.  This implementation returns null.
+     * 
+     * @since 3.1
+     */
+    
+    protected Object getComponent()
     {
-        return PRIMITIVE_TYPES.get(primitiveType).equals(subjectClass);
+        return null;
     }
-
-    /** @since 3.0 **/
+    
+    /** @since 3.0 */
 
     protected BindingException createReadOnlyBindingException(IBinding binding)
     {
-        return new BindingException(
-            Tapestry.getMessage("AbstractBinding.read-only-binding"),
-            binding);
+        return new BindingException(Tapestry.getMessage("AbstractBinding.read-only-binding"),
+                binding);
+    }
+
+    /** @since 3.1 */
+
+    public String getParameterName()
+    {
+        return _parameterName;
     }
 }

@@ -230,8 +230,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         ClassFab fab = (ClassFab) newMock(ClassFab.class);
 
-        cf.newClass("$BaseComponent_97", BaseComponent.class, Thread.currentThread()
-                .getContextClassLoader());
+        cf.newClass("$BaseComponent_97", BaseComponent.class);
 
         cfc.setReturnValue(fab);
 
@@ -262,11 +261,9 @@ public class TestEnhancementOperation extends HiveMindTestCase
         MockControl fabc = newControl(ClassFab.class);
         ClassFab fab = (ClassFab) fabc.getMock();
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
         // We force the uid to 97 in setUp()
 
-        cf.newClass("$Insert_97", baseClass, classLoader);
+        cf.newClass("$Insert_97", baseClass);
 
         cfc.setReturnValue(fab);
 
@@ -341,6 +338,24 @@ public class TestEnhancementOperation extends HiveMindTestCase
         verifyControls();
 
         assertSame(ref, ref2);
+    }
+
+    public void testGetArrayClassReference() throws Exception
+    {
+        MockControl specControl = newControl(IComponentSpecification.class);
+
+        IComponentSpecification spec = (IComponentSpecification) specControl.getMock();
+
+        replayControls();
+
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
+                spec, GetClassReferenceFixture.class, new ClassFactoryImpl());
+
+        String ref = eo.getClassReference(int[].class);
+
+        assertTrue(ref.indexOf('[') < 0);
+
+        verifyControls();
     }
 
     /**
@@ -427,8 +442,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         ClassFab fab = (ClassFab) newMock(ClassFab.class);
 
-        cf.newClass("$BaseComponent_97", BaseComponent.class, Thread.currentThread()
-                .getContextClassLoader());
+        cf.newClass("$BaseComponent_97", BaseComponent.class);
         cfc.setReturnValue(fab);
 
         replayControls();
@@ -487,7 +501,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         fab.addInterface(PageDetachListener.class);
 
-        cf.newClass("$BaseComponent_97", BaseComponent.class, cr.getClassLoader());
+        cf.newClass("$BaseComponent_97", BaseComponent.class);
         cfc.setReturnValue(fab);
 
         replayControls();
@@ -554,7 +568,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         verifyControls();
 
-        cf.newClass("$BaseComponent_97", BaseComponent.class, cr.getClassLoader());
+        cf.newClass("$BaseComponent_97", BaseComponent.class);
         cfc.setReturnValue(fab);
 
         fab.addMethod(Modifier.PUBLIC, sig, "{\n  super.finishLoad($$);\n}\n");
@@ -573,9 +587,54 @@ public class TestEnhancementOperation extends HiveMindTestCase
         verifyControls();
     }
 
+    public void testGetExistingProtectedMethod()
+    {
+        ClassResolver cr = new DefaultClassResolver();
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+
+        MockControl cfc = newControl(ClassFactory.class);
+        ClassFactory cf = (ClassFactory) cfc.getMock();
+        MockControl fabc = newControl(ClassFab.class);
+        ClassFab fab = (ClassFab) fabc.getMock();
+
+        replayControls();
+
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
+                cf);
+
+        // A protected method
+        MethodSignature sig = EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE;
+
+        BodyBuilder b = eo.getBodyBuilderForMethod(IComponent.class, sig);
+
+        assertEquals("{\n  super.cleanupAfterRender($$);\n", b.toString());
+
+        verifyControls();
+
+        cf.newClass("$BaseComponent_97", BaseComponent.class);
+        cfc.setReturnValue(fab);
+
+        fab.addMethod(Modifier.PUBLIC, sig, "{\n  super.cleanupAfterRender($$);\n}\n");
+        fabc.setReturnValue(null);
+
+        fab.createClass();
+        fabc.setReturnValue(BaseComponent.class);
+
+        spec.getLocation();
+        specc.setReturnValue(null);
+
+        replayControls();
+
+        eo.getConstructor();
+
+        verifyControls();
+    }
+
     public static abstract class ExistingAbstractMethodFixture extends BaseComponent implements
             PageDetachListener
     {
+        //
     }
 
     public void getExistingAbstractMethod()
@@ -602,8 +661,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         verifyControls();
 
-        cf.newClass("$ExitingAbstractMethodFixture_97", ExistingAbstractMethodFixture.class, cr
-                .getClassLoader());
+        cf.newClass("$ExitingAbstractMethodFixture_97", ExistingAbstractMethodFixture.class);
         cfc.setReturnValue(fab);
 
         fab.addMethod(Modifier.PUBLIC, sig, "{\n}\n");

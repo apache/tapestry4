@@ -76,9 +76,8 @@ public abstract class TableValues extends AbstractTableRowComponent
     {
         m_objTableColumn = tableColumn;
 
-        IBinding objColumnBinding = getBinding("column");
-        if (objColumnBinding != null)
-            objColumnBinding.setObject(tableColumn);
+        if (isParameterBound("column"))
+            setColumnParameter(tableColumn);
     }
 
     /**
@@ -103,23 +102,26 @@ public abstract class TableValues extends AbstractTableRowComponent
      */
     public String getValueClass()
     {
-        IBinding objClassBinding = getBinding("class");
-        if (objClassBinding != null)
-            return objClassBinding.getString();
-        else
-            return getTableColumn().getColumnName() + TABLE_VALUE_CSS_CLASS_SUFFIX;
+        if (isParameterBound("class"))
+            return getCellClass();
+
+        return getTableColumn().getColumnName() + TABLE_VALUE_CSS_CLASS_SUFFIX;
     }
 
-    /**
-     * @see org.apache.tapestry.BaseComponent#renderComponent(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle)
-     */
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /** @since 3.1 */
+    protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        super.renderComponent(writer, cycle);
+        super.cleanupAfterRender(cycle);
 
-        // set the current column to null when the component is not active
         m_objTableColumn = null;
+
     }
 
+    /** @since 3.1 */
+
+    public abstract void setColumnParameter(ITableColumn column);
+
+    /** @since 3.1 */
+
+    public abstract String getCellClass();
 }

@@ -20,24 +20,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ObjectPool;
 
 /**
- *  A very specialized binding that can be used as an {@link org.apache.tapestry.IActionListener},
- *  executing a script in a scripting language, via
- *  <a href="http://jakarta.apache.org/bsf">Bean Scripting Framework</a>.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
- **/
+ * A very specialized binding that can be used as an {@link org.apache.tapestry.IActionListener},
+ * executing a script in a scripting language, via <a href="http://jakarta.apache.org/bsf">Bean
+ * Scripting Framework </a>.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class ListenerBinding extends AbstractBinding implements IActionListener
 {
@@ -46,12 +45,15 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
     private static final String BSF_POOL_KEY = "org.apache.tapestry.BSFManager";
 
     private String _language;
+
     private String _script;
+
     private IComponent _component;
 
-    public ListenerBinding(IComponent component, String language, String script, Location location)
+    public ListenerBinding(IComponent component, String parameterName, String language,
+            String script, ValueConverter valueConverter, Location location)
     {
-        super(location);
+        super(parameterName, valueConverter, location);
 
         _component = component;
         _language = language;
@@ -59,44 +61,8 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
     }
 
     /**
-     *  Always returns true.
-     * 
-     **/
-
-    public boolean getBoolean()
-    {
-        return true;
-    }
-
-    public int getInt()
-    {
-        throw new BindingException(
-            Tapestry.format("ListenerBinding.invalid-access", "getInt()"),
-            this);
-    }
-
-    public double getDouble()
-    {
-        throw new BindingException(
-            Tapestry.format("ListenerBinding.invalid-access", "getDouble()"),
-            this);
-
-    }
-
-    /**
-     *  Returns the underlying script.
-     * 
-     **/
-
-    public String getString()
-    {
-        return _script;
-    }
-
-    /**
-     *  Returns this.
-     * 
-     **/
+     * Returns this.
+     */
 
     public Object getObject()
     {
@@ -104,20 +70,17 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
     }
 
     /**
-     *  A ListenerBinding is also a {@link org.apache.tapestry.IActionListener}.  It
-     *  registers a number of beans with the BSF manager and invokes the
-     *  script.
-     * 
-     *  <p>
-     *  Registers the following bean:
-     *  <ul>
-     *  <li>component - the relevant {@link IComponent}, typically the same as the page 
-     *  <li>page - the {@link IPage} trigged by the request (obtained by {@link IRequestCycle#getPage()}
-     *  <li>cycle - the {@link IRequestCycle}, from which can be found
-     *  the {@link IEngine}, etc.
-     *  </ul>
-     * 
-     **/
+     * A ListenerBinding is also a {@link org.apache.tapestry.IActionListener}. It registers a
+     * number of beans with the BSF manager and invokes the script.
+     * <p>
+     * Registers the following bean:
+     * <ul>
+     * <li>component - the relevant {@link IComponent}, typically the same as the page
+     * <li>page - the {@link IPage}trigged by the request (obtained by
+     * {@link IRequestCycle#getPage()}
+     * <li>cycle - the {@link IRequestCycle}, from which can be found the {@link IEngine}, etc.
+     * </ul>
+     */
 
     public void actionTriggered(IComponent component, IRequestCycle cycle)
     {
@@ -138,16 +101,16 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
             bsf.declareBean("cycle", cycle, cycle.getClass());
 
             bsf.exec(
-                _language,
-                location.getResource().toString(),
-                location.getLineNumber(),
-                location.getLineNumber(),
-                _script);
+                    _language,
+                    location.getResource().toString(),
+                    location.getLineNumber(),
+                    location.getLineNumber(),
+                    _script);
         }
         catch (BSFException ex)
         {
-            String message =
-                Tapestry.format("ListenerBinding.bsf-exception", location, ex.getMessage());
+            String message = Tapestry.format("ListenerBinding.bsf-exception", location, ex
+                    .getMessage());
 
             throw new ApplicationRuntimeException(message, _component, getLocation(), ex);
         }
@@ -166,8 +129,8 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
             {
                 long endTime = System.currentTimeMillis();
 
-                LOG.debug(
-                    "Execution of \"" + location + "\" took " + (endTime - startTime) + " millis");
+                LOG.debug("Execution of \"" + location + "\" took " + (endTime - startTime)
+                        + " millis");
             }
         }
     }
@@ -184,10 +147,10 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
         }
     }
 
-	/**
-	 * TODO: remove the use of the pool; the BSFManager should be injected in, and be
-	 * a pooled HiveMind service.
-	 */
+    /**
+     * TODO: remove the use of the pool; the BSFManager should be injected in, and be a pooled
+     * HiveMind service.
+     */
     private BSFManager obtainBSFManager(IRequestCycle cycle)
     {
         IEngine engine = cycle.getEngine();
@@ -205,5 +168,12 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
         }
 
         return result;
+    }
+
+    /** @since 3.1 */
+
+    protected Object getComponent()
+    {
+        return _component;
     }
 }

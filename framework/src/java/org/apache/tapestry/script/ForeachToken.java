@@ -18,25 +18,25 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.hivemind.Location;
-import org.apache.tapestry.Tapestry;
 
 /**
- *  A looping operator, modeled after the Foreach component.  It takes
- *  as its source as property and iterates through the values, updating
- *  a symbol on each pass.
+ * A looping operator, modeled after the Foreach component. It takes as its source as property and
+ * iterates through the values, updating a symbol on each pass.
+ * <p>
+ * As of 3.0, the index attribute has been added to foreach to keep track of the current index of
+ * the iterating collection.
+ * </p>
  * 
- *  <p>As of 3.0, the index attribute has been added to foreach to keep 
- *  track of the current index of the iterating collection.</p>
- *
- *  @author Howard Lewis Ship, Harish Krishnaswamy
- *  @since 1.0.1
- * 
- **/
+ * @author Howard Lewis Ship, Harish Krishnaswamy
+ * @since 1.0.1
+ */
 
 class ForeachToken extends AbstractToken
 {
     private String _key;
+
     private String _index;
+
     private String _expression;
 
     ForeachToken(String key, String index, String expression, Location location)
@@ -50,14 +50,12 @@ class ForeachToken extends AbstractToken
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
-        Map symbols = session.getSymbols();
+        Iterator i = (Iterator) session.evaluate(_expression, Iterator.class);
 
-        Object rawSource = evaluate(_expression, session);
-
-        Iterator i = Tapestry.coerceToIterator(rawSource);
-        
         if (i == null)
             return;
+
+        Map symbols = session.getSymbols();
 
         int index = 0;
 
@@ -66,12 +64,12 @@ class ForeachToken extends AbstractToken
             Object newValue = i.next();
 
             symbols.put(_key, newValue);
-            
+
             if (_index != null)
-            	symbols.put(_index, String.valueOf(index));
+                symbols.put(_index, String.valueOf(index));
 
             writeChildren(buffer, session);
-            
+
             index++;
         }
 
