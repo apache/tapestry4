@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.Card">
+
+    <description>
+        An WML deck contains a collection of cards. There is a variety of card types, each specifying a different mode
+        of user interaction.
+    </description>
+
+    <parameter name="title" type="java.lang.String" direction="in">
+        <description>
+            The title attribute specifies advisory information about the element. The title may be rendered in a
+            variety of ways by the user agent (eg, suggested bookmark name, pop-up tooltip, etc.).
+        </description>
+    </parameter>
+
+</component-specification>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.Do">
+
+    <description>
+        The do element provides a general mechanism for the user to act upon the current card, i.e. a card-level user
+        interface element.
+    </description>
+
+    <parameter name="type" type="java.lang.String" direction="in" required="yes" >
+        <description>
+            The do element type. This attribute provides a hint to the user agent about the author's intended use of
+            the element and how the element should be mapped to a physical user interface construct.
+            Predefined DO types are accept, prev, help, reset, options, delete and unkown.
+        </description>
+    </parameter>
+
+    <parameter name="label" type="java.lang.String" direction="in">
+        <description>
+            If the user agent is able to dynamically label the user interface widget, this attribute specifies a textual
+            string suitable for such labelling.
+        </description>
+    </parameter>
+
+</component-specification>

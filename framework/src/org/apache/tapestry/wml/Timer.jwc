@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.Timer" allow-body="no">
+
+    <description>
+        The Timer element declares a card timer, which exposes a means of processing inactivity or idle time.
+        The timer is initialised and started at card entry and is stopped when the card is exited.
+    </description>
+
+    <parameter name="name" type="java.lang.String" direction="in">
+        <description>
+            The name attribute specifies the name of the variable to be set with the value of the timer. The name
+            variable's value is used to set the timeout period upon timer initialisation. The variable named by the
+            name attribute will be set with the current timer value when the card is exited or when the timer expires.
+            For example, if the timer expires, the name variable is set to a value of "0".
+        </description>
+    </parameter>
+
+    <parameter name="value" type="java.lang.String">
+        <description>
+            The value attribute indicates the default value of the variable named in the name attribute. When the
+            timer is initialised and the variable named in the name attribute is not set, the name variable is assigned
+            the value specified in the value attribute. If the name variable already contains a value, the value
+            attribute is ignored. If the name attribute is not specified, the timeout is always initialised to the
+            value specified in the value attribute.
+        </description>
+    </parameter>
+
+</component-specification>

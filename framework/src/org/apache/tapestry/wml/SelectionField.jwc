@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.SelectionField" allow-body="no">
+
+    <description>
+        SelectionField specifies a postfield element and it is used to complement the PropertySelection component.
+    </description>
+
+    <parameter name="value" required="yes" type="java.lang.Object"/>
+
+    <parameter name="model"
+        type="org.apache.tapestry.form.IPropertySelectionModel"
+        required="yes"
+        direction="in"/>
+
+    <parameter name="name" property-name="varName" type="java.lang.String" direction="in" required="yes">
+        <description>
+            The name attribute specifies an WML variable name.
+        </description>
+    </parameter>
+
+    <reserved-parameter name="value"/>
+
+    <property-specification name="name" type="java.lang.String"/>
+    <property-specification name="form" type="org.apache.tapestry.IForm"/>
+
+</component-specification>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.Option">
+
+    <description>
+        This component serves as a container for one item that is listed as a choice in a Select. A Select
+        offers a selection of choices from which usersu may choose one or more items. The select list is created using a
+        select element which contains a collection of option elements. A string or text describing the item appears between
+        the opening and closing option tags.
+    </description>
+
+    <parameter name="value" type="java.lang.String" direction="in">
+        <description>
+            The value attribute specifies the value to be used when setting the name variable. When the user selects
+            this option, the resulting value specified in the value attribute is used to set the Select element's
+            name wml variable.
+        </description>
+    </parameter>
+
+</component-specification>

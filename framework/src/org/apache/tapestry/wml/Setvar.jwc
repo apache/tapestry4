@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.Setvar" allow-body="no">
+
+    <description>
+        The setvar element specifies the variable to set in the current browser context as a side effect of executing
+        a task.
+    </description>
+    <parameter name="name" type="java.lang.String" direction="in" required="yes">
+        <description>
+            The name attribute specifies a WML variable name.
+        </description>
+    </parameter>
+
+    <parameter name="value" type="java.lang.String" required="yes">
+        <description>
+            Bind value to the variable that should recieve the user input string.
+        </description>
+    </parameter>
+
+</component-specification>
