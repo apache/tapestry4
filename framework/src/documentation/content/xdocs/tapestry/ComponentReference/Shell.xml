@@ -19,6 +19,8 @@
 	<!ENTITY projectroot '../../'>
 	<!ENTITY % links.ent SYSTEM "../../links.ent">
 	%links.ent;
+  
+  <!ENTITY meta "&lt;meta&gt;">
 ]>
 <document>
   <header>
@@ -27,11 +29,25 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+  <p>
+  Provides the outer 'shell' of a page, including the &lt;html&gt;, &lt;head&gt; 
+  and &lt;title&gt; tags, but not the &lt;body&gt; tag (which is typically 
+  provided by a &Body; component).
+  </p>
+  <p>
+  Most Tapestry pages will include a Shell component followed by a Body 
+  component. The Shell is used to resolve the page's HTML stylesheet and the Body 
+  component manages dynamically generated JavaScript. 
+  </p>
+  <p>
+  When designing the look and feel of a 
+            Tapestry page, include the normal HTML elements before the Shell 
+            component, including a &lt;link rel="stylesheet"&gt; element, so 
+            that the page will render normally in a web browser, but use a 
+            &lt;span jwcid="$content$"&gt; around the actual content.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/html/Shell.html">org.apache.tapestry.html.Shell</link>, &Body;, &PageLink;</strong> 
 </p>
 
 <section>
@@ -46,15 +62,84 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+  
+  <tr>
+    <td>title</td>
+    <td>String</td>
+    <td>in</td>
+    <td>yes</td>
+    <td></td>
+    <td>The title for the page, used to render the &lt;title&gt; tag.</td>
+  </tr>
+  
+  <tr>
+    <td>stylesheet</td>
+    <td>&IAsset;</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>If provided, then a &lt;link&gt; to the stylesheet is generated.</td>
+  </tr>
+  
+  <tr>
+    <td>stylesheets</td>
+    <td>Array or collection of &IAsset;</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      If provided, then &lt;link&gt; elements are created for each stylesheet asset.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>doctype</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td>HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"</td>
+    <td>Used to specify the full definition of the DOCTYPE element in the response page.</td>
+  </tr>
+  
+  <tr>
+    <td>renderContentType</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>true</td>
+    <td>If true (the default), then an &meta; tag will be written to set the content
+      type of the page.</td>
+  </tr>
+  
+  <tr>
+    <td>refresh</td>
+    <td>int</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>If provided, then a &meta; tag will be written to cause a page refresh. The parameter value is
+      the number of seconds before the refresh.</td>
+  </tr>
+  
+  <tr>
+    <td>delegate</td>
+    <td>&IRender;</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>If specified, the delegate is rendered before the close of the &lt;head&gt;
+      tag.  Typically, this is used to provide additional &meta; tags.</td>
+  </tr>
+  
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -65,6 +150,65 @@
 
 <section>
   <title>Examples</title>
+
+	<p>
+  The Shell component is used here to provide the page's stylesheet and title.
+  </p>
+  
+  <p>
+  In this example, the Login.html template is in the login subdirectory
+  of the root application context.  The stylesheet is within the styles directory,
+  below the root application context.
+  </p>
+  
+  <p>login/Login.html:</p>
+  
+<source><![CDATA[
+<html>
+<head>
+ <link rel="stylesheet" type="text/css" href="../styles/style.css"/>
+ <title>MyCorp Customer Login</title>
+</head>
+
+<span jwcid="$content$">
+<span jwcid="@Shell" stylesheet="asset:stylesheet" title="MyCorp Customer Login">
+<body jwcid="@Body">
+
+<h1>Customer Login</h1>
+Welcome to MyCorp's Customer Portal secure login page.
+
+. . .
+
+</body>
+</span>
+</span>
+</html>]]>
+</source>
+
+<p>
+  WEB-INF/login/Login.page:
+</p>
+
+<source><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
+  
+<page-specification class="com.mycorp.web.Login">
+
+  . . .
+  
+  <asset name="stylesheet" path="styles/style.css"/>
+   
+</page-specification>
+]]>
+</source>
+
+<p>
+Note that for page and component specifications stored in the web application context (even under WEB-INF),
+relative assets paths are computed from the <em>root application context directory</em>.
+</p>
 
 </section>
 </body>
