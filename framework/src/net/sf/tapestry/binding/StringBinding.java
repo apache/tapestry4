@@ -40,54 +40,65 @@ import net.sf.tapestry.IComponent;
 
 public class StringBinding extends AbstractBinding
 {
-	private IComponent component;
-	private String key;
+    private IComponent component;
+    private String key;
 
-	public StringBinding(IComponent component, String key)
-	{
-	    this.component = component;
-	    this.key = key;
-	}
-	
-	public IComponent getComponent()
-	{
-	    return component;
-	}
-	
-	public String getKey()
-	{
-	    return key;
-	}
-	
-	/**
-	 *  Accesses the specified localized string.  Never returns null.
-	 *
-	 **/
-	
+    public StringBinding(IComponent component, String key)
+    {
+        this.component = component;
+        this.key = key;
+    }
+
+    public IComponent getComponent()
+    {
+        return component;
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    /**
+     *  Accesses the specified localized string.  Never returns null.
+     *
+     **/
+
     public Object getObject()
     {
         return component.getString(key);
     }
 
-	/**
-	 *  Returns String.class.
-	 * 
-	 **/
-	
+    /**
+     *  Returns String.class.
+     * 
+     **/
+
     public Class getType()
     {
         return String.class;
     }
 
-	/**
-	 *  Returns true.  Localized component strings are
-	 *  read-only.
-	 * 
-	 **/
-	
+    /**
+     *  Returns true.  Localized component strings are
+     *  read-only.
+     * 
+     **/
+
     public boolean isInvariant()
     {
         return true;
     }
 
+    public String toString()
+    {
+        StringBuffer buffer = new StringBuffer("StringBinding");
+        buffer.append('[');
+        buffer.append(component.getExtendedId());
+        buffer.append(' ');
+        buffer.append(key);
+        buffer.append(']');
+
+        return buffer.toString();
+    }
 }

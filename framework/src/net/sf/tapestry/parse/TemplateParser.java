@@ -27,6 +27,7 @@ package net.sf.tapestry.parse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,8 @@ import net.sf.tapestry.Tapestry;
  *  This parser supports the &lt;jwc id="<i>id</id>"&gt; syntax (standard
  *  through release 1.0.1).    In addition, any HTML tag can become
  *  the equivalent of a &lt;jwc&gt; tag by including a <code>jwcid</code>
- *  attribute.
+ *  attribute.  That latter is referred to as <em>invisible instrumentation</em>,
+ *  as the instrumentation is invisible to a WYSIWYG editor.
  *
  *  <p>The parser removes
  *  the body of some tags (when the corresponding component doesn't
@@ -56,6 +58,12 @@ import net.sf.tapestry.Tapestry;
  *  <p>Although the &lt;jwc&gt; tag is still supported (and will always
  *  be), it can now be avoided by using the jwcid attribute on
  *  existing tags, such as &lt;span&gt;.
+ * 
+ *  Starting in release 2.0.4 is a new option, <em>invisible localization</em>
+ *  where the parser recognizes HTML of the form:
+ *  <code>&lt;span key="<i>value</i>"&gt; ... &lt;/span&gt;</code>
+ *  and converts them into a {@link TokenType#LOCALIZATION}
+ *  token.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -81,6 +89,17 @@ public class TemplateParser
      **/
 
     private static final String CONTENT_ID = "$content$";
+
+    /**
+     *  
+     *  The attribute, checked for in &lt;span&gt; tags, that signfies
+     *  that the span is being used as an invisible localization.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+
+    public static final String LOCALIZATION_KEY_ATTRIBUTE_NAME = "key";
 
     private ITemplateParserDelegate delegate;
 
@@ -321,9 +340,7 @@ public class TemplateParser
         {
             if (cursor >= length)
                 throw new TemplateParseException(
-                    Tapestry.getString(
-                        "TemplateParser.comment-not-ended",
-                        Integer.toString(startLine)),
+                    Tapestry.getString("TemplateParser.comment-not-ended", Integer.toString(startLine)),
                     startLine,
                     resourcePath);
 
@@ -394,6 +411,7 @@ public class TemplateParser
         String jwcId = null;
         String jwcIdAttributeName = isJwcTag ? "id" : "jwcid";
         String attributeName = null;
+        String localizationKey = null;
         int attributeNameStart = -1;
         int attributeValueStart = -1;
         int state = WAIT_FOR_ATTRIBUTE_NAME;
@@ -408,9 +426,7 @@ public class TemplateParser
             if (cursor >= length)
             {
                 String key =
-                    (tagName == null)
-                        ? "TemplateParser.unclosed-unknown-tag"
-                        : "TemplateParser.unclosed-tag";
+                    (tagName == null) ? "TemplateParser.unclosed-unknown-tag" : "TemplateParser.unclosed-tag";
 
                 throw new TemplateParseException(
                     Tapestry.getString(key, tagName, Integer.toString(startLine)),
@@ -460,8 +476,7 @@ public class TemplateParser
 
                     if (ch == '=' || ch == '/' || ch == '>' || Character.isWhitespace(ch))
                     {
-                        attributeName =
-                            new String(templateData, attributeNameStart, cursor - attributeNameStart);
+                        attributeName = new String(templateData, attributeNameStart, cursor - attributeNameStart);
 
                         if (isJwcTag && !attributeName.equalsIgnoreCase(jwcIdAttributeName))
                             throw new TemplateParseException(
@@ -561,13 +576,15 @@ public class TemplateParser
 
                     if (ch == quoteChar)
                     {
-                        String attributeValue =
-                            new String(templateData, attributeValueStart, cursor - attributeValueStart);
+                        String attributeValue = new String(templateData, attributeValueStart, cursor - attributeValueStart);
 
                         if (attributeName.equalsIgnoreCase(jwcIdAttributeName))
                             jwcId = attributeValue;
                         else
                             attributes.put(attributeName, attributeValue);
+
+                        if (attributeName.equalsIgnoreCase(LOCALIZATION_KEY_ATTRIBUTE_NAME))
+                            localizationKey = attributeValue;
 
                         // Advance over the quote.
                         advance();
@@ -585,13 +602,15 @@ public class TemplateParser
 
                     if (ch == '/' || ch == '>' || Character.isWhitespace(ch))
                     {
-                        String attributeValue =
-                            new String(templateData, attributeValueStart, cursor - attributeValueStart);
+                        String attributeValue = new String(templateData, attributeValueStart, cursor - attributeValueStart);
 
                         if (attributeName.equalsIgnoreCase(jwcIdAttributeName))
                             jwcId = attributeValue;
                         else
                             attributes.put(attributeName, attributeValue);
+
+                        if (attributeName.equalsIgnoreCase(LOCALIZATION_KEY_ATTRIBUTE_NAME))
+                            localizationKey = attributeValue;
 
                         state = WAIT_FOR_ATTRIBUTE_NAME;
                         break;
@@ -604,12 +623,63 @@ public class TemplateParser
 
         if (isJwcTag && jwcId == null)
             throw new TemplateParseException(
-                Tapestry.getString(
-                    "TemplateParser.tag-missing-id",
-                    tagName,
-                    Integer.toString(startLine)),
+                Tapestry.getString("TemplateParser.tag-missing-id", tagName, Integer.toString(startLine)),
                 startLine,
                 resourcePath);
+
+        // Check for invisible localizations
+        
+        if (tagName.equalsIgnoreCase("span") && localizationKey != null)
+        {
+            if (ignoring)
+                throw new TemplateParseException(
+                    Tapestry.getString(
+                        "TemplateParser.component-may-not-be-ignored",
+                        tagName,
+                        Integer.toString(startLine)),
+                    startLine,
+                    resourcePath);
+                                
+            // If the tag isn't empty, then create a Tag instance to ignore the
+            // body of the tag.
+
+            if (!emptyTag)
+            {
+                Tag tag = new Tag(tagName, startLine);
+
+                tag.component = false;
+                tag.removeTag = true;
+                tag.ignoringBody = true;
+                tag.mustBalance = true;
+
+                stack.add(tag);
+                
+                // Start ignoring content until the close tag.
+                
+                ignoring = true;
+            }
+            else
+            {
+                // Cursor is at the closing carat, advance over it and any whitespace.                
+                advance();
+                advanceOverWhitespace();
+            }
+
+            // End any open block.
+
+            addTextToken(cursorStart - 1);
+
+            TemplateToken token =
+                new TemplateToken(
+                    TokenType.LOCALIZATION,
+                    localizationKey,
+                    tagName,
+                    filter(attributes, LOCALIZATION_KEY_ATTRIBUTE_NAME));
+
+            tokens.add(token);
+
+            return;
+        }
 
         if (jwcId != null)
         {
@@ -678,10 +748,7 @@ public class TemplateParser
 
             if (ignoring && ignoreBody)
                 throw new TemplateParseException(
-                    Tapestry.getString(
-                        "TemplateParser.nested-ignore",
-                        tagName,
-                        Integer.toString(startLine)),
+                    Tapestry.getString("TemplateParser.nested-ignore", tagName, Integer.toString(startLine)),
                     startLine,
                     resourcePath);
 
@@ -766,9 +833,7 @@ public class TemplateParser
         {
             if (cursor >= length)
                 throw new TemplateParseException(
-                    Tapestry.getString(
-                        "TemplateParser.incomplete-close-tag",
-                        Integer.toString(startLine)),
+                    Tapestry.getString("TemplateParser.incomplete-close-tag", Integer.toString(startLine)),
                     startLine,
                     resourcePath);
 
@@ -796,11 +861,7 @@ public class TemplateParser
                 throw new TemplateParseException(
                     Tapestry.getString(
                         "TemplateParser.improperly-nested-close-tag",
-                        new Object[] {
-                            tagName,
-                            Integer.toString(startLine),
-                            tag.tagName,
-                            Integer.toString(tag.line)}),
+                        new Object[] { tagName, Integer.toString(startLine), tag.tagName, Integer.toString(tag.line)}),
                     startLine,
                     resourcePath);
 
@@ -809,10 +870,7 @@ public class TemplateParser
 
         if (stackPos < 0)
             throw new TemplateParseException(
-                Tapestry.getString(
-                    "TemplateParser.unmatched-close-tag",
-                    tagName,
-                    Integer.toString(startLine)),
+                Tapestry.getString("TemplateParser.unmatched-close-tag", tagName, Integer.toString(startLine)),
                 startLine,
                 resourcePath);
 
@@ -920,5 +978,39 @@ public class TemplateParser
 
             advance();
         }
+    }
+
+    /**
+     *  Returns a copy of the input Map, with the identified
+     *  key removed.  The check for matching keys is caseless.
+     *  May return null if the input Map is empty, or null, or
+     *  contains only the matching key.
+     * 
+     **/
+
+    private Map filter(Map input, String removeKey)
+    {
+        if (input == null || input.isEmpty())
+            return null;
+
+        Map result = null;
+
+        Iterator i = input.entrySet().iterator();
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+
+            String key = (String) entry.getKey();
+
+            if (key.equalsIgnoreCase(removeKey))
+                continue;
+
+            if (result == null)
+                result = new HashMap(input.size());
+
+            result.put(key, entry.getValue());
+        }
+
+        return result;
     }
 }

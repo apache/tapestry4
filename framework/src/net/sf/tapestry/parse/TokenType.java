@@ -47,19 +47,29 @@ public class TokenType extends Enum
     public static final TokenType TEXT = new TokenType("TEXT");
 
     /**
-     *  The opening tag of a JWC element: &lt;jwc id="name"&gt;
+     *  The opening tag of an element.
      *
      **/
 
     public static final TokenType OPEN = new TokenType("OPEN");
 
     /**
-     *  The closing tag of a JWC element: &lt;/jwc&gt;
+     *  The closing tag of an element.
      *
      **/
 
     public static final TokenType CLOSE = new TokenType("CLOSE");
 
+    /**
+     * 
+     *  A reference to a localized string.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+    
+    public static final TokenType LOCALIZATION = new TokenType("LOCALIZATION");
+    
     private TokenType(String name)
     {
         super(name);

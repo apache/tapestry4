@@ -72,8 +72,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
     {
         return new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
-                throws RequestCycleException
+            public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
             {
                 writeTemplate(writer, cycle);
             }
@@ -91,23 +90,11 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
     private void writeTemplate(IMarkupWriter writer, IRequestCycle cycle)
     {
-        String templateName;
-        ITemplateSource source;
-        ComponentTemplate template;
-        int count;
-        char[] data;
-        TemplateToken token;
-        int i;
+        ComponentTemplate template = null;
         String[] context = null;
         IEngineService service = null;
-        String URL;
-        String id;
-        IComponent inspectedComponent;
-        IComponent embedded;
-
-        inspectedComponent = ((Inspector) page).getInspectedComponent();
-
-        source = page.getEngine().getTemplateSource();
+        IComponent inspectedComponent = ((Inspector) page).getInspectedComponent();
+        ITemplateSource source = page.getEngine().getTemplateSource();
 
         try
         {
@@ -120,12 +107,12 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
         writer.begin("pre");
 
-        count = template.getTokenCount();
-        data = template.getTemplateData();
+        int count = template.getTokenCount();
+         char[] data = template.getTemplateData();
 
-        for (i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            token = template.getToken(i);
+            TemplateToken token = template.getToken(i);
 
             if (token.getType() == TokenType.TEXT)
             {
@@ -158,6 +145,48 @@ public class ShowTemplate extends BaseComponent implements IDirect
                 continue;
             }
 
+            if (token.getType() == TokenType.LOCALIZATION)
+            {
+                writer.begin("span");
+                writer.attribute("class", "jwc-tag");
+
+                writer.print("<span key=\"");
+                writer.print(token.getId());
+                writer.print('"');
+
+                Map attributes = token.getAttributes();
+                if (attributes != null && !attributes.isEmpty())
+                {
+                    Iterator it = attributes.entrySet().iterator();
+                    while (it.hasNext())
+                    {
+                        Map.Entry entry = (Map.Entry) it.next();
+                        String attributeName = (String) entry.getKey();
+                        String attributeValue = (String) entry.getValue();
+
+                        writer.print(' ');
+                        writer.print(attributeName);
+                        writer.print("=\"");
+                        writer.print(attributeValue);
+                        writer.print('"');
+
+                    }
+                }
+
+                writer.print('>');
+                writer.begin("span");
+                writer.attribute("class", "localized-string");
+                
+                writer.print(inspectedComponent.getString(token.getId()));
+                writer.end(); // <span>
+                
+                writer.print("</span>");
+
+                writer.end(); // <span>
+
+                continue;
+            }
+
             // Only other type is OPEN
 
             if (service == null)
@@ -169,8 +198,8 @@ public class ShowTemplate extends BaseComponent implements IDirect
             // Each id references a component embedded in the inspected component.
             // Get that component.
 
-            id = token.getId();
-            embedded = inspectedComponent.getComponent(id);
+            String id = token.getId();
+            IComponent embedded = inspectedComponent.getComponent(id);
             context[0] = embedded.getIdPath();
 
             // Build a URL to select that component, as if by the captive
@@ -242,7 +271,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         Inspector inspector = (Inspector) page;
 
         String[] parameters = cycle.getServiceParameters();
-        
+
         inspector.selectComponent(parameters[0]);
 
         IComponent newComponent = inspector.getInspectedComponent();

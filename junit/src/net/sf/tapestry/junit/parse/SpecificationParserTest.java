@@ -50,32 +50,28 @@ public class SpecificationParserTest extends TestCase
         super(name);
     }
 
+    private ComponentSpecification parse(String simpleName) throws Exception
+    {
+        SpecificationParser parser = new SpecificationParser();
 
-	private ComponentSpecification parse(String simpleName)
-	throws Exception
-	{
-		SpecificationParser parser = new SpecificationParser();
-		
-		InputStream input = getClass().getResourceAsStream(simpleName);
-		
-		return parser.parseComponentSpecification(input, simpleName);
-	}
+        InputStream input = getClass().getResourceAsStream(simpleName);
 
-	/**
-	 *  Tests that the parser can handle a 1.2 specification
-	 *  that includes a &lt;string-binding&gt; element.
-	 * 
-	 **/
-	
+        return parser.parseComponentSpecification(input, simpleName);
+    }
 
-	public void testStringBinding()
-	throws Exception
-	{
-	 ComponentSpecification spec = parse("TestStringBinding.jwc");
-	 
-	 BindingSpecification bs = spec.getComponent("hello").getBinding("value");
-	 
-	 assertEquals("type", BindingType.STRING, bs.getType());
-	 assertEquals("key", "label.hello", bs.getValue());
-	}
+    /**
+     *  Tests that the parser can handle a 1.2 specification
+     *  that includes a &lt;string-binding&gt; element.
+     * 
+     **/
+
+    public void testStringBinding() throws Exception
+    {
+        ComponentSpecification spec = parse("TestStringBinding.jwc");
+
+        BindingSpecification bs = spec.getComponent("hello").getBinding("value");
+
+        assertEquals("type", BindingType.STRING, bs.getType());
+        assertEquals("key", "label.hello", bs.getValue());
+    }
 }

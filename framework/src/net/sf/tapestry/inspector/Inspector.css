@@ -98,12 +98,11 @@ SPAN.jwc-tag
 	font-weight: bold;
 }
 
-SPAN.jwc-id
+SPAN.jwc-id, SPAN.localized-string
 {
 	font-style: italic;
 }
 
-	
 
 
 TABLE.request-context-border  {
