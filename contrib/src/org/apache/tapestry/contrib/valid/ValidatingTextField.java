@@ -132,6 +132,9 @@ import org.apache.tapestry.valid.ValidField;
 
 public abstract class ValidatingTextField extends ValidField
 {
+	public abstract IBinding getValueBinding();
+	public abstract void setValueBinding(IBinding valueBinding);
+	
     private IBinding minimumLengthBinding;
     private IBinding requiredBinding;
 

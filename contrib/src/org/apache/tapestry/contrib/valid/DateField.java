@@ -158,6 +158,9 @@ import org.apache.tapestry.valid.ValidField;
 
 public abstract class DateField extends ValidField
 {
+	public abstract IBinding getValueBinding();
+	public abstract void setValueBinding(IBinding valueBinding);
+	
     private IBinding minimumBinding;
     private IBinding maximumBinding;
     private IBinding requiredBinding;
