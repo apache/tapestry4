@@ -111,12 +111,12 @@ problems using Team support inside the Eclipse IDE.
 
 <target name="docbook-unpack-dtd" unless="docbook.dtd.available">
 	<echo>Unpacking DocBook DTD distribution ...</echo>
-	<unzip src="${root.dir}/ext-dist/${docbook.dtd.base}.zip" dest="../common"/>
+	<unzip src="${ext.dist.dir}/${docbook.dtd.base}.zip" dest="../common"/>
 </target>
   	
 <target name="docbook-unpack-xsl" unless="docbook.xsl.available">
 	<echo>Unpacking DocBook XSL distribution ...</echo>
-	<unzip src="${root.dir}/ext-dist/${docbook.xsl.base}.zip" dest="../common"/>
+	<unzip src="${ext.dist.dir}/${docbook.xsl.base}.zip" dest="../common"/>
 	
 </target>
 

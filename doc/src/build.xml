@@ -7,10 +7,20 @@
 		<ant dir="UsersGuide" target="clean"/>
 		<ant dir="ContributorsGuide" target="clean"/>
 	</target>
+	
 	<target name="install">
-		<ant dir="DevelopersGuide" target="install" inheritAll="false"/>
-		<ant dir="ContributorsGuide" target="install" inheritAll="false" />
-		<ant dir="UsersGuide" target="install" inheritAll="false"/>
+		<ant dir="DevelopersGuide" target="install" inheritAll="false">
+		  <property name="ext.dist.dir" location="${ext.dist.dir}"/>
+		</ant>
+		
+		<ant dir="ContributorsGuide" target="install" inheritAll="false">
+		  <property name="ext.dist.dir" location="${ext.dist.dir}"/>
+		</ant>
+		
+		<ant dir="UsersGuide" target="install" inheritAll="false">
+		  <property name="ext.dist.dir" location="${ext.dist.dir}"/>
+		</ant>
+		
 		<ant dir="ComponentReference" target="install" inheritAll="false"/>
 	</target>
 </project>

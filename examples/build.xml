@@ -8,7 +8,6 @@
 		<ant dir="Vlib" target="clean"/>
 	</target>
 	<target name="install">
-	    <mkdir dir="../lib/examples"/>
 		<ant dir="Workbench" target="install" inheritAll="false"/>
 		<ant dir="VlibBeans" target="install" inheritAll="false"/>
 		<ant dir="Vlib" target="install" inheritAll="false"/>
