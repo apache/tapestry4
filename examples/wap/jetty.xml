@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XML Spy v4.0 NT beta 1 build Jun 13 2001 (http://www.xmlspy.com) by David Solis (private) -->
+<!-- $Id$ -->
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.0//EN"
+ "http://jetty.mortbay.com/configure_1_0.dtd">
+<Configure class="com.mortbay.HTTP.HttpServer">
+	<Call name="addListener">
+		<Arg>
+			<New class="com.mortbay.HTTP.SocketListener">
+				<Set name="Port">8080</Set>
+				<Set name="MinThreads">5</Set>
+				<Set name="MaxThreads">255</Set>
+				<Set name="MaxIdleTimeMs">50000</Set>
+			</New>
+		</Arg>
+	</Call>
+	<!-- This writes a log of each incoming request to the default output, which makes
+       it easier to see what Tapestry and Jetty are up to. -->
+	<Set name="LogSink">
+		<New class="com.mortbay.Util.WriterLogSink"/>
+	</Set>
+	<Call name="addWebApplication">
+		<Arg>/wap/*</Arg>
+		<Arg>./wap.war</Arg>
+		<Arg/>
+	</Call>
+</Configure>
