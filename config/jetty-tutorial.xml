@@ -7,7 +7,7 @@
   This configuration file is used to allow the Tutorial to be run directly from
   the main distribution directory (i.e., without having to build the frameworks).
   -->
-<Configure class="org.mortbay.http.HttpServer">
+<Configure class="org.mortbay.jetty.Server">
   <Call name="addListener">
     <Arg>
       <New class="org.mortbay.http.SocketListener">
@@ -22,13 +22,19 @@
   <Call name="addWebApplication">
     <Arg>/tutorial</Arg>
     <Arg>lib/tutorial.war</Arg>
-    <Arg>config/webdefault.xml</Arg>
-    <Arg type="boolean">false</Arg>
+    <Set name="DefaultsDescriptor">config/webdefault.xml</Set>
   </Call>
   
    <Call name="addContext">
     <Arg>/private/*</Arg>
     <Set name="ResourceBase">private</Set>
-    <Set name="ServingResources">TRUE</Set>
+    
+    <Call name="addHandler">
+      <Arg><New class="org.mortbay.http.handler.ResourceHandler"/></Arg>
+    </Call>
+    
+    <Call name="addHandler">
+    	<Arg><New class="org.mortbay.http.handler.NotFoundHandler"/></Arg>
+    </Call>
   </Call>
 </Configure>
