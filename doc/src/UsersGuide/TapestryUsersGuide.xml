@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Id$ -->
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
-  "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
-  <!-- Useful snippets -->
-  
-<!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
-  
-%TapestryLinks;
+<!DOCTYPE book PUBLIC
+  "-//OASIS//DTD DocBook XML V4.1.2//EN"
+  "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd" [
+  <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
+  %TapestryLinks;
   
 <!-- Each chapter is in its own file -->
   

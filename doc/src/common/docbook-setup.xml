@@ -34,9 +34,37 @@ problems using Team support inside the Eclipse IDE.
 <property name="docbook.fop.xsl"
 	value="../common/Tapestry-${docbook.xsl.base}-Fop.xsl"/>
 
+
 <xmlcatalog id="docbook.catalog">
-	<dtd publicId="-//OASIS//DTD DocBook XML V4.1//EN" location="${docbook.dtd.dir}/docbookx.dtd"/>
+  <dtd publicId="-//OASIS//DTD DocBook XML V4.1.2//EN" location="${docbook.dtd.dir}/docbookx.dtd"/>
+  <dtd publicId="-//OASIS//DTD DocBook CALS Table Model V4.1.2//EN" location="${docbook.dtd.dir}/calstblx.dtd"/>
+  <dtd publicId="-//OASIS//DTD XML Exchange Table Model 19990315//EN" location="${docbook.dtd.dir}/soextblx.dtd"/>
+  <dtd publicId="-//OASIS//ELEMENTS DocBook Information Pool V4.1.2//EN" location="${docbook.dtd.dir}/dbpoolx.mod"/>
+  <dtd publicId="-//OASIS//ELEMENTS DocBook Document Hierarchy V4.1.2//EN" location="${docbook.dtd.dir}/dbhierx.mod"/>
+  <dtd publicId="-//OASIS//ENTITIES DocBook Additional General Entities V4.1.2//EN" location="${docbook.dtd.dir}/dbgenent.mod"/>
+  <dtd publicId="-//OASIS//ENTITIES DocBook Notations V4.1.2//EN" location="${docbook.dtd.dir}/dbnotnx.mod"/>
+  <dtd publicId="-//OASIS//ENTITIES DocBook Character Entities V4.1.2//EN" location="${docbook.dtd.dir}/dbcentx.mod"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Diacritical Marks//EN//XML" location="${docbook.dtd.dir}/ent/iso-dia.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Numeric and Special Graphic//EN//XML" location="${docbook.dtd.dir}/ent/iso-num.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Publishing//EN//XML" location="${docbook.dtd.dir}/ent/iso-pub.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES General Technical//EN//XML" location="${docbook.dtd.dir}/ent/iso-tech.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Added Latin 1//EN//XML" location="${docbook.dtd.dir}/ent/iso-lat1.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Added Latin 2//EN//XML" location="${docbook.dtd.dir}/ent/iso-lat2.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Greek Letters//EN//XML" location="${docbook.dtd.dir}/ent/iso-grk1.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Monotoniko Greek//EN//XML" location="${docbook.dtd.dir}/ent/iso-grk2.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Greek Symbols//EN//XML" location="${docbook.dtd.dir}/ent/iso-grk3.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Alternative Greek Symbols//EN//XML" location="${docbook.dtd.dir}/ent/iso-grk4.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Added Math Symbols: Arrow Relations//EN//XML" location="${docbook.dtd.dir}/ent/iso-amsa.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Added Math Symbols: Binary Operators//EN//XML" location="${docbook.dtd.dir}/ent/iso-amsb.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Added Math Symbols: Delimiters//EN//XML" location="${docbook.dtd.dir}/ent/iso-amsc.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Added Math Symbols: Negated Relations//EN//XML" location="${docbook.dtd.dir}/ent/iso-amsn.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Added Math Symbols: Ordinary//EN//XML" location="${docbook.dtd.dir}/ent/iso-amso.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Added Math Symbols: Relations//EN//XML" location="${docbook.dtd.dir}/ent/iso-amsr.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Box and Line Drawing//EN//XML" location="${docbook.dtd.dir}/ent/iso-box.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Russian Cyrillic//EN//XML" location="${docbook.dtd.dir}/ent/iso-cyr1.ent"/>
+  <dtd publicId="ISO 8879:1986//ENTITIES Non-Russian Cyrillic//EN//XML" location="${docbook.dtd.dir}/ent/iso-cyr2.ent"/>
 </xmlcatalog>
+    
 
 <target name="docbook-setup"
 	description="Make sure the latest distributions of DocBook DTDs and stylesheets are ready.">
