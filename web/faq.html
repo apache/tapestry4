@@ -3,6 +3,39 @@
 <head>
 <title>Tapestry: FAQ</title><link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
 </head>
+<script language="JavaScript">
+<!--
+
+function openWin(url, windowName, width, height)
+{
+	var screenX = Math.floor((screen.width)/2)-Math.floor(width/2);
+	var screenY = Math.floor((screen.height)/2)-Math.floor(height/2)-20;
+
+
+	var features = 
+		"toolbar=no," +
+		"scrollbars=no," +
+		"status=no," +
+		"top=" + screenY  + "," +
+		"left=" + screenX + "," +
+		"screenX=" + screenX + "," +
+		"screenY=" + screenY + "," +
+		"width=" + width + "," +
+		"height=" + height;
+
+	var newWindow = window.open(url, windowName, features);
+	
+	newWindow.focus();
+	return newWindow;
+}
+
+function showLinePrecise()
+{
+	openWin("images/LinePrecise.png", "LinePrecise", 779, 1048);
+}
+
+// -->
+</script>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
@@ -73,10 +106,15 @@ application).
 		<br><br>
 		
 	Tapestry is 
-            <STRONG>not </STRONG>a JSP tag library; Tapestry builds on the 
+            <b>not</b> a JSP tag library; Tapestry builds on the 
             servlet API, but doesn't use JSPs in any way.&nbsp; It uses it own 
             HTML template format and its own rendering engine.</P>
 		
+		
+	<p>
+	Starting with release 2.4, Tapestry includes a simple JSP tag library
+	to allow JSP pages to create links to Tapestry pages.	
+	</p>
 		
 		
 	       
@@ -134,8 +172,8 @@ is a Tapestry plugin
 		<br><br>
 
 Start your servlet container with the JVM system parameter
-<code>net.sf.tapestry.disable-caching</code> set to true, i.e.,
-<code>-Dnet.sf.tapestry.disable-caching=true</code>.
+<code>org.apache.tapestry.disable-caching</code> set to true, i.e.,
+<code>-Dorg.apache.tapestry.disable-caching=true</code>.
 
 <p>Tapestry will discard cached specifications 
             and templates after each request. You application will run a bit 
@@ -171,7 +209,7 @@ Start your servlet container with the JVM system parameter
 			
 			<p>However, Tapestry 
             applications are 100% container agnostic ... Tapestry doesn't care 
-            what servlet container it is used with and does even need an EJB container.</p>
+            what servlet container it is used with and does not even need an EJB container.</p>
 		    
  
 	           
@@ -180,7 +218,59 @@ Start your servlet container with the JVM system parameter
 	</tr>
 	
 	
+	
+	<tr><td height="10"><IMG src="images/spacer.gif" width=1></td></tr>
+	
+	<tr valign="top">
+		<td><IMG height=12 src="images/dots_leftnav.gif" width=14></td>
+		<td>          
+		          
+		
+		<p id="lineprecise"><b>What is "line precise error reporting"?</b>  </p>          
+		          
 
+		<p>
+		Tapestry applications are built from templates and specifications.
+		It's natural that when these templates and specifications are read, any syntax
+		errors
+		are reported, and the precise file and location is identified.
+		</p>		
+		
+		<p>
+		Tapestry goes far beyond that!  It always relates runtime objects
+		back to the corresponding files so that even runtime errors report the
+		file and location.	
+		</p>
+		
+		<p>
+			<div class="callout">
+						<a href="javascript:showLinePrecise()"><img src="images/LinePrecise_thumb.png" alt="Line Precise"/></a>
+		<br/>	Tapestry exception report (click for larger image).
+			</div>
+		For example; say you bind a parameter of a component that expects
+		a non-null value, but the value ends up being null anyway, due to
+		a bug in your code or your specification.
+	    Tapestry can't tell, until runtime,
+		that you made a mistake ... but when it does, part of the exception report
+		will be the line in the template or specification where you bound the component parameter.
+		Zap!  You are sent right to the offending file to fix the problem.
+		</p>
+
+		
+		<p>
+		Other frameworks may report syntax errors when they parse their specifications, but
+		after that, you are own your own: if you are lucky, you'll get a stack trace.  Good luck
+		finding your error in that!  Tapestry gives you a wealth of information when unexpected
+		exceptions occur, usually more than enough to pinpoint the problem
+		<i>without</i> having to restart the application inside a debugger.
+		</p>
+
+		    
+ 
+	           
+
+		</td>
+	</tr>
 	
 	
 	</table>

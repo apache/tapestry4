@@ -39,7 +39,8 @@ to be provided in non-standard ways (when not found using the default rules).</l
 </ul>
 
 <pre>
-[ 18249 ] file upload using Commons FileUpload  
+[ 18249 ] file upload using Commons FileUpload 
+[ 17905 ] Link to mailing list and archives is wrong.  
 </pre>
 
 <h3>Release 2.4-alpha-4</h3>
@@ -56,19 +57,19 @@ Sorry.</li>
 <code><i>attribute</i>="string:<i>key</i>"</code>.</li>
 <li>Allow &lt;set-property&gt; element of specification to specify the expression as an attribute or
 as wrapped character data.</li>
-<li>The interfaces for <a href="doc/api/net/sf/tapestry/valid/IValidationDelegate.html">IValidationDelegate</a>,
- <a href="doc/api/net/sf/tapestry/valid/IValidator.html">IValidator</a> and
-  <a href="doc/api/net/sf/tapestry/valid/ValidatorException.html">ValidatorException</a>
+<li>The interfaces for <a href="doc/api/org/apache/tapestry/valid/IValidationDelegate.html">IValidationDelegate</a>,
+ <a href="doc/api/org/apache/tapestry/valid/IValidator.html">IValidator</a> and
+  <a href="doc/api/org/apache/tapestry/valid/ValidatorException.html">ValidatorException</a>
 changed incompatibly.  This will only be an issue if you have created custom validation delegates or custom
 validators.</li>
-<li>Added methods to <a href="doc/api/net/sf/tapestry/valid/IComponentStrings.html">IComponentStrings</a> for formatting localized strings
+<li>Added methods to <a href="doc/api/org/apache/tapestry/valid/IComponentStrings.html">IComponentStrings</a> for formatting localized strings
 with arguments.</li>
 <li>Remove ejb.jar and any direct dependencies on javax.ejb classes (application servers are responsible for properly replicating
 EJBObject and EJBHome instances).</li>
 <li>Added a <code>createRequestCycle()</code> method to 
-<a href="doc/api/net/sf/tapestry/engine/AbstractEngine.html">AbstractEngine</a>.</li>
+<a href="doc/api/org/apache/tapestry/engine/AbstractEngine.html">AbstractEngine</a>.</li>
 <li>Moved the invocation of the 
-<a href="doc/api/net/sf/tapestry/IMonitor.html">IMonitor</a> method  <code>serviceEnd()</code>
+<a href="doc/api/org/apache/tapestry/IMonitor.html">IMonitor</a> method  <code>serviceEnd()</code>
 to always occur after the invocation of <code>serviceException()</code>.</li>
 <li>The <a href="doc/ComponentReference/Upload.html">Upload</a> component now works with the enclosing Form
 to automatically set the encoding type to <code>multipart/form-data</code>.  It is no longer necessary to set
@@ -188,7 +189,7 @@ Created smarter checks for stale sessions for
 Changed Form to record the exact ids generated during the render (it used to just store the count).
 This allows a more useful exception message to be generated 
 for the
-<A href="doc/api/net/sf/tapestry/StaleLinkException.html">StaleLinkException</a>. 
+<A href="doc/api/org/apache/tapestry/StaleLinkException.html">StaleLinkException</a>. 
 
         
 
@@ -200,9 +201,9 @@ Changed the default StaleLink page to have a
 
 <li>
 Components (and even pages) can now implement page listener interfaces
-(<A href="doc/api/net/sf/tapestry/event/PageDetachListener.html">PageDetachListener</a>,
-<A href="doc/api/net/sf/tapestry/event/PageRenderListener.html">PageRenderListener</a> or
-<A href="doc/api/net/sf/tapestry/event/PageCleanupListener.html">PageCleanupListener</a>)
+(<A href="doc/api/org/apache/tapestry/event/PageDetachListener.html">PageDetachListener</a>,
+<A href="doc/api/org/apache/tapestry/event/PageRenderListener.html">PageRenderListener</a> or
+<A href="doc/api/org/apache/tapestry/event/PageCleanupListener.html">PageCleanupListener</a>)
 and <code>finishLoad()</code> will <i>automatically</i> add them as a listener to the 
         corresponding page events. 
         
@@ -214,7 +215,7 @@ The entire mechanism used to store persistant
 
 <li>
 Implemented a number of improvements to
-<A href="doc/api/net/sf/tapestry/util/pool/Pool.html">Pool</a>
+<A href="doc/api/org/apache/tapestry/util/pool/Pool.html">Pool</a>
 to support greater flexibility in managing objects stored into and discarded
 from the pool.
 </li>
