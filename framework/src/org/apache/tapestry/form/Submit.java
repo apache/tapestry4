@@ -134,7 +134,7 @@ public abstract class Submit extends AbstractFormComponent{
         if (label != null)
             writer.attribute("value", label);
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         writer.closeTag();
     }

@@ -157,7 +157,7 @@ public abstract class Foreach extends AbstractComponent
                 if (element != null)
                 {
                     writer.begin(element);
-                    generateAttributes(writer, cycle);
+                    renderInformalParameters(writer, cycle);
                 }
 
                 renderBody(writer, cycle);

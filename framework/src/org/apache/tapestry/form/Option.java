@@ -116,7 +116,7 @@ public abstract class Option extends AbstractComponent
             if (getSelectedBinding().getBoolean())
                 writer.attribute("selected", "selected");
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
 
             String label = getLabel();
 

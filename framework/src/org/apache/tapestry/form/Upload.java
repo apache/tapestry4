@@ -104,7 +104,7 @@ public abstract class Upload extends AbstractFormComponent
         // (Not making the same mistake here that was made with TextField
         // and friends).
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
     }
 
     public abstract boolean isDisabled();

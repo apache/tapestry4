@@ -103,7 +103,7 @@ public abstract class Button extends AbstractFormComponent
             writer.attribute("value", label);
         }
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         writer.closeTag();
     }

@@ -96,7 +96,7 @@ public abstract class Input extends AbstractComponent
             if (emptyok != false)
 				writer.attribute("emptyok", emptyok);
 
-			generateAttributes(writer, cycle);
+			renderInformalParameters(writer, cycle);
 
 			String value = readValue();
 			if (value != null)

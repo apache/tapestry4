@@ -412,6 +412,19 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
         observer.observeChange(event);
     }
+    
+    /**
+     *  @deprecated To be removed in 3.1.  Use 
+     *  {@link #renderInformalParameters(IMarkupWriter, IRequestCycle)}
+     *  instead.
+     * 
+     **/
+    
+	protected void generateAttributes(IMarkupWriter writer, IRequestCycle cycle)
+	{
+		renderInformalParameters(writer, cycle);
+	}
+	
 
     /**
      *  Converts informal parameters into additional attributes on the
@@ -447,7 +460,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  result phase; this can be skipped during the rewind phase.
      **/
 
-    protected void generateAttributes(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderInformalParameters(IMarkupWriter writer, IRequestCycle cycle)
     {
         String attribute;
 

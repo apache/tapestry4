@@ -120,7 +120,7 @@ public abstract class AbstractPostfield extends AbstractFormComponent
         String varName = getVarName();
         writer.attributeRaw("value", varName != null ? getEncodedVarName(varName) : "");
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         writer.closeTag();
     }

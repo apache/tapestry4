@@ -79,7 +79,7 @@ public abstract class Any extends AbstractComponent
         {
             writer.begin(element);
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
         }
 
         renderBody(writer, cycle);

@@ -88,7 +88,7 @@ public abstract class Frame extends AbstractComponent
         writer.beginEmpty("frame");
         writer.attribute("src", link.getURL());
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         writer.closeTag();
     }

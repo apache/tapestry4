@@ -88,7 +88,7 @@ public abstract class Image extends AbstractComponent
 
             writer.attribute("alt", getAlt());
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
 
             writer.closeTag();
         }

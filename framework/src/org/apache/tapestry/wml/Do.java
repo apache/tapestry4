@@ -92,7 +92,7 @@ public abstract class Do extends AbstractComponent
             if (label != null)
                 writer.attribute("label", label);
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
         }
 
         renderBody(writer, cycle);

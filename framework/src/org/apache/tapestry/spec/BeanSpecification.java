@@ -84,16 +84,6 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
 
     protected List initializers;
 
-    public BeanSpecification()
-    {
-    }
-
-    public BeanSpecification(String className, BeanLifecycle lifecycle)
-    {
-        this.className = className;
-        this.lifecycle = lifecycle;
-    }
-
     public String getClassName()
     {
         return className;

@@ -110,7 +110,7 @@ public abstract class TextArea extends AbstractFormComponent
         if (isDisabled())
             writer.attribute("disabled", "disabled");
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         String value = getValue();
 

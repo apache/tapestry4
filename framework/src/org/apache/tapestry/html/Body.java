@@ -305,7 +305,7 @@ public abstract class Body extends AbstractComponent
             // Start the body tag.
             writer.println();
             writer.begin(getElement());
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
 
             if (onLoadName != null)
                 writer.attribute("onLoad", "javascript:" + onLoadName + "();");
