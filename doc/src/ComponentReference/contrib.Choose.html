@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>contrib:Choose</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+  <td align="right"><a href="contrib.Otherwise.html"><img alt="contrib:Otherwise" src="common-images/next.png"></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
+ <td>
+  <table>
+   <tr>
+                <td><font size="+2"><b>contrib:Choose</b></font></td>
+   </tr>
+   <tr>
+    <td>
+     <A href="../api/org/apache/tapestry/contrib/components/Choose.html">org.apache.tapestry.contrib.components.Choose</a>
+    </td>
+   </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+   <tr>
+                <td> Non Visual Component</td>
+   </tr>
+  </table>
+ </td>
+</tr>
+
+<tr valign="center">
+ <td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+          <td colspan="2"> 
+            <p><b>Description</b> <br>
+              The Choose component is used in conjunction with When and Otherwise 
+              components to express mutually exclusive conditional tests. <br>
+              <br>
+              The Choose component must contain one or more When componets and 
+              can contain only one optional Otherwise component (which must occur 
+              after all of the When components). If the Choose component only 
+              contains one When element, then for all practical purposes, it behaves 
+              just like the Conditional component. When faced with three or more 
+              choices, this component behaves like a switch/case/default statement. 
+              
+            <p>Each When component is examined in the order of occurrence. If 
+              and when the condition expression is satisfied the content in that 
+              component is rendered. Then all further When components are ignored. 
+              The optional Otherwise component is also automatically ignored. 
+              If none of the conditions in any When component is satisfied , then 
+              the Otherwise component is automatically selected (if it is present) 
+              and the content associated with that element is rendered.</p>
+			  The body of the Choose component can only contain:
+			  <ul>
+			  <li>White spaces<br>May appear anywhere around the When and Otherwise components.</li>
+			  <li>1 or more When components<br>Must all appear before Otherwise.</li>
+			  <li>0 or 1 Otherwise component<br>Must be the last component nested within Choose</li>
+			  </ul>
+			  
+            <p> For simple conditional testing, use the Conditional component. 
+            </p>
+          </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+  <br>
+            <A href="Conditional.html">Conditional</a>, <A href="contrib.When.html">When</a>, 
+            <A href="contrib.Otherwise.html">Otherwise</a> </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  None
+  <p>
+  Body: <STRONG>rendered<BR></STRONG>
+  Informal parameters: 
+            <STRONG>forbidden</STRONG>
+     <br>
+  Reserved 
+            parameters: <EM>none</EM></p>
+    
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+            <p> The following sample code shows how the text rendered depends 
+              on a user&#146;s membership category. 
+            <pre>
+
+              &lt;span jwcid=&quot;contrib:Choose&gt;
+                 &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;visitor&quot;.equals(user.category)'&gt;
+                    ...
+                 &lt;/span&gt;
+                 &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;member&quot;.equals(user.category)'&gt;
+                    ...
+                 &lt;/span&gt;
+                 &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;customer&quot;.equals(user.category)'&gt;
+                    &lt;span jwcid=&quot;contrib:Choose&gt;
+                       &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;person&quot;.equals(user.profile)'&gt;
+                          ...
+                       &lt;/span&gt;
+                       &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;enterprise&quot;.equals(user.profile)'&gt;
+                          ...
+                       &lt;/span&gt;
+                    &lt;/span&gt;
+                 &lt;/span&gt;
+                 &lt;span jwcid=&quot;@contrib:Otherwise&quot;&gt;
+                    ...
+                 &lt;/span&gt;
+              &lt;/span&gt;
+            </pre>
+            An if/then/else statement can be easily achieved as follows: 
+            <pre>
+			
+              &lt;span jwcid=&quot;@contrib:Choose&quot;&gt;
+                 &lt;span jwcid=&quot;@contrib:When&quot; condition=&quot;ognl: count == 0&quot;&gt;
+                    Your search did not match any documents.
+                 &lt;/span&gt;
+                 &lt;span jwcid=&quot;@contrib:Otherwise&quot;&gt;
+                    &lt;span jwcid=&quot;@Insert&quot; value=&quot;ognl: count&quot;/&gt; documents matched your selection.
+                 &lt;/span&gt;
+              &lt;/span&gt;
+			  </pre> 
+      
+
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>  
+</tr>
+<tr>
+ <td align="left"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+ <td align="right"><a href="contrib.Otherwise.html"><img alt="contrib:Otherwise" src="common-images/next.png"></a></td>  
+</tr>
+</table>
+
+</body>
+</html>
