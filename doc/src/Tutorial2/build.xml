@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE project [
+    <!ENTITY docbook-setup SYSTEM "file:../common/docbook-setup.xml">
+]>
+
+<project name="Tutorial Documentation" default="install">
+
+<property name="root.filename" value="Tutorial2"/>
+
+&docbook-setup;
+      
+</project>
+
+
