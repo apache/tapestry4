@@ -700,7 +700,7 @@ Start your servlet container with the JVM system parameter
                 <link href="http://www.springframework.org/">Spring</link> is a popular
 		service framework. Colin Sampaleanu
 		has written a
-                <link href="http://www.springframework.org/docs/integration/tapestry.html">integration
+                <link href="http://www.springframework.org/docs/reference/view.html#view-tapestry">integration
 		document</link> on using these two open-source frameworks together.
 
             </answer>

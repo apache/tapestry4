@@ -278,7 +278,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
         // Write the page's scripting.  This is included scripts
         // and dynamic JavaScript, including initialization.
 
-        writeScript();
+        writeScript(_outerWriter);
 
         // Close the nested writer, which dumps its buffered content
         // into its parent.
@@ -312,7 +312,6 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
             _bodyScript.setLength(0);
 
         _outerWriter = null;
-        _outerWriter = null;
     }
 
     /**
@@ -330,45 +329,46 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
      *  then a function to execute them is created.
      **/
 
-    private void writeScript()
+    protected void writeScript(IMarkupWriter writer)
     {
         if (!Tapestry.isEmpty(_externalScripts))
-            writeExternalScripts(_outerWriter);
+            writeExternalScripts(writer);
 
         if (!(any(_initializationScript) || any(_bodyScript) || any(_imageInitializations)))
             return;
 
-        _outerWriter.begin("script");
-        _outerWriter.attribute("language", "JavaScript");
-        _outerWriter.printRaw("<!--");
+        writer.begin("script");
+        writer.attribute("language", "JavaScript");
+        writer.attribute("type", "text/javascript");
+        writer.printRaw("<!--");
 
         if (any(_imageInitializations))
         {
-            _outerWriter.printRaw("\n\nvar tapestry_preload = new Array();\n");
-            _outerWriter.printRaw("if (document.images)\n");
-            _outerWriter.printRaw("{\n");
-            _outerWriter.printRaw(_imageInitializations.toString());
-            _outerWriter.printRaw("}\n");
+            writer.printRaw("\n\nvar tapestry_preload = new Array();\n");
+            writer.printRaw("if (document.images)\n");
+            writer.printRaw("{\n");
+            writer.printRaw(_imageInitializations.toString());
+            writer.printRaw("}\n");
         }
 
         if (any(_bodyScript))
         {
-            _outerWriter.printRaw("\n\n");
-            _outerWriter.printRaw(_bodyScript.toString());
+            writer.printRaw("\n\n");
+            writer.printRaw(_bodyScript.toString());
         }
 
         if (any(_initializationScript))
         {
 
-            _outerWriter.printRaw("\n\n" + "window.onload = function ()\n" + "{\n");
+            writer.printRaw("\n\n" + "window.onload = function ()\n" + "{\n");
 
-            _outerWriter.printRaw(_initializationScript.toString());
+            writer.printRaw(_initializationScript.toString());
 
-            _outerWriter.printRaw("}");
+            writer.printRaw("}");
         }
 
-        _outerWriter.printRaw("\n\n// -->");
-        _outerWriter.end();
+        writer.printRaw("\n\n// -->");
+        writer.end();
     }
 
     private boolean any(StringBuffer buffer)

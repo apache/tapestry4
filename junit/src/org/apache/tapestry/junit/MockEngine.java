@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.asset.ResourceChecksumSource;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;
@@ -205,4 +206,8 @@ public class MockEngine implements IEngine
         return "UTF-8";
     }
 
+    public ResourceChecksumSource getResourceChecksumSource()
+    {
+        return null;
+    }
 }

@@ -50,7 +50,7 @@
   </target>
 
   <target name="compile" depends="init" description="Compile all test classes.">
-    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" target="1.1">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" target="1.1" source="1.3">
       <classpath refid="compile-tests.classpath"/>
     </javac>
   </target>

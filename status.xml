@@ -1,227 +1,116 @@
 <?xml version="1.0"?>
-<!-- $Id$ -->
 <status>
-
   <developers>
-    <person name="Howard M. Lewis Ship"  email="hlship@comcast.net"      id="HLS" />
-    <person name="David Solis"      email="dsolis@legosoft.com.mx"      id="DS" />
-    <person name="Harish Krishnaswamy"  id="HK"/>
+    <person name="Howard M. Lewis Ship" email="hlship@comcast.net" id="HLS" />
+    <person name="David Solis" email="dsolis@legosoft.com.mx" id="DS" />
+    <person name="Harish Krishnaswamy" id="HK"/>
     <person name="Erik Hatcher" id="EH"/>
     <person name="Richard Lewis-Shell" id="RLS"/>
     <person name="Mind Bridge" id="MB"/>
     <person name="Geoff Longman" id="GL"/>
     <person name="Tsvetelin Saykov" id="TS"/>
     <person name="Neil Clayton" id="NC"/>
-    
+    <person name="Paul Ferraro" id="PF"/>
     <!-- Retired -->
-    
     <person name="Malcom Edgar" id="ME"/>
-
     <!-- Add more people here -->
   </developers>
-
   <votes>
-  	<vote title="release 3.0-rc-3" date="Apr 7 2004" dev="HLS">
-  		<motion>
-  			I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2.
-
-Assuming that there are no further blocker bugs added in the meantime, I'd like to release rc-3.
-
-A +1 vote indicates that we should release rc-3, unless a new blocker bug is added in the meantime.
-
-Please respond in the next 24 hours (by Wednesday afternoon, EST). Missing responses will be treated
-as a +0.
-  		</motion>	
-  		<response>
-  			HLS, EH, HK, DS: +1
-  		</response>
-  		<response>
-  			NC, RLS, MB, TSV, GL: +0
-  		</response>
-  	</vote>
-  	<vote title="release 3.0-rc-2" date="Apr 1 2004" dev="HLS">
-  		<motion>
-  		3.0-rc-1 has been out for about two weeks now. A couple of notable bugs have been identified and
-fixed. I believe we should roll out rc-2 to keep the momentum going.	
-  		</motion>	
-  		<response>
-  			HLS, DS, EH, HK, TSV, RLS, MB: +1
-  		</response>
-  		<response>
-  		 NC, GL: +0	
-  		</response>
-  	</vote>
-  	
-    <vote title="release 3.0rc1" date="Mar 13 2004" dev="RLS">
-        <motion>
-        Looks like things are pretty much in place for the next release - 3.0
-release candidate 1.  Let's vote on it to make it official.  Release current
-code as rc1?
-        </motion>
-        <response>
-        RLS, GL, HK, EH, DS, MB, HLS: +1
-        </response>
+    <vote title="Tapestry 3.0.3" date="Mar 26 2005" dev="PF">
+      <motion> I finished patching/fixing all of the big issues identified with the last release.  With any luck, this will be the last release for the 3.0 branch. This vote will run for one week.  A +1 vote is to release Tapestry 3.0.3.  I will be able to start the release once the votes are tallied. </motion>
+      <response> PF, HK, MB, HLS, TS, DS, EH, GL: +1 </response>
+      <response> RLS: +0 </response>
     </vote>
-    
-  	<vote title="Can the Tutorial" date="Feb 19 2004" dev="HLS">
-  		<motion>
-  		I think its pretty obvious by now that no work is going to get done on the Tutorial for 3.0. I think
-it would be best to remove the Tutorial, perhaps replace it with a link to Kevin Dorff's site until
-we can actually put something useful together ... even if that is after 3.0 is released.
-
-A +1 vote would delete the Tutorial code, the docbook source and links to the old tutorial on the
-web site.	
-  		</motion>
-  		<response>
-  		HLS, EH, DS, GL, MB, HK: +1	
-  		</response>
-  	</vote>	
-  	
-  	
-  	
-  	<vote date="Sep 5 2003" title="Release 3.0-beta-3" dev="HLS">
-  		<motion>
-  People have been itching for the next release of Tapestry;
-one where the demos work (woops!)
-including JavaScript and the Palette. Documentation is still 
-not ready for an rc release, but I
-think a beta release is a good idea.				
-  		</motion>	
-  		
-  		<response>
-  			HLS, GL, RLS, DS, HK, EH, MB, TS, NC: +1	
-  		</response>
-  		
-  	</vote>
-  	
-  	<vote date="Sep 3 2003" title="Erik Hatcher as commiter" dev="GL">
-  		<motion>
-  			I nominate Erik Hatcher. He knows the score in jakarta-land. I think its a great idea.
-  			
-  		</motion>	
-  		
-  		<response>
-  			GL, HLS, MB, DS, RLS: +1	
-  		</response>
-  		<response>
-  			NC: +0 (no vote)	
-  		</response>
-  	</vote>
-  	
-  	<vote date="Sep 3 2003" title="Tsvetelin Saykov as committer" dev="MB">
-  		<motion>I would like to nominate Tsvetelin Saykov as a committer. Tsvetelin has more than an year and a half of Tapestry experience, has worked with many large web projects, and can be very helpful overall for the development of the framework, especially in the area of dynamic pages with layout determined at runtime. (not to mention that he would need CVS access to work on the Tree)
-  			</motion>	
-  			
-  		<response>
-  			MB, HLS, GL, DS, NC, RLS: +1	
-  		</response>
-  	</vote>
-  	
-  	<vote date="Sep 2 2003" title="Harish Krishnaswamy as committer" dev="HLS">
-  		<motion>
-  			I would like to nominate Harish; he has been very actively and
-enthusiastically supporting Tapestry
-in the mailing lists. I think he would be an excellent and valuable  
-asset to the team.  And hell,
-he's relatively local --- I might actually get to meet a Tapestry  
-committer in person!
-  		</motion>
-  		<response>
-  				HLS, GL, DS, MB, RLS: +1
-  		</response>
-  		<response>
-  			NC: +0 (no vote)	
-  		</response>
-  	</vote>
-  	
-  	<vote date="Jul 13 2003" title="Release 3.0-beta-2" dev="HLS">
-  		<motion>
-  			We informally discussed this not too long ago; I think we are at a good point for beta-2.  There have been some significant improvements since beta-1a that will largely be invisible to most users (the correct thing for a beta release); at the same time, I think we're all anxious to push forward and get Tapestry 3.0-xxx into wider distribution.  Although there are still several outstanding bugs (one or two that are problematic) I think this is a good time to keep momentum going and release the next beta.
-
-A +1 vote will procede with beta-2, tagging the repository and pushing the new releases out to the Apache distribution mirrors.
-  			
-  		</motion>	
-  		
-  		<response>
-  			HLS, MB, NC, RLS, GL, DS: +1	
-  		</response>
-  	</vote>
-  	
-  	
-  	<vote date="Jun 3 2003" title="Release 3.0-beta-1a" dev="RLS">
-  		<motion>release 3.0-beta-1a ASAP (containing fixes for JDK 1.3)</motion>	
-  		<response>
-  			HLS, MB, NC, RLS, GL, DS: +1	
-  		</response>
-  	</vote>
-  	
-  	<vote date="May 30 2003" title="Release 3.0-beta-1" dev="HLS">
-  		<motion>
-  			Release 3.0-beta-1 as soon as possible.
-<br/>
-Release notes will state that the API is now stable, with the exception of IMonitor.
-  			
-  		</motion>	
-  		
-  		<response>
-  			HLS, MB, NC, RLS, GL, DS: +1	
-  		</response>
-  	</vote>
-  	
-  	
-  	<vote date="Apr 17 2003" title="Tapestry NextGen released as 3.0" dev="HLS">
-  		<motion>
-  				PROPOSAL: the next major release of Tapestry (previously known as 2.4 or
-NextGen) be released as version number 3.0.
-  		</motion>	
-  		
-  		<response>
-  			HLS, MB, RLS, GL, DS: +1	
-  		</response>
-  		<response>
-  			NC: +0 (no vote)	
-  		</response>
-  	</vote>
-  	
-  	<vote date="Mar 7 2003" title="Nominate David Solis as Tapestry Commiter"
-  		dev="HLS">
-  		<motion>
-  		<p>There really didn't seem to be much discussion ... everyone seems to be in favor.  Mind Bridge seems very absent of late.</p>
-
-<p>Let's put it to a vote.  No answer within 24 hours will be treated as a +0.</p>
-
-<p>If voted in, David Solis will be invited to become a Tapestry committer; will be granted voting rights and update access to the CVS repository.	</p>
-  			
-  		</motion>
-  		
-  		<response>
-  			HLS, NC, RLS, GL: +1
-  		</response>
-  		<response>
-  			MB, ME: +0	
-  		</response>
-  			
-  	</vote>
+    <vote title="Tapestry 3.0.2" date="Feb 14 2005" dev="HLS">
+      <motion> I think we should just be done with 3.0.2. All the bugs that are going to get fixed, have been. The next version of OGNL should just drop in, and since its not shipped with the framework anyway, its not a big deal. </motion>
+      <response> HLS, PF, GL, RLS, DS, EH: +1 </response>
+      <response> HK, TSV, MB: +0 </response>
+    </vote>
+    <vote title="Tapestry 3.0 FINAL" date="Apr 14 2004" dev="HLS">
+      <motion> Despite a last minute flurry of bug fixes, the motion has passed and we'll be releasing the final Tapestry 3.0 release shortly. I'll be creating tagging and creating the final release shortly. Alas, it looks like Neil Clayton is no longer contributing to the Tapestry project. </motion>
+      <response>HLS, RLS, EH, HK, DS, TSV, MB: +1</response>
+      <response>GL, NC: +0</response>
+    </vote>
+    <vote title="release 3.0-rc-3" date="Apr 7 2004" dev="HLS">
+      <motion> I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2. Assuming that there are no further blocker bugs added in the meantime, I'd like to release rc-3. A +1 vote indicates that we should release rc-3, unless a new blocker bug is added in the meantime. Please respond in the next 24 hours (by Wednesday afternoon, EST). Missing responses will be treated as a +0. </motion>
+      <response> HLS, EH, HK, DS: +1 </response>
+      <response> NC, RLS, MB, TSV, GL: +0 </response>
+    </vote>
+    <vote title="release 3.0-rc-2" date="Apr 1 2004" dev="HLS">
+      <motion> 3.0-rc-1 has been out for about two weeks now. A couple of notable bugs have been identified and fixed. I believe we should roll out rc-2 to keep the momentum going. </motion>
+      <response> HLS, DS, EH, HK, TSV, RLS, MB: +1 </response>
+      <response> NC, GL: +0 </response>
+    </vote>
+    <vote title="release 3.0rc1" date="Mar 13 2004" dev="RLS">
+      <motion> Looks like things are pretty much in place for the next release - 3.0 release candidate 1. Let's vote on it to make it official. Release current code as rc1? </motion>
+      <response> RLS, GL, HK, EH, DS, MB, HLS: +1 </response>
+    </vote>
+    <vote title="Can the Tutorial" date="Feb 19 2004" dev="HLS">
+      <motion> I think its pretty obvious by now that no work is going to get done on the Tutorial for 3.0. I think it would be best to remove the Tutorial, perhaps replace it with a link to Kevin Dorff's site until we can actually put something useful together ... even if that is after 3.0 is released. A +1 vote would delete the Tutorial code, the docbook source and links to the old tutorial on the web site. </motion>
+      <response> HLS, EH, DS, GL, MB, HK: +1 </response>
+    </vote>
+    <vote date="Sep 5 2003" title="Release 3.0-beta-3" dev="HLS">
+      <motion> People have been itching for the next release of Tapestry; one where the demos work (woops!) including JavaScript and the Palette. Documentation is still not ready for an rc release, but I think a beta release is a good idea. </motion>
+      <response> HLS, GL, RLS, DS, HK, EH, MB, TS, NC: +1 </response>
+    </vote>
+    <vote date="Sep 3 2003" title="Erik Hatcher as commiter" dev="GL">
+      <motion> I nominate Erik Hatcher. He knows the score in jakarta-land. I think its a great idea. </motion>
+      <response> GL, HLS, MB, DS, RLS: +1 </response>
+      <response> NC: +0 (no vote) </response>
+    </vote>
+    <vote date="Sep 3 2003" title="Tsvetelin Saykov as committer" dev="MB">
+      <motion>I would like to nominate Tsvetelin Saykov as a committer. Tsvetelin has more than an year and a half of Tapestry experience, has worked with many large web projects, and can be very helpful overall for the development of the framework, especially in the area of dynamic pages with layout determined at runtime. (not to mention that he would need CVS access to work on the Tree) </motion>
+      <response> MB, HLS, GL, DS, NC, RLS: +1 </response>
+    </vote>
+    <vote date="Sep 2 2003" title="Harish Krishnaswamy as committer" dev="HLS">
+      <motion> I would like to nominate Harish; he has been very actively and enthusiastically supporting Tapestry in the mailing lists. I think he would be an excellent and valuable asset to the team. And hell, he's relatively local --- I might actually get to meet a Tapestry committer in person! </motion>
+      <response> HLS, GL, DS, MB, RLS: +1 </response>
+      <response> NC: +0 (no vote) </response>
+    </vote>
+    <vote date="Jul 13 2003" title="Release 3.0-beta-2" dev="HLS">
+      <motion> We informally discussed this not too long ago; I think we are at a good point for beta-2. There have been some significant improvements since beta-1a that will largely be invisible to most users (the correct thing for a beta release); at the same time, I think we're all anxious to push forward and get Tapestry 3.0-xxx into wider distribution. Although there are still several outstanding bugs (one or two that are problematic) I think this is a good time to keep momentum going and 
+        release the next beta. A +1 vote will procede with beta-2, tagging the repository and pushing the new releases out to the Apache distribution mirrors. </motion>
+      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
+    </vote>
+    <vote date="Jun 3 2003" title="Release 3.0-beta-1a" dev="RLS">
+      <motion>release 3.0-beta-1a ASAP (containing fixes for JDK 1.3)</motion>
+      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
+    </vote>
+    <vote date="May 30 2003" title="Release 3.0-beta-1" dev="HLS">
+      <motion> Release 3.0-beta-1 as soon as possible. <br/> Release notes will state that the API is now stable, with the exception of IMonitor. </motion>
+      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
+    </vote>
+    <vote date="Apr 17 2003" title="Tapestry NextGen released as 3.0" dev="HLS">
+      <motion> PROPOSAL: the next major release of Tapestry (previously known as 2.4 or NextGen) be released as version number 3.0. </motion>
+      <response> HLS, MB, RLS, GL, DS: +1 </response>
+      <response> NC: +0 (no vote) </response>
+    </vote>
+    <vote date="Mar 7 2003" title="Nominate David Solis as Tapestry Commiter" dev="HLS">
+      <motion>
+        <p>There really didn't seem to be much discussion ... everyone seems to be in favor. Mind Bridge seems very absent of late.</p>
+        <p>Let's put it to a vote. No answer within 24 hours will be treated as a +0.</p>
+        <p>If voted in, David Solis will be invited to become a Tapestry committer; will be granted voting rights and update access to the CVS repository. </p>
+      </motion>
+      <response> HLS, NC, RLS, GL: +1 </response>
+      <response> MB, ME: +0 </response>
+    </vote>
   </votes>
-
-
   <todo>
     <actions priority="Release 3.0">
-<action context="code" dev="open">Handle change of locale correctly, by reloading new   instance of page in proper locale</action>
-	<action context="code" dev="HLS">Improved User's Guide to replace existing Developer's Guide</action>
-	<action context="code" dev="open">Replace the current tutorial with Neil Clayton's Tutorial2</action>
-	<action context="code" dev="open">Reoganize directory structure to more standard format (compatible with Maven)</action>
-	<action context="code" dev="open">Get Tapestry compiling under Maven, have nightly builds</action>
-	<action context="code" dev="open">Fill out the test suite and code coverage, reach 85% or better</action>
-	<action context="code" dev="DS">Fix all the Component Reference pages to use the 3.0 syntax</action>
-  	<action context="script" dev="open">Improve the "include script" element to support relative scripts, scripts in context, script in classpath</action>
-	<action context="misc" dev="open">Unit testing stategy for the JSP tags and tagsupport service</action>
-	<action context="misc" dev="open">Allow auto parameters to not be required</action>
+      <action context="code" dev="open">Handle change of locale correctly, by reloading new instance of page in proper locale</action>
+      <action context="code" dev="HLS">Improved User's Guide to replace existing Developer's Guide</action>
+      <action context="code" dev="open">Replace the current tutorial with Neil Clayton's Tutorial2</action>
+      <action context="code" dev="open">Reoganize directory structure to more standard format (compatible with Maven)</action>
+      <action context="code" dev="open">Get Tapestry compiling under Maven, have nightly builds</action>
+      <action context="code" dev="open">Fill out the test suite and code coverage, reach 85% or better</action>
+      <action context="code" dev="DS">Fix all the Component Reference pages to use the 3.0 syntax</action>
+      <action context="script" dev="open">Improve the "include script" element to support relative scripts, scripts in context, script in classpath</action>
+      <action context="misc" dev="open">Unit testing stategy for the JSP tags and tagsupport service</action>
+      <action context="misc" dev="open">Allow auto parameters to not be required</action>
     </actions>
-
     <actions priority="Release 3.1">
-	<action context="code" dev="open">Intersertials</action>
-	<action context="code" dev="open">Extend listener methods to take parameters (matching service parameters to actual method parameters)</action>
+      <action context="code" dev="open">Intersertials</action>
+      <action context="code" dev="open">Extend listener methods to take parameters (matching service parameters to actual method parameters)</action>
     </actions>
     <!-- Add todo items. @context is an arbitrary string. Eg:
     <actions priority="high">
@@ -234,410 +123,148 @@ NextGen) be released as version number 3.0.
     </actions>
     -->
   </todo>
-
   <changes>
-  	
- 	<release version="3.0" date="unrelease">
- 	
- 	<action type="fix" dev="HLS" fixes-bug="28345">
- 		Workbench/Upload exception when no file specified   	
- 	</action>
- 		
- 	<action type="fix" dev="DS" fixes-bug="28396">
- 		Add FormConditional to Component Reference   	
- 	</action>
-
- 	<action type="fix" dev="DS" fixes-bug="28422">
- 		Add element parameter to contrib:Choose   	
- 	</action>
-
- 	</release>
-  	
-<!-- Use due-to to give acknowledgement for patches. -->
- <release version="3.0-rc-3" date="Apr 7 2004">
- 	<action type="update" dev="HLS">
- 	Add docs on how to report problems.	
- 	</action>
- 	<action type="fix" dev="HLS" fixes-bug="28202" due-to="Mats Forst&#246;f">
- 	Pass the java.security.ProtectionDomain to the parent class loader when
- 	creating an enhanced class, to allow Tapestry operation inside secure
- 	environments such as Tomcat.	
- 	</action>
-  <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp">
-     NPE in org.apache.tapestry.form.LinkSubmit.
-  </action>
-  <action type="fix" dev="HLS" fixes-bug="27956">
-  	Make checks for unimplemented abstract methods optional, to work around a bug
-  	in IBM JDK 1.3.1 (used with Websphere 4.x).	
-  </action>
-  <action type="fix" dev="HLS" fixes-bug="28235">
-  Allow more primitive types to be used with parameter direction <code>auto</code>
-  (byte, char, short, float and long) in addition to the previously accepted types
-  (boolean, int, double and objects).
-  </action>
- </release> 
-  
- <release version="3.0-rc-2" date="Apr 1 2004">
- 	<action type="fix" dev="HLS" fixes-bug="28057">
- 		Fix problems in the binary distribution.
- 	</action>	
- 	<action type="fix" dev="HLS" fixes-bug="27954">
- 		Create proper OGNL context when checking for invariant OGNL expressions
- 		(when initializing component properties).
- 	</action>
- 	<action type="fix" dev="HLS" fixes-bug="27628"> 
-   DataSqueezer: Incorrect exception message  
-  </action> 
-  <action type="fix" dev="HLS" fixes-bug="28010">
-     ExpressionBinding optimizes expressions incorrectly  	
-  </action>
-
- </release>
-  
- <release version="3.0-rc-1" date="Mar 15 2004">
- 
-<action type="fix" dev="EH" fixes-bug="27656">
-  ValidationDelegate.writeLabelPrefix/Suffix does not have IValidator access
-</action>
-
-<action type="fix" dev="DS" fixes-bug="27630, 27631" due-to="Michael M. Brzycki">
- 	Fix javadoc.
-</action>
-
-<action type="fix" dev="DS" fixes-bug="27567">
- 	Incorrect example code.
-</action>
-
-<action type="fix" dev="DS" fixes-bug="27551" due-to="Michael M. Brzycki">
- 	InspectorButton docs have incorrect links.
-</action>
-
- <action type="update" dev="DS">
- 	Update Component Reference to use 3.0 syntax	
- </action>
-
- <action type="update" dev="HLS">
- 	Update the license to Apache Software License 2.0.	
- </action>
-
- <action type="update" dev="EH">
-   Added 'raw' attribute to FieldLabel component.
- </action>
- 
- <action type="update" dev="HLS">
- Removed the out-of-date Tutorial.	
- </action>
-
-<action type="fix" dev="HLS" fixes-bug="18288">
-Palette doesn't retain user-specified sort order  	
-</action>
-
-<action type="fix" dev="HLS" fixes-bug="23544">
-Don't use <code>request.getRemoteHost()</code> since that requires
-an expensive reverse DNS lookup.
-</action>
-
-<action type="fix" dev="HLS" fixes-bug="27071" due-to="basile.chandesris">
-Fix typos and inaccuracies in the 3.0 DTD comments.
-</action>
-
-<action type="fix" dev="HLS" fixes-bug="27202,27203,27227" due-to="Jamie Orchard-Hays">
-Fix logic in client-side validation.	
-</action>
-
-<action type="fix" dev="HLS" fixes-bug="27110" due-to="Karel Miarka">
-DatePicker doesn't use the current Locale in its formatter	
-</action>
-
-<action type="update" dev="HLS">
-Update DatePicker to use a graphic icon to hide and show the calendar.	
-</action>
-
-<action type="fix" dev="HLS" fixes-bug="20932">
-Check for duplication of ids between the HTML template and the specification.
-</action>
-
-<action type="fix" dev="HLS" fixed-bug="27082">
-Fix some number conversion problems inside NumberValidator.	
-</action>
-
-<action type="update" dev="HLS">
-Dynamically download OGNL and Javassist libraries (in accordance with ASF directives
-about non-ASL code). <b>Unfortunately, this means that we no longer can distribute precompiled
-examples that include those libraries.</b>
-</action>
-
- </release>
-  	
-  
- <release version="3.0-beta-4" date="Feb 5 2004">
-
-<action type="update" dev="DS">
-Change direction of parameter model for WML components, SelectionField and PropertySelection
-</action>
-
-<action type="fix" dev="DS">
-Fixed the byte[] mapping in org.apache.tapestry.enhance.JavaClassMapping
-</action>
-
-<action type="update" dev="HLS" due-to="Tetsuya Kitahata">
-Convert the Tapestry home page to build using
-<link href="http://xml.apache.org/forrest/">Forrest</link>.
-</action>
-
-<action type="update" due-to="Michael M. Brzycki">
-Updated javadoc build target to link to JDK 1.3
-</action>
-
-<action type="add" dev="HK">
-Added new validator, Pattern Validator
-</action>
-
-<action type="fix" dev="HK">
-Fixed the null pointer exception from FieldLabel when not enclosed by Form
-or when IValidationDelegate is not provided
-</action>
-	
-<action type="fix" dev="HK">
-The key attribute of the script foreach is changed to not be a required
-attribute
-</action>
-    
-<action type="fix" dev="EH">
-Added support for OGNL TypeConverter in expression bindings
-</action>
-
-<action type="update" dev="DS">
-Updated Component Reference for WML components
-</action>
-
-<action type="update" dev="RLS">
-Made DateValidator's getEffectiveFormat()/getEffectiveDisplayFormat() public
-</action>
-
-<action type="update" dev="RLS">
-Updated to use DocBook 1.62.4 XSL stylesheets for documentation generation
-</action>
-
-<action type="update" dev="RLS">
-Moved info priority logging to debug priority
-</action>
-
-<action type="update" dev="RLS">
-Custom parameter binding properties only enhanced if abstract
-</action>
-
-<action type="update" dev="MB">
-Updated the Table components to have an easier interface, similar to that of Foreach.
-</action>
-
-<action type="fix" dev="MB" fixes-bug="21833">
-build.properties.sample does not include jython.dir
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22840">
-Table component doesn't sort fine when there are null values
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22640">
-Wrong Package in link
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22641">
- JavaDoc: should IField be IFieldTracking??
-</action>
-
-<action type="fix" dev="MB" fixes-bug="23668">
-contrib:PopupLink ignores informal parameters
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22635">
-Wrong Package in link	
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22634">
-Typo: "In a IListenerBindingSpecification"	
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22694">
-Add url parameter to Shell component
-</action>
-
-<action type="update" dev="MB" fixes-bug="23870">
-current OGNL 2.6.3 needs to be used
-</action>
-
-<action type="fix" dev="MB" fixes-bug="23511">
-Problem with URL encodings at EngineServiceLink.java
-</action>
-
-<action type="fix" dev="MB" fixes-bug="23227">
-The source parameter of Foreach should be required
-</action>
-
-<action type="fix" dev="MB" fixes-bug="20252">
-tests failing under JDK 1.3
-</action>
-
-<action type="fix" dev="MB" fixes-bug="23500">
-Name attribute gets duplicated in TextField	
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22835">
-DateField component throws an ApplicationRuntimeException
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22836">
-NumericField component throws an ApplicationRuntimeException
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22837">
-Using NumericField cause a ClassCastException
-</action>
-
-<action type="fix" dev="MB" fixes-bug="24467">
-Compatibility of the AbstractEngine to servlet-api 2.2
-</action>
-
-<action type="fix" dev="MB" fixes-bug="24298" due-to="Colin Sampaleanu">
-patch to allow workbench to work with JDK 1.4.2 and current Jetty	
-</action>
-
-<action type="fix" dev="MB" fixes-bug="24425">
-race condition in class enhancement
-</action>
-
-<action type="fix" dev="MB" fixes-bug="23916">
-The Dates tab in the Workbench contains an empty popup link
-</action>
-
-<action type="fix" dev="MB" fixes-bug="24008">
-ApplicationRuntime Exception loses root cause...
-</action>
-
-<action type="fix" dev="MB" fixes-bug="22958">
-NumberValidator forces to input a value
-</action>
-
-<action type="fix" dev="MB" fixes-bug="21871">
-junit.jar needed to build junit subproject
-</action>
-
-<action type="fix" dev="MB" fixes-bug="20253">
-JUnit XML tests broken under JDK with no XML parser (eg. 1.3)
-</action>
-
-
-<action type="fix" dev="MB" fixes-bug="24393">
-No JVM requirements mentioned in docs
-</action>
-
-<action type="fix" dev="MB" fixes-bug="24874" due-to="Zhenbang Wei">
-[PATCH]ValidationStrings_zh_TW.properties
-</action>
-
-
-
-<action type="fix" dev="EH" fixes-bug="25117">
-PageService.getLink throws ClassCastException if parameters arg is Object[]
-</action>
-
-<action type="fix" dev="RLS" fixes-bug="25462">
-NumericField does not pass on its type parameter
-</action>
-
-
-<action type="fix" dev="RLS" fixes-bug="25585">
-ValidationDelegate throws NPE for some new FieldLabel/ValidField
-</action>
-
-<action type="fix" dev="MB" fixes-bug="25642">
-properties cannot be of complex array types
-</action>
-
-<action type="fix" dev="EH" fixes-bug="25766">
-fixed broken links in doc\src\common\TapestryLinks.xml
-</action>
-
-<action type="fix" dev="MB" fixes-bug="26395">
-Inherited parameters do not pick up default values
-</action>
-
-<action type="update" dev="HLS">
-Changed code to no longer invoke <code>StringUtils.isEmpty() / isNonEmpty()</code> (this is because the
-behavior of the method is changing between jakarta-commons 1.0 and 2.0).	
-</action>
-
-<action type="update" dev="HLS">
-Add an implementation of <code>toString()</code> to <code>RequestCycle</code>.
-</action>
-
-<action type="update" dev="HLS">
-Update all copyrights for 2004.	
-</action>
-
-<action type="fix" dev="HLS">
-Add download links.	
-</action>
-
-<action type="update" dev="HLS">
-Remove unncessary constructor from test case classes.	
-</action>
-
-<action type="update" dev="HLS">
-Changed mock unit tests to redirect System.out and System.err to log files rather than the console.	
-</action>
-
-<action type="update" dev="HLS" due-to="Glen Stampoultzis">
-Improve the documentation for the Palette component, providing a real example of CSS styles
-used with the component.	
-</action>
-
-<action type="fix" dev="HLS" fixes-bug="26416">
-Component parameters with direction 'form' should not allow static bindings.
-</action>
-
-<action type="fix" dev="HK" fixes-bug="26599">
-Fixed NPE in PatternValidator.toString().
-</action>
-
-<action type="fix" dev="HLS">
-Fix TestMocks to not use JDK 1.4 API.	
-</action>
-
-<action type="fix" dev="MB">
-Fixing property initializers to be evaluated every time (unless they are invariant)
-</action>
-
-<action type="update" dev="MB">
-Added Servlet API 2.4 from Tomcat 5 and ejb.jar from Geronimo.
-Made the mock objects compatible with Servlet API 2.4.
-</action>
-
-<action type="update" dev="MB">
-Evaluate the string 'false' as Boolean.FALSE. 
-All other non-empty strings continue to be evaluated as Boolean.TRUE.
-</action>
-
-<action type="update" dev="MB">
-Automatically download external dependencies (such as Forrest and McKoi DB).	
-</action>
-
-<action type="fix" dev="HK" due-to="Anatol Pomazau">
-DatePicker positioning problem fixed.
-</action>
-
-<action type="fix" dev="HK" fixes-bug="24336">
-Automatic rendering of the maxlength and size attributes have been removed.
-DatePicker now allows informal attributes that will be applied to the field.
-</action>
-
-<action type="fix" dev="MB" fixes-bug="25611">
-Fixed one more place where the encoding needs to be set
-</action>
-
-
-
-			</release>
-		</changes>
-	</status>
+    <release version="3.0.3" date="Mar 26 2005">
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread now terminates explicitly when servlet is destroyed.  Interruption properly terminates thread during sweep operation. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-238"> Fixed bug preventing DatePicker calendar window from closing automatically if onchange event handler is not specified. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-277"> DatePicker onchange event now only fires when date changes. </action>
+      <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-255"> Patch for bad translation in ValidationStrings_zh_TW.properties </action>
+      <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-251"> Patch for bad translation in ValidationStrings_zh_CN.properties </action>
+      <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1"> Fixed incorrect test for enabling rendering of element in FormConditional component. </action>
+      <action type="fix" dev="PF" due-to="Markus Wiederkehr" fixes-bug="TAPESTRY-283"> Fixes missing type attribute of script tag in Body component. </action>
+      <action type="fix" dev="PF" due-to="Matthew Mead" fixed-bug="TAPESTRY-284"> Fixes improper engine cleanup when client aborts a request. </action>
+      <action type="update" dev="PF"> Build scripts are now Java 1.5 friendly. </action>
+    </release>
+    <release version="3.0.2" date="Feb 14 2005">
+      <action type="fix" dev="EH" fixes-bug="TAPESTRY-214, TAPESTRY-216, TAPESTRY-227"> Fix build settings for JDOM and Jetty. </action>
+      <action type="fix" dev="EH"> Upgrade OGNL to 2.6.7. This should move to 2.7.0 as soon as it is released. </action>
+      <action type="fix" dev="EH" fixes-bug="TAPESTRY-238"> Added call to onchange for DatePicker pop-up selections. </action>
+      <action type="fix" dev="HLS" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-249"> Provide localized validation messages for Simplified Chinese (zh_CN). </action>
+      <action type="fix" dev="HLS" due-to="Niklas Ekman" fixes-bug="TAPESTRY-139"> Provide localized validation messages for Swedish. </action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-230"> Ignored interruptedException prevents Janitorthread termination. </action>
+      <action type="fix" dev="HLS" due-to="Morten Holm" fixes-bug="TAPESTRY-248"> The online Tapestry component reference for 3.0.1 for @Foreach component has an error in the example section. </action>
+      <action type="fix" dev="HLS" due-to="Michael Frericks" fixes-bug="TAPESTRY-218"> Persistent properties can't be set to null. </action>
+      <action type="fix" dev="HLS" due-to="Sadanori Ito" fixes-bug="TAPESTRY-200"> ListEdit component reference should list source and value as required. </action>
+      <action type="fix" dev="HLS" due-to="Wouter de Vaal" fixes-bug="TAPESTRY-189"> FAQ link to Spring integration document is broken. </action>
+      <action type="fix" dev="HLS" due-to="Dominik Kreutz" fixes-bug="TAPESTRY-167"> [PATCH] ValidationStrings_de.properties </action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-258"> Have RenderString implement useful toString(). </action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-260"> Change ListEditMap to never return null from getDeletedKeys(). </action>
+    </release>
+    <release version="3.0.1" date="Oct 16 2004">
+      <action type="update" dev="DS"> Add PopupLinkRenderer to contrib, this renderer emits javascript to launch the link in a new window. </action>
+      <action type="fix" dev="HLS" fixes-bug="29850"> Ensure that the page's requestCycle property is set before finishLoad() is invoked on any component. </action>
+      <action type="update" dev="HLS"> Make IMessages smartly expand exceptions into their message, or their class name. </action>
+      <action type="fix" dev="HLS" fixes-bug="29871"> Fix NPE in ValidationDelegate when the form has errors recorded for fields that did not render. </action>
+      <action type="update" dev="HLS" fixes-bug="30261"> Provide a public implementation of ITemplateParserDelegate. </action>
+      <action type="fix" dev="HLS" fixes-bug="30384"> Palette does not clear its selected list when no selections are made. </action>
+      <action type="fix" dev="HLS" fixes-bug="26967"> Allow abstract pages/components even if no specified properties (or other enhancements) </action>
+      <action type="fix" dev="HLS" fixes-bug="30086"> Shell component should allow informal parameters </action>
+      <action type="update" dev="HLS"> Added a clearErrors() method to IValidationDelegate. </action>
+    </release>
+    <release version="3.0" date="Apr 18 2004">
+      <action type="fix" dev="HLS" fixes-bug="28345"> Workbench/Upload exception when no file specified </action>
+      <action type="fix" dev="DS" fixes-bug="28396"> Add FormConditional to Component Reference </action>
+      <action type="fix" dev="DS" fixes-bug="28422"> Add element parameter to contrib:Choose </action>
+      <action type="fix" dev="HLS" fixes-bug="28454"> Remove a small optimization that compromised storage of mutable objects as persistent page properties. </action>
+    </release>
+    <!-- Use due-to to give acknowledgement for patches. -->
+    <release version="3.0-rc-3" date="Apr 7 2004">
+      <action type="update" dev="HLS"> Add docs on how to report problems. </action>
+      <action type="fix" dev="HLS" fixes-bug="28202" due-to="Mats Forst&#246;f"> Pass the java.security.ProtectionDomain to the parent class loader when creating an enhanced class, to allow Tapestry operation inside secure environments such as Tomcat. </action>
+      <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp"> NPE in org.apache.tapestry.form.LinkSubmit. </action>
+      <action type="fix" dev="HLS" fixes-bug="27956"> Make checks for unimplemented abstract methods optional, to work around a bug in IBM JDK 1.3.1 (used with Websphere 4.x). </action>
+      <action type="fix" dev="HLS" fixes-bug="28235"> Allow more primitive types to be used with parameter direction <code>auto</code> (byte, char, short, float and long) in addition to the previously accepted types (boolean, int, double and objects). </action>
+    </release>
+    <release version="3.0-rc-2" date="Apr 1 2004">
+      <action type="fix" dev="HLS" fixes-bug="28057"> Fix problems in the binary distribution. </action>
+      <action type="fix" dev="HLS" fixes-bug="27954"> Create proper OGNL context when checking for invariant OGNL expressions (when initializing component properties). </action>
+      <action type="fix" dev="HLS" fixes-bug="27628"> DataSqueezer: Incorrect exception message </action>
+      <action type="fix" dev="HLS" fixes-bug="28010"> ExpressionBinding optimizes expressions incorrectly </action>
+    </release>
+    <release version="3.0-rc-1" date="Mar 15 2004">
+      <action type="fix" dev="EH" fixes-bug="27656"> ValidationDelegate.writeLabelPrefix/Suffix does not have IValidator access </action>
+      <action type="fix" dev="DS" fixes-bug="27630, 27631" due-to="Michael M. Brzycki"> Fix javadoc. </action>
+      <action type="fix" dev="DS" fixes-bug="27567"> Incorrect example code. </action>
+      <action type="fix" dev="DS" fixes-bug="27551" due-to="Michael M. Brzycki"> InspectorButton docs have incorrect links. </action>
+      <action type="update" dev="DS"> Update Component Reference to use 3.0 syntax </action>
+      <action type="update" dev="HLS"> Update the license to Apache Software License 2.0. </action>
+      <action type="update" dev="EH"> Added 'raw' attribute to FieldLabel component. </action>
+      <action type="update" dev="HLS"> Removed the out-of-date Tutorial. </action>
+      <action type="fix" dev="HLS" fixes-bug="18288"> Palette doesn't retain user-specified sort order </action>
+      <action type="fix" dev="HLS" fixes-bug="23544"> Don't use <code>request.getRemoteHost()</code> since that requires an expensive reverse DNS lookup. </action>
+      <action type="fix" dev="HLS" fixes-bug="27071" due-to="basile.chandesris"> Fix typos and inaccuracies in the 3.0 DTD comments. </action>
+      <action type="fix" dev="HLS" fixes-bug="27202,27203,27227" due-to="Jamie Orchard-Hays"> Fix logic in client-side validation. </action>
+      <action type="fix" dev="HLS" fixes-bug="27110" due-to="Karel Miarka"> DatePicker doesn't use the current Locale in its formatter </action>
+      <action type="update" dev="HLS"> Update DatePicker to use a graphic icon to hide and show the calendar. </action>
+      <action type="fix" dev="HLS" fixes-bug="20932"> Check for duplication of ids between the HTML template and the specification. </action>
+      <action type="fix" dev="HLS" fixed-bug="27082"> Fix some number conversion problems inside NumberValidator. </action>
+      <action type="update" dev="HLS"> Dynamically download OGNL and Javassist libraries (in accordance with ASF directives about non-ASL code). <b>Unfortunately, this means that we no longer can distribute precompiled examples that include those libraries.</b> </action>
+    </release>
+    <release version="3.0-beta-4" date="Feb 5 2004">
+      <action type="update" dev="DS"> Change direction of parameter model for WML components, SelectionField and PropertySelection </action>
+      <action type="fix" dev="DS"> Fixed the byte[] mapping in org.apache.tapestry.enhance.JavaClassMapping </action>
+      <action type="update" dev="HLS" due-to="Tetsuya Kitahata"> Convert the Tapestry home page to build using <link href="http://xml.apache.org/forrest/">Forrest</link>. </action>
+      <action type="update" due-to="Michael M. Brzycki"> Updated javadoc build target to link to JDK 1.3 </action>
+      <action type="add" dev="HK"> Added new validator, Pattern Validator </action>
+      <action type="fix" dev="HK"> Fixed the null pointer exception from FieldLabel when not enclosed by Form or when IValidationDelegate is not provided </action>
+      <action type="fix" dev="HK"> The key attribute of the script foreach is changed to not be a required attribute </action>
+      <action type="fix" dev="EH"> Added support for OGNL TypeConverter in expression bindings </action>
+      <action type="update" dev="DS"> Updated Component Reference for WML components </action>
+      <action type="update" dev="RLS"> Made DateValidator's getEffectiveFormat()/getEffectiveDisplayFormat() public </action>
+      <action type="update" dev="RLS"> Updated to use DocBook 1.62.4 XSL stylesheets for documentation generation </action>
+      <action type="update" dev="RLS"> Moved info priority logging to debug priority </action>
+      <action type="update" dev="RLS"> Custom parameter binding properties only enhanced if abstract </action>
+      <action type="update" dev="MB"> Updated the Table components to have an easier interface, similar to that of Foreach. </action>
+      <action type="fix" dev="MB" fixes-bug="21833"> build.properties.sample does not include jython.dir </action>
+      <action type="fix" dev="MB" fixes-bug="22840"> Table component doesn't sort fine when there are null values </action>
+      <action type="fix" dev="MB" fixes-bug="22640"> Wrong Package in link </action>
+      <action type="fix" dev="MB" fixes-bug="22641"> JavaDoc: should IField be IFieldTracking?? </action>
+      <action type="fix" dev="MB" fixes-bug="23668"> contrib:PopupLink ignores informal parameters </action>
+      <action type="fix" dev="MB" fixes-bug="22635"> Wrong Package in link </action>
+      <action type="fix" dev="MB" fixes-bug="22634"> Typo: "In a IListenerBindingSpecification" </action>
+      <action type="fix" dev="MB" fixes-bug="22694"> Add url parameter to Shell component </action>
+      <action type="update" dev="MB" fixes-bug="23870"> current OGNL 2.6.3 needs to be used </action>
+      <action type="fix" dev="MB" fixes-bug="23511"> Problem with URL encodings at EngineServiceLink.java </action>
+      <action type="fix" dev="MB" fixes-bug="23227"> The source parameter of Foreach should be required </action>
+      <action type="fix" dev="MB" fixes-bug="20252"> tests failing under JDK 1.3 </action>
+      <action type="fix" dev="MB" fixes-bug="23500"> Name attribute gets duplicated in TextField </action>
+      <action type="fix" dev="MB" fixes-bug="22835"> DateField component throws an ApplicationRuntimeException </action>
+      <action type="fix" dev="MB" fixes-bug="22836"> NumericField component throws an ApplicationRuntimeException </action>
+      <action type="fix" dev="MB" fixes-bug="22837"> Using NumericField cause a ClassCastException </action>
+      <action type="fix" dev="MB" fixes-bug="24467"> Compatibility of the AbstractEngine to servlet-api 2.2 </action>
+      <action type="fix" dev="MB" fixes-bug="24298" due-to="Colin Sampaleanu"> patch to allow workbench to work with JDK 1.4.2 and current Jetty </action>
+      <action type="fix" dev="MB" fixes-bug="24425"> race condition in class enhancement </action>
+      <action type="fix" dev="MB" fixes-bug="23916"> The Dates tab in the Workbench contains an empty popup link </action>
+      <action type="fix" dev="MB" fixes-bug="24008"> ApplicationRuntime Exception loses root cause... </action>
+      <action type="fix" dev="MB" fixes-bug="22958"> NumberValidator forces to input a value </action>
+      <action type="fix" dev="MB" fixes-bug="21871"> junit.jar needed to build junit subproject </action>
+      <action type="fix" dev="MB" fixes-bug="20253"> JUnit XML tests broken under JDK with no XML parser (eg. 1.3) </action>
+      <action type="fix" dev="MB" fixes-bug="24393"> No JVM requirements mentioned in docs </action>
+      <action type="fix" dev="MB" fixes-bug="24874" due-to="Zhenbang Wei"> [PATCH]ValidationStrings_zh_TW.properties </action>
+      <action type="fix" dev="EH" fixes-bug="25117"> PageService.getLink throws ClassCastException if parameters arg is Object[] </action>
+      <action type="fix" dev="RLS" fixes-bug="25462"> NumericField does not pass on its type parameter </action>
+      <action type="fix" dev="RLS" fixes-bug="25585"> ValidationDelegate throws NPE for some new FieldLabel/ValidField </action>
+      <action type="fix" dev="MB" fixes-bug="25642"> properties cannot be of complex array types </action>
+      <action type="fix" dev="EH" fixes-bug="25766"> fixed broken links in doc\src\common\TapestryLinks.xml </action>
+      <action type="fix" dev="MB" fixes-bug="26395"> Inherited parameters do not pick up default values </action>
+      <action type="update" dev="HLS"> Changed code to no longer invoke <code>StringUtils.isEmpty() / isNonEmpty()</code> (this is because the behavior of the method is changing between jakarta-commons 1.0 and 2.0). </action>
+      <action type="update" dev="HLS"> Add an implementation of <code>toString()</code> to <code>RequestCycle</code>. </action>
+      <action type="update" dev="HLS"> Update all copyrights for 2004. </action>
+      <action type="fix" dev="HLS"> Add download links. </action>
+      <action type="update" dev="HLS"> Remove unncessary constructor from test case classes. </action>
+      <action type="update" dev="HLS"> Changed mock unit tests to redirect System.out and System.err to log files rather than the console. </action>
+      <action type="update" dev="HLS" due-to="Glen Stampoultzis"> Improve the documentation for the Palette component, providing a real example of CSS styles used with the component. </action>
+      <action type="fix" dev="HLS" fixes-bug="26416"> Component parameters with direction 'form' should not allow static bindings. </action>
+      <action type="fix" dev="HK" fixes-bug="26599"> Fixed NPE in PatternValidator.toString(). </action>
+      <action type="fix" dev="HLS"> Fix TestMocks to not use JDK 1.4 API. </action>
+      <action type="fix" dev="MB"> Fixing property initializers to be evaluated every time (unless they are invariant) </action>
+      <action type="update" dev="MB"> Added Servlet API 2.4 from Tomcat 5 and ejb.jar from Geronimo. Made the mock objects compatible with Servlet API 2.4. </action>
+      <action type="update" dev="MB"> Evaluate the string 'false' as Boolean.FALSE. All other non-empty strings continue to be evaluated as Boolean.TRUE. </action>
+      <action type="update" dev="MB"> Automatically download external dependencies (such as Forrest and McKoi DB). </action>
+      <action type="fix" dev="HK" due-to="Anatol Pomazau"> DatePicker positioning problem fixed. </action>
+      <action type="fix" dev="HK" fixes-bug="24336"> Automatic rendering of the maxlength and size attributes have been removed. DatePicker now allows informal attributes that will be applied to the field. </action>
+      <action type="fix" dev="MB" fixes-bug="25611"> Fixed one more place where the encoding needs to be set </action>
+    </release>
+  </changes>
+</status>

@@ -206,9 +206,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *  </pre>
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
- * 
- **/
+ */
 
 public abstract class Palette extends BaseComponent implements IFormComponent
 {
@@ -448,8 +446,8 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
         if (sortUser)
         {
-        	Iterator i = selectedOptions.iterator();
-        	while (i.hasNext())
+            Iterator i = selectedOptions.iterator();
+            while (i.hasNext())
             {
                 PaletteOption o = (PaletteOption) i.next();
                 selectedColumn.addOption(o);
@@ -479,8 +477,8 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
         int count = Tapestry.size(values);
 
-        if (count == 0)
-            return;
+        // Build a new ArrayList and fill it with the selected 
+        // objects, if any. 
 
         List selected = new ArrayList(count);
         IPropertySelectionModel model = getModel();

@@ -67,7 +67,7 @@
 
   <target name="compile" depends="prepare">
     <javac srcdir="${src.dir}"
-	   destdir="${classes.dir}">
+	   destdir="${classes.dir}" target="1.1" source="1.3">
       <classpath refid="libs"/>
     </javac>
   </target>

@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
@@ -39,8 +38,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *
  *  <p>The retrieval part is directly linked to {@link PrivateAsset}.
  *  The service responds to a URL that encodes the path of a resource
- *  within the classpath.  The 
- *  {@link #service(IEngineServiceView, IRequestCycle, ResponseOutputStream)} 
+ *  within the classpath.  The
+ *  {@link #service(IEngineServiceView, IRequestCycle, ResponseOutputStream)}
  *  method reads the resource and streams it out.
  *
  *  <p>TBD: Security issues.  Should only be able to retrieve a
@@ -85,9 +84,9 @@ public class AssetService extends AbstractService
 
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
-        if (Tapestry.size(parameters) != 1)
+        if (Tapestry.size(parameters) != 2)
             throw new ApplicationRuntimeException(
-                Tapestry.format("service-single-parameter", Tapestry.ASSET_SERVICE));
+                Tapestry.format("service-incorrect-parameter-count", Tapestry.ASSET_SERVICE, new Integer(2)));
 
         // Service is stateless
 
@@ -129,21 +128,30 @@ public class AssetService extends AbstractService
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws ServletException, IOException
+        throws IOException
     {
         Object[] parameters = getParameters(cycle);
 
-        if (Tapestry.size(parameters) != 1)
+        if (Tapestry.size(parameters) != 2)
             throw new ApplicationRuntimeException(
-                Tapestry.format("service-single-parameter", Tapestry.ASSET_SERVICE));
+                Tapestry.format("service-incorrect-parameter-count", Tapestry.ASSET_SERVICE, new Integer(2)));
 
         String resourcePath = (String) parameters[0];
+        String checksum = (String) parameters[1];
 
-        URL resourceURL = cycle.getEngine().getResourceResolver().getResource(resourcePath);
+        URL resourceURL = engine.getResourceResolver().getResource(resourcePath);
 
         if (resourceURL == null)
             throw new ApplicationRuntimeException(
                 Tapestry.format("missing-resource", resourcePath));
+
+        String actualChecksum = engine.getResourceChecksumSource().getChecksum(resourceURL);
+
+        if (!actualChecksum.equals(checksum))
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.format("AssetService.checksum-failure", checksum, resourcePath));
+        }
 
         URLConnection resourceConnection = resourceURL.openConnection();
 

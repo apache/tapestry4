@@ -38,7 +38,7 @@ public abstract class BaseEnhancedClass implements IEnhancedClass
         return _enhancers;
     }
 
-    protected void addEnhancer(IEnhancer enhancer)
+    public void addEnhancer(IEnhancer enhancer)
     {
         if (_enhancers == null)
             _enhancers = new ArrayList();
@@ -57,7 +57,7 @@ public abstract class BaseEnhancedClass implements IEnhancedClass
     public void performEnhancement()
     {
         List enhancers = getEnhancers();
-        
+
         if (enhancers == null)
             return;
 

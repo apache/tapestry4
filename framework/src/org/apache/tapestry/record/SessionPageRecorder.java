@@ -32,55 +32,44 @@ import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
- *  Simple implementation of {@link org.apache.tapestry.engine.IPageRecorder}
- *  that stores page changes as {@link javax.servlet.http.HttpSession} attributes.
- *
- *
- *  @author Howard Ship
- *  @version $Id$
+ * Simple implementation of {@link org.apache.tapestry.engine.IPageRecorder}that stores page
+ * changes as {@link javax.servlet.http.HttpSession}attributes.
  * 
- **/
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public class SessionPageRecorder extends PageRecorder
 {
     private static final Log LOG = LogFactory.getLog(SessionPageRecorder.class);
 
     /**
-     *  Dictionary of changes, keyed on an instance of 
-     *  {@link ChangeKey}
-     *  (which enapsulates component path and property name).  The
-     *  value is the new value for the object.
-     *  The same information is stored into the
-     *  {@link HttpSession}, which is  used as a kind of
-     *  write-behind cache.
-     *
-     **/
+     * Dictionary of changes, keyed on an instance of {@link ChangeKey}(which enapsulates component
+     * path and property name). The value is the new value for the object. The same information is
+     * stored into the {@link HttpSession}, which is used as a kind of write-behind cache.
+     */
 
     private Map _changes;
 
     /**
-     *  The session into which changes are recorded.
+     * The session into which changes are recorded.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     private HttpSession _session;
 
     /**
-     *  The fully qualified name of the page being recorded.
+     * The fully qualified name of the page being recorded.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     private String _pageName;
 
     /**
-     *  The prefix (for {@link HttpSession} attributes) used by this
-     *  page recorder.
-     * 
-     **/
+     * The prefix (for {@link HttpSession}attributes) used by this page recorder.
+     */
 
     private String _attributePrefix;
 
@@ -110,8 +99,8 @@ public class SessionPageRecorder extends PageRecorder
         {
             ChangeKey key = (ChangeKey) i.next();
 
-            String attributeKey =
-                constructAttributeKey(key.getComponentPath(), key.getPropertyName());
+            String attributeKey = constructAttributeKey(key.getComponentPath(), key
+                    .getPropertyName());
 
             if (LOG.isDebugEnabled())
                 LOG.debug("Removing session attribute " + attributeKey);
@@ -121,11 +110,9 @@ public class SessionPageRecorder extends PageRecorder
     }
 
     /**
-     *  Simply clears the dirty flag, because there is no external place
-     *  to store changed page properties.  Sets the locked flag to prevent
-     *  subsequent changes from occuring now.
-     *
-     **/
+     * Simply clears the dirty flag, because there is no external place to store changed page
+     * properties. Sets the locked flag to prevent subsequent changes from occuring now.
+     */
 
     public void commit()
     {
@@ -134,9 +121,8 @@ public class SessionPageRecorder extends PageRecorder
     }
 
     /**
-     *  Returns true if the recorder has any changes recorded.
-     *
-     **/
+     * Returns true if the recorder has any changes recorded.
+     */
 
     public boolean getHasChanges()
     {
@@ -163,8 +149,7 @@ public class SessionPageRecorder extends PageRecorder
 
             Object value = entry.getValue();
 
-            PageChange change =
-                new PageChange(key.getComponentPath(), key.getPropertyName(), value);
+            PageChange change = new PageChange(key.getComponentPath(), key.getPropertyName(), value);
 
             result.add(change);
         }
@@ -179,24 +164,6 @@ public class SessionPageRecorder extends PageRecorder
         if (_changes == null)
             _changes = new HashMap();
 
-        // Check the prior value.  If this is not an actual change,
-        // then don't bother recording it, or marking this page recorder
-        // dirty.
-
-        Object oldValue = _changes.get(key);
-        if (newValue == oldValue)
-            return;
-
-        try
-        {
-            if (oldValue != null && oldValue.equals(newValue))
-                return;
-        }
-        catch (Exception ex)
-        {
-            // Ignore.
-        }
-
         setDirty(true);
 
         _changes.put(key, newValue);
@@ -206,7 +173,10 @@ public class SessionPageRecorder extends PageRecorder
 
         String attributeKey = constructAttributeKey(componentPath, propertyName);
 
-        _session.setAttribute(attributeKey, newValue);
+        if (newValue == null)
+            _session.removeAttribute(attributeKey);
+        else
+            _session.setAttribute(attributeKey, newValue);
 
         if (LOG.isDebugEnabled())
             LOG.debug("Stored session attribute " + attributeKey + " = " + newValue);
@@ -254,7 +224,7 @@ public class SessionPageRecorder extends PageRecorder
 
             // The first name is the servlet name, which allows
             // multiple Tapestry apps to share a HttpSession, even
-            // when they use the same page names.  The second name
+            // when they use the same page names. The second name
             // is the page name, which we already know.
 
             int i = 2;
@@ -271,8 +241,8 @@ public class SessionPageRecorder extends PageRecorder
         }
 
         if (LOG.isDebugEnabled())
-            LOG.debug(
-                count == 0 ? "No recorded changes." : "Restored " + count + " recorded changes.");
+            LOG.debug(count == 0 ? "No recorded changes." : "Restored " + count
+                    + " recorded changes.");
     }
 
 }
