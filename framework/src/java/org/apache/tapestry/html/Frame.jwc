@@ -16,22 +16,18 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.html.Frame" 
-	allow-body="no"
-	allow-informal-parameters="yes">
+    allow-body="no"
+    allow-informal-parameters="yes">
 
   <description>
   Identifies a page as the contents of a frame within a frameset.
   </description>
 
-  <parameter name="page" 
-  		property-name="targetPage"
-  		type="java.lang.String" 
-  		required="yes" 
-  		direction="in">
+  <parameter name="page" property-name="targetPage" required="yes">
     <description>
 	The page to display in the frame.
     </description>

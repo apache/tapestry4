@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.link.GenericLink">
 
@@ -25,18 +25,12 @@
   Creates a link to an application specified URL.
   </description>
   
-  <parameter name="href" type="java.lang.String" required="yes" direction="in"/>
+  <parameter name="href" required="yes"/>
 
-  <parameter name="disabled"
-  	type="boolean"
-  	direction="in"/>
+  <parameter name="disabled"/>
   	  	
-  <parameter name="anchor" 
-  	type="java.lang.String"
-  	direction="in"/>
+  <parameter name="anchor"/>
   	
-  <parameter name="renderer"
-  	type="org.apache.tapestry.link.ILinkRenderer"
-  	direction="in"/>
+  <parameter name="renderer"/>
   
 </component-specification>
