@@ -39,12 +39,12 @@ import com.primix.foundation.*;
 
 /**
  * This class encapsulates all the relevant data for one request cycle of an
- * <code>HttpServlet</code>, that is:
+ * {@link ApplicationServlet}, that is:
  * <ul>
- *  	<li>HttpServletRequest 
- *		<li>HttpServletResponse 
- *		<li>HttpSession
- * 		<li>HttpServlet 
+ *  	<li>{@link HttpServletRequest}
+ *		<li>{@link HttpServletResponse}
+ *		<li>{@link HttpSession}
+ * 		<li>{@link HttpServlet}
  * </ul>
  * <p>It also provides methods for:
  * <ul>
@@ -72,7 +72,7 @@ public class RequestContext
 	private HttpSession session;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private HttpServlet servlet;
+	private ApplicationServlet servlet;
 
 	/**
 	* A mapping of the cookies available in the request.
@@ -132,7 +132,7 @@ public class RequestContext
 	*
 	*/
 
-	public RequestContext(HttpServlet servlet, HttpServletRequest request,
+	public RequestContext(ApplicationServlet servlet, HttpServletRequest request,
 		HttpServletResponse response)
 	{
 		this.servlet = servlet;
@@ -730,7 +730,7 @@ public class RequestContext
 		return result;
 	}
 
-	public HttpServlet getServlet()
+	public ApplicationServlet getServlet()
 	{
 		return servlet;
 	}

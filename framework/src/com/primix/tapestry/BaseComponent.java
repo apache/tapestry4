@@ -254,11 +254,19 @@ public class BaseComponent extends AbstractComponent
 		int count;
 		int j = 0;
 		Iterator i;
+		Map components;
 		
 		// First, contruct a modifiable copy of the ids of all expected components
 		// (that is, components declared in the specification).
 		
-		ids = getComponents().keySet();
+		components = getComponents();
+		
+		// Occasionally, a component will have a template but no embedded components.
+		
+		if (components == null)
+			ids = Collections.EMPTY_SET;
+		else	
+			ids = components.keySet();
 		
 		// If the seen ids ... ids referenced in the template, matches
 		// all the ids in the specification then we're fine.

@@ -43,7 +43,7 @@ import com.primix.foundation.*;
  */
 
 /**
- *  Implementation of {@link IApplication} used for relatively
+ *  Concrete implementation of {@link IApplication} used for relatively
  *  small applications.  All page state information is maintained in memory.  Since
  * the instance is stored within the {@link HttpSession}, all page state information
  * will be carried along to other servers in the cluster.
@@ -61,7 +61,7 @@ import com.primix.foundation.*;
 
 
  
-public abstract class SimpleApplication extends AbstractApplication
+public class SimpleApplication extends AbstractApplication
 {
 	private final static int MAP_SIZE = 3;
 

@@ -31,12 +31,16 @@ package com.primix.tapestry;
 import javax.servlet.http.*;
 import java.io.*;
 import javax.servlet.*;
+import com.primix.tapestry.app.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.parse.*;
 
 /**
  * Links a servlet container with a Tapestry application.
  *
  * <p>Subclasses provide the servlet with its application by implementing
- * the abstract method {@link #getApplication(RequestContext)}.
+ * the abstract methods {@link #createApplication(RequestContext)}
+ * and {@link #getApplicationSpecificationPath()}.
  *
  * <p>This class is derived from the original class 
  * <code>com.primix.servlet.GatewayServlet</code>
@@ -50,6 +54,8 @@ import javax.servlet.*;
 
 abstract public class ApplicationServlet extends HttpServlet
 {
+	private ApplicationSpecification specification;
+	private String attributeName;
 
 	/**
 	* Handles the GET and POST requests. Performs the following:
@@ -101,6 +107,7 @@ abstract public class ApplicationServlet extends HttpServlet
 		}
 	}
 
+
 	/**
 	* Respond the same to a POST as to a GET.
 	*/
@@ -112,14 +119,108 @@ abstract public class ApplicationServlet extends HttpServlet
 	}
 
 	/**
-	* Invoked by 
-	* {@link #doGet(HttpServletRequest, HttpServletResponse)}
-	* to locate the {@link IApplication application} for the servlet.
-	* This method should create the application, or locate it within the
-	* {@link HttpSession}.
-	*
-	*/
+	 *  Returns the application specification, which is read
+	 *  by the {@link #init(ServletConfig)} method.
+	 *
+	 */
+	 
+	public ApplicationSpecification getApplicationSpecification()
+	{
+		return specification;
+	}
 
-	abstract protected IApplication getApplication(RequestContext context);
+	/**
+	 *  Retrieves the {@link IApplication} instance for this session
+	 *  from the {@link HttpSession}, or invokes
+	 *  {@link #createApplication(RequestContext)} to create the
+	 *  application instance.
+	 *
+	 * <p>If the application does not need to be stored in the {@link HttpSession}
+	 * (not possible with the framework provided implementations)
+	 * then this method should be overrided as appropriate.
+	 *  
+	 */
+
+	protected IApplication getApplication(RequestContext context)
+	throws ServletException
+	{
+		IApplication application;
+		
+		application = (IApplication)context.getSessionAttribute(attributeName);
+		
+		if (application == null)
+		{
+			application = createApplication(context);
+			
+			context.setSessionAttribute(attributeName, application);
+		}
+		
+		return application;
+	}
+	
+	/**
+	 *  Reads the application specification when the servlet is
+	 *  first initialized.  All {@link IApplication application instances}
+	 *  will have access to the specification via the servlet.
+	 *
+	 */
+	 
+	public void init(ServletConfig config)
+	throws ServletException
+	{
+		String path;
+		ServletContext servletContext;
+		String resource;
+		InputStream stream;
+		SpecificationParser parser;
+
+		super.init(config);
+		
+		path = getApplicationSpecificationPath();
+
+		// Make sure we locate the specification using our
+		// own class loader.
+
+		stream = getClass().getResourceAsStream(path);
+
+		if (stream == null)
+		throw new ServletException(
+			"Could not locate application specification " + path + ".");
+
+		parser = new SpecificationParser();
+
+		try
+		{
+			specification = parser.parseApplicationSpecification(stream, path);
+		}
+		catch (SpecificationParseException e)
+		{
+			throw new ServletException(
+				"Unable to read application specification " +
+				path + ".",  e);
+		}		
+
+		attributeName = "com.primix.tapestry.application." + specification.getName();
+	}
+
+	/**
+	 *  Implemented in subclasses to identify the resource path
+	 *  of the application specification.
+	 *
+	 */
+	 
+	abstract protected String getApplicationSpecificationPath();
+	
+	/**
+	 *  Invoked by {@link #getApplication(RequestContext)} to create
+	 *  the {@link IApplication} instance specific to the
+	 *  application, if not already in the
+	 *  {@link HttpSession}.
+	 *
+	 *  <p>The application instance returned is stored into the session.
+	 */
+	 
+	abstract protected IApplication createApplication(RequestContext context)
+	throws ServletException;
 }
 
