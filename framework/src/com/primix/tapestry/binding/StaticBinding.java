@@ -100,47 +100,6 @@ public class StaticBinding extends AbstractBinding
 		return true;
 	}
 
-	/**
-	*  @throws ReadOnlyBindingException always.
-	*
-	*/
-
-	public void setBoolean(boolean value) throws ReadOnlyBindingException
-	{
-		throw new ReadOnlyBindingException(this);
-	}
-
-	/**
-	*  @throws ReadOnlyBindingException always.
-	*
-	*/
-
-	public void setInt(int value) throws ReadOnlyBindingException
-	{
-		throw new ReadOnlyBindingException(this);
-	}
-
-	/**
-	*  @throws ReadOnlyBindingException always.
-	*
-	*/
-
-	public void setString(String value) throws ReadOnlyBindingException
-	{
-		throw new ReadOnlyBindingException(this);
-	}
-
-	/**
-	*  @throws ReadOnlyBindingException always.
-	*
-	*/
-
-
-	public void setValue(Object value) throws ReadOnlyBindingException
-	{
-		throw new ReadOnlyBindingException(this);
-	}
-
 	public String toString()
 	{
 		return "StaticBinding[" + value + "]";

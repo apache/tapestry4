@@ -1,3 +1,9 @@
+* Oct 16 2000 hship
+
+Implemented the <field-binding> element of the specification.  Allows a binding to
+be expressed in terms of a Java class and a static field of that class.
+Move the canonical Tapestry DTD to the tapestry.sourceforge.net website.
+
 * Oct 13 2000 hship
 
 Reorganized how Body and Rollover components work together, slightly, so that less Javascript

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
 	<class>com.primix.tapestry.inspector.ShowTemplate</class>
 	<components>
@@ -12,10 +12,10 @@
 					<name>condition</name>
 					<property-path>hasTemplate</property-path>
 				</binding>
-				<static-binding>
+				<field-binding>
 					<name>invert</name>
-					<value>true</value>
-				</static-binding>
+					<field-name>Boolean.TRUE</field-name>
+				</field-binding>
 			</bindings>
 		</component>
 		<component>
@@ -46,10 +46,10 @@
 					<name>listener</name>
 					<property-path>page.selectComponentListener</property-path>
 				</binding>
-				<static-binding>
+				<field-binding>
 					<name>enabled</name>
-					<value/>
-				</static-binding>
+					<field-name>Boolean.FALSE</field-name>
+				</field-binding>
 			</bindings>
 		</component>
 	</components>
