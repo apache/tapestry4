@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Image</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/html/Image.html">
+		 net.sf.tapestry.html.Image</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Visual Component</input>
+		</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Used to insert an image. <a href="Rollover.html">Rollover</a> is a 
+  similar component that can create dynamic mouse-over effects as well. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="ImageSubmit.html">ImageSubmit</a>, 
+  <a href="Rollover.html">Rollover</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (informal parameters allowed) 
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>image</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The image to show.
+		</td>
+	</tr>
+  <tr>
+ 		<td>border</td>
+		<td>int</td>
+		<td>in</td>
+		<td>no</td>
+		<td>0</td>
+		<td>Corresponds to the HTML border attribute. 
+		</td>
+	</tr>
+	</table>		
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+  
+	<p>
+Inserts the dynamic image obtained from the pages <tt>NewsItem</tt> property. 
+	<p>
+
+<table class="examples" cellpadding="8">
+<tr>
+ <td>
+  <h4>Elvis helitanker Saves 14 Lives</h4>
+  Elvis (Erickson S-64F ) super helitanker used to fight Sydney Australia 
+  Christmas bushfires. Credited with saving hundreds of homes and 
+  14 firefighters lives in the Black Christmas crisis. Photo of Elvis
+  helicoper on loan from US refueling at Glenbrook RAAF base.
+  <p>
+  Date : 4 January 2002 
+ </td>
+ <td>
+  <img src="elvis.jpg" alt="Elvis super helitanker refueling at Glenbrook"/>
+ </td>
+</tr>
+</table>
+
+<pre>
+&lt;table cellpadding="8"&gt;
+&lt;tr&gt;
+ &lt;td&gt;
+  &lt;h4&gt;&lt;span jwcid="newsItemTitle"/&gt;&lt;/h4&gt;
+  &lt;span jwcid="newsItemBody"/&gt;
+  &lt;p&gt;
+  Date : &lt;span jwcid="newsItemDate"/&gt; 
+ &lt;/td&gt;
+ &lt;td&gt;
+  &lt;img jwcid="<span class="jwcid">newsItemImage</span>"/&gt;
+ &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;component id="<span class="jwcid">newsItemImage</span>" type="<a href="Image.html">Image</a>"&gt;
+    &lt;binding name="image" property-path="newsItem.imageAsset"/&gt;
+    &lt;binding name="alt" property-path="newsItem.summary"/&gt;
+&lt;/component&gt;
+
+&lt;component id="newsItemTitle" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="newsItem.title"/&gt;
+&lt;/component&gt;
+
+&lt;component id="newsItemBody" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="newsItem.body"/&gt;
+&lt;/component&gt;
+
+&lt;component id="newsItemDate" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="newsItem.date"/&gt;
+    &lt;field-binding name="format" field-name="NewsItemPage.DATE_FORMAT"/&gt;
+&lt;/component&gt;
+
+
+public class NewsItemPage extends BasePage {
+    public static final SimpleDateFormat DATE_FORMAT =
+        new SimpleDateFormat("E, dd MMM yyyy");
+        
+    private NewsItem newsItem;
+    
+    public NewsItem getNewsItem () { return newsItem; }
+    
+    public void detach() {
+        newsItem = null;
+        super.detach();    
+    }
+}
+
+public class NewsItem implements Serializable {
+    private String title;
+    private String body;
+    private String summary;
+    private Date date;
+    private String imageURL;
+
+    public NewsItem(String title, String summary, String body, Date date, 
+            String imageURL) {
+        this.title = title;
+        this.body = body;
+        this.summary = summary;
+        this.date = date;
+        this.imageURL = imageURL;
+    }
+
+    public String getTitle() { return title; }
+
+    public String getBody() { return body; }
+
+    public String getSummary() { return summary; }
+
+    public String getDate() { return date; }
+
+    public IAsset getImageAsset() { return new <a href="../api/net/sf/tapestry/asset/ExternalAsset.html"><tt>ExternalAsset</tt></a>(imageURL); }    
+}
+</pre>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
