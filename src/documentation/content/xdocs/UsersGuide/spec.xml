@@ -113,7 +113,7 @@ it is expected that there will be some runtime warnings).
   <li>
     In the 3.0 DTD, the &spec.binding; element was for specifying OGNL expressions only, and had an
     expression attribute.  In the 3.1 DTD, it is used for setting all types of attributes, and has
-    a value attribute.  The value is a binding reference, which
+    a value attribute.  The value is a &binding-reference;, which
     uses a prefix to determine which type of binding is to be used.
   </li>
   <li>The &lt;static-binding&gt; and &lt;message-binding&gt; elements have been removed, replaced with
@@ -125,9 +125,17 @@ it is expected that there will be some runtime warnings).
     attribute has been dropped.</li>
   <li>The &spec.inject; element has been added.</li>
   <li>The &spec.parameter; element has been simplified; the type and direction attributes have been dropped. The
-    default-value attribute is now a <em>binding reference</em>, as with the &spec.binding; element's value attribute.</li>
-  <li>The &spec.property; element's initial-value attribute (or enclosed character data) is now a binding reference. In release 3.0
-    it was always an OGNL expression, but now it must be prefixed.</li>
+    default-value attribute is now a <em>&binding-reference;</em>, as with the &spec.binding; element's value attribute.</li>
+  <li>The &spec.property; element's initial-value attribute (or enclosed character data) is now a &binding-reference;. In release 3.0
+    it was always an OGNL expression, but is now a &binding-reference;.</li>
+  <li>The &lt;context-asset&gt;, &lt;private-asset&gt; and &lt;external-asset&gt; elements
+    have been consolidated into the new &spec.asset; element, and a
+    prefixing system has been introduced.</li>
+  <li>The &lt;set-property&gt; and &lt;set-message-property&gt; elements
+    have been consolidated into &lt;set&gt;, which now uses a (wait for it)
+    &binding-reference;.</li>
+  <li>The 3.1 DTD is more liberal about the order in which elements may be specified than the 3.0 DTD.</li>
+    
 </ul>
 
 <p>
@@ -178,11 +186,92 @@ It also defines any libraries that are used within the application.
 
 <p>&application; Elements:</p>
 <source>
-  &spec.description; ?, &spec.meta; *,
-  (&spec.page; | &spec.component-type; |  &spec.library; | &spec.extension;) *
+  &spec.description; ?,
+  (&spec.meta; | &spec.page; | &spec.component-type; |  &spec.library; | &spec.extension;) *
 </source>
 
 </section>  <!-- spec.application -->
+
+
+<section id="spec.asset">
+	<title>&lt;asset&gt; element</title>
+
+<p>
+Specifies the location of an asset, a file (typically an image or stylesheet) that may be 
+exposed to the client web browser.
+</p>
+
+<p>
+Assets may be stored in the web application (that is, within or beneath the web application root
+context folder), on the classpath (often the case for components packaged in a reusable library)
+or at an arbitrary URL.
+</p>
+
+<p>
+The path to a resource may be absolute (beginning with a leading slash), or relative (no leading slash).
+At this time, other common path sequences (".", "..", etc.) are not supported.
+</p>
+
+<table>
+  <tr>
+    <th>Prefix</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>context:</td>
+    <td>The asset is stored in the web application context.  Relative paths are compouted
+      from the web application root context folder, not the specification file.
+    </td>
+  </tr>
+  <tr>
+    <td>classpath:</td>
+    <td>
+      The asset is a file on the classpath.  Relative paths are computed from the specification file.
+    </td>
+  </tr>
+</table>
+
+<p>
+Context and classpath assets will automatically be localized.  Thus an asset with path "/images/Logo.gif" may be localized
+to "/images/Logo_fr.gif" if the active locale is French (and such a file exists).
+</p>
+
+<p>
+Unrecognized prefixes are considered to be the scheme portion of a URL.  Such paths are passed through unchanged,
+and not localized.
+</p>
+
+<table>
+
+<tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Required ?</th>
+  <th>Default Value</th>
+  <th>Description</th>
+</tr>
+
+<tr>
+	<td>name</td>
+	<td>string</td>
+	<td>yes</td>
+	<td/>
+	<td>The name of the asset, which must be a valid Java identifier.</td>
+</tr>
+<tr>
+	<td>path</td>
+	<td>string</td>
+	<td>yes</td>
+	<td/>
+	<td>The relative or absolute path to the asset.
+	</td>
+</tr>
+
+</table>
+
+
+</section> <!-- spec.asset -->
+
 
 <section id="spec.bean">
 	<title>&bean; element</title>
@@ -195,7 +284,7 @@ Appears in:
 <p>
 A &bean; is used to add behaviors to a page or component via aggregation.
 Each &bean; defines a named JavaBean that is instantiated on demand.
-Beans are accessed through the OGNL expression beans.<em>name</em>.
+Such managed beans are accessed through the OGNL expression beans.<em>name</em>.
 </p>
 
 <p>
@@ -218,6 +307,7 @@ for some period of time, specified by the bean's lifecycle.
   <dd>
 			The bean is retained until the current render operation completes.
 			This will discard the bean when a page or form finishes rewinding.
+      This is the default lifecycle.
   </dd>
 		
   <dt>request</dt>
@@ -236,7 +326,7 @@ be stored in a page.
 
 <p>
 Beans must be public classes with a default (no arguments) constructor. Properties of the bean
-may be configured using the &spec.set-property; and &spec.set-message-property; elements.
+may be configured nested &spec.set; elements.
 </p>
 
 <table>
@@ -277,8 +367,7 @@ may be configured using the &spec.set-property; and &spec.set-message-property; 
 
 <p>&bean; Elements:</p>
 <source>
-  &spec.description; ?, &spec.meta; *,
-  (&spec.set-property; | &spec.set-message-property;) *
+  &spec.description; ?, (&spec.meta; | &spec.set;) *
 </source>
 
 
@@ -336,7 +425,7 @@ of single and double quotes).
 </table>
 
 <p>
-The value may be literal string, or a binding reference.  Binding references are divided into a
+The value may be literal string, or a &binding-reference;.  Binding references are divided into a
 <em>prefix</em> and a <em>locator</em>.  The prefix identifies how the locator is 
 interpreted.
 </p>
@@ -451,8 +540,7 @@ containing library or application.
 	
 <p>&component; Elements</p>
 <source>
-  &spec.meta; *,
-  (&spec.binding; | &spec.listener-binding;) *
+  (&spec.meta; | &spec.binding; | &spec.listener-binding;) *
 </source>
 
 	
@@ -536,9 +624,9 @@ and elements related to parameters.
 
 <p>&component-specification; Elements</p>
 <source>
-  &spec.description; ?, &spec.parameter; *, &spec.reserved-parameter; *, &spec.meta; *,
-  (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset; | 
-   &spec.property; | &spec.inject;)*
+  &spec.description; ?, 
+  (&spec.parameter; | &spec.reserved-parameter; | &spec.meta; | &spec.bean; | 
+   &spec.component; | &spec.asset; | &spec.property; | &spec.inject;)*
 </source>
 
 
@@ -649,57 +737,6 @@ to the property.
 
 
 
-<section id="spec.context-asset">
-	<title>&lt;context-asset&gt; element</title>
-
-<p>
-Specifies an asset located relative to the web application context root folder.
-Context assets may be localized.
-</p>
-
-<p>
-Assets for an instantiated component (or page) 
-may be accessed using the OGNL expression assets.<em>name</em>.
-</p>
-
-<p>
-The path may be either absolute or relative.  Absolute paths start with a leading slash, and are evalulated
-relative to the context root.  Relative paths are evaluated relative to the application root, which
-is typically the same as the context root (the exception being a WAR that contains multiple
-Tapestry applications, within multiple subfolders).
-</p>
-
-<table>
-
-<tr>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Required ?</th>
-  <th>Default Value</th>
-  <th>Description</th>
-</tr>
-
-<tr>
-	<td>name</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The name of the asset, which must be a valid Java identifier.</td>
-</tr>
-<tr>
-	<td>path</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The path to the asset.
-	</td>
-</tr>
-
-</table>
-
-
-</section> <!-- spec.context-asset -->
-
 <section id="spec.description">
 	<title>&lt;description&gt; element</title>
 	
@@ -780,59 +817,11 @@ a global service to the application.
 
 <p>&lt;extension&gt; Elements</p>
 <source>
-  &spec.meta; *, &spec.configure; *
+  (&spec.meta; | &spec.configure;) *
 </source>
 
 
 </section> <!-- spec.extension -->
-
-<section id="spec.external-asset">
-	<title>&lt;external-asset&gt; element</title>
-
-<p>
-Appears in: &spec.component-specification; and &spec.page-specification;
-</p>
-
-<p>
-Defines an asset at an arbitrary URL.  The URL may begin with a slash to indicate an asset on the same
-web server as the application, or may be a complete URL to an arbitrary location on the Internet.
-</p>
-
-<p>
-External assets may be accessed at runtime with the OGNL expression
-assets.<em>name</em>.
-</p>
-
-<table>
-
-<tr>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Required ?</th>
-  <th>Default Value</th>
-  <th>Description</th>
-</tr>
-
-
-<tr>
-	<td>name</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>A name for the asset. Asset names must be valid Java identifiers.
-	</td>
-</tr>
-<tr>
-	<td>URL</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The URL used to access the asset.</td>
-</tr>
-
-</table>
-
-</section> <!-- spec.external-asset -->
 
 <section id="spec.inject">
   <title>&lt;inject&gt; element</title>
@@ -926,6 +915,12 @@ another library, and sets the prefix used to reference those components.
 </tr>
 
 </table>
+
+<p>&lt;library&gt; Elements:</p>
+<source>
+  &spec.description; ?,
+  (&spec.meta; | &spec.page; | &spec.component-type; |  &spec.library; | &spec.extension;) *
+</source>
 
 </section> <!-- spec.library -->
 
@@ -1173,8 +1168,8 @@ with attributes and entities related to parameters removed.
 
 <p>&lt;page-specification&gt; Elements</p>
 <source>
-  &spec.description; ?, &spec.meta; *,
-  (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset; | &spec.property; | &spec.inject;)*
+  &spec.description; ?, 
+  (&spec.meta; | &spec.bean; | &spec.component; | &spec.asset; | &spec.property; | &spec.inject;)*
 </source>
 
 
@@ -1238,7 +1233,7 @@ Appears in: &spec.component-specification;
 	<td/>
 	<td>
 	Specifies the default value for the parameter, if the parameter is not bound.	This value
-  is a <em>binding reference</em>, exactly like
+  is a <em>&binding-reference;</em>, exactly like
   a &spec.binding; element's value attribute.
 	</td>
 </tr>
@@ -1259,60 +1254,6 @@ or at some other time entirely.
 </note>
 
 </section> <!-- spec.parameter -->
-
-<section id="spec.private-asset">
-	<title>&lt;private-asset&gt; element</title>
-
-<p>
-Specifies located from the classpath.  These exist to support
-reusable components packages (as part of a &spec.library-specification;)
-packaged in a JAR.  Private assets will be localized.
-</p>
-
-<p>
-Assets for an instantiated component (or page) 
-may be accessed using the OGNL expression assets.<em>name</em>.
-</p>
-
-<p>
-The resource path may either be complete and absolute, and start with a leading slash,
-or be relative.  Relative paths are evaluated relative to the location of the
-containing specification.
-</p>
-
-
-
-<table>
-
-<tr>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Required ?</th>
-  <th>Default Value</th>
-  <th>Description</th>
-</tr>
-
-<tr>
-	<td>name</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The name of the asset, which must be a valid Java identifier.</td>
-</tr>
-<tr>
-	<td>resource-path</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The absolute or relative path to the asset on the classpath. 
-	</td>
-</tr>
-
-</table>
-
-
-</section> <!-- spec.private-asset -->
-
 <section id="spec.property">
 	<title>&lt;property&gt; element</title>
 	
@@ -1378,7 +1319,7 @@ itself.
 	<td>no</td>
 	<td/>
 	<td>
-	An optional binding reference used to initialize the property.
+	An optional &binding-reference; used to initialize the property.
 	</td>
 </tr>
 
@@ -1439,69 +1380,16 @@ a reserved parameter named "src" (or any variation), and be excluded.
 </section> <!-- spec.reserved-parameter -->
 
 
-<section id="spec.set-message-property">
-	<title>&lt;set-message-property&gt; element</title>
-
-<p>
-Appears in: &spec.bean;
-</p>
-
-<p>
-Allows a property of a helper bean to be set to a localized string
-value of its containing page or component.
-</p>
-
-
-<table>
-
-<tr>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Required ?</th>
-  <th>Default Value</th>
-  <th>Description</th>
-</tr>
-
-
-<tr>
-	<td>name</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The name of the helper bean property to set.</td>
-</tr>
-<tr>
-	<td>key</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>A string property key of the containing page or component.
-	</td>
-</tr>
-
-</table>
-
-
-</section> <!-- spec.set-message-property -->
-
-<section id="spec.set-property">
-	<title>&lt;set-property&gt; element</title>
+<section id="spec.set">
+	<title>&lt;set&gt; element</title>
 	
 <p>
 Appears in: &spec.bean;
 </p>
 
 <p>
-Allows a property of a helper bean to be set to an OGNL expression (evaluated
-on the containing component or page).
-</p>
-
-
-<p>
-The value to be assigned to the bean property can be specified
-using the expression attribute, or as
-the content of the &lt;set-property&gt; element
-itself.
+Allows a property of a managed bean to be set to a value
+obtained via a &binding-reference;.
 </p>
 
 <table>
@@ -1522,18 +1410,18 @@ itself.
 	<td>The name of the helper bean property to set.</td>
 </tr>
 <tr>
-	<td>expression</td>
+	<td>value</td>
 	<td>string</td>
 	<td>no</td>
 	<td/>
-	<td>The OGNL expression used to set the property.
+	<td>A &binding-reference; that provides the value to assign to the bean property.
 	</td>
 </tr>
 
 </table>
 
 
-</section> <!-- spec.set-property -->
+</section> <!-- spec.set -->
 
 </body>
 </document>

@@ -361,7 +361,7 @@ The second approach is to set the property from the component's finishLoad() met
 </p>
 
 <source>
-public void setTitle(String title);
+public abstract void setTitle(String title);
 
 protected void finishLoad()
 {
@@ -514,27 +514,31 @@ The search for page specifications is identical: as defined in the library speci
 
 </section> <!-- components.libraries.search -->
 
-<section id="components.libraries.private-assets">
+<section id="components.libraries.classpath-assets">
 	<title>Using Private Assets</title>
 	
 <p>
 Often, a component must be packaged up with images, stylesheets or other resources (collectively termed "assets")
-that are needed at runtime. A reference to such an asset can be created using the &spec.private-asset; element of
+that are needed at runtime. A reference to such an asset can be created using the &spec.asset; element of
 the page or component specification.	For example:
 </p>
 
 <source><![CDATA[
 	
-  <private-asset name="logo" resource-path="images/logo_200.png"/>
+  <asset name="logo" path="images/logo_200.png"/>
   
   <component id="image" type="Image">
-    <binding name="image" value="ognl:assets.logo"/>
+    <binding name="image" value="asset:logo"/>
   </component>
 ]]></source>
 
+<p>
+In this case, if the component is packaged as /com/example/mylibrary/MyComponent.jwc, then
+the asset will be /com/examples/mylibrary/images/logo_200.png.  Further, the asset path will be localized.
+</p>
 
 <p>
-All assets (private, context or external) are converted into instances of &IAsset; and treated identically by
+All assets (classpath, context or external) are converted into instances of &IAsset; and treated identically by
 components (such as &Image;). As in this example, relative paths are allowed: they are interpreted relative
 to the specification (page or component) they appear in.	
 </p>
@@ -563,7 +567,7 @@ This behavior is controlled by a pair of <link href="configuration.html#configur
 org.apache.tapestry.asset.dir and org.apache.tapestry.asset.URL.
 
 </p>	
-</section> <!-- components.libraries.private-assets -->
+</section> <!-- components.libraries.classpath-assets -->
 
 <section id="components.libraries.spec">
 	<title>Library Specifications</title>

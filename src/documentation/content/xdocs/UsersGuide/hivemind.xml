@@ -60,11 +60,37 @@
           <th>Example</th>
         </tr>
         <tr>
+          <td>app-property</td>
+          <td>The locator is the name of a property that is resolved using:
+            <ul>
+              <li>The application specification's &spec.meta; properties</li>
+              <li>The servlet's &init-parameter; elements</li>
+              <li>The servlet context's &init-parameter; elements</li>
+              <li>The delegate property source (a &lt;spec.extension;)</li>
+              <li>A HiveMind symbol</li>
+            </ul></td>
+            <td>
+              app-property:org.apache.tapestry.template-extension
+            </td>
+        </tr>
+        <tr>
+          <td>The locator is the name of an engine service (an instance of &IEngineService;).</td>
+          <td>engine-service:page</td>
+        </tr>
+        <tr>
+          <td>global-property</td>
+          <td>The locator is the name of global property, defined as a servlet &init-parameter;,
+            a servlet context &init-parameter;,
+            or a HiveMind symbol. </td>
+            <td>global-property:org.apache.tapestry.disable-caching</td>
+        </tr>        
+        <tr>
           <td>infrastructure</td>
           <td> The locator is the name of a property provided by the tapestry.Infrastructure service; this service 
             provides access to the key Tapestry services. </td>
           <td>infrastructure:applicationSpecification</td>
         </tr>
+
       </table>
       <note> More prefixes are forthcoming. </note>
       

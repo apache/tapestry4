@@ -306,7 +306,7 @@ to the localized messages stored in the files.
 </p>
 
 <p>
-Several additional prefixes are available:
+Starting with Tapestry 3.1, several additional prefixes are available:
 </p>
 
 <table>
@@ -321,7 +321,7 @@ Several additional prefixes are available:
     <td>asset</td>
     <td>References an asset of the component.</td>
     <td>asset:stylesheet </td>
-    <td>ogn:assets.stylesheet</td>
+    <td>ognl:assets.stylesheet</td>
   </tr>
   
   <tr>
@@ -447,7 +447,7 @@ be written into the HTML template as:
 </p>
 
 <source><![CDATA[
-  <a jwcid="@DirectLink" listener=". . ." href="#"> . . . </a>]]></source>
+  <a jwcid="@DirectLink" listener="listener:. . ." href="#"> . . . </a>]]></source>
 
 
 <p>
