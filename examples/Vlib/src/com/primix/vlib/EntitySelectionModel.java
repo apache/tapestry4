@@ -45,7 +45,7 @@ import java.util.*;
 public class EntitySelectionModel
 implements IPropertySelectionModel
 {
-	private static class Entry implements Comparable
+	private static class Entry
 	{
 		Integer primaryKey;
 		String label;
@@ -56,28 +56,6 @@ implements IPropertySelectionModel
 			this.label = label;
 		}
 		
-		public int compareTo(Object other)
-		{
-			Entry otherEntry;
-			
-			otherEntry = (Entry)other;
-			
-			// We want (the single allowed entry) with a null primary key
-			// to be sorted first.
-			
-			if (primaryKey == null && otherEntry.primaryKey == null)
-				return 0;
-			
-			if (primaryKey == null)
-				return -1;
-				
-			if (otherEntry.primaryKey == null)
-				return 1;
-				
-			// Otherwise, sort according to otherEntry
-			
-			return label.compareTo(otherEntry.label);	
-		}
 	}
 	
 	private static final int LIST_SIZE = 20;
@@ -90,11 +68,6 @@ implements IPropertySelectionModel
 		
 		entry = new Entry(key, label);
 		entries.add(entry);
-	}
-	
-	public void sort()
-	{
-		Collections.sort(entries);
 	}
 	
 	public int getOptionCount()

@@ -140,7 +140,7 @@ public class Login extends BasePage
 			app.setUser(person);
 			
 			if (targetPage == null)
-				cycle.setPage("home");
+				cycle.setPage("Home");
 			else	
 				cycle.setPage(targetPage);
 			

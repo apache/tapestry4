@@ -6,17 +6,17 @@
 	<name>Border Tutorial</name>
 	
 	<page>
-		<name>home</name>
+		<name>Home</name>
 		<specification-path>/tutorial/border/Home.jwc</specification-path>
 	</page>
 	
 	<page>
-		<name>credo</name>
+		<name>Credo</name>
 		<specification-path>/tutorial/border/Credo.jwc</specification-path>
 	</page>
 	
 	<page>
-		<name>legal</name>
+		<name>Legal</name>
 		<specification-path>/tutorial/border/Legal.jwc</specification-path>
 	</page>
 	

@@ -88,4 +88,18 @@ public class RaceModel implements IPropertySelectionModel
 		}
 		
 	}
+	
+	public String getValue(int index)
+	{
+		return Integer.toString(index);
+	}
+	
+	public Object translateValue(String value)
+	{
+		int index;
+		
+		index = Integer.parseInt(value);
+		
+		return options[index];
+	}
 }

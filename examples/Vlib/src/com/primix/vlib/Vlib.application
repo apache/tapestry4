@@ -4,24 +4,28 @@
 <application>
 	<name>Primix Virtual Library</name>
 	<page>
-		<name>home</name>
+		<name>Home</name>
 		<specification-path>/com/primix/vlib/pages/Home.jwc</specification-path>
 	</page>
 	<page>
-		<name>login</name>
+		<name>Login</name>
 		<specification-path>/com/primix/vlib/pages/Login.jwc</specification-path>
 	</page>
 	<page>
-		<name>logout</name>
+		<name>Logout</name>
 		<specification-path>/com/primix/vlib/pages/Logout.jwc</specification-path>
 	</page>
 	<page>
-		<name>matches</name>
+		<name>Matches</name>
 		<specification-path>/com/primix/vlib/pages/Matches.jwc</specification-path>
 	</page>
 	<page>
-		<name>mybooks</name>
+		<name>MyBooks</name>
 		<specification-path>/com/primix/vlib/pages/MyBooks.jwc</specification-path>
+	</page>
+	<page>
+		<name>NewBook</name>
+		<specification-path>/com/primix/vlib/pages/NewBook.jwc</specification-path>
 	</page>
 	<component-alias>
 		<alias>Border</alias>

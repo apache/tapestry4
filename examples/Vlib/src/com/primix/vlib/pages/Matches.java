@@ -117,7 +117,7 @@ public class Matches extends BasePage
 			}
 			catch (Throwable t)
 			{
-				throw new ApplicationRuntimeException(t.getMessage(), t);
+				throw new ApplicationRuntimeException(t);
 			}
 		}
 
@@ -135,13 +135,13 @@ public class Matches extends BasePage
 			else	
 				setBookQueryHandle(value.getHandle());
 		}
-		catch (Throwable t)
+		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException(t.getMessage(), t);
+			throw new ApplicationRuntimeException(e);
 		}
 	}
 	
-	public void performTitleQuery(String title, Object publisherPK)
+	public void performQuery(String title, String author, Object publisherPK)
 	{
 		IBookQueryHome home;
 		IBookQuery query;
@@ -151,12 +151,12 @@ public class Matches extends BasePage
 		
 		try
 		{
-			count = query.titleQuery(title, publisherPK);
+			count = query.masterQuery(title, author, publisherPK);
 			setMatchCount(count);
 		}
 		catch (Throwable t)
 		{
-			throw new ApplicationRuntimeException(t.getMessage(), t);
+			throw new ApplicationRuntimeException(t);
 		}
 		
 	}
@@ -176,7 +176,7 @@ public class Matches extends BasePage
 		}
 		catch (Throwable t)
 		{
-			throw new ApplicationRuntimeException(t.getMessage(), t);
+			throw new ApplicationRuntimeException(t);
 		}
 	}
 	
@@ -252,14 +252,14 @@ public class Matches extends BasePage
 	throws RequestCycleException
 	{
 		VirtualLibraryApplication app;
-		IVlibOperations bean;
+		IOperations bean;
 		Home home;
 		Integer borrowerPK;
 		IBook book;
 
 		app = (VirtualLibraryApplication)application;
 
-		home = (Home)cycle.getPage("home");
+		home = (Home)cycle.getPage("Home");
 
 		bean = app.getOperations();				
 
@@ -273,7 +273,8 @@ public class Matches extends BasePage
 		}
 		catch (FinderException e)
 		{
-			home.setError("Unable to locate book or user: " + e);
+			throw new ApplicationRuntimeException(
+				"Unable to find book or user: " + e.getMessage(), e);
 		}
 		catch (RemoteException e)
 		{

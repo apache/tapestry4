@@ -1,4 +1,9 @@
-package tutorial.border;
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import javax.rmi.*;
+import javax.naming.*;
 
 /*
  * Tapestry Web Application Framework
@@ -29,38 +34,16 @@ package tutorial.border;
  */
 
 /**
+ *  Home interface to the {@link Operations} stateless
+ *  session bean.
+ *  
  *  @version $Id$
  *  @author Howard Ship
  *
- */ 
+ */
 
-import java.util.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
-
-public class BorderApplication extends SimpleApplication
+public interface IOperationsHome extends EJBHome
 {
-  private static final String[] pageNames =
-    { "Home", "Credo", "Legal" };
-  
-  public BorderApplication(RequestContext context, Locale locale)
-  {
-    super(context, locale);
-  }
-
-  protected String getSpecificationAttributeName()
-  {
-    return "Border.specification";
-  }
-
-  protected String getSpecificationResourceName()
-  {
-    return "/tutorial/border/Border.application";
-  }
-  
-  public String[] getPageNames()
-  {
-    return pageNames;
-  }
-  
+	public IOperations create()
+	throws CreateException, RemoteException;
 }

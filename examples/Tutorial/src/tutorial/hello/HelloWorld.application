@@ -6,7 +6,7 @@
 	<name>Hello World Tutorial</name>
 	
 	<page>
-		<name>home</name>
+		<name>Home</name>
 		<specification-path>/tutorial/hello/Home.jwc</specification-path>
 	</page>
 </application>

@@ -42,7 +42,8 @@ import java.util.*;
  
 public interface IBookHome extends EJBHome
 {
-	public IBook create(String title, String ISBN, Integer publisherPK, Integer ownerPK)
+	public IBook create(String title, String author, String ISBN,
+					    Integer publisherPK, Integer ownerPK)
 		throws CreateException, RemoteException;
 	
 	public IBook findByPrimaryKey(Integer key)

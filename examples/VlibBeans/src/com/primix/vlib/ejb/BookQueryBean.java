@@ -183,7 +183,7 @@ public class BookQueryBean implements SessionBean
 		return result;
 	}
 	
-	public int titleQuery(String title, Object publisherPK)
+	public int masterQuery(String title, String author, Object publisherPK)
 	{
 		IStatement statement = null;
 		Connection connection = null;
@@ -198,7 +198,7 @@ public class BookQueryBean implements SessionBean
 
 			try
 			{
-				statement = buildTitleQueryStatement(connection, title, publisherPK);
+				statement = buildMasterQuery(connection, title, author, publisherPK);
 			}
 			catch (SQLException e)
 			{
@@ -332,7 +332,7 @@ public class BookQueryBean implements SessionBean
 		
 		while (set.next())
 		{
-			// Translate the thirteen selected columns into the 11 columns of
+			// Translate the selected columns into the columns of
 			// the result set (we fold two first name/last name pairs into simple
 			// names).
 			
@@ -352,6 +352,8 @@ public class BookQueryBean implements SessionBean
 				buildName(set.getString(column++), set.getString(column++));
 			columns[BookQueryResult.PUBLISHER_PK_COLUMN] = set.getObject(column++);
 			columns[BookQueryResult.PUBLISHER_NAME_COLUMN] = set.getString(column++);
+			columns[BookQueryResult.AUTHOR_COLUMN] = set.getString(column++);
+			columns[BookQueryResult.RATING_COLUMN] = set.getObject(column++);
 			
 			list.add(new BookQueryResult(columns));
 		}
@@ -381,7 +383,8 @@ public class BookQueryBean implements SessionBean
 		"book.LEND_COUNT",
 		"owner.PERSON_ID", "owner.FIRST_NAME", "owner.LAST_NAME",
 		"holder.PERSON_ID", "holder.FIRST_NAME", "holder.LAST_NAME",
-		"publisher.PUBLISHER_ID", "publisher.NAME"
+		"publisher.PUBLISHER_ID", "publisher.NAME",
+		"book.AUTHOR", "book.RATING"
 	};
 	
 	private static final String[] aliasColumns =
@@ -396,14 +399,13 @@ public class BookQueryBean implements SessionBean
 		"book.PUBLISHER_ID = publisher.PUBLISHER_ID"
 	};
 	
-	private IStatement buildTitleQueryStatement(Connection connection,
-		String title, Object publisherPK)
+	private IStatement buildMasterQuery(Connection connection,
+		String title, String author, Object publisherPK)
 	throws SQLException
 	{
 		StatementAssembly assembly;
 		int i;
 		IStatement result;
-		String trimmedTitle;
 		
 		assembly = new StatementAssembly();
 		
@@ -416,21 +418,9 @@ public class BookQueryBean implements SessionBean
 		assembly.newLine("WHERE ");
 		assembly.addList(joins, " AND ");
 		
-		
-		if (title != null)
-		{
-			trimmedTitle = title.trim().toLowerCase();
-			if (trimmedTitle.length() > 0)
-			{
-				// A little Cloudscape magic to allow case-insensitive searching.
-				// Would have to be modified for other databases.
-
-				assembly.addSep(" AND ");
-				assembly.addParameter("book.TITLE.trim().toLowerCase() like ?", 
-					"%" + trimmedTitle + "%");
-			}
-		}
-		
+		addSubstringSearch(assembly, "book.TITLE", title);
+		addSubstringSearch(assembly, "book.AUTHOR", author);
+				
 		if (publisherPK != null)
 		{
 			assembly.addSep(" AND ");
@@ -442,6 +432,24 @@ public class BookQueryBean implements SessionBean
 		result = assembly.createStatement(connection);
 		
 		return result;
+	}
+	
+	private void addSubstringSearch(StatementAssembly assembly, String column, String value)
+	{
+		String trimmed;
+		
+		if (value == null)
+			return;
+			
+		trimmed = value.trim();
+		if (trimmed.length() == 0)
+			return;
+		
+		// The is very Cloudscape dependant
+		
+		assembly.addSep(" AND ");
+		assembly.addParameter(column + ".trim().toLowerCase() LIKE ?",
+				 "%" + trimmed.toLowerCase() + "%");	
 	}
 	
 	private IStatement buildPersonQuery(Connection connection,

@@ -61,7 +61,7 @@
 	</component>
 
 	<component>
-		<id>nameField</id>
+		<id>inputName</id>
 		<type>TextField</type>
 
 		<bindings>
@@ -83,7 +83,7 @@
 	</component>
 
 	<component>
-		<id>ageField</id>
+		<id>inputAge</id>
 		<type>TextField</type>
 
 		<bindings>
@@ -105,7 +105,7 @@
 	</component>
 
 	<component>
-		<id>sexSelect</id>
+		<id>inputSex</id>
 		<type>PropertySelection</type> 
 
 		<bindings>
@@ -128,7 +128,7 @@
 
 
 	<component>
-		<id>raceSelect</id>
+		<id>inputRace</id>
 		<type>PropertySelection</type>
 		
 		<bindings>
@@ -146,7 +146,7 @@
 
 
 	<component>
-		<id>cats</id>
+		<id>inputCats</id>
 		<type>Checkbox</type>
 
 		<bindings>
@@ -158,7 +158,7 @@
 	</component>
 
 	<component>
-		<id>dogs</id>
+		<id>inputDogs</id>
 		<type>Checkbox</type>
 
 		<bindings>
@@ -170,7 +170,7 @@
 	</component>
 
 	<component>
-		<id>ferrits</id>
+		<id>inputFerrits</id>
 		<type>Checkbox</type>
 
 		<bindings>
@@ -182,7 +182,7 @@
 	</component>
 
 	<component>
-		<id>turnips</id>
+		<id>inputTurnips</id>
 		<type>Checkbox</type>
 
 		<bindings>

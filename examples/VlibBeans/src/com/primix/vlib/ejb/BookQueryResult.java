@@ -31,7 +31,12 @@ import java.io.*;
  */
 
 /**
- *  Represents a single result row from a {@link IBookQuery}.
+ *  Represents a single result row from a {@link IBookQuery}.  In effect,
+ *  this is a light-wieght, serializable, read-only version of an {@link IBook}
+ *  bean, plus it contains the owner and holder name (which means we don't
+ *  have to go find the correct {@link IPerson} to dig out the name).
+ *
+ *  <p>This is provided for efficient access when doing various queries.
  *
  *  @version $Id$
  *  @author Howard Ship
@@ -72,13 +77,14 @@ public class BookQueryResult implements Serializable
 	public static final int HOLDER_NAME_COLUMN = 8;
 	public static final int PUBLISHER_PK_COLUMN = 9;
 	public static final int PUBLISHER_NAME_COLUMN = 10;
-	
+	public static final int AUTHOR_COLUMN = 11;
+	public static final int RATING_COLUMN = 12;
 	/**
 	 *  Number of columns in the result.
 	 *
 	 */
 	 
-	public static final int N_COLUMNS = 11;
+	public static final int N_COLUMNS = 13;
 	
 	private Object[] columns;
 	
@@ -157,5 +163,15 @@ public class BookQueryResult implements Serializable
 	public String getPublisherName()
 	{
 		return (String)get(PUBLISHER_NAME_COLUMN);
+	}
+	
+	public String getAuthor()
+	{
+		return (String)get(AUTHOR_COLUMN);
+	}
+	
+	public Integer getRating()
+	{
+		return (Integer)get(RATING_COLUMN);
 	}
 }

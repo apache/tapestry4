@@ -56,10 +56,12 @@ public class BookBean extends AbstractEntityBean
 	
 	// Other CMP fields 
 	
+	public String author;
 	public String title;
 	public String description;
 	public String ISBN;
 	public int lendCount;
+	public int rating;
 	
 	// CMP fields that shadow relationships
 	
@@ -72,11 +74,23 @@ public class BookBean extends AbstractEntityBean
 		return new String[] 
 		{
 			"title", "description", "ISBN", "lendCount", 
-			"holderPK", "ownerPK", "publisherPK"
+			"holderPK", "ownerPK", "publisherPK",
+			"author", "rating"
 		};
 	}
 	
 	// Business methods
+	
+	public String getAuthor()
+	{
+		return author;
+	}
+	
+	public void setAuthor(String value)
+	{
+		author = value;
+		dirty = true;
+	}
 	
 	public String getDescription()
 	{
@@ -186,12 +200,13 @@ public class BookBean extends AbstractEntityBean
 		
 	// Create methods
 	
-	public Integer ejbCreate(String title, String ISBN, Integer publisherPK, 
+	public Integer ejbCreate(String title, String author, String ISBN, Integer publisherPK, 
 		Integer personPK)
 	throws CreateException, RemoteException
 	{
 		this.title = title;
 		this.ISBN = ISBN;
+		this.author = author;
 		
 		ownerPK = personPK;
 		holderPK = personPK;
@@ -203,12 +218,16 @@ public class BookBean extends AbstractEntityBean
 		description = null;
 		lendCount = 0;
 		
+		// Rating really isn't implemented yet.
+		
+		rating = 0;
+		
 		dirty = true;
 		
 		return null;
 	}
 	
-	public void ejbPostCreate(String title, String ISBN, Integer publisherPK,
+	public void ejbPostCreate(String title, String author, String ISBN, Integer publisherPK,
 		Integer personPK)
 	{
 		// No post create work needed but the method must be implemented

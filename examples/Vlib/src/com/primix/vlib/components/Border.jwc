@@ -26,7 +26,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>homeLink</id>
+			<id>home</id>
 			<type>Service</type>
 			<bindings>
 				<static-binding>
@@ -36,7 +36,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>linkToMyBooks</id>
+			<id>myBooks</id>
 			<type>Direct</type>
 			<bindings>
 				<binding>
@@ -84,17 +84,17 @@
 			</bindings>
 		</component>
 		<component>
-			<id>linkToLogin</id>
+			<id>login</id>
 			<type>Page</type>
 			<bindings>
 				<static-binding>
 					<name>page</name>
-					<value>login</value>
+					<value>Login</value>
 				</static-binding>
 			</bindings>
 		</component>
 		<component>
-			<id>actionLogout</id>
+			<id>logout</id>
 			<type>Direct</type>
 			<bindings>
 				<binding>

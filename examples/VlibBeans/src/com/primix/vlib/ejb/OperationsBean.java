@@ -5,6 +5,9 @@ import java.rmi.*;
 import java.util.*;
 import javax.naming.*;
 import javax.rmi.*;
+import javax.sql.*;
+import java.sql.*;
+import com.primix.foundation.jdbc.*;
 
 /*
  * Tapestry Web Application Framework
@@ -35,7 +38,7 @@ import javax.rmi.*;
  */
 
 /**
- *  Implementation of the VlibOperations stateless session bean.
+ *  Implementation of the {@link IOperations} stateless session bean.
  *
  *  <p>Implenents a number of stateless operations for the front end.
  *
@@ -44,7 +47,7 @@ import javax.rmi.*;
  *
  */
 
-public class VlibOperationsBean implements SessionBean
+public class OperationsBean implements SessionBean
 {
 	private SessionContext context;
 	private Context environment;
@@ -52,10 +55,17 @@ public class VlibOperationsBean implements SessionBean
 	private transient IPersonHome personHome;
 	private transient IPublisherHome publisherHome;
 		
+	/**
+	 *  Data source, retrieved from the ENC property 
+	 *  "jdbc/dataSource".
+	 *
+	 */
+	 
+	private DataSource dataSource;
+	
 	public void ejbCreate()
 	{
 		Context initial;
-		Integer blockSizeProperty;
 		
 		try
 		{
@@ -66,7 +76,15 @@ public class VlibOperationsBean implements SessionBean
 		{
 			throw new EJBException("Could not lookup environment: " + e);
 		}
-		
+	
+		try
+		{
+			dataSource = (DataSource)environment.lookup("jdbc/dataSource");
+		}
+		catch (NamingException e)
+		{
+			throw new EJBException("Could not lookup data source: " + e);
+		}
 	}
 	
 	/**
@@ -131,7 +149,7 @@ public class VlibOperationsBean implements SessionBean
 	}
 	
 	
-	public IBook addBook(Integer ownerPK, String title, String ISBN, String description,
+	public IBook addBook(Integer ownerPK, String title, String author, String ISBN, String description,
 						 Integer publisherPK)
 	throws CreateException, RemoteException
 	{
@@ -164,7 +182,7 @@ public class VlibOperationsBean implements SessionBean
 			throw new CreateException("Could not create book; publisher not found: " + e);
 		}
 
-		book = bookHome.create(title, ISBN, publisherPK, ownerPK);
+		book = bookHome.create(title, author, ISBN, publisherPK, ownerPK);
 		book.setDescription(description);
 		
 		return book;
@@ -181,15 +199,15 @@ public class VlibOperationsBean implements SessionBean
 	 *
 	 */
 	 
-	public IBook addBook(Integer ownerPK, String title, String ISBN, String description,
-						 String publisherName)
+	public IBook addBook(Integer ownerPK, String title, String author, String ISBN, 
+						 String description, String publisherName)
 	throws CreateException, RemoteException
 	{
 		IBookHome bookHome;
 		IPersonHome personHome;
 		IPublisherHome publisherHome;
 		IBook book;
-		IPublisher publisher;
+		IPublisher publisher = null;
 		Integer publisherPK;
 		
 		// First, verify that the person and publisher do exist.
@@ -211,11 +229,11 @@ public class VlibOperationsBean implements SessionBean
 		
 		try
 		{
-		publisher = publisherHome.findByName(publisherName);
+			publisher = publisherHome.findByName(publisherName);
 		}
 		catch (FinderException e)
 		{
-			throw new CreateException("Could not locate existing publisher: " + e);
+			// Ignore, means that no publisher with the given name already exists.
 		}
 		
 		if (publisher == null)
@@ -223,7 +241,7 @@ public class VlibOperationsBean implements SessionBean
 			
 		publisherPK = (Integer)publisher.getPrimaryKey();
 		
-		book = bookHome.create(title, ISBN, publisherPK, ownerPK);
+		book = bookHome.create(title, author, ISBN, publisherPK, ownerPK);
 		book.setDescription(description);
 		
 		return book;
@@ -295,4 +313,113 @@ public class VlibOperationsBean implements SessionBean
 		
 		return publisherHome;
 	}
+	
+	public Publisher[] getPublishers()
+	{
+		Connection connection = null;
+		IStatement statement = null;
+		ResultSet set = null;
+		StatementAssembly assembly;
+		Integer primaryKey;
+		String name;
+		List list;
+		Publisher[] result;
+		
+		try
+		{
+			connection = getConnection();
+			
+		
+			assembly = new StatementAssembly();
+			
+			assembly.newLine("SELECT PUBLISHER_ID, NAME");
+			assembly.newLine("FROM PUBLISHER");
+			assembly.newLine("ORDER BY NAME");
+		
+			statement = assembly.createStatement(connection);	
+			
+			set = statement.executeQuery();	
+			list = new ArrayList();
+			
+			while (set.next())
+			{
+				primaryKey = (Integer)set.getObject(1);
+				name = set.getString(2);
+				
+				list.add(new Publisher(primaryKey, name));
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new EJBException("Could not fetch all Publishers: " + e.getMessage());
+		}
+		finally
+		{
+			close(connection, statement, set);
+		}
+		
+		// Convert from List to Publisher[]
+		
+		result = new Publisher[list.size()];
+		
+		return (Publisher[])list.toArray(result);
+	}
+	
+	
+	private Connection getConnection()
+	{
+		try
+		{
+			return dataSource.getConnection();
+		}
+		catch (SQLException e)
+		{
+			throw new EJBException("Unable to get database connection from pool: " + e);
+		}
+	}
+	
+	private void close(Connection connection, IStatement statement, ResultSet resultSet)
+	{
+		if (resultSet != null)
+		{
+			try
+			{
+				resultSet.close();
+			}
+			catch (SQLException e)
+			{
+				System.out.println("Exception closing result set.");
+				e.printStackTrace();
+			}
+		}
+		
+		if (statement != null)
+		{
+			try
+			{
+				statement.close();
+			}
+			catch (SQLException e)
+			{
+				System.out.println("Exception closing statement.");
+				e.printStackTrace();
+			}
+		}
+		
+		if (connection != null)
+		{
+			try
+			{
+				connection.close();
+			}
+			catch (SQLException e)
+			{
+				System.out.println("Exception closing connection.");
+				e.printStackTrace();
+			}
+		}
+	}
+
 }  
+
+
