@@ -61,7 +61,6 @@ public class HomeServlet extends VlibServlet
 		Book book)
 	{
 		VirtualLibraryApplication application;
-		String label = "[Borrow]";
 		boolean enabled;
 		
 		application = VirtualLibraryApplication.get(context);
@@ -72,13 +71,9 @@ public class HomeServlet extends VlibServlet
 		enabled = application.isUserLoggedIn() &&
 		  		 !application.isLoggedInUser(book.getHolderPrimaryKey());
 		
-		if (!enabled)
-		{
-			writer.print(label);
-			return;
-		}
-		
-		writeLink(context, writer, "/home/borrow/" + book.getPrimaryKey(), label);
+		if (enabled)
+			writeLink(context, writer, 
+				"/home/borrow/" + book.getPrimaryKey(), "[Borrow]");
 	}
 
     public static String getSearchURL(RequestContext context)

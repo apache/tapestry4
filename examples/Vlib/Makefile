@@ -43,6 +43,7 @@ EXEC_CLASSPATH = \
 run: default
 	@$(ECHO) "\n*** Running Jetty for Vlib ... ***\n"
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
+		-Xms128M -Xmx128M -showversion \
 		-Dcom.primix.tapestry.enable-reset-service=true \
 		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
 		com.mortbay.Jetty.Server jetty.xml)

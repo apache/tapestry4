@@ -39,7 +39,7 @@ import java.io.*;
  */
 
 /**
- *  Controller for the Login page.  An instance is stored in the {@link HttpSession},
+ *  Controller for the MyBooks page.  An instance is stored in the {@link HttpSession},
  *  and persists until the user succesfully logs in.
  *
  *  @version $Id$
@@ -50,7 +50,8 @@ public class MyBooksDelegate extends BookQueryDelegate
 implements ILoginCallback
 {
 
-	private transient Book[] books;
+	private transient Book[] ownedBooks;
+	private transient Book[] borrowedBooks;
 	private transient String error;
 	private transient String message;
 
@@ -61,77 +62,92 @@ implements ILoginCallback
 	 *  of the {@link HttpSession}.
 	 *
 	 */
-	 
+
 
 	public MyBooksDelegate(RequestContext context)
 	{
 		super(context);
-		
+
 		context.setSessionAttribute(SESSION_ATTRIBUTE_NAME, this);
 	}
-	
+
 	/**
 	 *  Gets the delegate from the {@link HttpSession}, or creates a new
 	 *  one (and stores it in the session).
 	 *
 	 */
-	 
+
 	public static MyBooksDelegate get(RequestContext context)
 	{
 		MyBooksDelegate result;
-		
+
 		result = (MyBooksDelegate)context.getSessionAttribute(SESSION_ATTRIBUTE_NAME);
 		if (result == null)
 			result = new MyBooksDelegate(context);
-		
+
 		return result;	
 	}
-	
+
 	public String getError()
 	{
 		return error;
 	}
-	
+
 	public String getMessage()
 	{
 		return message;
 	}
-	
+
 	public void setError(String value)
 	{
 		error = value;
 	}
-	
+
 	public void setMessage(String value)
 	{
 		message = value;
 	}
-	
+
 	public void service(RequestContext context) throws ServletException, IOException
+	{
+		if (!application.isUserLoggedIn())
+		{
+			LoginDelegate login = LoginDelegate.get(context);
+			login.performLogin(this, context);
+			return;
+		}
+
+		String action = context.getPathInfo(0);
+
+		if (action != null &&
+			action.equals("return"))
+			returnBook(context);
+
+		render(context);			
+	}
+
+	private void render(RequestContext context) throws ServletException, IOException
 	{
 		IBookQuery query;
 		int count;
+		Integer userPK = application.getUserPK();
+
+		ownedBooks = null;
+		borrowedBooks = null;
 		
 		try
-		{
-			if (!application.isUserLoggedIn())
-			{
-				LoginDelegate login = LoginDelegate.get(context);
-				login.performLogin(this, context);
-				return;
-			}
-			
-			// Otherwise, we're logged in.
-			
+		{	
 			query = getOrCreateQuery();
-			
-			count = query.ownerQuery(application.getUserPK());
-			
-			if (count == 0)
-				books = new Book[0];
-			else
-				books = query.get(0, count)	;
-			
+
+			count = query.ownerQuery(userPK);
+
+			if (count > 0)
+				ownedBooks = query.get(0, count)	;
+
+			count = query.borrowerQuery(userPK);
+			if (count > 0)
+				borrowedBooks = query.get(0, count);
+
 			forward("/jsp/MyBooks.jsp", "My Books", "My Books", context);	
 		}
 		catch (RemoteException e)
@@ -140,20 +156,50 @@ implements ILoginCallback
 		}
 		finally
 		{
-			books = null;
+			ownedBooks = null;
+			borrowedBooks = null;
 			message = null;
 			error = null;
 		}
 	}
 
+
+	private void returnBook(RequestContext context)
+	throws ServletException
+	{
+	    IOperations operations = application.getOperations();
+		Integer bookPK = new Integer(context.getPathInfo(1));
+		
+	    try
+	    {
+	        IBook book = operations.returnBook(bookPK);
+
+	        setMessage("Returned book: " + book.getTitle());
+	    }
+	    catch (FinderException ex)
+	    {
+	        setError("Could not return book: " + ex.getMessage());
+	        return;
+	    }
+	    catch (RemoteException ex)
+	    {
+	        throw new ServletException(ex);
+	    }
+	}
+
 	public void postLogin(RequestContext context) throws IOException, ServletException
 	{
-		service(context);
+		render(context);
 	}
-	
-	public Book[] getBooks()
+
+	public Book[] getOwnedBooks()
 	{
-		return books;
+		return ownedBooks;
 	}
-	
+
+	public Book[] getBorrowedBooks()
+	{
+		return borrowedBooks;
+	}
+
 }
