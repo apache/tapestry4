@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<!-- $Id$ --> 
+<!-- $Id$ -->
 <html>
 <head>
 <title>ListEdit</title>
@@ -9,17 +9,17 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><A href="LinkSubmit.html"><IMG alt=LinkSubmit src="common-images/prev.png"></a></td>  
-  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
-  <td align="right"><A href="Option.html"><IMG alt=Option src="common-images/next.png"></a></td>  
+  <td align="left"><A href="LinkSubmit.html"><IMG alt=LinkSubmit src="common-images/prev.png"></a></td>
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>
+  <td align="right"><A href="Option.html"><IMG alt=Option src="common-images/next.png"></a></td>
  <tr>
  <tr>
-  <td colspan="3"><hr></td>  
+  <td colspan="3"><hr></td>
  </tr>
  <tr>
   <td colspan="3">
    <table border="0" cellpadding="4" cellspacing="4" width="100%">
-   
+
 <tr valign="top">
  <td>
   <table>
@@ -51,21 +51,21 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  A component used to iterate through a list of items within a 
-  <A href="Form.html">Form</a>.  The ListEdit is similar to a 
-  <A href="Foreach.html">Foreach</a> but uses hidden 
+  A component used to iterate through a list of items within a
+  <A href="Form.html">Form</a>.  The ListEdit is similar to a
+  <A href="Foreach.html">Foreach</a> but uses hidden
   input fields within the &lt;form&gt; to store the items in the list.
   <p>
   An instance of <A href="../api/org/apache/tapestry/util/io/DataSqueezer.html">
-  <tt>DataSqueezer</tt></a> is used to convert arbitrary objects into 
-  <tt>String</tt>s and then back into objects. However, for best efficiency, 
-  the list should be simple <tt>String</tt>s or numeric types, typically a 
-  primary key or other identifier from which the rest of an object may be 
-  retrieved or constructed. 
+  <tt>DataSqueezer</tt></a> is used to convert arbitrary objects into
+  <tt>String</tt>s and then back into objects. However, for best efficiency,
+  the list should be simple <tt>String</tt>s or numeric types, typically a
+  primary key or other identifier from which the rest of an object may be
+  retrieved or constructed.
 	<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/io/Serializable.html">
-	<tt>Serializable</tt></a> 
+	<tt>Serializable</tt></a>
             objects will work, but the resultant string can be very, very large.</p>
-               
+
  </td>
 </tr>
 
@@ -73,7 +73,7 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<A href="Foreach.html">Foreach</a>, 
+	<A href="Foreach.html">Foreach</a>,
   <A href="Form.html">Form</a>,
   <A href="Hidden.html">Hidden</a>
  </td>
@@ -84,11 +84,11 @@
   <b>Parameters</b>
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
-  <tr> 
+  <tr>
     <th>Name</th>
     <th>Type</th>
 	  <th>Direction</th>
-    <th>Required</th> 
+    <th>Required</th>
     <th>Default</th>
     <th>Description</th>
   </tr>
@@ -99,23 +99,23 @@
 		<tt>List</tt></a>, <br>
 	<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Iterator.html">
 		<tt>Iterator</tt></a> or <br>
-		
+
 		<tt>Object[]</tt>
     </td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
-    The list of values to be editted within the form. This list is only read 
-    when the component renders; it records hidden input fields in the form to 
+    The list of values to be editted within the form. This list is only read
+    when the component renders; it records hidden input fields in the form to
     guide things when the form is submitted.
-    <p> 
-    The source can contain objects of any type, though they should be 
-    serializable. Ideally, the objects should be <tt>String</tt> or wrapper 
-    types such as <tt>Integer</tt>. In other 
-                  words, the source should be a list of primary keys of the 
-                  objects being editted.</p>          
-           
+    <p>
+    The source can contain objects of any type, though they should be
+    serializable. Ideally, the objects should be <tt>String</tt> or wrapper
+    types such as <tt>Integer</tt>. In other
+                  words, the source should be a list of primary keys of the
+                  objects being editted.</p>
+
     </td>
 	</tr>
   <tr>
@@ -128,9 +128,9 @@
      The value for each iteration through the list (during render or rewind).
     </td>
 	</tr>
-	
-	
-	
+
+
+
   <tr>
     <td>index</td>
     <td>int</td>
@@ -139,7 +139,7 @@
 		<td>&nbsp;</td>
 		<td>The index (starting at zero) for each iteration through the list.</td>
 	</tr>
-	
+
   <tr>
     <td>listener</td>
     <td><A href="../api/org/apache/tapestry/IActionListener.html">
@@ -148,20 +148,20 @@
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
-      A listener that is informed after the value parameter is updated. This 
-    allows the data set operated on by the rest of the 
-    <A href="Form.html">Form</a> components to be synchronized to the value 
-    stored in the hidden field. 
+      A listener that is informed after the value parameter is updated. This
+    allows the data set operated on by the rest of the
+    <A href="Form.html">Form</a> components to be synchronized to the value
+    stored in the hidden field.
     <p>
-    A typical use is to encode the primary 
-                  key of an entity as a Hidden; when the form is submitted, the 
-                  Hidden's listener re-reads the corresponding entity from the 
+    A typical use is to encode the primary
+                  key of an entity as a Hidden; when the form is submitted, the
+                  Hidden's listener re-reads the corresponding entity from the
                   database.</p>
-                    
+
     </td>
 	</tr>
-		
-	
+
+
   <tr>
     <td>element</td>
     <td>String</td>
@@ -169,19 +169,19 @@
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
-    If specified, then a tag for the specified element is placed around the 
-    content on each iteration. This emulates the <A href="Any.html">Any</a> 
-    component. Most often the element specified is "tr" when the ListEdit is 
-    part of a table. Any informal parameters are applied to the element. 
+    If specified, then a tag for the specified element is placed around the
+    content on each iteration. This emulates the <A href="Any.html">Any</a>
+    component. Most often the element specified is "tr" when the ListEdit is
+    part of a table. Any informal parameters are applied to the element.
     </td>
 	</tr>
 	</table>
-            <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters: 
+            <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters:
             <STRONG>allowed</STRONG>
     <br>
-  Reserved 
+  Reserved
             parameters: <EM>none</EM> </P>
-    
+
  </td>
 </tr>
 
@@ -189,18 +189,66 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.</p>
-      
-  
- </td></tr></table>
+  This <tt>ListEdit</tt> control is typically used in conjuction with the <tt>ListEditMap</tt>	class. To understand how the <tt>ListEdit</tt> control works you need to understand
+	the how forms are rewound. But before we get into that lets see an example of the
+	<tt>ListEdit</tt> control in action.
+	This example is from the vlib sample application and allows the user to edit a list of publishers.</p>
+	<p>HTML:</p>
+	<p>The following code sets up list of TextField components for editing the publisher names. A checkbox is used to mark publishers to be deleted from the database. It's pretty similar to a Foreach component at this stage. </p>	<pre>    &lt;tr jwcid=&quot;listEdit&quot;&gt;<br>      &lt;td class=&quot;control&quot;&gt;&lt;input jwcid=&quot;inputName@TextField&quot; value=&quot;ognl:publisher.name&quot; size=&quot;40&quot; maxlength=&quot;40&quot;/&gt;<br>      &lt;/td&gt;<br>      &lt;td class=&quot;checkbox&quot;&gt;&lt;input type=&quot;checkbox&quot; jwcid=&quot;delete@Checkbox&quot; selected=&quot;ognl:listEditMap.deleted&quot;/&gt;<br>      &lt;/td&gt;<br>    &lt;/tr&gt;<br>
+</pre>
+	<p>Page file:</p>
+	<p>The page file sets up some page properties for the <tt>ListEditMap</tt> and current publisher. The <tt>listEdit</tt> component is where it gets interesting. The source binding is the set of all keys in the list edit map. Basically the list of all the publishers identifers. The value is the current key. It would actually be possible to use the publisher object as the value however because each value object is serialized this could get pretty inefficient. Instead what happens is a listener is setup. This listener sets up the actual publisher object from the key when the form is rewound.</p>	<pre>  &lt;property-specification name=&quot;listEditMap&quot; type=&quot;org.apache.tapestry.form.ListEditMap&quot;/&gt;<br>  &lt;property-specification name=&quot;publisher&quot; type=&quot;org.apache.tapestry.vlib.ejb.Publisher&quot;/&gt;<br>  <br>  &lt;component id=&quot;listEdit&quot; type=&quot;ListEdit&quot;&gt;<br>  	&lt;binding name=&quot;source&quot; expression=&quot;listEditMap.keys&quot;/&gt;<br>  	&lt;binding name=&quot;value&quot; expression=&quot;listEditMap.key&quot;/&gt;<br>  	&lt;static-binding name=&quot;element&quot; value=&quot;tr&quot;/&gt;<br>  	&lt;binding name=&quot;listener&quot; expression=&quot;listeners.synchronizePublisher&quot;/&gt;<br>  &lt;/component&gt;<br>
+	</pre>
+	<p>Code:</p>
+	<p>In the code part of this example consists of the abstract properties we set up earlier and three important methods. The <tt>synchronizePublisher()</tt> method is used to set the <tt>Publisher</tt> object from the keys we are storing in the <tt>listEditMap</tt> property. The secret to understanding how it works lies in understanding the rewind cycle. During rewind the listener method is called multiple times - once for each row. The rewind process calls <tt>listEditMap.setKey()</tt>. This effects the current value returned by <tt>listEditMap.getValue()</tt>. Once the current publisher is setup calls from the <tt>TextField</tt> component control the setting of the necessary publisher object properties.</p>
+	<p>The next two methods are easier to understand. The <tt>readPublishers()</tt> call populates the <tt>listEditMap</tt> property with the set of all publishers to be edited. It is called from <tt>pageBeginRender()</tt>. The <tt>processForm()</tt> method handles the form submit. All updated publishers are in <tt>map.getValues()</tt> and deleted publishers are returned by <tt>map.getDeletedKeys()</tt>. </p>	<pre>
+    public abstract ListEditMap getListEditMap();
+    public abstract void setListEditMap(ListEditMap listEditMap);
+    public abstract Publisher getPublisher();
+    public abstract void setPublisher(Publisher publisher);
+
+    public void synchronizePublisher(IRequestCycle cycle)
+    {
+        ListEditMap map = getListEditMap();
+
+        Publisher publisher = (Publisher) map.getValue();
+
+        if (publisher == null)
+        {
+            setError(getMessage("out-of-date"));
+            throw new PageRedirectException(this);
+        }
+
+        setPublisher(publisher);
+    }
+    private void readPublishers()<br>    {<br>        ...
+        ListEditMap map = new ListEditMap();
+        int count = Tapestry.size(publishers);
+        for (i = 0; i < count; i++)
+            map.add(publishers[i].getId(), publishers[i]);
+        setListEditMap(map);
+    }<br>    public void processForm(IRequestCycle cycle)
+    {
+        ...
+        ListEditMap map = getListEditMap();
+        List updateList = map.getValues();
+        List deletedIds = map.getDeletedKeys();
+        // update and delete publishers
+    }
+    </pre>
 </td></tr>
 <tr>
- <td colspan="3"><hr></td>  
+  <td colspan="2">&nbsp;</td>
+</tr>
+   </table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>
 </tr>
 <tr>
- <td align="left"><A href="LinkSubmit.html"><IMG alt=LinkSubmit src="common-images/prev.png"></a></td>  
- <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
- <td align="right"><A href="Option.html"><IMG alt=Option src="common-images/next.png"></a></td>  
+ <td align="left"><A href="LinkSubmit.html"><IMG alt=LinkSubmit src="common-images/prev.png"></a></td>
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>
+ <td align="right"><A href="Option.html"><IMG alt=Option src="common-images/next.png"></a></td>
 </tr>
 </table>
 
