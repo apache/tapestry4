@@ -339,7 +339,7 @@ public class Form
     {
 		return getElementId(component.getId());
 	}
-
+	
 	/**
 	 *  Constructs a unique identifier from the base id.  If possible, the
 	 *  id is used as-is.  Otherwise, a unique identifier is appended
@@ -406,27 +406,24 @@ public class Form
     public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
 		String method = "post";
-		boolean rewound;
-		String URL;
-		IEngineService service;
-		String actionId;
 		IActionListener listener;
-		boolean renderForm;
 		
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException("Forms may not be nested.", this);
 		
 		cycle.setAttribute(ATTRIBUTE_NAME, this);
 		
-		actionId = cycle.getNextActionId();
+		String actionId = cycle.getNextActionId();
 		name = "Form" + actionId;
 		
 		try
 		{
-			renderForm = !cycle.isRewinding();
-			rewound = cycle.isRewound(this);
+			boolean renderForm = !cycle.isRewinding();
+			boolean rewound = cycle.isRewound(this);
 			
 			rewinding = rewound;
+			
+			Gesture g = getGesture(cycle, actionId);	
 			
 			if (renderForm)
 			{
@@ -438,10 +435,18 @@ public class Form
 				writer.begin("form");
 				writer.attribute("method", method);
 				writer.attribute("name", name);
-				writer.attribute("action", buildURL(cycle, actionId));
+				
+				writer.attribute("action", cycle.encodeURL(g.getServletPath()));
 				
 				generateAttributes(cycle, writer, reservedNames);
+				
+				
 			}
+			
+			// Write the hidden's, or at least, reserve the query parameters
+			// required by the Gesture.
+			
+			writeGestureParameters(writer, g, !renderForm);			
 			
 			elementCount = 0;
 			
@@ -683,16 +688,16 @@ public class Form
 	
 	/**
 	 *  Builds the URL for the form, using either the direct or
-	 *  action service.
+	 *  action service.  In addition, writes the query parameters
+	 *  needed by the service.
 	 *
-	 *  @since 1.0.2
+	 *  @since 1.0.3
 	 *
 	 */
 	
-	private String buildURL(IRequestCycle cycle, String actionId)
+	private Gesture getGesture(IRequestCycle cycle, String actionId)
 	{
 		String serviceName = null;
-
 		
 		if (isDirect())
 			serviceName = IEngineService.DIRECT_SERVICE;
@@ -701,9 +706,33 @@ public class Form
 		
 		IEngine engine = cycle.getEngine();
 		IEngineService service = engine.getService(serviceName);
-		String URL = service.buildURL(cycle, this, new String[] { actionId });
 		
-		return cycle.encodeURL(URL);
+		return service.buildGesture(cycle, this, new String[] { actionId });
+	}
+	
+	private void writeGestureParameters(IResponseWriter writer, Gesture g, boolean reserveOnly)
+	{
+		Iterator i = g.getQueryParameters();
+		
+		while (i.hasNext())
+		{
+			Map.Entry e = (Map.Entry)i.next();
+			
+			String key = (String)e.getKey();
+			
+			if (!reserveOnly)
+			{
+				writer.begin("input");
+				writer.attribute("type", "hidden");
+				writer.attribute("name", key);
+				writer.attribute("value", (String)e.getValue());
+			}
+			
+			// Reserve the name, in case any form component has the
+			// same name.
+			
+			getElementId(key);
+		}
 	}
 }
 

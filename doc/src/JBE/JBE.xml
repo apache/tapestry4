@@ -1344,6 +1344,7 @@ C:\Work\Tapestry\doc\src\JBE>]]></programlisting>
 </varlistentry>
 </variablelist>
 </section>
+</section>
 <section id="additional-vars">
 <title>Additional Variables</title>
 <para>In addition to variables defined in individual module Makefiles, additional variables
@@ -1394,8 +1395,6 @@ variables will affect all modules.
 </varlistentry>
 </variablelist>
 </section>
-<!-- FIX: -->
-</section>
 </chapter>
 <chapter id="future">
 <title>Future development of the JBE</title>
@@ -1421,5 +1420,6 @@ As new situations arise, it is extended to meet the need.</para>
 <para>Support for Linux platforms, and for IBM JDKs.</para>
 </listitem>
 </itemizedlist>
+
 </chapter>
 </book>

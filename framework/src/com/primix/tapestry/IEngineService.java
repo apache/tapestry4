@@ -40,28 +40,9 @@ import javax.servlet.http.*;
 /**
  *  A service, provided by the {@link IEngine}, for its pages and/or components.  
  *  Services are
- *  responsible for constructing URLs to represent dynamic application behavior, and for
+ *  responsible for constructing {@link Gesture}s (an encoding of URLs)
+ *  to represent dynamic application behavior, and for
  *  parsing those URLs when a subsequent request involves them.
- *
- *  <p>The general format for such a URL consists of several segments divided by
- *  slashes:
- *  <ul>
- *  <li>servlet prefix
- *  <li>service name
- *  <li>service URI
- *  </ul>
- *
- * <p>The service URI is additional path info values that are meaningful to the service.
- * For example, the page service provided by 
- * {@link AbstractEngine} and the
- * {@link Page} component stores the name of the target page there:
- *
- *  <blockquote>
- *  /some-app/page/target-page
- * </blockquote>
- *
- * <p>Where "/some-app" is the servlet prefix.
- *
  *
  *  @see IEngine#getService(String)
  *
@@ -149,23 +130,53 @@ public interface IEngineService
 	
     public static final String RESET_SERVICE = "reset";
 	
-    /**
+ 	/**
+	 *  The query parameter into which each engine service records 
+	 *  its information when building a URL.
+	 *
+	 *  @since 1.0.3
+	 */
+	
+	public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
+	
+	/**
+	 *  The query parameter for additional context needed by the
+	 *  service.  This is used to store things like the page name or component id.
+	 *  When there are multiple pieces of data, they are seperated by
+	 *  slashes.
+	 *
+	 *  @since 1.0.3
+	 *
+	 */
+	
+	public static final String CONTEXT_QUERY_PARMETER_NAME = "context";
+	
+	/**
+	 *  The query parameter for application specific parameters to the
+	 *  service (this is used with the direct service).  Each of these
+	 *  values is encoded with {@link java.net.URLEncoder#encode(String)} before
+	 *  being added to the URL.  Multiple values are seperated with slashes.
+	 *
+	 *  @since 1.0.3
+	 *
+	 */
+	
+	public static final String PARAMETERS_QUERY_PARAMETER_NAME = "parameters";
+	
+	/**
 	 *  Builds a URL for a service.  This is performed during the
 	 *  rendering phase of one request cycle and bulds URLs that will
 	 *  invoke activity in a subsequent request cycle.
 	 *
 	 *  @param cycle Defines the request cycle being processed.
 	 *  @param component The component requesting the URL.
-	 *  @param context Additional elements added to the URI path that express the
-	 *  context.  Each service defines it own meaning for this; for example, the page
-	 *  service requires a single context element to identify the page to
-	 *  link to.
+	 *  @param parameters Additional parameters specific to the
+	 *  component requesting the Gesture.
 	 *  @returns The URL for the service.  The URL will have need to be encoded.
 	 *
-	 *  @see IRequestCycle#encodeURL(String)
 	 */
 	
-    public String buildURL(IRequestCycle cycle, IComponent component, String[] context);
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters);
 	
     /**
 	 *  Perform the service, interpreting the URL (from the
@@ -189,4 +200,5 @@ public interface IEngineService
 	 */
 	
 	public String getName();
+
 }

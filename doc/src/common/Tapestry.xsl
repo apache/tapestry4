@@ -11,7 +11,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/transitional"
                 exclude-result-prefixes="#default">
 
-<xsl:import href="C:\Work\Tapestry\JBE\docbook\docbook-xsl-1.41\html\chunk.xsl"/>
+<xsl:import href="##DOCBOOK_XSL_DIR##/html/chunk.xsl"/>
 
 <xsl:template match="programlisting|screen|synopsis">
   <xsl:param name="suppress-numbers" select="'0'"/>

@@ -28,8 +28,6 @@
   java-type="java.lang.String" 
   required="no"/>
   
-  <parameter name="mirror"/>
-  
   <parameter name="selectImage" java-type="com.primix.tapestry.IAsset"/>
   <parameter name="selectDisabledImage" java-type="com.primix.tapestry.IAsset"/>
   <parameter name="deselectImage" java-type="com.primix.tapestry.IAsset"/>
@@ -44,24 +42,24 @@
     <binding name="class" property-path="tableClass"/>
   </component>
   
-  <component id="insertLeftHeader" type="InsertBlock">
-    <binding name="block" property-path="leftHeaderBlock"/>
+  <component id="insertAvailableHeader" type="InsertBlock">
+    <binding name="block" property-path="availableHeaderBlock"/>
   </component>
     
   <component id="defaultSelectedTitleBlock" type="Block"/>
     
-  <component id="insertRightHeader" type="InsertBlock">
-    <binding name="block" property-path="rightHeaderBlock"/>
+  <component id="insertSelectedHeader" type="InsertBlock">
+    <binding name="block" property-path="selectedHeaderBlock"/>
   </component>
 
   <component id="defaultAvailableTitleBlock" type="Block"/>
   
-  <component id="rightSelect" type="Delegator">
-    <binding name="delegate" property-path="rightSelectDelegate"/>
+  <component id="availableSelect" type="Delegator">
+    <binding name="delegate" property-path="availableSelectDelegate"/>
   </component>
   
-  <component id="leftSelect" type="Delegator">
-    <binding name="delegate" property-path="leftSelectDelegate"/>
+  <component id="selectedSelect" type="Delegator">
+    <binding name="delegate" property-path="selectedSelectDelegate"/>
   </component>
   
   <component id="selectButton" type="Any">

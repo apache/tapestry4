@@ -119,7 +119,9 @@ public class PrivateAsset implements IAsset
 		// use the asset service, there's no need to encode the URL anymore.
 		// This change was made in release 1.0.1.
 		
-		return service.buildURL(cycle, null, parameters);
+		Gesture g = service.buildGesture(cycle, null, parameters);
+		
+		return g.getFullURL();
 	}
 
 	public InputStream getResourceAsStream(IRequestCycle cycle)
@@ -128,7 +130,6 @@ public class PrivateAsset implements IAsset
 		try
 		{
 			IResourceResolver resolver = cycle.getEngine().getResourceResolver();
-
 
 			URL url = resolver.getResource(findLocalization(cycle));
 

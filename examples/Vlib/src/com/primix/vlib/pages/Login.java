@@ -232,7 +232,7 @@ public class Login
 		// the browser (IE 5.0 anyway) quietly drops the cookie.
 		
 		cookie = new Cookie(COOKIE_NAME, email);
-		cookie.setPath(engine.getServletPrefix());
+		cookie.setPath(engine.getServletPath());
 		cookie.setMaxAge(ONE_WEEK);
 		
 		// Record the user's email address in a cookie

@@ -158,13 +158,13 @@ public interface IEngine
     public IEngineService getService(String name);
 	
     /**
-	 *  Returns the URL prefix that corresponds to the servlet for the application.  
+	 *  Returns the URL path that corresponds to the servlet for the application.  
 	 *  This is required by instances of {@link IEngineService} that need 
 	 *  to construct URLs for the application.  This value will include
 	 *  the context path.
 	 */
 	
-    public String getServletPrefix();
+    public String getServletPath();
 	
     /**
 	 *  Returns the context path, a string which is prepended to the names of

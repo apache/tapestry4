@@ -103,7 +103,7 @@ public abstract class AbstractEngine
 		Category.getInstance(AbstractEngine.class);
 	
 	private transient String contextPath;
-	private transient String servletPrefix;
+	private transient String servletPath;
 	private transient String clientAddress;
 	private transient String sessionId;
 	private transient boolean stateful;
@@ -255,61 +255,51 @@ public abstract class AbstractEngine
 	
 	private transient IResourceResolver resolver;
 	
-	
-	
-	private class ActionService implements IEngineService
+	private class ActionService extends AbstractService
 	{
-		private StringBuffer buffer;
-		
 		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 			throws RequestCycleException, ServletException, IOException
 		{
-			serviceAction(cycle, output);
+			serviceAction(cycle, getServiceContext(cycle.getRequestContext()), output);
 			
 			return true;
 		}
 		
-		public String buildURL(IRequestCycle cycle, IComponent component, String[] parameters)
+		private String[] serviceContext;
+		
+		public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
 		{
 			if (parameters == null ||
 					parameters.length != 1)
-				throw new IllegalArgumentException(
-					"Service action requires one parameter.");
+				throw new IllegalArgumentException("Service action requires one parameter.");
 			
-			// See note in DirectService.buildURL().  Basically, I think
-			// reuse of the StringBuffer is kosher.
+			IPage componentPage = component.getPage();
+			IPage responsePage = cycle.getPage();			
+			int length;
 			
-			if (buffer == null)
-				buffer = new StringBuffer();
+			if (componentPage == responsePage)
+				length = 3;
 			else
-				buffer.setLength(0);
+				length = 4;
 			
-			// Because we know that all of the terms are 'URL safe' (they contain
-			// only alphanumeric characters and the '.') we can avoid
-			// using URLEncoder.
+			String[] serviceContext = new String[length];
 			
-			buffer.append(servletPrefix);
-			buffer.append('/');
-			buffer.append(ACTION_SERVICE);
-			buffer.append('/');
-			buffer.append(cycle.getPage().getName());
-			buffer.append('/');
-			buffer.append(parameters[0]);
-			buffer.append('/');
+			int i = 0;
+			
+			serviceContext[i++] = responsePage.getName();
+			serviceContext[i++] = parameters[0];
+			
 			
 			// Because of Block/InsertBlock, the component may not be on
 			// the same page as the response page and we need to make
 			// allowances for this.
 			
-			if (cycle.getPage() != component.getPage())
-			{
-				buffer.append(component.getPage().getName());
-				buffer.append('/');
-			}
+			if (componentPage != responsePage)
+				serviceContext[i++] = componentPage.getName();
 			
-			buffer.append(component.getIdPath());
+			serviceContext[i++] = component.getIdPath();
 			
-			return buffer.toString();
+			return assembleGesture(getServletPath(), ACTION_SERVICE, serviceContext, null);
 		}
 		
 		public String getName()
@@ -318,30 +308,25 @@ public abstract class AbstractEngine
 		}
 	}
 	
-	private class PageService implements IEngineService
+	private class PageService extends AbstractService
 	{
 		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 			throws RequestCycleException, ServletException, IOException
 		{
-			servicePage(cycle, output);
+			servicePage(cycle, getServiceContext(cycle.getRequestContext()), output);
 			
 			return true;
 		}
 		
-		public String buildURL(IRequestCycle cycle, IComponent component, String[] parameters)
+		
+		public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
 		{
 			if (parameters == null ||
 					parameters.length != 1)
 				throw new IllegalArgumentException(
 					"Service page requires exactly one parameter.");
 			
-			// We assume that the page name is URL safe here.  We
-			// could check here that the page is defined by the
-			// specification.
-			
-			return servletPrefix +
-				"/" + PAGE_SERVICE +
-				"/" + parameters[0];
+			return assembleGesture(getServletPath(), PAGE_SERVICE, parameters, null);
 		}
 		
 		public String getName()
@@ -350,7 +335,7 @@ public abstract class AbstractEngine
 		}
 	}
 	
-	private class HomeService implements IEngineService
+	private class HomeService extends AbstractService
 	{
 		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 			throws RequestCycleException, ServletException, IOException
@@ -375,14 +360,13 @@ public abstract class AbstractEngine
 			return true;
 		}
 		
-		public String buildURL(IRequestCycle cycle, IComponent component,  String[] parameters)
+		public Gesture buildGesture(IRequestCycle cycle, IComponent component,  String[] parameters)
 		{
 			if (parameters != null &&
 					parameters.length > 0)
 				throw new IllegalArgumentException("Service home requires no parameters.");
 			
-			return servletPrefix +
-				"/" + HOME_SERVICE;
+			return assembleGesture(getServletPath(), HOME_SERVICE, null, null);
 		}
 		
 		public String getName()
@@ -391,7 +375,7 @@ public abstract class AbstractEngine
 		}
 	}
 	
-	private class RestartService implements IEngineService
+	private class RestartService extends AbstractService
 	{
 		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 			throws RequestCycleException, IOException, ServletException
@@ -409,14 +393,13 @@ public abstract class AbstractEngine
 			return false;
 		}
 		
-		public String buildURL(IRequestCycle cycle, IComponent component, String[] parameters)
+		public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
 		{
 			if (parameters != null &&
 					parameters.length > 0)
 				throw new IllegalArgumentException("Service restart requires no parameters.");
 			
-			return servletPrefix +
-				"/" + RESTART_SERVICE;
+			return assembleGesture(getServletPath(), RESTART_SERVICE, null, null);
 		}
 		
 		public String getName()
@@ -431,26 +414,28 @@ public abstract class AbstractEngine
 	 *
 	 */
 	
-	private class ResetService implements IEngineService
+	private class ResetService extends AbstractService
 	{
+		private String[] serviceContext = new String[1];
+		
 		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 			throws RequestCycleException, IOException, ServletException
 		{
-			serviceReset(cycle, output);
+			serviceReset(cycle, getServiceContext(cycle.getRequestContext()), output);
 			
 			return false;
 		}
 		
-		public String buildURL(IRequestCycle cycle, IComponent component, 
+		public Gesture buildGesture(IRequestCycle cycle, IComponent component, 
 				String[] parameters)
 		{
 			if (parameters != null &&
 					parameters.length > 0)
 				throw new IllegalArgumentException("Service reset requires no parameters.");
 			
-			String pageName = component.getPage().getName();
+			serviceContext[0] = component.getPage().getName();
 			
-			return getServletPrefix() + "/" + RESET_SERVICE + "/" + pageName;
+			return assembleGesture(getServletPath(), RESET_SERVICE, serviceContext, null);
 		}
 		
 		public String getName()
@@ -459,59 +444,35 @@ public abstract class AbstractEngine
 		}
 	}
 	
-	private class DirectService implements IEngineService
+	private class DirectService extends AbstractService
 	{
 		private StringBuffer buffer;
 		
 		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 			throws RequestCycleException, IOException, ServletException
 		{
-			serviceDirect(cycle, output);
+			RequestContext context = cycle.getRequestContext();
+			
+			serviceDirect(cycle, getServiceContext(context), getParameters(context), output);
 			
 			return true;
 		}
 		
-		public String buildURL(IRequestCycle cycle, IComponent component, 
+		private String[] serviceContext = new String[2];
+		
+		public Gesture buildGesture(IRequestCycle cycle, IComponent component, 
 				String[] parameters)
 		{
-			// The Java 2 performance and idiom guide isn't too keen
-			// on reusing StringBuffers.  The problem is that if you create
-			// a very long string with a buffer, then create short strings,
-			// the short strings use as much memory as the long one.  In
-			// my experience, though, URL length tends to be pretty standard
-			// (+/- 10 or 20 characters).
-			
-			if (buffer == null)
-				buffer = new StringBuffer();
-			else
-				buffer.setLength(0);
-			
 			// New since 1.0.1, we use the component to determine
 			// the page, not the cycle.  Through the use of tricky
 			// things such as Block/InsertBlock, it is possible 
 			// that a component from a page different than
 			// the response page will render.
 			
-			String pageName = component.getPage().getName();
+			serviceContext[0] = component.getPage().getName();
+			serviceContext[1] = component.getIdPath();
 			
-			buffer.append(servletPrefix);
-			buffer.append('/');
-			buffer.append(DIRECT_SERVICE);
-			buffer.append('/');
-			buffer.append(pageName);
-			buffer.append('/');
-			buffer.append(component.getIdPath());
-			
-			if (parameters != null)
-			{
-				for (int i = 0; i < parameters.length; i++)
-				{
-					buffer.append('/');
-					buffer.append(URLEncoder.encode(parameters[i]));
-				}
-			}
-			
-			return buffer.toString();
+			return assembleGesture(getServletPath(), DIRECT_SERVICE, serviceContext, parameters);
 		}
 		
 		public String getName()
@@ -737,9 +698,9 @@ public abstract class AbstractEngine
 		return result;
 	}
 	
-	public String getServletPrefix()
+	public String getServletPath()
 	{
-		return servletPrefix;
+		return servletPath;
 	}
 	
 	/**
@@ -931,7 +892,7 @@ public abstract class AbstractEngine
 			}
 		}
 		
-		String url = context.getAbsoluteURL(servletPrefix);
+		String url = context.getAbsoluteURL(servletPath);
 		
 		context.redirect(url);
 	}
@@ -988,10 +949,9 @@ public abstract class AbstractEngine
 		{
 			try
 			{
-				String serviceName = context.getPathInfo(0);
+				String serviceName = context.getParameter(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
 				
-				if (serviceName == null ||
-						serviceName.equals(""))
+				if (Tapestry.isNull(serviceName))
 					serviceName = IEngineService.HOME_SERVICE;
 				
 				IEngineService service = getService(serviceName);
@@ -1127,34 +1087,30 @@ public abstract class AbstractEngine
 	 *
 	 */
 	
-	private void serviceAction(IRequestCycle cycle, ResponseOutputStream output)
+	protected void serviceAction(IRequestCycle cycle, String[] serviceContext, ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 	{
 		IAction action = null;
 		String componentPageName;
+		int count = 0;
 		
-		// If the context is new on an action URL, then the session
-		// truly expired and we want to redirect to the
-		// timeout page to advise the user.
+		if (serviceContext != null)
+			count = serviceContext.length;
 		
-		RequestContext context = cycle.getRequestContext();
-		
-		int count = context.getPathInfoCount();
-		
-		if (count != 4 && count != 5)
+		if (count != 3 && count != 4)
 			throw new ApplicationRuntimeException(
-				"Service action requires either three or four parameters.");
+				"Service action requires either three or four service context parameters.");
 		
-		int i = 1;
-		String pageName = context.getPathInfo(i++);
-		String targetActionId = context.getPathInfo(i++);
+		int i = 0;
+		String pageName = serviceContext[i++];
+		String targetActionId = serviceContext[i++];
 		
-		if (count == 4)
+		if (count == 3)
 			componentPageName = pageName;
 		else
-			componentPageName = context.getPathInfo(i++);
+			componentPageName = serviceContext[i++];
 		
-		String targetIdPath = context.getPathInfo(i++);
+		String targetIdPath = serviceContext[i++];
 		
 		IMonitor monitor = cycle.getMonitor();
 		if (monitor != null)
@@ -1224,28 +1180,23 @@ public abstract class AbstractEngine
 	 *
 	 */
 	
-	private void serviceDirect(IRequestCycle cycle, ResponseOutputStream output)
+	protected void serviceDirect(IRequestCycle cycle, String[] serviceContext, String[] parameters, 
+				ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 	{
 		IDirect direct;
-		String[] parameters = null;
-		
 		IMonitor monitor = cycle.getMonitor();
+		int count = 0;
 		
-		// If the context is new on an action URL, then the session
-		// truly expired and we want to redirect to the
-		// timeout page to advise the user.
+		if (serviceContext != null)
+			count = serviceContext.length;
 		
-		RequestContext context = cycle.getRequestContext();
-		
-		int pathInfoCount = context.getPathInfoCount();
-		
-		if (pathInfoCount < 3)
+		if (count != 2)
 			throw new ApplicationRuntimeException(
-				"Service direct requires at least two parameters.");
+				"Service direct requires at two service context parameters.");
 		
-		String pageName = context.getPathInfo(1);
-		String componentPath = context.getPathInfo(2);
+		String pageName = serviceContext[0];
+		String componentPath = serviceContext[1];
 		
 		if (monitor != null)
 			monitor.serviceBegin(IEngineService.DIRECT_SERVICE, 
@@ -1274,16 +1225,6 @@ public abstract class AbstractEngine
 				component, ex);
 		}
 		
-		// Get any parameters encoded in the URL.
-		
-		if (pathInfoCount > 3)
-		{
-			parameters = new String[pathInfoCount - 3];
-			
-			for (int i = 3; i < pathInfoCount; i++)
-				parameters[i - 3] = context.getPathInfo(i);
-		}
-		
 		direct.trigger(cycle, parameters);
 		
 		// Render the response.
@@ -1299,16 +1240,16 @@ public abstract class AbstractEngine
 	 *
 	 */
 	
-	private void servicePage(IRequestCycle cycle, ResponseOutputStream output)
+	protected void servicePage(IRequestCycle cycle, String[] serviceContext, ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 	{
 		RequestContext context = cycle.getRequestContext();
 		
-		if (context.getPathInfoCount() != 2)
+		if (serviceContext == null || serviceContext.length != 1)
 			throw new ApplicationRuntimeException(
-				"Service page requires exactly one parameter.");
+				"Service page requires exactly one service context parameter.");
 		
-		String pageName = context.getPathInfo(1);
+		String pageName = serviceContext[0];
 		
 		IMonitor monitor = cycle.getMonitor();
 		if (monitor != null)
@@ -1342,32 +1283,23 @@ public abstract class AbstractEngine
 	 *
 	 */
 	
-	private void serviceReset(IRequestCycle cycle, ResponseOutputStream output)
+	protected void serviceReset(IRequestCycle cycle, String[] serviceContext, ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 	{
-		RequestContext context;
-		ServletContext servletContext;
-		IMonitor monitor;
-		String name;
-		String pageName;
-		IPage page;
-		
-		monitor = cycle.getMonitor();
-		
-		context = cycle.getRequestContext();
-		
-		if (context.getPathInfoCount() != 2)
+		if (serviceContext == null || serviceContext.length != 1)
 			throw new ApplicationRuntimeException(
-				"Service reset requires exactly one parameter.");
+				"Service reset requires exactly one service context parameter.");
 		
-		pageName = context.getPathInfo(1);
+		String pageName = serviceContext[0];
+		
+		IMonitor monitor = cycle.getMonitor();
 		
 		if (monitor != null)
 			monitor.serviceBegin("reset", pageName);
 		
 		clearCachedData();
 		
-		page = cycle.getPage(pageName);
+		IPage page = cycle.getPage(pageName);
 		
 		page.validate(cycle);
 		
@@ -1428,7 +1360,7 @@ public abstract class AbstractEngine
 	 *
 	 * <p>The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
 	 *
-	 * <p>The final path is available via the {@link #getServletPrefix()} method.
+	 * <p>The final path is available via the {@link #getServletPath()} method.
 	 *
 	 *  <p>In addition, this method locates and/or creates the:
 	 *  <ul>
@@ -1458,21 +1390,23 @@ public abstract class AbstractEngine
 		if (clientAddress == null)
 			clientAddress = request.getRemoteAddr();
 		
-		// servletPrefix is null, so this means either we're doing the
+		// servletPath is null, so this means either we're doing the
 		// first request in this session, or we're handling a subsequent
 		// request in another JVM (i.e. another server in the cluster).
 		// In any case, we have to do some late (re-)initialization.
 		
-		if (servletPrefix == null)
+		if (servletPath == null)
 		{
-			String servletPath = request.getServletPath();
+			// Get the path *within* the servlet context
+			
+			String path = request.getServletPath();
 			
 			// Get the context path, which may be the empty string
 			// (but won't be null).
 			
 			contextPath = request.getContextPath();
 			
-			servletPrefix = contextPath + servletPath;
+			servletPath = contextPath + path;
 			
 		}	
 		

@@ -102,22 +102,16 @@ public class VirtualLibraryEngine
 	 *
 	 */
 	
-	public class ExternalService implements IEngineService
+	public class ExternalService extends AbstractService
 	{
-		public String buildURL(IRequestCycle cycle,
+		public Gesture buildGesture(IRequestCycle cycle,
 				IComponent component,
-				String[] context)
+				String[] parameters)
 		{
-			if (context == null || context.length != 2)
+			if (parameters == null || parameters.length != 2)
 				throw new ApplicationRuntimeException("external service requires two parameters.");
 			
-			// Not sure what's in that primary key parameter (may have spaces, slashes,
-			// or other illegal characters.
-			
-			return getServletPrefix() +
-				"/" + EXTERNAL_SERVICE +
-				"/" + context[0] +
-				"/" + URLEncoder.encode(context[1]);
+			return assembleGesture(getServletPath(), EXTERNAL_SERVICE, null, parameters);
 		}
 		
 		public boolean service(IRequestCycle cycle,
@@ -126,7 +120,7 @@ public class VirtualLibraryEngine
 			ServletException,
 			IOException
 		{
-			serviceExternal(cycle, output);
+			serviceExternal(cycle, getParameters(cycle.getRequestContext()), output);
 			
 			return true;
 		}
@@ -200,26 +194,23 @@ public class VirtualLibraryEngine
 	 *
 	 */
 	
-	protected void serviceExternal(IRequestCycle cycle, ResponseOutputStream output)
+	protected void serviceExternal(IRequestCycle cycle, String[] parameters, ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 	{
-		IMonitor monitor;
-		String pageName;
-		String key;
-		Integer primaryKey;
-		RequestContext context;
 		IExternalPage page;
 		
-		monitor = cycle.getMonitor();
+		if (parameters == null || parameters.length != 2)
+			throw new ApplicationRuntimeException("external service requires two parameters.");
 		
-		context = cycle.getRequestContext();
-		pageName = context.getPathInfo(1);
-		key = context.getPathInfo(2);
+		String pageName = parameters[0];
+		String key = parameters[1];
+		
+		IMonitor monitor = cycle.getMonitor();
 		
 		if (monitor != null)
 			monitor.serviceBegin(EXTERNAL_SERVICE, pageName + " " + key);
 		
-		primaryKey = new Integer(key);
+		Integer primaryKey = new Integer(key);
 		
 		try
 		{
