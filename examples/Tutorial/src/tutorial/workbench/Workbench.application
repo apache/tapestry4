@@ -18,6 +18,9 @@
   <page name="Fields" specification-path="/tutorial/workbench/fields/Fields.jwc"/>
   <page name="fields.Results" specification-path="/tutorial/workbench/fields/Results.jwc"/>
   
+  <page name="Upload" specification-path="/tutorial/workbench/upload/Upload.jwc"/>
+  <page name="upload.Results" specification-path="/tutorial/workbench/upload/Results.jwc"/>
+
   <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
   <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
   <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification class="tutorial.workbench.upload.Upload">
+
+  <component id="border" type="Border"/>
+  
+  <component id="showError" type="ShowError">
+  	<binding name="message" property-path="message"/>
+  </component>
+  
+  <component id="form" type="Form">
+    <binding name="listener" property-path="listeners.formSubmit"/>
+  </component>
+  
+  <component id="inputFile" type="Upload">
+  	<binding name="file" property-path="file"/>
+  </component>
+  
+  <component id="inputAscii" type="Checkbox">
+  	<binding name="selected" property-path="showAscii"/>
+  </component>
+  
+  <component id="inputWidth" type="PropertySelection">
+  	<binding name="value" property-path="bytesPerLine"/>
+  	<binding name="model" property-path="bytesPerLineModel"/>
+  </component>
+  
+  
+  <component id="continue" type="ImageSubmit">
+  	<binding name="image" property-path="assets.continue"/>
+  </component>
+ 
+  <context-asset name="continue" path="/images/workbench/Continue.gif"/>
+
+</specification>
