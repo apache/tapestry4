@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
@@ -94,7 +93,7 @@ public abstract class Card extends AbstractComponent
         writer.begin("card");
 
         String title = getTitle();
-        if (StringUtils.isNotEmpty(title))
+        if (Tapestry.isNonBlank(title))
             writer.attribute("title", title);
 
         renderInformalParameters(writer, cycle);

@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  The do element provides a general mechanism for the user to act upon the current card,
@@ -91,7 +91,7 @@ public abstract class Do extends AbstractComponent
             writer.attribute("type", getType());
 
             String label = getLabel();
-            if (StringUtils.isNotEmpty(label))
+            if (Tapestry.isNonBlank(label))
                 writer.attribute("label", label);
 
             renderInformalParameters(writer, cycle);

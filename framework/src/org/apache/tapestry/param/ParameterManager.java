@@ -62,7 +62,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.BindingException;
@@ -365,7 +364,7 @@ public class ParameterManager
 
     private Class getType(String name, IResourceResolver resolver)
     {
-        if (StringUtils.isEmpty(name))
+        if (Tapestry.isBlank(name))
             return null;
 
         Class result = (Class) SPECIAL_TYPE_MAP.get(name);

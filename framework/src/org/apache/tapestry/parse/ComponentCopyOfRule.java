@@ -57,7 +57,6 @@ package org.apache.tapestry.parse;
 
 import java.util.Iterator;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -91,9 +90,9 @@ public class ComponentCopyOfRule extends AbstractSpecificationRule
         String copyOf = getValue(attributes, "copy-of");
         String type = getValue(attributes, "type");
 
-        if (StringUtils.isEmpty(copyOf))
+        if (Tapestry.isBlank(copyOf))
         {
-            if (StringUtils.isEmpty(type))
+            if (Tapestry.isBlank(type))
                 throw new DocumentParseException(
                     Tapestry.format("SpecificationParser.missing-type-or-copy-of", id),
                     getResourceLocation());
@@ -101,7 +100,7 @@ public class ComponentCopyOfRule extends AbstractSpecificationRule
             return;
         }
 
-        if (!StringUtils.isEmpty(type))
+        if (Tapestry.isNonBlank(type))
             throw new DocumentParseException(
                 Tapestry.format("SpecificationParser.both-type-and-copy-of", id),
                 getResourceLocation());

@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.digester.Rule;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ILocationHolder;
@@ -543,7 +542,7 @@ public class SpecificationParser
 
         public void body(String namespace, String name, String text) throws Exception
         {
-            if (StringUtils.isEmpty(text))
+            if (Tapestry.isBlank(text))
                 return;
 
             if (_value != null)

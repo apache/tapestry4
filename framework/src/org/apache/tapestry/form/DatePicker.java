@@ -64,7 +64,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
@@ -208,7 +207,7 @@ public abstract class DatePicker extends AbstractFormComponent
 
             String textValue = cycle.getRequestContext().getParameter(name);
 
-            if (StringUtils.isEmpty(textValue))
+            if (Tapestry.isBlank(textValue))
                 return;
 
             try
