@@ -258,21 +258,22 @@ public class Rollover extends AbstractComponent
 			if (dynamic)
 			{
 				script = 
-					"  function " + onMouseOverName + "()\n" +
-					"  {\n" +
-					"    if (document.images)\n" +
-					"      document." + imageName + ".src = " +
+					"\n\n" +
+					"function " + onMouseOverName + "()\n" +
+					"{\n" +
+					"  if (document.images)\n" +
+					"    document." + imageName + ".src = " +
 					body.getInitializedImage(focusImageName) + 
 					";\n" +
-					"  }\n" +
+					"}\n" +
 					"\n" +
-					"  function " + onMouseOutName + "()\n" +
-					"  {\n" +
-					"    if (document.images)\n" + 
-					"      document." + imageName + ".src = " +
+					"function " + onMouseOutName + "()\n" +
+					"{\n" +
+					"  if (document.images)\n" + 
+					"    document." + imageName + ".src = " +
 					body.getInitializedImage(blurImageName) + 
 					";\n" +
-					"  }";
+					"}";
 					
 				// Add this to the scripting block at the top of the page.
 				
