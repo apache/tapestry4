@@ -58,6 +58,7 @@ package org.apache.tapestry.vlib;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.callback.PageCallback;
+import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.vlib.pages.Login;
 
 /**
@@ -71,8 +72,9 @@ import org.apache.tapestry.vlib.pages.Login;
 public abstract class AdminPage extends Protected implements IMessageProperty
 {
 
-    public void validate(IRequestCycle cycle)
+    public void pageValidate(PageEvent event)
     {
+        IRequestCycle cycle = event.getRequestCycle();
         Visit visit = (Visit) getEngine().getVisit();
 
         if (visit == null || !visit.isUserLoggedIn())
@@ -86,9 +88,9 @@ public abstract class AdminPage extends Protected implements IMessageProperty
 
         if (!visit.getUser(cycle).isAdmin())
         {
-        	VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
-        	
-			vengine.presentError("That function is restricted to adminstrators.", cycle);
+            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+
+            vengine.presentError("That function is restricted to adminstrators.", cycle);
 
             throw new PageRedirectException(cycle.getPage());
         }
