@@ -56,7 +56,6 @@
 package org.apache.tapestry.vlib.ejb;
 
 import java.rmi.RemoteException;
-import java.util.Collection;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBHome;
