@@ -220,6 +220,11 @@ NextGen) be released as version number 3.0.
   <changes>
   	
 <!-- Use due-to to give acknowledgement for patches. -->
+ <release version="3.0" date="unreleased">
+ 	<action type="update" dev="HLS">
+ 	Add docs on how to report problems.	
+ 	</action>	
+ </release> 
   
  <release version="3.0-rc-2" date="Apr 1 2004">
  	<action type="fix" dev="HLS" fixes-bug="28057">
