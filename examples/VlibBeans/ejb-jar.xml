@@ -8,7 +8,7 @@
       <ejb-name>KeyAllocator</ejb-name>
       <home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
       <remote>com.primix.vlib.ejb.IKeyAllocator</remote>
-      <ejb-class>com.primix.vlib.ejb.KeyAllocatorBean</ejb-class>
+      <ejb-class>com.primix.vlib.ejb.impl.KeyAllocatorBean</ejb-class>
       <session-type>Stateless</session-type>
       <transaction-type>Container</transaction-type>
       <env-entry>
@@ -29,7 +29,7 @@
       <ejb-name>BookQuery</ejb-name>
       <home>com.primix.vlib.ejb.IBookQueryHome</home>
       <remote>com.primix.vlib.ejb.IBookQuery</remote>
-      <ejb-class>com.primix.vlib.ejb.BookQueryBean</ejb-class>
+      <ejb-class>com.primix.vlib.ejb.impl.BookQueryBean</ejb-class>
       <session-type>Stateful</session-type>
       <transaction-type>Container</transaction-type>
       <resource-ref>
@@ -43,7 +43,7 @@
       <ejb-name>Operations</ejb-name>
       <home>com.primix.vlib.ejb.IOperationsHome</home>
       <remote>com.primix.vlib.ejb.IOperations</remote>
-      <ejb-class>com.primix.vlib.ejb.OperationsBean</ejb-class>
+      <ejb-class>com.primix.vlib.ejb.impl.OperationsBean</ejb-class>
       <session-type>Stateless</session-type>
       <transaction-type>Container</transaction-type>
       <ejb-ref>
@@ -76,7 +76,7 @@
       <ejb-name>Person</ejb-name>
       <home>com.primix.vlib.ejb.IPersonHome</home>
       <remote>com.primix.vlib.ejb.IPerson</remote>
-      <ejb-class>com.primix.vlib.ejb.PersonBean</ejb-class>
+      <ejb-class>com.primix.vlib.ejb.impl.PersonBean</ejb-class>
       <persistence-type>Container</persistence-type>
       <prim-key-class>java.lang.Integer</prim-key-class>
       <reentrant>False</reentrant>
@@ -126,7 +126,7 @@
       <ejb-name>Book</ejb-name>
       <home>com.primix.vlib.ejb.IBookHome</home>
       <remote>com.primix.vlib.ejb.IBook</remote>
-      <ejb-class>com.primix.vlib.ejb.BookBean</ejb-class>
+      <ejb-class>com.primix.vlib.ejb.impl.BookBean</ejb-class>
       <persistence-type>Container</persistence-type>
       <prim-key-class>java.lang.Integer</prim-key-class>
       <reentrant>False</reentrant>
@@ -184,7 +184,7 @@
       <ejb-name>Publisher</ejb-name>
       <home>com.primix.vlib.ejb.IPublisherHome</home>
       <remote>com.primix.vlib.ejb.IPublisher</remote>
-      <ejb-class>com.primix.vlib.ejb.PublisherBean</ejb-class>
+      <ejb-class>com.primix.vlib.ejb.impl.PublisherBean</ejb-class>
       <persistence-type>Container</persistence-type>
       <prim-key-class>java.lang.Integer</prim-key-class>
       <reentrant>False</reentrant>

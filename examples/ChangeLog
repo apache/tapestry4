@@ -1,3 +1,8 @@
+* Jun 14 2001 hship
+
+VlibBeans:
+- Move the implementations into the (new) com.primix.vlib.ejb.impl package.
+
 * Jun 8 2001 hship
 
 Vlib:

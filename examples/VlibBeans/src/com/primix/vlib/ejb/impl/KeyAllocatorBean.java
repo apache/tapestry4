@@ -26,7 +26,7 @@
  *
  */
 
-package com.primix.vlib.ejb;
+package com.primix.vlib.ejb.impl;
 
 import javax.ejb.*;
 import java.rmi.*;
@@ -35,6 +35,7 @@ import javax.sql.*;
 import java.sql.*;
 import javax.naming.*;
 import com.primix.tapestry.util.ejb.*;
+import com.primix.vlib.ejb.*;
 
 /**
  *  Implementation of the KeyAllocator stateless session bean.

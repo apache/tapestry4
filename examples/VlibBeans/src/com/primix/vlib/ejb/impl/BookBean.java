@@ -26,11 +26,12 @@
  *
  */
 
-package com.primix.vlib.ejb;
+package com.primix.vlib.ejb.impl;
 
 import javax.ejb.*;
 import java.rmi.*;
 import java.util.*;
+import com.primix.vlib.ejb.*;
 
 /**
  *  Implementation of the Book entity.
