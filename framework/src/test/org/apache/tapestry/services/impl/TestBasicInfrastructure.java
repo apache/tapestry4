@@ -14,24 +14,18 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.engine.IPropertySource;
-import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestGlobals;
@@ -88,35 +82,6 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         rgi.setRequestGlobals(si);
 
         rgi.service(r, p, n);
-
-        verifyControls();
-    }
-
-    public void testMasterIntializer() throws Exception
-    {
-        ApplicationServlet servlet = new ApplicationServlet();
-
-        ApplicationInitializer ai = (ApplicationInitializer) newMock(ApplicationInitializer.class);
-
-        ai.initialize(servlet);
-
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
-
-        replayControls();
-
-        // Build the list.
-
-        InitializerContribution ic = new InitializerContribution();
-        ic.setName("test");
-        ic.setInitializer(ai);
-
-        List l = Collections.singletonList(ic);
-
-        MasterInitializer mi = new MasterInitializer();
-        mi.setErrorLog(log);
-        mi.setInitializers(l);
-
-        mi.initialize(servlet);
 
         verifyControls();
     }

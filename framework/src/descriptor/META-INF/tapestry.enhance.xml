@@ -27,11 +27,22 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ComponentConstructorFactoryImpl">
         <set-service property="classFactory" service-id="hivemind.ClassFactory"/>
-        <set-configuration property="contributions" configuration-id="EnhancementWorkers"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
         <set-service property="validator" service-id="EnhancedClassValidator"/>
+        <set-service property="chain" service-id="EnhancementWorkerChain"/>
       </construct>
     </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="EnhancementWorkerChain" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    The chain of enhancement workers built from the EnhancementWorkers configuration.
+    
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="EnhancementWorkers"/>
+    </invoke-factory>
+    
     
   </service-point>
   
@@ -44,30 +55,10 @@
     </invoke-factory>
   </service-point>
   
-  <configuration-point id="EnhancementWorkers">
+  <configuration-point id="EnhancementWorkers" schema-id="hivemind.lib.ChainContribution">
     
     Provides the logic for component class enhancements.
-    
-    <schema>
-      <element name="worker">
-        <attribute name="id" required="true" unique="true">
-          A unique id for the worker (used when ordering the workers).
-        </attribute>
-        <attribute name="before">
-          A list of workers who should operate after this worker.
-        </attribute>
-        <attribute name="after">
-          A list of workers who should operate prior to this worker.
-        </attribute>
-        <attribute name="object" translator="object" required="true">
-          An object implementing the EnhancementWorker interface.
-        </attribute>
-        
-        <conversion class="org.apache.tapestry.services.impl.EnhancementWorkerContribution">
-          <map attribute="object" property="worker"/>
-        </conversion>
-      </element>
-    </schema>
+   
     
   </configuration-point>
   
@@ -75,18 +66,18 @@
     
     <!-- These can actually run in any order, so we don't specify before or after. -->
     
-    <worker id="specified-property" object="service:SpecifiedPropertyWorker" before="abstract-property"/>
-    <worker id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
-    <worker id="inject" object="service:InjectWorker" before="abstract-property"/>
+    <command id="specified-property" object="service:SpecifiedPropertyWorker" before="abstract-property"/>
+    <command id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
+    <command id="inject" object="service:InjectWorker" before="abstract-property"/>
     
     <!-- This should be second to last, or at least, after all other workers have 
          added and claimed any properties they are going to. -->
     
-    <worker id="abstract-property" object="service:AbstractPropertyWorker"/>
+    <command id="abstract-property" object="service:AbstractPropertyWorker"/>
     
     <!-- This needs to be absolutely last -->
     
-    <worker id="force-non-abstract" after="*" object="instance:org.apache.tapestry.enhance.ForceNonAbstractWorker"/>
+    <command id="force-non-abstract" after="*" object="instance:org.apache.tapestry.enhance.ForceNonAbstractWorker"/>
     
   </contribution>
   

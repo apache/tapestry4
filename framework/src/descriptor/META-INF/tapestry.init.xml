@@ -24,40 +24,15 @@
     Master startup for the application; invokes an ordered series of other ApplicationInitializer instances contributed to
     the ApplicationInitializers configuration point.
     
-    <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.MasterInitializer">
-        <set-configuration property="initializers" configuration-id="ApplicationInitializers"/>
-      </construct>
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="ApplicationInitializers"/>
     </invoke-factory>
   </service-point>
 
-  <configuration-point id="ApplicationInitializers">
+  <configuration-point id="ApplicationInitializers" schema-id="hivemind.lib.ChainContribution">
   
     An orderable list of ApplicationInitializer services.
-    
-    <schema>
-      <element name="initializer">
-        <attribute name="name" required="true">
-          A unique id used when ordering the initializers.
-        </attribute>
-      
-        <attribute name="before" translator="id-list">
-          A comma-seperated list of the names of initializers that should execute after this initializer.
-        </attribute>
-      
-        <attribute name="after" translator="id-list">
-          A comma-seperated list of the names of initializers that should execute before this initializer.
-        </attribute>
-        
-        <attribute name="object" required="true" translator="object">
-          The object which implements the ApplicationInitializer interface.
-        </attribute>
-        
-        <conversion class="org.apache.tapestry.services.impl.InitializerContribution">
-          <map attribute="object" property="initializer"/>
-        </conversion>
-      </element>
-    </schema>
+
   </configuration-point>
 
   <service-point id="ApplicationSpecificationInitializer" interface="org.apache.tapestry.services.ApplicationInitializer">
@@ -74,7 +49,7 @@
   </service-point>
   
   <contribution configuration-id="ApplicationInitializers">
-    <initializer name="ApplicationSpecificationInitializer" object="service:ApplicationSpecificationInitializer"/>
+    <command id="ApplicationSpecificationInitializer" object="service:ApplicationSpecificationInitializer"/>
   </contribution>
   
 </module>
