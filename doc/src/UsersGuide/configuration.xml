@@ -528,6 +528,19 @@ to store the) and repository directory (where temporary files are stored).
 </listitem>	
 </varlistentry>
 
+<varlistentry>
+<term>org.apache.tapestry.ognl-type-converter</term>
+
+<listitem>
+<para>
+Specifies an implementation of ognl.TypeConverter to be used for expression bindings.
+See OGNL's Type Converter documentation (currently at
+http://www.ognl.org/2.6.3/Documentation/html/typeConversion.html)
+for further information on implementing a custom type converter.
+</para>
+</listitem>
+</varlistentry>
+
 </variablelist>
 
 </section>  <!-- configuration.extensions -->

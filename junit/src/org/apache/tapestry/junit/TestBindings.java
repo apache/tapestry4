@@ -56,6 +56,8 @@
 package org.apache.tapestry.junit;
 
 import java.util.HashMap;
+import java.util.Date;
+import java.sql.Timestamp;
 
 import junit.framework.AssertionFailedError;
 
@@ -66,6 +68,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.FieldBinding;
@@ -115,6 +118,7 @@ public class TestBindings extends TapestryTestCase
         private int _intValue;
         private double _doubleValue;
         private Object _objectValue;
+        private Timestamp _dateValue;
 
         public boolean getBooleanValue()
         {
@@ -156,6 +160,13 @@ public class TestBindings extends TapestryTestCase
             _objectValue = objectValue;
         }
 
+        public Timestamp getDateValue() {
+            return _dateValue;
+        }
+
+        public void setDateValue(Timestamp dateValue) {
+            _dateValue = dateValue;
+        }
     }
 
     public TestBindings(String name)
@@ -756,5 +767,33 @@ public class TestBindings extends TapestryTestCase
 
         assertSame(c, b.getComponent());
         assertEquals("foo", b.getKey());
+    }
+
+    public void testTypeConverter() {
+        BoundPage page = new BoundPage();
+        MockEngine engine = new MockEngine();
+        page.setEngine(engine);
+
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "dateValue", null);
+        Date date = new Date();
+
+        try {
+            // try without a converter first, which should fail
+            binding.setObject(date);
+            fail("Should not be able to call setDateValue(Date)");
+        }
+        catch (BindingException expected) {
+            assertTrue(true);
+        }
+
+        // now test with a custom converter enabled
+        MockApplicationSpecification appSpec = new MockApplicationSpecification();
+        HashMap extensions = new HashMap();
+        extensions.put(Tapestry.OGNL_TYPE_CONVERTER, new MockTypeConverter());
+        appSpec.setExtensions(extensions);
+        engine.setSpecification(appSpec);
+
+        binding.setObject(date);
+        assertEquals(date, page.getDateValue());
     }
 }
