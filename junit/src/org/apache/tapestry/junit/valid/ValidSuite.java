@@ -69,10 +69,8 @@ import junit.framework.TestSuite;
 
 public class ValidSuite
 {
-
     public static Test suite()
     {
-
         TestSuite suite = new TestSuite("ValidField Suite");
 
         suite.addTest(new TestSuite(TestStringValidator.class));
@@ -80,9 +78,9 @@ public class ValidSuite
         suite.addTest(new TestSuite(TestNumberValidator.class));
         suite.addTest(new TestSuite(TestValidationDelegate.class));
         suite.addTest(new TestSuite(TestEmailValidator.class));
+        suite.addTest(new TestSuite(TestPatternValidator.class));
 
         return suite;
-
     }
 
 }
