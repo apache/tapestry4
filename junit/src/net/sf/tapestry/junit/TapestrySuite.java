@@ -2,6 +2,7 @@ package net.sf.tapestry.junit;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
 import net.sf.tapestry.junit.mock.MockTestCase;
 import net.sf.tapestry.junit.parse.SpecificationParserTest;
 import net.sf.tapestry.junit.parse.TemplateParserTest;
@@ -15,7 +16,6 @@ import net.sf.tapestry.junit.utils.TestIdAllocator;
 import net.sf.tapestry.junit.utils.TestLocalizedNameGenerator;
 import net.sf.tapestry.junit.utils.TestPool;
 import net.sf.tapestry.junit.utils.TestPropertyFinder;
-import net.sf.tapestry.junit.utils.TestPublicBean;
 import net.sf.tapestry.junit.valid.ValidSuite;
 
 /**
@@ -37,7 +37,6 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(TestPool.class);
         suite.addTestSuite(TestLocalizedNameGenerator.class);
         suite.addTestSuite(TestResourceLocation.class);
-        suite.addTestSuite(TestPublicBean.class);
         suite.addTestSuite(TestPropertyFinder.class);
         suite.addTestSuite(TestListenerMap.class);
         suite.addTestSuite(TestIdAllocator.class);

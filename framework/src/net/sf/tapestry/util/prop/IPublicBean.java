@@ -11,6 +11,7 @@ package net.sf.tapestry.util.prop;
  *  @version $Id$
  *  @author Howard Lewis Ship
  *  @since 1.0.1
+ *  @deprecated This is now standard behavior supplied by OGNL.
  * 
  **/
 
