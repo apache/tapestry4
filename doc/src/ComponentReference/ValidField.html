@@ -199,8 +199,8 @@ The HTML for the above example:
 <pre>
 	&lt;form jwcid="<b>form</b>"&gt;
 	&lt;table&gt;
-		&lt;tr&gt;
-			&lt;td&gt;Enter date: &lt;/td&gt;								
+		&lt;tr&gt;								
+			&lt;td&gt;&lt;label jwcid="<b>example4label</b>"/&gt; &lt;/td&gt;								
 			&lt;td&gt;&lt;input jwcid="<b>example4</b>"/&gt;&lt;/td&gt;
 		&lt;/tr&gt;
 	&lt;/table&gt;
@@ -230,6 +230,10 @@ The related Tapestry page specification:
     	&lt;field-binding name="stateful" field-name="Boolean.TRUE"/&gt;
     &lt;/component&gt;
     
+    &lt;component id="<b>example4label</b>" type="FieldLabel"&gt;
+    	&lt;binding name="field" property-path="components.example4"/&gt;
+    &lt;/component&gt;
+
     &lt;component id="example4" type="<b>ValidField</b>"&gt;
     	&lt;binding name="value" property-path="visit.exampleFourValue"/&gt;
     	&lt;binding name="<B>validator</b>" property-path="<b>beans.ex4Validator</b>"/&gt;
