@@ -58,7 +58,7 @@ package org.apache.tapestry.engine;
 
 
 /**
- *  Null implementation of {@link org.apache.tapestry.IMonitor}.
+ *  Null implementation of {@link org.apache.tapestry.engine.IMonitor}.
  * 
  *
  *  @author Howard Lewis Ship

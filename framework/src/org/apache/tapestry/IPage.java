@@ -68,10 +68,10 @@ import org.apache.tapestry.event.PageValidateListener;
  *  within the application.
  *
  *  <p>Pages are created dynamically from thier class names (part of the
- *  {@link IComponentSpecification}).
+ *  {@link org.apache.tapestry.spec.IComponentSpecification}).
  *
- *  @see IPageSource
- *  @see IPageLoader
+ *  @see org.apache.tapestry.engine.IPageSource
+ *  @see org.apache.tapestry.engine.IPageLoader
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -90,7 +90,7 @@ public interface IPage extends IComponent
      *  default values (as if the instance
      *  was freshly instantiated).
      *
-     *  @see IPageSource#releasePage(IPage)
+     *  @see org.apache.tapestry.engine.IPageSource#releasePage(IPage)
      *
      **/
 
@@ -106,7 +106,7 @@ public interface IPage extends IComponent
 
     /**
      *  Returns the object (effectively, an 
-     *  {@link org.apache.tapestry.IPageRecorder}) that is notified
+     *  {@link org.apache.tapestry.engine.IPageRecorder}) that is notified
      *  of any changes to persistant properties of the page.
      *
      **/
@@ -143,7 +143,7 @@ public interface IPage extends IComponent
     /**
      *  Sets the name of the page.
      * 
-     *  @param name fully qualified page name (including namespace prefix, if any)
+     *  @param pageName fully qualified page name (including namespace prefix, if any)
      * 
      *  @since 3.0
      * 
@@ -156,7 +156,7 @@ public interface IPage extends IComponent
      *  name sequence identifying the component.  It may be null
      *  in which case the page returns itself.
      *
-     *  @exception NoSuchComponentException runtime exception
+     *  @exception ApplicationRuntimeException runtime exception
      *  thrown if the path does not identify a component.
      *
      **/
@@ -185,11 +185,11 @@ public interface IPage extends IComponent
      *  <p>The page performs a render using the following steps:
      *
      * <ul>
-     *  <li>Invokes {@link PageRenderListener#pageBeginRender(PageEvent)}
+     *  <li>Invokes {@link PageRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)}
      *  <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
      *  <li>Invokes {@link IRequestCycle#commitPageChanges()} (if not rewinding)
      *  <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
-     *  <li>Invokes {@link PageRenderListener#pageEndRender(PageEvent)} (this occurs
+     *  <li>Invokes {@link PageRenderListener#pageEndRender(org.apache.tapestry.event.PageEvent)} (this occurs
      *  even if a previous step throws an exception).
      * </ul>
      *
@@ -258,7 +258,7 @@ public interface IPage extends IComponent
      *  the page a chance to perform any additional setup.  One possible behavior is
      *  to set HTTP headers and cookies before any output is generated.
      *
-     *  <p>The timing of this explicitly <em>before</em> {@link IPageRecorder page recorder}
+     *  <p>The timing of this explicitly <em>before</em> {@link org.apache.tapestry.engine.IPageRecorder page recorder}
      *  changes are committed.  Rendering occurs <em>after</em> the recorders
      *  are committed, when it is too late to make changes to dynamic page
      *  properties.

@@ -75,8 +75,8 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
- *  A service for building URLs to and accessing {@link IAsset}s.
- *  Most of the work is deferred to the {@link IAsset} instance.
+ *  A service for building URLs to and accessing {@link org.apache.tapestry.IAsset}s.
+ *  Most of the work is deferred to the {@link org.apache.tapestry.IAsset} instance.
  *
  *  <p>The retrieval part is directly linked to {@link PrivateAsset}.
  *  The service responds to a URL that encodes the path of a resource

@@ -62,8 +62,8 @@ package org.apache.tapestry;
  * it includes methods similar to {@link java.text.MessageFormat}
  * for formatting the strings.
  *
- * @see org.apache.tapestry.IComponent#getStrings()
- * @see org.apache.tapestry.engine.IComponentStringsSource
+ * @see org.apache.tapestry.IComponent#getMessages
+ * @see org.apache.tapestry.engine.IComponentMessagesSource
  * 
  * @author Howard Lewis Ship
  * @version $Id$
@@ -96,10 +96,10 @@ public interface IMessages
 
     /**
      * Formats a string, using
-     * {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * {@link java.text.MessageFormat#format(java.lang.String, java.lang.Object[])}.
      *
      * @param key the key used to obtain a localized pattern using
-     * {@link #getString(String)}
+     * {@link #getMessage(String)}
      * @param arguments passed to the formatter
      *
      * @since 3.0

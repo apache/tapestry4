@@ -82,7 +82,7 @@ import org.apache.tapestry.util.pool.Pool;
  * that make up the application.  The engine is a delegate to the
  * {@link ApplicationServlet} via the {@link #service(RequestContext)} method.
  *
- * <p>Engine instances are persisted in the {@link HttpSession} and are serializable.
+ * <p>Engine instances are persisted in the {@link javax.servlet.http.HttpSession} and are serializable.
  *
  * @author Howard Lewis Ship
  * @version $Id$
@@ -365,7 +365,7 @@ public interface IEngine
     public DataSqueezer getDataSqueezer();
 
     /**
-     *  Returns a {@link org.apache.tapestry.IPropertySource} that should be
+     *  Returns a {@link org.apache.tapestry.engine.IPropertySource} that should be
      *  used to obtain configuration data.  The returned source represents
      *  a search path that includes (at a minimum):
      *  
