@@ -57,6 +57,12 @@ public class BasePage extends BaseComponent implements IPage
 
 	protected ChangeObserver changeObserver;
 
+    /**
+     *  The {@link IEngine} the page is currently attached to.  This may
+     *  be read, but not changed, but subclasses.
+     *
+     */
+
 	protected IEngine engine;
 
     /**
@@ -66,13 +72,19 @@ public class BasePage extends BaseComponent implements IPage
      *
      */
 
-    protected Object visit;
+    private Object visit;
 	
 	private static final int LIFECYCLE_INIT_SIZE = 3;
 
 	private int lifecycleComponentCount = 0;
 
 	private ILifecycle[] lifecycleComponents;
+
+    /**
+     *  The name of this page.  This may be read, but not changed, by
+     *  subclasses.
+     *
+     */
 
 	protected String name;
 	
@@ -88,7 +100,7 @@ public class BasePage extends BaseComponent implements IPage
 	*
 	*/
 
-	protected Locale locale;
+	private Locale locale;
 
 	public void addLifecycleComponent(ILifecycle component)
 	{

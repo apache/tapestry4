@@ -1349,9 +1349,9 @@ public abstract class AbstractEngine
         return visit;
     }
 
-    public void setVisit(Object value)
+    public boolean getHasVisit()
     {
-        visit = value;
+        return visit != null;
     }
 
     /**
@@ -1373,7 +1373,8 @@ public abstract class AbstractEngine
         if (visitClassName == null)
             throw new ApplicationRuntimeException(
                 "Could not create visit object because property " +
-                VISIT_CLASS_PROPERTY_NAME + " was not specified in the application specification.");
+                VISIT_CLASS_PROPERTY_NAME + 
+                " was not specified in the application specification.");
 
         visitClass = resolver.findClass(visitClassName);
 

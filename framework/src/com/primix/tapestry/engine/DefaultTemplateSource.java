@@ -1,8 +1,8 @@
 package com.primix.tapestry.engine;
 
-import java.util.Locale;
 import com.primix.tapestry.*;
 import com.primix.tapestry.parse.*;
+import com.primix.foundation.*;
 import java.io.*;
 import java.util.*;
 import java.net.URL;
@@ -42,19 +42,26 @@ import java.net.URL;
  *  <p>An instance of this class acts as a singleton shared by all sessions, so it
  *  must be threadsafe.
  *
- *  <p>TBD:  This implementation ignores <b>locale</b>.
- *
  * @author Howard Ship
  * @version $Id$
  */
 
 
 public class DefaultTemplateSource 
-   implements ITemplateSource
+implements ITemplateSource
 {
 	private static final int MAP_SIZE = 11;
 
-	private Map templates;
+    // Cache of previously retrieved templates.  Key is a multi-key of 
+    // specification resource path and locale (local may be null), value
+    // is the ComponentTemplate.
+
+	private Map cache;
+
+    // Previously read templates; key is the HTML resource path, value
+    // is the ComponentTemplate.
+
+    private Map templates;
 
 	private static final int BUFFER_SIZE = 2000;
 
@@ -73,15 +80,12 @@ public class DefaultTemplateSource
 
 	public void reset()
 	{
+        cache = null;
 		templates = null;
 	}
 
 	/**
 	*  Reads the template for the component.
-	*
-	*  <p>TBD:  Do a search based on the locale of the page containing the component.
-    *
-    *  <p>TBD:  Make threadsafe.
 	*
 	*  <p>Returns null if the template can't be found.
 	*/
@@ -90,46 +94,199 @@ public class DefaultTemplateSource
 	throws ResourceUnavailableException
 	{
 		String specificationResourcePath;
-		String resourcePath;
-		int dotx;
-		ComponentTemplate result = null;
+		ComponentTemplate result;
+        Object key;
+        Locale locale;
 
-		specificationResourcePath = component.getSpecification().
-		getSpecificationResourcePath();
+		specificationResourcePath = 
+		    component.getSpecification().getSpecificationResourcePath();
 
-		// Strip off the '.jwc' and replace with '.html'
+        locale = component.getPage().getLocale();
 
-		dotx = specificationResourcePath.lastIndexOf('.');
+        key = new MultiKey(new Object[] 
+        { specificationResourcePath, locale
+        }, false);
 
-		resourcePath = specificationResourcePath.substring(0, dotx) + ".html";
+        result = searchCache(key);
+        if (result != null)
+            return result;
 
-		// Need to do a little search right here when we implement
-		// localization.
+        result = findTemplate(specificationResourcePath, locale);
 
-		if (templates != null)
-			result = (ComponentTemplate)templates.get(resourcePath);
+        if (result == null)
+        {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("Could not find template for component ");
+            buffer.append(specificationResourcePath);
 
-		if (result != null)
-			return result;
+            if (locale != null)
+            {
+                buffer.append(" in locale ");
+                buffer.append(locale.toString());
+            }
 
-		result = parseTemplate(resourcePath);
+            buffer.append('.');
 
-		if (templates == null)
-			templates = new HashMap(MAP_SIZE);
+            throw new ResourceUnavailableException(buffer.toString());
+        }
 
-		templates.put(resourcePath, result);
+        saveToCache(key, result);
 
 		return result;
 	}
 
-	protected ComponentTemplate parseTemplate(String name)
+    private ComponentTemplate searchCache(Object key)
+    {
+        if (cache == null)
+            return null;
+
+        synchronized(cache)
+        {
+            return (ComponentTemplate)cache.get(key);
+        }
+    }
+
+    private void saveToCache(Object key, ComponentTemplate template)
+    {
+        if (cache == null)
+        {
+            synchronized(this)
+            {
+                if (cache == null)
+                    cache = new HashMap(MAP_SIZE);
+            }
+        }
+
+        synchronized(cache)
+        {
+            cache.put(key, template);
+        }
+    }
+
+    /**
+     *  Search for the template corresponding to the resource and the locale.
+     *  This may be in the template map already, or may involve reading and
+     *  parsing the template.
+     *
+     */
+
+    private ComponentTemplate findTemplate(String specificationResourcePath, Locale locale)
+    throws ResourceUnavailableException
+    {
+        int dotx;
+        StringBuffer buffer;
+        int rawLength;
+        String candidatePath;
+        String language = null;
+        String country = null;
+        int start = 2;
+        ComponentTemplate result = null;
+
+        // Just easier to lock the template cache once, for the duration.
+
+        if (templates == null)
+        {
+            synchronized(this)
+            {
+                if (templates == null)
+                    templates = new HashMap(MAP_SIZE);
+            }
+        }
+
+        dotx = specificationResourcePath.lastIndexOf('.');
+        buffer = new StringBuffer (dotx + 20);
+        buffer.append(specificationResourcePath.substring(0, dotx));
+        rawLength = buffer.length();
+
+        if (locale != null)
+        {
+            country = locale.getCountry();
+            if (country.length() > 0)
+                start--;
+
+            // This assumes that you never have the case where there's
+            // a null language code and a non-null country code.
+
+            language = locale.getLanguage();
+            if (language.length() > 0)
+                start--;
+        }
+
+
+        // On pass #0, we use language code and country code
+        // On pass #1, we use language code
+        // On pass #2, we use neither.
+        // We skip pass #0 or #1 depending on whether the language code
+        // and/or country code is null.
+
+        synchronized(templates)
+        {
+            for (int i = start; i < 3; i++)
+            {
+                buffer.setLength(rawLength);
+
+                if (i < 2)
+                {
+                    buffer.append('_');
+                    buffer.append(language);
+                }
+
+                if (i == 0)
+                {
+                    buffer.append('_');
+                    buffer.append(country);
+                }
+
+                buffer.append(".html");
+
+                candidatePath = buffer.toString();
+
+                // See if it's been parsed before
+
+                result = (ComponentTemplate)templates.get(candidatePath);
+                if (result != null)
+                {
+                    System.out.println("Found in cache: " + candidatePath + " = " + result);
+                    return result;
+                }
+        
+                // Ok, see if it exists.
+
+                result = parseTemplate(candidatePath);
+
+                if (result != null)
+                {
+                    System.out.println("Parsed: " + candidatePath + " = " + result);
+
+                    templates.put(candidatePath, result);
+                    return result;
+                }
+            }
+        }
+
+System.out.println("Not found anywhere: " + specificationResourcePath);
+
+        // Not found, let the caller complain about it.
+
+        return null;
+    }
+    
+    /**
+     *  Reads the template for the given resource; returns null if the
+     *  resource doesn't exist.
+     *
+     */
+
+	private ComponentTemplate parseTemplate(String resourceName)
 	throws ResourceUnavailableException
 	{
 		char[] templateData;
 		ComponentTemplate result;
 		TemplateToken[] tokens;
 
-		templateData = readTemplate(name);
+		templateData = readTemplate(resourceName);
+        if (templateData == null)
+            return null;
 
 		if (parser == null)
 			parser = new TemplateParser();
@@ -145,7 +302,13 @@ public class DefaultTemplateSource
 		return result;
 	}
 
-	protected char[] readTemplate(String resourceName)
+    /**
+     *  Reads the template, given the complete path to the
+     *  resource.  Returns null if the resource doesn't exist.
+     *
+     */
+
+	private char[] readTemplate(String resourceName)
 	throws ResourceUnavailableException
 	{
     	URL url;
@@ -154,8 +317,7 @@ public class DefaultTemplateSource
 		url = resolver.getResource(resourceName);
         
 		if (url == null)
-			throw new ResourceUnavailableException(
-			"Resource " + resourceName + " not found.");
+            return null;
 
 		try
 		{
@@ -183,7 +345,12 @@ public class DefaultTemplateSource
 
 	}
 
-	protected char[] readTemplateStream(InputStream stream)
+    /**
+     *  Reads a Stream into memory as an array of characters.
+     *
+     */
+
+	private char[] readTemplateStream(InputStream stream)
 	throws IOException
 	{
 		InputStreamReader reader;
