@@ -180,8 +180,6 @@ public abstract class DatePicker extends AbstractFormComponent
             writer.beginEmpty("input");
             writer.attribute("type", "text");
             writer.attribute("name", name);
-            writer.attribute("maxlength", format.length() + 2);
-            writer.attribute("size", format.length() + 2);
             writer.attribute("title", formatter.toLocalizedPattern());
 
             if (value != null)
@@ -189,6 +187,8 @@ public abstract class DatePicker extends AbstractFormComponent
 
             if (disabled)
                 writer.attribute("disabled", "disabled");
+
+            renderInformalParameters(writer, cycle);
 
             writer.beginEmpty("input");
             writer.attribute("type", "button");
