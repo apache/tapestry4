@@ -161,27 +161,43 @@
 		</row>
 		<row>
 		  <entry>tapestry.install.dir</entry>
-		  <entry><filename>c:\Tapestry-2.2</filename>
-		    <footnote>This version number was correct at the time of writting</footnote>
-		  </entry>
+		  <entry><filename>c:\Tapestry-<replaceable>x.x</replaceable></filename></entry>
 		</row>
 	      </tbody>
 	    </tgroup>
 	  </table>
 	</listitem>
 	<listitem>Save the file :-)</listitem>
-	<listitem>Go to a command console, to the directory you will be using
-	  for development. In the case of this tutorial, that is <filename class="directory">C:\TapestryExample</filename>
-	  and type 'ant'. If all goes will, you will see a message saying that the build was successful.
+	<listitem>
+	  <para>
+	    Go to a command console, to the directory you will be using
+	    for development. In the case of this tutorial, that is 
+	    <filename class="directory">C:\TapestryExample</filename>
+	    and type 'ant'. If all goes will, you will see a message saying that the build was successful.
+	  </para>
 	</listitem>
 	<listitem>
-	  Type 'ant run', and then open a web browser to 
-	  <ulink url="http://localhost:8081/tutorial">
-	    <filename>http://localhost:8081/tutorial</filename>
-	  </ulink>.
-	  Note that this is intentionally a 
-	  different port number from the tapestry tutorial example itself. 
-	  It means you can run both at once if you wish.
+	  <para>
+	    Type 'ant run', and then open a web browser to 
+	    <ulink url="http://localhost:8081/learn-tapestry">
+	      <filename>http://localhost:8081/learn-tapestry</filename>
+	    </ulink>
+	    <footnote>
+	      Note that this is intentionally a 
+	      different port number from the tapestry tutorial example itself. 
+	      It means you can run both at once if you wish.
+	    </footnote>
+	  </para>
+	  <para>
+	    <figure>
+	      <title>What you should see, when you click on the link above</title>
+	      <mediaobject>
+		<imageobject>
+		  <imagedata fileref="images/tapestry-dev-env.png" format="PNG"/>
+		</imageobject>
+	      </mediaobject>
+	    </figure>
+	  </para>
 	</listitem>
       </orderedlist>
       A brief overview of the tasks provided by the script:
