@@ -112,7 +112,7 @@ public class StringValidator extends BaseValidator
 		throws ValidatorException
 	{
 		if (checkRequired(field, input))
-			return input;
+			return null;
 
 		if (minimumLength > 0 && input.length() < minimumLength)
 		{
