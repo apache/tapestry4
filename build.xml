@@ -68,7 +68,7 @@ In some of the documentation in the web directory.
   <ant dir="examples/Vlib" target="clean"/>
   <ant dir="doc/src/Tutorial" target="clean"/>
   <ant dir="doc/src/DevelopersGuide" target="clean"/>
-  <remove dir="${private.dir}" quiet="true"/>
+  <delete dir="${private.dir}" quiet="true"/>
 </target>
 
 <target name="clean-all" depends="clean"
