@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.services;
 
+import java.util.List;
+
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebActivator;
 import org.apache.tapestry.web.WebContext;
@@ -55,4 +57,30 @@ public interface ApplicationGlobals
     public IApplicationSpecification getSpecification();
 
     public String getActivatorName();
+
+    /**
+     * Stores the two sets of engine service definitions. Application services override factory
+     * services with the same {@link org.apache.tapestry.engine.IEngineService#getName()name}.
+     * 
+     * @param factoryServices
+     *            List of {@link org.apache.tapestry.engine.IEngineService}.
+     * @param applicationServices
+     *            List of {@link org.apache.tapestry.engine.IEngineService}.
+     */
+
+    public void storeServices(List factoryServices, List applicationServices);
+
+    /**
+     * Returns the factory default services as a List of
+     * {@link org.apache.tapestry.engine.IEngineService}.
+     */
+
+    public List getFactoryServices();
+
+    /**
+     * Returns the application services (and overrides) as a List of
+     * {@link org.apache.tapestry.engine.IEngineService}.
+     */
+
+    public List getApplicationServices();
 }

@@ -14,8 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServlet;
+import java.util.List;
 
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -35,6 +34,10 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
     private IApplicationSpecification _specification;
 
     private WebContext _webContext;
+
+    private List _factoryServices;
+
+    private List _applicationServices;
 
     public void storeActivator(WebActivator activator)
     {
@@ -69,5 +72,21 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
     public void storeContext(WebContext context)
     {
         _webContext = context;
+    }
+
+    public void storeServices(List factoryServices, List applicationServices)
+    {
+      _factoryServices = factoryServices;
+      _applicationServices = applicationServices;
+    }
+    
+    public List getApplicationServices()
+    {
+        return _applicationServices;
+    }
+
+    public List getFactoryServices()
+    {
+        return _factoryServices;
     }
 }
