@@ -67,7 +67,8 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
 	}
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableDataModel#getRow(int)
+	 * Returns the row element at the given position
+     * @param nRow the index of the element to return
 	 */
 	public Object getRow(int nRow)
 	{
