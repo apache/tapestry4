@@ -26,6 +26,7 @@ This DTD is backwards compatible with the 1.3 DTD, with the following exceptions
 - added value attribute to <static-binding>
 - added value attribute to <property>
 - renamed <component-alias> to <component-type>
+- added <listener-binding> element
 -->
 
 <!-- =======================================================
@@ -128,7 +129,9 @@ Configures one JavaBean property of an extension.
 Attributes:
   property-name:  The name of the property to configure.
   type: Conversion of property value.
-  
+  value: The value to be converted and applied.  If not 
+    specified, the element's character data is
+    used.  
  
 -->
 
@@ -136,6 +139,7 @@ Attributes:
 <!ATTLIST configure 
   property-name CDATA #REQUIRED
   type %static-value-type;
+  value CDATA #IMPLIED
 >
   
 <!-- =======================================================
@@ -153,7 +157,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component (property*, (binding | inherited-binding | static-binding | string-binding)*)>
+<!ELEMENT component (property*, (binding | inherited-binding | listener-binding | static-binding | string-binding)*)>
 <!ATTLIST component
   id ID #REQUIRED
   type CDATA #IMPLIED
@@ -334,6 +338,27 @@ Attributes:
 <!ATTLIST page
   name CDATA #REQUIRED
   specification-path CDATA #REQUIRED
+>
+
+<!-- =======================================================
+Element: listener-binding
+Appears in: component
+
+Defines an in-place script using the scripting language
+supported by Bean Scripting Framework (http://jakarta.apache.org/bsf).
+The script itself is the element's character data (often, inside
+a CDATA block).
+
+The default language is jython, though this can be overridden.
+
+Attributes:
+  name: The name of the component parameter to bind.
+  language: The language the script is written in.
+-->
+<!ELEMENT listener-binding (#PCDATA)>
+<!ATTLIST listener-binding
+  name CDATA #REQUIRED
+  language CDATA #IMPLIED
 >
 
 <!-- =======================================================

@@ -32,6 +32,7 @@ import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.binding.ExpressionBinding;
+import net.sf.tapestry.binding.ListenerBinding;
 import net.sf.tapestry.binding.StringBinding;
 import net.sf.tapestry.html.BasePage;
 import net.sf.tapestry.resolver.ComponentSpecificationResolver;
@@ -42,6 +43,7 @@ import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
+import net.sf.tapestry.spec.ListenerBindingSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 
 /**
@@ -208,9 +210,10 @@ public class PageLoader implements IPageLoader
             // As a simple static String
             // As a nested property name (relative to the component)
             // As the name of a binding inherited from the containing component.
+            // As the name of a public field
+            // As a script for a listener
 
             BindingType type = bspec.getType();
-            String bindingValue = bspec.getValue();
 
             // For inherited bindings, defer until later.  This gives components
             // a chance to setup bindings from static values and expressions in the
@@ -219,12 +222,18 @@ public class PageLoader implements IPageLoader
 
             if (type == BindingType.INHERITED)
             {
-                QueuedInheritedBinding queued = new QueuedInheritedBinding(component, bindingValue, name);
+                QueuedInheritedBinding queued = new QueuedInheritedBinding(component, bspec.getValue(), name);
                 _inheritedBindingQueue.add(queued);
                 continue;
             }
 
-            IBinding binding = convert(type, bindingValue, container, propertyBindings);
+            if (type == BindingType.LISTENER)
+            {
+                constructListenerBinding(component, name, (ListenerBindingSpecification) bspec);
+                continue;
+            }
+
+            IBinding binding = convert(type, bspec.getValue(), container, propertyBindings);
 
             if (binding != null)
                 component.setBinding(name, binding);
@@ -306,6 +315,9 @@ public class PageLoader implements IPageLoader
         if (type == BindingType.STATIC)
             return _pageSource.getStaticBinding(bindingValue);
 
+        // BindingType.FIELD is on the way out, it is in the
+        // 1.3 DTD but not the 1.4 DTD.
+
         if (type == BindingType.FIELD)
             return _pageSource.getFieldBinding(bindingValue);
 
@@ -313,6 +325,30 @@ public class PageLoader implements IPageLoader
         // of binding is created.
 
         throw new ApplicationRuntimeException("Unexpected type: " + type + ".");
+    }
+
+    /**
+     *  Construct a {@link ListenerBinding} for the component, and add it.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    private void constructListenerBinding(IComponent component, String bindingName, ListenerBindingSpecification spec)
+    {
+        String location = Tapestry.getString("PageLoader.script-location", bindingName, component.getExtendedId());
+
+        String language = spec.getLanguage();
+        
+        // If not provided in the page or component specification, then
+        // search for a default (factory default is "jython").
+        
+        if (Tapestry.isNull(language))
+            language = _engine.getPropertySource().getPropertyValue("net.sf.tapestry.default-script-language");
+            
+        IBinding binding = new ListenerBinding(component, language, location, spec.getScript());
+
+        component.setBinding(bindingName, binding);
     }
 
     /**

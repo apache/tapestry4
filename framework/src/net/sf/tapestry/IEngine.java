@@ -4,25 +4,24 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.io.DataSqueezer;
 import net.sf.tapestry.util.pool.Pool;
 
 /**
- * Defines the core, session-persistant object used to run a Tapestry
- * application for a single client (each client will have its own instance of the engine).
+ *  Defines the core, session-persistant object used to run a Tapestry
+ *  application for a single client (each client will have its own instance of the engine).
  *
- * <p>The engine exists to provide core services to the pages and components
- * that make up the application.  The engine is a delegate to the
- * {@link ApplicationServlet} via the {@link #service(RequestContext)} method.
+ *  <p>The engine exists to provide core services to the pages and components
+ *  that make up the application.  The engine is a delegate to the
+ *  {@link ApplicationServlet} via the {@link #service(RequestContext)} method.
  *
- * <p>Engine instances are persisted in the {@link HttpSession} and are serializable.
+ *  <p>Engine instances are persisted in the {@link HttpSession} and are serializable.
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ * 
  **/
 
 public interface IEngine
@@ -31,6 +30,8 @@ public interface IEngine
      *  The name ("Home") of the default page presented when a user first accesses the
      *  application.
      *
+     *  @see net.sf.tapestry.engine.HomeService
+     * 
      **/
 
     public static final String HOME_PAGE = "Home";
@@ -49,6 +50,9 @@ public interface IEngine
     /**
      *  The name ("StaleLink") of the page used for reporting stale links.
      *
+     *  <p>The page must implement a writeable JavaBeans proeprty named
+     *  'message' of type <code>String</code>.
+     * 
      **/
 
     public static final String STALE_LINK_PAGE = "StaleLink";
@@ -145,7 +149,9 @@ public interface IEngine
      *  Returns the context path, a string which is prepended to the names of
      *  any assets or servlets.  This may be the empty string, but won't be null.
      *
-     *  <p>This value is obtained from {@link javax.servlet.http.HttpServletRequest#getContextPath()}.
+     *  <p>This value is obtained from 
+     *  {@link javax.servlet.http.HttpServletRequest#getContextPath()}.
+     * 
      **/
 
     public String getContextPath();
@@ -162,6 +168,8 @@ public interface IEngine
      *  Returns the source of all component specifications for the application.  
      *  The source is shared between sessions.
      *
+     *  @see net.sf.tapestry.engine.AbstractEngine#createSpecificationSource(RequestContext)
+     * 
      **/
 
     public ISpecificationSource getSpecificationSource();
@@ -169,6 +177,8 @@ public interface IEngine
     /**
      *  Returns the source for HTML templates.
      *
+     *  @see  net.sf.tapestry.engine.AbstractEngine#createTemplateSource(RequestContext)
+     * 
      **/
 
     public ITemplateSource getTemplateSource();
@@ -233,11 +243,13 @@ public interface IEngine
 
     /**
      *  Returns a source for parsed 
-     *  {@link net.sf.tapestry.IScript}s.  The source is typically
+     *  {@link net.sf.tapestry.IScript}s.  The source is 
      *  shared between all sessions.
      *
      *  @since 1.0.2
      *
+     *  @see net.sf.tapestry.engine.AbstractEngine#createScriptSource(RequestContext)
+     * 
      **/
 
     public IScriptSource getScriptSource();
@@ -261,6 +273,8 @@ public interface IEngine
 	 * 
 	 *  @since 2.0.4
 	 * 
+     *  @see net.sf.tapestry.engine.AbstractEngine#createComponentStringsSource(RequestContext)
+     * 
 	 **/
 	
 	public IComponentStringsSource getComponentStringsSource();
@@ -269,6 +283,8 @@ public interface IEngine
      *  Returns a shared instance of {@link net.sf.tapestry.util.io.DataSqueezer}.
      * 
      *  @since 2.2
+     * 
+     *  @see net.sf.tapestry.engine.AbstractEngine#createDataSqueezer()
      * 
      **/
     
@@ -311,9 +327,12 @@ public interface IEngine
      *  <li>Initial Parameters of servlet (configured in the <code>web.xml</code> deployment descriptor)
      *  <li>Initial Parameter of the servlet context (also configured in <code>web.xml</code>)
      *  <li>System properties (defined with the <code>-D</code> JVM command line parameter)
+     *  <li>Hard-coded "factory defaults" (for some properties)
      *  </ul>
      * 
      *  @since 2.3
+     *  @see net.sf.tapestry.engine.AbstractEngine#createPropertySource(RequestContext)
+     * 
      **/
     
     public IPropertySource getPropertySource();
@@ -326,6 +345,7 @@ public interface IEngine
      *  will clear out this Pool.
      * 
      *  @since 2.4
+     *  @see net.sf.tapestry.engine.AbstractEngine#createPool(RequestContext)
      * 
      **/
     

@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
+import org.apache.bsf.BSFManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -58,6 +60,7 @@ import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.DelegatingPropertySource;
 import net.sf.tapestry.util.PropertyHolderPropertySource;
+import net.sf.tapestry.util.ResourceBundlePropertySource;
 import net.sf.tapestry.util.ServletContextPropertySource;
 import net.sf.tapestry.util.ServletPropertySource;
 import net.sf.tapestry.util.SystemPropertiesPropertySource;
@@ -1870,6 +1873,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         }
 
         result.addSource(SystemPropertiesPropertySource.getInstance());
+        
+        // Lastly, add a final source to handle "factory defaults".
+        
+        ResourceBundle bundle = ResourceBundle.getBundle("net.sf.tapestry.ConfigurationDefaults");
+        
+        result.addSource(new ResourceBundlePropertySource(bundle));
 
         return result;
     }
@@ -1886,7 +1895,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /** 
-     *  Returns an new instance of {@link Pool}.  Subclasses may override this
+     *  Returns an new instance of {@link Pool}, with the standard
+     *  set of adaptors, plus {@link BSFManagerPoolableAdaptor} for
+     *  {@link BSFManager}.
+     * 
+     *  <p>Subclasses may override this
      *  method to configure the Pool differently.
      * 
      *  @since 2.4 
@@ -1895,7 +1908,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     protected Pool createPool(RequestContext context)
     {
-        return new Pool();
+        Pool result = new Pool();
+        
+        result.registerAdaptor(BSFManager.class, new BSFManagerPoolableAdaptor());
+        
+        return result;
     }
 
     /** @since 2.4 **/

@@ -40,10 +40,25 @@ public final class BindingType extends Enum
     /**
      *  Indicates a {@link net.sf.tapestry.binding.FieldBinding}.
      *
+     *  <p>
+     *  Field bindings are only available in the 1.3 DTD.  The 1.4 DTD
+     *  does not support them (since OGNL expressions can do the same thing).
+     * 
      **/
 
     public static final BindingType FIELD = new BindingType("FIELD");
 
+    /**
+     *  Indicates a {@link net.sf.tapestry.binding.ListenerBinding}, a
+     *  specialized kind of binding that encapsulates a component listener
+     *  as a script.  Uses a subclass of {@link BindingSpecification},
+     *  {@link ListenerBindingSpecification}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public static final BindingType LISTENER = new BindingType("LISTENER");
 
 	/**
 	 *  A binding to one of a component's localized strings.

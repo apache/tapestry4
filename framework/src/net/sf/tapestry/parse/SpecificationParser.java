@@ -28,6 +28,7 @@ import net.sf.tapestry.spec.Direction;
 import net.sf.tapestry.spec.ExtensionSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
+import net.sf.tapestry.spec.ListenerBindingSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.spec.SpecFactory;
 import net.sf.tapestry.util.IPropertyHolder;
@@ -911,9 +912,17 @@ public class SpecificationParser extends AbstractDocumentParser
                 continue;
             }
 
+            // Field binding is in 1.3 DTD, but removed from 1.4
+            
             if (isElement(child, "field-binding"))
             {
                 convertBinding(c, child, BindingType.FIELD, "field-name");
+                continue;
+            }
+
+            if (isElement(child, "listener-binding"))
+            {
+                convertListenerBinding(c, child);
                 continue;
             }
 
@@ -956,6 +965,20 @@ public class SpecificationParser extends AbstractDocumentParser
         component.setBinding(name, binding);
     }
 
+    private void convertListenerBinding(ContainedComponent component, Node node)
+    {
+        String name = getAttribute(node, "name");
+        String language = getAttribute(node, "language");
+        
+        // The script itself is the character data wrapped by the element.
+        
+        String script = getValue(node);                
+                
+        ListenerBindingSpecification binding = _factory.createListenerBindingSpecification(language, script);
+
+        component.setBinding(name, binding);
+    }
+    
     private void convertStaticBinding(ContainedComponent component, Node node)
     {
         String name = getAttribute(node, "name");
@@ -1125,7 +1148,10 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String propertyName = getAttribute(node, "property-name");
         String type = getAttribute(node, "type");
-        String value = getValue(node);
+        String value = getAttribute(node, "value");
+        
+        if (value == null)
+            value = getValue(node);
 
         validate(propertyName, PROPERTY_NAME_PATTERN, "SpecificationParser.invalid-property-name");
 

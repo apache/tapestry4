@@ -1,6 +1,5 @@
 package net.sf.tapestry.util.xml;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -20,7 +19,6 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -138,7 +136,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
     }
 
     /** 
-     * Invoked by subclasses to parse a document.  Obtains (or re-uses) a
+     *  Invoked by subclasses to parse a document.  Obtains (or re-uses) a
      *  {@link DocumentBuilder} and parses the document from the {@link InputSource}.
      *
      *  @param resourceLocation location from which parsing occurs
@@ -166,24 +164,10 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
                 Tapestry.getString("AbstractDocumentParser.missing-resource", resourceLocation),
                 resourceLocation);
 
-        InputStream inputStream = null;
-
         try
         {
 
-            inputStream = url.openStream();
-
-            if (inputStream == null)
-                throw new DocumentParseException(
-                    Tapestry.getString("AbstractDocumentParser.unable-to-open-resource", url, resourceLocation),
-                    resourceLocation);
-
-            // Wrapping in a buffered input stream seems to provide a slight
-            // speed improvement.
-
-            inputStream = new BufferedInputStream(inputStream);
-
-            InputSource source = new InputSource(inputStream);
+            InputSource source = new InputSource(url.toExternalForm());
 
             if (_builder == null)
                 _builder = constructBuilder();
@@ -208,9 +192,6 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
             error = false;
 
             validateRootElement(document, rootElementName);
-
-            inputStream.close();
-            inputStream = null;
 
             return document;
         }
@@ -245,8 +226,6 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
         }
         finally
         {
-            Tapestry.close(inputStream);
-
             // If there was an error, discard the builder --- it may be in
             // an unknown and unusable state.
 
