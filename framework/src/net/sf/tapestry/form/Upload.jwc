@@ -20,7 +20,7 @@
   	</description>
   </parameter>
 
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled" java-type="boolean" direction="in"/>
  
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>

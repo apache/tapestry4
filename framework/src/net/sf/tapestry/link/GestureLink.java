@@ -28,7 +28,6 @@ package net.sf.tapestry.link;
 import java.net.URL;
 
 import net.sf.tapestry.Gesture;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
@@ -56,15 +55,9 @@ import net.sf.tapestry.Tapestry;
 
 public abstract class GestureLink extends AbstractServiceLink
 {
-
-    private IBinding anchorBinding;
-    private String anchorValue;
-
-    private IBinding schemeBinding;
-    private String schemeValue;
-
-    private IBinding portBinding;
-    private int portValue;
+    private String anchor;
+    private String scheme;
+    private int port;
 
     /**
      *  Constructs a URL based on the service, context plus scheme, port and anchor.
@@ -91,9 +84,6 @@ public abstract class GestureLink extends AbstractServiceLink
     private String buildURL(IRequestCycle cycle, String[] context)
         throws RequestCycleException
     {
-        String anchor = null;
-        String scheme = null;
-        int port = 0;
         String URL = null;
 
         String serviceName = getServiceName();
@@ -109,25 +99,10 @@ public abstract class GestureLink extends AbstractServiceLink
         // Now, dress up the URL with scheme, server port and anchor,
         // as necessary.
 
-        if (schemeValue != null)
-            scheme = schemeValue;
-        else if (schemeBinding != null)
-            scheme = schemeBinding.getString();
-
-        if (portValue != 0)
-            port = portValue;
-        else if (portBinding != null)
-            port = portBinding.getInt();
-
         if (scheme == null && port == 0)
             URL = g.getURL();
         else
             URL = g.getAbsoluteURL(scheme, null, port);
-
-        if (anchorValue != null)
-            anchor = anchorValue;
-        else if (anchorBinding != null)
-            anchor = anchorBinding.getString();
 
         if (anchor == null)
             return URL;
@@ -135,50 +110,42 @@ public abstract class GestureLink extends AbstractServiceLink
         return URL + "#" + anchor;
     }
 
-    public IBinding getAnchorBinding()
-    {
-        return anchorBinding;
-    }
-
-    public IBinding getSchemeBinding()
-    {
-        return schemeBinding;
-    }
-
-    public void setSchemeBinding(IBinding value)
-    {
-        schemeBinding = value;
-
-        if (value.isStatic())
-            schemeValue = value.getString();
-    }
-
-    public IBinding getPortBinding()
-    {
-        return portBinding;
-    }
-
-    public void setPortBinding(IBinding value)
-    {
-        portBinding = value;
-
-        if (value.isStatic())
-            portValue = value.getInt();
-    }
-
     /**
-     *  Returns the service used to build URLs.
+     *  Returns the service used to build URLs.  This method is implemented
+     *  by subclasses.
      *
      **/
 
     protected abstract String getServiceName();
 
-    public void setAnchorBinding(IBinding value)
+    public String getAnchor()
     {
-        anchorBinding = value;
+        return anchor;
+    }
 
-        if (value.isStatic())
-            anchorValue = value.getString();
+    public void setAnchor(String anchor)
+    {
+        this.anchor = anchor;
+    }
+
+    public int getPort()
+    {
+        return port;
+    }
+
+    public void setPort(int port)
+    {
+        this.port = port;
+    }
+
+    public String getScheme()
+    {
+        return scheme;
+    }
+
+    public void setScheme(String scheme)
+    {
+        this.scheme = scheme;
     }
 
 }

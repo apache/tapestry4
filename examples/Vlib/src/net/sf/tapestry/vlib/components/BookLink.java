@@ -41,13 +41,21 @@ import net.sf.tapestry.vlib.ejb.Book;
  *  page using the external service.
  *
  *
- * <table border=1>
- * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> <th>Default</th> <th>Description</th>
- * </tr>
+ *  <table border=1>
+ *  <tr> <th>Parameter</th> 
+ *  <th>Type</th> 
+ *  <th>Direction</th> 
+ *  <th>Required</th> 
+ *  <th>Default</th> 
+ *  <th>Description</th>
+ *  </tr>
+ * 
  * <tr>
- *  <td>book</td> <td>{@link Book}</td>
- *  <td>R</td>
- *  <td>yes</td> <td>&nbsp;</td>
+ *  <td>book</td> 
+ *  <td>{@link Book}</td>
+ *  <td>in</td>
+ *  <td>yes</td> 
+ *  <td>&nbsp;</td>
  *  <td>The {@link Book} to create a link to.</td>
  * </tr>
  *
@@ -62,36 +70,16 @@ import net.sf.tapestry.vlib.ejb.Book;
 
 public class BookLink extends BaseComponent
 {
-    private IBinding bookBinding;
     private Book book;
-    private String[] context;
 
     /**
-     *  One week, in milliseconds (1/1024 second).  Books that have been added in the last
+     *  One week, in milliseconds (1/1000 second).  Books that have been added in the last
      *  week are marked new, until the user logs in, at which point, its books
      *  added since the user last logged in.
      * 
      **/
 
-    private static final long ONE_WEEK_MILLIS = 1024l * 60l * 60l * 24l * 7l;
-
-    public IBinding getBookBinding()
-    {
-        return bookBinding;
-    }
-
-    public void setBookBinding(IBinding value)
-    {
-        bookBinding = value;
-    }
-
-    public Book getBook()
-    {
-        if (book == null)
-            book = (Book) bookBinding.getObject("book", Book.class);
-
-        return book;
-    }
+    private static final long ONE_WEEK_MILLIS = 1000l * 60l * 60l * 24l * 7l;
 
     public boolean isNew()
     {
@@ -102,7 +90,6 @@ public class BookLink extends BaseComponent
         if (visit != null)
             lastAccess = visit.getLastAccess();
 
-        Book book = getBook();
         Timestamp dateAdded = book.getDateAdded();
 
         // Some old records may not contain a value for dateAdded
@@ -128,34 +115,28 @@ public class BookLink extends BaseComponent
 
     /**
      *  The context has two elements.  The first is the page to jump to
-     *  ({@link PersonPage}), the second is the primary key of the person.
+     *  ({@link net.sf.tapestry.vlib.pages.ViewBook}), the second is the primary key of the person.
      *
      **/
 
     public String[] getContext()
     {
-        if (context == null)
-        {
-            context = new String[2];
-            context[0] = "ViewBook";
-        }
+        String[] context = new String[2];
+        context[0] = "ViewBook";
 
         context[1] = getBook().getPrimaryKey().toString();
 
         return context;
     }
 
-    /**
-     *  Sets the book property to null after
-     *  renderring.
-     *
-     **/
-
-    protected void cleanupAfterRender(IRequestCycle cycle)
+    public Book getBook()
     {
-        book = null;
-        
-        super.cleanupAfterRender(cycle);
+        return book;
+    }
+
+    public void setBook(Book book)
+    {
+        this.book = book;
     }
 
 }

@@ -33,20 +33,29 @@ import net.sf.tapestry.vlib.pages.PersonPage;
  *  Creates a link to the {@link PersonPage} page using the external service.
  *
  *
- * <table border=1>
- * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> <th>Default</th> <th>Description</th>
+ *  <table border=1>
+ *  <tr> 
+ *  <th>Parameter</th> 
+ *  <th>Type</th> 
+ *  <th>Direction</th> 
+ *  <th>Required</th> 
+ *  <th>Default</th> 
+ *  <th>Description</th>
  * </tr>
+ * 
  * <tr>
- *  <td>primaryKey</td> <td>{@link Integer}</td>
- *  <td>R</td>
- *  <td>yes</td> <td>&nbsp;</td>
+ *  <td>primaryKey</td> 
+ *  <td>{@link Integer}</td>
+ *  <td>in</td>
+ *  <td>yes</td> 
+ *  <td>&nbsp;</td>
  *  <td>The primary key of the {@link IPerson} to create a link to.</td>
  * </tr>
  *
  * <tr>
  *      <td>name</td>
  *      <td>{@link String}</td>
- *      <td>R</td>
+ *      <td>in</td>
  *      <td>yes</td>
  *      <td>&nbsp;</td>
  *      <td>The name of the person to create a link to.
@@ -56,7 +65,7 @@ import net.sf.tapestry.vlib.pages.PersonPage;
  *  <tr>
  *		<td>omit</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>If true, then the link is omitted and replaced with an &amp;nbsp;.
@@ -74,61 +83,10 @@ import net.sf.tapestry.vlib.pages.PersonPage;
 
 public class PersonLink extends BaseComponent
 {
-    private IBinding primaryKeyBinding;
-    private IBinding nameBinding;
-
-    private String[] context;
     private Integer primaryKey;
-
-    private IBinding omitBinding;
-    private boolean staticOmit;
-    private boolean staticOmitValue;
-
-    public IBinding getPrimaryKeyBinding()
-    {
-        return primaryKeyBinding;
-    }
-
-    public void setPrimaryKeyBinding(IBinding value)
-    {
-        primaryKeyBinding = value;
-    }
-
-    public IBinding getNameBinding()
-    {
-        return nameBinding;
-    }
-
-    public void setNameBinding(IBinding value)
-    {
-        nameBinding = value;
-    }
-
-    public IBinding getOmitBinding()
-    {
-        return omitBinding;
-    }
-
-    public void setOmitBinding(IBinding value)
-    {
-        omitBinding = value;
-
-        staticOmit = value.isStatic();
-
-        if (staticOmit)
-            staticOmitValue = value.getBoolean();
-    }
-
-    public boolean getShowLink()
-    {
-        if (omitBinding == null)
-            return true;
-
-        if (staticOmit)
-            return !staticOmitValue;
-
-        return !omitBinding.getBoolean();
-    }
+    private String name;
+    private boolean omit;
+    private String styleClass;
 
     /**
      *  The context has two elements.  The first is the page to jump to
@@ -138,15 +96,51 @@ public class PersonLink extends BaseComponent
 
     public String[] getContext()
     {
-        if (context == null)
-        {
-            context = new String[2];
-            context[0] = "Person";
-        }
-
-        context[1] = primaryKeyBinding.getString();
+        String[] context = new String[2];
+        context[0] = "Person";
+        context[1] = primaryKey.toString();
 
         return context;
+    }
+
+    public String getStyleClass()
+    {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass)
+    {
+        this.styleClass = styleClass;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public boolean getOmit()
+    {
+        return omit;
+    }
+
+    public void setOmit(boolean omit)
+    {
+        this.omit = omit;
+    }
+
+    public Integer getPrimaryKey()
+    {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(Integer primaryKey)
+    {
+        this.primaryKey = primaryKey;
     }
 
 }

@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
 <specification class="net.sf.tapestry.vlib.components.BookLink" allow-body="no" allow-informal-parameters="no">
-  <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes"/>
+  
+  <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes" direction="in"/>
+  
   <component id="link" type="Service">
     <field-binding name="service" field-name="net.sf.tapestry.vlib.ExternalService.SERVICE_NAME"/>
     <binding name="context" property-path="context"/>
   </component>
+  
   <component id="insertBookTitle" type="Insert">
     <binding name="value" property-path="book.title"/>
   </component>

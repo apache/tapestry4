@@ -30,6 +30,8 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.apache.log4j.Category;
+
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
@@ -57,12 +59,16 @@ import net.sf.tapestry.Tapestry;
  *  <th>Description</th>
  * </tr>
  * <tr>
- *  <td>text</td> 
+ *  <td>value</td> 
  *  <td>{@link String}</td> 
  *  <td>in</td>
  *  <td>no</td> 
  *  <td>&nbsp;</td>
- *  <td>The text to be inserted.  If not provided, no output is written</td> </tr>
+ *  <td>The text to be inserted.  If not provided, no output is written.
+ * 
+ * <p>This parameter can also be accessed using the deprected name "text".
+ * 
+ * </td> </tr>
  *
  *  <tr>
  *      <td>mode</td>
@@ -85,7 +91,10 @@ import net.sf.tapestry.Tapestry;
 
 public class InsertText extends AbstractComponent
 {
-    private String text;
+    private static final Category CAT = Category.getInstance(InsertText.class);
+
+    private boolean warning = true;
+    private String value;
     private InsertTextMode mode = InsertTextMode.BREAK;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -96,12 +105,12 @@ public class InsertText extends AbstractComponent
         int lineNumber = 0;
         String line;
 
-        if (text == null)
+        if (value == null)
             return;
 
         try
         {
-            reader = new StringReader(text);
+            reader = new StringReader(value);
 
             lineReader = new LineNumberReader(reader);
 
@@ -122,10 +131,7 @@ public class InsertText extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(
-                Tapestry.getString("InsertText.conversion-error"),
-                this,
-                ex);
+            throw new RequestCycleException(Tapestry.getString("InsertText.conversion-error"), this, ex);
         }
         finally
         {
@@ -161,12 +167,28 @@ public class InsertText extends AbstractComponent
 
     public String getText()
     {
-        return text;
+        return getValue();
     }
 
     public void setText(String text)
     {
-        this.text = text;
+        if (warning)
+        {
+            CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
+            warning = false;
+        }
+
+        setValue(text);
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue(String value)
+    {
+        this.value = value;
     }
 
 }

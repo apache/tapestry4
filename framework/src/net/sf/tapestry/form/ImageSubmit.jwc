@@ -19,6 +19,7 @@
   </parameter>
   	
   <parameter name="name" 
+    property-name="nameOverride"
   	java-type="java.lang.String"
   	direction="in"/>
   	

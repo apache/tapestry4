@@ -30,10 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RenderOnlyPropertyException;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.components.IServiceLink;
@@ -49,13 +47,9 @@ import net.sf.tapestry.html.Body;
  *
  **/
 
-public abstract class AbstractServiceLink
-    extends AbstractComponent
-    implements IServiceLink
+public abstract class AbstractServiceLink extends AbstractComponent implements IServiceLink
 {
-    protected IBinding disabledBinding;
-    protected boolean disabled;
-    protected boolean rendering;
+    private boolean disabled;
 
     protected Body body;
 
@@ -63,30 +57,15 @@ public abstract class AbstractServiceLink
 
     protected Map eventHandlers;
 
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    /**
-     *  Returns true if the link is disabled, false otherwise.  If not otherwise
-     *  specified, the link will be enabled (and this method will return false).
-     *
-     *  @throws RenderOnlyPropertyException if the component is not currently rendering.
-     *
-     **/
-
     public boolean isDisabled()
     {
-        if (!rendering)
-            throw new RenderOnlyPropertyException(this, "disabled");
 
         return disabled;
     }
 
-    public void setDisabledBinding(IBinding value)
+    public void setDisabled(boolean disabled)
     {
-        disabledBinding = value;
+        this.disabled = disabled;
     }
 
     /**
@@ -95,9 +74,7 @@ public abstract class AbstractServiceLink
      *
      **/
 
-    public void addEventHandler(
-        ServiceLinkEventType eventType,
-        String functionName)
+    public void addEventHandler(ServiceLinkEventType eventType, String functionName)
     {
         Object currentValue;
 
@@ -153,69 +130,59 @@ public abstract class AbstractServiceLink
         IMarkupWriter wrappedWriter;
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(
-                Tapestry.getString("AbstractServiceLink.no-nesting"),
-                this);
+            throw new RequestCycleException(Tapestry.getString("AbstractServiceLink.no-nesting"), this);
 
-        try
+        body = Body.get(cycle);
+
+        cycle.setAttribute(ATTRIBUTE_NAME, this);
+
+        if (!disabled)
         {
-            rendering = true;
+            writer.begin("a");
+            writer.attribute("href", getURL(cycle));
 
-            body = Body.get(cycle);
+            // Allow the wrapped components a chance to render.
+            // Along the way, they may interact with this component
+            // and cause the name variable to get set.
 
-            cycle.setAttribute(ATTRIBUTE_NAME, this);
-
-            setup(cycle);
-
-            boolean disabled = isDisabled();
-
-            if (!disabled)
-            {
-                writer.begin("a");
-                writer.attribute("href", getURL(cycle));
-
-                // Allow the wrapped components a chance to render.
-                // Along the way, they may interact with this component
-                // and cause the name variable to get set.
-
-                wrappedWriter = writer.getNestedWriter();
-            }
-            else
-                wrappedWriter = writer;
-
-            renderWrapped(wrappedWriter, cycle);
-
-            if (!disabled)
-            {
-                // Write any attributes specified by wrapped components.
-
-                writeEventHandlers(writer);
-
-                // Generate additional attributes from informal parameters.
-
-                generateAttributes(writer, cycle);
-
-                // Dump in HTML provided by wrapped components
-
-                wrappedWriter.close();
-
-                // Close the <a> tag
-
-                writer.end();
-            }
-
-            cycle.removeAttribute(ATTRIBUTE_NAME);
+            wrappedWriter = writer.getNestedWriter();
         }
-        finally
+        else
+            wrappedWriter = writer;
+
+        renderWrapped(wrappedWriter, cycle);
+
+        if (!disabled)
         {
-            rendering = false;
-            eventHandlers = null;
-            body = null;
+            // Write any attributes specified by wrapped components.
+
+            writeEventHandlers(writer);
+
+            // Generate additional attributes from informal parameters.
+
+            generateAttributes(writer, cycle);
+
+            // Dump in HTML provided by wrapped components
+
+            wrappedWriter.close();
+
+            // Close the <a> tag
+
+            writer.end();
         }
+
+        cycle.removeAttribute(ATTRIBUTE_NAME);
     }
 
-    protected void writeEventHandlers(IMarkupWriter writer)
-        throws RequestCycleException
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        eventHandlers = null;
+        body = null;
+
+        super.cleanupAfterRender(cycle);
+    }
+
+    protected void writeEventHandlers(IMarkupWriter writer) throws RequestCycleException
     {
         String name = null;
 
@@ -229,8 +196,7 @@ public abstract class AbstractServiceLink
             Map.Entry entry = (Map.Entry) i.next();
             ServiceLinkEventType type = (ServiceLinkEventType) entry.getKey();
 
-            name =
-                writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
+            name = writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
         }
 
     }
@@ -288,21 +254,6 @@ public abstract class AbstractServiceLink
     }
 
     /**
-     *  Invoked from {@link #render(IMarkupWriter, IRequestCycle)}, 
-     *  this is responsible for
-     *  setting the disabled property.
-     *
-     **/
-
-    protected void setup(IRequestCycle cycle)
-    {
-        if (disabledBinding == null)
-            disabled = false;
-        else
-            disabled = disabledBinding.getBoolean();
-    }
-
-    /**
      * 
      *  Implemented by subclasses to provide the URL for the HTML HREF attribute.
      * 
@@ -310,6 +261,5 @@ public abstract class AbstractServiceLink
      * 
      **/
 
-    protected abstract String getURL(IRequestCycle cycle)
-        throws RequestCycleException;
+    protected abstract String getURL(IRequestCycle cycle) throws RequestCycleException;
 }

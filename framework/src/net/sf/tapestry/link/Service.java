@@ -35,18 +35,29 @@ import net.sf.tapestry.IRequestCycle;
  *  conjunction with an application-specific service.  
  *
  * <table border=1>
-
+ *  <tr> 
+ *  <th>Parameter</th> 
+ *  <th>Type</th> 
+ *  <th>Direction</th> 
+ *  <th>Required</th> 
+ *  <th>Default</th> 
+ *  <th>Description</th>
+ *  </tr>
  *
  * <tr>
  *		<td>service</td>
  *		<td>{@link String}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The name of the service.</td>  </tr>
  *
  * <tr>
- *   <td>disabled</td> <td>boolean</td> <td>R</td> <td>no</td> <td>true</td>
+ *   <td>disabled</td> 
+ *   <td>boolean</td> 
+ *   <td>in</td> 
+ *  <td>no</td>
+ *  <td>false</td>
  *   <td>Controls whether the link is produced.  If disabled, the portion of the template
  *  the link surrounds is still rendered, but not the link itself.
  *  </td></tr>
@@ -55,7 +66,7 @@ import net.sf.tapestry.IRequestCycle;
  *  <tr>
  *  <td>context</td>
  *  <td>String[] <br> List (of String) <br> String <br>Object</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>An array of Strings to be encoded into the URL.  These parameters will
@@ -70,7 +81,7 @@ import net.sf.tapestry.IRequestCycle;
  * <tr>
  *		<td>scheme</td>
  *		<td>{@link String}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>If specified, then a longer URL (including scheme, server and possibly port)
@@ -82,7 +93,7 @@ import net.sf.tapestry.IRequestCycle;
  * <tr>
  *		<td>port</td>
  *		<td>int</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>If specified, then a longer URL (including scheme, server and port)
@@ -94,65 +105,66 @@ import net.sf.tapestry.IRequestCycle;
  * <tr>
  *		<td>anchor</td>
  *		<td>{@link String}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>The name of an anchor or element to link to.  The final URL will have '#'
  *   and the anchor appended to it.
- * </td> </tr>
+ *  </td> </tr>
  *
- * </table>
+ *  </table>
  *
- * <p>Informal parameters are allowed.
+ *  <p>Informal parameters are allowed.
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
  *
  **/
 
 public class Service extends GestureLink
 {
-    private IBinding serviceBinding;
-    private String serviceValue;
-    private IBinding contextBinding;
-
-    public IBinding getServiceBinding()
-    {
-        return serviceBinding;
-    }
-
+    private String service;
+    private Object context;
+    
     /**
      *  Returns name of the service specified by the service parameter.
      **/
 
     protected String getServiceName()
     {
-        if (serviceValue != null)
-            return serviceValue;
-
-        return serviceBinding.getString();
+        return service;
     }
 
-    public void setServiceBinding(IBinding value)
-    {
-        serviceBinding = value;
-
-        if (value.isStatic())
-            serviceValue = value.getString();
-    }
-
-    public IBinding getContextBinding()
-    {
-        return contextBinding;
-    }
-
-    public void setContextBinding(IBinding value)
-    {
-        contextBinding = value;
-    }
-
+    /** 
+     *  Invokes {@link Direct#constructContext(Object)} to create String[]
+     *  from the context parameter (which may be an object, array of Strings or List of Strings).
+     * 
+     **/
+    
     protected String[] getContext(IRequestCycle cycle)
     {
-        return Direct.getContext(contextBinding);
+        return Direct.constructContext(context);
+        
     }
+    
+    public Object getContext()
+    {
+        return context;
+    }
+
+    public void setContext(Object context)
+    {
+        this.context = context;
+    }
+
+    public String getService()
+    {
+        return service;
+    }
+
+    public void setService(String service)
+    {
+        this.service = service;
+    }
+
 }

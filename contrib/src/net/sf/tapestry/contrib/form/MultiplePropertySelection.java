@@ -51,7 +51,7 @@ import net.sf.tapestry.form.IPropertySelectionModel;
  * <tr>
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td>
  *    <td>Default</td>
  *    <td>Description</td>
@@ -60,7 +60,7 @@ import net.sf.tapestry.form.IPropertySelectionModel;
  * <tr>
  *		<td>selectedList</td>
  *		<td>java.util.List</td>
- *		<td>R / W</td>
+ *		<td>in-out</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The property to set.  During rendering, this property is read, and sets
@@ -71,7 +71,7 @@ import net.sf.tapestry.form.IPropertySelectionModel;
  * <tr>
  *		<td>renderer</td>
  *		<td>{@link IMultiplePropertySelectionRenderer}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}</td>
  *		<td>Defines the object used to render this component.  The default
@@ -80,7 +80,7 @@ import net.sf.tapestry.form.IPropertySelectionModel;
  *  <tr>
  *		<td>model</td>
  *		<td>{@link IPropertySelectionModel}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The model provides a list of possible labels, and matches those labels
@@ -89,7 +89,7 @@ import net.sf.tapestry.form.IPropertySelectionModel;
  *  <tr>
  * 		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>Controls whether the &lt;select&gt; is active or not. A disabled PropertySelection
@@ -110,12 +110,11 @@ import net.sf.tapestry.form.IPropertySelectionModel;
 
 public class MultiplePropertySelection extends AbstractFormComponent
 {
-    private IBinding selectedListBinding;
-    private IBinding modelBinding;
-    private IBinding disabledBinding;
-    private IBinding rendererBinding;
-    private String name;
+    private IPropertySelectionModel model;
     private boolean disabled;
+    private IMultiplePropertySelectionRenderer renderer = DEFAULT_CHECKBOX_RENDERER;
+    private IBinding selectedListBinding;
+    private String name;
 
     /**
      *  A shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}.
@@ -135,35 +134,6 @@ public class MultiplePropertySelection extends AbstractFormComponent
         selectedListBinding = value;
     }
 
-    public IBinding getModelBinding()
-    {
-        return modelBinding;
-    }
-
-    public void setModelBinding(IBinding value)
-    {
-        modelBinding = value;
-    }
-
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
-    }
-
-    public void setRendererBinding(IBinding value)
-    {
-        rendererBinding = value;
-    }
-
-    public IBinding getRendererBinding()
-    {
-        return rendererBinding;
-    }
 
     /**
      *  Returns the name assigned to this PropertySelection by the 
@@ -188,6 +158,11 @@ public class MultiplePropertySelection extends AbstractFormComponent
         return disabled;
     }
 
+    public void setDisabled(boolean disabled)
+    {
+        this.disabled = disabled;
+    }
+    
     /**
      *  Renders the component, much of which is the responsiblity
      *  of the {@link IMultiplePropertySelectionRenderer renderer}.  The possible options,
@@ -199,21 +174,8 @@ public class MultiplePropertySelection extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        IMultiplePropertySelectionRenderer renderer = null;
-
         IForm form = getForm(cycle);
         boolean rewinding = form.isRewinding();
-
-        // Bit of parameter checking
-        disabled = (disabledBinding != null) && disabledBinding.getBoolean();
-
-        IPropertySelectionModel model =
-            (IPropertySelectionModel) modelBinding.getObject(
-                "model",
-                IPropertySelectionModel.class);
-
-        if (model == null)
-            throw new RequiredParameterException(this, "model", modelBinding);
 
         name = form.getElementId(this);
 
@@ -255,17 +217,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
             return;
         }
 
-        // Check the renderer first
-        if (rendererBinding != null)
-            renderer =
-                (IMultiplePropertySelectionRenderer) rendererBinding.getObject(
-                    "renderer",
-                    IMultiplePropertySelectionRenderer.class);
-
-        if (renderer == null)
-            renderer = DEFAULT_CHECKBOX_RENDERER;
-
-        // Start rendering
+         // Start rendering
         renderer.beginRender(this, writer, cycle);
 
         int count = model.getOptionCount();
@@ -284,4 +236,25 @@ public class MultiplePropertySelection extends AbstractFormComponent
         // wrapped components.
         renderer.endRender(this, writer, cycle);
     }
+    
+    public IPropertySelectionModel getModel()
+    {
+        return model;
+    }
+
+    public void setModel(IPropertySelectionModel model)
+    {
+        this.model = model;
+    }
+
+    public IMultiplePropertySelectionRenderer getRenderer()
+    {
+        return renderer;
+    }
+
+    public void setRenderer(IMultiplePropertySelectionRenderer renderer)
+    {
+        this.renderer = renderer;
+    }
+
 }

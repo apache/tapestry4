@@ -176,4 +176,24 @@ public abstract class AbstractTextField extends AbstractFormComponent
         this.disabled = disabled;
     }
 
+    public int getDisplayWidth()
+    {
+        return displayWidth;
+    }
+
+    public void setDisplayWidth(int displayWidth)
+    {
+        this.displayWidth = displayWidth;
+    }
+
+    public int getMaximumLength()
+    {
+        return maximumLength;
+    }
+
+    public void setMaximumLength(int maximumLength)
+    {
+        this.maximumLength = maximumLength;
+    }
+
 }

@@ -151,25 +151,14 @@ import net.sf.tapestry.html.Body;
 
 public class ValidField
     extends AbstractTextField
-    implements IField, IFormComponent, PageDetachListener
+    implements IField, IFormComponent
 {
     private IBinding valueBinding;
 
     private IBinding displayNameBinding;
     private String displayNameValue;
 
-    private IBinding validatorBinding;
     private IValidator validator;
-
-    /**
-     *  Registers this component as a {@link PageDetachListener}.
-     *
-     **/
-
-    protected void finishLoad()
-    {
-        page.addPageDetachListener(this);
-    }
 
     public IBinding getValueBinding()
     {
@@ -194,6 +183,13 @@ public class ValidField
             displayNameValue = value.getString();
     }
 
+    /**
+     *  Returns the display name for the component.  Because of the interaction
+     *  between {@link FieldLabel} and this component, the displayName parameter
+     *  is direction custom, allowing it to be resolved even when not renderring.
+     * 
+     **/
+    
     public String getDisplayName()
     {
         // Return the static value, if known.
@@ -206,37 +202,6 @@ public class ValidField
         return displayNameBinding.getString();
     }
 
-    /**
-     *  Return the component's {@link IValidator}, or
-     *  throws {@link NullValueForBindingException}.  The validator
-     *  is only resolved <em>once</em> per request cycle.
-     * 
-     **/
-
-    public IValidator getValidator()
-    {
-        if (validator == null)
-        {
-            validator =
-                (IValidator) validatorBinding.getObject("validator", IValidator.class);
-
-            if (validator == null)
-                throw new NullValueForBindingException(validatorBinding);
-        }
-
-        return validator;
-    }
-
-    /**
-     *  Clear the validator property at the end of request cycle.
-     *
-     *  @since 1.0.5
-     **/
-
-    public void pageDetached(PageEvent event)
-    {
-        validator = null;
-    }
 
     /**
      *
@@ -252,13 +217,11 @@ public class ValidField
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        boolean rendering;
         IValidationDelegate delegate = getForm().getDelegate();
-        IValidator translator = getValidator();
 
         String displayName = null;
 
-        rendering = !cycle.isRewinding();
+        boolean rendering = !cycle.isRewinding();
 
         delegate.setFormComponent(this);
 
@@ -343,8 +306,6 @@ public class ValidField
             return delegate.getInvalidInput();
 
         Object value = valueBinding.getObject();
-        IValidator validator = getValidator();
-
         String result = validator.toString(this, value);
 
         if (Tapestry.isNull(result) && validator.isRequired())
@@ -355,7 +316,6 @@ public class ValidField
 
     protected void updateValue(String value) throws RequestCycleException
     {
-        IValidator validator = getValidator();
         Object objectValue = null;
         IValidationDelegate delegate = getForm().getDelegate();
 
@@ -378,14 +338,14 @@ public class ValidField
         return valueBinding.getType();
     }
 
-    public IBinding getValidatorBinding()
+    public IValidator getValidator()
     {
-        return validatorBinding;
+        return validator;
     }
 
-    public void setValidatorBinding(IBinding value)
+    public void setValidator(IValidator validator)
     {
-        validatorBinding = value;
+        this.validator = validator;
     }
 
 }

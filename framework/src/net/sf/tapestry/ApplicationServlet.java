@@ -38,11 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Appender;
 import org.apache.log4j.Category;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Layout;
-import org.apache.log4j.PatternLayout;
 import org.apache.log4j.Priority;
 
 import net.sf.tapestry.parse.SpecificationParser;
@@ -436,22 +432,19 @@ abstract public class ApplicationServlet extends HttpServlet
      *  setup log4j logging.  This implemention is sufficient for testing, but should
      *  be overiden in production applications.
      *
-     *  <ul>
-     *  <li>Gets the JVM system property <code>net.sf.tapestry.root-logging-priority</code>,
-     *  and (if non-null), converts it to an {@link Priority} and assigns it to the root
+     *  <p>Gets the JVM system property <code>net.sf.tapestry.root-logging-priority</code>,
+     *  and (if non-null), converts it to a {@link Priority} and assigns it to the root
      *  {@link Category}.
-     *  <li>Gets the JVM system property <code>net.sf.tapestry.log-pattern</code> 
-     * and uses it as the pattern
-     * for a {@link PatternLayout}.  If the property is not defined, then the
-     * default pattern <code>%c{1} [%p] %m%n</code> is used.
-     *  <li>Configures a single {@link ConsoleAppender} for the root {@link Category},
-     *  using the pattern specified.
-     *  </ul>
      *
-     *  <p>In addition, for each priority, a check is made for a JVM system property
+     *  <p>For each priority, a check is made for a JVM system property
      *  <code>net.sf.tapestry.log4j.<em>priority</em></code> (i.e. <code>...log4j.DEBUG</code>).
      *  The value is a list of categories seperated by semicolons.  Each of these
      *  categories will be assigned that priority.
+     * 
+     *  <p>Prior to Tapestry release 2.0.3, this method would also set the pattern
+     *  for root category appender.  That is better done using a <code>log4j.properties</code>
+     *  file.  This method exists to make it easy to augment or override that
+     *  configuration using command line options.
      *
      *  @since 0.2.9
      **/
@@ -463,18 +456,12 @@ abstract public class ApplicationServlet extends HttpServlet
         String value = System.getProperty("net.sf.tapestry.root-logging-priority");
 
         if (value != null)
+        {
             priority = Priority.toPriority(value, Priority.ERROR);
 
-        Category root = Category.getRoot();
-        root.setPriority(priority);
-
-        String pattern = System.getProperty("net.sf.tapestry.log-pattern", "%c{1} [%p] %m%n");
-
-        Layout layout = new PatternLayout(pattern);
-        Appender rootAppender = new ConsoleAppender(layout);
-
-        root.removeAllAppenders();
-        root.addAppender(rootAppender);
+            Category root = Category.getRoot();
+            root.setPriority(priority);
+        }
 
         Priority[] priorities = Priority.getAllPossiblePriorities();
         StringSplitter splitter = new StringSplitter(';');

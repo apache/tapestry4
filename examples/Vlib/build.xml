@@ -76,7 +76,8 @@
         <pathelement location="${jboss.client.dir}/jnp-client.jar"/>
         
         <path refid="project.class.path"/>
-
+        <pathelement location="${root.dir}/config"/>
+        
       </classpath>
 
       <arg value="jetty.xml"/>

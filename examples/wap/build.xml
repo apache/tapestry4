@@ -60,6 +60,7 @@
       <classpath>
         <path refid="project.class.path"/>
         <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
+        <pathelement location="${root.dir}/config"/>
       </classpath>
       <arg value="jetty.xml"/>
       <jvmarg value="-showversion"/>
