@@ -73,6 +73,15 @@ import org.mortbay.util.URI;
  *  <li>Writing an HTML description of the <code>RequestContext</code> (for debugging).
  *  </ul>
  *
+ * 
+ *  <p>
+ *  If some cases, it is necesary to provide an implementation of
+ *  {@link net.sf.tapestry.IRequestDecoder} (often, due to a firewall).
+ *  If the application specifification
+ *  provides an extension named
+ *  <code>net.sf.tapestry.request-decoder</code>
+ *  then it will be used, instead of a default decoder.
+ * 
  *  <p>This class is not a component, but does implement {@link IRender}.  When asked to render
  *  (perhaps as the delegate of a {@link net.sf.tapestry.components.Delegator} component}
  *  it simply invokes {@link #write(IMarkupWriter)} to display all debugging output.
@@ -91,6 +100,25 @@ import org.mortbay.util.URI;
 
 public class RequestContext implements IRender
 {
+        /** @since 2.2 **/
+        
+    private static class DefaultRequestDecoder implements IRequestDecoder
+    {
+
+        public DecodedRequest decodeRequest(HttpServletRequest request)
+        {
+            DecodedRequest result = new DecodedRequest();
+
+            result.setRequestURI(request.getRequestURI());
+            result.setScheme(request.getScheme());
+            result.setServerName(request.getServerName());
+            result.setServerPort(request.getServerPort());
+            
+            return result;
+        }
+
+    }
+
     private static final Logger LOG = LogManager.getLogger(RequestContext.class);
 
     private HttpSession _session;
@@ -98,6 +126,7 @@ public class RequestContext implements IRender
     private HttpServletResponse _response;
     private ApplicationServlet _servlet;
     private MultipartDecoder _decoder;
+    private DecodedRequest _decodedRequest;
 
     /**
      * A mapping of the cookies available in the request.
@@ -119,7 +148,7 @@ public class RequestContext implements IRender
      *  Used during {@link #write(IMarkupWriter)}.
      * 
      **/
-    
+
     private boolean _evenRow;
 
     /**
@@ -169,7 +198,7 @@ public class RequestContext implements IRender
 
         // All three parameters may be null if created from
         // AbstractEngine.cleanupEngine().
-        
+
         if (_request != null && MultipartDecoder.isMultipartRequest(request))
             _decoder = new MultipartDecoder(request);
     }
@@ -263,6 +292,85 @@ public class RequestContext implements IRender
         return new String(buffer);
     }
 
+    /** @since 2.2 **/
+
+    private DecodedRequest getDecodedRequest()
+    {
+        if (_decodedRequest != null)
+            return _decodedRequest;
+
+        IRequestDecoder decoder =
+            (IRequestDecoder) _servlet.getApplicationSpecification().getExtension("net.sf.tapestry.request-decoder");
+
+        if (decoder == null)
+            decoder = new DefaultRequestDecoder();
+
+        _decodedRequest = decoder.decodeRequest(_request);
+
+        return _decodedRequest;
+    }
+
+    /** 
+     * 
+     *  Returns the actual scheme, possibly decoded from the request.
+     * 
+     *  @see IRequestDecoder
+     *  @see javax.servlet.ServletRequest#getScheme()
+     *  @since 2.2  
+     * 
+     **/
+
+    public String getScheme()
+    {
+        return getDecodedRequest().getScheme();
+    }
+
+
+    /** 
+     * 
+     *  Returns the actual server name, possibly decoded from the request.
+     * 
+     *  @see IRequestDecoder
+     *  @see javax.servlet.ServletRequest#getServerName()
+     *  @since 2.2  
+     * 
+     **/
+    
+    public String getServerName()
+    {
+        return getDecodedRequest().getServerName();
+    }
+
+    /** 
+     * 
+     *  Returns the actual server port, possibly decoded from the request.
+     * 
+     *  @see IRequestDecoder
+     *  @see javax.servlet.ServletRequest#getServerPort()
+     *  @since 2.2  
+     * 
+     **/
+    
+    public int getServerPort()
+    {
+        return getDecodedRequest().getServerPort();
+    }
+
+    /** 
+     * 
+     *  Returns the actual request URI, possibly decoded from the request.
+     * 
+     *  @see IRequestDecoder
+     *  @see HttpServletRequest#getRequestURI()
+     *  @since 2.2  
+     * 
+     **/
+    
+    public String getRequestURI()
+    {
+        return getDecodedRequest().getRequestURI();
+    }
+
     /**
      *  Forwards the request to a new resource, typically a JSP.
      * 
@@ -289,13 +397,9 @@ public class RequestContext implements IRender
 
     public String getAbsoluteURL(String URI)
     {
-        String server;
-        int port;
-        String scheme;
-
-        scheme = _request.getScheme();
-        server = _request.getServerName();
-        port = _request.getServerPort();
+        String scheme = getScheme();
+        String server = getServerName();
+        int port = getServerPort();
 
         // Keep things simple ... port 80 is accepted as the
         // standard port for http so it can be ommitted.

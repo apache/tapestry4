@@ -62,7 +62,7 @@ import net.sf.tapestry.util.pool.Pool;
  *  the application name).
  *
  *  <p>The <code>PageSource</code> acts as a pool for {@link IPage} instances.
- *  Pages are retrieved from the pool using {@link #getPage(IEngine, String, IMonitor)}
+ *  Pages are retrieved from the pool using {@link #getPage(IRequestCycle, String, IMonitor)}
  *  and are later returned to the pool using {@link #releasePage(IPage)}.
  *
  *

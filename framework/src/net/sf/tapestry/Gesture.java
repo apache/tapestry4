@@ -170,21 +170,21 @@ public class Gesture
     public String getAbsoluteURL(String scheme, String server, int port)
     {
         StringBuffer buffer = new StringBuffer();
-        HttpServletRequest request = _cycle.getRequestContext().getRequest();
-
+        RequestContext context = _cycle.getRequestContext();
+ 
         if (scheme == null)
-            scheme = request.getScheme();
+            scheme = context.getScheme();
 
         buffer.append(scheme);
         buffer.append("://");
 
         if (server == null)
-            server = request.getServerName();
+            server = context.getServerName();
 
         buffer.append(server);
 
         if (port == 0)
-            port = request.getServerPort();
+            port = context.getServerPort();
 
         if (!(scheme.equals("http") && port == DEFAULT_HTTP_PORT))
         {

@@ -682,7 +682,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         IMonitor monitor;
 
         if (LOG.isInfoEnabled())
-            LOG.info("Begin service " + context.getRequest().getRequestURI());
+            LOG.info("Begin service " + context.getRequestURI());
 
         if (_specification == null)
             _specification = context.getServlet().getApplicationSpecification();
@@ -729,7 +729,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
                 cycle.setService(service);
 
                 if (monitor != null)
-                    monitor.serviceBegin(service.getName(), context.getRequest().getRequestURI());
+                    monitor.serviceBegin(service.getName(), context.getRequestURI());
 
                 return service.service(this, cycle, output);
             }

@@ -1,6 +1,6 @@
 //
 // Tapestry Web Application Framework
-// Copyright (c) 2000-2002 by Howard Lewis Ship
+// Copyright (c) 2002 by Howard Lewis Ship
 //
 // Howard Lewis Ship
 // http://sf.net/projects/tapestry
@@ -25,37 +25,31 @@
 
 package net.sf.tapestry;
 
-import net.sf.tapestry.spec.ComponentSpecification;
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * Interface exposed to components as they are loaded by the page loader.
- *
- * @see IComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)
+ *  Given a {@link javax.servlet.http.HttpServletRequest}, identifies
+ *  the correct request properties (server, scheme, URI and port).
  * 
- * @author Howard Lewis Ship
- * @version $Id$
+ *  <p>An implementation of this class may be necessary when using
+ *  Tapestry with specific firewalls which may obscure
+ *  the scheme, server, etc. visible to the client web browser
+ *  (the request appears to arrive from the firewall server, not the
+ *  client web browser).
+ *
+ *  @author Howard Lewis Ship
+ *  @version IRequestDecoder.java,v 1.1 2002/08/20 21:49:58 hship Exp
+ *  @since 2.2
  * 
  **/
 
-public interface IPageLoader
+public interface IRequestDecoder
 {
-	/**
-	 *  Returns the engine for which this page loader is curently
-	 *  constructing a page.
-	 *
-	 *  @since 0.2.12
+
+    /**
+     *  Invoked to identify the actual properties from the request.
      * 
-	 **/
+     **/
 
-	public IEngine getEngine();
-
-	/**
-	 *  A convienience; returns the template source provided by
-	 *  the {@link IEngine engine}.
-	 *
-	 *  @since 0.2.12
-     * 
-	 **/
-
-	public ITemplateSource getTemplateSource();
+    public DecodedRequest decodeRequest(HttpServletRequest request);
 }

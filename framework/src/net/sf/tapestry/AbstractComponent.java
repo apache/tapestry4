@@ -840,8 +840,10 @@ public abstract class AbstractComponent implements IComponent
 
     /**
      * 
-     *  Invoked, as a convienience, from {@link #finishLoad(IPageLoader, ComponentSpecification)}.
-     *  This implemenation does nothing.  Subclasses may override with invoking. 
+     *  Invoked, as a convienience, 
+     *  from {@link #finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)}.
+     *  This implemenation does nothing.  Subclasses may override without invoking
+     *  this implementation.
      * 
      *  @since 1.0.5
      *
