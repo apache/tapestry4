@@ -3,9 +3,14 @@
 <project name="Tapestry Framework JUnit Test Suite" default="run">
 
   <property name="root.dir" value="../"/>
+  
   <property file="${root.dir}/config/Version.properties"/>
   <property file="${root.dir}/config/build.properties"/>
   <property file="${root.dir}/config/common.properties"/>
+  
+  <property name="local.lib.dir" value="lib"/>
+  
+  <property name="jdom.jar" value="jdom-b8.jar"/>
    
   <path id="project.class.path">
     <pathelement location="${framework.jar}"/>
@@ -16,7 +21,8 @@
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/junit.jar"/>
     <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/> 
-    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>  
+    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
+    <pathelement location="${local.lib.dir}/${jdom.jar}"/> 
   </path>
 
   <target name="init">

@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
@@ -22,10 +22,12 @@ import javax.servlet.ServletException;
  **/
 
 public class MockContext extends AttributeHolder
-    implements ServletContext
+    implements ServletContext, IInitParameterHolder
 {
+    private String _servletContextName = "test";
+    private Map _initParameters = new HashMap();
 
-    public ServletContext getContext(String arg0)
+    public ServletContext getContext(String name)
     {
         return null;
     }
@@ -40,7 +42,7 @@ public class MockContext extends AttributeHolder
         return 1;
     }
 
-    public String getMimeType(String arg0)
+    public String getMimeType(String path)
     {
         return null;
     }
@@ -50,27 +52,27 @@ public class MockContext extends AttributeHolder
         return null;
     }
 
-    public URL getResource(String arg0) throws MalformedURLException
+    public URL getResource(String path) throws MalformedURLException
     {
         return null;
     }
 
-    public InputStream getResourceAsStream(String arg0)
+    public InputStream getResourceAsStream(String path)
     {
         return null;
     }
 
-    public RequestDispatcher getRequestDispatcher(String arg0)
+    public RequestDispatcher getRequestDispatcher(String path)
     {
         return null;
     }
 
-    public RequestDispatcher getNamedDispatcher(String arg0)
+    public RequestDispatcher getNamedDispatcher(String name)
     {
         return null;
     }
 
-    public Servlet getServlet(String arg0) throws ServletException
+    public Servlet getServlet(String name) throws ServletException
     {
         return null;
     }
@@ -85,15 +87,17 @@ public class MockContext extends AttributeHolder
         return null;
     }
 
-    public void log(String arg0)
+    public void log(String message)
     {
+        log(message, null);
     }
 
-    public void log(Exception arg0, String arg1)
+    public void log(Exception exception, String message)
     {
+        log(message, exception);
     }
 
-    public void log(String arg0, Throwable arg1)
+    public void log(String message, Throwable exception)
     {
     }
 
@@ -107,19 +111,24 @@ public class MockContext extends AttributeHolder
         return "Tapestry Mock Objects";
     }
 
-    public String getInitParameter(String arg0)
+    public String getInitParameter(String name)
     {
-        return null;
+        return (String)_initParameters.get(name);
     }
 
     public Enumeration getInitParameterNames()
     {
-        return null;
+        return Collections.enumeration(_initParameters.keySet());
+    }
+
+    public void setInitParameter(String name, String value)
+    {
+        _initParameters.put(name, value);
     }
 
     public String getServletContextName()
     {
-        return null;
+        return _servletContextName;
     }
 
 
@@ -129,4 +138,10 @@ public class MockContext extends AttributeHolder
         
         return new MockSession(this, id);
     }
+    
+    public void setServletContextName(String servletContextName)
+    {
+        _servletContextName = servletContextName;
+    }
+
 }
