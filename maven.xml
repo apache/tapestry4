@@ -1,56 +1,31 @@
-<project
-  default="build-all"
-  xmlns:maven="jelly:maven">
-
-  <goal name="build">
-    <maven:reactor basedir="${basedir}"
-               includes="*/project.xml"
-	       excludes="examples/*"
-               goals="jar:install"
-               banner="Building"
-               ignoreFailures="true"/>
-  </goal>
-
-  <goal name="build-examples">
-    <maven:reactor basedir="${basedir}/examples"
-               includes="*/project.xml"
-               goals="jar:install"
-               banner="Building Examples"
-               ignoreFailures="false"/>
-  </goal>
-
-  <goal name="build-all">
-    <attainGoal name="build"/>
-    <attainGoal name="build-examples"/>
-  </goal>
-
-  <goal name="docs">
-    <maven:reactor basedir="${basedir}"
-               includes="*/project.xml"
-               goals="site:generate"
-               banner="Generating Site"
-               ignoreFailures="false"/>
-  </goal>
-
-  <goal name="clean">
-    <maven:reactor basedir="${basedir}"
-               includes="*/project.xml"
-               goals="clean:clean"
-               banner="Cleaning"
-               ignoreFailures="false"/>
-  </goal>
-
-  <goal name="clean-examples">
-    <maven:reactor basedir="${basedir}/examples"
-               includes="*/project.xml"
-               goals="clean:clean"
-               banner="Cleaning"
-               ignoreFailures="false"/>
-  </goal>
-
-  <goal name="clean-all">
-    <attainGoal name="clean"/>
-    <attainGoal name="clean-examples"/>
-  </goal>
-
+<project default="build-all" xmlns:maven="jelly:maven">
+	<goal name="build">
+		<maven:reactor basedir="${basedir}" includes="*/project.xml"
+			excludes="examples/*" goals="jar:install" banner="Building"
+			ignoreFailures="true"/>
+	</goal>
+	<goal name="build-examples">
+		<maven:reactor basedir="${basedir}/examples" includes="*/project.xml"
+			goals="jar:install" banner="Building Examples" ignoreFailures="false"/>
+	</goal>
+	<goal name="build-all">
+		<attainGoal name="build"/>
+		<attainGoal name="build-examples"/>
+	</goal>
+	<preGoal name="site:generate">
+		<maven:reactor basedir="${basedir}" includes="*/project.xml"
+			goals="site:generate" banner="Generating Site" ignoreFailures="false"/>
+	</preGoal>
+	<goal name="clean">
+		<maven:reactor basedir="${basedir}" includes="*/project.xml"
+			goals="clean:clean" banner="Cleaning" ignoreFailures="false"/>
+	</goal>
+	<goal name="clean-examples">
+		<maven:reactor basedir="${basedir}/examples" includes="*/project.xml"
+			goals="clean:clean" banner="Cleaning" ignoreFailures="false"/>
+	</goal>
+	<goal name="clean-all">
+		<attainGoal name="clean"/>
+		<attainGoal name="clean-examples"/>
+	</goal>
 </project>

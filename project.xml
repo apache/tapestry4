@@ -4,7 +4,7 @@
   <name>Tapestry Web Application Framework</name>
   <id>tapestry</id>
   <groupId>jakarta-tapestry</groupId>
-  <currentVersion>3.0-beta-1a</currentVersion>
+  <currentVersion>3.0-beta-1b</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -178,64 +178,12 @@
     
   </dependencies>
 
-  <build>
-
-    <nagEmailAddress>
-      tapestry-dev@jakarta.apache.org
-    </nagEmailAddress>
-
-    <sourceDirectory>src</sourceDirectory>
-
-    <unitTestSourceDirectory>test/src</unitTestSourceDirectory>
-    
-    <!-- Unit test cases -->
-    <unitTest>
-      <includes>
-        <include>**/Test*</include>
-      </includes>
-      <excludes>
-        <exclude>**/Testing*</exclude>
-      </excludes>
-      <resources>
-        <resource>
-          <directory>src</directory>
-          <includes>
-            <include>**/*.properties</include>
-            <include>**/*.script</include>
-          </includes>
-        </resource>
-        <resource>
-          <directory>test/src</directory>
-          <includes>
-            <include>**/*.script</include>
-            <include>**/*.properties</include>
-            <include>**/*.html</include>
-            <include>**/*.png</include>
-          </includes>
-        </resource>
-        <resource>
-          <directory>test</directory>
-          <includes>
-            <include>context**/*</include>
-            <include>mock-scripts/*</include>
-          </includes>
-        </resource>
-      </resources>
-    </unitTest>
-              
-    <!-- J A R  R E S O U R C E S -->
-    <!-- Resources that are packaged up inside the JAR file -->
-    <resources>
-      <includes>
-        <include>*.xsd</include>
-        <include>**/config/log4j.properties</include>
-      </includes>
-    </resources>
-
-    <!-- Integration unit test cases -->
-    <integrationUnitTest/>
-
-    <jars>
-    </jars>
-  </build>
+  <reports>
+    <report>maven-changelog-plugin</report>
+    <report>maven-tasklist-plugin</report>
+		<report>maven-license-plugin</report>
+		<report>maven-developer-activity-plugin</report>
+		<report>maven-file-activity-plugin</report>
+   </reports>
+   
 </project>

@@ -1,7 +1,38 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
+<!-- $Id$ -->
 <project>
-  <extend>${basedir}/../project.xml</extend>
-  <artifactId>tapestry</artifactId>
-  <name>Tapestry Framework</name>
+	<extend>${basedir}/../project.xml</extend>
+	<id>tapestry</id>
+	<name>Tapestry Framework</name>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<!-- J A R  R E S O U R C E S -->
+		<!-- Resources that are packaged up inside the JAR file -->
+		<resources>
+			<resource>
+				
+				<!-- Note: THIS ISN'T WORKING! -->
+				
+				<directory>${basedir}/src/java</directory>
+
+					<include>**/*.html</include>
+					<include>**/*.dtd</include>
+					<include>**/*.script</include>
+					<include>**/*.jwc</include>
+					<include>**/*.library</include>
+					<include>**/*.page</include>
+					<include>**/*.gif</include>
+					<include>**/*.css</include>
+
+			</resource>
+		</resources>
+	</build>
+	
+  <reports>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-junit-report-plugin</report>  
+    <report>maven-clover-plugin</report>  
+   </reports>
+   	
 </project>
