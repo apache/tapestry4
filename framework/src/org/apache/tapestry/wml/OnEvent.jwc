@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.OnEvent">
+
+    <description>
+        The onevent element binds a task to a particular intrinsic event for the immediately enclosing element, ie,
+        specifying an onevent element inside an "XYZ" element associates an intrinsic event binding with the "XYZ"
+        element.
+        The user agent must ignore any onevent element specifying a type that does not correspond to a legal
+        intrinsic event for the immediately enclosing element.
+    </description>
+
+    <parameter name="type" type="java.lang.String" direction="in" required="yes">
+        <description>
+            The type attribute indicates the name of the intrinsic event
+            (ontimer, onenterforward, onenterbackward, onpick).
+        </description>
+    </parameter>
+
+</component-specification>

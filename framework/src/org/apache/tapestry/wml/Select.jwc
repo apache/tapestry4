@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<component-specification class="org.apache.tapestry.wml.Select">
+
+	<description>
+		The WMLSelect element lets users pick from a list of options. Each option is specified 
+		by an Option element. Each Option element may have one line of formatted text 
+		(which may be wrapped or truncated by the user agent if too long). 
+		Option elements may be organised into hierarchical groups using the OptionGroup 
+		element. 
+	</description>
+
+	<parameter name="multiple" type="boolean" direction="in">
+        <description>
+            This attribute indicates that the select list should accept multiple selections. 
+            When not set, the select list should only accept a single selected option.
+        </description>
+	</parameter>
+
+	<parameter name="title" type="java.lang.String" direction="in">
+		<description>
+			This attribute specifies a title for this element, which may be used in the 
+			presentation of this object.
+			This attribute specifies a title for this element, which may be used in the 
+			presentation of this object.
+		</description>
+	</parameter>
+
+	<parameter name="name" type="java.lang.String" direction="in">
+        <description>
+            The name attribute indicates the name of the variable to set with the result 
+            of the selection. The variable is set to the string value of the chosen option
+            element, which is specified with the value attribute. The name variable's value 
+            is used to pre-select options in the select list.
+        </description>
+    </parameter>
+
+	<parameter name="value" type="java.lang.String" direction="in">
+        <description>
+            The value attribute indicates the default value of the variable named in the 
+            name attribute. When the element is displayed, and the variable named in the 
+            name attribute is not set, the name variable may be assigned the value 
+            specified in the value attribute, depending on the values defined in iname and 
+            ivalue. If the name variable already contains a value, the value attribute is 
+            ignored. Any application of the default value is done before the list is 
+            pre-selected with the value of the name variable.
+            If this element allows the selection of multiple options, the result of the 
+            user's choice is a list of all selected values, separated by the semicolon 
+            character. The name variable is set with this result. In addition, the value 
+            attribute is interpreted as a semicolon-separated list of pre-selected options.
+        </description>
+	</parameter>
+
+</component-specification>

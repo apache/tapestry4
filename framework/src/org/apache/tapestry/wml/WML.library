@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE library-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<library-specification>
+    <property name="org.apache.tapestry.template-extension" value="wml"/>
+
+    <component-type type="Card" specification-path="/org/apache/tapestry/wml/Card.jwc"/>
+    <component-type type="Do" specification-path="/org/apache/tapestry/wml/Do.jwc"/>
+    <component-type type="Go" specification-path="/org/apache/tapestry/wml/Go.jwc"/>
+    <component-type type="Input" specification-path="/org/apache/tapestry/wml/Input.jwc"/>
+    <component-type type="OnEvent" specification-path="/org/apache/tapestry/wml/OnEvent.jwc"/>
+    <component-type type="Postfield" specification-path="/org/apache/tapestry/wml/Postfield.jwc"/>
+    <component-type type="Setvar" specification-path="/org/apache/tapestry/wml/Setvar.jwc"/>
+    <component-type type="Timer" specification-path="/org/apache/tapestry/wml/Timer.jwc"/>
+    <component-type type="Image" specification-path="/org/apache/tapestry/wml/Image.jwc"/>
+    <component-type type="Option" specification-path="/org/apache/tapestry/wml/Option.jwc"/>
+    <component-type type="PropertySelection" specification-path="/org/apache/tapestry/wml/PropertySelection.jwc"/>
+    <component-type type="Select" specification-path="/org/apache/tapestry/wml/Select.jwc"/>
+    <component-type type="SelectionField" specification-path="/org/apache/tapestry/wml/SelectionField.jwc"/>
+
+</library-specification>

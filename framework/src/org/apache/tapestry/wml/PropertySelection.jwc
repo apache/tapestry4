@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.PropertySelection"
+    allow-body="no"
+    allow-informal-parameters="yes">
+
+    <description>
+        Creates an WML select to choose a single property from a list of options.
+    </description>
+
+    <parameter name="name" required="yes" type="java.lang.String" direction="in"/>
+
+    <parameter name="model"
+        type="org.apache.tapestry.form.IPropertySelectionModel"
+        required="yes"
+        direction="in"/>
+
+</component-specification>

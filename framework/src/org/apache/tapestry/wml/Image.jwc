@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.wml.Image" allow-body="no">
+
+    <description>
+        Displays a wml image, deriving the source URL for the image from an asset.
+    </description>
+
+    <parameter name="image" type="org.apache.tapestry.IAsset" direction="in" required="yes">
+        <description>
+            The asset to display.
+        </description>
+    </parameter>
+
+    <parameter name="alt" type="java.lang.String" direction="in" required="yes">
+        <description>
+            This attribute specifies an alternative textual representation for the image. This representation is used
+            when the image can not be displayed using any other method
+        </description>
+    </parameter>
+
+    <reserved-parameter name="src"/>
+
+</component-specification>
