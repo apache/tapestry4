@@ -181,7 +181,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void detach()
     {
-    	Tapestry.addMethodInvocation(Tapestry.IPAGE_DETACH_METHOD_ID);
+    	Tapestry.addMethodInvocation(Tapestry.ABSTRACTPAGE_DETACH_METHOD_ID);
     	
         // Do this first,so that any changes to persistent properties do not
         // cause errors.
@@ -360,7 +360,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void validate(IRequestCycle cycle)
     {
-        Tapestry.addMethodInvocation(Tapestry.IPAGE_VALIDATE_METHOD_ID);
+        Tapestry.addMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID);
 
         firePageValidate();
     }
