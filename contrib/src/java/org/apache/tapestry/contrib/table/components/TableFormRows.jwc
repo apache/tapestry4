@@ -30,7 +30,7 @@
 	</description>
   
 	<parameter name="row" 
-		type="Object" 
+		type="jva.lang.Object" 
 		required="no"
 		direction="custom">
         <description>The value object of the row currently being rendered.</description>
