@@ -6,6 +6,55 @@ import net.sf.tapestry.RequestCycleException;
 
 /**
  *  Simple callback for returning to a page.
+ *  <p>
+ *  Example usage of <tt>PageCallback</tt>:
+ *  <p>
+ *  The Home page ensure a user is 
+ *  authenticated in the {@link net.sf.tapestry.IPage#validate(IRequestCycle)} 
+ *  method.  If the user is not authenticated, they are redirected to the Login 
+ *  page, after setting a callback in the Login page.
+ *  <p>
+ *  The Login page <tt>formSubmit()</tt> {@link net.sf.tapestry.IActionListener} 
+ *  authenticates the user and then invokes {@link ICallback#performCallback(IRequestCycle)} 
+ *  to the Home page.
+ *  <pre>
+ *  public class Home extends BasePage {
+ * 
+ *      public void validate(IRequestCycle cycle) throws RequestCycleException {            
+ *          Visit visit = (Visit) getVisit();
+ *      
+ *          if (!visit.isAuthenticated()) {
+ *              Login login = (Login) cycle.getPage("Login");
+ *
+ *              login.setCallback(new PageCallback(this));
+ *              
+ *              throw new PageRedirectException(login);
+ *          }            
+ *      }
+ *  }
+ *
+ *  public Login extends BasePage {
+ * 
+ *      private ICallback _callback;
+ *
+ *      public void setCallback(ICallback _callback) {
+ *          _callback = callback;
+ *      }
+ *
+ *      public void formSubmit(IRequestCycle cycle) throws RequestCycleException {
+ *          // Authentication code
+ *          ..
+ *   
+ *          Visit visit = (Visit) getVisit();
+ *
+ *          visit.setAuthenticated(true);
+ *  
+ *          if (_callback != null) {
+ *              _callback.performCallback(cycle);
+ *          }
+ *      }
+ *  }    
+ *  </pre>
  *
  *  @version $Id$
  *  @author Howard Lewis Ship

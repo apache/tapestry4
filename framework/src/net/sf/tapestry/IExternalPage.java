@@ -10,6 +10,7 @@ import net.sf.tapestry.IRequestCycle;
  *  {@link net.sf.tapestry.link.ExternalLink} for details on how to invoke
  *  <tt>IExternalPage</tt>s.
  * 
+ *  @see net.sf.tapestry.callback.ExternalCallback
  *  @see net.sf.tapestry.engine.ExternalService
  *
  *  @author Howard Lewis Ship
