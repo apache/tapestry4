@@ -1,5 +1,11 @@
 * Jan 10 2001 hship
 
+VlibBeans: Install gnu-regexp.jar and log4j.jar as well as Tapestry.jar.
+Vlib: Change NewBook and EditBook pages to use some magic scripting to enable/disable
+the inputPropertyName field based on the selection in the publisher select.
+
+* Jan 10 2001 hship
+
 Fix the configure-jboss rule to depend on setup-jbe-util (not -utils).
 
 * Jan 9 2001 hship
