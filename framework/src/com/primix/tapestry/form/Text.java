@@ -163,7 +163,7 @@ public class Text extends AbstractFormComponent
 		form = getForm(cycle);
 
 		if (textBinding == null)
-			throw new RequiredParameterException(this, "text", null, cycle);		
+			throw new RequiredParameterException(this, "text", null);		
 
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.

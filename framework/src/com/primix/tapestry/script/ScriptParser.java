@@ -65,91 +65,25 @@ implements ErrorHandler, EntityResolver
 {
 	private static final Category CAT = Category.getInstance(ScriptParser.class.getName());
 	
-    // Description of the InputSource, used in some errors.
-
-    private String resourcePath;
-
-    private InputSource inputSource;
-
     private static final int MAP_SIZE = 11;
+	
     private Map symbolCache;
 
-    /**
-     *  {@link List} of {@link ITemplateToken}, extracted from
-     *  the XML document's body element.
-     *
-     */
-
-    private List body = new ArrayList();
-
-    /**
-     *  {@link List} of {@link ITemplateToken}, extracted from
-     *  the XML document's initialization element.
-     *
-     */
-
-    private List initialization = new ArrayList();
-
-
-    public ScriptParser(InputSource inputSource, String resourcePath)
-    {
-        this.inputSource = inputSource;
-        this.resourcePath = resourcePath;
-    }
-
-    public void parse()
+	public ParsedScript parse(InputStream stream, String resourcePath)
+	throws ScriptParseException
+	{
+		return parse(new InputSource(stream), resourcePath);
+	}
+	
+    public ParsedScript parse(InputSource inputSource, String resourcePath)
     throws ScriptParseException
     {
 		if (CAT.isDebugEnabled())
 			CAT.debug("Parsing script from " + inputSource + " (" + resourcePath + ")");
-			
-        Document document = parseDocument(); 
-
-        build(document);
 		
-		if (CAT.isDebugEnabled())
-			CAT.debug(body.size() + " body tokens and " +
-					  initialization.size() + " initialization tokens");
-    }
+	    Document document = parseDocument(inputSource, resourcePath); 
 
-    /**
-     *  Returns the token from the body element, or null if there
-     *  are no body element tokens.
-     *
-     */
-
-    public ITemplateToken[] getBodyTokens()
-    {
-        return extract(body);
-    }
-
-    /**
-     *  Returns the token from the initialization element, or null if there
-     *  are no body element tokens.
-     *
-     */
-
-    public ITemplateToken[] getInitializationTokens()
-    {
-        return extract(initialization);
-    }
-
-    private ITemplateToken[] extract(List list)
-    {
-        int count;
-        ITemplateToken[] array;
-                
-        if (list == null)
-            return null;
-
-        count = list.size();
-
-        if (count == 0)
-            return null;
-
-        array = new ITemplateToken[count];
-
-        return (ITemplateToken[])list.toArray(array);
+	    return build(document, resourcePath);
     }
 
     public void warning(SAXParseException exception)
@@ -196,7 +130,7 @@ implements ErrorHandler, EntityResolver
     	return null;
     }
 
-    private Document parseDocument()
+    private Document parseDocument(InputSource inputSource, String resourcePath)
     throws ScriptParseException
     {
         DOMParser parser = null;
@@ -234,11 +168,12 @@ implements ErrorHandler, EntityResolver
     	}
     }
 
-    private void build(Document document)
+    private ParsedScript build(Document document, String resourcePath)
     throws ScriptParseException
     {
         Element root;
         Node child;
+		ParsedScript result = new ParsedScript(resourcePath);
    
         root = document.getDocumentElement();
         
@@ -251,24 +186,61 @@ implements ErrorHandler, EntityResolver
 
         for (child = root.getFirstChild(); child != null; child = child.getNextSibling())
         {
+			if (isElement(child, "let"))
+			{
+				result.addToken(buildLet(child));
+				continue;
+			}
+			
             if (isElement(child, "body"))
             {
-                build(child, body);
+                result.addToken(buildBody(child));
                 continue;
             }
 
             if (isElement(child, "initialization"))
             {
-                build(child, initialization);
+                result.addToken(buildInitialization(child));
                 continue;
             }
 
             // Else, ignorable whitespace, I guess.
         }
 
+		return result;
     }
-
-    private void build(Node node, List list)
+	
+	private IScriptToken buildLet(Node node)
+	{
+		Element element = (Element)node;
+		String key = element.getAttribute("key");
+		
+		IScriptToken token = new LetToken(key);
+		build(token, node);
+		
+		return token;
+	}
+	
+	private IScriptToken buildBody(Node node)
+	{
+		IScriptToken token = new BodyToken();
+		
+		build(token, node);
+		
+		return token;
+	}
+	
+	private IScriptToken buildInitialization(Node node)
+	{
+		IScriptToken token = new InitToken();
+		
+		build(token, node);
+		
+		return token;
+	}
+	
+	
+    private void build(IScriptToken token, Node node)
     {
         Node child;
         CharacterData textNode;
@@ -286,7 +258,7 @@ implements ErrorHandler, EntityResolver
 
     	    if (isElement(child, "insert"))
     	    {
-                addSymbol(list, child);
+                addSymbol(token, child);
     		    continue;
     	    }
 
@@ -296,42 +268,38 @@ implements ErrorHandler, EntityResolver
             textNode = (CharacterData)child;
             staticText = textNode.getData();
 
-            list.add(new StaticToken(staticText));
+            token.addToken(new StaticToken(staticText));
         }
     
     }
 
     /**
      *  Creates a {@link SymbolToken} for the current node
-     *  (which is an insert element node).  Uses a caching mechanism so
+     *  (which is an insert element node) and adds it as a child of the token.
+	 *  Uses a caching mechanism so
      *  that it creates only one SymbolToken for each key referenced in the
      *  script.
      *
      */
 
-    private void addSymbol(List list, Node node)
+    private void addSymbol(IScriptToken token, Node node)
     {
-        Element element;
-        String key;
-        ITemplateToken token = null;
+        IScriptToken symbolToken = null;
+        Element element = (Element)node;
+        String key = element.getAttribute("key");
 
-        element = (Element)node;
-        key = element.getAttribute("key");
+        if (symbolCache == null)
+        	symbolCache = new HashMap(MAP_SIZE);	
+		else
+            symbolToken = (IScriptToken)symbolCache.get(key);
 
-        if (symbolCache != null)
-            token = (ITemplateToken)symbolCache.get(key);
-
-        if (token == null)
+        if (symbolToken == null)
         {
-            token = new SymbolToken(key);
-
-            if (symbolCache == null)
-                symbolCache = new HashMap(MAP_SIZE);
-
-            symbolCache.put(key, token);
+            symbolToken = new SymbolToken(key);
+            symbolCache.put(key, symbolToken);
         }
 
-        list.add(token);
+        token.addToken(symbolToken);
     }
 
     private boolean isElement(Node node, String elementName)

@@ -81,7 +81,7 @@ implements ICallback
 		{
 			throw new RequestCycleException(
 				"Component " + component.getExtendedId() + " is not type IDirect.", 
-				component, cycle, ex);
+				component, ex);
 		}
 		
 		direct.trigger(cycle, context);

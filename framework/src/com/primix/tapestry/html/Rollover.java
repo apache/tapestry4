@@ -116,7 +116,7 @@ public class Rollover extends AbstractComponent
 {
 	// Shared by all instances of Rollover
 
-	private static ScriptGenerator generator;
+	private static ParsedScript parsedScript;
 
 	// Symbols used when generating the script.
 
@@ -157,7 +157,7 @@ public class Rollover extends AbstractComponent
 		}
 		catch (BindingException ex)
 		{
-			throw new RequestCycleException(this, cycle, ex);
+			throw new RequestCycleException(this, ex);
 		}
 
 		if (asset == null)
@@ -210,13 +210,13 @@ public class Rollover extends AbstractComponent
 		if (body == null)
 			throw new RequestCycleException(
 				"Rollover components must be contained within a Body component.",
-				this, cycle);
+				this);
 
 		serviceLink = (IServiceLink)cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
 		if (serviceLink == null)
 			throw new RequestCycleException(
 				"Rollover components must be contained within an IServiceLink component.",
-				this, cycle);
+				this);
 
 		// No body, so we skip it all if not rewinding (assumes no side effects on
 		// accessors).
@@ -243,7 +243,7 @@ public class Rollover extends AbstractComponent
 		}
 
 		if (imageURL == null)
-			throw new RequiredParameterException(this, "image", null, cycle);			
+			throw new RequiredParameterException(this, "image", null);			
 
 		compressed = writer.compress(true);
 
@@ -262,7 +262,14 @@ public class Rollover extends AbstractComponent
 			if (blurURL == null)
 				blurURL = imageURL;
 
-			imageName = writeScript(body, serviceLink, focusURL, blurURL);
+			try
+			{
+				imageName = writeScript(body, serviceLink, focusURL, blurURL);
+			}
+			catch (ScriptException ex)
+			{
+				throw new RequestCycleException(this, ex);
+			}
 
 			writer.attribute("name", imageName);
 		}
@@ -276,13 +283,13 @@ public class Rollover extends AbstractComponent
 
 	private static final String SCRIPT_RESOURCE = "Rollover.script";
 
-	private ScriptGenerator getScriptGenerator()
+	private ParsedScript getParsedScript()
 	{
-		if (generator == null)
+		if (parsedScript == null)
 		{
 			synchronized (Rollover.class)
 			{
-				if (generator == null)
+				if (parsedScript == null)
 				{
 					InputStream stream = null;
 
@@ -290,7 +297,7 @@ public class Rollover extends AbstractComponent
                     {
                         stream = getClass().getResourceAsStream(SCRIPT_RESOURCE);
 
-						generator = new ScriptGenerator(stream, SCRIPT_RESOURCE);
+						parsedScript = new ScriptParser().parse(stream, SCRIPT_RESOURCE);
 						}
                     catch (ScriptParseException ex)
                     {
@@ -304,7 +311,7 @@ public class Rollover extends AbstractComponent
 			}
 		}
 
-		return generator;
+		return parsedScript;
 	}
 
 	private void close(InputStream stream)
@@ -324,35 +331,38 @@ public class Rollover extends AbstractComponent
 
 	private String writeScript(Body body, IServiceLink link,
 		String focusURL, String blurURL)
+		throws ScriptException
 	{
 		String uniqueId = body.getUniqueId();
-		String imageName = "rollover_" + uniqueId;
-		String onMouseOverName = "onMouseOver_" + uniqueId;
-		String onMouseOutName = "onMouseOut_" + uniqueId;
 		String focusImageURL = 
 			body.addImageInitialization("focus_" + uniqueId, focusURL);
 		String blurImageURL = 
 			body.addImageInitialization("blur_" + uniqueId, blurURL);
-		ScriptGenerator generator = getScriptGenerator();
 
 		if (symbols == null)
 			symbols = new HashMap(MAP_SIZE);
+		else
+			symbols.clear();	
 
-		symbols.put("imageName",       imageName);
-		symbols.put("onMouseOverName", onMouseOverName);
-		symbols.put("onMouseOutName",  onMouseOutName);
-		symbols.put("focusImageURL",   focusImageURL);
-		symbols.put("blurImageURL",    blurImageURL);
+		symbols.put("uniqueId",      uniqueId);
+		symbols.put("focusImageURL", focusImageURL);
+		symbols.put("blurImageURL",  blurImageURL);
 
-		generator.generateScript(body, symbols);
+		ScriptSession session = getParsedScript().execute(symbols);
 
+		body.addOtherScript(session.getBody());
+		
 		// Add attributes to the link to control mouse over/out.
 		// Because the script is written before the <body> tag,
 		// there won't be any timing issues (such as cause
 		// bug #113893).
 
-		link.addEventHandler(ServiceLinkEventType.MOUSE_OVER, onMouseOverName);
-		link.addEventHandler(ServiceLinkEventType.MOUSE_OUT, onMouseOutName);
+		link.addEventHandler(ServiceLinkEventType.MOUSE_OVER,
+			session.getSymbol("onMouseOverName"));
+		link.addEventHandler(ServiceLinkEventType.MOUSE_OUT,
+			session.getSymbol("onMouseOutName"));
+
+		String imageName = session.getSymbol("imageName");
 		
 		symbols.clear();
 

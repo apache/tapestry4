@@ -127,7 +127,7 @@ extends AbstractComponent
 				IValidatingTextField.class);
 
 			if (field == null)
-				throw new RequiredParameterException(this, "field", fieldBinding, cycle);
+				throw new RequiredParameterException(this, "field", fieldBinding);
 
 			if (delegateBinding != null)
 				delegate = (IValidationDelegate)delegateBinding.getObject("delegate",
@@ -143,7 +143,7 @@ extends AbstractComponent
 		}
 		catch (BindingException ex)
 		{
-			throw new RequestCycleException(this, cycle, ex);
+			throw new RequestCycleException(this, ex);
 		}
 	}
 }

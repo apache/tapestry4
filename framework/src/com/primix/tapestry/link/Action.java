@@ -124,11 +124,11 @@ public class Action extends AbstractServiceLink
 		}
 		catch (BindingException ex)
 		{
-			throw new RequestCycleException(this, cycle, ex);
+			throw new RequestCycleException(this, ex);
 		}
 
 		if (result == null)
-			throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
+			throw new RequiredParameterException(this, "listener", listenerBinding);
 
 		return result;
 	}
@@ -157,7 +157,7 @@ public class Action extends AbstractServiceLink
 
 			listener.actionTriggered(this, cycle);
 
-			throw new RenderRewoundException(this, cycle);
+			throw new RenderRewoundException(this);
 		}
 
 		if (context == null)

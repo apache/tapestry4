@@ -45,11 +45,11 @@ public class RequiredParameterException extends RequestCycleException
 	private transient IBinding binding;
 
 	public RequiredParameterException(IComponent component, String parameterName,
-		IBinding binding, IRequestCycle cycle)
+		IBinding binding)
 	{
 		super("No binding or value for parameter " + parameterName + 
 			  " in component " + component.getExtendedId() + ".", 
-			  component, cycle);
+			  component);
 
 		this.parameterName = parameterName;
 		this.binding = binding;

@@ -40,7 +40,7 @@ import java.io.*;
  */
 
 class StaticToken
-implements ITemplateToken
+implements IScriptToken
 {
     private String text;
 
@@ -54,9 +54,14 @@ implements ITemplateToken
      *
      */  
 
-	public void write(Writer writer, Map symbols)
-	throws IOException
+	public void write(StringBuffer buffer, ScriptSession session)
+	throws ScriptException
 	{
-		writer.write(text);
+		buffer.append(text);
+	}
+	
+	public void addToken(IScriptToken token)
+	{
+		// Should never be invoked.
 	}
 }

@@ -54,14 +54,12 @@ public class RequestCycleException extends Exception
 		super(message);
 	}
 
-	public RequestCycleException(String message, IComponent component,
-		IRequestCycle cycle)
+	public RequestCycleException(String message, IComponent component)
 	{
-		this(message, component, cycle, null);
+		this(message, component, null);
 	}
 
 	public RequestCycleException(String message, IComponent component,
-		IRequestCycle cycle,
 		Throwable rootCause)
 	{
 		super(message);
@@ -76,9 +74,9 @@ public class RequestCycleException extends Exception
 	 *
 	 */
 	 
-	public RequestCycleException(IComponent component, IRequestCycle cycle, Throwable rootCause)
+	public RequestCycleException(IComponent component, Throwable rootCause)
 	{
-		this(rootCause.getMessage(), component, cycle, rootCause);
+		this(rootCause.getMessage(), component, rootCause);
 	}
 
 	public IComponent getComponent()

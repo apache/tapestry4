@@ -1,6 +1,4 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.*;
+package com.primix.tapestry.script;
 
 /*
  * Tapestry Web Application Framework
@@ -31,20 +29,42 @@ import com.primix.tapestry.*;
  */
 
 /**
- *  A special subclass of {@link RequestCycleException} that can be thrown
- *  when a component has determined that the state of the page has been
- *  rewound.
+ *  Allows for the creation of new symbols that can be used in the script
+ *  or returned to the caller.
  *
- * @author Howard Ship
- * @version $Id$
+ *  <p>The &lt;let&gt; tag wraps around static text and &lt;insert&gt;
+ *  elements.  The results are trimmed.
+ *
+ *  @author Howard Ship
+ *  @version $Id$
+ *  @since 0.2.9
  */
-
-
-public class RenderRewoundException extends RequestCycleException
+ 
+class LetToken extends AbstractToken
 {
-	public RenderRewoundException(IComponent component)
+	private String key;
+	private int bufferLength = 20;
+	
+	public LetToken(String key)
 	{
-		super(null, component);
+		this.key = key;
+	}
+	
+	public void write(StringBuffer buffer, ScriptSession session)
+	throws ScriptException
+	{
+		if (buffer != null)
+			throw new IllegalArgumentException();
+		
+		buffer = new StringBuffer(bufferLength);
+		
+		writeChildren(buffer, session);
+		
+		session.setSymbol(key, buffer.toString().trim());
+		
+		// Store the buffer length from this run for the next run, since its
+		// going to be approximately the right size.
+		
+		bufferLength = Math.max(bufferLength, buffer.length());
 	}
 }
-

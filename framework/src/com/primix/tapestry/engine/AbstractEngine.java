@@ -1004,12 +1004,12 @@ public abstract class AbstractEngine
 		{
 			direct = (IDirect)component;
 		}
-		catch (ClassCastException e)
+		catch (ClassCastException ex)
 		{
 			throw new RequestCycleException(
 				"Component " + pageName + "/" +
 				componentPath + " does not implement the IDirect interface.",
-				component, cycle, e);
+				component, ex);
 		}
 
 		pathInfoCount = context.getPathInfoCount();

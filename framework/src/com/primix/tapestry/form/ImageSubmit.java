@@ -277,7 +277,7 @@ public class ImageSubmit extends AbstractFormComponent
 			if (tagBinding == null)
 				throw new RequestCycleException(
 					"The tag parameter is required if the selected parameter is bound.",
-					this, cycle);
+					this);
 
 
 			// OK, now to notify the application code (via the parameters)
@@ -292,7 +292,7 @@ public class ImageSubmit extends AbstractFormComponent
 				tagValue = tagBinding.getObject();
 
 			if (tagValue == null)
-				throw new RequiredParameterException(this, "tag", tagBinding, cycle);
+				throw new RequiredParameterException(this, "tag", tagBinding);
 
 			selectedBinding.setObject(tagValue);                        
 		}
@@ -307,7 +307,7 @@ public class ImageSubmit extends AbstractFormComponent
 			image = (IAsset)imageBinding.getObject("image", IAsset.class);
 			
 			if (image == null)
-				throw new RequiredParameterException(this, "image", imageBinding, cycle);
+				throw new RequiredParameterException(this, "image", imageBinding);
 		}                                
 
 		imageURL = image.buildURL(cycle);

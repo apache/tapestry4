@@ -1,6 +1,4 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.*;
+package com.primix.tapestry.script;
 
 /*
  * Tapestry Web Application Framework
@@ -31,20 +29,33 @@ import com.primix.tapestry.*;
  */
 
 /**
- *  A special subclass of {@link RequestCycleException} that can be thrown
- *  when a component has determined that the state of the page has been
- *  rewound.
+ *  Generates a String from its child tokens, then applies it
+ *  to {@link ScriptSession#setBody(String)}.
  *
- * @author Howard Ship
- * @version $Id$
+ *  @author Howard Ship
+ *  @version $Id$
+ *  @since 0.2.9
  */
-
-
-public class RenderRewoundException extends RequestCycleException
+ 
+class BodyToken extends AbstractToken
 {
-	public RenderRewoundException(IComponent component)
+	private int bufferLength = 100;
+	
+	public void write(StringBuffer buffer, ScriptSession session)
+	throws ScriptException
 	{
-		super(null, component);
+		if (buffer != null)
+			throw new IllegalArgumentException();
+		
+		buffer = new StringBuffer(bufferLength);
+		
+		writeChildren(buffer, session);
+		
+		session.setBody(buffer.toString());
+		
+		// Store the buffer length from this run for the next run, since its
+		// going to be approximately the right size.
+		
+		bufferLength = Math.max(bufferLength, buffer.length());
 	}
 }
-

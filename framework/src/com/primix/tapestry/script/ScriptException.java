@@ -1,6 +1,4 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.*;
+package com.primix.tapestry.script;
 
 /*
  * Tapestry Web Application Framework
@@ -31,20 +29,47 @@ import com.primix.tapestry.*;
  */
 
 /**
- *  A special subclass of {@link RequestCycleException} that can be thrown
- *  when a component has determined that the state of the page has been
- *  rewound.
+ *  Exception thrown during the execution of a {@link ParsedScript}.
  *
- * @author Howard Ship
- * @version $Id$
+ *  @author Howard Ship
+ *  @version $Id$
+ *  @since 0.2.9
  */
+ 
 
-
-public class RenderRewoundException extends RequestCycleException
+public class ScriptException extends Exception
 {
-	public RenderRewoundException(IComponent component)
+	private Throwable rootCause;
+	private IScriptToken token;
+	private ScriptSession session;
+
+	public ScriptException(String message, IScriptToken token, ScriptSession session,
+		Throwable rootCause)
 	{
-		super(null, component);
+		super(message);
+
+			this.token = token;
+		this.session = session;
+		this.rootCause = rootCause;
+	}
+	
+	public ScriptException(String message, IScriptToken token, ScriptSession session)
+	{
+		this(message, token, session, null);
+	}
+	
+	public Throwable getRootCause()
+	{
+		return rootCause;
+	}
+	
+	public IScriptToken getToken()
+	{
+		return token;
+	}
+	
+	public ScriptSession getSession()
+	{
+		return session;
 	}
 }
-

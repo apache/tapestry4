@@ -49,18 +49,18 @@ public class PageRedirectException extends RequestCycleException
 		this.targetPageName = targetPageName;
 	}
 
-	public PageRedirectException(String message, IComponent component, IRequestCycle cycle, 
+	public PageRedirectException(String message, IComponent component,
 		String targetPageName)
 	{
-		super(message, component, cycle);
+		super(message, component);
 		this.targetPageName = targetPageName;
 	}
 
 	public PageRedirectException(String message, IComponent component, 
-		IRequestCycle cycle, Throwable rootCause,
+		Throwable rootCause,
 		String targetPageName)
 	{
-		super(message, component, cycle, rootCause);
+		super(message, component, rootCause);
 
 		this.targetPageName = targetPageName;
 	}

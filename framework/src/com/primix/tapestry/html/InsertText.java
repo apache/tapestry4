@@ -143,10 +143,10 @@ public class InsertText extends AbstractComponent
             }
 
         }
-        catch (IOException e)
+        catch (IOException ex)
         {
             throw new RequestCycleException("Error converting text to lines (for InsertText).",
-                    this, cycle, e);
+                    this, ex);
         }
         finally
         {

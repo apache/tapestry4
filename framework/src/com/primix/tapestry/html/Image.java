@@ -104,7 +104,7 @@ public class Image extends AbstractComponent
 		}
 		catch (BindingException ex)
 		{
-			throw new RequestCycleException(this, cycle, ex);
+			throw new RequestCycleException(this, ex);
 		}
 
 		if (asset == null)
@@ -154,11 +154,11 @@ public class Image extends AbstractComponent
 		}
 		catch (BindingException ex)
 		{
-			throw new RequestCycleException(this, cycle, ex);
+			throw new RequestCycleException(this, ex);
 		}
 
 		if (imageAsset == null)
-			throw new RequiredParameterException(this, "image", imageBinding, cycle);
+			throw new RequiredParameterException(this, "image", imageBinding);
 
 		imageURL = imageAsset.buildURL(cycle);
 

@@ -153,7 +153,7 @@ public class Radio extends AbstractComponent
 		if (group == null)
 			throw new RequestCycleException(
 				"Radio component must be contained within a RadioGroup.",
-				this, cycle);
+				this);
 
 		// The group determines rewinding from the form.
 
