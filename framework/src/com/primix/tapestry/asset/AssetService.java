@@ -32,6 +32,7 @@ import java.net.*;
 import javax.servlet.*;
 import java.io.*;
 import com.primix.tapestry.*;
+import com.primix.tapestry.engine.*;
 import java.util.*;
 
 /**
@@ -53,18 +54,18 @@ import java.util.*;
  *  @version $Id$
  */
 
-public class AssetService implements IEngineService
+public class AssetService extends AbstractService
 {
-	private String prefix;
+	private String servletPath;
 	private IResourceResolver resolver;
-
+	
 	/**
 	 *  Defaults MIME types, by extension, used when the servlet container
 	 *  doesn't provide MIME types.  ServletExec Debugger, for example,
 	 *  fails to do provide these.
 	 *
 	 */
-	 
+	
 	private static Map mimeTypes;
 	
 	static
@@ -77,39 +78,39 @@ public class AssetService implements IEngineService
 		mimeTypes.put("htm", "text/html");
 		mimeTypes.put("html", "text/html");
 	}
-
+	
 	private static final int BUFFER_SIZE = 1024;
-
+	
 	public AssetService(IEngine engine)
 	{
-		prefix = engine.getServletPrefix() + "/" + ASSET_SERVICE;
-        resolver = engine.getResourceResolver();
+		servletPath = engine.getServletPath();
+		resolver = engine.getResourceResolver();
 	}
-
+	
 	/**
-	*  Builds a URL for a {@link PrivateAsset}.
-	*
-	*  <p>A single parameter is expected, the resource path of the asset
-    *  (which is expected to start with a leading slash).
-	*
-	*/
-
-	public String buildURL(IRequestCycle cycle, IComponent component, 
-		String[] parameters)
+	 *  Builds a {@link Gesture} for a {@link PrivateAsset}.
+	 *
+	 *  <p>A single parameter is expected, the resource path of the asset
+	 *  (which is expected to start with a leading slash).
+	 *
+	 */
+	
+	public Gesture buildGesture(IRequestCycle cycle, IComponent component, 
+			String[] parameters)
 	{
 		if (parameters == null ||
-			parameters.length != 1)
+				parameters.length != 1)
 			throw new ApplicationRuntimeException(
 				"Service asset requires exactly one parameter.");
-
-		return prefix +	parameters[0];
+		
+		return assembleGesture(servletPath, ASSET_SERVICE, parameters, null);
 	}
-
+	
 	public String getName()
 	{
 		return ASSET_SERVICE;
 	}
-
+	
 	private static String getMimeType(String path)
 	{
 		String key;
@@ -126,110 +127,88 @@ public class AssetService implements IEngineService
 		
 		return result;
 	}
-
+	
 	/**
-	*  Retrieves a resource from the classpath and returns it to the
-	*  client in a binary output stream.
-	*
-	*  <p>TBD: Security issues.  Hackers can download .class files.
-	*
-	*  <p>TBD: Error handling.  What to do if an IOException is
-	*  thrown, or the resource doesn't exist?  Typically, we're
-	*  downloading an image file and there's no way to communicate
-	*  the error back to the client web browser.
-	*
-	*/
-
-
+	 *  Retrieves a resource from the classpath and returns it to the
+	 *  client in a binary output stream.
+	 *
+	 *  <p>TBD: Security issues.  Hackers can download .class files.
+	 *
+	 *  <p>TBD: Error handling.  What to do if an IOException is
+	 *  thrown, or the resource doesn't exist?  Typically, we're
+	 *  downloading an image file and there's no way to communicate
+	 *  the error back to the client web browser.
+	 *
+	 */
+	
+	
 	public boolean service(IRequestCycle cycle, ResponseOutputStream output) 
-	throws ServletException, IOException, RequestCycleException
+		throws ServletException, IOException, RequestCycleException
 	{
-		byte[] buffer;
-		InputStream input;
-		String resourcePath;
-		URL resourceURL;
-		int bytesRead;
-		URLConnection resourceConnection;
-		String contentType;
-		ServletContext servletContext;
-		int count;
-		StringBuffer resourceBuffer;
-		RequestContext context;
-		int i;
-		IMonitor monitor;
-		int contentLength;
-
-		resourceBuffer = new StringBuffer();
-		context = cycle.getRequestContext();
-
-		count = context.getPathInfoCount();
-		for (i = 1; i < count; i++)
-		{
-			resourceBuffer.append('/');
-			resourceBuffer.append(context.getPathInfo(i));
-		}
-
-		resourcePath = resourceBuffer.toString();
-
-		monitor = cycle.getMonitor();
+		
+		RequestContext context = cycle.getRequestContext();
+		String resourcePath = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
+		
+		IMonitor monitor = cycle.getMonitor();
 		if (monitor != null)
 			monitor.serviceBegin("asset", resourcePath);
-
-		resourceURL = resolver.getResource(resourcePath);
-
+		
+		URL resourceURL = resolver.getResource(resourcePath);
+		
 		if (resourceURL == null)
 			throw new ApplicationRuntimeException(
 				"Could not find resource " + resourcePath + ".");
-
-		resourceConnection = resourceURL.openConnection();
-
-		servletContext = cycle.getRequestContext().getServlet().
-		getServletContext();
-
+		
+		URLConnection resourceConnection = resourceURL.openConnection();
+		
+		ServletContext servletContext = cycle.getRequestContext().getServlet().
+			getServletContext();
+		
 		// Getting the content type and length is very dependant
 		// on support from the application server (represented
 		// here by the servletContext).
-
-		contentType = servletContext.getMimeType(resourcePath);
-		contentLength = resourceConnection.getContentLength();
-
+		
+		String contentType = servletContext.getMimeType(resourcePath);
+		int contentLength = resourceConnection.getContentLength();
+		
 		if (contentLength > 0)
 			cycle.getRequestContext().getResponse().
-			setContentLength(contentLength);
-
+				setContentLength(contentLength);
+		
 		// Set the content type.  If the servlet container doesn't
 		// provide it, try and guess it by the extension.
-
+		
 		if (contentType == null ||
-			contentType.length() == 0)
-				contentType = getMimeType(resourcePath);
-
+				contentType.length() == 0)
+			contentType = getMimeType(resourcePath);
+		
 		output.setContentType(contentType);
 		
 		// Disable any further buffering inside the ResponseOutputStream
 		
 		output.forceFlush();
-
-		input = resourceConnection.getInputStream();
-
-		buffer = new byte[BUFFER_SIZE];
-
+		
+		InputStream input = resourceConnection.getInputStream();
+		
+		byte[] buffer = new byte[BUFFER_SIZE];
+		
 		while (true)
 		{
-			bytesRead = input.read(buffer);
-
+			int bytesRead = input.read(buffer);
+			
 			if (bytesRead < 0)
 				break;
-
+			
 			output.write(buffer, 0, bytesRead);
 		}
-
+		
 		input.close();
-
+		
 		if (monitor != null)
 			monitor.serviceEnd("asset");
-
+		
 		// The IEngine is responsible for closing the ResponseOutputStream
+		// Return false, to indicate that no server side state could have changed.
 		
 		return false;
 	}

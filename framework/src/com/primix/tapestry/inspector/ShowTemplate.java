@@ -168,7 +168,7 @@ implements IDirect
 			// Build a URL to select that component, as if by the captive
 			// component itself (it's a Direct).
 			
-			URL = service.buildURL(cycle, this, context);
+			Gesture g = service.buildGesture(cycle, this, context);
 
 			writer.begin("span");
 			writer.attribute("class", "jwc-tag");
@@ -185,7 +185,7 @@ implements IDirect
 			writer.attribute("class", "jwc-id");
 			
 			writer.begin("a");
-			writer.attribute("href", URL);
+			writer.attribute("href", g.getFullURL(cycle));
 			writer.print(id);
 			
 			writer.end();  // <a>

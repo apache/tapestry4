@@ -60,8 +60,7 @@ public class Home extends BasePage
 	public static final BigInteger MAX_BIGINT = new BigInteger("9745789589234578979");
 	
 	private SortMode sort = SortMode.USER;
-	private boolean mirror = false;
-	
+
 	private IPropertySelectionModel sortModel;
 	
 	private class PrivateDelegate extends BaseValidationDelegate
@@ -87,22 +86,10 @@ public class Home extends BasePage
 	{
 		error = null;
 		sort = SortMode.NONE;
-		mirror = false;
 		
 		super.detach();
 	}
 	
-	public void setMirror(boolean value)
-	{
-		mirror = value;
-		
-		fireObservedChange("mirror", value);
-	}
-	
-	public boolean getMirror()
-	{
-		return mirror;
-	}
 	
 	public String getError()
 	{

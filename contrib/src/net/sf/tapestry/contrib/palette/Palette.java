@@ -118,17 +118,6 @@ import java.util.*;
  *  which are available to be selected.  The default is the word
  *  <code>Available</code>. </td> </tr>
  *
- *  <tr>
- *		<td>mirror</td>
- *		<td>bool</td>
- *		<td>R</td>
- *		<td>false</td>
- *		<td>If true, then the normal orientation of the
- *  Palette is reversed, such that the list of available items
- *  is on the RIGHT and the selected items are on the LEFT.  This
- *  may involve selecting alternate images for the select and de-select
- *  buttons since they incorporate arrows. </td> </tr>
- *
  * <tr>
  *	<td>selectImage
  * <br>selectDisabledImage
@@ -146,9 +135,7 @@ import java.util.*;
  *  with the component.  This allows the look and feel to be customized relatively easily.
  *  Note that for the first four (selectImage through deselectImage), the images provided
  *  must coordinate with the mirror parameter; that is, if mirror is true, then the images
- *  should have an arrow pointing left for select and right for deselect.  When using the
- *  default images, the component automatically selects an internal image appropriate
- *  for mirroring.
+ *  should have an arrow pointing left for select and right for deselect.  
  *
  *  <p>The most common reason to replace the images is to deal with backgrounds.  The default
  *  images are anti-aliased against a white background.  If a colored or patterned background
@@ -190,11 +177,6 @@ public class Palette
 	private IBinding sortBinding;
 	private SortMode staticSort;
 	private SortMode sort;
-	
-	private IBinding mirrorBinding;
-	private boolean staticMirror;
-	private boolean mirrorValue;
-	private boolean mirrored;
 	
 	private Block defaultSelectedTitleBlock;
 	private Block defaultAvailableTitleBlock;
@@ -254,19 +236,6 @@ public class Palette
 		super.finishLoad(loader, spec);
 	}
 	
-	public void setMirrorBinding(IBinding value)
-	{
-		mirrorBinding = value;
-		
-		staticMirror = value.isStatic();
-		if (staticMirror)
-			mirrorValue = value.getBoolean();
-	}
-	
-	public IBinding getMirrorBinding()
-	{
-		return mirrorBinding;
-	}
 	
 	public void setTableClassBinding(IBinding value)
 	{
@@ -296,12 +265,12 @@ public class Palette
 		availableTitleBlockBinding = value;
 	}
 	
-	public void setselectedBinding(IBinding value)
+	public void setSelectedBinding(IBinding value)
 	{
 		selectedBinding = value;
 	}
 	
-	public IBinding getselectedBinding()
+	public IBinding getSelectedBinding()
 	{
 		return selectedBinding;
 	}
@@ -421,16 +390,6 @@ public class Palette
 		if (sort == null)
 			sort = SortMode.NONE;
 		
-		mirrored = false;
-		
-		if (mirrorBinding != null)
-		{
-			if (staticMirror)
-				mirrored = mirrorValue;
-			else
-				mirrored = mirrorBinding.getBoolean();
-		}
-		
 		// Lots of work to produce JavaScript and HTML for this sucker.
 		
 		String formName = form.getName();
@@ -504,10 +463,10 @@ public class Palette
 			throw new RequestCycleException("Palette component must be wrapped by a Body.", this);
 		
 		
-		setImage(symbols, body, cycle, "selectImage", "Select", "SelectM");
-		setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis", "SelectM-dis");
-		setImage(symbols, body, cycle, "deselectImage", "Deselect", "DeselectM");
-		setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis", "DeselectM-dis");
+		setImage(symbols, body, cycle, "selectImage", "Select");
+		setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis");
+		setImage(symbols, body, cycle, "deselectImage", "Deselect");
+		setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis");
 		
 		if (cycle.getAttribute(SKIP_KEY) == null)
 			symbols.put("includeBaseFunctions", Boolean.TRUE);
@@ -521,10 +480,10 @@ public class Palette
 		if (sort == SortMode.USER)
 		{
 			symbols.put("sortUser", Boolean.TRUE);
-			setImage(symbols, body, cycle, "upImage", "Up", null);
-			setImage(symbols, body, cycle, "upDisabledImage", "Up-dis", null);
-			setImage(symbols, body, cycle, "downImage", "Down", null);
-			setImage(symbols, body, cycle, "downDisabledImage", "Down-dis", null);
+			setImage(symbols, body, cycle, "upImage", "Up");
+			setImage(symbols, body, cycle, "upDisabledImage", "Up-dis");
+			setImage(symbols, body, cycle, "downImage", "Down");
+			setImage(symbols, body, cycle, "downDisabledImage", "Down-dis");
 		}
 		
 		try
@@ -546,7 +505,7 @@ public class Palette
 		cycle.setAttribute(SKIP_KEY, Boolean.TRUE);
 	}
 	
-	private IAsset getAsset(String symbolName, String assetName, String mirrorAssetName)
+	private IAsset getAsset(String symbolName, String assetName)
 	{
 		IAsset result = null;
 		IBinding binding = getBinding(symbolName);
@@ -555,14 +514,7 @@ public class Palette
 			result = (IAsset)binding.getObject(symbolName, IAsset.class);
 		
 		if (result == null)
-		{
-			String finalAssetName = assetName;
-			
-			if (mirrored && mirrorAssetName != null)
-				finalAssetName = mirrorAssetName;
-			
-			result = getAsset(finalAssetName);
-		}	
+			result = getAsset(assetName);	
 		
 		return result;
 	}
@@ -575,9 +527,9 @@ public class Palette
 	 */
 	
 	private void setImage(Map symbols, Body body, IRequestCycle cycle, 
-			String symbolName, String assetName, String mirrorAssetName)
+			String symbolName, String assetName)
 	{
-		IAsset asset = getAsset(symbolName, assetName, mirrorAssetName);
+		IAsset asset = getAsset(symbolName, assetName);
 		
 		String URL = asset.buildURL(cycle);
 		String reference = body.getPreloadedImageReference(URL);
@@ -620,26 +572,14 @@ public class Palette
 		return result;			
 	}
 	
-	/**
-	 *  Returns the available header block if mirrored, or the selected
-	 *  header block normally.
-	 *
-	 */
-	
-	public Block getRightHeaderBlock()
+	public Block getSelectedHeaderBlock()
 	{
-		return getHeaderBlock(!mirrored);
+		return getHeaderBlock(true);
 	}
 	
-	/**
-	 *  Returns the selected header block if mirrored, or the available
-	 *  header block normally.
-	 *
-	 */
-	
-	public Block getLeftHeaderBlock()
+	public Block getAvailableHeaderBlock()
 	{
-		return getHeaderBlock(mirrored);
+		return getHeaderBlock(false);
 	}
 	
 	/**
@@ -702,55 +642,40 @@ public class Palette
 	}
 	
 	/**
-	 *  Renders the left select by closing the nested writer for the left side.
-	 *  This normally the list of available options, but will be the list
-	 *  of selected options (if mirrored).
+	 *  Renders the available select by closing the nested writer for the available
+	 *  selects.
 	 *
 	 */
 	
-	public IRender getLeftSelectDelegate()
+	public IRender getAvailableSelectDelegate()
 	{
 		return new IRender()
 		{
 			public void render(IResponseWriter writer, IRequestCycle cycle)
 				throws RequestCycleException
 			{
-				if (mirrored)
-				{
-					selectedWriter.close();
-					selectedWriter = null;
-				}
-				else
-				{	
-					availableWriter.close();
-					availableWriter = null;				
-				}
+				
+				availableWriter.close();
+				availableWriter = null;				
 			}
 		};
 	}
 	
 	/**
-	 *  Like {@link #getLeftSelectDelegate()}, but for the right column.
+	 *  Like {@link #getAvailableSelectDelegate()}, but for the right, selected, column.
 	 *
 	 */
 	
-	public IRender getRightSelectDelegate()
+	public IRender getSelectedSelectDelegate()
 	{
 		return new IRender()
 		{
 			public void render(IResponseWriter writer, IRequestCycle cycle)
 				throws RequestCycleException
 			{
-				if (mirrored)
-				{
-					availableWriter.close();
-					availableWriter = null;
-				}
-				else
-				{
-					selectedWriter.close();
-					selectedWriter = null;
-				}
+				selectedWriter.close();
+				selectedWriter = null;
+				
 			}
 		};
 	}
@@ -787,22 +712,22 @@ public class Palette
 	
 	public IAsset getSelectImage()
 	{
-		return getAsset("selectImage", "Select", "SelectM");
+		return getAsset("selectImage", "Select");
 	}
 	
 	public IAsset getDeselectImage()
 	{
-		return getAsset("deselectImage", "Deselect", "DeselectM");
+		return getAsset("deselectImage", "Deselect");
 	}
 	
 	public IAsset getUpImage()
 	{
-		return getAsset("upImage", "Up", null);
+		return getAsset("upImage", "Up");
 	}
 	
 	public IAsset getDownImage()
 	{
-		return getAsset("downImage", "Down", null);
+		return getAsset("downImage", "Down");
 	}
 }
 

@@ -11,8 +11,8 @@
   <component id="insertContextPath" type="Insert">
     <binding name="value" property-path="page.engine.contextPath"/>
   </component>
-  <component id="insertServletPrefix" type="Insert">
-    <binding name="value" property-path="page.engine.servletPrefix"/>
+  <component id="insertServletPath" type="Insert">
+    <binding name="value" property-path="page.engine.servletPath"/>
   </component>
   <component id="insertEngineClass" type="Insert">
     <binding name="value" property-path="page.engine.class.name"/>

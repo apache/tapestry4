@@ -1,3 +1,26 @@
+* Aug 7 2001 hship
+
+JBE:
+- Update to DocBook XSL 1.42
+
+doc:
+- remove hardcoded pathname from common/Tapestry.xsl
+
+contrib:
+- remove mirror parameter from Palette
+
+framework:
+- Make it possible to use relative URLs; completely revise how services
+  construct URLs to use query parameters instead of extra path info
+- change IEngineService to build Gestures, not URLs
+- change Form component to encode query parameters for Gesture as hidden fields
+
+vlib:
+- Rework external service around Gestures
+
+[ #448475 ] Relative URLs to resources
+
+
 * Aug 3 2001 hship
 
 JBE:

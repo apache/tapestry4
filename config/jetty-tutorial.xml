@@ -27,4 +27,13 @@
     <Arg>lib/Tutorial.war</Arg>
     <Arg/>
   </Call>
+  
+   <Call name="addContext">
+    <Arg>/private-assets/*</Arg>
+    <Set name="ResourceBase">.build/private-assets</Set>
+    <Set name="ServingResources">TRUE</Set>
+
+  </Call>
+  
+  
 </Configure>

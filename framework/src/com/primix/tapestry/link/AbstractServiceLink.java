@@ -103,16 +103,13 @@ public abstract class AbstractServiceLink
 	protected String buildURL(IRequestCycle cycle, String[] context)
 	throws RequestCycleException
 	{
-		IEngineService service;
-		String serviceName;
-		String url;
 		String anchor = null;
 		StringBuffer buffer = null;
 		String scheme = null;
 		int port = 0;
 
-		serviceName = getServiceName(cycle);
-		service = cycle.getEngine().getService(serviceName);
+		String serviceName = getServiceName(cycle);
+		IEngineService service = cycle.getEngine().getService(serviceName);
 
 		if (service == null)
 			throw new RequestCycleException("No engine service named " + 
@@ -121,9 +118,9 @@ public abstract class AbstractServiceLink
 
 		// Perform the major work of building the URL.
 
-		url = service.buildURL(cycle, this, context);
+		Gesture g = service.buildGesture(cycle, this, context);
 
-		url = cycle.encodeURL(url);
+		String url = g.getFullURL(cycle);
 
 		// Now, dress up the URL with scheme, server port and anchor,
 		// as necessary.

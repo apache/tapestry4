@@ -265,12 +265,12 @@ public class Shell extends AbstractComponent
 		IEngineService pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
 		String pageName = getPage().getName();
 		
-		String URI = pageService.buildURL(cycle, null, new String[] 
+		Gesture g = pageService.buildGesture(cycle, null, new String[] 
 				{ pageName 
 				});
 		
 		HttpServletResponse response = context.getResponse();
-		String URL = response.encodeURL(context.getAbsoluteURL(URI));
+		String URL = response.encodeURL(context.getAbsoluteURL(g.getFullURL(cycle)));
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(refresh);

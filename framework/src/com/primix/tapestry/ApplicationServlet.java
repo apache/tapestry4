@@ -554,7 +554,7 @@ abstract public class ApplicationServlet
 			CAT.debug("Writing locale cookie " + locale);
 		
 		Cookie cookie = new Cookie(LOCALE_COOKIE_NAME, locale.toString());
-		cookie.setPath(engine.getServletPrefix());
+		cookie.setPath(engine.getServletPath());
 		
 		cycle.addCookie(cookie);
 	}

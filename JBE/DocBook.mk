@@ -35,7 +35,7 @@ default: documentation
 include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 
-DOCBOOK_XSL_DIR := $(DOCBOOK_DIR)/docbook-xsl-1.41
+DOCBOOK_XSL_DIR := $(DOCBOOK_DIR)/docbook-xsl-1.42
 DOCBOOK_DTD_DIR := $(DOCBOOK_DIR)/docbookx412
 
 HTML_DIR := html
@@ -47,7 +47,7 @@ HTML_PACKAGE_FILE := $(basename $(MAIN_DOCUMENT)).tar.gz
 DISTRO_STAMP_FILE := $(DOCBOOK_DIR)/.distro-stamp
 
 DOCBOOK_DISTROS := \
-	$(DOCBOOK_DIR)/docbook-xsl-1.41.tar.gz \
+	$(DOCBOOK_DIR)/docbook-xsl-1.42.tar.gz \
 	$(DOCBOOK_DIR)/docbkx412.tar.gz
 
 initialize: setup-jbe-util $(DISTRO_STAMP_FILE)
