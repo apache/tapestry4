@@ -55,7 +55,7 @@ REINVOKE := \
 
 prepare-for-packaging:
 	@$(ECHO) "\n*** Removing Word documents from distribution ... ***\n"
-	@$(FIND) . -name \*.doc -print -exec $(RMDIRS) {} \;
+	@$(FIND) . \( -name \*.doc -o -name \*.vsd \) -print -exec $(RMDIRS) {} \;
 	@$(ECHO) "\n*** Removing non-distributable JARs ... ***\n"
 	@$(RM) $(LOCAL_LIB_DIR)/j2ee.jar
 

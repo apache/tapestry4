@@ -1,3 +1,7 @@
+* Dec 19 2000 hship
+
+Update documentation to reflect use of Jetty 3.0.0 distribution.
+
 * Nov 20 2000
 
 Copy j2ee.jar in for compiling, but don't distribute it.
