@@ -123,7 +123,9 @@
 			The code for this example is in
 			<filename class="directory">c:\Tapestry-x.x\examples\Tutorial\src\tutorial\hello</filename>.
 		</para>
-		<section id="Setup the Application">
+
+		<section id="simplest-app-setup">
+			<title>Setup the Application</title>
 			<para>
 				Every Tapestry Application must have at least a single <emphasis>Application Servlet</emphasis>,
 				where the applications pages and other engine services are defined. For this example, create
@@ -147,15 +149,186 @@
 &lt;application
   name="Hello World Tutorial"
   engine-class="net.sf.tapestry.engine.&SimpleEngine;"&gt;
-
-  &lt;page name="Home"
-    specification-path="/tapestry/tutorial/hello/Home.page"/&gt;
-
+  &lt;page name="Home" specification-path="/tapestry/tutorial/hello/Home.page"/&gt;
 &lt;/application&gt;
 </programlisting>
       </figure>
-		</section>
+			<para>
+				This specification defines a Tapestry Application using the standard Tapestry Engine
+				(documented later), and a single page called <emphasis>Home</emphasis>,
+				which Tapestry expects to find at <filename>/tapestry/tutorial/hello/Home.page</filename>
+				on the classpath.
+			</para>
+			<para>
+				The last <emphasis>application related</emphasis> configuration we need (before we can work on
+				the page content itself), is to provide the Servlet engine configuration.
+				Within the <filename class="directory">WEB-INF</filename> directory is a
+				file called <filename>web.xml</filename>. This file should have at least the following
+				content:
+      <figure>
+        <title>Servet Configuration (web.xml)</title>
+        <programlisting>
+&lt;web-app&gt;
+  &lt;display-name&gt;Tapestry Tutorial&lt;/display-name&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;tutorial.hello.HelloWorldServlet&lt;/servlet-class&gt;
+  	&lt;load-on-startup&gt;0&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+  
+	&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
 
+  &lt;session-config&gt;
+  	&lt;session-timeout&gt;15&lt;/session-timeout&gt;
+  &lt;/session-config&gt;
+
+  &lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+  &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;
+</programlisting>
+      </figure>
+			Depending on the <filename>web.xml</filename> you are looking at, there may be
+			more than this (specifically, the definition of further servlets). That's fine - as long
+			as there is a definition for the <classname>HelloWorldServlet</classname>.
+			</para>
+		</section>
+		<section id="simplest-app-thehtml">
+			<title>The Home Page HTML</title>
+			<para>
+				With the basic application specification itself complete, we can now define the
+				HTML on the main page. This HTML file is a Tapestry resource, and for this tutorial
+				should reside	in the source directory for the application.
+				<footnote>
+					<para>The tutorial is setup to copy .html, .page and .application files to the classpath - as
+					such, these files will be loadable by Tapestry at runtime</para>
+				</footnote>
+				It should have the same filename as the Page name, in this case it is called <filename>
+				Home.html</filename>, and is in
+				 <filename class="directory">c:\Tapestry-x.x\examples\Tutorial\src\tutorial\hello</filename>.
+      <figure>
+        <title>The HTML Content (Home.html)</title>
+        <programlisting>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Hello World&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+Welcome to your first &lt;b&gt;Tapestry Application&lt;/b&gt;
+&lt;p&gt;
+&lt;h1&gt;
+	&lt;span jwcid="hellotext"/&gt;
+&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</programlisting>
+      </figure>
+			</para>
+			<para>
+				You will notice that the page is completely normal, apart from the single
+				<emphasis>span </emphasis> tag, which contains an attribute with name
+				<varname>jwcid</varname>.  This is how Tapestry inserts dynamic data
+				into a page. Tapestry will completely replace the <emphasis>span </emphasis>
+				tag, including its contents when it renders the page.
+				<footnote>
+					<para>The tag does not have to be a span tag. Don't worry about it now, it will be covered later.</para>
+				</footnote>
+			</para>
+		</section>
+		<section id="simplest-app-thejavaobject">
+			<title>The Java Object</title>
+			<para>
+				With the page definition completed, we will create the Java Object that
+				is related to this page. This object will simply supply some static text
+				to the HTML template.
+			</para>
+     <figure>
+        <title>The Java Object (Home.java)</title>
+        <programlisting>
+package tutorial.hello;
+
+import net.sf.tapestry.html.BasePage;
+
+public class Home extends BasePage
+{
+	public String getSomeText()
+	{
+		return "It's a brave new world!";
+	}
+}
+</programlisting>
+      </figure>
+		</section>
+		<section id="simplest-app-pagespec">
+			<title>The Page Specification</title>
+			<para>
+				Almost there! The last step is to tie the capabilities of the Java Object,
+				into the HTML. The final piece of the puzzle is the <emphasis>page
+				specification</emphasis>.
+			</para>
+			<para>
+				Again, this file should be with the .html and .java files, in the source directory
+				for this tutorial example.
+			</para>
+     <figure>
+        <title>The Page Specification (Home.page)</title>
+        <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- $Id$ --&gt;
+&lt;!DOCTYPE page-specification PUBLIC
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
+
+&lt;page-specification class="tutorial.hello.Home"&gt;
+	&lt;component id="hellotext" type="Insert"&gt;
+		&lt;binding name="value" expression="someText"/&gt;
+	&lt;/component&gt;
+&lt;/page-specification&gt;
+</programlisting>
+      </figure>
+			<para>
+				Thats it!  You can execute <emphasis>ant run</emphasis> to both
+				compile, package and run the Web Application. Go to
+	    <ulink url="http://localhost:8081/learn-tapestry/hello">
+	      <filename>http://localhost:8081/learn-tapestry/hello</filename>
+	    </ulink> to see the result.
+
+			<figure>
+        <title>Hello World Application</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/helloworld-example.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+			</para>
+		</section>
+		<section id="simplest-app-summary">
+			<title>Summary</title>
+			<para>
+			What have we done?
+			<orderedlist>
+				<listitem>We have seen that an application requires a specification file, which lists
+				the pages of the application. The application specification is required for any Tapestry
+				app.</listitem>
+				<listitem>That pages are defined in terms of an HTML file (the content), a Page file
+				(which ties the content to the Java Object) and finally the Java Object for the page
+				logic.</listitem>
+				<listitem>That a Tapestry application, consisting of any number of pages is
+				controlled by a single servlet</listitem>
+				<listitem>Built an example which uses both static content, and content
+				from a java object</listitem>
+			</orderedlist>
+			</para>
+			<para>
+				The next section details the separate parts of a Tapestry application in more detail.
+			</para>
+		</section>
 	</section>
 
 	<section id="diff-parts">
