@@ -1,0 +1,161 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Conditional</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/components/Conditional.html">
+		 net.sf.tapestry.components.Conditional</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Non Visual Component</input>
+		</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+	Makes part of an HTML template conditional. The body of the Conditional 
+	component is only rendered if a specified condition is met.
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Insert.html">Insert</a>, <a href="Foreach.html">Foreach</a> 
+ </td>
+</tr>
+
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp; (informal parameters allowed)
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>condition</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>The condition to be met. If this value is true, then the wrapped 
+		elements will be rendered.
+		</td>
+	</tr>
+  <tr>
+ 		<td>invert</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>If true, then the condition is inverted. This is useful for 
+		simulating an else clause.
+		</td>
+	</tr>
+	</table>		
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  The Conditional component is used to display whether the person is a manager
+	and if they are a manager whether they have any staff.	
+	<p>
+	
+<table bgcolor="#c0c0c0" cellpadding="8">
+<tr>
+ <td>
+John Smith is a Manager with <font color="red"><b>no</b></font> staff. 	
+ <td>
+</tr>
+</table>
+		
+<pre>
+&lt;span jwcid="insertName"&gt;
+&lt;span jwcid="<span class="jwcid">ifManager</span>"&gt;
+ is a Manager
+ &lt;span jwcid="<span class="jwcid">ifHasStaff</span>"&gt;
+   with staff.
+ &lt;/span&gt;
+ &lt;span jwcid="<span class="jwcid">ifNoHasStaff</span>"&gt;
+   with &lt;font color="red"&gt;&lt;b&gt;no&lt;/b&gt;&lt;/font&gt; staff.
+ &lt;/span&gt;
+&lt;/span&gt;
+&lt;span jwcid="<span class="jwcid">ifNotManager</span>"&gt;
+ is not a Manager.
+&lt;/span&gt;
+
+
+&lt;component jwcid="insertName" type="<a href="Insert.html">Insert</a>"&gt;
+   &lt;binding name="value" property-path="fullName"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="<span class="jwcid">ifManager</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+   &lt;binding name="condition" property-path="manager"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="<span class="jwcid">ifNotManager</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+   &lt;binding name="condition" property-path="manager"/&gt;
+   &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="<span class="jwcid">ifHasStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+   &lt;binding name="condition" property-path="staff.empty"/&gt;
+   &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="<span class="jwcid">ifHasNoStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+   &lt;binding name="condition" property-path="staff.empty"/&gt;
+&lt;/component&gt;
+
+
+public class EnquiryPage extends BasePage {
+
+    public String getFullName() { return fullName; }
+
+    public List getStaff() { return staff;  }
+
+    public boolean isManager() { return isManager; }
+}
+</pre>
+
+ </td>
+</tr>
+</table>
+
+</body>
+</html>

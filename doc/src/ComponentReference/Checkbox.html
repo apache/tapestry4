@@ -1,0 +1,152 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Checkbox</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/Checkbox.html">
+		 net.sf.tapestry.form.Checkbox</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0">
+	 <tr>
+	  <td>
+		 <input type="checkbox" checked="true">checkbox</input>
+		</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Used to implement a checkbox form element (&lt;input type='checkbox'&gt;). 
+	Must be wrapped by a <a href="Form.html">Form</a> component.
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Form.html">Form</a>, <a href="Radio.html">Radio</a>, 
+	<a href="RadioGroup.html">RadioGroup</a> 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (no informal parameters)
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>selected</td>
+    <td>boolean</td>
+    <td>in-out</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>Indicates whether the checkbox is selected or not.
+		 Corresponds to the 'checked' HTML attribute.
+		</td>
+	</tr>
+  <tr>
+ 		<td>disabled</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>Controls whether the text field is active or not.  If disabled, then
+			any value that comes up when the form is submitted is ignored.			
+			Corresponds to the 'disabled' HTML attribute.
+		</td>
+	</tr>
+	</table>		
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+	Provides a checkbox for the user contact a sales representative. 
+	<p>
+	
+<table bgcolor="#c0c0c0">
+ <tr>
+	<td>
+	 <input type="checkbox" checked="true">Contact Sales Rep</input>
+	</td>
+ </tr>
+</table>
+		
+<pre>
+&lt;form jwcid="enquiryForm"&gt;
+ &lt;input type="checkbox" jwcid="<span class="jwcid">contactRepCheckbox</span>"&gt;Contact Sales Rep&lt;/input&gt;
+&lt;/form&gt;
+
+
+&lt;component jwcid="enquiryForm" type="<a href="Form.html">Form</a>"&gt;
+    &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="<span class="jwcid">contactRepCheckbox</span>" type="<a href="Checkbox.html">Checkbox</a>"&gt;
+    &lt;binding name="selected" property-path="contactRep"/&gt;
+    &lt;binding name="disabled" property-path="staff"/&gt;
+&lt;/component&gt;
+
+
+public class EnquiryPage extends BasePage {
+    private boolean contactRep;
+    private boolean isStaff;
+   
+    public boolean getContactRep() { return contactRep;  }
+
+    public void setContactRep(boolean value) { 
+        contactRep = value;
+        fireObserbedChange("contactRep", contactRep);  
+    }
+
+    public boolean isStaff() { return isStaff; }
+   
+    public void detach() {
+        contactRep = false;
+        isStaff = false;
+        super.detach();
+    }
+
+    public void formSubmit(RequestCycle cycle) { }
+}
+</pre>
+
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
