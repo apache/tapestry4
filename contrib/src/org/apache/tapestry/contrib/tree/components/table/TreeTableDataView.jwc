@@ -34,6 +34,8 @@
 		type="int" 
 		required="no"
 		direction="custom"/>
+    <parameter name="showRootNode" type="boolean" required="no"
+               direction="custom"/>
 
     <parameter name="tableColunms"
                type="java.util.ArrayList"

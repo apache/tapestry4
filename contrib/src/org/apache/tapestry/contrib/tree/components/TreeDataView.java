@@ -72,14 +72,18 @@ public class TreeDataView extends BaseComponent implements ITreeRowSource{
         TreeView objView = getTreeView();
         ITreeModel objTreeModel = objView.getTreeModel();
         ITreeDataModel objTreeDataModel = objTreeModel.getTreeDataModel();
-        Object objValue = objTreeDataModel.getRoot();
-        Object objValueUID = objTreeDataModel.getUniqueKey(objValue, null);
-
-        // Object objSelectedNode = objTreeModel.getTreeStateModel().getSelectedNode();
-        //if(objSelectedNode == null)
-        //  objTreeModel.getTreeStateModel().expand(objValueUID);
-
-        walkTree(objValue, objValueUID, 0, objTreeModel, writer, cycle);
+        
+        Object objRoot = objTreeDataModel.getRoot();
+        Object objRootUID = objTreeDataModel.getUniqueKey(objRoot, null);
+        if(getShowRootNode()){
+            walkTree(objRoot, objRootUID, 0, objTreeModel, writer, cycle);
+        }else{
+            for (Iterator iter = objTreeModel.getTreeDataModel().getChildren(objRoot); iter.hasNext();) {
+                Object objChild = iter.next();
+                Object objChildUID = objTreeModel.getTreeDataModel().getUniqueKey(objChild, objRoot);
+                walkTree(objChild, objChildUID, 0, objTreeModel, writer, cycle);
+            }
+        }        
 
 		cycle.setAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE, objExistedTreeModelSource);
     }
@@ -120,4 +124,12 @@ public class TreeDataView extends BaseComponent implements ITreeRowSource{
 		m_objTreeRowObject = object;
 	}
 
+	public boolean getShowRootNode(){
+		boolean bShowRootNode = true;
+		IBinding objShowRootNodeB = getBinding("showRootNode");
+		if(objShowRootNodeB != null){
+			bShowRootNode = objShowRootNodeB.getBoolean();
+		}
+		return bShowRootNode;
+	}
 }
