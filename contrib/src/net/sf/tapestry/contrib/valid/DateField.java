@@ -222,5 +222,24 @@ public class DateField extends ValidField
     {
     	this.displayFormatBinding = displayFormatBinding;
     }
+    
+    public IBinding getMinimumBinding() {
+        return minimumBinding;
+    }
+    
+    public void setMinimumBinding(IBinding value)
+    {
+        this.minimumBinding = value;
+    }
+    
+    public IBinding getMaximumBinding()
+    {
+        return maximumBinding;
+    }
+    
+    public void setMaximumBinding(IBinding value)
+    {
+        this.maximumBinding = value;
+    }
 
 }
