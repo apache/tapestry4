@@ -55,6 +55,7 @@ public class ExtensionSpecification extends BasePropertyHolder
 
     private String _className;
     private Map _configuration = new HashMap();
+    private boolean _immediate;
 
     public String getClassName()
     {
@@ -159,6 +160,25 @@ public class ExtensionSpecification extends BasePropertyHolder
         buffer.append(']');
 
         return buffer.toString();
+    }
+
+    /**
+     *  Returns true if the extensions should be instantiated
+     *  immediately after the containing 
+     *  {@link net.sf.tapestry.spec.LibrarySpecification}
+     *  if parsed.  Non-immediate extensions are instantiated
+     *  only as needed.
+     * 
+     **/
+    
+    public boolean isImmediate()
+    {
+        return _immediate;
+    }
+
+    public void setImmediate(boolean immediate)
+    {
+        _immediate = immediate;
     }
 
 }

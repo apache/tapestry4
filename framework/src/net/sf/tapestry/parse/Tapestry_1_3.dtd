@@ -246,12 +246,14 @@ containing library (or application).
 Attributes:
   name: Name of the extension.
   class: Java class to instantiate.
+  immediate: If true, the extension is instantiated early instead of as-needed.
   
 -->
 <!ELEMENT extension (property*, configure*)>
 <!ATTLIST extension
   name CDATA #REQUIRED
   class CDATA #REQUIRED
+  immediate %attribute-flag; "no"
 >
 
 <!-- =======================================================

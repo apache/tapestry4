@@ -101,9 +101,14 @@ import org.xml.sax.InputSource;
  *  <td>1.3</td>
  *  <td><code>-//Howard Lewis Ship//Tapestry Specification 1.3//EN</code></td>
  * <td><code>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</code></td>
- *  <td>Splits the &lt;specification&gt; element into &lt;component-specification&gt;
+ *  <td>
+ *   <ul>
+ *      <li>Splits the &lt;specification&gt; element into &lt;component-specification&gt;
  *  and &lt;page-specification&gt; (where &lt;page-specification&gt; doesn't allow
  *  attributes and elements related to declaring parameters).
+ *      <li>Adds the &lt;library&gt; and &lt;extension&gt; elements
+ *      <li>Adds the &lt;library-specification&gt; root element
+ *      <li>Adds &lt;property&gt; to many other elements
  * </td>
  * </tr>
  * 
@@ -677,6 +682,8 @@ public class SpecificationParser extends AbstractDocumentParser
                 continue;
             }
         }
+        
+        specification.instantiateImmediateExtensions();
     }
 
     /**  @since 2.2 **/
@@ -1246,12 +1253,14 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String name = getAttribute(node, "name");
         String className = getAttribute(node, "class");
+        boolean immediate = getBooleanAttribute(node, "immediate");
 
         validate(name, EXTENSION_NAME_PATTERN, "SpecificationParser.invalid-extension-name");
 
         ExtensionSpecification exSpec = _factory.createExtensionSpecification();
 
         exSpec.setClassName(className);
+        exSpec.setImmediate(immediate);
 
         specification.addExtensionSpecification(name, exSpec);
 
