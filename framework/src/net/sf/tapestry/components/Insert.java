@@ -119,13 +119,13 @@ public class Insert extends AbstractComponent
         if (cycle.isRewinding())
             return;
 
+        if (value == null)
+            return;
+
         String insert = null;
 
         if (format == null)
-        {
-            if (value == null)
-            	return;
-            	
+        {           	
             insert = value.toString();
         }
         else
