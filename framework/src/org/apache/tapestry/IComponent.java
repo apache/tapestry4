@@ -158,7 +158,7 @@ public interface IComponent extends IRender, ILocationHolder
      *  Retrieves an contained component by its id.
      *  Contained components have unique ids within their container.
      *
-     *  @exception NoSuchComponentException runtime exception thrown if the named
+     *  @exception ApplicationRuntimeException runtime exception thrown if the named
      *  component does not exist.
      *
      **/
