@@ -237,6 +237,14 @@ NextGen) be released as version number 3.0.
 
   <changes>
   	
+ 	<release version="3.0" date="unrelease">
+ 	
+ 	<action type="fix" dev="HLS" fixes-bug="28345">
+ 		Workbench/Upload exception when no file specified   	
+ 	</action>
+ 		
+ 	</release>
+  	
 <!-- Use due-to to give acknowledgement for patches. -->
  <release version="3.0-rc-3" date="Apr 7 2004">
  	<action type="update" dev="HLS">
