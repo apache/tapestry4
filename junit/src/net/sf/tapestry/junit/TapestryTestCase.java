@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import net.sf.tapestry.IComponentStringsSource;
@@ -130,5 +131,12 @@ public class TapestryTestCase extends TestCase
             h.getProperty(propertyName));
     }
 
+    protected void checkException(Throwable ex, String string)
+    {
+        if (ex.getMessage().indexOf(string) >= 0)
+            return;
+
+        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
+    }
 
 }
