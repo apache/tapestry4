@@ -65,15 +65,22 @@
     
     <!-- These can actually run in any order, so we don't specify before or after. -->
 
-    <command id="inject-messages" object="service:InjectMessagesWorker"/>    
-    <command id="inject-specification" object="service:InjectSpecificationWorker"/>
-    <command id="specified-property" object="service:SpecifiedPropertyWorker"/>
-    <command id="parameter" object="service:ParameterPropertyWorker"/>
-    <command id="inject" object="service:InjectWorker"/>
-    <command id="inject-state" object="service:InjectStateWorker"/>
-    <command id="inject-component" object="service:InjectComponentWorker"/>
-    <command id="inject-bean" object="service:InjectBeanWorker"/>
-    <command id="inject-asset" object="service:InjectAssetWorker"/>
+    <command id="inject-messages" object="service:InjectMessagesWorker" before="page-detach-listener"/>    
+    <command id="inject-specification" object="service:InjectSpecificationWorker" before="page-detach-listener"/>
+    <command id="specified-property" object="service:SpecifiedPropertyWorker" before="page-detach-listener"/>
+    <command id="parameter" object="service:ParameterPropertyWorker" before="page-detach-listener"/>
+    <command id="inject" object="service:InjectWorker" before="page-detach-listener"/>
+    <command id="inject-state" object="service:InjectStateWorker" before="page-detach-listener"/>
+    <command id="inject-component" object="service:InjectComponentWorker" before="page-detach-listener"/>
+    <command id="inject-bean" object="service:InjectBeanWorker" before="page-detach-listener"/>
+    <command id="inject-asset" object="service:InjectAssetWorker" before="page-detach-listener"/>
+    
+    <!-- These need to come last,  since the previous commands may have added interfaces
+         to the class. -->
+    
+    <command id="page-detach-listener" object="service:InjectPageDetachListenerWorker"/>
+    <command id="page-validate-listener" object="service:InjectPageValidateListenerWorker" after="page-detach-listener"/>
+    <command id="page-render-listener" object="service:InjectPageRenderListenerWorker" after="page-detach-listener"/>
         
     <command id="abstract-property" object="service:AbstractPropertyWorker" after="*"/>
     
@@ -187,4 +194,58 @@
     </invoke-factory>
   </service-point>
   
+  <service-point id="InjectPageDetachListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Registers components as PageDetachListeners, if they implement
+    the interface.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+        <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageDetachListener"/>
+        <set property="registerMethodName" value="addPageDetachListener"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="InjectPageRenderListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Registers components as PageRenderListeners, if they implement
+    the interface.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+        <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageRenderListener"/>
+        <set property="registerMethodName" value="addPageRenderListener"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
+  
+  <service-point id="InjectPageValidateListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Registers components as PageValidateListeners, if they implement
+    the interface.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+        <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageValidateListener"/>
+        <set property="registerMethodName" value="addPageValidateListener"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>    
+  
+  <service-point id="ClassObjectProvider" interface="org.apache.hivemind.service.ObjectProvider">
+    
+    Provides the "class:" object prefix. This should be moved to
+    HiveMind proper.
+    
+    <create-instance class="org.apache.tapestry.services.impl.ClassObjectProvider"/>
+    
+  </service-point>
+  
+  <contribution configuration-id="hivemind.ObjectProviders">
+    <provider prefix="class" service-id="ClassObjectProvider"/>
+  </contribution>
 </module>

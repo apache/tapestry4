@@ -28,10 +28,7 @@ import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.engine.IPageLoader;
-import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
-import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -213,10 +210,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /**
-     * Registers this component as a listener of the page if it implements
-     * {@link org.apache.tapestry.event.PageDetachListener},
-     * {@link org.apache.tapestry.event.PageRenderListener}or {@link PageValidateListener}.
-     * <p>
      * Invokes {@link #finishLoad()}. Subclasses may overide as needed, but must invoke this
      * implementation. {@link BaseComponent}loads its HTML template.
      */
@@ -224,15 +217,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     public void finishLoad(IRequestCycle cycle, IPageLoader loader,
             IComponentSpecification specification)
     {
-        if (this instanceof PageDetachListener)
-            _page.addPageDetachListener((PageDetachListener) this);
-
-        if (this instanceof PageRenderListener)
-            _page.addPageRenderListener((PageRenderListener) this);
-
-        if (this instanceof PageValidateListener)
-            _page.addPageValidateListener((PageValidateListener) this);
-
         finishLoad();
     }
 

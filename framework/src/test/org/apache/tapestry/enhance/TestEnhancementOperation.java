@@ -28,11 +28,13 @@ import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Insert;
 import org.apache.tapestry.event.PageDetachListener;
+import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
@@ -59,6 +61,11 @@ public class TestEnhancementOperation extends HiveMindTestCase
         public abstract boolean isBooleanProperty();
 
         public abstract boolean getFlagProperty();
+    }
+
+    public abstract static class ValidatingComponent extends AbstractComponent implements
+            PageValidateListener
+    {
     }
 
     public abstract static class GetClassReferenceFixture
@@ -134,9 +141,14 @@ public class TestEnhancementOperation extends HiveMindTestCase
         return (ClassFab) newMock(ClassFab.class);
     }
 
+    private IComponentSpecification newSpec()
+    {
+        return (IComponentSpecification) newMock(IComponentSpecification.class);
+    }
+
     public void testConstructorAndAccessors()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
         replayControls();
@@ -149,9 +161,99 @@ public class TestEnhancementOperation extends HiveMindTestCase
         verifyControls();
     }
 
+    public void testCheckImplementsNoInterface()
+    {
+        IComponentSpecification spec = newSpec();
+        ClassFactory cf = newClassFactory();
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                BaseComponent.class, cf);
+
+        assertEquals(false, eo.implementsInterface(PageValidateListener.class));
+
+        verifyControls();
+    }
+
+    public void testCheckImplementsClassImplements()
+    {
+        IComponentSpecification spec = newSpec();
+        ClassFactory cf = newClassFactory(ValidatingComponent.class);
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                ValidatingComponent.class, cf);
+
+        assertEquals(true, eo.implementsInterface(PageValidateListener.class));
+
+        verifyControls();
+    }
+
+    public void testCheckImplementsNoMatchForAddedInterfaces()
+    {
+        IComponentSpecification spec = newSpec();
+
+        MockControl factoryc = newControl(ClassFactory.class);
+        ClassFactory factory = (ClassFactory) factoryc.getMock();
+
+        MockControl classfabc = newControl(ClassFab.class);
+        ClassFab classfab = (ClassFab) classfabc.getMock();
+
+        factory.newClass("$BaseComponent_97", BaseComponent.class);
+        factoryc.setReturnValue(classfab);
+
+        classfab.addInterface(PageDetachListener.class);
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                BaseComponent.class, factory);
+
+        eo.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                "foo();");
+
+        assertEquals(false, eo.implementsInterface(PageValidateListener.class));
+
+        verifyControls();
+    }
+
+    public void testCheckImplementsMatchAddedInterfaces()
+    {
+        IComponentSpecification spec = newSpec();
+
+        MockControl factoryc = newControl(ClassFactory.class);
+        ClassFactory factory = (ClassFactory) factoryc.getMock();
+
+        MockControl classfabc = newControl(ClassFab.class);
+        ClassFab classfab = (ClassFab) classfabc.getMock();
+
+        factory.newClass("$BaseComponent_97", BaseComponent.class);
+        factoryc.setReturnValue(classfab);
+
+        classfab.addInterface(PageDetachListener.class);
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                BaseComponent.class, factory);
+
+        eo.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                "foo();");
+
+        assertEquals(true, eo.implementsInterface(PageDetachListener.class));
+
+        verifyControls();
+    }
+
     public void testValidatePropertyNew()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
         replayControls();
@@ -168,7 +270,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testValidatePropertyMatches()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
         replayControls();
@@ -185,7 +287,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testValidatePropertyMismatch()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
         replayControls();
@@ -214,7 +316,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testConvertTypeName()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
         replayControls();
@@ -246,7 +348,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testAddField()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
 
         MockControl cfc = newControl(ClassFactory.class);
         ClassFactory cf = (ClassFactory) cfc.getMock();
@@ -274,7 +376,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         Class baseClass = Insert.class;
         MethodSignature sig = new MethodSignature(void.class, "frob", null, null);
 
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
 
         MockControl cfc = newControl(ClassFactory.class);
         ClassFactory cf = (ClassFactory) cfc.getMock();
@@ -303,7 +405,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testGetAccessorMethodName()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory(Fixture.class);
 
         replayControls();
@@ -406,7 +508,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testGetPropertyType()
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory();
 
         replayControls();
@@ -427,7 +529,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
     public void testFindUnclaimedAbstractProperties()
     {
         ClassResolver cr = (ClassResolver) newMock(ClassResolver.class);
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        IComponentSpecification spec = newSpec();
         ClassFactory cf = newClassFactory(UnclaimedAbstractPropertiesFixture.class);
 
         replayControls();

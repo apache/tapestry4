@@ -406,14 +406,28 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private void addInterfaceIfNeeded(Class interfaceClass)
     {
-        if (interfaceClass.isAssignableFrom(_baseClass))
-            return;
-
-        if (_addedInterfaces.contains(interfaceClass))
+        if (implementsInterface(interfaceClass))
             return;
 
         _classFab.addInterface(interfaceClass);
         _addedInterfaces.add(interfaceClass);
+    }
+
+    public boolean implementsInterface(Class interfaceClass)
+    {
+        if (interfaceClass.isAssignableFrom(_baseClass))
+            return true;
+
+        Iterator i = _addedInterfaces.iterator();
+        while (i.hasNext())
+        {
+            Class addedInterface = (Class) i.next();
+
+            if (interfaceClass.isAssignableFrom(addedInterface))
+                return true;
+        }
+
+        return false;
     }
 
     private BodyBuilder createIncompleteMethod(MethodSignature sig)
