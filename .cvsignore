@@ -4,3 +4,4 @@ dist
 .temp
 target
 maven.log
+velocity.log

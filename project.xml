@@ -3,13 +3,16 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-tapestry</name>
   <id>jakarta-tapestry</id>
-  <currentVersion>1.0-beta-1</currentVersion>
+  <groupId>jakarta-tapestry</groupId>
+  <currentVersion>3.0-beta-1</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
+    <logo>http://jakarta.apache.org/images/jakarta-logo.gif</logo>
   </organization>
   <inceptionYear>2000</inceptionYear>
   <package>org.apache.tapestry</package>
+  <logo>http://jakarta.apache.org/tapestry/images/Tapestry-Banner.png</logo>
 
   <shortDescription>Component-oriented web application framework.</shortDescription>
 
@@ -55,11 +58,9 @@
       <name>Tapestry User List</name>
       <subscribe>
         tapestry-user-subscribe@jakarta.apache.org
-
       </subscribe>
       <unsubscribe>
        tapestry-user-unsubscribe@jakarta.apache.org
-
       </unsubscribe>
       <archive>
         http://news.gmane.org/thread.php?group=gmane.comp.java.tapestry.user
@@ -68,18 +69,24 @@
   </mailingLists>
 
   <developers>
-
     <developer>
       <name>Howard M. Lewis Ship</name>
       <id>hlship</id>
       <email>hlship@apache.org</email>
-      <organization></organization>
+      <role>Peerless Leader</role>
     </developer>
-
+ 
+     <developer>
+      <name>Geoff Longman</name>
+      <id>glongman</id>
+      <email>glongman@intelligentworks.com</email>
+      <role>Spindle Developer</role>
+    </developer>
+       
+    
   </developers>
 
   <dependencies>
-
     <dependency>
       <id>commons-beanutils</id>
       <version>1.6.1</version>
@@ -92,7 +99,7 @@
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
   
-      <dependency>
+    <dependency>
       <id>commons-logging</id>
       <version>1.0</version>
       <url>http://jakarta.apache.org/commons/</url>
@@ -140,12 +147,6 @@
     </dependency>
     
     <dependency>
-    	<id>jdom</id>	
-    	<version>b8</version>
-    	<url>http://www.jdom.org/</url>
-    </dependency>
-    
-    <dependency>
       <id>ognl</id>
       <version>2.5.1</version>
       <url>http://www.ognl.org/</url>
@@ -165,15 +166,43 @@
       tapestry-dev@jakarta.apache.org
     </nagEmailAddress>
 
-    <sourceDirectory>framework/src</sourceDirectory>
+    <sourceDirectory>src</sourceDirectory>
 
-    <unitTestSourceDirectory>junit/src</unitTestSourceDirectory>
+    <unitTestSourceDirectory>test/src</unitTestSourceDirectory>
     
     <!-- Unit test cases -->
     <unitTest>
       <includes>
-        <include>**/TapestrySuite.java</include>
+        <include>**/Test*</include>
       </includes>
+      <excludes>
+        <exclude>**/Testing*</exclude>
+      </excludes>
+      <resources>
+        <resource>
+          <directory>src</directory>
+          <includes>
+            <include>**/*.properties</include>
+            <include>**/*.script</include>
+          </includes>
+        </resource>
+        <resource>
+          <directory>test/src</directory>
+          <includes>
+            <include>**/*.script</include>
+            <include>**/*.properties</include>
+            <include>**/*.html</include>
+            <include>**/*.png</include>
+          </includes>
+        </resource>
+        <resource>
+          <directory>test</directory>
+          <includes>
+            <include>context**/*</include>
+            <include>mock-scripts/*</include>
+          </includes>
+        </resource>
+      </resources>
     </unitTest>
               
     <!-- J A R  R E S O U R C E S -->
@@ -181,7 +210,7 @@
     <resources>
       <includes>
         <include>*.xsd</include>
-        <include>config/log4j.properties</include>
+        <include>**/config/log4j.properties</include>
       </includes>
     </resources>
 
