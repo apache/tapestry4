@@ -50,22 +50,36 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-	A ValidField is used to get input from the user, and apply some simple
-	validation at the same time. Out of the box, the component can provide validation based on type and
-	length of field input. Of course, it is possible to supply your own IValidator implemenation
-	to make this component do whatever you want.
+  Provides an extended <a href="TextField.html">TextField</a> that performs 
+  automated validation and conversion of user entered text into typed Objects.
+  The ValidField component is rendered as a HTML &lt;input type="text"&gt; field 
+  and must be wrapped by a <a href="Form.html">Form</a> component.   
   <p>
-	The ValidField component creates HTML of form: &lt;input type="text" name="personAge" value="25"&gt;
+  Each ValidField is configured with a 
+  <A href="../api/net/sf/tapestry/valid/IValidator.html">validator</a> which 
+  checks the correctness of the user's input and performs the input text to 
+  java Object translations. The <a href="Form.html">Form</a> tracks the state of 
+  all its ValidFields using a validation  
+  <a href="../api/net/sf/tapestry/valid/ValidationDelegate.html">delegate</a>.
+  Using the validation delegate you can determine whether all the form's fields
+  are valid and inform the user of any validation errors. 
   <p>
-  <A href="Form.html">Form</a> component that creates a text field that allows 
-  for validation of user input and conversion between string and object
-  values. A ValidField uses an <A href="Form.html">Form</a>  
-  <A href="../api/net/sf/tapestry/valid/ValidationDelegate.html">validationDelegate</a> 
-  to track errors at the form level and an 
-  <A href="../api/net/sf/tapestry/valid/IValidator/html">validator</a> 
-            to to perform validations and convert between Strings and Objects. A 
-            validator may be shared my ValidFields in a form.</p>
-             
+  There are number of pluggable validators you can assign to a ValidField 
+  including: 
+  <ul>
+   <li>
+    <A href="../api/net/sf/tapestry/valid/DateValidator.html">DateValidator</a>
+    - validates date strings and allows a minimum and maximum date range to be set 
+   </li>
+   <li>
+    <A href="../api/net/sf/tapestry/valid/NumberValidator.html">NumberValidator</a> 
+    - validates number strings and allows a minimum and maximum values to be set
+   </li>
+   <li>
+    <A href="../api/net/sf/tapestry/valid/StringValidator.html">StringValidator</a> 
+    - validates string values and allows a minimum length to be set 
+   </li>
+  </ul>
  </td>
 </tr>
 
@@ -73,6 +87,7 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
+	<A href="FieldLabel.html">FieldLabel</a>, 
 	<A href="Form.html">Form</a>, 
   <a href="TextArea.html">TextArea</a>,
   <A href="TextField.html">TextField</a>
@@ -100,10 +115,37 @@
 	 <td>&nbsp;</td>
 	 <td>
    The value to be displayed (on render), and updated (when the form is
-   submitted, if the submitted value is valid).  The <b>IValidator</b>
+   submitted, if the submitted value is valid). The
+   <a href="../api/net/sf/tapestry/valid/IValidator/html"><tt>IValidator</tt></a>
    converts between object values and Strings.
    </td>
 	</tr>
+  <tr>
+   <td>validator</td>
+   <td>
+    <A href="../api/net/sf/tapestry/valid/IValidator/html"><tt>IValidator</tt></a>
+   </td>
+   <td>in</td>
+   <td>yes</td>
+   <td>&nbsp;</td>
+   <td>
+   Object used to convert object values to Strings (for renderring)
+   and to validate and convert Strings into object values (when the form
+   is submitted).
+   </td>
+  </tr>
+  <tr>
+   <td>displayName</td>
+   <td>String</td>
+   <td>in</td>
+   <td>yes</td>
+   <td>&nbsp;</td>
+   <td>
+    A textual name for the field that is used when formulating error messages.
+ 	  Also used by the <A href="FieldLabel.html">FieldLabel</a> component to 
+    properly label the field.
+   </td>
+  </tr>
 	<tr>
 	 <td>hidden</td>
 	 <td>boolean</td>
@@ -115,8 +157,6 @@
     form element.
    </td>
   </tr>
-  
-  
     <tr>
    <td>type</td>
    <td>String</td>
@@ -142,8 +182,6 @@ Also, the names of Java scalar types are acceptible.
     form element.
    </td>
   </tr>
-  
-  
   <tr>
    <td>disabled</td>
    <td>boolean</td>
@@ -153,7 +191,8 @@ Also, the names of Java scalar types are acceptible.
    <td>
     Controls whether the text field is active or not.  If disabled, then
 		any value that comes up when the form is submitted is ignored. Corresponds 
-    to the "disabled" HTML attribute.</td>
+    to the "disabled" HTML attribute.
+   </td>
 	</tr>
 	<tr>
 	 <td>displayWidth</td>
@@ -178,32 +217,6 @@ Also, the names of Java scalar types are acceptible.
 		unspecified or zero, then the value is left to the client browser to
 		determine. Corresponds to the "maxlength" HTML attribute.
    </td> 
-  </tr>
-  <tr>
-   <td>displayName</td>
-   <td>String</td>
-   <td>in</td>
-   <td>yes</td>
-   <td>&nbsp;</td>
-   <td>
-    A textual name for the field that is used when formulating error messages.
- 	  Also used by the <A href="FieldLabel.html">FieldLabel</a> component to 
-    properly label the field.
-   </td>
-  </tr>
-  <tr>
-   <td>validator</td>
-   <td>
-    <A href="../api/net/sf/tapestry/valid/IValidator/html"><tt>IValidator</tt></a>
-   </td>
-   <td>in</td>
-   <td>yes</td>
-   <td>&nbsp;</td>
-   <td>
-   Object used to convert object values to Strings (for renderring)
-   and to validate and convert Strings into object values (when the form
-   is submitted).
-   </td>
   </tr>
 	</table>
             <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
