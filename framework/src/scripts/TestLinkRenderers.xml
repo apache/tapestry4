@@ -16,112 +16,135 @@
 -->
 
 <mock-test>
-    <context name="c10" root="context10"/>
+  <context name="c10" root="context10"/>
 
-  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
-  	
-  	<request>
-  		
-  		<assert-output name="Page Title">
+  <servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+  <request>
+
+    <assert-output name="Page Title">
 <![CDATA[
 <title>Home</title>
 ]]>  		
-  		</assert-output>
-  		
-  		<assert-output name="First Link">
+    </assert-output>
+
+    <assert-output name="First Link">
 <![CDATA[
 <a href="/c10/app?component=first&amp;page=Home&amp;service=direct">First</a>
 ]]>  		
-  		</assert-output>
-  	
-	
-  		<assert-output name="Second Link">
+    </assert-output>
+
+    <assert-output name="Second Link">
 <![CDATA[
 <a href="http://junit-test/c10/app?component=second&amp;page=Home&amp;service=direct">Second</a>
 ]]>  		
-  		</assert-output>	  	  		
-  		
-  		<assert-output name="Configured Values">
-  		
-  		Expecting: https://myserver:8080
-  			
-  		</assert-output>
-  		
-  		<assert-output name="Third Link">
+    </assert-output>
+
+    <assert-output name="Configured Values">
+    Expecting: https://myserver:8080
+    </assert-output>
+
+    <assert-output name="Third Link">
 <![CDATA[
 <a href="https://myserver:8080/c10/app?component=third&amp;page=Home&amp;service=direct#myanchor">Third</a>
 ]]>  		
-  		</assert-output>	
-  	  
-  		<assert-output name="Fourth Link">
+    </assert-output>
+
+    <assert-output name="Fourth Link">
   	[Fourth]	
-  		</assert-output>	
-  	  		
-  	  		
-  	</request>
-  	
-  	<request>
-  		<parameter name="service" value="page"/>
-      <parameter name="page" value="Two"/>
-  			
-  		<assert-output name="Page Title">
+    </assert-output>	
+
+    <!-- Test link with target -->
+    <assert-output name="Fifth Link">
+<![CDATA[
+<a href="/c10/app?component=fifth&amp;page=Home&amp;service=direct" target="_blank">Fifth</a>
+]]>  		
+    </assert-output>	
+
+    <!-- Test button link -->
+    <assert-output name="Sixth Link">
+<![CDATA[
+<button type="button" onclick="window.location='/c10/app?component=sixth&amp;page=Home&amp;service=direct'">Sixth</button>
+]]>  		
+    </assert-output>	
+
+    <!-- Test disabled button link -->
+    <assert-output name="Seventh Link">
+<![CDATA[
+<button type="button" disabled="disabled" onclick="window.location='/c10/app?component=seventh&amp;page=Home&amp;service=direct'">Seventh</button>
+]]>  		
+    </assert-output>	
+
+    <!-- Test button link with target -->
+    <assert-output name="Eighth Link">
+<![CDATA[
+<button type="button" onclick="window.open('/c10/app?component=eighth&amp;page=Home&amp;service=direct','_blank')">Eighth</button>
+]]>  		
+    </assert-output>	
+
+  </request>
+
+  <request>
+    <parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>
+
+    <assert-output name="Page Title">
 <![CDATA[
 <title>Exception</title>
 ]]>	
-  		</assert-output>
-  			
-  		<assert-output name="Message">
+    </assert-output>
+
+    <assert-output name="Message">
  		ILinkComponents may not be nested. 			
-  		</assert-output>
-  			
-  	</request>
-  	
-  	<!-- Check that ensures links with event handlers are inside a Body. -->
-  	
-  	<request>
-  		<parameter name="service" value="page"/>
-      <parameter name="page" value="Three"/>
-  		
-  		<assert-output name="Page Title">
+    </assert-output>
+
+  </request>
+
+  <!-- Check that ensures links with event handlers are inside a Body. -->
+
+  <request>
+    <parameter name="service" value="page"/>
+    <parameter name="page" value="Three"/>
+
+    <assert-output name="Page Title">
 <![CDATA[
 <title>Exception</title>
 ]]>	
-  		</assert-output>
-  			
-  		<assert-output name="Message">
+    </assert-output>
+
+    <assert-output name="Message">
  		A link component with multiple functions for a single event type must be contained within a Body.		
-  		</assert-output>
-  		  			
-  	</request>
-  	
-  	<!-- Test same thing on a page with a Body -->
-  	
-  	<request>
-  		<parameter name="service" value="page"/>
-      <parameter name="page" value="Four"/>
-  		
-  		<assert-output name="Page Title">
+    </assert-output>
+
+  </request>
+
+  <!-- Test same thing on a page with a Body -->
+
+  <request>
+    <parameter name="service" value="page"/>
+    <parameter name="page" value="Four"/>
+
+    <assert-output name="Page Title">
 <![CDATA[
 <title>Four</title>
 ]]>	
-  		</assert-output>
-  			
-  		<assert-output name="Composite Method">
+    </assert-output>
+
+    <assert-output name="Composite Method">
 function onClick_Link ()
 {
   eventHandler1();
   eventHandler2();
   eventHandler3();
 }  		
-		</assert-output>
-		
-		<assert-output name="Link">
+    </assert-output>
+
+    <assert-output name="Link">
 <![CDATA[
 <a href="/c10/app?component=link&amp;page=Four&amp;service=direct" onClick="javascript:onClick_Link();">
 ]]>	
-		</assert-output>
-  		  			
-  		  			
-  	</request>  	
-  	
+    </assert-output>
+
+  </request>  	
+
 </mock-test>
