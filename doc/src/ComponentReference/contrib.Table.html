@@ -19,14 +19,19 @@ Tbis HTML document provides a base template for Component Reference pages.
 <head>
 <title>contrib:Table</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+<STYLE type=text/css>
+.example TD { TEXT-ALIGN: center }
+.code {	FONT-FAMILY: Courier }
+.examples A { color: black }
+</STYLE>
 </head>
 
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr><!-- Previous component in alphabetical order. -->
-  <td align="left"><A href="index.html"><IMG alt="Component Index" src="common-images/prev.png"></a></td>  
+  <td align="left"><A href="contrib.PopupLink.html"><IMG alt="Component Index" src="common-images/prev.png"></a></td>  
   <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td><!-- Next component in alphabetical order. -->
-  <td align="right"><A href="index.html"><IMG alt="Component Index" src="common-images/next.png"></a></td>  
+  <td align="right"><A href="contrib.TableColumns.html"><IMG alt="Component Index" src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -91,7 +96,6 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td colspan="2">
   <b>See Also</b>
   <br>
-  <A href="contrib.SimpleTableComponent.html">SimpleTableComponent</a>, 
   <A href="contrib.TableColumns.html">TableColumns</a>, 
   <A href="contrib.TablePages.html">TablePages</a>,
   <A href="contrib.TableRows.html">TableRows</a>,
@@ -113,115 +117,146 @@ Tbis HTML document provides a base template for Component Reference pages.
     <th>Default</th>
     <th>Description</th>
    </tr>
-   <tr>
-    <td>tableModel</td>
-    <td><a href="../api/net/sf/tapestry/contrib/table/model/ITableModel.html"><tt>ITableModel</tt></a></td>
-    <td>in/out</td>
-    <td>yes</td>
-    <td>&nbsp;</td>
-    <td>
-    The TableModel to be used to render the table. This binding is typically used only once at the beginning and then the component stores the model in the session state.
-    <p> 
-    If you want the Table to read the model every time you can use a session state manager such as NullTableSessionStateManager that will force it to get the TableModel from this binding every time. If you do this, however, you will be responsible for saving the state of the table yourself. 
-    <p> 
-    You can also call the reset() method to force the Table to abandon its old model and reload a new one. 
-    </td>
-   </tr>
-   <tr>
-    <td>tableSessionStateManager</td>
-    <td><a href="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><tt>ITableSessionStateManager</tt></a></td>
-    <td>in/out</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>
-      This is the session state manager that will control what part of the table 
-      model will be saved in the session state. It is then used to recreate the 
-      table model from using what was saved in the session. By default, the 
-      <A HREF="../api/net/sf/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><tt>FullTableSessionStateManager</tt></A>
+
+ <tr>
+  <td>tableModel</td>
+  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableModel.html"><CODE>ITableModel</CODE></A></td>
+  <td>in</td>
+  <td>yes</td>
+  <td>&nbsp;</td>
+  <td align="left">The TableModel to be used to render the table. 
+      This binding is typically used only once at the beginning and then the 
+      component stores the model in the session state. 
+      <p>If you want the Table to read the model every time you can use
+      a session state manager such as 
+      <A HREF="../api/net/sf/tapestry/contrib/table/model/common/NullTableSessionStateManager.html"><CODE>NullTableSessionStateManager</CODE></A>
+      that will force it to get the TableModel from this binding every time.
+      If you do this, however, you will be responsible for saving the state of 
+      the table yourself.
+      <p> You can also call the reset() method to force the Table to abandon
+      its old model and reload a new one.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>tableSessionStateManager</td>
+  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A></td>
+  <td align="left">This is the session state manager that will control what part of the 
+      table model will be saved in the session state. 
+      It is then used to recreate the table model from
+      using what was saved in the session. By default, the 
+      <A HREF="../api/net/sf/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><CODE>FullTableSessionStateManager</CODE></A>
       is used, which just saves the entire model into the session.
       This behaviour may not be appropriate when the data is a lot or it is not
       <A HREF="http://java.sun.com/products/jdk/1.2/docs/api/java/io/Serializable.html"><CODE>Serializable</CODE></A>.
-      <p> 
-      You can use one of the stock implementations of  
+      <p> You can use one of the stock implementations of  
       <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
       to determine the session state behaviour, or you can just define your own.
-    </td>
-   </tr>
-   <tr>
-    <td>tableSessionStoreManager</td>
-    <td><a href="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><tt>ITableSessionStoreManager</tt></a></td>
-    <td>in/out</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>
-    Determines how the session state (returned by the session state manager) 
-    will be saved in the session. If this parameter is null, then the state 
-    will be saved as a persistent property. If it is not null, then the methods 
-    of the interface will be used to save and load the state. 
-    </td>
-   </tr>
-   <tr>
-    <td>pagesDisplayed</td>
-    <td>int</td>
-    <td>in/out</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>
-    Determines the maximum number of pages to be displayed in the page list when 
-    the table has more than one page.
-    <p> 
-    For example, if the table has 20 pages, and 10 is the current page, 
-    pages from 7 to 13 in the page list will be shown if this parameter has a value of 7.     
-    </td>
-   </tr>
-   <tr>
-    <td>arrowUpAsset</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</a></td>
-    <td>in</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>The image to use to describe a column sorted in an ascending order.</td>
-   </tr>
-   <tr>
-    <td>arrowDownAsset</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</a></td>
-    <td>in</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>The image to use to describe a column sorted in a descending order.</td>
-   </tr>
-   <tr>
-    <td>pagesClass</td>
-    <td>string</td>
-    <td>in/out</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>The CSS class of the pages.</td>
-   </tr>
-   <tr>
-    <td>columnsClass</td>
-    <td>string</td>
-    <td>in/out</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>The CSS class of the table columns.</td>
-   </tr>
-   <tr>
-    <td>rowsClass</td>
-    <td>string</td>
-    <td>in/out</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>The CSS class of the table rows.</td>
-   </tr>
-   <tr>
-    <td>valuesClass</td>
-    <td>string</td>
-    <td>in/out</td>
-    <td>no</td>
-    <td>&nbsp;</td>
-    <td>The CSS class of the table values.</td>
-   </tr>
+  </td> 
+ </tr>
+
+ <tr>
+  <td>tableSessionStoreManager</td>
+  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><CODE>ITableSessionStoreManager</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td>null</td>
+  <td align="left">Determines how the session state (returned by the session state manager)
+      will be saved in the session. If this parameter is null, then the state
+      will be saved as a persistent property. If it is not null, then the methods
+      of the interface will be used to save and load the state.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>row</td>
+  <td>Object</td>
+  <td>out</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The value object of the current row.</td> 
+ </tr>
+
+ <tr>
+  <td>column</td>
+  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableColumn.html"><CODE>ITableColumn</CODE></A></td>
+  <td>out</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The object representing the current column.</td> 
+ </tr>
+
+ <tr>
+  <td>pagesDisplayed</td>
+  <td>int</td>
+  <td>in</td>
+  <td>no</td>
+  <td>7</td>
+  <td align="left">Determines the maximum number of pages to be displayed in the page list
+      when the table has more than one page.
+      <p>For example, if the table has 20 pages, and 10 is the current page,
+      pages from 7 to 13 in the page list will be shown if this parameter has 
+      a value of 7.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>arrowUpAsset</td>
+  <td><A HREF="../api/net/sf/tapestry/IAsset.html"><CODE>IAsset</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The image to use to describe a column sorted in an ascending order.</td> 
+ </tr>
+
+ <tr>
+  <td>arrowDownAsset</td>
+  <td><A HREF="../api/net/sf/tapestry/IAsset.html"><CODE>IAsset</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The image to use to describe a column sorted in a descending order.</td> 
+ </tr>
+
+ <tr>
+  <td>pagesClass</td>
+  <td>String</td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The CSS class of the table pages.</td> 
+ </tr>
+
+ <tr>
+  <td>columnsClass</td>
+  <td>String</td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The CSS class of the table columns.</td> 
+ </tr>
+
+ <tr>
+  <td>rowsClass</td>
+  <td>String</td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The CSS class of the table rows.</td> 
+ </tr>
+
+ <tr>
+  <td>valuesClass</td>
+  <td>String</td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The CSS class of the table values.</td> 
+ </tr>
+
   </table>
   <P>
   Body: <STRONG>rendered</STRONG><BR>
@@ -232,13 +267,573 @@ Tbis HTML document provides a base template for Component Reference pages.
  </td>
 </tr>
 
+
+
+
 <tr>
  <td colspan="2">
   <b>Examples</b>
   <p>
-  This example is under construction.
-  </p>
-  Please see the example in the Tapestry Workbench. 
+
+<table class="examples" cellpadding="4" width="700">
+<tr><td>
+
+<SPAN><A 
+href="#">&lt;&lt;</A>&nbsp;<A 
+href="#">&lt;</A>&nbsp;<A 
+href="#">7</A>&nbsp;<A 
+href="#">8</A>&nbsp;<A 
+href="#">9</A><B>&nbsp;10</B>&nbsp;<A 
+href="#">11</A>&nbsp;<A 
+href="#">12</A>&nbsp;<A 
+href="#">13</A>&nbsp;<A 
+href="#">&gt;</A>&nbsp;<A 
+href="#">&gt;&gt;</A></SPAN> 
+
+<TABLE class=example width="90%">
+  <TBODY>
+  <TR>
+    <TD></TD></TR>
+  <TR>
+    <TH>
+      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+        <TBODY>
+        <TR>
+          <TD><A 
+            href="#">Locale</A> 
+          </TD></TR></TBODY></TABLE></TH>
+    <TH>
+      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+        <TBODY>
+        <TR>
+          <TD><A 
+            href="#">Language</A> 
+          </TD>
+          <TD>&nbsp;<IMG align=middle border=0 
+            src="images/arrow-up.gif"> </TD></TR></TBODY></TABLE></TH>
+    <TH>
+      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+        <TBODY>
+        <TR>
+          <TD><A 
+            href="#">Country</A> 
+          </TD></TR></TBODY></TABLE></TH>
+    <TH>
+      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+        <TBODY>
+        <TR>
+          <TD><A 
+            href="#">Variant</A> 
+          </TD></TR></TBODY></TABLE></TH>
+    <TH>
+      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+        <TBODY>
+        <TR>
+          <TD><A 
+            href="#">ISO 
+            Language</A> </TD></TR></TBODY></TABLE></TH>
+    <TH>
+      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+        <TBODY>
+        <TR>
+          <TD><A 
+            href="#">ISO 
+            Country</A> </TD></TR></TBODY></TABLE></TH></TR>
+  <TR>
+    <TD class=tableValues>is </TD>
+    <TD class=tableValues>is </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>isl </TD>
+    <TD class=tableValues><BR></TD></TR>
+  <TR>
+    <TD class=tableValues>is_IS </TD>
+    <TD class=tableValues>is </TD>
+    <TD class=tableValues>IS </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>isl </TD>
+    <TD class=tableValues>ISL </TD></TR>
+  <TR>
+    <TD class=tableValues>it </TD>
+    <TD class=tableValues>it </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>ita </TD>
+    <TD class=tableValues><BR></TD></TR>
+  <TR>
+    <TD class=tableValues>it_CH </TD>
+    <TD class=tableValues>it </TD>
+    <TD class=tableValues>CH </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>ita </TD>
+    <TD class=tableValues>CHE </TD></TR>
+  <TR>
+    <TD class=tableValues>it_IT </TD>
+    <TD class=tableValues>it </TD>
+    <TD class=tableValues>IT </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>ita </TD>
+    <TD class=tableValues>ITA </TD></TR>
+  <TR>
+    <TD class=tableValues>it_IT_EURO </TD>
+    <TD class=tableValues>it </TD>
+    <TD class=tableValues>IT </TD>
+    <TD class=tableValues>EURO </TD>
+    <TD class=tableValues>ita </TD>
+    <TD class=tableValues>ITA </TD></TR>
+  <TR>
+    <TD class=tableValues>iw </TD>
+    <TD class=tableValues>iw </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>heb </TD>
+    <TD class=tableValues><BR></TD></TR>
+  <TR>
+    <TD class=tableValues>iw_IL </TD>
+    <TD class=tableValues>iw </TD>
+    <TD class=tableValues>IL </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>heb </TD>
+    <TD class=tableValues>ISR </TD></TR>
+  <TR>
+    <TD class=tableValues>ja </TD>
+    <TD class=tableValues>ja </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>jpn </TD>
+    <TD class=tableValues><BR></TD></TR>
+  <TR>
+    <TD class=tableValues>ja_JP </TD>
+    <TD class=tableValues>ja </TD>
+    <TD class=tableValues>JP </TD>
+    <TD class=tableValues><BR></TD>
+    <TD class=tableValues>jpn </TD>
+    <TD class=tableValues>JPN </TD></TR></TBODY></TABLE>
+
+</td></tr>
+</table>
+        
+  <p>
+  <br>
+
+<PRE>
+&lt;style&gt; td { text-align: center } &lt;/style&gt;
+&lt;table jwcid="table" width="90%"/&gt;
+</PRE>
+
+<BR>
+
+<PRE>
+&lt;page-specification class="net.sf.tapestry.contrib.table.example.minimal.Home"&gt;
+    &lt;component id="table" type="contrib:Table"&gt;
+        &lt;binding name="tableModel" expression="tableModel"/&gt; 
+    &lt;/component&gt;
+&lt;/page-specification&gt;
+</PRE>
+
+<BR>
+
+<PRE>
+public class Home extends BasePage
+{
+    // Return the model of the table
+    public ITableModel getTableModel()
+    {
+        // Generate the list of data
+        Locale[] arrLocales = Locale.getAvailableLocales();
+  
+        // Generate a simple sorting column model that uses OGNL to get the column data
+        ITableColumnModel objColumnModel = 
+            new ExpressionTableColumnModel(new String[] {
+                "Locale", "toString()",
+                "Language", "language",
+                "Country", "country",
+                "Variant", "variant",
+                "ISO Language", "ISO3Language",
+                "ISO Country", "ISO3Country"
+            }, true);
+
+        // Create the table model and return it
+        return new SimpleTableModel(arrLocales, objColumnModel);
+    }
+}
+</PRE>
+
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+   <b>Further examples</b>
+
+<p>
+You can find additional examples in the Tutorial 
+as part of the Workbench application under the "Table" tab. 
+<P>That page consists of two components -- the <SPAN 
+class=code>LocaleList</SPAN> component and the <SPAN 
+class=code>LocaleSelection</SPAN> component. </P>
+<P>The <SPAN class=code>LocaleList</SPAN> component allows you to view all 
+Locales in a table (similar to the example above), as well as to choose Locales 
+from the table and add them to your "selection". </P>
+<P>The <SPAN class=code>LocaleSelection</SPAN> component displays the selected 
+Locales and provides additional information about them. It also allows Locales 
+to be removed from the selection. </P>
+<P>Even though the two components utilizing the Table are placed on a single 
+page, they can operate without any interference from each other with no effort 
+at all on part of the developer -- each table can be sorted independently, for 
+example. This is a good illustration of the power of Tapestry's component 
+approach. </P>
+ <p></p>
+ </td>
+</tr>
+
+
+<tr>
+ <td colspan="2">
+<hr>
+<H2>Table Developers Guide</H2>
+
+There are two important elements that comprise the Table 
+functionality -- the table model and the table components. 
+<P>The <STRONG>table model</STRONG> classes and interfaces provide the Table 
+with the ability to display and manipulate data from various different sources. 
+Using them in various combinations and customizing them allows the developer to 
+modify the behaviour of the table according to his needs. </P>
+<P>The <STRONG>table components</STRONG> are responsible for displaying the data 
+provided by the table model, and working with them allows the developer to 
+radically change the appearance of the table if necessary. </P>
+
+<H3>1. The Model </H3>
+<P>This section will discuss the table model and how it can be used and modified 
+to satisfy the needs of the developer. The next section will then concentrate on 
+how the table components can be used to customize the appearance of the table as 
+much as possible. </P>
+
+<H4>1.1. The Table Model Family of Classes </H4>Even though using a table model 
+can be very simple, as shown in the first example, behind the curtains it may 
+consist of many different interfaces and classes that work together to allow you 
+to modify different aspects of the table data representation and manipulation 
+without a lot of effort. 
+<P>Below you can see a UML Class diagram of the interfaces and classes in the 
+Table Model family. The rest of this section will discuss how they can be used 
+and modified as needed. </P>
+<P><IMG alt="Table Model Class Diagram" 
+src="images/tableModel.gif"> </P>
+<H4>1.2. The Table Model </H4>The table model provides the information needed by 
+the view to render the table. For example, the Table component may use its <SPAN 
+class=code>tableModel</SPAN> parameter to determine what to display. 
+<P>The Tapestry components access the table model via the relatively simple 
+<B><SPAN class=code>ITableModel</SPAN></B> interface, which is the facade of the 
+table model hierarchy. A variety of implementations of this interface can be 
+created to target different cases. </P>
+<P>The contrib library currently defines only one rudimentary implementation 
+that can be used in the majority of situations -- the <B><SPAN 
+class=code>SimpleTableModel</SPAN></B>. While versatile, however, this 
+implementation may not be suitable for all cases, and hence you may create your 
+own whenever necessary. </P>
+<P>Using the <SPAN class=code>SimpleTableModel</SPAN> is very easy -- you just 
+need to provide it with the data to be displayed and the columns that the table 
+will have: </P><PRE>    Object[] data = ...;
+    ITableColumn[] columns = ...;
+    ITableModel model = new SimpleTableModel(data, columns);
+</PRE>
+<P>This model can then be passed to the Table component, and it will display the 
+data using the given columns. <BR></P>
+<H4>1.3. The Data Model </H4>The <SPAN class=code>SimpleTableModel</SPAN> can 
+also obtain its data via the <SPAN class=code>ITableDataModel</SPAN> interface. 
+This allows the source of data to be abstracted. 
+<P>The contrib library provides two standard implementations of this interface. 
+The <SPAN class=code>SimpleListTableDataModel</SPAN> and the <SPAN 
+class=code>SimpleSetTableDataModel</SPAN>. As the names indicate, the former 
+provides the table data from Lists and arrays, while the latter provides the 
+data from Sets and other unordered Collections. Using the data models is very 
+simple as well: </P><PRE>    ArrayList data = ...;
+    ITableDataModel dataModel = new SimpleListTableDataModel(data);
+    ITableModel model = new SimpleTableModel(dataModel, ...);
+</PRE>
+<P>An example of using <SPAN class=code>SimpleSetTableDataModel</SPAN> can be 
+found in the <SPAN class=code>LocaleSelection</SPAN> component in the Workbench. 
+The storage of the selected locales there is implemented precisely using that 
+table data model.</P>
+<H4>1.4. The Column Model </H4>
+<P>A column in the table model is defined using the <STRONG><SPAN 
+class=code>ITableColumn</SPAN></STRONG> interface. It provides the information 
+needed to identify the column (the column name), to render the column (the 
+columnRender that renders the heading, and the valueRenderer that renders each 
+cell), and to sort the column (whether the column is sortable and what <SPAN 
+class=code>Comparator</SPAN> should be used for sorting the table). </P>
+<P>The basic implementation of <SPAN class=code>ITableColumn</SPAN> provided is 
+<STRONG><SPAN class=code>SimpleTableColumn</SPAN></STRONG>. It takes care of all 
+mundane tasks, such as supplying a renderer for the column header, and allows 
+you to define a column by only providing its name and a way to extract the 
+column data from the row object by overriding the <SPAN 
+class=code>getColumnValue()</SPAN> method. This is demonstrated by the example 
+below that also configures the column to be sortable: </P><PRE>    // Create a new sortable column with name and title "Full Name"
+    ITableColumn fullNameColumn = new SimpleTableColumn("Full Name", true) { 
+        public Object getColumnValue(Object value) {
+            PersonInfo info = (PersonInfo) value;
+            return info.getLastName() + ", " + info.getFirstName();
+        }
+    };
+</PRE>
+<P>Other methods can be overridden as well to provide additional features, such 
+as custom rendering, as it will be shown in the next section. </P>
+<P>The above can be achieved in a simpler, but not as flexible manner by using 
+<SPAN class=code><STRONG>ExpressionTableColumn</STRONG></SPAN>. It inherits 
+<SPAN class=code>SimpleTableColumn</SPAN>, and allows you to create columns 
+whose data is obtained via OGNL: </P><PRE>    // Create a new sortable column with name and title "Occupation"
+    ITableColumn occupationColumn =  new ExpressionTableColumn("Occupation", "occupation", true);
+
+    // Create a new sortable column with name and title "Full Name"
+    ITableColumn fullNameColumn =  new ExpressionTableColumn("Full Name", "lastName + \", \" + firstName", true);
+</PRE>
+<P>The table columns are supplied to the table model using a <SPAN 
+class=code>List</SPAN> -like container defined by the <SPAN 
+class=code><STRONG>ITableColumnModel</STRONG></SPAN> interface. The generic 
+implementation provided for this interface is<STRONG> <SPAN 
+class=code>SimpleTableColumnModel</SPAN></STRONG>, which contains an array of 
+<SPAN class=code>ITableColumn</SPAN> objects of any type. </P>
+<P>One more specific implementation available is the<STRONG> <SPAN 
+class=code>ExpressionTableColumnModel</SPAN> </STRONG>, which contains<SPAN 
+class=code>ExpressionTableColumn</SPAN> objects. It allows you to define the 
+columns of your table quickly and easily, by providing a name and an OGNL 
+expression for each one in a <SPAN class=code>String</SPAN> array: </P><PRE>    // Generate a simple sorting column model that uses OGNL to get the column data
+    ITableColumnModel objColumnModel = 
+        new ExpressionTableColumnModel(new String[] {
+            "Locale", "toString()",
+            "Language", "language",
+            "Country", "country",
+            "Variant", "variant",
+            "ISO Language", "ISO3Language",
+            "ISO Country", "ISO3Country"
+        }, true);
+</PRE>
+<H4>1.5. The Table State </H4>
+<P>The state of the table model consists of any data that is not related to the 
+contents of the table, but instead carries information about its presentation. 
+The standard table model supports two states -- the paging state (how many rows 
+per page; which page we are on) and the sorting state (which column we are 
+sorting on; in an ascending or a descending order). </P>
+<P>The paging state is defined by the <STRONG><SPAN 
+class=code>ITablePagingState</SPAN></STRONG> interface and is implemented in its 
+simplest form by <STRONG><SPAN 
+class=code>SimpleTablePagingState</SPAN></STRONG>. Similarly, the sorting state 
+is defined by<STRONG> <SPAN class=code>ITableSortingState</SPAN> </STRONG>and is 
+implemented by<STRONG> <SPAN class=code>SimpleTableSortingState</SPAN></STRONG>. 
+</P>
+<P>The states are typically accessed and modified by the components presenting 
+the table (e.g. the TablePages component can change the current page based on 
+the user selection). The user can also modify them, which is often necessary at 
+initialization: </P><PRE>    ITableModel model = new SimpleTableModel(data, columns);
+
+    // Set page size to 15 elements and go to page 8
+    model.getPagingState().setPageSize(15);
+    model.getPagingState().setCurrentPage(8);
+
+    // Sort by column 'price' in an ascending order
+    model.getSortingState().setSortColumn("price", ITableSortingState.SORT_ASCENDING);
+</PRE>
+<P>The <SPAN class=code>SimpleTableModel</SPAN> &nbsp;class keeps the two states 
+together in the<STRONG> <SPAN class=code>SimpleTableState</SPAN> 
+</STRONG>object, which can be passed via the constructor and obtained at any 
+time using the <SPAN class=code>getState()</SPAN> method. This is often useful 
+when storing the state by itself is necessary (see below). </P>
+<H4>1.6. The Session State Manager </H4>
+<P>In Web interfaces, unlike client-side GUIs, the information about the state 
+of the presentation must be kept in the session object between requests. What 
+has to be kept and what can be thrown away and recreated during the next request 
+differs in each case, however. The policy of what to do typically involves a 
+tradeoff between memory and CPU power, and hence it depends very much on the 
+specific situation. </P>
+<P>The<STRONG> <SPAN class=code>ITableSessionStateManager</SPAN> 
+</STRONG>interface is used to define precisely this policy. It defines what part 
+of the table model has to be saved in the session and can recreate the table 
+model using the saved information when the next request comes. </P>
+<P>The <SPAN class=code>Table</SPAN> and the <SPAN class=code>TableView</SPAN> 
+components have a <SPAN class=code>tableSessionStateManager</SPAN> binding that 
+allows such a manager to be supplied. When the table model is needed at the 
+beginning of a new request, the component use the following procedure to obtain 
+it: </P>
+<OL>
+  <LI>Load the session state (it will be null initially) 
+  <LI>Invoke <SPAN class=code>recreateTableModel(sessionState)</SPAN> on the 
+  Session State Manager to try to recrate the table model 
+  <LI>If <SPAN class=code>recreateTableMode()</SPAN> returns null, use the <SPAN 
+  class=code>tableModel</SPAN> binding to obtain the table model </LI></OL>
+<P>Immediately before rendering, the opposite procedure takes place: </P>
+<OL>
+  <LI>Invoke <SPAN class=code>getSessionState(tableModel)</SPAN> on the Session 
+  State Manager to extract the part of the model to be saved 
+  <LI>Save the session state </LI></OL>
+<P>Three standard implementations of the <SPAN 
+class=code>ITableSessionStateManager</SPAN> interface are provided that address 
+the common cases that can be implemented without custom code. Each of them 
+implements a different policy for extracting session state from the model and 
+hence is suitable for some specific situations: </P>
+<TABLE border=1 cellPadding=5 cellSpacing=0 width="100%">
+  <TBODY>
+  <TR>
+    <TH>Session State Manager </TH>
+    <TH>Description </TH></TR>
+  <TR>
+    <TD vAlign=center>
+      <P align=center><STRONG><SPAN 
+      class=code>FullTableSessionStateManager</SPAN> </STRONG></P></TD>
+    <TD>
+      <P><STRONG>Saves the entire table model in the session. This is the 
+      default manager.</STRONG> </P>
+      <P>This manager is the simplest to use as it brings to a minimum the need 
+      for additional coding. It has a number of disadvantages, however. First, 
+      everything in the table model must be <SPAN class=code>Serializable</SPAN> 
+      since it is stored in the session and may be serialized at one point or 
+      another. Second, depending on the table data, its memory consumption per 
+      session could be quite significant. </P>
+      <P>For those reasons, it is probably not a good idea to use this manager 
+      if you are displaying large amounts of data, if you have a lot of users, 
+      or if the application needs to be clustered. On the other hand, it is 
+      perfect for quick and dirty work. </P></TD></TR>
+  <TR>
+    <TD vAlign=center>
+      <P align=center><STRONG><SPAN 
+      class=code>SimpleTableSessionStateManager</SPAN> </STRONG></P></TD>
+    <TD>
+      <P><STRONG>Saves only the table model state and assumes that the data and 
+      column models are constant.</STRONG> </P>
+      <P>This manager is designed to work with the <SPAN 
+      class=code>SimpleTableModel</SPAN> . It stores only the model state 
+      (paging and sorting), and recreates the model using the data and column 
+      models that must be supplied via its constructor. As a result, the session 
+      memory consumption is low, but the CPU utilization may be high, since the 
+      data must be resorted at each request. This manager is best used when the 
+      data that needs to be displayed is constant. </P>
+      <P>An example of the use of the manager can be seen in the <SPAN 
+      class=code>LocaleList</SPAN> component in the Workbench. That component 
+      displays all locales available to the JVM -- information that does not 
+      change and is too much to be stored in the session. </P></TD></TR>
+  <TR>
+    <TD vAlign=center>
+      <P align=center><STRONG><SPAN 
+      class=code>NullTableSessionStateManager</SPAN> </STRONG></P></TD>
+    <TD>
+      <P><STRONG>Saves nothing at all and forces the component to always load 
+      the table model from the <SPAN class=code>tableModel</SPAN> 
+      binding.</STRONG> </P>
+      <P>This manager is typically used when the storing and creation of the 
+      table model needs to be delegated to the parent component. 
+  </P></TD></TR></TBODY></TABLE>
+<P>One approach that is a good compromise between memory consumption and CPU 
+load is to store in the session only the state and the IDs of the objects in the 
+table. In this way CPU is not loaded, since re-sorting is no longer necessary, 
+and the memory consumption is not excessive, since the IDs tend not to take a 
+lot of space. Implementing this approach, however, requires a custom manager, 
+and possibly a custom <SPAN class=code>TableModel</SPAN> to limit the data 
+loaded from the database only to the elements that will be displayed on the 
+current page.</P>
+<H4>1.7. The Session Store Manager </H4>
+<P>While the Session State Manager determines <EM>what</EM> to store in the 
+session, the Session Store Manager determines <EM>how</EM> to store data in the 
+session. Normally the information that needs to be saved is stored using the 
+Tapestry persistent property mechanism. If a Session Store Manager is provided, 
+however, it is asked to take care of storing and loading of that information. 
+</P>
+<P>This is typically necessary in two specific cases: </P>
+<OL>
+  <LI>When the same table needs to be displayed on multiple pages. In that case 
+  the persistent property method will not work as desired, and the table state 
+  must be saved in the <SPAN class=code>Visit</SPAN> instead. 
+  <LI>When the table is a part of a <SPAN class=code>Block</SPAN>, and the <SPAN 
+  class=code>Block</SPAN> is used on more than one page. In that case the tables 
+  displayed may be different, but a persistent page property will save their 
+  states at the same location.&nbsp;Hence a custom Session Store Manager is 
+  necessary. </LI></OL>
+<P></P>
+<P>The Session Store Managers implement the <STRONG><SPAN 
+class=code>ITableSessionStoreManager</SPAN></STRONG> interface. There are no 
+default implementations of this interface -- the developer must supply his own. 
+</P>
+<P> </P>
+<P></P>
+<H3>2. Changing appearance </H3>
+<P>While the table model defines what data should be displayed in the table, it 
+does not define how that data would look. The appearance is an important element 
+of the web applications, however, and so the table components provide a number 
+of ways to the developer to customize their looks. </P>
+<H4>2.1. Setting styles </H4>
+<P>The simplest way to modify how the table looks is by using CSS. The <SPAN 
+class=code>Table</SPAN> component provides a number of bindings allowing you to 
+set the CSS class of all major elements of the table. Please have a look at 
+<SPAN class=code>Table</SPAN>'s JavaDoc for details. </P>
+<P>One interesting use of this approach is to define an <SPAN 
+class=code>evenOdd</SPAN> bean of type <SPAN 
+class=code>net.sf.tapestry.bean.EvenOdd</SPAN> and bind the rowsClass parameter 
+of table to <SPAN class=code>"beans.evenOdd.next"</SPAN>. In this way odd rows 
+in the table will receive the class "odd", and even rows will receive the class 
+"even", which allows for different formatting of neighbouring rows. </P>
+<H4>2.2. Changing layout </H4>
+<P>The <SPAN class=code>Table</SPAN> component is very easy to use, but it may 
+become a "straight jacket" if a different layout of the table is required. In 
+such a case, instead of <SPAN class=code>Table</SPAN>, the developer could use 
+the lower level table components described below: </P>
+<TABLE border=1 cellPadding=5 cellSpacing=0>
+  <TBODY>
+  <TR>
+    <TH>Component</TH>
+    <TH>Wrapped by</TH>
+    <TH>Description</TH></TR>
+  <TR>
+    <TD align=middle><STRONG><SPAN class=code>TableView</SPAN></STRONG></TD>
+    <TD>&nbsp;</TD>
+    <TD>Wraps the whole table structure and manages the table model</TD></TR>
+  <TR>
+    <TD align=middle><STRONG><SPAN class=code>TablePages</SPAN></STRONG></TD>
+    <TD align=middle><SPAN class=code>TableView</SPAN></TD>
+    <TD>Displays the page navigation interface</TD></TR>
+  <TR>
+    <TD align=middle><STRONG><SPAN class=code>TableColumns</SPAN></STRONG></TD>
+    <TD align=middle><SPAN class=code>TableView</SPAN></TD>
+    <TD>Generates the column headers</TD></TR>
+  <TR>
+    <TD align=middle><STRONG><SPAN class=code>TableRows</SPAN></STRONG></TD>
+    <TD align=middle><SPAN class=code>TableView</SPAN></TD>
+    <TD>Enumerates all rows on the current page</TD></TR>
+  <TR>
+    <TD align=middle><STRONG><SPAN class=code>TableValues</SPAN></STRONG></TD>
+    <TD align=middle><SPAN class=code>TableRows</SPAN></TD>
+    <TD>Renders the values for each column of the current 
+row</TD></TR></TBODY></TABLE>
+<P>&nbsp;The <SPAN class=code>Table</SPAN> component itself is based on those 
+components. Here is its template: </P><PRE>    &lt;span jwcid="tableView"&gt;
+        &lt;span jwcid="condPages"&gt;&lt;span jwcid="tablePages"/&gt;&lt;/span&gt;
+        &lt;tr&gt;&lt;span jwcid="tableColumns"/&gt;&lt;/tr&gt;
+        &lt;tr jwcid="tableRows"&gt;&lt;td jwcid="tableValues"/&gt;&lt;/tr&gt;
+    &lt;/span&gt;
+</PRE>
+<P>You can use those components in a similar way to create a layout that you 
+want. You can change the location of the page navigation section, add other 
+columns in the table manually, or insert custom formatting. You can even build 
+your own components to replace some of the standard ones.</P>
+<P>A good example of this approach is the <SPAN class=code>LocaleList</SPAN> 
+component in the Workbench. It modifies the layout slightly and adds a separate 
+column in the table that is not defined the table model.</P>
+<H4>2.3. Changing renderers </H4>
+<P>Another way to change the appearance of the table is by using the <SPAN 
+class=code>ITableColumn</SPAN> ability to provide custom renderers for both 
+column headers and values. By default, <SPAN class=code>SimpleTableColumn</SPAN> 
+uses <SPAN class=code>RenderString</SPAN> to display values and the <SPAN 
+class=code>SimpleTableColumnComponent</SPAN> to render the headers. That 
+component makes the header a link if the column is sortable, handles clicks on 
+it, and displays an indicator if the column is currently used for sorting. </P>
+<P>If is quite possible to use custom components to render the values or the 
+headers in a different way. This is the approach taken by the <SPAN 
+class=code>LocaleSelection</SPAN> component in the Workbench. It uses Block 
+sections in its template to render some columns differently (see the demo). </P>
+<P>While using this mechanism is not hard at all, there are a number of common 
+pitfalls that the developer must avoid. If you would like to go that route, 
+please see how the <SPAN class=code>SimpleTableColumnComponent</SPAN> and the 
+<SPAN class=code>LocaleSelection</SPAN> component are implemented and read the 
+JavaDocs of <SPAN class=code>net.sf.tapestry.components.BlockRenderer</SPAN> and 
+<SPAN class=code>net.sf.tapestry.ComponentAddress</SPAN> beforehand.</P>
+<P>&nbsp;</P>
 
  </td></tr></table>
 </td></tr>
@@ -246,9 +841,9 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td colspan="3"><hr></td>  
 </tr>
 <tr><!-- Previous component in alphabetical order. -->
- <td align="left"><A href="index.html"><IMG alt="Component Index" src="common-images/prev.png"></a></td>  
- <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td><!-- Next component in alphabetical order. -->
- <td align="right"><A href="index.html"><IMG alt="Component Index" src="common-images/next.png"></a></td>  
+  <td align="left"><A href="contrib.PopupLink.html"><IMG alt="contrib:PopupLink" src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td><!-- Next component in alphabetical order. -->
+  <td align="right"><A href="contrib.TableColumns.html"><IMG alt="contrib:TableColumns" src="common-images/next.png"></a></td>  
 </tr>
 </table>
 
