@@ -17,7 +17,8 @@ MODULES = \
 	../Examples/Tutorial \
 	../Examples/VlibBeans \
 	../Examples/Vlib \
-	../Documentation/JBE
+	../Documentation/JBE \
+	../Documentation/DevelopersGuide
 
 JAVADOC_MODULES = \
 	../Tapestry \
@@ -93,7 +94,7 @@ SMALL_RELEASE = \
 	$(RELEASE_DIR)/LICENSE.html \
 	$(RELEASE_DIR)/Readme.html \
 	$(RELEASE_DIR)/images \
-	$(RELEASE_DIR)/doc/Tapestry.pdf \
+	$(RELEASE_DIR)/doc/DevelopersGuide \
 	$(RELEASE_DIR)/doc/api \
 	$(RELEASE_DIR)/lib/Tapestry.jar \
 	$(RELEASE_DIR)/lib/gnu-regexp.jar
@@ -117,11 +118,13 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/Readme.html \
 	$(RELEASE_DIR)/lib \
 	$(RELEASE_DIR)/doc/*.pdf \
+	$(RELEASE_DIR)/doc/DevelopersGuide \
 	$(RELEASE_DIR)/doc/JBE \
 	$(RELEASE_DIR)/doc/api \
 	$(RELEASE_DIR)/Tapestry \
 	$(RELEASE_DIR)/JBE \
-	$(RELEASE_DIR)/Examples
+	$(RELEASE_DIR)/Examples \
+	$(RELEASE_DIR)/Documentation
 
 create-archives: prepare-for-packaging
 	$(call NOTE, Creating full distribution archive ...)
