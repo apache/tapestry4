@@ -133,20 +133,6 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  At one time, this method erroneously invoked <code>close()</code>
-     *  on the HttpResponse output stream; that has been corrected.
-     *  This method simply invokes {@link #forceFlush()}.
-     * 
-     *  @depecated use {@link #forceFlush()} instead
-     * 
-     **/
-
-    public void forceClose() throws IOException
-    {
-        forceFlush();
-    }
-
-    /**
      *  Writes the internal buffer to the output stream, opening it if necessary, then
      *  flushes the output stream.  Future writes will go directly to the output stream.
      *
@@ -155,8 +141,18 @@ public class ResponseOutputStream extends OutputStream
     public void forceFlush() throws IOException
     {
         if (_out == null)
+        {
+            
+            // In certain cases (such as when the Tapestry service sends a redirect),
+            // there is no output to send back (and no content type set).  In this
+            // case, forceFlush() does nothing.
+            
+            if (_buffer == null)
+                return;
+                
             open();
-
+        }
+        
         try
         {
             _out.flush();
