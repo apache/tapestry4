@@ -368,6 +368,12 @@ Starting with Tapestry 3.1, several additional prefixes are available:
     <td></td>
   </tr>
   
+  <tr>
+    <td>state</td>
+    <td>True of false dependening on whether the named &aso; exists.</td>
+    <td>state:visit</td>
+    <td></td>
+  </tr>
 </table>
 
 <note>

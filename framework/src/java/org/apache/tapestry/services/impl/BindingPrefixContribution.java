@@ -15,7 +15,7 @@
 package org.apache.tapestry.services.impl;
 
 import org.apache.hivemind.impl.BaseLocatable;
-import org.apache.tapestry.services.BindingFactory;
+import org.apache.tapestry.binding.BindingFactory;
 
 /**
  * Contribution to the <code>tapestry.bindings.BindingFactories</code>

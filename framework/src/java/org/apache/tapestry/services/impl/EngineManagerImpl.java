@@ -27,42 +27,24 @@ import org.apache.tapestry.services.ObjectPool;
 
 /**
  * Implementation of service {@link org.apache.tapestry.services.EngineManager}.
- *
+ * Service point tapestry.request.EngineManager.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class EngineManagerImpl implements EngineManager
 {
     private ObjectPool _enginePool;
-    private HttpServletRequest _request;
-    private String _servletName;
-    private String _engineKey;
+
     private EngineFactory _engineFactory;
+
     private RequestLocaleManager _localeManager;
-
-    static final String ENGINE_KEY_PREFIX = "org.apache.tapestry.engine:";
-
-    public void initializeService()
-    {
-        _engineKey = ENGINE_KEY_PREFIX + _servletName;
-    }
 
     public IEngine getEngineInstance()
     {
-        HttpSession session = getSession();
-        IEngine result = null;
-
-        if (session != null)
-        {
-            result = (IEngine) session.getAttribute(_engineKey);
-
-            if (result != null)
-                return result;
-        }
-
         Locale locale = _localeManager.extractLocaleForCurrentRequest();
 
-        result = (IEngine) _enginePool.get(locale);
+        IEngine result = (IEngine) _enginePool.get(locale);
 
         // This happens when either the pool is empty, or when a session exists
         // but the engine has not been stored into it (which should never happen, and
@@ -74,26 +56,9 @@ public class EngineManagerImpl implements EngineManager
         return result;
     }
 
-    private HttpSession getSession()
-    {
-        return _request.getSession(false);
-    }
-
     public void storeEngineInstance(IEngine engine)
     {
-        HttpSession session = getSession();
-
-        if (session == null)
-        {
-            _enginePool.store(engine.getLocale(), engine);
-            return;
-        }
-
-        // TODO: We've lost the optimizations for only storing the engine when dirty.
-        // However, since (I believe) in 3.1, the engine will no longer be session persistent,
-        // this is OK.
-
-        session.setAttribute(_engineKey, engine);
+        _enginePool.store(engine.getLocale(), engine);
     }
 
     public void setEngineFactory(EngineFactory factory)
@@ -109,15 +74,5 @@ public class EngineManagerImpl implements EngineManager
     public void setLocaleManager(RequestLocaleManager manager)
     {
         _localeManager = manager;
-    }
-
-    public void setRequest(HttpServletRequest request)
-    {
-        _request = request;
-    }
-
-    public void setServletName(String string)
-    {
-        _servletName = string;
     }
 }

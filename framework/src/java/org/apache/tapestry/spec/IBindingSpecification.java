@@ -37,7 +37,7 @@ public interface IBindingSpecification extends LocationHolder, Locatable
      * For a prefixed binding specification (the typical type), the value is a binding reference; a
      * string used to contruct the actual binding, and consists of a prefix (such as "ognl:" or
      * "message:") and a locator. The prefix selects a
-     * {@link org.apache.tapestry.services.BindingFactory}, and the locator is passed to the
+     * {@link org.apache.tapestry.binding.BindingFactory}, and the locator is passed to the
      * factory, which uses it to construct the {@link org.apache.tapestry.IBinding}instance.
      */
 

@@ -99,6 +99,7 @@
 <!ENTITY SimpleEngine 				'<link href="&apiroot;/engine/SimpleEngine.html">SimpleEngine</link>'>
 <!ENTITY SpecificationParser 		'<link href="&apiroot;/parse/SpecificationParser">SpecificationParser</link>'>
 <!ENTITY StaleLinkException 		'<link href="&apiroot;/StaleLinkException.html">StaleLinkException</link>'>
+<!ENTITY StateObjectFactory			'<link href="&apiroot;/engine/state/StateObjectFactory.html">StateObjectFactory</link>'>
 <!ENTITY Tapestry 					'<link href="&apiroot;/Tapestry.html">Tapestry</link>'>
 <!ENTITY ValidationDelegate 		'<link href="&apiroot;/valid/ValidationDelegate.html">ValidationDelegate</link>'>
 
@@ -173,6 +174,7 @@
 
 <!ENTITY tapestry.services.ApplicationServices '<link href="&hivedoc;/service/tapestry.services.ApplicationServices.html">tapestry.services.ApplicationServices</link>'>
 <!ENTITY tapestry.url.ServiceEncoders '<link href="&hivedoc;/config/tapestry.url.ServiceEncoders.html">tapestry.url.ServiceEncoders</link>'>
+<!ENTITY tapestry.state.ApplicationObjects '<link href="&hivedoc;/config/tapestry.state.ApplicationObjects.html">tapestry.state.ApplicationObjects</link>'>
 
 <!-- Other useful stuff -->
 

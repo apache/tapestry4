@@ -18,9 +18,9 @@ import org.apache.commons.logging.Log;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
+import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.parse.ComponentTemplate;
-import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.services.ComponentTemplateLoader;
 import org.apache.tapestry.services.TemplateSource;
 

@@ -12,36 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services.impl;
+package org.apache.tapestry.binding;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.binding.ExpressionBinding;
-import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.services.BindingFactory;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- * Implementation of {@link org.apache.tapestry.services.BindingFactory}that creates
+ * Implementation of {@link org.apache.tapestry.binding.BindingFactory}that creates
  * {@link org.apache.tapestry.binding.ExpressionBinding}instances.
  * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class OGNLBindingFactory implements BindingFactory
+public class OGNLBindingFactory extends AbstractBindingFactory
 {
     private ExpressionEvaluator _expressionEvaluator;
 
     private ExpressionCache _expressionCache;
 
-    private ValueConverter _valueConverter;
-
     public IBinding createBinding(IComponent root, String description, String path,
             Location location)
     {
-        return new ExpressionBinding(root, description, path, _valueConverter, location,
+        return new ExpressionBinding(root, description, path, getValueConverter(), location,
                 _expressionEvaluator, _expressionCache);
     }
 
@@ -55,8 +50,4 @@ public class OGNLBindingFactory implements BindingFactory
         _expressionEvaluator = expressionEvaluator;
     }
 
-    public void setValueConverter(ValueConverter valueConverter)
-    {
-        _valueConverter = valueConverter;
-    }
 }

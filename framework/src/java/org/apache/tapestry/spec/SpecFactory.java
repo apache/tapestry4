@@ -18,7 +18,7 @@ import org.apache.tapestry.bean.BindingBeanInitializer;
 import org.apache.tapestry.bean.ExpressionBeanInitializer;
 import org.apache.tapestry.bean.IBeanInitializer;
 import org.apache.tapestry.bean.MessageBeanInitializer;
-import org.apache.tapestry.services.BindingSource;
+import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**

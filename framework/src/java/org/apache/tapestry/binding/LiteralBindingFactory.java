@@ -12,33 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services.impl;
+package org.apache.tapestry.binding;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.binding.AssetBinding;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.services.BindingFactory;
 
 /**
- * Factory for instances of {@link org.apache.tapestry.binding.AssetBinding}.
+ * Implementation of {@link org.apache.tapestry.binding.BindingFactory}that constructs
+ * {@link org.apache.tapestry.binding.LiteralBinding}instances.
  * 
- * @author Howard M. Lewis Ship
+ * @author Howard Lewis Ship
  * @since 3.1
  */
-public class AssetBindingFactory implements BindingFactory
+public class LiteralBindingFactory extends AbstractBindingFactory
 {
-    private ValueConverter _valueConverter;
 
-    public IBinding createBinding(IComponent root, String description, String path, Location location)
+    public IBinding createBinding(IComponent root, String description, String path,
+            Location location)
     {
-
-        return new AssetBinding(root, path, description, _valueConverter, location);
+        return new LiteralBinding(description, path, getValueConverter(), location);
     }
 
-    public void setValueConverter(ValueConverter valueConverter)
-    {
-        _valueConverter = valueConverter;
-    }
 }

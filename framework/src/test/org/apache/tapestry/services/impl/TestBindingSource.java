@@ -20,7 +20,7 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.services.BindingFactory;
+import org.apache.tapestry.binding.BindingFactory;
 import org.easymock.MockControl;
 
 /**

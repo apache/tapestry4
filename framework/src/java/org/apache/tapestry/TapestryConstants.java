@@ -48,6 +48,11 @@ public class TapestryConstants
      */
     
     public static final String STALE_SESSION_PAGE = "StaleSession";
+    /**
+     * Name of the cookie written to the client web browser to identify the locale.
+     */
+    
+    public static final String LOCALE_COOKIE_NAME = "org.apache.tapestry.locale";
 
     private TapestryConstants()
     {

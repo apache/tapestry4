@@ -19,7 +19,7 @@ import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.services.BindingSource;
+import org.apache.tapestry.binding.BindingSource;
 
 /**
  * An {@link org.apache.tapestry.bean.IBeanInitializer}&nbsp; implementation that uses an

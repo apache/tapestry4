@@ -28,7 +28,7 @@ public final class BindingType extends Enum
 {
     /**
      * Indicates that the binding value is a prefixed locator, ready for use
-     * with {@link org.apache.tapestry.services.BindingSource}.
+     * with {@link org.apache.tapestry.binding.BindingSource}.
      */
 
     public static final BindingType PREFIXED = new BindingType("PREFIXED");

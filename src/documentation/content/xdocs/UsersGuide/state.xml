@@ -46,8 +46,8 @@ to obtain values from the session, and to update values into the session when th
 </p>
 
 <p>
-Tapestry takes a different tack; it defines server-side state in terms of the Engine,
-the Visit and Global objects, and persistent page properties.
+Tapestry takes a different tack; it defines server side state in terms of
+either entire objects (&aso;s) or by allowing specific page or component properties to be persistent.
 </p>
 
 <section id="state.general">
@@ -126,173 +126,13 @@ sections go into more detail about how Tapestry approaches these issues.
 
 </section>  <!-- state.general -->
 
-<section id="state.engine">
-	<title>Engine</title>
-	
-<p>
-The engine, a class which implements the interface &IEngine;, is the central object that is
-responsible for managing server-side state (among its many other
-responsibilities).  The engine is itself stored as an HttpSession attribute.
-</p>
-
-<p>
-Because the internal state of the engine can change, the framework will re-store
-the engine into the HttpSession at the end of most requests.  This ensures that
-any changes to the
-<link href="#state.visit">Visit object</link>	are properly replicated.
-</p>
-
-<p>
-The simplest way to replicate server-side state is simply not to have any.  With some
-care, Tapestry applications can
-<link href="#state.stateless">run stateless</link>, at least until some
-actual server-side state is necessary.
-</p>
-
-</section>  <!-- state.engine -->
-
-<section id="state.visit">
-	<title>Visit object</title>
-	
-<p>
-The Visit object is an application-defined object that may be obtained from the engine (via the
-visit property of the &IEngine; or &IPage;).  By convention, the class is usually named <code>Visit</code>, but it can be
-any class whatsoever, even Map.
-</p>
-
-
-<p>
-The name, "Visit", was selected to emphasize that whatever data is stored in the Visit
-concerns just a single visit to the web application.
-</p>
-
-<note>
-	Another good name would have been "session", but that name is heavily overloaded throughout Java
-	and J2EE.
-</note>
-
-
-<p>
-Tapestry doesn't mandate anything about the Visit object's class. The type of the
-visit	property is Object. In Java code, accessing the Visit object
-involves a cast from Object to an application-specific class.
-The following example demonstrates how a &listener-method;
-may access the Visit object.
-</p>
-
-<source>
-public void formSubmit(&IRequestCycle; cycle)
-{
-  MyVisit visit = (MyVisit)getPage().getVisit();
-    
-  visit.<em>doSomething()</em>;   
-}
-</source>
-
-<p>
-In most cases, listener methods, such as <code>formSubmit()</code>, are implemented directly
-within the page.  In that case, the first line can be abbreviated to:
-</p>
-
-<source>
-  MyVisit visit = (MyVisit)getVisit();
-</source>
-
-<p>
-The Visit object is instantiated lazily, the first time it is needed.  Method
-<code>createVisit()</code> of &AbstractEngine; is responsible for this.
-</p>
-
-<p>
-In most cases, the Visit object is an ordinary JavaBean, and therefore, has a no-arguments
-constructor.  In this case, the complete class name of the
-Visit is specified as 
-&configuration-property;
-org.apache.tapestry.visit-class.
-</p>
-
-<p>
-Typically, the Visit class is defined in the application specification, or
-as a &lt;init-parameter&gt; in the web deployment descriptor (web.xml).
-</p>
-
-<source><![CDATA[
-<application name="My Application">
-  <property name="org.apache.tapestry.visit-class" value="mypackage.MyVisit"/>
-
-  ...
-]]>
-</source>
-
-<p>
-In cases where the Visit object does not have a no-arguments contructor, or
-has other special initialization requirements, the method
-<code>createVisit()</code> of &AbstractEngine; can be overridden.
-</p>
-
-<p>
-There is a crucial difference between accessing the visit via the 
-visit property of &IPage; and the
-visit property of &IEngine;.  In the former case, accessing the Visit object
-via the page, the Visit object <em>will</em> be created if it does not already exist.
-</p>
-
-<p>
-Accessing the visit property of the &IEngine; is different, the Visit object will <em>not</em>
-be created if it does not already exist.
-</p>
-
-<p>
-Carefully crafted applications will take heed of this difference and try to avoid
-creating the visit unnecessarilly.  It is not just the creation of this one object that is
-to be avoided ... creating the visit will likely force the entire application
-to go stateful (create an HttpSession), and applications are more efficient
-while <link href="#state.stateless">stateless</link>.
-</p>
-
-</section> <!-- state.visit -->
-
-<section id="state.global">
-	<title>Global object</title>
-	
-<p>
-The  Global object is very similar to the  Visit object with some key differences.
-The Global object is shared by all instances of the application engine; ultimately, it is stored
-as a ServletContext attribute.  The Global object is therefore not persistent in any way.
-The Global object is specific to an individual server within a cluster; each server will have its own instance
-of the Global object.
-  In a failover, 
-the engine will connect to a new instance of the Global object within the new server.
-</p>
-
-<p>
-The Global object may be accessed using the global property of either the
-page or the engine (unlike the visit property, they are completely equivalent).
-</p>
-
-<p>
-Care should be taken that the Global object is threadsafe; since many engines (from many sessions,
-in many threads) will access it simultanenously.  The default Global object is a synchronized
-HashMap.  This can be overriden with
-&configuration-property;
-org.apache.tapestry.global-class.
-</p>
-
-<p>
-The most typical use of the Global object is to interface to J2EE resources such as EJB home and remote
-interfaces or JDBC data sources.  The shared Global object can cache home and remote interfaces that 
-are efficiently shared by all engine instances.	
-</p>
-
-</section>  <!-- state.global -->
-
 <section id="state.page-properties">
 	<title>Persistent page properties</title>
 	
 <p>
 Servlets, and by extension, JavaServer Pages, are inherently stateless.  That is, they will be used
 simultaneously by many threads and clients.  Because of this, they must not store (in instance variables)
-any properties or values that are specified to any single client.
+any properties or values that are specific to any single client.
 </p>
 
 <p>
@@ -375,7 +215,7 @@ setter method.
 <note>
 Starting with Tapestry 3.1, persistence strategies are pluggable. In theory, properties can be stored 
 can be stored in query parameters or HTTP cookies, or by other means. The persist attribute of the
-&lt;property; element defines the stategy used, but only the "session" strategy is provided with
+&spec.property; element defines the stategy used, but only the "session" strategy is provided with
 the framework.
 </note>
 
@@ -492,6 +332,57 @@ when the page detaches is not defined and is subject to change.
 	
 </section> <!-- state.page-properties -->
 
+<section id="state.aso">
+  <title>Application state objects</title>
+  
+<p>
+What happens when you have objects that are needed by multiple pages?  For that, you need an
+<em>application state object</em>.  ASO's are global objects that can be accessed from any page
+or component in the application [[ Well, soon anyway ]].  Each ASO has a unique name (the two default
+ASO's are called "visit" and "global" for historical reasons).  An ASO is created when first referenced by any page.
+ASO's with session scope are stored into the HttpSession at the end of the request (and 
+<link href="#state.stateless">may force the creation of
+the session</link>).  ASOs in the application scope are available to any and all users.
+</p>  
+
+<note>
+Tapestry 3.0 had a more limited form of ASO:  The Visit object and the Global object. The Visit object is session scope, the Global object is
+application scope. This concept has been extended in Tapestry 3.1 to allow any number of ASOs with any desired scope, and lots
+of flexibility on how ASOs get created. The Visit and Global still exist in 3.1, as default ASOs you can use or override.
+</note>
+
+<section id="state.aso.defining">
+  <title>Defining new ASOs</title>
+  
+<p>
+To create a new ASO, you must update your &hivemind-descriptor; and add a contribution to the
+&tapestry.state.ApplicationObjects; configuration point:
+</p>  
+
+<source><![CDATA[
+<contribution configuration-id="hivemind.state.ApplicationObjects">
+  <state-object name="registration-data" scope="session">
+    <create-instance class="org.example.registration.RegistrationData"/>
+  </state-object>  
+</contribution>
+]]></source>
+  
+<p>
+This defines an ASO named registration-data that is session scoped (stored in the HttpSession once created). The first
+time it is referenced, an instance of RegistrationData is created and stored into the session.
+</p>  
+
+<p>
+If your data object can't be created using a simple constructor, then you can supply an &lt;invoke-factory&gt; element instead
+of &lt;create-instance&gt;.  &lt;invoke-factory&gt; allows you to reference and object or service that implements
+the &StateObjectFactory; interface.
+</p>
+  
+</section> <!-- state.aso.defining -->
+
+  
+</section>  <!-- state.aso -->
+
 <section id="state.stateless">
 	<title>Stateless applications</title>
 	
@@ -512,16 +403,9 @@ in a web application.
 </p>
 
 <p>
-Tapestry defers creation of the HttpSession until one of two things happens:  When
-the Visit object is created, or when the first persistent page property is recorded.  At this point,
-Tapestry will create the HttpSession and store the engine into it.
-</p>
-
-<p>
-Earlier, we said that the &IEngine; instance is stored in the HttpSession, but this is not always the case.
-Tapestry maintains an object pool of &IEngine; instances that are used for stateless requests.  An instance
-is checked out of the pool and used to process a single request, then checked back into the pool for
-reuse in a later request, by the same or different client.
+Tapestry defers creation of the HttpSession until one of two things happens:  When a session-scoped ASO is
+first created, or when the first persistent page property is recorded.  At this point,
+Tapestry will create the HttpSession to hold the object or property.
 </p>
 
 
@@ -531,6 +415,12 @@ just happens on its own.  Ideally, at least the first, or <code>Home</code> page
 organized in such a way that the Visit object is not created, and no persistent state is stored).  This will help
 speed the initial display of the application, since no processing time will be used in creating the HttpSession.
 </p>	
+
+<p>
+The <code>state:</code> &binding-reference; combined with the &Conditional; component makes it easy for you to skip
+portions of a page if a particular ASO does not already exist; this allows you to avoid accidentally force its
+creation on first reference.
+</p>
 
 <note>
 There are plans for Tapestry 3.1 to allow some persistent state to be stored as HTTP cookies or in hidden form fields (and as query parameters
