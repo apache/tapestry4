@@ -464,9 +464,10 @@ com.example.snood contains the class <filename>SnoodClient.java</>,
 the interface <filename>ISnood.java</> and a resource file: <filename>SnoodClient.properties</>.  
 The second package, com.example.snood.server contains the class <filename>SnoodImpl.java</>.</>
 
-<para>A project makefile must provide a name for the project 
+<para>Each project has a single Makefile, which provides a name for the project 
 (which is used to name the JAR or WAR file) and a list of packages.  
-It may provide additional options used when compiling, generating Javadoc or installing the JAR.</>
+It may provide additional options used when compiling, generating Javadoc or installing the JAR
+(or WAR).</>
 
 <para>
 By default, Java source code is stored in a subdirectory of the project directory named
@@ -476,39 +477,22 @@ another location.</>
 
 <example>
 	<title>Makefile</>
-	<programlisting>PROJECT_NAME = Snood
+	<programlisting>
+PROJECT_NAME = Snood
 
 PACKAGES = \
 	com.example.snood \
 	com.example.snood.server
 
-include $(SYS_MAKEFILE_DIR)/Jar.mk</>
-	</example>
+RMI_CLASSES = \
+	com.example.snood.server.SnoodImpl
+	
+include $(SYS_MAKEFILE_DIR)/Jar.mk
+</programlisting>
+</example>
 
 <para>The last line identifies the module for this project as Jar; 
 a module that builds a JAR file from the project.</>
-
-<para>The other two Makefiles identify the Java source files in the package, 
-any resource files that should be copied into the JAR, and any classes that must be compiled with the 
-RMI compiler.
-</>
-
-<example>
-	<title>com/example/snood/Makefile</>
-	<programlisting>JAVA_FILES = *.java
-
-RESOURCE_FILES = *.properties
-
-include $(SYS_MAKEFILE_DIR)/Package.mk</programlisting></example>
-
-<example>
-	<title>com/example/snood/server/Makefile</>
-	<programlisting>JAVA_FILES = *.java
-
-RMI_CLASSES = SnoodImpl
-
-include $(SYS_MAKEFILE_DIR)/Package.mk</programlisting>
-	</example>
 
 <para>
 Building this module executes a sequence of commands:</>
@@ -658,9 +642,34 @@ The project <filename>Makefile</> for a Jar module should define the following v
 	</>
 
 	<varlistentry>
+		<term><varname>RESOURCE_EXTENSIONS</></>
+		<listitem>
+			<para>A list of extensions for package resources.  If not specified,
+			a default list of extensions is used 
+			(<link linkend="default-resource-extensions">see below</link>), 
+			otherwise, only files with the specified extensions will be
+			selected.
+			</>
+		</>
+	</>
+
+	<varlistentry>
 		<term><varname>RMIC_OPT</></>
 		<listitem>
 			<para>RMI compiler  options.</>
+		</>
+	</>
+	
+	<varlistentry>
+		<term><varname>RMI_CLASSES</></>
+		<listitem>
+			<para>The names of any RMI classes on which the <command>rmic</>
+			tools should be used.  RMI compilation comes after normal Java files
+			are compiled.
+			</>
+			
+			<para>This names should be complete class names, including package.
+			</>
 		</>
 	</>
 
@@ -674,6 +683,42 @@ The project <filename>Makefile</> for a Jar module should define the following v
 		</>
 	</>
 </variablelist>
+
+<figure id="default-resource-extensions">
+	<title>Default Resources Extensions
+<informaltable>
+	<tgroup cols=2>
+	<thead>
+		<row>
+			<entry>Extension</>
+			<entry>Description</>
+		</row>
+	</thead>
+	<tbody>
+		<row>
+			<entry>application</>
+			<entry>Tapestry application specification</>
+		</row>
+		<row>
+			<entry>properties</>
+			<entry>Property strings file</>
+		</row>
+		<row>
+			<entry>html</entry>
+			<entry>Tapestry HTML template</>
+		</row>
+		<row>
+			<entry>jwc</entry>
+			<entry>Tapestry component specification</>
+		</row>
+		<row>
+			<entry>script</entry>
+			<entry>Tapestry Script</>
+		</row>
+	</tbody>
+	</tgroup>
+</informaltable>
+</figure>
 
 <para>
 A Jar module has a number of standard make targets:
@@ -732,46 +777,6 @@ A Jar module has a number of standard make targets:
 		</>
 	</>
 </variablelist>
-
-		</section>
-
-
-	<section id="package">
-		<title>Package Makefiles</>
-
-<para>Package makefiles are very simple.  They are only used when cataloging; 
-they simply declare what types of files are in the package.
-The form of a package makefile is very simple:
-</para>
-
-<informalexample>
-	<programlisting>JAVA_FILES = <replaceable>list of files</>
-
-RESOURCE_FILES = <replaceable>list of files</>
-
-RMI_CLASSES = <replaceable>list of class names</>
-
-include $(SYS_MAKEFILE_DIR)/Package.mk</programlisting>
-</informalexample>
-
-<para>As shown in the prior examples, the 
-<varname>JAVA_FILES</> and <varname>RESOURCE_FILES</> may use wild cards (such as <literal>*.java</>
- or <literal>*.properties</>).</>
-
-<para>The <varname>RMI_CLASSES</> is simply a list of the class names of RMI implementation classes; 
-just the simple name of the class (no extension, and no package name; the package is known implicitly).</>
-
-<para>Package makefiles are optional, if not provided a default makefile is used.  
-The default makefile assumes all files ending in the following extensions are resource files:
-</>
-
-<itemizedlist>
-	<listitem><para>jwc (Tapestry Component Specifications)</></>
-	<listitem><para>application (Tapestry Application Specifications)</></>
-	<listitem><para>html (Tapestry HTML templates)</></>
-	<listitem><para>properties (Java properties files)</></>
-	<listitem><para>script (Tapestry script files)</></>
-</itemizedlist>
 
 		</section>
 

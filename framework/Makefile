@@ -31,6 +31,9 @@ PACKAGES = \
 	com.primix.tapestry.util.pool \
 	com.primix.tapestry.util.xml
 
+RESOURCE_EXTENTIONS = \
+	jwc html gif dtd script properties css
+
 PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \

@@ -51,11 +51,6 @@ MOD_JAVA_CATALOG = $(MOD_BUILD_DIR)/java-catalog
 
 MOD_RESOURCE_CATALOG = $(MOD_BUILD_DIR)/resource-catalog
 
-# A file which contains the complete class names of all RMI implementations,
-# ready for RMIC
-
-MOD_RMI_CLASS_CATALOG = $(MOD_BUILD_DIR)/rmi-class-catalog
-
 # Create a macro for recusively invoking Make.
 # We don't want or need any builtin rules.
 
@@ -69,7 +64,7 @@ DOCBOOK_OPENJADE_DIR  := $(DOCBOOK_DIR)/openjade
 DOCBOOK_DSSSL_DIR := $(DOCBOOK_DIR)/dsssl/docbook
 DOCBOOK_DTD_DIR := $(DOCBOOK_DIR)/dtd
 
-# Find out what out platform is.  Must set a value for SITE_PLATFORM.
+# Find out what the platform is.  Must set a value for SITE_PLATFORM.
 # The LocalConfig can set other things (such as locations of tools,
 # libraries, etc.)  It is optional.
 
@@ -105,6 +100,8 @@ JDK_DIR := $($(JDK_DIR_VAR))
 # in the check-jdk rule defined in CommonRules.mk
 
 SYS_JDK_CONFIG_FILE := $(SYS_MAKEFILE_DIR)/JDK.$(FINAL_JDK_VENDOR)_$(SITE_PLATFORM).mk
+
+# A dummy rule for targets (such as 'install') that don't do anything directly.
 
 DUMMY_RULE = @$(TOUCH) $(MOD_BUILD_DIR)/dummy
 
