@@ -235,4 +235,9 @@ public class MockEngine implements IEngine
         _servletPath = servletPath;
     }
 
+    public String getOutputEncoding()
+    {
+        return "UTF-8";
+    }
+
 }

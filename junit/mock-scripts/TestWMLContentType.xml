@@ -15,7 +15,7 @@
         <parameter name="service" value="page/ContentType"/>
 
         <assert-output-stream name="Image Content"
-                content-type="text/vnd.wap.wml"
+                content-type="text/vnd.wap.wml;charset=UTF-8"
                 path="src/org/apache/tapestry/junit/mock/wml/ContentType.wml"/>
 
     </request>

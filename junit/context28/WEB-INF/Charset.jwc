@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification>
+
+	<property name="org.apache.tapestry.template-encoding" value="ISO-8859-1"/>
+
+	<property name="org.apache.tapestry.template-encoding_bg" value="ISO-8859-5"/>
+	<property name="org.apache.tapestry.template-encoding_bg_BG" value="UTF-8"/>
+
+	<property name="org.apache.tapestry.template-encoding_fr" value="UTF-8"/>
+	<property name="org.apache.tapestry.template-encoding_fr_FR" value="ISO-8859-1"/>
+
+	<property name="org.apache.tapestry.template-encoding_es" value="UTF-16"/>
+
+</component-specification>
