@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.contrib.table.model;
 
+import java.io.Serializable;
+
 import net.sf.tapestry.IRequestCycle;
 
 /**
@@ -41,11 +43,11 @@ public interface ITableSessionStoreManager
 	 * @param objCycle the current request cycle
 	 * @param objState the session state to be saved
 	 */
-	void saveState(IRequestCycle objCycle, Object objState);
+	void saveState(IRequestCycle objCycle, Serializable objState);
 	/**
 	 * Method loadState loads the session state
 	 * @param objCycle the current request cycle
 	 * @return Object the loaded sessions state
 	 */
-	Object loadState(IRequestCycle objCycle);
+	Serializable loadState(IRequestCycle objCycle);
 }

@@ -1,18 +1,16 @@
 package tutorial.workbench.table;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 
 import net.sf.tapestry.BaseComponent;
-import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.components.Block;
 import net.sf.tapestry.contrib.table.components.ComponentAddress;
 import net.sf.tapestry.contrib.table.model.ITableColumn;
@@ -24,7 +22,6 @@ import net.sf.tapestry.contrib.table.model.simple.SimpleSetTableDataModel;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableColumn;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableModel;
-import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  * @author mindbridge
@@ -36,106 +33,41 @@ public class LocaleSelection
 {
 	// immutable
 	private ITableColumnModel m_objTableColumnModel;
-    private VerbosityRating m_objVerbosityRating;
+	private VerbosityRating m_objVerbosityRating;
 
 	// temporary
 	private Locale m_objCurrentLocale;
 
 	public LocaleSelection()
 	{
-        m_objVerbosityRating = new VerbosityRating();
+		m_objVerbosityRating = new VerbosityRating();
 	}
 
-    /**
-     * @see net.sf.tapestry.AbstractComponent#finishLoad()
-     */
-    protected void finishLoad()
-    {
-    	super.finishLoad();
+	/**
+	 * @see net.sf.tapestry.AbstractComponent#finishLoad()
+	 */
+	protected void finishLoad()
+	{
+		super.finishLoad();
 
-        // We delay the initialization until now, since some columns
-        // rely on a completed page structure
-        m_objTableColumnModel = createColumnModel();
-    }
-
+		// We delay the initialization until now, since some columns
+		// rely on a completed page structure
+		m_objTableColumnModel = createColumnModel();
+	}
 
 	private ITableColumnModel createColumnModel()
 	{
-        // Using a ComponentAddress is always necessary when working 
-        // with IRender (see below)
-        final ComponentAddress objAddress = new ComponentAddress(this);
+		// Using a ComponentAddress is always necessary when working 
+		// with IRender (see below)
+		final ComponentAddress objAddress = new ComponentAddress(this);
 
-		return new SimpleTableColumnModel(new ITableColumn[] {
-			new ExpressionTableColumn("Locale", "toString()", true),
-            
-			new SimpleTableColumn("Date Format", true)
-			{
-				public Object getColumnValue(Object objRow)
-				{ 
-                    Locale objLocale = (Locale) objRow;
-					DateFormat objFormat =
-						DateFormat.getDateTimeInstance(
-							DateFormat.LONG,
-							DateFormat.LONG,
-							objLocale);
-					if (objFormat instanceof SimpleDateFormat)
-						return ((SimpleDateFormat) objFormat).toPattern();
-					return "";
-				}
-
-			}, 
-
-            new SimpleTableColumn("Example", true)
-            {
-                public Object getColumnValue(Object objRow)
-                { 
-                    Locale objLocale = (Locale) objRow;
-                    SimpleDateFormat objFormat = new SimpleDateFormat("EEEE", objLocale);
-                    
-                    return objFormat.format(new Date());
-                }
-
-            }, 
-
-            new SimpleTableColumn("Verbosity", true) 
-            {
-                /**
-				 * @see net.sf.tapestry.contrib.table.model.simple.SimpleTableColumn#getColumnValue(Object)
-				 */
-				public Object getColumnValue(Object objRow)
-				{
-                    Locale objLocale = (Locale) objRow;
-					return new Integer(m_objVerbosityRating.calculateVerbosity(objLocale));
-				}
-                
-                public IRender getValueRenderer(
-                    IRequestCycle objCycle,
-                    ITableModelSource objSource,
-                    Object objRow)
-                {
-                    LocaleSelection objSelection = (LocaleSelection) objAddress.findComponent(objCycle);
-                    objSelection.setCurrentLocale((Locale) objRow);
-                    Block objBlock = (Block) objSelection.getComponent("blockVerbosity");
-                    return new BlockRenderer(objBlock);
-                }
-
-            }, 
-
-            new SimpleTableColumn("") 
-            {
-				public IRender getValueRenderer(
-					IRequestCycle objCycle,
-					ITableModelSource objSource,
-					Object objRow)
-				{
-                    LocaleSelection objSelection = (LocaleSelection) objAddress.findComponent(objCycle);
-					objSelection.setCurrentLocale((Locale) objRow);
-					Block objBlock = (Block) objSelection.getComponent("blockDelete");
-					return new BlockRenderer(objBlock);
-				}
-
-			} 
-        });
+		return new SimpleTableColumnModel(
+			new ITableColumn[] {
+				new ExpressionTableColumn("Locale", "toString()", true),
+				new CurrencyColumn(),
+				new DateFormatColumn(new Date()),
+				new VerbosityColumn(m_objVerbosityRating, objAddress),
+				new DeleteColumn(objAddress)});
 	}
 
 	public ITableModel getInitialTableModel()
@@ -171,14 +103,14 @@ public class LocaleSelection
 		m_objCurrentLocale = currentLocale;
 	}
 
-    /**
-     * Returns the currentLocale.
-     * @return Locale
-     */
-    public int getCurrentLocaleVerbosity()
-    {
-        return m_objVerbosityRating.calculateVerbosity(getCurrentLocale());
-    }
+	/**
+	 * Returns the currentLocale.
+	 * @return Locale
+	 */
+	public int getCurrentLocaleVerbosity()
+	{
+		return m_objVerbosityRating.calculateVerbosity(getCurrentLocale());
+	}
 
 	/**
 	 * @see tutorial.workbench.table.ILocaleSelectionListener#localesSelected(Locale[])
@@ -195,4 +127,109 @@ public class LocaleSelection
 		Locale objLocale = (Locale) arrParams[0];
 		getDataModel().removeRow(objLocale);
 	}
+
+
+    // Column definitions follow
+	private static class DateFormatColumn extends SimpleTableColumn
+	{
+		private Date m_objDate;
+
+		public DateFormatColumn(Date objDate)
+		{
+			super("Date Format", true);
+			m_objDate = objDate;
+		}
+
+		public Object getColumnValue(Object objRow)
+		{
+			Locale objLocale = (Locale) objRow;
+			DateFormat objFormat =
+				DateFormat.getDateTimeInstance(
+					DateFormat.LONG,
+					DateFormat.LONG,
+					objLocale);
+			return objFormat.format(m_objDate);
+		}
+	}
+
+	private static class CurrencyColumn extends SimpleTableColumn
+	{
+		public CurrencyColumn()
+		{
+			super("Currency", true);
+		}
+
+		public Object getColumnValue(Object objRow)
+		{
+			Locale objLocale = (Locale) objRow;
+			String strCountry = objLocale.getCountry();
+			if (strCountry == null || strCountry.equals(""))
+				return "";
+
+			DecimalFormatSymbols objSymbols =
+				new DecimalFormatSymbols(objLocale);
+			Currency objCurrency = objSymbols.getCurrency();
+
+			return objCurrency.getSymbol();
+		}
+	}
+
+	private static class VerbosityColumn extends SimpleTableColumn
+	{
+		private VerbosityRating m_objVerbosityRating;
+		private ComponentAddress m_objComponentAddress;
+
+		public VerbosityColumn(
+			VerbosityRating objVerbosityRating,
+			ComponentAddress objComponentAddress)
+		{
+			super("Language Verbosity", true);
+			m_objVerbosityRating = objVerbosityRating;
+			m_objComponentAddress = objComponentAddress;
+		}
+
+		public Object getColumnValue(Object objRow)
+		{
+			Locale objLocale = (Locale) objRow;
+			return new Integer(
+				m_objVerbosityRating.calculateVerbosity(objLocale));
+		}
+
+		public IRender getValueRenderer(
+			IRequestCycle objCycle,
+			ITableModelSource objSource,
+			Object objRow)
+		{
+			LocaleSelection objSelection =
+				(LocaleSelection) m_objComponentAddress.findComponent(objCycle);
+			objSelection.setCurrentLocale((Locale) objRow);
+			Block objBlock =
+				(Block) objSelection.getComponent("blockVerbosity");
+			return new BlockRenderer(objBlock);
+		}
+	}
+
+	private static class DeleteColumn extends SimpleTableColumn
+	{
+		private ComponentAddress m_objComponentAddress;
+
+		public DeleteColumn(ComponentAddress objComponentAddress)
+		{
+			super("");
+			m_objComponentAddress = objComponentAddress;
+		}
+
+		public IRender getValueRenderer(
+			IRequestCycle objCycle,
+			ITableModelSource objSource,
+			Object objRow)
+		{
+			LocaleSelection objSelection =
+				(LocaleSelection) m_objComponentAddress.findComponent(objCycle);
+			objSelection.setCurrentLocale((Locale) objRow);
+			Block objBlock = (Block) objSelection.getComponent("blockDelete");
+			return new BlockRenderer(objBlock);
+		}
+	}
+
 }

@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.contrib.table.model.simple;
 
+import java.io.Serializable;
+
 import net.sf.tapestry.contrib.table.model.ITableColumnModel;
 import net.sf.tapestry.contrib.table.model.ITableDataModel;
 import net.sf.tapestry.contrib.table.model.ITableModel;
@@ -54,7 +56,7 @@ public class SimpleTableSessionStateManager
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#getSessionState(ITableModel)
 	 */
-	public Object getSessionState(ITableModel objModel)
+	public Serializable getSessionState(ITableModel objModel)
 	{
 		SimpleTableModel objSimpleModel = (SimpleTableModel) objModel;
 		return objSimpleModel.getState();
@@ -63,7 +65,7 @@ public class SimpleTableSessionStateManager
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#recreateTableModel(Object)
 	 */
-	public ITableModel recreateTableModel(Object objState)
+	public ITableModel recreateTableModel(Serializable objState)
 	{
 		if (objState == null)
 			return null;

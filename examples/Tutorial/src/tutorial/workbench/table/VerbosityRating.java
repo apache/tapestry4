@@ -1,5 +1,6 @@
 package tutorial.workbench.table;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -8,7 +9,7 @@ import java.util.Locale;
  * @author mindbridge
  *
  */
-public class VerbosityRating
+public class VerbosityRating implements Serializable
 {
     
 	/**
