@@ -16,7 +16,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.ComponentResolver;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngine;
@@ -36,6 +35,7 @@ import net.sf.tapestry.parse.ITemplateParserDelegate;
 import net.sf.tapestry.parse.TemplateParseException;
 import net.sf.tapestry.parse.TemplateParser;
 import net.sf.tapestry.parse.TemplateToken;
+import net.sf.tapestry.resolver.ComponentSpecificationResolver;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.MultiKey;
 
@@ -81,12 +81,12 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     private static class ParserDelegate implements ITemplateParserDelegate
     {
         private IComponent _component;
-        private ComponentResolver _resolver;
+        private ComponentSpecificationResolver _resolver;
 
-        ParserDelegate(IComponent component, ISpecificationSource _specificationSource)
+        ParserDelegate(IComponent component, IRequestCycle cycle)
         {
             _component = component;
-            _resolver = new ComponentResolver(_specificationSource);
+            _resolver = new ComponentSpecificationResolver(cycle);
         }
 
         public boolean getKnownComponent(String componentId)
@@ -367,10 +367,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         if (_parser == null)
             _parser = new TemplateParser();
 
-        IEngine engine = cycle.getEngine();
-        ISpecificationSource specificationSource = engine.getSpecificationSource();
-
-        ITemplateParserDelegate delegate = new ParserDelegate(component, specificationSource);
+        ITemplateParserDelegate delegate = new ParserDelegate(component, cycle);
 
         TemplateToken[] tokens;
 

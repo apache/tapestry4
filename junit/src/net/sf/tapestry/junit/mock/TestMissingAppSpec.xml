@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c3" root="context3"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.engine-class"
+  			value="net.sf.tapestry.junit.mock.c3.C3Engine"/>
+  	</servlet>
+       
+    <request>
+ 		
+ 		<assert-output name="Page Title">
+<![CDATA[
+<title>No Application Spec</title>
+]]> 		
+ 		</assert-output>
+ 		
+ 		<assert-output name="Application Name">
+Application name: app 		
+ 		</assert-output>
+ 		
+ 		<assert-output name="Engine Class">
+Engine class: net.sf.tapestry.junit.mock.c3.C3Engine
+		</assert-output>
+		
+ 	</request>
+			
+</mock-test>
+    	

@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.ComponentResolver;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
@@ -33,6 +32,7 @@ import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.binding.ExpressionBinding;
 import net.sf.tapestry.binding.StringBinding;
+import net.sf.tapestry.resolver.ComponentSpecificationResolver;
 import net.sf.tapestry.resource.ContextResourceLocation;
 import net.sf.tapestry.spec.AssetSpecification;
 import net.sf.tapestry.spec.AssetType;
@@ -63,7 +63,7 @@ public class PageLoader implements IPageLoader
     private IResourceResolver _resolver;
     private ISpecificationSource _specificationSource;
     private IPageSource _pageSource;
-    private ComponentResolver _componentResolver;
+    private ComponentSpecificationResolver _componentResolver;
     private List _inheritedBindingQueue = new ArrayList();
 
     /**
@@ -140,7 +140,7 @@ public class PageLoader implements IPageLoader
 
         _specificationSource = engine.getSpecificationSource();
         _resolver = engine.getResourceResolver();
-        _componentResolver = new ComponentResolver(_specificationSource);
+        _componentResolver = new ComponentSpecificationResolver(cycle);
 
         RequestContext context = cycle.getRequestContext();
 

@@ -4,13 +4,9 @@
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<application name="Test Application for Implicit Pages"
-	engine-class="net.sf.tapestry.engine.SimpleEngine">
+<application name="Application foo in WEB-INF"
+	engine-class="net.sf.tapestry.junit.mock.c4.C4Engine">
 		
-	<page name="Relative" specification-path="pages/Relative.page"/>
-			
-	<component-alias type="CRelative" specification-path="components/CRelative.jwc"/>
-												
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	
 </application>	

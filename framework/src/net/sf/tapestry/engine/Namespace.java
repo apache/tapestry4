@@ -10,6 +10,7 @@ import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
@@ -34,6 +35,31 @@ public class Namespace implements INamespace
     private INamespace _parent;
     private boolean _frameworkNamespace;
     private boolean _applicationNamespace;
+
+    /**
+     *  Map of {@link ComponentSpecification} keyed on page name.
+     *  The map is synchronized because different threads may
+     *  try to update it simultaneously (due to dynamic page
+     *  discovery in the application namespace).
+     * 
+     **/
+
+    private Map _pages = Collections.synchronizedMap(new HashMap());
+
+    /**
+     *  Map of {@link ComponentSpecification} keyed on
+     *  component alias.
+     * 
+     **/
+
+    private Map _components = Collections.synchronizedMap(new HashMap());
+
+    /**
+     *  Map, keyed on id, of {@link INamespace}.
+     * 
+     **/
+
+    private Map _children = Collections.synchronizedMap(new HashMap());
 
     public Namespace(
         String id,
@@ -65,31 +91,6 @@ public class Namespace implements INamespace
 
         return buffer.toString();
     }
-
-    /**
-     *  Map of {@link ComponentSpecification} keyed on page name.
-     *  The map is synchronized because different threads may
-     *  try to update it simultaneously (due to dynamic page
-     *  discovery in the application namespace).
-     * 
-     **/
-
-    private Map _pages = Collections.synchronizedMap(new HashMap());
-
-    /**
-     *  Map of {@link ComponentSpecification} keyed on
-     *  component alias.
-     * 
-     **/
-
-    private Map _components = new HashMap();
-
-    /**
-     *  Map, keyed on id, of {@link INamespace}.
-     * 
-     **/
-
-    private Map _children = new HashMap();
 
     public String getId()
     {
@@ -156,7 +157,7 @@ public class Namespace implements INamespace
         {
             result = locatePageSpecification(name);
 
-           _pages.put(name, result);
+            _pages.put(name, result);
         }
 
         return result;
@@ -232,7 +233,6 @@ public class Namespace implements INamespace
         return Tapestry.getString("Namespace.nested-namespace", getExtendedId());
     }
 
-
     /**
      *  Gets the specification from the specification source.
      * 
@@ -260,7 +260,7 @@ public class Namespace implements INamespace
             throw new ApplicationRuntimeException(
                 Tapestry.getString("Namespace.no-such-alias", type, getNamespaceId()));
 
-       IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
+        IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
 
         return _specificationSource.getComponentSpecification(location);
     }
@@ -274,6 +274,14 @@ public class Namespace implements INamespace
                 Tapestry.getString("Namespace.library-id-not-found", id, getNamespaceId()));
 
         IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
+
+        // Ok, an absolute path to a library for an application whose specification
+        // is in the context root is problematic, cause getRelativeLocation()
+        // will still be looking in the context.  Handle this case with the
+        // following little kludge:
+
+        if (location.getResourceURL() == null && path.startsWith("/"))
+            location = new ClasspathResourceLocation(_specification.getResourceResolver(), path);
 
         ILibrarySpecification ls = _specificationSource.getLibrarySpecification(location);
 
@@ -303,24 +311,48 @@ public class Namespace implements INamespace
     }
 
     /** @since 2.4 **/
-    
+
     public IResourceLocation getSpecificationLocation()
     {
         return _specification.getSpecificationLocation();
     }
 
     /** @since 2.4 **/
-    
+
     public boolean isApplicationNamespace()
     {
         return _applicationNamespace;
     }
 
     /** @since 2.4 **/
-    
+
     public void installPageSpecification(String pageName, ComponentSpecification specification)
     {
         _pages.put(pageName, specification);
+    }
+
+    /** @since 2.4 **/
+
+    public void installComponentSpecification(String type, ComponentSpecification specification)
+    {
+        _components.put(type, specification);
+    }
+
+    // On these renamed methods, we simply invoke the old, deprecated method
+    // for code coverage reasons.
+
+    /** @since 2.4 **/
+
+    public boolean containsComponentType(String type)
+    {
+        return containsAlias(type);
+    }
+
+    /** @since 2.4 **/
+
+    public List getComponentTypes()
+    {
+        return getComponentAliases();
     }
 
 }

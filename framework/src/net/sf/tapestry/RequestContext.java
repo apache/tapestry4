@@ -62,13 +62,6 @@ import net.sf.tapestry.util.StringSplitter;
  *  (perhaps as the delegate of a {@link net.sf.tapestry.components.Delegator} component}
  *  it simply invokes {@link #write(IMarkupWriter)} to display all debugging output.
  *
- *  <p>This class is derived from the original class 
- *  <code>com.primix.servlet.RequestContext</code>,
- *  part of the <b>ServletUtils</b> framework available from
- *  <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant 
- *  Java Tree</a>.
- *
- *
  *  @version $Id$
  *  @author Howard Lewis Ship
  * 

@@ -18,6 +18,7 @@ import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.asset.ExternalAsset;
 import net.sf.tapestry.binding.FieldBinding;
 import net.sf.tapestry.binding.StaticBinding;
+import net.sf.tapestry.resolver.*;
 import net.sf.tapestry.util.MultiKey;
 import net.sf.tapestry.util.pool.Pool;
 

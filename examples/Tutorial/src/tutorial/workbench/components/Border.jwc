@@ -2,11 +2,7 @@
 <!-- $Id$ -->
 <!DOCTYPE component-specification PUBLIC 
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd" [
-
-<!ENTITY here "/tutorial/workbench/components">
-	
-]>
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
 <component-specification
   class="tutorial.workbench.components.Border"
@@ -74,15 +70,15 @@
   	<binding name="disabled" expression="page.visit.disableInspector"/>
   </component>
 
-  <private-asset name="$template" resource-path="&here;/templates/Border.html"/>
+  <private-asset name="$template" resource-path="templates/Border.html"/>
 
-  <private-asset name="activeLeft" resource-path="&here;/tab-active-left.gif"/>
-  <private-asset name="activeMid" resource-path="&here;/tab-active-mid.gif"/>
-  <private-asset name="activeRight" resource-path="&here;/tab-active-right.gif"/>
+  <private-asset name="activeLeft" resource-path="tab-active-left.gif"/>
+  <private-asset name="activeMid" resource-path="tab-active-mid.gif"/>
+  <private-asset name="activeRight" resource-path="tab-active-right.gif"/>
   
-  <private-asset name="inactiveLeft" resource-path="&here;/tab-inactive-left.gif"/>
-  <private-asset name="inactiveMid" resource-path="&here;/tab-inactive-mid.gif"/>
-  <private-asset name="inactiveRight" resource-path="&here;/tab-inactive-right.gif"/>
+  <private-asset name="inactiveLeft" resource-path="tab-inactive-left.gif"/>
+  <private-asset name="inactiveMid" resource-path="tab-inactive-mid.gif"/>
+  <private-asset name="inactiveRight" resource-path="tab-inactive-right.gif"/>
 
   <context-asset name="stylesheet" path="/css/workbench.css"/>
   
