@@ -44,7 +44,7 @@ import net.sf.tapestry.Tapestry;
 
 /**
  *  A context-sensitive service related to {@link net.sf.tapestry.form.Form} 
- *  and {@link javax.swing.Action}.  Encodes
+ *  and {@link net.sf.tapestry.link.Action}.  Encodes
  *  the page, component and an action id in the service context.
  *
  *  @author Howard Lewis Ship
