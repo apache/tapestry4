@@ -6,7 +6,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import com.jrefinery.ui.about.SystemProperties;
+
 import junit.framework.TestCase;
+
+import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.valid.DateValidator;
 import net.sf.tapestry.valid.ValidationConstraint;
 import net.sf.tapestry.valid.ValidatorException;
@@ -21,7 +25,7 @@ import net.sf.tapestry.valid.ValidatorException;
  *
  **/
 
-public class TestDateValidator extends TestCase
+public class TestDateValidator extends TapestryTestCase
 {
     private Calendar calendar = new GregorianCalendar();
 
@@ -65,7 +69,12 @@ public class TestDateValidator extends TestCase
 
         String out = v.toString(null, buildDate(Calendar.DECEMBER, 8, 2001));
 
-        assertEquals("Result.", "08.12.01", out);
+        // JDK 1.3 does not inlcude a german localization, so we'll get the
+        // default, US English, localization of the date format.
+
+        String expected = IS_JDK13 ? "12/8/01" : "08.12.01";
+
+        assertEquals("Result.", expected, out);
     }
 
     public void testToObjectNull() throws ValidatorException
@@ -102,7 +111,11 @@ public class TestDateValidator extends TestCase
 
         v.setFormat(format);
 
-        Object out = v.toObject(null, "08.12.01");
+        // Again, adjust for missing German localization in JDK 1.3
+
+        String value = IS_JDK13 ? "12/8/2001" : "08.12.01";
+
+        Object out = v.toObject(null, value);
 
         assertEquals("Result.", buildDate(Calendar.DECEMBER, 8, 2001), out);
     }

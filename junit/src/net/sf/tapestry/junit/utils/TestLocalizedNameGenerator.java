@@ -51,69 +51,66 @@ public class TestLocalizedNameGenerator extends TapestryTestCase
         assertTrue(g.more());
         assertEquals("noCountry.zap", g.next());
 
-        assertTrue(!g.more());        
+        assertTrue(!g.more());
     }
-    
+
     public void testVariantWithoutCountry()
     {
-        LocalizedNameGenerator g = new
-            LocalizedNameGenerator(
-            "fred",
-            new Locale("en", "", "Geek"),
-            ".foo");
-            
-    assertTrue(g.more());
-    
-    // The double-underscore is correct, it's a kind
-    // of placeholder for the null country.
-    
-    assertEquals("fred_en__Geek.foo", g.next());
-    
-    assertTrue(g.more());
-    assertEquals("fred_en.foo", g.next());
-    
-    assertTrue(    g.more());
-    assertEquals("fred.foo", g.next());
-    
-    assertTrue(!g.more());   
-    }   
-    
+        LocalizedNameGenerator g = new LocalizedNameGenerator("fred", new Locale("en", "", "GEEK"), ".foo");
+
+        assertTrue(g.more());
+
+        // The double-underscore is correct, it's a kind
+        // of placeholder for the null country.
+        // JDK1.3 always converts the locale to upper case.  JDK 1.4
+        // does not.  To keep this test happyt, we selected an all-uppercase
+        // locale.
+
+        assertEquals("fred_en__GEEK.foo", g.next());
+
+        assertTrue(g.more());
+        assertEquals("fred_en.foo", g.next());
+
+        assertTrue(g.more());
+        assertEquals("fred.foo", g.next());
+
+        assertTrue(!g.more());
+    }
+
     public void testNullLocale()
     {
-         LocalizedNameGenerator g = new LocalizedNameGenerator("nullLocale", null, ".bar");
-         
-         assertTrue(g.more());
-         assertEquals("nullLocale.bar", g.next());
-         
-         assertTrue(!g.more());
+        LocalizedNameGenerator g = new LocalizedNameGenerator("nullLocale", null, ".bar");
+
+        assertTrue(g.more());
+        assertEquals("nullLocale.bar", g.next());
+
+        assertTrue(!g.more());
     }
-    
+
     public void testNullSuffix()
     {
-          LocalizedNameGenerator g = new LocalizedNameGenerator("nullSuffix", null, null);
-          
-          assertTrue(g.more());
-          assertEquals("nullSuffix", g.next());
-          
-          assertTrue(!g.more());
+        LocalizedNameGenerator g = new LocalizedNameGenerator("nullSuffix", null, null);
+
+        assertTrue(g.more());
+        assertEquals("nullSuffix", g.next());
+
+        assertTrue(!g.more());
     }
-       
-      
-    
+
     public void testForException()
     {
         LocalizedNameGenerator g = new LocalizedNameGenerator("bob", null, ".foo");
-        
+
         assertTrue(g.more());
         assertEquals("bob.foo", g.next());
-        
+
         assertTrue(!g.more());
-        
+
         try
         {
             g.next();
-            
-         throw new AssertionFailedError("Unreachable.");
+
+            throw new AssertionFailedError("Unreachable.");
         }
         catch (NoSuchElementException ex)
         {

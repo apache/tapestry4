@@ -5,7 +5,10 @@
 <mock-test>
     <context name="c6" root="context6"/>
 
-  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet"/>
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter name="net.sf.tapestry.engine-class"
+  					value="net.sf.tapestry.junit.mock.c6.C6Engine"/>
+  	</servlet>
        
     <request>
  		

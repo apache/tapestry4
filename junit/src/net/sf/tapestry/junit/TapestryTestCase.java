@@ -32,6 +32,8 @@ import net.sf.tapestry.util.IPropertyHolder;
 
 public class TapestryTestCase extends TestCase
 {
+    protected static final boolean IS_JDK13 = System.getProperty("java.specification.version").equals("1.3");
+
     private IResourceResolver _resolver = new DefaultResourceResolver();
 
     public TapestryTestCase(String name)
