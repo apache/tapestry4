@@ -54,9 +54,9 @@
   A form element used to handle file uploads.  The uploaded file is represented 
   by an instance of IUploadFile.
   <p>
-  The form's enctype must be set to 
-            "multipart/form-data".</p>
-             
+  Note for pre Tapestry 2.2 versions the form's enctype must be set to 
+  multipart/form-data, i.e.  
+  <tt>&lt;form enctype="multipart/form-data"&gt;<tt>.
  </td>
 </tr>
 
@@ -104,10 +104,8 @@
     Note Netscape Navigator 4 will ignore this attribute.  
 		</td>
 	</tr>
-	</table><BR>Body: 
-            <STRONG>removed</STRONG><BR>Informal parameters: 
-            <STRONG>allowed</STRONG>		
-    <br>
+	</table><BR>Body: <STRONG>removed</STRONG><BR>
+  Informal parameters: <STRONG>allowed</STRONG><br>
   Reserved parameters: "name", "type"
  </td>
 </tr>
@@ -116,8 +114,7 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  Provides a file upload form and displays the results of the upload.  Note 
-  the form's enctype <b>must</b> is set to "multipart/form-data".
+  Provides a file upload form and displays the results of the upload.
 	<p>
 
 <form>
@@ -150,7 +147,7 @@
 </form>
 
 <pre>
-&lt;form jwcid="form" <b>enctype="multipart/form-data"</b>&gt;
+&lt;form jwcid="form"&gt;
  &lt;table bgcolor="#c0c0c0" cellpadding="4"&gt;
   &lt;tr&gt;
    &lt;td colspan="2"&gt;File:&amp;nbsp;&lt;input jwcid="<span class="jwcid">fileUpload</span>" type= "file"&gt;&lt;/input&gt;&lt;/td&gt;
@@ -230,21 +227,19 @@ public class UploadPage extends BasePage {
     }
 
     public String getClientPath() { 
-        if
-    (file != null)
-    { returnfile.getFilePath(); }else
-{
-
-
-return ""; } } public String
-    getServerPath() { if (serverFile ! =     
-      
-      
-
-        null) { return
-
-    serverFile.getAbsolutePath(); } else { return
-        "";  }
+        if (file != null) { 
+            returnfile.getFilePath(); 
+        } else {
+            return ""; 
+        } 
+    } 
+    
+    public String getServerPath() { 
+        if (serverFile ! = null) { 
+            return serverFile.getAbsolutePath(); 
+        } else { 
+            return "";  
+        }
     }
 
     public long getFileSize() { 
@@ -263,49 +258,24 @@ return ""; } } public String
         }        
     }
 
-    public void formSubmit(IRequestCycle cycle) 
-        { InputStream fis=  
-             
-          
-                
-        
-    
-
-        
-        file.getStream(); FileOutputStream fos=  
-             
-          
-                
-        
-    
-
-       null; 
-        try { fos=  
-             
-          
-                
-                
-    
-
-        
-        new FileOutputStream(new  File(file.getFileName()));
-        byte[] buffer = 
-         new
-            byte[1024];  while (true) {
-            
-            int length =              
-              
-                 fis.read(buffer);  if
-                (length &lt;  0) {
+    public void formSubmit(IRequestCycle cycle) { 
+        InputStream fis = file.getStream(); 
+        FileOutputStream fos = null;
+         
+        try { 
+            fos = new FileOutputStream(new  File(file.getFileName()));
+            byte[] buffer = new byte[1024];  
+            while (true) {            
+                int length = fis.read(buffer);  
+                if (length &lt;  0) {
                     break;
                 }
                 fos.write(buffer, 0, length);               
             }
             fis.close();
             fos.close();
-
             serverFile = new File(file.getFileName());
-            
+
         } catch (IOException ioe) {
             ioe.printStackTrace();            
         } finally {
