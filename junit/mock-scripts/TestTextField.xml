@@ -17,7 +17,7 @@
 		
 		<assert-output name="Normal TextField">
 <![CDATA[
-Normal: <input type="text" name="normal" size="20" maxlength="25" value="normal"/>
+Normal: <input type="text" name="normal" value="normal"/>
 ]]>	
 		</assert-output>
 		
@@ -75,7 +75,7 @@ Hidden: [updated-hidden]
 		
 		<assert-output name="Normal TextField">
 <![CDATA[
-Normal: <input type="text" name="normal" size="20" maxlength="25" value="normal"/>
+Normal: <input type="text" name="normal" value="normal"/>
 ]]>	
 		</assert-output>
 		

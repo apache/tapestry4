@@ -15,12 +15,7 @@
   <parameter name="disabled" type="boolean" direction="in"/>
   
   <parameter name="hidden" type="boolean" direction="in"/>
-  
-  <parameter name="displayWidth" type="int" direction="in"/>
-  
-  <parameter name="maximumLength" type="int" direction="in"/>
-  
-  
+    
   <parameter name="validator" type="org.apache.tapestry.valid.IValidator" required="yes" direction="in">
     <description>
     Converts value to a string and parses strings back into object values.

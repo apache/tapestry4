@@ -207,30 +207,7 @@
     to the "disabled" HTML attribute.
    </td>
 	</tr>
-	<tr>
-	 <td>displayWidth</td>
-	 <td>integer</td>
-	 <td>in</td>
-	 <td>no</td>
-	 <td>&nbsp;</td>
-	 <td>
-   Controls the display width of the text control in the client browser.  If
-	 unspecified or zero, then the width is left to the client browser to
-	 determine. Corresponds to the "size" HTML attribute.
-   </td> 
-  </tr>
-	<tr>
-	 <td>maximumLength</td>
-	 <td>integer</td>
-   <td>in</td>
-   <td>no</td>
-	 <td>&nbsp;</td>
-	 <td>
-    Controls the maximum characters that the text control will accept.  If
-		unspecified or zero, then the value is left to the client browser to
-		determine. Corresponds to the "maxlength" HTML attribute.
-   </td> 
-  </tr>
+
 	</table>
   <p>Body: <strong>removed</strong><br>
   Informal parameters:<strong>allowed</strong><br>
@@ -305,19 +282,19 @@
  &lt;td colspan="2"&gt;&lt;span jwcid="@ShowError" delegate="ognl:beans.delegate"/&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
- &lt;td&gt;Lot Number&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">lotNoField</span>" type="text"/&gt;&lt;/td&gt;
+ &lt;td&gt;Lot Number&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">lotNoField</span>" type="text" size="4" maxlength="4"/&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
- &lt;td&gt;Bid Amount&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">bidAmountField</span>" type="text"/&gt;&lt;/td&gt;
+ &lt;td&gt;Bid Amount&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">bidAmountField</span>" type="text" size="7" maxlength="7"/&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
- &lt;td&lt;Full Name&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">fullNameField</span>" type="text"/&gt;&lt;/td&gt;
+ &lt;td&lt;Full Name&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">fullNameField</span>" type="text" size="25" maxlength="30"/&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
- &lt;td&gt;Email&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">emailField</span>" type="text"/&gt;&lt;/td&gt;
+ &lt;td&gt;Email&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">emailField</span>" type="text" size="25" maxlength="30"/&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
- &lt;td&gt;Telphone&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">telephoneField</span>" type="text"/&gt;&lt;/td&gt;
+ &lt;td&gt;Telphone&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">telephoneField</span>" type="text" size="25" maxlength="30"/&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
  &lt;td colspan="2" align="right"&gt;
@@ -363,41 +340,31 @@
 &lt;component id="<span class="jwcid">lotNoField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.lotNo"/&gt;
     &lt;binding name="validator" expression="beans.lotNoValidator"/&gt;
-    &lt;binding name="displayName" expression='"Lot Number"'/&gt;
-    &lt;binding name="displayWidth" expression="4"/&gt;
-    &lt;binding name="maximumLength" expression="4"/&gt;
+    &lt;static-binding name="displayName" value="Lot Number"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">bidAmountField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.bidAmount"/&gt;
     &lt;binding name="validator" expression="beans.bidAmountNoValidator"/&gt;
-    &lt;binding name="displayName" expression='"Bid Amount"'/&gt;
-    &lt;binding name="displayWidth" expression="7"/&gt;
-    &lt;binding name="maximumLength" expression="7"/&gt;
+    &lt;static-binding name="displayName" value="Bid Amount"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">fullNameField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.bidderName"/&gt;
     &lt;binding name="validator" expression="beans.fullNameValidator"/&gt;
-    &lt;binding name="displayName" expression='"Full Name"'/&gt;
-    &lt;binding name="displayWidth" expression="25"/&gt;
-    &lt;binding name="maximumLength" expression="30"/&gt;
+    &lt;static-binding name="displayName" value="Full Name"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">emailField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.bidderEmail"/&gt;
     &lt;binding name="validator" expression="beans.emailValidator"/&gt;
-    &lt;binding name="displayName" expression='"Email"'/&gt;
-    &lt;binding name="displayWidth" expression="25"/&gt;
-    &lt;binding name="maximumLength" expression="30"/&gt;
+    &lt;static-binding name="displayName" value="Email"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">telephoneField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.bidderTelephone"/&gt;
     &lt;binding name="validator" expression="beans.telephoneValidator"/&gt;
-    &lt;binding name="displayName" expression='"Telephone"'/&gt;
-    &lt;binding name="displayWidth" expression="25"/&gt;
-    &lt;binding name="maximumLength" expression="30"/&gt;
+    &lt;static-binding name="displayName" value="Telephone"/&gt;;
 &lt;/component&gt;
 
 
