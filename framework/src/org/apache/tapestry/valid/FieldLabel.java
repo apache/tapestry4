@@ -56,7 +56,9 @@
 package org.apache.tapestry.valid;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BindingException;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -101,17 +103,33 @@ public abstract class FieldLabel extends AbstractComponent
                 throw Tapestry.createRequiredParameterException(this, "field");
 
             displayName = field.getDisplayName();
+
+            if (displayName == null)
+            {
+                String msg = Tapestry.format("FieldLabel.no-display-name", field.getExtendedId());
+
+                throw new BindingException(msg, this, null, getBinding("field"), null);
+            }
         }
 
-        if (displayName == null)
-            throw new BindingException(
-                Tapestry.format("FieldLabel.no-display-name", field.getExtendedId()),
-                this,
-                null,
-                getBinding("field"),
-                null);
+        IForm form = Form.get(cycle);
 
-        IValidationDelegate delegate = Form.get(cycle).getDelegate();
+        if (form == null)
+        {
+            String msg = Tapestry.getMessage("FieldLabel.must-be-contained-by-form");
+
+            throw new ApplicationRuntimeException(msg, this, null, null);
+        }
+
+        IValidationDelegate delegate = form.getDelegate();
+
+        if (delegate == null)
+        {
+            String msg =
+                Tapestry.format("FieldLabel.no-delegate", getExtendedId(), form.getExtendedId());
+
+            throw new ApplicationRuntimeException(msg, this, null, null);
+        }
 
         delegate.writeLabelPrefix(field, writer, cycle);
 
