@@ -1,0 +1,43 @@
+This file contains the PGP keys of various developers.
+
+Users: pgp < KEYS
+       gpg --import KEYS
+Developers: 
+        pgp -kxa <your name> and append it to this file.
+        (pgpk -ll <your name> && pgpk -xa <your name>) >> this file.
+        (gpg --list-sigs <your name>
+             && gpg --armor --export <your name>) >> this file.
+
+
+
+
+
+pub  1024D/2DDB17D0 2003-06-01 Howard M. Lewis Ship <hlship@apache.org>
+sig 3       2DDB17D0 2003-06-01   Howard M. Lewis Ship <hlship@apache.org>
+sub  1024g/7837388C 2003-06-01
+sig         2DDB17D0 2003-06-01   Howard M. Lewis Ship <hlship@apache.org>
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.2.2 (Cygwin)
+
+mQGiBD7aKV8RBACd181gddOl6a2AM57Ae1r14d3u2TOXDvZRICl4wH8TjJO/+M/4
+K27+3X2ENLo3zuI5aVnDo1png/KVVx7PzRdyru1O4D3TDNLKKahmN/eAW2MvnLBK
+SCaEz+FjSt16M+wGoOkd0M2JMIXGD44r6k74e7lCvj/wnsBVaIcB/y7HtwCglqYe
+DtMa0lmDAZW0vZ5G2zqL/vkD/0cnfWXyL+a+GobHzXKc245UmPpfSzCPqjYFyr+W
+UjU4qQrmod+CoTRADmu+qdeHJSX9Bs0y6HKSFYalEOfl7m90xvH+pdKvdPOsu2LU
+SMH0cpmZHt7NJmXOUeaaTNJ2fcO+exRhqiijSREgBDiVO8YsBTHXiNxTaJREHIeN
+0RRiA/9fw8GzIN6Nez8ikKHanvuKojNE68GfIlJqCrJBNB2/rPBIQgCnKuwjwQpX
+73EalqEfQiIAI/Ekq6TZ9rzoxICaO0CdMDCGuStdL74Vq7XKQvX5ifuQzXgZ1jdf
+3CAZo5vrMDc5b6p+Mt8Gw/uSjK+Sl8tg6PkC1pTcxjCbAm1T8LQoSG93YXJkIE0u
+IExld2lzIFNoaXAgPGhsc2hpcEBhcGFjaGUub3JnPohbBBMRAgAbBQI+2ilfBgsJ
+CAcDAgMVAgMDFgIBAh4BAheAAAoJEIa00not2xfQIjYAn2V6U4zBa5FT0gPSJgCt
+6ZZBBLNxAJ9sPcjK2OS8TL5OvbN9J5BUuReNKbkBDQQ+2ilhEAQAu5TtBmHvKB1T
+7xrTMBJxEmdfxZodrCqR11tZOqRrvT/RcLLZbDQ3ntscZNoiAxoGrGv1vpeO4FwD
+t5T2G93Hza7aYuVV3ucNMAiWUCnkXzLVvVxZ9xK1hnhKDkeQyIyyIjaoiRyq19bi
+2j0NBaG2QNMQpcDSkwy1vHO2SPW8GNMAAwUD/Atf6puXOZn7vj0My580uy5PczQh
+f6EazspE7hqTxuTR8Um6mznAlaFiEjXoprTk6vBpiRzihYHXWhdsOTcLzxVxK+TW
+7Ve2OJGc8jwEWWXfXImorvvlH3HTadV0d63+Sw4oLgO9etUamlM3vVOYavBCfC81
+FVh4vOvy4cKKizOFiEYEGBECAAYFAj7aKWEACgkQhrTSei3bF9CZowCdEiyvPimY
+D3G2EeSaq1C4qb2iqREAn2qZk6Dlf4XrWJiZG+27KvdyaA5N
+=p680
+-----END PGP PUBLIC KEY BLOCK-----
