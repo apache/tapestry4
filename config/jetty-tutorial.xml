@@ -22,15 +22,24 @@
   <Set name="LogSink">
     <New class="org.mortbay.util.WriterLogSink"/>
   </Set>
+  
   <Call name="addWebApplication">
     <Arg>/tutorial/*</Arg>
     <Arg>lib/Tutorial.war</Arg>
     <Arg/>
+    <Call name="setInitParameter">
+    	<Arg>com.primix.tapestry.asset.dir</Arg>
+    	<Arg>private</Arg>
+    </Call>
+    <Call name="setInitParameter">
+    	<Arg>com.primix.tapestry.asset.URL</Arg>
+    	<Arg>/private</Arg>
+    </Call>
   </Call>
   
    <Call name="addContext">
-    <Arg>/private-assets/*</Arg>
-    <Set name="ResourceBase">.build/private-assets</Set>
+    <Arg>/private/*</Arg>
+    <Set name="ResourceBase">private</Set>
     <Set name="ServingResources">TRUE</Set>
 
   </Call>

@@ -1,16 +1,24 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<project name="Tapestry Tutorial" default="install">
+<project name="Virtual Library Demo" default="install">
+
   <!-- Directory in which compiled classes are placed -->
   <property name="classes" value="classes"/>
+
   <!-- Directory that contains library frameworks, and to
        which the WAR is eventually installed -->
   <property name="lib" value="../../lib"/>
+
   <!-- Directory containing source code and package resources -->
   <property name="src" value="src"/>
+
   <!-- Path of the installed framework jar -->
-  <property name="tutorial.war" value="${lib}/Tutorial.war"/>
- 
+  <property name="vlib.war" value="${lib}/Vlib.war"/>
+
+  <!-- Need the jboss.dir property -->
+  
+  <property file="../../config/build.properties"/>
+
   <path id="project.class.path">
     <pathelement location="${lib}/ejb.jar"/>
     <pathelement location="${lib}/javax.servlet.jar"/>
@@ -19,21 +27,24 @@
     <pathelement location="${lib}/org.apache.crimson.jar"/>
     <pathelement location="${lib}/com.primix.tapestry.jar"/>
     <pathelement location="${lib}/net.sf.tapestry.contrib.jar"/>
+    <pathelement location="${lib}/VlibBeans.jar"/>
   </path>
+
   <target name="init">
     <tstamp/>
     <mkdir dir="${classes}"/>
   </target>
+
   <target name="clean">
     <delete dir="${classes}"/>
   </target>
+
   <target name="compile" depends="init" description="Compile all classes in the framework.">
     <javac srcdir="${src}" destdir="${classes}">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
-  
-  
+    
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
     <copy todir="${classes}">
             <fileset dir="${src}">
@@ -47,26 +58,35 @@
         <exclude name="**/package.html"/>
       </fileset>
     </copy>
-    <war warfile="${tutorial.war}" webxml="web.xml">
+    <war warfile="${vlib.war}" webxml="web.xml">
 
       <fileset dir=".">
-        <include name="images/**"/>
         <include name="*.html"/>
+        <include name="images/**"/>
+        <include name="scripts/**"/>
      </fileset>
 	  <classes dir="${classes}"/>         
     </war>
   </target>
 
-  <target name="run" description="Run the Tutorial application." depends="install">
+  <target name="run" description="Run the Vlib application." depends="install">
     <java classname="org.mortbay.jetty.Server" fork="true">
       <classpath>
         <path refid="project.class.path"/>
         <pathelement location="${lib}/org.mortbay.jetty.jar"/>
+        <!-- Pick up the "custom" jndi.properties from the VlibBeans project -->
+        <pathelement location="../VlibBeans/jboss"/>
+        <!-- Runtime client libraries -->
+        <pathelement location="${jboss.dir}/client/jboss-client.jar"/>
+        <pathelement location="${jboss.dir}/client/jbosssx-client.jar"/>
+        <pathelement location="${jboss.dir}/client/jnp-client.jar"/>
       </classpath>
       <arg value="jetty.xml"/>
       <jvmarg value="-showversion"/>
       <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+      <sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
     </java>
   </target>
+
 </project>
 

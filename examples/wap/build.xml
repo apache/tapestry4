@@ -1,17 +1,16 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<project name="Tapestry Contrib Framework" default="install">
+<project name="Tapestry WAP Example" default="install">
   <!-- Directory in which compiled classes are placed -->
   <property name="classes" value="classes"/>
   <!-- Directory that contains library frameworks, and to
-       which the framework is eventually installed -->
-  <property name="lib" value="../lib"/>
+       which the WAR is eventually installed -->
+  <property name="lib" value="../../lib"/>
   <!-- Directory containing source code and package resources -->
   <property name="src" value="src"/>
   <!-- Path of the installed framework jar -->
-  <property name="framework.jar" value="${lib}/net.sf.tapestry.contrib.jar"/>
-  <!-- Relative path to the Javadoc directory -->
-  <property name="javadoc.dir" value="../doc/api"/>
+  <property name="wap.war" value="${lib}/wap.war"/>
+
   <path id="project.class.path">
     <pathelement location="${lib}/ejb.jar"/>
     <pathelement location="${lib}/javax.servlet.jar"/>
@@ -19,35 +18,58 @@
     <pathelement location="${lib}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib}/org.apache.crimson.jar"/>
     <pathelement location="${lib}/com.primix.tapestry.jar"/>
+    <pathelement location="${lib}/net.sf.tapestry.contrib.jar"/>
   </path>
+
   <target name="init">
     <tstamp/>
     <mkdir dir="${classes}"/>
   </target>
+
   <target name="clean">
     <delete dir="${classes}"/>
   </target>
+
   <target name="compile" depends="init" description="Compile all classes in the framework.">
     <javac srcdir="${src}" destdir="${classes}">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
-  <target name="install" depends="compile" description="Compile all classes and build the installed JAR including all package resources.">
-    <jar jarfile="${framework.jar}">
-      <fileset dir="${classes}"/>
-      <fileset dir="${src}">
+  
+  
+  <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
+    <copy todir="${classes}">
+            <fileset dir="${src}">
         <include name="**/*.jwc"/>
         <include name="**/*.html"/>
         <include name="**/*.gif"/>
         <include name="**/*.dtd"/>
         <include name="**/*.script"/>
         <include name="**/*.properties"/>
-        <include name="**/*.css"/>
-        <include name="**/*.swf"/>
-        <include name="**/*.js"/>
+        <include name="**/*.application"/>
         <exclude name="**/package.html"/>
       </fileset>
-    </jar>
+    </copy>
+    <war warfile="${wap.war}" webxml="web.xml">
+
+      <fileset dir=".">
+        <include name="images/**"/>
+        <include name="*.html"/>
+     </fileset>
+	  <classes dir="${classes}"/>         
+    </war>
+  </target>
+
+  <target name="run" description="Run the WAP application." depends="install">
+    <java classname="org.mortbay.jetty.Server" fork="true">
+      <classpath>
+        <path refid="project.class.path"/>
+        <pathelement location="${lib}/org.mortbay.jetty.jar"/>
+      </classpath>
+      <arg value="jetty.xml"/>
+      <jvmarg value="-showversion"/>
+      <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+    </java>
   </target>
 </project>
 

@@ -6168,42 +6168,7 @@ This section contains a few Q's and A's gleemed from the
 		</para>
 </answer>
 </qandaentry>
-<qandaentry>
-<question>
-<para>
-		Why does Tapestry use the JBE instead of Ant?
-		</para>
-</question>
-<answer>
-<para>
-<ulink url="http://jakarta.apache.org/ant/index.html">Ant</ulink> was not available 
-		when Tapestry was first written.  
-		The <ulink url="../JBE/JBE.html">Java Build Environment</ulink> (JBE)
-		is built around GNU Make, which has a pretty proven track record.
-		It has not been a priority
-		to determine if converting from JBE to Ant is worthwhile.
-		
-<note>
-<para>
-	The big downside to using the JBE is the requirement to have 
-	<ulink url="http://sources.redhat.com/cygwin/">Cygwin</ulink> (the GNU emulation
-	environment for Windows) available.  Folks without a fast Internet connection are
-	really hurt by the 30MB or more of downloads required.
-	</para>
-<para>
-	I have yet to learn everything about Ant, but I did find the Ant build files to
-	be uglier, more procedurable and less declarative.  The JBE Makefiles (the ones you
-	create for your projects) tend to be very declarative, you mostly just indicate
-	the names of your packages and the paths for your libraries.
-	</para>
-<para>
-	At some point, combining JBE declarative functionality with Ant seems like
-	a good idea; it's just a matter of finding the time.
-	</para>
-</note>
-</para>
-</answer>
-</qandaentry>
+
 <qandaentry>
 <question>
 <para>

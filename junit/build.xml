@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<project name="Tapestry Framework JUnit Test Suite" default="install">
+
+  <!-- Directory in which compiled classes are placed -->
+  <property name="classes" value="classes"/>
+
+  <!-- Directory that contains library frameworks, and to
+       which the framework is eventually installed -->
+  <property name="lib" value="../lib"/>
+  
+  <!-- Directory containing source code and package resources -->
+  <property name="src" value="src"/>
+ 
+  <path id="project.class.path">
+    <pathelement location="${lib}/com.primix.tapestry.jar"/>
+    <pathelement location="${lib}/ejb.jar"/>
+    <pathelement location="${lib}/javax.servlet.jar"/>
+    <pathelement location="${lib}/log4j-core.jar"/>
+    <pathelement location="${lib}/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib}/org.apache.crimson.jar"/>
+    <pathelement location="${lib}/junit.jar"/>
+  </path>
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${classes}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${classes}"/>
+  </target>
+
+  <target name="compile" depends="init" description="Compile all test classes.">
+    <javac srcdir="${src}" destdir="${classes}">
+      <classpath refid="project.class.path"/>
+    </javac>
+  </target>
+
+  <target name="run" depends="compile" description="Run the test suite.">
+  	<java classname="junit.textui.TestRunner" >
+  	  <classpath>
+  	  	 <path refid="project.class.path"/>
+  	  	 <path location="${classes}"/>
+  	  	 <!-- Add the src directory back in, since package resources needed by
+  	  	      the tests are there. -->
+  	  	 <path location="${src}"/>
+  	  </classpath>
+  	  <arg value="net.sf.tapestry.junit.parse.TemplateParserTest"/>
+  	</java>
+  </target>
+  
+</project>
+

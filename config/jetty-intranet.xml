@@ -31,17 +31,25 @@ exists largely to support the Vlib application.
   </Set>
   
   <Call name="addWebApplication">
-    <Arg>/tutorial/*</Arg>
-    <Arg>lib/Tutorial.war</Arg>
-    <Arg/>
-  </Call>
-  
-  <Call name="addWebApplication">
     <Arg>/vlib/*</Arg>
     <Arg>lib/Vlib.war</Arg>
     <Arg/>
-  </Call>
+    <Call name="setInitParameter">
+    	<Arg>com.primix.tapestry.asset.dir</Arg>
+    	<Arg>private</Arg>
+    </Call>
+    <Call name="setInitParameter">
+    	<Arg>com.primix.tapestry.asset.URL</Arg>
+    	<Arg>/private</Arg>
+    </Call>
+ </Call>
 
+  <Call name="addContext">
+    <Arg>/private/*</Arg>
+    <Set name="ResourceBase">private</Set>
+    <Set name="ServingResources">TRUE</Set>
+  </Call>
+  
  <Call name="addContext">
     <Arg>/doc/*</Arg>
     <Set name="ResourceBase">doc</Set>
@@ -60,11 +68,6 @@ exists largely to support the Vlib application.
     <Set name="RedirectNullPath">TRUE</Set>
   </Call>
 
- <Call name="addContext">
-    <Arg>/private-assets/*</Arg>
-    <Set name="ResourceBase">.build/private-assets</Set>
-    <Set name="ServingResources">TRUE</Set>
 
-  </Call>
   
 </Configure>

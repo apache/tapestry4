@@ -1,3 +1,11 @@
+* Sep 30 2001 hship
+
+Removed all references to the Java Build Environment; Tapestry is now built using
+Apache's ant tool.
+Build Javadoc only from the Tapestry module level (not the individual project level),
+and create a single Javadoc tree for the framework, contrib and examples together.
+Start updating copyrights to remove Primix, replace with simply Howard Lewis Ship.
+
 * Sep 28 2001 hship
 
 framework:

@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!-- Top-level buildfile for the Tapestry module. -->
+
+<project name="Tapestry Module" default="install">
+
+<!-- The framework version occurs in four places:
+Here (used when generating distributions and Javadoc).
+In the class com.primix.tapestry.Tapestry.
+In the Readme.html
+In some of the documentation in the web directory.
+-->
+
+<property name="framework.version" value="1.0.6"/>
+
+<property name="lib" value="lib"/>
+
+<property name="javadoc.dir" value="doc/api"/>
+
+<!-- Read the configuration to location the JBoss distribution. -->
+
+<property file="config/build.properties"/>
+
+<!-- Directory to put distributions into -->
+
+<property name="dist" value="dist"/>
+
+<property name="dist.base" value="Tapestry-${framework.version}"/>
+
+<property name="dist.dir" value="${dist}/${dist.base}"/>
+
+<!-- Names of distribution files.  Have to create the tar, then gzip it
+  afterwards.  -->
+<property name="dist.tar" value="${dist.dir}.tar"/>
+<property name="dist.tar.gz" value="${dist.tar}.gz"/>
+
+<path id="tutorial.classpath">
+  <pathelement location="${lib}/com.primix.tapestry.jar"/>
+  <pathelement location="${lib}/net.sf.tapestry.contrib.jar"/>
+  <pathelement location="${lib}/javax.servlet.jar"/>
+  <pathelement location="${lib}/log4j-core.jar"/>
+  <pathelement location="${lib}/javax.xml.jaxp.jar"/>
+  <pathelement location="${lib}/org.apache.crimson.jar"/>
+  <pathelement location="${lib}/org.mortbay.jetty.jar"/>
+  <pathelement location="${lib}/ejb.jar"/>
+</path>
+
+<path id="full.classpath">
+    <pathelement location="${jboss.dir}/lib/jboss-jdbc_ext.jar"/>
+    <pathelement location="${jboss.dir}/lib/ext/mail.jar"/>
+    <pathelement location="${jboss.dir}/lib/ext/activation.jar"/>
+    <pathelement location="${jboss.dir}/lib/ext/jboss-j2ee.jar"/>
+    <path refid="tutorial.classpath"/>
+</path>
+
+<target name="clean"
+  description="Cleans all sub-projects.">
+  <ant dir="framework" target="clean"/>
+  <ant dir="contrib" target="clean"/>
+  <ant dir="junit" target="clean"/>
+  <ant dir="examples/wap" target="clean"/>
+  <ant dir="examples/Tutorial" target="clean"/>
+  <ant dir="examples/VlibBeans" target="clean"/>
+  <ant dir="examples/Vlib" target="clean"/>
+  <ant dir="doc/src/Tutorial" target="clean"/>
+  <ant dir="doc/src/DevelopersGuide" target="clean"/>
+</target>
+
+<target name="clean-all" depends="clean"
+  description="Cleans all subprojects and deletes installed frameworks and WARs.">
+    <delete>
+    <fileset dir="${lib}">
+      <include name="*.war"/>
+      <include name="com.primix.tapestry.jar"/>
+      <include name="net.sf.tapestry.contrib.jar"/>
+     </fileset>
+  </delete>
+</target>
+
+<target name="install"
+ description="Builds all frameworks and examples.">
+ <!-- Each project has its own definitions for many properties.
+      inheritAll="false" ensures that definitions in this buildfile
+      doesn't override definitions in each project's buildfile. -->
+   <ant dir="framework" target="install" inheritAll="false"/>
+   <ant dir="contrib" target="install" inheritAll="false"/>
+   <ant dir="examples/wap" target="install" inheritAll="false"/>
+   <ant dir="examples/Tutorial" target="install" inheritAll="false"/>
+   <ant dir="examples/VlibBeans" target="install" inheritAll="false"/>
+   <ant dir="examples/Vlib" target="install" inheritAll="false"/>
+ </target>
+
+<target name="documentation"
+description="Builds the Tapestry documentation.">
+	<ant dir="doc/src/Tutorial" target="install"/>
+	<ant dir="doc/src/DevelopersGuide" target="install"/>
+</target>
+
+<target name="dist" description="Builds the Tapestry distribution from scratch."
+  depends="clean-all,install,documentation,javadoc">
+  <!-- Dont want to make build-dist depend on all that so that we can
+  test generating the .tar.gz easier. -->
+  <antcall target="build-dist"/>
+</target>
+
+<target name="build-dist" description="Builds the Tapestry distribution files.">
+ <!-- After building, clean all the subprojects. -->
+ <antcall target="clean"/>
+ <mkdir dir="${dist}"/>
+ 
+ <!-- Delete and recreate the base directory. -->
+ 
+ <delete dir="${dist.dir}" quiet="true"/>
+ <mkdir dir="${dist.dir}"/>
+ 
+ <!-- Copy all the relevant files to the base directory. -->
+ 
+ <copy todir="${dist.dir}" includeEmptyDirs="false">
+   <fileset dir=".">
+     <include name="ChangeLog"/>
+     <include name="*.xml"/>
+     <include name="*.html"/>
+     <include name="config/*"/>
+     <include name="contrib/**/*"/>
+     <include name="doc/**/*"/>
+     <include name="examples/**/*"/>
+     <include name="framework/**/*"/>
+     <include name="images/**/*"/>
+	 <include name="junit/**/*"/>
+	 <include name="lib/*"/>
+     <include name="web/*"/>
+     <!-- Exclude class files left around by IDEs. -->
+     <exclude name="**/*.class"/>
+     <!-- Exclude the unpacked versions of the DocBook DTD and XSL files,
+     which are unpacked into subdirectories of doc/src/common -->
+     <exclude name="doc/src/common/**"/>
+     <!-- Don't include build.properties; that's specific to this build
+       environment.  We ship a sample file instead. -->
+     <exclude name="config/build.properties"/>
+     
+     <!-- It isn't a good idea to generate a distribution from a normal working
+     directory, since the <copy> will include things like backup files created
+     while editting.  Better to check out the Tapestry module via anon CVS to
+     a temporary directory, configure build.properties, and build the
+     release there. -->
+     
+   </fileset>
+ </copy>
+ 
+ <!-- Pack the directory (relative to ${dist}), into a TAR file. -->
+ 
+ <tar basedir="${dist}" tarfile="${dist.tar}" includes="${dist.base}/**" longfile="gnu"/>
+ 
+ <!-- Zip up the TAR file -->
+ 
+ <gzip src="${dist.tar}" zipfile="${dist.tar.gz}"/>
+ 
+ <!-- Remove the distribution directory and the TAR file, leaving only the
+   final .tar.gz file. -->
+   
+ <delete file="${dist.tar}"/>
+ <delete dir="${dist.dir}"/>
+ 
+</target>
+
+<target name="javadoc" description="Generate API documentation for the framework and examples.">
+  <mkdir dir="${javadoc.dir}"/>
+  <javadoc author="true" version="true" destdir="${javadoc.dir}" splitindex="true"
+    windowtitle="Tapestry API ${framework.version}" classpathref="full.classpath">
+
+  <doctitle>Tapestry API (Release ${framework.version})</doctitle>
+
+  <package name="com.primix.tapestry.*"/>
+  <package name="net.sf.tapestry.*"/>
+  <package name="tutorial.*"/>
+  <package name="com.primix.vlib.*"/>
+
+  <link href="http://java.sun.com/j2se/1.3/docs/api "/>
+  <link href="http://java.sun.com/j2ee/j2sdkee/techdocs/api"/>
+  <link href="http://jakarta.apache.org/log4j/docs/api"/>
+  <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"/>
+  <link href="http://www.junit.org/junit/javadoc/3.7"/>
+  
+  <group title="Tapestry Framework" packages="com.primix.tapestry:com.primix.tapestry.*"/>
+  <group title="Tapestry Contributions Framework" packages="net.sf.tapestry.*"/>
+  <group title="Tapestry Tutorials" packages="tutorial.*"/>
+  <group title="Virtual Library" packages="com.primix.vlib:com.primix.vlib.*"/>
+  <group title="JUnit Tests" packages="net.sf.tapestry.junit.*"/>
+  
+  <sourcepath>
+    <pathelement location="framework/src"/>
+    <pathelement location="contrib/src"/>
+    <pathelement location="examples/Tutorial/src"/>
+    <pathelement location="examples/Vlib/src"/>
+    <pathelement location="examples/VlibBeans/src"/>
+    <pathelement location="junit/src"/>
+  </sourcepath>
+  
+  </javadoc>
+
+</target>
+
+
+
+<property name="private.dir" value="private"/>
+
+<!-- All of the run-xxx tasks use configuration that map private assets to
+    the /private URI.  This target deletes and recreates the private directory. -->
+    
+<target name="run-setup" description="Sets up for running the Tutorial or other.">
+  <delete dir="${private.dir}" quiet="true"/>
+  <mkdir dir="${private.dir}"/>
+</target>
+
+<target name="run-tutorial" depends="run-setup"
+  description="Runs the Tapestry Tutorial.">
+  <echo>Running Tapestry Tutorial on port 8080 ...</echo>
+  <java classname="org.mortbay.jetty.Server" classpathref="tutorial.classpath"
+  	fork="true" maxmemory="128MB">
+    <arg value="config/jetty-tutorial.xml"/>
+    <jvmarg value="-showversion"/>
+  </java>
+</target>
+
+<target name="run-intranet" depends="run-setup"
+  description="Runs the Tapestry Intranet (Virtual Library).">
+  <echo>Running Virtual Library on port 80 ...</echo>
+  <java classname="org.mortbay.jetty.Server" classpathref="full.classpath"
+  	fork="true" maxmemory="128MB">
+    <arg value="config/jetty-intranet.xml"/>
+    <jvmarg value="-showversion"/>
+  </java>
+</target>
+
+<target name="run-extranet" depends="run-setup"
+  description="Runs the Tapestry Extranet (Home Page).">
+  <echo>Running Tapestry Home Page on port 80 ...</echo>
+  <java classname="org.mortbay.jetty.Server" classpathref="full.classpath"
+  	fork="true" maxmemory="128MB">
+    <arg value="config/jetty-extranet.xml"/>
+    <jvmarg value="-showversion"/>
+    <sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
+    <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+  </java>
+</target>
+
+</project>
