@@ -136,6 +136,8 @@ extends BasePropertyHolder
             "/com/primix/tapestry/components/validating/DateField.jwc");
         defaultComponentMap.put("IntegerField",
               "/com/primix/tapestry/components/validating/IntegerField.jwc");
+        defaultComponentMap.put("FieldLabel",
+              "/com/primix/tapestry/components/validating/FieldLabel.jwc");
         defaultComponentMap.put("Script",
                 "/com/primix/tapestry/script/Script.jwc");
 	}
@@ -210,6 +212,12 @@ extends BasePropertyHolder
 	* <tr>
 	*     <td>/com/primix/tapestry/components/ExceptionDisplay.jwc</td>
 	*	 	<td>{@link BaseComponent}</td> </tr>
+    *
+	*  <tr>
+	*       <td>/com/primix/tapestry/components/validating/FieldLabel.jwc</td>
+	*       <td>{@link FieldLabel}</td>
+	* </tr>
+    *
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Foreach.jwc</td>
 	*		<td>{@link Foreach}</td> </tr>

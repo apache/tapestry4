@@ -87,7 +87,7 @@ public class Body extends AbstractComponent
 			imageLines = new ArrayList();
 
 		variableName = "tapestry_preload['" + imageName + "']";
-        result = variableName = ".src";
+        result = variableName + ".src";
 
 		imageLines.add(variableName + " = new Image()");
 		imageLines.add(result + " = \"" + URL + '"');
