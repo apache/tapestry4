@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- $Id: NoGo.wml,v 1.2 2003/03/25 08:05:15 dsolis Exp $ -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <card>
+        <p>
+            <postfield jwcid="orphan@wml:Postfield" value="ognl:value" name="a"/>
+        </p>
+    </card>
+
+</wml>

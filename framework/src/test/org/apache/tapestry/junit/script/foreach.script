@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+	
+<script>
+
+<let key="outputMissing">
+<foreach key="i" expression="missing">
+${i}
+</foreach>
+</let>
+
+<let key="outputSingle">
+<foreach key="i" expression="input.single">
+${i}
+</foreach>
+</let>
+
+<let key="outputEmptyArray">
+<foreach key="i" expression="input.emptyArray">
+${i}
+</foreach>
+</let>
+
+<let key="outputArray">
+<foreach key="i" expression="input.array">
+${i}
+</foreach>
+</let>
+
+<let key="outputCollection">
+<foreach key="k" expression="input.collection">
+${k}
+</foreach>
+</let>
+
+<let key="outputEmptyCollection">
+<foreach key="z" expression="input.emptyCollection">
+${z}
+</foreach>
+</let>
+
+<let key="outputMissingIndex">
+<foreach key="i" index="j" expression="missing">
+${i} ${j}
+</foreach>
+</let>
+
+<let key="outputSingleIndex">
+<foreach key="i" index="j" expression="input.single">
+${i} ${j}
+</foreach>
+</let>
+
+<let key="outputEmptyArrayIndex">
+<foreach key="i" index="j" expression="input.emptyArray">
+${i} ${j}
+</foreach>
+</let>
+
+<let key="outputArrayIndex">
+<foreach key="i" index="j" expression="input.array">
+${i} ${j}
+</foreach>
+</let>
+
+<let key="outputCollectionIndex">
+<foreach key="k" index="i" expression="input.collection">
+${k} ${i}
+</foreach>
+</let>
+
+<let key="outputEmptyCollectionIndex">
+<foreach key="z" index="i" expression="input.emptyCollection">
+${z} ${i}
+</foreach>
+</let>
+
+<let key="outputCollectionIndexOnly">
+<foreach index="i" expression="input.collection">
+${i}
+</foreach>
+</let>
+
+</script>

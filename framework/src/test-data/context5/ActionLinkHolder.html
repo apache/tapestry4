@@ -1,0 +1,18 @@
+
+
+<span jwcid="block@Block">
+
+<span jwcid="@Conditional" condition="ognl:visit.actionLinkTriggered">
+ActionLink HAS been triggered.
+</span>
+
+<span jwcid="@Conditional" condition="ognl:! visit.actionLinkTriggered">
+ActionLink HAS NOT been triggered.
+</span>
+
+<p>
+
+<a jwcid="@ActionLink" listener="ognl:visit.listeners.actionTrigger">Click to Trigger</a>
+
+
+</span>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- $Id: NestedSelect.wml,v 1.2 2003/03/25 08:05:15 dsolis Exp $ -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <card>
+        <p>
+            <select jwcid="@wml:Select" name="a">
+                <select jwcid="nestedSelect@wml:Select" name="b">
+                </select>
+            </select>
+        </p>
+    </card>
+
+</wml>

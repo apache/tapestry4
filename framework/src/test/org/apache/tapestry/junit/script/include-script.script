@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+		
+		
+<script>
+		
+<include-script resource-path="first"/>
+<include-script resource-path="second"/>
+<include-script resource-path="third"/>		
+
+</script>

@@ -18,8 +18,6 @@
   
   <property name="module.name" value="tapestry"/>
   <property name="javadoc.package" value="org.apache.tapestry.*"/>
-  
-  <property name="test.src.dir" value="../junit/src"/>
 
   <property name="module.javac.deprecation" value="off"/>
     
