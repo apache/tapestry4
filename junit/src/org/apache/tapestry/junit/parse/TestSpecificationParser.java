@@ -359,7 +359,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertNull(spec.getEngineClassName());
         assertNull(spec.getName());
-        checkLine(spec, 10);
+        checkLine(spec, 25);
     }
 
     /**
