@@ -53,21 +53,52 @@
  *
  */
 
-package org.apache.tapestry.enhance;
+package org.apache.tapestry.enhance.javassist;
+
+import javassist.CtClass;
+
+import org.apache.tapestry.enhance.IEnhancedClass;
+import org.apache.tapestry.enhance.IEnhancer;
 
 /**
- *  Defines an object which may work with a 
- *  {@link org.apache.tapestry.enhance.ComponentClassFactory}
- *  to create an enhancement to a class.  These enhancements are
- *  typically in the form of adding new fields and methods.
- *
- *  @author Howard Lewis Ship
+ *  @author Mindbridge
  *  @version $Id$
  *  @since 3.0
- *
- **/
-
-public interface IEnhancer
+ */
+public class CreatePropertyEnhancer implements IEnhancer
 {
-    public void performEnhancement(IEnhancedClass enhancedClass);
+    private String _propertyName;
+    private CtClass _propertyType;
+    private boolean _persistent;
+    private String _readMethodName;
+
+    public CreatePropertyEnhancer(String propertyName, CtClass propertyType)
+    {
+        this(propertyName, propertyType, null, false);
+    }
+
+    public CreatePropertyEnhancer(
+        String propertyName,
+        CtClass propertyType,
+        String readMethodName,
+        boolean persistent)
+    {
+        _propertyName = propertyName;
+        _propertyType = propertyType;
+        _readMethodName = readMethodName;
+        _persistent = persistent;
+    }
+
+    public void performEnhancement(IEnhancedClass enhancedClass)
+    {
+        String fieldName = "_$" + _propertyName;
+
+        EnhancedClass jaEnhancedClass = (EnhancedClass) enhancedClass;
+        ClassFabricator classFabricator = jaEnhancedClass.getClassFabricator(); 
+
+        classFabricator.createField(_propertyType, fieldName);
+        classFabricator.createPropertyAccessor(_propertyType, fieldName, _propertyName, _readMethodName);
+        classFabricator.createPropertyMutator(_propertyType, fieldName, _propertyName, _persistent);
+    }
+
 }

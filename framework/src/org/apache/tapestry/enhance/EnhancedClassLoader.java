@@ -55,19 +55,48 @@
 
 package org.apache.tapestry.enhance;
 
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.Tapestry;
+
 /**
- *  Defines an object which may work with a 
- *  {@link org.apache.tapestry.enhance.ComponentClassFactory}
- *  to create an enhancement to a class.  These enhancements are
- *  typically in the form of adding new fields and methods.
+ *  A class loader that can be used to create new classes 
+ *  as needed.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 3.0
- *
+ * 
  **/
 
-public interface IEnhancer
+public class EnhancedClassLoader extends ClassLoader
 {
-    public void performEnhancement(IEnhancedClass enhancedClass);
+
+    public EnhancedClassLoader(ClassLoader parentClassLoader)
+    {
+        super(parentClassLoader);
+    }
+
+    /**
+     *  Defines the new class.
+     * 
+     *  @throws ApplicationRuntimeException if defining the class fails.
+     * 
+     **/
+
+    public Class defineClass(String enhancedClassName, byte[] byteCode)
+    {
+        try
+        {
+            return defineClass(enhancedClassName, byteCode, 0, byteCode.length);
+        }
+        catch (Throwable ex)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.format(
+                    "EnhancedClassLoader.unable-to-define-class",
+                    enhancedClassName,
+                    ex.getMessage()),
+                ex);
+        }
+    }
 }

@@ -61,20 +61,10 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.bcel.Constants;
-import org.apache.bcel.classfile.JavaClass;
-import org.apache.bcel.generic.ArrayType;
-import org.apache.bcel.generic.BasicType;
-import org.apache.bcel.generic.InstructionConstants;
-import org.apache.bcel.generic.InstructionFactory;
-import org.apache.bcel.generic.ObjectType;
-import org.apache.bcel.generic.PUSH;
-import org.apache.bcel.generic.Type;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
@@ -103,80 +93,29 @@ public class ComponentClassFactory
     private static final Log LOG = LogFactory.getLog(ComponentClassFactory.class);
 
     /**
-     *  UID used to generate new class names.
-     * 
-     **/
+     *  Package prefix to be added if the enhanced object is in a 'sysem' package 
+     */
+    private static final String PACKAGE_PREFIX = "org.apache.tapestry.";
 
+    /**
+     *  UID used to generate new class names.
+     **/
     private static int _uid = 0;
 
     private IResourceResolver _resolver;
 
-    private ClassFabricator _classFabricator;
+    private IEnhancedClassFactory _enhancedClassFactory;
+    private IEnhancedClass _enhancedClass;
     private Map _beanProperties = new HashMap();
     private IComponentSpecification _specification;
     private Class _componentClass;
-    private String _subclassName;
-
-    /**
-     *  List of {@link IEnhancer}.
-     * 
-     **/
-
-    private List _enhancers;
-
-    /**
-     *  Map of type (as Class), keyed on type name. 
-     * 
-     **/
-
-    private Map _typeMap = new HashMap();
-
-    /**
-     *  Map of type (as Type), keyed on type name.
-     * 
-     *  This should be kept in synch with ParameterManager, which maintains
-     *  a similar list.
-     * 
-     **/
-
-    private Map _objectTypeMap = new HashMap();
-
-    {
-        recordType("boolean", boolean.class, Type.BOOLEAN);
-        recordType("boolean[]", boolean[].class, new ArrayType(Type.BOOLEAN, 1));
-
-        recordType("short", short.class, Type.SHORT);
-        recordType("short[]", short[].class, new ArrayType(Type.SHORT, 1));
-
-        recordType("int", int.class, Type.INT);
-        recordType("int[]", int[].class, new ArrayType(Type.INT, 1));
-
-        recordType("long", long.class, Type.LONG);
-        recordType("long[]", long[].class, new ArrayType(Type.LONG, 1));
-
-        recordType("float", float.class, Type.FLOAT);
-        recordType("float[]", float[].class, new ArrayType(Type.FLOAT, 1));
-
-        recordType("double", double.class, Type.DOUBLE);
-        recordType("double[]", double[].class, new ArrayType(Type.DOUBLE, 1));
-
-        recordType("char", char.class, Type.CHAR);
-        recordType("char[]", char[].class, new ArrayType(Type.CHAR, 1));
-
-        recordType("byte", byte.class, Type.BYTE);
-        recordType("byte[]", byte.class, new ArrayType(Type.BYTE, 1));
-
-        recordType("java.lang.Object", Object.class, Type.OBJECT);
-        recordType("java.lang.Object[]", Object[].class, new ArrayType(Type.OBJECT, 1));
-
-        recordType("java.lang.String", String.class, Type.STRING);
-        recordType("java.lang.String[]", String[].class, new ArrayType(Type.STRING, 1));
-    }
+    private JavaClassMapping _classMapping = new JavaClassMapping();
 
     public ComponentClassFactory(
         IResourceResolver resolver,
         IComponentSpecification specification,
-        Class componentClass)
+        Class componentClass,
+        IEnhancedClassFactory enhancedClassFactory)
     {
         _resolver = resolver;
 
@@ -184,13 +123,9 @@ public class ComponentClassFactory
 
         _componentClass = componentClass;
 
-        buildBeanProperties();
-    }
+        _enhancedClassFactory = enhancedClassFactory;
 
-    private void recordType(String name, Class type, Type objectType)
-    {
-        _typeMap.put(name, type);
-        _objectTypeMap.put(name, objectType);
+        buildBeanProperties();
     }
 
     private void buildBeanProperties()
@@ -235,7 +170,7 @@ public class ComponentClassFactory
     {
         scanForEnhancements();
 
-        return _enhancers != null;
+        return _enhancedClass != null && _enhancedClass.hasModifications();
     }
 
     /**
@@ -277,7 +212,7 @@ public class ComponentClassFactory
 
     public Class convertPropertyType(String type, ILocation location)
     {
-        Class result = (Class) _typeMap.get(type);
+        Class result = _classMapping.getType(type);
 
         if (result == null)
         {
@@ -294,48 +229,10 @@ public class ComponentClassFactory
                     ex);
             }
 
-            _typeMap.put(type, result);
+            _classMapping.recordType(type, result);
         }
 
         return result;
-    }
-
-    /**
-     *  Given the name of a class, returns the equivalent {@link Type}.  In addition,
-     *  knows about scalar types, arrays of scalar types, java.lang.Object[] and
-     *  java.lang.String[].
-     * 
-     **/
-
-    public Type getObjectType(String type)
-    {
-        Type result = (Type) _objectTypeMap.get(type);
-
-        if (result == null)
-        {
-            result = new ObjectType(type);
-            _objectTypeMap.put(type, result);
-        }
-
-        return result;
-    }
-
-    /**
-     *  Constructs an accessor method name.
-     * 
-     **/
-
-    public String buildMethodName(String prefix, String propertyName)
-    {
-        StringBuffer result = new StringBuffer(prefix);
-
-        char ch = propertyName.charAt(0);
-
-        result.append(Character.toUpperCase(ch));
-
-        result.append(propertyName.substring(1));
-
-        return result.toString();
     }
 
     protected void checkPropertyType(PropertyDescriptor pd, Class propertyType, ILocation location)
@@ -395,108 +292,6 @@ public class ComponentClassFactory
         return read == null ? null : read.getName();
     }
 
-    /**
-     *  Given an arbitrary type, figures out the correct
-     *  argument type (for fireObservedChange()) to use.
-     * 
-     **/
-
-    protected Type convertToArgumentType(Type type)
-    {
-        if (type instanceof BasicType)
-            return type;
-
-        return Type.OBJECT;
-    }
-
-    /**
-     *  Creates a mutator (aka "setter") method.
-     * 
-     *  @param fieldType type of field value (and type of parameter value)
-     *  @param fieldName name of field (not property!)
-     *  @param propertyName name of property (used to construct method name)
-     *  @param isPersistent if true, adds a call to fireObservedChange()
-     * 
-     **/
-
-    public void createMutator(
-        Type fieldType,
-        String fieldName,
-        String propertyName,
-        boolean isPersistent)
-    {
-        String methodName = buildMethodName("set", propertyName);
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Creating mutator: " + methodName);
-
-        MethodFabricator mf = _classFabricator.createMethod(methodName);
-        mf.addArgument(fieldType, propertyName);
-
-        InstructionFactory factory = _classFabricator.getInstructionFactory();
-
-        mf.append(factory.createThis());
-        mf.append(factory.createLoad(fieldType, 1));
-        mf.append(factory.createPutField(_subclassName, fieldName, fieldType));
-
-        // Persistent properties must invoke fireObservedChange()
-
-        if (isPersistent)
-        {
-            mf.append(factory.createThis());
-            mf.append(new PUSH(_classFabricator.getConstantPool(), propertyName));
-            mf.append(factory.createLoad(fieldType, 1));
-
-            Type argumentType = convertToArgumentType(fieldType);
-
-            mf.append(
-                factory.createInvoke(
-                    _subclassName,
-                    "fireObservedChange",
-                    Type.VOID,
-                    new Type[] { Type.STRING, argumentType },
-                    Constants.INVOKEVIRTUAL));
-        }
-
-        mf.append(InstructionConstants.RETURN);
-
-        mf.commit();
-    }
-
-    /**
-     *  Creates an accessor (getter) method for the property.
-     * 
-     *  @param fieldType the return type for the method
-     *  @param fieldName the name of the field (not the name of the property)
-     *  @param propertyName the name of the property (used to build the name of the method)
-     *  @param readMethodName if not null, the name of the method to use
-     * 
-     **/
-
-    public void createAccessor(
-        Type fieldType,
-        String fieldName,
-        String propertyName,
-        String readMethodName)
-    {
-        String methodName =
-            readMethodName == null ? buildMethodName("get", propertyName) : readMethodName;
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Creating accessor: " + methodName);
-
-        MethodFabricator mf =
-            _classFabricator.createMethod(Constants.ACC_PUBLIC, fieldType, methodName);
-
-        InstructionFactory factory = _classFabricator.getInstructionFactory();
-
-        mf.append(factory.createThis());
-        mf.append(factory.createGetField(_subclassName, fieldName, fieldType));
-        mf.append(factory.createReturn(fieldType));
-
-        mf.commit();
-    }
-
     protected boolean isMissingProperty(String propertyName)
     {
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
@@ -514,9 +309,12 @@ public class ComponentClassFactory
      * 
      **/
 
-    public JavaClass createEnhancedSubclass()
+    public Class createEnhancedSubclass()
     {
+        IEnhancedClass enhancedClass = getEnhancedClass();
+
         String startClassName = _componentClass.getName();
+        String subclassName = enhancedClass.getClassName();
 
         if (LOG.isDebugEnabled())
             LOG.debug(
@@ -525,35 +323,13 @@ public class ComponentClassFactory
                     + " for "
                     + _specification.getSpecificationLocation());
 
-        _subclassName = startClassName + "$Enhance_" + _uid++;
-
-        _classFabricator = new ClassFabricator(_subclassName, startClassName);
-
-        _classFabricator.addDefaultConstructor();
-
-        int count = _enhancers.size();
-
-        for (int i = 0; i < count; i++)
-        {
-            IEnhancer enhancer = (IEnhancer) _enhancers.get(i);
-
-            enhancer.performEnhancement(this);
-        }
-
-        JavaClass result = _classFabricator.commit();
+        Class result;
+        result = enhancedClass.createEnhancedSubclass();
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Finished creating enhanced class " + _subclassName);
+            LOG.debug("Finished creating enhanced class " + subclassName);
 
         return result;
-    }
-
-    protected void addEnhancer(IEnhancer enhancer)
-    {
-        if (_enhancers == null)
-            _enhancers = new ArrayList();
-
-        _enhancers.add(enhancer);
     }
 
     /**
@@ -618,12 +394,7 @@ public class ComponentClassFactory
             return;
 
         // Need to create the property.
-
-        Type propertyType = getObjectType(IBinding.class.getName());
-
-        IEnhancer enhancer = new CreatePropertyEnhancer(propertyName, propertyType);
-
-        addEnhancer(enhancer);
+        getEnhancedClass().createProperty(propertyName, IBinding.class.getName());
     }
 
     protected void scanForParameterProperty(String parameterName, IParameterSpecification ps)
@@ -652,12 +423,7 @@ public class ComponentClassFactory
 
         String readMethodName = checkAccessors(propertyName, propertyType, location);
 
-        Type fieldType = getObjectType(ps.getType());
-
-        IEnhancer enhancer =
-            new CreatePropertyEnhancer(propertyName, fieldType, readMethodName, false);
-
-        addEnhancer(enhancer);
+        getEnhancedClass().createProperty(propertyName, ps.getType(), readMethodName, false);
     }
 
     protected void addAutoParameterEnhancer(String parameterName, IParameterSpecification ps)
@@ -665,7 +431,7 @@ public class ComponentClassFactory
         ILocation location = ps.getLocation();
         String propertyName = ps.getPropertyName();
 
-        if (!ps.isRequired())
+        if (!ps.isRequired() && ps.getDefaultValue() == null)
             throw new ApplicationRuntimeException(
                 Tapestry.format("ComponentClassFactory.auto-must-be-required", parameterName),
                 location,
@@ -675,18 +441,11 @@ public class ComponentClassFactory
 
         String readMethodName = checkAccessors(propertyName, propertyType, location);
 
-        Type fieldType = getObjectType(ps.getType());
-
-        IEnhancer enhancer =
-            new CreateAutoParameterEnhancer(
-                this,
-                propertyName,
-                parameterName,
-                fieldType,
-                ps.getType(),
-                readMethodName);
-
-        addEnhancer(enhancer);
+        getEnhancedClass().createAutoParameter(
+            propertyName,
+            parameterName,
+            ps.getType(),
+            readMethodName);
     }
 
     protected void scanForSpecifiedProperty(IPropertySpecification ps)
@@ -707,25 +466,32 @@ public class ComponentClassFactory
 
         String readMethodName = checkAccessors(propertyName, propertyType, location);
 
-        Type fieldType = getObjectType(ps.getType());
-
-        IEnhancer enhancer =
-            new CreatePropertyEnhancer(propertyName, fieldType, readMethodName, ps.isPersistent());
-
-        addEnhancer(enhancer);
+        getEnhancedClass().createProperty(
+            propertyName,
+            ps.getType(),
+            readMethodName,
+            ps.isPersistent());
     }
 
-    public void createField(Type fieldType, String fieldName)
+    public IEnhancedClass getEnhancedClass()
     {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Creating field: " + fieldName);
+        if (_enhancedClass == null)
+        {
+            String startClassName = _componentClass.getName();
+            String subclassName = startClassName + "$Enhance_" + _uid++;
 
-        _classFabricator.addField(fieldType, fieldName);
-    }
+            // If the new class is located in a 'restricted' package, 
+            // add a neutral package prefix to the name. 
+            // The class enhancement will likely fail anyway, since the original object 
+            // would not implement IComponent, but we do not know what the enhancement
+            // will do in the future -- it might implement that interface automatically. 
+            if (subclassName.startsWith("java.") || subclassName.startsWith("javax."))
+                subclassName = PACKAGE_PREFIX + subclassName;
 
-    public ClassFabricator getClassFabricator()
-    {
-        return _classFabricator;
+            _enhancedClass =
+                _enhancedClassFactory.createEnhancedClass(subclassName, _componentClass);
+        }
+        return _enhancedClass;
     }
 
 }

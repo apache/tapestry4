@@ -55,19 +55,66 @@
 
 package org.apache.tapestry.enhance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- *  Defines an object which may work with a 
- *  {@link org.apache.tapestry.enhance.ComponentClassFactory}
- *  to create an enhancement to a class.  These enhancements are
- *  typically in the form of adding new fields and methods.
- *
- *  @author Howard Lewis Ship
+ *  @author Mindbridge
  *  @version $Id$
  *  @since 3.0
- *
- **/
-
-public interface IEnhancer
+ */
+public class JavaClassMapping
 {
-    public void performEnhancement(IEnhancedClass enhancedClass);
+
+    /**
+     *  Map of type (as Class), keyed on type name. 
+     * 
+     **/
+
+    private Map _typeMap = new HashMap();
+
+
+    {
+        recordType("boolean", boolean.class);
+        recordType("boolean[]", boolean[].class);
+
+        recordType("short", short.class);
+        recordType("short[]", short[].class);
+
+        recordType("int", int.class);
+        recordType("int[]", int[].class);
+
+        recordType("long", long.class);
+        recordType("long[]", long[].class);
+
+        recordType("float", float.class);
+        recordType("float[]", float[].class);
+
+        recordType("double", double.class);
+        recordType("double[]", double[].class);
+
+        recordType("char", char.class);
+        recordType("char[]", char[].class);
+
+        recordType("byte", byte.class);
+        recordType("byte[]", byte.class);
+
+        recordType("java.lang.Object", Object.class);
+        recordType("java.lang.Object[]", Object[].class);
+
+        recordType("java.lang.String", String.class);
+        recordType("java.lang.String[]", String[].class);
+    }
+
+
+    public void recordType(String name, Class type)
+    {
+        _typeMap.put(name, type);
+    }
+
+    public Class getType(String name)
+    {
+        return (Class) _typeMap.get(name);
+    }
+
 }

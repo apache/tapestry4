@@ -55,50 +55,35 @@
 
 package org.apache.tapestry.enhance;
 
-import org.apache.bcel.generic.Type;
-
 /**
- *  Creates a new property of a particular type in the enhanced subclass.  May optionally
- *  make the property a persistent property, by injecting an invocation of
- *  {@link org.apache.tapestry.AbstractComponent#fireObservedChange(String, Object)}
- *  into the mutator (setter) method.
- *
- *  @author Howard Lewis Ship
+ *  This is an unrecoverable error during code generation.
+ *  It should not occur and would typically be the result 
+ *  of a bug in the Tapestry code.
+ *   
+ *  @author Mindbridge
  *  @version $Id$
  *  @since 3.0
- *
- **/
-public class CreatePropertyEnhancer implements IEnhancer
+ */
+public class CodeGenerationException extends RuntimeException
 {
-    private String _propertyName;
-    private Type _propertyType;
-    private boolean _persistent;
-    private String _readMethodName;
-
-    public CreatePropertyEnhancer(String propertyName, Type propertyType)
+    public CodeGenerationException()
     {
-        this(propertyName, propertyType, null, false);
+        super();
     }
 
-    public CreatePropertyEnhancer(
-        String propertyName,
-        Type propertyType,
-        String readMethodName,
-        boolean persistent)
+    public CodeGenerationException(String message)
     {
-        _propertyName = propertyName;
-        _propertyType = propertyType;
-        _readMethodName = readMethodName;
-        _persistent = persistent;
+        super(message);
     }
 
-    public void performEnhancement(ComponentClassFactory factory)
+    public CodeGenerationException(String message, Throwable cause)
     {
-        String fieldName = "_$" + _propertyName;
+        super(message, cause);
+    }
 
-        factory.createField(_propertyType, fieldName);
-        factory.createAccessor(_propertyType, fieldName, _propertyName, _readMethodName);
-        factory.createMutator(_propertyType, fieldName, _propertyName, _persistent);
+    public CodeGenerationException(Throwable cause)
+    {
+        super(cause);
     }
 
 }
