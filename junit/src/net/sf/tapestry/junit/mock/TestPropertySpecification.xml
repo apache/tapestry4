@@ -189,7 +189,7 @@ Final value: [Taxi]
 		</assert-output>
 		
 		<assert-output name="Exception Message">
-Unable to enhance class net.sf.tapestry.junit.mock.c9.Four because it implements a non-abstract read method for property 'word'.
+Unable to enhance class net.sf.tapestry.junit.mock.c9.Four because it implements a non-abstract write method for property 'word'.
 		</assert-output>		
 		
 	</request>		
@@ -205,7 +205,7 @@ Unable to enhance class net.sf.tapestry.junit.mock.c9.Four because it implements
 		</assert-output>
 		
 		<assert-output name="Exception Message">
-Unable to enhance class net.sf.tapestry.junit.mock.c9.Five because it implements a non-abstract write method for property 'word'.
+Unable to enhance class net.sf.tapestry.junit.mock.c9.Five because it implements a non-abstract read method for property 'word'.
 		</assert-output>		
 		
 	</request>		

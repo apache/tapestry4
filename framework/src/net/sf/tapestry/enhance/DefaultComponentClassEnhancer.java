@@ -69,6 +69,8 @@ import net.sf.tapestry.IComponentClassEnhancer;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.Direction;
+import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.spec.PropertySpecification;
 import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.JavaClass;
@@ -186,7 +188,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
     {
         Class result = _resolver.findClass(className);
 
-        if (needsEnhancement(specification))
+        if (needsEnhancement(result, specification))
             result = createEnhancedSubclass(result, specification);
 
         return result;
@@ -195,13 +197,81 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
     /**
      *  Examines the specification, identifies if any enhancements will be needed.
      *  This implementation looks for the presence of any
-     *  {@link net.sf.tapestry.spec.PropertySpecification}s.
+     *  {@link net.sf.tapestry.spec.PropertySpecification}s, or any
+     *  connected parameters where the property is missing or abstract.
      * 
      **/
 
-    protected boolean needsEnhancement(ComponentSpecification specification)
+    protected boolean needsEnhancement(Class componentClass, ComponentSpecification specification)
     {
-        return !specification.getPropertySpecificationNames().isEmpty();
+        if (!specification.getPropertySpecificationNames().isEmpty())
+            return true;
+
+        if (checkConnectedParameters(componentClass, specification))
+            return true;
+
+        return false;
+    }
+
+    private boolean checkConnectedParameters(
+        Class componentClass,
+        ComponentSpecification specification)
+    {
+        List names = specification.getParameterNames();
+        int count = names.size();
+
+        Map beanProperties = getBeanProperties(componentClass);
+
+        for (int i = 0; i < count; i++)
+        {
+            String name = (String) names.get(i);
+            ParameterSpecification pspec = specification.getParameter(name);
+
+            if (checkConnectedParameter(beanProperties, pspec))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     *  Returns true if the parameter is connected (has a non-custom direction) and the
+     *  corresponding property is either missing or abstract.
+     * 
+     **/
+
+    private boolean checkConnectedParameter(Map beanProperties, ParameterSpecification spec)
+    {
+        Direction direction = spec.getDirection();
+
+        if (direction == Direction.CUSTOM)
+            return false;
+
+        String propertyName = spec.getPropertyName();
+
+        PropertyDescriptor d = (PropertyDescriptor) beanProperties.get(propertyName);
+
+        // No existing property matches, so we'll return true to
+        // create an enhanced class with the property.
+
+        boolean readAbstract = isAbstract(d.getReadMethod());
+
+        boolean writeAbstract = isAbstract(d.getWriteMethod());
+
+        return readAbstract && writeAbstract;
+    }
+
+    /**
+     *  Returns true if the method is null, or is abstract.
+     * 
+     **/
+
+    private boolean isAbstract(Method m)
+    {
+        if (m == null)
+            return true;
+
+        return Modifier.isAbstract(m.getModifiers());
     }
 
     private Class createEnhancedSubclass(Class startClass, ComponentSpecification specification)
@@ -218,6 +288,8 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         String startClassName = startClass.getName();
         String enhancedName = startClassName + "$Enhance_" + _uid++;
 
+        Map beanProperties = getBeanProperties(startClass);
+
         ClassFabricator cf = new ClassFabricator(enhancedName, startClassName);
 
         cf.addDefaultConstructor();
@@ -231,7 +303,19 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
             PropertySpecification ps = specification.getPropertySpecification(name);
 
-            createProperty(cf, startClass, ps);
+            createSpecifiedProperty(cf, startClass, beanProperties, ps);
+        }
+
+        names = specification.getParameterNames();
+        count = names.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            String name = (String) names.get(i);
+
+            ParameterSpecification ps = specification.getParameter(name);
+
+            createParameterProperty(cf, startClass, beanProperties, name, ps);
         }
 
         JavaClass jc = cf.commit();
@@ -245,23 +329,96 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
     }
 
     /**
-     *  Invoked to create the specified property.  Checks that the superclass provides
+     *  Invoked to create the specified property. 
+     * 
+     **/
+
+    protected void createSpecifiedProperty(
+        ClassFabricator cf,
+        Class beanClass,
+        Map beanProperties,
+        PropertySpecification ps)
+    {
+        String propertyName = ps.getName();
+
+        if (LOG.isDebugEnabled())
+            LOG.debug("Establishing specified property " + propertyName);
+
+        createProperty(
+            cf,
+            beanClass,
+            beanProperties,
+            propertyName,
+            ps.getType(),
+            ps.isPersistent());
+    }
+
+    /**
+     *  Creates a property from a parameter specdification.
+     * 
+     **/
+
+    protected void createParameterProperty(
+        ClassFabricator cf,
+        Class beanClass,
+        Map beanProperties,
+        String parameterName,
+        ParameterSpecification ps)
+    {
+        if (ps.getDirection() == Direction.CUSTOM)
+            return;
+
+        String propertyName = ps.getPropertyName();
+
+        if (propertyName == null)
+            propertyName = parameterName;
+
+        // Yes, but does it *need* a property created?
+
+        if (!isMissingParameterProperty(beanClass, beanProperties, propertyName))
+            return;
+
+        if (LOG.isDebugEnabled())
+            LOG.debug("Establishing parameter property " + propertyName);
+
+        createProperty(cf, beanClass, beanProperties, propertyName, ps.getType(), false);
+    }
+
+    protected boolean isMissingParameterProperty(
+        Class beanClass,
+        Map beanProperties,
+        String propertyName)
+    {
+        PropertyDescriptor pd = (PropertyDescriptor) beanProperties.get(propertyName);
+
+        if (pd == null)
+            return true;
+
+        return isAbstract(pd.getReadMethod()) && isAbstract(pd.getWriteMethod());
+
+        // Degenerate case:  one accessor abstract, the other real!  Not handled
+        // here.
+    }
+
+    /**
+     *  Checks that the superclass provides
      *  either abstract accessors or none at all.  Creates the file, creates 
      *  the accessors, creates initialization code.
      * 
      **/
 
-    protected void createProperty(ClassFabricator cf, Class startClass, PropertySpecification ps)
+    protected void createProperty(
+        ClassFabricator cf,
+        Class beanClass,
+        Map beanProperties,
+        String propertyName,
+        String type,
+        boolean persistent)
     {
-        String propertyName = ps.getName();
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Establishing property " + propertyName);
-
-        String type = ps.getType();
         Class propertyType = convertPropertyType(type);
 
-        checkAccessors(startClass, propertyName, propertyType);
+        String readMethodName =
+            checkAccessors(beanClass, beanProperties, propertyName, propertyType);
 
         String fieldName = "_$" + propertyName;
 
@@ -269,17 +426,19 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
         cf.addField(fieldType, fieldName);
 
-        createAccessor(cf, fieldType, fieldName, propertyName);
-        createMutator(cf, fieldType, fieldName, propertyName, ps.isPersistent());
+        createAccessor(cf, fieldType, fieldName, propertyName, readMethodName);
+        createMutator(cf, fieldType, fieldName, propertyName, persistent);
     }
 
     protected void createAccessor(
         ClassFabricator cf,
         Type fieldType,
         String fieldName,
-        String propertyName)
+        String propertyName,
+        String readMethodName)
     {
-        String methodName = buildMethodName("get", propertyName);
+        String methodName =
+            readMethodName == null ? buildMethodName("get", propertyName) : readMethodName;
 
         MethodFabricator mf = cf.createMethod(Constants.ACC_PUBLIC, fieldType, methodName);
 
@@ -390,13 +549,64 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         return result;
     }
 
-    protected void checkAccessors(Class startClass, String propertyName, Class propertyType)
+    /**
+     *  Checks to see that that class either doesn't provide the property, or does
+     *  but the accessor(s) are abstract.  Returns the name of the read accessor,
+     *  or null if there is no such accessor (this is helpful if the beanClass
+     *  defines a boolean property, where the name of the accessor may be isXXX or
+     *  getXXX).
+     * 
+     **/
+
+    protected String checkAccessors(
+        Class beanClass,
+        Map beanProperties,
+        String propertyName,
+        Class propertyType)
     {
-        BeanInfo info = null;
+        PropertyDescriptor d = (PropertyDescriptor) beanProperties.get(propertyName);
+
+        if (d == null)
+            return null;
+
+        if (!d.getPropertyType().equals(propertyType))
+            throw new ApplicationRuntimeException(
+                Tapestry.getString(
+                    "DefaultComponentClassEnhancer.property-type-mismatch",
+                    new Object[] {
+                        beanClass.getName(),
+                        propertyName,
+                        d.getPropertyType().getName(),
+                        propertyType.getName()}));
+
+        Method m = d.getWriteMethod();
+
+        if (!isAbstract(m))
+            throw new ApplicationRuntimeException(
+                Tapestry.getString(
+                    "DefaultComponentClassEnhancer.non-abstract-write",
+                    m.getDeclaringClass().getName(),
+                    propertyName));
+
+        m = d.getReadMethod();
+
+        if (!isAbstract(m))
+            throw new ApplicationRuntimeException(
+                Tapestry.getString(
+                    "DefaultComponentClassEnhancer.non-abstract-read",
+                    m.getDeclaringClass().getName(),
+                    propertyName));
+
+        return m == null ? null : m.getName();
+    }
+
+    protected BeanInfo getBeanInfo(Class beanClass)
+    {
+        BeanInfo result = null;
 
         try
         {
-            info = Introspector.getBeanInfo(startClass);
+            result = Introspector.getBeanInfo(beanClass);
 
         }
         catch (IntrospectionException ex)
@@ -404,47 +614,32 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
             throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "DefaultComponentClassEnhancer.unable-to-introspect-class",
-                    startClass.getName()),
+                    beanClass.getName()),
                 ex);
         }
+
+        return result;
+    }
+
+    /**
+     *  Examines the specified class and returns a Map, keyed on propertyName
+     *  of {@link java.beans.PropertyDescriptor}.
+     * 
+     **/
+
+    protected Map getBeanProperties(Class beanClass)
+    {
+        BeanInfo info = getBeanInfo(beanClass);
+
+        Map result = new HashMap();
 
         PropertyDescriptor[] descriptors = info.getPropertyDescriptors();
 
         for (int i = 0; i < descriptors.length; i++)
         {
-            PropertyDescriptor d = descriptors[i];
-
-            if (!d.getName().equals(propertyName))
-                continue;
-
-            if (!d.getPropertyType().equals(propertyType))
-                throw new ApplicationRuntimeException(
-                    Tapestry.getString(
-                        "DefaultComponentClassEnhancer.property-type-mismatch",
-                        new Object[] {
-                            startClass.getName(),
-                            propertyName,
-                            d.getPropertyType().getName(),
-                            propertyType.getName()}));
-
-            Method m = d.getReadMethod();
-
-            if (m != null && !Modifier.isAbstract(m.getModifiers()))
-                throw new ApplicationRuntimeException(
-                    Tapestry.getString(
-                        "DefaultComponentClassEnhancer.non-abstract-read",
-                        m.getDeclaringClass().getName(),
-                        propertyName));
-
-            m = d.getWriteMethod();
-
-            if (m != null && !Modifier.isAbstract(m.getModifiers()))
-                throw new ApplicationRuntimeException(
-                    Tapestry.getString(
-                        "DefaultComponentClassEnhancer.non-abstract-write",
-                        m.getDeclaringClass().getName(),
-                        propertyName));
-            return;
+            result.put(descriptors[i].getName(), descriptors[i]);
         }
+
+        return result;
     }
 }

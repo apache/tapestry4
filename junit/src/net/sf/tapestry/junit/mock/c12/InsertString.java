@@ -52,22 +52,30 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.junit.mock.c9;
+package net.sf.tapestry.junit.mock.c12;
 
-import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
 
 /**
- *  More testing for non-abstract accessor methods.
+ *  A simplified version of the Insert component that requires a parameter
+ *  named string of type String.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *
  **/
 
-public class Five extends BasePage
+public abstract class InsertString extends AbstractComponent
 {
-	public String getWord()
-	{
-		return null;
-	}
+	public abstract String getString();
+
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+    	writer.print(getString());
+    }
+
 }
