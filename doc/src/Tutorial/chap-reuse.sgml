@@ -1,0 +1,392 @@
+<chapter id="reuse">
+	<title>Creating Reusable Components</>
+    
+<para>
+In this tutorial, we'll show how to create a reusable component.  One common use of components 
+it to create a common "border" for the application that includes basic navigation.  We'll be 
+creating a simple, three page application with a navigation bar down the left side.
+</>
+
+
+<figure>
+	<title>Border Home Page</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/border-home.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+<para> 
+Navigating to another page results in a similar display:
+</>
+
+<figure>
+	<title>Border Credo Page</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/border-credo.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+
+<para> 
+Each page's content is confined to the silver area in the center.  Note that the border adapts itself 
+to each page:  the title "Home" or "Credo" is specific to the page, and the current page doesn't 
+have an active link (in the above page, "Credo" is the current page, so only "Home" and "Legal" 
+are usable as navigation links).
+</>
+
+<para>
+The "i" in the circle is the Show Inspector link.  It will be described in the next chapter.
+</>
+
+<para>
+Because this tutorial is somewhat large, we'll only be showing excerpts from some of the files.  
+The complete source of the tutorial examples is available seperately, in the 
+<classname>tutorial.border</> package.
+</>
+
+<para>
+Each of the three pages has a similar HTML template:
+</>
+
+<figure>
+	<title>Home.html</>
+<programlisting><![CDATA[<jwc id="border">
+
+Nothing much doing here on the <b>home</b> page.  Visit one of our other 
+fine 
+pages.
+
+</jwc>]]></programlisting></figure>
+
+<para> 
+Remember that Tapestry components can wrap around other HTML elements or components.  
+For the border, we have an HTML template where everything on the page is wrapped by the 
+<varname>border</> component.
+</>
+
+
+<para>
+Note that we don't specify any
+<sgmltag class=starttag>html</> or 
+<sgmltag class=starttag>body</> tags; those are provided by the <classname>Border</>
+component (as well as the matching close tags).
+</>
+
+
+<para>
+This illustrates a key concept within Tapestry:  embedding vs. wrapping.  The 
+<classname>Home</> page embeds 
+the <varname>border</> component (as we'll see in the <classname>Home</> page's specification).  
+This means that the <classname>Home</>
+page is implemented using the <varname>border</> component.
+</>
+
+<para>
+However, the <varname>border</> component wraps the content of the <classname>Home</> page,
+the <classname>Home</> page 
+HTML template indicates the <emphasis>order</> in which components (and static HTML elements) are  
+renderred.  On the <classname>Home</> page, the <varname>border</> component 'bats' first and cleanup.
+</>
+
+<para>
+The construction of the <classname>Border</> component is driven by how it differs from page to page.  
+You'll 
+see that on each page, the title (in the upper left corner) changes.  The names of all three pages are 
+displayed, but only two of the three will have links (the third, the current page, is just text).  
+Lastly,  each page contains the specific content from its own HTML template.
+
+<figure>
+	<title>Border.html</>
+<programlisting><![CDATA[<jwc id="shell">
+<jwc id="body">
+<table border=0 bgcolor=gray cellspacing=0 cellpadding=4>
+  <tr valign=top>
+    <td colspan=3 align=left>
+      <font size=5 color="White"><jwc id="insertPageTitle"/></font>
+    </td>
+  </tr>
+  <tr valign=top>
+    <td align=right>
+      <font color=white>
+<jwc id="e">
+        <br><jwc id="link"><jwc id="insertName"/></jwc>
+</jwc>
+      </font>
+    </td>
+    <td rowspan=2 valign=top bgcolor=silver>
+      <jwc id="wrapped"/>
+    </td>
+    <td rowspan=2 width=4></td>
+  </tr>
+  <tr>
+	<td><jwc id="showInspector"/></td>
+  </tr>
+  <tr>
+    <td colspan=3 height=4>&nbsp;</td>
+  </tr>
+</table>
+</jwc>
+</jwc>]]></PROGRAMLISTING></figure>
+
+<para> 
+The <varname>insertApplicationName</> and <varname>insertPageTitle</>
+components provides the name of the 
+application, and the title of the page within the application.
+</>
+
+<para>
+The <varname>e</>, <varname>link</> and <varname>insertName</>
+components provide the inter-page navigation links.  
+</>
+
+<!--
+The showInspector component provides the button below the page names (the italicized "i" in a 
+circle) and will be explained shortly.  
+The shell component provides the outermost portions of the page, the <html> and <head> tags.
+The body component is a replacement for the <body> tag; it is required to support automatic 
+rollover buttons (such as the showInspector) and will be used by most Tapestry applications.
+Lastly, the wrapped component provides the actual content for the page.
+The Border component is designed to be usable in other Tapestry applications, so it doesn't hard 
+code the list of page names.  These must be provided to the border component.  In fact, the 
+application object provides the list.
+Border.jwc
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 
+1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>tutorial.border.Border</class>
+	<parameters>
+		<allow-informal-parameters>no</allow-informal-parameters>
+		<parameter>
+			<name>title</name>
+			<java-type>java.lang.String</java-type>
+			<required>yes</required>
+		</parameter>
+		<parameter>
+			<name>pages</name>
+			<required>yes</required>
+		</parameter>
+	</parameters>
+	<components>
+		<component>
+			<id>shell</id>
+			<type>Shell</type>
+			<bindings>
+				<binding>
+					<name>title</name>
+					<property-
+path>page.application.specification.name</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertPageTitle</id>
+			<type>Insert</type>
+			<bindings>
+				<inherited-binding>
+					<name>value</name>
+					<parameter-name>title</parameter-name>
+				</inherited-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>body</id>
+			<type>Body</type>
+		</component>
+		<component>
+			<id>e</id>
+			<type>Foreach</type>
+			<bindings>
+				<inherited-binding>
+					<name>source</name>
+					<parameter-name>pages</parameter-name>
+				</inherited-binding>
+				<binding>
+					<name>value</name>
+					<property-path>pageName</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>link</id>
+			<type>Page</type>
+			<bindings>
+				<binding>
+					<name>page</name>
+					<property-path>pageName</property-path>
+				</binding>
+				<binding>
+					<name>disabled</name>
+					<property-path>disablePageLink</property-
+path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertName</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>pageName</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>wrapped</id>
+			<type>InsertWrapped</type>
+		</component>
+		<component>
+			<id>showInspector</id>
+			<type>ShowInspector</type>
+		</component>
+	</components>
+</specification>
+ 
+So, the specification for the Border component must identify the parameters it needs, but also the 
+components it uses and how they are configured.
+We start by declaring two parameters: title and pages.  The first is the title that will appear on the 
+page.  The second is the list of page names for the navigation area.  We don't specify a type for 
+pages because we want to allow all the possibilites (List, Iterator, Java array) that are acceptible as 
+the source parameter to a Foreach.
+We then provide the shell component with its title parameter; this will be the window title.  We 
+use the application's name, with is extracted from the application's specification.
+jumps from the page, to the application, to the application specification and gets the name of the 
+application.
+Further down we see that the insertPageTitle component inherits the title parameter from its 
+container, the border component.  Whatever binding is provided for the title parameter of the 
+border will also be used as the value parameter of the insertPageTitle component.  Using these 
+inherited bindings simplifies the process of creating complex components from simple ones.
+Likewise, the e component (a Foreach) needs as its source the list of pages, which it inherits from 
+the Border component's pages parameter.  It has been configured to store each succesive page 
+name into the pageName property of the Border component; this is necessary so that the Border 
+component can determine which page link to disable (it disables the current page since we're 
+already there).
+The link component creates the link to the other pages.  It has an disabled parameter; which, 
+when true, causes the link component to not create the hyperlink (though it still allows the 
+elements it wraps to render).  The Java class for the Border component, 
+tutorial.border.Border, provides a method, getDisablePageLink(), that returns true 
+when the pageName instance variable (set by the e component) matches the current page's name.
+The showInspector component creates a rollover button (the "i" lights up when the mouse is 
+moved over it):
+ 
+Clicking on the button raises a second window that describes the current page in the application 
+(this is used when debugging a Tapestry applicaton).  The Inspector is described in the next 
+chapter.
+The final mystery is the wrapped component.  It is used to render the elements wrapped by the 
+border on the page containing the border.  Those elements  will vary from page to page; running 
+the application shows that they are different on the home, credo and legal pages (different text 
+appears in the central light-grey box).  There is no limitation on the elements either  Tapestry is 
+specifically designed to allow components to wrap other components in this way, without any 
+arbitrary limitations.
+This means that the different pages could contain forms, images or any set of components at all, 
+not just static HTML text.
+The specification for the home page shows how the title and pages parameters are set.  The title is 
+static, the literal value "Home" (this isn't the best approach if localization is a concern).
+Home.jwc
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC
+"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+
+<specification>
+  <class>com.primix.tapestry.BasePage</class>
+
+	<components>
+	  <component>
+	    <id>border</id>
+	    <type>Border</type>
+
+		<bindings>
+		    <static-binding>
+		      <name>title</name>
+		      <value>Home</value>
+		    </static-binding>
+
+		    <binding>
+		      <name>pages</name>
+		      <property-path>application.pageNames</property-path>
+		    </binding>
+		</bindings>
+	  </component>
+	</components>
+
+</specification>
+  
+The pages property is retrieved from the application, which implements a pageNames property:
+BorderApplication.java (excerpt)
+  private static final String[] pageNames =
+    { "Home", "Credo", "Legal" };
+
+  public String[] getPageNames()
+  {
+    return pageNames;
+  }
+ 
+How did Tapestry know that the type 'Border' (shown in bold in the page specification) 
+corresponded to the specification /tutorial/border/Border.jwc?  Only because we defined 
+an alias in the application specification:
+Border.application (excerpt)
+  <component>
+    <alias>Border</alias>
+    <type>/tutorial/border/Border.jwc</type>
+  </component>
+ 
+Had we failed to do this, we would have had to specify the complete resource path, 
+/tutorial/border/Border.jwc, on each page's specification, instead of the short alias 
+'Border'.  There is no magic about the existing Tapestry component types (Insert, Foreach, Page, 
+etc.) ... they each have an alias pre-registered into every application specification.  These short 
+aliases are simply a convienience.
+Chapter
+9
+The Tapestry Inspector
+Unlike scripting systems (such as JavaServer Pages and the like), Tapestry applications are gifted 
+with a huge amount of information about how they are implemented  the same component 
+object model that allows Tapestry to perform so many ordinary functions can be leveraged to 
+provide some unusual functionality.
+Since this section was originally written, the Inspector has been reorganized and a new tab, Logging, has been added.  
+This section will be updated once the functionality of the Inspector has stabilized.
+Run the border tutorial from the previous chapter and click on the show inspector button (the 
+circle with the italic "i").  A new window will launch, containing the Inspector:
+ 
+The Inspector displays live information from the running application; in fact, it is simply another 
+part of the application (the drop-down list of pages will include the Inspector page itself).  The 
+Inspector is most often used to debug HTML generation by viewing the HTML templates.
+The Inspector consists of three sections.  The Component Navigation allows the page to be 
+selected (using the drop-down list), and then shows the page, or component on the page, being 
+inspected.
+The View Selection selects one of four views of the component to be selected.  Finally, the View 
+Details section shows detailed information about the component, as selected.
+The ShowInspector component and the Inspector page are built-into the Tapestry framework.  
+Any Tapestry application can make use of the Inspector by simply adding a ShowInspector 
+component to any page.  Most commonly, the ShowInspector component is added to a persistent 
+navigation component, such as the Border component (in these examples).
+Specification View
+The specification tab show the basic information about the component, plus its formal and 
+informal parameters (and how they are bound), and any assets.
+ 
+A more complicated component may also show informal parameters and assets.
+Components View
+The components view provides a list of the components embedded in the currently inspected 
+component.  Clicking the name of a component inspects that component.
+ 
+Template View
+The template view shows the template (if known) for the component.  It is formatted much like 
+the examples in this document, with <jwc> tags in bold.  In addition, component names are 
+links, showing the template (if any) for the embedded component.
+ 
+Properties View
+The properties view shows all persistent properties for the page.
+ 
+The component column is usually blank, except in the rare case that a component has its own 
+persistent properties, in which case the component's id path is displayed.
+
+-->
+
+</chapter>
+
