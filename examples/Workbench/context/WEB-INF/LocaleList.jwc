@@ -42,7 +42,7 @@
 
 	<component id="tableColumns" type="contrib:TableColumns"/>
 
-	<component id="tableRows" type="contrib:TableFormRows">
+	<component id="tableFormRows" type="contrib:TableFormRows">
 		<binding name="row" expression="currentLocale"/>
         <binding name="convertor" expression="localeConvertor"/>
 		<binding name="class" expression="beans.rowClass.next"/>

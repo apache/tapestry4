@@ -4,10 +4,12 @@
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
-<page-specification class="org.apache.tapestry.workbench.table.Table">
+<page-specification>
   
   <component id="localeList" type="LocaleList">
-  	<binding name="localeSelectionListener" expression="localeSelectionListener"/>
+  	<binding name="localeSelectionListener" expression="components.localeSelection"/>
   </component>
+  
+  <component id="localeSelection" type="LocaleSelection"/>
   
 </page-specification>
