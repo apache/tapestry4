@@ -72,7 +72,18 @@ public abstract class Hidden extends AbstractFormComponent
             else
                 externalValue = (String) getValueBinding().getObject("value", String.class);
 
-            form.addHiddenValue(name, externalValue);
+            String id = getElementId();
+            //if we would like to test the IForm.addHiddenValue(name, externalValue) method with
+            //Hidden JUnit test the following code must be default. But from the performance issue
+            //I don't use the id parameter clauses.  
+/*			if(id == null || id.length() == 0){
+				form.addHiddenValue(name, externalValue);
+            }else{
+				form.addHiddenValue(name, id, externalValue);
+            }
+*/
+			form.addHiddenValue(name, id, externalValue);
+            
 
             return;
         }
@@ -105,6 +116,15 @@ public abstract class Hidden extends AbstractFormComponent
             listener.actionTriggered(this, cycle);
     }
 
+	public String getElementId(){
+		String value = null;
+		IBinding idBinding = getIdBinding();
+		if(idBinding != null){
+			value = idBinding.getString();
+		}
+		return value;
+	}
+
     /** @since 2.2 **/
 
     private DataSqueezer getDataSqueezer()
@@ -115,6 +135,7 @@ public abstract class Hidden extends AbstractFormComponent
     public abstract IActionListener getListener();
 
     public abstract IBinding getValueBinding();
+	public abstract IBinding getIdBinding();
 
     /**
      * 
