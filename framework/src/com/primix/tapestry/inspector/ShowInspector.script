@@ -12,7 +12,6 @@ Expects that the Inspector is inside a <div> named "tapestryInspector".
 
 Input symbols:
  URL - The complete URL needed for to raise the Inspector
- windowName - The name of the window for the raised Inspector
  
 -->
 <script>
@@ -100,7 +99,7 @@ function ti_raiseInspector()
 {
   var newWindow = window.open(
   	"<insert property-path="URL"/>",
-  	"<insert property-path="windowName"/>",
+  	"TapestryInspector",
   	"titlebar,resizable,scrollbars,width=700,height=600");
   	
   newWindow.focus();

@@ -34,8 +34,8 @@
 
 <img jwcid="banner"/>
 
-<p>
-Note: Exploring properties can lead to exceptions and application instability.
+
+
 
 <table class="inspector-data">
 	<tr class="heading">
@@ -60,6 +60,12 @@ Note: Exploring properties can lead to exceptions and application instability.
 	</tr>
 </table>
 
+
+<p>
+
+Note: Exploring properties can lead to application instability.
+
+
 <span jwcid="ifNotNull">
 
 <table class="inspector-data">
@@ -72,10 +78,23 @@ Note: Exploring properties can lead to exceptions and application instability.
 	
 	<tr jwcid="accessors">
 		<td><a jwcid="exploreProperty"><span jwcid="insertPropertyName"/></a>
+		<span jwcid="ifError">
+			<img jwcid="redDot" alt="[Error]"/>
+		</span>
 		</td>
 		<td><span jwcid="insertPropertyType"/></td>
 	</tr>
 </table>
+
+<span jwcid="ifException">
+
+<p>
+<span class="error">Unable to access property <span jwcid="insertErrorPropertyName"/>:
+</span>
+
+<span jwcid="reportException"/>
+	
+</span>
 
 </span>
 

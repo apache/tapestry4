@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application name="Tapestry Component Workbench" 
+	engine-class="com.primix.tapestry.engine.SimpleEngine">
+  <property name="com.primix.tapestry.visit-class">tutorial.workbench.Visit</property>
+  
+  <page name="Home" specification-path="/tutorial/workbench/Home.jwc"/>
+  
+  <page name="Palette" specification-path="/tutorial/workbench/palette/Palette.jwc"/>
+  <page name="palette.Results" specification-path="/tutorial/workbench/palette/Results.jwc"/>
+  
+  <page name="Localization" specification-path="/tutorial/workbench/localization/Localization.jwc"/>
+  <page name="localization.Change" 
+  	specification-path="/tutorial/workbench/localization/Change.jwc"/>
+    
+  <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
+  <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
+</application>

@@ -117,12 +117,6 @@ public class ShowInspector
 
 		HttpSession session = cycle.getRequestContext().getSession();
 		
-		if (session == null)
-			symbols.put("windowName", "TapestryInspector");
-		else
-			symbols.put("windowName", "TapestryInspector"  + session.getCreationTime());
-
-		
 		try
 		{			
 			scriptSession = script.execute(symbols);

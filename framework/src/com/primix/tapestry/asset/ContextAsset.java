@@ -239,7 +239,7 @@ public class ContextAsset implements IAsset
 		}
 		
 		throw new ResourceUnavailableException
-			("Could not find internal asset " +
+			("Could not find context asset " +
 				 assetPath + " for locale " + locale + ".");
 		
     }

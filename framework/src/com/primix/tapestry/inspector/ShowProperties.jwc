@@ -83,24 +83,43 @@
   
   <component id="accessors" type="Foreach">
     <binding name="source" property-path="accessors"/>
-    <binding name="value" property-path="accessor"/>
     <static-binding name="element">tr</static-binding>
     <binding name="class" property-path="beans.propertyClass.next"/>
   </component>
   
   <component id="exploreProperty" type="Direct">
-    <binding name="listener" property-path="listeners.exploreProperty"/>
-    <binding name="context" property-path="accessor.name"/> 
+    <binding name="listener" property-path="listeners.selectExplorePath"/>
+    <binding name="context" property-path="components.accessors.value.propertyPath"/> 
   </component>
   
   <component id="insertPropertyName" type="Insert">
-    <binding name="value" property-path="accessor.name"/>
+    <binding name="value" property-path="components.accessors.value.propertyName"/>
+  </component>
+  
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="components.accessors.value.error"/>
+  </component>
+  
+  <component id="redDot" type="Image">
+    <binding name="image" property-path="assets.red-dot"/>
   </component>
   
   <component id="insertPropertyType" type="Insert">
-    <binding name="value" property-path="accessorTypeName"/>
+    <binding name="value" property-path="components.accessors.value.propertyType"/>
+  </component>
+  
+  <component id="ifException" type="Conditional">
+  	<binding name="condition" property-path="propertyException"/>
+  </component>
+  
+  <component id="insertErrorPropertyName" type="Insert">
+    <binding name="value" property-path="errorPropertyName"/>
+  </component>
+  
+  <component id="reportException" type="ExceptionDisplay">
+  	<binding name="exceptions" property-path="propertyException"/>
   </component>
   
   <private-asset name="banner" resource-path="/com/primix/tapestry/inspector/PropertiesExplorer_NBanner.gif"/>
-  
+  <private-asset name="red-dot" resource-path="/com/primix/tapestry/inspector/red-dot.gif"/> 
 </specification>
