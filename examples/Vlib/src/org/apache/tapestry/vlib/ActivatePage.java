@@ -55,11 +55,9 @@
 
 package org.apache.tapestry.vlib;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageValidateListener;
-import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.pages.Login;
 
 /**

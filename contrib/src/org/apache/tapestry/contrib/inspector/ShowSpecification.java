@@ -68,8 +68,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
-import org.apache.tapestry.spec.BeanSpecification;
-import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
