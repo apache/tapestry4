@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.0//EN"
  "http://jetty.mortbay.com/configure_1_0.dtd">
 <Configure class="com.mortbay.HTTP.HttpServer">
@@ -13,8 +14,16 @@
 		</Arg>
 	</Call>
 	
+  <!-- This writes a log of each incoming request to the default output, which makes
+       it easier to see what Tapestry and Jetty are up to. -->
+
+    <Set name="LogSink">
+	    <New class="com.mortbay.Util.WriterLogSink"/>
+	</Set>
+
+
 	<Call name="addWebApplication">
-		<!--Because we use JSPs, we can't deploy as a .war, we deploy the directory instead.-->
+		<!-- Because we use JSPs, we can't deploy as a .war, we deploy the directory instead. -->
 		<Arg>/vlib/*</Arg>
 		<Arg>.build/wapp</Arg>
 		<Arg>jetty-default-web.xml</Arg>

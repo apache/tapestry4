@@ -29,8 +29,9 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
 	$(INSTALL_DIR)/ejb.jar
 
-run: install
+run: war
 	$(call NOTE, Running Jetty for Tutorial ...)
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
+		-showversion \
 		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
 		com.mortbay.Jetty.Server jetty.xml)
