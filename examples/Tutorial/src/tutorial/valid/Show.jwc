@@ -19,6 +19,13 @@
   <component id="insertBigIntData" type="Insert">
     <binding name="value" property-path="visit.bigIntData"/>
   </component>
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="visit.selectedColors"/>
+  </component>
+  <component id="insertColor" type="Insert">
+    <binding name="value" property-path="components.e.value"/>
+  </component>
+  
   <component id="home" type="Page">
     <static-binding name="page">Home</static-binding>
   </component>

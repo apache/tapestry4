@@ -1,3 +1,12 @@
+* Jun 15 2001 hship
+
+Create contrib project (net.sf.tapestry.contrib.jar).
+Create Palette component (not complete).
+Update Tutorial to make use of the Palette.
+Framework:
+- Add support for form event handlers
+- Add FormEventType.java, an Enum for the different types of events.
+
 * Jun 14 2001 hship
 
 Reorganize and improve how Scripts are handled in Tapestry.  Add IEngine.getScriptSource() and

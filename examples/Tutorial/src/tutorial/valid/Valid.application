@@ -8,4 +8,5 @@
   <page name="Show" specification-path="/tutorial/valid/Show.jwc"/>
   <component-alias type="Border" specification-path="/tutorial/valid/Border.jwc"/>
   <component-alias type="ShowError" specification-path="/tutorial/valid/ShowError.jwc"/>
+  <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
 </application>

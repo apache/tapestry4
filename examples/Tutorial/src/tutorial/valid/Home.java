@@ -30,8 +30,11 @@ package tutorial.valid;
 
 import java.util.*;
 import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
 import com.primix.tapestry.valid.*;
+import com.primix.tapestry.util.*;
 import java.math.*;
+import net.sf.tapestry.contrib.palette.*;
 
 /**
  *  @version $Id$
@@ -56,6 +59,10 @@ public class Home extends BasePage
 	public static final BigInteger MIN_BIGINT = new BigInteger("5");
 	public static final BigInteger MAX_BIGINT = new BigInteger("9745789589234578979");
 	
+	private SortMode sort = SortMode.NONE;
+	
+	private IPropertySelectionModel sortModel;
+	
 	private class PrivateDelegate extends BaseValidationDelegate
 	{
 		/**
@@ -67,17 +74,18 @@ public class Home extends BasePage
 		
 		public void invalidField(IValidatingTextField field, 
 				ValidationConstraint contraint,
-			String defaultErrorMessage)
+				String defaultErrorMessage)
 		{
 			if (error == null)
 				error = defaultErrorMessage;
 		}
-			
+		
 	}
 	
 	public void detach()
 	{
 		error = null;
+		sort = SortMode.NONE;
 		
 		super.detach();
 	}
@@ -116,5 +124,51 @@ public class Home extends BasePage
 				handleFormSubmit(cycle);
 			}
 		};
+	}
+	
+	private IPropertySelectionModel colorModel;
+	
+	private String[] colors = 
+	{
+		"Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet"
+	};
+	
+	public IPropertySelectionModel getColorModel()
+	{
+		if (colorModel == null)
+			colorModel = new StringPropertySelectionModel(colors);
+		
+		return colorModel;
+	}
+	
+	public void setSort(SortMode value)
+	{
+		sort = value;
+		
+		fireObservedChange("sort", value);
+	}
+	
+	public SortMode getSort()
+	{
+		return sort;
+	}
+	
+	public IPropertySelectionModel getSortModel()
+	{
+		if (sortModel == null)
+		{
+			ResourceBundle bundle = 
+				ResourceBundle.getBundle("tutorial.valid.SortModeStrings",
+					getLocale());
+			
+			Enum[] options = new Enum[]
+			{
+				SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER
+			};
+			
+			sortModel = new EnumPropertySelectionModel(options, bundle);
+		}
+	
+		return sortModel;
 	}
 }

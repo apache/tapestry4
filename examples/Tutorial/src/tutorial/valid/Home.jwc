@@ -71,4 +71,16 @@
     &delegate;
   <static-binding name="displayName">BigInt Data</static-binding>
   </component>
+  
+  <component id="inputColorSort" type="PropertySelection">
+  	<binding name="value" property-path="sort"/>
+  	<binding name="model" property-path="sortModel"/>
+  </component>
+  
+  <component id="inputColor" type="Palette">
+    <binding name="model" property-path="colorModel"/>
+    <binding name="selected" property-path="visit.selectedColors"/>
+    <binding name="sort" property-path="sort"/>
+  </component>
+  
 </specification>

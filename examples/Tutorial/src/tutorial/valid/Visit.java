@@ -2,6 +2,7 @@ package tutorial.valid;
 
 import java.io.*;
 import java.math.*;
+import java.util.*;
 
 public class Visit implements Serializable
 {
@@ -10,6 +11,7 @@ public class Visit implements Serializable
 	private double doubleData;
 	private BigDecimal decimalData;
 	private BigInteger bigIntData;
+	private List selectedColors;
 	
 	private static final BigDecimal DECIMAL_ZERO = new BigDecimal(0.0);
 	private static final BigInteger BIGINT_ZERO = new BigInteger("0");
@@ -68,5 +70,13 @@ public class Visit implements Serializable
 	public void setBigIntData(BigInteger value)
 	{
 		bigIntData = value;
+	}
+	
+	public List getSelectedColors()
+	{
+		if (selectedColors == null)
+			selectedColors = new ArrayList();
+		
+		return selectedColors;
 	}
 }

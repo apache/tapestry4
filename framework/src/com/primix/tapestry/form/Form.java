@@ -29,6 +29,8 @@
 package com.primix.tapestry.form;
 
 import com.primix.tapestry.*;
+import com.primix.tapestry.html.*;
+import java.util.*;
 
 // Appease Javadoc
 import com.primix.tapestry.components.*;
@@ -117,11 +119,22 @@ public class Form
 	private boolean staticStateful;
 	private boolean statefulValue;
 	
+	/**
+	 *  {@link Map}, keyed on {@link FormEventType}.  Values are either a String (the name
+	 *  of a single event), or a {@link List} of Strings.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	private Map events;
+	
+	private static final int EVENT_MAP_SIZE = 3;
 	
     private static final String[] reservedNames = { "action" };
 	
     /**
-	 *  Attribute name used with the request cycle.
+	 *  Attribute name used with the request cycle; allows other components to locate
+	 *  the Form.
 	 *
 	 */
 	
@@ -168,8 +181,8 @@ public class Form
 		
 		return rewinding;
     }
-
-		public void setStatefulBinding(IBinding value)
+	
+	public void setStatefulBinding(IBinding value)
 	{
 		statefulBinding = value;
 		
@@ -201,7 +214,7 @@ public class Form
 		
 		return true;
 	}
-
+	
     /**
 	 *  Constructs a unique identifier (within the Form) from a prefix and a
 	 *  unique index.  The prefix typically corresponds to the component Class (i.e.
@@ -314,6 +327,10 @@ public class Form
 				writer.attribute("value", nextElementId++);
 				
 				writer.end("form");
+				
+				// Write out event handlers collected during the rendering.
+				
+				emitEventHandlers(writer, cycle);
 			}
 			
 			if (rewound)
@@ -354,6 +371,9 @@ public class Form
 		finally
 		{
 			rendering = false;
+			
+			if (events != null)
+				events.clear();
 		}
     }
 	
@@ -364,6 +384,124 @@ public class Form
 		if (value.isStatic())
 			methodValue = value.getString();
     }
+	
+	/**
+	 *  Adds an additional event handler.
+	 *
+	 * @since 1.0.2
+	 */
+	
+	public void addEventHandler(FormEventType type, String functionName)
+	{
+		if (events == null)
+			events = new HashMap(EVENT_MAP_SIZE);
+		
+		Object value = events.get(type);
+		
+		if (value == null)
+		{
+			events.put(type, functionName);
+			return;
+		}
+		
+		if (value instanceof String)
+		{
+			List list = new ArrayList();
+			list.add(value);
+			list.add(functionName);
+			
+			events.put(type, list);
+		}
+		
+		List list = (List)value;
+		list.add(functionName);
+	}
+	
+	private void emitEventHandlers(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		StringBuffer buffer = null;
+		
+		if (events == null || events.isEmpty())
+			return;
+		
+		Body body = Body.get(cycle);
+		
+		if (body == null)
+			throw new RequestCycleException(
+				"A Form with event handlers must be wrapped by a Body.", this);
+				
+		Iterator i = events.entrySet().iterator();
+		while (i.hasNext())
+		{
+			
+			Map.Entry entry = (Map.Entry)i.next();	
+			FormEventType type = (FormEventType)entry.getKey();
+			Object value = entry.getValue();
+			
+			String formPath = "document." + name;
+			String propertyName = type.getPropertyName();
+			String finalFunctionName;
+			
+			boolean combineWithAnd = type.getCombineWithAnd();
+			
+			// The typical case; one event one event handler.  Easy enough.
+			
+			if (value instanceof String)
+			{
+				finalFunctionName = (String)value;
+			}
+			else
+			{
+				
+				String compositeName = propertyName + "_" + name;
+				
+				if (buffer == null)
+					buffer = new StringBuffer(200);
+				
+				buffer.append("function ");
+				buffer.append(compositeName);
+				buffer.append("()\n{\n");
+				
+				List l = (List)value;
+				int count = l.size();
+				for (int j = 0; j < count; j++)
+				{
+					String functionName = (String)l.get(j);
+					
+					buffer.append("  ");
+					
+					if (j > 0 && combineWithAnd)
+						buffer.append("&& ");
+					
+					buffer.append(functionName);
+					buffer.append("()");
+					
+					// If combining normally, or on the very last
+					// name, add a semicolon to end the statement.
+					
+					if (j + 1 == count || !combineWithAnd)
+						buffer.append(';');
+					
+					buffer.append('\n');
+				}
+				
+				buffer.append("}\n\n");
+				
+				finalFunctionName = compositeName;
+			}
+			
+			body.addOtherInitialization(
+				formPath + "." + propertyName + " = " + finalFunctionName + ";");
+			
+		}
+		
+		if (buffer != null)
+			body.addOtherScript(buffer.toString());
+		
+	}
+	
 }
+
 
 

@@ -15,6 +15,7 @@ PACKAGES = \
 
 PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/com.primix.tapestry.jar \
+	$(INSTALL_DIR)/net.sf.tapestry.contrib.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/log4j-core.jar \
 	$(INSTALL_DIR)/javax.xml.jaxp.jar \
