@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- edited with XML Spy v3.5 (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
@@ -35,6 +34,7 @@
   <!ENTITY ShowInspector '<link linkend="builtin.ShowInspector"><classname>ShowInspector</classname></link>'>
   <!ENTITY Text '<link linkend="builtin.Text"><classname>Text</classname></link>'>
   <!ENTITY TextField '<link linkend="builtin.TextField"><classname>TextField</classname></link>'>
+  <!ENTITY Upload '<link linkend="builtin.Upload"><classname>Upload</classname></link>'>
   <!ENTITY ValidField '<link linkend="builtin.ValidField"><classname>ValidField</classname></link>'>
 ]>
 <!-- Conventions:
@@ -51,15 +51,13 @@
   <bookinfo>
     <author>
       <firstname>Howard</firstname>
-      <surname>Ship</surname>
-      <affiliation>
-        <orgname>Primix</orgname>
-      </affiliation>
+      <surname>Lewis Ship</surname>
     </author>
     <copyright>
       <year>2000</year>
       <year>2001</year>
-      <holder>Primix</holder>
+      <year>2002</year>
+      <holder>Howard M. Lewis Ship</holder>
     </copyright>
   </bookinfo>
   <chapter id="intro">
@@ -1569,7 +1567,9 @@ Component specification files, which use the filename extension <literal>.jwc</l
   [ &lt;<link linkend="components.spec.property">property</link> ...&gt; ...]
   [ &lt;<link linkend="components.spec.bean">bean</link> ...&gt; ...]
   [ &lt;<link linkend="components.spec.component">component</link> ...&gt; ...]
-  [ &lt;<link linkend="components.spec.assets"><replaceable>asset</replaceable></link> ...&gt; ...]
+  [ &lt;<link linkend="components.spec.assets">
+              <replaceable>asset</replaceable>
+            </link> ...&gt; ...]
 &lt;/specification&gt;
 </programlisting>
         </figure>
@@ -1833,36 +1833,30 @@ or
 element.
 </para>
       </section>
-      
       <section id="components.spec.field-value">
-      <title>
-      	<sgmltag class="starttag">field-value</sgmltag> element</title>
-      	<para>
+        <title>
+          <sgmltag class="starttag">field-value</sgmltag> element</title>
+        <para>
  This element, which appears only within a
 <link linkend="components.spec.set-property">
             <sgmltag class="starttag">set-property</sgmltag> element</link>
 provides a static value with which to set the property obtained from a public static
 variable of some class.
 </para>
-
-<figure>     	
-              <title>Component specification: <sgmltag class="starttag">field-value</sgmltag> element</title>
-              
-<programlisting>
+        <figure>
+          <title>Component specification: <sgmltag class="starttag">field-value</sgmltag> element</title>
+          <programlisting>
 &lt;field-value field-name="<replaceable>field-name</replaceable>"/&gt;
 </programlisting>
-        </figure> 
-        
-       <para>
+        </figure>
+        <para>
 The field name specifies the complete class name (including package name) and the name of a field within the class.  
 As a convienience, the package name may be ommitted if the class is in the
 <property>java.lang</property>
 package.
 
        </para>
-       
-</section>
-               
+      </section>
       <section id="components.spec.static-value">
         <title>
           <sgmltag class="starttag">static-value</sgmltag> element</title>
@@ -4246,7 +4240,6 @@ which have HTML templates and can wrap other elements should
 include exactly one <classname>InsertWrapped</classname> component in their template.
 </para>
     </section>
-
     <section id="builtin.ListEdit">
       <title>ListEdit</title>
       <para>
@@ -4676,6 +4669,31 @@ Implements a component that manages an HTML
         </varlistentry>
       </variablelist>
     </section>
+    <section id="builtin.Upload">
+      <title>Upload</title>
+      <para>
+    A form element used to handle file uploads.  The uploaded file is represented
+    by an instance of &IUploadFile;.
+    </para>
+      <variablelist>
+        <title>Parameters</title>
+        <varlistentry>
+          <term>field</term>
+          <listitem>
+            <para>The &IUploadFile; (representing the content of the file provided
+            by the client).</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>disabled</term>
+          <listitem>
+            <para>Controls whether the text field is active or not.  Netscape Navigator 4
+			ignores the disabled attribute.
+			</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
     <section id="builtin.ValidField">
       <title>ValidField</title>
       <para>
@@ -4707,7 +4725,6 @@ A name for the the component, used when formulating error messages.
 </para>
           </listitem>
         </varlistentry>
-        
         <varlistentry>
           <term>delegate</term>
           <listitem>
@@ -4715,19 +4732,17 @@ A name for the the component, used when formulating error messages.
 			</para>
           </listitem>
         </varlistentry>
- 
- 		<varlistentry>
- 			<term>validator</term>
- 				<listitem>
- 					<para>An &IValidator; used to convert between string and object
+        <varlistentry>
+          <term>validator</term>
+          <listitem>
+            <para>An &IValidator; used to convert between string and object
  					representations.  The validator may also enforce rules on the
  					input value, such as minimum and maximums, or to make the
  					value required.
  				</para>
- 				</listitem>
- 			</varlistentry>
- 
-         <varlistentry>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
           <term>disabled</term>
           <listitem>
             <para>Controls whether the text field is active or not.  Netscape Navigator 4
@@ -4932,7 +4947,7 @@ even here Tapestry offers superior services.  In the e-commerce example,
 the service URL could encode some form of product identifier.
 </para>
       <para>
-An example of this is in the Primix Virtual Library application.  In 
+An example of this is in the Virtual Library application.  In 
 order to make certain pages bookmarkable, a new service named 
 "external" was created.  This involved subclassing 
 &SimpleEngine; 
@@ -6176,34 +6191,32 @@ will generate some warnings in your code if you create classes which implement t
 </para>
         </answer>
       </qandaentry>
-
-<qandaentry>
-  <question>
-		<para>Why do I need to subclass &ApplicationServlet;?
+      <qandaentry>
+        <question>
+          <para>Why do I need to subclass &ApplicationServlet;?
 		</para>
-  </question>
-<answer>
-<para>
+        </question>
+        <answer>
+          <para>
 Several folks have suggested that subclassing &ApplicationServlet; is unneccessary,
 and it's primary job, identifying the application specification path, could be accomplished 
 using servlet initial parameters.
 There are several reasons why a subclass is necessary, outlined in this
 <link linkend="engine.servlet.subclass-note">note</link>.  Primarily, it's
 a class loader issue.
-</para></answer>
-</qandaentry>
-
-<qandaentry>
-	<question>
-		<para>What happened to <classname>ValidatingTextField</classname>,
+</para>
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>What happened to <classname>ValidatingTextField</classname>,
 		<classname>NumericField</classname>,
 		<classname>DateField</classname>
 		and <classname>IntegerField</classname>?
 		</para>
-	</question>
-	
-	<answer>
-		<para>
+        </question>
+        <answer>
+          <para>
 		In release 1.0.8, the entire suite of components related to validating
 		form input was rewritten.  A single component, &ValidField;, now does the work
 		of all the others.  In the earlier version, component subclasses were needed
@@ -6212,19 +6225,31 @@ a class loader issue.
 		much easier to create new kinds of validations and just plug them into the
 		&ValidField;.
 		</para>
-		
-		<para>This was, regrettably, a completely non-backwards compatible change.
+          <para>This was, regrettably, a completely non-backwards compatible change.
 		</para>
-		
-		<para>
+          <para>
 		In addition, the old components had big disclaimers:  "Don't use these inside
 		any kind of loop (such as a &Foreach;)".  By expanding the role of the
 		&IValidationDelegate;, this is no longer so, the delegate now does much more,
 		including the ability to track errors for fields even inside loops.
 		</para>
-	</answer>
-</qandaentry>
-
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>Why don't my &Upload; components work?  I keep getting NullPointerExceptions.
+		</para>
+        </question>
+        <answer>
+          <para>
+		The &Upload; component creates an <sgmltag class="starttag">input type="file"</sgmltag>
+		HTML element.  This requires that the containing <sgmltag class="starttag">form</sgmltag> element
+		use the encoding MIME type <literal>multipart/form-data</literal>.  This is accomplished by
+		setting the informal parameter <property>enctype</property> of the containing &Form; component to
+		 <literal>multipart/form-data</literal>.
+		</para>
+        </answer>
+      </qandaentry>
     </qandaset>
   </appendix>
 </book>
