@@ -124,6 +124,14 @@ public class TestDataSqueezer extends TestCase
         attempt(new Short((short) 57), "s57");
     }
 
+    /** @since 2.2 **/
+    
+    public void testCharacter() throws IOException
+    {
+        attempt(new Character('a'), "ca");
+        attempt(new Character('Z'), "cZ");
+    }
+
     public void testString() throws IOException
     {
         attempt(
