@@ -1,6 +1,5 @@
 package net.sf.tapestry.contrib.palette;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,16 +10,13 @@ import java.util.Set;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
-import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ScriptException;
@@ -31,7 +27,6 @@ import net.sf.tapestry.form.FormEventType;
 import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.form.IPropertySelectionModel;
 import net.sf.tapestry.html.Body;
-import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  *  A component used to make a number of selections from a list.  The general look
