@@ -13,7 +13,7 @@
 
 	<component id="table" type="contrib:Table">
 		<binding name="tableModel" expression="initialTableModel"/>
-		<static-binding name="valuesClass">tableValuesClass</static-binding>
+		<static-binding name="rowsClass">tableRowsClass</static-binding>
 	</component>
 
 	<component id="blockDelete" type="Block"/>
@@ -26,8 +26,8 @@
 	<component id="blockVerbosity" type="Block"/>
 	  
 	<component id="verbosity" type="Any">
-		<static-binding name="element">span</static-binding>
-		<binding name="style" expression="&#34;width:&#34;+(currentLocaleVerbosity/2)"/>
+		<static-binding name="element">td</static-binding>
+		<binding name="style" expression="&#34;background-color:blue; width:&#34;+(currentLocaleVerbosity/2)"/>
 	</component>
 	
   
