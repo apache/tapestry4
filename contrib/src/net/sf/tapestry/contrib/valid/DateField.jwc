@@ -6,18 +6,18 @@
   
 <component-specification class="net.sf.tapestry.contrib.valid.DateField">
 
-  <parameter name="disabled" java-type="boolean" direction="in"/>
-  <parameter name="hidden" java-type="boolean" direction="in"/>
-  <parameter name="displayWidth" java-type="int" direction="in"/>
-  <parameter name="maximumLength" java-type="int" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="hidden" type="boolean" direction="in"/>
+  <parameter name="displayWidth" type="int" direction="in"/>
+  <parameter name="maximumLength" type="int" direction="in"/>
 
-  <parameter name="date" java-type="java.util.Date" required="yes" />
-  <parameter name="displayName" java-type="java.lang.String" required="yes" />
-  <parameter name="maximum" java-type="java.util.Date" />
-  <parameter name="minimum" java-type="java.util.Date" />
+  <parameter name="date" type="java.util.Date" required="yes" />
+  <parameter name="displayName" type="java.lang.String" required="yes" />
+  <parameter name="maximum" type="java.util.Date" />
+  <parameter name="minimum" type="java.util.Date" />
   <parameter name="required" />
-  <parameter name="format" java-type="java.text.DateFormat" />
-  <parameter name="displayFormat" java-type="java.lang.String" />
+  <parameter name="format" type="java.text.DateFormat" />
+  <parameter name="displayFormat" type="java.lang.String" />
     
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>

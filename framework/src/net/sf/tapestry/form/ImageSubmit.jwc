@@ -11,7 +11,7 @@
   </description>
 
   <parameter name="image" 
-  	java-type="net.sf.tapestry.IAsset" 
+  	type="net.sf.tapestry.IAsset" 
   	required="yes"
   	direction="in">
   	<description>
@@ -21,11 +21,11 @@
   	
   <parameter name="name" 
     property-name="nameOverride"
-  	java-type="java.lang.String"
+  	type="java.lang.String"
   	direction="in"/>
   	
   <parameter name="disabledImage" 
-  	java-type="net.sf.tapestry.IAsset"
+  	type="net.sf.tapestry.IAsset"
   	direction="in">
   	<description>
   	Image used for the button, if disabled.
@@ -33,20 +33,20 @@
   </parameter>
   	
   <parameter name="disabled"
-  	java-type="boolean"
+  	type="boolean"
   	direction="in"/>
   	
-  <parameter name="point" java-type="java.awt.Point"/>
+  <parameter name="point" type="java.awt.Point"/>
   
   <parameter name="selected"
-  	java-type="java.lang.Object">
+  	type="java.lang.Object">
   	<description>
   	Property updated when the button is clicked.
   	</description>
   </parameter>
   
   <parameter name="tag" 
-  	java-type="java.lang.Object" 
+  	type="java.lang.Object" 
   	direction="in">
   	<description>
   	Value used when updating the selected parameter.
@@ -54,7 +54,7 @@
   </parameter>
   
   <parameter name="listener" 
-  	java-type="net.sf.tapestry.IActionListener"
+  	type="net.sf.tapestry.IActionListener"
   	direction="in">
   	<description>
   	Notified when the button is clicked.

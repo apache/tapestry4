@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="net.sf.tapestry.junit.mock.c14.ListEditForm">
+	
+	<parameter name="source" type="java.lang.Object" required="yes" direction="in"/>
+	
+	<property-specification name="value" type="java.lang.String"/>
+	<property-specification name="index" type="int"/>
+	
+</component-specification>

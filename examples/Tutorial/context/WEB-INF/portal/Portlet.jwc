@@ -12,10 +12,10 @@
 
 <parameter name="model" 
 	required="yes" 
-	java-type="tutorial.portal.PortletModel"
+	type="tutorial.portal.PortletModel"
 	direction="in"/>
 
-<parameter name="closeListener" required="yes" java-type="net.sf.tapestry.IActionListener">
+<parameter name="closeListener" required="yes" type="net.sf.tapestry.IActionListener">
 	<description>
 		A listener notified when the close box is clicked by the user.
 	</description>

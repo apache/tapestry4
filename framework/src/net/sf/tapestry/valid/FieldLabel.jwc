@@ -12,8 +12,8 @@
   Labels a ValidField.
   </description>
   
-  <parameter name="field" java-type="net.sf.tapestry.form.IFormComponent" required="yes" direction="in"/>
+  <parameter name="field" type="net.sf.tapestry.form.IFormComponent" required="yes" direction="in"/>
   
-  <parameter name="displayName" java-type="java.lang.String" direction="in"/>
+  <parameter name="displayName" type="java.lang.String" direction="in"/>
   
 </component-specification>

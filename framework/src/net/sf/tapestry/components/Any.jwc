@@ -10,7 +10,7 @@
   informal parameters).
   </description>
   
-  <parameter name="element" java-type="java.lang.String" direction="in" required="yes">
+  <parameter name="element" type="java.lang.String" direction="in" required="yes">
   	<description>
   	The element to emulate.
   	</description>

@@ -12,7 +12,7 @@
   
   <parameter name="script" 
   	property-name="scriptPath"
-  	java-type="java.lang.String" 
+  	type="java.lang.String" 
   	required="yes" 
   	direction="in">
     <description>
@@ -22,7 +22,7 @@
 
   <parameter name="symbols"
   	property-name="baseSymbols"
-  	java-type="java.util.Map" 
+  	type="java.util.Map" 
   	direction="in">
     <description>
     Provides a base set of symbols to which, in a copy, are added

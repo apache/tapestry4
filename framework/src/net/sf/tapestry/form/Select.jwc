@@ -10,8 +10,8 @@
   Creates an HTML popup populated with a number of options.
   </description>
   
-  <parameter name="multiple" java-type="boolean" direction="in"/>
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="multiple" type="boolean" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
   
   <reserved-parameter name="name"/>
   

@@ -10,11 +10,11 @@
   A multi-line text area.
   </description>
   
-  <parameter name="value" java-type="java.lang.String" required="yes" direction="form"/>
+  <parameter name="value" type="java.lang.String" required="yes" direction="form"/>
   
-  <parameter name="disabled" java-type="boolean" direction="in"/>
-  <parameter name="columns" java-type="int" direction="in"/>
-  <parameter name="rows" java-type="int" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="columns" type="int" direction="in"/>
+  <parameter name="rows" type="int" direction="in"/>
   
   <reserved-parameter name="name"/>
   

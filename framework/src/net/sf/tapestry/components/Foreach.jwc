@@ -13,7 +13,7 @@
   component).
   </description>
 	
-  <parameter name="source" java-type="java.lang.Object" direction="in">
+  <parameter name="source" type="java.lang.Object" direction="in">
     <description>
     The source of values, a Java collection or array.
     </description>
@@ -25,13 +25,13 @@
     </description>
   </parameter>
   
-  <parameter name="index" java-type="int" direction="custom">
+  <parameter name="index" type="int" direction="custom">
     <description>
     If provided, then the index of the loop is set on each iteration.
     </description>
   </parameter>
   
-  <parameter name="element" java-type="java.lang.String" direction="in">
+  <parameter name="element" type="java.lang.String" direction="in">
     <description>
     If provided, then the Foreach creates an element wrapping its content.
     Informal parameters become attributes of the element.

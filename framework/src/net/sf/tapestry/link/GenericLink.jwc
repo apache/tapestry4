@@ -10,18 +10,18 @@
   Creates a link to an application specified URL.
   </description>
   
-  <parameter name="href" java-type="java.lang.String" required="yes" direction="in"/>
+  <parameter name="href" type="java.lang.String" required="yes" direction="in"/>
 
   <parameter name="disabled"
-  	java-type="boolean"
+  	type="boolean"
   	direction="in"/>
   	  	
   <parameter name="anchor" 
-  	java-type="java.lang.String"
+  	type="java.lang.String"
   	direction="in"/>
   	
   <parameter name="renderer"
-  	java-type="net.sf.tapestry.link.ILinkRenderer"
+  	type="net.sf.tapestry.link.ILinkRenderer"
   	direction="in"/>
   
 </component-specification>

@@ -10,15 +10,15 @@
   A text input field.
   </description>
   
-  <parameter name="value" java-type="java.lang.String" required="yes"/>
+  <parameter name="value" type="java.lang.String" required="yes"/>
   
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
   
-  <parameter name="hidden" java-type="boolean" direction="in"/>
+  <parameter name="hidden" type="boolean" direction="in"/>
   
-  <parameter name="displayWidth" java-type="int" direction="in"/>
+  <parameter name="displayWidth" type="int" direction="in"/>
   
-  <parameter name="maximumLength" java-type="int" direction="in"/>
+  <parameter name="maximumLength" type="int" direction="in"/>
   
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>

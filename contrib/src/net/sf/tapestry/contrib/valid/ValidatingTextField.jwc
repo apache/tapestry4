@@ -6,14 +6,14 @@
   
 <component-specification class="net.sf.tapestry.contrib.valid.ValidatingTextField" allow-body="no">
 
-  <parameter name="disabled" java-type="boolean" direction="in"/>  
-  <parameter name="hidden" java-type="boolean" direction="in"/>
-  <parameter name="displayWidth" java-type="int" direction="in"/>
-  <parameter name="maximumLength" java-type="int" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>  
+  <parameter name="hidden" type="boolean" direction="in"/>
+  <parameter name="displayWidth" type="int" direction="in"/>
+  <parameter name="maximumLength" type="int" direction="in"/>
 
-  <parameter name="text" java-type="java.lang.String" required="yes" direction="custom"/>
-  <parameter name="displayName" java-type="java.lang.String" required="yes" direction="custom" />
-  <parameter name="minimumLength" java-type="java.lang.Integer" direction="custom" />
+  <parameter name="text" type="java.lang.String" required="yes" direction="custom"/>
+  <parameter name="displayName" type="java.lang.String" required="yes" direction="custom" />
+  <parameter name="minimumLength" type="java.lang.Integer" direction="custom" />
   <parameter name="required" direction="custom" />
  
   <reserved-parameter name="type"/>

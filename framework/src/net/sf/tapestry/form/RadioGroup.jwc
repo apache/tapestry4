@@ -12,6 +12,6 @@
   
   <parameter name="selected" required="yes"/>
   
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
   
 </component-specification>

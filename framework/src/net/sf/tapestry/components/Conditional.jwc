@@ -9,13 +9,13 @@
   Conditionally includes a block of content if a condition is met.
   </description>
   
-  <parameter name="condition" java-type="boolean" direction="in">
+  <parameter name="condition" type="boolean" direction="in">
     <description>
     The condition to evaluate.
     </description>
   </parameter>
   
-  <parameter name="invert" java-type="boolean" direction="in">
+  <parameter name="invert" type="boolean" direction="in">
     <description>
     If true, inverts the condition, so that a false condition causes the 
     content to be included.  If false (the default), then the condition

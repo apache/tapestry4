@@ -10,8 +10,8 @@
   Creates a labeled button within a form.
   </description>
 
-  <parameter name="label" java-type="java.lang.String" direction="in"/>
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="label" type="java.lang.String" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
   <parameter name="selected"/>
   
   <reserved-parameter name="name"/>

@@ -664,14 +664,14 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String type = getAttribute(node, "type");
 
-        validate(type, COMPONENT_ALIAS_PATTERN, "SpecificationParser.invalid-component-alias");
+        validate(type, COMPONENT_ALIAS_PATTERN, "SpecificationParser.invalid-component-type");
 
         String path = getAttribute(node, "specification-path");
 
         specification.setComponentSpecificationPath(type, path);
     }
 
-    private void convertProperty(IPropertyHolder holder, Node node)
+    private void convertProperty(IPropertyHolder holder, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
 
@@ -679,10 +679,7 @@ public class SpecificationParser extends AbstractDocumentParser
         // as an attribute.  Only if that is null do we
         // extract the node's value.
 
-        String value = getAttribute(node, "value");
-
-        if (value == null)
-            value = getValue(node);
+        String value = getExtendedAttribute(node, "value", true);
 
         holder.setProperty(name, value);
     }
@@ -711,11 +708,6 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             if (isElement(node, "parameter"))
             {
-                if (isPage)
-                    throw new DocumentParseException(
-                        Tapestry.getString("SpecificationParser.not-allowed-for-page", "parameter"),
-                        getResourceLocation());
-
                 convertParameter(specification, node);
                 continue;
             }
@@ -794,7 +786,18 @@ public class SpecificationParser extends AbstractDocumentParser
 
         validate(name, PARAMETER_NAME_PATTERN, "SpecificationParser.invalid-parameter-name");
 
-        param.setType(getAttribute(node, "java-type"));
+        String type = getAttribute(node, "type");
+
+        // The attribute was called "java-type" in the 1.3 and earlier DTD
+
+        if (type == null)
+            type = getAttribute(node, "java-type");
+
+        if (type == null)
+            type = "java.lang.Object";
+
+        param.setType(type);
+
         param.setRequired(getBooleanAttribute(node, "required"));
 
         String propertyName = getAttribute(node, "property-name");
@@ -1049,15 +1052,11 @@ public class SpecificationParser extends AbstractDocumentParser
         Node node,
         BindingType type,
         String attributeName)
+        throws DocumentParseException
     {
         String name = getAttribute(node, "name");
-        String value = getAttribute(node, attributeName);
 
-        // In several cases, the 1.4 DTD makes the attribute optional and
-        // allows the value to be to the body of the element.
-
-        if (value == null)
-            value = getValue(node);
+        String value = getExtendedAttribute(node, attributeName, true);
 
         BindingSpecification binding = _factory.createBindingSpecification(type, value);
 
@@ -1239,10 +1238,8 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String propertyName = getAttribute(node, "property-name");
         String type = getAttribute(node, "type");
-        String value = getAttribute(node, "value");
 
-        if (value == null)
-            value = getValue(node);
+        String value = getExtendedAttribute(node, "value", true);
 
         validate(propertyName, PROPERTY_NAME_PATTERN, "SpecificationParser.invalid-property-name");
 
@@ -1271,7 +1268,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
         ps.setName(name);
 
-        String type = getAttribute(node, "type");
+        String type = getExtendedAttribute(node, "type", false);
 
         if (!Tapestry.isNull(type))
             ps.setType(type);
@@ -1280,9 +1277,47 @@ public class SpecificationParser extends AbstractDocumentParser
 
         ps.setPersistent(persistent);
 
-        ps.setInitialValue(getAttribute(node, "initial-value"));
+        ps.setInitialValue(getExtendedAttribute(node, "initial-value", false));
 
         spec.addPropertySpecification(ps);
     }
 
+    /** 
+     *  Used with many elements that allow a value to be specified as either
+     *  an attribute, or as wrapped character data.  This handles that case,
+     *  and makes it an error to specify both.
+     * 
+     * @since 2.4 
+     * 
+     **/
+
+    protected String getExtendedAttribute(Node node, String attributeName, boolean required)
+        throws DocumentParseException
+    {
+        String attributeValue = getAttribute(node, attributeName);
+        boolean nullAttributeValue = Tapestry.isNull(attributeValue);
+        String bodyValue = getValue(node);
+        boolean nullBodyValue = Tapestry.isNull(bodyValue);
+
+        if (!nullAttributeValue && !nullBodyValue)
+            throw new DocumentParseException(
+                Tapestry.getString(
+                    "SpecificationParser.no-attribute-and-body",
+                    attributeName,
+                    node.getNodeName()),
+                getResourceLocation());
+
+        if (required && nullAttributeValue && nullBodyValue)
+            throw new DocumentParseException(
+                Tapestry.getString(
+                    "SpecificationParser.required-extended-attribute",
+                    node.getNodeName(),
+                    attributeName),
+                getResourceLocation());
+
+        if (nullAttributeValue)
+            return bodyValue;
+
+        return attributeValue;
+    }
 }

@@ -11,22 +11,22 @@
 	</description>
   
 	<parameter name="tableModel" 
-		java-type="net.sf.tapestry.contrib.table.model.ITableModel" 
+		type="net.sf.tapestry.contrib.table.model.ITableModel" 
 		required="yes"
 		direction="custom"/>
   
 	<parameter name="tableSessionStateManager" 
-		java-type="net.sf.tapestry.contrib.table.model.ITableSessionStateManager" 
+		type="net.sf.tapestry.contrib.table.model.ITableSessionStateManager" 
 		required="no"
 		direction="custom"/>
   
 	<parameter name="tableSessionStoreManager" 
-		java-type="net.sf.tapestry.contrib.table.model.ITableSessionStoreManager" 
+		type="net.sf.tapestry.contrib.table.model.ITableSessionStoreManager" 
 		required="no"
 		direction="custom"/>
 
 	<parameter name="element" 
-		java-type="java.lang.String" 
+		type="java.lang.String" 
 		required="no"
 		direction="custom"/>
   

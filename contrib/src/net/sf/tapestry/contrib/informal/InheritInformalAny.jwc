@@ -5,5 +5,5 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
 <component-specification class="net.sf.tapestry.contrib.informal.InheritInformalAny" allow-body="yes" allow-informal-parameters="yes">
-    <parameter name="element" java-type="java.lang.String" required="yes" direction="custom"/>
+    <parameter name="element" type="java.lang.String" required="yes" direction="custom"/>
 </component-specification>

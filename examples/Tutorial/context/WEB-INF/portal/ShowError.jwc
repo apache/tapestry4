@@ -7,7 +7,7 @@
 <component-specification 
   allow-informal-parameters="no" allow-body="no">
   
-  <parameter name="delegate" java-type="net.sf.tapestry.valid.IValidationDelegate" 
+  <parameter name="delegate" type="net.sf.tapestry.valid.IValidationDelegate" 
   	required="yes"/>
    
 </component-specification>

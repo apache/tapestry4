@@ -8,7 +8,7 @@
 	allow-body="no" allow-informal-parameters="yes">
 
 	<parameter name="localeSelectionListener" 
-		java-type="tutorial.workbench.table.ILocaleSelectionListener" 
+		type="tutorial.workbench.table.ILocaleSelectionListener" 
 		required="yes"
 		direction="custom"/>
 

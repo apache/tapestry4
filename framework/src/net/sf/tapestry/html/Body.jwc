@@ -13,7 +13,7 @@
 
   <parameter
   	name="element"
-  	java-type="java.lang.String"
+  	type="java.lang.String"
   	direction="in">
   	<description>
   	Name of element to use, defaults to "body".

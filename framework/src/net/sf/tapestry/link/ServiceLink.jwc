@@ -10,9 +10,9 @@
   Creates a link using an arbitrary engine service.
   </description>
   
-  <parameter name="service" java-type="java.lang.String" required="yes" direction="in"/>
+  <parameter name="service" type="java.lang.String" required="yes" direction="in"/>
 
-  <parameter name="parameters" java-type="java.lang.Object" direction="in">
+  <parameter name="parameters" type="java.lang.Object" direction="in">
     <description>
     A object or string, or array of objects and strings, encoded into the URL
     as service parameters.
@@ -20,15 +20,15 @@
   </parameter>
 
   <parameter name="disabled"
-  	java-type="boolean"
+  	type="boolean"
   	direction="in"/>
   	  	
   <parameter name="anchor" 
-  	java-type="java.lang.String"
+  	type="java.lang.String"
   	direction="in"/>
   	
   <parameter name="renderer"
-  	java-type="net.sf.tapestry.link.ILinkRenderer"
+  	type="net.sf.tapestry.link.ILinkRenderer"
   	direction="in"/>
 
   <reserved-parameter name="href"/>

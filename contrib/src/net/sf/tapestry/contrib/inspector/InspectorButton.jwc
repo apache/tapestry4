@@ -16,7 +16,7 @@ window.
 ]]>
     </description>
 
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
 
     <component id="link" type="GenericLink">
         <static-binding name="href">javascript:ti_raiseInspector();</static-binding>

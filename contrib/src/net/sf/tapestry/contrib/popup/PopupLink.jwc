@@ -6,9 +6,9 @@
 
 <component-specification class="net.sf.tapestry.contrib.popup.PopupLink" allow-body="yes" allow-informal-parameters="yes">
 
-	<parameter name="href" java-type="String" direction="custom" required="yes"/>
-	<parameter name="windowName" java-type="String" direction="custom" required="no"/>
-	<parameter name="features" java-type="String" direction="custom" required="no"/>
+	<parameter name="href" type="String" direction="custom" required="yes"/>
+	<parameter name="windowName" type="String" direction="custom" required="no"/>
+	<parameter name="features" type="String" direction="custom" required="no"/>
 
 	<component id="popoutScript" type="Script">
 		<binding name="script" expression='"popup.script"'/>

@@ -10,8 +10,8 @@
   A single option within a Select.
   </description>
   
-  <parameter name="selected" java-type="java.lang.Boolean" required="yes"/>  
-  <parameter name="label" java-type="java.lang.String" direction="in"/>
+  <parameter name="selected" type="java.lang.Boolean" required="yes"/>  
+  <parameter name="label" type="java.lang.String" direction="in"/>
   
   <reserved-parameter name="value"/>
   

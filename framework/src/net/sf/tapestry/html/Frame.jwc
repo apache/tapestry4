@@ -14,7 +14,7 @@
 
   <parameter name="page" 
   		property-name="targetPage"
-  		java-type="java.lang.String" 
+  		type="java.lang.String" 
   		required="yes" 
   		direction="in">
     <description>

@@ -11,7 +11,7 @@
   </description>
 
   <parameter name="image" 
-  	java-type="net.sf.tapestry.IAsset" 
+  	type="net.sf.tapestry.IAsset" 
   	required="yes"
   	direction="in">
     <description>
@@ -20,7 +20,7 @@
   </parameter>
   
   <parameter name="border"
-  	java-type="int"
+  	type="int"
   	direction="in">
     <description>
     Number of pixels of border.

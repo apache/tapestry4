@@ -8,7 +8,7 @@
 	allow-informal-parameters="no" 
 	class="net.sf.tapestry.vlib.components.Browser">
 
-  <parameter name="query" required="yes" java-type="net.sf.tapestry.vlib.IBookQuery"/>
+  <parameter name="query" required="yes" type="net.sf.tapestry.vlib.IBookQuery"/>
  
 </component-specification>
 

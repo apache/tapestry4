@@ -8,14 +8,14 @@
 	allow-body="no" allow-informal-parameters="no">
 	
   <parameter name="model" 
-  	java-type="net.sf.tapestry.form.IPropertySelectionModel" required="yes" direction="in"/>
+  	type="net.sf.tapestry.form.IPropertySelectionModel" required="yes" direction="in"/>
   	
-  <parameter name="selectedList" java-type="java.util.List" required="yes"/>
+  <parameter name="selectedList" type="java.util.List" required="yes"/>
   
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
   
   <parameter name="renderer" 
-  	java-type="net.sf.tapestry.contrib.form.IMultiplePropertySelectionRenderer"
+  	type="net.sf.tapestry.contrib.form.IMultiplePropertySelectionRenderer"
   	direction="in"/>
   	
 </component-specification>
