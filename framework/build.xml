@@ -20,12 +20,12 @@
   <property name="javadoc.dir" value="../doc/api"/>
   
   <path id="project.class.path">
-    <pathelement location="${lib}/ejb.jar"/>
-    <pathelement location="${lib}/javax.servlet.jar"/>
-    <pathelement location="${lib}/log4j-core.jar"/>
-    <pathelement location="${lib}/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib}/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/org.mortbay.jetty.jar"/>
+    <pathelement location="${lib}/ext/ejb.jar"/>
+    <pathelement location="${lib}/ext/javax.servlet.jar"/>
+    <pathelement location="${lib}/ext/log4j-core.jar"/>
+    <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
+    <pathelement location="${lib}/ext/org.mortbay.jetty.jar"/>
   </path>
   
   <target name="init">

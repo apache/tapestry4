@@ -23,12 +23,12 @@
   
   
   <path id="project.class.path">
-    <pathelement location="${lib}/javax.servlet.jar"/>
-    <pathelement location="${lib}/log4j-core.jar"/>
-    <pathelement location="${lib}/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib}/org.apache.crimson.jar"/>
+    <pathelement location="${lib}/ext/javax.servlet.jar"/>
+    <pathelement location="${lib}/ext/log4j-core.jar"/>
+    <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
     <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
-    <pathelement location="${lib}/mckoidb.jar"/>
+    <pathelement location="${lib}/ext/mckoidb.jar"/>
     <pathelement location="${jboss.dir}/lib/jmxri.jar"/>
     <pathelement location="${jboss.dir}/lib/ext/jboss.jar"/>
     <pathelement location="${jboss.dir}/lib/ext/jboss-j2ee.jar"/>

@@ -36,12 +36,12 @@ In some of the documentation in the web directory.
 <path id="tutorial.classpath">
   <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
   <pathelement location="${lib}/net.sf.tapestry.contrib_${framework.version}.jar"/>
-  <pathelement location="${lib}/javax.servlet.jar"/>
-  <pathelement location="${lib}/log4j-core.jar"/>
-  <pathelement location="${lib}/javax.xml.jaxp.jar"/>
-  <pathelement location="${lib}/org.apache.crimson.jar"/>
-  <pathelement location="${lib}/org.mortbay.jetty.jar"/>
-  <pathelement location="${lib}/ejb.jar"/>
+  <pathelement location="${lib}/ext/javax.servlet.jar"/>
+  <pathelement location="${lib}/ext/log4j-core.jar"/>
+  <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
+  <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
+  <pathelement location="${lib}/ext/org.mortbay.jetty.jar"/>
+  <pathelement location="${lib}/ext/ejb.jar"/>
 </path>
 
 <path id="full.classpath">
@@ -70,14 +70,12 @@ In some of the documentation in the web directory.
 <target name="clean-all" depends="clean"
   description="Cleans all subprojects and deletes installed frameworks and WARs.">
     <delete>
-    <fileset dir="${lib}">
-      <include name="*.war"/>
-      <include name="*.ear"/>
-      <include name="com.primix.tapestry_*.jar"/>
-      <include name="net.sf.tapestry.contrib_*.jar"/>
-      <include name="VlibBeans.jar"/>  
-   </fileset>
-  </delete>
+      <fileset dir="${lib}">
+      	<include name="*.jar"/>
+      	<include name="*.war"/>
+      	<include name="*.ear"/>
+      </fileset>
+    </delete>
 </target>
 
 <target name="install"
@@ -130,9 +128,8 @@ description="Builds the Tapestry documentation.">
      <exclude name="Readme.html"/>
      <include name="config/**"/>
      <include name="doc/**"/>
-     <include name="examples/**"/>
  	 <include name="junit/**"/>
-	 <include name="lib/*"/>
+	 <include name="lib/**"/>
 	 <include name="web/**"/>
      <!-- Exclude class files left around by IDEs. -->
      <exclude name="**/*.class"/>
@@ -180,6 +177,7 @@ description="Builds the Tapestry documentation.">
  	basedir="framework"/>
  <jar jarfile="${dist.dir}/src/net.sf.tapestry.contrib-src.jar"
  	basedir="contrib"/>
+ <jar jarfile="${dist.dir}/src/examples-src.jar" basedir="examples"/>
 
  <!-- Pack the directory (relative to ${dist}), into a TAR file.  We go to the extra work
       of building a .tar.gz because the disto is smaller than an equivalent .zip file.
@@ -234,8 +232,8 @@ description="Builds the Tapestry documentation.">
   
   <classpath>
   	<path refid="full.classpath"/>
-    <pathelement location="${lib}/mckoidb.jar"/>
-  	<pathelement location="${lib}/junit.jar"/>
+    <pathelement location="${lib}/ext/mckoidb.jar"/>
+  	<pathelement location="${lib}/ext/junit.jar"/>
   	<pathelement location="${jboss.dir}/lib/jboss-jdbc_ext.jar"/>
   	<pathelement location="${jboss.dir}/lib/ext/mail.jar"/>
     <pathelement location="${jboss.dir}/lib/jmxri.jar"/>
@@ -282,13 +280,13 @@ description="Builds the Tapestry documentation.">
 	    </fileset>
     </delete>
     
-    <copy todir="${jboss.dir}/lib/ext">
+    <copy todir="${jboss.dir}/lib/ext" flatten="true">
     	<fileset dir="${lib}">
     		<include name="net.sf.tapestry.contrib_${framework.version}.jar"/>
     		<include name="com.primix.tapestry_${framework.version}.jar"/>
-    		<include name="mckoidb.jar"/>
-    		<include name="org.mortbay.jetty.jar"/>
-    		<include name="javax.servlet.jar"/>
+    		<include name="ext/mckoidb.jar"/>
+    		<include name="ext/org.mortbay.jetty.jar"/>
+    		<include name="ext/javax.servlet.jar"/>
     	</fileset>
     	<fileset dir="config/jboss/lib">
     		<include name="*.jar"/>
