@@ -146,8 +146,8 @@ public class Border extends BaseComponent
 		Visit visit = (Visit)page.getEngine().getVisit();
 		
 		return (visit != null &&
-				visit.isUserLoggedIn() &&
-				visit.getUser().isAdmin());
+					visit.isUserLoggedIn() &&
+					visit.getUser().isAdmin());
 	}
 	
 	/**
@@ -173,19 +173,7 @@ public class Border extends BaseComponent
 			return WINDOW_TITLE + ": " + subtitle;
     }
 	
-	public IDirectListener getLoginListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect component, String[] context, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				login(cycle);
-			}
-		};
-	}
-	
-	private void login(IRequestCycle cycle)
+	public void login(IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		Login login = (Login)cycle.getPage("Login");
@@ -196,7 +184,7 @@ public class Border extends BaseComponent
 		
 		if (!page.getName().equals("Logout"))
 			login.setCallback(new PageCallback(page));
-
+		
 		cycle.setPage(login);
 	}
 	
@@ -239,20 +227,13 @@ public class Border extends BaseComponent
 	 *
 	 */
 	
-	public IDirectListener getEditProfileListener()
+	public void editProfile(IRequestCycle cycle)
 	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				EditProfile page;
-				
-				page = (EditProfile)cycle.getPage("EditProfile");
-				
-				page.beginEdit(cycle);
-			}
-		};
+		EditProfile page;
+		
+		page = (EditProfile)cycle.getPage("EditProfile");
+		
+		page.beginEdit(cycle);
 	}
 	
 	/**
@@ -260,23 +241,16 @@ public class Border extends BaseComponent
 	 *
 	 */
 	
-    public IDirectListener getAddNewBookListener()
+    public void addNewBook(IRequestCycle cycle)
     {
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				NewBook page = (NewBook)cycle.getPage("NewBook");
-				
-				// Setup defaults for the new book.
-				
-				page.getAttributes().put("lendable", Boolean.TRUE);
-				
-				cycle.setPage(page);
-			}
-		};
-    }
+		NewBook page = (NewBook)cycle.getPage("NewBook");
+		
+		// Setup defaults for the new book.
+		
+		page.getAttributes().put("lendable", Boolean.TRUE);
+		
+		cycle.setPage(page);
+	}
 	
 	public IAsset getSubheader()
 	{

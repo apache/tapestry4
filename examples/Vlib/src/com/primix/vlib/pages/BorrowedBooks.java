@@ -166,52 +166,16 @@ public class BorrowedBooks
 		return message;
 	}
 	
-	/**
-	 *  Listener that invokes the {@link EditProfile} page to allow a user
-	 *  to edit their name, etc.
-	 *
-	 */
-	
-	public IDirectListener getEditProfileListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				EditProfile page;
-				
-				page = (EditProfile)cycle.getPage("EditProfile");
-				
-				page.beginEdit(cycle);
-			}
-		};
-	}
-	
 	
     /**
 	 *  Listener used to return a book.
 	 *
 	 */
 	
-    public IDirectListener getReturnListener()
+    public void returnBook(String[] context, IRequestCycle cycle)
     {
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				Integer bookPK;
-				
-				bookPK = new Integer(context[0]);
-				
-				returnBook(bookPK);
-			}
-		};
-    }
-	
-    private void returnBook(Integer bookPK)
-    {
+		Integer bookPK = new Integer(context[0]);
+		
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		IOperations operations = vengine.getOperations();
 		

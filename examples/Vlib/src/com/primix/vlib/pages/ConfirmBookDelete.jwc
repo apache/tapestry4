@@ -14,12 +14,12 @@
   </component>
   
   <component id="yes" type="Direct">
-    <binding name="listener" property-path="deleteBookListener"/>
+    <binding name="listener" property-path="listeners.deleteBook"/>
     <binding name="context" property-path="bookPrimaryKey"/>
   </component>
   
   <component id="no" type="Page">
-    <static-binding name="page">MyBooks</static-binding>
+    <static-binding name="page">MyLibrary</static-binding>
   </component>
   
   

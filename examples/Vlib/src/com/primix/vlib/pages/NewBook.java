@@ -87,20 +87,8 @@ public class NewBook extends Protected
 		return cancel;
 	}
 	
-	public IActionListener getFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			{
-				// Add the book or set an error message.
-				
-				addBook(cycle);
-			}
-		};
-	}
 	
-	private void addBook(IRequestCycle cycle)
+	public void addBook(IRequestCycle cycle)
 	{
 		if (cancel)
 		{

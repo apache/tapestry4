@@ -56,12 +56,12 @@
   </component>
 
   <component id="edit" type="Direct">
-    <binding name="listener" property-path="editListener"/>
+    <binding name="listener" property-path="listeners.editBook"/>
     <binding name="context" property-path="currentBook.primaryKey"/>
   </component>
 
   <component id="delete" type="Direct">
-    <binding name="listener" property-path="deleteListener"/>
+    <binding name="listener" property-path="listeners.deleteBook"/>
     <binding name="context" property-path="currentBook.primaryKey"/>
   </component>
  

@@ -156,27 +156,14 @@ public class EditBook
 		cycle.setPage(this);	
 	}
 	
-
+	
 	
 	/**
 	 *  Used to update the book when the form is submitted.
 	 *
 	 */
 	
-	public IActionListener getFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			{
-				// Add the book or set an error message.
-				
-				updateBook(cycle);
-			}
-		};
-	}
-	
-	private void updateBook(IRequestCycle cycle)
+	public void formSubmit(IRequestCycle cycle)
 	{
 		if (cancel)
 		{

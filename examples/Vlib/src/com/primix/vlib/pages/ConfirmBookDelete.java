@@ -114,23 +114,10 @@ public class ConfirmBookDelete extends BasePage
 	 *
 	 */
 	
-	public IDirectListener getDeleteBookListener()
+	public void deleteBook(String[] context, IRequestCycle cycle)
 	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context, IRequestCycle cycle)
-			{
-				Integer bookPK;
-				
-				bookPK = new Integer(context[0]);
-				
-				deleteBook(bookPK, cycle);
-			}
-		};
-	}
-	
-	private void deleteBook(Integer bookPK, IRequestCycle cycle)
-	{
+		Integer bookPK = new Integer(context[0]);
+		
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		Book book = null;
 		

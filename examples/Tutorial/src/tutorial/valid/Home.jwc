@@ -11,7 +11,7 @@
   <component id="border" type="Border"/>
   <component id="showError" type="ShowError"/>
   <component id="form" type="Form">
-    <binding name="listener" property-path="formListener"/>
+    <binding name="listener" property-path="listeners.formListener"/>
   </component>
   <component id="labelString" type="FieldLabel">
     <binding name="field" property-path="components.inputString"/>

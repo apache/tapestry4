@@ -165,19 +165,7 @@ public class Register
 		field.refresh();
     }
 	
-	public IActionListener getFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				attemptRegister(cycle);
-			}
-		};
-	}
-	
-	private void attemptRegister(IRequestCycle cycle)
+	public void attemptRegister(IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		// Check for errors from the validating text fields

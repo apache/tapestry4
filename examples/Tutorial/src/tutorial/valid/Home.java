@@ -108,22 +108,10 @@ public class Home extends BasePage
 		return delegate;
 	}
 	
-	private void handleFormSubmit(IRequestCycle cycle)
+	public void formListener(IRequestCycle cycle)
 	{
 		if (error == null)
 			cycle.setPage("Show");
-	}
-	
-	public IActionListener getFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				handleFormSubmit(cycle);
-			}
-		};
 	}
 	
 	private IPropertySelectionModel colorModel;

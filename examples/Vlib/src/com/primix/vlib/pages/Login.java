@@ -161,7 +161,7 @@ public class Login
 	 *
 	 */
 	
-	private void attemptLogin(IRequestCycle cycle)
+	public void attemptLogin(IRequestCycle cycle)
 		throws RequestCycleException
 	{		
 		// An error, from a validation field, may already have occured.
@@ -197,24 +197,7 @@ public class Login
 		}
 	}
 	
-	
-	/**
-	 *  Invoked when the login form is submitted.
-	 *
-	 */
-	
-	public IActionListener getLoginFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				attemptLogin(cycle);
-			}
-		};
-	}
-	
+		
 	/**
 	 *  Sets up the {@link IPerson} as the logged in user, creates
 	 *  a cookie for thier email address (for subsequent logins),

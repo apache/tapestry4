@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<body>
+
+<p>Support classes that allows an object
+to expose listener <em>methods</em> instead of listener <em>properties</em>.
+
+<p>
+Normally, a listener property must be an object that implements either
+{@link com.primix.tapestry.IActionListener} or
+{@link com.primix.tapestry.IDirectListener}.  This can be cumbersome, in practice, as it
+typically involves creating an anonymous inner class.
+
+<p>
+Using this mechanism, classes can instead implement listener <em>methods</em>.
+A listener method takes one of two forms:
+
+<ul>
+	<li><code>public void <em>method-name</em>({@link com.primix.tapestry.IRequestCycle} cycle) 
+	<br>throws {@link com.primix.tapestry.RequestCycleException}</code>
+	<li><code>public void <em>method-name</em>(String[] context, 
+	{@link com.primix.tapestry.IRequestCycle} cycle)
+	<br>throws {@link com.primix.tapestry.RequestCycleException}</code>
+</ul>
+
+<p>The first option can act like either an {@link com.primix.tapestry.IActionListener} or
+a {@link com.primix.tapestry.IDirectListener}, the second must be a
+{@link com.primix.tapestry.IDirectListener}.  In both cases, the <code>throws</code>
+clause is optional.
+
+<p>Tapestry will create an appropriate listener object that will invoke the
+corresponding method.
+
+<p>The methods can be accessed using the property path "<code>listeners.<em>method-name</em></code>"
+
+@see com.primix.tapestry.listener.ListenerMap
+@see com.primix.tapestry.AbstractComponent#getListeners()
+@see com.primix.tapestry.engine.AbstractEngine#getListeners()
+
+@author Howard Ship <a href="mailto:hship@primix.com">hship@primix.com</a>
+@since 1.0.2
+</body>
+</html>

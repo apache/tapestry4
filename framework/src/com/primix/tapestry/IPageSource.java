@@ -79,7 +79,7 @@ public interface IPageSource
 	public IBinding getFieldBinding(String fieldName);
 	
 	/**
-	 *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
+	 *  Like {@link #getFieldBinding(String)}, except for static bindings.
 	 *
 	 * @since 1.0.2
 	 */

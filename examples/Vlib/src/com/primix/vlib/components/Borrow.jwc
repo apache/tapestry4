@@ -8,6 +8,6 @@
   </component>
   <component id="link" type="Direct">
     <binding name="context" property-path="book.primaryKey"/>
-    <binding name="listener" property-path="borrowListener"/>
+    <binding name="listener" property-path="listeners.borrow"/>
   </component>
 </specification>

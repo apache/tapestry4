@@ -12,9 +12,10 @@
   <component id="showError" type="ShowError"/>
 
   <component id="form" type="Form">
-    <binding name="listener" property-path="formListener"/>
+    <binding name="listener" property-path="listeners.attemptRegister"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
+  
   <component id="inputFirstName" type="TextField">
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">30</static-binding>

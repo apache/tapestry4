@@ -10,7 +10,7 @@
   </component>
   
   <component id="form" type="Form">
-    <binding name="listener" property-path="loginFormListener"/>
+    <binding name="listener" property-path="listeners.attemptLogin"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="showError" type="ShowError"/>

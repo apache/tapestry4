@@ -196,11 +196,25 @@ public class Shell extends AbstractComponent
 			writer.println();
 			writer.begin("head");
 			writer.println();
+			
+			writer.beginEmpty("meta");
+			writer.attribute("name", "generator");
+			writer.attribute("content", "Tapestry Web Application Framework");
+			writer.println();
+			
 			writer.begin("title");
 			
 			writer.print(title);
 			writer.end();  // title
 			writer.println();
+			
+			if (delegateBinding != null)
+			{
+				IRender delegate = (IRender)delegateBinding.getObject("delegate", IRender.class);
+				
+				if (delegate != null)
+					delegate.render(writer, cycle);
+			}
 			
 			if (stylesheet != null)
 			{
@@ -210,21 +224,8 @@ public class Shell extends AbstractComponent
 				writer.attribute("href", stylesheet.buildURL(cycle));
 				writer.println();
 			}
-			
-			writer.beginEmpty("meta");
-			writer.attribute("name", "generator");
-			writer.attribute("content", "Tapestry Web Application Framework");
-			writer.println();
-			
+						
 			writeRefresh(writer, cycle);
-			
-			if (delegateBinding != null)
-			{
-				IRender delegate = (IRender)delegateBinding.getObject("delegate", IRender.class);
-				
-				if (delegate != null)
-					delegate.render(writer, cycle);
-			}
 			
 			writer.end();  // head
 		}

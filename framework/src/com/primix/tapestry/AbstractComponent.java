@@ -32,6 +32,7 @@ import java.io.Serializable;
 import com.primix.tapestry.util.prop.*;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.*;
+import com.primix.tapestry.listener.*;
 import java.util.*;
 
 
@@ -132,6 +133,15 @@ public abstract class AbstractComponent implements IComponent
 	private Map assets;
 	private Map safeAssets;
 	
+	/**
+	 *  A mapping that allows public instance methods to be dressed up
+	 *  as {@link IActionListener} or {@link IDirectListener} listener
+	 *  objects.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	private ListenerMap listeners;
 	
     public void addAsset(String name, IAsset asset)
     {
@@ -816,5 +826,21 @@ public abstract class AbstractComponent implements IComponent
 		result.addAll(bindings.keySet());
 		
 		return result;
+	}
+	
+	/**
+	 *  Returns a {@link ListenerMap} for the component.  A {@link ListenerMap} contains a number of
+	 *  synthetic read-only properties that implement the {@link IActionListener} and/or {@link IDirectListener}
+	 *  interfaces, but in fact, cause public instance methods to be invoked.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	public ListenerMap getListeners()
+	{
+		if (listeners == null)
+			listeners = new ListenerMap(this);
+		
+		return listeners;
 	}
 }
