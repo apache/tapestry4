@@ -42,68 +42,69 @@ import org.apache.log4j.*;
  */
 
 public class BaseComponent
-extends AbstractComponent
+	extends AbstractComponent
 {
 	protected static final int OUTER_INIT_SIZE = 5;
 	protected int outerCount = 0;
 	protected IRender[] outer;
-
+	
 	private static final Category CAT  =
 		Category.getInstance(BaseComponent.class);
-
+	
 	/**
-	*  Adds an element as an outer element for the receiver.  Outer
-	*  elements are elements that should be directly rendered by the
-	*  receiver's <code>render()</code> method.  That is, they are
-	*  top-level elements on the HTML template.
-	*
-	*/
-
+	 *  Adds an element as an outer element for the receiver.  Outer
+	 *  elements are elements that should be directly rendered by the
+	 *  receiver's <code>render()</code> method.  That is, they are
+	 *  top-level elements on the HTML template.
+	 *
+	 */
+	
 	protected void addOuter(IRender element)
 	{
 		if (outer == null)
 		{
 			outer = new IRender[OUTER_INIT_SIZE];
 			outer[0] = element;
-
+			
 			outerCount = 1;
 			return;
 		}
-
+		
 		// No more room?  Make the array bigger.
-
+		
 		if (outerCount == outer.length)
 		{
 			IRender[] newOuter;
-
+			
 			newOuter = new IRender[outer.length * 2];
-
+			
 			System.arraycopy(outer, 0, newOuter, 0, outerCount);
-
+			
 			outer = newOuter;
 		}
-
+		
 		outer[outerCount++] = element;
 	}
-
+	
 	/**
-	*
-	* Reads the receiver's template and figures out which elements wrap which
-	* other elements.
-	*
-	* <P>This is coded as a single, big, ugly method for efficiency.
-	*/
-
+	 *
+	 * Reads the receiver's template and figures out which elements wrap which
+	 * other elements.
+	 *
+	 * <P>This is coded as a single, big, ugly method for efficiency.
+	 */
+	
 	protected void readTemplate(IPageLoader loader)
-	throws PageLoaderException
+		throws PageLoaderException
 	{
 		IComponent component;
 		ComponentTemplate componentTemplate;
 		Set seenIds = new HashSet();
-	
+		IPageSource pageSource = loader.getEngine().getPageSource();
+		
 		if (CAT.isDebugEnabled())
 			CAT.debug(this + " reading template");
-			
+		
 		try
 		{
 			ITemplateSource source = loader.getTemplateSource();
@@ -111,30 +112,30 @@ extends AbstractComponent
 		}
 		catch (ResourceUnavailableException ex)
 		{
-	    	throw new PageLoaderException("Unable to obtain template.", this, ex);
+			throw new PageLoaderException("Unable to obtain template.", this, ex);
 		}
-
+		
 		int count = componentTemplate.getTokenCount();
-
+		
 		// The stack can never be as large as the number of tokens, so this is safe.
-
+		
 		IComponent[] componentStack = new IComponent[count];
 		IComponent activeComponent = null;
 		int stackx = 0;
 		boolean check = true;
-
+		
 		for (int i = 0; i < count; i++)
 		{
 			TemplateToken token = componentTemplate.getToken(i);
 			TokenType type = token.getType();
-
+			
 			if (type == TokenType.TEXT)
 			{
 				// Get a render for the token.  This allows the token and the render
 				// to be shared across sessions.
-
+				
 				IRender element = token.getRender();
-
+				
 				if (activeComponent == null)
 					addOuter(element);
 				else
@@ -142,48 +143,48 @@ extends AbstractComponent
 					if (check)
 					{
 						check = false;
-
+						
 						if (!activeComponent.getSpecification().getAllowBody())
 							throw new BodylessComponentException(activeComponent);
 					}
-
+					
 					activeComponent.addWrapped(element);
 				}
-
+				
 				continue;
 			}
-
+			
 			// On an OPEN, we get the name
-
+			
 			if (type == TokenType.OPEN)
 			{
 				String id = token.getId();
-
+				
 				try
 				{
 					component = getComponent(id);
-
+					
 					check = true;
 				}
 				catch (NoSuchComponentException ex)
 				{
 					throw new PageLoaderException(
 						"Template for component " +
-						getExtendedId() +
-						" references undefined embedded component " +
-						id + ".", this,  ex);
+							getExtendedId() +
+							" references undefined embedded component " +
+							id + ".", this,  ex);
 				}
-
+				
 				// Make sure the template contains each component only once.
 				
 				if (seenIds.contains(id))
 					throw new PageLoaderException(
 						"Template for component " + getExtendedId() +
-						" contains multiple references to embedded component " +
-						id + ".", this);
-						
+							" contains multiple references to embedded component " +
+							id + ".", this);
+				
 				seenIds.add(id);
-
+				
 				if (activeComponent == null)
 					addOuter(component);
 				else
@@ -191,53 +192,79 @@ extends AbstractComponent
 					if (check)
 					{
 						check = false;
-
+						
+						// If you use a <jwc> tag in the template, you can get here.
+						// If you use a normal tag and a jwcid attribute, the
+						// body is automatically editted out.
+						
 						if (!activeComponent.getSpecification().getAllowBody())
 							throw new BodylessComponentException(activeComponent);
 					}
-
+					
 					activeComponent.addWrapped(component);
 				}
-
+				
+				addStaticBindings(component, token.getAttributes(), pageSource);
+				
 				componentStack[stackx++] = activeComponent;
-
+				
 				activeComponent = component;
-
+				
 				continue;
 			}
-
+			
 			if (type == TokenType.CLOSE)
 			{
 				try
 				{
 					activeComponent = componentStack[--stackx];
-
+					
 					check = true;
 				}
 				catch (IndexOutOfBoundsException e)
 				{
-					// Actually, the curent template parser is easy enough to confuse
-					// that this could happen because the <jwc> tag is poorly formatted.
-
+					// This is now almost impossible to reach, because the 
+					// TemplateParser does a great job of checking for most of these cases.
+					
 					throw new PageLoaderException(
 						"More </jwc> tags than <jwc> tags in template.", this);
 				}
 			}
 		}
-
+		
+		// This is also pretty much unreachable.
+		
 		if (stackx != 0)
 			throw new PageLoaderException(
 				"Not all <jwc> tags closed in template.",
 				this);
-
+		
 		checkAllComponentsReferenced(seenIds);
 		
 		if (CAT.isDebugEnabled())
 			CAT.debug(this + " finished reading template");
 	}
-
+	
+	private void addStaticBindings(IComponent component, Map attributes, IPageSource pageSource)
+	{
+		if (attributes == null || attributes.isEmpty())
+			return;
+		
+		Iterator i = attributes.entrySet().iterator();
+		while (i.hasNext())
+		{
+			Map.Entry e = (Map.Entry)i.next();
+			
+			String informalParameterName = (String)e.getKey();
+			String value = (String)e.getValue();
+			
+			IBinding binding = pageSource.getStaticBinding(value);
+			
+			component.setBinding(informalParameterName, binding);
+		}
+	}
 	private void checkAllComponentsReferenced(Set seenIds)
-	throws PageLoaderException
+		throws PageLoaderException
 	{
 		Set ids;
 		StringBuffer buffer;
@@ -290,7 +317,7 @@ extends AbstractComponent
 					buffer.append(" and ");
 				else
 					buffer.append(", ");
-					
+			
 			buffer.append(i.next());
 		}
 		
@@ -298,25 +325,25 @@ extends AbstractComponent
 		
 		throw new PageLoaderException(buffer.toString(), this);
 	}
-			
+	
 	/**
-	*  Renders the top level components contained by the receiver.
-	*
-	*/
-
+	 *  Renders the top level components contained by the receiver.
+	 *
+	 */
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		if (CAT.isDebugEnabled())
 			CAT.debug("Begin render " + getExtendedId());
-			
+		
 		for (int i = 0; i < outerCount; i++)
 			outer[i].render(writer, cycle);
-
+		
 		if (CAT.isDebugEnabled())
 			CAT.debug("End render " + getExtendedId());
 	}
-
+	
 	/**
 	 *  Loads the template for the component.  Subclasses must invoke this method first,
 	 *  before adding any additional behavior.

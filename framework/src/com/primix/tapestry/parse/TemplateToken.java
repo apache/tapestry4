@@ -29,6 +29,7 @@
 package com.primix.tapestry.parse;
 
 import com.primix.tapestry.*;
+import java.util.*;
 
 /**
  * A token parsed from a Tapestry HTML template.
@@ -51,6 +52,8 @@ public class TemplateToken
 	private int endIndex = -1;
 	
 	private IRender render;
+	
+	private Map attributes;
 	
 	/**
 	 *  Constructs a TEXT token with the given template data.
@@ -89,9 +92,20 @@ public class TemplateToken
 	
 	public TemplateToken(String id)
 	{
+		this(id, null);
+	}
+	
+	/**
+	 *  Contructs and OPEN token with the given id and attributes.
+	 *
+	 * @since 1.0.2
+	 */
+	
+	public TemplateToken(String id, Map attributes)
+	{
 		type = TokenType.OPEN;
-		
 		this.id = id;
+		this.attributes = attributes;
 	}
 	
 	public int getEndIndex()
@@ -144,6 +158,18 @@ public class TemplateToken
 		return type;
 	}
 	
+	/**
+	 *  Returns the attributes associated with an OPEN tag, which may
+	 *  be null.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	public Map getAttributes()
+	{
+		return attributes;
+	}
+	
 	public String toString()
 	{
 		StringBuffer buffer = new StringBuffer("TemplateToken[");
@@ -163,6 +189,30 @@ public class TemplateToken
 			
 			buffer.append(" end:");
 			buffer.append(endIndex);
+		}
+		
+		boolean first = true;
+		
+		if (attributes != null)
+		{
+			Iterator i = attributes.keySet().iterator();
+			
+			while (i.hasNext())
+			{
+				if (first)
+				{
+					buffer.append(" attributes: ");
+					first = false;
+				}
+				else
+					buffer.append(", ");
+				
+				Map.Entry e = (Map.Entry)i.next();
+				
+				buffer.append(e.getKey());
+				buffer.append('=');
+				buffer.append(e.getValue());
+			}				
 		}
 		
 		buffer.append(']');

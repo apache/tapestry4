@@ -241,7 +241,7 @@ public class PageSource
 	*
 	*/
 
-	public synchronized IBinding getFieldBinding(String fieldName)
+	public IBinding getFieldBinding(String fieldName)
 	{
 		IBinding result = null;
 
@@ -274,7 +274,7 @@ public class PageSource
 	*
 	*/
 
-	public synchronized IBinding getStaticBinding(String value)
+	public IBinding getStaticBinding(String value)
 	{
 		IBinding result = null;
 
@@ -302,7 +302,7 @@ public class PageSource
 		return result;
 	}
 
-	public synchronized IAsset getExternalAsset(String URL)
+	public IAsset getExternalAsset(String URL)
 	{
 		IAsset result = null;
 
@@ -329,7 +329,7 @@ public class PageSource
 		return result;
 	}
 
-	public synchronized IAsset getContextAsset(String assetPath)
+	public IAsset getContextAsset(String assetPath)
 	{
 		IAsset result = null;
 
@@ -357,7 +357,7 @@ public class PageSource
 
 	}
 
-	public synchronized IAsset getPrivateAsset(String resourcePath)
+	public IAsset getPrivateAsset(String resourcePath)
 	{
 		IAsset result = null;
 

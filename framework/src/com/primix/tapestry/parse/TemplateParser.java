@@ -36,7 +36,24 @@ import java.util.*;
  *  This parser supports the &lt;jwc id="<i>id</id>"&gt; syntax (standard
  *  through release 1.0.1).    In addition, any HTML tag can become
  *  the equivalent of a &lt;jwc&gt; tag by including a <code>jwcid</code>
- *  attribute.  In addition, this new parser edits out HTML comments.
+ *  attribute.
+ *
+ *  <p>The parser edits out HTML comments, removes
+ *  the body of some tags (when the corresponding component doesn't
+ *  allow a body), identifies more template errors, and allows
+ *  portions of the template to be completely removed.
+ *
+ *  <p>The parser does a more thorough lexical analysis of the template,
+ *  and reports a great number of errors, including improper nesting
+ *  of tags.
+ *
+ *  <p>The parser identifies attributes in dynamic tags (ordinary 
+ *  tags with the <code>jwcid</code> attribute) and records them,
+ *  where they later become static bindings on the component.
+ *
+ *  <p>Although the &lt;jwc&gt; tag is still supported (and will always
+ *  be), it can now be avoided by using the jwcid attribute on
+ *  existing tags, such as &lt;span&gt;.
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -45,6 +62,31 @@ import java.util.*;
 
 public class TemplateParser
 {
+	/**
+	 *  A "magic" component id that causes the tag with the id and its entire
+	 *  body to be ignored during parsing.
+	 *
+	 */
+	
+	private static final String REMOVE_ID = "$remove$";
+	
+	/**
+	 * A "magic" component id that causes the tag to represent the true
+	 * content of the template.  Any content prior to the tag is discarded,
+	 * and any content after the tag is ignored.  The tag itself is not
+	 * included.
+	 *
+	 */
+	
+	private static final String CONTENT_ID = "$content$";
+	
+	private ITemplateParserDelegate delegate;
+	
+	/**
+	 *  Identifies the template being parsed; used with error messages.
+	 *
+	 */
+	
 	private String resourcePath;
 	
 	/**
@@ -63,13 +105,27 @@ public class TemplateParser
 	
 	private static class Tag
 	{
+		// The element, i.e., <jwc> or virtually any other element (via jwcid attribute)
 		String tagId;
-		boolean dynamic;
+		// If true, the tag is a placeholder for a dynamic element
+		boolean component;
+		// If true, the body of the tag is being ignored, and the
+		// ignore flag is cleared when the close tag is reached
+		boolean ignoringBody;
+		// If true, then the entire tag (and its body) is being ignored
+		boolean removeTag;
+		// If true, then the tag must have a balanced closing tag.
+		// This is always true for components.
+		boolean mustBalance;
+		// The line on which the start tag exists
+		int line;
+		// If true, then the parse ends when the closing tag is found.
+		boolean content;
 		
-		Tag(String tagId, boolean dynamic)
+		Tag(String tagId, int line)
 		{
 			this.tagId = tagId;
-			this.dynamic = dynamic;
+			this.line = line;
 		}
 		
 		boolean match(String matchTagId)
@@ -109,16 +165,41 @@ public class TemplateParser
 	private int line;
 	
 	/**
+	 *  Set to true when the body of a tag is being ignored.  This is typically
+	 *  used to skip over the body of a tag when its corresponding
+	 *  component doesn't allow a body, or whe the special
+	 *  jwcid of $remove$ is used.
+	 *
+	 */
+	
+	private boolean ignoring;
+	
+	
+	/**
+	 *  A {@link Map} of {@link Strings}, used to store attributes collected
+	 *  while parsing a tag.
+	 *
+	 */
+	
+	private Map attributes = new HashMap();
+	
+	/**
 	 *  Parses the template data into an array of {@link TemplateToken}s.
+	 *
+	 *  <p>The parser is very much not threadsafe, so care should be taken
+	 *  that only a single thread accesses it.
 	 *
 	 *  @param templateData the HTML template to parse.  Some tokens will hold
 	 *  a reference to this array.
+	 *  @param delegate delegate object that "knows" about components
 	 *  @param resourcePath a description of where the template originated from,
 	 *  used with error messages.
 	 *
 	 */
 	
-	public TemplateToken[] parse(char[] templateData, String resourcePath)
+	public TemplateToken[] parse(char[] templateData, 
+			ITemplateParserDelegate delegate,
+			String resourcePath)
 		throws TemplateParseException
 	{
 		TemplateToken[] result = null;
@@ -127,6 +208,8 @@ public class TemplateParser
 		{
 			this.templateData = templateData;
 			this.resourcePath = resourcePath;
+			this.delegate = delegate;
+			ignoring = false;
 			line = 1;
 			
 			parse();
@@ -135,10 +218,12 @@ public class TemplateParser
 		}
 		finally
 		{
+			this.delegate = null;
 			this.templateData = null;
 			this.resourcePath = null;
 			stack.clear();
 			tokens.clear();
+			attributes.clear();
 		}
 		
 		return result;
@@ -158,7 +243,7 @@ public class TemplateParser
 				if (templateData[cursor + i] != match[i])
 					return false;
 			}
-	
+			
 			// Every character matched.
 			
 			return true;
@@ -173,7 +258,7 @@ public class TemplateParser
 	private static final char[] COMMENT_END = new char[] { '-', '-', '>' };
 	private static final char[] CLOSE_TAG = new char[] { '<', '/' };
 	private static final char[] CLOSE_EMPTY_TAG = new char[] { '/', '>'};
-
+	
 	private void parse()
 		throws TemplateParseException
 	{
@@ -185,7 +270,7 @@ public class TemplateParser
 		{
 			if (templateData[cursor] != '<')
 			{
-				if (blockStart < 0)
+				if (blockStart < 0 && !ignoring)
 					blockStart = cursor;
 				
 				advance();
@@ -223,18 +308,29 @@ public class TemplateParser
 		addTextToken(templateData.length - 1);
 	}
 	
+	/**
+	 *  Advance forward in the document until the end of the comment is reached.
+	 *  In addition, skip any whitespace following the comment.
+	 *
+	 */
+	
 	private void skipComment()
 		throws TemplateParseException
 	{
 		int length = templateData.length;
 		int startLine = line;
 		
-		while (cursor < length)
+		while (true)
 		{
+			if (cursor >= length)
+				throw new TemplateParseException(
+					"Comment on line " + startLine + " did not end.",
+					startLine, resourcePath);
+			
 			if (lookahead(COMMENT_END))
 			{
 				cursor += COMMENT_END.length;
-				return;
+				break;
 			}
 			
 			// Not the end of the comment, advance over it.
@@ -242,9 +338,15 @@ public class TemplateParser
 			advance();
 		}
 		
-		throw new TemplateParseException(
-			"Comment on line " + startLine + " did not end.",
-			startLine, resourcePath);
+		// Ok, advance over any whitespace.
+		
+		while (cursor < length)
+		{
+			if (Character.isWhitespace(templateData[cursor]))
+				advance();
+			else
+				break;
+		}
 	}
 	
 	private void addTextToken(int end)
@@ -254,7 +356,7 @@ public class TemplateParser
 		if (blockStart < 0)
 			return;
 		
-		if (blockStart != end)
+		if (blockStart <= end)
 		{
 			TemplateToken token = new TemplateToken(templateData, blockStart, end);
 			
@@ -304,11 +406,12 @@ public class TemplateParser
 		String jwcIdAttributeName = 
 			isJwcTag ? "id" : "jwcid";
 		String attributeName = null;
-		String attributeValue = null;
 		int attributeNameStart = -1;
 		int attributeValueStart = -1;
 		int state = WAIT_FOR_ATTRIBUTE_NAME;
 		char quoteChar = 0;
+		
+		attributes.clear();
 		
 		// Collect each attribute
 		
@@ -369,6 +472,12 @@ public class TemplateParser
 					if (ch == '=' || ch == '/' || ch == '>' || Character.isWhitespace(ch))
 					{
 						attributeName = new String(templateData, attributeNameStart, cursor - attributeNameStart);
+						
+						if (isJwcTag && !attributeName.equalsIgnoreCase(jwcIdAttributeName))
+							throw new TemplateParseException(
+								"Tag <" + tagId + "> on line " + startLine + " may only contain attribute '" +
+									jwcIdAttributeName + "'.", startLine, resourcePath);
+						
 						state = ADVANCE_PAST_EQUALS;
 						break;
 					}
@@ -453,12 +562,14 @@ public class TemplateParser
 					
 					if (ch == quoteChar)
 					{
-						// We only care about the attribute value if the
-						// attribute is interesting.
+						String attributeValue = new String(templateData, attributeValueStart,
+								cursor - attributeValueStart);
 						
 						if (attributeName.equalsIgnoreCase(jwcIdAttributeName))
-							jwcId = new String(templateData, attributeValueStart,
-									cursor - attributeValueStart);
+							jwcId = attributeValue;
+						else
+							attributes.put(attributeName, attributeValue);
+						
 						
 						// Advance over the quote.
 						advance();
@@ -476,9 +587,13 @@ public class TemplateParser
 					
 					if (ch == '/' || ch== '>' || Character.isWhitespace(ch))
 					{
+						String attributeValue = new String(templateData, attributeValueStart,
+								cursor - attributeValueStart);
+						
 						if (attributeName.equalsIgnoreCase(jwcIdAttributeName))
-							jwcId = new String(templateData, attributeValueStart,
-									cursor - attributeValueStart);
+							jwcId = attributeValue;
+						else
+							attributes.put(attributeName, attributeValue);
 						
 						state = WAIT_FOR_ATTRIBUTE_NAME;
 						break;
@@ -496,47 +611,117 @@ public class TemplateParser
 		
 		if (jwcId != null)
 		{
+			if (jwcId.equalsIgnoreCase(CONTENT_ID))
+			{
+				if (ignoring)
+					throw new TemplateParseException(
+						"Tag <" + tagId + "> on line " + startLine + 
+							" is the template content, and may not be in an ignored block.",
+						startLine, resourcePath);
+				
+				if (emptyTag)
+					throw new TemplateParseException(
+						"Tag <" + tagId + "> on line " + startLine + 
+							" is the template content, and may not be empty.",
+						startLine, resourcePath);
+				
+				tokens.clear();
+				blockStart = -1;
+				
+				Tag tag = new Tag(tagId, startLine);
+
+				tag.mustBalance = true;
+				tag.content = true;
+				
+				stack.clear();
+				stack.add(tag);
+				
+				advance();
+				
+				return;
+			}
+			
+			boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
+			
+			if (!(isRemoveId || delegate.getKnownComponent(jwcId)))
+				throw new TemplateParseException(
+					"Tag <" + tagId + "> on line " + startLine +
+						" references unknown component id '" + jwcId + "'.",
+					startLine, resourcePath);
+			
+			if (ignoring && !isRemoveId)
+				throw new TemplateParseException(
+					"Tag <" + tagId + "> on line " + startLine + 
+						" is a dynamic component, and may not appear inside an ignored block.", startLine, resourcePath);
+			
+			
+			// Ignore the body if we're removing the entire tag,
+			// of if the corresponding component doesn't allow
+			// a body.
+			
+			boolean ignoreBody =
+				!emptyTag && (isRemoveId || !delegate.getAllowBody(jwcId));
+			
+			if (ignoring && ignoreBody)
+				throw new TemplateParseException(
+					"Tag <" + tagId + "> on line " + startLine +
+						" should be ignored, but is already inside an ignored block (ignored blocks may not be nested).",
+					startLine, resourcePath);
+			
 			if (!emptyTag)
-				push(tagId, true);
+			{
+				Tag tag = new Tag(tagId, startLine);
+				
+				tag.component = !isRemoveId;
+				tag.removeTag = isRemoveId;
+				
+				
+				tag.ignoringBody = ignoreBody;
+				
+				ignoring = tag.ignoringBody;
+				
+				tag.mustBalance = true;
+				
+				stack.add(tag);
+			}
 			
 			// End any open block.
 			
 			addTextToken(cursorStart - 1);
 			
-			tokens.add(new TemplateToken(jwcId));
-			
-			if (emptyTag)
-				tokens.add(new TemplateToken(TokenType.CLOSE));
+			if (!isRemoveId)
+			{
+				if (attributes.isEmpty())
+					tokens.add(new TemplateToken(jwcId));
+				else
+					tokens.add(new TemplateToken(jwcId, new HashMap(attributes)));
+				
+				if (emptyTag)
+					tokens.add(new TemplateToken(TokenType.CLOSE));
+			}
 			
 			advance();
 			
 			return;
 		}
 		
-		// A static tag (not a <jwc> tag, or an ordinary tag with a jwcid attribute).
+		// A static tag (not a <jwc> tag, or an ordinary tag without a jwcid attribute).
 		// We need to record this so that we can match close tags later.
 		
 		if (!emptyTag)
-			push(tagId, false);
+		{
+			Tag tag = new Tag(tagId, startLine);
+			stack.add(tag);
+		}
 		
 		// If there wasn't an active block, then start one.
 		
-		if (blockStart < 0)
+		if (blockStart < 0 && !ignoring)
 			blockStart = cursorStart;
 		
 		advance();
 	}
 	
-	/**
-	 *  Pushes a tag onto the stack of open tags.
-	 *
-	 */
-	
-	private void push(String tagId, boolean dynamic)
-	{
-		Tag tag = new Tag(tagId, dynamic);
-		stack.add(tag);
-	}
 	
 	/**
 	 *  Invoked to handle a closing tag, i.e., &lt;/foo&gt;.  When a tag closes, it will match against
@@ -589,6 +774,12 @@ public class TemplateParser
 			if (tag.match(tagId))
 				break;
 			
+			if (tag.mustBalance)
+				throw new TemplateParseException(
+					"Closing tag </" + tagId + "> on line " + startLine +
+						" is improperly nested with tag <" + tag.tagId + "> on line " + tag.line + ".",
+					startLine, resourcePath);
+			
 			stackPos--;
 		}
 		
@@ -597,7 +788,21 @@ public class TemplateParser
 				"Closing tag </" + tagId + "> on line " + startLine +
 					" does not have a matching opening tag.", startLine, resourcePath);
 		
-		if (tag.dynamic)
+		// Special case for the content tag
+		
+		if (tag.content)
+		{
+			addTextToken(cursorStart - 1);
+			
+			// Advance the cursor right to the end.
+			
+			cursor = length;
+			stack.clear();
+			return;
+		}
+		
+		// When a component closes, add a CLOSE tag.
+		if (tag.component)
 		{
 			addTextToken(cursorStart - 1);
 			
@@ -605,7 +810,10 @@ public class TemplateParser
 		}
 		else
 		{
-			if (blockStart < 0)
+			// The close of a static tag.  Unless removing the tag
+			// entirely, make sure the block tag is part of a text block.
+			
+			if (blockStart < 0 && ! tag.removeTag && !ignoring)
 				blockStart = cursorStart;
 		}
 		
@@ -617,6 +825,12 @@ public class TemplateParser
 		// Advance cursor past '>'
 		
 		advance();
+		
+		// If we were ignoring the body of the tag, then clear the ignoring
+		// flag, since we're out of the body.
+		
+		if (tag.ignoringBody)
+			ignoring = false;
 	}
 	
 	/**

@@ -31,6 +31,7 @@ package com.primix.tapestry.engine;
 import com.primix.tapestry.*;
 import com.primix.tapestry.parse.*;
 import com.primix.tapestry.util.*;
+import com.primix.tapestry.spec.*;
 import java.io.*;
 import java.util.*;
 import java.net.URL;
@@ -79,6 +80,36 @@ implements ITemplateSource
 	private IResourceResolver resolver;
 	private TemplateParser parser;
 
+	private static class ParserDelegate
+		implements ITemplateParserDelegate
+	{
+		IComponent component;
+		
+		ParserDelegate(IComponent component)
+		{
+			this.component = component;
+		}
+		
+		public boolean getKnownComponent(String componentId)
+		{
+			try
+			{
+				component.getComponent(componentId);
+				
+				return true;
+			}
+			catch (NoSuchComponentException ex)
+			{
+				return false;
+			}
+		}
+		
+		public boolean getAllowBody(String componentId)
+		{
+			return component.getComponent(componentId).getSpecification().getAllowBody();
+		}
+	}
+	
 	public DefaultTemplateSource(IResourceResolver resolver)
 	{
         this.resolver = resolver;
@@ -106,25 +137,19 @@ implements ITemplateSource
 	public ComponentTemplate getTemplate(IComponent component)
 	throws ResourceUnavailableException
 	{
-		String specificationResourcePath;
-		ComponentTemplate result;
-        Object key;
-        Locale locale;
+	ComponentSpecification specification = component.getSpecification();
+		String specificationResourcePath = specification.getSpecificationResourcePath();
+       Locale locale = component.getPage().getLocale();
 
-		specificationResourcePath = 
-		    component.getSpecification().getSpecificationResourcePath();
-
-        locale = component.getPage().getLocale();
-
-        key = new MultiKey(new Object[] 
+        Object key = new MultiKey(new Object[] 
         { specificationResourcePath, locale
         }, false);
 
-        result = searchCache(key);
+        ComponentTemplate result = searchCache(key);
         if (result != null)
             return result;
 
-        result = findTemplate(specificationResourcePath, locale);
+        result = findTemplate(specificationResourcePath, component, locale);
 
         if (result == null)
         {
@@ -183,7 +208,9 @@ implements ITemplateSource
      *
      */
 
-    private ComponentTemplate findTemplate(String specificationResourcePath, Locale locale)
+    private ComponentTemplate findTemplate(String specificationResourcePath, 
+			IComponent component,
+			Locale locale)
     throws ResourceUnavailableException
     {
         int dotx;
@@ -266,7 +293,7 @@ implements ITemplateSource
         
                 // Ok, see if it exists.
 
-                result = parseTemplate(candidatePath);
+                result = parseTemplate(candidatePath, component);
 
                 if (result != null)
                 {
@@ -281,30 +308,34 @@ implements ITemplateSource
     
     /**
      *  Reads the template for the given resource; returns null if the
-     *  resource doesn't exist.
+     *  resource doesn't exist.  Note that this method is only invoked
+	 *  from a synchronized block, so there shouldn't be threading
+	 *  issues here.
      *
      */
 
-	private ComponentTemplate parseTemplate(String resourceName)
+	private ComponentTemplate parseTemplate(String resourceName,
+		IComponent component)
 	throws ResourceUnavailableException
 	{
-		char[] templateData;
 		TemplateToken[] tokens;
 
-		templateData = readTemplate(resourceName);
+		char[] templateData = readTemplate(resourceName);
         if (templateData == null)
             return null;
 
 		if (parser == null)
 			parser = new TemplateParser();
 
+		ITemplateParserDelegate delegate = new ParserDelegate(component);
+		
 		// Once we have the template data in memory, the parse will always be successful.
 		// In the future, the parser may be more complicated and will be able to
 		// detect errors in the template data.
 
 		try
 		{
-			tokens = parser.parse(templateData, resourceName);
+			tokens = parser.parse(templateData, delegate, resourceName);
 		}
 		catch (TemplateParseException ex)
 		{

@@ -43,28 +43,76 @@ package com.primix.tapestry;
 public interface IPageSource
 {
     /**
-     *  Gets a given page for the engine.  This may involve using a previously
-     *  loaded page from a pool of available pages, or the page may be loaded as needed.
-     *
-     */
- 
+	 *  Gets a given page for the engine.  This may involve using a previously
+	 *  loaded page from a pool of available pages, or the page may be loaded as needed.
+	 *
+	 */
+	
     public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
-    throws PageLoaderException;
-
+		throws PageLoaderException;
+	
     /**
-     *  Invoked after the engine is done with the page
-     *  (typically, after the response to the client has been sent).
-     *  The page is returned to the pool for later reuse.
-     *
-     */
- 
+	 *  Invoked after the engine is done with the page
+	 *  (typically, after the response to the client has been sent).
+	 *  The page is returned to the pool for later reuse.
+	 *
+	 */
+	
     public void releasePage(IPage page);
-
+	
     /**
-     *  Invoked to have the source clear any internal cache.  This is most often
-     *  used when debugging an application.
-     *
-     */
-
+	 *  Invoked to have the source clear any internal cache.  This is most often
+	 *  used when debugging an application.
+	 *
+	 */
+	
     public void reset();
+	
+	/**
+	 *  Gets a field binding for the named field (the name includes the class name
+	 *  and the field).  If no such binding exists, then one is created, otherwise
+	 *  the existing binding is returned. 
+	 *
+	 * @since 1.0.2
+	 */
+	
+	public IBinding getFieldBinding(String fieldName);
+	
+	/**
+	 *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
+	 *
+	 * @since 1.0.2
+	 */
+	
+	public IBinding getStaticBinding(String value);
+	
+	/**
+	 *  Gets a cached asset.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	public IAsset getExternalAsset(String URL);
+	
+	
+	
+	
+	/**
+	 *  Gets a cached asset.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	public IAsset getContextAsset(String assetPath);
+	
+	/**
+	 *  Gets a cached asset.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	public IAsset getPrivateAsset(String resourcePath);
 }

@@ -25,6 +25,8 @@ INSTALL_DIR = ../../lib
 
 CONTEXT_RESOURCES = index.html images
 
+RESOURCE_EXTENSIONS = application properties html jwc script gif
+
 include $(SYS_MAKEFILE_DIR)/War.mk
 
 # Include FINAL_SOURCE_DIR first on the classpath, 
