@@ -8,12 +8,6 @@
 	
   <bean name="delegate" class="com.primix.tapestry.inspector.InspectorValidationDelegate"/>
   
-  <bean name="requiredString" class="com.primix.tapestry.valid.StringValidator">
-    <set-property name="required">
-    	<field-value field-name="Boolean.TRUE"/>
-    </set-property>
-  </bean>
-    	
   <bean name="categoryClass" class="com.primix.tapestry.inspector.EvenOdd">
     <set-property name="even">
       <static-value type="boolean">false</static-value>
@@ -62,7 +56,7 @@
   <component id="inputNewCategory" type="ValidField">
     <static-binding name="displayName">New Category</static-binding>
     <binding name="delegate" property-path="beans.delegate"/>
-    <binding name="validator" property-path="beans.requiredString"/>
+    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
     <binding name="value" property-path="newCategory"/>
   </component>
   
