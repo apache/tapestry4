@@ -184,17 +184,12 @@ This example uses the <A href="../api/org/apache/tapestry/asset/ExternalAsset.ht
 &lt;/table&gt;
 
 
-public class NewsItemPage extends BasePage {
-    public static final SimpleDateFormat DATE_FORMAT =
-        new SimpleDateFormat("dd MMM yyyy");
-        
-    private NewsItem newsItem;
-    
-    public NewsItem getNewsItem () { return newsItem; }
-    
-    protected void initialize() {
-        newsItem = null;
-    }
+&lt;property-specification name=&quot;orderItem&quot; type=&quot;com.dsconsulting.cms.model.NewsItem&quot; persistent=&quot;no&quot;/&gt;<br>
+
+public abstract class NewsItemPage extends BasePage {
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy");
+
+    public abstract NewsItem getNewsItem();
 }
 
 public class NewsItem implements Serializable {
@@ -221,7 +216,7 @@ public class NewsItem implements Serializable {
 
     public String getDate() { return date; }
 
-    public IAsset getImageAsset() { return new <A href="../api/org/apache/tapestry/asset/ExternalAsset.html"><tt>ExternalAsset</tt></a>(imageURL); }    
+    public IAsset getImageAsset() { return new <A href="../api/org/apache/tapestry/asset/ExternalAsset.html"><tt>ExternalAsset</tt></a>(imageURL, null); }    
 }
 </pre>
           </td>
