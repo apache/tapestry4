@@ -76,7 +76,7 @@ public class ResourceDigestSourceImpl implements ResourceDigestSource, ResetEven
 
         try
         {
-            MessageDigest digest = MessageDigest.getInstance("DIGEST");
+            MessageDigest digest = MessageDigest.getInstance("MD5");
 
             stream = new BufferedInputStream(url.openStream());
 

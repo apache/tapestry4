@@ -37,7 +37,7 @@
 		
 		<assert-output name="Private Asset">
 <![CDATA[
-/mock/app?md5=a87e71b10295ea577a18c087e8cc035d&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fimages%2FPrivateAsset.gif&amp;service=asset		
+/mock/app?digest=a87e71b10295ea577a18c087e8cc035d&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fimages%2FPrivateAsset.gif&amp;service=asset		
 ]]>
 		</assert-output>
 		
