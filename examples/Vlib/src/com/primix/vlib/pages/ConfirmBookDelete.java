@@ -40,7 +40,7 @@ import com.primix.tapestry.util.prop.*;
 /**
  * Presents a confirmation page before deleting a book.  If the user
  * selects "yes", the book is deleted; otherwise the user is returned
- * to the {@link MyBooks} page.
+ * to the {@link MyLibrary} page.
  *
  * @author Howard Ship
  * @version $Id$
@@ -71,7 +71,7 @@ public class ConfirmBookDelete extends BasePage
 	}
 	
 	/** 
-	 * Invoked (by {@link MyBooks}) to select a book to be
+	 * Invoked (by {@link MyLibrary}) to select a book to be
 	 * deleted.  This method sets the temporary page properties
 	 * (bookPrimaryKey and bookTitle) and invoked {@link IRequestCycle#setPage(IPage)}.
 	 *
@@ -141,6 +141,6 @@ public class ConfirmBookDelete extends BasePage
 			throw new ApplicationRuntimeException(e);
 		}
 		
-		cycle.setPage("MyBooks");		
+		cycle.setPage("MyLibrary");		
 	}
 }

@@ -106,7 +106,7 @@ extends Protected
 	}	
 	
 	/**
-	 *  Invoked (from {@link MyBooks}) to begin editting the user's
+	 *  Invoked (from {@link MyLibrary}) to begin editting the user's
 	 *  profile.  We get the entity attributes from the {@link IPerson},
 	 *  and store them in the attributes page property, ready to provide
 	 *  default values to the {@link ValidatingTextField} components.
@@ -134,7 +134,7 @@ extends Protected
 	/**
 	 *  Invoked when the form is submitted, validates the form and
 	 *  updates the {@link IPerson} for the user, before returning
-	 *  to {@link MyBooks}.
+	 *  to {@link MyLibrary}.
 	 *
 	 */
 	 
@@ -155,7 +155,7 @@ extends Protected
 	{
 		if (cancel)
 		{
-			cycle.setPage("MyBooks");
+			cycle.setPage("MyLibrary");
 			return;
 		}
 		
@@ -209,7 +209,7 @@ extends Protected
 		
 		visit.clearCache();
 		
-		cycle.setPage("MyBooks");
+		cycle.setPage("MyLibrary");
 	}
 	
     private void resetPasswords()

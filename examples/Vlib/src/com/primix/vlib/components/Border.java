@@ -35,7 +35,7 @@ import com.primix.vlib.pages.*;
 
 /**
  *  The standard Border component, which provides the title of the page,
- *  the link to {@link MyBooks}, the {@link Login} page and the {@link Logout}
+ *  the link to {@link MyLibrary}, the {@link Login} page and the {@link Logout}
  *  page.
  *
  * @author Howard Ship

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Ship//Tapestry Specification 1.1//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+
+<specification class="com.primix.vlib.pages.BorrowedBooks">
+
+  <component id="border" type="Border">
+    <static-binding name="title">Borrowed Books</static-binding>
+  </component>
+
+  <component id="showError" type="ShowError"/>
+
+  <component id="showMessage" type="ShowMessage"/>
+
+  <component id="ifShowBorrowedBooks" type="Conditional">
+      <binding name="condition" property-path="components.browser.resultCount"/>
+  </component>
+  
+  <component id="ifNoBorrowedBooks" copy-of="ifShowBorrowedBooks">
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="browser" type="Browser">
+  	<binding name="query" property-path="borrowedQuery"/>
+  </component>
+  
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="components.browser.pageResults"/>
+    <binding name="value" property-path="currentBook"/>
+  </component>
+  
+  <component id="bookLink" type="BookLink">
+    <binding name="book" property-path="currentBook"/>
+  </component>
+  
+  <component id="insertAuthor" type="Insert">
+    <binding name="value" property-path="currentBook.author"/>
+  </component>
+  
+  <component id="insertPublisher" type="Insert">
+    <binding name="value" property-path="currentBook.publisherName"/>
+  </component>
+  
+  <component id="ownerLink" type="PersonLink">
+    <binding name="name" property-path="currentBook.ownerName"/>
+    <binding name="primaryKey" property-path="currentBook.ownerPrimaryKey"/>
+  </component>
+  
+  <component id="return" type="Direct">
+    <binding name="context" property-path="currentBook.primaryKey"/>
+    <binding name="listener" property-path="returnListener"/>
+  </component>
+
+</specification>
