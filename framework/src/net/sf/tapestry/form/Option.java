@@ -34,46 +34,11 @@ import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.Tapestry;
 
 /**
- *  Implements a component that manages an HTML &lt;option&gt; form element.
+ *  A component that renders an HTML &lt;option&gt; form element.
  *  Such a component must be wrapped (possibly indirectly)
  *  inside a {@link Select} component.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Read / Write </td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *
- * <tr>
- *		<td>selected</td>
- *		<td>java.lang.Boolean</td>
- *		<td>R / W </td>
- *		<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>Used to indicate whether the given option is selected.
- *		</td>
- *	</tr>
- *
- *  <tr>
- *		<td>label</td>
- *		<td>java.lang.String</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>A string which represents the option that may be selected.  This is optional;
- *		any text that follows the &lt;option&gt; tag is considered the label, but this
- *      saves the designed from including one more 
- *      {@link net.sf.tapestry.components.Insert} component.
- *		</td>
- *	</tr>
- *	</table>
- *
- *  <p>Allows informal parameters, but may not contain a body.
+ *  [<a href="../../../../../ComponentReference/Option.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -82,13 +47,13 @@ import net.sf.tapestry.Tapestry;
 
 public class Option extends AbstractComponent
 {
-    private IBinding selectedBinding;
-	private String label;
+    private IBinding _selectedBinding;
+	private String _label;
 
 
     public IBinding getSelectedBinding()
     {
-        return selectedBinding;
+        return _selectedBinding;
     }
 
     /**
@@ -128,7 +93,7 @@ public class Option extends AbstractComponent
         if (rewinding)
         {
             if (!select.isDisabled())
-                selectedBinding.setBoolean(select.isSelected(value));
+                _selectedBinding.setBoolean(select.isSelected(value));
         }
         else
         {
@@ -136,13 +101,13 @@ public class Option extends AbstractComponent
 
             writer.attribute("value", value);
 
-            if (selectedBinding.getBoolean())
+            if (_selectedBinding.getBoolean())
                 writer.attribute("selected");
 
             generateAttributes(writer, cycle);
 
-            if (label != null) 
-                writer.print(label);
+            if (_label != null) 
+                writer.print(_label);
 
             writer.println();
         }
@@ -151,16 +116,16 @@ public class Option extends AbstractComponent
 
     public void setSelectedBinding(IBinding value)
     {
-        selectedBinding = value;
+        _selectedBinding = value;
     }
     public String getLabel()
     {
-        return label;
+        return _label;
     }
 
     public void setLabel(String label)
     {
-        this.label = label;
+        this._label = label;
     }
 
 }

@@ -36,84 +36,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  A component for creating a navigation link to another page, 
  *  using the page service.
  *
- *
- *  <table border=1>
- *  <tr> 
- *  <th>Parameter</th> 
- *  <th>Type</th> 
- *  <th>Direction</th> 
- *  <th>Required</th> 
- *  <th>Default</th> 
- *  <th>Description</th>
- *  </tr>
- *
- * <tr>
- *        <td>page</td>
- *        <td>java.lang.String</td>
- *        <td>R</td>
- *        <td>yes</td>
- *        <td>&nbsp;</td>
- *        <td>The name of a page to link to.</td>  </tr>
- *
- * <tr>
- *   <td>disabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
- *   <td>Controls whether the link is produced.  If disabled, the portion of the template
- *  the link surrounds is still rendered, but not the link itself.
- * 
- * <p>Under the new namespace scheme, to create a link to a page
- *  in a library, you must provide the libraries namespace prefix.
- *  </td></tr>
- *
- * <tr>
- *        <td>namespace</td>
- *        <td>{@link net.sf.tapestry.INamespace}</td>
- *        <td>R</td>
- *        <td>no</td>
- *        <td>&nbsp;</td>
- *        <td>If specified, the namespace's prefix
- * is prefixed (with a colon) to the page.  This is primarily
- *  used when pages (or components) in a namespace need
- *  to create links to other pages inside the same
- *  namespace.  </td>  </tr>
- * <tr>
- *        <td>scheme</td>
- *        <td>java.lang.String</td>
- *        <td>R</td>
- *        <td>no</td>
- *        <td>&nbsp;</td>
- *        <td>If specified, then a longer URL (including scheme, server and possibly port)
- * is generated using the specified scheme. Server is determined fromt he incoming request,
- * and port is deterimined from the port paramter or the incoming request.
- *  </td>
- * </tr>
- *
- * <tr>
- *        <td>port</td>
- *        <td>int</td>
- *        <td>R</td>
- *        <td>no</td>
- *        <td>&nbsp;</td>
- *        <td>If specified, then a longer URL (including scheme, server and port)
- *  is generated using the specified port.  The server is determined from the incoming
- *  request, the scheme from the scheme paramter or the incoming request.
- * </td>
- * </tr>
- *
- * <tr>
- *        <td>anchor</td>
- *        <td>java.lang.String</td>
- *        <td>R</td>
- *        <td>no</td>
- *        <td>&nbsp;</td>
- *        <td>The name of an anchor or element to link to.  The final URL will have '#'
- *   and the anchor appended to it.
- * </td> </tr>
- *
- * </table>
- *
- * <p>Informal parameters are allowed.
- *  The final URL will have '#'
- *   and the anchor appended to it.
+ *  [<a href="../../../../../ComponentReference/Page.html">Component Reference</a>]
  *
  * @author Howard Ship
  * @version $Id$
@@ -147,11 +70,15 @@ public class Page extends GestureLink
     protected Object[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
     {
         String parameter = null;
+        String prefix = null;
 
-        if (_targetNamespace == null)
-            parameter = _targetPage;
+        if (_targetNamespace != null)
+            prefix = _targetNamespace.getExtendedId();
+
+        if (prefix != null)
+            parameter = prefix + ":" + _targetPage;
         else
-            parameter = _targetNamespace.getExtendedId() + ":" + _targetPage;
+            parameter = _targetPage;
 
         return new String[] { parameter };
     }
@@ -163,7 +90,7 @@ public class Page extends GestureLink
 
     public void setTargetPage(String targetPage)
     {
-        this._targetPage = targetPage;
+        _targetPage = targetPage;
     }
 
     /** @since 2.2 **/
