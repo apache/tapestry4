@@ -6,38 +6,6 @@
 
 <page-specification>
 
-	<component id="insertDateValue" type="Insert">
-		<binding name="value" expression="visit.dateValue"/>
-	</component>
-		
-	<component id="insertIntValue" type="Insert">
-		<binding name="value" expression="visit.intValue"/>
-	</component>
-		
-	<component id="insertDoubleValue" type="Insert">
-		<binding name="value" expression="visit.doubleValue"/>
-	</component>
-	
-	<component id="insertBigDecimalValue" type="Insert">
-		<binding name="value" expression="visit.bigDecimalValue"/>
-	</component>
-
-    <component id="insertLongValue" type="Insert">
-        <binding name="value" expression="visit.longValue"/>
-    </component>
-
-    <component id="insertStringValue" type="Insert">
-        <binding name="value" expression="visit.stringValue"/>
-    </component>
-
-    <component id="insertEmailValue" type="Insert">
-        <binding name="value" expression="visit.emailValue"/>
-    </component>
-
-  <component id="back" type="PageLink">
-  	<static-binding name="page">Fields</static-binding>
-  </component>
-
   <component id="backRollover" type="Rollover">
     <binding name="image" expression="assets.back"/>
     <binding name="focus" expression="assets.backFocus"/>

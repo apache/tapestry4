@@ -5,15 +5,7 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
 <page-specification class="tutorial.workbench.fields.Forms">
-
-	<component id="form" type="Form">
-		<binding name="listener" expression="listeners.formSubmit"/>
-	</component>
-	
-	<component id="group" type="RadioGroup">
-		<binding name="selected" expression="favoriteColor"/>
-	</component>
-	
+		
 	<component id="blue" type="Radio">
 		<string-binding name="value" key="blue"/>
 	</component>
@@ -24,15 +16,7 @@
 	
 	<component id="red" type="Radio">
 		<string-binding name="value" key="red"/>
-	</component>
-	
-	<component id="ifFavoriteColor" type="Conditional">
-		<binding name="condition" expression="favoriteColor"/>
-	</component>
-	
-	<component id="insertFavoriteColor" type="Insert">
-		<binding name="value" expression="favoriteColor"/>
-	</component>
+	</component>	
 	
 </page-specification>
 

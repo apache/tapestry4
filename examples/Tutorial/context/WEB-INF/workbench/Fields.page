@@ -53,10 +53,6 @@
   	<set-property name="minimumLength" expression='6'/>
   	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
-
-   <component id="enabledForm" type="Form">
-    <binding name="listener" expression="listeners.clientValidationChanged"/>
-  </component>
   
   <component id="inputEnabled" type="Checkbox">
     <binding name="selected" expression="clientValidationEnabled"/> 
@@ -69,34 +65,17 @@
      <binding name="delegate" expression="beans.delegate"/>
   </component>
 
-  <component id="form" type="Form">
-    <binding name="listener" expression="listeners.formSubmit"/>
-    <binding name="delegate" expression="beans.delegate"/>
-  </component>
-
-  <component id="dateLabel" type="FieldLabel">
-    <binding name="field" expression="components.inputDate"/>
-  </component>
-
   <component id="inputDate" type="ValidField">
     <binding name="validator" expression="beans.dateValidator"/>
     <binding name="value" expression="visit.dateValue"/>
-    <static-binding name="displayName">Date Field</static-binding>
-  </component>
-
-  <component id="intLabel" type="FieldLabel">
-    <binding name="field" expression="components.inputInt"/>
+    <static-binding name="displayName" value="Date Field"/>
   </component>
 
   <component id="inputInt" type="ValidField">
     <binding name="validator" expression="beans.intValidator"/>
     <binding name="value" expression="visit.intValue"/>
-    <static-binding name="displayName">Integer Field</static-binding>
-    <static-binding name="type">Integer</static-binding>
-  </component>
-
-  <component id="doubleLabel" type="FieldLabel">
-    <binding name="field" expression="components.inputDouble"/>
+    <static-binding name="displayName" value="Integer Field"/>
+    <static-binding name="type" value="Integer"/>
   </component>
 
   <component id="inputDouble" type="ValidField">
@@ -106,10 +85,6 @@
     <static-binding name="type" value="Double"/>
   </component>
 
-  <component id="bigDecimalLabel" type="FieldLabel">
-    <binding name="field" expression="components.inputBigDecimal"/>
-  </component>
-
   <component id="inputBigDecimal" type="ValidField">
    <binding name="value" expression="visit.bigDecimalValue"/>
     <binding name="validator" expression="beans.bigDecimalValidator"/>
@@ -117,39 +92,23 @@
     <static-binding name="type" value="java.math.BigDecimal"/>
   </component>
 
-  <component id="longLabel" type="FieldLabel">
-    <binding name="field" expression="components.inputLong"/>
-  </component>
-
   <component id="inputLong" type="ValidField">
     <binding name="value" expression="visit.longValue"/>
     <binding name="validator" expression="beans.longValidator"/>
-    <static-binding name="displayName">Long Field</static-binding>
-    <static-binding name="type">Long</static-binding>
+    <static-binding name="displayName" value="Long Field"/>
+    <static-binding name="type" value="Long"/>
   </component>
-
-  <component id="stringLabel" type="FieldLabel">
-    <binding name="field" expression="components.inputString"/>
-   </component>
 
   <component id="inputString" type="ValidField">
     <binding name="value" expression="visit.stringValue"/>
     <binding name="validator" expression="beans.stringValidator"/>
-    <static-binding name="displayName">String Field</static-binding>
+    <static-binding name="displayName" value="String Field"/>
   </component>
 
-  <component id="emailLabel" type="FieldLabel">
-    <binding name="field" expression="components.emailString"/>
-   </component>
-
-  <component id="emailString" type="ValidField">
+  <component id="inputEmail" type="ValidField">
     <binding name="value" expression="visit.emailValue"/>
     <binding name="validator" expression="beans.emailValidator"/>
-    <static-binding name="displayName">Email Field</static-binding>
-  </component>
-
-  <component id="continue" type="ImageSubmit">
- 	<binding name="image" expression="assets.continue"/>
+    <static-binding name="displayName" value="Email Field"/>
   </component>
 
   <context-asset name="continue" path="images/Continue.gif"/>

@@ -6,18 +6,18 @@
     
 <page-specification class="tutorial.portal.Slashdot">
 
-<bean name="rowClass" class="net.sf.tapestry.bean.EvenOdd"/>
+	<bean name="rowClass" class="net.sf.tapestry.bean.EvenOdd"/>
 
-<component id="e" type="Foreach">
-    <binding name="source" expression="stories"/>
-    <binding name="value" expression="story"/>
-    <static-binding name="element" value="tr"/>
-    <binding name="class" expression="beans.rowClass.next"/>
-</component>
+	<component id="e" type="Foreach">
+	    <binding name="source" expression="stories"/>
+	    <binding name="value" expression="story"/>
+	    <static-binding name="element" value="tr"/>
+	    <binding name="class" expression="beans.rowClass.next"/>
+	</component>
 
-<component id="link" type="Any">
-    <static-binding name="element" value="a"/>
-    <binding name="href" expression="story.URL"/>
-</component>
+	<component id="link" type="Any">
+	    <static-binding name="element" value="a"/>
+	    <binding name="href" expression="story.URL"/>
+	</component>
   
 </page-specification>

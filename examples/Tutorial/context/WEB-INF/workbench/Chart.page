@@ -25,17 +25,17 @@
   <component id="plotValues" type="Foreach">
     <binding name="source" expression="plotValues"/>
     <binding name="value" expression="plotValue"/>
-    <static-binding name="element">tr</static-binding>
+    <static-binding name="element" value="tr"/>
   </component>
 
   <component id="inputName" type="ValidField">
-  	<static-binding name="displayName">Name</static-binding>
+  	<static-binding name="displayName" value="Name"/>
   	<binding name="value" expression="plotValue.name"/>
   	<binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>
   </component>
 
   <component id="inputValue" type="ValidField">	
-  	<static-binding name="displayName">Value</static-binding>
+  	<static-binding name="displayName" value="Value"/>
   	<binding name="value" expression="plotValue.value"/>
   	<binding name="validator" expression="beans.intValidator"/>
   	<static-binding name="type" value="int"/>
@@ -54,10 +54,6 @@
   	<binding name="listener" expression="listeners.delete"/>
   	<static-binding name="label" value="Delete Selected"/>
   </component>
-  
-  <component id="chart" type="Image">
-    <binding name="image" expression="chartImageAsset"/>
-  </component>
-  
+
 </page-specification>
 

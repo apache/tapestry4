@@ -7,23 +7,19 @@
 <component-specification
   class="tutorial.workbench.components.Border"
   allow-informal-parameters="no">
-
+    
   <component id="shell" type="Shell">
-    <string-binding name="title" key="window.title"/>
-    <binding name="stylesheet" expression="assets.stylesheet"/>
+  	<binding name="stylesheet" expression="assets.stylesheet"/>
+  	<string-binding name="title" key="window.title"/>
   </component>
     
   <component id="eachPage" type="Foreach">
     <binding name="source" expression="pageTabNames"/>
     <binding name="value" expression="pageName"/>
   </component>
-  
-  <component id="leftTabImage" type="Image">
-  	<binding name="image" expression="leftTabAsset"/>
-  </component>
-  
+    
   <component id="tabCell" type="Any">
-  	<static-binding name="element">td</static-binding>
+  	<static-binding name="element" value="td"/>
   	<binding name="background" expression="midTabAsset"/>
   </component> 
  
@@ -31,19 +27,8 @@
   <component id="pageLink" type="DirectLink">
     <binding name="listener" expression="listeners.selectPage"/>
     <binding name="parameters" expression="pageName"/>
-    <binding name="stateful" expression="false"/>
   </component>
- 
-  <component id="insertPageTitle" type="Insert">
-  	<binding name="value" expression="pageTitle"/>
-  </component>
-  
-  <component id="rightTabImage" type="Image">
-  	<binding name="image" expression="rightTabAsset"/>
-  </component>
-  
-  <component id="form" type="Form"/>
-  
+    
   <component id="inputRequestDebug" type="Checkbox">
     <binding name="selected" expression="page.visit.requestDebug"/>
     <static-binding name="onclick">
@@ -57,19 +42,7 @@
     	javascript:this.form.submit();
     </static-binding>
   </component>  
-  
-  <component id="ifRequestDebug" type="Conditional">
-  	<binding name="condition" expression="page.visit.requestDebug"/>
-  </component>
-  
-  <component id="displayRequestDebug" type="Delegator">
-    <binding name="delegate" expression="page.requestCycle.requestContext"/>
-  </component>
-  
-  <component id="inspector" type="contrib:InspectorButton">
-  	<binding name="disabled" expression="page.visit.disableInspector"/>
-  </component>
-
+    
   <context-asset name="activeLeft" path="images/tab-active-left.gif"/>
   <context-asset name="activeMid" path="images/tab-active-mid.gif"/>
   <context-asset name="activeRight" path="images/tab-active-right.gif"/>

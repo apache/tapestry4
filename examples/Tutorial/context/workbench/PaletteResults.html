@@ -4,14 +4,14 @@
 is significant.
 
 <ul>
-<li jwcid="loop"><span jwcid="insertColor"/></li>
+<li jwcid="loop"><span jwcid="@Insert" value="[[ components.loop.value ]]"/></li>
 </ul>
 
-<span jwcid="ifNone">
+<span jwcid="@Conditional" condition="[[ ! selectedColors ]]">
 <p>You made no selections.
 </span>
 
 <p>
-<a jwcid="back"><img jwcid="backRollover" alt="[Back]"/></a>
+<a jwcid="@PageLink" page="Palette"><img jwcid="backRollover" alt="[Back]"/></a>
 
 </span>

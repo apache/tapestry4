@@ -18,10 +18,5 @@
     <inherited-binding name="source" parameter-name="pages"/>
     <binding name="value" expression="pageName"/>
   </component>
-  
-  <component id="link" type="PageLink">
-    <binding name="page" expression="pageName"/>
-    <binding name="disabled" expression="disablePageLink"/>
-  </component>
 
 </component-specification>

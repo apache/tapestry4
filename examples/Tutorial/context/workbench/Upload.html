@@ -9,21 +9,21 @@ be freely mixed<a href="#note"><sup>*</sup></a> with other components in a form.
 
 <p>The following form allows you to upload a file and see a hexadecimal dump of it.
 
-<span jwcid="showError"/>
+<span jwcid="@ShowError" delegate="[[ beans.delegate ]]"/>
 
-<form jwcid="form" enctype="multipart/form-data">
+<form jwcid="@Form" listener="[[ listeners.formSubmit ]]" enctype="multipart/form-data">
 
 <table class="form">
 	<tr>
 		<th>File:</th>
-		<td><input jwcid="inputFile" size=30/></td>
+		<td><input jwcid="@Upload" file="[[ file ]]" size="30"/></td>
 	</tr>
 	<tr>
 		<th>Options:</th>
 		<td>
 			<table class="form">
 				<tr>
-					<th><input jwcid="inputAscii"/></th>
+					<th><input jwcid="@Checkbox" selected="[[ showAscii ]]"/></th>
 					<td>Display ASCII</td>
 				</tr>
 				<tr>
@@ -35,7 +35,7 @@ be freely mixed<a href="#note"><sup>*</sup></a> with other components in a form.
 	
 	<tr>
 		<td></td>
-		<td><input jwcid="continue"/></td>
+		<td><input jwcid="@ImageSubmit" image="[[ assets.continue ]]"/></td>
 	</tr>
 	
 </table>

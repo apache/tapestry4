@@ -4,9 +4,9 @@
 
 This page is used to test some additional form elements.
 
-<form jwcid="form">
+<form jwcid="@Form" listener="[[ listeners.formSubmit ]]">
 
-<span jwcid="group">
+<span jwcid="@RadioGroup" selected="[[ favoriteColor ]]">
 	
 <table>
 	<tr valign="top">
@@ -23,7 +23,7 @@ This page is used to test some additional form elements.
 	</tr>
 	
 	<tr>
-	<td><input type="submit" value="Submit"></td>
+	<td><input type="submit" value="Submit"/></td>
 	</tr>
 
 </table>
@@ -33,8 +33,8 @@ This page is used to test some additional form elements.
 </form>
 
 
-<span jwcid="ifFavoriteColor">
-<p>Your favorite color is: <span jwcid="insertFavoriteColor">Puce</span>.
+<span jwcid="@Conditional" condition="[[ favoriteColor ]]">
+<p>Your favorite color is: <span jwcid="@Insert" value="[[ favoriteColor ]]">Puce</span>.
 </span>
 
 </span>

@@ -13,7 +13,7 @@ is part of a framework that allows for complex validation of user input
 as well as presentation of errors.
 
 <p>
-<form jwcid="enabledForm">
+<form jwcid="@Form" listener="[[ listeners.clientValidationChanged ]]">
 <input jwcid="inputEnabled"/> Enable Client Side Validation
 </form>
 
@@ -24,43 +24,43 @@ doesn't support JavaScript).
 
 <span jwcid="showError"/>
 
-<form jwcid="form">
+<form jwcid="@Form" listener="[[ listeners.formSubmit ]]" delegate="[[ beans.delegate ]]">
 
 <table class="form">
 	<tr>
-		<th><span jwcid="dateLabel"/></th>
+		<th><span jwcid="@FieldLabel" field="[[ components.inputDate ]]"/></th>
 		<td><input jwcid="inputDate"/></td>
 	</tr>
   <tr>
-  	<th><span jwcid="intLabel"/></th>
+  	<th><span jwcid="@FieldLabel" field="[[ components.inputInt ]]"/></th>
   	<td><input jwcid="inputInt"/></td>
   </tr>
   <tr>
-  	<th><span jwcid="doubleLabel"/></th>
+  	<th><span jwcid="@FieldLabel" field="[[ components.inputDouble ]]"/></th>
   	<td><input jwcid="inputDouble"/></td>
   </tr>
   <tr>
-  	<th><span jwcid="bigDecimalLabel"/></th>
+  	<th><span jwcid="@FieldLabel" field="[[ components.inputBigDecimal ]]"/></th>
   	<td><input jwcid="inputBigDecimal"/></td>
   </tr>
   <tr>
- 	<th><span jwcid="longLabel"/></th>
+ 	<th><span jwcid="@FieldLabel" field="[[ components.inputLong ]]"/></th>
  	<td><input jwcid="inputLong"/></td>
   </tr>
 
   <tr>
-  	<th><span jwcid="stringLabel"/></th>
+  	<th><span jwcid="@FieldLabel" field="[[ components.inputString ]]"/></th>
   	<td><input jwcid="inputString"/></td>
   </tr>
 
   <tr>
-  	<th><span jwcid="emailLabel"/></th>
-  	<td><input jwcid="emailString"/></td>
+  	<th><span jwcid="@FieldLabel" field="[[ components.inputEmail ]]""/></th>
+  	<td><input jwcid="inputEmail"/></td>
   </tr>
 
   <tr>
   	<td></td>
-  	<td><input jwcid="continue"/></td>
+  	<td><input jwcid="@ImageSubmit" image="[[ assets.continue ]]"/></td>
 </table>
 
 </form>

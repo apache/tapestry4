@@ -5,10 +5,6 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
 	
 <page-specification class="tutorial.workbench.palette.Palette">
-
-  <component id="form" type="Form">
-    <binding name="listener" expression="listeners.formSubmit"/>
-  </component>
   
   <component id="inputColorSort" type="PropertySelection">
   	<binding name="value" expression="sort"/>

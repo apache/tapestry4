@@ -6,22 +6,6 @@
 
 <page-specification class="tutorial.workbench.fields.Dates">
 
-	<component id="endDatePicker" type="DatePicker">
-		<binding name="value" expression="endDate"/>
-	</component>
-	
-	<component id="insertEndDate" type="Insert">
-		<binding name="value" expression="endDate"/>
-	</component>
-	
-	<component id="insertStartDate" type="Insert">
-		<binding name="value" expression="startDate"/>
-	</component>
-	
-	<component id="startDatePicker" type="DatePicker">
-		<binding name="value" expression="startDate"/>
-	</component>
-
 	<component id="helpLink" type="contrib:PopupLink">
 		<binding name="url" expression='"popuplink-help.html"'/>
 		<binding name="height" expression="400"/>

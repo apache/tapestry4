@@ -10,20 +10,7 @@
   	<static-binding name="element" value="li"/>
   	<binding name="source" expression="selectedColors"/>
   </component>
-  
-  <component id="insertColor" type="Insert">
-  	<binding name="value" expression="components.loop.value"/>
-  </component>
-  
-  <component id="ifNone" type="Conditional">
-  	<binding name="condition" expression="selectedColors"/>
-  	<binding name="invert" expression="true"/>
-  </component>
-  
-  <component id="back" type="PageLink">
-  	<static-binding name="page" value="Palette"/>
-  </component>
-  
+     
   <component id="backRollover" type="Rollover">
     <binding name="image" expression="assets.back"/>
     <binding name="focus" expression="assets.backFocus"/>
