@@ -30,16 +30,16 @@ import com.primix.tapestry.*;
 
 /**
  *  A component for creating a link for an arbitrary {@link IEngineService
- *  application service}.  A Service component can emulate an {@link Action},
+ *  engine service}.  A Service component can emulate an {@link Action},
  *  {@link Page} or {@link Direct} component, but is most often used in
- *  conjunction with an application-specific {@link IEngineService service}.  
+ *  conjunction with an application-specific service.  
  *
  * <table border=1>
 
  *
  * <tr>
  *		<td>service</td>
- *		<td>java.lang.String</td>
+ *		<td>{@link String}</td>
  *		<td>R</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
@@ -69,7 +69,7 @@ import com.primix.tapestry.*;
  *
  * <tr>
  *		<td>scheme</td>
- *		<td>java.lang.String</td>
+ *		<td>{@link String}</td>
  *		<td>R</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
@@ -93,7 +93,7 @@ import com.primix.tapestry.*;
  *
  * <tr>
  *		<td>anchor</td>
- *		<td>java.lang.String</td>
+ *		<td>{@link String}</td>
  *		<td>R</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
@@ -107,9 +107,10 @@ import com.primix.tapestry.*;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ *
+ **/
 
-public class Service extends AbstractServiceLink
+public class Service extends GestureLink
 {
 	private IBinding serviceBinding;
 	private String serviceValue;
@@ -121,10 +122,10 @@ public class Service extends AbstractServiceLink
 	}
 
 	/**
-	*  Returns name of the service specified by the service parameter.
-	*/
+	 *  Returns name of the service specified by the service parameter.
+	 **/
 
-	protected String getServiceName(IRequestCycle cycle)
+	protected String getServiceName()
 	{
 		if (serviceValue != null)
 			return serviceValue;

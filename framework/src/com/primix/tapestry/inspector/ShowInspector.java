@@ -50,18 +50,13 @@ import com.primix.tapestry.html.*;
 
 public class ShowInspector extends BaseComponent implements IDirect
 {
-	private IScript script;
-	private String movieURL;
-	private Map symbols;
-
 	/**
 	 *  Gets the listener for the link component.
 	 *
 	 *  @since 1.0.5
 	 */
 
-	public void trigger(IRequestCycle cycle, String[] context)
-		throws RequestCycleException
+	public void trigger(IRequestCycle cycle, String[] context) throws RequestCycleException
 	{
 		Inspector inspector = (Inspector) cycle.getPage("Inspector");
 
@@ -74,43 +69,36 @@ public class ShowInspector extends BaseComponent implements IDirect
 	 *  @since 1.0.5
 	 */
 
-	public void render(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
+	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
-		ScriptSession scriptSession;
 
 		if (cycle.isRewinding())
 			return;
 
-		if (script == null)
-		{
-			IEngine engine = page.getEngine();
-			IScriptSource source = engine.getScriptSource();
+		IScript script = null;
 
-			try
-			{
-				script =
-					source.getScript("/com/primix/tapestry/inspector/ShowInspector.script");
-			}
-			catch (ResourceUnavailableException ex)
-			{
-				throw new RequestCycleException(this, ex);
-			}
+		IEngine engine = page.getEngine();
+		IScriptSource source = engine.getScriptSource();
+
+		try
+		{
+			script = source.getScript("/com/primix/tapestry/inspector/ShowInspector.script");
+		}
+		catch (ResourceUnavailableException ex)
+		{
+			throw new RequestCycleException(this, ex);
 		}
 
-		if (symbols == null)
-			symbols = new HashMap();
-		else
-			symbols.clear();
+		Map symbols = new HashMap();
 
-		IEngineService service =
-			page.getEngine().getService(IEngineService.DIRECT_SERVICE);
+		IEngineService service = page.getEngine().getService(IEngineService.DIRECT_SERVICE);
 		Gesture g = service.buildGesture(cycle, this, null);
 		String URL = g.getAbsoluteURL();
 
 		symbols.put("URL", URL);
 
 		HttpSession session = cycle.getRequestContext().getSession();
+		ScriptSession scriptSession = null;
 
 		try
 		{
@@ -135,6 +123,7 @@ public class ShowInspector extends BaseComponent implements IDirect
 		body.process(scriptSession);
 
 		super.render(writer, cycle);
-	}
 
+		symbols = null;
+	}
 }

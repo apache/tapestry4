@@ -38,12 +38,12 @@ import com.primix.tapestry.*;
  * </tr>
  *
  * <tr>
- *		<td>page</td>
- *		<td>java.lang.String</td>
- *		<td>R</td>
- *		<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The name of a page to link to.</td>  </tr>
+ *        <td>page</td>
+ *        <td>java.lang.String</td>
+ *        <td>R</td>
+ *        <td>yes</td>
+ *        <td>&nbsp;</td>
+ *        <td>The name of a page to link to.</td>  </tr>
  *
  * <tr>
  *   <td>disabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
@@ -53,48 +53,51 @@ import com.primix.tapestry.*;
  *
  *
  * <tr>
- *		<td>scheme</td>
- *		<td>java.lang.String</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>If specified, then a longer URL (including scheme, server and possibly port)
+ *        <td>scheme</td>
+ *        <td>java.lang.String</td>
+ *        <td>R</td>
+ *        <td>no</td>
+ *        <td>&nbsp;</td>
+ *        <td>If specified, then a longer URL (including scheme, server and possibly port)
  * is generated using the specified scheme. Server is determined fromt he incoming request,
  * and port is deterimined from the port paramter or the incoming request.
  *  </td>
  * </tr>
  *
  * <tr>
- *		<td>port</td>
- *		<td>int</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>If specified, then a longer URL (including scheme, server and port)
+ *        <td>port</td>
+ *        <td>int</td>
+ *        <td>R</td>
+ *        <td>no</td>
+ *        <td>&nbsp;</td>
+ *        <td>If specified, then a longer URL (including scheme, server and port)
  *  is generated using the specified port.  The server is determined from the incoming
  *  request, the scheme from the scheme paramter or the incoming request.
  * </td>
  * </tr>
  *
  * <tr>
- *		<td>anchor</td>
- *		<td>java.lang.String</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The name of an anchor or element to link to.  The final URL will have '#'
+ *        <td>anchor</td>
+ *        <td>java.lang.String</td>
+ *        <td>R</td>
+ *        <td>no</td>
+ *        <td>&nbsp;</td>
+ *        <td>The name of an anchor or element to link to.  The final URL will have '#'
  *   and the anchor appended to it.
  * </td> </tr>
  *
  * </table>
  *
  * <p>Informal parameters are allowed.
+ *  The final URL will have '#'
+ *   and the anchor appended to it.
  *
  * @author Howard Ship
  * @version $Id$
- */
+ *
+ **/
 
-public class Page extends AbstractServiceLink
+public class Page extends GestureLink
 {
 	private IBinding pageBinding;
 	private String pageValue;
@@ -107,10 +110,11 @@ public class Page extends AbstractServiceLink
 	}
 
 	/**
-	*  Returns {@link IEngineService#PAGE_SERVICE}.
-	*/
+	 *  Returns {@link IEngineService#PAGE_SERVICE}.
+	 *
+	 **/
 
-	protected String getServiceName(IRequestCycle cycle)
+	protected String getServiceName()
 	{
 		return IEngineService.PAGE_SERVICE;
 	}
@@ -124,10 +128,10 @@ public class Page extends AbstractServiceLink
 	}
 
 	/**
-	*  Returns a single-element String array; the lone element is the
-	*  name of the page, retrieved from the 'page' parameter.
-	*
-	*/
+	 *  Returns a single-element String array; the lone element is the
+	 *  name of the page, retrieved from the 'page' parameter.
+	 *
+	 **/
 
 	protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
 	{
