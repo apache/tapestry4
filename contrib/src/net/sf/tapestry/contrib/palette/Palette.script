@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<script>
+  <!-- 
+
+input symbols:
+
+formName - the name of the form containing this Palette
+name - the name of the selected element
+includeBaseFunctions - if true, then include the base functions; this is true for the first
+  Palette rendered on a page, false subsequently
+sortLabel - if true, sort options by label
+sortValue - if true, sort options by value
+sortUser - if create additional controls to allow user to sort manually
+  
+output symbols:
+  formSubmitFunctionName - name of a function to be executed when the form submits
+  availableName - the name of the available element
+  selectButtonId - the id of the select button
+  deselectButtonId - the id of the deselect button
+-->
+
+<!-- baseName - base name from which other names are generated -->
+
+<let key="baseName">
+  <insert property-path="formName"/>_<insert property-path="name"/>
+</let>
+
+<let key="availableName">
+  <insert property-path="name"/>_avail
+</let>
+
+<let key="updateFunctionName">
+  update_<insert property-path="baseName"/>
+</let>
+
+<let key="selectFunctionName">
+  select_<insert property-path="baseName"/>
+</let>
+
+<let key="deselectFunctionName">
+  deselect_<insert property-path="baseName"/>
+</let>
+
+<let key="formSubmitFunctionName">
+  onsubmit_<insert property-path="baseName"/>
+</let>
+
+<let key="selectButtonId">
+  select_<insert property-path="baseName"/>
+</let>
+
+<let key="selectButtonPath">
+  document.all.<insert property-path="selectButtonId"/>
+</let>
+
+<let key="deselectButtonId">
+  deselect_<insert property-path="baseName"/>
+</let>
+
+<let key="deselectButtonPath">
+  document.all.<insert property-path="deselectButtonId"/>
+</let>
+
+<let key="formPath">
+  document.<insert property-path="formName"/>
+</let>
+
+<let key="selectedPath">
+    <insert property-path="formPath"/>.<insert property-path="name"/>
+</let>
+
+<let key="availablePath">
+    <insert property-path="formPath"/>.<insert property-path="availableName"/>
+</let>
+
+<let key="upButtonId">
+  moveup_<insert property-path="baseName"/>
+</let>
+
+<let key="upButtonPath">
+  document.all.<insert property-path="upButtonId"/>
+</let>
+
+<let key="downButtonId">
+  movedown_<insert property-path="baseName"/>
+</let>
+
+<let key="downButtonPath">
+  document.all.<insert property-path="downButtonId"/>
+</let>
+
+<let key="moveUpFunction">
+  moveup_<insert property-path="baseName"/>
+</let>
+
+<let key="moveDownFunction">
+  movedown_<insert property-path="baseName"/>
+</let>
+
+<body>
+<if property-path="includeBaseFunctions">
+
+function palette_clear_selections(element)
+{
+  var options = element.options;
+  
+  for (var i = 0; i &lt; options.length; i++)
+    options[i].selected = false;
+}
+
+function palette_select_all(element)
+{
+  var options = element.options;
+
+  for (var i = 0; i &lt; options.length; i++)
+    options[i].selected = true;
+}
+
+function palette_sort(element, sorter)
+{
+  var options = element.options;
+  var list = new Array();
+  var index = 0;
+  
+  while (options.length &gt; 0)
+  {
+    list[index++] = options[0];
+    options.remove(0);
+  }
+  
+  list.sort(sorter);
+  
+  for (var i = 0; i &lt; list.length; i++)
+    options.add(list[i]); 
+}
+
+function palette_label_sorter(a, b)
+{
+  var a_text = a.text;
+  var b_text = b.text;
+  
+  if (a_text == b_text)
+    return 0;
+    
+  if (a_text &lt; b.text)
+    return -1;
+    
+  return 1;
+}
+
+function palette_sort_by_label(element)
+{
+  palette_sort(element, palette_label_sorter);
+}
+
+function palette_value_sorter(a, b)
+{
+  var a_value = a.value;
+  var b_value = b.value;
+  
+  if (a_value == b_value)
+    return 0;
+    
+  if (a_value &lt; b_value)
+    return -1;
+    
+  return 1;
+}
+
+function palette_sort_by_value(element)
+{
+  palette_sort(element, palette_value_sorter);
+}
+
+function palette_transfer_selections(source, target)
+{
+  var sourceOptions = source.options;
+  var targetOptions = target.options;
+  
+  palette_clear_selections(target);
+  
+  for (var i = 0; i &lt; sourceOptions.length; i++)
+  {
+    var option = sourceOptions[i];
+    
+    if (option.selected)
+    {
+      sourceOptions.remove(i);
+      targetOptions.add(option);
+      i--;
+    }
+  }
+}
+</if>
+
+function <insert property-path="updateFunctionName"/>()
+{
+  <insert property-path="selectButtonPath"/>.disabled =
+    <insert property-path="availablePath"/>.selectedIndex &lt; 0;
+    
+  <insert property-path="deselectButtonPath"/>.disabled =
+    <insert property-path="selectedPath"/>.selectedIndex &lt; 0;
+}
+
+function <insert property-path="selectFunctionName"/>()
+{
+  var source = <insert property-path="availablePath"/>;
+  var target = <insert property-path="selectedPath"/>;
+  
+  palette_transfer_selections(source, target);
+  
+<if property-path="sortLabel">
+  palette_sort_by_label(target);
+</if>
+<if property-path="sortValue">
+  palette_sort_by_value(target);
+</if>
+  <insert property-path="updateFunctionName"/>();
+}
+
+function <insert property-path="deselectFunctionName"/>()
+{
+  var source = <insert property-path="selectedPath"/>;
+  var target = <insert property-path="availablePath"/>;
+  
+  palette_transfer_selections(source, target);
+  
+<if property-path="sortLabel">
+  palette_sort_by_label(target);
+</if>
+<if property-path="sortValue">
+  palette_sort_by_value(target);
+</if>
+  <insert property-path="updateFunctionName"/>();  
+}
+
+function <insert property-path="formSubmitFunctionName"/>()
+{
+  palette_clear_selections(<insert property-path="availablePath"/>);
+  palette_select_all(<insert property-path="selectedPath"/>);
+  
+  return true;
+}
+
+</body>
+
+<initialization>
+
+<insert property-path="selectedPath"/>.onchange = <insert property-path="updateFunctionName"/>;
+<insert property-path="selectedPath"/>.ondblclick = <insert property-path="deselectFunctionName"/>;
+<insert property-path="availablePath"/>.onchange = <insert property-path="updateFunctionName"/>;
+<insert property-path="availablePath"/>.ondblclick = <insert property-path="selectFunctionName"/>;
+<insert property-path="selectButtonPath"/>.onclick = <insert property-path="selectFunctionName"/>;
+<insert property-path="deselectButtonPath"/>.onclick = <insert property-path="deselectFunctionName"/>;
+
+<insert property-path="updateFunctionName"/>();
+
+</initialization>
+</script>

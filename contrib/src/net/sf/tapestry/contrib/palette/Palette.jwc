@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.contrib.palette.Palette" allow-body="no" allow-informal-parameters="no">
+  <description>Presents a "Palette"; a combination of two selection boxes.  On the left is a list of items to be selected, on the right a list of items already selected.  Two buttons allow values to be moved between the two lists.  This is a highly usable alternative to presenting a simple list of items with checkboxes, or a select box with simple multiple selection.</description>
+  
+  <parameter name="selectedTitleBlock" 
+  	java-type="com.primix.tapestry.components.Block" 
+  	required="no"/>
+  
+  <parameter name="availableTitleBlock" 
+   	java-type="com.primix.tapestry.components.Block" 
+   	required="no"/>
+   	
+  <parameter name="model" 
+  java-type="com.primix.tapestry.form.IPropertySelectionModel" 
+  required="yes"/>
+  
+  <parameter name="selected" java-type="java.util.List" 
+  required="yes"/>
+  
+  <parameter name="sort" java-type="net.sf.tapestry.contrib.palette.SortMode" required="no"/>
+  
+  <parameter name="rows" 
+   java-type="int" 
+   required="no"/>
+  
+  <parameter name="tableClass" 
+  java-type="java.lang.String" 
+  required="no"/>
+  
+  <component id="table" type="Any">
+    <static-binding name="element">table</static-binding>
+    <binding name="class" property-path="tableClass"/>
+  </component>
+  
+  <component id="insertSelectedTitleBlock" type="InsertBlock">
+    <binding name="block" property-path="selectedTitleBlock"/>
+  </component>
+  
+  <component id="insertAvailableTitleBlock" type="InsertBlock">
+    <binding name="block" property-path="availableTitleBlock"/>
+  </component>
+  
+  <component id="selected" type="Delegator">
+    <binding name="delegate" property-path="selectedDelegate"/>
+  </component>
+  
+  <component id="selectButton" type="Any">
+    <static-binding name="element">button</static-binding>
+    <static-binding name="title">Select</static-binding>
+    <binding name="id" property-path="symbols.selectButtonId"/>
+  </component>
+  
+  <component id="deselectButton" type="Any">
+    <static-binding name="element">button</static-binding>
+    <static-binding name="title">Deselect</static-binding>
+    <binding name="id" property-path="symbols.deselectButtonId"/>
+  </component>
+  
+  <component id="ifSortUser" type="Conditional">
+    <binding name="condition" property-path="sortUser"/>
+  </component>
+  
+  <component id="moveUpButton" type="Any">
+  	<static-binding name="element">button</static-binding>
+  	<static-binding name="title">Move Up</static-binding>
+  	<binding name="id" property-path="symbols.upButtonId"/>
+  </component>
+  
+  <component id="moveDownButton" type="Any">
+    <static-binding name="element">button</static-binding>
+    <static-binding name="title">Move Down</static-binding>
+    <binding name="id" property-path="symbols.downButtonId"/>
+  </component>
+  
+  <component id="available" type="Delegator">
+    <binding name="delegate" property-path="availableDelegate"/>
+  </component>
+  
+  <component id="defaultSelectedTitleBlock" type="Block"/>
+  <component id="defaultAvailableTitleBlock" type="Block"/>
+  
+</specification>

@@ -16,7 +16,7 @@
 #
 # Example:
 #
-#  cvs -z3 -d:ext:hship@cvs.tapestry.sourceforge.net:/cvsroot/tapestry export -r HEAD -d Tapestry-x.x.x Tapestry
+#  cvs -z3 -d:pserver:anonymous@cvs.tapestry.sf.net:/cvsroot/tapestry export -r HEAD -d Tapestry-x.x.x Tapestry
 #  cd Tapestry-x.x.x
 #  make dist
 
@@ -32,6 +32,7 @@ include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 
 MODULES := \
 	framework \
+	contrib \
 	examples/Tutorial \
 	examples/VlibBeans \
 	examples/Vlib \
@@ -135,6 +136,7 @@ dist: clean install javadoc
 		
 TUTORIAL_CLASSPATH := \
 	$(LIB_DIR)/com.primix.tapestry.jar \
+	$(LIB_DIR)/net.sf.tapestry.contrib.jar \
 	$(LIB_DIR)/javax.servlet.jar \
 	$(LIB_DIR)/log4j-core.jar \
 	$(LIB_DIR)/javax.xml.jaxp.jar \
