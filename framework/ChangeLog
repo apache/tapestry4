@@ -1,5 +1,9 @@
 * Jan 3 2001 hship
 
+Restore IEngine.setVisit() method.
+
+* Jan 3 2001 hship
+
 Rename InternalAsset to ContextAsset, and <internal-asset> to <context-asset>.
 Implement localization for ContextAsset and PrivateAsset.
 Have the PageSource cache instance of ExternalAsset, PrivateAsset and ContextAsset.
