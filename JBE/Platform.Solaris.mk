@@ -1,7 +1,7 @@
-# $Id$
+#$Id$
 #
 # Tapestry Web Application Framework
-# Copyright (c) 2000, 2001 by Howard Ship and Primix
+# Copyright (c) 2001 by Howard Ship and Primix Solutions
 #
 # Primix
 # 311 Arsenal Street
@@ -25,32 +25,40 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
-# Defines stuff specific to using the JBE with Cygnus and NT.
+# Defines commands and options used on Solaris.
+# The Solaris install requires GNU tar and the gzip utilities
+# be installed as well.
 
 # Here we define a bunch of command line tools used in the rest of the system.
 
-MV := $(TOOLS_DIR)/mv.exe
-ECHO := $(TOOLS_DIR)/echo.exe
-MKDIRS := $(TOOLS_DIR)/mkdir.exe --parents
-TOUCH := $(TOOLS_DIR)/touch.exe
-RM := $(TOOLS_DIR)/rm.exe --force --recursive
+TOOLS_DIR := /usr/bin
 
-CP := $(TOOLS_DIR)/cp.exe
-CP_FORCE_OPT := --force
+MV := $(TOOLS_DIR)/mv
+ECHO := $(TOOLS_DIR)/echo
+MKDIRS := $(TOOLS_DIR)/mkdir -p
+TOUCH := $(TOOLS_DIR)/touch
+RM := $(TOOLS_DIR)/rm -fR
 
-CAT := $(TOOLS_DIR)/cat.exe
-FIND := $(TOOLS_DIR)/find.exe
+CP := $(TOOLS_DIR)/cp
+CP_FORCE_OPT := -f
 
-GNUTAR := $(TOOLS_DIR)/tar.exe
+CAT := $(TOOLS_DIR)/cat
+FIND := $(TOOLS_DIR)/find
+
+# Expect that cd from /bin/sh will always work (troublesome)
+
+CD := cd
+
+GNUTAR := /usr/local/bin/gtar
 GNUTAR_CREATE_OPT := --create
 GNUTAR_EXTRACT_OPT := --extract
 GNUTAR_GZIP_OPT := --gzip
 
-PWD := $(TOOLS_DIR)/pwd.exe
+PWD := $(TOOLS_DIR)/pwd
 
-# Provided internally by Cygnus bourne shell
+
+# Use the cd command of the bourne shell
 
 CD := cd
-
 
 

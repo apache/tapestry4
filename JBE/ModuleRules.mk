@@ -168,9 +168,9 @@ $(RESOURCE_STAMP_FILE): $(_RESOURCE_FILES)
 ifneq "$(_RESOURCE_FILES)" ""
 	$(call NOTE, Copying package resources ...)
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CD) $(FINAL_SOURCE_DIR) ; \
-	$(CP) $(CP_FORCE_OPT) $(CP_PARENTS_OPT) $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?) \
-		 $(ABSOLUTE_CLASS_DIR)
+	@$(call COPY_TREE,$(FINAL_SOURCE_DIR), \
+					  $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?), \
+					  $(ABSOLUTE_CLASS_DIR))
 endif
 	@$(TOUCH) $@
 

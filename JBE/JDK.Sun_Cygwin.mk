@@ -25,32 +25,24 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
-# Defines stuff specific to using the JBE with Cygnus and NT.
+# Defines the Sun JDK environment for Cygwin (Win32)
 
-# Here we define a bunch of command line tools used in the rest of the system.
+# JDK_DIR is specified indirectly.  We determine the vendor, release and
+# platform (see CommonDefs.mk), then look for a variable that defines
+# the local directory for the vendor and release, that becomes JDK_DIR.
 
-MV := $(TOOLS_DIR)/mv.exe
-ECHO := $(TOOLS_DIR)/echo.exe
-MKDIRS := $(TOOLS_DIR)/mkdir.exe --parents
-TOUCH := $(TOOLS_DIR)/touch.exe
-RM := $(TOOLS_DIR)/rm.exe --force --recursive
+JDK_BIN_DIR := $(JDK_DIR)/bin
 
-CP := $(TOOLS_DIR)/cp.exe
-CP_FORCE_OPT := --force
+JAVAC := $(JDK_BIN_DIR)/javac.exe
+JAVA := $(JDK_BIN_DIR)/java.exe
+JAR := $(JDK_BIN_DIR)/jar.exe
+JAVADOC := $(JDK_BIN_DIR)/javadoc.exe
+RMIC := $(JDK_BIN_DIR)/rmic.exe
+JDB := $(JDK_BIN_DIR)/jdb.exe
 
-CAT := $(TOOLS_DIR)/cat.exe
-FIND := $(TOOLS_DIR)/find.exe
+# NT uses a semi-colon to seperate items in the classpath (Unix
+# uses a colon).
 
-GNUTAR := $(TOOLS_DIR)/tar.exe
-GNUTAR_CREATE_OPT := --create
-GNUTAR_EXTRACT_OPT := --extract
-GNUTAR_GZIP_OPT := --gzip
-
-PWD := $(TOOLS_DIR)/pwd.exe
-
-# Provided internally by Cygnus bourne shell
-
-CD := cd
-
+CLASSPATHSEP := $(SEMI)
 
 

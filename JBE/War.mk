@@ -109,7 +109,7 @@ FINAL_CONTEXT_RESOURCES := \
 $(WAR_CONTEXT_STAMP_FILE): $(FINAL_CONTEXT_RESOURCES)
 	$(call NOTE, Copying context resources ...)
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) $(CP_FORCE_OPT) $(CP_PARENTS_OPT) $? $(WAR_APP_DIR)
+	@$(call COPY_TREE, . , $? , $(WAR_APP_DIR))
 	@$(TOUCH) $@ $(MOD_DIRTY_JAR_STAMP_FILE)
 else
 

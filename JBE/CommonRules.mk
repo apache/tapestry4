@@ -55,10 +55,8 @@ $(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 
 # Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
 # GNU Make or JAVA is eating the backslashes under NT.
-# Use -classic to defeat HotSpot, which is only for long running Java apps,
-# not for quick little utilities.
 
-JBE_UTIL := $(JAVA) -classic -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
+JBE_UTIL := $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
 
 # Command for accessing the JBE utility.
 # Usage:
@@ -91,9 +89,13 @@ EXEC_JAVA = $(JAVA) -classpath "$(call JBE_CANONICALIZE,-classpath $(1))" $(2)
 # directory.
 #
 # Usage
-#  $(call COPY_TREE,source dirs,target dir)
+#  $(call COPY_TREE,source dir, source files, target dir)
+#
+# Example:
+#  $(call COPY_TREE,$(SOURCE_DIR),. images,$(TARGET_DIR))
 
-COPY_TREE = $(TAR) $(TAR_CREATE_OPT) $(1) | ( $(CD) $(2) && $(TAR) $(TAR_EXTRACT_OPT) )
+COPY_TREE = ($(CD) $(1) && $(GNUTAR) $(GNUTAR_CREATE_OPT) $(2))  | \
+			($(CD) $(3) && $(GNUTAR) $(GNUTAR_EXTRACT_OPT) )
 
 # Command for producing output
 #
