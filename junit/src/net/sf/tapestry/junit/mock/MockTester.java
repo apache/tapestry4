@@ -5,8 +5,22 @@ import java.io.InputStream;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
+import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.xml.DocumentParseException;
+
+import ognl.Ognl;
+import ognl.OgnlException;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.MatchResult;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.PatternCompiler;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.PatternMatcherInput;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
 import org.jdom.*;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -17,6 +31,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import junit.framework.AssertionFailedError;
 
 /**
  *  A complex class that reads an XML description
@@ -50,6 +65,9 @@ public class MockTester
     private ApplicationServlet _servlet;
     private MockRequest _request;
     private MockResponse _response;
+    private PatternMatcher _matcher;
+    private PatternCompiler _compiler;
+    private Map _ognlContext;
 
     private static class ServletConfigImpl implements ServletConfig, IInitParameterHolder
     {
@@ -96,7 +114,7 @@ public class MockTester
      * 
      **/
 
-    public MockTester(String resourcePath) throws JDOMException, ServletException
+    public MockTester(String resourcePath) throws JDOMException, ServletException, DocumentParseException
     {
         _resourcePath = resourcePath;
 
@@ -116,19 +134,29 @@ public class MockTester
 
         return buffer.toString();
     }
-    
+
     /**
      *  Invoked to execute the request cycle.
      * 
      **/
-    
-    public void execute() throws IOException, ServletException
+
+    public void execute() throws IOException, ServletException, DocumentParseException
     {
+        Element root = _document.getRootElement();
+        Element request = root.getChild("request");
+
+        // I think we're going to allow multiple <request> elements
+        // soon.
+
+        setupRequest(request);
+
         _response = new MockResponse(_request);
-        
+
         _servlet.service(_request, _response);
-        
+
         _response.end();
+
+        executeAssertions(request);
     }
 
     private void parse() throws JDOMException
@@ -140,13 +168,15 @@ public class MockTester
         _document = builder.build(stream);
     }
 
-    private void setup() throws ServletException
+    private void setup() throws ServletException, DocumentParseException
     {
-        Element setup = _document.getRootElement().getChild("setup");
+        Element root = _document.getRootElement();
 
-        setupContext(setup);
-        setupServlet(setup);
-        setupRequest(setup);
+        if (!root.getName().equals("mock-test"))
+            throw new DocumentParseException("Root element must be 'mock-test'.", _resourcePath);
+
+        setupContext(root);
+        setupServlet(root);
     }
 
     private void setupContext(Element parent)
@@ -182,51 +212,49 @@ public class MockTester
         _servlet.init(config);
     }
 
-    private void setupRequest(Element parent)
+    private void setupRequest(Element request)
     {
         _request = new MockRequest(_context, "/" + _servlet.getServletName());
-     
-        Element request = parent.getChild("request");
-        
+
         String method = request.getAttributeValue("method");
         if (method != null)
             _request.setMethod(method);
-        
+
         List parameters = request.getChildren("parameter");
         int count = parameters.size();
-        
+
         for (int i = 0; i < count; i++)
         {
-            Element parameter = (Element)parameters.get(i);
-            
+            Element parameter = (Element) parameters.get(i);
+
             setRequestParameter(parameter);
         }
-        
+
         // TBD: Headers, etc., etc.
     }
 
     private void setRequestParameter(Element parameter)
     {
         List values = new ArrayList();
-        
+
         String name = parameter.getAttributeValue("name");
-        
+
         String value = parameter.getAttributeValue("value");
         if (value != null)
             values.add(value);
-            
+
         List children = parameter.getChildren("value");
         int count = children.size();
         for (int i = 0; i < count; i++)
         {
-            Element e = (Element)values.get(i);
+            Element e = (Element) values.get(i);
             value = e.getTextTrim();
-            
+
             values.add(value);
         }
-        
-        String[] array = (String[])values.toArray(new String[values.size()]);
-        
+
+        String[] array = (String[]) values.toArray(new String[values.size()]);
+
         _request.setParameter(name, array);
     }
 
@@ -273,7 +301,7 @@ public class MockTester
 
         throw new ApplicationRuntimeException("Unable to instantiate servlet class " + className + ".", t);
     }
-    
+
     public MockContext getContext()
     {
         return _context;
@@ -294,4 +322,210 @@ public class MockTester
         return _servlet;
     }
 
+    private void executeAssertions(Element request) throws DocumentParseException
+    {
+        executeOutputAssertions(request);
+        executeExpressionAssertions(request);
+        executeOutputMatchesAssertions(request);
+    }
+
+    /**
+     *  Handles &lt;assert&gt; elements inside &lt;request&gt;.
+     *  Each assertion is in the form of a boolean expression
+     *  which must be true.
+     * 
+     **/
+
+    private void executeExpressionAssertions(Element request) throws DocumentParseException
+    {
+        List l = request.getChildren("assert");
+        int count = l.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element a = (Element) l.get(i);
+
+            String name = a.getAttributeValue("name");
+            String expression = a.getAttributeValue("expression");
+
+            checkExpression(name, expression);
+        }
+    }
+
+    private void checkExpression(String name, String expression) throws DocumentParseException
+    {
+
+        boolean result = evaluate(expression);
+
+        if (result)
+            return;
+
+        throw new AssertionFailedError(name + ": Expression '" + expression + "' was not true.");
+
+    }
+
+    private boolean evaluate(String expression) throws DocumentParseException
+    {
+        if (_ognlContext == null)
+            _ognlContext = Ognl.createDefaultContext(this);
+
+        Object value = null;
+
+        try
+        {
+            value = Ognl.getValue(expression, _ognlContext, this);
+        }
+        catch (OgnlException ex)
+        {
+            throw new DocumentParseException("Expression '" + expression + "' is not valid.", ex);
+        }
+
+        if (value == null)
+            return false;
+
+        if (value instanceof Boolean)
+            return ((Boolean) value).booleanValue();
+
+        if (value instanceof Number)
+            return ((Number) value).longValue() != 0;
+
+        if (value instanceof String)
+            return ((String) value).length() > 0;
+
+        throw new DocumentParseException(
+            "Expression '"
+                + expression
+                + "' evaluates to ("
+                + value.getClass().getName()
+                + ") "
+                + value
+                + ", which cannot be interpreted as a boolean.");
+    }
+
+    /**
+     *  Handles &lt;assert-output&gt; elements inside &lt;request&gt;.
+     *  Checks that a regular expression appears in the output.
+     *  Content of element is the regular expression.
+     * 
+     *  <p>
+     *  Attribute name is used in error messages.
+     * 
+     **/
+
+    private void executeOutputAssertions(Element request) throws DocumentParseException
+    {
+        String outputString = null;
+
+        List assertions = request.getChildren("assert-output");
+        int count = assertions.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element a = (Element) assertions.get(i);
+
+            String name = a.getAttributeValue("name");
+            String pattern = a.getTextTrim();
+
+            if (outputString == null)
+                outputString = _response.getOutputString();
+
+            match(name, outputString, pattern);
+        }
+
+    }
+
+    private PatternMatcher getMatcher()
+    {
+        if (_matcher == null)
+            _matcher = new Perl5Matcher();
+
+        return _matcher;
+    }
+
+    private Pattern compile(String pattern) throws DocumentParseException
+    {
+        if (_compiler == null)
+            _compiler = new Perl5Compiler();
+
+        try
+        {
+           return _compiler.compile(pattern, Perl5Compiler.MULTILINE_MASK);
+
+        }
+        catch (MalformedPatternException ex)
+        {
+            throw new DocumentParseException("Malformed regular expression: " + pattern, _resourcePath, ex);
+        }
+
+    }
+
+    private void match(String name, String text, String pattern) throws DocumentParseException
+    {
+
+        Pattern compiled = compile(pattern);
+
+        if (getMatcher().contains(text, compiled))
+            return;
+
+        System.err.println(text);
+
+        throw new AssertionFailedError(name + ": Response does not contain regular expression '" + pattern + "'.");
+
+    }
+    
+    private void executeOutputMatchesAssertions(Element request)
+    throws DocumentParseException
+    {
+        List l = request.getChildren("assert-output-matches");
+        int count = l.size();
+        String outputString = null;
+        
+        for (int i = 0; i < count; i++)
+        {
+            Element e = (Element)l.get(i);
+            
+            if (outputString == null)
+                outputString = _response.getOutputString();
+                
+            executeOutputMatchAssertion(e, outputString);                            
+        }
+        
+    }
+    
+    private void executeOutputMatchAssertion(Element element, String outputString) throws DocumentParseException
+    {
+        String name = element.getAttributeValue("name");
+        String pattern = element.getTextTrim();
+        
+        PatternMatcherInput input = new PatternMatcherInput(outputString);
+        
+        PatternMatcher matcher = getMatcher();
+        Pattern compiled = compile(pattern);
+        
+        List l = element.getChildren("match");
+        int count = l.size();
+        int i = 0;
+        
+        while (matcher.contains(input, compiled))
+        {
+            MatchResult match = matcher.getMatch();
+            
+            if (i >= count)
+                throw new AssertionFailedError(name + ": Too many matches for '" + pattern + "'.");
+                
+            Element e = (Element)l.get(i);
+            String expected = e.getTextTrim();
+            String actual = match.toString();
+            
+                
+            if (!actual.equals(expected))
+                 throw new AssertionFailedError(name + "[" + i + "]: Expected '" + expected + "' but got '" + actual + "'.");    
+            
+            i++;
+        }
+        
+        if (i < count)
+            throw new AssertionFailedError(name + ": Too few matches for '" + pattern + "'.");
+    }
+    
 }
