@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<project name="Tapestry Framework JUnit Test Suite" default="install">
+<project name="Tapestry Framework JUnit Test Suite" default="run">
 
   <!-- Directory in which compiled classes are placed -->
   <property name="classes" value="classes"/>
 
-  <!-- Directory that contains library frameworks, and to
-       which the framework is eventually installed -->
+  <!-- Directory that contains library frameworks -->
   <property name="lib" value="../lib"/>
   
   <!-- Directory containing source code and package resources -->
@@ -37,21 +36,29 @@
     </javac>
   </target>
 
+  <path id="junit.classpath">
+    <path location="${classes}"/>
+  	 <!-- Add the src directory back in, since package resources needed by
+  	      the tests are there.  Also, ensure that the local copy 
+  	      of junit/running/excluded.properties overrides the default
+  	      copy in junit.jar -->
+  	 <path location="${src}"/>
+  	 <path refid="project.class.path"/>
+  </path>
+  	  
   <target name="run" depends="compile" description="Run the test suite.">
   	<junit printsummary="on" haltonfailure="on">
-  	  <classpath>
-  	  	 <path location="${classes}"/>
-  	  	 <!-- Add the src directory back in, since package resources needed by
-  	  	      the tests are there.  Also, ensure that the local copy 
-  	  	      of junit/running/excluded.properties overrides the default
-  	  	      copy in junit.jar -->
-  	  	 <path location="${src}"/>
-  	  	 <path refid="project.class.path"/>
-  	  </classpath>
-
-  	  <test name="net.sf.tapestry.junit.TapestrySuite">
-  	  </test>
+	  <classpath refid="junit.classpath"/>
+    		
+  	  <test name="net.sf.tapestry.junit.TapestrySuite"/>
   	</junit>
+  </target>
+  
+  <target name="gui" depends="compile" description="Run the JUnit gui.">
+  	<java fork="true" classname="net.sf.tapestry.junit.TapestrySuite">
+  		<classpath refid="junit.classpath"/>
+  	</java>
+  	
   </target>
   
 </project>
