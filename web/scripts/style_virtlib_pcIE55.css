@@ -147,3 +147,15 @@ PRE
 {
   font-size: 12px;
 }
+
+DIV.right-side-quote
+{
+	text-align: left;
+	float: right;
+	width: 250px;
+	color: white;
+	padding-right: 8px;
+	padding-left: 4px;
+    font-size: 14px;
+	font-weight : bold;
+}
