@@ -111,6 +111,8 @@ public class ApplicationSpecification extends BasePropertyHolder
 			"/com/primix/tapestry/components/Hidden.jwc");	
 		componentMap.put("ShowInspector",
 			"/com/primix/tapestry/inspector/ShowInspector.jwc");		
+        componentMap.put("Shell",
+            "/com/primix/tapestry/components/Shell.jwc");
 
 		// Provide defaults for three of the four standard pages.
 		// An application must provide a home page and may override
@@ -224,6 +226,10 @@ public class ApplicationSpecification extends BasePropertyHolder
 	*		<td>/com/primix/tapestry/components/Service.jwc</td>
 	*		<td>{@link Service}</td>
 	* </tr>
+    * <tr>
+    *       <td>/com/primix/tapestry/components/Shell.jwc</td>
+    *       <td>{@link Shell}</td>
+    * </tr>
 	* <tr>
 	*		<td>/com/primix/tapestry/inspector/ShowInspector.jwc</td>
 	*		<td>{@link ShowInspector}</td>

@@ -5,34 +5,16 @@
 	<class>com.primix.tapestry.inspector.Inspector</class>
 	<components>
 		<component>
-			<id>styleSheet</id>
-			<type>Any</type>
+			<id>shell</id>
+			<type>Shell</type>
 			<bindings>
-				<static-binding>
-					<name>rel</name>
-					<value>stylesheet</value>
-				</static-binding>
-				<static-binding>
-					<name>type</name>
-					<value>text/css</value>
-				</static-binding>
-				<static-binding>
-					<name>element</name>
-					<value>link</value>
-				</static-binding>
 				<binding>
-					<name>href</name>
-					<property-path>assets.stylesheet</property-path>
+					<name>title</name>
+					<property-path>inspectorTitle</property-path>
 				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertApplicationName</id>
-			<type>Insert</type>
-			<bindings>
 				<binding>
-					<name>value</name>
-					<property-path>application.specification.name</property-path>
+					<name>stylesheet</name>
+					<property-path>assets.stylesheet</property-path>
 				</binding>
 			</bindings>
 		</component>

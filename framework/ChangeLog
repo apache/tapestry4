@@ -1,5 +1,7 @@
 * Oct 24 2000 hship
 
+Add the Shell component, and convert the Inspector, Exception, StaleSession
+and StaleLink pages to use it.
 Tiny change to exception handling when instantiating components and pages.
 Add getDouble() method to IBinding.
 

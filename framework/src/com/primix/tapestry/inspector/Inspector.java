@@ -175,4 +175,10 @@ public class Inspector extends BasePage
 	{
 		return getInspectedPage().getNestedComponent(inspectedIdPath);	
 	}
+
+    public String getInspectorTitle()
+    {
+        return "Tapestry Inspector: " +
+                application.getSpecification().getName();
+    }
 }

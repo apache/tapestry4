@@ -1,10 +1,23 @@
 <?xml version="1.0"?>
-<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
 	<class>com.primix.tapestry.BasePage</class>
 	<components>
+		<component>
+			<id>shell</id>
+			<type>Shell</type>
+			<bindings>
+				<static-binding>
+					<name>title</name>
+					<value>Stale Link</value>
+				</static-binding>
+				<binding>
+					<name>stylesheet</name>
+					<property-path>assets.stylesheet</property-path>
+				</binding>
+			</bindings>
+		</component>
 		<component>
 			<id>home</id>
 			<type>Service</type>
@@ -16,4 +29,10 @@
 			</bindings>
 		</component>
 	</components>
+	<assets>
+		<private-asset>
+			<name>stylesheet</name>
+			<resource-path>/com/primix/tapestry/pages/Exception.css</resource-path>
+		</private-asset>
+	</assets>
 </specification>
