@@ -34,8 +34,15 @@
   
   
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
-    <copy todir="${classes.dir}">
-      <fileset dir="${src.dir}">
+    
+    <war warfile="${wap.war}" webxml="web.xml">
+      <fileset dir=".">
+        <include name="images/**"/>
+        <include name="*.html"/>
+      </fileset>
+	  <classes dir="${classes.dir}"/>         
+    
+      <classes dir="${src.dir}">
         <include name="**/*.jwc"/>
         <include name="**/*.html"/>
         <include name="**/*.gif"/>
@@ -44,15 +51,7 @@
         <include name="**/*.properties"/>
         <include name="**/*.application"/>
         <exclude name="**/package.html"/>
-      </fileset>
-    </copy>
-    
-    <war warfile="${wap.war}" webxml="web.xml">
-      <fileset dir=".">
-        <include name="images/**"/>
-        <include name="*.html"/>
-      </fileset>
-	  <classes dir="${classes.dir}"/>         
+      </classes>
     </war>
   </target>
 
