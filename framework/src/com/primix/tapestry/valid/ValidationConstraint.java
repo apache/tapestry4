@@ -89,7 +89,13 @@ public class ValidationConstraint extends Enum
 	public static final ValidationConstraint TOO_LARGE =
 		new ValidationConstraint("TOO_LARGE");
 
-	private ValidationConstraint(String enumerationId)
+	/**
+	 *  Protected constructor, which allows new constraints to be created
+	 *  as subclasses.
+	 * 
+	 **/
+	
+	protected ValidationConstraint(String enumerationId)
 	{
 		super(enumerationId);
 	}

@@ -151,6 +151,20 @@ public class ValidationDelegate
 
 	public void record(ValidatorException ex)
 	{
+		record(ex.getMessage(), ex.getConstraint(), ex.getInvalidInput());
+	}
+
+
+	/**
+	 *  Records the information provided as a {@link ValidatorException}.
+	 *  Subclasses may override the default error message (based on other
+	 *  factors, such as the field and constraint) before invoking this
+	 *  implementation.
+	 * 
+	 **/
+	
+	protected void record(String errorMessage, ValidationConstraint constraint, String invalidInput)
+	{
 		if (trackings == null)
 			trackings = new ArrayList();
 			
@@ -167,9 +181,9 @@ public class ValidationDelegate
 			trackingMap.put(fieldName, currentTracking);
 		}
 		
-		currentTracking.setInvalidInput(ex.getInvalidInput());
-		currentTracking.setErrorMessage(ex.getMessage());
-		currentTracking.setConstraint(ex.getConstraint());
+		currentTracking.setInvalidInput(invalidInput);
+		currentTracking.setErrorMessage(errorMessage);
+		currentTracking.setConstraint(constraint);
 	}
 
 	public void writePrefix(IResponseWriter writer, IRequestCycle cycle)

@@ -45,6 +45,17 @@ public class ValidatorException extends Exception
 		super(errorMessage);
 	}
 
+	/**
+	 *  Creates a new instance.
+	 *  @param errorMessage the default error message to be used (this may be
+	 *  overriden by the {@link IValidationDelegate}
+	 *  @param constraint a validation constraint that has been compromised, or
+	 *  null if no constraint is applicable
+	 *  @param invalidInput the input received by the component that was invalid; this
+	 *  is stored during the request cycle and will be used as the default value
+	 *  for the input field during the page render
+	 **/
+	
 	public ValidatorException(
 		String errorMessage,
 		ValidationConstraint constraint,
