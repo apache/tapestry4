@@ -44,69 +44,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
  *  within a form; it is similar to a {@link net.sf.tapestry.components.Foreach} but leverages
  *  hidden inputs within the &lt;form&gt; to store the items in the list.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction </td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- * <tr> <td>source</td>
- *	<td>Object[] or {@link List}</td>
- *	<td>in</td>
- *	<td>yes</td> <td>&nbsp;</td>
- *	<td>The list of values to be editted within the form.  This list is only
- *  read when the component renders; it records hidden input fields in the
- *  form to guide things when the form is submitted.
- *
- *  <p>The source can contain objects of any type, though they should be serializable.
- *  Ideally, the objects should be {@link String} or wrapper types such as {@link Integer}.
- *  In other words, the source should be a list of primary keys of the objects
- *  being editted.
- *	</td> </tr>
- *
- *  <tr>
- *	<td>value</td>
- *	<td>any</td>
- *	<td>out</td>
- *	<td>yes</td>
- *	<td>&nbsp;</td>
- *	<td>The value for each iteration through the list (during render or rewind).
- *	</td> </tr>
- *
- *  <tr>
- *	<td>index</td>
- *  <td>int</td>
- *	<td>out</td>
- *	<td>no</td> <td>&nbsp;</td>
- *	<td>The index (starting at zero) for each iteration through the list.
- *	</td> </tr>
- *
- * <tr>
- *  <td>element</td>
- *  <td>{@link String}</td>
- *  <td>in</td>
- *  <td>no</td> <td>&nbsp;</td>
- *	<td>If specified, then a tag for the specified element is placed around
- *  the content on each iteration.  This emulates the
- *  {@link net.sf.tapestry.components.Any} component.  Most often
- *  the element specified is "tr" when the ListEdit is part of a table.
- *  Any informal parameters are applied to the element.
- *	</td>
- *
- *  </table>
- *
- *  <p>Informal parameters are allowed.  A body is allowed (and expected).
- *
- *  <p>An instance of {@link DataSqueezer} is used to convert arbitrary objects into 
- *  Strings and then back into objects.  However, for best efficiency, the list
- *  should be simple Strings or numeric types, typically a primary key or other
- *  identifier from which the rest of an object may be retrieved or constructed.
- *  Serializable objects will work, but the resultant string can be 
- *  very, very large.
+ *  [<a href="../../../../../ComponentReference/ListEdit.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -343,12 +281,12 @@ public class ListEdit extends AbstractComponent
 
     public void setElement(String element)
     {
-        this._element = element;
+        _element = element;
     }
 
     public void setSource(Object source)
     {
-        this._source = source;
+        _source = source;
     }
     
     public Object getSource()

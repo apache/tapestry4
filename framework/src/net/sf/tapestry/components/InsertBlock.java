@@ -35,6 +35,8 @@ import net.sf.tapestry.RequestCycleException;
 /**
  *  Renders the text and components wrapped by a {@link Block} component.
  *
+ *  [<a href="../../../../../ComponentReference/InsertBlock.html">Component Reference</a>]
+ *
  *  <p>It is possible for an InsertBlock to obtain a Block
  *  from a page <em>other than</em> the render page.  This works, even when
  *  the Block contains links, forms and form components.  The action and
@@ -56,30 +58,6 @@ import net.sf.tapestry.RequestCycleException;
  *  which effectively allows parameters to be passed to the components contained
  *  in a Block.
  *
- * <p>
- * <table border=1>
- * <tr>
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction</th>
- *    <th>Required</th>
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>block</td>
- *  <td>{@link Block}</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td>The {@link Block} whose contents are to be rendered.</td>
- * </tr>
- *
- *  </table>
- 
- * <p>Informal parameters are allowed.  The component may not have a body.
- *
  * @author Howard Lewis Ship
  * @version $Id$
  * 
@@ -87,7 +65,7 @@ import net.sf.tapestry.RequestCycleException;
 
 public class InsertBlock extends AbstractComponent
 {
-    private Block block;
+    private Block _block;
 
     /**
      *  If block is not null,
@@ -99,25 +77,25 @@ public class InsertBlock extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-         if (block != null)
+         if (_block != null)
          {
          	// make a copy of the inserter so we don't overwrite completely
-         	IComponent previousInserter = block.getInserter();
-         	block.setInserter(this);
-            block.renderWrapped(writer, cycle);
+         	IComponent previousInserter = _block.getInserter();
+         	_block.setInserter(this);
+            _block.renderWrapped(writer, cycle);
             // reset the inserter as it was before we changed it
-            block.setInserter(previousInserter);
+            _block.setInserter(previousInserter);
          }
     }
     
     public Block getBlock()
     {
-        return block;
+        return _block;
     }
 
     public void setBlock(Block block)
     {
-        this.block = block;
+        _block = block;
     }
 
 }

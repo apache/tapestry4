@@ -34,10 +34,13 @@ import net.sf.tapestry.RequestCycleException;
 /**
  *  Renders the text and components wrapped by a component.
  *
- * <p>Informal parameters are not allowed.  The component may not have a body.
+ *  [<a href="../../../../../ComponentReference/InsertWrapped.html">Component Reference</a>]
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  <p>Possibly, a better name for this component would have been
+ *  <b>InsertBody</b>.
+ * 
+ *  @author Howard Lewis Ship
+ *  @version $Id$
  * 
  **/
 
@@ -52,10 +55,7 @@ public class InsertWrapped extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        IComponent container;
-        String containerId;
-
-        container = getContainer();
+        IComponent container = getContainer();
 
         container.renderWrapped(writer, cycle);
     }
