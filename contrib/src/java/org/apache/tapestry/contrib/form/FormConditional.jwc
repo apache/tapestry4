@@ -48,6 +48,6 @@
 
   <reserved-parameter name="invert"/>
   
-  <inject name="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
+  <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
   
 </component-specification>
