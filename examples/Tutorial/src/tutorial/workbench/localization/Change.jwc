@@ -8,7 +8,7 @@
     <binding name="value" property-path="localeName"/>
   </component>
   
-  <component id="home" type="Page">
+  <component id="back" type="Page">
     <static-binding name="page">Localization</static-binding>
   </component>
   

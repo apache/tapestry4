@@ -30,7 +30,37 @@
     <field-binding name="required" field-name="Boolean.TRUE"/>
     <static-binding name="displayName">Integer Field</static-binding>
   </component>
+ 
+ 
+  <component id="doubleLabel" type="FieldLabel">
+    <binding name="field" property-path="components.inputDouble"/>
+    <binding name="delegate" property-path="beans.delegate"/>
+  </component>
   
+  <component id="inputDouble" type="NumericField">
+    <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="value" property-path="visit.doubleValue"/>
+    <field-binding name="minimum" field-name="tutorial.workbench.fields.Fields.DOUBLE_MIN"/>
+    <field-binding name="maximum" field-name="tutorial.workbench.fields.Fields.DOUBLE_MAX"/>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <static-binding name="displayName">Double Field</static-binding>
+  </component>
+  
+  <component id="bigDecimalLabel" type="FieldLabel">
+    <binding name="field" property-path="components.inputBigDecimal"/>
+    <binding name="delegate" property-path="beans.delegate"/>
+  </component>
+  
+  <component id="inputBigDecimal" type="NumericField">
+    <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="value" property-path="visit.bigDecimalValue"/>
+    <field-binding name="minimum" field-name="tutorial.workbench.fields.Fields.DECIMAL_MIN"/>
+    <field-binding name="maximum" field-name="tutorial.workbench.fields.Fields.DECIMAL_MAX"/>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <static-binding name="displayName">Big Decimal Field</static-binding>
+  </component>
+  
+    
   <component id="continue" type="ImageSubmit">
    	<binding name="image" property-path="assets.continue"/>
   </component>
