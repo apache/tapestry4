@@ -80,7 +80,7 @@ tested configurations:
 </section>
 
 <section id="configuration.deployment-descriptor">
-	<title>Web Deployment Descriptor</title>
+	<title>Web deployment descriptor</title>
 	
 <para>
 All Tapestry applications make use of the &ApplicationServlet; class as their
@@ -96,21 +96,17 @@ servlet; it is rarely necessary to create a subclass.
  "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd"&gt;
 &lt;web-app&gt;
   &lt;distributable/&gt; <co id="configuration.web.distributable"/>
-  &lt;display-name&gt;Tapestry Virtual Library Demo&lt;/display-name&gt;
+  &lt;display-name&gt;My Application&lt;/display-name&gt;
   &lt;servlet&gt;
-    &lt;servlet-name&gt;vlib&lt;/servlet-name&gt; <co id="configuration.web.servlet-name"/>
+    &lt;servlet-name&gt;myapp&lt;/servlet-name&gt; <co id="configuration.web.servlet-name"/>
     &lt;servlet-class&gt;org.apache.tapestry.&ApplicationServlet;&lt;/servlet-class&gt; <co id="configuration.web.servlet-class"/>
-    &lt;init-param&gt;
-    	&lt;param-name&gt;org.apache.tapestry.application-specification&lt;/param-name&gt; <co id="configuration.web.spec-path"/>
-    	&lt;param-value&gt;/net/sf/tapestry/vlib/Vlib.application&lt;/param-value&gt;
-    &lt;/init-param&gt;
-    &lt;load-on-startup&gt;0&lt;/load-on-startup&gt;
+    &lt;load-on-startup&gt;0&lt;/load-on-startup&gt; <co id="configuration.load-on-startup"/>
   &lt;/servlet&gt;
   
   &lt;!-- The single mapping used for the Virtual Library application --&gt;
 
   &lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;vlib&lt;/servlet-name&gt;
+    &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
     &lt;url-pattern&gt;/app&lt;/url-pattern&gt; <co id="configuration.web.url"/>
   &lt;/servlet-mapping&gt;
   
@@ -154,25 +150,28 @@ HttpSession state management simply doesn't work.
 	application.
 	</para>
 </callout>
-<callout arearefs="configuration.web.spec-path">
-	<para>
-	The Virtual Library application stores its specification on the classpath, rather
-	than under &WEB-INF;, so it is necessary to provide the complete
-	path to the specification.  Most applications can omit this
-	<sgmltag class="starttag">init-param</sgmltag>.
-	</para>
+<callout arearefs="configuration.load-on-startup">
+<para>
+It is generally a good idea to specify 
+<sgmltag class="starttag">load-on-startup</sgmltag>, this causes
+the servlet container to instantitate and initialize the the application servlet, which in turn,
+reads the Tapestry application specification. Many common development errors will be spotted immediately,
+rather than when the first application request arrives.
+</para>	
 </callout>
 <callout arearefs="configuration.web.url">
 	<para>
 	The servlet is mapped to <filename>/app</filename> within the context.  The context
-	itself has a path, determined by the application server, but typically
-	<filename>/vlib</filename>.  The client web browser will see the Tapestry application
-	as <filename>http://<replaceable>host</replaceable>/vlib/app</filename>.
+	itself has a path, determined by the application server and based on the name of the WAR file.
+	
+	The client web browser will see the Tapestry application
+	as <filename>http://<replaceable>host</replaceable>/<replaceable>war-name</replaceable>/app</filename>.
 	</para>
 	
 	<para>
 	Using <filename>/app</filename> as the URL is a common convention when creating
-	Tapestry applications, but is not a requirement.
+	Tapestry applications, but is not a requirement. The framework will adapt to whatever mapping
+	you select.
 	</para>
 </callout>
 </calloutlist>
@@ -187,8 +186,7 @@ applications can operate without an application specification.
 </para>
 
 <para>
-Prior to release 3.0, application specifications had to be stored on the classpath.  This 
-is maintained for backwards compatibility.  In modern applications, the specification is
+The specification is normally
 stored under &WEB-INF;.  In fact, Tapestry performs a search to find the specification:
 </para>
 
@@ -211,7 +209,7 @@ stored under &WEB-INF;.  In fact, Tapestry performs a search to find the specifi
 	<para>
 	As <filename>/WEB-INF/<replaceable>name</replaceable>.application</filename>.
 	Again, <replaceable>name</replaceable> is the
-	servlet name.  This is the standard scenario.
+	servlet name.  This is the standard location.
 	</para>
 </listitem>
 </orderedlist>
@@ -291,14 +289,14 @@ some configuration data could be drawn from a database.
 </para>
 		
 <para>
-The following table lists all the configuration values
-currently used in Tapestry.
+The following are all the configuration values
+currently used in Tapestry:
 	
 <variablelist>
 	<title>Configuration Values</title>
 	
 <varlistentry>
-	<term>org.apache.tapestry.template-extension</term>
+	<term><literal>org.apache.tapestry.template-extension</literal></term>
 	
 	<listitem>
 	<para>
@@ -319,8 +317,8 @@ currently used in Tapestry.
 </varlistentry>
 	
 <varlistentry>
-	<term>org.apache.tapestry.asset.dir</term>
-	<term>org.apache.tapestry.asset.URL</term>
+	<term><literal>org.apache.tapestry.asset.dir</literal></term>
+	<term><literal>org.apache.tapestry.asset.URL</literal></term>
 	
 	<listitem>
 	<para>
@@ -337,7 +335,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.visit-class</term>
+	<term><literal>org.apache.tapestry.visit-class</literal></term>
 	
 	<listitem>
 	<para>
@@ -354,7 +352,7 @@ currently used in Tapestry.
 
 
 <varlistentry>
-	<term>org.apache.tapestry.default-page-class</term>
+	<term><literal>org.apache.tapestry.default-page-class</literal></term>
 	
 	<listitem>
 	<para>
@@ -368,7 +366,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.engine-class</term>
+	<term><literal>org.apache.tapestry.engine-class</literal></term>
 	
 	<listitem>
 	<para>
@@ -382,7 +380,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.global-class</term>
+	<term><literal>org.apache.tapestry.global-class</literal></term>
 	
 	<listitem>
 	<para>
@@ -396,7 +394,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.default-script-language</term>
+	<term><literal>org.apache.tapestry.default-script-language</literal></term>
 	
 	<listitem>
 	<para>
@@ -410,7 +408,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.enable-reset-service</term>
+	<term><literal>org.apache.tapestry.enable-reset-service</literal></term>
 	
 	<listitem>
 	<para>
@@ -430,7 +428,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.disable-caching</term>
+	<term><literal>org.apache.tapestry.disable-caching</literal></term>
 	
 	<listitem>
 	<para>
@@ -447,15 +445,15 @@ currently used in Tapestry.
 	
 	<para>
 	This should never be enabled in production; the performance hit is too large.
-	Like <literal>org.apache.tapestry.enable-reset-service</literal>, this must
-	be specified as a JVM system property.
+	Unlike most other configuration values, this must be specified
+	as a JVM system property.
 	</para>
 	</listitem>
 </varlistentry>
 
 
 <varlistentry>
-	<term>org.apache.tapestry.output-encoding</term>
+	<term><literal>org.apache.tapestry.output-encoding</literal></term>
 	
 	<listitem>
 	<para>
@@ -474,7 +472,7 @@ currently used in Tapestry.
 
 
 <varlistentry>
-	<term>org.apache.tapestry.template-encoding</term>
+	<term><literal>org.apache.tapestry.template-encoding</literal></term>
 	
 	<listitem>
 	<para>
@@ -495,10 +493,13 @@ currently used in Tapestry.
 </section>  <!-- configuration.search-path -->
 
 <section id="configuration.extensions">
-	<title>Application Extensions</title>
+	<title>Application extensions</title>
 	
-<para>Tapestry is designed for flexibility; this extends beyond simply configuration
-	behavior, and encompasses actually replacing or augmenting behavior.  In some cases,
+<para>Tapestry is designed for flexibility; this extends beyond simply 
+configuring the framework, and encompasses actually replacing or augmenting the implementation
+of the framework.  If Tapestry doesn't do what you want it to, there are multiple paths
+for extending, changing and overriding its normal behavior.
+  In some cases,
 	it is necessary to subclass framework classes in order to alter behavior, but in
 	many cases, it is possible to use an application extension.
 	</para>
@@ -520,7 +521,7 @@ currently used in Tapestry.
 	<title>Application Extension Points</title>
 	
 <varlistentry>
-	<term>org.apache.tapestry.property-source (&IPropertySource;)</term>
+	<term><literal>org.apache.tapestry.property-source</literal> (&IPropertySource;)</term>
 	<listitem>
 	<para>
 		This extension
@@ -532,7 +533,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.request-decoder (&IRequestDecoder;)</term>
+	<term><literal>org.apache.tapestry.request-decoder</literal> (&IRequestDecoder;)</term>
 	<listitem>
 	<para>
 		A request decoder is used
@@ -545,7 +546,7 @@ currently used in Tapestry.
 </varlistentry>	
 
 <varlistentry>
-	<term>org.apache.tapestry.monitor-factory (&IMonitorFactory;)</term>
+	<term><literal>org.apache.tapestry.monitor-factory</literal> (&IMonitorFactory;)</term>
 
 	<listitem>
 	<para>An object that is used to create &IMonitor; instances.  Monitors
@@ -565,7 +566,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.specification-resolver-delegate (&ISpecificationResolverDelegate;)</term>
+	<term><literal>org.apache.tapestry.specification-resolver-delegate</literal> (&ISpecificationResolverDelegate;)</term>
 	
 	<listitem>
 	<para>
@@ -578,7 +579,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.template-source-delegate (&ITemplateSourceDelegate;)</term>
+	<term><literal>org.apache.tapestry.template-source-delegate</literal> (&ITemplateSourceDelegate;)</term>
 	
 	<listitem>
 	<para>
@@ -591,7 +592,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry> 
-<term>org.apache.tapestry.multipart-decoder (&IMultipartDecoder;)</term>
+<term><literal>org.apache.tapestry.multipart-decoder</literal> (&IMultipartDecoder;)</term>
 
 <listitem>
 <para>
@@ -605,13 +606,13 @@ to store the) and repository directory (where temporary files are stored).
 </varlistentry>
 
 <varlistentry>
-<term>org.apache.tapestry.ognl-type-converter</term>
+<term><literal>org.apache.tapestry.ognl-type-converter</literal></term>
 
 <listitem>
 <para>
 Specifies an implementation of ognl.TypeConverter to be used for expression bindings.
-See OGNL's Type Converter documentation (currently at
-http://www.ognl.org/2.6.3/Documentation/html/typeConversion.html)
+See OGNL's <ulink url="http://www.ognl.org/2.6.3/Documentation/html/typeConversion.html">Type 
+	Converter documentation</ulink> 
 for further information on implementing a custom type converter.
 </para>
 </listitem>
@@ -629,9 +630,9 @@ for further information on implementing a custom type converter.
 <para>
 Tapestry is designed to make the web application localization easy and 
 offers the ability to define different localized templates for the same component.
-For example, Home.html would be the default template of the Home page, however
-Home_fr.html would be used in all French locales, while Home_zh_CN.html would be used in
-China and Home_zh_TW.html would be used in Taiwan.
+For example, <filename>Home.html</filename> would be the default template of the Home page, however
+<filename>Home_fr.html</filename> would be used in all French locales, while <filename>Home_zh_CN.html</filename> would be used in
+China and <filename>Home_zh_TW.html</filename> would be used in Taiwan.
 </para>
 
 <para>
@@ -645,8 +646,8 @@ different components and different locales.
 
 <para>
 The character set of a template is defined using the 
-org.apache.tapestry.template-encoding
-configuration property. The search path of this property is slightly different then the
+<literal>org.apache.tapestry.template-encoding</literal>
+&configuration-property;. The search path of this property is slightly different then the
 standard one and allows specific components to use other character sets:
 </para>
 	
@@ -702,8 +703,9 @@ standard one and allows specific components to use other character sets:
 <para>
 Tapestry also makes it possible to define the character set used by the templates specific 
 to a particular locale by appending the locale to the property name above. 
-As an example, the org.apache.tapestry.template-encoding_ru configuration property would define
-the character set used by the Russian templates, such as Home_ru.html. 
+As an example, the 
+<literal>org.apache.tapestry.template-encoding_ru</literal> configuration property would define
+the character set used by the Russian templates, such as <filename>Home_ru.html</filename>. 
 This allows templates for different locales to use different character sets, 
 even though they are in the same application. 
 For example, it is possible for all Russian templates in the application to use the KOI8-R 
@@ -712,13 +714,14 @@ character set and all Chinese templates to use Big5 at the same time.
 
 <para>
 The character sets used by the templates do not reflect in any way on the character set 
-Tapestry uses to encode its response to the browser. 
-That character set is defined by the org.apache.tapestry.output-encoding 
-configuration property.
+Tapestry uses to encode its response to the browser. The character sets are used when reading
+the template to translate it appropriately into Unicode.
+The output character set is defined by the 
+<literal>org.apache.tapestry.output-encoding</literal> configuration property.
 </para>
 
 	
-</section>	
+</section>	<!-- configuration.character-sets -->
 
 
 </chapter>

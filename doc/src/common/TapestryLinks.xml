@@ -72,6 +72,7 @@
 <!ENTITY SimpleEngine '<ulink url="&ApiRoot;/engine/SimpleEngine.html"><classname>SimpleEngine</classname></ulink>'>
 <!ENTITY SpecificationParser '<ulink url="&ApiRoot;/parse/SpecificationParser"><classname>SpecificationParser</classname></ulink>'>
 <!ENTITY StaleLinkException '<ulink url="&ApiRoot;/StaleLinkException.html"><classname>StaleLinkException</classname></ulink>'>
+<!ENTITY Tapestry '<ulink ulr="&ApiRoot;/Tapestry.html"><classname>Tapestry</classname></ulink>'>
 <!ENTITY ValidationDelegate '<ulink url="&ApiRoot;/valid/ValidationDelegate.html"><classname>ValidationDelegate</classname></ulink>'>
 
 <!-- Links to Component Reference -->
