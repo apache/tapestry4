@@ -251,6 +251,12 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
         PropertyDescriptor d = (PropertyDescriptor) beanProperties.get(propertyName);
 
+        // If the property is entirely missing, then
+        // assume it needs creation.
+
+        if (d == null)
+            return true;
+
         // No existing property matches, so we'll return true to
         // create an enhanced class with the property.
 
@@ -315,7 +321,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
             ParameterSpecification ps = specification.getParameter(name);
 
-            createParameterProperty(cf, startClass, beanProperties, name, ps);
+            createParameterProperty(cf, startClass, beanProperties, ps);
         }
 
         JavaClass jc = cf.commit();
@@ -362,16 +368,12 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         ClassFabricator cf,
         Class beanClass,
         Map beanProperties,
-        String parameterName,
         ParameterSpecification ps)
     {
         if (ps.getDirection() == Direction.CUSTOM)
             return;
 
         String propertyName = ps.getPropertyName();
-
-        if (propertyName == null)
-            propertyName = parameterName;
 
         // Yes, but does it *need* a property created?
 
