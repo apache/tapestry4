@@ -28,21 +28,23 @@ import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
- * Locates the application specification and informs the 
- * {@link org.apache.tapestry.services.ServletInfo} service about it.
- *
+ * Locates the application specification and informs the
+ * {@link org.apache.tapestry.services.ServletInfo}service about it.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class ApplicationSpecificationInitializer implements ApplicationInitializer
 {
     private Log _log;
+
     private ClasspathResourceFactory _classpathResourceFactory;
+
     private ApplicationGlobals _globals;
+
     private ISpecificationParser _parser;
 
-    public static final String APP_SPEC_PATH_PARAM =
-        "org.apache.tapestry.application-specification";
+    public static final String APP_SPEC_PATH_PARAM = "org.apache.tapestry.application-specification";
 
     public void initialize(HttpServlet servlet)
     {
@@ -101,15 +103,18 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
 
     private IApplicationSpecification constructStandinSpecification(HttpServlet servlet)
     {
+        String servletName = servlet.getServletName();
+
         ApplicationSpecification result = new ApplicationSpecification();
 
-        Resource virtualLocation = new ContextResource(servlet.getServletContext(), "/WEB-INF/");
+        // Pretend the file exists in the most common expected location.
+        
+        Resource virtualLocation = new ContextResource(servlet.getServletContext(), "/WEB-INF/"
+                + servletName + ".application");
 
         result.setSpecificationLocation(virtualLocation);
 
-        result.setName(servlet.getServletName());
-
-        // result.setResourceResolver(_resolver);
+        result.setName(servletName);
 
         return result;
     }
