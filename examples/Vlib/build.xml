@@ -72,6 +72,15 @@
   <target name="run" description="Run the Vlib application." depends="install">
     <java classname="org.mortbay.jetty.Server" fork="true">
       <classpath>
+
+      	<!-- Favor files in src over copies in classes -->
+      	<pathelement location="${src}"/>
+      	
+      	<!-- Temporary hack: pick up compiled files from Eclipse's compilation directory
+      	     instead of our own: necessary for debugging.  -->
+      	     
+        <pathelement location="../../bin"/>
+
         <path refid="project.class.path"/>
         <pathelement location="${lib}/org.mortbay.jetty.jar"/>
         <!-- Pick up the "custom" jndi.properties from the VlibBeans project -->
@@ -81,11 +90,22 @@
         <pathelement location="${jboss.dir}/client/jbosssx-client.jar"/>
         <pathelement location="${jboss.dir}/client/jnp-client.jar"/>
       </classpath>
+
       <arg value="jetty.xml"/>
-      <jvmarg value="-showversion"/>
+
       <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
       <sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
-    </java>
+      
+      <!-- Enable debugging on port 20150 --> 
+       
+      <jvmarg line="-showversion -Xdebug -Xnoagent"/>
+      <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
+      <sysproperty key="java.compiler" value="NONE"/>     
+       
+      <sysproperty key="com.primix.tapestry.disable-caching" value="true"/>
+      <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+      
+   </java>
   </target>
 
 </project>
