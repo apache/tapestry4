@@ -8,11 +8,13 @@
 
   <parameter name="value" direction="custom" java-type="java.util.Date" required="yes"/>
   <parameter name="format" direction="in" java-type="java.lang.String" required="no"/>
-
+  <parameter name="disabled" direction="in" java-type="boolean" required="no"/>
+  
   <component id="dateTextField" type="TextField">
        	<binding name="value" expression="text"/>
         <binding name="maxlength" expression="format.length()"/>        
         <binding name="size" expression="format.length()"/>        
+       	<binding name="disabled" expression="disabled"/>
   </component>
 
   <component id="dateHidden" type="Hidden">
@@ -23,6 +25,10 @@
   <component id="formatHidden" type="Hidden">
        	<binding name="value" expression="format"/>
        	<binding name="encode" expression="false"/>
+  </component>
+
+  <component id="popupButton" type="Button">
+       	<binding name="disabled" expression="disabled"/>
   </component>
 
   <component id="datePickerScript" type="Script">
