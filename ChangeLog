@@ -1,5 +1,9 @@
 * Nov 20 2000
 
+Copy j2ee.jar in for compiling, but don't distribute it.
+
+* Nov 20 2000
+
 Update Readme to mention J2EE RI.
 
 * Nov 20 2000
