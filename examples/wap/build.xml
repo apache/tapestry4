@@ -13,7 +13,6 @@
 	<path id="compile.classpath">
 		<fileset dir="${root.lib.dir}">
             <include name="${framework.jar}"/>
-            <include name="${wml.jar}"/>
             <include name="${ext.dir}/*.jar"/>
 		</fileset>
 		<path refid="jetty.classpath"/>
