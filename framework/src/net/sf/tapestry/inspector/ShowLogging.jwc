@@ -55,7 +55,7 @@
   
   <component id="inputNewLogger" type="ValidField">
     <static-binding name="displayName">New Logger</static-binding>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>
     <binding name="value" expression="newLogger"/>
   </component>
   
