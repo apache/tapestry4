@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock;
+package org.apache.tapestry.test.mock;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,16 +21,15 @@ import java.io.InputStream;
 import javax.servlet.ServletInputStream;
 
 /**
- *  Implementation of {@link ServletInputStream} used in mock object testing.
- *  The data in the stream is provided by a binary file.  The implemenation
- *  wraps around a {@link java.io.FileInputStream} redirecting all method
- *  invocations to the inner stream.
+ * Implementation of {@link ServletInputStream} used in mock object testing.
+ * The data in the stream is provided by a binary file.  The implemenation
+ * wraps around a {@link java.io.FileInputStream} redirecting all method
+ * invocations to the inner stream.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.1
+ */
 
 public class MockServletInputStream extends ServletInputStream
 {

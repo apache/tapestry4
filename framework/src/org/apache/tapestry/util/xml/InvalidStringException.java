@@ -44,7 +44,7 @@ public class InvalidStringException extends DocumentParseException implements Lo
 
     public InvalidStringException(String message, String invalidString, Location location)
     {
-        super(message, location == null ? null : location.getResource(), location, null);
+        super(message, location, null);
 
         _invalidString = invalidString;
     }

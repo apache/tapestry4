@@ -18,11 +18,11 @@ import java.util.ResourceBundle;
 
 import junit.framework.TestCase;
 
-import org.apache.tapestry.junit.mock.MockContext;
-import org.apache.tapestry.junit.mock.MockServletConfig;
 
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.spec.ApplicationSpecification;
+import org.apache.tapestry.test.mock.MockContext;
+import org.apache.tapestry.test.mock.MockServletConfig;
 import org.apache.tapestry.util.DelegatingPropertySource;
 import org.apache.tapestry.util.PropertyHolderPropertySource;
 import org.apache.tapestry.util.ResourceBundlePropertySource;

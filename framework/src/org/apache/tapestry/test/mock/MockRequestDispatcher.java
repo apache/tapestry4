@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock;
+package org.apache.tapestry.test.mock;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,13 +25,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 /**
- *  Used to enable mock testing of internal request forwarding.
+ * Used to enable mock testing of internal request forwarding.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.1
+ */
 public class MockRequestDispatcher implements RequestDispatcher
 {	
 	private String _resourcePath;
@@ -40,7 +39,6 @@ public class MockRequestDispatcher implements RequestDispatcher
     {
     	_resourcePath = resourcePath;
     }
-
 
     public void forward(ServletRequest request, ServletResponse response)
         throws ServletException, IOException

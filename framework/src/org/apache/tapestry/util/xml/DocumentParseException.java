@@ -46,15 +46,17 @@ public class DocumentParseException extends ApplicationRuntimeException
         this(message, documentLocation, null);
     }
 
-    public DocumentParseException(
-        String message,
-        Resource documentLocation,
-        Throwable rootCause)
+    public DocumentParseException(String message, Resource documentLocation, Throwable rootCause)
     {
         this(message, documentLocation, null, rootCause);
     }
 
-    public DocumentParseException(
+    public DocumentParseException(String message, Location location, Throwable rootCause)
+    {
+        this(message, location == null ? null : location.getResource(), location, rootCause);
+    }
+
+    private DocumentParseException(
         String message,
         Resource documentLocation,
         Location location,

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock;
+package org.apache.tapestry.test.mock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,16 +29,16 @@ import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
  *  
- *  Base class for holders of named attributes such as
- *  {@link javax.servlet.http.HttpSession}, 
- *  {@link javax.servlet.http.HttpServletRequest}
- *  and {@link javax.servlet.ServletContext}.
+ * Base class for holders of named attributes such as
+ * {@link javax.servlet.http.HttpSession}, 
+ * {@link javax.servlet.http.HttpServletRequest}
+ * and {@link javax.servlet.ServletContext}.
  *
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *
- **/
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.1
+ */
 
 public class AttributeHolder
 {

@@ -33,9 +33,9 @@
   		<include name="*.jar"/>
   	</fileset>
     <pathelement location="${jython.dir}/jython.jar"/>
-		<fileset dir="${root.lib.dir}">
-			<include name="${j2ee.dir}/*.jar"/>
-		</fileset>
+	<fileset dir="${root.lib.dir}">
+		<include name="${j2ee.dir}/*.jar"/>
+	</fileset>
   </path> 
 
   <target name="init">
@@ -76,17 +76,22 @@
 
   <!-- To run just a single test case, specify -Dtestcase=name -->
   
-  <target name="junit" depends="compile" description="Run the test suite.">
-      <junit printsummary="no"
+  <macrodef name="run-junit" description="Executes the JUnit test suite with a configured classpath.">
+    <attribute name="classpathref"/>
+    <attribute name="log4j-configuration" default="log4j.properties"/>
+ 
+ 	<sequential>
+       <junit printsummary="no"
           errorProperty="test.failed"
           failureProperty="test.failed"
           fork="true">
-          <classpath refid="junit.classpath"/>
+          <classpath refid="@{classpathref}"/>
           <formatter type="xml"/>
           <formatter type="brief" usefile="false"/>
 
           <sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
-
+		  <sysproperty key="log4j.configuration" value="@{log4j-configuration}"/> 
+		
           <batchtest todir="${classes.dir}" unless="testcase">
               <fileset dir="${classes.dir}"
                   includes="**/Test*.class"
@@ -103,6 +108,11 @@
       </junit>
 
       <fail if="test.failed">Unit tests failed.</fail>
+    </sequential>
+  </macrodef>
+  
+  <target name="junit" depends="compile" description="Run the test suite.">
+  	  <run-junit classpathref="junit.classpath"/>
   </target>
 
   <target name="junitreport">
@@ -155,25 +165,21 @@
     
     <echo>Executing suite ${suite} ...</echo>
     
-    <echo>Clover Run #1:  No logging enabled ...</echo>
+    <echo>
+
+*** Clover Run #1:  No logging enabled. ***
+
+</echo>
     
-  	<java fork="true" classname="junit.textui.TestRunner"
-		failonerror="true">
-  		<classpath refid="clover.classpath"/>
-		<arg value="${suite}"/>
-		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
-  	</java>
+    <run-junit classpathref="clover.classpath"/>
   	
-  
-    <echo>Clover Run #2: All logging enabled ...</echo>
+    <echo>
     
-  	<java fork="true" classname="junit.textui.TestRunner"
-		failonerror="true">
-  		<classpath refid="clover.classpath"/>
-		<arg value="${suite}"/>
-		<sysproperty key="log4j.configuration" value="log4j-slow.properties"/> 
-		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
-  	</java>  	
+*** Clover Run #2: All logging enabled ***
+
+</echo>
+    
+    <run-junit classpathref="clover.classpath" log4j-configuration="log4j-slow.properties"/>	
   	
   	<antcall target="clover-report"/>
 </target>
