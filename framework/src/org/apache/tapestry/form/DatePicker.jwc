@@ -12,7 +12,7 @@
   <parameter name="value" direction="form" type="java.util.Date" required="yes"/>
   <parameter name="format" direction="in" type="java.lang.String" required="no"/>
   <parameter name="disabled" direction="in" type="boolean" required="no"/>
-  <parameter name="includeWeek" java-type="boolean" direction="in" required="no"/>
+  <parameter name="includeWeek" type="boolean" direction="in" required="no"/>
         
   <property-specification name="name" type="java.lang.String"/>
   <property-specification name="form" type="org.apache.tapestry.IForm"/>
