@@ -64,7 +64,14 @@ public class BookLink extends BaseComponent
 	private Book book;
 	private String[] context;
 
-	private static final long ONE_WEEK_MILLIS = 1024l * 60l * 60l * 60l * 24l * 7l;
+	/**
+	 *  One week, in milliseconds (1/1024 second).  Books that have been added in the last
+	 *  week are marked new, until the user logs in, at which point, its books
+	 *  added since the user last logged in.
+	 * 
+	 **/
+	
+	private static final long ONE_WEEK_MILLIS = 1024l * 60l * 60l * 24l * 7l;
 
 	public IBinding getBookBinding()
 	{
