@@ -1,40 +1,36 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2002 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.valid;
 
 import java.util.List;
 
-
-import net.sf.tapestry.*;
+import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.form.*;
 import net.sf.tapestry.form.IFormComponent;
 
 /**
@@ -94,180 +90,178 @@ import net.sf.tapestry.form.IFormComponent;
  *  {@link FieldLabel} in this situation.
  * 
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
  *
  **/
 
 public interface IValidationDelegate
 {
-	/**
-	 *  Invoked before other methods to configure the delegate for the given 
-	 *  form component.
-	 * 
-	 *  <p>The caller should invoke this with a parameter of null to record
-	 *  global errors (errors not associated with any particular field).
-	 * 
-	 *  @since 1.0.8
-	 *
-	 **/
-	
-	public void setFormComponent(IFormComponent component);
+    /**
+     *  Invoked before other methods to configure the delegate for the given 
+     *  form component.
+     * 
+     *  <p>The caller should invoke this with a parameter of null to record
+     *  global errors (errors not associated with any particular field).
+     * 
+     *  @since 1.0.8
+     *
+     **/
 
-	/**
-	 *  Returns true if the current component is in error (that is, had bad input
-	 *  submitted by the end user).
-	 * 
-	 *  @since 1.0.8
-	 * 
-	 **/
-	
-	public boolean isInError();
-	
-	/**
-	 *  Returns the invalid string submitted by the client.
-	 * 
-	 * @since 1.0.8
-	 * 
-	 **/
+    public void setFormComponent(IFormComponent component);
 
-	public String getInvalidInput();
+    /**
+     *  Returns true if the current component is in error (that is, had bad input
+     *  submitted by the end user).
+     * 
+     *  @since 1.0.8
+     * 
+     **/
 
+    public boolean isInError();
 
-	/**
-	 *  Returns a {@link List} of {@link IFieldTracking}, in default order
-	 *  (the order in which fields are renderred). A caller should
-	 *  not change the values (the List is immutable).  
-	 *  May return null if no fields are in error.
-	 * 
-	 *  @since 1.0.8
-	 **/
-	
-	public List getFieldTracking();
+    /**
+     *  Returns the invalid string submitted by the client.
+     * 
+     * @since 1.0.8
+     * 
+     **/
 
-	/**
-	 *  Resets any tracking information for the current field.  This will
-	 *  clear the field's inError flag, and set its error message and invalid input value
-	 *  to null.
-	 * 
-	 *  @since 1.0.8
-	 * 
-	 **/
-	
-	public void reset();
+    public String getInvalidInput();
 
-	/**
-	 *  Clears all tracking information.
-	 * 
-	 *  @since 1.0.10
-	 * 
-	 **/
-	
-	public void clear();
+    /**
+     *  Returns a {@link List} of {@link IFieldTracking}, in default order
+     *  (the order in which fields are renderred). A caller should
+     *  not change the values (the List is immutable).  
+     *  May return null if no fields are in error.
+     * 
+     *  @since 1.0.8
+     **/
 
-	/**
-	 *  The error notification method, invoked during the rewind phase
-	 *  (that is, while HTTP parameters are being extracted from the request
-	 *  and assigned to various object properties).  
-	 *
-	 *  <p>Typically, the delegate simply invokes
-	 *  {@link #record(String, ValidationConstraint, String)}, but special
-	 *  delegates may override this behavior to provide (in some cases)
-	 *  different error messages or more complicated error renderers.
-	 **/
+    public List getFieldTracking();
 
-	public void record(ValidatorException ex);
+    /**
+     *  Resets any tracking information for the current field.  This will
+     *  clear the field's inError flag, and set its error message and invalid input value
+     *  to null.
+     * 
+     *  @since 1.0.8
+     * 
+     **/
 
-	/**
-	 *  Records an error in the current component, or an unassociated error.
-	 *  
-	 *  @param message message to display (@see RenderString}
-	 *  @param constraint the constraint that was violated
-	 *  @param invalidInput the input provided by the user
-	 * 
-	 *  @since 1.0.9
-	 **/
-	
-	public void record(String message, ValidationConstraint constraint, String invalidInput);
+    public void reset();
 
+    /**
+     *  Clears all tracking information.
+     * 
+     *  @since 1.0.10
+     * 
+     **/
 
-	/**
-	 *  Records an error in the current component, or an unassociated error..
-	 *  The maximum flexibility recorder.
-	 *  
-	 *  @param errorRenderer object that will render the error message (@see RenderString}
-	 *  @param constraint the constraint that was violated
-	 *  @param invalidInput the input provided by the user
-	 * 
-	 **/
-	
-	public void record(IRender errorRenderer, ValidationConstraint constraint, String invalidInput);
+    public void clear();
 
-	/**
-	 *  Invoked before the field is rendered.  If the field is in error,
-	 *  the delegate may decorate the field in some way (to highlight its
-	 *  error state).
-	 *
-	 **/
+    /**
+     *  The error notification method, invoked during the rewind phase
+     *  (that is, while HTTP parameters are being extracted from the request
+     *  and assigned to various object properties).  
+     *
+     *  <p>Typically, the delegate simply invokes
+     *  {@link #record(String, ValidationConstraint, String)}, but special
+     *  delegates may override this behavior to provide (in some cases)
+     *  different error messages or more complicated error renderers.
+     **/
 
-	public void writePrefix(
-		IMarkupWriter writer,
-		IRequestCycle cycle)
-		throws RequestCycleException;
+    public void record(ValidatorException ex);
 
-	/**
-	 *  Invoked just before the &lt;input&gt; element is closed.
-	 *  The delegate can write additional attributes.  This is often used
-	 *  to set the CSS class of the field so that it can be displayed 
-	 *  differently, if in error (or required).
-	 *
-	 *  @since 1.0.5
-	 **/
+    /**
+     *  Records an error in the current component, or an unassociated error.
+     *  
+     *  @param message message to display (@see RenderString}
+     *  @param constraint the constraint that was violated
+     *  @param invalidInput the input provided by the user
+     * 
+     *  @since 1.0.9
+     **/
 
-	public void writeAttributes(
-		IMarkupWriter writer,
-		IRequestCycle cycle)
-		throws RequestCycleException;
+    public void record(
+        String message,
+        ValidationConstraint constraint,
+        String invalidInput);
 
-	/**
-	 *  Invoked after the form component is rendered, so that the
-	 *  delegate may decorate the form component (if it is in error).
-	 *
-	 **/
+    /**
+     *  Records an error in the current component, or an unassociated error..
+     *  The maximum flexibility recorder.
+     *  
+     *  @param errorRenderer object that will render the error message (@see RenderString}
+     *  @param constraint the constraint that was violated
+     *  @param invalidInput the input provided by the user
+     * 
+     **/
 
-	public void writeSuffix(
-		IMarkupWriter writer,
-		IRequestCycle cycle)
-		throws RequestCycleException;
+    public void record(
+        IRender errorRenderer,
+        ValidationConstraint constraint,
+        String invalidInput);
 
-	/**
-	 *  Invoked by a {@link FieldLabel} just before writing the name
-	 *  of the form component.
-	 *
-	 **/
+    /**
+     *  Invoked before the field is rendered.  If the field is in error,
+     *  the delegate may decorate the field in some way (to highlight its
+     *  error state).
+     *
+     **/
 
-	public void writeLabelPrefix(
-		IFormComponent component,
-		IMarkupWriter writer,
-		IRequestCycle cycle)
-		throws RequestCycleException;
+    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException;
 
-	/**
-	 *  Invoked by a {@link FieldLabel} just after writing the name
-	 *  of the form component.
-	 *
-	 **/
+    /**
+     *  Invoked just before the &lt;input&gt; element is closed.
+     *  The delegate can write additional attributes.  This is often used
+     *  to set the CSS class of the field so that it can be displayed 
+     *  differently, if in error (or required).
+     *
+     *  @since 1.0.5
+     **/
 
-	public void writeLabelSuffix(
-		IFormComponent component,
-		IMarkupWriter writer,
-		IRequestCycle cycle)
-		throws RequestCycleException;
-		
-	/**
-	 *   Returns true if any form component has errors.
-	 * 
-	 **/
-	
-	public boolean getHasErrors();
+    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException;
+
+    /**
+     *  Invoked after the form component is rendered, so that the
+     *  delegate may decorate the form component (if it is in error).
+     *
+     **/
+
+    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException;
+
+    /**
+     *  Invoked by a {@link FieldLabel} just before writing the name
+     *  of the form component.
+     *
+     **/
+
+    public void writeLabelPrefix(
+        IFormComponent component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
+        throws RequestCycleException;
+
+    /**
+     *  Invoked by a {@link FieldLabel} just after writing the name
+     *  of the form component.
+     *
+     **/
+
+    public void writeLabelSuffix(
+        IFormComponent component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
+        throws RequestCycleException;
+
+    /**
+     *   Returns true if any form component has errors.
+     * 
+     **/
+
+    public boolean getHasErrors();
 }

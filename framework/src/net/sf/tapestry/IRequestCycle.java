@@ -25,10 +25,6 @@
 
 package net.sf.tapestry;
 
-import com.primix.tapestry.link.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.form.*;
-
 /**
  * Controller object that manages a single request cycle.  A request cycle
  * is one 'hit' on the web server.  In the case of a Tapestry application,

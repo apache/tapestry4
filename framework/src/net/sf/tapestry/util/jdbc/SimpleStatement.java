@@ -1,28 +1,27 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.util.jdbc;
 
@@ -35,96 +34,100 @@ import java.sql.Statement;
  *  A wrapper around {@link Statement}.
  *
  *  @version $Id$
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *
- */
+ **/
 
 public class SimpleStatement implements IStatement
 {
-	private String SQL;
-	private Statement statement;
+    private String SQL;
+    private Statement statement;
 
-	public SimpleStatement(String SQL, Connection connection) throws SQLException
-	{
-		this.SQL = SQL;
-		this.statement = connection.createStatement();
-	}
+    public SimpleStatement(String SQL, Connection connection) throws SQLException
+    {
+        this.SQL = SQL;
+        this.statement = connection.createStatement();
+    }
 
-	/** @since 1.0.7 **/
-	
-	public SimpleStatement(String SQL, Connection connection, int resultSetType,
-                                 int resultSetConcurrency)
-	throws SQLException
-	{
-		this.SQL = SQL;
-		this.statement = connection.createStatement(resultSetType, resultSetConcurrency);
-	}
+    /** @since 1.0.7 **/
 
-	/**
-	 * Returns the SQL associated with this statement.
-	 *
-	 */
+    public SimpleStatement(
+        String SQL,
+        Connection connection,
+        int resultSetType,
+        int resultSetConcurrency)
+        throws SQLException
+    {
+        this.SQL = SQL;
+        this.statement =
+            connection.createStatement(resultSetType, resultSetConcurrency);
+    }
 
-	public String getSQL()
-	{
-		return SQL;
-	}
+    /**
+     * Returns the SQL associated with this statement.
+     *
+     **/
 
-	/**
-	 *  Returns the underlying {@link Statement}.
-	 *
-	 */
+    public String getSQL()
+    {
+        return SQL;
+    }
 
-	public Statement getStatement()
-	{
-		return statement;
-	}
+    /**
+     *  Returns the underlying {@link Statement}.
+     *
+     **/
 
-	/**
-	 *  Closes the underlying statement, and nulls the reference to it.
-	 *
-	 */
+    public Statement getStatement()
+    {
+        return statement;
+    }
 
-	public void close() throws SQLException
-	{
-		statement.close();
+    /**
+     *  Closes the underlying statement, and nulls the reference to it.
+     *
+     **/
 
-		statement = null;
-		SQL = null;
-	}
+    public void close() throws SQLException
+    {
+        statement.close();
 
-	/**
-	 *  Executes the statement as a query, returning a {@link ResultSet}.
-	 *
-	 */
+        statement = null;
+        SQL = null;
+    }
 
-	public ResultSet executeQuery() throws SQLException
-	{
-		return statement.executeQuery(SQL);
-	}
+    /**
+     *  Executes the statement as a query, returning a {@link ResultSet}.
+     *
+     **/
 
-	/**
-	 *  Executes the statement as an update, returning the number of rows
-	 *  affected.
-	 *
-	 */
+    public ResultSet executeQuery() throws SQLException
+    {
+        return statement.executeQuery(SQL);
+    }
 
-	public int executeUpdate() throws SQLException
-	{
-		return statement.executeUpdate(SQL);
-	}
+    /**
+     *  Executes the statement as an update, returning the number of rows
+     *  affected.
+     *
+     **/
 
-	public String toString()
-	{
-		StringBuffer buffer;
+    public int executeUpdate() throws SQLException
+    {
+        return statement.executeUpdate(SQL);
+    }
 
-		buffer = new StringBuffer(super.toString());
+    public String toString()
+    {
+        StringBuffer buffer;
 
-		buffer.append("[SQL=<\n");
-		buffer.append(SQL);
-		buffer.append("\n>]");
+        buffer = new StringBuffer(super.toString());
 
-		return buffer.toString();
-	}
+        buffer.append("[SQL=<\n");
+        buffer.append(SQL);
+        buffer.append("\n>]");
+
+        return buffer.toString();
+    }
 
 }

@@ -4,7 +4,7 @@
 	"-//Howard Ship//Tapestry Specification 1.1//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 	
-<specification class="com.primix.tapestry.valid.FieldLabel" 
+<specification class="net.sf.tapestry.valid.FieldLabel" 
 	allow-body="no" 
 	allow-informal-parameters="no">
   
@@ -12,7 +12,7 @@
   Labels a ValidField.
   </description>
   
-  <parameter name="field" java-type="com.primix.tapestry.form.IFormComponent" required="yes"/>
+  <parameter name="field" java-type="net.sf.tapestry.form.IFormComponent" required="yes"/>
   <parameter name="displayName" java-type="java.lang.String"/>
   
 </specification>
