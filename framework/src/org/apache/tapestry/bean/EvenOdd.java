@@ -56,7 +56,7 @@
 package org.apache.tapestry.bean;
 
 /**
- *  Used to emit a stream of alteranting string values: "even", "odd", etc.  This
+ *  Used to emit a stream of alterating string values: "even", "odd", etc.  This
  *  is often used in the Inspector pages to make the class of a &lt;tr&gt; alternate
  *  for presentation reasons.
  *
