@@ -33,9 +33,6 @@
 #
 # Overrides a number of local- rules: local-clean, local-install
 #
-# Requires that the WebLogic framework (weblogicaux.jar) be in the classpath
-# (SITE_CLASSPATH, LOCAL-CLASSPATH or LOCAL_RELATIVE_CLASSPATH)
-# so that WebLogic's ejbc tool can be invoked.
 #
 # You may specify options for ejbc using SITE_EJBC_OPT or EJBC_OPT.
 # -keepgenerated is pretty useful.
@@ -44,7 +41,7 @@ MOD_META_RESOURCES = ejb-jar.xml weblogic-ejb-jar.xml
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 
-DEPLOY_JAR_FILE := $(JAR_NAME)-deploy.$(JAR_EXT)
+DEPLOY_JAR_FILE := $(MODULE_NAME)-deploy.$(JAR_EXT)
 
 local-clean:
 	@$(RMDIRS) $(DEPLOY_JAR_FILE)
@@ -59,12 +56,8 @@ WEBLOGIC_CLASSPATH := $(WEBLOGIC_DIR)/lib/weblogicaux.jar $(WEBLOGIC_DIR)/classe
 
 MOD_CLASSPATH := $(WEBLOGIC_CLASSPATH)
 
-# EJDB is run from the build directory, so we need to modify LOCAL_RELATIVE_CLASSPATH.
-# Other classpaths use absolute path names.
-
-_EJBC_CLASSPATH := $(strip $(WEBLOGIC_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH) \
-	$(addprefix $(DOTDOT)$(SLASH),$(LOCAL_RELATIVE_CLASSPATH)))
-EJBC_CLASSPATH := $(subst $(SPACE),$(CLASSPATHSEP),$(_EJBC_CLASSPATH))
+EJBC_CLASSPATH =  $(shell $(JBE_CANONICALIZE) -classpath \
+						$(WEBLOGIC_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
 
 FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
 

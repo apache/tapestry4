@@ -56,11 +56,10 @@ MOD_DIRTY_JAR_STAMP_FILE = $(SYS_BUILD_DIR_NAME)/dirty-jar-stamp
 
 # Build the compile-time classpath
 
-FINAL_CLASSPATH = $(strip . $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(SITE_CLASSPATH) \
-	$(LOCAL_CLASSPATH) $(LOCAL_RELATIVE_CLASSPATH))
+FINAL_CLASSPATH = $(shell $(JBE_CANONICALIZE) -classpath \
+	. $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
 	
-FINAL_CLASSPATH_OPTION = \
-	-classpath "$(subst $(SPACE),$(CLASSPATHSEP),$(FINAL_CLASSPATH))"
+FINAL_CLASSPATH_OPTION = -classpath "$(FINAL_CLASSPATH)"
 	
 FINAL_JAVAC_OPT = $(strip -d $(MOD_CLASS_DIR) $(FINAL_CLASSPATH_OPTION) $(MOD_JAVAC_OPT) \
 	$(SITE_JAVAC_OPT) $(LOCAL_JAVAC_OPT) $(JAVAC_OPT))
@@ -98,3 +97,15 @@ MAKE_IN_PACKAGE = \
 	MOD_BUILD_DIR="$(RELATIVE_MOD_DIR)$(SLASH)$(SYS_BUILD_DIR_NAME)" \
 	MOD_PACKAGE_DIR="$(PACKAGE_DIR)"
 
+
+# Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
+# GNU Make or JAVA is eating the backslashes under NT.
+
+JBE_UTIL = $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
+
+# Command to convert some absolute and/or relative pathnames into
+# a list of well-formatted (for GNU Make) absolute pathnames.  Add -classpath
+# to use the classpath seperator intead of putting the converted names onto
+# seperate lines.
+
+JBE_CANONICALIZE = $(JBE_UTIL) canonicalize
