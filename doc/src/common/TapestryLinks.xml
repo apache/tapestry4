@@ -9,9 +9,11 @@
 <!ENTITY Double "<classname>Double</classname>">
 <!ENTITY HttpServletRequest "<classname>HttpServletRequest</classname>">
 <!ENTITY HttpSession "<classname>HttpSession</classname>">
+<!ENTITY Integer "<classname>Integer</classname>">
 <!ENTITY Iterator "<classname>Iterator</classname>">
 <!ENTITY List "<classname>List</classname>">
 <!ENTITY Map "<classname>Map</classname>">
+<!ENTITY Object "<classname>Object</classname>">
 <!ENTITY ResourceBundle "<classname>ResourceBundle</classname>">
 <!ENTITY ServletContext "<classname>ServletContext</classname>">
 <!ENTITY String "<classname>String</classname>">

@@ -674,7 +674,7 @@ public List userNames = null;
 /**
  *  Returns a List of user names obtained from the database.
  *
- */
+ **/
 
 public List getUserNames()
 {
@@ -701,7 +701,7 @@ avoid tripping over null pointers.
  *  Returns the name of the company's account representative, if
  *  if the company has one, or null otherwise.
  *
- */
+ **/
 
 public String getAccountRepName()
 {
@@ -1564,17 +1564,17 @@ Example: for a component <filename>/com/skunkworx/skunkapp/Border.jwc</filename>
   <itemizedlist>
     <listitem>
       <para>
-        <filename>/com/skunkworx/skunkapp/Banner_fr_BE.properties</filename>
+        <filename>/com/skunkworx/skunkapp/Border_fr_BE.properties</filename>
       </para>
     </listitem>
     <listitem>
       <para>
-        <filename>/com/skunkworx/skunkapp/Banner_fr.properties</filename>
+        <filename>/com/skunkworx/skunkapp/Border_fr.properties</filename>
       </para>
     </listitem>
     <listitem>
       <para>
-        <filename>/com/skunkworx/skunkapp/Banner.properties</filename>
+        <filename>/com/skunkworx/skunkapp/Border.properties</filename>
       </para>
     </listitem>
   </itemizedlist>
@@ -1582,7 +1582,7 @@ Example: for a component <filename>/com/skunkworx/skunkapp/Border.jwc</filename>
 
 <para>
 Searching for individual keys works just as with &ResourceBundle;, the search starts in the most
-specific file (<literal>Banner_fr_BE.properties</literal>) and continues downward if not found.
+specific file (<literal>Border_fr_BE.properties</literal>) and continues downward if not found.
 </para>
 	
 	
@@ -1606,8 +1606,8 @@ to be deployed with the application.
       <para>
 The base template name is derived from the specification name, 
 by changing the <literal>jwc</literal> extension to <literal>html</literal>.  
-For example, component <filename>/com/skunkworx/skunkapp/Banner.jwc</filename>
-will have a base template name of  <filename>/com/skunkworx/skunkapp/Banner.html</filename>.
+For example, component <filename>/com/skunkworx/skunkapp/Border.jwc</filename>
+will have a base template name of  <filename>/com/skunkworx/skunkapp/Border.html</filename>.
 This resource name is used as the basis of a search that includes the locale.  
 Various suffixes are inserted just before the '.html' extension.
 </para>
@@ -1619,17 +1619,17 @@ A French speaking Belgian visitor would provoke the following search:
       <itemizedlist>
         <listitem>
           <para>
-            <filename>/com/skunkworx/skunkapp/Banner_fr_BE.html</filename>
+            <filename>/com/skunkworx/skunkapp/Border_fr_BE.html</filename>
           </para>
         </listitem>
         <listitem>
           <para>
-            <filename>/com/skunkworx/skunkapp/Banner_fr.html</filename>
+            <filename>/com/skunkworx/skunkapp/Border_fr.html</filename>
           </para>
         </listitem>
         <listitem>
           <para>
-            <filename>/com/skunkworx/skunkapp/Banner.html</filename>
+            <filename>/com/skunkworx/skunkapp/Border.html</filename>
           </para>
         </listitem>
       </itemizedlist>
@@ -2211,7 +2211,7 @@ component identified in the containing component's HTML template.
         <para>
 Each component must also have a type.  Types are resource paths for a component 
 specification.  Specifications end with '.jwc'.  An example would be 
-<filename>/com/skunkworx/skunkapp/Banner.jwc</filename>.
+<filename>/com/skunkworx/skunkapp/Border.jwc</filename>.
 </para>
         <para>
 Unlike HTML templates, specifications are never localized.
@@ -3964,14 +3964,20 @@ on state that changes during the rendering of the page.  In those cases, the
 <link linkend="cycle.action">action service</link>
 (and &Action; or &Form; components) should be used.
 </para>
+
       <para>
 The &Direct; component has an optional parameter named <varname>parameters</varname>. 
-The value for this may be a single &String;, an array of &String;s,
-or a &List; of &String;s.  
-These strings are added to the URL after the id path.  
+The value for this may be a single object, an array of objects,
+or a &List;.  Each object is converted into a string encoding, that is
+included in the URL.
 When the action is triggered, the array is reconstructed (from the URL) and stored
-in the &IRequestCycle;, where it is available to the listener.
-This is primarily used to encode dynamic page state directly 
+in the &IRequestCycle;, where it is available to the listener.  The type is maintained, thus if
+the third parameter is of type &Integer; when the URL is generated, then the third parameter
+will still be an &Integer; when the listener method is invoked.
+</para>
+
+<para>
+This is a very powerful feature of Tapestry, as it allows the developer to encode dynamic page state directly 
 into the URL when doing so is not compatible with the action service (described in the next section).
 </para>
       <para>
@@ -4271,10 +4277,10 @@ is used in cases where the &Action; component can't be used
           </listitem>
         </varlistentry>
         <varlistentry>
-          <term>context</term>
+          <term>parameters</term>
           <listitem>
-            <para>An array of Strings to be encoded into the URL. 
-			These parameters will be decoded when the link is triggered.</para>
+            <para>An array of object values to be encoded in the URL
+             and provided to the listener.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -5305,7 +5311,7 @@ order to make certain pages bookmarkable, a new service named
       <para>
 The external service includes the name of a page and the primary key 
 of an object that page displays (this was simplified by the 
-design of the Vlib entity beans, which always use  an <classname>Integer</classname> 
+design of the Vlib entity beans, which always use  an &Integer; 
 as the primary key).
 </para>
       <para>
@@ -6914,7 +6920,7 @@ a class loader issue.
 	</question>
 	<answer>
 		<para>
-		Between Tapestry release 2.0.0 and 2.1.0
+		Between Tapestry release 2.0.0 and 2.1
 		a signficant number of changes occurred,
 		including renaming everything <filename class="directory">com.primix.tapestry.*</filename>
 		to <filename class="directory">net.sf.tapestry.*</filename>.
@@ -6989,11 +6995,20 @@ The service parameters are now available from the &IRequestCycle;:
 public void <replaceable>my-method</replaceable>(IRequestCycle cycle)
 throws RequestCycleException
 {
-  String[] parameters = cycle.getServiceParameters();
+  Object[] parameters = cycle.getServiceParameters();
   ...
 }
 </programlisting>
 </informalexample>
+
+<para>
+Starting in release 2.2, the type of each parameter is encoded with its
+value in the URL (in release 2.1 and earlier, the parameters were always Strings,
+and it was your responsibility to convert them).  
+You can cast from &Object;
+to a particular type (say, &Integer; or &String;).
+</para>
+
 </answer>
 </qandaentry>
 
