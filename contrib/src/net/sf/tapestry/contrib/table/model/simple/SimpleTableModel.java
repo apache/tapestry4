@@ -30,8 +30,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import sun.rmi.runtime.GetThreadPoolAction;
-
 import net.sf.tapestry.contrib.table.model.ITableColumn;
 import net.sf.tapestry.contrib.table.model.ITableColumnModel;
 import net.sf.tapestry.contrib.table.model.ITableDataModel;
