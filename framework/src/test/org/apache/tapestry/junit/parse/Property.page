@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!--
-   Copyright 2004 The Apache Software Foundation
+    Copyright 2004 The Apache Software Foundation
   
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
    limitations under the License.
 -->
 
-<!DOCTYPE tabs PUBLIC "-//APACHE//DTD Cocoon Documentation Tab V1.0//EN" "http://apache.org/forrest/dtd/tab-cocoon-v10.dtd">
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
+     	
+<page-specification>
 
-<tabs software="Tapestry"
-  title="Tapestry Project"
-  copyright="Apache Software Foundation"
-  xmlns:xlink="http://www.w3.org/1999/xlink">
+<property name="bool" type="boolean"/>
+<property name="persist" persistent="yes"/>
+<property name="init" initial-value="pageName"/>
 
-  <tab label="Tapestry Project" href="index.html" id="project"/>
-  <tab label="Users Guide" dir="UsersGuide"  id="UsersGuide"/>
-  <tab label="Framework" dir="tapestry" id="tapestry"/>
+</page-specification>
 
- </tabs>

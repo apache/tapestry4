@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd" [
+  <!ENTITY projectroot '../'>
+  <!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+  %links.ent;
+  %common.ent;
+  ]>
+<document>
+  <header>
+    <title>HiveMind Integration</title>
+  </header>
+  <body>
+    <p> Tapestry 3.1 is intimately integrated into the &HiveMind; microkernel. Building a complex system onto a 
+      dependency injection microkernel such as HiveMind has many benefits; the code is easier to write, test and 
+      maintain. HiveMind's flexible approach makes it easy to provide extension points ... many of the common kinds of 
+      customizations in Tapestry 3.0 that required code changes (such as subclassing &BaseEngine;) are now accomplished 
+      by providing objects via a HiveMind module descriptor for your application. </p>
+    <p> In fact, you should not think of HiveMind as just Tapestry's infrastructure, but as infrastructure for your 
+      application as well. A very succesful design pattern in Tapestry is to keep pages and components very simple, and 
+      <em>delegate</em> as much logic as possible out to HiveMind services. Listener methods should ideally do little 
+      more than marshall together the correct information and pass it over to a service (this sidesteps most of the 
+      issues with testing pages and components, which tend to be abstract). </p>
+    <section id="hivemind.inject">
+      <title>Injecting Services</title>
+      <p> But how to get access to those services? Tapestry allows you to <em>inject</em> your pages and components 
+        with HiveMind services (or other objects accessible from within a HiveMind registry). This is accomplished via 
+        the &spec.inject; specification element: </p>
+      <source><![CDATA[
+<page-specification class=". . .">
+
+  <inject name="mailSender" object="service:mymodule.MailSender"/>
+  
+</page-specification>]]> </source>
+      <p> This would create a new property on your page, mailSender, that would be connected to a HiveMind service, 
+        mymodule.MailSender. The object attribute is an <em>object reference</em>, consisting of a prefix ("service:") 
+        followed by a <em>locator</em>. The prefix identifies how the locator should be interpreted; in this case, as a 
+        full qualified service id. HiveMind itself defines a <link 
+        href="http://jakarta.apache.org/hivemind/hivemind/ObjectProviders.html">base set of prefixes</link>, to which 
+        Tapestry adds the following: </p>
+      <table>
+        <tr>
+          <th>Prefix</th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>infrastructure</td>
+          <td> The locator is the name of a property provided by the tapestry.Infrastructure service; this service 
+            provides access to the key Tapestry services. </td>
+          <td>infrastructure:applicationSpecification</td>
+        </tr>
+      </table>
+      <note> More prefixes are forthcoming. </note>
+      
+      <p>
+        You can access the service via the property.  You can do this from a &spec.binding; element, or from within
+        the template, using an OGNL expression.  For example:  <code>ognl:mailSender.sendMail(to, subject)</code> would
+        read the to and subject properties of the page, and pass them to the sendMail() method of the mymodule.MailSender service (which has
+        been injected into the mailSender property).
+      </p>
+      
+      <p>
+        From within Java code, you can define an abstract accessor method:
+      </p>
+      
+      <source><![CDATA[
+public abstract class MyPage extends BasePage
+{
+  public abstract MailSender getMailSender();
+  
+  . . .
+        
+  public void myListener(IRequestCycle cycle)
+  {
+    String to = getTo();
+    String subject = getSubject();
+          
+    getMailSender().sendMail(to, subject);
+          
+     . . .
+  }
+}]]></source>
+      
+      
+    </section>
+    <!-- hivemind.inject -->
+    <section id="hivemind.bootstrap">
+      <title>Bootstrapping the Registry</title>
+      <p> The &ApplicationServlet; is responsible for initializing HiveMind's Registry on startup. </p>
+      <note> The ApplicationServlet takes over all the roles usually supplied by HiveMind's HiveMindFilter. This 
+        includes the initial creation of the HiveMind Registry (as discussed), but also includes cleaning up thread 
+        local information at the end of each request, and shutting down the Registry when the servlet is destroyed. 
+        </note>
+      <p> The ApplicationServlet will create a default registry, consisting of all META-INF/hivemodule.xml files found 
+        on the servlet classpath. This is how the base HiveMind and Tapestry module descriptors are loaded. You may 
+        package module deployment descriptors inside libraries or even in your application WAR. </p>
+      <p> In addition, two other descriptors will be parsed if they exist: </p>
+      <ul>
+        <li>/WEB-INF/<em>name</em>/hivemodule.xml</li>
+        <li>/WEB-INF/hivemodule.xml</li>
+      </ul>
+      <p> Both of these files exist in the web application context; the <em>name</em> is the name of the application 
+        servlet, as given in web.xml deployment descriptor (this is only useful in the very rare case that you package 
+        more than one Tapestry application in a single web application). </p>
+      <p> By subclassing ApplicationServlet and overriding the <code>constructRegistry()</code> method, you can easily 
+        extend these rules, loading additional descriptors from arbitrary locations. </p>
+    </section>
+    <!-- hivemind.bootstrap -->
+  </body>
+</document>

@@ -32,13 +32,13 @@ See http://xml.apache.org/forrest/linking.html for more info
 <!DOCTYPE site
 [
 <!ENTITY project-report-menu.ent SYSTEM "project-report-menu.ent">
-<!ENTITY tapestry-report-menu.ent SYSTEM "tapestry-report-menu.ent">
+<!ENTITY tapestry-report-menu.ent SYSTEM "tapestry/report-menu.ent">
 ]
 >
 
 <site xmlns="http://apache.org/forrest/linkmap/1.0" tab="project">
   
-    <index href="index.html"/>
+    <project-index href="index.html"/>
     
     <project label="Tapestry">
     <home label="Home" href="index.html"/>
@@ -49,6 +49,18 @@ See http://xml.apache.org/forrest/linking.html for more info
     <wiki label="Wiki" href="http://wiki.apache.org/jakarta-tapestry/"/>
     <dev label="Developers" href="dev.html"/>
     </project>
+    
+    <UsersGuide label="Users Guide" tab="UsersGuide" href="UsersGuide/">
+      <intro label="Introduction" href="index.html"/>
+      <templates label="Page and component templates" href="template.html"/>
+      <components label="Creating Tapestry components" href="components.html"/>
+      <state label="Managing server-side state" href="state.html"/>
+      <hivemind label="HiveMind Integration" href="hivemind.html"/>
+      <configuration label="Configuring Tapestry" href="configuration.html"/>
+      <proprties label="Tapestry Object Properties" href="properties.html"/>
+      <spec label="Specification DTDs" href="spec.html"/>
+    </UsersGuide>
+    
     
     <tapestry label="Framework" tab="tapestry" href="tapestry/">
       
@@ -88,24 +100,11 @@ See http://xml.apache.org/forrest/linking.html for more info
         <ValidField label="ValidField" href="ValidField.html"/>
       </ComponentReference>
       
-      <reports label="Reports">
+      <!-- reports label="Reports">
         &tapestry-report-menu.ent;
-      </reports>
+      </reports -->
       
     </tapestry>
-    
-    
-    <UsersGuide label="Users Guide" tab="users-guide" href="UsersGuide/">
-      
-      <index label="Introduction" href="index.html"/>
-      <templates label="Page and component templates" href="template.html"/>
-      <components label="Creating Tapestry components" href="components.html"/>
-      <state label="Managing server-side state" href="state.html"/>
-      <configuration label="Configuring Tapestry" href="configuration.html"/>
-      <proprties label="Tapestry Object Properties" href="properties.html"/>
-      <spec label="Specification DTDs" href="spec.html"/>
-      
-    </UsersGuide>
     
     <project label="Project">
         <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
@@ -113,9 +112,9 @@ See http://xml.apache.org/forrest/linking.html for more info
         <item label="CVS Access"      href="cvs.html"/>    
         <item label="Downloads" href="downloads.html"/>
     
-        <reports label="Reports">
+        <!-- reports label="Reports">
           &project-report-menu.ent;
-        </reports>        
+        </reports -->        
     </project>
     
     <info label="Useful Information">
@@ -130,7 +129,7 @@ See http://xml.apache.org/forrest/linking.html for more info
     
 	<!-- complete-site label="Complete Site">
 		<complete-html label="HTML" href="site.html"/>
-		<!-- complete-pdf label="PDF" href="site.pdf"/ -->
+		<complete-pdf label="PDF" href="site.pdf"/>
 	</complete-site -->    
     
     <related label="Related Projects">

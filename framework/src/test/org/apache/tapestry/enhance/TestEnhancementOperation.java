@@ -209,8 +209,8 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         ClassFab fab = (ClassFab) newMock(ClassFab.class);
 
-        cf.newClass("$BaseComponent_97", BaseComponent.class, Thread
-                .currentThread().getContextClassLoader());
+        cf.newClass("$BaseComponent_97", BaseComponent.class, Thread.currentThread()
+                .getContextClassLoader());
 
         cfc.setReturnValue(fab);
 
@@ -376,5 +376,25 @@ public class TestEnhancementOperation extends HiveMindTestCase
                     "Unable to instantiate instance of class org.apache.tapestry.BaseComponent");
             assertSame(l, ex.getLocation());
         }
+    }
+
+    public void testGetPropertyType()
+    {
+        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        ClassFactory cf = (ClassFactory) newMock(ClassFactory.class);
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                BaseComponent.class, cf);
+
+        assertEquals(Map.class, eo.getPropertyType("assets"));
+        assertEquals(IPage.class, eo.getPropertyType("page"));
+        
+        // Doesn't exist, so returns null
+        
+        assertNull(eo.getPropertyType("foosball"));
+
+        verifyControls();
     }
 }

@@ -31,6 +31,7 @@ The following changes have occured:
   There is now just <binding>, whose value attribute contains a prefix to interpret how
   the remainder of the value is interpreted (no prefix meaning a literal, or static, value).
 - <property> renamed to <meta> and <property-specification> renamed to <property>
+- Added <inject>
 
 -->
 <!-- =======================================================
@@ -194,7 +195,7 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT component-specification (description?, parameter*, reserved-parameter*, meta*, (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
+<!ELEMENT component-specification (description?, parameter*, reserved-parameter*, meta*, (bean | component | external-asset | context-asset | private-asset | property | inject)*)>
 <!ATTLIST component-specification
 	class CDATA #IMPLIED
 	allow-body %attribute-flag; "yes"
@@ -261,6 +262,24 @@ Attributes:
 	name CDATA #REQUIRED
 	URL CDATA #REQUIRED
 >
+
+<!-- =======================================================
+Element: inject
+Contained by: component-specification, page-specification
+
+Defines a new property whose read-only value is an object
+obtained from HiveMind.
+
+Attributes:
+  name: The name of the property.
+  object: The locator used to obtain the value.
+-->
+<!ELEMENT inject EMPTY>
+<!ATTLIST inject
+  name CDATA #REQUIRED
+  object CDATA #REQUIRED
+>
+
 <!-- =======================================================
 Element: library
 Appears in: application-specification, library-specification
@@ -337,7 +356,7 @@ a body, and never allow parameters (formal or otherwise).
 Attributes:
   class: The Java class to instantiate for the component.
 -->
-<!ELEMENT page-specification (description?, meta*, (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
+<!ELEMENT page-specification (description?, meta*, (bean | component | external-asset | context-asset | private-asset | property | inject)*)>
 <!ATTLIST page-specification
 	class CDATA #IMPLIED
 >
@@ -406,7 +425,7 @@ Attributes:
 	value CDATA #IMPLIED
 >
 <!-- =======================================================
-Element: property-specification
+Element: property
 Appears in: page-specification, component-specification
 
 Identifies a transient or persistent property.
@@ -423,8 +442,8 @@ Attributes:
     body of the element is used as the initial value.
     
 -->
-<!ELEMENT property-specification (#PCDATA)>
-<!ATTLIST property-specification
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property
 	name CDATA #REQUIRED
 	type CDATA #IMPLIED
 	persistent %attribute-flag; "no"

@@ -52,6 +52,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
+import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.SpecFactory;
 import org.apache.tapestry.util.IPropertyHolder;
 import org.apache.tapestry.util.RegexpMatcher;
@@ -238,7 +239,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private static final int STATE_META = 3;
 
-    private static final int STATE_PROPERTY_SPECIFICATION = 10;
+    private static final int STATE_PROPERTY = 10;
 
     private static final int STATE_SET_PROPERTY = 5;
 
@@ -324,9 +325,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /** @since 3.1 */
-    
+
     private ExpressionEvaluator _expressionEvaluator;
-    
+
     /**
      * This constructor is a convienience used by some tests.
      */
@@ -671,9 +672,19 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        if (_elementName.equals("property-specification"))
+        // <property-specification> in 3.0, <property> in 3.1
+        // Have to be careful, because <meta> in 3.1 was <property> in 3.0
+
+        if (_elementName.equals("property-specification")
+                || (_DTD_3_1 && _elementName.equals("property")))
         {
-            enterPropertySpecification();
+            enterProperty();
+            return;
+        }
+
+        if (_elementName.equals("inject"))
+        {
+            enterInject();
             return;
         }
 
@@ -800,7 +811,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 endStaticBinding();
                 break;
 
-            case STATE_PROPERTY_SPECIFICATION:
+            case STATE_PROPERTY:
 
                 endPropertySpecification();
                 break;
@@ -1262,7 +1273,11 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, new PropertyValueSetter(ph, name, value), STATE_META, false);
     }
 
-    private void enterPropertySpecification()
+    /**
+     * &tl;property&gt; in 3.1, or &lt;property-specification&gt; in 3.0
+     */
+
+    private void enterProperty()
     {
         String name = getValidatedAttribute("name", PROPERTY_NAME_PATTERN, "invalid-property-name");
         String type = getAttribute("type");
@@ -1281,7 +1296,27 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         IComponentSpecification cs = (IComponentSpecification) peekObject();
         cs.addPropertySpecification(ps);
 
-        push(_elementName, ps, STATE_PROPERTY_SPECIFICATION, false);
+        push(_elementName, ps, STATE_PROPERTY, false);
+    }
+
+    /**
+     * @since 3.1
+     */
+
+    private void enterInject()
+    {
+        String name = getValidatedAttribute("name", PROPERTY_NAME_PATTERN, "invalid-property-name");
+        String locator = getAttribute("object");
+
+        InjectSpecification spec = _factory.createInjectSpecification();
+
+        spec.setName(name);
+        spec.setLocator(locator);
+        IComponentSpecification cs = (IComponentSpecification) peekObject();
+
+        cs.addInjectSpecification(spec);
+
+        push(_elementName, spec, STATE_NO_CONTENT);
     }
 
     private void enterReservedParameter()
@@ -1582,7 +1617,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         throw new DocumentParseException(ParseMessages.unknownPublicId(getResource(), publicId),
                 getResource());
     }
-    
+
     /** @since 3.1 */
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
     {

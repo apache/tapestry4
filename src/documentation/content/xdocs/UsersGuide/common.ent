@@ -31,6 +31,7 @@
 <!ENTITY spec.description			'<link href="spec.html#spec.description">&lt;description&gt;</link>'>
 <!ENTITY spec.extension				'<link href="spec.html#spec.extension">&lt;extension&gt;</link>'>
 <!ENTITY spec.external-asset		'<link href="spec.html#spec.external-asset">&lt;external-asset&gt;</link>'>
+<!ENTITY spec.inject				'<link href="spec.html#spec.inject">&lt;inject&gt;</link>'>
 <!ENTITY spec.library				'<link href="spec.html#spec.library">&lt;library&gt;</link>'>
 <!ENTITY spec.library-specification	'<link href="spec.html#spec.library-specification">&lt;library-specification&gt;</link>'>
 <!ENTITY spec.listener-binding		'<link href="spec.html#spec.listener-binding">&lt;listener-binding&gt;</link>'>
@@ -39,8 +40,7 @@
 <!ENTITY spec.page-specification	'<link href="spec.html#spec.page-specification">&lt;page-specification&gt;</link>'>
 <!ENTITY spec.parameter				'<link href="spec.html#spec.parameter">&lt;parameter&gt;</link>'>
 <!ENTITY spec.private-asset			'<link href="spec.html#spec.private-asset">&lt;private-asset&gt;</link>'>
-<!ENTITY spec.property-specification
-									'<link href="spec.html#spec.property-specification">&lt;property-specification&gt;</link>'>
+<!ENTITY spec.property				'<link href="spec.html#spec.property">&lt;property&gt;</link>'>
 <!ENTITY spec.reserved-parameter	'<link href="spec.html#spec.reserved-parameter">&lt;reserved-parameter&gt;</link>'>
 <!ENTITY spec.set-message-property	'<link href="spec.html#spec.set-message-property">&lt;set-message-property&gt;</link>'>
 <!ENTITY spec.set-property			'<link href="spec.html#spec.set-property">&lt;set-property&gt;</link>'>

@@ -25,14 +25,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.impl.ModuleDescriptorProvider;
 import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.impl.XmlModuleDescriptorProvider;
 import org.apache.tapestry.request.RequestContext;
@@ -40,8 +38,11 @@ import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.RequestServicer;
+import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
+
+import com.sun.jndi.ldap.pool.Pool;
 
 /**
  * Links a servlet container with a Tapestry application. The servlet has some responsibilities
@@ -75,8 +76,6 @@ import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 
 public class ApplicationServlet extends HttpServlet
 {
-    private static final Log LOG = LogFactory.getLog(ApplicationServlet.class);
-
     /**
      * Name of the cookie written to the client web browser to identify the locale.
      */
@@ -153,6 +152,10 @@ public class ApplicationServlet extends HttpServlet
             // Rethrow it.
 
             throw ex;
+        }
+        finally
+        {
+            _registry.cleanupThread();
         }
     }
 
@@ -249,28 +252,6 @@ public class ApplicationServlet extends HttpServlet
         {
             // Ignore it.
         }
-    }
-
-    /**
-     * Invoked from the {@link IEngine engine}, just prior to starting to render a response, when
-     * the locale has changed. The servlet writes a {@link Cookie}so that, on subsequent request
-     * cycles, an engine localized to the selected locale is chosen.
-     * <p>
-     * At this time, the cookie is <em>not</em> persistent. That may change in subsequent
-     * releases.
-     * 
-     * @since 1.0.1
-     */
-
-    public static void writeLocaleCookie(Locale locale, IEngine engine, RequestContext cycle)
-    {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Writing locale cookie " + locale);
-
-        Cookie cookie = new Cookie(LOCALE_COOKIE_NAME, locale.toString());
-        cookie.setPath(engine.getServletPath());
-
-        cycle.addCookie(cookie);
     }
 
     /**

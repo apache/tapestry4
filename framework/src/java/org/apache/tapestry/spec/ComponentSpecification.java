@@ -28,138 +28,131 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A specification for a component, as read from an XML specification file.
- *
- *  <p>A specification consists of
- *  <ul>
- *  <li>An implementing class
- *  <li>An optional template
- *  <li>An optional description
- *  <li>A set of contained components
- *  <li>Bindings for the properties of each contained component
- *  <li>A set of named assets
- *  <li>Definitions for helper beans
- *  <li>Any reserved names (used for HTML attributes)
- *  </ul>
- *
- *  <p>From this information, an actual component may be instantiated and
- *  initialized.  Instantiating a component is usually a recursive process, since
- *  to initialize a container component, it is necessary to instantiate and initialize
- *  its contained components as well.
- *
- *  @see org.apache.tapestry.IComponent
- *  @see IContainedComponent
- *  @see org.apache.tapestry.engine.IPageLoader
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * A specification for a component, as read from an XML specification file.
+ * <p>
+ * A specification consists of
+ * <ul>
+ * <li>An implementing class
+ * <li>An optional template
+ * <li>An optional description
+ * <li>A set of contained components
+ * <li>Bindings for the properties of each contained component
+ * <li>A set of named assets
+ * <li>Definitions for helper beans
+ * <li>Any reserved names (used for HTML attributes)
+ * </ul>
+ * <p>
+ * From this information, an actual component may be instantiated and initialized. Instantiating a
+ * component is usually a recursive process, since to initialize a container component, it is
+ * necessary to instantiate and initialize its contained components as well.
+ * 
+ * @see org.apache.tapestry.IComponent
+ * @see IContainedComponent
+ * @see org.apache.tapestry.engine.IPageLoader
+ * @author Howard Lewis Ship
+ */
 
-public class ComponentSpecification extends LocatablePropertyHolder implements IComponentSpecification
+public class ComponentSpecification extends LocatablePropertyHolder implements
+        IComponentSpecification
 {
-    private String _componentClassName; 
+    private String _componentClassName;
 
-    /** @since 1.0.9 **/
+    /** @since 1.0.9 * */
 
     private String _description;
 
     /**
-     *  Keyed on component id, value is {@link IContainedComponent}.
-     *
-     **/
+     * Keyed on component id, value is {@link IContainedComponent}.
+     */
 
     protected Map _components;
 
     /**
-     *  Keyed on asset name, value is {@link IAssetSpecification}.
-     *
-     **/
+     * Keyed on asset name, value is {@link IAssetSpecification}.
+     */
 
     protected Map _assets;
 
     /**
-     *  Defines all formal parameters.  Keyed on parameter name, value is
+     * Defines all formal parameters. Keyed on parameter name, value is
      * {@link IParameterSpecification}.
-     *
-     **/
+     */
 
     protected Map _parameters;
 
     /**
-     *  Defines all helper beans.  Keyed on name, value is {@link IBeanSpecification}.
-     *
-     *  @since 1.0.4
-     **/
+     * Defines all helper beans. Keyed on name, value is {@link IBeanSpecification}.
+     * 
+     * @since 1.0.4
+     */
 
     protected Map _beans;
 
     /**
-     *  The names of all reserved informal parameter names (as lower-case).  This
-     *  allows the page loader to filter out any informal parameters during page load,
-     *  rather than during render.
-     *
-     *   @since 1.0.5
-     *
-     **/
+     * The names of all reserved informal parameter names (as lower-case). This allows the page
+     * loader to filter out any informal parameters during page load, rather than during render.
+     * 
+     * @since 1.0.5
+     */
 
     protected Set _reservedParameterNames;
 
     /**
-     *  Is the component allowed to have a body (that is, wrap other elements?).
-     *
-     **/
+     * Is the component allowed to have a body (that is, wrap other elements?).
+     */
 
     private boolean _allowBody = true;
 
     /**
-     *  Is the component allow to have informal parameter specified.
-     *
-     **/
+     * Is the component allow to have informal parameter specified.
+     */
 
     private boolean _allowInformalParameters = true;
 
     /**
-     *  The XML Public Id used when the page or component specification was read
-     *  (if applicable).
+     * The XML Public Id used when the page or component specification was read (if applicable).
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     private String _publicId;
 
     /**
-     *  Indicates that the specification is for a page, not a component.
+     * Indicates that the specification is for a page, not a component.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     private boolean _pageSpecification;
 
     /**
-     *  The location from which the specification was obtained.
+     * The location from which the specification was obtained.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     private Resource _specificationLocation;
 
     /**
-     *  A Map of {@link IPropertySpecification} keyed on the name
-     *  of the property.
-     *
-     *  @since 3.0
+     * A Map of {@link IPropertySpecification}keyed on the name of the property.
      * 
-     **/
+     * @since 3.0
+     */
 
     private Map _propertySpecifications;
 
     /**
-     * @throws IllegalArgumentException if the name already exists.
-     *
-     **/
+     * List of {@link InjectSpecification}.
+     * 
+     * @since 3.1
+     */
+
+    private List _injectSpecifications;
+
+    /**
+     * @throws IllegalArgumentException
+     *             if the name already exists.
+     */
 
     public void addAsset(String name, IAssetSpecification asset)
     {
@@ -167,16 +160,18 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
             _assets = new HashMap();
 
         if (_assets.containsKey(name))
-            throw new IllegalArgumentException(
-                Tapestry.format("ComponentSpecification.duplicate-asset", this, name));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "ComponentSpecification.duplicate-asset",
+                    this,
+                    name));
 
         _assets.put(name, asset);
     }
 
     /**
-     *  @throws IllegalArgumentException if the id is already defined.
-     *
-     **/
+     * @throws IllegalArgumentException
+     *             if the id is already defined.
+     */
 
     public void addComponent(String id, IContainedComponent component)
     {
@@ -184,17 +179,20 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
             _components = new HashMap();
 
         if (_components.containsKey(id))
-            throw new IllegalArgumentException(
-                Tapestry.format("ComponentSpecification.duplicate-component", this, id));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "ComponentSpecification.duplicate-component",
+                    this,
+                    id));
 
         _components.put(id, component);
     }
 
     /**
-     *  Adds the parameter.   The name is added as a reserved name.
-     *
-     *  @throws IllegalArgumentException if the name already exists.
-     **/
+     * Adds the parameter. The name is added as a reserved name.
+     * 
+     * @throws IllegalArgumentException
+     *             if the name already exists.
+     */
 
     public void addParameter(String name, IParameterSpecification spec)
     {
@@ -202,8 +200,10 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
             _parameters = new HashMap();
 
         if (_parameters.containsKey(name))
-            throw new IllegalArgumentException(
-                Tapestry.format("ComponentSpecification.duplicate-parameter", this, name));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "ComponentSpecification.duplicate-parameter",
+                    this,
+                    name));
 
         _parameters.put(name, spec);
 
@@ -211,12 +211,11 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns true if the component is allowed to wrap other elements (static HTML
-     *  or other components).  The default is true.
-     *
-     *  @see #setAllowBody(boolean)
-     *
-     **/
+     * Returns true if the component is allowed to wrap other elements (static HTML or other
+     * components). The default is true.
+     * 
+     * @see #setAllowBody(boolean)
+     */
 
     public boolean getAllowBody()
     {
@@ -224,16 +223,15 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns true if the component allows informal parameters (parameters
-     *  not formally defined).  Informal parameters are generally used to create
-     *  additional HTML attributes for an HTML tag rendered by the
-     *  component.  This is often used to specify JavaScript event handlers or the class
-     *  of the component (for Cascarding Style Sheets).
-     *
-     * <p>The default value is true.
-     *
-     *  @see #setAllowInformalParameters(boolean)
-     **/
+     * Returns true if the component allows informal parameters (parameters not formally defined).
+     * Informal parameters are generally used to create additional HTML attributes for an HTML tag
+     * rendered by the component. This is often used to specify JavaScript event handlers or the
+     * class of the component (for Cascarding Style Sheets).
+     * <p>
+     * The default value is true.
+     * 
+     * @see #setAllowInformalParameters(boolean)
+     */
 
     public boolean getAllowInformalParameters()
     {
@@ -241,11 +239,11 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns the {@link IAssetSpecification} with the given name, or null
-     *  if no such specification exists.
-     *
-     *  @see #addAsset(String,IAssetSpecification)
-     **/
+     * Returns the {@link IAssetSpecification}with the given name, or null if no such specification
+     * exists.
+     * 
+     * @see #addAsset(String,IAssetSpecification)
+     */
 
     public IAssetSpecification getAsset(String name)
     {
@@ -254,11 +252,8 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns a <code>List</code>
-     *  of the String names of all assets, in alphabetical
-     *  order
-     *
-     **/
+     * Returns a <code>List</code> of the String names of all assets, in alphabetical order
+     */
 
     public List getAssetNames()
     {
@@ -266,12 +261,11 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns the specification of a contained component with the given id, or
-     *  null if no such contained component exists.
-     *
-     *  @see #addComponent(String, IContainedComponent)
-     *
-     **/
+     * Returns the specification of a contained component with the given id, or null if no such
+     * contained component exists.
+     * 
+     * @see #addComponent(String, IContainedComponent)
+     */
 
     public IContainedComponent getComponent(String id)
     {
@@ -284,13 +278,11 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns an <code>List</code>
-     *  of the String names of the {@link IContainedComponent}s
-     *  for this component.
-     *
-     *  @see #addComponent(String, IContainedComponent)
-     *
-     **/
+     * Returns an <code>List</code> of the String names of the {@link IContainedComponent}s for
+     * this component.
+     * 
+     * @see #addComponent(String, IContainedComponent)
+     */
 
     public List getComponentIds()
     {
@@ -298,12 +290,11 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns the specification of a parameter with the given name, or
-     *  null if no such parameter exists.
-     *
-     *  @see #addParameter(String, IParameterSpecification)
-     *
-     **/
+     * Returns the specification of a parameter with the given name, or null if no such parameter
+     * exists.
+     * 
+     * @see #addParameter(String, IParameterSpecification)
+     */
 
     public IParameterSpecification getParameter(String name)
     {
@@ -311,13 +302,10 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns a List of
-     *  of String names of all parameters.  This list
-     *  is in alphabetical order.
-     *
-     *  @see #addParameter(String, IParameterSpecification)
-     *
-     **/
+     * Returns a List of of String names of all parameters. This list is in alphabetical order.
+     * 
+     * @see #addParameter(String, IParameterSpecification)
+     */
 
     public List getParameterNames()
     {
@@ -340,31 +328,31 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  @since 1.0.4
-     *
-     *  @throws IllegalArgumentException if the bean already has a specification.
-     **/
+     * @since 1.0.4
+     * @throws IllegalArgumentException
+     *             if the bean already has a specification.
+     */
 
     public void addBeanSpecification(String name, IBeanSpecification specification)
     {
         if (_beans == null)
             _beans = new HashMap();
 
-        else
-            if (_beans.containsKey(name))
-                throw new IllegalArgumentException(
-                    Tapestry.format("ComponentSpecification.duplicate-bean", this, name));
+        else if (_beans.containsKey(name))
+            throw new IllegalArgumentException(Tapestry.format(
+                    "ComponentSpecification.duplicate-bean",
+                    this,
+                    name));
 
         _beans.put(name, specification);
     }
 
     /**
-     * Returns the {@link IBeanSpecification} for the given name, or null
-     * if not such specification exists.
-     *
+     * Returns the {@link IBeanSpecification}for the given name, or null if not such specification
+     * exists.
+     * 
      * @since 1.0.4
-     *
-     **/
+     */
 
     public IBeanSpecification getBeanSpecification(String name)
     {
@@ -375,9 +363,8 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns an unmodifiable collection of the names of all beans.
-     *
-     **/
+     * Returns an unmodifiable collection of the names of all beans.
+     */
 
     public Collection getBeanNames()
     {
@@ -388,14 +375,12 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Adds the value as a reserved name.  Reserved names are not allowed
-     *  as the names of informal parameters.  Since the comparison is
-     *  caseless, the value is converted to lowercase before being
-     *  stored.
-     *
-     *  @since 1.0.5
-     *
-     **/
+     * Adds the value as a reserved name. Reserved names are not allowed as the names of informal
+     * parameters. Since the comparison is caseless, the value is converted to lowercase before
+     * being stored.
+     * 
+     * @since 1.0.5
+     */
 
     public void addReservedParameterName(String value)
     {
@@ -406,15 +391,13 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns true if the value specified is in the reserved name list.
-     *  The comparison is caseless.  All formal parameters are automatically
-     *  in the reserved name list, as well as any additional
-     *  reserved names specified in the component specification.  The latter
-     *  refer to HTML attributes generated directly by the component.
-     *
-     *  @since 1.0.5
-     *
-     **/
+     * Returns true if the value specified is in the reserved name list. The comparison is caseless.
+     * All formal parameters are automatically in the reserved name list, as well as any additional
+     * reserved names specified in the component specification. The latter refer to HTML attributes
+     * generated directly by the component.
+     * 
+     * @since 1.0.5
+     */
 
     public boolean isReservedParameterName(String value)
     {
@@ -438,10 +421,10 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns the documentation for this component.
+     * Returns the documentation for this component.
      * 
-     *  @since 1.0.9
-     **/
+     * @since 1.0.9
+     */
 
     public String getDescription()
     {
@@ -449,10 +432,10 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Sets the documentation for this component.
+     * Sets the documentation for this component.
      * 
-     *  @since 1.0.9
-     **/
+     * @since 1.0.9
+     */
 
     public void setDescription(String description)
     {
@@ -460,56 +443,48 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns the XML Public Id for the specification file, or null
-     *  if not applicable.
+     * Returns the XML Public Id for the specification file, or null if not applicable.
+     * <p>
+     * This method exists as a convienience for the Spindle plugin. A previous method used an
+     * arbitrary version string, the public id is more useful and less ambiguous.
      * 
-     *  <p>
-     *  This method exists as a convienience for the Spindle plugin.
-     *  A previous method used an arbitrary version string, the
-     *  public id is more useful and less ambiguous.
-     *  
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public String getPublicId()
     {
         return _publicId;
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public void setPublicId(String publicId)
     {
         _publicId = publicId;
     }
 
-    /** 
+    /**
+     * Returns true if the specification is known to be a page specification and not a component
+     * specification. Earlier versions of the framework did not distinguish between the two, but
+     * starting in 2.2, there are seperate XML entities for pages and components. Pages omit several
+     * attributes and entities related to parameters, as parameters only make sense for components.
      * 
-     *  Returns true if the specification is known to be a page
-     *  specification and not a component specification.  Earlier versions
-     *  of the framework did not distinguish between the two, but starting
-     *  in 2.2, there are seperate XML entities for pages and components.
-     *  Pages omit several attributes and entities related
-     *  to parameters, as parameters only make sense for components.
-     *  
-     *  @since 2.2 
-     * 
-     **/
+     * @since 2.2
+     */
 
     public boolean isPageSpecification()
     {
         return _pageSpecification;
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public void setPageSpecification(boolean pageSpecification)
     {
         _pageSpecification = pageSpecification;
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     private List sortedKeys(Map input)
     {
@@ -523,7 +498,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
         return result;
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     private Object get(Map map, Object key)
     {
@@ -533,14 +508,14 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
         return map.get(key);
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public Resource getSpecificationLocation()
     {
         return _specificationLocation;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void setSpecificationLocation(Resource specificationLocation)
     {
@@ -548,12 +523,11 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Adds a new property specification.  The name of the property must
-     *  not already be defined (and must not change after being added).
+     * Adds a new property specification. The name of the property must not already be defined (and
+     * must not change after being added).
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void addPropertySpecification(IPropertySpecification spec)
     {
@@ -563,8 +537,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
         String name = spec.getName();
 
         if (_propertySpecifications.containsKey(name))
-            throw new IllegalArgumentException(
-                Tapestry.format(
+            throw new IllegalArgumentException(Tapestry.format(
                     "ComponentSpecification.duplicate-property-specification",
                     this,
                     name));
@@ -573,12 +546,11 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns a sorted, immutable list of the names of all 
-     *  {@link org.apache.tapestry.spec.IPropertySpecification}s.
+     * Returns a sorted, immutable list of the names of all
+     * {@link org.apache.tapestry.spec.IPropertySpecification}s.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public List getPropertySpecificationNames()
     {
@@ -586,17 +558,34 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     }
 
     /**
-     *  Returns the named {@link org.apache.tapestry.spec.IPropertySpecification},
-     *  or null  if no such specification exist.
+     * Returns the named {@link org.apache.tapestry.spec.IPropertySpecification}, or null if no
+     * such specification exist.
      * 
-     *  @since 3.0
-     *  @see #addPropertySpecification(IPropertySpecification)
-     * 
-     **/
+     * @since 3.0
+     * @see #addPropertySpecification(IPropertySpecification)
+     */
 
     public IPropertySpecification getPropertySpecification(String name)
     {
         return (IPropertySpecification) get(_propertySpecifications, name);
     }
 
+    public void addInjectSpecification(InjectSpecification spec)
+    {
+        if (_injectSpecifications == null)
+            _injectSpecifications = new ArrayList();
+
+        // Note: we could check for property name collisions here, but since properties, parameters
+        // and injects can all collide, best to do that inside the component class enhancer.
+
+        _injectSpecifications.add(spec);
+    }
+
+    public List getInjectSpecifications()
+    {
+        if (_injectSpecifications == null)
+            return Collections.EMPTY_LIST;
+
+        return Collections.unmodifiableList(_injectSpecifications);
+    }
 }

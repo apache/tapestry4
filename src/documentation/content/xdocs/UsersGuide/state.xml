@@ -375,7 +375,7 @@ setter method.
 
 
 <p>
-Persistent properties make use of a &spec.property-specification; element in the
+Persistent properties make use of a &spec.property; element in the
 page or component specification.  Tapestry does something special when a component
 contains any such elements; it dynamically fabricates a subclass that provides the desired fields,
 methods and whatever extra initialization or cleanup is required.
@@ -399,7 +399,7 @@ your class, inside listener methods.
 <note>
 Properties defined this way may be either transient or persistent.  It is useful to define
 even transient
-properties using the &spec.property-specification; element because doing so ensures that
+properties using the &spec.property; element because doing so ensures that
 the property will be properly reset at the end of the request (before the page
 is returned to the pool for later reuse).
 </note>
@@ -421,7 +421,7 @@ public abstract class MyPage extends &BasePage;
 </source>
 
 <p>
-This is combined with a &spec.property-specification;  element
+This is combined with a &spec.property;  element
 in the page's specification:
 </p>
 
@@ -429,12 +429,12 @@ in the page's specification:
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <page-specification class="mypackage.MyPage">
 
-  <property-specification
+  <property
     name="itemsPerPage"
     persistent="yes"
     type="int" initial-value="10"/>
@@ -456,7 +456,7 @@ in both the Java code and in the page specification. This is a violation of the
 <link href="http://c2.com/cgi/wiki?DontRepeatYourself">Dont Repeat Yourself</link> principal -- requiring
 coordination is just an inviation for the two sides to get out of synchronization.  In Tapestry 3.1, it
 is likely that <em>any</em> abstract property in the Java code will become a transient property, even when
-there's no corresponding &spec.property-specification; element. The &spec.property-specification; element will
+there's no corresponding &spec.property; element. The &spec.property; element will
 be used to mark a property as persistent (the type will still not have to be defined), to provide an initial value,
 or specify a property that isn't referenced from Java code (and even here, type will be optional and default to Object).
 </warning>
@@ -498,13 +498,13 @@ when the page detaches is not defined and is subject to change.
 	
 <warning>
 There is no reason to implement persistent page properties manually.  Using
-the &spec.property-specification; element is much easier.
+the &spec.property; element is much easier.
 </warning>	
 	
 <p>
 The preferred way to
 implement persistent page properties without using
-the &spec.property-specification; element is to implement the method <code>initialize()</code> on your page.  This method is invoked
+the &spec.property; element is to implement the method <code>initialize()</code> on your page.  This method is invoked
 once when the page is first created; it is invoked again at the end of each request cycle.  An empty implementation
 of this method is provided by &AbstractPage;.
 </p>
@@ -610,7 +610,7 @@ session.
 	
 <warning>
 There is no reason to implement persistent component properties manually.  Using
-the &spec.property-specification; element is much easier.
+the &spec.property; element is much easier.
 </warning>	
 
 <p>
@@ -687,7 +687,7 @@ public class MyComponent extends &BaseComponent; implements &PageDetachListener;
 
 <p>
 Again, there is no particular need to do all this; using the
-&spec.property-specification; element is far, far simpler.	
+&spec.property; element is far, far simpler.	
 </p>
 	
 </section> <!-- state.manual-component-properties -->

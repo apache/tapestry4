@@ -49,6 +49,13 @@ public interface EnhancementOperation
     public void addField(String name, Class type);
 
     /**
+     * Adds a field containing an initial value. The EnhancementOperation will ensure that the value
+     * is passed into the enhanced class' constructor and assigned.
+     */
+
+    public void addField(String name, Class type, Object value);
+
+    /**
      * Converts a type name (an object class name, a primtive name, or an array) into the
      * corresponding Class object.
      */
@@ -109,4 +116,10 @@ public interface EnhancementOperation
 
     public void forceEnhancement();
 
+    /**
+     * Returns the type of an existing property of the base component class. If the property does
+     * not exist, then returns null.
+     */
+
+    public Class getPropertyType(String name);
 }

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.junit.parse;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.Locatable;
@@ -30,6 +31,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
+import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.ListenerBindingSpecification;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
@@ -824,4 +826,70 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("bar", spec.getProperty("foo"));
         assertEquals("long value", spec.getProperty("long"));
     }
+
+    /** @since 3.1 */
+    public void testInject() throws Exception
+    {
+        IComponentSpecification spec = parseComponent("Inject.jwc");
+
+        List l = spec.getInjectSpecifications();
+
+        assertEquals(2, l.size());
+
+        InjectSpecification i1 = (InjectSpecification) l.get(0);
+
+        assertEquals("fred", i1.getName());
+        assertEquals("flintstone", i1.getLocator());
+        assertNotNull(i1.getLocation());
+
+        InjectSpecification i2 = (InjectSpecification) l.get(1);
+        assertEquals("barney", i2.getName());
+        assertEquals("rubble", i2.getLocator());
+        assertNotNull(i2.getLocation());
+    }
+    
+    /**
+     * Test that the new &lt;property&gt; element (was &lt;property-specification&gt;)
+     * works correctly.
+     * 
+     * @since 3.1
+     */
+
+    public void testProperty() throws Exception
+    {
+        IComponentSpecification spec = parsePage("Property.page");
+
+        checkList("propertySpecificationNames", new String[]
+        { "bool", "init", "persist" }, spec.getPropertySpecificationNames());
+
+        IPropertySpecification ps = spec.getPropertySpecification("bool");
+        assertEquals("name", "bool", ps.getName());
+        assertEquals("persistent", false, ps.isPersistent());
+        assertEquals("type", "boolean", ps.getType());
+        assertNull("initialValue", ps.getInitialValue());
+        checkLine(ps, 24);
+
+        ps = spec.getPropertySpecification("init");
+        assertEquals("name", "init", ps.getName());
+        assertEquals("persistent", false, ps.isPersistent());
+        
+        // Note: this will like change to null as the default, to differentiate
+        // explicitly "java.lang.Object" from "no value specified"
+        
+        assertEquals("type", "java.lang.Object", ps.getType());
+        assertEquals("initialValue", "pageName", ps.getInitialValue());
+        checkLine(ps, 26);
+
+        ps = spec.getPropertySpecification("persist");
+        assertEquals("name", "persist", ps.getName());
+        assertEquals("persistent", true, ps.isPersistent());
+        assertEquals("type", "java.lang.Object", ps.getType());
+        assertNull("initialValue", ps.getInitialValue());
+        checkLine(ps, 25);
+
+        ps = spec.getPropertySpecification("unknown");
+
+        assertNull("Unknown PropertySpecification", ps);
+    }    
+    
 }

@@ -160,4 +160,32 @@
     </invoke-factory>
   </service-point>
   
+  <service-point id="ObjectTranslator" interface="org.apache.hivemind.schema.Translator" visibility="private">
+    
+    Translator that works with ObjectProviders to find or create objects.  This is a duplicate
+    of the HiveMind service (which is also private).
+      
+    <invoke-factory>
+      <construct
+        class="org.apache.hivemind.service.impl.ObjectTranslator" initialize-method="initializeService">
+        <set-configuration configuration-id="ObjectProviders" property="contributions"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
+  <service-point id="InjectedValueProviderFactory" interface="org.apache.hivemind.ServiceImplementationFactory"
+    visibility="private" parameters-occurs="none">
+    
+    Special service factory for the InjectedValueProvider service.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.service.impl.InjectedValueProviderFactory">
+        <set-service property="objectTranslator" service-id="ObjectTranslator"/>
+      </construct>
+    </invoke-factory>    
+  </service-point>
+  
+  <service-point id="InjectedValueProvider" interface="org.apache.tapestry.services.InjectedValueProvider">
+    <invoke-factory service-id="InjectValueProviderFactory"/>
+  </service-point>
 </module>
