@@ -10,6 +10,7 @@
 
   <bean name="dateValidator" lifecycle="render" class="net.sf.tapestry.valid.DateValidator">
   	<set-property name="required" expression="true"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
 
   <bean name="intValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">

@@ -67,7 +67,7 @@ public class DefaultScriptSource implements IScriptSource
         _cache.clear();
     }
 
-    public IScript getScript(String resourcePath) 
+    public IScript getScript(String resourcePath)
     {
         IScript result;
 
@@ -101,6 +101,10 @@ public class DefaultScriptSource implements IScriptSource
         {
             URL url = _resolver.getResource(resourcePath);
 
+            if (url == null)
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString("DefaultScriptSource.unable-to-find-script", resourcePath));
+
             stream = url.openStream();
 
             IScript result = parser.parse(stream, resourcePath);
@@ -112,13 +116,13 @@ public class DefaultScriptSource implements IScriptSource
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultScriptParser.unable-to-parse-script", resourcePath),
+                Tapestry.getString("DefaultScriptSource.unable-to-parse-script", resourcePath),
                 ex);
         }
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultScriptParser.unable-to-read-script", resourcePath),
+                Tapestry.getString("DefaultScriptSource.unable-to-read-script", resourcePath),
                 ex);
         }
         finally
