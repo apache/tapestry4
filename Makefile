@@ -118,7 +118,7 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/framework \
 	$(RELEASE_DIR)/JBE \
 	$(RELEASE_DIR)/examples \
-	$(RELEASE_DIR)/junit
+	$(RELEASE_DIR)/junit \
 	$(RELEASE_DIR)/web
 	
 create-archives:
