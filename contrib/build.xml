@@ -37,12 +37,12 @@
   </target>
   
   <target name="install" depends="compile" description="Compile all classes and build the installed JAR including all package resources.">
-    <jar jarfile="${contrib.jar}" compress="false">
+    <jar jarfile="${contrib.jar}">
+      <fileset dir="${classes.dir}"/>
       <fileset dir="${src.dir}">
         <exclude name="**/*.java"/>
         <exclude name="**/package.html"/>
       </fileset>
-      <fileset dir="${classes.dir}"/>
     </jar>
   </target>
 </project>
