@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd">
+<document>
+
+ <header>
+  <title>Jakarta Tapestry - Welcome!</title>
+ </header>
+
+<body>
+		
+<p>
+Tapestry is a powerful, open-source, all-Java framework
+for creating leading edge web applications in Java.
+</p>
+
+<p>
+Tapestry reconceptualizes web application development 
+in terms of objects, methods and properties
+instead of URLs and query parameters.
+</p>
+
+<p>
+Tapestry is an alternative to scripting environments such as
+JavaServer Pages or Velocity.  Tapestry goes far further,
+providing a complete framework for creating extremely dynamic applications
+with minimal amounts of coding.
+</p>
+
+<p>
+Tapestry's approach, using a component object model similar to a
+traditional GUI, provides the following benefits:
+</p>
+
+<ul>
+<li>Very high level of reuse, within and between projects<br/><em>Everything in Tapestry is a reusable component</em></li>
+<li>Frees developers from writing boring, buggy code<br/><em>Code in terms of objects, methods and properties, not URLs and query parameters</em></li>
+<li>Allows applications' complexity to scale well<br/><em>Framework does all the URL building and message dispatching, transparently</em></li>
+<li>Easy Internationalization/Localization<br/><em>Framework selects localized version of text, templates and images</em></li>
+<li>Extremely robust applications<br/><em>Less code is less bugs<br/>Sophisticated built-in exception reporting<br/><link href="faq.html#lineprecise">Line precise error reporting</link></em></li>
+<li>Easy team integration<br/><em>Graphic designers and Java developers can work together without having to know each other's jobs</em></li>
+</ul>
+<p>
+Tapestry is distributed under the terms of the Apache Software License.
+</p>
+
+<p>Tapestry exploits the dynamic nature of the Java language, leveraging 
+the JavaBeans API, as well as servlets and other J2EE technology.
+Tapestry applications are fast, scalable, robust and powerful.
+</p>
+
+<p>
+Tapestry components are a combination of a specification file (in XML),
+an HTML template and a Java class (extending a framework class,
+with simple additions). Tapestry components are combined together
+ to form larger components or complete Tapestry pages.
+</p>
+
+
+<section>
+		<title>Tapestry in Print</title>
+
+
+<figure src="images/tapestry-in-action.png" alt="Tapestry in Action Cover"/> 
+<p>
+	Tapestry in Action
+is now available from
+<link href="http://www.manning.com/lewisship/index.html">Manning Publications</link>. It is the
+definitive introduction to Tapestry written by Howard Lewis Ship, the creator of Tapestry.
+</p>
+
+<p>Tapestry has also  been described in the print journal 
+<em>The Java Report</em> in the September 2001 issue.  Other articles
+includes the on-line journal
+<link href="http://www.onjava.com/pub/a/onjava/2001/11/21/tapestry.html">OnJava</link>,
+in November 2001.
+</p>
+
+</section>
+
+<section>
+		<title>Tapestry Community</title>
+
+
+<p>
+Tapestry has a very active 
+<link href="mailto:tapestry-user-subscribe@jakarta.apache.org">User</link> mailing list, with
+<link href="http://news.gmane.org/thread.php?group=gmane.comp.java.tapestry.user">archives</link>.
+This is the list for getting help with using the framework.
+</p>
+
+<p>
+The <link href="mailto:tapestry-dev-subscribe@jakarta.apache.org">Developer</link>
+mailing list is for Tapestry committers and other power users to discuss
+enhancements to the framework.  It also has 
+<link href="http://news.gmane.org/thread.php?group=gmane.comp.jakarta.tapestry.devel">archives</link>.
+
+</p>
+
+<p>
+A <link href="site:wiki">Wiki</link> has been set 
+up to discuss Tapestry and plan new features.
+</p>
+
+</section>
+
+</body>
+</document>
