@@ -528,6 +528,208 @@ accessing the &IBinding; object (via the <function>getBinding()</function> metho
 <section id="components.libraries">
 	<title>Component Libraries</title>
 	
+<para>
+Tapestry has a very advanced concept of a <emphasis>component library</emphasis>. A component library contains both Tapestry components and Tapestry pages
+(not to mention engine services).
+</para>
+
+<section id="components.libraries.ref">
+	<title>Referencing Library Components</title>
+	
+<para>
+Before a component library may be used, it must be listed in the application specification. Often, an application specification is <emphasis>only</emphasis>	
+needed so that it may list the libraries used by the application. Libraries are identified using the &spec.library; element.
+</para>
+
+<para>
+The &spec.library; element provides an <emphasis>id</emphasis> for the library, which is used to reference components (and pages) within the library. It also 
+provides a path to the library's specification. This is a complete path for a <filename>.library</filename> file on the classpath. For example:
+
+<example>
+	<title>Referencing a Component Library</title>	
+	<programlisting><![CDATA[
+<application name="Example Application">
+      
+  <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
+  	
+</application>]]></programlisting>
+</example>
+</para>
+
+<para>
+In this example, <filename>Contrib.library</filename> defines a set of components, and those component can be accessed using
+<literal>contrib:</literal> as a prefix. In an HTML template, this might appear as:
+
+<informalexample>
+<programlisting><![CDATA[	
+<span jwcid="palette@contrib:Palette" . . . />
+]]></programlisting>	
+</informalexample>
+</para>
+
+<para>
+This example defines a component with id <literal>palette</literal>. The component will be an instance of the Palette component, supplied within
+the <literal>contrib</literal> component library. If an application uses multiple libraries, they will each have their own prefix. 
+Unlike JSPs and JSP tag libraries, the prefix is set once, in the application specification, and is used consistently in all HTML templates and
+ specifications within the application.
+</para>
+
+<para>
+The same syntax may be used in page and component specifications:
+<informalexample>
+<programlisting><![CDATA[
+<component id="palette" type="contrib:Palette">
+  . . .
+</component>
+]]></programlisting>	
+</informalexample>	
+</para>
+
+</section> <!-- components.libraries.ref -->
+
+<section id="components.libraries.search">
+	<title>Library component search path</title>
+	
+<para>
+<link linkend="components.spec">Previously</link>, we described the search path for components and pages within the application. The rules are somewhat different
+for components and pages within a library.
+</para>	
+
+<para>
+Tapestry searches for library component specifications in the following places:
+<itemizedlist>
+	<listitem>
+		<para>As specified in a &spec.component-type; element (with the library specification)</para>	
+	</listitem>	
+	<listitem>
+		<para>In the same package folder as the 
+			library specification</para>
+	</listitem>
+</itemizedlist>	
+</para>
+
+<para>
+The search for page specifications is identical: as defined in the library specification, or in the same package folder. 	
+</para>
+
+</section> <!-- components.libraries.search -->
+
+<section id="components.libraries.private-assets">
+	<title>Using Private Assets</title>
+	
+<para>
+Often, a component must be packaged up with images, stylesheets or other resources (collectively termed "assets")
+that are needed at runtime. A reference to such an asset can be created using the &spec.private-asset; element of
+the page or component specification.	For example:
+<informalexample>
+<programlisting><![CDATA[
+	
+  <private-asset name="logo" resource-path="images/logo_200.png"/>
+  
+  <component id="image" type="Image">
+    <binding name="image" expression="assets.logo"/>
+  </component>
+]]></programlisting>	
+</informalexample>
+</para>
+
+<para>
+All assets (private, context or external) are converted into instances of &IAsset; and treated identically by
+components (such as &Image;). As in this example, relative paths are allowed: they are interpreted relative
+to the specification (page or component) they appear in.	
+</para>
+
+<para>
+The Tapestry framework will ensure that an asset will be converted to a valid URL that may be referenced from a client
+web browser ... even though the actual service is inside a JAR or otherwise on the classpath, not normally
+referenceable from the client browser.
+</para>
+
+<para>
+The <emphasis>default</emphasis>	behavior is to serve up the <emphasis>localized</emphasis> resource
+using the asset service. In effect, the framework will read the contents of the asset and pipe that binary content
+down to the client web browser. 
+</para>
+
+<para>
+An alternate behavior is to have the framework copy the asset to a fixed directory. This directory should be mapped
+to a know web folder; that is, have a URL that can be referenced from a client web browser. In this way, the web server
+can more efficiently serve up the asset, as a static resource (that just happens to be copied into place in a just-in-time manner).
+
+</para>
+
+<para>
+This behavior is controlled by a pair of <link linkend="configuration.search-path">configuration properties</link>:
+<literal>org.apache.tapestry.asset.dir</literal> and <literal>org.apache.tapestry.asset.URL</literal>.
+
+</para>	
+</section> <!-- components.libraries.private-assets -->
+
+<section id="components.libraries.spec">
+	<title>Library Specifications</title>
+
+
+<para>
+A library specification is a file with a <filename>.library</filename>	 extension. Library specifications
+use a root element of &spec.library-specification;, which supports a subset of the attributes
+allowed within an &spec.application; element (but allowing the <emphasis>same</emphasis> nested elements). Often, the library specification is an empty placeholder, used
+to an establish a search location for page and component specifications:
+<informalexample><programlisting><![CDATA[
+<!DOCTYPE library-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<library-specification/>
+]]></programlisting></informalexample>
+</para>
+	
+<para>
+It is allowed that components in one library be constructed using components provided by another library. 
+The referencing library's specification may contain
+&spec.library; elements that identify some other library.	
+</para>
+
+</section> <!-- comopnents.libraries.spec -->
+
+<section id="components.libraries.namespace">
+	<title>Libraries and Namespaces</title>
+	
+<para>
+Tapestry organizes components and pages (but <emphasis>not</emphasis>	 engine services) into
+<emphasis>namespaces</emphasis>. Namespaces are closely related to, but not exactly the same as,
+the library prefix established using the &spec.library; element in an application or library specification.
+</para>
+
+<para>
+Every Tapestry application consists of a default namespace, the application namespace. This is the namespace used 
+when referencing a page or component without a prefix. When a page or component can't be resolved within the application namespace,
+the framework namespaceis searched. Only if the component (or page) is not part of the framework namespace does an error result.	
+</para>
+
+<para>
+In fact, it is possible to override both pages and components provided by the framework. This is frequently used to change the
+look and feel of the default StateSession or Exception page.  In theory, it is even possible to override fundamental components such as
+&Insert; or &Foreach;!
+</para>
+
+<para>
+Every component provides a <varname>namespace</varname>	 property that defines the namespace (an instance
+of &INamespace;) that the component belongs to.
+</para>
+
+<para>
+You rarely need to be concerned with namespaces, however. The rare exception is when a page from a library wishes to
+make use of the &PageLink; or &ExternalLink; components to create a link to <emphasis>another page</emphasis>	 within
+the same namespace. This is accomplished (in the source page's HTML template) as:
+<informalexample>
+<programlisting><![CDATA[
+  <a href="#" jwcid="@PageLink" page="OtherPage" namespace="ognl:namespace"> ... </a>]]>	
+</programlisting>	
+</informalexample>
+</para>
+
+</section> <!-- components.libraries.namespace -->
+	
 </section> <!-- components.libraries -->
 
 
