@@ -96,7 +96,7 @@ import net.sf.tapestry.util.prop.PropertyHelper;
  *  <p>In practice, a subclass (usually {@link SimpleEngine})
  *  is used without subclassing.  Instead, a 
  *  visit object is specified.  To facilitate this, the application specification
- *  may include a property, <code>com.primix.tapestry.visit-class</code>
+ *  may include a property, <code>net.sf.tapestry.visit-class</code>
  *  which is the class name  to instantiate when a visit object is first needed.  See
  *  {@link #createVisit(IRequestCycle)} for more details.
  *
@@ -105,13 +105,13 @@ import net.sf.tapestry.util.prop.PropertyHelper;
  *
  * <table border=1>
  * 	<tr> <th>Parameter</th> <th>Description</th> </tr>
- *  <tr> <td>com.primix.tapestry.enable-reset-service</td>
+ *  <tr> <td>net.sf.tapestry.enable-reset-service</td>
  *		<td>If true, enabled an additional service, reset, that
  *		allow page, specification and template caches to be cleared on demand.
  *  	See {@link #isResetServiceEnabled()}. </td>
  * </tr>
  * <tr>
- *		<td>com.primix.tapestry.disable-caching</td>
+ *		<td>net.sf.tapestry.disable-caching</td>
  *	<td>If true, then the page, specification, template and script caches
  *  will be cleared after each request. This slows things down,
  *  but ensures that the latest versions of such files are used.
@@ -208,7 +208,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected static final String SCRIPT_SOURCE_NAME = "com.primix.tapestry.DefaultScriptSource";
+    protected static final String SCRIPT_SOURCE_NAME = "net.sf.tapestry.DefaultScriptSource";
 
     private transient Map services;
 
@@ -220,7 +220,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    public static final String VISIT_CLASS_PROPERTY_NAME = "com.primix.tapestry.visit-class";
+    public static final String VISIT_CLASS_PROPERTY_NAME = "net.sf.tapestry.visit-class";
 
     /**
      *  Servlet context attribute name for the default {@link ITemplateSource}
@@ -228,7 +228,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected static final String TEMPLATE_SOURCE_NAME = "com.primix.tapestry.TemplateSource";
+    protected static final String TEMPLATE_SOURCE_NAME = "net.sf.tapestry.TemplateSource";
 
     /**
      *  Servlet context attribute name for the default {@link ISpecificationSource}
@@ -236,7 +236,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected static final String SPECIFICATION_SOURCE_NAME = "com.primix.tapestry.SpecificationSource";
+    protected static final String SPECIFICATION_SOURCE_NAME = "net.sf.tapestry.SpecificationSource";
 
     /**
      *  Servlet context attribute name for the {@link IPageSource}
@@ -244,7 +244,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected static final String PAGE_SOURCE_NAME = "com.primix.tapestry.PageSource";
+    protected static final String PAGE_SOURCE_NAME = "net.sf.tapestry.PageSource";
 
     /**
      *  The source for pages, which acts as a pool, but is capable of
@@ -257,7 +257,7 @@ public abstract class AbstractEngine
 
     /**
      *  If true (set from JVM system parameter
-     *  <code>com.primix.tapestry.enable-reset-service</code>)
+     *  <code>net.sf.tapestry.enable-reset-service</code>)
      *  then the reset service will be enabled, allowing
      *  the cache of pages, specifications and template
      *  to be cleared on demand.
@@ -265,17 +265,17 @@ public abstract class AbstractEngine
      **/
 
     private static boolean resetServiceEnabled =
-        Boolean.getBoolean("com.primix.tapestry.enable-reset-service");
+        Boolean.getBoolean("net.sf.tapestry.enable-reset-service");
 
     /**
      * If true (set from the JVM system parameter
-     * <code>com.primix.tapestry.disable-caching</code>)
+     * <code>net.sf.tapestry.disable-caching</code>)
      * then the cache of pages, specifications and template
      * will be cleared after each request.
      *
      **/
 
-    private static boolean disableCaching = Boolean.getBoolean("com.primix.tapestry.disable-caching");
+    private static boolean disableCaching = Boolean.getBoolean("net.sf.tapestry.disable-caching");
 
     private transient IResourceResolver resolver;
 
@@ -288,7 +288,7 @@ public abstract class AbstractEngine
 
     private transient Map serviceMap;
 
-    protected static final String SERVICE_MAP_NAME = "com.primix.tapestry.ServiceMap";
+    protected static final String SERVICE_MAP_NAME = "net.sf.tapestry.ServiceMap";
 
     /**
      *  Sets the Exception page's exception property, then renders the Exception page.

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<application name="Tapestry Hangman" engine-class="com.primix.tapestry.engine.SimpleEngine">
-  <property name="com.primix.tapestry.visit-class">tutorial.hangman.Visit</property>
+<application name="Tapestry Hangman" engine-class="net.sf.tapestry.engine.SimpleEngine">
+  <property name="net.sf.tapestry.visit-class">tutorial.hangman.Visit</property>
   <page name="Home" specification-path="/tutorial/hangman/Home.jwc"/>
   <page name="Guess" specification-path="/tutorial/hangman/Guess.jwc"/>
   <page name="Failed" specification-path="/tutorial/hangman/Failed.jwc"/>

@@ -3,8 +3,8 @@
 <!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <application name="Tapestry Component Workbench" 
-	engine-class="com.primix.tapestry.engine.SimpleEngine">
-  <property name="com.primix.tapestry.visit-class">tutorial.workbench.Visit</property>
+	engine-class="net.sf.tapestry.engine.SimpleEngine">
+  <property name="net.sf.tapestry.visit-class">tutorial.workbench.Visit</property>
   
   <service name="home" class="tutorial.workbench.WorkbenchHomeService"/>
   <service name="chart" class="tutorial.workbench.chart.ChartService"/>

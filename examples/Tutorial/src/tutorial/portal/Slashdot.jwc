@@ -5,7 +5,7 @@
     
 <specification class="tutorial.portal.Slashdot">
 
-<bean name="rowClass" class="net.sf.tapestry.inspector.EvenOdd"/>
+<bean name="rowClass" class="net.sf.tapestry.helper.EvenOdd"/>
 
 <component id="content" type="Block"/>
 

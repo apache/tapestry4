@@ -1,136 +1,130 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package tutorial.workbench.palette;
 
-import java.util.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.form.*;
-import net.sf.tapestry.valid.*;
-import com.primix.tapestry.util.*;
-import java.math.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
-import net.sf.tapestry.*;
-import net.sf.tapestry.contrib.palette.*;
-import net.sf.tapestry.form.*;
-import net.sf.tapestry.html.*;
-import net.sf.tapestry.util.*;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.contrib.palette.SortMode;
+import net.sf.tapestry.form.EnumPropertySelectionModel;
+import net.sf.tapestry.form.IPropertySelectionModel;
+import net.sf.tapestry.form.StringPropertySelectionModel;
+import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.util.Enum;
 
 /**
  *  @version $Id$
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *
- */
+ **/
 
 public class Palette extends BasePage
 {
-	private List selectedColors;
+    private List selectedColors;
 
-	private SortMode sort = SortMode.USER;
+    private SortMode sort = SortMode.USER;
 
-	private IPropertySelectionModel sortModel;
+    private IPropertySelectionModel sortModel;
 
-	public void detach()
-	{
-		sort = SortMode.USER;
-		selectedColors = null;
+    public void detach()
+    {
+        sort = SortMode.USER;
+        selectedColors = null;
 
-		super.detach();
-	}
+        super.detach();
+    }
 
-	public void formSubmit(IRequestCycle cycle)
-	{
-			// Does nothing ... may be invoked because
-			// the user changed the sort
-	}
+    public void formSubmit(IRequestCycle cycle)
+    {
+        // Does nothing ... may be invoked because
+        // the user changed the sort
+    }
 
-	/**
-	 *  Invoked before {@link #formSubmit(IRequestCycle)} if the
-	 *  user clicks the "advance" button.
-	 * 
-	 **/
-	
-	public void advance(IRequestCycle cycle)
-	{
-			Results results = (Results) cycle.getPage("palette.Results");
+    /**
+     *  Invoked before {@link #formSubmit(IRequestCycle)} if the
+     *  user clicks the "advance" button.
+     * 
+     **/
 
-			results.setSelectedColors(selectedColors);
+    public void advance(IRequestCycle cycle)
+    {
+        Results results = (Results) cycle.getPage("palette.Results");
 
-			cycle.setPage(results);
-	}
-	
-	private IPropertySelectionModel colorModel;
+        results.setSelectedColors(selectedColors);
 
-	private String[] colors =
-		{ "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet" };
+        cycle.setPage(results);
+    }
 
-	public IPropertySelectionModel getColorModel()
-	{
-		if (colorModel == null)
-			colorModel = new StringPropertySelectionModel(colors);
+    private IPropertySelectionModel colorModel;
 
-		return colorModel;
-	}
+    private String[] colors = { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet" };
 
-	public void setSort(SortMode value)
-	{
-		sort = value;
+    public IPropertySelectionModel getColorModel()
+    {
+        if (colorModel == null)
+            colorModel = new StringPropertySelectionModel(colors);
 
-		fireObservedChange("sort", value);
-	}
+        return colorModel;
+    }
 
-	public SortMode getSort()
-	{
-		return sort;
-	}
+    public void setSort(SortMode value)
+    {
+        sort = value;
 
-	public IPropertySelectionModel getSortModel()
-	{
-		if (sortModel == null)
-		{
-			ResourceBundle bundle =
-				ResourceBundle.getBundle(
-					"tutorial.workbench.palette.SortModeStrings",
-					getLocale());
+        fireObservedChange("sort", value);
+    }
 
-			Enum[] options =
-				new Enum[] { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
+    public SortMode getSort()
+    {
+        return sort;
+    }
 
-			sortModel = new EnumPropertySelectionModel(options, bundle);
-		}
+    public IPropertySelectionModel getSortModel()
+    {
+        if (sortModel == null)
+        {
+            ResourceBundle bundle =
+                ResourceBundle.getBundle("tutorial.workbench.palette.SortModeStrings", getLocale());
 
-		return sortModel;
-	}
+            Enum[] options = new Enum[] { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
 
-	public List getSelectedColors()
-	{
-		if (selectedColors == null)
-			selectedColors = new ArrayList();
+            sortModel = new EnumPropertySelectionModel(options, bundle);
+        }
 
-		return selectedColors;
-	}
+        return sortModel;
+    }
+
+    public List getSelectedColors()
+    {
+        if (selectedColors == null)
+            selectedColors = new ArrayList();
+
+        return selectedColors;
+    }
 
 }

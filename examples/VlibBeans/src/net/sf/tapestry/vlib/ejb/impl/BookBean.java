@@ -1,247 +1,244 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.vlib.ejb.impl;
 
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-import net.sf.tapestry.vlib.ejb.*;
+import java.rmi.RemoteException;
 import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  *  Implementation of the Book entity.
  *
  *  <p>We're using container managed persistance.
  *
- *  @see IBook
- *  @see IBookHome
+ *  @see net.sf.tapestry.vlib.ejb.IBook
+ *  @see net.sf.tapestry.vlib.ejb.IBookHome
  *
  *  @version $Id$
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *
- */
+ **/
 
 public class BookBean extends AbstractEntityBean
 {
-	// All must be public for access by container
+    // All must be public for access by container
 
-	// Primary key
-	public Integer bookId;
+    // Primary key
+    public Integer bookId;
 
-	// Contrary to the O'Reilly book, we can't use int here and java.lang.Integer
-	// elsewhere; it has to be an Object and it has to match exactly.
+    // Contrary to the O'Reilly book, we can't use int here and java.lang.Integer
+    // elsewhere; it has to be an Object and it has to match exactly.
 
-	// Other CMP fields 
+    // Other CMP fields 
 
-	public String author;
-	public String title;
-	public String description;
-	public String ISBN;
-	public int rating;
+    public String author;
+    public String title;
+    public String description;
+    public String ISBN;
+    public int rating;
 
-	// CMP fields that shadow relationships
+    // CMP fields that shadow relationships
 
-	public Integer ownerPK;
-	public Integer holderPK;
-	public Integer publisherPK;
+    public Integer ownerPK;
+    public Integer holderPK;
+    public Integer publisherPK;
 
-	public boolean hidden;
-	public boolean lendable;
-	public Timestamp dateAdded;
+    public boolean hidden;
+    public boolean lendable;
+    public Timestamp dateAdded;
 
-	protected String[] getAttributePropertyNames()
-	{
-		return new String[] {
-			"title",
-			"description",
-			"ISBN",
-			"holderPK",
-			"ownerPK",
-			"publisherPK",
-			"author",
-			"hidden",
-			"lendable",
-			"dateAdded" };
-	}
+    protected String[] getAttributePropertyNames()
+    {
+        return new String[] {
+            "title",
+            "description",
+            "ISBN",
+            "holderPK",
+            "ownerPK",
+            "publisherPK",
+            "author",
+            "hidden",
+            "lendable",
+            "dateAdded" };
+    }
 
-	// Business methods
+    // Business methods
 
-	public String getAuthor()
-	{
-		return author;
-	}
+    public String getAuthor()
+    {
+        return author;
+    }
 
-	public void setAuthor(String value)
-	{
-		author = value;
-		dirty = true;
-	}
+    public void setAuthor(String value)
+    {
+        author = value;
+        dirty = true;
+    }
 
-	public String getDescription()
-	{
-		return description;
-	}
+    public String getDescription()
+    {
+        return description;
+    }
 
-	public void setDescription(String value)
-	{
-		description = value;
-		dirty = true;
-	}
+    public void setDescription(String value)
+    {
+        description = value;
+        dirty = true;
+    }
 
-	public String getISBN()
-	{
-		return ISBN;
-	}
+    public String getISBN()
+    {
+        return ISBN;
+    }
 
-	public void setISBN(String value)
-	{
-		ISBN = value;
-		dirty = true;
-	}
+    public void setISBN(String value)
+    {
+        ISBN = value;
+        dirty = true;
+    }
 
-	public String getTitle()
-	{
-		return title;
-	}
+    public String getTitle()
+    {
+        return title;
+    }
 
-	public void setTitle(String value)
-	{
-		title = value;
-		dirty = true;
-	}
+    public void setTitle(String value)
+    {
+        title = value;
+        dirty = true;
+    }
 
-	public Integer getHolderPK() throws RemoteException
-	{
-		return holderPK;
-	}
+    public Integer getHolderPK() throws RemoteException
+    {
+        return holderPK;
+    }
 
-	public void setHolderPK(Integer value)
-	{
-		holderPK = value;
+    public void setHolderPK(Integer value)
+    {
+        holderPK = value;
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	public Integer getOwnerPK() throws RemoteException
-	{
-		return ownerPK;
-	}
+    public Integer getOwnerPK() throws RemoteException
+    {
+        return ownerPK;
+    }
 
-	public void setOwnerPK(Integer value)
-	{
-		ownerPK = value;
+    public void setOwnerPK(Integer value)
+    {
+        ownerPK = value;
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	public void setPublisherPK(Integer value)
-	{
-		publisherPK = value;
+    public void setPublisherPK(Integer value)
+    {
+        publisherPK = value;
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	public Integer getPublisherPK() throws RemoteException
-	{
-		return publisherPK;
-	}
+    public Integer getPublisherPK() throws RemoteException
+    {
+        return publisherPK;
+    }
 
-	public boolean isHidden()
-	{
-		return hidden;
-	}
+    public boolean isHidden()
+    {
+        return hidden;
+    }
 
-	public void setHidden(boolean value)
-	{
-		hidden = value;
+    public void setHidden(boolean value)
+    {
+        hidden = value;
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	public boolean isLendable()
-	{
-		return lendable;
-	}
+    public boolean isLendable()
+    {
+        return lendable;
+    }
 
-	public void setLendable(boolean value)
-	{
-		lendable = value;
+    public void setLendable(boolean value)
+    {
+        lendable = value;
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	public void ejbLoad()
-	{
-		dirty = false;
-	}
+    public void ejbLoad()
+    {
+        dirty = false;
+    }
 
-	public void ejbStore()
-	{
-		dirty = false;
-	}
+    public void ejbStore()
+    {
+        dirty = false;
+    }
 
-	public Timestamp getDateAdded()
-	{
-		return dateAdded;
-	}
+    public Timestamp getDateAdded()
+    {
+        return dateAdded;
+    }
 
-	public void setDateAdded(Timestamp value)
-	{
-		dateAdded = value;
+    public void setDateAdded(Timestamp value)
+    {
+        dateAdded = value;
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	// Create methods
+    // Create methods
 
-	public Integer ejbCreate(Map attributes) throws RemoteException
-	{
-		hidden = false;
-		lendable = true;
-		description = null;
+    public Integer ejbCreate(Map attributes) throws RemoteException
+    {
+        hidden = false;
+        lendable = true;
+        description = null;
 
-		// Rating really isn't implemented yet.
+        // Rating really isn't implemented yet.
 
-		rating = 0;
+        rating = 0;
 
-		// Update all the attributes specified in the attributes map.
+        // Update all the attributes specified in the attributes map.
 
-		updateEntityAttributes(attributes);
+        updateEntityAttributes(attributes);
 
-		bookId = allocateKey();
+        bookId = allocateKey();
 
-		dirty = true;
+        dirty = true;
 
-		return null;
-	}
+        return null;
+    }
 
-	public void ejbPostCreate(Map attributes)
-	{
-		// No post create work needed but the method must be implemented
-	}
+    public void ejbPostCreate(Map attributes)
+    {
+        // No post create work needed but the method must be implemented
+    }
 
 }

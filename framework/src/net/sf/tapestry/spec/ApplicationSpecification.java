@@ -135,13 +135,13 @@ public class ApplicationSpecification extends BasePropertyHolder
     private static Map defaultServiceMap = new HashMap(MAP_SIZE);
 
     static {
-        defaultServiceMap.put(IEngineService.HOME_SERVICE, "com.primix.tapestry.engine.HomeService");
-        defaultServiceMap.put(IEngineService.ACTION_SERVICE, "com.primix.tapestry.engine.ActionService");
-        defaultServiceMap.put(IEngineService.DIRECT_SERVICE, "com.primix.tapestry.engine.DirectService");
-        defaultServiceMap.put(IEngineService.PAGE_SERVICE, "com.primix.tapestry.engine.PageService");
-        defaultServiceMap.put(IEngineService.RESET_SERVICE, "com.primix.tapestry.engine.ResetService");
-        defaultServiceMap.put(IEngineService.RESTART_SERVICE, "com.primix.tapestry.engine.RestartService");
-        defaultServiceMap.put(IEngineService.ASSET_SERVICE, "com.primix.tapestry.asset.AssetService");
+        defaultServiceMap.put(IEngineService.HOME_SERVICE, "net.sf.tapestry.engine.HomeService");
+        defaultServiceMap.put(IEngineService.ACTION_SERVICE, "net.sf.tapestry.engine.ActionService");
+        defaultServiceMap.put(IEngineService.DIRECT_SERVICE, "net.sf.tapestry.engine.DirectService");
+        defaultServiceMap.put(IEngineService.PAGE_SERVICE, "net.sf.tapestry.engine.PageService");
+        defaultServiceMap.put(IEngineService.RESET_SERVICE, "net.sf.tapestry.engine.ResetService");
+        defaultServiceMap.put(IEngineService.RESTART_SERVICE, "net.sf.tapestry.engine.RestartService");
+        defaultServiceMap.put(IEngineService.ASSET_SERVICE, "net.sf.tapestry.asset.AssetService");
 
     }
 
