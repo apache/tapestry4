@@ -844,7 +844,7 @@ are added as additional HTML attributes (there are a few special exceptions, suc
 </para>
       <para>
 Informal parameters do have some limitations.  Informal parameters that conflict with the names of
-any formal parameters, or with any the HTML attributes generated directly by the component, are silently
+any formal parameters, or with any of the HTML attributes generated directly by the component, are silently
 ommitted.  The comparison is case-insensitve.  Thus, for a &Direct; component, you can not change
 the <varname>href</varname> attribute, even if you supply a <varname>Href</varname> (or other variation) informal parameter.
 </para>
@@ -6097,6 +6097,18 @@ examples), others are used at runtime (and must be added to the servlet containe
 			</para>
 		</listitem>
 	</varlistentry>
+
+	<varlistentry>
+		<term><filename>jcommon-<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<term><filename>jfreechart-<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<listitem>
+			<para>
+			The <ulink url="http://www.object-refinery.com/jfreechart/">JFreeChart</ulink> libraries,
+			which are used in the Tapestry Workbench tutorial to generate a dynamic pie chart.
+			</para>
+		</listitem>
+	</varlistentry>
+	
 	
 	<varlistentry>
 		<term><filename>junit.jar</filename></term>
@@ -6199,22 +6211,16 @@ examples), others are used at runtime (and must be added to the servlet containe
 	<title>Building Tapestry</title>
 	
 <para>
-The Tapestry framework and examples can be easily rebuilt using &Ant;.  The Tapestry distribution includes
-all necessary source code, build files and most of the 
-supporting frameworks.  The distribution has virtually the same structure as the Tapestry
-CVS repository (the main difference being that the Tapestry distribution does <emphasis>not</emphasis> include
-the source for the Tapestry manuals).
+The Tapestry framework and examples can be easily rebuilt using &Ant;. Although the Tapestry
+distribution includes complete source code, the build files for Tapestry only work
+with a workspace sychronized to the Tapestry CVS repository.  Simply unarchiving the source code
+zip files is not enough.  Details on how to setup such
+a workspace are available at the &TapestryProjectPage;.
 </para>
 
-<para>
-The Tapestry distribution can be downloaded from
-the <ulink url="http://sourceforge.net/project/showfiles.php?group_id=4754">Tapestry downloads page</ulink>.
-Alternately, Tapestry source can be obtained via
-<ulink url="http://sourceforge.net/cvs/?group_id=4754">CVS access on SourceForge</ulink>.
-</para>
 
 <para>
-In either case, the &JBoss; distribution is also required for a complete build (some of the example code, as well as the 
+The &JBoss; distribution is also required for a complete build (some of the example code, as well as the 
 <filename>net.sf.tapestry.contrib.jar</filename> framework has dependencies on &JBoss;).
 </para>
 
@@ -6225,11 +6231,11 @@ this can be renamed or copied, then editted, filling in the entry for <varname>j
 </para>
 
 <para>
-Tapestry is currently built and tested againt release 2.3.3 of JBoss.
+Tapestry is currently built and tested against release 2.4.3 of JBoss.
 </para>
 
 <para>
-Finally, you must have &Ant; 1.4 or better, as well as a JDK 1.2 or better JDK.
+You must have &Ant; 1.4 or better, as well as a JDK 1.2 or better JDK.
 </para>
 
 <para>
@@ -6238,15 +6244,37 @@ Rebuilding the framework is as easy as executing the command <command>ant clean 
 the distribution.  The <varname>install</varname> target recompiles all Java code and builds the library JAR files.
 </para>
 
+<para>
+To generate documentation, you must obtain the &Saxon; distribution, release 6.5.2 or better.  Copy
+the file <filename>saxon.jar</filename> into the Ant <filename>lib</filename> directory.  In addition, update your
+<envar>ANT_OPTS</envar> environment variable
+to add the following two system properties:
 
+	<itemizedlist mark="opencircle">
+          <listitem>
+            <para>
+              -Djavax.xml.parsers.DocumentBuilderFactory=org.apache.crimson.jaxp.DocumentBuilderFactoryImpl
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+           -Djavax.xml.parsers.SAXParserFactory=org.apache.crimson.jaxp.SAXParserFactoryImpl
+            </para>
+          </listitem>
+	</itemizedlist>
+</para>
+
+<para>
+These definitions enables Ant to ignore the XML parser embedded in <filename>saxon.jar</filename>
+and use the default XML parser distributed with Ant.
+</para>
 
 </appendix>
   
   <appendix id="faq">
     <title>Frequently Asked Questions</title>
     <para>
-This section contains a few Q's and A's gleemed from the 
-<ulink url="http://sourceforge.net/forum/forum.php?forum_id=14493">Tapestry forums at SourceForge</ulink>.
+This section contains a few Q's and A's gleemed from the Tapestry developer mailing list. 
 </para>
     <qandaset defaultlabel="qanda">
       <qandaentry>
