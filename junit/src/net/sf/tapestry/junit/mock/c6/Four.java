@@ -22,6 +22,7 @@ public class Four extends BasePage
     private double _doubleValue;
     private char _charValue;
     private int _intValue;
+    private StringHolder _stringHolder;
     
     public void initialize()
     {
@@ -33,6 +34,7 @@ public class Four extends BasePage
       _doubleValue = 0;
       _charValue = ' ';
       _intValue = 0;
+      _stringHolder = null;
     }   
     
     public boolean getBooleanValue()
@@ -117,6 +119,7 @@ public class Four extends BasePage
         setShortValue((short)127);
         setByteValue((byte)27);
         setIntValue(23);
+        setStringHolder(new StringHolder("Surprise!"));
     }
 
     public byte getByteValue()
@@ -141,6 +144,18 @@ public class Four extends BasePage
         _intValue = intValue;
         
         fireObservedChange("intValue", intValue);
+    }
+
+    public StringHolder getStringHolder()
+    {
+        return _stringHolder;
+    }
+
+    public void setStringHolder(StringHolder stringHolder)
+    {
+        _stringHolder = stringHolder;
+        
+        fireObservedChange("stringHolder", stringHolder);
     }
 
 }
