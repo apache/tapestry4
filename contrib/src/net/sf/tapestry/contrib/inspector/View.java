@@ -1,4 +1,4 @@
-package net.sf.tapestry.inspector;
+package net.sf.tapestry.contrib.inspector;
 
 import org.apache.commons.lang.enum.Enum;
 

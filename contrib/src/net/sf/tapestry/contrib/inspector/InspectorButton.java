@@ -1,4 +1,4 @@
-package net.sf.tapestry.inspector;
+package net.sf.tapestry.contrib.inspector;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -48,7 +48,9 @@ public class InspectorButton extends BaseComponent implements IDirect
 
     public void trigger(IRequestCycle cycle) throws RequestCycleException
     {
-        Inspector inspector = (Inspector) cycle.getPage(INamespace.FRAMEWORK_NAMESPACE + ":Inspector");
+        String name = getNamespace().constructQualifiedName("Inspector");
+        
+        Inspector inspector = (Inspector) cycle.getPage(name);
 
         inspector.inspect(getPage().getName(), cycle);
     }
@@ -67,7 +69,7 @@ public class InspectorButton extends BaseComponent implements IDirect
         IEngine engine = getPage().getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        IScript script = source.getScript("/net/sf/tapestry/inspector/InspectorButton.script");
+        IScript script = source.getScript("/net/sf/tapestry/contrib/inspector/InspectorButton.script");
 
         Map symbols = new HashMap();
 
@@ -76,7 +78,6 @@ public class InspectorButton extends BaseComponent implements IDirect
 
         symbols.put("URL", g.getURL());
 
-        HttpSession session = cycle.getRequestContext().getSession();
         ScriptSession scriptSession = null;
 
         try

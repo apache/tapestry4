@@ -14,7 +14,7 @@
   
   <component id="body" type="Body"/>
   <component id="renderBody" type="RenderBody"/>
-  <component id="inspector" type="InspectorButton"/>
+  <component id="inspector" type="contrib:InspectorButton"/>
 
   <component id="insertPageName" type="Insert">
 	<binding name="value" expression="page.name"/>

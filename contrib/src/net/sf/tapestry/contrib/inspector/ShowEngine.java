@@ -1,4 +1,4 @@
-package net.sf.tapestry.inspector;
+package net.sf.tapestry.contrib.inspector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;

@@ -34,7 +34,7 @@
   </component> 
  
   
-  <component id="pageLink" type="Direct">
+  <component id="pageLink" type="DirectLink">
     <binding name="listener" expression="listeners.selectPage"/>
     <binding name="parameters" expression="pageName"/>
     <binding name="stateful" expression="false"/>
@@ -74,7 +74,7 @@
     <binding name="delegate" expression="page.requestCycle.requestContext"/>
   </component>
   
-  <component id="inspector" type="InspectorButton">
+  <component id="inspector" type="contrib:InspectorButton">
   	<binding name="disabled" expression="page.visit.disableInspector"/>
   </component>
 

@@ -40,7 +40,7 @@
 
 <component id="form" type="Form">
   <binding name="listener" expression="listeners.addStock"/>
-  <field-binding name="direct" field-name="Boolean.FALSE"/>
+  <binding name="direct" expression="false"/>
   <binding name="delegate" expression="beans.delegate"/>
 </component>
 

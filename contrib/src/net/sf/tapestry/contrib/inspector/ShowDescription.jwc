@@ -20,6 +20,6 @@
 	  <inherited-binding name="alt" parameter-name="description"/>
 	</component>
 	
-	<private-asset name="info" resource-path="/net/sf/tapestry/inspector/info.gif"/>
+	<private-asset name="info" resource-path="/net/sf/tapestry/contrib/inspector/info.gif"/>
 	
 </component-specification>

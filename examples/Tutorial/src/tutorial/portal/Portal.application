@@ -22,5 +22,7 @@
   <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>
   
   <component-alias type="Portlet" specification-path="/tutorial/portal/Portlet.jwc"/>
-  
+
+  <library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
+ 
 </application>

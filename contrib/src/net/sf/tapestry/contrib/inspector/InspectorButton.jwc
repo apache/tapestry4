@@ -4,7 +4,7 @@
       PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
       "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<component-specification class="net.sf.tapestry.inspector.InspectorButton" 
+<component-specification class="net.sf.tapestry.contrib.inspector.InspectorButton" 
 	allow-body="no" 
 	allow-informal-parameters="no">
 
@@ -27,6 +27,6 @@ window.
     	<binding name="focus" expression="assets.inspector"/>
     </component>
 
-    <private-asset name="logo" resource-path="/net/sf/tapestry/inspector/tapestry-logo.gif"/>
-    <private-asset name="inspector" resource-path="/net/sf/tapestry/inspector/inspector-rollover.gif"/>
+    <private-asset name="logo" resource-path="/net/sf/tapestry/contrib/inspector/tapestry-logo.gif"/>
+    <private-asset name="inspector" resource-path="/net/sf/tapestry/contrib/inspector/inspector-rollover.gif"/>
 </component-specification>

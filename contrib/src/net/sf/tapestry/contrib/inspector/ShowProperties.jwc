@@ -4,7 +4,7 @@
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<component-specification class="net.sf.tapestry.inspector.ShowProperties">
+<component-specification class="net.sf.tapestry.contrib.inspector.ShowProperties">
 
   <bean name="persistPropertyClass" class="net.sf.tapestry.bean.EvenOdd"/>
   <bean name="propertyClass" class="net.sf.tapestry.bean.EvenOdd"/>

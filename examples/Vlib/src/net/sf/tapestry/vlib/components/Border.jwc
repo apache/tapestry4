@@ -118,7 +118,7 @@
   
   <component id="renderBody" type="RenderBody"/>
 
-  <component id="inspectorButton" type="InspectorButton">
+  <component id="inspectorButton" type="contrib:InspectorButton">
     <binding name="disabled" expression="!page.engine.debugEnabled"/>
   </component>
   

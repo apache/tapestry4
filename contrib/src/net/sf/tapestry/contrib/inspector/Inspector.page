@@ -4,7 +4,7 @@
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<page-specification class="net.sf.tapestry.inspector.Inspector">
+<page-specification class="net.sf.tapestry.contrib.inspector.Inspector">
 
   <component id="shell" type="Shell">
     <binding name="title" expression="inspectorTitle"/>
@@ -37,6 +37,6 @@
 
   <component id="showEngine" type="inspector:ShowEngine"/>
 
-  <private-asset name="stylesheet" resource-path="/net/sf/tapestry/inspector/Inspector.css"/>
+  <private-asset name="stylesheet" resource-path="/net/sf/tapestry/contrib/inspector/Inspector.css"/>
 
 </page-specification>

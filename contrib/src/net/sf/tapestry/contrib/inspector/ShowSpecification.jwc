@@ -9,7 +9,7 @@
 
 ]>
   
-<component-specification class="net.sf.tapestry.inspector.ShowSpecification">
+<component-specification class="net.sf.tapestry.contrib.inspector.ShowSpecification">
 
   <bean name="formalClass" class="&EvenOdd;"/>
   <bean name="informalClass" class="&EvenOdd;"/>

@@ -1,4 +1,4 @@
-package net.sf.tapestry.inspector;
+package net.sf.tapestry.contrib.inspector;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -84,7 +84,6 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.begin("pre");
 
         int count = template.getTokenCount();
-        char[] data = template.getTemplateData();
 
         for (int i = 0; i < count; i++)
         {
@@ -249,11 +248,11 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.end(); // <span>
         writer.print('"');
 
-        Map attributes = token.getAttributes();
+        Map staticValues = token.getStaticValuesMap();
 
-        if (attributes != null)
+        if (staticValues != null)
         {
-            Iterator ii = attributes.entrySet().iterator();
+            Iterator ii = staticValues.entrySet().iterator();
 
             while (ii.hasNext())
             {

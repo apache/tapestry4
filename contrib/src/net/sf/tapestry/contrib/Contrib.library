@@ -6,6 +6,9 @@
 	
 <library-specification>
 
+  <page name="Inspector" specification-path="/net/sf/tapestry/contrib/inspector/Inspector.page"/>
+  <component-alias type="InspectorButton" specification-path="/net/sf/tapestry/contrib/inspector/InspectorButton.jwc"/>
+
   <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
   <component-alias type="MultiplePropertySelection"
   	specification-path="/net/sf/tapestry/contrib/form/MultiplePropertySelection.jwc"/>
@@ -30,5 +33,7 @@
   <component-alias type="SimpleTableColumnComponent" specification-path="/net/sf/tapestry/contrib/table/components/inserted/SimpleTableColumnComponent.jwc"/>
 
   <component-alias type="PopupLink" specification-path="/net/sf/tapestry/contrib/popup/PopupLink.jwc"/>
+
+  <library id="inspector" specification-path="/net/sf/tapestry/contrib/inspector/Inspector.library"/>
 
 </library-specification>

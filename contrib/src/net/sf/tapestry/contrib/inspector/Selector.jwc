@@ -4,7 +4,7 @@
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<component-specification class="net.sf.tapestry.inspector.Selector">
+<component-specification class="net.sf.tapestry.contrib.inspector.Selector">
 
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.formSubmit"/>
@@ -16,7 +16,7 @@
     <binding name="submitOnChange" expression="true"/>
   </component>
 
-  <component id="page" type="Direct">
+  <component id="page" type="DirectLink">
     <binding name="listener" expression="page.listeners.selectComponent"/>
   </component>
 
@@ -24,7 +24,7 @@
     <binding name="source" expression="crumbTrail"/>
   </component>
 
-  <component id="component" type="Direct">
+  <component id="component" type="DirectLink">
     <binding name="parameters" expression="components.e.value.idPath"/>
     <binding name="listener" expression="page.listeners.selectComponent"/>
   </component>

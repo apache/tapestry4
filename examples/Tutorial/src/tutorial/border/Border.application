@@ -10,4 +10,7 @@
   <page name="Legal" specification-path="/tutorial/border/Legal.page"/>
   
   <component-alias type="Border" specification-path="/tutorial/border/Border.jwc"/>
+  
+  <library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
+
 </application>
