@@ -4,7 +4,7 @@
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<component-specification class="net.sf.tapestry.form.DateEdit" allow-informal-parameters="no">
+<component-specification class="net.sf.tapestry.form.DatePicker" allow-informal-parameters="no">
 
   <parameter name="value" direction="custom" java-type="java.util.Date" required="yes"/>
   <parameter name="format" direction="in" java-type="java.lang.String" required="no"/>
@@ -32,8 +32,8 @@
         <static-binding name="script">/net/sf/tapestry/form/Calendar.script</static-binding>
   </component>
         
-  <component id="dateEditScript" type="Script">
-        <static-binding name="script">/net/sf/tapestry/form/DateEdit.script</static-binding>
+  <component id="datePickerScript" type="Script">
+        <static-binding name="script">/net/sf/tapestry/form/DatePicker.script</static-binding>
         <static-binding name="language">JScript</static-binding>
         <binding name="displayField" expression="components.dateShow"/>
         <binding name="returnField" expression="components.dateSubmit"/>

@@ -39,16 +39,16 @@ import net.sf.tapestry.RequestCycleException;
 /**
  * Provides a Form <tt>java.sql.Date</tt> field component for selecting dates.
  *
- *  [<a href="../../../../../ComponentReference/DateEdit.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/DatePicker.html">Component Reference</a>]
  *
  * @author Paul Geertz
  * @author Malcolm Edgar
  * @version $Id$
  */
-public class DateEdit extends BaseComponent
+public class DatePicker extends BaseComponent
 {
 
-    private static final String FIRST_USE_ATTRIBUTE_KEY = "net.sf.tapestry.DateEdit-first";
+    private static final String FIRST_USE_ATTRIBUTE_KEY = "net.sf.tapestry.DatePicker-first";
 
     private Date _value = new Date(System.currentTimeMillis());
     private IBinding _valueBinding;
@@ -135,8 +135,7 @@ public class DateEdit extends BaseComponent
      *
      *  @return a <tt>boolean</tt> value
      * 
-     **/
-    
+     **/    
     public boolean isFirstTime()
     {
         return _firstTime;

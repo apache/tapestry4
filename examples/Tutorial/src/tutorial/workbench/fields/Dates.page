@@ -10,7 +10,7 @@
 	  
 	<component id="form" type="Form"/>
 
-	<component id="endDateEdit" type="DateEdit">
+	<component id="endDatePicker" type="DatePicker">
 		<binding name="value" expression="endDate"/>
 	</component>
 	
@@ -22,7 +22,7 @@
 		<binding name="value" expression="startDate"/>
 	</component>
 	
-	<component id="startDateEdit" type="DateEdit">
+	<component id="startDatePicker" type="DatePicker">
 		<binding name="value" expression="startDate"/>
 	</component>
 	
