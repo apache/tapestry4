@@ -1234,7 +1234,7 @@ public class SpecificationParser
 
         digester.addRule(pattern, new CreateListenerBindingSpecificationRule());
         digester.addSetLimitedProperties(pattern, "language", "language");
-        digester.addBeanPropertySetter(pattern, "value");
+        digester.addBody(pattern, "value");
         digester.addConnectChild(pattern, "setBinding", "name");
 
         // <external-asset>

@@ -60,14 +60,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.digester.Digester;
-import org.apache.tapestry.*;
 import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.RegexpMatcher;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 /**
  *  Extension of {@link org.apache.commons.digester.Digester} with additional rules, hooks
@@ -159,6 +158,11 @@ public class SpecificationDigester extends Digester
         String[] propertyNames)
     {
         addRule(pattern, new SetLimitedPropertiesRule(attributeNames, propertyNames));
+    }
+    
+    public void addBody(String pattern, String propertyName)
+    {
+    	addRule(pattern, new BodyRule(propertyName));
     }
 
     /**
