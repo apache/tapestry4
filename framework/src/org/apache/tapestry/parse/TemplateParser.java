@@ -271,6 +271,13 @@ public class TemplateParser
      **/
 
     private Location _templateLocation;
+    
+    /**
+     *  Location with in the resource for the current line.
+     * 
+     **/
+    
+    private Location _currentLocation;
 
     /**
      *  Local reference to the template data that is to be parsed.
@@ -423,6 +430,7 @@ public class TemplateParser
             _templateData = null;
             _resourceLocation = null;
             _templateLocation = null;
+            _currentLocation = null;
             _stack.clear();
             _tokens.clear();
             _attributes.clear();
@@ -716,7 +724,7 @@ public class TemplateParser
                                 tagName,
                                 Integer.toString(_line),
                                 attributeName),
-                            new Location(_resourceLocation, _line));
+                            getCurrentLocation());
 
                     // Ignore whitespace between '=' and the attribute value.  Also, look
                     // for initial quote.
@@ -986,7 +994,7 @@ public class TemplateParser
             addOpenToken(tagName, jwcId, type, startLocation);
 
             if (emptyTag)
-                _tokens.add(new CloseToken(tagName, new Location(_resourceLocation, _line)));
+                _tokens.add(new CloseToken(tagName, getCurrentLocation()));
         }
 
         advance();
@@ -1126,6 +1134,8 @@ public class TemplateParser
         int length = _templateData.length;
         int startLine = _line;
 
+		Location startLocation = getCurrentLocation();
+		
         _cursor += CLOSE_TAG.length;
 
         int tagStart = _cursor;
@@ -1137,7 +1147,7 @@ public class TemplateParser
                     Tapestry.getString(
                         "TemplateParser.incomplete-close-tag",
                         Integer.toString(startLine)),
-                    new Location(_resourceLocation, startLine));
+                    startLocation);
 
             char ch = _templateData[_cursor];
 
@@ -1168,7 +1178,7 @@ public class TemplateParser
                             Integer.toString(startLine),
                             tag._tagName,
                             Integer.toString(tag._line)}),
-                    new Location(_resourceLocation, startLine));
+                    startLocation);
 
             stackPos--;
         }
@@ -1179,7 +1189,7 @@ public class TemplateParser
                     "TemplateParser.unmatched-close-tag",
                     tagName,
                     Integer.toString(startLine)),
-                new Location(_resourceLocation, startLine));
+                startLocation);
 
         // Special case for the content tag
 
@@ -1199,7 +1209,7 @@ public class TemplateParser
         {
             addTextToken(cursorStart - 1);
 
-            _tokens.add(new CloseToken(tagName, new Location(_resourceLocation, _line)));
+            _tokens.add(new CloseToken(tagName, getCurrentLocation()));
         }
         else
         {
@@ -1254,6 +1264,7 @@ public class TemplateParser
         if (ch == '\n')
         {
             _line++;
+            _currentLocation = null;
             return;
         }
 
@@ -1262,6 +1273,7 @@ public class TemplateParser
         if (ch == '\r')
         {
             _line++;
+            _currentLocation = null;
 
             if (_cursor < length && _templateData[_cursor] == '\n')
                 _cursor++;
@@ -1418,5 +1430,22 @@ public class TemplateParser
             return false;
 
         return value.equalsIgnoreCase("true");
+    }
+    
+    /**
+     *  Gets the current location within the file.  This allows the location to be
+     *  created only as needed, and multiple objects on the same line can share
+     *  the same Location instance.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    protected Location getCurrentLocation()
+    {
+    	if (_currentLocation == null)
+    	_currentLocation = new Location(_resourceLocation, _line);
+    	
+    	return _currentLocation;
     }
 }
