@@ -26,7 +26,7 @@
     <classpathentry kind="lib" path="lib/ext/commons-fileupload-1.0.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/ext/javassist-2.5.1.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/ext/commons-digester-1.5.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-codec-1.1.1-dev.jar"/>
+    <classpathentry kind="lib" path="lib/ext/commons-codec-1.2.jar"/>
     <classpathentry kind="lib" path="lib/ext/ognl-2.6.3.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>
