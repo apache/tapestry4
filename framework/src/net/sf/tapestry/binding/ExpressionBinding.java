@@ -274,28 +274,12 @@ public class ExpressionBinding extends AbstractBinding
         if (_initialized)
             return;
 
+        _initialized = true;
+
         _parsedExpression = OgnlUtils.getParsedExpression(_expression);
 
-        int i;
-
-        try
-        {
-            if (Ognl.isConstant(_parsedExpression, getOgnlContext()))
-            {
-                _invariant = true;
-
-                _cachedValue = resolveProperty();
-
-                return;
-            }
-        }
-        catch (OgnlException ex)
-        {
-            throw new BindingException(
-                Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),
-                this,
-                ex);
-        }
+        if (checkForConstant())
+            return;
 
         // Split the expression into individual property names.
         // We then optimize what we can from the expression.  This will
@@ -303,6 +287,44 @@ public class ExpressionBinding extends AbstractBinding
         // it.  We also check to see if the binding can be an invariant.
 
         String[] split = new StringSplitter('.').splitToArray(_expression);
+
+        int count = optimizeRootObject(split);
+
+        // We'ver removed some or all of the initial elements of split
+        // but have to account for anthing left over.
+
+        if (count == split.length)
+        {
+            // The property path was something like "page" or "component.foo"
+            // and was completely eliminated.
+
+            _expression = null;
+            _parsedExpression = null;
+
+            _invariant = true;
+            _cachedValue = _root;
+
+            return;
+        }
+
+        _expression = reassemble(count, split);
+        _parsedExpression = OgnlUtils.getParsedExpression(_expression);
+
+        checkForInvariant(count, split);
+    }
+
+    /**
+     *  Looks for common prefixes on the expression (provided pre-split) that
+     *  are recognized as references to other components.
+     * 
+     *  @return the number of leading elements of the split expression that
+     *  have been removed.
+     * 
+     **/
+
+    private int optimizeRootObject(String[] split)
+    {
+        int i;
 
         for (i = 0; i < split.length; i++)
         {
@@ -335,28 +357,31 @@ public class ExpressionBinding extends AbstractBinding
             break;
         }
 
-        // We'ver removed some or all of the initial elements of split
-        // but have to account for anthing left over.
+        return i;
+    }
 
-        if (i == split.length)
+    private boolean checkForConstant()
+    {
+        try
         {
-            // The property path was something like "page" or "component.foo"
-            // and was completely eliminated.
+            if (Ognl.isConstant(_parsedExpression, getOgnlContext()))
+            {
+                _invariant = true;
+                
+                _cachedValue = resolveProperty();
 
-            _expression = null;
-
-            _invariant = true;
-            _cachedValue = _root;
+                return true;
+            }
         }
-        else
+        catch (OgnlException ex)
         {
-            _expression = reassemble(i, split);
-
-            checkInvariant(i, split);
+            throw new BindingException(
+                Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),
+                this,
+                ex);
         }
 
-        _initialized = true;
-
+        return false;
     }
 
     /**
@@ -393,13 +418,26 @@ public class ExpressionBinding extends AbstractBinding
      * 
      **/
 
-    private void checkInvariant(int start, String[] split)
+    private void checkForInvariant(int start, String[] split)
     {
         // For now, all of our conditions are two properties
         // from a root component.
 
         if (split.length - start != 2)
             return;
+
+        try
+        {
+            if (!Ognl.isSimpleNavigationChain(_parsedExpression, getOgnlContext()))
+                return;
+        }
+        catch (OgnlException ex)
+        {
+            throw new BindingException(
+                Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),
+                this,
+                ex);
+        }
 
         String first = split[start];
 
