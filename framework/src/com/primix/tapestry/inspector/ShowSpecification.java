@@ -66,6 +66,11 @@ implements ILifecycle
 		assetName = null;
 	}
 	
+	/**
+	 *  Gets the inspected component and specification from the {@link Inspector} page.
+	 *
+	 */
+	 
 	public void prepareForRender(IRequestCycle cycle)
 	{
 		Inspector inspector;
