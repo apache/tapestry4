@@ -99,7 +99,12 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>The features of the target window.</td>
+    <td>
+    The JavaScript features of the target window. These features should be 
+    specified as a comma delimited string with the required feature as  
+    <tt>[feature name]=yes</tt>. JavaScript 1.1 features include:<p>
+    <tt>height, location, menubar, resizable, scrollbars, status, toolbar, width</tt>
+    </td>
    </tr>
    <tr>
     <td>height</td>
@@ -134,7 +139,36 @@
  <td colspan="2">
   <b>Examples</b>
   <p>
-  This example is under construction.</p>
+  This example provides a context help popup link for an account number field. 
+  <p>
+
+<table class="examples" cellspacing="8">
+<tr>
+ <td>Account Number:</td>
+ <td><input type="text"/></td>
+ <td><a href="contrib.PopupLink.html"><font color="blue">Help</font></a></td>
+</tr>
+</table>
+		
+<pre>
+&lt;tr&gt;
+ &lt;td&gt; Account Number: &lt;/td&gt;
+ &lt;td&gt; &lt;input jwcid="accountField"/&gt; &lt;/td&gt;
+ &lt;td&gt; &lt;a jwcid="<span class="jwcid">helpLink</span>"&gt;Help&lt;/a&gt; &lt;/td&gt;
+&lt;/tr&gt;
+
+
+&lt;component id="accountField" type="<a href="TextField.html">TextField</a>"&gt;
+   &lt;binding name="value" expression='visit.accountNumber'/&gt;
+&lt;/component&gt;
+
+&lt;component id="helpLink" type="<a href="contrib.PopupLink.html">contrib:PopupLink</a>"&gt;
+   &lt;binding name="url" expression='"help/account-number-help.html"'/&gt;
+   &lt;binding name="height" expression="600"/&gt;
+   &lt;binding name="width" expression="300"/&gt;
+   &lt;binding name="features" expression='"top=200,left=200,resizable=yes,scrollbars=yes"'/&gt;
+&lt;/component&gt;
+</pre>
       
 
  </td></tr></table>

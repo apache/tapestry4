@@ -45,6 +45,8 @@ import net.sf.tapestry.spec.ComponentSpecification;
  * URL, windowName and windowFeatures for the javascript function:
  * <tt>window.open(URL, windowName, windowFeatures)</tt>.
  *
+ *  [<a href="../../../../../../ComponentReference/Form.html">Component Reference</a>]
+ * 
  * @version $Id$ 
  * @author Joe Panico
  */
