@@ -22,14 +22,15 @@
 <component-specification class="org.apache.tapestry.workbench.table.LocaleList" 
 	allow-body="no" allow-informal-parameters="yes">
 
-	<parameter name="localeSelectionListener" 
+	<parameter name="localeSelectionListener"
 		required="yes"/>
 
     <bean name="rowClass" class="org.apache.tapestry.bean.EvenOdd"/>
 
+    
 	<property name="currentLocale"/>
 	
-	<property name="selectedLocales" persistent="yes" initial-value="ognl:new java.util.HashSet()"/>
+	<property name="selectedLocales" persist="session" initial-value="ognl:new java.util.HashSet()"/>
 
 	<component id="form" type="Form">
 		<!--binding name="listener" value="ognl:listeners.formSubmit"/-->
@@ -47,8 +48,8 @@
 	<component id="tableView" type="contrib:TableView">
         <binding name="source" value="ognl:@java.util.Locale@getAvailableLocales()"/>
         <binding name="columns">
-            '* Locale:toString(), Language:displayLanguage, Country:displayCountry, ' +
-            'Variant:displayVariant, ISO Language:ISO3Language, ISO Country:ISO3Country'
+            * Locale:toString(), Language:displayLanguage, Country:displayCountry, 
+            Variant:displayVariant, ISO Language:ISO3Language, ISO Country:ISO3Country
         </binding>
 	</component>
 
