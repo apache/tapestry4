@@ -387,6 +387,24 @@ public class ListenerMap
 		}
 	}
 
+	/** 
+	 *  Returns a collection of the names of the listeners implemented by the target class.
+	 *  Returns a copy of the key set for the method map.
+	 *
+	 *  @since 1.0.6
+	 *
+	 */
+	
+	public Collection getListenerNames()
+	{
+		Map methods = getMethodMap();
+		
+		synchronized(methods)
+		{
+			return new ArrayList(methods.keySet());
+		}
+	}
+	
 	public String toString()
 	{
 		return "ListenerMap[" + target + "]";

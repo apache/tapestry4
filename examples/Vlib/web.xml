@@ -4,14 +4,6 @@
  "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
 <web-app>
   <display-name>Primix Virtual Library Demo</display-name>
-  <context-param>
-    <param-name>com.primix.tapestry.asset.dir</param-name>
-    <param-value>.build/private-assets</param-value>
-  </context-param>
-  <context-param>
-    <param-name>com.primix.tapestry.asset.URL</param-name>
-    <param-value>/private-assets</param-value>
-  </context-param>
   <servlet>
     <servlet-name>vlib</servlet-name>
     <servlet-class>com.primix.vlib.VirtualLibraryServlet</servlet-class>

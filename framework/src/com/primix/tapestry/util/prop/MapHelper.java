@@ -50,11 +50,12 @@ import java.util.*;
 
 public class MapHelper extends PropertyHelper
 {	
-	private static class MapAccessor
+	public static class MapAccessor
 	implements IPropertyAccessor
 	{
 		private String name;
 
+		
 		private MapAccessor(String name)
 		{
 			this.name = name;
@@ -63,6 +64,13 @@ public class MapHelper extends PropertyHelper
 		public Object get(Object instance)
 		{
 			return ((Map)instance).get(name);
+		}
+
+		/** @since 1.0.6 **/
+		
+		public String getName()
+		{
+			return name;
 		}
 
 		public boolean isReadable()
@@ -135,5 +143,14 @@ public class MapHelper extends PropertyHelper
 		}
 
 		return result;
+	}
+	
+	/** @since 1.0.6 **/
+	
+	public Collection getSyntheticPropertyNames(Object instance)
+	{
+		Map map = (Map)instance;
+	
+		return map.keySet();
 	}
 }

@@ -28,6 +28,7 @@
 
 package com.primix.tapestry;
 
+import java.util.*;
 
 /**
  *  An object that provides a component with access to helper beans.
@@ -60,5 +61,17 @@ public interface IBeanProvider
 	 */
 	
 	public IComponent getComponent();
+	
+	/**
+	 *  Returns a collection of the names of any beans which may
+	 *  be provided.
+	 *
+	 *  @since 1.0.6
+	 *  @see ComponentSpecification#getBeanNames()
+	 *
+	 */
+	
+	public Collection getBeanNames();
+	
 }
 

@@ -707,6 +707,75 @@ public class PropertyHelper
 	{
 		return splitter.splitToArray(propertyPath);
 	}
+
+	/**
+	 *  Returns a collection of {@link IPropertyAccessor} instances.
+	 *
+	 *  <p>These are generated from the "natural" JavaBeans properties.
+	 *  Many subclasses create "synthesized" properties, which should
+	 *  be added to the result and returned.
+	 *
+	 *  <p>The collection returned may be modified freely.  Subclasses
+	 *  should invoke this implementation, then add additional
+	 *  values as necessary.
+	 *
+	 *  <p>TODO:  Deal with conflicts between natural and synthesized
+	 *  properties.
+	 *
+	 *  @since 1.0.6
+	 *
+	 */
+	
+	public Collection getAccessors(Object instance)
+	{
+		Collection result;
+		
+		if (accessors == null)
+		{
+			synchronized(this)
+			{
+				buildPropertyAccessors();
+			}
+		}		
+		
+		synchronized(accessors)
+		{
+			result = new ArrayList(accessors.values());
+		}
+		
+		Collection names = getSyntheticPropertyNames(instance);
+		
+		if (names != null)
+		{
+			Iterator i = names.iterator();
+			while (i.hasNext())
+			{
+				String name = (String)i.next();
+				result.add(getAccessor(instance, name));
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 *  Returns a Collection of the names of any synthetic properties.
+	 *
+	 *  <p>Subclasses should override this to interrogate the instance
+	 *  in an appropriate way, so as to extract this list of properties.
+	 *  For example, {@link MapHelper} casts the instance to {@link Map},
+	 *  and returns the map's keySet.
+	 *
+	 *  <p>Subclasses may override this implementation without invoking it.  This
+	 *  implementation returns null.
+	 *
+	 *  @since 1.0.6
+	 */
+	
+	protected Collection getSyntheticPropertyNames(Object instance)
+	{
+		return null;
+	}
 }
 
 

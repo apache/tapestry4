@@ -184,7 +184,7 @@ public class TemplateParserTest
 		TemplateToken[] tokens = run("AllStatic.html");
 		
 		assertTokenCount(tokens, 1);
-		assertTextToken(tokens[0], 0, 184);
+		assertTextToken(tokens[0], 0, 172);
 	}
 	
 	public void testSingleEmptyTag()
@@ -194,10 +194,10 @@ public class TemplateParserTest
 		
 		assertTokenCount(tokens, 4);
 		
-		assertTextToken(tokens[0], 0, 39);
+		assertTextToken(tokens[0], 0, 37);
 		assertOpenToken(tokens[1], "emptyTag");
 		assertCloseToken(tokens[2]);
-		assertTextToken(tokens[3], 60, 101);
+		assertTextToken(tokens[3], 58, 96);
 	}
 	
 	public void testSimpleNested()
@@ -252,7 +252,7 @@ public class TemplateParserTest
 		TemplateToken[] tokens = run("StartWithStaticTag.html");
 		
 		assertTokenCount(tokens, 4);
-		assertTextToken(tokens[0], 0, 240);
+		assertTextToken(tokens[0], 0, 232);
 		assertOpenToken(tokens[1], "justBecause");
 	}
 	
@@ -322,15 +322,15 @@ public class TemplateParserTest
 		TemplateToken[] tokens = run("BasicRemove.html");
 		
 		assertTokenCount(tokens, 10);
-		assertTextToken(tokens[0], 0, 126);
-		assertTextToken(tokens[1], 201, 287);
+		assertTextToken(tokens[0], 0, 119);
+		assertTextToken(tokens[1], 188, 268);
 		assertOpenToken(tokens[2], "e");
-		assertTextToken(tokens[3], 359, 361);
+		assertTextToken(tokens[3], 337, 338);
 		assertOpenToken(tokens[4], "row");
-		assertTextToken(tokens[5], 378, 398);
+		assertTextToken(tokens[5], 355, 373);
 		assertCloseToken(tokens[6]);
 		assertCloseToken(tokens[8]);
-		assertTextToken(tokens[9], 412, 425);
+		assertTextToken(tokens[9], 386, 396);
 	}
 	
 	public void testBodyRemove()
@@ -384,10 +384,10 @@ public class TemplateParserTest
 		TemplateToken[] tokens = run("BasicContent.html");
 		
 		assertTokenCount(tokens, 4);
-		assertTextToken(tokens[0], 112, 173);
+		assertTextToken(tokens[0],108, 165);
 		assertOpenToken(tokens[1], "nested");
 		assertCloseToken(tokens[2]);
-		assertTextToken(tokens[3], 192, 198);
+		assertTextToken(tokens[3], 184, 188);
 	}
 	
 	public void testIgnoredContentFailure()

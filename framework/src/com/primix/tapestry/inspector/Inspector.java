@@ -28,6 +28,7 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.util.*;
+import com.primix.tapestry.util.prop.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.spec.*;
@@ -47,10 +48,41 @@ public class Inspector extends BasePage
 	private String inspectedPageName;
 	private String inspectedIdPath;
 	
+	/** 
+	 *  A property path, relative to the inspected component, used
+	 *  by the ShowProperties view.  This is set to null
+	 *  whenever the inspected component is changed.
+	 *
+	 *  @since 1.0.6
+	 *
+	 */
+	
+	private String explorePath;
+	
+	/**
+	 *  The currently explored object; the explorePath is applied
+	 *  to the inspected component.
+	 *
+	 *  @since 1.0.6
+	 *
+	 */
+	
+	private Object exploredObject;
+	
 	private static final int MAP_SIZE = 7;
 	
 	private Map blocks;
 	
+	public void detach()
+	{
+		view = View.SPECIFICATION;
+		inspectedPageName = null;
+		inspectedIdPath = null;
+		explorePath = null;
+		exploredObject = null;
+		
+		super.detach();	
+	}
 	
 	public void finishLoad(IPageLoader loader,
 			ComponentSpecification specification)
@@ -65,15 +97,6 @@ public class Inspector extends BasePage
 		blocks.put(View.ENGINE, getComponent("engineBlock"));
 		blocks.put(View.PROPERTIES, getComponent("propertiesBlock"));
 		blocks.put(View.LOGGING, getComponent("loggingBlock"));
-	}
-	
-	public void detach()
-	{
-		view = View.SPECIFICATION;
-		inspectedPageName = null;
-		inspectedIdPath = null;
-		
-		super.detach();	
 	}
 	
 	public View getView()
@@ -112,6 +135,34 @@ public class Inspector extends BasePage
 		fireObservedChange("inspectedIdPath", value);
 	}
 	
+	/** 
+	 *  Invoked to change the component being inspected within the current
+	 *  page.  This should be used, not {@link #setInspectedIdPath(String)},
+	 *  since this also sets the explore path to null.
+	 *
+	 *  @since 1.0.6
+	 */
+	
+	public void selectComponent(String idPath)
+	{
+		setInspectedIdPath(idPath);
+		setExplorePath(null);
+	}
+	
+	/** @since 1.0.6 **/
+	
+	public String getExplorePath()
+	{
+		return explorePath;
+	}
+	
+	public void setExplorePath(String value)
+	{
+		explorePath = value;
+		exploredObject = null;
+		
+		fireObservedChange("explorePath", value);
+	}
 	
 	/**
 	 *  Method invoked by the {@link ShowInspector} component, 
@@ -122,7 +173,7 @@ public class Inspector extends BasePage
 	public void inspect(String pageName, IRequestCycle cycle)
 	{
 		setInspectedPageName(pageName);
-		setInspectedIdPath(null);
+		selectComponent(null);
 		
 		cycle.setPage(this);
 	}
@@ -133,7 +184,7 @@ public class Inspector extends BasePage
 	 *  <p>The context is a single string,
 	 *  the id path of the component to be selected (or null to inspect
 	 *  the page itself).  This invokes
-	 *  {@link #setInspectedIdPath(String)}.
+	 *  {@link #selectComponent(String)}.
 	 *
 	 */
 	
@@ -148,7 +199,7 @@ public class Inspector extends BasePage
 		else
 			newIdPath = context[0];
 		
-		setInspectedIdPath(newIdPath);
+		selectComponent(newIdPath);
 	}
 	
 	/**
@@ -178,6 +229,37 @@ public class Inspector extends BasePage
 		return "Tapestry Inspector: " +
 			engine.getSpecification().getName();
     }
+	
+	/**
+	 *  Returns the object currently being explored.  This is
+	 *  either the inspected component, or an object
+	 *  retrieved from it via the explorePath.
+	 *
+	 *  @since 1.0.6
+	 *
+	 */
+	 
+	public Object getExploredObject()
+	{
+		// The only problem is that sometimes the explorePath leads
+		// to a null property.  Need to track this better (maybe using Void?).
+		
+		if (exploredObject == null)
+		{
+			IComponent inspectedComponent = getInspectedComponent();
+			
+			if (explorePath == null)
+				exploredObject = inspectedComponent;
+			else
+			{
+				PropertyHelper helper = PropertyHelper.forInstance(inspectedComponent);
+				
+				exploredObject = helper.getPath(inspectedComponent, explorePath);
+			}
+		}
+		
+		return exploredObject;
+	}
 	
 	/**
 	 *  Returns the {@link Block} for the currently selected view.
