@@ -5,6 +5,7 @@ import com.primix.tapestry.components.html.*;
 import java.util.*;
 import java.io.*;
 import java.net.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -92,7 +93,9 @@ import java.net.*;
 public class Script
 extends AbstractComponent
 {
-	private IBinding scriptBinding;
+	private static final Category CAT = Category.getInstance(Script.class.getName());
+
+		private IBinding scriptBinding;
 
 	private IBinding cautiousBinding;
 	private boolean staticCautious;
@@ -285,7 +288,11 @@ extends AbstractComponent
 		URL scriptURL;
 		InputStream stream = null;
 
-			scriptURL = resolver.getResource(scriptPath);
+		if (CAT.isDebugEnabled())
+			CAT.debug("Reading script from resource " + scriptPath);
+			
+		scriptURL = resolver.getResource(scriptPath);
+		
 		if (scriptURL == null)
 			throw new ApplicationRuntimeException
 				("Unable to locate script resource " + scriptPath + " in classpath.");

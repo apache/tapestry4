@@ -65,7 +65,7 @@ public class Body extends AbstractComponent
     private boolean openScript;
 
 	private static final String ATTRIBUTE_NAME = 
-		"com.primix.tapestry.components.Body";
+		"com.primix.tapestry.active.Body";
 
 	private static final String[] reservedNames = { "onLoad" };
 

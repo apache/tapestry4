@@ -193,7 +193,7 @@ public abstract class AbstractServiceLink
 	 *
 	 */
 
-		public void setAttribute(String attributeName, String attributeValue)
+	public void setAttribute(String attributeName, String attributeValue)
 	{
 		if (attributes == null)
 			attributes = new HashMap(MAP_SIZE);
@@ -216,7 +216,7 @@ public abstract class AbstractServiceLink
 	 *
 	 */
 
-		public void render(IResponseWriter writer, IRequestCycle cycle)
+	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
 		IResponseWriter wrappedWriter;
@@ -299,7 +299,7 @@ public abstract class AbstractServiceLink
 		if (attributes == null)
 			return;
 
-			i = attributes.entrySet().iterator();
+		i = attributes.entrySet().iterator();
 
 		while (i.hasNext())
 		{
