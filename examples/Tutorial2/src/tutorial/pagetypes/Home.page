@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Home.page,v 1.6 2002/05/13 14:00:37 scornflake Exp $ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<page-specification class="tutorial.pagetypes.Home">
+    <component id="staleSession" type="DirectLink">
+        <binding name="listener" expression="listeners.forceStaleSession"/>
+        <binding name="stateful" expression="false"/>
+    </component>
+    <component id="staleLink" type="DirectLink">
+        <binding name="listener" expression="listeners.forceStaleLink"/>
+        <binding name="stateful" expression="false"/>
+    </component>
+    <component id="exceptionLink" type="DirectLink">
+        <binding name="listener" expression="listeners.forceException"/>
+        <binding name="stateful" expression="false"/>
+    </component>
+    <component id="niceException" type="DirectLink">
+        <binding name="listener" expression="listeners.niceExceptionPage"/>
+        <binding name="stateful" expression="false"/>
+    </component>
+</page-specification>

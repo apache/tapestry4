@@ -5,7 +5,7 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
 <page-specification class="tutorial.hello.Home">
-	<component id="hellotext" type="Insert">
+	<component id="insertSomeText" type="Insert">
 		<binding name="value" expression="someText"/>
 	</component>
 </page-specification>
