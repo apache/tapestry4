@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+
 <specification class="net.sf.tapestry.contrib.valid.ValidatingTextField" allow-body="no">
 
-  <parameter name="disabled"/>
-  <parameter name="hidden"/>
-  <parameter name="displayWidth" java-type="java.lang.Integer"/>
-  <parameter name="maximumLength" java-type="java.lang.Integer"/>
-  <parameter name="displayName" java-type="java.lang.String" required="yes"/>
-  <parameter name="minimumLength" java-type="java.lang.Integer"/>
-  <parameter name="required"/>
-  <parameter name="text" java-type="java.lang.String" required="yes"/>
+  <parameter name="disabled" java-type="boolean" direction="in"/>  
+  <parameter name="hidden" java-type="boolean" direction="in"/>
+  <parameter name="displayWidth" java-type="int" direction="in"/>
+  <parameter name="maximumLength" java-type="int" direction="in"/>
+
+  <parameter name="text" java-type="java.lang.String" required="yes" direction="custom"/>
+  <parameter name="displayName" java-type="java.lang.String" required="yes" direction="custom" />
+  <parameter name="minimumLength" java-type="java.lang.Integer" direction="custom" />
+  <parameter name="required" direction="custom" />
  
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
-  <reserved-parameter name="name"/>
 
 </specification>
