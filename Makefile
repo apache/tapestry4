@@ -107,7 +107,6 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/lib \
 	$(RELEASE_DIR)/Makefile \
 	$(RELEASE_DIR)/config \
-	$(RELEASE_DIR)/doc/*.pdf \
 	$(RELEASE_DIR)/doc/DevelopersGuide \
 	$(RELEASE_DIR)/doc/JBE \
 	$(RELEASE_DIR)/doc/Tutorial \

@@ -1,5 +1,14 @@
 * Aug 15 2001 hship
 
+Release 1.0.4
+
+Don't attempt to package PDF files (which have been removed).
+
+web:
+- Fix bad link in ex_demo.html
+
+* Aug 15 2001 hship
+
 framework:
 - Slight change to the rules involving whitespace in an HTML template.
 - Change MapHelper to use a cache of MapAccessor instances.
