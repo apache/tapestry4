@@ -33,6 +33,7 @@ include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 MODULES := \
 	framework \
 	contrib \
+	junit \
 	examples/Tutorial \
 	examples/VlibBeans \
 	examples/Vlib \
@@ -44,7 +45,6 @@ JAVADOC_MODULES := \
 	framework \
 	examples/VlibBeans \
 	examples/Vlib
-
 
 LIB_DIR := lib
 
@@ -118,6 +118,7 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/framework \
 	$(RELEASE_DIR)/JBE \
 	$(RELEASE_DIR)/examples \
+	$(RELEASE_DIR)/junit
 	$(RELEASE_DIR)/web
 	
 create-archives:
@@ -142,10 +143,8 @@ TUTORIAL_CLASSPATH := \
 	$(LIB_DIR)/log4j-core.jar \
 	$(LIB_DIR)/javax.xml.jaxp.jar \
 	$(LIB_DIR)/org.apache.crimson.jar \
-	$(LIB_DIR)/gnu-regexp.jar \
 	$(LIB_DIR)/com.mortbay.jetty.jar \
 	$(LIB_DIR)/ejb.jar
-
 
 # Quick start for folks who download the full distribution (this Makefile
 # is only included in the full distro).  Allows users to easily and quickly

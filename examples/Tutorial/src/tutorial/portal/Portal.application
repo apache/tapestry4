@@ -21,6 +21,4 @@
   
   <component-alias type="Portlet" specification-path="/tutorial/portal/Portlet.jwc"/>
   
-  <component-alias type="EvenOdd" specification-path="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
-  
 </application>

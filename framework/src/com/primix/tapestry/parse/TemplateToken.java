@@ -28,7 +28,7 @@
 
 package com.primix.tapestry.parse;
 
-import com.primix.tapestry.IRender;
+import com.primix.tapestry.*;
 
 /**
  * A token parsed from a Tapestry HTML template.
@@ -41,126 +41,132 @@ import com.primix.tapestry.IRender;
 
 public class TemplateToken
 {
-
 	private TokenType type;
-
+	
 	private String id;
-
+	
 	char[] templateData;
-
-	private int startIndex;
-	private int endIndex;
-
+	
+	private int startIndex = -1;
+	private int endIndex = -1;
+	
 	private IRender render;
-
+	
 	/**
-	*  Constructs an TEXT token with the given template data.
-	*
-	*/
-
+	 *  Constructs a TEXT token with the given template data.
+	 *
+	 */
+	
 	public TemplateToken(char[] templateData, int startIndex, int endIndex)
 	{
 		type = TokenType.TEXT;
-
+		
 		this.templateData = templateData;
 		this.startIndex = startIndex;
 		this.endIndex = endIndex;
+		
+		if (startIndex < 0 || endIndex < 0 ||
+				startIndex > templateData.length ||
+				endIndex > templateData.length)
+			throw new IllegalArgumentException(this + " out of range for template length " +
+							templateData.length + ".");
 	}
-
+	
 	/**
-	*  Constructs a CLOSE token.
-	*
-	*/
-
-	public TemplateToken(int startIndex, int endIndex)
+	 *  Constructs token, typically used with CLOSE.
+	 *
+	 */
+	
+	public TemplateToken(TokenType type)
 	{
-		this.type = TokenType.CLOSE;
-
-		this.startIndex = startIndex;
-		this.endIndex = endIndex;
+		this.type = type;
 	}
-
+	
 	/**
-	*  Constructs an OPEN token with the given id.
-	*
-	*/
-
-	public TemplateToken(String id, int startIndex, int endIndex)
+	 *  Constructs an OPEN token with the given id.
+	 *
+	 */
+	
+	public TemplateToken(String id)
 	{
 		type = TokenType.OPEN;
-
+		
 		this.id = id;
-		this.startIndex = startIndex;
-		this.endIndex = endIndex;
 	}
-
+	
 	public int getEndIndex()
 	{
 		return endIndex;
 	}
-
+	
 	/**
-	*  Returns the id of the component.  This is only valid when the type
-	*  is OPEN.
-	*
-	*/
-
+	 *  Returns the id of the component.  This is only valid when the type
+	 *  is OPEN.
+	 *
+	 */
+	
 	public String getId()
 	{
 		return id;
 	}
-
+	
 	public IRender getRender()
 	{
-		// Some earlier code attempted to trim down excess whitespace in the template data here,
-		// but it caused some problems and wasn't very necessary.
-
+		if (type != TokenType.TEXT)
+			throw new ApplicationRuntimeException(type + " tokens may not render.");
+		
 		if (render == null)
-			render = new RenderTemplateHTML(templateData, 
-				startIndex, endIndex - startIndex + 1);
-
+		{
+			synchronized(this)
+			{
+				if (render == null)
+					render = new RenderTemplateHTML(templateData, 
+							startIndex, endIndex - startIndex + 1);
+			}
+		}
+		
 		return render;
 	}
-
+	
 	/**
-	*  Returns the starting index of the token.  May return -1 if the token
-	*  is synthesized (a close token derived from a <jwc/> tag.
-	*
-	*/
-
+	 *  Returns the starting index of the token.  Will return -1 for any non-TEXT
+	 * token.
+	 *
+	 */
+	
 	public int getStartIndex()
 	{
 		return startIndex;
 	}
-
+	
 	public TokenType getType()
 	{
 		return type;
 	}
-
+	
 	public String toString()
 	{
 		StringBuffer buffer = new StringBuffer("TemplateToken[");
-
+		
 		buffer.append(type.getEnumerationId());
-
+		
 		if (id != null)
 		{
 			buffer.append(' ');
 			buffer.append(id);
 		}
-
+		
 		if (startIndex >= 0)
 		{
 			buffer.append(" start:");
 			buffer.append(startIndex);
-
+			
 			buffer.append(" end:");
 			buffer.append(endIndex);
 		}
-
+		
 		buffer.append(']');
-
+		
 		return buffer.toString();
 	}
 }

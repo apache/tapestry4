@@ -45,29 +45,44 @@ public class RenderTemplateHTML implements IRender
 	private int offset;
 	private int length;
 	private boolean needsTrim = true;
-
+	
 	public RenderTemplateHTML(char[] templateData, int offset, int length)
 	{
 		this.templateData = templateData;
 		this.offset = offset;
 		this.length = length;
+		
+		if (offset < 0 || 
+				length < 0 ||
+				offset >= templateData.length ||
+				offset + length > templateData.length)
+			throw new IllegalArgumentException(this + " offset and/or length arguments out of range.");
+		
 	}
-
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		if (needsTrim)
-			trim();
-			
+		{
+			synchronized(this)
+			{
+				if (needsTrim)
+					trim();
+				
+				needsTrim = false;
+			}
+		}
+		
 		if (length == 0)
 			return;
-
+		
 		// At one time, we would check to see if the cycle was rewinding and
 		// only invoke printRaw() if it was.  However, that slows down
 		// normal rendering (microscopically) and, with the new
 		// NullResponseWriter class, the "cost" of invoking cycle.isRewinding()
 		// is approximately the same as the "cost" of invoking writer.printRaw().
-					
+		
 		writer.printRaw(templateData, offset, length);
 	}
 	
@@ -75,66 +90,111 @@ public class RenderTemplateHTML implements IRender
 	 *  Strip off all leading and trailing whitespace by adjusting offset and length.
 	 *
 	 */
-	 
+	
 	private void trim()
 	{
 		char ch;
 		boolean didTrim = false;
 		
-		needsTrim = false;
-
 		if (length == 0)
 			return;
-			
-		// Shave characters off the end until we hit a non-whitespace
-		// character.
 		
-		while (length > 0)
+		try
 		{
-			ch = templateData[offset + length - 1];
 			
-			if (!Character.isWhitespace(ch))
-				break;
+			// Shave characters off the end until we hit a non-whitespace
+			// character.
+			
+			while (length > 0)
+			{
+				ch = templateData[offset + length - 1];
 				
-			length--;
-			didTrim = true;
-		}
-		
-		// Restore one character of whitespace to the end
-		
-		if (didTrim)
-			length++;
-		
-		didTrim = false;
-			
-		// Strip characters off the front until we hit a non-whitespace
-		// character.
-		
-		while (length > 0)
-		{
-			ch = templateData[offset];
-			
-			if (!Character.isWhitespace(ch))
-				break;
+				if (!Character.isWhitespace(ch))
+					break;
 				
-			offset++;
-			length--;
-			didTrim = true;
+				length--;
+				didTrim = true;
+			}
+			
+			// Restore one character of whitespace to the end
+			
+			if (didTrim)
+				length++;
+			
+			didTrim = false;
+			
+			// Strip characters off the front until we hit a non-whitespace
+			// character.
+			
+			while (length > 0)
+			{
+				ch = templateData[offset];
+				
+				if (!Character.isWhitespace(ch))
+					break;
+				
+				offset++;
+				length--;
+				didTrim = true;
+			}
+			
+			// Again, restore one character of whitespace.
+			
+			if (didTrim)
+			{
+				offset--;
+				length++;
+			}
+			
 		}
-		
-		// Again, restore one character of whitespace.
-		
-		if (didTrim)
+		catch (IndexOutOfBoundsException ex)
 		{
-			offset--;
-			length++;
+			throw new RuntimeException("Failure trimming: " + this);
 		}
-		
 		
 		// Ok, this isn't perfect.  I don't want to write into templateData[] even
 		// though I'd prefer that my single character of whitespace was always a space.
 		// It would also be kind of neat to shave whitespace within the static HTML, rather
 		// than just on the edges.
+	}
+	
+	public String toString()
+	{
+		StringBuffer buffer = new StringBuffer("RenderTemplateHTML[");
+		
+		buffer.append("offset: ");
+		buffer.append(offset);
+		
+		buffer.append(" length: ");
+		buffer.append(length);
+		
+		buffer.append('/');
+		buffer.append(templateData.length);
+		
+		buffer.append(" <");
+		
+		try
+		{
+			
+			for (int i = 0; i < length; i++)
+			{			
+				char ch = templateData[offset + i];
+				
+				// If outside of normal ASCII range ... this is sloppy!
+				
+				if (ch < 32 || ch > 126)
+					buffer.append('.');
+				else
+					buffer.append(ch);
+			}
+		} 
+		catch (IndexOutOfBoundsException ex)
+		{
+		}
+		
+		buffer.append(">]");
+		
+		return buffer.toString();
 	}
 }
 
