@@ -97,7 +97,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
      *
      **/
 
-    public void beginEdit(Integer bookId, IRequestCycle cycle)
+    public void beginEdit(IRequestCycle cycle, Integer bookId)
     {
         setBookId(bookId);
 
@@ -118,9 +118,6 @@ public abstract class EditBook extends Protected implements PageRenderListener
             }
             catch (FinderException ex)
             {
-                // TBD:  Dress this up and send them back to the Search or
-                // MyLibrary page.
-
                 throw new ApplicationRuntimeException(ex);
             }
             catch (RemoteException ex)

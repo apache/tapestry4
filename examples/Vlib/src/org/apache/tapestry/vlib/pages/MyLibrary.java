@@ -172,7 +172,7 @@ public abstract class MyLibrary
         Integer bookId = (Integer) parameters[0];
         EditBook page = (EditBook) cycle.getPage("EditBook");
 
-        page.beginEdit(bookId, cycle);
+        page.beginEdit(cycle, bookId);
     }
 
     /**

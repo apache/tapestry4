@@ -118,15 +118,20 @@ public abstract class ViewPerson extends BasePage implements IExternalPage, Page
 
         // Force the query to be re-run when the person changes.
 
-        runQuery();
+        int count = runQuery();
+        
+        _browser.initializeForResultCount(count);
     }
 
     public void requery(IRequestCycle cycle)
     {
-        runQuery();
+        int count = runQuery();
+        
+        if (_browser.getResultCount() != count)
+        	_browser.setResultCount(count);
     }
 
-    private void runQuery()
+    private int runQuery()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Integer personId = getPersonId();
@@ -147,11 +152,7 @@ public abstract class ViewPerson extends BasePage implements IExternalPage, Page
 
             try
             {
-                int count = query.ownerQuery(personId, ordering);
-
-                _browser.initializeForResultCount(count);
-
-                break;
+                return query.ownerQuery(personId, ordering);
             }
             catch (RemoteException ex)
             {
