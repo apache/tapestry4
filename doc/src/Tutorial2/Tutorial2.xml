@@ -6,6 +6,7 @@
   <!ENTITY chapter-one SYSTEM "./tutorial-chapter-one.xml">
   <!ENTITY chapter-two SYSTEM "./tutorial-chapter-two.xml">
   <!ENTITY chapter-three SYSTEM "./tutorial-chapter-three.xml">
+  <!ENTITY chapter-three-ex1 SYSTEM "./tutorial-pagelinking.xml">
   %TapestryLinks;
 ]>
 <!-- Conventions:
