@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0"  encoding="ISO-8859-1"?> 
 <!-- $Id$ -->
 <!DOCTYPE Configure PUBLIC
 	"-//Mort Bay Consulting//DTD Configure 1.2//EN"
 	"http://jetty.mortbay.org/configure_1_2.dtd">
-<!--
-  This configuration file is used to allow the Tutorial to be run directly from
-  the main distribution directory (i.e., without having to build the frameworks).
-  -->
-<Configure class="org.mortbay.http.HttpServer">
+
+<Configure class="org.mortbay.jetty.Server">
+
   <Call name="addListener">
     <Arg>
       <New class="org.mortbay.http.SocketListener">
@@ -19,9 +17,28 @@
     </Arg>
   </Call>
   
+  <!-- By moving web.xml into WEB-INF, the working directory ends up with the
+       approximate format of a WAR. -->
+
   <Call name="addWebApplication">
-    <Arg>/learn-tapestry</Arg>
-    <Arg>webapps/learn-tapestry.war</Arg>
-    <Set name="DefaultsDescriptor">config/webdefault.xml</Set>
+    <Arg>/tutorial</Arg>
+    <Arg>./web</Arg>
+    <Set name="DefaultsDescriptor">./config/webdefault.xml</Set>
   </Call>
-  </Configure>
+  
+  <Call name="addContext">
+    <Arg>/</Arg>   
+    <Set name="realmName">Jetty Demo Realm</Set>
+   
+    <Call name="addServlet">
+      <Arg>Admin</Arg>
+      <Arg>/</Arg>
+      <Arg>org.mortbay.servlet.AdminServlet</Arg>
+    </Call>
+    
+    <Call name="setAttribute">
+      <Arg>org.mortbay.http.HttpServer</Arg>
+      <Arg><Call name="getHttpServer"/></Arg>
+    </Call>
+  </Call>    
+</Configure>
