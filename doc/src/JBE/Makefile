@@ -2,7 +2,7 @@
 
 MAIN_DOCUMENT =	JBE.sgml
 
-HTML_INSTALL_DIR := ../../doc/JBE
+HTML_INSTALL_DIR := ../../JBE
 
 DOCUMENT_RESOURCES = images
 

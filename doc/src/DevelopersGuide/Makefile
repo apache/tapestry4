@@ -6,7 +6,7 @@ OTHER_DOC_FILES := *.sgml
 
 HTML_VARIABLE_DEFS := %shade-verbatim% %use-id-as-filename%
 
-HTML_INSTALL_DIR := ../../doc/DevelopersGuide
+HTML_INSTALL_DIR := ../../DevelopersGuide
 
 DOCUMENT_RESOURCES = images
 

@@ -2,7 +2,7 @@
 # $Id$
 
 distribution: clean copy-external-jars install javadoc
-	@$(RECURSE) clean prepare-for-packaging create-archives
+	@$(RECURSE) clean create-archives
 
 # The job of this Makefile is to re-invoke make in various subdirectories.
 
@@ -12,18 +12,19 @@ include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 # The names of the different modules to invoke make in. Order is important, frameworks
 # should come first.
 
-MODULES = \
-	../Tapestry \
-	../Examples/Tutorial \
-	../Examples/VlibBeans \
-	../Examples/Vlib \
-	../Documentation/JBE \
-	../Documentation/DevelopersGuide
+MODULES := \
+	src \
+	examples/Tutorial \
+	examples/VlibBeans \
+	examples/Vlib \
+	doc/src/JBE \
+	doc/src/DevelopersGuide \
+	doc/src/Tutorial
 
-JAVADOC_MODULES = \
-	../Tapestry \
-	../Examples/VlibBeans \
-	../Examples/Vlib
+JAVADOC_MODULES := \
+	src \
+	examples/VlibBeans \
+	examples/Vlib
 
 # A list of Jar files redistributed with Tapestry.  xerces, gnu-regexp
 # ejb and log4j are needed to build Tapestry; the rest are needed
@@ -31,7 +32,7 @@ JAVADOC_MODULES = \
 # ony needed to run the JSP portion of the Primix Virtual Library
 # demo.
 
-EXTERNAL_JARS = \
+EXTERNAL_JARS := \
 	xerces.jar \
 	gnu-regexp.jar \
 	com.mortbay.jetty.jar \
@@ -40,17 +41,19 @@ EXTERNAL_JARS = \
 	ejb.jar \
 	log4j.jar
 
-# This reflects my personal build work area structure, where
-# I create a subdirectory and checkout all the files.
+# This reflects my personal build work area structure.
+# C:/Work/Tapestry is my work area and I create new releases
+# by checking out the Tapestry module to
+# C:/Work/Export/Tapestry-x-x-x
 
-EXTERNAL_LIB_DIR = ../../../lib
+EXTERNAL_LIB_DIR = ../../Tapestry/lib
 
-LOCAL_LIB_DIR = ../lib
+LOCAL_LIB_DIR = lib
 
 copy-external-jars:
 	$(call NOTE, Copying external JARs ...)
 	@$(MKDIRS) $(LOCAL_LIB_DIR)
-	@$(CP) $(foreach _jar,$(EXTERNAL_JARS),$(EXTERNAL_LIB_DIR)/$(_jar)) $(LOCAL_LIB_DIR)
+	$(CP) $(foreach _jar,$(EXTERNAL_JARS),$(EXTERNAL_LIB_DIR)/$(_jar)) $(LOCAL_LIB_DIR)
 
 # REINVOKE needs to specify a TARGET (used by the reinvoke
 # rule).
@@ -58,12 +61,8 @@ copy-external-jars:
 REINVOKE := \
 	@$(RECURSE) reinvoke
 	
-prepare-for-packaging:
-	$(call NOTE, Copying licenses, etc. to root ...)
-	@$(call COPY_TREE, . , LICENSE* *.html ChangeLog images, ..)
-
 install: 
-	$(REINVOKE) TARGET=install JAVAC_OPT=-g
+	$(REINVOKE) TARGET=install
 
 clean: 
 	$(REINVOKE) TARGET=clean
@@ -71,7 +70,7 @@ clean:
 reinvoke: 
 	@for module in $(MODULES) ; do \
 		$(ECHO) "\n*** Making target $(TARGET) in $$module ... ***\n" ; \
-       $(RECURSE) -C $$module $(TARGET) || exit 2 ; \
+       $(RECURSE) -C $$module $(TARGET) JAVAC_OPT=-g || exit 2 ; \
 	done
 
 javadoc:
@@ -87,9 +86,10 @@ javadoc:
 RELEASE_DIR := $(notdir $(shell $(CD) .. && $(PWD)))
 
 # The small release contains the precompiled JAR and javadoc, but
-# virtually nothing else.
+# virtually nothing else.  We include gnu-regexp because its very
+# hard to find and tiny to boot.
 
-SMALL_RELEASE = \
+SMALL_RELEASE := \
 	$(RELEASE_DIR)/ChangeLog \
 	$(RELEASE_DIR)/LICENSE.html \
 	$(RELEASE_DIR)/Readme.html \
@@ -102,14 +102,14 @@ SMALL_RELEASE = \
 # The medium release adds the JBE, JBE documentation
 # and the Tapestry source code.
 	
-MEDIUM_RELEASE = \
+MEDIUM_RELEASE := \
 	$(SMALL_RELEASE) \
 	$(RELEASE_DIR)/JBE \
 	$(RELEASE_DIR)/doc/JBE \
-	$(RELEASE_DIR)/Tapestry
+	$(RELEASE_DIR)/src
 
-# The full release adds all the documentation (in PDF format),
-# plus all the Examples, and bundles xerces, Jetty and etc.
+# The full release adds all the documentation and documentation source,
+# plus all the examples, and bundles xerces, Jetty and etc.
 
 FULL_RELEASE = \
 	$(RELEASE_DIR)/ChangeLog \
@@ -120,13 +120,14 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/doc/*.pdf \
 	$(RELEASE_DIR)/doc/DevelopersGuide \
 	$(RELEASE_DIR)/doc/JBE \
+	$(RELEASE_DIR)/doc/Tutorial \
 	$(RELEASE_DIR)/doc/api \
-	$(RELEASE_DIR)/Tapestry \
+	$(RELEASE_DIR)/doc/src \
+	$(RELEASE_DIR)/src \
 	$(RELEASE_DIR)/JBE \
-	$(RELEASE_DIR)/Examples \
-	$(RELEASE_DIR)/Documentation
-
-create-archives: prepare-for-packaging
+	$(RELEASE_DIR)/examples
+	
+create-archives:
 	$(call NOTE, Creating full distribution archive ...)
 	@$(RM) -f ..\$(RELEASE_DIR)-*.gz 
 	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-full.tar.gz $(FULL_RELEASE)
@@ -136,5 +137,5 @@ create-archives: prepare-for-packaging
 	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-medium.tar.gz $(MEDIUM_RELEASE)
 
 
-.PHONY: javadoc create-archives prepare-for-packaging reinvoke
+.PHONY: javadoc create-archives reinvoke
 .PHONY: clean install copy-external-jars distribution
