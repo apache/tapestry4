@@ -37,28 +37,7 @@ import net.sf.tapestry.RequiredParameterException;
 /**
  *  A component which delegates it's behavior to another object.
  *
- * <table border=1>
- * <tr> 
- *    <th>Parameter</th>
- *    <th>Type</th>
- *	  <th>Direction</th>
- *    <th>Required</th> 
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>delegate</td>
- *  <td>{@link IRender}</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td>If specified, the object which will provide the rendering for the component.</td>
- * </tr>
- *
- * </table>
- *
- * <p>Informal parameters are not allowed.  A body is not allowed.
+ *  [<a href="../../../../../ComponentReference/Delegator.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -67,7 +46,7 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Delegator extends AbstractComponent
 {
-	private IRender delegate;
+	private IRender _delegate;
 
     /**
      *  Gets its delegate and invokes {@link IRender#render(IMarkupWriter, IRequestCycle)}
@@ -77,18 +56,18 @@ public class Delegator extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        if (delegate != null)
-        	delegate.render(writer, cycle);
+        if (_delegate != null)
+        	_delegate.render(writer, cycle);
     }
     
     public IRender getDelegate()
     {
-        return delegate;
+        return _delegate;
     }
 
     public void setDelegate(IRender delegate)
     {
-        this.delegate = delegate;
+        _delegate = delegate;
     }
 
 }

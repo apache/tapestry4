@@ -2,6 +2,7 @@
 <!-- $Id$ --> 
 <html>
 <head>
+<title>FieldLabel</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -15,8 +16,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/valid/FieldLabel.html">
-		 net.sf.tapestry.valid.FieldLabel</a>
+		 <a href="../api/net/sf/tapestry/valid/FieldLabel.html">net.sf.tapestry.valid.FieldLabel</a>
 		</td>
 	 </tr>
   </table>
@@ -41,7 +41,7 @@
   A component, used with a <a href="ValidField.html">ValidField</a> that 
   provides the label for the field.
   <p>
-  A <a href="api/net/sf/tapestry/valid/IValidationDelegate.html">delegate</a> 
+  A <a href="../api/net/sf/tapestry/valid/IValidationDelegate.html">delegate</a> 
   object may be specified that will change the visual formatting of the label 
   to reflect the state of the field, for instance, to make the label red when 
   the field itself is in error.
@@ -74,12 +74,11 @@
   </tr>
   <tr>
     <td>field</td>
-    <td>String</td>
+    <td><a href="../api/net/sf/tapestry/form/IFormComponent.html"><tt>IFormComponent</tt></a></td>
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
-		<td>The id of the <a href="../api/net/sf/tapestry/form/IFormComponent.html">
-    <tt>IFormComponent</tt></a> component to be labeled.
+		<td>The component to be labeled.
     </td>
 	</tr>
   <tr>
@@ -89,9 +88,8 @@
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
-    Allows the display name to be overriden from the value supplied by a 
-    <a href="../api/net/sf/tapestry/form/IFormComponent.html">
-    <tt>IFormComponent</tt></a>. Most implementation of <tt>IFormComponent</tt> 
+    Allows the display name to be overriden from the value supplied by 
+    the <tt>IFormComponent</tt></a>. Most implementations of <tt>IFormComponent</tt> 
     provide a null displayName, and it is necessary to set one using this 
     parameter. 
     </td>

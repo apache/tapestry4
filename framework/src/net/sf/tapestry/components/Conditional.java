@@ -32,43 +32,10 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 
 /**
- *  A conditional element on a page.  Will render its wrapped elements
+ *  A conditional element on a page which will render its wrapped elements
  *  zero or one times.
  *
- * <table border=1>
- * <tr> 
- *    <th>Parameter</th>
- *    <th>Type</th>
- *	  <th>Direction</th>
- *    <th>Required</th> 
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>condition</td>
- *  <td>boolean</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>false</td>
- *  <td>The condition to be met.  If this value is true, then the wrapped elements
- *  will be rendered.
- *  <p>The determination of true vs. false is made by the method
- *  {@link IBinding#getBoolean()}. </td>
- * </tr>
- *
- * <tr>
- *  <td>invert</td>
- *  <td>boolean</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>false</td>
- *  <td>If true, then the condition is inverted.  This is useful for simulating
- *  an else clause.</td>
- *  </tr>
- * </table>
- *
- * <p>Informal parameters are not allowed.
+ *  [<a href="../../../../../ComponentReference/Conditional.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -77,8 +44,8 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Conditional extends AbstractComponent
 {
-	private boolean condition;
-	private boolean invert;
+	private boolean _condition;
+	private boolean _invert;
 	
     /**
      *  Renders its wrapped components only if the condition is true (technically,
@@ -88,28 +55,28 @@ public class Conditional extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-      if (condition != invert)
+      if (_condition != _invert)
             renderWrapped(writer, cycle);
     }
     
     public boolean getCondition()
     {
-        return condition;
+        return _condition;
     }
 
     public void setCondition(boolean condition)
     {
-        this.condition = condition;
+        _condition = condition;
     }
 
     public boolean getInvert()
     {
-        return invert;
+        return _invert;
     }
 
     public void setInvert(boolean invert)
     {
-        this.invert = invert;
+        _invert = invert;
     }
 
 }

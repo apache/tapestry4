@@ -35,6 +35,8 @@ import net.sf.tapestry.util.exception.ExceptionDescription;
 
 /**
  *  Component used to display an already formatted exception.
+ * 
+ *  [<a href="../../../../../ComponentReference/ExceptionDisplay.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -43,20 +45,20 @@ import net.sf.tapestry.util.exception.ExceptionDescription;
 
 public class ExceptionDisplay extends BaseComponent
 {
-    private IBinding exceptionsBinding;
-    private ExceptionDescription exception;
-    private int count;
-    private int index;
-    private EvenOdd evenOdd;
+    private IBinding _exceptionsBinding;
+    private ExceptionDescription _exception;
+    private int _count;
+    private int _index;
+    private EvenOdd _evenOdd;
 
     public void setExceptionsBinding(IBinding value)
     {
-        exceptionsBinding = value;
+        _exceptionsBinding = value;
     }
 
     public IBinding getExceptionsBinding()
     {
-        return exceptionsBinding;
+        return _exceptionsBinding;
     }
 
     /**
@@ -67,46 +69,46 @@ public class ExceptionDisplay extends BaseComponent
     
     public void setException(ExceptionDescription value)
     {
-        exception = value;
+        _exception = value;
         
-        evenOdd.setEven(true);
+        _evenOdd.setEven(true);
     }
 
     public ExceptionDescription getException()
     {
-        return exception;
+        return _exception;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         ExceptionDescription[] exceptions =
-            (ExceptionDescription[]) exceptionsBinding.getObject(
+            (ExceptionDescription[]) _exceptionsBinding.getObject(
                 "exceptions",
                 ExceptionDescription[].class);
 
-        count = exceptions.length;
+        _count = exceptions.length;
         
         try
         {
-            evenOdd = (EvenOdd)getBeans().getBean("evenOdd");
+            _evenOdd = (EvenOdd)getBeans().getBean("evenOdd");
             
             super.renderComponent(writer, cycle);
         }
         finally
         {
-            exception = null;
-            evenOdd = null;
+            _exception = null;
+            _evenOdd = null;
         }
     }
 
     public void setIndex(int value)
     {
-        index = value;
+        _index = value;
     }
 
     public boolean isLast()
     {
-        return index == (count - 1);
+        return _index == (_count - 1);
     }
 }
