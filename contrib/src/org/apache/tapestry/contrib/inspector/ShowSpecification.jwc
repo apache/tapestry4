@@ -3,20 +3,16 @@
 
 <!DOCTYPE component-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd" [
-  
-<!ENTITY EvenOdd "org.apache.tapestry.bean.EvenOdd">
-
-]>
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd" > 
   
 <component-specification class="org.apache.tapestry.contrib.inspector.ShowSpecification">
 
-  <bean name="formalClass" class="&EvenOdd;"/>
-  <bean name="informalClass" class="&EvenOdd;"/>
-  <bean name="assetClass" class="&EvenOdd;"/>
-  <bean name="propertyClass" class="&EvenOdd;"/>
-  <bean name="componentClass" class="&EvenOdd;"/>
-  <bean name="beanClass" class="&EvenOdd;"/>
+  <bean name="formalClass" class="org.apache.tapestry.bean.EvenOdd"/>           
+  <bean name="informalClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="assetClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="propertyClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="componentClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="beanClass" class="org.apache.tapestry.bean.EvenOdd"/>
         
   <component id="e_formal" type="Foreach">
     <binding name="source" expression="formalParameterNames"/>
@@ -26,7 +22,7 @@
   </component>
      
   
-  <component id="e_informal" type="Foreach">
+  <component id="e_informal" type="Foreach"> 
     <binding name="source" expression="informalParameterNames"/>
     <binding name="value" expression="parameterName"/>
     <static-binding name="element">tr</static-binding>
