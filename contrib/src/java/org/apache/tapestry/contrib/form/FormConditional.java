@@ -66,7 +66,7 @@ public abstract class FormConditional extends AbstractFormComponent
         {
             String element = getElement();
 
-            boolean render = cycleRewinding && HiveMind.isNonBlank(element);
+            boolean render = !cycleRewinding && HiveMind.isNonBlank(element);
 
             if (render)
             {
