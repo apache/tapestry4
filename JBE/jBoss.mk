@@ -48,7 +48,7 @@ include $(SYS_MAKEFILE_DIR)/Jar.mk
 # for jBoss
 
 MOD_CLASSPATH := \
-	$(JBOSS_DIR)/lib/ext/ejb.jar \
+	$(JBOSS_DIR)/lib/ext/ejb2.0.jar \
 	$(JBOSS_DIR)/lib/ext/jndi.jar \
 	$(JBOSS_DIR)/lib/jdbc2_0-stdext.jar
 
