@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.services.RequestServicer;
+import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.easymock.MockControl;
 
@@ -34,7 +34,7 @@ import org.easymock.MockControl;
  */
 public class TestDecodedRequestInjector extends HiveMindTestCase
 {
-    private static class ServicerFixture implements RequestServicer
+    private static class ServicerFixture implements ServletRequestServicer
     {
         HttpServletRequest _request;
 
@@ -78,7 +78,7 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
         HttpServletResponse response = newResponse();
         ILibrarySpecification spec = newSpec(false, null);
 
-        RequestServicer servicer = (RequestServicer) newMock(RequestServicer.class);
+        ServletRequestServicer servicer = (ServletRequestServicer) newMock(ServletRequestServicer.class);
 
         servicer.service(request, response);
 

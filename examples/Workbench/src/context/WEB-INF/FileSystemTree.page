@@ -54,4 +54,7 @@
     </component>
 
     <!--component id="showInspector" type="contrib:InspectorButton"/-->
+    
+    <inject property="treeRootDir" object="app-property:TreeRootDir"/>
+    
 </page-specification>

@@ -99,7 +99,7 @@ public abstract class LinkSubmit extends AbstractFormComponent
                 // How to know which Submit link was actually
                 // clicked? When submitted, it sets its elementId into a hidden field
 
-                String value = cycle.getRequestContext().getParameter("_linkSubmit");
+                String value = cycle.getParameter("_linkSubmit");
 
                 // If the value isn't the elementId of this component, then this link wasn't
                 // selected.

@@ -83,45 +83,75 @@
     
   </service-point>  
   
-  <service-point id="RequestServicerPipeline" interface="RequestServicer">
+  <configuration-point id="ServletRequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+    
+    A pipeline for processing an incoming servlet request.
+    
+  </configuration-point> 
+  
+  <service-point id="ServletRequestServicerPipeline" interface="ServletRequestServicer">
     
     A pipeline for handling each request.
     
     <invoke-factory service-id="hivemind.lib.PipelineFactory">
-      <create-pipeline filter-interface="RequestServicerFilter"
-        configuration-id="RequestServicerPipeline"/>
+      <create-pipeline filter-interface="ServletRequestServicerFilter"
+        configuration-id="ServletRequestServicerPipeline"/>
     </invoke-factory>    
-  </service-point>
+  </service-point>     
   
-  <service-point id="InvokeEngineTerminator" interface="RequestServicer">
+  <contribution configuration-id="ServletRequestServicerPipeline">
+    <filter name="DecodedRequestInjector" object="service:DecodedRequestInjector"/>
+	<filter name="SetupRequestEncoding" object="service:SetupRequestEncoding"/>
+    <terminator object="service:WebRequestServicerPipelineBridge"/>
+  </contribution> 
+  
+  <service-point id="WebRequestServicerPipelineBridge" interface="ServletRequestServicer">
+    <invoke-factory>
+		<construct class="impl.WebRequestServicerPipelineBridge">
+			<set-service property="webRequestServicer" service-id="WebRequestServicerPipeline"/>
+			<set-service property="requestGlobals" service-id="RequestGlobals"/>
+		</construct>
+	</invoke-factory>
+  </service-point>  
+  
+  <configuration-point id="WebRequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+		
+	A pipeline, invoked by the ServletRequestPipeline, that will process the request
+	using the generic WebRequest and WebResponse objects.
+	
+  </configuration-point>   
+  
+  <service-point id="WebRequestServicerPipeline" interface="ServletRequestServicer">
     
-    Terminator service for the RequestServicerPipeline. This locates an IEngine instance that
-    can take control of the request.
+	A secondary pipeline for handling each requests wrapped in the WebRequest abstraction
+	layer.
+    
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
+      <create-pipeline filter-interface="WebRequestServicerFilter"
+        configuration-id="WebRequestServicerPipeline"/>
+    </invoke-factory>    
+  </service-point>    
+  
+  <contribution configuration-id="WebRequestServicerPipeline">
+     <terminator object="service:InvokeEngineTerminator"/>
+  </contribution>  
+    
+  <service-point id="InvokeEngineTerminator" interface="WebRequestServicer">
+    
+    Terminator service for the WebRequestServicerPipeline. This locates an IEngine instance that
+    can take control of the remainder of the request.
     
     <invoke-factory>
       <construct class="impl.InvokeEngineTerminator">
         <set-service property="engineManager" service-id="EngineManager"/>
-        <set-object property="specification" value="service-property:tapestry.globals.ApplicationGlobals:specification"/>
-        <set-object property="servlet" value="service-property:tapestry.globals.ApplicationGlobals:servlet"/>
         <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
       </construct>
     </invoke-factory>
-  </service-point>    
-  
-  <configuration-point id="RequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+  </service-point> 
     
-    A pipeline for processing an incoming request.
+  <service-point id="DecodedRequestInjector" interface="ServletRequestServicerFilter">
     
-  </configuration-point>
-  
-  <contribution configuration-id="RequestServicerPipeline">
-    <filter name="DecodedRequestInjector" object="service:DecodedRequestInjector"/>
-    <terminator object="service:InvokeEngineTerminator"/>
-  </contribution>  
-  
-  <service-point id="DecodedRequestInjector" interface="RequestServicerFilter">
-    
-    Filter contributed into the RequestServicerPipeline whose responsibility is
+    Filter contributed into the ServletRequestServicerPipeline whose responsibility is
     to provide a modified HttpServletRequest that reflects the results of
     an IRequestDecoder (provided as the org.apache.tapestry.request-decoder
     application extension).  If the extension exists, then a different HttpServletRequest
@@ -169,8 +199,21 @@
         <set-service property="monitorFactory" service-id="tapestry.monitor.MonitorFactory"/>
         <set-service property="strategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>       
         <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
+		<set-service property="absoluteURLBuilder" service-id="AbsoluteURLBuilder"/>
       </construct>
     </invoke-factory>
     
   </service-point>  
+  
+  <service-point id="SetupRequestEncoding" interface="ServletRequestServicerFilter">
+	
+	Sets the output encoding for the request.
+	
+	<invoke-factory>
+		<construct class="impl.SetupRequestEncoding">
+			<set-object property="outputEncoding"
+				value="app-property:org.apache.tapestry.output-encoding"/>
+		</construct>
+	</invoke-factory>
+  </service-point>
 </module>

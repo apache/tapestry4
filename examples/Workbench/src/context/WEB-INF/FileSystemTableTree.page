@@ -47,4 +47,7 @@
     <component id="directoryTableView" type="DirectoryTableView">
         <binding name="selectedFolderSource" value="ognl:selectedFolderSource"/>
     </component>
+    
+   <inject property="treeRootDir" object="app-property:TreeRootDir"/>
+
 </page-specification>

@@ -18,17 +18,17 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IPropertySelectionModel;
 
 /**
- *  SelectionField specifies a postfield element and it is used to complement the {@link PropertySelection} component.
- *
- *  @author David Solis
- *  @since 3.0
- *
- **/
+ * SelectionField specifies a postfield element and it is used to complement the
+ * {@link PropertySelection}component.
+ * 
+ * @author David Solis
+ * @since 3.0
+ */
 public abstract class SelectionField extends AbstractPostfield
 {
     protected void rewind(IRequestCycle cycle)
     {
-        String optionValue = cycle.getRequestContext().getParameter(getName());
+        String optionValue = cycle.getParameter(getName());
         IPropertySelectionModel model = getModel();
         Object value = (optionValue == null) ? null : model.translateValue(optionValue);
 

@@ -32,7 +32,7 @@
     <create-instance class="impl.RequestGlobalsImpl" model="threaded"/>
   </service-point>
   
-  <service-point id="RequestGlobalsInitializer" interface="RequestServicerFilter">
+  <service-point id="RequestGlobalsInitializer" interface="ServletRequestServicerFilter">
     <invoke-factory>
       <construct class="impl.RequestGlobalsInitializer">
         <set-service property="requestGlobals" service-id="RequestGlobals"/>
@@ -40,7 +40,7 @@
     </invoke-factory>
   </service-point>  
   
-  <contribution configuration-id="tapestry.request.RequestServicerPipeline">
+  <contribution configuration-id="tapestry.request.ServletRequestServicerPipeline">
     <filter name="RequestGlobalsInitializer" before="*" object="service:RequestGlobalsInitializer"/>
   </contribution>  
   

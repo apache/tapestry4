@@ -18,8 +18,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,8 +38,11 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.record.PageRecorderImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.util.QueryParameterMap;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Provides the logic for processing a single request cycle. Provides access to the
@@ -60,11 +61,11 @@ public class RequestCycle implements IRequestCycle
 
     private IEngineService _service;
 
-    private RequestContext _requestContext;
+    private WebRequest _request;
 
     private IMonitor _monitor;
 
-    private HttpServletResponse _response;
+    private WebResponse _response;
 
     /** @since 3.1 */
 
@@ -86,6 +87,10 @@ public class RequestCycle implements IRequestCycle
      */
 
     private QueryParameterMap _parameters;
+
+    /** @since 3.1 */
+
+    private AbsoluteURLBuilder _absoluteURLBuilder;
 
     /**
      * A mapping of pages loaded during the current request cycle. Key is the page name, value is
@@ -123,18 +128,20 @@ public class RequestCycle implements IRequestCycle
      * Standard constructor used to render a response page.
      */
 
-    public RequestCycle(IEngine engine, RequestContext requestContext,
+    public RequestCycle(IEngine engine, WebRequest request, WebResponse response,
             QueryParameterMap parameters, IEngineService service, Infrastructure infrastructure,
-            PropertyPersistenceStrategySource strategySource, ErrorHandler errorHandler,
-            IMonitor monitor)
+            PropertyPersistenceStrategySource strategySource,
+            AbsoluteURLBuilder absoluteURLBuilder, ErrorHandler errorHandler, IMonitor monitor)
     {
         _engine = engine;
-        _requestContext = requestContext;
+        _request = request;
+        _response = response;
         _parameters = parameters;
         _service = service;
         _infrastructure = infrastructure;
         _pageSource = _infrastructure.getPageSource();
         _strategySource = strategySource;
+        _absoluteURLBuilder = absoluteURLBuilder;
         _log = new ErrorLogImpl(errorHandler, LOG);
         _monitor = monitor;
     }
@@ -179,9 +186,6 @@ public class RequestCycle implements IRequestCycle
 
     public String encodeURL(String URL)
     {
-        if (_response == null)
-            _response = _requestContext.getResponse();
-
         return _response.encodeURL(URL);
     }
 
@@ -283,11 +287,6 @@ public class RequestCycle implements IRequestCycle
         }
 
         return result;
-    }
-
-    public RequestContext getRequestContext()
-    {
-        return _requestContext;
     }
 
     public boolean isRewinding()
@@ -655,9 +654,9 @@ public class RequestCycle implements IRequestCycle
 
     public String getAbsoluteURL(String partialURL)
     {
-        String contextPath = _requestContext.getContextPath();
+        String contextPath = _request.getContextPath();
 
-        return _requestContext.getAbsoluteURL(contextPath + partialURL);
+        return _absoluteURLBuilder.constructURL(contextPath + partialURL);
     }
 
     /** @since 3.1 */

@@ -14,11 +14,16 @@
 
 package org.apache.tapestry.web;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.easymock.MockControl;
 
 /**
@@ -29,6 +34,21 @@ import org.easymock.MockControl;
  */
 public class TestServletWebRequest extends BaseWebTestCase
 {
+    private HttpServletRequest newRequest()
+    {
+        return (HttpServletRequest) newMock(HttpServletRequest.class);
+    }
+
+    private HttpServletResponse newResponse()
+    {
+        return (HttpServletResponse) newMock(HttpServletResponse.class);
+    }
+
+    private RequestDispatcher newDispatcher()
+    {
+        return (RequestDispatcher) newMock(RequestDispatcher.class);
+    }
+
     public void testGetParameterNames()
     {
         MockControl control = newControl(HttpServletRequest.class);
@@ -37,9 +57,11 @@ public class TestServletWebRequest extends BaseWebTestCase
         request.getParameterNames();
         control.setReturnValue(newEnumeration());
 
+        HttpServletResponse response = newResponse();
+
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         List l = wr.getParameterNames();
 
@@ -58,9 +80,11 @@ public class TestServletWebRequest extends BaseWebTestCase
         request.getParameter("artist");
         control.setReturnValue(value);
 
+        HttpServletResponse response = newResponse();
+
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertSame(value, wr.getParameterValue("artist"));
 
@@ -77,9 +101,11 @@ public class TestServletWebRequest extends BaseWebTestCase
         request.getParameterValues("artist");
         control.setReturnValue(values);
 
+        HttpServletResponse response = newResponse();
+
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertSame(values, wr.getParameterValues("artist"));
 
@@ -94,9 +120,11 @@ public class TestServletWebRequest extends BaseWebTestCase
         request.getContextPath();
         control.setReturnValue("/foo");
 
+        HttpServletResponse response = newResponse();
+
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertEquals("/foo", wr.getContextPath());
 
@@ -111,9 +139,11 @@ public class TestServletWebRequest extends BaseWebTestCase
         request.getAttributeNames();
         control.setReturnValue(newEnumeration());
 
+        HttpServletResponse response = newResponse();
+
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         List l = wr.getAttributeNames();
 
@@ -131,9 +161,11 @@ public class TestServletWebRequest extends BaseWebTestCase
         request.getAttribute("attr");
         control.setReturnValue(attribute);
 
+        HttpServletResponse response = newResponse();
+
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertSame(attribute, wr.getAttribute("attr"));
 
@@ -149,9 +181,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         request.setAttribute("name", attribute);
 
+        HttpServletResponse response = newResponse();
+
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         wr.setAttribute("name", attribute);
 
@@ -165,9 +199,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         request.removeAttribute("tonull");
 
+        HttpServletResponse response = newResponse();
+
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         wr.setAttribute("tonull", null);
 
@@ -176,6 +212,8 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetSession()
     {
+        HttpServletResponse response = newResponse();
+
         MockControl control = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) control.getMock();
 
@@ -188,7 +226,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertNull(wr.getSession(false));
 
@@ -217,6 +255,8 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetScheme()
     {
+        HttpServletResponse response = newResponse();
+
         MockControl control = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) control.getMock();
 
@@ -225,7 +265,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertEquals("http", wr.getScheme());
 
@@ -234,6 +274,8 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetServerName()
     {
+        HttpServletResponse response = newResponse();
+
         MockControl control = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) control.getMock();
 
@@ -242,7 +284,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertEquals("www.myhost.com", wr.getServerName());
 
@@ -251,6 +293,8 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetServerPort()
     {
+        HttpServletResponse response = newResponse();
+
         MockControl control = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) control.getMock();
 
@@ -259,7 +303,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertEquals(80, wr.getServerPort());
 
@@ -268,6 +312,8 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetRequestURI()
     {
+        HttpServletResponse response = newResponse();
+
         MockControl control = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) control.getMock();
 
@@ -276,9 +322,198 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         replayControls();
 
-        WebRequest wr = new ServletWebRequest(request);
+        WebRequest wr = new ServletWebRequest(request, response);
 
         assertEquals("/foo/bar", wr.getRequestURI());
+
+        verifyControls();
+    }
+
+    public void testForwardInternal() throws Exception
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        HttpServletResponse response = newResponse();
+
+        RequestDispatcher dispatcher = newDispatcher();
+
+        request.getRequestDispatcher("/local.html");
+        control.setReturnValue(dispatcher);
+
+        dispatcher.forward(request, response);
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request, response);
+
+        wr.forward("local.html");
+
+        verifyControls();
+    }
+
+    public void testForwardNull() throws Exception
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        HttpServletResponse response = newResponse();
+
+        RequestDispatcher dispatcher = newDispatcher();
+
+        request.getRequestDispatcher("/");
+        control.setReturnValue(dispatcher);
+
+        dispatcher.forward(request, response);
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request, response);
+
+        wr.forward(null);
+
+        verifyControls();
+    }
+
+    public void testForwardInternalNoDispatcher() throws Exception
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        HttpServletResponse response = newResponse();
+        request.getRequestDispatcher("/local.html");
+        control.setReturnValue(null);
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request, response);
+
+        try
+        {
+            wr.forward("local.html");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Unable to find a request dispatcher for local resource '/local.html'.",
+                    ex.getMessage());
+        }
+
+        verifyControls();
+    }
+
+    public void testForwardInternalFailure() throws Exception
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        HttpServletResponse response = newResponse();
+
+        MockControl dispatcherc = newControl(RequestDispatcher.class);
+        RequestDispatcher dispatcher = (RequestDispatcher) dispatcherc.getMock();
+
+        Throwable t1 = new ServletException("Mock Servlet Exception");
+
+        request.getRequestDispatcher("/servlet-exception.html");
+        control.setReturnValue(dispatcher);
+
+        dispatcher.forward(request, response);
+        dispatcherc.setThrowable(t1);
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request, response);
+
+        try
+        {
+            wr.forward("servlet-exception.html");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Unable to forward to local resource '/servlet-exception.html': Mock Servlet Exception",
+                    ex.getMessage());
+            assertSame(t1, ex.getRootCause());
+        }
+
+        verifyControls();
+
+        Throwable t2 = new IOException("Mock IO Exception");
+
+        request.getRequestDispatcher("/io-exception.html");
+        control.setReturnValue(dispatcher);
+
+        dispatcher.forward(request, response);
+        dispatcherc.setThrowable(t2);
+
+        replayControls();
+
+        try
+        {
+            wr.forward("io-exception.html");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Unable to forward to local resource '/io-exception.html': Mock IO Exception",
+                    ex.getMessage());
+            assertSame(t2, ex.getRootCause());
+        }
+
+        verifyControls();
+    }
+
+    public void testForwardExternal() throws Exception
+    {
+        HttpServletRequest request = newRequest();
+        MockControl responsec = newControl(HttpServletResponse.class);
+        HttpServletResponse response = (HttpServletResponse) responsec.getMock();
+
+        response.encodeRedirectURL("http://foo.bar");
+        responsec.setReturnValue("<encoded: http://foo.bar>");
+
+        response.sendRedirect("<encoded: http://foo.bar>");
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request, response);
+
+        wr.forward("http://foo.bar");
+
+        verifyControls();
+    }
+
+    public void testForwardExternalFailure() throws Exception
+    {
+        HttpServletRequest request = newRequest();
+        MockControl responsec = newControl(HttpServletResponse.class);
+        HttpServletResponse response = (HttpServletResponse) responsec.getMock();
+
+        Throwable t = new IOException("Mock IO Exception");
+
+        response.encodeRedirectURL("/");
+        responsec.setReturnValue("<encoded: http://foo.bar>");
+
+        response.sendRedirect("<encoded: http://foo.bar>");
+        responsec.setThrowable(t);
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request, response);
+
+        try
+        {
+            wr.forward("/");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals("Unable to redirect to /: Mock IO Exception", ex.getMessage());
+            assertSame(t, ex.getRootCause());
+        }
 
         verifyControls();
     }

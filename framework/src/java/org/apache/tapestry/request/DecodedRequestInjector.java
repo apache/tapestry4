@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.services.RequestServicer;
-import org.apache.tapestry.services.RequestServicerFilter;
+import org.apache.tapestry.services.ServletRequestServicer;
+import org.apache.tapestry.services.ServletRequestServicerFilter;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
@@ -33,7 +33,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class DecodedRequestInjector implements RequestServicerFilter
+public class DecodedRequestInjector implements ServletRequestServicerFilter
 {
     private ILibrarySpecification _applicationSpecification;
 
@@ -48,7 +48,7 @@ public class DecodedRequestInjector implements RequestServicerFilter
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response,
-            RequestServicer servicer) throws IOException, ServletException
+            ServletRequestServicer servicer) throws IOException, ServletException
     {
         HttpServletRequest decodedRequest = _decoder == null ? request : wrapRequest(request);
 

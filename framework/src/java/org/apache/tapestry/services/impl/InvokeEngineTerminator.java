@@ -16,18 +16,13 @@ package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.tapestry.Constants;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.EngineManager;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.services.RequestServicer;
-import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.services.WebRequestServicer;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * The terminatior for the <code>tapestry.RequestProcessor</code> pipeline, this service is
@@ -36,28 +31,24 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class InvokeEngineTerminator implements RequestServicer
+public class InvokeEngineTerminator implements WebRequestServicer
 {
-    private HttpServlet _servlet;
-
     private EngineManager _engineManager;
-
-    private IApplicationSpecification _specification;
 
     private Infrastructure _infrastructure;
 
-    public void service(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException
+    public void service(WebRequest request, WebResponse response) throws IOException
     {
         IEngine engine = _engineManager.getEngineInstance();
 
-        request.setAttribute(Constants.INFRASTRUCTURE_KEY, _infrastructure);
+        // Until we can inject the infrastructure into the engine
+        // we do this to let the engine know about it.
 
-        RequestContext context = new RequestContext(_servlet, request, response, _specification);
+        request.setAttribute(Constants.INFRASTRUCTURE_KEY, _infrastructure);
 
         try
         {
-            engine.service(context);
+            engine.service(request, response);
         }
         finally
         {
@@ -69,16 +60,6 @@ public class InvokeEngineTerminator implements RequestServicer
     public void setEngineManager(EngineManager manager)
     {
         _engineManager = manager;
-    }
-
-    public void setServlet(HttpServlet servlet)
-    {
-        _servlet = servlet;
-    }
-
-    public void setSpecification(IApplicationSpecification specification)
-    {
-        _specification = specification;
     }
 
     public void setInfrastructure(Infrastructure infrastructure)

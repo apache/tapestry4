@@ -88,7 +88,7 @@ public abstract class PropertySelection extends AbstractFormComponent
             if (isDisabled())
                 return;
 
-            String optionValue = cycle.getRequestContext().getParameter(name);
+            String optionValue = cycle.getParameter(name);
 
             Object value = (optionValue == null) ? null : getModel().translateValue(optionValue);
 

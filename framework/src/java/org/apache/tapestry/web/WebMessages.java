@@ -34,4 +34,19 @@ class WebMessages
     {
         return _formatter.format("error-getting-resource", path, ex);
     }
+
+    public static String unableToFindDispatcher(String url)
+    {
+        return _formatter.format("unable-to-find-dispatcher", url);
+    }
+
+    public static String unableToForward(String url, Throwable cause)
+    {
+        return _formatter.format("unable-to-forward", url, cause);
+    }
+
+    public static String unableToRedirect(String url, Throwable cause)
+    {
+        return _formatter.format("unable-to-redirect", url, cause);
+    }
 }

@@ -148,7 +148,7 @@ public abstract class RadioGroup extends AbstractFormComponent
 
         if (_rewinding)
         {
-            String value = cycle.getRequestContext().getParameter(name);
+            String value = cycle.getParameter(name);
             if (value == null)
                 _selectedOption = -1;
             else

@@ -20,8 +20,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tapestry.services.RequestServicer;
-import org.apache.tapestry.services.RequestServicerFilter;
+import org.apache.tapestry.services.ServletRequestServicer;
+import org.apache.tapestry.services.ServletRequestServicerFilter;
 
 /**
  * Checks to see if the request is a file upload and, if so, uses the
@@ -30,12 +30,12 @@ import org.apache.tapestry.services.RequestServicerFilter;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class MultipartDecoderFilter implements RequestServicerFilter
+public class MultipartDecoderFilter implements ServletRequestServicerFilter
 {
     private MultipartDecoder _decoder;
 
     public void service(HttpServletRequest request, HttpServletResponse response,
-            RequestServicer servicer) throws IOException, ServletException
+            ServletRequestServicer servicer) throws IOException, ServletException
     {
         String contentType = request.getContentType();
 

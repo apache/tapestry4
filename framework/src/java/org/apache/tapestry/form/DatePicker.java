@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
@@ -36,14 +37,12 @@ import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
 
 /**
- * Provides a Form <tt>java.util.Date</tt> field component for selecting dates.
- *
- *  [<a href="../../../../../ComponentReference/DatePicker.html">Component Reference</a>]
- *
+ * Provides a Form <tt>java.util.Date</tt> field component for selecting dates. [ <a
+ * href="../../../../../ComponentReference/DatePicker.html">Component Reference </a>]
+ * 
  * @author Paul Geerts
  * @author Malcolm Edgar
  * @since 2.2
- * 
  */
 
 public abstract class DatePicker extends AbstractFormComponent
@@ -63,16 +62,27 @@ public abstract class DatePicker extends AbstractFormComponent
     private IScript _script;
 
     private static final String SYM_NAME = "name";
+
     private static final String SYM_FORMNAME = "formName";
+
     private static final String SYM_MONTHNAMES = "monthNames";
+
     private static final String SYM_SHORT_MONTHNAMES = "shortMonthNames";
+
     private static final String SYM_WEEKDAYNAMES = "weekDayNames";
+
     private static final String SYM_SHORT_WEEKDAYNAMES = "shortWeekDayNames";
+
     private static final String SYM_FIRSTDAYINWEEK = "firstDayInWeek";
+
     private static final String SYM_MINDAYSINFIRSTWEEK = "minimalDaysInFirstWeek";
+
     private static final String SYM_FORMAT = "format";
+
     private static final String SYM_INCL_WEEK = "includeWeek";
+
     private static final String SYM_VALUE = "value";
+
     private static final String SYM_BUTTONONCLICKHANDLER = "buttonOnclickHandler";
 
     // Output symbol
@@ -84,8 +94,8 @@ public abstract class DatePicker extends AbstractFormComponent
         IEngine engine = getPage().getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        Resource location =
-            getSpecification().getSpecificationLocation().getRelativeResource("DatePicker.script");
+        Resource location = getSpecification().getSpecificationLocation().getRelativeResource(
+                "DatePicker.script");
 
         _script = source.getScript(location);
     }
@@ -110,11 +120,9 @@ public abstract class DatePicker extends AbstractFormComponent
             Body body = Body.get(cycle);
 
             if (body == null)
-                throw new ApplicationRuntimeException(
-                    Tapestry.format("must-be-contained-by-body", "DatePicker"),
-                    this,
-                    null,
-                    null);
+                throw new ApplicationRuntimeException(Tapestry.format(
+                        "must-be-contained-by-body",
+                        "DatePicker"), this, null, null);
 
             Locale locale = getPage().getLocale();
             DateFormatSymbols dfs = new DateFormatSymbols(locale);
@@ -151,7 +159,7 @@ public abstract class DatePicker extends AbstractFormComponent
                 writer.attribute("disabled", "disabled");
 
             renderInformalParameters(writer, cycle);
-            
+
             writer.printRaw("&nbsp;");
 
             if (!disabled)
@@ -176,9 +184,9 @@ public abstract class DatePicker extends AbstractFormComponent
             if (disabled)
                 return;
 
-            String textValue = cycle.getRequestContext().getParameter(name);
+            String textValue = cycle.getParameter(name);
 
-            if (Tapestry.isBlank(textValue))
+            if (HiveMind.isBlank(textValue))
                 return;
 
             try
@@ -195,8 +203,7 @@ public abstract class DatePicker extends AbstractFormComponent
     }
 
     /**
-     * Create a list of quoted strings. The list is suitable for
-     * initializing a JavaScript array.
+     * Create a list of quoted strings. The list is suitable for initializing a JavaScript array.
      */
     private String makeStringList(String[] a, int offset, int length)
     {
@@ -231,6 +238,7 @@ public abstract class DatePicker extends AbstractFormComponent
 
     /**
      * Create an escaped Unicode character
+     * 
      * @param c
      * @return The unicode character in escaped string form
      */

@@ -53,7 +53,7 @@ public abstract class TextArea extends AbstractFormComponent
         if (rewinding)
         {
         	if (!isDisabled())
-	            setValue(cycle.getRequestContext().getParameter(name));
+	            setValue(cycle.getParameter(name));
 
             return;
         }

@@ -27,7 +27,7 @@
     
   </service-point>
   
-  <service-point id="MultipartDecoderFilter" interface="org.apache.tapestry.services.RequestServicerFilter">
+  <service-point id="MultipartDecoderFilter" interface="org.apache.tapestry.services.ServletRequestServicerFilter">
     
     Identifies upload requests and passes them to the MultipartDecoder service
     for decoding.
@@ -40,7 +40,7 @@
     
   </service-point>
   
-  <contribution configuration-id="tapestry.request.RequestServicerPipeline">
+  <contribution configuration-id="tapestry.request.ServletRequestServicerPipeline">
     <filter name="MultipartDecoderFilter" object="service:MultipartDecoderFilter"/>
   </contribution>
   

@@ -21,21 +21,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tapestry.services.RequestGlobals;
-import org.apache.tapestry.services.RequestServicer;
-import org.apache.tapestry.services.RequestServicerFilter;
+import org.apache.tapestry.services.ServletRequestServicer;
+import org.apache.tapestry.services.ServletRequestServicerFilter;
 import org.apache.tapestry.web.ServletWebRequest;
 import org.apache.tapestry.web.ServletWebResponse;
 
 /**
- * A {@link org.apache.tapestry.services.RequestServicerFilter}threaded early onto the pipeline,
- * which invokes
+ * A {@link org.apache.tapestry.services.ServletRequestServicerFilter}threaded early onto the
+ * pipeline, which invokes
  * {@link org.apache.tapestry.services.ServletInfo#store(HttpServletRequest, HttpServletResponse)}
  * so that other services can obtain the current thread's request and response.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class RequestGlobalsInitializer implements RequestServicerFilter
+public class RequestGlobalsInitializer implements ServletRequestServicerFilter
 {
     private RequestGlobals _requestGlobals;
 
@@ -45,12 +45,9 @@ public class RequestGlobalsInitializer implements RequestServicerFilter
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response,
-            RequestServicer servicer) throws IOException, ServletException
+            ServletRequestServicer servicer) throws IOException, ServletException
     {
         _requestGlobals.store(request, response);
-
-        _requestGlobals.store(new ServletWebRequest(request), new ServletWebResponse(
-                response));
 
         servicer.service(request, response);
     }

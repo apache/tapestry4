@@ -37,7 +37,7 @@ import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
-import org.apache.tapestry.services.RequestServicer;
+import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
@@ -103,7 +103,7 @@ public class ApplicationServlet extends HttpServlet
     /**
      * @since 3.1
      */
-    private RequestServicer _requestServicer;
+    private ServletRequestServicer _requestServicer;
 
     /**
      * Handles the GET and POST requests. Performs the following:
@@ -287,9 +287,9 @@ public class ApplicationServlet extends HttpServlet
 
         _registry.cleanupThread();
 
-        _requestServicer = (RequestServicer) _registry.getService(
-                "tapestry.request.RequestServicerPipeline",
-                RequestServicer.class);
+        _requestServicer = (ServletRequestServicer) _registry.getService(
+                "tapestry.request.ServletRequestServicerPipeline",
+                ServletRequestServicer.class);
     }
 
     /**

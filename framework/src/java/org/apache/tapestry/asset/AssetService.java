@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
@@ -62,6 +63,12 @@ public class AssetService implements IEngineService
 
     /** @since 3.1 */
     private LinkFactory _linkFactory;
+
+    /** @since 3.1 */
+    private ServletContext _servletContext;
+    
+    /** @since 3.1 */
+    private HttpServletResponse _servletResponse;
 
     /**
      * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
@@ -154,27 +161,25 @@ public class AssetService implements IEngineService
 
         URLConnection resourceConnection = resourceURL.openConnection();
 
-        ServletContext servletContext = cycle.getRequestContext().getServlet().getServletContext();
-
-        writeAssetContent(cycle, output, path, resourceConnection, servletContext);
+        writeAssetContent(cycle, output, path, resourceConnection);
     }
 
     /** @since 2.2 * */
 
     private void writeAssetContent(IRequestCycle cycle, ResponseOutputStream output,
-            String resourcePath, URLConnection resourceConnection, ServletContext servletContext)
+            String resourcePath, URLConnection resourceConnection)
     {
         // Getting the content type and length is very dependant
         // on support from the application server (represented
         // here by the servletContext).
 
-        String contentType = servletContext.getMimeType(resourcePath);
+        String contentType = _servletContext.getMimeType(resourcePath);
         int contentLength = resourceConnection.getContentLength();
 
         try
         {
             if (contentLength > 0)
-                cycle.getRequestContext().getResponse().setContentLength(contentLength);
+                _servletResponse.setContentLength(contentLength);
 
             // Set the content type. If the servlet container doesn't
             // provide it, try and guess it by the extension.
@@ -235,5 +240,17 @@ public class AssetService implements IEngineService
     public void setClassResolver(ClassResolver classResolver)
     {
         _classResolver = classResolver;
+    }
+
+    /** @since 3.1 */
+    public void setServletContext(ServletContext servletContext)
+    {
+        _servletContext = servletContext;
+    }
+    
+    /** @since 3.1 */
+    public void setServletResponse(HttpServletResponse servletResponse)
+    {
+        _servletResponse = servletResponse;
     }
 }

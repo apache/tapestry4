@@ -56,14 +56,12 @@ public abstract class ImageSubmit extends AbstractFormComponent
             if (isDisabled())
                 return;
 
-            RequestContext context = cycle.getRequestContext();
-
             // Image clicks get submitted as two request parameters:
             // foo.x and foo.y
 
             String parameterName = name + ".x";
 
-            String value = context.getParameter(parameterName);
+            String value = cycle.getParameter(parameterName);
 
             if (value == null)
                 return;
@@ -81,7 +79,7 @@ public abstract class ImageSubmit extends AbstractFormComponent
                 int x = Integer.parseInt(value);
 
                 parameterName = name + ".y";
-                value = context.getParameter(parameterName);
+                value = cycle.getParameter(parameterName);
 
                 int y = Integer.parseInt(value);
 

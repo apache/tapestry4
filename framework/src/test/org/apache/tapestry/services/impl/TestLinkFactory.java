@@ -31,6 +31,7 @@ import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.engine.encoders.PageServiceEncoder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
+import org.apache.tapestry.web.WebRequest;
 import org.easymock.MockControl;
 
 /**
@@ -44,6 +45,11 @@ public class TestLinkFactory extends HiveMindTestCase
     private ErrorLog newErrorLog()
     {
         return (ErrorLog) newMock(ErrorLog.class);
+    }
+
+    private WebRequest newRequest()
+    {
+        return (WebRequest) newMock(WebRequest.class);
     }
 
     private static class NoopEncoder implements ServiceEncoder
@@ -88,16 +94,19 @@ public class TestLinkFactory extends HiveMindTestCase
 
     public void testNoEncoders()
     {
-        LinkFactoryImpl lf = new LinkFactoryImpl();
-
-        lf.setContributions(Collections.EMPTY_LIST);
-        lf.setErrorLog(newErrorLog());
-        lf.setContextPath("/context");
-        lf.setServletPath("/app");
-
+        ErrorLog log = newErrorLog();
+        WebRequest request = newRequest();
         IRequestCycle cycle = newCycle();
 
         replayControls();
+
+        LinkFactoryImpl lf = new LinkFactoryImpl();
+
+        lf.setContributions(Collections.EMPTY_LIST);
+        lf.setErrorLog(log);
+        lf.setContextPath("/context");
+        lf.setServletPath("/app");
+        lf.setRequest(request);
 
         lf.initializeService();
 
@@ -113,6 +122,12 @@ public class TestLinkFactory extends HiveMindTestCase
 
     public void testNoopEncoders()
     {
+        WebRequest request = newRequest();
+        IRequestCycle cycle = newCycle();
+        ErrorLog log = newErrorLog();
+
+        replayControls();
+
         List l = new ArrayList();
         l.add(newContribution("fred", new NoopEncoder()));
         l.add(newContribution("barney", new NoopEncoder()));
@@ -120,13 +135,10 @@ public class TestLinkFactory extends HiveMindTestCase
         LinkFactoryImpl lf = new LinkFactoryImpl();
 
         lf.setContributions(l);
-        lf.setErrorLog(newErrorLog());
+        lf.setErrorLog(log);
         lf.setContextPath("/context");
         lf.setServletPath("/app");
-
-        IRequestCycle cycle = newCycle();
-
-        replayControls();
+        lf.setRequest(request);
 
         lf.initializeService();
 
@@ -142,6 +154,11 @@ public class TestLinkFactory extends HiveMindTestCase
 
     public void testActiveEncoder()
     {
+        WebRequest request = newRequest();
+        IRequestCycle cycle = newCycle();
+        ErrorLog log = newErrorLog();
+
+        replayControls();
         PageServiceEncoder e = new PageServiceEncoder();
         e.setServiceName("page");
         e.setExtension("html");
@@ -151,13 +168,10 @@ public class TestLinkFactory extends HiveMindTestCase
         LinkFactoryImpl lf = new LinkFactoryImpl();
 
         lf.setContributions(l);
-        lf.setErrorLog(newErrorLog());
+        lf.setErrorLog(log);
         lf.setContextPath("/context");
         lf.setServletPath("/app");
-
-        IRequestCycle cycle = newCycle();
-
-        replayControls();
+        lf.setRequest(request);
 
         lf.initializeService();
 
@@ -174,6 +188,12 @@ public class TestLinkFactory extends HiveMindTestCase
 
     public void testWithServiceParameters()
     {
+        WebRequest request = newRequest();
+        IRequestCycle cycle = newCycle();
+        ErrorLog log = newErrorLog();
+
+        replayControls();
+
         PageServiceEncoder e = new PageServiceEncoder();
         e.setServiceName("external");
         e.setExtension("ext");
@@ -183,14 +203,11 @@ public class TestLinkFactory extends HiveMindTestCase
         LinkFactoryImpl lf = new LinkFactoryImpl();
 
         lf.setContributions(l);
-        lf.setErrorLog(newErrorLog());
+        lf.setErrorLog(log);
         lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setDataSqueezer(new DataSqueezerImpl(new DefaultClassResolver()));
-
-        IRequestCycle cycle = newCycle();
-
-        replayControls();
+        lf.setRequest(request);
 
         lf.initializeService();
 
@@ -205,6 +222,5 @@ public class TestLinkFactory extends HiveMindTestCase
         verifyControls();
 
         assertEquals("/context/Barney.ext?sp=T", link.getURL());
-
     }
 }

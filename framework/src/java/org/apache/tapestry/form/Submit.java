@@ -60,7 +60,7 @@ public abstract class Submit extends AbstractFormComponent{
             // with its name and value (the value serves double duty as both
             // the label on the button, and the parameter value).
 
-            String value = cycle.getRequestContext().getParameter(name);
+            String value = cycle.getParameter(name);
 
             // If the value isn't there, then this button wasn't
             // selected.

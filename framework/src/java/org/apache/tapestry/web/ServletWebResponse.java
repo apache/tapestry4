@@ -52,8 +52,8 @@ public class ServletWebResponse implements WebResponse
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(WebMessages
-                    .streamOpenError(contentType, ex), null, ex);
+            throw new ApplicationRuntimeException(WebMessages.streamOpenError(contentType, ex),
+                    null, ex);
         }
     }
 
@@ -67,4 +67,13 @@ public class ServletWebResponse implements WebResponse
         _servletResponse.reset();
     }
 
+    public OutputStream getOutputStream() throws IOException
+    {
+        return _servletResponse.getOutputStream();
+    }
+
+    public void setContentType(String contentType)
+    {
+        _servletResponse.setContentType(contentType);
+    }
 }

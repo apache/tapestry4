@@ -17,15 +17,13 @@ package org.apache.tapestry.engine;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.util.QueryParameterMap;
+import org.apache.tapestry.web.WebRequest;
 
 /**
  * A EngineServiceLink represents a possible action within the client web browser; either clicking a
@@ -52,7 +50,12 @@ public class EngineServiceLink implements ILink
 
     private boolean _stateful;
 
+    /** @since 3.1 */
     private final QueryParameterMap _parameters;
+
+    /** @since 3.1 */
+
+    private final WebRequest _request;
 
     /**
      * Creates a new EngineServiceLink.
@@ -74,18 +77,20 @@ public class EngineServiceLink implements ILink
      */
 
     public EngineServiceLink(IRequestCycle cycle, String servletPath, String encoding,
-            URLCodec codec, Map parameters, boolean stateful)
+            URLCodec codec, WebRequest request, Map parameters, boolean stateful)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(servletPath, "servletPath");
         Defense.notNull(encoding, "encoding");
         Defense.notNull(codec, "codec");
+        Defense.notNull(request, "request");
         Defense.notNull(parameters, "parameters");
 
         _cycle = cycle;
         _servletPath = servletPath;
         _encoding = encoding;
         _codec = codec;
+        _request = request;
         _parameters = new QueryParameterMap(parameters);
         _stateful = stateful;
     }
@@ -109,22 +114,20 @@ public class EngineServiceLink implements ILink
             boolean includeParameters)
     {
         StringBuffer buffer = new StringBuffer();
-        RequestContext context = _cycle.getRequestContext();
-        HttpServletRequest request = context.getRequest();
 
         if (scheme == null)
-            scheme = request.getScheme();
+            scheme = _request.getScheme();
 
         buffer.append(scheme);
         buffer.append("://");
 
         if (server == null)
-            server = request.getServerName();
+            server = _request.getServerName();
 
         buffer.append(server);
 
         if (port == 0)
-            port = request.getServerPort();
+            port = _request.getServerPort();
 
         if (!(scheme.equals("http") && port == DEFAULT_HTTP_PORT))
         {

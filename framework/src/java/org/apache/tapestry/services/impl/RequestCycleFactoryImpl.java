@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.util.Iterator;
+
 import org.apache.hivemind.ErrorHandler;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
@@ -27,11 +29,14 @@ import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncodingImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestCycleFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.util.QueryParameterMap;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * @author Howard M. Lewis Ship
@@ -49,18 +54,20 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     private Infrastructure _infrastructure;
 
-    public IRequestCycle newRequestCycle(IEngine engine, RequestContext context)
+    private AbsoluteURLBuilder _absoluteURLBuilder;
+
+    public IRequestCycle newRequestCycle(IEngine engine, WebRequest request, WebResponse response)
     {
-        IMonitor monitor = _monitorFactory.createMonitor(context);
+        IMonitor monitor = _monitorFactory.createMonitor(request);
 
-        QueryParameterMap parameters = extractParameters(context);
+        QueryParameterMap parameters = extractParameters(request);
 
-        decodeParameters(context.getRequest().getServletPath(), parameters);
+        decodeParameters(request.getActivationPath(), parameters);
 
         IEngineService service = findService(parameters);
 
-        return new RequestCycle(engine, context, parameters, service, _infrastructure,
-                _strategySource, _errorHandler, monitor);
+        return new RequestCycle(engine, request, response, parameters, service, _infrastructure,
+                _strategySource, _absoluteURLBuilder, _errorHandler, monitor);
     }
 
     private IEngineService findService(QueryParameterMap parameters)
@@ -79,17 +86,17 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
      * file upload parameters!).
      */
 
-    private QueryParameterMap extractParameters(RequestContext context)
+    private QueryParameterMap extractParameters(WebRequest request)
     {
         QueryParameterMap result = new QueryParameterMap();
 
-        String[] names = context.getParameterNames();
+        Iterator i = request.getParameterNames().iterator();
 
-        for (int i = 0; i < names.length; i++)
+        while (i.hasNext())
         {
-            String name = names[i];
+            String name = (String) i.next();
 
-            String[] values = context.getParameters(name);
+            String[] values = request.getParameterValues(name);
 
             if (values.length == 1)
                 result.setParameterValue(name, values[0]);
@@ -136,5 +143,10 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
     public void setInfrastructure(Infrastructure infrastructure)
     {
         _infrastructure = infrastructure;
+    }
+
+    public void setAbsoluteURLBuilder(AbsoluteURLBuilder absoluteURLBuilder)
+    {
+        _absoluteURLBuilder = absoluteURLBuilder;
     }
 }
