@@ -3,7 +3,7 @@
 <span jwcid="$content$">
 <table jwcid="@Any" element="table" class="ognl:tableClass">
   <tr>
-  	<th>
+  	<th class="available-header">
  <span jwcid="@RenderBlock" block="ognl:availableTitleBlock"/>
  <span jwcid="defaultAvailableTitleBlock@Block"><span key="title.available"/></span>
 </th>
@@ -37,14 +37,14 @@
     </span>
 
     </td>
-  	<th>
+  	<th class="selected-header">
  <span jwcid="@RenderBlock" block="ognl:selectedTitleBlock"/>
  <span jwcid="defaultSelectedTitleBlock@Block"><span key="title.selected"/></span>
     </th>
   </tr>
   <tr>
-    <td><select jwcid="@Delegator" delegate="ognl:availableSelectDelegate"/></td>
-    <td><select jwcid="@Delegator" delegate="ognl:selectedSelectDelegate"/></td>
+    <td class="available-cell"><select jwcid="@Delegator" delegate="ognl:availableSelectDelegate"/></td>
+    <td class="selected-cell"><select jwcid="@Delegator" delegate="ognl:selectedSelectDelegate"/></td>
   </tr>
 </table>
 </span>
