@@ -1,34 +1,11 @@
-<?xml version="1.0"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-	
-<specification>
-	<class>tutorial.simple.Home</class>
-	
-	<components>
-		<component>
-			<id>insertDate</id>
-			<type>Insert</type>
-			
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentDate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		
-		<component>
-			<id>refresh</id>
-			<type>Page</type>
-			
-			<bindings>
-				<static-binding>
-					<name>page</name>
-					<value>Home</value>
-				</static-binding>
-			</bindings>
-		</component>
-	</components>
-	
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="tutorial.simple.Home">
+  <component id="insertDate" type="Insert">
+    <binding name="value" property-path="currentDate"/>
+  </component>
+  <component id="refresh" type="Page">
+    <static-binding name="page">Home</static-binding>
+  </component>
 </specification>

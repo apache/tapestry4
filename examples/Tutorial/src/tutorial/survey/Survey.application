@@ -1,23 +1,9 @@
-<?xml version="1.0"?>
-<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<application>
-	<name>Survey Tutorial</name>
-	<engine-class>tutorial.survey.SurveyEngine</engine-class>
-	<page>
-		<name>Home</name>
-		<specification-path>/tutorial/survey/Home.jwc</specification-path>
-	</page>
-	<page>
-		<name>Survey</name>
-		<specification-path>/tutorial/survey/SurveyPage.jwc</specification-path>
-	</page>
-	<page>
-		<name>Results</name>
-		<specification-path>/tutorial/survey/Results.jwc</specification-path>
-	</page>
-	<component-alias>
-		<alias>Border</alias>
-		<specification-path>/tutorial/border/Border.jwc</specification-path>
-	</component-alias>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application name="Survey Tutorial" engine-class="tutorial.survey.SurveyEngine">
+  <page name="Home" specification-path="/tutorial/survey/Home.jwc"/>
+  <page name="Survey" specification-path="/tutorial/survey/SurveyPage.jwc"/>
+  <page name="Results" specification-path="/tutorial/survey/Results.jwc"/>
+  <component-alias type="Border" specification-path="/tutorial/border/Border.jwc"/>
 </application>

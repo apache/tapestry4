@@ -1,160 +1,49 @@
-<?xml version="1.0"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>tutorial.survey.SurveyPage</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-			<bindings>
-				<static-binding>
-					<name>title</name>
-					<value>Survey</value>
-				</static-binding>
-				<binding>
-					<name>pages</name>
-					<property-path>engine.pageNames</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifError</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertError</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>surveyForm</id>
-			<type>Form</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>formListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputName</id>
-			<type>TextField</type>
-			<bindings>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>30</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>100</value>
-				</static-binding>
-				<binding>
-					<name>text</name>
-					<property-path>survey.name</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputAge</id>
-			<type>TextField</type>
-			<bindings>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>4</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>4</value>
-				</static-binding>
-				<binding>
-					<name>text</name>
-					<property-path>age</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputSex</id>
-			<type>PropertySelection</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>survey.sex</property-path>
-				</binding>
-				<binding>
-					<name>model</name>
-					<property-path>sexModel</property-path>
-				</binding>
-				<binding>
-					<name>renderer</name>
-					<property-path>components.inputSex.defaultRadioRenderer</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputRace</id>
-			<type>PropertySelection</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>survey.race</property-path>
-				</binding>
-				<binding>
-					<name>model</name>
-					<property-path>raceModel</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputCats</id>
-			<type>Checkbox</type>
-			<bindings>
-				<binding>
-					<name>selected</name>
-					<property-path>survey.likesCats</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputDogs</id>
-			<type>Checkbox</type>
-			<bindings>
-				<binding>
-					<name>selected</name>
-					<property-path>survey.likesDogs</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputFerrits</id>
-			<type>Checkbox</type>
-			<bindings>
-				<binding>
-					<name>selected</name>
-					<property-path>survey.likesFerrits</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputTurnips</id>
-			<type>Checkbox</type>
-			<bindings>
-				<binding>
-					<name>selected</name>
-					<property-path>survey.likesTurnips</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="tutorial.survey.SurveyPage">
+  <component id="border" type="Border">
+    <static-binding name="title">Survey</static-binding>
+    <binding name="pages" property-path="engine.pageNames"/>
+  </component>
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="error"/>
+  </component>
+  <component id="insertError" type="Insert">
+    <binding name="value" property-path="error"/>
+  </component>
+  <component id="surveyForm" type="Form">
+    <binding name="listener" property-path="formListener"/>
+  </component>
+  <component id="inputName" type="TextField">
+    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="maximumLength">100</static-binding>
+    <binding name="text" property-path="survey.name"/>
+  </component>
+  <component id="inputAge" type="TextField">
+    <static-binding name="displayWidth">4</static-binding>
+    <static-binding name="maximumLength">4</static-binding>
+    <binding name="text" property-path="age"/>
+  </component>
+  <component id="inputSex" type="PropertySelection">
+    <binding name="value" property-path="survey.sex"/>
+    <binding name="model" property-path="sexModel"/>
+    <binding name="renderer" property-path="components.inputSex.defaultRadioRenderer"/>
+  </component>
+  <component id="inputRace" type="PropertySelection">
+    <binding name="value" property-path="survey.race"/>
+    <binding name="model" property-path="raceModel"/>
+  </component>
+  <component id="inputCats" type="Checkbox">
+    <binding name="selected" property-path="survey.likesCats"/>
+  </component>
+  <component id="inputDogs" type="Checkbox">
+    <binding name="selected" property-path="survey.likesDogs"/>
+  </component>
+  <component id="inputFerrits" type="Checkbox">
+    <binding name="selected" property-path="survey.likesFerrits"/>
+  </component>
+  <component id="inputTurnips" type="Checkbox">
+    <binding name="selected" property-path="survey.likesTurnips"/>
+  </component>
 </specification>

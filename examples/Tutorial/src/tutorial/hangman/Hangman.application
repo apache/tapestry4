@@ -1,30 +1,10 @@
-<?xml version="1.0"?>
-<!--$Id$-->
-<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<application>
-	<name>Tapestry Hangman</name>
-	<engine-class>com.primix.tapestry.engine.SimpleEngine</engine-class>
-	<page>
-		<name>Home</name>
-		<specification-path>/tutorial/hangman/Home.jwc</specification-path>
-	</page>
-	<page>
-		<name>Guess</name>
-		<specification-path>/tutorial/hangman/Guess.jwc</specification-path>
-	</page>
-	<page>
-		<name>Failed</name>
-		<specification-path>/tutorial/hangman/Failed.jwc</specification-path>
-	</page>
-	<page>
-		<name>Success</name>
-		<specification-path>/tutorial/hangman/Success.jwc</specification-path>
-	</page>
-	<properties>
-		<property>
-			<name>com.primix.tapestry.visit-class</name>
-			<value>tutorial.hangman.Visit</value>
-		</property>
-	</properties>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application name="Tapestry Hangman" engine-class="com.primix.tapestry.engine.SimpleEngine">
+  <property name="com.primix.tapestry.visit-class">tutorial.hangman.Visit</property>
+  <page name="Home" specification-path="/tutorial/hangman/Home.jwc"/>
+  <page name="Guess" specification-path="/tutorial/hangman/Guess.jwc"/>
+  <page name="Failed" specification-path="/tutorial/hangman/Failed.jwc"/>
+  <page name="Success" specification-path="/tutorial/hangman/Success.jwc"/>
 </application>
