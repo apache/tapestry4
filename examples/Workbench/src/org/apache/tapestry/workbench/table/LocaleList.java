@@ -56,24 +56,14 @@
 package org.apache.tapestry.workbench.table;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.contrib.table.model.ITableColumnModel;
-import org.apache.tapestry.contrib.table.model.ITableDataModel;
-import org.apache.tapestry.contrib.table.model.ITableModel;
-import org.apache.tapestry.contrib.table.model.ITableRendererSource;
-import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
-import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
-import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumnModel;
-import org.apache.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnFormRendererSource;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableSessionStateManager;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
+import org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor;
 
 /**
  * @author mindbridge
@@ -82,96 +72,43 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 public abstract class LocaleList extends BaseComponent
 {
     // immutable values
-	private ITableSessionStateManager m_objTableSessionStateManager;
-
-    /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
-     */
-    protected void finishLoad()
+	private IPrimaryKeyConvertor m_objLocaleConvertor;
+    
+    public LocaleList()
     {
-        super.finishLoad();
-        initTableSessionStateManager();
+        m_objLocaleConvertor = new IPrimaryKeyConvertor()
+        {
+            public Object getPrimaryKey(Object objValue)
+            {
+                Locale objLocale = (Locale) objValue;
+                return objValue.toString();
+            }
+
+            public Object getValue(Object objPrimaryKey)
+            {
+                StringTokenizer objTokenizer = new StringTokenizer((String) objPrimaryKey, "_");
+
+                String strLanguage = "";
+                if (objTokenizer.hasMoreTokens())
+                    strLanguage = objTokenizer.nextToken(); 
+
+                String strCountry = "";
+                if (objTokenizer.hasMoreTokens())
+                    strCountry = objTokenizer.nextToken(); 
+
+                String strVariant = "";
+                if (objTokenizer.hasMoreTokens())
+                    strVariant = objTokenizer.nextToken();
+                
+                return new Locale(strLanguage, strCountry, strVariant); 
+            }
+        };
     }
     
-	/**
-	 * Method initTableSessionStateManager.
-	 * Creates the Table Session State Manager, and thus determines what part
-	 * of the table model will be saved in the session.
-     * See comments for details
-	 */
-	protected void initTableSessionStateManager()
-	{
-		// Use the simple data model using the array of standard Locales
-		ITableDataModel objDataModel =
-			new SimpleListTableDataModel(Locale.getAvailableLocales());
-
-		// This is a simple to use column model that uses OGNL to access
-		// the data to be displayed in each column. The first string is
-		// the name of the column, and the second is the OGNL expression.
-		// We also enable sorting for all columns by setting the second argument to true
-		ITableColumnModel objColumnModel =
-			new ExpressionTableColumnModel(
-				new String[] {
-                    "Locale", "toString()",
-					"Language", "displayLanguage",
-					"Country", "displayCountry",
-					"Variant", "displayVariant",
-                    "ISO Language", "ISO3Language",
-                    "ISO Country", "ISO3Country", 
-                    },
-				true);
-
-
-        // Modify the columns to render headers designed for use in a form. 
-        // These headers ensure that the form is submitted when clicking on them
-        // and sorting by the column so that current form selections are preserved.
-        // Skip this if the table is not used in a form or you do not need 
-        // that behaviour.  
-        // This is usually used in conjunction with the TableFormPages and
-        // the TableFormRows components.
-        ITableRendererSource objRendererSource = new SimpleTableColumnFormRendererSource();
-        for (Iterator it = objColumnModel.getColumns(); it.hasNext(); ) {
-            ExpressionTableColumn objColumn = (ExpressionTableColumn) it.next();
-            objColumn.setColumnRendererSource(objRendererSource);
-        }
-
-
-		// Here we make a choice as to how the table would operate: 
-		//
-		// We select a session state manager that stores only the table state 
-		// in the session. This makes the session state very small, but it causes 
-		// the table model to be recreated every time (note that the data and 
-		// column models remain the same -- they are created only once here). 
-		// The recreation of the table model means sorting of the locales 
-		// according the the state will be invoked every time the page is displayed.
-		//
-		// Essentially in this case we sacrfice CPU load for memory, and since 
-		// the amount of data (the number of locales) may be significant, 
-		// this approach should behave much better when there are many users.
-		m_objTableSessionStateManager =
-			new SimpleTableSessionStateManager(objDataModel, objColumnModel);
-	}
-
-	/**
-	 * Method getTableModel.
-	 * @return ITableModel the initial Table Model to use
-	 */
-	public ITableModel getTableModel()
-	{
-		// Use the Session State Manager to create an initial table model 
-		// with an initial state (no sorting, show first page)
-		return m_objTableSessionStateManager.recreateTableModel(
-			new SimpleTableState());
-	}
-
-	/**
-	 * Method getTableSessionStateManager.
-	 * @return ITableSessionStateManager the Table Session State Manager to use
-	 */
-	public ITableSessionStateManager getTableSessionStateManager()
-	{
-		return m_objTableSessionStateManager;
-	}
+    public IPrimaryKeyConvertor getLocaleConvertor()
+    {
+        return m_objLocaleConvertor;
+    }
 
     public boolean getCheckboxSelected() 
     {
