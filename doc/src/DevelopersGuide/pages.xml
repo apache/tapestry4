@@ -725,18 +725,7 @@ that maintain any independent state.
       <para>
 This cleanup occurs at the end of the request, after a response has been sent to the client web browser.
 </para>
-      <para>
-Finally,  the &PageCleanupListener; is implemented by objects that need to know when the
-&HttpSession; is invalidated.
-</para>
-      <figure>
-        <title>Page Cleanup Sequence</title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="images/Page-Cleanup-sequence.gif" format="GIF"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
+
       <para>
 The engine knows when the &HttpSession; has been invalidated because the container will
 invoke <function>valueUnbound()</function>.  It loads and rolls back each page, then invokes

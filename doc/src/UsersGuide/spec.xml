@@ -123,7 +123,7 @@ It also defines any libraries that are used within the application.
 <figure>
 	<title><sgmltag class="starttag">application</sgmltag> Elements</title>
 <literallayout>
-  &spec.description; *, &spec.property; *,
+  &spec.description; ?, &spec.property; *,
   (&spec.page; | &spec.component-type; | &spec.service; | &spec.library; | &spec.extension;) *
 </literallayout>
 </figure>
@@ -250,7 +250,7 @@ may be configured using the &spec.set-property; and &spec.set-string-property; e
 <figure>
 	<title><sgmltag class="starttag">bean</sgmltag> Elements</title>
 <literallayout>
-  &spec.description; *, &spec.property; *,
+  &spec.description; ?, &spec.property; *,
   (&spec.set-property; | &spec.set-string-property;) *
 </literallayout>
 </figure>
@@ -600,7 +600,7 @@ and elements related to parameters.
 <figure>
 	<title><sgmltag class="starttag">component-specification</sgmltag> Elements</title>
 <literallayout>
-  &spec.description; *, &spec.parameter; *, &spec.reserved-parameter; *, &spec.property; *,
+  &spec.description; ?, &spec.parameter; *, &spec.reserved-parameter; *, &spec.property; *,
   (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset; | &spec.property-specification;)*
 </literallayout>
 </figure>
@@ -675,51 +675,18 @@ Appears in: <emphasis>many</emphasis>
 A description may be attached to a many different elements.  Descriptions are used
 by an intelligent IDE to provide help.  The Tapestry Inspector may also display a description.
 </para>
-
-<warning>
-<para>
-The DTD supports multiple <sgmltag class="starttag">description</sgmltag> elements, each
-localized to a different language.  In practice, a single description, in English, is typically
-used.  This approach to providing a localized description is likely to change in the future, and
-it is probably safest to expect just a single <sgmltag class="starttag">description</sgmltag> tag
-to be allowed in the next revision of the DTD.
-</para>
-</warning>
 	
 <para>
 The descriptive text appears inside the <sgmltag class="starttag">description</sgmltag> tags.  Leading
 and trailing whitespace is removed and interior whitespace may be altered or removed.  Descriptions
 should be short; external documentation can provide greater details.
 </para>
-
-<figure>
-	<title><sgmltag class="starttag">description</sgmltag> element</title>
-<informaltable>
-<tgroup cols="5">
-<thead>
-<row>
-  <entry>Name</entry>
-  <entry>Type</entry>
-  <entry>Required ?</entry>
-  <entry>Default Value</entry>
-  <entry>Description</entry>
-</row>
-
-</thead>
-<tbody>
-<row>
-	<entry>xml:lang</entry>
-	<entry>string</entry>
-	<entry>no</entry>
-	<entry/>
-	<entry>The language the message is localized to as an ISO language string.
-	</entry>
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-</figure>
 	
+<para>
+The 	<sgmltag class="starttag">description</sgmltag>
+element has no attributes.
+</para>
+
 </section> <!-- spec.description -->
 
 <section id="spec.extension">
@@ -980,7 +947,7 @@ element has no attributes.
 <figure>
 	<title><sgmltag class="starttag">library-specification</sgmltag> Elements</title>
 <literallayout>
-  &spec.description; *, &spec.property; *,
+  &spec.description; ?, &spec.property; *,
   (&spec.page; | &spec.component-type; | &spec.service; | &spec.library; | &spec.extension;) *
 </literallayout>
 </figure>
@@ -1168,7 +1135,7 @@ with attributes and entities related to parameters removed.
 <figure>
 	<title><sgmltag class="starttag">page-specification</sgmltag> Elements</title>
 <literallayout>
-  &spec.description; *, &spec.property; *,
+  &spec.description; ?, &spec.property; *,
   (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset; | &spec.property-specification;)*
 </literallayout>
 </figure>
@@ -1185,12 +1152,21 @@ Appears in: &spec.component-specification;
 
 <para>
 Defines a formal parameter of a component.  Parameters may be connected 
-(<literal>in</literal> or <literal>form</literal>)
+(<literal>in</literal>, <literal>form</literal> or <literal>auto</literal>)
 or unconnected (<literal>custom</literal>).  If a parameter is
 connected, but the class does not provide the property (or does, but
 the accessors are abstract), then the framework
 will create and use a subclass that contains the implementation
 of the necessary property.
+</para>
+
+<para>
+For <literal>auto</literal> parameters, the framework will create a synthetic property
+as a wrapper around the binding.  Reading the property will read the value from
+the binding and updating the property will update the binding value.  <literal>auto</literal>
+may only be used with required parameters.  <literal>auto</literal> is less
+efficient than <literal>in</literal>, but can be used even when the component
+is not rendering.
 </para>
 
 <figure>
@@ -1252,7 +1228,7 @@ of the necessary property.
 
 <row>
   <entry>direction</entry>
-  <entry><literal>in|form|custom</literal></entry>
+  <entry><literal>in|form|auto|custom</literal></entry>
   <entry>no</entry>
   <entry><literal>custom</literal></entry>
   <entry>
@@ -1274,6 +1250,13 @@ of the necessary property.
   parameter when the component renders (as with <literal>in</literal>).
   When the form is submitted, the value is read from the property
   and used to set the binding value after the component rewinds.
+  </para>
+  
+  <para>
+  <literal>auto</literal> creates a synthetic property that works
+  with the binding to read and update.  <literal>auto</literal>
+  parameters must be required, but can be used even when the
+  component is not rendering.
   </para>
   </entry>
 </row>

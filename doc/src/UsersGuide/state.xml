@@ -183,7 +183,8 @@ Visit is specified as
 </para>
 
 <para>
-Typically, the Visit class is defined in the application specification.
+Typically, the Visit class is defined in the application specification, or
+as a <sgmltag class="starttag">init-parameter</sgmltag> in the web deployment descriptor (web.xml).
 </para>
 
 <example>
@@ -243,7 +244,7 @@ page or the engine (unlike the <literal>visit</literal> property, they are compl
 
 <para>
 Care should be taken that the Global object is threadsafe; since many engines (from many sessions,
-in many threads) will access it simulatenously.  The default Global object is a synchronized
+in many threads) will access it simultanenously.  The default Global object is a synchronized
 &HashMap;.  This can be overriden with
 <link linkend="configuration.search-path">configuration property</link>
 <literal>org.apache.tapestry.global-class</literal>.
@@ -540,8 +541,8 @@ from the engine (prior to be stored back into the page pool).  This event is gen
 <para>
 The Java interface &PageDetachListener; is the event listener interface for this purpose.  
 By simply implementing this interface, Tapestry will register the component as a listener and ensure that
-it receives event notifications at the right time (this works for the two other
-page event interfaces, &PageRenderListener; and &PageCleanupListener; as well; simply
+it receives event notifications at the right time (this works for the other
+page event interface, &PageRenderListener; as well; simply
 implement the interface and leave the rest to the framework).
 </para>
 
