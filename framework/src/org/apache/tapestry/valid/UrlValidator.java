@@ -68,6 +68,7 @@ import java.util.Vector;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.util.StringSplitter;
 
 public class UrlValidator extends BaseValidator {
 	private int _minimumLength;
@@ -298,7 +299,9 @@ public class UrlValidator extends BaseValidator {
 	 * @param collection
 	 */
 	public void setAllowedProtocols(String protocols) {
-		String[] aProtocols = protocols.split(","); //$NON-NLS-1$
+		StringSplitter spliter = new StringSplitter(',');
+		//String[] aProtocols = protocols.split(","); //$NON-NLS-1$
+		String[] aProtocols = spliter.splitToArray(protocols); //$NON-NLS-1$
 		_allowedProtocols = new Vector();
 		for (int i = 0; i < aProtocols.length; i++) {
 			_allowedProtocols.add(aProtocols[i]);
