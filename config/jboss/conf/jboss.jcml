@@ -78,7 +78,7 @@
     <attribute name="GCInterval">120000</attribute>
     <attribute name="IdleTimeout">1800000</attribute>
     <attribute name="IdleTimeoutEnabled">false</attribute>
-    <attribute name="LoggingEnabled">true</attribute>
+    <attribute name="LoggingEnabled">false</attribute>
     <attribute name="MaxIdleTimeoutPercent">1.0</attribute>
     <attribute name="MinSize">0</attribute>
   </mbean>
