@@ -3,9 +3,10 @@
 <!-- Top-level buildfile for the Tapestry module. -->
 <project name="Tapestry Web Application Framework" default="install">
 	<property name="root.dir" value="./"/>
-	<property file="${root.dir}/config/Version.properties"/>
-	<property file="${root.dir}/config/build.properties"/>
-	<property file="${root.dir}/config/common.properties"/>
+	<property name="config.dir" value="${root.dir}/config"/>
+	<property file="${config.dir}/Version.properties"/>
+	<property file="${config.dir}/build.properties"/>
+	<property file="${config.dir}/common.properties"/>
 	<property name="javadoc.dir" value="web/doc/api"/>
 	<property name="private.dir" value="private"/>
 	<property environment="env"/>
@@ -84,6 +85,7 @@
 		>
 		<ant dir="junit" target="clover" inheritAll="false"/>
 	</target>
+	
 	<target name="dist"
 		description="Builds the Tapestry distribution from scratch."
 		depends="clean-all,install,junit,documentation,clover,javadoc">
@@ -92,15 +94,18 @@
 		<!-- Now, build that actual distribution. -->
 		<antcall target="build-dist"/>
 	</target>
+	
 	<property name="dist.root.dir" value="dist"/>
 	<property name="dist.base" value="Tapestry-${framework.version}"/>
 	<property name="dist.dir" value="${dist.root.dir}/${dist.base}"/>
+	
 	<target name="build-dist"
 		description="Builds the Tapestry distribution files.">
 		<!-- Delete the base directory. -->
 		<delete dir="${dist.root.dir}" quiet="true"/>
 		<antcall target="build-dist-tarball"/>
 	</target>
+	
 	<target name="build-dist-copy">
 		<!-- Copy all the relevant files to the base directory. -->
 		<copy todir="${dist.dir}" includeEmptyDirs="false">
@@ -162,6 +167,13 @@
 				<exclude name="${vlibbeans.jar}"/>
 			</fileset>
 		</copy>
+		
+		<copy todir="${dist.dir}/lib" flatten="true">
+			<fileset dir="examples">
+				<include name="**/*.tld"/>	
+			</fileset>
+		</copy>
+		
 		<copy todir="${dist.dir}">
 			<fileset dir=".">
 				<include name="framework/**"/>
@@ -219,21 +231,21 @@
 		<mkdir dir="${javadoc.dir}"/>
 		<javadoc author="true" version="true" destdir="${javadoc.dir}"
 			splitindex="true" windowtitle="Tapestry API ${framework.version}">
-			<doctitle>Tapestry API (Release ${framework.version})</doctitle>
+			<doctitle>Tapestry ${framework.version} API</doctitle>
 			<package name="org.apache.tapestry.*"/>
 
 			<link href="http://java.sun.com/products/jdk/1.2/docs/api/"
 				offline="true" packageListLoc="package-lists/jdk"/>
+
 			<link href="http://java.sun.com/j2ee/sdk_1.2.1/techdocs/api/"
 				offline="true" packageListLoc="package-lists/j2ee"/>
+
 			<link href="http://jakarta.apache.org/log4j/docs/api/"
 				offline="true" packageListLoc="package-lists/log4j"/>
+
 			<link href="http://www.junit.org/junit/javadoc/3.7/" offline="true"
 				packageListLoc="package-lists/junit"/>
-			<link href="http://www.object-refinery.com/jcommon/javadoc/"
-				offline="true" packageListLoc="package-lists/jcommon"/>
-			<link href="http://www.object-refinery.com/jfreechart/javadoc/"
-				offline="true" packageListLoc="package-lists/jfreechart"/>
+
 			<link href="http://jakarta.apache.org/oro/api/" offline="true"
 				packageListLoc="package-lists/jakarta-oro"/>
 				
@@ -319,8 +331,7 @@
 			</fileset>
 			<fileset dir="${ext.dist.dir}">
 				<include name="mckoidb*.jar"/>
-				<include name="jcommon*.jar"/>
-				<include name="jfreechart*.jar"/>
+				<include name="jChart*.jar"/>
 			</fileset>
 		</copy>
 		<!-- Delete, recreate and copy -->
@@ -404,24 +415,35 @@
 		</java>
 	</target>
 	
+	<!-- Unpacks the Workbench ('cause Tomcat does that anyway), and copies
+		 all the necessary JARs into the WEB-INF/libs folder.  -->
+		
 	<target name="deploy-tomcat"
 		depends="check-for-tomcat-dir"
 		description="Deploys the Workbench application into Tomcat.">
-		<unjar src="${lib.dir}/${workbench.war}" dest="${tomcat.dir}/webapps/workbench"/>
+		
+		<property name="workbench.deploy.root.dir" value="${tomcat.dir}/webapps/workbench"/>
 		<property name="web.lib"
-			value="${tomcat.dir}/webapps/workbench/WEB-INF/lib"/>
+			value="${workbench.deploy.root.dir}/WEB-INF/lib"/>
+			
+		<unjar src="${lib.dir}/${workbench.war}" dest="${workbench.deploy.root.dir}"/>
+
 		<copy todir="${web.lib}" flatten="true">
 			<fileset dir="${lib.dir}">
 				<include name="${framework.jar}"/>
 				<include name="${contrib.jar}"/>
 				<include name="${ext.dir}/*.jar"/>
+				<include name="${runtime.dir}/*.jar"/>
 			</fileset>
 			<fileset dir="${ext.dist.dir}">
-				<include name="jfreechart*.jar"/>
-				<include name="jcommon*.jar"/>
+				<include name="jChart*.jar"/>
 			</fileset>
 		</copy>
+		
+		<copy file="${config.dir}/log4j.properties"
+			 todir="${workbench.deploy.root.dir}/WEB-INF/classes"/>
 	</target>
+	
 	<target name="check-for-jboss-dir">
 		<available property="exists.jboss.dir" type="dir" file="${jboss.dir}"/>
 		<fail unless="jboss.dir"

@@ -56,12 +56,9 @@
 package org.apache.tapestry.workbench.chart;
 
 import java.awt.Color;
+import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.jrefinery.chart.ChartFactory;
-import com.jrefinery.chart.JFreeChart;
-import com.jrefinery.data.DefaultPieDataset;
 
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
@@ -70,18 +67,26 @@ import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.jCharts.Chart;
+import org.jCharts.chartData.ChartDataException;
+import org.jCharts.chartData.PieChartDataSet;
+import org.jCharts.nonAxisChart.PieChart2D;
+import org.jCharts.properties.ChartProperties;
+import org.jCharts.properties.LegendProperties;
+import org.jCharts.properties.PieChart2DProperties;
+import org.jCharts.test.TestDataGenerator;
 
 /**
  *  Demonstrates more complex form handling (including loops and dynamic addition/deletion of
- *  rows) as well as dynamic image generation using {@link JFreeChart}.
+ *  rows) as well as dynamic image generation using {@link JCharts}.
  * 
- *  @author Howard Lewis Ship
+ *  @author Howard Lewis Ship, Luis Neves
  *  @version $Id$
  *  @since 1.0.10
  * 
  **/
 
-public class Chart extends BasePage implements IChartProvider
+public class ChartPage extends BasePage implements IChartProvider
 {
     private List _plotValues;
     private List _removeValues;
@@ -100,7 +105,8 @@ public class Chart extends BasePage implements IChartProvider
      * 
      **/
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         getPlotValues();
     }
@@ -235,13 +241,26 @@ public class Chart extends BasePage implements IChartProvider
      * 
      **/
 
-    public JFreeChart getChart()
+    public Chart getChart()
     {
-        DefaultPieDataset data = new DefaultPieDataset();
+        LegendProperties legendProperties = new LegendProperties();
+        legendProperties.setNumColumns(2);
+        legendProperties.setPlacement(LegendProperties.RIGHT);
+        ChartProperties chartProperties = new ChartProperties();
+        chartProperties.setBackgroundPaint(Color.decode("#ffffcc"));
 
+        Chart result = new PieChart2D(getData(), legendProperties, chartProperties, 400, 350);
+
+        return result;
+    }
+
+    private PieChartDataSet getData()
+    {
         List plotValues = getPlotValues();
-
         int count = plotValues.size();
+        double[] data = new double[count];
+        String[] labels = new String[count];
+        PieChart2DProperties properties = new PieChart2DProperties();
 
         for (int i = 0; i < count; i++)
         {
@@ -252,14 +271,20 @@ public class Chart extends BasePage implements IChartProvider
             if (Tapestry.isNull(name))
                 name = "<New>";
 
-            data.setValue(name, new Integer(pv.getValue()));
+            data[i] = new Double(pv.getValue()).doubleValue();
+            labels[i] = new String(name);
         }
 
-        JFreeChart result = ChartFactory.createPieChart("Pie Chart", data, false);
-
-        result.setBackgroundPaint(Color.decode("#ffffcc"));
-
-        return result;
+        Paint[] paints = TestDataGenerator.getRandomPaints(count);
+        
+        try
+        {
+            return new PieChartDataSet("Pie Chart", data, labels, paints, properties);
+        }
+        catch (ChartDataException e)
+        {
+            return null;
+        }
     }
 
 }
