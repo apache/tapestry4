@@ -6,9 +6,9 @@
      	
 <page-specification>
 
-	<property name="barney" value="rubble"/>
-
-	<property name="wilma" value="flintstone"/>
+	<component id="c" type="Insert">
+		<static-binding name="fred" value="error">flintstone</static-binding>
+	</component>
 	
 </page-specification>
 
