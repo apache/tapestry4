@@ -280,8 +280,11 @@ public class ComponentSpecification extends BasePropertyHolder
 
 		buffer.append('[');
 
-		if (componentClassName != null)
-			buffer.append(componentClassName);
+		if (specificationResourcePath != null)
+			buffer.append(specificationResourcePath);
+		else
+			if (componentClassName != null)
+				buffer.append(componentClassName);
 
 		buffer.append(']');
 
