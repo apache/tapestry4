@@ -12,7 +12,7 @@ import com.primix.tapestry.asset.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -41,7 +41,7 @@ import com.primix.tapestry.asset.*;
 /**
  *  A source for pages for a particular application.  Each application
  *  should have its own <code>PageSource</code>, storing it into the
- *  <code>ServletContext</code> using a unique key (usually built from
+ *  {@link ServletContext} using a unique key (usually built from
  *  the application name).
  *
  *  <p>The <code>PageSource</code> acts as a pool for {@link IPage} instances.
@@ -71,8 +71,6 @@ import com.primix.tapestry.asset.*;
  *  <p>This caching allows common objects to be created once, and
  *  used across all components and pages.  Without pooling, objects would often be duplicated.
  *
- *  <p>Note: {@link InternalAsset} and {PrivateAsset} will also be cached, once localization
- *  is finalized.
  *
  * <p>TBD: Pooled pages stay forever.  Need a strategy for cleaning up the pool,
  * tracking which pages have been in the pool the longest, etc.  A mechanism
@@ -88,7 +86,9 @@ public class PageSource
 {
     private Map fieldBindings;
     private Map staticBindings;
-    private Map externalAssetBindings;
+    private Map externalAssets;
+    private Map contextAssets;
+    private Map privateAssets;
     private IResourceResolver resolver;
 
     private static final int MAP_SIZE = 23;
@@ -117,9 +117,9 @@ public class PageSource
     }
 
     /**
-     *  Returns true if the page pool has been disabled.
-     *
-     */
+    *  Returns true if the page pool has been disabled.
+    *
+    */
 
     public boolean isPoolDisabled()
     {
@@ -128,133 +128,131 @@ public class PageSource
 
 
 
-	/**
-	*  Builds a key for a named page in the application's current locale.
-	*
-	*/
+    /**
+    *  Builds a key for a named page in the application's current locale.
+    *
+    */
 
-	protected MultiKey buildKey(IEngine engine, String pageName)
-	{
-		Object[] keys;
+    protected MultiKey buildKey(IEngine engine, String pageName)
+    {
+        Object[] keys;
 
-		keys = new Object[] { pageName,
+        keys = new Object[] { pageName,
                               engine.getLocale() };
 
-		// Don't make a copy, this array is just for the MultiKey.
+        // Don't make a copy, this array is just for the MultiKey.
 
-		return new MultiKey(keys, false);
-	}
+        return new MultiKey(keys, false);
+    }
 
-	/**
-	*  Builds a key from an existing page, using the page's name and locale.  This is
-	*  used when storing a page into the pool.
-	*
-	*/
+    /**
+    *  Builds a key from an existing page, using the page's name and locale.  This is
+    *  used when storing a page into the pool.
+    *
+    */
 
-	protected MultiKey buildKey(IPage page)
-	{
-		Object[] keys;
+    protected MultiKey buildKey(IPage page)
+    {
+        Object[] keys;
 
-		keys = new Object[] { page.getName(),
+        keys = new Object[] { page.getName(),
                               page.getLocale() };
 
-		// Don't make a copy, this array is just for the MultiKey.
+        // Don't make a copy, this array is just for the MultiKey.
 
-		return new MultiKey(keys, false);
-	}
+        return new MultiKey(keys, false);
+    }
 
-	/**
-	*  Gets the page from a pool, or otherwise loads the page.  This operation
-	*  is threadsafe ... it synchronizes on the pool of pages.
-	*
+    /**
+    *  Gets the page from a pool, or otherwise loads the page.  This operation
+    *  is threadsafe ... it synchronizes on the pool of pages.
+    *
 
-	*/
+    */
 
-	public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
-	throws PageLoaderException
-	{
-		Object key;
-		PageLoader loader;
-		IPage result = null;
-		String resource;
-		PageSpecification specification;
+    public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
+    throws PageLoaderException
+    {
+        Object key;
+        PageLoader loader;
+        IPage result = null;
+        String resource;
+        PageSpecification specification;
 
-		key = buildKey(engine, pageName);
+        key = buildKey(engine, pageName);
 
-		if (pool != null)
+        if (pool != null)
             result = (IPage)pool.get(key);
 
-		if (result == null)
-		{
-			if (monitor != null)
-				monitor.pageCreateBegin(pageName);
+        if (result == null)
+        {
+            if (monitor != null)
+                monitor.pageCreateBegin(pageName);
 
-			// Ok, need to load the page.  Note that we should also pool the page loader, instead
-			// we inneficiently create - use - discard it.
+            // Ok, need to load the page.  Note that we should also pool the page loader, instead
+            // we inneficiently create - use - discard it.
 
-			loader = new PageLoader(this, engine);
+            loader = new PageLoader(this, engine);
 
-			specification = engine.getSpecification().getPageSpecification(pageName);
+            specification = engine.getSpecification().getPageSpecification(pageName);
 
-			if (specification == null)
-				throw new ApplicationRuntimeException(
-					"This application does not contain a page named " + pageName + "."); 
+            if (specification == null)
+                throw new ApplicationRuntimeException(
+                    "This application does not contain a page named " + pageName + "."); 
 
-			result = loader.loadPage(pageName, specification.getSpecificationPath());
+            result = loader.loadPage(pageName, specification.getSpecificationPath());
 
             // Alas, the page loader is discarded, we should be pooling those as
             // well.
 
-			if (monitor != null)
-				monitor.pageCreateEnd(pageName);
-		}
+            if (monitor != null)
+                monitor.pageCreateEnd(pageName);
+        }
 
         // Whether its new or reused, it must join the engine.
 
-		result.attach(engine);
+        result.attach(engine);
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	*  Returns the page to the appropriate pool.
-	*
-	*/
+    /**
+    *  Returns the page to the appropriate pool.
+    *
+    */
 
-	public void releasePage(IPage page)
-	{
-		page.detach();
-        
+    public void releasePage(IPage page)
+    {
+        page.detach();
+
         if (pool != null)
-        {
-            Object key = buildKey(page);
-            pool.add(key, page);
-        }
+            pool.add(buildKey(page), page);
+    }
 
-	}
+    /**
+    *  Invoked (during testing primarily) to release the entire pool
+    *  of pages, and the caches of bindings and assets.
+    *
+    */
 
-	/**
-	*  Invoked (during testing primarily) to release the entire pool
-	*  of pages and bindings.
-	*
-	*/
-
-	public void reset()
-	{
-		if (pool != null)
-		    pool.clear();
+    public void reset()
+    {
+        if (pool != null)
+            pool.clear();
 
         fieldBindings = null;
         staticBindings = null;
-        externalAssetBindings = null;
-	}
+        externalAssets = null;
+        contextAssets = null;
+        privateAssets = null;
+    }
 
     /**
-     *  Gets a field binding for the named field (the name includes the class name
-     *  and the field).  If no such binding exists, then one is created, otherwise
-     *  the existing binding is returned. 
-     *
-     */
+    *  Gets a field binding for the named field (the name includes the class name
+    *  and the field).  If no such binding exists, then one is created, otherwise
+    *  the existing binding is returned. 
+    *
+    */
 
     public synchronized IBinding getFieldBinding(String fieldName)
     {
@@ -264,7 +262,7 @@ public class PageSource
             fieldBindings = new HashMap(MAP_SIZE);
         else
             result = (IBinding)fieldBindings.get(fieldName);
- 
+
         if (result == null)
         {
             result = new FieldBinding(resolver, fieldName);
@@ -276,9 +274,9 @@ public class PageSource
     }
 
     /**
-     *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
-     *
-     */
+    *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
+    *
+    */
 
     public synchronized IBinding getStaticBinding(String value)
     {
@@ -303,15 +301,52 @@ public class PageSource
     {
         IAsset result = null;
 
-        if (externalAssetBindings == null)
-            externalAssetBindings = new HashMap(MAP_SIZE);
+        if (externalAssets == null)
+            externalAssets = new HashMap(MAP_SIZE);
         else
-            result = (IAsset)externalAssetBindings.get(URL);
+            result = (IAsset)externalAssets.get(URL);
 
         if (result == null)
         {
             result = new ExternalAsset(URL);
-            externalAssetBindings.put(URL, result);
+            externalAssets.put(URL, result);
+        }
+
+        return result;
+    }
+
+    public synchronized IAsset getContextAsset(String assetPath)
+    {
+        IAsset result = null;
+
+        if (contextAssets == null)
+            contextAssets = new HashMap(MAP_SIZE);
+        else
+            result = (IAsset)contextAssets.get(assetPath);
+
+        if (result == null)
+        {
+            result = new ContextAsset(assetPath);
+            contextAssets.put(assetPath, result);
+        }
+
+        return result;
+
+    }
+
+    public synchronized IAsset getPrivateAsset(String resourcePath)
+    {
+        IAsset result = null;
+
+        if (privateAssets == null)
+            privateAssets = new HashMap(MAP_SIZE);
+        else
+            result = (IAsset)privateAssets.get(resourcePath);
+
+        if (result == null)
+        {
+            result = new PrivateAsset(resourcePath);
+            privateAssets.put(resourcePath, result);
         }
 
         return result;

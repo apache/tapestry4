@@ -9,7 +9,7 @@ import java.net.URL;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -245,10 +245,7 @@ implements ITemplateSource
 
                 result = (ComponentTemplate)templates.get(candidatePath);
                 if (result != null)
-                {
-                    System.out.println("Found in cache: " + candidatePath + " = " + result);
                     return result;
-                }
         
                 // Ok, see if it exists.
 
@@ -256,15 +253,11 @@ implements ITemplateSource
 
                 if (result != null)
                 {
-                    System.out.println("Parsed: " + candidatePath + " = " + result);
-
                     templates.put(candidatePath, result);
                     return result;
                 }
             }
         }
-
-System.out.println("Not found anywhere: " + specificationResourcePath);
 
         // Not found, let the caller complain about it.
 
