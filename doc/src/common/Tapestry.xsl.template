@@ -23,11 +23,12 @@
 <xsl:param name="shade.verbatim" select="1"/>
   
 <xsl:param name="navig.graphics" select="1"/>
-<xsl:param name="navig.graphics.path">standard-images/</xsl:param>
+<xsl:param name="navig.graphics.path">common-images/</xsl:param>
 <xsl:param name="navig.showtitles">1</xsl:param>
 <xsl:param name="navig.graphics.extension" select="'.png'"/>
+
 <xsl:param name="admon.graphics" select="1"/>
-<xsl:param name="admon.graphics.path">standard-images/</xsl:param>
+<xsl:param name="admon.graphics.path">common-images/</xsl:param>
 
 <xsl:param name="callout.graphics" select="1"/>
 <xsl:param name="callout.graphics.path">standard-images/callouts/</xsl:param>
@@ -36,6 +37,11 @@
      frameset even when the use clicks a link "outside" the documentation.  -->
      
 <xsl:param name="ulink.target">_self</xsl:param>
+
+<!-- This stylesheet allows the generated HTML to blend into
+     the Tapestry web page. -->
+     
+<xsl:param name="html.stylesheet">Tapestry.css</xsl:param>
 
 </xsl:stylesheet>
 
