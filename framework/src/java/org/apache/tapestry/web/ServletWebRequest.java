@@ -26,7 +26,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.Tapestry;
 
 /**
  * Adapter from {@link javax.servlet.http.HttpServletRequest}&nbsp;to
@@ -180,6 +179,9 @@ public class ServletWebRequest implements WebRequest
      */
     public String getActivationPath()
     {
-        return _servletRequest.getServletPath();
+        String servletPath = _servletRequest.getServletPath();
+        String pathInfo = _servletRequest.getPathInfo();
+
+        return pathInfo == null ? servletPath : servletPath + pathInfo;
     }
 }

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.asset;
 
+import java.io.IOException;
+
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 
@@ -29,5 +31,25 @@ class AssetMessages
     public static String missingAsset(String path, Resource resource)
     {
         return _formatter.format("missing-asset", path, resource);
+    }
+
+    public static String noSuchResource(String resourcePath)
+    {
+        return _formatter.format("no-such-resource", resourcePath);
+    }
+
+    public static String unableToReadResource(String resourcePath, IOException cause)
+    {
+        return _formatter.format("unable-to-read-resource", resourcePath, cause);
+    }
+
+    public static String md5Mismatch(String path)
+    {
+        return _formatter.format("md5-mismatch", path);
+    }
+
+    public static String exceptionReportTitle(String path)
+    {
+        return _formatter.format("exception-report-title", path);
     }
 }

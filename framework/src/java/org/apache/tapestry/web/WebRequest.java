@@ -123,10 +123,11 @@ public interface WebRequest extends AttributeHolder
     public void forward(String URL);
 
     /**
-     * Returns the path of the resource which activated this request (this is the servlet path for a
-     * servlet request).
+     * Returns the path of the resource which activated this request (this is the servlet path, plus
+     * path info, for a servlet request).
      * 
-     * @returns the servlet path (for servlet requests), or a blank string (for portlet requests).
+     * @returns the full servlet path (for servlet requests), or a blank string (for portlet
+     *          requests).
      */
     public String getActivationPath();
 }

@@ -32,45 +32,20 @@
 		
 		<assert-output name="Image Tag">
 <![CDATA[
-<img src="/c16/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png&amp;service=asset" border="0"/>
+<img src="/c16/app?md5=f6324ac8f24f0a7f4850221b0f14c865&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png&amp;service=asset" border="0"/>
 ]]>
 		</assert-output>
 	</request>
 	
 	<request>
 		<parameter name="service" value="asset"/>
+    <parameter name="md5" value="f6324ac8f24f0a7f4850221b0f14c865"/>
 		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/logo.png"/>
 		
 		<assert-output-stream name="Image Content"
 				content-type="image/png"
 				path="src/test/org/apache/tapestry/junit/mock/c16/logo.png"/>	
 	</request>
-	
-	<request>
-		<parameter name="service" value="asset"/>
-		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/globe.jpg"/>
-		
-		<assert-output-stream name="Image Content"
-				content-type="image/jpeg"
-				path="src/test/org/apache/tapestry/junit/mock/c16/globe.jpg"/>	
-	</request>	
-	
-	<!-- Request a file which does not exist. -->
-	
-	<request>
-		<parameter name="service" value="asset"/>
-		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/MISSING.gif"/>
-		
-		<assert-output name="Page Title">
-<![CDATA[
-<title>Exception</title>
-]]>			
-		</assert-output>
-		
-		<assert-output name="Message">
-		Could not locate resource /org/apache/tapestry/junit/mock/c16/MISSING.gif.	
-		</assert-output>
-		
-	</request>
+
 	
 </mock-test>

@@ -167,7 +167,7 @@
       
       <p>
         For Tapestry to recognize the URLs, you must inform the servlet container
-        to send them to the Tapestry application servlet, by addining a mapping
+        to send them to the Tapestry application servlet, by adding a mapping
         to web.xml:
       </p>
       <source><![CDATA[
@@ -189,11 +189,59 @@
     </section>
     
     <section>
+      <title>asset-encoder</title>
+      
+      <p>
+        The <code>asset-encoder</code> is for use with the asset service.  The asset service exposes assets stored
+        on the classpath (i.e., inside JARs) to the client web browser. The asset service receives a request with a
+        resource path, and writes back a binary stream of that resources content.
+      </p>
+      
+      <p>
+        In addition, each request includes a <em>message digest</em>, a string generated from the bytes of the
+        the resource.  This message digest acts as a <em>credential</em>, assuring that only classpath resources
+        explicitly exposed by the application are accessible by the client (this prevents devious users from
+        obtaining Java class files, for example). The message digest can only be computed by the server, using the full
+        content of the actual file.
+      </p>
+      
+      <p>
+        To enable friendly URLs for the asset service, add the following to your hivemodule.xml:
+      </p>
+      
+      <source><![CDATA[
+  <contribution configuration-id="tapestry.url.ServiceEncoders">
+    <asset-encoder id="asset" path="/assets/"/>
+  </contribution>]]></source>
+      
+      <p>
+        This contribution will encode asset URLs using the given path.  The provided path, <code>/assets/</code> comes first,
+        then the digest string, then the path for the URL.  An example URI would be <code>/assets/91ab6d51232df0384663312f405babbe/org/apache/tapestry/contrib/palette/select_right.gif</code>.
+      </p>
+      
+      <p>
+        In addition you must add a mapping to web.xml:
+      </p>
+      
+<source><![CDATA[  <servlet-mapping>
+    <servlet-name>myapp</servlet-name>
+    <url-pattern>/assets/*</url-pattern>
+  </servlet-mapping>]]></source>      
+      
+      
+      <p>
+        If you choose a different folder than <code>/assets/</code> then be sure to make corresponding changes
+        in both hivemodule.xml and web.xml.
+      </p>
+      
+    </section>
+    
+    <section>
       <title>extension-encoder</title>
       
       <p>
         The <code>extension-encoder</code> 
-        isused to encode just the <code>service</code> query parameter. The output URL is the service name
+        is used to encode just the <code>service</code> query parameter. The output URL is the service name
         with a fixed extension (typically, ".svc"), i.e., <code>/home.svc</code> or <code>/restart.svc</code>.
       </p>
       

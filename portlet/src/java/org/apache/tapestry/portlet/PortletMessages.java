@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.portlet;
 
+import java.net.MalformedURLException;
+
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
@@ -28,5 +30,10 @@ class PortletMessages
     public static String unsupportedMethod(String methodName)
     {
         return _formatter.format("unsupported-method", methodName);
+    }
+
+    public static String errorGettingResource(String path, Throwable cause)
+    {
+        return _formatter.format("error-getting-resource", path, cause);
     }
 }

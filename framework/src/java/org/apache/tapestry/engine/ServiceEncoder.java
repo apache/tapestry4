@@ -37,8 +37,8 @@ public interface ServiceEncoder
     public void encode(ServiceEncoding encoding);
 
     /**
-     * Invoked by XXX to decode a request. The encoder is responsible for recognizing a request it
-     * may have encoded, and for restoring any query parameters is may have removed.
+     * Invoked to decode a request. The encoder is responsible for recognizing a request it may have
+     * encoded, and for restoring any query parameters is may have removed.
      */
 
     public void decode(ServiceEncoding encoding);
