@@ -1,7 +1,7 @@
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2000-2003 The Apache Software Foundation.  All rights
+ * Copyright (c) 2000-2004 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,13 +23,13 @@
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation", "Tapestry"
+ * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
  *    must not be used to endorse or promote products derived from this
  *    software without prior written permission. For written
  *    permission, please contact apache@apache.org.
  *
- * 5. Products derived from this software may not be called "Apache"
- *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their
+ * 5. Products derived from this software may not be called "Apache" 
+ *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
  *    name, without prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -52,6 +52,7 @@
  * <http://www.apache.org/>.
  *
  */
+
 package org.apache.tapestry.workbench.tree.examples;
 
 import java.util.ArrayList;
