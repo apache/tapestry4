@@ -968,11 +968,11 @@ public abstract class AbstractEngine
 
         }
 
-        String applicationName = _specification.getName();
+        String servletName = context.getServlet().getServletName();
 
         if (_templateSource == null)
         {
-            String name = TEMPLATE_SOURCE_NAME + "." + applicationName;
+            String name = TEMPLATE_SOURCE_NAME + "." + servletName;
 
             _templateSource = (ITemplateSource) servletContext.getAttribute(name);
 
@@ -986,7 +986,7 @@ public abstract class AbstractEngine
 
         if (_specificationSource == null)
         {
-            String name = SPECIFICATION_SOURCE_NAME + "." + applicationName;
+            String name = SPECIFICATION_SOURCE_NAME + "." + servletName;
 
             _specificationSource = (ISpecificationSource) servletContext.getAttribute(name);
 
@@ -1000,7 +1000,7 @@ public abstract class AbstractEngine
 
         if (_pageSource == null)
         {
-            String name = PAGE_SOURCE_NAME + "." + applicationName;
+            String name = PAGE_SOURCE_NAME + "." + servletName;
 
             _pageSource = (IPageSource) servletContext.getAttribute(name);
 
@@ -1014,7 +1014,7 @@ public abstract class AbstractEngine
 
         if (_scriptSource == null)
         {
-            String name = SCRIPT_SOURCE_NAME + "." + applicationName;
+            String name = SCRIPT_SOURCE_NAME + "." + servletName;
 
             _scriptSource = (IScriptSource) servletContext.getAttribute(name);
 
@@ -1028,7 +1028,7 @@ public abstract class AbstractEngine
 
         if (_serviceMap == null)
         {
-            String name = SERVICE_MAP_NAME + "." + applicationName;
+            String name = SERVICE_MAP_NAME + "." + servletName;
 
             _serviceMap = (Map) servletContext.getAttribute(name);
 
@@ -1042,7 +1042,7 @@ public abstract class AbstractEngine
 
         if (_stringsSource == null)
         {
-            String name = STRINGS_SOURCE_NAME + "." + applicationName;
+            String name = STRINGS_SOURCE_NAME + "." + servletName;
 
             _stringsSource = (IComponentStringsSource) servletContext.getAttribute(name);
 
@@ -1057,8 +1057,10 @@ public abstract class AbstractEngine
 
     /**
      * 
-     *  Creates and returns a new instance of {@link DefaultStringsSource}.
+     *  Invoked from {@link #setupForRequest(RequestContext)} to provide
+     *  a new instance of {@link IComponentStringsSource}.
      * 
+     *  @return an instance of {@link DefaultStringsSource}
      *  @since 2.0.4
      * 
      **/
@@ -1093,6 +1095,7 @@ public abstract class AbstractEngine
      * 
      *  @return an instance of {@link PageSource}
      *  @since 1.0.9
+     * 
      **/
 
     protected IPageSource createPageSource()

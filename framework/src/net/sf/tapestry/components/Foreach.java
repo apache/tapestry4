@@ -60,9 +60,8 @@ import net.sf.tapestry.Tapestry;
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>The source of objects to be iterated, which may be a Collection,
- *  an Iterator or an array of Objects.  If unbound, or the binding
- *  is null, or bound to an unusable value (one not in the list), 
- *  then no iteration takes place.</td>
+ *  an Iterator or an array of Objects, or a single object (which is
+ *  treated as a singleton collection).</td>
  * </tr>
  *
  * <tr>

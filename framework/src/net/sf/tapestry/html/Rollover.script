@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<!DOCTYPE script PUBLIC 
-	"-//Primix Solutions//Tapestry Script 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Script_1_0.dtd">
+
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
 
 <script>
 <!-- 
@@ -22,31 +22,32 @@ onMouseOutName - name of mouse out function
 -->
 
 <let key="imageName">
-	rollover_<insert key="uniqueId"/>
+	rollover_${uniqueId}
 </let>
+
 <let key="onMouseOverName">
-	focus_<insert key="imageName"/>
+	focus_${imageName}
 </let>
 <let key="onMouseOutName">
-	blur_<insert key="imageName"/>
+	blur_${imageName}
 </let>
 
 <let key="attribute">
-	document.<insert key="imageName"/>.src
+	document.${imageName}.src
 </let>
 
 <body>
 
-function <insert key="onMouseOverName"/>()
+function ${onMouseOverName}()
 {
   if (document.images)
-    <insert key="attribute"/> = <insert key="focusImageURL"/>;
+    ${attribute} = ${focusImageURL};
 }
 
-function <insert key="onMouseOutName"/>()
+function ${onMouseOutName}()
 {
   if (document.images)
-    <insert key="attribute"/> = <insert key="blurImageURL"/>;
+    ${attribute} = ${blurImageURL};
 }
 
 </body>

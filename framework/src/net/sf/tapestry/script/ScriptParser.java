@@ -60,6 +60,11 @@ import org.xml.sax.InputSource;
  *  (associated with the <code>initialization</code> element of the XML document)
  *  is used to add JavaScript that will be evaluated when the page finishes loading
  *  (i.e., from the HTML &lt;body&gt; element's onLoad event handler).
+ * 
+ *  <p>
+ *  Starting in release 2.2, the &lt;insert&gt; element is no longer used, instead
+ *  the (Ant-like) syntax <code>${<i>property-path</i>}</code> accomplishes the
+ *  same thing.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -80,11 +85,9 @@ public class ScriptParser extends AbstractDocumentParser
 
     private Map insertCache;
 
-    public static final String SCRIPT_DTD_1_0_PUBLIC_ID =
-        "-//Primix Solutions//Tapestry Script 1.0//EN";
+    public static final String SCRIPT_DTD_1_0_PUBLIC_ID = "-//Primix Solutions//Tapestry Script 1.0//EN";
 
-    public static final String SCRIPT_DTD_1_1_PUBLIC_ID =
-        "-//Howard Ship//Tapestry Script 1.1//EN";
+    public static final String SCRIPT_DTD_1_1_PUBLIC_ID = "-//Howard Ship//Tapestry Script 1.1//EN";
 
     public ScriptParser()
     {
@@ -98,8 +101,7 @@ public class ScriptParser extends AbstractDocumentParser
      *
      **/
 
-    public IScript parse(InputStream stream, String resourcePath)
-        throws DocumentParseException
+    public IScript parse(InputStream stream, String resourcePath) throws DocumentParseException
     {
         InputSource source = new InputSource(stream);
 
@@ -123,15 +125,12 @@ public class ScriptParser extends AbstractDocumentParser
 
         String publicId = document.getDoctype().getPublicId();
 
-        if (!(publicId.equals(SCRIPT_DTD_1_0_PUBLIC_ID)
-            || publicId.equals(SCRIPT_DTD_1_1_PUBLIC_ID)))
+        if (!(publicId.equals(SCRIPT_DTD_1_0_PUBLIC_ID) || publicId.equals(SCRIPT_DTD_1_1_PUBLIC_ID)))
             throw new DocumentParseException(
                 Tapestry.getString("ScriptParser.unknown-public-id", publicId),
                 getResourcePath());
 
-        for (Node child = root.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
+        for (Node child = root.getFirstChild(); child != null; child = child.getNextSibling())
         {
 
             // Ordered first since it is most prevalent.
@@ -186,8 +185,7 @@ public class ScriptParser extends AbstractDocumentParser
         return token;
     }
 
-    private IScriptToken buildInitialization(Node node)
-        throws DocumentParseException
+    private IScriptToken buildInitialization(Node node) throws DocumentParseException
     {
         IScriptToken token = new InitToken();
 
@@ -208,9 +206,7 @@ public class ScriptParser extends AbstractDocumentParser
         CharacterData textNode;
         String staticText;
 
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
+        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
         {
             // Completely ignore any comment nodes.
 
@@ -247,7 +243,7 @@ public class ScriptParser extends AbstractDocumentParser
             textNode = (CharacterData) child;
             staticText = textNode.getData();
 
-            token.addToken(new StaticToken(staticText));
+            addTextTokens(token, staticText);
         }
 
     }
@@ -263,13 +259,21 @@ public class ScriptParser extends AbstractDocumentParser
 
     private IScriptToken buildInsert(Node node)
     {
-        IScriptToken result = null;
         String propertyPath = getAttribute(node, "property-path");
 
         // Version 1.0 of the DTD called the attribute "key".
 
         if (propertyPath == null)
             propertyPath = getAttribute(node, "key");
+
+        return constructInsert(propertyPath);
+    }
+
+    /** @since 2.2 **/
+
+    private IScriptToken constructInsert(String propertyPath)
+    {
+        IScriptToken result = null;
 
         if (insertCache == null)
             insertCache = new HashMap(MAP_SIZE);
@@ -285,8 +289,7 @@ public class ScriptParser extends AbstractDocumentParser
         return result;
     }
 
-    private IScriptToken buildIf(boolean condition, Node node)
-        throws DocumentParseException
+    private IScriptToken buildIf(boolean condition, Node node) throws DocumentParseException
     {
         String propertyPath = getAttribute(node, "property-path");
         IScriptToken result = new IfToken(condition, propertyPath);
@@ -314,5 +317,112 @@ public class ScriptParser extends AbstractDocumentParser
         String path = getAttribute(node, "resource-path");
 
         return new IncludeScriptToken(path);
+    }
+
+    private static final int STATE_START = 0;
+    private static final int STATE_DOLLAR = 1;
+    private static final int STATE_COLLECT_PATH = 2;
+
+    /** @since 2.2 **/
+
+    private void addTextTokens(IScriptToken token, String text)
+    {
+        char[] buffer = text.toCharArray();
+        int state = STATE_START;
+        int blockStart = 0;
+        int blockLength = 0;
+        int propertyStart = -1;
+        int propertyLength = 0;
+        int i = 0;
+
+        while (i < buffer.length)
+        {
+            char ch = buffer[i];
+
+            switch (state)
+            {
+                case STATE_START :
+
+                    if (ch == '$')
+                    {
+                        state = STATE_DOLLAR;
+                        i++;
+                        continue;
+                    }
+
+                    blockLength++;
+                    i++;
+                    continue;
+
+                case STATE_DOLLAR :
+
+                    if (ch == '{')
+                    {
+                        state = STATE_COLLECT_PATH;
+                        i++;
+
+                        propertyStart = i;
+                        propertyLength = 0;
+
+                        continue;
+                    }
+
+                    state = STATE_START;
+                    continue;
+
+                case STATE_COLLECT_PATH :
+
+                    if (ch == '}')
+                    {
+
+                        // Degenerate case:  the string "${}".
+
+                        if (propertyLength == 0)
+                            blockLength += 3;
+
+                        if (blockLength > 0)
+                            token.addToken(constructStatic(text, blockStart, blockLength));
+
+                        if (propertyLength > 0)
+                        {
+                            String propertyPath = text.substring(propertyStart, propertyStart + propertyLength);
+
+                            token.addToken(constructInsert(propertyPath));
+                        }
+
+                        i++;
+                        blockStart = i;
+                        blockLength = 0;
+
+                        state = STATE_START;
+
+                        continue;
+                    }
+
+                    i++;
+                    propertyLength++;
+                    continue;
+            }
+
+        }
+
+        // OK, to handle the end.  Couple of degenerate cases where
+        // a ${...} was incomplete, so we adust the block length.
+
+        if (state == STATE_DOLLAR)
+            blockLength++;
+
+        if (state == STATE_COLLECT_PATH)
+            blockLength += propertyLength + 2;
+
+        if (blockLength > 0)
+            token.addToken(constructStatic(text, blockStart, blockLength));
+    }
+
+    /** @since 2.2. **/
+    
+    private IScriptToken constructStatic(String text, int blockStart, int blockLength)
+    {
+        return new StaticToken(text.substring(blockStart, blockStart + blockLength));
     }
 }

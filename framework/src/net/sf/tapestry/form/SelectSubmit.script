@@ -11,32 +11,39 @@ Input symbols:
   component: The PropertySelection component the script is to be attached to.
 -->
 <script>
+
 <let key="formName">
-	<insert property-path="component.form.name"/>
+	${component.form.name}
 </let>
+
 <let key="selectName">
- 	<insert property-path="component.name"/>
+ 	${component.name}
 </let>
+
 <let key="formPath">
-	document.<insert property-path="formName"/>
+	document.${formName}
 </let>
+
 <let key="selectPath">
-	<insert property-path="formPath"/>.<insert property-path="selectName"/>
+	${formPath}.${selectName}
 </let>
+
 <let key="functionName">
-  onChange_<insert property-path="formName"/>_<insert property-path="selectName"/>
+  onChange_${formName}_${selectName}
 </let>
+
 <body>
 
-function <insert property-path="functionName"/>()
+function ${functionName}()
 {
-  <insert property-path="formPath"/>.submit();
+  ${formPath}.submit();
 }
 
 </body>
+
 <initialization>
 
-<insert property-path="selectPath"/>.onchange = <insert property-path="functionName"/>;
+${selectPath}.onchange = ${functionName};
 
 </initialization>
 </script>
