@@ -79,7 +79,7 @@ public class SimpleTableColumnComponent
 	}
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.simple.ISimpleTableColumnRenderer#initializeColumnRenderer(SimpleTableColumn, ITableModel)
+	 * @see net.sf.tapestry.contrib.table.model.simple.ISimpleTableColumnRenderer#initializeColumnRenderer(SimpleTableColumn, ITableModelSource)
 	 */
 	public void initializeColumnRenderer(
 		SimpleTableColumn objColumn,
