@@ -7,11 +7,8 @@ import javax.ejb.RemoveException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.vlib.Protected;
 import net.sf.tapestry.vlib.VirtualLibraryEngine;
 import net.sf.tapestry.vlib.Visit;

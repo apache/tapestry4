@@ -1,13 +1,10 @@
 package net.sf.tapestry.components;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.BindingException;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  A component which delegates it's behavior to another object.

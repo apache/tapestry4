@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Tapestry;
 
 import ognl.ClassResolver;
 import ognl.Ognl;

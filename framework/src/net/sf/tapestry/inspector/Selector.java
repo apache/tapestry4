@@ -1,7 +1,6 @@
 package net.sf.tapestry.inspector;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -13,9 +12,7 @@ import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.form.IPropertySelectionModel;
-import net.sf.tapestry.form.IPropertySelectionRenderer;
 import net.sf.tapestry.form.StringPropertySelectionModel;
-import net.sf.tapestry.spec.ApplicationSpecification;
 
 /**
  *  Component of the {@link Inspector} page used to select the page and "crumb trail"

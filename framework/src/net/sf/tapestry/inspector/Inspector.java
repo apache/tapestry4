@@ -5,12 +5,9 @@ import java.util.Map;
 
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IPage;
-import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.components.Block;
 import net.sf.tapestry.html.BasePage;
-import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  *  The Tapestry Inspector page.

@@ -4,8 +4,6 @@ import java.util.List;
 
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
-import net.sf.tapestry.spec.LibrarySpecification;
-import net.sf.tapestry.util.IPropertyHolder;
 
 /**
  *  Organizes different libraries of Tapestry pages, components

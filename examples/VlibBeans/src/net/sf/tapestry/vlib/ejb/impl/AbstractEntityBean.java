@@ -18,7 +18,6 @@ import net.sf.tapestry.vlib.ejb.IKeyAllocator;
 import net.sf.tapestry.vlib.ejb.IKeyAllocatorHome;
 import ognl.Ognl;
 import ognl.OgnlException;
-import ognl.OgnlRuntime;
 
 /**
  *  Provides basic support for the entity context, empty or minimal

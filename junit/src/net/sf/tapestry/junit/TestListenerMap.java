@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IActionListener;

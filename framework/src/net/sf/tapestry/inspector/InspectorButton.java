@@ -1,6 +1,5 @@
 package net.sf.tapestry.inspector;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 

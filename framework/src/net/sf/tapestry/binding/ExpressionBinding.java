@@ -2,7 +2,6 @@ package net.sf.tapestry.binding;
 
 import java.util.Map;
 
-import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IResourceResolver;
@@ -12,8 +11,6 @@ import net.sf.tapestry.spec.BeanLifecycle;
 import net.sf.tapestry.spec.BeanSpecification;
 import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.util.prop.OgnlUtils;
-import net.sf.tapestry.util.prop.PropertyFinder;
-import net.sf.tapestry.util.prop.PropertyInfo;
 import ognl.Ognl;
 import ognl.OgnlException;
 

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.BindingException;
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
@@ -21,7 +20,6 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RenderOnlyPropertyException;
 import net.sf.tapestry.RenderRewoundException;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.StaleLinkException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.PageDetachListener;

@@ -3,7 +3,6 @@ package net.sf.tapestry.param;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequiredParameterException;
 
 /**
  *   Connector for boolean parameters.

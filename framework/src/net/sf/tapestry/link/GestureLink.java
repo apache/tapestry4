@@ -1,7 +1,5 @@
 package net.sf.tapestry.link;
 
-import java.net.URL;
-
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;

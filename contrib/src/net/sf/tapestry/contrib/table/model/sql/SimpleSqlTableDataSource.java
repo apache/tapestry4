@@ -204,7 +204,7 @@ public class SimpleSqlTableDataSource implements ISqlTableDataSource
 			objSortingBuf.append("ORDER BY ");
 			objSortingBuf.append(objSortingState.getSortColumn());
 			if (objSortingState.getSortOrder()
-				== objSortingState.SORT_ASCENDING)
+				== ITableSortingState.SORT_ASCENDING)
 				objSortingBuf.append(" ASC ");
 			else
 				objSortingBuf.append(" DESC ");

@@ -13,7 +13,6 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.util.io.DataSqueezer;
 
 /**
  * The external service enables external applications

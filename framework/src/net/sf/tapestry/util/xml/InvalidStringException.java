@@ -1,7 +1,5 @@
 package net.sf.tapestry.util.xml;
 
-import org.xml.sax.SAXParseException;
-
 /**
  *  Exception thrown if there is any kind of error validating a string
  *  during document parsing

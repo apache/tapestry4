@@ -1,13 +1,10 @@
 package net.sf.tapestry.html;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IAsset;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  Used to insert an image.  To create a rollover image, use the

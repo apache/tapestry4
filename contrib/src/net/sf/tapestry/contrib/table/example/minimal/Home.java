@@ -2,13 +2,9 @@ package net.sf.tapestry.contrib.table.example.minimal;
 
 import java.util.Locale;
 
-import net.sf.tapestry.contrib.table.model.ITableColumn;
 import net.sf.tapestry.contrib.table.model.ITableColumnModel;
-import net.sf.tapestry.contrib.table.model.ITableDataModel;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ognl.ExpressionTableColumnModel;
-import net.sf.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
-import net.sf.tapestry.contrib.table.model.simple.SimpleTableColumn;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableModel;
 import net.sf.tapestry.html.BasePage;
 

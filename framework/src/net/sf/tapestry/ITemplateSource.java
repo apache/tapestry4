@@ -1,8 +1,5 @@
 package net.sf.tapestry;
 
-import java.util.Locale;
-
-import net.sf.tapestry.parse.*;
 import net.sf.tapestry.parse.ComponentTemplate;
 
 /**

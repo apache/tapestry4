@@ -2,13 +2,11 @@ package net.sf.tapestry.html;
 
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.Gesture;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  Implements a &lt;frame&gt; within a &lt;frameset&gt;.

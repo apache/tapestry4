@@ -2,18 +2,8 @@ package net.sf.tapestry.contrib.popup;
 
 import java.net.URLEncoder;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IPageLoader;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.PageLoaderException;
-import net.sf.tapestry.event.PageDetachListener;
-import net.sf.tapestry.event.PageEvent;
-import net.sf.tapestry.event.PageRenderListener;
-import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  * This component provides a popup link to launch a new window using a given

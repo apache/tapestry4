@@ -6,11 +6,8 @@ import javax.ejb.CreateException;
 import javax.ejb.RemoveException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.html.BasePage;
-import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.vlib.IErrorProperty;
 import net.sf.tapestry.vlib.VirtualLibraryEngine;
 import net.sf.tapestry.vlib.components.Browser;

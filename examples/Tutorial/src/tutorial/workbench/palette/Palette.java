@@ -1,10 +1,7 @@
 package tutorial.workbench.palette;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import org.apache.commons.lang.enum.Enum;
 
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.contrib.palette.SortMode;
@@ -12,6 +9,8 @@ import net.sf.tapestry.form.EnumPropertySelectionModel;
 import net.sf.tapestry.form.IPropertySelectionModel;
 import net.sf.tapestry.form.StringPropertySelectionModel;
 import net.sf.tapestry.html.BasePage;
+
+import org.apache.commons.lang.enum.Enum;
 
 /**
  *  @version $Id$

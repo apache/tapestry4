@@ -1,17 +1,9 @@
 package net.sf.tapestry.contrib.table.model.ognl;
 
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ognl.Ognl;
-import ognl.OgnlException;
-
-import net.sf.tapestry.contrib.table.model.ITableColumn;
-import net.sf.tapestry.contrib.table.model.simple.ITableColumnEvaluator;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableColumn;
-import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
  * @author mindbridge

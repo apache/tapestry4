@@ -2,7 +2,6 @@ package net.sf.tapestry.contrib.table.components;
 
 import java.util.Iterator;
 
-import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;

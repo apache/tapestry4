@@ -8,7 +8,6 @@ import java.io.OutputStream;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.BaseComponent;
-import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;

@@ -1,6 +1,5 @@
 package net.sf.tapestry.util;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

@@ -1,7 +1,6 @@
 package net.sf.tapestry.form;
 
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.Tapestry;
 
 /**
  *  Implements a component that manages an HTML &lt;input type=text&gt; or

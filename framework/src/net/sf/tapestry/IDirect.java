@@ -1,7 +1,5 @@
 package net.sf.tapestry;
 
-import net.sf.tapestry.link.DirectLink;
-
 /**
  *  Interface that defines classes that may be messaged by the direct
  *  service.

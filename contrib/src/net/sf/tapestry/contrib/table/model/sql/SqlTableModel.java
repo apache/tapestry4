@@ -9,7 +9,6 @@ import net.sf.tapestry.contrib.table.model.ITableColumnModel;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITablePagingState;
 import net.sf.tapestry.contrib.table.model.ITableSortingState;
-import net.sf.tapestry.contrib.table.model.common.ArrayIterator;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

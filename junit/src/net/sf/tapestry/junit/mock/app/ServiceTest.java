@@ -1,9 +1,5 @@
 package net.sf.tapestry.junit.mock.app;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import net.sf.tapestry.ComponentAddress;
 import net.sf.tapestry.IExternalPage;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;

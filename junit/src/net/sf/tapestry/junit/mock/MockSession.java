@@ -1,7 +1,5 @@
 package net.sf.tapestry.junit.mock;
 
-import java.util.Enumeration;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;

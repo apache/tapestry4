@@ -1,12 +1,9 @@
 package net.sf.tapestry.junit;
 
-import javax.servlet.ServletConfig;
-
 import junit.framework.TestCase;
 import net.sf.tapestry.IPropertySource;
 import net.sf.tapestry.junit.mock.MockContext;
 import net.sf.tapestry.junit.mock.MockServletConfig;
-import net.sf.tapestry.junit.mock.MockSession;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.util.DelegatingPropertySource;
 import net.sf.tapestry.util.PropertyHolderPropertySource;

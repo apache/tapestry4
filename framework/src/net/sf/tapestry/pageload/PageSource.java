@@ -1,12 +1,10 @@
 package net.sf.tapestry.pageload;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
@@ -20,7 +18,6 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.PageLoaderException;
-import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.asset.ContextAsset;
 import net.sf.tapestry.asset.ExternalAsset;
 import net.sf.tapestry.asset.PrivateAsset;

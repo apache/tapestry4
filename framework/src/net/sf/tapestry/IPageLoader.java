@@ -1,7 +1,5 @@
 package net.sf.tapestry;
 
-import net.sf.tapestry.spec.ComponentSpecification;
-
 /**
  * Interface exposed to components as they are loaded by the page loader.
  *

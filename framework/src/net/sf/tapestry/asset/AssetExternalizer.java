@@ -9,12 +9,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IPropertySource;
@@ -22,6 +18,9 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.StringSplitter;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  Responsible for copying assets from the classpath to an external directory that

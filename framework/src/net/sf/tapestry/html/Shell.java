@@ -1,14 +1,10 @@
 package net.sf.tapestry.html;
 
-import java.net.URL;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IAsset;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IPage;
