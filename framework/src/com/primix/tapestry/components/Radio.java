@@ -36,6 +36,9 @@ import com.primix.tapestry.spec.*;
  *  Such a component must be wrapped (possibly indirectly)
  *  inside a {@link RadioGroup} component.
  *
+ *  <p>{@link Radio} and {@link RadioGroup} are generally not used (except
+ *  for very special cases).  Instead, a {@link PropertySelection} component is used.
+ *
  * <table border=1>
  * <tr> 
  *    <td>Property</td>

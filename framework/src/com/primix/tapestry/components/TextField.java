@@ -224,61 +224,53 @@ public class TextField extends AbstractFormComponent
 				value = cycle.getRequestContext().getParameter(name);
 
 				textBinding.setString(value);
-				
-				// Notify the listener, if any.
-				
-				listener = getListener(cycle);
-
-				if (listener != null)
-					listener.actionTriggered(this, cycle);	
 			}
 
+            return;
 		}
-		else
-		{
+
 			if (staticHidden)
 				hidden = hiddenValue;
 			else if (hiddenBinding != null)
 				hidden = hiddenBinding.getBoolean();
 
 
-			writer.beginOrphan("input");
+		writer.beginOrphan("input");
 
-			writer.attribute("type", hidden ? "password" : "text");
+		writer.attribute("type", hidden ? "password" : "text");
 
-			if (disabled)
-				writer.attribute("disabled");
+		if (disabled)
+			writer.attribute("disabled");
 
-			writer.attribute("name", name);
+		writer.attribute("name", name);
 
-			if (displayWidthBinding != null)
-			{
-				if (staticDisplayWidth)
-					displayWidth = displayWidthValue;
-				else
-					displayWidth = displayWidthBinding.getInt();
+		if (displayWidthBinding != null)
+		{
+			if (staticDisplayWidth)
+				displayWidth = displayWidthValue;
+			else
+				displayWidth = displayWidthBinding.getInt();
 
-				writer.attribute("size", displayWidth);
-			}
-
-			if (maximumWidthBinding != null)
-			{
-				if (staticMaximumWidth)
-					maximumWidth = maximumWidthValue;
-				else
-					maximumWidth = maximumWidthBinding.getInt();
-
-				writer.attribute("maxlength", maximumWidth);
-			}
-
-			value = textBinding.getString();
-			if (value != null)
-				writer.attribute("value", value);
-
-			generateAttributes(cycle, writer, reservedNames);
-
-			writer.closeTag();
+			writer.attribute("size", displayWidth);
 		}
+
+		if (maximumWidthBinding != null)
+		{
+			if (staticMaximumWidth)
+				maximumWidth = maximumWidthValue;
+			else
+				maximumWidth = maximumWidthBinding.getInt();
+
+			writer.attribute("maxlength", maximumWidth);
+		}
+
+		value = textBinding.getString();
+		if (value != null)
+			writer.attribute("value", value);
+
+		generateAttributes(cycle, writer, reservedNames);
+
+		writer.closeTag();
 	}
 
 	public void setDisabledBinding(IBinding value)

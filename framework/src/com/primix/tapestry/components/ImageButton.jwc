@@ -41,13 +41,21 @@
 			<java-type>java.awt.Point</java-type>
 		</parameter>
 
-	    <!-- Listener notified IF the image button was clicked (causing the
-		     form to be submitted) -->
+		<!-- Bound to a property that is updated (with the tag) if the Submit button
+		     is clicked. -->
 
 		<parameter>
-			<name>listener</name>
-			<java-type>com.primix.tapestry.components.IActionListener</java-type>
+		    <name>selected</name>
+		    <required>no</required>
 		</parameter>
+
+		<!-- A tag that is used when the Submit button is clicked. -->
+
+		<parameter>
+		    <name>tag</name>
+		    <required>no</required>
+		</parameter>
+
 	</parameters>
 	
 </specification>

@@ -114,12 +114,12 @@ public class AssetExternalizer
 		if (directory == null)
 			return;
 
-			URL = servlet.getInitParameter("com.primix.tapestry.asset.URL");
+		URL = servlet.getInitParameter("com.primix.tapestry.asset.URL");
 
 		if (URL == null)
 			return;
 
-			assetDir = new File(directory);
+		assetDir = new File(directory);
 	}
 
 	protected void externalize(String resourcePath)
@@ -232,7 +232,7 @@ public class AssetExternalizer
 	*  previously copied out of the classpath, the previously
 	*  generated URL is returned.
 	* 
-	*  <p>If the asset directgory and URL are not configured, then
+	*  <p>If the asset directory and URL are not configured, then
 	*  returns null.
 	*
 	*  <p>Otherwise, the asset is copied out to the asset directory,

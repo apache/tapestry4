@@ -85,10 +85,12 @@ import com.primix.tapestry.spec.*;
  */
 
 
-public class Form extends AbstractFormComponent
+public class Form extends AbstractComponent
 {
 	private IBinding methodBinding;
 	private String methodValue;
+
+    private IBinding listenerBinding;
 
 	private boolean rewinding;
 	private int nextElementId = 0;
@@ -125,6 +127,16 @@ public class Form extends AbstractFormComponent
 	{
 		return methodBinding;
 	}
+
+    public void setListenerBinding(IBinding value)
+    {
+        listenerBinding = value;
+    }
+
+    public IBinding getListenerBinding()
+    {
+        return listenerBinding;
+    }
 
 	/**
 	*  Indicates to any wrapped form components that they should respond to the form
@@ -249,10 +261,18 @@ public class Form extends AbstractFormComponent
 					"Incorrect number of elements with Form " + getExtendedId() + ".",
 					getPage(), cycle);
 		
-			listener = getListener(cycle);
+            try
+            {
+			    listener = (IActionListener)listenerBinding.getValue();
+            }
+            catch (ClassCastException e)
+            {
+                throw new RequestCycleException("Parameter listener is not type IActionListener.",
+                        this, cycle, e);
+            }
 
 			if (listener == null)
-				throw new RequiredParameterException(this, "listener", getBinding("listener"),
+				throw new RequiredParameterException(this, "listener", listenerBinding,
 					cycle);
 
 			listener.actionTriggered(this, cycle);

@@ -54,6 +54,8 @@ import com.primix.tapestry.parse.*;
 
 abstract public class ApplicationServlet extends HttpServlet
 {
+    private static boolean showExceptions = Boolean.getBoolean("com.primix.tapestry.show-servlet-exceptions");
+
 	private ApplicationSpecification specification;
 	private String attributeName;
 
@@ -93,6 +95,9 @@ abstract public class ApplicationServlet extends HttpServlet
 		{
 			log("ServletException", e);
 
+            if (showExceptions)
+                e.printStackTrace();
+
 			// Rethrow it.
 
 			throw e;
@@ -100,6 +105,9 @@ abstract public class ApplicationServlet extends HttpServlet
 		catch (IOException e)
 		{
 			log("IOException", e);
+
+            if (showExceptions)
+                e.printStackTrace();
 
 			// Rethrow it.
 

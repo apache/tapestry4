@@ -89,15 +89,6 @@ import com.primix.tapestry.spec.*;
  *
  *			<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
  *
- *  <tr>
- *    <td>listener</td>
- *    <td>{@link IActionListener}</td>
- * 	  <td>R</td>
- * 	  <td>no</td>
- *	  <td>&nbsp;</td>
- *	  <td>The listener is notified after the text binding has been updated.</td>
- *	</tr>
- *
  * <tr>
  *	</table>
  *
@@ -164,7 +155,6 @@ public class Text extends AbstractFormComponent
 	{
 		boolean rewinding;
 		String name;
-		IActionListener listener;
 		String value;
 		boolean disabled = false;
 		Form form;
@@ -194,43 +184,35 @@ public class Text extends AbstractFormComponent
 				value = cycle.getRequestContext().getParameter(name);
 
 				textBinding.setString(value);
-				
-				// Now, notify the listener.
-				
-				listener = getListener(cycle);
-
-				if (listener != null)
-					listener.actionTriggered(this, cycle);	
 			}
 
+            return;
 		}
-		else
-		{
-			compressed = writer.compress(true);
 
-			writer.begin("textarea");
+		compressed = writer.compress(true);
 
-			writer.attribute("name", name);
+		writer.begin("textarea");
 
-			if (disabled)
-				writer.attribute("disabled");
+		writer.attribute("name", name);
 
-			if (rowsBinding != null)
-				writer.attribute("rows", rowsBinding.getInt());
+		if (disabled)
+			writer.attribute("disabled");
 
-			if (columnsBinding != null)
-				writer.attribute("cols", columnsBinding.getInt());
+		if (rowsBinding != null)
+			writer.attribute("rows", rowsBinding.getInt());
 
-			generateAttributes(cycle, writer, reservedNames);
+		if (columnsBinding != null)
+			writer.attribute("cols", columnsBinding.getInt());
 
-			value = textBinding.getString();
-			if (value != null)
-				writer.print(value);
+		generateAttributes(cycle, writer, reservedNames);
 
-			writer.end();
+		value = textBinding.getString();
+		if (value != null)
+			writer.print(value);
 
-			writer.setCompressed(compressed);
-		}
+		writer.end();
+
+		writer.setCompressed(compressed);
 	}
 
 	public void setColumnsBinding(IBinding value)

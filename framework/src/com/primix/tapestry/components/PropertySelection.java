@@ -93,19 +93,9 @@ import com.primix.foundation.*;
  *		<td>no</td>
  *		<td>false</td>
  *		<td>Controls whether the &lt;select&gt; is active or not. A disabled PropertySelection
- * does not update its value parameter, and doesn't notify its listener when the form
- * is submitted.
+ * does not update its value parameter.
  *			
  *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
- *	</tr>
- *
- *  <tr>
- *    <td>listener</td>
- *    <td>{@link IActionListener}</td>
- * 	  <td>R</td>
- * 	  <td>no</td>
- *	  <td>&nbsp;</td>
- *	  <td>The listener, informed <em>after</em> the property value is updated.</td>
  *	</tr>
  *
  *	</table>
@@ -236,7 +226,6 @@ public class PropertySelection extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		IActionListener listener;
 		Form form;
 		boolean rewinding;
 		IPropertySelectionModel model;
@@ -283,10 +272,6 @@ public class PropertySelection extends AbstractFormComponent
 					newValue = model.translateValue(optionValue);
 				
 				valueBinding.setValue(newValue);
-				
-				listener = getListener(cycle);
-				if (listener != null)
-					listener.actionTriggered(this, cycle);
 				
 				return;	
 			}

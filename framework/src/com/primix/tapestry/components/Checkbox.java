@@ -69,15 +69,6 @@ import com.primix.tapestry.spec.*;
  *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
  *	</tr>
  *
- *  <tr>
- *    <td>listener</td>
- *    <td>{@link IActionListener}</td>
- * 	  <td>R</td>
- * 	  <td>no</td>
- *	  <td>&nbsp;</td>
- *	  <td>The listener is notified after the text binding has been updated.  The
- *		  listener is notified <em>even if the <code>Checkbox</code> is disabled</em>.</td>
- *	</tr>
  *
  *	</table>
  *
@@ -91,7 +82,6 @@ import com.primix.tapestry.spec.*;
 
 public class Checkbox extends AbstractFormComponent
 {
-	private IBinding listenerBinding;
 	private IBinding selectedBinding;
 	private IBinding disabledBinding;
 	private boolean staticDisabled;
@@ -131,7 +121,6 @@ public class Checkbox extends AbstractFormComponent
 	{
 		boolean rewinding;
 		String name;
-		IActionListener listener;
 		String value;
 		boolean disabled = false;
 		Form form;
@@ -164,10 +153,6 @@ public class Checkbox extends AbstractFormComponent
 				selectedBinding.setBoolean(checked);
 			}
 
-			listener = getListener(cycle);
-
-			if (listener != null)
-				listener.actionTriggered(this, cycle);
 		}
 		else
 		{

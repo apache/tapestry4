@@ -68,16 +68,6 @@ import java.util.*;
  *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
  *	</tr>
  *
- *  <tr>
- *    <td>listener</td>
- *    <td>{@link IActionListener}</td>
- * 	  <td>R</td>
- * 	  <td>no</td>
- *	  <td>&nbsp;</td>
- *	  <td>The listener, informed <em>after</em> the {@link Option} components
- *	      have had a chance to absorb the request.</td>
- *	</tr>
- *
  *	</table>
  *
  * <p>Informal parameters are allowed.
@@ -188,7 +178,6 @@ public class Select extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 		String name;
-		IActionListener listener;
 		Form form;
 		boolean compressed;
 		boolean multiple;
@@ -258,12 +247,6 @@ public class Select extends AbstractFormComponent
 		{
 			writer.end();
 		}
-		else
-		{
-			listener = getListener(cycle);
-			if (listener != null)
-				listener.actionTriggered(this, cycle);
-		}
 
 		cycle.removeAttribute(ATTRIBUTE_NAME);
 
@@ -279,6 +262,11 @@ public class Select extends AbstractFormComponent
 		multipleBinding = value;
 	}
     
+    /**
+     *  Cut-and-paste with {@link RadioGroup}!
+     *
+     */
+
     private Set buildSelections(IRequestCycle cycle, String parameterName)
     {
     	RequestContext context;

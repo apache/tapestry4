@@ -34,8 +34,7 @@ import com.primix.tapestry.spec.*;
 /**
  *  A base class for building components that correspond to HTML form elements.
  *  All such components must be wrapped (directly or indirectly) by
- *  a {@link Form} component, and may have an 
- *  {@link IActionListener action listener}.
+ *  a {@link Form} component.
  *
  *  @version $Id$
  *  @author Howard Ship
@@ -45,42 +44,18 @@ import com.primix.tapestry.spec.*;
 public abstract class AbstractFormComponent
     extends AbstractComponent
 {
-	private IBinding listenerBinding;
-
 	public AbstractFormComponent(IPage page, IComponent container, 
 		String id, ComponentSpecification specification)
 	{
 		super(page, container, id, specification);
 	}
 
-	public void setListenerBinding(IBinding value)
-	{
-		listenerBinding = value;
-	}
-
-	public IBinding getListenerBinding()
-	{
-		return listenerBinding;
-	}
-
-	public IActionListener getListener(IRequestCycle cycle)
-	throws RequestCycleException
-	{
-		if (listenerBinding == null)
-			return null;
-
-		try
-		{
-			return (IActionListener)listenerBinding.getValue();
-		}
-		catch (ClassCastException e)
-		{
-			throw new RequestCycleException(
-				"Parameter listener is not type IActionListener.",
-				this, cycle, e);
-		}
-
-	}
+    /**
+     *  Returns the {@link Form} wrapping this component.
+     *
+     *  @throws RequestCycleException if the component is not wrapped by a {@link Form}.
+     *
+     */
 
 	public Form getForm(IRequestCycle cycle)
 	throws RequestCycleException
