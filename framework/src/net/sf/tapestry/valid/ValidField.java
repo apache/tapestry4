@@ -185,6 +185,9 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
 
         super.renderComponent(writer, cycle);
 
+        if (rendering)
+            delegate.writeSuffix(writer, cycle);
+
         // If rendering and there's either an error in the field,
         // or the field is required but the value is currently null,
         // then we may have identified the default field (which will
