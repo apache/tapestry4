@@ -162,7 +162,7 @@ public class Inspector extends BasePage
 	 
 	public IPage getInspectedPage()
 	{
-		return getRequestCycle().getPage(inspectedPageName);
+        return getRequestCycle().getPage(inspectedPageName);
 	}
 	
 	/**

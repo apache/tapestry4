@@ -720,31 +720,12 @@ public abstract class AbstractApplication
 	throws RequestCycleException, ServletException, IOException
 	{
 		IResponseWriter writer;
-		PageSpecification spec;
-		int bufferSize;
 		boolean discard = true;
 		IPage page;
 
 		// Commit all changes and ignore further changes.
-		// I've been thinking that we may want to *forbid* changes
-		// at this point.
-
-		try
-		{
-			cycle.commitPageChanges();
-		}
-		catch (PageRecorderCommitException e)
-		{
-			throw new RequestCycleException(e.getMessage(), null, cycle, e);
-		}
 
 		page = cycle.getPage();
-		
-		spec = specification.getPageSpecification(page.getName());
-		bufferSize = spec.getBufferSize();
-
-		if (bufferSize >= 0)
-			output.setBufferSize(bufferSize);
 
 		writer = page.getResponseWriter(output);
 		

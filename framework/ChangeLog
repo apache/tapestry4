@@ -1,5 +1,13 @@
 * Dec 21 2000 hship
 
+Create a special case in PageRecorder for converting EJB references to handles for
+storage and vice-versa when the page is restored.
+Fix a previously unnoticed problem caused by bad timing in the interaction between
+committing page changes and lazy creation of persistent page properties.
+Add new checks to the PageRecorder to detect when a persistent property changes during page rendering.
+
+* Dec 21 2000 hship
+
 Attempt a few minor optimizations related to PropertyHelper and PropertyBinding.
 
 

@@ -66,7 +66,8 @@ implements Externalizable
 
 	/**
 	*  Simply clears the dirty flag, because there is no external place
-	*  to store changed page properties.
+	*  to store changed page properties.  Sets the locked flag to prevent
+    * subsequent changes from occuring now.
 	*
 	*/
 
@@ -74,6 +75,7 @@ implements Externalizable
 	throws PageRecorderCommitException
 	{
 		dirty = false;
+        locked = true;
 	}
 
 	/**
@@ -173,7 +175,13 @@ implements Externalizable
 
         for (i = 0; i < count; i++)
         {
-            componentPath = (String)in.readObject();
+            // Read a boolean ... if true, a UTF string follows.
+
+            if (in.readBoolean())
+                componentPath = (String)in.readObject();
+            else
+                componentPath = null;
+
             propertyName = in.readUTF();
             value = in.readObject();
 
@@ -216,8 +224,15 @@ implements Externalizable
             entry = (Map.Entry)i.next();
             key = (ChangeKey)entry.getKey();
 
-            // Can't use writeUTF() because componentPath may be null.
-            out.writeObject(key.componentPath);
+            // To avoid writeObject(), we write a boolean
+            // indicating whether there's a non-null UTF string
+            // following.
+
+            out.writeBoolean(key.componentPath != null);
+
+            if (key.componentPath != null)
+                out.writeObject(key.componentPath);
+
             out.writeUTF(key.propertyName);
             out.writeObject(entry.getValue());
         }

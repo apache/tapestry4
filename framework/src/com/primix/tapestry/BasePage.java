@@ -237,26 +237,31 @@ public class BasePage extends BaseComponent implements IPage
 	public void renderPage(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		int i;
-
-		requestCycle = cycle;
-
-		for (i = 0; i < lifecycleComponentCount; i++)
-			lifecycleComponents[i].prepareForRender(cycle);
+        requestCycle = cycle;
 
 		try
 		{			
+            for (int i = 0; i < lifecycleComponentCount; i++)
+                lifecycleComponents[i].prepareForRender(cycle);
+          
             beginResponse(writer, cycle);
-            
+
+            if (!cycle.isRewinding())
+              cycle.commitPageChanges();
+
 			render(writer, cycle);
+		}
+		catch (PageRecorderCommitException ex)
+		{
+			throw new RequestCycleException(ex.getMessage(), null, cycle, ex);
 		}
 		finally
 		{
 			requestCycle = null;
 			
-			// Open question:  how to handle an exceptions thrown here.
+			// Open question:  how to handle any exceptions thrown here.
 
-			for (i = 0; i < lifecycleComponentCount; i++)
+			for (int i = 0; i < lifecycleComponentCount; i++)
 				lifecycleComponents[i].cleanupAfterRender(cycle);
 		}		
 	}
@@ -297,14 +302,14 @@ public class BasePage extends BaseComponent implements IPage
 	}
 
     /**
-     *  Does nothing.  Subclasses may override.
+     *  Does nothing, subclasses may override as needed.
+     *
      *
      */
      
 	public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
     throws RequestCycleException
-    { 
-		// Does nothing.
+    {
     }
 	
 	public IRequestCycle getRequestCycle()
