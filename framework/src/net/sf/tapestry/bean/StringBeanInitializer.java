@@ -54,6 +54,6 @@ public class StringBeanInitializer extends AbstractBeanInitializer
         IComponent component = provider.getComponent();
         String value = component.getString(_key);
         
-        setBeanProperty(bean, value);
+        setBeanProperty(provider.getResourceResolver(), bean, value);
     }
 }

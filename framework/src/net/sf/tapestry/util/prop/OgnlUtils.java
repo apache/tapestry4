@@ -30,6 +30,8 @@ import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Tapestry;
+
+import ognl.ClassResolver;
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -87,9 +89,9 @@ public class OgnlUtils
      * 
      **/
     
-    public static void set(String expression, Object target, Object value)
+    public static void set(String expression, ClassResolver resolver, Object target, Object value)
     {
-        set(getParsedExpression(expression), target, value);
+        set(getParsedExpression(expression), resolver, target, value);
     }
   
     /** 
@@ -101,11 +103,13 @@ public class OgnlUtils
      **/
  
      
-    public static void set(Object expression, Object target, Object value)
+    public static void set(Object expression, ClassResolver resolver, Object target, Object value)
     {
         try
         {
-            Ognl.setValue(expression, target, value);
+            Map context = Ognl.createDefaultContext(target, resolver);
+            
+            Ognl.setValue(expression, context, target, value);
         }
         catch (OgnlException ex)
         {
@@ -125,11 +129,13 @@ public class OgnlUtils
      * 
      **/
     
-    public static Object get(Object expression, Object object)
+    public static Object get(Object expression, ClassResolver resolver, Object object)
     {
         try
         {
-            return Ognl.getValue(expression, object);
+            Map context = Ognl.createDefaultContext(object, resolver);
+            
+            return Ognl.getValue(expression, context, object);
         }
         catch (OgnlException ex)
         {
@@ -147,9 +153,9 @@ public class OgnlUtils
      *   not obtained from the object.
      **/
     
-    public static Object get(String expression, Object object)
+    public static Object get(String expression, ClassResolver resolver, Object object)
     {
-        return get(getParsedExpression(expression), object);
+        return get(getParsedExpression(expression), resolver, object);
     }
      
 }

@@ -28,6 +28,7 @@ package net.sf.tapestry.bean;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IBeanProvider;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.prop.OgnlUtils;
 import ognl.Ognl;
@@ -57,10 +58,12 @@ public class PropertyBeanInitializer extends AbstractBeanInitializer
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
+        IResourceResolver resolver = provider.getResourceResolver();
         IComponent component = provider.getComponent();
-        Object value = OgnlUtils.get(_expression, component);
+        
+        Object value = OgnlUtils.get(_expression, resolver, component);
 
-        setBeanProperty(bean, value);
+        setBeanProperty(resolver, bean, value);
     }
 
 }

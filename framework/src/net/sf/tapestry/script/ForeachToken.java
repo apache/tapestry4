@@ -28,6 +28,7 @@ package net.sf.tapestry.script;
 import java.util.Iterator;
 import java.util.Map;
 
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
@@ -46,20 +47,22 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 
 class ForeachToken extends AbstractToken
 {
+    private IResourceResolver _resolver;
     private String _key;
     private String _expression;
 
-    ForeachToken(String key, String expression)
+    ForeachToken(String key, String expression, IResourceResolver resolver)
     {
         _key = key;
         _expression = expression;
+        _resolver = resolver;
     }
 
     public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
     {
         Map symbols = session.getSymbols();
 
-        Object rawSource = OgnlUtils.get(_expression, symbols);
+        Object rawSource = OgnlUtils.get(_expression, _resolver, symbols);
 
         Iterator i = Tapestry.coerceToIterator(rawSource);
 

@@ -56,10 +56,12 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
+        IResourceResolver resolver = provider.getResourceResolver();
+        
         if (!_fieldResolved)
-            resolveField(provider.getResourceResolver());
+            resolveField(resolver);
 
-        setBeanProperty(bean, _fieldValue);
+        setBeanProperty(resolver, bean, _fieldValue);
     }
 
     private synchronized void resolveField(IResourceResolver resolver)

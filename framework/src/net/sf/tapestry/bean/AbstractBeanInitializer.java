@@ -26,6 +26,7 @@
 package net.sf.tapestry.bean;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.prop.OgnlUtils;
 import ognl.Ognl;
@@ -54,8 +55,8 @@ abstract public class AbstractBeanInitializer implements IBeanInitializer
         return _propertyName;
     }
 
-    protected void setBeanProperty(Object bean, Object value)
+    protected void setBeanProperty(IResourceResolver resolver, Object bean, Object value)
     {
-        OgnlUtils.set(_propertyName, bean, value);
+        OgnlUtils.set(_propertyName, resolver, bean, value);
     }
 }

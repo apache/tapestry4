@@ -29,6 +29,7 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.form.Form;
 import net.sf.tapestry.form.IFormComponent;
@@ -56,6 +57,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
     private boolean _required;
     private Object _clearValue;
     private Direction _direction;
+    private IResourceResolver _resolver;
 
     /**
      *  Parsed OGNL expression, used to get and set the value.
@@ -79,6 +81,8 @@ public abstract class AbstractParameterConnector implements IParameterConnector
         _parameterName = parameterName;
         _binding = binding;
 
+        _resolver = component.getPage().getEngine().getResourceResolver();
+
         ParameterSpecification pspec = _component.getSpecification().getParameter(_parameterName);
         _required = pspec.isRequired();
         _propertyName = pspec.getPropertyName();
@@ -91,7 +95,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
 
     private Object readCurrentPropertyValue()
     {
-        return OgnlUtils.get(_propertyName, _component);
+        return OgnlUtils.get(_propertyName, _resolver, _component);
     }
 
     /**
@@ -101,7 +105,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
 
     protected void setPropertyValue(Object value)
     {
-        OgnlUtils.set(_propertyName, _component, value);
+        OgnlUtils.set(_propertyName, _resolver, _component, value);
     }
 
     /**

@@ -27,6 +27,7 @@ package net.sf.tapestry.script;
 
 import java.util.Map;
 
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.util.prop.OgnlUtils;
@@ -46,11 +47,13 @@ class SetToken extends AbstractToken
 {
     private String _key;
     private String _expression;
+    private IResourceResolver _resolver;
 
-    SetToken(String key, String expression)
+    SetToken(String key, String expression, IResourceResolver resolver)
     {
         _key = key;
         _expression = expression;
+        _resolver = resolver;
     }
 
     /**
@@ -64,7 +67,7 @@ class SetToken extends AbstractToken
     {
         Map symbols = session.getSymbols();
 
-        Object value = OgnlUtils.get(_expression, symbols);
+        Object value = OgnlUtils.get(_expression, _resolver, symbols);
 
         symbols.put(_key, value);
     }

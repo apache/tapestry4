@@ -528,7 +528,11 @@ public abstract class AbstractComponent implements IComponent
         PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
 
         if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
-            return (IBinding) OgnlUtils.get(bindingPropertyName, this);
+        {
+            IResourceResolver resolver = getPage().getEngine().getResourceResolver();
+            
+            return (IBinding) OgnlUtils.get(bindingPropertyName, resolver, this);
+        }
 
         if (_bindings == null)
             return null;
@@ -687,7 +691,8 @@ public abstract class AbstractComponent implements IComponent
 
         if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
         {
-            OgnlUtils.set(bindingPropertyName, this, binding);
+            IResourceResolver resolver = getPage().getEngine().getResourceResolver();
+            OgnlUtils.set(bindingPropertyName, resolver, this, binding);
             return;
         }
 

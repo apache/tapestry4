@@ -104,12 +104,12 @@ public class ExtensionSpecification extends BasePropertyHolder
 
         result = instantiateInstance(extensionClass, result);
 
-        initializeProperties(result);
+        initializeProperties(resolver, result);
 
         return result;
     }
 
-    private void initializeProperties(Object extension)
+    private void initializeProperties(IResourceResolver resolver, Object extension)
     {
         if (_configuration.isEmpty())
             return;
@@ -121,7 +121,7 @@ public class ExtensionSpecification extends BasePropertyHolder
 
             String propertyName = (String) entry.getKey();
 
-            OgnlUtils.set(propertyName, extension, entry.getValue());
+            OgnlUtils.set(propertyName, resolver, extension, entry.getValue());
         }
     }
 

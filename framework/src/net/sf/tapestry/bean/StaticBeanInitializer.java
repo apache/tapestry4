@@ -49,6 +49,6 @@ public class StaticBeanInitializer extends AbstractBeanInitializer
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
-        setBeanProperty(bean, _value);
+        setBeanProperty(provider.getResourceResolver(), bean, _value);
     }
 }
