@@ -59,4 +59,10 @@ Value: [100]
 		</assert-output>
 	</request>
 		
+    <request>
+		<parameter name="service" value="page/Four"/>
+		
+		<assert-output name="Final">banana</assert-output>
+    </request>
+
  </mock-test>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: InsertInteger.jwc,v 1.4 2003/06/01 05:05:11 hlship Exp $ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  
+<component-specification class="org.apache.tapestry.junit.mock.c12.InsertFinal"
+		allow-body="no" allow-informal-parameters="no">
+
+  <parameter name="final" type="java.lang.String" direction="custom"/>
+		
+</component-specification>
