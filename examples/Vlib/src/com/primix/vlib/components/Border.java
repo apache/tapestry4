@@ -44,6 +44,31 @@ import com.primix.vlib.pages.*;
 
 public class Border extends BaseComponent
 {	
+    private static final String WINDOW_TITLE = "Primix Virtual Library";
+
+    private IBinding titleBinding;
+    private IBinding subtitleBinding;
+
+    public void setTitleBinding(IBinding value)
+    {
+        titleBinding = value;
+    }
+
+    public IBinding getTitleBinding()
+    {
+        return titleBinding;
+    }
+
+    public void setSubtitleBinding(IBinding value)
+    {
+        subtitleBinding = value;
+    }
+
+    public IBinding getSubtitleBinding()
+    {
+        return subtitleBinding;
+    }
+
 	/**
 	 *  Show the Logout button on all pages except the Logout page itself.
 	 *
@@ -53,4 +78,18 @@ public class Border extends BaseComponent
 	{
 		return !getPage().getName().equals("Logout");
 	}
+
+    public String getWindowTitle()
+    {
+        String subtitle = null;
+
+        if (subtitleBinding != null)
+            subtitle = subtitleBinding.getString();
+
+        if (subtitle == null)
+            return WINDOW_TITLE;
+        else
+            return WINDOW_TITLE + ": " + subtitle;
+    }
+
 }

@@ -1,7 +1,6 @@
 package tests.tapestry;
 
 import com.primix.tapestry.components.*;
-import com.ibm.logging.*;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.*;
 

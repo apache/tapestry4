@@ -10,9 +10,7 @@ WEB_INF_RESOURCES = weblogic.xml
 
 LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/SessionTracker.jar \
-	$(INSTALL_DIR)/log.jar \
 	$(INSTALL_DIR)/Tapestry.jar \
-	$(INSTALL_DIR)/PrimixFoundation.jar \
 	$(INSTALL_DIR)/j2ee.jar
 
 INSTALL_DIR = ../../lib
@@ -39,10 +37,8 @@ WEBLOGIC_CLASSPATH = \
 	$(WEBLOGIC_DIR)/lib/weblogicaux.jar \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/xerces.jar \
-	$(INSTALL_DIR)/log.jar \
-	$(INSTALL_DIR)/Tapestry.jar \
-	$(INSTALL_DIR)/PrimixFoundation.jar
-	
+	$(INSTALL_DIR)/Tapestry.jar 
+		
 # Convert from space-seperated to proper form, and convert relative paths to absolute paths.
 
 _WEBLOGIC_BOOT_CLASSPATH := $(strip $(shell $(JBE_CANONICALIZE) -classpath $(WEBLOGIC_BOOT_CLASSPATH)))
