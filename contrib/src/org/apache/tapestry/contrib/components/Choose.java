@@ -86,6 +86,12 @@ public abstract class Choose extends AbstractComponent {
 		renderBody(writer, cycle);
 	}
 	
+	protected void cleanupAfterRender(IRequestCycle cycle)
+	{
+		setConditionMet(false);
+		super.cleanupAfterRender(cycle);
+	}
+	
 	public abstract boolean isConditionMet();
 	public abstract void setConditionMet(boolean value);
 }
