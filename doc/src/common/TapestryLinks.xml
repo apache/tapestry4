@@ -21,6 +21,7 @@
 
 <!-- Classes provided by Sun -->
 
+<!ENTITY Collection "<classname>Collection</classname>">
 <!ENTITY Double "<classname>Double</classname>">
 <!ENTITY HashMap "<classname>HashMap</classname>">
 <!ENTITY HttpServletRequest "<classname>HttpServletRequest</classname>">
@@ -28,6 +29,7 @@
 <!ENTITY Integer "<classname>Integer</classname>">
 <!ENTITY Iterator "<classname>Iterator</classname>">
 <!ENTITY List "<classname>List</classname>">
+<!ENTITY Locale "<classname>Locale</classname>">
 <!ENTITY Map "<classname>Map</classname>">
 <!ENTITY Object "<classname>Object</classname>">
 <!ENTITY ResourceBundle "<classname>ResourceBundle</classname>">
@@ -40,11 +42,14 @@
 
 <!ENTITY AbstractComponent '<ulink url="&ApiRoot;/AbstractComponent.html"><classname>AbstractComponent</classname></ulink>'>
 <!ENTITY AbstractEngine '<ulink url="&ApiRoot;/engine/AbstractEngine.html"><classname>AbstractEngine</classname></ulink>'>
+<!ENTITY AbstractFormComponent '<ulink url="&ApiRoot;/form/AbstractFormComponent.html"><classname>AbstractFormComponent</classname></ulink>'>
 <!ENTITY AbstractPage '<ulink url="&ApiRoot;/AbstractPage.html"><classname>AbstractPage</classname></ulink>'>
 <!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
+<!ENTITY ChangeObserver '<ulink url="&ApiRoot;/event/ChangeObserver.html"><classname>ChangeObserver</classname></ulink>'>
 <!ENTITY BaseComponent '<ulink url="&ApiRoot;/BaseComponent.html"><classname>BaseComponent</classname></ulink>'>
 <!ENTITY BaseEngine '<ulink url="&ApiRoot;/engine/BaseEngine.html"><classname>BaseEngine</classname></ulink>'>
 <!ENTITY BasePage '<ulink url="&ApiRoot;/html/BasePage.html"><classname>BasePage</classname></ulink>'>
+<!ENTITY DataSqueezer '<ulink url="&ApiRoot;/util/io/DataSqueezer.html"><classname>DataSqueezer</classname></ulink>'>
 <!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
 <!ENTITY DefaultMonitorFactory '<ulink url="&ApiRoot;/engine/DefaultMonitorFactory.html"><classname>DefaultMonitorFactory</classname></ulink>'>
 <!ENTITY DefaultMultipartDecoder '<ulink url="&ApiRoot;/multipart/DefaultMultipartDecoder.html"><classname>DefaultMultipartDecoder</classname></ulink>'>
@@ -54,37 +59,53 @@
 <!ENTITY EvenOdd '<ulink url="&ApiRoot;/bean/EvenOdd.html"><classname>EvenOdd</classname></ulink>'>
 <!ENTITY ExceptionAnalyzer '<ulink url="&ApiRoot;/util/exception/ExceptionAnalyzer.html"><classname>ExceptionAnalyzer</classname></ulink>'>
 <!ENTITY ExceptionDescription '<ulink url="&ApiRoot;/util/exception/ExceptionDescription.html"><classname>ExceptionDescription</classname></ulink>'>
-<!ENTITY Gesture '<ulink url="&ApiRoot;/Gesture.html"><classname>Gesture</classname></ulink>'>
+<!ENTITY IAsset '<ulink url="&ApiRoot;/IAsset.html"><classname>IAsset</classname></ulink>'>
+<!ENTITY IBeanProvider '<ulink url="&ApiRoot;/IBeanProvider.html"><classname>IBeanProvider</classname></ulink>'>
 <!ENTITY IBinding '<ulink url="&ApiRoot;/IBinding.html"><classname>IBinding</classname></ulink>'>
 <!ENTITY IActionListener '<ulink url="&ApiRoot;/IActionListener.html"><classname>IActionListener</classname></ulink>'>
 <!ENTITY IApplicationSpecification '<ulink url="&ApiRoot;/spec/IApplicationSpecification.html"><classname>IApplicationSpecification</classname></ulink>'>
 <!ENTITY IComponent '<ulink url="&ApiRoot;/IComponent.html"><classname>IComponent</classname></ulink>'>
+<!ENTITY IComponentClassEnhancer '<ulink url="&ApiRoot;/engine/IComponentClassEnhancer.html"><classname>IComponentClassEnhancer</classname></ulink>'>
+<!ENTITY IComponentMessagesSource '<ulink url="&ApiRoot;/engine/IComponentMessagesSource.html"><classname>IComponentMessagesSource</classname></ulink>'>
+<!ENTITY IComponentSpecification '<ulink url="&ApiRoot;/spec/IComponentSpecification.html"><classname>IComponentSpecification</classname></ulink>'>
 <!ENTITY IDirect '<ulink url="&ApiRoot;/IDirect.html"><classname>IDirect</classname></ulink>'>
 <!ENTITY IEngine '<ulink url="&ApiRoot;/IEngine.html"><classname>IEngine</classname></ulink>'>
+<!ENTITY IForm '<ulink url="&ApiRoot;/IForm.html"><classname>IForm</classname></ulink>'>
+<!ENTITY IFormComponent '<ulink url="&ApiRoot;/form/IFormComponent.html"><classname>IFormComponent</classname></ulink>'>
 <!ENTITY IEngineService '<ulink url="&ApiRoot;/IEngineService.html"><classname>IEngineService</classname></ulink>'>
+<!ENTITY ILocation '<ulink url="&ApiRoot;/ILocation.html"><classname>ILocation</classname></ulink>'>
 <!ENTITY ILifecycle '<classname>ILifecycle</classname>'>
+<!ENTITY INamespace '<ulink url="&ApiRoot;/INamespace.html"><classname>INamespace</classname></ulink>'>
 <!ENTITY IMarkupWriter '<ulink url="&ApiRoot;/IMarkupWriter.html"><classname>IMarkupWriter</classname></ulink>'>
+<!ENTITY IMessages '<ulink url="&ApiRoot;/IMessages.html"><classname>IMessages</classname></ulink>'>
 <!ENTITY IMonitor '<ulink url="&ApiRoot;/engine/IMonitor.html"><classname>IMonitor</classname></ulink>'>
 <!ENTITY IMonitorFactory '<ulink url="&ApiRoot;/engine/IMonitorFactory.html"><classname>IMonitorFactory</classname></ulink>'>
 <!ENTITY IMultipartDecoder '<ulink url="&ApiRoot;/multipart/IMultipartDecoder.html"><classname>IMultipartDecoder</classname></ulink>'>
 <!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
 <!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
+<!ENTITY IPageSource '<ulink url="&ApiRoot;/engine/IPageSource.html"><classname>IPageSource</classname></ulink>'>
 <!ENTITY IPropertySelectionModel '<ulink url="&ApiRoot;/form/IPropertySelectionModel.html"><classname>IPropertySelectionModel</classname></ulink>'>
 <!ENTITY IPropertySource '<ulink url="&ApiRoot;/engine/IPropertySource.html"><classname>IPropertySource</classname></ulink>'>
 <!ENTITY IPoolable '<ulink url="&ApiRoot;/util/pool/IPoolable.html"><classname>IPoolable</classname></ulink>'>
 <!ENTITY IRender '<ulink url="&ApiRoot;/IRender.html"><classname>IRender</classname></ulink>'>
+<!ENTITY IResourceResolver '<ulink url="&ApiRoot;/IResourceResolver.html"><classname>IResourceResolver</classname></ulink>'>
 <!ENTITY IRequestCycle '<ulink url="&ApiRoot;/IRequestCycle.html"><classname>IRequestCycle</classname></ulink>'>
 <!ENTITY IRequestDecoder '<ulink url="&ApiRoot;/request/IRequestDecoder.html"><classname>IRequestDecoder</classname></ulink>'>
+<!ENTITY IScriptSource '<ulink url="&ApiRoot;/engine/IScriptSource.html"><classname>IScriptSource</classname></ulink>'>
+<!ENTITY ISpecificationSource '<ulink url="&ApiRoot;/engine/ISpecificationSource.html"><classname>ISpecificationSource</classname></ulink>'>
 <!ENTITY ISpecificationResolverDelegate '<ulink url="&ApiRoot;/resolver/ISpecificationResolverDelegate.html"><classname>ISpecificationResolverDelegate</classname></ulink>'>
+<!ENTITY ITemplateSource '<ulink url="&ApiRoot;/engine/ITemplateSource.html"><classname>ITemplateSource</classname></ulink>'>
 <!ENTITY ITemplateSourceDelegate '<ulink url="&ApiRoot;/engine/ITemplateSourceDelegate.html"><classname>ITemplateSourceDelegate</classname></ulink>'>
 <!ENTITY IValidator '<ulink url="&ApiRoot;/valid/IValidator.html"><classname>IValidator</classname></ulink>'>
 <!ENTITY IValidationDelegate '<ulink url="&ApiRoot;/valid/IValidationDelegate.html"><classname>IValidationDelegate</classname></ulink>'>
 <!ENTITY IUploadFile '<ulink url="&ApiRoot;/IUploadFile.html"><classname>IUploadFile</classname></ulink>'>
+<!ENTITY ListenerMap '<ulink url="&ApiRoot;/listener/ListenerMap.html"><classname>ListenerMap</classname></ulink>'>
 <!ENTITY PageDetachListener '<ulink url="&ApiRoot;/event/PageDetachListener.html"><classname>PageDetachListener</classname></ulink>'>
 <!ENTITY PageRecorder '<ulink url="&ApiRoot;/record/PageRecorder.html"><classname>PageRecorder</classname></ulink>'>
 <!ENTITY PageRedirectException '<ulink url="&ApiRoot;/PageRedirectException.html"><classname>PageRedirectException</classname></ulink>'>
 <!ENTITY PageRenderListener '<ulink url="&ApiRoot;/event/PageRenderListener.html"><classname>PageRenderListener</classname></ulink>'>
 <!ENTITY ParameterManager '<ulink ulr="&ApiRoot;/param/ParameterManager.html"><classname>ParameterManager</classname></ulink>'>
+<!ENTITY Pool '<ulink ulr="&ApiRoot;/util/pool/Pool.html"><classname>Pool</classname></ulink>'>
 <!ENTITY RedirectFilter '<ulink url="&ApiRoot;/RedirectFilter.html"><classname>RedirectFilter</classname></ulink>'>
 <!ENTITY RequestContext '<ulink url="&ApiRoot;/RequestContext.html"><classname>RequestContext</classname></ulink>'>
 <!ENTITY SimpleEngine '<ulink url="&ApiRoot;/engine/SimpleEngine.html"><classname>SimpleEngine</classname></ulink>'>

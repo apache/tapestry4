@@ -1,0 +1,505 @@
+<!-- $Id$ -->
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<appendix id="properties">
+	<title>Tapestry Object Properties</title>
+
+<para>
+When using Tapestry, an important aspect of your work is to leverage the properties exposed
+by the various objects within Tapestry. A page has properties (inherited from base classes
+such as &AbstractComponent; and &BasePage;) and contains components and other objects
+with more properties. Pages are connected to an engine, which exports its own set of properties.
+This appendix is a quick guide to the most common objects and their properties.	
+</para>
+
+<table>
+	<title>Tapestry Object Properties</title>	
+	<tgroup cols="4">
+		<thead>
+			<row>
+				<entry>Property name</entry>
+				<entry>Defining class</entry>
+				<entry>Property type</entry>
+				<entry>Description</entry>
+			</row>	
+		</thead>	
+		
+		<tbody>
+			
+<row>
+	<entry>activePageNames</entry>
+	<entry>&BaseEngine;</entry>	
+	<entry>&Collection; of &String;</entry>
+	<entry>Names of all pages for which a page recorder has been created.</entry>
+</row>
+			
+<row>
+	<entry>assets</entry>
+	<entry>&IComponent;</entry>
+	<entry>&Map; of &IAsset;</entry>
+	<entry>
+	Localized assets as defined in the component's specification.	
+	</entry>
+</row>			
+
+
+
+<row>
+	<entry>beans</entry>
+	<entry>&IComponent;</entry>
+	<entry>&IBeanProvider;</entry>
+	<entry>Used to access beans defined using the &spec.bean; specification element.</entry>
+</row>
+			
+			
+<row>
+	<entry>bindingNames</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&Collection; of &String;</entry>
+	<entry>
+	The names of all formal and informal parameter bindings for the component.
+	</entry>
+</row>
+
+<row>
+	<entry>bindings</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&Map; of &IBinding;</entry>
+	<entry>
+	All bindings (for both formal and informal parameters) for this component, keyed on
+	the parameter name.
+	</entry>
+</row>		
+
+<row>
+	<entry>body</entry>	
+	<entry>&AbstractComponent;</entry>
+	<entry>&IRender;[]</entry>
+	<entry>
+	The body of the component: the text (as &IRender;) and components (which inherit from
+	&IRender;) that the component directly encloses within its container's template.
+	</entry>
+</row>
+
+<row>
+	<entry>bodyCount</entry>	
+	<entry>&AbstractComponent;</entry>
+	<entry>int</entry>
+	<entry>
+	The active number of elements in the <varname>body</varname> property array.
+	</entry>
+</row>
+
+<row>
+	<entry>componentClassEnhancer</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&IComponentClassEnhancer;</entry>
+	<entry>
+	Object responsible for dynamic creation of enhanced subclasses of Tapestry pages and components.	
+	</entry>
+</row>
+
+<row>
+	<entry>components</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&Map; of &IComponent;</entry>
+	<entry>
+	All components contained by this component, keyed on the component id.	
+	</entry>
+</row>
+
+<row>
+	<entry>contextPath</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&String;</entry>
+	<entry>
+	The path, if any, for the web application context.	
+	</entry>
+</row>
+
+<row>
+	<entry>changeObserver</entry>	
+	<entry>&IPage;</entry>
+	<entry>&ChangeObserver;</entry>
+	<entry>An object that recieves notifications about changes to persistent page properties.</entry>
+</row>
+
+<row>
+<entry>componentMessagesSource</entry>	
+<entry>&IEngine;</entry>
+<entry>&IComponentMessagesSource;</entry>
+<entry>
+	An object that allows components to find their set of localized messages. 
+	</entry>
+</row>
+
+<row>
+	<entry>container</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&IComponent;</entry>
+	<entry>
+	The page or component which contains this component.  Pages will return null.	
+	</entry>
+</row>	
+
+<row>
+	<entry>dataSqueezer</entry>
+	<entry>&IEngine;</entry>
+	<entry>&DataSqueezer;</entry>
+	<entry>Object used to encode and decode arbitrary values into a URL while maintaining their type.</entry>
+</row>
+
+<row>
+	<entry>dirty</entry>	
+	<entry>&AbstractEngine;</entry>
+	<entry>boolean</entry>
+	<entry>
+	True if the engine has been (potentially) modified, and should be stored 
+	into the &HttpSession;.	
+	</entry>
+</row>
+
+<row>
+	<entry>disabled</entry>	
+	<entry>&IFormComponent;</entry>
+	<entry>boolean</entry>
+	<entry>
+	If true, the component should be disabled (and not respond to query parameters passed up in the request).	
+	</entry>
+</row>
+
+<row>
+	<entry>displayName</entry>	
+	<entry>&IFormComponent;</entry>
+	<entry>&String;</entry>
+	<entry>
+	Localized string to be displayed as a label for the form control. Most implementations leave this
+	undefined (as null).	
+	</entry>
+</row>
+
+<row>
+	<entry>engine</entry>	
+	<entry>&IPage;</entry>
+	<entry>&IEngine;</entry>
+	<entry>The engine to which the page is currently attached.</entry>
+</row>
+
+<row>
+	<entry>extendedId</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&String;</entry>
+	<entry>
+	An "extended" version of the <varname>idPath</varname>	 property that
+	includes the name of the page containing the component as well.
+	</entry>
+</row>
+
+<row>
+	<entry>form</entry>
+	<entry>&IFormComponent;</entry>
+	<entry>&IForm;</entry>
+	<entry>
+	The form which encloses the form control component.	
+	</entry>
+</row>
+
+<row>
+	<entry>global</entry>	
+	<entry>&IEngine;, &IPage;</entry>
+	<entry>&Object;</entry>
+	<entry>
+	The Global object for the application.	
+	</entry>
+</row>
+
+<row>
+	<entry>hasVisit</entry>	
+	<entry>&AbstractEngine;</entry>
+	<entry>boolean</entry>
+	<entry>
+	Returns true if the Visit object has been created, false initially.	
+	</entry>
+</row>
+
+<row>
+	<entry>id</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&String;</entry>
+	<entry>
+	The id of the component, which is unique within its container. In many cases, the framework
+	may have assigned an automatically generated id. Pages do not have an id and return null.
+	</entry>
+</row>
+
+<row>
+	<entry>idPath</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&String;</entry>
+	<entry>A sequence of id's used to locate a component within a page.  A component <literal>bar</literal>
+		within a component <literal>foo</literal> within a page will have an <varname>idPath</varname>
+		of <literal>foo.bar</literal>. Pages return null.
+		</entry>
+</row>
+
+<row>
+	<entry>listeners</entry>	
+	<entry>&AbstractComponent;, &AbstractEngine;</entry>
+	<entry>&ListenerMap;</entry>
+	<entry>
+	Used to map listener methods as objects that implement the &IActionListener; interface.
+	</entry>
+</row>
+
+<row>
+	<entry>locale</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&Locale;</entry>
+	<entry>
+	The locale for the current client; this is used when loading pages from the page pool, or
+	when instantiating new page instances.	
+	</entry>
+</row>
+
+<row>
+	<entry>locale</entry>
+	<entry>&IPage;</entry>
+	<entry>&Locale;</entry>
+	<entry>
+	The locale to which the page and all components within the page is localized.	
+	</entry>
+</row>
+
+
+
+
+
+<row>
+	<entry>location</entry>	
+	<entry><emphasis>many</emphasis></entry>
+	<entry>&ILocation;</entry>
+	<entry>
+	The location that should be used with any error messages generated about the object. This is
+	ultimately the file, line (and even column) of the template or specification file responsible
+	for defining the object (be it a component, a page, or some other kind of object).
+	</entry>
+</row>
+
+<row>
+	<entry>messages</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&IMessages;</entry>
+	<entry>
+	Localized messages for the component.	
+	</entry>
+</row>
+
+<row>
+	<entry>name</entry>	
+	<entry>&IFormComponent;</entry>
+	<entry>&String;</entry>
+	<entry>
+	The name, or element id, assigned to the form control by the &IForm;. This is set as the component
+	renders (but the property can then be read after the component renders).	
+	</entry>
+</row>
+
+<row>
+	<entry>namespace</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&INamespace;</entry>
+	<entry>The namespace containing the component. Components are always within <emphasis>some</emphasis>
+		namespace, whether it is the default (application) namespace, the framework namespace,
+		or a namespace for a component library.</entry>
+</row>
+
+<row>
+	<entry>outputEncoding</entry>	
+	<entry>&AbstractPage;</entry>
+	<entry>&String;</entry>
+	<entry>
+	Output encoding for the page.	
+	</entry>
+</row>
+
+<row>
+	<entry>page</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&IPage;</entry>
+	<entry>
+	The page which ultimately contains the component.	
+	</entry>
+</row>
+
+<row>
+	<entry>propertySource</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&IPropertySource;</entry>
+	<entry>
+	Source for configuration properties.	
+	</entry>
+</row>
+
+<row>
+	<entry>pageName</entry>	
+	<entry>&IPage;</entry>
+	<entry>&String;</entry>
+	<entry>
+	The fully qualified page name (possibly including a namespace prefix).
+	</entry>
+</row>
+
+<row>
+	<entry>pageSource</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&IPageSource;</entry>
+	<entry>
+	The object used to obtain page instances.	
+	</entry>
+</row>
+
+<row>
+	<entry>pool</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&Pool;</entry>
+	<entry>
+	Stores objects that are expensive to create.	
+	</entry>
+</row>
+
+<row>
+	<entry>requestCycle</entry>	
+	<entry>&IPage;</entry>	
+	<entry>&IRequestCycle;</entry>
+	<entry>
+	The request cycle to which the page is currently attached.
+	</entry>
+</row>
+
+<row>
+	<entry>resetServiceEnabled</entry>	
+	<entry>&IEngine;</entry>
+	<entry>boolean</entry>
+	<entry>
+	If true, the reset service is enabled. The reset service is disabled by default.	
+	</entry>
+</row>
+
+
+
+<row>
+<entry>resourceResolver</entry>	
+<entry>&IEngine;</entry>
+<entry>&IResourceResolver;</entry>
+<entry>
+Object responsible for locating classes and classpath resources.	
+</entry>
+</row>
+
+<row>
+<entry>scriptSource</entry>	
+<entry>&IEngine;</entry>
+<entry>&IScriptSource;</entry>
+<entry>
+Object that parses and caches script specifications.	
+</entry>
+</row>
+
+<row>
+	<entry>servletPath</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&String;</entry>
+	<entry>
+	The URL path used to reference the application servlet (including the context path, if any).	
+	</entry>
+</row>
+
+<row>
+	<entry>specification</entry>	
+	<entry>&IComponent;</entry>
+	<entry>&IComponentSpecification;</entry>
+	<entry>
+	The specification which defines this component.	Often used to access
+	meta data defined in the component's specification using the
+	&spec.property; element.
+	</entry>
+</row>
+
+<row>
+	<entry>specification</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&IApplicationSpecification;</entry>
+	<entry>
+	The specification for the application.	
+	</entry>
+</row>
+
+<row>
+	<entry>specificationSource</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&ISpecificationSource;</entry>
+	<entry>Object responsible for reading and caching page and component specifications.</entry>
+</row>
+
+<row>
+<entry>stateful</entry>	
+<entry>&IEngine;</entry>
+<entry>boolean</entry>
+<entry>
+If true, then an &HttpSession; has been created for the client to store server-side state. Initially false.	
+</entry>
+</row>
+
+
+
+<row>
+	<entry>templateSource</entry>	
+	<entry>&IEngine;</entry>
+	<entry>&ITemplateSource;</entry>
+	<entry>
+	Object responsible for reading and caching page and component templates.	
+	</entry>
+</row>
+
+
+<row>
+		<entry>visit</entry>
+		<entry>&IEngine;</entry>
+		<entry>&Object;</entry>
+		<entry>
+		Returns the Visit object for the current client, or null if the Visit object
+		has not yet been created.	
+		</entry>
+</row>
+
+<row>
+	<entry>visit</entry>	
+	<entry>&IPage;</entry>
+	<entry>&Object;</entry>
+	<entry>
+	Returns the Visit object for the current client, creating it if necessary.	
+	</entry>
+</row>
+
+
+			
+		</tbody>
+	</tgroup>
+</table>
+
+
+</appendix>
