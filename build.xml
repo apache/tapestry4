@@ -58,6 +58,7 @@
 	<ant dir="examples/Vlib" target="clean"/>
 	<ant dir="doc/src/Tutorial" target="clean"/>
 	<ant dir="doc/src/DevelopersGuide" target="clean"/>
+	<ant dir="doc/src/ContributorsGuide" target="clean"/>
 	<delete dir="${private.dir}" quiet="true"/>
 </target>
 
@@ -72,6 +73,7 @@
 	</delete>
 	<delete dir="doc/Tutorial"/>
 	<delete dir="doc/DevelopersGuide"/>
+	<delete dir="doc/ContributorsGuide"/>
 	<delete dir="doc/api"/>
 </target>
 
@@ -95,6 +97,7 @@
 	description="Builds the Tapestry documentation.">
 	<ant dir="doc/src/Tutorial" target="install" inheritAll="false"/>
 	<ant dir="doc/src/DevelopersGuide" target="install" inheritAll="false"/>
+	<ant dir="doc/src/ContributorsGuide" target="install" inheritAll="false"/>
 </target>
 
 <target name="junit"

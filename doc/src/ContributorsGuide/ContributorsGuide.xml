@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id$ -->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
+  "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
+  <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
+  %TapestryLinks;
+]>
+<!-- Conventions:
+
+	Component ids are <varname>
+	Java packages and class names are <classname>
+	Tapestry component aliases are <classname>
+
+	In-line code snippets use <function>
+	Property paths and JavaBeans property names used <varname>
+-->
+<book>
+  <title>Tapestry Contributor's Guide</title>
+  <bookinfo>
+    <author>
+      <firstname>Howard</firstname>
+      <surname>Lewis Ship</surname>
+    </author>
+    <copyright>
+      <year>2002</year>
+      <holder>Howard M. Lewis Ship</holder>
+    </copyright>
+  </bookinfo>
+  
+<chapter id="intro">
+	<title>Introduction</title>
+	
+<para>
+This document is a guide to developers who want to go
+beyond merely developing applications <emphasis>using</emphasis> Tapestry,
+and want to extend and improve Tapestry itself.
+</para>
+
+<para>
+Tapestry has benefitted over the first two years of its 
+development from having a focused vision and, predominantly,
+a single developer. At the time of this writing, May 2002,
+the Tapestry community is truly coming alive, with
+new developers contributing fixes, components and documentation.
+</para>
+
+<para>
+The goal is to maintain the stability of Tapestry even as it
+shifts from a one-man-show to a true community effort.  Meanwhile
+it is vitally important to not to sacrifice quality in either
+code or <emphasis>documentation</emphasis> if Tapestry is to
+stay on track.
+</para>
+
+<para>
+Contributing to Tapestry requires a commitment to produce excellent code, 
+examples and documentation.  In fact, proper documentation in JavaDoc and
+as updates to the tutorials and manuals represents the
+<emphasis>dominant</emphasis> amount of effort when contributing to Tapestry.
+</para>
+
+
+</chapter>  
+
+<chapter id="cvs">
+	<title>CVS Access</title>
+	
+<para>
+Tapestry is housed at the &TapestryProjectPage;.  Read-only CVS access is available
+to anyone; to have read-write access you must be registered
+with SourceForge, and then contact the Tapestry administrator
+(<ulink url="mailto:hship@users.sf.net">Howard Lewis Ship</ulink>) to be
+added to the list of Tapestry developers.
+</para>
+
+</chapter>
+
+<chapter id="building">
+	<title>Building Tapestry</title>
+	
+<para>
+Tapestry is built using &Ant;.  In addition,
+Tapestry includes the necessary control files to allow
+development using the excellent open-source IDE, &Eclipse;.
+</para>
+
+<para>
+The first step is to obtain the CVS tree for the Tapestry module.
+</para>
+
+<para>
+Using Eclipse, this takes three steps.  First, activate the 
+CVS Repositories view.
+</para>
+
+<para>
+Second, use the context menu to create a new CVS Repository location.
+This raises a panel for defining connection information.  Fill in your own name
+and password:
+</para>
+
+<figure>
+	<title>Eclipse: New CVS Repository Location</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/eclipse-add-repository.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>	
+</figure>
+
+<para>
+Next, open the new CVS Repository location and navigate down to the Tapestry
+module, then use the context menu to checkout the Tapestry project:
+</para>
+
+
+<figure>
+	<title>Eclipse: Check Out Project</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/eclipse-check-out-project.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>	
+</figure>
+
+</chapter>
+
+</book>
