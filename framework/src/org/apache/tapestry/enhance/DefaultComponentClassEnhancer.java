@@ -57,6 +57,7 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,16 +90,17 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      * 
      **/
 
-    private Map _cachedClasses = new HashMap();
+    private Map _cachedClasses;
     private IResourceResolver _resolver;
     private IEnhancedClassFactory _factory;
 
     public DefaultComponentClassEnhancer(IResourceResolver resolver)
     {
+        _cachedClasses = Collections.synchronizedMap(new HashMap());
         _resolver = resolver;
         _factory = createEnhancedClassFactory();
     }
-    
+
     protected IEnhancedClassFactory createEnhancedClassFactory()
     {
         return new EnhancedClassFactory(getResourceResolver());
@@ -121,21 +123,26 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
         if (result == null)
         {
-            result = constructComponentClass(specification, className);
-            storeCachedClass(specification, result);
+            synchronized (this)
+            {
+                result = getCachedClass(specification);
+                if (result == null)
+                {
+                    result = constructComponentClass(specification, className);
+                    storeCachedClass(specification, result);
+                }
+            }
         }
 
         return result;
     }
 
-    protected synchronized void storeCachedClass(
-        IComponentSpecification specification,
-        Class cachedClass)
+    protected void storeCachedClass(IComponentSpecification specification, Class cachedClass)
     {
         _cachedClasses.put(specification, cachedClass);
     }
 
-    protected synchronized Class getCachedClass(IComponentSpecification specification)
+    protected Class getCachedClass(IComponentSpecification specification)
     {
         return (Class) _cachedClasses.get(specification);
     }
@@ -146,7 +153,9 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      * 
      **/
 
-    protected Class constructComponentClass(IComponentSpecification specification, String className)
+    protected Class constructComponentClass(
+        IComponentSpecification specification,
+        String className)
     {
         Class result = null;
 
@@ -162,20 +171,18 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         try
         {
             ComponentClassFactory factory = createComponentClassFactory(specification, result);
-            
+
             if (factory.needsEnhancement())
             {
                 result = factory.createEnhancedSubclass();
-            
+
                 validateEnhancedClass(result, className, specification);
             }
         }
         catch (CodeGenerationException e)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.format(
-                    "ComponentClassFactory.code-generation-error",
-                    className),
+                Tapestry.format("ComponentClassFactory.code-generation-error", className),
                 e);
         }
 
@@ -220,7 +227,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
         Set implementedMethods = new HashSet();
         Class current = subject;
- 
+
         while (true)
         {
             Method m = checkForAbstractMethods(current, implementedMethods);
@@ -233,20 +240,20 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
                     specification.getLocation(),
                     null);
 
-			// An earlier version of this code walked the interfaces directly,
-			// but it appears that implementing an interface actually
-			// puts abstract method declarations into the class
-			// (at least, in terms of what getDeclaredMethods() returns).
+            // An earlier version of this code walked the interfaces directly,
+            // but it appears that implementing an interface actually
+            // puts abstract method declarations into the class
+            // (at least, in terms of what getDeclaredMethods() returns).
 
             // March up to the super class.
 
             current = current.getSuperclass();
-            
+
             // Once advanced up to a concrete class, we trust that
             // the compiler did its checking.
-            
+
             if (!Modifier.isAbstract(current.getModifiers()))
-            	break;
+                break;
         }
 
     }
@@ -275,7 +282,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
             boolean isAbstract = Modifier.isAbstract(m.getModifiers());
 
-			MethodSignature s = new MethodSignature(m);
+            MethodSignature s = new MethodSignature(m);
 
             if (isAbstract)
             {
