@@ -75,8 +75,8 @@
 
 <!-- Other useful stuff -->
 
-<!ENTITY TapestryFrameworkJar "<filename>net.sf.tapestry-<replaceable>x.x.x</replaceable>.jar</filename>">
-<!ENTITY TapestryContribJar "<filename>net.sf.tapestry.contrib-<replaceable>x.x.x</replaceable>.jar</filename>">
+<!ENTITY TapestryFrameworkJar "<filename>net.sf.tapestry-<replaceable>x.x</replaceable>.jar</filename>">
+<!ENTITY TapestryContribJar "<filename>net.sf.tapestry.contrib-<replaceable>x.x</replaceable>.jar</filename>">
 
 
 

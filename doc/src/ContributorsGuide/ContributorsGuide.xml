@@ -620,9 +620,37 @@ preferences are easy to setup in Eclipse:
 <para>
 Standard Java guidelines are expected to be followed.  
 Class names are capitalized (example: <classname>MyClass</classname>).
-Methods and variables start with a lower-case character (example: <literal>myVariable</literal>).
-Static finals are in upper-case (example: <literal>MY_CONSTANT</literal>).
+Methodsstart with a lower-case character (example: <literal>myMethod</literal>).
 </para>
+
+<para>
+Static final variables used as constants
+are in upper-case (example: <literal>MY_CONSTANT</literal>).
+</para>
+
+<para>
+Private member variables (both instance and static) are named with a leading underscore
+(example: <literal>_myVariable</literal>).  Public member variables are to be avoided.
+</para>
+
+<note>
+<title>Naming in transition</title>
+<para>
+I've resisted the leading underscore syntax for a long time; the rational behind it
+is to make it possible, at a glance, to visually seperate instance variables
+from local variables and parameters.  Previously, I've always maintained that
+the problem was methods that were too large; lately I've changed
+my mind ... the underscore naming helps when debugging and helps avoid
+a number of naming collisions.
+</para>
+
+<para>
+At the time of this writing, 2.1-beta-1, very little of the code used
+the new naming.  Over time, mixed in with other bug fixes, renaming will
+occur (&Eclipse; help with this greatly).  New code will be written to conform.
+</para>
+</note>
+
 
 <para>
 Interfaces in Tapestry are prefixed with the letter 'I' (example: <literal>IRequestCycle</literal>).
@@ -644,6 +672,66 @@ The base package for the contrib JAR (&TapestryContribJar;) is <literal>net.sf.t
 </para>
 
 </section>
+
+</chapter>
+
+<chapter id="releases">
+	<title>Tapestry Release Numbering</title>
+	
+<para>
+Tapestry release numbering is relatively simple, as long as you don't look back in time
+(the less managable numbering system used through release 2.0.5 is described shortly).
+</para>
+
+<para>
+Tapestry releases consist of a major version, a minor version and a incremental version.
+The pattern 
+<literal>
+<replaceable>major</replaceable>.<replaceable>minor</replaceable>-<replaceable>incremental</replaceable>-<replaceable>index</replaceable>
+</literal>
+is used, for example: <literal>2.1</literal>, <literal>2.2-alpha-3</literal>
+or <literal>2.3-beta-1</literal>.
+</para>
+
+<para>
+The major version represents large-scale changes in the framework ... short of translating Tapestry
+to another language (say, Python or Ruby), this is not likely to happen again.  Tapestry
+is currently in major release 2.
+</para>
+
+
+<para>
+The minor version represents the introduction of new functionality and bug fixes
+in a stable manner.  <literal>2.1</literal> or <literal>2.2</literal> would be examples
+of minor releases.
+</para>
+
+<para>
+An incremental release represents a transition from one minor release to the next.
+Incremental releases are <literal>alpha</literal>, <literal>beta</literal> or
+<literal>rc</literal> (release candidate).
+Typically, after a major release there will
+be a series of alpha, then beta, then rc releases, leading up to 
+the next minor release.
+A possible sequence is <literal>2.1</literal>, <literal>2.2-alpha-1</literal>,
+<literal>2.2-beta-1</literal>, <literal>2.2-rc-1</literal>, <literal>2.2</literal>.
+</para>
+
+<para>
+Typically, there will be several incremental releases of the same type, numbered from 1 up.
+Alpha releases contain significant functionality changes, beta releases represent
+bug fixes to those changes (stabilizing the changes), 
+and rc (release chandidate) releases are expected
+to be stable versions of the next minor release (though any problems can spur further
+release candidates).
+</para>
+
+<para>
+Through Tapestry release 2.0.5, numbering was a bit different.  Under the modern scheme, 
+2.0.1 would be named <literal>2.1-alpha-1</literal>, 2.0.2 would be <literal>2.1-alpha-2</literal>,
+and 2.0.5 would be <literal>2.1-beta-1</literal>.  Modern release numbering
+begins with <literal>2.1-beta-2</literal> (the release immediately following 2.0.5).  
+</para>
 
 </chapter>
 
@@ -669,26 +757,11 @@ If a method or class must be deleted, it should be marked as deprecated in one m
 and can be removed in the following minor release.
 </para>
 
-<note>
-	<title>Tapestry Release Numbering</title>
-	<para>
-	Tapestry release as numbered as <replaceable>major.minor.incremental</replaceable>.
-	For example, release 2.1.0 is a minor release.  2.1.1 is an incremental release and 2.2.0
-	is the next minor release after 2.1.0.  Incremental releases are considered
-	"rollup" leading to the next minor release.
-	</para>
-	
-	<para>
-	A method marked deprecated in release 2.1.0 may be removed in 2.1.1.  Developers
-	who need stability should only download minor releases, not incremental releases.
-	</para>
-	
-	<para>
-	This is just one development cycle; as community involvement in Tapestry grows
-	it may be necessary to institute a more robust development cycle based on the use
-	of branches for development.
-	</para>
-</note>
+<para>
+For example, a method may be marked in release 2.2-alpha-1.  This change isn't considered 
+"real" until release 2.2.  The method can be removed any time after that, say in release 2.3-alpha-3,
+and the removal becomes "real" in release 2.3.
+</para>
 
 <para>
 It is also important for the changer to make the transition as simple as possible for
@@ -831,13 +904,9 @@ Files should be either binary or text; text should be checked in with keyword
 expansion turned on (this is the <literal>-kkv</literal> option).
 </para>
 
-
-<warning>
-<title>Eclipse Notes</title>
 <para>
-Although Eclipse has excellent support for CVS, the current release, M5, has
-some wrinkles.  When it detects new files to be checked in, it decides whether
-they are binary or text.  It always assumes <emphasis>binary</emphasis>
+When new files are added using Eclipse, it must decide whether they are
+binary or text. Eclipse always assumes <emphasis>binary</emphasis>
 unless specifically informed that a file is text.  Use the Team preferences
 panel to set this.
 </para>
@@ -851,14 +920,6 @@ panel to set this.
         </mediaobject>	
 </figure>
 
-<para>
-Eclipse makes one <emphasis>big</emphasis> mistake when automatically adding
-text files ... it doesn't use keyword expansion.  You should manually
-add files (using the Team context menu), then manually set the keyword expansion (also using the Team context
-menu).
-</para>
-
-</warning>
 
 </section>
 
@@ -867,8 +928,9 @@ menu).
 	
 <para>
 In lieu of unit tests, the best way to make sure a new component works (as well as advertise
-its existence) is to update the tutorial; typically the Tapestry Workbench.  The Workbench is very easy
-to extend with new pages, it also has the <emphasis>very</emphasis> useful feature for dumping out
+its existence) is to update the Tapestry Tutorial to include it; typically the Tapestry Workbench.  
+The Workbench is very easy to extend with new pages, it also has
+the <emphasis>very</emphasis> useful feature for dumping out
 the request context on each request which greatly simplifies debugging links and form components.
 </para>
 	
