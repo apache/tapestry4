@@ -12,34 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services.impl;
+package org.apache.tapestry.binding;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.binding.ListenerMethodBinding;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.services.BindingFactory;
 
 /**
- * Factory of {@link org.apache.tapestry.binding.ListenerMethodBinding}, mapped to the "listener:"
- * prefix.
+ * Constructs instances of {@link org.apache.tapestry.binding.MessageBinding}.
  * 
- * @author Howard M. Lewis Ship
+ * @author Howard Lewis Ship
  * @since 3.1
  */
-public class ListenerBindingFactory implements BindingFactory
+public class MessageBindingFactory extends AbstractBindingFactory
 {
-    private ValueConverter _valueConverter;
-
     public IBinding createBinding(IComponent root, String description, String path,
             Location location)
     {
-        return new ListenerMethodBinding(root, path, description, _valueConverter, location);
-    }
-
-    public void setValueConverter(ValueConverter valueConverter)
-    {
-        _valueConverter = valueConverter;
+        return new MessageBinding(root, description, path, getValueConverter(), location);
     }
 }

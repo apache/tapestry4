@@ -63,8 +63,6 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.EngineManagerImpl">
         <set-service property="enginePool" service-id="EnginePool"/>
-        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
-        <set-object property="servletName" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
         <set-service property="engineFactory" service-id="EngineFactory"/>
         <set-service property="localeManager" service-id="RequestLocaleManager"/>
       </construct>

@@ -16,9 +16,6 @@ package org.apache.tapestry.services.impl;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.services.EngineFactory;
@@ -34,44 +31,9 @@ import org.easymock.MockControl;
  */
 public class TestEngineManager extends HiveMindTestCase
 {
-    public void testGetFromSession()
-    {
-        IEngine engine = (IEngine) newMock(IEngine.class);
-
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
-
-        MockControl sessionControl = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) sessionControl.getMock();
-
-        // Training
-
-        request.getSession(false);
-        requestControl.setReturnValue(session);
-
-        session.getAttribute(EngineManagerImpl.ENGINE_KEY_PREFIX + "george");
-        sessionControl.setReturnValue(engine);
-
-        replayControls();
-
-        EngineManagerImpl m = new EngineManagerImpl();
-
-        m.setServletName("george");
-        m.setRequest(request);
-
-        m.initializeService();
-
-        IEngine actual = m.getEngineInstance();
-
-        assertSame(engine, actual);
-
-        verifyControls();
-    }
 
     public void testGetFromPool()
     {
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
 
         MockControl extractorControl = newControl(RequestLocaleManager.class);
         RequestLocaleManager extractor = (RequestLocaleManager) extractorControl.getMock();
@@ -80,9 +42,6 @@ public class TestEngineManager extends HiveMindTestCase
         ObjectPool pool = (ObjectPool) poolControl.getMock();
 
         // Training
-
-        request.getSession(false);
-        requestControl.setReturnValue(null);
 
         extractor.extractLocaleForCurrentRequest();
         extractorControl.setReturnValue(Locale.CHINESE);
@@ -96,12 +55,8 @@ public class TestEngineManager extends HiveMindTestCase
 
         EngineManagerImpl m = new EngineManagerImpl();
 
-        m.setServletName("george");
-        m.setRequest(request);
         m.setEnginePool(pool);
         m.setLocaleManager(extractor);
-
-        m.initializeService();
 
         IEngine actual = m.getEngineInstance();
 
@@ -112,8 +67,6 @@ public class TestEngineManager extends HiveMindTestCase
 
     public void testGetNotInPool()
     {
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
 
         MockControl extractorControl = newControl(RequestLocaleManager.class);
         RequestLocaleManager extractor = (RequestLocaleManager) extractorControl.getMock();
@@ -122,9 +75,6 @@ public class TestEngineManager extends HiveMindTestCase
         ObjectPool pool = (ObjectPool) poolControl.getMock();
 
         // Training
-
-        request.getSession(false);
-        requestControl.setReturnValue(null);
 
         extractor.extractLocaleForCurrentRequest();
         extractorControl.setReturnValue(Locale.CHINESE);
@@ -144,13 +94,9 @@ public class TestEngineManager extends HiveMindTestCase
 
         EngineManagerImpl m = new EngineManagerImpl();
 
-        m.setServletName("george");
-        m.setRequest(request);
         m.setEnginePool(pool);
         m.setLocaleManager(extractor);
         m.setEngineFactory(factory);
-
-        m.initializeService();
 
         IEngine actual = m.getEngineInstance();
 
@@ -161,8 +107,6 @@ public class TestEngineManager extends HiveMindTestCase
 
     public void testStoreNoSession()
     {
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
 
         MockControl engineControl = newControl(IEngine.class);
         IEngine engine = (IEngine) engineControl.getMock();
@@ -170,9 +114,6 @@ public class TestEngineManager extends HiveMindTestCase
         ObjectPool pool = (ObjectPool) newMock(ObjectPool.class);
 
         // Training
-
-        request.getSession(false);
-        requestControl.setReturnValue(null);
 
         engine.getLocale();
         engineControl.setReturnValue(Locale.KOREAN);
@@ -183,48 +124,11 @@ public class TestEngineManager extends HiveMindTestCase
 
         EngineManagerImpl m = new EngineManagerImpl();
 
-        m.setServletName("george");
-        m.setRequest(request);
         m.setEnginePool(pool);
 
-        m.initializeService();
-
         m.storeEngineInstance(engine);
 
         verifyControls();
     }
 
-    public void setStoreIntoSession()
-    {
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
-
-        HttpSession session = (HttpSession) newMock(HttpSession.class);
-
-        MockControl engineControl = newControl(IEngine.class);
-        IEngine engine = (IEngine) engineControl.getMock();
-
-        // Training
-
-        request.getSession(false);
-        requestControl.setReturnValue(session);
-
-        engine.getLocale();
-        engineControl.setReturnValue(Locale.KOREAN);
-
-        session.setAttribute(EngineManagerImpl.ENGINE_KEY_PREFIX + "george", engine);
-
-        replayControls();
-
-        EngineManagerImpl m = new EngineManagerImpl();
-
-        m.setServletName("george");
-        m.setRequest(request);
-
-        m.initializeService();
-
-        m.storeEngineInstance(engine);
-
-        verifyControls();
-    }
 }

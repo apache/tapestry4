@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.ApplicationServlet;
+import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;
 import org.easymock.MockControl;
 
@@ -41,7 +42,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         // Training
 
-        source.readCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME);
+        source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
         sourceControl.setReturnValue(null);
 
         request.getLocale();
@@ -67,7 +68,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         // Training
 
-        source.readCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME);
+        source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
         sourceControl.setReturnValue(localeName);
 
         replayControls();
@@ -105,7 +106,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         // Training
 
-        source.writeCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME, locale.toString());
+        source.writeCookieValue(TapestryConstants.LOCALE_COOKIE_NAME, locale.toString());
 
         replayControls();
 
@@ -127,7 +128,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         // Training
 
-        source.readCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME);
+        source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
         sourceControl.setReturnValue(null);
 
         request.getLocale();

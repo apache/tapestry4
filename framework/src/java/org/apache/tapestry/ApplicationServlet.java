@@ -77,12 +77,6 @@ import com.sun.jndi.ldap.pool.Pool;
 public class ApplicationServlet extends HttpServlet
 {
     /**
-     * Name of the cookie written to the client web browser to identify the locale.
-     */
-
-    public static final String LOCALE_COOKIE_NAME = "org.apache.tapestry.locale";
-
-    /**
      * The application specification, which is read once and kept in memory thereafter.
      */
 

@@ -67,7 +67,7 @@
               <li>The application specification's &spec.meta; properties</li>
               <li>The servlet's &init-parameter; elements</li>
               <li>The servlet context's &init-parameter; elements</li>
-              <li>The delegate property source (a &lt;spec.extension;)</li>
+              <li>The delegate property source (a &spec.extension;)</li>
               <li>A HiveMind symbol</li>
             </ul></td>
             <td>
@@ -75,6 +75,7 @@
             </td>
         </tr>
         <tr>
+          <td>engine-service</td>
           <td>The locator is the name of an engine service (an instance of &IEngineService;).</td>
           <td>engine-service:page</td>
         </tr>

@@ -22,8 +22,8 @@ import java.util.Map;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.services.BindingFactory;
-import org.apache.tapestry.services.BindingSource;
+import org.apache.tapestry.binding.BindingFactory;
+import org.apache.tapestry.binding.BindingSource;
 
 /**
  * Implementation of the <code>tapestry.bindings.BindingSource</code> service.

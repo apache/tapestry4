@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.ApplicationServlet;
+import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.util.StringSplitter;
@@ -42,7 +43,7 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
 
     public Locale extractLocaleForCurrentRequest()
     {
-        String localeName = _cookieSource.readCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME);
+        String localeName = _cookieSource.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
 
         _requestLocale = (localeName != null) ? getLocale(localeName) : _request.getLocale();
 
@@ -56,7 +57,7 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
         if (locale.equals(_requestLocale))
             return;
 
-        _cookieSource.writeCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME, locale.toString());
+        _cookieSource.writeCookieValue(TapestryConstants.LOCALE_COOKIE_NAME, locale.toString());
     }
 
     private Locale getLocale(String name)

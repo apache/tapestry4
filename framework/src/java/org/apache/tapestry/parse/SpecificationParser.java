@@ -36,7 +36,7 @@ import org.apache.hivemind.parse.AbstractParser;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.bean.BindingBeanInitializer;
-import org.apache.tapestry.services.BindingSource;
+import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BindingType;
