@@ -287,7 +287,7 @@ public class BaseComponent extends AbstractComponent
 		
 		buffer = new StringBuffer("Template for component ");
 		buffer.append(getExtendedId());
-		buffer.append("does not reference embedded component");
+		buffer.append(" does not reference embedded component");
 		if (count > 0)
 			buffer.append('s');
 		

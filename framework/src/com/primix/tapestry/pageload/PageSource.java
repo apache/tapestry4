@@ -7,6 +7,7 @@ import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.*;
 import java.util.*;
 import com.primix.tapestry.binding.*;
+import com.primix.tapestry.asset.*;
 
 /*
  * Tapestry Web Application Framework
@@ -58,8 +59,19 @@ import com.primix.tapestry.binding.*;
  *  will turn pooling off (pages will always be discarded at the end of
  *  the request cycle, never recycled in subsequent cycles).
  *
- *  <p>In addition, this class acts as a cache of {@link FieldBinding}s.  This allows a {@link FieldBinding} to
- * be created once, and used across all components and pages.
+ *  <p>In addition, this class acts as a cache of serveral common
+ *  objects:
+ *  <ul>
+ *  <li>{@link FieldBinding}
+ *  <li>{@link StaticBinding}
+ *  <li>{@link ExternalAsset}
+ *  </ul>
+ *
+ *  <p>This caching allows common objects to be created once, and
+ *  used across all components and pages.  Without pooling, objects would often be duplicated.
+ *
+ *  <p>Note: {@link InternalAsset} and {PrivateAsset} will also be cached, once localization
+ *  is finalized.
  *
  * <p>TBD: Pooled pages stay forever.  Need a strategy for cleaning up the pool,
  * tracking which pages have been in the pool the longest, etc.  A mechanism
@@ -76,6 +88,17 @@ public class PageSource
 	private static final int MAP_SIZE = 11;
     private Map fieldBindings;
     private Map staticBindings;
+    private Map externalAssetBindings;
+
+    /**
+    *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
+    *  built from the application name, the page name, and the page locale.
+    *
+    */
+
+    private Map pool;
+
+
     private boolean poolDisabled;
 
     private IResourceResolver resolver;
@@ -103,14 +126,6 @@ public class PageSource
     }
 
 
-
-	/**
-	*  The pool of <code>PooledPage</code>s.  The key is a {@link MultiKey},
-	*  built from the application name, the page name, and the page locale.
-	*
-	*/
-
-	private Map pool;
 
 	/**
 	*  Builds a key for a named page in the application's current locale.
@@ -283,6 +298,7 @@ public class PageSource
 		pool = null;
         fieldBindings = null;
         staticBindings = null;
+        externalAssetBindings = null;
 	}
 
     /**
@@ -330,6 +346,24 @@ public class PageSource
             result = new StaticBinding(value);
 
             staticBindings.put(value, result);
+        }
+
+        return result;
+    }
+
+    public synchronized IAsset getExternalAsset(String URL)
+    {
+        IAsset result = null;
+
+        if (externalAssetBindings == null)
+            externalAssetBindings = new HashMap(MAP_SIZE);
+        else
+            result = (IAsset)externalAssetBindings.get(URL);
+
+        if (result == null)
+        {
+            result = new ExternalAsset(URL);
+            externalAssetBindings.put(URL, result);
         }
 
         return result;

@@ -36,7 +36,10 @@ import com.primix.tapestry.app.*;
  */
 
 /**
- *  Internal asset; one that is visible to the web server directly.
+ *  Internal asset; one that is visible to the servlet container directly.
+ *  In retrospect, a better name for this would be <code>ContextAsset</code>
+ *  since the path is relative to the {@link ServletContext} containing
+ *  the application.
  *
  *  <p>TBD: Localization
  *
