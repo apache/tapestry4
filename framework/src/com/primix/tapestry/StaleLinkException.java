@@ -57,12 +57,12 @@ public class StaleLinkException extends RequestCycleException
 	 *
 	 */
 	 
-	public StaleLinkException(IComponent component, IRequestCycle cycle,
-		String targetActionId, String targetIdPath)
+	public StaleLinkException(IComponent component, 
+			String targetActionId, String targetIdPath)
 	{
 		super("Action id " + targetActionId + 
 			" matched component " + component.getIdPath() + 
-			" not " + targetIdPath + ".", component, cycle);
+			" not " + targetIdPath + ".", component);
 		
 		page = component.getPage();
 		pageName = page.getName();
@@ -75,21 +75,20 @@ public class StaleLinkException extends RequestCycleException
 	 *
 	 */
 
-	public StaleLinkException(IPage page, IRequestCycle cycle,
-		 String targetActionId, String targetIdPath)
+	public StaleLinkException(IPage page, String targetActionId, String targetIdPath)
 	{
 		this("Action id " + targetActionId + 
 			" does not match component " + targetIdPath + ".", 
-			page, cycle);
+			page);
 			
 		this.targetActionId = targetActionId;
 		this.targetIdPath = targetIdPath;
 	}
 	
-	public StaleLinkException(String message, IPage page, IRequestCycle cycle)
+	public StaleLinkException(String message, IPage page)
 	{
 	
-		super(message, null, cycle);
+		super(message, null);
 		this.page = page;
 		
 		if (page != null)

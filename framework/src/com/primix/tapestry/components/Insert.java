@@ -148,7 +148,7 @@ public class Insert extends AbstractComponent
 			}
 			catch (BindingException ex)
 			{
-				throw new RequestCycleException(this, cycle, ex);
+				throw new RequestCycleException(this,  ex);
 			}
 		}
 		
@@ -166,7 +166,7 @@ public class Insert extends AbstractComponent
             catch (Exception e)
             {
                 throw new RequestCycleException("Unable to format object " + value + ".",
-                        this, cycle, e);
+                        this, e);
             }
         }
 

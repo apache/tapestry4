@@ -78,7 +78,7 @@ public class Any extends AbstractComponent
 
 			elementName = elementBinding.getString();
 			if (elementName == null)
-				throw new RequiredParameterException(this, "element", elementBinding, cycle);
+				throw new RequiredParameterException(this, "element", elementBinding);
 
 			writer.begin(elementName);
 

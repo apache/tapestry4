@@ -5,26 +5,48 @@
 	"http://tapestry.sourceforge.net/dtd/Script_1_0.dtd">
 
 <script>
-<!-- symbols:
-	onMouseOverName - the name of the event handler function for mouse overs
-	onMouseOutName - the name of the event handler function for mouse out
-	imageName - the name of the image to be changed (i.e., matches the
-			    <img> element's name attribute)
-	focusImageURL - the full and quoted URL for the image to be used on a mouse over
-	blurImageURL - the full and quoted URL for the iamge to be used on a mouse out
+<!-- 
+
+input symbols:
+
+uniqueId - uniqueId used to build names
+focusImageURL - URL for focus (mouse over)
+blurImageURL - URL for blur image (mouse out)
+
+output symbols:
+
+imageName - name for the image (i.e. name attribute of <img> element)
+onMouseOverName - name of mouse over function
+onMouseOutName - name of mouse out function
+
 -->
+
+<let key="imageName">
+	rollover_<insert key="uniqueId"/>
+</let>
+<let key="onMouseOverName">
+	focus_<insert key="imageName"/>
+</let>
+<let key="onMouseOutName">
+	blur_<insert key="imageName"/>
+</let>
+
+<let key="attribute">
+	document.<insert key="imageName"/>.src
+</let>
+
 <body>
 
 function <insert key="onMouseOverName"/>()
 {
   if (document.images)
-    document.<insert key="imageName"/>.src = <insert key="focusImageURL"/>;
+    <insert key="attribute"/> = <insert key="focusImageURL"/>;
 }
 
 function <insert key="onMouseOutName"/>()
 {
   if (document.images)
-    document.<insert key="imageName"/>.src = <insert key="blurImageURL"/>;
+    <insert key="attribute"/> = <insert key="blurImageURL"/>;
 }
 
 </body>

@@ -1,10 +1,11 @@
-package com.primix.tapestry;
+package com.primix.tapestry.script;
 
-import com.primix.tapestry.*;
+import java.util.*;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -31,20 +32,47 @@ import com.primix.tapestry.*;
  */
 
 /**
- *  A special subclass of {@link RequestCycleException} that can be thrown
- *  when a component has determined that the state of the page has been
- *  rewound.
+ *  A top level container for a number of {@link IScriptToken script tokens}.
  *
- * @author Howard Ship
- * @version $Id$
+ *  @author Howard Ship
+ *  @version $Id$
+ *  @since 0.2.9
  */
-
-
-public class RenderRewoundException extends RequestCycleException
+ 
+public class ParsedScript
 {
-	public RenderRewoundException(IComponent component)
+	private String scriptPath;
+	
+	public ParsedScript(String scriptPath)
 	{
-		super(null, component);
+		this.scriptPath = scriptPath;
+	}
+	
+	public String getScriptPath()
+	{
+		return scriptPath;
+	}
+	
+	private List tokens = new ArrayList();
+	
+	public void addToken(IScriptToken token)
+	{
+		tokens.add(token);
+	}
+	
+	public ScriptSession execute(Map symbols)
+	throws ScriptException
+	{
+		ScriptSession result = new ScriptSession(scriptPath, symbols);
+		Iterator i = tokens.iterator();
+		
+		while (i.hasNext())
+		{
+			IScriptToken token = (IScriptToken)i.next();
+			
+			token.write(null, result);
+		}
+		
+		return result;
 	}
 }
-

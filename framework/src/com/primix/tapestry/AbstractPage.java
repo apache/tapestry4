@@ -281,7 +281,7 @@ implements IPage
 			}
 		catch (PageRecorderCommitException ex)
 		{
-			throw new RequestCycleException(ex.getMessage(), null, cycle, ex);
+			throw new RequestCycleException(ex.getMessage(), null, ex);
 			}
 		finally
 		{

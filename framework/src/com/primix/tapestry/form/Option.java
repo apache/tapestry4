@@ -126,10 +126,10 @@ public class Option extends AbstractComponent
 		if (select == null)
 			throw new RequestCycleException(
 				"Option component must be contained within a Select.",
-				this, cycle);
+				this);
 
 		if (selectedBinding == null)
-			throw new RequiredParameterException(this, "selected", null, cycle);
+			throw new RequiredParameterException(this, "selected", null);
 
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.

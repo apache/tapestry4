@@ -119,9 +119,9 @@ extends AbstractComponent
 
 			componentTemplate = templateSource.getTemplate(this);
 		}
-		catch (ResourceUnavailableException e)
+		catch (ResourceUnavailableException ex)
 		{
-	    	throw new RequestCycleException(e.getMessage(), this, cycle, e);
+	    	throw new RequestCycleException(ex.getMessage(), this, ex);
 		}
 
 		count = componentTemplate.getTokenCount();
@@ -152,7 +152,7 @@ extends AbstractComponent
 						check = false;
 
 						if (!activeComponent.getSpecification().getAllowBody())
-							throw new BodylessComponentException(activeComponent, cycle);
+							throw new BodylessComponentException(activeComponent);
 					}
 
 					activeComponent.addWrapped(element);
@@ -173,13 +173,13 @@ extends AbstractComponent
 
 					check = true;
 				}
-				catch (NoSuchComponentException e)
+				catch (NoSuchComponentException ex)
 				{
 					throw new RequestCycleException(
 						"Template for component " +
 						getExtendedId() +
 						" references undefined embedded component " +
-						id + ".", this, cycle, e);
+						id + ".", this,  ex);
 				}
 
 				// Make sure the template contains each component only once.
@@ -201,7 +201,7 @@ extends AbstractComponent
 						check = false;
 
 						if (!activeComponent.getSpecification().getAllowBody())
-							throw new BodylessComponentException(activeComponent, cycle);
+							throw new BodylessComponentException(activeComponent);
 					}
 
 					activeComponent.addWrapped(component);	
@@ -228,7 +228,7 @@ extends AbstractComponent
 					// that this could happen because the <jwc> tag is poorly formatted.
 
 					throw new RequestCycleException(
-						"More </jwc> tags than <jwc> tags in template.", this, cycle);
+						"More </jwc> tags than <jwc> tags in template.", this);
 				}
 			}
 		}
@@ -236,7 +236,7 @@ extends AbstractComponent
 		if (stackx != 0)
 			throw new RequestCycleException(
 				"Not all <jwc> tags closed in template.",
-				this, cycle);
+				this);
 
 		checkAllComponentsReferenced(seenIds, cycle);
 		
@@ -304,7 +304,7 @@ extends AbstractComponent
 		
 		buffer.append('.');
 		
-		throw new RequestCycleException(buffer.toString(), this, cycle);
+		throw new RequestCycleException(buffer.toString(), this);
 	}
 			
 	/**

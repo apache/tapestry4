@@ -92,11 +92,11 @@ public class Delegator extends AbstractComponent
 		}
         catch (BindingException ex)
         {
-            throw new RequestCycleException(this, cycle, ex);
+            throw new RequestCycleException(this, ex);
 		}
 	
 		if (delegate == null)
-			throw new RequiredParameterException(this, "delegate", delegateBinding, cycle);
+			throw new RequiredParameterException(this, "delegate", delegateBinding);
 			
 		delegate.render(writer, cycle);
 	}

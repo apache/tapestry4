@@ -289,7 +289,7 @@ public class RequestCycle
 
 		// Woops.  Mismatch.
 
-		throw new StaleLinkException(component, this, 
+		throw new StaleLinkException(component,  
 			Integer.toString(targetActionId), targetIdPath);
 	}
 
@@ -340,18 +340,18 @@ public class RequestCycle
 			// RenderExceptions don't need to be wrapped.
 throw e;
 			}
-		catch (ApplicationRuntimeException e)
+		catch (ApplicationRuntimeException ex)
 		{
 		    // Nothing much to add here.
 
-			throw e;
+			throw ex;
 			}
-		catch (Throwable e)
+		catch (Throwable ex)
 		{
 			// But wrap other exceptions in a RequestCycleException ... this
 			// will ensure that some of the context is available.
 
-			throw new RequestCycleException(e.getMessage(), page, this, e);
+			throw new RequestCycleException(ex.getMessage(), page,  ex);
 			}
 		finally
 		{
@@ -406,24 +406,24 @@ throw e;
 			// Shouldn't get this far, because the target component should
 			// throw the RenderRewoundException.
 
-			throw new StaleLinkException(page, this, 
+			throw new StaleLinkException(page,  
 				targetActionId, targetIdPath);
 		}
-		catch (RenderRewoundException e)
+		catch (RenderRewoundException ex)
 		{
 			// This is acceptible and expected.
 		}
-		catch (RequestCycleException e)
+		catch (RequestCycleException ex)
 		{
 			// RequestCycleException don't need to be wrapped.
-			throw e;
+			throw ex;
 		}
-		catch (Throwable e)
+		catch (Throwable ex)
 		{
 			// But wrap other exceptions in a RequestCycleException ... this
 			// will ensure that some of the context is available.
 
-			throw new RequestCycleException(e.getMessage(), page, this, e);
+			throw new RequestCycleException(ex.getMessage(), page,  ex);
 		}
 		finally
 		{

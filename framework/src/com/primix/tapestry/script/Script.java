@@ -64,10 +64,10 @@ import org.apache.log4j.*;
  *  <td>R</td>
  *  <td>no</td>
  *  <td>false</td>
- *  <td>If false (the default), then the {@link ScriptGenerator} is maintained
+ *  <td>If false (the default), then the {@link ParsedScript} is maintained
  *  across request cycles without question.  If true, then a check is made
- *  that the script parameter and {@link ScriptGenerator} are in agreement
- *  (and a new {@link ScriptGenerator} is obtained if needed).</td>
+ *  that the script parameter and {@link ParsedScript} are in agreement
+ *  (and a new {@link ParsedScript} is obtained if needed).</td>
  *  </tr>
  *
  * <tr>
@@ -76,7 +76,7 @@ import org.apache.log4j.*;
  *  <td>R</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
- *  <td>The base set of symbols to be provided to the {@link ScriptGenerator}.
+ *  <td>The base set of symbols to be provided to the {@link ParsedScript}.
  *  To this is added (in a copy of the {@link Map}) any informal parameters.
  *  </tr>
  *
@@ -95,7 +95,7 @@ extends AbstractComponent
 {
 	private static final Category CAT = Category.getInstance(Script.class.getName());
 
-		private IBinding scriptBinding;
+	private IBinding scriptBinding;
 
 	private IBinding cautiousBinding;
 	private boolean staticCautious;
@@ -103,8 +103,8 @@ extends AbstractComponent
 
 	private IBinding symbolsBinding;
 
-	private String lastScript;
-	private ScriptGenerator generator;
+	private ParsedScript parsedScript;
+	private ScriptParser scriptParser;
 
 	public void setScriptBinding(IBinding value)
 	{
@@ -222,51 +222,46 @@ extends AbstractComponent
 	}
 
 	/**
-	*  Gets the {@link ScriptGenerator} initialized for the correct script.
+	*  Gets the {@link ParsedScript} for the correct script.
 	*
-	*  <p>The generator is cached between invocations; once constructed, it will
+	*  <p>The ParsedScript is cached between invocations; once constructed, it will
 	*  be re-used for all future request cycles, unless this Script component
 	*  is configured to be cautious.
 	*
 	*  <p>When cautious, the script parameter is checked and, if it doesn't match
 	*  the script last parsed (i.e., the script that matches the generator), then
-	*  the current generator is discarded and a new one constructed, using
+	*  the current ParsedScript is discarded and a new one built, using
 	*  the new value of the script parameter.
 	*
 	*/
 
-	public ScriptGenerator getGenerator()
+	public ParsedScript getParsedScript()
 	{
-		String script;
+		String scriptPath;
 
-		if (generator != null && ! isCautious())
-			return generator;
+		if (parsedScript != null && ! isCautious())
+			return parsedScript;
 
-		script = (String)scriptBinding.getObject("script", String.class);
+		scriptPath = (String)scriptBinding.getObject("script", String.class);
 
-		if (script == null)
-			throw new BindingException("Parameter script is null.", scriptBinding);
+		if (scriptPath == null)
+			throw new NullValueForBindingException(scriptBinding);
 
 		// If this script is different than the last script parsed by this
 		// component, then throw it away and parse again (using the new script).
 
 
-		if (generator != null &&
-			lastScript != null &&
-			! lastScript.equals(script))
-			generator = null;
+		if (parsedScript != null &&
+			!parsedScript.getScriptPath().equals(scriptPath))
+			parsedScript = null;
 
-		if (generator == null)
-		{
-			generator = buildGenerator(script);
-
-			lastScript = script;
-		}
-
-		return generator;
+		if (parsedScript == null)
+			parsedScript = buildParsedScript(scriptPath);
+			
+		return parsedScript;
 	}
 
-	private ScriptGenerator buildGenerator(String scriptPath)
+	private ParsedScript buildParsedScript(String scriptPath)
 	{
 		IResourceResolver resolver = page.getEngine().getResourceResolver();
 		URL scriptURL;
@@ -281,11 +276,14 @@ extends AbstractComponent
 			throw new ApplicationRuntimeException
 				("Unable to locate script resource " + scriptPath + " in classpath.");
 
+		if (scriptParser == null)
+			scriptParser = new ScriptParser();
+			
 		try
 		{
 			stream = scriptURL.openStream();
 
-			return new ScriptGenerator(stream, scriptPath);
+			return scriptParser.parse(stream, scriptPath);
 		}
 		catch (ScriptParseException ex)
 		{
@@ -319,19 +317,34 @@ extends AbstractComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		Body body;
-
+		ScriptSession session;
+		
 		if (cycle.isRewinding())
 			return;
 
-		body = Body.get(cycle);
+		Body body = Body.get(cycle);
 
 		if (body == null)
 			throw new RequestCycleException(
 				"A Script component must be wrapped by a Body component.",
-				this, cycle);
+				this);
 
-		getGenerator().generateScript(body, getSymbols());
+		try
+		{
+			session = getParsedScript().execute(getSymbols());
+		}
+		catch (ScriptException ex)
+		{
+			throw new RequestCycleException(this, ex);
+		}
+
+		String value = session.getBody();
+		if (value != null)
+			body.addOtherScript(value);
+		
+		value = session.getInitialization()	;
+		if (value != null)
+			body.addOtherInitialization(value);
 
 		// This component is not allowed to have a body.
 	}

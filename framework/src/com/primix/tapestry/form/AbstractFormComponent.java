@@ -62,7 +62,7 @@ public abstract class AbstractFormComponent
 		if (result == null)
 			throw new RequestCycleException(
 				"This component must be contained within a Form.",
-				this, cycle);
+				this);
 
 		return result;
 	}

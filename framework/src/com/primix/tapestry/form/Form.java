@@ -202,7 +202,7 @@ public class Form extends AbstractComponent
         boolean renderForm;
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException("Forms may not be nested.", this, cycle);
+            throw new RequestCycleException("Forms may not be nested.", this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -272,7 +272,7 @@ public class Form extends AbstractComponent
                     Integer.parseInt(actual) != nextElementId++)
                     throw new StaleLinkException(
                         "Incorrect number of elements with Form " + getExtendedId() + ".",
-                        getPage(), cycle);
+                        getPage());
 				
 				try
 				{
@@ -281,17 +281,17 @@ public class Form extends AbstractComponent
 				}
 				catch (BindingException ex)
 				{
-				    throw new RequestCycleException(this, cycle, ex);
+				    throw new RequestCycleException(this, ex);
 				}
 						
 				if (listener == null)
-					throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
+					throw new RequiredParameterException(this, "listener", listenerBinding);
 					
                 listener.actionTriggered(this, cycle);
 
                 // Abort the rewind render.
 
-                throw new RenderRewoundException(this, cycle);
+                throw new RenderRewoundException(this);
             }
 
 

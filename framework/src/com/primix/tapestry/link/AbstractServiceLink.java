@@ -118,7 +118,7 @@ public abstract class AbstractServiceLink
 		if (service == null)
 			throw new RequestCycleException("No engine service named " + 
 				serviceName + ".",
-				this, cycle);
+				this);
 
 		// Perform the major work of building the URL.
 
@@ -363,7 +363,7 @@ public abstract class AbstractServiceLink
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException(
 				"IServiceLink components may not be nested.",
-			this, cycle);
+			this);
 
 		try
 		{

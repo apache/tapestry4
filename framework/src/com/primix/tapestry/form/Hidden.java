@@ -160,7 +160,7 @@ public class Hidden extends AbstractFormComponent
 		}
 		catch (BindingException ex)
 		{
-			throw new RequestCycleException(this, cycle, ex);
+			throw new RequestCycleException(this, ex);
 		}
 
 		if (listener != null)

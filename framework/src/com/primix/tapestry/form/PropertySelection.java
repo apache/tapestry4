@@ -246,7 +246,7 @@ public class PropertySelection extends AbstractFormComponent
 				"model", IPropertySelectionModel.class);
 			
 		if (model == null)
-			throw new RequiredParameterException(this, "model", modelBinding, cycle);
+			throw new RequiredParameterException(this, "model", modelBinding);
 
 		name = form.getNextElementId("PropertySelection");
 

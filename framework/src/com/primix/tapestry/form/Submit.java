@@ -217,7 +217,7 @@ public class Submit extends AbstractFormComponent
 				tagValue = tagBinding.getObject();
 
 			if (tagValue == null)
-				throw new RequiredParameterException(this, "tag", tagBinding, cycle);
+				throw new RequiredParameterException(this, "tag", tagBinding);
 
 			selectedBinding.setObject(tagValue);
 

@@ -41,9 +41,9 @@ import com.primix.tapestry.*;
 
 public class BodylessComponentException extends RequestCycleException
 {
-	public BodylessComponentException(IComponent component, IRequestCycle cycle)
+	public BodylessComponentException(IComponent component)
 	{
-		super("This component may not wrap other elements.", component, cycle);
+		super("This component may not wrap other elements.", component);
 	}
 }
 

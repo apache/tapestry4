@@ -1,5 +1,10 @@
 * Jan 26 2001 hship
 
+Remove IRequestCycle from the parameter list for RequestCycleException and all sub-exceptions.
+Vastly improve the Script component and related classes.
+
+* Jan 26 2001 hship
+
 Revisit links and event handlers ... again!  ServiceLinks now support
 a well-defined set of events, but can handle any number of JavaScript
 functions.

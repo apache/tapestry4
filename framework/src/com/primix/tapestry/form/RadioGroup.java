@@ -231,7 +231,7 @@ public class RadioGroup extends AbstractFormComponent
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException("RadioGroup components may not be nested.",
-				this, cycle);
+				this);
 
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.

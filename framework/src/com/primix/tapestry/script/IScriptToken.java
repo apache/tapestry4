@@ -1,8 +1,5 @@
 package com.primix.tapestry.script;
 
-import java.util.*;
-import java.io.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -33,20 +30,34 @@ import java.io.*;
 
 /**
  *  Defines the responsibilities of a template token used by a
- *  {@link ScriptGenerator} ... that is, how the token
+ *  {@link ParsedScript} ... that is, how the token
  *  can assist in generating output.
  *
+ *  @author Howard Ship
+ *  @version $Id$
  */
 
-public interface ITemplateToken
+public interface IScriptToken
 {
     /**
-     *  Invoked by the {@link ScriptGenerator} to have the token
-     *  add its text to the script.  A token may need access
+     *  Invoked to have the token
+     *  add its text to the buffer.  A token may need access
      *  to the symbols in order to produce its output.
+	 *
+	 *  <p>Top level tokens (such as BodyToken) can expect that
+	 *  buffer will be null.
      *
      */
 
-    public void write(Writer writer, Map symbols)
-    throws IOException;
+    public void write(StringBuffer buffer, ScriptSession session)
+	throws ScriptException;
+	
+	/**
+	 *  Invoked during parsing to add the token parameter as a child
+	 *  of this token.
+	 *
+	 *  @since 0.2.9
+	 */
+	 
+	public void addToken(IScriptToken token);	
 }

@@ -40,7 +40,7 @@ import java.io.*;
  */
 
 class SymbolToken
-implements ITemplateToken
+implements IScriptToken
 {
     private String name;
 
@@ -55,27 +55,24 @@ implements ITemplateToken
      *
      */
 
-	public void write(Writer writer, Map symbols)
-	throws IOException
+	public void write(StringBuffer buffer, ScriptSession session)
+	throws ScriptException
 	{
-        Object raw = null;
 	    String value;
 
-        try
-        {
-            raw = symbols.get(name);
-            value = (String)raw;
-        }
-        catch (ClassCastException ex)
-        {
-            throw new IOException("Symbol '" + name + "' is class " +
-                raw.getClass().getName() + ", not String.");
-        }
-
+		value = session.getSymbol(name);
+		
         if (value == null)
-            throw new IOException(
-                "No symbol '" + name + "' provided for this script.");
+            throw new ScriptException(
+                "No symbol '" + name + "' provided for this script.",
+						this, session);
 
-		writer.write(value);
+		buffer.append(value);
 	}
+	
+	public void addToken(IScriptToken token)
+	{
+		// Should never be invoked.
+	}
+	
 }

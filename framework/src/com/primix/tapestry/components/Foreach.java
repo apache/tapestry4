@@ -224,7 +224,7 @@ public class Foreach extends AbstractComponent
 		if (dataSource == null)
 			throw new RequestCycleException(
 				"Parameter source is not convertable to type java.util.Iterator.",
-				this, cycle);
+				this);
 
 		try
 		{
