@@ -67,7 +67,7 @@ public class Chart extends BasePage implements IChartProvider
     }
 
     /**
-     *  Invokes {@link #getValues()}, which ensures that (on the very first request cycle),
+     *  Invokes {@link #getPlotValues()}, which ensures that (on the very first request cycle),
      *  the persistent values property is set <em>before</em> the page recorder is locked.
      * 
      **/

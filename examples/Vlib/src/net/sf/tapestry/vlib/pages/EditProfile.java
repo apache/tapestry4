@@ -99,9 +99,11 @@ public class EditProfile extends Protected
 
     /**
      *  Invoked (from {@link MyLibrary}) to begin editting the user's
-     *  profile.  We get the entity attributes from the {@link IPerson},
+     *  profile.  We get the entity attributes from the 
+     *  {@link net.sf.tapestry.vlib.ejb.IPerson},
      *  and store them in the attributes page property, ready to provide
-     *  default values to the {@link ValidatingTextField} components.
+     *  default values to the {@link net.sf.tapestry.valid.ValidField} 
+     *  components.
      *
      **/
 

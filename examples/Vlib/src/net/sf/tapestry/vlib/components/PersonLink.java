@@ -30,7 +30,8 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.vlib.pages.PersonPage;
 
 /**
- *  Creates a link to the {@link PersonPage} page using the external service.
+ *  Creates a link to the {@link net.sf.tapestry.vlib.pages.PersonPage} 
+ *  page using the external service.
  *
  *
  *  <table border=1>
@@ -39,7 +40,7 @@ import net.sf.tapestry.vlib.pages.PersonPage;
  *  <th>Type</th> 
  *  <th>Direction</th> 
  *  <th>Required</th> 
- *  <th>Default</th> 
+ *  <th>Default</th>
  *  <th>Description</th>
  * </tr>
  * 
@@ -49,7 +50,7 @@ import net.sf.tapestry.vlib.pages.PersonPage;
  *  <td>in</td>
  *  <td>yes</td> 
  *  <td>&nbsp;</td>
- *  <td>The primary key of the {@link IPerson} to create a link to.</td>
+ *  <td>The primary key of the {@link net.sf.tapestry.vlib.ejb.IPerson} to create a link to.</td>
  * </tr>
  *
  * <tr>

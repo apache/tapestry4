@@ -76,7 +76,8 @@ public interface IPage extends IComponent
 	public IEngine getEngine();
 
 	/**
-	 *  Returns the object (effectively, an {@link IPageRecorder}) that is notified
+	 *  Returns the object (effectively, an 
+	 *  {@link net.sf.tapestry.IPageRecorder}) that is notified
 	 *  of any changes to persistant properties of the page.
 	 *
 	 **/

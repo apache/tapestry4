@@ -106,8 +106,8 @@ public class EditBook extends Protected
 
     /**
      *  Invoked (from {@link MyLibrary}) to begin editting a book.
-     *  Gets the attributes from the {@link IBook} and updates
-     *  the request cycle to render this page,
+     *  Gets the attributes from the {@link net.sf.tapestry.vlib.ejb.IBook} 
+     *  and updates the request cycle to render this page,
      *
      **/
 

@@ -67,6 +67,10 @@ import net.sf.tapestry.spec.ComponentSpecification;
  *  a {@link Body} component must wrap the Palette. If JavaScript is not enabled
  *  in the client browser, then the user will be unable to make (or change) any selections.
  *
+ *  <p>Cross-browser compatibility is not perfect.  In some cases, the 
+ *  {@link net.sf.tapestry.contrib.form.MultiplePropertySelection} component
+ *  may be a better choice.
+ * 
  *  <p><table border=1>
  * <tr>
  *    <td>Parameter</td>
@@ -97,7 +101,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
  *  <td>in</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
- *  <td>Works, as with a {@link PropertySelection} component, to define the
+ *  <td>Works, as with a {@link net.sf.tapestry.form.PropertySelection} component, to define the
  *  possible values.
  *  </td> </tr>
  *

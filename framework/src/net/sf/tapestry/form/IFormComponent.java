@@ -39,10 +39,10 @@ import net.sf.tapestry.IForm;
 public interface IFormComponent extends IComponent
 {
     /**
-     *  Returns the {@link Form} which contains the component.
-     *
-     *  @return the {@link Form}, or null if the component is not contained by a Form,
+     *  Returns the {@link net.sf.tapestry.IForm} which contains the component,
+     *  or null if the component is not contained by a form,
      *  of if the containing Form is not currently renderring.
+     * 
      **/
 
     public IForm getForm();
