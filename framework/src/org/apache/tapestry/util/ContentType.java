@@ -104,7 +104,7 @@ public class ContentType
     }
     
     /**
-     * @return
+     * @return the base type of the content type
      */
     public String getBaseType()
     {
@@ -112,7 +112,7 @@ public class ContentType
     }
 
     /**
-     * @param string
+     * @param baseType
      */
     public void setBaseType(String baseType)
     {
@@ -120,7 +120,7 @@ public class ContentType
     }
 
     /**
-     * @return
+     * @return the sub-type of the content type
      */
     public String getSubType()
     {
@@ -128,7 +128,7 @@ public class ContentType
     }
 
     /**
-     * @param string
+     * @param subType
      */
     public void setSubType(String subType)
     {

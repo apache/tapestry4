@@ -134,7 +134,7 @@ public class EnhancedClassFactory implements IEnhancedClassFactory
     }
 
     /**
-     *  Given the java class, returns the equivalent {@link Type}.  In addition,
+     *  Given the java class, returns the equivalent {@link CtClass type}.  In addition,
      *  knows about scalar types, arrays of scalar types, java.lang.Object[] and
      *  java.lang.String[].
      * 
@@ -169,7 +169,7 @@ public class EnhancedClassFactory implements IEnhancedClassFactory
 
 
     /**
-     * @return
+     * @return The class loader to be used to create the enhanced class
      */
     public EnhancedClassLoader getEnhancedClassLoader()
     {

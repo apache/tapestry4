@@ -140,7 +140,7 @@ import org.apache.tapestry.util.IdAllocator;
  *  sent to the client without filtering, which is appropriate if the
  *  value has any markup that should not be escaped.
  *
- *  @author Howard Lewis Ship
+ *  @author Howard Lewis Ship, Geoff Longman
  *  @version $Id$
  * 
  **/
@@ -149,13 +149,13 @@ public class TemplateParser
 {
     /**
      *  A Factory used by {@link org.apache.tapestry.parse.TemplateParser} to create 
-     *  {@link org.apache.tapestry.parse.TemplateToken} objects
+     *  {@link org.apache.tapestry.parse.TemplateToken} objects.
      * 
      *  <p>
-     *  This class is extended by Spindle - the Eclipse Plugin for Tapestry
-     * 
-     *  @since 3.0
+     *  This class is extended by Spindle - the Eclipse Plugin for Tapestry.
+     *  <p>
      *  @author glongman@intelligentworks.com
+     *  @since 3.0
      */
     protected static class TemplateTokenFactory
     {
@@ -398,7 +398,7 @@ public class TemplateParser
     private boolean _ignoring;
 
     /**
-     *  A {@link Map} of {@link Strings}, used to store attributes collected
+     *  A {@link Map} of {@link String}s, used to store attributes collected
      *  while parsing a tag.
      *
      **/
@@ -406,9 +406,9 @@ public class TemplateParser
     private Map _attributes = new HashMap();
 
     /**
-     *  A factory used to create template tokens
-     *
-     * @author glongman@intelligentworks.com
+     *  A factory used to create template tokens.
+     * <p>
+     * author glongman@intelligentworks.com
      */
 
     protected TemplateTokenFactory _factory;
@@ -440,7 +440,7 @@ public class TemplateParser
      *  @param templateData the HTML template to parse.  Some tokens will hold
      *  a reference to this array.
      *  @param delegate  object that "knows" about defined components
-     *  @param resourcePath a description of where the template originated from,
+     *  @param resourceLocation a description of where the template originated from,
      *  used with error messages.
      *
      **/
@@ -469,9 +469,9 @@ public class TemplateParser
     }
 
     /**
-     *  perform default initialization of the parser
-     * 
-     *  @author glongman@intelligentworks.com
+     *  perform default initialization of the parser.
+     *  <p>
+     *  author glongman@intelligentworks.com
      */
 
     protected void beforeParse(
@@ -488,9 +488,9 @@ public class TemplateParser
     }
 
     /**
-     *  Perform default cleanup after parsing completes
-     * 
-     *  @author glongman@intelligentworks.com
+     *  Perform default cleanup after parsing completes.
+     *  <p>
+     *  author glongman@intelligentworks.com
      */
 
     protected void afterParse()
@@ -514,8 +514,9 @@ public class TemplateParser
      * the message and location parameters.
      * <p>
      * Subclasses may override but <b>must</b> ensure they throw the required exception.
-     * 
-     * @author glongman@intelligentworks.com
+     * <p>
+     *
+     * author glongman@intelligentworks.com
      *  
      * @param message
      * @param location
@@ -537,8 +538,9 @@ public class TemplateParser
      * The default implementation simply rethrows the exception.
      * <p>
      * Subclasses may override but <b>must</b> ensure they rethrow the exception.
-     * 
-     * @author glongman@intelligentworks.com
+     * <p>
+     *
+     * author glongman@intelligentworks.com
      *  
      * @param exception
      * @param line ignored by the default impl
@@ -553,9 +555,10 @@ public class TemplateParser
     }
 
     /**
-     * Give subclasses access to the parse results
-     * 
-     * @author glongman@intelligentworks.com
+     * Give subclasses access to the parse results.
+     * <p>
+     *
+     * author glongman@intelligentworks.com
      */
     protected List getTokens()
     {
@@ -1011,44 +1014,45 @@ public class TemplateParser
      **/
 
     /**
-     * Notify that the beginning of a tag has been detected
+     * Notify that the beginning of a tag has been detected.
      * <p>
      * Default implementation does nothing.
-     * 
-     * @author glongman@intelligentworks.com
+     * <p>
+     *
+     * author glongman@intelligentworks.com
      */
     protected void tagBeginEvent(int startLine, int cursorPosition)
     {
     }
 
     /**
-     * Notify that the end of the current tag has been detected
+     * Notify that the end of the current tag has been detected.
      * <p>
      * Default implementation does nothing.
-     * 
-     * @author glongman@intelligentworks.com
+     * <p>
+     * author glongman@intelligentworks.com
      */
     protected void tagEndEvent(int cursorPosition)
     {
     }
 
     /**
-     * Notify that the beginning of an attribute value has been detected
+     * Notify that the beginning of an attribute value has been detected.
      * <p>
      * Default implementation does nothing.
-     * 
-     * @author glongman@intelligentworks.com
+     * <p>
+     * author glongman@intelligentworks.com
      */
     protected void attributeBeginEvent(String attributeName, int startLine, int cursorPosition)
     {
     }
 
     /**
-     * Notify that the end of the current attribute value has been detected
+     * Notify that the end of the current attribute value has been detected.
      * <p>
      * Default implementation does nothing.
-     * 
-     * @author glongman@intelligentworks.com
+     * <p>
+     * author glongman@intelligentworks.com
      */
     protected void attributeEndEvent(int cursorPosition)
     {

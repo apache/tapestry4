@@ -75,7 +75,7 @@ public class ObservedChangeEvent extends EventObject
     private Object _newValue;
 
 	/**
-	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object)} instead.
 	 */
     public ObservedChangeEvent(IComponent component, String propertyName, char newValue)
     {
@@ -83,7 +83,7 @@ public class ObservedChangeEvent extends EventObject
     }
 
 	/**
-	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object)} instead.
 	 */
     public ObservedChangeEvent(IComponent component, String propertyName, byte newValue)
     {
@@ -91,7 +91,7 @@ public class ObservedChangeEvent extends EventObject
     }
 
 	/**
-	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object)} instead.
 	 */
     public ObservedChangeEvent(IComponent component, String propertyName, short newValue)
     {
@@ -99,7 +99,7 @@ public class ObservedChangeEvent extends EventObject
     }
 
 	/**
-	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object)} instead.
 	 */
     public ObservedChangeEvent(IComponent component, String propertyName, int newValue)
     {
@@ -107,7 +107,7 @@ public class ObservedChangeEvent extends EventObject
     }
 
 	/**
-	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object)} instead.
 	 */
     public ObservedChangeEvent(IComponent component, String propertyName, long newValue)
     {
@@ -115,7 +115,7 @@ public class ObservedChangeEvent extends EventObject
     }
 
 	/**
-	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object)} instead.
 	 */
    public ObservedChangeEvent(IComponent component, String propertyName, double newValue)
     {
@@ -123,7 +123,7 @@ public class ObservedChangeEvent extends EventObject
     }
 
 	/**
-	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object)} instead.
 	 */
    public ObservedChangeEvent(IComponent component, String propertyName, float newValue)
     {
@@ -159,7 +159,7 @@ public class ObservedChangeEvent extends EventObject
     }
 
 	/**
-	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object)} instead.
 	 */
     public ObservedChangeEvent(IComponent component, String propertyName, boolean newValue)
     {

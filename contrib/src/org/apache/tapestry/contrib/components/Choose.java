@@ -61,7 +61,7 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  This component is a container for {@link When} or {@link Otherwise} components; 
+ *  This component is a container for {@link When} or Otherwise components;
  *  it provides the context for mutually exclusive conditional evaluation.
  *
  *  [<a href="../../../../../../ComponentReference/contrib.Choose.html">Component Reference</a>]

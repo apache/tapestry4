@@ -164,7 +164,7 @@ public class BaseComponent extends AbstractComponent
 
     /**
      *  Loads the template for the component, then invokes
-     *  {@link AbstractComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification))}.  
+     *  {@link AbstractComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}.
      *  Subclasses must invoke this method first,
      *  before adding any additional behavior, though its usually
      *  simpler to override {@link #finishLoad()} instead.

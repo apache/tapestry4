@@ -150,7 +150,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     /**
      * The depth of the open tag stack.
-     * @see #activeElementStack
+     * @see #_activeElementStack
      *
      **/
 
@@ -197,9 +197,9 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *  @param entities a set of prefered entities, unsafe characters with
      *  a defined entity use the entity, other characters are converted
      *  to numeric entities.
-     *  @param mimeType the MIME type of the content produced by the writer.
+     *  @param contentType the MIME type of the content produced by the writer.
      *  @param encoding the encoding of content produced by the writer.
-     *  @param outputStream stream to which content will be written.
+     *  @param stream stream to which content will be written.
      *
      **/
 
@@ -235,7 +235,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *  to numeric entities.
      *  @param contentType the type of content produced by the
      *  writer.
-     *  @param outputStream stream to which content will be written.
+     *  @param stream stream to which content will be written.
      **/
 
     protected AbstractMarkupWriter(
@@ -382,8 +382,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *  {@link #begin(String)}
      *  and before any other kind of writing (which closes the tag).
      *
-     *  <p>The value may be null, in which case this method behaves the same as
-     *  {@link #attribute(String)}.
+     *  <p>The value may be null.
      *
      *  <p>Troublesome characters in the value are converted to thier GTML entities, much
      *  like a <code>print()</code> method, with the following exceptions:

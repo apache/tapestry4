@@ -85,7 +85,7 @@ import org.apache.tapestry.request.RequestContext;
  *  of the page is reached.  This rewinding ensures that the page
  *  is restored to the exact state it had when the URL for the request cycle was
  *  generated, taking into account the dynamic nature of the page ({@link org.apache.tapestry.components.Foreach},
- *  {@link java.awt.Conditional}, etc.).  Once this component is reached, it can notify
+ *  {@link org.apache.tapestry.components.Conditional}, etc.).  Once this component is reached, it can notify
  *  its {@link IActionListener}.  The listener has the ability to update the state
  *  of any pages and select a new result page.
  *
@@ -248,10 +248,10 @@ public interface IRequestCycle
 
     /**
      *  Invoked just before rendering the response page to get all
-     *  {@link IPageRecorder page recorders} touched in this request cycle
+     *  {@link org.apache.tapestry.engine.IPageRecorder page recorders} touched in this request cycle
      *  to commit their changes (save them to persistant storage).
      *
-     *  @see IPageRecorder#commit()
+     *  @see org.apache.tapestry.engine.IPageRecorder#commit()
      **/
 
     public void commitPageChanges();
@@ -296,7 +296,7 @@ public interface IRequestCycle
      *  <p>Through release 2.1, parameters was of type String[].  This is
      *  an incompatible change in 2.2.
      * 
-     *  @see IEngineService#DIRECT_SERVICE
+     *  @see org.apache.tapestry.engine.DirectService
      *  @since 2.0.3
      * 
      **/

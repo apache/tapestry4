@@ -60,7 +60,7 @@ import javax.servlet.ServletConfig;
 import org.apache.tapestry.engine.IPropertySource;
 
 /**
- *  Implementation of {@link org.apache.tapestry.IPropertySource}
+ *  Implementation of {@link IPropertySource}
  *  that returns values defined as Servlet initialization parameters
  *  (defined as <code>&lt;init-param&gt;</code> in the
  *  <code>web.xml</code> deployment descriptor.

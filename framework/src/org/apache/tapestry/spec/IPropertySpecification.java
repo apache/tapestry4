@@ -59,7 +59,7 @@ import org.apache.tapestry.ILocationHolder;
 
 /**
  *  Defines a transient or persistant property of a component or page.  
- *  A {@link org.apache.tapestry.IComponentClassEnhancer} uses this information
+ *  A {@link org.apache.tapestry.engine.IComponentClassEnhancer} uses this information
  *  to create a subclass with the necessary instance variables and methods.  
  *  
  * @author glongman@intelligentworks.com

@@ -68,9 +68,10 @@ import java.util.EventListener;
 public interface PageValidateListener extends EventListener
 {
     /**
-     *  Invoked by the page from its {@link org.apache.tapestry.IPage#validate()} method.
+     *  Invoked by the page from its
+     *  {@link org.apache.tapestry.IPage#validate(org.apache.tapestry.IRequestCycle)} method.
      *
-     *  <p>May throw a {@link PageRedirectException}, to redirect the user 
+     *  <p>May throw a {@link org.apache.tapestry.PageRedirectException}, to redirect the user
      *  to an appropriate part of the system (such as, a login page).
      **/
 

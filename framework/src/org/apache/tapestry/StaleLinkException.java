@@ -56,7 +56,7 @@
 package org.apache.tapestry;
 
 /**
- *  Exception thrown by an {@link IEngineService} when it discovers that
+ *  Exception thrown by an {@link org.apache.tapestry.engine.IEngineService} when it discovers that
  *  the an action link was for an out-of-date version of the page.
  *
  *  <p>The application should redirect to the StaleLink page.

@@ -61,8 +61,9 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  The do element provides a general mechanism for the user to act upon the current card, i.e. a card-level user
- *  interface element. The representation of the do element is user agent dependent and the author must only assume
+ *  The do element provides a general mechanism for the user to act upon the current card,
+ *  in other words a card-level user interface element.
+ *  The representation of the do element is user agent dependent and the author must only assume
  *  that the element is mapped to a unique user interface widget that the user can activate.
  *  For example, the widget mapping may be to a graphically rendered button, a soft or function key, a voice-activated command sequence, or any other interface that has a simple "activate" operation with no inter-operation persistent state.
  *  The do element may appear at both the card and deck-level.

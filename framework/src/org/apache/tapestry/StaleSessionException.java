@@ -56,7 +56,7 @@
 package org.apache.tapestry;
 
 /**
- *  Exception thrown by an {@link IEngineService} when it discovers that
+ *  Exception thrown by an {@link org.apache.tapestry.engine.IEngineService} when it discovers that
  *  the {@link javax.servlet.http.HttpSession}
  *  has timed out (and been replaced by a new, empty
  *  one).

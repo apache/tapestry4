@@ -86,7 +86,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  *  @see org.apache.tapestry.IComponent
  *  @see IContainedComponent
  *  @see IComponentSpecification
- *  @see org.apache.tapestry.IPageLoader
+ *  @see org.apache.tapestry.engine.IPageLoader
  * 
  * @author glongman@intelligentworks.com
  * @version $Id$

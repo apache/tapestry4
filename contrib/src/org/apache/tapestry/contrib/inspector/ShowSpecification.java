@@ -229,7 +229,7 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
     }
 
     /**
-     *  Returns the {@link ParameterSpecification} corresponding to
+     *  Returns the {@link org.apache.tapestry.spec.ParameterSpecification} corresponding to
      *  the value of the parameterName property.
      *
      **/

@@ -81,8 +81,8 @@ public interface IBinding extends ILocatable
      *  <li>A {@link Number} value is true if non-zero
      *  <li>A {@link String} value is true if non-empty and contains
      *  non-whitespace characters
-     *  <li>Any {@link Collection} value is true if it has a non-zero
-     *  {@link Collection#size() size}
+     *  <li>Any {@link java.util.Collection} value is true if it has a non-zero
+     *  {@link java.util.Collection#size() size}
      *  <li>Any array type is true if it has a non-zero length
      *  <li>Any other non-null value is true
      *  </ul>
@@ -100,7 +100,7 @@ public interface IBinding extends ILocatable
      *  invoked.  
      *
      *  @throws ClassCastException if the binding's value is not of a usable class.
-     *  @throws NullValueForBindingException if the binding's value is null.
+     *  @throws BindingException if the binding's value is null.
      **/
 
     public int getInt();
@@ -112,7 +112,7 @@ public interface IBinding extends ILocatable
      *  invoked.
      *
      *  @throws ClassCastException if the binding's value is not of a usable class.
-     *  @throws NullValueForBindingException if the binding's value is null.
+     *  @throws BindingException if the binding's value is null.
      **/
 
     public double getDouble();

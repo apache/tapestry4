@@ -493,7 +493,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     /**
      *  Updates the extension map.
-     *  @param extensions A Map of extension specification paths 
+     *  @param extension A Map of extension specification paths
      *  keyed on extension id.
      * 
      * <p>The map is retained, not copied.
@@ -570,7 +570,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      *  Updates the services map.
      *  @param services A Map of the fully qualified names of classes 
      *  which implement
-     *  {@link org.apache.tapestry.IEngineService} 
+     *  {@link org.apache.tapestry.engine.IEngineService}
      *  keyed on service id.
      * 
      *  <p>The map is retained, not copied.

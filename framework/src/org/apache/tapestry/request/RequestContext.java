@@ -108,7 +108,7 @@ import org.apache.tapestry.util.IRenderDescription;
  * 
  *  <p>
  *  If some cases, it is necesary to provide an implementation of
- *  {@link org.apache.tapestry.IRequestDecoder} (often, due to a firewall).
+ *  {@link IRequestDecoder} (often, due to a firewall).
  *  If the application specifification
  *  provides an extension named
  *  <code>org.apache.tapestry.request-decoder</code>

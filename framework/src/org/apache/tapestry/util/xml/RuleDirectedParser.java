@@ -84,9 +84,10 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * A simplified version of {@link org.apache.commons.digester.Digester} without
- * as many bells and whistles ... but with some key features needed when parsing
+ * A simplified version of {@link org.apache.commons.digester.Digester}.
+ * This version is without as many bells and whistles but has some key features needed when parsing
  * a document (rather than a configuration file):
+ * <br>
  * <ul>
  *   <li>Notifications for each bit of text</ul>
  *   <li>Tracking of exact location within the document.</li>
@@ -413,7 +414,7 @@ public class RuleDirectedParser extends DefaultHandler
 
     /**
      * Pops the top rule off the stack and
-     * invokes {@link IRule#endElementt(RuleDirectedParser, String)}.
+     * invokes {@link IRule#endElement(RuleDirectedParser)}.
      */
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
@@ -436,7 +437,7 @@ public class RuleDirectedParser extends DefaultHandler
     /**
      * Invokes {@link #selectRule(String, Attributes)} to choose a new rule,
      * which is pushed onto the rule stack, then invokes
-     * {@link IRule#startElement(RuleDirectedParser, String, Attributes)}.
+     * {@link IRule#startElement(RuleDirectedParser, Attributes)}.
      */
     public void startElement(String uri, String localName, String qName, Attributes attributes)
         throws SAXException

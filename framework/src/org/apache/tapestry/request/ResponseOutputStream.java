@@ -70,7 +70,7 @@ import org.apache.tapestry.Tapestry;
  *  data so as to defer opening the response's output stream.
  *
  *  <p>The buffering is pretty simple because the code
- *  between {@link IMarkupWriter} and this shows lots of buffering
+ *  between {@link org.apache.tapestry.IMarkupWriter} and this shows lots of buffering
  *  after the <code>PrintWriter</code> and inside the <code>OutputStreamWriter</code> that
  *  can't be configured.
  *
@@ -129,7 +129,7 @@ public class ResponseOutputStream extends OutputStream
 
     /**
      *  Does nothing.  This is because of chaining of <code>close()</code> from
-     *  {@link IMarkupWriter#close()} ... see {@link #flush()}.
+     *  {@link org.apache.tapestry.IMarkupWriter#close()} ... see {@link #flush()}.
      * 
      **/
 
@@ -142,7 +142,7 @@ public class ResponseOutputStream extends OutputStream
      *  Flushes the underlying output stream, if is has been opened.  
      *
      *  <p>This method explicitly <em>does not</em> flush the internal buffer ...
-     *  that's because when an {@link IMarkupWriter} is closed (for instance, because
+     *  that's because when an {@link org.apache.tapestry.IMarkupWriter} is closed (for instance, because
      *  an exception is thrown), that <code>close()</code> spawns <code>flush()</code>es
      *  and <code>close()</code>s throughout the output stream chain, eventually
      *  reaching this method.

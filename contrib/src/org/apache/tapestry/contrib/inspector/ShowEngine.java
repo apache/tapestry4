@@ -73,8 +73,8 @@ import org.apache.tapestry.util.io.BinaryDumpOutputStream;
 
 /**
  *  Component of the {@link Inspector} page used to display
- *  the properties of the {@link IEngine} as well as a serialized view of it.
- *  Also, the {@link org.apache.tapestry.RequestContext} is dumped out.
+ *  the properties of the {@link org.apache.tapestry.IEngine} as well as a serialized view of it.
+ *  Also, the {@link org.apache.tapestry.request.RequestContext} is dumped out.
  *
  *
  *  @version $Id$

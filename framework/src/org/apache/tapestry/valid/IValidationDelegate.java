@@ -64,7 +64,8 @@ import org.apache.tapestry.form.IFormComponent;
 
 /**
  *  Interface used to track validation errors in forms and
- *  {@link IFormComponent}s (including {@link IField}).
+ *  {@link IFormComponent}s (including {@link org.apache.tapestry.form.AbstractTextField}
+ *  and its subclasses).
  * 
  *  <p>In addition,
  *  controls how fields that are in error are presented (they can be
@@ -81,11 +82,11 @@ import org.apache.tapestry.form.IFormComponent;
  *  of field state.
  * 
  *  <p>Starting with release 1.0.9, this interface was <em>again</em>
- *  reworked, to allow tracking of errors in {@link IFormComponent form components}
- *  (not just {@link IField}s}, and to allow unassociated (with any field) errors
+ *  reworked, to allow tracking of errors in {@link IFormComponent form components},
+ *  and to allow unassociated (with any field) errors
  *  to be tracked.
  *  
- *  <p><b>Fields vs. {@link IField} vs. Form Components</b><br>
+ *  <p><b>Fields vs. Form Components</b><br>
  *  For most simple forms, these terms are pretty much synonymous.
  *  Your form will render normally, and each form component will render
  *  only once.  Some of your form components will by {@link ValidField}
@@ -108,7 +109,7 @@ import org.apache.tapestry.form.IFormComponent;
  *  <p><b>The Exception</b><br>
  *  The problem is that a component doesn't know its field name until its
  *  <code>render()</code> method is invoked (at which point, it allocates a unique field
- *  name from the {@link org.apache.tapestry.IForm#getElementId(IComponent)}. 
+ *  name from the {@link org.apache.tapestry.IForm#getElementId(org.apache.tapestry.form.IFormComponent)}.
  *  This is not a problem for the field or its
  *  {@link IValidator}, but screws things up for the {@link FieldLabel}.
  * 

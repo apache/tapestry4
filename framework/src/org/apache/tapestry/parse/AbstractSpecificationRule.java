@@ -101,7 +101,7 @@ public abstract class AbstractSpecificationRule extends Rule
 
     /**
      *  Gets the current location tag.  This requires that the
-     *  rule's digester be {@link org.apache.tapestry.parse.LocatableDigester}.
+     *  rule's digester be {@link SpecificationDigester}.
      * 
      **/
 

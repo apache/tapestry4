@@ -183,7 +183,7 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     *  @throws ReadOnlyBindingException always.
+     *  @throws BindingException always.
      *
      **/
 
@@ -193,7 +193,7 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     *  @throws ReadOnlyBindingException always.
+     *  @throws BindingException always.
      *
      **/
 
@@ -203,7 +203,7 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     *  @throws ReadOnlyBindingException always.
+     *  @throws BindingException always.
      *
      **/
 
@@ -213,7 +213,7 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     *  @throws ReadOnlyBindingException always.
+     *  @throws BindingException always.
      *
      **/
 
@@ -223,7 +223,7 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     *  @throws ReadOnlyBindingException always.
+     *  @throws BindingException always.
      *
      **/
 

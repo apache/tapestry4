@@ -84,7 +84,7 @@ import org.apache.tapestry.vlib.pages.ApplicationUnavailable;
  *  The engine for the Virtual Library.  
  *  This exists to implement the external 
  *  service, which allows the {@link org.apache.tapestry.vlib.pages.ViewBook}
- *  and {@link org.apache.tapestry.vlib.pages.PersonPage}
+ *  and {@link org.apache.tapestry.vlib.pages.ViewPerson}
  *  pages to be bookmarked, and to provide
  *  a way for shutting down the application when the user logs out.
  *

@@ -73,12 +73,12 @@ import org.apache.tapestry.Tapestry;
  *  functionality was deprecated in 2.3 and will be removed in 2.3.
  * 
  *  <p>Typically, the values available to be selected
- *  are defined using an {@link org.apache.tapestry.util.Enum}.  
+ *  are defined using an {@link org.apache.commons.lang.enum.Enum}.
  *  A PropertySelection is dependent on
  *  an {@link IPropertySelectionModel} to provide the list of possible values.
  *
  *  <p>Often, this is used to select a particular 
- *  {@link org.apache.tapestry.util.Enum} to assign to a property; the
+ *  {@link org.apache.commons.lang.enum.Enum} to assign to a property; the
  *  {@link EnumPropertySelectionModel} class simplifies this.
  *
  *

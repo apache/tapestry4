@@ -77,7 +77,7 @@ import org.jCharts.test.TestDataGenerator;
 
 /**
  *  Demonstrates more complex form handling (including loops and dynamic addition/deletion of
- *  rows) as well as dynamic image generation using {@link JCharts}.
+ *  rows) as well as dynamic image generation using JCharts.
  * 
  *  @author Howard Lewis Ship, Luis Neves
  *  @version $Id$

@@ -56,7 +56,7 @@
 package org.apache.tapestry;
 
 /**
- *  A special subclass of {@link RequestCycleException} that can be thrown
+ *  A special subclass of {@link ApplicationRuntimeException} that can be thrown
  *  when a component has determined that the state of the page has been
  *  rewound.
  *

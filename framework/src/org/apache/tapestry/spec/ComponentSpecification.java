@@ -90,7 +90,7 @@ import org.apache.tapestry.Tapestry;
  *
  *  @see org.apache.tapestry.IComponent
  *  @see IContainedComponent
- *  @see org.apache.tapestry.IPageLoader
+ *  @see org.apache.tapestry.engine.IPageLoader
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

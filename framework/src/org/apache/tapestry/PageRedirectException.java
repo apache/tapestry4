@@ -56,7 +56,7 @@
 package org.apache.tapestry;
 
 /**
- *  Exception thrown by a {@link IComponent component} or {@link IEngineService}
+ *  Exception thrown by a {@link IComponent component} or {@link org.apache.tapestry.engine.IEngineService}
  *  that wishes to force the application to a particular page.  This is often used
  *  to protect a sensitive page until the user is authenticated.
  *

@@ -120,7 +120,7 @@ public class ClasspathResourceLocation extends AbstractResourceLocation
     }
 
     /**
-     *  Invokes {@link IResourceResolver#getResource(String)
+     *  Invokes {@link IResourceResolver#getResource(String)}
      * 
      **/
 

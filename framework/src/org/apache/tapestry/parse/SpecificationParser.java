@@ -748,7 +748,7 @@ public class SpecificationParser
 
     /**
      *  Parses an resource containing an application specification and assembles
-     *  an {@link ApplicationSpecification} from it.
+     *  an {@link org.apache.tapestry.spec.ApplicationSpecification} from it.
      *
      *  @throws DocumentParseException if the input stream cannot be fully
      *  parsed or contains invalid data.
@@ -774,7 +774,7 @@ public class SpecificationParser
 
     /**
      *  Parses an input stream containing a library specification and assembles
-     *  a {@link LibrarySpecification} from it.
+     *  a {@link org.apache.tapestry.spec.LibrarySpecification} from it.
      *
      *  @throws DocumentParseException if the input stream cannot be fully
      *  parsed or contains invalid data.

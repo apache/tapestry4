@@ -63,7 +63,7 @@ import org.apache.tapestry.vlib.pages.Login;
 /**
  *  Subclass of {@link org.apache.tapestry.vlib.Protected} that
  *  implements {@link org.apache.tapestry.vlib.IActivate}.  Overrides
- *  {@link #validate(IRequestCycle)}.
+ *  {@link #validate(org.apache.tapestry.IRequestCycle)}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

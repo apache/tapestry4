@@ -88,7 +88,7 @@ import org.apache.tapestry.valid.ValidField;
  *  <p>When rendering, a null value will render as the empty string.  A value
  *  of zero will render normally.
  *
- *  <p>When the form is submitted, the {@link IBinding#getType() type} of the binding
+ *  <p>When the form is submitted, the type of the binding
  *  is used to determine what kind of object to convert the string to.
  *
  * </td>

@@ -63,9 +63,8 @@ import org.apache.tapestry.vlib.IErrorProperty;
  *  (typically because of repeated {@link java.rmi.RemoteException}s
  *  or {@link javax.naming.NamingException}s accessing EJBs.
  * 
- *  @see org.apache.tapestry.vlib.VirtualLibraryEngine#rmiFailure(String, RemoteException, boolean)
- *  @see org.apache.tapestry.vlib.VirtualLibraryEngine#namingFailure(String, NamingException, boolean)
- * 
+ *  @see org.apache.tapestry.vlib.VirtualLibraryEngine#rmiFailure(String, java.rmi.RemoteException, int)
+ *
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

@@ -72,7 +72,7 @@ import org.apache.tapestry.enhance.javassist.EnhancedClassFactory;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- *  Default implementation of {@link org.apache.tapestry.IComponentClassEnhancer}.
+ *  Default implementation of {@link IComponentClassEnhancer}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
