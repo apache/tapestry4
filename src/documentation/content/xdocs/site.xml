@@ -102,6 +102,8 @@ See http://xml.apache.org/forrest/linking.html for more info
       <components label="Creating Tapestry components" href="components.html"/>
       <state label="Managing server-side state" href="state.html"/>
       <configuration label="Configuring Tapestry" href="configuration.html"/>
+      <proprties label="Tapestry Object Properties" href="properties.html"/>
+      <spec label="Specification DTDs" href="spec.html"/>
       
     </UsersGuide>
     
