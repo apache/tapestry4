@@ -58,7 +58,7 @@ package org.apache.tapestry.spec;
 /**
  *  Special interface of {@link org.apache.tapestry.spec.IBindingSpecification} used
  *  to encapsulate additional information the additional information 
- *  specific to listener bindings.  In a IListenerBindingSpecification, the
+ *  specific to listener bindings.  In an IListenerBindingSpecification, the
  *  value property is the actual script (and is aliased as property script), 
  *  but an additional property,
  *  language, (which may be null) is needed.  This is the language
