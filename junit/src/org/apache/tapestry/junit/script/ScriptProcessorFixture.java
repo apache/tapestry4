@@ -53,21 +53,80 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.junit.script;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.hivemind.Resource;
+import org.apache.tapestry.IScriptProcessor;
+import org.apache.tapestry.util.IdAllocator;
 
 /**
- *  Interface for objects that are
- *  read from resource files, used to backtrace
- *  live objects to the resources they
- *  came from. 
+ * Used by {@link org.apache.tapestry.junit.script.TestScript}.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
  **/
-
-public interface ILocationHolder extends ILocatable
+public class ScriptProcessorFixture implements IScriptProcessor
 {
-    public void setLocation(ILocation location);
+    private StringBuffer _body;
+    private StringBuffer _initialization;
+    private List _externalScripts;
+    private IdAllocator _idAllocator = new IdAllocator();
+
+    public void addBodyScript(String script)
+    {
+        if (_body == null)
+            _body = new StringBuffer();
+
+        _body.append(script);
+    }
+
+	public String getBody()
+	{
+		if (_body == null)
+			return null;
+			
+			return _body.toString();
+	}
+
+    public void addInitializationScript(String script)
+    {
+        if (_initialization == null)
+            _initialization = new StringBuffer();
+
+        _initialization.append(script);
+    }
+
+	public String getInitialization()
+	{
+		if (_initialization == null)return null;
+		
+		return _initialization.toString();
+	}
+
+    public void addExternalScript(Resource scriptLocation)
+    {
+        if (_externalScripts == null)
+            _externalScripts = new ArrayList();
+
+        _externalScripts.add(scriptLocation);
+    }
+    
+    public Resource[] getExternalScripts()
+    {
+    	if (_externalScripts == null)return null;
+    	
+    	int count = _externalScripts.size();
+    	
+    	return (Resource[])_externalScripts.toArray(new Resource[count]);
+    }
+
+    public String getUniqueString(String baseValue)
+    {
+    	return _idAllocator.allocateId(baseValue);
+    }
+
 }

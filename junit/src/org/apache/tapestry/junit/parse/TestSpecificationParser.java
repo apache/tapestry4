@@ -57,7 +57,7 @@ package org.apache.tapestry.junit.parse;
 
 import java.util.Map;
 
-import org.apache.tapestry.ILocatable;
+import org.apache.commons.hivemind.Locatable;
 import org.apache.tapestry.bean.MessageBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BindingType;
@@ -92,7 +92,7 @@ public class TestSpecificationParser extends TapestryTestCase
         super(name);
     }
 
-    private void checkLine(ILocatable locatable, int line)
+    private void checkLine(Locatable locatable, int line)
     {
         assertEquals("Line", line, locatable.getLocation().getLineNumber());
     }

@@ -55,6 +55,9 @@
 
 package org.apache.tapestry;
 
+import org.apache.commons.hivemind.*;
+import org.apache.commons.hivemind.*;
+
 /**
  *  Exception thrown by a {@link IComponent component} or {@link IEngineService}
  *  that wishes to force the application to a particular page.  This is often used

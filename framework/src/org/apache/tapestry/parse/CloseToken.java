@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.parse;
 
+import org.apache.commons.hivemind.Location;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.tapestry.ILocation;
 
 /**
  *  Represents the closing tag of a component element in the template.
@@ -72,7 +72,7 @@ public class CloseToken extends TemplateToken
 {
     private String _tag;
     
-    public CloseToken(String tag, ILocation location)
+    public CloseToken(String tag, Location location)
     {
         super(TokenType.CLOSE, location);
         

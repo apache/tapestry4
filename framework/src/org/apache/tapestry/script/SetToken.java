@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.Location;
 
 /**
  *  
@@ -73,7 +73,7 @@ class SetToken extends AbstractToken
     private String _key;
     private String _expression;
 
-    SetToken(String key, String expression, ILocation location)
+    SetToken(String key, String expression, Location location)
     {
         super(location);
         _key = key;

@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;

@@ -57,9 +57,9 @@ package org.apache.tapestry.binding;
 
 import java.lang.reflect.Field;
 
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.Location;
 import org.apache.tapestry.BindingException;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -89,9 +89,9 @@ public class FieldBinding extends AbstractBinding
     private String fieldName;
     private boolean accessed;
     private Object value;
-    private IResourceResolver resolver;
+    private ClassResolver resolver;
 
-    public FieldBinding(IResourceResolver resolver, String fieldName, ILocation location)
+    public FieldBinding(ClassResolver resolver, String fieldName, Location location)
     {
     	super(location);
     	

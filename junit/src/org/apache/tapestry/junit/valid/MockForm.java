@@ -58,10 +58,11 @@ package org.apache.tapestry.junit.valid;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.commons.hivemind.Messages;
+import org.apache.commons.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMessages;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
@@ -71,7 +72,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 
@@ -84,16 +84,16 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *
  **/
 
-public class TestingForm extends BaseLocatable implements IForm
+public class MockForm extends BaseLocatable implements IForm
 {
     private String _name;
 
-    public TestingForm()
+    public MockForm()
     {
         this("DefaultFormName");
     }
 
-    public TestingForm(String name)
+    public MockForm(String name)
     {
         _name = name;
     }
@@ -270,7 +270,7 @@ public class TestingForm extends BaseLocatable implements IForm
     {
     }
 
-    public IMessages getMessages()
+    public Messages getMessages()
     {
         return null;
     }

@@ -56,7 +56,6 @@
 package org.apache.tapestry.pageload;
 
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.util.prop.OgnlUtils;
@@ -74,18 +73,12 @@ import org.apache.tapestry.util.prop.OgnlUtils;
 
 public class PropertyInitializer implements PageDetachListener
 {
-    private IResourceResolver _resolver;
     private IComponent _component;
     private String _propertyName;
     private Object _value;
 
-    public PropertyInitializer(
-        IResourceResolver resolver,
-        IComponent component,
-        String propertyName,
-        Object value)
+    public PropertyInitializer(IComponent component, String propertyName, Object value)
     {
-        _resolver = resolver;
         _component = component;
         _propertyName = propertyName;
         _value = value;
@@ -93,7 +86,7 @@ public class PropertyInitializer implements PageDetachListener
 
     public void pageDetached(PageEvent event)
     {
-        OgnlUtils.set(_propertyName, _resolver, _component, _value);
+        OgnlUtils.set(_propertyName, _component, _value);
     }
 
 }

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.junit.spec;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -83,7 +83,7 @@ public class TestApplicationSpecification extends TapestryTestCase
     {
         IApplicationSpecification spec = parseApp("BasicExtension.application");
 
-        TestBean extension = (TestBean) spec.getExtension("testBean");
+        BeanFixture extension = (BeanFixture) spec.getExtension("testBean");
 
         assertEquals("booleanProperty", true, extension.getBooleanProperty());
         assertEquals("intProperty", 18, extension.getIntProperty());
@@ -99,7 +99,7 @@ public class TestApplicationSpecification extends TapestryTestCase
     {
         IApplicationSpecification spec = parseApp("BasicExtension.application");
 
-        TestBean extension = (TestBean) spec.getExtension("testBean", Object.class);
+        BeanFixture extension = (BeanFixture) spec.getExtension("testBean", Object.class);
 
         assertNotNull(extension);
     }

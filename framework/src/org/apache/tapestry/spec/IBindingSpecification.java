@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocationHolder;
+import org.apache.commons.hivemind.LocationHolder;
+import org.apache.commons.hivemind.Locatable;
 
 /**
  *  Stores a binding specification, which identifies the static value
@@ -66,7 +66,7 @@ import org.apache.tapestry.ILocationHolder;
  * @author glongman@intelligentworks.com
  * @version $Id$
  */
-public interface IBindingSpecification extends ILocationHolder, ILocatable
+public interface IBindingSpecification extends LocationHolder, Locatable
 {
     public abstract BindingType getType();
     public abstract String getValue();

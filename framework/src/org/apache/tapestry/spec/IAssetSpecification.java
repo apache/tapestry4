@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocationHolder;
+import org.apache.commons.hivemind.LocationHolder;
+import org.apache.commons.hivemind.Locatable;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
@@ -65,7 +65,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @author glongman@intelligentworks.com
  * @version $Id$
  */
-public interface IAssetSpecification extends IPropertyHolder, ILocationHolder, ILocatable
+public interface IAssetSpecification extends IPropertyHolder, LocationHolder, Locatable
 {
     /**
      *  Returns the base path for the asset.  This may be interpreted as a URL, relative URL

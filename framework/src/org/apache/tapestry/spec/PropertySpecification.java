@@ -54,6 +54,10 @@
  */
 
 package org.apache.tapestry.spec;
+
+import org.apache.commons.hivemind.impl.*;
+import org.apache.commons.hivemind.impl.*;
+
 /**
  *  Defines a transient or persistant property of a component or page.  
  *  A {@link org.apache.tapestry.IComponentClassEnhancer} uses this information

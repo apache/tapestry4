@@ -62,21 +62,22 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.Location;
+import org.apache.commons.hivemind.Resource;
+import org.apache.commons.hivemind.util.ClasspathResource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.ILocation;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.ContextAsset;
 import org.apache.tapestry.asset.ExternalAsset;
@@ -94,7 +95,6 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.resource.ContextResourceLocation;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BindingType;
@@ -124,7 +124,7 @@ public class PageLoader implements IPageLoader
     private static final Log LOG = LogFactory.getLog(PageLoader.class);
 
     private IEngine _engine;
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
     private IComponentClassEnhancer _enhancer;
     private ISpecificationSource _specificationSource;
     private ComponentSpecificationResolver _componentResolver;
@@ -166,7 +166,7 @@ public class PageLoader implements IPageLoader
      * 
      **/
 
-    private IResourceLocation _servletLocation;
+    private Resource _servletLocation;
 
     private static interface IQueuedInheritedBinding
     {
@@ -259,7 +259,7 @@ public class PageLoader implements IPageLoader
         IEngine engine = cycle.getEngine();
 
         _specificationSource = engine.getSpecificationSource();
-        _resolver = engine.getResourceResolver();
+        _resolver = engine.getClassResolver();
         _enhancer = engine.getComponentClassEnhancer();
         _componentResolver = new ComponentSpecificationResolver(cycle);
 
@@ -405,7 +405,7 @@ public class PageLoader implements IPageLoader
     private IBinding convert(IComponent container, IBindingSpecification spec)
     {
         BindingType type = spec.getType();
-        ILocation location = spec.getLocation();
+        Location location = spec.getLocation();
         String value = spec.getValue();
 
         // The most common type. 
@@ -517,7 +517,7 @@ public class PageLoader implements IPageLoader
                 IContainedComponent contained = containerSpec.getComponent(id);
 
                 String type = contained.getType();
-                ILocation location = contained.getLocation();
+                Location location = contained.getLocation();
 
                 _componentResolver.resolve(cycle, namespace, type, location);
 
@@ -604,7 +604,7 @@ public class PageLoader implements IPageLoader
         IComponent container,
         String componentId,
         String componentType,
-        ILocation location)
+        Location location)
     {
         IPage page = container.getPage();
 
@@ -639,7 +639,7 @@ public class PageLoader implements IPageLoader
         String id,
         IComponentSpecification spec,
         INamespace namespace,
-        ILocation location)
+        Location location)
     {
         IComponent result = null;
         String className = spec.getComponentClassName();
@@ -711,7 +711,7 @@ public class PageLoader implements IPageLoader
 
         String pageName = namespace.constructQualifiedName(name);
         String className = spec.getComponentClassName();
-        ILocation location = spec.getLocation();
+        Location location = spec.getLocation();
 
         if (StringUtils.isEmpty(className))
         {
@@ -853,7 +853,7 @@ public class PageLoader implements IPageLoader
         if (names.isEmpty())
             return;
 
-        IResourceLocation specLocation = specification.getSpecificationLocation();
+        Resource specLocation = specification.getSpecificationLocation();
 
         Iterator i = names.iterator();
 
@@ -901,15 +901,15 @@ public class PageLoader implements IPageLoader
             {
                 if (StringUtils.isEmpty(expression))
                 {
-                    initialValue = OgnlUtils.get(name, _resolver, component);
+                    initialValue = OgnlUtils.get(name, component);
                 }
                 else
                 {
                     // Evaluate the expression and update the property.
 
-                    initialValue = OgnlUtils.get(expression, _resolver, component);
+                    initialValue = OgnlUtils.get(expression, component);
 
-                    OgnlUtils.set(name, _resolver, component, initialValue);
+                    OgnlUtils.set(name, component, initialValue);
                 }
             }
             catch (Exception ex)
@@ -925,7 +925,7 @@ public class PageLoader implements IPageLoader
             }
 
             PageDetachListener initializer =
-                new PropertyInitializer(_resolver, component, name, initialValue);
+                new PropertyInitializer(component, name, initialValue);
 
             page.addPageDetachListener(initializer);
         }
@@ -941,18 +941,18 @@ public class PageLoader implements IPageLoader
         String assetName,
         IComponent component,
         IAssetSpecification spec,
-        IResourceLocation specificationLocation)
+        Resource specificationLocation)
     {
         AssetType type = spec.getType();
         String path = spec.getPath();
-        ILocation location = spec.getLocation();
+        Location location = spec.getLocation();
 
         if (type == AssetType.EXTERNAL)
             return new ExternalAsset(path, location);
 
         if (type == AssetType.PRIVATE)
         {
-            IResourceLocation baseLocation = specificationLocation;
+            Resource baseLocation = specificationLocation;
 
             // Fudge a special case for private assets with complete paths.  The specificationLocation
             // can't be used because it is often a ContextResourceLocation,
@@ -960,12 +960,12 @@ public class PageLoader implements IPageLoader
 
             if (path.startsWith("/"))
             {
-                baseLocation = new ClasspathResourceLocation(_resolver, "/");
+                baseLocation = new ClasspathResource(_resolver, "/");
                 path = path.substring(1);
             }
 
             return new PrivateAsset(
-                (ClasspathResourceLocation) findAsset(assetName,
+                (ClasspathResource) findAsset(assetName,
                     component,
                     baseLocation,
                     path,
@@ -982,15 +982,15 @@ public class PageLoader implements IPageLoader
             location);
     }
 
-    private IResourceLocation findAsset(
+    private Resource findAsset(
         String assetName,
         IComponent component,
-        IResourceLocation baseLocation,
+        Resource baseLocation,
         String path,
-        ILocation location)
+        Location location)
     {
-        IResourceLocation assetLocation = baseLocation.getRelativeLocation(path);
-        IResourceLocation localizedLocation = assetLocation.getLocalization(_locale);
+        Resource assetLocation = baseLocation.getRelativeResource(path);
+        Resource localizedLocation = assetLocation.getLocalization(_locale);
 
         if (localizedLocation == null)
             throw new ApplicationRuntimeException(

@@ -61,7 +61,7 @@ import java.util.List;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.Tapestry;

@@ -60,10 +60,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
@@ -127,7 +127,7 @@ public class ExtensionSpecification
      * 
      **/
 
-    public Object instantiateExtension(IResourceResolver resolver)
+    public Object instantiateExtension(ClassResolver resolver)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Instantiating extension class " + _className + ".");
@@ -148,12 +148,12 @@ public class ExtensionSpecification
 
         result = instantiateInstance(extensionClass, result);
 
-        initializeProperties(resolver, result);
+        initializeProperties(result);
 
         return result;
     }
 
-    private void initializeProperties(IResourceResolver resolver, Object extension)
+    private void initializeProperties(Object extension)
     {
         if (_configuration.isEmpty())
             return;
@@ -165,7 +165,7 @@ public class ExtensionSpecification
 
             String propertyName = (String) entry.getKey();
 
-            OgnlUtils.set(propertyName, resolver, extension, entry.getValue());
+            OgnlUtils.set(propertyName, extension, entry.getValue());
         }
     }
 

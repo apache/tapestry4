@@ -59,9 +59,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceResolver;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Location;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -76,15 +75,13 @@ import org.apache.tapestry.util.prop.OgnlUtils;
 abstract class AbstractToken implements IScriptToken
 {
     private List _tokens;
-    private ILocation _location;
-    private IResourceResolver _resolver;
-
-    protected AbstractToken(ILocation location)
+    private Location _location;
+    protected AbstractToken(Location location)
     {
         _location = location;
     }
 
-    public ILocation getLocation()
+    public Location getLocation()
     {
         return _location;
     }
@@ -125,12 +122,10 @@ abstract class AbstractToken implements IScriptToken
      */
     protected Object evaluate(String expression, ScriptSession session)
     {
-        if (_resolver == null)
-            _resolver = session.getRequestCycle().getEngine().getResourceResolver();
 
         try
         {
-            return OgnlUtils.get(expression, _resolver, session.getSymbols());
+            return OgnlUtils.get(expression, session.getSymbols());
         }
         catch (Exception ex)
         {

@@ -64,8 +64,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -186,7 +186,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
      * 
      **/
 
-    private IResourceLocation _specificationLocation;
+    private Resource _specificationLocation;
 
     /**
      *  A Map of {@link IPropertySpecification} keyed on the name
@@ -577,14 +577,14 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
 
     /** @since 3.0 **/
 
-    public IResourceLocation getSpecificationLocation()
+    public Resource getSpecificationLocation()
     {
         return _specificationLocation;
     }
 
     /** @since 3.0 **/
 
-    public void setSpecificationLocation(IResourceLocation specificationLocation)
+    public void setSpecificationLocation(Resource specificationLocation)
     {
         _specificationLocation = specificationLocation;
     }

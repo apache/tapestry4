@@ -59,20 +59,20 @@ import java.util.HashMap;
 
 import junit.framework.AssertionFailedError;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.FieldBinding;
 import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
-import org.apache.tapestry.util.DefaultResourceResolver;
 
 /**
  *  Do tests of bindings.
@@ -89,7 +89,7 @@ public class TestBindings extends TapestryTestCase
 
     public static final Object NULL_FIELD = null;
 
-    private IResourceResolver _resolver = new DefaultResourceResolver();
+    private ClassResolver _resolver = new DefaultClassResolver();
 
     private static class TestBinding extends AbstractBinding
     {

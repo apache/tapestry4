@@ -59,13 +59,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ognl.ClassResolver;
+import ognl.DefaultClassResolver;
 import ognl.Ognl;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 
 /**
  *  Utilities wrappers around <a href="http://www.ognl.org">OGNL</a>.
+ * 
+ *  <p>This has been temporarily hacked for Tapestry 3.1. It's not a good solution,
+ *  because it only really supports a single class loader, which could be a problem
+ *  if the Tapestry framework is loaded by the system class loader.
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -76,6 +81,11 @@ import org.apache.tapestry.Tapestry;
 public class OgnlUtils
 {
     private static final Map _cache = new HashMap();
+
+	/**
+	 * @since 3.1
+	 */
+	private static ClassResolver _ognlClassResolver = new OgnlClassResolver();
 
     private OgnlUtils()
     {
@@ -120,9 +130,9 @@ public class OgnlUtils
      * 
      **/
 
-    public static void set(String expression, ClassResolver resolver, Object target, Object value)
+    public static void set(String expression,  Object target, Object value)
     {
-        set(getParsedExpression(expression), resolver, target, value);
+        set(getParsedExpression(expression), target, value);
     }
 
     /** 
@@ -133,11 +143,11 @@ public class OgnlUtils
      * 
      **/
 
-    public static void set(Object expression, ClassResolver resolver, Object target, Object value)
+    public static void set(Object expression, Object target, Object value)
     {
         try
         {
-            Map context = Ognl.createDefaultContext(target, resolver);
+            Map context = Ognl.createDefaultContext(target, _ognlClassResolver);
 
             Ognl.setValue(expression, context, target, value);
         }
@@ -165,11 +175,11 @@ public class OgnlUtils
      * 
      **/
 
-    public static Object get(Object expression, ClassResolver resolver, Object object)
+    public static Object get(Object expression, Object object)
     {
         try
         {
-            Map context = Ognl.createDefaultContext(object, resolver);
+            Map context = Ognl.createDefaultContext(object, _ognlClassResolver);
 
             return Ognl.getValue(expression, context, object);
         }
@@ -194,9 +204,26 @@ public class OgnlUtils
      *   not obtained from the object.
      **/
 
-    public static Object get(String expression, ClassResolver resolver, Object object)
+    public static Object get(String expression, Object object)
     {
-        return get(getParsedExpression(expression), resolver, object);
+        return get(getParsedExpression(expression), object);
+    }
+
+	
+	/**
+	 * @since 3.1
+	 */
+    public static ClassResolver getOgnlClassResolver()
+    {
+        return _ognlClassResolver;
+    }
+
+	/**
+	 * @since 3.1
+	 */
+    public static void setOgnlClassResolver(ClassResolver resolver)
+    {
+        _ognlClassResolver = resolver;
     }
 
 }

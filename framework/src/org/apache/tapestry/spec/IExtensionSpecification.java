@@ -57,9 +57,9 @@ package org.apache.tapestry.spec;
 
 import java.util.Map;
 
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocationHolder;
-import org.apache.tapestry.IResourceResolver;
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.LocationHolder;
+import org.apache.commons.hivemind.Locatable;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
@@ -70,7 +70,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @author glongman@intelligentworks.com
  * @version $Id$
  */
-public interface IExtensionSpecification extends IPropertyHolder, ILocationHolder, ILocatable
+public interface IExtensionSpecification extends IPropertyHolder, LocationHolder, Locatable
 {
     public abstract String getClassName();
     public abstract void setClassName(String className);
@@ -86,7 +86,7 @@ public interface IExtensionSpecification extends IPropertyHolder, ILocationHolde
      *  It also configures properties of the extension.
      * 
      **/
-    public abstract Object instantiateExtension(IResourceResolver resolver);
+    public abstract Object instantiateExtension(ClassResolver resolver);
     /**
      *  Returns true if the extensions should be instantiated
      *  immediately after the containing 

@@ -60,6 +60,7 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
+import org.apache.commons.hivemind.*;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;
@@ -189,7 +190,7 @@ public interface IEngine
 
     /**
      *  Gets the named service, or throws an {@link
-     *  org.apache.tapestry.ApplicationRuntimeException} 
+     *  org.apache.commons.hivemind.ApplicationRuntimeException} 
      *  if the application can't provide
      *  the named server.
      *
@@ -267,7 +268,7 @@ public interface IEngine
      *
      **/
 
-    public IResourceResolver getResourceResolver();
+    public ClassResolver getClassResolver();
 
     /**
      *  Returns the visit object, an object that represents the client's visit

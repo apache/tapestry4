@@ -59,13 +59,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IScriptSource;
@@ -153,9 +153,9 @@ public abstract class Script extends AbstractComponent
         // If the script path is relative, it should be relative to the Script component's
         // container (i.e., relative to a page in the application).
 
-        IResourceLocation rootLocation =
+        Resource rootLocation =
             getContainer().getSpecification().getSpecificationLocation();
-        IResourceLocation scriptLocation = rootLocation.getRelativeLocation(scriptPath);
+        Resource scriptLocation = rootLocation.getRelativeResource(scriptPath);
 
         try
         {

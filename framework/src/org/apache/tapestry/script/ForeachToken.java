@@ -58,7 +58,7 @@ package org.apache.tapestry.script;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -81,7 +81,7 @@ class ForeachToken extends AbstractToken
     private String _index;
     private String _expression;
 
-    ForeachToken(String key, String index, String expression, ILocation location)
+    ForeachToken(String key, String index, String expression, Location location)
     {
         super(location);
 

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.Location;
 import org.apache.tapestry.util.xml.BaseRule;
 import org.apache.tapestry.util.xml.RuleDirectedParser;
 
@@ -103,7 +103,7 @@ abstract class AbstractTokenRule extends BaseRule
     /**
      * Parses the provided text and converts it into a series of 
      */
-    protected void addTextTokens(IScriptToken token, String text, ILocation location)
+    protected void addTextTokens(IScriptToken token, String text, Location location)
     {
         char[] buffer = text.toCharArray();
         int state = STATE_START;
@@ -224,7 +224,7 @@ abstract class AbstractTokenRule extends BaseRule
         String text,
         int blockStart,
         int blockLength,
-        ILocation location)
+        Location location)
     {
         String literal = text.substring(blockStart, blockStart + blockLength);
 

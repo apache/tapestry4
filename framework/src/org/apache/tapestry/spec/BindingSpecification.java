@@ -55,6 +55,9 @@
 
 package org.apache.tapestry.spec;
 
+import org.apache.commons.hivemind.impl.*;
+import org.apache.commons.hivemind.impl.*;
+
 /**
  *  Stores a binding specification, which identifies the static value
  *  or OGNL expression for the binding.  The name of the binding (which

@@ -57,7 +57,6 @@ package org.apache.tapestry.bean;
 
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -77,23 +76,22 @@ public class ExpressionBeanInitializer extends AbstractBeanInitializer
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
-        IResourceResolver resolver = provider.getResourceResolver();
         IComponent component = provider.getComponent();
-        
-        Object value = OgnlUtils.get(_expression, resolver, component);
 
-        setBeanProperty(resolver, bean, value);
+        Object value = OgnlUtils.get(_expression, component);
+
+        setBeanProperty(bean, value);
     }
 
-	/** @since 3.0 **/
-	
+    /** @since 3.0 **/
+
     public String getExpression()
     {
         return _expression;
     }
 
-	/** @since 3.0 **/
-	
+    /** @since 3.0 **/
+
     public void setExpression(String expression)
     {
         _expression = expression;

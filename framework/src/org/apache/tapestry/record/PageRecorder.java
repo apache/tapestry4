@@ -58,10 +58,10 @@ package org.apache.tapestry.record;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.event.ObservedChangeEvent;
@@ -224,7 +224,6 @@ public abstract class PageRecorder implements IPageRecorder
         if (changes.isEmpty())
             return;
 
-        IResourceResolver resolver = page.getEngine().getResourceResolver();
         Iterator i = changes.iterator();
 
         while (i.hasNext())
@@ -239,7 +238,7 @@ public abstract class PageRecorder implements IPageRecorder
 
             try
             {
-                OgnlUtils.set(propertyName, resolver, component, storedValue);
+                OgnlUtils.set(propertyName, component, storedValue);
             }
             catch (Throwable t)
             {

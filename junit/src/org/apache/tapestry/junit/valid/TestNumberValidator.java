@@ -85,7 +85,7 @@ public class TestNumberValidator extends TapestryTestCase
     private void testPassThru(String displayName, Class valueTypeClass, Number input)
         throws ValidatorException
     {
-        testPassThru(new TestingField(displayName), valueTypeClass, input);
+        testPassThru(new Field(displayName), valueTypeClass, input);
     }
 
     private void testPassThru(IFormComponent field, Class valueTypeClass, Number input)
@@ -211,7 +211,7 @@ public class TestNumberValidator extends TapestryTestCase
     public void testInvalidFormat()
     {
         v.setValueTypeClass(Integer.class);
-        IFormComponent field = new TestingField("invalidFormat");
+        IFormComponent field = new Field("invalidFormat");
 
         try
         {
@@ -230,7 +230,7 @@ public class TestNumberValidator extends TapestryTestCase
         v.setValueTypeClass(Integer.class);
         v.setInvalidNumericFormatMessage("Dude, gimme a number for {0}.");
 
-        IFormComponent field = new TestingField("invalidFormat");
+        IFormComponent field = new Field("invalidFormat");
 
         try
         {

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.Location;
 
 /**
  *  A token that writes the value of a property using a property path
@@ -70,7 +70,7 @@ class InsertToken extends AbstractToken
 {
     private String _expression;
 
-    InsertToken(String expression, ILocation location)
+    InsertToken(String expression, Location location)
     {
         super(location);
 

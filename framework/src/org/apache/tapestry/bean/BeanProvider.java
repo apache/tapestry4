@@ -64,13 +64,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
@@ -120,7 +120,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
      *
      **/
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     /**
      *  Map of beans, keyed on name.
@@ -142,7 +142,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
     {
         this._component = component;
         IEngine engine = component.getPage().getEngine();
-        _resolver = engine.getResourceResolver();
+        _resolver = engine.getClassResolver();
 
         if (LOG.isDebugEnabled())
             LOG.debug("Created BeanProvider for " + component);
@@ -332,7 +332,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
 
     /** @since 1.0.8 **/
 
-    public IResourceResolver getResourceResolver()
+    public ClassResolver getClassResolver()
     {
         return _resolver;
     }

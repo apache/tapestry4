@@ -62,9 +62,6 @@ import java.util.Map;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import ognl.ClassResolver;
-import ognl.DefaultClassResolver;
-
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.link.DirectLink;
 import org.apache.tapestry.parse.TemplateParser;
@@ -186,11 +183,9 @@ public abstract class AbstractTapestryTag extends TagSupport
 
     private Object evaluateExpression(String expression) throws JspException
     {
-        ClassResolver resolver = new DefaultClassResolver();
-
         try
         {
-            return OgnlUtils.get(expression, resolver, pageContext);
+            return OgnlUtils.get(expression, pageContext);
         }
         catch (Throwable t)
         {

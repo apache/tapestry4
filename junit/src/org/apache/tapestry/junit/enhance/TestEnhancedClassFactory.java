@@ -55,13 +55,13 @@
 
 package org.apache.tapestry.junit.enhance;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IResourceResolver;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.enhance.IEnhancedClass;
 import org.apache.tapestry.enhance.IEnhancedClassFactory;
 import org.apache.tapestry.enhance.javassist.EnhancedClassFactory;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -90,7 +90,7 @@ public class TestEnhancedClassFactory extends TapestryTestCase
 
     public void testCreateProperty() throws Exception
     {
-        IResourceResolver resolver = new DefaultResourceResolver();
+        ClassResolver resolver = new DefaultClassResolver();
         IEnhancedClassFactory factory = new EnhancedClassFactory(resolver);
 
         String className = "org.apache.tapestry.junit.enhance.PropertyHolder";
@@ -105,9 +105,9 @@ public class TestEnhancedClassFactory extends TapestryTestCase
 
         String value = "abraxis";
 
-        OgnlUtils.set("name", resolver, holder, value);
+        OgnlUtils.set("name", holder, value);
 
-        Object actual = OgnlUtils.get("name", resolver, holder);
+        Object actual = OgnlUtils.get("name", holder);
 
         assertEquals("Holder name property.", value, actual);
     }
@@ -115,7 +115,7 @@ public class TestEnhancedClassFactory extends TapestryTestCase
 
     public void testCreateFailure()
     {
-        IResourceResolver resolver = new DefaultResourceResolver();
+        ClassResolver resolver = new DefaultClassResolver();
         IEnhancedClassFactory factory = new EnhancedClassFactory(resolver);
 
         String className = "org.apache.tapestry.junit.enhance.Invalid";

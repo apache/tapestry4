@@ -61,8 +61,8 @@ import java.util.Map;
 
 import javax.ejb.FinderException;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;

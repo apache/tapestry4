@@ -57,8 +57,8 @@ package org.apache.tapestry.spec;
 
 import java.util.Collection;
 
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocationHolder;
+import org.apache.commons.hivemind.LocationHolder;
+import org.apache.commons.hivemind.Locatable;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
@@ -69,7 +69,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @author glongman@intelligentworks.com
  * @version $Id$
  */
-public interface IContainedComponent extends IPropertyHolder, ILocationHolder, ILocatable
+public interface IContainedComponent extends IPropertyHolder, LocationHolder, Locatable
 {
     /**
      *  Returns the named binding, or null if the binding does not

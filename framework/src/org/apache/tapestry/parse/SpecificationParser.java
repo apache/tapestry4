@@ -60,12 +60,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.digester.Rule;
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.LocationHolder;
+import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ILocationHolder;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
@@ -303,7 +303,7 @@ public class SpecificationParser
      * 
      **/
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     private interface IConverter
     {
@@ -397,11 +397,11 @@ public class SpecificationParser
          * 
          **/
 
-        public abstract ILocationHolder create();
+        public abstract LocationHolder create();
 
         public void begin(String namespace, String name, Attributes attributes) throws Exception
         {
-            ILocationHolder holder = create();
+            LocationHolder holder = create();
 
             holder.setLocation(getLocation());
 
@@ -417,7 +417,7 @@ public class SpecificationParser
 
     private class CreateExpressionBeanInitializerRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createExpressionBeanInitializer();
         }
@@ -425,7 +425,7 @@ public class SpecificationParser
 
     private class CreateStringBeanInitializerRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createMessageBeanInitializer();
         }
@@ -433,7 +433,7 @@ public class SpecificationParser
 
     private class CreateContainedComponentRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createContainedComponent();
         }
@@ -441,7 +441,7 @@ public class SpecificationParser
 
     private class CreateParameterSpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createParameterSpecification();
         }
@@ -449,7 +449,7 @@ public class SpecificationParser
 
     private class CreateComponentSpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createComponentSpecification();
         }
@@ -457,7 +457,7 @@ public class SpecificationParser
 
     private class CreateBindingSpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createBindingSpecification();
         }
@@ -465,7 +465,7 @@ public class SpecificationParser
 
     private class CreateBeanSpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createBeanSpecification();
         }
@@ -473,7 +473,7 @@ public class SpecificationParser
 
     private class CreateListenerBindingSpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createListenerBindingSpecification();
         }
@@ -481,7 +481,7 @@ public class SpecificationParser
 
     private class CreateAssetSpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createAssetSpecification();
         }
@@ -489,7 +489,7 @@ public class SpecificationParser
 
     private class CreatePropertySpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createPropertySpecification();
         }
@@ -497,7 +497,7 @@ public class SpecificationParser
 
     private class CreateApplicationSpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createApplicationSpecification();
         }
@@ -505,7 +505,7 @@ public class SpecificationParser
 
     private class CreateLibrarySpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createLibrarySpecification();
         }
@@ -513,7 +513,7 @@ public class SpecificationParser
 
     private class CreateExtensionSpecificationRule extends SpecFactoryCreateRule
     {
-        public ILocationHolder create()
+        public LocationHolder create()
         {
             return _factory.createExtensionSpecification();
         }
@@ -617,7 +617,7 @@ public class SpecificationParser
         CONVERSION_MAP.put("auto", Direction.AUTO);
     }
 
-    public SpecificationParser(IResourceResolver resolver)
+    public SpecificationParser(ClassResolver resolver)
     {
         _resolver = resolver;
         setFactory(new SpecFactory());
@@ -632,7 +632,7 @@ public class SpecificationParser
      *
      **/
 
-    public IComponentSpecification parseComponentSpecification(IResourceLocation resourceLocation)
+    public IComponentSpecification parseComponentSpecification(Resource resourceLocation)
         throws DocumentParseException
     {
         if (_componentDigester == null)
@@ -662,7 +662,7 @@ public class SpecificationParser
      * 
      **/
 
-    protected Object parse(SpecificationDigester digester, IResourceLocation location)
+    protected Object parse(SpecificationDigester digester, Resource location)
         throws DocumentParseException
     {
         try
@@ -723,7 +723,7 @@ public class SpecificationParser
      *
      **/
 
-    public IComponentSpecification parsePageSpecification(IResourceLocation resourceLocation)
+    public IComponentSpecification parsePageSpecification(Resource resourceLocation)
         throws DocumentParseException
     {
         if (_pageDigester == null)
@@ -755,7 +755,7 @@ public class SpecificationParser
      *
      **/
 
-    public IApplicationSpecification parseApplicationSpecification(IResourceLocation resourceLocation)
+    public IApplicationSpecification parseApplicationSpecification(Resource resourceLocation)
         throws DocumentParseException
     {
 
@@ -783,7 +783,7 @@ public class SpecificationParser
      *
      **/
 
-    public ILibrarySpecification parseLibrarySpecification(IResourceLocation resourceLocation)
+    public ILibrarySpecification parseLibrarySpecification(Resource resourceLocation)
         throws DocumentParseException
     {
         if (_libraryDigester == null)

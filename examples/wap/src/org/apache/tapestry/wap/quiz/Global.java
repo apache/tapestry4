@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.wap.quiz;
 
+import org.apache.commons.hivemind.Resource;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResourceLocation;
@@ -249,8 +249,8 @@ public class Global implements Serializable
             ApplicationServlet servlet = requestContext.getServlet();
             ServletContext context = servlet.getServletContext();
             IPropertySource propertySource = cycle.getEngine().getPropertySource();
-            IResourceLocation webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
-            IResourceLocation webInfAppLocation = webInfLocation.getRelativeLocation(servlet.getServletName() + "/");
+            Resource webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
+            Resource webInfAppLocation = webInfLocation.getRelativeResource(servlet.getServletName() + "/");
             readQuestions(easyQuestions, webInfAppLocation, propertySource.getPropertyValue("easyquestionsfile"));
             readQuestions(mediumQuestions, webInfAppLocation, propertySource.getPropertyValue("mediumquestiosfile"));
             readQuestions(hardQuestions, webInfAppLocation, propertySource.getPropertyValue("hardquestionsfile"));
@@ -284,9 +284,9 @@ public class Global implements Serializable
         }
     }
 
-    private void readQuestions(List questions, IResourceLocation location, String filename)
+    private void readQuestions(List questions, Resource location, String filename)
     {
-        IResourceLocation result = location.getRelativeLocation(filename);
+        Resource result = location.getRelativeResource(filename);
         URL url = result.getResourceURL();
         try
         {

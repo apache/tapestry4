@@ -13,7 +13,6 @@
     <classpathentry exported="true" kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/client/jboss-j2ee.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/server/all/lib/mail.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/ext/bsf-2.3.0.jar"/>
     <classpathentry exported="true" kind="var" path="JETTY_DIR/lib/javax.servlet.jar"/>
     <classpathentry exported="true" kind="var" path="JETTY_DIR/ext/javax.xml.jaxp.jar"/>
@@ -25,7 +24,9 @@
     <classpathentry exported="true" kind="lib" path="lib/ext/commons-collections-2.1.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/ext/ognl-2.5.1.jar"/>
     <classpathentry kind="lib" path="lib/ext/commons-fileupload-1.0.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/javassist-2.5.1.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/ext/commons-digester-1.5.jar"/>
+    <classpathentry kind="src" path="/hivemind"/>
+    <classpathentry kind="var" path="MAVEN_REPO/jboss/jars/javassist-2.6.jar"/>
+    <classpathentry kind="var" path="MAVEN_REPO/commons-lang/jars/commons-lang-2.0.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

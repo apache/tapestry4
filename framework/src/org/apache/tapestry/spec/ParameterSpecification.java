@@ -55,6 +55,9 @@
 
 package org.apache.tapestry.spec;
 
+import org.apache.commons.hivemind.impl.*;
+import org.apache.commons.hivemind.impl.*;
+
 /**
  *  Defines a formal parameter to a component.  A <code>IParameterSpecification</code>
  *  is contained by a {@link IComponentSpecification}.

@@ -60,9 +60,10 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;
@@ -74,7 +75,6 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.pool.Pool;
 
@@ -89,7 +89,7 @@ import org.apache.tapestry.util.pool.Pool;
 
 public class MockEngine implements IEngine
 {
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
     private IComponentMessagesSource componentStringsSource;
 
     private Pool _pool = new Pool();
@@ -158,10 +158,10 @@ public class MockEngine implements IEngine
         return false;
     }
 
-    public IResourceResolver getResourceResolver()
+    public ClassResolver getClassResolver()
     {
         if (_resolver == null)
-            _resolver = new DefaultResourceResolver();
+            _resolver = new DefaultClassResolver();
 
         return _resolver;
     }

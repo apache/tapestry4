@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.tapestry.IResourceLocation;
+import org.apache.commons.hivemind.Resource;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.xml.sax.Attributes;
@@ -85,7 +85,7 @@ public class ValidatePublicIdRule extends BaseDocumentRule
         throws Exception
     {
         SpecificationDigester digester = getDigester();
-        IResourceLocation location = digester.getResourceLocation();
+        Resource location = digester.getResourceLocation();
 
         String publicId = digester.getPublicId();
 

@@ -73,6 +73,7 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.hivemind.*;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResourceLocation;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -1173,7 +1174,7 @@ public final class Tapestry
      * 
      **/
 
-    public static IResourceLocation getApplicationRootLocation(IRequestCycle cycle)
+    public static Resource getApplicationRootLocation(IRequestCycle cycle)
     {
         RequestContext context = cycle.getRequestContext();
         ServletContext servletContext = context.getServlet().getServletContext();
@@ -1201,39 +1202,6 @@ public final class Tapestry
     }
 
     /**
-     *  Selects the first {@link org.apache.tapestry.ILocation} in an array of objects.
-     *  Skips over nulls.  The objects may be instances of
-     *  {Location or {@link org.apache.tapestry.ILocatable}.  May return null
-     *  if no Location found found.
-     * 
-     **/
-
-    public static ILocation findLocation(Object[] locations)
-    {
-        for (int i = 0; i < locations.length; i++)
-        {
-            Object location = locations[i];
-
-            if (location == null)
-                continue;
-
-            if (location instanceof ILocation)
-                return (ILocation) location;
-
-            if (location instanceof ILocatable)
-            {
-                ILocatable locatable = (ILocatable) location;
-                ILocation result = locatable.getLocation();
-
-                if (result != null)
-                    return result;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      *  Creates an exception indicating the binding value is null.
      * 
      *  @since 3.0 
@@ -1250,7 +1218,7 @@ public final class Tapestry
     public static ApplicationRuntimeException createNoSuchComponentException(
         IComponent component,
         String id,
-        ILocation location)
+        Location location)
     {
         return new ApplicationRuntimeException(
             format("no-such-component", component.getExtendedId(), id),

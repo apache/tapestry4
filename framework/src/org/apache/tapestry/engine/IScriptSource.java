@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.engine;
 
-import org.apache.tapestry.IResourceLocation;
+import org.apache.commons.hivemind.Resource;
 import org.apache.tapestry.IScript;
 
 /**
@@ -74,7 +74,7 @@ public interface IScriptSource
      * 
      **/
 
-    public IScript getScript(IResourceLocation scriptLocation);
+    public IScript getScript(Resource scriptLocation);
 
     /**
      *  Invoked to clear any cached scripts.

@@ -97,7 +97,7 @@ public class TestValidationDelegate extends TestCase
 
     public void testInvalidInput()
     {
-        IFormComponent f = new TestingField("testAdd");
+        IFormComponent f = new Field("testAdd");
         String errorMessage = "Need a bigger one.";
 
         d.setFormComponent(f);
@@ -122,7 +122,7 @@ public class TestValidationDelegate extends TestCase
 
     public void testValidatorErrorRenderer()
     {
-        IFormComponent f = new TestingField("testValidatorErrorRenderer");
+        IFormComponent f = new Field("testValidatorErrorRenderer");
 
         IRender errorRenderer = new RenderString("Just don't like it.");
 
@@ -152,7 +152,7 @@ public class TestValidationDelegate extends TestCase
 
     public void testNoError()
     {
-        IFormComponent f = new TestingField("testNoError");
+        IFormComponent f = new Field("testNoError");
 
         d.setFormComponent(f);
         d.recordFieldInputValue("Futurama");
@@ -174,7 +174,7 @@ public class TestValidationDelegate extends TestCase
 
     public void testUnassociatedErrors()
     {
-        IFormComponent f = new TestingField("testUnassociatedErrors");
+        IFormComponent f = new Field("testUnassociatedErrors");
 
         d.setFormComponent(f);
         d.recordFieldInputValue("Bender");
@@ -221,9 +221,9 @@ public class TestValidationDelegate extends TestCase
 
     public void testMultipleInvalidInput()
     {
-        IFormComponent f1 = new TestingField("input1");
+        IFormComponent f1 = new Field("input1");
         String e1 = "And now for something completely different.";
-        IFormComponent f2 = new TestingField("input2");
+        IFormComponent f2 = new Field("input2");
         String e2 = "A man with three buttocks.";
 
         d.setFormComponent(f1);
@@ -250,9 +250,9 @@ public class TestValidationDelegate extends TestCase
 
     public void testReset()
     {
-        IFormComponent f1 = new TestingField("input1");
+        IFormComponent f1 = new Field("input1");
         String e1 = "And now for something completely different.";
-        IFormComponent f2 = new TestingField("input2");
+        IFormComponent f2 = new Field("input2");
         String e2 = "A man with three buttocks.";
 
         d.setFormComponent(f1);
@@ -279,9 +279,9 @@ public class TestValidationDelegate extends TestCase
 
     public void testResetAll()
     {
-        IFormComponent f1 = new TestingField("input1");
+        IFormComponent f1 = new Field("input1");
         String e1 = "And now for something completely different.";
-        IFormComponent f2 = new TestingField("input2");
+        IFormComponent f2 = new Field("input2");
         String e2 = "A man with three buttocks.";
 
         d.setFormComponent(f1);

@@ -58,9 +58,9 @@ package org.apache.tapestry.spec;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocationHolder;
-import org.apache.tapestry.IResourceLocation;
+import org.apache.commons.hivemind.LocationHolder;
+import org.apache.commons.hivemind.Locatable;
+import org.apache.commons.hivemind.Resource;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
@@ -91,7 +91,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @author glongman@intelligentworks.com
  * @version $Id$
  */
-public interface IComponentSpecification extends IPropertyHolder, ILocationHolder, ILocatable
+public interface IComponentSpecification extends IPropertyHolder, LocationHolder, Locatable
 {
     /**
      * @throws IllegalArgumentException if the name already exists.
@@ -264,9 +264,9 @@ public interface IComponentSpecification extends IPropertyHolder, ILocationHolde
     /** @since 2.2 **/
     public abstract void setPageSpecification(boolean pageSpecification);
     /** @since 3.0 **/
-    public abstract IResourceLocation getSpecificationLocation();
+    public abstract Resource getSpecificationLocation();
     /** @since 3.0 **/
-    public abstract void setSpecificationLocation(IResourceLocation specificationLocation);
+    public abstract void setSpecificationLocation(Resource specificationLocation);
     /**
      *  Adds a new property specification.  The name of the property must
      *  not already be defined (and must not change after being added).

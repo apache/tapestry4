@@ -62,7 +62,8 @@ import java.util.List;
 import junit.framework.AssertionFailedError;
 
 import ognl.Ognl;
-import org.apache.tapestry.ApplicationRuntimeException;
+
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.listener.ListenerMap;

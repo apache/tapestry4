@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocatable;
+import org.apache.commons.hivemind.Locatable;
 
 
 /**
@@ -67,7 +67,7 @@ import org.apache.tapestry.ILocatable;
  * 
  **/
 
-public interface IScriptToken extends ILocatable
+public interface IScriptToken extends Locatable
 {
 	/**
 	 *  Invoked to have the token

@@ -65,7 +65,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -180,7 +180,7 @@ public class AssetService extends AbstractService
 
         String resourcePath = (String) parameters[0];
 
-        URL resourceURL = cycle.getEngine().getResourceResolver().getResource(resourcePath);
+        URL resourceURL = cycle.getEngine().getClassResolver().getResource(resourcePath);
 
         if (resourceURL == null)
             throw new ApplicationRuntimeException(

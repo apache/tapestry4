@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.script;
 
+import org.apache.commons.hivemind.ClassResolver;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.BaseRule;
 import org.apache.tapestry.util.xml.DocumentParseException;
@@ -73,9 +73,9 @@ import org.xml.sax.Attributes;
  */
 class InputSymbolRule extends BaseRule
 {
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
-    public InputSymbolRule(IResourceResolver resolver)
+    public InputSymbolRule(ClassResolver resolver)
     {
         _resolver = resolver;
     }

@@ -57,7 +57,7 @@ package org.apache.tapestry.util.io;
 
 import java.io.IOException;
 
-import org.apache.tapestry.IResourceResolver;
+import org.apache.commons.hivemind.ClassResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.AdaptorRegistry;
 
@@ -100,14 +100,14 @@ public class DataSqueezer
      * 
      **/
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     /**
      *  Creates a new squeezer with the default set of adaptors.
      *
      **/
 
-    public DataSqueezer(IResourceResolver resolver)
+    public DataSqueezer(ClassResolver resolver)
     {
         this(resolver, null);
     }
@@ -121,7 +121,7 @@ public class DataSqueezer
      *
      **/
 
-    public DataSqueezer(IResourceResolver resolver, ISqueezeAdaptor[] adaptors)
+    public DataSqueezer(ClassResolver resolver, ISqueezeAdaptor[] adaptors)
     {
         _resolver = resolver;
 
@@ -332,7 +332,7 @@ public class DataSqueezer
      * 
      **/
 
-    public IResourceResolver getResolver()
+    public ClassResolver getResolver()
     {
         return _resolver;
     }

@@ -60,9 +60,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.IUploadFile;
 

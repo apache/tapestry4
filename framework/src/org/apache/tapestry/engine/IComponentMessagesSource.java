@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.engine;
 
+import org.apache.commons.hivemind.Messages;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMessages;
 
 /**
  *  Defines an object that can provide a component with its
@@ -70,7 +70,7 @@ import org.apache.tapestry.IMessages;
 
 public interface IComponentMessagesSource
 {
-	public IMessages getMessages(IComponent component);
+	public Messages getMessages(IComponent component);
 	
 	/**
 	 *  Clears all cached information for the source.

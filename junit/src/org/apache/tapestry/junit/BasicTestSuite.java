@@ -61,7 +61,6 @@ import junit.framework.TestSuite;
 import org.apache.tapestry.junit.enhance.TestEnhancedClassFactory;
 import org.apache.tapestry.junit.enhance.TestMethodSignature;
 import org.apache.tapestry.junit.form.TestListEditMap;
-import org.apache.tapestry.junit.parse.TestLocation;
 import org.apache.tapestry.junit.parse.TestSpecificationParser;
 import org.apache.tapestry.junit.parse.TestTemplateParser;
 import org.apache.tapestry.junit.script.TestScript;
@@ -71,7 +70,6 @@ import org.apache.tapestry.junit.utils.TestAdaptorRegistry;
 import org.apache.tapestry.junit.utils.TestDataSqueezer;
 import org.apache.tapestry.junit.utils.TestEnum;
 import org.apache.tapestry.junit.utils.TestIdAllocator;
-import org.apache.tapestry.junit.utils.TestLocalizedNameGenerator;
 import org.apache.tapestry.junit.utils.TestPool;
 import org.apache.tapestry.junit.utils.TestPropertyFinder;
 import org.apache.tapestry.junit.utils.TestRegexpMatcher;
@@ -94,21 +92,18 @@ public class BasicTestSuite extends TestSuite
     {
         TestSuite suite = new TestSuite("Basic Tapestry Test Suite");
 
-        suite.addTestSuite(TestTapestryFindLocation.class);
         suite.addTestSuite(TapestryCheckMethodInvocation.class);
         suite.addTestSuite(TestStaticLink.class);
         suite.addTestSuite(TestEngineServiceLink.class);
         suite.addTestSuite(TestAdaptorRegistry.class);
         suite.addTestSuite(TestTapestryCoerceToIterator.class);
         suite.addTestSuite(TestPool.class);
-        suite.addTestSuite(TestLocalizedNameGenerator.class);
-        suite.addTestSuite(TestResourceLocation.class);
+        suite.addTestSuite(TestContextResource.class);
         suite.addTestSuite(TestPropertyFinder.class);
         suite.addTestSuite(TestListenerMap.class);
         suite.addTestSuite(TestIdAllocator.class);
         suite.addTestSuite(TestComponentMessages.class);
         suite.addTestSuite(TestTemplateParser.class);
-        suite.addTestSuite(TestLocation.class);
         suite.addTestSuite(TestSpecificationParser.class);
         suite.addTestSuite(TestApplicationSpecification.class);
         suite.addTest(ValidSuite.suite());

@@ -58,9 +58,9 @@ package org.apache.tapestry.binding;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
-import org.apache.tapestry.ILocation;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -75,7 +75,7 @@ public abstract class AbstractBinding implements IBinding
 {
     /** @since 3.0 **/
 
-    private ILocation _location;
+    private Location _location;
 
     /**
      *  A mapping from primitive types to wrapper types.
@@ -97,12 +97,12 @@ public abstract class AbstractBinding implements IBinding
 
     /** @since 3.0 **/
 
-    protected AbstractBinding(ILocation location)
+    protected AbstractBinding(Location location)
     {
         _location = location;
     }
 
-    public ILocation getLocation()
+    public Location getLocation()
     {
         return _location;
     }

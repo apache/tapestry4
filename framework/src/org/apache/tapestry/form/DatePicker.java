@@ -64,13 +64,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IScriptSource;
@@ -123,8 +123,8 @@ public abstract class DatePicker extends AbstractFormComponent
         IEngine engine = getPage().getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        IResourceLocation location =
-            getSpecification().getSpecificationLocation().getRelativeLocation("DatePicker.script");
+        Resource location =
+            getSpecification().getSpecificationLocation().getRelativeResource("DatePicker.script");
 
         _script = source.getScript(location);
     }

@@ -65,6 +65,10 @@ import java.util.Map;
 
 import ognl.OgnlRuntime;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.Messages;
+import org.apache.commons.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.bean.BeanProviderPropertyAccessor;
 import org.apache.tapestry.engine.IPageLoader;
@@ -76,7 +80,6 @@ import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.param.ParameterManager;
-import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
@@ -238,7 +241,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * 
      **/
 
-    private IMessages _strings;
+    private Messages _strings;
 
     public void addAsset(String name, IAsset asset)
     {
@@ -517,14 +520,14 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /**
-	 *  Returns an object used to resolve classes.
+     *  Returns an object used to resolve classes.
      *  @since 3.0
-	 *
-	 **/
-    private IResourceResolver getResourceResolver()
+     *
+     **/
+    private ClassResolver getClassResolver()
     {
-    	return getPage().getEngine().getResourceResolver();
-    } 
+        return getPage().getEngine().getClassResolver();
+    }
 
     /**
      *  Returns the named binding, or null if it doesn't exist.
@@ -542,10 +545,9 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         if (_specification.getParameter(name) != null)
         {
-            IResourceResolver resolver = getResourceResolver();
             String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
 
-            return (IBinding) OgnlUtils.get(bindingPropertyName, resolver, this);
+            return (IBinding) OgnlUtils.get(bindingPropertyName, this);
         }
 
         if (_bindings == null)
@@ -702,8 +704,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         if (_specification.getParameter(name) != null)
         {
             String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
-            IResourceResolver resolver = getResourceResolver();
-            OgnlUtils.set(bindingPropertyName, resolver, this, binding);
+            OgnlUtils.set(bindingPropertyName, this, binding);
             return;
         }
 
@@ -985,7 +986,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /** @since 3.0 **/
 
-    public IMessages getMessages()
+    public Messages getMessages()
     {
         if (_strings == null)
             _strings = getPage().getEngine().getComponentMessagesSource().getMessages(this);
@@ -1174,24 +1175,22 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
     }
 
-	/**
-	 *  Sets a property of a component.
-	 *  @see IComponent 
+    /**
+     *  Sets a property of a component.
+     *  @see IComponent 
      *  @since 3.0
-	 */
-	public void setProperty(String propertyName, Object value)
-	{		
-		IResourceResolver resolver = getResourceResolver();
-		OgnlUtils.set(propertyName, resolver, this, value);
-}	
-	/**
-	 *  Gets a property of a component.
-	 *  @see IComponent 
+     */
+    public void setProperty(String propertyName, Object value)
+    {
+        OgnlUtils.set(propertyName, this, value);
+    }
+    /**
+     *  Gets a property of a component.
+     *  @see IComponent 
      *  @since 3.0
-	 */
-	public Object getProperty(String propertyName)
-	{
-		IResourceResolver resolver = getResourceResolver();
-		return OgnlUtils.get(propertyName, resolver, this);
-	}
+     */
+    public Object getProperty(String propertyName)
+    {
+        return OgnlUtils.get(propertyName, this);
+    }
 }

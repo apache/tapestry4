@@ -60,10 +60,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.digester.Digester;
+import org.apache.commons.hivemind.Location;
+import org.apache.commons.hivemind.Resource;
+import org.apache.commons.hivemind.impl.LocationImpl;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.RegexpMatcher;
 import org.xml.sax.Attributes;
@@ -84,10 +84,10 @@ import org.xml.sax.SAXParseException;
 public class SpecificationDigester extends Digester
 {
     private List _documentRules;
-    private IResourceLocation _resourceLocation;
+    private Resource _resourceLocation;
     private RegexpMatcher _matcher;
 
-    private ILocation _lastLocation;
+    private Location _lastLocation;
     private int _lastLine;
     private int _lastColumn;
 
@@ -181,7 +181,7 @@ public class SpecificationDigester extends Digester
         return locator;
     }
 
-    public ILocation getLocationTag()
+    public Location getLocationTag()
     {
         int line = -1;
         int column = -1;
@@ -199,18 +199,18 @@ public class SpecificationDigester extends Digester
         {
             _lastLine = line;
             _lastColumn = column;
-            _lastLocation = new Location(_resourceLocation, line, column);
+            _lastLocation = new LocationImpl(_resourceLocation, line, column);
         }
 
         return _lastLocation;
     }
 
-    public IResourceLocation getResourceLocation()
+    public Resource getResourceLocation()
     {
         return _resourceLocation;
     }
 
-    public void setResourceLocation(IResourceLocation resourceLocation)
+    public void setResourceLocation(Resource resourceLocation)
     {
         _resourceLocation = resourceLocation;
 

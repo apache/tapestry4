@@ -55,6 +55,9 @@
 
 package org.apache.tapestry;
 
+import org.apache.commons.hivemind.*;
+import org.apache.commons.hivemind.*;
+
 /**
  *  Exception thrown by an {@link IEngineService} when it discovers that
  *  the an action link was for an out-of-date version of the page.

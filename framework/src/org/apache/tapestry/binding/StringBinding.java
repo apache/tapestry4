@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.commons.hivemind.Location;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.ILocation;
 
 /**
  *  A binding that connects directly to a localized string for
@@ -75,7 +75,7 @@ public class StringBinding extends AbstractBinding
     private IComponent _component;
     private String _key;
 
-    public StringBinding(IComponent component, String key, ILocation location)
+    public StringBinding(IComponent component, String key, Location location)
     {
     	super(location);
     	

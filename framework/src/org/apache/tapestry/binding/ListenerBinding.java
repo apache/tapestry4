@@ -57,14 +57,14 @@ package org.apache.tapestry.binding;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Location;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -91,7 +91,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
     private String _script;
     private IComponent _component;
 
-    public ListenerBinding(IComponent component, String language, String script, ILocation location)
+    public ListenerBinding(IComponent component, String language, String script, Location location)
     {
         super(location);
 
@@ -169,7 +169,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
         BSFManager bsf = obtainBSFManager(cycle);
 
-        ILocation location = getLocation();
+        Location location = getLocation();
 
         try
         {
@@ -181,7 +181,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
             bsf.exec(
                 _language,
-                location.getResourceLocation().toString(),
+                location.getResource().toString(),
                 location.getLineNumber(),
                 location.getLineNumber(),
                 _script);
@@ -239,7 +239,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
             result = new BSFManager();
 
-            result.setClassLoader(engine.getResourceResolver().getClassLoader());
+            result.setClassLoader(engine.getClassResolver().getClassLoader());
         }
 
         return result;

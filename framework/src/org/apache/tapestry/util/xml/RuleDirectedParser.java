@@ -67,13 +67,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Location;
+import org.apache.commons.hivemind.Resource;
+import org.apache.commons.hivemind.impl.LocationImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.RegexpMatcher;
 import org.xml.sax.Attributes;
@@ -109,7 +109,7 @@ public class RuleDirectedParser extends DefaultHandler
 {
     private static final Log LOG = LogFactory.getLog(RuleDirectedParser.class);
 
-    private IResourceLocation _documentLocation;
+    private Resource _documentLocation;
     private List _ruleStack = new ArrayList();
     private List _objectStack = new ArrayList();
     private Object _documentObject;
@@ -117,7 +117,7 @@ public class RuleDirectedParser extends DefaultHandler
     private Locator _locator;
     private int _line = -1;
     private int _column = -1;
-    private ILocation _location;
+    private Location _location;
 
     private static SAXParserFactory _parserFactory;
     private SAXParser _parser;
@@ -147,7 +147,7 @@ public class RuleDirectedParser extends DefaultHandler
 
     private Map _entities = new HashMap();
 
-    public Object parse(IResourceLocation documentLocation)
+    public Object parse(Resource documentLocation)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Parsing: " + documentLocation);
@@ -237,7 +237,7 @@ public class RuleDirectedParser extends DefaultHandler
      * column number level).
      */
 
-    public ILocation getLocation()
+    public Location getLocation()
     {
         if (_locator == null)
             return null;
@@ -253,7 +253,7 @@ public class RuleDirectedParser extends DefaultHandler
         }
 
         if (_location == null)
-            _location = new Location(_documentLocation, _line, _column);
+            _location = new LocationImpl(_documentLocation, _line, _column);
 
         return _location;
     }
@@ -581,7 +581,7 @@ public class RuleDirectedParser extends DefaultHandler
         throw new InvalidStringException(Tapestry.format(errorKey, value), value, getLocation());
     }
 
-    public IResourceLocation getDocumentLocation()
+    public Resource getDocumentLocation()
     {
         return _documentLocation;
     }

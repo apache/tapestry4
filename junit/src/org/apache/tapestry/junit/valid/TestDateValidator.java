@@ -128,14 +128,14 @@ public class TestDateValidator extends TapestryTestCase
 
     public void testToObjectNull() throws ValidatorException
     {
-        Object out = v.toObject(new TestingField("toObjectNull"), null);
+        Object out = v.toObject(new Field("toObjectNull"), null);
 
         assertNull(out);
     }
 
     public void testToObjectEmpty() throws ValidatorException
     {
-        Object out = v.toObject(new TestingField("toObjectNull"), "");
+        Object out = v.toObject(new Field("toObjectNull"), "");
 
         assertNull(out);
     }
@@ -144,7 +144,7 @@ public class TestDateValidator extends TapestryTestCase
     {
         try
         {
-            v.toObject(new TestingField("badDatesIndy"), "frankenhooker");
+            v.toObject(new Field("badDatesIndy"), "frankenhooker");
 
             unreachable();
         }
@@ -163,7 +163,7 @@ public class TestDateValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("badDatesIndy"), "frankenhooker");
+            v.toObject(new Field("badDatesIndy"), "frankenhooker");
 
             unreachable();
         }
@@ -196,7 +196,7 @@ public class TestDateValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("toObjectMinimum"), "12/8/2001");
+            v.toObject(new Field("toObjectMinimum"), "12/8/2001");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -212,7 +212,7 @@ public class TestDateValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("inputDate"), "12/8/2001");
+            v.toObject(new Field("inputDate"), "12/8/2001");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -237,7 +237,7 @@ public class TestDateValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("toObjectMaximum"), "12/8/2002");
+            v.toObject(new Field("toObjectMaximum"), "12/8/2002");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -254,7 +254,7 @@ public class TestDateValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("toObjectMaximum"), "12/8/2002");
+            v.toObject(new Field("toObjectMaximum"), "12/8/2002");
             unreachable();
         }
         catch (ValidatorException ex)

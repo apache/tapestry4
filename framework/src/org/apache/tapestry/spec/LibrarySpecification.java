@@ -62,11 +62,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.Location;
+import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -86,7 +86,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      * 
      **/
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     /**
      *  Map of page name to page specification path.
@@ -146,7 +146,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      * 
      **/
 
-    private IResourceLocation _specificationLocation;
+    private Resource _specificationLocation;
 
     public String getLibrarySpecificationPath(String id)
     {
@@ -420,7 +420,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         String name,
         Object extension,
         Class typeConstraint,
-        ILocation location)
+        Location location)
     {
         Class extensionClass = extension.getClass();
 
@@ -470,12 +470,12 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     }
 
-    public IResourceResolver getResourceResolver()
+    public ClassResolver getResourceResolver()
     {
         return _resolver;
     }
 
-    public void setResourceResolver(IResourceResolver resolver)
+    public void setResourceResolver(ClassResolver resolver)
     {
         _resolver = resolver;
     }
@@ -629,14 +629,14 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     /** @since 3.0 **/
 
-    public IResourceLocation getSpecificationLocation()
+    public Resource getSpecificationLocation()
     {
         return _specificationLocation;
     }
 
     /** @since 3.0 **/
 
-    public void setSpecificationLocation(IResourceLocation specificationLocation)
+    public void setSpecificationLocation(Resource specificationLocation)
     {
         _specificationLocation = specificationLocation;
     }

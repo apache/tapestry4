@@ -55,6 +55,9 @@
 
 package org.apache.tapestry;
 
+import org.apache.commons.hivemind.*;
+import org.apache.commons.hivemind.*;
+
 /**
  *  Exception thrown to force a redirection to an arbitrary location.
  *  This is used when, after processing a request (such as a form

@@ -53,62 +53,73 @@
  *
  */
 
-package org.apache.tapestry.util;
-
-import java.util.Locale;
-
-import org.apache.tapestry.IResourceResolver;
+package org.apache.tapestry.junit.spec;
 
 /**
- *  
- *  Searches for a localization of a
- *  particular resource in the classpath (using
- *  a {@link org.apache.tapestry.IResourceResolver}. 
- * 
+ *  Bean used to test extensions.
+ *
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 3.0
  *
  **/
 
-public class LocalizedResourceFinder
+public class BeanFixture
 {
-    private IResourceResolver _resolver;
-
-    public LocalizedResourceFinder(IResourceResolver resolver)
-    {
-        _resolver = resolver;
-    }
-
-    /**
-     *  Resolves the resource, returning a path representing
-     *  the closest match (with respect to the provided locale).
-     *  Returns null if no match.
-     * 
-     *  <p>The provided path is split into a base path
-     *  and a suffix (at the last period character).  The locale
-     *  will provide different suffixes to the base path
-     *  and the first match is returned.
-     * 
-     **/
+    private boolean _booleanProperty;
+    private int _intProperty;
+    private long _longProperty;
+    private String _stringProperty;
+    private double _doubleProperty;
     
-    public LocalizedResource resolve(String resourcePath, Locale locale)
+    public boolean getBooleanProperty()
     {
-        int dotx = resourcePath.lastIndexOf('.');
-        String basePath = resourcePath.substring(0, dotx);
-        String suffix = resourcePath.substring(dotx);
-
-        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
-
-        while (generator.more())
-        {
-            String candidatePath = generator.next();
-
-            if (_resolver.getResource(candidatePath) != null)
-                return new LocalizedResource(candidatePath, generator.getCurrentLocale());
-        }
-
-        return null;
+        return _booleanProperty;
     }
+
+    public double getDoubleProperty()
+    {
+        return _doubleProperty;
+    }
+
+    public int getIntProperty()
+    {
+        return _intProperty;
+    }
+
+    public long getLongProperty()
+    {
+        return _longProperty;
+    }
+
+    public String getStringProperty()
+    {
+        return _stringProperty;
+    }
+
+    public void setBooleanProperty(boolean booleanProperty)
+    {
+        _booleanProperty = booleanProperty;
+    }
+
+    public void setDoubleProperty(double doubleProperty)
+    {
+        _doubleProperty = doubleProperty;
+    }
+
+    public void setIntProperty(int intProperty)
+    {
+        _intProperty = intProperty;
+    }
+
+    public void setLongProperty(long longProperty)
+    {
+        _longProperty = longProperty;
+    }
+
+    public void setStringProperty(String stringProperty)
+    {
+        _stringProperty = stringProperty;
+    }
+
 }

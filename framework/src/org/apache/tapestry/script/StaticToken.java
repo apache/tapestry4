@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.Location;
 
 
 /**
@@ -70,7 +70,7 @@ class StaticToken extends AbstractToken
 {
     private String _text;
 
-    StaticToken(String text, ILocation location	)
+    StaticToken(String text, Location location	)
     {
     	super(location);
     	

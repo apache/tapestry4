@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.param;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Location;
 
 /**
  *  Identifies exceptions in connected parameters (parameters that
@@ -90,7 +90,7 @@ public class ConnectedParameterException extends ApplicationRuntimeException
         Object component,
         String parameterName,
         String propertyName,
-        ILocation location,
+        Location location,
         Throwable rootCause)
     {
         super(message, location, rootCause);

@@ -58,14 +58,14 @@ package org.apache.tapestry.asset;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Location;
+import org.apache.commons.hivemind.Resource;
+import org.apache.commons.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
 
 /**
  *  An implementation of {@link IAsset} for localizable assets within
@@ -84,7 +84,7 @@ public class PrivateAsset extends AbstractAsset
 
     private AssetExternalizer _externalizer;
 
-    public PrivateAsset(ClasspathResourceLocation resourceLocation, ILocation location)
+    public PrivateAsset(ClasspathResource resourceLocation, Location location)
     {
         super(resourceLocation, location);
     }
@@ -123,7 +123,7 @@ public class PrivateAsset extends AbstractAsset
 
     public InputStream getResourceAsStream(IRequestCycle cycle)
     {
-        IResourceLocation location = getResourceLocation();
+        Resource location = getResourceLocation();
 
         try
         {

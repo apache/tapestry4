@@ -57,9 +57,9 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.Location;
+import org.apache.commons.hivemind.Resource;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.IScriptProcessor;
 
@@ -74,18 +74,18 @@ import org.apache.tapestry.IScriptProcessor;
 
 public class ParsedScript extends AbstractToken implements IScript
 {
-    private IResourceLocation _scriptLocation;
+    private Resource _scriptResource;
 
-    public ParsedScript(ILocation location)
+    public ParsedScript(Location location)
     {
  		super(location);
  		
- 		_scriptLocation = location.getResourceLocation();
+ 		_scriptResource = location.getResource();
     }
 
-    public IResourceLocation getScriptLocation()
+    public Resource getScriptResource()
     {
-        return _scriptLocation;
+        return _scriptResource;
     }
 
 	/**
@@ -94,7 +94,7 @@ public class ParsedScript extends AbstractToken implements IScript
 	 */
     public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
     {
-        ScriptSession session = new ScriptSession(_scriptLocation, cycle, processor, symbols);
+        ScriptSession session = new ScriptSession(_scriptResource, cycle, processor, symbols);
 		writeChildren(null, session);
     }
     

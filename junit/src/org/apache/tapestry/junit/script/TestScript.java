@@ -62,16 +62,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.Resource;
+import org.apache.commons.hivemind.impl.DefaultClassResolver;
+import org.apache.commons.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.junit.MockRequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.script.ScriptSession;
-import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -86,7 +86,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 
 public class TestScript extends TapestryTestCase
 {
-    private TestScriptProcessor _processor = new TestScriptProcessor();
+    private ScriptProcessorFixture _processor = new ScriptProcessorFixture();
 
     public TestScript(String name)
     {
@@ -95,13 +95,13 @@ public class TestScript extends TapestryTestCase
 
     private IScript read(String file) throws IOException, DocumentParseException
     {
-        IResourceResolver resolver = new DefaultResourceResolver();
+        ClassResolver resolver = new DefaultClassResolver();
         ScriptParser parser = new ScriptParser(resolver);
 
         String classAsPath = "/" + getClass().getName().replace('.', '/');
 
-        IResourceLocation classLocation = new ClasspathResourceLocation(resolver, classAsPath);
-        IResourceLocation scriptLocation = classLocation.getRelativeLocation(file);
+        Resource classLocation = new ClasspathResource(resolver, classAsPath);
+        Resource scriptLocation = classLocation.getRelativeResource(file);
 
         return parser.parse(scriptLocation);
     }
@@ -319,13 +319,13 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = execute("include-script.script", null);
 
-        IResourceLocation scriptLocation = script.getScriptLocation();
+        Resource scriptLocation = script.getScriptResource();
 
-        IResourceLocation[] expected =
-            new IResourceLocation[] {
-                scriptLocation.getRelativeLocation("first"),
-                scriptLocation.getRelativeLocation("second"),
-                scriptLocation.getRelativeLocation("third")};
+        Resource[] expected =
+            new Resource[] {
+                scriptLocation.getRelativeResource("first"),
+                scriptLocation.getRelativeResource("second"),
+                scriptLocation.getRelativeResource("third")};
 
         assertEquals(
             "included scripts",
@@ -468,7 +468,7 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = execute("simple.script", null);
 
-        ScriptSession session = new ScriptSession(script.getScriptLocation(), null, null, null);
-        assertEquals("ScriptSession[" + script.getScriptLocation() + "]", session.toString());
+        ScriptSession session = new ScriptSession(script.getScriptResource(), null, null, null);
+        assertEquals("ScriptSession[" + script.getScriptResource() + "]", session.toString());
     }
 }

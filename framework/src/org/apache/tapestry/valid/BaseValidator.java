@@ -61,20 +61,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Resource;
+import org.apache.commons.hivemind.util.ClasspathResource;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.Body;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
 
 /**
  *  Abstract base class for {@link IValidator}.  Supports a required and locale property.
@@ -329,8 +329,8 @@ public abstract class BaseValidator implements IValidator
         finalSymbols.put(FORM_SYMBOL, form);
         finalSymbols.put(VALIDATOR_SYMBOL, this);
 
-        IResourceLocation location =
-            new ClasspathResourceLocation(engine.getResourceResolver(), scriptPath);
+        Resource location =
+            new ClasspathResource(engine.getClassResolver(), scriptPath);
 
         IScript script = source.getScript(location);
 

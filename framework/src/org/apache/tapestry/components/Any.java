@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.components;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;

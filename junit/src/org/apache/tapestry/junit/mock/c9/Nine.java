@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.junit.mock.c9;
 
-import org.apache.tapestry.ILocatable;
+import org.apache.commons.hivemind.Locatable;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.html.BasePage;
 
@@ -68,7 +68,7 @@ import org.apache.tapestry.html.BasePage;
  *
  **/
 
-public abstract class Nine extends BasePage implements PageDetachListener, ILocatable
+public abstract class Nine extends BasePage implements PageDetachListener, Locatable
 {
 
 }

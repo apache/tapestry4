@@ -91,7 +91,7 @@
 		</assert-output>
 		
 		<assert-output name="Exception">
-		org.apache.tapestry.ApplicationRuntimeException
+		org.apache.commons.hivemind.ApplicationRuntimeException
 		</assert-output>
 		
 		<!-- JDK 1.4 changes this message to:

@@ -60,10 +60,10 @@ import java.util.Map;
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import org.apache.commons.hivemind.ClassResolver;
+import org.apache.commons.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.IBeanSpecification;
@@ -176,7 +176,7 @@ public class ExpressionBinding extends AbstractBinding
 
     private boolean _initialized;
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     /**
      *  The OGNL context for this binding.  It is retained
@@ -193,10 +193,10 @@ public class ExpressionBinding extends AbstractBinding
      **/
 
     public ExpressionBinding(
-        IResourceResolver resolver,
+        ClassResolver resolver,
         IComponent root,
         String expression,
-        ILocation location)
+        Location location)
     {
         super(location);
 
@@ -261,7 +261,7 @@ public class ExpressionBinding extends AbstractBinding
     private Map getOgnlContext()
     {
         if (_context == null)
-            _context = Ognl.createDefaultContext(_root, _resolver);
+            _context = Ognl.createDefaultContext(_root, OgnlUtils.getOgnlClassResolver());
 
         return _context;
     }

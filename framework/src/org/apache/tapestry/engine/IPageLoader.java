@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.engine;
 
+import org.apache.commons.hivemind.Location;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IRequestCycle;
 
 /**
@@ -107,5 +107,5 @@ public interface IPageLoader
         IComponent container,
         String componentId,
         String componentType,
-        ILocation location);
+        Location location);
 }

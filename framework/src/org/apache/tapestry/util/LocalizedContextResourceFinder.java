@@ -60,6 +60,8 @@ import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.hivemind.util.*;
+
 /**
  *  Finds localized resources within the web application context.
  * 

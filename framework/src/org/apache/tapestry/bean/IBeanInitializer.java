@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.bean;
 
+import org.apache.commons.hivemind.LocationHolder;
 import org.apache.tapestry.IBeanProvider;
-import org.apache.tapestry.ILocationHolder;
 
 /**
  *  Interface for a set of classes used to initialize helper beans.
@@ -67,7 +67,7 @@ import org.apache.tapestry.ILocationHolder;
  * 
  **/
 
-public interface IBeanInitializer extends ILocationHolder
+public interface IBeanInitializer extends LocationHolder
 {
     /**
      *  Invoked by the {@link IBeanProvider} to initialize

@@ -63,13 +63,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.Messages;
+import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMessages;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.MultiKey;
 
@@ -111,7 +111,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
             throw new IllegalArgumentException(
                 Tapestry.format("invalid-null-parameter", "component"));
 
-        IResourceLocation specificationLocation =
+        Resource specificationLocation =
             component.getSpecification().getSpecificationLocation();
         Locale locale = component.getPage().getLocale();
 
@@ -135,7 +135,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
     private static final String SUFFIX = ".properties";
 
-    private Properties assembleProperties(IResourceLocation baseResourceLocation, Locale locale)
+    private Properties assembleProperties(Resource baseResourceLocation, Locale locale)
     {
         boolean debug = LOG.isDebugEnabled();
         if (debug)
@@ -214,13 +214,13 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
         return result;
     }
 
-    private MultiKey buildKey(IResourceLocation location, Locale locale)
+    private MultiKey buildKey(Resource location, Locale locale)
     {
         return new MultiKey(new Object[] { location, locale.toString()}, false);
     }
 
     private Properties readProperties(
-        IResourceLocation baseLocation,
+        Resource baseLocation,
         String baseName,
         Locale locale,
         Properties parent)
@@ -235,7 +235,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
         buffer.append(SUFFIX);
 
-        IResourceLocation localized = baseLocation.getRelativeLocation(buffer.toString());
+        Resource localized = baseLocation.getRelativeResource(buffer.toString());
 
         URL propertiesURL = localized.getResourceURL();
 
@@ -277,7 +277,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
         _cache.clear();
     }
 
-    public IMessages getMessages(IComponent component)
+    public Messages getMessages(IComponent component)
     {
         return new ComponentMessages(
             component.getPage().getLocale(),

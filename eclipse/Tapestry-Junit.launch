@@ -9,20 +9,20 @@
     sourceAttachmentPath=&quot;JRE_SRC&quot; sourceRootPath=&quot;JRE_SRCROOT&quot; type=&quot;3&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry internalArchive=&quot;/jakarta-tapestry/config&quot;
+&lt;runtimeClasspathEntry internalArchive=&quot;/jakarta-tapestry-3-1/config&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;jakarta-tapestry&quot; type=&quot;1&quot;/&gt;
+&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;jakarta-tapestry-3-1&quot; type=&quot;1&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/jakarta-oro-2.0.6.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/ext/jakarta-oro-2.0.6.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-logging-1.0.2.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/ext/commons-logging-1.0.2.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -35,16 +35,13 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-lang-1.0.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/ext/ognl-2.5.1.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/ognl-2.5.1.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/bsf-2.3.0.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/ext/bsf-2.3.0.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry containerPath=&quot;JETTY_DIR/lib/javax.servlet.jar&quot;
@@ -60,25 +57,26 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/ext-dist/jdom-b8.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/ext-dist/junit.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-beanutils-1.6.1.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/ext-dist/jdom-b8.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/examples/Workbench/lib/jCharts-0.6.0.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/ext-dist/junit.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/ext/commons-beanutils-1.6.1.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/runtime/log4j-1.2.6.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/examples/Workbench/lib/jCharts-0.6.0.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/runtime/log4j-1.2.6.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -86,32 +84,39 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-collections-2.1.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/ext/commons-collections-2.1.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-fileupload-1.0.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/ext/commons-fileupload-1.0.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/javassist-2.5.1.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry-3-1/lib/ext/commons-digester-1.5.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;hivemind&quot; type=&quot;1&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-digester-1.5.jar&quot;
-    path=&quot;3&quot; type=&quot;2&quot;/&gt;
+    containerPath=&quot;MAVEN_REPO/commons-lang/jars/commons-lang-2.0.jar&quot;
+    path=&quot;3&quot; type=&quot;3&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    containerPath=&quot;MAVEN_REPO/jboss/jars/javassist-2.6.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;
 "/>
     </listAttribute>
-    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jakarta-tapestry"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jakarta-tapestry-3-1"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.enable-reset-service=true"/>
     <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
         <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
     </listAttribute>
     <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_none"/>
     <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
-    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="jakarta-tapestry/junit"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="jakarta-tapestry-3-1/junit"/>
     <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_none"/>
 </launchConfiguration>

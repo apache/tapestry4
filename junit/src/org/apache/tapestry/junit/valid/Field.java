@@ -53,99 +53,90 @@
  *
  */
 
-package org.apache.tapestry.resource;
+package org.apache.tapestry.junit.valid;
 
-import java.net.URL;
 import java.util.Locale;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.util.LocalizedResource;
-import org.apache.tapestry.util.LocalizedResourceFinder;
+import org.apache.tapestry.IForm;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.form.AbstractFormComponent;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.html.BasePage;
+
 
 /**
- *  Implementation of {@link org.apache.tapestry.IResourceLocation}
- *  for resources found within the classpath.
- * 
+ *  Used as a stand-in for a real component when testing the 
+ *  {@link org.apache.tapestry.valid.IValidator}
+ *  implementations.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 3.0
+ *  @since 1.0.8
  *
  **/
 
-public class ClasspathResourceLocation extends AbstractResourceLocation
+public class Field extends AbstractFormComponent implements IFormComponent
 {
-    private IResourceResolver _resolver;
+	private String _displayName;
+    private IForm _form;
 
-    public ClasspathResourceLocation(IResourceResolver resolver, String path)
+    public Field(String displayName)
     {
-        this(resolver, path, null);
+        this(displayName, new MockForm());
+    }
+    
+
+	public Field(String displayName, IForm form)
+	{
+		_displayName = displayName;
+        _form = form;
+        
+        IPage page = new BasePage();
+        page.setLocale(Locale.ENGLISH);
+        page.addComponent(this);
+        
+        setPage(page);
+	}
+	
+	public void setForm(IForm form)
+	{
+		_form = form;
+	}
+
+	public String getDisplayName()
+	{
+		return _displayName;
+	}
+
+	public String getName()
+	{
+		return _displayName;
+	}
+
+
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
     }
 
-    public ClasspathResourceLocation(IResourceResolver resolver, String path, Locale locale)
+    public IForm getForm()
     {
-        super(path, locale);
-
-        _resolver = resolver;
+        return _form;
     }
 
-    /**
-     *  Locates the localization of the
-     *  resource using {@link org.apache.tapestry.util.LocalizedResourceFinder}
-     * 
-     **/
-
-    public IResourceLocation getLocalization(Locale locale)
+    public boolean isDisabled()
     {
-        String path = getPath();
-        LocalizedResourceFinder finder = new LocalizedResourceFinder(_resolver);
-
-        LocalizedResource localizedResource = finder.resolve(path, locale);
-
-        if (localizedResource == null)
-            return null;
-
-        String localizedPath = localizedResource.getResourcePath();
-        Locale pathLocale = localizedResource.getResourceLocale();
-
-        if (localizedPath == null)
-            return null;
-
-        if (path.equals(localizedPath))
-            return this;
-
-        return new ClasspathResourceLocation(_resolver, localizedPath, pathLocale);
+        return false;
     }
 
-    /**
-     *  Invokes {@link IResourceResolver#getResource(String)
-     * 
-     **/
-
-    public URL getResourceURL()
+	public String toString()
+	{
+		return "TestingField[" + _displayName + "]";
+	}
+	
+    public void setName(String name)
     {
-        return _resolver.getResource(getPath());
-    }
-
-    public String toString()
-    {
-        return "classpath:" + getPath();
-    }
-
-    public int hashCode()
-    {
-        HashCodeBuilder builder = new HashCodeBuilder(4783, 23);
-
-        builder.append(getPath());
-
-        return builder.toHashCode();
-    }
-
-    protected IResourceLocation buildNewResourceLocation(String path)
-    {
-        return new ClasspathResourceLocation(_resolver, path);
     }
 
 }

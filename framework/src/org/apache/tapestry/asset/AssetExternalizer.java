@@ -67,11 +67,11 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.util.StringSplitter;
@@ -131,7 +131,7 @@ public class AssetExternalizer
 {
     private static final Log LOG = LogFactory.getLog(AssetExternalizer.class);
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
     private File _assetDir;
     private String _URL;
 
@@ -146,7 +146,7 @@ public class AssetExternalizer
 
     protected AssetExternalizer(IRequestCycle cycle)
     {
-        _resolver = cycle.getEngine().getResourceResolver();
+        _resolver = cycle.getEngine().getClassResolver();
     
         IPropertySource properties = cycle.getEngine().getPropertySource();
 

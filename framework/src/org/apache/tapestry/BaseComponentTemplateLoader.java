@@ -60,6 +60,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.hivemind.*;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -311,7 +312,7 @@ public class BaseComponentTemplateLoader
         _activeComponent = component;
     }
 
-    private IComponent createImplicitComponent(String id, String componentType, ILocation location)
+    private IComponent createImplicitComponent(String id, String componentType, Location location)
     {
         IComponent result =
             _pageLoader.createImplicitComponent(
@@ -430,7 +431,7 @@ public class BaseComponentTemplateLoader
         IComponentSpecification spec,
         String name,
         String expression,
-        ILocation location)
+        Location location)
     {
 
         // If matches a formal parameter name, allow it to be set
@@ -505,7 +506,7 @@ public class BaseComponentTemplateLoader
         IComponentSpecification spec,
         String name,
         String localizationKey,
-        ILocation location)
+        Location location)
     {
         // If matches a formal parameter name, allow it to be set
         // unless there's already a binding.
@@ -575,7 +576,7 @@ public class BaseComponentTemplateLoader
         IComponentSpecification spec,
         String name,
         String staticValue,
-        ILocation location)
+        Location location)
     {
 
         if (component.getBinding(name) != null)

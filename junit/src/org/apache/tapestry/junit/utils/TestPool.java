@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.junit.utils;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.util.pool.IPoolable;
 import org.apache.tapestry.util.pool.IPoolableAdaptor;

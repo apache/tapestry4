@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.tapestry.ILocation;
+import org.apache.commons.hivemind.Location;
 
 /**
  *  Provides a {@link TemplateParser} with additional information about
@@ -85,7 +85,7 @@ public interface ITemplateParserDelegate
      * 
      **/
 
-    public boolean getAllowBody(String componentId, ILocation location);
+    public boolean getAllowBody(String componentId, Location location);
 
     /**
      *  Used with implicit components to determine if the component
@@ -100,5 +100,5 @@ public interface ITemplateParserDelegate
      * 
      **/
 
-    public boolean getAllowBody(String libraryId, String type, ILocation location);
+    public boolean getAllowBody(String libraryId, String type, Location location);
 }

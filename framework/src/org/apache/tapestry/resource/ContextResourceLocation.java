@@ -61,13 +61,14 @@ import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.hivemind.Resource;
+import org.apache.commons.hivemind.util.AbstractResource;
+import org.apache.commons.hivemind.util.LocalizedResource;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.LocalizedContextResourceFinder;
-import org.apache.tapestry.util.LocalizedResource;
 
 /**
  *  Implementation of {@link org.apache.tapestry.IResourceLocation}
@@ -80,7 +81,7 @@ import org.apache.tapestry.util.LocalizedResource;
  *
  **/
 
-public class ContextResourceLocation extends AbstractResourceLocation
+public class ContextResourceLocation extends AbstractResource
 {
     private static final Log LOG = LogFactory.getLog(ContextResourceLocation.class);
 
@@ -104,7 +105,7 @@ public class ContextResourceLocation extends AbstractResourceLocation
      * 
      **/
 
-    public IResourceLocation getLocalization(Locale locale)
+    public Resource getLocalization(Locale locale)
     {
         LocalizedContextResourceFinder finder = new LocalizedContextResourceFinder(_context);
 
@@ -158,7 +159,7 @@ public class ContextResourceLocation extends AbstractResourceLocation
         return builder.toHashCode();
     }
 
-    protected IResourceLocation buildNewResourceLocation(String path)
+    protected Resource buildNewResourceLocation(String path)
     {
         return new ContextResourceLocation(_context, path);
     }

@@ -57,9 +57,9 @@ package org.apache.tapestry.parse;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.digester.Rule;
+import org.apache.commons.hivemind.Location;
+import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
 import org.xml.sax.Attributes;
 
 /**
@@ -105,7 +105,7 @@ public abstract class AbstractSpecificationRule extends Rule
      * 
      **/
 
-    protected ILocation getLocation()
+    protected Location getLocation()
     {
         SpecificationDigester locatableDigester = (SpecificationDigester) digester;
 
@@ -114,7 +114,7 @@ public abstract class AbstractSpecificationRule extends Rule
 
     // Temporary, until DocumentParseException is fixed.
 
-    protected IResourceLocation getResourceLocation()
+    protected Resource getResourceLocation()
     {
         SpecificationDigester locatableDigester = (SpecificationDigester) digester;
 

@@ -55,11 +55,11 @@
 
 package org.apache.tapestry.pageload;
 
+import org.apache.commons.hivemind.ClassResolver;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.engine.IPageSource;
@@ -104,7 +104,7 @@ public class PageSource implements IPageSource
     private static final String PAGE_SPECIFICATION_RESOLVER_KEY =
         "org.apache.tapestry.PageSpecificationResolver";
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     /**
      *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
@@ -119,11 +119,11 @@ public class PageSource implements IPageSource
 
     public PageSource(IEngine engine)
     {
-        _resolver = engine.getResourceResolver();
+        _resolver = engine.getClassResolver();
         _pool = engine.getPool();
     }
 
-    public IResourceResolver getResourceResolver()
+    public ClassResolver getResourceResolver()
     {
         return _resolver;
     }

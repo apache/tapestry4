@@ -62,10 +62,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.commons.hivemind.ClassResolver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.enhance.javassist.EnhancedClassFactory;
@@ -90,10 +90,10 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      **/
 
     private Map _cachedClasses = new HashMap();
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
     private IEnhancedClassFactory _factory;
 
-    public DefaultComponentClassEnhancer(IResourceResolver resolver)
+    public DefaultComponentClassEnhancer(ClassResolver resolver)
     {
         _resolver = resolver;
         _factory = createEnhancedClassFactory();
@@ -109,7 +109,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         _cachedClasses.clear();
     }
 
-    public IResourceResolver getResourceResolver()
+    public ClassResolver getResourceResolver()
     {
         return _resolver;
     }
