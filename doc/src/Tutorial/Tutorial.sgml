@@ -9,6 +9,9 @@
 <!ENTITY chap-hangman SYSTEM "chap-hangman.sgml">
 <!ENTITY chap-reuse SYSTEM "chap-reuse.sgml">
 <!ENTITY chap-inspector SYSTEM "chap-inspector.sgml">
+<!ENTITY chap-forms SYSTEM "chap-forms.sgml">
+<!ENTITY chap-local SYSTEM "chap-local.sgml">
+<!ENTITY chap-summary SYSTEM "chap-summary.sgml">
 
 <!ENTITY jwc-tag "<sgmltag class=starttag>jwc</>">
 
@@ -49,7 +52,6 @@
 		</copyright>
 	</bookinfo>
 
-<!--
 &chap-intro;
 &chap-setup;
 &chap-hello;
@@ -58,8 +60,9 @@
 &chap-errors;
 &chap-hangman;
 &chap-reuse;
--->
-
 &chap-inspector;
+&chap-forms;
+&chap-local;
+&chap-summary;
 
 </book>

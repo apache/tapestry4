@@ -1,0 +1,869 @@
+<!-- $Id$ -->
+
+<chapter id="forms">
+	<title>Complex Forms and Output</>
+
+<para>
+Tapestry includes a number of components designed to simplify interactions with the client, 
+especially when handling forms.
+</>
+
+<para>
+In this chapter, we'll build a survey-taking application that collects information from the user, 
+stores it in an in-memory database, and produces tabular results summarizing what has been 
+entered.
+</>
+
+<para>
+We'll see how to validate input from the client, how to create radio groups and pop-up selections 
+and how to organize information for display.
+</>
+
+<para>
+The application has three main screens; the first is a home page:
+</>
+
+<figure>
+	<title>Surver Home Page</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/survey-home.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+ 
+ <para>
+The second page is for entering survey data:
+</>
+
+<figure>
+	<title>Survey Data Page</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/survey-form.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+ 
+<para>
+The last page is used to present results collected from many surveys:
+</>
+
+<figure>
+	<title>Survey Results Page</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/survey-results.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+<para> 
+In addition, we are re-using the <classname>Border</> component from the previous chapter.
+</>
+
+<para>
+The application does not use an actual database; the survey information is stored in memory (the 
+amount of work to set up a JDBC database is beyond the scope of this tutorial).  
+</>
+
+<para>
+The source code for this chapter is in the <filename>tutorial.survey</> package.
+</>
+
+<section id="forms.survey">
+	<title>Survey</>
+
+<para>
+At the root of this application is an object that represents a survey taken by a user. We want to 
+collect the name (which is optional), the sex and the race, the age and lastly, which pets the survey 
+taker prefers.
+</>
+
+<figure>
+	<title>Survey.java</>
+	<programlisting><![CDATA[package tutorial.survey;
+
+import java.util.*;
+import com.primix.tapestry.*;
+import java.io.*;
+
+public class Survey implements Serializable, Cloneable
+{
+	private Object primaryKey;
+	private String name;
+	private int age = 0;
+	private Sex sex = Sex.MALE;
+	private Race race = Race.CAUCASIAN;
+	
+	private boolean likesDogs = true;
+	private boolean likesCats;
+	private boolean likesFerrits;
+	private boolean likesTurnips;
+	
+	public Object getPrimaryKey()
+	{
+		return primaryKey;
+	}
+	
+	public void setPrimaryKey(Object value)
+	{
+		primaryKey = value;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public void setName(String value)
+	{
+		name = value;
+	}
+	
+	public int getAge()
+	{
+		return age;
+	}
+	
+	public void setAge(int value)
+	{
+		age = value;
+	}
+ 	
+	public void setSex(Sex value)
+	{
+		sex = value;
+	}
+	
+	public Sex getSex()
+	{
+		return sex;
+	}
+	
+	public void setRace(Race value)
+	{
+		race = value;
+	}
+	
+	public Race getRace()
+	{
+		return race;
+	}
+	
+	public boolean getLikesCats()
+	{
+		return likesCats;
+	}
+
+	public void setLikesCats(boolean value)
+	{
+		likesCats = value;
+	}
+	
+	public boolean getLikesDogs()
+	{
+		return likesDogs;
+	}
+	
+	public void setLikesDogs(boolean value)
+	{
+		likesDogs = value;
+	}
+	
+	public boolean getLikesFerrits()
+	{
+		return likesFerrits;
+	}
+	
+	public void setLikesFerrits(boolean value)
+	{
+		likesFerrits = value;
+	}
+	
+	public boolean getLikesTurnips()
+	{
+		return likesTurnips;
+	}
+	
+	public void setLikesTurnips(boolean value)
+	{
+		likesTurnips = value;
+	}
+	
+	/**
+	 *  Validates that the survey is acceptible; throws an {@link 
+IllegalArgumentException}
+	 *  if not valid.
+	 *
+	 */
+	 
+	public void validate()
+	throws IllegalArgumentException
+	{
+		if (race == null)
+			throw new IllegalArgumentException("Race must be 
+specified.");
+		
+		if (sex == null)
+			throw new IllegalArgumentException("Sex must be 
+specified.");
+			
+		if (age < 1)
+			throw new IllegalArgumentException("Age must be at least 
+one.");
+	}	
+	
+	public Object clone()
+	{
+		try
+		{
+			return super.clone(); 
+		}
+		catch (CloneNotSupportedException e)
+		{
+			return null;
+		}
+	}
+}]]></programlisting></figure>
+
+<para> 
+The <varname>race</> and <varname>sex</> properties are defined in terms of the 
+<classname>Race</> and <classname>Sex</> classes, which are derived 
+from <classname>com.primix.foundation.Enum</>.  <classname>Enum</> classes act like 
+C enum types; a specific number of 
+pre-defined values are declared by the class (as static final constants of the class).
+</>
+
+
+<figure>
+	<title>Race.java</>
+	<programlisting><![CDATA[package tutorial.survey;
+
+import com.primix.foundation.Enum;
+
+/**
+ *  An enumeration of different races.
+ *
+ */
+ 
+public class Race extends Enum
+{
+	public static final Race CAUCASIAN = new Race("CAUCASIAN");
+	public static final Race AFRICAN = new Race("AFRICAN");
+	public static final Race ASIAN = new Race("ASIAN");
+	public static final Race INUIT = new Race("INUIT");
+	public static final Race MARTIAN = new Race("MARTIAN");
+
+	private Race(String enumerationId)
+	{
+		super(enumerationId);
+	}
+
+	private Object readResolve()
+	{
+		return getSingleton();
+	}
+
+}]]></programlisting></figure>
+
+<para> 
+This is better than using <classname>String</> or <classname>int</> constants because 
+of type safety; the Java compiler will 
+notice if you pass <classname>Race.INUIT</> as a parameter that expects an instance of 
+<classname>Sex </>... if they were both 
+encoded as numbers, the compiler wouldn't know that there was a programming error.
+</>
+
+	</section>
+
+	<section id="forms.surveydatabase">
+		<title>SurveyDatabase</>
+
+<para>
+The <classname>SurveyDatabase</> class is a mockup of a database for storing 
+<classname>Survey</>s, it has methods such as 
+<function>addSurvey()</> and <function>getAllSurveys()</>.  
+To emulate a database, it even allocates primary keys for 
+surveys.  Additionally, when surveys are added to the database, they are copied and when surveys 
+are retrieved from the database, they are copied (that is, modifying a 
+<classname>Survey</> instance after adding 
+it to, or retrieving it from, the database doesn't affect the persistently stored 
+<classname>Surveys</> within the 
+database ... just as if they were in external storage).
+</>
+
+	</section>
+
+	<section id="forms.surveyengine">
+		<title>SurveyEngine</>
+
+<para>
+The database is accessed via the <classname>SurveyEngine</> object.
+</>
+
+<figure>
+	<title>SurveyEngine.java (excerpt)</>
+	<programlisting<![CDATA[private transient SurveyDatabase database;
+
+	public SurveyDatabase getDatabase()
+	{
+		return database;
+	}
+	
+	protected void setupForRequest(RequestContext context)
+	{
+		super.setupForRequest(context);
+		
+		if (database == null)
+		{
+			String name = "Survey.database";
+			ServletContext servletContext;
+			
+			servletContext = 
+context.getServlet().getServletContext();
+			
+			database = 
+(SurveyDatabase)servletContext.getAttribute(name);
+			
+			if (database == null)
+			{
+				database = new SurveyDatabase();
+				servletContext.setAttribute(name, database);
+			}
+		}
+	}]]></programlisting></figure>
+
+<para> 
+The <classname>SurveyDatabase</> instance is stored as a 
+named attribute of the <classname>ServletContext</>, a shared space 
+available to all sessions.
+</>
+
+	</section>
+		
+	<section id="forms.surveypage">
+		<title>SurveyPage</>
+
+<para>
+The <classname>SurveyPage</> is where survey information is collected.  It initially creates 
+a <classname>Survey</> instance as 
+a persistent page property.  It uses a <classname>Form</> component
+and a number of other components to edit the survey.
+</>
+
+<para>
+When the survey is complete and valid, it is added to the database and the results page is used as 
+an acknowledgment.
+</>
+
+<para>
+The SurveyPage also demonstrates how to validate data from a TextField component<footnote>
+	<para>
+		Since this tutorial was written, a suite of more powerful components for
+		validating input have been added to the Tapestry framework.
+	</>
+</>, and how to 
+display validation errors.  If invalid data is enterred, then the user is notified (after submitting the 
+form):
+</>
+
+<figure>
+	<title>Surver Form (w/ error)</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/survey-form-error.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+   
+<para> 
+The HTML template for the page is relatively short.  All the interesting stuff comes later, in the 
+specification and the Java class.
+</>
+
+<figure>
+	<title>SurveyPage.html</>
+	<programlisting><![CDATA[<jwc id="border">
+
+<jwc id="ifError">
+<table border=1>
+<tr>
+<td bgcolor=red>
+<font style=bold color=white>
+<jwc id="insertError"/>
+</font> </tr> </tr> </table>
+</jwc>
+
+<jwc id="surveyForm">
+
+<table border=0>
+
+<tr valign=top> <th>Name</th>
+	 <td colspan=3><jwc id="inputName"/></td></tr>
+
+<tr valign=top>  <th>Age</th>
+	 <td colspan=3><jwc id="inputAge"/></td></tr>
+
+<tr valign=top> <th>Sex</th>
+	  <td> <jwc id="inputSex"/>  
+	  </td>
+
+	  <th>Race</th>
+
+      <td><jwc id="inputRace"/>
+      </td> </tr>
+
+<tr valign=top> <th>Favorite Pets</th>
+	<td colspan=3>
+	<jwc id="inputCats"/> Cats
+<br><jwc id="inputDogs"/> Dogs
+<br><jwc id="inputFerrits"/> Ferrits
+<br><jwc id="inputTurnips"/> Turnips</td> </tr>
+<tr>
+<td></td>
+<td colspan=3><input type=submit value="Submit"></td> </tr>
+</table>
+
+</jwc>
+</jwc>]]></programlisting></figure>
+
+<para> 
+Most of this page is wrapped by the 
+<varname>surveyForm</> component which is of type <classname>Form</>.  The form 
+contains two text fields (<varname>nameField</> and <varname>ageField</>),
+a group of radio buttons (<varname>ageSelect</>) a pop-
+up list (<varname>raceSelect</>), and a number of check boxes (<varname>inputCats</>,
+<varname>inputDogs</>, <varname>inputFerrits</> and <varname>inputTurnips</>).
+</>
+
+<para>
+Most of these components are pretty straight forward:  <varname>nameField</> 
+and <varname>ageField</> are setting <classname>String</>
+properties, and the check boxes are setting boolean properties.  The two other components, 
+<varname>raceSelect</> and <varname>ageSelect</>, are more interesting.
+</>
+
+<para>
+Both of these are of type <classname>PropertySelection</>; they are used for 
+setting a specific property of some 
+object to one of a number of possible values.
+</>
+
+<para>
+The <classname>PropertySelection</> component has some difficult tasks:  It must 
+know what the possible 
+values are (including the correct order).  It must also know how to display the values (that is, what 
+labels to use on the radio buttons or in the pop up).  These will often not be the same value; 
+for instance, in a database-driven application, the values may be primary keys and the labels
+may be attributes of database objects.
+</>
+
+<para>
+This information is provided by a model (an object that implements the interface 
+<classname>com.primix.tapestry.components.html.form.IPropertySelectionModel)</>, 
+an object 
+that exists just to provide this information to a <classname>PropertySelection</> component.
+</>
+
+<para>
+There's a secondary question with <classname>PropertySelection</>: how the component is rendered.  
+By default, 
+it creates a pop-up list, but this can be changed by providing an alternate renderer (using the 
+component's renderer parameter).  A rendered is an object that generates HTML from the component and
+its model.  In our case, we used a secondary, radio-button renderer.  
+</>
+
+<para>
+Applications can also create their own renderers, if they need to do something special with fonts, 
+styles or images.
+</>
+
+<para>
+All of these concepts come together in the SurveyPage specification:
+</>
+
+<figure>
+	<title>SurveyPage.jwc</>
+	<programlisting><![CDATA[<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 
+1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>tutorial.survey.SurveyPage</class>
+	<components>
+		<component>
+			<id>border</id>
+			<type>Border</type>
+			<bindings>
+				<static-binding>
+					<name>title</name>
+					<value>Survey</value>
+				</static-binding>
+				<binding>
+					<name>pages</name>
+					<property-
+path>application.pageNames</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>ifError</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>error</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertError</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>error</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>surveyForm</id>
+			<type>Form</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>formListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputName</id>
+			<type>TextField</type>
+			<bindings>
+				<static-binding>
+					<name>displayWidth</name>
+					<value>30</value>
+				</static-binding>
+				<static-binding>
+					<name>maximumWidth</name>
+					<value>100</value>
+				</static-binding>
+				<binding>
+					<name>text</name>
+					<property-path>survey.name</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputAge</id>
+			<type>TextField</type>
+			<bindings>
+				<static-binding>
+					<name>displayWidth</name>
+					<value>4</value>
+				</static-binding>
+				<static-binding>
+					<name>maximumWidth</name>
+					<value>4</value>
+				</static-binding>
+				<binding>
+					<name>text</name>
+					<property-path>age</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputSex</id>
+			<type>PropertySelection</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>survey.sex</property-path>
+				</binding>
+				<binding>
+					<name>model</name>
+					<property-path>sexModel</property-path>
+				</binding>
+				<binding>
+					<name>renderer</name>
+					<property-
+path>components.inputSex.defaultRadioRenderer</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputRace</id>
+			<type>PropertySelection</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>survey.race</property-path>
+				</binding>
+				<binding>
+					<name>model</name>
+					<property-path>raceModel</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputCats</id>
+			<type>Checkbox</type>
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-path>survey.likesCats</property-
+path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputDogs</id>
+			<type>Checkbox</type>
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-path>survey.likesDogs</property-
+path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputFerrits</id>
+			<type>Checkbox</type>
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-
+path>survey.likesFerrits</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputTurnips</id>
+			<type>Checkbox</type>
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-
+path>survey.likesTurnips</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
+</specification>]]></programlisting></figure>
+ 
+
+<para>
+Several of the components, such as 
+<varname>inputName</> and <varname>inputTurnips</>, modify properties of the 
+<classname>Survey</>
+directly.  The <classname>SurveyPage</> class has a <varname>survey</> property, 
+which allows for property paths like 
+<varname>survey.name</> and <varname>survey.likesTurnips</>.
+</>
+
+<para>
+The <varname>age</> field is more complicated, since it must be converted from a 
+<classname>String</> to an int before being 
+assigned to the survey's <varname>age</> property ... and the page must check that 
+the user enterred a valid 
+number as well.
+</>
+
+<para>
+Finally, the <classname>SurveyPage</> class shows how all the details fit together:
+</>
+
+<figure>
+	<title>SurveyPage.java</>
+	<programlisting><![CDATA[package tutorial.survey;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.html.form.*;
+import java.util.*;
+
+public class SurveyPage extends BasePage
+{
+	private Survey survey;
+	private String error;
+	private String age;
+	private IPropertySelectionModel sexModel;
+	private IPropertySelectionModel raceModel;
+	
+	public IPropertySelectionModel getRaceModel()
+	{
+		if (raceModel == null)
+			raceModel = new EnumPropertySelectionModel(
+				new Race[] 
+				{
+					Race.CAUCASIAN, Race.AFRICAN, Race.ASIAN, 
+Race.INUIT, Race.MARTIAN
+				},  getBundle("tutorial.survey.SurveyStrings"), 
+"Race");
+				
+		return raceModel;
+	}
+		
+	public IPropertySelectionModel getSexModel()
+	{
+		if (sexModel == null)
+			sexModel = new EnumPropertySelectionModel(
+				new Sex[] 
+				{
+					Sex.MALE, Sex.FEMALE, Sex.TRANSGENDER, 
+Sex.ASEXUAL	
+				},  getBundle("tutorial.survey.SurveyStrings"), 
+"Sex");
+				
+		return sexModel;
+	}	
+	
+    private ResourceBundle getBundle(String resourceName)
+    {
+        return ResourceBundle.getBundle(resourceName, getLocale());
+    }
+		
+	public IActionListener getFormListener()
+	{
+		return new IActionListener()
+		{
+			public void actionTriggered(IComponent component, 
+IRequestCycle cycle)
+			{
+				try
+				{
+					survey.setAge(Integer.parseInt(age));
+					
+					survey.validate();
+				}
+				catch (NumberFormatException e)
+				{
+					// NumberFormatException doesn't provide 
+any useful data
+					
+					setError("Value entered for age is not a 
+number.");
+					return;
+				}
+				catch (Exception e)
+				{
+					setError(e.getMessage());
+					return;
+				}
+				
+				// Survey is OK, add it to the database.
+				
+			
+	((SurveyApplication)getApplication()).getDatabase().addSurvey(survey
+);
+				
+				setSurvey(null);	
+				
+				// Jump to the results page to show the totals.
+				
+				cycle.setPage("Results");
+			}	
+		};
+	}
+		
+	public Survey getSurvey()
+	{
+		if (survey == null)
+			setSurvey(new Survey());
+				
+		return survey;
+	}
+	
+	public void setSurvey(Survey value)
+	{
+		survey = value;
+		fireObservedChange("survey", survey);
+	}
+	
+	public void detach()
+	{
+		super.detach();
+		
+		survey = null;
+		error = null;
+		age = null;
+		
+		// We keep the models, since they are stateless
+	}
+	
+	public void setError(String value)
+	{
+		error = value;
+	}
+	
+	public String getError()
+	{
+		return error;
+	}
+	
+	public String getAge()
+	{
+		int ageValue;
+		
+		if (age == null)
+		{
+			ageValue = getSurvey().getAge();
+			
+			if (ageValue == 0)
+				age = "";
+			else 
+				age = Integer.toString(ageValue);
+		}	
+		
+		return age;	
+	}
+	
+	public void setAge(String value)
+	{
+		age = value;
+	}
+}]]></programlisting></figure> 
+
+<para> 
+A few notes.  First, the <varname>raceModel</> and 
+<varname>sexModel</> properties are created on-the-fly as needed.  The 
+<classname>EnumPropertySelectionModel</> is a provided class that simplifies using a 
+<classname>PropertySelection</> 
+component to set an Enum-typed property.  We provide the list of possible values, and the 
+information needed to extract the corresponding labels from a properties file.
+</>
+
+<para> 
+Only <varname>survey</> is a persistent page property.  The 
+<varname>error</> property is transient (it is set to null at the 
+end of the request cycle).  The <varname>error</> property doesn't need 
+to be persistent ... it is generated during 
+a request cycle and is not used on a subsequent request cycle (because the survey will be re-
+validated).
+</>
+
+<para>
+Likewise, the <varname>age</>
+property isn't page persistent.  If an invalid value is submitted, then its value will 
+come up from the <classname>HttpServletRequest</> 
+parameter and be plugged into the <varname>age</> property of the 
+page.  If validation of the survey fails, then the <classname>SurveyPage</>
+will be used to render the HTML 
+response, and the invalid age value will still be there.
+</>
+
+
+
+
+<para>
+In the <function>detach()</> method, the <varname>survey</>, <varname>error</> and 
+<varname>age</> properties are properly 
+cleared.  The <varname>raceModel</> and <varname>ageModel</> properties are 
+not ... they are stateless and leaving them in 
+place saves the trouble of creating identical objects later.
+
+	</section>
+
+</chapter>
