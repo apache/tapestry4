@@ -7,6 +7,7 @@ import java.util.*;
 import com.primix.tapestry.*;
 import javax.servlet.http.*;
 import com.primix.tapestry.components.html.link.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -47,6 +48,8 @@ import com.primix.tapestry.components.html.link.*;
 public class RequestCycle 
     implements IRequestCycle
 {
+	private static final Category CAT = Category.getInstance(RequestCycle.class.getName());
+
 	private IPage page;
 	private IEngine engine;
 
@@ -292,6 +295,9 @@ public class RequestCycle
 
 	public void removeAttribute(String name)
 	{
+		if (CAT.isDebugEnabled())
+			CAT.debug("Removing attribute " + name);
+			
 		if (attributes == null)
 			return;
 
@@ -436,6 +442,9 @@ throw e;
 
 	public void setAttribute(String name, Object value)
 	{
+		if (CAT.isDebugEnabled())
+			CAT.debug("Set attribute " + name + " to " + value);
+			
 		if (attributes == null)
 			attributes = new HashMap(MAP_SIZE);
 
@@ -444,12 +453,18 @@ throw e;
 
 	public void setPage(IPage value)
 	{
-		page = value;
+		if (CAT.isDebugEnabled())
+			CAT.debug("Set page to " + value);
+
+			page = value;
 	}
 
 	public void setPage(String name)
 	{
-		page = getPage(name);
+		if (CAT.isDebugEnabled())
+			CAT.debug("Set page to " + name);
+
+			page = getPage(name);
 	}
 
 	/**
@@ -463,6 +478,9 @@ throw e;
 	{
 		Iterator i;
 		IPageRecorder recorder;
+
+		if (CAT.isDebugEnabled())
+			CAT.debug("Committing page changes");
 
 		if (loadedRecorders == null)
 			return;

@@ -9,7 +9,7 @@ import org.w3c.dom.*;
 import java.io.*;
 import java.util.*;
 import org.xml.sax.*;
-
+import org.apache.log4j.*;
  
 /*
  * Tapestry Web Application Framework
@@ -41,7 +41,7 @@ import org.xml.sax.*;
 
 /**
  *  Parses a Tapestry Script, an XML file defined by the public identifier
- *  <code>-//Primix//Tapestry Script 1.0//EN</code>.
+ *  <code>-//Primix Solutions//Tapestry Script 1.0//EN</code>.
  *
  *  <p>A Tapestry Script is used, in association with the 
  *  {@link Body} and/or {@link Script} components,
@@ -63,6 +63,8 @@ import org.xml.sax.*;
 public class ScriptParser
 implements ErrorHandler, EntityResolver
 {
+	private static final Category CAT = Category.getInstance(ScriptParser.class.getName());
+	
     // Description of the InputSource, used in some errors.
 
     private String resourcePath;
@@ -98,9 +100,16 @@ implements ErrorHandler, EntityResolver
     public void parse()
     throws ScriptParseException
     {
+		if (CAT.isDebugEnabled())
+			CAT.debug("Parsing script from " + inputSource + " (" + resourcePath + ")");
+			
         Document document = parseDocument(); 
 
         build(document);
+		
+		if (CAT.isDebugEnabled())
+			CAT.debug(body.size() + " body tokens and " +
+					  initialization.size() + " initialization tokens");
     }
 
     /**
@@ -334,8 +343,8 @@ implements ErrorHandler, EntityResolver
     	
     	Element element = (Element)node;
     	
-    	// Note:  Using Xerces 1.0.3 and deferred DOM loading
-    	// (which is explicitly turned off), this sometimes
+    	// Note:  Using Xerces 1.0.3 and deferred DOM loading on
+    	// (which is why it is explicitly turned off), this sometimes
     	// throws a NullPointerException.
     	
     	return element.getTagName().equals(elementName);

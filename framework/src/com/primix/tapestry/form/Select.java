@@ -105,7 +105,7 @@ public class Select extends AbstractFormComponent
 	*/
 
 	private final static String ATTRIBUTE_NAME
-		= "com.primix.tapestry.components.Select";
+		= "com.primix.tapestry.active.Select";
 
 	public static Select get(IRequestCycle cycle)
 	{

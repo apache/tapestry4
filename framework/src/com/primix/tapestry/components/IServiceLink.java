@@ -43,28 +43,28 @@ import com.primix.tapestry.components.html.*;
 
 public interface IServiceLink extends IComponent
 {
-    /**
-     *  The name of an {@link IRequestCycle} attribute in which the
-     *  current service link is stored.  Service links do not nest.
-     *
-     */
-	 
-    public static final String ATTRIBUTE_NAME = 
-	"com.primix.tapestry.components.IServiceLink";
+	/**
+	*  The name of an {@link IRequestCycle} attribute in which the
+	*  current service link is stored.  Service links do not nest.
+	*
+	*/
 
-    /**
-     *  Returns whether this service link component is enabled or disabled.
-     *
-     */
- 
-    public boolean isEnabled();
-	
+	public static final String ATTRIBUTE_NAME = 
+		"com.primix.tapestry.active.IServiceLink";
+
+	/**
+	*  Returns whether this service link component is enabled or disabled.
+	*
+	*/
+
+	public boolean isEnabled();
+
 	/**
 	 *  Allows a component to set additional attributes.  This is used by
 	 *  {@link Rollover} to set mouse over and mouse out handlers on
 	 *  the {@link IServiceLink} that wraps it.
 	 *
 	 */
-	 
+
 	public void setAttribute(String attributeName, String attributeValue);
 }

@@ -109,7 +109,7 @@ public class RadioGroup extends AbstractFormComponent
 
 
 	private static final String ATTRIBUTE_NAME =
-		"com.primix.tapestry.active-radio-group";
+		"com.primix.tapestry.active.RadioGroup";
 
 	public static RadioGroup get(IRequestCycle cycle)
 	{

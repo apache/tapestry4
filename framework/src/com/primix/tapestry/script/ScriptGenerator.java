@@ -6,6 +6,7 @@ import com.primix.tapestry.components.html.*;
 import java.util.*;
 import java.io.*;
 import org.xml.sax.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -54,6 +55,8 @@ import org.xml.sax.*;
 
 public class ScriptGenerator
 {
+	private static final Category CAT = Category.getInstance(ScriptGenerator.class.getName());
+	
 	private ITemplateToken[] bodyTokens;
 	private ITemplateToken[] initTokens; 
 	private String resourcePath;
@@ -106,6 +109,10 @@ public class ScriptGenerator
 
 	public void generateScript(Body body, Map symbols)
 	{
+		if (CAT.isDebugEnabled())
+			CAT.debug("Generating script " + resourcePath + 
+					  " with symbols " + symbols);
+			
 		if (bodyTokens != null)
 			body.addOtherScript(generateScript(bodyTokens, symbols));
 

@@ -1,5 +1,11 @@
 * Jan 10 2001 hship
 
+Change names of Pool methods slightly.
+Add a bunch of log4j logging to Script, ScriptGenerator, RequestCycle, etc.
+Use better names for some IRequestCycle attributes (used to track active components).
+
+* Jan 10 2001 hship
+
 Update for log4j 1.0.
 
 * Jan 9 2001 hship

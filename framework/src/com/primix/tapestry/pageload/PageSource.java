@@ -182,7 +182,7 @@ public class PageSource
         key = buildKey(engine, pageName);
 
         if (pool != null)
-            result = (IPage)pool.get(key);
+            result = (IPage)pool.retrieve(key);
 
         if (result == null)
         {
@@ -226,7 +226,7 @@ public class PageSource
         page.detach();
 
         if (pool != null)
-            pool.add(buildKey(page), page);
+            pool.store(buildKey(page), page);
     }
 
     /**

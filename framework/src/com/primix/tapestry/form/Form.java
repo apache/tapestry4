@@ -105,7 +105,7 @@ public class Form extends AbstractComponent
     *
     */
 
-    private static final String ATTRIBUTE_NAME = "com.primix.tapestry.active-form";
+    private static final String ATTRIBUTE_NAME = "com.primix.tapestry.active.Form";
 
     /**
     *  Returns the currently active <code>Form</code>, or null if no <code>Form</code> is

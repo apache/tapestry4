@@ -86,7 +86,7 @@ public class Pool
 	*
 	*/
 
-	public Object get(Object key)
+	public Object retrieve(Object key)
 	{
 		PoolList list;
 		Object result = null;
@@ -103,17 +103,17 @@ public class Pool
 		}
 
 		if (CAT.isDebugEnabled())
-			CAT.debug("Retrieved " + result + " for " + key);
+			CAT.debug("Retrieved " + result + " from " + key);
 
 		return result;	
 	}
 
 	/**
-	*  Adds an object to the pool for later retrieval.
+	*  Stores an object in the pool for later retrieval.
 	*
 	*/
 
-	public void add(Object key, Object object)
+	public void store(Object key, Object object)
 	{
 		PoolList list;
 
@@ -140,7 +140,7 @@ public class Pool
 		}
 		
 		if (CAT.isDebugEnabled())
-			CAT.debug("Added " + object + " for " + key);
+			CAT.debug("Stored " + object + " into " + key);
 	}
 
 	/**
