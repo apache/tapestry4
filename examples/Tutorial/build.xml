@@ -68,12 +68,7 @@
       <classpath>
       	<!-- Favor files in src over copies in classes -->
       	<pathelement location="${src.dir}"/>
-      	
-      	<!-- Temporary hack: pick up compiled files from Eclipse's compilation directory
-      	     instead of our own: necessary for debugging.  -->
       	     
-        <pathelement location="${root.dir}/bin"/>
-        
         <path refid="project.class.path"/>
         <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
       </classpath>
