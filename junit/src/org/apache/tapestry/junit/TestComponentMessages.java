@@ -25,10 +25,8 @@ import org.apache.tapestry.IPage;
  *  Tests the class {@link org.apache.tapestry.engine.DefaultStringsSource}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.4
- *
- **/
+ */
 
 public class TestComponentMessages extends TapestryTestCase
 {
@@ -142,6 +140,25 @@ public class TestComponentMessages extends TapestryTestCase
         assertEquals(
             "A formatted date: 24/12/66",
             page.getMessages().format("using-date-format", d));
+    }
 
+    public void testExceptionWithMessage()
+    {
+        IPage page = createPage(MOCK1, Locale.ENGLISH);
+
+        assertEquals(
+            "Exception: foo must not be null",
+            page.getMessages().format(
+                "exception",
+                new NullPointerException("foo must not be null")));
+    }
+
+    public void testExceptionWithBlankMessage()
+    {
+        IPage page = createPage(MOCK1, Locale.ENGLISH);
+
+        assertEquals(
+            "Exception: java.lang.NullPointerException",
+            page.getMessages().format("exception", new NullPointerException()));
     }
 }
