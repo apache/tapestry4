@@ -110,7 +110,7 @@ public abstract class Quiz extends Deck
             boolean isNewHighscore = global.addHighscore(visit.getPoints(), visit.getUsername()) != -1;
             scoresDeck.setNewHighscore(isNewHighscore);
             scoresDeck.setHighscores(global.getHighscores());
-            cycle.setPage(scoresDeck);
+            cycle.activate(scoresDeck);
         }
     }
 

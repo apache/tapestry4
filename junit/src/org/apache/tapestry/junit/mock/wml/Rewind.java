@@ -76,7 +76,7 @@ public abstract class Rewind extends Deck
         String v = getV();
         deck.setU(v);
         deck.setL(v);
-        cycle.setPage(deck);
+        cycle.activate(deck);
     }
 
     public abstract String getV();

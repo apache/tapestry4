@@ -272,8 +272,4 @@ public abstract class Browser extends AbstractComponent implements PageRenderLis
         setPageResults(pageResults);
     }
 
-    public void pageEndRender(PageEvent event)
-    {
-    }
-
 }

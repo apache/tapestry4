@@ -113,13 +113,7 @@ public class PageService extends AbstractService
 
         IPage page = cycle.getPage(pageName);
 
-        // Allow the page to validate that the user is allowed to visit.  This is simple
-        // protection from malicious users who hack the URLs directly, or make inappropriate
-        // use of the back button. 
-
-        page.validate(cycle);
-
-        cycle.setPage(page);
+        cycle.activate(page);
 
         engine.renderResponse(cycle, output);
 

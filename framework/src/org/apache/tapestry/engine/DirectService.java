@@ -163,15 +163,7 @@ public class DirectService extends AbstractService
 
         IPage page = cycle.getPage(pageName);
 
-        // Allow the page to validate that the user is allowed to visit.  This is simple
-        // protection from malicious users who hack the URLs directly, or make inappropriate
-        // use of the back button. 
-        // Using Block/InsertBlock, it is possible that the component is on a different page
-        // than the render page.  The render page is validated, not necessaily the component
-        // page.
-
-        page.validate(cycle);
-        cycle.setPage(page);
+        cycle.activate(page);
 
         if (complex)
             componentPage = cycle.getPage(componentPageName);

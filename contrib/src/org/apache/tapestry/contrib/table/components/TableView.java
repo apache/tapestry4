@@ -408,13 +408,6 @@ public class TableView
         saveSessionState();
 	}
 
-	/**
-	 * @see org.apache.tapestry.event.PageRenderListener#pageEndRender(PageEvent)
-	 */
-	public void pageEndRender(PageEvent objEvent)
-	{
-	}
-
     /**
      * Returns the elementBinding.
      * @return IBinding

@@ -27,10 +27,14 @@
 <a href="doc/api/org/apache/tapestry/AbstractComponent.html">AbstractComponent</a>.</li>
 <li>Added support for the informal parameters of a component to be passed down to a contained component
 using the inherit-informal-parameters attribute. </li>
-<li>Added IRequestCycle.activate(page) as a replacement for IRequestCycle.setPage(page). 
+<li>Added <a href="doc/api/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>.activate() as a replacement for setPage(). 
 Besides setting the page to be rendered, it also invokes page.validate() and handles the page redirections.</li>
-<li>Added page.addValidateListener() and page.removeValidateListener()</li>
+<li>Added addValidateListener() and removeValidateListener()
+to <a href="doc/api/org/apache/tapestry/IPage.html">IPage</a>.</li>
 <li>Squeezed strings are now always prefixed with 'S'</li>
+<li>Added mechanism for checking that super-class implementations of key methods are invoked.</li>
+<li>Added checks that <a href="doc/api/org/apache/tapestry/IPage.html">IPage</a> methods
+<code>validate()</code> and <code>detach</code> are properly overriden by subclasses.</li>
 </ul>
 
 <pre>

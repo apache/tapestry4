@@ -58,6 +58,8 @@ package org.apache.tapestry.vlib;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.callback.PageCallback;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -73,7 +75,7 @@ import org.apache.tapestry.vlib.pages.Login;
  * 
  **/
 
-public abstract class Protected extends BasePage implements IErrorProperty
+public abstract class Protected extends BasePage implements IErrorProperty, PageValidateListener
 {
     private IValidationDelegate _validationDelegate;
 
@@ -117,7 +119,7 @@ public abstract class Protected extends BasePage implements IErrorProperty
      *
      **/
 
-    public void validate(IRequestCycle cycle)
+	public void pageValidate(PageEvent event)
     {
         Visit visit = (Visit) getVisit();
 
@@ -126,7 +128,7 @@ public abstract class Protected extends BasePage implements IErrorProperty
 
         // User not logged in ... redirect through the Login page.
 
-        Login login = (Login) cycle.getPage("Login");
+        Login login = (Login) getRequestCycle().getPage("Login");
 
         login.setCallback(new PageCallback(this));
 

@@ -114,7 +114,7 @@ public abstract class BookMatches extends BasePage
         }
 
         _browser.initializeForResultCount(count);
-        cycle.setPage(this);
+        cycle.activate(this);
     }
 
     public void requery(IRequestCycle cycle)

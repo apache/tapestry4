@@ -129,7 +129,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
             }
         }
 
-        cycle.setPage(this);
+        cycle.activate(this);
     }
 
     /**
@@ -209,10 +209,6 @@ public abstract class EditBook extends Protected implements PageRenderListener
     {
         if (getAttributes() == null)
             setAttributes(new HashMap());
-    }
-
-    public void pageEndRender(PageEvent event)
-    {
     }
 
 }

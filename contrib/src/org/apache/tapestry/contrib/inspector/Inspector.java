@@ -118,7 +118,7 @@ public abstract class Inspector extends BasePage
         setInspectedPageName(pageName);
         selectComponent((String) null);
 
-        cycle.setPage(this);
+        cycle.activate(this);
     }
 
     /**

@@ -73,7 +73,7 @@ public class ServiceTest extends BasePage implements IExternalPage
 
         dumper.setObjects(parameters);
 
-        cycle.setPage(dumper);
+        cycle.activate(dumper);
     }
 
 }

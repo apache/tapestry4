@@ -76,6 +76,6 @@ public class Home extends BasePage
         
         dumper.setObjects(cycle.getServiceParameters());
         
-        cycle.setPage(dumper);
+        cycle.activate(dumper);
     }
 }

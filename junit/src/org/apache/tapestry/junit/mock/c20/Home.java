@@ -101,7 +101,7 @@ public abstract class Home extends BasePage
     	page.setMode(getMode());
     	page.setText(getText());
     	
-    	cycle.setPage(page);
+    	cycle.activate(page);
     }
     
     public void disableTextArea(IRequestCycle cycle)

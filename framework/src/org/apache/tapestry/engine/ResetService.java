@@ -119,9 +119,7 @@ public class ResetService extends AbstractService
 
         IPage page = cycle.getPage(pageName);
 
-        page.validate(cycle);
-
-        cycle.setPage(page);
+        cycle.activate(page);
 
         // Render the same page (that contained the reset link).
 

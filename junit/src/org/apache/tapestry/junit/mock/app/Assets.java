@@ -80,6 +80,6 @@ public class Assets extends BasePage
         // Currently, when you change locale there is no way to
         // reload the current page.
         
-        cycle.setPage("Home");
+        cycle.activate("Home");
     }
 }

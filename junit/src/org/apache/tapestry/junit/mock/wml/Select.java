@@ -78,7 +78,7 @@ public abstract class Select extends Deck
         Result deck = (Result) cycle.getPage("Result");
         deck.setU(getSex() + " " + getIncome());
         deck.setL(getHobbies());
-        cycle.setPage(deck);
+        cycle.activate(deck);
     }
 
     public abstract String getSex();

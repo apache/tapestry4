@@ -372,7 +372,7 @@ public class VirtualLibraryEngine extends BaseEngine
 
         page.setError(error);
 
-        cycle.setPage(page);
+        cycle.activate(page);
     }
 
     /**
@@ -445,7 +445,7 @@ public class VirtualLibraryEngine extends BaseEngine
 
             page.activate(message, cause);
 
-            cycle.setPage(page);
+            cycle.activate(page);
 
             renderResponse(cycle, output);
         }

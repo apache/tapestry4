@@ -71,6 +71,7 @@ import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.event.PageDetachListener;
+import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.listener.ListenerMap;
@@ -1050,5 +1051,20 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     public int getBodyCount()
     {
         return _bodyCount;
+    }
+    
+    /**
+     * Empty implementation of
+     * {@link org.apache.tapestry.event.PageRenderListener#pageEndRender(PageEvent)}.
+     * This allows classes to implement
+     * {@link org.apache.tapestry.event.PageRenderListener} and only
+     * implement the
+     * {@link org.apache.tapestry.event.PageRenderListener#pageBeginRender(PageEvent)}
+     * method.
+     * @since 3.0
+     */
+    
+    public void pageEndRender(PageEvent event)
+    {
     }
 }

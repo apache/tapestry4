@@ -53,114 +53,54 @@
  *
  */
 
-package org.apache.tapestry.workbench.palette;
+package org.apache.tapestry.junit;
 
-import java.util.List;
-import java.util.ResourceBundle;
-
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.contrib.palette.SortMode;
-import org.apache.tapestry.form.EnumPropertySelectionModel;
-import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.form.StringPropertySelectionModel;
-import org.apache.tapestry.html.BasePage;
-import org.apache.commons.lang.enum.Enum;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.Tapestry;
 
 /**
- *  @version $Id$
- *  @author Howard Lewis Ship
+ * Tests for the methods 
+ * {@link org.apache.tapestry.Tapestry#checkMethodInvocation(Object, String, Object)},
+ * {@link org.apache.tapestry.Tapestry#addMethodInvocation(Object)} and
+ * {@link org.apache.tapestry.Tapestry#clearMethodInvocations()}.
  *
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
  **/
-
-public class Palette extends BasePage
+public class TapestryCheckMethodInvocation extends TapestryTestCase
 {
-    private List _selectedColors;
 
-    private SortMode _sort = SortMode.USER;
-
-    private IPropertySelectionModel _sortModel;
-
-    public void initialize()
+    public TapestryCheckMethodInvocation(String name)
     {
-        _sort = SortMode.USER;
-        _selectedColors = null;
+        super(name);
     }
 
-    public void formSubmit(IRequestCycle cycle)
+    public void testSuccess()
     {
-        // Does nothing ... may be invoked because
-        // the user changed the sort
+        Tapestry.clearMethodInvocations();
+        Tapestry.addMethodInvocation("alpha");
+        Tapestry.addMethodInvocation("beta");
+
+        Tapestry.checkMethodInvocation("alpha", "alpha()", this);
+        Tapestry.checkMethodInvocation("beta", "beta()", this);
     }
 
-    /**
-     *  Invoked before {@link #formSubmit(IRequestCycle)} if the
-     *  user clicks the "advance" button.
-     * 
-     **/
-
-    public void advance(IRequestCycle cycle)
+    public void testFail()
     {
-        // Since Palette and palette.Results come from
-        // a library now, we need to make sure
-        // the namespace id is part of the name.
+        Tapestry.clearMethodInvocations();
 
-        PaletteResults results = (PaletteResults) cycle.getPage("PaletteResults");
-
-        results.setSelectedColors(_selectedColors);
-
-        cycle.activate(results);
-    }
-
-    private IPropertySelectionModel colorModel;
-
-    private String[] colors = { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet" };
-
-    public IPropertySelectionModel getColorModel()
-    {
-        if (colorModel == null)
-            colorModel = new StringPropertySelectionModel(colors);
-
-        return colorModel;
-    }
-
-    public void setSort(SortMode value)
-    {
-        _sort = value;
-
-        fireObservedChange("sort", value);
-    }
-
-    public SortMode getSort()
-    {
-        return _sort;
-    }
-
-    public IPropertySelectionModel getSortModel()
-    {
-        if (_sortModel == null)
+        try
         {
-            String packageName = getClass().getPackage().getName();
-            
-            ResourceBundle bundle =
-                ResourceBundle.getBundle(packageName + ".SortModeStrings", getLocale());
-
-            Enum[] options =
-                new Enum[] { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
-
-            _sortModel = new EnumPropertySelectionModel(options, bundle);
+            Tapestry.checkMethodInvocation("gamma", "gamma()", this);
+            unreachable();
         }
-
-        return _sortModel;
-    }
-
-    public List getSelectedColors()
-    {
-        return _selectedColors;
-    }
-
-    public void setSelectedColors(List selectedColors)
-    {
-        _selectedColors = selectedColors;
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                "Class org.apache.tapestry.junit.TapestryCheckMethodInvocation overrides method 'gamma()' but does not invoke the super-class implementation.",
+                ex.getMessage());
+        }
     }
 
 }

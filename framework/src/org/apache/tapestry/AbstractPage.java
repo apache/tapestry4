@@ -181,6 +181,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void detach()
     {
+    	Tapestry.addMethodInvocation(Tapestry.IPAGE_DETACH_METHOD_ID);
+    	
         // Do this first,so that any changes to persistent properties do not
         // cause errors.
 
@@ -350,6 +352,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
         _pageName = pageName;
     }
+
     /**
      *  By default, pages are not protected and this method does nothing.
      *
@@ -357,12 +360,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void validate(IRequestCycle cycle)
     {
+        Tapestry.addMethodInvocation(Tapestry.IPAGE_VALIDATE_METHOD_ID);
+
         firePageValidate();
     }
 
     /**
      *  Does nothing, subclasses may override as needed.
      *
+     * @deprecated To be removed in 3.1.  Implement 
+     * {@link PageRenderListener} instead.
      *
      **/
 
@@ -552,11 +559,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         return _pageName;
     }
-    
-	public void addPageValidateListener(PageValidateListener listener)
-	{
+
+    public void addPageValidateListener(PageValidateListener listener)
+    {
         addListener(PageValidateListener.class, listener);
-	}
+    }
 
     public void removePageValidateListener(PageValidateListener listener)
     {

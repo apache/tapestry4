@@ -172,7 +172,7 @@ public class ExternalCallback implements ICallback
         {
             IExternalPage page = (IExternalPage) cycle.getPage(_pageName);
             
-            cycle.setPage(page);
+            cycle.activate(page);
     
             page.activateExternalPage(_parameters, cycle);            
         }

@@ -80,14 +80,14 @@ public abstract class Home extends BasePage
     	
     	if (file == null)
     	{
-    		cycle.setPage("Three");
+    		cycle.activate("Three");
     		return;
     	}
     	
         Two page = (Two) cycle.getPage("Two");
 
         page.setFile(file);
-        cycle.setPage(page);
+        cycle.activate(page);
     }
     
     public void disableUpload(IRequestCycle cycle)

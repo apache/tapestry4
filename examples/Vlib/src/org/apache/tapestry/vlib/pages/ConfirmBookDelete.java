@@ -118,7 +118,7 @@ public abstract class ConfirmBookDelete extends BasePage
             }
         }
 
-        cycle.setPage(this);
+        cycle.activate(this);
     }
 
     /**

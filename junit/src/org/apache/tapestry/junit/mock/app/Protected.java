@@ -55,10 +55,11 @@
 
 package org.apache.tapestry.junit.mock.app;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.callback.PageCallback;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.html.BasePage;
 
 /**
@@ -71,20 +72,20 @@ import org.apache.tapestry.html.BasePage;
  * 
  **/
 
-public class Protected extends BasePage
+public class Protected extends BasePage implements PageValidateListener
 {
 
-    public void validate(IRequestCycle cycle)
+    public void pageValidate(PageEvent event)
     {
-        Guard guard = (Guard)cycle.getPage("Guard");
-        
+        Guard guard = (Guard) getRequestCycle().getPage("Guard");
+
         if (!guard.isVisited())
         {
             ICallback callback = new PageCallback(this);
             guard.setCallback(callback);
 
             throw new PageRedirectException(guard);
-        }            
+        }
     }
 
 }

@@ -178,7 +178,4 @@ public abstract class ViewPerson extends BasePage implements IExternalPage, Page
         }
     }
 
-	public void pageEndRender(PageEvent event)
-	{
-	}
 }

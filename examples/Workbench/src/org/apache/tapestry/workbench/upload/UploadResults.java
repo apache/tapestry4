@@ -154,7 +154,7 @@ public class UploadResults extends BasePage
             close(writer);
         }
 
-        cycle.setPage(this);
+        cycle.activate(this);
     }
 
     private void close(InputStream stream)

@@ -151,6 +151,6 @@ public class TestSelect extends BasePage
 		
 		result.setMessage(message);
 		
-		cycle.setPage(result);
+		cycle.activate(result);
 	}
 }
