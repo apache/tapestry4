@@ -29,18 +29,10 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  @author Howard Lewis Ship
  *  @since 3.0
  * 
- **/
+ */
 
 public interface IComponentClassEnhancer
-{
-	/**
-	 *  Clears all cached data for the enhancer; this includes references to
-	 *  enhanced classes.
-	 * 
-	 **/
-	
-	public void reset();
-	
+{	
 	/**
 	 *  Used to access the class for a given component (or page).  Returns the
 	 *  specified class, or an enhanced version of the class if the
@@ -53,7 +45,7 @@ public interface IComponentClassEnhancer
 	 *  @throws org.apache.tapestry.ApplicationRuntimeException if the class does not exist, is invalid,
 	 *  or may not be enhanced.
 	 * 
-	 **/
+	 */
 	
 	public Class getEnhancedClass(IComponentSpecification specification, String className);
 }

@@ -55,7 +55,6 @@ import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.enhance.DefaultComponentClassEnhancer;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.pageload.PageSource;
 import org.apache.tapestry.request.RequestContext;
@@ -324,25 +323,6 @@ public abstract class AbstractEngine
 
     protected static final String SERVICE_MAP_NAME = "org.apache.tapestry.ServiceMap";
 
-    /**
-     *  Name of a shared instance of {@link org.apache.tapestry.engine.IComponentClassEnhancer}
-     *  stored in the {@link ServletContext}.
-     *
-     *  @since 3.0
-     *
-     **/
-
-    protected static final String ENHANCER_NAME = "org.apache.tapestry.ComponentClassEnhancer";
-
-    /**
-     *  A shared instance of {@link org.apache.tapestry.engine.IComponentClassEnhancer}.
-     *
-     *  @since 3.0
-     *  @see #createComponentClassEnhancer(RequestContext)
-     *
-     **/
-
-    private transient IComponentClassEnhancer _enhancer;
 
     /**
      *  Set to true when there is a (potential)
@@ -1057,7 +1037,6 @@ public abstract class AbstractEngine
     	
         _pageSource.reset();
         _scriptSource.reset();
-        _enhancer.reset();
     }
 
     /**
@@ -1170,20 +1149,6 @@ public abstract class AbstractEngine
         }
 
         String servletName = context.getServlet().getServletName();
-
-        if (_enhancer == null)
-        {
-            String name = ENHANCER_NAME + ":" + servletName;
-
-            _enhancer = (IComponentClassEnhancer) servletContext.getAttribute(name);
-
-            if (_enhancer == null)
-            {
-                _enhancer = createComponentClassEnhancer(context);
-
-                servletContext.setAttribute(name, _enhancer);
-            }
-        }
 
         if (_pageSource == null)
         {
@@ -1945,36 +1910,11 @@ public abstract class AbstractEngine
         return _infrastructure.getObjectPool();
     }
 
-    /**
-     *
-     * Invoked from {@link #setupForRequest(RequestContext)}.  Creates
-     * a new instance of {@link DefaultComponentClassEnhancer}.  Subclasses
-     * may override to return a different object.
-     * 
-     * <p>
-     * Check the property <code>org.apache.tapestry.enhance.disable-abstract-method-validation</code>
-     * and, if true, disables abstract method validation. This is used  in some
-     * errant JDK's (such as IBM's 1.3.1) that incorrectly report concrete methods from
-     * abstract classes as abstract.
-     *
-     * @since 3.0
-     */
-
-    protected IComponentClassEnhancer createComponentClassEnhancer(RequestContext context)
-    {
-        boolean disableValidation =
-            "true".equals(
-                getPropertySource().getPropertyValue(
-                    "org.apache.tapestry.enhance.disable-abstract-method-validation"));
-
-        return new DefaultComponentClassEnhancer(_resolver, disableValidation);
-    }
-
     /** @since 3.0 **/
 
     public IComponentClassEnhancer getComponentClassEnhancer()
     {
-        return _enhancer;
+        return _infrastructure.getComponentClassEnhancer();
     }
 
     /**

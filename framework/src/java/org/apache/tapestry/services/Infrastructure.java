@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.services;
 
+import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.ISpecificationSource;
 
@@ -63,4 +64,11 @@ public interface Infrastructure
 	 * Returns a generic, shared ObjectPool instance.
 	 */
     public ObjectPool getObjectPool();
+    
+    /**
+     * Returns the factory responsible for creating enhanced classes
+     * for pages and components.
+     */
+    
+    public IComponentClassEnhancer getComponentClassEnhancer();
 }
