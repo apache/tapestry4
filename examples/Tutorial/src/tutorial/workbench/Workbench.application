@@ -36,6 +36,10 @@
 
   <page name="Dates" specification-path="/tutorial/workbench/fields/Dates.page"/>
 
+  <page name="Table" specification-path="/tutorial/workbench/table/Table.page"/>
+  <component-alias type="LocaleList" specification-path="/tutorial/workbench/table/LocaleList.jwc"/>
+  <component-alias type="LocaleSelection" specification-path="/tutorial/workbench/table/LocaleSelection.jwc"/>
+
   <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
   <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>
  
@@ -44,5 +48,9 @@
        some of the normal application to a library. -->
  
   <library id="inner" specification-path="/tutorial/workbench/Inner.library"/>
+
+  <!-- We include the contrib library for the Table functionality directly -->
+  <!-- The Table definitions could go into inner as well -->
+  <library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
   
 </application>
