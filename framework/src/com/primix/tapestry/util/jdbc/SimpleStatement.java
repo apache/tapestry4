@@ -26,8 +26,10 @@
 
 package com.primix.tapestry.util.jdbc;
 
-import java.util.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *  A wrapper around {@link Statement}.
@@ -46,6 +48,16 @@ public class SimpleStatement implements IStatement
 	{
 		this.SQL = SQL;
 		this.statement = connection.createStatement();
+	}
+
+	/** @since 1.0.7 **/
+	
+	public SimpleStatement(String SQL, Connection connection, int resultSetType,
+                                 int resultSetConcurrency)
+	throws SQLException
+	{
+		this.SQL = SQL;
+		this.statement = connection.createStatement(resultSetType, resultSetConcurrency);
 	}
 
 	/**

@@ -26,14 +26,10 @@
 
 package com.primix.tapestry.util.jdbc;
 
-import java.util.*;
-import java.sql.*;
-
-// Appease Javadoc
-
-import java.lang.Integer;
-import java.lang.Boolean;
-import java.lang.Double;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  Class for creating and executing JDBC statements.
@@ -65,6 +61,22 @@ public class StatementAssembly
 	{
 		this.maxLineLength = maxLineLength;
 		this.indent = indent;
+	}
+
+	/**
+	 *  Clears the assembly, preparing it for re-use.
+	 * 
+	 *  @since 1.0.7
+	 * 
+	 **/
+
+	public void clear()
+	{
+		buffer.setLength(0);
+		lineLength = 0;
+
+		if (parameters != null)
+			parameters.clear();
 	}
 
 	/**
@@ -316,17 +328,44 @@ public class StatementAssembly
 
 	public IStatement createStatement(Connection connection) throws SQLException
 	{
-		String sql;
-		IStatement result;
+		String sql = buffer.toString();
 
-		sql = buffer.toString();
+		if (parameters == null || parameters.isEmpty())
+			return new SimpleStatement(sql, connection);
 
-		if (parameters == null)
-			result = new SimpleStatement(sql, connection);
-		else
-			result = new ParameterizedStatement(sql, connection, parameters);
+		return new ParameterizedStatement(sql, connection, parameters);
+	}
 
-		return result;
+	/**
+	 * 
+	 * Creates a statement that supports JDBC 2.0 ResultSet features.
+	 * 
+	 *  @since 1.0.7
+	 * 
+	 **/
+
+	public IStatement createStatement(
+		Connection connection,
+		int resultSetType,
+		int resultSetConcurrency)
+		throws SQLException
+	{
+		String sql = buffer.toString();
+
+		if (parameters == null || parameters.isEmpty())
+			return new SimpleStatement(
+				sql,
+				connection,
+				resultSetType,
+				resultSetConcurrency);
+
+		return new ParameterizedStatement(
+			sql,
+			connection,
+			parameters,
+			resultSetType,
+			resultSetConcurrency);
+
 	}
 
 	public String toString()
