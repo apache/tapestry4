@@ -86,7 +86,7 @@
   <project name="jakarta-commons-codec">
     <package>org.apache.commons.codec</package>
     <url href="http://jakarta.apache.org/commons/codec/"/>
-    <jar name="lib/ext/commons-codec-1.1.1-dev.jar"/>
+    <jar name="lib/ext/commons-codec-1.2.jar"/>
     <license name="lib/ext/LICENSE.commons-codec.txt"/>
   </project>
 
