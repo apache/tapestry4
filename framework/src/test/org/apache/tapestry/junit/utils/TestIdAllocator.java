@@ -21,7 +21,6 @@ import org.apache.tapestry.util.IdAllocator;
  * Tests the {@link org.apache.tapestry.util.IdAllocator}class.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

@@ -19,7 +19,6 @@ package org.apache.tapestry.junit.mock.c33;
  * the MyConditional component.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class Visit
 {

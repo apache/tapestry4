@@ -21,7 +21,6 @@ import org.apache.tapestry.multipart.ValuePart;
  * {@link org.apache.tapestry.multipart.UploadPart}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 public class TestMultipart extends TapestryTestCase

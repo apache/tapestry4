@@ -20,7 +20,6 @@ import org.apache.tapestry.html.BasePage;
  * Page for testing a validator, with client side validation, but no Body.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.3
  */
 

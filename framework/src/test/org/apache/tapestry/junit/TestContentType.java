@@ -20,7 +20,6 @@ import org.apache.tapestry.util.ContentType;
  * Test the functionality of {@link org.apache.tapestry.util.ContentType}
  * 
  * @author Mindbridge
- * @version $Id$
  * @since 3.0
  */
 

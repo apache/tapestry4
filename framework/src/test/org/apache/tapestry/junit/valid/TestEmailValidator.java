@@ -23,7 +23,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

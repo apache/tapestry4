@@ -21,7 +21,6 @@ import org.apache.tapestry.link.StaticLink;
  * Tests for {@link org.apache.tapestry.link.StaticLink}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

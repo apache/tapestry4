@@ -18,7 +18,6 @@ package org.apache.tapestry.junit.mock.app;
  * Contains information about a user.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 

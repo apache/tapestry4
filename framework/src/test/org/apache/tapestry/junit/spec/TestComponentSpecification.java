@@ -24,7 +24,6 @@ import org.apache.tapestry.spec.IContainedComponent;
  * Test cases for page and component specifications.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 

@@ -29,7 +29,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * Tests the {@link DateValidator}class.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 1.0.8
  */
 

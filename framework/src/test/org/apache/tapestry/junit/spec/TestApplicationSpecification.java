@@ -24,7 +24,6 @@ import org.apache.tapestry.spec.IExtensionSpecification;
  * Tests related to {@link org.apache.tapestry.spec.ApplicationSpecification}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 

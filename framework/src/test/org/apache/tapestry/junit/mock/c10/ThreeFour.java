@@ -24,7 +24,6 @@ import org.apache.tapestry.components.LinkEventType;
  * Used on a page to test links and Body.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

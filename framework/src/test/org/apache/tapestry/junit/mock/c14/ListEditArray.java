@@ -20,7 +20,6 @@ import org.apache.tapestry.html.BasePage;
  * Test {@link org.apache.tapestry.form.ListEdit}with an object array as a source.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

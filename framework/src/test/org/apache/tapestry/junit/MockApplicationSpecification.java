@@ -26,7 +26,6 @@ import org.apache.tapestry.spec.IExtensionSpecification;
 
 /**
  * @author Erik Hatcher
- * @version $Id$
  */
 public class MockApplicationSpecification implements IApplicationSpecification
 {

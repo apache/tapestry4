@@ -21,7 +21,6 @@ import org.apache.tapestry.html.InsertTextMode;
  * Used to display results of form containing a {@link org.apache.tapestry.form.TextArea}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

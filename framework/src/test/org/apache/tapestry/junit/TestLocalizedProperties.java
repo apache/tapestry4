@@ -24,7 +24,6 @@ import org.apache.tapestry.util.text.LocalizedProperties;
  * and that non-latin characters are read correctly.
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public class TestLocalizedProperties extends TapestryTestCase

@@ -26,7 +26,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * Test cases for PatternValidator.
  * 
  * @author Harish Krishnaswamy
- * @version $Id$
  * @since 3.0
  */
 public class TestPatternValidator extends TapestryTestCase

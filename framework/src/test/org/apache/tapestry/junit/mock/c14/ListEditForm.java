@@ -24,7 +24,6 @@ import org.apache.tapestry.event.PageEvent;
  * as well as using an array (not a list) as a ListEdit source.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

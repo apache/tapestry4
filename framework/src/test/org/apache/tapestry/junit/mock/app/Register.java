@@ -26,7 +26,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * Page used to demonstate basic forms.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 

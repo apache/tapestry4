@@ -30,7 +30,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * Test the class {@link ValidationDelegate}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 1.0.8
  */
 

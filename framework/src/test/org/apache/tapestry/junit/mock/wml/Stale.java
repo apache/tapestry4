@@ -23,7 +23,6 @@ import org.apache.tapestry.wml.Deck;
  * {@link org.apache.tapestry.wml.WMLEngine}.
  * 
  * @author David Solis
- * @version $Id$
  * @since 3.0
  */
 

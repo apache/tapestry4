@@ -25,7 +25,6 @@ import org.apache.tapestry.engine.NullWriter;
  * {@link  org.apache.tapestry.BaseComponent}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

@@ -29,7 +29,6 @@ import org.apache.tapestry.html.BasePage;
  * {@link org.apache.tapestry.valid.IValidator}implementations.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 1.0.8
  */
 
