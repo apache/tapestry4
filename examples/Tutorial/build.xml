@@ -62,6 +62,9 @@
   <target name="run" description="Run the Tutorial application." depends="compile">
     <java classname="org.mortbay.jetty.Server" fork="true">
       <classpath>
+      	<!-- Favor files in src over copies in classes -->
+      	<pathelement location="${src}"/>
+        <pathelement location="${classes}"/>
         <path refid="project.class.path"/>
         <pathelement location="${lib}/org.mortbay.jetty.jar"/>
       </classpath>
