@@ -43,7 +43,8 @@ import org.xml.sax.*;
  *  <code>-//Primix Solutions//Tapestry Script 1.0//EN</code>.
  *
  *  <p>A Tapestry Script is used, in association with the 
- *  {@link com.primix.tapestry.components.Body} component,
+ *  {@link com.primix.tapestry.components.Body} and/or
+ *  {@link Script} components,
  *  to generate JavaScript for use with a Tapestry component.  Two seperate pieces
  *  of JavaScript can be generated.  The body section (associated with the <code>body</code>
  *  element of the XML document) is typically used to define JavaScript functions
@@ -67,6 +68,9 @@ implements ErrorHandler, EntityResolver
     private String resourcePath;
 
     private InputSource inputSource;
+
+    private static final int MAP_SIZE = 11;
+    private Map symbolCache;
 
     /**
      *  {@link List} of {@link ITemplateToken}, extracted from
@@ -288,16 +292,36 @@ implements ErrorHandler, EntityResolver
     
     }
 
+    /**
+     *  Creates a {@link SymbolToken} for the current node
+     *  (which is an insert element node).  Uses a caching mechanism so
+     *  that it creates only one SymbolToken for each key referenced in the
+     *  script.
+     *
+     */
+
     private void addSymbol(List list, Node node)
     {
         Element element;
         String key;
-        ITemplateToken token;
+        ITemplateToken token = null;
 
         element = (Element)node;
         key = element.getAttribute("key");
 
-        token = new SymbolToken(key);
+        if (symbolCache != null)
+            token = (ITemplateToken)symbolCache.get(key);
+
+        if (token == null)
+        {
+            token = new SymbolToken(key);
+
+            if (symbolCache == null)
+                symbolCache = new HashMap(MAP_SIZE);
+
+            symbolCache.put(key, token);
+        }
+
         list.add(token);
     }
 

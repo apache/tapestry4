@@ -38,7 +38,7 @@ import java.io.*;
  *
  */
 
-interface ITemplateToken
+public interface ITemplateToken
 {
     /**
      *  Invoked by the {@link ScriptGenerator} to have the token

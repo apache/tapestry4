@@ -1,3 +1,8 @@
+* Dec 19 2000 hship
+
+Slight improvements in efficiency of the ScriptParser.
+Fix minor Javadoc mistakes.
+
 * Dec 18 2000 hship
 
 Revisit the ScriptGenerator class, changing the format of the .script file from

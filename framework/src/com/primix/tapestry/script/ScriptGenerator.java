@@ -37,12 +37,15 @@ import org.xml.sax.*;
 /**
  *  A class to assist in creating scripts (typically, JavaScript) from a template,
  *  with a set of substitutions.  The template is an XML document (see the class
- *  {@link ScriptParser} for details on how it is implemented.
+ *  {@link ScriptParser} for details on how it is implemented).
  *
  *  <p>A problem: this class has a dependency on class {@link Body}
  *  (from package com.primix.tapestry.components), but class {@link Rollover} (from the same
  *  package) has a dependency on this class.  That is somewhat icky (see
  *  Java 2 Performance and Idiom Guide for why) and needs to be fixed in some way.
+ *
+ * <p>Future directions may include a cache or pool of ScriptGenerators
+ *  (much like how page specifications and template operate).
  *
  *  @author Howard Ship
  *  @version $Id$
