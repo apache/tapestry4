@@ -44,6 +44,9 @@ import ognl.OgnlException;
 
 public class PublicBeanPropertyAccessor extends ObjectPropertyAccessor
 {
+    // For 1.2.2 compatibility -- Collections.EMPTY_MAP is not defined there
+    private final static Map EMPTY_MAP = new HashMap();
+
     /**
      *  Map of Map.  Outer map is keyed on class.  Inner map is keyed
      *  on field name and value is {@link java.lang.reflect.Field}.
@@ -51,7 +54,7 @@ public class PublicBeanPropertyAccessor extends ObjectPropertyAccessor
      **/
 
     private Map _cache = new HashMap();
-
+    
     private synchronized Field findField(Class beanClass, String fieldName)
     {
         Map classMap = (Map) _cache.get(beanClass);
@@ -70,7 +73,9 @@ public class PublicBeanPropertyAccessor extends ObjectPropertyAccessor
         Field fields[] = beanClass.getFields();
 
         if (fields.length == 0)
-            return Collections.EMPTY_MAP;
+            return EMPTY_MAP;
+            //return Collections.EMPTY_MAP;
+            
 
         Map result = new HashMap();
 
