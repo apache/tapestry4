@@ -164,8 +164,6 @@ public class Form
 	
 	private static final int EVENT_MAP_SIZE = 3;
 	
-    private static final String[] reservedNames = { "action" };
-	
 	/**
 	 * A Map, keyed on component id, used to allocate new component ids.
 	 *
@@ -437,7 +435,7 @@ public class Form
 				writer.attribute("name", name);
 				writer.attribute("action", cycle.encodeURL(g.getServletPath()));
 				
-				generateAttributes(cycle, writer, reservedNames);
+				generateAttributes(writer, cycle);
 				writer.println();				
 			}
 			

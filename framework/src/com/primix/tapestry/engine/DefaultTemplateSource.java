@@ -455,17 +455,14 @@ implements ITemplateSource
 		
 		buffer.append('[');
 		
-		if (cache == null)
-			buffer.append("no");
-		else
+		if (cache != null)
 		{
 			synchronized(cache)
 			{
-				buffer.append(cache.size());
+				buffer.append(cache.keySet());
 			}
 		}
-		
-		buffer.append(" cached templates");
+
 		
 		if (tokenCount > 0)
 		{

@@ -128,15 +128,14 @@
   
   <context-asset name="header-Home" path="/images/hd_searchforbooks.gif"/>
   <context-asset name="header-Matches" path="/images/hd_matchingbooks.gif"/>
-  <context-asset name="header-EditBook" path="/images/hd_editbook.gif"/>
   <context-asset name="header-NewBook" path="/images/hd_addnewbooks.gif"/>
   <context-asset name="header-BorrowedBooks" path="/images/hd_borrowedbooks.gif"/>
   <context-asset name="header-ConfirmBookDelete" path="/images/hd_deletebook.gif"/>
   <context-asset name="header-Person" path="/images/hd_bookinventory.gif"/>
-  <context-asset name="header-EditBook" path="/images/hd_editbooks.gif"/>
   <context-asset name="header-EditProfile" path="/images/hd_editprofile.gif"/>
   <context-asset name="header-Login" path="/images/hd_login.gif"/>
   <context-asset name="header-Logout" path="/images/hd_logout.gif"/>
   <context-asset name="header-Register" path="/images/hd_register_noslash.gif"/>
+  <context-asset name="header-ViewBook" path="/images/hd_viewbook.gif"/>
   
 </specification>

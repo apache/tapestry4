@@ -57,7 +57,7 @@ public final class Tapestry
 	 *
 	 */
 	
-	public static final String VERSION = "1.0.4";
+	public static final String VERSION = "1.0.5";
 	
 	/**
 	 *  A {@link Map} that links Locale names (as in {@link Locale#toString()} to
@@ -246,9 +246,6 @@ public final class Tapestry
 	 *  informal) in the
 	 *  destination component if there is a naming conflict.
 	 *
-	 *  <p>This is often used in cases where a "captive" component is used
-	 *  to implement some more complicated component, such as
-	 * {@link com.primix.tapestry.valid.AbstractValidatingTextField}.
 	 *
 	 */
 	

@@ -230,7 +230,7 @@ public class Foreach extends AbstractComponent
 				if (element != null)
 				{
 					writer.begin(element);
-					generateAttributes(cycle, writer, null);
+					generateAttributes(writer, cycle);
 				}
 				
 				renderWrapped(writer, cycle);

@@ -8,4 +8,7 @@
   <parameter name="scheme" java-type="java.lang.String"/>
   <parameter name="port"/>
   <parameter name="anchor" java-type="java.lang.String"/>
+
+  <reserved-parameter name="href"/>
+  
 </specification>

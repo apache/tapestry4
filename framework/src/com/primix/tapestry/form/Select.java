@@ -113,8 +113,6 @@ public class Select extends AbstractFormComponent
 		return (Select)cycle.getAttribute(ATTRIBUTE_NAME);
 	}
 
-	private static final String[] reservedNames = { "name"};
-
 	public IBinding getDisabledBinding()
 	{
 		return disabledBinding;
@@ -213,7 +211,7 @@ public class Select extends AbstractFormComponent
 			if (disabled)
 				writer.attribute("disabled");
 
-			generateAttributes(cycle, writer, reservedNames);			
+			generateAttributes(writer, cycle);			
 		}
 
 		try

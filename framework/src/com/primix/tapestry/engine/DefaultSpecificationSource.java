@@ -189,17 +189,15 @@ public class DefaultSpecificationSource
 		
 		buffer.append('[');
 		
-		if (cache == null)
-			buffer.append("no");
-		else
+		if (cache != null)
 		{
 			synchronized(cache)
 			{
-				buffer.append(cache.size());
+				buffer.append(cache.keySet());
 			}
 		}
 		
-		buffer.append(" cached specifications]");
+		buffer.append(']');
 		
 		return buffer.toString();
 	}

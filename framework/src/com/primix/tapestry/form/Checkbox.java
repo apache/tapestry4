@@ -92,9 +92,6 @@ public class Checkbox extends AbstractFormComponent
 		return name;
 	}
 	
-	private static final String[] reservedNames = 
-    { "type", "name", "checked"};
-	
 	public IBinding getDisabledBinding()
 	{
 		return disabledBinding;
@@ -168,7 +165,7 @@ public class Checkbox extends AbstractFormComponent
 			if (checked)
 				writer.attribute("checked");
 			
-			generateAttributes(cycle, writer, reservedNames);
+			generateAttributes(writer, cycle);
 			
 			writer.closeTag();
 		}

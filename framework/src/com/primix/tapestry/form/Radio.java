@@ -89,8 +89,6 @@ public class Radio extends AbstractComponent
 	private IBinding valueBinding;
 	private Object staticValue;
 
-	private static final String[] reservedNames = { "value", "checked", "type", "name"};
-
 	public IBinding getDisabledBinding()
 	{
 		return disabledBinding;
@@ -199,7 +197,7 @@ public class Radio extends AbstractComponent
 
 		writer.attribute("value", option);
 
-		generateAttributes(cycle, writer, reservedNames);
+		generateAttributes(writer, cycle);
 
 	}
 

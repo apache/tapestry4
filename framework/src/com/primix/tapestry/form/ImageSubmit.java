@@ -151,9 +151,6 @@ public class ImageSubmit extends AbstractFormComponent
 		return name;
 	}
 	
-	private static final String[] reservedNames = 
-	{ "type", "border", "src" };
-	
 	public void setImageBinding(IBinding value)
 	{
 		imageBinding = value;
@@ -363,7 +360,7 @@ public class ImageSubmit extends AbstractFormComponent
 		
 		writer.attribute("src", imageURL);
 		
-		generateAttributes(cycle, writer, reservedNames);
+		generateAttributes(writer, cycle);
 		
 		writer.closeTag();
 	}        

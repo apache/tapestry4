@@ -2,12 +2,20 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.valid.ValidatingTextField" allow-body="no">
+  <parameter name="disabled"/>
+  <parameter name="hidden"/>
+  <parameter name="displayWidth" java-type="java.lang.Integer"/>
+  <parameter name="maximumLength" java-type="java.lang.Integer"/>
   <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate" required="yes"/>
   <parameter name="displayName" java-type="java.lang.String" required="yes"/>
   <parameter name="minimumLength" java-type="java.lang.Integer"/>
   <parameter name="required"/>
   <parameter name="text" java-type="java.lang.String" required="yes"/>
-  <component id="captive" type="TextField">
-    <binding name="text" property-path="text"/>
-  </component>
+  
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="size"/>
+  <reserved-parameter name="maxlength"/>
+  <reserved-parameter name="value"/>
+  <reserved-parameter name="name"/>
+
 </specification>

@@ -7,6 +7,12 @@
   <parameter name="maximum" java-type="java.lang.Integer"/>
   <parameter name="minimum" java-type="java.lang.Integer"/>
   <parameter name="required"/>
+  
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="size"/>
+  <reserved-parameter name="maxlength"/>
+  <reserved-parameter name="value"/>
+  
   <parameter name="value" java-type="java.lang.Integer" required="yes"/>
   <component id="captive" type="TextField">
     <binding name="text" property-path="text"/>

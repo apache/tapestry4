@@ -84,8 +84,6 @@ public class Option extends AbstractComponent
 	private IBinding labelBinding;
 	private String labelValue;
 
-	private static final String[] reservedNames = { "value" };
-
 	public IBinding getLabelBinding()
 	{
 		return labelBinding;
@@ -151,7 +149,7 @@ public class Option extends AbstractComponent
 			if (selectedBinding.getBoolean())
 				writer.attribute("selected");
 
-			generateAttributes(cycle, writer, reservedNames);
+			generateAttributes(writer, cycle);
 
 			if (labelValue != null)
 				label = labelValue;

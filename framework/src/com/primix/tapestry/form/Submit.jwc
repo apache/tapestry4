@@ -6,4 +6,8 @@
   <parameter name="disabled"/>
   <parameter name="selected" required="yes"/>
   <parameter name="tag" required="yes"/>
+  
+  <reserved-parameter name="name"/>
+  <reserved-parameter name="type"/>
+  
 </specification>

@@ -93,9 +93,24 @@
 				<!-- head --><img src="/vlib/images/ico_t.gif" width="44" height="44" border="0" align="absmiddle">&nbsp;&nbsp;<img src="/vlib/images/hd_primixtapestry.gif" width="177" height="22" alt="" border="0" vspace="17" align="absmiddle">
 				<!-- END head -->
 				
+				<h3>Release 1.0.5</h3>
+				
+				<p>Added a mechanism to clear out pooled objects when they haven't been used
+				for some time.  The interface <a href="doc/api/com/primix/tapestry/util/ICleanable.html">ICleanup</a>
+				has the details.
+				
+				<p>Made a number of other efficiency improvements.  Particularily, the page loader now weeds
+				out informal parameters that can't be used (because they conflict with formal parameter names,
+				or because the component owns the attributes), preventing them from being added as component
+				bindings.  The old method was to weed out the unwanted parameters on every
+				render, which was more expensive.
+				
+				<p>Improved the <a href="doc/api/com/primix/tapestry/valid/NumericField.html">NumericField</a>
+				component to deal with null values in an intelligent manner.
+				
                 <h3>Release 1.0.4</h3>
                 
-                <p>Release 1.0.4 debuts the finished Tapestry Home and Virtual Library.
+                <p>Release 1.0.4 debuted the finished Tapestry Home and Virtual Library.
                 
                 <br>
 			<!-- END Content -->

@@ -119,35 +119,37 @@ public class PageLoader
 		ContainedComponent contained, Map propertyBindings)
 	throws PageLoaderException
 	{
-		Iterator i;
-		String name;
 		BindingSpecification bspec;
 		IBinding binding;
 		String bindingValue;
 		BindingType type;
-		boolean checkForFormal;
 		ParameterSpecification parameterSpec;
 
-		checkForFormal = !spec.getAllowInformalParameters();
+		boolean formalOnly = !spec.getAllowInformalParameters();
 
-		i = contained.getBindingNames().iterator();
+		Iterator i = contained.getBindingNames().iterator();
 		while (i.hasNext())
 		{
-			name = (String)i.next();
+			String name = (String)i.next();
 
+			boolean isFormal = spec.getParameter(name) != null;
+			
 			// If not allowing informal parameters, check that each binding matches
 			// a formal parameter.
 
-			if (checkForFormal)
-			{
-				if (spec.getParameter(name) == null)
+			if (formalOnly && !isFormal)
 					throw new PageLoaderException(
 						"Component " + component.getExtendedId() +
 						" allows only formal parameters, binding " +
 						name + " is not allowed.",
 						component, null);
-			}
 
+			// If an informal parameter that conflicts with a reserved name, then
+			// skip it.
+			
+			if (!isFormal && spec.isReservedParameterName(name))
+				continue;
+			
 			bspec = contained.getBinding(name);
 
 			// The type determines how to interpret the value:
@@ -169,7 +171,7 @@ public class PageLoader
 		i = spec.getParameterNames().iterator();
 		while (i.hasNext())
 		{
-			name = (String)i.next();
+			String name = (String)i.next();
 
 			parameterSpec = spec.getParameter(name);
 

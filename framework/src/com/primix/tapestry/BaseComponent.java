@@ -232,7 +232,8 @@ public class BaseComponent
 			}
 		}
 		
-		// This is also pretty much unreachable.
+		// This is also pretty much unreachable, and the message is kind of out
+		// of date, too.
 		
 		if (stackx != 0)
 			throw new PageLoaderException(
@@ -247,8 +248,8 @@ public class BaseComponent
 	
 	/** 
 	 * Adds static bindings for any attrributes specified in the HTML
-	 * template.  Does not overwrite bindings (from the component specification)
-	 * with identical (case sensitive) names.
+	 * template, skipping any that are reserved (explicitly, or
+	 * because they match a formal parameter name).
 	 *
 	 */
 	
@@ -257,7 +258,13 @@ public class BaseComponent
 		if (attributes == null || attributes.isEmpty())
 			return;
 		
+		ComponentSpecification spec = component.getSpecification();
+		
+		if (!spec.getAllowInformalParameters())
+			return;
+		
 		Iterator i = attributes.entrySet().iterator();
+
 		while (i.hasNext())
 		{
 			Map.Entry e = (Map.Entry)i.next();
@@ -267,7 +274,7 @@ public class BaseComponent
 			// If a formal or informal parameter already exists with that
 			// exact name, then skip it.
 			
-			if (component.getBinding(informalParameterName) != null)
+			if (spec.isReservedParameterName(informalParameterName))
 				continue;
 			
 			String value = (String)e.getValue();
@@ -277,6 +284,7 @@ public class BaseComponent
 			component.setBinding(informalParameterName, binding);
 		}
 	}
+	
 	private void checkAllComponentsReferenced(Set seenIds)
 		throws PageLoaderException
 	{

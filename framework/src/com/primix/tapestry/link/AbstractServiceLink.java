@@ -57,7 +57,6 @@ public abstract class AbstractServiceLink
     implements IServiceLink
 {
 	private static final int DEFAULT_HTTP_PORT = 80;
-	private static final String[] reservedNames = { "href" };
 
 	// A number of characters to add to the URL to get the initial size
 	// of the StringBuffer used to assemble the complete URL.
@@ -397,7 +396,7 @@ public abstract class AbstractServiceLink
 
 				// Generate additional attributes from informal parameters.
 
-				generateAttributes(cycle, writer, reservedNames);
+				generateAttributes(writer, cycle);
 
 				// Dump in HTML provided by wrapped components
 

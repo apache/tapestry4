@@ -15,6 +15,9 @@ For application specifications, the root element is application.
 
 For component specifications the root element is specification.
 
+Minor backwords-compatible changes to this DTD will occur during the 1.0.x timeframe.  
+The DTD will be frozen for Tapestry release 1.1.0.
+
 -->
 <!-- =======================================================
 Entity: attribute-flag
@@ -264,6 +267,20 @@ the PCDATA wrapped by the property tag (which is trimmed of leading and trailing
   name CDATA #REQUIRED
 >
 <!-- =======================================================
+Element: reserved-parameter
+Appears in: specification
+
+Identifies a name which may not be used as an informal parameter.
+Informal parameters are typically HTML attribute names; this
+list identifies HTML attributes that are written exclusively
+by the component and may not be affected by informal parameters.
+-->
+
+<!ELEMENT reserved-parameter EMPTY>
+<!ATTLIST reserved-parameter
+  name CDATA #REQUIRED
+>
+<!-- =======================================================
 Element: specification
 Root element
 
@@ -277,7 +294,7 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT specification (description*, parameter*, property*, bean*,
+<!ELEMENT specification (description*, parameter*, reserved-parameter*, property*, bean*,
 	component*, (external-asset | context-asset | private-asset)*)>
 <!ATTLIST specification
   class CDATA #REQUIRED
@@ -289,7 +306,7 @@ Element: static-binding
 Appears in: component
 
 Binds a parameter of the component to a static value defined directly
-within this specification. The value is the PCDATA wraped by the element 
+within this specification. The value is the PCDATA wrapped by the element 
 (with leading and trailing whitespace removed).
 
 Attributes:

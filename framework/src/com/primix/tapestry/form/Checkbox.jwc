@@ -4,4 +4,9 @@
 <specification class="com.primix.tapestry.form.Checkbox" allow-body="no">
   <parameter name="selected" java-type="java.lang.Boolean" required="yes"/>
   <parameter name="disabled"/>
+  
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="checked"/>
+  <reserved-parameter name="name"/>
+  
 </specification>

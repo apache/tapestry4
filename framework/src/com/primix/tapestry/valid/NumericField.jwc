@@ -2,13 +2,23 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.valid.NumericField">
+
   <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate" required="yes"/>
+  
+  <parameter name="value" java-type="java.lang.Number" required="yes"/>
+  
   <parameter name="displayName" java-type="java.lang.String" required="yes"/>
   <parameter name="maximum" java-type="java.lang.Number"/>
   <parameter name="minimum" java-type="java.lang.Number"/>
   <parameter name="required"/>
-  <parameter name="value" java-type="java.lang.Number" required="yes"/>
-  <component id="captive" type="TextField">
-    <binding name="text" property-path="text"/>
-  </component>
+  <parameter name="disabled"/>
+  <parameter name="hidden"/>
+  <parameter name="displayWidth" java-type="java.lang.Integer"/>
+  <parameter name="maximumLength" java-type="java.lang.Integer"/>
+  
+  
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="size"/>
+  <reserved-parameter name="maxlength"/>
+   
 </specification>
