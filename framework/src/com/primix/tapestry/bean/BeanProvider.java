@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -29,6 +29,7 @@
 package com.primix.tapestry.bean;
 
 import com.primix.tapestry.*;
+import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.*;
 import java.util.*;
 import com.primix.tapestry.util.pool.*;
@@ -43,13 +44,39 @@ import org.apache.log4j.*;
  */
 
 
-public class BeanProvider implements IBeanProvider
+public class BeanProvider
+	implements IBeanProvider, PageDetachListener
 {
 	private static final Category CAT = Category.getInstance(BeanProvider.class);
+
+	/**
+	 *  Indicates whether this instance has been registered with its
+	 *  page as a PageDetachListener.  Registration only occurs
+	 *  the first time a bean with lifecycle REQUEST is instantiated.
+	 *
+	 */
 	
 	private boolean registered = false;
+	
+	/**
+	 *  The component for which beans are being created and tracked.
+	 *
+	 */
+	
 	private IComponent component;
+	
+	/**
+	 *  Used for instantiating classes.
+	 *
+	 */
+	
 	private IResourceResolver resolver;
+	
+	/**
+	 *  The {@link Pool}, acquired from the {@link IEngine}.
+	 *
+	 */
+	
 	private Pool helperBeanPool;
 	
 	/**
@@ -107,7 +134,7 @@ public class BeanProvider implements IBeanProvider
 		
 		if (lifecycle == BeanLifecycle.REQUEST && !registered)
 		{
-			component.getPage().registerBeanProvider(this);
+			component.getPage().addPageDetachListener(this);
 			registered = true;
 		}
 		
@@ -154,9 +181,15 @@ public class BeanProvider implements IBeanProvider
 		}
 	}
 	
-	public void removeRequestBeans()
+	/**
+	 *  Removes all beans with the REQUEST lifecycle.  If such
+	 *  beans implement {@link IPoolable} they are stored into
+	 *  the {@link IEngine}'s helper pool.
+	 *
+	 */
+	
+	public void pageDetached(PageEvent event)
 	{
-		registered = false;
 		ComponentSpecification spec = null;
 		
 		if (beans == null)

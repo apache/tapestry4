@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -91,7 +91,7 @@ public interface IPageRecorder extends ChangeObserver
 	 *
 	 *  <p>A page recorder can only rollback changes to properties
 	 *  which have changed  at some point.  This can cause some minor
-	 *  problems, addressed by  {@link ILifecycle#reset()}.
+	 *  problems, addressed by  {@link PageDetachListener#pageDetached(PageEvent)}.
 	 */
 	
     public void rollback(IPage page);

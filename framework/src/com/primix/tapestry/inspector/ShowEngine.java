@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -29,6 +29,7 @@
 
 package com.primix.tapestry.inspector;
 
+import com.primix.tapestry.event.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.util.io.*;
 import java.io.*;
@@ -46,11 +47,23 @@ import java.util.*;
  */
 
 public class ShowEngine extends BaseComponent
-implements ILifecycle
+implements PageDetachListener
 {
 	private byte[] serializedEngine;
 
-	public void cleanupAfterRender(IRequestCycle cycle)
+	/**
+	 *  Registers with the page as a {@link PageDetachListener}.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	protected void registerForEvents()
+	{
+		page.addPageDetachListener(this);
+	}
+
+	public void pageDetached(PageEvent event)
 	{
 		serializedEngine = null;
 	}
@@ -148,7 +161,7 @@ implements ILifecycle
 			bos.write(getSerializedEngine());
 			bos.close();
 
-			responseWriter.print(writer.toString());            
+			responseWriter.print(writer.toString());
 			}
         catch (IOException ex)
         {
@@ -158,7 +171,7 @@ implements ILifecycle
         {
             if (bos != null)
             {
-                try 
+                try
                 {
                     bos.close();
 					}

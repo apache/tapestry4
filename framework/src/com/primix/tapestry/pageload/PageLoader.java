@@ -297,15 +297,7 @@ public class PageLoader
 
 		container.finishLoad(this, containerSpec);
 		
-		if (container instanceof ILifecycle)
-		{
-			ILifecycle lifecycle = (ILifecycle)container;
-			
-			page.addLifecycleComponent(lifecycle);
-		}
-
 		depth--;
-
 	}
 
 	/**

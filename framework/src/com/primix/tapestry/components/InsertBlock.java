@@ -38,12 +38,12 @@ import com.primix.tapestry.*;
  *  the Block contains links, forms and form components.  The action and
  *  direct services will create URLs that properly address this situation.
  *
- *  <p>However, because the rendering page can't know about these foriegn
- *  Blocks, it can't run lifecycle methods on components from them.  Again,
- *  {@link ILifecycle} methods for components dragged in from other pages
+ *  <p>However, because the rendering page can't know
+ *  ahead of time about these foriegn Blocks,
+ *  {@link com.primix.tapestry.event.PageRenderListener} methods
+ *  (for components and objects of the foriegn page)
  *  via InsertBlock will <em>not</em> be executed.  This specifically
- *  affects the methods {@link ILifecycle#prepareForRender(IRequestCycle)}
- *  and {@link ILifecycle#cleanupAfterRender(IRequestCycle)}.
+ *  affects the methods of the {@link PageRenderListener} interface.
  *
  * <p>
  * <table border=1>

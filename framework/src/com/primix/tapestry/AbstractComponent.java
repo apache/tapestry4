@@ -40,16 +40,12 @@ import java.util.*;
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
  *
- * <p>In addition, this class implements empty stubs for the methods of
- * the {@link ILifecycle} interface.  Subclasses will still need
- * to implement the interface for any of the methods to be invoked.
- *
  * @author Howard Ship
  * @version $Id$
  */
 
 public abstract class AbstractComponent implements IComponent
-{	
+{
 	static
 	{
 		// Register the BeanProviderHelper to provide access to the
@@ -215,25 +211,18 @@ public abstract class AbstractComponent implements IComponent
 	}
 	
 	/**
-	 *  Does nothing.  Subclasses may overide as needed.
-	 *
-	 *  @see ILifecycle
-	 *
-	 */
-	
-	public void cleanupAfterRender(IRequestCycle cycle)
-	{
-	}
-	
-	/**
-	 *  Does nothing.  Subclasses may overide as needed.  {@link BaseComponent}
-	 * loads its HTML template.
+	 *  Invokes {@link #registerForEvents()}.  Subclasses may overide as needed, but
+	 *  must invoke this implementation (or {@link #registerForEvents()}.
+	 *  {@link BaseComponent}
+	 * loads its HTML template.  Many components that implement one of the page
+	 *  event interfaces register with the page here.
 	 *
 	 */
 	
 	public void finishLoad(IPageLoader loader, ComponentSpecification specification)
 		throws PageLoaderException
 	{
+		registerForEvents();
 	}
 	
 	protected void fireObservedChange(String propertyName, int newValue)
@@ -440,7 +429,7 @@ public abstract class AbstractComponent implements IComponent
 		Iterator i = bindings.entrySet().iterator();
 		
 		while (i.hasNext())
-		{			
+		{
 			Map.Entry entry = (Map.Entry)i.next();
 			String name = (String)entry.getKey();
 			
@@ -620,30 +609,6 @@ public abstract class AbstractComponent implements IComponent
     }
 	
 	/**
-	 *  Does nothing.  Subclasses may overide.
-	 *
-	 *  @see ILifecycle
-	 *
-	 */
-	
-	public void prepareForRender(IRequestCycle cycle)
-	{
-		// Does nothing.
-	}
-	
-	/**
-	 *  Does nothing.  Subclasses may overide.
-	 *
-	 *  @see ILifecycle
-	 *
-	 */
-	
-	public void cleanupComponent()
-	{
-		// Does nothing.
-	}
-	
-	/**
 	 *  Renders all elements wrapped by the receiver.
 	 *
 	 */
@@ -653,17 +618,6 @@ public abstract class AbstractComponent implements IComponent
 	{
 		for (int i = 0; i < wrappedCount; i++)
 			wrapped[i].render(writer, cycle);
-	}
-	
-	/**
-	 *  Does nothing.  Subclasses may overide as needed.
-	 *
-	 *  @see ILifecycle
-	 *
-	 */
-	
-	public void reset()
-	{
 	}
 	
 	/**
@@ -817,5 +771,22 @@ public abstract class AbstractComponent implements IComponent
 			beans = new BeanProvider(this);
 		
 		return beans;
+	}
+	
+	/**
+	 *  Invoked from {@link #finishLoad(IPageLoader, ComponentSpecification)}
+	 *  so that components that implement a listener interface can
+	 *  register.
+	 *
+	 *  <p>This implementation does nothing; subclasses can override
+	 *  as desired.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	protected void registerForEvents()
+	{
+		// Does nothing
 	}
 }

@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -33,17 +33,18 @@ import com.primix.tapestry.components.*;
 import com.primix.tapestry.html.*;
 import com.primix.tapestry.form.*;
 import com.primix.tapestry.spec.*;
+import com.primix.tapestry.event.*;
 import java.util.*;
 import java.text.*;
 
 /**
- * 
+ *
  *  Base class for several classes that validate their input from the user.
  *
  * <p>All subclasses share the following features:
  *	<ul>
  *	<li>They perform a validation when the containing form is submitted
- *  <li>If there's a validation error, they notify their 
+ *  <li>If there's a validation error, they notify their
  *      {@link IValidationDelegate delegate}
  *  <li>The exact value entered by the user is supplied as the value when the
  *  page is rendered (to allow the user to correct the error)
@@ -59,7 +60,7 @@ import java.text.*;
 
 public abstract class AbstractValidatingTextField
 	extends AbstractTextField
-	implements ILifecycle, IValidatingTextField, IFormComponent
+	implements IValidatingTextField, IFormComponent, PageDetachListener
 {
 	private IValidationDelegate delegate;
 	private IBinding delegateBinding;
@@ -81,9 +82,20 @@ public abstract class AbstractValidatingTextField
 	
 	private ResourceBundle strings;
 	
+	/**
+	 *  Registers this component as a {@link PageDetachListener}.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	protected void registerForEvents()
+	{
+		page.addPageDetachListener(this);
+	}
 	
 	/**
-	 *  Gets and formats a localized string from the 
+	 *  Gets and formats a localized string from the
 	 *  <code>com.primix.tapestry.valid.ValidationStrings</code>
 	 *  property bundle.
 	 *
@@ -115,14 +127,14 @@ public abstract class AbstractValidatingTextField
 	protected String getString(String key, Object argument)
 	{
 		return getString(key, new Object[]
-				{ argument 
+				{ argument
 				});
 	}
 	
 	protected String getString(String key, Object arg1, Object arg2)
 	{
 		return getString(key, new Object[]
-				{ arg1, arg2 
+				{ arg1, arg2
 				});
 	}
 	
@@ -162,7 +174,7 @@ public abstract class AbstractValidatingTextField
 	}
 	
 	/**
-	 *  Returns the component's delegate, or throws 
+	 *  Returns the component's delegate, or throws
 	 *  {@link RequiredParameterException}.
 	 *
 	 */
@@ -238,7 +250,7 @@ public abstract class AbstractValidatingTextField
 	 *
 	 */
 	
-	protected void notifyDelegate(ValidationConstraint constraint, 
+	protected void notifyDelegate(ValidationConstraint constraint,
 			String defaultErrorMessage)
 	{
 		error = true;
@@ -271,9 +283,10 @@ public abstract class AbstractValidatingTextField
 	/**
 	 *  Clear the error, text and delegate properties at the end of request cycle.
 	 *
+	 *  @since 1.0.5
 	 */
 	
-	public void reset()
+	public void pageDetached(PageEvent event)
 	{
 		error = false;
 		text = null;
@@ -330,7 +343,7 @@ public abstract class AbstractValidatingTextField
 		// then we may have identified the default field (which will
 		// automatically receive focus).
 		
-		if (rendering && 
+		if (rendering &&
 			(error | (isRequired() && Tapestry.isNull(readValue()))))
 			addSelect(cycle);
 		
@@ -352,7 +365,7 @@ public abstract class AbstractValidatingTextField
 		getDelegate().writeAttributes(this, writer, cycle);
 	}
 	
-	private static final String SELECTED_ATTRIBUTE_NAME = 
+	private static final String SELECTED_ATTRIBUTE_NAME =
 		"com.primix.tapestry.component.html.valid.SelectedFieldSet";
 	
 	/**
@@ -405,7 +418,7 @@ public abstract class AbstractValidatingTextField
 			requiredValue = value.getBoolean();
 	}
 	
-	/** 
+	/**
 	 *  Returns the value of the required parameter, or false if the parameter
 	 *  is not bound.
 	 *

@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -35,7 +35,7 @@ import java.util.*;
 import java.text.*;
 
 /**
- * 
+ *
  *  A {@link Form} component that can be used to
  *  create a text field that validates that the user
  *  has entered a value (if required) and that the
@@ -47,15 +47,15 @@ import java.text.*;
  *  be the default value for the form element when the page is rendered.
  *
  *  <p>Doesn't work inside a {@link Foreach} ... it maintains a little bit
- *  of state (invalid text, error flag) 
+ *  of state (invalid text, error flag)
  *  that will get confused if the component is re-used on the page.
- * 
+ *
  * <table border=1>
- * <tr> 
+ * <tr>
  *    <td>Parameter</td>
  *    <td>Type</td>
  *	  <td>Read / Write </td>
- *    <td>Required</td> 
+ *    <td>Required</td>
  *    <td>Default</td>
  *    <td>Description</td>
  * </tr>
@@ -128,7 +128,6 @@ import java.text.*;
 
 public class ValidatingTextField
 extends AbstractValidatingTextField
-implements ILifecycle
 {
     private IBinding textBinding;
     private IBinding minimumLengthBinding;
@@ -200,7 +199,7 @@ implements ILifecycle
             if (length < minimumLength)
             {
                 errorMessage =
-                    getString("field-too-short", new Integer(minimumLength), 
+                    getString("field-too-short", new Integer(minimumLength),
                     getDisplayName());
 
                 notifyDelegate(ValidationConstraint.MINIMUM_WIDTH,

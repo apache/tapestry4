@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -26,54 +26,40 @@
  *
  */
 
-package com.primix.tapestry.spec;
+package com.primix.tapestry.event;
 
-import java.io.*;
-import com.primix.tapestry.util.Enum;
-
+import com.primix.tapestry.*;
+import java.util.*;
+	
 /**
- *  An {@link Enum} of the different possible lifecycles for a JavaBean.
+ *  An object that listens to page events.  The {@link IPage page} generates
+ *  events before and after rendering a response, and at the end of the request
+ *  cycle.
  *
  *  @author Howard Ship
  *  @version $Id$
- *  @since 1.0.4
+ *  @since 1.0.5
  */
-
-
-public class BeanLifecycle extends Enum
+	
+public interface PageRenderListener extends EventListener
 {
 	/**
-	 *  No lifecycle; the bean is created fresh on each reference and not retained.
+	 *  Invoked before just before the page renders a response.  This provides
+	 *  listeners with a last chance to initialize themselves for the render.
+	 *  This initialization can include modifying peristent page properties.
 	 *
-	 **/
-	
-	public static final BeanLifecycle NONE = new BeanLifecycle("NONE");
-	
-	/**
-	 * The standard lifecycle; the bean is retained for the
-	 * duration of the request cycle and is discarded at the end of the
-	 * request cycle.
 	 *
 	 */
 	
-	public static final BeanLifecycle REQUEST = new BeanLifecycle("REQUEST");
+	public void pageBeginRender(PageEvent event);
 	
 	/**
-	 * The bean is created once and reused for the lifespan of the page
-	 * containing the component.
+	 *  Invoked after a successful render of the page.
+	 *  Allows objects to release any resources they needed during the
+	 *  the render.
 	 *
 	 */
 	
-	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
-	
-    private BeanLifecycle(String name)
-    {
-		super(name);
-    }
-    
-    private Object readResolve()
-    {
-    	return getSingleton();
-    }
+	public void pageEndRender(PageEvent event);
 }
 

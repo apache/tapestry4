@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -32,6 +32,7 @@ package com.primix.tapestry.inspector;
 import com.primix.tapestry.*;
 import com.primix.tapestry.form.*;
 import com.primix.tapestry.valid.*;
+import com.primix.tapestry.event.*;
 import java.util.*;
 import org.apache.log4j.*;
 
@@ -44,8 +45,9 @@ import org.apache.log4j.*;
  *  @since 0.2.9
  */
 
-public class ShowLogging extends BaseComponent
-	implements ILifecycle
+public class ShowLogging
+	extends BaseComponent
+	implements PageDetachListener
 {
 	private Category category;
 	private String error;
@@ -55,7 +57,26 @@ public class ShowLogging extends BaseComponent
 	private IPropertySelectionModel priorityModel;
 	private EvenOdd categoryClass;
 	
-	public void reset()
+	/**
+	 *  Registers this component as a {@link PageDetachListener}.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	protected void registerForEvents()
+	{
+		page.addPageDetachListener(this);
+	}
+	
+	/**
+	 *  Clears out everything when the page is detached.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public void pageDetached(PageEvent event)
 	{
 		category = null;
 		error = null;
@@ -155,7 +176,7 @@ public class ShowLogging extends BaseComponent
 		if (rootPriorityModel == null)
 			rootPriorityModel = new PriorityModel(false);
 		
-		return rootPriorityModel;	
+		return rootPriorityModel;
 	}
 	
 	/**
@@ -169,7 +190,7 @@ public class ShowLogging extends BaseComponent
 		if (priorityModel == null)
 			priorityModel = new PriorityModel();
 		
-		return priorityModel;	
+		return priorityModel;
 	}
 	
 	public IValidationDelegate getValidationDelegate()
@@ -178,7 +199,7 @@ public class ShowLogging extends BaseComponent
 			validationDelegate = new ValidationDelegate();
 		
 		return validationDelegate;
-	}	
+	}
 	
 	public void priorityChange(IRequestCycle cycle)
 	{

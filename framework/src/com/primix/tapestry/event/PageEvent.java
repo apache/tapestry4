@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -26,54 +26,49 @@
  *
  */
 
-package com.primix.tapestry.spec;
+package com.primix.tapestry.event;
 
-import java.io.*;
-import com.primix.tapestry.util.Enum;
-
+import com.primix.tapestry.*;
+import java.util.*;
+	
 /**
- *  An {@link Enum} of the different possible lifecycles for a JavaBean.
+ *  Encapsulates information related to the {@link PageListener}
+ *  interface.
  *
  *  @author Howard Ship
  *  @version $Id$
- *  @since 1.0.4
+ *  @since 1.0.5
  */
-
-
-public class BeanLifecycle extends Enum
+	
+public class PageEvent
+	extends EventObject
 {
-	/**
-	 *  No lifecycle; the bean is created fresh on each reference and not retained.
-	 *
-	 **/
-	
-	public static final BeanLifecycle NONE = new BeanLifecycle("NONE");
+	private transient IPage page;
+	private transient IRequestCycle requestCycle;
 	
 	/**
-	 * The standard lifecycle; the bean is retained for the
-	 * duration of the request cycle and is discarded at the end of the
-	 * request cycle.
+	 *  Constructs a new instance of the event.  The
+	 *  {@link EventObject#getSource()} of the event will
+	 *  be the {@link IPage}.
 	 *
 	 */
 	
-	public static final BeanLifecycle REQUEST = new BeanLifecycle("REQUEST");
+	public PageEvent(IPage page, IRequestCycle cycle)
+	{
+		super(page);
+		
+		this.page = page;
+		this.requestCycle = cycle;
+	}
 	
-	/**
-	 * The bean is created once and reused for the lifespan of the page
-	 * containing the component.
-	 *
-	 */
+	public IPage getPage()
+	{
+		return page;
+	}
 	
-	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
-	
-    private BeanLifecycle(String name)
-    {
-		super(name);
-    }
-    
-    private Object readResolve()
-    {
-    	return getSingleton();
-    }
+	public IRequestCycle getRequestCycle()
+	{
+		return requestCycle;
+	}
 }
 

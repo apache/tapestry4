@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -26,54 +26,28 @@
  *
  */
 
-package com.primix.tapestry.spec;
+package com.primix.tapestry.event;
 
-import java.io.*;
-import com.primix.tapestry.util.Enum;
-
+import com.primix.tapestry.*;
+import java.util.*;
+	
 /**
- *  An {@link Enum} of the different possible lifecycles for a JavaBean.
+ *  An interface for objects that want to know when the end of the
+ *  request cycle occurs, so that any resources that should be limited
+ *  to just one request cycle can be released.
  *
  *  @author Howard Ship
  *  @version $Id$
- *  @since 1.0.4
+ *  @since 1.0.5
  */
-
-
-public class BeanLifecycle extends Enum
+	
+public interface PageDetachListener extends EventListener
 {
 	/**
-	 *  No lifecycle; the bean is created fresh on each reference and not retained.
-	 *
-	 **/
-	
-	public static final BeanLifecycle NONE = new BeanLifecycle("NONE");
-	
-	/**
-	 * The standard lifecycle; the bean is retained for the
-	 * duration of the request cycle and is discarded at the end of the
-	 * request cycle.
+	 *  Invoked by the page from its {@link IPage#detach()} method.
 	 *
 	 */
 	
-	public static final BeanLifecycle REQUEST = new BeanLifecycle("REQUEST");
-	
-	/**
-	 * The bean is created once and reused for the lifespan of the page
-	 * containing the component.
-	 *
-	 */
-	
-	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
-	
-    private BeanLifecycle(String name)
-    {
-		super(name);
-    }
-    
-    private Object readResolve()
-    {
-    	return getSingleton();
-    }
+	public void pageDetached(PageEvent event);
 }
 

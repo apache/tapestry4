@@ -4,9 +4,9 @@
  *
  * http://sourceforge.net/projects/tapestry
  * mailto:hship@sourceforge.net
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -34,7 +34,7 @@ import java.text.*;
 import java.math.*;
 
 /**
- * 
+ *
  *  A {@link Form} component that can be used to
  *  create a text field that validates that the user
  *  has entered a numeric value (if required) and that the
@@ -45,8 +45,8 @@ import java.math.*;
  *  an error flag is set.  Also, the invalid text is kept so that it can
  *  be the default value for the form element when the page is rendered.
  *
- *  <p>This component doesn't work properly inside a {@link Foreach} ... 
- *  it maintains a little bit of state (invalid text, error flag) 
+ *  <p>This component doesn't work properly inside a {@link Foreach} ...
+ *  it maintains a little bit of state (invalid text, error flag)
  *  that will get confused if the component is re-used on the page.
  *
  * <p>This single component can be used with <em>any</em> numeric type, it can
@@ -57,13 +57,13 @@ import java.math.*;
  *
  *  <p>The earlier component, {@link IntegerField}, exists for backwards compatibility.
  *  It also is a bit more efficient.
- * 
+ *
  * <table border=1>
- * <tr> 
+ * <tr>
  *    <td>Parameter</td>
  *    <td>Type</td>
  *	  <td>Read / Write </td>
- *    <td>Required</td> 
+ *    <td>Required</td>
  *    <td>Default</td>
  *    <td>Description</td>
  * </tr>
@@ -150,7 +150,6 @@ import java.math.*;
 
 public class NumericField
 extends AbstractValidatingTextField
-implements ILifecycle
 {
     private IBinding valueBinding;
     private IBinding minimumBinding;
@@ -341,7 +340,7 @@ implements ILifecycle
 
     protected void update(String value)
     {
-		Number objectValue = null;		
+		Number objectValue = null;
 		Number minimum = null;
 		Number maximum = null;
 		NumberAdaptor adaptor = null;
@@ -396,7 +395,7 @@ implements ILifecycle
 			
 			if (adaptor.compare(objectValue, minimum) < 0)
             {
-                String errorMessage = getString("number-too-small", getDisplayName(), 
+                String errorMessage = getString("number-too-small", getDisplayName(),
                     minimum);
 
                 notifyDelegate(ValidationConstraint.TOO_SMALL,

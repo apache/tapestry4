@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -30,23 +30,24 @@ package com.primix.tapestry.valid;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.form.*;
+import com.primix.tapestry.event.*;
 import java.util.*;
 import java.text.*;
 
 /**
- * 
+ *
  *  Implements a special text field used for enterring dates.
  *
  * <table border=1>
- * <tr> 
+ * <tr>
  *    <td>Parameter</td>
  *    <td>Type</td>
  *	  <td>Read / Write </td>
- *    <td>Required</td> 
+ *    <td>Required</td>
  *    <td>Default</td>
  *    <td>Description</td>
  * </tr>
- *  
+ *
  *  <tr>
  *      <td>date</td>
  *      <td>java.util.Date</td>
@@ -118,7 +119,7 @@ import java.text.*;
  *  <p>Informal parameters are allowed, but are applied to
  *  the underlying {@link TextField}.  A body is not allowed.
  *
- *  <p>As of release 0.2.10, it is possible to set the 
+ *  <p>As of release 0.2.10, it is possible to set the
  *  {@link DateFormat format} used for
  *  displaying and enterring dates.  However, you still can't enter
  *  a date prior to year 1000 or use a non-gregorian calendar.
@@ -193,7 +194,7 @@ extends AbstractValidatingTextField
     }
 
     /**
-     *  Returns the {@link DateFormat} used to render and parse dates. 
+     *  Returns the {@link DateFormat} used to render and parse dates.
 	 *  The format parameter, if non null, is read.  If the format parameter
 	 *  is not bound (or returns null), then a default format
 	 *  <code>MM/dd/yyyy</code> (with lenient set to false) is returned.
@@ -223,19 +224,19 @@ extends AbstractValidatingTextField
 	/**
 	 *  Clears the format property, then invokes the super implementation.
 	 *
-	 *  @since 0.2.10
+	 *  @since 1.0.5
 	 */
 	 
-	public void reset()
+	public void pageDetached(PageEvent event)
 	{
 		format = null;
 		
-		super.reset();
+		super.pageDetached(event);
 	}
 	
     protected void update(String value)
     {
-        Date date;                   
+        Date date;
         Date boundary;
         String errorMessage;
         DateFormat format;
@@ -248,7 +249,7 @@ extends AbstractValidatingTextField
             {
                 errorMessage = getString("field-is-required", getDisplayName());
 
-                notifyDelegate(ValidationConstraint.REQUIRED, 
+                notifyDelegate(ValidationConstraint.REQUIRED,
                     errorMessage);
             }
 
@@ -257,7 +258,7 @@ extends AbstractValidatingTextField
             return;
         }
 
-        format = getFormat();  
+        format = getFormat();
 
         try
         {
@@ -321,7 +322,7 @@ extends AbstractValidatingTextField
                     getDisplayName(),
                     format.format(boundary));
 
-                notifyDelegate(ValidationConstraint.TOO_LARGE, 
+                notifyDelegate(ValidationConstraint.TOO_LARGE,
                     errorMessage);
 
                 return;
