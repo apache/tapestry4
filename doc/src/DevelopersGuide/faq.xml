@@ -337,7 +337,7 @@ a class loader issue.
 <qandaentry>
 <question>
 <para>
-I've fixed all my imports to use <filename>net.sf.tapestry</filename>, but
+I've fixed all my imports to use <filename>org.apache.tapestry</filename>, but
 my &DirectLink; listener methods no longer work.  How do I fix things?
 </para>
 </question>

@@ -22,9 +22,9 @@ servlet; it is rarely necessary to create a subclass.
   &lt;display-name&gt;Tapestry Virtual Library Demo&lt;/display-name&gt;
   &lt;servlet&gt;
     &lt;servlet-name&gt;vlib&lt;/servlet-name&gt; <co id="configuration.web.servlet-name"/>
-    &lt;servlet-class&gt;net.sf.tapestry.&ApplicationServlet;&lt;/servlet-class&gt; <co id="configuration.web.servlet-class"/>
+    &lt;servlet-class&gt;org.apache.tapestry.&ApplicationServlet;&lt;/servlet-class&gt; <co id="configuration.web.servlet-class"/>
     &lt;init-param&gt;
-    	&lt;param-name&gt;net.sf.tapestry.application-specification&lt;/param-name&gt; <co id="configuration.web.spec-path"/>
+    	&lt;param-name&gt;org.apache.tapestry.application-specification&lt;/param-name&gt; <co id="configuration.web.spec-path"/>
     	&lt;param-value&gt;/net/sf/tapestry/vlib/Vlib.application&lt;/param-value&gt;
     &lt;/init-param&gt;
     &lt;load-on-startup&gt;0&lt;/load-on-startup&gt;
@@ -103,7 +103,7 @@ stored under &WEB-INF;.  In fact, Tapestry performs a search to find the specifi
 <orderedlist>
 <listitem>
 	<para>
-	On the classpath, as defined by the <literal>net.sf.tapestry.application-specification</literal>
+	On the classpath, as defined by the <literal>org.apache.tapestry.application-specification</literal>
 	configuration parameter.
 	</para>
 </listitem>
@@ -206,7 +206,7 @@ currently used in Tapestry.
 	<title>Configuration Values</title>
 	
 <varlistentry>
-	<term>net.sf.tapestry.template-extension</term>
+	<term>org.apache.tapestry.template-extension</term>
 	
 	<listitem>
 	<para>
@@ -227,8 +227,8 @@ currently used in Tapestry.
 </varlistentry>
 	
 <varlistentry>
-	<term>net.sf.tapestry.asset.dir</term>
-	<term>net.sf.tapestry.asset.URL</term>
+	<term>org.apache.tapestry.asset.dir</term>
+	<term>org.apache.tapestry.asset.URL</term>
 	
 	<listitem>
 	<para>
@@ -245,7 +245,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>net.sf.tapestry.visit-class</term>
+	<term>org.apache.tapestry.visit-class</term>
 	
 	<listitem>
 	<para>
@@ -262,7 +262,7 @@ currently used in Tapestry.
 
 
 <varlistentry>
-	<term>net.sf.tapestry.default-page-class</term>
+	<term>org.apache.tapestry.default-page-class</term>
 	
 	<listitem>
 	<para>
@@ -276,7 +276,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>net.sf.tapestry.engine-class</term>
+	<term>org.apache.tapestry.engine-class</term>
 	
 	<listitem>
 	<para>
@@ -290,7 +290,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>net.sf.tapestry.global-class</term>
+	<term>org.apache.tapestry.global-class</term>
 	
 	<listitem>
 	<para>
@@ -304,7 +304,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>net.sf.tapestry.default-script-language</term>
+	<term>org.apache.tapestry.default-script-language</term>
 	
 	<listitem>
 	<para>
@@ -318,7 +318,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>net.sf.tapestry.enable-reset-service</term>
+	<term>org.apache.tapestry.enable-reset-service</term>
 	
 	<listitem>
 	<para>
@@ -338,7 +338,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>net.sf.tapestry.disable-caching</term>
+	<term>org.apache.tapestry.disable-caching</term>
 	
 	<listitem>
 	<para>
@@ -355,7 +355,7 @@ currently used in Tapestry.
 	
 	<para>
 	This should never be enabled in production; the performance hit is too large.
-	Like <literal>net.sf.tapestry.enable-reset-service</literal>, this must
+	Like <literal>org.apache.tapestry.enable-reset-service</literal>, this must
 	be specified as a JVM system property.
 	</para>
 	</listitem>
@@ -393,7 +393,7 @@ currently used in Tapestry.
 	<title>Application Extension Points</title>
 	
 <varlistentry>
-	<term>net.sf.tapestry.property-source (&IPropertySource;)</term>
+	<term>org.apache.tapestry.property-source (&IPropertySource;)</term>
 	<listitem>
 	<para>
 		This extension
@@ -405,7 +405,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>net.sf.tapestry.request-decoder (&IRequestDecoder;)</term>
+	<term>org.apache.tapestry.request-decoder (&IRequestDecoder;)</term>
 	<listitem>
 	<para>
 		A request decoder is used
@@ -418,7 +418,7 @@ currently used in Tapestry.
 </varlistentry>	
 
 <varlistentry>
-	<term>net.sf.tapestry.monitor (&IMonitor;)</term>
+	<term>org.apache.tapestry.monitor (&IMonitor;)</term>
 
 	<listitem>
 	<para>A monitor is informed
@@ -429,7 +429,7 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>net.sf.tapestry.value-persister (&IValuePersister;)</term>
+	<term>org.apache.tapestry.value-persister (&IValuePersister;)</term>
 
 	<listitem>
 	<para>

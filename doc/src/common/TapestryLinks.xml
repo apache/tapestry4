@@ -97,6 +97,7 @@
 <!ENTITY InspectorButton '<ulink url="&ReferenceRoot;/InspectorButton.html"><classname>InspectorButton</classname></ulink>'>
 <!ENTITY Option '<ulink url="&ReferenceRoot;/Option.html"><classname>Option</classname></ulink>'>
 <!ENTITY PageLink '<ulink url="&ReferenceRoot;/PageLink.html"><classname>PageLink</classname></ulink>'>
+<!ENTITY Palette '<ulink url="&ReferenceRoot;/contrib.Palette.html"><classname>Palette</classname></ulink>'>
 <!ENTITY PropertySelection '<ulink url="&ReferenceRoot;/PropertySelection.html"><classname>PropertySelection</classname></ulink>'>
 <!ENTITY Radio '<ulink url="&ReferenceRoot;/Radio.html"><classname>Radio</classname></ulink>'>
 <!ENTITY RadioGroup '<ulink url="&ReferenceRoot;/RadioGroup.html"><classname>RadioGroup</classname></ulink>'>
@@ -122,6 +123,7 @@
 <!ENTITY Eclipse '<ulink url="http://www.eclipse.org">Eclipse</ulink>'>
 <!ENTITY Fop '<ulink url="http://xml.apache.org/fop">FOP</ulink>'>
 <!ENTITY Log4J '<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
+<!ENTITY Jakarta '<ulink url="http://jakarta.apache.org">Jakarta</ulink>'>
 <!ENTITY JBoss '<ulink url="http://www.jboss.org">JBoss</ulink>'>
 <!ENTITY Jetty '<ulink url="http://sf.net/projects/jetty">Jetty</ulink>'>
 <!ENTITY JUnit '<ulink url="http://www.junit.org">JUnit</ulink>'>
@@ -129,13 +131,12 @@
 <!ENTITY OGNL '<ulink url="http://www.ognl.org">OGNL</ulink>'>
 <!ENTITY Saxon '<ulink url="http://sf.net/projects/saxon">Saxon</ulink>'>
 <!ENTITY TapestryHomePage '<ulink url="http://jakarta.apache.org/proposals/tapestry">Tapestry Home Page</ulink>'>
-<!ENTITY TapestryProjectPage '<ulink url="http://sf.net/projects/tapestry">Tapestry Project Page</ulink>'>
 
 <!-- Other useful stuff -->
 
 <!ENTITY TapestryFrameworkJar "<filename>tapestry-<replaceable>x.x</replaceable>.jar</filename>">
 <!ENTITY TapestryContribJar "<filename>tapestry-contrib-<replaceable>x.x</replaceable>.jar</filename>">
 
-
+<!ENTITY HowardLewisShipEmail '<ulink url="mailto:hlship@apache.org">Howard M. Lewis Ship</ulink>'>
 
 

@@ -107,7 +107,7 @@ protected void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
       <para>
 The call to <function>getBinding()</function> is relatively expensive, since 
 it involves rummaging around in a &Map; and then 
-casting the result from <classname>java.lang.Object</classname> to <classname>net.sf.tapestry.IBinding</classname>.  
+casting the result from <classname>java.lang.Object</classname> to <classname>org.apache.tapestry.IBinding</classname>.  
 </para>
       <para>
 Because bindings are typically set once and then read frequently by the component, 

@@ -44,7 +44,7 @@ Specifications are stored on the classpath, which means in a JAR file, or in the
 
 <para>
 The servlet determines the location of the application specification from the
-web deployment descriptor.  A servlet initialization property, <varname>net.sf.tapestry.application-specification</varname>
+web deployment descriptor.  A servlet initialization property, <varname>org.apache.tapestry.application-specification</varname>
 provides the locations of the specificiation as a path.
 </para>
 
@@ -59,9 +59,9 @@ provides the locations of the specificiation as a path.
   <display-name>Tapestry Virtual Library Demo</display-name>
   <servlet>
     <servlet-name>vlib</servlet-name>
-    <servlet-class>net.sf.tapestry.ApplicationServlet</servlet-class>
+    <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
     <init-param>
-    	<param-name>net.sf.tapestry.application-specification</param-name>
+    	<param-name>org.apache.tapestry.application-specification</param-name>
     	<param-value>/net/sf/tapestry/vlib/Vlib.application</param-value>
     </init-param>
   	<load-on-startup>0</load-on-startup>
@@ -212,7 +212,7 @@ button on your browser") and uses the home service to create a link back to the
 </para>
       <para>
 The <classname>StaleSession</classname> page is displayed when a
-<classname>net.sf.tapestry.StaleSessionException</classname>
+<classname>org.apache.tapestry.StaleSessionException</classname>
 is thrown.  This exception is thrown when the component
 is configured to be stateful (which is the default)
 and the <classname>HttpSession</classname> doesn't exist, or is 
@@ -456,7 +456,7 @@ using a pair of JVM system properties:
         <title>JVM System Properties</title>
         <varlistentry>
           <term>
-            <varname>net.sf.tapestry.asset.dir</varname>
+            <varname>org.apache.tapestry.asset.dir</varname>
           </term>
           <listitem>
             <para>
@@ -467,7 +467,7 @@ using a pair of JVM system properties:
         </varlistentry>
         <varlistentry>
           <term>
-            <varname>net.sf.tapestry.asset.URL</varname>
+            <varname>org.apache.tapestry.asset.URL</varname>
           </term>
           <listitem>
             <para>
