@@ -85,6 +85,8 @@ public class RegexpMatcher
 
     private Map _compiledPatterns = new HashMap();
 
+    private Map _escapedPatternStrings = new HashMap();
+
     protected Pattern compilePattern(String pattern)
     {
         if (_patternCompiler == null)
@@ -123,13 +125,40 @@ public class RegexpMatcher
         _compiledPatterns.clear();
     }
 
+    protected PatternMatcher getPatternMatcher()
+    {
+        if (_matcher == null)
+            _matcher = new Perl5Matcher();
+
+        return _matcher;
+    }
+
     public boolean matches(String pattern, String input)
     {
         Pattern compiledPattern = getCompiledPattern(pattern);
 
-        if (_matcher == null)
-            _matcher = new Perl5Matcher();
-
-        return _matcher.matches(input, compiledPattern);
+        return getPatternMatcher().matches(input, compiledPattern);
     }
+
+    public boolean contains(String pattern, String input)
+    {
+        Pattern compiledPattern = getCompiledPattern(pattern);
+
+        return getPatternMatcher().contains(input, compiledPattern);
+    }
+
+    public String getEscapedPatternString(String pattern)
+    {
+        String result = (String) _escapedPatternStrings.get(pattern);
+
+        if (result == null)
+        {
+            result = Perl5Compiler.quotemeta(pattern);
+
+            _escapedPatternStrings.put(pattern, result);
+        }
+
+        return result;
+    }
+
 }
