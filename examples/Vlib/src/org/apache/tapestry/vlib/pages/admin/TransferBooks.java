@@ -61,8 +61,9 @@ import java.util.List;
 import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.EntitySelectionModel;
@@ -80,130 +81,80 @@ import org.apache.tapestry.vlib.ejb.Person;
  * 
  **/
 
-public class TransferBooks extends AdminPage
+public abstract class TransferBooks extends AdminPage implements PageRenderListener
 {
-    private Person _fromUser;
-    private Person _toUser;
-    private boolean _selectionsOk;
-    private IPropertySelectionModel _userBookModel;
-    private IBookQuery _bookQuery;
+    public abstract Person getFromUser();
 
-    /**
-     *  {@link List} of Book primary keys ({@link Integer}).
-     *
-     **/
+    public abstract void setFromUser(Person fromUser);
 
-    private List _selectedBooks;
+    public abstract Person getToUser();
 
-    public void detach()
+    public abstract void setToUser(Person toUser);
+
+    public abstract List getSelectedBooks();
+
+    public abstract IPropertySelectionModel getUserBookModel();
+
+    public abstract void setUserBookModel(IPropertySelectionModel userBookModel);
+
+    public void pageBeginRender(PageEvent event)
     {
-        _fromUser = null;
-        _toUser = null;
-        _selectionsOk = false;
-        _userBookModel = null;
-        _bookQuery = null;
-
-        super.detach();
+        if (isSelectionsOk() && getUserBookModel() == null)
+            setUserBookModel(buildUserBookModel());
     }
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+    public void pageEndRender(PageEvent event)
     {
-        super.beginResponse(writer, cycle);
-
-        if (_selectionsOk)
-            getUserBookModel();
     }
 
-    public void setFromUser(Person value)
-    {
-        _fromUser = value;
-        fireObservedChange("fromUser", value);
-    }
+    public abstract boolean isSelectionsOk();
 
-    public Person getFromUser()
-    {
-        return _fromUser;
-    }
-
-    public void setToUser(Person value)
-    {
-        _toUser = value;
-        fireObservedChange("toUser", value);
-    }
-
-    public Person getToUser()
-    {
-        return _toUser;
-    }
+    public abstract void setSelectionsOk(boolean value);
 
     public Integer getFromUserPK()
     {
-        if (_fromUser == null)
-            return null;
-
-        return _fromUser.getPrimaryKey();
+        return getPK(getFromUser());
     }
 
-    public void setFromUserPK(Integer value)
+    public void setFromUserPK(Integer pk)
     {
-        setFromUser(readPerson(value));
-    }
-
-    public void setToUserPK(Integer value)
-    {
-        setToUser(readPerson(value));
+        setFromUser(readPerson(pk));
     }
 
     public Integer getToUserPK()
     {
-        if (_toUser == null)
+        return getPK(getToUser());
+    }
+
+    public void setToUserPK(Integer pk)
+    {
+        setToUser(readPerson(pk));
+    }
+
+    private Integer getPK(Person person)
+    {
+        if (person == null)
             return null;
 
-        return _toUser.getPrimaryKey();
-    }
-
-    public boolean isSelectionsOk()
-    {
-        return _selectionsOk;
-    }
-
-    public void setSelectionsOk(boolean value)
-    {
-        _selectionsOk = value;
-
-        fireObservedChange("selectionsOk", value);
-    }
-
-    public void setBookQuery(IBookQuery value)
-    {
-        _bookQuery = value;
-
-        fireObservedChange("bookQuery", value);
-    }
-
-    public IBookQuery getBookQuery()
-    {
-        if (_bookQuery == null)
-        {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-            setBookQuery(vengine.createNewQuery());
-        }
-
-        return _bookQuery;
+        return person.getPrimaryKey();
     }
 
     public void processSelectForm(IRequestCycle cycle)
     {
         setSelectionsOk(false);
 
-        if (_fromUser.getPrimaryKey().equals(_toUser.getPrimaryKey()))
+        Person fromUser = getFromUser();
+        Person toUser = getToUser();
+
+        if (fromUser.getPrimaryKey().equals(toUser.getPrimaryKey()))
         {
             setError("Please select two different people.");
             return;
         }
 
-        if (getUserBookModel().getOptionCount() == 0)
+        IPropertySelectionModel model = buildUserBookModel();
+
+        if (model.getOptionCount() == 0)
         {
             setError("Selected user owns no books.");
             return;
@@ -212,13 +163,16 @@ public class TransferBooks extends AdminPage
         // Selections ok, enable bottom half of page.
 
         setSelectionsOk(true);
+        setUserBookModel(model);
     }
 
     public void processXferForm(IRequestCycle cycle)
     {
         setSelectionsOk(false);
 
-        int count = _selectedBooks.size();
+        List selectedBooks = getSelectedBooks();
+
+        int count = selectedBooks.size();
 
         if (count == 0)
         {
@@ -226,7 +180,8 @@ public class TransferBooks extends AdminPage
             return;
         }
 
-        Integer[] keys = (Integer[]) _selectedBooks.toArray(new Integer[count]);
+        Integer[] keys = (Integer[]) selectedBooks.toArray(new Integer[count]);
+        Person toUser = getToUser();
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -236,7 +191,7 @@ public class TransferBooks extends AdminPage
             {
                 IOperations operations = vengine.getOperations();
 
-                operations.transferBooks(_toUser.getPrimaryKey(), keys);
+                operations.transferBooks(toUser.getPrimaryKey(), keys);
 
                 break;
             }
@@ -250,26 +205,14 @@ public class TransferBooks extends AdminPage
             }
         }
 
-        setMessage("Transfered " + count + " books to " + _toUser.getNaturalName() + ".");
-    }
-
-    public List getSelectedBooks()
-    {
-        return _selectedBooks;
-    }
-
-    public IPropertySelectionModel getUserBookModel()
-    {
-        if (_userBookModel == null)
-            _userBookModel = buildUserBookModel();
-
-        return _userBookModel;
+        setMessage("Transfered " + count + " books to " + toUser.getNaturalName() + ".");
     }
 
     private IPropertySelectionModel buildUserBookModel()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Book[] books = null;
+        Person fromUser = getFromUser();
 
         for (int i = 0; i < 2; i++)
         {
@@ -277,9 +220,9 @@ public class TransferBooks extends AdminPage
 
             try
             {
-                IBookQuery query = getBookQuery();
+                IBookQuery query = vengine.createNewQuery();
 
-                int count = query.ownerQuery(_fromUser.getPrimaryKey());
+                int count = query.ownerQuery(fromUser.getPrimaryKey());
 
                 if (count > 0)
                     books = query.get(0, count);
@@ -289,11 +232,9 @@ public class TransferBooks extends AdminPage
             catch (RemoteException ex)
             {
                 vengine.rmiFailure(
-                    "Unable to retrieve books owned by " + _fromUser.getNaturalName() + ".",
+                    "Unable to retrieve books owned by " + fromUser.getNaturalName() + ".",
                     ex,
                     i > 0);
-
-                setBookQuery(null);
             }
         }
 
@@ -334,10 +275,4 @@ public class TransferBooks extends AdminPage
 
         return result;
     }
-    
-    public void setSelectedBooks(List selectedBooks)
-    {
-        _selectedBooks = selectedBooks;
-    }
-
 }

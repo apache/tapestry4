@@ -56,16 +56,18 @@
 package org.apache.tapestry.vlib.pages.admin;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.form.ListEditMap;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.IOperations;
@@ -80,71 +82,42 @@ import org.apache.tapestry.vlib.ejb.Publisher;
  * 
  **/
 
-public class EditPublishers extends AdminPage
+public abstract class EditPublishers extends AdminPage implements PageRenderListener
 {
-    private Publisher[] publishers;
-    private Publisher publisher;
+    public abstract ListEditMap getListEditMap();
+
+    public abstract void setListEditMap(ListEditMap listEditMap);
+
+    public abstract Publisher getPublisher();
+
+    public abstract void setPublisher(Publisher publisher);
+
+    public void synchronizePublisher(IRequestCycle cycle)
+    {
+        ListEditMap map = getListEditMap();
+
+        Publisher publisher = (Publisher) map.getValue();
+
+        if (publisher == null)
+        {
+            setError("The data submitted in the form is out of date.  Please try again.");
+            throw new PageRedirectException(this);
+        }
+
+        setPublisher(publisher);
+    }
 
     /**
-     *  {@link Set} of {@link Integer} primary keys, of Publishers.
-     *
+     *  Reads all publishers from the database, building the list
+     *  of publisher ids, and the map from id to Publisher.
+     *  Also, sets the deletedPublisherIds property to an empty set.
+     * 
      **/
-
-    private Set deletedPublishers;
-
-    public void detach()
-    {
-        publishers = null;
-        publisher = null;
-        deletedPublishers = null;
-
-        super.detach();
-    }
-
-    public Integer[] getPublisherIds()
-    {
-        if (publishers == null)
-            readPublishers();
-
-        Integer[] ids = new Integer[publishers.length];
-
-        for (int i = 0; i < publishers.length; i++)
-            ids[i] = publishers[i].getPrimaryKey();
-
-        return ids;
-    }
-
-    public void setPublisherId(Integer value)
-    {
-        if (publishers == null)
-            readPublishers();
-
-        for (int i = 0; i < publishers.length; i++)
-            if (publishers[i].getPrimaryKey().equals(value))
-            {
-                publisher = publishers[i];
-                return;
-            }
-
-        publisher = null;
-    }
-
-    public Publisher getPublisher()
-    {
-        return publisher;
-    }
-
-    public Set getDeletedPublishers()
-    {
-        if (deletedPublishers == null)
-            deletedPublishers = new HashSet();
-
-        return deletedPublishers;
-    }
 
     private void readPublishers()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        Publisher[] publishers = null;
 
         for (int i = 0; i < 2; i++)
         {
@@ -162,6 +135,16 @@ public class EditPublishers extends AdminPage
             }
         }
 
+        ListEditMap map = new ListEditMap();
+
+        int count = Tapestry.size(publishers);
+
+        for (int i = 0; i < count; i++)
+        {
+            map.add(publishers[i].getPrimaryKey(), publishers[i]);
+        }
+
+        setListEditMap(map);
     }
 
     public void processForm(IRequestCycle cycle)
@@ -169,29 +152,16 @@ public class EditPublishers extends AdminPage
         if (isInError())
             return;
 
-        List updateList = new ArrayList(publishers.length);
-        Set deletedKeys = getDeletedPublishers();
-
-        // Create a List of all the publishers which aren't
-        // being deleted.
-        for (int i = 0; i < publishers.length; i++)
-        {
-            if (deletedKeys != null && deletedKeys.contains(publishers[i].getPrimaryKey()))
-                continue;
-
-            updateList.add(publishers[i]);
-        }
-
-        // Forget any information about publishers that was previously read.
-
-        publishers = null;
+        ListEditMap map = getListEditMap();
+        List updateList = map.getValues();
+        List deletedIds = map.getDeletedKeys();
 
         Publisher[] updated = (Publisher[]) updateList.toArray(new Publisher[updateList.size()]);
 
-        Integer[] deleted = null;
-
-        if (deletedKeys != null)
-            deleted = (Integer[]) deletedKeys.toArray(new Integer[deletedKeys.size()]);
+        Integer[] deleted =
+            deletedIds == null
+                ? null
+                : (Integer[]) deletedIds.toArray(new Integer[deletedIds.size()]);
 
         // Now, push the updates through to the database
 
@@ -226,30 +196,13 @@ public class EditPublishers extends AdminPage
         vengine.clearCache();
     }
 
-    /**
-     *  Always returns false; no publishers are deleted when the form is rendered.
-     *
-     **/
-
-    public boolean getDeletedPublisher()
+    public void pageBeginRender(PageEvent event)
     {
-        return false;
+        readPublishers();
     }
 
-    /**
-     *  If value is true (i.e., the checkbox was checked)
-     *  then the primary key of the current Publisher is added
-     *  to the deletedPublishers set.
-     *
-     **/
-
-    public void setDeletedPublisher(boolean value)
+    public void pageEndRender(PageEvent event)
     {
-        if (value)
-        {
-            Set set = getDeletedPublishers();
-
-            set.add(publisher.getPrimaryKey());
-        }
     }
+
 }

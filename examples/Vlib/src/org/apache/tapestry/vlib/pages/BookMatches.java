@@ -57,17 +57,13 @@ package org.apache.tapestry.vlib.pages;
 
 import java.rmi.RemoteException;
 
-import javax.ejb.CreateException;
-
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
-import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
-import org.apache.tapestry.vlib.ejb.IBookQueryHome;
 
 /**
  *  Runs queries and displays matches.
@@ -76,74 +72,18 @@ import org.apache.tapestry.vlib.ejb.IBookQueryHome;
  *  @version $Id$
  **/
 
-public class Matches extends BasePage
+public abstract class BookMatches extends BasePage
 {
-    private IBookQuery bookQuery;
-    private Book currentMatch;
-    private Browser browser;
-
-    public void detach()
-    {
-        bookQuery = null;
-        currentMatch = null;
-
-        super.detach();
-    }
+    private Browser _browser;
 
     public void finishLoad()
     {
-        browser = (Browser) getComponent("browser");
+        _browser = (Browser) getComponent("browser");
     }
 
-    /**
-     *  Gets the {@link IBookQuery} session bean for the query, creating
-     *  it fresh if necessary.
-     *
-     **/
+    public abstract IBookQuery getBookQuery();
 
-    public IBookQuery getBookQuery()
-    {
-        if (bookQuery == null)
-        {
-            // No existing handle, so time to create a new bean.
-
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-            for (int i = 0; i < 2; i++)
-            {
-                try
-                {
-                    IBookQueryHome home = vengine.getBookQueryHome();
-
-                    setBookQuery(home.create());
-
-                    break;
-                }
-                catch (CreateException ex)
-                {
-                    throw new ApplicationRuntimeException(ex);
-                }
-                catch (RemoteException ex)
-                {
-                    vengine.rmiFailure("Remote exception creating BookQuery.", ex, i > 0);
-                }
-            }
-        }
-
-        return bookQuery;
-    }
-
-    /**
-     *  Sets the persistent bookQuery property.
-     *
-     **/
-
-    public void setBookQuery(IBookQuery value)
-    {
-        bookQuery = value;
-
-        fireObservedChange("bookQuery", value);
-    }
+    public abstract void setBookQuery(IBookQuery bookQuery);
 
     /**
      *  Invoked by the {@link Home} page to perform a query.
@@ -152,12 +92,19 @@ public class Matches extends BasePage
 
     public void performQuery(String title, String author, Object publisherPK, IRequestCycle cycle)
     {
+    	IComponentStrings strings = getStrings();
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+
+        IBookQuery query = getBookQuery();
+
+        if (query == null)
+        {
+            query = vengine.createNewQuery();
+            setBookQuery(query);
+        }
 
         for (int i = 0; i < 2; i++)
         {
-
-            IBookQuery query = getBookQuery();
 
             try
             {
@@ -166,12 +113,12 @@ public class Matches extends BasePage
                 if (count == 0)
                 {
                     Home home = (Home) cycle.getPage("Home");
-                    home.setMessage("No matches for your query.");
+                    home.setMessage(strings.getString("no-matches"));
                     cycle.setPage(home);
                     return;
                 }
 
-                browser.initializeForResultCount(count);
+                _browser.initializeForResultCount(count);
 
                 break;
             }
@@ -194,27 +141,6 @@ public class Matches extends BasePage
         }
 
         cycle.setPage(this);
-
-    }
-
-    public Book getCurrentMatch()
-    {
-        return currentMatch;
-    }
-
-    /**
-     *  Updates the dynamic currentMatch property.
-     *
-     **/
-
-    public void setCurrentMatch(Book value)
-    {
-        currentMatch = value;
-    }
-
-    public boolean getOmitHolderLink()
-    {
-        return !currentMatch.isBorrowed();
     }
 
 }

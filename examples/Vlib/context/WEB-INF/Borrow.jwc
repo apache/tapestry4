@@ -8,7 +8,7 @@
 	allow-body="no" 
 	allow-informal-parameters="no">
 	
-  <parameter name="book" type="org.apache.tapestry.vlib.ejb.Book" required="yes"/>
+  <parameter name="book" type="org.apache.tapestry.vlib.ejb.Book" required="yes" direction="in"/>
     
   <component id="link" type="DirectLink">
     <binding name="parameters" expression="book.primaryKey"/>

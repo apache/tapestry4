@@ -4,31 +4,27 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
-<page-specification class="org.apache.tapestry.vlib.pages.ViewPerson">
+<page-specification class="org.apache.tapestry.vlib.pages.BookMatches">
 
-  <property name="page-type">search</property>
- 
-  <property-specification name="query" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
-  <property-specification name="person" type="org.apache.tapestry.vlib.ejb.Person" persistent="yes"/>
+  <property-specification name="bookQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
   <property-specification name="currentMatch" type="org.apache.tapestry.vlib.ejb.Book"/>
-
-  <component id="mailLink" type="Any">
-    <binding name="href">
-    	"mailto:" + person.email
-    </binding>
-    <static-binding name="element" value="a"/>
-  </component>
- 
+  
   <component id="e" type="Foreach">
     <binding name="source" expression="components.browser.pageResults"/>
     <binding name="value" expression="currentMatch"/>
     <static-binding name="element" value="tr"/>
   </component>
-
+  
+  
+  <component id="ownerLink" type="PersonLink">
+    <binding name="primaryKey" expression="currentMatch.ownerPrimaryKey"/>
+    <binding name="name" expression="currentMatch.ownerName"/>
+  </component>
+  
   <component id="holderLink" type="PersonLink">
     <binding name="primaryKey" expression="currentMatch.holderPrimaryKey"/>
     <binding name="name" expression="currentMatch.holderName"/>
     <binding name="omit" expression="! currentMatch.borrowed"/>
   </component>
- 
+
 </page-specification>

@@ -59,8 +59,10 @@ import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
 
+import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -84,28 +86,13 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public class MyLibrary extends Protected
+public abstract class MyLibrary extends Protected implements IMessageProperty
 {
-    private String message;
-    private IBookQuery ownedQuery;
-
-    private Book currentBook;
-
-    private Browser browser;
-    private Browser borrowedBooksBrowser;
-
-    public void detach()
-    {
-        message = null;
-        ownedQuery = null;
-        currentBook = null;
-
-        super.detach();
-    }
+    private Browser _browser;
 
     public void finishLoad()
     {
-        browser = (Browser) getComponent("browser");
+        _browser = (Browser) getComponent("browser");
     }
 
     /**
@@ -131,10 +118,17 @@ public class MyLibrary extends Protected
             try
             {
                 IBookQuery query = getOwnedQuery();
+
+                if (query == null)
+                {
+                    query = vengine.createNewQuery();
+                    setOwnedQuery(query);
+                }
+
                 int count = query.ownerQuery(userPK);
 
-                if (count != browser.getResultCount())
-                    browser.initializeForResultCount(count);
+                if (count != _browser.getResultCount())
+                    _browser.initializeForResultCount(count);
 
                 break;
             }
@@ -147,58 +141,9 @@ public class MyLibrary extends Protected
         }
     }
 
-    public void setOwnedQuery(IBookQuery value)
-    {
-        ownedQuery = value;
+    public abstract void setOwnedQuery(IBookQuery value);
 
-        fireObservedChange("ownedQuery", ownedQuery);
-    }
-
-    /**
-     *  Gets the query object responsible for the finding books owned by the user.
-     *
-     **/
-
-    public IBookQuery getOwnedQuery()
-    {
-        if (ownedQuery == null)
-        {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-            setOwnedQuery(vengine.createNewQuery());
-        }
-
-        return ownedQuery;
-    }
-
-    /**
-     *  Updates the currentBook dynamic page property.
-     *
-     **/
-
-    public void setCurrentBook(Book value)
-    {
-        currentBook = value;
-    }
-
-    public Book getCurrentBook()
-    {
-        return currentBook;
-    }
-
-    public boolean getOmitHolderLink()
-    {
-        return !currentBook.isBorrowed();
-    }
-
-    public void setMessage(String value)
-    {
-        message = value;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
+    public abstract IBookQuery getOwnedQuery();
 
     /**
      *  Listener invoked to allow a user to edit a book.
@@ -230,6 +175,7 @@ public class MyLibrary extends Protected
 
     private void returnBook(Integer bookPK)
     {
+        IComponentStrings strings = getStrings();
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
@@ -239,13 +185,13 @@ public class MyLibrary extends Protected
                 IOperations operations = vengine.getOperations();
                 Book book = operations.returnBook(bookPK);
 
-                setMessage("Returned book: " + book.getTitle());
+                setMessage(strings.format("returned-book", book.getTitle()));
 
                 break;
             }
             catch (FinderException ex)
             {
-                setError("Could not return book: " + ex.getMessage());
+                setError(strings.format("unable-to-return-book", ex.getMessage()));
                 return;
             }
             catch (RemoteException ex)

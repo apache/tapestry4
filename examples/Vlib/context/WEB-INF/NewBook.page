@@ -8,72 +8,32 @@
 
   <property name="page-type">library</property>
   
+  <property-specification name="error" type="java.lang.String"/>
+  <property-specification name="publisherName" type="java.lang.String"/>
+  <property-specification name="attributes" type="java.util.Map"/>
+  
   <bean name="required" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
     <set-property name="required" expression="true"/>
     <set-property name="clientScriptingEnabled" expression="true"/>
   </bean>
-  
-  <component id="form" type="Form">
-    <binding name="listener" expression="listeners.addBook"/>
-    <binding name="delegate" expression="validationDelegate"/>
-  </component>
-  
- 
-  
+    
   <component id="inputTitle" type="ValidField">
     <binding name="value" expression="attributes.title"/>
-    <static-binding name="maximumLength" value="100"/>
-    <static-binding name="displayWidth" value="50"/>
     <static-binding name="displayName" value="Title"/>
     <binding name="validator" expression="beans.required"/>
   </component>
   
   <component id="inputAuthor" type="ValidField">
     <binding name="value" expression="attributes.author"/>
-    <binding name="validator" expression="beans.required"/>    
-    <static-binding name="maximumLength" value="60"/>
-    <static-binding name="displayWidth" value="30"/>
+    <binding name="validator" expression="beans.required"/>
     <static-binding name="displayName" value="Author"/>
   </component>
-  
-  <component id="inputISBN" type="TextField">
-    <static-binding name="maximumLength" value="20"/>
-    <static-binding name="displayWidth" value="20"/>
-    <binding name="value" expression="attributes.ISBN"/>
-  </component>
-  
-  
-  <component id="inputPublisher" type="PropertySelection">
-    <binding name="value" expression="attributes.publisherPK"/>
-    <binding name="model" expression="engine.publisherModel"/>
-  </component>
+
   
   <component id="inputPublisherName" type="ValidField">
-    <static-binding name="maximumLength" value="40"/>
-    <static-binding name="displayWidth" value="20"/>
     <binding name="value" expression="publisherName"/>
     <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
     <static-binding name="displayName" value="Publisher"/>
-  </component>
-  
-  <component id="inputDescription" type="TextArea">
-    <binding name="value" expression="attributes.description"/>
-    <static-binding name="columns" value="35"/>
-    <static-binding name="rows" value="8"/>
-  </component>
-  
-  <component id="inputHidden" type="Checkbox">
-  	<binding name="selected" expression="attributes.hidden"/>
-  </component>
-  
-  <component id="inputLendable" type="Checkbox">
-  	<binding name="selected" expression="attributes.lendable"/>
-  </component>
-  
-  <component id="publisherScript" type="Script">
-    <static-binding name="script">Publisher.script</static-binding>
-    <binding name="select" expression="components.inputPublisher"/>
-    <binding name="field" expression="components.inputPublisherName"/>
   </component>
     
 </page-specification>

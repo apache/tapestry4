@@ -75,28 +75,13 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public class ViewBook extends BasePage implements IExternalPage
+public abstract class ViewBook extends BasePage implements IExternalPage
 {
-    private Book book;
+    private DateFormat _dateFormat;
 
-    public void detach()
-    {
-        super.detach();
+    public abstract Book getBook();
 
-        book = null;
-    }
-
-    public Book getBook()
-    {
-        return book;
-    }
-
-    public void setBook(Book value)
-    {
-        book = value;
-
-        fireObservedChange("book", value);
-    }
+    public abstract void setBook(Book value);
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
@@ -110,8 +95,6 @@ public class ViewBook extends BasePage implements IExternalPage
             try
             {
                 setBook(bean.getBook(bookPK));
-
-                cycle.setPage(this);
 
                 return;
             }
@@ -128,29 +111,12 @@ public class ViewBook extends BasePage implements IExternalPage
 
     }
 
-    /**
-     *  Only want to show the holder if it doesn't match the owner.
-     *
-     **/
-
-    public boolean getShowHolder()
-    {
-        Integer ownerPK;
-        Integer holderPK;
-
-        ownerPK = book.getOwnerPrimaryKey();
-        holderPK = book.getHolderPrimaryKey();
-
-        return !ownerPK.equals(holderPK);
-    }
-
-    private DateFormat dateFormat;
 
     public DateFormat getDateFormat()
     {
-        if (dateFormat == null)
-            dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, getLocale());
+        if (_dateFormat == null)
+            _dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, getLocale());
 
-        return dateFormat;
+        return _dateFormat;
     }
 }

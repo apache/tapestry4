@@ -73,17 +73,13 @@ import org.apache.tapestry.vlib.pages.Login;
  * 
  **/
 
-public class Protected extends BasePage implements IErrorProperty
+public abstract class Protected extends BasePage implements IErrorProperty
 {
-    private String _error;
     private IValidationDelegate _validationDelegate;
 
-    public void detach()
+    public void initialize()
     {
-        _error = null;
         _validationDelegate = null;
-
-        super.detach();
     }
 
     public IValidationDelegate getValidationDelegate()
@@ -94,16 +90,6 @@ public class Protected extends BasePage implements IErrorProperty
         return _validationDelegate;
     }
 
-    public void setError(String value)
-    {
-        _error = value;
-    }
-
-    public String getError()
-    {
-        return _error;
-    }
-
     protected void setErrorField(String componentId, String message)
     {
         IFormComponent component = (IFormComponent) getComponent(componentId);
@@ -112,7 +98,6 @@ public class Protected extends BasePage implements IErrorProperty
 
         delegate.setFormComponent(component);
         delegate.record(message, null);
-
     }
 
     /**
@@ -122,7 +107,7 @@ public class Protected extends BasePage implements IErrorProperty
 
     protected boolean isInError()
     {
-        return _error != null || getValidationDelegate().getHasErrors();
+        return getError() != null || getValidationDelegate().getHasErrors();
     }
 
     /**

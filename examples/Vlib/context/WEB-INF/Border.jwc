@@ -8,9 +8,9 @@
 	class="org.apache.tapestry.vlib.components.Border"
 	allow-informal-parameters="no">
 
-  <parameter name="title" type="java.lang.String"/>
+  <parameter name="title" type="java.lang.String" direction="in"/>
   <parameter name="subtitle" type="java.lang.String" direction="in"/>
-  <parameter name="simpleTitle" type="java.lang.Boolean"/>  
+  <parameter name="simpleTitle" type="boolean" direction="in"/>  
             
   <component id="ifImageTitle" type="Conditional">
   	<inherited-binding name="condition" parameter-name="simpleTitle"/>
@@ -20,11 +20,7 @@
   <component id="ifSimpleTitle" type="Conditional">
   	<inherited-binding name="condition" parameter-name="simpleTitle"/>
   </component>
-  
-  <component id="insertSimpleTitle" type="Insert">
-    <inherited-binding name="value" parameter-name="title"/>
-  </component>
-  
+ 
   <context-asset name="stylesheet" path="/scripts/style_virtlib_pcIE55.css"/>
   <context-asset name="dot" path="/images/dots_leftnav.gif"/>
   <context-asset name="spacer" path="/images/spacer.gif"/>

@@ -4,5 +4,13 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
   
-<page-specification class="org.apache.tapestry.vlib.pages.Home"/>
+<page-specification class="org.apache.tapestry.vlib.pages.Home">
+
+  <property-specification name="searchTitle" type="java.lang.String"/>
+  <property-specification name="searchPublisherPK" type="java.lang.Integer"/>
+  <property-specification name="error" type="java.lang.String"/>
+  <property-specification name="message" type="java.lang.String"/>
+  <property-specification name="searchAuthor" type="java.lang.String"/>	
+
+</page-specification>
 

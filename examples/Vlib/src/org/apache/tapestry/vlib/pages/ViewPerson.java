@@ -64,7 +64,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
-import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
@@ -79,72 +78,23 @@ import org.apache.tapestry.vlib.ejb.Person;
  * 
  **/
 
-public class ViewPerson extends BasePage implements IExternalPage
+public abstract class ViewPerson extends BasePage implements IExternalPage
 {
-    private IBookQuery query;
-    private Book currentMatch;
-    private Person person;
-    private Browser browser;
+    public abstract void setPerson(Person value);
 
-    public void detach()
-    {
-        query = null;
-        currentMatch = null;
-        person = null;
+    public abstract Person getPerson();
+    
+    public abstract IBookQuery getQuery();
 
-        super.detach();
-    }
+    public abstract void setQuery(IBookQuery value);
+    
+    private Browser _browser;
 
     public void finishLoad()
     {
-        browser = (Browser) getComponent("browser");
+        _browser = (Browser) getComponent("browser");
     }
 
-    public void setPerson(Person value)
-    {
-        person = value;
-
-        fireObservedChange("person", value);
-    }
-
-    public Person getPerson()
-    {
-        return person;
-    }
-
-    public String getEmailURL()
-    {
-        return "mailto:" + person.getEmail();
-    }
-
-    /**
-     *  Gets the {@link IBookQuery} session bean that contains
-     *  the books owned by the user, creating it fresh as needed.
-     *
-     **/
-
-    public IBookQuery getQuery()
-    {
-        if (query == null)
-        {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-            setQuery(vengine.createNewQuery());
-        }
-
-        return query;
-    }
-
-    /**
-     *  Sets the query persistent page property.
-     *
-     **/
-
-    public void setQuery(IBookQuery value)
-    {
-        query = value;
-
-        fireObservedChange("query", value);
-    }
 
     /**
      *  Invoked by the external service to being viewing the
@@ -164,9 +114,16 @@ public class ViewPerson extends BasePage implements IExternalPage
             {
                 IBookQuery query = getQuery();
 
+                if (query == null)
+                {
+                    query = vengine.createNewQuery();
+
+                    setQuery(query);
+                }
+
                 int count = query.ownerQuery(personPK);
 
-                browser.initializeForResultCount(count);
+                _browser.initializeForResultCount(count);
 
                 IOperations operations = vengine.getOperations();
 
@@ -189,21 +146,6 @@ public class ViewPerson extends BasePage implements IExternalPage
         }
 
         cycle.setPage(this);
-    }
-
-    public Book getCurrentMatch()
-    {
-        return currentMatch;
-    }
-
-    public void setCurrentMatch(Book value)
-    {
-        currentMatch = value;
-    }
-
-    public boolean getOmitHolderLink()
-    {
-        return !currentMatch.isBorrowed();
     }
 
 }

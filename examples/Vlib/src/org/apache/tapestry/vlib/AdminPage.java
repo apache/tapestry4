@@ -68,26 +68,8 @@ import org.apache.tapestry.vlib.pages.Login;
  * 
  **/
 
-public class AdminPage extends Protected
+public abstract class AdminPage extends Protected implements IMessageProperty
 {
-    private String _message;
-
-    public void detach()
-    {
-        _message = null;
-
-        super.detach();
-    }
-
-    public String getMessage()
-    {
-        return _message;
-    }
-
-    public void setMessage(String value)
-    {
-        _message = value;
-    }
 
     public void validate(IRequestCycle cycle)
     {

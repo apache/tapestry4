@@ -62,8 +62,12 @@ import java.util.Map;
 import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
@@ -78,54 +82,19 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public class EditProfile extends Protected
+public abstract class EditProfile extends Protected implements PageRenderListener
 {
-    private Map attributes;
-    private String password1;
-    private String password2;
+    public abstract String getPassword1();
 
-    private static final int MAP_SIZE = 11;
+    public abstract void setPassword1(String value);
 
-    public void detach()
-    {
-        attributes = null;
-        password1 = null;
-        password2 = null;
+    public abstract String getPassword2();
 
-        super.detach();
-    }
+    public abstract void setPassword2(String value);
 
-    /** Passwords are read-only. **/
+    public abstract Map getAttributes();
 
-    public String getPassword1()
-    {
-        return null;
-    }
-
-    public void setPassword1(String value)
-    {
-        password1 = value;
-    }
-
-    /** Passwords are read-only. **/
-
-    public String getPassword2()
-    {
-        return null;
-    }
-
-    public void setPassword2(String value)
-    {
-        password2 = value;
-    }
-
-    public Map getAttributes()
-    {
-        if (attributes == null)
-            attributes = new HashMap(MAP_SIZE);
-
-        return attributes;
-    }
+    public abstract void setAttributes(Map attributes);
 
     /**
      *  Invoked (from {@link MyLibrary}) to begin editting the user's
@@ -143,6 +112,7 @@ public class EditProfile extends Protected
         VirtualLibraryEngine vengine = visit.getEngine();
 
         Integer primaryKey = visit.getUserPK();
+        Map attributes = null;
 
         for (int i = 0; i < 2; i++)
         {
@@ -165,20 +135,36 @@ public class EditProfile extends Protected
         }
 
         attributes.remove("password");
+        setAttributes(attributes);
 
         cycle.setPage(this);
     }
 
     public void updateProfile(IRequestCycle cycle)
     {
+        String password1 = getPassword1();
+        String password2 = getPassword2();
+
+        setPassword1(null);
+        setPassword2(null);
+
         IValidationDelegate delegate = getValidationDelegate();
+
+        delegate.setFormComponent((IFormComponent) getComponent("inputPassword1"));
+        delegate.recordFieldInputValue(null);
+
+        delegate.setFormComponent((IFormComponent) getComponent("inputPassword2"));
+        delegate.recordFieldInputValue(null);
 
         if (delegate.getHasErrors())
             return;
 
+        IComponentStrings strings = getStrings();
+        Map attributes = getAttributes();
+
         if (Tapestry.isNull(password1) != Tapestry.isNull(password2))
         {
-            setErrorField("inputPassword1", "Enter the password, then re-enter it to confirm.");
+            setErrorField("inputPassword1", strings.getString("enter-password-twice"));
 
             return;
         }
@@ -187,7 +173,7 @@ public class EditProfile extends Protected
         {
             if (!password1.equals(password2))
             {
-                setErrorField("inputPassword1", "Enter the same password in both fields.");
+                setErrorField("inputPassword1", strings.getString("password-must-match"));
                 return;
             }
 
@@ -227,6 +213,16 @@ public class EditProfile extends Protected
         visit.clearCache();
 
         cycle.setPage("MyLibrary");
+    }
+
+    public void pageBeginRender(PageEvent event)
+    {
+        if (getAttributes() == null)
+            setAttributes(new HashMap());
+    }
+
+    public void pageEndRender(PageEvent event)
+    {
     }
 
 }

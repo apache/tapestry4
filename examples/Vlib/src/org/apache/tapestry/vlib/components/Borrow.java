@@ -61,9 +61,7 @@ import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.Book;
@@ -97,49 +95,9 @@ import org.apache.tapestry.vlib.pages.Home;
  *
  **/
 
-public class Borrow extends BaseComponent
+public abstract class Borrow extends BaseComponent
 {
-    private IBinding bookBinding;
-    private Book book;
-
-    public void setBookBinding(IBinding value)
-    {
-        bookBinding = value;
-    }
-
-    public IBinding getBookBinding()
-    {
-        return bookBinding;
-    }
-
-    /**
-     *  Gets the book to create a link for.  This is cached for the duration of the componen's
-     * {@link #render(IMarkupWriter, IRequestCycle)} method.
-     *
-     **/
-
-    public Book getBook()
-    {
-        if (book == null)
-            book = (Book) bookBinding.getObject("book", Book.class);
-
-        if (book == null)
-            throw Tapestry.createNullBindingException(bookBinding);
-
-        return book;
-    }
-
-    /**
-     *  Overriden to simply clear the book property after the component finishes rendering.
-     *
-     **/
-
-    protected void cleanupAfterRender(IRequestCycle cycle)
-    {
-        book = null;
-
-        super.cleanupAfterRender(cycle);
-    }
+    public abstract Book getBook();
 
     public boolean isLinkDisabled()
     {
@@ -166,7 +124,7 @@ public class Borrow extends BaseComponent
     public void borrow(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer)parameters[0];
+        Integer bookPK = (Integer) parameters[0];
 
         Visit visit = (Visit) getPage().getVisit();
         Home home = (Home) cycle.getPage("Home");

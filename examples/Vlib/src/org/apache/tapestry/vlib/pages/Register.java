@@ -60,13 +60,12 @@ import java.rmi.RemoteException;
 import javax.ejb.CreateException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.valid.ValidatorException;
 import org.apache.tapestry.vlib.IErrorProperty;
-import org.apache.tapestry.vlib.SimpleValidationDelegate;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
@@ -81,98 +80,26 @@ import org.apache.tapestry.vlib.ejb.RegistrationException;
  * 
  **/
 
-public class Register extends BasePage implements IErrorProperty
+public abstract class Register extends BasePage implements IErrorProperty
 {
-    private String error;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password1;
-    private String password2;
-    private IValidationDelegate validationDelegate;
 
-    public void detach()
+    public abstract String getFirstName();
+
+    public abstract String getLastName();
+
+    public abstract String getEmail();
+
+    public abstract String getPassword1();
+
+    public abstract String getPassword2();
+
+    public abstract void setPassword1(String value);
+
+    public abstract void setPassword2(String value);
+
+    private IValidationDelegate getValidationDelegate()
     {
-        error = null;
-        firstName = null;
-        lastName = null;
-        email = null;
-        password1 = null;
-        password2 = null;
-
-        super.detach();
-    }
-
-    public String getError()
-    {
-        return error;
-    }
-
-    public String getFirstName()
-    {
-        return firstName;
-    }
-
-    public String getLastName()
-    {
-        return lastName;
-    }
-
-    public String getEmail()
-    {
-        return email;
-    }
-
-    /** Passwords are read-only. **/
-
-    public String getPassword1()
-    {
-        return null;
-    }
-
-    /** Passwords are read-only. **/
-
-    public String getPassword2()
-    {
-        return null;
-    }
-
-    public void setError(String value)
-    {
-        error = value;
-    }
-
-    public void setFirstName(String value)
-    {
-        firstName = value;
-    }
-
-    public void setLastName(String value)
-    {
-        lastName = value;
-    }
-
-    public void setEmail(String value)
-    {
-        email = value;
-    }
-
-    public void setPassword1(String value)
-    {
-        password1 = value;
-    }
-
-    public void setPassword2(String value)
-    {
-        password2 = value;
-    }
-
-    public IValidationDelegate getValidationDelegate()
-    {
-        if (validationDelegate == null)
-            validationDelegate = new SimpleValidationDelegate();
-
-        return validationDelegate;
+        return (IValidationDelegate) getBeans().getBean("delegate");
     }
 
     private void setErrorField(String componentId, String message)
@@ -181,22 +108,42 @@ public class Register extends BasePage implements IErrorProperty
         IFormComponent field = (IFormComponent) getComponent(componentId);
 
         delegate.setFormComponent(field);
-        delegate.record(new ValidatorException(message));
+        delegate.record(message, null);
+    }
+
+    private void clear(String componentId)
+    {
+        IValidationDelegate delegate = getValidationDelegate();
+        IFormComponent component = (IFormComponent) getComponent(componentId);
+
+        delegate.setFormComponent(component);
+        delegate.recordFieldInputValue(null);
     }
 
     public void attemptRegister(IRequestCycle cycle)
     {
         IValidationDelegate delegate = getValidationDelegate();
 
+        String password1 = getPassword1();
+        String password2 = getPassword2();
+
+        setPassword1(null);
+        setPassword2(null);
+
+        clear("inputPassword1");
+        clear("inputPassword2");
+
         if (delegate.getHasErrors())
             return;
+
+        IComponentStrings strings = getStrings();
 
         // Note: we know password1 and password2 are not null
         // because they are required fields.
 
         if (!password1.equals(password2))
         {
-            setErrorField("inputPassword1", "Enter the same password twice.");
+            setErrorField("inputPassword1", strings.getString("password-must-match"));
             return;
         }
 
@@ -208,7 +155,8 @@ public class Register extends BasePage implements IErrorProperty
             try
             {
                 IOperations bean = vengine.getOperations();
-                Person user = bean.registerNewUser(firstName, lastName, email, password1);
+                Person user =
+                    bean.registerNewUser(getFirstName(), getLastName(), getEmail(), password1);
 
                 // Ask the login page to return us to the proper place, as well
                 // as set a cookie identifying the user for next time.

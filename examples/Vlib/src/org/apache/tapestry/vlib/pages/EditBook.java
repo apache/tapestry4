@@ -63,8 +63,11 @@ import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -77,62 +80,17 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  *  @version $Id$
  **/
 
-public class EditBook extends Protected
+public abstract class EditBook extends Protected implements PageRenderListener
 {
-    private Integer bookPK;
-    private Map attributes;
-    private String publisherName;
+    public abstract Map getAttributes();
 
-    private static final int MAP_SIZE = 11;
+    public abstract void setAttributes(Map attributes);
 
-    public void detach()
-    {
-        attributes = null;
-        bookPK = null;
-        publisherName = null;
+    public abstract String getPublisherName();
 
-        super.detach();
-    }
+    public abstract Integer getBookPrimaryKey();
 
-    public Map getAttributes()
-    {
-        if (attributes == null)
-            attributes = new HashMap(MAP_SIZE);
-
-        return attributes;
-    }
-
-    public String getPublisherName()
-    {
-        return publisherName;
-    }
-
-    public void setPublisherName(String value)
-    {
-        publisherName = value;
-    }
-
-    /**
-     *  Gets the book's primary key as a String.
-     *
-     **/
-
-    public String getBookPrimaryKey()
-    {
-        return bookPK.toString();
-    }
-
-    /**
-     *  Updates the book's primary key value (converting from String to Integer).
-     *  This allows a Hidden component in the form to synchronize the book being
-     *  editted ... which fixes the Browser Back Button problem.
-     *
-     **/
-
-    public void setBookPrimaryKey(String value)
-    {
-        bookPK = new Integer(value);
-    }
+    public abstract void setBookPrimaryKey(Integer value);
 
     /**
      *  Invoked (from {@link MyLibrary}) to begin editting a book.
@@ -143,7 +101,7 @@ public class EditBook extends Protected
 
     public void beginEdit(Integer bookPK, IRequestCycle cycle)
     {
-        this.bookPK = bookPK;
+        setBookPrimaryKey(bookPK);
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -155,7 +113,7 @@ public class EditBook extends Protected
 
                 IOperations operations = vengine.getOperations();
 
-                attributes = operations.getBookAttributes(bookPK);
+                setAttributes(operations.getBookAttributes(bookPK));
 
                 break;
             }
@@ -185,21 +143,21 @@ public class EditBook extends Protected
 
     public void formSubmit(IRequestCycle cycle)
     {
+        IComponentStrings strings = getStrings();
+        Map attributes = getAttributes();
+
         Integer publisherPK = (Integer) attributes.get("publisherPK");
+        String publisherName = getPublisherName();
 
         if (publisherPK == null && Tapestry.isNull(publisherName))
         {
-            setErrorField(
-                "inputPublisherName",
-                "Must provide a publisher name if the publisher option is empty.");
+            setErrorField("inputPublisherName", strings.getString("need-publisher-name"));
             return;
         }
 
         if (publisherPK != null && !Tapestry.isNull(publisherName))
         {
-            setErrorField(
-                "inputPublisherName",
-                "Must leave the publisher name blank if selecting a publisher from the list.");
+            setErrorField("inputPublisherName", strings.getString("leave-publisher-name-empty"));
             return;
         }
 
@@ -212,10 +170,10 @@ public class EditBook extends Protected
 
         Visit visit = (Visit) getVisit();
         VirtualLibraryEngine vengine = visit.getEngine();
+        Integer bookPK = getBookPrimaryKey();
 
         for (int i = 0; i < 2; i++)
         {
-
             IOperations bean = vengine.getOperations();
 
             try
@@ -247,9 +205,19 @@ public class EditBook extends Protected
         }
 
         MyLibrary page = (MyLibrary) cycle.getPage("MyLibrary");
-        page.setMessage("Updated book.");
+        page.setMessage(strings.format("updated-book", attributes.get("title")));
 
         cycle.setPage(page);
+    }
+
+    public void pageBeginRender(PageEvent event)
+    {
+        if (getAttributes() == null)
+            setAttributes(new HashMap());
+    }
+
+    public void pageEndRender(PageEvent event)
+    {
     }
 
 }

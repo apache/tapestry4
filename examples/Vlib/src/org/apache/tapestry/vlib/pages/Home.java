@@ -58,6 +58,7 @@ package org.apache.tapestry.vlib.pages;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.IErrorProperty;
+import org.apache.tapestry.vlib.IMessageProperty;
 
 /**
  *  The home page for the application, it's primary purpose is
@@ -67,74 +68,14 @@ import org.apache.tapestry.vlib.IErrorProperty;
  *  @version $Id$
  **/
 
-public class Home extends BasePage implements IErrorProperty
+public abstract class Home extends BasePage implements IErrorProperty, IMessageProperty
 {
-	private String searchTitle;
-	private Object searchPublisherPK;
-	private String error;
-	private String message;
-	private String searchAuthor;
 
-	public void detach()
-	{
-		searchTitle = null;
-		searchPublisherPK = null;
-		error = null;
-		message = null;
-		searchAuthor = null;
+	public abstract String getSearchTitle();
 
-		super.detach();
-	}
+	public abstract String getSearchAuthor();
 
-	public String getSearchTitle()
-	{
-		return searchTitle;
-	}
-
-	public void setSearchTitle(String value)
-	{
-		searchTitle = value;
-	}
-
-	public String getSearchAuthor()
-	{
-		return searchAuthor;
-	}
-
-	public void setSearchAuthor(String value)
-	{
-		searchAuthor = value;
-	}
-
-	public Object getSearchPublisherPK()
-	{
-		return searchPublisherPK;
-	}
-
-	public void setSearchPublisherPK(Object value)
-	{
-		searchPublisherPK = value;
-	}
-
-	public void setError(String value)
-	{
-		error = value;
-	}
-
-	public String getError()
-	{
-		return error;
-	}
-
-	public void setMessage(String value)
-	{
-		message = value;
-	}
-
-	public String getMessage()
-	{
-		return message;
-	}
+	public abstract Integer getSearchPublisherPK();
 
 	/**
 	 *  Invokes {@link Matches#performQuery(String,String,Object,IRequestCycle)}.
@@ -143,11 +84,9 @@ public class Home extends BasePage implements IErrorProperty
 
 	public void search(IRequestCycle cycle)
 	{
-		Matches matches;
+		BookMatches matches = (BookMatches) cycle.getPage("BookMatches");
 
-		matches = (Matches) cycle.getPage("Matches");
-
-		matches.performQuery(searchTitle, searchAuthor, searchPublisherPK, cycle);
+		matches.performQuery(getSearchTitle(), getSearchAuthor(), getSearchPublisherPK(), cycle);
 	}
 
 }

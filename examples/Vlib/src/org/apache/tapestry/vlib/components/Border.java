@@ -256,10 +256,6 @@ public class Border extends BaseComponent
     {
         NewBook page = (NewBook) cycle.getPage("NewBook");
 
-        // Setup defaults for the new book.
-
-        page.getAttributes().put("lendable", Boolean.TRUE);
-
         cycle.setPage(page);
     }
 
