@@ -1,9 +1,12 @@
 package net.sf.tapestry.engine;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.INamespace;
@@ -113,7 +116,7 @@ public class Namespace implements INamespace
         return _parent;
     }
 
-    public synchronized INamespace getChildNamespace(String id)
+    public INamespace getChildNamespace(String id)
     {
         String firstId = id;
         String nextIds = null;
@@ -149,7 +152,7 @@ public class Namespace implements INamespace
         return _specification.getLibraryIds();
     }
 
-    public synchronized ComponentSpecification getPageSpecification(String name)
+    public ComponentSpecification getPageSpecification(String name)
     {
         ComponentSpecification result = (ComponentSpecification) _pages.get(name);
 
@@ -165,10 +168,19 @@ public class Namespace implements INamespace
 
     public List getPageNames()
     {
-        return _specification.getPageNames();
+        Set names = new HashSet();
+
+        names.addAll(_pages.keySet());
+        names.addAll(_specification.getPageNames());
+
+        List result = new ArrayList(names);
+
+        Collections.sort(result);
+
+        return result;
     }
 
-    public synchronized ComponentSpecification getComponentSpecification(String alias)
+    public ComponentSpecification getComponentSpecification(String alias)
     {
         ComponentSpecification result = (ComponentSpecification) _components.get(alias);
 
@@ -183,7 +195,16 @@ public class Namespace implements INamespace
 
     public List getComponentAliases()
     {
-        return _specification.getComponentAliases();
+        Set types = new HashSet();
+        
+        types.addAll(_components.keySet());
+        types.addAll(_specification.getComponentTypes());
+        
+        List result = new ArrayList(types);
+        
+        Collections.sort(result);
+        
+        return result;
     }
 
     public String getServiceClassName(String name)
@@ -288,14 +309,14 @@ public class Namespace implements INamespace
         return new Namespace(id, this, ls, _specificationSource);
     }
 
-    public boolean containsAlias(String alias)
+    public boolean containsAlias(String type)
     {
-        return _specification.getComponentSpecificationPath(alias) != null;
+        return _components.containsKey(type) || (_specification.getComponentSpecificationPath(type) != null);
     }
 
     public boolean containsPage(String name)
     {
-        return _specification.getPageSpecificationPath(name) != null;
+        return _pages.containsKey(name) || (_specification.getPageSpecificationPath(name) != null);
     }
 
     /** @since 2.3 **/
@@ -326,20 +347,21 @@ public class Namespace implements INamespace
 
     /** @since 2.4 **/
 
-    public void installPageSpecification(String pageName, ComponentSpecification specification)
+    public synchronized void installPageSpecification(String pageName, ComponentSpecification specification)
     {
         _pages.put(pageName, specification);
     }
 
     /** @since 2.4 **/
 
-    public void installComponentSpecification(String type, ComponentSpecification specification)
+    public synchronized void installComponentSpecification(String type, ComponentSpecification specification)
     {
         _components.put(type, specification);
     }
 
     // On these renamed methods, we simply invoke the old, deprecated method
-    // for code coverage reasons.
+    // for code coverage reasons.  In 2.5 we delete the deprecated method
+    // and move its body here.
 
     /** @since 2.4 **/
 
