@@ -16,13 +16,13 @@
 
         <assert-output name="Input component">
             <![CDATA[
-            <input type="text" name="fname" value="Ronnie"/>
+            <input type="text" name="fname" title="FName" value="Ronnie"/>
             ]]>
         </assert-output>
 
         <assert-output name="Input component">
             <![CDATA[
-            <input type="text" name="lname"/>
+            <input type="text" name="lname" title="LName"/>
             ]]>
         </assert-output>
 

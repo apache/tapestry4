@@ -88,6 +88,10 @@ public abstract class Input extends AbstractComponent
 
             writer.attribute("name", getName());
 
+			String title = getTitle();
+			if (title != null)
+				writer.attribute("title", title);
+
 			String format = getFormat();
             if (format != null)
 				writer.attribute("format", format);
