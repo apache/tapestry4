@@ -231,8 +231,6 @@ public class ImageSubmit extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		Form form;
-		boolean rewinding;
 		String parameterName;
 		String value;
 		int x;
@@ -243,9 +241,9 @@ public class ImageSubmit extends AbstractFormComponent
 		boolean disabled = false;
 		Object tagValue = staticTagValue;
 		
-		form = getForm(cycle);
+		IForm form = getForm(cycle);
 		
-		rewinding = form.isRewinding();
+		boolean rewinding = form.isRewinding();
 		
 		name = null;
 		

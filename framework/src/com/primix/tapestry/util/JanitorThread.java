@@ -33,7 +33,7 @@ import java.lang.ref.*;
 
 /**
  *  A basic kind of janitor, an object that periodically invokes
- *  {@link ICleanable#executeJanitor()} on a set of objects.
+ *  {@link ICleanable#executeCleanup()} on a set of objects.
  *
  *  <p>The JanitorThread holds a <em>weak reference</em> to
  *  the objects it operates on.

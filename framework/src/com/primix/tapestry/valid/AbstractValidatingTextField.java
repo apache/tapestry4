@@ -89,7 +89,7 @@ public abstract class AbstractValidatingTextField
 	 *
 	 */
 	
-	protected void registerForEvents()
+	protected void finishLoad()
 	{
 		page.addPageDetachListener(this);
 	}
@@ -389,7 +389,7 @@ public abstract class AbstractValidatingTextField
 		if (body == null)
 			return;
 		
-		Form form = Form.get(cycle);
+		IForm form = Form.get(cycle);
 		
 		String formName = form.getName();
 		String textFieldName = getName();

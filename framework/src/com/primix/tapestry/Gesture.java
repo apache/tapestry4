@@ -68,7 +68,7 @@ public class Gesture
 	
 
 	/**
-	 *  Returns the {@link Iteratory} for the query parameter map's entry set.
+	 *  Returns the {@link Iterator} for the query parameter map's entry set.
 	 *  Each value will be {@link Map.Entry}.
 	 *
 	 */
@@ -85,7 +85,7 @@ public class Gesture
 	
 	/**
 	 *  Returns the full URL, with all query parameters encoded into the URL.
-	 *  This must still be filtered through {@link HttpServletResponse.encodeURL(String)}.
+	 *  This must still be filtered through {@link HttpServletResponse#encodeURL(String)}.
 	 */
 	
 	public String getFullURL()

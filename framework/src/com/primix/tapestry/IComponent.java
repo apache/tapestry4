@@ -108,6 +108,16 @@ public interface IComponent
 	public Collection getBindingNames();
 	
 	/**
+	 *  Returns a {@link Map} of the {@link IBinding bindings} for this component; this includes informal parameters
+	 *  as well as formal bindings.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public Map getBindings();
+	
+	/**
 	 *  Retrieves an contained component by its id.
 	 *  Contained components have unique ids within their container.
 	 *

@@ -82,7 +82,7 @@ public class BeanSpecification
 	}
 	
 	/**
-	 *  Returns the {@link List} of {@link IBeanInitializers}.  The caller
+	 *  Returns the {@link List} of {@link IBeanInitializer}s.  The caller
 	 *  should not modify this value!.  May return null if there
 	 *  are no initializers.
 	 *

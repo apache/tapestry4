@@ -35,7 +35,7 @@ import java.io.*;
 
 /**
  *  A specialized {@link Form} component used to edit a list of items
- *  within a form; it is similar to a {@link Foreach} but leverages
+ *  within a form; it is similar to a {@link com.primix.tapestry.components.Foreach} but leverages
  *  hidden inputs within the &lt;form&gt; to store the items in the list.
  *
  * <table border=1>
@@ -249,7 +249,7 @@ public class ListEdit
 		Object value = null;
 		String element = null;
 		
-		Form form = Form.get(cycle);
+		IForm form = Form.get(cycle);
 		if (form == null)
 			throw new RequestCycleException(
 				"ListEdit components must be wrapped by a Form.",

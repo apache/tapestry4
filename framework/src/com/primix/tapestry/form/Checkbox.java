@@ -116,18 +116,16 @@ public class Checkbox extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle) 
 		throws RequestCycleException
 	{
-		boolean rewinding;
 		String value;
 		boolean disabled = false;
-		Form form;
 		boolean checked;
 		
-		form = getForm(cycle);
+		IForm form = getForm(cycle);
 		
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.
 		
-		rewinding = form.isRewinding();
+		boolean rewinding = form.isRewinding();
 		
 		// Used whether rewinding or not.
 		

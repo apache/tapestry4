@@ -43,7 +43,8 @@ import com.primix.tapestry.*;
  *  {@link com.primix.tapestry.event.PageRenderListener} methods
  *  (for components and objects of the foriegn page)
  *  via InsertBlock will <em>not</em> be executed.  This specifically
- *  affects the methods of the {@link PageRenderListener} interface.
+ *  affects the methods of the {@link com.primix.tapestry.event.PageRenderListener} 
+ *  interface.
  *
  * <p>
  * <table border=1>

@@ -59,7 +59,7 @@ public class ShowProperties
 	 *
 	 */
 	
-	protected void registerForEvents()
+	protected void finishLoad()
 	{
 		page.addPageRenderListener(this);
 	}

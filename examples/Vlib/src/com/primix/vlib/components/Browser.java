@@ -81,7 +81,7 @@ public class Browser
 	 *
 	 */
 	
-	protected void registerForEvents()
+	protected void finishLoad()
 	{
 		page.addPageDetachListener(this);
 	}

@@ -153,12 +153,9 @@ public class Text extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		boolean rewinding;
-		String value;
 		boolean disabled = false;
-		Form form;
 
-		form = getForm(cycle);
+		IForm form = getForm(cycle);
 
 		if (textBinding == null)
 			throw new RequiredParameterException(this, "text", null);		
@@ -166,7 +163,7 @@ public class Text extends AbstractFormComponent
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.
 
-		rewinding = form.isRewinding();
+		boolean rewinding = form.isRewinding();
 
 		// Used whether rewinding or not.
 
@@ -179,7 +176,7 @@ public class Text extends AbstractFormComponent
 		{
 			if (!disabled)
 			{
-				value = cycle.getRequestContext().getParameter(name);
+				String value = cycle.getRequestContext().getParameter(name);
 
 				textBinding.setString(value);
 			}
@@ -202,7 +199,7 @@ public class Text extends AbstractFormComponent
 
 		generateAttributes(writer, cycle);
 
-		value = textBinding.getString();
+		String value = textBinding.getString();
 		if (value != null)
 			writer.print(value);
 

@@ -30,7 +30,7 @@ package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
 
-/**
+/** 
  *  Prevents its contents from being rendered until triggered by
  *  an {@link InsertBlock} component.
  *

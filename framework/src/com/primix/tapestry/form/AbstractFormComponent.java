@@ -55,10 +55,10 @@ public abstract class AbstractFormComponent
 	 *
 	 */
 	
-	public Form getForm(IRequestCycle cycle)
+	public IForm getForm(IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		Form result = Form.get(cycle);
+		IForm result = Form.get(cycle);
 		
 		if (result == null)
 			throw new RequestCycleException(
@@ -68,9 +68,9 @@ public abstract class AbstractFormComponent
 		return result;
 	}
 	
-	public Form getForm()
+	public IForm getForm()
 	{
-		return Form.get(getPage().getRequestCycle());
+		return Form.get(page.getRequestCycle());
 	}
 	
 	abstract public String getName();

@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- *
+ * 
  * This library is free software.
- *
+ * 
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -26,39 +26,67 @@
  *
  */
 
-package com.primix.tapestry.event;
+package com.primix.tapestry.valid;
 
-import com.primix.tapestry.*;
+import com.primix.tapestry.util.pool.*;
 import java.util.*;
-	
+
 /**
- *  An object that listens to page events.  The {@link IPage page} generates
- *  events before and after rendering a response.
+ *  A simple implementation of {@link IValidationDelegate} that can be used
+ *  as a helper bean.
  *
  *  @author Howard Ship
  *  @version $Id$
  *  @since 1.0.5
  */
-	
-public interface PageRenderListener extends EventListener
+
+
+public class ValidationDelegate
+	extends BaseValidationDelegate
+	implements IPoolable
 {
+	private List errors;
+	
+	public void invalidField(IValidatingTextField field,
+			ValidationConstraint constraint,
+			String defaultErrorMessage)
+	{
+		if (errors == null)
+			errors = new ArrayList();
+		
+		errors.add(defaultErrorMessage);
+	}
+	
+	public void resetForPool()
+	{
+		if (errors != null)
+			errors.clear();
+	}
+	
 	/**
-	 *  Invoked before just before the page renders a response.  This provides
-	 *  listeners with a last chance to initialize themselves for the render.
-	 *  This initialization can include modifying peristent page properties.
-	 *
+	 *  Returns the first error message, or null if there
+	 *  are no error messages.
 	 *
 	 */
 	
-	public void pageBeginRender(PageEvent event);
+	public String getError()
+	{
+		if (errors == null || errors.size() == 0)
+			return null;
+		
+		return (String)errors.get(0);
+	}
 	
 	/**
-	 *  Invoked after a successful render of the page.
-	 *  Allows objects to release any resources they needed during the
-	 *  the render.
+	 *  Returns a {@link List} of {@link String}, the errors collected
+	 *  during this request cycle.  May return null, or an empty list,
+	 *  if there are no errors.
 	 *
 	 */
 	
-	public void pageEndRender(PageEvent event);
+	public List getErrors()
+	{
+		return errors;
+	}
 }
 

@@ -179,11 +179,11 @@ public class Palette
     private Block defaultAvailableTitleBlock;
     
     /**
-     *  {@link Form} which is currently wrapping the Palette.
+     *  {@link IForm} which is currently wrapping the Palette.
      *
      */
     
-    private Form form;
+    private IForm form;
     
     /**
      *  The element name assigned to this usage of the Palette by the Form.
@@ -261,6 +261,11 @@ public class Palette
     {
         availableTitleBlockBinding = value;
     }
+	
+	public IBinding getAvailableTitleBlockBinding()
+	{
+		return availableTitleBlockBinding;
+	}
     
     public void setSelectedBinding(IBinding value)
     {
@@ -352,7 +357,7 @@ public class Palette
         return name;
     }
     
-    public Form getForm()
+    public IForm getForm()
     {
         return form;
     }
@@ -360,7 +365,7 @@ public class Palette
     public void render(IResponseWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        form = Form.get(getPage().getRequestCycle());
+        form = Form.get(page.getRequestCycle());
         
         if (form == null)
             throw new RequestCycleException("Palette component must be wrapped by a Form.", this);
@@ -538,47 +543,7 @@ public class Palette
     {
         return symbols;
     }
-    
-    private Block getHeaderBlock(boolean selected)
-    {
-        Block result = null;
-        String bindingName = null;
-        IBinding binding = null;
         
-        if (selected)
-        {
-            bindingName = "selectedTitleBlock";
-            binding = selectedTitleBlockBinding;
-        }
-        else
-        {
-            bindingName = "availableTitleBlock";
-            binding = availableTitleBlockBinding;
-        }
-        
-        if (binding != null)
-            result = (Block)binding.getObject(bindingName, Block.class);
-        
-        if (result == null)
-        {
-            return selected
-                ? defaultSelectedTitleBlock
-                : defaultAvailableTitleBlock;
-        }
-        
-        return result;
-    }
-    
-    public Block getSelectedHeaderBlock()
-    {
-        return getHeaderBlock(true);
-    }
-    
-    public Block getAvailableHeaderBlock()
-    {
-        return getHeaderBlock(false);
-    }
-    
     /**
      *  Buffers the two &lt;select&gt;s, each in its own nested {@link IResponseWriter}.
      *  The idea is to run through the property selection model just once, assigning

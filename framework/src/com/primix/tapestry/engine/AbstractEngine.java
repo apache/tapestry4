@@ -1089,7 +1089,7 @@ public abstract class AbstractEngine
 	 *  Processes an 'action' URL.
 	 *  <ul>
 	 *  <li>The specified page is loaded and rolled back to its prior state.
-	 *  <li>{@link IRequestCycle#rewindPage(String, String)} is invoked, 
+	 *  <li>{@link IRequestCycle#rewindPage(String, IComponent)} is invoked, 
 	 *  to rewind the page to
 	 *  the target action id and target component id path,
 	 *  by going through the motions of
@@ -1185,7 +1185,7 @@ public abstract class AbstractEngine
 	 *  <ul>
 	 *  <li>The specified page is loaded and rolled back to its prior state.
 	 *  <li>The referenced component is located and cast to {@link IDirect}.
-	 *  <li>{@link IAction#trigger(IRequestCycle)} is invoked to trigger the
+	 *  <li>{@link IDirect#trigger(IRequestCycle, String[])} is invoked to trigger the
 	 *  behaviour associated with the component.
 	 *  <li>{@link #render(IRequestCycle,ResponseOutputStream)} is invoked to
 	 *  render the response page.

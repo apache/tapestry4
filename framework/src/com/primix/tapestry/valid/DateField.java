@@ -200,7 +200,7 @@ extends AbstractValidatingTextField
 	 *  <code>MM/dd/yyyy</code> (with lenient set to false) is returned.
 	 *
 	 *  <p>Once determined, the format is cached for the remainder of the
-	 *  request cycle (until {@link #reset()} is invoked).
+	 *  request cycle (until {@link #pageDetached(PageEvent)} is invoked).
      *
      */
 

@@ -37,23 +37,41 @@
   <parameter name="downImage" java-type="com.primix.tapestry.IAsset"/>
   <parameter name="downDisabledImage" java-type="com.primix.tapestry.IAsset"/>
   
+  <bean name="selectedTitleBlock" class="com.primix.tapestry.bean.Default">
+    <set-property name="binding"> 
+      <property-value property-path="bindings.selectedTitleBlock"/>
+    </set-property>
+    <set-property name="defaultValue">
+      <property-value property-path="components.defaultSelectedTitleBlock"/>
+    </set-property>
+  </bean>
+  
+  <bean name="availableTitleBlock" class="com.primix.tapestry.bean.Default">
+     <set-property name="binding"> 
+      <property-value property-path="bindings.availableTitleBlock"/>
+    </set-property>
+    <set-property name="defaultValue">
+      <property-value property-path="components.defaultAvailableTitleBlock"/>
+    </set-property>
+  </bean> 
+  
   <component id="table" type="Any">
     <static-binding name="element">table</static-binding>
     <binding name="class" property-path="tableClass"/>
   </component>
   
-  <component id="insertAvailableHeader" type="InsertBlock">
-    <binding name="block" property-path="availableHeaderBlock"/>
+  <component id="insertAvailableTitle" type="InsertBlock">
+    <binding name="block" property-path="beans.availableTitleBlock.value"/>
   </component>
     
-  <component id="defaultSelectedTitleBlock" type="Block"/>
-    
-  <component id="insertSelectedHeader" type="InsertBlock">
-    <binding name="block" property-path="selectedHeaderBlock"/>
-  </component>
-
   <component id="defaultAvailableTitleBlock" type="Block"/>
   
+  <component id="insertSelectedTitle" type="InsertBlock">
+    <binding name="block" property-path="beans.selectedTitleBlock.value"/>
+  </component>
+
+  <component id="defaultSelectedTitleBlock" type="Block"/>
+    
   <component id="availableSelect" type="Delegator">
     <binding name="delegate" property-path="availableSelectDelegate"/>
   </component>

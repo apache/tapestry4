@@ -170,16 +170,14 @@ public class Submit extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		Form form;
-		boolean rewinding;
 		String label = null;
 		boolean disabled = false;
 		String value;
 		Object tagValue = staticTagValue;
 
-		form = getForm(cycle);
+		IForm form = getForm(cycle);
 
-		rewinding = form.isRewinding();
+		boolean rewinding = form.isRewinding();
 
 		name = form.getElementId(this);
 

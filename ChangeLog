@@ -1,3 +1,27 @@
+* Aug 28 2001 hship
+
+- Don't build or ship the junit code
+
+framework:
+- Add IComponent.getBindings()
+- Rename registerForEvents() to the more generic, finishLoad()
+- Add Default helper bean
+- Cleanup a number of Javadoc errors
+- Reorganize IForm vs. Form (moving key methods to the IForm interface)
+- Change IFormComponent to expose an IForm property (not a Form property)
+
+contrib:
+- Change the Palette component to use the new Default helper bean
+
+vlib:
+- Rename registerForEvents() to the more generic, finishLoad()
+
+doc:
+- Rename registerForEvents() to the more generic, finishLoad()
+
+tutorial:
+- Made use of ValidationDelegate and Default helper beans in the valid tutorial
+
 * Aug 27 2001 hship
 
 vlibbeans:
