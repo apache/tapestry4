@@ -14,7 +14,7 @@
 	</Call>
 	<Call name="addWebApplication">
 		<Arg>/tutorial/*</Arg>
-		<Arg>Tutorial.war</Arg>
+		<Arg>../../lib/Tutorial.war</Arg>
 		<Arg/>
 	</Call>
 </Configure>
