@@ -618,6 +618,7 @@ public class SpecificationParser
         CONVERSION_MAP.put("in", Direction.IN);
         CONVERSION_MAP.put("form", Direction.FORM);
         CONVERSION_MAP.put("custom", Direction.CUSTOM);
+        CONVERSION_MAP.put("auto", Direction.AUTO);
     }
 
     public SpecificationParser(IResourceResolver resolver)

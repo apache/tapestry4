@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification>
+	
+	<property-specification name="booleanProperty" type="boolean" persistent="yes" initial-value="true"/>
+	<property-specification name="intProperty" type="int" persistent="yes" initial-value="-3"/>
+	<property-specification name="doubleProperty" type="double" persistent="yes" initial-value="10.5"/>
+	<property-specification name="stringProperty" type="java.lang.String"
+			persistent="yes">
+		"Pink Floyd"	
+	</property-specification>
+	<property-specification name="objectProperty" type="java.util.Locale" persistent="yes">
+		@java.util.Locale@ENGLISH	
+	</property-specification>
+	
+	
+	<component id="flicker" type="Flicker">
+	  <binding name="boolValue" expression="booleanProperty"/>
+	  <binding name="intValue" expression="intProperty"/>
+	  <binding name="doubleValue" expression="doubleProperty"/>
+	  <binding name="stringValue" expression="stringProperty"/>
+	  <binding name="objectValue" expression="objectProperty"/>	
+	</component>
+	
+</page-specification>

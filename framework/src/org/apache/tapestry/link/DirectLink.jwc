@@ -14,7 +14,7 @@
   <parameter name="listener" 
   	type="org.apache.tapestry.IActionListener" 
   	required="yes"
-  	direction="custom"/>
+  	direction="auto"/>
   	
   <parameter name="parameters" type="java.lang.Object" direction="in">
     <description>

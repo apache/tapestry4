@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification>
+	
+	<parameter name="boolValue" required="yes" type="boolean" direction="auto"/>
+	<parameter name="intValue" required="yes" type="int" direction="auto"/>
+	<parameter name="doubleValue" required="yes" type="double" direction="auto"/>
+	<parameter name="stringValue" required="yes" type="java.lang.String" direction="auto"/>
+	<parameter name="objectValue" required="yes" type="java.util.Locale" direction="auto"/>
+	
+	<!-- Been having trouble with the Jython syntax. -->
+	
+	<property-specification name="updateObjectValue"
+		type="java.util.Locale">
+		@java.util.Locale@FRENCH	
+	</property-specification>
+	
+	<component id="update" type="DirectLink">
+	<listener-binding name="listener">
+
+component.boolValue = 0
+component.intValue = 100
+component.doubleValue = 22.7
+component.stringValue = "Poi Dog Pondering"
+component.objectValue = component.updateObjectValue
+
+	</listener-binding>	
+	</component>
+</component-specification>

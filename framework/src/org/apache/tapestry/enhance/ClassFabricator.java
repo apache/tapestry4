@@ -73,6 +73,7 @@ public class ClassFabricator
 {
     private ClassGen _classGen;
     private InstructionFactory _instructionFactory;
+    private MethodFabricator _staticInitializeMethod;
 
     /**
      *  Creates a public final class.
@@ -101,14 +102,14 @@ public class ClassFabricator
                 null);
     }
 
-	/**
-	 *  Creates a new {@link MethodFabricator}.  Invoke
-	 *  {@link MethodFabricator#getInstructionList()}
-	 *  to obtain the (initially empty) instruction list
-	 *  for the method.
-	 * 
-	 **/
-	
+    /**
+     *  Creates a new {@link MethodFabricator}.  Invoke
+     *  {@link MethodFabricator#getInstructionList()}
+     *  to obtain the (initially empty) instruction list
+     *  for the method.
+     * 
+     **/
+
     public MethodFabricator createMethod(int accessFlags, Type returnType, String methodName)
     {
         return new MethodFabricator(_classGen, accessFlags, returnType, methodName);
@@ -158,49 +159,93 @@ public class ClassFabricator
         _classGen.addEmptyConstructor(Constants.ACC_PUBLIC);
     }
 
+    /**
+     *  Adds an interface to the list of interfaces implemented
+     *  by the class.
+     * 
+     **/
 
-	/**
-	 *  Adds an interface to the list of interfaces implemented
-	 *  by the class.
-	 * 
-	 **/
-	
-	public void addInterface(String interfaceName)
-	{
-		_classGen.addInterface(interfaceName);
-	}
-	
-	public void addInterface(Class interfaceClass)
-	{
-		addInterface(interfaceClass.getName());
-	}
-	
-	public InstructionFactory getInstructionFactory()
-	{
-		if (_instructionFactory == null)
-			_instructionFactory = new InstructionFactory(_classGen);
-		
-		return _instructionFactory;
-	}
+    public void addInterface(String interfaceName)
+    {
+        _classGen.addInterface(interfaceName);
+    }
+
+    public void addInterface(Class interfaceClass)
+    {
+        addInterface(interfaceClass.getName());
+    }
+
+    public InstructionFactory getInstructionFactory()
+    {
+        if (_instructionFactory == null)
+            _instructionFactory = new InstructionFactory(_classGen);
+
+        return _instructionFactory;
+    }
 
     /**
      *  Invoked very much last, to create the
      *  new {@link org.apache.bcel.classfile.JavaClass} instance.
      * 
+     *  If there is a
+     *  {@link #getStaticInitializerMethod() static initializer method},
+     *  then a {@link RETURN} opcode is appended, and the method is committed.
+     * 
      **/
 
     public JavaClass commit()
     {
+        if (_staticInitializeMethod != null)
+        {
+        	_staticInitializeMethod.append(InstructionConstants.RETURN);
+            _staticInitializeMethod.commit();
+        }
+
         return _classGen.getJavaClass();
     }
-    
+
+    /**
+     *  Returns the static initializer method for the class,
+     *  creating it if necessary.
+     * 
+     *  <p>
+     *  Do not add {@link RETURN} opcodes to the initializer;
+     *  it may be accessed by several enhancers, each of which
+     *  will need to add some code; putting a RETURN in the middle
+     *  will keep some of the initializations from being executed!
+     * 
+     *  <p>
+     *  {@link #commit()} will append a RETURN and commit
+     *  the method.
+     * 
+     **/
+
+    public MethodFabricator getStaticInitializerMethod()
+    {
+        if (_staticInitializeMethod == null)
+            _staticInitializeMethod =
+                createMethod(Constants.ACC_STATIC, Type.VOID, Constants.STATIC_INITIALIZER_NAME);
+
+        return _staticInitializeMethod;
+    }
+
     /**
      *  Returns the mutable constant pool.
      * 
      **/
-    
+
     public ConstantPoolGen getConstantPool()
     {
-    	return _classGen.getConstantPool();
+        return _classGen.getConstantPool();
+    }
+
+    /**
+     *  Returns the name of the class being fabricated.
+     * 
+     **/
+
+    public String getClassName()
+    {
+        return _classGen.getClassName();
     }
 }

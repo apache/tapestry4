@@ -111,6 +111,17 @@ public class Direction extends Enum
 	
 	public static final Direction CUSTOM = new Direction("CUSTOM");
 
+
+	/**
+	 *  Causes a synthetic property to be created that automatically
+	 *  references and de-references the underlying binding.
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	public static final Direction AUTO = new Direction("AUTO");
+	
     protected Direction(String name)
     {
         super(name);

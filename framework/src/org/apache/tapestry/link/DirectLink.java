@@ -79,6 +79,7 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
 {
 
     public abstract IBinding getStatefulBinding();
+    public abstract IActionListener getListener();
 
     /**
      *  Returns true if the stateful parameter is bound to
@@ -151,30 +152,12 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
 
     public void trigger(IRequestCycle cycle)
     {
-        IActionListener listener = getListener(cycle);
+        IActionListener listener = getListener();
+        
+        if (listener == null)
+        	throw Tapestry.createRequiredParameterException(this, "listener");
 
         listener.actionTriggered(this, cycle);
-    }
-
-    public abstract IBinding getListenerBinding();
-
-    /**
-     *  Need to use the listener binding, since this method gets called even when the
-     *  component is not rendering.
-     * 
-     **/
-
-    private IActionListener getListener(IRequestCycle cycle)
-    {
-        IBinding listenerBinding = getListenerBinding();
-
-        IActionListener result =
-            (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
-
-        if (result == null)
-            throw Tapestry.createRequiredParameterException(this, "listener");
-
-        return result;
     }
 
     /** @since 2.2 **/

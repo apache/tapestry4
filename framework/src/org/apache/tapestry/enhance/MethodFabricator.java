@@ -60,6 +60,7 @@ import java.util.List;
 
 import org.apache.tapestry.Tapestry;
 import org.apache.bcel.classfile.Method;
+import org.apache.bcel.generic.BranchInstruction;
 import org.apache.bcel.generic.ClassGen;
 import org.apache.bcel.generic.CompoundInstruction;
 import org.apache.bcel.generic.Instruction;
@@ -67,6 +68,7 @@ import org.apache.bcel.generic.InstructionHandle;
 import org.apache.bcel.generic.InstructionList;
 import org.apache.bcel.generic.LocalVariableGen;
 import org.apache.bcel.generic.MethodGen;
+import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.Type;
 
 /**
@@ -174,12 +176,22 @@ public class MethodFabricator
         return _instructionList.append(instruction);
     }
 
+    /**
+     *  Convienience method for adding instructions.
+     * 
+     **/
+
+    public InstructionHandle append(CompoundInstruction instruction)
+    {
+        return _instructionList.append(instruction);
+    }
+
 	/**
 	 *  Convienience method for adding instructions.
 	 * 
 	 **/
 	
-	public InstructionHandle append(CompoundInstruction instruction)
+	public InstructionHandle append(BranchInstruction instruction)
 	{
 		return _instructionList.append(instruction);
 	}
@@ -244,5 +256,23 @@ public class MethodFabricator
         }
 
         _argumentsCommitted = true;
+    }
+
+	/**
+	 *  Adds an exception handler.  The start and end instructions are indicated by their
+	 *  handles (to be honest, I'm shakey on whether the entire end instruction is covered,
+	 *  or only until just before the end instruction).  The handler is an instruction
+	 *  that should immediately follow the protected block.  The catch type
+	 *  determines what kind of exception will be caught.
+	 * 
+	 **/
+	
+    public void addExceptionHandler(
+        InstructionHandle start,
+        InstructionHandle end,
+        InstructionHandle handler,
+        ObjectType catchType)
+    {
+        _methodGen.addExceptionHandler(start, end, handler, catchType);
     }
 }
