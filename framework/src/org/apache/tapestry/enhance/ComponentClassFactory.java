@@ -540,7 +540,7 @@ public class ComponentClassFactory
         if (_enhancedClass == null)
         {
             String startClassName = _componentClass.getName();
-            String subclassName = startClassName + "$Enhance_" + _uid++;
+            String subclassName = startClassName + "$Enhance_" + generateUID();
 
             // If the new class is located in a 'restricted' package, 
             // add a neutral package prefix to the name. 
@@ -554,6 +554,11 @@ public class ComponentClassFactory
                 _enhancedClassFactory.createEnhancedClass(subclassName, _componentClass);
         }
         return _enhancedClass;
+    }
+
+    private static synchronized int generateUID()
+    {
+        return _uid++;
     }
 
 }
