@@ -242,7 +242,7 @@ public interface IEngine
     /**
      *  Method invoked from the {@link org.apache.tapestry.ApplicationServlet} 
      *  to perform processing of the
-     *  request.  In release 2.4, this has become more of a dirty flag, indicating
+     *  request.  In release 3.0, this has become more of a dirty flag, indicating
      *  if any state stored by the engine instance itself has changed.
      *
      *  @return true if the state of the engine was, or could have been, changed during
@@ -381,7 +381,7 @@ public interface IEngine
      *  create and not threadsafe.  The reset service
      *  will clear out this Pool.
      * 
-     *  @since 2.4
+     *  @since 3.0
      *  @see org.apache.tapestry.engine.AbstractEngine#createPool(RequestContext)
      * 
      **/
@@ -391,7 +391,7 @@ public interface IEngine
     /**
      *  Returns an object that can create enhanced versions of component classes.
      * 
-     *  @since 2.4
+     *  @since 3.0
      *  @see org.apache.tapestry.engine.AbstractEngine#createComponentClassEnhancer(RequestContext)
      * 
      **/

@@ -85,14 +85,14 @@ public class ExpressionBeanInitializer extends AbstractBeanInitializer
         setBeanProperty(resolver, bean, value);
     }
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 	
     public String getExpression()
     {
         return _expression;
     }
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 	
     public void setExpression(String expression)
     {

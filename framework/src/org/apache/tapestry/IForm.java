@@ -176,7 +176,7 @@ public interface IForm extends IAction
      *  @see org.apache.tapestry.form.Upload
      *  @throws RequestCycleException if the current encoding type is not null
      *  and doesn't match the suggested encoding type
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     

@@ -216,7 +216,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -377,7 +377,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         return getExtension(name, null);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public synchronized Object getExtension(String name, Class typeConstraint)
     {
@@ -410,7 +410,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      * 
      *  @throws IllegalArgumentException if the extension fails the check.
      * 
-     *  @since 2.4
+     *  @since 3.0
      *  
      **/
 
@@ -619,21 +619,21 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         _publicId = publicId;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public IResourceLocation getSpecificationLocation()
     {
         return _specificationLocation;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void setSpecificationLocation(IResourceLocation specificationLocation)
     {
         _specificationLocation = specificationLocation;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public String toString()
     {
@@ -659,7 +659,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      *  description.
      * 
      *  @see #toString()
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

@@ -148,7 +148,7 @@ public class TemplateParser
     /**
      *  Attribute value prefix indicating that the attribute is an OGNL expression.
      * 
-     *  @since 2.4
+     *  @since 3.0
      **/
 
     public static final String OGNL_EXPRESSION_PREFIX = "ognl:";
@@ -157,7 +157,7 @@ public class TemplateParser
      *  Attribute value prefix indicating that the attribute is a localization
      *  key.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -217,7 +217,7 @@ public class TemplateParser
     /**
      *  Pattern used to recognize ordinary components (defined in the specification).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -231,7 +231,7 @@ public class TemplateParser
      *  is the type (which may be qualified with a library prefix).
      *  Subgroup 4 is the library id, Subgroup 5 is the simple component type.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -1078,7 +1078,7 @@ public class TemplateParser
      *  the value is not a literal.  Adds the attribute to the
      *  token.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -1437,7 +1437,7 @@ public class TemplateParser
      *  created only as needed, and multiple objects on the same line can share
      *  the same Location instance.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     

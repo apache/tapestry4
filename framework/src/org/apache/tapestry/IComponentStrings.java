@@ -95,7 +95,7 @@ public interface IComponentStrings
      *  {@link #getString(String)}
      *  @param arguments passed to the formatter
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -104,7 +104,7 @@ public interface IComponentStrings
     /**
      *  Convienience method for invoking {@link #format(String, Object[])}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     
@@ -113,7 +113,7 @@ public interface IComponentStrings
     /**
      *  Convienience method for invoking {@link #format(String, Object[])}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -122,7 +122,7 @@ public interface IComponentStrings
     /**
      *  Convienience method for invoking {@link #format(String, Object[])}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

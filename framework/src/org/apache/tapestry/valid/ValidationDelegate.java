@@ -288,7 +288,7 @@ public class ValidationDelegate implements IValidationDelegate
      *  If no current component, an unassociated error is created
      *  and returned.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

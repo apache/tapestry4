@@ -82,7 +82,7 @@ import org.apache.tapestry.vlib.ejb.Person;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 

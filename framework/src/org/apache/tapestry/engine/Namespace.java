@@ -367,21 +367,21 @@ public class Namespace implements INamespace
         return prefix + SEPARATOR + pageName;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public IResourceLocation getSpecificationLocation()
     {
         return _specification.getSpecificationLocation();
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public boolean isApplicationNamespace()
     {
         return _applicationNamespace;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public synchronized void installPageSpecification(
         String pageName,
@@ -390,7 +390,7 @@ public class Namespace implements INamespace
         _pages.put(pageName, specification);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public synchronized void installComponentSpecification(
         String type,
@@ -399,7 +399,7 @@ public class Namespace implements INamespace
         _components.put(type, specification);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public boolean containsComponentType(String type)
     {
@@ -407,7 +407,7 @@ public class Namespace implements INamespace
             || (_specification.getComponentSpecificationPath(type) != null);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public List getComponentTypes()
     {
@@ -423,7 +423,7 @@ public class Namespace implements INamespace
         return result;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public Location getLocation()
     {

@@ -99,7 +99,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 

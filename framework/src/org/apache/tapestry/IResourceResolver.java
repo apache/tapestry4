@@ -100,7 +100,7 @@ public interface IResourceResolver extends ClassResolver
      *  Returns a {@link java.lang.ClassLoader} that can see
      *  all the classes the resolver can access.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     

@@ -61,7 +61,7 @@ package org.apache.tapestry.junit.mock.c10;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  * 
  **/
 

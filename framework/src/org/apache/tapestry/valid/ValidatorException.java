@@ -107,7 +107,7 @@ public class ValidatorException extends Exception
         return _constraint;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public IRender getErrorRenderer()
     {

@@ -70,7 +70,7 @@ import org.apache.tapestry.Tapestry;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 public class URLRetriever

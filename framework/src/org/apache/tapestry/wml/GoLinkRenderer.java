@@ -64,7 +64,7 @@ import org.apache.tapestry.link.ILinkRenderer;
  *
  *  @author David Solis
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  **/
 public class GoLinkRenderer extends DefaultLinkRenderer
 {

@@ -68,7 +68,7 @@ import org.xml.sax.Attributes;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 

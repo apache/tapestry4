@@ -89,8 +89,8 @@ public interface IBeanSpecification extends IPropertyHolder, ILocationHolder, IL
     public abstract String toString();
     public abstract String getDescription();
     public abstract void setDescription(String desc);
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     public abstract void setClassName(String className);
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     public abstract void setLifecycle(BeanLifecycle lifecycle);
 }

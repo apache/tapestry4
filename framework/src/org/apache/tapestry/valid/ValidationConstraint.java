@@ -127,7 +127,7 @@ public class ValidationConstraint extends Enum
     /**
      *  Indicates a consistency error, usually between too different fields.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

@@ -209,7 +209,7 @@ public abstract class ListEdit extends AbstractFormComponent
 
     public abstract IActionListener getListener();
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public abstract IBinding getSourceBinding();
 
@@ -217,7 +217,7 @@ public abstract class ListEdit extends AbstractFormComponent
 
     public abstract IBinding getIndexBinding();
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     
     public boolean isDisabled()
     {

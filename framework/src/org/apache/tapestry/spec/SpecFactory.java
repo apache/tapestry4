@@ -105,7 +105,7 @@ public class SpecFactory
 	/**
 	 *  Returns a new instance of {@link IAssetSpecification}.
 	 * 
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 **/
 	
@@ -117,7 +117,7 @@ public class SpecFactory
 	/**
 	 *  Creates a new instance of {@link IBeanSpecification}.
 	 * 
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 **/
 	
@@ -135,7 +135,7 @@ public class SpecFactory
      *  Creates a new concrete instance of {@link IListenerBindingSpecification} for the
      *  given language (which is option) and script.
      * 
-     *  @since 2.4
+     *  @since 3.0
      *  
      **/
 
@@ -174,7 +174,7 @@ public class SpecFactory
 	/**
 	 *  Creates a new instance of {@link ExpressionBeanInitializer}.
 	 * 
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 **/
 	
@@ -186,7 +186,7 @@ public class SpecFactory
 	/**
 	 *  Returns a new instance of {@link StringBeanInitializer}.
 	 * 
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 **/
 	
@@ -210,7 +210,7 @@ public class SpecFactory
     /**
      *  Creates a concrete instance of {@link org.apache.tapestry.spec.IPropertySpecification}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     

@@ -82,7 +82,7 @@ import org.apache.bcel.generic.Type;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  **/
 
 public class TestClassFabricator extends TapestryTestCase

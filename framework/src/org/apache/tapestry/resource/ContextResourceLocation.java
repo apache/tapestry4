@@ -75,7 +75,7 @@ import org.apache.tapestry.util.LocalizedContextResourceFinder;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 

@@ -67,7 +67,7 @@ import org.apache.tapestry.*;
  *
  *  @version $Id$
  *  @author David Solis
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 public abstract class Select extends AbstractComponent

@@ -123,7 +123,7 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
      *  this library.  Returns a list of strings in sorted order,
      *  or an empty list (but not null).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -211,7 +211,7 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
      *  @throws IllegalArgumentException if no extension specification exists for
      *  the given name, or if the extension fails the type check.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     
@@ -244,13 +244,13 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
     /**
      *  Returns the location from which the specification was read.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     
     public IResourceLocation getSpecificationLocation();
     
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     
     public void setSpecificationLocation(IResourceLocation specificationLocation);    
 }

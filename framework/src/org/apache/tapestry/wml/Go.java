@@ -69,14 +69,14 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *
  *  @version $Id$
  *  @author David Solis
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 
 public abstract class Go extends Form
 {
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     protected void writeAttributes(IMarkupWriter writer, ILink link)
     {
@@ -87,7 +87,7 @@ public abstract class Go extends Form
         writer.attribute("href", link.getURL(null, false));
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     protected void writeHiddenField(IMarkupWriter writer, String name, String value)
     {

@@ -104,7 +104,7 @@ public class HTMLWriter extends AbstractMarkupWriter
 	 *  The content type is currently hard-wired to
 	 *  <code>text/html</code>.
 	 * 
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 **/
 	

@@ -65,7 +65,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  *  and services into "frameworks", used to disambiguate names.
  * 
  *  <p>
- *  Tapestry release 2.4 includes dynamic discovery of pages and components; an application
+ *  Tapestry release 3.0 includes dynamic discovery of pages and components; an application
  *  or library may contain a page or component that won't be "known" until the name
  *  is resolved (because it involves searching for a particular named file).
  * 
@@ -125,7 +125,7 @@ public interface INamespace extends ILocatable
      *  application or framework namespace, in which case
      *  special strings are returned.
      *  
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -222,7 +222,7 @@ public interface INamespace extends ILocatable
      * 
      *  <p>Is this method even needed?
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -280,7 +280,7 @@ public interface INamespace extends ILocatable
      *  application namespace (which has special search rules
      *  for handling undeclared pages and components).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -291,7 +291,7 @@ public interface INamespace extends ILocatable
      *  the namespace's specification.  This is used when pages
      *  in the application namespace are dynamically discovered.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -302,7 +302,7 @@ public interface INamespace extends ILocatable
      *  the namespace's specification.  This is used when components
      *  in the application namespace are dynamically discovered.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

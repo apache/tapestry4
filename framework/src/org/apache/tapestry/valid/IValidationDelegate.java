@@ -199,7 +199,7 @@ public interface IValidationDelegate
      *  be recorded even if there isn't an explicit error, since later form-wide
      *  validations may discover an error in the field.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

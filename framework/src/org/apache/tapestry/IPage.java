@@ -144,7 +144,7 @@ public interface IPage extends IComponent
      * 
      *  @param name fully qualified page name (including namespace prefix, if any)
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

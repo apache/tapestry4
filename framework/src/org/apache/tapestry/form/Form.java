@@ -116,7 +116,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *  the rewind) against expected ids (allocated in the previous request cycle, when
      *  the form was rendered).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -127,7 +127,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *  is constructed when a form renders, and is validated against when the
      *  form is rewound.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -295,7 +295,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         return _name;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     protected void prepareForRender(IRequestCycle cycle)
     {
@@ -644,7 +644,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  @since 2.4
+     *  @since 3.0
      *
      **/
 
@@ -680,7 +680,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *  This is included as a hidden field in the form and is used to identify
      *  discrepencies when the form is submitted.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -706,7 +706,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      * 
      *  @see #buildAllocatedIdList()
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -773,7 +773,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     /**
      *  Returns the tag of the form.
      *
-     *  @since 2.4
+     *  @since 3.0
      *
      **/
 
@@ -785,7 +785,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     /**
      * Returns the tag of the input element used by the form.
      *
-     *  @since 2.4
+     *  @since 3.0
      *
      **/
 
@@ -798,7 +798,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      * Returns the name of the element.
      *
      *
-     *  @since 2.4
+     *  @since 3.0
      **/
 
     protected String getDisplayName()

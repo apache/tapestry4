@@ -111,7 +111,7 @@ public class PageSource implements IPageSource
     /**
      *  Used to resolve page names to a namespace, a simple name, and a page specification.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -220,7 +220,7 @@ public class PageSource implements IPageSource
      *  {@link PageLoader}.  An instance if aquired from the pool or,
      *  if none are available, created fresh.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -238,7 +238,7 @@ public class PageSource implements IPageSource
      *  Invoked once the {@link PageLoader} is not
      *  longer needed; it is then returned to the pool.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

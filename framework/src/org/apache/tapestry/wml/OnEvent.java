@@ -67,7 +67,7 @@ import org.apache.tapestry.IRequestCycle;
  *
  *  @version $Id$
  *  @author David Solis
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 

@@ -924,7 +924,7 @@ requests over HTTP, the requests are driven by an XML script file, which include
 Generally, each bit of functionality can be tested using its own mini-application.  
 Create the application as
 <filename>junit/context<replaceable>X</replaceable></filename>.  This is much easier now, 
-using Tapestry 2.4 features
+using Tapestry 3.0 features
 such as dynamic lookup of specifications and implicit components.
 </para>
 

@@ -433,7 +433,7 @@ public class NumberValidator extends BaseValidator
      *  a scalar numeric type, a fully qualified class name, or the name
      *  of a numeric wrapper type from java.lang (with the package name omitted).
      * 
-     * @since 2.4 
+     * @since 3.0 
      * 
      **/
 
@@ -448,7 +448,7 @@ public class NumberValidator extends BaseValidator
         _valueTypeClass = typeClass;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void setValueTypeClass(Class valueTypeClass)
     {
@@ -459,7 +459,7 @@ public class NumberValidator extends BaseValidator
      *  
      *  Returns the value type to convert strings back into.  The default is int.
      * 
-     *  @since 2.4 
+     *  @since 3.0 
      * 
      **/
 

@@ -63,7 +63,7 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  *
  *  @version $Id$
  *  @author David Solis
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 public abstract class SelectionField extends AbstractPostfield

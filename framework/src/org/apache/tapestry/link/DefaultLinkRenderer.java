@@ -69,7 +69,7 @@ import org.apache.tapestry.engine.ILink;
  *
  *  @author Howard Lewis Ship, David Solis
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  **/
 
 public class DefaultLinkRenderer implements ILinkRenderer
@@ -182,7 +182,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
     {
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     protected String getElement()
     {

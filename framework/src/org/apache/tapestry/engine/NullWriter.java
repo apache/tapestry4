@@ -177,7 +177,7 @@ public class NullWriter implements IMarkupWriter
     /**
      *  @see org.apache.tapestry.IMarkupWriter#attribute(java.lang.String, boolean)
      *
-     *  @since 2.4
+     *  @since 3.0
      **/
 
     public void attribute(String name, boolean value)
@@ -187,7 +187,7 @@ public class NullWriter implements IMarkupWriter
     /**
      *  @see org.apache.tapestry.IMarkupWriter#attributeRaw(java.lang.String, java.lang.String)
      *
-     *  @since 2.4
+     *  @since 3.0
      **/
 
     public void attributeRaw(String name, String value)

@@ -170,7 +170,7 @@ public class ApplicationServlet extends HttpServlet
     /**
      *  The resolved class name used to instantiate the engine.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -180,7 +180,7 @@ public class ApplicationServlet extends HttpServlet
      *  Used to search for configuration properties.
      * 
      *  
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -541,7 +541,7 @@ public class ApplicationServlet extends HttpServlet
      *  <p>Returns the location of the application specification, or null
      *  if not found.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -570,7 +570,7 @@ public class ApplicationServlet extends HttpServlet
      *  Checks for the application specification relative to the specified
      *  location.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -596,7 +596,7 @@ public class ApplicationServlet extends HttpServlet
      *  simple specification is constructed and returned.  This is useful
      *  for minimal applications and prototypes.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -757,7 +757,7 @@ public class ApplicationServlet extends HttpServlet
      *  </ul>
      * 
      *  @see #createPropertySource()
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -775,7 +775,7 @@ public class ApplicationServlet extends HttpServlet
      *  this method if they want to change the normal locations
      *  that properties are searched for within.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

@@ -65,7 +65,7 @@ import org.apache.commons.lang.enum.EnumUtils;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 public class EnumAdaptor implements ISqueezeAdaptor

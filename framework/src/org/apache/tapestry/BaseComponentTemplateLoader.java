@@ -90,7 +90,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 
@@ -359,7 +359,7 @@ public class BaseComponentTemplateLoader
     /**
      *  Adds bindings based on attributes in the template.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -412,7 +412,7 @@ public class BaseComponentTemplateLoader
      *  bindings in both the specification
      *  and the template.
      * 
-     *  @since 2.4
+     *  @since 3.0
      **/
 
     private void addExpressionBinding(
@@ -487,7 +487,7 @@ public class BaseComponentTemplateLoader
       *  bindings in both the specification
       *  and the template.
       * 
-      *  @since 2.4
+      *  @since 3.0
       **/
 
     private void addStringBinding(
@@ -556,7 +556,7 @@ public class BaseComponentTemplateLoader
      *  Static bindings that conflict with bindings in the
      *  specification are quietly ignored.
      *
-     *  @since 2.4
+     *  @since 3.0
      *
      **/
 

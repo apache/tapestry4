@@ -182,7 +182,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
     /**
      *  The location from which the specification was obtained.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -192,7 +192,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
      *  A Map of {@link IPropertySpecification} keyed on the name
      *  of the property.
      *
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -575,14 +575,14 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
         return map.get(key);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public IResourceLocation getSpecificationLocation()
     {
         return _specificationLocation;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void setSpecificationLocation(IResourceLocation specificationLocation)
     {
@@ -593,7 +593,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
      *  Adds a new property specification.  The name of the property must
      *  not already be defined (and must not change after being added).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -618,7 +618,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
      *  Returns a sorted, immutable list of the names of all 
      *  {@link org.apache.tapestry.spec.IPropertySpecification}s.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -631,7 +631,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
      *  Returns the named {@link org.apache.tapestry.spec.IPropertySpecification},
      *  or null  if no such specification exist.
      * 
-     *  @since 2.4
+     *  @since 3.0
      *  @see #addPropertySpecification(IPropertySpecification)
      * 
      **/

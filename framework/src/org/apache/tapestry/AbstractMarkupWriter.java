@@ -165,7 +165,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 	 *  Indicates whether {@link #close()} should close the 
 	 *  underlying {@link PrintWriter}.
 	 * 
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 **/
 	
@@ -214,7 +214,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 	 *  which is inlcuding content, and therefore this method will not
 	 *  close the writer when the markup writer is closed.
 	 * 
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 **/
 	
@@ -280,7 +280,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *
      *  @throws IllegalStateException if there is no open tag.
      *
-     *  @since 2.4
+     *  @since 3.0
      *
      **/
 
@@ -356,7 +356,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
       * 
       *  @throws IllegalStateException if there is no open tag.
       *
-      *  @since 2.4
+      *  @since 3.0
       *
       **/
     public void attributeRaw(String name, String value)

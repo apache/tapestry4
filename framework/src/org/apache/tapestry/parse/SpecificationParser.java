@@ -106,7 +106,7 @@ import org.xml.sax.SAXParseException;
  *  <td><code>-//Howard Lewis Ship//Tapestry Specification 1.3//EN</code></td>
  * <td><code>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</code></td>
  *  <td>
- *  Version of specification introduced in release 2.4.
+ *  Version of specification introduced in release 3.0.
  * </td>
  * </tr>
  * 
@@ -278,7 +278,7 @@ public class SpecificationParser
     /** 
      *   Digester used for component specifications.
      * 
-     *  @since 2.4 
+     *  @since 3.0 
      * 
      **/
 
@@ -287,7 +287,7 @@ public class SpecificationParser
     /**
      *  Digestger used for page specifications.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -296,14 +296,14 @@ public class SpecificationParser
     /**
      *  Digester use for library specifications.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
     private SpecificationDigester _libraryDigester;
 
     /**
-     *  @since 2.4 
+     *  @since 3.0 
      * 
      **/
 
@@ -662,7 +662,7 @@ public class SpecificationParser
     /**
      *  Parses a resource using a particular digester.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -839,7 +839,7 @@ public class SpecificationParser
      *  Constructs a digester, registerring the known DTDs and the
      *  global rules (for &lt;property&gt; and &lt;description&gt;).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -872,7 +872,7 @@ public class SpecificationParser
     /**
      *  Constructs a digester configued to parse application specifications.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -897,7 +897,7 @@ public class SpecificationParser
     /**
      *  Constructs a digester configured to parse library specifications.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -921,7 +921,7 @@ public class SpecificationParser
      *  Configures a digester to parse the common elements of
      *  a &lt;application&gt; or &lt;library-specification&gt;.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -1021,7 +1021,7 @@ public class SpecificationParser
     /**
      *  Returns a digester configured to parse page specifications.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

@@ -318,7 +318,7 @@ public class PageLoader implements IPageLoader
      *  checks each component in the tree to ensure that
      *  all of its required parameters are bound.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -398,7 +398,7 @@ public class PageLoader implements IPageLoader
     /**
      *  Construct a {@link ListenerBinding} for the component, and add it.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -551,7 +551,7 @@ public class PageLoader implements IPageLoader
      *  specification).
      * 
      *  @see org.apache.tapestry.BaseComponentTemplateLoader
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

@@ -85,7 +85,7 @@ public interface ILinkComponent extends IComponent
     /**
      *  Returns the anchor defined for this link, or null for no anchor.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -122,7 +122,7 @@ public interface ILinkComponent extends IComponent
      *  are informal parameters, plus any attributes related to events.
      *  This is only invoked for non-disabled links.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
