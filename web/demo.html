@@ -4,17 +4,88 @@
 <head>
 <link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
 </head>
+<script language="javascript">
+<!--
+
+function runTutorial()
+{
+  run('/tutorial');
+}
+
+function runVlib()
+{
+  run('/vlib/app');
+}
+
+function run(uri)
+{
+  var form = document.demoForm;
+  var url = null;
+  var elems = form.elements;
+  
+  for (var i = 0; i < elems.length; i++)
+  {
+     var elem = elems[i];
+    if (elem.name = "host" && elem.checked)
+    {
+       url = elem.value;
+       break;
+     }
+  }
+  
+  location.href = url + uri;
+}
+
+// -->
+</script>
+
 <body bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
 		<td valign="top" align="left"><img height="44" src="images/ico_t.gif" alt="[Tapestry Logo]" width="44" align="absMiddle" border="0">&nbsp;<img height="22" alt="Tapestry" src="images/hd_tapestry.gif" width="100" align="absMiddle" vspace="17" border="0">
+
+<form name="demoForm">
+
+<p>These demos require a running version of Tapestry, and so they are not hosted
+at SourceForge.  Fortunately, the Tapestry community has provided the following sites
+to run the demos from:
+
+
+		<p>
 		
+			<table border="0" cellspacing="0" cellpadding="2">
+				<tr valign="top">
+					<td><input type="radio" name="host" checked value="http://tapestry.javanuke.org">
+					</td>
+					<td>tapestry.javanuke.org<br>Hosted by Garrett Suhm
+					</td>
+					<td>United States
+					</td>
+				</tr>
+
+				<tr>
+					<td height="10"><img src="images/spacer.gif" width="1">
+					</td>
+				</tr>
+
+				<tr valign="top">
+					<td><input type="radio" name="host" value="http://tapestry.cogito-info.ch">
+					</td>
+					<td>tapestry.cogito-info.ch<br>Hosted by Sacha Labourey
+					</td>
+					<td>Switzerland
+					</td>
+				</tr>
+
+			</table>
+			
+					
 		<br><br>Two demonstrations are available.
 		
 	<p><table border="0" cellspacing="0" cellpadding="2">
 	<tr valign="top">
 		<td><img src="images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="/vlib/app">Virtual Library</a>
+		<td><a class="clsLeftNav" href="javascript:runVlib();">Virtual Library</a>
 		
 		<br><br>
 		
@@ -24,7 +95,8 @@
          database access (via Entity EJBs), stateless vs. stateful operation, securing pages against
          unauthorized access and more.
 <p>The Virtual Library is built on top of the <a target="_top" href="http://www.jboss.org">JBoss</a> application server.
-<p>The source code for the Virtual Library is included in the&nbsp;Tapestry
+<p>The source code for the Virtual Library is included in the
+Tapestry
          distribution.
 		</td>
 	</tr>
@@ -34,7 +106,7 @@
 
 	<tr valign="top">
 		<td><img src="images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="/tutorial">Tapestry Tutorials</a>
+		<td><a class="clsLeftNav" href="javascript:runTutorial();">Tapestry Tutorials</a>
 		
 		<br><br>
 		
@@ -45,7 +117,9 @@
 		</td>
 	</tr>
 	
+</table>
 
+</form>
 		
 	</td>
 	</tr>
