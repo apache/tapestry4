@@ -1446,13 +1446,20 @@ public abstract class AbstractEngine
         if (CAT.isDebugEnabled())
             CAT.debug("Redirecting to: " + location);
 
+        RequestContext context = cycle.getRequestContext();
+        
+        String redirectURL = buildRedirectURL(context, location);
+        
         HttpServletResponse response = cycle.getRequestContext().getResponse();
 
-        String encodedLocation = response.encodeRedirectURL(location);
+        String finalURL = response.encodeRedirectURL(redirectURL);
+
+        if (CAT.isDebugEnabled())
+            CAT.debug("Sending redirect: " + finalURL);
 
         try
         {
-            response.sendRedirect(encodedLocation);
+            response.sendRedirect(finalURL);
         }
         catch (IOException ioEx)
         {
@@ -1464,6 +1471,37 @@ public abstract class AbstractEngine
 
     }
 
+    /**
+     *  Tries to determine if a location is a relative URL or not.  If relative, 
+     *  tacks on enough to ensure that the location works out beneath the
+     *  servlet context.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private String buildRedirectURL(RequestContext context, String location)
+    {
+        if (Tapestry.isNull(location))
+            return getContextPath();
+            
+        // If it smells like an absolute path or
+        // a complete URL (possibly to a different
+        // web site), leave it alone.
+        
+        if (location.startsWith("/") ||
+            location.indexOf("://") > 0)
+                return location;
+                
+        StringBuffer buffer = new StringBuffer(location.length() + 20);
+                
+        buffer.append(getContextPath());
+        buffer.append('/');
+        buffer.append(location);
+        
+        return buffer.toString();                       
+     }
+    
     /**
      *  Creates a Map of all the services available to the application.
      * 
