@@ -881,6 +881,12 @@ public class SpecificationParser extends AbstractDocumentParser
                 continue;
             }
 
+            if (isElement(child, "property"))
+            {
+                convertProperty(bspec, child);
+                continue;
+            }
+            
             if (isElement(child, "set-property"))
             {
                 convertSetProperty(bspec, child);
@@ -1036,6 +1042,12 @@ public class SpecificationParser extends AbstractDocumentParser
             if (isElement(child, "string-binding"))
             {
                 convertBinding(c, child, BindingType.STRING, "key");
+                continue;
+            }
+            
+            if (isElement(child, "property"))
+            {
+                convertProperty(c, child);
                 continue;
             }
         }

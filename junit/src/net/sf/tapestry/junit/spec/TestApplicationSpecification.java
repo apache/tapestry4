@@ -25,11 +25,7 @@
 
 package net.sf.tapestry.junit.spec;
 
-import java.io.InputStream;
-
-import junit.framework.TestCase;
-import net.sf.tapestry.engine.ResourceResolver;
-import net.sf.tapestry.parse.SpecificationParser;
+import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.spec.ApplicationSpecification;
 
 /**
@@ -42,7 +38,7 @@ import net.sf.tapestry.spec.ApplicationSpecification;
  * 
  **/
 
-public class TestApplicationSpecification extends TestCase
+public class TestApplicationSpecification extends TapestryTestCase
 {
 
     public TestApplicationSpecification(String name)
@@ -50,16 +46,6 @@ public class TestApplicationSpecification extends TestCase
         super(name);
     }
 
-    // Note: this could be moved to a super-class shared by several TestCases
-    
-    private ApplicationSpecification parseApp(String simpleName) throws Exception
-    {
-        SpecificationParser parser = new SpecificationParser();
-
-        InputStream input = getClass().getResourceAsStream(simpleName);
-
-        return parser.parseApplicationSpecification(input, simpleName, new ResourceResolver(this));
-    }
 
     public void testBasicExtension() throws Exception
     {
