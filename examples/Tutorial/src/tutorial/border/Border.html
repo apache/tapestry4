@@ -2,7 +2,7 @@
 <head>
 <title><jwc id="insertApplicationName"/></title>
 </head>
-<body>
+<jwc id="body">
 <table border=0 bgcolor=gray cellspacing=0 cellpadding=4>
   <tr valign=top>
     <td colspan=3 align=left>
@@ -17,14 +17,17 @@
 </jwc>
       </font>
     </td>
-    <td valign=top bgcolor=silver>
+    <td rowspan=2 valign=top bgcolor=silver>
       <jwc id="wrapped"/>
     </td>
-    <td width=4></td>
+    <td rowspan=2 width=4></td>
   </tr>
   <tr>
-    <td colspan=3 height=4><jwc id="showInspector"/></td>
+	<td><jwc id="showInspector"/></td>
+  </tr>
+  <tr>
+    <td colspan=3 height=4>&nbsp;</td>
   </tr>
 </table>
-</body>
+</jwc>
 </HTML>

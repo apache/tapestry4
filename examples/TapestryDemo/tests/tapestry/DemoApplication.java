@@ -66,16 +66,30 @@ public class DemoApplication extends SimpleApplication
 	
 	private boolean monitorEnabled;
 	private boolean initialized;
+	private static boolean standalone;
+	
+	private static Map enc;
+	
+	static
+	{
+		enc = new HashMap();
+		enc.put("ejb/SessionTracker", "com.primix.sesstrack.SessionTracker");
+		
+		standalone = Boolean.getBoolean("standalone");
+	}
 
 	protected void setupForRequest(RequestContext context)
 	{
 		ServletConfig config;
+		String value;
 
 		super.setupForRequest(context);
 
 		if (!initialized)
 		{
-			monitorEnabled = context.getServlet().getInitParameter("monitor-enabled").equals("true");
+			value = context.getServlet().getInitParameter("monitor-enabled");
+			
+			monitorEnabled = "true".equals(value);
 		
 			initialized = true;
 		}
@@ -205,10 +219,16 @@ public class DemoApplication extends SimpleApplication
 	{
     	Object raw;
 		Object result;
+		String resolvedName;
 
 		try
 		{
-			raw = getEnvironment().lookup(name);
+			if (standalone)
+				resolvedName = (String)enc.get(name);
+			else
+				resolvedName = name;
+					
+			raw = getEnvironment().lookup(resolvedName);
             
             result = PortableRemoteObject.narrow(raw, interfaceClass);
             
@@ -229,14 +249,28 @@ public class DemoApplication extends SimpleApplication
 	public Context getEnvironment()
 	{
 		Context initial;
+		Properties props;
 		
 		if (environment == null)
 	    {
 		    try
 			{
+				if (standalone)
+				{
+					props = new Properties();
+					props.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
+					props.put(Context.PROVIDER_URL, "t3://localhost:7001");
+					props.put(Context.SECURITY_PRINCIPAL, "system");
+					props.put(Context.SECURITY_CREDENTIALS, "pmixticket");
+					
+					environment = new InitialContext(props);
+					
+					return environment;
+				}
+				
 				initial = new InitialContext();
-			    
-			    environment = (Context)initial.lookup("java:comp/env");
+
+		    	environment = (Context)initial.lookup("java:comp/env");
 			}
 			catch (NamingException e)
 			{

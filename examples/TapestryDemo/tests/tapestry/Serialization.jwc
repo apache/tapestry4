@@ -55,7 +55,7 @@
 		</component>
 		
 		<component>
-			<id>insertPageName</id>
+			<id>insertPageName1</id>
 			<type>Insert</type>
 			
 			<bindings>
@@ -66,6 +66,18 @@
 			</bindings>
 		</component>
 			
+		<component>
+			<id>insertPageName2</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>pageName</property-path>
+				</binding>
+			</bindings>
+		</component>
+						
 		<component>
 			<id>serializedApplication</id>
 			<type>Insert</type>
@@ -86,6 +98,42 @@
 				<binding>
 					<name>value</name>
 					<property-path>compressedApplicationDump</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>insertPageName3</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>pageName</property-path>
+				</binding>
+			</bindings>
+		</component>	
+				
+		<component>
+			<id>insertPageName4</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>pageName</property-path>
+				</binding>
+			</bindings>
+		</component>		
+		
+		<component>
+			<id>insertPageName5</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>pageName</property-path>
 				</binding>
 			</bindings>
 		</component>
