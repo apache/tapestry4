@@ -71,23 +71,22 @@ import org.apache.tapestry.IRequestCycle;
 
 class UniqueToken extends AbstractToken
 {
-    private String _tag;
-
-    public UniqueToken(String tag, ILocation location)
+    public UniqueToken(ILocation location)
     {
         super(location);
-
-        _tag = tag;
     }
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
         IRequestCycle cycle = session.getRequestCycle();
 
-        if (cycle.getAttribute(_tag) != null)
+        ILocation location = getLocation();
+        String tag = "<unique> " + location.toString();
+
+        if (cycle.getAttribute(tag) != null)
             return;
 
-        cycle.setAttribute(_tag, getLocation());
+        cycle.setAttribute(tag, Boolean.TRUE);
 
         writeChildren(buffer, session);
     }

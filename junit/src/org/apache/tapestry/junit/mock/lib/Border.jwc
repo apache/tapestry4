@@ -19,8 +19,6 @@
   
   <component id="renderBody" type="RenderBody"/>
   
-  <component id="inspectorButton" type="contrib:InspectorButton"/>
-
   <private-asset name="style" resource-path="/org/apache/tapestry/junit/mock/lib/style.css"/>
   
 </component-specification>	

@@ -62,6 +62,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.IScript;
@@ -135,17 +136,24 @@ public class TestScript extends TapestryTestCase
         assertNull(_processor.getExternalScripts());
     }
 
-	/**
-	 * Test the &lt;unique&gt; element, new in the 1.3 DTD
-	 * @since 3.0
-	 */
-	
-	public void testUnique() throws Exception
-	{
-		execute("unique.script", null);
-		
-		assertEquals("body", "Block1\n\n\nBlock4", _processor.getBody().trim());
-	}
+    /**
+     * Test the &lt;unique&gt; element, new in the 1.3 DTD
+     * @since 3.0
+     */
+
+    public void testUnique() throws Exception
+    {
+        IScript script = read("unique.script");
+
+        IRequestCycle cycle = new MockRequestCycle();
+
+        script.execute(cycle, _processor, null);
+        script.execute(cycle, _processor, null);
+
+        assertEquals(
+            "Block1\nBlock2\nNotUnique\n\n\n\nNotUnique",
+            _processor.getBody().trim());
+    }
 
     /**
      *  Test omitting body and initialization, ensure they return null.
@@ -219,7 +227,7 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "output_number_zero", "");
         assertSymbol(symbols, "output_number_nonzero", "NUMBER-NON-ZERO");
     }
-    
+
     /**
      * Test the unique attribute on the &lt;let&gt; element.  New in
      * the 1.3 DTD
@@ -227,13 +235,13 @@ public class TestScript extends TapestryTestCase
      */
     public void testUniqueLet() throws Exception
     {
-    	Map symbols = new HashMap();
-    	
-    	execute("unique-let.script", symbols);
-    	
-    	assertSymbol(symbols, "alpha", "Alpha");
-    	assertSymbol(symbols, "beta", "Alpha$0");
-    	assertSymbol(symbols, "gamma", "Alpha$1");
+        Map symbols = new HashMap();
+
+        execute("unique-let.script", symbols);
+
+        assertSymbol(symbols, "alpha", "Alpha");
+        assertSymbol(symbols, "beta", "Alpha$0");
+        assertSymbol(symbols, "gamma", "Alpha$1");
     }
 
     /**
@@ -434,28 +442,27 @@ public class TestScript extends TapestryTestCase
         }
 
     }
-    
+
     /** @since 3.0 */
-    
+
     public void testNameAppend() throws Exception
     {
-    	Map symbols = new HashMap();
-    	
-    	symbols.put("name", "fred");
-    	execute("name-append.script", symbols);
-    	
-    	assertSymbol(symbols, "output", "fred$suffix");
+        Map symbols = new HashMap();
+
+        symbols.put("name", "fred");
+        execute("name-append.script", symbols);
+
+        assertSymbol(symbols, "output", "fred$suffix");
     }
-    
+
     /**
      * A bunch of quickies to push up the code coverage numbers.
      */
-    public void testCheats()
-    throws Exception
+    public void testCheats() throws Exception
     {
-		IScript script = execute("simple.script", null);
-		
-		ScriptSession session = new ScriptSession(script.getScriptLocation(), null, null, null);
-		assertEquals("ScriptSession[" + script.getScriptLocation() + "]",  session.toString());
+        IScript script = execute("simple.script", null);
+
+        ScriptSession session = new ScriptSession(script.getScriptLocation(), null, null, null);
+        assertEquals("ScriptSession[" + script.getScriptLocation() + "]", session.toString());
     }
 }

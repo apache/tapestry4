@@ -6,12 +6,9 @@
 <script>
 
 <body>
-<unique tag="tag1">Block1</unique>
-<unique tag="tag1">Block2</unique>
-<unique tag="tag1">Block3</unique>
-<unique tag="tag2">Block4</unique>
-<unique tag="tag2">Block5</unique>
-	
+<unique>Block1</unique>
+<unique>Block2</unique>
+NotUnique
 </body>
 
 

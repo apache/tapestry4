@@ -77,12 +77,10 @@ public class UniqueRule extends AbstractTokenRule
 
     public void startElement(RuleDirectedParser parser, Attributes attributes)
     {
-    	String tag = getAttribute(attributes, "tag");
-    	
-    	IScriptToken token = new UniqueToken(tag, parser.getLocation());
-    	
-    	addToParent(parser, token);
-    	parser.push(token);
+        IScriptToken token = new UniqueToken(parser.getLocation());
+
+        addToParent(parser, token);
+        parser.push(token);
     }
 
 }

@@ -189,14 +189,6 @@ Defines a block that only is rendered once per page.
 This is appropriate to certain kinds of initialization code
 that should not be duplicated, even if the script is
 executed multiple times.
-
-Attributes:
-  tag: A string used to identify the unique block.  This should
-    be a fully-qualified name (ex: "com.mycompany.myapp.foo")
-    to ensure there are no conflicts with other's scripts.
     
 -->
 <!ELEMENT unique %full-content;>
-<!ATTLIST unique
-  tag CDATA #REQUIRED
-> 
