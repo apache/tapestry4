@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c21" root="context21"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<!-- Ensure that you can't change the engine's locale to null. -->
+	
+	<request>
+		<parameter name="service" value="external"/>
+		<parameter name="context" value="SetLocaleNull"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+Exception
+]]>
+
+		</assert-output>
+		
+		<assert-output name="Exception">
+		java.lang.IllegalArgumentException	
+		</assert-output>
+		
+		<assert-output name="Detail">
+		May not change engine locale to null.	
+		</assert-output>
+		
+	</request>
+</mock-test>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c21" root="context21"/>
+
+  	<servlet name="service-instantiate-error" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		
+		<assert-exception name="Result">
+		Unable to instantiate class org.apache.tapestry.junit.mock.c21.PrivateService as service private.
+		</assert-exception>
+		
+	</request>
+</mock-test>
