@@ -1,3 +1,16 @@
+* Sep 26 2000 hship
+
+Fix NullPointerException when the Home page does NOT throw an exception inside validate().
+
+* Sep 25 2000 hship
+
+Change the signature for AbstractApplication.cleanupAfterRequest to include the IRequestCycle.
+Undo the [114878] fix, since it uses servlet 2.2 only API.
+
+* Sep 24 2000 hship
+
+[114878] com.primix.tapestry.context-path should be for context 
+
 * Sep 24 2000 hship
 
 [115140] Home service must validate()
