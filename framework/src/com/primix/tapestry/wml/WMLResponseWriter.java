@@ -1,8 +1,3 @@
-package com.primix.tapestry.wml;
-
-import com.primix.tapestry.*;
-import java.io.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -51,6 +46,11 @@ import java.io.*;
  * @author David Solis
  * @since 0.2.9
  */
+
+package com.primix.tapestry.wml;
+
+import com.primix.tapestry.*;
+import java.io.*;
 
 public class WMLResponseWriter
     extends AbstractResponseWriter

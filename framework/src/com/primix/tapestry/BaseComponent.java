@@ -1,11 +1,3 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.spec.ComponentSpecification;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.parse.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -41,6 +33,14 @@ import org.apache.log4j.*;
  * @version $Id$
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.spec.ComponentSpecification;
+import com.primix.tapestry.event.*;
+import com.primix.tapestry.parse.*;
+import java.util.*;
+import org.apache.log4j.*;
+
 public class BaseComponent
 extends AbstractComponent
 {
@@ -48,7 +48,8 @@ extends AbstractComponent
 	protected int outerCount = 0;
 	protected IRender[] outer;
 
-	private static final Category CAT  = Category.getInstance(BaseComponent.class.getName());
+	private static final Category CAT  = 
+		Category.getInstance(BaseComponent.class);
 
 	/**
 	*  Adds an element as an outer element for the receiver.  Outer

@@ -1,8 +1,3 @@
-package com.primix.tapestry.binding;
-
-import com.primix.tapestry.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,6 +33,11 @@ import java.util.*;
  * @version $Id$
  */
 
+
+package com.primix.tapestry.binding;
+
+import com.primix.tapestry.*;
+import java.util.*;
 
 public abstract class AbstractBinding implements IBinding
 {

@@ -1,13 +1,3 @@
-package com.primix.tapestry.asset;
-
-import java.net.*;
-import javax.servlet.*;
-import java.io.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -46,6 +36,15 @@ import org.apache.log4j.*;
  *  @version $Id$
  */
 
+package com.primix.tapestry.asset;
+
+import java.net.*;
+import javax.servlet.*;
+import java.io.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.*;
+import java.util.*;
+import org.apache.log4j.*;
 
 public class ContextAsset implements IAsset
 {

@@ -1,7 +1,3 @@
-package com.primix.foundation;
-
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -33,12 +29,15 @@ import java.util.*;
 /**
  *  Used to split a string into substrings based on a single character
  *  delimiter.  A fast, simple version of
- *  <code>java.util.StringTokenizer</code>.
+ *  {@link StringTokenizer}.
  *
  *  @author Howard Ship
  *  @version $Id$
  */
 
+package com.primix.tapestry.util;
+
+import java.util.*;
 
 public class StringSplitter
 {

@@ -1,7 +1,3 @@
-package com.primix.foundation.io;
-
-import java.io.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -42,6 +38,9 @@ import java.io.*;
  *  @version $Id$
  */
 
+package com.primix.tapestry.util.io;
+
+import java.io.*;
 
 public class BinaryDumpOutputStream extends OutputStream
 {

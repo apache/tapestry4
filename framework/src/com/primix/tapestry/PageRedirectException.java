@@ -1,5 +1,3 @@
-package com.primix.tapestry;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,6 +36,8 @@ package com.primix.tapestry;
  */
 
 
+package com.primix.tapestry;
+
 public class PageRedirectException extends RequestCycleException
 {
 	private String targetPageName;
@@ -49,6 +49,11 @@ public class PageRedirectException extends RequestCycleException
 		this.targetPageName = targetPageName;
 	}
 
+	public PageRedirectException(IPage page)
+	{
+		this(page.getName());
+	}
+	
 	public PageRedirectException(String message, IComponent component,
 		String targetPageName)
 	{

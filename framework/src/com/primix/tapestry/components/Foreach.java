@@ -1,9 +1,3 @@
-package com.primix.tapestry.components;
-
-import com.primix.foundation.*;
-import java.util.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.event.*;
 
 /*
  * Tapestry Web Application Framework
@@ -114,6 +108,12 @@ import com.primix.tapestry.event.*;
  *  @version $Id$
  */
 
+
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.util.*;
+import java.util.*;
+import com.primix.tapestry.*;
 
 public class Foreach extends AbstractComponent
 {

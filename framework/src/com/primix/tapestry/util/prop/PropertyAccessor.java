@@ -1,11 +1,3 @@
-package com.primix.foundation.prop;
-
-import java.beans.*;
-import java.lang.reflect.*;
-import java.util.*;
-import com.primix.foundation.DynamicInvocationException;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -45,10 +37,18 @@ import org.apache.log4j.*;
  * @see PropertyHelper
  */
  
+package com.primix.tapestry.util.prop;
+
+import java.beans.*;
+import java.lang.reflect.*;
+import java.util.*;
+import com.primix.tapestry.util.DynamicInvocationException;
+import org.apache.log4j.*;
+
 class PropertyAccessor implements IPropertyAccessor
 {
 	private static final Category CAT = 
-		Category.getInstance(PropertyAccessor.class.getName());
+		Category.getInstance(PropertyAccessor.class);
 
 	protected PropertyDescriptor pd;
 	private Method accessor;

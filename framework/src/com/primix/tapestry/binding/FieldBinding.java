@@ -1,10 +1,3 @@
-package com.primix.tapestry.binding;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.pageload.PageSource;
-import java.util.*;
-import java.lang.reflect.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -53,6 +46,13 @@ import java.lang.reflect.*;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry.binding;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.pageload.PageSource;
+import java.util.*;
+import java.lang.reflect.*;
 
 public class FieldBinding extends AbstractBinding
 {

@@ -1,11 +1,3 @@
-package com.primix.tapestry;
-
-import java.util.Locale;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.ComponentSpecification;
-import java.io.OutputStream;
-import javax.servlet.http.HttpSession;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -51,6 +43,14 @@ import javax.servlet.http.HttpSession;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry;
+
+import java.util.Locale;
+import com.primix.tapestry.event.*;
+import com.primix.tapestry.spec.ComponentSpecification;
+import java.io.OutputStream;
+import javax.servlet.http.HttpSession;
 
 public interface IPage extends IComponent
 {

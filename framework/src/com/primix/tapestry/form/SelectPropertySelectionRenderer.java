@@ -1,7 +1,3 @@
-package com.primix.tapestry.components.html.form;
-
-import com.primix.tapestry.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,7 +34,11 @@ import com.primix.tapestry.*;
  *  @author Howard Ship
  *
  */
- 
+
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
 public class SelectPropertySelectionRenderer
 implements IPropertySelectionRenderer
 {

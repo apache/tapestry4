@@ -1,14 +1,3 @@
-package com.primix.tapestry.parse;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
-import com.primix.foundation.*;
-import org.w3c.dom.*;
-import java.io.*;
-import java.util.*;
-import org.xml.sax.*;
-import com.primix.foundation.xml.*;
- 
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -46,6 +35,18 @@ import com.primix.foundation.xml.*;
  *  @version $Id$
  *  @author Howard Ship
  */
+ 
+
+package com.primix.tapestry.parse;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.util.*;
+import org.w3c.dom.*;
+import java.io.*;
+import java.util.*;
+import org.xml.sax.*;
+import com.primix.tapestry.util.xml.*;
  
 public class SpecificationParser
 extends AbstractDocumentParser

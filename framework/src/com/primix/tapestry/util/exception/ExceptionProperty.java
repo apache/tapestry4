@@ -1,7 +1,3 @@
-package com.primix.foundation.exception;
-
-import java.io.Serializable;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,6 +34,10 @@ import java.io.Serializable;
  *  @version $Id$
  */
 
+
+package com.primix.tapestry.util.exception;
+
+import java.io.Serializable;
 
 public class ExceptionProperty implements Serializable
 {

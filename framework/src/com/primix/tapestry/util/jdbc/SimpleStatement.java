@@ -1,8 +1,3 @@
-package com.primix.foundation.jdbc;
-
-import java.util.*;
-import java.sql.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,6 +33,11 @@ import java.sql.*;
  *  @author Howard Ship
  *
  */
+
+package com.primix.tapestry.util.jdbc;
+
+import java.util.*;
+import java.sql.*;
 
 public class SimpleStatement implements IStatement
 {

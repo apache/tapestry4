@@ -1,10 +1,3 @@
-package com.primix.tapestry;
-
-import java.io.Serializable;
-import com.primix.foundation.prop.*;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
-import java.util.*;
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -43,6 +36,14 @@ import java.util.*;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry;
+
+import java.io.Serializable;
+import com.primix.tapestry.util.prop.*;
+import com.primix.tapestry.event.*;
+import com.primix.tapestry.spec.*;
+import java.util.*;
 
 public abstract class AbstractComponent implements IComponent
 {

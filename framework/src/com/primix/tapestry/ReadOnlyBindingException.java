@@ -1,8 +1,3 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.binding.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -30,6 +25,11 @@ import com.primix.tapestry.binding.*;
  * Lesser General Public License for more details.
  *
  */
+
+package com.primix.tapestry;
+
+// Appease Javadoc
+import com.primix.tapestry.binding.*;
 
 /**
  *  Thrown when an attempt is made to update through a read-only binding (i.e,

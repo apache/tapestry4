@@ -1,8 +1,3 @@
-package com.primix.tapestry.callback;
-
-import com.primix.tapestry.*;
-import java.io.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -45,13 +40,19 @@ import java.io.*;
  *  @since 0.2.9
  *
  */
- 
+
+package com.primix.tapestry.callback;
+
+import com.primix.tapestry.*;
+import java.io.*;
+
 public interface ICallback
 extends Serializable
 {
 	/**
-	 *  Performs the call back.  Typical implementation will locale a particular
-	 *  page or component and invoke a method upon it, or the {@link IRequestCycle cycle}.
+	 *  Performs the call back.  Typical implementation will locate a particular
+	 *  page or component and invoke a method upon it, or 
+	 *  invoke a method on the {@link IRequestCycle cycle}.
 	 *
 	 */
 	 

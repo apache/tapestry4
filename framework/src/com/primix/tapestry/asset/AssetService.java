@@ -1,11 +1,3 @@
-package com.primix.tapestry.asset;
-
-import java.net.*;
-import javax.servlet.*;
-import java.io.*;
-import com.primix.tapestry.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -52,6 +44,14 @@ import java.util.*;
  *  @author Howard Ship
  *  @version $Id$
  */
+
+package com.primix.tapestry.asset;
+
+import java.net.*;
+import javax.servlet.*;
+import java.io.*;
+import com.primix.tapestry.*;
+import java.util.*;
 
 public class AssetService implements IEngineService
 {

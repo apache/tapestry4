@@ -1,7 +1,3 @@
-package com.primix.tapestry.components;
-
-import com.primix.foundation.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -39,7 +35,11 @@ import com.primix.foundation.*;
  *  @since 0.2.9
  *
  */
-  
+
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.util.*;
+
 public class ServiceLinkEventType
 extends Enum
 {
@@ -51,7 +51,16 @@ extends Enum
 	public static final ServiceLinkEventType MOUSE_OUT
 		= new ServiceLinkEventType("MOUSE_OUT", "onMouseOut");
 		
-	private ServiceLinkEventType(String name, String attributeName)
+	/**
+	 *  Constructos a new type of event.  The name should match the
+	 *  static final variable (i.e., MOUSE_OVER) and the attributeName
+	 *  is the name of the HTML attribute to be managed (i.e., "onMouseOver").
+	 *
+	 *  <p>This method is protected so that subclasses can be created
+	 *  to provide additional managed event types.
+	 */
+	 
+	protected ServiceLinkEventType(String name, String attributeName)
 	{
 		super(name);
 		

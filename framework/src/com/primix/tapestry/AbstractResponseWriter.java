@@ -1,11 +1,3 @@
-package com.primix.tapestry;
-
-import java.io.*;
-import javax.servlet.ServletOutputStream;
-import java.util.*;
-import java.text.Format;
-import java.text.NumberFormat;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -66,6 +58,14 @@ import java.text.NumberFormat;
  * @author Howard Ship, David Solis
  * @since 0.2.9
  */
+
+package com.primix.tapestry;
+
+import java.io.*;
+import javax.servlet.ServletOutputStream;
+import java.util.*;
+import java.text.Format;
+import java.text.NumberFormat;
 
 public abstract class AbstractResponseWriter
 implements IResponseWriter

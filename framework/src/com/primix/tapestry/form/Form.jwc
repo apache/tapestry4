@@ -3,16 +3,16 @@
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.components.html.form.Form</class>
-	<parameters>
-		<parameter>
-			<name>method</name>
-			<java-type>java.lang.String</java-type>
-		</parameter>
-		<parameter>
-			<name>listener</name>
-			<java-type>com.primix.tapestry.components.IActionListener</java-type>
-			<required>yes</required>
-		</parameter>
-	</parameters>
+  <class>com.primix.tapestry.form.Form</class>
+  <parameters>
+    <parameter>
+      <name>method</name>
+      <java-type>java.lang.String</java-type>
+    </parameter>
+    <parameter>
+      <name>listener</name>
+      <java-type>com.primix.tapestry.IActionListener</java-type>
+      <required>yes</required>
+    </parameter>
+  </parameters>
 </specification>

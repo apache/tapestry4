@@ -1,8 +1,3 @@
-package com.primix.foundation.pool;
-
-import java.util.*; 
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -47,9 +42,15 @@ import org.apache.log4j.*;
  *
  */
 
+package com.primix.tapestry.util.pool;
+
+import java.util.*; 
+import org.apache.log4j.*;
+
 public class Pool
 {
-	private static final Category CAT = Category.getInstance(Pool.class.getName());
+	private static final Category CAT = 
+		Category.getInstance(Pool.class);
 
 	private static final int MAP_SIZE = 23;
 

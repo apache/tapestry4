@@ -1,9 +1,3 @@
-package com.primix.foundation.io;
-
-import java.util.*;
-import java.io.*;
-import com.primix.foundation.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -40,6 +34,13 @@ import com.primix.foundation.*;
  *  @version $Id$
  *
  */
+
+
+package com.primix.tapestry.util.io;
+
+import java.util.*;
+import java.io.*;
+import com.primix.tapestry.util.*;
 
 public class DataSqueezer
 {

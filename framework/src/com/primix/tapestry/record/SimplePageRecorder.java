@@ -1,11 +1,3 @@
-package com.primix.tapestry.record;
-
-import com.primix.tapestry.*;
-import java.util.*;
-import com.primix.foundation.*;
-import java.io.*;
-import com.primix.tapestry.engine.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -47,6 +39,16 @@ import com.primix.tapestry.engine.*;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry.record;
+
+import com.primix.tapestry.*;
+import java.util.*;
+import com.primix.tapestry.util.*;
+import java.io.*;
+
+// Appease Javadoc
+import com.primix.tapestry.engine.*;
 
 
 public class SimplePageRecorder 

@@ -1,13 +1,3 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.event.ChangeObserver;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-import java.io.OutputStream;
-import javax.servlet.http.*;
-import com.primix.foundation.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -44,12 +34,22 @@ import org.apache.log4j.*;
  * @since 0.2.9
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.event.ChangeObserver;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+import java.io.OutputStream;
+import javax.servlet.http.*;
+import com.primix.tapestry.util.*;
+import org.apache.log4j.*;
 
 public abstract class AbstractPage
 extends BaseComponent 
 implements IPage
 {
-	private static final Category CAT = Category.getInstance(AbstractPage.class.getName());
+	private static final Category CAT = 
+		Category.getInstance(AbstractPage.class);
 	
 	/**
 	*  Object to be notified when a observered property changes.  Observered

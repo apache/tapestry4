@@ -1,14 +1,3 @@
-package com.primix.tapestry;
-
-import javax.servlet.http.*;
-import java.io.*;
-import javax.servlet.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.parse.*;
-import com.primix.foundation.exception.*;
-import com.primix.foundation.xml.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -54,6 +43,17 @@ import org.apache.log4j.*;
  * @version $Id$
  * @author Howard Ship
  */
+
+package com.primix.tapestry;
+
+import javax.servlet.http.*;
+import java.io.*;
+import javax.servlet.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.parse.*;
+import com.primix.tapestry.util.exception.*;
+import com.primix.tapestry.util.xml.*;
+import org.apache.log4j.*;
 
 abstract public class ApplicationServlet
 extends HttpServlet

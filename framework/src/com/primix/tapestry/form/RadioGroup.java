@@ -1,10 +1,3 @@
-package com.primix.tapestry.components.html.form;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -78,6 +71,10 @@ import java.util.*;
  */
 
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
 public class RadioGroup extends AbstractFormComponent
 {
 	private IBinding selectedBinding;
@@ -95,7 +92,7 @@ public class RadioGroup extends AbstractFormComponent
 
 	private String name;
 
-		private boolean disabled;
+	private boolean disabled;
 	private boolean rewinding;
 	private boolean rendering;
 	private int nextOptionId;

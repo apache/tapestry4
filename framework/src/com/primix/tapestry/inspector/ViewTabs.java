@@ -1,9 +1,3 @@
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -42,6 +36,12 @@ import java.util.*;
  *
  */
  
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import java.util.*;
+
 public class ViewTabs extends BaseComponent
 {
 	private static View[] views =

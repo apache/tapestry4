@@ -1,3 +1,9 @@
+* May 1 2001 hship
+
+Fix code following package reorganization.
+[420454] Should be possible to subclass ServiceLinkEventType
+
+
 * Apr 24 2001 hship
 
 Cleanup Javadoc warnings by adding extra imports.

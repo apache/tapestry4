@@ -1,15 +1,3 @@
-package com.primix.tapestry;
-
-import java.awt.Color;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.StringTokenizer;
-import java.util.*;
-import java.io.Writer;
-import com.primix.foundation.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -73,6 +61,15 @@ import com.primix.foundation.*;
  * @author Howard Ship
  */
  
+package com.primix.tapestry;
+
+import java.awt.Color;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+import com.primix.tapestry.util.*;
+
 public class RequestContext
 implements IRender
 {

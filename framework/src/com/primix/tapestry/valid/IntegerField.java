@@ -1,11 +1,3 @@
-package com.primix.tapestry.components.html.valid;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.form.*;
-import java.util.*;
-import java.text.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -131,6 +123,14 @@ import java.text.*;
  *  @version $Id$
  *
  */
+
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.form.*;
+import java.util.*;
+import java.text.*;
 
 public class IntegerField
 extends AbstractValidatingTextField

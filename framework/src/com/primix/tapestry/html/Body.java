@@ -1,10 +1,3 @@
-package com.primix.tapestry.components.html;
-
-import java.io.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.script.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -43,6 +36,13 @@ import java.util.*;
  *  @version $Id$
  */
 
+
+package com.primix.tapestry.html;
+
+import java.io.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.script.*;
+import java.util.*;
 
 public class Body extends AbstractComponent
 {

@@ -1,9 +1,3 @@
-package com.primix.tapestry.spec;
-
-import com.primix.tapestry.IBinding;
-import com.primix.foundation.*;
-import com.primix.tapestry.binding.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -42,6 +36,11 @@ import com.primix.tapestry.binding.*;
  * @version $Id$
  */
 
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.IBinding;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.binding.*;
 
 public final class BindingType extends Enum
 {

@@ -1,6 +1,3 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.*;
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -37,6 +34,8 @@ import com.primix.tapestry.*;
  * @version $Id$
  */
 
+
+package com.primix.tapestry;
 
 public class NoSuchComponentException extends RuntimeException
 {

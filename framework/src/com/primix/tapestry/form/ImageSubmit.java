@@ -1,10 +1,3 @@
-package com.primix.tapestry.components.html.form;
-                                                  
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.*;
-import java.awt.Point;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -123,6 +116,11 @@ import java.awt.Point;
  *  @version $Id$
  */
 
+
+package com.primix.tapestry.form;
+                                                  
+import com.primix.tapestry.*;
+import java.awt.Point;
 
 public class ImageSubmit extends AbstractFormComponent
 {

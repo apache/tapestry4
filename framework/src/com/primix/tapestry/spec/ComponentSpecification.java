@@ -1,9 +1,3 @@
-package com.primix.tapestry.spec;
-
-import com.primix.tapestry.*;
-import com.primix.foundation.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -56,6 +50,12 @@ import java.util.*;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.util.*;
+import java.util.*;
 
 public class ComponentSpecification extends BasePropertyHolder
 {

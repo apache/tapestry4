@@ -1,18 +1,3 @@
-package com.primix.tapestry.record;
-
-import com.primix.foundation.prop.PropertyHelper;
-import com.primix.tapestry.*;
-import com.primix.tapestry.event.*;
-import java.util.*;
-import java.io.*;
-import java.rmi.*;
-import javax.ejb.*;
-
-// To appease JavaDoc
-
-import javax.ejb.EJBObject;
-import javax.ejb.Handle;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -56,6 +41,20 @@ import javax.ejb.Handle;
  * @version $Id$
  */
 
+package com.primix.tapestry.record;
+
+import com.primix.tapestry.util.prop.PropertyHelper;
+import com.primix.tapestry.*;
+import com.primix.tapestry.event.*;
+import java.util.*;
+import java.io.*;
+import java.rmi.*;
+import javax.ejb.*;
+
+// Appease JavaDoc
+
+import javax.ejb.EJBObject;
+import javax.ejb.Handle;
 
 public abstract class PageRecorder
 implements IPageRecorder, Serializable

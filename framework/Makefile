@@ -3,22 +3,14 @@
 PROJECT_NAME = com.primix.tapestry
 
 PACKAGES = \
-	com.primix.foundation \
-	com.primix.foundation.exception \
-	com.primix.foundation.io \
-	com.primix.foundation.prop \
-	com.primix.foundation.jdbc \
-	com.primix.foundation.ejb \
-	com.primix.foundation.pool \
-	com.primix.foundation.xml \
 	com.primix.tapestry \
 	com.primix.tapestry.asset \
 	com.primix.tapestry.binding \
 	com.primix.tapestry.components \
-	com.primix.tapestry.components.html \
-	com.primix.tapestry.components.html.link \
-	com.primix.tapestry.components.html.form \
-	com.primix.tapestry.components.html.valid \
+	com.primix.tapestry.html \
+	com.primix.tapestry.link \
+	com.primix.tapestry.form \
+	com.primix.tapestry.valid \
 	com.primix.tapestry.engine \
 	com.primix.tapestry.event \
 	com.primix.tapestry.pageload \
@@ -29,7 +21,15 @@ PACKAGES = \
 	com.primix.tapestry.inspector \
 	com.primix.tapestry.script \
 	com.primix.tapestry.wml \
-	com.primix.tapestry.callback
+	com.primix.tapestry.callback \
+	com.primix.tapestry.util \
+	com.primix.tapestry.util.exception \
+	com.primix.tapestry.util.io \
+	com.primix.tapestry.util.prop \
+	com.primix.tapestry.util.jdbc \
+	com.primix.tapestry.util.ejb \
+	com.primix.tapestry.util.pool \
+	com.primix.tapestry.util.xml
 
 PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/gnu-regexp.jar \

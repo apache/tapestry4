@@ -1,5 +1,3 @@
-package com.primix.tapestry.script;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -36,7 +34,9 @@ package com.primix.tapestry.script;
  *  @version $Id$
  *  @since 0.2.9
  */
- 
+
+package com.primix.tapestry.script;
+
 class InitToken extends AbstractToken
 {
 	private int bufferLength = 100;

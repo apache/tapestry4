@@ -1,7 +1,3 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.spec.ComponentSpecification;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -40,6 +36,9 @@ import com.primix.tapestry.spec.ComponentSpecification;
  * @version $Id$
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.spec.ComponentSpecification;
 
 public interface IPageLoader
 {

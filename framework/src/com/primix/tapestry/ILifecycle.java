@@ -1,8 +1,3 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.spec.ComponentSpecification;
-import com.primix.tapestry.components.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -48,6 +43,9 @@ import com.primix.tapestry.components.*;
  *  @version $Id$
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.spec.ComponentSpecification;
 
 public interface ILifecycle
 {

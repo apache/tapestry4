@@ -3,13 +3,13 @@
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.components.html.form.Select</class>
-	<parameters>
-		<parameter>
-			<name>multiple</name>
-		</parameter>
-		<parameter>
-			<name>disabled</name>
-		</parameter>
-	</parameters>
+  <class>com.primix.tapestry.form.Select</class>
+  <parameters>
+    <parameter>
+      <name>multiple</name>
+    </parameter>
+    <parameter>
+      <name>disabled</name>
+    </parameter>
+  </parameters>
 </specification>

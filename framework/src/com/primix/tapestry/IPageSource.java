@@ -1,5 +1,3 @@
-package com.primix.tapestry;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -40,6 +38,7 @@ package com.primix.tapestry;
  *  @version $Id$
  */
 
+package com.primix.tapestry;
 
 public interface IPageSource
 {
@@ -50,7 +49,7 @@ public interface IPageSource
      */
  
     public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
-        throws PageLoaderException;
+    throws PageLoaderException;
 
     /**
      *  Invoked after the engine is done with the page

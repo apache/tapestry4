@@ -1,8 +1,3 @@
-package com.primix.foundation;
-
-import java.util.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -69,13 +64,21 @@ import org.apache.log4j.*;
  *  <p>This class is thread safe.
  *
  *
+ *  @version $Id$
+ *  @author Howard Ship
  */
+
+package com.primix.tapestry.util;
+
+import java.util.*;
+import org.apache.log4j.*;
 
 public class Decorator
 {
-	private static final Category CAT = Category.getInstance(Decorator.class.getName());
+	private static final Category CAT = 
+		Category.getInstance(Decorator.class);
 
-		private static final int REGISTRATION_MAP_SIZE = 7;
+	private static final int REGISTRATION_MAP_SIZE = 7;
 	private static final int CACHE_MAP_SIZE = 29;
 
 	/**
@@ -127,7 +130,7 @@ public class Decorator
 			// Also, normally all registrations occur before any adaptors
 			// are searched for, so this is not a big deal.
 
-			cache = null;
+		cache = null;
 	}
 
 	/**

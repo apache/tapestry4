@@ -1,8 +1,3 @@
-package com.primix.foundation.prop;
-
-import com.primix.foundation.prop.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -48,6 +43,10 @@ import java.util.*;
  *  @version $Id$
  */
 
+package com.primix.tapestry.util.prop;
+
+import com.primix.tapestry.util.prop.*;
+import java.util.*;
 
 public class MapHelper extends PropertyHelper
 {

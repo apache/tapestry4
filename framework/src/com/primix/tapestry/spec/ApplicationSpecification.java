@@ -1,17 +1,3 @@
-package com.primix.tapestry.spec;
-
-import com.primix.tapestry.*;
-import java.util.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.*;
-import com.primix.tapestry.components.html.form.*;
-import com.primix.tapestry.components.html.link.*;
-import com.primix.tapestry.components.html.valid.*;
-import com.primix.foundation.exception.*;
-import com.primix.foundation.*;
-import com.primix.tapestry.inspector.*;
-import com.primix.tapestry.script.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -47,6 +33,19 @@ import com.primix.tapestry.script.*;
  * @version $Id$
  */
 
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.*;
+import java.util.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+import com.primix.tapestry.form.*;
+import com.primix.tapestry.link.*;
+import com.primix.tapestry.valid.*;
+import com.primix.tapestry.util.exception.*;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.inspector.*;
+import com.primix.tapestry.script.*;
 
 public class ApplicationSpecification 
 extends BasePropertyHolder
@@ -75,9 +74,9 @@ extends BasePropertyHolder
 		defaultComponentMap.put("Insert", 
 			"/com/primix/tapestry/components/Insert.jwc");
 		defaultComponentMap.put("Action", 
-			"/com/primix/tapestry/components/html/link/Action.jwc");
+			"/com/primix/tapestry/link/Action.jwc");
 		defaultComponentMap.put("Checkbox",
-			"/com/primix/tapestry/components/html/form/Checkbox.jwc");
+			"/com/primix/tapestry/form/Checkbox.jwc");
 		defaultComponentMap.put("InsertWrapped",
 			"/com/primix/tapestry/components/InsertWrapped.jwc");
 		defaultComponentMap.put("Conditional", 
@@ -85,59 +84,59 @@ extends BasePropertyHolder
 		defaultComponentMap.put("Foreach", 
 			"/com/primix/tapestry/components/Foreach.jwc");
 		defaultComponentMap.put("ExceptionDisplay",
-			"/com/primix/tapestry/components/html/ExceptionDisplay.jwc");
+			"/com/primix/tapestry/html/ExceptionDisplay.jwc");
 		defaultComponentMap.put("Delegator",
 			"/com/primix/tapestry/components/Delegator.jwc");
 		defaultComponentMap.put("Form",
-			"/com/primix/tapestry/components/html/form/Form.jwc");
+			"/com/primix/tapestry/form/Form.jwc");
 		defaultComponentMap.put("TextField",
-			"/com/primix/tapestry/components/html/form/TextField.jwc");
+			"/com/primix/tapestry/form/TextField.jwc");
 		defaultComponentMap.put("Text",
-			"/com/primix/tapestry/components/html/form/Text.jwc");
+			"/com/primix/tapestry/form/Text.jwc");
 		defaultComponentMap.put("Select",
-			"/com/primix/tapestry/components/html/form/Select.jwc");
+			"/com/primix/tapestry/form/Select.jwc");
 		defaultComponentMap.put("Option",
-			"/com/primix/tapestry/components/html/form/Option.jwc");
+			"/com/primix/tapestry/form/Option.jwc");
 		defaultComponentMap.put("Image",
-			"/com/primix/tapestry/components/html/Image.jwc");
+			"/com/primix/tapestry/html/Image.jwc");
 		defaultComponentMap.put("Any",
 			"/com/primix/tapestry/components/Any.jwc");
 		defaultComponentMap.put("RadioGroup",
-			"/com/primix/tapestry/components/html/form/RadioGroup.jwc");
+			"/com/primix/tapestry/form/RadioGroup.jwc");
 		defaultComponentMap.put("Radio",
-			"/com/primix/tapestry/components/html/form/Radio.jwc");
+			"/com/primix/tapestry/form/Radio.jwc");
 		defaultComponentMap.put("Rollover",
-			"/com/primix/tapestry/components/html/Rollover.jwc");
+			"/com/primix/tapestry/html/Rollover.jwc");
 		defaultComponentMap.put("Body",
-			"/com/primix/tapestry/components/html/Body.jwc");
+			"/com/primix/tapestry/html/Body.jwc");
 		defaultComponentMap.put("Direct",
-			"/com/primix/tapestry/components/html/link/Direct.jwc");
+			"/com/primix/tapestry/link/Direct.jwc");
 		defaultComponentMap.put("Page",
-			"/com/primix/tapestry/components/html/link/Page.jwc");
+			"/com/primix/tapestry/link/Page.jwc");
 		defaultComponentMap.put("Service",
-			"/com/primix/tapestry/components/html/link/Service.jwc");
+			"/com/primix/tapestry/link/Service.jwc");
 		defaultComponentMap.put("ImageSubmit",
-			"/com/primix/tapestry/components/html/form/ImageSubmit.jwc");	
+			"/com/primix/tapestry/form/ImageSubmit.jwc");	
 		defaultComponentMap.put("PropertySelection",
-			"/com/primix/tapestry/components/html/form/PropertySelection.jwc");
+			"/com/primix/tapestry/form/PropertySelection.jwc");
 		defaultComponentMap.put("Submit",
-			"/com/primix/tapestry/components/html/form/Submit.jwc");	
+			"/com/primix/tapestry/form/Submit.jwc");	
 		defaultComponentMap.put("Hidden",
-			"/com/primix/tapestry/components/html/form/Hidden.jwc");	
+			"/com/primix/tapestry/form/Hidden.jwc");	
 		defaultComponentMap.put("ShowInspector",
 			"/com/primix/tapestry/inspector/ShowInspector.jwc");		
 		defaultComponentMap.put("Shell",
-			"/com/primix/tapestry/components/html/Shell.jwc");
+			"/com/primix/tapestry/html/Shell.jwc");
 		defaultComponentMap.put("InsertText",
-			"/com/primix/tapestry/components/html/InsertText.jwc");
+			"/com/primix/tapestry/html/InsertText.jwc");
 		defaultComponentMap.put("ValidatingTextField",
-			"/com/primix/tapestry/components/html/valid/ValidatingTextField.jwc");
+			"/com/primix/tapestry/valid/ValidatingTextField.jwc");
 		defaultComponentMap.put("DateField",
-			"/com/primix/tapestry/components/html/valid/DateField.jwc");
+			"/com/primix/tapestry/valid/DateField.jwc");
 		defaultComponentMap.put("IntegerField",
-			"/com/primix/tapestry/components/html/valid/IntegerField.jwc");
+			"/com/primix/tapestry/valid/IntegerField.jwc");
 		defaultComponentMap.put("FieldLabel",
-			"/com/primix/tapestry/components/html/valid/FieldLabel.jwc");
+			"/com/primix/tapestry/valid/FieldLabel.jwc");
 		defaultComponentMap.put("Script",
 			"/com/primix/tapestry/script/Script.jwc");
 		defaultComponentMap.put("Block",
@@ -181,13 +180,13 @@ extends BasePropertyHolder
 	*  <table border=1>
 	* 	<tr> <th>Specification</th> <th>Class / Alias</th></tr>
 	*  <tr>
-	*	 <td>/com/primix/tapestry/components/html/link/Action.jwc</td>
+	*	 <td>/com/primix/tapestry/link/Action.jwc</td>
 	*	 <td>{@link Action}</td></tr>
 	* <tr>
 	* <td>/com/primix/tapestry/components/Block.jwc </td> 
 	*		<td>{@link Block}</td></tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/Checkbox.jwc</td>
+	*		<td>/com/primix/tapestry/form/Checkbox.jwc</td>
 	*		<td>{@link Checkbox}</td>
 	* </tr>
 	*
@@ -195,7 +194,7 @@ extends BasePropertyHolder
 	*		<td>/com/primix/tapestry/components/Any.jwc</td>
 	*		<td>{@link Any}</td> </tr>
 	*  <tr>
-	*		<td>/com/primix/tapestry/components/html/Body.jwc</td>
+	*		<td>/com/primix/tapestry/html/Body.jwc</td>
 	*		<td>{@link Body}</td>
 	* </tr>
 	* <tr>
@@ -203,7 +202,7 @@ extends BasePropertyHolder
 	*		<td>{@link Conditional}</td> </tr>
 	* </tr>
 	*  <tr>
-	*       <td>/com/primix/tapestry/components/html/valid/DateField.jwc</td>
+	*       <td>/com/primix/tapestry/valid/DateField.jwc</td>
 	*       <td>{@link DateField}</td>
 	* </tr>
 	*
@@ -211,15 +210,15 @@ extends BasePropertyHolder
 	*		<td>/com/primix/tapestry/components/Delegator.jwc</td>
 	*		<td>{@link Delegator}</td> </tr>
 	*  <tr>
-	*		<td>/com/primix/tapestry/components/html/link/Direct.jwc</td>
+	*		<td>/com/primix/tapestry/link/Direct.jwc</td>
 	*		<td>{@link Direct}</td>
 	* </tr>
 	* <tr>
-	*     <td>/com/primix/tapestry/components/html/ExceptionDisplay.jwc</td>
+	*     <td>/com/primix/tapestry/html/ExceptionDisplay.jwc</td>
 	*	 	<td>{@link BaseComponent}</td> </tr>
 	*
 	*  <tr>
-	*       <td>/com/primix/tapestry/components/html/valid/FieldLabel.jwc</td>
+	*       <td>/com/primix/tapestry/valid/FieldLabel.jwc</td>
 	*       <td>{@link FieldLabel}</td>
 	* </tr>
 	*
@@ -227,18 +226,18 @@ extends BasePropertyHolder
 	*		<td>/com/primix/tapestry/components/Foreach.jwc</td>
 	*		<td>{@link Foreach}</td> </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/Form.jwc</td>
+	*		<td>/com/primix/tapestry/form/Form.jwc</td>
 	*		<td>{@link Form}</td> </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/Hidden.jwc</td>
+	*		<td>/com/primix/tapestry/form/Hidden.jwc</td>
 	*		<td>{@link Hidden}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/Image.jwc</td>
+	*		<td>/com/primix/tapestry/html/Image.jwc</td>
 	*		<td>{@link Image}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/ImageSubmit.jwc</td>
+	*		<td>/com/primix/tapestry/form/ImageSubmit.jwc</td>
 	*		<td>{@link ImageSubmit}</td>
 	* </tr>
 	*  <tr>
@@ -250,7 +249,7 @@ extends BasePropertyHolder
 	*		<td>{@link InsertBlock}</td></tr>
 	*
 	*   <tr>
-	*       <td>/com/primix/tapestry/components/html/InsertText.jwc</td>
+	*       <td>/com/primix/tapestry/html/InsertText.jwc</td>
 	*       <td>{@link InsertText}</td>
 	*   </tr>
 	*
@@ -259,29 +258,29 @@ extends BasePropertyHolder
 	*		<td>{@link InsertWrapped}</td> </tr>
 	*
 	*  <tr>
-	*       <td>/com/primix/tapestry/components/html/valid/IntegerField.jwc</td>
+	*       <td>/com/primix/tapestry/valid/IntegerField.jwc</td>
 	*       <td>{@link IntegerField}</td>
 	* </tr>
 	*
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/Option.jwc</td>
+	*		<td>/com/primix/tapestry/form/Option.jwc</td>
 	*		<td>{@link Option}</td>
 	* </tr>
 	*  <tr>
-	*	 <td>/com/primix/tapestry/components/html/link/Page.jwc</td>
+	*	 <td>/com/primix/tapestry/link/Page.jwc</td>
 	*	 <td>{@link Page}</td></tr>
 	* <tr>
 	* <tr>
-	*  <td>/com/primix/tapestry/components/html/form/PropertySelection.jwc</td>
+	*  <td>/com/primix/tapestry/form/PropertySelection.jwc</td>
 	*  <td>{@link PropertySelection}</td> </tr>
 	*
-	*		<td>/com/primix/tapestry/components/html/form/Radio.jwc</td>
+	*		<td>/com/primix/tapestry/form/Radio.jwc</td>
 	*		<td>{@link Radio}</td> </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/RadioGroup.jwc</td>
+	*		<td>/com/primix/tapestry/form/RadioGroup.jwc</td>
 	*		<td>{@link RadioGroup}</td> </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/Rollover.jwc</td>
+	*		<td>/com/primix/tapestry/html/Rollover.jwc</td>
 	*		<td>{@link Rollover} </td> </tr>
 	*
 	* <tr>
@@ -289,15 +288,15 @@ extends BasePropertyHolder
 	*       <td>{@link Script}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/Select.jwc</td>
+	*		<td>/com/primix/tapestry/form/Select.jwc</td>
 	*		<td>{@link Select}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/link/Service.jwc</td>
+	*		<td>/com/primix/tapestry/link/Service.jwc</td>
 	*		<td>{@link Service}</td>
 	* </tr>
 	* <tr>
-	*       <td>/com/primix/tapestry/components/html/Shell.jwc</td>
+	*       <td>/com/primix/tapestry/html/Shell.jwc</td>
 	*       <td>{@link Shell}</td>
 	* </tr>
 	* <tr>
@@ -305,19 +304,19 @@ extends BasePropertyHolder
 	*		<td>{@link ShowInspector}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/Submit.jwc</td>
+	*		<td>/com/primix/tapestry/form/Submit.jwc</td>
 	*		<td>{@link Submit}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/Text.jwc</td>
+	*		<td>/com/primix/tapestry/form/Text.jwc</td>
 	*		<td>{@link Text}</td>	</tr>
 	*
 	* <tr>
-	*		<td>/com/primix/tapestry/components/html/form/TextField.jwc</td>
+	*		<td>/com/primix/tapestry/form/TextField.jwc</td>
 	*		<td>{@link TextField}</td> </tr>
 	*
 	*  <tr>
-	*       <td>/com/primix/tapestry/components/html/valid/ValidatingTextField.jwc</td>
+	*       <td>/com/primix/tapestry/valid/ValidatingTextField.jwc</td>
 	*       <td>{@link ValidatingTextField}</td>
 	* </tr>
 	*

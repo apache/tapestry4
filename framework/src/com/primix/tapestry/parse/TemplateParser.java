@@ -1,7 +1,3 @@
-package com.primix.tapestry.parse;
-
-import gnu.regexp.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -29,8 +25,6 @@ import gnu.regexp.*;
  * Lesser General Public License for more details.
  *
  */
-
-import java.util.*;
 
 /**
  *  Parses an HTML template file that has been read in as a String.
@@ -65,6 +59,11 @@ import java.util.*;
  * @version $Id$
  *
  */
+
+package com.primix.tapestry.parse;
+
+import gnu.regexp.*;
+import java.util.*;
 
 public class TemplateParser
 {

@@ -1,11 +1,3 @@
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.html.form.*;
-import com.primix.tapestry.components.html.valid.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2001 by Howard Ship and Primix
@@ -44,6 +36,14 @@ import org.apache.log4j.*;
  *  @since 0.2.9
  */
  
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
+import com.primix.tapestry.valid.*;
+import java.util.*;
+import org.apache.log4j.*;
+
 public class ShowLogging extends BaseComponent
 implements ILifecycle
 {

@@ -2,17 +2,17 @@
 <!--$Id$-->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.components.html.form.Hidden</class>
-	<allow-body>no</allow-body>
-	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
-		<parameter>
-			<name>value</name>
-			<required>yes</required>
-		</parameter>
-		<parameter>
-			<name>listener</name>
-			<java-type>com.primix.tapestry.components.IActionListener</java-type>
-		</parameter>
-	</parameters>
+  <class>com.primix.tapestry.form.Hidden</class>
+  <allow-body>no</allow-body>
+  <parameters>
+    <allow-informal-parameters>no</allow-informal-parameters>
+    <parameter>
+      <name>value</name>
+      <required>yes</required>
+    </parameter>
+    <parameter>
+      <name>listener</name>
+      <java-type>com.primix.tapestry.IActionListener</java-type>
+    </parameter>
+  </parameters>
 </specification>

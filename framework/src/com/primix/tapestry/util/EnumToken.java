@@ -1,7 +1,3 @@
-package com.primix.foundation;
-
-import java.lang.reflect.*;
-import java.io.*;
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -36,7 +32,12 @@ import java.io.*;
  * @author Howard Ship
  * @version $Id$
  */
- 
+
+package com.primix.tapestry.util;
+
+import java.lang.reflect.*;
+import java.io.*;
+
 class EnumToken
 {
 	private String className;

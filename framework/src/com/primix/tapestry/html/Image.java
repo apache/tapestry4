@@ -1,8 +1,3 @@
-package com.primix.tapestry.components.html;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.event.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -74,6 +69,10 @@ import com.primix.tapestry.event.*;
  *  @version $Id$
  */
 
+
+package com.primix.tapestry.html;
+
+import com.primix.tapestry.*;
 
 public class Image extends AbstractComponent
 {

@@ -1,13 +1,3 @@
-package com.primix.foundation.exception;
-
-import java.lang.reflect.*;
-import java.beans.*;
-import com.primix.foundation.*;
-import com.primix.foundation.prop.*;
-import java.util.*;
-import java.io.*;
-import gnu.regexp.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -45,6 +35,16 @@ import gnu.regexp.*;
  *  @version $Id$
  */
 
+
+package com.primix.tapestry.util.exception;
+
+import java.lang.reflect.*;
+import java.beans.*;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.util.prop.*;
+import java.util.*;
+import java.io.*;
+import gnu.regexp.*;
 
 public class ExceptionAnalyzer
 {

@@ -1,10 +1,3 @@
-package com.primix.tapestry;
-
-
-import com.primix.tapestry.spec.ComponentSpecification;
-import java.util.*;
-import com.primix.tapestry.components.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -50,199 +43,209 @@ import com.primix.tapestry.components.*;
  * @version $Id$
  */
 
+package com.primix.tapestry;
+
+
+import com.primix.tapestry.spec.ComponentSpecification;
+import java.util.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+
 public interface IComponent extends IRender
 {
 
-    /**
-    *  Adds an asset to the component.  This is invoked from the page loader.
-    *
-    */
+	/**
+	*  Adds an asset to the component.  This is invoked from the page loader.
+	*
+	*/
 
-    public void addAsset(String name, IAsset asset);
+	public void addAsset(String name, IAsset asset);
 
-    /**
-    *  Adds a component to a container.  Should only be called during the page
-    *  loading process, which is responsible for any checking.
-    *
-    *  @see IPageLoader
-    *
-    */
+	/**
+	*  Adds a component to a container.  Should only be called during the page
+	*  loading process, which is responsible for any checking.
+	*
+	*  @see IPageLoader
+	*
+	*/
 
-        public void addComponent(IComponent component);
+	public void addComponent(IComponent component);
 
-    /**
-    *  Adds a new renderable element to the receiver.  The element may be either
-    *  another component, or static HTML.
-    */
+	/**
+	*  Adds a new renderable element to the receiver.  The element may be either
+	*  another component, or static HTML.
+	*/
 
-        public void addWrapped(IRender element);
+	public void addWrapped(IRender element);
 
-    /**
-    *  Returns the asset map for the component, which may be null.
-    *
-    *  <p>The return value is unmodifiable.
-    */
+	/**
+	*  Returns the asset map for the component, which may be null.
+	*
+	*  <p>The return value is unmodifiable.
+	*/
 
-    public Map getAssets();
+	public Map getAssets();
 
-    /**
-    *  Returns the binding with the given name or null if not found.
-    *
-    *  <p>Bindings are added to a component using {@link #setBinding(String,IBinding)}.
-    */
+	/**
+	*  Returns the binding with the given name or null if not found.
+	*
+	*  <p>Bindings are added to a component using {@link #setBinding(String,IBinding)}.
+	*/
 
-    public IBinding getBinding(String name);
+	public IBinding getBinding(String name);
 
-    /**
-     *  Returns a {@link Collection} of the names of all bindings (which includes
-     *  bindings for both formal and informal parameters).
-     *
-     *  <p>The return value is unmodifiable.  It will be null for a {@link IPage page},
+	/**
+	*  Returns a {@link Collection} of the names of all bindings (which includes
+	*  bindings for both formal and informal parameters).
+	*
+	*  <p>The return value is unmodifiable.  It will be null for a {@link IPage page},
 	 *  or may simply be empty for a component with no bindings.
-     *
-     */
+	*
+	*/
 
-    public Collection getBindingNames();
+	public Collection getBindingNames();
 
-    /**
-    *  Retrieves an contained component by its id.  
-    *  Contained components have unique ids within their container.
-    *
-    *  @exception NoSuchComponentException runtime exception thrown if the named
-    *  component does not exist.
-    *
-    */
+	/**
+	*  Retrieves an contained component by its id.  
+	*  Contained components have unique ids within their container.
+	*
+	*  @exception NoSuchComponentException runtime exception thrown if the named
+	*  component does not exist.
+	*
+	*/
 
-    public IComponent getComponent(String id);
+	public IComponent getComponent(String id);
 
-    /**
-    *  Returns the component which embeds the receiver.  All components are contained within
-    *  other components, with the exception of the root page component.  
-    *
-    *  <p>A page returns null.
-    *
-    */
+	/**
+	*  Returns the component which embeds the receiver.  All components are contained within
+	*  other components, with the exception of the root page component.  
+	*
+	*  <p>A page returns null.
+	*
+	*/
 
-    public IComponent getContainer();
+	public IComponent getContainer();
 
-    /**
-    *  Sets the container of the component.    This is write-once,
-    *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
-    *
-    */
+	/**
+	*  Sets the container of the component.    This is write-once,
+	*  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
+	*
+	*/
 
 
-    public void setContainer(IComponent value);
+	public void setContainer(IComponent value);
 
-    /**
-    *  Returns a string identifying the name of the page and the id path of the reciever within
-    *  the page.  Pages simply return their name.
-    *
-    *  @see #getIdPath()
-    */
+	/**
+	*  Returns a string identifying the name of the page and the id path of the reciever within
+	*  the page.  Pages simply return their name.
+	*
+	*  @see #getIdPath()
+	*/
 
-    public String getExtendedId();
+	public String getExtendedId();
 
-    /**
-    *  Returns the simple id of the component, as defined in its specification.  
-    *
-    *  <p>An id will be unique within the
-    *  component which contains this component.
-    *
-    *  <p>A  {@link IPage page} will always return null.
-    *
-    */
+	/**
+	*  Returns the simple id of the component, as defined in its specification.  
+	*
+	*  <p>An id will be unique within the
+	*  component which contains this component.
+	*
+	*  <p>A  {@link IPage page} will always return null.
+	*
+	*/
 
-    public String getId();
+	public String getId();
 
-    /**
-    *  Sets the id of the component.    This is write-once,
-    *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
-    *
-    */
+	/**
+	*  Sets the id of the component.    This is write-once,
+	*  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
+	*
+	*/
 
-    public void setId(String value);
+	public void setId(String value);
 
-    /**
-    *  Returns the qualified id of the component.  This represents a path from the 
-    *  {@link IPage page} to
-    *  this component, showing how components contain each other.  
-    *
-    *  <p>A {@link IPage page} will always return
-    *  null.  A component contained on a page returns its simple id.
-    *  Other components return their container's id path followed by a period and their
-    *  own name.
-    *
-    *  @see #getId()
-    */
+	/**
+	*  Returns the qualified id of the component.  This represents a path from the 
+	*  {@link IPage page} to
+	*  this component, showing how components contain each other.  
+	*
+	*  <p>A {@link IPage page} will always return
+	*  null.  A component contained on a page returns its simple id.
+	*  Other components return their container's id path followed by a period and their
+	*  own name.
+	*
+	*  @see #getId()
+	*/
 
-    public String getIdPath();
+	public String getIdPath();
 
-    /**
-    *  Returns the page which ultimately contains the receiver.  A page will return itself.
-    *
-    */
+	/**
+	*  Returns the page which ultimately contains the receiver.  A page will return itself.
+	*
+	*/
 
-    public IPage getPage();
+	public IPage getPage();
 
-    /**
-    *  Sets the page which ultimiately contains the component.  This is write-once,
-    *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
-    *
-    */
+	/**
+	*  Sets the page which ultimiately contains the component.  This is write-once,
+	*  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
+	*
+	*/
 
-    public void setPage(IPage value);
+	public void setPage(IPage value);
 
-    /**
-    *  Returns the specification which defines the component.
-    *
-    */
+	/**
+	*  Returns the specification which defines the component.
+	*
+	*/
 
-    public ComponentSpecification getSpecification();
+	public ComponentSpecification getSpecification();
 
-    /**
-    *  Sets the specification used by the component.  This is write-once, an attempt
-    *  to change it later will throw an {@link ApplicationRuntimeException}.
-    *
-    */
+	/**
+	*  Sets the specification used by the component.  This is write-once, an attempt
+	*  to change it later will throw an {@link ApplicationRuntimeException}.
+	*
+	*/
 
-    public void setSpecification(ComponentSpecification value);
+	public void setSpecification(ComponentSpecification value);
 
-    /**
-    *  Invoked to make the receiver render any elements it wraps.  This is typically
-    *  invoked by the receiver itself.  This method is public so that the
-    *  {@link InsertWrapped} component may operate.
-    *
-    */
+	/**
+	*  Invoked to make the receiver render any elements it wraps.  This is typically
+	*  invoked by the receiver itself.  This method is public so that the
+	*  {@link InsertWrapped} component may operate.
+	*
+	*/
 
-        public void renderWrapped(IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException;
+	public void renderWrapped(IResponseWriter writer, IRequestCycle cycle)
+	throws RequestCycleException;
 
-    /**
-    *  Adds a binding to a container.  Should only be called during the page
-    *  loading process (which is responsible for error checking).
-    *
-    *  @see IPageLoader
-    *
-    */
+	/**
+	*  Adds a binding to a container.  Should only be called during the page
+	*  loading process (which is responsible for error checking).
+	*
+	*  @see IPageLoader
+	*
+	*/
 
-        public void setBinding(String name, IBinding binding);
+	public void setBinding(String name, IBinding binding);
 
-    /**
-     *  Returns the contained components as an unmodifiable {@link Map}.  This
-     *  allows peer components to work together without directly involving their
-     *  container ... the classic example is to have an {@link Insert} work with
-     *  an enclosing {@link Foreach}.
-     *
-     *  <p>This is late addition to Tapestry, because it also opens the door
-     * to abuse, since it is quite possible to break the "black box" aspect of
-     * a component by interacting directly with components it embeds.  This creates
-     * ugly interrelationships between components that should be seperated.
-     *
-     *  @returns A Map of components keyed on component id, or null if the
-     *  component contains no other components.
-     *
-     */
+	/**
+	*  Returns the contained components as an unmodifiable {@link Map}.  This
+	*  allows peer components to work together without directly involving their
+	*  container ... the classic example is to have an {@link Insert} work with
+	*  an enclosing {@link Foreach}.
+	*
+	*  <p>This is late addition to Tapestry, because it also opens the door
+	* to abuse, since it is quite possible to break the "black box" aspect of
+	* a component by interacting directly with components it embeds.  This creates
+	* ugly interrelationships between components that should be seperated.
+	*
+	*  @returns A Map of components keyed on component id, or null if the
+	*  component contains no other components.
+	*
+	*/
 
-    public Map getComponents();
+	public Map getComponents();
 }
+

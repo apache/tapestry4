@@ -1,10 +1,3 @@
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -49,6 +42,11 @@ import java.util.*;
  *
  */
  
+
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+
 public class ShowInspector extends BaseComponent
 {
 	/**

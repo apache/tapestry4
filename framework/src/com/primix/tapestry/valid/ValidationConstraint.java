@@ -1,7 +1,3 @@
-package com.primix.tapestry.components.html.valid;
-
-import com.primix.foundation.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -37,6 +33,10 @@ import com.primix.foundation.*;
  *  @author Howard Ship
  *  @version $Id$
  */
+
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.util.*;
 
 public class ValidationConstraint
 extends Enum

@@ -1,21 +1,3 @@
-package com.primix.tapestry.engine;
-
-import com.primix.tapestry.components.*;
-import com.primix.foundation.prop.PropertyHelper;
-import com.primix.foundation.exception.*;
-import com.primix.tapestry.record.PageRecorder;
-import java.io.*;
-import javax.servlet.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.parse.*;
-import java.util.*;
-import com.primix.tapestry.pageload.*;
-import com.primix.tapestry.asset.*;
-import java.net.*;
-import javax.servlet.http.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -74,10 +56,29 @@ import org.apache.log4j.*;
  */
 
 
+package com.primix.tapestry.engine;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.util.prop.PropertyHelper;
+import com.primix.tapestry.util.exception.*;
+import com.primix.tapestry.record.PageRecorder;
+import java.io.*;
+import javax.servlet.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.parse.*;
+import java.util.*;
+import com.primix.tapestry.pageload.*;
+import com.primix.tapestry.asset.*;
+import java.net.*;
+import javax.servlet.http.*;
+import org.apache.log4j.*;
+
 public abstract class AbstractEngine
     implements IEngine, Externalizable, HttpSessionBindingListener
 {
-	private static final Category CAT = Category.getInstance(AbstractEngine.class.getName());
+	private static final Category CAT = 
+		Category.getInstance(AbstractEngine.class);
 
 	private transient String contextPath;
 	private transient String servletPrefix;

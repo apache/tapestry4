@@ -1,7 +1,3 @@
-package com.primix.foundation.ejb;
-
-import javax.ejb.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -37,6 +33,10 @@ import javax.ejb.*;
  *  @author Howard Ship
  *
  */
+
+package com.primix.tapestry.util.ejb;
+
+import javax.ejb.*;
 
 public class XFinderException extends FinderException
 {

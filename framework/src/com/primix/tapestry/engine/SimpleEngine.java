@@ -1,19 +1,3 @@
-package com.primix.tapestry.engine;
-
-import javax.servlet.http.*;
-import com.primix.tapestry.components.*;
-import java.io.IOException;
-import javax.servlet.*;
-import com.primix.tapestry.record.*;
-import java.util.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.pageload.*;
-import java.io.*;
-import javax.servlet.*;
-import com.primix.foundation.*;
-
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -53,7 +37,16 @@ import com.primix.foundation.*;
  */
 
 
- 
+package com.primix.tapestry.engine;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.record.*;
+import java.util.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.pageload.*;
+import java.io.*;
+import javax.servlet.*;
+
 public class SimpleEngine 
 extends AbstractEngine
 {

@@ -1,13 +1,3 @@
-package com.primix.foundation.xml;
-
-import com.primix.foundation.*;
-import org.w3c.dom.*;
-import java.io.*;
-import java.util.*;
-import org.xml.sax.*;
-import javax.xml.parsers.*; 
-import org.apache.log4j.*;
- 
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -45,6 +35,16 @@ import org.apache.log4j.*;
  *  @author Howard Ship
  *  @since 0.2.10
  */
+ 
+package com.primix.tapestry.util.xml;
+
+import com.primix.tapestry.util.*;
+import org.w3c.dom.*;
+import java.io.*;
+import java.util.*;
+import org.xml.sax.*;
+import javax.xml.parsers.*; 
+import org.apache.log4j.*;
  
 public abstract class AbstractDocumentParser
 implements ErrorHandler, EntityResolver
