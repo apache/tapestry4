@@ -30,8 +30,8 @@
   	<binding name="format" property-path="dateFormat"/>
   </component>
 
-  <component id="insertDescription" type="Insert">
-    <binding name="value" property-path="book.description"/>
+  <component id="insertDescription" type="InsertText">
+    <binding name="text" property-path="book.description"/>
   </component>
   
   <component id="ifShowHolder" type="Conditional">

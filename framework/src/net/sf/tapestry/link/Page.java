@@ -36,9 +36,15 @@ import net.sf.tapestry.RequiredParameterException;
  *  using the page service.
  *
  *
- * <table border=1>
- * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> <th>Default</th> <th>Description</th>
- * </tr>
+ *  <table border=1>
+ *  <tr> 
+ *  <th>Parameter</th> 
+ *  <th>Type</th> 
+ *  <th>Direction</th> 
+ *  <th>Required</th> 
+ *  <th>Default</th> 
+ *  <th>Description</th>
+ *  </tr>
  *
  * <tr>
  *        <td>page</td>

@@ -26,6 +26,7 @@
 
 package net.sf.tapestry.spec;
 
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.Enum;
 
 /**
@@ -81,4 +82,13 @@ public class Direction extends Enum
         super(enumerationId);
     }
 
+    /**
+     *  Returns a user-presentable name for the direction, i.e., "in", or "in-out".
+     * 
+     **/
+    
+    public String getName()
+    {
+        return Tapestry.getString("Direction." + getEnumerationId());
+    }
 }

@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 	
 <specification 
 	class="net.sf.tapestry.vlib.components.PersonLink" 
 	allow-body="no" 
 	allow-informal-parameters="no">
   
-  <parameter name="name" java-type="java.lang.String" required="yes"/>
+  <parameter name="name" java-type="java.lang.String" required="yes" direction="in"/>
   
-  <parameter name="primaryKey" java-type="java.lang.Integer" required="yes"/>
+  <parameter name="primaryKey" java-type="java.lang.Integer" required="yes" direction="in"/>
   
-  <parameter name="omit"/>
+  <parameter name="omit" java-type="boolean" direction="in"/>
   
-  <parameter name="class" java-type="java.lang.String"/>
+  <parameter name="class" property-name="styleClass" java-type="java.lang.String" direction="in"/>
   
   <component id="ifShowLink" type="Conditional">
-  	<binding name="condition" property-path="showLink"/>
+  	<binding name="condition" property-path="omit"/>
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
   
   <component id="link" type="Service">
     <field-binding name="service" field-name="net.sf.tapestry.vlib.ExternalService.SERVICE_NAME"/>
     <binding name="context" property-path="context"/>
-    <inherited-binding name="class" parameter-name="class"/>
+    <binding name="class" property-path="styleClass"/>
   </component>
   
   <component id="insertPersonName" type="Insert">
     <inherited-binding name="value" parameter-name="name"/>
   </component>
   
-  <component id="ifOmitLink" copy-of="ifShowLink">
-    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  <component id="ifOmitLink" type="Conditional">
+  	<binding name="condition" property-path="omit"/>
   </component>
   
 </specification>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
 <specification class="net.sf.tapestry.link.Page">
 
   <description>
@@ -13,10 +16,21 @@
   	property-name="targetPage"
   	direction="in"/>
   	
-  <parameter name="disabled"/>
-  <parameter name="scheme" java-type="java.lang.String"/>
-  <parameter name="port"/>
-  <parameter name="anchor" java-type="java.lang.String"/>
+  <parameter name="disabled"
+  	java-type="boolean"
+  	direction="in"/>
+  	
+  <parameter name="scheme" 
+  	java-type="java.lang.String"
+  	direction="in"/>
+  	
+  <parameter name="port"
+  	java-type="int"
+  	direction="in"/>
+  	
+  <parameter name="anchor" 
+  	java-type="java.lang.String"
+  	direction="in"/>
   
   <reserved-parameter name="href"/>
 

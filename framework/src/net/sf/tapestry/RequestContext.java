@@ -1036,11 +1036,8 @@ public class RequestContext implements IRender
 
             String property = properties.getProperty(name);
 
-            if (property.indexOf(pathSeparator) < 0)
-                pair(writer, name, property);
-            else
+            if (property.indexOf(pathSeparator) > 0 && name.endsWith(".path"))
             {
-
                 writer.begin("tr");
                 writer.attribute("class", getRowClass());
 
@@ -1060,6 +1057,10 @@ public class RequestContext implements IRender
                 }
 
                 writer.end("tr");
+            }
+            else
+            {
+                pair(writer, name, property);
             }
         }
 

@@ -26,9 +26,9 @@
 package net.sf.tapestry.link;
 
 import java.util.List;
-import java.util.Vector;
 
 import javax.servlet.http.HttpSession;
+
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
@@ -44,33 +44,44 @@ import net.sf.tapestry.StaleSessionException;
  *  are not dependant on dynamic page state.
  *
  *
- * <table border=1>
- * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> 
- * <th>Default</th> <th>Description</th>
- * </tr>
+ *  <table border=1>
+ *  <tr> <th>Parameter</th> 
+ *  <th>Type</th> 
+ *  <th>Direction</th> 
+ *  <th>Required</th> 
+ *  <th>Default</th>
+ *  <th>Description</th>
+ *  </tr>
+ * 
  * <tr>
- *  <td>listener</td> <td>{@link IDirectListener}</td>
- *  <td>R</td>
- *  <td>yes</td> <td>&nbsp;</td>
+ *  <td>listener</td> 
+ *  <td>{@link IActionListener}</td>
+ *  <td>in</td>
+ *  <td>yes</td> 
+ *  <td>&nbsp;</td>
  *  <td>Specifies an object that is notified when the link is clicked.</td> </tr>
  *
  *  <tr>
  *  <td>context</td>
  *  <td>String[] <br> List (of String) <br> String <br>Object</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>An array of Strings to be encoded into the URL.  These parameters will
  *  be decoded when the link is triggered.
  *  <p>If the context is simply an Object, then <code>toString()</code> is invoked on
- it.  It is assumed that the listener will be able to convert it back.
+ *  it.  It is assumed that the listener will be able to convert it back.
  *  <p>In a web application built onto of Enterprise JavaBeans, the context is
  *  often the primary key of some Entity bean; typically such keys are Strings or
  *  Integers (which can be freely converted from String to Integer by the listener).</td>
- * </tr>
+ *  </tr>
  *
  * <tr>
- *   <td>disabled</td> <td>boolean</td> <td>R</td> <td>no</td> <td>true</td>
+ *   <td>disabled</td> 
+ *   <td>boolean</td> 
+ *   <td>in</td> 
+ *   <td>no</td> 
+ *   <td>false</td>
  *   <td>Controls whether the link is produced.  If disabled, the portion of the template
  *  the link surrounds is still rendered, but not the link itself.
  *  </td></tr>
@@ -79,19 +90,19 @@ import net.sf.tapestry.StaleSessionException;
  * <tr>
  *	<td>stateful</td>
  *  <td>boolean</td>
- *	<td>R</td>
+ *	<td>in</td>
  *	<td>no</td>
  *	<td>true</td>
  *	<td>If true (the default), then the component requires an active (i.e., non-new)
- * {@link HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
+ *  {@link HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
  *  If false, then no check is necessary.  The latter works well with links that
- * encode all necessary state inside the URL itself.</td>
+ *  encode all necessary state inside the URL itself.</td>
  * </tr>
  *
  * <tr>
  *		<td>scheme</td>
  *		<td>java.lang.String</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>If specified, then a longer URL (including scheme, server and possibly port)
@@ -103,7 +114,7 @@ import net.sf.tapestry.StaleSessionException;
  * <tr>
  *		<td>port</td>
  *		<td>int</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>If specified, then a longer URL (including scheme, server and port)
@@ -115,7 +126,7 @@ import net.sf.tapestry.StaleSessionException;
  * <tr>
  *		<td>anchor</td>
  *		<td>java.lang.String</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>The name of an anchor or element to link to.  The final URL will have '#'
@@ -134,28 +145,12 @@ import net.sf.tapestry.StaleSessionException;
 public class Direct extends GestureLink implements IDirect
 {
     private IBinding listenerBinding;
-    private IBinding contextBinding;
+    private Object context;
     private IBinding statefulBinding;
-    private boolean staticStateful;
-    private boolean statefulValue;
-
-    public void setContextBinding(IBinding value)
-    {
-        contextBinding = value;
-    }
-
-    public IBinding getContextBinding()
-    {
-        return contextBinding;
-    }
 
     public void setStatefulBinding(IBinding value)
     {
         statefulBinding = value;
-
-        staticStateful = value.isStatic();
-        if (staticStateful)
-            statefulValue = value.getBoolean();
     }
 
     public IBinding getStatefulBinding()
@@ -166,19 +161,16 @@ public class Direct extends GestureLink implements IDirect
     /**
      *  Returns true if the stateful parameter is bound to
      *  a true value.  If stateful is not bound, also returns
-     *  the default, true.
+     *  the default, true.  May be invoked when not renderring.
      *
      **/
 
     public boolean isStateful()
     {
-        if (staticStateful)
-            return statefulValue;
+        if (statefulBinding == null)
+            return true;
 
-        if (statefulBinding != null)
-            return statefulBinding.getBoolean();
-
-        return true;
+        return statefulBinding.getBoolean();
     }
 
     /**
@@ -193,7 +185,7 @@ public class Direct extends GestureLink implements IDirect
 
     protected String[] getContext(IRequestCycle cycle)
     {
-        return getContext(contextBinding);
+        return constructContext(context);
     }
 
     /**
@@ -203,38 +195,27 @@ public class Direct extends GestureLink implements IDirect
      *
      **/
 
-    public static String[] getContext(IBinding binding)
+    public static String[] constructContext(Object contextValue)
     {
-        Object raw;
-        String[] context;
-        Vector v;
-
-        if (binding == null)
+        if (contextValue == null)
             return null;
 
-        raw = binding.getObject();
+        if (contextValue instanceof String[])
+            return (String[]) contextValue;
 
-        if (raw == null)
-            return null;
-
-        if (raw instanceof String[])
-            return (String[]) raw;
-
-        if (raw instanceof String)
+        if (contextValue instanceof String)
         {
-            context = new String[1];
-            context[0] = (String) raw;
+            String[] arrayContext = new String[1];
+            arrayContext[0] = (String) contextValue;
 
-            return context;
+            return arrayContext;
         }
 
-        if (raw instanceof List)
+        if (contextValue instanceof List)
         {
-            List list = (List) raw;
+            List list = (List) contextValue;
 
-            context = new String[list.size()];
-
-            return (String[]) list.toArray(context);
+            return (String[]) list.toArray(new String[list.size()]);
         }
 
         // Allow simply Object ... use toString() to make it a string.
@@ -242,10 +223,10 @@ public class Direct extends GestureLink implements IDirect
         // if the real type is java.lang.Integer, it's easy to convert
         // it to an int or java.lang.Integer.
 
-        context = new String[1];
-        context[0] = raw.toString();
+        String[] arrayContext = new String[1];
+        arrayContext[0] = contextValue.toString();
 
-        return context;
+        return arrayContext;
     }
 
     /**
@@ -256,8 +237,7 @@ public class Direct extends GestureLink implements IDirect
      *  the session is new.
      **/
 
-    public void trigger(IRequestCycle cycle)
-        throws RequestCycleException
+    public void trigger(IRequestCycle cycle) throws RequestCycleException
     {
         IActionListener listener;
 
@@ -284,15 +264,19 @@ public class Direct extends GestureLink implements IDirect
         listenerBinding = value;
     }
 
-    private IActionListener getListener(IRequestCycle cycle)
-        throws RequestCycleException
+    /**
+     *  Need to use the listener binding, since this method gets called even when the
+     *  component is not rendering.
+     * 
+     **/
+
+    private IActionListener getListener(IRequestCycle cycle) throws RequestCycleException
     {
         IActionListener result;
 
         try
         {
-            result =
-                (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
+            result = (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
 
         }
         catch (BindingException ex)
@@ -304,6 +288,16 @@ public class Direct extends GestureLink implements IDirect
             throw new RequiredParameterException(this, "listener", listenerBinding);
 
         return result;
+    }
+
+    public Object getContext()
+    {
+        return context;
+    }
+
+    public void setContext(Object context)
+    {
+        this.context = context;
     }
 
 }

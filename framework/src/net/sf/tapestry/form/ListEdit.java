@@ -358,5 +358,10 @@ public class ListEdit extends AbstractComponent
     {
         this.source = source;
     }
+    
+    public Object getSource()
+    {
+        return source;
+    }
 
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC 
-	"-//Howard Ship//Tapestry Specification 1.1//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 	
 <specification class="net.sf.tapestry.valid.FieldLabel" 
 	allow-body="no" 
@@ -12,7 +12,8 @@
   Labels a ValidField.
   </description>
   
-  <parameter name="field" java-type="net.sf.tapestry.form.IFormComponent" required="yes"/>
-  <parameter name="displayName" java-type="java.lang.String"/>
+  <parameter name="field" java-type="net.sf.tapestry.form.IFormComponent" required="yes" direction="in"/>
+  
+  <parameter name="displayName" java-type="java.lang.String" direction="in"/>
   
 </specification>

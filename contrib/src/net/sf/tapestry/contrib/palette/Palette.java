@@ -71,7 +71,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
  * <tr>
  *    <td>Parameter</td>
  *    <td>Type</td>
- *    <td>Read / Write </td>
+ *    <td>Direction </td>
  *    <td>Required</td>
  *    <td>Default</td>
  *    <td>Description</td>
@@ -80,7 +80,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
  *  <tr>
  *    <td>selected</td>
  *  <td>{@link List}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
  *  <td>A list of selected values.  Possible selections are defined by the model; this
@@ -94,53 +94,65 @@ import net.sf.tapestry.spec.ComponentSpecification;
  * <tr>
  * <td>model</td>
  *  <td>{@link IPropertySelectionModel}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
  *  <td>Works, as with a {@link PropertySelection} component, to define the
  *  possible values.
  *  </td> </tr>
  *
- * <tr>
- *  <td>sort</td> <td>{@link SortMode}</td> <td>R</td>
- * <td>no</td> <td>{@link SortMode#NONE}</td>
+ *  <tr>
+ *  <td>sort</td> 
+ *  <td>{@link SortMode}</td> 
+ *  <td>in</td>
+ *  <td>no</td> 
+ *  <td>{@link SortMode#NONE}</td>
  *  <td>
  *  Controls automatic sorting of the options. </td>
- * </tr>
+ *  </tr>
  *
  * <tr>
  *  <td>rows</td>
- * <td>int</td> <td>R</td> <td>no</td> <td>10</td>
- * <td>The number of rows that should be visible in the Pallete's &lt;select&gt;
+ *  <td>int</td> 
+ *  <td>in</td> 
+ *  <td>no</td> 
+ *  <td>10</td>
+ *  <td>The number of rows that should be visible in the Pallete's &lt;select&gt;
  *  elements.
  *  </td> </tr>
  *
  * <tr>
  *  <td>tableClass</td>
- *  <td>{@link String}</td> <td>R</td>
- *  <td>no</td> <td>tapestry-palette</td>
+ *  <td>{@link String}</td> 
+ *  <td>in</td>
+ *  <td>no</td> 
+ *  <td>tapestry-palette</td>
  *  <td>The CSS class for the table which surrounds the other elements of
  *  the Palette.</td> </tr>
  *
  * <tr>
  *  <td>selectedTitleBlock</td>
  *  <td>{@link Block}</td>
- *  </td>R</td> <td>no</td> <td>"Selected"</td>
+ *  </td>in</td> 
+ *  <td>no</td> 
+ *  <td>"Selected"</td>
  *  <td>If specified, allows a {@link Block} to be placed within
  *  the &lt;th&gt; reserved for the title above the selected items
  *  &lt;select&gt; (on the right).  This allows for images or other components to
- * be placed there.  By default, the simple word <code>Selected</code>
+ *  be placed there.  By default, the simple word <code>Selected</code>
  *  is used.</td> </tr>
  *
  * <tr>
  *  <td>availableTitleBlock</td>
  *  <td>{@link Block}</td>
- *  </td>R</td> <td>no</td> <td>"Available"</td>
+ *  </td>in</td> 
+ *  <td>no</td> 
+ *  <td>"Available"</td>
  *  <td>As with selectedTitleBlock, but for the left column, of items
  *  which are available to be selected.  The default is the word
  *  <code>Available</code>. </td> </tr>
  *
- * <tr>
+ *  <tr>
  *  <td>selectImage
  * <br>selectDisabledImage
  * <br>deselectImage
@@ -151,7 +163,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
  * <br>downDisabledImage
  *  </td>
  *  <td>{@link IAsset}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td> <td>&nbsp;</td>
  *  <td>If any of these are specified then they override the default images provided
  *  with the component.  This allows the look and feel to be customized relatively easily.
@@ -177,24 +189,22 @@ public class Palette extends BaseComponent implements IFormComponent
     private static final int MAP_SIZE = 7;
     private static final String DEFAULT_TABLE_CLASS = "tapestry-palette";
 
-    private IBinding tableClassBinding;
-    private String staticTableClass;
-
-    private IBinding selectedTitleBlockBinding;
-    private IBinding availableTitleBlockBinding;
-
     private IBinding selectedBinding;
-    private IBinding modelBinding;
 
-    private IBinding rowsBinding;
-    private int staticRows;
-
-    private IBinding sortBinding;
-    private SortMode staticSort;
-    private SortMode sort;
-
-    private Block defaultSelectedTitleBlock;
-    private Block defaultAvailableTitleBlock;
+    private IPropertySelectionModel model;
+    private SortMode sort = SortMode.NONE;
+    private int rows = DEFAULT_ROWS;
+    private String tableClass = DEFAULT_TABLE_CLASS;
+    private Block selectedTitleBlock;
+    private Block availableTitleBlock;
+    private IAsset selectImage;
+    private IAsset selectDisabledImage;
+    private IAsset deselectImage;
+    private IAsset deselectDisabledImage;
+    private IAsset upImage;
+    private IAsset upDisabledImage;
+    private IAsset downImage;
+    private IAsset downDisabledImage;
 
     /**
      *  {@link IForm} which is currently wrapping the Palette.
@@ -242,126 +252,21 @@ public class Palette extends BaseComponent implements IFormComponent
 
     private IScript script;
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification spec)
-        throws PageLoaderException
+    public void finishLoad(IPageLoader loader, ComponentSpecification spec) throws PageLoaderException
     {
-        defaultSelectedTitleBlock = (Block) getComponent("defaultSelectedTitleBlock");
-        defaultAvailableTitleBlock = (Block) getComponent("defaultAvailableTitleBlock");
+        selectedTitleBlock = (Block) getComponent("defaultSelectedTitleBlock");
+        availableTitleBlock = (Block) getComponent("defaultAvailableTitleBlock");
+
+        selectImage = getAsset("Select");
+        selectDisabledImage = getAsset("Select-dis");
+        deselectImage = getAsset("Deselect");
+        deselectDisabledImage = getAsset("Deselect-dis");
+        upImage = getAsset("Up");
+        upDisabledImage = getAsset("Up-dis");
+        downImage = getAsset("Down");
+        downDisabledImage = getAsset("Down-dis");
 
         super.finishLoad(loader, spec);
-    }
-
-    public void setTableClassBinding(IBinding value)
-    {
-        tableClassBinding = value;
-
-        if (value.isStatic())
-            staticTableClass = value.getString();
-    }
-
-    public IBinding getTableClassBinding()
-    {
-        return tableClassBinding;
-    }
-
-    public void setSelectedTitleBlockBinding(IBinding value)
-    {
-        selectedTitleBlockBinding = value;
-    }
-
-    public IBinding getSelectedTitleBlockBinding()
-    {
-        return selectedTitleBlockBinding;
-    }
-
-    public void setAvailableTitleBlockBinding(IBinding value)
-    {
-        availableTitleBlockBinding = value;
-    }
-
-    public IBinding getAvailableTitleBlockBinding()
-    {
-        return availableTitleBlockBinding;
-    }
-
-    public void setSelectedBinding(IBinding value)
-    {
-        selectedBinding = value;
-    }
-
-    public IBinding getSelectedBinding()
-    {
-        return selectedBinding;
-    }
-
-    public void setModelBinding(IBinding value)
-    {
-        modelBinding = value;
-    }
-
-    public IBinding getModelBinding()
-    {
-        return modelBinding;
-    }
-
-    public void setRowsBinding(IBinding value)
-    {
-        rowsBinding = value;
-
-        if (rowsBinding.isStatic())
-            staticRows = value.getInt();
-    }
-
-    public IBinding getRowsBinding()
-    {
-        return rowsBinding;
-    }
-
-    public int getRows()
-    {
-        int result = staticRows;
-
-        if (result == 0 && rowsBinding != null)
-            result = rowsBinding.getInt();
-
-        if (result == 0)
-            result = DEFAULT_ROWS;
-
-        return result;
-    }
-
-    public String getTableClass()
-    {
-        if (staticTableClass != null)
-            return staticTableClass;
-
-        if (tableClassBinding == null)
-            return DEFAULT_TABLE_CLASS;
-
-        String result = tableClassBinding.getString();
-
-        if (result == null)
-            return DEFAULT_TABLE_CLASS;
-        else
-            return result;
-    }
-
-    public void setSortBinding(IBinding value)
-    {
-        sortBinding = value;
-
-        if (value.isStatic())
-            staticSort = (SortMode) value.getObject("sort", SortMode.class);
-    }
-
-    public IBinding getSortBinding()
-    {
-        return sortBinding;
-    }
-
-    public SortMode getSort()
-    {
-        return sort;
     }
 
     /**
@@ -384,9 +289,7 @@ public class Palette extends BaseComponent implements IFormComponent
         form = Form.get(page.getRequestCycle());
 
         if (form == null)
-            throw new RequestCycleException(
-                "Palette component must be wrapped by a Form.",
-                this);
+            throw new RequestCycleException("Palette component must be wrapped by a Form.", this);
 
         name = form.getElementId(this);
 
@@ -402,22 +305,11 @@ public class Palette extends BaseComponent implements IFormComponent
         if (cycle.isRewinding())
             return;
 
-        sort = staticSort;
-
-        if (sort == null && sortBinding != null)
-            sort = (SortMode) sortBinding.getObject("sort", SortMode.class);
-
-        if (sort == null)
-            sort = SortMode.NONE;
-
         // Lots of work to produce JavaScript and HTML for this sucker.
 
         String formName = form.getName();
 
-        if (symbols == null)
-            symbols = new HashMap(MAP_SIZE);
-        else
-            symbols.clear();
+        symbols = new HashMap(MAP_SIZE);
 
         symbols.put("formName", formName);
         symbols.put("name", name);
@@ -429,28 +321,24 @@ public class Palette extends BaseComponent implements IFormComponent
         // is submitted.  This is also key to the operation
         // of the PropertySelection.
 
-        form.addEventHandler(
-            FormEventType.SUBMIT,
-            (String) symbols.get("formSubmitFunctionName"));
+        form.addEventHandler(FormEventType.SUBMIT, (String) symbols.get("formSubmitFunctionName"));
 
         // Buffer up the HTML for the left and right selects (the available
         // items and the selected items).
 
         bufferSelects(writer);
 
-        try
-        {
-            super.renderComponent(writer, cycle);
-        }
-        finally
-        {
-            availableWriter = null;
-            selectedWriter = null;
-            form = null;
-            sort = null;
+        super.renderComponent(writer, cycle);
+    }
 
-            symbols.clear();
-        }
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        availableWriter = null;
+        selectedWriter = null;
+        form = null;
+        symbols = null;
+
+        super.cleanupAfterRender(cycle);
     }
 
     /**
@@ -459,8 +347,7 @@ public class Palette extends BaseComponent implements IFormComponent
      *
      **/
 
-    private void runScript(IRequestCycle cycle, Map symbols)
-        throws RequestCycleException
+    private void runScript(IRequestCycle cycle, Map symbols) throws RequestCycleException
     {
         ScriptSession session;
 
@@ -484,14 +371,12 @@ public class Palette extends BaseComponent implements IFormComponent
 
         Body body = Body.get(cycle);
         if (body == null)
-            throw new RequestCycleException(
-                "Palette component must be wrapped by a Body.",
-                this);
+            throw new RequestCycleException("Palette component must be wrapped by a Body.", this);
 
-        setImage(symbols, body, cycle, "selectImage", "Select");
-        setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis");
-        setImage(symbols, body, cycle, "deselectImage", "Deselect");
-        setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis");
+        setImage(body, cycle, "selectImage", selectImage);
+        setImage(body, cycle, "selectDisabledImage", selectDisabledImage);
+        setImage(body, cycle, "deselectImage",  deselectImage);
+        setImage(body, cycle, "deselectDisabledImage", deselectDisabledImage);
 
         if (sort == SortMode.LABEL)
             symbols.put("sortLabel", Boolean.TRUE);
@@ -502,10 +387,10 @@ public class Palette extends BaseComponent implements IFormComponent
         if (sort == SortMode.USER)
         {
             symbols.put("sortUser", Boolean.TRUE);
-            setImage(symbols, body, cycle, "upImage", "Up");
-            setImage(symbols, body, cycle, "upDisabledImage", "Up-dis");
-            setImage(symbols, body, cycle, "downImage", "Down");
-            setImage(symbols, body, cycle, "downDisabledImage", "Down-dis");
+            setImage(body, cycle, "upImage", upImage);
+            setImage(body, cycle, "upDisabledImage", upDisabledImage);
+            setImage(body, cycle, "downImage", downImage);
+            setImage(body, cycle, "downDisabledImage", downDisabledImage);
         }
 
         try
@@ -521,36 +406,18 @@ public class Palette extends BaseComponent implements IFormComponent
 
     }
 
-    private IAsset getAsset(String symbolName, String assetName)
-    {
-        IAsset result = null;
-        IBinding binding = getBinding(symbolName);
-
-        if (binding != null)
-            result = (IAsset) binding.getObject(symbolName, IAsset.class);
-
-        if (result == null)
-            result = getAsset(assetName);
-
-        return result;
-    }
-
     /**
-     *  Gets the asset (first looking for a parameter with the symbolName, then
-     *  using the default asset), extracts its URL, sets it up for
+     *  Extracts its asset URL, sets it up for
      *  preloading, and assigns the preload reference as a script symbol.
      *
      **/
 
     private void setImage(
-        Map symbols,
         Body body,
         IRequestCycle cycle,
         String symbolName,
-        String assetName)
+        IAsset asset)
     {
-        IAsset asset = getAsset(symbolName, assetName);
-
         String URL = asset.buildURL(cycle);
         String reference = body.getPreloadedImageReference(URL);
 
@@ -572,13 +439,7 @@ public class Palette extends BaseComponent implements IFormComponent
     private void bufferSelects(IMarkupWriter writer)
     {
         List selected = (List) selectedBinding.getObject("selected", List.class);
-        IPropertySelectionModel model =
-            (IPropertySelectionModel) modelBinding.getObject(
-                "model",
-                IPropertySelectionModel.class);
-
-        int rows = getRows();
-
+ 
         // Build a Set around the list of selected items.
 
         Set selectedSet = new HashSet(selected);
@@ -633,8 +494,7 @@ public class Palette extends BaseComponent implements IFormComponent
     {
         return new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
-                throws RequestCycleException
+            public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
             {
                 availableWriter.close();
                 availableWriter = null;
@@ -651,8 +511,7 @@ public class Palette extends BaseComponent implements IFormComponent
     {
         return new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
-                throws RequestCycleException
+            public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
             {
                 selectedWriter.close();
                 selectedWriter = null;
@@ -663,10 +522,6 @@ public class Palette extends BaseComponent implements IFormComponent
     private void handleSubmission(IRequestCycle cycle) throws RequestCycleException
     {
         List selected = (List) selectedBinding.getObject("selected", List.class);
-        IPropertySelectionModel model =
-            (IPropertySelectionModel) modelBinding.getObject(
-                "model",
-                IPropertySelectionModel.class);
 
         // Remove any values currently in the List
         selected.clear();
@@ -691,26 +546,6 @@ public class Palette extends BaseComponent implements IFormComponent
         return sort == SortMode.USER;
     }
 
-    public IAsset getSelectImage()
-    {
-        return getAsset("selectImage", "Select");
-    }
-
-    public IAsset getDeselectImage()
-    {
-        return getAsset("deselectImage", "Deselect");
-    }
-
-    public IAsset getUpImage()
-    {
-        return getAsset("upImage", "Up");
-    }
-
-    public IAsset getDownImage()
-    {
-        return getAsset("downImage", "Down");
-    }
-
     /**
      *  Returns null, but may make sense to implement a displayName parameter.
      * 
@@ -719,6 +554,156 @@ public class Palette extends BaseComponent implements IFormComponent
     public String getDisplayName()
     {
         return null;
+    }
+
+    public Block getAvailableTitleBlock()
+    {
+        return availableTitleBlock;
+    }
+
+    public void setAvailableTitleBlock(Block availableTitleBlock)
+    {
+        this.availableTitleBlock = availableTitleBlock;
+    }
+
+    public IAsset getDeselectDisabledImage()
+    {
+        return deselectDisabledImage;
+    }
+
+    public void setDeselectDisabledImage(IAsset deselectDisabledImage)
+    {
+        this.deselectDisabledImage = deselectDisabledImage;
+    }
+
+    public IAsset getDeselectImage()
+    {
+        return deselectImage;
+    }
+
+    public void setDeselectImage(IAsset deselectImage)
+    {
+        this.deselectImage = deselectImage;
+    }
+
+    public IAsset getDownDisabledImage()
+    {
+        return downDisabledImage;
+    }
+
+    public void setDownDisabledImage(IAsset downDisabledImage)
+    {
+        this.downDisabledImage = downDisabledImage;
+    }
+
+    public IAsset getDownImage()
+    {
+        return downImage;
+    }
+
+    public void setDownImage(IAsset downImage)
+    {
+        this.downImage = downImage;
+    }
+
+    public IPropertySelectionModel getModel()
+    {
+        return model;
+    }
+
+    public void setModel(IPropertySelectionModel model)
+    {
+        this.model = model;
+    }
+
+    public int getRows()
+    {
+        return rows;
+    }
+
+    public void setRows(int rows)
+    {
+        this.rows = rows;
+    }
+
+    public IAsset getSelectDisabledImage()
+    {
+        return selectDisabledImage;
+    }
+
+    public void setSelectDisabledImage(IAsset selectDisabledImage)
+    {
+        this.selectDisabledImage = selectDisabledImage;
+    }
+
+    public Block getSelectedTitleBlock()
+    {
+        return selectedTitleBlock;
+    }
+
+    public void setSelectedTitleBlock(Block selectedTitleBlock)
+    {
+        this.selectedTitleBlock = selectedTitleBlock;
+    }
+
+    public IAsset getSelectImage()
+    {
+        return selectImage;
+    }
+
+    public void setSelectImage(IAsset selectImage)
+    {
+        this.selectImage = selectImage;
+    }
+
+    public SortMode getSort()
+    {
+        return sort;
+    }
+
+    public void setSort(SortMode sort)
+    {
+        this.sort = sort;
+    }
+
+    public String getTableClass()
+    {
+        return tableClass;
+    }
+
+    public void setTableClass(String tableClass)
+    {
+        this.tableClass = tableClass;
+    }
+
+    public IAsset getUpDisabledImage()
+    {
+        return upDisabledImage;
+    }
+
+    public void setUpDisabledImage(IAsset upDisabledImage)
+    {
+        this.upDisabledImage = upDisabledImage;
+    }
+
+    public IAsset getUpImage()
+    {
+        return upImage;
+    }
+
+    public void setUpImage(IAsset upImage)
+    {
+        this.upImage = upImage;
+    }
+
+    public IBinding getSelectedBinding()
+    {
+        return selectedBinding;
+    }
+
+    public void setSelectedBinding(IBinding selectedBinding)
+    {
+        this.selectedBinding = selectedBinding;
     }
 
 }

@@ -12,9 +12,15 @@
   markup to delimit lines.
   </description>
   
+   <parameter name="value" java-type="java.lang.String" direction="in">
+    <description>
+  	The text to insert.
+    </description>
+  </parameter>
+  
   <parameter name="text" java-type="java.lang.String" direction="in">
     <description>
-    The multi-line text to insert.
+  	Deprecated.  Use value parameter.
     </description>
   </parameter>
 

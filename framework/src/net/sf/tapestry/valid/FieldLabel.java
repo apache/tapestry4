@@ -26,12 +26,11 @@
 package net.sf.tapestry.valid;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.BindingException;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.NullValueForBindingException;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.form.Form;
 import net.sf.tapestry.form.IFormComponent;
 
@@ -50,7 +49,7 @@ import net.sf.tapestry.form.IFormComponent;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -59,7 +58,7 @@ import net.sf.tapestry.form.IFormComponent;
  * <tr>
  *  <td>field</td>
  *  <td>{@link IFormComponent}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
  *  <td>The field to be labeled.</td>
@@ -71,7 +70,7 @@ import net.sf.tapestry.form.IFormComponent;
  * 		<td>R</td> <td>no</td> <td>&nbsp;</td>
  * 		<td>
  * 	Allows the display name to be overriden from the value supplied by a {@link IFormComponent}.
- *  Most implementation of {@link IFormComponent} don't provide a null displayName, and it
+ *  Most implementation of {@link IFormComponent} provide a null displayName, and it
  *  is necessary to set one using this parameter.
  * 	</td>
  *  </tr>
@@ -87,17 +86,8 @@ import net.sf.tapestry.form.IFormComponent;
 
 public class FieldLabel extends AbstractComponent
 {
-    private IBinding fieldBinding;
-
-    public void setFieldBinding(IBinding value)
-    {
-        fieldBinding = value;
-    }
-
-    public IBinding getFieldBinding()
-    {
-        return fieldBinding;
-    }
+    private IFormComponent field;
+    private String displayName;
 
     /**
      *  Gets the {@link IField} 
@@ -113,25 +103,40 @@ public class FieldLabel extends AbstractComponent
         if (cycle.isRewinding())
             return;
 
-        try
-        {
-            IFormComponent field =
-                (IFormComponent) fieldBinding.getObject("field", IFormComponent.class);
+        String finalDisplayName = (displayName != null) ? displayName : field.getDisplayName();
 
-            if (field == null)
-                throw new RequiredParameterException(this, "field", fieldBinding);
+        if (finalDisplayName == null)
+            throw new RequestCycleException(
+                Tapestry.getString("FieldLabel.no-display-name", field.getExtendedId()),
+                this);
 
-            IValidationDelegate delegate = Form.get(cycle).getDelegate();
+        IValidationDelegate delegate = Form.get(cycle).getDelegate();
 
-            delegate.writeLabelPrefix(field, writer, cycle);
+        delegate.writeLabelPrefix(field, writer, cycle);
 
-            writer.print(field.getDisplayName());
+        writer.print(finalDisplayName);
 
-            delegate.writeLabelSuffix(field, writer, cycle);
-        }
-        catch (BindingException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
+        delegate.writeLabelSuffix(field, writer, cycle);
     }
+
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
+
+    public IFormComponent getField()
+    {
+        return field;
+    }
+
+    public void setField(IFormComponent field)
+    {
+        this.field = field;
+    }
+
 }

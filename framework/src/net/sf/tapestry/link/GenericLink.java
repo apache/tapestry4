@@ -25,10 +25,8 @@
 
 package net.sf.tapestry.link;
 
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  An implementation of {@link net.sf.tapestry.components.IServiceLink} 
@@ -42,26 +40,30 @@ import net.sf.tapestry.RequiredParameterException;
  *
  *
  * <tr>
- *   <td>disabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
+ *   <td>disabled</td> 
+ *   <td>boolean</td> 
+ *   <td>in</td> 
+ *   <td>no</td> 
+ *   <td>false</td>
  *   <td>Controls whether the link is produced.  If disabled, the portion of the template
  *  the link surrounds is still rendered, but not the link itself.
  *  </td></tr>
  *
  *
- * <tr>
+ *  <tr>
  *   <td>href</td>
  *   <td>{@link String}
- *   <td>R</td>
+ *   <td>in</td>
  *   <td>yes</td>
  *   <td>&nbsp;</td>
  *   <td>The exact URL to invoked; typically of the form <code>javascript:...</code>.
  *   </td>
- * </tr>
+ *  </tr>
  *
  * </table>
  *
  *
- * <p>Informal parameters are allowed.
+ *  <p>Informal parameters are allowed.
  * 
  *
  *  @author Howard Lewis Ship
@@ -72,24 +74,11 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class GenericLink extends AbstractServiceLink
 {
-    private IBinding hrefBinding;
-    private String staticHrefValue;
-
-    public IBinding getHrefBinding()
-    {
-        return hrefBinding;
-    }
-
-    public void setHrefBinding(IBinding binding)
-    {
-        hrefBinding = binding;
-
-        if (binding.isStatic())
-            staticHrefValue = binding.getString();
-    }
+    private String href;
 
     /**
-     *  Returns the String specified by the href binding.
+     *  Returns the String specified by the href binding (this method is invoked
+     *  while renderring).
      * 
      *  @throws RequiredParameterException if no href value was supplied.
      * 
@@ -97,15 +86,17 @@ public class GenericLink extends AbstractServiceLink
 
     protected String getURL(IRequestCycle cycle) throws RequestCycleException
     {
-        String href = staticHrefValue;
-
-        if (href == null)
-            href = hrefBinding.getString();
-
-        if (href == null)
-            throw new RequiredParameterException(this, "href", hrefBinding);
-
         return href;
+    }
+
+    public String getHref()
+    {
+        return href;
+    }
+
+    public void setHref(String href)
+    {
+        this.href = href;
     }
 
 }

@@ -155,6 +155,7 @@ public class ImageSubmit extends AbstractFormComponent
     private IAsset disabledImage;
     private Object tag;
     private String name;
+    private String nameOverride;
     private IActionListener listener;
     private boolean disabled;
 
@@ -181,6 +182,7 @@ public class ImageSubmit extends AbstractFormComponent
         return selectedBinding;
     }
 
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
@@ -188,9 +190,12 @@ public class ImageSubmit extends AbstractFormComponent
 
         boolean rewinding = form.isRewinding();
 
-        String finalName = 
-        	(name == null) ? form.getElementId(this) : form.getElementId(name);
-        
+        if (nameOverride == null)
+            name = form.getElementId(this);
+           else
+            name = form.getElementId(nameOverride);;
+
+       
         if (rewinding)
         {
             // If disabled, do nothing.
@@ -310,11 +315,6 @@ public class ImageSubmit extends AbstractFormComponent
         return name;
     }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
     public Object getTag()
     {
         return tag;
@@ -323,6 +323,16 @@ public class ImageSubmit extends AbstractFormComponent
     public void setTag(Object tag)
     {
         this.tag = tag;
+    }
+
+    public String getNameOverride()
+    {
+        return nameOverride;
+    }
+
+    public void setNameOverride(String nameOverride)
+    {
+        this.nameOverride = nameOverride;
     }
 
 }

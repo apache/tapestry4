@@ -133,7 +133,7 @@ public class ParameterManager
             if (pspec.getDirection() != Direction.IN)
             {
                 if (debug)
-                    CAT.debug("Parameter is " + pspec.getDirection() + ".");
+                    CAT.debug("Parameter is " + pspec.getDirection().getName() + ".");
 
                 continue;
             }
@@ -258,7 +258,8 @@ public class ParameterManager
         Class propertyType,
         Class requiredType)
     {
-        // For double property, need special conversion
+        // Could convert this code to use a Decorator, but then I'd need
+        // some kind of factory for these parameter connectors.
 
         if (propertyType.equals(Boolean.TYPE))
             return new BooleanParameterConnector(component, parameterName, binding);

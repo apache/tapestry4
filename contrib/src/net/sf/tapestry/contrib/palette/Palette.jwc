@@ -1,61 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.contrib.palette.Palette" allow-body="no" allow-informal-parameters="no">
+<!--  $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
+<specification class="net.sf.tapestry.contrib.palette.Palette" 
+	allow-body="no" allow-informal-parameters="no">
+	
   <description>
   A complex component used to manage multiple selection of items from a list.
   </description>
   
   <parameter name="selectedTitleBlock" 
   	java-type="net.sf.tapestry.components.Block" 
-  	required="no"/>
+  	required="no"
+  	direction="in"/>
   
   <parameter name="availableTitleBlock" 
    	java-type="net.sf.tapestry.components.Block" 
-   	required="no"/>
+   	required="no"
+   	direction="in"/>
    	
   <parameter name="model" 
-  java-type="net.sf.tapestry.form.IPropertySelectionModel" 
-  required="yes"/>
+  	java-type="net.sf.tapestry.form.IPropertySelectionModel" 
+  	required="yes"
+  	direction="in"/>
   
   <parameter name="selected" java-type="java.util.List" 
-  required="yes"/>
+  	required="yes"/>
   
-  <parameter name="sort" java-type="net.sf.tapestry.contrib.palette.SortMode" required="no"/>
+  <parameter name="sort" 
+  	java-type="net.sf.tapestry.contrib.palette.SortMode" 
+  	required="no"
+  	direction="in"/>
   
   <parameter name="rows" 
-   java-type="int" 
-   required="no"/>
+   	java-type="int" 
+   	required="no"
+   	direction="in"/>
   
   <parameter name="tableClass" 
-  java-type="java.lang.String" 
-  required="no"/>
+  	java-type="java.lang.String" 
+  	required="no"
+  	direction="in"/>
   
-  <parameter name="selectImage" java-type="net.sf.tapestry.IAsset"/>
-  <parameter name="selectDisabledImage" java-type="net.sf.tapestry.IAsset"/>
-  <parameter name="deselectImage" java-type="net.sf.tapestry.IAsset"/>
-  <parameter name="deselectDisabledImage" java-type="net.sf.tapestry.IAsset"/>
-  <parameter name="upImage" java-type="net.sf.tapestry.IAsset"/>
-  <parameter name="upDisabledImage" java-type="net.sf.tapestry.IAsset"/>
-  <parameter name="downImage" java-type="net.sf.tapestry.IAsset"/>
-  <parameter name="downDisabledImage" java-type="net.sf.tapestry.IAsset"/>
-  
-  <bean name="selectedTitleBlock" class="net.sf.tapestry.bean.Default">
-    <set-property name="binding"> 
-      <property-value property-path="bindings.selectedTitleBlock"/>
-    </set-property>
-    <set-property name="defaultValue">
-      <property-value property-path="components.defaultSelectedTitleBlock"/>
-    </set-property>
-  </bean>
-  
-  <bean name="availableTitleBlock" class="net.sf.tapestry.bean.Default">
-     <set-property name="binding"> 
-      <property-value property-path="bindings.availableTitleBlock"/>
-    </set-property>
-    <set-property name="defaultValue">
-      <property-value property-path="components.defaultAvailableTitleBlock"/>
-    </set-property>
-  </bean> 
+  <parameter name="selectImage" java-type="net.sf.tapestry.IAsset" direction="in"/>
+  <parameter name="selectDisabledImage" java-type="net.sf.tapestry.IAsset" direction="in"/>
+  <parameter name="deselectImage" java-type="net.sf.tapestry.IAsset" direction="in"/>
+  <parameter name="deselectDisabledImage" java-type="net.sf.tapestry.IAsset" direction="in"/>
+  <parameter name="upImage" java-type="net.sf.tapestry.IAsset" direction="in"/>
+  <parameter name="upDisabledImage" java-type="net.sf.tapestry.IAsset" direction="in"/>
+  <parameter name="downImage" java-type="net.sf.tapestry.IAsset" direction="in"/>
+  <parameter name="downDisabledImage" java-type="net.sf.tapestry.IAsset" direction="in"/>
   
   <component id="table" type="Any">
     <static-binding name="element">table</static-binding>
@@ -63,13 +59,13 @@
   </component>
   
   <component id="insertAvailableTitle" type="InsertBlock">
-    <binding name="block" property-path="beans.availableTitleBlock.value"/>
+    <binding name="block" property-path="availableTitleBlock"/>
   </component>
     
   <component id="defaultAvailableTitleBlock" type="Block"/>
   
   <component id="insertSelectedTitle" type="InsertBlock">
-    <binding name="block" property-path="beans.selectedTitleBlock.value"/>
+    <binding name="block" property-path="selectedTitleBlock"/>
   </component>
 
   <component id="defaultSelectedTitleBlock" type="Block"/>
@@ -130,10 +126,6 @@
   <private-asset name="Select-dis" resource-path="/net/sf/tapestry/contrib/palette/select_right_off.gif"/>
   <private-asset name="Deselect" resource-path="/net/sf/tapestry/contrib/palette/deselect_left.gif"/>
   <private-asset name="Deselect-dis" resource-path="/net/sf/tapestry/contrib/palette/deselect_left_off.gif"/>
-  <private-asset name="SelectM" resource-path="/net/sf/tapestry/contrib/palette/select_left.gif"/>
-  <private-asset name="SelectM-dis" resource-path="/net/sf/tapestry/contrib/palette/select_left_off.gif"/>
-  <private-asset name="DeselectM" resource-path="/net/sf/tapestry/contrib/palette/deselect_right.gif"/>
-  <private-asset name="DeselectM-dis" resource-path="/net/sf/tapestry/contrib/palette/deselect_right_off.gif"/>
   <private-asset name="Up" resource-path="/net/sf/tapestry/contrib/palette/move_up.gif"/>
   <private-asset name="Up-dis" resource-path="/net/sf/tapestry/contrib/palette/move_up_off.gif"/>
   <private-asset name="Down" resource-path="/net/sf/tapestry/contrib/palette/move_down.gif"/>
