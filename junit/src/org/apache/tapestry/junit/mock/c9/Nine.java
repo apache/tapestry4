@@ -68,7 +68,7 @@ import org.apache.tapestry.html.BasePage;
  *
  **/
 
-public abstract class Nine extends BasePage implements ILocatable, PageDetachListener
+public abstract class Nine extends BasePage implements PageDetachListener, ILocatable
 {
 
 }

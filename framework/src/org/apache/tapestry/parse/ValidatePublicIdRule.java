@@ -89,10 +89,7 @@ public class ValidatePublicIdRule extends BaseDocumentRule
 
         String publicId = digester.getPublicId();
 
-        if (publicId == null)
-            throw new DocumentParseException(
-                Tapestry.getString("ValidatePublicIdRule.no-public-id", location),
-                location);
+		// publicId will never be null because we use a validating parser.
 
         for (int i = 0; i < _publicIds.length; i++)
         {

@@ -32,7 +32,6 @@ This DTD is backwards compatible with the 1.3 DTD, with the following exceptions
 - allow values to be specified as attributes or wrapped character data in many elements
 - allow only a single <description> per element
 -->
-
 <!-- =======================================================
 Entity: attribute-flag
 
@@ -40,8 +39,6 @@ For entity attributes that take a boolean value, defines 'yes' and 'no'.
 The default varies, so isn't included here.
 -->
 <!ENTITY % attribute-flag "(yes|no)">
-
-
 <!-- =======================================================
 Entity: static-value-type
 
@@ -50,9 +47,7 @@ type.  Defaults to String.
 
 -->
 <!ENTITY % static-value-type "(boolean|int|long|double|String) 'String'">
-
 <!ENTITY % library-content "(description?, property*, (page|component-type|service|library|extension)*)">
-
 <!-- =======================================================
 Element: application
 Root element
@@ -65,10 +60,9 @@ Attributes:
 -->
 <!ELEMENT application %library-content;>
 <!ATTLIST application
-  name CDATA #IMPLIED
-  engine-class CDATA #IMPLIED
+	name CDATA #IMPLIED
+	engine-class CDATA #IMPLIED
 >
-
 <!-- =======================================================
 Element: bean
 Appears in: component-specification, page-specification
@@ -103,11 +97,10 @@ newly instantiated beans, and beans that are retrieved from a pool.
 -->
 <!ELEMENT bean (description?, property*, (set-property | set-string-property)*)>
 <!ATTLIST bean
-  name CDATA #REQUIRED
-  class CDATA #REQUIRED
-  lifecycle (none|request|page|render) "request"
+	name CDATA #REQUIRED
+	class CDATA #REQUIRED
+	lifecycle (none | request | page | render) "request"
 >
-
 <!-- =======================================================
 Element: binding
 Appears in: component
@@ -124,10 +117,9 @@ Attributes:
 -->
 <!ELEMENT binding (#PCDATA)>
 <!ATTLIST binding
-  name CDATA #REQUIRED
-  expression CDATA #IMPLIED
+	name CDATA #REQUIRED
+	expression CDATA #IMPLIED
 >
-
 <!-- =======================================================
 Element: configure
 Appears in: extension
@@ -142,14 +134,12 @@ Attributes:
     used.  
  
 -->
-
 <!ELEMENT configure (#PCDATA)>
-<!ATTLIST configure 
-  property-name CDATA #REQUIRED
-  type %static-value-type;
-  value CDATA #IMPLIED
+<!ATTLIST configure
+	property-name CDATA #REQUIRED
+	type %static-value-type;
+	value CDATA #IMPLIED
 >
-  
 <!-- =======================================================
 Element: component
 Contained by: component-specification, page-specification
@@ -167,12 +157,11 @@ The Tapestry page loader ensures that either type or copy-of is specified, but n
 -->
 <!ELEMENT component (property*, (binding | inherited-binding | listener-binding | static-binding | string-binding)*)>
 <!ATTLIST component
-  id ID #REQUIRED
-  type CDATA #IMPLIED
-  copy-of IDREF #IMPLIED
-  inherit-informal-parameters %attribute-flag; "no"
+	id ID #REQUIRED
+	type CDATA #IMPLIED
+	copy-of IDREF #IMPLIED
+	inherit-informal-parameters %attribute-flag; "no"
 >
-
 <!-- =======================================================
 Element: component-type
 Contained by: application
@@ -186,10 +175,9 @@ Attributes:
 -->
 <!ELEMENT component-type EMPTY>
 <!ATTLIST component-type
-  type CDATA #REQUIRED
-  specification-path CDATA #REQUIRED
+	type CDATA #REQUIRED
+	specification-path CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: component-specification
 Root element
@@ -205,15 +193,12 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT component-specification 
-	(description?, parameter*, reserved-parameter*, property*,
-	(bean |	component | external-asset | context-asset | private-asset | property-specification)*)>
+<!ELEMENT component-specification (description?, parameter*, reserved-parameter*, property*, (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
 <!ATTLIST component-specification
-  class CDATA #IMPLIED
-  allow-body %attribute-flag; "yes"
-  allow-informal-parameters %attribute-flag; "yes"
+	class CDATA #IMPLIED
+	allow-body %attribute-flag; "yes"
+	allow-informal-parameters %attribute-flag; "yes"
 >
-
 <!-- =======================================================
 Element: context-asset
 Contained by: component-specification, page-specification
@@ -227,10 +212,9 @@ Attributes:
 -->
 <!ELEMENT context-asset (property*)>
 <!ATTLIST context-asset
-  name CDATA #REQUIRED
-  path CDATA #REQUIRED
+	name CDATA #REQUIRED
+	path CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: description
 Appears in: many
@@ -241,9 +225,6 @@ Currently, descriptions are optional and ignored.
 
 -->
 <!ELEMENT description (#PCDATA)>
-<!ATTLIST description
->
-
 <!-- =======================================================
 Element: extension
 Contained by: application, library-specification
@@ -260,11 +241,10 @@ Attributes:
 -->
 <!ELEMENT extension (property*, configure*)>
 <!ATTLIST extension
-  name CDATA #REQUIRED
-  class CDATA #REQUIRED
-  immediate %attribute-flag; "no"
+	name CDATA #REQUIRED
+	class CDATA #REQUIRED
+	immediate %attribute-flag; "no"
 >
-
 <!-- =======================================================
 Element: external-asset
 Contained by: component-specification, page-specification
@@ -277,10 +257,9 @@ Attributes:
 -->
 <!ELEMENT external-asset (property*)>
 <!ATTLIST external-asset
-  name CDATA #REQUIRED
-  URL CDATA #REQUIRED
+	name CDATA #REQUIRED
+	URL CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: inherited-binding
 Appears in: component
@@ -294,10 +273,9 @@ Attributes:
 -->
 <!ELEMENT inherited-binding EMPTY>
 <!ATTLIST inherited-binding
-  name CDATA #REQUIRED
-  parameter-name CDATA #REQUIRED
+	name CDATA #REQUIRED
+	parameter-name CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: library
 Appears in: application-specification, library-specification
@@ -313,10 +291,9 @@ Attributes:
 -->
 <!ELEMENT library EMPTY>
 <!ATTLIST library
-  id CDATA #REQUIRED
-  specification-path CDATA #REQUIRED
+	id CDATA #REQUIRED
+	specification-path CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: library-specification
 Root element
@@ -327,7 +304,6 @@ be thought of as a specialized kind of library.
 
 -->
 <!ELEMENT library-specification %library-content;>
-
 <!-- =======================================================
 Element: page
 Contained by: application, library-specification
@@ -342,10 +318,9 @@ Attributes:
 -->
 <!ELEMENT page EMPTY>
 <!ATTLIST page
-  name CDATA #REQUIRED
-  specification-path CDATA #REQUIRED
+	name CDATA #REQUIRED
+	specification-path CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: listener-binding
 Appears in: component
@@ -363,10 +338,9 @@ Attributes:
 -->
 <!ELEMENT listener-binding (#PCDATA)>
 <!ATTLIST listener-binding
-  name CDATA #REQUIRED
-  language CDATA #IMPLIED
+	name CDATA #REQUIRED
+	language CDATA #IMPLIED
 >
-
 <!-- =======================================================
 Element: page-specification
 Root element
@@ -378,12 +352,10 @@ a body, and never allow parameters (formal or otherwise).
 Attributes:
   class: The Java class to instantiate for the component.
 -->
-<!ELEMENT page-specification (description?, property*,
-    (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
+<!ELEMENT page-specification (description?, property*, (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
 <!ATTLIST page-specification
-  class CDATA #IMPLIED
+	class CDATA #IMPLIED
 >
-
 <!-- =======================================================
 Element: parameter
 Contained by: component-specification
@@ -399,16 +371,14 @@ Attributes:
     JavaBean property connected to this parameter.
   direction: The normal flow of data through the component.
 -->
-
 <!ELEMENT parameter (description?)>
 <!ATTLIST parameter
-  name CDATA #REQUIRED
-  type CDATA #IMPLIED
-  required %attribute-flag; "no"
-  property-name CDATA #IMPLIED
-  direction (in|form|custom|auto) "custom"
+	name CDATA #REQUIRED
+	type CDATA #IMPLIED
+	required %attribute-flag; "no"
+	property-name CDATA #IMPLIED
+	direction (in | form | custom | auto) "custom"
 >
-
 <!-- =======================================================
 Element: private-asset
 Contained by: component-specification, page-specification
@@ -421,10 +391,9 @@ Attributes:
 -->
 <!ELEMENT private-asset (property*)>
 <!ATTLIST private-asset
-  name CDATA #REQUIRED
-  resource-path CDATA #REQUIRED
+	name CDATA #REQUIRED
+	resource-path CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: property
 Contained by: (many other elements)
@@ -443,10 +412,9 @@ Attributes:
 -->
 <!ELEMENT property (#PCDATA)>
 <!ATTLIST property
-  name CDATA #REQUIRED
-  value CDATA #IMPLIED
+	name CDATA #REQUIRED
+	value CDATA #IMPLIED
 >
-
 <!-- =======================================================
 Element: property-specification
 Appears in: component-specification, component-specification
@@ -465,15 +433,13 @@ Attributes:
     body of the element is used as the initial value.
     
 -->
-
 <!ELEMENT property-specification (#PCDATA)>
 <!ATTLIST property-specification
-  name CDATA #REQUIRED
-  type CDATA #IMPLIED
-  persistent %attribute-flag; "no"
-  initial-value CDATA #IMPLIED
+	name CDATA #REQUIRED
+	type CDATA #IMPLIED
+	persistent %attribute-flag; "no"
+	initial-value CDATA #IMPLIED
 >
-
 <!-- =======================================================
 Element: reserved-parameter
 Appears in: component-specification
@@ -486,12 +452,10 @@ by the component and may not be affected by informal parameters.
 Attributes:
   name: The parameter name to reserve.
 -->
-
 <!ELEMENT reserved-parameter EMPTY>
 <!ATTLIST reserved-parameter
-  name CDATA #REQUIRED
+	name CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: service
 Appears in: application
@@ -504,13 +468,11 @@ Attributes:
   class: The Java class to instantiate for the service.
 
 -->
-
 <!ELEMENT service EMPTY>
 <!ATTLIST service
-  name CDATA #REQUIRED
-  class CDATA #REQUIRED
+	name CDATA #REQUIRED
+	class CDATA #REQUIRED
 >
-
 <!-- =======================================================
 Element: set-property
 Appears in: bean
@@ -523,14 +485,11 @@ Attributes:
   name: The name of the property to be set.
   expression: The OGNL expression that provides a value.
 -->
-
 <!ELEMENT set-property (#PCDATA)>
 <!ATTLIST set-property
-  name CDATA #REQUIRED
-  expression CDATA #IMPLIED
+	name CDATA #REQUIRED
+	expression CDATA #IMPLIED
 >
-
-
 <!-- =======================================================
 Element: set-string-property
 Appears in: bean
@@ -541,14 +500,11 @@ Attributes:
   key:  Sets a property of a string from a localized string.
 
 -->
-
 <!ELEMENT set-string-property EMPTY>
 <!ATTLIST set-string-property
-  name CDATA #REQUIRED
-  key CDATA #REQUIRED
+	name CDATA #REQUIRED
+	key CDATA #REQUIRED
 >
-
-
 <!-- =======================================================
 Element: static-binding
 Appears in: component
@@ -564,10 +520,9 @@ Attributes:
 -->
 <!ELEMENT static-binding (#PCDATA)>
 <!ATTLIST static-binding
-  name CDATA #REQUIRED
-  value CDATA #IMPLIED
+	name CDATA #REQUIRED
+	value CDATA #IMPLIED
 >
-
 <!-- =======================================================
 Element: string-binding
 Appears in: component
@@ -580,10 +535,8 @@ Attributes:
   key: The key used to access a localized string.
   
 -->
-
 <!ELEMENT string-binding EMPTY>
 <!ATTLIST string-binding
-  name CDATA #REQUIRED
-  key CDATA #REQUIRED
+	name CDATA #REQUIRED
+	key CDATA #REQUIRED
 >
-

@@ -68,6 +68,7 @@ import org.apache.tapestry.util.RegexpMatcher;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  *  Extension of {@link org.apache.commons.digester.Digester} with additional rules, hooks
@@ -311,4 +312,30 @@ public class SpecificationDigester extends Digester
         }
 
     }
+    
+    /**
+     * Invokes {@link #fatalError(SAXParseException)}.
+     */
+    public void error(SAXParseException exception) throws SAXException
+    {
+       fatalError(exception);
+    }
+
+	/**
+	 * Simply re-throws the exception.  All exceptions when parsing
+	 * documents are fatal.
+	 */
+    public void fatalError(SAXParseException exception) throws SAXException
+    {
+       throw exception;
+    }
+
+	/**
+	 * Invokes {@link #fatalError(SAXParseException)}.
+	 */
+    public void warning(SAXParseException exception) throws SAXException
+    {
+        fatalError(exception);
+    }
+
 }

@@ -350,7 +350,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (DocumentParseException ex)
         {
-            checkException(ex, "MissingDoctype.application does not define a public id");
+            checkException(ex, "Valid documents must have a <!DOCTYPE declaration.");
         }
     }
 
