@@ -37,15 +37,7 @@
    <jar jarfile="${framework.jar}">
       <fileset dir="${classes.dir}"/>
       <fileset dir="${src.dir}">
-        <include name="**/*.jwc"/>
-        <include name="**/*.html"/>
-        <include name="**/*.gif"/>
-        <include name="**/*.dtd"/>
-        <include name="**/*.script"/>
-        <include name="**/*.properties"/>
-        <include name="**/*.css"/>
-        <include name="**/*.swf"/>
-        <include name="**/*.js"/>
+        <exclude name="**/*.java"/>
         <exclude name="**/package.html"/>
       </fileset>
     </jar>

@@ -51,17 +51,11 @@
 	   	<include name="${jfreechart.jar}"/>
 	  </lib>
 
- 	  <classes dir="${classes.dir}"/>
+      <classes dir="${classes.dir}"/>
       <classes dir="${src.dir}">
-        <include name="**/*.jwc"/>
-        <include name="**/*.html"/>
-        <include name="**/*.gif"/>
-        <include name="**/*.dtd"/>
-        <include name="**/*.script"/>
-        <include name="**/*.properties"/>
-        <include name="**/*.application"/>
-        <exclude name="**/package.html"/>  
-	  </classes>
+        <exclude name="**/*.java"/>
+        <exclude name="**/package.html"/>
+      </classes>
     </war>
   </target>
 

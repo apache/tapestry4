@@ -138,11 +138,8 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      *  specification).  The former always starts with a slash, the latter
      *  never does.
      *
-     *  <p>If an alias (i.e, starts with a slash), then the value is passed through
-     *  {@link ApplicationSpecification#getComponentAlias(String)} to
-     *  get a resource on the classpath that is parsed.
-     *
-     *  @deprecated To be removed in 2.3
+     *  @deprecated To be removed in 2.3, use {@link #getComponentSpecification(String)}.
+     * 
      **/
 
     public ComponentSpecification getSpecification(String type)
@@ -314,12 +311,20 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
             writer.end(); // <ul>
     }
 
+    /**
+     *  Gets a component specification.
+     * 
+     *  @param resourcePath the complete resource path to the specification.
+     *  @throws ApplicationRuntimeException if the specification cannot be obtained.
+     * 
+     **/
+
     public synchronized ComponentSpecification getComponentSpecification(String resourcePath)
     {
         ComponentSpecification result = (ComponentSpecification) _componentCache.get(resourcePath);
 
-    if (result == null)
-    {
+        if (result == null)
+        {
             result = parseSpecification(resourcePath, false);
 
             _componentCache.put(resourcePath, result);

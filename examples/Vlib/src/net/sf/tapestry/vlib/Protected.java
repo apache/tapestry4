@@ -97,7 +97,7 @@ public class Protected extends BasePage implements IErrorProperty
     }
 
     /**
-     *  Checks if the user is logged in ... if not, they are sent
+     *  Checks if the user is logged in.  If not, they are sent
      *  to the {@link Login} page before coming back to whatever this
      *  page is.
      *

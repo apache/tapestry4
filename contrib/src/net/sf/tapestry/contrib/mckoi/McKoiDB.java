@@ -35,7 +35,7 @@ import org.jboss.system.ServiceMBeanSupport;
 import com.mckoi.runtime.BootMain;
 
 /**
- *  An MBean used to start and stop and embedded instance of
+ *  An MBean used to start and stop an embedded instance of
  *  <a href="http://www.mckoi.com/database">McKoi Database</a>.
  * 
  *  @author Howard Lewis Ship

@@ -267,7 +267,7 @@ public interface IRequestCycle
     public void setServiceParameters(Object[] parameters);
     
     /**
-     *  Returns parameters previously stored by {@link #setServiceParameters(String[])}.
+     *  Returns parameters previously stored by {@link #setServiceParameters(Object[])}.
      * 
      *  <p>
      *  Through release 2.1, the return type was String[].  This is

@@ -392,6 +392,23 @@
 	<property name="temp.dir" value=".temp"/>	
 	
 	<mkdir dir="${tapestry.lib.dir}"/>
+
+	<!-- Delete old version of the frameworks. -->
+	
+	<delete quiet="true">
+		<fileset dir="${tapestry.lib.dir}">
+		
+			<!-- Match and exclude current versions -->
+			
+			<exclude name="*tapestry*${framework.version}.jar"/>
+			<exclude name="${jakarta-oro.jar}"/>
+			
+			<!-- Match and include out-of-date versions -->
+			
+			<include name="*tapestry*.jar"/>
+			<include name="jakarta-oro-*.jar"/>
+		</fileset>
+	</delete>
 		
 	<copy todir="${tapestry.lib.dir}" flatten="true">
 		<fileset dir="${lib.dir}">
@@ -402,22 +419,11 @@
 		<fileset dir="${jboss.server.default.dir}/lib">
 		
 			<!-- Could do a careful analysis of just what we need and copy only that,
-				 but this is good for now.  Need to see if ClassPathExtension still
-				 exists and is useable as well (in which case, we could just point
-				 to the server/default/conf/lib dir). -->
+				 but this is good for now.  -->
 				 
 			<include name="*.jar"/>
 		</fileset>
 	</copy>
-
-	<!-- Delete old version of the frameworks. -->
-	
-	<delete quiet="true">
-		<fileset dir="${tapestry.lib.dir}">
-			<include name="*tapestry*.jar"/>
-			<exclude name="*-${framework.version}.jar"/>
-		</fileset>
-	</delete>
 
 	<!-- Delete, recreate and copy -->
 	

@@ -43,7 +43,7 @@ import net.sf.tapestry.form.IPropertySelectionModel;
  *  an {link IPropertySelectionModel} to provide the list of possible values.
  *
  *  <p>Often, this is used to select one or more {@link net.sf.tapestry.util.Enum} to assign to a property; the
- * {@link EnumPropertySelectionModel} class simplifies this.
+ * {@link net.sf.tapestry.form.EnumPropertySelectionModel} class simplifies this.
  * 
  *  <p>The {@link net.sf.tapestry.contrib.palette.Palette} component
  *  is more powerful, but requires client-side JavaScript and 

@@ -200,7 +200,7 @@ public class RadioGroup extends AbstractFormComponent
     }
 
     /**
-     * Doesn't actual render an HTML element ... there is no direct equivalent for
+     * Doesn't actual render an HTML element as there is no direct equivalent for
      * an HTML element.  A <code>RadioGroup</code> component exists to organize the
      * {@link Radio} components it wraps (directly or indirectly).
      *

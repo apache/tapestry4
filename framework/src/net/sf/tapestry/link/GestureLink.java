@@ -45,7 +45,7 @@ import net.sf.tapestry.Tapestry;
  * </ul>
  *
  * <p>Subclasses usually need only implement {@link #getServiceName()}
- * and {@link #getContext(IRequestCycle)}.
+ * and {@link #getServiceParameters(IRequestCycle)}.
  * 
  *                       
  * @author Howard Lewis Ship

@@ -162,7 +162,7 @@ public class Service extends GestureLink
     }
 
     /**
-     *  @deprecated To be removed in 2.3, use {@link #getParameters().
+     *  @deprecated To be removed in 2.3, use {@link #getParameters()}.
      * 
      **/
 

@@ -43,7 +43,7 @@ public interface ISpecificationSource
     /**
      *  Retrieves a component specification, parsing it as necessary.
      *  
-     *  @parameter resourcePath a full resource path of a
+     *  @param resourcePath a full resource path of a
      *  component specification file.
      * 
      *  @throws ApplicationRuntimeException if the specification doesn't
@@ -58,7 +58,7 @@ public interface ISpecificationSource
     /**
      *  Retrieves a component specification, parsing it as necessary.
      *  
-     *  @parameter resourcePath a full resource path of a
+     *  @param resourcePath a full resource path of a
      *  page specification file.
      * 
      *  @throws ApplicationRuntimeException if the specification doesn't
@@ -100,7 +100,7 @@ public interface ISpecificationSource
      *  @param id the name of the namespace, possibly as a dotted name
      *  sequence.  Null for the application namespace, "framework"
      *  for the framework namespace.
-     *  @returns the namespace
+     *  @return the namespace
      *  @throws ApplicationRuntimeException if the namespace cannot
      *  be located.
      * 

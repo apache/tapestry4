@@ -5,8 +5,9 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 
 <application name="Border Tutorial" engine-class="tutorial.border.BorderEngine">
-  <page name="Home" specification-path="/tutorial/border/Home.jwc"/>
-  <page name="Credo" specification-path="/tutorial/border/Credo.jwc"/>
-  <page name="Legal" specification-path="/tutorial/border/Legal.jwc"/>
+  <page name="Home" specification-path="/tutorial/border/Home.page"/>
+  <page name="Credo" specification-path="/tutorial/border/Credo.page"/>
+  <page name="Legal" specification-path="/tutorial/border/Legal.page"/>
+  
   <component-alias type="Border" specification-path="/tutorial/border/Border.jwc"/>
 </application>

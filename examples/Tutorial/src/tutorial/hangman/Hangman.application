@@ -6,8 +6,8 @@
 
 <application name="Tapestry Hangman" engine-class="net.sf.tapestry.engine.SimpleEngine">
   <property name="net.sf.tapestry.visit-class">tutorial.hangman.Visit</property>
-  <page name="Home" specification-path="/tutorial/hangman/Home.jwc"/>
-  <page name="Guess" specification-path="/tutorial/hangman/Guess.jwc"/>
-  <page name="Failed" specification-path="/tutorial/hangman/Failed.jwc"/>
-  <page name="Success" specification-path="/tutorial/hangman/Success.jwc"/>
+  <page name="Home" specification-path="/tutorial/hangman/Home.page"/>
+  <page name="Guess" specification-path="/tutorial/hangman/Guess.page"/>
+  <page name="Failed" specification-path="/tutorial/hangman/Failed.page"/>
+  <page name="Success" specification-path="/tutorial/hangman/Success.page"/>
 </application>

@@ -315,7 +315,7 @@ public class Direct extends GestureLink implements IDirect
     }
 
     /**
-     *  @deprecated To be removed in 2.3, use {@link #getParameters().
+     *  @deprecated To be removed in 2.3, use {@link #getParameters()}.
      * 
      **/
 
