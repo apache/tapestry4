@@ -74,9 +74,11 @@ problems using Team support inside the Eclipse IDE.
 <property name="html.output.dir" value="html"/>
 <property name="images.src.dir" value="images"/>
 <property name="images.dest.dir" value="${html.output.dir}/images"/>
+<property name="common-images.dest.dir" value="${html.output.dir}/common-images"/>
 
 <target name="setup">
  <mkdir dir="${html.output.dir}"/>
+ <mkdir dir="${common-images.dest.dir}"/>
 </target>
 
 <target name="clean">
@@ -94,10 +96,15 @@ problems using Team support inside the Eclipse IDE.
     </copy>
     <copy todir="${html.output.dir}/standard-images">
       <fileset dir="${docbook.xsl.dir}/images">
-        <include name="**/*.png"/>
-        <exclude name="**/draft.png"/>
+        <include name="callouts/*.png"/>
       </fileset>
     </copy>
+    <copy todir="${common-images.dest.dir}">
+    	<fileset dir="../common/images">
+    		<include name="*.png"/>
+    	</fileset>
+    </copy>
+    <copy todir="${html.output.dir}" file="../common/Tapestry.css"/>
    
     <echo>
     
