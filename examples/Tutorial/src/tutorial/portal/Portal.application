@@ -9,8 +9,6 @@
   
   <page name="Home" specification-path="/tutorial/portal/Home.jwc"/>
   
-  <page name="TV" specification-path="/tutorial/portal/TV.jwc"/>
-
   <page name="Stocks" specification-path="/tutorial/portal/Stocks.jwc"/>
  
   <page name="Weather" specification-path="/tutorial/portal/Weather.jwc"/>

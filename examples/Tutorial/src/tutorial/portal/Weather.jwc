@@ -3,8 +3,24 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 	
-<specification class="com.primix.tapestry.BasePage">
+<specification class="tutorial.portal.Weather">
 
 <component id="content" type="Block"/>
 
+<component id="weekday" type="Direct">
+  <binding name="listener" property-path="linkListener"/>
+  <binding name="class" property-path="weekdayClass"/>
+  <static-binding name="context">0</static-binding>
+</component>
+
+<component id="weekend" type="Direct">
+  <binding name="listener" property-path="linkListener"/>
+  <binding name="class" property-path="weekendClass"/>
+  <static-binding name="context">1</static-binding>
+</component>
+
+<component id="insertForecast" type="Insert">
+	<binding name="value" property-path="forecast"/>
+</component>
+	
 </specification>
