@@ -55,12 +55,8 @@ See http://xml.apache.org/forrest/linking.html for more info
     <related label="Related Projects">
     	<item label="Spindle" href="http://spindle.sourceforge.net/"/>
     	<item label="Tacos" href="http://sf.net/projects/tacos/"/>
-    </related>
-    
-    <whole label="Whole Site">
-        <item label="WholeSite (HTML)"       href="site.html"/>
-        <item label="WholeSite (PDF)"       href="site.pdf"/>
-    </whole>
-    
+    </related>  
 
+	<!-- Temporarily removed whole site stuff due to build problems. -->
+	
 </site>

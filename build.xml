@@ -490,9 +490,6 @@
 				value="false"/>
 		</java>
 	</target>
-	
-	<!-- Unpacks the Workbench ('cause Tomcat does that anyway), and copies
-		 all the necessary JARs into the WEB-INF/libs folder.  -->
 		
 	<target name="deploy-tomcat"
 		depends="check-for-tomcat-dir,build-workbench"
@@ -511,6 +508,7 @@
 			message="Directory ${jboss.dir} (jboss.dir from config/build.properties) does not exist."
 			/>
 	</target>
+	
 	<target name="check-for-tomcat-dir">
 		<available property="exists.tomcat.dir" type="dir" file="${tomcat.dir}"
 			/>
@@ -521,6 +519,7 @@
 			message="Directory ${tomcat.dir} (tomcat.dir from config/build.properties) does not exist."
 			/>
 	</target>
+	
 	<target name="check-for-clover-dir">
 		<available property="exists.clover.dir" type="dir" file="${clover.dir}"
 			/>
@@ -531,6 +530,7 @@
 			message="Directory ${clover.dir} (clover.dir from config/build.properties) does not exist."
 			/>
 	</target>
+	
 	<target name="check-for-jython-dir">
 		<available property="exists.jython.dir" type="dir" file="${jython.dir}"
 			/>
@@ -541,6 +541,7 @@
 			message="Directory ${jython.dir} (jython.dir from config/build.properties) does not exist."
 			/>
 	</target>
+	
 	<target name="check-for-jetty-dir">
 		<available property="exists.jetty.dir" type="dir" file="${jetty.dir}" />
 		<fail unless="jetty.dir"
@@ -551,7 +552,7 @@
 			/>
 	</target>
 	
-	<target name="check-for-forrest-dir" depends="check-defined-forrest-dir, check-downloaded-forrest">
+	<target name="check-for-forrest-dir" depends="check-defined-forrest-dir,check-downloaded-forrest">
 	</target>
 	
 	<target name="site" description="Generates static HTML documentation" depends="check-for-forrest-dir">
