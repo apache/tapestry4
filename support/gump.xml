@@ -45,7 +45,6 @@
     <depend project="jakarta-oro"/>
     <depend project="commons-digester"/>
     <depend project="commons-lang"/>
-    <depend project="commons-fileupload"/>
     <depend project="jakarta-bsf"/>
     <depend project="ognl"/>
 
