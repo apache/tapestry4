@@ -99,7 +99,7 @@ override any of the others to provide a consistent look-and-feel.
           <tbody>
             <row>
               <entry>Exception</entry>
-              <entry>Default provided, may be changed.</entry>
+              <entry>Default provided, may be overridden.</entry>
               <entry>
 				Page used to present uncaught 
 			 	exceptions to the user.</entry>

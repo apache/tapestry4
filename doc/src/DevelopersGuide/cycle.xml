@@ -60,9 +60,10 @@ information, separated by slashes.
           </listitem>
           <listitem>
             <para>
-              <varname>parameters</varname>: additional parameters that can be made available to
-the component.  This is used by a &DirectLink; component.  As with the context, multiple
-values are seperated with slashes.</para>
+              <varname>sp</varname>: additional parameters that can be made available to
+the component.  This is used by a &DirectLink; component.  If there is more than one
+service parameter, then there will be multiple <varname>sp</varname>
+parameters in the URL.</para>
           </listitem>
         </itemizedlist>
       </para>

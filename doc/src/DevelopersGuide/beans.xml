@@ -175,10 +175,27 @@ as any other JavaCode.  Care must be taken that none of the properties in a prop
 except the final one, return null.  This can often be accomplished 
 using <link linkend="beans.properties.synthesized">synthesized properties</link>.
       </para>
-      <para>
-The Tapestry class &PropertyHelper; is used to streamline property path access to objects.  It also provides hooks that
-allow for non-conforming access ... allowing non-JavaBeans to behave like JavaBeans.  For example, a built-in hook allows
-the keys stored in a &Map; to appear as named properties.
+
+    </section>  <!-- beans.property-path -->
+    
+    <section id="beans.ognl">
+    	<title>Object Graph Navigation Library</title>
+    	
+<para>
+Beyond even simple property paths are the powerful Object Graph
+Navigation Library (OGNL) <emphasis>expressions</emphasis>.
+OGNL expressions are modeled after Java expressions; they can
+invoke methods, perform comparisons, do arithmetic ... even build collections on the fly.
 </para>
-    </section>
+
+
+
+<para>
+OGNL is a separate framework from Tapestry; further details about it
+are available at
+<ulink url="http://www.ognl.org">http://www.ognl.org</ulink>.
+</para>
+
+    	
+   	</section> <!-- beans.ognl -->
   </chapter>

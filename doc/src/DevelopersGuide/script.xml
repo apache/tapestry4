@@ -154,4 +154,47 @@ function tapestry_onLoad()  <co id="script.body.onload"/>
       </para>
     </section>
  
+ <section id="script.spec">
+ 	<title>Script Specifications and Script Components</title>
+ 	
+<para>
+The &Body; component only lays the foundation for client-side JavaScript support in Tapestry.
+Tapestry includes its own, XML-based language for
+create dynamic JavaScript.
+</para>
+
+<para>
+A Tapestry Script Specification takes as input a number of 
+<emphasis>symbols</emphasis>, each of which is a named object.  These
+input symbols are combined to form additional symbols. Additional XML tags
+allow a script to place JavaScript into the main script body, or into the
+initialization.
+</para> 	
+
+<para>
+The most common use for script specifications is to add client-side behavior to
+form elements.  The input symbol is a form component,
+from this, the name of the element and containing form are determined.  Next,
+the name of one or more event handler functions are defined.
+</para>
+
+<para>
+In the body, the functions are actually created.  In the initialization,
+the event handlers are wired to the form and form elements.
+</para>
+
+<para>
+In some cases, a script specification may produce usable output symbols (commonly, the
+names of a JavaScript function that should be tied to some component's event
+handler).
+</para>
+
+<note>
+<para>A detailed example is coming.
+</para>
+</note>
+ 
+ 
+ </section> <!-- script.spec -->
+ 
   </chapter>

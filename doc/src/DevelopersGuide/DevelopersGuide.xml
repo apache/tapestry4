@@ -3,7 +3,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
   <!-- Useful snippets -->
-<!ENTITY jwc-tag "<sgmltag class='starttag'>jwc</sgmltag>">
+  
 <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
   
   %TapestryLinks;
