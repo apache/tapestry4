@@ -22,38 +22,38 @@
   <property name="module.javac.deprecation" value="off"/>
     
   <property name="root.dir" value=".."/>
-	<property file="${root.dir}/config/build.properties"/>
-	<property file="${root.dir}/config/common.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
   
-	<import file="${hivebuild.dir}/jar-module.xml"/>
-	<import file="${hivebuild.dir}/javadoc-report.xml"/>
-	<import file="${hivebuild.dir}/clover-report.xml"/>  
-	<import file="${hivebuild.dir}/hivedoc-report.xml"/>  
+  <import file="${hivebuild.dir}/jar-module.xml"/>
+  <import file="${hivebuild.dir}/javadoc-report.xml"/>
+  <import file="${hivebuild.dir}/clover-report.xml"/>  
+  <import file="${hivebuild.dir}/hivedoc-report.xml"/>  
   
-	<target name="compile">
+  <target name="compile">
     <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"/>
-    <ibiblio-dependency artifact="commons-codec"      version="1.2"                 group="commons-codec"/>
-		<ibiblio-dependency artifact="commons-fileupload" version="1.0"                 group="commons-fileupload"/>    
+    <ibiblio-dependency artifact="commons-codec"      version="1.3"                 group="commons-codec"/>
+    <ibiblio-dependency artifact="commons-fileupload" version="1.0"                 group="commons-fileupload"/>    
     <ibiblio-dependency artifact="commons-lang"       version="2.0"                 group="commons-lang"/>
     <ibiblio-dependency artifact="commons-logging"    version="1.0.4"               group="commons-logging"/>
     <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"/>
     <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"/>
-    <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"/>
-		<ibiblio-dependency artifact="javassist"          version="${javassist.version}" group="jboss"/>
-		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
-    <ibiblio-dependency artifact="ognl"               version="2.6.3"               group="ognl"/>
+    <ibiblio-dependency artifact="oro"                version="2.0.8"               group="oro"/>
+    <ibiblio-dependency artifact="javassist"          version="${javassist.version}" group="javassist"/>
+    <ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
+    <ibiblio-dependency artifact="ognl"               version="2.6.5"               group="ognl"/>
     
-		<ibiblio-dependency artifact="log4j"              version="1.2.7"               group="log4j"    use="test"/>
-		<ibiblio-dependency artifact="easymock"           version="1.1"                 group="easymock" use="test"/>
-		<ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
-		<ibiblio-dependency artifact="cglib-full"         version="2.0.1"               group="cglib"    use="test"/>
-    <ibiblio-dependency artifact="jdom"               version="b8"                  group="jdom"     use="test"/>
+    <ibiblio-dependency artifact="log4j"              version="1.2.8"               group="log4j"    use="test"/>
+    <ibiblio-dependency artifact="easymock"           version="1.1"                 group="easymock" use="test"/>
+    <ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
+    <ibiblio-dependency artifact="cglib-full"         version="2.0.2"               group="cglib"    use="test"/>
+    <ibiblio-dependency artifact="jdom"               version="1.0"                 group="jdom"     use="test"/>
     <ibiblio-dependency artifact="jython"             version="2.1"                 group="jython"   use="test"/>
-		
-		<default-compile/>
+	
+    <default-compile/>
     
-		<copy file="${root.dir}/version.properties" todir="${java.classes.dir}/org/apache/tapestry"/>    
-	</target>	
+    <copy file="${root.dir}/version.properties" todir="${java.classes.dir}/org/apache/tapestry"/>    
+  </target>	
   
   <target name="run-reports">
     <javadoc-report/>
