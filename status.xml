@@ -224,13 +224,17 @@ NextGen) be released as version number 3.0.
  	<action type="update" dev="HLS">
  	Add docs on how to report problems.	
  	</action>
- 	<action type="fix" dev="HLS" fixes-bug="28202">
+ 	<action type="fix" dev="HLS" fixes-bug="28202" due-to="Mats Forst&#246;f">
  	Pass the java.security.ProtectionDomain to the parent class loader when
  	creating an enhanced class, to allow Tapestry operation inside secure
  	environments such as Tomcat.	
  	</action>
   <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp">
      NPE in org.apache.tapestry.form.LinkSubmit.
+  </action>
+  <action type="fix" dev="HLS" fixes-bug="27956">
+  	Make checks for unimplemented abstract methods optional, to work around a bug
+  	in IBM JDK 1.3.1 (used with Websphere 4.x).	
   </action>
  </release> 
   
