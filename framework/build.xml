@@ -11,7 +11,7 @@
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
 		<fileset dir="${root.lib.dir}">
-			<include name="${servlet.dir}/*.jar"/>
+			<include name="${j2ee.dir}/*.jar"/>
 		</fileset>
 	</path>
 	<target name="init">

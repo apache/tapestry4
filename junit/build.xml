@@ -34,9 +34,9 @@
   	</fileset>
     <pathelement location="${jython.dir}/jython.jar"/>
 		<fileset dir="${root.lib.dir}">
-			<include name="${servlet.dir}/*.jar"/>
+			<include name="${j2ee.dir}/*.jar"/>
 		</fileset>
-  </path>
+  </path> 
 
   <target name="init">
     <mkdir dir="${classes.dir}"/>

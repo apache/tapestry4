@@ -15,9 +15,7 @@
 			<include name="*.jar"/>
 			<include name="examples/${vlibbeans.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
-		</fileset>
-		<fileset dir="${root.lib.dir}">
-			<include name="${servlet.dir}/*.jar"/>
+			<include name="${j2ee.dir}/*.jar"/>
 		</fileset>
 	</path>
 	<property name="private.dir" value="private"/>
@@ -77,22 +75,23 @@
 				<pathelement location="${root.dir}/config"/>
 			</classpath>
 			<arg value="jetty.xml"/>
-			<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"
-				/>
-			<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
+
+			<sysproperty key="org.apache.tapestry.vlib.debug-enabled" value="true"/>
 			<!-- Enable debugging on port 20150 -->
 			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
 			<jvmarg
 				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"
 				/>
 			<sysproperty key="java.compiler" value="NONE"/>
-			<sysproperty key="net.sf.tapestry.disable-caching" value="true"/>
-			<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"
+			
+			<sysproperty key="org.apache.tapestry.disable-caching" value="true"/>
+			<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"
 				/>
-			<sysproperty key="net.sf.tapestry.asset.dir" value="${private.dir}"
+			<sysproperty key="org.apache.tapestry.asset.dir" value="${private.dir}"
 				/>
-			<sysproperty key="net.sf.tapestry.asset.URL" value="/${private.dir}"
+			<sysproperty key="org.apache.tapestry.asset.URL" value="/${private.dir}"
 				/>
+				
 			<!-- JNDI Configuration for JBoss -->
 			<sysproperty key="java.naming.factory.initial"
 				value="org.jnp.interfaces.NamingContextFactory"/>

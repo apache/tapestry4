@@ -14,8 +14,8 @@
 		<fileset dir="${root.lib.dir}">
 			<include name="${framework.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
+			<include name="${j2ee.dir}/*.jar"/>
 		</fileset>
-		<pathelement location="${j2ee.jar.path}"/>
 	</path>
 	<target name="init">
 		<mkdir dir="${classes.dir}"/>
@@ -24,17 +24,7 @@
 		<delete dir="${classes.dir}"/>
 	</target>
 
-    <target name="check-j2ee-jar">
-        <available property="exists.j2ee.jar.path" type="file" file="${j2ee.jar.path}" />
-        <fail unless="j2ee.jar.path"
-              message="Property j2ee.jar.path not specified in config/build.properties."
-        />
-        <fail unless="exists.j2ee.jar.path"
-              message="JAR ${j2ee.jar.path} (j2ee.jar.path from config/build.properties) does not exist."
-        />
-    </target>
-
-	<target name="compile" depends="init,check-j2ee-jar"
+	<target name="compile" depends="init"
 		description="Compile all classes in the framework.">
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on"
 			target="1.1">
