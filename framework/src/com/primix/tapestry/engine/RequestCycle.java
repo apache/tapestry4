@@ -94,7 +94,7 @@ public class RequestCycle
 	
 	private int actionId;
 	private int targetActionId;
-	private String targetIdPath;
+	private IComponent targetComponent;
 	
 	/**
 	 *  Standard constructor used to render a response page.
@@ -320,13 +320,14 @@ public class RequestCycle
 		
 		// OK, we're there, is the page is good order?
 		
-		if (component.getIdPath().equals(targetIdPath))
+		if (component == targetComponent)
 			return true;
 		
 		// Woops.  Mismatch.
 		
 		throw new StaleLinkException(component,  
-				Integer.toString(targetActionId), targetIdPath);
+				Integer.toHexString(targetActionId), 
+				targetComponent.getExtendedId());
 	}
 	
 	public void removeAttribute(String name)
@@ -414,7 +415,7 @@ public class RequestCycle
 	 *
 	 */
 	
-	public void rewindPage(String targetActionId, String targetIdPath)
+	public void rewindPage(String targetActionId, IComponent targetComponent)
 		throws RequestCycleException
 	{
 		String pageName = null;
@@ -432,7 +433,7 @@ public class RequestCycle
 		// Parse the action Id as hex since that's whats generated
 		// by getNextActionId()
 		this.targetActionId = Integer.parseInt(targetActionId, 16);
-		this.targetIdPath = targetIdPath;
+		this.targetComponent = targetComponent;
 		
 		try
 		{
@@ -442,7 +443,7 @@ public class RequestCycle
 			// throw the RenderRewoundException.
 			
 			throw new StaleLinkException(page,  
-					targetActionId, targetIdPath);
+					targetActionId, targetComponent.getExtendedId());
 		}
 		catch (RenderRewoundException ex)
 		{
@@ -465,7 +466,7 @@ public class RequestCycle
 			rewinding = false;
 			actionId = 0;
 			this.targetActionId = 0;
-			this.targetIdPath = null;
+			this.targetComponent = null;
 		}
 		
 		if (monitor != null)

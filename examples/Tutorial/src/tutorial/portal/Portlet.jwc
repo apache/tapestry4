@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Ship//Tapestry Specification 1.1//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification 
+	class="tutorial.portal.Portlet" 
+	allow-body="no" 
+	allow-informal-parameters="no">
+
+<parameter name="model" required="yes" java-type="tutorial.portal.PortalModel"/>
+
+<parameter name="closeListener" required="yes" java-type="com.primix.tapestry.IActionListener">
+	<description>
+		A listener notified when the close box is clicked by the user.
+	</description>
+</parameter>
+
+<component id="colWidth" type="Any">
+	<static-binding name="element">col</static-binding>
+	<static-binding name="width">450px</static-binding>
+</component>
+
+<component id="changeState" type="Action">
+	<binding name="listener" property-path="changeStateListener"/>
+</component>
+
+<component id="changeStateButton" type="Rollover">
+	<binding name="image" property-path="changeStateImage"/>
+	<binding name="focus" property-path="changeStateFocus"/>
+	<static-binding name="width">41</static-binding>
+	<static-binding name="height">33</static-binding>
+	<binding name="alt" property-path="changeStateLabel"/>
+</component>
+
+<component id="close" type="Action">
+	<inherited-binding name="listener" parameter-name="closeListener"/>
+</component>
+
+<component id="closeButton" type="Rollover">
+	<binding name="image" property-path="assets.close"/>
+	<binding name="focus" property-path="assets.close-focus"/>
+	<static-binding name="width">39</static-binding>
+	<static-binding name="height">33</static-binding>
+	<static-binding name="alt">[Close]</static-binding>
+</component>
+
+<component id="insertTitle" type="Insert">
+  <binding name="value" property-path="model.title"/>
+</component>
+
+<component id="insertBodyBlock" type="InsertBlock">
+  <binding name="block" property-path="bodyBlock"/>
+</component>
+
+<context-asset name="minimize" path="/images/portal/minimize.gif"/>
+<context-asset name="minimize-focus" path="/images/portal/minimize-focus.gif"/>
+<context-asset name="maximize" path="/images/portal/maximize.gif"/>
+<context-asset name="maximize-focus" path="/images/portal/maximize-focus.gif"/>
+<context-asset name="close" path="/images/portal/close.gif"/>
+<context-asset name="close-focus" path="/images/portal/close-focus.gif"/>
+
+</specification>
+

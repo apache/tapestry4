@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification class="tutorial.portal.Home">
+
+<component id="border" type="Border"/>
+
+<component id="showError" type="ShowError"/>
+
+<component id="e" type="Foreach">
+  <binding name="source" property-path="visit.models"/>
+  <binding name="value" property-path="model"/>
+</component>
+
+<component id="portlet" type="Portlet">
+	<binding name="model" property-path="model"/>
+	<binding name="closeListener" property-path="closeListener"/>
+</component>
+
+<component id="ifSelectPortlet" type="Conditional">
+  <binding name="condition" property-path="visit.maySelectPortlet"/>
+</component>
+
+<component id="form" type="Form">
+  <binding name="listener" property-path="formListener"/>
+</component>
+
+<component id="selectPortlet" type="PropertySelection">
+  <binding name="value" property-path="newPortletId"/>
+  <binding name="model" property-path="visit.portletSelectionModel"/>
+</component>
+
+</specification>

@@ -4,6 +4,7 @@
 <specification class="com.primix.tapestry.link.Direct">
   <parameter name="listener" java-type="com.primix.tapestry.IDirectListener" required="yes"/>
   <parameter name="context"/>
+  <parameter name="stateful"/>
   <parameter name="disabled"/>
   <parameter name="scheme" java-type="java.lang.String"/>
   <parameter name="port"/>

@@ -1,3 +1,15 @@
+* May 25 2001 hship
+
+Created the IAction interface so that the action service can ask components
+whether they require a session or not.
+Add a stateful parameter to Action and Direct.
+Move the stale session check from the direct service to the Direct component.
+Fix the action and direct services to handle cases where an InsertBlock has been
+used to includes components from a page other than the render page.
+
+[233087] direct service should not require a session (untested)
+[427432] Block from other page causes errors (untested)
+
 * May 24 2001 hship
 
 Change the Inspector to show any properties associated with a component's
