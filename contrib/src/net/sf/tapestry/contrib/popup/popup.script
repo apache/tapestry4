@@ -10,10 +10,6 @@
 function ${popupFunctionName}()
 {
 	aWindow = window.open('${url}', '${windowName}', '${features}', false);
-	
-	if (${width} != 0 &amp;&amp; ${height} != 0) {
-		aWindow.resizeTo(${width}, ${height});
-	}
 	aWindow.focus();
 }
 </body>

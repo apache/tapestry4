@@ -27,10 +27,7 @@
 	</component>
 
 	<component id="helpLink" type="contrib:PopupLink">
-		<binding name="url" expression='"popuplink-help.html"'/>
-		<binding name="height" expression="400"/>
-		<binding name="width" expression="850"/>
-		<binding name="features" expression='"top=200,left=100,resizable=yes,scrollbars=yes"'/>
+		<binding name="features" expression='"resizable,scrollbars,top=200,left=100,height=400,width=650"'/>
 	</component>
 	
 </page-specification>

@@ -17,10 +17,10 @@ import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  * This component provides a popup link to launch a new window using a given
- * URL, windowName and windowFeatures for the javascript function:
+ * href, windowName and windowFeatures for the javascript function:
  * <tt>window.open(URL, windowName, windowFeatures)</tt>.
  *
- *  [<a href="../../../../../../ComponentReference/Form.html">Component Reference</a>]
+ *  [<a href="../../../../../../ComponentReference/contrib.PopupLink.html">Component Reference</a>]
  * 
  * @version $Id$ 
  * @author Joe Panico
@@ -31,20 +31,18 @@ public class PopupLink extends BaseComponent
 	public static final String DEFAULT_WINDOW_NAME = "popuplink_window";
 
 	//	Instance variables
-	private IBinding _urlBinding;
+	private IBinding _hrefBinding;
 	private IBinding _windowNameBinding;
 	private IBinding _featuresBinding;
-	private IBinding _heightBinding;
-	private IBinding _widthBinding;
 
-	public IBinding getUrlBinding()
+	public IBinding getHrefBinding()
 	{
-		return _urlBinding;
+		return _hrefBinding;
 	}
 
-	public void setUrlBinding(IBinding urlBinding)
+	public void setHrefBinding(IBinding hrefBinding)
 	{
-		_urlBinding = urlBinding;
+		_hrefBinding = hrefBinding;
 	}
 
 	public IBinding getWindowNameBinding()
@@ -67,33 +65,13 @@ public class PopupLink extends BaseComponent
 		_featuresBinding = featuresBinding;
 	}
 
-	public IBinding getHeightBinding()
+	public String getHref()
 	{
-		return _heightBinding;
-	}
+		IBinding aHrefBinding = getHrefBinding();
 
-	public void setHeightBinding(IBinding heightBinding)
-	{
-		_heightBinding = heightBinding;
-	}
-
-	public IBinding getWidthBinding()
-	{
-		return _widthBinding;
-	}
-
-	public void setWidthBinding(IBinding widthBinding)
-	{
-		_widthBinding = widthBinding;
-	}
-
-	public String getUrl()
-	{
-		IBinding aUrlBinding = getUrlBinding();
-
-		if (aUrlBinding != null)
+		if (aHrefBinding != null)
 		{
-			return URLEncoder.encode(aUrlBinding.getString());
+			return URLEncoder.encode(aHrefBinding.getString());
 		}
 
 		return null;
@@ -109,32 +87,6 @@ public class PopupLink extends BaseComponent
 		else
 		{
 			return DEFAULT_WINDOW_NAME;
-		}
-	}
-
-	public int getHeight()
-	{
-		IBinding aHeightBinding = getHeightBinding();
-		if (aHeightBinding != null)
-		{
-			return aHeightBinding.getInt();
-		}
-		else
-		{
-			return 0;
-		}
-	}
-
-	public int getWidth()
-	{
-		IBinding aWidthBinding = getWidthBinding();
-		if (aWidthBinding != null)
-		{
-			return aWidthBinding.getInt();
-		}
-		else
-		{
-			return 0;
 		}
 	}
 

@@ -78,20 +78,12 @@
     <th>Description</th>
    </tr>
    <tr>
-    <td>url</td>
+    <td>href</td>
     <td>String</td>
     <td>in</td>
     <td>yes</td>
     <td>&nbsp;</td>
     <td>The URL of the window to open.</td>
-   </tr>
-   <tr>
-    <td>windowName</td>
-    <td>String</td>
-    <td>in</td>
-    <td>no</td>
-    <td>popuplink_window</td>
-    <td>The name of the target window.</td>
    </tr>
    <tr>
     <td>features</td>
@@ -100,31 +92,20 @@
     <td>no</td>
     <td>&nbsp;</td>
     <td>
-    The JavaScript features of the target window. These features should be 
-    specified as a comma delimited string with the required feature as  
-    <tt>[feature name]=yes</tt>. JavaScript 1.1 features include:<p>
-    <tt>height, location, menubar, resizable, scrollbars, status, toolbar, width</tt>
+    The JavaScript features of the target window. Boolean features to include be 
+    should be specified in comma delimited string. Integer features 
+    (left, height, top, width) should be specified by assigning the feature 
+    value as <tt>[feature name]=100</tt>. JavaScript 1.1 features include:<p>
+    <tt>height, left, location, menubar, resizable, scrollbars, status, toolbar, top, width</tt>
     </td>
    </tr>
    <tr>
-    <td>height</td>
-    <td>int</td>
+    <td>windowName</td>
+    <td>String</td>
     <td>in</td>
     <td>no</td>
-    <td>0</td>
-    <td>The height the target window is resized to. If the height is 0 and the 
-    width is 0 the window is not resized.
-    </td>
-   </tr>
-   <tr>
-    <td>width</td>
-    <td>int</td>
-    <td>in</td>
-    <td>no</td>
-    <td>0</td>
-    <td>The width the target window is resized to. If the width is 0 and the 
-    height is 0 the window is not resized.
-    </td>
+    <td>popuplink_window</td>
+    <td>The name of the target window.</td>
    </tr>
   </table>
   <P>Body: <STRONG>rendered<BR>
@@ -154,7 +135,7 @@
 &lt;tr&gt;
  &lt;td&gt; Account Number: &lt;/td&gt;
  &lt;td&gt; &lt;input jwcid="accountField"/&gt; &lt;/td&gt;
- &lt;td&gt; &lt;a jwcid="<span class="jwcid">helpLink</span>"&gt;Help&lt;/a&gt; &lt;/td&gt;
+ &lt;td&gt; &lt;a href="help/account-number-help.html" jwcid="<span class="jwcid">helpLink</span>"&gt;Help&lt;/a&gt; &lt;/td&gt;
 &lt;/tr&gt;
 
 
@@ -163,10 +144,7 @@
 &lt;/component&gt;
 
 &lt;component id="helpLink" type="<a href="contrib.PopupLink.html">contrib:PopupLink</a>"&gt;
-   &lt;binding name="url" expression='"help/account-number-help.html"'/&gt;
-   &lt;binding name="height" expression="600"/&gt;
-   &lt;binding name="width" expression="300"/&gt;
-   &lt;binding name="features" expression='"top=200,left=200,resizable=yes,scrollbars=yes"'/&gt;
+   &lt;binding name="features" expression='"resizable,scrollbars,top=100,left=100,height=400,width=300"'/&gt;
 &lt;/component&gt;
 </pre>
       
