@@ -42,6 +42,16 @@
   </parameter>
   
   <parameter 
+  	name="renderContentType" 
+  	type="boolean"
+  	direction="in"
+  	default-value="true">
+    <description>
+    Determines whether to render an http-equiv element with the Content Type of this response.
+    </description>
+  </parameter>
+  
+  <parameter 
   	name="refresh" 
   	type="int"
   	direction="in">

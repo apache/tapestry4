@@ -59,8 +59,11 @@ import java.io.BufferedWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Stack;
+
+import org.apache.tapestry.util.ContentType;
 
 /**
  * Abstract base class implementing the {@link IMarkupWriter} interface.
@@ -187,10 +190,47 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *  @param entities a set of prefered entities, unsafe characters with
      *  a defined entity use the entity, other characters are converted
      *  to numeric entities.
+     *  @param mimeType the MIME type of the content produced by the writer.
+     *  @param encoding the encoding of content produced by the writer.
+     *  @param outputStream stream to which content will be written.
+     *
+     **/
+
+    protected AbstractMarkupWriter(
+        boolean safe[],
+        String[] entities,
+        String contentType,
+        String encoding,
+        OutputStream stream)
+    {
+        if (entities == null || safe == null || contentType == null || encoding == null)
+            throw new IllegalArgumentException(
+                Tapestry.getMessage("AbstractMarkupWriter.missing-constructor-parameters"));
+
+        _entities = entities;
+        _safe = safe;
+        
+        ContentType contentTypeObject = new ContentType(contentType);
+        contentTypeObject.setParameter("charset", encoding);
+        _contentType = contentTypeObject.unparse();
+
+        setOutputStream(stream, encoding);
+    }
+
+    /**
+     *  General constructor used by subclasses.
+     *  This constructor is left for backward compatibility. It is preferred that 
+     *  it is not used since it does not specify an encoding for conversion.
+     * 
+     *  @param safe an array of flags indicating which characters
+     *  can be passed directly through with out filtering.  Characters marked
+     *  unsafe, or outside the range defined by safe, are converted to entities.
+     *  @param entities a set of prefered entities, unsafe characters with
+     *  a defined entity use the entity, other characters are converted
+     *  to numeric entities.
      *  @param contentType the type of content produced by the
      *  writer.
      *  @param outputStream stream to which content will be written.
-     *
      **/
 
     protected AbstractMarkupWriter(
@@ -201,10 +241,10 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     {
         this(safe, entities, contentType);
 
-		OutputStreamWriter owriter = new OutputStreamWriter(stream);
-		Writer bwriter = new BufferedWriter(owriter);
-
-        _writer = new PrintWriter(bwriter);
+        ContentType contentTypeObject = new ContentType(contentType);
+        String encoding = contentTypeObject.getParameter("charset");
+        
+        setOutputStream(stream, encoding);
     }
 
 	/**
@@ -215,7 +255,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 	 *  close the writer when the markup writer is closed.
 	 * 
 	 *  @since 3.0
-	 * 
+	 *  
 	 **/
 	
 	protected AbstractMarkupWriter(
@@ -251,6 +291,26 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     protected void setWriter(PrintWriter writer)
     {
         _writer = writer;
+    }
+
+    protected void setOutputStream(OutputStream stream, String encoding)
+    {
+        try
+        {
+            OutputStreamWriter owriter;
+            if (encoding != null) 
+                owriter = new OutputStreamWriter(stream, encoding);
+            else
+                owriter = new OutputStreamWriter(stream);
+            Writer bwriter = new BufferedWriter(owriter);
+
+            _writer = new PrintWriter(bwriter);
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw new IllegalArgumentException(
+                Tapestry.format("AbstractMarkupWriter.illegal-encoding", encoding));            
+        }
     }
 
     /**

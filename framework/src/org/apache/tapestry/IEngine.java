@@ -116,7 +116,11 @@ public interface IEngine
      *
      *  <p>The page must implement a writeable JavaBeans proeprty named
      *  'message' of type <code>String</code>.
-     * 
+     *
+     **/ 
+
+    public static final String STALE_LINK_PAGE = "StaleLink";
+    
     /**
      *  Returns a recorder for a page.  Returns null if the page recorder has
      *  not been created yet.
@@ -126,8 +130,6 @@ public interface IEngine
      **/
 
     public IPageRecorder getPageRecorder(String pageName, IRequestCycle cycle);
-
-    public static final String STALE_LINK_PAGE = "StaleLink";
 
     /**
      *  The name ("StaleSession") of the page used for reporting state sessions.
@@ -405,4 +407,14 @@ public interface IEngine
      **/
     
     public IComponentClassEnhancer getComponentClassEnhancer();
+    
+    /**
+     *  Returns the encoding to be used to generate the servlet responses and 
+     *  accept the servlet requests.
+     * 
+     *  @since 3.0
+     * 
+     **/
+    
+    public String getOutputEncoding();
 }

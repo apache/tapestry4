@@ -79,6 +79,6 @@ public class BasePage extends AbstractPage
 
     public IMarkupWriter getResponseWriter(OutputStream out)
     {
-        return new HTMLWriter(out);
+        return new HTMLWriter(out, getOutputEncoding());
     }
 }

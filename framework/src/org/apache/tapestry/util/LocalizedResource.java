@@ -57,58 +57,40 @@ package org.apache.tapestry.util;
 
 import java.util.Locale;
 
-import org.apache.tapestry.IResourceResolver;
-
 /**
- *  
- *  Searches for a localization of a
- *  particular resource in the classpath (using
- *  a {@link org.apache.tapestry.IResourceResolver}. 
+ *  Contains the path to a localized resource and the locale for which it has been localized.
+ *  This object is immutable.
  * 
- *
- *  @author Howard Lewis Ship
+ *  @author Mindbridge
  *  @version $Id$
  *  @since 3.0
- *
- **/
-
-public class LocalizedResourceFinder
+ */
+public class LocalizedResource
 {
-    private IResourceResolver _resolver;
+    private String _resourcePath;
+    private Locale _resourceLocale;
 
-    public LocalizedResourceFinder(IResourceResolver resolver)
+
+    public LocalizedResource(String resourcePath, Locale resourceLocale)
     {
-        _resolver = resolver;
+        _resourcePath = resourcePath;
+        _resourceLocale = resourceLocale;
+    }
+    
+    /**
+     * @return the locale for which this resource has been localized or null if it has not been localized at all
+     */
+    public Locale getResourceLocale()
+    {
+        return _resourceLocale;
     }
 
     /**
-     *  Resolves the resource, returning a path representing
-     *  the closest match (with respect to the provided locale).
-     *  Returns null if no match.
-     * 
-     *  <p>The provided path is split into a base path
-     *  and a suffix (at the last period character).  The locale
-     *  will provide different suffixes to the base path
-     *  and the first match is returned.
-     * 
-     **/
-    
-    public LocalizedResource resolve(String resourcePath, Locale locale)
+     * @return the path to the localized resource
+     */
+    public String getResourcePath()
     {
-        int dotx = resourcePath.lastIndexOf('.');
-        String basePath = resourcePath.substring(0, dotx);
-        String suffix = resourcePath.substring(dotx);
-
-        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
-
-        while (generator.more())
-        {
-            String candidatePath = generator.next();
-
-            if (_resolver.getResource(candidatePath) != null)
-                return new LocalizedResource(candidatePath, generator.getCurrentLocale());
-        }
-
-        return null;
+        return _resourcePath;
     }
+
 }

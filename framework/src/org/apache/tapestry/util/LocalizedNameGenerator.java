@@ -80,6 +80,7 @@ public class LocalizedNameGenerator
     private String _country;
     private String _variant;
     private int _state;
+    private int _prevState;
 
     private static final int INITIAL = 0;
     private static final int LCV = 1;
@@ -101,6 +102,7 @@ public class LocalizedNameGenerator
         }
 
         _state = INITIAL;
+        _prevState = INITIAL;
 
         _suffix = suffix;
 
@@ -111,6 +113,8 @@ public class LocalizedNameGenerator
 
     private void advance()
     {
+        _prevState = _state;
+        
         while (_state != EXHAUSTED)
         {
             _state++;
@@ -216,5 +220,31 @@ public class LocalizedNameGenerator
             _buffer.append(_suffix);
 
         return _buffer.toString();
+    }
+
+
+    public Locale getCurrentLocale()
+    {
+        switch (_prevState)
+        {
+            case LCV :
+
+                return new Locale(_language, _country, _variant);
+
+            case LC :
+
+                return new Locale(_language, _country, "");
+
+            case LV :
+
+                return new Locale(_language, "", _variant);
+
+            case L :
+
+                return new Locale(_language, "", "");
+
+            default :
+                return null;
+        }
     }
 }
