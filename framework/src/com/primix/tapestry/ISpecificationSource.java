@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -39,27 +37,26 @@ import com.primix.tapestry.spec.*;
  * @version $Id$
  */
 
-
 public interface ISpecificationSource
 {
-    /**
-    *  Gets a specification from the cache, possibly parsing it at the same time.
-    *
-    *  <p>The type is used to locate the resource that defines the specification.  In
-    *  practical terms, this is the XML file which contains the specification.
-    *
-    * @throws ResourceUnavailableException if the specification cannot be located or loaded.
-    *
-    */
+	/**
+	*  Gets a specification from the cache, possibly parsing it at the same time.
+	*
+	*  <p>The type is used to locate the resource that defines the specification.  In
+	*  practical terms, this is the XML file which contains the specification.
+	*
+	* @throws ResourceUnavailableException if the specification cannot be located or loaded.
+	*
+	*/
 
-    public ComponentSpecification getSpecification(String type)
-    throws ResourceUnavailableException;
+	public ComponentSpecification getSpecification(String type)
+		throws ResourceUnavailableException;
 
-    /**
-    *  Invoked to have the source clear any internal cache.  This is most often
-    *  used when debugging an application.
-    *
-    */
+	/**
+	*  Invoked to have the source clear any internal cache.  This is most often
+	*  used when debugging an application.
+	*
+	*/
 
-    public void reset();
+	public void reset();
 }

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -105,141 +103,136 @@ import java.io.*;
  *  @since 1.0.2
  */
 
-
-public class ListEdit
-	extends AbstractComponent
+public class ListEdit extends AbstractComponent
 {
 	/**
 	 *  Interface that allows a ListEdit to treat an Object[] array or
 	 *  a {@link List} identically.
 	 *
 	 */
-	
+
 	private interface ISource
 	{
 		public int getCount();
-		
+
 		public Object get(int index);
 	}
-	
-	private static class ArraySource 
-		implements ISource
+
+	private static class ArraySource implements ISource
 	{
 		Object[] array;
-		
+
 		ArraySource(Object[] array)
 		{
 			this.array = array;
 		}
-		
+
 		public int getCount()
 		{
 			return array.length;
 		}
-		
+
 		public Object get(int index)
 		{
 			return array[index];
 		}
 	}
-	
-	private static class ListSource
-		implements ISource
+
+	private static class ListSource implements ISource
 	{
 		List list;
-		
+
 		ListSource(List list)
 		{
 			this.list = list;
 		}
-		
+
 		public int getCount()
 		{
 			return list.size();
 		}
-		
+
 		public Object get(int index)
 		{
 			return list.get(index);
 		}
 	}
-	
-	private static class EmptySource
-		implements ISource
+
+	private static class EmptySource implements ISource
 	{
 		public int getCount()
 		{
 			return 0;
 		}
-		
+
 		public Object get(int index)
 		{
 			throw new IndexOutOfBoundsException("ListEdit.EmptySource contains no values.");
 		}
 	}
-	
+
 	private IBinding sourceBinding;
 	private IBinding valueBinding;
 	private IBinding indexBinding;
 	private IBinding elementBinding;
 	private String staticElement;
-	
+
 	/**
 	 *  The squeezer that converts values to and from Strings for storage in
 	 *  hidden fields.  DataSqueezer is thread-safe so we can share this
 	 *  across all instances.
 	 *
 	 */
-	
+
 	private static final DataSqueezer squeezer = new DataSqueezer();
-	
+
 	public void setSourceBinding(IBinding value)
 	{
 		sourceBinding = value;
 	}
-	
+
 	public IBinding getSourceBinding()
 	{
 		return sourceBinding;
 	}
-	
+
 	public void setValueBinding(IBinding value)
 	{
 		valueBinding = value;
 	}
-	
+
 	public IBinding getValueBinding()
 	{
 		return valueBinding;
 	}
-	
+
 	public void setIndexBinding(IBinding value)
 	{
 		indexBinding = value;
 	}
-	
+
 	public IBinding getIndexBinding()
 	{
 		return indexBinding;
 	}
-	
+
 	/** @since 1.0.4 **/
-	
+
 	public void setElementBinding(IBinding value)
 	{
 		elementBinding = value;
-		
+
 		if (value.isStatic())
 			staticElement = value.getString();
 	}
-	
+
 	/** @since 1.0.4 **/
-	
+
 	public IBinding getElementBinding()
 	{
 		return elementBinding;
 	}
-	
+
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
@@ -248,37 +241,38 @@ public class ListEdit
 		RequestContext context = null;
 		Object value = null;
 		String element = null;
-		
+
 		IForm form = Form.get(cycle);
 		if (form == null)
 			throw new RequestCycleException(
 				"ListEdit components must be wrapped by a Form.",
 				this);
-		
+
 		boolean cycleRewinding = cycle.isRewinding();
 		boolean formRewinding = form.isRewinding();
-		
+
 		if (!cycleRewinding && elementBinding != null)
 		{
 			if (staticElement == null)
-				element = (String)elementBinding.getObject("element", String.class);
+				element = (String) elementBinding.getObject("element", String.class);
 			else
 				element = staticElement;
 		}
-			
+
 		// If the cycle is rewinding, but not this particular form,
 		// then do nothing (don't even render the body).
-		
-		if (cycleRewinding && ! form.isRewinding())
+
+		if (cycleRewinding && !form.isRewinding())
 			return;
-		
+
 		String name = form.getElementId(this);
-		
+
 		if (!cycleRewinding)
-		{
+		
+			{
 			source = getSource();
 			count = source.getCount();
-			
+
 			writer.beginEmpty("input");
 			writer.attribute("type", "hidden");
 			writer.attribute("name", name);
@@ -290,12 +284,12 @@ public class ListEdit
 			context = cycle.getRequestContext();
 			count = Integer.parseInt(context.getParameter(name));
 		}
-		
+
 		for (int i = 0; i < count; i++)
 		{
 			if (indexBinding != null)
 				indexBinding.setInt(i);
-			
+
 			if (cycleRewinding)
 				value = extractValue(context, form.getElementId(this));
 			else
@@ -303,27 +297,27 @@ public class ListEdit
 				value = source.get(i);
 				writeValue(writer, form.getElementId(this), value);
 			}
-			
+
 			valueBinding.setObject(value);
-			
+
 			if (element != null)
 			{
 				writer.begin(element);
 				generateAttributes(writer, cycle);
 			}
-			
+
 			renderWrapped(writer, cycle);
-			
+
 			if (element != null)
 				writer.end();
 		}
 	}
-	
+
 	private void writeValue(IResponseWriter writer, String name, Object value)
 		throws RequestCycleException
 	{
 		String externalValue;
-		
+
 		try
 		{
 			externalValue = squeezer.squeeze(value);
@@ -331,22 +325,23 @@ public class ListEdit
 		catch (IOException ex)
 		{
 			throw new RequestCycleException(
-				"Unable to convert " + value + 
-					" to an external String in ListEdit component.", this, ex);
+				"Unable to convert " + value + " to an external String in ListEdit component.",
+				this,
+				ex);
 		}
-		
+
 		writer.beginEmpty("input");
 		writer.attribute("type", "hidden");
 		writer.attribute("name", name);
 		writer.attribute("value", externalValue);
 		writer.println();
 	}
-	
+
 	private Object extractValue(RequestContext context, String name)
 		throws RequestCycleException
 	{
 		String value = context.getParameter(name);
-		
+
 		try
 		{
 			return squeezer.unsqueeze(value);
@@ -354,28 +349,30 @@ public class ListEdit
 		catch (IOException ex)
 		{
 			throw new RequestCycleException(
-				"Unable to convert '" + value + "' back into an object in " +
-					"ListEdit component.", this, ex);
+				"Unable to convert '"
+					+ value
+					+ "' back into an object in "
+					+ "ListEdit component.",
+				this,
+				ex);
 		}
 	}
-	
-	private ISource getSource()
-		throws RequestCycleException
+
+	private ISource getSource() throws RequestCycleException
 	{
 		Object raw = sourceBinding.getObject();
-		
+
 		if (raw == null)
 			return new EmptySource();
-		
+
 		if (raw instanceof List)
-			return new ListSource((List)raw);
-		
+			return new ListSource((List) raw);
+
 		if (raw.getClass().isArray())
-			return new ArraySource((Object[])raw);
-		
+			return new ArraySource((Object[]) raw);
+
 		throw new RequestCycleException(
-			"Unable to convert " + raw + " to a source for ListEdit component.", 
+			"Unable to convert " + raw + " to a source for ListEdit component.",
 			this);
 	}
 }
-

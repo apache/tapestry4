@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,13 +18,12 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
-
-
+ 
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.util.pool.*;
@@ -40,41 +37,41 @@ import com.primix.tapestry.util.pool.*;
  *  @author Howard Ship
  *
  */
- 
+
 public class EvenOdd implements IPoolable
 {
 	private boolean even = true;
-	
+
 	/**
 	 *  Returns "even" or "odd".  Whatever it returns on one invocation, it will
 	 *  return the opposite on the next.
 	 *
 	 */
-	
+
 	public String getNext()
 	{
 		String result = even ? "even" : "odd";
-		
+
 		even = !even;
-		
+
 		return result;
 	}
-	
+
 	public boolean isEven()
 	{
 		return even;
 	}
-	
+
 	public void setEven(boolean value)
 	{
 		even = value;
 	}
-	
+
 	/**
 	 *  Resets the internal flag such that the next value from {@link #getNext()} will be "even".
 	 *
 	 */
-	
+
 	public void resetForPool()
 	{
 		even = true;

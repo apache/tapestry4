@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -43,21 +42,19 @@ import javax.servlet.http.HttpSession;
  * @version $Id$
  */
 
-public class Logout
-extends BasePage
+public class Logout extends BasePage
 {
-    /**
-    *  Sets the application user to null.
-    *
-    */
+	/**
+	*  Sets the application user to null.
+	*
+	*/
 
-    public void beginResponse(IResponseWriter writer,
-        IRequestCycle cycle)
-    throws RequestCycleException
-    {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+	public void beginResponse(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
 
-        vengine.logout();
-    }
+		vengine.logout();
+	}
 
 }

@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -126,103 +124,85 @@ import java.text.*;
  *
  */
 
-public class ValidatingTextField
-extends AbstractValidatingTextField
+public class ValidatingTextField extends AbstractValidatingTextField
 {
-    private IBinding textBinding;
-    private IBinding minimumLengthBinding;
+	private IBinding textBinding;
+	private IBinding minimumLengthBinding;
 
-    public IBinding getTextBinding()
-    {
-        return textBinding;
-    }
+	public IBinding getTextBinding()
+	{
+		return textBinding;
+	}
 
-    public void setTextBinding(IBinding value)
-    {
-        textBinding = value;
-    }
+	public void setTextBinding(IBinding value)
+	{
+		textBinding = value;
+	}
 
-    public IBinding getMinimumLengthBinding()
-    {
-        return minimumLengthBinding;
-    }
+	public IBinding getMinimumLengthBinding()
+	{
+		return minimumLengthBinding;
+	}
 
-    public void setMinimumLengthBinding(IBinding value)
-    {
-        minimumLengthBinding = value;
-    }
+	public void setMinimumLengthBinding(IBinding value)
+	{
+		minimumLengthBinding = value;
+	}
 
-    /**
-     *  Reads the current value of the text parameter.
-     *
-     */
+	/**
+	 *  Reads the current value of the text parameter.
+	 *
+	 */
 
-    protected String read()
-    {
-        return textBinding.getString();
-    }
+	protected String read()
+	{
+		return textBinding.getString();
+	}
 
+	protected void update(String value)
+	{
+		int minimumLength = 0;
+		int length;
+		String errorMessage;
 
+		length = value.length();
 
-    protected void update(String value)
-    {
-        int minimumLength = 0;
-        int length;
-        String errorMessage;
+		if (length == 0)
+		{
+			if (isRequired())
+			{
+				errorMessage = getString("field-is-required", getDisplayName());
 
-        length = value.length();
+				notifyDelegate(ValidationConstraint.REQUIRED, errorMessage);
 
-        if (length == 0)
-        {
-            if (isRequired())
-            {
-                errorMessage =
-                    getString("field-is-required", getDisplayName());
+				return;
+			}
 
-                notifyDelegate(ValidationConstraint.REQUIRED,
-                     errorMessage);
+			textBinding.setObject(value);
+			return;
+		}
 
-                return;
-            }
+		// Non-zero length, but is there a minimum?
 
-            textBinding.setObject(value);
-            return;
-        }
+		if (minimumLengthBinding != null)
+		{
+			minimumLength = minimumLengthBinding.getInt();
 
+			if (length < minimumLength)
+			{
+				errorMessage =
+					getString("field-too-short", new Integer(minimumLength), getDisplayName());
 
-        // Non-zero length, but is there a minimum?
+				notifyDelegate(ValidationConstraint.MINIMUM_WIDTH, errorMessage);
 
-        if (minimumLengthBinding != null)
-        {
-            minimumLength = minimumLengthBinding.getInt();
+				return;
+			}
+		}
 
-            if (length < minimumLength)
-            {
-                errorMessage =
-                    getString("field-too-short", new Integer(minimumLength),
-                    getDisplayName());
+		// Valid!  Update through our binding.
 
-                notifyDelegate(ValidationConstraint.MINIMUM_WIDTH,
-                     errorMessage);
+		textBinding.setObject(value);
 
-                return;
-            }
-        }
-
-        // Valid!  Update through our binding.
-
-        textBinding.setObject(value);
-
-    }
+	}
 
 }
-
-
-
-
-
-
-
-
-
-

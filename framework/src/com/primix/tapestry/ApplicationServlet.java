@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -15,7 +13,7 @@
  *
  * Version 2.1 of the license should be included with this distribution in
  * the file LICENSE, as well as License.html. If the license is not
- * included    with this distribution, you may find a copy at the FSF web
+ * included with this distribution, you may find a copy at the FSF web
  * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
@@ -84,45 +82,43 @@ import org.apache.log4j.*;
  * @author Howard Ship
  */
 
-
-abstract public class ApplicationServlet
-	extends HttpServlet
+abstract public class ApplicationServlet extends HttpServlet
 {
 	private static final Category CAT =
 		Category.getInstance(ApplicationServlet.class);
-	
+
 	/**
 	 *  Name of the cookie written to the client web browser to
 	 *  identify the locale.
 	 *
 	 */
-	
+
 	private static final String LOCALE_COOKIE_NAME = "com.primix.tapestry.locale";
-	
+
 	/**
 	 *  A {@link Pool} used to store {@link IEngine engine}s that are not currently
 	 *  in use.  The key is on {@link Locale}.
 	 *
 	 */
-	
+
 	private Pool enginePool = new Pool();
-	
+
 	/**
 	 *  The application specification, which is read once and kept in memory
 	 *  thereafter.
 	 *
 	 */
-	
+
 	private ApplicationSpecification specification;
-	
+
 	/**
 	 * The name under which the {@link IEngine engine} is stored within the
 	 * {@link HttpSession}.
 	 *
 	 */
-	
+
 	private String attributeName;
-	
+
 	/**
 	 * Gets the class loader for the servlet.  Generally, this class (ApplicationServlet)
 	 * is loaded by the system class loader, but the servlet and other classes in the
@@ -130,32 +126,33 @@ abstract public class ApplicationServlet
 	 * of all classes and package resources.
 	 *
 	 */
-	
+
 	private ClassLoader classLoader = getClass().getClassLoader();
-	
+
 	/**
 	 * If true, then the engine is stored as an attribute of the HttpSession
 	 * after every request.
 	 *
 	 * @since 0.2.12
 	 */
-	
+
 	private static boolean storeEngine =
 		Boolean.getBoolean("com.primix.tapestry.store-engine");
-	
+
 	/**
 	 *  Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
 	 *
 	 *  @since 1.0.6
 	 *
 	 */
-	
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException
+	
 	{
 		doService(request, response);
 	}
-	
+
 	/**
 	 * Handles the GET and POST requests. Performs the following:
 	 * <ul>
@@ -164,55 +161,55 @@ abstract public class ApplicationServlet
 	 * <li>Invoke {@link IEngine#service(RequestContext)} on the application
 	 * </ul>
 	 */
-	
-	protected void doService(HttpServletRequest request, HttpServletResponse response)
+
+	protected void doService(
+		HttpServletRequest request,
+		HttpServletResponse response)
 		throws IOException, ServletException
 	{
 		RequestContext context;
 		IEngine engine;
-		
+
 		// Create a context from the various bits and pieces.
-		
+
 		context = new RequestContext(this, request, response);
-		
+
 		try
 		{
-			
+
 			// The subclass provides the engine.
-			
+
 			engine = getEngine(context);
-			
+
 			if (engine == null)
-				throw new ServletException(
-					"Could not locate an engine to service this request.");
-			
+				throw new ServletException("Could not locate an engine to service this request.");
+
 			boolean dirty = engine.service(context);
-			
+
 			HttpSession session = context.getSession();
-			
+
 			// When there's an active session, we *may* store it into
 			// the HttpSession and we *will not* store the engine
 			// back into the engine pool.
-			
+
 			if (session != null)
 			{
-				boolean forceStore = engine.isStateful() &&
-					(session.getAttribute(attributeName) == null);
-				
+				boolean forceStore =
+					engine.isStateful() && (session.getAttribute(attributeName) == null);
+
 				// If the service may have changed the engine and the
 				// special storeEngine flag is on, then re-save the engine
 				// into the session.  Otherwise, we only save the engine
 				// into the session when the session is first created (is new).
-				
+
 				try
 				{
-					
+
 					if (forceStore || (dirty && storeEngine))
 					{
 						if (CAT.isDebugEnabled())
-							CAT.debug("Storing " + engine + 
-										" into session as " + attributeName);
-						
+							CAT.debug("Storing " + engine + " into session as " + attributeName);
+
 						session.setAttribute(attributeName, engine);
 					}
 				}
@@ -221,91 +218,91 @@ abstract public class ApplicationServlet
 					// Ignore because the session been's invalidated.
 					// Allow the engine (which has state particular to the client)
 					// to be reclaimed by the garbage collector.
-					
+
 					if (CAT.isDebugEnabled())
 						CAT.debug("Session invalidated.");
 				}
-				
+
 				return;
 			}
-			
+
 			if (engine.isStateful())
 			{
-				CAT.error("Engine " + engine + 
-							" is stateful even though there is no session.  Discarding the engine.");
+				CAT.error(
+					"Engine "
+						+ engine
+						+ " is stateful even though there is no session.  Discarding the engine.");
 				return;
 			}
-			
+
 			// No session; the engine contains no state particular to
 			// the client (except for locale).  Don't throw it away,
 			// instead save it in a pool for later reuse (by this, or another
 			// client in the same locale).
-			
-			
+
 			if (CAT.isDebugEnabled())
 				CAT.debug("Returning " + engine + " to pool.");
-			
+
 			enginePool.store(engine.getLocale(), engine);
-			
+
 		}
 		catch (ServletException ex)
 		{
 			log("ServletException", ex);
-			
+
 			show(ex);
-			
+
 			// Rethrow it.
-			
+
 			throw ex;
 		}
 		catch (IOException ex)
 		{
 			log("IOException", ex);
-			
+
 			show(ex);
-			
+
 			// Rethrow it.
-			
+
 			throw ex;
 		}
 	}
-	
+
 	protected void show(Exception ex)
 	{
 		System.err.println(
 			"\n\n**********************************************************\n\n");
-		
+
 		new ExceptionAnalyzer().reportException(ex, System.err);
-		
+
 		System.err.println(
 			"\n**********************************************************\n");
-		
+
 	}
-	
-	
+
 	/**
 	 *  Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
 	 *
 	 *
 	 */
-	
+
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException
 	{
 		doService(request, response);
 	}
-	
+
 	/**
 	 *  Returns the application specification, which is read
 	 *  by the {@link #init(ServletConfig)} method.
 	 *
 	 */
-	
+
 	public ApplicationSpecification getApplicationSpecification()
 	{
 		return specification;
 	}
-	
+
 	/**
 	 *  Retrieves the {@link IEngine engine} that will process this
 	 *  request.  This comes from one of the following places:
@@ -316,34 +313,33 @@ abstract public class ApplicationServlet
 	 *  </ul>
 	 *
 	 */
-	
-	protected IEngine getEngine(RequestContext context)
-		throws ServletException
+
+	protected IEngine getEngine(RequestContext context) throws ServletException
 	{
 		IEngine engine = null;
 		HttpSession session = context.getSession();
-		
+
 		// If there's a session, then find the engine within it.
-		
+
 		if (session != null)
 		{
-			engine = (IEngine)session.getAttribute(attributeName);
+			engine = (IEngine) session.getAttribute(attributeName);
 			if (engine != null)
 			{
 				if (CAT.isDebugEnabled())
 					CAT.debug("Retrieved " + engine + " from session " + session.getId() + ".");
-				
+
 				return engine;
 			}
-			
+
 			if (CAT.isDebugEnabled())
 				CAT.debug("Session exists, but doesn't contain an engine.");
 		}
-		
+
 		Locale locale = getLocaleFromRequest(context);
-		
-		engine = (IEngine)enginePool.retrieve(locale);
-		
+
+		engine = (IEngine) enginePool.retrieve(locale);
+
 		if (engine == null)
 		{
 			engine = createEngine(context);
@@ -354,10 +350,10 @@ abstract public class ApplicationServlet
 			if (CAT.isDebugEnabled())
 				CAT.debug("Using pooled engine " + engine + " (from locale " + locale + ").");
 		}
-		
+
 		return engine;
 	}
-	
+
 	/**
 	 *  Determines the {@link Locale} for the incoming request.
 	 *  This is determined from the locale cookie or, if not set,
@@ -365,73 +361,69 @@ abstract public class ApplicationServlet
 	 *  if no locale is determined.
 	 *
 	 */
-	
-	
+
 	protected Locale getLocaleFromRequest(RequestContext context)
 		throws ServletException
 	{
 		Cookie cookie = context.getCookie(LOCALE_COOKIE_NAME);
-		
+
 		if (cookie != null)
 			return Tapestry.getLocale(cookie.getValue());
-		
+
 		return context.getRequest().getLocale();
 	}
-	
-	
-	
+
 	/**
 	 *  Reads the application specification when the servlet is
 	 *  first initialized.  All {@link IEngine engine instances}
 	 *  will have access to the specification via the servlet.
 	 *
 	 */
-	
-	public void init(ServletConfig config)
-		throws ServletException
+
+	public void init(ServletConfig config) throws ServletException
 	{
 		String path;
 		ServletContext servletContext;
 		String resource;
 		InputStream stream;
 		SpecificationParser parser;
-		
+
 		super.init(config);
-		
+
 		setupLogging();
-		
+
 		path = getApplicationSpecificationPath();
-		
+
 		// Make sure we locate the specification using our
 		// own class loader.
-		
+
 		stream = getClass().getResourceAsStream(path);
-		
+
 		if (stream == null)
 			throw new ServletException(
 				"Could not locate application specification " + path + ".");
-		
+
 		parser = new SpecificationParser();
-		
+
 		try
 		{
 			if (CAT.isDebugEnabled())
 				CAT.debug("Loading application specification from " + path);
-			
+
 			specification = parser.parseApplicationSpecification(stream, path);
 		}
 		catch (DocumentParseException ex)
 		{
 			show(ex);
-			
+
 			throw new ServletException(
-				"Unable to read application specification " +
-					path + ".",  ex);
+				"Unable to read application specification " + path + ".",
+				ex);
 		}
-		
+
 		attributeName = "com.primix.tapestry.engine." + specification.getName();
 	}
-	
+
 	/**
 	 *  Invoked from {@link #init(ServletConfig)} before the specification is loaded to
 	 *  setup log4j logging.  This implemention is sufficient for testing, but should
@@ -455,42 +447,41 @@ abstract public class ApplicationServlet
 	 *
 	 *  @since 0.2.9
 	 */
-	
-	protected void setupLogging()
-		throws ServletException
+
+	protected void setupLogging() throws ServletException
 	{
 		Priority priority = Priority.ERROR;
-		
+
 		String value = System.getProperty("com.primix.tapestry.root-logging-priority");
-		
+
 		if (value != null)
 			priority = Priority.toPriority(value, Priority.ERROR);
-		
+
 		Category root = Category.getRoot();
 		root.setPriority(priority);
-		
-		String pattern = System.getProperty("com.primix.tapestry.log-pattern",
-				"%c{1} [%p] %m%n");
-		
+
+		String pattern =
+			System.getProperty("com.primix.tapestry.log-pattern", "%c{1} [%p] %m%n");
+
 		Layout layout = new PatternLayout(pattern);
 		Appender rootAppender = new ConsoleAppender(layout);
-		
+
 		root.removeAllAppenders();
 		root.addAppender(rootAppender);
-		
+
 		Priority[] priorities = Priority.getAllPossiblePriorities();
 		StringSplitter splitter = new StringSplitter(';');
-		
+
 		for (int i = 0; i < priorities.length; i++)
 		{
 			priority = priorities[i];
 			String key = "com.primix.tapestry.log4j." + priority.toString();
 			String categoryList = System.getProperty(key);
-			
+
 			if (categoryList != null)
 			{
-				String[] categories	= splitter.splitToArray(categoryList);
-				
+				String[] categories = splitter.splitToArray(categoryList);
+
 				for (int j = 0; j < categories.length; j++)
 				{
 					Category cat = Category.getInstance(categories[j]);
@@ -498,17 +489,17 @@ abstract public class ApplicationServlet
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 *  Implemented in subclasses to identify the resource path
 	 *  of the application specification.
 	 *
 	 */
-	
+
 	abstract protected String getApplicationSpecificationPath();
-	
+
 	/**
 	 *  Invoked by {@link #getEngine(RequestContext)} to create
 	 *  the {@link IEngine} instance specific to the
@@ -522,27 +513,26 @@ abstract public class ApplicationServlet
 	 *  by {@link ApplicationSpecification#getEngineClassName()}.
 	 *
 	 */
-	
-	protected IEngine createEngine(RequestContext context)
-		throws ServletException
+
+	protected IEngine createEngine(RequestContext context) throws ServletException
 	{
 		try
 		{
 			String className = specification.getEngineClassName();
-			
+
 			if (className == null)
 				throw new ServletException("Application specification does not specify an engine class name.");
-			
+
 			if (CAT.isDebugEnabled())
 				CAT.debug("Creating engine from class " + className);
-			
+
 			Class engineClass = Class.forName(className, true, classLoader);
-			
-			IEngine result = (IEngine)engineClass.newInstance();
-			
+
+			IEngine result = (IEngine) engineClass.newInstance();
+
 			if (CAT.isDebugEnabled())
 				CAT.debug("Created engine " + result);
-			
+
 			return result;
 		}
 		catch (Exception ex)
@@ -550,7 +540,7 @@ abstract public class ApplicationServlet
 			throw new ServletException(ex);
 		}
 	}
-	
+
 	/**
 	 *  Invoked from the {@link IEngine engine}, just prior to starting to
 	 *  render a response, when the locale has changed.  The servlet writes a
@@ -562,16 +552,18 @@ abstract public class ApplicationServlet
 	 *
 	 *  @since 1.0.1
 	 */
-	
-	public void writeLocaleCookie(Locale locale, IEngine engine, RequestContext cycle)
+
+	public void writeLocaleCookie(
+		Locale locale,
+		IEngine engine,
+		RequestContext cycle)
 	{
 		if (CAT.isDebugEnabled())
 			CAT.debug("Writing locale cookie " + locale);
-		
+
 		Cookie cookie = new Cookie(LOCALE_COOKIE_NAME, locale.toString());
 		cookie.setPath(engine.getServletPath());
-		
+
 		cycle.addCookie(cookie);
 	}
 }
-

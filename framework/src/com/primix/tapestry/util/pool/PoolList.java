@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -55,22 +53,22 @@ class PoolList
 	 *
 	 * @since 1.0.5
 	 */
-	
+
 	private Entry first;
-    
+
 	/**
 	 *  Linked list of "spare" Entries, ready to be re-used.
 	 *
 	 * @since 1.0.5
 	 */
-	
+
 	private Entry spare;
-	
+
 	/**
 	 *  Overall count of items pooled.
 	 *
 	 */
-	
+
 	private int count;
 
 	/**
@@ -85,28 +83,28 @@ class PoolList
 		Object pooled;
 		Entry next;
 	}
-	
+
 	/**
 	 *  Returns the number of pooled objects currently stored.
 	 *
 	 *  @since 1.0.5
 	 */
-	
+
 	public int getPooledCount()
 	{
 		return count;
 	}
-	
-    /**
-     *  Returns an object previously stored into the list, or null if the list
-     *  is empty.  The returned object is removed from the list.
-     *
-     */
 
-    public Object retrieve()
-    {
-       if (count == 0)
-            return null;
+	/**
+	 *  Returns an object previously stored into the list, or null if the list
+	 *  is empty.  The returned object is removed from the list.
+	 *
+	 */
+
+	public Object retrieve()
+	{
+		if (count == 0)
+			return null;
 
 		count--;
 
@@ -114,30 +112,30 @@ class PoolList
 		Object result = e.pooled;
 
 		// Okay, store e into the list of spare entries.
-		
+
 		first = e.next;
-		
+
 		e.next = spare;
 		spare = e;
 		e.generation = 0;
 		e.pooled = null;
-		
-		return result;
-    }
 
-    /**
-     *  Adds the object to this PoolList.  An arbitrary number of objects can be
-     *  stored.  The objects can later be retrieved using {@link #get()}.
+		return result;
+	}
+
+	/**
+	 *  Adds the object to this PoolList.  An arbitrary number of objects can be
+	 *  stored.  The objects can later be retrieved using {@link #get()}.
 	 *  The list requires that generation never decrease.  On each subsequent
 	 *  invocation, it should be the same as, or greater, than the previous value.
-     *
+	 *
 	 *  @return The number of objects stored in the list (after adding the new object).
-     */
+	 */
 
-    public int store(int generation, Object object)
-    {
+	public int store(int generation, Object object)
+	{
 		Entry e;
-		
+
 		if (spare == null)
 		{
 			e = new Entry();
@@ -147,12 +145,12 @@ class PoolList
 			e = spare;
 			spare = spare.next;
 		}
-		
+
 		e.generation = generation;
 		e.pooled = object;
 		e.next = first;
 		first = e;
-		
+
 		return ++count;
 	}
 
@@ -164,45 +162,45 @@ class PoolList
 	 *
 	 * @since 1.0.5
 	 */
-	
+
 	public int cleanup(int generation)
 	{
 		spare = null;
-		
+
 		count = 0;
 
 		Entry prev = null;
-	
+
 		// Walk through the list.  They'll be sorted by generation.
-		
+
 		Entry e = first;
 		while (true)
 		{
 			if (e == null)
 				break;
-			
+
 			// If found a too-old entry then we want to
 			// delete it.
-			
+
 			if (e.generation <= generation)
 			{
 				// Set the next pointer of the previous node to null.
 				// If the very first node inspected was too old,
 				// set the first pointer to null.
-				
+
 				if (prev == null)
 					first = null;
 				else
 					prev.next = null;
-				
+
 				break;
 			}
-	
+
 			prev = e;
 			e = e.next;
 			count++;
 		}
-		
+
 		return count;
 	}
 	public String toString()

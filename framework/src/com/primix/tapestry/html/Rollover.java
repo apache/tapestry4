@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,12 +18,11 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
-
 
 package com.primix.tapestry.html;
 
@@ -121,7 +118,7 @@ public class Rollover extends AbstractComponent
 
 	private Map symbols;
 
-	private static final int MAP_SIZE = 7;    
+	private static final int MAP_SIZE = 7;
 
 	private IBinding image;
 	private IBinding focus;
@@ -134,8 +131,11 @@ public class Rollover extends AbstractComponent
 	*
 	*/
 
-	protected String getAssetURL(String name, IBinding binding, IRequestCycle cycle)
-	throws RequestCycleException
+	protected String getAssetURL(
+		String name,
+		IBinding binding,
+		IRequestCycle cycle)
+		throws RequestCycleException
 	{
 		IAsset asset;
 
@@ -144,10 +144,11 @@ public class Rollover extends AbstractComponent
 
 		try
 		{
-			asset = (IAsset)binding.getObject(name, IAsset.class);
+			asset = (IAsset) binding.getObject(name, IAsset.class);
 		}
 		catch (BindingException ex)
-		{
+		
+			{
 			throw new RequestCycleException(this, ex);
 		}
 
@@ -178,7 +179,7 @@ public class Rollover extends AbstractComponent
 	}
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		String imageURL = null;
 		String focusURL = null;
@@ -201,7 +202,7 @@ public class Rollover extends AbstractComponent
 				"Rollover components must be contained within a Body component.",
 				this);
 
-		serviceLink = (IServiceLink)cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
+		serviceLink = (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
 		if (serviceLink == null)
 			throw new RequestCycleException(
 				"Rollover components must be contained within an IServiceLink component.",
@@ -232,7 +233,7 @@ public class Rollover extends AbstractComponent
 		}
 
 		if (imageURL == null)
-			throw new RequiredParameterException(this, "image", null);			
+			throw new RequiredParameterException(this, "image", null);
 
 		writer.beginEmpty("img");
 
@@ -272,56 +273,57 @@ public class Rollover extends AbstractComponent
 
 	private static final String SCRIPT_RESOURCE = "Rollover.script";
 
-	private IScript getParsedScript()
-		throws ResourceUnavailableException
+	private IScript getParsedScript() throws ResourceUnavailableException
 	{
 		if (parsedScript == null)
 		{
 			IEngine engine = getPage().getEngine();
 			IScriptSource source = engine.getScriptSource();
-			
+
 			parsedScript = source.getScript("/com/primix/tapestry/html/Rollover.script");
 		}
-		
+
 		return parsedScript;
 	}
 
-
-	private String writeScript(Body body, IServiceLink link,
-		String focusURL, String blurURL)
+	private String writeScript(
+		Body body,
+		IServiceLink link,
+		String focusURL,
+		String blurURL)
 		throws ResourceUnavailableException, ScriptException
 	{
 		String uniqueId = body.getUniqueId();
-		String focusImageURL = 
-			body.getPreloadedImageReference(focusURL);
-		String blurImageURL = 
-			body.getPreloadedImageReference(blurURL);
+		String focusImageURL = body.getPreloadedImageReference(focusURL);
+		String blurImageURL = body.getPreloadedImageReference(blurURL);
 
 		if (symbols == null)
 			symbols = new HashMap(MAP_SIZE);
 		else
-			symbols.clear();	
+			symbols.clear();
 
-		symbols.put("uniqueId",      uniqueId);
+		symbols.put("uniqueId", uniqueId);
 		symbols.put("focusImageURL", focusImageURL);
-		symbols.put("blurImageURL",  blurImageURL);
+		symbols.put("blurImageURL", blurImageURL);
 
 		ScriptSession session = getParsedScript().execute(symbols);
 
 		body.process(session);
-		
+
 		// Add attributes to the link to control mouse over/out.
 		// Because the script is written before the <body> tag,
 		// there won't be any timing issues (such as cause
 		// bug #113893).
 
-		link.addEventHandler(ServiceLinkEventType.MOUSE_OVER,
-								(String)symbols.get("onMouseOverName"));
-		link.addEventHandler(ServiceLinkEventType.MOUSE_OUT,
-								(String)symbols.get("onMouseOutName"));
+		link.addEventHandler(
+			ServiceLinkEventType.MOUSE_OVER,
+			(String) symbols.get("onMouseOverName"));
+		link.addEventHandler(
+			ServiceLinkEventType.MOUSE_OUT,
+			(String) symbols.get("onMouseOutName"));
 
-		String imageName = (String)symbols.get("imageName");
-		
+		String imageName = (String) symbols.get("imageName");
+
 		symbols.clear();
 
 		// Return the value that must be assigned to the 'name' attribute
@@ -351,4 +353,3 @@ public class Rollover extends AbstractComponent
 		image = value;
 	}
 }
-

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -42,8 +40,7 @@ import java.util.*;
  *
  */
 
-public class EntitySelectionModel
-implements IPropertySelectionModel
+public class EntitySelectionModel implements IPropertySelectionModel
 {
 	private static class Entry
 	{
@@ -55,58 +52,58 @@ implements IPropertySelectionModel
 			this.primaryKey = primaryKey;
 			this.label = label;
 		}
-		
+
 	}
-	
+
 	private static final int LIST_SIZE = 20;
-	
+
 	private List entries = new ArrayList(LIST_SIZE);
-	
+
 	public void add(Integer key, String label)
 	{
 		Entry entry;
-		
+
 		entry = new Entry(key, label);
 		entries.add(entry);
 	}
-	
+
 	public int getOptionCount()
 	{
 		return entries.size();
 	}
-	
+
 	private Entry get(int index)
 	{
-		return (Entry)entries.get(index);
+		return (Entry) entries.get(index);
 	}
-	
+
 	public Object getOption(int index)
 	{
 		return get(index).primaryKey;
 	}
-	
+
 	public String getLabel(int index)
 	{
 		return get(index).label;
 	}
-	
+
 	public String getValue(int index)
 	{
 		Integer primaryKey;
-		
+
 		primaryKey = get(index).primaryKey;
-		
+
 		if (primaryKey == null)
 			return "";
-		
-		return primaryKey.toString();	
+
+		return primaryKey.toString();
 	}
-	
+
 	public Object translateValue(String value)
 	{
 		if (value.equals(""))
 			return null;
-		
+
 		try
 		{
 			return new Integer(value);
@@ -114,7 +111,8 @@ implements IPropertySelectionModel
 		catch (NumberFormatException e)
 		{
 			throw new ApplicationRuntimeException(
-				"Could not convert '" + value + "' to an Integer.", e);
+				"Could not convert '" + value + "' to an Integer.",
+				e);
 		}
 	}
 }

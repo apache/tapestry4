@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -123,125 +121,122 @@ import javax.servlet.http.*;
  * @version $Id$
  */
 
-
-public class Direct
-	extends AbstractServiceLink
-	implements IDirect
+public class Direct extends AbstractServiceLink implements IDirect
 {
 	private IBinding listenerBinding;
 	private IBinding contextBinding;
 	private IBinding statefulBinding;
 	private boolean staticStateful;
 	private boolean statefulValue;
-	
+
 	public void setContextBinding(IBinding value)
 	{
 		contextBinding = value;
 	}
-	
+
 	public IBinding getContextBinding()
 	{
 		return contextBinding;
 	}
-	
+
 	public void setStatefulBinding(IBinding value)
 	{
 		statefulBinding = value;
-		
+
 		staticStateful = value.isStatic();
 		if (staticStateful)
 			statefulValue = value.getBoolean();
 	}
-	
+
 	public IBinding getStatefulBinding()
 	{
 		return statefulBinding;
 	}
-	
+
 	/**
 	 *  Returns true if the stateful parameter is bound to
 	 *  a true value.  If stateful is not bound, also returns
 	 *  the default, true.
 	 *
 	 */
-	
+
 	public boolean isStateful()
 	{
 		if (staticStateful)
 			return statefulValue;
-		
+
 		if (statefulBinding != null)
 			return statefulBinding.getBoolean();
-		
+
 		return true;
 	}
-	
+
 	/**
 	 *  Returns {@link IEngineService#DIRECT_SERVICE}.
 	 */
-	
+
 	protected String getServiceName(IRequestCycle cycle)
 	{
 		return IEngineService.DIRECT_SERVICE;
 	}
-	
+
 	protected String[] getContext(IRequestCycle cycle)
 	{
 		return getContext(contextBinding);
 	}
-	
+
 	/**
 	 *  Converts a binding to a context (an array of Strings).
 	 *  This is used by the {@link Direct} and {@link Service}
 	 *  components.
 	 *
 	 */
-	
+
 	public static String[] getContext(IBinding binding)
 	{
 		Object raw;
 		String[] context;
 		Vector v;
-		
+
 		if (binding == null)
 			return null;
-		
+
 		raw = binding.getObject();
-		
+
 		if (raw == null)
 			return null;
-		
+
 		if (raw instanceof String[])
-			return (String[])raw;
-		
+			return (String[]) raw;
+
 		if (raw instanceof String)
 		{
 			context = new String[1];
-			context[0] = (String)raw;
-			
+			context[0] = (String) raw;
+
 			return context;
 		}
-		
+
 		if (raw instanceof List)
 		{
-			List list = (List)raw;
-			
+			List list = (List) raw;
+
 			context = new String[list.size()];
-			
-			return (String[])list.toArray(context);
+
+			return (String[]) list.toArray(context);
 		}
-		
+
 		// Allow simply Object ... use toString() to make it a string.
 		// The listener should be able to convert it back.  For example,
 		// if the real type is java.lang.Integer, it's easy to convert
 		// it to an int or java.lang.Integer.
-		
+
 		context = new String[1];
 		context[0] = raw.toString();
-		
+
 		return context;
 	}
-	
+
 	/**
 	 *  Invoked by the direct service to trigger the application-specific
 	 *  action by notifying the {@link IDirectListener listener}.
@@ -249,56 +244,56 @@ public class Direct
 	 *  @throws StaleSessionException if the component is stateful, and
 	 *  the session is new.
 	 */
-	
+
 	public void trigger(IRequestCycle cycle, String[] context)
 		throws RequestCycleException
 	{
 		IDirectListener listener;
-		
+
 		if (isStateful())
 		{
 			HttpSession session = cycle.getRequestContext().getSession();
-			
+
 			if (session == null || session.isNew())
 				throw new StaleSessionException();
 		}
-		
+
 		listener = getListener(cycle);
-		
+
 		listener.directTriggered(this, context, cycle);
 	}
-	
+
 	public IBinding getListenerBinding()
 	{
 		return listenerBinding;
 	}
-	
+
 	public void setListenerBinding(IBinding value)
 	{
 		listenerBinding = value;
 	}
-	
+
 	private IDirectListener getListener(IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		IDirectListener result;
-		
+
 		try
 		{
-			result = (IDirectListener)listenerBinding.getObject("listener", 
-					IDirectListener.class);
-			
+			result =
+				(IDirectListener) listenerBinding.getObject("listener", IDirectListener.class);
+
 		}
 		catch (BindingException ex)
-		{
+		
+			{
 			throw new RequestCycleException(this, ex);
 		}
-		
+
 		if (result == null)
 			throw new RequiredParameterException(this, "listener", listenerBinding);
-		
+
 		return result;
 	}
-	
-}
 
+}

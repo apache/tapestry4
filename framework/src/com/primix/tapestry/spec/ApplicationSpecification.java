@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -39,7 +37,6 @@ import com.primix.tapestry.util.exception.*;
 import com.primix.tapestry.util.*;
 import com.primix.tapestry.inspector.*;
 
-
 /**
  *  Defines the configuration for a Tapestry application.
  *
@@ -47,131 +44,127 @@ import com.primix.tapestry.inspector.*;
  * @version $Id$
  */
 
-public class ApplicationSpecification 
-	extends BasePropertyHolder
+public class ApplicationSpecification extends BasePropertyHolder
 {
 	private String name;
 	private String engineClassName;
-	
+
 	private final static int MAP_SIZE = 11;
-	
+
 	// Map of PageSpecification, keyed on String (name of page), specific
 	// to this application.  Will not be null in a running application.
-	
+
 	private Map pageMap;
-	
+
 	// Map of String (full path to component specification), 
 	// keyed on String (component alias), may often be null.
-	
+
 	private Map componentMap;
-	
+
 	// The Default component map is shared by all specifications
-	
+
 	private static Map defaultComponentMap = new HashMap(MAP_SIZE);
-	
-	static
-	{
-		defaultComponentMap.put("Insert", 
-				"/com/primix/tapestry/components/Insert.jwc");
-		defaultComponentMap.put("Action", 
-				"/com/primix/tapestry/link/Action.jwc");
-		defaultComponentMap.put("Checkbox",
-				"/com/primix/tapestry/form/Checkbox.jwc");
-		defaultComponentMap.put("InsertWrapped",
-				"/com/primix/tapestry/components/InsertWrapped.jwc");
-		defaultComponentMap.put("Conditional", 
-				"/com/primix/tapestry/components/Conditional.jwc");
-		defaultComponentMap.put("Foreach", 
-				"/com/primix/tapestry/components/Foreach.jwc");
-		defaultComponentMap.put("ExceptionDisplay",
-				"/com/primix/tapestry/html/ExceptionDisplay.jwc");
-		defaultComponentMap.put("Delegator",
-				"/com/primix/tapestry/components/Delegator.jwc");
-		defaultComponentMap.put("Form",
-				"/com/primix/tapestry/form/Form.jwc");
-		defaultComponentMap.put("TextField",
-				"/com/primix/tapestry/form/TextField.jwc");
-		defaultComponentMap.put("Text",
-				"/com/primix/tapestry/form/Text.jwc");
-		defaultComponentMap.put("Select",
-				"/com/primix/tapestry/form/Select.jwc");
-		defaultComponentMap.put("Option",
-				"/com/primix/tapestry/form/Option.jwc");
-		defaultComponentMap.put("Image",
-				"/com/primix/tapestry/html/Image.jwc");
-		defaultComponentMap.put("Any",
-				"/com/primix/tapestry/components/Any.jwc");
-		defaultComponentMap.put("RadioGroup",
-				"/com/primix/tapestry/form/RadioGroup.jwc");
-		defaultComponentMap.put("Radio",
-				"/com/primix/tapestry/form/Radio.jwc");
-		defaultComponentMap.put("Rollover",
-				"/com/primix/tapestry/html/Rollover.jwc");
-		defaultComponentMap.put("Body",
-				"/com/primix/tapestry/html/Body.jwc");
-		defaultComponentMap.put("Direct",
-				"/com/primix/tapestry/link/Direct.jwc");
-		defaultComponentMap.put("Page",
-				"/com/primix/tapestry/link/Page.jwc");
-		defaultComponentMap.put("Service",
-				"/com/primix/tapestry/link/Service.jwc");
-		defaultComponentMap.put("ImageSubmit",
-				"/com/primix/tapestry/form/ImageSubmit.jwc");	
-		defaultComponentMap.put("PropertySelection",
-				"/com/primix/tapestry/form/PropertySelection.jwc");
-		defaultComponentMap.put("Submit",
-				"/com/primix/tapestry/form/Submit.jwc");	
-		defaultComponentMap.put("Hidden",
-				"/com/primix/tapestry/form/Hidden.jwc");	
-		defaultComponentMap.put("ShowInspector",
-				"/com/primix/tapestry/inspector/ShowInspector.jwc");		
-		defaultComponentMap.put("Shell",
-				"/com/primix/tapestry/html/Shell.jwc");
-		defaultComponentMap.put("InsertText",
-				"/com/primix/tapestry/html/InsertText.jwc");
-		defaultComponentMap.put("ValidatingTextField",
-				"/com/primix/tapestry/valid/ValidatingTextField.jwc");
-		defaultComponentMap.put("DateField",
-				"/com/primix/tapestry/valid/DateField.jwc");
-		defaultComponentMap.put("IntegerField",
-				"/com/primix/tapestry/valid/IntegerField.jwc");
-		defaultComponentMap.put("FieldLabel",
-				"/com/primix/tapestry/valid/FieldLabel.jwc");
-		defaultComponentMap.put("Script",
-				"/com/primix/tapestry/html/Script.jwc");
-		defaultComponentMap.put("Block",
-				"/com/primix/tapestry/components/Block.jwc");
-		defaultComponentMap.put("InsertBlock",
-				"/com/primix/tapestry/components/InsertBlock.jwc");
-		defaultComponentMap.put("NumericField",
-				"/com/primix/tapestry/valid/NumericField.jwc");
-		defaultComponentMap.put("ListEdit",
-				"/com/primix/tapestry/form/ListEdit.jwc");
-		
+
+	static {
+		defaultComponentMap.put("Insert", "/com/primix/tapestry/components/Insert.jwc");
+		defaultComponentMap.put("Action", "/com/primix/tapestry/link/Action.jwc");
+		defaultComponentMap.put("Checkbox", "/com/primix/tapestry/form/Checkbox.jwc");
+		defaultComponentMap.put(
+			"InsertWrapped",
+			"/com/primix/tapestry/components/InsertWrapped.jwc");
+		defaultComponentMap.put(
+			"Conditional",
+			"/com/primix/tapestry/components/Conditional.jwc");
+		defaultComponentMap.put(
+			"Foreach",
+			"/com/primix/tapestry/components/Foreach.jwc");
+		defaultComponentMap.put(
+			"ExceptionDisplay",
+			"/com/primix/tapestry/html/ExceptionDisplay.jwc");
+		defaultComponentMap.put(
+			"Delegator",
+			"/com/primix/tapestry/components/Delegator.jwc");
+		defaultComponentMap.put("Form", "/com/primix/tapestry/form/Form.jwc");
+		defaultComponentMap.put("TextField", "/com/primix/tapestry/form/TextField.jwc");
+		defaultComponentMap.put("Text", "/com/primix/tapestry/form/Text.jwc");
+		defaultComponentMap.put("Select", "/com/primix/tapestry/form/Select.jwc");
+		defaultComponentMap.put("Option", "/com/primix/tapestry/form/Option.jwc");
+		defaultComponentMap.put("Image", "/com/primix/tapestry/html/Image.jwc");
+		defaultComponentMap.put("Any", "/com/primix/tapestry/components/Any.jwc");
+		defaultComponentMap.put(
+			"RadioGroup",
+			"/com/primix/tapestry/form/RadioGroup.jwc");
+		defaultComponentMap.put("Radio", "/com/primix/tapestry/form/Radio.jwc");
+		defaultComponentMap.put("Rollover", "/com/primix/tapestry/html/Rollover.jwc");
+		defaultComponentMap.put("Body", "/com/primix/tapestry/html/Body.jwc");
+		defaultComponentMap.put("Direct", "/com/primix/tapestry/link/Direct.jwc");
+		defaultComponentMap.put("Page", "/com/primix/tapestry/link/Page.jwc");
+		defaultComponentMap.put("Service", "/com/primix/tapestry/link/Service.jwc");
+		defaultComponentMap.put(
+			"ImageSubmit",
+			"/com/primix/tapestry/form/ImageSubmit.jwc");
+		defaultComponentMap.put(
+			"PropertySelection",
+			"/com/primix/tapestry/form/PropertySelection.jwc");
+		defaultComponentMap.put("Submit", "/com/primix/tapestry/form/Submit.jwc");
+		defaultComponentMap.put("Hidden", "/com/primix/tapestry/form/Hidden.jwc");
+		defaultComponentMap.put(
+			"ShowInspector",
+			"/com/primix/tapestry/inspector/ShowInspector.jwc");
+		defaultComponentMap.put("Shell", "/com/primix/tapestry/html/Shell.jwc");
+		defaultComponentMap.put(
+			"InsertText",
+			"/com/primix/tapestry/html/InsertText.jwc");
+		defaultComponentMap.put(
+			"ValidatingTextField",
+			"/com/primix/tapestry/valid/ValidatingTextField.jwc");
+		defaultComponentMap.put(
+			"DateField",
+			"/com/primix/tapestry/valid/DateField.jwc");
+		defaultComponentMap.put(
+			"IntegerField",
+			"/com/primix/tapestry/valid/IntegerField.jwc");
+		defaultComponentMap.put(
+			"FieldLabel",
+			"/com/primix/tapestry/valid/FieldLabel.jwc");
+		defaultComponentMap.put("Script", "/com/primix/tapestry/html/Script.jwc");
+		defaultComponentMap.put("Block", "/com/primix/tapestry/components/Block.jwc");
+		defaultComponentMap.put(
+			"InsertBlock",
+			"/com/primix/tapestry/components/InsertBlock.jwc");
+		defaultComponentMap.put(
+			"NumericField",
+			"/com/primix/tapestry/valid/NumericField.jwc");
+		defaultComponentMap.put("ListEdit", "/com/primix/tapestry/form/ListEdit.jwc");
+
 	}
-	
+
 	// Default page map shared by all applications.
-	
+
 	private static Map defaultPageMap = new HashMap(MAP_SIZE);
 	{
 		// Provide defaults for three of the four standard pages.
 		// An application must provide a home page and may override
 		// any of these.
-		
-		defaultPageMap.put("StaleLink",
-				new PageSpecification( "/com/primix/tapestry/pages/StaleLink.jwc"));
-		defaultPageMap.put("StaleSession",
-				new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
-		defaultPageMap.put("Exception",
-				new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
-		
+
+		defaultPageMap.put(
+			"StaleLink",
+			new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
+		defaultPageMap.put(
+			"StaleSession",
+			new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
+		defaultPageMap.put(
+			"Exception",
+			new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
+
 		// Provide the Inspector, which is quietly available and never
 		// overriden.
-		
-		defaultPageMap.put("Inspector",
-				new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));		
+
+		defaultPageMap.put(
+			"Inspector",
+			new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));
 	}
-	
+
 	/**
 	 *  Gets the resource path for a component given a potential alias.  If
 	 *  an resource is known for the alias, it is returned.
@@ -337,63 +330,63 @@ public class ApplicationSpecification
 	 *  </table>
 	 *
 	 */
-	
+
 	public String getComponentAlias(String alias)
 	{
 		String result = null;
-		
+
 		if (componentMap != null)
-			result = (String)componentMap.get(alias);
-		
+			result = (String) componentMap.get(alias);
+
 		if (result == null)
-			result = (String)defaultComponentMap.get(alias);
-		
+			result = (String) defaultComponentMap.get(alias);
+
 		return result;
 	}
-	
+
 	public String getName()
 	{
 		return name;
 	}
-	
+
 	public void setEngineClassName(String value)
 	{
 		engineClassName = value;
 	}
-	
+
 	public String getEngineClassName()
 	{
 		return engineClassName;
 	}
-	
+
 	/**
 	 *  Returns a {@link Collection}
 	 *  of the String names of the pages defined
 	 *  by the application.
 	 *
 	 */
-	
+
 	public Collection getPageNames()
 	{
 		Collection result;
-		
+
 		result = new HashSet();
-		
+
 		// Add any pages specific to this application (a running application
 		// will always have at least one page, Home, but we check for null
 		// anyway).
-		
+
 		if (pageMap != null)
 			result.addAll(pageMap.keySet());
-		
+
 		// Now add any additional pages (such as Inspector) that are provided
 		// by the system.
-		
+
 		result.addAll(defaultPageMap.keySet());
-		
+
 		return result;
 	}
-	
+
 	/**
 	 *  Gets a page specification with the given name, or returns null.
 	 *
@@ -420,37 +413,37 @@ public class ApplicationSpecification
 	 *
 	 *
 	 */
-	
+
 	public PageSpecification getPageSpecification(String name)
 	{
 		PageSpecification result = null;
-		
+
 		if (pageMap != null)
-			result = (PageSpecification)pageMap.get(name);
-		
+			result = (PageSpecification) pageMap.get(name);
+
 		if (result == null)
-			result = (PageSpecification)defaultPageMap.get(name);
-		
+			result = (PageSpecification) defaultPageMap.get(name);
+
 		return result;
 	}
-	
+
 	public void setComponentAlias(String alias, String resourceName)
 	{
 		if (defaultComponentMap.containsKey(alias))
-			throw new IllegalArgumentException("May not redefine component alias " +
-						alias + ".");
-		
+			throw new IllegalArgumentException(
+				"May not redefine component alias " + alias + ".");
+
 		if (componentMap == null)
 			componentMap = new HashMap(MAP_SIZE);
-		
+
 		componentMap.put(alias, resourceName);
 	}
-	
+
 	public void setName(String value)
 	{
 		name = value;
 	}
-	
+
 	/**
 	 *  Adds a new page resource.  An existing page with the same name is replaced.
 	 *
@@ -458,18 +451,17 @@ public class ApplicationSpecification
 	 *  @param type The component resource path for the page.
 	 *
 	 */
-	
+
 	public void setPageSpecification(String name, PageSpecification spec)
 	{
 		if (pageMap == null)
 			pageMap = new HashMap(MAP_SIZE);
-		
+
 		pageMap.put(name, spec);
 	}
-	
+
 	public String toString()
 	{
 		return "ApplicationSpecification[" + name + " " + engineClassName + "]";
 	}
 }
-

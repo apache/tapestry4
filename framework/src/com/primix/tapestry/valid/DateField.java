@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -130,220 +128,205 @@ import java.text.*;
  *
  */
 
-public class DateField
-extends AbstractValidatingTextField
+public class DateField extends AbstractValidatingTextField
 {
-    private IBinding dateBinding;
-    private IBinding minimumBinding;
-    private IBinding maximumBinding;
-	
+	private IBinding dateBinding;
+	private IBinding minimumBinding;
+	private IBinding maximumBinding;
+
 	private IBinding formatBinding;
 	private DateFormat format;
 
-    private Calendar calendar;
+	private Calendar calendar;
 
-    public IBinding getDateBinding()
-    {
-        return dateBinding;
-    }
+	public IBinding getDateBinding()
+	{
+		return dateBinding;
+	}
 
-    public void setDateBinding(IBinding value)
-    {
-        dateBinding = value;
-    }
+	public void setDateBinding(IBinding value)
+	{
+		dateBinding = value;
+	}
 
-    public IBinding getMinimumBinding()
-    {
-        return minimumBinding;
-    }
+	public IBinding getMinimumBinding()
+	{
+		return minimumBinding;
+	}
 
-    public void setMinimumBinding(IBinding value)
-    {
-        minimumBinding = value;
-    }
+	public void setMinimumBinding(IBinding value)
+	{
+		minimumBinding = value;
+	}
 
-    public IBinding getMaximumBinding()
-    {
-        return maximumBinding;
-    }
+	public IBinding getMaximumBinding()
+	{
+		return maximumBinding;
+	}
 
-    public void setMaximumBinding(IBinding value)
-    {
-        maximumBinding = value;
-    }
+	public void setMaximumBinding(IBinding value)
+	{
+		maximumBinding = value;
+	}
 
 	public void setFormatBinding(IBinding value)
 	{
 		formatBinding = value;
 	}
-	
+
 	public IBinding getFormatBinding()
 	{
 		return formatBinding;
 	}
 
-    protected String read()
-    {
-        Date date;
+	protected String read()
+	{
+		Date date;
 
-        date = (Date)dateBinding.getObject("date", Date.class);
-        if (date == null)
-            return "";
+		date = (Date) dateBinding.getObject("date", Date.class);
+		if (date == null)
+			return "";
 
-        return getFormat().format(date);
-    }
+		return getFormat().format(date);
+	}
 
-    /**
-     *  Returns the {@link DateFormat} used to render and parse dates.
+	/**
+	 *  Returns the {@link DateFormat} used to render and parse dates.
 	 *  The format parameter, if non null, is read.  If the format parameter
 	 *  is not bound (or returns null), then a default format
 	 *  <code>MM/dd/yyyy</code> (with lenient set to false) is returned.
 	 *
 	 *  <p>Once determined, the format is cached for the remainder of the
 	 *  request cycle (until {@link #pageDetached(PageEvent)} is invoked).
-     *
-     */
+	 *
+	 */
 
-    public DateFormat getFormat()
-    {
-        if (format == null)
-        {
+	public DateFormat getFormat()
+	
+	{
+		if (format == null)
+		{
 			if (formatBinding != null)
-				format = (DateFormat)formatBinding.getObject("format", DateFormat.class);
+				format = (DateFormat) formatBinding.getObject("format", DateFormat.class);
 
 			if (format == null)
-			{
-            	format = new SimpleDateFormat("MM/dd/yyyy");
-            	format.setLenient(false);
+			
+				{
+				format = new SimpleDateFormat("MM/dd/yyyy");
+				format.setLenient(false);
 			}
-        }
+		}
 
-        return format;
-    }
+		return format;
+	}
 
 	/**
 	 *  Clears the format property, then invokes the super implementation.
 	 *
 	 *  @since 1.0.5
 	 */
-	 
+
 	public void pageDetached(PageEvent event)
 	{
 		format = null;
-		
+
 		super.pageDetached(event);
 	}
-	
-    protected void update(String value)
-    {
-        Date date;
-        Date boundary;
-        String errorMessage;
-        DateFormat format;
 
-        // The value is already trimmed.  Is it null?
+	protected void update(String value)
+	{
+		Date date;
+		Date boundary;
+		String errorMessage;
+		DateFormat format;
 
-        if (value.length() == 0)
-        {
-            if (isRequired())
-            {
-                errorMessage = getString("field-is-required", getDisplayName());
+		// The value is already trimmed.  Is it null?
 
-                notifyDelegate(ValidationConstraint.REQUIRED,
-                    errorMessage);
-            }
+		if (value.length() == 0)
+		{
+			if (isRequired())
+			{
+				errorMessage = getString("field-is-required", getDisplayName());
 
-            dateBinding.setObject(null);
+				notifyDelegate(ValidationConstraint.REQUIRED, errorMessage);
+			}
 
-            return;
-        }
+			dateBinding.setObject(null);
 
-        format = getFormat();
+			return;
+		}
 
-        try
-        {
-            date = format.parse(value);
+		format = getFormat();
 
-            if (calendar == null)
-                calendar = new GregorianCalendar();
+		try
+		{
+			date = format.parse(value);
 
-            calendar.setTime(date);
+			if (calendar == null)
+				calendar = new GregorianCalendar();
 
-            // SimpleDateFormat allows two-digit dates to be
-            // entered, i.e., 12/24/66 is Dec 24 0066 ... that's
-            // probably not what is really wanted, so treat
-            // it as an invalid date.
+			calendar.setTime(date);
 
-            if (calendar.get(Calendar.YEAR) < 1000)
-                date = null;
+			// SimpleDateFormat allows two-digit dates to be
+			// entered, i.e., 12/24/66 is Dec 24 0066 ... that's
+			// probably not what is really wanted, so treat
+			// it as an invalid date.
 
-        }
-        catch (ParseException e)
-        {
-            date = null;
-        }
+			if (calendar.get(Calendar.YEAR) < 1000)
+				date = null;
 
-        if (date == null)
-        {
-            errorMessage = getString("invalid-date-format", getDisplayName());
+		}
+		catch (ParseException e)
+		{
+			date = null;
+		}
 
-            notifyDelegate(ValidationConstraint.DATE_FORMAT,  errorMessage);
-            return;
-        }
+		if (date == null)
+		{
+			errorMessage = getString("invalid-date-format", getDisplayName());
 
-        // OK, check that the date is in range.
+			notifyDelegate(ValidationConstraint.DATE_FORMAT, errorMessage);
+			return;
+		}
 
-        if (minimumBinding != null)
-        {
-            boundary = (Date)minimumBinding.getObject("minimum", Date.class);
+		// OK, check that the date is in range.
 
-            if (boundary != null &&
-                boundary.compareTo(date) > 0)
-            {
-                errorMessage = getString("date-too-early",
-                    getDisplayName(),
-                    format.format(boundary));
+		if (minimumBinding != null)
+		{
+			boundary = (Date) minimumBinding.getObject("minimum", Date.class);
 
-                notifyDelegate(ValidationConstraint.TOO_SMALL,
-                    errorMessage);
+			if (boundary != null && boundary.compareTo(date) > 0)
+			
+				{
+				errorMessage =
+					getString("date-too-early", getDisplayName(), format.format(boundary));
 
-                return;
-            }
-        }
+				notifyDelegate(ValidationConstraint.TOO_SMALL, errorMessage);
 
-        if (maximumBinding != null)
-        {
-            boundary = (Date)maximumBinding.getObject("maximum", Date.class);
+				return;
+			}
+		}
 
-            if (boundary != null &&
-                boundary.compareTo(date) < 0)
-            {
-                errorMessage = getString("date-too-late",
-                    getDisplayName(),
-                    format.format(boundary));
+		if (maximumBinding != null)
+		{
+			boundary = (Date) maximumBinding.getObject("maximum", Date.class);
 
-                notifyDelegate(ValidationConstraint.TOO_LARGE,
-                    errorMessage);
+			if (boundary != null && boundary.compareTo(date) < 0)
+			
+				{
+				errorMessage =
+					getString("date-too-late", getDisplayName(), format.format(boundary));
 
-                return;
-            }
-        }
+				notifyDelegate(ValidationConstraint.TOO_LARGE, errorMessage);
 
-        // OK ... finally, everything is OK.
+				return;
+			}
+		}
 
-        dateBinding.setObject(date);
+		// OK ... finally, everything is OK.
 
-    }
+		dateBinding.setObject(date);
+
+	}
 
 }
-
-
-
-
-
-
-
-
-
-
-

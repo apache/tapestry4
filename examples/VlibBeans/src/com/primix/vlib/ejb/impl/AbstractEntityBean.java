@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix Solutions
- * One Arsenal Marketplace
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -45,29 +43,29 @@ import com.primix.vlib.ejb.*;
  *  @author Howard Ship
  *
  */
- 
+
 public abstract class AbstractEntityBean implements EntityBean
 {
 	/**
 	 *  The EntityContext provided by the application server.
 	 *
 	 */
-	 
+
 	protected EntityContext context;
-	
+
 	/**
 	 *  Flag indicating that the object is 'dirty' and needs to
 	 *  be written back to the database.  Each mutator method
 	 *  should set this to true.
 	 *
 	 */
-	 
+
 	protected transient boolean dirty;
-	
+
 	private transient String[] attributePropertyNames;
 	private static final int MAP_SIZE = 11;
 	private transient PropertyHelper helper;
-	
+
 	private transient IKeyAllocatorHome keyAllocatorHome;
 
 	/**
@@ -75,14 +73,14 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  in the deployment descriptor.
 	 *
 	 */
-	 
+
 	private transient Context environment;
-	
+
 	public void setEntityContext(EntityContext context)
 	{
 		this.context = context;
 	}
-	
+
 	public void unsetEntityContext()
 	{
 		context = null;
@@ -93,7 +91,7 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  saved to the database.
 	 *
 	 */
-	 
+
 	public boolean isDirty()
 	{
 		return dirty;
@@ -103,32 +101,32 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  Gets a named object from the bean's environment naming context.
 	 *
 	 */
-	 
+
 	protected Object getEnvironmentObject(String name, Class objectClass)
-	throws RemoteException, NamingException
+		throws RemoteException, NamingException
 	{
 		Object raw;
 		Object result;
 		Context initial;
-		
+
 		if (environment == null)
 		{
 			initial = new InitialContext();
-			environment = (Context)initial.lookup("java:comp/env");
+			environment = (Context) initial.lookup("java:comp/env");
 		}
-		
+
 		raw = environment.lookup(name);
-		
+
 		try
 		{
 			result = PortableRemoteObject.narrow(raw, objectClass);
 		}
 		catch (ClassCastException e)
 		{
-			throw new RemoteException("Could not narrow " + raw + " (" + name + 
-						") to class " + objectClass + ".");
+			throw new RemoteException(
+				"Could not narrow " + raw + " (" + name + ") to class " + objectClass + ".");
 		}
-		
+
 		return result;
 	}
 
@@ -136,8 +134,8 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  Empty implementation; subclasses may override.
 	 *
 	 */
-	 
-	public void ejbActivate() throws EJBException, RemoteException 
+
+	public void ejbActivate() throws EJBException, RemoteException
 	{
 		// does nothing
 	}
@@ -146,8 +144,8 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  Empty implementation; subclasses may override.
 	 *
 	 */
-	 
-	public void ejbPassivate() throws EJBException, RemoteException 
+
+	public void ejbPassivate() throws EJBException, RemoteException
 	{
 		// does nothing
 	}
@@ -156,19 +154,19 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  Empty implementation; subclasses may override.
 	 *
 	 */
-	 
-	public void ejbRemove() throws EJBException, RemoteException 
+
+	public void ejbRemove() throws EJBException, RemoteException
 	{
 		// does nothing
 	}
-	
-    /**
+
+	/**
 	 *  Clears the dirty flag.  Subclasses may invoke this implementation,
 	 *  or simply do so themselves.
 	 *
 	 */
-	 
-	public void ejbLoad() throws EJBException, RemoteException 
+
+	public void ejbLoad() throws EJBException, RemoteException
 	{
 		dirty = false;
 	}
@@ -178,46 +176,45 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  or simply do so themselves.
 	 *
 	 */
-	 
-	public void ejbStore() throws EJBException, RemoteException 
+
+	public void ejbStore() throws EJBException, RemoteException
 	{
 		dirty = false;
 	}
-	
+
 	/**
 	 *  Uses the KeyAllocator session bean to allocate a necessary key.
 	 *
 	 */
-	 
- 	public Integer allocateKey()
-	throws RemoteException
+
+	public Integer allocateKey() throws RemoteException
 	{
 		Context initial;
 		Context environment;
 		IKeyAllocator allocator;
 		Object raw;
-		
+
 		if (keyAllocatorHome == null)
 		{
 			try
 			{
 				initial = new InitialContext();
-				environment = (Context)initial.lookup("java:comp/env");
-				
+				environment = (Context) initial.lookup("java:comp/env");
+
 				raw = environment.lookup("ejb/KeyAllocator");
-				keyAllocatorHome = 
-					(IKeyAllocatorHome)PortableRemoteObject.narrow
-						(raw, IKeyAllocatorHome.class);
+				keyAllocatorHome =
+					(IKeyAllocatorHome) PortableRemoteObject.narrow(raw, IKeyAllocatorHome.class);
 			}
 			catch (NamingException e)
-			{
+			
+				{
 				throw new XEJBException("Unable to locate IKeyAllocatorHome.", e);
 			}
 		}
-		
+
 		// Get a reference to *some* KeyAllocator bean ... it may be fresh,
 		// or one reused from a pool.
-		
+
 		try
 		{
 			allocator = keyAllocatorHome.create();
@@ -225,23 +222,23 @@ public abstract class AbstractEntityBean implements EntityBean
 		catch (CreateException e)
 		{
 			throw new RemoteException(
-				"Unable to create a KeyAllocator from " + 
-				keyAllocatorHome + ".", e);
+				"Unable to create a KeyAllocator from " + keyAllocatorHome + ".",
+				e);
 		}
-		
+
 		// Finally, invoke the method that gets a key.
-			
+
 		return allocator.allocateKey();
 	}
-	
+
 	/**
 	 *  Implemented in subclasses to provide a list of property names to be included
 	 *  in the entity attributes map.
 	 *
 	 */
-	 
+
 	protected abstract String[] getAttributePropertyNames();
-	
+
 	/**
 	 *  Returns a {@link Map} of the properties of the bean.  This Map is
 	 *  returned to the client, where it can be modified and then used to update
@@ -252,33 +249,33 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  by concrete subclasses.
 	 *
 	 */
-	 
+
 	public Map getEntityAttributes()
 	{
 		Map result;
 		int i;
 		String key;
 		Object value;
-		
+
 		result = new HashMap(MAP_SIZE);
-		
+
 		if (attributePropertyNames == null)
 			attributePropertyNames = getAttributePropertyNames();
-		
+
 		if (helper == null)
-			helper = PropertyHelper.forClass(getClass());	
-		
+			helper = PropertyHelper.forClass(getClass());
+
 		for (i = 0; i < attributePropertyNames.length; i++)
 		{
 			key = attributePropertyNames[i];
-			
+
 			value = helper.get(this, key);
 			result.put(key, value);
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 *  Updates the bean with property changes from the update {@link Map}.
 	 *  Only the keys defined by {@link #getAttributePropertyNames()} will be
@@ -289,31 +286,31 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *  the <em>changed</em> keys.  Remember that a Map may store null values.
 	 *
 	 */
-	 
+
 	public void updateEntityAttributes(Map update)
 	{
 		int i;
 		String key;
 		Object value;
-		
+
 		if (attributePropertyNames == null)
 			attributePropertyNames = getAttributePropertyNames();
-		
+
 		if (helper == null)
-			helper = PropertyHelper.forClass(getClass());	
-		
+			helper = PropertyHelper.forClass(getClass());
+
 		for (i = 0; i < attributePropertyNames.length; i++)
 		{
 			key = attributePropertyNames[i];
-			
+
 			if (update.containsKey(key))
 			{
 				value = update.get(key);
-				
+
 				helper.set(this, key, value);
 			}
-				
+
 		}
-	
+
 	}
 }

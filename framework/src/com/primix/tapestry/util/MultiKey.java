@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -39,27 +37,25 @@ import java.util.*;
  *  @version $Id$
  */
 
-
-public class MultiKey
-implements Externalizable
+public class MultiKey implements Externalizable
 {
 	private static final int HASH_CODE_UNSET = -1;
 
 	private transient int hashCode = HASH_CODE_UNSET;
 
 	private Object[] keys;
-    
-    /**
-     *  Public no-arguments constructor needed to be compatible with
-     *  {@link Externalizable}; this leaves the new MultiKey in a
-     *  non-usable state and shouldn't be used by user code.
-     *
-     */
 
-    public MultiKey()
-    {
-    }
-    
+	/**
+	 *  Public no-arguments constructor needed to be compatible with
+	 *  {@link Externalizable}; this leaves the new MultiKey in a
+	 *  non-usable state and shouldn't be used by user code.
+	 *
+	 */
+
+	public MultiKey()
+	{
+	}
+
 	/**
 	*  Builds a <code>MultiKey</code> from an array of keys.  If the array is not
 	*  copied, then it must not be modified.
@@ -72,7 +68,7 @@ implements Externalizable
 	*  first element of keys is null.
 	*
 	*/
-    
+
 	public MultiKey(Object[] keys, boolean makeCopy)
 	{
 		super();
@@ -89,9 +85,9 @@ implements Externalizable
 			System.arraycopy(keys, 0, this.keys, 0, keys.length);
 		}
 		else
-			this.keys = keys;		
+			this.keys = keys;
 	}
-    
+
 	/**
 	*  Returns true if:
 	*  <ul>
@@ -109,14 +105,14 @@ implements Externalizable
 		if (other == null)
 			return false;
 
-        if (keys == null)
-            throw new IllegalStateException("No keys for this MultiKey.");
+		if (keys == null)
+			throw new IllegalStateException("No keys for this MultiKey.");
 
 		// Would a hashCode check be worthwhile here?
 
 		try
 		{
-			MultiKey otherMulti = (MultiKey)other;
+			MultiKey otherMulti = (MultiKey) other;
 
 			if (keys.length != otherMulti.keys.length)
 				return false;
@@ -150,7 +146,7 @@ implements Externalizable
 
 		return false;
 	}
-    
+
 	/**
 	*  Returns the hash code of the receiver, which is computed from all the
 	*  non-null key elements.  This value is computed once and
@@ -177,8 +173,7 @@ implements Externalizable
 
 		return hashCode;
 	}
-    	
-   
+
 	/**
 	*  Identifies all the keys stored by this <code>MultiKey</code>.
 	*
@@ -189,7 +184,7 @@ implements Externalizable
 		StringBuffer buffer;
 		int i;
 
-			buffer = new StringBuffer("MultiKey[");
+		buffer = new StringBuffer("MultiKey[");
 
 		for (i = 0; i < keys.length; i++)
 		{
@@ -207,35 +202,33 @@ implements Externalizable
 		return buffer.toString();
 	}
 
-    /**
-     *  Writes a count of the keys, then writes each individual key.
-     *
-     */
+	/**
+	 *  Writes a count of the keys, then writes each individual key.
+	 *
+	 */
 
-    public void writeExternal(ObjectOutput out)
-    throws IOException
-    {
-        out.writeInt(keys.length);
+	public void writeExternal(ObjectOutput out) throws IOException
+	{
+		out.writeInt(keys.length);
 
-        for (int i = 0; i < keys.length; i++)
-            out.writeObject(keys[i]);
-    }
+		for (int i = 0; i < keys.length; i++)
+			out.writeObject(keys[i]);
+	}
 
-    /**
-     *  Reads the state previously written by {@link #writeExternal(ObjectOutput)}.
-     *
-     */
+	/**
+	 *  Reads the state previously written by {@link #writeExternal(ObjectOutput)}.
+	 *
+	 */
 
-    public void readExternal(ObjectInput in)
-    throws IOException, ClassNotFoundException
-    {
-        int count;
+	public void readExternal(ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		int count;
 
-        count = in.readInt();
-        keys = new Object[count];
+		count = in.readInt();
+		keys = new Object[count];
 
-        for (int i = 0; i < count; i++)
-            keys[i] = in.readObject();
-    }
+		for (int i = 0; i < count; i++)
+			keys[i] = in.readObject();
+	}
 }
-

@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -38,7 +37,6 @@ import java.util.*;
 import java.rmi.*;
 import javax.rmi.*;
 
-
 /**
  *  Shows a list of the user's books, allowing books to be editted or
  *  even deleted.
@@ -53,36 +51,35 @@ import javax.rmi.*;
  * @version $Id$
  */
 
-
-public class BorrowedBooks
-	extends Protected
+public class BorrowedBooks extends Protected
 {
 	private String message;
-    private IBookQuery borrowedQuery;
-	
+	private IBookQuery borrowedQuery;
+
 	private Book currentBook;
-	
+
 	private Browser browser;
-	
+
 	public void detach()
 	{
 		message = null;
 		borrowedQuery = null;
 		currentBook = null;
-		
+
 		super.detach();
 	}
-	
-	public void finishLoad(IPageLoader loader,
-			ComponentSpecification specification)
+
+	public void finishLoad(
+		IPageLoader loader,
+		ComponentSpecification specification)
 		throws PageLoaderException
 	{
 		super.finishLoad(loader, specification);
-		
-		browser = (Browser)getComponent("browser");
+
+		browser = (Browser) getComponent("browser");
 	}
-	
-    /**
+
+	/**
 	 *  A dirty little secret of Tapestry and page recorders:  persistent
 	 *  properties must be set before the render (when this method is invoked)
 	 *  and can't change during the render.  We force
@@ -90,99 +87,97 @@ public class BorrowedBooks
 	 *  the BorrowedBooks page is rendered.
 	 *
 	 */
-	
-    public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
+
+	public void beginResponse(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
-    {
+	{
 		super.beginResponse(writer, cycle);
-		
-		Visit visit = (Visit)getVisit();
+
+		Visit visit = (Visit) getVisit();
 		Integer userPK = visit.getUserPK();
-		
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		
+
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+
 		for (int i = 0; i < 2; i++)
 		{
 			try
 			{
 				IBookQuery query = getBorrowedQuery();
 				int count = query.borrowerQuery(userPK);
-				
+
 				if (count != browser.getResultCount())
 					browser.initializeForResultCount(count);
-				
+
 				break;
 			}
 			catch (RemoteException ex)
 			{
 				vengine.rmiFailure("Remote exception finding borrowed books.", ex, i > 0);
-				
+
 				setBorrowedQuery(null);
 			}
 		}
-    }
-	
-    public void setBorrowedQuery(IBookQuery value)
-    {
+	}
+
+	public void setBorrowedQuery(IBookQuery value)
+	{
 		borrowedQuery = value;
-		
+
 		fireObservedChange("borrowedQuery", value);
-    }
-	
-    public IBookQuery getBorrowedQuery()
-    {
+	}
+
+	public IBookQuery getBorrowedQuery()
+	{
 		if (borrowedQuery == null)
 		{
-			VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
+			VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 			setBorrowedQuery(vengine.createNewQuery());
 		}
-		
+
 		return borrowedQuery;
-    }
-	
-	
+	}
+
 	/**
 	 *  Updates the currentBook dynamic page property.
 	 *
 	 */
-	
+
 	public void setCurrentBook(Book value)
 	{
 		currentBook = value;
 	}
-	
+
 	public Book getCurrentBook()
 	{
 		return currentBook;
 	}
-	
+
 	public void setMessage(String value)
 	{
 		message = value;
 	}
-	
+
 	public String getMessage()
 	{
 		return message;
 	}
-	
-	
-    /**
+
+	/**
 	 *  Listener used to return a book.
 	 *
 	 */
-	
-    public void returnBook(String[] context, IRequestCycle cycle)
-    {
+
+	public void returnBook(String[] context, IRequestCycle cycle)
+	{
 		Integer bookPK = new Integer(context[0]);
-		
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
 		IOperations operations = vengine.getOperations();
-		
+
 		try
 		{
 			Book book = operations.returnBook(bookPK);
-			
+
 			setMessage("Returned book: " + book.getTitle());
 		}
 		catch (FinderException ex)
@@ -194,21 +189,19 @@ public class BorrowedBooks
 		{
 			throw new ApplicationRuntimeException(ex);
 		}
-    }
-    
-	
-	
+	}
+
 	/**
 	 *  Removes the book query beans.
 	 */
-	
+
 	public void cleanupPage()
 	{
 		try
 		{
 			if (borrowedQuery != null)
 				borrowedQuery.remove();
-			
+
 		}
 		catch (RemoveException e)
 		{
@@ -218,7 +211,7 @@ public class BorrowedBooks
 		{
 			throw new ApplicationRuntimeException(e);
 		}
-		
+
 		super.cleanupPage();
 	}
 }

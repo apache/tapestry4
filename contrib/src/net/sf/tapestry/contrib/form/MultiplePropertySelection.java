@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -28,10 +26,16 @@
 
 package net.sf.tapestry.contrib.form;
 
-import java.util.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.form.*;
-import com.primix.tapestry.util.*;
+import java.util.List;
+
+import com.primix.tapestry.IBinding;
+import com.primix.tapestry.IForm;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResponseWriter;
+import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.RequiredParameterException;
+import com.primix.tapestry.form.AbstractFormComponent;
+import com.primix.tapestry.form.IPropertySelectionModel;
 
 /**
  *  A component which uses &lt;input type=checkbox&gt; to
@@ -107,176 +111,179 @@ import com.primix.tapestry.util.*;
 
 public class MultiplePropertySelection extends AbstractFormComponent
 {
-    private IBinding selectedListBinding;
-    private IBinding modelBinding;
-    private IBinding disabledBinding;
-    private IBinding rendererBinding;
-    private String name;
+	private IBinding selectedListBinding;
+	private IBinding modelBinding;
+	private IBinding disabledBinding;
+	private IBinding rendererBinding;
+	private String name;
 	private boolean disabled;
-	
-	
-    /**
+
+	/**
 	 *  A shared instance of {@link CheckBoxPropertySelectionRenderer}.
 	 *
 	 */
-	
-    public static final IMultiplePropertySelectionRenderer
-		DEFAULT_CHECKBOX_RENDERER = new CheckBoxMultiplePropertySelectionRenderer();
-	
-	
-    public IBinding getSelectedListBinding()
-    {
+
+	public static final IMultiplePropertySelectionRenderer DEFAULT_CHECKBOX_RENDERER =
+		new CheckBoxMultiplePropertySelectionRenderer();
+
+	public IBinding getSelectedListBinding()
+	{
 		return selectedListBinding;
-    }
-	
-    public void setSelectedListBinding(IBinding value)
-    {
+	}
+
+	public void setSelectedListBinding(IBinding value)
+	{
 		selectedListBinding = value;
-    }
-	
-    public IBinding getModelBinding()
-    {
+	}
+
+	public IBinding getModelBinding()
+	{
 		return modelBinding;
-    }
-	
-    public void setModelBinding(IBinding value)
-    {
+	}
+
+	public void setModelBinding(IBinding value)
+	{
 		modelBinding = value;
-    }
-	
-    public IBinding getDisabledBinding()
-    {
+	}
+
+	public IBinding getDisabledBinding()
+	{
 		return disabledBinding;
-    }
-	
-    public void setDisabledBinding(IBinding value)
-    {
+	}
+
+	public void setDisabledBinding(IBinding value)
+	{
 		disabledBinding = value;
-    }
-	
-    public void setRendererBinding(IBinding value)
-    {
+	}
+
+	public void setRendererBinding(IBinding value)
+	{
 		rendererBinding = value;
-    }
-	
-    public IBinding getRendererBinding()
-    {
+	}
+
+	public IBinding getRendererBinding()
+	{
 		return rendererBinding;
-    }
-	
-    /**
+	}
+
+	/**
 	 *  Returns the name assigned to this PropertySelection by the {@link Form}
 	 *  that wraps it.
 	 *
 	 */
-	
-    public String getName()
-    {
+
+	public String getName()
+	{
 		return name;
-    }
-	
-	
+	}
+
 	/**
 	 *  Returns true if the component is disabled (this is relevant to the
 	 *  renderer).
 	 *
 	 */
-	
+
 	public boolean isDisabled()
 	{
 		return disabled;
 	}
-	
-    /**
+
+	/**
 	 *  Renders the component, much of which is the responsiblity
 	 *  of the {@link IMultiplePropertySelectionRenderer renderer}.  The possible options,
 	 *  their labels, and the values to be encoded in the form are provided
 	 *  by the {@link IPropertySelectionModel model}.
 	 *
 	 */
-	
-    public void render(IResponseWriter writer, IRequestCycle cycle)
+
+	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
-    {
+	{
 		IMultiplePropertySelectionRenderer renderer = null;
-		
+
 		IForm form = getForm(cycle);
 		boolean rewinding = form.isRewinding();
-		
+
 		// Bit of parameter checking
 		disabled = (disabledBinding != null) && disabledBinding.getBoolean();
-		
-		IPropertySelectionModel model = (IPropertySelectionModel)modelBinding.getObject(
-			"model", IPropertySelectionModel.class);
-		
+
+		IPropertySelectionModel model =
+			(IPropertySelectionModel) modelBinding.getObject(
+				"model",
+				IPropertySelectionModel.class);
+
 		if (model == null)
 			throw new RequiredParameterException(this, "model", modelBinding);
-		
+
 		name = form.getElementId(this);
-		
-		List selectedList = (List)selectedListBinding.getObject("selectedList", List.class);
-		
+
+		List selectedList =
+			(List) selectedListBinding.getObject("selectedList", List.class);
+
 		if (selectedList == null)
 			throw new RequiredParameterException(this, "selectedList", selectedListBinding);
-		
+
 		// Handle the form processing first.
 		if (rewinding)
-		{
+		
+			{
 			// If disabled, ignore anything that comes up from the client.
-			
+
 			if (disabled)
 				return;
-			
+
 			// get all the values
 			String[] optionValues = cycle.getRequestContext().getParameterValues(name);
-			
+
 			// Clear the list
-			
+
 			selectedList.clear();
-			
+
 			// Nothing was selected
-			if (optionValues != null)             
+			if (optionValues != null)
 			{
 				// Go through the array and translate and put back in the list
 				for (int i = 0; i < optionValues.length; i++)
 				{
 					// Translate the new value
 					Object selectedValue = model.translateValue(optionValues[i]);
-					
+
 					// Add this element in the list back
 					selectedList.add(selectedValue);
 				}
 			}
-			
+
 			return;
 		}
-		
+
 		// Check the renderer first
 		if (rendererBinding != null)
-			renderer = (IMultiplePropertySelectionRenderer)rendererBinding.getObject(
-				"renderer", IMultiplePropertySelectionRenderer.class);
-		
+			renderer =
+				(IMultiplePropertySelectionRenderer) rendererBinding.getObject(
+					"renderer",
+					IMultiplePropertySelectionRenderer.class);
+
 		if (renderer == null)
 			renderer = DEFAULT_CHECKBOX_RENDERER;
-		
+
 		// Start rendering
 		renderer.beginRender(this, writer, cycle);
-		
+
 		int count = model.getOptionCount();
-		
+
 		for (int i = 0; i < count; i++)
-		{
+		
+			{
 			Object option = model.getOption(i);
-			
+
 			// Try to find the option in the list and if yes, then it is checked.
 			boolean optionSelected = selectedList.contains(option);
-			
+
 			renderer.renderOption(this, writer, cycle, model, option, i, optionSelected);
 		}
-		
+
 		// A PropertySelection doesn't allow a body, so no need to worry about
 		// wrapped components.
 		renderer.endRender(this, writer, cycle);
-    }
+	}
 }
-

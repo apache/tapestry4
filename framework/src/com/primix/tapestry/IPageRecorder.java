@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -45,63 +43,62 @@ import com.primix.tapestry.event.*;
 
 public interface IPageRecorder extends ChangeObserver
 {
-    /**
+	/**
 	 *  Persists all changes that have been accumulated.  If the recorder
 	 *  saves change incrementally, this should ensure that all changes have been persisted.
 	 *
 	 *  <p>After commiting, a page record automatically locks itself.
 	 */
-	
-    public void commit()
-		throws PageRecorderCommitException;
-	
-    /**
+
+	public void commit() throws PageRecorderCommitException;
+
+	/**
 	 *  Returns a {@link Collection} of {@link IPageChange} objects that represent
 	 *  the persistant state of the page.
 	 *
 	 */
-	
-    public Collection getChanges();
-	
+
+	public Collection getChanges();
+
 	/**
 	 *  Returns true if the recorder has any changes for the page.
 	 *
 	 */
-	
+
 	public boolean getHasChanges();
-	
-    /**
+
+	/**
 	 *  Returns true if the recorder has observed any changes that have not
 	 *  been committed to external storage.
 	 *
 	 */
-	
-    public boolean isDirty();
-	
-    /**
+
+	public boolean isDirty();
+
+	/**
 	 *  Returns true if the recorder is in a locked state, following
 	 *  a {@link #commit()}.
 	 *
 	 */
-	
-    public boolean isLocked();
-	
-    /**
+
+	public boolean isLocked();
+
+	/**
 	 *  Rolls back the page to the currently persisted state.
 	 *
 	 *  <p>A page recorder can only rollback changes to properties
 	 *  which have changed  at some point.  This can cause some minor
 	 *  problems, addressed by  {@link PageDetachListener#pageDetached(PageEvent)}.
 	 */
-	
-    public void rollback(IPage page);
-	
-    /**
+
+	public void rollback(IPage page);
+
+	/**
 	 *  Invoked to lock or unlock the recorder.  Recoders are locked
 	 *  after they are commited, and stay locked until
 	 *  explicitly unlocked in a subsequent request cycle.
 	 *
 	 */
-	
-    public void setLocked(boolean value);
+
+	public void setLocked(boolean value);
 }

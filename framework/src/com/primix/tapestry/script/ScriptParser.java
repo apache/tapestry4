@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -63,82 +61,83 @@ import org.apache.log4j.*;
  *  @version $Id$
  */
 
-public class ScriptParser
-	extends AbstractDocumentParser
+public class ScriptParser extends AbstractDocumentParser
 {
-	
-	private static final Category CAT = 
-		Category.getInstance(ScriptParser.class);
-	
+
+	private static final Category CAT = Category.getInstance(ScriptParser.class);
+
 	private static final int MAP_SIZE = 11;
-	
+
 	/**
 	 *  A cache of {@link InsertToken}s, keyed on property path.
 	 *
 	 */
-	
+
 	private Map insertCache;
-	
+
 	public static final String SCRIPT_DTD_1_0_PUBLIC_ID =
 		"-//Primix Solutions//Tapestry Script 1.0//EN";
-	
-	public static final String SCRIPT_DTD_1_1_PUBLIC_ID = 
+
+	public static final String SCRIPT_DTD_1_1_PUBLIC_ID =
 		"-//Howard Ship//Tapestry Script 1.1//EN";
-	
+
 	public ScriptParser()
-	{		
+	
+	{
 		register(SCRIPT_DTD_1_0_PUBLIC_ID, "Script_1_0.dtd");
 		register(SCRIPT_DTD_1_1_PUBLIC_ID, "Script_1_1.dtd");
 	}
-	
+
 	/**
 	 *  Parses the given input stream to produce a parsed script,
 	 *  ready to execute.
 	 *
 	 */
-	
+
 	public IScript parse(InputStream stream, String resourcePath)
 		throws DocumentParseException
 	{
 		InputSource source = new InputSource(stream);
-		
+
 		try
 		{
-			Document document = parse(source, resourcePath, "script"); 
-			
+			Document document = parse(source, resourcePath, "script");
+
 			return build(document);
-			
+
 		}
 		finally
 		{
 			setResourcePath(null);
 		}
 	}
-	
-	private IScript build(Document document)
-		throws DocumentParseException
+
+	private IScript build(Document document) throws DocumentParseException
 	{
-		ParsedScript result = new ParsedScript(getResourcePath()); 
+		ParsedScript result = new ParsedScript(getResourcePath());
 		Element root = document.getDocumentElement();
 
 		String publicId = document.getDoctype().getPublicId();
-		
-		if (! (publicId.equals(SCRIPT_DTD_1_0_PUBLIC_ID) ||
-				publicId.equals(SCRIPT_DTD_1_1_PUBLIC_ID)))
-			throw new DocumentParseException("Script uses unknown public identifier " +
-						publicId + ".", getResourcePath());
-			
-		for (Node child = root.getFirstChild(); child != null; child = child.getNextSibling())
+
+		if (!(publicId.equals(SCRIPT_DTD_1_0_PUBLIC_ID)
+			|| publicId.equals(SCRIPT_DTD_1_1_PUBLIC_ID)))
+			throw new DocumentParseException(
+				"Script uses unknown public identifier " + publicId + ".",
+				getResourcePath());
+
+		for (Node child = root.getFirstChild();
+			child != null;
+			child = child.getNextSibling())
 		{
-			
+
 			// Ordered first since it is most prevalent.
-			
+
 			if (isElement(child, "let"))
 			{
 				result.addToken(buildLet(child));
 				continue;
 			}
-			
+
 			if (isElement(child, "include-script"))
 			{
 				result.addToken(buildIncludeScript(child));
@@ -150,107 +149,105 @@ public class ScriptParser
 				result.addToken(buildBody(child));
 				continue;
 			}
-			
+
 			if (isElement(child, "initialization"))
 			{
 				result.addToken(buildInitialization(child));
 				continue;
 			}
-			
+
 			// Else, ignorable whitespace, I guess.
 		}
-		
+
 		return result;
 	}
-	
-	private IScriptToken buildLet(Node node)
-		throws DocumentParseException
+
+	private IScriptToken buildLet(Node node) throws DocumentParseException
 	{
-		Element element = (Element)node;
+		Element element = (Element) node;
 		String key = element.getAttribute("key");
-		
+
 		IScriptToken token = new LetToken(key);
 		build(token, node);
-		
+
 		return token;
 	}
-	
-	private IScriptToken buildBody(Node node)
-		throws DocumentParseException
+
+	private IScriptToken buildBody(Node node) throws DocumentParseException
 	{
 		IScriptToken token = new BodyToken();
-		
+
 		build(token, node);
-		
+
 		return token;
 	}
-	
+
 	private IScriptToken buildInitialization(Node node)
 		throws DocumentParseException
 	{
 		IScriptToken token = new InitToken();
-		
+
 		build(token, node);
-		
+
 		return token;
 	}
-	
 
 	/**
 	 *  Builds the inner content of some other token; this method understands
 	 *  all the content that can appear in the %full-content; entity of the DTD.
 	 *
 	 */
-	
-	private void build(IScriptToken token, Node node)
-		throws DocumentParseException
+
+	private void build(IScriptToken token, Node node) throws DocumentParseException
 	{
 		Node child;
 		CharacterData textNode;
 		String staticText;
-		
-		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+
+		for (child = node.getFirstChild();
+			child != null;
+			child = child.getNextSibling())
 		{
 			// Completely ignore any comment nodes.
-			
+
 			if (child.getNodeType() == Node.COMMENT_NODE)
 				continue;
-						
+
 			if (isElement(child, "insert"))
 			{
 				token.addToken(buildInsert(child));
 				continue;
 			}
-			
+
 			if (isElement(child, "if"))
 			{
 				token.addToken(buildIf(true, child));
 				continue;
 			}
-			
+
 			if (isElement(child, "if-not"))
 			{
 				token.addToken(buildIf(false, child));
 				continue;
 			}
-			
+
 			if (isElement(child, "foreach"))
 			{
 				token.addToken(buildForeach(child));
 				continue;
 			}
-			
+
 			// Have to assume it is a Text or CDATASection, both
 			// of which inherit from interface CharacterData
-			
-			textNode = (CharacterData)child;
+
+			textNode = (CharacterData) child;
 			staticText = textNode.getData();
-			
+
 			token.addToken(new StaticToken(staticText));
 		}
-		
+
 	}
-	
+
 	/**
 	 *  Creates an {@link InsertToken} for the current node
 	 *  (which is an insert element node) and adds it as a child of the token.
@@ -259,61 +256,59 @@ public class ScriptParser
 	 *  script.
 	 *
 	 */
-	
+
 	private IScriptToken buildInsert(Node node)
 	{
 		IScriptToken result = null;
 		String propertyPath = getAttribute(node, "property-path");
-		
+
 		// Version 1.0 of the DTD called the attribute "key".
-		
+
 		if (propertyPath == null)
 			propertyPath = getAttribute(node, "key");
-		
+
 		if (insertCache == null)
-			insertCache = new HashMap(MAP_SIZE);	
+			insertCache = new HashMap(MAP_SIZE);
 		else
-			result = (IScriptToken)insertCache.get(propertyPath);
-		
+			result = (IScriptToken) insertCache.get(propertyPath);
+
 		if (result == null)
 		{
 			result = new InsertToken(propertyPath);
 			insertCache.put(propertyPath, result);
 		}
-		
+
 		return result;
 	}
-	
+
 	private IScriptToken buildIf(boolean condition, Node node)
 		throws DocumentParseException
 	{
 		String propertyPath = getAttribute(node, "property-path");
 		IScriptToken result = new IfToken(condition, propertyPath);
-		
+
 		build(result, node);
-		
+
 		return result;
 	}
-	
-	private IScriptToken buildForeach(Node node)
-		throws DocumentParseException
+
+	private IScriptToken buildForeach(Node node) throws DocumentParseException
 	{
 		String key = getAttribute(node, "key");
 		String propertyPath = getAttribute(node, "property-path");
 		IScriptToken result = new ForeachToken(key, propertyPath);
-		
+
 		build(result, node);
-		
+
 		return result;
 	}
-	
+
 	/** @since 1.0.5 **/
-	
+
 	private IScriptToken buildIncludeScript(Node node)
 	{
 		String path = getAttribute(node, "resource-path");
-		
+
 		return new IncludeScriptToken(path);
 	}
 }
-

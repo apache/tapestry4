@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -61,11 +59,25 @@ public class BinaryDumpOutputStream extends OutputStream
 	private String asciiBegin = "  |";
 	private String asciiEnd = "|";
 
-
 	private static final char[] HEX =
-		{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-		  'a', 'b', 'c', 'd', 'e', 'f' };
-		  
+		{
+			'0',
+			'1',
+			'2',
+			'3',
+			'4',
+			'5',
+			'6',
+			'7',
+			'8',
+			'9',
+			'a',
+			'b',
+			'c',
+			'd',
+			'e',
+			'f' };
+
 	/**
 	*  Creates a <code>PrintWriter</code> for <code>System.out</code>.
 	*
@@ -75,19 +87,18 @@ public class BinaryDumpOutputStream extends OutputStream
 	{
 		this(new PrintWriter(System.out, true));
 	}
-    
+
 	public BinaryDumpOutputStream(PrintWriter out)
 	{
 		this.out = out;
 	}
-    
+
 	public BinaryDumpOutputStream(Writer out)
 	{
 		this.out = new PrintWriter(out);
 	}
-    
-	public void close()
-	throws IOException
+
+	public void close() throws IOException
 	{
 		if (out != null)
 		{
@@ -99,7 +110,7 @@ public class BinaryDumpOutputStream extends OutputStream
 
 		out = null;
 	}
-    
+
 	private void finishFinalLine()
 	{
 		// Since we only finish the final line after at least one byte has
@@ -136,48 +147,47 @@ public class BinaryDumpOutputStream extends OutputStream
 
 		out.println();
 	}
-    
+
 	/**
 	*  Forward's the <code>flush()</code> to the <code>PrintWriter</code>.
 	*
 	*/
 
-	public void flush()
-	throws IOException
+	public void flush() throws IOException
 	{
 		out.flush();
 	}
-    
+
 	public String getAsciiBegin()
 	{
 		return asciiBegin;
 	}
-    
+
 	public String getAsciiEnd()
 	{
 		return asciiEnd;
 	}
-    
+
 	public int getBytesPerLine()
 	{
 		return bytesPerLine;
 	}
-    
+
 	public String getOffsetSeperator()
 	{
 		return offsetSeperator;
 	}
-    
+
 	public boolean getShowAscii()
 	{
 		return showAscii;
 	}
-    
+
 	public char getSubstituteChar()
 	{
 		return substituteChar;
 	}
-    
+
 	public void setAsciiBegin(String value)
 	{
 		if (locked)
@@ -185,7 +195,7 @@ public class BinaryDumpOutputStream extends OutputStream
 
 		asciiBegin = value;
 	}
-    
+
 	public void setAsciiEnd(String value)
 	{
 		if (locked)
@@ -193,7 +203,7 @@ public class BinaryDumpOutputStream extends OutputStream
 
 		asciiEnd = value;
 	}
-    
+
 	public void setBytesPerLine(int value)
 	{
 		if (locked)
@@ -203,7 +213,7 @@ public class BinaryDumpOutputStream extends OutputStream
 
 		ascii = null;
 	}
-    
+
 	public void setOffsetSeperator(String value)
 	{
 		if (locked)
@@ -211,7 +221,7 @@ public class BinaryDumpOutputStream extends OutputStream
 
 		offsetSeperator = value;
 	}
-    
+
 	public void setShowAscii(boolean value)
 	{
 		if (locked)
@@ -219,21 +229,21 @@ public class BinaryDumpOutputStream extends OutputStream
 
 		showAscii = value;
 	}
-    
+
 	/**
 	*  Sets the character used in the ASCII dump that substitutes for characters
 	*  outside the range of 32..126.
 	*
 	*/
 
-		public void setSubstituteChar(char value)
+	public void setSubstituteChar(char value)
 	{
 		if (locked)
 			throw new IllegalStateException();
 
 		substituteChar = value;
 	}
-    
+
 	public void write(int b) throws IOException
 	{
 		char letter;
@@ -282,7 +292,7 @@ public class BinaryDumpOutputStream extends OutputStream
 			if (b < 32 | b > 127)
 				letter = substituteChar;
 			else
-				letter = (char)b;
+				letter = (char) b;
 
 			ascii[lineCount] = letter;
 		}
@@ -290,7 +300,7 @@ public class BinaryDumpOutputStream extends OutputStream
 		lineCount++;
 		bytesSinceSpace++;
 	}
-    
+
 	private void writeHex(int value, int digits)
 	{
 		int i;
@@ -304,4 +314,3 @@ public class BinaryDumpOutputStream extends OutputStream
 		}
 	}
 }
-

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -53,8 +51,8 @@ import javax.servlet.http.*;
  */
 
 public abstract class AbstractServiceLink
-    extends AbstractComponent
-    implements IServiceLink
+	extends AbstractComponent
+	implements IServiceLink
 {
 	private static final int DEFAULT_HTTP_PORT = 80;
 
@@ -93,14 +91,13 @@ public abstract class AbstractServiceLink
 	*  
 	*/
 
-	protected String[] getContext(IRequestCycle cycle)
-	throws RequestCycleException
+	protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
 	{
 		return null;
 	}
 
 	protected String buildURL(IRequestCycle cycle, String[] context)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		String anchor = null;
 		StringBuffer buffer = null;
@@ -111,8 +108,8 @@ public abstract class AbstractServiceLink
 		IEngineService service = cycle.getEngine().getService(serviceName);
 
 		if (service == null)
-			throw new RequestCycleException("No engine service named " + 
-				serviceName + ".",
+			throw new RequestCycleException(
+				"No engine service named " + serviceName + ".",
 				this);
 
 		// Perform the major work of building the URL.
@@ -126,27 +123,22 @@ public abstract class AbstractServiceLink
 
 		if (anchorValue != null)
 			anchor = anchorValue;
-		else
-			if (anchorBinding != null)
+		else if (anchorBinding != null)
 			anchor = anchorBinding.getString();
 
 		if (schemeValue != null)
 			scheme = schemeValue;
-		else
-			if (schemeBinding != null)
-			scheme = schemeBinding.getString();	
+		else if (schemeBinding != null)
+			scheme = schemeBinding.getString();
 
 		if (portValue != 0)
 			port = portValue;
-		else
-			if (portBinding != null)
+		else if (portBinding != null)
 			port = portBinding.getInt();
 
 		// If nothing to add to the URL, then simply return it.
 
-		if (anchor == null &&
-			scheme == null &&
-			port == 0)
+		if (anchor == null && scheme == null && port == 0)
 			return url;
 
 		buffer = new StringBuffer(url.length() + URL_PAD);
@@ -178,8 +170,8 @@ public abstract class AbstractServiceLink
 			if (port != DEFAULT_HTTP_PORT)
 			{
 				buffer.append(':');
-				buffer.append(port);	
-			}		
+				buffer.append(port);
+			}
 		}
 
 		buffer.append(url);
@@ -227,7 +219,7 @@ public abstract class AbstractServiceLink
 
 		if (value.isStatic())
 			portValue = value.getInt();
-	}	
+	}
 
 	/**
 	*  Returns the service used to build URLs.
@@ -279,13 +271,11 @@ public abstract class AbstractServiceLink
 	*
 	*/
 
-
 	protected void setup(IRequestCycle cycle)
 	{
 		if (staticDisabled)
 			disabled = disabledValue;
-		else
-			if (disabledBinding == null)
+		else if (disabledBinding == null)
 			disabled = false;
 		else
 			disabled = disabledBinding.getBoolean();
@@ -297,7 +287,9 @@ public abstract class AbstractServiceLink
 	 *
 	 */
 
-	public void addEventHandler(ServiceLinkEventType eventType, String functionName)
+	public void addEventHandler(
+		ServiceLinkEventType eventType,
+		String functionName)
 	{
 		Object currentValue;
 
@@ -328,9 +320,9 @@ public abstract class AbstractServiceLink
 
 		// For the third and up, add the new function to the List
 
-		List list = (List)currentValue;
+		List list = (List) currentValue;
 		list.add(functionName);
-	}	
+	}
 
 	/**
 	 *  Renders the link.  This is somewhat complicated, because a
@@ -348,14 +340,14 @@ public abstract class AbstractServiceLink
 	 */
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		IResponseWriter wrappedWriter;
-		
+
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException(
 				"IServiceLink components may not be nested.",
-			this);
+				this);
 
 		try
 		{
@@ -370,7 +362,7 @@ public abstract class AbstractServiceLink
 			boolean disabled = isDisabled();
 
 			if (!disabled)
-			{		
+			{
 				String[] context = getContext(cycle);
 				String href = buildURL(cycle, context);
 
@@ -420,7 +412,7 @@ public abstract class AbstractServiceLink
 	}
 
 	private void writeEventHandlers(IResponseWriter writer)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		String name = null;
 
@@ -431,30 +423,35 @@ public abstract class AbstractServiceLink
 
 		while (i.hasNext())
 		{
-			Map.Entry entry = (Map.Entry)i.next();
-			ServiceLinkEventType type = (ServiceLinkEventType)entry.getKey();
+			Map.Entry entry = (Map.Entry) i.next();
+			ServiceLinkEventType type = (ServiceLinkEventType) entry.getKey();
 
-			name = writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
+			name =
+				writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
 		}
 
 	}
 
-	private String writeEventHandler(IResponseWriter writer, String name,
-		String attributeName, Object value)
-	throws RequestCycleException
+	private String writeEventHandler(
+		IResponseWriter writer,
+		String name,
+		String attributeName,
+		Object value)
+		throws RequestCycleException
 	{
 		String wrapperFunctionName;
 
 		if (value instanceof String)
 		{
-			wrapperFunctionName = (String)value;
+			wrapperFunctionName = (String) value;
 		}
 		else
 		{
 			if (body == null)
 				throw new RequestCycleException(
 					"A link component with multiple functions for a single event type must be wrapped by a Body.",
-					this, null);
+					this,
+					null);
 
 			if (name == null)
 				name = "Link" + body.getUniqueId();
@@ -467,10 +464,10 @@ public abstract class AbstractServiceLink
 			buffer.append(wrapperFunctionName);
 			buffer.append(" ()\n{\n");
 
-			Iterator i = ((List)value).iterator();
+			Iterator i = ((List) value).iterator();
 			while (i.hasNext())
 			{
-				String functionName = (String)i.next();
+				String functionName = (String) i.next();
 				buffer.append("  ");
 				buffer.append(functionName);
 				buffer.append("();\n");
@@ -481,8 +478,7 @@ public abstract class AbstractServiceLink
 			body.addOtherScript(buffer.toString());
 		}
 
-		writer.attribute(attributeName,
-			"javascript:" + wrapperFunctionName + "();");
+		writer.attribute(attributeName, "javascript:" + wrapperFunctionName + "();");
 
 		return name;
 

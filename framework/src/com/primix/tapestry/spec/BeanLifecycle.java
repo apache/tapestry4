@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -39,41 +37,39 @@ import com.primix.tapestry.util.Enum;
  *  @since 1.0.4
  */
 
-
 public class BeanLifecycle extends Enum
 {
 	/**
 	 *  No lifecycle; the bean is created fresh on each reference and not retained.
 	 *
 	 **/
-	
+
 	public static final BeanLifecycle NONE = new BeanLifecycle("NONE");
-	
+
 	/**
 	 * The standard lifecycle; the bean is retained for the
 	 * duration of the request cycle and is discarded at the end of the
 	 * request cycle.
 	 *
 	 */
-	
+
 	public static final BeanLifecycle REQUEST = new BeanLifecycle("REQUEST");
-	
+
 	/**
 	 * The bean is created once and reused for the lifespan of the page
 	 * containing the component.
 	 *
 	 */
-	
-	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
-	
-    private BeanLifecycle(String name)
-    {
-		super(name);
-    }
-    
-    private Object readResolve()
-    {
-    	return getSingleton();
-    }
-}
 
+	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
+
+	private BeanLifecycle(String name)
+	{
+		super(name);
+	}
+
+	private Object readResolve()
+	{
+		return getSingleton();
+	}
+}

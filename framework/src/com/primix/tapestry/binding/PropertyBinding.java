@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -43,21 +41,21 @@ import com.primix.tapestry.*;
 
 public class PropertyBinding extends AbstractBinding
 {
-    /**
+	/**
 	 *  The root object against which the nested property name is evaluated.
 	 *
 	 */
-	
-    private IComponent root;
-	
-    /**
+
+	private IComponent root;
+
+	/**
 	 *  Allows dynamic property access to the root object.
 	 *
 	 */
-	
-    private PropertyHelper helper;
-	
-    /**
+
+	private PropertyHelper helper;
+
+	/**
 	 *  The name of the property to bind to.  This may be either a
 	 *  simple name, or a nested property name.  A nested property
 	 *  name consists of a series of simple names seperated by
@@ -67,25 +65,25 @@ public class PropertyBinding extends AbstractBinding
 	 *  <code>getPage().getVisit().getFoo()</code>.
 	 *
 	 */
-	
-    private String propertyPath;
-	
-    /**
+
+	private String propertyPath;
+
+	/**
 	 *  Property path split to individual Strings.
 	 *
 	 */
-	
-    private String[] splitPropertyPath;
-	
-    /**
+
+	private String[] splitPropertyPath;
+
+	/**
 	 *  If true, the propertyPath is a simple propertyName (and
 	 *  splitPropertyPath will be null).
 	 *
 	 */
-	
-    private boolean simple = false;
-	
-    /**
+
+	private boolean simple = false;
+
+	/**
 	 *  Creates a {@link PropertyBinding} from the root object
 	 *  and a nested property name.
 	 *
@@ -121,44 +119,44 @@ public class PropertyBinding extends AbstractBinding
 	 *
 	 * <p>In the meantime, no optimization is done.
 	 */
-	
-    public PropertyBinding(IComponent root, String propertyPath)
-    {
+
+	public PropertyBinding(IComponent root, String propertyPath)
+	{
 		this.root = root;
 		this.propertyPath = propertyPath;
-    }
-	
-    public String getPropertyPath()
-    {
+	}
+
+	public String getPropertyPath()
+	{
 		return propertyPath;
-    }
-	
-    public IComponent getRoot()
-    {
+	}
+
+	public IComponent getRoot()
+	{
 		return root;
-    }
-	
-    /**
+	}
+
+	/**
 	 *  Gets the value of the property path, with the assistance of a 
 	 *  {@link PropertyHelper}.
 	 *
 	 *  @throws BindingException if an exception is thrown accessing the property.
 	 *
 	 */
-	
-    public Object getObject()
-    {
+
+	public Object getObject()
+	{
 		if (helper == null)
 			setupHelper();
-		
+
 		try
 		{
 			// In certain cases, the property path is to an IComponent
 			// instance directly and that's that!
-			
+
 			if (propertyPath == null)
 				return root;
-			
+
 			if (simple)
 				return helper.get(root, propertyPath);
 			else
@@ -167,113 +165,112 @@ public class PropertyBinding extends AbstractBinding
 		catch (Throwable e)
 		{
 			StringBuffer buffer;
-			
+
 			buffer = new StringBuffer("Unable to resolve property ");
 			buffer.append(propertyPath);
 			buffer.append(" of ");
 			buffer.append(root);
 			buffer.append(".");
-			
+
 			throw new BindingException(buffer.toString(), this, e);
 		}
-    }
-	
-    /**
+	}
+
+	/**
 	 *  Returns false.
 	 *
 	 */
-	
-    public boolean isStatic()
-    {
+
+	public boolean isStatic()
+	{
 		return false;
-    }
-	
-    public void setBoolean(boolean value)
-    {
+	}
+
+	public void setBoolean(boolean value)
+	{
 		setObject(value ? Boolean.TRUE : Boolean.FALSE);
-    }
-	
-    public void setInt(int value)
-    {
+	}
+
+	public void setInt(int value)
+	{
 		setObject(new Integer(value));
-    }
-	
-    public void setDouble(double value)
-    {
+	}
+
+	public void setDouble(double value)
+	{
 		setObject(new Double(value));
-    }
-	
-    public void setString(String value)
-    {
+	}
+
+	public void setString(String value)
+	{
 		setObject(value);
-    }
-	
-    /**
+	}
+
+	/**
 	 *  Sets up the helper object, but also optimizes the property path.
 	 *
 	 */
-	
-    private void setupHelper()
-    {
+
+	private void setupHelper()
+	{
 		String[] split;
 		int i;
-		
+
 		// Split the property path into individual property names.
 		// We then optimize what we can from the path.  This will
 		// shorten the property path and, in some cases, eliminate
 		// it (if the property path was to an IComponent).
-		
+
 		split = PropertyHelper.splitPropertyPath(propertyPath);
-		
+
 		for (i = 0; i < split.length; i++)
 		{
-			
+
 			if (split[i].equals("page"))
 			{
 				root = root.getPage();
 				continue;
 			}
-			
+
 			if (split[i].equals("container"))
 			{
 				root = root.getContainer();
 				continue;
 			}
-			
+
 			// Here's the tricky one ... if its of the form
 			// "components.foo" we can get the named component
 			// directly.
-			
-			if (split[i].equals("components") &&
-					i + 1 < split.length)
+
+			if (split[i].equals("components") && i + 1 < split.length)
 			{
-				root = root.getComponent(split[i+1]);
+				root = root.getComponent(split[i + 1]);
 				i++;
 				continue;
 			}
-			
+
 			// Not a recognized prefix, break the loop
-			
+
 			break;
 		}
-		
+
 		// We'ver removed some or all of the initial elements of split
 		// but have to account for anthing left over.
-		
+
 		int count = split.length - i;
-		
+
 		if (count == 0)
 		{
 			// The property path was something like "page" or "component.foo"
 			// and was completely eliminated.
-			
+
 			simple = true;
 			propertyPath = null;
 		}
 		else if (count == 1)
 		{
 			// The path was something like "page.foo" and shrinks to just "foo".
-			
+
 			simple = true;
 			propertyPath = split[i];
 		}
@@ -281,40 +278,40 @@ public class PropertyBinding extends AbstractBinding
 		{
 			// The path was something like "page.foo.baz" and shrinks to just
 			// "foo.baz"
-			
+
 			splitPropertyPath = new String[count];
 			System.arraycopy(split, i, splitPropertyPath, 0, count);
-			
+
 			// Create a new propertyPath to replace the original
-			
+
 			StringBuffer buffer = new StringBuffer();
 			for (int j = i; j < split.length; j++)
 			{
 				if (j > i)
 					buffer.append('.');
-				
+
 				buffer.append(split[j]);
 			}
-			
+
 			propertyPath = buffer.toString();
-			
+
 		}
-		
+
 		helper = PropertyHelper.forInstance(root);
-    }
-	
-    /**
+	}
+
+	/**
 	 *  Updates the property for the binding to the given value.  
 	 *
 	 *  @throws BindingException if the property can't be updated (typically
 	 *  due to an security problem, or a missing mutator method).
 	 */
-	
-    public void setObject(Object value)
-    {
+
+	public void setObject(Object value)
+	{
 		if (helper == null)
 			setupHelper();
-		
+
 		try
 		{
 			if (simple)
@@ -325,72 +322,73 @@ public class PropertyBinding extends AbstractBinding
 		catch (Throwable e)
 		{
 			StringBuffer buffer;
-			
+
 			buffer = new StringBuffer("Unable to update property ");
 			buffer.append(propertyPath);
 			buffer.append(" of ");
 			buffer.append(root);
 			buffer.append(" to ");
 			buffer.append(value);
-			
+
 			buffer.append('.');
-			
+
 			throw new BindingException(buffer.toString(), this, e);
 		}
-		
-    }
-	
+
+	}
+
 	/**
 	 *  Follows the property path to determine the type.
 	 *
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	public Class getType()
 	{
 		if (helper == null)
 			setupHelper();
-		
+
 		try
 		{
-			
+
 			if (simple)
 				return helper.getAccessor(root, propertyPath).getType();
-			
+
 			return helper.getAccessorPath(root, splitPropertyPath).getType();
 		}
 		catch (Throwable ex)
 		{
-			throw new BindingException("Unable to get type of property " + propertyPath + " of " + root + ".",
-					this, ex);
+			throw new BindingException(
+				"Unable to get type of property " + propertyPath + " of " + root + ".",
+				this,
+				ex);
 		}
 	}
-	
-    /**
+
+	/**
 	 *  Returns the a String representing the property path.  This includes
 	 *  the {@link IComponent#getExtendedId() extended id} of the root component
 	 *  and the property path ... once the binding is used, these may change
 	 *  due to optimization of the property path.
 	 *
 	 */
-	
-    public String toString()
-    {
+
+	public String toString()
+	{
 		StringBuffer buffer = new StringBuffer();
-		
+
 		buffer.append("PropertyBinding[");
 		buffer.append(root.getExtendedId());
-		
+
 		if (propertyPath != null)
 		{
 			buffer.append(' ');
 			buffer.append(propertyPath);
 		}
-		
-		buffer.append(']');
-		
-		return buffer.toString();
-    }
-}
 
+		buffer.append(']');
+
+		return buffer.toString();
+	}
+}

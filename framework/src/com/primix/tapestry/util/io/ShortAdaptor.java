@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -39,41 +37,41 @@ import java.io.*;
  *
  */
 
-class ShortAdaptor
-implements ISqueezeAdaptor
+class ShortAdaptor implements ISqueezeAdaptor
 {
-    private static final String PREFIX = "s";
+	private static final String PREFIX = "s";
 
-    /**
-     *  Registers using the prefix 's'.
-     *
-     */
+	/**
+	 *  Registers using the prefix 's'.
+	 *
+	 */
 
-    public void register(DataSqueezer squeezer)
-    {
-        squeezer.register(PREFIX, Short.class, this);
-    }
+	public void register(DataSqueezer squeezer)
+	{
+		squeezer.register(PREFIX, Short.class, this);
+	}
 
-    /**
-     *  Invoked <code>toString()</code> on data (which is type {@link Short}),
-     *  and prefixs the result.
-     *
-     */
+	/**
+	 *  Invoked <code>toString()</code> on data (which is type {@link Short}),
+	 *  and prefixs the result.
+	 *
+	 */
 
-    public String squeeze(DataSqueezer squeezer, Object data)
-    {
-        return PREFIX + data.toString();
-    }
+	public String squeeze(DataSqueezer squeezer, Object data)
+	
+	{
+		return PREFIX + data.toString();
+	}
 
-    /**
-     *  Constructs a {@link Short} from the string, after stripping
-     *  the prefix.
-     *
-     */
+	/**
+	 *  Constructs a {@link Short} from the string, after stripping
+	 *  the prefix.
+	 *
+	 */
 
-    public Object unsqueeze(DataSqueezer squeezer, String string)
-    {
-        return new Short(string.substring(1));
-    }
+	public Object unsqueeze(DataSqueezer squeezer, String string)
+	{
+		return new Short(string.substring(1));
+	}
 
 }

@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -43,126 +42,124 @@ import javax.rmi.*;
  * @version $Id$
  */
 
-public class EditBook 
-	extends Protected
+public class EditBook extends Protected
 {
-	private Integer bookPK;	
-	private Map attributes;	
+	private Integer bookPK;
+	private Map attributes;
 	private String publisherName;
 	private boolean cancel;
-	
+
 	private static final int MAP_SIZE = 11;
-	
+
 	public void detach()
 	{
 		attributes = null;
-		bookPK = null;	
-		publisherName = null;	
+		bookPK = null;
+		publisherName = null;
 		cancel = false;
-		
+
 		super.detach();
 	}
-	
+
 	public Map getAttributes()
 	{
 		if (attributes == null)
 			attributes = new HashMap(MAP_SIZE);
-		
+
 		return attributes;
-	}	
-	
+	}
+
 	public String getPublisherName()
 	{
 		return publisherName;
 	}
-	
+
 	public void setPublisherName(String value)
 	{
 		publisherName = value;
 	}
-	
+
 	public boolean getCancel()
 	{
 		return cancel;
 	}
-	
+
 	public void setCancel(boolean value)
 	{
 		cancel = value;
 	}
-	
+
 	/**
 	 *  Gets the book's primary key as a String.
 	 *
 	 */
-	
+
 	public String getBookPrimaryKey()
 	{
 		return bookPK.toString();
 	}
-	
+
 	/**
 	 *  Updates the book's primary key value (converting from String to Integer).
 	 *  This allows a Hidden component in the form to synchronize the book being
 	 *  editted ... which fixes the Browser Back Button problem.
 	 *
 	 */
-	
+
 	public void setBookPrimaryKey(String value)
 	{
 		bookPK = new Integer(value);
 	}
-	
+
 	/**
 	 *  Invoked (from {@link MyLibrary}) to begin editting a book.
 	 *  Gets the attributes from the {@link IBook} and updates
 	 *  the request cycle to render this page,
 	 *
 	 */
-	
+
 	public void beginEdit(Integer bookPK, IRequestCycle cycle)
 	{
 		this.bookPK = bookPK;
-		
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		
+
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+
 		for (int i = 0; i < 2; i++)
 		{
 			try
 			{
 				// Get the attributes as a source for our input fields.
-				
+
 				IOperations operations = vengine.getOperations();
-				
+
 				attributes = operations.getBookAttributes(bookPK);
-				
+
 				break;
 			}
 			catch (FinderException ex)
 			{
 				// TBD:  Dress this up and send them back to the Search or
 				// MyLibrary page.
-				
+
 				throw new ApplicationRuntimeException(ex);
 			}
 			catch (RemoteException ex)
 			{
 				vengine.rmiFailure(
 					"Remote exception setting up page for book #" + bookPK + ".",
-					ex, i > 0);
+					ex,
+					i > 0);
 			}
 		}
-		
-		cycle.setPage(this);	
+
+		cycle.setPage(this);
 	}
-	
-	
-	
+
 	/**
 	 *  Used to update the book when the form is submitted.
 	 *
 	 */
-	
+
 	public void formSubmit(IRequestCycle cycle)
 	{
 		if (cancel)
@@ -170,38 +167,40 @@ public class EditBook
 			cycle.setPage("MyLibrary");
 			return;
 		}
-		
+
 		// Check for an error from a validation field
-		
+
 		if (getError() != null)
 			return;
-		
-		Integer publisherPK = (Integer)attributes.get("publisherPK");
-		
+
+		Integer publisherPK = (Integer) attributes.get("publisherPK");
+
 		if (publisherPK == null && Tapestry.isNull(publisherName))
 		{
-			setErrorField("inputPublisherName",
-					"Must provide a publisher name if the publisher option is empty.");
+			setErrorField(
+				"inputPublisherName",
+				"Must provide a publisher name if the publisher option is empty.");
 			return;
 		}
-		
+
 		if (publisherPK != null && !Tapestry.isNull(publisherName))
 		{
-			setErrorField("inputPublisherName",
-					"Must leave the publisher name blank if selecting a publisher from the list.");
+			setErrorField(
+				"inputPublisherName",
+				"Must leave the publisher name blank if selecting a publisher from the list.");
 			return;
 		}
-		
+
 		// OK, do the update.
-		
-		Visit visit = (Visit)getVisit();
+
+		Visit visit = (Visit) getVisit();
 		VirtualLibraryEngine vengine = visit.getEngine();
-		
+
 		for (int i = 0; i < 2; i++)
 		{
-			
+
 			IOperations bean = vengine.getOperations();
-			
+
 			try
 			{
 				if (publisherPK != null)
@@ -210,8 +209,8 @@ public class EditBook
 				{
 					bean.updateBook(bookPK, attributes, publisherName);
 					visit.clearCache();
-				}		
-				
+				}
+
 				break;
 			}
 			catch (FinderException ex)
@@ -226,16 +225,17 @@ public class EditBook
 			{
 				vengine.rmiFailure(
 					"Remote exception updating book #" + bookPK + ".",
-					ex, i > 0);
-				
+					ex,
+					i > 0);
+
 				continue;
 			}
 		}
-		
-		MyLibrary page = (MyLibrary)cycle.getPage("MyLibrary");
+
+		MyLibrary page = (MyLibrary) cycle.getPage("MyLibrary");
 		page.setMessage("Updated book.");
-		
+
 		cycle.setPage(page);
 	}
-	
+
 }

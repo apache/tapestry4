@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -42,13 +41,10 @@ import com.primix.vlib.pages.*;
  * @version $Id$
  */
 
-
-public class Protected
-extends BasePage
-implements IErrorProperty
+public class Protected extends BasePage implements IErrorProperty
 {
 	private String error;
-    private IValidationDelegate validationDelegate;
+	private IValidationDelegate validationDelegate;
 
 	public void detach()
 	{
@@ -56,20 +52,20 @@ implements IErrorProperty
 
 		error = null;
 	}
-	
-    public IValidationDelegate getValidationDelegate()
-    {
-        if (validationDelegate == null)
-            validationDelegate = new SimpleValidationDelegate(this);
 
-        return validationDelegate;
-    }
+	public IValidationDelegate getValidationDelegate()
+	{
+		if (validationDelegate == null)
+			validationDelegate = new SimpleValidationDelegate(this);
+
+		return validationDelegate;
+	}
 
 	public void setError(String value)
 	{
 		error = value;
 	}
-	
+
 	public String getError()
 	{
 		return error;
@@ -77,37 +73,35 @@ implements IErrorProperty
 
 	protected void setErrorField(String componentId, String message)
 	{
-	    IValidatingTextField field;
+		IValidatingTextField field;
 
-	    field = (IValidatingTextField)getComponent(componentId);
-	    field.setError(true);
+		field = (IValidatingTextField) getComponent(componentId);
+		field.setError(true);
 
-        if (error == null)
-            error = message;
+		if (error == null)
+			error = message;
 	}
-	
+
 	/**
 	 *  Checks if the user is logged in ... if not, they are sent
 	 *  to the {@link Login} page before coming back to whatever this
 	 *  page is.
 	 *
 	 */
-	 
-	public void validate(IRequestCycle cycle)
-	throws RequestCycleException
+
+	public void validate(IRequestCycle cycle) throws RequestCycleException
 	{
-		Visit visit = (Visit)getVisit();
-		
-		if (visit != null &&
-			visit.isUserLoggedIn())
+		Visit visit = (Visit) getVisit();
+
+		if (visit != null && visit.isUserLoggedIn())
 			return;
-		
+
 		// User not logged in ... redirect through the Login page.
-		
-		Login login = (Login)cycle.getPage("Login");
-		
+
+		Login login = (Login) cycle.getPage("Login");
+
 		login.setCallback(new PageCallback(this));
-		
-		throw new PageRedirectException(login);			
+
+		throw new PageRedirectException(login);
 	}
 }

@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -15,7 +13,7 @@
  *
  * Version 2.1 of the license should be included with this distribution in
  * the file LICENSE, as well as License.html. If the license is not
- * included    with this distribution, you may find a copy at the FSF web
+ * included with this distribution, you may find a copy at the FSF web
  * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
@@ -36,8 +34,7 @@ import com.primix.tapestry.*;
  *
  */
 
-public interface IFormComponent 
-	extends IComponent
+public interface IFormComponent extends IComponent
 {
 	/**
 	 *  Returns the {@link Form} which contains the component.
@@ -45,10 +42,9 @@ public interface IFormComponent
 	 *  @returns the {@link Form}, or null if the component is not contained by a Form,
 	 *  of if the containing Form is not currently renderring.
 	 */
-	
+
 	public IForm getForm();
-	
-	
+
 	/**
 	 *  Returns the name of the component, which is automatically generated
 	 *  during renderring.
@@ -64,7 +60,7 @@ public interface IFormComponent
 	 *  works with the {@link com.primix.tapestry.html.Body} component to get the
 	 *  JavaScript code inserted and referenced.
 	 *
-	 */	
-	
+	 */
+
 	public String getName();
 }

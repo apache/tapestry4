@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -41,29 +39,28 @@ import java.io.*;
 
 public interface ISqueezeAdaptor
 {
-    /**
-     *  Converts the data object into a String.
-     *
-     *  @throws IOException if the object can't be converted.
-     */
+	/**
+	 *  Converts the data object into a String.
+	 *
+	 *  @throws IOException if the object can't be converted.
+	 */
 
-    public String squeeze(DataSqueezer squeezer, Object data)
-    throws IOException;
+	public String squeeze(DataSqueezer squeezer, Object data) throws IOException;
 
-    /**
-     *  Converts a String back into an appropriate object.
-     *
-     *  @throws IOException if the String can't be converted.
-     *
-     */
+	/**
+	 *  Converts a String back into an appropriate object.
+	 *
+	 *  @throws IOException if the String can't be converted.
+	 *
+	 */
 
-    public Object unsqueeze(DataSqueezer squeezer, String string)
-    throws IOException;
+	public Object unsqueeze(DataSqueezer squeezer, String string)
+		throws IOException;
 
-    /**
-     *  Invoked to ask an adaptor to register itself to the squeezer.
-     *
-     */
+	/**
+	 *  Invoked to ask an adaptor to register itself to the squeezer.
+	 *
+	 */
 
-    public void register(DataSqueezer squeezer);
+	public void register(DataSqueezer squeezer);
 }

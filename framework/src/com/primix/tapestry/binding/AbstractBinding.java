@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -38,7 +36,6 @@ import java.util.*;
  * @version $Id$
  */
 
-
 public abstract class AbstractBinding implements IBinding
 {
 	/**
@@ -46,169 +43,162 @@ public abstract class AbstractBinding implements IBinding
 	 *  rules set by {@link Tapestry#evaluateBoolean(Object)}.
 	 *
 	 */
-	
+
 	public boolean getBoolean()
 	{
 		return Tapestry.evaluateBoolean(getObject());
 	}
-	
+
 	public int getInt()
 	{
 		Object raw;
-		
+
 		raw = getObject();
 		if (raw == null)
 			throw new NullValueForBindingException(this);
-		
+
 		if (raw instanceof Number)
 		{
-			return ((Number)raw).intValue();
+			return ((Number) raw).intValue();
 		}
-		
+
 		if (raw instanceof Boolean)
 		{
-			return ((Boolean)raw).booleanValue() 
-				? 1 
-				: 0;
+			return ((Boolean) raw).booleanValue() ? 1 : 0;
 		}
-		
+
 		// Save parsing for last.  This may also throw a number format exception.
-		
-		return Integer.parseInt((String)raw);
+
+		return Integer.parseInt((String) raw);
 	}
-	
+
 	public double getDouble()
 	{
 		Object raw;
-		
+
 		raw = getObject();
 		if (raw == null)
 			throw new NullValueForBindingException(this);
-		
+
 		if (raw instanceof Number)
 		{
-			return ((Number)raw).doubleValue();
+			return ((Number) raw).doubleValue();
 		}
-		
+
 		if (raw instanceof Boolean)
 		{
-			return ((Boolean)raw).booleanValue() 
-				? 1 
-				: 0;
+			return ((Boolean) raw).booleanValue() ? 1 : 0;
 		}
-		
+
 		// Save parsing for last.  This may also throw a number format exception.
-		
-		return Double.parseDouble((String)raw);
+
+		return Double.parseDouble((String) raw);
 	}
-	
+
 	/**
 	 *  Gets the value for the binding.  If null, returns null,
 	 *  otherwise, returns the String (<code>toString()</code>) version of
 	 *  the value.
 	 *
 	 */
-	
+
 	public String getString()
 	{
 		Object value;
-		
+
 		value = getObject();
 		if (value == null)
 			return null;
-		
+
 		return value.toString();
 	}
-	
+
 	/**
 	 *  @throws ReadOnlyBindingException always.
 	 *
 	 */
-	
+
 	public void setBoolean(boolean value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
-	
+
 	/**
 	 *  @throws ReadOnlyBindingException always.
 	 *
 	 */
-	
+
 	public void setInt(int value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
-	
+
 	/**
 	 *  @throws ReadOnlyBindingException always.
 	 *
 	 */
-	
+
 	public void setDouble(double value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
-	
+
 	/**
 	 *  @throws ReadOnlyBindingException always.
 	 *
 	 */
-	
+
 	public void setString(String value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
-	
+
 	/**
 	 *  @throws ReadOnlyBindingException always.
 	 *
 	 */
-	
-	
+
 	public void setObject(Object value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
-	
+
 	/**
 	 *  Default implementation: returns true.
 	 *
 	 */
-	
+
 	public boolean isStatic()
 	{
 		return true;
 	}
-	
+
 	public Object getObject(String parameterName, Class type)
 	{
 		Object result = getObject();
-		
+
 		if (result == null)
 			return result;
-		
+
 		if (type.isAssignableFrom(result.getClass()))
 			return result;
-		
+
 		StringBuffer buffer = new StringBuffer();
-		
+
 		buffer.append("Parameter ");
 		buffer.append(parameterName);
 		buffer.append(" (");
 		buffer.append(result);
 		buffer.append(") ");
-		
+
 		if (type.isInterface())
 			buffer.append(" does not implement interface ");
 		else
 			buffer.append(" is not type ");
-		
-		
+
 		buffer.append(type.getName());
 		buffer.append('.');
-		
-		throw new BindingException(buffer.toString(), this);				
+
+		throw new BindingException(buffer.toString(), this);
 	}
 }
-

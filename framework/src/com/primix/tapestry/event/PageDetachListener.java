@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -28,9 +26,8 @@
 
 package com.primix.tapestry.event;
 
-import com.primix.tapestry.*;
-import java.util.*;
-	
+import java.util.EventListener;
+
 /**
  *  An interface for objects that want to know when the end of the
  *  request cycle occurs, so that any resources that should be limited
@@ -40,14 +37,13 @@ import java.util.*;
  *  @version $Id$
  *  @since 1.0.5
  */
-	
+
 public interface PageDetachListener extends EventListener
 {
 	/**
 	 *  Invoked by the page from its {@link IPage#detach()} method.
 	 *
 	 */
-	
+
 	public void pageDetached(PageEvent event);
 }
-

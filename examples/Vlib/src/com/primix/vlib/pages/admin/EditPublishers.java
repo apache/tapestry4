@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -43,57 +41,55 @@ import com.primix.vlib.ejb.*;
  *  @version $Id$
  */
 
-
-public class EditPublishers
-	extends AdminPage
+public class EditPublishers extends AdminPage
 {
 	private Publisher[] publishers;
 	private Publisher publisher;
-	
+
 	/**
 	 *  {@link Set} of {@link Integer} primary keys, of Publishers.
 	 *
 	 */
-	
+
 	private Set deletedPublishers;
-	
+
 	public void detach()
 	{
 		publishers = null;
 		publisher = null;
 		deletedPublishers = null;
-		
+
 		super.detach();
 	}
-	
+
 	public Integer[] getPublisherIds()
 	{
 		if (publishers == null)
 			readPublishers();
-		
+
 		Integer[] ids = new Integer[publishers.length];
-		
+
 		for (int i = 0; i < publishers.length; i++)
 			ids[i] = publishers[i].getPrimaryKey();
-		
+
 		return ids;
 	}
-	
+
 	public void setPublisherId(Integer value)
 	{
 		if (publishers == null)
 			readPublishers();
-		
+
 		for (int i = 0; i < publishers.length; i++)
 			if (publishers[i].getPrimaryKey().equals(value))
 			{
 				publisher = publishers[i];
 				return;
 			}
-		
+
 		publisher = null;
 	}
-			
+
 	public Publisher getPublisher()
 	{
 		return publisher;
@@ -103,22 +99,22 @@ public class EditPublishers
 	{
 		if (deletedPublishers == null)
 			deletedPublishers = new HashSet();
-		
+
 		return deletedPublishers;
 	}
-	
+
 	private void readPublishers()
 	{
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+
 		for (int i = 0; i < 2; i++)
 		{
 			try
 			{
 				IOperations operations = vengine.getOperations();
-				
+
 				publishers = operations.getPublishers();
-				
+
 				break;
 			}
 			catch (RemoteException ex)
@@ -126,48 +122,48 @@ public class EditPublishers
 				vengine.rmiFailure("Unable to obtain list of publishers.", ex, i > 0);
 			}
 		}
-		
+
 	}
-		
+
 	public void processForm(IRequestCycle cycle)
 	{
 		List updateList = new ArrayList(publishers.length);
 		Set deletedKeys = getDeletedPublishers();
-		
+
 		// Create a List of all the publishers which aren't
 		// being deleted.
 		for (int i = 0; i < publishers.length; i++)
 		{
-			if (deletedKeys != null &&
-					deletedKeys.contains(publishers[i].getPrimaryKey()))
-					continue;
-			
+			if (deletedKeys != null && deletedKeys.contains(publishers[i].getPrimaryKey()))
+				continue;
+
 			updateList.add(publishers[i]);
 		}
 
 		// Forget any information about publishers that was previously read.
-		
+
 		publishers = null;
-		
-		Publisher[] updated = (Publisher[])updateList.toArray(new Publisher[updateList.size()]);
-		
+
+		Publisher[] updated =
+			(Publisher[]) updateList.toArray(new Publisher[updateList.size()]);
+
 		Integer[] deleted = null;
-		
+
 		if (deletedKeys != null)
-			deleted = (Integer[])deletedKeys.toArray(new Integer[deletedKeys.size()]);
-				
+			deleted = (Integer[]) deletedKeys.toArray(new Integer[deletedKeys.size()]);
+
 		// Now, push the updates through to the database
-		
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
-		
+
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+
 		for (int i = 0; i < 2; i++)
 		{
 			try
 			{
 				IOperations operations = vengine.getOperations();
-				
+
 				operations.updatePublishers(updated, deleted);
-				
+
 				break;
 			}
 			catch (FinderException ex)
@@ -183,29 +179,29 @@ public class EditPublishers
 				vengine.rmiFailure("Remote exception updating publishers.", ex, i > 0);
 			}
 		}
-				
+
 		// Clear any cached info about publishers.
-		
+
 		vengine.clearCache();
 	}
-	
+
 	/**
 	 *  Always returns false; no publishers are deleted when the form is rendered.
 	 *
 	 */
-	
+
 	public boolean getDeletedPublisher()
 	{
 		return false;
 	}
-	
+
 	/**
 	 *  If value is true (i.e., the checkbox was checked)
 	 *  then the primary key of the current Publisher is added
 	 *  to the deletedPublishers set.
 	 *
 	 */
-	
+
 	public void setDeletedPublisher(boolean value)
 	{
 		if (value)
@@ -216,4 +212,3 @@ public class EditPublishers
 		}
 	}
 }
-

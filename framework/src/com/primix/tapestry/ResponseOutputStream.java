@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -59,7 +57,6 @@ import javax.servlet.http.*;
  *  @version $Id$
  */
 
-
 public class ResponseOutputStream extends OutputStream
 {
 	/**
@@ -96,7 +93,7 @@ public class ResponseOutputStream extends OutputStream
 	*
 	*/
 
-	public ResponseOutputStream(HttpServletResponse response,int maxSize)
+	public ResponseOutputStream(HttpServletResponse response, int maxSize)
 	{
 		this.response = response;
 
@@ -146,8 +143,7 @@ public class ResponseOutputStream extends OutputStream
 	*
 	*/
 
-	public void forceClose()
-	throws IOException
+	public void forceClose() throws IOException
 	{
 		// Invoke open() now to write the current buffer to the output stream.
 
@@ -174,8 +170,7 @@ public class ResponseOutputStream extends OutputStream
 	*
 	*/
 
-	public void forceFlush()
-	throws IOException
+	public void forceFlush() throws IOException
 	{
 		if (out == null)
 			open();
@@ -203,8 +198,7 @@ public class ResponseOutputStream extends OutputStream
 	*
 	*/
 
-	private void open()
-	throws IOException
+	private void open() throws IOException
 	{
 		if (contentType == null)
 			throw new IOException("Content type of response never set.");
@@ -228,8 +222,7 @@ public class ResponseOutputStream extends OutputStream
 	*
 	*/
 
-	public void reset()
-	throws IOException
+	public void reset() throws IOException
 	{
 		pos = 0;
 
@@ -242,8 +235,7 @@ public class ResponseOutputStream extends OutputStream
 	*
 	*/
 
-	public void setBufferSize(int value)
-	throws IOException
+	public void setBufferSize(int value) throws IOException
 	{
 		if (value < pos)
 		{
@@ -279,7 +271,7 @@ public class ResponseOutputStream extends OutputStream
 			return;
 
 		if (out != null)
-		{	 
+		{
 			out.write(b, off, len);
 			return;
 		}
@@ -316,9 +308,8 @@ public class ResponseOutputStream extends OutputStream
 		if (tiny == null)
 			tiny = new byte[1];
 
-		tiny[0] = (byte)b;
+		tiny[0] = (byte) b;
 
 		write(tiny, 0, 1);
 	}
 }
-

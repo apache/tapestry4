@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -33,7 +32,6 @@ import com.primix.vlib.ejb.*;
 
 // Appease Javadoc
 import com.primix.vlib.pages.PersonPage;
-
 
 /**
  *  Creates a link to the {@link PersonPage} page using the external service.
@@ -79,79 +77,79 @@ import com.primix.vlib.pages.PersonPage;
 
 public class PersonLink extends BaseComponent
 {
-    private IBinding primaryKeyBinding;
-    private IBinding nameBinding;
+	private IBinding primaryKeyBinding;
+	private IBinding nameBinding;
 
-    private String[] context;
-    private Integer primaryKey;
+	private String[] context;
+	private Integer primaryKey;
 
 	private IBinding omitBinding;
 	private boolean staticOmit;
 	private boolean staticOmitValue;
-	
-    public IBinding getPrimaryKeyBinding()
-    {
-        return primaryKeyBinding;
-    }
 
-    public void setPrimaryKeyBinding(IBinding value)
-    {
-        primaryKeyBinding = value;
-    }
+	public IBinding getPrimaryKeyBinding()
+	{
+		return primaryKeyBinding;
+	}
 
-    public IBinding getNameBinding()
-    {
-        return nameBinding;
-    }
+	public void setPrimaryKeyBinding(IBinding value)
+	{
+		primaryKeyBinding = value;
+	}
 
-    public void setNameBinding(IBinding value)
-    {
-        nameBinding = value;
-    }
+	public IBinding getNameBinding()
+	{
+		return nameBinding;
+	}
+
+	public void setNameBinding(IBinding value)
+	{
+		nameBinding = value;
+	}
 
 	public IBinding getOmitBinding()
 	{
 		return omitBinding;
 	}
-	
+
 	public void setOmitBinding(IBinding value)
 	{
 		omitBinding = value;
-		
+
 		staticOmit = value.isStatic();
-		
+
 		if (staticOmit)
 			staticOmitValue = value.getBoolean();
 	}
-	
+
 	public boolean getShowLink()
 	{
 		if (omitBinding == null)
 			return true;
-		
+
 		if (staticOmit)
-			return ! staticOmitValue;
-		
-		return ! omitBinding.getBoolean();
+			return !staticOmitValue;
+
+		return !omitBinding.getBoolean();
 	}
-	
-     /**
-     *  The context has two elements.  The first is the page to jump to
-     *  ("Person", for {@link PersonPage}), the second is the primary key of the person.
-     *
-     */
 
-    public String[] getContext()
-    {
-        if (context == null)
-        {
-            context = new String[2];
-            context[0] = "Person";
-        }
+	/**
+	*  The context has two elements.  The first is the page to jump to
+	*  ("Person", for {@link PersonPage}), the second is the primary key of the person.
+	*
+	*/
 
-        context[1] = primaryKeyBinding.getString();
+	public String[] getContext()
+	{
+		if (context == null)
+		{
+			context = new String[2];
+			context[0] = "Person";
+		}
 
-        return context;
-    }
+		context[1] = primaryKeyBinding.getString();
+
+		return context;
+	}
 
 }

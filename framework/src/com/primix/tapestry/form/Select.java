@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -105,12 +103,12 @@ public class Select extends AbstractFormComponent
 	*
 	*/
 
-	private final static String ATTRIBUTE_NAME
-		= "com.primix.tapestry.active.Select";
+	private final static String ATTRIBUTE_NAME =
+		"com.primix.tapestry.active.Select";
 
 	public static Select get(IRequestCycle cycle)
 	{
-		return (Select)cycle.getAttribute(ATTRIBUTE_NAME);
+		return (Select) cycle.getAttribute(ATTRIBUTE_NAME);
 	}
 
 	public IBinding getDisabledBinding()
@@ -146,7 +144,7 @@ public class Select extends AbstractFormComponent
 
 		// Return it as a hex value.
 
-		return Integer.toString(nextOptionId++);	
+		return Integer.toString(nextOptionId++);
 	}
 
 	public boolean isSelected(String value)
@@ -162,16 +160,15 @@ public class Select extends AbstractFormComponent
 	*  is submitted (by checking {@link Form#isRewinding()}.
 	**/
 
-	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
+	public void render(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
 	{
 		boolean multiple;
 
 		IForm form = getForm(cycle);
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException(
-				"Select components may not be nested.",
-				this);
+			throw new RequestCycleException("Select components may not be nested.", this);
 
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.
@@ -210,7 +207,7 @@ public class Select extends AbstractFormComponent
 			if (disabled)
 				writer.attribute("disabled");
 
-			generateAttributes(writer, cycle);			
+			generateAttributes(writer, cycle);
 		}
 
 		try
@@ -280,6 +277,5 @@ public class Select extends AbstractFormComponent
 			result.add(parameters[i]);
 
 		return result;
-	}    
+	}
 }
-

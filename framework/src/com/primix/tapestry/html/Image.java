@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -73,7 +71,6 @@ import com.primix.tapestry.*;
  *  @version $Id$
  */
 
-
 public class Image extends AbstractComponent
 {
 	private IBinding imageBinding;
@@ -87,8 +84,11 @@ public class Image extends AbstractComponent
 	*
 	*/
 
-	protected String getAssetURL(String name, IBinding binding, IRequestCycle cycle)
-	throws RequestCycleException
+	protected String getAssetURL(
+		String name,
+		IBinding binding,
+		IRequestCycle cycle)
+		throws RequestCycleException
 	{
 		IAsset asset;
 
@@ -97,10 +97,11 @@ public class Image extends AbstractComponent
 
 		try
 		{
-			asset = (IAsset)binding.getObject(name, IAsset.class);
+			asset = (IAsset) binding.getObject(name, IAsset.class);
 		}
 		catch (BindingException ex)
-		{
+		
+			{
 			throw new RequestCycleException(this, ex);
 		}
 
@@ -132,8 +133,8 @@ public class Image extends AbstractComponent
 	*
 	*/
 
-	public void render(IResponseWriter writer, IRequestCycle cycle) 
-	throws RequestCycleException
+	public void render(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
 	{
 		String imageURL = null;
 		int border = 0;
@@ -147,10 +148,11 @@ public class Image extends AbstractComponent
 
 		try
 		{
-			imageAsset = (IAsset)imageBinding.getObject("image", IAsset.class);
+			imageAsset = (IAsset) imageBinding.getObject("image", IAsset.class);
 		}
 		catch (BindingException ex)
-		{
+		
+			{
 			throw new RequestCycleException(this, ex);
 		}
 
@@ -186,4 +188,3 @@ public class Image extends AbstractComponent
 		imageBinding = value;
 	}
 }
-

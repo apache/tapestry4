@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -44,7 +42,7 @@ import com.primix.tapestry.form.*;
 
 public interface IActionListener
 {
-	
+
 	/**
 	 *  Method invoked by the component (an {@link Action} or {@link
 	 *  Form}, when its URL is triggered.
@@ -52,7 +50,7 @@ public interface IActionListener
 	 *  @param action The component which was "triggered".
 	 *  @param cycle The request cycle in which the component was triggered.
 	 */
-	
+
 	public void actionTriggered(IComponent component, IRequestCycle cycle)
 		throws RequestCycleException;
 }

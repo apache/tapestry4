@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -109,7 +107,6 @@ import com.primix.tapestry.*;
  *  @version $Id$
  */
 
-
 public class Foreach extends AbstractComponent
 {
 	private IBinding sourceBinding;
@@ -117,43 +114,42 @@ public class Foreach extends AbstractComponent
 	private IBinding indexBinding;
 	private IBinding elementBinding;
 	private String staticElement;
-	
+
 	private Object value;
 	private boolean rendering;
-	
-	
+
 	public IBinding getSourceBinding()
 	{
 		return sourceBinding;
 	}
-	
+
 	public IBinding getIndexBinding()
 	{
 		return indexBinding;
 	}
-	
+
 	public void setIndexBinding(IBinding value)
 	{
 		indexBinding = value;
 	}
-	
+
 	/** @since 1.0.4 **/
-	
+
 	public void setElementBinding(IBinding value)
 	{
 		elementBinding = value;
-		
+
 		if (value.isStatic())
 			staticElement = value.getString();
 	}
-	
+
 	/** @since 1.0.4 **/
-	
+
 	public IBinding getElementBinding()
 	{
 		return elementBinding;
 	}
-	
+
 	/**
 	 *  Gets the source binding and returns an {@link Iterator}
 	 *  representing
@@ -164,80 +160,80 @@ public class Foreach extends AbstractComponent
 	 *  the actual conversion.
 	 *
 	 */
-	
-	protected Iterator getSourceData()
-		throws RequestCycleException
+
+	protected Iterator getSourceData() throws RequestCycleException
 	{
-		
+
 		if (sourceBinding == null)
 			return null;
-		
+
 		Object rawValue = sourceBinding.getObject();
-		
+
 		return Tapestry.coerceToIterator(rawValue);
 	}
-	
-    public IBinding getValueBinding()
+
+	public IBinding getValueBinding()
 	{
 		return valueBinding;
 	}
-	
+
 	/**
 	 *  Gets the source binding and iterates through
 	 *  its values.  For each, it updates the value binding and render's its wrapped elements.
 	 *
 	 */
-	
-	public void render(IResponseWriter writer, IRequestCycle cycle) 
+
+	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		Iterator dataSource = getSourceData();
-		
+
 		// The dataSource was either not convertable, or was empty.
-		
+
 		if (dataSource == null)
-			return;		
-		
+			return;
+
 		String element = null;
-		
+
 		if (elementBinding != null && !cycle.isRewinding())
 		{
 			if (staticElement == null)
-				element = (String)elementBinding.getObject("element", String.class);
+				element = (String) elementBinding.getObject("element", String.class);
 			else
 				element = staticElement;
 		}
-		
+
 		try
-		{
+		
+			{
 			rendering = true;
 			value = null;
 			int i = 0;
-			
+
 			boolean hasNext = dataSource.hasNext();
-			
+
 			while (hasNext)
 			{
 				value = dataSource.next();
 				hasNext = dataSource.hasNext();
-					
+
 				if (indexBinding != null)
 					indexBinding.setInt(i);
-				
+
 				if (valueBinding != null)
 					valueBinding.setObject(value);
-				
+
 				if (element != null)
 				{
 					writer.begin(element);
 					generateAttributes(writer, cycle);
 				}
-				
+
 				renderWrapped(writer, cycle);
-				
+
 				if (element != null)
 					writer.end();
-				
+
 				i++;
 			}
 		}
@@ -247,31 +243,30 @@ public class Foreach extends AbstractComponent
 			rendering = false;
 		}
 	}
-		
+
 	public void setSourceBinding(IBinding value)
 	{
 		sourceBinding = value;
 	}
-	
+
 	public void setValueBinding(IBinding value)
 	{
 		valueBinding = value;
 	}
-			
+
 	/**
 	 *  Returns the most recent value extracted from the source parameter.
 	 *
 	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
 	 *
 	 */
-	
+
 	public Object getValue()
 	{
 		if (!rendering)
 			throw new RenderOnlyPropertyException(this, "value");
-		
+
 		return value;
 	}
-	
-}
 
+}

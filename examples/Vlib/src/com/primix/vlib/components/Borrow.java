@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -61,47 +60,47 @@ import javax.ejb.*;
  *
  */
 
-public class Borrow
-	extends BaseComponent
+public class Borrow extends BaseComponent
 {
-    private IBinding bookBinding;
-    private Book book;
-	
-    public void setBookBinding(IBinding value)
-    {
+	private IBinding bookBinding;
+	private Book book;
+
+	public void setBookBinding(IBinding value)
+	{
 		bookBinding = value;
-    }
-	
-    public IBinding getBookBinding()
-    {
+	}
+
+	public IBinding getBookBinding()
+	{
 		return bookBinding;
-    }
-	
-    /**
+	}
+
+	/**
 	 *  Gets the book to create a link for.  This is cached for the duration of the componen's
 	 * {@link #render(IResponseWriter, IRequestCycle)} method.
 	 *
 	 */
-	
-    public Book getBook()
-    {
+
+	public Book getBook()
+	{
 		if (book == null)
-			book = (Book)bookBinding.getObject("book", Book.class);
-		
+			book = (Book) bookBinding.getObject("book", Book.class);
+
 		if (book == null)
 			throw new NullValueForBindingException(bookBinding);
-		
+
 		return book;
-    }
-	
-    /**
+	}
+
+	/**
 	 *  Overriden to simply clear the book property after the component finishes rendering.
 	 *
 	 */
-	
-    public void render(IResponseWriter writer, IRequestCycle cycle)
+
+	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
-    {
+	
+	{
 		try
 		{
 			super.render(writer, cycle);
@@ -110,51 +109,51 @@ public class Borrow
 		{
 			book = null;
 		}
-    }
-	
-    public boolean isLinkEnabled()
-    {
-		Visit visit = (Visit)page.getVisit();
-		
+	}
+
+	public boolean isLinkEnabled()
+	{
+		Visit visit = (Visit) page.getVisit();
+
 		if (!visit.isUserLoggedIn())
 			return false;
-		
+
 		// If the user is logged in, they can borrow it if they are
 		// not already holding it and aren't the owner.
-		
+
 		Book book = getBook();
-		
+
 		// If the book is not lendable, then disable the link.
-		
+
 		if (!book.isLendable())
 			return false;
-		
+
 		// Otherwise, can only borrow it if not already holding it.
-		
-		return ! visit.isLoggedInUser(book.getHolderPrimaryKey());
-    }
-	
+
+		return !visit.isLoggedInUser(book.getHolderPrimaryKey());
+	}
+
 	public void borrow(String[] context, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		Integer bookPK;
-		
+
 		// The primary key of the book to borrow is encoded in the context.
 		bookPK = new Integer(context[0]);
-		
-		Visit visit = (Visit)page.getVisit();
-		Home home = (Home)cycle.getPage("Home");
+
+		Visit visit = (Visit) page.getVisit();
+		Home home = (Home) cycle.getPage("Home");
 		VirtualLibraryEngine vengine = visit.getEngine();
-		
+
 		for (int i = 0; i < 2; i++)
 		{
 			try
 			{
-				IOperations bean = vengine.getOperations();				
+				IOperations bean = vengine.getOperations();
 				Book book = bean.borrowBook(bookPK, visit.getUserPK());
-				
+
 				home.setMessage("Borrowed: " + book.getTitle());
-				
+
 				break;
 			}
 			catch (BorrowException ex)
@@ -164,16 +163,15 @@ public class Borrow
 			}
 			catch (FinderException ex)
 			{
-				throw new ApplicationRuntimeException(
-					"Unable to find book or user. ", ex);
+				throw new ApplicationRuntimeException("Unable to find book or user. ", ex);
 			}
 			catch (RemoteException ex)
 			{
 				vengine.rmiFailure("Remote exception borrowing book.", ex, i > 0);
 			}
 		}
-		
-		cycle.setPage(home);				
+
+		cycle.setPage(home);
 	}
-	
+
 }

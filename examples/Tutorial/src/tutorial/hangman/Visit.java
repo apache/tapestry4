@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix Solutions
- * One Arsenal Marketplace
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -38,68 +36,66 @@ import java.util.*;
  *  @version $Id$
  *  @author Howard Ship
  *
- */ 
+ */
 
-public class Visit
-implements Serializable
+public class Visit implements Serializable
 {
-    private static final String[] words =
-    {
-        "tapestry",
-        "servlet",
-        "microsoft",
-        "tango",
-        "gorilla",
-        "internet",
-        "application",
-        "developer",
-        "tutorial",
-        "hangman",
-        "dogfight",
-        "greyhound",
-        "massacre",
-        "universe"
-    };
+	private static final String[] words =
+		{
+			"tapestry",
+			"servlet",
+			"microsoft",
+			"tango",
+			"gorilla",
+			"internet",
+			"application",
+			"developer",
+			"tutorial",
+			"hangman",
+			"dogfight",
+			"greyhound",
+			"massacre",
+			"universe" };
 
-    private List wordList;
+	private List wordList;
 
-    private HangmanGame game;
+	private HangmanGame game;
 
-    public HangmanGame getGame()
-    {
-        if (game == null)
-            game = new HangmanGame();
+	public HangmanGame getGame()
+	{
+		if (game == null)
+			game = new HangmanGame();
 
-        return game;
-    }
+		return game;
+	}
 
-    /**
-     *  Starts a new game with a randomly selected word.
-     *
-     */
+	/**
+	 *  Starts a new game with a randomly selected word.
+	 *
+	 */
 
-    public void start(int maxMisses)
-    {
-        getGame().start(getWord(), maxMisses);
-    }
+	public void start(int maxMisses)
+	{
+		getGame().start(getWord(), maxMisses);
+	}
 
-    private String getWord()
-    {
-        if (wordList == null)
-            wordList = new ArrayList();
+	private String getWord()
+	{
+		if (wordList == null)
+			wordList = new ArrayList();
 
-        if (wordList.size() == 0)
-        {
-            // Create a list of words that the user will see and shuffle them
-            // in random order.  This prevents repeats of words until the
-            // user has seen them all.
+		if (wordList.size() == 0)
+		{
+			// Create a list of words that the user will see and shuffle them
+			// in random order.  This prevents repeats of words until the
+			// user has seen them all.
 
-            wordList.addAll(Arrays.asList(words));
-            Collections.shuffle(wordList);
-        }
+			wordList.addAll(Arrays.asList(words));
+			Collections.shuffle(wordList);
+		}
 
-        // Remove the last word in the list.
+		// Remove the last word in the list.
 
-        return (String)wordList.remove(wordList.size() - 1);
-    }
+		return (String) wordList.remove(wordList.size() - 1);
+	}
 }

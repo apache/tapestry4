@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -86,9 +84,9 @@ import org.apache.log4j.*;
 
 public class AssetExternalizer
 {
-	private static final Category CAT = 
+	private static final Category CAT =
 		Category.getInstance(AssetExternalizer.class);
-	
+
 	private IResourceResolver resolver;
 	private File assetDir;
 	private String URL;
@@ -103,14 +101,15 @@ public class AssetExternalizer
 	private Map resources;
 
 	private static final int BUFFER_SIZE = 2048;
-	
+
 	protected AssetExternalizer(IRequestCycle cycle)
+	
 	{
 		resolver = cycle.getEngine().getResourceResolver();
-		
+
 		HttpServlet servlet = cycle.getRequestContext().getServlet();
 
-        ServletContext context = servlet.getServletContext();
+		ServletContext context = servlet.getServletContext();
 
 		String directory = context.getInitParameter("com.primix.tapestry.asset.dir");
 
@@ -123,12 +122,11 @@ public class AssetExternalizer
 			return;
 
 		assetDir = new File(directory);
-		
+
 		CAT.debug("Initialized with directory " + assetDir + " mapped to " + URL);
 	}
 
-	protected void externalize(String resourcePath)
-	throws IOException
+	protected void externalize(String resourcePath) throws IOException
 	{
 		String[] path;
 		int i;
@@ -142,7 +140,7 @@ public class AssetExternalizer
 
 		if (CAT.isDebugEnabled())
 			CAT.debug("Externalizing " + resourcePath);
-			
+
 		file = assetDir;
 
 		// Resources are always split by the unix seperator, even on Win32.
@@ -226,7 +224,7 @@ public class AssetExternalizer
 
 		attributeName = "com.primix.tapestry.AssetExternalizer." + applicationName;
 
-		result = (AssetExternalizer)context.getAttribute(attributeName);
+		result = (AssetExternalizer) context.getAttribute(attributeName);
 
 		if (result == null)
 		{
@@ -259,8 +257,7 @@ public class AssetExternalizer
 	*
 	*/
 
-	public String getURL(String resourcePath)
-	throws ResourceUnavailableException
+	public String getURL(String resourcePath) throws ResourceUnavailableException
 	{
 		String result;
 
@@ -269,16 +266,16 @@ public class AssetExternalizer
 
 		if (resources == null)
 		{
-			synchronized(this)
+			synchronized (this)
 			{
 				if (resources == null)
 					resources = new HashMap(MAP_SIZE);
 			}
-		}	
+		}
 
 		synchronized (resources)
 		{
-			result = (String)resources.get(resourcePath);
+			result = (String) resources.get(resourcePath);
 
 			if (result != null)
 				return result;
@@ -290,8 +287,8 @@ public class AssetExternalizer
 			catch (IOException e)
 			{
 				throw new ResourceUnavailableException(
-					"Could not externalize asset " + resourcePath + " to " +
-					assetDir + ".", e);
+					"Could not externalize asset " + resourcePath + " to " + assetDir + ".",
+					e);
 			}
 
 			result = URL + resourcePath;
@@ -302,4 +299,3 @@ public class AssetExternalizer
 		}
 	}
 }
-

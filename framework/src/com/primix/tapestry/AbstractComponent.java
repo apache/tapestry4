@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -36,7 +34,6 @@ import com.primix.tapestry.listener.*;
 import com.primix.tapestry.bean.*;
 import java.util.*;
 
-
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
  *
@@ -46,99 +43,99 @@ import java.util.*;
 
 public abstract class AbstractComponent implements IComponent
 {
-	static
-	{
+	static {
 		// Register the BeanProviderHelper to provide access to the
 		// beans of a bean provider as named properties.
-		
+
 		PropertyHelper.register(IBeanProvider.class, BeanProviderHelper.class);
 	}
-	
+
 	/**
 	 *  The specification used to originally build the component.
 	 *
 	 */
-	
+
 	protected ComponentSpecification specification;
-	
+
 	/**
 	 *  The page that contains the component, possibly itself (if the component is
 	 *  in fact, a page).
 	 *
 	 */
-	
+
 	protected IPage page;
-	
+
 	/**
 	 *  The component which contains the component.  This will only be
 	 *  null if the component is actually a page.
 	 *
 	 */
-	
+
 	private IComponent container;
-	
+
 	/**
 	 *  The simple id of this component.
 	 *
 	 */
-	
+
 	protected String id;
-	
+
 	/**
 	 *  The fully qualified id of this component.  This is calculated the first time
 	 *  it is needed, then cached for later.
 	 *
 	 */
-	
+
 	private String idPath;
-	
+
 	private static final int MAP_SIZE = 5;
-	
+
 	/**
 	 *  A {@link Map} of all bindings (for which there isn't a corresponding
 	 *  JavaBeans property); the keys are the names of formal and informal
 	 *  parameters.
 	 *
 	 */
-	
+
 	private Map bindings;
-	
+
 	private Map components;
 	private Map safeComponents;
-	
+
 	private static final int WRAPPED_INIT_SIZE = 5;
-	
+
 	/**
 	 *  Used in place of JDK 1.3's Collections.EMPTY_MAP (which is not
 	 *  available in JDK 1.2).
 	 *
 	 */
-	
-	private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap(1));
-	
+
+	private static final Map EMPTY_MAP =
+		Collections.unmodifiableMap(new HashMap(1));
+
 	/**
 	 *  The number of {@link IRender} objects wrapped by
 	 *  this component.
 	 *
 	 */
-	
+
 	protected int wrappedCount = 0;
-	
+
 	/**
 	 *  An aray of elements wrapped by this component.
 	 *
 	 */
-	
+
 	protected IRender[] wrapped;
-	
+
 	/**
 	 *  The components' asset map.
 	 *
 	 */
-	
+
 	private Map assets;
 	private Map safeAssets;
-	
+
 	/**
 	 *  A mapping that allows public instance methods to be dressed up
 	 *  as {@link IActionListener} or {@link IDirectListener} listener
@@ -146,71 +143,72 @@ public abstract class AbstractComponent implements IComponent
 	 *
 	 *  @since 1.0.2
 	 */
-	
+
 	private ListenerMap listeners;
-	
+
 	/**
 	 * A bean provider; these are lazily created as needed.
 	 *
 	 * @since 1.0.4
 	 */
-	
+
 	private IBeanProvider beans;
+
+	public void addAsset(String name, IAsset asset)
 	
-    public void addAsset(String name, IAsset asset)
-    {
+	{
 		if (assets == null)
 			assets = new HashMap(MAP_SIZE);
-		
+
 		assets.put(name, asset);
-    }
-	
+	}
+
 	public void addComponent(IComponent component)
 	{
 		if (components == null)
 			components = new HashMap(MAP_SIZE);
-		
+
 		components.put(component.getId(), component);
 	}
-	
-    /**
+
+	/**
 	 *  Adds an element (which may be static text or a component) as a wrapped
 	 *  element of this component.  Such elements are rendered
 	 *  by {@link #renderWrapped(IResponseWriter, IRequestCycle)}.
 	 *
 	 */
-	
+
 	public void addWrapped(IRender element)
 	{
 		// Should check the specification to see if this component
 		// allows body.  Curently, this is checked by the component
 		// in render(), which is silly.
-		
+
 		if (wrapped == null)
 		{
 			wrapped = new IRender[WRAPPED_INIT_SIZE];
 			wrapped[0] = element;
-			
+
 			wrappedCount = 1;
 			return;
 		}
-		
+
 		// No more room?  Make the array bigger.
-		
+
 		if (wrappedCount == wrapped.length)
 		{
 			IRender[] newWrapped;
-			
+
 			newWrapped = new IRender[wrapped.length * 2];
-			
+
 			System.arraycopy(wrapped, 0, newWrapped, 0, wrappedCount);
-			
+
 			wrapped = newWrapped;
 		}
-		
+
 		wrapped[wrappedCount++] = element;
 	}
-	
+
 	/**
 	 *  Invokes {@link #finishLoad()}.  Subclasses may overide as needed, but
 	 *  must invoke this implementation (or {@link #finishLoad()}.
@@ -218,148 +216,150 @@ public abstract class AbstractComponent implements IComponent
 	 * loads its HTML template. 
 	 *
 	 */
-	
-	public void finishLoad(IPageLoader loader, ComponentSpecification specification)
+
+	public void finishLoad(
+		IPageLoader loader,
+		ComponentSpecification specification)
 		throws PageLoaderException
 	{
 		finishLoad();
 	}
-	
+
 	protected void fireObservedChange(String propertyName, int newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	protected void fireObservedChange(String propertyName, Object newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	protected void fireObservedChange(String propertyName, boolean newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	protected void fireObservedChange(String propertyName, double newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	protected void fireObservedChange(String propertyName, float newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	protected void fireObservedChange(String propertyName, long newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	protected void fireObservedChange(String propertyName, char newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	protected void fireObservedChange(String propertyName, byte newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	protected void fireObservedChange(String propertyName, short newValue)
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this, propertyName, newValue);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	/**
 	 *  Fires a change event for no single property; the receiver should
 	 *  note that the page containing the component is 'dirty' even if
@@ -369,22 +369,22 @@ public abstract class AbstractComponent implements IComponent
 	 *  is not.
 	 *
 	 */
-	
+
 	protected void fireObservedChange()
 	{
 		ChangeObserver observer;
 		ObservedChangeEvent event;
-		
+
 		observer = getChangeObserver();
-		
+
 		if (observer == null)
 			return;
-		
+
 		event = new ObservedChangeEvent(this);
-		
+
 		observer.observeChange(event);
 	}
-	
+
 	/**
 	 *  Converts informal parameters into additional attributes on the
 	 *  curently open tag.
@@ -418,52 +418,50 @@ public abstract class AbstractComponent implements IComponent
 	 *  <p>Components are only required to generate attributes on the
 	 *  result phase; this can be skipped during the rewind phase.
 	 */
-	
+
 	protected void generateAttributes(IResponseWriter writer, IRequestCycle cycle)
 	{
 		String attribute;
-		
+
 		if (bindings == null)
 			return;
-		
+
 		Iterator i = bindings.entrySet().iterator();
-		
+
 		while (i.hasNext())
 		{
-			Map.Entry entry = (Map.Entry)i.next();
-			String name = (String)entry.getKey();
-			
+			Map.Entry entry = (Map.Entry) i.next();
+			String name = (String) entry.getKey();
+
 			// Skip over formal parameters stored in the bindings
 			// Map.  We're just interested in informal parameters.
-			
+
 			if (specification.getParameter(name) != null)
 				continue;
-			
-			IBinding binding = (IBinding)entry.getValue();
-			
+
+			IBinding binding = (IBinding) entry.getValue();
+
 			Object value = binding.getObject();
 			if (value == null)
 				continue;
-			
+
 			if (value instanceof IAsset)
 			{
-				IAsset asset = (IAsset)value;
-				
+				IAsset asset = (IAsset) value;
+
 				// Get the URL of the asset and insert that.
-				
+
 				attribute = asset.buildURL(cycle);
 			}
 			else
 				attribute = value.toString();
-			
+
 			writer.attribute(name, attribute);
-			
+
 		}
-		
+
 	}
-	
-	
-	
+
 	/**
 	 *  Returns the named binding, or null if it doesn't exist.
 	 *
@@ -478,28 +476,26 @@ public abstract class AbstractComponent implements IComponent
 	 *  @see #setBinding(String,IBinding)
 	 *
 	 */
-	
+
 	public IBinding getBinding(String name)
 	{
 		PropertyHelper helper;
 		IPropertyAccessor accessor;
-		
+
 		helper = PropertyHelper.forClass(getClass());
 		accessor = helper.getAccessor(this, name + "Binding");
-		
-		if (accessor != null &&
-				accessor.isReadWrite() &&
-				accessor.getType().equals(IBinding.class))
-		{
-			return (IBinding)accessor.get(this);
-		}
-		
+
+		if (accessor != null
+			&& accessor.isReadWrite()
+			&& accessor.getType().equals(IBinding.class))
+			return (IBinding) accessor.get(this);
+
 		if (bindings == null)
 			return null;
-		
-		return (IBinding)bindings.get(name);
+
+		return (IBinding) bindings.get(name);
 	}
-	
+
 	/**
 	 *  Return's the page's change observer.  In practical terms, this
 	 *  will be an {@link IPageRecorder}.
@@ -507,38 +503,39 @@ public abstract class AbstractComponent implements IComponent
 	 *  @see IPage#getChangeObserver()
 	 *
 	 */
-	
+
 	public ChangeObserver getChangeObserver()
+	
 	{
 		return page.getChangeObserver();
 	}
-	
+
 	public IComponent getComponent(String id)
 	{
 		IComponent result = null;
-		
+
 		if (components != null)
-			result = (IComponent)components.get(id);
-		
+			result = (IComponent) components.get(id);
+
 		if (result == null)
 			throw new NoSuchComponentException(id, this);
-		
+
 		return result;
 	}
-	
+
 	public IComponent getContainer()
 	{
 		return container;
 	}
-	
-    public void setContainer(IComponent value)
-    {
+
+	public void setContainer(IComponent value)
+	{
 		if (container != null)
 			throw new ApplicationRuntimeException("Attempt to change existing container.");
-		
+
 		container = value;
-    }
-	
+	}
+
 	/**
 	 *  Returns the name of the page, a slash, and this component's id path.
 	 *  Pages are different, they simply return their name.
@@ -546,80 +543,80 @@ public abstract class AbstractComponent implements IComponent
 	 *  @see #getIdPath()
 	 *
 	 */
-	
+
 	public String getExtendedId()
 	{
 		return page.getName() + "/" + getIdPath();
 	}
-	
+
 	public String getId()
 	{
 		return id;
 	}
-	
-    public void setId(String value)
-    {
+
+	public void setId(String value)
+	{
 		if (id != null)
 			throw new ApplicationRuntimeException("Attempt to change existing component id.");
-		
+
 		id = value;
-    }
-	
+	}
+
 	public String getIdPath()
 	{
 		String containerIdPath;
-		
+
 		if (container == null)
-			throw new NullPointerException(this + " container is null.");
-		
+			throw new NullPointerException(this +" container is null.");
+
 		containerIdPath = container.getIdPath();
-		
+
 		if (containerIdPath == null)
 			idPath = id;
 		else
 			idPath = containerIdPath + "." + id;
-		
+
 		return idPath;
 	}
-	
+
 	public IPage getPage()
 	{
 		return page;
 	}
-	
-    public void setPage(IPage value)
-    {
+
+	public void setPage(IPage value)
+	{
 		if (page != null)
 			throw new ApplicationRuntimeException("Attempt to change existing containing page.");
-		
+
 		page = value;
-    }
-	
+	}
+
 	public ComponentSpecification getSpecification()
 	{
 		return specification;
 	}
-	
-    public void setSpecification(ComponentSpecification value)
-    {
+
+	public void setSpecification(ComponentSpecification value)
+	{
 		if (specification != null)
 			throw new ApplicationRuntimeException("Attempt to change existing component specification.");
-		
+
 		specification = value;
-    }
-	
+	}
+
 	/**
 	 *  Renders all elements wrapped by the receiver.
 	 *
 	 */
-	
+
 	public void renderWrapped(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		for (int i = 0; i < wrappedCount; i++)
 			wrapped[i].render(writer, cycle);
 	}
-	
+
 	/**
 	 *  Adds the binding with the given name, replacing any existing binding
 	 *  with that name.
@@ -637,110 +634,110 @@ public abstract class AbstractComponent implements IComponent
 	 *  #generateAttribute(IResponseWriter, String[]) is to be used.
 	 *  It relies on using the collection of bindings (to store informal parameters).
 	 */
-	
+
 	public void setBinding(String name, IBinding binding)
 	{
 		PropertyHelper helper;
 		IPropertyAccessor accessor;
-		
+
 		helper = PropertyHelper.forClass(getClass());
 		accessor = helper.getAccessor(this, name + "Binding");
+
+		if (accessor != null && accessor.getType().equals(IBinding.class))
 		
-		if (accessor != null &&
-				accessor.getType().equals(IBinding.class))
-		{
+			{
 			accessor.set(this, binding);
 			return;
 		}
-		
+
 		if (bindings == null)
 			bindings = new HashMap(MAP_SIZE);
-		
+
 		bindings.put(name, binding);
 	}
-	
+
 	public String toString()
 	{
 		StringBuffer buffer;
-		
+
 		buffer = new StringBuffer(super.toString());
-		
+
 		buffer.append('[');
-		
+
 		buffer.append(getExtendedId());
-		
+
 		buffer.append(']');
-		
+
 		return buffer.toString();
 	}
-	
+
 	/**
 	 *  Returns an unmodifiable {@link Map} of components, keyed on component id.
 	 *
 	 */
-	
+
 	public Map getComponents()
 	{
 		if (components == null)
 			return EMPTY_MAP;
-		
+
 		if (safeComponents == null)
 			safeComponents = Collections.unmodifiableMap(components);
-		
+
 		return safeComponents;
 	}
-	
+
 	public Map getAssets()
 	{
 		if (assets == null)
 			return EMPTY_MAP;
-		
+
 		if (safeAssets == null)
 			safeAssets = Collections.unmodifiableMap(assets);
-		
+
 		return safeAssets;
 	}
-	
+
 	public IAsset getAsset(String name)
 	{
 		if (assets == null)
 			return null;
-		
-		return (IAsset)assets.get(name);
+
+		return (IAsset) assets.get(name);
 	}
-	
+
 	public Collection getBindingNames()
 	{
 		// If no conainer, i.e. a page, then no bindings.
-		
+
 		if (container == null)
 			return null;
-		
+
 		ContainedComponent contained = container.getSpecification().getComponent(id);
-		
+
 		// If no informal parameters, then it's safe to return
 		// just the names of the formal parameters.
-		
+
 		if (bindings == null || bindings.size() == 0)
 			return contained.getBindingNames();
-		
+
 		// The new HTML parser means that sometimes, the informal attributes
 		// come from the HTML template and aren't known in the contained component
 		// specification.  The only thing to do is to build up a set of
 		// informal bindings.  A degenerate case:  an informal binding that has
 		// setXXXBinding and getXXXBinding methods --- that makes the
 		// informal parameter invisible to this method (and thus, to the Inspector).
-		
+
 		HashSet result = new HashSet(contained.getBindingNames());
-		
+
 		// All the informal bindings go into the bindings Map.   Also
 		// formal parameters where there isn't a corresponding JavaBeans property.
-		
+
 		result.addAll(bindings.keySet());
-		
+
 		return result;
 	}
-	
+
 	/** 
 	 *
 	 *  Returns a {@link Map} of all bindings for this component.  This implementation
@@ -751,36 +748,36 @@ public abstract class AbstractComponent implements IComponent
 	 * @since 1.0.5
 	 *
 	 **/
-	
+
 	public Map getBindings()
 	{
 		Map result = new HashMap();
-		
+
 		// Add any informal parameters, as well as any formal parameters
 		// that don't have a correspoinding JavaBeans property.
-		
+
 		if (bindings != null)
 			result.putAll(bindings);
-		
+
 		// Now work on the formal parameters
-		
+
 		Iterator i = specification.getParameterNames().iterator();
 		while (i.hasNext())
 		{
-			String name = (String)i.next();
-			
+			String name = (String) i.next();
+
 			if (result.containsKey(name))
 				continue;
-			
+
 			IBinding binding = getBinding(name);
-			
+
 			if (binding != null)
 				result.put(name, binding);
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 *  Returns a {@link ListenerMap} for the component.  A {@link ListenerMap} contains a number of
 	 *  synthetic read-only properties that implement the {@link IActionListener} and/or {@link IDirectListener}
@@ -788,15 +785,15 @@ public abstract class AbstractComponent implements IComponent
 	 *
 	 *  @since 1.0.2
 	 */
-	
+
 	public ListenerMap getListeners()
 	{
 		if (listeners == null)
 			listeners = new ListenerMap(this);
-		
+
 		return listeners;
 	}
-	
+
 	/**
 	 *  Returns the {@link IBeanProvider} for this component.  This is lazily created the
 	 *  first time it is needed.
@@ -804,15 +801,15 @@ public abstract class AbstractComponent implements IComponent
 	 *  @since 1.0.4
 	 *
 	 */
-	
+
 	public IBeanProvider getBeans()
 	{
 		if (beans == null)
 			beans = new BeanProvider(this);
-		
+
 		return beans;
 	}
-	
+
 	/**
 	 *  Invoked from {@link #finishLoad(IPageLoader, ComponentSpecification)}
 	 *  so that components can easily perform simple operations, such as
@@ -828,7 +825,7 @@ public abstract class AbstractComponent implements IComponent
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	protected void finishLoad()
 	{
 		if (this instanceof ILifecycle)
@@ -838,20 +835,20 @@ public abstract class AbstractComponent implements IComponent
 			page.addPageCleanupListener(new CleanupListener());
 		}
 	}
-	
+
 	private class RenderListener implements PageRenderListener
 	{
 		public void pageBeginRender(PageEvent event)
 		{
 			prepareForRender(event.getRequestCycle());
 		}
-		
+
 		public void pageEndRender(PageEvent event)
 		{
 			cleanupAfterRender(event.getRequestCycle());
 		}
 	}
-	
+
 	private class DetachListener implements PageDetachListener
 	{
 		public void pageDetached(PageEvent event)
@@ -859,7 +856,7 @@ public abstract class AbstractComponent implements IComponent
 			reset();
 		}
 	}
-	
+
 	private class CleanupListener implements PageCleanupListener
 	{
 		public void pageCleanup(PageEvent event)
@@ -867,7 +864,7 @@ public abstract class AbstractComponent implements IComponent
 			cleanupComponent();
 		}
 	}
-	
+
 	/**
 	 *  Does nothing.  To be removed in release 1.1.
 	 *
@@ -875,12 +872,11 @@ public abstract class AbstractComponent implements IComponent
 	 *  @see ILifecycle
 	 *
 	 */
-	
+
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 	}
-	
-	
+
 	/**
 	 *  Does nothing.  To be removed in release 1.1.
 	 *
@@ -888,12 +884,11 @@ public abstract class AbstractComponent implements IComponent
 	 *  @see ILifecycle
 	 *
 	 */
-	
+
 	public void prepareForRender(IRequestCycle cycle)
 	{
 	}
-	
-		
+
 	/**
 	 *  Does nothing.  To be removed in release 1.1.
 	 *
@@ -901,13 +896,11 @@ public abstract class AbstractComponent implements IComponent
 	 *  @see ILifecycle
 	 *
 	 */
-	
-	
+
 	public void reset()
 	{
 	}
-	
-		
+
 	/**
 	 *  Does nothing.  To be removed in release 1.1.
 	 *
@@ -915,10 +908,9 @@ public abstract class AbstractComponent implements IComponent
 	 *  @see ILifecycle
 	 *
 	 */
-	
-	
+
 	public void cleanupComponent()
 	{
 	}
-	
+
 }
