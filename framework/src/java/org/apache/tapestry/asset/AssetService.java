@@ -26,11 +26,11 @@ import javax.servlet.ServletException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Defense;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.AbstractService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.link.StaticLink;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.RequestExceptionReporter;
 
@@ -51,6 +51,9 @@ import org.apache.tapestry.services.RequestExceptionReporter;
 
 public class AssetService extends AbstractService
 {
+    /** @since 3.1 */
+    private AssetExternalizer _assetExternalizer;
+
     /**
      * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
      * types. ServletExec Debugger, for example, fails to do provide these.
@@ -86,10 +89,17 @@ public class AssetService extends AbstractService
     {
         Defense.isAssignable(parameter, String.class, "parameter");
 
+        String path = (String) parameter;
+
+        String externalURL = _assetExternalizer.getURL(path);
+
+        if (externalURL != null)
+            return new StaticLink(externalURL);
+
         // Service is stateless
 
         return constructLink(cycle, Tapestry.ASSET_SERVICE, null, new Object[]
-        { parameter }, false);
+        { path }, false);
     }
 
     public String getName()
@@ -99,14 +109,10 @@ public class AssetService extends AbstractService
 
     private static String getMimeType(String path)
     {
-        String key;
-        String result;
-        int dotx;
+        int dotx = path.lastIndexOf('.');
+        String key = path.substring(dotx + 1).toLowerCase();
 
-        dotx = path.lastIndexOf('.');
-        key = path.substring(dotx + 1).toLowerCase();
-
-        result = (String) _mimeTypes.get(key);
+        String result = (String) _mimeTypes.get(key);
 
         if (result == null)
             result = "text/plain";
@@ -203,5 +209,11 @@ public class AssetService extends AbstractService
     public void setExceptionReporter(RequestExceptionReporter exceptionReporter)
     {
         _exceptionReporter = exceptionReporter;
+    }
+
+    /** @since 3.1 */
+    public void setAssetExternalizer(AssetExternalizer assetExternalizer)
+    {
+        _assetExternalizer = assetExternalizer;
     }
 }

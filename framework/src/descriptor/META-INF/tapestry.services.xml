@@ -78,6 +78,7 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.asset.AssetService">
         <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
+        <set-service property="assetExternalizer" service-id="AssetExternalizer"/>
       </construct>
     </invoke-factory>
   </service-point>  
@@ -155,6 +156,19 @@
       <construct class="org.apache.tapestry.services.impl.ServiceMapImpl">
         <set-configuration property="factoryServices" configuration-id="FactoryServices"/>
         <set-configuration property="applicationServices" configuration-id="ApplicationServices"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="AssetExternalizer" interface="org.apache.tapestry.asset.AssetExternalizer">
+    
+    Used by the AssetService to copy private assets out onto the file system within
+    a web folder, so that static URLs to the assets may be generated.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.asset.AssetExternalizerImpl">
+        <set-object property="propertySource" value="infrastructure:applicationPropertySource"/>
       </construct>
     </invoke-factory>
     
