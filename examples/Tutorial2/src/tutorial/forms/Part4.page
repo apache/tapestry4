@@ -31,10 +31,9 @@
 		<binding name="value" expression="visit.dateOfBirth"/>
 	</component>
 
-	<component id="favColour" type="ValidField">
+	<component id="favColour" type="PropertySelection">
 		<binding name="value" expression="visit.favoriteColour"/>
-        <binding name="validator" expression='beans.stringValidator'/>
-        <static-binding name="displayName">Favorite colour</static-binding>
+		<binding name="model" expression="@tutorial.forms.Part4@getColourModel()"/>
 	</component>
 	
 	<component id="errors" type="Delegator">
