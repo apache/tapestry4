@@ -1,15 +1,12 @@
 package net.sf.tapestry.junit.parse;
 
-import junit.framework.AssertionFailedError;
-
 import net.sf.tapestry.junit.TapestryTestCase;
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
-import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
@@ -30,23 +27,6 @@ public class SpecificationParserTest extends TapestryTestCase
     public SpecificationParserTest(String name)
     {
         super(name);
-    }
-
-    /** 
-     * 
-     *  Asserts that the exception message contains the
-     *  indicated substring.
-     * 
-     *  @since 2.2 
-     * 
-     **/
-
-    private void checkException(DocumentParseException ex, String string)
-    {
-        if (ex.getMessage().indexOf(string) >= 0)
-            return;
-
-        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
     }
 
     /**
@@ -94,7 +74,7 @@ public class SpecificationParserTest extends TapestryTestCase
         {
             parseComponent("InvalidParameterName.jwc");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -116,7 +96,7 @@ public class SpecificationParserTest extends TapestryTestCase
         {
             parseComponent("InvalidComponentId.jwc");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -138,7 +118,7 @@ public class SpecificationParserTest extends TapestryTestCase
         {
             parseLib("InvalidLibraryId.library");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -180,7 +160,7 @@ public class SpecificationParserTest extends TapestryTestCase
         {
             parseComponent("InvalidAssetName.jwc");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -202,8 +182,7 @@ public class SpecificationParserTest extends TapestryTestCase
         {
             parseApp("InvalidPageName.application");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
-
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -225,7 +204,7 @@ public class SpecificationParserTest extends TapestryTestCase
         {
             parseApp("InvalidServiceName.application");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -247,7 +226,7 @@ public class SpecificationParserTest extends TapestryTestCase
         {
             parseApp("InvalidComponentAlias.application");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -269,7 +248,7 @@ public class SpecificationParserTest extends TapestryTestCase
         {
             parseApp("InvalidExtensionName.application");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -278,4 +257,134 @@ public class SpecificationParserTest extends TapestryTestCase
         }
     }
 
+    /** 
+     *  Test case where the document does not have a DOCTYPE
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void testMissingDoctype() throws Exception
+    {
+        try
+        {
+            parseApp("MissingDoctype.application");
+
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "Valid documents must have a <!DOCTYPE");
+        }
+    }
+
+    /**
+     *  Test case where the public id of the document is not known.
+     * 
+     **/
+
+    public void testInvalidPublicId() throws Exception
+    {
+        try
+        {
+            parseApp("InvalidPublicId.application");
+
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "has an unexpected public id");
+        }
+    }
+
+    /**
+     *  Test an an application specification can omit
+     *  the name and engine-class attributes.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testNulledApplication() throws Exception
+    {
+        IApplicationSpecification spec = parseApp("NulledApplication.application");
+
+        assertNull(spec.getEngineClassName());
+        assertNull(spec.getName());
+    }
+
+    /**
+     *  Test new DTD 1.4 syntax for declaring components.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testComponentType() throws Exception
+    {
+        IApplicationSpecification spec = parseApp("ComponentType.application");
+
+        assertEquals("/path/Fred.jwc", spec.getComponentSpecificationPath("Fred"));
+    }
+
+    /**
+     *  Test omitting the class name from a component specification
+     *  (new, in DTD 1.4).
+     * 
+     **/
+
+    public void testNulledComponent() throws Exception
+    {
+        ComponentSpecification spec = parseComponent("NulledComponent.jwc");
+
+        assertNull(spec.getComponentClassName());
+    }
+
+    /**
+     *  Test omitting the class name from a component specification
+     *  (new, in DTD 1.4).
+     * 
+     **/
+
+    public void testNulledPage() throws Exception
+    {
+        ComponentSpecification spec = parsePage("NulledPage.page");
+
+        assertNull(spec.getComponentClassName());
+    }
+
+    /**
+     *  Test the value attribute for the property element
+     *  (which is new in DTD 1.4).
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testPropertyValue() throws Exception
+    {
+        ComponentSpecification spec = parsePage("PropertyValue.page");
+
+        assertEquals("rubble", spec.getProperty("barney"));
+        assertEquals("flintstone", spec.getProperty("wilma"));
+    }
+
+    /**
+     *  Tests the new (in DTD 1.4) value attribute on static-binding
+     *  element.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testStaticBindingValue() throws Exception
+    {
+        ComponentSpecification spec = parsePage("StaticBindingValue.page");
+
+        ContainedComponent c = spec.getComponent("c");
+
+        assertEquals("flintstone", c.getBinding("fred").getValue());
+        assertEquals("rubble", c.getBinding("barney").getValue());
+        assertEquals("hudson", c.getBinding("rock").getValue());
+    }
 }

@@ -20,6 +20,7 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -179,7 +180,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
 
             // Wrapping in a buffered input stream seems to provide a slight
             // speed improvement.
-            
+
             inputStream = new BufferedInputStream(inputStream);
 
             InputSource source = new InputSource(inputStream);
@@ -188,6 +189,18 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
                 _builder = constructBuilder();
 
             Document document = _builder.parse(source);
+
+            // The document parsed and validated, so it must
+            // have a <!DOCTYPE>
+            
+            String publicId = document.getDoctype().getPublicId();
+
+            // Ensure its a known type.
+
+            if (!_entities.containsKey(publicId))
+                throw new DocumentParseException(
+                    Tapestry.getString("AbstractDocumentParser.unknown-public-id", resourceLocation, publicId),
+                    resourceLocation);
 
             error = false;
 

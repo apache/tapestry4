@@ -67,6 +67,15 @@ public class TapestryTestCase extends TestCase
         return parser.parseComponentSpecification(location);
     }
 
+    protected ComponentSpecification parsePage(String simpleName) throws Exception
+    {
+        SpecificationParser parser = new SpecificationParser();
+
+        IResourceLocation location = getSpecificationResourceLocation(simpleName);
+
+        return parser.parsePageSpecification(location);
+    }
+
     protected IApplicationSpecification parseApp(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser();

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+
+<application name="Tapestry Component Workbench" 
+	engine-class="net.sf.tapestry.engine.SimpleEngine">
+ 
+</application>

@@ -46,7 +46,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
  *	<tr>
  *	  <th>Version</th> <th>PUBLIC ID</th> <th>SYSTEM ID</th> <th>Description</th>
  *  </tr>
-
+ *
  * 
  *  <tr valign="top">
  *  <td>1.3</td>
@@ -54,6 +54,15 @@ import net.sf.tapestry.util.xml.DocumentParseException;
  * <td><code>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</code></td>
  *  <td>
  *  Version of specification introduced in release 2.2.
+ * </td>
+ * </tr>
+ *
+ *  <tr valign="top">
+ *  <td>1.4</td>
+ *  <td><code>-//Howard Lewis Ship//Tapestry Specification 1.3//EN</code></td>
+ * <td><code>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</code></td>
+ *  <td>
+ *  Version of specification introduced in release 2.4.
  * </td>
  * </tr>
  * 
@@ -70,6 +79,10 @@ public class SpecificationParser extends AbstractDocumentParser
     /** @since 2.2 **/
 
     public static final String TAPESTRY_DTD_1_3_PUBLIC_ID = "-//Howard Lewis Ship//Tapestry Specification 1.3//EN";
+
+    /** @since 2.2 **/
+
+    public static final String TAPESTRY_DTD_1_4_PUBLIC_ID = "-//Howard Lewis Ship//Tapestry Specification 1.4//EN";
 
     /**
      *  Like modified property name, but allows periods in the name as
@@ -321,6 +334,8 @@ public class SpecificationParser extends AbstractDocumentParser
     public SpecificationParser()
     {
         register(TAPESTRY_DTD_1_3_PUBLIC_ID, "Tapestry_1_3.dtd");
+        register(TAPESTRY_DTD_1_4_PUBLIC_ID, "Tapestry_1_4.dtd");
+
         _factory = new SpecFactory();
     }
 
@@ -439,23 +454,6 @@ public class SpecificationParser extends AbstractDocumentParser
         }
     }
 
-    private boolean getBooleanValue(Node node) throws DocumentParseException
-    {
-        String key = getValue(node).toLowerCase();
-
-        Boolean value = (Boolean) _conversionMap.get(key);
-
-        if (value == null)
-            throw new DocumentParseException(
-                Tapestry.getString(
-                    "SpecificationParser.unable-to-convert-node-to-boolean",
-                    key,
-                    getNodePath(node.getParentNode())),
-                getResourceLocation());
-
-        return value.booleanValue();
-    }
-
     private boolean getBooleanAttribute(Node node, String attributeName)
     {
         String attributeValue = getAttribute(node, attributeName);
@@ -517,9 +515,11 @@ public class SpecificationParser extends AbstractDocumentParser
                 continue;
             }
 
-            if (isElement(node, "component-alias"))
+            // component-type is in DTD 1.4, component-alias in DTD 1.3
+
+            if (isElement(node, "component-alias") || isElement(node, "component-type"))
             {
-                convertComponentAlias(specification, node);
+                convertComponentType(specification, node);
                 continue;
             }
 
@@ -588,7 +588,7 @@ public class SpecificationParser extends AbstractDocumentParser
         specification.setPageSpecificationPath(name, specificationPath);
     }
 
-    private void convertComponentAlias(ILibrarySpecification specification, Node node) throws DocumentParseException
+    private void convertComponentType(ILibrarySpecification specification, Node node) throws DocumentParseException
     {
         String type = getAttribute(node, "type");
 
@@ -602,7 +602,15 @@ public class SpecificationParser extends AbstractDocumentParser
     private void convertProperty(IPropertyHolder holder, Node node)
     {
         String name = getAttribute(node, "name");
-        String value = getValue(node);
+        
+        // Starting in DTD 1.4, the value may be specified
+        // as an attribute.  Only if that is null do we
+        // extract the node's value.
+        
+        String value = getAttribute(node, "value");
+        
+        if (value == null)
+            value = getValue(node);
 
         holder.setProperty(name, value);
     }
@@ -951,7 +959,15 @@ public class SpecificationParser extends AbstractDocumentParser
     private void convertStaticBinding(ContainedComponent component, Node node)
     {
         String name = getAttribute(node, "name");
-        String value = getValue(node);
+        
+        // Starting in DTD 1.4, the value may be specified as an attribute
+        // or as the PCDATA
+        
+        String value = getAttribute(node, "value");
+        
+        if (value == null)
+            value = getValue(node);
+            
         BindingSpecification binding = _factory.createBindingSpecification(BindingType.STATIC, value);
 
         component.setBinding(name, binding);

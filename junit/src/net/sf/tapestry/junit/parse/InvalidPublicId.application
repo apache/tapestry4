@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.1//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<application name="Tapestry Component Workbench" 
+	engine-class="net.sf.tapestry.engine.SimpleEngine">
+
+    
+</application>
