@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path=""/>
     <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
-    <classpathentry kind="output" path=""/>
+    <classpathentry kind="src" path="framework/src"/>
+    <classpathentry kind="src" path="contrib/src"/>
+    <classpathentry kind="src" path="junit/src"/>
+    <classpathentry kind="src" path="examples/Tutorial/src"/>
+    <classpathentry kind="src" path="config"/>
+    <classpathentry kind="lib" path="lib/ejb.jar"/>
+    <classpathentry kind="lib" path="lib/javax.servlet.jar"/>
+    <classpathentry kind="lib" path="lib/javax.xml.jaxp.jar"/>
+    <classpathentry kind="lib" path="lib/junit.jar"/>
+    <classpathentry kind="lib" path="lib/log4j-core.jar"/>
+    <classpathentry kind="lib" path="lib/org.apache.crimson.jar"/>
+    <classpathentry kind="lib" path="lib/org.mortbay.jetty.jar"/>
+    <classpathentry kind="output" path="bin"/>
 </classpath>
