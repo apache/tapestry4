@@ -1,3 +1,8 @@
+* Dec 26 2000 hship
+
+Create a re-usable threadsafe Pool component and use it, instead of ad-hoc code,
+to handle pooled Pages.
+
 * Dec 21 2000 hship
 
 Create a special case in PageRecorder for converting EJB references to handles for

@@ -2,6 +2,7 @@ package com.primix.tapestry.pageload;
 
 import javax.servlet.*;
 import com.primix.foundation.MultiKey;
+import com.primix.foundation.pool.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.*;
@@ -85,10 +86,12 @@ import com.primix.tapestry.asset.*;
 public class PageSource 
     implements IPageSource
 {
-	private static final int MAP_SIZE = 11;
     private Map fieldBindings;
     private Map staticBindings;
     private Map externalAssetBindings;
+    private IResourceResolver resolver;
+
+    private static final int MAP_SIZE = 23;
 
     /**
     *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
@@ -96,18 +99,16 @@ public class PageSource
     *
     */
 
-    private Map pool;
-
-
-    private boolean poolDisabled;
-
-    private IResourceResolver resolver;
+    private Pool pool;
 
     public PageSource(IResourceResolver resolver)
     {
         this.resolver = resolver;
 
-        poolDisabled = Boolean.getBoolean("com.primix.tapestry.disable-page-pool");
+        boolean poolDisabled = Boolean.getBoolean("com.primix.tapestry.disable-page-pool");
+
+        if (!poolDisabled)
+            pool = new Pool();
     }
 
     public IResourceResolver getResourceResolver()
@@ -122,7 +123,7 @@ public class PageSource
 
     public boolean isPoolDisabled()
     {
-        return poolDisabled;
+        return pool == null;
     }
 
 
@@ -173,7 +174,6 @@ public class PageSource
 	throws PageLoaderException
 	{
 		Object key;
-		PooledPage pooled = null;
 		PageLoader loader;
 		IPage result = null;
 		String resource;
@@ -182,38 +182,7 @@ public class PageSource
 		key = buildKey(application, pageName);
 
 		if (pool != null)
-		{
-			// Need to synchronize for TWO operations:  getting the current
-			// PooledPage, then updating the key back to the
-			// next int he PoolePage list.
-
-			synchronized(pool)
-			{
-
-				pooled = (PooledPage)pool.get(key);
-
-				if (pooled != null)
-				{
-					if (pooled.next == null)
-						pool.remove(key);
-					else
-						pool.put(key, pooled.next);
-				}
-			}
-
-			// Not synchronized
-
-			if (pooled != null)
-			{
-				result = pooled.page;
-
-				// Pooled pages are detached from their original application, and
-				// must join the new application.
-
-				result.joinApplication(application);
-			}
-
-		}
+            result = (IPage)pool.get(key);
 
 		if (result == null)
 		{
@@ -233,17 +202,16 @@ public class PageSource
 
 			result = loader.loadPage(pageName, specification.getSpecificationPath());
 
-            // Because of support for new style (no arguments) constructor, we must
-            // always join the application explicitly.
-
-            result.joinApplication(application);
-
             // Alas, the page loader is discarded, we should be pooling those as
             // well.
 
 			if (monitor != null)
 				monitor.pageCreateEnd(pageName);
 		}
+
+        // Whether its new or reused, it must join the active application.
+
+		result.joinApplication(application);
 
 		return result;
 	}
@@ -255,35 +223,13 @@ public class PageSource
 
 	public void releasePage(IPage page)
 	{
-		Object key;
-		PooledPage next;
-		PooledPage pooled;
-
-		key = buildKey(page);
-
 		page.detachFromApplication();
         
-        // When the pool is disabled, don't store the page in the pool.
-        // It will be garbage collected instead.
-
-        if (poolDisabled)
-            return;
-
-		if (pool == null)
-			pool = new HashMap(MAP_SIZE);
-
-		// Lock the pool for TWO operations:  getting the old head of the
-		// list (into next), then putting the new head of the list
-		// into the pool.
-
-		synchronized(pool)
-		{
-			next = (PooledPage)pool.get(key);
-
-			pooled = new PooledPage(page, next);
-
-			pool.put(key, pooled);
-		}
+        if (pool != null)
+        {
+            Object key = buildKey(page);
+            pool.add(key, page);
+        }
 
 	}
 
@@ -295,7 +241,9 @@ public class PageSource
 
 	public void reset()
 	{
-		pool = null;
+		if (pool != null)
+		    pool.clear();
+
         fieldBindings = null;
         staticBindings = null;
         externalAssetBindings = null;
