@@ -96,6 +96,11 @@ public abstract class Upload extends AbstractFormComponent
             return;
         }
 
+		// Force the form to use the correct encoding type for
+		// file uploads.
+		
+		form.setEncodingType("multipart/form-data");
+
         writer.beginEmpty("input");
         writer.attribute("type", "file");
         writer.attribute("name", _name);

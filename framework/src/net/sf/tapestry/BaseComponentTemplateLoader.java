@@ -112,6 +112,7 @@ public class BaseComponentTemplateLoader
     private static class LocalizedStringRender implements IRender
     {
         private IComponent _component;
+        private IComponentStrings _strings;
         private String _key;
         private Map _attributes;
         private boolean _raw;
@@ -145,7 +146,10 @@ public class BaseComponentTemplateLoader
                 }
             }
 
-            String value = _component.getStrings().getString(_key);
+            if (_strings == null)
+                _strings = _component.getStrings();
+
+            String value = _strings.getString(_key);
 
             if (_raw)
                 writer.printRaw(value);
@@ -171,9 +175,11 @@ public class BaseComponentTemplateLoader
     }
 
     public BaseComponentTemplateLoader(
-    IRequestCycle requestCycle,
-    IPageLoader pageLoader,
-    BaseComponent loadComponent, ComponentTemplate template, IPageSource pageSource)
+        IRequestCycle requestCycle,
+        IPageLoader pageLoader,
+        BaseComponent loadComponent,
+        ComponentTemplate template,
+        IPageSource pageSource)
     {
         _requestCycle = requestCycle;
         _pageLoader = pageLoader;
@@ -223,7 +229,9 @@ public class BaseComponentTemplateLoader
         // of date, too.
 
         if (_stackx != 0)
-            throw new PageLoaderException(Tapestry.getString("BaseComponent.unbalance-open-tags"), _loadComponent);
+            throw new PageLoaderException(
+                Tapestry.getString("BaseComponent.unbalance-open-tags"),
+                _loadComponent);
 
         checkAllComponentsReferenced();
     }
@@ -257,17 +265,20 @@ public class BaseComponentTemplateLoader
         String id = token.getId();
         IComponent component = null;
         String componentType = token.getComponentType();
-        
+
         if (componentType == null)
             component = getEmbeddedComponent(id);
         else
-            component = createImplicitComponent(id, componentType);            
+            component = createImplicitComponent(id, componentType);
 
         // Make sure the template contains each component only once.
 
         if (_seenIds.contains(id))
             throw new PageLoaderException(
-                Tapestry.getString("BaseComponent.multiple-component-references", _loadComponent.getExtendedId(), id),
+                Tapestry.getString(
+                    "BaseComponent.multiple-component-references",
+                    _loadComponent.getExtendedId(),
+                    id),
                 _loadComponent);
 
         _seenIds.add(id);
@@ -294,9 +305,13 @@ public class BaseComponentTemplateLoader
     }
 
     private IComponent createImplicitComponent(String id, String componentType)
-    throws PageLoaderException
+        throws PageLoaderException
     {
-        return _pageLoader.createImplicitComponent(_requestCycle, _loadComponent, id, componentType);
+        return _pageLoader.createImplicitComponent(
+            _requestCycle,
+            _loadComponent,
+            id,
+            componentType);
     }
 
     private IComponent getEmbeddedComponent(String id) throws PageLoaderException
@@ -304,12 +319,15 @@ public class BaseComponentTemplateLoader
         try
         {
             return _loadComponent.getComponent(id);
-        
+
         }
         catch (NoSuchComponentException ex)
         {
             throw new PageLoaderException(
-                Tapestry.getString("BaseComponent.undefined-embedded-component", _loadComponent.getExtendedId(), id),
+                Tapestry.getString(
+                    "BaseComponent.undefined-embedded-component",
+                    _loadComponent.getExtendedId(),
+                    id),
                 _loadComponent,
                 ex);
         }
@@ -321,7 +339,9 @@ public class BaseComponentTemplateLoader
         // the template parser does a great job.
 
         if (_stackx <= 0)
-            throw new PageLoaderException(Tapestry.getString("BaseComponent.unbalanced-close-tags"), _loadComponent);
+            throw new PageLoaderException(
+                Tapestry.getString("BaseComponent.unbalanced-close-tags"),
+                _loadComponent);
 
         // Null and forget the top element on the stack.
 
@@ -349,7 +369,8 @@ public class BaseComponentTemplateLoader
      * 
      **/
 
-    private void addExpressionBindings(IComponent component, Map expressionsMap) throws PageLoaderException
+    private void addExpressionBindings(IComponent component, Map expressionsMap)
+        throws PageLoaderException
     {
         if (Tapestry.isEmpty(expressionsMap))
             return;
@@ -408,7 +429,11 @@ public class BaseComponentTemplateLoader
 
             String expression = (String) e.getValue();
 
-            IBinding binding = new ExpressionBinding(_pageSource.getResourceResolver(), _loadComponent, expression);
+            IBinding binding =
+                new ExpressionBinding(
+                    _pageSource.getResourceResolver(),
+                    _loadComponent,
+                    expression);
 
             component.setBinding(name, binding);
         }
@@ -495,9 +520,12 @@ public class BaseComponentTemplateLoader
         int count = ids.size();
 
         String key =
-            (count == 1) ? "BaseComponent.missing-component-spec-single" : "BaseComponent.missing-component-spec-multi";
+            (count == 1)
+                ? "BaseComponent.missing-component-spec-single"
+                : "BaseComponent.missing-component-spec-multi";
 
-        StringBuffer buffer = new StringBuffer(Tapestry.getString(key, _loadComponent.getExtendedId()));
+        StringBuffer buffer =
+            new StringBuffer(Tapestry.getString(key, _loadComponent.getExtendedId()));
 
         Iterator i = ids.iterator();
         int j = 1;

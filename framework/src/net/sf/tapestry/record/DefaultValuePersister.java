@@ -59,9 +59,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.EJBObject;
-import javax.ejb.Handle;
-
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.Tapestry;
@@ -126,10 +123,6 @@ public class DefaultValuePersister implements IValuePersister
      *  An instance of {@link MapCopier} is registered for {@link java.util.Map}.
      * 
      *  <p>
-     *  An instance of {@link EJBCopier} for {@link EJBObject}, and {@link EJBWrapperCopier}
-     *  for {@link EJBWrapper}.
-     * 
-     *  <p>
      *  An instance of {@link ArrayCopier} for <code>Object[]</code>.
      * 
      *  <p>
@@ -141,25 +134,17 @@ public class DefaultValuePersister implements IValuePersister
     {
         IValueCopier immutable = new ImmutableValueCopier();
 
+		registerValueCopier(Object.class, immutable);
         registerValueCopier(IImmutable.class, immutable);
         registerValueCopier(String.class, immutable);
         registerValueCopier(Character.class, immutable);
         registerValueCopier(Number.class, immutable);
         registerValueCopier(Boolean.class, immutable);
         registerValueCopier(Date.class, immutable);
-        registerValueCopier(Handle.class, immutable);
         registerValueCopier(Enum.class, immutable);
 
         registerValueCopier(List.class, new ListCopier());
         registerValueCopier(Map.class, new MapCopier());
-
-        // EJBCopier copies an EJBObject as an EJBWrapper
-
-        registerValueCopier(EJBObject.class, new EJBCopier());
-
-        // EJBWrapperCopier restores an EJBWrapper to an EJBObject
-
-        registerValueCopier(EJBWrapper.class, new EJBWrapperCopier());
 
         registerValueCopier(Object[].class, new ArrayCopier());
 

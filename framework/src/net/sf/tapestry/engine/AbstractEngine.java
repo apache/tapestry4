@@ -708,10 +708,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
         throws RequestCycleException, ServletException, IOException
     {
-        IMarkupWriter writer;
-        boolean discard = true;
-        IPage page;
-
         if (LOG.isDebugEnabled())
             LOG.debug("Begin render response.");
 
@@ -731,11 +727,13 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         // Commit all changes and ignore further changes.
 
-        page = cycle.getPage();
+        IPage page = cycle.getPage();
 
-        writer = page.getResponseWriter(output);
+        IMarkupWriter writer = page.getResponseWriter(output);
 
         output.setContentType(writer.getContentType());
+
+        boolean discard = true;
 
         try
         {
@@ -773,7 +771,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public void restart(IRequestCycle cycle) throws IOException
     {
-
         RequestContext context = cycle.getRequestContext();
 
         HttpSession session = context.getSession();
@@ -811,9 +808,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     public boolean service(RequestContext context) throws ServletException, IOException
     {
         ApplicationServlet servlet = context.getServlet();
-        RequestCycle cycle = null;
+        IRequestCycle cycle = null;
         ResponseOutputStream output = null;
-        IMonitor monitor;
+        IMonitor monitor = null;
 
         if (LOG.isInfoEnabled())
             LOG.info("Begin service " + context.getRequestURI());
@@ -835,8 +832,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             setupForRequest(context);
 
             monitor = getMonitor(context);
-
-            cycle = new RequestCycle(this, context, monitor);
 
             output = new ResponseOutputStream(context.getResponse());
         }
@@ -860,7 +855,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
                 service = getService(serviceName);
 
-                cycle.setService(service);
+                cycle = createRequestCycle(context, service, monitor);
 
                 monitor.serviceBegin(serviceName, context.getRequestURI());
 
@@ -881,10 +876,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             catch (StaleSessionException ex)
             {
                 handleStaleSessionException(ex, cycle, output);
-            }
-            finally
-            {
-                monitor.serviceEnd(service.getName());
             }
         }
         catch (Exception ex)
@@ -908,6 +899,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         }
         finally
         {
+            monitor.serviceEnd(service.getName());
+
             try
             {
                 cycle.cleanup();
@@ -947,6 +940,23 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         // to the engine.
 
         return true;
+    }
+
+    /**
+     *  Invoked from {@link #service(RequestContext)} to create an instance of
+     *  {@link IRequestCycle} for the current request.  This implementation creates
+     *  an returns an instance of {@link RequestCycle}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected IRequestCycle createRequestCycle(
+        RequestContext context,
+        IEngineService service,
+        IMonitor monitor)
+    {
+        return new RequestCycle(this, context, service, monitor);
     }
 
     /**
@@ -1013,8 +1023,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     /**
      *  Discards all cached pages, component specifications and templates.
-     *  Subclasses who override this implementation should invoke it as
-     *  well.
+     *  Subclasses who override this method should invoke this implementation
+     *  as well.
      *
      *  @since 1.0.1
      * 
@@ -1060,13 +1070,13 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  {@link IEngineService services} to build URLs.  It consists
      *  of two parts:  the context path and the servlet path.
      *
-     * <p>The servlet path is retrieved from {@link HttpServletRequest#getServletPath()}.
+     *  <p>The servlet path is retrieved from {@link HttpServletRequest#getServletPath()}.
      *
-     * <p>The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
+     *  <p>The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
      *
-     * <p>The global object is retrieved from {@link RequestContext#getGlobal()} method.
+     *  <p>The global object is retrieved from {@link RequestContext#getGlobal()} method.
      *
-     * <p>The final path is available via the {@link #getServletPath()} method.
+     *  <p>The final path is available via the {@link #getServletPath()} method.
      *
      *  <p>In addition, this method locates and/or creates the:
      *  <ul>
@@ -1082,7 +1092,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  </ul>
      * 
      *  <p>This order is important, because some of the later shared objects
-     *  depend on some of the earlier shared objects already been located or created
+     *  depend on some of the earlier shared objects already having
+     *  been located or created
      *  (especially {@link #getPool() pool}).
      *
      *  <p>Subclasses should invoke this implementation first, then perform their
@@ -1508,9 +1519,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     /**
      *  Returns the global object for the application.  The global object is created at the start
-     *  of the request ({@link #setupForRequest(RequestContext)} invokes {@link #createGlobal(RequestContext)} if needed),
-     *  and is stored into the {@link ServletContext}.  All instances of the engine for the application share
-     *  the global object; however, the global object is explicitly <em>not</em> replicated to other servers within
+     *  of the request ({@link #setupForRequest(RequestContext)} invokes 
+     *  {@link #createGlobal(RequestContext)} if needed),
+     *  and is stored into the {@link ServletContext}.  All instances of the engine for 
+     *  the application share
+     *  the global object; however, the global object is explicitly <em>not</em> 
+     *  replicated to other servers within
      *  a cluster.
      * 
      *  @since 2.3
@@ -1872,7 +1886,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /** 
      *  Returns false.
      *  
-     *  @deprecated With no replacement.
+     *  @deprecated With no replacement.  To be removed in 2.5.
      *  @since 2.2 
      * 
      **/
@@ -1885,7 +1899,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /** 
      *  Does nothing.
      * 
-     *  @deprecated With no replacement.
+     *  @deprecated With no replacement.  To be removed in 2.5.
      *  @since 2.2 
      * 
      **/
@@ -1976,8 +1990,10 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     /**
      *  Creates the shared Global object.  This implementation looks for an configuration
-     *  property, <code>net.sf.tapestry.global-class</code>, and instantiates that class using a no-arguments
-     *  constructor.  If the property is not defined, a synchronized {@link java.util.HashMap} is created.
+     *  property, <code>net.sf.tapestry.global-class</code>, and instantiates that class 
+     *  using a no-arguments
+     *  constructor.  If the property is not defined, a synchronized 
+     *  {@link java.util.HashMap} is created.
      * 
      *  @since 2.3
      * 

@@ -7,10 +7,6 @@
 <page-specification class="tutorial.workbench.upload.Upload">
 
   <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
-    
-  <component id="inputAscii" type="Checkbox">
-  	<binding name="selected" expression="showAscii"/>
-  </component>
   
   <component id="inputWidth" type="PropertySelection">
   	<binding name="value" expression="bytesPerLine"/>

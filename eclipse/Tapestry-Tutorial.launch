@@ -8,9 +8,6 @@
     sourceAttachmentPath=&quot;JRE_SRC&quot; sourceRootPath=&quot;JRE_SRCROOT&quot; type=&quot;3&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;Scratch&quot; type=&quot;1&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry internalArchive=&quot;/jakarta-tapestry/config&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
@@ -21,10 +18,6 @@
 &lt;runtimeClasspathEntry
     internalArchive=&quot;/jakarta-tapestry/lib/ext/jakarta-oro-2.0.6.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/ejb.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry

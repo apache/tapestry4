@@ -54,8 +54,11 @@
  */
 package net.sf.tapestry;
 
+import java.io.BufferedWriter;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Stack;
 
 /**
@@ -179,11 +182,18 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *
      **/
 
-    protected AbstractMarkupWriter(boolean safe[], String[] entities, String contentType, OutputStream stream)
+    protected AbstractMarkupWriter(
+        boolean safe[],
+        String[] entities,
+        String contentType,
+        OutputStream stream)
     {
         this(safe, entities, contentType);
 
-        _writer = new PrintWriter(stream);
+		OutputStreamWriter owriter = new OutputStreamWriter(stream);
+		Writer bwriter = new BufferedWriter(owriter);
+
+        _writer = new PrintWriter(bwriter);
     }
 
     /**
@@ -352,7 +362,8 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     private void checkTagOpen()
     {
         if (!_openTag)
-            throw new IllegalStateException(Tapestry.getString("AbstractMarkupWriter.tag-not-open"));
+            throw new IllegalStateException(
+                Tapestry.getString("AbstractMarkupWriter.tag-not-open"));
     }
 
     /**
