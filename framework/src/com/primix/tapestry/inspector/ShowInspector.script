@@ -34,22 +34,27 @@ function ti_positionInspector()
   if (navigator.family == "nn4")
   {
     object = document.tapestryInspector;
-    width = innerWidth + pageXOffset;
+    width = innerWidth + pageXOffset;  <!-- Doesn't properly account for scrollbars! -->
     height = innerHeight + pageYOffset;
   }
   else
   {
     object = document.getElementById("tapestryInspector");
     
-	if (navigator.OS == "mac" || navigator.family == "gecko")
+	if (navigator.OS == "mac")
 	{
 	  width = document.body.offsetWidth;
 	  height = document.body.offsetWidth;
 	}
+	else if (navigator.family == "gecko")
+	{
+      width = innerWidth + pageXOffset; 
+      height = innerHeight + pageYOffset;
+	}
 	else
 	{
 	  // IE 4, 5 on PC
-	  width = document.body.clientWidth + document.body.scrollLeft;
+	  width = document.body.clientWidth  + document.body.scrollLeft;
 	  height = document.body.clientHeight + document.body.scrollTop;
 	}
   }
@@ -83,7 +88,7 @@ function ti_positionInspector()
 
   // Reposition it every quarter second.
   
-  window.setTimeout("ti_positionInspector()", 5000);
+  window.setTimeout("ti_positionInspector()", 250);
 }
 
 function ti_raiseInspector()
@@ -95,14 +100,10 @@ function ti_raiseInspector()
   	
   newWindow.focus();
 }
-
-
 </body>
 
-<initialization> <![CDATA[
-
+<initialization>
 ti_positionInspector();
-
-]]></initialization>
+</initialization>
 
 </script>

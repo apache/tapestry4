@@ -148,7 +148,7 @@ public abstract class AbstractComponent implements IComponent
 	 */
 	
 	private ListenerMap listeners;
-
+	
 	/**
 	 * A bean provider; these are lazily created as needed.
 	 *
@@ -488,8 +488,8 @@ public abstract class AbstractComponent implements IComponent
 		accessor = helper.getAccessor(this, name + "Binding");
 		
 		if (accessor != null &&
-			accessor.isReadWrite() &&
-			accessor.getType().equals(IBinding.class))
+				accessor.isReadWrite() &&
+				accessor.getType().equals(IBinding.class))
 		{
 			return (IBinding)accessor.get(this);
 		}
@@ -647,7 +647,7 @@ public abstract class AbstractComponent implements IComponent
 		accessor = helper.getAccessor(this, name + "Binding");
 		
 		if (accessor != null &&
-			accessor.getType().equals(IBinding.class))
+				accessor.getType().equals(IBinding.class))
 		{
 			accessor.set(this, binding);
 			return;
@@ -717,13 +717,13 @@ public abstract class AbstractComponent implements IComponent
 			return null;
 		
 		ContainedComponent contained = container.getSpecification().getComponent(id);
-	
+		
 		// If no informal parameters, then it's safe to return
 		// just the names of the formal parameters.
 		
 		if (bindings == null || bindings.size() == 0)
 			return contained.getBindingNames();
-	
+		
 		// The new HTML parser means that sometimes, the informal attributes
 		// come from the HTML template and aren't known in the contained component
 		// specification.  The only thing to do is to build up a set of
@@ -819,8 +819,11 @@ public abstract class AbstractComponent implements IComponent
 	 *  registering for event notifications.  This is a convienience,
 	 *  providing a much simpler method signature to override.
 	 *
-	 *  <p>This implementation does nothing; subclasses can override
-	 *  as desired.
+	 *  <p>This implementation checks to
+	 *  see if the component implements {@link ILifecycle}, if
+	 *  so, the component sets up listeners to invoke
+	 *  the implementations of the {@link ILifecycle} methods.  This support
+	 *  will be removed in release 1.1.
 	 *
 	 *  @since 1.0.5
 	 *
@@ -828,6 +831,94 @@ public abstract class AbstractComponent implements IComponent
 	
 	protected void finishLoad()
 	{
-		// Does nothing
+		if (this instanceof ILifecycle)
+		{
+			page.addPageDetachListener(new DetachListener());
+			page.addPageRenderListener(new RenderListener());
+			page.addPageCleanupListener(new CleanupListener());
+		}
 	}
+	
+	private class RenderListener implements PageRenderListener
+	{
+		public void pageBeginRender(PageEvent event)
+		{
+			prepareForRender(event.getRequestCycle());
+		}
+		
+		public void pageEndRender(PageEvent event)
+		{
+			cleanupAfterRender(event.getRequestCycle());
+		}
+	}
+	
+	private class DetachListener implements PageDetachListener
+	{
+		public void pageDetached(PageEvent event)
+		{
+			reset();
+		}
+	}
+	
+	private class CleanupListener implements PageCleanupListener
+	{
+		public void pageCleanup(PageEvent event)
+		{
+			cleanupComponent();
+		}
+	}
+	
+	/**
+	 *  Does nothing.  To be removed in release 1.1.
+	 *
+	 *  @see #finishLoad()
+	 *  @see ILifecycle
+	 *
+	 */
+	
+	public void cleanupAfterRender(IRequestCycle cycle)
+	{
+	}
+	
+	
+	/**
+	 *  Does nothing.  To be removed in release 1.1.
+	 *
+	 *  @see #finishLoad()
+	 *  @see ILifecycle
+	 *
+	 */
+	
+	public void prepareForRender(IRequestCycle cycle)
+	{
+	}
+	
+		
+	/**
+	 *  Does nothing.  To be removed in release 1.1.
+	 *
+	 *  @see #finishLoad()
+	 *  @see ILifecycle
+	 *
+	 */
+	
+	
+	public void reset()
+	{
+	}
+	
+		
+	/**
+	 *  Does nothing.  To be removed in release 1.1.
+	 *
+	 *  @see #finishLoad()
+	 *  @see ILifecycle
+	 *
+	 */
+	
+	
+	public void cleanupComponent()
+	{
+	}
+	
 }

@@ -22,24 +22,42 @@ function palette_sort(element, sorter)
   var options = element.options;
   var list = new Array();
   var index = 0;
+  var isNavigator = (navigator.family == "nn4" || navigator.family == "gecko");
   
-  while (options.length < 0)
+  while (options.length > 0)
   {
-    if (navigator.family == 'nn4' || navigator.family == 'gecko')
+    var option = options[0];
+        
+    if (isNavigator)
     {
-      var copy = new Option(options[0].text, options[0].value);
+      // Can't transfer option in nn4, nn6
+      
+     if (navigator.family == 'gecko')
+      	var copy = document.createElement("OPTION");
+     else
+        var copy = new Option(option.text, option.value);
+
+      	copy.text = option.text;
+      	copy.value = option.value;
+      	copy.selected = options.selected;
+      	
       list[index++] = copy;
     }
     else
-      list[index++] = options[0];
-      
+      list[index++] = option;
+
+    
     options[0] = null;
   }
   
   list.sort(sorter);
   
   for (var i = 0; i < list.length; i++)
-    options[options.length] = list[i]; 
+  {
+    options[i] = list[i]; 
+  }
+
+
 }
 
 function palette_label_sorter(a, b)
