@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application name="Hello World Tutorial" engine-class="com.primix.tapestry.engine.SimpleEngine">
+  <page name="Home" specification-path="/wap/hello/Home.jwc"/>
+</application>
