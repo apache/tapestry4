@@ -28,29 +28,26 @@
 
 package com.primix.tapestry;
 
-import java.util.*;
-
-// Appease Javadoc
-import com.primix.tapestry.link.*;
-
 /**
- *  Interface that defines classes that may be messaged by the direct
- *  service.
+ *  A particular type of component usuable with the
+ *  action service.
  *
  *  @author Howard Ship
  *  @version $Id$
+ *  @since 1.0.1
  */
 
-public interface IDirect
+
+public interface IAction 
 	extends IComponent
 {
 	/**
-	 *  Invoked by the direct service to have the component peform
-	 *  the appropriate action.  The {@link Direct} component will
-	 *  notify its listener.
+	 *  Returns true if the component requires 
+	 *  an existing, not new, {@link javax.servlet.http.HttpSession}
+	 *  to operate.  Components who are not dependant on page state
+	 *  (or the visit object) are non-stateful and can return false.
 	 *
 	 */
 	
-	public void trigger(IRequestCycle cycle, String[] context)
-		throws RequestCycleException;
+	public boolean getRequiresSession();	
 }

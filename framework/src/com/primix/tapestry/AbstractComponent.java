@@ -780,6 +780,14 @@ public abstract class AbstractComponent implements IComponent
 		return safeAssets;
 	}
 	
+	public IAsset getAsset(String name)
+	{
+		if (assets == null)
+			return null;
+		
+		return (IAsset)assets.get(name);
+	}
+	
 	public Collection getBindingNames()
 	{
 		// If no conainer, i.e. a page, then no bindings.

@@ -1,9 +1,9 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000 by Howard Ship and Primix Solutions
  *
- * Primix
- * 311 Arsenal Street
+ * Primix Solutions
+ * One Arsenal Marketplace
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -26,31 +26,23 @@
  *
  */
 
-package com.primix.tapestry;
+package tutorial.portal;
 
-import java.util.*;
-
-// Appease Javadoc
-import com.primix.tapestry.link.*;
+import com.primix.tapestry.*;
 
 /**
- *  Interface that defines classes that may be messaged by the direct
- *  service.
- *
- *  @author Howard Ship
  *  @version $Id$
- */
+ *  @author Howard Ship
+ *
+ */ 
 
-public interface IDirect
-	extends IComponent
+public class PortalServlet 
+extends ApplicationServlet
 {
-	/**
-	 *  Invoked by the direct service to have the component peform
-	 *  the appropriate action.  The {@link Direct} component will
-	 *  notify its listener.
-	 *
-	 */
-	
-	public void trigger(IRequestCycle cycle, String[] context)
-		throws RequestCycleException;
+	protected String getApplicationSpecificationPath()
+	{
+		return "/tutorial/portal/Portal.application";
+	}
 }
+
+

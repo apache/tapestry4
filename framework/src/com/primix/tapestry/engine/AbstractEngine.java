@@ -228,6 +228,8 @@ public abstract class AbstractEngine
 	
 	private class ActionService implements IEngineService
 	{
+		private StringBuffer buffer;
+		
 		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 			throws RequestCycleException, ServletException, IOException
 		{
@@ -242,19 +244,41 @@ public abstract class AbstractEngine
 					parameters.length != 1)
 				throw new IllegalArgumentException(
 					"Service action requires one parameter.");
+		
+			// See note in DirectService.buildURL().  Basically, I think
+			// reuse of the StringBuffer is kosher.
 			
-			String pageName = cycle.getPage().getName();
+			if (buffer == null)
+				buffer = new StringBuffer();
+			else
+				buffer.setLength(0);
 			
 			// Because we know that all of the terms are 'URL safe' (they contain
 			// only alphanumeric characters and the '.') we don't have to
 			// use HTMLUtils.buildURL().
+
+			buffer.append(servletPrefix);
+			buffer.append('/');
+			buffer.append(ACTION_SERVICE);
+			buffer.append('/');
+			buffer.append(cycle.getPage().getName());
+			buffer.append('/');
+			buffer.append(parameters[0]);
+			buffer.append('/');
 			
-			return servletPrefix +
-				"/" + ACTION_SERVICE +
-				"/" + pageName +
-				"/" + parameters[0] +
-				"/" + component.getIdPath();
+			// Because of Block/InsertBlock, the component may not be on
+			// the same page and the response page and we need to make
+			// allowances for this.
 			
+			if (cycle.getPage() != component.getPage())
+			{
+				buffer.append(component.getPage().getName());
+				buffer.append('/');
+			}
+			
+			buffer.append(component.getIdPath());
+			
+			return buffer.toString();
 		}
 		
 		public String getName()
@@ -431,8 +455,13 @@ public abstract class AbstractEngine
 			else
 				buffer.setLength(0);
 			
-			String pageName = cycle.getPage().getName();
+			// New since 1.0.1, we use the component to determine
+			// the page, not the cycle.  Through the use of tricky
+			// things such as Block/InsertBlock, it is possible 
+			// that a component from a page different than
+			// the response page will render.
 			
+			String pageName = component.getPage().getName();
 			
 			buffer.append(servletPrefix);
 			buffer.append('/');
@@ -1042,39 +1071,74 @@ public abstract class AbstractEngine
 	private void serviceAction(IRequestCycle cycle, ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 	{
+		IAction action = null;
+		String componentPageName;
+		
 		// If the context is new on an action URL, then the session
 		// truly expired and we want to redirect to the
 		// timeout page to advise the user.
 		
 		RequestContext context = cycle.getRequestContext();
 		
-		if (context.getPathInfoCount() != 4)
-			throw new ApplicationRuntimeException(
-				"Service action requires exactly three parameters.");
+		int count = context.getPathInfoCount();
 		
-		String pageName = context.getPathInfo(1);
-		String targetActionId = context.getPathInfo(2);
-		String targetIdPath = context.getPathInfo(3);
+		if (count != 4 && count != 5)
+			throw new ApplicationRuntimeException(
+				"Service action requires either three or four parameters.");
+		
+		int i = 1;
+		String pageName = context.getPathInfo(i++);
+		String targetActionId = context.getPathInfo(i++);
+		
+		if (count == 4)
+			componentPageName = pageName;
+		else
+			componentPageName = context.getPathInfo(i++);
+		
+		String targetIdPath = context.getPathInfo(i++);
 		
 		IMonitor monitor = cycle.getMonitor();
 		if (monitor != null)
 			monitor.serviceBegin(IEngineService.ACTION_SERVICE, pageName + "/" + targetActionId);
 		
-		if (context.getSession().isNew())
-			throw new StaleSessionException();
-		
 		IPage page = cycle.getPage(pageName);
+
+		IPage componentPage = cycle.getPage(componentPageName);
+		IComponent component = componentPage.getNestedComponent(targetIdPath);
+		
+		try
+		{
+			action = (IAction)component;
+		}
+		catch (ClassCastException ex)
+		{
+			throw new RequestCycleException(
+				"Component " + componentPageName + "/" +
+					targetIdPath + " does not implement the IAction interface.",
+				component, ex);			
+		}
+		
+		if (action.getRequiresSession())
+		{
+			HttpSession session = cycle.getRequestContext().getSession();
+			
+			if (session.isNew())
+				throw new StaleSessionException();
+		}
 		
 		// Allow the page to validate that the user is allowed to visit.  This is simple
-		// protected from malicious users who hack the URLs directly, or make inappropriate
+		// protection from malicious users who hack the URLs directly, or make inappropriate
 		// use of the back button. 
+	
+		// Note that we validate the page that rendered the response which (again, due to
+		// Block/InsertBlock) is not necessarily the page that contains the component.
 		
 		page.validate(cycle);
 		
 		// Setup the page for the rewind, then do the rewind.
 		
 		cycle.setPage(page);
-		cycle.rewindPage(targetActionId, targetIdPath);
+		cycle.rewindPage(targetActionId, action);
 		
 		// During the rewind, a component may change the page.  This will take
 		// effect during the second render, which renders the HTML response.
@@ -1092,7 +1156,7 @@ public abstract class AbstractEngine
 	 *  Processes a 'direct' URL.
 	 *  <ul>
 	 *  <li>The specified page is loaded and rolled back to its prior state.
-	 *  <li>The referenced component is located and cast to {@link IAction}.
+	 *  <li>The referenced component is located and cast to {@link IDirect}.
 	 *  <li>{@link IAction#trigger(IRequestCycle)} is invoked to trigger the
 	 *  behaviour associated with the component.
 	 *  <li>{@link #render(IRequestCycle,ResponseOutputStream)} is invoked to
@@ -1127,9 +1191,6 @@ public abstract class AbstractEngine
 		if (monitor != null)
 			monitor.serviceBegin(IEngineService.DIRECT_SERVICE, 
 					pageName + "/" + componentPath);
-		
-		if (context.getSession().isNew())
-			throw new StaleSessionException();
 		
 		IPage page = cycle.getPage(pageName);
 		

@@ -51,6 +51,18 @@ import com.primix.tapestry.*;
  *  </td></tr>
  *
  * <tr>
+ *	<td>stateful</td>
+ *  <td>boolean</td>
+ *	<td>R</td>
+ *	<td>no</td>
+ *	<td>true</td>
+ *	<td>If true (the default), then the component requires an active (i.e., non-new)
+ * {@link HttpSession) when triggered.  Failing that, it throws a {@link StaleLinkException}.
+ *  If false, then no check is necessary.  The latter works well with links that
+ * encode all necessary state inside the URL itself.</td>
+ * </tr>
+ *
+ * <tr>
  *		<td>scheme</td>
  *		<td>java.lang.String</td>
  *		<td>R</td>
@@ -93,29 +105,34 @@ import com.primix.tapestry.*;
  */
 
 
-public class Action extends AbstractServiceLink
+public class Action 
+	extends AbstractServiceLink
+	implements IAction
 {
 	private IBinding listenerBinding;
-
+	private IBinding statefulBinding;
+	private boolean staticStateful;
+	private boolean statefulValue;
+	
 	// Each instance gets its own context array.
-
+	
 	private String[] context;
-
+	
 	public IBinding getListenerBinding()
 	{
 		return listenerBinding;
 	}
-
+	
 	public void setListenerBinding(IBinding value)
 	{
 		listenerBinding = value;
 	}
-
+	
 	private IActionListener getListener(IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		IActionListener result;
-
+		
 		try
 		{
 			result = (IActionListener)listenerBinding.getObject("listener", IActionListener.class);
@@ -124,45 +141,76 @@ public class Action extends AbstractServiceLink
 		{
 			throw new RequestCycleException(this, ex);
 		}
-
+		
 		if (result == null)
 			throw new RequiredParameterException(this, "listener", listenerBinding);
-
+		
 		return result;
 	}
-
+	
+	public void setStatefulBinding(IBinding value)
+	{
+		statefulBinding = value;
+		
+		staticStateful = value.isStatic();
+		if (staticStateful)
+			statefulValue = value.getBoolean();
+	}
+	
+	public IBinding getStatefulBinding()
+	{
+		return statefulBinding;
+	}
+	
 	/**
-	*  Returns {@link IEngineService#ACTION_SERVICE}.
-	*/
-
+	 *  Returns true if the stateful parameter is bound to
+	 *  a true value.  If stateful is not bound, also returns
+	 *  the default, true.
+	 *
+	 */
+	
+	public boolean getRequiresSession()
+	{
+		if (staticStateful)
+			return statefulValue;
+		
+		if (statefulBinding != null)
+			return statefulBinding.getBoolean();
+		
+		return true;
+	}
+	/**
+	 *  Returns {@link IEngineService#ACTION_SERVICE}.
+	 */
+	
 	protected String getServiceName(IRequestCycle cycle)
 	{
 		return IEngineService.ACTION_SERVICE;
 	}
-
-
+	
+	
 	protected String[] getContext(IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		String actionId;
 		IActionListener listener;
-
+		
 		actionId = cycle.getNextActionId();
-
+		
 		if (cycle.isRewound(this))
 		{
 			listener = getListener(cycle);
-
+			
 			listener.actionTriggered(this, cycle);
-
+			
 			throw new RenderRewoundException(this);
 		}
-
+		
 		if (context == null)
 			context = new String[1];
-
+		
 		context[0] = actionId;
-
+		
 		return context;
 	}
 }

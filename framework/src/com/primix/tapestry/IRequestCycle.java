@@ -179,11 +179,11 @@ public interface IRequestCycle
     *  Rewinds a page and executes some form of action when the
     *  component with the specified action id is reached.
     *
-    *  @see Action
+    *  @see IAction
     *
     */
 
-    public void rewindPage(String targetActionId, String targetIdPath)
+    public void rewindPage(String targetActionId, IComponent targetComponent)
     throws RequestCycleException;
 
     /**

@@ -87,230 +87,243 @@ import com.primix.tapestry.components.*;
  */
 
 
-public class Form extends AbstractComponent
+public class Form 
+	extends AbstractComponent
+	implements IAction
 {
     private IBinding methodBinding;
     private String methodValue;
-
+	
     private IBinding listenerBinding;
-
+	
     private boolean rewinding;
     private int nextElementId = 0;
     private StringBuffer buffer;
     private boolean rendering;
     private String name;
-
+	
     private static final String[] reservedNames = { "action" };
-
+	
     /**
-    *  Attribute name used with the request cycle.
-    *
-    */
-
+	 *  Attribute name used with the request cycle.
+	 *
+	 */
+	
     private static final String ATTRIBUTE_NAME = "com.primix.tapestry.active.Form";
-
+	
     /**
-    *  Returns the currently active <code>Form</code>, or null if no <code>Form</code> is
-    *  active.
-    *
-    */
-
+	 *  Returns the currently active <code>Form</code>, or null if no <code>Form</code> is
+	 *  active.
+	 *
+	 */
+	
     public static Form get(IRequestCycle cycle)
     {
-        return (Form)cycle.getAttribute(ATTRIBUTE_NAME);
+		return (Form)cycle.getAttribute(ATTRIBUTE_NAME);
     }
-
+	
+	/**
+	 *  For the moment, Forms always require a session.  That may change.
+	 *
+	 *  @since 1.0.1
+	 */
+	
+	public boolean getRequiresSession()
+	{
+		return true;
+	}
+	
     public IBinding getMethodBinding()
     {
-        return methodBinding;
+		return methodBinding;
     }
-
+	
     public void setListenerBinding(IBinding value)
     {
-        listenerBinding = value;
+		listenerBinding = value;
     }
-
+	
     public IBinding getListenerBinding()
     {
-        return listenerBinding;
+		return listenerBinding;
     }
-
+	
     /**
-    *  Indicates to any wrapped form components that they should respond to the form
-    *  submission.
-    *
-    *  @throws RenderOnlyPropertyException if not rendering.
-    */
-
+	 *  Indicates to any wrapped form components that they should respond to the form
+	 *  submission.
+	 *
+	 *  @throws RenderOnlyPropertyException if not rendering.
+	 */
+	
     public boolean isRewinding()
     {
-        if (!rendering)
-            throw new RenderOnlyPropertyException(this, "rewinding");
-
-        return rewinding;
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "rewinding");
+		
+		return rewinding;
     }
-
+	
     /**
-     *  Constructs a unique identifier (within the Form) from a prefix and a
-     *  unique index.  The prefix typically corresponds to the component Class (i.e.
-     *  "Text" or "Checkbox").
-     *
-     */
-
+	 *  Constructs a unique identifier (within the Form) from a prefix and a
+	 *  unique index.  The prefix typically corresponds to the component Class (i.e.
+	 *  "Text" or "Checkbox").
+	 *
+	 */
+	
     public String getNextElementId(String prefix)
     {
-        if (buffer == null)
-            buffer = new StringBuffer();
-        else
-        {
-            buffer.setLength(0);
-        }
-
-        buffer.append(prefix);
-        buffer.append(nextElementId++);
-
-        return buffer.toString();
+		if (buffer == null)
+			buffer = new StringBuffer();
+		else
+		{
+			buffer.setLength(0);
+		}
+		
+		buffer.append(prefix);
+		buffer.append(nextElementId++);
+		
+		return buffer.toString();
     }
-
+	
     /**
-    *  Returns the name generated for the form.  This is used to faciliate
-    *  components that write JavaScript and need to access the form or
-    *  its contents.
-    *
-    *  <p>This value is generated when the form renders, and is not cleared.
-    *  If the Form is inside a {@link Foreach}, this will be the most recently
-    *  generated name for the Form.
-    *
-    *  <p>This property is exposed so that sophisticated applications can write
-    *  JavaScript handlers for the form and components within the form.
-    *
-    *  @see AbstractFormComponent#getName()
-    *
-    */
-
+	 *  Returns the name generated for the form.  This is used to faciliate
+	 *  components that write JavaScript and need to access the form or
+	 *  its contents.
+	 *
+	 *  <p>This value is generated when the form renders, and is not cleared.
+	 *  If the Form is inside a {@link Foreach}, this will be the most recently
+	 *  generated name for the Form.
+	 *
+	 *  <p>This property is exposed so that sophisticated applications can write
+	 *  JavaScript handlers for the form and components within the form.
+	 *
+	 *  @see AbstractFormComponent#getName()
+	 *
+	 */
+	
     public String getName()
     {
-        return name;
+		return name;
     }
-
+	
     public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        String method = "post";
-        boolean rewound;
-        String URL;
-        IEngineService service;
-        String actionId;
-        IActionListener listener;
-        boolean renderForm;
-
-        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException("Forms may not be nested.", this);
-
-        cycle.setAttribute(ATTRIBUTE_NAME, this);
-
-        actionId = cycle.getNextActionId();
-        name = "Form" + actionId;
-
-        try
-        {
-            renderForm = !cycle.isRewinding();
-            rewound = cycle.isRewound(this);
-
-            rewinding = rewound;
-
-            if (renderForm)
-            {
-                if (methodValue != null)
-                    method = methodValue;
-                else if (methodBinding != null)
-                    method = methodBinding.getString();
-
-                writer.begin("form");
-                writer.attribute("method", method);
-                writer.attribute("name", name);
-
-                // Forms are processed using the 'action' service.
-
-                service = cycle.getEngine().
-                getService(IEngineService.ACTION_SERVICE);
-
-                URL = service.buildURL(cycle, this, 
-                    new String[]
-                    { actionId 
-                });
-
-                writer.attribute("action", cycle.encodeURL(URL));
-
-                generateAttributes(cycle, writer, reservedNames);
-            }
-
-            nextElementId = 0;
-
-            rendering = true;
-            renderWrapped(writer, cycle);
-
-            if (renderForm)
-            {
-                // What's this for?  It's part of checking for stale links.  We record
-                // the next action id into the form.  This ensures that the number
-                // of action ids within the form (when the form HTML is rendered)
-                // matches the expected number (when the form submission is processed).
-
-                writer.beginEmpty("input");
-                writer.attribute("type", "hidden");
-                writer.attribute("name", name);
-                writer.attribute("value", nextElementId++);
-
-                writer.end("form");
-            }
-
-            if (rewound)
-            {
-                String actual;
-
-                actual = cycle.getRequestContext().getParameter(name);
-
-                if (actual == null ||
-                    Integer.parseInt(actual) != nextElementId++)
-                    throw new StaleLinkException(
-                        "Incorrect number of elements with Form " + getExtendedId() + ".",
-                        getPage());
+		String method = "post";
+		boolean rewound;
+		String URL;
+		IEngineService service;
+		String actionId;
+		IActionListener listener;
+		boolean renderForm;
+		
+		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
+			throw new RequestCycleException("Forms may not be nested.", this);
+		
+		cycle.setAttribute(ATTRIBUTE_NAME, this);
+		
+		actionId = cycle.getNextActionId();
+		name = "Form" + actionId;
+		
+		try
+		{
+			renderForm = !cycle.isRewinding();
+			rewound = cycle.isRewound(this);
+			
+			rewinding = rewound;
+			
+			if (renderForm)
+			{
+				if (methodValue != null)
+					method = methodValue;
+				else if (methodBinding != null)
+					method = methodBinding.getString();
+				
+				writer.begin("form");
+				writer.attribute("method", method);
+				writer.attribute("name", name);
+				
+				// Forms are processed using the 'action' service.
+				
+				service = cycle.getEngine().
+					getService(IEngineService.ACTION_SERVICE);
+				
+				URL = service.buildURL(cycle, this, 
+						new String[]
+						{ actionId 
+						});
+				
+				writer.attribute("action", cycle.encodeURL(URL));
+				
+				generateAttributes(cycle, writer, reservedNames);
+			}
+			
+			nextElementId = 0;
+			
+			rendering = true;
+			renderWrapped(writer, cycle);
+			
+			if (renderForm)
+			{
+				// What's this for?  It's part of checking for stale links.  We record
+				// the next action id into the form.  This ensures that the number
+				// of action ids within the form (when the form HTML is rendered)
+				// matches the expected number (when the form submission is processed).
+				
+				writer.beginEmpty("input");
+				writer.attribute("type", "hidden");
+				writer.attribute("name", name);
+				writer.attribute("value", nextElementId++);
+				
+				writer.end("form");
+			}
+			
+			if (rewound)
+			{
+				String actual;
+				
+				actual = cycle.getRequestContext().getParameter(name);
+				
+				if (actual == null ||
+						Integer.parseInt(actual) != nextElementId++)
+					throw new StaleLinkException(
+						"Incorrect number of elements with Form " + getExtendedId() + ".",
+						getPage());
 				
 				try
 				{
-                    listener = (IActionListener)listenerBinding.getObject("listener",
-						IActionListener.class);
+					listener = (IActionListener)listenerBinding.getObject("listener",
+							IActionListener.class);
 				}
 				catch (BindingException ex)
 				{
 				    throw new RequestCycleException(this, ex);
 				}
-						
+				
 				if (listener == null)
 					throw new RequiredParameterException(this, "listener", listenerBinding);
-					
-                listener.actionTriggered(this, cycle);
-
-                // Abort the rewind render.
-
-                throw new RenderRewoundException(this);
-            }
-
-
-            cycle.removeAttribute(ATTRIBUTE_NAME);
-        }
-        finally
-        {
-            rendering = false;
-        }
+				
+				listener.actionTriggered(this, cycle);
+				
+				// Abort the rewind render.
+				
+				throw new RenderRewoundException(this);
+			}
+			
+			
+			cycle.removeAttribute(ATTRIBUTE_NAME);
+		}
+		finally
+		{
+			rendering = false;
+		}
     }
-
+	
     public void setMethodBinding(IBinding value)
     {
-        methodBinding = value;
-
-        if (value.isStatic())
-            methodValue = value.getString();
+		methodBinding = value;
+		
+		if (value.isStatic())
+			methodValue = value.getString();
     }
 }
 

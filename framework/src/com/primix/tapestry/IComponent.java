@@ -86,6 +86,13 @@ public interface IComponent extends IRender
 	public Map getAssets();
 	
 	/**
+	 *  Returns the named asset, or null if not found.
+	 *
+	 */
+	
+	public IAsset getAsset(String name);
+	
+	/**
 	 *  Returns the binding with the given name or null if not found.
 	 *
 	 *  <p>Bindings are added to a component using {@link #setBinding(String,IBinding)}.
