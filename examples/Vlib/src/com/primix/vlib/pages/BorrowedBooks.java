@@ -217,7 +217,7 @@ public class BorrowedBooks
 		
 		try
 		{
-			IBook book = operations.returnBook(bookPK);
+			Book book = operations.returnBook(bookPK);
 			
 			setMessage("Returned book: " + book.getTitle());
 		}

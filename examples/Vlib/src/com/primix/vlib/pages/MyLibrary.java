@@ -250,7 +250,7 @@ public class MyLibrary
 			try
 			{
 				IOperations operations = vengine.getOperations();
-				IBook book = operations.returnBook(bookPK);
+				Book book = operations.returnBook(bookPK);
 				
 				setMessage("Returned book: " + book.getTitle());
 				

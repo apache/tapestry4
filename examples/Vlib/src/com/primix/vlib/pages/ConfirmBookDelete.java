@@ -85,11 +85,11 @@ public class ConfirmBookDelete extends BasePage
 		
 		for (int i = 0; i < 2; i++)
 		{
-			IBookHome home = vengine.getBookHome();
-			
 			try
 			{
-				IBook book = home.findByPrimaryKey(bookPK);
+				IOperations operations = vengine.getOperations();
+				Book book = operations.getBook(bookPK);
+				
 				bookTitle = book.getTitle();
 				
 				break;
@@ -132,15 +132,16 @@ public class ConfirmBookDelete extends BasePage
 	private void deleteBook(Integer bookPK, IRequestCycle cycle)
 	{
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		
+		Book book = null;
 		
 		for (int i = 0; i < 2; i++)
 		{
-			IBookHome home = vengine.getBookHome();
-			
 			try
 			{
-				home.remove(bookPK);
+				IOperations operations = vengine.getOperations();
+				
+				book = operations.deleteBook(bookPK);
+				
 				break;
 			}
 			catch (RemoveException ex)
@@ -155,6 +156,10 @@ public class ConfirmBookDelete extends BasePage
 			}
 		}
 		
-		cycle.setPage("MyLibrary");		
+		MyLibrary myLibrary = (MyLibrary)cycle.getPage("MyLibrary");
+		
+		myLibrary.setMessage("Deleted book: " + book.getTitle());
+		
+		cycle.setPage(myLibrary);		
 	}
 }

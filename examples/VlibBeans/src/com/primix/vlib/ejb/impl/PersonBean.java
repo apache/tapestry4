@@ -63,12 +63,13 @@ public class PersonBean extends AbstractEntityBean
 	public boolean verified;
 	public boolean lockedOut;
 	public boolean admin;
+	public String authorizationCode;
 	
 	protected String[] getAttributePropertyNames()
 	{
 		return new String[] 
 		{ "firstName", "lastName", "email", "password", 
-				"verified", "lockedOut", "admin"
+				"verified", "lockedOut", "admin", "authorizationCode"
 		};
 	}
 	
@@ -151,6 +152,18 @@ public class PersonBean extends AbstractEntityBean
 	public boolean isAdmin()
 	{
 		return admin;
+	}
+	
+	public String getAuthorizationCode()
+	{
+		return authorizationCode;
+	}
+	
+	public void setAuthorizationCode(String value)
+	{
+		authorizationCode = value;
+		
+		dirty = true;
 	}
 	
 	public Integer ejbCreate(Map attributes)

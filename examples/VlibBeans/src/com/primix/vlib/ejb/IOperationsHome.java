@@ -34,7 +34,7 @@ import javax.rmi.*;
 import javax.naming.*;
 
 /**
- *  Home interface to the {@link OperationsBean} stateless
+ *  Home interface to the {@link IOperations} stateless
  *  session bean.
  *  
  *  @version $Id$
@@ -42,8 +42,9 @@ import javax.naming.*;
  *
  */
 
-public interface IOperationsHome extends EJBHome
+public interface IOperationsHome 
+	extends EJBHome
 {
 	public IOperations create()
-	throws CreateException, RemoteException;
+		throws CreateException, RemoteException;
 }

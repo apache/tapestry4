@@ -54,17 +54,16 @@ import java.net.*;
  */
 
 public class Visit
-implements Serializable
+	implements Serializable
 {
 	/**
 	 *  Used to identify the logged in user.
 	 *
 	 */
-	 
-	private transient IPerson user;
-	private Integer userPK;
-	private transient String fullUserName;
 	
+	private transient Person user;
+	private Integer userPK;
+
 	private VirtualLibraryEngine engine;
 	
 	public Visit(VirtualLibraryEngine engine)
@@ -81,26 +80,31 @@ implements Serializable
 	 *  Gets the logged-in user, or null if the user is not logged in.
 	 *
 	 */
-	 
-	public IPerson getUser()
+	
+	public Person getUser()
 	{
 		if (user != null)
 			return user;
 		
 		if (userPK == null)
 			return null;
-			
-		try
+		
+		for (int i = 0; i < 2; i++)
 		{
-			user = engine.getPersonHome().findByPrimaryKey(userPK);
-		}
-		catch (FinderException e)
-		{
-			throw new ApplicationRuntimeException("Could not locate user.", e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException("Could not get user.", e);
+			try
+			{
+				user = engine.getOperations().getPerson(userPK);
+				
+				break;
+			}
+			catch (FinderException e)
+			{
+				throw new ApplicationRuntimeException("Could not locate user.", e);
+			}
+			catch (RemoteException ex)
+			{
+				engine.rmiFailure("Unable to access logged-in user.", ex, i > 0);
+			}
 		}
 		
 		return user;
@@ -111,68 +115,36 @@ implements Serializable
 	 *  user is not logged in.
 	 *
 	 */
-	 
+	
 	public Integer getUserPK()
 	{
 		return userPK;
 	}	
 	
 	
-
+	
 	/**
 	 *  Changes the logged in user ... this is only invoked from the {@link Login}
 	 *  page.
 	 *
 	 */
-	 	
-	public void setUser(IPerson value)
+	
+	public void setUser(Person value)
 	{
 		user = value;
 		userPK = null;		
-		fullUserName = null;
 		
 		if (user == null)
 			return;
 		
-		try
-		{
-			userPK = (Integer)user.getPrimaryKey();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException("Could not get primary key for user.", e);
-		}
+		userPK = user.getPrimaryKey();
 	}
-	
-	/**
-	 *  Returns the full name of the logged-in user, 
-	 *  i.e., from {@link IPerson#getNaturalName()}.
-	 *
-	 */
-	 
-	public String getFullUserName()
-	{
-		if (fullUserName == null)
-		{
-			try
-			{
-				fullUserName = getUser().getNaturalName();
-			}
-			catch (RemoteException e)
-			{
-				throw new ApplicationRuntimeException("Could not get user's name: " + e.toString(),
-						e);
-			}		
-		}
 		
-		return fullUserName;
-	}
-	
 	/**
 	 *  Returns true if the user is logged in.
 	 *
 	 */
-	 
+	
 	public boolean isUserLoggedIn()
 	{
 		return userPK != null;
@@ -183,7 +155,7 @@ implements Serializable
 	 *  logged in).
 	 *
 	 */
-	 
+	
 	public boolean isUserLoggedOut()
 	{
 		return userPK == null;
@@ -193,12 +165,12 @@ implements Serializable
 	{
 		if (userPK == null)
 			return false;
-				
+		
 		return userPK.equals(primaryKey);
 	}
 	
-		
-
+	
+	
 	/**
 	 *  Invoked by pages after they perform an operation that changes the backend
 	 *  database in such a way that cached data is no longer valid.  Currently,
@@ -206,14 +178,12 @@ implements Serializable
 	 *  a new {@link IPublisher} entity.
 	 *
 	 */
-	 
+	
 	public void clearCache()
 	{
 		user = null;
-		fullUserName = null;
 		
-		engine.clearCache();
-		
+		engine.clearCache();		
 	}
-
+	
 }

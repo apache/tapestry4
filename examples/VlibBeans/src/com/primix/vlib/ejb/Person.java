@@ -49,8 +49,9 @@ public class Person implements Serializable
 	public static final int VERIFIED_COLUMN = 4;
 	public static final int LOCKED_OUT_COLUMN = 5;
 	public static final int ADMIN_COLUMN = 6;
+	public static final int AUTHORIZATION_CODE_COLUMN = 7;
 	
-	public static final int N_COLUMNS = 7;
+	public static final int N_COLUMNS = 8;
 	
 	public Person(Object[] columns)
 	{
@@ -130,5 +131,10 @@ public class Person implements Serializable
 		Boolean b = (Boolean)columns[column];
 		
 		return b.booleanValue();
+	}
+	
+	public String getAuthorizationCode()
+	{
+		return (String)columns[AUTHORIZATION_CODE_COLUMN];
 	}
 }

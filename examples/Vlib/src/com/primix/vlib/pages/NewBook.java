@@ -102,8 +102,6 @@ public class NewBook extends Protected
 	
 	private void addBook(IRequestCycle cycle)
 	{
-		IBook book = null;	
-		
 		if (cancel)
 		{
 			cycle.setPage("MyLibrary");
@@ -146,10 +144,10 @@ public class NewBook extends Protected
 				IOperations operations = vengine.getOperations();		
 
 				if (publisherPK != null)
-					book = operations.addBook(attributes);
+					operations.addBook(attributes);
 				else
 				{
-					book = operations.addBook(attributes, publisherName);
+					operations.addBook(attributes, publisherName);
 					
 					// Clear the app's cache of info; in this case, known publishers.
 					

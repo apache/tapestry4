@@ -31,7 +31,10 @@ package com.primix.vlib.ejb.impl;
 import com.primix.vlib.ejb.*;
 import javax.ejb.*;
 import java.rmi.*;
+import javax.rmi.*;
 import javax.jms.*;
+import javax.naming.*;
+import java.rmi.*;
 import org.apache.log4j.*;
 
 /**
@@ -50,13 +53,98 @@ public class MailQueueBean
 	private static final Category CAT = 
 		Category.getInstance(MailQueueBean.class);
 	
+	private static IMailSenderHome mailSenderHome;
+	private transient IMailSender mailSender;
+	
 	/**
 	 *  Logs the message receipt; more to come soon.
 	 *
 	 */
+	
 	public void onMessage(Message message)
 	{
-
+		IMailSender sender = null;
+		String emailAddress;
+		String subject;
+		String content;
+		
+		try
+		{
+			emailAddress = message.getStringProperty(EMAIL_ADDRESS);
+			subject = message.getStringProperty(SUBJECT);
+			
+			TextMessage textMessage = (TextMessage)message;
+			
+			content = textMessage.getText();
+		}
+		catch (JMSException ex)
+		{
+			CAT.error("Unable to extract properties from message.", ex);
+			
+			return;
+		}
+		
+		try
+		{
+			sender = getMailSender();
+		}
+		catch (RemoteException ex)
+		{
+			CAT.error("Unable to obtain IMailSender instance.", ex);
+		}
+		
+		try
+		{
+			sender.sendMail(emailAddress, subject, content);
+		}
+		catch (RemoteException ex)
+		{
+			CAT.error("Remote exception sending mail.", ex);
+			
+			return;
+		}
+		catch (EJBException ex)
+		{
+			CAT.error("Error sending mail: " + ex.getMessage(), ex);
+			
+			return;
+		}
+		
+		// Not clear if we have to acknowledge the message here.
+		// What about TP stuff? 
+	}
+	
+	private IMailSender getMailSender()
+		throws RemoteException
+	{
+		if (mailSender != null)
+			return mailSender;
+		
+		if (mailSenderHome == null)
+		{
+			try
+			{
+				Object raw = environment.lookup("ejb/MailSender");
+				
+				mailSenderHome = (IMailSenderHome)PortableRemoteObject.narrow(raw,
+						IMailSenderHome.class);
+			}
+			catch (NamingException ex)
+			{
+				throw new RemoteException("Unable to obtain reference to IMailSenderHome.", ex);
+			}
+		}
+		
+		try
+		{
+			mailSender = mailSenderHome.create();
+		}
+		catch (CreateException ex)
+		{
+			throw new RemoteException("Unable to create new instance of MailSender bean.", ex);
+		}
+		
+		return mailSender;
 	}
 }
 

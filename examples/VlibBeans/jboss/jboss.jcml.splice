@@ -9,3 +9,8 @@
     <attribute name="JDBCUser"></attribute>
     <attribute name="Password"/>
   </mbean>
+  
+  <mbean code="org.jboss.mail.MailService" name=":service=VlibMail">
+    <attribute name="JNDIName">vlib/Mail</attribute>
+    <attribute name="ConfigurationFile">vlib-mail.properties</attribute>
+  </mbean>

@@ -72,6 +72,19 @@
         <res-auth>Container</res-auth>
       </resource-ref>
     </session>
+    <session>
+      <ejb-name>MailSender</ejb-name>
+      <home>com.primix.vlib.ejb.IMailSenderHome</home>
+      <remote>com.primix.vlib.ejb.IMailSender</remote>
+      <ejb-class>com.primix.vlib.ejb.impl.MailSenderBean</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+      <resource-ref>
+        <res-ref-name>vlib/Mail</res-ref-name>
+        <res-type>javax.mail.Session</res-type>
+        <res-auth>Container</res-auth>
+      </resource-ref>
+    </session>
     <entity>
       <display-name>Person</display-name>
       <ejb-name>Person</ejb-name>
@@ -112,6 +125,10 @@
       <cmp-field>
         <description>If true, the user is an administrator, who has priviledged access to adminstrate books and users.</description>
         <field-name>admin</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>A code mailed to the user; the user is not verified until they can provide this code back.</description>
+        <field-name>authorizationCode</field-name>
       </cmp-field>
       <primkey-field>personId</primkey-field>
       <ejb-ref>
@@ -214,6 +231,12 @@
         <destination-type>javax.jms.Queue</destination-type>
         <subscription-durability>NonDurable</subscription-durability>
       </message-driven-destination>
+      <ejb-ref>
+        <ejb-ref-name>ejb/MailSender</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <home>com.primix.vlib.ejb.IMailSenderHome</home>
+        <remote>com.primix.vlib.ejb.IMailSender</remote>
+      </ejb-ref>
     </message-driven>
   </enterprise-beans>
   <assembly-descriptor>
@@ -242,11 +265,12 @@
         <ejb-name>Operations</ejb-name>
         <method-name>*</method-name>
       </method>
-      <trans-attribute>Required</trans-attribute>
-    </container-transaction>
-    <container-transaction>
       <method>
         <ejb-name>MailQueue</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>MailSender</ejb-name>
         <method-name>*</method-name>
       </method>
       <trans-attribute>Required</trans-attribute>

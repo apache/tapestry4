@@ -1,9 +1,9 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -30,38 +30,19 @@ package com.primix.vlib.ejb;
 
 import javax.ejb.*;
 import java.rmi.*;
-import javax.rmi.*;
-import javax.naming.*;
 
 /**
- *  Remote interface to the KeyAllocator stateless
- *  session bean.
- *  
- *  @version $Id$
- *  @author Howard Ship
+ *  Home interface for {@link IMailSender}, a stateless session bean.
  *
+ *  @author Howard Ship
+ *  @version $Id$
  */
 
-public interface IKeyAllocator extends EJBObject
+
+public interface IMailSenderHome
+	extends EJBHome
 {
-	/**
-	 *  Allocates a new key, possibling reserving it from
-	 *  the database.  The value returned is guarenteed to
-	 *  not have been previously returned by any instance.
-	 *
-	 */
-	 
-	public Integer allocateKey()
-		throws RemoteException;
-	
-	/**
-	 * Allocates several keys, as if invoking {@link #allocateKey}
-	 * multiple times.  No guarentees are made that the
-	 * values are sequential or in any order, just that they
-	 * are unique.
-	 *
-	 */
-	 	 
-	public Integer[] allocateKeys(int count)
-		throws RemoteException;	
+	public IMailSender create()
+		throws CreateException, RemoteException;
 }
+

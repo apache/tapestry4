@@ -32,7 +32,7 @@ import javax.ejb.*;
 import java.rmi.*;
 
 /**
- *  Remote interface for the {@link BookQueryBean} session bean.
+ *  Remote interface for the BookQuery stateless session bean.
  *
  *  @version $Id$
  *  @author Howard Ship

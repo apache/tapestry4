@@ -35,7 +35,7 @@ import javax.rmi.*;
 import javax.naming.*;
 
 /**
- *  Remote interface to the {@link OperationsBean} stateless
+ *  Remote interface to the Operations stateless
  *  session bean.  A repository for simple operations such as
  *  adding a new book or borrowing an existing book.
  *  
@@ -44,114 +44,159 @@ import javax.naming.*;
  *
  */
 
-public interface IOperations extends EJBObject
+public interface IOperations 
+	extends EJBObject
 {
 	/**
 	 *  Locates the book and the borrower, then sets the holder of the book
 	 *  to the borrower and increments the lend count on the book.
 	 *
-	 *  <p>The borrowed book is returned.
 	 */
-	 
-	public IBook borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
-	throws BorrowException, FinderException, RemoteException;
-
+	
+	public Book borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
+		throws BorrowException, FinderException, RemoteException;
+	
 	/**
 	 *  Adds a book which will be owned and held by the specified owner.
 	 *
-	 *  <p>Returns the newly created book.
+	 *  <p>Returns the primary key of the newly created book.
 	 */
-
-	public IBook addBook(Map attributes)
-	throws CreateException, RemoteException;
-
-
+	
+	public Integer addBook(Map attributes)
+		throws CreateException, RemoteException;
+	
+	
 	/**
 	 *  Adds a book, which will be owned and help by the specified owner.
 	 *
 	 * <p>The publisherName may either be the name of a known publisher, or
 	 * a new name.  A new {@link IPublisher} will be created as necessary.
 	 *
-	 * <p>Returns the newly created book.
+	 * <p>Returns the primary key of the newly created book.
 	 *
 	 */
-	 
-	public IBook addBook(Map attributes, String publisherName)
-	throws CreateException, RemoteException;
-		
+	
+	public Integer addBook(Map attributes, String publisherName)
+		throws CreateException, RemoteException;
+	
+	
 	/**
 	 *  Updates a book to an existing publisher.
 	 *
-	 *  <p>Returns the updated book.
 	 */
-
-	public IBook updateBook(Integer bookPK, Map attributes)
-	throws FinderException, RemoteException;
-
+	
+	public void updateBook(Integer bookPK, Map attributes)
+		throws FinderException, RemoteException;
+	
 	/**
 	 *  Updates a book for a unknown publisher.
 	 *
-	 *  <p>Returns the updated book.
 	 */
-
-	public IBook updateBook(Integer bookPK, Map attributes, String publisherName)
-	throws CreateException, FinderException, RemoteException;
-
-
+	
+	public void updateBook(Integer bookPK, Map attributes, String publisherName)
+		throws CreateException, FinderException, RemoteException;
+	
+	/**
+	 *  Updates a Person.  Returns the attributes of the update person.
+	 *
+	 */
+	
+	public void updatePerson(Integer personPK, Map attributes)
+		throws FinderException, RemoteException;
+	
 	/**
 	 *  Retrieves the light-weight version of all {@link IPublisher} beans, sorted by name.
 	 *
 	 */
-	 
+	
 	public Publisher[] getPublishers()
-	throws RemoteException;	
-
+		throws RemoteException;	
+	
 	/**
 	 *  Retrieves the light-weight version of all the {@link IPerson} beans, sorted
 	 *  by last name, then by first name.
 	 *
 	 */
-	 
+	
 	public Person[] getPersons()
-	throws RemoteException;	
-
+		throws RemoteException;	
+	
 	/**
 	 *  Retrieves a single {@link Person} by its primary key.
 	 *
 	 *  @throws FinderException if the Person does not exist.
 	 *
 	 */
-	 
+	
 	public Person getPerson(Integer primaryKey)
-	throws FinderException, RemoteException;
+		throws FinderException, RemoteException;
 	
 	/**
-	 *  Retrieves a single {@link Book} by its primary key.
+	 *  Attempts to login the user in.
+	 *
+	 *  @returns the user
+	 *  @throws LoginException if the email address is invalid, the password
+	 *  is invalid, or the user may not log in for other reasons.
+	 *
+	 */
+	
+	public Person login(String email, String password)
+		throws LoginException, RemoteException;
+	
+	/**
+	 *  Retrieves the attributes of a {@link IPerson} as a {@link Map}.
+	 *
+	 */
+	
+	public Map getPersonAttributes(Integer primaryKey)
+		throws FinderException, RemoteException;
+	
+	/**
+	 *  Retrieves a single {@link Book} by its primary key.  Returns the
+	 *  book's attributes as a {@link Map}.
 	 *
 	 *  @throws FinderException if the Book does not exist.
 	 *
 	 */
-	 
+	
 	public Book getBook(Integer primaryKey)
-	throws FinderException, RemoteException;
-	 	
+		throws FinderException, RemoteException;
+	
 	/**
-	 *  Attempts to register a new user, first checking that the
-	 *  e-mail and names are unique.
+	 *  Retrieves the attributes of a {@link IBook} as a {@link Map}.
 	 *
 	 */
-	 
-	public IPerson registerNewUser(String firstName, String lastName, 
-									String email, String password)
-	throws RegistrationException, CreateException, RemoteException;
-
+	
+	public Map getBookAttributes(Integer primaryKey)
+		throws FinderException, RemoteException;
+	
+	/**
+	 *  Attempts to register a new user, first checking that the
+	 *  e-mail and names are unique.  Returns the primary key of
+	 *  the new {@link IPerson}.
+	 *
+	 */
+	
+	public Person registerNewUser(String firstName, String lastName, 
+			String email, String password)
+		throws RegistrationException, CreateException, RemoteException;
+	
     /**
-     *  Returns a book to its owner.
-     *
-     *  @throws FinderException if the book is not known.
-     *
-     */
-
-    public IBook returnBook(Integer bookPrimaryKey)
-    throws RemoteException, FinderException;
+	 *  Returns a book to its owner.
+	 *
+	 *  @throws FinderException if the book is not known.
+	 *
+	 */
+	
+    public Book returnBook(Integer bookPrimaryKey)
+		throws RemoteException, FinderException;
+	
+	/**
+	 * Deletes a Book.
+	 *
+	 * @returns the Book as it was before being deleted.
+	 */
+	
+	public Book deleteBook(Integer bookPrimaryKey)
+		throws RemoveException, RemoteException;
 }

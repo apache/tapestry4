@@ -79,10 +79,7 @@ public class ViewBook extends BasePage
 			}
 			catch (FinderException ex)
 			{
-				Home home = (Home)cycle.getPage("Home");
-				home.setError("Book not found in database.");
-				
-				cycle.setPage(home);
+				vengine.presentError("Book not found in database.", cycle);
 				return;
 			}
 			catch (RemoteException ex)

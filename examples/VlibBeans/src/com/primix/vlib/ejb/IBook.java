@@ -32,7 +32,7 @@ import javax.ejb.*;
 import java.rmi.*;
 
 /**
- *  Remote interface for the {@link BookBean} entity bean.
+ *  Remote interface for the Book entity bean.
  *
  *  @version $Id$
  *  @author Howard Ship

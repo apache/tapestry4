@@ -61,6 +61,9 @@ public class OperationsBean
 	private transient IPersonHome personHome;
 	private transient IPublisherHome publisherHome;
 	
+	private QueueSender mailQueueSender;
+	private QueueSession mailQueueSession;
+	
 	public static final String MAIL_QUEUE_JNDI_NAME = "queue/Vlib-MailQueue";
 	
 	private static final int MAIL_QUEUE_PRIORITY = 4;
@@ -148,16 +151,16 @@ public class OperationsBean
 	public void ejbActivate()
 	{
 	}
-
+	
 	
 	/**
 	 *  Finds the book and borrower (by thier primary keys) and updates the book.
 	 *
-	 *  <p>The borrowed book is returned.
+	 *  <p>The attributes of the borrowed book is returned.
 	 *
 	 */
 	
-	public IBook borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
+	public Book borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
 		throws FinderException, RemoteException, BorrowException
 	{
 		IBookHome bookHome = getBookHome();
@@ -179,24 +182,20 @@ public class OperationsBean
 		
 		IPerson owner = personHome.findByPrimaryKey(book.getOwnerPK());
 		
-		String bookTitle = book.getTitle();
-		String ownerEmail = owner.getEmail();
-		
-		sendMail(ownerEmail,
-				"Book borrow notification.",
-				"'" + bookTitle + 
-				"'\n" +
-				"has been borrowed by " +
-				owner.getNaturalName() + 
-				" <" +
-					ownerEmail + ">.\n");
-
 		// Here's the real work; just setting the holder of the book
 		// to be the borrower.
 		
 		book.setHolderPK(borrowerPrimaryKey);
-
-		return book;
+		
+		sendMail( owner.getEmail(),
+				"Book borrow notification.",
+				"Your book, '" + book.getTitle() + "',\n" +
+					"has been borrowed by " +
+					borrower.getNaturalName() + 
+					" <" +
+					borrower.getEmail() + ">.\n");
+		
+		return getBook(bookPrimaryKey);
 	}
 	
 	/**
@@ -204,12 +203,14 @@ public class OperationsBean
 	 *
 	 */
 	
-	public IBook addBook(Map attributes)
+	public Integer addBook(Map attributes)
 		throws CreateException, RemoteException
 	{
 		IBookHome home = getBookHome();
 		
-		return home.create(attributes);
+		IBook book = home.create(attributes);
+		
+		return (Integer)book.getPrimaryKey();
 	}
 	
 	
@@ -219,11 +220,11 @@ public class OperationsBean
 	 * <p>The publisherName may either be the name of a known publisher, or
 	 * a new name.  A new {@link IPublisher} will be created as necessary.
 	 *
-	 * <p>Returns the newly created book.
+	 * <p>Returns the newly created book, as a {@link Map} of attributes.
 	 *
 	 */
 	
-	public IBook addBook(Map attributes, String publisherName)
+	public Integer addBook(Map attributes, String publisherName)
 		throws CreateException, RemoteException
 	{
 		IPublisher publisher = null;
@@ -257,7 +258,7 @@ public class OperationsBean
 	 *  
 	 */
 	
-	public IBook updateBook(Integer bookPK, Map attributes)
+	public void updateBook(Integer bookPK, Map attributes)
 		throws FinderException, RemoteException
 	{
 		IBookHome bookHome = getBookHome();
@@ -265,15 +266,12 @@ public class OperationsBean
 		IBook book = bookHome.findByPrimaryKey(bookPK);
 		
 		book.updateEntityAttributes(attributes);
-		
-		return book;
 	}
 	
 	
 	/**
 	 *  Updates a book, adding a new Publisher at the same time.
 	 *
-	 *  <p>Returns the updated book.
 	 *
 	 *  @param bookPK The primary key of the book to update.
 	 *  @param attributes attributes to change
@@ -282,7 +280,7 @@ public class OperationsBean
 	 *  @throws CreateException if the {@link IPublisher} can not be created.
 	 */
 	
-	public IBook updateBook(Integer bookPK, Map attributes, String publisherName)
+	public void updateBook(Integer bookPK, Map attributes, String publisherName)
 		throws CreateException, FinderException, RemoteException
 	{
 		IPublisher publisher = null;
@@ -305,9 +303,18 @@ public class OperationsBean
 		
 		attributes.put("publisherPK", publisher.getPrimaryKey());
 		
-		return updateBook(bookPK, attributes);		
+		updateBook(bookPK, attributes);		
 	}
 	
+	public void updatePerson(Integer primaryKey, Map attributes)
+		throws FinderException, RemoteException
+	{
+		IPersonHome home = getPersonHome();
+		
+		IPerson person = home.findByPrimaryKey(primaryKey);
+		
+		person.updateEntityAttributes(attributes);
+	}
 	
 	public Publisher[] getPublishers()
 	{
@@ -463,6 +470,46 @@ public class OperationsBean
 		return result;
 	}
 	
+	public Person login(String email, String password)
+		throws RemoteException, LoginException
+	{
+		IPersonHome home = getPersonHome();
+		IPerson person = null;
+		
+		try
+		{
+			person = home.findByEmail(email);
+		}
+		catch (FinderException ex)
+		{
+			throw new LoginException("Unknown e-mail address.", false);
+		}
+		
+		if (!person.getPassword().equals(password))
+			throw new LoginException("Invalid password.", true);
+		
+		// TBD:  Check for locked out
+		
+		try
+		{
+			return getPerson((Integer)person.getPrimaryKey());
+		}
+		catch (FinderException ex)
+		{
+			throw new LoginException("Could not read person.", false);
+		}
+	}
+	
+	public Map getPersonAttributes(Integer primaryKey)
+		throws FinderException, RemoteException
+	{
+		IPersonHome home = getPersonHome();
+		
+		IPerson person = home.findByPrimaryKey(primaryKey);
+		
+		return person.getEntityAttributes();
+	}
+	
 	/**
 	 *  Retrieves a single {@link Book} by its primary key.
 	 *
@@ -511,13 +558,24 @@ public class OperationsBean
 		return result;
 	}
 	
+	public Map getBookAttributes(Integer primaryKey)
+		throws FinderException, RemoteException
+	{
+		IBookHome home = getBookHome();
+		
+		IBook book = home.findByPrimaryKey(primaryKey);
+		
+		return book.getEntityAttributes();
+	}
+	
 	/**
 	 *  Attempts to register a new user, first checking that the
-	 *  e-mail and names are unique.
+	 *  e-mail and names are unique.  Returns the primary key of the
+	 *  new {@link IPerson}.
 	 *
 	 */
 	
-	public IPerson registerNewUser(String firstName, String lastName, 
+	public Person registerNewUser(String firstName, String lastName, 
 			String email, String password)
 		throws RegistrationException, CreateException, RemoteException
 	{
@@ -538,9 +596,41 @@ public class OperationsBean
 		attributes.put("email", email.trim());
 		attributes.put("password", password.trim());
 		
-		return home.create(attributes);
+		IPerson person = home.create(attributes);
+		
+		Integer primaryKey = (Integer)person.getPrimaryKey();
+		
+		try
+		{
+			return getPerson(primaryKey);
+		}
+		catch (FinderException ex)
+		{
+			throw new XCreateException("Unable to find newly created Person.", ex);
+		}
 	}
 	
+	public Book deleteBook(Integer bookPrimaryKey)
+		throws RemoveException, RemoteException
+	{
+		IBookHome home = getBookHome();
+		Book result = null;
+		
+		try
+		{
+			result = getBook(bookPrimaryKey);
+		}
+		catch (FinderException ex)
+		{
+			throw new XRemoveException(ex);
+		}
+		
+		home.remove(bookPrimaryKey);
+		
+		
+		return result;
+		
+	}
 	
 	/**
 	 *  Translates the next row from the result set into a {@link Book}.
@@ -787,7 +877,7 @@ public class OperationsBean
 		result = new StatementAssembly();
 		
 		result.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL, ");
-		result.newLine("  VERIFIED, LOCKED_OUT, ADMIN");
+		result.newLine("  VERIFIED, LOCKED_OUT, ADMIN, AUTH_CODE");
 		result.newLine("FROM PERSON");
 		
 		return result;
@@ -812,6 +902,7 @@ public class OperationsBean
 		columns[Person.VERIFIED_COLUMN] = getBoolean(set, column++);
 		columns[Person.LOCKED_OUT_COLUMN] = getBoolean(set, column++);
 		columns[Person.ADMIN_COLUMN] = getBoolean(set, column++);
+		columns[Person.AUTHORIZATION_CODE_COLUMN] =	set.getString(column++);
 		
 		return new Person(columns);
 	}	
@@ -885,7 +976,7 @@ public class OperationsBean
 		}
 	}
 	
-    public IBook returnBook(Integer bookPrimaryKey)
+    public Book returnBook(Integer bookPrimaryKey)
 		throws RemoteException, FinderException
     {
 		IBookHome bookHome;
@@ -896,13 +987,23 @@ public class OperationsBean
 		
 		// Return the book ... that is, make its holder its owner.
 		
-		book.setHolderPK(book.getOwnerPK());
+		Integer borrowerPK = book.getHolderPK();
+		Integer ownerPK = book.getOwnerPK();
 		
-		return book;
+		book.setHolderPK(ownerPK);
+		
+		IPersonHome personHome = getPersonHome();
+		IPerson owner = personHome.findByPrimaryKey(ownerPK);
+		IPerson borrower = personHome.findByPrimaryKey(borrowerPK);
+		
+		sendMail( owner.getEmail(),
+				"Book return notification.",
+				borrower.getNaturalName() + 
+					" <" + borrower.getEmail() + "> has returned your book,\n" +
+					"'" + book.getTitle() + "'.\n");
+		
+		return getBook(bookPrimaryKey);
     }
-	
-	private QueueSender mailQueueSender;
-	private QueueSession mailQueueSession;
 	
 	protected QueueSession getMailQueueSession()
 		throws NamingException, JMSException
@@ -920,7 +1021,7 @@ public class OperationsBean
 		
 		return mailQueueSession;
 	}
-			
+	
 	protected QueueSender getMailQueueSender()
 		throws NamingException, JMSException
 	{
@@ -945,10 +1046,11 @@ public class OperationsBean
 			
 			QueueSession session = getMailQueueSession();
 			
-			MapMessage queueMessage = session.createMapMessage();
-			queueMessage.setString("email", emailAddress);
-			queueMessage.setString("subject", subject);
-			queueMessage.setString("content", content);
+			TextMessage queueMessage = session.createTextMessage();
+			queueMessage.setStringProperty(EMAIL_ADDRESS, emailAddress);
+			queueMessage.setStringProperty(SUBJECT, subject);
+			queueMessage.setText(content);
+			
 			
 			sender.send(queueMessage, DeliveryMode.PERSISTENT, MAIL_QUEUE_PRIORITY, 0);
 		}
@@ -961,6 +1063,8 @@ public class OperationsBean
 			throw new XEJBException(ex);
 		}
 	}
+	
+	
 }  
 
 
