@@ -131,114 +131,135 @@ public class SpecificationParser extends AbstractDocumentParser
     public static final String TAPESTRY_DTD_1_3_PUBLIC_ID = "-//Howard Lewis Ship//Tapestry Specification 1.3//EN";
 
     /**
+     *  Simple property names match Java variable names; a leading letter
+     *  (or underscore), followed by letters, numbers and underscores.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private static final String SIMPLE_PROPERTY_NAME_PATTERN = "^[a-zA-Z_]\\w*$";
+
+    /**
+     *  Like simple property name, but also allows dashes in the name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private static final String MODIFIED_PROPERTY_NAME_PATTERN = "^[a-zA-Z_](\\w|-)*$";
+
+    /**
+     *  Like modified property name, but allows periods in the name as
+     *  well.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private static final String EXTENDED_PROPERTY_NAME_PATTERN = "^[a-zA-Z_](\\w|-|\\.)*$";
+
+    /**
      *  Perl5 pattern that parameter names must conform to.  
      *  Letter, followed by letter, number or underscore.
-     *  Expects caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public static final String PARAMETER_NAME_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
+
+    /**
+     *  Perl5 pattern that property names (that can be connected to
+     *  parameters) must conform to.  
+     *  Letter, followed by letter, number or underscore.
      *  
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String PARAMETER_NAME_PATTERN = "^[a-z]\\w*$";
-
-    /**
-     *  Perl5 pattern that property names (that can be connected to
-     *  parameters) must conform to.  
-     *  Letter, followed by letter, number or underscore.
-     *  Expects caseless comparison.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    public static final String PROPERTY_NAME_PATTERN = PARAMETER_NAME_PATTERN;
+    public static final String PROPERTY_NAME_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for page names.  Letter
      *  followed by letter, number, dash, underscore or period.
-     *  Expects caseless comparison.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String PAGE_NAME_PATTERN = "^[a-z](\\w|-|\\.)*$";
+    public static final String PAGE_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for component aliases. 
      *  Letter, followed by letter, number, dash, underscore or period.
-     *  Expects caseless comparison.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String COMPONENT_ALIAS_PATTERN = PAGE_NAME_PATTERN;
+    public static final String COMPONENT_ALIAS_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for helper bean names.  
      *  Letter, followed by letter, number, underscore or dash.
-     *  Expects caseless comparison.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String BEAN_NAME_PATTERN = "^[a-z](\\w|-)*$";
+    public static final String BEAN_NAME_PATTERN = MODIFIED_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for component ids.  Letter, followed by
-     *  letter, number, underscore or dash.  Expects caseless comparison.
+     *  letter, number, underscore or dash. 
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String COMPONENT_ID_PATTERN = BEAN_NAME_PATTERN;
+    public static final String COMPONENT_ID_PATTERN = MODIFIED_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for asset names.  Letter, followed by
-     *  letter, number, underscore or dash.  Expects caseless comparison.
+     *  letter, number, underscore or dash. 
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String ASSET_NAME_PATTERN = BEAN_NAME_PATTERN;
+    public static final String ASSET_NAME_PATTERN = MODIFIED_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for service names.  Letter
      *  followed by letter, number, dash, underscore or period.
-     *  Expects caseless comparison.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String SERVICE_NAME_PATTERN = PAGE_NAME_PATTERN;
+    public static final String SERVICE_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for library ids.  Letter followed
-     *  by letter, number, dash or underscore.  Expects
-     *  caseless comparison.
+     *  by letter, number, dash or underscore.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String LIBRARY_ID_PATTERN = BEAN_NAME_PATTERN;
+    public static final String LIBRARY_ID_PATTERN = MODIFIED_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Per5 pattern for extension names.  Letter follwed
-     *  by letter, number, dash or underscore.  Expects
-     *  caseless comparison.
+     *  Per5 pattern for extension names.  Letter followed
+     *  by letter, number, dash, period or underscore. 
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String EXTENSION_NAME_PATTERN = BEAN_NAME_PATTERN;
+    public static final String EXTENSION_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     /**
      *  We can share a single map for all the XML attribute to object conversions,
@@ -580,13 +601,12 @@ public class SpecificationParser extends AbstractDocumentParser
             dtdVersion = "1.1";
 
         }
-        else
-            if (publicId.equals(TAPESTRY_DTD_1_2_PUBLIC_ID))
-            {
+        else if (publicId.equals(TAPESTRY_DTD_1_2_PUBLIC_ID))
+        {
 
-                dtdVersion = "1.2";
+            dtdVersion = "1.2";
 
-            }
+        }
         return dtdVersion;
     }
 
@@ -683,7 +703,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 continue;
             }
         }
-        
+
         specification.instantiateImmediateExtensions();
     }
 
@@ -894,7 +914,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 convertProperty(bspec, child);
                 continue;
             }
-            
+
             if (isElement(child, "set-property"))
             {
                 convertSetProperty(bspec, child);
@@ -1052,7 +1072,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 convertBinding(c, child, BindingType.STRING, "key");
                 continue;
             }
-            
+
             if (isElement(child, "property"))
             {
                 convertProperty(c, child);
@@ -1117,8 +1137,8 @@ public class SpecificationParser extends AbstractDocumentParser
         AssetSpecification asset = _factory.createAssetSpecification(type, value);
 
         specification.addAsset(name, asset);
-        
-        processPropertiesInNode(asset, node);      
+
+        processPropertiesInNode(asset, node);
     }
 
     /**
@@ -1126,7 +1146,7 @@ public class SpecificationParser extends AbstractDocumentParser
      *  &lt;property&gt; elements.
      * 
      **/
-    
+
     private void processPropertiesInNode(IPropertyHolder holder, Node node) throws DocumentParseException
     {
         for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
@@ -1136,7 +1156,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 convertProperty(holder, child);
                 continue;
             }
-        }  
+        }
     }
 
     /**
@@ -1240,7 +1260,7 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             return _patternCompiler.compile(
                 pattern,
-                Perl5Compiler.CASE_INSENSITIVE_MASK | Perl5Compiler.SINGLELINE_MASK);
+                Perl5Compiler.SINGLELINE_MASK);
         }
         catch (MalformedPatternException ex)
         {
@@ -1272,7 +1292,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 convertConfigure(exSpec, child);
                 continue;
             }
-            
+
             if (isElement(child, "property"))
             {
                 convertProperty(exSpec, child);
