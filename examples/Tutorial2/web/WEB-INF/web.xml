@@ -26,6 +26,12 @@
   	<load-on-startup>0</load-on-startup>
   </servlet>
 
+  <servlet>
+    <servlet-name>forms</servlet-name>
+    <servlet-class>tutorial.forms.FormsServlet</servlet-class>
+  	<load-on-startup>0</load-on-startup>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>hello</servlet-name>
     <url-pattern>/hello</url-pattern>
@@ -34,6 +40,11 @@
   <servlet-mapping>
     <servlet-name>pagelinking</servlet-name>
     <url-pattern>/pagelinking</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>forms</servlet-name>
+    <url-pattern>/forms</url-pattern>
   </servlet-mapping>
 
   <session-config>
