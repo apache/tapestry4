@@ -33,18 +33,9 @@ import java.util.*;
 
 /**
  *  A special type of form component that is used to contain {@link Radio}
- *  components.  Roughly the analog of a {@link Select}.
- *
- *  <p>{@link Radio} and {@link RadioGroup} are generally not used (except
- *  for very special cases).  Instead, a {@link PropertySelection} component is used.
- *
- *  <p>In most cases, a {@link SelectionAdaptor} will be used with
- *  a {@link Foreach} to drive the options used by the {@link Radio}
- *  components. 
- *
- * <p>TBD:  The similuarities between {@link Select} and <code>RadioGroup</code>
- *  are so great that they probably are they could probably be merged, or at least,
- *  factored with a common base class.
+ *  components.  The Radio and {@link Radio} group components work together to
+ *  update a property of some other object, much like a more flexible
+ *  version of a {@link PropertySelection}.
  *
  * <table border=1>
  * <tr> 
@@ -55,6 +46,17 @@ import java.util.*;
  *    <td>Default</td>
  *    <td>Description</td>
  * </tr>
+ *
+ * <tr>
+ *      <td>selected</td>
+ *      <td>{@link Object}</td>
+ *      <td>R / W</td>
+ *      <td>yes</td>
+ *      <td>&nbsp;</td>
+ *      <td>Read during rendering to determine which {@link Radio} will be the default.
+ *  Updated during rewinding (when the form is submitted) to indicate which radio button
+ *  was selected by the user.
+ *  </td>
  *
  *  <tr>
  *		<td>disabled</td>
@@ -76,10 +78,21 @@ import java.util.*;
 
 public class RadioGroup extends AbstractFormComponent
 {
+    private IBinding selectedBinding;
     private IBinding disabledBinding;
 
-    private Set selections;
+    // Cached copy of the value from the selectedBinding
+    private Object selection;
+
+    // The value from the HTTP request indicating which
+    // Radio was selected by the user.
+    private int selectedOption;
+
+    // The HTML field name used for this group (i.e., by all Radio buttons
+    // within this group).
+
     private String name;
+    
     private boolean disabled;
     private boolean rewinding;
     private boolean rendering;
@@ -101,9 +114,24 @@ public class RadioGroup extends AbstractFormComponent
         return (RadioGroup)cycle.getAttribute(ATTRIBUTE_NAME);
     }
 
+    public IBinding getSelectedBinding()
+    {
+        return selectedBinding;
+    }
+
+    public void setSelectedBinding(IBinding value)
+    {
+        selectedBinding = value;
+    }
+
     public IBinding getDisabledBinding()
     {
         return disabledBinding;
+    }
+
+    public void setDisabledBinding(IBinding value)
+    {
+        disabledBinding = value;
     }
 
     public String getName()
@@ -111,12 +139,12 @@ public class RadioGroup extends AbstractFormComponent
         return name;
     }
 
-    public String getNextOptionId()
+    public int getNextOptionId()
     {
         if (!rendering)
             throw new RenderOnlyPropertyException(this, "nextOptionId");
 
-        return Integer.toString(nextOptionId++);
+        return nextOptionId++;
     }	
 
     /**
@@ -142,17 +170,45 @@ public class RadioGroup extends AbstractFormComponent
     }
 
     /**
-    *  Used by {@link Radio} components when rewinding to see if their value was submitted.  They
-    *  use this to determine if they, individually, were selected.
+     *  Returns true if the value is equal to the current selection for the
+     *  group.  This is invoked by a {@link Radio} during rendering
+     *  to determine if it should be marked 'checked'.
+     *
+     */
+
+    public boolean isSelection(Object value)
+    {
+        if (!rendering)
+            throw new RenderOnlyPropertyException(this, "selection");
+
+        if (selection == value)
+            return true;
+
+        if (selection == null || value == null)
+            return false;
+
+        return selection.equals(value);
+    }
+
+    /**
+     *  Invoked by the {@link Radio} which is selected to update the 
+     *  property bound to the selected parameter.
+     *
+     */
+
+    public void updateSelection(Object value)
+    {
+        selectedBinding.setValue(value);
+    }
+
+    /**
+    *  Used by {@link Radio} components when rewinding to see if their value was submitted.
     *
     */
 
-    public boolean isSelected(String value)
+    public boolean isSelected(int option)
     {
-        if (selections == null)
-            return false;
-
-        return selections.contains(value);
+        return selectedOption == option;
     }
 
     /**
@@ -191,65 +247,40 @@ public class RadioGroup extends AbstractFormComponent
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
+        // When rewinding, find out which (if any) radio was selected by
+        // the user.
+
         if (rewinding)
-            selections = buildSelections(cycle, name);
+        {
+            String value = cycle.getRequestContext().getParameter(name);
+            if (value == null)
+                selectedOption = -1;
+            else
+                selectedOption = Integer.parseInt(value);
+        }
 
         try
         {
             rendering = true;
             nextOptionId = 0;
 
+            // For rendering, the Radio components need to know what the current
+            // selection is, so that the correct one can mark itself 'checked'.
+
+            if (!rewinding)
+                selection = selectedBinding.getValue();
+
             renderWrapped(writer, cycle);
         }
         finally
         {
             rendering = false;
-            selections = null;
+            selection = null;
         }
 
         cycle.removeAttribute(ATTRIBUTE_NAME);
     }
 
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
-    }
-
-    /**
-    *  Ick!  Cut and paste with {@link Select}.
-    *
-    */
-
-    private Set buildSelections(IRequestCycle cycle, String parameterName)
-    {
-        RequestContext context;
-        String[] parameters;
-        int size = 7;
-        int length;
-        int i;
-        Set result;
-
-        context = cycle.getRequestContext();
-
-        parameters = context.getParameterValues(parameterName);
-
-        if (parameters == null)
-            return null;
-
-        length = parameters.length;
-        if (parameters.length == 0)
-            return null;
-
-        if (parameters.length > 30)
-            size = 101;
-
-        result = new HashSet(size);
-
-        for (i = 0; i < length; i++)
-            result.add(parameters[i]);
-
-        return result;
-    }  
 }
 
 

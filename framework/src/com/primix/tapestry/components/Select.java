@@ -71,9 +71,6 @@ import java.util.*;
  *
  * <p>Informal parameters are allowed.
  *
- * <p>When using single selection, it is useful to create a subclass of
- * {@link SelectionAdaptor} to mediate the results for your application.
- *
  *  @author Howard Ship
  *  @version $Id$
  */

@@ -10,9 +10,7 @@
 	
 	<parameters>
 		<parameter>
-			<name>selected</name>
-			<java-type>java.lang.Boolean</java-type>
-			<required>yes</required>
+			<name>value</name>
 		</parameter>
 		
 		<parameter>

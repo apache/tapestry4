@@ -28,7 +28,8 @@ PACKAGES = \
 LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/xerces.jar \
-	$(INSTALL_DIR)/j2ee.jar
+	$(INSTALL_DIR)/javax.servlet.jar \
+	$(INSTALL_DIR)/ejb.jar
 
 INSTALL_DIR = ../lib
 
