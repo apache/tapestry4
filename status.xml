@@ -209,9 +209,13 @@ NextGen) be released as version number 3.0.
 <!-- Use due-to to give acknowledgement for patches. -->
   
  <release version="3.0-rc-2" date="unreleased">
- 	<action type="fix" dev="HLS" fixed-bug="28057">
+ 	<action type="fix" dev="HLS" fixes-bug="28057">
  		Fix problems in the binary distribution.
  	</action>	
+ 	<action type="fix" dev="HLS" fixes-bug="27954">
+ 		Create proper OGNL context when checking for invariant OGNL expressions
+ 		(when initializing component properties).
+ 	</action>
  </release>
   
  <release version="3.0-rc-1" date="Mar 15 2004">
