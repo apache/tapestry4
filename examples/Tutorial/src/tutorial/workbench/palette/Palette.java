@@ -44,13 +44,6 @@ public class Palette extends BasePage
 {
 	private List selectedColors;
 
-	/**
-	 *  Set the true when the user clicks the "continue" button.
-	 *
-	 */
-
-	private boolean advance;
-
 	private SortMode sort = SortMode.USER;
 
 	private IPropertySelectionModel sortModel;
@@ -58,7 +51,6 @@ public class Palette extends BasePage
 	public void detach()
 	{
 		sort = SortMode.USER;
-		advance = false;
 		selectedColors = null;
 
 		super.detach();
@@ -66,16 +58,25 @@ public class Palette extends BasePage
 
 	public void formSubmit(IRequestCycle cycle)
 	{
-		if (advance)
-		{
+			// Does nothing ... may be invoked because
+			// the user changed the sort
+	}
+
+	/**
+	 *  Invoked before {@link #formSubmit(IRequestCycle)} if the
+	 *  user clicks the "advance" button.
+	 * 
+	 **/
+	
+	public void advance(IRequestCycle cycle)
+	{
 			Results results = (Results) cycle.getPage("palette.Results");
 
 			results.setSelectedColors(selectedColors);
 
 			cycle.setPage(results);
-		}
 	}
-
+	
 	private IPropertySelectionModel colorModel;
 
 	private String[] colors =
@@ -127,13 +128,4 @@ public class Palette extends BasePage
 		return selectedColors;
 	}
 
-	public boolean getAdvance()
-	{
-		return advance;
-	}
-
-	public void setAdvance(boolean value)
-	{
-		advance = value;
-	}
 }

@@ -121,6 +121,19 @@ import com.primix.tapestry.html.*;
  *  <p>This parameter is required if the selected paremeter is used.</td>
  *  </tr>
  *
+ *  <tr>
+ * 		<td>listener</td>
+ * 		<td>{@link IActionListener}</td>
+ * 		<td>R</td>
+ * 		<td>no</td>
+ * 		<td>&nbsp;</td>
+ * 		<td>If specified, the listener is notified.  This notification occurs
+ *  as the component is rewinded, i.e., prior to the {@link IForm form}'s listener.
+ *  In addition, the selected property (if bound) will be updated <em>before</em>
+ *  the listener is notified.
+ * 		</td>
+ *   </tr>
+ * 
  * </table>
  *
  * <p>Informal parameters are allowed.  A body is not allowed.
@@ -139,6 +152,7 @@ public class ImageSubmit extends AbstractFormComponent
 	private IBinding selectedBinding;
 	private IBinding tagBinding;
 	private IBinding nameBinding;
+	private IBinding listenerBinding;
 	private String staticName;
 	private Object staticTagValue;
 	private String name;
@@ -299,28 +313,40 @@ public class ImageSubmit extends AbstractFormComponent
 			// Notify the application, by setting the select parameter
 			// to the tag parameter.
 
-			if (selectedBinding == null)
-				return;
+			if (selectedBinding != null)
+			{
 
-			if (tagBinding == null)
-				throw new RequestCycleException(
-					"The tag parameter is required if the selected parameter is bound.",
-					this);
+				if (tagBinding == null)
+					throw new RequestCycleException(
+						"The tag parameter is required if the selected parameter is bound.",
+						this);
 
-			// OK, now to notify the application code (via the parameters)
-			// that *this* ImageButton was selected.  We do this by applying
-			// a tag (presumably, specific to the ImageButton in question)
-			// to the selected binding.  When the containing Form's listener
-			// is invoked, it can determine which (if any) ImageButton
-			// (or Submit) was clicked.
+				// OK, now to notify the application code (via the parameters)
+				// that *this* ImageButton was selected.  We do this by applying
+				// a tag (presumably, specific to the ImageButton in question)
+				// to the selected binding.  When the containing Form's listener
+				// is invoked, it can determine which (if any) ImageButton
+				// (or Submit) was clicked.
 
-			if (tagValue == null)
-				tagValue = tagBinding.getObject();
+				if (tagValue == null)
+					tagValue = tagBinding.getObject();
 
-			if (tagValue == null)
-				throw new RequiredParameterException(this, "tag", tagBinding);
+				if (tagValue == null)
+					throw new RequiredParameterException(this, "tag", tagBinding);
 
-			selectedBinding.setObject(tagValue);
+				selectedBinding.setObject(tagValue);
+			}
+
+			if (listenerBinding != null)
+			{
+				IActionListener listener =
+					(IActionListener) listenerBinding.getObject("listener", IActionListener.class);
+
+				if (listener != null)
+					listener.actionTriggered(this, cycle);
+			}
+
+			return;
 		}
 
 		// Not rewinding, do the real render
@@ -357,4 +383,16 @@ public class ImageSubmit extends AbstractFormComponent
 
 		writer.closeTag();
 	}
+
+	public IBinding getListenerBinding()
+	
+	{
+		return listenerBinding;
+	}
+
+	public void setListenerBinding(IBinding listenerBinding)
+	{
+		this.listenerBinding = listenerBinding;
+	}
+
 }
