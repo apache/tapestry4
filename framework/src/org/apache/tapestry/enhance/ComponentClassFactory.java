@@ -79,8 +79,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -276,7 +276,7 @@ public class ComponentClassFactory
      * 
      **/
 
-    public Class convertPropertyType(String type, Location location)
+    public Class convertPropertyType(String type, ILocation location)
     {
         Class result = (Class) _typeMap.get(type);
 
@@ -339,7 +339,7 @@ public class ComponentClassFactory
         return result.toString();
     }
 
-    protected void checkPropertyType(PropertyDescriptor pd, Class propertyType, Location location)
+    protected void checkPropertyType(PropertyDescriptor pd, Class propertyType, ILocation location)
     {
         if (!pd.getPropertyType().equals(propertyType))
             throw new ApplicationRuntimeException(
@@ -363,7 +363,7 @@ public class ComponentClassFactory
      * 
      **/
 
-    protected String checkAccessors(String propertyName, Class propertyType, Location location)
+    protected String checkAccessors(String propertyName, Class propertyType, ILocation location)
     {
         PropertyDescriptor d = getPropertyDescriptor(propertyName);
 
@@ -648,7 +648,7 @@ public class ComponentClassFactory
         if (!isMissingProperty(propertyName))
             return;
 
-        Location location = ps.getLocation();
+        ILocation location = ps.getLocation();
 
         Class propertyType = convertPropertyType(ps.getType(), location);
 
@@ -664,7 +664,7 @@ public class ComponentClassFactory
 
     protected void addAutoParameterEnhancer(String parameterName, IParameterSpecification ps)
     {
-        Location location = ps.getLocation();
+        ILocation location = ps.getLocation();
         String propertyName = ps.getPropertyName();
 
         if (!ps.isRequired())
@@ -695,7 +695,7 @@ public class ComponentClassFactory
     protected void scanForSpecifiedProperty(IPropertySpecification ps)
     {
         String propertyName = ps.getName();
-        Location location = ps.getLocation();
+        ILocation location = ps.getLocation();
         Class propertyType = convertPropertyType(ps.getType(), location);
 
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);

@@ -56,7 +56,6 @@
 package org.apache.tapestry.spec;
 
 import org.apache.commons.lang.enum.Enum;
-
 import org.apache.tapestry.Tapestry;
 
 /**

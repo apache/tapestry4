@@ -59,8 +59,8 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -76,7 +76,7 @@ public class ExternalAsset extends AbstractAsset
 {
     private String _URL;
 
-    public ExternalAsset(String URL, Location location)
+    public ExternalAsset(String URL, ILocation location)
     {
     	super(null, location);
     	

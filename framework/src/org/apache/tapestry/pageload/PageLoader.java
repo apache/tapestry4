@@ -71,12 +71,12 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.ContextAsset;
 import org.apache.tapestry.asset.ExternalAsset;
@@ -441,7 +441,7 @@ public class PageLoader implements IPageLoader
     private IBinding convert(IComponent container, IBindingSpecification spec)
     {
         BindingType type = spec.getType();
-        Location location = spec.getLocation();
+        ILocation location = spec.getLocation();
         String value = spec.getValue();
 
         // The most common type. 
@@ -553,7 +553,7 @@ public class PageLoader implements IPageLoader
                 IContainedComponent contained = containerSpec.getComponent(id);
 
                 String type = contained.getType();
-                Location location = contained.getLocation();
+                ILocation location = contained.getLocation();
 
                 _componentResolver.resolve(cycle, namespace, type, location);
 
@@ -639,7 +639,7 @@ public class PageLoader implements IPageLoader
         IComponent container,
         String componentId,
         String componentType,
-        Location location)
+        ILocation location)
     {
         IPage page = container.getPage();
 
@@ -674,7 +674,7 @@ public class PageLoader implements IPageLoader
         String id,
         IComponentSpecification spec,
         INamespace namespace,
-        Location location)
+        ILocation location)
     {
         IComponent result = null;
         String className = spec.getComponentClassName();
@@ -744,7 +744,7 @@ public class PageLoader implements IPageLoader
 
         String pageName = namespace.constructQualifiedName(name);
         String className = spec.getComponentClassName();
-        Location location = spec.getLocation();
+        ILocation location = spec.getLocation();
 
         if (Tapestry.isNull(className))
         {
@@ -975,7 +975,7 @@ public class PageLoader implements IPageLoader
     {
         AssetType type = spec.getType();
         String path = spec.getPath();
-        Location location = spec.getLocation();
+        ILocation location = spec.getLocation();
 
         if (type == AssetType.EXTERNAL)
             return new ExternalAsset(path, location);
@@ -1017,7 +1017,7 @@ public class PageLoader implements IPageLoader
         IComponent component,
         IResourceLocation baseLocation,
         String path,
-        Location location)
+        ILocation location)
     {
         IResourceLocation assetLocation = baseLocation.getRelativeLocation(path);
         IResourceLocation localizedLocation = assetLocation.getLocalization(_locale);

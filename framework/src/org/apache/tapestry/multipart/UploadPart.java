@@ -59,14 +59,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.IUploadFile;
-
 import org.apache.commons.fileupload.DefaultFileItem;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.request.IUploadFile;
 
 /**
  *  Portion of a multi-part request representing an uploaded file.

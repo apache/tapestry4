@@ -57,7 +57,7 @@ package org.apache.tapestry.parse;
 
 import java.util.Map;
 
-import org.apache.tapestry.Location;
+import org.apache.tapestry.ILocation;
 
 /**
  *  Represents localized text from the template.
@@ -90,7 +90,7 @@ public class LocalizationToken extends TemplateToken
      * 
      **/
     
-    public LocalizationToken(String tag, String key, boolean raw, Map attributes, Location location)
+    public LocalizationToken(String tag, String key, boolean raw, Map attributes, ILocation location)
     {
         super(TokenType.LOCALIZATION, location);
         

@@ -55,11 +55,11 @@
 
 package org.apache.tapestry.util.xml;
 
-import org.xml.sax.SAXParseException;
-
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Location;
+import org.xml.sax.SAXParseException;
 
 /**
  *  Exception thrown if there is any kind of error parsing the
@@ -98,7 +98,7 @@ public class DocumentParseException extends ApplicationRuntimeException
     public DocumentParseException(
         String message,
         IResourceLocation documentLocation,
-        Location location,
+        ILocation location,
         Throwable rootCause)
     {
         super(message, null, location, rootCause);

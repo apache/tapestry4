@@ -90,7 +90,7 @@ public class BindingException extends ApplicationRuntimeException
     public BindingException(
         String message,
         IComponent component,
-        Location location,
+        ILocation location,
         IBinding binding,
         Throwable rootCause)
     {

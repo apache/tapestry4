@@ -59,7 +59,8 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;;
+import org.apache.tapestry.IRequestCycle;
+;
 
 /**
  *  Implements a component that manages an HTML &lt;input type=submit&gt; form element.

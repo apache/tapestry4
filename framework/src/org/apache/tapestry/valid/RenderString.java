@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.valid;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  *  A wrapper around {@link String} that allows the String to

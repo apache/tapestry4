@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.digester.Digester;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
@@ -84,7 +85,7 @@ public class SpecificationDigester extends Digester
     private IResourceLocation _resourceLocation;
     private RegexpMatcher _matcher;
 
-    private Location _lastLocation;
+    private ILocation _lastLocation;
     private int _lastLine;
     private int _lastColumn;
 
@@ -169,7 +170,7 @@ public class SpecificationDigester extends Digester
      *  Returns the {@link org.xml.sax.Locator} for the Digester.  This object
      *  is provided by the underlying SAX parser to identify where in the
      *  document the parse is currently located; this information can be
-     *  used to build a {@link org.apache.tapestry.ILocationTag}.
+     *  used to build a {@link org.apache.tapestry.ILocation}.
      * 
      **/
 
@@ -178,7 +179,7 @@ public class SpecificationDigester extends Digester
         return locator;
     }
 
-    public Location getLocationTag()
+    public ILocation getLocationTag()
     {
         int line = -1;
         int column = -1;

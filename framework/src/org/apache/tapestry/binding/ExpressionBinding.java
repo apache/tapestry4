@@ -62,8 +62,8 @@ import ognl.OgnlException;
 
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.IBeanSpecification;
@@ -196,7 +196,7 @@ public class ExpressionBinding extends AbstractBinding
         IResourceResolver resolver,
         IComponent root,
         String expression,
-        Location location)
+        ILocation location)
     {
         super(location);
 

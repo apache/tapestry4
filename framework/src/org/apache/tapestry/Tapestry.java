@@ -1158,14 +1158,14 @@ public final class Tapestry
     }
 
     /**
-     *  Selects the first {@link org.apache.tapestry.Location} in an array of objects.
+     *  Selects the first {@link org.apache.tapestry.ILocation} in an array of objects.
      *  Skips over nulls.  The objects may be instances of
      *  {Location or {@link org.apache.tapestry.ILocatable}.  May return null
      *  if no Location found found.
      * 
      **/
 
-    public static Location findLocation(Object[] locations)
+    public static ILocation findLocation(Object[] locations)
     {
         for (int i = 0; i < locations.length; i++)
         {
@@ -1174,13 +1174,13 @@ public final class Tapestry
             if (location == null)
                 continue;
 
-            if (location instanceof Location)
-                return (Location) location;
+            if (location instanceof ILocation)
+                return (ILocation) location;
 
             if (location instanceof ILocatable)
             {
                 ILocatable locatable = (ILocatable) location;
-                Location result = locatable.getLocation();
+                ILocation result = locatable.getLocation();
 
                 if (result != null)
                     return result;
@@ -1207,7 +1207,7 @@ public final class Tapestry
     public static ApplicationRuntimeException createNoSuchComponentException(
         IComponent component,
         String id,
-        Location location)
+        ILocation location)
     {
         return new ApplicationRuntimeException(
             getString("no-such-component", component.getExtendedId(), id),

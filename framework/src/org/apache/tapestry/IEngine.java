@@ -60,8 +60,16 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
-import org.apache.tapestry.engine.*;
-import org.apache.tapestry.request.*;
+import org.apache.tapestry.engine.IComponentClassEnhancer;
+import org.apache.tapestry.engine.IComponentStringsSource;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.engine.IPageRecorder;
+import org.apache.tapestry.engine.IPageSource;
+import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.engine.IScriptSource;
+import org.apache.tapestry.engine.ISpecificationSource;
+import org.apache.tapestry.engine.ITemplateSource;
+import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.pool.Pool;

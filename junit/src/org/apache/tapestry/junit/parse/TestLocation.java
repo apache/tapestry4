@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.junit.parse;
 
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Location;
 import org.apache.tapestry.junit.TapestryTestCase;
@@ -80,7 +81,7 @@ public class TestLocation extends TapestryTestCase
 
     public void testNoNumbers()
     {
-        Location l = new Location(_location);
+        ILocation l = new Location(_location);
 
         assertSame(_location, l.getResourceLocation());
         assertTrue(l.getLineNumber() <= 0);
@@ -89,14 +90,14 @@ public class TestLocation extends TapestryTestCase
 
     public void testToStringShort()
     {
-        Location l = new Location(_location);
+        ILocation l = new Location(_location);
 
         assertEquals("context:/WEB-INF/foo.bar", l.toString());
     }
 
 	public void testWithLine()
 	{
-		Location l = new Location(_location, 22);
+		ILocation l = new Location(_location, 22);
 		
 		assertEquals(22, l.getLineNumber());
 		assertEquals("context:/WEB-INF/foo.bar, line 22", l.toString());
@@ -104,7 +105,7 @@ public class TestLocation extends TapestryTestCase
 
     public void testWithNumbers()
     {
-        Location l = new Location(_location, 100, 15);
+        ILocation l = new Location(_location, 100, 15);
 
         assertEquals(100, l.getLineNumber());
         assertEquals(15, l.getColumnNumber());
@@ -112,7 +113,7 @@ public class TestLocation extends TapestryTestCase
 
     public void testToStringLong()
     {
-        Location l = new Location(_location, 97, 3);
+        ILocation l = new Location(_location, 97, 3);
 
         assertEquals("context:/WEB-INF/foo.bar, line 97, column 3", l.toString());
     }

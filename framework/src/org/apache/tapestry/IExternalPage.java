@@ -55,8 +55,6 @@
 
 package org.apache.tapestry;
 
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 
 /**
  *  Defines a page which may be referenced externally via a URL using the 

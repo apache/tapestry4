@@ -58,7 +58,12 @@ package org.apache.tapestry.enhance;
 import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.Field;
 import org.apache.bcel.classfile.JavaClass;
-import org.apache.bcel.generic.*;
+import org.apache.bcel.generic.ClassGen;
+import org.apache.bcel.generic.ConstantPoolGen;
+import org.apache.bcel.generic.FieldGen;
+import org.apache.bcel.generic.InstructionConstants;
+import org.apache.bcel.generic.InstructionFactory;
+import org.apache.bcel.generic.Type;
 
 /**
  *  Class used to simplify the generation of new classes as

@@ -70,7 +70,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
-import org.apache.tapestry.Location;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -94,7 +94,7 @@ public class CreateAutoParameterEnhancer implements IEnhancer
     private Type _type;
     private String _typeClassName;
     private String _readMethodName;
-    private Location _location;
+    private ILocation _location;
 
     private Type _bindingType;
     private Type _classType;
@@ -106,7 +106,7 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         Type type,
         String typeClassName,
         String readMethodName,
-        Location location)
+        ILocation location)
     {
         _factory = factory;
         _propertyName = propertyName;

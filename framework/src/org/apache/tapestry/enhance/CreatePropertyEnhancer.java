@@ -56,7 +56,7 @@
 package org.apache.tapestry.enhance;
 
 import org.apache.bcel.generic.Type;
-import org.apache.tapestry.Location;
+import org.apache.tapestry.ILocation;
 
 /**
  *  Creates a new property of a particular type in the enhanced subclass.  May optionally
@@ -75,9 +75,9 @@ public class CreatePropertyEnhancer implements IEnhancer
     private Type _propertyType;
     private boolean _persistent;
     private String _readMethodName;
-    private Location _location;
+    private ILocation _location;
 
-    public CreatePropertyEnhancer(String propertyName, Type propertyType, Location location)
+    public CreatePropertyEnhancer(String propertyName, Type propertyType, ILocation location)
     {
         this(propertyName, propertyType, null, false, location);
     }
@@ -87,7 +87,7 @@ public class CreatePropertyEnhancer implements IEnhancer
         Type propertyType,
         String readMethodName,
         boolean persistent,
-        Location location)
+        ILocation location)
     {
         _propertyName = propertyName;
         _propertyType = propertyType;

@@ -68,6 +68,7 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
@@ -270,14 +271,14 @@ public class TemplateParser
      * 
      **/
 
-    private Location _templateLocation;
+    private ILocation _templateLocation;
     
     /**
      *  Location with in the resource for the current line.
      * 
      **/
     
-    private Location _currentLocation;
+    private ILocation _currentLocation;
 
     /**
      *  Local reference to the template data that is to be parsed.
@@ -579,7 +580,7 @@ public class TemplateParser
         boolean endOfTag = false;
         boolean emptyTag = false;
         int startLine = _line;
-        Location startLocation = new Location(_resourceLocation, startLine);
+        ILocation startLocation = new Location(_resourceLocation, startLine);
 
         advance();
 
@@ -894,7 +895,7 @@ public class TemplateParser
         boolean emptyTag,
         int startLine,
         int cursorStart,
-        Location startLocation)
+        ILocation startLocation)
         throws TemplateParseException
     {
         if (jwcId.equalsIgnoreCase(CONTENT_ID))
@@ -1049,7 +1050,7 @@ public class TemplateParser
         advance();
     }
 
-    private void addOpenToken(String tagName, String jwcId, String type, Location location)
+    private void addOpenToken(String tagName, String jwcId, String type, ILocation location)
     {
         OpenToken token = new OpenToken(tagName, jwcId, type, location);
         _tokens.add(token);
@@ -1134,7 +1135,7 @@ public class TemplateParser
         int length = _templateData.length;
         int startLine = _line;
 
-		Location startLocation = getCurrentLocation();
+		ILocation startLocation = getCurrentLocation();
 		
         _cursor += CLOSE_TAG.length;
 
@@ -1441,7 +1442,7 @@ public class TemplateParser
      * 
      **/
     
-    protected Location getCurrentLocation()
+    protected ILocation getCurrentLocation()
     {
     	if (_currentLocation == null)
     	_currentLocation = new Location(_resourceLocation, _line);

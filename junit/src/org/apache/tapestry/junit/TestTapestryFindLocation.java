@@ -56,6 +56,7 @@
 package org.apache.tapestry.junit;
 
 import org.apache.tapestry.ILocatable;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 
@@ -72,14 +73,14 @@ public class TestTapestryFindLocation extends TapestryTestCase
 {
     private static class TestLocatable implements ILocatable
     {
-        private Location _l;
+        private ILocation _l;
 
-        TestLocatable(Location l)
+        TestLocatable(ILocation l)
         {
             _l = l;
         }
 
-        public Location getLocation()
+        public ILocation getLocation()
         {
             return _l;
         }
@@ -103,15 +104,15 @@ public class TestTapestryFindLocation extends TapestryTestCase
 
     public void testOrdering()
     {
-        Location l1 = new Location(null);
-        Location l2 = new Location(null);
+        ILocation l1 = new Location(null);
+        ILocation l2 = new Location(null);
 
         assertSame(l1, Tapestry.findLocation(new Object[] { l1, l2 }));
     }
 
     public void testLocatable()
     {
-        Location l1 = new Location(null);
+        ILocation l1 = new Location(null);
         ILocatable l2 = new TestLocatable(l1);
 
         assertSame(l1, Tapestry.findLocation(new Object[] { l2 }));
@@ -119,7 +120,7 @@ public class TestTapestryFindLocation extends TapestryTestCase
 
     public void testNullLocatable()
     {
-        Location l1 = new Location(null);
+        ILocation l1 = new Location(null);
         ILocatable l2 = new TestLocatable(null);
         ILocatable l3 = new TestLocatable(l1);
 
@@ -128,7 +129,7 @@ public class TestTapestryFindLocation extends TapestryTestCase
 
     public void testSkipOther()
     {
-        Location l1 = new Location(null);
+        ILocation l1 = new Location(null);
 
         assertSame(l1, Tapestry.findLocation(new Object[] { this, "Hello", l1, "Goodbye" }));
     }

@@ -64,9 +64,9 @@ import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.pool.Pool;
 
@@ -91,7 +91,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
     private String _script;
     private IComponent _component;
 
-    public ListenerBinding(IComponent component, String language, String script, Location location)
+    public ListenerBinding(IComponent component, String language, String script, ILocation location)
     {
         super(location);
 
@@ -169,7 +169,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
         BSFManager bsf = obtainBSFManager(cycle);
 
-        Location location = getLocation();
+        ILocation location = getLocation();
 
         try
         {
