@@ -168,11 +168,6 @@ public class EditBook extends Protected
 			return;
 		}
 
-		// Check for an error from a validation field
-
-		if (getError() != null)
-			return;
-
 		Integer publisherPK = (Integer) attributes.get("publisherPK");
 
 		if (publisherPK == null && Tapestry.isNull(publisherName))
@@ -190,6 +185,11 @@ public class EditBook extends Protected
 				"Must leave the publisher name blank if selecting a publisher from the list.");
 			return;
 		}
+
+		// Check for an error from a validation field
+
+		if (isInError())
+			return;
 
 		// OK, do the update.
 

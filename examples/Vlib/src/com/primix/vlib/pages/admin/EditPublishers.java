@@ -127,6 +127,9 @@ public class EditPublishers extends AdminPage
 
 	public void processForm(IRequestCycle cycle)
 	{
+		if (isInError())
+			return;
+			
 		List updateList = new ArrayList(publishers.length);
 		Set deletedKeys = getDeletedPublishers();
 

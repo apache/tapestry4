@@ -86,6 +86,17 @@ public class Protected extends BasePage implements IErrorProperty
 	}
 
 	/**
+	 *  Returns true if the delegate indicates an error, or the error property is not null.
+	 *
+	 **/
+	
+	protected boolean isInError()
+	{
+		return error != null ||
+			getValidationDelegate().getHasErrors();
+	}
+
+	/**
 	 *  Checks if the user is logged in ... if not, they are sent
 	 *  to the {@link Login} page before coming back to whatever this
 	 *  page is.

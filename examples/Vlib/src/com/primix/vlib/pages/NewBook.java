@@ -93,9 +93,6 @@ public class NewBook extends Protected
 			return;
 		}
 
-		if (getError() != null)
-			return;
-
 		Map attributes = getAttributes();
 
 		Integer publisherPK = (Integer) attributes.get("publisherPK");
@@ -115,6 +112,9 @@ public class NewBook extends Protected
 				"Must either select an existing publisher or enter a new publisher name.");
 			return;
 		}
+
+		if (isInError())
+			return;
 
 		Visit visit = (Visit) getVisit();
 		Integer userPK = visit.getUserPK();

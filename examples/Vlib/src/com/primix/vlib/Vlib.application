@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--$Id$-->
 <!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<application name="Primix Virtual Library" engine-class="com.primix.vlib.VirtualLibraryEngine">
+
+<application name="Virtual Library" engine-class="com.primix.vlib.VirtualLibraryEngine">
   <page name="Home" specification-path="/com/primix/vlib/pages/Home.jwc"/>
   <page name="Login" specification-path="/com/primix/vlib/pages/Login.jwc"/>
   <page name="Logout" specification-path="/com/primix/vlib/pages/Logout.jwc"/>

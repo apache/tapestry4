@@ -161,7 +161,8 @@ public class Login extends BasePage implements IErrorProperty
 	{
 		// An error, from a validation field, may already have occured.
 
-		if (getError() != null)
+		if (getValidationDelegate().getHasErrors() ||
+			error != null)
 			return;
 
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
@@ -204,10 +205,7 @@ public class Login extends BasePage implements IErrorProperty
 	public void loginUser(Person person, IRequestCycle cycle)
 		throws RequestCycleException, RemoteException
 	{
-		String email;
-		Cookie cookie;
-
-		email = person.getEmail();
+		String email = person.getEmail();
 
 		// Get the visit object; this will likely force the
 		// creation of the visit object and an HttpSession.
@@ -226,14 +224,14 @@ public class Login extends BasePage implements IErrorProperty
 		// I've found that failing to set a maximum age and a path means that
 		// the browser (IE 5.0 anyway) quietly drops the cookie.
 
-		cookie = new Cookie(COOKIE_NAME, email);
+		Cookie cookie = new Cookie(COOKIE_NAME, email);
 		cookie.setPath(engine.getServletPath());
 		cookie.setMaxAge(ONE_WEEK);
 
 		// Record the user's email address in a cookie
 
 		cycle.getRequestContext().addCookie(cookie);
-
+		
 		engine.forgetPage(getName());
 	}
 }

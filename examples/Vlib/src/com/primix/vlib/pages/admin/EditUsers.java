@@ -211,6 +211,9 @@ public class EditUsers extends AdminPage
 
 	public void updateUsers(IRequestCycle cycle)
 	{
+		if (isInError())
+			return;	
+	
 		Visit visit = (Visit) getVisit();
 		VirtualLibraryEngine vengine = visit.getEngine();
 
