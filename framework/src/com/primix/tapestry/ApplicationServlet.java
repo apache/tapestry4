@@ -1,5 +1,12 @@
 package com.primix.tapestry;
 
+import javax.servlet.http.*;
+import java.io.*;
+import javax.servlet.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.parse.*;
+import com.primix.foundation.exception.*;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -28,18 +35,13 @@ package com.primix.tapestry;
  *
  */
 
-import javax.servlet.http.*;
-import java.io.*;
-import javax.servlet.*;
-import com.primix.tapestry.app.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.parse.*;
 
 /**
  * Links a servlet container with a Tapestry application.
  *
- * <p>Subclasses provide the servlet with its application by implementing
- * the abstract methods {@link #createApplication(RequestContext)}
+ * <p>Subclasses provide the servlet with its {@link IEngine engine}
+ * by implementing
+ * the abstract methods {@link #createEngine(RequestContext)}
  * and {@link #getApplicationSpecificationPath()}.
  *
  * <p>This class is derived from the original class 
@@ -54,8 +56,6 @@ import com.primix.tapestry.parse.*;
 
 abstract public class ApplicationServlet extends HttpServlet
 {
-    private static boolean showExceptions = Boolean.getBoolean("com.primix.tapestry.show-servlet-exceptions");
-
 	private ApplicationSpecification specification;
 	private String attributeName;
 
@@ -63,8 +63,8 @@ abstract public class ApplicationServlet extends HttpServlet
 	* Handles the GET and POST requests. Performs the following:
 	* <ul>
 	* <li>Construct a {@link RequestContext}
-	* <li>Invoke {@link #getApplication(RequestContext)} to get the {@link IApplication}
-	* <li>Invoke {@link IApplication#service(RequestContext)} on the application
+	* <li>Invoke {@link #getEngine(RequestContext)} to get the {@link IEngine}
+	* <li>Invoke {@link IEngine#service(RequestContext)} on the application
 	* </ul>
 	*/
 
@@ -72,7 +72,7 @@ abstract public class ApplicationServlet extends HttpServlet
 	throws IOException, ServletException
 	{
 		RequestContext context;
-		IApplication application;
+		IEngine engine;
 
 		// Create a context from the various bits and pieces.
 
@@ -83,36 +83,46 @@ abstract public class ApplicationServlet extends HttpServlet
 
 			// The subclass provides the delegate.
 
-			application = getApplication(context);
+			engine = getEngine(context);
 
-			if (application == null)
+			if (engine == null)
 				throw new ServletException(
-					"Could not locate an application to service this request.");
+					"Could not locate an engine to service this request.");
 
-			application.service(context);
+			engine.service(context);
 		}
-		catch (ServletException e)
+		catch (ServletException ex)
 		{
-			log("ServletException", e);
+			log("ServletException", ex);
 
-            if (showExceptions)
-                e.printStackTrace();
+            show(ex);
 
 			// Rethrow it.
 
-			throw e;
+			throw ex;
 		}
-		catch (IOException e)
+		catch (IOException ex)
 		{
-			log("IOException", e);
+			log("IOException", ex);
 
-            if (showExceptions)
-                e.printStackTrace();
+            show(ex);
 
 			// Rethrow it.
 
-			throw e;
+			throw ex;
 		}
+	}
+
+	protected void show(Exception ex)
+	{
+	    System.err.println(
+	        "\n\n**********************************************************\n\n");
+
+	    new ExceptionAnalyzer().reportException(ex, System.err);
+
+	    System.err.println(
+	        "\n**********************************************************\n");
+
 	}
 
 
@@ -138,37 +148,37 @@ abstract public class ApplicationServlet extends HttpServlet
 	}
 
 	/**
-	 *  Retrieves the {@link IApplication} instance for this session
+	 *  Retrieves the {@link IEngine} instance for this session
 	 *  from the {@link HttpSession}, or invokes
-	 *  {@link #createApplication(RequestContext)} to create the
+	 *  {@link #createEngine(RequestContext)} to create the
 	 *  application instance.
 	 *
-	 * <p>If the application does not need to be stored in the {@link HttpSession}
+	 * <p>If the engine does not need to be stored in the {@link HttpSession}
 	 * (not possible with the framework provided implementations)
 	 * then this method should be overrided as appropriate.
 	 *  
 	 */
 
-	protected IApplication getApplication(RequestContext context)
+	protected IEngine getEngine(RequestContext context)
 	throws ServletException
 	{
-		IApplication application;
+		IEngine engine;
 		
-		application = (IApplication)context.getSessionAttribute(attributeName);
+		engine = (IEngine)context.getSessionAttribute(attributeName);
 		
-		if (application == null)
+		if (engine == null)
 		{
-			application = createApplication(context);
+			engine = createEngine(context);
 			
-			context.setSessionAttribute(attributeName, application);
+			context.setSessionAttribute(attributeName, engine);
 		}
 		
-		return application;
+		return engine;
 	}
 	
 	/**
 	 *  Reads the application specification when the servlet is
-	 *  first initialized.  All {@link IApplication application instances}
+	 *  first initialized.  All {@link IEngine engine instances}
 	 *  will have access to the specification via the servlet.
 	 *
 	 */
@@ -199,14 +209,16 @@ abstract public class ApplicationServlet extends HttpServlet
 		{
 			specification = parser.parseApplicationSpecification(stream, path);
 		}
-		catch (SpecificationParseException e)
+		catch (SpecificationParseException ex)
 		{
+            show(ex);
+
 			throw new ServletException(
 				"Unable to read application specification " +
-				path + ".",  e);
+				path + ".",  ex);
 		}		
 
-		attributeName = "com.primix.tapestry.application." + specification.getName();
+		attributeName = "com.primix.tapestry.engine." + specification.getName();
 	}
 
 	/**
@@ -218,15 +230,37 @@ abstract public class ApplicationServlet extends HttpServlet
 	abstract protected String getApplicationSpecificationPath();
 	
 	/**
-	 *  Invoked by {@link #getApplication(RequestContext)} to create
-	 *  the {@link IApplication} instance specific to the
+	 *  Invoked by {@link #getEngine(RequestContext)} to create
+	 *  the {@link IEngine} instance specific to the
 	 *  application, if not already in the
 	 *  {@link HttpSession}.
 	 *
-	 *  <p>The application instance returned is stored into the session.
+	 *  <p>The {@link IEngine} instance returned is stored into the 
+	 *  {@link HttpSession}.
+     *
+     *  <p>This implementation instantiates a new engine as specified
+     *  by {@link ApplicationSpecification#getEngineClassName()}.
+     *
 	 */
 	 
-	abstract protected IApplication createApplication(RequestContext context)
-	throws ServletException;
+	protected IEngine createEngine(RequestContext context)
+	throws ServletException
+	{
+        try
+        {
+            String className = specification.getEngineClassName();
+
+            if (className == null)
+                throw new ServletException("Application specification does not specify an engine class name.");
+
+            Class engineClass = Class.forName(className);
+
+            return (IEngine)engineClass.newInstance();
+        }
+        catch (Exception ex)
+        {
+            throw new ServletException(ex);
+        }
+	}
 }
 

@@ -46,19 +46,19 @@ import com.primix.tapestry.parse.ComponentTemplate;
 public interface ITemplateSource
 {
     /**
-     *  Locates the template for the component.
-     *
-     *  @throws ResourceException if the resource cannot be located or loaded.
-     */
- 
+    *  Locates the template for the component.
+    *
+    *  @throws ResourceException if the resource cannot be located or loaded.
+    */
+
     public ComponentTemplate getTemplate(IComponent component)
-        throws ResourceUnavailableException;
+    throws ResourceUnavailableException;
 
     /**
-     *  Invoked to have the source clear any internal cache.  This is most often
-     *  used when debugging an application.
-     *
-     */
+    *  Invoked to have the source clear any internal cache.  This is most often
+    *  used when debugging an application.
+    *
+    */
 
     public void reset();
 }

@@ -11,11 +11,11 @@ PACKAGES = \
 	com.primix.foundation.ejb \
     com.primix.foundation.pool \
 	com.primix.tapestry \
-	com.primix.tapestry.app \
 	com.primix.tapestry.asset \
 	com.primix.tapestry.binding \
 	com.primix.tapestry.components \
 	com.primix.tapestry.components.validating \
+	com.primix.tapestry.engine \
 	com.primix.tapestry.event \
 	com.primix.tapestry.pageload \
 	com.primix.tapestry.pages \

@@ -161,7 +161,7 @@ public class Shell extends AbstractComponent
             page = getPage();
 
             writer.comment("Application: " + 
-                page.getApplication().getSpecification().getName());
+                page.getEngine().getSpecification().getName());
 
             writer.comment("Page: " + page.getName());
             writer.comment("Generated: " + new Date());
@@ -213,7 +213,7 @@ public class Shell extends AbstractComponent
         String URI;
         String URL;
         RequestContext context;
-        IApplicationService pageService;
+        IEngineService pageService;
         String pageName;
 
         if (refreshBinding == null)
@@ -229,7 +229,7 @@ public class Shell extends AbstractComponent
 
 
         context = cycle.getRequestContext();
-        pageService = cycle.getApplication().getService(IApplicationService.PAGE_SERVICE);
+        pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
         pageName = getPage().getName();
 
         URI = pageService.buildURL(cycle, null, new String[] 

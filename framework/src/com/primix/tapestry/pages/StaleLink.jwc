@@ -24,7 +24,7 @@
 			<bindings>
 				<field-binding>
 					<name>service</name>
-					<field-name>com.primix.tapestry.IApplicationService.HOME_SERVICE</field-name>
+					<field-name>com.primix.tapestry.IEngineService.HOME_SERVICE</field-name>
 				</field-binding>
 			</bindings>
 		</component>

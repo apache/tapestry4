@@ -112,12 +112,12 @@ public class Action extends AbstractServiceLink
 	}
 
 	/**
-	*  Returns {@link IApplicationService#ACTION_SERVICE}.
+	*  Returns {@link IEngineService#ACTION_SERVICE}.
 	*/
 
 	protected String getServiceName(IRequestCycle cycle)
 	{
-		return IApplicationService.ACTION_SERVICE;
+		return IEngineService.ACTION_SERVICE;
 	}
 
 

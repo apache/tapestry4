@@ -29,7 +29,7 @@ package com.primix.tapestry;
  */
 
 /**
- *  Exception thrown by an {@link IApplicationService} when it discovers that
+ *  Exception thrown by an {@link IEngineService} when it discovers that
  *  the an action link was for an out-of-date version of the page.
  *
  *  <p>The application should redirect to the stale-link page.

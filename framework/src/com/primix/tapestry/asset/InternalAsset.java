@@ -5,7 +5,6 @@ import javax.servlet.*;
 import java.io.*;
 import com.primix.tapestry.spec.ApplicationSpecification;
 import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
 
 /*
  * Tapestry Web Application Framework
@@ -63,23 +62,18 @@ public class InternalAsset implements IAsset
 	 *  is prepended to the asset path, which means that assets deployed inside
 	 *  web applications will still work (if things are configured properly).
 	 *
-	 *  <p>A temporary kludge:  This method casts the {@link IApplication}
-	 *  (retrieved from the {@link IRequestCycle}) to
-	 *  {@link AbstractApplication} and invokes 
-	 *  {@link AbstractApplication#getContextPath()}.
-	 *
 	 */
 	 
 	public String buildURL(IRequestCycle cycle)
 	{
 		if (URL == null)
 		{
-			IApplication application;
+			IEngine engine;
 			String contextPath;
 			
-			application = cycle.getApplication();
+			engine = cycle.getEngine();
 			
-			contextPath = application.getContextPath();
+			contextPath = engine.getContextPath();
             
             URL = contextPath + "/" + assetPath;
 		}

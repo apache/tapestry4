@@ -32,10 +32,10 @@ import java.util.*;
  */
 
 /**
- *  A component for creating a link for an arbitrary {@link IApplicationService
+ *  A component for creating a link for an arbitrary {@link IEngineService
  *  application service}.  A Service component can emulate an {@link Action},
  *  {@link Page} or {@link Direct} component, but is most often used in
- *  conjunction with an application-specific service.  
+ *  conjunction with an application-specific {@link IEngineService service}.  
  *
  * <table border=1>
 

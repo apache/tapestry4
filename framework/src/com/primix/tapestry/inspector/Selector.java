@@ -80,7 +80,7 @@ public class Selector extends BaseComponent
 		List sortedPageNames;
 		String[] pageNames;
 		
-		sortedPageNames = new ArrayList(page.getApplication().getSpecification().getPageNames());
+		sortedPageNames = new ArrayList(page.getEngine().getSpecification().getPageNames());
 		
 		Collections.sort(sortedPageNames);
 		

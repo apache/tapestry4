@@ -40,7 +40,7 @@ import java.util.*;
  * @version $Id$
  */
 
-public class ContainedComponent extends BasePropertyHolder
+public class ContainedComponent
 {
 	private String type;
 

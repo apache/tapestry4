@@ -49,6 +49,7 @@ public class ApplicationSpecification
 extends BasePropertyHolder
 {
 	private String name;
+    private String engineClassName;
 
 	private final static int MAP_SIZE = 11;
 
@@ -338,6 +339,16 @@ extends BasePropertyHolder
 		return name;
 	}
 
+    public void setEngineClassName(String value)
+    {
+        engineClassName = value;
+    }
+
+    public String getEngineClassName()
+    {
+        return engineClassName;
+    }
+
 	/**
 	*  Returns a {@link Collection}
     *  of the String names of the pages defined
@@ -441,7 +452,7 @@ extends BasePropertyHolder
 
 	public String toString()
 	{
-		return "ApplicationSpecification[" + name + "]";
+		return "ApplicationSpecification[" + name + " " + engineClassName + "]";
 	}
 }
 

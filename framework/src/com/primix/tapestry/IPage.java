@@ -76,22 +76,24 @@ public interface IPage extends IComponent
     public void addLifecycleComponent(ILifecycle component);
 
     /**
-     *  Invoked on a page when it is removed from an application (and
-     *  returned to a pool).  This nulls the application and
-     *  and changeObserver properties.
+     *  Invoked on a page when it is no longer needed by
+     *  the engine, just before is is
+     *  returned to the pool.  The page is expected to
+     *  null the engine, visit and changeObserver properties.
      *
      *  @see IPageSource#releasePage(IPage)
      *
      */
  
-    public void detachFromApplication();
+    public void detach();
 
     /**
-     *  Returns the {@link IApplication} that the currently IPage belongs to.
+     *  Returns the {@link IEngine} that the page is currently
+     *  attached to.
      *
      */
  
-    public IApplication getApplication();
+    public IEngine getEngine();
     
     /**
      *  Returns the object (effectively, an {@link IPageRecorder}) that is notified
@@ -147,7 +149,7 @@ public interface IPage extends IComponent
      *
      */
  
-    public void joinApplication(IApplication value);
+    public void attach(IEngine value);
 
     /**
      *  Invoked to render the entire page.  This should only be invoked by
@@ -232,7 +234,7 @@ public interface IPage extends IComponent
 	
 	/**
 	 *  Invoked when the application terminates (that is, when the {@link HttpSession}
-	 *  containing the application is invalidated or times out).  This gives
+	 *  containing the {link IEngine} is invalidated or times out).  This gives
 	 *  the page to release any additional resources it may have ... in particular,
 	 *  it allows a page to remove stateful session EJBs it may be using.
 	 *

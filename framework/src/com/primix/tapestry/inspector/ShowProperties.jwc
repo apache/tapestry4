@@ -110,17 +110,17 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>applicationByteCount</property-path>
+					<property-path>engineByteCount</property-path>
 				</binding>
 			</bindings>
 		</component>
 		<component>
-			<id>insertSerializedApplication</id>
+			<id>insertSerializedEngine</id>
 			<type>Delegator</type>
 			<bindings>
 				<binding>
 					<name>delegate</name>
-					<property-path>applicationDumpDelegate</property-path>
+					<property-path>engineDumpDelegate</property-path>
 				</binding>
 			</bindings>
 		</component>

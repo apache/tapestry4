@@ -1,4 +1,4 @@
-package com.primix.tapestry.app;
+package com.primix.tapestry.engine;
 
 import javax.servlet.http.*;
 import com.primix.tapestry.components.*;
@@ -43,7 +43,7 @@ import com.primix.foundation.*;
  */
 
 /**
- *  Concrete implementation of {@link IApplication} used for relatively
+ *  Concrete implementation of {@link IEngine} used for relatively
  *  small applications.  All page state information is maintained in memory.  Since
  * the instance is stored within the {@link HttpSession}, all page state information
  * will be carried along to other servers in the cluster.
@@ -54,16 +54,12 @@ import com.primix.foundation.*;
 
 
  
-public class SimpleApplication extends AbstractApplication
+public class SimpleEngine 
+extends AbstractEngine
 {
 	private final static int MAP_SIZE = 3;
 
 	private Map recorders;
-
-	public SimpleApplication(RequestContext context, Locale locale)
-	{
-		super(context, locale);
-	}
 
     /**
      *  Restores the object state as written by
@@ -182,8 +178,8 @@ public class SimpleApplication extends AbstractApplication
 
 		if (recorder.isDirty())
 			throw new ApplicationRuntimeException(
-				"Could not forget changes to page " + name 
-				+ " because the page's recorder has uncommitted changes.");
+				"Could not forget changes to page " + name +
+				" because the page's recorder has uncommitted changes.");
 
 		recorders.remove(name);		
 	}

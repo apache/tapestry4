@@ -4,7 +4,7 @@ import com.primix.tapestry.*;
 import java.util.*;
 import com.primix.foundation.*;
 import java.io.*;
-import com.primix.tapestry.app.SimpleApplication;
+import com.primix.tapestry.engine.*;
 
 /*
  * Tapestry Web Application Framework
@@ -41,7 +41,7 @@ import com.primix.tapestry.app.SimpleApplication;
  *
  * <p>The recorder must be made session persistant, either by being stored
  *  directly in the session, or being referenced from a session-persistant
- *  object.  {@link SimpleApplication} simply stores a {@link Map} of
+ *  object.  {@link SimpleEngine} simply stores a {@link Map} of
  *  these page recorders.
  *
  * @author Howard Ship

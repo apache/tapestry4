@@ -106,7 +106,7 @@ public class AssetExternalizer
 		String directory;
         ServletContext context;
 
-		resolver = cycle.getApplication().getResourceResolver();
+		resolver = cycle.getEngine().getResourceResolver();
 		
 		servlet = cycle.getRequestContext().getServlet();
 
@@ -195,7 +195,7 @@ public class AssetExternalizer
 	}
 
 	/**
-	*  Gets the externalizer for the current application.  If it does not already
+	*  Gets the externalizer singleton for the application.  If it does not already
 	*  exist, it is created and stored into the {@link ServletContext}.
 	*
 	*  <p>Each Tapestry application within a single {@link ServletContext}
@@ -215,7 +215,7 @@ public class AssetExternalizer
 
 		context = cycle.getRequestContext().getServlet().getServletContext();
 
-		applicationName = cycle.getApplication().getSpecification().getName();
+		applicationName = cycle.getEngine().getSpecification().getName();
 
 		attributeName = "com.primix.tapestry.AssetExternalizer." + applicationName;
 

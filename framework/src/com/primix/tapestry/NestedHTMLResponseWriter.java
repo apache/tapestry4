@@ -30,7 +30,9 @@ import java.io.*;
  */
 
 /**
- *  Subclass of {@link HTMLResponseWriter} that is nested.
+ *  Subclass of {@link HTMLResponseWriter} that is nested.  A nested writer
+ *  buffers its output, then inserts it into its parent writer when it is
+ *  closed.
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -63,11 +65,9 @@ public class NestedHTMLResponseWriter extends HTMLResponseWriter
 
 	public void close()
 	{
-		char[] data;
-
 		super.close();
 
-		data = internalBuffer.toCharArray();
+		char[] data = internalBuffer.toCharArray();
 
 		parent.printRaw(data, 0, data.length);	
 

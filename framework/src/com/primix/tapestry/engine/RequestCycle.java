@@ -1,4 +1,4 @@
-package com.primix.tapestry.app;
+package com.primix.tapestry.engine;
 
 import com.primix.foundation.*;
 import com.primix.tapestry.spec.ApplicationSpecification;
@@ -48,7 +48,7 @@ public class RequestCycle
     implements IRequestCycle
 {
 	private IPage page;
-	private IApplication application;
+	private IEngine engine;
 
 	private RequestContext requestContext;
 
@@ -94,10 +94,10 @@ public class RequestCycle
 	*
 	*/
 
-	public RequestCycle(IApplication application, RequestContext requestContext,
+	public RequestCycle(IEngine engine, RequestContext requestContext,
 		IMonitor monitor)
 	{
-		this.application = application;
+		this.engine = engine;
 		this.requestContext = requestContext;
 		this.monitor = monitor;
 	}
@@ -110,20 +110,15 @@ public class RequestCycle
 
 	public void cleanup()
 	{
-		Iterator i;
-		IPage page;
-		IPageSource source;
-
 		if (loadedPages == null)
 			return;
 
-		source = application.getPageSource();
-
-		i = loadedPages.values().iterator();
+		IPageSource source = engine.getPageSource();
+		Iterator i = loadedPages.values().iterator();
 
 		while (i.hasNext())
         {
-			page = (IPage)i.next();
+			IPage page = (IPage)i.next();
 
 			source.releasePage(page);
 		}
@@ -140,9 +135,9 @@ public class RequestCycle
 		return response.encodeURL(URL);
 	}
 
-	public IApplication getApplication()
+	public IEngine getEngine()
 	{
-		return application;
+		return engine;
 	}
 
 	public Object getAttribute(String name)
@@ -179,6 +174,9 @@ public class RequestCycle
 		IPageRecorder recorder;
 		IPageSource pageSource;
 
+        if (name == null)
+            throw new NullPointerException("Parameter name may not be null in RequestCycle.getPage().");
+
 		if (monitor != null)
 			monitor.pageLoadBegin(name);
 
@@ -187,11 +185,11 @@ public class RequestCycle
 
 		if (result == null)
 		{
-			pageSource = application.getPageSource();
+			pageSource = engine.getPageSource();
 
 			try
 			{
-				result = pageSource.getPage(application, name, monitor);
+				result = pageSource.getPage(engine, name, monitor);
 			}
 			catch (PageLoaderException e)
 			{
@@ -199,25 +197,25 @@ public class RequestCycle
 					name + ".", e);
 			}
 
+            // Get the recorder that will eventually observe and record
+            // changes to persistent properties of the page.
+
 			recorder = getPageRecorder(name);
 
-			// Ignore changes to properties of the page and its components
-			// until after the page's state has been rolled back.  Here's
-			// where things could, in theory, get tricky ... what if another
-			// thread (for this same session) is using the shared recorder?
-			// Also, this is not so necessary, since the changeObserver property
-			// of the page is null, so it will not be generating any
-			// change events.
+			// Have it rollback the page to the prior state.  Note that
+            // the page has a null observer at this time.
 
-			recorder.setActive(false);
+			recorder.rollback(result);
+			
+			// Now, have the page use the recorder for any future
+            // property changes.
 
 			result.setChangeObserver(recorder);
 
-			recorder.rollback(result);
+            // And, if this recorder observed changes in a prior request cycle
+            // (and was locked after committing in that cycle), it's time
+            // to unlock.
 
-			// From this point on, any changes must be tracked.
-
-			recorder.setActive(true);
             recorder.setLocked(false);
 
 			if (loadedPages == null)
@@ -235,7 +233,7 @@ public class RequestCycle
 	/**
 	 *  Returns the page recorder for the named page.  This may come
 	 *  form the cycle's cache of page recorders or, if not yet encountered
-	 *  in this request cycle, the {@link IApplication#getPageRecorder(String)} is
+	 *  in this request cycle, the {@link IEngine#getPageRecorder(String)} is
 	 *  invoked to get (or create) the page recorder.
 	 *
 	 */
@@ -250,7 +248,7 @@ public class RequestCycle
 		if (result != null)
 			return result;
 			
-		result = application.getPageRecorder(name);
+		result = engine.getPageRecorder(name);
 			
 		if (loadedRecorders == null)
 			loadedRecorders = new HashMap(MAP_SIZE);

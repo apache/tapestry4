@@ -1,4 +1,4 @@
-package com.primix.tapestry.app;
+package com.primix.tapestry.engine;
 
 import java.util.Locale;
 import com.primix.tapestry.*;
@@ -39,6 +39,9 @@ import java.net.URL;
  *  Default implementation of {@link ITemplateSource}.  Templates, once parsed,
  *  stay in memory until explicitly cleared.
  *
+ *  <p>An instance of this class acts as a singleton shared by all sessions, so it
+ *  must be threadsafe.
+ *
  *  <p>TBD:  This implementation ignores <b>locale</b>.
  *
  * @author Howard Ship
@@ -77,6 +80,8 @@ public class DefaultTemplateSource
 	*  Reads the template for the component.
 	*
 	*  <p>TBD:  Do a search based on the locale of the page containing the component.
+    *
+    *  <p>TBD:  Make threadsafe.
 	*
 	*  <p>Returns null if the template can't be found.
 	*/

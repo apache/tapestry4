@@ -6,23 +6,19 @@
 	
 	For application specifications, the main element is application; for component specification the
 	main element is specification.
-	
-	Certain parts of the DTD are subject to change with the next version; these are marked (primarily
-	elements are deprecated here, and will be removed in the next version.
 -->
 <!ELEMENT alias (#PCDATA)>
 <!ELEMENT allow-body (#PCDATA)>
 <!ELEMENT allow-informal-parameters (#PCDATA)>
-<!ELEMENT application (name, page+, component-alias*, properties?)>
+<!ELEMENT application (name, engine-class, page+, component-alias*, properties?)>
 <!ELEMENT assets (internal-asset | external-asset | private-asset)+>
-<!--The buffer-size element is deprecated and will be removed in the next version of the DTD.-->
-<!ELEMENT buffer-size (#PCDATA)>
 <!ELEMENT binding (name, property-path)>
 <!ELEMENT bindings (binding | static-binding | inherited-binding | field-binding)+>
 <!ELEMENT class (#PCDATA)>
-<!ELEMENT component (id, type, bindings?, properties?)>
+<!ELEMENT component (id, type, bindings?)>
 <!ELEMENT components (component)+>
 <!ELEMENT component-alias (alias, specification-path)>
+<!ELEMENT engine-class (#PCDATA)>
 <!ELEMENT external-asset (name, URL)>
 <!ELEMENT field-binding (name, field-name)>
 <!ELEMENT field-name (#PCDATA)>
@@ -31,8 +27,7 @@
 <!ELEMENT internal-asset (name, path)>
 <!ELEMENT java-type (#PCDATA)>
 <!ELEMENT name (#PCDATA)>
-<!--The buffer-size element is deprecated, and will be removed in the next version of the DTD.  In addition, properties will no longer be allowed within the page element in the next release of the DTD.-->
-<!ELEMENT page (name, buffer-size?, specification-path, properties?)>
+<!ELEMENT page (name, specification-path)>
 <!ELEMENT parameter (name, java-type?, required?)>
 <!ELEMENT parameters (allow-informal-parameters?, parameter*)>
 <!ELEMENT parameter-name (#PCDATA)>

@@ -93,7 +93,7 @@ implements IDirect
 		int i;
 		boolean compressed;
 		String[] context = null;
-		IApplicationService service = null;
+		IEngineService service = null;
 		String URL;
 		String id;
 		IComponent inspectedComponent;
@@ -101,7 +101,7 @@ implements IDirect
 		
 		inspectedComponent = ((Inspector)page).getInspectedComponent();
 
-		source = page.getApplication().getTemplateSource();
+		source = page.getEngine().getTemplateSource();
 
 		try
 		{
@@ -155,7 +155,7 @@ implements IDirect
 			
 			if (service == null)
 			{
-				service = cycle.getApplication().getService(IApplicationService.DIRECT_SERVICE);
+				service = cycle.getEngine().getService(IEngineService.DIRECT_SERVICE);
 				context = new String[1];
 			}
 			
