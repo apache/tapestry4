@@ -57,9 +57,11 @@ package org.apache.tapestry.pageload;
 
 import java.util.Iterator;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -95,9 +97,23 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
             String name = (String) i.next();
             IParameterSpecification parameterSpec = spec.getParameter(name);
 
-            String defaultValue = parameterSpec.getDefaultValue(); 
-            if (defaultValue != null && component.getBinding(name) == null) {
-                // there is no binding for this parameter. bind it to the default value
+            String defaultValue = parameterSpec.getDefaultValue();
+            if (defaultValue == null)
+                continue;
+            
+            // the parameter has a default value, so it must not be required
+            if (parameterSpec.isRequired())
+            throw new ApplicationRuntimeException(
+                Tapestry.format(
+                    "EstablishDefaultParameterValuesVisitor.parameter-must-have-no-default-value",
+                    component.getExtendedId(),
+                    name),
+                component,
+                parameterSpec.getLocation(),
+                null);
+            
+            // if there is no binding for this parameter, bind it to the default value
+            if (component.getBinding(name) == null) {
                 IBinding binding = new ExpressionBinding(_resolver, component, defaultValue, parameterSpec.getLocation());
                 component.setBinding(name, binding);
             }
