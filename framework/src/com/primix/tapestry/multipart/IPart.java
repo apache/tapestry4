@@ -28,8 +28,9 @@ package com.primix.tapestry.multipart;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 1.0.2
- */
+ *  @since 2.0.1
+ * 
+ **/
 
 public interface IPart
 {

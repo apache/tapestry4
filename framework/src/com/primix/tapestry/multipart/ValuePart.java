@@ -35,7 +35,8 @@ import com.primix.tapestry.IUploadFile;
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 2.0.1
- */
+ *
+ **/
 
 public class ValuePart implements IPart
 {

@@ -54,7 +54,8 @@ import com.primix.tapestry.util.StringSplitter;
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 2.0.1
- */
+ *
+ **/
 
 public class MultipartDecoder
 {
