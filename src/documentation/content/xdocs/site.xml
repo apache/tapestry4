@@ -93,6 +93,11 @@ See http://xml.apache.org/forrest/linking.html for more info
       <item label="Source" href="http://jakarta.apache.org/site/sourceindex.cgi#Milestone Source Drops"/>
     </downloads>
     
+	<complete-site label="Complete Site">
+		<complete-html label="HTML" href="site.html"/>
+		<!-- complete-pdf label="PDF" href="site.pdf"/ -->
+	</complete-site>    
+    
     <related label="Related Projects">
     	<item label="Spindle" href="http://spindle.sourceforge.net/"/>
       <item label="HiveMind" href="http://jakarta.apache.org/hivemind/"/>
