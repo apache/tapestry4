@@ -66,6 +66,8 @@ package org.apache.tapestry.enhance;
  */
 public class CodeGenerationException extends RuntimeException
 {
+	Throwable _cause;
+
     public CodeGenerationException()
     {
         super();
@@ -78,12 +80,21 @@ public class CodeGenerationException extends RuntimeException
 
     public CodeGenerationException(String message, Throwable cause)
     {
-        super(message, cause);
+        super(message);
+        _cause = cause;
     }
 
     public CodeGenerationException(Throwable cause)
     {
-        super(cause);
+        super();
+        _cause = cause;
     }
+    
+    public Throwable getCause()
+    {
+    	return _cause;
+    }
+    
+    
 
 }
