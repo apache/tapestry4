@@ -73,38 +73,10 @@ public class VirtualLibraryApplication extends SimpleApplication
 	private transient IOperationsHome operationsHome;
 	private transient IOperations operations;
 	
-	private transient Context environment;	
+	private transient Context rootNamingContext;	
 	
     private boolean killSession;
 
-	private static final Map externalReferences = new HashMap();
-	
-    // This duplicates data normally in the weblogic.xml file ... but in
-    // standalone mode (i.e., under ServletExec Debugger), we don't have
-    // access to the environment naming context.
-    
-	static
-	{
-		externalReferences.put("ejb/Person", "com.primix.vlib.Person");
-		externalReferences.put("ejb/Book", "com.primix.vlib.Book");
-		externalReferences.put("ejb/BookQuery", "com.primix.vlib.BookQuery");
-		externalReferences.put("ejb/Publisher", "com.primix.vlib.Publisher");
-		externalReferences.put("ejb/Operations", "com.primix.vlib.Operations");
-	}
-	
-	/**
-	 *  When using a standalone servlet container (such as Servlet Exec Debugger),
-	 *  set all the necessary system properties for locating the JNDI naming
-	 *  context and set an additional property, standalone, so that
-	 *  we know.
-	 *
-	 */
-	 
-	private static final boolean standaloneServletContainer 
-		= Boolean.getBoolean("standalone");
-	
-	// Includes a null option for searching without care to Publisher
-	
 	private IPropertySelectionModel publisherModel;
 	private IPropertySelectionModel personModel;
 	
@@ -236,7 +208,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IPersonHome getPersonHome()
 	{
 		if (personHome == null)
-			personHome = (IPersonHome)findNamedObject("ejb/Person", IPersonHome.class);
+			personHome = (IPersonHome)findNamedObject("com.primix.vlib.Person", IPersonHome.class);
 		
 		return personHome;	
 	}
@@ -244,7 +216,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IPublisherHome getPublisherHome()
 	{
 		if (publisherHome == null)
-		  publisherHome = (IPublisherHome)findNamedObject("ejb/Publisher",
+		  publisherHome = (IPublisherHome)findNamedObject("com.primix.vlib.Publisher",
 		  		IPublisherHome.class);
 		
 		return publisherHome;		
@@ -253,7 +225,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IBookHome getBookHome()
 	{
 		if (bookHome == null)
-			bookHome = (IBookHome)findNamedObject("ejb/Book", IBookHome.class);
+			bookHome = (IBookHome)findNamedObject("com.primix.vlib.Book", IBookHome.class);
 		
 		return bookHome;	
 	}
@@ -261,7 +233,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IBookQueryHome getBookQueryHome()
 	{
 		if (bookQueryHome == null)
-			bookQueryHome = (IBookQueryHome)findNamedObject("ejb/BookQuery",
+			bookQueryHome = (IBookQueryHome)findNamedObject("com.primix.vlib.BookQuery",
 				IBookQueryHome.class);
 		
 		return bookQueryHome;
@@ -270,7 +242,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IOperationsHome getOperationsHome()
 	{
 		if (operationsHome == null)
-			operationsHome = (IOperationsHome)findNamedObject("ejb/Operations",
+			operationsHome = (IOperationsHome)findNamedObject("com.primix.vlib.Operations",
 				IOperationsHome.class);
 		
 		return operationsHome;
@@ -312,14 +284,10 @@ public class VirtualLibraryApplication extends SimpleApplication
 	{
 		Object raw;
 		Object result;
-		String resolvedName = name;
 		
 		try
 		{
-			if (standaloneServletContainer)
-				resolvedName = (String)externalReferences.get(name);
-		
-			raw = getEnvironment().lookup(resolvedName);
+			raw = getRootNamingContext().lookup(name);
 			
 			result = PortableRemoteObject.narrow(raw, expectedClass);
 		}
@@ -338,38 +306,22 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return result;
 	}
 	
-	public Context getEnvironment()
-	{
-		InitialContext initial;
-		
-		if (environment == null)
-		{
-			try
-			{
-				initial = new InitialContext();
-			}
-			catch (NamingException e)
-			{
-				throw new ApplicationRuntimeException("Unable to acquire initial naming context.", e);
-			}
-			
-			try
-			{
-				if (standaloneServletContainer)
-					environment = initial;
-				else	
-					environment = (Context)initial.lookup("java:comp/env");
-			}
-			catch (NamingException e)
-			{
-				throw new ApplicationRuntimeException(
-					"Unable to resolve environment naming context from initial context.", 
-					e);
-			}		
-		}
-		
-		return environment;
-	}
+    public Context getRootNamingContext()
+    {
+        if (rootNamingContext == null)
+        {
+            try
+            {
+                rootNamingContext = new InitialContext();
+            }
+            catch (NamingException e)
+            {
+                throw new ApplicationRuntimeException("Unable to locate root naming context.", e);
+            }
+        }
+
+        return rootNamingContext;
+    }
 
 	/**
 	 *  Changes the logged in user ... this is only invoked from the {@link Login}

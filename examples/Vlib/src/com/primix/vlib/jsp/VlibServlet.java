@@ -52,13 +52,13 @@ import java.io.IOException;
 	 */
 	 
  	protected static void writeLink(RequestContext context, HTMLWriter writer,
-			String URL, String label)
+			String URI, String label)
 	{
 		boolean compressed;
 		
 		compressed = writer.compress(true);
 		writer.begin("a");
-		writer.attribute("href", context.getResponse().encodeURL(URL));
+		writer.attribute("href", buildURL(context, URI));
 		writer.print(label);
 		writer.end();
 		
@@ -71,7 +71,28 @@ import java.io.IOException;
 	{
 		context.setAttribute("javax.servlet.jsp.jspException", e);
 		
-		context.forward("/jsp/Error.jsp");
+		context.forward(buildURL(context, "/jsp/Error.jsp"));
 	}
+
+    /**
+     *  Converts a partial URI into a complete URL.  The URI passed in
+     *  is relative to the context.  The final URL is prefixed with
+     *  the context path and properly encoded.
+     *
+     */
+
+    public static String buildURL(RequestContext context, String URI)
+    {
+        StringBuffer buffer;
+        String URL;
+
+        buffer = new StringBuffer();
+        buffer.append(context.getRequest().getContextPath());
+        buffer.append(URI);
+
+        URL =  context.getResponse().encodeURL(buffer.toString());
+
+        return URL;
+    }
  }
  

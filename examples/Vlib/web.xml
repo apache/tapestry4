@@ -7,14 +7,6 @@
 	<servlet>
 		<servlet-name>vlib</servlet-name>
 		<servlet-class>com.primix.vlib.VirtualLibraryServlet</servlet-class>
-		<init-param>
-			<param-name>com.primix.tapestry.context-path</param-name>
-			<param-value>/vlib</param-value>
-			<description>Context path, prepended to the servlet path.  This is
-the same as the value returned by HttpServletRequest.getContextPath()
-in the Java Servlet API 2.2 ... but Tapestry uses the 2.1 API.
-      </description>
-		</init-param>
 	</servlet>
 	<servlet>
 		<servlet-name>home</servlet-name>
@@ -36,10 +28,12 @@ in the Java Servlet API 2.2 ... but Tapestry uses the 2.1 API.
 		<servlet-name>mybooks</servlet-name>
 		<servlet-class>com.primix.vlib.jsp.MyBooksServlet</servlet-class>
 	</servlet>
+	<!--The single mapping used for the Tapestry application-->
 	<servlet-mapping>
 		<servlet-name>vlib</servlet-name>
 		<url-pattern>/app/*</url-pattern>
 	</servlet-mapping>
+	<!--The remaining mappings are used for the pages in the JSP version.-->
 	<servlet-mapping>
 		<servlet-name>home</servlet-name>
 		<url-pattern>/home/*</url-pattern>
@@ -63,34 +57,4 @@ in the Java Servlet API 2.2 ... but Tapestry uses the 2.1 API.
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	<ejb-ref>
-		<ejb-ref-name>ejb/Person</ejb-ref-name>
-		<ejb-ref-type>Entity</ejb-ref-type>
-		<home>com.primix.vlib.ejb.IPersonHome</home>
-		<remote>com.primix.vlib.ejb.IPerson</remote>
-	</ejb-ref>
-	<ejb-ref>
-		<ejb-ref-name>ejb/Book</ejb-ref-name>
-		<ejb-ref-type>Entity</ejb-ref-type>
-		<home>com.primix.vlib.ejb.IBookHome</home>
-		<remote>com.primix.vlib.ejb.IBook</remote>
-	</ejb-ref>
-	<ejb-ref>
-		<ejb-ref-name>ejb/Publisher</ejb-ref-name>
-		<ejb-ref-type>Entity</ejb-ref-type>
-		<home>com.primix.vlib.ejb.IPublisherHome</home>
-		<remote>com.primix.vlib.ejb.IPublisher</remote>
-	</ejb-ref>
-	<ejb-ref>
-		<ejb-ref-name>ejb/BookQuery</ejb-ref-name>
-		<ejb-ref-type>Session</ejb-ref-type>
-		<home>com.primix.vlib.ejb.IBookQueryHome</home>
-		<remote>com.primix.vlib.ejb.IBookQuery</remote>
-	</ejb-ref>
-	<ejb-ref>
-		<ejb-ref-name>ejb/Operations</ejb-ref-name>
-		<ejb-ref-type>Session</ejb-ref-type>
-		<home>com.primix.vlib.ejb.IVlibOperationsHome</home>
-		<remote>com.primix.vlib.ejb.IVlibOperations</remote>
-	</ejb-ref>
 </web-app>

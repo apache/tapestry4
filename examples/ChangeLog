@@ -1,3 +1,7 @@
+* Nov 7 2000 hship
+
+Convert the Vlib demo over to using Jetty.
+
 * Nov 1 2000 hship
 
 More changes to the Tutorial, to take advantage of Tapestry's switch-over to Servlet 2.2.
