@@ -1,5 +1,4 @@
 <%-- $Id$ --%>
-<%@ page import="com.primix.vlib.ejb.*" %>
 <%@ include file="Border.jsp" %>
 <%
 	PersonDelegate delegate = PersonDelegate.get(context);
@@ -10,7 +9,7 @@
 <table>
 	<tr>
 		<th>Name</th>
-		<td><% writer.print(person.getName()); %></td>
+		<td><% writer.print(person.getNaturalName()); %></td>
 	</tr>
 	<tr>
 		<th>Email</th>
@@ -19,11 +18,10 @@
 </table>
 
 <p><%= books.length %> books.
+
 <%
-	for (int i = 0; i < books.length; i++)
+	if (books.length > 0)
 	{
-		if (i == 0)
-		{
 %>
 <table>
 	<tr>
@@ -31,17 +29,22 @@
 		<th>Author</th>
 		<th>Publisher</th>
 		<th>Borrowed By</th>
+		<th></th>
 	</tr>
 <%
-		}
+	}
+
+	for (int i = 0; i < books.length; i++)
+	{
+		Book book = books[i];
 %>
 	<tr>
-		<td><% BookServlet.writeLink(context, writer, book); %></td>
-		<td><% writer.print(book.getAuthor()); %></td>
-		<td><% writer.print(book.getPublisherName()); %></td>
+		<td><%  BookServlet.writeLink(context, writer, book); %></td>
+		<td><%  writer.print(book.getAuthor()); %></td>
+		<td><%  writer.print(book.getPublisherName()); %></td>
 		<td><%
 		
-		if (application.showHolder(book))
+		if (vlib.getShowHolder(book))
 			PersonServlet.writeLink(context, writer,
 				book.getHolderPrimaryKey(),
 				book.getHolderName());

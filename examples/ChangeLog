@@ -1,3 +1,10 @@
+* Dec 19 2000 hship
+
+Fix a bug in VlibBeans where the Operations.getPerson() method built invalid SQL
+for the query.
+Fill out much more of the functionlity of Vlib/JSP, and add closure (links point
+to a simply Not Yet Implemented page).
+
 * Dec 13 2000 hship
 
 Lots of changes in the Vlib to make use of the new validating text field components.

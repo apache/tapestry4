@@ -36,8 +36,8 @@ import java.io.IOException;
  */
 
 /**
- *  Servlet for the {@link HomeDelegate} page.  Should be mapped
- *  to the URI <code>/home/*</code>.
+ *  Abstract base class for servlets inside the Vlib application.
+ *  Also provides some utility methods for creating links and such.
  *
  *  @version $Id$
  *  @author Howard Ship
@@ -65,13 +65,33 @@ import java.io.IOException;
 		writer.setCompressed(compressed);
 	}
 	
+	public static void writeNYILink(RequestContext context, HTMLWriter writer,
+	            String label)
+	{
+	    writeLink(context, writer, "/jsp/NYI.jsp", label);
+	}
+
 	protected void handleServletException(RequestContext context,
-		IService delegate, ServletException e)
+		IService delegate, ServletException ex)
 	throws IOException, ServletException
 	{
-		context.setAttribute("javax.servlet.jsp.jspException", e);
+        forwardToErrorPage(context, ex);
+	}
+
+	protected void handleOtherException(RequestContext context, 
+	    IService delegate, Exception ex)
+	throws IOException, ServletException
+	{
+		forwardToErrorPage(context, ex);
+	}
+
+
+    private void forwardToErrorPage(RequestContext context, Exception ex)
+    throws IOException, ServletException
+    {
+		context.setAttribute("javax.servlet.jsp.jspException", ex);
 		
-		context.forward(buildURL(context, "/jsp/Error.jsp"));
+		context.forward("/jsp/Error.jsp");
 	}
 
     /**
@@ -94,5 +114,6 @@ import java.io.IOException;
 
         return URL;
     }
+
  }
  

@@ -40,7 +40,7 @@ else
 	@$(ECHO) "\n*** jBoss is ready to run ***\n"
 endif
 
-run-jboss: deploy
+run: deploy
 	@$(ECHO) "\n*** Running jBoss ... ***\n"
 	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) -jar run.jar
 

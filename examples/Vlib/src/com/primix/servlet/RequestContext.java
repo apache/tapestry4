@@ -125,6 +125,7 @@ public class RequestContext
 
 		request.setAttribute(ATTRIBUTE_NAME, this);
 	}
+
 	/**
 	 * Adds a simple <code>Cookie</code>. To set a Cookie with attributes,
 	 * use {@link #addCookie(Cookie)}.
@@ -135,6 +136,7 @@ public class RequestContext
 	{
 		addCookie(new Cookie(name, value));
 	}
+
 	/**
 	 * Adds a <code>Cookie</code> to the response. Once added, the
 	 * Cookie will also be available to {@link #getCookie(String)} method.
@@ -157,6 +159,7 @@ public class RequestContext
 
 		cookieMap.put(cookie.getName(), cookie);
 	}
+
 	private void buildPathInfo()
 	{
 		String raw;
@@ -201,10 +204,12 @@ public class RequestContext
 		pathInfo = new String[elements.size()];
 		elements.copyInto(pathInfo);
 	}
+
 	private void datePair(HTMLWriter writer, String name, long value)
 	{
 		pair(writer, name, new Date(value));
 	}
+
 	/**
 	 * Forwards the request to a new resource, typically a JSP.
 	 */
@@ -220,6 +225,7 @@ public class RequestContext
 
 		dispatcher.forward(request, response);
 	}
+
 	/**
 	 * Returns the <code>RequestContext</code> as previously
 	 * stored as a request attribute.
@@ -235,6 +241,7 @@ public class RequestContext
 	{
 		return (RequestContext)request.getAttribute(ATTRIBUTE_NAME);
 	}
+
 	/**
 	 * Returns a named attribute of the <code>HttpServletRequest</code>,
 	 * or null if not defined.
@@ -252,6 +259,7 @@ public class RequestContext
 
 		return result;
 	}
+
 	/**
 	 * Gets a named <code>Cookie</code>.
 	 *
@@ -279,6 +287,7 @@ public class RequestContext
 
 		return result;
 	}
+
 	/**
 	 * Reads the named <CODE>Cookie</CODE> and returns its value (if it exists), or
 	 * null if it does not exist.
@@ -295,6 +304,7 @@ public class RequestContext
 
 		return cookie.getValue();
 	}
+
 	/**
 	 * Returns the value of a <CODE>Cookie</CODE>, if the <CODE>Cookie</CODE> exists, or the
 	 * <code>defaultValue</code> if the <code>Cookie</code> does not exist.
@@ -310,6 +320,7 @@ public class RequestContext
 
 		return cookie.getValue();
 	}
+
 	/**
 	 *  Returns the named parameter from the <code>HttpServletRequest</code>.
 	 *
@@ -329,6 +340,7 @@ public class RequestContext
 
 		return result;
 	}
+
 	/**
 	 * For parameters that are, or are possibly, multi-valued, this
 	 * method returns all the values as an array of Strings.
@@ -350,6 +362,7 @@ public class RequestContext
 
 		return result;
 	}
+
 	/**
 	 * Returns the pathInfo string at the given index. If the index
 	 * is out of range, this returns null.
@@ -371,6 +384,7 @@ public class RequestContext
 		}
 
 	}
+
 	/**
 	 * Returns the number of items in the pathInfo.
 	 */
@@ -382,10 +396,13 @@ public class RequestContext
 
 		return pathInfo.length;
 	}
+
 	public HttpServletRequest getRequest()
 	{ return request; }
+
 	public HttpServletResponse getResponse()
 	{ return response; }
+
 	private String getRowColor()
 	{
 		String result;
@@ -396,10 +413,12 @@ public class RequestContext
 
 		return result;
 	}
+
 	public HttpServlet getServlet()
 	{
 		return servlet;
 	}
+
 /**
  *  Returns the session. The session is created if it doesn't already
  *  exist.
@@ -418,6 +437,7 @@ public HttpSession getSession()
 	
 	return session;
 }
+
 	/**
 	 * Gets an attribute from the HttpSession. Attributes are named
 	 * "values" through the 2.1 version of the API. In 2.2, the
@@ -433,10 +453,10 @@ public HttpSession getSession()
 	{
 		Object result;
 
-		result = getSession().getValue(name);
+		result = getSession().getAttribute(name);
 
 		if (debugEnabled)
-			servlet.log("session.getValue(" + name + ")=" + result);
+			servlet.log("session.getAttribute(" + name + ")=" + result);
 			
 		return result;
 	}
@@ -581,8 +601,9 @@ public HTMLWriter getWriter() throws IOException
 		if (debugEnabled)
 			servlet.log("session.removeValue(" + name + ")");
 
-		getSession().removeValue(name);
+		getSession().removeAttribute(name);
 	}
+
 	private void section(HTMLWriter writer, String sectionName)
 	{
 		writer.begin("tr");
@@ -604,6 +625,7 @@ public HTMLWriter getWriter() throws IOException
 
 		request.setAttribute(name, value);
 	}
+
 	public void setDebugEnabled(boolean value)
 	{
 		debugEnabled = value;
@@ -618,9 +640,9 @@ public HTMLWriter getWriter() throws IOException
 	public void setSessionAttribute(String name, Object value)
 	{
 		if (debugEnabled)
-			servlet.log("session.putValue(" + name + ", " + value + ")");
+			servlet.log("session.setAttribute(" + name + ", " + value + ")");
 
-		getSession().putValue(name, value);
+		getSession().setAttribute(name, value);
 	}
 	/**
 	 * Writes the state of the context to the writer, typically for inclusion
@@ -632,7 +654,6 @@ public HTMLWriter getWriter() throws IOException
 	public void write(HTMLWriter writer)
 	{
 		int i;
-		String names[];
 		String values[];
 		Enumeration e;
 		String name;
@@ -665,20 +686,20 @@ public HTMLWriter getWriter() throws IOException
 		pair(writer, "maxInactiveInterval", session.getMaxInactiveInterval());
 		pair(writer, "new", session.isNew());
 
-		// In 2.2, getValue...() will be deprecated in favor of
-		// getAttribute...().
+		e = session.getAttributeNames();
 
-		names = session.getValueNames();
-		for (i = 0; i < names.length; i++)
+		while (e.hasMoreElements())
 		{
-
-			if (i == 0)
+			if (first)
 			{
 				section(writer, "Attributes");
 				header(writer, "Name", "Value");
+                first = false;
 			}
 
-			pair(writer, names[i], session.getValue(names[i]));
+            name = (String)e.nextElement();
+
+			pair(writer, name, session.getAttribute(name));
 		}
 
 		writer.end(); // Session
@@ -717,6 +738,8 @@ public HTMLWriter getWriter() throws IOException
 		// Now deal with any headers
 
 		e = request.getHeaderNames();
+        first = true;
+
 		while (e.hasMoreElements())
 		{
 			if (first)

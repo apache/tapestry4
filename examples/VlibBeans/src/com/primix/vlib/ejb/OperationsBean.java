@@ -453,6 +453,7 @@ public class OperationsBean implements SessionBean
 			connection = getConnection();
 			
 			assembly = buildBasePersonQuery();
+			assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
 		
 			statement = assembly.createStatement(connection);	
 			
@@ -502,7 +503,9 @@ public class OperationsBean implements SessionBean
 			connection = getConnection();
 			
 			assembly = buildBasePersonQuery();
-			assembly.addParameter("WHERE PERSON_ID = ?", primaryKey);
+            assembly.newLine("WHERE ");
+			assembly.addParameter("PERSON_ID = ?", primaryKey);
+			assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
 			
 			statement = assembly.createStatement(connection);
 			
@@ -845,7 +848,6 @@ public class OperationsBean implements SessionBean
 		
 		result.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL");
 		result.newLine("FROM PERSON");
-		result.newLine("ORDER BY LAST_NAME, FIRST_NAME");
 		
 		return result;
 	}

@@ -1,5 +1,4 @@
 <%-- $Id$ --%>
-<%@ page import="com.primix.vlib.ejb.*" %>
 <%@ include file="Border.jsp"%>
 <%
 	HomeDelegate delegate = HomeDelegate.get(context);

@@ -105,7 +105,11 @@ public class PersonDelegate extends BookQueryDelegate
 			if (count == 0)
 				books = new Book[0];
 			else
-				books = query.get(0, count);	
+				books = query.get(0, count);
+				
+			forward("/jsp/Person.jsp", "Book Inventory",
+			    person.getNaturalName(), context);
+			    	
 		}
 		catch (RemoteException e)
 		{

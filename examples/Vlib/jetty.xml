@@ -13,7 +13,7 @@
 		</Arg>
 	</Call>
 	<Call name="addWebApplication">
-		<!--Because we use JSPs, we can't deply as a .war, we deploy the directory instead.-->
+		<!--Because we use JSPs, we can't deploy as a .war, we deploy the directory instead.-->
 		<Arg>/vlib/*</Arg>
 		<Arg>.build/wapp</Arg>
 		<Arg>jetty-default-web.xml</Arg>

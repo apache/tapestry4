@@ -42,7 +42,7 @@
 		<td><% writer.print(book.getDescription()); %></td>
 	</tr>
 <%
-	if (application.showHolder(book))
+	if (vlib.getShowHolder(book))
 	{
 %>
 	<tr>

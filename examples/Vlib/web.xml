@@ -28,6 +28,10 @@
 		<servlet-name>mybooks</servlet-name>
 		<servlet-class>com.primix.vlib.jsp.MyBooksServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>logout</servlet-name>
+		<servlet-class>com.primix.vlib.jsp.LogoutServlet</servlet-class>
+	</servlet>
 	<!--The single mapping used for the Tapestry application-->
 	<servlet-mapping>
 		<servlet-name>vlib</servlet-name>
@@ -53,6 +57,10 @@
 	<servlet-mapping>
 		<servlet-name>mybooks</servlet-name>
 		<url-pattern>/mybooks/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>logout</servlet-name>
+		<url-pattern>/logout/*</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

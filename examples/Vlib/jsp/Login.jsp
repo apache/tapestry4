@@ -1,9 +1,9 @@
 <%-- $Id$ --%>
-<%@ include file="Border.jsp"%>
+<%@ include file="Border.jsp" %>
 <%
 	LoginDelegate delegate = LoginDelegate.get(context);
 %>
-<form method="post" action="/login/submit">
+<form method="post" action="<%= LoginServlet.getLoginFormURL(context) %>">
 
 <table>
 	<tr>
@@ -16,7 +16,7 @@
 	<tr>
 		<th>Email Address:</th>
 		<td> <input type="text" name="<%= delegate.EMAIL_NAME %>" size="30" maxlength="60" 
-			value="<% writer.print(delegate.getDefaultEmail()); %>"></td>
+			value="<% writer.print(delegate.getEmail()); %>"></td>
 	</tr>
 
 	<tr>
@@ -32,6 +32,6 @@
 
 </form>
 
-<p>Not registered?  <a href="/register">Register now.</a>
+<p>Not registered?  <% VlibServlet.writeNYILink(context, writer, "Register now"); %>.
 
 <%@ include file="Border-trailer.jsp" %>

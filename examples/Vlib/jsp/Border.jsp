@@ -3,6 +3,7 @@
 <!-- Generated: <%= new Date() %> -->
 <%@ page import="com.primix.servlet.*" %>
 <%@ page import="com.primix.vlib.jsp.*" %>
+<%@ page import="com.primix.vlib.ejb.*" %>
 <%@ page import="java.util.*" %>
 <%@ page errorPage="/jsp/Error.jsp" %>
 <%
@@ -11,16 +12,8 @@
 	RequestContext context = RequestContext.get(request);
 	HTMLWriter writer = new HTMLWriter(out);
 	
-//  Yes, I use WebLogic.  Can you tell?
-
-//	Object raw = context.getSessionAttribute("application");
-//	System.out.println("application = " + raw);
-//	if (raw != null)
-//		System.out.println("app class loader =  " + raw.getClass().getClassLoader());
-//	System.out.println("this = " + this);
-//	System.out.println("this class loader = " + this.getClass().getClassLoader());
-
-	VirtualLibraryApplication vlib = (VirtualLibraryApplication)context.getSessionAttribute("application");
+	VirtualLibraryApplication vlib =
+		(VirtualLibraryApplication)context.getSessionAttribute("application");
 	
 	boolean isLoggedIn = vlib.isUserLoggedIn();
 	
@@ -64,8 +57,6 @@
 		<td align=center>
 <%
 
-	boolean compressed = writer.compress(true);
-	
 	if (isLoggedIn)
 	{
 		writer.print("Logged in as: ");
@@ -80,15 +71,8 @@
 		<td>
 <%
 	if (request.getAttribute("omit-logout") == null)
-	{
-		writer.begin("a");
-		writer.attribute("href",
-			response.encodeURL("/logout"));
-		writer.print("[Logout]");
-		writer.end();
-	}
+		LogoutServlet.writeLink(context, writer);
 	
-	writer.setCompressed(compressed);
 %>		</td>
 	</tr>
 </table>
