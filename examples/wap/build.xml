@@ -69,7 +69,8 @@
       <arg value="jetty.xml"/>
       <jvmarg value="-showversion"/>
       <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
-    </java>
+ 	  <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+   </java>
   </target>
 </project>
 

@@ -234,8 +234,17 @@ description="Builds the Tapestry documentation.">
   <echo>Running Tapestry Tutorial on port 8080 ...</echo>
   <java classname="org.mortbay.jetty.Server" classpathref="tutorial.classpath"
   	fork="true" maxmemory="128MB">
+  	
     <arg value="config/jetty-tutorial.xml"/>
-    <jvmarg value="-showversion"/>
+ 
+    <!-- Enable debugging when running the tutorial -->
+
+    <jvmarg line="-showversion -Xdebug -Xnoagent"/>
+    <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
+    
+    <!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
+    
+	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
   </java>
 </target>
 
@@ -244,8 +253,14 @@ description="Builds the Tapestry documentation.">
   <echo>Running Virtual Library on port 80 ...</echo>
   <java classname="org.mortbay.jetty.Server" classpathref="full.classpath"
   	fork="true" maxmemory="128MB">
+
     <arg value="config/jetty-intranet.xml"/>
+
     <jvmarg value="-showversion"/>
+    
+    <!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
+    
+	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
   </java>
 </target>
 
@@ -254,10 +269,17 @@ description="Builds the Tapestry documentation.">
   <echo>Running Tapestry Home Page on port 80 ...</echo>
   <java classname="org.mortbay.jetty.Server" classpathref="full.classpath"
   	fork="true" maxmemory="128MB">
+
     <arg value="config/jetty-extranet.xml"/>
+
     <jvmarg value="-showversion"/>
+
     <sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
     <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+    
+    <!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
+    
+	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
   </java>
 </target>
 
