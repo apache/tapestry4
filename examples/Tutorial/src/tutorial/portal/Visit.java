@@ -11,7 +11,6 @@ public class Visit
     private static PortletDef[] defs =
     {
         new PortletDef(87, "Slashdot Headlines", "Slashdot", "content"),
-            new PortletDef(1020, "TV Listings", "TV", "content"),
             new PortletDef(23, "Stock Quotes", "Stocks", "content"),
             new PortletDef(373, "Weather", "Weather", "content")
             
