@@ -130,7 +130,7 @@ public class PageLoader
 				if (spec.getParameter(name) == null)
 					throw new PageLoaderException(
 						"Component " + component.getExtendedId() +
-						" allows only formal paramters, binding " +
+						" allows only formal parameters, binding " +
 						name + " is not allowed.", 
 						this, component, null);
 			}

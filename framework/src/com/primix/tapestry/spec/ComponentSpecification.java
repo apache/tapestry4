@@ -57,7 +57,7 @@ import java.util.*;
  * @version $Id$
  */
 
-public class ComponentSpecification
+public class ComponentSpecification extends BasePropertyHolder
 {
 	private String componentClassName;
 	private String specificationResourcePath;
@@ -280,8 +280,11 @@ public class ComponentSpecification
 
 		buffer.append('[');
 
-		if (componentClassName != null)
-			buffer.append(componentClassName);
+		if (specificationResourcePath != null)
+			buffer.append(specificationResourcePath);
+		else
+			if (componentClassName != null)
+				buffer.append(componentClassName);
 
 		buffer.append(']');
 

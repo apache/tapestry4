@@ -179,4 +179,22 @@ public interface IComponent extends IRender
      */
  
     public void setBinding(String name, IBinding binding);
+	
+	/**
+	 *  Returns the contained components as an unmodifiable {@link Map}.  This
+	 *  allows peer components to work together without directly involving their
+	 *  container ... the classic example is to have an {@link Insert} work with
+	 *  an enclosing {@link Foreach}.
+	 *
+	 *  <p>This is late addition to Tapestry, because it also opens the door
+	 * to abuse, since it is quite possible to break the "black box" aspect of
+	 * a component by interacting directly with components it embeds.  This creates
+	 * ugly interrelationships between components that should be seperated.
+	 *
+	 *  @returns A Map of components keyed on component id, or null if the
+	 *  component contains no other components.
+	 *
+	 */
+	 
+	 public Map getComponents();
 }

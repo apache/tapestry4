@@ -56,6 +56,12 @@ MOD_RESOURCE_CATALOG = $(MOD_BUILD_DIR)/resource-catalog
 
 MOD_RMI_CLASS_CATALOG = $(MOD_BUILD_DIR)/rmi-class-catalog
 
+# Create a macro for recusively invoking Make.  --unix seems
+# to tame things under Windows.  We don't want or need any builtin
+# rules.
+
+RECURSE := $(MAKE) --unix --no-builtin-rules
+
 # Find out what out platform is.  Must set a value for SITE_PLATFORM.
 # The LocalConfig can set other things (such as locations of tools,
 # libraries, etc.)  It is optional.
@@ -67,6 +73,11 @@ include $(CONFIG_DIR)/SiteConfig.mk
 # just set by CONFIG_DIR/SiteConfig.mk
 
 include $(SYS_MAKEFILE_DIR)/Platform.$(SITE_PLATFORM).mk
+
+# Find out the information specific to the JDK.   SITE_JDK was just
+# set by CONFIG_DIR/SiteConfig.mk.
+
+include $(SYS_MAKEFILE_DIR)/JDK.$(SITE_JDK).mk
 
 -include $(CONFIG_DIR)/Common.mk
 

@@ -34,8 +34,10 @@ import java.util.*;
 
 /**
  *  Implements a component that manages an HTML &lt;select&gt; form element.
+ *  The most common situation, using a &lt;select&gt; to set a specific
+ *  property of some object, is best handled using a {@link PropertySelection} component.
  *
- *  <p>Very similar to {@link RadioGroup}.
+ *  <p>Otherwise, this component is very similar to {@link RadioGroup}.
  *
  * <table border=1>
  * <tr> 

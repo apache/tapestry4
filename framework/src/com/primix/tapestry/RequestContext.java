@@ -1235,6 +1235,7 @@ public class RequestContext
 			}
 		}
 
+		writer.end(); // System Properties
 	}
 
 }

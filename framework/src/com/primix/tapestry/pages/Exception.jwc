@@ -1,52 +1,46 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0"?>
 <!-- $Id$ -->
-
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.pages.Exception</class>
-	
-	<component>
-		<id>insertStylesheetURL</id>
-		<type>InsertURL</type>
-		
-		<binding>
-			<name>asset</name>
-			<property-path>assets.stylesheet</property-path>
-		</binding>
-	</component>
-	
-	<component>
-		<id>exceptionDisplay</id>
-		<type>ExceptionDisplay</type>
-		
-		<binding>
-			<name>exceptions</name>
-			<property-path>exceptions</property-path>
-		</binding>
-	</component>
-	
-	<component>
-		<id>restart</id>
-		<type>Service</type>
-		
-		<static-binding>
-			<name>service</name>
-			<value>restart</value>
-		</static-binding>
-	</component>
-	
-	<component>
-		<id>showDebug</id>
-		<type>Delegator</type>
-		
-		<binding>
-			<name>delegate</name>
-			<property-path>showDebugDelegate</property-path>
-		</binding>
-	</component>
-	
-	<private-asset>
-		<name>stylesheet</name>
-		<resource-path>/com/primix/tapestry/pages/Exception.css</resource-path>
-	</private-asset>
-	
+<class>com.primix.tapestry.pages.Exception</class>
+<components>
+<component>
+<id>insertStylesheetURL</id>
+<type>InsertURL</type> <bindings>
+<binding>
+<name>asset</name>
+<property-path>assets.stylesheet</property-path>
+</binding></bindings>
+</component>
+<component>
+<id>exceptionDisplay</id>
+<type>ExceptionDisplay</type><bindings>
+<binding>
+<name>exceptions</name>
+<property-path>exceptions</property-path>
+</binding></bindings>
+</component>
+<component>
+<id>restart</id>
+<type>Service</type><bindings>
+<static-binding>
+<name>service</name>
+<value>restart</value>
+</static-binding></bindings>
+</component>
+<component>
+<id>showDebug</id>
+<type>Delegator</type><bindings>
+<binding>
+<name>delegate</name>
+<property-path>showDebugDelegate</property-path>
+</binding></bindings>
+</component>
+</components>
+<assets>
+<private-asset>
+<name>stylesheet</name>
+<resource-path>/com/primix/tapestry/pages/Exception.css</resource-path>
+</private-asset>
+</assets>
 </specification>

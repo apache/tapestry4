@@ -69,7 +69,8 @@ import java.util.*;
  * 	  <td>no</td>
  *	  <td>&nbsp;</td>
  *	  <td>The listener, informed <em>after</em> the {@link Radio} components
- *	      have had a chance to absorb the request.</td>
+ *	      have had a chance to absorb the request.  The listener is not notified if
+ *  the RadioGroup is disabled.</td>
  *	</tr>
  *
  *	</table>
@@ -207,7 +208,7 @@ public class RadioGroup extends AbstractFormComponent
 
 		cycle.removeAttribute(ATTRIBUTE_NAME);
 
-		if (rewinding)
+		if (rewinding & !disabled)
 		{
 			listener = getListener(cycle);
 			if (listener != null)

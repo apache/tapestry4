@@ -1,148 +1,152 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0"?>
 <!-- $Id$ -->
-
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+	
 <specification>
-	<class>com.primix.tapestry.components.ExceptionDisplay</class>
+	<class>com.primix.tapestry.BaseComponent</class>
 	
-	<allow-informal-parameters>no</allow-informal-parameters>
 	<allow-body>no</allow-body>
+		
+	<parameters>
+		<allow-informal-parameters>no</allow-informal-parameters>
 
-	<!-- Actually, com.primix.foundation.exception.ExceptionDescription[] -->
-	
-	<parameter>
-		<name>exceptions</name>
-		<required>yes</required>
-	</parameter>
-	
-	<component>
-		<id>e-exception</id>
-		<type>Foreach</type>
-		
-		<inherited-binding>
-			<name>source</name>
-			<parameter-name>exceptions</parameter-name>
-		</inherited-binding>
-		
-		<binding>
-			<name>value</name>
-			<property-path>exceptionDescription</property-path>
-		</binding>	
-		
-		<!-- Track when the last description is processed, so that we
-			 can do the stack trace. -->
-			 
-		<binding>
-			<name>last</name>
-			<property-path>last</property-path>
-		</binding>
-	</component>
-		
-	<component>
-		<id>insertClass</id>
-		<type>Insert</type>
-		
-		<binding>
-			<name>value</name>
-			<property-path>exceptionDescription.exceptionClassName</property-path>
-		</binding>
-	</component>
-	
-	<component>
-		<id>insertMessage</id>
-		<type>Insert</type>
-		
-		<binding>
-			<name>value</name>
-			<property-path>exceptionDescription.message</property-path>
-		</binding>
-	</component>
-	
-	<component>
-		<id>e-property</id>
-		<type>Foreach</type>
-		
-		<binding>
-			<name>source</name>
-			<property-path>exceptionDescription.properties</property-path>
-		</binding>
-		
-		<binding>
-			<name>value</name>
-			<property-path>exceptionProperty</property-path>
-		</binding>
-	</component>
 
-	<component>
-		<id>insertPropertyName</id>
-		<type>Insert</type>
+		<!-- Actually, com.primix.foundation.exception.ExceptionDescription[] -->
 		
-		<binding>
-			<name>value</name>
-			<property-path>exceptionProperty.name</property-path>
-		</binding>
-	</component>
+		<parameter>
+			<name>exceptions</name>
+			<required>yes</required>
+		</parameter>
+	</parameters>
 	
-	<component>
-		<id>insertPropertyValue</id>
-		<type>Insert</type>
+	<components>
 		
-		<binding>
-			<name>value</name>
-			<property-path>exceptionProperty.value</property-path>
-		</binding>
-	</component>
+		<component>
+			<id>e-exception</id>
+			<type>Foreach</type>
+			
+			<bindings>
+				<inherited-binding>
+					<name>source</name>
+					<parameter-name>exceptions</parameter-name>
+				</inherited-binding>
+			</bindings>
+		</component>
+			
+		<component>
+			<id>insertClass</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>components.e-exception.value.exceptionClassName</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>insertMessage</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>components.e-exception.value.message</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>e-property</id>
+			<type>Foreach</type>
+			
+			<bindings>
+				<binding>
+					<name>source</name>
+					<property-path>components.e-exception.value.properties</property-path>
+				</binding>
+			</bindings>
+		</component>
 
-	<component>
-		<id>ifLast</id>
-		<type>Conditional</type>
+		<component>
+			<id>insertPropertyName</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>components.e-property.value.name</property-path>
+				</binding>
+			</bindings>
+		</component>
 		
-		<binding>
-			<name>condition</name>
-			<property-path>last</property-path>
-		</binding>
-	</component>
-	
-	<component>
-		<id>ifNotLast</id>
-		<type>Conditional</type>
-		
-		<binding>
-			<name>condition</name>
-			<property-path>last</property-path>
-		</binding>
-		
-		<static-binding>
-			<name>invert</name>
-			<value>true</value>
-		</static-binding>
-		
-	</component>
+		<component>
+			<id>insertPropertyValue</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>components.e-property.value.value</property-path>
+				</binding>
+			</bindings>
+		</component>
 
-	<!-- The stack is only traced for the last (deepest) exception. -->
-	
-	<component>
-		<id>e-stack</id>
-		<type>Foreach</type>
+		<component>
+			<id>ifLast</id>
+			<type>Conditional</type>
+			
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>components.e-exception.last</property-path>
+				</binding>
+			</bindings>
+		</component>
 		
-		<binding>
-			<name>source</name>
-			<property-path>exceptionDescription.stackTrace</property-path>
-		</binding>
-		
-		<binding>
-			<name>value</name>
-			<property-path>stackTrace</property-path>
-		</binding>
-	</component>
-		
-	<component>
-		<id>insertStackTrace</id>
-		<type>Insert</type>
-		
-		<binding>
-			<name>value</name>
-			<property-path>stackTrace</property-path>
-		</binding>
-	</component>	
+		<component>
+			<id>ifNotLast</id>
+			<type>Conditional</type>
+			
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>components.e-exception.last</property-path>
+				</binding>
+				
+				<static-binding>
+					<name>invert</name>
+					<value>true</value>
+				</static-binding>
+			</bindings>
+		</component>
 
+		<!-- The stack is only traced for the last (deepest) exception. -->
+		
+		<component>
+			<id>e-stack</id>
+			<type>Foreach</type>
+			
+			<bindings>
+				<binding>
+					<name>source</name>
+					<property-path>components.e-exception.value.stackTrace</property-path>
+				</binding>
+			</bindings>
+		</component>
+			
+		<component>
+			<id>insertStackTrace</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>components.e-stack.value</property-path>
+				</binding>
+			</bindings>
+		</component>	
+	</components>
 </specification>

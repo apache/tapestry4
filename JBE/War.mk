@@ -42,13 +42,14 @@ WAR_WEB_INF_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/wapp-web-inf-stamp
 WAR_CONTEXT_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/wapp-context-stamp
 MOD_META_INF_DIR := $(WAR_APP_DIR)/META-INF
 
+default: war
+
 include $(SYS_MAKEFILE_DIR)/ModuleRules.mk
 
-default: war
 
 # Initializer, makes sure some directories are there
 
-initialize: war-initialize local-initialize
+initialize: setup-jbe-util war-initialize local-initialize
 
 war-initialize:
 	@$(MKDIRS) $(MOD_CLASS_DIR) $(WAR_LIB_DIR) $(MOD_META_INF_DIR)
@@ -96,14 +97,21 @@ endif
 install: war war-install local-install
 
 war-install:war
-ifeq $(INSTALL_DIR)" ""
+
+ifeq "$(INSTALL_DIR)" ""
+war-install:
 	@$(ECHO) JBE Error: Must set INSTALL_DIR in Makefile
 else
+
 ifneq "$(MODULE_NAME)" ""
+war-install: $(INSTALL_DIR)/$(JAR_FILE)
+
+$(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
 	@$(CP) $(JAR_FILE) --force $(INSTALL_DIR)
 endif
 endif
+
 
 # Additional rule that will fire after the WAR is installed.
 

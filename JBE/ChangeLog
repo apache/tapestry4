@@ -1,0 +1,39 @@
+* Oct 11 2000 hship
+
+Add some comments to WebLogic.mk to make clear it is for WebLogic 5.1 and things will
+change in WebLogic 6.0.
+[114707] Seperate Platform from JDK
+
+* Sep 28 2000 hship
+
+Improve handling of dependencies of jar files:  make the WebLogic deplyable jar
+dependent on the any framework jars; make installed jars dependent on Module jars (rather
+than blindly copying them).
+
+* Sep 25 2000 hship
+
+Speed up writing of catalog entries by using $(addprefix) to generate a single long line
+(the old way invoked echo.exe a zillion times).
+
+* Sep 24 2000 hship
+
+Attempt to speed up the build a little, by including the relative
+pathname to source and resource files in the catalogs.
+
+* Sep 19 2000 hship
+
+Hide a make invocation (related to generating the catalog) with a '@'.
+
+* Sep 19 2000 hship
+
+Split part of ModuleRules.mk into CommonRules.mk and some other re-organizing.
+
+* Sep 19 2000 hship
+
+Support modules with no packages, plus other minor tweaks.
+
+* Sep 18 2000 hship
+
+Started ChangeLog (some time after release 0.1.1).
+[114704] Should allow source tree to live in different directory
+[114708] JBE should remove duplicates from the classpath 

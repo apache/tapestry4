@@ -42,6 +42,7 @@ public class RenderTemplateHTML implements IRender
 	private char[] templateData;
 	private int offset;
 	private int length;
+	private boolean needsOptimize = true;
 
 	public RenderTemplateHTML(char[] templateData, int offset, int length)
 	{
@@ -53,8 +54,64 @@ public class RenderTemplateHTML implements IRender
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
+		if (needsOptimize)
+			optimize();
+			
+		if (length == 0)
+			return;
+			
 		if (!cycle.isRewinding())
 			writer.printRaw(templateData, offset, length);
+	}
+	
+	/**
+	 *  Strip off all leading and trailing whitespace by adjusting offset and length.
+	 *
+	 */
+	 
+	private void optimize()
+	{
+		char ch;
+		
+		needsOptimize = false;
+
+		if (length == 0)
+			return;
+			
+		// Shave characters off the end until we hit a non-whitespace
+		// character.
+		
+		while (true)
+		{
+			ch = templateData[offset + length - 1];
+			
+			if (!Character.isWhitespace(ch))
+				break;
+				
+			length--;
+			
+			if (length <= 0)
+				return;
+		}
+		
+		// Strip characters off the front until we hit a non-whitespace
+		// character.
+		
+		while (true)
+		{
+			ch = templateData[offset];
+			
+			if (!Character.isWhitespace(ch))
+				break;
+				
+			offset++;
+			length--;
+			
+			if (length <= 0)
+				return;
+			
+		}
+		
 	}
 }
 

@@ -40,17 +40,9 @@ MOD_META_INF_DIR := $(MOD_CLASS_DIR)/META-INF
 
 include $(SYS_MAKEFILE_DIR)/ModuleRules.mk
 
-# Build the final classpath used for execution
-
-FINAL_EXECUTION_CLASSPATH := \
-	$(strip $(EXECUTION_CLASSPATH) . $(MOD_CLASS_DIR))
-
-EXECUTION_CLASSPATH_OPTION := \
-	-classpath "$(subst $(SPACE),$(CLASSPATHSEP),$(FINAL_EXECUTION_CLASSPATH))"
-
 # Initializer, makes sure some directories are there
 
-initialize: jar-initialize local-initialize
+initialize: setup-jbe-util jar-initialize local-initialize
 
 local-initialize: jar-initialize
 
@@ -89,14 +81,21 @@ endif
 
 install: jar-install local-install
 
+# Default rule for when INSTALL_DIR or MODULE_NAME is undefined.
+
 jar-install: jar
+
 ifeq "$(INSTALL_DIR)" ""
+jar-install:
 	@$(ECHO) JBE Error: Must set INSTALL_DIR in Makefile
-else
+endif
+
 ifneq "$(MODULE_NAME)" ""
+jar-install: $(INSTALL_DIR)/$(JAR_FILE)
+
+$(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
 	@$(CP) $(JAR_FILE) --force $(INSTALL_DIR)
-endif
 endif
 
 # local-install allows additional installation work to follow the normal

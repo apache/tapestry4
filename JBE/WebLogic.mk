@@ -26,16 +26,17 @@
 # Lesser General Public License for more details.
 
 # Makefile that defines additional rules for creating WebLogic EJBs.  This
-# was built against WebLogic 5.1.
+# was built for WebLogic 5.1.
+#
+# For WebLogic 6.0, this doesn't appear to be necessary, the server will automatically
+# run ejbc internally as it deploys files.  It may still be possible and desirable
+# to do this during development rather than at deployment. 
 #
 # Works just like a Jar project, except that it then produces a
 # deployable version of the Jar file as well, named $(JAR_NAME)-deploy.$(JAR_EXT)
 #
 # Overrides a number of local- rules: local-clean, local-install
 #
-# Requires that the WebLogic framework (weblogicaux.jar) be in the classpath
-# (SITE_CLASSPATH, LOCAL-CLASSPATH or LOCAL_RELATIVE_CLASSPATH)
-# so that WebLogic's ejbc tool can be invoked.
 #
 # You may specify options for ejbc using SITE_EJBC_OPT or EJBC_OPT.
 # -keepgenerated is pretty useful.
@@ -44,14 +45,19 @@ MOD_META_RESOURCES = ejb-jar.xml weblogic-ejb-jar.xml
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 
-DEPLOY_JAR_FILE := $(JAR_NAME)-deploy.$(JAR_EXT)
+DEPLOY_JAR_FILE := $(MODULE_NAME)-deploy.$(JAR_EXT)
 
 local-clean:
 	@$(RMDIRS) $(DEPLOY_JAR_FILE)
 
-local-install: 
+ifneq "$(INSTALL_DIR)" ""
+
+local-install: $(INSTALL_DIR)/$(DEPLOY_JAR_FILE)
+
+$(INSTALL_DIR)/$(DEPLOY_JAR_FILE): $(DEPLOY_JAR_FILE)
 	@$(ECHO) "\n*** Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... ***\n"
 	@$(CP) --force $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
+endif
 
 local-post-jar: $(DEPLOY_JAR_FILE)
 
@@ -59,12 +65,8 @@ WEBLOGIC_CLASSPATH := $(WEBLOGIC_DIR)/lib/weblogicaux.jar $(WEBLOGIC_DIR)/classe
 
 MOD_CLASSPATH := $(WEBLOGIC_CLASSPATH)
 
-# EJDB is run from the build directory, so we need to modify LOCAL_RELATIVE_CLASSPATH.
-# Other classpaths use absolute path names.
-
-_EJBC_CLASSPATH := $(strip $(WEBLOGIC_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH) \
-	$(addprefix $(DOTDOT)$(SLASH),$(LOCAL_RELATIVE_CLASSPATH)))
-EJBC_CLASSPATH := $(subst $(SPACE),$(CLASSPATHSEP),$(_EJBC_CLASSPATH))
+EJBC_CLASSPATH =  $(shell $(JBE_CANONICALIZE) -classpath \
+						$(WEBLOGIC_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
 
 FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
 
@@ -73,7 +75,7 @@ FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
 # EJBC leaves lots of garbage around, so we'll switch to the
 # build directory
 
-$(DEPLOY_JAR_FILE): $(JAR_FILE)
+$(DEPLOY_JAR_FILE): $(JAR_FILE) $(filter %.jar %.zip,$(LOCAL_CLASSPATH))
 	@$(ECHO) "\n*** Creating $(DEPLOY_JAR_FILE) ... ***\n"
 	$(CD) $(MOD_BUILD_DIR) ; \
 	$(JAVA) -classpath "$(EJBC_CLASSPATH)" \

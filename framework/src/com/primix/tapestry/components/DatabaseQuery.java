@@ -104,9 +104,10 @@ import java.util.*;
  *		<td>row</td>
  *		<td>java.util.Map</td>
  *		<td>W</td>
- *		<td>Yes</td>
+ *		<td>no</td>
  *		<td>&nbsp;</td>
- *		<td>A property to update with each row from the query. </td> </tr>
+ *		<td>A property to update with each row from the query.  Alternately,
+ *  components wrapped by the DatabaseQuery can access its {@link #getRow() row property}.</td> </tr>
  * </table>
  *
  * <p>Informal parameters are not allowed.
@@ -129,6 +130,8 @@ public class DatabaseQuery extends AbstractComponent
 	private IBinding queryBinding;
 	private String queryValue;
 	private IBinding rowBinding;
+	private Map row;
+	private boolean renderring;
 
 	public DatabaseQuery(IPage page, IComponent container, String id, 
 		ComponentSpecification specification)
@@ -220,6 +223,7 @@ public class DatabaseQuery extends AbstractComponent
 
 		try
 		{
+			renderring = true;
 
 			statement = jdbcConnection.createStatement();
 
@@ -236,6 +240,8 @@ public class DatabaseQuery extends AbstractComponent
 				if (currentRow == null)
 				{
 					currentRow = new HashMap(13);
+					
+					row = Collections.unmodifiableMap(currentRow);
 
 					intKey = new Integer[columns + 1];
 					columnKey = new String[columns + 1];
@@ -285,6 +291,9 @@ public class DatabaseQuery extends AbstractComponent
 		}
 		finally
 		{
+			renderring = false;
+			row = null;
+			
 			try
 			{
 				if (statement != null)
@@ -324,5 +333,21 @@ public class DatabaseQuery extends AbstractComponent
 	{
 		URLBinding = value;
 	}
+	
+	/**
+	 *  Returns the most recently fetched row of the query as an unmodifiable
+	 *  {@link Map}.
+	 *
+	 *  @throws RenderOnlyPropertyException if the component is not renderring.
+	 *
+	 */
+	 
+	public Map getRow()
+	{
+		if (!renderring)
+			throw new RenderOnlyPropertyException(this, "row");
+		
+		return row;
+	}	
 }
 

@@ -1,22 +1,27 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0"?>
 <!-- $Id$ -->
-
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+	
 <specification>
 	<class>com.primix.tapestry.components.Action</class>
 		
-	<parameter>
-		<name>listener</name>
-		<java-type>com.primix.tapestry.components.IActionListener</java-type>
-		<required>yes</required>
-	</parameter>
+	<parameters>
+		<parameter>
+			<name>listener</name>
+			<java-type>com.primix.tapestry.components.IActionListener</java-type>
+			<required>yes</required>
+		</parameter>
+		
+		<parameter>
+			<name>enabled</name>
+		</parameter>
+		
+		<parameter>
+			<name>anchor</name>
+			<java-type>java.lang.String</java-type>
+		</parameter>
+	</parameters>
 	
-	<parameter>
-		<name>enabled</name>
-	</parameter>
-	
-	<parameter>
-		<name>anchor</name>
-		<java-type>java.lang.String</java-type>
-	</parameter>
 		
 </specification>
