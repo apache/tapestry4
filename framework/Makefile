@@ -1,5 +1,4 @@
 # $Id$
-#
 
 MODULE_NAME = Tapestry
 
