@@ -218,18 +218,17 @@
 		version="true" 
 		destdir="${javadoc.dir}" 
 		splitindex="true"
-		windowtitle="Tapestry API ${framework.version}"
-		additionalparam="-quiet">
+		windowtitle="Tapestry API ${framework.version}">
 	
 		<doctitle>Tapestry API (Release ${framework.version})</doctitle>
 		
 		<package name="net.sf.tapestry.*"/>
 		<package name="tutorial.*"/>
-		
-		<link href="http:/java.sun.com/j2se/1.4/docs/api/"/>
-		<link href="http:/java.sun.com/j2ee/j2sdkee/techdocs/api"/>
-		<link href="http:/jakarta.apache.org/log4j/docs/api"/>
-		<link href="http:/www.junit.org/junit/javadoc/3.7"/>
+
+		<link href="http://java.sun.com/products/jdk/1.2/docs/api/"/>
+		<link href="http://java.sun.com/j2ee/sdk_1.2.1/techdocs/api/"/>
+		<link href="http://jakarta.apache.org/log4j/docs/api/"/>
+		<link href="http://www.junit.org/junit/javadoc/3.7/"/>
 		  
 		<group title="Tapestry Framework" packages="net.sf.tapestry:net.sf.tapestry.*"/>
 		<group title="Tapestry Contributions Framework" packages="net.sf.tapestry.contrib.*"/>
@@ -255,6 +254,8 @@
 			<pathelement location="${jboss.lib.dir}/jmxri.jar"/>
 			<pathelement location="${jboss.lib.ext.dir}/jboss.jar"/>
 			<pathelement location="${jboss.lib.ext.dir}/jboss-j2ee.jar"/>
+			<pathelement location="${lib.ext.dir}/jndi.jar"/>
+			<pathelement location="${lib.ext.dir}/javax.rmi.jar"/>
 		</classpath>		
 	</javadoc>
 </target>
