@@ -705,6 +705,8 @@ public class TemplateParser
         int startLine = _line;
         ILocation startLocation = new Location(_resourceLocation, startLine);
 
+        tagBeginEvent(startLine, _cursor);
+
         advance();
 
         // Collect the element type
@@ -864,6 +866,7 @@ public class TemplateParser
                         state = COLLECT_QUOTED_VALUE;
                         advance();
                         attributeValueStart = _cursor;
+                        attributeBeginEvent(attributeName, _line, attributeValueStart);
                         break;
                     }
 
@@ -871,6 +874,7 @@ public class TemplateParser
 
                     state = COLLECT_UNQUOTED_VALUE;
                     attributeValueStart = _cursor;
+                    attributeBeginEvent(attributeName, _line, attributeValueStart);
                     break;
 
                 case COLLECT_QUOTED_VALUE :
@@ -884,6 +888,7 @@ public class TemplateParser
                             new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
 
                         _attributes.put(attributeName, attributeValue);
+                        attributeEndEvent(_cursor - 1);
 
                         // Advance over the quote.
                         advance();
@@ -905,6 +910,7 @@ public class TemplateParser
                             new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
 
                         _attributes.put(attributeName, attributeValue);
+                        attributeEndEvent(_cursor);
 
                         state = WAIT_FOR_ATTRIBUTE_NAME;
                         break;
@@ -914,6 +920,8 @@ public class TemplateParser
                     break;
             }
         }
+        
+        tagEndEvent(_cursor);
 
         // Check for invisible localizations
 
@@ -1001,6 +1009,50 @@ public class TemplateParser
      *  the $remove$ and $content$ tags).
      * 
      **/
+
+    /**
+     * Notify that the beginning of a tag has been detected
+     * <p>
+     * Default implementation does nothing.
+     * 
+     * @author glongman@intelligentworks.com
+     */
+    protected void tagBeginEvent(int startLine, int cursorPosition)
+    {
+    }
+
+    /**
+     * Notify that the end of the current tag has been detected
+     * <p>
+     * Default implementation does nothing.
+     * 
+     * @author glongman@intelligentworks.com
+     */
+    protected void tagEndEvent(int cursorPosition)
+    {
+    }
+
+    /**
+     * Notify that the beginning of an attribute value has been detected
+     * <p>
+     * Default implementation does nothing.
+     * 
+     * @author glongman@intelligentworks.com
+     */
+    protected void attributeBeginEvent(String attributeName, int startLine, int cursorPosition)
+    {
+    }
+
+    /**
+     * Notify that the end of the current attribute value has been detected
+     * <p>
+     * Default implementation does nothing.
+     * 
+     * @author glongman@intelligentworks.com
+     */
+    protected void attributeEndEvent(int cursorPosition)
+    {
+    }
 
     private void processComponentStart(
         String tagName,
@@ -1471,7 +1523,7 @@ public class TemplateParser
      * 
      **/
 
-    private String findValueCaselessly(String key, Map map)
+    protected String findValueCaselessly(String key, Map map)
     {
         String result = (String) map.get(key);
 
