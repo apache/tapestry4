@@ -46,7 +46,7 @@ import net.sf.tapestry.util.BasePropertyHolder;
  *
  **/
 
-public class LibrarySpecification extends BasePropertyHolder
+public class LibrarySpecification extends BasePropertyHolder implements ILibrarySpecification
 {
     /**
      *  Resource resolver (used to instantiate extensions).
@@ -99,6 +99,17 @@ public class LibrarySpecification extends BasePropertyHolder
      **/
 
     private Map _instantiatedExtensions;
+    
+    /**
+     *  The XML Public Id used when the library specification was read
+     *  (if applicable).
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private String _publicId;
+    
 
     public String getLibrarySpecificationPath(String id)
     {
@@ -383,6 +394,138 @@ public class LibrarySpecification extends BasePropertyHolder
     public void setResourceResolver(IResourceResolver resolver)
     {
         _resolver = resolver;
+    }
+
+    /**
+     * Returns the extensions map.
+     * @return Map
+     */
+    protected Map getExtensions() {
+      return _extensions;
+    }
+
+   /**
+    * Updates the extension map.
+    * @param extensions A Map of extension specification paths 
+    * keyed on extension id.
+    * 
+    * The map is retained, not copied.
+    *
+    */
+   
+    protected void setExtensions(Map extension) {
+      _extensions = extension;
+    }
+
+
+    /**
+     * Returns the libraries map.
+     * @return Map
+     */
+    protected Map getLibraries() {
+      return _libraries;
+    }
+
+   /**
+    * Updates the library map.
+    * @param libraries A Map of library specification paths 
+    * keyed on library id.
+    * 
+    * The map is retained, not copied.
+    *
+    */
+   
+    protected void setLibraries(Map libraries) {
+      _libraries = libraries;
+    }
+
+    /**
+     * Returns the pages map.
+     * @return Map
+     */
+    
+    protected Map getPages() {
+      return _pages;
+    }
+    
+   /**
+    * Updates the page map.
+    * @param pages A Map of page specification paths 
+    * keyed on page id.
+    * 
+    * The map is retained, not copied.
+    *
+    */
+    
+    protected void setPages(Map pages) {
+      _pages = pages;
+    }
+
+    /**
+     * Returns the services.
+     * @return Map
+     */
+    
+    protected Map getServices() {
+      return _services;
+    }
+
+   /**
+    * Updates the services map.
+    * @param services A Map of the fully qualified names of classes of type {@link IEngineService} 
+    * keyed on service id.
+    * 
+    * The map is retained, not copied.
+    *
+    */
+   
+    protected void setServices(Map services) {
+      _services = services;
+    }
+
+    /**
+     * Returns the components map.
+     * @return Map
+     */
+    
+    protected Map getComponents() {
+      return _components;
+    }
+
+   /**
+    * Updates the components map.
+    * @param components A Map of {@link ContainedComponent} keyed on component id.
+    * The map is retained, not copied.
+    *
+    */
+   
+    protected void setComponents(Map components) {
+      _components = components;
+    }
+    
+    /**
+     *  Returns the XML Public Id for the library file, or null
+     *  if not applicable.
+     * 
+     *  <p>
+     *  This method exists as a convienience for the Spindle plugin.
+     *  A previous method used an arbitrary version string, the
+     *  public id is more useful and less ambiguous.
+     *  
+     *  @since 2.2
+     * 
+     **/
+
+    public String getPublicId()
+    {
+        return _publicId;
+    }
+
+    /** @since 2.2 **/
+
+    public void setPublicId(String publicId)
+    {
+        _publicId = publicId;
     }
 
 }

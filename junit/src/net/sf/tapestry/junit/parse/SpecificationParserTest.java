@@ -32,6 +32,8 @@ import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
+import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.xml.DocumentParseException;
@@ -161,7 +163,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            LibrarySpecification spec = parseLib("InvalidLibraryId.library");
+            ILibrarySpecification spec = parseLib("InvalidLibraryId.library");
 
             throw new AssertionFailedError("Should not be able to parse document.");
         }
@@ -181,7 +183,7 @@ public class SpecificationParserTest extends TapestryTestCase
     
     public void testValidLibrary() throws Exception
     {
-        LibrarySpecification spec = parseLib("ValidLibrary.library");
+        ILibrarySpecification spec = parseLib("ValidLibrary.library");
         
         checkList("serviceNames",
             new String[] { "service1", "service2" },
@@ -235,7 +237,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ApplicationSpecification spec = parseApp("InvalidPageName.application");
+            IApplicationSpecification spec = parseApp("InvalidPageName.application");
 
             throw new AssertionFailedError("Should not be able to parse document.");
 
@@ -259,7 +261,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ApplicationSpecification spec = 
+            IApplicationSpecification spec = 
                 parseApp("InvalidServiceName.application");
                 
              throw new AssertionFailedError("Should not be able to parse document.");
@@ -283,7 +285,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ApplicationSpecification spec = 
+            IApplicationSpecification spec =  
                 parseApp("InvalidComponentAlias.application");
                 
              throw new AssertionFailedError("Should not be able to parse document.");
@@ -307,7 +309,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ApplicationSpecification spec = 
+            IApplicationSpecification spec = 
                 parseApp("InvalidExtensionName.application");
                 
              throw new AssertionFailedError("Should not be able to parse document.");

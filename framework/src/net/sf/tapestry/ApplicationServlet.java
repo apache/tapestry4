@@ -46,6 +46,7 @@ import org.apache.log4j.Priority;
 import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.pool.Pool;
@@ -121,7 +122,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    private ApplicationSpecification _specification;
+    private IApplicationSpecification _specification;
 
     /**
      * The name under which the {@link IEngine engine} is stored within the
@@ -285,7 +286,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    public ApplicationSpecification getApplicationSpecification()
+    public IApplicationSpecification getApplicationSpecification()
     {
         return _specification;
     }
@@ -397,7 +398,7 @@ abstract public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    protected ApplicationSpecification constructApplicationSpecification() throws ServletException
+    protected IApplicationSpecification constructApplicationSpecification() throws ServletException
     {
         String path = getApplicationSpecificationPath();
 
@@ -431,7 +432,7 @@ abstract public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    protected ApplicationSpecification parseApplicationSpecification(InputStream stream, String path)
+    protected IApplicationSpecification parseApplicationSpecification(InputStream stream, String path)
         throws ServletException
     {
         try

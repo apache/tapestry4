@@ -46,6 +46,8 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
+import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.util.xml.DocumentParseException;
@@ -70,7 +72,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     private static final Logger LOG = LogManager.getLogger(DefaultSpecificationSource.class);
 
     private IResourceResolver _resolver;
-    private ApplicationSpecification _specification;
+    private IApplicationSpecification _specification;
 
     private SpecificationParser _parser;
 
@@ -111,7 +113,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     private Map _namespaceCache = new HashMap();
 
-    public DefaultSpecificationSource(IResourceResolver resolver, ApplicationSpecification specification)
+    public DefaultSpecificationSource(IResourceResolver resolver, IApplicationSpecification specification)
     {
         _resolver = resolver;
         _specification = specification;
@@ -182,7 +184,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    protected LibrarySpecification parseLibrarySpecification(String resourcePath)
+    protected ILibrarySpecification parseLibrarySpecification(String resourcePath)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Parsing library specification " + resourcePath);
@@ -348,9 +350,9 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    public synchronized LibrarySpecification getLibrarySpecification(String resourcePath)
+    public synchronized ILibrarySpecification getLibrarySpecification(String resourcePath)
     {
-        LibrarySpecification result = (LibrarySpecification) _libraryCache.get(resourcePath);
+        ILibrarySpecification result = (LibrarySpecification) _libraryCache.get(resourcePath);
 
         if (result == null)
         {
@@ -397,7 +399,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     {
         if (_frameworkNamespace == null)
         {
-            LibrarySpecification ls = getLibrarySpecification("/net/sf/tapestry/Framework.library");
+            ILibrarySpecification ls = getLibrarySpecification("/net/sf/tapestry/Framework.library");
 
             _frameworkNamespace = new Namespace(null, null, ls, this);
         }

@@ -49,7 +49,7 @@ import net.sf.tapestry.util.BasePropertyHolder;
  *
  **/
 
-public class ApplicationSpecification extends LibrarySpecification
+public class ApplicationSpecification extends LibrarySpecification implements IApplicationSpecification
 {
     private String _name;
     private String _engineClassName;

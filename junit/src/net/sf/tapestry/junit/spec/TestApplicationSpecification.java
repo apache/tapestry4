@@ -28,6 +28,7 @@ package net.sf.tapestry.junit.spec;
 import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.ExtensionSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
 
 /**
  *  Tests related to {@link net.sf.tapestry.spec.ApplicationSpecification}.
@@ -50,7 +51,7 @@ public class TestApplicationSpecification extends TapestryTestCase
 
     public void testBasicExtension() throws Exception
     {
-        ApplicationSpecification spec = parseApp("BasicExtension.application");
+        IApplicationSpecification spec = parseApp("BasicExtension.application");
 
         TestBean extension = (TestBean) spec.getExtension("testBean");
 
@@ -63,7 +64,7 @@ public class TestApplicationSpecification extends TapestryTestCase
     
     public void testExtensionProperty() throws Exception
     {
-        ApplicationSpecification a = parseApp("ExtensionProperty.application");
+        IApplicationSpecification a = parseApp("ExtensionProperty.application");
         
         ExtensionSpecification e = a.getExtensionSpecification("testBean");
         
@@ -74,7 +75,7 @@ public class TestApplicationSpecification extends TapestryTestCase
     {
         assertEquals("instanceCount", 0, ImmediateExtension.getInstanceCount());
         
-        ApplicationSpecification a = parseApp("ImmediateExtension.application");
+        IApplicationSpecification a = parseApp("ImmediateExtension.application");
         
         assertEquals("instanceCount", 1, ImmediateExtension.getInstanceCount());
     }

@@ -40,6 +40,8 @@ import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
+import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.util.IPropertyHolder;
 
@@ -88,7 +90,7 @@ public class TapestryTestCase extends TestCase
     }
 
 
-    protected ApplicationSpecification parseApp(String simpleName) throws Exception
+    protected IApplicationSpecification parseApp(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser();
 
@@ -97,7 +99,7 @@ public class TapestryTestCase extends TestCase
         return parser.parseApplicationSpecification(input, simpleName, new ResourceResolver(this));
     }
     
-    protected LibrarySpecification parseLib(String simpleName) throws Exception
+    protected ILibrarySpecification parseLib(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser();
 

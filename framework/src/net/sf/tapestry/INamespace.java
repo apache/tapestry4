@@ -28,6 +28,7 @@ package net.sf.tapestry;
 import java.util.List;
 
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.util.IPropertyHolder;
 
@@ -183,6 +184,6 @@ public interface INamespace
     * 
     **/
    
-   public LibrarySpecification getSpecification();
+   public ILibrarySpecification getSpecification();
     
 }
