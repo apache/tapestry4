@@ -95,7 +95,9 @@
 ]]>
   	  </assert-output>	
 	
-	<assert name="HttpSession created" expression="request.session != null"/>
+	<assert name="HttpSession created">
+	request.session != null
+	</assert>
 	
   </request>
   

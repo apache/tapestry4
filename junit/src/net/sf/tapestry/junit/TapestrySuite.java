@@ -57,6 +57,7 @@ package net.sf.tapestry.junit;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import net.sf.tapestry.junit.enhance.TestClassFabricator;
 import net.sf.tapestry.junit.mock.MockTestCase;
 import net.sf.tapestry.junit.parse.SpecificationParserTest;
 import net.sf.tapestry.junit.parse.TemplateParserTest;
@@ -106,6 +107,7 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(BindingsTestCase.class);
         suite.addTestSuite(TestPropertySource.class);
         suite.addTestSuite(ComponentTest.class);
+        suite.addTestSuite(TestClassFabricator.class);
         suite.addTestSuite(MockTestCase.class);
 
         return suite;

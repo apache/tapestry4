@@ -19,12 +19,12 @@ to obtain values from the session, and to update values into the session when th
 
 <para>
 Tapestry takes a different tack; it defines server-side state in terms of the Engine,
-the Visit and persistant page properties.
+the Visit and persistent page properties.
 </para>
 
 <para>
 The Engine is important because, ultimately, it is the lone object stored into the &HttpSession;.  Because it
-is persistant, the Visit and all page properties are also persistant.
+is persistent, the Visit and all page properties are also persistent.
 </para>
 
 <section id="state.visit">
@@ -111,7 +111,7 @@ while <link linkend="state.stateless">stateless</link>.
 </section> <!-- state.visit -->
 
 <section id="state.page-properties">
-	<title>Pesistant Page Properties</title>
+	<title>Persistent Page Properties</title>
 	
 <para>
 Servlets, and by extension, JavaServer Pages, are inherently stateless.  That is, they will be used
@@ -124,7 +124,7 @@ This creates a frustration for developers, because ordinary programming techniqu
 Instead, client-specific state and data must be stored in the &HttpSession; or as &HttpServletRequest; attributes.
 This is an awkward and limiting way to handle both <emphasis>transient</emphasis> state (state that is only needed
 during the actual processing of the request) and
-<emphasis>persistant</emphasis> state (state that should be available during the processing of this
+<emphasis>persistent</emphasis> state (state that should be available during the processing of this
 and subsequent requests).
 </para>
 
@@ -147,11 +147,21 @@ to its pristine state.  The prisitine state is equivalent to a freshly created i
 properties of the page that changed during the processing of the request must be returned to thier initial values.
 </para>
 
+<note>
+<para>
+The following sections describe a scheme used through Tapestry release 2.3.  In release 2.4
+<link linkend="state.declarative-properties">declarative properties</link> are used instead, since
+they are much easier.
+</para>
+</note>
+
 <para>
 The best way to do this is to implement the method <function>initialize()</function> on your page.  This method is invoked
 once when the page is first created; it is invoked again at the end of each request cycle.  An empty implementation
 of this method is provided by &AbstractPage;.
 </para>
+
+
 
 <example>
 	<title>Use of <function>initialize()</function> method</title>
@@ -186,11 +196,11 @@ the <function>initialize()</function> method.
 
 <para>
 Now that we've shown how Tapestry allows pages to have <emphasis>transient</emphasis> state, we'll
-show how to handle <emphasis>persistant</emphasis> state.
+show how to handle <emphasis>persistent</emphasis> state.
 </para>	
 
 <para>
-Tapestry separates the persistant state of a page from any instance.  This is very important, because
+Tapestry separates the persistent state of a page from any instance.  This is very important, because
 from one request cycle to another, a different instance of the page may be used ... even when clustering is
 not used.  Again, Tapestry has many copies of any page in a pool, and pulls one instance out of the pool
 for each request.
@@ -207,7 +217,7 @@ a later request.
 </para>
 
 <para>
-For a property to be persistant, all that's necessary is that the accessor method notify
+For a property to be persistent, all that's necessary is that the accessor method notify
 the framework of changes.  Tapestry will record the changes (using an &IPageRecorder;)
 and, in later request cycles, will restore the property
 using using the recorded value and whichever page instance is taken out of the page pool.
@@ -220,7 +230,7 @@ and is overloaded for all the scalar types, and for &Object;.
 </para>
 
 <example>
-<title>Persistant Page Property</title>
+<title>Persistent Page Property</title>
 <programlisting>
 public class MyPage extends &BasePage;
 {
@@ -252,23 +262,11 @@ the value is changed (perhaps by a form or a listener method),
 the changed value will "stick" with the user who changed it, for the duration of their
 session.
 </para>
-
-<note id="state.page-properties.declarative">
-<title>Coming in 2.4</title>
-<para>
-A feature planned for release 2.4, but not yet coded, is <emphasis>declarative properties</emphasis>.
-This will allow the transient and persistant properties of a page (or component) to be
-declared in the specification.  Tapestry will take care of everything else; this will likely
-use some form of bytecode engineering; that is, Tapestry will create a subclass on the fly,
-providing accessor methods, the <function>initialize()</function> method, possibly even
-the instance variables themselves.
-</para>
-</note>
 	
 </section> <!-- state.page-properties -->
 
 <section id="state.component-properties">
-	<title>Persistant Component Properties</title>
+	<title>Persistent Component Properties</title>
 	
 <para>
 Transient and persistent properties are not limited just to pages.  The can be implemented
@@ -296,7 +294,7 @@ Tapestry provides a method, <function>finishLoad()</function>, for just this pur
 </para>
 
 <example>
-	<title>Persistant Component Properties</title>
+	<title>Persistent Component Properties</title>
 <programlisting>
 public class MyComponent extends &BaseComponent; implements &PageDetachListener;
 {
@@ -339,6 +337,97 @@ public class MyComponent extends &BaseComponent; implements &PageDetachListener;
 	
 </section> <!-- state.component-properties -->
 
+<section id="state.declarative-properties">
+	<title>Declarative Properties</title>
+	
+<para>
+If all those extra methods are at all intimidating, don't fear, Tapestry provides another approach
+to dealing with transient and persistent properties in pages and components: 
+<emphasis>declarative properties</emphasis>.
+</para>
+
+<para>
+Declarative properties make use of a &spec.property-specification; element in the
+page or component specification.  Tapestry does something special when a component
+contains any such elements; it dynamically generates a subclass that provides the desired fields,
+methods and whatever extra initialization or cleanup is required.
+</para>
+
+<para>
+You may also, optionally, make your class abstract, and define abstract accessor methods that will
+be filled in by Tapestry in the generated subclass.  This allows you to read and update properties inside
+your class, inside listener methods.
+</para>
+
+<para>
+Properties defined this way may be either transient or persistent.
+</para>
+
+<para>
+The previous example, of a persistent page property, can be reworked as the following:
+</para>
+	
+<example>
+<title>Declarative Persistent Page Property: Java Class</title>
+<programlisting>
+public abstract class MyPage extends &BasePage;
+{
+    abstract public int getItemsPerPage();
+	
+    abstract public void setItemsPerPage(int itemsPerPage);
+}
+</programlisting>
+</example>	
+
+<example>
+<title>Declarative Persistent Page Property: Page Specification</title>
+<programlisting>
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+	
+<page-specification class="MyPage">
+
+  <property-specification name="itemsPerPage" persistent="yes" type="int" initial-value="10"/>
+
+</page-specification>
+]]>
+</programlisting>
+</example>	
+
+<para>
+Again, making the class abstract, and defining abstract accessors is <emphasis>optional</emphasis>.
+It is only useful when a listener method will need to update the property.
+</para>
+
+<para>
+This exact same technique can be used with components as well as pages, which vastly simplifies
+the coding necessary, since it is not longer necessary to directly use
+the &PageDetachListener; interface.
+</para>
+
+<para>
+A last note about initialization.  After Tapestry invokes the <function>finishLoad()</function>
+method, it processes the initial value provided in the specification.  If 
+the <literal>initial-value</literal> attribute is ommitted or blank, no change takes place.
+Tapestry then takes a snapshot of the property value, which is retains 
+and uses it at the end of each request cycle
+to reset the property back to its "pristine" state.
+</para>
+
+<para>
+This means that you may perform initialization for the property inside
+<function>finishLoad()</function> (instead of providing a <literal>initial-value</literal>).  However,
+don't attempt to update the property from <function>initialize()</function> ... the order of operations
+when the page detaches is not defined and is subject to change.
+</para>
+
+
+</section>  <!-- state.declarative-persistent-properties  -->
+
+
 <section id="state.stateless">
 	<title>Stateless Applications</title>
 	
@@ -359,7 +448,7 @@ in a web application.
 
 <para>
 Tapestry defers creation of the &HttpSession; until one of two things happens:  When
-the visit is created, or when the first persistant page property is recorded.  At this point,
+the visit is created, or when the first persistent page property is recorded.  At this point,
 Tapestry will create the &HttpSession; and store the engine into it.
 </para>
 
@@ -374,7 +463,7 @@ reuse in a later request, by the same or different client.
 <para>
 For the most part, your application will be unaware of when it is stateful or stateless; statefulness
 just happens on its own.  Ideally, at least the first, or "Home" page, should be stateless (it should be
-organized in such a way that the visit is not created, and no persistant state is stored).  This will help
+organized in such a way that the visit is not created, and no persistent state is stored).  This will help
 speed the initial display of the application, since no processing time will be used in creating the session.
 </para>	
 	

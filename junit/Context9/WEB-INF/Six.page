@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+	
+<page-specification class="net.sf.tapestry.junit.mock.c9.Six">
+
+  <property-specification name="value" type="long" initial-value="15"/>
+  
+  <component id="loop" type="Foreach">
+  	<static-binding name="element" value="li"/>
+  	<binding name="source">
+  		{ 2, 4, 6, 8 }
+  	</binding>
+  	<binding name="value" expression="value"/>
+  </component>
+
+</page-specification>

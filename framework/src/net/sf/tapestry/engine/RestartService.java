@@ -83,12 +83,16 @@ public class RestartService extends AbstractService
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 0)
-            throw new IllegalArgumentException(Tapestry.getString("service-no-parameters", RESTART_SERVICE));
+            throw new IllegalArgumentException(
+                Tapestry.getString("service-no-parameters", Tapestry.RESTART_SERVICE));
 
-        return assembleGesture(cycle, RESTART_SERVICE, null, null, true);
+        return assembleGesture(cycle, Tapestry.RESTART_SERVICE, null, null, true);
     }
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public boolean service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws RequestCycleException, ServletException, IOException
     {
         engine.restart(cycle);
@@ -98,7 +102,7 @@ public class RestartService extends AbstractService
 
     public String getName()
     {
-        return RESTART_SERVICE;
+        return Tapestry.RESTART_SERVICE;
     }
 
 }

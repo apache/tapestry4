@@ -176,7 +176,7 @@ public class Shell extends AbstractComponent
         // Here comes the tricky part ... have to assemble a complete URL
         // for the current page.
 
-        IEngineService pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
+        IEngineService pageService = cycle.getEngine().getService(Tapestry.PAGE_SERVICE);
         String pageName = getPage().getPageName();
 
         Gesture g = pageService.buildGesture(cycle, null, new String[] { pageName });

@@ -79,6 +79,7 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
+import net.sf.tapestry.IComponentClassEnhancer;
 import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
@@ -103,6 +104,7 @@ import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.StaleLinkException;
 import net.sf.tapestry.StaleSessionException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.enhance.DefaultComponentClassEnhancer;
 import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.pageload.PageSource;
 import net.sf.tapestry.spec.IApplicationSpecification;
@@ -395,10 +397,18 @@ public abstract class AbstractEngine
      *  in the servlet context.
      * 
      *  @since 2.3
-     * 
+     *
      **/
 
     protected static final String PROPERTY_SOURCE_NAME = "net.sf.tapestry.PropertySource";
+
+    /**
+     *  A shared instance of {@link IPropertySource}
+     *  
+     *  @since 2.4
+     *  @see #createPropertySource(RequestContext)
+     * 
+     **/
 
     private transient IPropertySource _propertySource;
 
@@ -417,12 +427,33 @@ public abstract class AbstractEngine
      *  A shared instance of {@link Pool}.
      * 
      *  @since 2.4
+     *  @see #createPool(RequestContext)
      * 
      **/
 
     private transient Pool _pool;
 
     protected static final String POOL_NAME = "net.sf.tapestry.Pool";
+
+    /**
+     *  Name of a shared instance of {@link net.sf.tapestry.IComponentClassEnhancer}
+     *  stored in the {@link ServletContext}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected static final String ENHANCER_NAME = "net.sf.tapestry.ComponentClassEnhancer";
+
+    /**
+     *  A shared instance of {@link net.sf.tapestry.IComponentClassEnhancer}.
+     * 
+     *  @since 2.4
+     *  @see #createComponentClassEnhancer(RequestContext)
+     * 
+     **/
+
+    private transient IComponentClassEnhancer _enhancer;
 
     /**
      *  Sets the Exception page's exception property, then renders the Exception page.
@@ -840,7 +871,7 @@ public abstract class AbstractEngine
                 String serviceName = extractServiceName(context);
 
                 if (Tapestry.isNull(serviceName))
-                    serviceName = IEngineService.HOME_SERVICE;
+                    serviceName = Tapestry.HOME_SERVICE;
 
                 service = getService(serviceName);
 
@@ -892,14 +923,21 @@ public abstract class AbstractEngine
         }
         finally
         {
-            cycle.cleanup();
+            try
+            {
+                cycle.cleanup();
 
-            // Closing the buffered output closes the underlying stream as well.
+                // Closing the buffered output closes the underlying stream as well.
 
-            if (output != null)
-                output.forceFlush();
+                if (output != null)
+                    output.forceFlush();
 
-            cleanupAfterRequest(cycle);
+                cleanupAfterRequest(cycle);
+            }
+            catch (Exception ex)
+            {
+                reportException(Tapestry.getString("AbstractEngine.exception-during-cleanup"), ex);
+            }
 
             if (_disableCaching)
             {
@@ -909,7 +947,9 @@ public abstract class AbstractEngine
                 }
                 catch (Exception ex)
                 {
-                    LOG.warn("Exception thrown while clearing caches.", ex);
+                    reportException(
+                        Tapestry.getString("AbstractEngine.exception-during-cache-clear"),
+                        ex);
                 }
             }
 
@@ -1003,6 +1043,7 @@ public abstract class AbstractEngine
         _templateSource.reset();
         _scriptSource.reset();
         _stringsSource.reset();
+        _enhancer.reset();
     }
 
     /**
@@ -1044,6 +1085,7 @@ public abstract class AbstractEngine
      *
      *  <p>In addition, this method locates and/or creates the:
      *  <ul>
+     *  <li>{@link IComponentClassEnhancer}
      *  <li>{@link Pool}
      *  <li>{@link ITemplateSource} 
      *  <li>{@link ISpecificationSource}
@@ -1101,9 +1143,23 @@ public abstract class AbstractEngine
 
         String servletName = context.getServlet().getServletName();
 
+        if (_enhancer == null)
+        {
+            String name = ENHANCER_NAME + ":" + servletName;
+
+            _enhancer = (IComponentClassEnhancer) servletContext.getAttribute(name);
+
+            if (_enhancer == null)
+            {
+                _enhancer = createComponentClassEnhancer(context);
+
+                servletContext.setAttribute(name, _enhancer);
+            }
+        }
+
         if (_pool == null)
         {
-            String name = POOL_NAME + "." + servletName;
+            String name = POOL_NAME + ":" + servletName;
 
             _pool = (Pool) servletContext.getAttribute(name);
 
@@ -1117,7 +1173,7 @@ public abstract class AbstractEngine
 
         if (_templateSource == null)
         {
-            String name = TEMPLATE_SOURCE_NAME + "." + servletName;
+            String name = TEMPLATE_SOURCE_NAME + ":" + servletName;
 
             _templateSource = (ITemplateSource) servletContext.getAttribute(name);
 
@@ -1131,7 +1187,7 @@ public abstract class AbstractEngine
 
         if (_specificationSource == null)
         {
-            String name = SPECIFICATION_SOURCE_NAME + "." + servletName;
+            String name = SPECIFICATION_SOURCE_NAME + ":" + servletName;
 
             _specificationSource = (ISpecificationSource) servletContext.getAttribute(name);
 
@@ -1145,7 +1201,7 @@ public abstract class AbstractEngine
 
         if (_pageSource == null)
         {
-            String name = PAGE_SOURCE_NAME + "." + servletName;
+            String name = PAGE_SOURCE_NAME + ":" + servletName;
 
             _pageSource = (IPageSource) servletContext.getAttribute(name);
 
@@ -1159,7 +1215,7 @@ public abstract class AbstractEngine
 
         if (_scriptSource == null)
         {
-            String name = SCRIPT_SOURCE_NAME + "." + servletName;
+            String name = SCRIPT_SOURCE_NAME + ":" + servletName;
 
             _scriptSource = (IScriptSource) servletContext.getAttribute(name);
 
@@ -1173,7 +1229,7 @@ public abstract class AbstractEngine
 
         if (_serviceMap == null)
         {
-            String name = SERVICE_MAP_NAME + "." + servletName;
+            String name = SERVICE_MAP_NAME + ":" + servletName;
 
             _serviceMap = (Map) servletContext.getAttribute(name);
 
@@ -1187,7 +1243,7 @@ public abstract class AbstractEngine
 
         if (_stringsSource == null)
         {
-            String name = STRINGS_SOURCE_NAME + "." + servletName;
+            String name = STRINGS_SOURCE_NAME + ":" + servletName;
 
             _stringsSource = (IComponentStringsSource) servletContext.getAttribute(name);
 
@@ -1201,7 +1257,7 @@ public abstract class AbstractEngine
 
         if (_dataSqueezer == null)
         {
-            String name = DATA_SQUEEZER_NAME + "." + servletName;
+            String name = DATA_SQUEEZER_NAME + ":" + servletName;
 
             _dataSqueezer = (DataSqueezer) servletContext.getAttribute(name);
 
@@ -1215,7 +1271,7 @@ public abstract class AbstractEngine
 
         if (_propertySource == null)
         {
-            String name = PROPERTY_SOURCE_NAME + "." + servletName;
+            String name = PROPERTY_SOURCE_NAME + ":" + servletName;
 
             _propertySource = (IPropertySource) servletContext.getAttribute(name);
 
@@ -1229,7 +1285,7 @@ public abstract class AbstractEngine
 
         if (_global == null)
         {
-            String name = GLOBAL_NAME + "." + servletName;
+            String name = GLOBAL_NAME + ":" + servletName;
 
             _global = servletContext.getAttribute(name);
 
@@ -1925,7 +1981,7 @@ public abstract class AbstractEngine
      *  specific services with unusual URL encoding rules.
      * 
      *  <p>This implementation simply extracts the value for
-     *  query parameter {@link IEngineService#SERVICE_QUERY_PARAMETER_NAME}.
+     *  query parameter {@link Tapestry#SERVICE_QUERY_PARAMETER_NAME}.
      * 
      *  @since 2.2
      * 
@@ -1933,7 +1989,7 @@ public abstract class AbstractEngine
 
     protected String extractServiceName(RequestContext context)
     {
-        return context.getParameter(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
+        return context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
     }
 
     /** @since 2.2 **/
@@ -2097,6 +2153,28 @@ public abstract class AbstractEngine
     public Pool getPool()
     {
         return _pool;
+    }
+
+    /**
+     * 
+     *  Invoked from {@link #setupForRequest(RequestContext)}.  Creates
+     *  a new instance of {@link DefaultComponentClassEnhancer}.  Subclasses
+     *  may override to return a different object.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected IComponentClassEnhancer createComponentClassEnhancer(RequestContext context)
+    {
+        return new DefaultComponentClassEnhancer(_resolver);
+    }
+
+    /** @since 2.4 **/
+
+    public IComponentClassEnhancer getComponentClassEnhancer()
+    {
+        return _enhancer;
     }
 
 }

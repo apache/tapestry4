@@ -425,7 +425,7 @@ public class MockTester
             Element a = (Element) l.get(i);
 
             String name = a.getAttributeValue("name");
-            String expression = a.getAttributeValue("expression");
+            String expression = a.getTextTrim();
 
             checkExpression(name, expression);
         }

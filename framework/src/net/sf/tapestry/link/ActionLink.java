@@ -57,10 +57,10 @@ package net.sf.tapestry.link;
 import net.sf.tapestry.IAction;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RenderRewoundException;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  A component for creating a link that is handled using the action service.
@@ -94,24 +94,24 @@ public class ActionLink extends GestureLink implements IAction
     {
         if (_statefulBinding == null)
             return true;
-            
-         return _statefulBinding.getBoolean();
+
+        return _statefulBinding.getBoolean();
     }
 
     /**
-     *  Returns {@link IEngineService#ACTION_SERVICE}.
+     *  Returns {@link Tapestry#ACTION_SERVICE}.
      * 
      **/
 
     protected String getServiceName()
     {
-        return IEngineService.ACTION_SERVICE;
+        return Tapestry.ACTION_SERVICE;
     }
 
     protected Object[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
     {
         String actionId;
- 
+
         actionId = cycle.getNextActionId();
 
         if (cycle.isRewound(this))
@@ -123,7 +123,7 @@ public class ActionLink extends GestureLink implements IAction
 
         return new Object[] { actionId };
     }
-    
+
     public IBinding getStatefulBinding()
     {
         return _statefulBinding;
@@ -133,7 +133,6 @@ public class ActionLink extends GestureLink implements IAction
     {
         _statefulBinding = statefulBinding;
     }
-
 
     public IActionListener getListener()
     {

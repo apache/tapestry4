@@ -78,7 +78,8 @@ import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.StringSplitter;
 
 /**
- *  A placeholder for a number of (static) methods that don't belong elsewhere.
+ *  A placeholder for a number of (static) methods that don't belong elsewhere, as well
+ *  as a global location for static constants.
  *
  *  @since 1.0.1
  *  @version $Id$
@@ -88,6 +89,134 @@ import net.sf.tapestry.util.StringSplitter;
 
 public final class Tapestry
 {
+	/**
+	 *  The name ("action") of a service that allows behavior to be associated with
+	 *  an {@link IAction} component, such as {@link ActionLink} or {@link Form}.
+	 *  
+	 *  <p>This service is used with actions that are tied to the
+	 *  dynamic state of the page, and which require a rewind of the page.
+	 *
+	 **/
+
+	public final static String ACTION_SERVICE = "action";
+
+	/**
+	 *  The name ("direct") of a service that allows stateless behavior for an {@link
+	 *  DirectLink} component.
+	 *
+	 *  <p>This service rolls back the state of the page but doesn't
+	 *  rewind the the dynamic state of the page the was the action
+	 *  service does, which is more efficient but less powerful.
+	 *
+	 *  <p>An array of String parameters may be included with the
+	 *  service URL; these will be made available to the {@link DirectLink}
+	 *  component's listener.
+	 *
+	 **/
+
+	public final static String DIRECT_SERVICE = "direct";
+
+    /**
+     *  The name ("external") of a service that a allows {@link IExternalPage} to be selected.
+     *  Associated with a {@link ExternalLink} component.
+     *
+     *  <p>This service enables {@link IExternalPage}s to be accessed via a URL.
+     *  External pages may be booked marked using their URL for future reference.
+     *
+     *  <p>An array of Object parameters may be included with the
+     *  service URL; these will be passed to the 
+     *  {@link IExternalPage#activateExternalPage(Object[], IRequestCycle)} method.
+     *
+     **/
+
+    public final static String EXTERNAL_SERVICE = "external";
+
+	/**
+	 *  The name ("page") of a service that allows a new page to be selected.
+	 *  Associated with a {@link PageLink} component.
+	 *
+	 *  <p>The service requires a single parameter:  the name of the target page.
+	 **/
+
+	public final static String PAGE_SERVICE = "page";
+
+	/**
+	 *  The name ("home") of a service that jumps to the home page.  A stand-in for
+	 *  when no service is provided, which is typically the entrypoint
+	 *  to the application.
+	 *
+	 **/
+
+	public final static String HOME_SERVICE = "home";
+
+	/**
+	 *  The name ("restart") of a service that invalidates the session and restarts
+	 *  the application.  Typically used just
+	 *  to recover from an exception.
+	 *
+	 **/
+
+	public static final String RESTART_SERVICE = "restart";
+
+	/**
+	 *  The name ("asset") of a service used to access internal assets.
+	 *
+	 **/
+
+	public static final String ASSET_SERVICE = "asset";
+
+	/**
+	 *  The name ("reset") of a service used to clear cached template
+	 *  and specification data and remove all pooled pages.
+	 *  This is only used when debugging as
+	 *  a quick way to clear the out cached data, to allow updated
+	 *  versions of specifications and templates to be loaded (without
+	 *  stopping and restarting the servlet container).
+	 *
+	 *  <p>This service is only available if the Java system property
+	 *  <code>net.sf.tapestry.enable-reset-service</code>
+	 *  is set to <code>true</code>.
+	 * 
+	 **/
+
+	public static final String RESET_SERVICE = "reset";
+
+	/**
+	 *  Query parameter that identfies the service for the
+     *  request.
+	 *
+	 *  @since 1.0.3
+     * 
+	 **/
+
+	public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
+
+	/**
+	 *  The query parameter for additional context needed by the
+	 *  service.  This is used to store things like the page name or component id.
+	 *  When there are multiple pieces of data, they are seperated by
+	 *  slashes.  Not all services use a context.
+	 *
+	 *  @since 1.0.3
+ 	 *
+	 **/
+
+	public static final String CONTEXT_QUERY_PARMETER_NAME = "context";
+
+	/**
+	 *  The query parameter for application specific parameters to the
+	 *  service (this is used with the direct service).  Each of these
+	 *  values is encoded with {@link java.net.URLEncoder#encode(String)} before
+	 *  being added to the URL.  Multiple values are handle by repeatedly
+     *  establishing key/value pairs (this is a change from behavior in 
+     *  2.1 and earlier).
+	 *
+	 *  @since 1.0.3
+     * 
+	 **/
+
+	public static final String PARAMETERS_QUERY_PARAMETER_NAME = "sp";
+		
 	/**
 	 *  Property name used to get the extension used for templates.  This
 	 *  may be set in the page or component specification, or in the page (or

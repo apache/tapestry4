@@ -78,6 +78,7 @@ import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.ListenerBindingSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
+import net.sf.tapestry.spec.PropertySpecification;
 import net.sf.tapestry.spec.SpecFactory;
 import net.sf.tapestry.util.IPropertyHolder;
 import net.sf.tapestry.util.xml.AbstractDocumentParser;
@@ -773,6 +774,12 @@ public class SpecificationParser extends AbstractDocumentParser
                 specification.setDescription(getValue(node));
                 continue;
             }
+
+            if (isElement(node, "property-specification"))
+            {
+                convertPropertySpecification(specification, node);
+                continue;
+            }
         }
 
         return specification;
@@ -1045,13 +1052,13 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String name = getAttribute(node, "name");
         String value = getAttribute(node, attributeName);
-        
+
         // In several cases, the 1.4 DTD makes the attribute optional and
         // allows the value to be to the body of the element.
-        
+
         if (value == null)
-        	value = getValue(node);
-        	
+            value = getValue(node);
+
         BindingSpecification binding = _factory.createBindingSpecification(type, value);
 
         component.setBinding(name, binding);
@@ -1249,6 +1256,33 @@ public class SpecificationParser extends AbstractDocumentParser
         Object objectValue = converter.convert(value);
 
         spec.addConfiguration(propertyName, objectValue);
+    }
+
+    /** @since 2.4 **/
+
+    private void convertPropertySpecification(ComponentSpecification spec, Node node)
+        throws DocumentParseException
+    {
+        PropertySpecification ps = _factory.createPropertySpecification();
+
+        String name = getAttribute(node, "name");
+
+        validate(name, PROPERTY_NAME_PATTERN, "SpecificationParser.invalid-property-name");
+
+        ps.setName(name);
+
+        String type = getAttribute(node, "type");
+
+        if (!Tapestry.isNull(type))
+            ps.setType(type);
+
+        boolean persistent = getBooleanAttribute(node, "persistent");
+
+        ps.setPersistent(persistent);
+
+        ps.setInitialValue(getAttribute(node, "initial-value"));
+
+        spec.addPropertySpecification(ps);
     }
 
 }

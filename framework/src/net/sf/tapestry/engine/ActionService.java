@@ -103,7 +103,8 @@ public class ActionService extends AbstractService
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (parameters == null || parameters.length != 1)
-            throw new IllegalArgumentException(Tapestry.getString("service-single-parameter", ACTION_SERVICE));
+            throw new IllegalArgumentException(
+                Tapestry.getString("service-single-parameter", Tapestry.ACTION_SERVICE));
 
         String stateful = cycle.getEngine().isStateful() ? STATEFUL_ON : STATEFUL_OFF;
         IPage componentPage = component.getPage();
@@ -128,10 +129,13 @@ public class ActionService extends AbstractService
 
         serviceContext[i++] = component.getIdPath();
 
-        return assembleGesture(cycle, ACTION_SERVICE, serviceContext, null, true);
+        return assembleGesture(cycle, Tapestry.ACTION_SERVICE, serviceContext, null, true);
     }
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public boolean service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws RequestCycleException, ServletException, IOException
     {
         IAction action = null;
@@ -144,7 +148,8 @@ public class ActionService extends AbstractService
             count = serviceContext.length;
 
         if (count != 4 && count != 5)
-            throw new ApplicationRuntimeException(Tapestry.getString("ActionService.context-parameters"));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("ActionService.context-parameters"));
 
         boolean complex = count == 5;
 
@@ -214,7 +219,7 @@ public class ActionService extends AbstractService
 
     public String getName()
     {
-        return ACTION_SERVICE;
+        return Tapestry.ACTION_SERVICE;
     }
 
 }

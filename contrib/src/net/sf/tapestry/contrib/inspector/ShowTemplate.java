@@ -67,6 +67,7 @@ import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.parse.CloseToken;
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.LocalizationToken;
@@ -104,7 +105,8 @@ public class ShowTemplate extends BaseComponent implements IDirect
     {
         return new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+            public void render(IMarkupWriter writer, IRequestCycle cycle)
+                throws RequestCycleException
             {
                 writeTemplate(writer, cycle);
             }
@@ -166,7 +168,8 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
             if (token.getType() == TokenType.OPEN)
             {
-                boolean nextIsClose = (i + 1 < count) && (template.getToken(i + 1).getType() == TokenType.CLOSE);
+                boolean nextIsClose =
+                    (i + 1 < count) && (template.getToken(i + 1).getType() == TokenType.CLOSE);
 
                 write(writer, nextIsClose, (OpenToken) token);
 
@@ -181,13 +184,13 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
         writer.end(); // <pre>        
     }
-    
+
     /** @since 2.4 **/
-    
+
     private IComponent getInspectedComponent()
     {
-        Inspector page = (Inspector)getPage();
-        
+        Inspector page = (Inspector) getPage();
+
         return page.getInspectedComponent();
     }
 
@@ -224,7 +227,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
     private void write(IMarkupWriter writer, LocalizationToken token)
     {
         IComponent component = getInspectedComponent();
-        
+
         writer.begin("span");
         writer.attribute("class", "jwc-tag");
 
@@ -268,7 +271,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
     private void write(IMarkupWriter writer, boolean nextIsClose, OpenToken token)
     {
         IComponent component = getInspectedComponent();
-        IEngineService service = getPage().getEngine().getService(IEngineService.DIRECT_SERVICE);
+        IEngineService service = getPage().getEngine().getService(Tapestry.DIRECT_SERVICE);
         String[] context = new String[1];
 
         // Each id references a component embedded in the inspected component.

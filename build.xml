@@ -31,6 +31,7 @@
 	<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
 	<pathelement location="${lib.ext.dir}/${ognl.jar}"/>
     <pathelement location="${lib.ext.dir}/${bsf.jar}"/>	
+    <pathelement location="${lib.ext.dir}/${bcel.jar}"/>
 	<pathelement location="config"/>
 </path>
 
@@ -439,6 +440,7 @@
 			<exclude name="${commons-lang.jar}"/>
 			<exclude name="${commons-logging.jar}"/>
 			<exclude name="${bsf.jar}"/>
+			<exclude name="${bcel.jar}"/>
 			
 			<!-- Match and include out-of-date versions -->
 			
@@ -448,6 +450,7 @@
 			<include name="commons-logging*.jar"/>
 			<include name="commons-lang*.jar"/>
 			<include name="bsf*.jar"/>
+			<include name="bcel*.jar"/>
 		</fileset>
 	</delete>
 		
@@ -459,6 +462,7 @@
 			<include name="${commons-logging.jar}"/>
 			<include name="${commons-lang.jar}"/>
 			<include name="${bsf.jar}"/>
+			<include name="${bcel.jar}"/>
 		</fileset>
 		<fileset dir="${jboss.server.default.dir}/lib">
 		
@@ -607,7 +611,8 @@
       <include name="${jakarta-oro.jar}"/>
       <include name="${log4j.jar}"/>
       <include name="${ognl.jar}"/>
-      <include name="${bsf.jar}"/>      
+      <include name="${bsf.jar}"/> 
+      <include name="${bcel.jar}"/>     
     </fileset>
   </copy>  
 </target>

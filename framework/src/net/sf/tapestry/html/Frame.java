@@ -61,6 +61,7 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  Implements a &lt;frame&gt; within a &lt;frameset&gt;.
@@ -74,26 +75,26 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Frame extends AbstractComponent
 {
-	private String _targetPage;
-	    
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    private String _targetPage;
+
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         if (cycle.isRewinding())
             return;
-            
+
         IEngine engine = cycle.getEngine();
-        IEngineService pageService = engine.getService(IEngineService.PAGE_SERVICE);
-        
+        IEngineService pageService = engine.getService(Tapestry.PAGE_SERVICE);
+
         Gesture g = pageService.buildGesture(cycle, this, new String[] { _targetPage });
-        
+
         writer.beginEmpty("frame");
         writer.attribute("src", g.getURL());
-        
+
         generateAttributes(writer, cycle);
-            
+
         writer.closeTag();
     }
-
 
     public String getTargetPage()
     {

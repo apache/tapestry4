@@ -94,6 +94,16 @@ public class MockTestCase extends TapestryTestCase
     // implicitly define tests based on the found XML files?  Possibly
     // in a static suite() method.
 
+	/**
+	 *  Tests related to specified properties.
+	 * 
+	 **/
+	
+	public void testPropertySpecification()
+	throws Exception
+	{
+		attempt("TestPropertySpecification.xml");
+	}
 
 	/**
 	 *  Tests ability to override default template extension.

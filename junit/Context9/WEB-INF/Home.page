@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+	
+<page-specification>
+
+  <property-specification name="word" type="java.lang.String"/>
+  
+  <component id="loop" type="Foreach">
+  	<static-binding name="element" value="li"/>
+  	<binding name="source">
+  		{ "Gromit", "is", "a", "good", "boy" }
+  	</binding>
+  	<binding name="value" expression="word"/>
+  </component>
+
+</page-specification>

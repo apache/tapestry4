@@ -176,9 +176,10 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     /**
      *  Prepares the page to be returned to the pool.
      *  <ul>
+     *  <li>Clears the changeObserved property
      *	<li>Invokes {@link PageDetachListener#pageDetached(PageEvent)} on all listeners
      *  <li>Invokes {@link #initialize()} to clear/reset any properties	
-     * <li>Clears the engine, visit and changeObserver properties
+     * <li>Clears the engine, visit and requestCycle properties
      *	</ul>
      *
      *  <p>Subclasses may override this method, but must invoke this
@@ -188,13 +189,17 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void detach()
     {
+    	// Do this first,so that any changes to persistent properties do not
+    	// cause errors.
+    	
+        _changeObserver = null;
+
         firePageDetached();
 
         initialize();
 
         _engine = null;
         _visit = null;
-        _changeObserver = null;
         _requestCycle = null;
     }
 
@@ -269,11 +274,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public String getName()
     {
         return _name;
-    }
-
-    public IPage getPage()
-    {
-        return this;
     }
 
     public IComponent getNestedComponent(String path)

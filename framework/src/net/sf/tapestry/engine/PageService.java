@@ -85,9 +85,9 @@ public class PageService extends AbstractService
     {
         if (Tapestry.size(parameters) != 1)
             throw new IllegalArgumentException(
-                Tapestry.getString("service-single-parameter", PAGE_SERVICE));
+                Tapestry.getString("service-single-parameter", Tapestry.PAGE_SERVICE));
 
-        return assembleGesture(cycle, PAGE_SERVICE, (String[]) parameters, null, true);
+        return assembleGesture(cycle, Tapestry.PAGE_SERVICE, (String[]) parameters, null, true);
 
     }
 
@@ -102,7 +102,7 @@ public class PageService extends AbstractService
 
         if (Tapestry.size(serviceContext) != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-parameter", PAGE_SERVICE));
+                Tapestry.getString("service-single-parameter", Tapestry.PAGE_SERVICE));
 
         String pageName = serviceContext[0];
 
@@ -130,7 +130,7 @@ public class PageService extends AbstractService
 
     public String getName()
     {
-        return PAGE_SERVICE;
+        return Tapestry.PAGE_SERVICE;
     }
 
 }

@@ -64,14 +64,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IComponentClassEnhancer;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
@@ -88,6 +86,7 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.binding.ExpressionBinding;
 import net.sf.tapestry.binding.ListenerBinding;
 import net.sf.tapestry.binding.StringBinding;
+import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.html.BasePage;
 import net.sf.tapestry.resolver.ComponentSpecificationResolver;
 import net.sf.tapestry.resource.ContextResourceLocation;
@@ -99,6 +98,11 @@ import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.ListenerBindingSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
+import net.sf.tapestry.spec.PropertySpecification;
+import net.sf.tapestry.util.prop.OgnlUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  Runs the process of building the component hierarchy for an entire page.
@@ -119,6 +123,7 @@ public class PageLoader implements IPageLoader
 
     private IEngine _engine;
     private IResourceResolver _resolver;
+    private IComponentClassEnhancer _enhancer;
     private ISpecificationSource _specificationSource;
     private IPageSource _pageSource;
     private ComponentSpecificationResolver _componentResolver;
@@ -167,7 +172,10 @@ public class PageLoader implements IPageLoader
         private String _containerParameterName;
         private String _parameterName;
 
-        private QueuedInheritedBinding(IComponent component, String containerParameterName, String parameterName)
+        private QueuedInheritedBinding(
+            IComponent component,
+            String containerParameterName,
+            String parameterName)
         {
             _component = component;
             _containerParameterName = containerParameterName;
@@ -198,6 +206,7 @@ public class PageLoader implements IPageLoader
 
         _specificationSource = engine.getSpecificationSource();
         _resolver = engine.getResourceResolver();
+        _enhancer = engine.getComponentClassEnhancer();
         _componentResolver = new ComponentSpecificationResolver(cycle);
 
         RequestContext context = cycle.getRequestContext();
@@ -209,7 +218,8 @@ public class PageLoader implements IPageLoader
 
         String servletPath = request.getServletPath();
 
-        _servletLocation = new ContextResourceLocation(context.getServlet().getServletContext(), servletPath);
+        _servletLocation =
+            new ContextResourceLocation(context.getServlet().getServletContext(), servletPath);
     }
 
     /**
@@ -229,7 +239,11 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    private void bind(IComponent container, IComponent component, ContainedComponent contained, Map propertyBindings)
+    private void bind(
+        IComponent container,
+        IComponent component,
+        ContainedComponent contained,
+        Map propertyBindings)
         throws PageLoaderException
     {
         ComponentSpecification spec = component.getSpecification();
@@ -248,7 +262,10 @@ public class PageLoader implements IPageLoader
 
             if (formalOnly && !isFormal)
                 throw new PageLoaderException(
-                    Tapestry.getString("PageLoader.formal-parameters-only", component.getExtendedId(), name),
+                    Tapestry.getString(
+                        "PageLoader.formal-parameters-only",
+                        component.getExtendedId(),
+                        name),
                     component,
                     null);
 
@@ -276,7 +293,8 @@ public class PageLoader implements IPageLoader
 
             if (type == BindingType.INHERITED)
             {
-                QueuedInheritedBinding queued = new QueuedInheritedBinding(component, bspec.getValue(), name);
+                QueuedInheritedBinding queued =
+                    new QueuedInheritedBinding(component, bspec.getValue(), name);
                 _inheritedBindingQueue.add(queued);
                 continue;
             }
@@ -317,7 +335,10 @@ public class PageLoader implements IPageLoader
 
             if (parameterSpec.isRequired() && component.getBinding(name) == null)
                 throw new PageLoaderException(
-                    Tapestry.getString("PageLoader.required-parameter-not-bound", name, component.getExtendedId()),
+                    Tapestry.getString(
+                        "PageLoader.required-parameter-not-bound",
+                        name,
+                        component.getExtendedId()),
                     component,
                     null);
         }
@@ -337,7 +358,11 @@ public class PageLoader implements IPageLoader
         }
     }
 
-    private IBinding convert(BindingType type, String bindingValue, IComponent container, Map propertyBindings)
+    private IBinding convert(
+        BindingType type,
+        String bindingValue,
+        IComponent container,
+        Map propertyBindings)
     {
         // The most common type.  propertyBindings is a cache of
         // property bindings for the container, we re-use
@@ -387,19 +412,28 @@ public class PageLoader implements IPageLoader
      *  @since 2.4
      * 
      **/
-    
-    private void constructListenerBinding(IComponent component, String bindingName, ListenerBindingSpecification spec)
+
+    private void constructListenerBinding(
+        IComponent component,
+        String bindingName,
+        ListenerBindingSpecification spec)
     {
-        String location = Tapestry.getString("PageLoader.script-location", bindingName, component.getExtendedId());
+        String location =
+            Tapestry.getString(
+                "PageLoader.script-location",
+                bindingName,
+                component.getExtendedId());
 
         String language = spec.getLanguage();
-        
+
         // If not provided in the page or component specification, then
         // search for a default (factory default is "jython").
-        
+
         if (Tapestry.isNull(language))
-            language = _engine.getPropertySource().getPropertyValue("net.sf.tapestry.default-script-language");
-            
+            language =
+                _engine.getPropertySource().getPropertyValue(
+                    "net.sf.tapestry.default-script-language");
+
         IBinding binding = new ListenerBinding(component, language, location, spec.getScript());
 
         component.setBinding(bindingName, binding);
@@ -454,13 +488,19 @@ public class PageLoader implements IPageLoader
 
                 _componentResolver.resolve(namespace, type);
 
-                ComponentSpecification componentSpecification = _componentResolver.getSpecification();
+                ComponentSpecification componentSpecification =
+                    _componentResolver.getSpecification();
                 INamespace componentNamespace = _componentResolver.getNamespace();
 
                 // Instantiate the contained component.
 
                 IComponent component =
-                    instantiateComponent(page, container, id, componentSpecification, componentNamespace);
+                    instantiateComponent(
+                        page,
+                        container,
+                        id,
+                        componentSpecification,
+                        componentNamespace);
 
                 // Add it, by name, to the container.
 
@@ -473,7 +513,12 @@ public class PageLoader implements IPageLoader
                 // Now construct the component recusively; it gets its chance
                 // to create its subcomponents and set their bindings.
 
-                constructComponent(cycle, page, component, componentSpecification, componentNamespace);
+                constructComponent(
+                    cycle,
+                    page,
+                    component,
+                    componentSpecification,
+                    componentNamespace);
             }
 
             addAssets(container, containerSpec);
@@ -485,6 +530,11 @@ public class PageLoader implements IPageLoader
             // later.
 
             container.finishLoad(cycle, this, containerSpec);
+
+            // Finally, we create an initializer for each
+            // specified property.
+
+            createPropertyInitializers(page, container, containerSpec);
         }
         catch (RuntimeException ex)
         {
@@ -524,7 +574,8 @@ public class PageLoader implements IPageLoader
         INamespace componentNamespace = _componentResolver.getNamespace();
         ComponentSpecification spec = _componentResolver.getSpecification();
 
-        IComponent result = instantiateComponent(page, container, componentId, spec, componentNamespace);
+        IComponent result =
+            instantiateComponent(page, container, componentId, spec, componentNamespace);
 
         container.addComponent(result);
 
@@ -556,40 +607,34 @@ public class PageLoader implements IPageLoader
         String className = spec.getComponentClassName();
 
         if (Tapestry.isNull(className))
+            className = BaseComponent.class.getName();
+
+        Class componentClass = _enhancer.getEnhancedClass(spec, className);
+
+        try
         {
-            result = new BaseComponent();
-        }
-        else
-        {
-
-            Class componentClass = _resolver.findClass(className);
-
-            try
-            {
-                result = (IComponent) componentClass.newInstance();
-
-            }
-            catch (ClassCastException ex)
-            {
-                throw new PageLoaderException(
-                    Tapestry.getString("PageLoader.class-not-component", className),
-                    container,
-                    ex);
-            }
-            catch (Exception ex)
-            {
-                throw new PageLoaderException(
-                    Tapestry.getString("PageLoader.unable-to-instantiate", className),
-                    container,
-                    ex);
-            }
-
-            if (result instanceof IPage)
-                throw new PageLoaderException(
-                    Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
-                    result);
+            result = (IComponent) componentClass.newInstance();
 
         }
+        catch (ClassCastException ex)
+        {
+            throw new PageLoaderException(
+                Tapestry.getString("PageLoader.class-not-component", className),
+                container,
+                ex);
+        }
+        catch (Exception ex)
+        {
+            throw new PageLoaderException(
+                Tapestry.getString("PageLoader.unable-to-instantiate", className),
+                container,
+                ex);
+        }
+
+        if (result instanceof IPage)
+            throw new PageLoaderException(
+                Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
+                result);
 
         result.setNamespace(namespace);
         result.setSpecification(spec);
@@ -627,18 +672,22 @@ public class PageLoader implements IPageLoader
         if (Tapestry.isNull(className))
         {
             if (LOG.isDebugEnabled())
-                LOG.debug("Page " + namespace.constructQualifiedName(name) + " does not specify a component class.");
+                LOG.debug(
+                    "Page "
+                        + namespace.constructQualifiedName(name)
+                        + " does not specify a component class.");
 
-            className = _engine.getPropertySource().getPropertyValue("net.sf.tapestry.default-page-class");
+            className =
+                _engine.getPropertySource().getPropertyValue("net.sf.tapestry.default-page-class");
 
             if (className == null)
                 className = BasePage.class.getName();
 
             if (LOG.isDebugEnabled())
-                LOG.debug("Instantiating as class " + className);
+                LOG.debug("Defaulting to class " + className);
         }
 
-        Class pageClass = _resolver.findClass(className);
+        Class pageClass = _enhancer.getEnhancedClass(spec, className);
 
         try
         {
@@ -648,15 +697,22 @@ public class PageLoader implements IPageLoader
             result.setSpecification(spec);
             result.setName(name);
             result.setPageName(pageName);
+            result.setPage(result);
             result.setLocale(_locale);
         }
         catch (ClassCastException ex)
         {
-            throw new PageLoaderException(Tapestry.getString("PageLoader.class-not-page", className), name, ex);
+            throw new PageLoaderException(
+                Tapestry.getString("PageLoader.class-not-page", className),
+                name,
+                ex);
         }
         catch (Exception ex)
         {
-            throw new PageLoaderException(Tapestry.getString("PageLoader.unable-to-instantiate", className), name, ex);
+            throw new PageLoaderException(
+                Tapestry.getString("PageLoader.unable-to-instantiate", className),
+                name,
+                ex);
         }
 
         return result;
@@ -679,7 +735,11 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    public IPage loadPage(String name, INamespace namespace, IRequestCycle cycle, ComponentSpecification specification)
+    public IPage loadPage(
+        String name,
+        INamespace namespace,
+        IRequestCycle cycle,
+        ComponentSpecification specification)
         throws PageLoaderException
     {
         IPage page = null;
@@ -712,7 +772,14 @@ public class PageLoader implements IPageLoader
         }
 
         if (LOG.isInfoEnabled())
-            LOG.info("Loaded page " + page + " with " + _count + " components (maximum depth " + _maxDepth + ")");
+            LOG.info(
+                "Loaded page "
+                    + page
+                    + " with "
+                    + _count
+                    + " components (maximum depth "
+                    + _maxDepth
+                    + ")");
 
         return page;
     }
@@ -750,6 +817,57 @@ public class PageLoader implements IPageLoader
 
             component.addAsset(name, asset);
         }
+    }
+
+    /**
+     *  Invoked from 
+     *  {@link #constructComponent(IRequestCycle, IPage, IComponent, ComponentSpecification, INamespace)}
+     *  after {@link IComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)}
+     *  is invoked.  This iterates over any
+     *  {@link net.sf.tapestry.spec.PropertySpecification}s for the component,
+     *  create an initializer for each.
+     * 
+     **/
+
+    private void createPropertyInitializers(
+        IPage page,
+        IComponent component,
+        ComponentSpecification spec)
+    {
+        List names = spec.getPropertySpecificationNames();
+        int count = names.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            String name = (String) names.get(i);
+            PropertySpecification ps = spec.getPropertySpecification(name);
+
+            String expression = ps.getInitialValue();
+            Object initialValue = null;
+
+            // If no initial value expression is provided, then read the current
+            // property of the expression.  This may be null, or may be
+            // a value set in finishLoad() (via an abstract accessor).
+
+            if (Tapestry.isNull(expression))
+            {
+                initialValue = OgnlUtils.get(name, _resolver, component);
+            }
+            else
+            {
+                // Evaluate the expression and update the property.
+
+                initialValue = OgnlUtils.get(expression, _resolver, component);
+
+                OgnlUtils.set(name, _resolver, component, initialValue);
+            }
+
+            PageDetachListener initializer =
+                new PropertyInitializer(_resolver, component, name, initialValue);
+
+            page.addPageDetachListener(initializer);
+        }
+
     }
 
     /**

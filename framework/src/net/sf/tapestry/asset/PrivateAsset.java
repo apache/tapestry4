@@ -127,7 +127,7 @@ public class PrivateAsset implements IAsset
 
         String[] parameters = new String[] { localizedResourcePath };
 
-        IEngineService service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
+        IEngineService service = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
 
         Gesture g = service.buildGesture(cycle, null, parameters);
 

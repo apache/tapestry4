@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+     	
+<page-specification>
+
+<property-specification name="bool" type="boolean"/>
+<property-specification name="persist" persistent="yes"/>
+<property-specification name="init" initial-value="pageName"/>
+
+</page-specification>
+

@@ -39,6 +39,7 @@
 <!ENTITY spec.parameter '<link linkend="spec.parameter"><sgmltag class="starttag">parameter</sgmltag></link>'>
 <!ENTITY spec.private-asset '<link linkend="spec.private-asset"><sgmltag class="starttag">private-asset</sgmltag></link>'>
 <!ENTITY spec.property '<link linkend="spec.property"><sgmltag class="starttag">property</sgmltag></link>'>
+<!ENTITY spec.property-specification '<link linkend="spec.property-specification"><sgmltag class="starttag">property-specification</sgmltag></link>'>
 <!ENTITY spec.reserved-parameter '<link linkend="spec.reserved-parameter"><sgmltag class="starttag">reserved-parameter</sgmltag></link>'>
 <!ENTITY spec.service '<link linkend="spec.service"><sgmltag class="starttag">service</sgmltag></link>'>
 <!ENTITY spec.set-property '<link linkend="spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>'>

@@ -36,7 +36,8 @@
     <pathelement location="${lib.ext.dir}/junit.jar"/>
     <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/> 
     <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
-    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>    
+    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>	
+    <pathelement location="${lib.ext.dir}/${bcel.jar}"/>  
     <pathelement location="${jython.dir}/jython.jar"/>
     <pathelement location="${local.lib.dir}/${jdom.jar}"/> 
   </path>

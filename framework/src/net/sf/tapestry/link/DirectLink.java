@@ -60,10 +60,10 @@ import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IDirect;
-import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  A component for creating a link using the direct service; used for actions that
@@ -108,13 +108,13 @@ public class DirectLink extends GestureLink implements IDirect
     }
 
     /**
-     *  Returns {@link IEngineService#DIRECT_SERVICE}.
+     *  Returns {@link net.sf.tapestry.Tapestry#DIRECT_SERVICE}.
      *
      **/
 
     protected String getServiceName()
     {
-        return IEngineService.DIRECT_SERVICE;
+        return Tapestry.DIRECT_SERVICE;
     }
 
     protected Object[] getServiceParameters(IRequestCycle cycle)
@@ -198,7 +198,8 @@ public class DirectLink extends GestureLink implements IDirect
 
         try
         {
-            result = (IActionListener) _listenerBinding.getObject("listener", IActionListener.class);
+            result =
+                (IActionListener) _listenerBinding.getObject("listener", IActionListener.class);
 
         }
         catch (BindingException ex)

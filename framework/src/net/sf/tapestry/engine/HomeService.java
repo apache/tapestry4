@@ -87,12 +87,16 @@ public class HomeService extends AbstractService
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 0)
-            throw new IllegalArgumentException(Tapestry.getString("service-no-parameters", HOME_SERVICE));
+            throw new IllegalArgumentException(
+                Tapestry.getString("service-no-parameters", Tapestry.HOME_SERVICE));
 
-        return assembleGesture(cycle, HOME_SERVICE, null, null, true);
+        return assembleGesture(cycle, Tapestry.HOME_SERVICE, null, null, true);
     }
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public boolean service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws RequestCycleException, ServletException, IOException
     {
 
@@ -111,7 +115,7 @@ public class HomeService extends AbstractService
 
     public String getName()
     {
-        return HOME_SERVICE;
+        return Tapestry.HOME_SERVICE;
     }
 
 }

@@ -587,9 +587,9 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         String serviceName = null;
 
         if (isDirect())
-            serviceName = IEngineService.DIRECT_SERVICE;
+            serviceName = Tapestry.DIRECT_SERVICE;
         else
-            serviceName = IEngineService.ACTION_SERVICE;
+            serviceName = Tapestry.ACTION_SERVICE;
 
         IEngine engine = cycle.getEngine();
         IEngineService service = engine.getService(serviceName);
