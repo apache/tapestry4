@@ -128,7 +128,8 @@ public class PageLoader implements IPageLoader
     private ComponentSpecificationResolver _componentResolver;
     private List _inheritedBindingQueue = new ArrayList();
     private List _propertyInitializers = new ArrayList();
-    private ComponentTreeWalker _componentTreeWalker;
+    private ComponentTreeWalker _establishDefaultParameterValuesWalker;
+    private ComponentTreeWalker _verifyRequiredParametersWalker;
 
     /**
      * The locale of the application, which is also the locale
@@ -274,18 +275,13 @@ public class PageLoader implements IPageLoader
         _servletLocation =
             new ContextResourceLocation(context.getServlet().getServletContext(), servletPath);
 
-        // Create the mechanism for walking the component tree when it is complete
+        // Create the mechanisms for walking the component tree when it is complete
         IComponentVisitor verifyRequiredParametersVisitor = new VerifyRequiredParametersVisitor();
+        _verifyRequiredParametersWalker = new ComponentTreeWalker(new IComponentVisitor[] { verifyRequiredParametersVisitor });
+
         IComponentVisitor establishDefaultParameterValuesVisitor =
             new EstablishDefaultParameterValuesVisitor(_resolver);
-
-        // Perform required parameter verfication and set up of the default parameter values
-        IComponentVisitor[] visitors =
-            new IComponentVisitor[] {
-                verifyRequiredParametersVisitor,
-                establishDefaultParameterValuesVisitor };
-
-        _componentTreeWalker = new ComponentTreeWalker(visitors);
+        _establishDefaultParameterValuesWalker = new ComponentTreeWalker(new IComponentVisitor[] { establishDefaultParameterValuesVisitor });
     }
 
     /**
@@ -804,11 +800,13 @@ public class PageLoader implements IPageLoader
 
             constructComponent(cycle, page, page, specification, namespace);
 
+            // Walk through the complete component tree to set up the default parameter values.
+            _establishDefaultParameterValuesWalker.walkComponentTree(page);
+
             establishInheritedBindings();
 
-            // Walk through the complete component tree to ensure that required parameters
-            // are bound and to set up the default parameter values.
-            _componentTreeWalker.walkComponentTree(page);
+            // Walk through the complete component tree to ensure that required parameters are bound 
+            _verifyRequiredParametersWalker.walkComponentTree(page);
             
             establishDefaultPropertyValues();
         }
