@@ -48,16 +48,20 @@ GNUTAR_GZIP_OPT := --gzip
 
 PWD := $(TOOLS_DIR)/pwd.exe
 
+SED := $(TOOLS_DIR)/sed.exe
+SED_QUIET_OPT := --quiet
+SED_EXPRESSION_OPT := -e 
+
+CHMOD := $(TOOLS_DIR)/chmod.exe
+
 # Provided internally by Cygnus bourne shell
 
 CD := cd
 
 # Used with DocBook
 
-OPENJADE := $(DOCBOOK_OPENJADE_DIR)/bin/openjade.exe
-ONSGMLS :=  $(DOCBOOK_OPENJADE_DIR)/bin/onsgmls.exe
-
-OPENJADE_DISTRO = $(DOCBOOK_DIR)/openjade-1.3-1.tar.gz
+OPENJADE := $(OPENJADE_DIR)/bin/openjade.exe
+ONSGMLS :=  $(OPENJADE_DIR)/bin/onsgmls.exe
 
 
 
