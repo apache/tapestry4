@@ -7,6 +7,6 @@
 <component-specification>
 	
 	<!-- this has to boom: Insert does not allow informal parameters -->
-	<component id="insert" type="Insert" inherit-informal-parameters="yes"/>
+	<component id="block" type="Block" inherit-informal-parameters="yes"/>
 	
 </component-specification>
