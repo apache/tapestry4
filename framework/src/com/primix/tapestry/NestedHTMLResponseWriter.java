@@ -44,7 +44,7 @@ public class NestedHTMLResponseWriter extends HTMLResponseWriter
 
 	public NestedHTMLResponseWriter(IResponseWriter parent)
 	{
-		super();
+		super(parent.getContentType());
 
 		this.parent = parent;
 

@@ -53,8 +53,8 @@ import java.io.*;
 public class WMLResponseWriter extends AbstractResponseWriter
 {
 
-	private static String[] entities = new String[64];
-	private static boolean[] safe = new boolean[128];
+	private static final String[] entities = new String[64];
+	private static final boolean[] safe = new boolean[128];
 	private static final String SAFE_CHARACTERS =
 		"01234567890"
 			+ "abcdefghijklmnopqrstuvwxyz"
@@ -73,35 +73,27 @@ public class WMLResponseWriter extends AbstractResponseWriter
 			safe[SAFE_CHARACTERS.charAt(i)] = true;
 	}
 
-	protected String[] getEntities()
-	{
-		return entities;
-	}
-
-	protected boolean[] getSafe()
-	{
-		return safe;
-	}
 
 	/**
-	*  Protected constructor, needed by {@link NestedWMLResponseWriter}.
-	*
-	*/
+	 *  Creates a response writer for content type "text/vnd.wap.wml".
+	 * 
+	 **/
 
-	protected WMLResponseWriter()
-	{
-	}
-
-	/**
-	*  Sends output to the stream.  Internally, an instance of <code>PrintWriter</code>
-	*  is created, which will be closed when the <code>WMLResponseWriter</code>
-	*  is closed.
-	*
-	*/
 
 	public WMLResponseWriter(OutputStream stream)
 	{
-		writer = new PrintWriter(stream);
+		this("text/vnd.wap.wml", stream);
+	}
+
+	public WMLResponseWriter(String contentType, OutputStream stream)
+	{
+		super(safe, entities, contentType, stream);
+	}
+
+
+	protected WMLResponseWriter(String contentType)
+	{
+		super(safe, entities, contentType);
 	}
 
 	public IResponseWriter getNestedWriter()
@@ -111,6 +103,6 @@ public class WMLResponseWriter extends AbstractResponseWriter
 
 	public String getContentType()
 	{
-		return "text/vnd.wap.wml";
+		return "";
 	}
 }

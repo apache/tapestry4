@@ -46,7 +46,7 @@ public class NestedWMLResponseWriter extends WMLResponseWriter
 
 	public NestedWMLResponseWriter(IResponseWriter parent)
 	{
-		super();
+		super(parent.getContentType());
 
 		this.parent = parent;
 

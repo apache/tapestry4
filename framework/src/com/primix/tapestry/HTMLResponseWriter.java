@@ -45,8 +45,8 @@ import java.io.*;
 public class HTMLResponseWriter extends AbstractResponseWriter
 {
 
-	private static String[] entities = new String[64];
-	private static boolean[] safe = new boolean[128];
+	private static final String[] entities = new String[64];
+	private static final boolean[] safe = new boolean[128];
 
 	private static final String SAFE_CHARACTERS =
 		"01234567890"
@@ -65,45 +65,30 @@ public class HTMLResponseWriter extends AbstractResponseWriter
 			safe[SAFE_CHARACTERS.charAt(i)] = true;
 	}
 
-	protected String[] getEntities()
+
+	public HTMLResponseWriter(String contentType, OutputStream outputStream)
 	{
-		return entities;
+		super(safe, entities, contentType, outputStream);
 	}
 
-	protected boolean[] getSafe()
+	protected HTMLResponseWriter(String contentType)
 	{
-		return safe;
-	}
-
-	/**
-	*  Protected constructor, needed by {@link NestedHTMLResponseWriter}.
-	*
-	*/
-
-	protected HTMLResponseWriter()
-	{
-		super();
+		super(safe, entities, contentType);
 	}
 
 	/**
-	*  Sends output to the stream.  Internally, an instance of <code>PrintWriter</code>
-	*  is created, which will be closed when the <code>HTMLResponseWriter</code>
-	*  is closed.
-	*
-	*/
-
-	public HTMLResponseWriter(OutputStream stream)
+	 *  Creates a default writer for content type "text/html".
+	 * 
+	 **/
+	
+	public HTMLResponseWriter(OutputStream outputStream)
 	{
-		super(stream);
+		this("text/html", outputStream);
 	}
+
 
 	public IResponseWriter getNestedWriter()
 	{
 		return new NestedHTMLResponseWriter(this);
-	}
-
-	public String getContentType()
-	{
-		return "text/html";
 	}
 }
