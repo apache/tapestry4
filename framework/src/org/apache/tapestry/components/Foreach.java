@@ -137,7 +137,7 @@ public abstract class Foreach extends AbstractComponent
     /**
      *  Returns the most recent value extracted from the source parameter.
      *
-     *  @throws RenderOnlyPropertyException if the Foreach is not currently rendering.
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if the Foreach is not currently rendering.
      *
      **/
 
@@ -157,7 +157,7 @@ public abstract class Foreach extends AbstractComponent
      *  The index number, within the {@link #getSource() source}, of the
      *  the current value.
      * 
-     *  @throws RenderOnlyPropertyException if the Foreach is not currently rendering.
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if the Foreach is not currently rendering.
      *
      *  @since 2.2
      * 
