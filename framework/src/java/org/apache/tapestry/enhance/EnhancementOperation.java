@@ -108,20 +108,6 @@ public interface EnhancementOperation
     public String getClassReference(Class clazz);
 
     /**
-     * Returns true if any enhancements (new methods, fields, etc.) have been defined.
-     */
-
-    public boolean hasEnhancements();
-
-    /**
-     * Forces an enhanced subclass to be created even if there are no other enhancements.
-     * 
-     * @see org.apache.tapestry.enhance.ForceNonAbstractWorker
-     */
-
-    public void forceEnhancement();
-
-    /**
      * Returns the type of an existing property of the base component class. If the property does
      * not exist, then returns null.
      */

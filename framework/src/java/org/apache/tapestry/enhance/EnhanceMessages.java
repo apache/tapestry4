@@ -77,11 +77,6 @@ class EnhanceMessages
         return _formatter.format("instantiation-failure", c.getDeclaringClass().getName(), cause);
     }
 
-    public static String missingConstructor(Class baseClass)
-    {
-        return _formatter.format("missing-constructor", baseClass.getName());
-    }
-
     public static String locatedValueIsNull(String objectReference)
     {
         return _formatter.format("located-value-is-null", objectReference);
