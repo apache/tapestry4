@@ -61,10 +61,22 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.bcel.Constants;
+import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.generic.ArrayType;
+import org.apache.bcel.generic.BasicType;
+import org.apache.bcel.generic.InstructionConstants;
+import org.apache.bcel.generic.InstructionFactory;
+import org.apache.bcel.generic.ObjectType;
+import org.apache.bcel.generic.PUSH;
+import org.apache.bcel.generic.Type;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IResourceResolver;
@@ -74,18 +86,6 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.ParameterSpecification;
 import org.apache.tapestry.spec.PropertySpecification;
-import org.apache.bcel.Constants;
-import org.apache.bcel.classfile.JavaClass;
-import org.apache.bcel.generic.ArrayType;
-import org.apache.bcel.generic.BasicType;
-import org.apache.bcel.generic.InstructionConstants;
-import org.apache.bcel.generic.InstructionFactory;
-import org.apache.bcel.generic.InstructionList;
-import org.apache.bcel.generic.ObjectType;
-import org.apache.bcel.generic.PUSH;
-import org.apache.bcel.generic.Type;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *  Contains the logic for analyzing and enhancing a single component class.
@@ -117,6 +117,13 @@ public class ComponentClassFactory
     private ComponentSpecification _specification;
     private Class _componentClass;
     private String _subclassName;
+
+    /**
+     *  List of {@link IEnhancer}.
+     * 
+     **/
+
+    private List _enhancers;
 
     /**
      *  Map of type (as Class), keyed on type name. 
@@ -213,103 +220,37 @@ public class ComponentClassFactory
         }
     }
 
-    private PropertyDescriptor getPropertyDescriptor(String name)
+    protected PropertyDescriptor getPropertyDescriptor(String name)
     {
         return (PropertyDescriptor) _beanProperties.get(name);
     }
 
     /**
-    *  Examines the specification, identifies if any enhancements will be needed.
-    *  This implementation looks for the presence of any
-    *  {@link org.apache.tapestry.spec.PropertySpecification}s, or any
-    *  connected parameters where the property is missing or abstract.
-    * 
-    **/
+     *  Invokes {@link #scanForEnhancements()} to identify any
+     *  enhancements needed on the class, returning true
+     *  if there are any enhancements to be performed. 
+     * 
+     **/
 
     public boolean needsEnhancement()
     {
-        if (!_specification.getPropertySpecificationNames().isEmpty())
-            return true;
+        scanForEnhancements();
 
-        if (checkParameters())
-            return true;
-
-        return false;
+        return _enhancers != null;
     }
 
     /**
-     *  Checks the formal parameters, returns true if any connected parameter
-     *  has a missing or abstract property, or any parameter has a 
-     *  missing or abstract binding property.
+     *  Returns true if the {@link PropertyDescriptor} is null, or
+     *  (if non-null), if both accessor methods are abstract.
      * 
      **/
 
-    private boolean checkParameters()
+    public boolean isAbstract(PropertyDescriptor pd)
     {
-        List names = _specification.getParameterNames();
-        int count = names.size();
-
-        for (int i = 0; i < count; i++)
-        {
-            String name = (String) names.get(i);
-            ParameterSpecification pspec = _specification.getParameter(name);
-
-            if (checkParameterProperty(name))
-                return true;
-
-            if (checkConnectedParameter(pspec))
-                return true;
-        }
-
-        return false;
-    }
-
-    /**
-     *  Returns true if the parameter is connected (has a non-custom direction) and the
-     *  corresponding property is either missing or abstract.
-     * 
-     **/
-
-    private boolean checkConnectedParameter(ParameterSpecification spec)
-    {
-        Direction direction = spec.getDirection();
-
-        if (direction == Direction.CUSTOM)
-            return false;
-
-        String propertyName = spec.getPropertyName();
-
-        PropertyDescriptor d = getPropertyDescriptor(propertyName);
-
-        return isAbstract(d);
-    }
-
-    /**
-     *  Checks for a property that will store the
-     *  {@link org.apache.tapestry.IBinding binding} for the (formal)
-     *  parameter.
-     *  
-     *  <p>
-     *  Returns false is present, true if missing or abstract.
-     * 
-     **/
-
-    private boolean checkParameterProperty(String parameterName)
-    {
-        String propertyName = parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
-
-        PropertyDescriptor d = getPropertyDescriptor(propertyName);
-
-        return isAbstract(d);
-
-    }
-
-    private boolean isAbstract(PropertyDescriptor d)
-    {
-        if (d == null)
+        if (pd == null)
             return true;
 
-        return isAbstract(d.getReadMethod()) && isAbstract(d.getWriteMethod());
+        return isAbstract(pd.getReadMethod()) && isAbstract(pd.getWriteMethod());
     }
 
     /**
@@ -317,7 +258,7 @@ public class ComponentClassFactory
      * 
      **/
 
-    private boolean isAbstract(Method m)
+    public boolean isAbstract(Method m)
     {
         if (m == null)
             return true;
@@ -325,7 +266,17 @@ public class ComponentClassFactory
         return Modifier.isAbstract(m.getModifiers());
     }
 
-    protected Class convertPropertyType(String type, Location location)
+    /**
+     *  Given a class name, returns the corresponding class.  In addition,
+     *  scalar types, arrays of scalar types, java.lang.Object[] and
+     *  java.lang.String[] are supported.
+     * 
+     *  @param type to convert to a Class
+     *  @param location of the involved specification element (for exception reporting)
+     * 
+     **/
+
+    public Class convertPropertyType(String type, Location location)
     {
         Class result = (Class) _typeMap.get(type);
 
@@ -350,7 +301,14 @@ public class ComponentClassFactory
         return result;
     }
 
-    protected Type getObjectType(String type)
+    /**
+     *  Given the name of a class, returns the equivalent {@link Type}.  In addition,
+     *  knows about scalar types, arrays of scalar types, java.lang.Object[] and
+     *  java.lang.String[].
+     * 
+     **/
+
+    public Type getObjectType(String type)
     {
         Type result = (Type) _objectTypeMap.get(type);
 
@@ -363,6 +321,11 @@ public class ComponentClassFactory
         return result;
     }
 
+    /**
+     *  Constructs an accessor method name.
+     * 
+     **/
+
     protected String buildMethodName(String prefix, String propertyName)
     {
         StringBuffer result = new StringBuffer(prefix);
@@ -374,6 +337,21 @@ public class ComponentClassFactory
         result.append(propertyName.substring(1));
 
         return result.toString();
+    }
+
+    protected void checkPropertyType(PropertyDescriptor pd, Class propertyType, Location location)
+    {
+        if (!pd.getPropertyType().equals(propertyType))
+            throw new ApplicationRuntimeException(
+                Tapestry.getString(
+                    "ComponentClassFactory.property-type-mismatch",
+                    new Object[] {
+                        _componentClass.getName(),
+                        pd.getName(),
+                        pd.getPropertyType().getName(),
+                        propertyType.getName()}),
+                location,
+                null);
     }
 
     /**
@@ -392,41 +370,30 @@ public class ComponentClassFactory
         if (d == null)
             return null;
 
-        if (!d.getPropertyType().equals(propertyType))
-            throw new ApplicationRuntimeException(
-                Tapestry.getString(
-                    "ComponentClassFactory.property-type-mismatch",
-                    new Object[] {
-                        _componentClass.getName(),
-                        propertyName,
-                        d.getPropertyType().getName(),
-                        propertyType.getName()}),
-                location,
-                null);
+        checkPropertyType(d, propertyType, location);
 
-        Method m = d.getWriteMethod();
+        Method write = d.getWriteMethod();
+        Method read = d.getReadMethod();
 
-        if (!isAbstract(m))
+        if (!isAbstract(write))
             throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "ComponentClassFactory.non-abstract-write",
-                    m.getDeclaringClass().getName(),
+                    write.getDeclaringClass().getName(),
                     propertyName),
                 location,
                 null);
 
-        m = d.getReadMethod();
-
-        if (!isAbstract(m))
+        if (!isAbstract(read))
             throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "ComponentClassFactory.non-abstract-read",
-                    m.getDeclaringClass().getName(),
+                    read.getDeclaringClass().getName(),
                     propertyName),
                 location,
                 null);
 
-        return m == null ? null : m.getName();
+        return read == null ? null : read.getName();
     }
 
     /**
@@ -443,7 +410,17 @@ public class ComponentClassFactory
         return Type.OBJECT;
     }
 
-    protected void createMutator(
+    /**
+     *  Creates a mutator (aka "setter") method.
+     * 
+     *  @param fieldType type of field value (and type of parameter value)
+     *  @param fieldName name of field (not property!)
+     *  @param propertyName name of property (used to construct method name)
+     *  @param isPersistent if true, adds a call to fireObservedChange()
+     * 
+     **/
+
+    public void createMutator(
         Type fieldType,
         String fieldName,
         String propertyName,
@@ -451,27 +428,29 @@ public class ComponentClassFactory
     {
         String methodName = buildMethodName("set", propertyName);
 
+        if (LOG.isDebugEnabled())
+            LOG.debug("Creating mutator: " + methodName);
+
         MethodFabricator mf = _classFabricator.createMethod(methodName);
         mf.addArgument(fieldType, propertyName);
 
-        InstructionList il = mf.getInstructionList();
         InstructionFactory factory = _classFabricator.getInstructionFactory();
 
-        il.append(factory.createThis());
-        il.append(factory.createLoad(fieldType, 1));
-        il.append(factory.createPutField(_subclassName, fieldName, fieldType));
+        mf.append(factory.createThis());
+        mf.append(factory.createLoad(fieldType, 1));
+        mf.append(factory.createPutField(_subclassName, fieldName, fieldType));
 
-        // Persistent properties must invoke fireObservedChange
+        // Persistent properties must invoke fireObservedChange()
 
         if (isPersistent)
         {
-            il.append(factory.createThis());
-            il.append(new PUSH(_classFabricator.getConstantPool(), propertyName));
-            il.append(factory.createLoad(fieldType, 1));
+            mf.append(factory.createThis());
+            mf.append(new PUSH(_classFabricator.getConstantPool(), propertyName));
+            mf.append(factory.createLoad(fieldType, 1));
 
             Type argumentType = convertToArgumentType(fieldType);
 
-            il.append(
+            mf.append(
                 factory.createInvoke(
                     _subclassName,
                     "fireObservedChange",
@@ -480,12 +459,22 @@ public class ComponentClassFactory
                     Constants.INVOKEVIRTUAL));
         }
 
-        il.append(InstructionConstants.RETURN);
+        mf.append(InstructionConstants.RETURN);
 
         mf.commit();
     }
 
-    protected void createAccessor(
+    /**
+     *  Creates an accessor (getter) method for the property.
+     * 
+     *  @param fieldType the return type for the method
+     *  @param fieldName the name of the field (not the name of the property)
+     *  @param propertyName the name of the property (used to build the name of the method)
+     *  @param readMethodName if not null, the name of the method to use
+     * 
+     **/
+
+    public void createAccessor(
         Type fieldType,
         String fieldName,
         String propertyName,
@@ -494,44 +483,19 @@ public class ComponentClassFactory
         String methodName =
             readMethodName == null ? buildMethodName("get", propertyName) : readMethodName;
 
+        if (LOG.isDebugEnabled())
+            LOG.debug("Creating accessor: " + methodName);
+
         MethodFabricator mf =
             _classFabricator.createMethod(Constants.ACC_PUBLIC, fieldType, methodName);
 
-        InstructionList il = mf.getInstructionList();
         InstructionFactory factory = _classFabricator.getInstructionFactory();
 
-        il.append(factory.createThis());
-        il.append(factory.createGetField(_subclassName, fieldName, fieldType));
-        il.append(factory.createReturn(fieldType));
+        mf.append(factory.createThis());
+        mf.append(factory.createGetField(_subclassName, fieldName, fieldType));
+        mf.append(factory.createReturn(fieldType));
 
         mf.commit();
-    }
-
-    /**
-       *  Checks that the superclass provides
-       *  either abstract accessors or none at all.  Creates the file, creates 
-       *  the accessors, creates initialization code.
-       * 
-       **/
-
-    protected void createProperty(
-        String propertyName,
-        String type,
-        boolean persistent,
-        Location location)
-    {
-        Class propertyType = convertPropertyType(type, location);
-
-        String readMethodName = checkAccessors(propertyName, propertyType, location);
-
-        String fieldName = "_$" + propertyName;
-
-        Type fieldType = getObjectType(type);
-
-        _classFabricator.addField(fieldType, fieldName);
-
-        createAccessor(fieldType, fieldName, propertyName, readMethodName);
-        createMutator(fieldType, fieldName, propertyName, persistent);
     }
 
     protected boolean isMissingProperty(String propertyName)
@@ -539,45 +503,6 @@ public class ComponentClassFactory
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
 
         return isAbstract(pd);
-    }
-
-    /**
-     *  Creates a property for a connected
-     *  parameter from a parameter specification.
-     * 
-     **/
-
-    protected void createConnectedParameterProperty(ParameterSpecification ps)
-    {
-        if (ps.getDirection() == Direction.CUSTOM)
-            return;
-
-        String propertyName = ps.getPropertyName();
-
-        // Yes, but does it *need* a property created?
-
-        if (!isMissingProperty(propertyName))
-            return;
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Establishing connected parameter property " + propertyName);
-
-        createProperty(propertyName, ps.getType(), false, ps.getLocation());
-    }
-
-    /**
-     *  Invoked to create a specified property. 
-     * 
-     **/
-
-    protected void createSpecifiedProperty(PropertySpecification ps)
-    {
-        String propertyName = ps.getName();
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Establishing specified property " + propertyName);
-
-        createProperty(propertyName, ps.getType(), ps.isPersistent(), ps.getLocation());
     }
 
     /**
@@ -607,9 +532,14 @@ public class ComponentClassFactory
 
         _classFabricator.addDefaultConstructor();
 
-        createPropertySpecificationEnhancements();
+        int count = _enhancers.size();
 
-        createParameterEnhancements();
+        for (int i = 0; i < count; i++)
+        {
+            IEnhancer enhancer = (IEnhancer) _enhancers.get(i);
+
+            enhancer.performEnhancement(this);
+        }
 
         JavaClass result = _classFabricator.commit();
 
@@ -619,48 +549,35 @@ public class ComponentClassFactory
         return result;
     }
 
-    private void createParameterBindingProperty(String parameterName, Location location)
+    protected void addEnhancer(IEnhancer enhancer)
     {
-        String propertyName = parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
+        if (_enhancers == null)
+            _enhancers = new ArrayList();
 
-        if (!isMissingProperty(propertyName))
-            return;
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Establishing parameter binding property " + propertyName);
-
-        createProperty(propertyName, IBinding.class.getName(), false, location);
+        _enhancers.add(enhancer);
     }
 
     /**
-     *  Creates any properties related to
-     *  {@link org.apache.tapestry.spec.PropertySpecification property specifications}.
+     *  Invoked by {@link #needsEnhancement()} to find any enhancements
+     *  that may be needed.  Should create an {@link org.apache.tapestry.enhance.IEnhancer}
+     *  for each one, and add it to the queue using {@link #addEnhancer(IEnhancer)}.
      * 
      **/
 
-    protected void createPropertySpecificationEnhancements()
+    protected void scanForEnhancements()
     {
-        List names = _specification.getPropertySpecificationNames();
-        int count = names.size();
-
-        for (int i = 0; i < count; i++)
-        {
-            String name = (String) names.get(i);
-
-            PropertySpecification ps = _specification.getPropertySpecification(name);
-
-            createSpecifiedProperty(ps);
-        }
+        scanForParameterEnhancements();
+        scanForSpecifiedPropertyEnhancements();
     }
 
     /**
-     *  Creates new properties related to formal parameters.  This is one
-     *  property to store the binding, and a second property if the parameter
-     *  is connected.
+     *  Invoked by {@link #scanForEnhancements()} to locate
+     *  any enhancements needed for component parameters (this includes
+     *  binding properties and connected parameter property).
      * 
      **/
 
-    protected void createParameterEnhancements()
+    protected void scanForParameterEnhancements()
     {
         List names = _specification.getParameterNames();
         int count = names.size();
@@ -671,9 +588,99 @@ public class ComponentClassFactory
 
             ParameterSpecification ps = _specification.getParameter(name);
 
-            createParameterBindingProperty(name, ps.getLocation());
+            scanForBindingProperty(name, ps);
 
-            createConnectedParameterProperty(ps);
+            scanForParameterProperty(ps);
+        }
+
+    }
+
+    protected void scanForSpecifiedPropertyEnhancements()
+    {
+        List names = _specification.getPropertySpecificationNames();
+        int count = names.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            String name = (String) names.get(i);
+
+            PropertySpecification ps = _specification.getPropertySpecification(name);
+
+            scanForSpecifiedProperty(ps);
         }
     }
+
+    protected void scanForBindingProperty(String parameterName, ParameterSpecification ps)
+    {
+        String propertyName = parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
+        PropertyDescriptor pd = getPropertyDescriptor(propertyName);
+
+        if (!isAbstract(pd))
+            return;
+
+        // Need to create the property.
+
+        Type propertyType = getObjectType(IBinding.class.getName());
+
+        IEnhancer enhancer =
+            new CreatePropertyEnhancer(propertyName, propertyType, ps.getLocation());
+
+        addEnhancer(enhancer);
+    }
+
+    protected void scanForParameterProperty(ParameterSpecification ps)
+    {
+        if (ps.getDirection() == Direction.CUSTOM)
+            return;
+
+        String propertyName = ps.getPropertyName();
+
+        // Yes, but does it *need* a property created?
+
+        if (!isMissingProperty(propertyName))
+            return;
+
+        Location location = ps.getLocation();
+
+        Class propertyType = convertPropertyType(ps.getType(), location);
+
+        String readMethodName = checkAccessors(propertyName, propertyType, location);
+
+        Type fieldType = getObjectType(ps.getType());
+
+        IEnhancer enhancer =
+            new CreatePropertyEnhancer(propertyName, fieldType, readMethodName, false, location);
+
+        addEnhancer(enhancer);
+    }
+
+    protected void scanForSpecifiedProperty(PropertySpecification ps)
+    {
+        String propertyName = ps.getName();
+        Location location = ps.getLocation();
+        Class propertyType = convertPropertyType(ps.getType(), location);
+
+        String readMethodName = checkAccessors(propertyName, propertyType, location);
+
+        Type fieldType = getObjectType(ps.getType());
+
+        IEnhancer enhancer =
+            new CreatePropertyEnhancer(
+                propertyName,
+                fieldType,
+                readMethodName,
+                ps.isPersistent(),
+                location);
+
+        addEnhancer(enhancer);
+    }
+
+    public void createField(Type fieldType, String fieldName)
+    {
+        if (LOG.isDebugEnabled())
+            LOG.debug("Creating field: " + fieldName);
+
+        _classFabricator.addField(fieldType, fieldName);
+    }
+
 }

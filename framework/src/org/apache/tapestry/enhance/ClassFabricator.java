@@ -195,16 +195,6 @@ public class ClassFabricator
     }
     
     /**
-     *  Returns the fully qualified class name.
-     * 
-     **/
-    
-    public String getClassName()
-    {
-    	return _classGen.getClassName();
-    }
-    
-    /**
      *  Returns the mutable constant pool.
      * 
      **/

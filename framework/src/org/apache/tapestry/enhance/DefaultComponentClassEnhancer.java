@@ -160,6 +160,15 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         return result;
     }
 
+	/**
+	 *  Constructs a new factory for enhancing the specified class. Advanced users
+	 *  may want to provide thier own enhancements to classes and this method
+	 *  is the hook that allows them to provide a subclass of
+	 *  {@link org.apache.tapestry.enhance.ComponentClassFactory} adding those
+	 *  enhancements.
+	 * 
+	 **/
+	
     protected ComponentClassFactory createComponentClassFactory(
         ComponentSpecification specification,
         Class componentClass)
