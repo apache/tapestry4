@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--$Id$-->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>tutorial.locale.Change</class>
+	<components>
+		<component>
+			<id>border</id>
+			<type>Border</type>
+		</component>
+		<component>
+			<id>insertLocaleName</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>localeName</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>home</id>
+			<type>Page</type>
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>Home</value>
+				</static-binding>
+			</bindings>
+		</component>
+	</components>
+</specification>
