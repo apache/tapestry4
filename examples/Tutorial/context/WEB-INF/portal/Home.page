@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+
+	
+<page-specification class="tutorial.portal.Home">
+
+<component id="e" type="Foreach">
+  <binding name="source" expression="visit.models"/>
+  <binding name="value" expression="model"/>
+</component>
+
+<component id="portlet" type="Portlet">
+	<binding name="model" expression="model"/>
+	<binding name="closeListener" expression="listeners.closeModel"/>
+</component>
+
+
+<component id="selectPortlet" type="PropertySelection">
+  <binding name="value" expression="newPortletId"/>
+  <binding name="model" expression="visit.portletSelectionModel"/>
+</component>
+
+</page-specification>

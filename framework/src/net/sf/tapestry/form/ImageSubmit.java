@@ -130,7 +130,7 @@ public class ImageSubmit extends AbstractFormComponent
         if (_nameOverride == null)
             _name = form.getElementId(this);
         else
-            _name = form.getElementId(_nameOverride);
+            _name = form.getElementId(this, _nameOverride);
 
         if (rewinding)
         {

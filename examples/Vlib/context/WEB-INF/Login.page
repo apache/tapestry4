@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.vlib.pages.Login">
+
+  <property name="page-type">login</property>
+
+  <bean name="validator" class="net.sf.tapestry.valid.StringValidator" lifecycle="page">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="clientScriptingEnabled" expression="true"/>
+  </bean>
+
+  <component id="border" type="Border">
+    <static-binding name="title">Login</static-binding>
+  </component>
+  
+  <component id="form" type="Form">
+    <binding name="listener" expression="listeners.attemptLogin"/>
+    <binding name="delegate" expression="validationDelegate"/>
+  </component>
+   
+  <component id="showError" type="ShowError"/>
+  
+  <component id="showValidationError" type="ShowValidationError">
+  	<binding name="delegate" expression="validationDelegate"/>
+  </component>
+  
+  <component id="labelEmail" type="FieldLabel">
+    <binding name="field" expression="components.inputEmail"/>
+  </component>
+  
+  <component id="inputEmail" type="ValidField">
+    <binding name="displayWidth" expression="30"/>
+    <binding name="maximumLength" expression="60"/>
+    <static-binding name="displayName">Email Address</static-binding>
+    <binding name="value" expression="email"/>
+    <binding name="validator" expression="beans.validator"/>
+  </component>
+  
+  <component id="labelPassword" type="FieldLabel">
+    <binding name="field" expression="components.inputPassword"/>
+  </component>
+  
+  <component id="inputPassword" type="ValidField">
+    <binding name="value" expression="password"/>
+    <binding name="validator" expression="beans.validator"/>
+    <binding name="displayWidth" expression="10"/>
+    <binding name="maximumLength" expression="20"/>
+    <static-binding name="displayName">Password</static-binding>
+    <binding name="hidden" expression="true"/>
+  </component>
+  
+  <component id="register" type="PageLink">
+    <static-binding name="page">Register</static-binding>
+  </component>
+
+</page-specification>

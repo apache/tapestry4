@@ -74,13 +74,17 @@ package net.sf.tapestry.util.pool;
 
 class PoolList
 {
+    /** @since 2.4 **/
+
+    private Pool _pool;
+
     /**
      *  Linked list of pooled objects.
      *
      * @since 1.0.5
      **/
 
-    private Entry first;
+    private Entry _first;
 
     /**
      *  Linked list of "spare" Entries, ready to be re-used.
@@ -88,19 +92,20 @@ class PoolList
      * @since 1.0.5
      **/
 
-    private Entry spare;
+    private Entry _spare;
 
     /**
      *  Overall count of items pooled.
      *
      **/
 
-    private int count;
+    private int _count;
 
     /**
      * A simple linked-list entry for items stored in the PoolList.
      *
      * @since 1.0.5
+     * 
      **/
 
     private static class Entry
@@ -111,6 +116,16 @@ class PoolList
     }
 
     /**
+     *  @since 2.4
+     * 
+     **/
+    
+    PoolList(Pool pool)
+    {
+        _pool = pool;
+    }
+
+    /**
      *  Returns the number of pooled objects currently stored.
      *
      *  @since 1.0.5
@@ -118,7 +133,7 @@ class PoolList
 
     public int getPooledCount()
     {
-        return count;
+        return _count;
     }
 
     /**
@@ -129,20 +144,20 @@ class PoolList
 
     public Object retrieve()
     {
-        if (count == 0)
+        if (_count == 0)
             return null;
 
-        count--;
+        _count--;
 
-        Entry e = first;
+        Entry e = _first;
         Object result = e.pooled;
 
         // Okay, store e into the list of spare entries.
 
-        first = e.next;
+        _first = e.next;
 
-        e.next = spare;
-        spare = e;
+        e.next = _spare;
+        _spare = e;
         e.generation = 0;
         e.pooled = null;
 
@@ -162,22 +177,22 @@ class PoolList
     {
         Entry e;
 
-        if (spare == null)
+        if (_spare == null)
         {
             e = new Entry();
         }
         else
         {
-            e = spare;
-            spare = spare.next;
+            e = _spare;
+            _spare = _spare.next;
         }
 
         e.generation = generation;
         e.pooled = object;
-        e.next = first;
-        first = e;
+        e.next = _first;
+        _first = e;
 
-        return ++count;
+        return ++_count;
     }
 
     /**
@@ -191,15 +206,15 @@ class PoolList
 
     public int cleanup(int generation)
     {
-        spare = null;
+        _spare = null;
 
-        count = 0;
+        _count = 0;
 
         Entry prev = null;
 
         // Walk through the list.  They'll be sorted by generation.
 
-        Entry e = first;
+        Entry e = _first;
         while (true)
         {
             if (e == null)
@@ -210,27 +225,61 @@ class PoolList
 
             if (e.generation <= generation)
             {
+                Object pooled = e.pooled;
+
+                // Notify the object that it is being dropped
+                // through the cracks!
+
+                _pool.getAdaptor(pooled).discardFromPool(pooled);
+
                 // Set the next pointer of the previous node to null.
                 // If the very first node inspected was too old,
                 // set the first pointer to null.
 
                 if (prev == null)
-                    first = null;
+                    _first = null;
                 else
                     prev.next = null;
-
-                break;
             }
+            else
+                _count++;
 
             prev = e;
             e = e.next;
-            count++;
         }
 
-        return count;
+        return _count;
     }
+
     public String toString()
     {
-        return "PoolList[" + count + "]";
+        return "PoolList[" + _count + "]";
+    }
+
+    /** 
+     *  Much like {@link #cleanup(int)}, but discards all
+     *  pooled objects.
+     * 
+     *  @since 2.4 
+     * 
+     **/
+
+    void discardAll()
+    {
+        Entry e = _first;
+
+        while (e != null)
+        {
+            Object pooled = e.pooled;
+
+            _pool.getAdaptor(pooled).discardFromPool(pooled);
+
+            e = e.next;
+        }
+
+        _first = null;
+        _spare = null;
+        _count = 0;
+
     }
 }

@@ -109,17 +109,6 @@ public class LocaleList extends BaseComponent implements PageDetachListener
         m_setSelectedLocales.clear();
     }
 
-    /**
-	 * @see net.sf.tapestry.AbstractComponent#finishLoad()
-	 */
-	protected void finishLoad()
-	{
-		super.finishLoad();
-        getPage().addPageDetachListener(this);
-	}
-
-
-
 	/**
 	 * Method initTableSessionStateManager.
 	 * Creates the Table Session State Manager, and thus determines what part

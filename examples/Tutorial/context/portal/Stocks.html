@@ -1,0 +1,25 @@
+<span jwcid="content@Block">
+
+<table class="portlet-content">
+    <tr> <th>Stock</th> <th>Price</th> <th>Change</th></tr>
+     <tr jwcid="e">
+        <td align=right><span jwcid="@Insert" value="[[ stock.tickerId ]]">PMIX</span></td>
+        <td align=right><span jwcid="@Insert" value="[[ stock.price ]]">0.27</span></td>
+        <td align=right><span jwcid="@Insert" value="[[ stock.change ]]">+ 0.02</span></td>
+     </tr>
+</table>
+
+<hr>
+
+<span jwcid="@ShowError" delegate="[[ beans.delegate ]]"/>
+
+<form jwcid="form">
+
+<input jwcid="inputTickerId"/> <input type=submit value="Add"/>
+</form>
+
+<p>Note: these values are <em>entirely made up</em> for demonstration
+purposes.
+
+</span>
+

@@ -110,7 +110,7 @@ public class Upload extends BasePage
 			return;
 		}
 
-		Results results = (Results) cycle.getPage("upload.Results");
+		UploadResults results = (UploadResults) cycle.getPage("UploadResults");
 
 		results.activate(file, showAscii, Integer.parseInt(bytesPerLine), cycle);
 	}

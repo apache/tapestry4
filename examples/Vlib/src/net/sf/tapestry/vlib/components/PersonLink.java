@@ -57,7 +57,7 @@ package net.sf.tapestry.vlib.components;
 import net.sf.tapestry.BaseComponent;
 
 /**
- *  Creates a link to the {@link net.sf.tapestry.vlib.pages.PersonPage} 
+ *  Creates a link to the {@link net.sf.tapestry.vlib.pages.ViewPerson} 
  *  page using the external service.
  *
  *
@@ -123,6 +123,7 @@ public class PersonLink extends BaseComponent
     private Integer _primaryKey;
     private String _name;
     private boolean _omit;
+
     public String getName()
     {
         return _name;

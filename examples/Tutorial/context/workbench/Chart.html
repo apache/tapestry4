@@ -1,0 +1,42 @@
+<!-- $Id$ -->
+
+<span jwcid="@Border">
+
+<p>This page demonstrates using a form to drive the dynamic generation of a
+chart (courtesy of <a href="http://www.object-refinery.com/jfreechart/">JFreeChart</a>).
+Enter names and values in the form and see them in the pie chart at the bottom.
+
+
+<span jwcid="showError"/>
+
+<form jwcid="form">
+
+<table class="form">
+	<tr class="column-header">
+		<th>Category</th>
+		<th>Value</th>
+	</tr>
+	
+	<tr jwcid="plotValues">
+		<td><input jwcid="inputName" size="40" maxlength="40"/></td>
+		<td><input jwcid="inputValue" size="20" maxlength="20"/></td>
+		<td><input jwcid="inputMarked"/></td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<input jwcid="add"/>
+			<input type="submit" value="Update">
+		</td>
+		<td>
+		<input jwcid="delete"/>
+		</td>
+	</tr>
+
+</table>
+
+</form>
+
+<img jwcid="@Image" image="[[ chartImageAsset ]]"/>
+
+</span>

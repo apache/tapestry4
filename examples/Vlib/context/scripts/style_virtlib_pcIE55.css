@@ -1,0 +1,259 @@
+/* style_virtlib_pcIE55.css */
+body, table, td, p	{
+	font-family:verdana, arial, helvetica, sans-serif;
+	font-size:12px;
+}
+a	{
+	color:#ffffff;
+}
+.clsBold	{
+	font-weight:bold;
+}
+.clsDataBlue	{
+	color:#4b5887;
+}
+a.clsDataBlue:link	{
+	color:#4b5887;
+}
+a.clsDataBlue:hover	{
+	color:#4b5887;
+	text-decoration:none;
+}
+a.clsDataBlue:visited	{
+	color:#4b5887;
+}
+.clsDataBlack:link	{
+	color:#000000;
+}
+.clsDataBlack:hover	{
+	color:#000000;
+	text-decoration:none;
+}
+.clsDataBlack:visited	{
+	color:#000000;
+}
+/* Top Nav */
+.clsTopNav {
+	font-weight:bold;
+	color:#4b5887;
+	text-decoration:none;
+}
+.clsTopNav:hover	{
+	text-decoration:underline;
+}
+.clsTopNavOn	{
+	font-weight:bold;
+	color:#e88700;
+}
+.clsLeftNavTxt	{
+	color:#ffffff;
+	font-weight:bold;
+}
+/* Left Nav */
+.clsLeftNav	{
+	font-weight:bold;
+	text-decoration:none;
+}
+.clsLeftNav:hover	{
+	text-decoration:underline;
+}
+/* Forms */
+form	{
+	display:block;
+	margin-top:1px;
+	margin-bottom:1px;
+}
+.inputTextForm	{
+	font-family:courier, monospace;
+}
+
+SPAN.error .inputTextForm
+{
+	font-family:courier, monospace;
+	color: white;
+	background-color: red;
+}
+
+.inputSelectForm	{
+	font-family:courier, monospace;
+}
+.inputTextareaForm	{
+	font-family:courier, monospace;
+}
+/* Footer */
+.clsFooterPos	{
+	position:absolute;
+	bottom: 0px;
+}
+.clsFooter	{
+	color:#666666;
+	text-decoration:none;
+}
+.clsFooterLink	{
+	color:#8e9cd1;
+}
+.clsFooterLink:hover	{
+	color:#8e9cd1;
+	text-decoration:none;
+}
+td.clsDataTable	{
+	border-width:1px;
+	border-color:#4b5887;
+	border-style:solid;
+	background:#ffffff;
+}
+
+TABLE.tapestry-palette TH
+{
+  font-weight: bold;
+  color: white;
+  background-color: #4b5887;
+  width: 200;
+}
+
+TABLE.tapestry-palette SELECT
+{
+  width: 200;
+}
+
+TABLE.tapestry-palette TD.controls
+{
+   text-align: center;
+}
+
+.clsInvalidField	
+{
+	color:#993300;
+}
+
+.clsInfoWarning	{
+	font-size:17px;
+	font-weight:bold;
+}
+
+
+TABLE.exception-display TR.even  {
+	top : auto;
+}
+
+TABLE.exception-display TR.odd  {
+	top : auto;
+	background-color : #C0C0FF;
+}
+
+TABLE.exception-display TH  {
+	text-align : right;
+	font-weight : bold;
+}
+
+TABLE.exception-display TD  {
+	text-align : left;
+	width : 100%;	
+}
+
+TABLE.exception-display TR.stack-trace  {
+	font-size : small;
+	text-align : left;
+}
+
+SPAN.exception-header  {
+	font-size : large;
+	font-weight : bold;
+	color : Red;
+}
+
+TABLE.request-context-border  {
+	border-width : 1;
+	border-color : Black;
+}
+
+SPAN.request-context-object  {
+	font-size : large;
+	font-weight : bold;
+	text-align : left;
+}
+
+TR.request-context-section TH  {
+	font-size : medium;
+	font-weight : bold;
+	text-align : center;
+	color : White;
+	background-color : #4b5887;
+}
+
+TR.request-context-header TH  {
+	font-size : small;
+	font-weight : bold;
+	text-align : center;
+	color : White;
+	background-color : #4b5887;
+}
+
+TABLE.request-context-object TD
+{
+	width: 100%;
+}
+
+TABLE.request-context-object TR.odd TD  {
+	text-align : left;
+	color : Black;
+	background-color : #C0C0FF;
+	width: 100%;
+}
+
+TABLE.request-context-object TR.odd TH  {
+	color : Black;
+	background-color : #C0C0FF;
+	text-align : right;
+}
+
+TABLE.request-context-object TR.even TD  {
+	text-align : left;
+}
+
+TABLE.request-context-object TR.even TH  {
+	text-align : right;
+}
+
+TABLE.request-context-object  {
+	width : 100%;
+}
+
+TABLE.request-context-object TR  {
+	vertical-align : text-top;
+}
+
+UL  {
+	margin-top : 0px;
+	margin-bottom : 0px;
+	margin-left : 20px;
+}
+
+TABLE.exception-display TR.exception-name TD  {
+	font-size : larger;
+	font-weight : bold;
+	text-align : center;
+	background-color : #4b5887;
+	color : White;
+}
+
+TABLE.exception-display  {
+	width : 100%;
+}
+
+TABLE.exception-display TR.exception-message TD  {
+	border-width : 1;
+	border-color : Black;
+	border-style : solid;
+	padding : 2;
+	text-align : left;
+	font-style : italic;
+}
+
+TABLE.exception-display TR.strack-trace-label TD  {
+	margin : 2;
+	border-width : 1;
+	border-color : Black;
+	border-style : solid;
+	text-align : center;
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.contrib.inspector.ShowProperties">
+
+  <bean name="persistPropertyClass" class="net.sf.tapestry.bean.EvenOdd"/>
+  <bean name="propertyClass" class="net.sf.tapestry.bean.EvenOdd"/>
+  
+  <component id="ifNoProperties" type="Conditional">
+    <binding name="condition" expression="!properties"/>
+  </component>
+  
+  <component id="ifHasProperties" type="Conditional">
+    <binding name="condition" expression="properties"/>
+  </component>
+  
+  <component id="e" type="Foreach">
+    <binding name="source" expression="properties"/>
+    <binding name="value" expression="change"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" expression="beans.persistPropertyClass.next"/>
+  </component>
+  
+  <component id="selectComponent" type="DirectLink">
+    <binding name="listener" expression="page.listeners.selectComponent"/>
+    <binding name="parameters" expression="change.componentPath"/>
+    <binding name="disabled" expression="change.componentPath == null"/>
+  </component>
+  
+  <component id="insertPath" type="Insert">
+    <binding name="value" expression="change.componentPath"/>
+  </component>
+  
+  <component id="insertPersistPropertyName" type="Insert">
+    <binding name="value" expression="change.propertyName"/>
+  </component>
+  
+  <component id="insertPersistValueClass" type="Insert">
+    <binding name="value" expression="valueClassName"/>
+  </component>
+  
+  <component id="insertPersistValue" type="Insert">
+    <binding name="value" expression="change.newValue"/>
+  </component>
+  
+</component-specification>

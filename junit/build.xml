@@ -26,6 +26,7 @@
   </path>
   
   <path id="base.class.path">
+	<pathelement location="${contrib.jar}"/>
     <pathelement location="${lib.ext.dir}/ejb.jar"/>
     <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
     <pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
@@ -35,6 +36,8 @@
     <pathelement location="${lib.ext.dir}/junit.jar"/>
     <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/> 
     <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
+    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>    
+    <pathelement location="${jython.dir}/jython.jar"/>
     <pathelement location="${local.lib.dir}/${jdom.jar}"/> 
   </path>
 
@@ -70,6 +73,7 @@
 		failonerror="true">
   		<classpath refid="junit.class.path"/>
 		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
+		<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
   	</java>
   </target>
   
@@ -77,6 +81,7 @@
   	<java fork="true" classname="junit.swingui.TestRunner">
   		<classpath refid="junit.class.path"/>
 		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
+		<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
   	</java>
   	
   </target>
@@ -106,6 +111,7 @@
 		failonerror="true">
   		<classpath refid="clover.class.path"/>
 		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
+		<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
   	</java>
   	
   
@@ -116,6 +122,7 @@
   		<classpath refid="clover.class.path"/>
 		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
 		<sysproperty key="log4j.configuration" value="log4j-slow.properties"/> 
+		<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
   	</java>  	
   	
   	<antcall target="clover-report"/>

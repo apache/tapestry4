@@ -444,12 +444,9 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         IStatement statement = null;
         ResultSet set = null;
         StatementAssembly assembly;
-        Integer primaryKey;
-        String name;
         List list;
         Person[] result;
         Object[] columns;
-        int column;
 
         try
         {
@@ -714,7 +711,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         // Verify that the new owner exists.
 
         IPersonHome personHome = getPersonHome();
-        IPerson newOwner = personHome.findByPrimaryKey(newOwnerPrimaryKey);
+        personHome.findByPrimaryKey(newOwnerPrimaryKey);
 
         // Direct SQL would be more efficient, but this'll probably do.
 

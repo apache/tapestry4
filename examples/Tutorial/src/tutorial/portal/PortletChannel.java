@@ -67,31 +67,31 @@ package tutorial.portal;
 
 public class PortletChannel
 {
-    private int id;
-    private String title;
-    private String pageName;
-    private String componentPath;
+    private int _id;
+    private String _title;
+    private String _pageName;
+    private String _componentPath;
 
     public PortletChannel(int id, String title, String pageName, String componentPath)
     {
-        this.id = id;
-        this.title = title;
-        this.pageName = pageName;
-        this.componentPath = componentPath;
+        _id = id;
+        _title = title;
+        _pageName = pageName;
+        _componentPath = componentPath;
     }
 
     public PortletModel getModel()
     {
-        return new PortletModel(id, title, pageName, componentPath);
+        return new PortletModel(_id, _title, _pageName, _componentPath);
     }
 
     public int getId()
     {
-        return id;
+        return _id;
     }
 
     public String getTitle()
     {
-        return title;
+        return _title;
     }
 }

@@ -1,0 +1,2 @@
+Used in JUnit testing to support partial testing of implicit pages (pages not defined in
+the application specification).

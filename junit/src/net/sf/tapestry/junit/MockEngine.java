@@ -58,6 +58,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
+
 import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
@@ -72,6 +73,7 @@ import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.io.DataSqueezer;
+import net.sf.tapestry.util.pool.Pool;
 
 /**
  *  An implementation of {@link IEngine} used for unit testing.
@@ -84,9 +86,10 @@ import net.sf.tapestry.util.io.DataSqueezer;
 
 public class MockEngine implements IEngine
 {
-	private IComponentStringsSource componentStringsSource;
+    private IComponentStringsSource componentStringsSource;
 
     private boolean _refreshing;
+    private Pool _pool = new Pool();
 
     public void forgetPage(String name)
     {
@@ -101,7 +104,7 @@ public class MockEngine implements IEngine
     {
     }
 
-    public IPageRecorder getPageRecorder(String pageName)
+    public IPageRecorder getPageRecorder(String pageName, IRequestCycle cycle)
     {
         return null;
     }
@@ -131,7 +134,7 @@ public class MockEngine implements IEngine
         return null;
     }
 
-    public IApplicationSpecification getSpecification() 
+    public IApplicationSpecification getSpecification()
     {
         return null;
     }
@@ -146,8 +149,7 @@ public class MockEngine implements IEngine
         return null;
     }
 
-    public boolean service(RequestContext context)
-        throws ServletException, IOException
+    public boolean service(RequestContext context) throws ServletException, IOException
     {
         return false;
     }
@@ -169,11 +171,6 @@ public class MockEngine implements IEngine
 
     public void setVisit(Object value)
     {
-    }
-
-    public Object getGlobal()
-    {
-        return null;
     }
 
     public boolean isResetServiceEnabled()
@@ -217,6 +214,16 @@ public class MockEngine implements IEngine
     }
 
     public IPropertySource getPropertySource()
+    {
+        return null;
+    }
+
+    public Pool getPool()
+    {
+        return _pool;
+    }
+
+    public Object getGlobal()
     {
         return null;
     }

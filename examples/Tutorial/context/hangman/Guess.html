@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Tapestry Hangman</title>
+</head>
+<body>
+
+<h1>Make a Guess</h1>
+
+<font size=+3>
+	<span jwcid="@Insert" value="[[ guessed ]]"/>
+</font>
+
+<p>
+
+You have made <span jwcid="@Insert" value="[[ visit.game.missed ]]">10</span> bad guesses,
+out of a maximum of <span jwcid="@Insert" value="[[ visit.game.maxMisses ]]">10</span>.
+
+<span jwcid="@Conditional" condition="[[ error ]]">
+<p>
+<font size=+3 color=red><span jwcid="@Insert" value="[[ error ]]">Error Message</span></font>
+</span>
+
+<p>Guess:
+<font size=+1>
+<span jwcid="e">
+<a jwcid="guess"><span jwcid="@Insert" value="[[ components.e.value ]]">X</span></a>
+</span>
+</font>
+
+<p><a jwcid="@PageLink" page="Failed">Give up?</a>
+
+</body>
+</html>

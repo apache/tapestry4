@@ -54,11 +54,18 @@
  */
 package net.sf.tapestry.junit.mock;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import net.sf.tapestry.ApplicationRuntimeException;
 
 /**
  *  
@@ -76,12 +83,11 @@ import java.util.Set;
 public class AttributeHolder
 {
     private Map _attributes = new HashMap();
-    
+
     public Object getAttribute(String name)
     {
         return _attributes.get(name);
     }
-
 
     public Enumeration getAttributeNames()
     {
@@ -97,10 +103,10 @@ public class AttributeHolder
     {
         Set keys = _attributes.keySet();
         int count = keys.size();
-        
+
         String[] array = new String[count];
-        
-        return (String[])keys.toArray(array);
+
+        return (String[]) keys.toArray(array);
     }
 
     public void setAttribute(String name, Object value)
@@ -108,10 +114,61 @@ public class AttributeHolder
         _attributes.put(name, value);
     }
 
-
     public void removeAttribute(String name)
     {
         _attributes.remove(name);
     }
 
+    /**
+     *  Serializes and then deserializes the {@link Map}
+     *  containing all attributes.
+     * 
+     **/
+
+    public void simulateFailover()
+    {
+        byte[] serialized = serializeAttributes();
+
+        _attributes = null;
+
+        Map restoredAttributes = deserializeAttributes(serialized);
+
+        _attributes = restoredAttributes;
+    }
+
+    private byte[] serializeAttributes()
+    {
+        try
+        {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+
+            oos.writeObject(_attributes);
+
+            oos.close();
+
+            return bos.toByteArray();
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException("Unable to serialize attributes.", ex);
+        }
+    }
+
+    private Map deserializeAttributes(byte[] serialized)
+    {
+        try
+        {
+            ByteArrayInputStream bis = new ByteArrayInputStream(serialized);
+            ObjectInputStream ois = new ObjectInputStream(bis);
+
+            Map result = (Map) ois.readObject();
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException("Unable to deserialize attributes.", ex);
+        }
+    }
 }

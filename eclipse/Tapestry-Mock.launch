@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.sf.tapestry.junit.mock.MockTestCase"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Tapestry"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="Tapestry/junit"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
     <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry containerPath=&quot;JRE_LIB&quot; path=&quot;2&quot;
@@ -56,13 +61,16 @@
 &lt;runtimeClasspathEntry
     internalArchive=&quot;/Tapestry/lib/ext/log4j-1.2.6.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry internalArchive=&quot;/Tapestry/lib/ext/bsf-2.3.0.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry containerPath=&quot;JYTHON_DIR/jython.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;
+"/>
     </listAttribute>
-    <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_none"/>
-    <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_none"/>
     <booleanAttribute key="org.eclipse.debug.ui.runFavorite" value="true"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Tapestry"/>
-    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="Tapestry/junit"/>
-    <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
-    <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
-    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.sf.tapestry.junit.mock.MockTestCase"/>
+    <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_none"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.enable-reset-service=true"/>
+    <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_none"/>
 </launchConfiguration>

@@ -55,7 +55,6 @@
 package net.sf.tapestry.junit.script;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,9 +66,12 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import net.sf.tapestry.DefaultResourceResolver;
+import net.sf.tapestry.IResourceLocation;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.script.ScriptParser;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
@@ -93,13 +95,15 @@ public class ScriptTest extends TestCase
 
     private IScript read(String file) throws IOException, DocumentParseException
     {
-        ScriptParser parser = new ScriptParser(new DefaultResourceResolver());
+        IResourceResolver resolver = new DefaultResourceResolver();
+        ScriptParser parser = new ScriptParser(resolver);
 
-        InputStream stream = getClass().getResourceAsStream(file);
+        String classAsPath = "/" + getClass().getName().replace('.', '/');
 
-        IScript result = parser.parse(stream, file);
+        IResourceLocation classLocation = new ClasspathResourceLocation(resolver, classAsPath);
+        IResourceLocation scriptLocation = classLocation.getRelativeLocation(file);
 
-        stream.close();
+        IScript result = parser.parse(scriptLocation);
 
         return result;
     }
@@ -188,11 +192,11 @@ public class ScriptTest extends TestCase
         input.put("array_empty", new Integer[0]);
         input.put("number_zero", new Long(0));
         input.put("number_nonzero", new Integer(1));
-
+        
         Map symbols = new HashMap();
         symbols.put("input", input);
 
-        ScriptSession session = execute("if.script", symbols);
+        execute("if.script", symbols);
 
         assertSymbol(symbols, "output_true_string", "TRUE-STRING");
         assertSymbol(symbols, "output_false_string", "");
@@ -230,7 +234,7 @@ public class ScriptTest extends TestCase
         Map symbols = new HashMap();
         symbols.put("input", input);
 
-        ScriptSession session = execute("if-not.script", symbols);
+        execute("if-not.script", symbols);
 
         assertSymbol(symbols, "outputTrueString", "");
         assertSymbol(symbols, "outputFalseString", "FALSE-STRING");
@@ -262,7 +266,7 @@ public class ScriptTest extends TestCase
         Map symbols = new HashMap();
         symbols.put("input", input);
 
-        ScriptSession session = execute("foreach.script", symbols);
+        execute("foreach.script", symbols);
 
         assertSymbol(symbols, "outputMissing", "");
         assertSymbol(symbols, "outputEmptyArray", "");
@@ -294,7 +298,7 @@ public class ScriptTest extends TestCase
         Map symbols = new HashMap();
         symbols.put("component", component);
 
-        ScriptSession session = execute("ant-syntax.script", symbols);
+        execute("ant-syntax.script", symbols);
 
         assertSymbol(symbols, "functionName", "gallahad_lancelot");
         assertSymbol(symbols, "incomplete1", "Incomplete: $");
@@ -307,7 +311,7 @@ public class ScriptTest extends TestCase
     {
         Map symbols = new HashMap();
 
-        ScriptSession session = execute("set.script", symbols);
+        execute("set.script", symbols);
 
         assertSymbol(symbols, "element2", new Character('p'));
     }
@@ -378,7 +382,7 @@ public class ScriptTest extends TestCase
 
     public void testInputSymbolRequired() throws Exception
     {
-                try
+        try
         {
             execute("input-symbol-required.script", new HashMap());
 

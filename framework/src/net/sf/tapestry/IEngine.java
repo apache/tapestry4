@@ -61,6 +61,7 @@ import javax.servlet.ServletException;
 
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.io.DataSqueezer;
+import net.sf.tapestry.util.pool.Pool;
 
 /**
  * Defines the core, session-persistant object used to run a Tapestry
@@ -82,6 +83,8 @@ public interface IEngine
      *  The name ("Home") of the default page presented when a user first accesses the
      *  application.
      *
+     *  @see net.sf.tapestry.engine.HomeService
+     * 
      **/
 
     public static final String HOME_PAGE = "Home";
@@ -100,7 +103,18 @@ public interface IEngine
     /**
      *  The name ("StaleLink") of the page used for reporting stale links.
      *
+     *  <p>The page must implement a writeable JavaBeans proeprty named
+     *  'message' of type <code>String</code>.
+     * 
+    /**
+     *  Returns a recorder for a page.  Returns null if the page recorder has
+     *  not been created yet.
+     *
+     *  @see #createPageRecorder(String, IRequestCycle)
+     * 
      **/
+
+    public IPageRecorder getPageRecorder(String pageName, IRequestCycle cycle);
 
     public static final String STALE_LINK_PAGE = "StaleLink";
 
@@ -144,14 +158,7 @@ public interface IEngine
 
     public void setLocale(Locale value);
 
-    /**
-     *  Returns a recorder for a page.  Returns null if the page record has
-     *  not been created yet.
-     *
-     *  @see #createPageRecorder(String, IRequestCycle)
-     **/
 
-    public IPageRecorder getPageRecorder(String pageName);
 
     /**
      *  Creates a new page recorder for the named page.
@@ -195,7 +202,9 @@ public interface IEngine
      *  Returns the context path, a string which is prepended to the names of
      *  any assets or servlets.  This may be the empty string, but won't be null.
      *
-     *  <p>This value is obtained from {@link javax.servlet.http.HttpServletRequest#getContextPath()}.
+     *  <p>This value is obtained from 
+     *  {@link javax.servlet.http.HttpServletRequest#getContextPath()}.
+     * 
      **/
 
     public String getContextPath();
@@ -212,6 +221,8 @@ public interface IEngine
      *  Returns the source of all component specifications for the application.  
      *  The source is shared between sessions.
      *
+     *  @see net.sf.tapestry.engine.AbstractEngine#createSpecificationSource(RequestContext)
+     * 
      **/
 
     public ISpecificationSource getSpecificationSource();
@@ -219,6 +230,8 @@ public interface IEngine
     /**
      *  Returns the source for HTML templates.
      *
+     *  @see  net.sf.tapestry.engine.AbstractEngine#createTemplateSource(RequestContext)
+     * 
      **/
 
     public ITemplateSource getTemplateSource();
@@ -297,7 +310,7 @@ public interface IEngine
 
     /**
      *  Returns a source for parsed 
-     *  {@link net.sf.tapestry.IScript}s.  The source is typically
+     *  {@link net.sf.tapestry.IScript}s.  The source is 
      *  shared between all sessions.
      *
      *  @since 1.0.2
@@ -318,23 +331,27 @@ public interface IEngine
 
     public boolean isStateful();
 
-    /**
-     *  Returns a shared object that allows components to find
-     *  their set of localized strings.
+	/**
+	 *  Returns a shared object that allows components to find
+	 *  their set of localized strings.
+	 * 
+	 *  @since 2.0.4
+	 * 
+     *  @see net.sf.tapestry.engine.AbstractEngine#createComponentStringsSource(RequestContext)
      * 
-     *  @since 2.0.4
-     * 
-     **/
-
-    public IComponentStringsSource getComponentStringsSource();
+	 **/
+	
+	public IComponentStringsSource getComponentStringsSource();
 
     /**
      *  Returns a shared instance of {@link net.sf.tapestry.util.io.DataSqueezer}.
      * 
      *  @since 2.2
      * 
+     *  @see net.sf.tapestry.engine.AbstractEngine#createDataSqueezer()
+     * 
      **/
-
+    
     public DataSqueezer getDataSqueezer();
 
     /** 
@@ -374,11 +391,26 @@ public interface IEngine
      *  <li>Initial Parameters of servlet (configured in the <code>web.xml</code> deployment descriptor)
      *  <li>Initial Parameter of the servlet context (also configured in <code>web.xml</code>)
      *  <li>System properties (defined with the <code>-D</code> JVM command line parameter)
+     *  <li>Hard-coded "factory defaults" (for some properties)
      *  </ul>
      * 
      *  @since 2.3
+     *  @see net.sf.tapestry.engine.AbstractEngine#createPropertySource(RequestContext)
+     * 
      **/
 
     public IPropertySource getPropertySource();
-
+    /**
+     *  Returns a {@link net.sf.tapestry.util.pool.Pool} that is used
+     *  to store all manner of objects that are needed throughout the system.
+     *  This is the best way to deal with objects that are both expensive to
+     *  create and not threadsafe.  The reset service
+     *  will clear out this Pool.
+     * 
+     *  @since 2.4
+     *  @see net.sf.tapestry.engine.AbstractEngine#createPool(RequestContext)
+     * 
+     **/
+    
+    public Pool getPool();
 }

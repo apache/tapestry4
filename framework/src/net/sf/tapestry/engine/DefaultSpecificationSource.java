@@ -62,23 +62,26 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRenderDescription;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.parse.SpecificationParser;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.util.StringSplitter;
+import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.xml.DocumentParseException;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  Default implementation of {@link ISpecificationSource} that
@@ -99,10 +102,18 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 {
     private static final Log LOG = LogFactory.getLog(DefaultSpecificationSource.class);
 
+    /**
+     *  Key used to get and store {@link SpecificationParser} instances
+     *  from the Pool.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private static final String PARSER_POOL_KEY = "net.sf.tapestry.SpecificationParser";
+
     private IResourceResolver _resolver;
     private IApplicationSpecification _specification;
-
-    private SpecificationParser _parser;
 
     private INamespace _applicationNamespace;
     private INamespace _frameworkNamespace;
@@ -141,10 +152,25 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     private Map _namespaceCache = new HashMap();
 
-    public DefaultSpecificationSource(IResourceResolver resolver, IApplicationSpecification specification)
+    /**
+     *  Reference to the shared {@link net.sf.tapestry.util.pool.Pool}.
+     * 
+     *  @see IEngine#getPool()
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private Pool _pool;
+
+    public DefaultSpecificationSource(
+        IResourceResolver resolver,
+        IApplicationSpecification specification,
+        Pool pool)
     {
         _resolver = resolver;
         _specification = specification;
+        _pool = pool;
     }
 
     /**
@@ -163,90 +189,72 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         _frameworkNamespace = null;
     }
 
-    /**
-     *  Gets a specification.  The type is either a component specification
-     *  path, or an alias to a component (registerred in the application
-     *  specification).  The former always starts with a slash, the latter
-     *  never does.
-     *
-     *  @deprecated To be removed in 2.3, use {@link #getComponentSpecification(String)}.
-     * 
-     **/
-
-    public ComponentSpecification getSpecification(String type)
-    {
-        return getComponentSpecification(type);
-    }
-
-    protected ComponentSpecification parseSpecification(String resourcePath, boolean asPage)
+    protected ComponentSpecification parseSpecification(
+        IResourceLocation resourceLocation,
+        boolean asPage)
     {
         ComponentSpecification result = null;
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Parsing component specification " + resourcePath);
-
-        InputStream inputStream = openSpecification(resourcePath);
+            LOG.debug("Parsing component specification " + resourceLocation);
 
         SpecificationParser parser = getParser();
 
         try
         {
             if (asPage)
-                result = _parser.parsePageSpecification(inputStream, resourcePath);
+                result = parser.parsePageSpecification(resourceLocation);
             else
-                result = _parser.parseComponentSpecification(inputStream, resourcePath);
+                result = parser.parseComponentSpecification(resourceLocation);
         }
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultSpecificationSource.unable-to-parse-specification", resourcePath),
+                Tapestry.getString(
+                    "DefaultSpecificationSource.unable-to-parse-specification",
+                    resourceLocation),
                 ex);
         }
         finally
         {
-            close(inputStream);
+            discardParser(parser);
         }
-
-        result.setSpecificationResourcePath(resourcePath);
 
         return result;
     }
 
-    protected ILibrarySpecification parseLibrarySpecification(String resourcePath)
+    protected ILibrarySpecification parseLibrarySpecification(IResourceLocation resourceLocation)
     {
         if (LOG.isDebugEnabled())
-            LOG.debug("Parsing library specification " + resourcePath);
-
-        InputStream inputStream = openSpecification(resourcePath);
-
-        SpecificationParser parser = getParser();
+            LOG.debug("Parsing library specification " + resourceLocation);
 
         try
         {
-            return getParser().parseLibrarySpecification(inputStream, resourcePath, _resolver);
+            return getParser().parseLibrarySpecification(resourceLocation, _resolver);
         }
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultSpecificationSource.unable-to-parse-specification", resourcePath),
+                Tapestry.getString(
+                    "DefaultSpecificationSource.unable-to-parse-specification",
+                    resourceLocation),
                 ex);
         }
-        finally
-        {
-            close(inputStream);
-        }
+
     }
 
     /** @since 2.2 **/
 
-    private InputStream openSpecification(String resourcePath)
+    private InputStream openSpecification(IResourceLocation resourceLocation)
     {
-        URL URL = _resolver.getResource(resourcePath);
+        URL URL = resourceLocation.getResourceURL();
 
         if (URL == null)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultSpecificationSource.unable-to-locate-specification", resourcePath));
+                Tapestry.getString(
+                    "DefaultSpecificationSource.unable-to-locate-specification",
+                    resourceLocation));
         }
 
         try
@@ -256,7 +264,9 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultSpecificationSource.unable-to-open-specification", resourcePath),
+                Tapestry.getString(
+                    "DefaultSpecificationSource.unable-to-open-specification",
+                    resourceLocation),
                 ex);
         }
     }
@@ -276,24 +286,15 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         }
     }
 
-    public String toString()
+    public synchronized String toString()
     {
-        StringBuffer buffer = new StringBuffer("DefaultSpecificationSource@");
-        buffer.append(Integer.toHexString(hashCode()));
+        ToStringBuilder builder = new ToStringBuilder(this);
 
-        buffer.append('[');
+        builder.append("applicationNamespace", _applicationNamespace);
+        builder.append("frameworkNamespace", _frameworkNamespace);
+        builder.append("specification", _specification);
 
-        if (_componentCache != null)
-        {
-            synchronized (_componentCache)
-            {
-                buffer.append(_componentCache.keySet());
-            }
-        }
-
-        buffer.append(']');
-
-        return buffer.toString();
+        return builder.toString();
     }
 
     /** @since 1.0.6 **/
@@ -325,7 +326,9 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         Iterator i = keySet.iterator();
         while (i.hasNext())
         {
-            String key = (String) i.next();
+            // The keys are now IResourceLocation instances
+
+            Object key = i.next();
 
             if (first)
             {
@@ -334,7 +337,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
             }
 
             writer.begin("li");
-            writer.print(key);
+            writer.print(key.toString());
             writer.end();
         }
 
@@ -350,42 +353,43 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      * 
      **/
 
-    public synchronized ComponentSpecification getComponentSpecification(String resourcePath)
+    public synchronized ComponentSpecification getComponentSpecification(IResourceLocation resourceLocation)
     {
-        ComponentSpecification result = (ComponentSpecification) _componentCache.get(resourcePath);
+        ComponentSpecification result =
+            (ComponentSpecification) _componentCache.get(resourceLocation);
 
         if (result == null)
         {
-            result = parseSpecification(resourcePath, false);
+            result = parseSpecification(resourceLocation, false);
 
-            _componentCache.put(resourcePath, result);
+            _componentCache.put(resourceLocation, result);
         }
 
         return result;
     }
 
-    public synchronized ComponentSpecification getPageSpecification(String resourcePath)
+    public synchronized ComponentSpecification getPageSpecification(IResourceLocation resourceLocation)
     {
-        ComponentSpecification result = (ComponentSpecification) _pageCache.get(resourcePath);
+        ComponentSpecification result = (ComponentSpecification) _pageCache.get(resourceLocation);
 
         if (result == null)
         {
-            result = parseSpecification(resourcePath, true);
+            result = parseSpecification(resourceLocation, true);
 
-            _pageCache.put(resourcePath, result);
+            _pageCache.put(resourceLocation, result);
         }
 
         return result;
     }
 
-    public synchronized ILibrarySpecification getLibrarySpecification(String resourcePath)
+    public synchronized ILibrarySpecification getLibrarySpecification(IResourceLocation resourceLocation)
     {
-        ILibrarySpecification result = (LibrarySpecification) _libraryCache.get(resourcePath);
+        ILibrarySpecification result = (LibrarySpecification) _libraryCache.get(resourceLocation);
 
         if (result == null)
         {
-            result = parseLibrarySpecification(resourcePath);
-            _libraryCache.put(resourcePath, result);
+            result = parseLibrarySpecification(resourceLocation);
+            _libraryCache.put(resourceLocation, result);
         }
 
         return result;
@@ -407,12 +411,21 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     /** @since 2.2 **/
 
-    private synchronized SpecificationParser getParser()
+    protected SpecificationParser getParser()
     {
-        if (_parser == null)
-            _parser = new SpecificationParser();
+        SpecificationParser result = (SpecificationParser) _pool.retrieve(PARSER_POOL_KEY);
 
-        return _parser;
+        if (result == null)
+            result = new SpecificationParser();
+
+        return result;
+    }
+
+    /** @since 2.4 **/
+
+    protected void discardParser(SpecificationParser parser)
+    {
+        _pool.store(PARSER_POOL_KEY, parser);
     }
 
     public synchronized INamespace getApplicationNamespace()
@@ -427,7 +440,10 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     {
         if (_frameworkNamespace == null)
         {
-            ILibrarySpecification ls = getLibrarySpecification("/net/sf/tapestry/Framework.library");
+            IResourceLocation frameworkLocation =
+                new ClasspathResourceLocation(_resolver, "/net/sf/tapestry/Framework.library");
+
+            ILibrarySpecification ls = getLibrarySpecification(frameworkLocation);
 
             _frameworkNamespace = new Namespace(INamespace.FRAMEWORK_NAMESPACE, null, ls, this);
         }

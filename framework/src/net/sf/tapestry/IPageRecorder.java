@@ -68,82 +68,111 @@ import net.sf.tapestry.event.ChangeObserver;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ * 
  **/
 
 public interface IPageRecorder extends ChangeObserver
 {
-	/**
-	 *  Persists all changes that have been accumulated.  If the recorder
-	 *  saves change incrementally, this should ensure that all changes have been persisted.
-	 *
-	 *  <p>After commiting, a page record automatically locks itself.
-	 **/
+    /**
+     *  Invoked after the recorder is instantiated to initialize
+     *  it for the current request cycle.
+     * 
+     *  @param pageName the fully qualified page name
+     *  @param cycle the current request cycle
+     * 
+     *  @since 2.4
+     * 
+     **/
 
-	public void commit() throws PageRecorderCommitException;
+    public void initialize(String pageName, IRequestCycle cycle);
 
-	/**
-	 *  Returns a {@link Collection} of {@link IPageChange} objects that represent
-	 *  the persistant state of the page.
-	 *
-	 **/
+    /**
+     *  Invoked at the end of a request cycle in which the
+     *  page recorder is discarded (either implicitly, because
+     *  the page recorder has no changes, or explicitly
+     *  because of {@link IEngine#forgetPage(String)} or
+     *  {@link #markForDiscard()}.
+     * 
+     *  @since 2.4
+     * 
+     **/
 
-	public Collection getChanges();
+    public void discard();
 
-	/**
-	 *  Returns true if the recorder has any changes for the page.
-	 *
-	 **/
+    /**
+     *  Persists all changes that have been accumulated.  If the recorder
+     *  saves change incrementally, this should ensure that all changes have been persisted.
+     *
+     *  <p>After commiting, a page recorder automatically locks itself.
+     * 
+     **/
 
-	public boolean getHasChanges();
+    public void commit() throws PageRecorderCommitException;
 
-	/**
-	 *  Returns true if the recorder has observed any changes that have not
-	 *  been committed to external storage.
-	 *
-	 **/
+    /**
+     *  Returns a {@link Collection} of {@link IPageChange} objects that represent
+     *  the persistant state of the page.
+     *
+     **/
 
-	public boolean isDirty();
+    public Collection getChanges();
 
-	/**
-	 *  Returns true if the recorder is in a locked state, following
-	 *  a {@link #commit()}.
-	 *
-	 **/
+    /**
+     *  Returns true if the recorder has any changes for the page.
+     *
+     **/
 
-	public boolean isLocked();
+    public boolean getHasChanges();
 
-	/**
-	 *  Rolls back the page to the currently persisted state.
-	 *
-	 *  <p>A page recorder can only rollback changes to properties
-	 *  which have changed  at some point.  This can cause some minor
-	 *  problems, addressed by  {@link PageDetachListener#pageDetached(PageEvent)}.
-	 **/
+    /**
+     *  Returns true if the recorder has observed any changes that have not
+     *  been committed to external storage.
+     *
+     **/
 
-	public void rollback(IPage page);
+    public boolean isDirty();
 
-	/**
-	 *  Invoked to lock or unlock the recorder.  Recoders are locked
-	 *  after they are commited, and stay locked until
-	 *  explicitly unlocked in a subsequent request cycle.
-	 *
-	 **/
+    /**
+     *  Returns true if the recorder is in a locked state, following
+     *  a {@link #commit()}.
+     *
+     **/
 
-	public void setLocked(boolean value);
-    
+    public boolean isLocked();
+
+    /**
+     *  Rolls back the page to the currently persisted state.
+     *
+     *  <p>A page recorder can only rollback changes to properties
+     *  which have changed at some point.  This can cause some minor
+     *  problems, addressed by  {@link PageDetachListener#pageDetached(PageEvent)}.
+     * 
+     **/
+
+    public void rollback(IPage page);
+
+    /**
+     *  Invoked to lock or unlock the recorder.  Recoders are locked
+     *  after they are commited, and stay locked until
+     *  explicitly unlocked in a subsequent request cycle.
+     *
+     **/
+
+    public void setLocked(boolean value);
+
     /**
      *  Invoked to mark the recorder for discarding at the end of the request cycle.
      * 
      *  @since 2.0.2
      * 
      **/
-    
+
     public void markForDiscard();
-    
+
     /**
      *  Returns true if the recorder has been marked for discard.
      * 
      **/
-    
+
     public boolean isMarkedForDiscard();
 }

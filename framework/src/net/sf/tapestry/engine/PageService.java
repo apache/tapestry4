@@ -61,7 +61,6 @@ import javax.servlet.ServletException;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IRequestCycle;
@@ -85,21 +84,25 @@ public class PageService extends AbstractService
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 1)
-            throw new IllegalArgumentException(Tapestry.getString("service-single-parameter", PAGE_SERVICE));
+            throw new IllegalArgumentException(
+                Tapestry.getString("service-single-parameter", PAGE_SERVICE));
 
-        return assembleGesture(cycle, PAGE_SERVICE, (String[])parameters, null, true);
+        return assembleGesture(cycle, PAGE_SERVICE, (String[]) parameters, null, true);
 
     }
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public boolean service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws RequestCycleException, ServletException, IOException
     {
         RequestContext context = cycle.getRequestContext();
         String[] serviceContext = getServiceContext(context);
 
-        if (serviceContext == null || serviceContext.length != 1)
+        if (Tapestry.size(serviceContext) != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-parameter", IEngineService.PAGE_SERVICE));
+                Tapestry.getString("service-single-parameter", PAGE_SERVICE));
 
         String pageName = serviceContext[0];
 

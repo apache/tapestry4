@@ -237,16 +237,6 @@ public class TableView
 		m_objTableModel = null;
 	}
 
-	/**
-	 * @see net.sf.tapestry.AbstractComponent#finishLoad()
-	 */
-	protected void finishLoad()
-	{
-		super.finishLoad();
-		getPage().addPageDetachListener(this);
-		getPage().addPageRenderListener(this);
-	}
-
 	public void reset()
 	{
 		m_objTableModel = null;

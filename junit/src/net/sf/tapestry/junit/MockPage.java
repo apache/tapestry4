@@ -173,11 +173,6 @@ public class MockPage implements IPage
         return null;
     }
 
-    public Object getGlobal()
-    {
-        return null;
-    }
-
     public void addPageRenderListener(PageRenderListener listener)
     {
     }
@@ -354,7 +349,21 @@ public class MockPage implements IPage
     {
     }
 
+    public String getQualifiedName()
+    {
+        return null;
+    }
+
     public String getPageName()
+    {
+        return null;
+    }
+
+    public void setPageName(String pageName)
+    {
+    }
+
+    public Object getGlobal()
     {
         return null;
     }

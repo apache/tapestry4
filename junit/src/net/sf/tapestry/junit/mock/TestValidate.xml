@@ -27,13 +27,13 @@
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app\?service=direct&amp;context=Guard/link"
+href="/mock/app?service=direct&amp;context=1/Guard/link"
 ]]>
 		</assert-output>
 		
 		<assert-output name="Callback">
 <![CDATA[
-Callback: PageCallback\[Protected\]
+Callback: PageCallback[Protected]
 ]]>		
 		</assert-output>		
   	</request>
@@ -43,7 +43,7 @@ Callback: PageCallback\[Protected\]
   	     
   	<request>
   		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="Guard/link"/>
+  		<parameter name="context" value="1/Guard/link"/>
   		
   		<assert-output name="Title">
 <![CDATA[

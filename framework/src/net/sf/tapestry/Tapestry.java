@@ -57,6 +57,7 @@ package net.sf.tapestry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -69,6 +70,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
+import net.sf.tapestry.resource.ContextResourceLocation;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.StringSplitter;
@@ -237,35 +241,206 @@ public final class Tapestry
         abstract public Iterator coerce(Object value);
     }
 
+    private static class DefaultIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            return (Iterator) value;
+        }
+
+    }
+
+    private static class CollectionIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            Collection c = (Collection) value;
+
+            if (c.size() == 0)
+                return null;
+
+            return c.iterator();
+        }
+    }
+
+    private static class ObjectIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            return Collections.singleton(value).iterator();
+        }
+    }
+
+    private static class ObjectArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            Object[] array = (Object[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            return Arrays.asList(array).iterator();
+        }
+    }
+
+    private static class BooleanArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            boolean[] array = (boolean[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(array[i] ? Boolean.TRUE : Boolean.FALSE);
+
+            return l.iterator();
+        }
+    }
+
+    private static class ByteArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            byte[] array = (byte[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Byte(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class CharArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            char[] array = (char[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Character(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class ShortArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            short[] array = (short[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Short(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class IntArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            int[] array = (int[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Integer(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class LongArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            long[] array = (long[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Long(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class FloatArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            float[] array = (float[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Float(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class DoubleArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            double[] array = (double[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Double(array[i]));
+
+            return l.iterator();
+        }
+    }
+
     static {
-        _iteratorAdaptors.register(Iterator.class, new IteratorAdaptor()
-        {
-            public Iterator coerce(Object value)
-            {
-                return (Iterator) value;
-            }
-        });
-
-        _iteratorAdaptors.register(Collection.class, new IteratorAdaptor()
-        {
-            public Iterator coerce(Object value)
-            {
-                Collection c = (Collection) value;
-
-                if (c.size() == 0)
-                    return null;
-
-                return c.iterator();
-            }
-        });
-
-        _iteratorAdaptors.register(Object.class, new IteratorAdaptor()
-        {
-            public Iterator coerce(Object value)
-            {
-                return Collections.singleton(value).iterator();
-            }
-        });
+        _iteratorAdaptors.register(Iterator.class, new DefaultIteratorAdaptor());
+        _iteratorAdaptors.register(Collection.class, new CollectionIteratorAdaptor());
+        _iteratorAdaptors.register(Object.class, new ObjectIteratorAdaptor());
+        _iteratorAdaptors.register(Object[].class, new ObjectArrayIteratorAdaptor());
+        _iteratorAdaptors.register(boolean[].class, new BooleanArrayIteratorAdaptor());
+        _iteratorAdaptors.register(byte[].class, new ByteArrayIteratorAdaptor());
+        _iteratorAdaptors.register(char[].class, new CharArrayIteratorAdaptor());
+        _iteratorAdaptors.register(short[].class, new ShortArrayIteratorAdaptor());
+        _iteratorAdaptors.register(int[].class, new IntArrayIteratorAdaptor());
+        _iteratorAdaptors.register(long[].class, new LongArrayIteratorAdaptor());
+        _iteratorAdaptors.register(float[].class, new FloatArrayIteratorAdaptor());
+        _iteratorAdaptors.register(double[].class, new DoubleArrayIteratorAdaptor());
     }
 
     /**
@@ -341,7 +516,7 @@ public final class Tapestry
      *		<td>True if contains any non-whitespace characters, false otherwise.</td>
      *		</tr>
      *	<tr>
-     *		<td>Any array type</td>
+     *		<td>Any Object array type</td>
      *		<td>True if contains any elements (non-zero length), false otherwise.</td>
      *	<tr>
      *</table>
@@ -373,12 +548,14 @@ public final class Tapestry
      *
      *  <table border=1>
      * 	<tr><th>Input Class</th> <th>Result</th> </tr>
-     * <tr><td>Object array</td> <td>Converted to a {@link List} and iterator returned.
-     * null returned if the array is empty.</td>
+     * <tr><td>array</td> <td>Converted to a {@link List} and iterator returned.
+     * null returned if the array is empty.  This works with both object arrays and
+     *  arrays of scalars. </td>
      * </tr>
      * <tr><td>{@link Iterator}</td> <td>Returned as-is.</td>
      * <tr><td>{@link Collection}</td> <td>Iterator returned, or null
      *  if the Collection is empty</td> </tr>
+
      * <tr><td>Any other</td> <td>{@link Iterator} for singleton collection returned</td> </tr>
      * <tr><td>null</td> <td>null returned</td> </tr>
      * </table>
@@ -390,20 +567,7 @@ public final class Tapestry
         if (value == null)
             return null;
 
-        Class valueClass = value.getClass();
-        if (valueClass.isArray())
-        {
-            Object[] array = (Object[]) value;
-
-            if (array.length == 0)
-                return null;
-
-            List l = Arrays.asList(array);
-
-            return l.iterator();
-        }
-
-        IteratorAdaptor adaptor = (IteratorAdaptor) _iteratorAdaptors.getAdaptor(valueClass);
+        IteratorAdaptor adaptor = (IteratorAdaptor) _iteratorAdaptors.getAdaptor(value.getClass());
 
         return adaptor.coerce(value);
     }
@@ -449,7 +613,8 @@ public final class Tapestry
 
                 default :
 
-                    throw new IllegalArgumentException("Unable to convert '" + s + "' to a Locale.");
+                    throw new IllegalArgumentException(
+                        "Unable to convert '" + s + "' to a Locale.");
             }
 
             synchronized (_localeMap)
@@ -613,7 +778,31 @@ public final class Tapestry
 
         return array.length;
     }
-    
+
+    /**
+     *  Returns true if the Map is null or empty.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static boolean isEmpty(Map map)
+    {
+        return map == null || map.isEmpty();
+    }
+
+    /**
+     *  Returns true if the Collection is null or empty.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static boolean isEmpty(Collection c)
+    {
+        return c == null || c.isEmpty();
+    }
+
     /**
      *  Converts a {@link Map} to an even-sized array of key/value
      *  pairs.  This may be useful when using a Map as service parameters
@@ -628,29 +817,29 @@ public final class Tapestry
      * 
      *  @since 2.2
      **/
-    
+
     public static Object[] convertMapToArray(Map map)
     {
-        if (map == null || map.isEmpty())
+        if (isEmpty(map))
             return null;
-            
+
         Set entries = map.entrySet();
-        
+
         Object[] result = new Object[2 * entries.size()];
         int x = 0;
-        
+
         Iterator i = entries.iterator();
         while (i.hasNext())
         {
-            Map.Entry entry = (Map.Entry)i.next();
-            
+            Map.Entry entry = (Map.Entry) i.next();
+
             result[x++] = entry.getKey();
             result[x++] = entry.getValue();
         }
-        
+
         return result;
     }
-    
+
     /**
      *  Converts an even-sized array of objects back 
      *  into a {@link Map}.
@@ -660,27 +849,47 @@ public final class Tapestry
      *  @since 2.2
      * 
      **/
-    
+
     public static Map convertArrayToMap(Object[] array)
     {
         if (array == null || array.length == 0)
             return null;
-            
-         if (array.length % 2 != 0)
-         throw new IllegalArgumentException(
-         getString("Tapestry.even-sized-array"));
-         
-         Map result = new HashMap();
-         
-         int x = 0;
-         while (x < array.length)
-         {
+
+        if (array.length % 2 != 0)
+            throw new IllegalArgumentException(getString("Tapestry.even-sized-array"));
+
+        Map result = new HashMap();
+
+        int x = 0;
+        while (x < array.length)
+        {
             Object key = array[x++];
             Object value = array[x++];
-            
+
             result.put(key, value);
-         }
-         
-         return result;    
+        }
+
+        return result;
+    }
+
+    /**
+     *  Returns the application root location, which is in the
+     *  {@link javax.servlet.ServletContext}, based on
+     *  the {@link javax.servlet.http.HttpServletRequest#getServletPath() servlet path}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static IResourceLocation getApplicationRootLocation(IRequestCycle cycle)
+    {
+        RequestContext context = cycle.getRequestContext();
+        ServletContext servletContext = context.getServlet().getServletContext();
+        String servletPath = context.getRequest().getServletPath();
+
+        // Could strip off the servlet name (i.e., "app" in "/app") but
+        // there's no need.
+
+        return new ContextResourceLocation(servletContext, servletPath);
     }
 }

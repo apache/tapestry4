@@ -58,6 +58,7 @@ import java.io.Serializable;
 
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.util.IImmutable;
 
 /**
  *  Defines a callback, an object which is used to invoke or reinvoke a method
@@ -67,6 +68,9 @@ import net.sf.tapestry.RequestCycleException;
  *
  *  <p>Callbacks must be {@link Serializable}, to ensure that they can be stored
  *  between request cycles.
+ * 
+ *  <p>Callbacks must be immutable, to ensure that they can be treated efficiently
+ *  by {@link net.sf.tapestry.record.IValuePersister}.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
@@ -74,7 +78,7 @@ import net.sf.tapestry.RequestCycleException;
  *
  **/
 
-public interface ICallback extends Serializable
+public interface ICallback extends Serializable, IImmutable
 {
     /**
      *  Performs the call back.  Typical implementation will locate a particular

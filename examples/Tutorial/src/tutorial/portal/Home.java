@@ -54,8 +54,6 @@
  */
 package tutorial.portal;
 
-import net.sf.tapestry.IActionListener;
-import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.html.BasePage;
 
@@ -69,70 +67,58 @@ import net.sf.tapestry.html.BasePage;
 
 public class Home extends BasePage
 {
-    private PortletModel model;
-    private int newPortletId;
+    private PortletModel _model;
+    private int _newPortletId;
 
-    public void detach()
+    public void initialize()
     {
-        model = null;
-        newPortletId = 0;
-
-        super.detach();
+        _model = null;
+        _newPortletId = 0;
     }
 
     public void setModel(PortletModel value)
     {
-        model = value;
+        _model = value;
     }
 
     public PortletModel getModel()
     {
-        return model;
+        return _model;
     }
 
     public void setNewPortletId(int value)
     {
-        newPortletId = value;
+        _newPortletId = value;
     }
 
     public int getNewPortletId()
     {
-        return newPortletId;
+        return _newPortletId;
     }
 
-    public IActionListener getCloseListener()
-    {
-        return new IActionListener()
-        {
-            public void actionTriggered(IComponent component, IRequestCycle cycle)
-            {
-                closeModel();
-            }
-        };
-    }
+    /**
+     *  Listener for the close button.  Closes the portlet currently
+     *  being rendered.
+     * 
+     **/
 
-    private void closeModel()
+    public void closeModel(IRequestCycle cycle)
     {
         Visit visit = (Visit) getVisit();
 
-        visit.removeModel(model);
+        visit.removeModel(_model);
     }
 
-    public IActionListener getFormListener()
-    {
-        return new IActionListener()
-        {
-            public void actionTriggered(IComponent component, IRequestCycle cycle)
-            {
-                addModel();
-            }
-        };
-    }
+    /**
+     *  Adds the selected portlet (by requesting that the Visit
+     *  add the portlet with the identified portlet id.
+     *
+     **/
 
-    private void addModel()
+    public void addModel(IRequestCycle cycle)
     {
         Visit visit = (Visit) getVisit();
 
-        visit.addModel(newPortletId);
+        visit.addModel(_newPortletId);
     }
 }

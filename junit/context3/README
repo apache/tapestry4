@@ -1,0 +1,2 @@
+This context is used inside JUnit testing to handle applications that run without an
+application specification.

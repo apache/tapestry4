@@ -76,4 +76,13 @@ public interface IPoolable
      **/
 
     public void resetForPool();
+    
+    /**
+     *  Invoked just as a Pool discards an object (for lack of use).
+     *  This allows a last chance to perform final cleanup
+     *  on the object while it is still referencable.
+     * 
+     **/
+    
+    public void discardFromPool();
 }

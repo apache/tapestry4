@@ -8,7 +8,7 @@
 <jbosscmp-jdbc>
 	<defaults>
   		<datasource>java:/McKoiDB</datasource>       
-  		<datasource-mapping>McKoiDB</datasource-mapping>
+  		<datasource-mapping>McKoi</datasource-mapping>
   	</defaults>
   
   <enterprise-beans>

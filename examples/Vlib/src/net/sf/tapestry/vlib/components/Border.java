@@ -176,18 +176,17 @@ public class Border extends BaseComponent
 
         cycle.setPage(login);
     }
-    
-    public void logout(IRequestCycle cycle)
-    throws RequestCycleException
+
+    public void logout(IRequestCycle cycle) throws RequestCycleException
     {
-        VirtualLibraryEngine engine = (VirtualLibraryEngine)getPage().getEngine();
-        
+        VirtualLibraryEngine engine = (VirtualLibraryEngine) getPage().getEngine();
+
         engine.logout();
-        
-        Home home = (Home)cycle.getPage("Home");
-        
+
+        Home home = (Home) cycle.getPage("Home");
+
         home.setMessage("Goodbye.");
-        
+
         cycle.setPage(home);
     }
 
@@ -218,7 +217,7 @@ public class Border extends BaseComponent
 
     public boolean getShowSlash()
     {
-        return !getPage().getName().equals("MyLibrary");
+        return !getPage().getPageName().equals("MyLibrary");
     }
 
     public IAsset getAdminIcon()
@@ -268,7 +267,7 @@ public class Border extends BaseComponent
     {
         if (_subheader == null)
         {
-            String name = "header_" + getPage().getName();
+            String name = "header_" + getPage().getPageName();
 
             _subheader = getAsset(name);
 

@@ -54,13 +54,17 @@
  */
 package net.sf.tapestry.junit;
 
+import java.util.ResourceBundle;
+
 import junit.framework.TestCase;
+
 import net.sf.tapestry.IPropertySource;
 import net.sf.tapestry.junit.mock.MockContext;
 import net.sf.tapestry.junit.mock.MockServletConfig;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.util.DelegatingPropertySource;
 import net.sf.tapestry.util.PropertyHolderPropertySource;
+import net.sf.tapestry.util.ResourceBundlePropertySource;
 import net.sf.tapestry.util.ServletContextPropertySource;
 import net.sf.tapestry.util.ServletPropertySource;
 import net.sf.tapestry.util.SystemPropertiesPropertySource;
@@ -147,5 +151,16 @@ public class TestPropertySource extends TestCase
         expect(source, "java.os", System.getProperty("java.os"));
         expect(source, "alpha", "bravo");
         expect(source, "gamma", null);
+    }
+
+    public void testResourceBundle()
+    {
+        ResourceBundle bundle = ResourceBundle.getBundle("net.sf.tapestry.junit.Properties");
+
+        ResourceBundlePropertySource source = new ResourceBundlePropertySource(bundle);
+
+        expect(source, "fred", "flintstone");
+        expect(source, "barney", "rubble");
+        expect(source, "wilma", null);
     }
 }

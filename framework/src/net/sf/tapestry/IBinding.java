@@ -85,6 +85,9 @@ public interface IBinding
      *  <li>Any array type is true if it has a non-zero length
      *  <li>Any other non-null value is true
      *  </ul>
+     * 
+     *  @see Tapestry#evaluateBoolean(Object)
+     * 
      **/
 
     public boolean getBoolean();
@@ -142,17 +145,17 @@ public interface IBinding
 
     public Object getObject(String parameterName, Class type);
 
-	/**
-	 *  Returns true if the value is invariant (not changing; the
-	 *  same value returned each time).  Static and field bindings
-	 *  are always invariant, and {@link net.sf.tapestry.binding.ExpressionBinding}s
+    /**
+     *  Returns true if the value is invariant (not changing; the
+     *  same value returned each time).  Static and field bindings
+     *  are always invariant, and {@link net.sf.tapestry.binding.ExpressionBinding}s
      *  may be marked invariant (as an optimization).
-	 * 
-	 *  @since 2.0.3
-	 * 
-	 **/
-	
-	public boolean isInvariant();
+     * 
+     *  @since 2.0.3
+     * 
+     **/
+
+    public boolean isInvariant();
 
     /**
      *  Constructs a <code>Boolean</code> and invokes {@link #setObject(Object)}.

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+
+
+
+<mock-test>
+    <context name="mock"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.application-specification"
+  			value="/net/sf/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>      
+    
+ 
+	<request>
+	  	<parameter name="service" value="page"/>
+	  	<parameter name="context" value="RelativeAssets"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Relative Assets</title>
+]]>		
+		</assert-output>
+		
+		<assert-output name="Private Asset">
+<![CDATA[
+/mock/app?service=asset&amp;sp=%2Fnet%2Fsf%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fimages%2FPrivateAsset.gif			
+]]>
+		</assert-output>
+		
+		<assert-output name="Context Asset">
+/mock/images/ContextAsset.gif
+		</assert-output>		
+	</request>
+	
+			 	 	 
+</mock-test>
+    	

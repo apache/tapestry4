@@ -10,13 +10,51 @@
 
 <server>
 
-  <!--
-     | The Classpath element is needed for http based installations 
-     | we need to list all the archives that the server needs at boot
-     | if the installation is local and the configuration is from file
-     | then there is no need to list the files and it should commented
+  <!-- Load all jars from the JBOSS_DIST/server/<config>/lib directory. This
+    can be restricted to specific jars by specifying them in the archives
+    attribute.
    -->
   <classpath codebase="lib" archives="*"/>
+
+  <!-- ==================================================================== -->
+  <!-- PropertyEditors and System Properties                                -->
+  <!-- ==================================================================== -->
+  <mbean code="org.jboss.varia.property.PropertyEditorManagerService"
+    name="jboss:type=Service,name=BootstrapEditors">
+    <!-- Preload all custom editors for VMs that don't use the thread
+         context class loader when searching for PropertyEditors
+    -->
+    <attribute name="BootstrapEditors">
+       java.math.BigDecimal=org.jboss.util.propertyeditor.BigDecimalEditor
+       java.lang.Boolean=org.jboss.util.propertyeditor.BooleanEditor
+       java.lang.Class=org.jboss.util.propertyeditor.ClassEditor
+       java.util.Date=org.jboss.util.propertyeditor.DateEditor
+       java.io.File=org.jboss.util.propertyeditor.FileEditor
+       java.net.InetAddress=org.jboss.util.propertyeditor.InetAddressEditor
+       java.lang.Integer=org.jboss.util.propertyeditor.IntegerEditor
+       javax.management.ObjectName=org.jboss.util.propertyeditor.ObjectNameEditor
+       java.util.Properties=org.jboss.util.propertyeditor.PropertiesEditor
+       [Ljava.lang.String;=org.jboss.util.propertyeditor.StringArrayEditor
+       java.net.URL=org.jboss.util.propertyeditor.URLEditor
+    </attribute>
+  </mbean>
+  <mbean code="org.jboss.varia.property.SystemPropertiesService"
+    name="jboss:type=Service,name=SystemProperties">
+    <!-- The invokerServletPath property gives the public URL to the
+      org.jboss.invocation.http.servlet.InvokerServlet used by the
+      HTTP proxy for RMI/HTTP. This is only needed if the http-invoker.sar
+      is deployed.
+    -->
+    <attribute name="Properties">
+      invokerServletPath=http://localhost:8080/invoker/JMXInvokerServlet
+    </attribute>
+    <!-- Load properties from each of the given comma seperated URLs
+    <attribute name="URLList">
+      http://somehost/some-location.properties,
+      ./conf/somelocal.properties
+    </attribute>
+    -->
+  </mbean>
 
   <!-- ==================================================================== -->
   <!-- Log4j Initialization                                                 -->
@@ -51,6 +89,9 @@
 
   <mbean code="org.jboss.naming.NamingService"
 	 name="jboss:service=Naming">
+    <!-- The listening port for the bootstrap JNP service. Set this to -1
+      to run the NamingService without the JNP invoker listening port.
+    -->
     <attribute name="Port">1099</attribute>
   </mbean>
   <mbean code="org.jboss.naming.JNDIView" 
@@ -62,16 +103,16 @@
 
   <mbean code="org.jboss.security.plugins.SecurityConfig"
 	 name="jboss.security:name=SecurityConfig">
-    <attribute name="LoginConfig">jboss.security:name=XMLLoginConfig</attribute>
+    <attribute name="LoginConfig">jboss.security:service=XMLLoginConfig</attribute>
   </mbean>
   <mbean code="org.jboss.security.auth.login.XMLLoginConfig"
-	 name="jboss.security:name=XMLLoginConfig">
+	 name="jboss.security:service=XMLLoginConfig">
     <attribute name="ConfigResource">login-config.xml</attribute>
   </mbean>
 
   <!-- JAAS security manager and realm mapping -->
   <mbean code="org.jboss.security.plugins.JaasSecurityManagerService"
-	 name="jboss.security:name=JaasSecurityManager">
+	 name="jboss.security:service=JaasSecurityManager">
     <attribute name="SecurityManagerClassName">
       org.jboss.security.plugins.JaasSecurityManager
     </attribute>
@@ -81,14 +122,14 @@
   <!-- Transactions                                                         -->
   <!-- ==================================================================== -->
 
+  <mbean code="org.jboss.tm.XidFactory" 
+	 name="jboss:service=XidFactory">
+  </mbean>
+ 
   <mbean code="org.jboss.tm.TransactionManagerService" 
 	 name="jboss:service=TransactionManager">
     <attribute name="TransactionTimeout">300</attribute>
-
-    <!-- Use this attribute if you need to use a specific Xid
-         implementation
-    <attribute name="XidClassName">oracle.jdbc.xa.OracleXid</attribute>
-    -->
+    <depends optional-attribute-name="XidFactory">jboss:service=XidFactory</depends>
   </mbean>
 
   <!-- 
@@ -127,10 +168,14 @@
     <attribute name="ValidateDTDs">false</attribute>
     <attribute name="MetricsEnabled">false</attribute>
     <attribute name="VerifierVerbose">true</attribute>
-    <attribute name="BeanCacheJMSMonitoringEnabled">false</attribute>
+    <!-- Add a dependency on the JMS provider(jms-service.xml) for MDBs. If
+      you are not using MDBs and JMS remove these.
+    -->
+    <depends>jboss.mq:service=JMSProviderLoader,name=JBossMQProvider</depends>
+    <depends>jboss.mq:service=ServerSessionPoolMBean,name=StdJMSPool</depends>
   </mbean>
-  
-  <!-- EAR deployer, remove if you are not using Web layers -->
+
+  <!-- EAR deployer -->
   <mbean code="org.jboss.deployment.EARDeployer" name="jboss.j2ee:service=EARDeployer">
   </mbean>
   
@@ -155,8 +200,15 @@
 
   <!-- Uncomment to enable JMX monitoring of the bean cache
   <mbean code="org.jboss.monitor.BeanCacheMonitor" 
-         name="jboss.jmx:name=BeanCacheMonitor"/>
+         name="jboss.monitor:name=BeanCacheMonitor"/>
   -->
+
+  <!-- Uncomment to enable JMX monitoring of the entity bean locking
+  <mbean code="org.jboss.monitor.EntityLockMonitor" 
+         name="jboss.monitor:name=EntityLockMonitor"/>
+  -->
+
+  
 
   <!-- ==================================================================== -->
   <!-- Invokers to the JMX node                                             -->
@@ -173,6 +225,10 @@
     -->
   </mbean>
   
+  <mbean code="org.jboss.invocation.pooled.server.PooledInvoker" 
+         name="jboss:service=invoker,type=pooled">
+  </mbean>
+
   <mbean code="org.jboss.invocation.local.LocalInvoker" 
          name="jboss:service=invoker,type=local">
   </mbean>
@@ -194,20 +250,13 @@
   </mbean>
   -->
 
-
-  <!--  Use URLDirectoryScanner if you need to specify which urls are
-        directories to scan, and which are urls to be deployed directly.
-        URLDeploymentScanner assumes that all directories are to be scanned,
-        which can cause problems if you deploy exploded archives.
+  <!-- An mbean for hot deployment/undeployment of archives.
   -->
   <mbean code="org.jboss.deployment.scanner.URLDeploymentScanner"
 	 name="jboss.deployment:type=DeploymentScanner,flavor=URL">
-  <!--
-  <mbean code="org.jboss.deployment.scanner.URLDirectoryScanner"
-         name="jboss.deployment:type=DeploymentScanner,flavor=URL">
-  -->
 
-    <!-- Uncomment (and comment/remove version below) to enable usage of the DeploymentCache
+    <!-- Uncomment (and comment/remove version below) to enable usage of the
+      DeploymentCache
     <depends optional-attribute-name="Deployer">jboss.deployment:type=DeploymentCache</depends>
     -->
     <depends optional-attribute-name="Deployer">jboss.system:service=MainDeployer</depends>
@@ -225,7 +274,7 @@
              If the name portion of the url begins with 1 or more digits, those 
              digits are converted to an int (ignoring leading zeroes), and 
              files are deployed in that order.  Files that do not start with 
-             any digits will be deployed last, and they will be sorted by
+             any digits will be deployed first, and they will be sorted by
              extension as above with DeploymentSorter.
     -->
     <attribute name="URLComparator">org.jboss.deployment.DeploymentSorter</attribute>
@@ -246,21 +295,33 @@
 
     <attribute name="ScanPeriod">5000</attribute>
 
-    <!-- 
-       | URLs are comma seperated and unprefixed arguments are considered
-       | file URLs and resolve relative to server home unless the given path
-       | is absolute.  Comment this out if using URLDirectoryScanner.
+    <!-- URLs are comma seperated and unprefixed arguments are considered
+       file URLs and resolve relative to server home(JBOSS_DIST/server/default)
+       unless the given path is absolute. Any referenced directories cannot
+       be unpackaged archives, use the parent directory of the unpacked
+       archive.
      -->
     <attribute name="URLs">
        ./deploy
     </attribute>
-    <!-- Use this for URLDirectoryScanner.  Each entry specifies either a
-         dir (directory to be scanned), or url (url to be deployed).  Like
-         the URLs for the DeploymentScanner above, a file: protocol will
-         be assumed if not specified otherwise.  Uncomment for use with
-         URLDirectoryScanner .
-    -->
-    <!--
+  </mbean>
+
+  <!--  An alternate hot deployer mbean. Use URLDirectoryScanner if you need to
+    specify which urls are directories to scan, and which are urls to be
+    deployed directly. URLDeploymentScanner assumes that all directories are to
+    be scanned, which can cause problems if directory referred to in the
+    deploy attribute is an exploded archive.
+  <mbean code="org.jboss.deployment.scanner.URLDirectoryScanner"
+       name="jboss.deployment:type=DeploymentScanner,flavor=URL">
+
+    <depends optional-attribute-name="Deployer">jboss.system:service=MainDeployer</depends>
+    <attribute name="URLComparator">org.jboss.deployment.DeploymentSorter</attribute>
+    <attribute name="Filter">org.jboss.deployment.scanner.DeploymentFilter</attribute>
+    <attribute name="ScanPeriod">5000</attribute>
+    /* Each entry specifies either a dir (directory to be scanned),
+      or url (url to be deployed). Like the URLs for the DeploymentScanner
+      above, a file: protocol will be assumed if not specified otherwise.
+    */
     <attribute name="URLs">
         <urls>
             <dir name="./deploy" />
@@ -269,7 +330,7 @@
             <url name="http://www.test.com/samples/myapp.ear" />
         </urls>
     </attribute>
-    -->
   </mbean>
+  -->
 
 </server>

@@ -65,6 +65,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -75,9 +76,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
@@ -110,12 +108,17 @@ import net.sf.tapestry.pageload.PageSource;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.DelegatingPropertySource;
 import net.sf.tapestry.util.PropertyHolderPropertySource;
+import net.sf.tapestry.util.ResourceBundlePropertySource;
 import net.sf.tapestry.util.ServletContextPropertySource;
 import net.sf.tapestry.util.ServletPropertySource;
 import net.sf.tapestry.util.SystemPropertiesPropertySource;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.io.DataSqueezer;
+import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.prop.OgnlUtils;
+import org.apache.bsf.BSFManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  Basis for building real Tapestry applications.  Immediate subclasses
@@ -136,7 +139,7 @@ import net.sf.tapestry.util.prop.OgnlUtils;
  * <p>Where possible, instance variables should be transient.  They
  * can be restored inside {@link #setupForRequest(RequestContext)}.
  *
- *  <p>In practice, a subclass (usually {@link SimpleEngine})
+ *  <p>In practice, a subclass (usually {@link BaseEngine})
  *  is used without subclassing.  Instead, a 
  *  visit object is specified.  To facilitate this, the application specification
  *  may include a property, <code>net.sf.tapestry.visit-class</code>
@@ -169,7 +172,8 @@ import net.sf.tapestry.util.prop.OgnlUtils;
  * 
  **/
 
-public abstract class AbstractEngine implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
+public abstract class AbstractEngine
+    implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
 {
     private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
 
@@ -370,7 +374,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      **/
 
-    private static final boolean _resetServiceEnabled = Boolean.getBoolean("net.sf.tapestry.enable-reset-service");
+    private static final boolean _resetServiceEnabled =
+        Boolean.getBoolean("net.sf.tapestry.enable-reset-service");
 
     /**
      * If true (set from the JVM system parameter
@@ -380,7 +385,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      **/
 
-    private static final boolean _disableCaching = Boolean.getBoolean("net.sf.tapestry.disable-caching");
+    private static final boolean _disableCaching =
+        Boolean.getBoolean("net.sf.tapestry.disable-caching");
 
     private transient IResourceResolver _resolver;
 
@@ -408,6 +414,17 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     protected static final String SERVICE_MAP_NAME = "net.sf.tapestry.ServiceMap";
 
     /**
+     *  A shared instance of {@link Pool}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private transient Pool _pool;
+
+    protected static final String POOL_NAME = "net.sf.tapestry.Pool";
+
+    /**
      *  Sets the Exception page's exception property, then renders the Exception page.
      *
      *  <p>If the render throws an exception, then copious output is sent to
@@ -415,14 +432,17 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      **/
 
-    protected void activateExceptionPage(IRequestCycle cycle, ResponseOutputStream output, Throwable cause)
+    protected void activateExceptionPage(
+        IRequestCycle cycle,
+        ResponseOutputStream output,
+        Throwable cause)
         throws ServletException
     {
         try
         {
             IPage exceptionPage = cycle.getPage(EXCEPTION_PAGE);
 
-            OgnlUtils.set("exception", _resolver, exceptionPage, cause);
+            setProperty(exceptionPage, "exception", cause);
 
             cycle.setPage(exceptionPage);
 
@@ -434,12 +454,16 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             // Worst case scenario.  The exception page itself is broken, leaving
             // us with no option but to write the cause to the output.
 
-            reportException(Tapestry.getString("AbstractEngine.unable-to-process-client-request"), cause);
+            reportException(
+                Tapestry.getString("AbstractEngine.unable-to-process-client-request"),
+                cause);
 
             // Also, write the exception thrown when redendering the exception
             // page, so that can get fixed as well.
 
-            reportException(Tapestry.getString("AbstractEngine.unable-to-present-exception-page"), ex);
+            reportException(
+                Tapestry.getString("AbstractEngine.unable-to-present-exception-page"),
+                ex);
 
             // And throw the exception.
 
@@ -461,7 +485,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         System.err.println(reportTitle);
 
         System.err.println(
-            "\n\n      Session id: " + _sessionId + "\n  Client address: " + _clientAddress + "\n\nExceptions:\n");
+            "\n\n      Session id: "
+                + _sessionId
+                + "\n  Client address: "
+                + _clientAddress
+                + "\n\nExceptions:\n");
 
         new ExceptionAnalyzer().reportException(ex, System.err);
 
@@ -514,12 +542,18 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /**
      *  Overriden in subclasses that support monitoring.  Should create and return
      *  an instance of {@link IMonitor} that is appropriate for the request cycle described
-     *  by the {@link RequestContext}.  May return null.
+     *  by the {@link RequestContext}.
      *
      *  <p>The monitor is used to create a {@link RequestCycle}.
      *
-     *  <p>This implementation returns null always.  Subclasses may overide without
-     *  invoking it.
+     *  <p>This implementation returns either an application extension named
+     *  <code>net.sf.tapestry.monitor</code>, or
+     *  the shared instance of {@link NullMonitor}.
+     * 
+     *  <p>Subclasses could create their own instances of {@link IMonitor}, specific
+     *  to the individual request or session.
+     * 
+     *  <p>As of release 2.4, this method should <em>not</em> return null.
      *
      *  <p>TBD:  Lifecycle of the monitor ... should there be a commit?
      *
@@ -527,7 +561,10 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public IMonitor getMonitor(RequestContext context)
     {
-        return null;
+        if (_specification.checkExtension(MONITOR_EXTENSION_NAME))
+            return (IMonitor) _specification.getExtension(MONITOR_EXTENSION_NAME, IMonitor.class);
+
+        return NullMonitor.SHARED;
     }
 
     public IPageSource getPageSource()
@@ -545,7 +582,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         IEngineService result = (IEngineService) _serviceMap.get(name);
 
         if (result == null)
-            throw new ApplicationRuntimeException(Tapestry.getString("AbstractEngine.unknown-service", name));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractEngine.unknown-service", name));
 
         return result;
     }
@@ -808,8 +846,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
                 cycle.setService(service);
 
-                if (monitor != null)
-                    monitor.serviceBegin(service.getName(), context.getRequestURI());
+                monitor.serviceBegin(serviceName, context.getRequestURI());
 
                 return service.service(this, cycle, output);
             }
@@ -831,14 +868,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             }
             finally
             {
-                if (monitor != null)
-                    monitor.serviceEnd(service.getName());
+                monitor.serviceEnd(service.getName());
             }
         }
         catch (Exception ex)
         {
-            if (monitor != null)
-                monitor.serviceException(ex);
+            monitor.serviceException(ex);
 
             // Discard any output (if possible).  If output has already been sent to
             // the client, then things get dicey.  Note that this block
@@ -892,21 +927,38 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /**
      *  Invoked by {@link #service(RequestContext)} if a {@link StaleLinkException}
      *  is thrown by the {@link IEngineService service}.  This implementation
-     *  invokes 
+     *  sets the message property of the StaleLink page to the
+     *  message provided in the exception,
+     *  then invokes 
      *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, RequestCycleException)}
      *  to render the StaleLink page.
      *
      *  <p>Subclasses may overide this method (without
      *  invoking this implementation).  A common practice
-     *  is to present an eror message on the application's
+     *  is to present an error message on the application's
      *  Home page.	
+     * 
+     *  <p>Alternately, the application may provide its own version of 
+     *  the StaleLink page, overriding
+     *  the framework's implementation (probably a good idea, because the
+     *  default page hints at "application errors" and isn't localized).  
+     *  The overriding StaleLink implementation must
+     *  implement a message property of type String.
      *
      *  @since 0.2.10
+     * 
      **/
 
-    protected void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle, ResponseOutputStream output)
+    protected void handleStaleLinkException(
+        StaleLinkException ex,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws IOException, ServletException, RequestCycleException
     {
+        IPage page = cycle.getPage(STALE_LINK_PAGE);
+
+        setProperty(page, "message", ex.getMessage());
+
         redirect(STALE_LINK_PAGE, cycle, output, ex);
     }
 
@@ -945,6 +997,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public void clearCachedData()
     {
+        _pool.clear();
         _pageSource.reset();
         _specificationSource.reset();
         _templateSource.reset();
@@ -991,6 +1044,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      *  <p>In addition, this method locates and/or creates the:
      *  <ul>
+     *  <li>{@link Pool}
      *  <li>{@link ITemplateSource} 
      *  <li>{@link ISpecificationSource}
      *  <li>{@link IPageSource}
@@ -999,6 +1053,10 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  <li>{@link IComponentStringsSource}
      *  <li>{@link IPropertySource}
      *  </ul>
+     * 
+     *  <p>This order is important, because some of the later shared objects
+     *  depend on some of the earlier shared objects already been located or created
+     *  (especially {@link #getPool() pool}).
      *
      *  <p>Subclasses should invoke this implementation first, then perform their
      *  own setup.
@@ -1043,6 +1101,20 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         String servletName = context.getServlet().getServletName();
 
+        if (_pool == null)
+        {
+            String name = POOL_NAME + "." + servletName;
+
+            _pool = (Pool) servletContext.getAttribute(name);
+
+            if (_pool == null)
+            {
+                _pool = createPool(context);
+
+                servletContext.setAttribute(name, _pool);
+            }
+        }
+
         if (_templateSource == null)
         {
             String name = TEMPLATE_SOURCE_NAME + "." + servletName;
@@ -1051,7 +1123,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_templateSource == null)
             {
-                _templateSource = createTemplateSource();
+                _templateSource = createTemplateSource(context);
 
                 servletContext.setAttribute(name, _templateSource);
             }
@@ -1065,7 +1137,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_specificationSource == null)
             {
-                _specificationSource = createSpecificationSource();
+                _specificationSource = createSpecificationSource(context);
 
                 servletContext.setAttribute(name, _specificationSource);
             }
@@ -1079,7 +1151,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_pageSource == null)
             {
-                _pageSource = createPageSource();
+                _pageSource = createPageSource(context);
 
                 servletContext.setAttribute(name, _pageSource);
             }
@@ -1093,7 +1165,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_scriptSource == null)
             {
-                _scriptSource = createScriptSource();
+                _scriptSource = createScriptSource(context);
 
                 servletContext.setAttribute(name, _scriptSource);
             }
@@ -1121,7 +1193,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_stringsSource == null)
             {
-                _stringsSource = createComponentStringsSource();
+                _stringsSource = createComponentStringsSource(context);
 
                 servletContext.setAttribute(name, _stringsSource);
             }
@@ -1180,9 +1252,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * 
      **/
 
-    public IComponentStringsSource createComponentStringsSource()
+    public IComponentStringsSource createComponentStringsSource(RequestContext context)
     {
-        return new DefaultStringsSource(getResourceResolver());
+        return new DefaultStringsSource();
     }
 
     /**
@@ -1197,7 +1269,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * 
      **/
 
-    protected IScriptSource createScriptSource()
+    protected IScriptSource createScriptSource(RequestContext context)
     {
         return new DefaultScriptSource(getResourceResolver());
     }
@@ -1213,9 +1285,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * 
      **/
 
-    protected IPageSource createPageSource()
+    protected IPageSource createPageSource(RequestContext context)
     {
-        return new PageSource(getResourceResolver());
+        return new PageSource(this);
     }
 
     /**
@@ -1228,9 +1300,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  @since 1.0.9
      **/
 
-    protected ISpecificationSource createSpecificationSource()
+    protected ISpecificationSource createSpecificationSource(RequestContext context)
     {
-        return new DefaultSpecificationSource(getResourceResolver(), _specification);
+        return new DefaultSpecificationSource(getResourceResolver(), _specification, _pool);
     }
 
     /**
@@ -1244,7 +1316,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * 
      **/
 
-    protected ITemplateSource createTemplateSource()
+    protected ITemplateSource createTemplateSource(RequestContext context)
     {
         return new DefaultTemplateSource(getResourceResolver());
     }
@@ -1361,7 +1433,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         }
         catch (IOException ex)
         {
-            reportException(Tapestry.getString("AbstractEngine.unable-to-create-cleanup-context"), ex);
+            reportException(
+                Tapestry.getString("AbstractEngine.unable-to-create-cleanup-context"),
+                ex);
             return;
         }
 
@@ -1376,7 +1450,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             try
             {
                 IPage page = source.getPage(fakeCycle, name, null);
-                IPageRecorder recorder = getPageRecorder(name);
+                IPageRecorder recorder = getPageRecorder(name, fakeCycle);
 
                 recorder.rollback(page);
 
@@ -1384,7 +1458,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             }
             catch (Throwable t)
             {
-                reportException(Tapestry.getString("AbstractEngine.unable-to-cleanup-page", name), t);
+                reportException(
+                    Tapestry.getString("AbstractEngine.unable-to-cleanup-page", name),
+                    t);
             }
         }
     }
@@ -1452,8 +1528,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /**
      *  Invoked to lazily create a new visit object when it is first
      *  referenced (by {@link #getVisit(IRequestCycle)}).  This implementation works
-     *  by looking up the name of the class
-     *  in the application specification.
+     *  by looking up the name of the class to instantiate
+     *  in the {@link #getPropertySource() configuration}.
      *
      *  <p>Subclasses may want to overide this method if some other means
      *  of instantiating a visit object is required.
@@ -1465,10 +1541,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         Class visitClass;
         Object result = null;
 
-        visitClassName = _specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
+        visitClassName = _propertySource.getPropertyValue(VISIT_CLASS_PROPERTY_NAME);
         if (visitClassName == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractEngine.visit-class-property-not-specified", VISIT_CLASS_PROPERTY_NAME));
+                Tapestry.getString(
+                    "AbstractEngine.visit-class-property-not-specified",
+                    VISIT_CLASS_PROPERTY_NAME));
 
         if (LOG.isDebugEnabled())
             LOG.debug("Creating visit object as instance of " + visitClassName);
@@ -1506,7 +1584,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  @since 2.3
      * 
      **/
-    
+
     public Object getGlobal()
     {
         return _global;
@@ -1645,7 +1723,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      **/
 
-    protected void redirectOut(IRequestCycle cycle, RedirectException ex) throws RequestCycleException
+    protected void redirectOut(IRequestCycle cycle, RedirectException ex)
+        throws RequestCycleException
     {
         handleRedirectException(cycle, ex);
     }
@@ -1661,7 +1740,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      **/
 
-    protected void handleRedirectException(IRequestCycle cycle, RedirectException ex) throws RequestCycleException
+    protected void handleRedirectException(IRequestCycle cycle, RedirectException ex)
+        throws RequestCycleException
     {
         String location = ex.getLocation();
 
@@ -1724,7 +1804,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
                 if (!service.getName().equals(name))
                     throw new ApplicationRuntimeException(
-                        Tapestry.getString("AbstractEngine.service-name-mismatch", name, serviceClass, serviceName));
+                        Tapestry.getString(
+                            "AbstractEngine.service-name-mismatch",
+                            name,
+                            serviceClass,
+                            serviceName));
 
                 // Replace the class name with an instance
                 // of the named class.
@@ -1733,7 +1817,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             }
             catch (InstantiationException ex)
             {
-                String message = Tapestry.getString("AbstractEngine.unable-to-instantiate-service", name, className);
+                String message =
+                    Tapestry.getString(
+                        "AbstractEngine.unable-to-instantiate-service",
+                        name,
+                        className);
 
                 LOG.error(message, ex);
 
@@ -1741,7 +1829,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             }
             catch (IllegalAccessException ex)
             {
-                String message = Tapestry.getString("AbstractEngine.unable-to-instantiate-service", name, className);
+                String message =
+                    Tapestry.getString(
+                        "AbstractEngine.unable-to-instantiate-service",
+                        name,
+                        className);
 
                 LOG.error(message, ex);
 
@@ -1866,7 +1958,25 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         return _propertySource;
     }
 
+    /**
+     *  Name of an application extension that can provide configuration properties.
+     * 
+     *  @see #createPropertySource(RequestContext)
+     *  @since 2.3
+     * 
+     **/
+
     private static final String EXTENSION_PROPERTY_SOURCE_NAME = "net.sf.tapestry.property-source";
+
+    /**
+     *  The name of an application extension that implements {@link IMonitor}.
+     * 
+     *  @see #getMonitor(RequestContext)
+     *  @since 2.4
+     * 
+     **/
+
+    protected static final String MONITOR_EXTENSION_NAME = "net.sf.tapestry.monitor";
 
     /**
      *  Creates a shared property source that will be stored into
@@ -1902,12 +2012,21 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         if (spec.checkExtension(EXTENSION_PROPERTY_SOURCE_NAME))
         {
-            IPropertySource source = (IPropertySource) spec.getExtension(EXTENSION_PROPERTY_SOURCE_NAME);
+            IPropertySource source =
+                (IPropertySource) spec.getExtension(
+                    EXTENSION_PROPERTY_SOURCE_NAME,
+                    IPropertySource.class);
 
             result.addSource(source);
         }
 
         result.addSource(SystemPropertiesPropertySource.getInstance());
+
+        // Lastly, add a final source to handle "factory defaults".
+
+        ResourceBundle bundle = ResourceBundle.getBundle("net.sf.tapestry.ConfigurationDefaults");
+
+        result.addSource(new ResourceBundlePropertySource(bundle));
 
         return result;
     }
@@ -1941,4 +2060,44 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
                 ex);
         }
     }
+
+    /**
+     *  Sets a property of an object; this is used to initalize properties
+     *  of the Exception and StaleSession pages.
+     * 
+     **/
+
+    protected void setProperty(Object object, String propertyName, Object value)
+    {
+        OgnlUtils.set(propertyName, _resolver, object, value);
+    }
+
+    /** 
+     *  Returns an new instance of {@link Pool}, with the standard
+     *  set of adaptors, plus {@link BSFManagerPoolableAdaptor} for
+     *  {@link BSFManager}.
+     * 
+     *  <p>Subclasses may override this
+     *  method to configure the Pool differently.
+     * 
+     *  @since 2.4 
+     * 
+     **/
+
+    protected Pool createPool(RequestContext context)
+    {
+        Pool result = new Pool();
+
+        result.registerAdaptor(BSFManager.class, new BSFManagerPoolableAdaptor());
+
+        return result;
+    }
+
+    /** @since 2.4 **/
+
+    public Pool getPool()
+    {
+        return _pool;
+    }
+
 }

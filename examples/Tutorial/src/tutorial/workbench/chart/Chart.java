@@ -82,17 +82,15 @@ import net.sf.tapestry.valid.IValidationDelegate;
 
 public class Chart extends BasePage implements IChartProvider
 {
-    private List plotValues;
-    private List removeValues;
-    private PlotValue plotValue;
+    private List _plotValues;
+    private List _removeValues;
+    private PlotValue _plotValue;
 
-    public void detach()
+    public void initialize()
     {
-        plotValues = null;
-        removeValues = null;
-        plotValue = null;
-
-        super.detach();
+        _plotValues = null;
+        _removeValues = null;
+        _plotValue = null;
     }
 
     /**
@@ -108,33 +106,35 @@ public class Chart extends BasePage implements IChartProvider
 
     public List getPlotValues()
     {
-        if (plotValues == null)
+        if (_plotValues == null)
         {
-            setPlotValues(new ArrayList());
+            _plotValues = new ArrayList();
 
-            plotValues.add(new PlotValue("Fred", 10));
-            plotValues.add(new PlotValue("Barney", 15));
-            plotValues.add(new PlotValue("Dino", 7));
+            _plotValues.add(new PlotValue("Fred", 10));
+            _plotValues.add(new PlotValue("Barney", 15));
+            _plotValues.add(new PlotValue("Dino", 7));
+
+            fireObservedChange("plotValues", _plotValues);
         }
 
-        return plotValues;
+        return _plotValues;
     }
 
     public void setPlotValues(List plotValues)
     {
-        this.plotValues = plotValues;
+        _plotValues = plotValues;
 
         fireObservedChange("plotValues", plotValues);
     }
 
     public PlotValue getPlotValue()
     {
-        return plotValue;
+        return _plotValue;
     }
 
     public void setPlotValue(PlotValue plotValue)
     {
-        this.plotValue = plotValue;
+        _plotValue = plotValue;
     }
 
     /**
@@ -159,10 +159,10 @@ public class Chart extends BasePage implements IChartProvider
     {
         if (value)
         {
-            if (removeValues == null)
-                removeValues = new ArrayList();
+            if (_removeValues == null)
+                _removeValues = new ArrayList();
 
-            removeValues.add(plotValue);
+            _removeValues.add(_plotValue);
 
             // Deleting things screws up the validation delegate.
             // That's because the errors are associated with the form name
@@ -191,7 +191,11 @@ public class Chart extends BasePage implements IChartProvider
 
     public void add(IRequestCycle cycle)
     {
+        List plotValues = getPlotValues();
+
         plotValues.add(new PlotValue());
+
+        setPlotValues(plotValues);
     }
 
     /**
@@ -203,8 +207,14 @@ public class Chart extends BasePage implements IChartProvider
 
     public void delete(IRequestCycle cycle)
     {
-        if (removeValues != null)
-            plotValues.removeAll(removeValues);
+        if (_removeValues != null)
+        {
+            List plotValues = getPlotValues();
+
+            plotValues.removeAll(_removeValues);
+
+            setPlotValues(plotValues);
+        }
     }
 
     private IAsset chartImageAsset;
@@ -227,6 +237,8 @@ public class Chart extends BasePage implements IChartProvider
     public JFreeChart getChart()
     {
         DefaultPieDataset data = new DefaultPieDataset();
+
+        List plotValues = getPlotValues();
 
         int count = plotValues.size();
 

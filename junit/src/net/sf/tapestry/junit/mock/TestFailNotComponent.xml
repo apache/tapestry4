@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="fail"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.application-specification"
+  			value="/net/sf/tapestry/junit/mock/fail/Fail.application"/>
+  	</servlet>      
+    
+    <request>
+    	<parameter name="service" value="page"/>
+    	<parameter name="context" value="NotComponent"/>
+    	
+    	<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+					
+		<assert-output name="Error">
+Failed to acquire page NotComponent.
+		</assert-output>
+				
+		<assert-output name="Error">
+Class java.lang.Object does not implement the IComponent interface.
+		</assert-output>
+								
+	</request>		
+
+</mock-test>
+    	

@@ -60,9 +60,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IAsset;
@@ -70,6 +67,9 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.LocalizedResourceFinder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  An implementation of {@link IAsset} for localizable assets within
@@ -182,69 +182,22 @@ public class PrivateAsset implements IAsset
                     + " in locale "
                     + locale.getDisplayName());
 
-        int dotx = _resourcePath.lastIndexOf('.');
-        String suffix = _resourcePath.substring(dotx);
-
-        StringBuffer buffer = new StringBuffer(dotx + 30);
-
-        buffer.append(_resourcePath.substring(0, dotx));
-        int rawLength = buffer.length();
-
-        int start = 2;
-
-        String country = locale.getCountry();
-        if (country.length() > 0)
-            start--;
-
-        // This assumes that you never have the case where there's
-        // a null language code and a non-null country code.
-
-        String language = locale.getLanguage();
-        if (language.length() > 0)
-            start--;
-
         IResourceResolver resolver = cycle.getEngine().getResourceResolver();
 
-        // On pass #0, we use language code and country code
-        // On pass #1, we use language code
-        // On pass #2, we use neither.
-        // We skip pass #0 or #1 depending on whether the language code
-        // and/or country code is null.
+        LocalizedResourceFinder finder = new LocalizedResourceFinder(resolver);
 
-        for (int i = start; i < 3; i++)
-        {
-            buffer.setLength(rawLength);
+        String localizedPath = finder.resolve(_resourcePath, locale);
 
-            if (i < 2)
-            {
-                buffer.append('_');
-                buffer.append(language);
-            }
+        if (localizedPath == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("PrivateAsset.resource-unavailable", _resourcePath, locale));
 
-            if (i == 0)
-            {
-                buffer.append('_');
-                buffer.append(country);
-            }
+        _localizations.put(locale, localizedPath);
 
-            buffer.append(suffix);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Found " + localizedPath);
 
-            String candidatePath = buffer.toString();
-
-            if (resolver.getResource(candidatePath) != null)
-            {
-                _localizations.put(locale, candidatePath);
-
-                if (LOG.isDebugEnabled())
-                    LOG.debug("Found " + candidatePath);
-
-                return candidatePath;
-            }
-
-        }
-
-        throw new ApplicationRuntimeException(
-            Tapestry.getString("PrivateAsset.resource-unavailable", _resourcePath, locale));
+        return localizedPath;
     }
 
     public String toString()

@@ -67,9 +67,12 @@ import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 
 /**
  *  The body of a Tapestry page.  This is used since it allows components on the
@@ -121,14 +124,14 @@ public class Body extends AbstractComponent
      **/
 
     private Set _includedScripts;
-    
+
     /** 
      *  Element name to use.
      * 
      *  @since 2.2
      * 
      **/
-    
+
     private String _element = "body";
 
     private static final String ATTRIBUTE_NAME = "net.sf.tapestry.active.Body";
@@ -364,9 +367,7 @@ public class Body extends AbstractComponent
 
     private String writeScript()
     {
-        if (!(any(_otherInitialization)
-            || any(_otherScript)
-            || any(_imageInitializations)))
+        if (!(any(_otherInitialization) || any(_otherScript) || any(_imageInitializations)))
             return null;
 
         _outerWriter.begin("script");
@@ -442,27 +443,31 @@ public class Body extends AbstractComponent
         IRequestCycle cycle = getPage().getRequestCycle();
         IEngine engine = getPage().getEngine();
         IPageSource source = engine.getPageSource();
+        IResourceResolver resolver = engine.getResourceResolver();
 
         Iterator i = includes.iterator();
         while (i.hasNext())
         {
             String path = (String) i.next();
-            IAsset asset = source.getPrivateAsset(path);
+
+            IResourceLocation location = new ClasspathResourceLocation(resolver, path);
+
+            IAsset asset = source.getAsset(location);
             String URL = asset.buildURL(cycle);
 
             includeScript(URL);
         }
     }
-    
+
     /** @since 2.2 **/
-    
+
     public String getElement()
     {
         return _element;
     }
 
     /** @since 2.2 **/
-    
+
     public void setElement(String element)
     {
         _element = element;

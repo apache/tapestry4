@@ -66,10 +66,9 @@ import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IComponentStrings;
 import net.sf.tapestry.IComponentStringsSource;
-import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.MultiKey;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -87,9 +86,7 @@ public class DefaultStringsSource implements IComponentStringsSource
 {
     private static final Log LOG = LogFactory.getLog(DefaultStringsSource.class);
 
-    private IResourceResolver resolver;
-
-    private Properties emptyProperties = new Properties();
+    private Properties _emptyProperties = new Properties();
 
     /**
      *  Map of {@link Properties}, keyed on a {@link MultiKey} of
@@ -97,11 +94,10 @@ public class DefaultStringsSource implements IComponentStringsSource
      * 
      **/
 
-    private Map cache = new HashMap();
+    private Map _cache = new HashMap();
 
-    public DefaultStringsSource(IResourceResolver resolver)
+    public DefaultStringsSource()
     {
-        this.resolver = resolver;
     }
 
     /**
@@ -115,54 +111,58 @@ public class DefaultStringsSource implements IComponentStringsSource
     protected synchronized Properties getLocalizedProperties(IComponent component)
     {
         if (component == null)
-            throw new IllegalArgumentException(Tapestry.getString("invalid-null-parameter", "component"));
+            throw new IllegalArgumentException(
+                Tapestry.getString("invalid-null-parameter", "component"));
 
-        String specificationPath = component.getSpecification().getSpecificationResourcePath();
+        IResourceLocation specificationLocation =
+            component.getSpecification().getSpecificationLocation();
         Locale locale = component.getPage().getLocale();
 
         // Check to see if already in the cache
 
-        MultiKey key = buildKey(specificationPath, locale);
+        MultiKey key = buildKey(specificationLocation, locale);
 
-        Properties result = (Properties) cache.get(key);
+        Properties result = (Properties) _cache.get(key);
 
         if (result != null)
             return result;
 
         // Not found, create it now.
 
-        result = assembleProperties(specificationPath, locale);
+        result = assembleProperties(specificationLocation, locale);
 
-        cache.put(key, result);
+        _cache.put(key, result);
 
         return result;
     }
 
     private static final String SUFFIX = ".properties";
 
-    private Properties assembleProperties(String path, Locale locale)
+    private Properties assembleProperties(IResourceLocation baseResourceLocation, Locale locale)
     {
         boolean debug = LOG.isDebugEnabled();
         if (debug)
-            LOG.debug("Assembling properties for " + path + " " + locale);
+            LOG.debug("Assembling properties for " + baseResourceLocation + " " + locale);
 
-        int dotx = path.indexOf('.');
-        String basePath = path.substring(0, dotx);
+        String name = baseResourceLocation.getName();
+
+        int dotx = name.indexOf('.');
+        String baseName = name.substring(0, dotx);
 
         String language = locale.getLanguage();
         String country = locale.getCountry();
         String variant = locale.getVariant();
 
-        Properties parent = (Properties) cache.get(path);
+        Properties parent = (Properties) _cache.get(baseResourceLocation);
 
         if (parent == null)
         {
-            parent = readProperties(basePath, null, null);
+            parent = readProperties(baseResourceLocation, baseName, null, null);
 
             if (parent == null)
-                parent = emptyProperties;
+                parent = _emptyProperties;
 
-            cache.put(path, parent);
+            _cache.put(baseResourceLocation, parent);
         }
 
         Properties result = parent;
@@ -170,14 +170,14 @@ public class DefaultStringsSource implements IComponentStringsSource
         if (!Tapestry.isNull(language))
         {
             Locale l = new Locale(language, "");
-            MultiKey key = buildKey(path, l);
+            MultiKey key = buildKey(baseResourceLocation, l);
 
-            result = (Properties) cache.get(key);
+            result = (Properties) _cache.get(key);
 
             if (result == null)
-                result = readProperties(basePath, l, parent);
+                result = readProperties(baseResourceLocation, baseName, l, parent);
 
-            cache.put(key, result);
+            _cache.put(key, result);
 
             parent = result;
         }
@@ -187,14 +187,14 @@ public class DefaultStringsSource implements IComponentStringsSource
         if (!Tapestry.isNull(country))
         {
             Locale l = new Locale(language, country);
-            MultiKey key = buildKey(path, l);
+            MultiKey key = buildKey(baseResourceLocation, l);
 
-            result = (Properties) cache.get(key);
+            result = (Properties) _cache.get(key);
 
             if (result == null)
-                result = readProperties(basePath, l, parent);
+                result = readProperties(baseResourceLocation, baseName, l, parent);
 
-            cache.put(key, result);
+            _cache.put(key, result);
 
             parent = result;
         }
@@ -204,27 +204,31 @@ public class DefaultStringsSource implements IComponentStringsSource
         if (!Tapestry.isNull(variant))
         {
             Locale l = new Locale(language, country, variant);
-            MultiKey key = buildKey(path, l);
+            MultiKey key = buildKey(baseResourceLocation, l);
 
-            result = (Properties) cache.get(key);
+            result = (Properties) _cache.get(key);
 
             if (result == null)
-                result = readProperties(basePath, l, parent);
+                result = readProperties(baseResourceLocation, baseName, l, parent);
 
-            cache.put(key, result);
+            _cache.put(key, result);
         }
 
         return result;
     }
 
-    private MultiKey buildKey(String path, Locale locale)
+    private MultiKey buildKey(IResourceLocation location, Locale locale)
     {
-        return new MultiKey(new Object[] { path, locale.toString()}, false);
+        return new MultiKey(new Object[] { location, locale.toString()}, false);
     }
 
-    private Properties readProperties(String basePath, Locale locale, Properties parent)
+    private Properties readProperties(
+        IResourceLocation baseLocation,
+        String baseName,
+        Locale locale,
+        Properties parent)
     {
-        StringBuffer buffer = new StringBuffer(basePath);
+        StringBuffer buffer = new StringBuffer(baseName);
 
         if (locale != null)
         {
@@ -234,9 +238,9 @@ public class DefaultStringsSource implements IComponentStringsSource
 
         buffer.append(SUFFIX);
 
-        String path = buffer.toString();
+        IResourceLocation localized = baseLocation.getRelativeLocation(buffer.toString());
 
-        URL propertiesURL = resolver.getResource(path);
+        URL propertiesURL = localized.getResourceURL();
 
         if (propertiesURL == null)
             return parent;
@@ -253,6 +257,8 @@ public class DefaultStringsSource implements IComponentStringsSource
             InputStream input = propertiesURL.openStream();
 
             result.load(input);
+
+            input.close();
         }
         catch (IOException ex)
         {
@@ -271,7 +277,7 @@ public class DefaultStringsSource implements IComponentStringsSource
 
     public void reset()
     {
-        cache.clear();
+        _cache.clear();
     }
 
     public IComponentStrings getStrings(IComponent component)

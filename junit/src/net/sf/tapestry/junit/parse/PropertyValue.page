@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+     	
+<page-specification>
+
+	<property name="barney" value="rubble"/>
+
+	<property name="wilma" value="flintstone">
+		Ignored.
+	</property>
+	
+</page-specification>
+

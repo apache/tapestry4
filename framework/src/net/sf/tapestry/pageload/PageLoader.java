@@ -55,15 +55,20 @@
 package net.sf.tapestry.pageload;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
@@ -73,23 +78,35 @@ import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.PageLoaderException;
+import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.binding.ExpressionBinding;
+import net.sf.tapestry.binding.ListenerBinding;
 import net.sf.tapestry.binding.StringBinding;
+import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.resolver.ComponentSpecificationResolver;
+import net.sf.tapestry.resource.ContextResourceLocation;
 import net.sf.tapestry.spec.AssetSpecification;
 import net.sf.tapestry.spec.AssetType;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
+import net.sf.tapestry.spec.ListenerBindingSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 
 /**
  *  Runs the process of building the component hierarchy for an entire page.
+ * 
+ *  <p>
+ *  This class is not threadsafe; however, {@link net.sf.tapestry.pageload.PageSource}
+ *  creates a new instance of it for each page to be loaded, which bypasses
+ *  multithreading issues.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -104,6 +121,8 @@ public class PageLoader implements IPageLoader
     private IResourceResolver _resolver;
     private ISpecificationSource _specificationSource;
     private IPageSource _pageSource;
+    private ComponentSpecificationResolver _componentResolver;
+    private List _inheritedBindingQueue = new ArrayList();
 
     /**
      * The locale of the application, which is also the locale
@@ -135,56 +154,34 @@ public class PageLoader implements IPageLoader
 
     private int _maxDepth;
 
-    private class ComponentResolver
+    /**
+     *  Used to figure relative paths for context assets.
+     * 
+     **/
+
+    private IResourceLocation _servletLocation;
+
+    private static class QueuedInheritedBinding
     {
-        private INamespace _namespace;
-        private ComponentSpecification _spec;
+        private IComponent _component;
+        private String _containerParameterName;
+        private String _parameterName;
 
-        private ComponentResolver(INamespace containerNamespace, String alias)
+        private QueuedInheritedBinding(IComponent component, String containerParameterName, String parameterName)
         {
-            // For compatibility with the 1.1 and 1.2 specifications, which allow
-            // the component type to be a complete specification path.
-            
-            if (alias.startsWith("/"))
-            {
-                _namespace = _specificationSource.getApplicationNamespace();
-                _spec = _specificationSource.getComponentSpecification(alias);
-                return;
-            }
-
-            int colonx = alias.indexOf(':');
-
-            if (colonx > 0)
-            {
-                String id = alias.substring(0, colonx);
-                _namespace = containerNamespace.getChildNamespace(id);
-
-                String bareAlias = alias.substring(colonx + 1);
-                _spec = _namespace.getComponentSpecification(bareAlias);
-                return;
-            }
-
-            // A bare component type may be in the namespace of the container
-            // (typically the application namespace, but possibly a 
-            // library namespace).  Check there first and, if not found,
-            // check the framework namespace.
-
-            if (containerNamespace.containsAlias(alias))
-                _namespace = containerNamespace;
-            else
-                _namespace = _specificationSource.getFrameworkNamespace();
-
-            _spec = _namespace.getComponentSpecification(alias);
+            _component = component;
+            _containerParameterName = containerParameterName;
+            _parameterName = parameterName;
         }
 
-        private INamespace getNamespace()
+        private void connect()
         {
-            return _namespace;
-        }
+            IBinding binding = _component.getContainer().getBinding(_containerParameterName);
 
-        private ComponentSpecification getSpecification()
-        {
-            return _spec;
+            if (binding == null)
+                return;
+
+            _component.setBinding(_parameterName, binding);
         }
     }
 
@@ -193,9 +190,26 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    public PageLoader(IPageSource pageSource)
+    public PageLoader(IPageSource pageSource, IRequestCycle cycle)
     {
         _pageSource = pageSource;
+
+        IEngine engine = cycle.getEngine();
+
+        _specificationSource = engine.getSpecificationSource();
+        _resolver = engine.getResourceResolver();
+        _componentResolver = new ComponentSpecificationResolver(cycle);
+
+        RequestContext context = cycle.getRequestContext();
+
+        // Need the location of the servlet within the context as the basis
+        // for building relative context asset paths.
+
+        HttpServletRequest request = context.getRequest();
+
+        String servletPath = request.getServletPath();
+
+        _servletLocation = new ContextResourceLocation(context.getServlet().getServletContext(), servletPath);
     }
 
     /**
@@ -250,17 +264,51 @@ public class PageLoader implements IPageLoader
             // As a simple static String
             // As a nested property name (relative to the component)
             // As the name of a binding inherited from the containing component.
+            // As the name of a public field
+            // As a script for a listener
 
             BindingType type = bspec.getType();
-            String bindingValue = bspec.getValue();
 
-            IBinding binding = convert(type, bindingValue, container, propertyBindings);
+            // For inherited bindings, defer until later.  This gives components
+            // a chance to setup bindings from static values and expressions in the
+            // template.  The order of operations is tricky, template bindings come
+            // later.
+
+            if (type == BindingType.INHERITED)
+            {
+                QueuedInheritedBinding queued = new QueuedInheritedBinding(component, bspec.getValue(), name);
+                _inheritedBindingQueue.add(queued);
+                continue;
+            }
+
+            if (type == BindingType.LISTENER)
+            {
+                constructListenerBinding(component, name, (ListenerBindingSpecification) bspec);
+                continue;
+            }
+
+            IBinding binding = convert(type, bspec.getValue(), container, propertyBindings);
 
             if (binding != null)
                 component.setBinding(name, binding);
         }
+    }
 
-        i = spec.getParameterNames().iterator();
+    /**
+     *  Invoked from {@link #loadPage(String, INamespace, IRequestCycle, ComponentSpecification)}
+     *  after the entire tree of components in the page has been constructed.  Recursively
+     *  checks each component in the tree to ensure that
+     *  all of its required parameters are bound.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private void verifyRequiredParameters(IComponent component) throws PageLoaderException
+    {
+        ComponentSpecification spec = component.getSpecification();
+
+        Iterator i = spec.getParameterNames().iterator();
 
         while (i.hasNext())
         {
@@ -272,6 +320,20 @@ public class PageLoader implements IPageLoader
                     Tapestry.getString("PageLoader.required-parameter-not-bound", name, component.getExtendedId()),
                     component,
                     null);
+        }
+
+        Collection components = component.getComponents().values();
+
+        if (Tapestry.size(components) == 0)
+            return;
+
+        i = components.iterator();
+
+        while (i.hasNext())
+        {
+            IComponent embedded = (IComponent) i.next();
+
+            verifyRequiredParameters(embedded);
         }
     }
 
@@ -307,14 +369,40 @@ public class PageLoader implements IPageLoader
         if (type == BindingType.STATIC)
             return _pageSource.getStaticBinding(bindingValue);
 
+        // BindingType.FIELD is on the way out, it is in the
+        // 1.3 DTD but not the 1.4 DTD.
+
         if (type == BindingType.FIELD)
             return _pageSource.getFieldBinding(bindingValue);
 
-        // Otherwise, its an inherited binding.  Dig it out of the container.
-        // This may return null if the container doesn't have the named binding.
+        // This code is unreachable, at least until a new type
+        // of binding is created.
 
-        return container.getBinding(bindingValue);
+        throw new ApplicationRuntimeException("Unexpected type: " + type + ".");
+    }
 
+    /**
+     *  Construct a {@link ListenerBinding} for the component, and add it.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    private void constructListenerBinding(IComponent component, String bindingName, ListenerBindingSpecification spec)
+    {
+        String location = Tapestry.getString("PageLoader.script-location", bindingName, component.getExtendedId());
+
+        String language = spec.getLanguage();
+        
+        // If not provided in the page or component specification, then
+        // search for a default (factory default is "jython").
+        
+        if (Tapestry.isNull(language))
+            language = _engine.getPropertySource().getPropertyValue("net.sf.tapestry.default-script-language");
+            
+        IBinding binding = new ListenerBinding(component, language, location, spec.getScript());
+
+        component.setBinding(bindingName, binding);
     }
 
     /**
@@ -324,7 +412,7 @@ public class PageLoader implements IPageLoader
      * <li>Add the contained components to the container.
      * <li>Setting up bindings between container and containees.
      * <li>Construct the containees recursively.
-     * <li>Telling the component its 'ready' (so that it can load its HTML template)
+     * <li>Invoking {@link IComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)}
      * </ul>
      *
      *  @param cycle the request cycle for which the page is being (initially) constructed
@@ -349,41 +437,102 @@ public class PageLoader implements IPageLoader
 
         List ids = new ArrayList(containerSpec.getComponentIds());
         int count = ids.size();
+        Map propertyBindings = new HashMap();
 
-        for (int i = 0; i < count; i++)
+        try
         {
-            String id = (String) ids.get(i);
+            for (int i = 0; i < count; i++)
+            {
+                String id = (String) ids.get(i);
 
-            // Get the sub-component specification from the
-            // container's specification.
+                // Get the sub-component specification from the
+                // container's specification.
 
-            ContainedComponent contained = containerSpec.getComponent(id);
+                ContainedComponent contained = containerSpec.getComponent(id);
 
-            String type = contained.getType();
+                String type = contained.getType();
 
-            ComponentResolver resolver = new ComponentResolver(namespace, type);
-            ComponentSpecification componentSpecification = resolver.getSpecification();
-            INamespace componentNamespace = resolver.getNamespace();
+                _componentResolver.resolve(namespace, type);
 
-            // Instantiate the contained component.
+                ComponentSpecification componentSpecification = _componentResolver.getSpecification();
+                INamespace componentNamespace = _componentResolver.getNamespace();
 
-            IComponent component =
-                instantiateComponent(page, container, id, componentSpecification, componentNamespace);
+                // Instantiate the contained component.
 
-            // Add it, by name, to the container.
+                IComponent component =
+                    instantiateComponent(page, container, id, componentSpecification, componentNamespace);
 
-            container.addComponent(component);
+                // Add it, by name, to the container.
 
-            // Recursively construct the component
+                container.addComponent(component);
 
-            constructComponent(cycle, page, component, componentSpecification, componentNamespace);
+                // Set up any bindings in the ContainedComponent specification
+
+                bind(container, component, contained, propertyBindings);
+
+                // Now construct the component recusively; it gets its chance
+                // to create its subcomponents and set their bindings.
+
+                constructComponent(cycle, page, component, componentSpecification, componentNamespace);
+            }
+
+            addAssets(container, containerSpec);
+
+            // Finish the load of the component; most components (which
+            // subclass BaseComponent) load their templates here.
+            // That may cause yet more components to be created, and more
+            // bindings to be set, so we defer some checking until
+            // later.
+
+            container.finishLoad(cycle, this, containerSpec);
+        }
+        catch (RuntimeException ex)
+        {
+            throw new PageLoaderException(
+                Tapestry.getString(
+                    "PageLoader.unable-to-instantiate-component",
+                    container.getExtendedId(),
+                    ex.getMessage()),
+                container,
+                ex);
         }
 
-        addAssets(container, containerSpec);
-
-        container.finishLoad(cycle, this, containerSpec);
-
         _depth--;
+    }
+
+    /**
+     *  Invoked to create an implicit component (one which is defined in the
+     *  containing component's template, rather that in the containing component's
+     *  specification).
+     * 
+     *  @see net.sf.tapestry.BaseComponentTemplateLoader
+     *  @since 2.4
+     * 
+     **/
+
+    public IComponent createImplicitComponent(
+        IRequestCycle cycle,
+        IComponent container,
+        String componentId,
+        String componentType)
+        throws PageLoaderException
+    {
+        IPage page = container.getPage();
+
+        _componentResolver.resolve(container.getNamespace(), componentType);
+
+        INamespace componentNamespace = _componentResolver.getNamespace();
+        ComponentSpecification spec = _componentResolver.getSpecification();
+
+        IComponent result = instantiateComponent(page, container, componentId, spec, componentNamespace);
+
+        container.addComponent(result);
+
+        // Recusively build the component.
+
+        constructComponent(cycle, page, result, spec, componentNamespace);
+
+        return result;
     }
 
     /**
@@ -405,38 +554,48 @@ public class PageLoader implements IPageLoader
         IComponent result = null;
 
         String className = spec.getComponentClassName();
-        Class componentClass = _resolver.findClass(className);
 
-        try
+        if (Tapestry.isNull(className))
         {
-            result = (IComponent) componentClass.newInstance();
+            result = new BaseComponent();
+        }
+        else
+        {
 
-            result.setNamespace(namespace);
-            result.setSpecification(spec);
-            result.setPage(page);
-            result.setContainer(container);
-            result.setId(id);
+            Class componentClass = _resolver.findClass(className);
+
+            try
+            {
+                result = (IComponent) componentClass.newInstance();
+
+            }
+            catch (ClassCastException ex)
+            {
+                throw new PageLoaderException(
+                    Tapestry.getString("PageLoader.class-not-component", className),
+                    container,
+                    ex);
+            }
+            catch (Exception ex)
+            {
+                throw new PageLoaderException(
+                    Tapestry.getString("PageLoader.unable-to-instantiate", className),
+                    container,
+                    ex);
+            }
+
+            if (result instanceof IPage)
+                throw new PageLoaderException(
+                    Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
+                    result);
 
         }
-        catch (ClassCastException ex)
-        {
-            throw new PageLoaderException(
-                Tapestry.getString("PageLoader.class-not-component", className),
-                container,
-                ex);
-        }
-        catch (Exception ex)
-        {
-            throw new PageLoaderException(
-                Tapestry.getString("PageLoader.unable-to-instantiate", className),
-                container,
-                ex);
-        }
 
-        if (result instanceof IPage)
-            throw new PageLoaderException(
-                Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
-                result);
+        result.setNamespace(namespace);
+        result.setSpecification(spec);
+        result.setPage(page);
+        result.setContainer(container);
+        result.setId(id);
 
         _count++;
 
@@ -446,24 +605,40 @@ public class PageLoader implements IPageLoader
     /**
      *  Instantitates a page from its specification.
      *
+     *  @param name the unqualified, simple, name for the page
+     *  @param namespace the namespace containing the page's specification
+     *  @param spec the page's specification
+     * 
+     *  We instantiate the page object, then set its specification,
+     *  names and locale.
      *
-     * We instantiate the page object, then set its specification,
-     * name and locale.
-     *
-     * @see IEngine
-     * @see ChangeObserver
+     *  @see IEngine
+     *  @see ChangeObserver
      **/
 
     private IPage instantiatePage(String name, INamespace namespace, ComponentSpecification spec)
         throws PageLoaderException
     {
-        String className;
-        Class pageClass;
         IPage result = null;
 
-        className = spec.getComponentClassName();
+        String pageName = namespace.constructQualifiedName(name);
+        String className = spec.getComponentClassName();
 
-        pageClass = _resolver.findClass(className);
+        if (Tapestry.isNull(className))
+        {
+            if (LOG.isDebugEnabled())
+                LOG.debug("Page " + namespace.constructQualifiedName(name) + " does not specify a component class.");
+
+            className = _engine.getPropertySource().getPropertyValue("net.sf.tapestry.default-page-class");
+
+            if (className == null)
+                className = BasePage.class.getName();
+
+            if (LOG.isDebugEnabled())
+                LOG.debug("Instantiating as class " + className);
+        }
+
+        Class pageClass = _resolver.findClass(className);
 
         try
         {
@@ -472,6 +647,7 @@ public class PageLoader implements IPageLoader
             result.setNamespace(namespace);
             result.setSpecification(spec);
             result.setName(name);
+            result.setPageName(pageName);
             result.setLocale(_locale);
         }
         catch (ClassCastException ex)
@@ -492,7 +668,7 @@ public class PageLoader implements IPageLoader
      *  any given instance of PageLoader is loading only a single page at a time.
      *  The page is immediately attached to the {@link IEngine engine}.
      *
-     *  @param name the name of the page to load
+     *  @param name the simple (unqualified) name of the page to load
      *  @param namespace from which the page is to be loaded (used
      *  when resolving components embedded by the page)
      *  @param cycle the request cycle the page is 
@@ -511,8 +687,6 @@ public class PageLoader implements IPageLoader
         _engine = cycle.getEngine();
 
         _locale = _engine.getLocale();
-        _specificationSource = _engine.getSpecificationSource();
-        _resolver = _engine.getResourceResolver();
 
         _count = 0;
         _depth = 0;
@@ -526,14 +700,15 @@ public class PageLoader implements IPageLoader
 
             constructComponent(cycle, page, page, specification, namespace);
 
-            setBindings(page);
+            establishInheritedBindings();
+
+            verifyRequiredParameters(page);
         }
         finally
         {
             _locale = null;
             _engine = null;
-            _specificationSource = null;
-            _resolver = null;
+            _inheritedBindingQueue.clear();
         }
 
         if (LOG.isInfoEnabled())
@@ -542,49 +717,36 @@ public class PageLoader implements IPageLoader
         return page;
     }
 
-    /** 
-     *  Sets all bindings, top-down.  Checking (as it goes) that all required parameters
-     *  have been set.
-     *
-     *  @since 1.0.6 
-     * 
-     **/
-
-    private void setBindings(IComponent container) throws PageLoaderException
+    private void establishInheritedBindings()
     {
-        Map components = container.getComponents();
+        LOG.debug("Establishing inherited bindings");
 
-        if (components.isEmpty())
-            return;
+        int count = _inheritedBindingQueue.size();
 
-        ComponentSpecification containerSpec = container.getSpecification();
-
-        Map propertyBindings = new HashMap();
-
-        Iterator i = components.entrySet().iterator();
-        while (i.hasNext())
+        for (int i = 0; i < count; i++)
         {
-            Map.Entry e = (Map.Entry) i.next();
-            String id = (String) e.getKey();
-            IComponent component = (IComponent) e.getValue();
-            ComponentSpecification spec = component.getSpecification();
-            ContainedComponent contained = containerSpec.getComponent(id);
+            QueuedInheritedBinding queued = (QueuedInheritedBinding) _inheritedBindingQueue.get(i);
 
-            bind(container, component, contained, propertyBindings);
-
-            setBindings(component);
+            queued.connect();
         }
     }
 
     private void addAssets(IComponent component, ComponentSpecification specification)
     {
-        Iterator i = specification.getAssetNames().iterator();
+        List names = specification.getAssetNames();
+
+        if (names.isEmpty())
+            return;
+
+        IResourceLocation specLocation = specification.getSpecificationLocation();
+
+        Iterator i = names.iterator();
 
         while (i.hasNext())
         {
             String name = (String) i.next();
             AssetSpecification assetSpec = specification.getAsset(name);
-            IAsset asset = convert(assetSpec);
+            IAsset asset = convert(assetSpec, specLocation);
 
             component.addAsset(name, asset);
         }
@@ -595,7 +757,7 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    private IAsset convert(AssetSpecification spec)
+    private IAsset convert(AssetSpecification spec, IResourceLocation specificationLocation)
     {
         AssetType type = spec.getType();
         String path = spec.getPath();
@@ -603,13 +765,20 @@ public class PageLoader implements IPageLoader
         if (type == AssetType.EXTERNAL)
             return _pageSource.getExternalAsset(path);
 
+        IResourceLocation baseLocation = null;
+
         if (type == AssetType.PRIVATE)
-            return _pageSource.getPrivateAsset(path);
+            baseLocation = specificationLocation;
+        else
+            baseLocation = _servletLocation;
 
-        // Could use a sanity check for  type == null,
-        // but instead we assume its a context asset.
+        // One known problem is that relative private assets for pages
+        // whose spec is in the context (not the classpath) will be computed
+        // wrong!  In fact, they'll be ContextAssets.
 
-        return _pageSource.getContextAsset(path);
+        IResourceLocation assetLocation = baseLocation.getRelativeLocation(path);
+
+        return _pageSource.getAsset(assetLocation);
     }
 
     public IEngine getEngine()

@@ -88,16 +88,16 @@ public class Visit implements Serializable
             "massacre",
             "universe" };
 
-    private List wordList;
+    private List _wordList;
 
-    private HangmanGame game;
+    private HangmanGame _game;
 
     public HangmanGame getGame()
     {
-        if (game == null)
-            game = new HangmanGame();
+        if (_game == null)
+            _game = new HangmanGame();
 
-        return game;
+        return _game;
     }
 
     /**
@@ -112,21 +112,21 @@ public class Visit implements Serializable
 
     private String getWord()
     {
-        if (wordList == null)
-            wordList = new ArrayList();
+        if (_wordList == null)
+            _wordList = new ArrayList();
 
-        if (wordList.size() == 0)
+        if (_wordList.size() == 0)
         {
             // Create a list of words that the user will see and shuffle them
             // in random order.  This prevents repeats of words until the
             // user has seen them all.
 
-            wordList.addAll(Arrays.asList(words));
-            Collections.shuffle(wordList);
+            _wordList.addAll(Arrays.asList(words));
+            Collections.shuffle(_wordList);
         }
 
         // Remove the last word in the list.
 
-        return (String) wordList.remove(wordList.size() - 1);
+        return (String) _wordList.remove(_wordList.size() - 1);
     }
 }

@@ -56,20 +56,26 @@ package net.sf.tapestry.junit.mock;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-
+import javax.servlet.http.Cookie;
 import junit.framework.AssertionFailedError;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
+import net.sf.tapestry.DefaultResourceResolver;
+import net.sf.tapestry.IResourceLocation;
+import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.util.xml.DocumentParseException;
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.oro.text.regex.MalformedPatternException;
@@ -110,7 +116,7 @@ public class MockTester
 {
     private static final Log LOG = LogFactory.getLog(MockTester.class);
 
-    private String _resourcePath;
+    private IResourceLocation _resourceLocation;
     private Document _document;
     private MockContext _context;
     private String _servletName;
@@ -129,16 +135,18 @@ public class MockTester
     private PatternMatcher _matcher;
     private PatternCompiler _compiler;
 
-    
     /**
      *  Constructs a new MockTester for the given resource path
      *  (which is the XML file to read).
      * 
      **/
 
-    public MockTester(String resourcePath) throws JDOMException, ServletException, DocumentParseException
+    public MockTester(String resourcePath)
+        throws JDOMException, ServletException, DocumentParseException, IOException
     {
-        _resourcePath = resourcePath;
+        IResourceResolver resolver = new DefaultResourceResolver();
+
+        _resourceLocation = new ClasspathResourceLocation(resolver, resourcePath);
 
         parse();
 
@@ -177,8 +185,18 @@ public class MockTester
         }
     }
 
-    private void executeRequest(Element request) throws IOException, ServletException, DocumentParseException
+    private void executeRequest(Element request)
+        throws IOException, ServletException, DocumentParseException
     {
+        Cookie[] oldRequestCookies = (_request == null ? null : _request.getCookies());
+
+        _request = new MockRequest(_context, "/" + _servlet.getServletName());
+
+        _request.addCookies(oldRequestCookies);
+
+        if (_response != null)
+            _request.addCookies(_response.getCookies());
+
         setupRequest(request);
 
         _response = new MockResponse(_request);
@@ -188,21 +206,24 @@ public class MockTester
         _response.end();
 
         executeAssertions(request);
-
     }
 
-    private void parse() throws JDOMException, DocumentParseException
+    private void parse() throws JDOMException, DocumentParseException, IOException
     {
         SAXBuilder builder = new SAXBuilder();
 
-        InputStream stream = getClass().getResourceAsStream(_resourcePath);
+        URL resourceURL = _resourceLocation.getResourceURL();
+
+        InputStream stream = resourceURL.openStream();
 
         if (stream == null)
             throw new DocumentParseException(
-                "Mock test script file " + _resourcePath + " does not exist.",
-                _resourcePath);
+                "Mock test script file " + _resourceLocation + " does not exist.",
+                _resourceLocation);
 
         _document = builder.build(stream);
+
+        stream.close();
     }
 
     private void setup() throws ServletException, DocumentParseException
@@ -210,7 +231,9 @@ public class MockTester
         Element root = _document.getRootElement();
 
         if (!root.getName().equals("mock-test"))
-            throw new DocumentParseException("Root element must be 'mock-test'.", _resourcePath);
+            throw new DocumentParseException(
+                "Root element must be 'mock-test'.",
+                _resourceLocation);
 
         setupContext(root);
         setupServlet(root);
@@ -218,9 +241,9 @@ public class MockTester
 
     private void setupContext(Element parent)
     {
-        Element context = parent.getChild("context");
-
         _context = new MockContext();
+
+        Element context = parent.getChild("context");
 
         if (context == null)
             return;
@@ -229,6 +252,11 @@ public class MockTester
 
         if (name != null)
             _context.setServletContextName(name);
+
+        String root = context.getAttributeValue("root");
+
+        if (root != null)
+            _context.setRootDirectory(root);
 
         setInitParameters(context, _context);
     }
@@ -251,11 +279,15 @@ public class MockTester
 
     private void setupRequest(Element request)
     {
-        _request = new MockRequest(_context, "/" + _servlet.getServletName());
-
         String method = request.getAttributeValue("method");
         if (method != null)
             _request.setMethod(method);
+
+        // It's really just the language from the locale.
+
+        String locale = request.getAttributeValue("locale");
+        if (locale != null)
+            _request.setLocale(new Locale(locale, "", ""));
 
         List parameters = request.getChildren("parameter");
         int count = parameters.size();
@@ -266,6 +298,11 @@ public class MockTester
 
             setRequestParameter(parameter);
         }
+
+        String failover = request.getAttributeValue("failover");
+
+        if (failover != null && failover.equals("true"))
+            _request.simulateFailover();
 
         // TBD: Headers, etc., etc.
     }
@@ -336,7 +373,9 @@ public class MockTester
         // Just a convient wrapper to percolate to the top and
         // mark this test as an error.
 
-        throw new ApplicationRuntimeException("Unable to instantiate servlet class " + className + ".", t);
+        throw new ApplicationRuntimeException(
+            "Unable to instantiate servlet class " + className + ".",
+            t);
     }
 
     public MockContext getContext()
@@ -362,8 +401,10 @@ public class MockTester
     private void executeAssertions(Element request) throws DocumentParseException
     {
         executeOutputAssertions(request);
+        executeRegexpAssertions(request);
         executeExpressionAssertions(request);
         executeOutputMatchesAssertions(request);
+        executeCookieAssertions(request);
     }
 
     /**
@@ -440,7 +481,7 @@ public class MockTester
     }
 
     /**
-     *  Handles &lt;assert-output&gt; elements inside &lt;request&gt;.
+     *  Handles &lt;assert-regexp&gt; elements inside &lt;request&gt;.
      *  Checks that a regular expression appears in the output.
      *  Content of element is the regular expression.
      * 
@@ -448,6 +489,37 @@ public class MockTester
      *  Attribute name is used in error messages.
      * 
      **/
+
+    private void executeRegexpAssertions(Element request) throws DocumentParseException
+    {
+        String outputString = null;
+
+        List assertions = request.getChildren("assert-regexp");
+        int count = assertions.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element a = (Element) assertions.get(i);
+
+            String name = a.getAttributeValue("name");
+            String pattern = a.getTextTrim();
+
+            if (outputString == null)
+                outputString = _response.getOutputString();
+
+            matchRegexp(name, outputString, pattern);
+        }
+
+    }
+
+    /**
+         *  Handles &lt;assert-output&gt; elements inside &lt;request&gt;.
+         *  Checks that a substring appears in the output.
+         *  Content of element is the substring to search for.
+         *  <p>
+         *  Attribute name is used in error messages.
+         * 
+         **/
 
     private void executeOutputAssertions(Element request) throws DocumentParseException
     {
@@ -461,12 +533,12 @@ public class MockTester
             Element a = (Element) assertions.get(i);
 
             String name = a.getAttributeValue("name");
-            String pattern = a.getTextTrim();
+            String substring = a.getTextTrim();
 
             if (outputString == null)
                 outputString = _response.getOutputString();
 
-            match(name, outputString, pattern);
+            matchSubstring(name, outputString, substring);
         }
 
     }
@@ -496,7 +568,10 @@ public class MockTester
         }
         catch (MalformedPatternException ex)
         {
-            throw new DocumentParseException("Malformed regular expression: " + pattern, _resourcePath, ex);
+            throw new DocumentParseException(
+                "Malformed regular expression: " + pattern,
+                _resourceLocation,
+                ex);
         }
 
         _patternCache.put(pattern, result);
@@ -504,9 +579,9 @@ public class MockTester
         return result;
     }
 
-    private void match(String name, String text, String pattern) throws DocumentParseException
+    private void matchRegexp(String name, String text, String pattern)
+        throws DocumentParseException
     {
-
         Pattern compiled = compile(pattern);
 
         if (getMatcher().contains(text, compiled))
@@ -514,8 +589,19 @@ public class MockTester
 
         System.err.println(text);
 
-        throw new AssertionFailedError(name + ": Response does not contain regular expression '" + pattern + "'.");
+        throw new AssertionFailedError(
+            name + ": Response does not contain regular expression '" + pattern + "'.");
+    }
 
+    private void matchSubstring(String name, String text, String substring)
+    {
+        if (text.indexOf(substring) >= 0)
+            return;
+
+        System.err.println(text);
+
+        throw new AssertionFailedError(
+            name + ": Response does not contain string '" + substring + "'.");
     }
 
     private void executeOutputMatchesAssertions(Element request) throws DocumentParseException
@@ -536,7 +622,8 @@ public class MockTester
 
     }
 
-    private void executeOutputMatchAssertion(Element element, String outputString) throws DocumentParseException
+    private void executeOutputMatchAssertion(Element element, String outputString)
+        throws DocumentParseException
     {
         String name = element.getAttributeValue("name");
         String value = element.getAttributeValue("subgroup");
@@ -581,8 +668,56 @@ public class MockTester
         {
             System.err.println(outputString);
             throw new AssertionFailedError(
-                name + ": Too few matches for '" + pattern + "' (expected " + count + " but got " + i + ").");
+                name
+                    + ": Too few matches for '"
+                    + pattern
+                    + "' (expected "
+                    + count
+                    + " but got "
+                    + i
+                    + ").");
         }
+    }
+
+    private void executeCookieAssertions(Element request)
+    {
+        List l = request.getChildren("assert-cookie");
+        int count = l.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element assertion = (Element) l.get(i);
+
+            executeCookieAssertion(assertion);
+        }
+    }
+
+    private void executeCookieAssertion(Element assertion)
+    {
+        String name = assertion.getAttributeValue("name");
+        String value = assertion.getAttributeValue("value");
+
+        Cookie[] cookies = _response.getCookies();
+
+        for (int i = 0; i < cookies.length; i++)
+        {
+            if (!cookies[i].getName().equals(name))
+                continue;
+
+            if (cookies[i].getValue().equals(value))
+                return;
+
+            throw new AssertionFailedError(
+                "Response cookie '"
+                    + name
+                    + "': expected '"
+                    + value
+                    + "', but was '"
+                    + cookies[i].getValue()
+                    + "'.");
+        }
+
+        throw new AssertionFailedError("Could not find cookie named '" + name + "' in response.");
     }
 
 }

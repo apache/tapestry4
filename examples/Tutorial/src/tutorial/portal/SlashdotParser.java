@@ -54,16 +54,17 @@
  */
 package tutorial.portal;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 
+import net.sf.tapestry.IAsset;
+import net.sf.tapestry.IResourceLocation;
+import net.sf.tapestry.asset.ExternalAsset;
 import net.sf.tapestry.util.xml.AbstractDocumentParser;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
@@ -77,23 +78,55 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 public class SlashdotParser extends AbstractDocumentParser
 {
-    public List parseStories(URL url, String resourcePath) throws DocumentParseException
+    private static class URLResourceLocation implements IResourceLocation
     {
+        private URL _URL;
+
+        private URLResourceLocation(URL URL)
+        {
+            _URL = URL;
+        }
+
+        public IResourceLocation getLocalization(Locale locale)
+        {
+            return this;
+        }
+
+        public String getName()
+        {
+            return _URL.getFile();
+        }
+
+        public IResourceLocation getRelativeLocation(String name)
+        {
+            return this; // Not right, but good enough.
+        }
+
+        public URL getResourceURL()
+        {
+            return _URL;
+        }
+
+        public IAsset toAsset()
+        {
+            return new ExternalAsset(_URL.toString());
+        }
+
+    }
+
+    public List parseStories(URL URL) throws DocumentParseException
+    {
+        IResourceLocation location = new URLResourceLocation(URL);
+
         try
         {
-            InputStream stream = url.openStream();
-            InputSource source = new InputSource(stream);
-            Document document = parse(source, resourcePath, "backslash");
+            Document document = parse(location, "backslash");
 
             return build(document);
         }
-        catch (IOException ex)
-        {
-            throw new DocumentParseException("Unable to read " + resourcePath + ".", ex);
-        }
         finally
         {
-            setResourcePath(null);
+            setResourceLocation(null);
         }
 
     }

@@ -91,19 +91,18 @@ public class SpecFactory
         return new ApplicationSpecification();
     }
 
-
     /**
      *  Creates an instance of {@link LibrarySpecification}.
      * 
      *  @since 2.2
      * 
      **/
-    
+
     public ILibrarySpecification createLibrarySpecification()
     {
         return new LibrarySpecification();
     }
-    
+
     /**
      * Creates a concrete instance of {@link AssetSpecification}.
      **/
@@ -129,6 +128,21 @@ public class SpecFactory
     public BindingSpecification createBindingSpecification(BindingType type, String value)
     {
         return new BindingSpecification(type, value);
+    }
+
+    /**
+     *  Creates a new instance of {@link ListenerBindingSpecification} for the
+     *  given language (which is option) and script.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public ListenerBindingSpecification createListenerBindingSpecification(
+        String language,
+        String script)
+    {
+        return new ListenerBindingSpecification(language, script);
     }
 
     /**
@@ -172,7 +186,7 @@ public class SpecFactory
     }
 
     /** @since 2.2 **/
-    
+
     public IBeanInitializer createExpressionBeanInitializer(String propertyName, String expression)
     {
         return new ExpressionBeanInitializer(propertyName, expression);
@@ -209,19 +223,19 @@ public class SpecFactory
      *  @since 2.2
      * 
      **/
-    
+
     public IBeanInitializer createStringBeanInitializer(String propertyName, String key)
     {
         return new StringBeanInitializer(propertyName, key);
     }
-    
+
     /**
      *  Creates a concrete instance of {@link net.sf.tapestry.spec.ExtensionSpecification}.
      * 
      *  @since 2.2
      * 
      **/
-    
+
     public ExtensionSpecification createExtensionSpecification()
     {
         return new ExtensionSpecification();

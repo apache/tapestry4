@@ -1,0 +1,330 @@
+<!-- $Id$ -->
+
+<chapter id="configuration">
+	<title>Configuring Tapestry</title>
+	
+<section id="configuration.deployment-descriptor">
+	<title>Web Deployment Descriptor</title>
+	
+<para>
+All Tapestry applications make use of the &ApplicationServlet; class as their
+servlet; it is rarely necessary to create a subclass.
+</para>
+
+
+<example>
+	<title>Virtual Library Deployment Descriptor</title>
+<programlisting>
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+ "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd"&gt;
+&lt;web-app&gt;
+  &lt;display-name&gt;Tapestry Virtual Library Demo&lt;/display-name&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;vlib&lt;/servlet-name&gt; <co id="configuration.web.servlet-name"/>
+    &lt;servlet-class&gt;net.sf.tapestry.&ApplicationServlet;&lt;/servlet-class&gt; <co id="configuration.web.servlet-class"/>
+    &lt;init-param&gt;
+    	&lt;param-name&gt;net.sf.tapestry.application-specification&lt;/param-name&gt; <co id="configuration.web.spec-path"/>
+    	&lt;param-value&gt;/net/sf/tapestry/vlib/Vlib.application&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;0&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+  
+  &lt;!-- The single mapping used for the Virtual Library application --&gt;
+
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;vlib&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/app&lt;/url-pattern&gt; <co id="configuration.web.url"/>
+  &lt;/servlet-mapping&gt;
+  
+  &lt;session-config&gt;
+  	&lt;session-timeout&gt;15&lt;/session-timeout&gt;
+  &lt;/session-config&gt;
+    
+  &lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+  &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;
+</programlisting>
+</example>
+
+<calloutlist>
+<callout arearefs="configuration.web.servlet-name">
+	<para>
+	The servlet name may be used when locating the application specification (though
+	not in this example).
+	</para>
+</callout>
+<callout arearefs="configuration.web.servlet-class">
+	<para>
+	The servlet class is nearly always &ApplicationServlet;.  There's rarely
+	a need to create a subclass; Tapestry has many hooks for extending the
+	application.
+	</para>
+</callout>
+<callout arearefs="configuration.web.spec-path">
+	<para>
+	The Virtual Library application stores its specification on the classpath, rather
+	than under &WEB-INF;, so it is necessary to provide the complete
+	path to the specification.
+	</para>
+</callout>
+<callout arearefs="configuration.web.url">
+	<para>
+	The servlet is mapped to <filename>/app</filename> within the context.  The context
+	itself has a path, determined by the application server, but typically
+	<filename>/vlib</filename>.  The client web browser will see the Tapestry application
+	as <filename>http://<replaceable>host</replaceable>/vlib/app</filename>.
+	</para>
+	
+	<para>
+	Using <filename>/app</filename> as the URL is a common convention when creating
+	Tapestry applications, but is not a requirement.
+	</para>
+</callout>
+</calloutlist>
+
+<para>
+On initialization, the Tapestry servlet will locate its
+application specification; a file that identifies details about the
+application, the pages and components within it, and any
+component libraries it uses.  Tapestry provides a great deal of
+flexibility on where the specification is stored; trivial Tapestry
+applications can operate without an application specification.
+</para>
+
+<para>
+Prior to release 2.4, application specifications had to be stored on the classpath.  This 
+is maintained for backwards compatibility.  In modern applications, the specification is
+stored under &WEB-INF;.  In fact, Tapestry performs a search to find the specification:
+</para>
+
+<orderedlist>
+<listitem>
+	<para>
+	On the classpath, as defined by the <literal>net.sf.tapestry.application-specification</literal>
+	configuration parameter.
+	</para>
+</listitem>
+<listitem>
+	<para>
+	As <filename>/WEB-INF/<replaceable>name</replaceable>/<replaceable>name</replaceable>.application</filename>.
+	The <replaceable>name</replaceable> is the servlet name.  This location
+	is only used in the rare case of a single WAR containing multiple Tapestry
+	applications.
+	</para>
+</listitem>
+<listitem>
+	<para>
+	As <filename>/WEB-INF/<replaceable>name</replaceable>.application</filename>.
+	Again, <replaceable>name</replaceable> is the
+	servlet name.  This is the standard scenario.
+	</para>
+</listitem>
+</orderedlist>
+
+<para>
+If the application specification still can not be found, then an empty, "stand in"
+application specification is used.
+</para>
+	
+	
+</section>  <!-- configuration.deployment-descriptor -->
+
+<section id="configuration.search-path">
+	<title>Configuration Search Path</title>
+	
+<para>
+Tapestry occasionally must obtain a value for a configuration property.    These configuration
+properties are items that are frequently optional, and don't fit into any particular
+specification.  Many are related to the runtime environment, such as ...
+</para>
+
+<para>
+Tapestry
+is very flexible about where values for such properties may be obtained.  In general,
+the search path for properties is:
+</para>
+
+<itemizedlist>
+	<listitem>
+		<para>
+		As a &spec.property; of the &spec.application; (in the application specification,
+		if the application uses one).
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As an <sgmltag class="starttag">init-parameter</sgmltag>
+		for the servlet, in the web application deployment descriptor.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As an <sgmltag class="starttag">init-parameter</sgmltag>
+		for the servlet context, also in the web application deployment descriptor.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As a JVM system property.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		Hard-coded "factory" defaults (for some properties).
+		</para>
+	</listitem>
+</itemizedlist>
+
+<para>
+It is expected that some configurations are not defined at any level; those will
+return null.
+</para>
+
+
+<para>
+Applications are free to leverage this lookup mechanism as well.  &IEngine; defines
+a <varname>propertySource</varname> property (of type &IPropertySource;)
+that can be used to perform such lookups.
+</para>
+
+<para>
+Applications may also want to change or augment
+the default search path; this is accomplished by overriding
+&AbstractEngine; method <function>createPropertySource()</function>.  For example,
+some configuration data could be drawn from a database.
+</para>
+		
+<para>
+The following table lists all the configuration values
+currently used in Tapestry.
+	
+<variablelist>
+	<title>Configuration Values</title>
+	
+<varlistentry>
+	<term>net.sf.tapestry.asset.dir</term>
+	<term>net.sf.tapestry.asset.URL</term>
+	
+	<listitem>
+	<para>
+	These two values are used to handle private assets.  Private assets are assets
+	that are stored on the classpath, and not normally visible to client web browsers.
+	</para>
+	
+	<para>
+	By specifying these two configuration values, Tapestry can export private assets
+	to a directory that is visible to the client web browser.  The <literal>URL</literal>
+	value should map to the directory specified by the <literal>dir</literal> value.
+	</para>
+	</listitem>
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.visit-class</term>
+	
+	<listitem>
+	<para>
+	The class name to instantiate as the 
+	<link linkend="intro.engine-service-visit">Visit object</link>.
+	</para>
+	</listitem>
+</varlistentry>
+
+
+<varlistentry>
+	<term>net.sf.tapestry.default-page-class</term>
+	
+	<listitem>
+	<para>
+	By default, any page that omits the
+	<varname>class</varname> attribute (in its &spec.page-specification;)
+	will be instantiated as &BasePage;.  If this is not desired,
+	the default may be overridden by specifying a fully
+	qualified class name.
+	</para>
+	</listitem>
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.engine-class</term>
+	
+	<listitem>
+	<para>
+	The fully qualified class name to instantiate as the application engine.
+	This configuration value is only used when the 
+	application specification does not exist, or fails to
+	specify a class.  By default, &BaseEngine; is used if this configuration
+	value is also left unspecified.
+	</para>
+	</listitem>
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.default-script-language</term>
+	
+	<listitem>
+	<para>
+	The name of a &BSF;-supported language, used when a
+	&spec.listener-binding; element does not specify
+	a language.  The "factory default" is "jython".
+	</para>
+	</listitem>
+	
+	
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.enable-reset-service</term>
+	
+	<listitem>
+	<para>
+	If not specified as "true", then the <literal>reset</literal> service
+	will be non functional.  The reset service is used to force
+	the running Tapestry application to discard all cached data (including
+	templates, specifications, pooled objects and more).  This must
+	be explicitly enabled, and should only be used in development (in production,
+	it is too easily exploited as a denial of service attack).
+	</para>
+	
+	<para>
+	Unlike most other configuration values, this must be specified
+	as a JVM system property.
+	</para>
+	</listitem>
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.disable-caching</term>
+	
+	<listitem>
+	<para>
+	If specified (as "true"), then the framework will discard all cached data
+	(specifications, templates, pooled objects, etc.) at the end of each request cycle.
+	</para>
+	
+	<para>
+	This slows down request handling but a significant amount, but is very
+	useful in devlopment; it means that changes to templates and specifications
+	are immediately visible to the application.  It also helps identify
+	any errors in managing persistent page state.
+	</para>
+	
+	<para>
+	This should never be enabled in production; the performance hit is too large.
+	Like <literal>net.sf.tapestry.enable-reset-service</literal>, this must
+	be specified as a JVM system property.
+	</para>
+	</listitem>
+</varlistentry>
+	
+
+</variablelist>
+</para>
+
+</section>  <!-- configuration.search-path -->
+
+
+
+</chapter>

@@ -69,6 +69,7 @@ import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.RequestContext;
@@ -310,7 +311,8 @@ public class Palette extends BaseComponent implements IFormComponent
         return _form;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         _form = Form.get(getPage().getRequestCycle());
 
@@ -333,8 +335,6 @@ public class Palette extends BaseComponent implements IFormComponent
 
         // Lots of work to produce JavaScript and HTML for this sucker.
 
-        String formName = _form.getName();
-
         _symbols = new HashMap(MAP_SIZE);
 
         runScript(cycle);
@@ -344,7 +344,9 @@ public class Palette extends BaseComponent implements IFormComponent
         // is submitted.  This is also key to the operation
         // of the PropertySelection.
 
-        _form.addEventHandler(FormEventType.SUBMIT, (String) _symbols.get("formSubmitFunctionName"));
+        _form.addEventHandler(
+            FormEventType.SUBMIT,
+            (String) _symbols.get("formSubmitFunctionName"));
 
         // Buffer up the HTML for the left and right selects (the available
         // items and the selected items).
@@ -382,7 +384,10 @@ public class Palette extends BaseComponent implements IFormComponent
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            _script = source.getScript("/net/sf/tapestry/contrib/palette/Palette.script");
+            IResourceLocation scriptLocation =
+                getSpecification().getSpecificationLocation().getRelativeLocation("Palette.script");
+
+            _script = source.getScript(scriptLocation);
         }
 
         Body body = Body.get(cycle);
@@ -394,7 +399,7 @@ public class Palette extends BaseComponent implements IFormComponent
         setImage(body, cycle, "deselectImage", _deselectImage);
         setImage(body, cycle, "deselectDisabledImage", _deselectDisabledImage);
 
-         if (_sort == SortMode.USER)
+        if (_sort == SortMode.USER)
         {
             setImage(body, cycle, "upImage", _upImage);
             setImage(body, cycle, "upDisabledImage", _upDisabledImage);
@@ -499,7 +504,8 @@ public class Palette extends BaseComponent implements IFormComponent
     {
         return new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+            public void render(IMarkupWriter writer, IRequestCycle cycle)
+                throws RequestCycleException
             {
                 _availableWriter.close();
                 _availableWriter = null;
@@ -516,7 +522,8 @@ public class Palette extends BaseComponent implements IFormComponent
     {
         return new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+            public void render(IMarkupWriter writer, IRequestCycle cycle)
+                throws RequestCycleException
             {
                 _selectedWriter.close();
                 _selectedWriter = null;

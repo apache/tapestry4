@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id -->
+<!-- $Id$ -->
 
 
 <!-- Fill in some code-coverage gaps in the page service. -->
@@ -21,15 +21,13 @@
     	<parameter name="context" value="Qbert"/>
     	
 	  	<assert-output name="Page Title">
-	<![CDATA[
-		<title>Exception</title>
-	]]>
+<![CDATA[
+<title>Exception</title>
+]]>
 		</assert-output>
-		
-<!-- Note: this doesn't seem like the correct message in this situation. -->
 				
 		<assert-output>
-		Page 'Qbert' not found in framework namespace.
+Page 'Qbert' not found in application namespace.
 		</assert-output>
 	
 	</request>
@@ -38,15 +36,15 @@
 		<parameter name="service" value="page"/>
 		
 	  	<assert-output name="Page Title">
-	<![CDATA[
-		<title>Exception</title>
-	]]>
+<![CDATA[
+<title>Exception</title>
+]]>
 		</assert-output>
 		
-<!-- Note: this *ALSO* doesn't seem like the correct message in this situation. -->
+<!-- Note: this doesn't seem like the correct message in this situation. -->
 			
 		<assert-output>
-		Service page requires exactly one service parameter.
+Service page requires exactly one service parameter.
 		</assert-output>
 	</request>		
 		

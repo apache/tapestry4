@@ -60,39 +60,82 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.IdAllocator;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.MatchResult;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
 
 /**
- *  A new implementation of the template parser; this does <em>not</em>
- *  rely on GNU Regexp, and performs a much more complex parsing job.
- *  This parser supports the &lt;jwc id="<i>id</id>"&gt; syntax (standard
- *  through release 1.0.1).    In addition, any HTML tag can become
- *  the equivalent of a &lt;jwc&gt; tag by including a <code>jwcid</code>
- *  attribute.  That latter is referred to as <em>invisible instrumentation</em>,
- *  as the instrumentation is invisible to a WYSIWYG editor.
+ *  Parses Tapestry templates, breaking them into a series of
+ *  {@link net.sf.tapestry.parse.TemplateToken tokens}.
+ *  Although often referred to as an "HTML template", there is no real
+ *  requirement that the template be HTML.  This parser can handle
+ *  any reasonable SGML derived markup (including XML), 
+ *  but specifically works around the ambiguities
+ *  of HTML reasonably.
+ * 
+ *  <p>Dynamic markup in Tapestry attempts to be invisible.
+ *  Components are arbitrary tags containing a <code>jwcid</code> attribute.
+ *  Such components must be well balanced (have a matching close tag, or
+ *  end the tag with "<code>/&gt;</code>".
+ * 
+ *  <p>Generally, the id specified in the template is matched against
+ *  an component defined in the specification.  However, implicit
+ *  components are also possible.  The jwcid attribute uses
+ *  the syntax "<code>@Type</code>" for implicit components.
+ *  Type is the component type, and may include a library id prefix.  Such
+ *  a component is anonymous (but is given a unique id).
+ * 
+ *  <p>
+ *  (The unique ids assigned start with a dollar sign, which is normally
+ *  no allowed for component ids ... this helps to make them stand out
+ *  and assures that they do not conflict with
+ *  user-defined component ids.  These ids tend to propagate
+ *  into URLs and become HTML element names and even JavaScript
+ *  variable names ... the dollar sign is acceptible in these contexts as 
+ *  well).
+ * 
+ *  <p>Implicit component may also be given a name using the syntax
+ *  "<code>componentId:@Type</code>".  Such a component should
+ *  <b>not</b> be defined in the specification, but may still be
+ *  accessed via {@link net.sf.tapestry.IComponent#getComponent(String)}.
+ * 
+ *  <p>
+ *  Both defined and implicit components may have additional attributes
+ *  defined, simply by including them in the template.  They set formal or
+ *  informal parameters of the component to static strings.
+ *  {@link net.sf.tapestry.spec.ComponentSpecification#getAllowInformalParameters()},
+ *  if false, will cause such attributes to be simply ignored.  For defined
+ *  components, conflicting values defined in the template are ignored.
+ * 
+ *  <p>
+ *  Attribute values of the form "<code>[[ <i>expression</i> ]]</code>"
+ *  are dynamic OGNL expressions.  These also set parameters 
  *
  *  <p>The parser removes
  *  the body of some tags (when the corresponding component doesn't
- *  allow a body), identifies more template errors, and allows
+ *  {@link net.sf.tapestry.spec.ComponentSpecification#getAllowBody() allow a body},
+ *  and allows
  *  portions of the template to be completely removed.
  *
- *  <p>The parser does a more thorough lexical analysis of the template,
+ *  <p>The parser does a pretty thorough lexical analysis of the template,
  *  and reports a great number of errors, including improper nesting
  *  of tags.
  *
- *  <p>The parser identifies attributes in dynamic tags (ordinary 
- *  tags with the <code>jwcid</code> attribute) and records them,
- *  where they later become static bindings on the component.
- *
- *  <p>Although the &lt;jwc&gt; tag is still supported (and will always
- *  be), it can now be avoided by using the jwcid attribute on
- *  existing tags, such as &lt;span&gt;.
- * 
- *  Starting in release 2.0.4 is a new option, <em>invisible localization</em>
- *  where the parser recognizes HTML of the form:
+ *  <p>The parser supports <em>invisible localization</em>:
+ *  The parser recognizes HTML of the form:
  *  <code>&lt;span key="<i>value</i>"&gt; ... &lt;/span&gt;</code>
  *  and converts them into a {@link TokenType#LOCALIZATION}
- *  token.
+ *  token.  You may also specifify a <code>raw</code> attribute ... if the value
+ *  is <code>true</code>, then the localized value is 
+ *  sent to the client without filtering, which is appropriate if the
+ *  value has any markup that should not be escaped.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -149,6 +192,49 @@ public class TemplateParser
      **/
 
     public static final String JWCID_ATTRIBUTE_NAME = "jwcid";
+
+    private static final String PROPERTY_NAME_PATTERN = "_?[a-zA-Z]\\w*";
+
+    /**
+     *  Pattern used to recognize ordinary components (defined in the specification).
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final String SIMPLE_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")$";
+
+    private static final int SIMPLE_ID_PATTERN_ID_GROUP = 1;
+
+    /**
+     *  Pattern used to recognize implicit components (whose type is defined in
+     *  the template).  Subgroup 1 is the id (which may be null) and subgroup 2
+     *  is the type (which may be qualified with a library prefix).
+     *  Subgroup 4 is the library id, Subgroup 5 is the simple component type.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final String IMPLICIT_ID_PATTERN =
+        "^("
+            + PROPERTY_NAME_PATTERN
+            + ")?@((("
+            + PROPERTY_NAME_PATTERN
+            + "):)?("
+            + PROPERTY_NAME_PATTERN
+            + "))$";
+
+    private static final int IMPLICIT_ID_PATTERN_ID_GROUP = 1;
+    private static final int IMPLICIT_ID_PATTERN_TYPE_GROUP = 2;
+    private static final int IMPLICIT_ID_PATTERN_LIBRARY_ID_GROUP = 4;
+    private static final int IMPLICIT_ID_PATTERN_SIMPLE_TYPE_GROUP = 5;
+
+    private Pattern _simpleIdPattern;
+    private Pattern _implicitIdPattern;
+    private PatternMatcher _patternMatcher;
+
+    private IdAllocator _idAllocator = new IdAllocator();
 
     private ITemplateParserDelegate _delegate;
 
@@ -252,21 +338,41 @@ public class TemplateParser
 
     private Map _attributes = new HashMap();
 
+    public TemplateParser()
+    {
+        Perl5Compiler compiler = new Perl5Compiler();
+
+        try
+        {
+            _simpleIdPattern = compiler.compile(SIMPLE_ID_PATTERN);
+            _implicitIdPattern = compiler.compile(IMPLICIT_ID_PATTERN);
+        }
+        catch (MalformedPatternException ex)
+        {
+            throw new ApplicationRuntimeException(ex);
+        }
+
+        _patternMatcher = new Perl5Matcher();
+    }
+
     /**
      *  Parses the template data into an array of {@link TemplateToken}s.
      *
-     *  <p>The parser is very much not threadsafe, so care should be taken
+     *  <p>The parser is <i>decidedly</i> not threadsafe, so care should be taken
      *  that only a single thread accesses it.
      *
      *  @param templateData the HTML template to parse.  Some tokens will hold
      *  a reference to this array.
-     *  @param delegate delegate object that "knows" about components
+     *  @param delegate  object that "knows" about defined components
      *  @param resourcePath a description of where the template originated from,
      *  used with error messages.
      *
      **/
 
-    public TemplateToken[] parse(char[] templateData, ITemplateParserDelegate delegate, String resourcePath)
+    public TemplateToken[] parse(
+        char[] templateData,
+        ITemplateParserDelegate delegate,
+        String resourcePath)
         throws TemplateParseException
     {
         TemplateToken[] result = null;
@@ -291,6 +397,7 @@ public class TemplateParser
             _stack.clear();
             _tokens.clear();
             _attributes.clear();
+            _idAllocator.clear();
         }
 
         return result;
@@ -386,7 +493,9 @@ public class TemplateParser
         {
             if (_cursor >= length)
                 throw new TemplateParseException(
-                    Tapestry.getString("TemplateParser.comment-not-ended", Integer.toString(startLine)),
+                    Tapestry.getString(
+                        "TemplateParser.comment-not-ended",
+                        Integer.toString(startLine)),
                     startLine,
                     _resourcePath);
 
@@ -411,7 +520,7 @@ public class TemplateParser
 
         if (_blockStart <= end)
         {
-            TemplateToken token = new TemplateToken(_templateData, _blockStart, end);
+            TemplateToken token = new TextToken(_templateData, _blockStart, end);
 
             _tokens.add(token);
         }
@@ -467,7 +576,10 @@ public class TemplateParser
         {
             if (_cursor >= length)
             {
-                String key = (tagName == null) ? "TemplateParser.unclosed-unknown-tag" : "TemplateParser.unclosed-tag";
+                String key =
+                    (tagName == null)
+                        ? "TemplateParser.unclosed-unknown-tag"
+                        : "TemplateParser.unclosed-tag";
 
                 throw new TemplateParseException(
                     Tapestry.getString(key, tagName, Integer.toString(startLine)),
@@ -517,7 +629,11 @@ public class TemplateParser
 
                     if (ch == '=' || ch == '/' || ch == '>' || Character.isWhitespace(ch))
                     {
-                        attributeName = new String(_templateData, attributeNameStart, _cursor - attributeNameStart);
+                        attributeName =
+                            new String(
+                                _templateData,
+                                attributeNameStart,
+                                _cursor - attributeNameStart);
 
                         state = ADVANCE_PAST_EQUALS;
                         break;
@@ -568,7 +684,7 @@ public class TemplateParser
                     if (ch == '/' || ch == '>')
                         throw new TemplateParseException(
                             Tapestry.getString(
-                                "TemplateParser.missing-attiribute-value",
+                                "TemplateParser.missing-attribute-value",
                                 tagName,
                                 Integer.toString(_line),
                                 attributeName),
@@ -608,7 +724,10 @@ public class TemplateParser
                     if (ch == quoteChar)
                     {
                         String attributeValue =
-                            new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
+                            new String(
+                                _templateData,
+                                attributeValueStart,
+                                _cursor - attributeValueStart);
 
                         _attributes.put(attributeName, attributeValue);
 
@@ -629,7 +748,10 @@ public class TemplateParser
                     if (ch == '/' || ch == '>' || Character.isWhitespace(ch))
                     {
                         String attributeValue =
-                            new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
+                            new String(
+                                _templateData,
+                                attributeValueStart,
+                                _cursor - attributeValueStart);
 
                         _attributes.put(attributeName, attributeValue);
 
@@ -688,9 +810,12 @@ public class TemplateParser
 
             boolean raw = checkBoolean(RAW_ATTRIBUTE_NAME, _attributes);
 
-            Map attributes = filter(_attributes, new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
+            Map attributes =
+                filter(
+                    _attributes,
+                    new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
 
-            TemplateToken token = new TemplateToken(localizationKey, raw, tagName, attributes);
+            TemplateToken token = new LocalizationToken(tagName, localizationKey, raw, attributes);
 
             _tokens.add(token);
 
@@ -701,112 +826,11 @@ public class TemplateParser
 
         if (jwcId != null)
         {
-            if (jwcId.equalsIgnoreCase(CONTENT_ID))
-            {
-                if (_ignoring)
-                    throw new TemplateParseException(
-                        Tapestry.getString(
-                            "TemplateParser.content-block-may-not-be-ignored",
-                            tagName,
-                            Integer.toString(startLine)),
-                        startLine,
-                        _resourcePath);
-
-                if (emptyTag)
-                    throw new TemplateParseException(
-                        Tapestry.getString(
-                            "TemplateParser.content-block-may-not-be-empty",
-                            tagName,
-                            Integer.toString(startLine)),
-                        startLine,
-                        _resourcePath);
-
-                _tokens.clear();
-                _blockStart = -1;
-
-                Tag tag = new Tag(tagName, startLine);
-
-                tag._mustBalance = true;
-                tag._content = true;
-
-                _stack.clear();
-                _stack.add(tag);
-
-                advance();
-
-                return;
-            }
-
-            boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
-
-            if (!(isRemoveId || _delegate.getKnownComponent(jwcId)))
-                throw new TemplateParseException(
-                    Tapestry.getString(
-                        "TemplateParser.unknown-component-id",
-                        tagName,
-                        Integer.toString(startLine),
-                        jwcId),
-                    startLine,
-                    _resourcePath);
-
-            if (_ignoring && !isRemoveId)
-                throw new TemplateParseException(
-                    Tapestry.getString(
-                        "TemplateParser.component-may-not-be-ignored",
-                        tagName,
-                        Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath);
-
-            // Ignore the body if we're removing the entire tag,
-            // of if the corresponding component doesn't allow
-            // a body.
-
-            boolean ignoreBody = !emptyTag && (isRemoveId || !_delegate.getAllowBody(jwcId));
-
-            if (_ignoring && ignoreBody)
-                throw new TemplateParseException(
-                    Tapestry.getString("TemplateParser.nested-ignore", tagName, Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath);
-
-            if (!emptyTag)
-            {
-                Tag tag = new Tag(tagName, startLine);
-
-                tag._component = !isRemoveId;
-                tag._removeTag = isRemoveId;
-
-                tag._ignoringBody = ignoreBody;
-
-                _ignoring = tag._ignoringBody;
-
-                tag._mustBalance = true;
-
-                _stack.add(tag);
-            }
-
-            // End any open block.
-
-            addTextToken(cursorStart - 1);
-
-            if (!isRemoveId)
-            {
-                if (_attributes.isEmpty())
-                    _tokens.add(new TemplateToken(jwcId, tagName));
-                else
-                    _tokens.add(new TemplateToken(jwcId, tagName, filter(_attributes, JWCID_ATTRIBUTE_NAME)));
-
-                if (emptyTag)
-                    _tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
-            }
-
-            advance();
-
+            processComponentStart(tagName, jwcId, emptyTag, startLine, cursorStart);
             return;
         }
 
-        // A static tag (not a <jwc> tag, or an ordinary tag without a jwcid attribute).
+        // A static tag (not a tag without a jwcid attribute).
         // We need to record this so that we can match close tags later.
 
         if (!emptyTag)
@@ -821,6 +845,228 @@ public class TemplateParser
             _blockStart = cursorStart;
 
         advance();
+    }
+
+    /**
+     *  Processes a tag that is the open tag for a component (but also handles
+     *  the $remove$ and $content$ tags).
+     * 
+     **/
+
+    private void processComponentStart(
+        String tagName,
+        String jwcId,
+        boolean emptyTag,
+        int startLine,
+        int cursorStart)
+        throws TemplateParseException
+    {
+        if (jwcId.equalsIgnoreCase(CONTENT_ID))
+        {
+            processContentTag(tagName, startLine, emptyTag);
+
+            return;
+        }
+
+        boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
+
+        if (_ignoring && !isRemoveId)
+            throw new TemplateParseException(
+                Tapestry.getString(
+                    "TemplateParser.component-may-not-be-ignored",
+                    tagName,
+                    Integer.toString(startLine)),
+                startLine,
+                _resourcePath);
+
+        String type = null;
+        boolean allowBody = false;
+
+        if (_patternMatcher.matches(jwcId, _implicitIdPattern))
+        {
+            MatchResult match = _patternMatcher.getMatch();
+
+            jwcId = match.group(IMPLICIT_ID_PATTERN_ID_GROUP);
+            type = match.group(IMPLICIT_ID_PATTERN_TYPE_GROUP);
+
+            String libraryId = match.group(IMPLICIT_ID_PATTERN_LIBRARY_ID_GROUP);
+            String simpleType = match.group(IMPLICIT_ID_PATTERN_SIMPLE_TYPE_GROUP);
+
+            // If (and this is typical) no actual component id was specified,
+            // then generate one on the fly.
+            // The allocated id for anonymous components is
+            // based on the simple (unprefixed) type, but starts
+            // with a leading dollar sign to ensure no conflicts
+            // with user defined component ids (which don't allow dollar signs
+            // in the id).
+
+            if (jwcId == null)
+                jwcId = _idAllocator.allocateId("$" + simpleType);
+
+            try
+            {
+                allowBody = _delegate.getAllowBody(libraryId, simpleType);
+            }
+            catch (PageLoaderException ex)
+            {
+                throw new TemplateParseException(
+                    Tapestry.getString(
+                        "TemplateParser.unresolved-component-type",
+                        type,
+                        tagName,
+                        Integer.toString(startLine)),
+                    startLine,
+                    _resourcePath,
+                    ex);
+            }
+        }
+        else
+        {
+            if (!isRemoveId)
+            {
+                if (!_patternMatcher.matches(jwcId, _simpleIdPattern))
+                    throw new TemplateParseException(
+                        Tapestry.getString(
+                            "TemplateParser.component-id-invalid",
+                            tagName,
+                            Integer.toString(startLine),
+                            jwcId),
+                        startLine,
+                        _resourcePath);
+
+                if (!_delegate.getKnownComponent(jwcId))
+                    throw new TemplateParseException(
+                        Tapestry.getString(
+                            "TemplateParser.unknown-component-id",
+                            tagName,
+                            Integer.toString(startLine),
+                            jwcId),
+                        startLine,
+                        _resourcePath);
+
+                allowBody = _delegate.getAllowBody(jwcId);
+
+            }
+        }
+
+        // Ignore the body if we're removing the entire tag,
+        // of if the corresponding component doesn't allow
+        // a body.
+
+        boolean ignoreBody = !emptyTag && (isRemoveId || !allowBody);
+
+        if (_ignoring && ignoreBody)
+            throw new TemplateParseException(
+                Tapestry.getString(
+                    "TemplateParser.nested-ignore",
+                    tagName,
+                    Integer.toString(startLine)),
+                startLine,
+                _resourcePath);
+
+        if (!emptyTag)
+            pushNewTag(tagName, startLine, isRemoveId, ignoreBody);
+
+        // End any open block.
+
+        addTextToken(cursorStart - 1);
+
+        if (!isRemoveId)
+        {
+            addOpenToken(tagName, jwcId, type);
+
+            if (emptyTag)
+                _tokens.add(new CloseToken(tagName));
+        }
+
+        advance();
+
+        return;
+    }
+
+    private void pushNewTag(String tagName, int startLine, boolean isRemoveId, boolean ignoreBody)
+    {
+        Tag tag = new Tag(tagName, startLine);
+
+        tag._component = !isRemoveId;
+        tag._removeTag = isRemoveId;
+
+        tag._ignoringBody = ignoreBody;
+
+        _ignoring = tag._ignoringBody;
+
+        tag._mustBalance = true;
+
+        _stack.add(tag);
+    }
+
+    private void processContentTag(String tagName, int startLine, boolean emptyTag)
+        throws TemplateParseException
+    {
+        if (_ignoring)
+            throw new TemplateParseException(
+                Tapestry.getString(
+                    "TemplateParser.content-block-may-not-be-ignored",
+                    tagName,
+                    Integer.toString(startLine)),
+                startLine,
+                _resourcePath);
+
+        if (emptyTag)
+            throw new TemplateParseException(
+                Tapestry.getString(
+                    "TemplateParser.content-block-may-not-be-empty",
+                    tagName,
+                    Integer.toString(startLine)),
+                startLine,
+                _resourcePath);
+
+        _tokens.clear();
+        _blockStart = -1;
+
+        Tag tag = new Tag(tagName, startLine);
+
+        tag._mustBalance = true;
+        tag._content = true;
+
+        _stack.clear();
+        _stack.add(tag);
+
+        advance();
+    }
+
+    private void addOpenToken(String tagName, String jwcId, String type)
+    {
+        OpenToken token = new OpenToken(tagName, jwcId, type);
+        _tokens.add(token);
+
+        if (_attributes.isEmpty())
+            return;
+
+        Iterator i = _attributes.entrySet().iterator();
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+
+            String key = (String) entry.getKey();
+
+            if (key.equalsIgnoreCase(JWCID_ATTRIBUTE_NAME))
+                continue;
+
+            String value = (String) entry.getValue();
+
+            // OGNL expressions look like "[[ expression ]]"
+
+            if (value.startsWith("[[") && value.endsWith("]]"))
+            {
+                value = extractExpression(value);
+
+                token.addExpressionValue(key, value);
+                continue;
+            }
+
+            token.addStaticValue(key, value);
+        }
     }
 
     /**
@@ -851,7 +1097,9 @@ public class TemplateParser
         {
             if (_cursor >= length)
                 throw new TemplateParseException(
-                    Tapestry.getString("TemplateParser.incomplete-close-tag", Integer.toString(startLine)),
+                    Tapestry.getString(
+                        "TemplateParser.incomplete-close-tag",
+                        Integer.toString(startLine)),
                     startLine,
                     _resourcePath);
 
@@ -892,7 +1140,10 @@ public class TemplateParser
 
         if (stackPos < 0)
             throw new TemplateParseException(
-                Tapestry.getString("TemplateParser.unmatched-close-tag", tagName, Integer.toString(startLine)),
+                Tapestry.getString(
+                    "TemplateParser.unmatched-close-tag",
+                    tagName,
+                    Integer.toString(startLine)),
                 startLine,
                 _resourcePath);
 
@@ -914,7 +1165,7 @@ public class TemplateParser
         {
             addTextToken(cursorStart - 1);
 
-            _tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
+            _tokens.add(new CloseToken(tagName));
         }
         else
         {
@@ -1003,42 +1254,11 @@ public class TemplateParser
     }
 
     /**
-     *  Returns a copy of the input Map, with the identified
-     *  key removed.  The check for matching keys is caseless.
-     *  May return null if the input Map is empty, or null, or
-     *  contains only the matching key.
-     * 
-     **/
-
-    private Map filter(Map input, String removeKey)
-    {
-        if (input == null || input.isEmpty())
-            return null;
-
-        Map result = null;
-
-        Iterator i = input.entrySet().iterator();
-        while (i.hasNext())
-        {
-            Map.Entry entry = (Map.Entry) i.next();
-
-            String key = (String) entry.getKey();
-
-            if (key.equalsIgnoreCase(removeKey))
-                continue;
-
-            if (result == null)
-                result = new HashMap(input.size());
-
-            result.put(key, entry.getValue());
-        }
-
-        return result;
-    }
-
-    /**
-     *  Variation of {@link #filter(Map, String)} when multiple keys
-     *  should be removed.
+     *  Returns a new Map that is a copy of the input Map with some
+     *  key/value pairs removed.  A list of keys is passed in
+     *  and matching keys (caseless comparison) from the input
+     *  Map are excluded from the output map.  May return null
+     *  (rather than return an empty Map).
      * 
      **/
 
@@ -1050,9 +1270,8 @@ public class TemplateParser
         Map result = null;
 
         Iterator i = input.entrySet().iterator();
-        
-nextkey:        
-        while (i.hasNext())
+
+        nextkey : while (i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();
 
@@ -1061,7 +1280,7 @@ nextkey:
             for (int j = 0; j < removeKeys.length; j++)
             {
                 if (key.equalsIgnoreCase(removeKeys[j]))
-                continue nextkey;
+                    continue nextkey;
             }
 
             if (result == null)
@@ -1100,20 +1319,71 @@ nextkey:
 
         return null;
     }
-    
+
+    /**
+     *  Conversions needed by {@link #extractExpression(String)}
+     * 
+     **/
+
+    private static final String[] CONVERSIONS =
+        { "&lt;", "<", "&gt;", ">", "&quot;", "\"", "&amp;", "&" };
+
+    /**
+     *  Provided a raw input string that has been recognized to be an expression
+     *  (starts with "[[" and ends with "]]"), this removes the outer brackets
+     *  and excess white space and converts &amp;amp;, &amp;quot; &amp;lt; and &amp;gt;
+     *  to their normal character values (otherwise its impossible to specify
+     *  those values in expressions in the template).
+     * 
+     **/
+
+    private String extractExpression(String input)
+    {
+        int inputLength = input.length() - 2;
+
+        StringBuffer buffer = new StringBuffer(inputLength - 2);
+
+        int cursor = 2;
+
+        while (cursor < inputLength)
+        {
+            outer : for (int i = 0; i < CONVERSIONS.length; i += 2)
+            {
+                String entity = CONVERSIONS[i];
+                int entityLength = entity.length();
+                String value = CONVERSIONS[i + 1];
+
+                if (cursor + entityLength > inputLength)
+                    continue;
+
+                if (input.substring(cursor, cursor + entityLength).equals(entity))
+                {
+                    buffer.append(value);
+                    cursor += entityLength;
+                    break outer;
+                }
+            }
+
+            buffer.append(input.charAt(cursor));
+            cursor++;
+        }
+
+        return buffer.toString().trim();
+    }
+
     /**
      *  Returns true if the  map contains the given key (caseless search) and the value
      *  is "true" (caseless comparison).
      * 
      **/
-    
+
     private boolean checkBoolean(String key, Map map)
     {
         String value = findValueCaselessly(key, map);
-        
+
         if (value == null)
             return false;
-            
-         return value.equalsIgnoreCase("true");
+
+        return value.equalsIgnoreCase("true");
     }
 }

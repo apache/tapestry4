@@ -1,0 +1,2 @@
+This context is used to test pages and components that use the 1.4 specification DTD, where
+the class attribute is optional and can be defaulted.

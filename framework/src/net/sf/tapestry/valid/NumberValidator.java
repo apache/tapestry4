@@ -332,13 +332,10 @@ public class NumberValidator extends BaseValidator
         if (isRequired())
             symbols.put("requiredMessage", getString("field-is-required", locale, displayName));
 
-        NumberAdaptor adaptor = getAdaptor(field);
-
         symbols.put("formatMessage", getString("invalid-numeric-format", locale, displayName));
 
         if (_minimum != null || _maximum != null)
         {
-
             symbols.put("rangeMessage", buildRangeMessage(displayName, locale));
         }
 

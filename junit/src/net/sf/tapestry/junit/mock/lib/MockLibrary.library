@@ -6,12 +6,14 @@
 	
 <library-specification>
 	
-	<page name="Dumper" specification-path="/net/sf/tapestry/junit/mock/lib/Dumper.page"/>
+	<page name="Dumper" specification-path="Dumper.page"/>
 	
-	<page name="Properties" specification-path="/net/sf/tapestry/junit/mock/lib/Properties.page"/>
+	<page name="Properties" specification-path="Properties.page"/>
 
-	<component-alias type="Border" specification-path="/net/sf/tapestry/junit/mock/lib/Border.jwc"/>
+	<component-alias type="Border" specification-path="Border.jwc"/>
 	
-	<component-alias type="ShowError" specification-path="/net/sf/tapestry/junit/mock/lib/ShowError.jwc"/>
+	<component-alias type="ShowError" specification-path="ShowError.jwc"/>
+	
+	<library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
 	
 </library-specification>	

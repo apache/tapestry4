@@ -54,6 +54,7 @@
  */
 package net.sf.tapestry.spec;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  *  Defines the configuration for a Tapestry application.  An ApplicationSpecification
@@ -65,11 +66,13 @@ package net.sf.tapestry.spec;
  *
  **/
 
-public class ApplicationSpecification extends LibrarySpecification implements IApplicationSpecification
+public class ApplicationSpecification
+    extends LibrarySpecification
+    implements IApplicationSpecification
 {
     private String _name;
     private String _engineClassName;
- 
+
     public String getName()
     {
         return _name;
@@ -90,9 +93,10 @@ public class ApplicationSpecification extends LibrarySpecification implements IA
         _name = name;
     }
 
-    public String toString()
+    protected void extendDescription(ToStringBuilder builder)
     {
-        return "ApplicationSpecification[" + _name + " " + _engineClassName + "]";
+        builder.append("name", _name);
+        builder.append("engineClassName", _engineClassName);
     }
 
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+	
+<page-specification class="tutorial.workbench.table.Table">
+  
+  <component id="localeList" type="LocaleList">
+  	<binding name="localeSelectionListener" expression="localeSelectionListener"/>
+  </component>
+  
+</page-specification>

@@ -70,11 +70,11 @@ import java.util.Map;
 public interface IScript
 {
     /**
-     *  Returns a string representing where the script was loaded from.
+     *  Returns the location from which the script was loaded.
      *
      **/
 
-    public String getScriptPath();
+    public IResourceLocation getScriptLocation();
 
     /**
      *  Executes the script, which will read and modify the symbols {@link Map}, and return
