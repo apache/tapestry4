@@ -73,6 +73,8 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 
+import org.apache.tapestry.event.ChangeObserver;
+import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResourceLocation;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -1349,5 +1351,229 @@ public final class Tapestry
                 "Tapestry.missing-method-invocation",
                 object.getClass().getName(),
                 methodName));
+    }
+
+    /**
+     * Method used by pages and components to send notifications about
+     * property changes.
+     * 
+     * @param component the component containing the property
+     * @param propertyName the name of the property which changed
+     * @param newValue the new value for the property
+     * 
+     * @since 3.0
+     */
+    public static void fireObservedChange(
+        IComponent component,
+        String propertyName,
+        Object newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event = new ObservedChangeEvent(component, propertyName, newValue);
+
+        observer.observeChange(event);
+    }
+
+    /**
+     * Method used by pages and components to send notifications about
+     * property changes.
+     * 
+     * @param component the component containing the property
+     * @param propertyName the name of the property which changed
+     * @param newValue the new value for the property
+     * 
+     * @since 3.0
+     */
+    public static void fireObservedChange(
+        IComponent component,
+        String propertyName,
+        boolean newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event =
+            new ObservedChangeEvent(
+                component,
+                propertyName,
+                newValue ? Boolean.TRUE : Boolean.FALSE);
+
+        observer.observeChange(event);
+    }
+
+    /**
+     * Method used by pages and components to send notifications about
+     * property changes.
+     * 
+     * @param component the component containing the property
+     * @param propertyName the name of the property which changed
+     * @param newValue the new value for the property
+     * 
+     * @since 3.0
+     */
+    public static void fireObservedChange(
+        IComponent component,
+        String propertyName,
+        double newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event =
+            new ObservedChangeEvent(component, propertyName, new Double(newValue));
+
+        observer.observeChange(event);
+    }
+
+    /**
+     * Method used by pages and components to send notifications about
+     * property changes.
+     * 
+     * @param component the component containing the property
+     * @param propertyName the name of the property which changed
+     * @param newValue the new value for the property
+     * 
+     * @since 3.0
+     */
+    public static void fireObservedChange(
+        IComponent component,
+        String propertyName,
+        float newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event =
+            new ObservedChangeEvent(component, propertyName, new Float(newValue));
+
+        observer.observeChange(event);
+    }
+
+    /**
+    * Method used by pages and components to send notifications about
+    * property changes.
+    * 
+    * @param component the component containing the property
+    * @param propertyName the name of the property which changed
+    * @param newValue the new value for the property
+    * 
+    * @since 3.0
+    */
+    public static void fireObservedChange(IComponent component, String propertyName, int newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event =
+            new ObservedChangeEvent(component, propertyName, new Integer(newValue));
+
+        observer.observeChange(event);
+    }
+
+    /**
+    * Method used by pages and components to send notifications about
+    * property changes.
+    * 
+    * @param component the component containing the property
+    * @param propertyName the name of the property which changed
+    * @param newValue the new value for the property
+    * 
+    * @since 3.0
+    */
+    public static void fireObservedChange(IComponent component, String propertyName, long newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event =
+            new ObservedChangeEvent(component, propertyName, new Long(newValue));
+
+        observer.observeChange(event);
+    }
+
+    /**
+     * Method used by pages and components to send notifications about
+     * property changes.
+     * 
+     * @param component the component containing the property
+     * @param propertyName the name of the property which changed
+     * @param newValue the new value for the property
+     * 
+     * @since 3.0
+     */
+    public static void fireObservedChange(IComponent component, String propertyName, char newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event =
+            new ObservedChangeEvent(component, propertyName, new Character(newValue));
+
+        observer.observeChange(event);
+    }
+
+    /**
+     * Method used by pages and components to send notifications about
+     * property changes.
+     * 
+     * @param component the component containing the property
+     * @param propertyName the name of the property which changed
+     * @param newValue the new value for the property
+     * 
+     * @since 3.0
+     */
+    public static void fireObservedChange(IComponent component, String propertyName, byte newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event =
+            new ObservedChangeEvent(component, propertyName, new Byte(newValue));
+
+        observer.observeChange(event);
+    }
+
+    /**
+     * Method used by pages and components to send notifications about
+     * property changes.
+     * 
+     * @param component the component containing the property
+     * @param propertyName the name of the property which changed
+     * @param newValue the new value for the property
+     * 
+     * @since 3.0
+     */
+    public static void fireObservedChange(
+        IComponent component,
+        String propertyName,
+        short newValue)
+    {
+        ChangeObserver observer = component.getPage().getChangeObserver();
+
+        if (observer == null)
+            return;
+
+        ObservedChangeEvent event =
+            new ObservedChangeEvent(component, propertyName, new Short(newValue));
+
+        observer.observeChange(event);
     }
 }

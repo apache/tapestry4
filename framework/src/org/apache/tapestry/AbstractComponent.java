@@ -69,7 +69,6 @@ import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.bean.BeanProviderPropertyAccessor;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
-import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
@@ -326,112 +325,85 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         finishLoad();
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, int)} instead.
+     */
     protected void fireObservedChange(String propertyName, int newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, Object)} instead.
+     */
     protected void fireObservedChange(String propertyName, Object newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, boolean)} instead.
+     */
     protected void fireObservedChange(String propertyName, boolean newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, double)} instead.
+     */
     protected void fireObservedChange(String propertyName, double newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, float)} instead.
+     */
     protected void fireObservedChange(String propertyName, float newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, long)} instead.
+     */
     protected void fireObservedChange(String propertyName, long newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, char)} instead.
+     */
     protected void fireObservedChange(String propertyName, char newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, byte)} instead.
+     */
     protected void fireObservedChange(String propertyName, byte newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
+    /**
+     * @deprecated To be removed in 3.1. 
+     * Use {@link Tapestry#fireObservedChange(IComponent, String, short)} instead.
+     */
     protected void fireObservedChange(String propertyName, short newValue)
     {
-        ChangeObserver observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
+        Tapestry.fireObservedChange(this, propertyName, newValue);
     }
 
     /**
@@ -517,14 +489,14 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /**
-	 *  Returns an object used to resolve classes.
+     *  Returns an object used to resolve classes.
      *  @since 3.0
-	 *
-	 **/
+     *
+     **/
     private IResourceResolver getResourceResolver()
     {
-    	return getPage().getEngine().getResourceResolver();
-    } 
+        return getPage().getEngine().getResourceResolver();
+    }
 
     /**
      *  Returns the named binding, or null if it doesn't exist.
@@ -559,7 +531,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  will be an {@link IPageRecorder}.
      *
      *  @see IPage#getChangeObserver()
-     *
+     *  @deprecated To be removed in 3.1; use {@link IPage#getChangeObserver()}.
      **/
 
     public ChangeObserver getChangeObserver()
@@ -1174,24 +1146,24 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
     }
 
-	/**
-	 *  Sets a property of a component.
-	 *  @see IComponent 
+    /**
+     *  Sets a property of a component.
+     *  @see IComponent 
      *  @since 3.0
-	 */
-	public void setProperty(String propertyName, Object value)
-	{		
-		IResourceResolver resolver = getResourceResolver();
-		OgnlUtils.set(propertyName, resolver, this, value);
-}	
-	/**
-	 *  Gets a property of a component.
-	 *  @see IComponent 
+     */
+    public void setProperty(String propertyName, Object value)
+    {
+        IResourceResolver resolver = getResourceResolver();
+        OgnlUtils.set(propertyName, resolver, this, value);
+    }
+    /**
+     *  Gets a property of a component.
+     *  @see IComponent 
      *  @since 3.0
-	 */
-	public Object getProperty(String propertyName)
-	{
-		IResourceResolver resolver = getResourceResolver();
-		return OgnlUtils.get(propertyName, resolver, this);
-	}
+     */
+    public Object getProperty(String propertyName)
+    {
+        IResourceResolver resolver = getResourceResolver();
+        return OgnlUtils.get(propertyName, resolver, this);
+    }
 }
