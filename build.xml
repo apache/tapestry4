@@ -97,9 +97,14 @@
 	<ant dir="junit" target="run" inheritAll="false"/>
 </target>
 
+<target name="clover"
+	description="Execute the JUnit tests and generate Code Coverage report.">
+	<ant dir="junit" target="clover" inheritAll="false"/>
+</target>
+
 <target name="dist"
 		description="Builds the Tapestry distribution from scratch."
-  		depends="clean-all,install,junit,documentation,javadoc">
+  		depends="clean-all,install,junit,documentation,clover,javadoc">
 
 	<!-- After building, clean all the subprojects. -->
 	<antcall target="clean"/>
@@ -259,6 +264,10 @@
 		longfile="gnu"
 		compression="gzip">
 		<tarfileset dir="${dist.root.dir}">
+		
+			<!-- Don't ship the code coverage report; it's huge. -->
+			
+			<exclude name="${dist.base}/web/doc/clover/**"/>
 			<include name="${dist.base}/web/**"/>
 		</tarfileset>
 	</tar>

@@ -27,7 +27,6 @@ package net.sf.tapestry;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
@@ -52,7 +51,6 @@ import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.StringSplitter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.mortbay.util.URI;
 
 /**
  *  This class encapsulates all the relevant data for one request cycle of an
