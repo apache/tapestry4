@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
+<application name="Invalid Page Name" 
+	engine-class="net.sf.tapestry.engine.SimpleEngine">
+	
+  <service name="home" class="tutorial.workbench.WorkbenchHomeService"/>
+  <service name="chart" class="tutorial.workbench.chart.ChartService"/>
+  <service name="in$valid" class="it.just.doesnt.matter.Service"/>
+	
+  <page name="Home" specification-path="/tutorial/workbench/Home.jwc"/>
+  
+</application>

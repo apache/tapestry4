@@ -26,11 +26,15 @@ package net.sf.tapestry.junit.parse;
 
 import java.io.InputStream;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import net.sf.tapestry.parse.SpecificationParser;
+import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.ParameterSpecification;
+import net.sf.tapestry.util.xml.DocumentParseException;
 
 /**
  *  Tests the specification parser (which reads page and component
@@ -59,6 +63,34 @@ public class SpecificationParserTest extends TestCase
         return parser.parseComponentSpecification(input, simpleName);
     }
 
+    /** @since 2.2 **/
+
+    private ApplicationSpecification parseApp(String simpleName) throws Exception
+    {
+        SpecificationParser parser = new SpecificationParser();
+
+        InputStream input = getClass().getResourceAsStream(simpleName);
+
+        return parser.parseApplicationSpecification(input, simpleName);
+    }
+
+    /** 
+     * 
+     *  Asserts that the exception message contains the
+     *  indicated substring.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+
+    private void checkException(DocumentParseException ex, String string)
+    {
+        if (ex.getMessage().indexOf(string) >= 0)
+            return;
+
+        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
+    }
+
     /**
      *  Tests that the parser can handle a 1.2 specification
      *  that includes a &lt;string-binding&gt; element.
@@ -74,4 +106,157 @@ public class SpecificationParserTest extends TestCase
         assertEquals("type", BindingType.STRING, bs.getType());
         assertEquals("key", "label.hello", bs.getValue());
     }
+
+    /**
+     *  Test valid parameter name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void testValidParameterName() throws Exception
+    {
+        ComponentSpecification spec = parse("ValidParameterName.jwc");
+
+        ParameterSpecification ps = spec.getParameter("valid");
+
+        assertNotNull("Parameter specification.", ps);
+    }
+
+    /**
+     *  Test invalid parameter name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void testInvalidParameterName() throws Exception
+    {
+        try
+        {
+            ComponentSpecification spec = parse("InvalidParameterName.jwc");
+
+            throw new AssertionFailedError("Should not be able to parse document.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "in-valid");
+            checkException(ex, "Parameter");
+        }
+    }
+
+    /**
+     *  Test invalid parameter name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void testInvalidComponentId() throws Exception
+    {
+        try
+        {
+            ComponentSpecification spec = parse("InvalidComponentId.jwc");
+
+            throw new AssertionFailedError("Should not be able to parse document.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "in.valid");
+            checkException(ex, "component id");
+        }
+    }
+
+    /**
+     *  Test invalid parameter name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void testInvalidAssetName() throws Exception
+    {
+        try
+        {
+            ComponentSpecification spec = parse("InvalidAssetName.jwc");
+
+            throw new AssertionFailedError("Should not be able to parse document.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "in.valid");
+            checkException(ex, "asset name");
+        }
+    }
+
+    /**
+     *  Test invalid page name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void testInvalidPageName() throws Exception
+    {
+        try
+        {
+            ApplicationSpecification spec = parseApp("InvalidPageName.application");
+
+            throw new AssertionFailedError("Should not be able to parse document.");
+
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "in$valid");
+            checkException(ex, "page name");
+        }
+    }
+        
+    /**
+     *  Test invalid service name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public void testInvalidServiceName()
+    throws Exception
+    {
+        try
+        {
+            ApplicationSpecification spec = 
+                parseApp("InvalidServiceName.application");
+                
+             throw new AssertionFailedError("Should not be able to parse document.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "in$valid");
+            checkException(ex, "service");
+        }
+    }
+        
+    /**
+     *  Test invalid service name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public void testInvalidComponentAlias()
+    throws Exception
+    {
+        try
+        {
+            ApplicationSpecification spec = 
+                parseApp("InvalidComponentAlias.application");
+                
+             throw new AssertionFailedError("Should not be able to parse document.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "Invalid$Component");
+            checkException(ex, "alias");
+        }
+    }             
 }
