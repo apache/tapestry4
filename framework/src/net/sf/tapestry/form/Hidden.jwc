@@ -28,15 +28,7 @@
     Listener notified after the value is restored.
     </description>
   </parameter>
-
-  <parameter name="datasqueeze" 
-  	required="no" 
-  	java-type="java.lang.Boolean"
-  	direction="custom">
-    <description>
-    Use DataSqueezer to pass value.
-    </description>
-  </parameter>
   
-
+  <parameter name="encode" java-type="boolean" direction="in"/>
+  
 </component-specification>

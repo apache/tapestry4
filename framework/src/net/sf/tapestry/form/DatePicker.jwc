@@ -17,7 +17,7 @@
 
   <component id="dateHidden" type="Hidden">
        	<binding name="value" expression="javaScriptValue"/>
-       	<field-binding name="datasqueeze" field-name="Boolean.FALSE"/>
+       	<field-binding name="encode" field-name="Boolean.FALSE"/>
   </component>
 
   <component id="datePickerScript" type="Script">

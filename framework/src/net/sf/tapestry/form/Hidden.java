@@ -48,10 +48,19 @@ import net.sf.tapestry.util.io.DataSqueezer;
 
 public class Hidden extends AbstractFormComponent
 {
-    private IBinding _datasqueezeBinding;
     private IBinding _valueBinding;
     private IActionListener _listener;
     private String _name;
+
+    /**
+     *  If true, the value is encoded using a DataSqueezer.  If false,
+     *  the value must be a String and is not encoded.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private boolean _encode = true;
 
     public String getName()
     {
@@ -64,11 +73,6 @@ public class Hidden extends AbstractFormComponent
         boolean formRewound = form.isRewinding();
 
         _name = form.getElementId(this);
-        
-        Boolean datasqueeze = (Boolean) _datasqueezeBinding.getObject();
-        if (datasqueeze == null) {
-            datasqueeze = Boolean.TRUE;
-        } 
 
         // If the form containing the Hidden isn't rewound, then render.
 
@@ -80,12 +84,12 @@ public class Hidden extends AbstractFormComponent
             if (cycle.isRewinding())
                 return;
 
-            Object value = _valueBinding.getObject();
-
             String externalValue = null;
 
-            if (datasqueeze.equals(Boolean.TRUE)) 
+            if (_encode)
             {
+                Object value = _valueBinding.getObject();
+
                 try
                 {
                     externalValue = getDataSqueezer().squeeze(value);
@@ -95,10 +99,8 @@ public class Hidden extends AbstractFormComponent
                     throw new RequestCycleException(this, ex);
                 }
             }
-            else 
-            {
-                externalValue = value.toString();
-            }
+            else
+                externalValue = (String) _valueBinding.getObject("value", String.class);
 
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
@@ -111,7 +113,7 @@ public class Hidden extends AbstractFormComponent
         String externalValue = cycle.getRequestContext().getParameter(_name);
         Object value = null;
 
-        if (datasqueeze.equals(Boolean.TRUE)) 
+        if (_encode)
         {
             try
             {
@@ -123,9 +125,7 @@ public class Hidden extends AbstractFormComponent
             }
         }
         else
-        {
-            value = externalValue;    
-        }
+            value = externalValue;
 
         // A listener is not always necessary ... it's easy to code
         // the synchronization as a side-effect of the accessor method.
@@ -136,9 +136,8 @@ public class Hidden extends AbstractFormComponent
             _listener.actionTriggered(this, cycle);
     }
 
-
     /** @since 2.2 **/
-    
+
     private DataSqueezer getDataSqueezer()
     {
         return getPage().getEngine().getDataSqueezer();
@@ -164,16 +163,6 @@ public class Hidden extends AbstractFormComponent
         _valueBinding = valueBinding;
     }
 
-    public IBinding getDatasqueezeBinding()
-    {
-        return _datasqueezeBinding;
-    }
-
-    public void setDatasqueezeBinding(IBinding datasqueezeBinding)
-    {
-        _datasqueezeBinding = datasqueezeBinding;
-    }
-
     /**
      * 
      *  Returns false.  Hidden components are never disabled.
@@ -181,10 +170,32 @@ public class Hidden extends AbstractFormComponent
      *  @since 2.2
      * 
      **/
-    
+
     public boolean isDisabled()
     {
         return false;
     }
-    
+
+    /** 
+     * 
+     *  Returns true if the compent encodes object values using a
+     *  {@link net.sf.tapestry.util.io.DataSqueezer}, false
+     *  if values are always Strings.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public boolean getEncode()
+    {
+        return _encode;
+    }
+
+    /** @since 2.2 **/
+
+    public void setEncode(boolean encode)
+    {
+        _encode = encode;
+    }
+
 }
