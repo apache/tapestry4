@@ -25,6 +25,6 @@
     <classpathentry kind="lib" path="lib/ext/ognl-2.6.3.jar"/>
     <classpathentry kind="lib" path="lib/j2ee/geronimo-ejb.jar"/>
     <classpathentry kind="lib" path="lib/j2ee/jsp-api.jar"/>
-    <classpathentry kind="lib" path="lib/j2ee/servlet-api.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/j2ee/servlet-api.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

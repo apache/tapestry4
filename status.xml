@@ -6,7 +6,7 @@
     <person name="Howard M. Lewis Ship"  email="hlship@comcast.net"      id="HLS" />
     <person name="David Solis"      email="dsolis@legosoft.com.mx"      id="DS" />
     <person name="Harish Krishnaswamy"  id="HK"/>
-    <person name="Erik Hatchert" id="EH"/>
+    <person name="Erik Hatcher" id="EH"/>
     <person name="Richard Lewis-Shell" id="RLS"/>
     <person name="Mind Bridge" id="MB"/>
 
@@ -48,7 +48,7 @@
 <!-- Use due-to to give acknowledgement for patches. -->
   	
   
- <release version="3.0-beta-4" date="unreleased">
+ <release version="3.0-beta-4" date="Feb 5 2004">
 
 <action type="update" dev="DS">
 Change direction of parameter model for WML components, SelectionField and PropertySelection

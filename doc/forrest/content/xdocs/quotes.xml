@@ -77,6 +77,32 @@ object-oriented
 </section>
 
 <section>
+	<title>Jason Cox</title>	
+	
+<p>
+When I see things like "I can use Struts+Tiles+JSP 2.0 Taglibs" I kind of chuckle.
+ While you have to learn three different, albeit related, technologies 
+ I just have to use Tapestry. With this kind of mindset, is it any wonder 
+ companies are looking to ASP for their front-ends? 
+</p>
+	
+<p>
+	When I took my current position, I decided to use ASP to develop the front-end
+	 piece for similar reasons ... 
+
+	I was fortunate to find Tapestry before I started development in ASP.
+	 Not only did it allow for me to meet my goals, but I actually have fun developing now. 
+	 I used to spend at least a day formatting and introducing the 
+	 proper presentation logic into an application. What took a day 
+	 now takes maybe a couple of hours. Performance is excellence, the MVC design couldn't be 
+	 better, and no messy JSP compilations to worry about. 
+	</p>
+	
+<p>To me, simplicity with functionality is the greatest achievement of the Tapestry framework.
+</p> 
+</section>
+
+<section>
 		<title>Paul Witt</title>
 <p>
 Of all the web presentation frameworks out there, Tapestry is the most elegant. </p>
