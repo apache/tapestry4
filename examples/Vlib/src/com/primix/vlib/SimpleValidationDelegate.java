@@ -37,38 +37,14 @@ import com.primix.tapestry.valid.*;
  * @version $Id$
  */
 
-public class SimpleValidationDelegate extends BaseValidationDelegate
+public class SimpleValidationDelegate extends ValidationDelegate
 {
-	IErrorProperty page;
-
-	public SimpleValidationDelegate(IErrorProperty page)
-	{
-		this.page = page;
-	}
-
-	/**
-	 *  Checks to see if the page already has an error; if not,
-	 *  invokes <code>setError()</code> to update it.
-	 *
-	 */
-
-	public void invalidField(
-		IValidatingTextField field,
-		ValidationConstraint constraint,
-		String defaultErrorMessage)
-	{
-		if (page.getError() != null)
-			return;
-
-		page.setError(defaultErrorMessage);
-	}
-
 	public void writeLabelPrefix(
-		IValidatingTextField field,
+		IField field,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
-		if (field.getError())
+		if (isInError(field))
 		{
 			writer.begin("span");
 			writer.attribute("class", "clsInvalidField");
@@ -76,23 +52,25 @@ public class SimpleValidationDelegate extends BaseValidationDelegate
 	}
 
 	public void writeLabelSuffix(
-		IValidatingTextField field,
+		IField field,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
-		if (field.getError())
+		if (isInError(field))
 			writer.end();
 	}
 
-	public void writeErrorSuffix(
-		IValidatingTextField field,
+	public void writeSuffix(
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
+		if (currentTracking != null)
+		{
 		writer.print(" ");
 		writer.begin("span");
 		writer.attribute("class", "clsInvalidField");
 		writer.print("**");
 		writer.end();
+		}
 	}
 }

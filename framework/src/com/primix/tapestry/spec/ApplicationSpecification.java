@@ -116,14 +116,8 @@ public class ApplicationSpecification extends BasePropertyHolder
 			"InsertText",
 			"/com/primix/tapestry/html/InsertText.jwc");
 		defaultComponentMap.put(
-			"ValidatingTextField",
-			"/com/primix/tapestry/valid/ValidatingTextField.jwc");
-		defaultComponentMap.put(
-			"DateField",
-			"/com/primix/tapestry/valid/DateField.jwc");
-		defaultComponentMap.put(
-			"IntegerField",
-			"/com/primix/tapestry/valid/IntegerField.jwc");
+			"ValidField",
+			"/com/primix/tapestry/valid/ValidField.jwc");
 		defaultComponentMap.put(
 			"FieldLabel",
 			"/com/primix/tapestry/valid/FieldLabel.jwc");
@@ -132,9 +126,6 @@ public class ApplicationSpecification extends BasePropertyHolder
 		defaultComponentMap.put(
 			"InsertBlock",
 			"/com/primix/tapestry/components/InsertBlock.jwc");
-		defaultComponentMap.put(
-			"NumericField",
-			"/com/primix/tapestry/valid/NumericField.jwc");
 		defaultComponentMap.put("ListEdit", "/com/primix/tapestry/form/ListEdit.jwc");
 
 	}
@@ -198,11 +189,6 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 *   <td>/com/primix/tapestry/component/Conditional.jwc</td>
 	 *		<td>{@link Conditional}</td> </tr>
 	 * </tr>
-	 *  <tr>
-	 *       <td>/com/primix/tapestry/valid/DateField.jwc</td>
-	 *       <td>{@link DateField}</td>
-	 * </tr>
-	 *
 	 * <tr>
 	 *		<td>/com/primix/tapestry/components/Delegator.jwc</td>
 	 *		<td>{@link Delegator}</td> </tr>
@@ -253,20 +239,9 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 *  <tr>
 	 * <td>/com/primix/tapestry/components/InsertWrapped.jwc</td> 
 	 *		<td>{@link InsertWrapped}</td> </tr>
-	 *
-	 *  <tr>
-	 *       <td>/com/primix/tapestry/valid/IntegerField.jwc</td>
-	 *       <td>{@link IntegerField}</td>
-	 * </tr>
-	 *
 	 * <tr>
 	 *		<td>/com/primix/tapestry/form/ListEdit.jwc</td>
 	 *		<td>{@link ListEdit}</td>
-	 * </tr>
-	 *
-	 * <tr>
-	 *  <td>/com/primix/tapestry/valid/NumericField.jwc</td>
-	 *  <td>{@link NumericField}</td>
 	 * </tr>
 	 *
 	 * <tr>
@@ -323,8 +298,8 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 *		<td>{@link TextField}</td> </tr>
 	 *
 	 *  <tr>
-	 *       <td>/com/primix/tapestry/valid/ValidatingTextField.jwc</td>
-	 *       <td>{@link ValidatingTextField}</td>
+	 *       <td>/com/primix/tapestry/valid/ValidField.jwc</td>
+	 *       <td>{@link ValidField}</td>
 	 * </tr>
 	 *
 	 *  </table>

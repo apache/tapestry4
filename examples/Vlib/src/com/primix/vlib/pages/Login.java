@@ -77,7 +77,7 @@ public class Login extends BasePage implements IErrorProperty
 	public IValidationDelegate getValidationDelegate()
 	{
 		if (validationDelegate == null)
-			validationDelegate = new SimpleValidationDelegate(this);
+			validationDelegate = new SimpleValidationDelegate();
 
 		return validationDelegate;
 	}
@@ -125,13 +125,13 @@ public class Login extends BasePage implements IErrorProperty
 
 	protected void setErrorField(String componentId, String message)
 	{
-		IValidatingTextField field;
+		IField field;
 
-		field = (IValidatingTextField) getComponent(componentId);
-		field.setError(true);
+		field = (IField) getComponent(componentId);
 
-		if (error == null)
-			error = message;
+		IValidationDelegate delegate = getValidationDelegate();
+		delegate.setField(field);
+		delegate.record(new ValidatorException(message));
 	}
 
 	public void setCallback(ICallback value)

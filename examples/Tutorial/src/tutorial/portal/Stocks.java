@@ -26,12 +26,12 @@
 
 package tutorial.portal;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.prop.*;
-import com.primix.tapestry.valid.*;
-import java.io.*;
-import java.util.*;
-import java.text.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.valid.IValidationDelegate;
 
 /**
  *  Page that presents (fake) stock information.
@@ -106,13 +106,12 @@ public class Stocks extends ErrorPage
 
 	public void addStock(IRequestCycle cycle)
 	{
-		if (Tapestry.isNull(tickerId))
-		{
-			setErrorField("inputTickerId", "No stock ticker value entered.");
+		IValidationDelegate delegate = (IValidationDelegate)getBeans().getBean("delegate");
+		
+		if (delegate.getHasErrors())
 			return;
-		}
 
-		String newId = tickerId.trim().toUpperCase();
+		String newId = tickerId.toUpperCase();
 		List existingStocks = getStocks();
 		int count = existingStocks.size();
 		for (int i = 0; i < count; i++)
@@ -137,7 +136,6 @@ public class Stocks extends ErrorPage
 				userStocks.add(otherStocks[i]);
 
 				tickerId = null;
-				((IValidatingTextField) getNestedComponent("inputTickerId")).refresh();
 
 				return;
 			}

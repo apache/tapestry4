@@ -28,6 +28,7 @@ package tutorial.workbench;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.valid.*;
+import com.primix.tapestry.valid.ValidationDelegate;
 import com.primix.tapestry.util.pool.*;
 
 /**
@@ -38,63 +39,40 @@ import com.primix.tapestry.util.pool.*;
  *
  */
 
-public class ValidationDelegate
-	extends BaseValidationDelegate
-	implements IPoolable
+public class WorkbenchValidationDelegate
+	extends ValidationDelegate
 {
-	private String errorMessage;
-
-	public void resetForPool()
-	{
-		errorMessage = null;
-	}
-
-	public String getErrorMessage()
-	{
-		return errorMessage;
-	}
-
-	public void invalidField(
-		IValidatingTextField field,
-		ValidationConstraint constraint,
-		String defaultErrorMessage)
-	{
-		if (errorMessage == null)
-			errorMessage = defaultErrorMessage;
-	}
-
 	public void writeAttributes(
-		IValidatingTextField field,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (field.getError())
+		if (currentTracking != null)
 			writer.attribute("class", "field-error");
 	}
 
-	public void writeErrorSuffix(
-		IValidatingTextField field,
+	public void writeSuffix(
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
-		if (field.getError())
+		if (currentTracking != null)
 		{
 			writer.print(" ");
 			writer.beginEmpty("img");
 			writer.attribute("src", "images/workbench/Warning-small.gif");
 			writer.attribute("height", 20);
 			writer.attribute("width", 20);
+			writer.attribute("title", currentTracking.getErrorMessage());
 		}
 	}
 
 	public void writeLabelPrefix(
-		IValidatingTextField field,
+		IField field,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (field.getError())
+		if (isInError(field))
 		{
 			writer.begin("span");
 			writer.attribute("class", "label-error");
@@ -102,12 +80,12 @@ public class ValidationDelegate
 	}
 
 	public void writeLabelSuffix(
-		IValidatingTextField field,
+		IField field,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (field.getError())
+		if (isInError(field))
 			writer.end(); // <span>
 	}
 }

@@ -23,55 +23,40 @@
  * Lesser General Public License for more details.
  *
  */
+ 
+ package com.primix.tapestry.inspector;
 
-package tutorial.portal;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.valid.*;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResponseWriter;
+import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.valid.ValidationDelegate;
 
 /**
- *  A base page for pages that contain an error property.
+ * Customized version of {@link ValidationDelegate} that changes some
+ * output behavior. 
+ * 
  *
- *  @author Howard Ship
- *  @version $Id: ErrorPage.java,v 1.2 2001/11/10 21:58:37 hship Exp $
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 1.0.8
+ *
  */
 
-public class ErrorPage extends BasePage
+public class InspectorValidationDelegate extends ValidationDelegate
 {
-	private String error;
-
-	/**
-	 *  Marks a particular {@link IField} as in error,
-	 *  and sets the page's error property, if not already
-	 *  set.
-	 *
-	 */
-
-	protected void setErrorField(String idPath, String fieldError)
+	public void writeSuffix(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
 	{
-		IField field = (IField) getNestedComponent(idPath);
-
-		// field.setError(true);
-
-		if (error == null)
-			error = fieldError;
-	}
-
-	public void detach()
-	{
-		error = null;
-
-		super.detach();
-	}
-
-	public String getError()
-	{
-		return error;
-	}
-
-	public void setError(String value)
-	{
-		error = value;
+		if (currentTracking != null)
+		{
+			writer.printRaw("&nbsp;");
+			writer.begin("span");
+			writer.attribute("class", "error");
+			writer.print("**");
+			writer.end();
+		}
 	}
 
 }
+

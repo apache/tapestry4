@@ -7,14 +7,19 @@ and writing properties when the form is submitted; it is never necesssary to wri
 code to directly read HTTP parameters.
 
 <p>
-In addition, Tapestry includes a suite of validating form components, special text
-fields that can validate user input and generate error messages as needed.
+In addition, Tapestry includes the ValidatingTextField component which
+is part of a framework that allows for complex validation of user input
+as well as presentation of errors.
 
 <span jwcid="showError"/>
 
 <form jwcid="form">
 
 <table>
+	<tr>
+		<th><span jwcid="dateLabel"/></th>
+		<td><input jwcid="inputDate"/></td>
+	</tr>
   <tr>
   	<th><span jwcid="intLabel"/></th>
   	<td><input jwcid="inputInt"/></td>

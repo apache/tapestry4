@@ -86,14 +86,18 @@ public class Register extends BasePage implements IErrorProperty
 		return email;
 	}
 
+	/** Passwords are read-only. **/
+	
 	public String getPassword1()
 	{
-		return password1;
+		return null;
 	}
+
+	/** Passwords are read-only. **/
 
 	public String getPassword2()
 	{
-		return password2;
+		return null;
 	}
 
 	public void setError(String value)
@@ -129,47 +133,28 @@ public class Register extends BasePage implements IErrorProperty
 	public IValidationDelegate getValidationDelegate()
 	{
 		if (validationDelegate == null)
-			validationDelegate = new SimpleValidationDelegate(this);
+			validationDelegate = new SimpleValidationDelegate();
 
 		return validationDelegate;
 	}
 
 	private void setErrorField(String componentId, String message)
 	{
-		IValidatingTextField field;
+		IValidationDelegate delegate = getValidationDelegate();
+		IField field;
 
-		field = (IValidatingTextField) getComponent(componentId);
-		field.setError(true);
+		field = (IField) getComponent(componentId);
 
-		if (error == null)
-			error = message;
-
-		resetPasswords();
-	}
-
-	private void resetPasswords()
-	{
-		IValidatingTextField field;
-
-		password1 = null;
-		password2 = null;
-
-		field = (IValidatingTextField) getComponent("inputPassword1");
-		field.refresh();
-
-		field = (IValidatingTextField) getComponent("inputPassword2");
-		field.refresh();
+		delegate.setField(field);
+		delegate.record(new ValidatorException(message));
 	}
 
 	public void attemptRegister(IRequestCycle cycle) throws RequestCycleException
 	{
-		// Check for errors from the validating text fields
-
-		if (error != null)
-		{
-			resetPasswords();
+		IValidationDelegate delegate = getValidationDelegate();
+	
+		if (delegate.getHasErrors())
 			return;
-		}
 
 		// Note: we know password1 and password2 are not null
 		// because they are required fields.
