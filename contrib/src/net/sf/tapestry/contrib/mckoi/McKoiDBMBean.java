@@ -24,7 +24,7 @@
 //
 package net.sf.tapestry.contrib.mckoi;
 
-import org.jboss.util.ServiceMBean;
+import org.jboss.system.ServiceMBean;
 
 /**
  *  MBean interface for {@link net.sf.tapestry.contrib.mckoi.McKoiDB}.

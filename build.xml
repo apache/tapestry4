@@ -253,11 +253,12 @@
 			<path refid="full.classpath"/>
 			<pathelement location="${lib.ext.dir}/mckoidb.jar"/>
 			<pathelement location="${lib.ext.dir}/junit.jar"/>
-			<pathelement location="${jboss.lib.dir}/jboss-jdbc_ext.jar"/>
-			<pathelement location="${jboss.lib.ext.dir}/mail.jar"/>
-			<pathelement location="${jboss.lib.dir}/jmxri.jar"/>
-			<pathelement location="${jboss.lib.ext.dir}/jboss.jar"/>
-			<pathelement location="${jboss.lib.ext.dir}/jboss-j2ee.jar"/>
+		    <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
+		    <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
+		    <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
+		    <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
+		    <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>   
+		    <pathelement location="${jboss.server.all.lib.dir}/mail.jar"/> 
 			<pathelement location="${lib.ext.dir}/jndi.jar"/>
 			<pathelement location="${lib.ext.dir}/javax.rmi.jar"/>
 		</classpath>		
@@ -290,37 +291,63 @@
 	</java>
 </target>
 
+<!-- ===================================================================================
+
+	 JBoss 3.0.0 auto configuration
+	
+	 Configures a JBoss 3.0.0 with a new configuration, tapestry.  Part of the configuration
+	 comes with the Tapestry distribution; part is copied from the JBoss default server
+	 configuration.
+	
+     ====================================================================================  -->	
+
+
+<property name="tapestry.dir" value="${jboss.dir}/server/tapestry"/>
+<property name="tapestry.conf.dir" value="${tapestry.dir}/conf"/>
+<property name="tapestry.lib.dir" value="${tapestry.dir}/lib"/>
+<property name="tapestry.db.dir" value="${tapestry.dir}/db"/>
+<property name="tapestry.deploy.dir" value="${tapestry.dir}/deploy"/>
+<property name="tapestry.private.dir" value="${tapestry.dir}/tmp/${private.dir}"/>
+
+<property name="jboss.server.default.dir" value="${jboss.dir}/server/default"/>
 
 <target name="configure" 
-	description="Configure the JBoss server and setup the Vlib database.">
+	description="Configure the JBoss 3.0.0 server and setup the Vlib database.">
+	<property name="temp.dir" value=".temp"/>	
 	
-	<!-- Delete old version of the frameworks. -->
-	
-	<delete quiet="true">
-		<fileset dir="${jboss.lib.ext.dir}">
-			<include name="*tapestry*.jar"/>
-			<exclude name="*-${framework.version}.jar"/>
-		</fileset>
-	</delete>
-	
-	<copy todir="${jboss.lib.ext.dir}" flatten="true">
+	<mkdir dir="${tapestry.lib.dir}"/>
+		
+	<copy todir="${tapestry.lib.dir}" flatten="true">
 		<fileset dir="${lib.dir}">
 			<include name="*-${framework.version}.jar"/>
 			<include name="ext/mckoidb.jar"/>
-			<include name="ext/org.mortbay.jetty.jar"/>
-			<include name="ext/javax.servlet.jar"/>
 		</fileset>
-		<fileset dir="config/jboss/lib">
+		<fileset dir="${jboss.server.default.dir}/lib">
+		
+			<!-- Could do a careful analysis of just what we need and copy only that,
+				 but this is good for now.  Need to see if ClassPathExtension still
+				 exists and is useable as well (in which case, we could just point
+				 to the server/default/conf/lib dir). -->
+				 
 			<include name="*.jar"/>
 		</fileset>
 	</copy>
 
+	<!-- Delete old version of the frameworks. -->
+	
+	<delete quiet="true">
+		<fileset dir="${tapestry.lib.dir}">
+			<include name="*tapestry*.jar"/>
+			<exclude name="*-${framework.version}.jar"/>
+		</fileset>
+	</delete>
+
 	<!-- Delete, recreate and copy -->
 	
-	<delete dir="${jboss.dir}/conf/vlib" quiet="true"/>
-	<mkdir dir="${jboss.dir}/conf/vlib"/>
+	<delete dir="${tapestry.conf.dir}" quiet="true"/>
+	<mkdir dir="${tapestry.conf.dir}"/>
 			
-	<copy todir="${jboss.dir}/conf/vlib" filtering="true">
+	<copy todir="${tapestry.conf.dir}" filtering="true">
 		<fileset dir="config/jboss/conf"/>
 		<filterset>
 			<filter token="jboss.dir" value="${jboss.dir}"/>
@@ -329,20 +356,58 @@
 	</copy>
 	
 	<!-- Set a flag if the vlib already exists, then extract it if necessary. -->
+
+	<mkdir dir="${tapestry.db.dir}"/>
+		
+	<available file="${tapestry.db.dir}/vlib.conf" property="vlib.db.exists"/>
+	<antcall target="unpack-vlib-database"/>	
 	
-	<available file="${jboss.dir}/db/vlib.conf" property="vlib.db.exists"/>
-	<antcall target="unpack-vlib-database"/>		    	
+	<mkdir dir="${tapestry.deploy.dir}"/>
+	
+	<copy todir="${tapestry.deploy.dir}">
+		<fileset dir="${jboss.server.default.dir}/deploy">
+			<include name="*.jar"/>
+			<include name="jmx-ejb-connector-server.sar"/>
+			<include name="jmx-html-adaptor.sar"/>	<!-- This will be going soon! -->
+			<include name="jmx-rmi-adaptor.sar"/>
+		</fileset>
+	</copy>
+
+	<!-- We explode the Jetty plugin and copy its individual JARs to lib, plus
+	     a custom service XML. -->
+	     
+	<mkdir dir="${temp.dir}"/>
+	<unjar src="${jboss.server.default.dir}/deploy/jetty-plugin.sar"
+		  dest="${temp.dir}"/>
+	<copy todir="${tapestry.lib.dir}">
+		<fileset dir="${temp.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</copy>   
+	
+	<delete dir="${temp.dir}" quiet="true"/> 
+		
+	<copy todir="${tapestry.deploy.dir}" filtering="true">
+		<fileset dir="config/jboss/deploy">
+			<include name="*.xml"/>
+		</fileset>
+		<filterset>
+			<filter token="user.dir" value="${user.dir}"/>
+			<filter token="jboss.dir" value="${jboss.dir}"/>
+		</filterset>
+	</copy>
+				    	
 </target>
  
 
 <target name="unpack-vlib-database"
   	description="Unpacks the Virtual Library database."
   	unless="vlib.db.exists">
-	<unzip src="config/jboss/vlib-db.zip" dest="${jboss.dir}/db"/>  
+	<unzip src="config/jboss/vlib-db.zip" dest="${tapestry.db.dir}"/>  
 </target>
 
 <target name="deploy-vlib" description="Deploys the Virtual Library demo into JBoss.">
-  	<copy todir="${jboss.dir}/deploy">
+  	<copy todir="${tapestry.deploy.dir}">
   		<fileset dir="${lib.dir}">
   			<include name="Vlib.ear"/>
   			<include name="tutorial.war"/>
@@ -353,11 +418,10 @@
 <target name="run-jboss"
 	depends="deploy-vlib"
 	description="Launch the JBoss application server.">
-  		  
-  	<property name="jboss.private.dir" value="${jboss.dir}/${private.dir}"/>
+  		 
   	
-  	<delete dir="${jboss.private.dir}" quiet="true"/>
-  	<mkdir dir="${jboss.private.dir}"/>
+  	<delete dir="${tapestry.private.dir}" quiet="true"/>
+  	<mkdir dir="${tapestry.private.dir}"/>
   	
   	<java fork="true"
   		dir="${jboss.dir}/bin"
@@ -365,10 +429,9 @@
 
 		<!-- Launch using the vlib configuration, not the default. -->
 
-		<arg value="vlib"/>
+		<arg line="--configuration=tapestry"/>
 
 		<classpath>
-			<pathelement location="${jboss.lib.dir}/crimson.jar"/>
 			<pathelement location="${jboss.dir}/bin/run.jar"/>
 		</classpath>	
 	
@@ -376,20 +439,15 @@
 	
 		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
 		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"/>
-		
-		<sysproperty key="javax.xml.parsers.SAXParserFactory"
-			value="org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
-		<sysproperty key="javax.xml.parsers.DocumentBuilderFactory"
-			value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
-	
+
 	  	<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
 	  	<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
 	  	
 	  	<!-- These allow private assets to be exported as static
 	  		 files.  This coordinates with portions of
-	  		 config/jboss/conf/jetty.xml -->
+	  		 config/deploy/jetty-service.xml -->
 	  		 
-	 	<sysproperty key="net.sf.tapestry.asset.dir" value="${jboss.private.dir}"/>
+	 	<sysproperty key="net.sf.tapestry.asset.dir" value="${tapestry.private.dir}"/>
 	 	<sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>
 	 	
 	  	<!-- The following is probably only necessary under Windows.  Jetty gets

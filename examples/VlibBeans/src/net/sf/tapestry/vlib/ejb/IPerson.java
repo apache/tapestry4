@@ -55,15 +55,15 @@ public interface IPerson extends IEntityBean
 
 	public String getEmail() throws RemoteException;
 
-	public boolean isAdmin() throws RemoteException;
+	public boolean getAdmin() throws RemoteException;
 
 	public void setAdmin(boolean value) throws RemoteException;
 
-	public boolean isLockedOut() throws RemoteException;
+	public boolean getLockedOut() throws RemoteException;
 
 	public void setLockedOut(boolean value) throws RemoteException;
 
-	public boolean isVerified() throws RemoteException;
+	public boolean getVerified() throws RemoteException;
 
 	public void setVerified(boolean value) throws RemoteException;
 

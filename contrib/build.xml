@@ -14,9 +14,11 @@
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${framework.jar}"/>
     <pathelement location="${lib.ext.dir}/mckoidb.jar"/>
-    <pathelement location="${jboss.lib.dir}/jmxri.jar"/>
-    <pathelement location="${jboss.lib.ext.dir}/jboss.jar"/>
-    <pathelement location="${jboss.lib.ext.dir}/jboss-j2ee.jar"/>
+    <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
+    <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
+    <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
+    <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
+    <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
   </path>
   
   <target name="init">

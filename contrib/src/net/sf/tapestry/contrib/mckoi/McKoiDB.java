@@ -23,6 +23,7 @@
 // Lesser General Public License for more details.
 //
 package net.sf.tapestry.contrib.mckoi;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -30,8 +31,9 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-import org.jboss.util.ServiceMBeanSupport;
+import org.jboss.system.ServiceMBeanSupport;
 import com.mckoi.runtime.BootMain;
+
 /**
  *  An MBean used to start and stop and embedded instance of
  *  <a href="http://www.mckoi.com/database">McKoi Database</a>.
@@ -41,6 +43,7 @@ import com.mckoi.runtime.BootMain;
  *  @since 1.0.8
  * 
  **/
+
 public class McKoiDB extends ServiceMBeanSupport implements McKoiDBMBean
 {
     private String rootPath;
