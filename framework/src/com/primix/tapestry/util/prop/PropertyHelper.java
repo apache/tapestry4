@@ -125,7 +125,13 @@ public class PropertyHelper
 
 	/**
 	*  Uses JavaBeans introspection to find all the properties of the
-	*  bean class.
+	*  bean class.  This method sets the {@link #accessor} variable (it will
+	*  have been null), and adds all the well-defined JavaBeans properties.
+	*
+	*  <p>Subclasses may invoke this method before adding thier own accessors.
+	*
+	*  <p>This method is invoked from within a synchronized block.  Subclasses
+	*  do not have to worry about synchronization.
 	*/
 
 	protected void buildPropertyAccessors()
@@ -135,29 +141,26 @@ public class PropertyHelper
 		int count;
 		PropertyDescriptor[] props;
 
-		synchronized(this)
+		if (accessors != null)
+			return;
+
+		try
 		{
-			if (accessors != null)
-				return;
-
-			try
-			{
-				info = Introspector.getBeanInfo(beanClass);
-			}
-			catch (Exception e)
-			{
-				throw new DynamicInvocationException(e);
-			}
-
-			props = info.getPropertyDescriptors();
-			count = props.length;
-
-			accessors = new HashMap(MAP_SIZE);
-
-			for (i = 0; i < count; i++)
-				accessors.put(props[i].getName(),
-					new PropertyAccessor(props[i]));
+			info = Introspector.getBeanInfo(beanClass);
 		}
+		catch (Exception e)
+		{
+			throw new DynamicInvocationException(e);
+		}
+
+		props = info.getPropertyDescriptors();
+		count = props.length;
+
+		accessors = new HashMap(MAP_SIZE);
+
+		for (i = 0; i < count; i++)
+			accessors.put(props[i].getName(),
+				new PropertyAccessor(props[i]));
 
 	}
 
@@ -476,7 +479,12 @@ public class PropertyHelper
 	public IPropertyAccessor getAccessor(Object instance, String propertyName)
 	{
 		if (accessors == null)
-			buildPropertyAccessors();
+		{
+			synchronized(this)
+			{
+				buildPropertyAccessors();
+			}
+		}
 
 		synchronized(accessors)
 		{
