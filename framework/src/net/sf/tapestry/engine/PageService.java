@@ -53,12 +53,12 @@ import net.sf.tapestry.Tapestry;
 public class PageService extends AbstractService
 {
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
-        if (parameters == null || parameters.length != 1)
+        if (Tapestry.size(parameters) != 1)
             throw new IllegalArgumentException(Tapestry.getString("service-single-parameter", PAGE_SERVICE));
 
-        return assembleGesture(cycle, PAGE_SERVICE, parameters, null, true);
+        return assembleGesture(cycle, PAGE_SERVICE, (String[])parameters, null, true);
 
     }
 

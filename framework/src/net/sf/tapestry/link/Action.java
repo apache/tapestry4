@@ -127,11 +127,6 @@ public class Action extends GestureLink implements IAction
     private IActionListener _listener;
     private IBinding _statefulBinding;
 
-    // Each instance gets its own context array.
-
-    private String[] _serviceParameters;
-
-
     /**
      *  Returns true if the stateful parameter is bound to
      *  a true value.  If stateful is not bound, also returns
@@ -162,7 +157,7 @@ public class Action extends GestureLink implements IAction
         return IEngineService.ACTION_SERVICE;
     }
 
-    protected String[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
+    protected Object[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
     {
         String actionId;
  
@@ -175,12 +170,7 @@ public class Action extends GestureLink implements IAction
             throw new RenderRewoundException(this);
         }
 
-        if (_serviceParameters == null)
-            _serviceParameters = new String[1];
-
-        _serviceParameters[0] = actionId;
-
-        return _serviceParameters;
+        return new Object[] { actionId };
     }
     
     public IBinding getStatefulBinding()

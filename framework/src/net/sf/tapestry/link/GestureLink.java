@@ -69,36 +69,22 @@ public abstract class GestureLink extends AbstractServiceLink
         return buildURL(cycle, getServiceParameters(cycle));
     }
 
-
-    /**
-     *  @deprecated To be removed in 2.3, use {@link #getServiceParameters(IRequestCycle)}
-     *  @return null subclasses may override (but should override
-     *  {@link #getServiceParameters(IRequestCycle)} instead)
-     * 
-     **/
-
-    protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
-    {
-        return getServiceParameters(cycle);
-    }
-
     /**
      *  Invoked by {@link #getURL(IRequestCycle)}.
      *  The default implementation 
-     *  invokes {@link #getContext(IRequestCycle)}, which returns null.
-     *  (In 2.3, this method will simply return null).
+     *  invokes  returns null.
      *  Implementations can provide appropriate parameters as needed.
      *  
      *  @since 2.2
      * 
      **/
         
-    protected String[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
+    protected Object[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
     {
-        return getContext(cycle);
+        return null;
     }
 
-    private String buildURL(IRequestCycle cycle, String[] serviceParameters)
+    private String buildURL(IRequestCycle cycle, Object[] serviceParameters)
         throws RequestCycleException
     {
         String URL = null;

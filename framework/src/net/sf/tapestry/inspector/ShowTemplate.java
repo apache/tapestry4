@@ -270,9 +270,9 @@ public class ShowTemplate extends BaseComponent implements IDirect
     {
         Inspector inspector = (Inspector) page;
 
-        String[] parameters = cycle.getServiceParameters();
+        Object[] parameters = cycle.getServiceParameters();
 
-        inspector.selectComponent(parameters[0]);
+        inspector.selectComponent((String)parameters[0]);
 
         IComponent newComponent = inspector.getInspectedComponent();
 

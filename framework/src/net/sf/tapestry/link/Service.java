@@ -150,12 +150,12 @@ public class Service extends GestureLink
     }
 
     /** 
-     *  Invokes {@link Direct#constructContext(Object)} to create String[]
+     *  Invokes {@link Direct#constructContext(Object)} to create Object[]
      *  from the context parameter (which may be an object, array of Strings or List of Strings).
      * 
      **/
 
-    protected String[] getServiceParameters(IRequestCycle cycle)
+    protected Object[] getServiceParameters(IRequestCycle cycle)
     {
         return Direct.constructContext(_parameters);
 

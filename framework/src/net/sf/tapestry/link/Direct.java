@@ -65,7 +65,7 @@ import org.apache.log4j.Category;
  *
  *  <tr>
  *  <td>parameters</td>
- *  <td>String[] <br> List (of String) <br> String <br>Object</td>
+ *  <td>Object[] <br> List (of Object) <br>Object</td>
  *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
@@ -81,15 +81,18 @@ import org.apache.log4j.Category;
  *  A listener method can retrieve the parameters
  *  using {@link net.sf.tapestry.IRequestCycle#getServiceParameters()}.
  * 
- *  <p>A {@link net.sf.tapestry.util.io.DataSqueezer} may be used to encode
- *  objects into Strings and vice-versa.
+ *  <p>
+ *  Prior to release 2.2, the parameters were always type String.
+ *  They may now be of any type; type will be maintained
+ *  when the parameters are later retrieved by a listener.  See
+ *  {@link net.sf.tapestry.util.io.DataSqueezer} for more details.
  * 
  * </td>
  *  </tr>
  *
   *  <tr>
  *  <td>context</td>
- *  <td>String[] <br> List (of String) <br> String <br>Object</td>
+ *  <td>Object[] <br> List (of Object) <br>Object</td>
  *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
@@ -207,7 +210,7 @@ public class Direct extends GestureLink implements IDirect
         return IEngineService.DIRECT_SERVICE;
     }
 
-    protected String[] getServiceParameters(IRequestCycle cycle)
+    protected Object[] getServiceParameters(IRequestCycle cycle)
     {
         return constructContext(_parameters);
     }
@@ -219,38 +222,22 @@ public class Direct extends GestureLink implements IDirect
      *
      **/
 
-    public static String[] constructContext(Object contextValue)
+    public static Object[] constructContext(Object contextValue)
     {
         if (contextValue == null)
             return null;
 
-        if (contextValue instanceof String[])
-            return (String[]) contextValue;
-
-        if (contextValue instanceof String)
-        {
-            String[] arrayContext = new String[1];
-            arrayContext[0] = (String) contextValue;
-
-            return arrayContext;
-        }
+        if (contextValue instanceof Object[])
+            return (Object[]) contextValue;
 
         if (contextValue instanceof List)
         {
             List list = (List) contextValue;
 
-            return (String[]) list.toArray(new String[list.size()]);
+            return list.toArray();
         }
 
-        // Allow simply Object ... use toString() to make it a string.
-        // The listener should be able to convert it back.  For example,
-        // if the real type is java.lang.Integer, it's easy to convert
-        // it to an int or java.lang.Integer.
-
-        String[] arrayContext = new String[1];
-        arrayContext[0] = contextValue.toString();
-
-        return arrayContext;
+        return new Object[] { contextValue };
     }
 
     /**
@@ -259,12 +246,11 @@ public class Direct extends GestureLink implements IDirect
      *
      *  @throws StaleSessionException if the component is stateful, and
      *  the session is new.
+     * 
      **/
 
     public void trigger(IRequestCycle cycle) throws RequestCycleException
     {
-        IActionListener listener;
-
         if (isStateful())
         {
             HttpSession session = cycle.getRequestContext().getSession();
@@ -273,7 +259,7 @@ public class Direct extends GestureLink implements IDirect
                 throw new StaleSessionException();
         }
 
-        listener = getListener(cycle);
+        IActionListener listener = getListener(cycle);
 
         listener.actionTriggered(this, cycle);
     }

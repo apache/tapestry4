@@ -90,18 +90,21 @@ public class PersonLink extends BaseComponent
     private String styleClass;
 
     /**
-     *  The context has two elements.  The first is the page to jump to
-     *  ("Person", for {@link PersonPage}), the second is the primary key of the person.
+     *  Return parameters for the
+     *  {@link net.sf.tapestry.vlib.ExternalService}.
+     *   The first parameter is the page to jump to
+     *  ("Person", for {@link PersonPage}), 
+     *  the second is the primary key of the person.
      *
      **/
 
-    public String[] getContext()
+    public Object[] getPersonParameters()
     {
-        String[] context = new String[2];
-        context[0] = "Person";
-        context[1] = primaryKey.toString();
-
-        return context;
+        return new Object[]
+        {
+            "Person",
+            primaryKey
+        };
     }
 
     public String getStyleClass()

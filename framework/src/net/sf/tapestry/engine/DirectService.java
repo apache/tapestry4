@@ -54,7 +54,7 @@ import net.sf.tapestry.Tapestry;
 public class DirectService extends AbstractService
 {
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         String[] context;
 
@@ -145,7 +145,7 @@ public class DirectService extends AbstractService
                 ex);
         }
 
-        String[] parameters = getParameters(requestContext);
+        Object[] parameters = getParameters(cycle);
 
         cycle.setServiceParameters(parameters);
         direct.trigger(cycle);

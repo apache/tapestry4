@@ -22,7 +22,7 @@
   </component>
 
   <component id="component" type="Direct">
-    <binding name="context" property-path="components.e.value.idPath"/>
+    <binding name="parameters" property-path="components.e.value.idPath"/>
     <binding name="listener" property-path="page.listeners.selectComponent"/>
   </component>
 

@@ -247,9 +247,9 @@ public class Browser extends BaseComponent implements PageDetachListener
 
     public void jump(IRequestCycle cycle)
     {
-        String[] parameters = cycle.getServiceParameters();
+        Object[] parameters = cycle.getServiceParameters();
         
-        int page = Integer.parseInt(parameters[0]);
+        int page = ((Integer)parameters[0]).intValue();
 
         jump(page);
     }

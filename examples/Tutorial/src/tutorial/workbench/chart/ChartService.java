@@ -61,7 +61,7 @@ public class ChartService extends AbstractService
 
     public static final String SERVICE_NAME = "chart";
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         String[] context;
         String pageName = component.getPage().getName();

@@ -137,11 +137,8 @@ public class Borrow extends BaseComponent
 
     public void borrow(IRequestCycle cycle) throws RequestCycleException
     {
-        String[] parameters = cycle.getServiceParameters();
-        Integer bookPK;
-
-        // The primary key of the book to borrow is encoded in the context.
-        bookPK = new Integer(parameters[0]);
+        Object[] parameters = cycle.getServiceParameters();
+        Integer bookPK = (Integer)parameters[0];
 
         Visit visit = (Visit) page.getVisit();
         Home home = (Home) cycle.getPage("Home");

@@ -153,19 +153,19 @@ import net.sf.tapestry.valid.IValidationDelegate;
 
 public class Form extends AbstractComponent implements IForm, IDirect, PageDetachListener
 {
-    private String method;
-    private IActionListener listener;
-    private boolean rewinding;
-    private boolean rendering;
-    private String name;
-    private boolean statefulMode = true;
-    private boolean direct = true;
-    private IValidationDelegate delegate;
+    private String _method;
+    private IActionListener _listener;
+    private boolean _rewinding;
+    private boolean _rendering;
+    private String _name;
+    private boolean _statefulMode = true;
+    private boolean _direct = true;
+    private IValidationDelegate _delegate;
 
     // Need the stateful binding, since isStateful() can be invoked
     // when not rendering.
 
-    private IBinding statefulBinding;
+    private IBinding _statefulBinding;
 
     /**
      *  Number of element ids allocated.
@@ -174,7 +174,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
      *
      **/
 
-    private int elementCount;
+    private int _elementCount;
 
     /**
      *  {@link Map}, keyed on {@link FormEventType}.  Values are either a String (the name
@@ -183,7 +183,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
      *  @since 1.0.2
      **/
 
-    private Map events;
+    private Map _events;
 
     private static final int EVENT_MAP_SIZE = 3;
 
@@ -194,7 +194,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
      *
      **/
 
-    private Map allocatorMap;
+    private Map _allocatorMap;
 
     /**
      *  Class used to allocate ids (used as form element names).
@@ -239,10 +239,10 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public boolean isRewinding()
     {
-        if (!rendering)
+        if (!_rendering)
             throw new RenderOnlyPropertyException(this, "rewinding");
 
-        return rewinding;
+        return _rewinding;
     }
 
     /**
@@ -257,7 +257,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public boolean isDirect()
     {
-        return direct;
+        return _direct;
     }
 
     /**
@@ -273,10 +273,10 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         // Can't rely on stateful property, since that is only valid
         // during render ... so we go direct to the binding.
 
-        if (statefulBinding == null)
+        if (_statefulBinding == null)
             return true;
 
-        return statefulBinding.getBoolean();
+        return _statefulBinding.getBoolean();
     }
 
     /**
@@ -310,12 +310,12 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public String getElementId(String baseId)
     {
-        if (allocatorMap == null)
-            allocatorMap = new HashMap();
+        if (_allocatorMap == null)
+            _allocatorMap = new HashMap();
 
         String result = null;
 
-        IdAllocator allocator = (IdAllocator) allocatorMap.get(baseId);
+        IdAllocator allocator = (IdAllocator) _allocatorMap.get(baseId);
 
         if (allocator == null)
         {
@@ -329,9 +329,9 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         // names by the developer, such as 'foo' (in a Foreach) and
         // 'foo0' elsewhere.
 
-        allocatorMap.put(result, allocator);
+        _allocatorMap.put(result, allocator);
 
-        elementCount++;
+        _elementCount++;
 
         return result;
     }
@@ -355,7 +355,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
@@ -366,20 +366,20 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         String actionId = cycle.getNextActionId();
-        name = "Form" + actionId;
+        _name = "Form" + actionId;
 
         boolean renderForm = !cycle.isRewinding();
         boolean rewound = cycle.isRewound(this);
 
-        rewinding = rewound;
+        _rewinding = rewound;
 
         Gesture g = getGesture(cycle, actionId);
 
         if (renderForm)
         {
             writer.begin("form");
-            writer.attribute("method", (method == null) ? "post" : method);
-            writer.attribute("name", name);
+            writer.attribute("method", (_method == null) ? "post" : _method);
+            writer.attribute("name", _name);
             writer.attribute("action", g.getBareURL());
 
             generateAttributes(writer, cycle);
@@ -391,9 +391,9 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         writeGestureParameters(writer, g, !renderForm);
 
-        elementCount = 0;
+        _elementCount = 0;
 
-        rendering = true;
+        _rendering = true;
         renderWrapped(writer, cycle);
 
         if (renderForm)
@@ -412,8 +412,8 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
-            writer.attribute("name", name);
-            writer.attribute("value", elementCount);
+            writer.attribute("name", _name);
+            writer.attribute("value", _elementCount);
             writer.println();
 
             writer.end("form");
@@ -425,12 +425,12 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         if (rewound)
         {
-            String actual = cycle.getRequestContext().getParameter(name);
+            String actual = cycle.getRequestContext().getParameter(_name);
 
-            if (actual == null || Integer.parseInt(actual) != elementCount)
+            if (actual == null || Integer.parseInt(actual) != _elementCount)
                 throw new StaleLinkException(Tapestry.getString("Form.bad-element-count", getExtendedId()), getPage());
 
-            listener.actionTriggered(this, cycle);
+            _listener.actionTriggered(this, cycle);
 
             // Abort the rewind render.
 
@@ -449,10 +449,10 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public void addEventHandler(FormEventType type, String functionName)
     {
-        if (events == null)
-            events = new HashMap(EVENT_MAP_SIZE);
+        if (_events == null)
+            _events = new HashMap(EVENT_MAP_SIZE);
 
-        Object value = events.get(type);
+        Object value = _events.get(type);
 
         // The value can either be a String, or a List of String.  Since
         // it is rare for there to be more than one event handling function,
@@ -460,7 +460,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         if (value == null)
         {
-            events.put(type, functionName);
+            _events.put(type, functionName);
             return;
         }
 
@@ -472,7 +472,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
             list.add(value);
             list.add(functionName);
 
-            events.put(type, list);
+            _events.put(type, list);
             return;
         }
 
@@ -487,7 +487,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     {
         StringBuffer buffer = null;
 
-        if (events == null || events.isEmpty())
+        if (_events == null || _events.isEmpty())
             return;
 
         Body body = Body.get(cycle);
@@ -495,14 +495,14 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         if (body == null)
             throw new RequestCycleException(Tapestry.getString("Form.needs-body-for-event-handlers"), this);
 
-        Iterator i = events.entrySet().iterator();
+        Iterator i = _events.entrySet().iterator();
         while (i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();
             FormEventType type = (FormEventType) entry.getKey();
             Object value = entry.getValue();
 
-            String formPath = "document." + name;
+            String formPath = "document." + _name;
             String propertyName = type.getPropertyName();
             String finalFunctionName;
 
@@ -517,7 +517,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
             else
             {
 
-                String compositeName = propertyName + "_" + name;
+                String compositeName = propertyName + "_" + _name;
 
                 if (buffer == null)
                     buffer = new StringBuffer(200);
@@ -584,9 +584,9 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public void trigger(IRequestCycle cycle) throws RequestCycleException
     {
-        String[] parameters = cycle.getServiceParameters();
+        Object[] parameters = cycle.getServiceParameters();
 
-        cycle.rewindForm(this, parameters[0]);
+        cycle.rewindForm(this, (String)parameters[0]);
     }
 
     /**
@@ -644,10 +644,10 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        rendering = false;
-        elementCount = 0;
-        events = null;
-        allocatorMap = null;
+        _rendering = false;
+        _elementCount = 0;
+        _events = null;
+        _allocatorMap = null;
 
         super.cleanupAfterRender(cycle);
 
@@ -660,7 +660,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public void pageDetached(PageEvent event)
     {
-        delegate = null;
+        _delegate = null;
     }
 
     /**
@@ -676,37 +676,37 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public IValidationDelegate getDelegate()
     {
-        return delegate;
+        return _delegate;
     }
 
     public void setDelegate(IValidationDelegate delegate)
     {
-        this.delegate = delegate;
+        _delegate = delegate;
     }
 
     public void setDirect(boolean direct)
     {
-        this.direct = direct;
+        _direct = direct;
     }
 
     public IActionListener getListener()
     {
-        return listener;
+        return _listener;
     }
 
     public void setListener(IActionListener listener)
     {
-        this.listener = listener;
+        _listener = listener;
     }
 
     public String getMethod()
     {
-        return method;
+        return _method;
     }
 
     public void setMethod(String method)
     {
-        this.method = method;
+        _method = method;
     }
 
     /**
@@ -717,30 +717,30 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public boolean isStateful()
     {
-        if (statefulBinding == null)
+        if (_statefulBinding == null)
             return true;
 
-        return statefulBinding.getBoolean();
+        return _statefulBinding.getBoolean();
     }
 
     public IBinding getStatefulBinding()
     {
-        return statefulBinding;
+        return _statefulBinding;
     }
 
     public void setStatefulBinding(IBinding statefulBinding)
     {
-        this.statefulBinding = statefulBinding;
+        _statefulBinding = statefulBinding;
     }
 
     public boolean getStatefulMode()
     {
-        return statefulMode;
+        return _statefulMode;
     }
 
     public void setStatefulMode(boolean statefulMode)
     {
-        this.statefulMode = statefulMode;
+        _statefulMode = statefulMode;
     }
 
 }

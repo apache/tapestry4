@@ -47,9 +47,9 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public class Inspector extends BasePage
 {
-    private View view = View.SPECIFICATION;
-    private String inspectedPageName;
-    private String inspectedIdPath;
+    private View _view = View.SPECIFICATION;
+    private String _inspectedPageName;
+    private String _inspectedIdPath;
 
     /** 
      *  A property path, relative to the inspected component, used
@@ -60,7 +60,7 @@ public class Inspector extends BasePage
      *
      **/
 
-    private String explorePath;
+    private String _explorePath;
 
     /**
      *  The currently explored object; the explorePath is applied
@@ -70,19 +70,19 @@ public class Inspector extends BasePage
      *
      **/
 
-    private Object exploredObject;
+    private Object _exploredObject;
 
     private static final int MAP_SIZE = 7;
 
-    private Map blocks;
+    private Map _blocks;
 
     public void detach()
     {
-        view = View.SPECIFICATION;
-        inspectedPageName = null;
-        inspectedIdPath = null;
-        explorePath = null;
-        exploredObject = null;
+        _view = View.SPECIFICATION;
+        _inspectedPageName = null;
+        _inspectedIdPath = null;
+        _explorePath = null;
+        _exploredObject = null;
 
         super.detach();
     }
@@ -94,47 +94,47 @@ public class Inspector extends BasePage
     {
         super.finishLoad(loader, specification);
 
-        blocks = new HashMap(MAP_SIZE);
+        _blocks = new HashMap(MAP_SIZE);
 
-        blocks.put(View.TEMPLATE, getComponent("templateBlock"));
-        blocks.put(View.SPECIFICATION, getComponent("specificationBlock"));
-        blocks.put(View.ENGINE, getComponent("engineBlock"));
-        blocks.put(View.PROPERTIES, getComponent("propertiesBlock"));
-        blocks.put(View.LOGGING, getComponent("loggingBlock"));
+        _blocks.put(View.TEMPLATE, getComponent("templateBlock"));
+        _blocks.put(View.SPECIFICATION, getComponent("specificationBlock"));
+        _blocks.put(View.ENGINE, getComponent("engineBlock"));
+        _blocks.put(View.PROPERTIES, getComponent("propertiesBlock"));
+        _blocks.put(View.LOGGING, getComponent("loggingBlock"));
     }
 
     public View getView()
     {
-        return view;
+        return _view;
     }
 
     public void setView(View value)
     {
-        view = value;
+        _view = value;
 
         fireObservedChange("view", value);
     }
 
     public String getInspectedPageName()
     {
-        return inspectedPageName;
+        return _inspectedPageName;
     }
 
     public void setInspectedPageName(String value)
     {
-        inspectedPageName = value;
+        _inspectedPageName = value;
 
         fireObservedChange("inspectedPageName", value);
     }
 
     public String getInspectedIdPath()
     {
-        return inspectedIdPath;
+        return _inspectedIdPath;
     }
 
     public void setInspectedIdPath(String value)
     {
-        inspectedIdPath = value;
+        _inspectedIdPath = value;
 
         fireObservedChange("inspectedIdPath", value);
     }
@@ -157,13 +157,13 @@ public class Inspector extends BasePage
 
     public String getExplorePath()
     {
-        return explorePath;
+        return _explorePath;
     }
 
     public void setExplorePath(String value)
     {
-        explorePath = value;
-        exploredObject = null;
+        _explorePath = value;
+        _exploredObject = null;
 
         fireObservedChange("explorePath", value);
     }
@@ -194,7 +194,7 @@ public class Inspector extends BasePage
 
     public void selectComponent(IRequestCycle cycle)
     {
-        String[] parameters = cycle.getServiceParameters();
+        Object[] parameters = cycle.getServiceParameters();
         
         String newIdPath;
 
@@ -203,7 +203,7 @@ public class Inspector extends BasePage
         if (parameters == null)
             newIdPath = null;
         else
-            newIdPath = parameters[0];
+            newIdPath = (String)parameters[0];
 
         selectComponent(newIdPath);
     }
@@ -216,7 +216,7 @@ public class Inspector extends BasePage
 
     public IPage getInspectedPage()
     {
-        return getRequestCycle().getPage(inspectedPageName);
+        return getRequestCycle().getPage(_inspectedPageName);
     }
 
     /**
@@ -227,7 +227,7 @@ public class Inspector extends BasePage
 
     public IComponent getInspectedComponent()
     {
-        return getInspectedPage().getNestedComponent(inspectedIdPath);
+        return getInspectedPage().getNestedComponent(_inspectedIdPath);
     }
 
     public String getInspectorTitle()
@@ -249,21 +249,21 @@ public class Inspector extends BasePage
         // The only problem is that sometimes the explorePath leads
         // to a null property.  Need to track this better (maybe using Void?).
 
-        if (exploredObject == null)
+        if (_exploredObject == null)
         {
             IComponent inspectedComponent = getInspectedComponent();
 
-            if (explorePath == null)
-                exploredObject = inspectedComponent;
+            if (_explorePath == null)
+                _exploredObject = inspectedComponent;
             else
             {
                 PropertyHelper helper = PropertyHelper.forInstance(inspectedComponent);
 
-                exploredObject = helper.getPath(inspectedComponent, explorePath);
+                _exploredObject = helper.getPath(inspectedComponent, _explorePath);
             }
         }
 
-        return exploredObject;
+        return _exploredObject;
     }
 
     /**
@@ -273,6 +273,6 @@ public class Inspector extends BasePage
 
     public Block getBlockForView()
     {
-        return (Block) blocks.get(view);
+        return (Block) _blocks.get(_view);
     }
 }

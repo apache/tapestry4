@@ -47,6 +47,7 @@ import net.sf.tapestry.link.Page;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ * 
  **/
 
 public interface IEngineService
@@ -171,6 +172,9 @@ public interface IEngineService
 	 *  Builds a URL for a service.  This is performed during the
 	 *  rendering phase of one request cycle and bulds URLs that will
 	 *  invoke activity in a subsequent request cycle.
+     * 
+     *  <p><b>Through release 2.1, parameters was String[],
+     *  not Object[].  This is an incompatibl change.</b>
 	 *
 	 *  @param cycle Defines the request cycle being processed.
 	 *  @param component The component requesting the URL.  Generally, the
@@ -185,7 +189,7 @@ public interface IEngineService
 	public Gesture buildGesture(
 		IRequestCycle cycle,
 		IComponent component,
-		String[] parameters);
+		Object[] parameters);
 
 	/**
 	 *  Perform the service, interpreting the URL (from the

@@ -17,7 +17,7 @@
   	
   <parameter name="parameters" java-type="java.lang.Object" direction="in">
     <description>
-    A object or string, or array of objects or strings, encoded into the URL
+    An object, or list of objects, encoded into the URL
     as service parameters.
     </description>
   </parameter>

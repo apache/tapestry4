@@ -114,8 +114,8 @@ public class ConfirmBookDelete extends BasePage
 
     public void deleteBook(IRequestCycle cycle)
     {
-        String[] parameters = cycle.getServiceParameters();
-        Integer bookPK = new Integer(parameters[0]);
+        Object[] parameters = cycle.getServiceParameters();
+        Integer bookPK =(Integer)parameters[0];
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Book book = null;
