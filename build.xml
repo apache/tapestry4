@@ -342,7 +342,7 @@
   	</copy>
 </target>
   
-	<target name="run-jboss"
+<target name="run-jboss"
 	depends="deploy-vlib"
 	description="Launch the JBoss application server.">
   		  
@@ -359,35 +359,35 @@
 
 		<arg value="vlib"/>
 
-	<classpath>
-		<pathelement location="${jboss.lib.dir}/crimson.jar"/>
-		<pathelement location="${jboss.dir}/bin/run.jar"/>
-	</classpath>	
-
-	<!-- Enable debugging -->
-
-	<jvmarg line="-showversion -Xdebug -Xnoagent"/>
-	<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"/>
+		<classpath>
+			<pathelement location="${jboss.lib.dir}/crimson.jar"/>
+			<pathelement location="${jboss.dir}/bin/run.jar"/>
+		</classpath>	
 	
-	<sysproperty key="javax.xml.parsers.SAXParserFactory"
-		value="org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
-	<sysproperty key="javax.xml.parsers.DocumentBuilderFactory"
-		value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
-
-  	<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
-  	<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
-  	
-  	<!-- These allow private assets to be exported as static
-  		 files.  This coordinates with portions of
-  		 config/jboss/conf/jetty.xml -->
-  		 
- 	<sysproperty key="net.sf.tapestry.asset.dir" value="${jboss.private.dir}"/>
- 	<sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>
- 	
-  	<!-- The following is probably only necessary under Windows.  Jetty gets
-  	     tripped up by the fact that pathnames are case-insensitive.  -->
-      	     
- 	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+		<!-- Enable debugging -->
+	
+		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"/>
+		
+		<sysproperty key="javax.xml.parsers.SAXParserFactory"
+			value="org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
+		<sysproperty key="javax.xml.parsers.DocumentBuilderFactory"
+			value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
+	
+	  	<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
+	  	<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
+	  	
+	  	<!-- These allow private assets to be exported as static
+	  		 files.  This coordinates with portions of
+	  		 config/jboss/conf/jetty.xml -->
+	  		 
+	 	<sysproperty key="net.sf.tapestry.asset.dir" value="${jboss.private.dir}"/>
+	 	<sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>
+	 	
+	  	<!-- The following is probably only necessary under Windows.  Jetty gets
+	  	     tripped up by the fact that pathnames are case-insensitive.  -->
+	      	     
+	 	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
  	    
 	</java>
 	
