@@ -25,7 +25,9 @@ JAVADOC_MODULES = \
 
 # A list of Jar files redistributed with Tapestry.  xerces, gnu-regexp
 # and j2ee are needed to build Tapestry; the rest are needed
-# for the tutorials and demos.
+# for the tutorials and demos.  Note that org.apache.jasper.jar is
+# ony needed to run the JSP portion of the Primix Virtual Library
+# demo.
 
 EXTERNAL_JARS = \
 	xerces.jar \
@@ -33,7 +35,7 @@ EXTERNAL_JARS = \
 	com.mortbay.jetty.jar \
 	javax.servlet.jar \
 	org.apache.jasper.jar \
-	j2ee.jar
+	ejb.jar
 
 # This reflects my personal build work area structure, where
 # I create a subdirectory and checkout all the files.
@@ -54,8 +56,6 @@ REINVOKE := \
 	@$(RECURSE) reinvoke
 	
 prepare-for-packaging:
-	@$(ECHO) "\n*** Removing non-distributable JARs ... ***\n"
-	@$(RM) $(LOCAL_LIB_DIR)/j2ee.jar
 	@$(ECHO) "\n*** Copying licenses and Readme to root ...***\n"
 	$(TAR) --create LICENSE* *.html ChangeLog images | \
 		($(CD) .. && $(TAR) --extract)
