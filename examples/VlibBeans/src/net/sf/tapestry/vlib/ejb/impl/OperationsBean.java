@@ -57,11 +57,11 @@ import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 import javax.sql.DataSource;
 
-import net.sf.tapestry.util.ejb.XCreateException;
-import net.sf.tapestry.util.ejb.XEJBException;
-import net.sf.tapestry.util.ejb.XRemoveException;
-import net.sf.tapestry.util.jdbc.IStatement;
-import net.sf.tapestry.util.jdbc.StatementAssembly;
+import net.sf.tapestry.contrib.ejb.XCreateException;
+import net.sf.tapestry.contrib.ejb.XEJBException;
+import net.sf.tapestry.contrib.ejb.XRemoveException;
+import net.sf.tapestry.contrib.jdbc.IStatement;
+import net.sf.tapestry.contrib.jdbc.StatementAssembly;
 import net.sf.tapestry.vlib.ejb.Book;
 import net.sf.tapestry.vlib.ejb.BorrowException;
 import net.sf.tapestry.vlib.ejb.IBook;

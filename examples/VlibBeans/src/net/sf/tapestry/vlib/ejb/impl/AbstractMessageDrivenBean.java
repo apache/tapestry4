@@ -33,7 +33,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import net.sf.tapestry.util.ejb.XEJBException;
+import net.sf.tapestry.contrib.ejb.XEJBException;
 
 /**
  *  Abstract base class for implementing message driven beans.

@@ -31,9 +31,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.tapestry.util.ejb.XEJBException;
-import net.sf.tapestry.util.jdbc.IStatement;
-import net.sf.tapestry.util.jdbc.StatementAssembly;
+import net.sf.tapestry.contrib.ejb.XEJBException;
+import net.sf.tapestry.contrib.jdbc.IStatement;
+import net.sf.tapestry.contrib.jdbc.StatementAssembly;
 import net.sf.tapestry.vlib.ejb.Book;
 
 /**

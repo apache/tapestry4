@@ -23,35 +23,35 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.util.ejb;
+package net.sf.tapestry.contrib.ejb;
 
-import javax.ejb.CreateException;
+import javax.ejb.RemoveException;
 
 /**
- *  Extended version of {@link CreateException} that includes a root cause.
+ *  Extended version of {@link RemoveException} that includes a root cause.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/
 
-public class XCreateException extends CreateException
+public class XRemoveException extends RemoveException
 {
     private Throwable rootCause;
 
-    public XCreateException(String message)
+    public XRemoveException(String message)
     {
         super(message);
     }
 
-    public XCreateException(String message, Throwable rootCause)
+    public XRemoveException(String message, Throwable rootCause)
     {
         super(message);
 
         this.rootCause = rootCause;
     }
 
-    public XCreateException(Throwable rootCause)
+    public XRemoveException(Throwable rootCause)
     {
         super(rootCause.getMessage());
 

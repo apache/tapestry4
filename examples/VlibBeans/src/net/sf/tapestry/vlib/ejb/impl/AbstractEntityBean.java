@@ -38,7 +38,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import net.sf.tapestry.util.ejb.XEJBException;
+import net.sf.tapestry.contrib.ejb.XEJBException;
 import net.sf.tapestry.vlib.ejb.IKeyAllocator;
 import net.sf.tapestry.vlib.ejb.IKeyAllocatorHome;
 import ognl.Ognl;

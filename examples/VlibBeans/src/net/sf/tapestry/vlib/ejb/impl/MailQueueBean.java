@@ -35,8 +35,8 @@ import javax.jms.TextMessage;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.vlib.ejb.IMailMessageConstants;
 import net.sf.tapestry.vlib.ejb.IMailSender;
@@ -53,7 +53,7 @@ import net.sf.tapestry.vlib.ejb.IMailSenderHome;
 
 public class MailQueueBean extends AbstractMessageDrivenBean implements IMailMessageConstants
 {
-    private static final Logger LOG = LogManager.getLogger(MailQueueBean.class);
+    private static final Log LOG = LogFactory.getLog(MailQueueBean.class);
 
     private static IMailSenderHome mailSenderHome;
     private transient IMailSender mailSender;

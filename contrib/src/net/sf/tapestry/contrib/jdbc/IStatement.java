@@ -23,46 +23,55 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.util.ejb;
+package net.sf.tapestry.contrib.jdbc;
 
-import javax.ejb.EJBException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
- *  Extended version of {@link EJBException} that includes a root cause.
- *  {@link EJBException} doesn't have quite the right constructor for this ...
- *  it has an equivalent to the rootCause property, (causedByException), but
- *  doesn't have a constructor that allows us to set a custom message.
+ *  A wrapper around {@link Statement} or {@link java.sql.PreparedStatement}.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
- *
+ * 
  **/
 
-public class XEJBException extends EJBException
+public interface IStatement
 {
-    private Throwable rootCause;
+    /**
+     * Returns the SQL associated with this statement.
+     *
+     **/
 
-    public XEJBException(String message)
-    {
-        super(message);
-    }
+    public String getSQL();
 
-    public XEJBException(String message, Throwable rootCause)
-    {
-        super(message);
+    /**
+     *  Returns the underlying {@link Statement} (or {@link java.sql.PreparedStatement}).
+     *
+     **/
 
-        this.rootCause = rootCause;
-    }
+    public Statement getStatement();
 
-    public XEJBException(Throwable rootCause)
-    {
-        super(rootCause.getMessage());
+    /**
+     *  Closes the underlying statement, and nulls the reference to it.
+     *
+     **/
 
-        this.rootCause = rootCause;
-    }
+    public void close() throws SQLException;
 
-    public Throwable getRootCause()
-    {
-        return rootCause;
-    }
+    /**
+     *  Executes the statement as a query, returning a {@link ResultSet}.
+     *
+     **/
+
+    public ResultSet executeQuery() throws SQLException;
+
+    /**
+     *  Executes the statement as an update, returning the number of rows
+     *  affected.
+     *
+     **/
+
+    public int executeUpdate() throws SQLException;
 }

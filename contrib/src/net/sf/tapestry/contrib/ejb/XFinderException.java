@@ -23,35 +23,35 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.util.ejb;
+package net.sf.tapestry.contrib.ejb;
 
-import javax.ejb.RemoveException;
+import javax.ejb.FinderException;
 
 /**
- *  Extended version of {@link RemoveException} that includes a root cause.
+ *  Extended version of {@link FinderException} that includes a root cause.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/
 
-public class XRemoveException extends RemoveException
+public class XFinderException extends FinderException
 {
     private Throwable rootCause;
 
-    public XRemoveException(String message)
+    public XFinderException(String message)
     {
         super(message);
     }
 
-    public XRemoveException(String message, Throwable rootCause)
+    public XFinderException(String message, Throwable rootCause)
     {
         super(message);
 
         this.rootCause = rootCause;
     }
 
-    public XRemoveException(Throwable rootCause)
+    public XFinderException(Throwable rootCause)
     {
         super(rootCause.getMessage());
 

@@ -23,35 +23,35 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.util.ejb;
+package net.sf.tapestry.contrib.ejb;
 
-import javax.ejb.FinderException;
+import javax.ejb.CreateException;
 
 /**
- *  Extended version of {@link FinderException} that includes a root cause.
+ *  Extended version of {@link CreateException} that includes a root cause.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/
 
-public class XFinderException extends FinderException
+public class XCreateException extends CreateException
 {
     private Throwable rootCause;
 
-    public XFinderException(String message)
+    public XCreateException(String message)
     {
         super(message);
     }
 
-    public XFinderException(String message, Throwable rootCause)
+    public XCreateException(String message, Throwable rootCause)
     {
         super(message);
 
         this.rootCause = rootCause;
     }
 
-    public XFinderException(Throwable rootCause)
+    public XCreateException(Throwable rootCause)
     {
         super(rootCause.getMessage());
 
