@@ -64,9 +64,9 @@ import org.apache.tapestry.IRequestCycle;
  * The interface defining a table column. 
  * 
  * A column is responsible for presenting a particular part of the data
- * from the objects in the table. The is done via the getValueRender() method.
+ * from the objects in the table. This is done via the getValueRender() method.
  * 
- * A column man be sortable, in which case it defines the way in which the 
+ * A column may be sortable, in which case it defines the way in which the
  * objects in the table must be sorted by providing a Comparator.
  * 
  * @version $Id$
@@ -97,7 +97,7 @@ public interface ITableColumn
 	 * the data in the table according to this column. The Comparator must
 	 * accept two different rows, compare them according to this column, 
 	 * and return the appropriate value.
-	 * @return Comparator the Comparator to sort the table data by
+	 * @return Comparator the Comparator used to sort the table data
 	 */
 	Comparator getComparator();
 

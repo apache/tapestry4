@@ -58,10 +58,9 @@ package org.apache.tapestry.contrib.table.model;
 import java.util.Iterator;
 
 /**
- * A model containing the data within the table.
- * This model is not necessary to be used. Implementations may choose to 
- * access its data in a way that would provide an abstraction as to the
- * true source of data.
+ * A model of the table's data
+ * This model need not be used. Implementations may choose to
+ * access data via an abstraction.
  * 
  * @version $Id$
  * @author mindbridge
