@@ -23,104 +23,104 @@ import java.io.Serializable;
  */
 public class ComponentAddress implements Serializable
 {
-	private String _pageName;
-	private String _idPath;
+    private String _pageName;
+    private String _idPath;
 
-	/**
-	 * Creates a new ComponentAddress object that carries the identification 
-	 * information of the given component (the page name and the ID path).
-	 * @param component the component to get the address of
-	 */
-	public ComponentAddress(IComponent component)
-	{
-		init(component);
-	}
+    /**
+     * Creates a new ComponentAddress object that carries the identification 
+     * information of the given component (the page name and the ID path).
+     * @param component the component to get the address of
+     */
+    public ComponentAddress(IComponent component)
+    {
+        this(component.getPage().getName(), component.getIdPath());
+    }
 
-	/**
-	 * Creates a new ComponentAddress using the given Page Name and ID Path
-	 * @param pageName the name of the page that contains the component
-	 * @param idPath the ID Path of the component
-	 */
-	public ComponentAddress(String pageName, String idPath)
-	{
-		_pageName = pageName;
-		_idPath = idPath;
-	}
+    /**
+     * Creates a new ComponentAddress using the given Page Name and ID Path
+     * @param pageName the name of the page that contains the component
+     * @param idPath the ID Path of the component
+     */
+    public ComponentAddress(String pageName, String idPath)
+    {
+        _pageName = pageName;
+        _idPath = idPath;
+    }
 
-	/**
-	 * Creates a new ComponentAddress using the given Page Name and ID Path
-	 * relative on the provided Namespace
-	 * @param namespace the namespace of the page that contains the component
-	 * @param pageName the name of the page that contains the component
-	 * @param idPath the ID Path of the component
-	 */
-	public ComponentAddress(
-		INamespace namespace,
-		String pageName,
-		String idPath)
-	{
-        _pageName = namespace.constructQualifiedName(pageName);
-		_idPath = idPath;
-	}
+    /**
+     * Creates a new ComponentAddress using the given Page Name and ID Path
+     * relative on the provided Namespace
+     * @param namespace the namespace of the page that contains the component
+     * @param pageName the name of the page that contains the component
+     * @param idPath the ID Path of the component
+     */
+    public ComponentAddress(
+        INamespace namespace,
+        String pageName,
+        String idPath)
+    {
+        this(namespace.constructQualifiedName(pageName), idPath);
+    }
 
-	private void init(IComponent component)
-	{
-		IPage objPage = component.getPage();
+    /**
+     * Finds a component with the current address using the given RequestCycle.
+     * @param objCycle the RequestCycle to use to locate the component
+     * @return IComponent a component that has been initialized for the given RequestCycle
+     */
+    public IComponent findComponent(IRequestCycle cycle)
+    {
+        IPage objPage = cycle.getPage(_pageName);
+        return objPage.getNestedComponent(_idPath);
+    }
 
-		_pageName = objPage.getName();
-		_idPath = component.getIdPath();
-	}
+    /**
+     * Returns the idPath of the component.
+     * @return String the ID path of the component
+     */
+    public String getIdPath()
+    {
+        return _idPath;
+    }
 
-	/**
-	 * Finds a component with the current address using the given RequestCycle.
-	 * @param objCycle the RequestCycle to use to locate the component
-	 * @return IComponent a component that has been initialized for the given RequestCycle
-	 */
-	public IComponent findComponent(IRequestCycle cycle)
-	{
-		IPage objPage = cycle.getPage(_pageName);
-		return objPage.getNestedComponent(_idPath);
-	}
-	/**
-	 * Returns the idPath of the component.
-	 * @return String the ID path of the component
-	 */
-	public String getIdPath()
-	{
-		return _idPath;
-	}
+    /**
+     * Returns the Page Name of the component.
+     * @return String the Page Name of the component
+     */
+    public String getPageName()
+    {
+        return _pageName;
+    }
 
-	/**
-	 * Returns the Page Name of the component.
-	 * @return String the Page Name of the component
-	 */
-	public String getPageName()
-	{
-		return _pageName;
-	}
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        int hash = _pageName.hashCode() * 31;
+        if (_idPath != null)
+            hash += _idPath.hashCode();
+        return hash;
+    }
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode()
-	{
-		return _pageName.hashCode() * 31 + _idPath.hashCode();
-	}
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof ComponentAddress))
+            return false;
 
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object obj)
-	{
-		if (!(obj instanceof ComponentAddress))
-			return false;
+        if (obj == this)
+            return true;
 
-		if (obj == this)
-			return true;
+        ComponentAddress objAddress = (ComponentAddress) obj;
+        if (!getPageName().equals(objAddress.getPageName()))
+            return false;
 
-		ComponentAddress objAddress = (ComponentAddress) obj;
-		return getPageName().equals(objAddress.getPageName())
-			&& getIdPath().equals(objAddress.getIdPath());
-	}
+        String idPath1 = getIdPath();
+        String idPath2 = objAddress.getIdPath();
+        return (idPath1 == idPath2)
+            || (idPath1 != null && idPath1.equals(idPath2));
+    }
 
 }

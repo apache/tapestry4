@@ -22,19 +22,27 @@ public class ComponentAddressAdaptor implements ISqueezeAdaptor
     public String squeeze(DataSqueezer squeezer, Object data) throws IOException
     {
         ComponentAddress address = (ComponentAddress) data;
-        return PREFIX + address.getPageName() + SEPARATOR + address.getIdPath();
+
+        // a 'null' id path is encoded as an empty string
+        String idPath = address.getIdPath();
+        if (idPath == null)
+        	idPath = "";
+
+        return PREFIX + address.getPageName() + SEPARATOR + idPath;
     }
 
     public Object unsqueeze(DataSqueezer squeezer, String string) throws IOException
     {
-        int nSeparator = string.indexOf(SEPARATOR);
-        if (nSeparator < 0) 
+        int separator = string.indexOf(SEPARATOR);
+        if (separator < 0) 
             throw new IOException(Tapestry.getString("ComponentAddressAdaptor.no-separator"));
 
-        String strPageName = string.substring(1, nSeparator);
-        String strIdPath = string.substring(nSeparator + 1);
+        String pageName = string.substring(1, separator);
+        String idPath = string.substring(separator + 1);
+        if (idPath.equals(""))
+        	idPath = null;
 
-        return new ComponentAddress(strPageName, strIdPath);
+        return new ComponentAddress(pageName, idPath);
     }
 
     public void register(DataSqueezer squeezer)
