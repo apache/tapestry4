@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.InsertURL</class>
+	
+	<allow-body>no</allow-body>
+	
+	<allow-informal-parameters>no</allow-informal-parameters>
+	
+	<parameter>
+		<name>asset</name>
+		<java-type>com.primix.tapestry.IAsset</java-type>
+		<required>yes</required>
+	</parameter>
+	
+</specification>

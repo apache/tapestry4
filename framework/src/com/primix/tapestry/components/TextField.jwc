@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.TextField</class>	
+
+	<allow-body>no</allow-body>
+	
+	<parameter>
+		<name>text</name>
+		<java-type>java.lang.String</java-type>
+	</parameter>
+	
+	<parameter>
+		<name>disabled</name>
+	</parameter>
+	
+	<parameter>
+		<name>hidden</name>
+	</parameter>
+	
+	<parameter>
+		<name>displayWidth</name>
+		<java-type>java.lang.Integer</java-type>
+	</parameter>
+	
+	<parameter>
+		<name>maximumWidth</name>
+		<java-type>java.lang.Integer</java-type>
+	</parameter>
+	
+	<parameter>
+		<name>listener</name>
+		<java-type>com.primix.tapestry.components.IActionListener</java-type>
+	</parameter>
+	
+</specification>

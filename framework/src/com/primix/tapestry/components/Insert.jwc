@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.Insert</class>
+	
+	<allow-body>no</allow-body>
+	
+	<allow-informal-parameters>no</allow-informal-parameters>
+	
+	<parameter>
+		<name>value</name>
+	</parameter>
+	
+</specification>

@@ -1,0 +1,317 @@
+package com.primix.tapestry;
+
+import com.primix.tapestry.event.ChangeObserver;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+import java.io.OutputStream;
+import javax.servlet.http.*;
+
+/*
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ *
+ * Primix Solutions
+ * One Arsenal Marketplace
+ * Watertown, MA 02472
+ * http://www.primix.com
+ * mailto:hship@primix.com
+ * 
+ * This library is free software.
+ * 
+ * You may redistribute it and/or modify it under the terms of the GNU
+ * Lesser General Public License as published by the Free Software Foundation.
+ *
+ * Version 2.1 of the license should be included with this distribution in
+ * the file LICENSE, as well as License.html. If the license is not
+ * included with this distribution, you may find a copy at the FSF web
+ * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+ * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ */
+
+/**
+ * Base implementation of the {@link IPage} interface.  Most pages
+ * should be able to simply subclass this, adding new properties and
+ * methods.  An unlikely exception would be a page that was not based
+ * on a template.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
+
+
+public class BasePage extends BaseComponent implements IPage
+{
+	/**
+	*  Object to be notified when a observered property changes.  Observered
+	*  properties are the ones that will be persisted between request cycles.
+	*  Unobserved properties are reconstructed.
+	*
+	*/
+
+	protected ChangeObserver changeObserver;
+
+	protected IApplication application;
+	
+	private static final int LIFECYCLE_INIT_SIZE = 3;
+
+	protected int lifecycleComponentCount = 0;
+
+	protected ILifecycle[] lifecycleComponents;
+
+	protected String name;
+	
+	/**
+	*  The locale of the page, initially determined from the application.
+	*
+	*/
+
+	protected Locale locale;
+
+	/**
+	*  Standard constructor.  Sets the locale for the page from the applications' locale.
+	*
+	*/
+
+	public BasePage(IApplication application,
+		ComponentSpecification componentSpecification)
+	{
+		// No page, no container, no name.
+
+		super(null, null, null, componentSpecification);
+
+		this.application = application;
+		this.locale = application.getLocale();
+
+		// This ensures that Component.readTemplate() works.
+
+		page = this;
+
+	}
+
+	public void addLifecycleComponent(ILifecycle component)
+	{
+		if (lifecycleComponents == null)
+		{
+			lifecycleComponents = new ILifecycle[LIFECYCLE_INIT_SIZE];
+			lifecycleComponents[0] = component;
+
+			lifecycleComponentCount = 1;
+			return;
+		}
+
+		if (lifecycleComponentCount == lifecycleComponents.length)
+		{
+			ILifecycle[] newList;
+
+			newList = new ILifecycle[lifecycleComponentCount * 2];
+
+			System.arraycopy(lifecycleComponents, 0, newList, 0, lifecycleComponentCount);
+
+			lifecycleComponents = newList;
+		}
+
+		lifecycleComponents[lifecycleComponentCount++] = component;
+	}
+
+	/**
+	*  Clears the application and changeObserver properties, then
+	*  invokes {@link ILifecycle#reset()} on all lifecycle components.
+	*
+	*/
+
+	public void detachFromApplication()
+	{
+		application = null;
+		changeObserver = null;
+
+		for (int i = 0; i < lifecycleComponentCount; i++)
+			lifecycleComponents[i].reset();
+
+	}
+
+	public IApplication getApplication()
+	{
+		return application;
+	}
+
+	public ChangeObserver getChangeObserver()
+	{
+		return changeObserver;
+	}
+
+	/**
+	*  Returns the name of the page.
+	*
+	*/
+
+	public String getExtendedId()
+	{
+		return name;
+	}
+
+	/**
+	*  Pages always return null for idPath.
+	*
+	*/
+
+	public String getIdPath()
+	{
+		return null;
+	}
+
+	/**
+	*  Returns the locale for the page, which may be null if the
+	*  locale is not known (null corresponds to the "default locale").
+	*
+	*/
+
+	public Locale getLocale()
+	{
+		return locale;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public IComponent getNestedComponent(String path)
+	{
+		StringTokenizer tokenizer;
+		IComponent current = this;
+		String element;
+
+		if (path == null)
+			return this;
+
+		// StringSplitter is more efficient!
+
+		tokenizer = new StringTokenizer(path, ".");
+
+		while (tokenizer.hasMoreTokens())
+		{
+			element = tokenizer.nextToken();
+
+			current = current.getComponent(element);
+
+		}
+
+		return current;
+
+	}
+
+	/**
+	*  Sets the application and trace logger for the page.  Does
+	*  <em>not</em> change the locale, but since a page is selected
+	*  from the {@link IPageSource} pool partially based on its
+	*  locale matching the application locale, they should match
+	*  anyway.
+	*
+	*  <p>Invokes {@link ILifecycle#reset()} on any lifecycle components.
+	*
+	*/
+
+	public void joinApplication(IApplication value)
+	{
+		application = value;
+
+	}
+
+	/**
+	*
+	*  Invokes lifecycle methods on any components (as necessary).
+	*
+	*/
+
+	public void renderPage(IResponseWriter writer, IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		int i;
+
+		for (i = 0; i < lifecycleComponentCount; i++)
+			lifecycleComponents[i].prepareForRender(cycle);
+
+		try
+		{
+            beginResponse(writer, cycle);
+            
+			render(writer, cycle);
+		}
+		finally
+		{
+			// Open question:  how to handle an exceptions thrown here.
+
+			for (i = 0; i < lifecycleComponentCount; i++)
+				lifecycleComponents[i].cleanupAfterRender(cycle);
+		}		
+	}
+
+	public void setChangeObserver(ChangeObserver value)
+	{
+		changeObserver = value;
+	}
+
+	public void setName(String value)
+	{
+		name = value;
+	}
+
+	/**
+	*  By default, pages are not protected and this method does nothing.
+	*
+	*/
+
+	public void validate(IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		// Does nothing.
+	}
+		
+	/**
+	 *  Returns an {@link HTMLResponseWriter}.
+	 *
+	 */
+	 
+	 
+	public IResponseWriter getResponseWriter(OutputStream out)
+	{
+		return new HTMLResponseWriter(out);
+	}
+
+    /**
+     *  Begins the response by setting {@link HttpServletResponse} headers
+     *  that should ensure the page is not cached.  This implementation
+     *  is a scattershot approach, sending headers that are meaningful
+     *  to various browsers (a smarter approach would be to identify
+     *  the browser and set at most one specific header appropriate
+     *  to the browser).
+     *
+     *  <p><table>
+     *  <tr><th>Header</th> <th>Value</th> </tr>
+     *  <tr><td>Pragma</td> <td>no-cache</td> </tr>
+     *  <tr><td>Cache-Control</td> <td>no-cache</td> </tr>
+     *  <tr><td>Expires</td> <td>0</td> </tr> </table>
+     *
+     */
+     
+	public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
+    throws RequestCycleException
+    {
+        HttpServletResponse response;
+
+        response = cycle.getRequestContext().getResponse();
+
+        // This is a gamut of options that should convince the
+        // browser not to cache.
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+    }
+}
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.RadioGroup</class>
+	
+	<allow-informal-parameters>no</allow-informal-parameters>
+	
+	<parameter>
+		<name>disabled</name>
+	</parameter>
+	
+	<parameter>
+		<name>listener</name>
+		<java-type>com.primix.tapestry.components.IActionListener</java-type>
+	</parameter>
+	
+</specification>

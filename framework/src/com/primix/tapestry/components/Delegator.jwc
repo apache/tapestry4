@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.Delegator</class>
+	
+	<allow-informal-parameters>no</allow-informal-parameters>
+	
+	<parameter>
+		<name>delegate</name>
+		<java-type>com.primix.tapestry.IRender</java-type>
+		<required>yes</required>
+	</parameter>
+	
+</specification>

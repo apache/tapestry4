@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.Conditional</class>
+
+	<allow-informal-parameters>no</allow-informal-parameters>
+	
+	<parameter>
+		<name>condition</name>
+	</parameter>
+	
+	<parameter>
+		<name>invert</name>
+	</parameter>
+	
+</specification>
