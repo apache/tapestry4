@@ -10,6 +10,7 @@ import net.sf.tapestry.junit.spec.TestApplicationSpecification;
 import net.sf.tapestry.junit.spec.TestComponentSpecification;
 import net.sf.tapestry.junit.utils.TestDataSqueezer;
 import net.sf.tapestry.junit.utils.TestEnum;
+import net.sf.tapestry.junit.utils.TestIdAllocator;
 import net.sf.tapestry.junit.utils.TestPropertyFinder;
 import net.sf.tapestry.junit.utils.TestPublicBean;
 import net.sf.tapestry.junit.valid.ValidSuite;
@@ -31,6 +32,7 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(TestPublicBean.class);
         suite.addTestSuite(TestPropertyFinder.class);
         suite.addTestSuite(TestListenerMap.class);
+        suite.addTestSuite(TestIdAllocator.class);
 		suite.addTestSuite(ComponentStringsTest.class);
 		suite.addTestSuite(TemplateParserTest.class);
 		suite.addTestSuite(SpecificationParserTest.class);

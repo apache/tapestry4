@@ -6,8 +6,6 @@
 	
 <page-specification class="tutorial.workbench.localization.Change">
 
-  <component id="border" type="Border"/>
- 
   <component id="insertLocaleName" type="Insert">
     <binding name="value" expression="localeName"/>
   </component>

@@ -13,8 +13,6 @@
 
 <h3>NEXT_RELEASE</h3>
 
-Moved the Inspector out of the framework and into the contrib library.
-
 <p>
 Added support for specifying expressions in the component template.  Expressions
 are specified as attributes with the format "<code>[[ <i>expression</i> ]]</code>".
@@ -22,6 +20,19 @@ The brackets and leading and trailing whitespace are removed.
 Expressions specified this way are the equivalent of the
 <code>&lt;binding&gt;</code> element in a specification.
 
+<p>
+Tapestry now supports <i>implicit components</i>.  Implicit components are
+declared exclusively in the containing component's template (instead of in
+the containing component's specification) using a special
+<code>jwcid</code> syntax:
+<code>@<i>type</i></code> (for anonymous components) or
+<code><i>id</i>:@<i>type</i></code> (for named components).  Implicit components
+are especially useful for components that take no parameters, but may also
+make use of template expressions.
+
+
+<p>
+Moved the Inspector out of the framework and into the contrib library.
 
 <h3>Release 2.3-alpha-1</h3>
 

@@ -5,13 +5,9 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
 <page-specification class="tutorial.workbench.table.Table">
-
-  <component id="border" type="Border"/>
   
   <component id="localeList" type="LocaleList">
   	<binding name="localeSelectionListener" expression="localeSelectionListener"/>
   </component>
-
-  <component id="localeSelection" type="LocaleSelection"/>
   
 </page-specification>

@@ -13,8 +13,6 @@
   	<set-property name="minimum" expression="0"/>
   </bean>
 
-  <component id="border" type="Border"/>
-
   <component id="showError" type="ShowError">
      <binding name="delegate" expression="beans.delegate"/>
   </component>

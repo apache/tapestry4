@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id -->
-
-
-<!-- Fill in some code-coverage gaps in the page service. -->
+<!-- $Id$ -->
 
 <mock-test>
     <context name="mock"/>

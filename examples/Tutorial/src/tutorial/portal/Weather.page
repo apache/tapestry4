@@ -7,8 +7,6 @@
 	
 <page-specification class="tutorial.portal.Weather">
 
-<component id="content" type="Block"/>
-
 <component id="weekday" type="DirectLink">
   <binding name="listener" expression="listeners.selectWeekday"/>
   <binding name="class" expression="weekdayClass"/>

@@ -81,7 +81,7 @@ public class BaseComponent extends AbstractComponent
         // Most of the work is done inside the loader class. 
         // We instantiate it just to invoke process() on it.
         
-        new BaseComponentTemplateLoader(this, componentTemplate, pageSource).process();
+        new BaseComponentTemplateLoader(cycle, loader, this, componentTemplate, pageSource).process();
 
         if (LOG.isDebugEnabled())
             LOG.debug(this +" finished reading template");

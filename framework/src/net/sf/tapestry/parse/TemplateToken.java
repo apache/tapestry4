@@ -25,17 +25,6 @@ public abstract class TemplateToken
 {
     private TokenType _type;
 
-
-
-    /**
-     *  Used with LOCALIZATION tokens.
-     * 
-     *  @since 2.3
-     * 
-     **/
-    
-    private boolean _raw;
-
     protected TemplateToken(TokenType type)
     {
         _type = type;
@@ -44,17 +33,6 @@ public abstract class TemplateToken
     public TokenType getType()
     {
         return _type;
-    }
-
-    /**
-     *  Returns true for {@link TokenType#LOCALIZATION} tokens, if the
-     *  String is to be inserted into the response raw.
-     * 
-     **/
-    
-    public boolean isRaw()
-    {
-        return _raw;
     }
 
     public String toString()

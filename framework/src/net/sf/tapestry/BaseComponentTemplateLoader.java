@@ -38,6 +38,8 @@ public class BaseComponentTemplateLoader
 {
     private static final Log LOG = LogFactory.getLog(BaseComponentTemplateLoader.class);
 
+    private IPageLoader _pageLoader;
+    private IRequestCycle _requestCycle;
     private BaseComponent _loadComponent;
     private IPageSource _pageSource;
     private ComponentTemplate _template;
@@ -114,8 +116,13 @@ public class BaseComponentTemplateLoader
 
     }
 
-    public BaseComponentTemplateLoader(BaseComponent loadComponent, ComponentTemplate template, IPageSource pageSource)
+    public BaseComponentTemplateLoader(
+    IRequestCycle requestCycle,
+    IPageLoader pageLoader,
+    BaseComponent loadComponent, ComponentTemplate template, IPageSource pageSource)
     {
+        _requestCycle = requestCycle;
+        _pageLoader = pageLoader;
         _loadComponent = loadComponent;
         _template = template;
         _pageSource = pageSource;
@@ -195,19 +202,12 @@ public class BaseComponentTemplateLoader
     {
         String id = token.getId();
         IComponent component = null;
-
-        try
-        {
-            component = _loadComponent.getComponent(id);
-
-        }
-        catch (NoSuchComponentException ex)
-        {
-            throw new PageLoaderException(
-                Tapestry.getString("BaseComponent.undefined-embedded-component", _loadComponent.getExtendedId(), id),
-                _loadComponent,
-                ex);
-        }
+        String componentType = token.getComponentType();
+        
+        if (componentType == null)
+            component = getEmbeddedComponent(id);
+        else
+            component = createImplicitComponent(id, componentType);            
 
         // Make sure the template contains each component only once.
 
@@ -237,7 +237,28 @@ public class BaseComponentTemplateLoader
         _stack[_stackx++] = _activeComponent;
 
         _activeComponent = component;
+    }
 
+    private IComponent createImplicitComponent(String id, String componentType)
+    throws PageLoaderException
+    {
+        return _pageLoader.createImplicitComponent(_requestCycle, _loadComponent, id, componentType);
+    }
+
+    private IComponent getEmbeddedComponent(String id) throws PageLoaderException
+    {
+        try
+        {
+            return _loadComponent.getComponent(id);
+        
+        }
+        catch (NoSuchComponentException ex)
+        {
+            throw new PageLoaderException(
+                Tapestry.getString("BaseComponent.undefined-embedded-component", _loadComponent.getExtendedId(), id),
+                _loadComponent,
+                ex);
+        }
     }
 
     private void process(CloseToken token) throws PageLoaderException

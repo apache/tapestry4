@@ -27,6 +27,7 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.html.Body;
+import net.sf.tapestry.util.IdAllocator;
 import net.sf.tapestry.valid.IValidationDelegate;
 
 /**
@@ -89,35 +90,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     private static final int EVENT_MAP_SIZE = 3;
 
-    /**
-     * A Map, keyed on component id, used to allocate new component ids.
-     *
-     * @since 1.0.2
-     *
-     **/
-
-    private Map _allocatorMap;
-
-    /**
-     *  Class used to allocate ids (used as form element names).
-     *
-     **/
-
-    private static class IdAllocator
-    {
-        String baseId;
-        int index;
-
-        IdAllocator(String baseId)
-        {
-            this.baseId = baseId + "_";
-        }
-
-        public String nextId()
-        {
-            return baseId + index++;
-        }
-    }
+    private IdAllocator _elementIdAllocator;
 
     /**
      *  Returns the currently active {@link IForm}, or null if no form is
@@ -212,26 +185,10 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public String getElementId(String baseId)
     {
-        if (_allocatorMap == null)
-            _allocatorMap = new HashMap();
+        if (_elementIdAllocator == null)
+            _elementIdAllocator = new IdAllocator();
 
-        String result = null;
-
-        IdAllocator allocator = (IdAllocator) _allocatorMap.get(baseId);
-
-        if (allocator == null)
-        {
-            result = baseId;
-            allocator = new IdAllocator(baseId);
-        }
-        else
-            result = allocator.nextId();
-
-        // Record the allocated id.  This protects against degenerate
-        // names by the developer, such as 'foo' (in a Foreach) and
-        // 'foo0' elsewhere.
-
-        _allocatorMap.put(result, allocator);
+        String result = _elementIdAllocator.allocateId(baseId);
 
         _elementCount++;
 
@@ -568,10 +525,11 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         _rendering = false;
         _elementCount = 0;
         _events = null;
-        _allocatorMap = null;
+      
+        if (_elementIdAllocator != null)
+            _elementIdAllocator.clear();
 
         super.cleanupAfterRender(cycle);
-
     }
 
     /**

@@ -29,6 +29,8 @@
 	<page name="TemplateExprInformal" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExprInformal.page"/>
 	<page name="TemplateExprReserved" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExprReserved.page"/>
 		
+	<page name="ImplicitComponents" specification-path="/net/sf/tapestry/junit/mock/app/impl/ImplicitComponents.page"/>
+			
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	
 </application>	

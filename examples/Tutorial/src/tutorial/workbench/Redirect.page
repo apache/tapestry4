@@ -6,8 +6,6 @@
 	
 <page-specification class="tutorial.workbench.Redirect">
 
-  <component id="border" type="Border"/>
-  
   <component id="internal" type="DirectLink">
   	<binding name="listener" expression="listeners.redirectInternal"/>
   </component>

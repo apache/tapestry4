@@ -158,4 +158,10 @@ public class MockTestCase extends TapestryTestCase
     {
         attempt("/net/sf/tapestry/junit/mock/TestTemplateExpr.xml");
     }
+    
+    public void testImplicitComponents()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestImplicitComponents.xml");
+    }
 }

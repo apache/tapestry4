@@ -6,8 +6,6 @@
 	
 <page-specification class="tutorial.workbench.palette.Palette">
 
-  <component id="border" type="Border"/>
-  
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.formSubmit"/>
   </component>

@@ -5,8 +5,6 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
 <page-specification class="tutorial.workbench.palette.Results">
-
-  <component id="border" type="Border"/>
   
   <component id="loop" type="Foreach">
   	<static-binding name="element">li</static-binding>

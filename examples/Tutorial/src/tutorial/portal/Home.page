@@ -7,8 +7,6 @@
 	
 <page-specification class="tutorial.portal.Home">
 
-<component id="border" type="Border"/>
-
 <component id="e" type="Foreach">
   <binding name="source" expression="visit.models"/>
   <binding name="value" expression="model"/>

@@ -16,9 +16,7 @@
     <string-binding name="title" key="window.title"/>
     <binding name="stylesheet" expression="assets.stylesheet"/>
   </component>
-  
-  <component id="body" type="Body"/>
-  
+    
   <component id="eachPage" type="Foreach">
     <binding name="source" expression="pageTabNames"/>
     <binding name="value" expression="pageName"/>
@@ -47,8 +45,6 @@
   <component id="rightTabImage" type="Image">
   	<binding name="image" expression="rightTabAsset"/>
   </component>
-  
-  <component id="renderBody" type="RenderBody"/>
   
   <component id="form" type="Form"/>
   

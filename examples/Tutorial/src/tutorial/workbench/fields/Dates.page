@@ -6,10 +6,6 @@
 
 <page-specification class="tutorial.workbench.fields.Dates">
 
-	<component id="border" type="Border"/>
-	  
-	<component id="form" type="Form"/>
-
 	<component id="endDatePicker" type="DatePicker">
 		<binding name="value" expression="endDate"/>
 	</component>

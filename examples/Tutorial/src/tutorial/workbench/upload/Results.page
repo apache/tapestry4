@@ -5,8 +5,6 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
 <page-specification class="tutorial.workbench.upload.Results">
-
-  <component id="border" type="Border"/>
   
   <component id="insertFilePath" type="Insert">
   	<binding name="value" expression="file.filePath"/>

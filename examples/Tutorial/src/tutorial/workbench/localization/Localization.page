@@ -6,11 +6,9 @@
 	
 <page-specification class="tutorial.workbench.localization.Localization">
 
-  <component id="border" type="Border"/>
-  
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.formSubmit"/>
-    <field-binding name="stateful" field-name="Boolean.FALSE"/>
+    <binding name="stateful" expression="false"/>
   </component>
   
   <component id="inputLocale" type="PropertySelection">

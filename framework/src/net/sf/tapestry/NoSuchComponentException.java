@@ -11,8 +11,8 @@ package net.sf.tapestry;
 
 public class NoSuchComponentException extends RuntimeException
 {
-	private String componentId;
-	private transient IComponent container;
+	private String _componentId;
+	private transient IComponent _container;
 
 	public NoSuchComponentException(String componentId, IComponent container)
 	{
@@ -22,17 +22,17 @@ public class NoSuchComponentException extends RuntimeException
 				container.getExtendedId(),
 				componentId));
 
-		this.componentId = componentId;
-		this.container = container;
+		_componentId = componentId;
+		_container = container;
 	}
 
 	public IComponent getContainer()
 	{
-		return container;
+		return _container;
 	}
 
 	public String getComponentId()
 	{
-		return componentId;
+		return _componentId;
 	}
 }

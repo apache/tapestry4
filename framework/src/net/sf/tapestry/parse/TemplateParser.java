@@ -6,7 +6,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.MatchResult;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.NoSuchComponentException;
+import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.IdAllocator;
 
 /**
  *  A new implementation of the template parser; this does <em>not</em>
@@ -95,6 +106,32 @@ public class TemplateParser
      **/
 
     public static final String JWCID_ATTRIBUTE_NAME = "jwcid";
+
+    private static final String PROPERTY_NAME_PATTERN = "_?[a-zA-Z]\\w*";
+
+    /**
+     *  Pattern used to recognize ordinary components (defined in the specification).
+     * 
+     **/
+
+    public static final String SIMPLE_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")$";
+
+    /**
+     *  Pattern used to recognize implicit components (whose type is defined in
+     *  the template).  Subgroup 3 is the id (which may be null) and subgroup 4
+     *  is the type (which may be qualified with a library prefix).
+     *  Subgroup 6 is the library id, Subgroup 7 is the simple component type.
+     * 
+     **/
+
+    public static final String IMPLICIT_ID_PATTERN =
+        "^((" + PROPERTY_NAME_PATTERN + "):)?@(((" + PROPERTY_NAME_PATTERN + "):)?(" + PROPERTY_NAME_PATTERN + "))$";
+
+    private Pattern _simpleIdPattern;
+    private Pattern _implicitIdPattern;
+    private PatternMatcher _patternMatcher;
+
+    private IdAllocator _idAllocator = new IdAllocator();
 
     private ITemplateParserDelegate _delegate;
 
@@ -198,6 +235,23 @@ public class TemplateParser
 
     private Map _attributes = new HashMap();
 
+    public TemplateParser()
+    {
+        Perl5Compiler compiler = new Perl5Compiler();
+
+        try
+        {
+            _simpleIdPattern = compiler.compile(SIMPLE_ID_PATTERN);
+            _implicitIdPattern = compiler.compile(IMPLICIT_ID_PATTERN);
+        }
+        catch (MalformedPatternException ex)
+        {
+            throw new ApplicationRuntimeException(ex);
+        }
+
+        _patternMatcher = new Perl5Matcher();
+    }
+
     /**
      *  Parses the template data into an array of {@link TemplateToken}s.
      *
@@ -237,6 +291,7 @@ public class TemplateParser
             _stack.clear();
             _tokens.clear();
             _attributes.clear();
+            _idAllocator.clear();
         }
 
         return result;
@@ -514,7 +569,7 @@ public class TemplateParser
                     if (ch == '/' || ch == '>')
                         throw new TemplateParseException(
                             Tapestry.getString(
-                                "TemplateParser.missing-attiribute-value",
+                                "TemplateParser.missing-attribute-value",
                                 tagName,
                                 Integer.toString(_line),
                                 attributeName),
@@ -647,109 +702,11 @@ public class TemplateParser
 
         if (jwcId != null)
         {
-            if (jwcId.equalsIgnoreCase(CONTENT_ID))
-            {
-                if (_ignoring)
-                    throw new TemplateParseException(
-                        Tapestry.getString(
-                            "TemplateParser.content-block-may-not-be-ignored",
-                            tagName,
-                            Integer.toString(startLine)),
-                        startLine,
-                        _resourcePath);
-
-                if (emptyTag)
-                    throw new TemplateParseException(
-                        Tapestry.getString(
-                            "TemplateParser.content-block-may-not-be-empty",
-                            tagName,
-                            Integer.toString(startLine)),
-                        startLine,
-                        _resourcePath);
-
-                _tokens.clear();
-                _blockStart = -1;
-
-                Tag tag = new Tag(tagName, startLine);
-
-                tag._mustBalance = true;
-                tag._content = true;
-
-                _stack.clear();
-                _stack.add(tag);
-
-                advance();
-
-                return;
-            }
-
-            boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
-
-            if (!(isRemoveId || _delegate.getKnownComponent(jwcId)))
-                throw new TemplateParseException(
-                    Tapestry.getString(
-                        "TemplateParser.unknown-component-id",
-                        tagName,
-                        Integer.toString(startLine),
-                        jwcId),
-                    startLine,
-                    _resourcePath);
-
-            if (_ignoring && !isRemoveId)
-                throw new TemplateParseException(
-                    Tapestry.getString(
-                        "TemplateParser.component-may-not-be-ignored",
-                        tagName,
-                        Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath);
-
-            // Ignore the body if we're removing the entire tag,
-            // of if the corresponding component doesn't allow
-            // a body.
-
-            boolean ignoreBody = !emptyTag && (isRemoveId || !_delegate.getAllowBody(jwcId));
-
-            if (_ignoring && ignoreBody)
-                throw new TemplateParseException(
-                    Tapestry.getString("TemplateParser.nested-ignore", tagName, Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath);
-
-            if (!emptyTag)
-            {
-                Tag tag = new Tag(tagName, startLine);
-
-                tag._component = !isRemoveId;
-                tag._removeTag = isRemoveId;
-
-                tag._ignoringBody = ignoreBody;
-
-                _ignoring = tag._ignoringBody;
-
-                tag._mustBalance = true;
-
-                _stack.add(tag);
-            }
-
-            // End any open block.
-
-            addTextToken(cursorStart - 1);
-
-            if (!isRemoveId)
-            {
-                addOpenToken(tagName, jwcId);
-
-                if (emptyTag)
-                    _tokens.add(new CloseToken(tagName));
-            }
-
-            advance();
-
+            processComponentStart(tagName, jwcId, emptyTag, startLine, cursorStart);
             return;
         }
 
-        // A static tag (not a <jwc> tag, or an ordinary tag without a jwcid attribute).
+        // A static tag (not a tag without a jwcid attribute).
         // We need to record this so that we can match close tags later.
 
         if (!emptyTag)
@@ -766,41 +723,208 @@ public class TemplateParser
         advance();
     }
 
-    private void addOpenToken(String tagName, String jwcId)
+    /**
+     *  Processes a tag that is the open tag for a component (but also handles
+     *  the $remove$ and $content$ tags).
+     * 
+     **/
+
+    private void processComponentStart(String tagName, String jwcId, boolean emptyTag, int startLine, int cursorStart)
+        throws TemplateParseException
     {
-        OpenToken token = new OpenToken(tagName, jwcId);
+        if (jwcId.equalsIgnoreCase(CONTENT_ID))
+        {
+            processContentTag(tagName, startLine, emptyTag);
+
+            return;
+        }
+
+        boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
+
+        if (_ignoring && !isRemoveId)
+            throw new TemplateParseException(
+                Tapestry.getString("TemplateParser.component-may-not-be-ignored", tagName, Integer.toString(startLine)),
+                startLine,
+                _resourcePath);
+
+        String type = null;
+        boolean allowBody = false;
+
+        if (_patternMatcher.matches(jwcId, _implicitIdPattern))
+        {
+            MatchResult match = _patternMatcher.getMatch();
+
+            jwcId = match.group(2);
+            type = match.group(3);
+
+            String libraryId = match.group(5);
+            String simpleType = match.group(6);
+
+            // If (and this is typical) no actual component id was specified,
+            // then generate one on the fly.
+
+            if (jwcId == null)
+                jwcId = _idAllocator.allocateId("$" + simpleType);
+
+            try
+            {
+                allowBody = _delegate.getAllowBody(libraryId, simpleType);
+            }
+            catch (PageLoaderException ex)
+            {
+                throw new TemplateParseException(
+                    Tapestry.getString(
+                        "TemplateParser.unresolved-component-type",
+                        type,
+                        tagName,
+                        Integer.toString(startLine)),
+                    startLine,
+                    _resourcePath,
+                    ex);
+            }
+        }
+        else
+        {
+            if (!isRemoveId)
+            {
+                if (!_patternMatcher.matches(jwcId, _simpleIdPattern))
+                    throw new TemplateParseException(
+                        Tapestry.getString(
+                            "TemplateParser.component-id-invalid",
+                            tagName,
+                            Integer.toString(startLine),
+                            jwcId),
+                        startLine,
+                        _resourcePath);
+
+                if (!_delegate.getKnownComponent(jwcId))
+                    throw new TemplateParseException(
+                        Tapestry.getString(
+                            "TemplateParser.unknown-component-id",
+                            tagName,
+                            Integer.toString(startLine),
+                            jwcId),
+                        startLine,
+                        _resourcePath);
+
+                allowBody = _delegate.getAllowBody(jwcId);
+
+
+            }
+        }
+
+        // Ignore the body if we're removing the entire tag,
+        // of if the corresponding component doesn't allow
+        // a body.
+
+        boolean ignoreBody = !emptyTag && (isRemoveId || !allowBody);
+
+        if (_ignoring && ignoreBody)
+            throw new TemplateParseException(
+                Tapestry.getString("TemplateParser.nested-ignore", tagName, Integer.toString(startLine)),
+                startLine,
+                _resourcePath);
+
+        if (!emptyTag)
+        {
+            Tag tag = new Tag(tagName, startLine);
+
+            tag._component = !isRemoveId;
+            tag._removeTag = isRemoveId;
+
+            tag._ignoringBody = ignoreBody;
+
+            _ignoring = tag._ignoringBody;
+
+            tag._mustBalance = true;
+
+            _stack.add(tag);
+        }
+
+        // End any open block.
+
+        addTextToken(cursorStart - 1);
+
+        if (!isRemoveId)
+        {
+            addOpenToken(tagName, jwcId, type);
+
+            if (emptyTag)
+                _tokens.add(new CloseToken(tagName));
+        }
+
+        advance();
+
+        return;
+    }
+
+    private void processContentTag(String tagName, int startLine, boolean emptyTag) throws TemplateParseException
+    {
+        if (_ignoring)
+            throw new TemplateParseException(
+                Tapestry.getString(
+                    "TemplateParser.content-block-may-not-be-ignored",
+                    tagName,
+                    Integer.toString(startLine)),
+                startLine,
+                _resourcePath);
+
+        if (emptyTag)
+            throw new TemplateParseException(
+                Tapestry.getString(
+                    "TemplateParser.content-block-may-not-be-empty",
+                    tagName,
+                    Integer.toString(startLine)),
+                startLine,
+                _resourcePath);
+
+        _tokens.clear();
+        _blockStart = -1;
+
+        Tag tag = new Tag(tagName, startLine);
+
+        tag._mustBalance = true;
+        tag._content = true;
+
+        _stack.clear();
+        _stack.add(tag);
+
+        advance();
+    }
+
+    private void addOpenToken(String tagName, String jwcId, String type)
+    {
+        OpenToken token = new OpenToken(tagName, jwcId, type);
         _tokens.add(token);
-        
+
         if (_attributes.isEmpty())
             return;
-            
+
         Iterator i = _attributes.entrySet().iterator();
         while (i.hasNext())
         {
-            Map.Entry entry = (Map.Entry)i.next();
-            
-            String key = (String)entry.getKey();
-            
+            Map.Entry entry = (Map.Entry) i.next();
+
+            String key = (String) entry.getKey();
+
             if (key.equalsIgnoreCase(JWCID_ATTRIBUTE_NAME))
                 continue;
-            
-            String value = (String)entry.getValue();
-            
+
+            String value = (String) entry.getValue();
+
             // OGNL expressions look like "[[ expression ]]"
-            
+
             if (value.startsWith("[[") && value.endsWith("]]"))
             {
                 value = extractExpression(value);
-                
-                
+
                 token.addExpressionValue(key, value);
                 continue;
             }
-                        
-            token.addStaticValue(key, value);
-        }        
-    }
 
+            token.addStaticValue(key, value);
+        }
+    }
 
     /**
      *  Invoked to handle a closing tag, i.e., &lt;/foo&gt;.  When a tag closes, it will match against
@@ -982,40 +1106,6 @@ public class TemplateParser
     }
 
     /**
-     *  Returns a copy of the input Map, with the identified
-     *  key removed.  The check for matching keys is caseless.
-     *  May return null if the input Map is empty, or null, or
-     *  contains only the matching key.
-     * 
-     **/
-
-    private Map filter(Map input, String removeKey)
-    {
-        if (input == null || input.isEmpty())
-            return null;
-
-        Map result = null;
-
-        Iterator i = input.entrySet().iterator();
-        while (i.hasNext())
-        {
-            Map.Entry entry = (Map.Entry) i.next();
-
-            String key = (String) entry.getKey();
-
-            if (key.equalsIgnoreCase(removeKey))
-                continue;
-
-            if (result == null)
-                result = new HashMap(input.size());
-
-            result.put(key, entry.getValue());
-        }
-
-        return result;
-    }
-
-    /**
      *  Variation of {@link #filter(Map, String)} when multiple keys
      *  should be removed.
      * 
@@ -1029,9 +1119,8 @@ public class TemplateParser
         Map result = null;
 
         Iterator i = input.entrySet().iterator();
-        
-nextkey:        
-        while (i.hasNext())
+
+        nextkey : while (i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();
 
@@ -1040,7 +1129,7 @@ nextkey:
             for (int j = 0; j < removeKeys.length; j++)
             {
                 if (key.equalsIgnoreCase(removeKeys[j]))
-                continue nextkey;
+                    continue nextkey;
             }
 
             if (result == null)
@@ -1079,19 +1168,14 @@ nextkey:
 
         return null;
     }
-    
+
     /**
      *  Conversions needed by {@link #extractExpression(String)}
      * 
      **/
-    
-    private static final String[] CONVERSIONS = {
-            "&lt;", "<",
-            "&gt;", ">",
-            "&quot;", "\"",
-            "&amp;", "&"
-    };
-    
+
+    private static final String[] CONVERSIONS = { "&lt;", "<", "&gt;", ">", "&quot;", "\"", "&amp;", "&" };
+
     /**
      *  Provided a raw input string that has been recognized to be an expression
      *  (starts with "[[" and ends with "]]"), this removes the outer brackets
@@ -1100,28 +1184,26 @@ nextkey:
      *  those values in expressions in the template).
      * 
      **/
-    
+
     private String extractExpression(String input)
     {
         int inputLength = input.length() - 2;
-        
+
         StringBuffer buffer = new StringBuffer(inputLength - 2);
 
         int cursor = 2;
-        
 
         while (cursor < inputLength)
         {
-outer: 
-            for (int i = 0; i < CONVERSIONS.length; i += 2)
+            outer : for (int i = 0; i < CONVERSIONS.length; i += 2)
             {
                 String entity = CONVERSIONS[i];
                 int entityLength = entity.length();
                 String value = CONVERSIONS[i + 1];
-                
+
                 if (cursor + entityLength > inputLength)
                     continue;
-                
+
                 if (input.substring(cursor, cursor + entityLength).equals(entity))
                 {
                     buffer.append(value);
@@ -1129,27 +1211,27 @@ outer:
                     break outer;
                 }
             }
-            
+
             buffer.append(input.charAt(cursor));
-            cursor++;           
+            cursor++;
         }
 
         return buffer.toString().trim();
     }
-    
+
     /**
      *  Returns true if the  map contains the given key (caseless search) and the value
      *  is "true" (caseless comparison).
      * 
      **/
-    
+
     private boolean checkBoolean(String key, Map map)
     {
         String value = findValueCaselessly(key, map);
-        
+
         if (value == null)
             return false;
-            
-         return value.equalsIgnoreCase("true");
+
+        return value.equalsIgnoreCase("true");
     }
 }

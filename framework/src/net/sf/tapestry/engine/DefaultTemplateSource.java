@@ -13,14 +13,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.ComponentResolver;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.NoSuchComponentException;
+import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.ITemplateParserDelegate;
@@ -71,31 +76,43 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private static class ParserDelegate implements ITemplateParserDelegate
     {
-        IComponent _component;
+        private IComponent _component;
+        private ComponentResolver _resolver;
 
-        ParserDelegate(IComponent component)
+        ParserDelegate(IComponent component, ISpecificationSource _specificationSource)
         {
             _component = component;
+            _resolver = new ComponentResolver(_specificationSource);
         }
 
         public boolean getKnownComponent(String componentId)
         {
-            try
-            {
-                _component.getComponent(componentId);
-
-                return true;
-            }
-            catch (NoSuchComponentException ex)
-            {
-                return false;
-            }
+            return _component.getSpecification().getComponent(componentId) != null;
         }
 
         public boolean getAllowBody(String componentId)
+        throws NoSuchComponentException
         {
-            return _component.getComponent(componentId).getSpecification().getAllowBody();
+             IComponent embedded = _component.getComponent(componentId);
+             
+             if (embedded == null)
+             throw new NoSuchComponentException(componentId, _component);
+             
+             return embedded.getSpecification().getAllowBody();
         }
+
+        public boolean getAllowBody(String libraryId, String type)
+        throws PageLoaderException
+        {
+            INamespace namespace = _component.getNamespace();
+
+            _resolver.resolve(namespace, libraryId, type);
+
+            ComponentSpecification spec = _resolver.getSpecification();
+
+            return spec.getAllowBody();
+        }
+
     }
 
     public DefaultTemplateSource(IResourceResolver resolver)
@@ -178,7 +195,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         if (templateAsset != null)
             return readTemplateFromAsset(cycle, component, templateAsset, locale);
 
-        return findStandardTemplate(specificationResourcePath, component, locale);
+        return findStandardTemplate(cycle, specificationResourcePath, component, locale);
     }
 
     /**
@@ -186,7 +203,11 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      * 
      **/
 
-    private synchronized ComponentTemplate readTemplateFromAsset(IRequestCycle cycle, IComponent component, IAsset asset, Locale locale)
+    private synchronized ComponentTemplate readTemplateFromAsset(
+        IRequestCycle cycle,
+        IComponent component,
+        IAsset asset,
+        Locale locale)
     {
         InputStream stream = asset.getResourceAsStream(cycle, locale);
 
@@ -206,7 +227,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
                 ex);
         }
 
-        return constructTokens(templateData, asset.toString(), component);
+        return constructTokens(cycle, templateData, asset.toString(), component);
     }
 
     /**
@@ -217,6 +238,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      **/
 
     private synchronized ComponentTemplate findStandardTemplate(
+    IRequestCycle cycle,
         String specificationResourcePath,
         IComponent component,
         Locale locale)
@@ -288,7 +310,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
             // Ok, see if it exists.
 
-            result = parseTemplate(candidatePath, component);
+            result = parseTemplate(cycle, candidatePath, component);
 
             if (result != null)
             {
@@ -308,21 +330,24 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *
      **/
 
-    private ComponentTemplate parseTemplate(String resourceName, IComponent component)
+    private ComponentTemplate parseTemplate(IRequestCycle cycle, String resourceName, IComponent component)
     {
         char[] templateData = readTemplate(resourceName);
         if (templateData == null)
             return null;
 
-        return constructTokens(templateData, resourceName, component);
+        return constructTokens(cycle, templateData, resourceName, component);
     }
 
-    private ComponentTemplate constructTokens(char[] templateData, String resourceName, IComponent component)
+    private ComponentTemplate constructTokens(IRequestCycle cycle, char[] templateData, String resourceName, IComponent component)
     {
         if (_parser == null)
             _parser = new TemplateParser();
 
-        ITemplateParserDelegate delegate = new ParserDelegate(component);
+        IEngine engine = cycle.getEngine();
+        ISpecificationSource specificationSource = engine.getSpecificationSource();
+        
+        ITemplateParserDelegate delegate = new ParserDelegate(component, specificationSource);
 
         TemplateToken[] tokens;
 

@@ -11,8 +11,6 @@
     
 <bean name="rowClass" class="net.sf.tapestry.bean.EvenOdd"/>
 
-<component id="content" type="Block"/>
-
 <component id="e" type="Foreach">
   <binding name="source" expression="stocks"/>
   <binding name="value" expression="stock"/>

@@ -31,8 +31,6 @@
 		<binding name="tableSessionStateManager" expression="tableSessionStateManager"/>
 	</component>
 
-	<component id="tablePages" type="contrib:TablePages"/>
-
 	<component id="tableColumns" type="contrib:TableColumns"/>
 
 	<component id="tableRows" type="contrib:TableRows">

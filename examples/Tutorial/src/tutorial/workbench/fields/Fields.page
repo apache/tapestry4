@@ -54,9 +54,7 @@
   	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
 
-  <component id="border" type="Border"/>
-
-  <component id="enabledForm" type="Form">
+   <component id="enabledForm" type="Form">
     <binding name="listener" expression="listeners.clientValidationChanged"/>
   </component>
   

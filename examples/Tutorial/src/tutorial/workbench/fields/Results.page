@@ -6,18 +6,14 @@
 
 <page-specification class="net.sf.tapestry.html.BasePage">
 
-	<component id="border" type="Border"/>
-	
 	<component id="insertDateValue" type="Insert">
 		<binding name="value" expression="visit.dateValue"/>
 	</component>
-	
-	
+		
 	<component id="insertIntValue" type="Insert">
 		<binding name="value" expression="visit.intValue"/>
 	</component>
-	
-	
+		
 	<component id="insertDoubleValue" type="Insert">
 		<binding name="value" expression="visit.doubleValue"/>
 	</component>
