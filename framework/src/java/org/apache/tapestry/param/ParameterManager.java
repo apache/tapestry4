@@ -16,12 +16,8 @@ package org.apache.tapestry.param;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import ognl.PropertyAccessor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,7 +29,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.enhance.JavaTypeUtils;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -48,38 +43,6 @@ import org.apache.tapestry.spec.IParameterSpecification;
 public class ParameterManager
 {
     private static final Log LOG = LogFactory.getLog(ParameterManager.class);
-
-    /**
-     * Special types that aren't resolved by class lookups, including scalars, arrays of scalars,
-     * etc.
-     * <p>
-     * There's some overlap here with ComponentClassFactory.
-     */
-
-    private static final Map SPECIAL_TYPE_MAP = new HashMap();
-
-    static
-    {
-        SPECIAL_TYPE_MAP.put("boolean", boolean.class);
-        SPECIAL_TYPE_MAP.put("boolean[]", boolean[].class);
-        SPECIAL_TYPE_MAP.put("byte", byte.class);
-        SPECIAL_TYPE_MAP.put("byte[]", byte[].class);
-        SPECIAL_TYPE_MAP.put("char", char.class);
-        SPECIAL_TYPE_MAP.put("char[]", char[].class);
-        SPECIAL_TYPE_MAP.put("short", short.class);
-        SPECIAL_TYPE_MAP.put("short[]", short[].class);
-        SPECIAL_TYPE_MAP.put("int", int.class);
-        SPECIAL_TYPE_MAP.put("int[]", int[].class);
-        SPECIAL_TYPE_MAP.put("long", long.class);
-        SPECIAL_TYPE_MAP.put("long[]", long[].class);
-        SPECIAL_TYPE_MAP.put("float", float.class);
-        SPECIAL_TYPE_MAP.put("float[]", float[].class);
-        SPECIAL_TYPE_MAP.put("double", double.class);
-        SPECIAL_TYPE_MAP.put("double[]", double[].class);
-
-        SPECIAL_TYPE_MAP.put("java.lang.Object[]", Object[].class);
-        SPECIAL_TYPE_MAP.put("java.lang.String[]", String[].class);
-    }
 
     private IComponent _component;
 
@@ -300,18 +263,11 @@ public class ParameterManager
         return new ObjectParameterConnector(component, parameterName, binding, requiredType);
     }
 
-    private Class getType(String name, ClassResolver resolver)
+    private Class getType(String type, ClassResolver resolver)
     {
-        if (Tapestry.isBlank(name))
+        if (Tapestry.isBlank(type))
             return null;
 
-        Class result = (Class) SPECIAL_TYPE_MAP.get(name);
-
-        if (result != null)
-            return result;
-
-        // Convert array references into the format needed by the resolver.
-        
-        return resolver.findClass(JavaTypeUtils.getJVMClassName(name));
+        return resolver.findClass(type);
     }
 }
