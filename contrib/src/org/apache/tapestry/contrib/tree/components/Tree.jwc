@@ -35,7 +35,7 @@
     <parameter name="makeNodeDirect" type="boolean" required="no"
                direction="custom"/>
     <parameter name="nodeRenderFactory"
-               type="org.apache.tapestry.contrib.tree.model.INodeRenderFactory"
+               type="org.apache.tapestry.contrib.tree.components.INodeRenderFactory"
                required="no" direction="custom"/>
 
     <component id="treeView" type="TreeView">

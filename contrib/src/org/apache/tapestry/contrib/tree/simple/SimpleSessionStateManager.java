@@ -54,7 +54,8 @@
  */
 package org.apache.tapestry.contrib.tree.simple;
 
-import org.apache.tapestry.contrib.tree.model.*;
+import org.apache.tapestry.contrib.tree.model.ITreeModel;
+import org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager;
 
 /**
  * @author ceco
