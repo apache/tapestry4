@@ -237,8 +237,8 @@ Welcome to your first &lt;b&gt;Tapestry Application&lt;/b&gt;
 				You will notice that the page is completely normal, apart from the single
 				<emphasis>span </emphasis> tag, which contains an attribute with name
 				<varname>jwcid</varname>.  This is how Tapestry inserts dynamic data
-				into a page. Tapestry will completely replace the <emphasis>span </emphasis>
-				tag, including its contents when it renders the page.
+				into a page. In this example, Tapestry will completely replace the <emphasis>span </emphasis>
+				tag, including whatever it wraps when it renders the page.
 				<footnote>
 					<para>The tag does not have to be a span tag. Don't worry about it now, it will be covered later.</para>
 				</footnote>
