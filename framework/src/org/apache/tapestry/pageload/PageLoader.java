@@ -88,7 +88,6 @@ import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPageLoader;
-import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.event.PageDetachListener;
@@ -129,7 +128,6 @@ public class PageLoader implements IPageLoader
     private IResourceResolver _resolver;
     private IComponentClassEnhancer _enhancer;
     private ISpecificationSource _specificationSource;
-    private IPageSource _pageSource;
     private ComponentSpecificationResolver _componentResolver;
     private List _inheritedBindingQueue = new ArrayList();
 
@@ -253,10 +251,8 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    public PageLoader(IPageSource pageSource, IRequestCycle cycle)
+    public PageLoader(IRequestCycle cycle)
     {
-        _pageSource = pageSource;
-
         IEngine engine = cycle.getEngine();
 
         _specificationSource = engine.getSpecificationSource();

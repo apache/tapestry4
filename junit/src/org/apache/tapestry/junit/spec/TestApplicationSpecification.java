@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.junit.spec;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -112,7 +113,7 @@ public class TestApplicationSpecification extends TapestryTestCase
             spec.getExtension("testBean", Number.class);
             unreachable();
         }
-        catch (IllegalArgumentException ex)
+        catch (ApplicationRuntimeException ex)
         {
             checkException(ex, "does not inherit from class java.lang.Number");
         }
@@ -128,7 +129,7 @@ public class TestApplicationSpecification extends TapestryTestCase
             spec.getExtension("testBean", IMonitor.class);
             unreachable();
         }
-        catch (IllegalArgumentException ex)
+        catch (ApplicationRuntimeException ex)
         {
             checkException(ex, "does not implement interface org.apache.tapestry.engine.IMonitor");
         }

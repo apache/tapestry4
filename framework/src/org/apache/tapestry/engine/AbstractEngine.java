@@ -1466,7 +1466,7 @@ public abstract class AbstractEngine
 
     protected ITemplateSource createTemplateSource(RequestContext context)
     {
-        return new DefaultTemplateSource(getResourceResolver());
+        return new DefaultTemplateSource();
     }
 
     /**
@@ -1697,7 +1697,6 @@ public abstract class AbstractEngine
 
     private static class RedirectAnalyzer
     {
-        private IRequestCycle _cycle;
         private boolean _internal;
         private String _location;
 

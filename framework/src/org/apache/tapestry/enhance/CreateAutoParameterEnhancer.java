@@ -70,7 +70,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
-import org.apache.tapestry.ILocation;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -94,7 +93,6 @@ public class CreateAutoParameterEnhancer implements IEnhancer
     private Type _type;
     private String _typeClassName;
     private String _readMethodName;
-    private ILocation _location;
 
     private Type _bindingType;
     private Type _classType;
@@ -105,8 +103,7 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         String parameterName,
         Type type,
         String typeClassName,
-        String readMethodName,
-        ILocation location)
+        String readMethodName)
     {
         _factory = factory;
         _propertyName = propertyName;
@@ -114,7 +111,6 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         _type = type;
         _typeClassName = typeClassName;
         _readMethodName = readMethodName;
-        _location = location;
 
         _bindingType = factory.getObjectType(IBinding.class.getName());
         _classType = factory.getObjectType(Class.class.getName());
@@ -157,7 +153,7 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         // Concern: will the class be visible to the right class loader?
         // May need to use alternate forName() and pass Thread's context class loader.
 
-		mf.append(new PUSH(cf.getConstantPool(), _typeClassName));
+        mf.append(new PUSH(cf.getConstantPool(), _typeClassName));
         InstructionHandle tryStart =
             mf.append(
                 factory.createInvoke(
@@ -176,15 +172,15 @@ public class CreateAutoParameterEnhancer implements IEnhancer
 
         InstructionHandle catchHandle = mf.append(factory.createNew(exceptionClassName));
 
-		// This stuff can make my head spin, so let's map it out a little.
-		// CCE = ClassCastException, ARE = ApplicationRuntimeException
+        // This stuff can make my head spin, so let's map it out a little.
+        // CCE = ClassCastException, ARE = ApplicationRuntimeException
 
-		// Stack: CCE, ARE --> ARE, CCE, ARE
-		
-		mf.append(InstructionConstants.DUP_X1);
-		
-		// Stack: ARE, CCE, ARE -> ARE, ARE, CCE
-		
+        // Stack: CCE, ARE --> ARE, CCE, ARE
+
+        mf.append(InstructionConstants.DUP_X1);
+
+        // Stack: ARE, CCE, ARE -> ARE, ARE, CCE
+
         mf.append(InstructionConstants.SWAP);
 
         mf.append(
@@ -221,7 +217,8 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         if (LOG.isDebugEnabled())
             LOG.debug("Creating method: " + methodName);
 
-		Type[] noArgs = new Type[] { };
+        Type[] noArgs = new Type[] {
+        };
 
         MethodFabricator mf = cf.createMethod(Constants.ACC_PUBLIC, _type, methodName);
 
@@ -327,13 +324,11 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         // Get the binding
 
         mf.append(factory.createThis());
-        mf.append(
-            factory.createInvoke(
-                cf.getClassName(),
-                readBindingMethodName,
-                _bindingType,
-                new Type[] { },
-                Constants.INVOKEVIRTUAL));
+        mf
+            .append(
+                factory
+                .createInvoke(cf.getClassName(), readBindingMethodName, _bindingType, new Type[] {
+        }, Constants.INVOKEVIRTUAL));
 
         // Push the parameter value (remember,
         // parameter 0 is "this")

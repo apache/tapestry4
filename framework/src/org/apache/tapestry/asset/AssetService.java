@@ -95,8 +95,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
 
 public class AssetService extends AbstractService
 {
-    private String _servletPath;
-
     /**
      *  Defaults MIME types, by extension, used when the servlet container
      *  doesn't provide MIME types.  ServletExec Debugger, for example,

@@ -151,4 +151,15 @@ public class StaleLinkException extends ApplicationRuntimeException
     {
         return _page;
     }
+    
+    public String getTargetActionId()
+    {
+        return _targetActionId;
+    }
+
+    public String getTargetIdPath()
+    {
+        return _targetIdPath;
+    }
+
 }

@@ -63,6 +63,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
@@ -331,7 +333,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      * 
      **/
 
-    public List getExtensionNames()
+    public synchronized List getExtensionNames()
     {
         return sortedKeys(_instantiatedExtensions);
     }
@@ -385,14 +387,14 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             _instantiatedExtensions = new HashMap();
 
         Object result = _instantiatedExtensions.get(name);
+        IExtensionSpecification spec = getExtensionSpecification(name);
+
+        if (spec == null)
+            throw new IllegalArgumentException(
+                Tapestry.getString("LibrarySpecification.no-such-extension", name));
 
         if (result == null)
         {
-            IExtensionSpecification spec = getExtensionSpecification(name);
-
-            if (spec == null)
-                throw new IllegalArgumentException(
-                    Tapestry.getString("LibrarySpecification.no-such-extension", name));
 
             result = spec.instantiateExtension(_resolver);
 
@@ -400,7 +402,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         }
 
         if (typeConstraint != null)
-            applyTypeConstraint(name, result, typeConstraint);
+            applyTypeConstraint(name, result, typeConstraint, spec.getLocation());
 
         return result;
     }
@@ -414,7 +416,11 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      *  
      **/
 
-    protected void applyTypeConstraint(String name, Object extension, Class typeConstraint)
+    protected void applyTypeConstraint(
+        String name,
+        Object extension,
+        Class typeConstraint,
+        ILocation location)
     {
         Class extensionClass = extension.getClass();
 
@@ -429,8 +435,10 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
                 ? "LibrarySpecification.extension-does-not-implement-interface"
                 : "LibrarySpecification.extension-not-a-subclass";
 
-        throw new IllegalArgumentException(
-            Tapestry.getString(key, name, extensionClass.getName(), typeConstraint.getName()));
+        throw new ApplicationRuntimeException(
+            Tapestry.getString(key, name, extensionClass.getName(), typeConstraint.getName()),
+            location,
+            null);
     }
 
     /**
@@ -635,7 +643,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     /** @since 3.0 **/
 
-    public String toString()
+    public synchronized String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
 

@@ -177,7 +177,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      *
      **/
 
-    public void reset()
+    public synchronized void reset()
     {
         _componentCache.clear();
         _pageCache.clear();

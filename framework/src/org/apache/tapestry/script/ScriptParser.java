@@ -101,9 +101,6 @@ public class ScriptParser
 {
     private static final Log LOG = LogFactory.getLog(ScriptParser.class);
 
-    /** @since 2.2 **/
-
-    private IResourceResolver _resolver;
     private RuleDirectedParser _parser;
 
     public static final String SCRIPT_DTD_1_0_PUBLIC_ID =
@@ -120,8 +117,6 @@ public class ScriptParser
 
     public ScriptParser(IResourceResolver resolver)
     {
-        _resolver = resolver;
-
         _parser = new RuleDirectedParser();
 
         _parser.registerEntity(

@@ -139,7 +139,7 @@ public class ObservedChangeEvent extends EventObject
 
     public ObservedChangeEvent(IComponent component, String propertyName, boolean newValue)
     {
-        this(component, propertyName, new Boolean(newValue));
+        this(component, propertyName, newValue ? Boolean.TRUE : Boolean.FALSE);
     }
 
     public IComponent getComponent()
