@@ -71,7 +71,38 @@
 		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>
   </target>
-  
+
+  <target name="junit" depends="compile" description="Run the test suite.">
+      <junit printsummary="no"
+          errorProperty="test.failed"
+          failureProperty="test.failed"
+          fork="true">
+          <classpath refid="junit.classpath"/>
+          <formatter type="xml"/>
+          <formatter type="brief" usefile="false"/>
+
+          <sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
+
+          <batchtest todir="${classes.dir}" unless="testcase">
+              <fileset dir="${classes.dir}"
+                  includes="**/*TapestrySuite.class"
+              />
+          </batchtest>
+
+      </junit>
+
+      <fail if="test.failed">Unit tests failed.</fail>
+  </target>
+
+  <target name="junitreport">
+      <junitreport todir="${classes.dir}">
+          <fileset dir="${classes.dir}">
+              <include name="TEST-*.xml"/>
+          </fileset>
+          <report format="frames" todir="${classes.dir}"/>
+      </junitreport>
+  </target>
+
   <target name="gui" depends="compile" description="Run the JUnit GUI.">
   	<java fork="true" classname="junit.swingui.TestRunner">
   		<classpath refid="junit.classpath"/>
