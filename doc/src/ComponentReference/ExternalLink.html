@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>ExternalLink</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><A href="ExceptionDisplay.html"><IMG alt="ExceptionDisplay" src="common-images/prev.png"></A></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+  <td align="right"><A href="FieldLabel.html"><IMG alt="FieldLabel" src="common-images/next.png"></A></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>ExternalLink</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <A href="../api/net/sf/tapestry/link/ExternalLink.html">
+		 net.sf.tapestry.link.ExternalLink</A>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td><A href="ExternalLink.html"><font color="blue">External Link</font></A></td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr valign="center">
+ <td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Creates a &lt;a&gt; hyperlink to an 
+  <a href="../api/net/sf/tapestry/IExternalPage.html"><tt>IExternalPage</tt></a>
+  which may be book marked using the hyperlink's URL.  
+  <p>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="ActionLink.html">ActionLink</a>, 
+  <A href="DirectLink.html">DirectLink</A>,
+  <A href="GenericLink.html">GenericLink</A>,
+  <a href="PageLink.html">PageLink</a>,
+  <a href="ServiceLink.html">ServiceLink</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>page</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The name of a application page to link to.</td>
+	</tr>
+  <tr>
+    <td>parameters</td>
+    <td>Object or<br>
+        Object[] or<br> 
+     <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/List.html">
+     <tt>List</tt></a>    
+    </td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    An array of objects to be encoded into the URL. These parameters will be 
+    passed to 
+    <A href="/api/net/sf/tapestry/IExternalPage.html#initPage(Object[], IRequestCycle)">
+    <tt>IExternalPage.initPage()</tt></a> method. 
+    </td>
+	</tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>Controls whether the link is produced. If disabled, the portion of the 
+    template the link surrounds is still rendered, but not the link itself.
+    </td>
+	</tr>
+  <tr>
+    <td>scheme</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If specified, then a longer URL (including scheme, server and possibly port) 
+    is generated using the specified scheme. Server is determined fromt he 
+    incoming request, and port is deterimined from the port paramter or the 
+    incoming request.     
+    </td>
+	</tr>
+  <tr>
+    <td>port</td>
+    <td>int</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If specified, then a longer URL (including scheme, server and port) is 
+    generated using the specified port. The server is determined from the 
+    incoming request, the scheme from the scheme parameter or the incoming 
+    request. 
+    </td>
+	</tr>
+	</table>
+  <P>Body: <STRONG>rendered</STRONG><BR>
+  Informal parameters:<STRONG>allowed</STRONG>
+  <br>Reserved parameters: "href" 
+  </P>    
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.</p>
+
+
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>
+</tr>
+<tr>
+ <td align="left"><A href="ExceptionDisplay.html"><IMG alt="ExceptionDisplay" src="common-images/prev.png"></A></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+ <td align="right"><A href="FieldLabel.html"><IMG alt="FieldLabel" src="common-images/next.png"></A></td>  
+</tr>
+</table>
+
+</body>
+</html>
