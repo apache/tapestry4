@@ -13,7 +13,7 @@
   component).
   </description>
 	
-  <parameter name="source" type="java.lang.Object" direction="in">
+  <parameter name="source" type="java.lang.Object" direction="in" required="yes">
     <description>
     The source of values, a Java collection or array.
     </description>
