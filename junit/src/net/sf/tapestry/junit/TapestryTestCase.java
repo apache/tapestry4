@@ -1,6 +1,5 @@
 package net.sf.tapestry.junit;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 
