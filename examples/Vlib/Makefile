@@ -13,7 +13,8 @@ PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/ejb.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/com.primix.tapestry.jar \
-	$(INSTALL_DIR)/VlibBeans.jar
+	$(INSTALL_DIR)/VlibBeans.jar \
+	$(INSTALL_DIR)/log4j-core.jar
 
 JAVADOC_DIR := javadoc
 

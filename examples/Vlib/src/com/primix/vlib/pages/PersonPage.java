@@ -110,7 +110,7 @@ public class PersonPage extends BasePage
 	{
 		fullName = value;
 	}
-		
+	
 	
 	/**
 	 *  Gets the {@link IBookQuery} session bean that contains
@@ -149,34 +149,43 @@ public class PersonPage extends BasePage
 	
 	public void setup(Integer personPK, IRequestCycle cycle)
 	{
-		IBookQuery query = getQuery();
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			int count = query.ownerQuery(personPK);
-
-			browser.initializeForResultCount(count);
-			
-			VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-			IPersonHome home = vengine.getPersonHome();
-			IPerson person = home.findByPrimaryKey(personPK);
-			
-			setEmail(person.getEmail());
-			setFullName(person.getNaturalName());
-			
-		}
-		catch (FinderException e)
-		{
-			Home homePage = (Home)cycle.getPage("Home");
-			homePage.setError("Person " + personPK + " not found in database.");
-			
-			cycle.setPage(homePage);
-			
-			return;
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
+			try
+			{
+				IBookQuery query = getQuery();
+				
+				int count = query.ownerQuery(personPK);
+				
+				browser.initializeForResultCount(count);
+				
+				IPersonHome home = vengine.getPersonHome();
+				IPerson person = home.findByPrimaryKey(personPK);
+				
+				setEmail(person.getEmail());
+				setFullName(person.getNaturalName());
+				
+				break;
+			}
+			catch (FinderException e)
+			{
+				Home homePage = (Home)cycle.getPage("Home");
+				homePage.setError("Person " + personPK + " not found in database.");
+				
+				cycle.setPage(homePage);
+				
+				return;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception for owner query.", ex, i > 0);
+				
+				setQuery(null);
+				
+			}
 		}
 		
 		cycle.setPage(this);

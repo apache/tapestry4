@@ -1,3 +1,8 @@
+* Jun 20 2001 hship
+
+Simplify the Browser, to match the upcoming UI.
+Lots of small changes to make the application robust, even when jBoss bounces.
+
 * Jun 19 2001 hship
 
 Use a Browser on the PersonPage.  Clean up some redundant code.

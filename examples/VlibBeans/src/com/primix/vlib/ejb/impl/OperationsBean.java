@@ -35,10 +35,12 @@ import javax.naming.*;
 import javax.rmi.*;
 import javax.sql.*;
 import java.sql.*;
+import javax.jms.*;
 import com.primix.tapestry.util.jdbc.*;
 import com.primix.tapestry.util.ejb.*;
 import com.primix.vlib.ejb.*;
 
+import java.sql.Connection;
 
 /**
  *  Implementation of the {@link IOperations} stateless session bean.
@@ -57,7 +59,11 @@ public class OperationsBean implements SessionBean
 	private transient IBookHome bookHome;
 	private transient IPersonHome personHome;
 	private transient IPublisherHome publisherHome;
-		
+	
+	public static final String MAIL_QUEUE_JNDI_NAME = "queue/Vlib-MailQueue";
+	
+	private static final int MAIL_QUEUE_PRIORITY = 4;
+	
 	private final static int MAP_SIZE = 7;
 	
 	/**
@@ -65,7 +71,7 @@ public class OperationsBean implements SessionBean
 	 *  "jdbc/dataSource".
 	 *
 	 */
-	 
+	
 	private transient DataSource dataSource;
 	
 	/**
@@ -74,7 +80,7 @@ public class OperationsBean implements SessionBean
 	 *  later used by {@link #getConnection()}.
 	 *
 	 */
-	 
+	
 	public void ejbCreate()
 	{
 		Context initial;
@@ -88,22 +94,42 @@ public class OperationsBean implements SessionBean
 		{
 			throw new XEJBException("Could not lookup environment.", e);
 		}
-	
+		
 		try
 		{
 			dataSource = (DataSource)environment.lookup("jdbc/dataSource");
 		}
 		catch (NamingException e)
 		{
-            e.printStackTrace();
+			e.printStackTrace();
 			throw new XEJBException("Could not lookup data source.", e);
 		}
 	}
 	
 	/**
+	 *  Closes the mail queue session, if it has been opened.
+	 *
+	 */
+	
+	public void ejbRemove()
+	{
+		try
+		{
+			// Closing a session closes any
+			// producers created with it.
+			
+			if (mailQueueSession != null)
+				mailQueueSession.close();
+		}
+		catch (Exception ex)
+		{
+			System.err.println("Failure removing Operations bean: " + ex.getMessage());
+		}
+	}
+	/**
 	 *  Does nothing, not invoked in stateless session beans.
 	 */
-	 
+	
 	public void ejbPassivate()
 	{
 	}
@@ -117,50 +143,58 @@ public class OperationsBean implements SessionBean
 	 *  Does nothing, not invoked in stateless session beans.
 	 *
 	 */
-	 
+	
 	public void ejbActivate()
 	{
 	}
-	
-	/**
-	 *  Does nothing.
-	 */
-	 
-	public void ejbRemove()
-	{
-		// Does nothing.
-	}
 
+	
 	/**
 	 *  Finds the book and borrower (by thier primary keys) and updates the book.
 	 *
 	 *  <p>The borrowed book is returned.
 	 *
 	 */
-	 
+	
 	public IBook borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
-	throws FinderException, RemoteException, BorrowException
+		throws FinderException, RemoteException, BorrowException
 	{
-		IBookHome bookHome;
-		IPersonHome personHome;
-		IPerson borrower;
-		IBook book;
+		IBookHome bookHome = getBookHome();
+		IPersonHome personHome = getPersonHome();
 		
-		bookHome = getBookHome();
-		personHome = getPersonHome();
-		
-		book = bookHome.findByPrimaryKey(bookPrimaryKey);
+		IBook book = bookHome.findByPrimaryKey(bookPrimaryKey);
 		
 		if (!book.isLendable())
 			throw new BorrowException("Book may not be borrowed.");
 		
-		borrower = personHome.findByPrimaryKey(borrowerPrimaryKey);
+		// Verify that the borrower exists.
+		
+		IPerson borrower = personHome.findByPrimaryKey(borrowerPrimaryKey);
+		
+		// TBD: Check that borrower has authenticated
 		
 		// findByPrimaryKey() throws an exception if the EJB doesn't exist,
 		// so we're safe.
 		
-		book.setHolderPK(borrowerPrimaryKey);
+		IPerson owner = personHome.findByPrimaryKey(book.getOwnerPK());
 		
+		String bookTitle = book.getTitle();
+		String ownerEmail = owner.getEmail();
+		
+		sendMail(ownerEmail,
+				"Book borrow notification.",
+				"'" + bookTitle + 
+				"'\n" +
+				"has been borrowed by " +
+				owner.getNaturalName() + 
+				" <" +
+					ownerEmail + ">.\n");
+
+		// Here's the real work; just setting the holder of the book
+		// to be the borrower.
+		
+		book.setHolderPK(borrowerPrimaryKey);
+
 		return book;
 	}
 	
@@ -168,16 +202,16 @@ public class OperationsBean implements SessionBean
 	 *  Adds a new book, verifying that the publisher and holder actually exist.
 	 *
 	 */
-	 
+	
 	public IBook addBook(Map attributes)
-	throws CreateException, RemoteException
+		throws CreateException, RemoteException
 	{
 		IBookHome home = getBookHome();
 		
 		return home.create(attributes);
 	}
-
-
+	
+	
 	/**
 	 *  Adds a book, which will be owned and held by the specified owner.
 	 *
@@ -187,13 +221,13 @@ public class OperationsBean implements SessionBean
 	 * <p>Returns the newly created book.
 	 *
 	 */
-	 
+	
 	public IBook addBook(Map attributes, String publisherName)
-	throws CreateException, RemoteException
+		throws CreateException, RemoteException
 	{
 		IPublisher publisher = null;
 		IPublisherHome publisherHome = getPublisherHome();
-
+		
 		// Find or create the publisher.
 		
 		try
@@ -207,7 +241,7 @@ public class OperationsBean implements SessionBean
 		
 		if (publisher == null)
 			publisher = publisherHome.create(publisherName);
-			
+		
 		attributes.put("publisherPK", publisher.getPrimaryKey());
 		
 		return addBook(attributes);
@@ -221,20 +255,20 @@ public class OperationsBean implements SessionBean
 	 *  @param bookPK The primary key of the book to update.
 	 *  
 	 */
-
+	
 	public IBook updateBook(Integer bookPK, Map attributes)
-	throws FinderException, RemoteException
+		throws FinderException, RemoteException
 	{
 		IBookHome bookHome = getBookHome();
-
+		
 		IBook book = bookHome.findByPrimaryKey(bookPK);
-			
+		
 		book.updateEntityAttributes(attributes);
 		
 		return book;
 	}
-
-
+	
+	
 	/**
 	 *  Updates a book, adding a new Publisher at the same time.
 	 *
@@ -246,9 +280,9 @@ public class OperationsBean implements SessionBean
 	 *  @throws FinderException if the book, holder or publisher can not be located.
 	 *  @throws CreateException if the {@link IPublisher} can not be created.
 	 */
-
+	
 	public IBook updateBook(Integer bookPK, Map attributes, String publisherName)
-	throws CreateException, FinderException, RemoteException
+		throws CreateException, FinderException, RemoteException
 	{
 		IPublisher publisher = null;
 		
@@ -265,7 +299,7 @@ public class OperationsBean implements SessionBean
 		
 		if (publisher == null)
 			publisher = publisherHome.create(publisherName);
-			
+		
 		// Don't duplicate all that other code!
 		
 		attributes.put("publisherPK", publisher.getPrimaryKey());
@@ -289,13 +323,13 @@ public class OperationsBean implements SessionBean
 		{
 			connection = getConnection();
 			
-		
+			
 			assembly = new StatementAssembly();
 			
 			assembly.newLine("SELECT PUBLISHER_ID, NAME");
 			assembly.newLine("FROM PUBLISHER");
 			assembly.newLine("ORDER BY NAME");
-		
+			
 			statement = assembly.createStatement(connection);	
 			
 			set = statement.executeQuery();	
@@ -311,7 +345,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-            e.printStackTrace();
+			e.printStackTrace();
 			throw new XEJBException("Could not fetch all Publishers.", e);
 		}
 		finally
@@ -325,14 +359,14 @@ public class OperationsBean implements SessionBean
 		
 		return (Publisher[])list.toArray(result);
 	}
-
+	
 	/**
 	 * Fetchs all {@link IPerson} beans in the database and converts them
 	 * to {@link Person} objects.
 	 *
 	 * Returns the {@link Person}s sorted by last name, then first.
 	 */
-	 
+	
 	public Person[] getPersons()
 	{
 		Connection connection = null;
@@ -352,7 +386,7 @@ public class OperationsBean implements SessionBean
 			
 			assembly = buildBasePersonQuery();
 			assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
-		
+			
 			statement = assembly.createStatement(connection);	
 			
 			set = statement.executeQuery();	
@@ -385,9 +419,9 @@ public class OperationsBean implements SessionBean
 	 *
 	 *  @throws FinderException if the Person does not exist.
 	 */
-	 
+	
 	public Person getPerson(Integer primaryKey)
-	throws FinderException
+		throws FinderException
 	{
 		Connection connection = null;
 		IStatement statement = null;
@@ -401,7 +435,7 @@ public class OperationsBean implements SessionBean
 			connection = getConnection();
 			
 			assembly = buildBasePersonQuery();
-            assembly.newLine("WHERE ");
+			assembly.newLine("WHERE ");
 			assembly.addParameter("PERSON_ID = ?", primaryKey);
 			assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
 			
@@ -434,9 +468,9 @@ public class OperationsBean implements SessionBean
 	 *  @throws FinderException if the Book does not exist.
 	 *
 	 */
-	 
+	
 	public Book getBook(Integer primaryKey)
-	throws FinderException
+		throws FinderException
 	{
 		Connection connection = null;
 		IStatement statement = null;
@@ -475,23 +509,23 @@ public class OperationsBean implements SessionBean
 		
 		return result;
 	}
-
+	
 	/**
 	 *  Attempts to register a new user, first checking that the
 	 *  e-mail and names are unique.
 	 *
 	 */
-	 
+	
 	public IPerson registerNewUser(String firstName, String lastName, 
-									String email, String password)
-	throws RegistrationException, CreateException, RemoteException
+			String email, String password)
+		throws RegistrationException, CreateException, RemoteException
 	{
 		IPersonHome home;
 		
 		if (password == null ||
-			password.trim().length() == 0)
-				throw new RegistrationException("Must specify a password.");
-			
+				password.trim().length() == 0)
+			throw new RegistrationException("Must specify a password.");
+		
 		validateUniquePerson(firstName, lastName, email);
 		
 		home = getPersonHome();
@@ -505,20 +539,20 @@ public class OperationsBean implements SessionBean
 		
 		return home.create(attributes);
 	}
-
-
+	
+	
 	/**
 	 *  Translates the next row from the result set into a {@link Book}.
 	 *
 	 *  <p>This works with queries generated by {@link #buildBaseBookQuery()}.
 	 *
 	 */
-	 
+	
 	protected Book convertRowToBook(ResultSet set, Object[] columns)
-	throws SQLException
+		throws SQLException
 	{
 		int column = 1;
-	
+		
 		columns[Book.PRIMARY_KEY_COLUMN] =
 			set.getObject(column++);
 		columns[Book.TITLE_COLUMN] = set.getString(column++);
@@ -538,7 +572,7 @@ public class OperationsBean implements SessionBean
 		
 		return new Book(columns);
 	}
-
+	
 	private String buildName(String firstName, String lastName)
 	{
 		if (firstName == null)
@@ -553,14 +587,14 @@ public class OperationsBean implements SessionBean
 	 *  the correct {@link Book} from each row.
 	 *
 	 */
-	 	
+	
 	private static final String[] bookSelectColumns =
 	{
 		"book.BOOK_ID", "book.TITLE", "book.DESCRIPTION", "book.ISBN",
-		"owner.PERSON_ID", "owner.FIRST_NAME", "owner.LAST_NAME",
-		"holder.PERSON_ID", "holder.FIRST_NAME", "holder.LAST_NAME",
-		"publisher.PUBLISHER_ID", "publisher.NAME",
-		"book.AUTHOR", "book.HIDDEN", "book.LENDABLE"
+			"owner.PERSON_ID", "owner.FIRST_NAME", "owner.LAST_NAME",
+			"holder.PERSON_ID", "holder.FIRST_NAME", "holder.LAST_NAME",
+			"publisher.PUBLISHER_ID", "publisher.NAME",
+			"book.AUTHOR", "book.HIDDEN", "book.LENDABLE"
 	};
 	
 	private static final String[] bookAliasColumns =
@@ -571,10 +605,10 @@ public class OperationsBean implements SessionBean
 	private static final String[] bookJoins =
 	{
 		"book.OWNER_ID = owner.PERSON_ID",
-		"book.HOLDER_ID = holder.PERSON_ID",
-		"book.PUBLISHER_ID = publisher.PUBLISHER_ID"
+			"book.HOLDER_ID = holder.PERSON_ID",
+			"book.PUBLISHER_ID = publisher.PUBLISHER_ID"
 	};
-
+	
 	protected StatementAssembly buildBaseBookQuery()
 	{
 		StatementAssembly result;
@@ -583,7 +617,7 @@ public class OperationsBean implements SessionBean
 		
 		result.newLine("SELECT ");
 		result.addList(bookSelectColumns, ", ");
-
+		
 		result.newLine("FROM ");
 		result.addList(bookAliasColumns, ", ");
 		
@@ -599,7 +633,7 @@ public class OperationsBean implements SessionBean
 		
 		if (value == null)
 			return;
-			
+		
 		trimmed = value.trim();
 		if (trimmed.length() == 0)
 			return;
@@ -610,7 +644,7 @@ public class OperationsBean implements SessionBean
 		assembly.addSep(" AND ");
 		assembly.add(column);
 		assembly.addParameter(" LIKE ?",
-				 "%" + trimmed.toLowerCase() + "%");	
+				"%" + trimmed.toLowerCase() + "%");	
 	}
 	
 	/**
@@ -618,7 +652,7 @@ public class OperationsBean implements SessionBean
 	 *  then the Connection (if not null).  Exceptions are written to System.out.
 	 *
 	 */
-	 
+	
 	protected void close(Connection connection, IStatement statement, ResultSet resultSet)
 	{
 		if (resultSet != null)
@@ -677,7 +711,7 @@ public class OperationsBean implements SessionBean
 			{
 				throw new XEJBException("Could not lookup Person home interface.", e);
 			}
-		
+			
 		}
 		
 		return personHome;
@@ -699,12 +733,12 @@ public class OperationsBean implements SessionBean
 			{
 				throw new XEJBException("Could not lookup Publisher home interface.", e);
 			}
-		
+			
 		}
 		
 		return publisherHome;
 	}
-
+	
 	private IBookHome getBookHome()
 	{
 		Object raw;
@@ -721,7 +755,7 @@ public class OperationsBean implements SessionBean
 			{
 				throw new XEJBException("Could not lookup Book home interface.", e);
 			}
-		
+			
 		}
 		
 		return bookHome;
@@ -732,7 +766,7 @@ public class OperationsBean implements SessionBean
 	 *  Gets a new connection from the data source.
 	 *
 	 */
-	 
+	
 	protected Connection getConnection()
 	{
 		try
@@ -757,19 +791,19 @@ public class OperationsBean implements SessionBean
 		
 		return result;
 	}
-
+	
 	/**
 	 *  Translates the next row from the result set into a {@link Person}.
 	 *
 	 *  <p>This works with queries generated by {@link #buildBasePersonQuery()}.
 	 *
 	 */
-
+	
 	protected Person convertRowToPerson(ResultSet set, Object[] columns)
-	throws SQLException
+		throws SQLException
 	{
 		int column = 1;
-	
+		
 		columns[Person.PRIMARY_KEY_COLUMN] = set.getObject(column++);
 		columns[Person.FIRST_NAME_COLUMN] = set.getString(column++);
 		columns[Person.LAST_NAME_COLUMN] = set.getString(column++);
@@ -790,7 +824,7 @@ public class OperationsBean implements SessionBean
 	}
 	
 	private void validateUniquePerson(String firstName, String lastName, String email)
-	throws RegistrationException
+		throws RegistrationException
 	{
 		Connection connection = null;
 		IStatement statement = null;
@@ -803,7 +837,7 @@ public class OperationsBean implements SessionBean
 		trimmedEmail = email.trim().toLowerCase();
 		trimmedLastName = lastName.trim().toLowerCase();
 		trimmedFirstName = firstName.trim().toLowerCase();
-
+		
 		try
 		{
 			connection = getConnection();
@@ -827,7 +861,7 @@ public class OperationsBean implements SessionBean
 			assembly.newLine("SELECT PERSON_ID");
 			assembly.newLine("FROM PERSON");
 			assembly.newLine("WHERE ");
-
+			
 			assembly.addParameter("LOWER (FIRST_NAME) = ?", trimmedFirstName);
 			assembly.addSep(" AND ");
 			assembly.addParameter("LOWER (LAST_NAME) = ?", trimmedLastName);
@@ -842,29 +876,91 @@ public class OperationsBean implements SessionBean
 		catch (SQLException e)
 		{
 			throw new RegistrationException("Could not access database: " 
-			+ e.getMessage(), e);
+						+ e.getMessage(), e);
 		}
 		finally
 		{
 			close(connection, statement, set);
 		}
 	}
-
+	
     public IBook returnBook(Integer bookPrimaryKey)
-    throws RemoteException, FinderException
+		throws RemoteException, FinderException
     {
-        IBookHome bookHome;
-        IBook book;
-
-        bookHome = getBookHome();
-        book = bookHome.findByPrimaryKey(bookPrimaryKey);
-        
-        // Return the book ... that is, make its holder its owner.
-
-        book.setHolderPK(book.getOwnerPK());
-
-        return book;
+		IBookHome bookHome;
+		IBook book;
+		
+		bookHome = getBookHome();
+		book = bookHome.findByPrimaryKey(bookPrimaryKey);
+		
+		// Return the book ... that is, make its holder its owner.
+		
+		book.setHolderPK(book.getOwnerPK());
+		
+		return book;
     }
+	
+	private QueueSender mailQueueSender;
+	private QueueSession mailQueueSession;
+	
+	protected QueueSession getMailQueueSession()
+		throws NamingException, JMSException
+	{
+		if (mailQueueSession == null)
+		{
+			Context context = new InitialContext();
+			
+			QueueConnectionFactory factory = (QueueConnectionFactory)context.lookup("QueueConnectionFactory");
+			
+			QueueConnection connection = factory.createQueueConnection();
+			
+			mailQueueSession = connection.createQueueSession(true, Session.AUTO_ACKNOWLEDGE);
+		}
+		
+		return mailQueueSession;
+	}
+			
+	protected QueueSender getMailQueueSender()
+		throws NamingException, JMSException
+	{
+		if (mailQueueSender == null)
+		{
+			Context context = new InitialContext();
+			
+			Queue queue = (Queue)context.lookup("queue/Vlib-MailQueue");
+			
+			mailQueueSender = getMailQueueSession().createSender(queue);
+		}
+		
+		return mailQueueSender;
+	}
+	
+	protected void sendMail(String emailAddress, String subject, String content)
+		throws EJBException
+	{
+		try
+		{
+			QueueSender sender = getMailQueueSender();
+			
+			QueueSession session = getMailQueueSession();
+			
+			MailMessage message = new MailMessage(emailAddress, subject, content);
+			
+			ObjectMessage queueMessage = session.createObjectMessage(message);
+
+			System.out.println("Sending message: " + queueMessage + " via " + sender);
+			
+			sender.send(queueMessage, DeliveryMode.PERSISTENT, MAIL_QUEUE_PRIORITY, 0);
+		}
+		catch (NamingException ex)
+		{
+			throw new XEJBException(ex);
+		}
+		catch (JMSException ex)
+		{
+			throw new XEJBException(ex);
+		}
+	}
 }  
 
 

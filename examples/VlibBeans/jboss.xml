@@ -68,5 +68,10 @@
         <jndi-name>vlib/KeyAllocator</jndi-name>
       </ejb-ref>
     </entity>
+    <message-driven>
+      <ejb-name>MailQueue</ejb-name>
+      <configuration-name>Standard Message Driven Bean</configuration-name>
+      <destination-jndi-name>queue/Vlib-MailQueue</destination-jndi-name>
+    </message-driven>
   </enterprise-beans>
 </jboss>

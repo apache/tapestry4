@@ -59,7 +59,7 @@ public class MyLibrary
 {
 	private String message;
 	private IBookQuery ownedQuery;
-
+	
 	private Book currentBook;
 	
 	private Browser browser;
@@ -87,7 +87,7 @@ public class MyLibrary
 	 *  A dirty little secret of Tapestry and page recorders:  persistent
 	 *  properties must be set before the render (when this method is invoked)
 	 *  and can't change during the render.  We force
-	 *  the creation of the queries and re-execute both of them whenever
+	 *  the creation of the owned book query and re-execute it whenever
 	 *  the MyLibrary page is rendered.
 	 *
 	 */
@@ -100,17 +100,26 @@ public class MyLibrary
 		Visit visit = (Visit)getVisit();
 		Integer userPK = visit.getUserPK();
 		
-		try
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		
+		for (int i = 0; i < 2; i++)
 		{
-			IBookQuery query = getOwnedQuery();
-			int count = query.ownerQuery(userPK);
-			
-			if (count != browser.getResultCount())
-				browser.initializeForResultCount(count);
-		}
-		catch (RemoteException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
+			try
+			{
+				IBookQuery query = getOwnedQuery();
+				int count = query.ownerQuery(userPK);
+				
+				if (count != browser.getResultCount())
+					browser.initializeForResultCount(count);
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure("Remote exception accessing owned books.", ex, i > 0);
+				
+				setOwnedQuery(null);
+			}
 		}
     }
 	
@@ -235,22 +244,27 @@ public class MyLibrary
     private void returnBook(Integer bookPK)
     {
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		IOperations operations = vengine.getOperations();
 		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			IBook book = operations.returnBook(bookPK);
-			
-			setMessage("Returned book: " + book.getTitle());
-		}
-		catch (FinderException ex)
-		{
-			setError("Could not return book: " + ex.getMessage());
-			return;
-		}
-		catch (RemoteException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
+			try
+			{
+				IOperations operations = vengine.getOperations();
+				IBook book = operations.returnBook(bookPK);
+				
+				setMessage("Returned book: " + book.getTitle());
+				
+				break;
+			}
+			catch (FinderException ex)
+			{
+				setError("Could not return book: " + ex.getMessage());
+				return;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure("Remote exception returning book.", ex, i > 0);
+			}
 		}
     }
     
@@ -279,7 +293,7 @@ public class MyLibrary
     }
 	
 	/**
-	 *  Removes the book query beans.
+	 *  Removes the book query bean.
 	 */
 	
 	public void cleanupPage()
@@ -289,13 +303,13 @@ public class MyLibrary
 			if (ownedQuery != null)
 			    ownedQuery.remove();
 		}
-		catch (RemoveException e)
+		catch (RemoveException ex)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ApplicationRuntimeException(ex);
 		}
-		catch (RemoteException e)
+		catch (RemoteException ex)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ApplicationRuntimeException(ex);
 		}
 		
 		super.cleanupPage();

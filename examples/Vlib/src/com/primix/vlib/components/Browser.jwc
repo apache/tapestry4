@@ -11,49 +11,29 @@
 <specification allow-informal-parameters="no" class="com.primix.vlib.components.Browser">
 
   <parameter name="query" required="yes" java-type="com.primix.vlib.IBookQuery"/>
-  
-  <component id="insertPage" type="Insert">
-  	<binding name="value" property-path="currentPage"/>
+
+  <component id="insertRange" type="Insert">
+    <binding name="value" property-path="range"/>
   </component>
-  
-  <component id="insertPageCount" type="Insert">
-  	<binding name="value" property-path="pageCount"/>
-  </component>
-  
+      
   <component id="insertWrapped" type="InsertWrapped"/>
   
-  <component id="first" type="Direct">
-  	&listener;
-  	<static-binding name="context">1</static-binding>
+  <component id="ifShowPrev" type="Conditional">
+    <binding name="condition" property-path="showPreviousLink"/>
   </component>
-  
+   
   <component id="prev" type="Direct">
     &listener;
     <binding name="context" property-path="previousPage"/>
   </component>
-  
-  <component id="e" type="Foreach">
-    <binding name="source" property-path="jumpPages"/>
-    <binding name="value" property-path="jumpPage"/>
-  </component>
-  
-  <component id="jump" type="Direct">
-    &listener;
-    <binding name="context" property-path="jumpPage"/>
-  </component>
-  
-  <component id="insertJumpPage" type="Insert">
-    <binding name="value" property-path="jumpPage"/>
+ 
+  <component id="ifShowNext" type="Conditional">
+    <binding name="condition" property-path="showNextLink"/>
   </component>
   
   <component id="next" type="Direct">
     &listener;
     <binding name="context" property-path="nextPage"/>
-  </component>
-  
-  <component id="last" type="Direct">
-    &listener;
-    <binding name="context" property-path="pageCount"/>
   </component>
 
 </specification>
