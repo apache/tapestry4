@@ -15,7 +15,7 @@
     <parameter name="model"
         type="org.apache.tapestry.form.IPropertySelectionModel"
         required="yes"
-        direction="in"/>
+        direction="auto"/>
 
     <parameter name="name" property-name="varName" type="java.lang.String" direction="in" required="yes">
         <description>
