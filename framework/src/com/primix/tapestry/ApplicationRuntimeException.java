@@ -43,6 +43,13 @@ public class ApplicationRuntimeException extends RuntimeException
 {
 	private Throwable rootCause;
 
+	public ApplicationRuntimeException(Throwable rootCause)
+	{
+		super(rootCause.getMessage());
+		
+		this.rootCause = rootCause;
+	}
+
 	public ApplicationRuntimeException(String message)
 	{
 		super(message);

@@ -111,11 +111,11 @@ public class ApplicationSpecification extends BasePropertyHolder
 		// An application must provide a home page and may override
 		// any of these.
 
-		pageMap.put("stale-link",
+		pageMap.put("StaleLink",
 			new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
-		pageMap.put("stale-session",
+		pageMap.put("StaleSession",
 			new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
-		pageMap.put("exception",
+		pageMap.put("Exception",
 			new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
 	}
 
@@ -250,6 +250,27 @@ public class ApplicationSpecification extends BasePropertyHolder
 		return Collections.unmodifiableSet(pageMap.keySet());
 	}
 
+	/**
+	 *  Gets a page specification with the given name, or returns null.
+	 *
+	 *  <p>The following three default page specifications will always
+	 *  be present, unless overriden:
+	 *
+	 *  <table border=1>
+	 * 	<tr> <th>Specification</th> <th>Name / Class</th></tr>
+	 *  <tr>
+	 *	 <td>/com/primix/tapestry/pages/Exception.jwc</td>
+	 *	 <td>{@link Exception}</td></tr>
+	 *  <tr>
+	 *	 <td>/com/primix/tapestry/pages/StaleLink.jwc</td>
+	 *	 <td>StaleLink</td></tr>
+	 *  <tr>
+	 *	 <td>/com/primix/tapestry/pages/StaleSession.jwc</td>
+	 *	 <td>StaleSession</td></tr>
+	 *
+	 *
+	 */
+	 
 	public PageSpecification getPageSpecification(String name)
 	{
 		if (pageMap == null)

@@ -138,21 +138,13 @@ public class PropertyBinding extends AbstractBinding
 		}
 		catch (Throwable e)
 		{
-			String message = e.getMessage();
 			StringBuffer buffer;
 			
 			buffer = new StringBuffer("Unable to resolve property ");
 			buffer.append(propertyPath);
 			buffer.append(" of ");
 			buffer.append(root);
-			
-			if (message == null)
-				buffer.append('.');
-			else
-			{
-				buffer.append(": ");
-				buffer.append(message);
-			}		
+			buffer.append(".");
 
 			throw new BindingException(buffer.toString(), this, e);
 		}
@@ -206,7 +198,6 @@ public class PropertyBinding extends AbstractBinding
 		}
 		catch (Throwable e)
 		{
-			String message = e.getMessage();
 			StringBuffer buffer;
 			
 			buffer = new StringBuffer("Unable to update property ");
@@ -216,13 +207,7 @@ public class PropertyBinding extends AbstractBinding
 			buffer.append(" to <");
 			buffer.append(value);
 			
-			if (message == null)
-				buffer.append(">.");
-			else
-			{
-				buffer.append(">: ");
-				buffer.append(message);
-			}		
+			buffer.append(">.");
 
 			throw new BindingException(buffer.toString(), this, e);
 		}
