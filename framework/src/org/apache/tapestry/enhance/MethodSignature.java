@@ -53,85 +53,91 @@
  *
  */
 
-package org.apache.tapestry.wml;
+package org.apache.tapestry.enhance;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.form.Form;
-import org.apache.tapestry.valid.IValidationDelegate;
+import java.lang.reflect.Method;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- *  The go element declares a go task, indicating navigation to a URI. If the URI
- *  names a WML card or deck, it is displayed. 
+ *  The signature of a {@link java.lang.reflect.Method}, including
+ *  the name, return type, and parameter types.  Used when checking
+ *  for unimplemented methods in enhanced subclasses.  
+ * 
+ *  <p>
+ *  The modifiers (i.e., "public", "abstract") and thrown
+ *  exceptions are not relevant for these purposes, and
+ *  are not part of the signature.
+ * 
+ *  <p>
+ *  Instances of MethodSignature are immutable and
+ *  implement equals() and hashCode() properly for use
+ *  in Sets or as Map keys.
  *
+ *  @author Howard Lewis Ship
  *  @version $Id$
- *  @author David Solis
  *  @since 2.4
  *
  **/
 
-public abstract class Go extends Form
+public class MethodSignature
 {
+    private String _name;
+    private Class _returnType;
+    private Class[] _parameterTypes;
+    private int _hashCode = 0;
 
-    /** @since 2.4 **/
-
-    protected void writeAttributes(IMarkupWriter writer, ILink link)
+    public MethodSignature(Method m)
     {
-        String method = getMethod();
+        _name = m.getName();
+        _returnType = m.getReturnType();
 
-        writer.begin(getTag());
-        writer.attribute("method", (method == null) ? "post" : method);
-        writer.attribute("href", link.getURL(null, false));
+        // getParameterTypes() returns a copy for us to keep.
+
+        _parameterTypes = m.getParameterTypes();
     }
 
-    /** @since 2.4 **/
-
-    protected void writeHiddenField(IMarkupWriter writer, String name, String value)
+    public boolean equals(Object obj)
     {
-        writer.beginEmpty(getInputTag());
-        writer.attribute("name", name);
-        writer.attribute("value", value);
-        writer.println();
+        if (obj == null || !(obj instanceof MethodSignature))
+            return false;
+
+        MethodSignature other = (MethodSignature) obj;
+
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(_name, other._name);
+        builder.append(_returnType, other._returnType);
+        builder.append(_parameterTypes, other._parameterTypes);
+
+        return builder.isEquals();
     }
 
-    /**
-     *  This component doesn't support event handlers.
-     *
-     **/
-    protected void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
+    public int hashCode()
     {
+        if (_hashCode == 0)
+        {
+            HashCodeBuilder builder = new HashCodeBuilder(253, 97);
+
+            builder.append(_name);
+            builder.append(_returnType);
+            builder.append(_parameterTypes);
+
+            _hashCode = builder.toHashCode();
+        }
+
+        return _hashCode;
     }
 
-    /**
-     *  This component doesn't support delegate.
-     *
-     **/
-    public IValidationDelegate getDelegate()
+    public String toString()
     {
-        return null;
+        ToStringBuilder builder = new ToStringBuilder(this);
+        builder.append("name", _name);
+        builder.append("returnType", _returnType);
+        builder.append("parameterTypes", _parameterTypes);
+
+        return builder.toString();
     }
 
-    public void setDelegate(IValidationDelegate delegate)
-    {
-        throw new ApplicationRuntimeException(
-            Tapestry.getString("unsupported-property", this, "delegate"));
-    }
-
-    protected String getTag()
-    {
-        return "go";
-    }
-
-    protected String getInputTag()
-    {
-        return "postfield";
-    }
-
-    protected String getDisplayName()
-    {
-        return "Go";
-    }
 }
