@@ -273,6 +273,8 @@ public class NumericField extends AbstractValidatingTextField
 		numberAdaptors.register(Short.TYPE, shortAdaptor);
 		numberAdaptors.register(Integer.class, intAdaptor);
 		numberAdaptors.register(Integer.TYPE, intAdaptor);
+		numberAdaptors.register(Long.class, longAdaptor);
+		numberAdaptors.register(Long.TYPE, longAdaptor);
 		numberAdaptors.register(Float.class, floatAdaptor);
 		numberAdaptors.register(Float.TYPE, floatAdaptor);
 		numberAdaptors.register(Double.class, doubleAdaptor);
@@ -283,7 +285,7 @@ public class NumericField extends AbstractValidatingTextField
 	}
 
 	public IBinding getValueBinding()
-	
+
 	{
 		return valueBinding;
 	}
@@ -337,7 +339,7 @@ public class NumericField extends AbstractValidatingTextField
 	 */
 
 	protected void update(String value)
-	
+
 	{
 		Number objectValue = null;
 		Number minimum = null;
@@ -387,7 +389,7 @@ public class NumericField extends AbstractValidatingTextField
 			minimum = (Number) minimumBinding.getObject("minimum", Number.class);
 
 		if (minimum != null)
-		
+
 			{
 
 			if (adaptor.compare(objectValue, minimum) < 0)
@@ -404,7 +406,7 @@ public class NumericField extends AbstractValidatingTextField
 			maximum = (Number) maximumBinding.getObject("maximum", Number.class);
 
 		if (maximum != null)
-		
+
 			{
 			if (adaptor.compare(objectValue, maximum) > 0)
 			{
