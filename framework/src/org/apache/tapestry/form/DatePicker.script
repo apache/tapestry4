@@ -53,10 +53,15 @@ ${calendarObject}.setIncludeWeek(${includeWeek});
 ${calendarObject}.create();
 
 ${calendarObject}.onchange = function() {
-	document.${formName}.${name}.value  = ${calendarObject}.formatDate();
-	document.${formName}.${name}.onchange();
+  var field = document.${formName}.${name};
+  var value = ${calendarObject}.formatDate();
+  if (field.value != value) {
+    field.value = value;
+    if (field.onchange) {
+      field.onchange();
+    }
+  }
 }
 
 </initialization>
 </script>
-
