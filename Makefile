@@ -137,7 +137,7 @@ dist: clean install javadoc
 TUTORIAL_CLASSPATH := \
 	$(LIB_DIR)/com.primix.tapestry.jar \
 	$(LIB_DIR)/javax.servlet.jar \
-	$(LIB_DIR)/log4j.jar \
+	$(LIB_DIR)/log4j-core.jar \
 	$(LIB_DIR)/javax.xml.jaxp.jar \
 	$(LIB_DIR)/org.apache.crimson.jar \
 	$(LIB_DIR)/gnu-regexp.jar \

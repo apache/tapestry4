@@ -37,7 +37,7 @@ PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/javax.xml.jaxp.jar \
 	$(INSTALL_DIR)/org.apache.crimson.jar \
 	$(INSTALL_DIR)/ejb.jar \
-	$(INSTALL_DIR)/log4j.jar
+	$(INSTALL_DIR)/log4j-core.jar
 
 INSTALL_DIR = ../lib
 
@@ -47,7 +47,7 @@ JAVADOC_OPT = \
 	-version -author -splitindex -windowtitle "Tapestry API" \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api \
-	-link http://jakarta.apache.org/log4j/javadoc \
+	-link http://jakarta.apache.org/log4j/docs/api \
 	-link http://java.sun.com/xml/jaxp-docs-1.1/docs/api
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk

@@ -29,7 +29,7 @@ JBOSS_CONF_DIR = $(JBOSS_DIR)/conf/default
 RUNTIME_LIBRARIES := \
 	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/gnu-regexp.jar \
-	$(INSTALL_DIR)/log4j.jar
+	$(INSTALL_DIR)/log4j-core.jar
 	
 # Rule to configure the jBoss server for the VlibBeans
 # demo.
