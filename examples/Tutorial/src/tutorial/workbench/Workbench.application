@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!--$Id$-->
 <!DOCTYPE application PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
 <application name="Tapestry Component Workbench" 
 	engine-class="net.sf.tapestry.engine.SimpleEngine">
@@ -12,10 +12,7 @@
   <service name="chart" class="tutorial.workbench.chart.ChartService"/>
   
   <page name="Home" specification-path="/tutorial/workbench/Home.jwc"/>
-  
-  <page name="Palette" specification-path="/tutorial/workbench/palette/Palette.jwc"/>
-  <page name="palette.Results" specification-path="/tutorial/workbench/palette/Results.jwc"/>
-  
+    
   <page name="Localization" specification-path="/tutorial/workbench/localization/Localization.jwc"/>
   <page name="localization.Change" 
   	specification-path="/tutorial/workbench/localization/Change.jwc"/>
@@ -34,7 +31,12 @@
   <page name="ErrorFest" specification-path="/tutorial/workbench/ErrorFest.jwc"/>
 
   <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
-  <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
   <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>
+ 
+  <!-- You would not, normally, ever do this, but to test
+       some of the namespace functionality, we've moved
+       some of the normal application to a library. -->
+ 
+  <library id="inner" specification-path="/tutorial/workbench/Inner.library"/>
   
 </application>

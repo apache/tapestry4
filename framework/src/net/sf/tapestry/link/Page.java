@@ -27,6 +27,7 @@ package net.sf.tapestry.link;
 
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngineService;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
@@ -58,9 +59,22 @@ import net.sf.tapestry.RequiredParameterException;
  *   <td>disabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
  *   <td>Controls whether the link is produced.  If disabled, the portion of the template
  *  the link surrounds is still rendered, but not the link itself.
+ * 
+ * <p>Under the new namespace scheme, to create a link to a page
+ *  in a library, you must provide the libraries namespace prefix.
  *  </td></tr>
  *
- *
+ * <tr>
+ *        <td>namespace</td>
+ *        <td>{@link net.sf.tapestry.INamespace}</td>
+ *        <td>R</td>
+ *        <td>no</td>
+ *        <td>&nbsp;</td>
+ *        <td>If specified, the namespace's prefix
+ * is prefixed (with a colon) to the page.  This is primarily
+ *  used when pages (or components) in a namespace need
+ *  to create links to other pages inside the same
+ *  namespace.  </td>  </tr>
  * <tr>
  *        <td>scheme</td>
  *        <td>java.lang.String</td>
@@ -108,7 +122,11 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Page extends GestureLink
 {
-	private String targetPage;
+    private String _targetPage;
+
+    /** @since 2.2 **/
+
+    private INamespace _targetNamespace;
 
     /**
      *  Returns {@link IEngineService#PAGE_SERVICE}.
@@ -128,18 +146,38 @@ public class Page extends GestureLink
 
     protected Object[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
     {
-        return new String[] { targetPage };
+        String parameter = null;
+
+        if (_targetNamespace == null)
+            parameter = _targetPage;
+        else
+            parameter = _targetNamespace.getExtendedId() + ":" + _targetPage;
+
+        return new String[] { parameter };
     }
 
     public String getTargetPage()
     {
-        return targetPage;
+        return _targetPage;
     }
-
 
     public void setTargetPage(String targetPage)
     {
-        this.targetPage = targetPage;
+        this._targetPage = targetPage;
+    }
+
+    /** @since 2.2 **/
+
+    public INamespace getTargetNamespace()
+    {
+        return _targetNamespace;
+    }
+
+    /** @since 2.2 **/
+
+    public void setTargetNamespace(INamespace targetNamespace)
+    {
+        _targetNamespace = targetNamespace;
     }
 
 }
