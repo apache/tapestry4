@@ -6,6 +6,9 @@ This XML snippet is included into an ant build file.
 It includes a rule, docbook-setup, that ensures that the necessary
 DocBook distributions are unpacked and ready to process the XML.
 
+Very important to keep this synchronized with .cvsignore to prevent
+problems using Team support inside the Eclipse IDE.
+
 -->
 
 <!-- The base name for the DTD distribution (the directory and tar file
@@ -15,7 +18,7 @@ DocBook distributions are unpacked and ready to process the XML.
 
 <!-- Base name for the XSL distribution. -->
 
-<property name="docbook.xsl.base" value="docbook-xsl-1.44"/>
+<property name="docbook.xsl.base" value="docbook-xsl-1.45"/>
 
 <property name="docbook.dtd.dir" value="../common/${docbook.dtd.base}"/>
 <property name="docbook.xsl.dir" value="../common/${docbook.xsl.base}"/>
@@ -32,12 +35,12 @@ DocBook distributions are unpacked and ready to process the XML.
 
 <target name="docbook-unpack-dtd" unless="docbook.dtd.available">
 	<echo>Unpacking DocBook DTD distribution ...</echo>
-	<untar src="../common/${docbook.dtd.base}.tar" dest="../common"/>
+	<unzip src="../common/${docbook.dtd.base}.zip" dest="../common"/>
 </target>
   	
 <target name="docbook-unpack-xsl" unless="docbook.xsl.available">
 	<echo>Unpacking DocBook XSL distribution ...</echo>
-	<untar src="../common/${docbook.xsl.base}.tar" dest="../common"/>
+	<unzip src="../common/${docbook.xsl.base}.zip" dest="../common"/>
 </target>
 
 
