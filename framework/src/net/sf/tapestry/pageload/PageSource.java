@@ -42,6 +42,7 @@ import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.asset.ContextAsset;
@@ -49,6 +50,7 @@ import net.sf.tapestry.asset.ExternalAsset;
 import net.sf.tapestry.asset.PrivateAsset;
 import net.sf.tapestry.binding.FieldBinding;
 import net.sf.tapestry.binding.StaticBinding;
+import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.MultiKey;
 import net.sf.tapestry.util.pool.Pool;
 
@@ -94,6 +96,47 @@ public class PageSource implements IPageSource, IRenderDescription
     private Map _contextAssets;
     private Map _privateAssets;
     private IResourceResolver _resolver;
+
+    private static class PageSpecificationResolver
+    {
+        private String _simplePageName;
+        private INamespace _namespace;
+
+        private PageSpecificationResolver(ISpecificationSource source, String pageName)
+        {
+            _namespace = source.getApplicationNamespace();
+
+            int colonx = pageName.indexOf(':');
+
+            if (colonx > 0)
+            {
+                _simplePageName = pageName.substring(colonx + 1);
+                String namespaceId = pageName.substring(0, colonx);
+
+                _namespace = source.getApplicationNamespace().getChildNamespace(namespaceId);
+            }
+            else
+            {
+                _simplePageName = pageName;
+
+                _namespace = source.getApplicationNamespace();
+
+                if (!_namespace.containsPage(_simplePageName))
+                    _namespace = source.getFrameworkNamespace();
+
+            }
+        }
+
+        public INamespace getNamespace()
+        {
+            return _namespace;
+        }
+
+        public ComponentSpecification getSpecification()
+        {
+            return _namespace.getPageSpecification(_simplePageName);
+        }
+    }
 
     /**
      *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
@@ -152,10 +195,9 @@ public class PageSource implements IPageSource, IRenderDescription
      *  Gets the page from a pool, or otherwise loads the page.  This operation
      *  is threadsafe.
      *
-     
      **/
 
-    public IPage getPage(IEngine engine, INamespace namespace, String pageName, IMonitor monitor) throws PageLoaderException
+    public IPage getPage(IEngine engine, String pageName, IMonitor monitor) throws PageLoaderException
     {
         Object key = buildKey(engine, pageName);
         IPage result = (IPage) _pool.retrieve(key);
@@ -165,19 +207,19 @@ public class PageSource implements IPageSource, IRenderDescription
             if (monitor != null)
                 monitor.pageCreateBegin(pageName);
 
-            String specificationPath = engine.getSpecification().getPageSpecificationPath(pageName);
-
-            if (specificationPath == null)
-                throw new ApplicationRuntimeException(Tapestry.getString("PageLoader.no-such-page", pageName));
+            PageSpecificationResolver specificationResolver =
+                new PageSpecificationResolver(engine.getSpecificationSource(), pageName);
 
             PageLoader loader = new PageLoader(this);
 
-            result = loader.loadPage(pageName, namespace, engine, specificationPath);
+            result =
+                loader.loadPage(
+                    pageName,
+                    specificationResolver.getNamespace(),
+                    engine,
+                    specificationResolver.getSpecification());
 
-            // Alas, the page loader is discarded, we should be pooling those as
-            // well.
-
-            if (monitor != null)
+             if (monitor != null)
                 monitor.pageCreateEnd(pageName);
         }
         else

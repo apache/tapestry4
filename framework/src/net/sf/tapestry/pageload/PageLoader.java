@@ -103,6 +103,51 @@ public class PageLoader implements IPageLoader
 
     private int _maxDepth;
 
+    private class ComponentResolver
+    {
+        private INamespace _namespace;
+        private ComponentSpecification _spec;
+
+        private ComponentResolver(INamespace containerNamespace, String alias)
+        {
+            if (alias.startsWith("/"))
+            {
+                _namespace = _specificationSource.getApplicationNamespace();
+                _spec = _specificationSource.getComponentSpecification(alias);
+                return;
+            }
+
+            int colonx = alias.indexOf(':');
+
+            if (colonx > 0)
+            {
+                String id = alias.substring(0, colonx);
+                _namespace = containerNamespace.getChildNamespace(id);
+
+                String bareAlias = alias.substring(colonx + 1);
+                _spec = _namespace.getComponentSpecification(bareAlias);
+                return;
+            }
+
+            _namespace = _specificationSource.getApplicationNamespace();
+
+            if (!_namespace.containsAlias(alias))
+                _namespace = _specificationSource.getFrameworkNamespace();
+
+            _spec = _namespace.getComponentSpecification(alias);
+        }
+
+        private INamespace getNamespace()
+        {
+            return _namespace;
+        }
+
+        private ComponentSpecification getSpecification()
+        {
+            return _spec;
+        }
+    }
+
     /**
      *  Constructor.
      *
@@ -265,8 +310,6 @@ public class PageLoader implements IPageLoader
 
         for (int i = 0; i < count; i++)
         {
-            ComponentSpecification spec = null;
-
             String id = (String) ids.get(i);
 
             // Get the sub-component specification from the
@@ -276,19 +319,14 @@ public class PageLoader implements IPageLoader
 
             String type = contained.getType();
 
-            INamespace componentNamespace = computeNamespace(type, namespace);
-
-            // Get the component specification for the contained
-            // component.
-
-            if (type.startsWith("/"))
-                spec = _specificationSource.getComponentSpecification(type);
-            else
-                spec = componentNamespace.getComponentSpecification(type);
+            ComponentResolver resolver = new ComponentResolver(namespace, type);
+            ComponentSpecification componentSpecification = resolver.getSpecification();
+            INamespace componentNamespace = resolver.getNamespace();
 
             // Instantiate the contained component.
 
-            IComponent component = instantiateComponent(page, container, id, spec, componentNamespace);
+            IComponent component =
+                instantiateComponent(page, container, id, componentSpecification, componentNamespace);
 
             // Add it, by name, to the container.
 
@@ -296,7 +334,7 @@ public class PageLoader implements IPageLoader
 
             // Recursively construct the component
 
-            constructComponent(page, component, spec, componentNamespace);
+            constructComponent(page, component, componentSpecification, componentNamespace);
         }
 
         addAssets(container, containerSpec);
@@ -304,40 +342,6 @@ public class PageLoader implements IPageLoader
         container.finishLoad(this, containerSpec);
 
         _depth--;
-    }
-
-    /**
-     *  Determines the namespace of a component, based on the namespace of
-     *  its container.  Components whose type is a resource path use
-     *  the application namespace.  Components without a prefix use
-     *  the defaultNamespace (if it contains the necessary alias), or
-     *  the framework namespace otherwise.  Components with a prefix
-     *  use the specified namespace.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private INamespace computeNamespace(String type, INamespace defaultNamespace) throws PageLoaderException
-    {
-        if (type.startsWith("/"))
-            return _specificationSource.getApplicationNamespace();
-
-        int colonx = type.indexOf(':');
-        if (colonx > 0)
-        {
-            String namespaceId = type.substring(0, colonx);
-
-            return defaultNamespace.getChildNamespace(namespaceId);
-        }
-
-        // An unadorned name, so it's either in its container's
-        // namespace, or in the framework namespace.
-
-        if (defaultNamespace.containsAlias(type))
-            return defaultNamespace;
-
-        return _specificationSource.getFrameworkNamespace();
     }
 
     /**
@@ -452,15 +456,14 @@ public class PageLoader implements IPageLoader
      *  @param engine the engine the page is loaded for (this is used
      *  to define the locale of the new page, and provide access
      *  to the corect specification source, etc.).
-     *  @param resourcePath the resource path for the page specification
+     *  @param specification the specification for the page
      *
      **/
 
-    public IPage loadPage(String name, INamespace namespace, IEngine engine, String resourcePath)
+    public IPage loadPage(String name, INamespace namespace, IEngine engine, ComponentSpecification specification)
         throws PageLoaderException
     {
         IPage page = null;
-        ComponentSpecification specification;
 
         _engine = engine;
 
@@ -474,8 +477,6 @@ public class PageLoader implements IPageLoader
 
         try
         {
-            specification = _specificationSource.getPageSpecification(resourcePath);
-
             page = instantiatePage(name, namespace, specification);
 
             page.attach(engine);

@@ -156,7 +156,7 @@ public class Shell extends AbstractComponent
                 writer.println();
             }
 
-            page = getPage();
+            IPage page = getPage();
 
             writer.comment("Application: " + page.getEngine().getSpecification().getName());
 

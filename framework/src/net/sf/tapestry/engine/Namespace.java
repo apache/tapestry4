@@ -67,6 +67,22 @@ public class Namespace implements INamespace
         _specificationSource = specificationSource;
     }
 
+    public String toString()
+    {
+        StringBuffer buffer = new StringBuffer("Namespace@");
+        buffer.append(Integer.toHexString(hashCode()));
+        buffer.append('[');
+
+        if (_id == null)
+            buffer.append("<application>");
+        else
+            buffer.append(getExtendedId());
+            
+        buffer.append(']');
+        
+        return buffer.toString();
+    }                    
+
     /**
      *  Map of {@link ComponentSpecification} keyed on page name.
      * 
@@ -133,7 +149,7 @@ public class Namespace implements INamespace
     {
         ComponentSpecification result = (ComponentSpecification) _pages.get(name);
 
-        if (name == null)
+        if (result == null)
         {
             result = locatePageSpecification(name);
 
@@ -153,12 +169,10 @@ public class Namespace implements INamespace
     {
         ComponentSpecification result = (ComponentSpecification) _components.get(alias);
 
-        if (alias == null)
+        if (result == null)
         {
             result = locateComponentSpecification(alias);
-
-            if (result != null)
-                _components.put(alias, result);
+            _components.put(alias, result);
         }
 
         return result;
