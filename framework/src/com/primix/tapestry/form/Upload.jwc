@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Ship//Tapestry Specification 1.1//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+	
+<specification class="com.primix.tapestry.form.Upload" allow-body="no">
+
+  <parameter name="file" java-type="com.primix.tapestry.IUploadFile" required="yes">
+  	<description>
+  	Parameter updated with the information (filename and content) of the file
+  	when the form is submitted.
+  	</description>
+  </parameter>
+
+  <parameter name="disabled"/>
+ 
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="name"/>
+  
+</specification>

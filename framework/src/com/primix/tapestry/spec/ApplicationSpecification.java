@@ -127,6 +127,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 			"InsertBlock",
 			"/com/primix/tapestry/components/InsertBlock.jwc");
 		defaultComponentMap.put("ListEdit", "/com/primix/tapestry/form/ListEdit.jwc");
+		defaultComponentMap.put("Upload", "/com/primix/tapestry/form/Upload.jwc");
 
 	}
 
@@ -297,6 +298,11 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 *		<td>/com/primix/tapestry/form/TextField.jwc</td>
 	 *		<td>{@link TextField}</td> </tr>
 	 *
+	 *  <tr>
+	 * 	<td>/com/primix/tapestry/form/Upload.jwc</td>
+	 * 	<td>{@link Upload}</td>
+	 *  </tr>
+	 * 
 	 *  <tr>
 	 *       <td>/com/primix/tapestry/valid/ValidField.jwc</td>
 	 *       <td>{@link ValidField}</td>
