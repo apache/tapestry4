@@ -129,12 +129,15 @@
 		<fileset dir=".">
 			<include name="*.xml"/>
 			<include name="*.html"/>
-			<exclude name="Readme.html"/>
+			
+			<!-- Skip HTML files in web, since those need
+				 a seperate path, to provide filtering. -->
+			<exclude name="Readme.html"/>				 
 			<exclude name="web/*.html"/>
+
 			<include name="web/**"/>
 			<include name="config/**"/>
 			<include name="doc/**"/>
-			<include name="junit/**"/>
 			<include name="lib/**"/>
 			<!-- Exclude class files left around by IDEs. -->
 			<exclude name="**/*.class"/>
@@ -158,7 +161,7 @@
 			<exclude name="config/build.properties"/>
 			 
 			<!-- It isn't a good idea to generate a distribution from a normal working
-			     directory, since the<copy> will include things like backup files created
+			     directory, since the <copy> will include things like backup files created
 			     while editting.  Better to check out the Tapestry module via anon CVS to
 			     a temporary directory, configure build.properties, and build the
 			     release there. -->
