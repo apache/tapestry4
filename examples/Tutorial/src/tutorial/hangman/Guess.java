@@ -64,7 +64,7 @@ extends BasePage
     {
         return new IDirectListener()
         {
-            public void directTriggered(IComponent component,
+            public void directTriggered(IDirect direct,
                         String[] context, IRequestCycle cycle)
             throws RequestCycleException
             {

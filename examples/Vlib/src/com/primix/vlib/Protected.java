@@ -2,6 +2,7 @@
 
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.components.html.valid.*;
+import com.primix.tapestry.callback.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.pages.*;
 
@@ -96,15 +97,15 @@ implements IErrorProperty
 	throws RequestCycleException
 	{
 		Visit visit = (Visit)getVisit();
-		Login page;
 		
 		if (visit.isUserLoggedIn())
 			return;
 		
 		// User not logged in ... redirect through the Login page.
 		
-		page = (Login)cycle.getPage("Login");
-		page.setTargetPage(getName());
+		Login loginPage = (Login)cycle.getPage("Login");
+		
+		loginPage.setCallback(new PageCallback(this));
 		
 		throw new PageRedirectException("Login");			
 	}

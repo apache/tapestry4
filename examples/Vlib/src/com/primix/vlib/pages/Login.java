@@ -2,6 +2,7 @@ package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.components.html.valid.*;
+import com.primix.tapestry.callback.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -55,7 +56,7 @@ implements IErrorProperty
 	private String email;
 	private String password;
 	private String error;
-	private String targetPage;
+	private ICallback callback;
     private IValidationDelegate validationDelegate;
 
 	/**
@@ -73,7 +74,7 @@ implements IErrorProperty
 		email = null;
 		password = null;
 		error = null;
-		targetPage = null;
+		callback = null;
 
 		super.detach();
 	}
@@ -127,18 +128,6 @@ implements IErrorProperty
 		return error;
 	}
 	
-	public void setTargetPage(String value)
-	{
-		targetPage = value;
-		
-		fireObservedChange("targetPage", value);
-	}
-	
-	public String getTargetPage()
-	{
-		return targetPage;
-	}
-
     protected void setErrorField(String componentId, String message)
     {
         IValidatingTextField field;
@@ -149,6 +138,19 @@ implements IErrorProperty
         if (error == null)
             error = message;
     }
+	
+	public void setCallback(ICallback value)
+	{
+		callback = value;
+		
+		fireObservedChange("callback", value);
+	}
+	
+	public ICallback getCallback()
+	{
+		return callback;
+	}
+	
 	
 	/**
 	 *  Attempts to login.  If successful, updates the application's user property
@@ -222,6 +224,7 @@ implements IErrorProperty
 	 */
 	 
 	public void loginUser(IPerson person, IRequestCycle cycle)
+	throws RequestCycleException
 	{
 		String email;
 		Cookie cookie;
@@ -241,10 +244,10 @@ implements IErrorProperty
 		// After logging in, go to the MyBooks page, unless otherwise
 		// specified.
 
-		if (targetPage == null)
+		if (callback == null)
 			cycle.setPage("MyBooks");
 		else	
-			cycle.setPage(targetPage);
+			callback.peformCallback(cycle);
 
 		// I've found that failing to set a maximum age and a path means that
 		// the browser (IE 5.0 anyway) quietly drops the cookie.
