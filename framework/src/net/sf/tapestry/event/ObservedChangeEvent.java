@@ -16,9 +16,9 @@ import net.sf.tapestry.Tapestry;
 
 public class ObservedChangeEvent extends EventObject
 {
-    private IComponent component;
-    private String propertyName;
-    private Serializable newValue;
+    private IComponent _component;
+    private String _propertyName;
+    private Object _newValue;
 
     public ObservedChangeEvent(IComponent component, String propertyName, char newValue)
     {
@@ -78,12 +78,9 @@ public class ObservedChangeEvent extends EventObject
             throw new IllegalArgumentException(
                 Tapestry.getString("ObservedChangeEvent.null-property-name", component));
 
-        if (newValue != null && !(newValue instanceof Serializable))
-            throw new IllegalArgumentException(Tapestry.getString("ObservedChangeEvent.must-be-serializable"));
-
-        this.component = component;
-        this.propertyName = propertyName;
-        this.newValue = (Serializable) newValue;
+        _component = component;
+        _propertyName = propertyName;
+        _newValue = newValue;
     }
 
     public ObservedChangeEvent(IComponent component, String propertyName, boolean newValue)
@@ -91,34 +88,19 @@ public class ObservedChangeEvent extends EventObject
         this(component, propertyName, new Boolean(newValue));
     }
 
-    /**
-     *  Constructor for an unknown change event.  The receiver must acknowledge
-     *  that the observed object changed.  This is used when a property of
-     *  the component is itself is a data holder (such as a Collection object) and
-     *  it changes.
-     *
-     **/
-
-    public ObservedChangeEvent(IComponent component)
-    {
-        super(component);
-
-        this.component = component;
-    }
-
     public IComponent getComponent()
     {
-        return component;
+        return _component;
     }
 
-    public Serializable getNewValue()
+    public Object getNewValue()
     {
-        return newValue;
+        return _newValue;
     }
 
     public String getPropertyName()
     {
-        return propertyName;
+        return _propertyName;
     }
 
 }
