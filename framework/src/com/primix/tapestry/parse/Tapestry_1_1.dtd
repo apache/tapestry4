@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!--
+
+The DTD for Tapestry application and component specifications.  
+Associated with the public identifier:
+
+	-//Howard Ship/Tapestry Specification 1.1//EN
+	
+For application specifications, the root element is application.
+
+For component specifications the root element is specification.
+
+-->
+<!-- =======================================================
+Entity: attribute-flag
+
+For entity attribute that take a boolean value, defines 'yes' and 'no.
+-->
+<!ENTITY % attribute-flag "(yes|no)">
+<!-- =======================================================
+Element: application
+Root element
+
+Defines a Tapestry application.
+
+Attributes:
+  name: A textual name used to uniquely identify the application.
+  engine-class:  The Java class to instantiate as the application engine.
+-->
+<!ELEMENT application (description*, page+, component-alias*, property*)>
+<!ATTLIST application
+  name CDATA #REQUIRED
+  engine-class CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: binding
+Appears in: component
+
+Binds a parameter of the component to a property of its container.
+
+Attributes:
+  name: The name of the component parameter to bind.
+  property-path: The property path, relative to the container, to obtain 
+    the parameter value from.
+-->
+<!ELEMENT binding EMPTY>
+<!ATTLIST binding
+  name CDATA #REQUIRED
+  property-path CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: component
+Contained by: specification
+
+Defines a component contained by the component being specified.
+
+Attribute:
+  id: A unique identifier for the component within the container.
+  type: The type of component, either a well known logical name, or the complete path
+    to the component's specification.
+  copy-of: The id of a previously defined component; this component will be a copy
+    of the other component.
+
+The Tapestry page loader ensures that either type or copy-of is specified, but not both.
+-->
+<!ELEMENT component ((binding | field-binding | inherited-binding | static-binding)*)>
+<!ATTLIST component
+  id ID #REQUIRED
+  type CDATA #IMPLIED
+  copy-of IDREF #IMPLIED
+>
+<!-- =======================================================
+Element: component-alias
+Contained by: application
+
+Establishes a short logic name for a particular component that is used 
+within the application.
+
+Attributes:
+  type: The logical name for the component.
+  specification-path:  The complete path to the component's specification.
+-->
+<!ELEMENT component-alias EMPTY>
+<!ATTLIST component-alias
+  type CDATA #REQUIRED
+  specification-path CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: context-asset
+Contained by: specification
+
+An asset located in the same web application context as the running 
+application.
+
+Attributes:
+  name: The name of the asset.
+  path: The path, relative to the web application context, of the resource.
+-->
+<!ELEMENT context-asset EMPTY>
+<!ATTLIST context-asset
+  name CDATA #REQUIRED
+  path CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: description
+Appears in: application parameter specification
+
+Several elements may contain descriptions; these descriptions are 
+optional.  The eventual goal is to provide help in some form of IDE.  
+Currently, descriptions are optional and ignored.
+
+Attributes:
+  xml:lang the language that the description is expressed in.
+-->
+<!ELEMENT description (#PCDATA)>
+<!ATTLIST description
+  xml:lang NMTOKEN "en"
+>
+<!-- =======================================================
+Element: external-asset
+Contained by: specification
+
+Defines an asset at some external source.
+
+Attributes:
+  name: The name of the asset.
+  URL: The URL used to reference the asset.
+-->
+<!ELEMENT external-asset EMPTY>
+<!ATTLIST external-asset
+  name CDATA #REQUIRED
+  URL CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: field-binding
+Appears in: component
+
+Binds a parameter of the component to a public static field of 
+some Java object.
+
+Attributes:
+  name: The name of the component parameter to bind.
+  field-name:  The name of the field, of the form [package.]class.field.  
+    The package may be ommitted if it is "java.lang".
+-->
+<!ELEMENT field-binding EMPTY>
+<!ATTLIST field-binding
+  name CDATA #REQUIRED
+  field-name CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: inherited-binding
+Appears in: component
+
+Binds a parameter of the component to a parameter of the container.
+
+Attributes:
+  name: The name of the component parameter to bind.
+  parameter-name: The name of the container parameter to bind the 
+    component parameter to.
+-->
+<!ELEMENT inherited-binding EMPTY>
+<!ATTLIST inherited-binding
+  name CDATA #REQUIRED
+  parameter-name CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: page
+Contained by: application
+
+Defines a single page within the application.  Each application will contain
+at least one of these, to define the Home page.
+
+Attributes:
+  name: A unique name for the application.
+  specification-path:  The resource classpath of the component specification 
+    for the page.
+-->
+<!ELEMENT page EMPTY>
+<!ATTLIST page
+  name CDATA #REQUIRED
+  specification-path CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: parameter
+Contained by: specification
+
+Defines a formal parameter for the component.
+
+Attributes:
+  name: A unqiue name for the parameter.
+  java-type: The name of a Java class or primitive type expected by the parameter.  
+    This is for documentation purposes only, it is not enforced.
+  required: If yes, then the parameter must be bound.  If no (the default), 
+    then the parameter is optional.
+-->
+<!ELEMENT parameter (description*)>
+<!ATTLIST parameter
+  name CDATA #REQUIRED
+  java-type CDATA #IMPLIED
+  required %attribute-flag; "no"
+>
+<!-- =======================================================
+Element: private-asset
+Contained by: specification
+
+An asset available within the Java classpath (i.e., bundled inside a JAR or WAR).
+
+Attributes:
+  name: The name of the asset.
+  resource-path: The complete pathname of the resource.
+-->
+<!ELEMENT private-asset EMPTY>
+<!ATTLIST private-asset
+  name CDATA #REQUIRED
+  resource-path CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: property
+Contained by: application, specification
+
+Defines a key/value pair associated with the application or component specification.  Properties
+are used to capture information that doesn't fit into the DTD.  The value for the property is
+the PCDATA wrapped by the property tag (which is trimmed of leading and trailing whitespace).
+-->
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property
+  name CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: specification
+Root element
+
+A component specification.  It's attributes define the Java class to 
+instantiate, whether the component may wrap other elements, and whether 
+informal (undeclared) parameters are allowed.
+
+Attributes:
+  class: The Java class to instantiate for the component.
+  allow-body:  If yes (the default), the component may wrap other elements (have a body).
+  allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
+    explictily defined) are allowed.
+-->
+<!ELEMENT specification (description*, parameter*, component*, (external-asset | context-asset | private-asset)*)>
+<!ATTLIST specification
+  class CDATA #REQUIRED
+  allow-body %attribute-flag; "yes"
+  allow-informal-parameters %attribute-flag; "yes"
+>
+<!-- =======================================================
+Element: static-binding
+Appears in: component
+
+Binds a parameter of the component to a static value defined directly
+within this specification. The value is the PCDATA wraped by the element 
+(with leading and trailing whitespace removed).
+
+Attributes:
+  name: The name of the component parameter to bind.
+
+-->
+<!ELEMENT static-binding (#PCDATA)>
+<!ATTLIST static-binding
+  name CDATA #REQUIRED
+>

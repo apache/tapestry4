@@ -1,34 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-  <class>com.primix.tapestry.BaseComponent</class>
-  <allow-body>yes</allow-body>
-  <parameters>
-    <allow-informal-parameters>no</allow-informal-parameters>
-  </parameters>
-  <components>
-    <component>
-      <id>shell</id>
-      <type>Shell</type>
-      <bindings>
-        <static-binding>
-          <name>title</name>
-          <value>Validating Text Fields</value>
-        </static-binding>
-      </bindings>
-    </component>
-    <component>
-      <id>body</id>
-      <type>Body</type>
-    </component>
-    <component>
-      <id>insertWrapped</id>
-      <type>InsertWrapped</type>
-    </component>
-    <component>
-      <id>showInspector</id>
-      <type>ShowInspector</type>
-    </component>
-  </components>
-</specification>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification
+  class="com.primix.tapestry.BaseComponent"
+  allow-informal-parameters="no">
+
+  <component id="shell" type="Shell">
+    <static-binding name="title">Validating Text Fields</static-binding>
+  </component>
+  
+  <component id="body" type="Body"/>
+  <component id="insertWrapped" type="InsertWrapped"/>
+  <component id="showInspector" type="ShowInspector"/>
+
+ </specification>

@@ -1,72 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-  <class>com.primix.tapestry.BasePage</class>
-  <components>
-    <component>
-      <id>border</id>
-      <type>Border</type>
-    </component>
-    <component>
-      <id>insertStringData</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>visit.stringData</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertIntData</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>visit.intData</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertDoubleData</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>visit.doubleData</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertDecimalData</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>visit.decimalData</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertBigIntData</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>visit.bigIntData</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>home</id>
-      <type>Page</type>
-      <bindings>
-        <static-binding>
-          <name>page</name>
-          <value>Home</value>
-        </static-binding>
-      </bindings>
-    </component>
-  </components>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.BasePage">
+  <component id="border" type="Border"/>
+  <component id="insertStringData" type="Insert">
+    <binding name="value" property-path="visit.stringData"/>
+  </component>
+  <component id="insertIntData" type="Insert">
+    <binding name="value" property-path="visit.intData"/>
+  </component>
+  <component id="insertDoubleData" type="Insert">
+    <binding name="value" property-path="visit.doubleData"/>
+  </component>
+  <component id="insertDecimalData" type="Insert">
+    <binding name="value" property-path="visit.decimalData"/>
+  </component>
+  <component id="insertBigIntData" type="Insert">
+    <binding name="value" property-path="visit.bigIntData"/>
+  </component>
+  <component id="home" type="Page">
+    <static-binding name="page">Home</static-binding>
+  </component>
 </specification>
