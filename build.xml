@@ -106,19 +106,24 @@
 	<antcall target="build-dist"/>
 </target>
 
+<property name="dist.root.dir" value="dist"/>
+<property name="dist.base" value="Tapestry-${framework.version}"/>	
+<property name="dist.dir" value="${dist.root.dir}/${dist.base}"/>
+	
 <target name="build-dist" description="Builds the Tapestry distribution files.">
 
-	<!-- Directory to put distributions into -->
-	
-	<property name="dist.root.dir" value="dist"/>
-	<property name="dist.base" value="Tapestry-${framework.version}"/>	
-	<property name="dist.dir" value="${dist.root.dir}/${dist.base}"/>
+	<!-- Delete the base directory. -->
+ 
+	<delete dir="${dist.root.dir}" quiet="true"/>
+ 
+ 	<antcall target="build-dist-tarball"/>
+ 	
+ </target>
+ 
+<target name="build-dist-copy"> 	
 
-	<!-- Delete and recreate the base directory. -->
- 
-	<delete dir="${dist.dir}" quiet="true"/>
 	<mkdir dir="${dist.dir}"/>
- 
+	 
 	<!-- Copy all the relevant files to the base directory. -->
  
 	<copy todir="${dist.dir}" includeEmptyDirs="false">
@@ -174,6 +179,10 @@
 		</fileset>
 		<filterset>
 			<filter token="VERSION" value="${framework.version}"/>
+			<filter token="OS_NAME" value="${os.name}"/>
+			<filter token="OS_VERSION" value="${os.version}"/>
+			<filter token="JAVA_VENDOR" value="${java.vendor}"/>
+			<filter token="JAVA_VM_VERSION" value="${java.vm.version}"/>
 		</filterset>
 	</copy>
 	
@@ -196,6 +205,12 @@
 		</fileset>
 	</copy>
 	   
+</target>
+
+<target name="build-dist-jars"
+	description="Builds the source JARs."
+	depends="build-dist-copy">	   
+	
 	<!-- Jar up the source code for the frameworks. -->
 	 
 	<property name="dist.src.dir" value="${dist.dir}/src"/>
@@ -207,7 +222,12 @@
 	<jar jarfile="${dist.src.dir}/net.sf.tapestry.contrib-src.jar"
 		basedir="contrib"/>
 	<jar jarfile="${dist.src.dir}/examples-src.jar" basedir="examples"/>
-	
+</target>
+
+<target name="build-dist-tarball"
+	description="Builds the tarball distributions."
+	depends="build-dist-jars">
+
 	<!-- Pack the directory (relative to ${dist.dir}), into a TAR file.  We go to the extra work
 	      of building a .tar.gz because the distro is smaller than an equivalent .zip file.
 	   -->
@@ -236,8 +256,6 @@
 	<tar basedir="${web.dir}" tarfile="${web.tar}" longfile="gnu"/>
 	<gzip src="${web.tar}" zipfile="${web.tar.gz}"/>
 	<delete file="${web.tar}"/>
-	
-	<delete dir="${dist.dir}"/>
  
 </target>
 
