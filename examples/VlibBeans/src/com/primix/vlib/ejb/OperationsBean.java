@@ -94,6 +94,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (NamingException e)
 		{
+            e.printStackTrace();
 			throw new XEJBException("Could not lookup data source.", e);
 		}
 	}
@@ -412,6 +413,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
+            e.printStackTrace();
 			throw new XEJBException("Could not fetch all Publishers.", e);
 		}
 		finally
@@ -585,15 +587,18 @@ public class OperationsBean implements SessionBean
 	{
 		IPersonHome home;
 		
-		validateUniquePerson(firstName, lastName, email);
-		
 		if (password == null ||
 			password.trim().length() == 0)
 				throw new RegistrationException("Must specify a password.");
 			
+		validateUniquePerson(firstName, lastName, email);
+		
 		home = getPersonHome();
 		
-		return home.create(firstName, lastName, email, password);
+		return home.create(lastName.trim(), 
+		        firstName.trim(), 
+		        email.trim(), 
+		        password.trim());
 	}
 
 
@@ -695,10 +700,8 @@ public class OperationsBean implements SessionBean
 		if (trimmed.length() == 0)
 			return;
 		
-		// The is very Cloudscape dependant
-		
 		assembly.addSep(" AND ");
-		assembly.addParameter(column + ".trim().toLowerCase() LIKE ?",
+		assembly.addParameter("LCASE(" + column + ") LIKE ?",
 				 "%" + trimmed.toLowerCase() + "%");	
 	}
 	
@@ -881,7 +884,7 @@ public class OperationsBean implements SessionBean
 		trimmedEmail = email.trim().toLowerCase();
 		trimmedLastName = lastName.trim().toLowerCase();
 		trimmedFirstName = firstName.trim().toLowerCase();
-		
+
 		try
 		{
 			connection = getConnection();
@@ -891,7 +894,7 @@ public class OperationsBean implements SessionBean
 			assembly.newLine("FROM PERSON");
 			assembly.newLine("WHERE ");
 			
-			assembly.addParameter("EMAIL.trim().toLowerCase() = ?", trimmedEmail);
+			assembly.addParameter("LCASE (EMAIL) = ?", trimmedEmail);
 			
 			statement = assembly.createStatement(connection);
 			set = statement.executeQuery();
@@ -906,9 +909,9 @@ public class OperationsBean implements SessionBean
 			assembly.newLine("FROM PERSON");
 			assembly.newLine("WHERE ");
 
-			assembly.addParameter("FIRST_NAME.trim().toLowerCase() = ?", trimmedFirstName);
+			assembly.addParameter("LCASE (FIRST_NAME) = ?", trimmedFirstName);
 			assembly.addSep(" AND ");
-			assembly.addParameter("LAST_NAME.trim().toLowerCase() = ?", trimmedLastName);
+			assembly.addParameter("LCASE (LAST_NAME) = ?", trimmedLastName);
 			
 			statement = assembly.createStatement(connection);
 			set = statement.executeQuery();
@@ -919,7 +922,8 @@ public class OperationsBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-			throw new RegistrationException("Could not access database.", e);
+			throw new RegistrationException("Could not access database: " 
+			+ e.getMessage(), e);
 		}
 		finally
 		{

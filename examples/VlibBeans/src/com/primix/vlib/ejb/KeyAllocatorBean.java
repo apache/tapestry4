@@ -59,6 +59,8 @@ import com.primix.foundation.ejb.*;
 
 public class KeyAllocatorBean implements SessionBean
 {
+    private static final String  PROPERTY_NAME = "next-key";
+
 	private SessionContext context;
 	
 	/**
@@ -232,8 +234,8 @@ public class KeyAllocatorBean implements SessionBean
 			connection = getConnection();
 			
 			statement = connection.prepareStatement
-				("select VALUE from PROP where NAME = ?");
-			statement.setString(1, "next-key");
+				("select PROP_VALUE from PROP where NAME = ?");
+			statement.setString(1, PROPERTY_NAME);
 			
 			set = statement.executeQuery();
 			
@@ -258,15 +260,17 @@ public class KeyAllocatorBean implements SessionBean
 			
 			statement = connection.prepareStatement(
 				"update PROP\n" +
-				"set VALUE = ?\n" +
+				"set PROP_VALUE = ?\n" +
 				"where NAME	 = ?");
 			statement.setInt(1, nextKey);
-			statement.setString(2, "next-key");
+			statement.setString(2, PROPERTY_NAME);
 			
 			statement.executeUpdate();
 		}
 		catch (SQLException e)
 		{
+            e.printStackTrace();
+
 			throw new XEJBException("Unable to allocate keys from the database.", e);
 		}
 		finally
@@ -305,7 +309,7 @@ public class KeyAllocatorBean implements SessionBean
 	/**
 	 *  Gets a database connection from the pool.
 	 *
-	 *  @throws EJBException if a <code>SQLException</code>
+	 *  @throws EJBException if a {@link SQLException}
 	 *  is thrown.
 	 *
 	 */

@@ -3,63 +3,49 @@
 MODULE_NAME = Vlib
 
 PACKAGES = \
+	com.primix.servlet \
 	com.primix.vlib \
 	com.primix.vlib.pages \
 	com.primix.vlib.components \
 	com.primix.vlib.jsp
 
 LOCAL_CLASSPATH = \
-	$(INSTALL_DIR)/j2ee.jar \
-	$(INSTALL_DIR)/xerces.jar \
+	$(JBOSS_DIR)/lib/ext/ejb.jar \
+	$(JBOSS_DIR)/lib/ext/jndi.jar \
+	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/Tapestry.jar \
-	$(INSTALL_DIR)/VlibBeans.jar \
-	$(INSTALL_DIR)/ServletUtils.jar
+	$(INSTALL_DIR)/VlibBeans.jar
 
 INSTALL_DIR = ../../lib
 
 JAVADOC_DIR = ../../javadoc
 
-CONTEXT_RESOURCES = index.jsp jsp
+JAVADOC_OPT = \
+	-version -author -windowtitle "Primix Virtual Library - Presentation Layer" \
+	-link http://java.sun.com/products/jdk/1.2/docs/api \
+	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
-WEB_INF_RESOURCES = weblogic.xml
+CONTEXT_RESOURCES = index.html jsp
 
 include $(SYS_MAKEFILE_DIR)/War.mk
 
-# Classpath entries needed when WebLogic starts up.  This includes the Cloudscape
-# libraries needed to setup the Cloudscape vlib connection pool.
-
-WEBLOGIC_BOOT_CLASSPATH := \
-	$(WEBLOGIC_DIR)/lib/weblogic510sp4boot.jar \
-	$(CLOUDSCAPE_INSTALL)/lib/cloudscape.jar \
-	$(CLOUDSCAPE_INSTALL)/lib/license.jar
-
-# Classpath needed for EJB deployment modules and Wars that are loaded.
-# This includes WebLogic licensing as well.
-
-WEBLOGIC_CLASSPATH := \
-	$(WEBLOGIC_DIR)/lib/weblogic510sp4.jar \
-	$(WEBLOGIC_DIR)/license \
-	$(WEBLOGIC_DIR)/classes \
-	$(WEBLOGIC_DIR)/lib/weblogicaux.jar \
-	$(INSTALL_DIR)/gnu-regexp.jar \
+EXEC_CLASSPATH = \
+	$(LOCAL_CLASSPATH) \
 	$(INSTALL_DIR)/xerces.jar \
-	$(INSTALL_DIR)/Tapestry.jar \
-	$(INSTALL_DIR)/ServletUtils.jar
-	
-# Convert from space-seperated to proper form, and convert relative paths to absolute paths.
+	$(INSTALL_DIR)/gnu-regexp.jar \
+	$(INSTALL_DIR)/com.mortbay.jetty.jar \
+	$(JBOSS_DIR)/conf/default \
+	$(JBOSS_DIR)/client/jboss-client.jar
 
-_WEBLOGIC_BOOT_CLASSPATH = $(strip $(shell $(JBE_CANONICALIZE) -classpath $(WEBLOGIC_BOOT_CLASSPATH)))
-_WEBLOGIC_CLASSPATH = $(strip $(shell $(JBE_CANONICALIZE) -classpath $(WEBLOGIC_CLASSPATH)))
+_EXEC_CLASSPATH := $(strip $(shell $(JBE_CANONICALIZE) -classpath $(EXEC_CLASSPATH)))
 
-WEBLOGIC_OPTS = \
-	-mx128M -mx128M \
-    -Dweblogic.class.path="$(_WEBLOGIC_CLASSPATH)" \
-    -Dweblogic.system.home=$(WEBLOGIC_DIR)  \
-	-Dcloudscape.system.home="$(CLOUDSCAPE_INSTALL)/demo/databases" \
-	-classpath "$(_WEBLOGIC_BOOT_CLASSPATH)"
+run:
+	$(JAVA) -classpath "$(_EXEC_CLASSPATH)" \
+	-Dcom.primix.tapestry.enable-reset-service=true \
+	-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
+	com.mortbay.Jetty.Server jetty.xml
 
-configure-weblogic: initialize
-	@ $(ECHO) "\n*** Configuring WebLogic Server options ***\n"
-	$(WEBLOGIC_DIR)/bin/wlconfig.exe $(WEBLOGIC_OPTS)
+
+
 
 

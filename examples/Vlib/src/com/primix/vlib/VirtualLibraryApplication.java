@@ -208,7 +208,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IPersonHome getPersonHome()
 	{
 		if (personHome == null)
-			personHome = (IPersonHome)findNamedObject("com.primix.vlib.Person", IPersonHome.class);
+			personHome = (IPersonHome)findNamedObject("vlib/Person", IPersonHome.class);
 		
 		return personHome;	
 	}
@@ -216,7 +216,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IPublisherHome getPublisherHome()
 	{
 		if (publisherHome == null)
-		  publisherHome = (IPublisherHome)findNamedObject("com.primix.vlib.Publisher",
+		  publisherHome = (IPublisherHome)findNamedObject("vlib/Publisher",
 		  		IPublisherHome.class);
 		
 		return publisherHome;		
@@ -225,7 +225,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IBookHome getBookHome()
 	{
 		if (bookHome == null)
-			bookHome = (IBookHome)findNamedObject("com.primix.vlib.Book", IBookHome.class);
+			bookHome = (IBookHome)findNamedObject("vlib/Book", IBookHome.class);
 		
 		return bookHome;	
 	}
@@ -233,7 +233,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IBookQueryHome getBookQueryHome()
 	{
 		if (bookQueryHome == null)
-			bookQueryHome = (IBookQueryHome)findNamedObject("com.primix.vlib.BookQuery",
+			bookQueryHome = (IBookQueryHome)findNamedObject("vlib/BookQuery",
 				IBookQueryHome.class);
 		
 		return bookQueryHome;
@@ -242,7 +242,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public IOperationsHome getOperationsHome()
 	{
 		if (operationsHome == null)
-			operationsHome = (IOperationsHome)findNamedObject("com.primix.vlib.Operations",
+			operationsHome = (IOperationsHome)findNamedObject("vlib/Operations",
 				IOperationsHome.class);
 		
 		return operationsHome;
