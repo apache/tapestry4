@@ -127,6 +127,7 @@
 <!ENTITY Delegator '<ulink url="&ReferenceRoot;/Delegator.html"><classname>Delegator</classname></ulink>'>
 <!ENTITY DirectLink '<ulink url="&ReferenceRoot;/DirectLink.html"><classname>DirectLink</classname></ulink>'>
 <!ENTITY ExceptionDisplay '<ulink url="&ReferenceRoot;/ExceptionDisplay.html"><classname>ExceptionDisplay</classname></ulink>'>
+<!ENTITY ExternalLink '<ulink url="&ReferenceRoot;/ExternalLink.html"><classname>ExternalLink</classname></ulink>'>
 <!ENTITY Foreach '<ulink url="&ReferenceRoot;/Foreach.html"><classname>Foreach</classname></ulink>'>
 <!ENTITY Form '<ulink url="&ReferenceRoot;/Form.html"><classname>Form</classname></ulink>'>
 <!ENTITY Frame '<link linkend="bultin.Frame.html"><classname>Frame</classname></ulink>'>
