@@ -63,11 +63,7 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.ITemplateSource;
-import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IParameterSpecification;
-import org.apache.tapestry.spec.ParameterSpecification;
 
 /**
  *  Utility class that understands the rules of component types (which
@@ -217,10 +213,6 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
                 null);
 
         }
-
-        // This code is here because this is the centralized location that combines
-        // execution flow for all kinds of templates (standard, by extension, etc)
-        establishDefaultParameters();
     }
 
     private void searchForComponent(IRequestCycle cycle)
@@ -304,24 +296,5 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
 
         namespace.installComponentSpecification(_type, specification);
     }
-    
-    
-    private void establishDefaultParameters()
-    {
-        IComponentSpecification specification = getSpecification();
 
-        if (specification.getParameter(ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME) == null)
-        {
-            // Add a templateTag parameter
-            IParameterSpecification parameter = new ParameterSpecification();
-            parameter.setPropertyName(ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME);
-            parameter.setDirection(Direction.AUTO);
-            parameter.setType("java.lang.String");
-            parameter.setDefaultValue("null");
-            parameter.setLocation(specification.getLocation());
-            parameter.setRequired(false);
-            
-            specification.addParameter(ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME, parameter);
-        }
-    }
 }

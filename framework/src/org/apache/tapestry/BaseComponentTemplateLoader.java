@@ -369,49 +369,67 @@ public class BaseComponentTemplateLoader
     {
         IComponentSpecification spec = component.getSpecification();
 
-        // add a static binding carrying the template tag
-        addStaticBinding(
-            component,
-            spec,
-            ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME,
-            token.getTag(),
-            token.getLocation());
-
         Map attributes = token.getAttributesMap();
 
-        if (attributes == null)
-            return;
-
-        Iterator i = attributes.entrySet().iterator();
-
-        while (i.hasNext())
+        if (attributes != null)
         {
-            Map.Entry entry = (Map.Entry) i.next();
+            Iterator i = attributes.entrySet().iterator();
 
-            String name = (String) entry.getKey();
-            TemplateAttribute attribute = (TemplateAttribute) entry.getValue();
-            AttributeType type = attribute.getType();
-
-            if (type == AttributeType.OGNL_EXPRESSION)
+            while (i.hasNext())
             {
-                addExpressionBinding(
-                    component,
-                    spec,
-                    name,
-                    attribute.getValue(),
-                    token.getLocation());
-                continue;
-            }
+                Map.Entry entry = (Map.Entry) i.next();
 
-            if (type == AttributeType.LOCALIZATION_KEY)
-            {
-                addStringBinding(component, spec, name, attribute.getValue(), token.getLocation());
-                continue;
-            }
+                String name = (String) entry.getKey();
+                TemplateAttribute attribute = (TemplateAttribute) entry.getValue();
+                AttributeType type = attribute.getType();
 
-            if (type == AttributeType.LITERAL)
-                addStaticBinding(component, spec, name, attribute.getValue(), token.getLocation());
+                if (type == AttributeType.OGNL_EXPRESSION)
+                {
+                    addExpressionBinding(
+                        component,
+                        spec,
+                        name,
+                        attribute.getValue(),
+                        token.getLocation());
+                    continue;
+                }
+
+                if (type == AttributeType.LOCALIZATION_KEY)
+                {
+                    addStringBinding(
+                        component,
+                        spec,
+                        name,
+                        attribute.getValue(),
+                        token.getLocation());
+                    continue;
+                }
+
+                if (type == AttributeType.LITERAL)
+                    addStaticBinding(
+                        component,
+                        spec,
+                        name,
+                        attribute.getValue(),
+                        token.getLocation());
+            }
         }
+
+
+        // if the component defines a templateTag parameter and 
+        // there is no established binding for that parameter, 
+        // add a static binding carrying the template tag  
+        if (spec.getParameter(ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME) != null
+            && component.getBinding(ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME) == null)
+        {
+            addStaticBinding(
+                component,
+                spec,
+                ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME,
+                token.getTag(),
+                token.getLocation());
+        }
+        
     }
 
     /**
@@ -643,15 +661,14 @@ public class BaseComponentTemplateLoader
         {
             if (j == 1)
                 buffer.append(' ');
+            else if (j == count)
+            {
+                buffer.append(' ');
+                buffer.append(Tapestry.getMessage("BaseComponent.and"));
+                buffer.append(' ');
+            }
             else
-                if (j == count)
-                {
-                    buffer.append(' ');
-                    buffer.append(Tapestry.getMessage("BaseComponent.and"));
-                    buffer.append(' ');
-                }
-                else
-                    buffer.append(", ");
+                buffer.append(", ");
 
             buffer.append(i.next());
 

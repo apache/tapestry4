@@ -16,4 +16,10 @@
   	</description>
   </parameter>
   
+  <parameter name="templateTag" type="java.lang.String" direction="auto" required="no" default-value="null">
+  	<description>
+  	The tag used to add this component in a template.
+  	</description>
+  </parameter>
+  
 </component-specification>
