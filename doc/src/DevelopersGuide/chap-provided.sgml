@@ -70,6 +70,22 @@ parameters are used to fill in the attributes of the element.
 </>
 	</section>
 
+	<section id="builtin.Block">
+		<title>Block</>
+
+<para>
+A block is used to prevent a section of an HTML template from being renderred.  That is,
+a <classname>Block</classname> is allowed a body, but never renders it.  Intead, an
+<classname>InsertBlock</classname> component is used to insert
+the body of the block.
+</>
+
+<para><classname>Block</>s are used to pass arbitrary blocks of HTML and components as parameters
+to a component.
+</>
+
+	</section>
+
 	<section id="builtin.Body">
 		<title>Body</>
 
@@ -479,6 +495,25 @@ are converted into HTML entities (&amp;lt; and &amp;gt;).
 			<para>A format (<classname>java.text.Format</>) object used to format 
 			the <classname>String</> or object.
 			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.InsertBlock">
+		<title>InsertBlock</>
+
+<para>
+Inserts the body of a <classname>Block</>.
+</>
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>block</>
+		<listitem>
+			<para>The <classname>Block</> to insert.</>
 		</>
 	</>
 </>
