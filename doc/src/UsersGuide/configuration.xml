@@ -204,6 +204,27 @@ currently used in Tapestry.
 	<title>Configuration Values</title>
 	
 <varlistentry>
+	<term>net.sf.tapestry.template-extension</term>
+	
+	<listitem>
+	<para>
+	Overrides the default extension used to locate templates for pages or components.
+	The default extension is "html", this configuration property 
+	allows overrides where appropriate.  For example,
+	an application that produces WML may want to override this to "wml".
+	</para>
+	
+	<para>
+	This configuration property does not follow the normal search path rules.  The
+	&spec.property; must be provided in the &spec.page-specification; or &spec.component-specification;.
+	If no value is found there, the immediate containing &spec.application; or
+	&spec.library-specification; is checked.  If still not found, the default is used.
+	</para>
+	
+	</listitem>
+</varlistentry>
+	
+<varlistentry>
 	<term>net.sf.tapestry.asset.dir</term>
 	<term>net.sf.tapestry.asset.URL</term>
 	
@@ -226,9 +247,14 @@ currently used in Tapestry.
 	
 	<listitem>
 	<para>
-	The class name to instantiate as the 
+	The fully qualified class name to instantiate as the 
 	<link linkend="intro.engine-service-visit">Visit object</link>.
 	</para>
+	
+	<para>
+	If not specified, an instance of &HashMap; will be created.
+	</para>
+	
 	</listitem>
 </varlistentry>
 
@@ -305,7 +331,7 @@ currently used in Tapestry.
 	</para>
 	
 	<para>
-	This slows down request handling but a significant amount, but is very
+	This slows down request handling by a noticable amount, but is very
 	useful in devlopment; it means that changes to templates and specifications
 	are immediately visible to the application.  It also helps identify
 	any errors in managing persistent page state.

@@ -72,6 +72,7 @@ import net.sf.tapestry.ApplicationServlet;
 import net.sf.tapestry.DefaultResourceResolver;
 import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.util.xml.DocumentParseException;
 import ognl.Ognl;
@@ -504,6 +505,9 @@ public class MockTester
             String name = a.getAttributeValue("name");
             String pattern = a.getTextTrim();
 
+            if (Tapestry.isNull(pattern))
+                throw new DocumentParseException("Pattern is null in " + a);
+
             if (outputString == null)
                 outputString = _response.getOutputString();
 
@@ -534,6 +538,9 @@ public class MockTester
 
             String name = a.getAttributeValue("name");
             String substring = a.getTextTrim();
+
+            if (Tapestry.isNull(substring))
+                throw new DocumentParseException("Substring is null in " + a);
 
             if (outputString == null)
                 outputString = _response.getOutputString();
@@ -630,6 +637,9 @@ public class MockTester
         int subgroup = (value == null) ? 0 : Integer.parseInt(value);
 
         String pattern = element.getTextTrim();
+
+        if (Tapestry.isNull(pattern))
+            throw new DocumentParseException("Pattern is null in " + element);
 
         PatternMatcherInput input = new PatternMatcherInput(outputString);
 

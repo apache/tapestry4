@@ -88,6 +88,28 @@ import net.sf.tapestry.util.StringSplitter;
 
 public final class Tapestry
 {
+	/**
+	 *  Property name used to get the extension used for templates.  This
+	 *  may be set in the page or component specification, or in the page (or
+	 *  component's) immediate container (library or application specification).
+	 *  Unlike most properties, value isn't inherited all the way up the chain.
+	 *  The default template extension is "html".
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	public static final String TEMPLATE_EXTENSION_PROPERTY = "net.sf.tapestry.template-extension";
+	
+	/**
+	 *  The default extension for templates, "html".
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	public static final String DEFAULT_TEMPLATE_EXTENSION = "html";
+	
     /**
      *  Prevent instantiation.
      *
