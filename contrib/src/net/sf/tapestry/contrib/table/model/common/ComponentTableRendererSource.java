@@ -29,7 +29,7 @@ public class ComponentTableRendererSource implements ITableRendererSource
 	}
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.column.ITableValueRendererSource#getValueRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
+	 * @see net.sf.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
 	 */
 	public IRender getRenderer(
 		IRequestCycle objCycle,

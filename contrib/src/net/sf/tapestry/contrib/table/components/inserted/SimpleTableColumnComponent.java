@@ -55,7 +55,7 @@ public class SimpleTableColumnComponent
 	}
 
     /**
-     * @see net.sf.tapestry.contrib.table.model.ITableRendererListener#initRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
+     * @see net.sf.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
      */
     public void initializeRenderer(
         IRequestCycle objCycle,

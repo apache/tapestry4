@@ -14,8 +14,7 @@ import net.sf.tapestry.valid.RenderString;
  * A base implementation of {@link net.sf.tapestry.contrib.table.model.ITableColumn}
  * that allows renderers to be set via aggregation.
  * 
- * @see net.sf.tapestry.contrib.table.model.column.ITableColumnRendererSource
- * @see net.sf.tapestry.contrib.table.model.column.ITableValueRendererSource
+ * @see net.sf.tapestry.contrib.table.model.ITableRendererSource
  * @version $Id$
  * @author mindbridge
  * @since 2.3
