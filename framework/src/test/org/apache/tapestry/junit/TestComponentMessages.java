@@ -35,6 +35,7 @@ import org.apache.tapestry.junit.mock.c21.NullPropertySource;
 import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
 
 /**
@@ -64,6 +65,17 @@ public class TestComponentMessages extends TapestryTestCase
         Resource resource = new ClasspathResource(new DefaultClassResolver(), path);
 
         IComponentSpecification spec = new ComponentSpecification();
+        spec.setSpecificationLocation(resource);
+
+        return spec;
+    }
+
+    private ILibrarySpecification newLibrarySpec()
+    {
+        Resource resource = new ClasspathResource(new DefaultClassResolver(),
+                "/org/apache/tapestry/junit/Library.library");
+
+        ILibrarySpecification spec = new LibrarySpecification();
         spec.setSpecificationLocation(resource);
 
         return spec;
@@ -102,7 +114,7 @@ public class TestComponentMessages extends TapestryTestCase
 
         IPage page = newPage(spec, locale);
 
-        INamespace namespace = new Namespace(null, null, new LibrarySpecification(), null, null);
+        INamespace namespace = new Namespace(null, null, newLibrarySpec(), null, null);
 
         page.setNamespace(namespace);
 
@@ -114,6 +126,44 @@ public class TestComponentMessages extends TapestryTestCase
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
         check(messages, "only-in-base", "BASE1");
+    }
+
+    /** @since 3.1 */
+    public void testOnlyInNamespace()
+    {
+        Messages messages = createMessages(MOCK1, new Locale("en", "US"));
+
+        check(messages, "only-in-namespace", "LIBRARY_BASE.only-in-namespace");
+    }
+
+    /** @since 3.1 */
+    public void testLocalizedInNamespace()
+    {
+        Messages messages = createMessages(MOCK1, new Locale("fr"));
+
+        check(messages, "localized-in-namespace", "LIBRARY_FR.localized-in-namespace");
+    }
+
+    /** @since 3.1 */
+    public void testComponentOverridesNamespace()
+    {
+        Messages messages = createMessages(MOCK1, new Locale("en", "US"));
+
+        check(
+                messages,
+                "component-overrides-namespace",
+                "MOCKPAGE1_BASE.component-overrides-namespace");
+    }
+
+    /** @since 3.1 */
+    public void testLocalizedComponentOverridesLocalizedNamespace()
+    {
+        Messages messages = createMessages(MOCK1, new Locale("fr"));
+
+        check(
+                messages,
+                "localized-component-overrides-namespace",
+                "MOCKPAGE1_FR.localized-component-overrides-namespace");
     }
 
     public void testMissingKey()
