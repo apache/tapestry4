@@ -28,11 +28,11 @@ import org.apache.tapestry.util.IPropertyHolder;
  * 
  * @author glongman@intelligentworks.com
  */
-public interface IExtensionSpecification extends IPropertyHolder, LocationHolder, Locatable
+public interface IExtensionSpecification extends IPropertyHolder, LocationHolder
 {
     public abstract String getClassName();
     public abstract void setClassName(String className);
-    public abstract void addConfiguration(String propertyName, Object value);
+    public abstract void addConfiguration(String propertyName, String value);
     /**
      *  Returns an immutable Map of the configuration; keyed on property name,
      *  with values as properties to assign.

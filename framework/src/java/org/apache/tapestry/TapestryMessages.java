@@ -17,15 +17,13 @@ package org.apache.tapestry;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
- * 
- *
  * @author Howard Lewis Ship
  * @since 3.1
  */
 final class TapestryMessages
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(TapestryMessages.class, "TapestryStrings2");
+    private static final MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
+            "TapestryStrings2");
 
     public static String servletInitFailure(Throwable cause)
     {
