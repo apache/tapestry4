@@ -21,7 +21,7 @@
 		The sample below is for a tutorial component, called <emphasis>ArrayViewer</emphasis>. 
 		This component can take any Java array, 
 		and render it as an HTML table.  In real applications, the same can be done using alternative components that 
-		exist in the framework (such as &TableView;). This example exists to show simply how easy it is to build a component.</para>
+		exist in the framework (such as <varname>TableView</varname>). This example exists to show simply how easy it is to build a component.</para>
 		
 		<para>
 		By the end of this example, you should have learnt the basics of building a component with various properties.

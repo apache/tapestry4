@@ -6,10 +6,14 @@
   <!ENTITY chapter-intro SYSTEM "./tutorial-chapter-intro.xml">
   <!ENTITY chapter-gettingstarted SYSTEM "./tutorial-chapter-gettingstarted.xml">
   <!ENTITY chapter-intro-examples SYSTEM "./tutorial-chapter-intro-examples.xml">
-  <!ENTITY chapter-three-ex1 SYSTEM "./tutorial-pagelinking.xml">
+  <!ENTITY into-examples-pagelinking SYSTEM "./tutorial-pagelinking.xml">
   <!ENTITY chapter-forms SYSTEM "./tutorial-chapter-forms.xml">
   <!ENTITY chapter-builtins SYSTEM "./tutorial-chapter-builtins.xml">
   <!ENTITY chapter-components SYSTEM "./tutorial-chapter-components.xml">
+  <!ENTITY chapter-localization SYSTEM "./tutorial-localization.xml">
+  <!ENTITY chapter-inspector SYSTEM "./tutorial-inspector.xml">
+  <!ENTITY chapter-required-pages SYSTEM "./tutorial-required-pages.xml">
+  <!ENTITY chapter-assets SYSTEM "./tutorial-assets.xml">
   %TapestryLinks;
 ]>
 <!-- Conventions:
@@ -37,51 +41,12 @@
 	&chapter-intro;
 	&chapter-gettingstarted;
 	&chapter-intro-examples;
-
-  <chapter id="pages">
-  	<title>Pages</title>
-  	<section id="required-pages">
-  		<title>Required pages in a Tapestry Application</title>
-  	</section>
-
-  	<section id="pages-howto">
-  		<title>Howto (for various page types)</title>
-	  	<section id="pages-howto-home">
-	  		<title>Home</title>
-	  	</section>
-	  	<section id="pages-howto-exception">
-	  		<title>Exception</title>
-	  	</section>
-	  	<section id="pages-howto-Inspector">
-	  		<title>Inspector</title>
-	  	</section>
-	  	<section id="pages-howto-stalelink">
-	  		<title>StaleLink</title>
-	  	</section>
-	  	<section id="pages-howto-stalesession">
-	  		<title>StaleSession</title>
-	  	</section>
-  	</section>
-  </chapter>
-
-  &chapter-forms;
-  &chapter-builtins;
-
-  <chapter id="assets">
-  	<title>Assets</title>
-  	<section id="assets-what">
-  		<title>What is an Asset?</title>
-  	</section>
-  	<section id="assets-definition">
-  		<title>Defining and Using Assets</title>
-  	</section>
-  </chapter>
-
-  <chapter id="localization">
-  	<title>Localization</title>
-  </chapter>
-
-  &chapter-components;
+    &chapter-required-pages;
+    &chapter-forms;
+    &chapter-builtins;
+    &chapter-assets;
+    &chapter-localization;
+    &chapter-components;
 
   <chapter id="common-tasks">
   	<title>Common Tasks With Tapestry</title>
@@ -96,27 +61,7 @@
   	</section>
   </chapter>
 
-  <chapter id="inspector">
-  	<title>The Component Inspector</title>
-  	<section id="inspector-navigation">
-  		<title>Navigation</title>
-  	</section>
-  	<section id="inspector-specification">
-  		<title>Specification</title>
-  	</section>
-  	<section id="inspector-template">
-  		<title>Template</title>
-  	</section>
-  	<section id="inspector-properties">
-  		<title>Properties</title>
-  	</section>
-  	<section id="inspector-engine">
-  		<title>Engine</title>
-  	</section>
-  	<section id="inspector-logging">
-  		<title>Logging</title>
-  	</section>
-  </chapter>
+  &chapter-inspector;
 
   <chapter id="other">
   	<title>Other Considerations</title>

@@ -1,0 +1,185 @@
+<chapter id="inspector">
+    <title>The Tapestry Inspector</title>
+    <para>
+Unlike scripting systems (such as JavaServer Pages and the like), Tapestry applications are gifted
+with a huge amount of information about how they are implemented. The same component
+object model that allows Tapestry to perform so many ordinary functions can be leveraged to
+provide some unusual functionality.
+</para>
+    <para>
+Run the Border tutorial from the previous chapter and click on the show inspector button (the
+gear icon in the lower right corner).  A new window will launch, containing the Inspector:
+</para>
+    <figure>
+      <title>Tapestry Inspector</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/Inspector-Spec.jpg" format="JPEG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+The Inspector displays live information from the running application; in fact, it is simply another
+part of the application (the drop-down list of pages will include the Inspector page itself).  The
+Inspector is most often used to debug HTML generation by viewing the HTML templates.
+It is also very useful in debugging problems where the wrong data is displayed, since it
+allows the developer to navigate to the particular components and see directly what properties
+are used.
+</para>
+    <section id="inspector.navigation">
+      <title>Navigation</title>
+      <para>
+The inspector allows the user to navigate to any page and any component on a page.
+The drop down list in the upper left corner lists all pages in the application; changing
+the selection immediately updates the Inspector.
+</para>
+      <para>Next to the drop down list is the component path; a list of nested component ids, starting
+with "page" to represent the page.  Clicking on any id in the path changes the information displayed
+below.
+</para>
+      <para>
+Underneath the component navigation tools are a set of tab buttons for the different
+inspector views.
+</para>
+    </section>
+    <section id="inspector.specification">
+      <title>Specification View</title>
+      <figure>
+        <title>Specification View</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/Inspector-Spec.jpg" format="JPEG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>
+The specification view shows several sets of information about the selected component.
+</para>
+      <para>
+First shown are basic properties, such as the specification path and Java class.
+</para>
+      <para>
+Each formal parameter is displayed.  Unbound parameters will show no value in
+the Binding column.
+</para>
+      <para>
+Beneath formal parameters are informal parameters (the <classname>Border</classname>
+component has none, so there is nothing to see).  Informal parameters are
+usually mapped directly to HTML attributes.  They are most often used with
+components that generate a single HTML tag, such as the &ActionLink;,
+&DirectLink; or &TextField; components.
+</para>
+      <para>
+If the component contains assets, they are shown next.
+</para>
+      <para>
+Any helper beans for the component are displayed last.
+</para>
+      <para>
+On the right side is a list of each embedded component and its type.  Clicking
+the component id will navigate to the selected component.
+</para>
+    </section>
+    <section id="inspector.template">
+      <title>Template View</title>
+      <figure>
+        <title>Template View</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/Inspector-Template.jpg" format="JPEG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>
+The template view shows the HTML template for the component.  It shows dynamic tags in bold,
+and makes the component id a clickable link (which navigates to the component, but maintains
+the Template View).  This allows the developer to quickly drill down through the components.
+</para>
+    </section>
+    <section id="inspector.properties">
+      <title>Properties View</title>
+      <figure>
+        <title>Properties View</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/Inspector-Properties.jpg" format="JPEG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>
+The properties view shows persistant properties stored by the page (or any components on
+the page).  Most pages do not store any persistent state (it is more often stored
+in the application's visit object).
+</para>
+    </section>
+    <section id="inspector.engine">
+      <title>Engine View</title>
+      <figure>
+        <title>Engine View</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/Inspector-Engine.jpg" format="JPEG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>
+The engine view shows information about the running application engine, as well as some details
+from the application specification.
+</para>
+      <para>
+Under Operations are two buttons:  the first restarts the application.  The
+second (when enabled
+	<footnote>
+          <para>
+		By default, the reset service (used by the reset button) is disabled.
+		To enable it, set the JVM system property
+		<varname>net.sf.tapestry.enable-reset-service</varname> to true.
+		The service is disabled since it is too tempting a target for a denial
+		of service attack.
+		</para>
+        </footnote>) resets the application, which forces a reload of all component specifications
+and HTML templates.  This is useful during development, since it allows for incremental development
+without stopping and restarting the servlet container.
+</para>
+      <para>
+Below the operations is a binary dump of the application engine.  This is useful when
+developing to see how large the serialized state is, and perhaps gleam how it might be trimmed.
+</para>
+      <para>
+Further below (and not visible in the screen shot above), is a dump of the request context.  This
+is that vast amount of data also displayed when an unexpected exception is thrown.
+</para>
+    </section>
+    <section id="inspector.logging">
+      <title>Logging View</title>
+      <figure>
+        <title>Logging View (Level Selection)</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/Inspector-Logging.jpg" format="JPEG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>
+The Logging view allows dynamic integration with the
+<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink> logging framework.  The top half
+of the page allows the logging level of any category to be
+dynamically set.  This is useful when debugging, since logging output for specific
+classes
+	<footnote>
+          <para>
+			By convention, logging categories match the complete class name
+			of the corresponding class.  All Tapestry logging categories
+			conform to this convention.
+		</para>
+        </footnote>
+can be individually enabled or disable.
+</para>
+      <para>
+The right side is a small second form, allowing new categories to be created.
+This can be useful to make broad changes in logging levels.  For instance, creating
+a category "net.sf.tapestry" would allow the logging level of all Tapestry classes to be
+set in a single place.
+</para>
+    </section>
+  </chapter>

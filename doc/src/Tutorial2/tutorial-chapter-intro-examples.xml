@@ -3,9 +3,12 @@
   	<para>
   	This section provides a set of examples that show some of the fundamental aspects of
   	Tapestry. It begins with a discussion on Tapestry binding, which is the process by which you 
-  	as a developer link your objects to the components in the HTML page. Moving on, we 
+  	as a developer link your objects to the components in the HTML page, or put another way -
+          it is how you provide to the compoents the values they need (think of methods that
+          need arguments), as well as a way for the component to change those values.
+          . Moving on, we
   	create a simple multiple page application using the &PageLink; component, and then show
-  	how to respond to user actions (typically Submit buttons) via the &ActionLink; component.
+  	how to respond to user actions (typically &Submit; buttons) via the &ActionLink; component.
   	</para>
   	<para>
   	More advanced examples can be found from <xref linkend="forms"/> onwards.
@@ -36,6 +39,13 @@
 					<para><emphasis>All OGNL expressions are evaluated in the context of a current object, and a chain 
 					simply uses the result of the previous link in the chain as the current object for the next one. 
 					You can extend a chain as long as you like. (from &OGNL; web site)</emphasis></para></para>
+                    <figure>
+                      <title>OGNL binding example</title>
+                      <programlisting>
+
+  &lt;binding&gt; name="value" expression="visit.name"/&gt;
+                      </programlisting>
+                    </figure>
 					<para>
 					In Tapestry, the current object that you start with is the object for the page 
 					in question. For the 'hello world' application covered previously, this is the
@@ -62,7 +72,22 @@
 					<listitem><para>
 					A completely static piece of text, hardcoded into the component specification. As a result, static
 					bindings are not dynamic (being static!) and are read only.
-					</para></listitem>
+					</para>
+                    <figure>
+                      <title>Static Binding example</title>
+                      <programlisting>
+
+  &lt;static-binding name="value"&gt;Click To Save&lt;/static-binding&gt;
+                      </programlisting>
+                    </figure>
+                    <para>
+                        The example above would use the text <emphasis>Click to Save</emphasis> as
+                        the value for the binding. Note that <varname>static</varname> when used to
+                        refer to a binding type does not mean the same as <varname>static</varname> within
+                        Java itself. In Tapestry, the meaning is that the value is constant, and will never
+                        change.
+                    </para>
+					</listitem>
 				</varlistentry>
 	
 				<varlistentry>
@@ -72,9 +97,21 @@
 					or <function>com.mycompany.myclass.MyObject.SOMEVAR</function>. Static bindings must use full qualified
 					object names, except if the property being referenced is within the <function>java.lang</function> package.
 					</para>
+                        <para>Field bindings important Java code and referenced in pages, which ensures
+                        that the code and pages are synchronized and that changes occur only in a single place.</para>
 					<para>
-					Note that field bindings can also be achieved using an OGNL expression and property binding. 
+					Note that field bindings can also be achieved using an OGNL expression and property binding.
+                        The reason that field bindings reman is historic. It is likely that they will be removed
+                        in the 2.4 release, because you can achieve exactly the same thing with an &OGNL;
+                        binding.
 					</para>
+                    <figure>
+                      <title>Field Binding example (set the value to 'true')</title>
+                      <programlisting>
+
+  &lt;field-binding name="value" field-name="Boolean.TRUE"/&gt;
+                      </programlisting>
+                    </figure>
 					</listitem>
 				</varlistentry>
 	
@@ -82,18 +119,28 @@
 					<term>String Binding</term>
 					<listitem><para>
 					Used for localization, the value of this binding should refer to some localized string resource for this page ( 
-					part of a resource bundle).  The binding is read only.
-					</para></listitem>
+					part of a resource bundle).  The binding is read only.  The example below shows a usage of a string=binding
+                        to provide a value for an &Insert; component. It is assumed that the properties file for the component,
+                        with at least a line along the lines of <varname>pageTitle=Super Application Title!</varname>.
+					</para>
+                    <figure>
+                      <title>String Binding example </title>
+                      <programlisting>
+
+  &lt;string-binding name="value" key="pageTitle"/&gt;
+                      </programlisting>
+                    </figure>
+					</listitem>
 				</varlistentry>
 			</variablelist>
   		</para>
 			
 			<para>
-			The next section takes you through the building of slightly a slightly more complex application.
+			The next section takes you through the building of slightly more complex application.
 			</para>
   	</section>
 
-		&chapter-three-ex1;
+		&into-examples-pagelinking;
 		
 		<section id="ex-actions">
 			<title>Simple Actions</title>
