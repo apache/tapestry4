@@ -26,12 +26,27 @@
 
 package com.primix.tapestry.asset;
 
-import java.net.*;
-import javax.servlet.*;
-import java.io.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.engine.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
+import com.primix.tapestry.ApplicationRuntimeException;
+import com.primix.tapestry.Gesture;
+import com.primix.tapestry.IComponent;
+import com.primix.tapestry.IEngine;
+import com.primix.tapestry.IMonitor;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResourceResolver;
+import com.primix.tapestry.RequestContext;
+import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.ResponseOutputStream;
+import com.primix.tapestry.engine.AbstractService;
 
 /**
  *  A service for building URLs to and accessing {@link IAsset}s.
