@@ -1,5 +1,19 @@
 <!-- $Id$ -->
-
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
  
   <chapter id="cycle">
     <title>Understanding the Request Cycle</title>
@@ -208,7 +222,7 @@ The request cycle for the direct service is more complicated that the page servi
 As with the page service, the page involved has a chance validate the request.
 The component is located within the page, and the page is set as the default
 response page.  The listener is free to override this, and can load other pages,
-change thier properties, or otherwise affect the state of the application.
+change their properties, or otherwise affect the state of the application.
 </para>
       <para>
 After the listener has its chance to respond to the request, a response page
@@ -228,7 +242,7 @@ a listener.
 This is the primary way (besides forms) in which applications respond to the user.  
 What's key is the component's listener, of type 
 &IActionListener;.  This is the hook that allows 
-pre-defined components from the Tapestry framework to access application specific behavior.   
+pre-defined cotheirponents from the Tapestry framework to access application specific behavior.   
 The page or container of the 
 &DirectLink; component provides the necessary listener objects using dynamic bindings.
 </para>
