@@ -7,7 +7,7 @@
 <page-specification class="net.sf.tapestry.html.BasePage">
   <component id="shell" type="Shell">
     <static-binding name="title">Stale Session</static-binding>
-    <binding name="stylesheet" property-path="assets.stylesheet"/>
+    <binding name="stylesheet" expression="assets.stylesheet"/>
   </component>
   
   <component id="restart" type="ServiceLink">
