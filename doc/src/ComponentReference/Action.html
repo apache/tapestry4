@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Action</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/link/Action.html">
+		 net.sf.tapestry.link.Action</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td><a href="Action.html"><font color="blue">Action Link</a></a></td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Creates an &lt;a&gt; hyperlink in the HTML response. If the link is 
+  triggered, then the Action retrieves its listener, and invokes 
+  <tt>actionTriggered()</tt> on it.
+  <p>
+  See the Developers Guide <a href="../DevelopersGuide/cycle.listeners.html">
+  Action and Direct listeners</a> for a more complete description.  
+  <p>
+  This component may wrap around other components and static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Direct.html">Direct</a>, 
+  <a href="GenericLink.html">GenericLink</a>
+  <a href="Page.html">Page</a>
+  <a href="Service.html">Service</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>listener</td>
+    <td>
+     <a href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
+    </td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>Specifies an object that is notified when the link is clicked.</td>
+	</tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>Controls whether the link is produced. If disabled, the portion of the 
+    template the link surrounds is still rendered, but not the link itself.
+    </td>
+	</tr>
+  <tr>
+    <td>stateful</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>true</td>
+		<td>
+    If true (the default), then the component requires an active (i.e., non-new) 
+    <tt>HttpSession</tt> when triggered. Failing that, it throws a 
+    <a href="../api/net/sf/tapestry/StaleLinkException">
+    <tt>StaleLinkException</tt></a>. If false, then no check is necessary. The 
+    latter works well with links that encode all necessary state inside the URL 
+    itself.
+    </td>
+	</tr>
+  <tr>
+    <td>scheme</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If specified, then a longer URL (including scheme, server and possibly port) 
+    is generated using the specified scheme. Server is determined fromt he 
+    incoming request, and port is deterimined from the port paramter or the 
+    incoming request.     
+    </td>
+	</tr>
+  <tr>
+    <td>port</td>
+    <td>int</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If specified, then a longer URL (including scheme, server and port) is 
+    generated using the specified port. The server is determined from the 
+    incoming request, the scheme from the scheme paramter or the incoming 
+    request. 
+    </td>
+	</tr>
+  <tr>
+    <td>anchor</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    The name of an anchor or element to link to. The final URL will have '#' 
+    and the anchor appended to it.
+    </td>
+	</tr>
+	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: "href"
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="Any.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
