@@ -170,6 +170,11 @@ the search path for properties is:
 		As a JVM system property.
 		</para>
 	</listitem>
+	<listitem>
+		<para>
+		Hard-coded "factory" defaults (for some properties).
+		</para>
+	</listitem>
 </itemizedlist>
 
 <para>
@@ -187,7 +192,8 @@ that can be used to perform such lookups.
 <para>
 Applications may also want to change or augment
 the default search path; this is accomplished by overriding
-&AbstractEngine; method <function>createPropertySource()</function>.
+&AbstractEngine; method <function>createPropertySource()</function>.  For example,
+some configuration data could be drawn from a database.
 </para>
 		
 <para>
@@ -254,6 +260,65 @@ currently used in Tapestry.
 	</para>
 	</listitem>
 </varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.default-script-language</term>
+	
+	<listitem>
+	<para>
+	The name of a &BSF;-supported language, used when a
+	&spec.listener-binding; element does not specify
+	a language.  The "factory default" is "jython".
+	</para>
+	</listitem>
+	
+	
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.enable-reset-service</term>
+	
+	<listitem>
+	<para>
+	If not specified as "true", then the <literal>reset</literal> service
+	will be non functional.  The reset service is used to force
+	the running Tapestry application to discard all cached data (including
+	templates, specifications, pooled objects and more).  This must
+	be explicitly enabled, and should only be used in development (in production,
+	it is too easily exploited as a denial of service attack).
+	</para>
+	
+	<para>
+	Unlike most other configuration values, this must be specified
+	as a JVM system property.
+	</para>
+	</listitem>
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.disable-caching</term>
+	
+	<listitem>
+	<para>
+	If specified (as "true"), then the framework will discard all cached data
+	(specifications, templates, pooled objects, etc.) at the end of each request cycle.
+	</para>
+	
+	<para>
+	This slows down request handling but a significant amount, but is very
+	useful in devlopment; it means that changes to templates and specifications
+	are immediately visible to the application.  It also helps identify
+	any errors in managing persistent page state.
+	</para>
+	
+	<para>
+	This should never be enabled in production; the performance hit is too large.
+	Like <literal>net.sf.tapestry.enable-reset-service</literal>, this must
+	be specified as a JVM system property.
+	</para>
+	</listitem>
+</varlistentry>
+	
 
 </variablelist>
 </para>

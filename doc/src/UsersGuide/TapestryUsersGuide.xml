@@ -33,6 +33,7 @@
 <!ENTITY spec.inherited-binding '<link linkend="spec.inherited-binding"><sgmltag class="starttag">inherited-binding</sgmltag></link>'>
 <!ENTITY spec.library '<link linkend="spec.library"><sgmltag class="starttag">library</sgmltag></link>'>
 <!ENTITY spec.library-specification '<link linkend="spec.library-specification"><sgmltag class="starttag">library-specification</sgmltag></link>'>
+<!ENTITY spec.listener-binding '<link linkend="spec.listener-binding"><sgmltag class="starttag">listener-binding</sgmltag></link>'>
 <!ENTITY spec.page '<link linkend="spec.page"><sgmltag class="starttag">page</sgmltag></link>'>
 <!ENTITY spec.page-specification '<link linkend="spec.page-specification"><sgmltag class="starttag">page-specification</sgmltag></link>'>
 <!ENTITY spec.parameter '<link linkend="spec.parameter"><sgmltag class="starttag">parameter</sgmltag></link>'>

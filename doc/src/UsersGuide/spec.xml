@@ -354,6 +354,16 @@ to the property.
 	<entry><literal>String</literal></entry>
 	<entry>The conversion to apply to the value.</entry>
 </row>
+<row>
+	<entry>value</entry>
+	<entry/>
+	<entry>no</entry>
+	<entry/>
+	<entry>The value to configure, which will be converted before being assigned
+	to the property.  If not provided, the character data wrapped by the element
+	is used instead.
+	</entry>
+</row>
 </tbody>
 </tgroup>
 </informaltable>
@@ -445,7 +455,7 @@ containing library or application.
 	<title><sgmltag class="starttag">component</sgmltag> Elements</title>
 <literallayout>
   &spec.property; *,
-  (&spec.binding; | &spec.inherited-binding; | &spec.static-binding; | &spec.string-binding;) *
+  (&spec.binding; | &spec.inherited-binding; | &spec.listener-binding; | &spec.static-binding; | &spec.string-binding;) *
 </literallayout>
 </figure>
 
@@ -1018,6 +1028,85 @@ Relates a logical name for the page to the path to the page's specification file
 
 </section> <!-- spec.page -->
 
+<section id="spec.listener-binding">
+	<title><sgmltag class="starttag">listener-binding</sgmltag> element</title>
+
+<para>
+Appears in: &spec.component;
+</para>
+
+
+<para>
+A listener binding is used to create application logic, in the form
+of a listener (for a &DirectLink;, &ActionLink;, &Form;, etc.)
+in place within the specification, in 
+a scripting language (such as &Jython; or JavaScript).  The script itself
+is the wrapped character data for the <sgmltag class="starttag">listener-binding</sgmltag> 
+element.
+</para>
+
+<para>
+When the listener is triggered, the script is executed.  Three beans,
+<varname>page</varname>, <varname>component</varname> and <varname>cycle</varname>
+are pre-declared.
+</para>
+
+<para>
+The <varname>page</varname> is the page activated by the request.  Usually, this is
+the same as the page which contains the <varname>component</varname> ... in fact,
+usually <varname>page</varname> and <varname>compoment</varname> are identical.
+</para>
+
+<para>
+The <varname>component</varname> is the component from whose specification
+the binding was created (that is, not the &DirectLink;, but the page or component
+which embeds the &DirectLink;).
+</para>
+
+<para>
+The <varname>cycle</varname> is the active request cycle, from which service parameters
+may be obtained.
+</para>
+
+
+<figure>
+	<title><sgmltag class="starttag">listener-binding</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of the listener parameter to bind.</entry>
+</row>
+<row>
+	<entry>language</entry>
+	<entry>string</entry>
+	<entry>no</entry>
+	<entry/>
+	<entry>The name of a &BSF;-supported language that the script is written in.  The default,
+	if not specified, is <literal>jython</literal>.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+</section> <!-- spec.listener-binding -->
+
+
 <section id="spec.page-specification">
 	<title><sgmltag class="starttag">page-specification</sgmltag> element</title>
 
@@ -1237,9 +1326,10 @@ Appears in: <emphasis>many</emphasis>
 
 <para>
 The <sgmltag class="starttag">property</sgmltag> element is used to store meta-data
-about some other element (it is contained within).  Tapestr ignores this meta-data
-Any number of name/value pairs may be stored.  The value is the static text the <sgmltag class="starttag">property</sgmltag>
-tag wraps around.
+about some other element (it is contained within).  Tapestry ignores this meta-data
+Any number of name/value pairs may be stored.  The value is provided with
+the <varname>value</varname> attribute, or the 
+character data for the <sgmltag class="starttag">property</sgmltag> element.
 </para>
 
 <figure>
