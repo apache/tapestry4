@@ -62,6 +62,19 @@ public class SpecFactory
         return new ApplicationSpecification();
     }
 
+
+    /**
+     *  Creates an instance of {@link LibrarySpecification}.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public LibrarySpecification createLibrarySpecification()
+    {
+        return new LibrarySpecification();
+    }
+    
     /**
      * Creates a concrete instance of {@link AssetSpecification}.
      **/
@@ -105,24 +118,6 @@ public class SpecFactory
     public ContainedComponent createContainedComponent()
     {
         return new ContainedComponent();
-    }
-
-    /**
-     * Creates a concrete instance of {@link PageSpecification}.
-     **/
-
-    public PageSpecification createPageSpecification()
-    {
-        return new PageSpecification();
-    }
-
-    /**
-     * Creates a concrete instance of {@link PageSpecification}.
-     **/
-
-    public PageSpecification createPageSpecification(String specificationPath)
-    {
-        return new PageSpecification(specificationPath);
     }
 
     /**
