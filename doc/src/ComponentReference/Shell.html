@@ -161,6 +161,21 @@
     various types.
     </td>
 	</tr>
+  <tr>
+    <td>renderContentType</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>true</td>
+		<td>Determines whether the component will render an http-equiv element with 
+		the Content Type of this response. It is necessary to render this element to ensure
+		that the browser will encode the POST parameters using the encoding
+		defined in the Content Type. Otherwise the browsers may use the default encoding 
+		of the client machine, which cannot be known by the server.
+		If you set this parameter to false, please make sure that you can decode 
+		the HTTP request parameters correctly.</td>
+	</tr>
+	
 	</table>
             <P>Body: <STRONG>rendered<BR></STRONG>Informal parameters: 
             <STRONG>forbidden</STRONG>		
