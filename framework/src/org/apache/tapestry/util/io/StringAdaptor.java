@@ -76,25 +76,8 @@ class StringAdaptor implements ISqueezeAdaptor
     public String squeeze(DataSqueezer squeezer, Object data)
     {
         String string = (String) data;
-        char ch;
 
-        // An empty String is encoded as an 'S', that is, a String with
-        // a length of zero.
-
-        if (string.length() == 0)
-            return PREFIX;
-
-        ch = string.charAt(0);
-
-        // If the first character of the string is claimed
-        // this or some other adaptor, then prefix it
-        // with this adaptor's prefix.
-
-        if (ch == PREFIX_CH || squeezer.isPrefixRegistered(ch))
-            return PREFIX + string;
-        else
-            // Otherwise, the string is OK as is.
-            return string;
+        return PREFIX + string;
     }
 
     /**

@@ -310,4 +310,33 @@ public interface IRequestCycle
      **/
     
     public Object[] getServiceParameters();
+    
+    
+    /**
+     *  Sets the page to be rendered.  This is called by a component
+     *  during the rewind phase to specify an alternate page to render
+     *  during the response phase.
+     * 
+     *  The validate() method of the page is invoked first and if it throws
+     *  a PageRedirectException, the page provided by the exception is set instead.
+	 *
+	 *  @since 3.0
+     *  
+     **/
+
+    public void activate(String name);
+
+    /**
+     *  Sets the page to be rendered.  This is called by a component
+     *  during the rewind phase to specify an alternate page to render
+     *  during the response phase.
+     * 
+     *  The validate() method of the page is invoked first and if it throws
+     *  a PageRedirectException, the page provided by the exception is set instead.
+     *
+     *  @since 3.0
+     *  
+	 */
+	public void activate(IPage page);
+    
 }

@@ -72,6 +72,7 @@ import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.param.ParameterManager;
 import org.apache.tapestry.spec.BaseLocatable;
@@ -301,6 +302,9 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
         if (this instanceof PageRenderListener)
             _page.addPageRenderListener((PageRenderListener) this);
+
+        if (this instanceof PageValidateListener)
+            _page.addPageValidateListener((PageValidateListener) this);
 
         finishLoad();
     }
