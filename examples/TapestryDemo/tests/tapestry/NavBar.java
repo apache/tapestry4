@@ -42,22 +42,19 @@ import java.util.*;
 public class NavBar extends BaseComponent
 {
 	private static final String[] pageNames =
-    { "home", "empty", "survey", "debug", "serialization", "history", "credits" };
+    { "Home", "empty", "survey", "debug", "serialization", "history", "credits" };
 
 	private static final Hashtable displayNames = new Hashtable(5);
 
 	static
 	{
-		displayNames.put("home", "Home");
+		displayNames.put("Home", "Home");
 		displayNames.put("empty", "Empty");
 		displayNames.put("survey", "Survey");
 		displayNames.put("debug", "Debug");
 		displayNames.put("serialization", "Serialization Test");
 		displayNames.put("credits", "Credits");
 		displayNames.put("history", "History");
-
-		displayNames.put("db", "Database");
-		displayNames.put("logging", "Logging");
 	}
 
 	private String currentPageName;
