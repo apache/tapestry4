@@ -35,7 +35,7 @@ public interface DataSqueezer
     public String squeeze(Object data) throws IOException;
 
     /**
-     * A convience; invokes {@link #squeeze(Object)}for each element in the
+     * A convenience; invokes {@link #squeeze(Object)}for each element in the
      * data array. If data is null, returns null.
      */
     public String[] squeeze(Object[] data) throws IOException;
@@ -43,12 +43,12 @@ public interface DataSqueezer
     /**
      * Unsqueezes the string. Note that in a special case, where the first
      * character of the string is not a recognized prefix, it is assumed that
-     * the string is simply a string, and return with no change.
+     * the string is simply a string, and returned with no change.
      */
     public Object unsqueeze(String string) throws IOException;
 
     /**
-     * Convienience method for unsqueezing many strings (back into objects).
+     * Convenience method for unsqueezing many strings (back into objects).
      * <p>
      * If strings is null, returns null.
      */
