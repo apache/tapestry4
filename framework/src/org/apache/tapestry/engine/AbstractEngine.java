@@ -882,16 +882,18 @@ public abstract class AbstractEngine
         {
             try
             {
-                String serviceName = extractServiceName(context);
-
-                if (StringUtils.isEmpty(serviceName))
-                    serviceName = Tapestry.HOME_SERVICE;
-
-                // Must have a service to create the request cycle.
-                // Must have a request cycle to report an exception.
-
+                String serviceName;
+                
                 try
                 {
+                    serviceName = extractServiceName(context);
+
+                    if (StringUtils.isEmpty(serviceName))
+                        serviceName = Tapestry.HOME_SERVICE;
+
+                    // Must have a service to create the request cycle.
+                    // Must have a request cycle to report an exception.
+
                     service = getService(serviceName);
                 }
                 catch (Exception ex)
@@ -1439,6 +1441,11 @@ public abstract class AbstractEngine
             {
                 throw new IllegalArgumentException(
                     Tapestry.format("illegal-encoding", encoding));
+            }
+            catch (NoSuchMethodError e)
+            {
+                // Servlet API 2.2 compatibility
+                // Behave okay if the setCharacterEncoding() method is unavailable
             }
         }
     }

@@ -184,11 +184,6 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
         // The encoding that will be used to decode the string parameters
         // It should NOT be null at this point
         String encoding = request.getCharacterEncoding();
-        if (encoding == null)
-        {
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("DefaultMultipartDecoder.encoding-not-set"));
-        }
 
         // DiskFileUpload is not quite threadsafe, so we create a new instance
         // for each request.
@@ -219,14 +214,20 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
                 try
                 {
                     String name = uploadItem.getFieldName();
+                    String value;
+                    if (encoding == null)
+                        value = uploadItem.getString();
+                    else
+                        value = uploadItem.getString(encoding);
+                        
                     ValuePart valuePart = (ValuePart) partMap.get(name);
                     if (valuePart != null)
                     {
-                        valuePart.add(uploadItem.getString(encoding));
+                        valuePart.add(value);
                     }
                     else
                     {
-                        valuePart = new ValuePart(uploadItem.getString(encoding));
+                        valuePart = new ValuePart(value);
                         partMap.put(name, valuePart);
                     }
                 }

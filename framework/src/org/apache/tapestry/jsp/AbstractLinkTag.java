@@ -108,8 +108,7 @@ public abstract class AbstractLinkTag extends AbstractTapestryTag
         catch (IOException ex)
         {
             throw new JspException(
-                Tapestry.format("AbstractLinkTag.io-exception", ex.getMessage()),
-                ex);
+                Tapestry.format("AbstractLinkTag.io-exception", ex.getMessage()));
         }
 
         return EVAL_PAGE;
