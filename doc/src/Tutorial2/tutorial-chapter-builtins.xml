@@ -1,6 +1,13 @@
 <chapter id="built-ins">
 	<title>Using the Built-In Components</title>
-  	
+
+    <para>
+        This section will provide examples on a couple of basis non-visual built in components,
+        that are very, very useful.  The &Foreach; component (as you might have guessed from its name)
+        is used to iterator over a number of element. The other components are used to respond to
+        various user events, whether via a link or through a form button.
+    </para>
+
   	<section id="builtin-foreach">
   		<title>Foreach</title>
 		<para>The &Foreach; component can be used to iterate over some collection of items. 
@@ -163,7 +170,7 @@ public Person getPerson() {
   			<listitem>DirectLink</listitem>
   		</itemizedlist>
   		
-  		<para>&GeneriLink; is used to construct a simple link to some resource. 
+  		<para>&GenericLink; is used to construct a simple link to some resource.
   		The resource is not Tapestry specific (i.e: the link can point to anything). GenericLink will render 
   		it's body, and so an HTML template along these lines:</para>
 

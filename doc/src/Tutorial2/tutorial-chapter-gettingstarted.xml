@@ -226,7 +226,7 @@
 Welcome to your first &lt;b&gt;Tapestry Application&lt;/b&gt;
 &lt;p&gt;
 &lt;h1&gt;
-	&lt;span jwcid="hellotext"/&gt;
+	&lt;span jwcid="insertSomeText"&gt;This text will be replaced by Tapesty&lt;/span&gt;
 &lt;/h1&gt;
 &lt;/body&gt;
 &lt;/html&gt;
@@ -237,11 +237,30 @@ Welcome to your first &lt;b&gt;Tapestry Application&lt;/b&gt;
 				You will notice that the page is completely normal, apart from the single
 				<emphasis>span </emphasis> tag, which contains an attribute with name
 				<varname>jwcid</varname>.  This is how Tapestry inserts dynamic data
-				into a page. In this example, Tapestry will completely replace the <emphasis>span </emphasis>
-				tag, including whatever it wraps when it renders the page.
+				into a page. In this example, Tapestry will completely replace 
+				the <emphasis>span </emphasis>
+				tag, including whatever it wraps when it renders the page -
+				that is, you will not see the text <emphasis>This text will be
+				replaced by Tapestry</emphasis>, but rather the value that is
+				returned by the <varname>getSomeText()</varname> method.
 				<footnote>
 					<para>The tag does not have to be a span tag. Don't worry about it now, it will be covered later.</para>
 				</footnote>
+			</para>
+			<para>
+				You may be wondering how Tapestry calls the <varname>getSomeText()</varname>
+				method. In the specification above, we have used an &OGNL; binding.
+				This type of binding uses an expression, which can be read like
+				a JavaBean name. For the above, it means that the expression "someText"
+				relates to the <varname>getSomeText()</varname> and <varname>setSomeText()</varname>
+				method respectively. In the case of the &Insert; component, only 
+				<varname>getSomeText()</varname> is required, so &Insert; will not try to
+				change the value.   Also note that the example here is very simple, 
+				and returns a constant String. There is no reason why the value could
+				not come from a Database, or some other dynamic source. There is no
+				restriction on what you can do in the method.  Finally, if you do change
+                the code to return the value a different way, you don't need to change
+                the specification or HTML template.
 			</para>
 		</section>
 		<section id="simplest-app-thejavaobject">
@@ -289,14 +308,28 @@ public class Home extends BasePage
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
 
 &lt;page-specification class="tutorial.hello.Home"&gt;
-	&lt;component id="hellotext" type="Insert"&gt;
+	&lt;component id="insertSomeText" type="Insert"&gt;
 		&lt;binding name="value" expression="someText"/&gt;
 	&lt;/component&gt;
 &lt;/page-specification&gt;
 </programlisting>
       </figure>
+      		<para>
+      		Note that Tapestry Components are different from JSP tags.
+      		Specifically, a Tapestry component takes typed values (the
+      		type is defined in the property binding part of the specification,
+      		at the top of the specification file).  Secondly, the values of a
+      		component can be read only, or read/write. In the later case, the 
+      		component Java code is able to change the value, which causes whatever
+      		was <emphasis>bound</emphasis> to that property to be changed.
+      		Lastly, components can be nested. 
+      		A component may itself be made up of many other 
+      		components (which themselves might be made up of other components, and so on),
+      		and can bind the properties of those contained 
+      		components to properties of itself.
+      		</para>
 			<para>
-				Thats it!  You can execute <emphasis>ant run</emphasis> to both
+				Whew! Thats it!  You can execute <emphasis>ant run</emphasis> to both
 				compile, package and run the Web Application. Go to
 	    <ulink url="http://localhost:8081/learn-tapestry/hello">
 	      <filename>http://localhost:8081/learn-tapestry/hello</filename>
@@ -387,7 +420,7 @@ public class Home extends BasePage
 				<varname>jwcid</varname> attributes on elements.
 			</para>
 		   <para>Tapestry doesn't really care what HTML tag you use, as long as you balance
-			 	the tag correctly.  In fact, it ignores the tag entirely:  the <varname>hellotext</varname>
+			 	the tag correctly.  In fact, it ignores the tag entirely:  the <varname>insertSomeText</varname>
 				component above could just has easily been identified with a &lt;text&gt; tag,
 				or any other tag for that matter.  Tapestry is only interested in the <emphasis>structure</emphasis>
 				of the HTML template.  The fact that you can use meaningful tags is a convienience;
@@ -410,14 +443,14 @@ public class Home extends BasePage
 				components by name. Component names are defined in the page specification.
 			</para>
 			<para>
-				The component definition includes both name, type and some bound properties.
+				The component specification includes both name, type and some bound properties.
 				The properties define where the component gets its data from, and what other
 				objects it interacts with.
 				For example, in the 'Hello World' application above, a component
-				with name <varname>hellotext</varname> was defined to be an &Insert;,
+				with name <varname>insertSomeText</varname> was defined to be an &Insert;,
 				and was bound to the <varname>someText</varname> property of the
 				page object. In this example, there is no real interaction, as the &Insert;
-				component does not provide a way for the user to interact with it.
+				component does not provide any links for the user to click, nor forms to subnmit.
 			</para>
 		</section>
 		<section id="part-logic">

@@ -42,10 +42,10 @@
 &lt;/head&gt;
 &lt;body&gt;
 
-&lt;h1&gt;The firt page&lt;/h1&gt;
+&lt;h1&gt;The first page&lt;/h1&gt;
 The link shown will take you to page two of this application.
 
-Click &lt;span jwcid="page2"&gt;here&lt;/span&gt; for the second page!
+Click &lt;a href="#" jwcid="page2"&gt;here&lt;/a&gt; for the second page!
 
 &lt;/body&gt;
 &lt;/html&gt;
@@ -77,11 +77,14 @@ Click &lt;span jwcid="page2"&gt;here&lt;/span&gt; for the second page!
 				</figure>
 				</para>
 				<para>
-				Here we specify that <varname>page2</varname> is a &pageLink; component. The example here
+				Here we specify that <varname>page2</varname> is a &PageLink; component. The example here
 				supplies the name of the destination page, which is defined in the application specification.
-				Note that in this case, the PageLink component outputs the content inside the %lt;span&gt;. 
+				Note that in this case, the &PageLink; component outputs the content inside the %lt;a&gt;.
 				Components that do this are said to <emphasis>render</emphasis> their body sections.
-				tag.
+				tag. Using the correct element tag is useful for previewing the template in a browser,
+                    or some other HTML based editing tool - Tapestry will discard any attribtues that
+                    are problematic.   Another example (which you have already seen) is the &Insert;
+                    component, which will discard any content within its body.
 				</para>
 				<para>
 				If a page has no dynamic functionality, it does not require it's own Java object.

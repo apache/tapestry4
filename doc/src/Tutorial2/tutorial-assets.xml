@@ -1,0 +1,145 @@
+<chapter id="assets">
+    <title>Assets</title>
+    <para>
+        This section will introduce you to the way in which Tapestry allows applications to manage
+        images, resources, external stylesheets and generally anything else non-Java-code-related that you might want to
+        make available within your application.  The section provides examples of how to use a simple
+        context asset (you'll learn what this is in just a moment) within a page.
+    </para>
+    <para>
+        In general, the management of assets is often related to the localization of an application. Further information
+        about localization is found in
+        <xref linkend="localization"/>.
+    </para>
+    <section id="assets-what">
+        <title>What is an Asset?</title>
+        <para>
+            In Tapestry, external resources (resources not managed by Java code) are called Assets.
+            Assets come in three flavors:  external, context and private.
+        </para>
+        <para>
+            <emphasis>External</emphasis> assets live at an arbitrary URL.
+            <emphasis>Context</emphasis> assets use a URL within the
+            servlet context hosting the Tapestry application, and are deployed
+            within the same Web Application Archive (WAR) as the application.
+            <emphasis> Private</emphasis> assets come from the Java classpath and are
+            resources not normally visible to the web server.
+        </para>
+        <para>
+            Private assets allow for easy deployment because the assets are
+            packaged with the HTML templates and Java code of the application,
+            inside a Java Archive (JAR) file.
+            Private assets support re-usability; a re-usable component may be
+            packaged with supporting assets (typically, image files) and used in any
+            Tapestry application without change, and without having to locate, extract or
+            otherwise fiddle with those assets.
+        </para>
+        <para>
+            The Tapestry framework provides two ways of exposing the assets to the client web browser.
+        </para>
+        <para>
+            First, it provides a service that will access the asset dynamically.
+            The URL encodes the application servlet and the resource to download,
+            and Tapestry framework code will pump the bytes down to the client web browser.
+            This is the default behavior (and is most useful during development).
+        </para>
+        <para>
+            The second method involves copying the asset out to a directory visible
+            to the web server, and creating a URL for it in its final location.
+            This requires some extra configuration of the application.
+            This method also has some implications when deploying new versions of the web application. These
+            implications are not covered here (see the developers guide).
+        </para>
+    </section>
+    <section id="assets-definition">
+        <title>Defining and Using Assets</title>
+        <para>
+            This example code will show the use of a context asset.  Assets of this type
+            are visible by the browser, through some well defined URL. That is, they
+            are effectively public.  The example code for this section can be found in
+            <filename>c:\Tapestry-x.x\examples\Tutorial\src\tutorial\assets</filename>.
+        </para>
+        <para>
+            Our goal in this example is to show a simple page, with a heading. The page itself
+            is completely useless, since it has no content (apart from the heading) and no
+            behavior (you can't do anything).  Buy hey. It's an example, right? Good!
+        </para>
+        <para>
+            As usual, we'll start with the HTML template:
+        </para>
+        <figure>
+            <title>Asset Example - HTML Template</title>
+            <programlisting>
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Assets Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;table cellpadding="8" valign="middle"&gt;
+        &lt;tr&gt;
+         &lt;td&gt;
+            &lt;a href="http://tapestry.sourceforge.net/"&gt;
+                &lt;img jwcid="poweredbyImage" alt="View Tapestry Home"/&gt;
+            &lt;/a&gt;
+         &lt;/td&gt;
+         &lt;td&gt;
+              &lt;font color="navy" size="+2"&gt;&lt;b&gt;&lt;i&gt;Powered by Tapestry&lt;/i&gt;&lt;/b&gt;&lt;/font&gt;
+         &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+            </programlisting>
+        </figure>
+
+        <para>
+            And now, the page specification:
+        </para>
+
+        <figure>
+            <title>Asset Example - Specification</title>
+            <programlisting>
+&lt;page-specification class="net.sf.tapestry.html.BasePage"&gt;
+
+  &lt;component id="poweredbyImage" type="Image"&gt;
+    &lt;binding name="image" expression="assets.imageAsset"/&gt;
+  &lt;/component&gt;
+
+  &lt;context-asset name="imageAsset" path="/images/poweredby.jpg"/&gt;
+
+&lt;/page-specification&gt;
+            </programlisting>
+        </figure>
+
+        <para>
+            OK - there we have it. There is no Java object, because there is no
+            functionality nor property bindings that require one (so we can just
+            use the provided <emphasis>net.sf.tapestry.html.BasePage</emphasis>.
+        </para>
+        <para>
+            The &Image; component itself requires only a single parameter, named
+            <varname>image</varname>. This should be some kind of asset.  Tapestry allows you
+            to define fixed assets in the specification, which is what we have done here.
+            The context-asset declaration gives a name to a relative URL. That is,
+            the real name will end up being encoded into the HTML
+            as <varname>/tutorial/images/poweredby.jpg</varname>. As you can see,
+            Tapestry takes care of adding the context specific part to the front
+            of the URL, so that you don't have to.
+        </para>
+        <para>
+            If you have compiled the tutorial code and have a server running, you should be able
+            to click on the assets example and see a screen similar to this:
+        </para>
+
+        <figure>
+            <title>Context Asset Demonstration</title>
+            <mediaobject>
+               <imageobject>
+                  <imagedata format="JPEG" fileref="images/assets-example.jpg"/>
+               </imageobject>
+            </mediaobject>
+        </figure>
+    </section>
+</chapter>

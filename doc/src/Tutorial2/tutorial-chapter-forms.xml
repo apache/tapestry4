@@ -28,8 +28,17 @@
 		<figure>
 			<title>The Application Specification</title>
 			<programlisting>
-			<para><emphasis>INSERT APP SPEC HERE</emphasis></para>
-			</programlisting>
+&lt;application name="Forms Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine"&gt;
+  &lt;property name="net.sf.tapestry.visit-class"&gt;tutorial.forms.VisitorState&lt;/property&gt;
+
+  &lt;page name="Home" specification-path="/tutorial/forms/Home.page"/&gt;
+  &lt;page name="Success" specification-path="/tutorial/forms/Success.page"/&gt;
+  &lt;page name="Part1" specification-path="/tutorial/forms/Part1.page"/&gt;
+  &lt;page name="Part2" specification-path="/tutorial/forms/Part2.page"/&gt;
+  &lt;page name="Part3" specification-path="/tutorial/forms/Part3.page"/&gt;
+  &lt;page name="Part4" specification-path="/tutorial/forms/Part4.page"/&gt;
+&lt;/application&gt;
+            </programlisting>
 		</figure>
 		
 		<para>The Home page of this application provides some description of what the application is,
@@ -114,7 +123,7 @@ Enter some fields on this page, and press the submit button.
 			</programlisting>				
 		</figure>
 
-		<para>An &InputText; component allows you to show simple &lt;input&gt; HTML tags, and have the value bound 
+		<para>An &TextField; component allows you to show simple &lt;input&gt; HTML tags, and have the value bound 
 		to some property of an object. As we have have already seen, Tapestry is capable of getting the value which 
 		will appear in the form from almost anywhere. In these examples, we will create a Visit object for the application 
 		and bind the form's values to properties on that object. There is however nothing from stopping us using OGNL to 
@@ -217,7 +226,7 @@ public class Part1 extends BasePage {
 		input fields. A StringValidator will accept any string type value. In this example, the only real validation
 		will be that a value for every field is that the value is <emphasis>required</emphasis>.  
 		The example will also show some new components such 
-		as &Delegator;and &Body; which are required in order to support validation. Here is the page specification:</para>
+		as &Delegator; and &Body; which are required in order to support validation. Here is the page specification:</para>
 
 		<figure>
 			<title>Component Specification, with StringValidator</title>
@@ -281,7 +290,7 @@ public class Part1 extends BasePage {
 		all the time, and client side validation is possible if the user agent supports JavaScript.</para>
 	
 		<para>Finally, in order to show an error with validation on the page, we have added an
-		<varname>errors</varname> component, which simply shows the first error.  The &Delegate; 
+		<varname>errors</varname> component, which simply shows the first error.  The &Delegator; 
 		component is an easy way to pass the responsibility for rendering to some other object. 
 		As the first error of a validator implements &IRender;, we can use the &Delegator; component to 
 		include its output into the page during the rendering process.  
@@ -481,7 +490,7 @@ public class Part2 extends BasePage {
 			
 			<para>
 			Tapestry contains more validators that those shown here, and of course it is not that hard to write
-			your own.  Also, there are specific components that help in this regard. For example, the &DateField;
+			your own.  Also, there are specific components that help in this regard. For example, the <varname>DateField</varname>
 			component sets it's own validator, saving you the time in having to declare and attach it yourself.
 			</para>
 		</section>
@@ -595,7 +604,7 @@ public class Part2 extends BasePage {
  			</programlisting>
 		</figure>
 
-		<para>The Java code itself requires no modification, because the &DatePicker; component uses the
+		<para>The Java code itself requires no modification, because the <varname>DatePicker</varname> component uses the
 		same data type as our previous &ValidField; did.  So, we have made it easier for the user to enter date values, by providing a date picker 
 		component. We can also restrict the possible values for favorite colour, using another built in Tapestry
 		component.

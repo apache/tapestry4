@@ -1,0 +1,255 @@
+  <chapter id="pages">
+      <title>Pages</title>
+      <section id="required-pages">
+          <title>Pages in a Tapestry Application</title>
+          <para>Tapestry applications have a number of pre-defined pages.
+              Of of these you have already seen, is known as the <emphasis>Home</emphasis>
+              page - and is the first page of an application.  Tapestry also has
+              pages which are shown when some Exception occurs, when a request
+              results in a Stale Link <footnote><para>A stale link in Tapestry is defined to
+              be the case where the rewind of some component of page <emphasis>within a form</emphasis>
+              detects that the component content is now different from the previous
+              render.  At the time of writting, this was done by counting the number
+              of components during the render and storing this in a hidden field.
+              Then, when the user visits the page again, part of the rewind process
+              is to count the number of components rendered, and see if it matches
+              the value in the hidden field. If not, then a <varname>StaleLinkException</varname>
+              is thrown, which will end up showing the <varname>StaleLink</varname> page.
+              </para></footnote>
+
+              , or Tapestry detects that the session is now stale.
+          </para>
+
+          <para>
+              The following sections will explain how to use the pages in an application,
+              and where applicable provide some "best practices" and tips for debugging.
+              The tutorial example code provides a page which allows you to force the use
+              of these pages, or insert your own. The example is contained in
+              <filename>c:\Tapestry-x.x\examples\Tutorial\src\tutorial\pagetypes</filename>
+          </para>
+          <note>
+              <para>
+                  Note that all &DirectLink; components within this particular tutorial
+                  specify the parameter <varname>stateful</varname> as <varname>false</varname>.
+                  This is required because we do not have a defined Visit object, and in any
+                  case we don't want any state in this example. If you do not do this, then
+                  you will get <varname>StaleSessionException</varname>'s for every request.
+              </para>
+          </note>
+      </section>
+
+      <section id="pages-introduction">
+          <title>What comes with Tapestry?</title>
+          <section id="pages-intro-home">
+              <title>Home</title>
+              <para>
+                  There is not very much to say about the <varname>Home</varname> page, since
+                  you must have one for any Tapestry application. However; it is worth nothing
+                  that if you know your site or application is going to have a high number
+                  of users, that you should ensure that the <varname>Visit</varname> object
+                  is not constructed if it is not required. Note that this strategy will only
+                  provide benefit if most of the information your users require is available
+                  from pages where an HTTP session is not required.
+              </para>
+          </section>
+          <section id="pages-intro-exception">
+              <title>Exception</title>
+              <para>
+                  This page is shown whenever an an application exception occurs that is
+                  cannot be handled by Tapestry itself. The default page in Taepstry is
+                  useful for developers, but may not quite be what you want you're users so
+                  see (hence this tutorial will show you how to define your own page).
+                  Part of the default page is shown below:
+              </para>
+
+              <figure>
+                <title>Example Standard Exception Page</title>
+                <mediaobject>
+                   <imageobject>
+                      <imagedata format="JPEG" fileref="images/pages-exception.jpg"/>
+                   </imageobject>
+                </mediaobject>
+              </figure>
+
+              <para>
+                  The page contains the stack trace, as well as information related to the
+                  state of the container and Tapestry at the time the exception occured.
+              </para>
+          </section>
+          <section id="pages-intro-stalelink">
+              <title>StaleLink</title>
+              <para>
+                  <varname>StaleLinkExceptions</varname> are the result of some internal
+                  checking within Tapestry, which attempts to ensure that a user does not
+                  visit a page later which has changed since the last time they were there.
+                  The primary reason is to protect against a non-sensical operation by the
+                  user.
+              </para>
+              <figure>
+                <title>Example Stale Link</title>
+                <mediaobject>
+                   <imageobject>
+                      <imagedata format="JPEG" fileref="images/pages-stalelink.jpg"/>
+                   </imageobject>
+                </mediaobject>
+              </figure>
+
+          </section>
+          <section id="pages-intro-stalesession">
+              <title>StaleSession</title>
+              <para>
+                  This page informs the user that the HTTP session has expired on the server.
+                  You might choose to override this an provide a way for the user to re-login
+                  (if you application or site supports that) or restart their session in
+                  some other manner.   The default page provides a simple explanation of what
+                  has happended, and allows the user to restart their session.
+              </para>
+              <figure>
+                <title>Example Stale Session</title>
+                <mediaobject>
+                   <imageobject>
+                      <imagedata format="JPEG" fileref="images/pages-stalesession.jpg"/>
+                   </imageobject>
+                </mediaobject>
+              </figure>
+          </section>
+      </section>
+      <section id="pages-example">
+          <title>Changing the exception page</title>
+          <para>
+              This section will provide an example of changing the exception page.
+              The example itself shows a simple error header, some basic user-friendly
+              text and the text of the error. The stack trace is not shown on the form. <footnote>
+                  This sounds like an excercise for the reader :-)
+              </footnote>
+          </para>
+
+          <para>
+              In order to replace the <emphasis>Exception</emphasis> page, you need only
+              provide an alternative implementation within the Application specification file.
+              An example of this is provded below:
+          </para>
+          <figure>
+              <title>Application Specification, with custom Exception page</title>
+              <programlisting>
+&lt;application name="PageTypes Demo" engine-class="tutorial.pagetypes.PageTypesEngine"&gt;
+  &lt;page name="Home" specification-path="/tutorial/pagetypes/Home.page"/&gt;
+  &lt;page name="Exception" specification-path="/tutorial/pagetypes/NewException.page"/&gt;
+&lt;/application&gt;
+              </programlisting>
+          </figure>
+          <note>
+              Note that in the above example, we are providing a new Page for <emphasis>Exception</emphasis>.
+              You will note that in the actual code supplied for this tutorial, we use a page
+              called <emphasis>NewException</emphasis>. This is because this particular example
+              is setup to show both the normal exception, and a new exception page. Normally you
+              just need provide a new Exception page.
+          </note>
+          <para>
+              Now we must define this new page. In the case of an exception, tapestry will set
+              a binding on the page called <varname>exception</varname>. We provide this on the
+              Java object, which you will see below.
+              We'll begin with the template. We will create one that is supposed to be "somewhat less
+              intimidating" to new users. Of course, given further time, you can make something
+              much nicer than this.
+          </para>
+          <figure>
+              <title>Custom Exception Template</title>
+              <programlisting>
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;An Error has occurred with the Application&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;center&gt;
+    &lt;h1&gt;We have 'issues' ... &lt;/h1&gt;
+
+    &lt;h2&gt;&lt;font color="red"&gt;&lt;span jwcid="errorMessage"/&gt;&lt;/font&gt;&lt;/h2&gt;
+
+    &lt;p&gt;
+    We don't think we'll be doing that any time soon, since our system
+    appears to have some kind of problem.  We would appreciate it if you
+    could &lt;a href="mailto:errors@neverneverland.net"&gt;email us&lt;/a&gt; a copy
+    of this page.
+    &lt;/p&gt;
+&lt;/center&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+              </programlisting>
+          </figure>
+          <para>
+              As you can see, it's very basic - but it is enough for this demonstration.
+              We need only a very simple page specification (note that the XML header part
+              of this specification has not been included, to keep the example smaller):
+          </para>
+          <figure>
+              <title>Custom Exception Page Specification</title>
+              <programlisting>
+&lt;page-specification class="tutorial.pagetypes.NewException"&gt;
+    &lt;component id="errorMessage" type="InsertText"&gt;
+        &lt;binding name="value" expression="exception.message"/&gt;
+    &lt;/component&gt;
+&lt;/page-specification&gt;
+              </programlisting>
+          </figure>
+          <para>
+              Finally, we require a Java object for the page which holds the binding,
+              and provides a way to access the exception:
+          </para>
+          <figure>
+              <title>Custom Exception Page Specification</title>
+              <programlisting>
+  package tutorial.pagetypes;
+
+  import net.sf.tapestry.IBinding;
+  import net.sf.tapestry.html.BasePage;
+
+  public class NewException extends BasePage {
+      public Throwable getException() {
+          return exception;
+      }
+
+      public void setException(Throwable exception) {
+          this.exception = exception;
+      }
+
+      public IBinding getExceptionBinding() {
+          return exceptionBinding;
+      }
+
+      public void setExceptionBinding(IBinding exceptionBinding) {
+          this.exceptionBinding = exceptionBinding;
+      }
+
+      private IBinding exceptionBinding;
+      private Throwable exception;
+  }
+              </programlisting>
+          </figure>
+          <para>
+              That's it!    In the example code, you will see there is an &IEngine; implementation,
+              as well as two types of <emphasis>Exception</emphasis> page. The first exception link
+              will show you a standard page. The second exception link will show you the page that
+              has been defined in this section.  Normally Tapestry will allow you to define only a single
+              exception page, which is why we needed to override the engine implementation.  For this
+              example, we show the <emphasis>NewException</emphasis> page if the exception being
+              thrown is of type <varname>MyException</varname>, and the standard page otherwise.
+          </para>
+          <para>
+              So in summary, we need accessors on the Java object to hold the actual exception instance.
+              The rest is entirely up to you - e.g: how you want the exception page to look, etc. Tapestry
+              will take care of the rest!  Assuming you have compiled the tutorial code and started a
+              server, you should be able to see this example page:
+          </para>
+          <figure>
+            <title>Example Custom Exception Page</title>
+            <mediaobject>
+               <imageobject>
+                  <imagedata format="JPEG" fileref="images/pages-newexception.jpg"/>
+               </imageobject>
+            </mediaobject>
+          </figure>
+      </section>
+  </chapter>

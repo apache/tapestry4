@@ -1,0 +1,144 @@
+
+
+<chapter id="localization">
+    <title>Localization</title>
+    <para>
+One of the most powerful and useful features of the Tapestry framework is the way in which it
+assists with localization of a web application.  This is normally an ugly area in web applications,
+with tremendous amounts of ad-hoc coding necessary.
+</para>
+    <para>
+Because Tapestry does such a strong job of seperating the presentation of a component (its
+HTML template) from its control logic (its specification and Java class) it becomes easy for it to
+perform localization automatically.  It's as simple as providing additional localized HTML
+templates for the component, and letting the framework select the proper one.
+</para>
+    <para>
+However, the static text of an application, provided by the HTML templates, is not all.
+</para>
+    <para>
+Applications also have assets (images, stylesheets and the like) that must also be localized: that
+fancy button labeled "Search" is fine for your English clients, but your
+French clients will require
+a similar button labeled "Recherche".
+</para>
+    <para>
+Again, the framework assists, because it can look for localized versions of the assets as it runs.
+</para>
+    <para>
+The locale application demostrates this.  It is a very simply application that demonstrates changing
+the locale of a running application
+	<footnote>
+        <para>
+		All the translations were performed using
+		<ulink url="http://world.altavista.com/">Babelfish</ulink>, and are probably quite laughable to
+		someone who actually speaks the alternate
+		languages.
+		</para>
+      </footnote>
+    </para>
+    <para>
+A demonstration of localization is built into the Workbench, under the <acronym>L10N</acronym>
+      <footnote>
+        <para>
+The "10" refers to the number of letters between 'l' and 'n' in the word 'localization'
+</para>
+      </footnote> tab.
+The page allows the user to select a new language for the application:
+</para>
+    <figure>
+      <title>L10N Page (English)</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/localize-home-english.jpg" format="JPEG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+Selecting "German" from the list and clicking the "Change" button brings you to a new page that
+acknowledges your selection:
+</para>
+    <figure>
+      <title>Locale Changed (German)</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/localize-changed-german.jpg" format="JPEG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+Clicking the button (it's labeled "Return" in German) returns you to the L10N page to
+select a new language:
+</para>
+    <figure>
+      <title>L10N Page (German)</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/localize-home-german.jpg" format="JPEG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+The neat thing here is that the <classname>L10N</classname> page has been localized into
+German as well; it shows
+equivalent German text, the options in the popup list are in German, and the "Change" button
+has been replaced with a German equivalent.
+</para>
+
+<section id="locale.template">
+	<title>Localization of HTML Templates</title>
+
+<para>
+Localization of HTML templates ia automatic.  When Tapestry reads a template, it looks for a localized version of it.
+In this example, in addition to the English language <filename>Localization.html</filename>, three additional files were created:
+<filename>Localization_de.html</filename>, <filename>Localization_fr.html</filename> and <filename>Localization_it.html</filename>.
+</para>
+
+<para>
+Tapestry tracks the locale for each user using either an HTTP Cookie, or the &HttpSession;.  It makes sure that all templates for all components
+on the page use the best available template; it does a standard search.
+</para>
+
+	</section>
+
+<section id="locale.assets">
+	<title>Localization of Assets</title>
+
+<para>
+In the L10N pages, there are images that are also localized.
+Tapestry has a hand in this as well.  As with HTML templates, Tapestry
+searches for matches based on the user's locale.
+
+</para>
+
+<para>
+Both context assets (assets that are part of the WAR) and private assets (assets that are stored in Java frameworks) can be localized.  This is demonstrated
+on the L10N page:  the "Change" button is a private asset; the "Back" button is a context asset.
+
+</para>
+
+</section>
+
+  <section id="locale.other-options">
+      <title>Other Options for Localization</title>
+      <para>
+In some cases, different localizations of the a component will be very similar, perhaps having only
+one or two small snippets of text that is different.
+In those cases, it may be easier on the developer to not localize the HTML template, but to
+replace the variant text with an
+&Insert; component.
+</para>
+      <para>
+The page can read a localized strings file (a <filename>.properties</filename> file) to get
+appropriate localized text.  This
+saves the bother of maintaining multiple HTML templates.  This is the same approach taken
+by the Apache Struts framework.
+</para>
+      <para>
+All components on a page share the single locale for the page, but each performs its own search
+for its HTML template.  This means that some components may not have to be localized, if they
+never contain any static HTML text.  This is sometimes the case for reusable components, even
+navigational borders.
+</para>
+    </section>
+</chapter>
