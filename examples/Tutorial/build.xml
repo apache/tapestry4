@@ -1,45 +1,40 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <project name="Tapestry Tutorial" default="install">
-  <!-- Directory in which compiled classes are placed -->
-  <property name="classes" value="classes"/>
-  <!-- Directory that contains library frameworks, and to
-       which the WAR is eventually installed -->
-  <property name="lib" value="../../lib"/>
-  <!-- Directory containing source code and package resources -->
-  <property name="src" value="src"/>
-  <!-- Path of the installed framework jar -->
-  <property name="tutorial.war" value="${lib}/Tutorial.war"/>
- 
-  <property file="../../framework/src/com/primix/tapestry/Version.properties"/>
 
+  <property name="root.dir" value="../.."/>
+  <property file="${root.dir}/config/Version.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
+  
   <path id="project.class.path">
-    <pathelement location="${lib}/ext/ejb.jar"/>
-    <pathelement location="${lib}/ext/javax.servlet.jar"/>
-    <pathelement location="${lib}/ext/log4j-core.jar"/>
-    <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
-    <pathelement location="${lib}/net.sf.tapestry.contrib_${framework.version}.jar"/>
+    <pathelement location="${lib.ext.dir}/ejb.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+    <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${framework.jar}"/>
+    <pathelement location="${contrib.jar}"/>
   </path>
   
   <target name="init">
-    <tstamp/>
-    <mkdir dir="${classes}"/>
+    <mkdir dir="${classes.dir}"/>
   </target>
+
   <target name="clean">
-    <delete dir="${classes}"/>
+    <delete dir="${classes.dir}"/>
   </target>
+
   <target name="compile" depends="init" description="Compile all classes in the framework.">
-    <javac srcdir="${src}" destdir="${classes}">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
   
   
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
-    <copy todir="${classes}">
-            <fileset dir="${src}">
+    <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}">
         <include name="**/*.jwc"/>
         <include name="**/*.html"/>
         <include name="**/*.gif"/>
@@ -50,6 +45,7 @@
         <exclude name="**/package.html"/>
       </fileset>
     </copy>
+    
     <war warfile="${tutorial.war}" webxml="WEB-INF/web.xml">
 
       <fileset dir=".">
@@ -58,7 +54,7 @@
         <!-- These are left around by Paint Shop Pro -->
         <exclude name="**/pspbrwse.jbf"/>
      </fileset>
-	  <classes dir="${classes}"/>         
+	  <classes dir="${classes.dir}"/>         
     </war>
   </target>
 
@@ -66,15 +62,15 @@
     <java classname="org.mortbay.jetty.Server" fork="true">
       <classpath>
       	<!-- Favor files in src over copies in classes -->
-      	<pathelement location="${src}"/>
+      	<pathelement location="${src.dir}"/>
       	
       	<!-- Temporary hack: pick up compiled files from Eclipse's compilation directory
       	     instead of our own: necessary for debugging.  -->
       	     
-        <pathelement location="../../bin"/>
+        <pathelement location="${root.dir}/bin"/>
         
         <path refid="project.class.path"/>
-        <pathelement location="${lib}/org.mortbay.jetty.jar"/>
+        <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
       </classpath>
       
       <arg value="jetty.xml"/>

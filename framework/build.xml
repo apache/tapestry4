@@ -2,48 +2,40 @@
 <!-- $Id$ -->
 <project name="Tapestry Framework" default="install">
 
- 
-  <!-- Directory in which compiled classes are placed -->
-  <property name="classes" value="classes"/>
-  <!-- Directory that contains library frameworks, and to
-       which the framework is eventually installed -->
-  <property name="lib" value="../lib"/>
-  <!-- Directory containing source code and package resources -->
-  <property name="src" value="src"/>
-  
-  <property file="${src}/com/primix/tapestry/Version.properties"/>
-  
-  <!-- Path of the installed framework jar -->
-  <property name="framework.jar" value="${lib}/com.primix.tapestry_${framework.version}.jar"/>
-  
-  <!-- Relative path to the Javadoc directory -->
-  <property name="javadoc.dir" value="../doc/api"/>
+  <property name="root.dir" value=".."/>
+  <property file="${root.dir}/config/Version.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
   
   <path id="project.class.path">
-    <pathelement location="${lib}/ext/ejb.jar"/>
-    <pathelement location="${lib}/ext/javax.servlet.jar"/>
-    <pathelement location="${lib}/ext/log4j-core.jar"/>
-    <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/ext/org.mortbay.jetty.jar"/>
+    <pathelement location="${lib.ext.dir}/ejb.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+    <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
   </path>
   
   <target name="init">
-    <tstamp/>
-    <mkdir dir="${classes}"/>
+    <mkdir dir="${classes.dir}"/>
   </target>
+  
   <target name="clean">
-    <delete dir="${classes}"/>
+    <delete dir="${classes.dir}"/>
   </target>
+  
   <target name="compile" depends="init" description="Compile all classes in the framework.">
-    <javac srcdir="${src}" destdir="${classes}">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
+  
   <target name="install" depends="compile" description="Compile all classes and build the installed JAR including all package resources.">
-    <jar jarfile="${framework.jar}">
-      <fileset dir="${classes}"/>
-      <fileset dir="${src}">
+   <copy file="${root.dir}/config/Version.properties"
+      	todir="${classes.dir}/com/primix/tapestry"/>
+ 
+   <jar jarfile="${framework.jar}">
+      <fileset dir="${classes.dir}"/>
+      <fileset dir="${src.dir}">
         <include name="**/*.jwc"/>
         <include name="**/*.html"/>
         <include name="**/*.gif"/>
@@ -56,15 +48,6 @@
         <exclude name="**/package.html"/>
       </fileset>
     </jar>
-  </target>
-  <target name="javadoc">
-    <mkdir dir="${javadoc.dir}"/>
-    <javadoc sourcepath="${src}" destdir="${javadoc.dir}" classpathref="project.class.path" version="true" author="true" use="true" splitindex="true" packagenames="com.primix.tapestry.*" windowtitle="Tapester API ${framework.version}">
-      <link href="http://java.sun.com/j2se/1.3/docs/api"/>
-      <link href="http://java.sun.com/j2ee/j2sdkee/techdocs/api"/>
-      <link href="http://jakarta.apache.org/log4j/docs/api"/>
-      <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"/>
-    </javadoc>
   </target>
 </project>
 

@@ -4,378 +4,384 @@
 
 <project name="Tapestry Module" default="install">
 
-<!-- The framework version occurs in four places:
-In some of the documentation in the web directory.
--->
-
-<property file="framework/src/com/primix/tapestry/Version.properties"/>
-
-<property name="lib" value="lib"/>
-
-<property name="javadoc.dir" value="doc/api"/>
-
-<property name="private.dir" value="private"/>
-
-<!-- Read the configuration to location the JBoss distribution. -->
-
-<property file="config/build.properties"/>
-
-<!-- Directory to put distributions into -->
-
-<property name="dist" value="dist"/>
-
-<property name="dist.base" value="Tapestry-${framework.version}"/>
-
-<property name="dist.dir" value="${dist}/${dist.base}"/>
-
-<!-- Names of distribution files.  Have to create the tar, then gzip it
-  afterwards.  -->
-<property name="dist.tar" value="${dist.dir}.tar"/>
-<property name="dist.tar.gz" value="${dist.tar}.gz"/>
-
-<path id="tutorial.classpath">
-  <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
-  <pathelement location="${lib}/net.sf.tapestry.contrib_${framework.version}.jar"/>
-  <pathelement location="${lib}/ext/javax.servlet.jar"/>
-  <pathelement location="${lib}/ext/log4j-core.jar"/>
-  <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
-  <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
-  <pathelement location="${lib}/ext/org.mortbay.jetty.jar"/>
-  <pathelement location="${lib}/ext/ejb.jar"/>
-</path>
-
-<path id="full.classpath">
-	<pathelement location="${lib}/VlibBeans.jar"/>
-	<pathelement location="examples/VlibBeans/jboss"/>
-    <pathelement location="${jboss.dir}/client/jboss-j2ee.jar"/>
-    <pathelement location="${jboss.dir}/client/jboss-client.jar"/>
-    <pathelement location="${jboss.dir}/client/jnp-client.jar"/>
-    <path refid="tutorial.classpath"/>
-</path>
-
-<target name="clean"
-  description="Cleans all sub-projects.">
-  <ant dir="framework" target="clean"/>
-  <ant dir="contrib" target="clean"/>
-  <ant dir="junit" target="clean"/>
-  <ant dir="examples/wap" target="clean"/>
-  <ant dir="examples/Tutorial" target="clean"/>
-  <ant dir="examples/VlibBeans" target="clean"/>
-  <ant dir="examples/Vlib" target="clean"/>
-  <ant dir="doc/src/Tutorial" target="clean"/>
-  <ant dir="doc/src/DevelopersGuide" target="clean"/>
-  <delete dir="${private.dir}" quiet="true"/>
-</target>
-
-<target name="clean-all" depends="clean"
-  description="Cleans all subprojects and deletes installed frameworks and WARs.">
-    <delete>
-      <fileset dir="${lib}">
-      	<include name="*.jar"/>
-      	<include name="*.war"/>
-      	<include name="*.ear"/>
-      </fileset>
-    </delete>
-</target>
-
-<target name="install"
- description="Builds all frameworks and examples.">
- <!-- Each project has its own definitions for many properties.
-      inheritAll="false" ensures that definitions in this buildfile
-      doesn't override definitions in each project's buildfile. -->
-   <ant dir="framework" target="install" inheritAll="false"/>
-   <ant dir="contrib" target="install" inheritAll="false"/>
-   <ant dir="examples/wap" target="install" inheritAll="false"/>
-   <ant dir="examples/Tutorial" target="install" inheritAll="false"/>
-   <ant dir="examples/VlibBeans" target="install" inheritAll="false"/>
-   <ant dir="examples/Vlib" target="install" inheritAll="false"/>
-   <ant dir="examples/VlibEAR" target="install" inheritAll="false"/>
- </target>
-
-<target name="documentation"
-description="Builds the Tapestry documentation.">
-	<ant dir="doc/src/Tutorial" target="install"/>
-	<ant dir="doc/src/DevelopersGuide" target="install"/>
-</target>
-
-<target name="junit" description="Run the JUnit test suite for Tapestry.">
-	<ant dir="junit" target="run" inheritAll="false"/>
-</target>
-
-<target name="dist" description="Builds the Tapestry distribution from scratch."
-  depends="clean-all,install,junit,documentation,javadoc">
-
-   <!-- After building, clean all the subprojects. -->
-   <antcall target="clean"/>
-
-   <antcall target="build-dist"/>
-</target>
-
-<target name="build-dist" description="Builds the Tapestry distribution files.">
- <mkdir dir="${dist}"/>
- 
- <!-- Delete and recreate the base directory. -->
- 
- <delete dir="${dist.dir}" quiet="true"/>
- <mkdir dir="${dist.dir}"/>
- 
- <!-- Copy all the relevant files to the base directory. -->
- 
- <copy todir="${dist.dir}" includeEmptyDirs="false">
-   <fileset dir=".">
-     <include name="*.xml"/>
-     <include name="*.html"/>
-     <exclude name="Readme.html"/>
-     <include name="config/**"/>
-     <include name="doc/**"/>
- 	 <include name="junit/**"/>
-	 <include name="lib/**"/>
-	 <include name="web/**"/>
-     <!-- Exclude class files left around by IDEs. -->
-     <exclude name="**/*.class"/>
-     
-     <!-- Exclude Paint Shop Pro files (used to generate images
-          in various places) -->
-          
-     <exclude name="**/*.psp"/>
-     <exclude name="**/*.jbf"/>
-
-     <!-- Exclude the source for the documentation. Starting with 1.0.7,
-          we only include the output for the documentation, not the
-          source.  This keeps us from duplicating the images as well,
-          which really shrinks the distribution size. -->
-
-     <exclude name="doc/src/**"/>
-
-     <!-- Don't include build.properties; that's specific to this build
-       environment.  We ship a sample file instead. -->
-
-     <exclude name="config/build.properties"/>
-     
-     <!-- It isn't a good idea to generate a distribution from a normal working
-     directory, since the <copy> will include things like backup files created
-     while editting.  Better to check out the Tapestry module via anon CVS to
-     a temporary directory, configure build.properties, and build the
-     release there. -->
-     
-   </fileset>
- </copy>
- 
- <!-- The Readme.html file includes a version number; copy w/ filtering. -->
- 
- <copy file="Readme.html" todir="${dist.dir}">
-	<filterset>
-		<filter token="VERSION" value="${framework.version}"/>
-	</filterset>
- </copy>
-   
- <!-- Jar up the source code for the frameworks. -->
- 
- <mkdir dir="${dist.dir}/src"/>
- 
- <jar jarfile="${dist.dir}/src/com.primix.tapestry-src.jar"
- 	basedir="framework"/>
- <jar jarfile="${dist.dir}/src/net.sf.tapestry.contrib-src.jar"
- 	basedir="contrib"/>
- <jar jarfile="${dist.dir}/src/examples-src.jar" basedir="examples"/>
-
- <!-- Pack the directory (relative to ${dist}), into a TAR file.  We go to the extra work
-      of building a .tar.gz because the disto is smaller than an equivalent .zip file.
-   -->
- 
- <tar basedir="${dist}" tarfile="${dist.tar}" includes="${dist.base}/**" longfile="gnu"/>
- 
- <!-- Zip up the TAR file -->
- 
- <gzip src="${dist.tar}" zipfile="${dist.tar.gz}"/>
- 
- <!-- Remove the distribution directory and the TAR file, leaving only the
-   final .tar.gz file. -->
-   
- <delete file="${dist.tar}"/>
- <delete dir="${dist.dir}"/>
- 
-</target>
-
-<target name="javadoc" description="Generate API documentation for the framework and examples.">
-  <mkdir dir="${javadoc.dir}"/>
-  <javadoc author="true" version="true" destdir="${javadoc.dir}" splitindex="true"
-    windowtitle="Tapestry API ${framework.version}">
-
-  <doctitle>Tapestry API (Release ${framework.version})</doctitle>
-
-  <package name="com.primix.tapestry.*"/>
-  <package name="net.sf.tapestry.*"/>
-  <package name="tutorial.*"/>
-  <package name="com.primix.vlib.*"/>
-
-  <link href="http://java.sun.com/j2se/1.3/docs/api "/>
-  <link href="http://java.sun.com/j2ee/j2sdkee/techdocs/api"/>
-  <link href="http://jakarta.apache.org/log4j/docs/api"/>
-  <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"/>
-  <link href="http://www.junit.org/junit/javadoc/3.7"/>
+	<property name="root.dir" value="./"/>
+	<property file="${root.dir}/config/Version.properties"/>
+	<property file="${root.dir}/config/build.properties"/>
+	<property file="${root.dir}/config/common.properties"/>
   
-  <group title="Tapestry Framework" packages="com.primix.tapestry:com.primix.tapestry.*"/>
-  <group title="Tapestry Contributions Framework" packages="net.sf.tapestry.*"/>
-  <group title="Tapestry Tutorials" packages="tutorial.*"/>
-  <group title="Virtual Library" packages="com.primix.vlib:com.primix.vlib.*"/>
-  <group title="JUnit Tests" packages="net.sf.tapestry.junit,net.sf.tapestry.junit.*"/>
-  
-  <sourcepath>
-    <pathelement location="framework/src"/>
-    <pathelement location="contrib/src"/>
-    <pathelement location="examples/Tutorial/src"/>
-    <pathelement location="examples/Vlib/src"/>
-    <pathelement location="examples/VlibBeans/src"/>
-    <pathelement location="junit/src"/>
-  </sourcepath>
-  
-  <classpath>
-  	<path refid="full.classpath"/>
-    <pathelement location="${lib}/ext/mckoidb.jar"/>
-  	<pathelement location="${lib}/ext/junit.jar"/>
-  	<pathelement location="${jboss.dir}/lib/jboss-jdbc_ext.jar"/>
-  	<pathelement location="${jboss.dir}/lib/ext/mail.jar"/>
-    <pathelement location="${jboss.dir}/lib/jmxri.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/jboss.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/jboss-j2ee.jar"/>
-  </classpath>
+	<property name="javadoc.dir" value="doc/api"/>
 
-  </javadoc>
+	<property name="private.dir" value="private"/>
 
-</target>
+	<!-- Directory to put distributions into -->
 
-<target name="run-tutorial"
-  description="Runs the Tapestry Tutorial.">
-	
-  <delete dir="${private.dir}" quiet="true"/>
-  <mkdir dir="${private.dir}"/>
-  
-  <echo>Running Tapestry Tutorial on port 8080 ...</echo>
-  <java classname="org.mortbay.jetty.Server" classpathref="tutorial.classpath"
-  	fork="true" maxmemory="128MB">
-  	
-    <arg value="config/jetty-tutorial.xml"/>
- 
-    <!-- Enable debugging when running the tutorial -->
+	<property name="dist.root.dir" value="dist"/>
 
-    <jvmarg line="-showversion -Xdebug -Xnoagent"/>
-    <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
-    
-    <!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
-    
-	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
-  </java>
-</target>
+	<property name="dist.base" value="Tapestry-${framework.version}"/>
 
+	<property name="dist.dir" value="${dist.root.dir}/${dist.base}"/>
 
-  <target name="configure" description="Configure the JBoss server and setup the Vlib database.">
-    <!-- Delete old version of the framework. -->
-    
-    <delete quiet="true">
-    	<fileset dir="${jboss.dir}/lib/ext">
-	    	<include name="net.sf.tapestry.contrib*.jar"/>
-	    	<include name="com.primix.tapestry*.jar"/>
-	    	<exclude name="*_${framework.version}.jar"/>
-	    </fileset>
-    </delete>
-    
-    <copy todir="${jboss.dir}/lib/ext" flatten="true">
-    	<fileset dir="${lib}">
-    		<include name="net.sf.tapestry.contrib_${framework.version}.jar"/>
-    		<include name="com.primix.tapestry_${framework.version}.jar"/>
-    		<include name="ext/mckoidb.jar"/>
-    		<include name="ext/org.mortbay.jetty.jar"/>
-    		<include name="ext/javax.servlet.jar"/>
-    	</fileset>
-    	<fileset dir="config/jboss/lib">
-    		<include name="*.jar"/>
-    	</fileset>
-    </copy>
-    
-    <!-- Delete, recreate and copy -->
-    
-    <delete dir="${jboss.dir}/conf/vlib" quiet="true"/>
-	<mkdir dir="${jboss.dir}/conf/vlib"/>
-	
-	<filter token="jboss.dir" value="${jboss.dir}"/>
-	<filter token="user.dir" value="${user.dir}"/>
-	
-	<copy todir="${jboss.dir}/conf/vlib" filtering="true">
-		<fileset dir="config/jboss/conf"/>
-	</copy>
+	<!-- Names of distribution files.  Have to create the tar, then gzip it
+	     afterwards.   tar + gzip results in a smaller distribution than
+	     zip. -->
+	<property name="dist.tar" value="${dist.dir}.tar"/>
+	<property name="dist.tar.gz" value="${dist.tar}.gz"/>
 
-	<!-- Set a flag if the vlib already exists, then extract it if necessary. -->
+	<path id="tutorial.classpath">
+		<pathelement location="${framework.jar}"/>
+		<pathelement location="${contrib.jar}"/>
+		<pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+		<pathelement location="${lib.ext.dir}/log4j-core.jar"/>
+		<pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+		<pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+		<pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
+		<pathelement location="${lib.ext.dir}/ejb.jar"/>
+	</path>
 
-    <available file="${jboss.dir}/db/vlib.conf" property="vlib.db.exists"/>
-    <antcall target="unpack-vlib-database"/>
-	    	
-  </target>
- 
+	<path id="full.classpath">
+		<pathelement location="${vlibbeans.jar}"/>
+		<pathelement location="examples/VlibBeans/jboss"/>
+		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
+		<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
+		<pathelement location="${jboss.client.dir}/jnp-client.jar"/>
+		<path refid="tutorial.classpath"/>
+	</path>
 
-  <target name="unpack-vlib-database"
-  	description="Unpacks the Virtual Library database."
-  	unless="vlib.db.exists">
-	<unzip src="config/jboss/vlib-db.zip" dest="${jboss.dir}/db"/>  
-  </target>
+	<target name="clean"
+		description="Cleans all sub-projects.">
+		<ant dir="framework" target="clean"/>
+		<ant dir="contrib" target="clean"/>
+		<ant dir="junit" target="clean"/>
+		<ant dir="examples/wap" target="clean"/>
+		<ant dir="examples/Tutorial" target="clean"/>
+		<ant dir="examples/VlibBeans" target="clean"/>
+		<ant dir="examples/Vlib" target="clean"/>
+		<ant dir="doc/src/Tutorial" target="clean"/>
+		<ant dir="doc/src/DevelopersGuide" target="clean"/>
+		<delete dir="${private.dir}" quiet="true"/>
+	</target>
 
-  <target name="deploy-vlib" description="Deploys the Virtual Library demo into JBoss.">
-  	<copy todir="${jboss.dir}/deploy">
-  		<fileset dir="lib">
-  			<include name="Vlib.ear"/>
-  			<include name="Tutorial.war"/>
-  		</fileset>
-  	</copy>
-  </target>
-  
-  <target name="run-jboss"
-  		  depends="deploy-vlib"
-  		  description="Launch the JBoss application server.">
-  		  
-  	<property name="jboss.private.dir" value="${jboss.dir}/${private.dir}"/>
-  	<delete dir="${jboss.private.dir}" quiet="true"/>
-  	<mkdir dir="${jboss.private.dir}"/>
-  	
-  	<java fork="true"
-  		dir="${jboss.dir}/bin"
-		classname="org.jboss.Main">
+	<target name="clean-all" depends="clean"
+		description="Cleans all subprojects and deletes installed frameworks and WARs.">
+		<delete>
+			<fileset dir="${lib.dir}">
+			  	<include name="*.jar"/>
+			  	<include name="*.war"/>
+			  	<include name="*.ear"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="install"
+		description="Builds all frameworks and examples.">
 		
-		<!-- Launch using the vlib configuration, not the default. -->
+		<!-- Each project has its own definitions for many properties.
+	     	 inheritAll="false" ensures that definitions in this buildfile
+	     	 doesn't override definitions in each project's buildfile. -->
+	     
+		<ant dir="framework" target="install" inheritAll="false"/>
+		<ant dir="contrib" target="install" inheritAll="false"/>
+		<ant dir="examples/wap" target="install" inheritAll="false"/>
+		<ant dir="examples/Tutorial" target="install" inheritAll="false"/>
+		<ant dir="examples/VlibBeans" target="install" inheritAll="false"/>
+		<ant dir="examples/Vlib" target="install" inheritAll="false"/>
+		<ant dir="examples/VlibEAR" target="install" inheritAll="false"/>
+	</target>
+
+	<target name="documentation"
+		description="Builds the Tapestry documentation.">
+		<ant dir="doc/src/Tutorial" target="install"/>
+		<ant dir="doc/src/DevelopersGuide" target="install"/>
+	</target>
+
+	<target name="junit"
+		description="Run the JUnit test suite for Tapestry.">
+		<ant dir="junit" target="run" inheritAll="false"/>
+	</target>
+
+	<target name="dist"
+		description="Builds the Tapestry distribution from scratch."
+  		depends="clean-all,install,junit,documentation,javadoc">
+
+		<!-- After building, clean all the subprojects. -->
+		<antcall target="clean"/>
 		
-		<arg value="vlib"/>
+		<!-- Now, build that actual distribution. -->
+		<antcall target="build-dist"/>
+	</target>
+
+	<target name="build-dist" description="Builds the Tapestry distribution files.">
+
+		<!-- Delete and recreate the base directory. -->
+	 
+		<delete dir="${dist.dir}" quiet="true"/>
+		<mkdir dir="${dist.dir}"/>
+	 
+		<!-- Copy all the relevant files to the base directory. -->
+	 
+		<copy todir="${dist.dir}" includeEmptyDirs="false">
+			<fileset dir=".">
+				<include name="*.xml"/>
+				<include name="*.html"/>
+				<exclude name="Readme.html"/>
+				<include name="config/**"/>
+				<include name="doc/**"/>
+				<include name="junit/**"/>
+				<include name="lib/**"/>
+				<include name="web/**"/>
+				<!-- Exclude class files left around by IDEs. -->
+				<exclude name="**/*.class"/>
+				 
+				<!-- Exclude Paint Shop Pro files (used to generate images
+				  in various places) -->
+				      
+				<exclude name="**/*.psp"/>
+				<exclude name="**/*.jbf"/>
+				
+				<!-- Exclude the source for the documentation. Starting with 1.0.7,
+				     we only include the output for the documentation, not the
+				     source.  This keeps us from duplicating the images as well,
+				     which really shrinks the distribution size. -->
+				
+				<exclude name="doc/src/**"/>
+				
+				<!-- Don't include build.properties; that's specific to this build
+				     environment.  We ship a sample file instead. -->
+				
+				<exclude name="config/build.properties"/>
+				 
+				<!-- It isn't a good idea to generate a distribution from a normal working
+				     directory, since the<copy> will include things like backup files created
+				     while editting.  Better to check out the Tapestry module via anon CVS to
+				     a temporary directory, configure build.properties, and build the
+				     release there. -->
+				     
+			</fileset>
+		</copy>
+	 
+		<!-- The Readme.html file includes a version number; copy w/ filtering. -->
+		 
+		<copy file="Readme.html" todir="${dist.dir}">
+			<filterset>
+				<filter token="VERSION" value="${framework.version}"/>
+			</filterset>
+		</copy>
+		   
+		<!-- Jar up the source code for the frameworks. -->
+		 
+		<property name="dist.src.dir" value="${dist.dir}/src"/>
+		 
+		<mkdir dir="${dist.src.dir}"/>
+		 
+		<jar jarfile="${dist.src.dir}/com.primix.tapestry-src.jar"
+			basedir="framework"/>
+		<jar jarfile="${dist.src.dir}/net.sf.tapestry.contrib-src.jar"
+			basedir="contrib"/>
+		<jar jarfile="${dist.src.dir}/examples-src.jar" basedir="examples"/>
 		
+		<!-- Pack the directory (relative to ${dist.dir}), into a TAR file.  We go to the extra work
+		      of building a .tar.gz because the disto is smaller than an equivalent .zip file.
+		   -->
+		 
+		<tar basedir="${dist.root.dir}" tarfile="${dist.tar}" includes="${dist.base}/**" longfile="gnu"/>
+		 
+		<!-- Zip up the TAR file -->
+		 
+		<gzip src="${dist.tar}" zipfile="${dist.tar.gz}"/>
+		 
+		<!-- Remove the distribution directory and the TAR file, leaving only the
+		   final .tar.gz file. -->
+		   
+		<delete file="${dist.tar}"/>
+		<delete dir="${dist.dir}"/>
+	 
+	</target>
+
+	<target name="javadoc" description="Generate API documentation for the framework and examples.">
+		<javadoc 
+			author="true" 
+			version="true" 
+			destdir="${javadoc.dir}" 
+			splitindex="true"
+			windowtitle="Tapestry API ${framework.version}"
+			additionalparam="-quiet">
+		
+			<doctitle>Tapestry API (Release ${framework.version})</doctitle>
+			
+			<package name="com.primix.tapestry.*"/>
+			<package name="net.sf.tapestry.*"/>
+			<package name="tutorial.*"/>
+			<package name="com.primix.vlib.*"/>
+			
+			<link href="http:/java.sun.com/j2se/1.4/docs/api/"/>
+			<link href="http:/java.sun.com/j2ee/j2sdkee/techdocs/api"/>
+			<link href="http:/jakarta.apache.org/log4j/docs/api"/>
+			<link href="http:/www.junit.org/junit/javadoc/3.7"/>
+			  
+			<group title="Tapestry Framework" packages="com.primix.tapestry:com.primix.tapestry.*"/>
+			<group title="Tapestry Contributions Framework" packages="net.sf.tapestry.*"/>
+			<group title="Tapestry Tutorials" packages="tutorial.*"/>
+			<group title="Virtual Library" packages="com.primix.vlib:com.primix.vlib.*"/>
+			<group title="JUnit Tests" packages="net.sf.tapestry.junit,net.sf.tapestry.junit.*"/>
+			  
+			<sourcepath>
+				<pathelement location="framework/src"/>
+				<pathelement location="contrib/src"/>
+				<pathelement location="examples/Tutorial/src"/>
+				<pathelement location="examples/Vlib/src"/>
+				<pathelement location="examples/VlibBeans/src"/>
+				<pathelement location="junit/src"/>
+			</sourcepath>
+			  
+			<classpath>
+				<path refid="full.classpath"/>
+				<pathelement location="${lib.ext.dir}/mckoidb.jar"/>
+				<pathelement location="${lib.ext.dir}/junit.jar"/>
+				<pathelement location="${jboss.lib.dir}/jboss-jdbc_ext.jar"/>
+				<pathelement location="${jboss.lib.ext.dir}/mail.jar"/>
+				<pathelement location="${jboss.lib.dir}/jmxri.jar"/>
+				<pathelement location="${jboss.lib.ext.dir}/jboss.jar"/>
+				<pathelement location="${jboss.lib.ext.dir}/jboss-j2ee.jar"/>
+			</classpath>		
+		</javadoc>
+	</target>
+
+	<target name="run-tutorial"
+		description="Runs the Tapestry Tutorial.">
+		
+		<delete dir="${private.dir}" quiet="true"/>
+		<mkdir dir="${private.dir}"/>
+		  
+		<echo>Running Tapestry Tutorial on port 8080 ...</echo>
+		<java
+			classname="org.mortbay.jetty.Server"
+			classpathref="tutorial.classpath"
+		  	fork="true" 
+		  	maxmemory="128MB">
+		  	
+			<arg value="config/jetty-tutorial.xml"/>
+		 
+			<!-- Enable debugging when running the tutorial -->
+			
+			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+			<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
+			
+			<!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
+			
+			<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+		</java>
+	</target>
+
+
+	<target name="configure" 
+		description="Configure the JBoss server and setup the Vlib database.">
+		
+		<!-- Delete old version of the frameworks. -->
+		
+		<delete quiet="true">
+			<fileset dir="${jboss.lib.ext.dir}">
+				<include name="net.sf.tapestry.contrib*.jar"/>
+				<include name="com.primix.tapestry*.jar"/>
+				<exclude name="*-${framework.version}.jar"/>
+			</fileset>
+		</delete>
+		
+		<copy todir="${jboss.lib.ext.dir}" flatten="true">
+			<fileset dir="${lib.dir}">
+				<include name="*-${framework.version}.jar"/>
+				<include name="ext/mckoidb.jar"/>
+				<include name="ext/org.mortbay.jetty.jar"/>
+				<include name="ext/javax.servlet.jar"/>
+			</fileset>
+			<fileset dir="config/jboss/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+	
+		<!-- Delete, recreate and copy -->
+		
+		<delete dir="${jboss.dir}/conf/vlib" quiet="true"/>
+		<mkdir dir="${jboss.dir}/conf/vlib"/>
+				
+		<copy todir="${jboss.dir}/conf/vlib" filtering="true">
+			<fileset dir="config/jboss/conf"/>
+			<filterset>
+				<filter token="jboss.dir" value="${jboss.dir}"/>
+				<filter token="user.dir" value="${user.dir}"/>
+			</filterset>
+		</copy>
+		
+		<!-- Set a flag if the vlib already exists, then extract it if necessary. -->
+		
+		<available file="${jboss.dir}/db/vlib.conf" property="vlib.db.exists"/>
+		<antcall target="unpack-vlib-database"/>		    	
+	</target>
+	 
+
+	<target name="unpack-vlib-database"
+	  	description="Unpacks the Virtual Library database."
+	  	unless="vlib.db.exists">
+		<unzip src="config/jboss/vlib-db.zip" dest="${jboss.dir}/db"/>  
+	</target>
+	
+	<target name="deploy-vlib" description="Deploys the Virtual Library demo into JBoss.">
+	  	<copy todir="${jboss.dir}/deploy">
+	  		<fileset dir="${lib.dir}">
+	  			<include name="Vlib.ear"/>
+	  			<include name="Tutorial.war"/>
+	  		</fileset>
+	  	</copy>
+	</target>
+  
+	<target name="run-jboss"
+		depends="deploy-vlib"
+		description="Launch the JBoss application server.">
+	  		  
+	  	<property name="jboss.private.dir" value="${jboss.dir}/${private.dir}"/>
+	  	
+	  	<delete dir="${jboss.private.dir}" quiet="true"/>
+	  	<mkdir dir="${jboss.private.dir}"/>
+	  	
+	  	<java fork="true"
+	  		dir="${jboss.dir}/bin"
+			classname="org.jboss.Main">
+	
+			<!-- Launch using the vlib configuration, not the default. -->
+	
+			<arg value="vlib"/>
+	
 		<classpath>
-			<pathelement location="${jboss.dir}/lib/crimson.jar"/>
+			<pathelement location="${jboss.lib.dir}/crimson.jar"/>
 			<pathelement location="${jboss.dir}/bin/run.jar"/>
 		</classpath>	
-		
-		<!-- Enable debugging -->
-
-    	<jvmarg line="-showversion -Xdebug -Xnoagent"/>
-    	<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"/>
-    	
-    	<sysproperty key="javax.xml.parsers.SAXParserFactory"
-    	           value="org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
-    	<sysproperty key="javax.xml.parsers.DocumentBuilderFactory"
-    			   value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
-
-      	<sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
-      	<sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
-      	
-      	<!-- These allow private assets to be exported as static
-      		 files.  This coordinates with portions of
-      		 config/jboss/conf/jetty.xml -->
-      		 
-     	<sysproperty key="com.primix.tapestry.asset.dir" value="${jboss.private.dir}"/>
-     	<sysproperty key="com.primix.tapestry.asset.URL" value="/private"/>
-     	
-      	<!-- The following is probably only necessary under Windows.  Jetty gets
-      	     tripped up by the fact that pathnames are case-insensitive.  -->
-      	     
- 	    <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
- 	    
-	</java>
 	
-  </target>
+		<!-- Enable debugging -->
+	
+		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"/>
+		
+		<sysproperty key="javax.xml.parsers.SAXParserFactory"
+			value="org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
+		<sysproperty key="javax.xml.parsers.DocumentBuilderFactory"
+			value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
+	
+	  	<sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+	  	<sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
+	  	
+	  	<!-- These allow private assets to be exported as static
+	  		 files.  This coordinates with portions of
+	  		 config/jboss/conf/jetty.xml -->
+	  		 
+	 	<sysproperty key="com.primix.tapestry.asset.dir" value="${jboss.private.dir}"/>
+	 	<sysproperty key="com.primix.tapestry.asset.URL" value="/private"/>
+	 	
+	  	<!-- The following is probably only necessary under Windows.  Jetty gets
+	  	     tripped up by the fact that pathnames are case-insensitive.  -->
+	      	     
+	 	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+	 	    
+		</java>
+		
+	</target>
 
 </project>

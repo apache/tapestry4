@@ -1,45 +1,35 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <project name="Tapestry VlibBeans Example" default="install">
-  <!-- Directory in which compiled classes are placed -->
-  <property name="classes" value="classes"/>
-  <!-- Directory that contains library frameworks, and to
-       which the framework is eventually installed -->
-  <property name="lib" value="../../lib"/>
-  <!-- Directory containing source code and package resources -->
-  <property name="src" value="src"/>
-  <!-- Path of the installed framework jar -->
-  <property name="VlibBeans.jar" value="${lib}/VlibBeans.jar"/>
 
-  <!-- Read the configuration file to get the absolute path
-       to the JBoss installation (2.4.x). -->
-       
-  <property file="../../config/build.properties"/>
-  <property file="../../framework/src/com/primix/tapestry/Version.properties"/>
+
+  <property name="root.dir" value="../.."/>
+  <property file="${root.dir}/config/Version.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
   
   <path id="project.class.path">
-    <pathelement location="${lib}/ext/javax.servlet.jar"/>
-    <pathelement location="${lib}/ext/log4j-core.jar"/>
-    <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
-    <pathelement location="${jboss.dir}/lib/jboss-jdbc_ext.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/mail.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/activation.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/jboss-j2ee.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+    <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${framework.jar}"/>
+    <pathelement location="${jboss.lib.dir}/jboss-jdbc_ext.jar"/>
+    <pathelement location="${jboss.lib.ext.dir}/mail.jar"/>
+    <pathelement location="${jboss.lib.ext.dir}/activation.jar"/>
+    <pathelement location="${jboss.lib.ext.dir}/jboss-j2ee.jar"/>
   </path>
-  
+    
   <target name="init">
-    <tstamp/>
-    <mkdir dir="${classes}"/>
+    <mkdir dir="${classes.dir}"/>
   </target>
   
   <target name="clean">
-    <delete dir="${classes}"/>
+    <delete dir="${classes.dir}"/>
   </target>
   
   <target name="compile" depends="init" description="Compile all classes in the JAR.">
-    <javac srcdir="${src}" destdir="${classes}">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
@@ -49,8 +39,8 @@
        needed from the deployment descriptors. -->
   
   <target name="install" depends="compile" description="Compile all classes and build the installed JAR including all package resources.">
-    <jar jarfile="${VlibBeans.jar}">
-      <fileset dir="${classes}"/>
+    <jar jarfile="${vlibbeans.jar}">
+      <fileset dir="${classes.dir}"/>
       <metainf dir=".">
         <include name="*.xml"/>
         <exclude name="build.xml"/>
@@ -59,11 +49,11 @@
   </target>
 
   <target name="run" description="Deploy the JAR file and run the Jboss server." depends="install">
-    <copy file="${lib}/VlibBeans.jar" todir="${jboss.dir}/deploy"/>
+    <copy file="${vlibbeans.jar}" todir="${jboss.dir}/deploy"/>
     <java dir="${jboss.dir}/bin" classname="org.jboss.Main" fork="true">
       <classpath>
          <pathelement location="${jboss.dir}/bin/run.jar"/>
-         <pathelement location="${jboss.dir}/lib/crimson.jar"/>
+         <pathelement location="${jboss.lib.dir}/crimson.jar"/>
       </classpath>
       <sysproperty key="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
       <sysproperty key="javax.xml.parsers.SAXParserFactory" value="org.apache.crimson.jaxp.SAXParserFactoryImpl"/>

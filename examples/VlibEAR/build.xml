@@ -3,15 +3,18 @@
 
 <project name="Virtual Library - Enterprise Application Archive" default="install">
 
-  <property name="lib" value="../../lib"/>
-
+  <property name="root.dir" value="../.."/>
+  <property file="${root.dir}/config/Version.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
+  
   <target name="install">
   
-  	<jar jarfile="${lib}/Vlib.ear">
+  	<jar jarfile="${vlib.ear}">
   	  <fileset dir=".">
   	    <include name="META-INF/*"/>
   	  </fileset>
-  	  <fileset dir="${lib}">
+  	  <fileset dir="${lib.dir}">
   	  	<include name="Vlib.war"/>
   	  	<include name="VlibBeans.jar"/>
   	  </fileset>

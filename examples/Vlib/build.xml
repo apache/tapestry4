@@ -2,54 +2,42 @@
 <!-- $Id$ -->
 <project name="Virtual Library Demo" default="install">
 
-  <!-- Directory in which compiled classes are placed -->
-  <property name="classes" value="classes"/>
-
-  <!-- Directory that contains library frameworks, and to
-       which the WAR is eventually installed -->
-  <property name="lib" value="../../lib"/>
-
-  <!-- Directory containing source code and package resources -->
-  <property name="src" value="src"/>
-
-  <!-- Path of the installed framework jar -->
-  <property name="vlib.war" value="${lib}/Vlib.war"/>
-
-  <!-- Need the jboss.dir property -->
+  <property name="root.dir" value="../.."/>
+  <property file="${root.dir}/config/Version.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
   
-  <property file="../../config/build.properties"/>
-  <property file="../../framework/src/com/primix/tapestry/Version.properties"/>
-
   <path id="project.class.path">
-    <pathelement location="${lib}/ext/ejb.jar"/>
-    <pathelement location="${lib}/ext/javax.servlet.jar"/>
-    <pathelement location="${lib}/ext/log4j-core.jar"/>
-    <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
-    <pathelement location="${lib}/net.sf.tapestry.contrib_${framework.version}.jar"/>
-    <pathelement location="${lib}/VlibBeans.jar"/>
+    <pathelement location="${lib.ext.dir}/ejb.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+    <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${framework.jar}"/>
+    <pathelement location="${contrib.jar}"/>
+    <pathelement location="${vlibbeans.jar}"/>
   </path>
+  
+  <property name="private.dir" value="private"/>
 
   <target name="init">
-    <tstamp/>
-    <mkdir dir="${classes}"/>
+    <mkdir dir="${classes.dir}"/>
   </target>
 
   <target name="clean">
-    <delete dir="${classes}" quiet="true"/>
-    <delete dir="private" quiet="true"/>
+    <delete dir="${classes.dir}" quiet="true"/>
+    <delete dir="${private.dir}" quiet="true"/>
   </target>
 
   <target name="compile" depends="init" description="Compile all classes in the framework.">
-    <javac srcdir="${src}" destdir="${classes}">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
     
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
-    <copy todir="${classes}">
-        <fileset dir="${src}">
+    <copy todir="${classes.dir}">
+        <fileset dir="${src.dir}">
 	        <include name="**/*.jwc"/>
 	        <include name="**/*.html"/>
 	        <include name="**/*.gif"/>
@@ -67,32 +55,32 @@
         <include name="images/**"/>
         <include name="scripts/**"/>
      </fileset>
-     <classes dir="${classes}"/>         
+     <classes dir="${classes.dir}"/>         
     </war>
   </target>
 
   <target name="run" description="Run the Vlib application." depends="install">
-    <delete dir="private" quiet="true"/>
-    <mkdir dir="private"/>
+    <delete dir="${private.dir}" quiet="true"/>
+    <mkdir dir="${private.dir}"/>
     
     <java classname="org.mortbay.jetty.Server" fork="true">
       <classpath>
 
       	<!-- Favor files in src over copies in classes -->
-      	<pathelement location="${src}"/>
+      	<pathelement location="${src.dir}"/>
       	
       	<!-- Temporary hack: pick up compiled files from Eclipse's compilation directory
       	     instead of our own: necessary for debugging.  -->
       	     
-        <pathelement location="../../bin"/>
+        <pathelement location=".${root.dir}/bin"/>
 
-        <pathelement location="${lib}/org.mortbay.jetty.jar"/>
+        <pathelement location="${lib.dir}/org.mortbay.jetty.jar"/>
         <!-- Runtime client libraries -->
-        <pathelement location="${jboss.dir}/client/jboss-client.jar"/>
-        <pathelement location="${jboss.dir}/client/jbosssx-client.jar"/>
-        <pathelement location="${jboss.dir}/client/jnp-client.jar"/>
+        <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
+        <pathelement location="${jboss.client.dir}/jbosssx-client.jar"/>
+        <pathelement location="${jboss.client.dir}/jnp-client.jar"/>
         
-         <path refid="project.class.path"/>
+        <path refid="project.class.path"/>
 
       </classpath>
 
@@ -110,8 +98,8 @@
       <sysproperty key="com.primix.tapestry.disable-caching" value="true"/>
       <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
 
-	  <sysproperty key="com.primix.tapestry.asset.dir" value="private"/>
-	  <sysproperty key="com.primix.tapestry.asset.URL" value="/private"/>
+	  <sysproperty key="com.primix.tapestry.asset.dir" value="${private.dir}"/>
+	  <sysproperty key="com.primix.tapestry.asset.URL" value="/${private.dir}"/>
 
       <!-- JNDI Configuration for JBoss -->
       

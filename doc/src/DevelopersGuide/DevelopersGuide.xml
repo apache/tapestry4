@@ -6042,7 +6042,7 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 
 	<varlistentry>
-		<term><filename>com.primix.tapestry_<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<term><filename>com.primix.tapestry-<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<listitem>
 			<para>
 			The main Tapestry framework.  This is needed at compile time and runtime.  At runtime, it is most
@@ -6116,7 +6116,7 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 
 	<varlistentry>
-		<term><filename>net.sf.tapestry.contrib_<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<term><filename>net.sf.tapestry.contrib-<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<listitem>
 		<para>
 		Contains additional components and tools that are not integral to the framework itself, such
@@ -6147,6 +6147,7 @@ examples), others are used at runtime (and must be added to the servlet containe
 	
 	<varlistentry>
 		<term><filename>Tutorial.war</filename></term>
+		<term><filename>Vlib.ear</filename></term>
 		<term><filename>Vlib.war</filename></term>
 		<term><filename>Wap.war</filename></term>
 		<listitem>
@@ -6156,15 +6157,6 @@ examples), others are used at runtime (and must be added to the servlet containe
 		</listitem>
 	</varlistentry>
 	
-	
-	<varlistentry>
-		<term><filename>Tutorial.ear</filename></term>
-		<listitem>
-		<para>
-		A combination of the Virtual Library application and the Tutorial.
-		</para>
-		</listitem>
-	</varlistentry>
 	
 	<varlistentry>
 		<term><filename>VlibBeans.jar</filename></term>
