@@ -40,31 +40,38 @@ import net.sf.tapestry.RequestCycleException;
 
 public class PageCallback implements ICallback
 {
-	private String pageName;
+    /**
+     *  @since 2.0.4
+     * 
+     **/
 
-	public PageCallback(String pageName)
-	{
-		this.pageName = pageName;
-	}
+    private static final long serialVersionUID = -3286806776105690068L;
 
-	public PageCallback(IPage page)
-	{
-		pageName = page.getName();
-	}
+    private String pageName;
 
-	public String toString()
-	{
-		return "PageCallback[" + pageName + "]";
-	}
+    public PageCallback(String pageName)
+    {
+        this.pageName = pageName;
+    }
 
-	/**
-	 *  Invokes {@link IRequestCycle#setPage(String)} to identify the previously
-	 *  identified page as the response page.
-	 *
-	 **/
+    public PageCallback(IPage page)
+    {
+        pageName = page.getName();
+    }
 
-	public void performCallback(IRequestCycle cycle) throws RequestCycleException
-	{
-		cycle.setPage(pageName);
-	}
+    public String toString()
+    {
+        return "PageCallback[" + pageName + "]";
+    }
+
+    /**
+     *  Invokes {@link IRequestCycle#setPage(String)} to identify the previously
+     *  identified page as the response page.
+     *
+     **/
+
+    public void performCallback(IRequestCycle cycle) throws RequestCycleException
+    {
+        cycle.setPage(pageName);
+    }
 }

@@ -38,6 +38,12 @@ import java.io.Serializable;
 
 public class ExceptionProperty implements Serializable
 {
+    /**
+     *  @since 2.0.4
+     * 
+     **/
+    
+    private static final long serialVersionUID = -4598312382467505134L;
     private String name;
     private String value;
 

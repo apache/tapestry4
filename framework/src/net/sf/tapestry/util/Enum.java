@@ -63,6 +63,13 @@ import net.sf.tapestry.Tapestry;
 
 public class Enum implements Serializable
 {
+    /**
+     *  @since 2.0.4
+     * 
+     **/
+
+    private static final long serialVersionUID = -2458528582889298111L;
+
     private transient String enumerationId;
 
     /**
@@ -141,7 +148,8 @@ public class Enum implements Serializable
         key = new EnumToken(enum);
 
         if (identity.containsKey(key))
-            throw new RuntimeException(Tapestry.getString("Enum.duplicate-registration", key));
+            throw new RuntimeException(
+                Tapestry.getString("Enum.duplicate-registration", key));
 
         identity.put(new EnumToken(enum), enum);
     }
@@ -169,7 +177,8 @@ public class Enum implements Serializable
         }
 
         if (result == null)
-            throw new RuntimeException(Tapestry.getString("Enum.deserialize-error", key, getClass().getName()));
+            throw new RuntimeException(
+                Tapestry.getString("Enum.deserialize-error", key, getClass().getName()));
 
         return result;
     }
@@ -190,7 +199,8 @@ public class Enum implements Serializable
       *
       **/
 
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    private void readObject(ObjectInputStream in)
+        throws IOException, ClassNotFoundException
     {
         enumerationId = in.readUTF();
     }

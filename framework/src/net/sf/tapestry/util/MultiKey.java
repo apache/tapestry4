@@ -43,6 +43,13 @@ import net.sf.tapestry.Tapestry;
 
 public class MultiKey implements Externalizable
 {
+    /**
+     *  @since 2.0.4
+     * 
+     **/
+    
+    private static final long serialVersionUID = 4465448607415788806L;
+    
     private static final int HASH_CODE_UNSET = -1;
 
     private transient int hashCode = HASH_CODE_UNSET;

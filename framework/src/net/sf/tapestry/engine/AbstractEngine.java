@@ -133,6 +133,13 @@ public abstract class AbstractEngine
 {
     private static final Category CAT = Category.getInstance(AbstractEngine.class);
 
+	/**
+	 *  @since 2.0.4
+	 * 
+	 **/
+	
+	private static final long serialVersionUID = 6884834397673817117L;
+	
     private transient String contextPath;
     private transient String servletPath;
     private transient String clientAddress;
