@@ -8,8 +8,7 @@
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
 
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="ListEdit"/>
+		<parameter name="service" value="page/ListEdit"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -21,8 +20,7 @@
 <![CDATA[
 <input type="hidden" (name="(.*?)" value="(.*?)")/>
 ]]>
-			<match>name="service" value="direct"</match>
-			<match>name="context" value="0/ListEdit/form"</match>
+			<match>name="service" value="direct/0/ListEdit/form"</match>
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="e,inputColor,inputColor_0,inputColor_1"</match>			
 			<match>name="e" value="Clothing"</match>
@@ -43,8 +41,7 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct"/>	
-		<parameter name="context" value="0/ListEdit/form"/>
+		<parameter name="service" value="direct/0/ListEdit/form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="e">
 			<value>Clothing</value>
@@ -75,8 +72,7 @@
 	<!-- Hack the submission so that one of the values passed up can't be unsqueezed. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>	
-		<parameter name="context" value="0/ListEdit/form"/>
+		<parameter name="service" value="direct/0/ListEdit/form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="e">
 			<value>3Clothing</value>
@@ -112,8 +108,7 @@
 		 as the source. -->
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="ListEditArray"/>
+		<parameter name="service" value="page/ListEditArray"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -125,8 +120,7 @@
 <![CDATA[
 <input type="hidden" (name="(.*?)" value="(.*?)")/>
 ]]>
-			<match>name="service" value="direct"</match>
-			<match>name="context" value="0/ListEditArray/$ListEditForm.$Form"</match>
+			<match>name="service" value="direct/0/ListEditArray/$ListEditForm.$Form"</match>
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="e"</match>			
 			<match>name="e" value="SFred"</match>
@@ -138,8 +132,7 @@
 	<!-- Test where the ListEdit gets a null source. -->
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="ListEditNull"/>
+		<parameter name="service" value="page/ListEditNull"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -151,8 +144,7 @@
 <![CDATA[
 <input type="hidden" (name="(.*?)" value="(.*?)")/>
 ]]>
-			<match>name="service" value="direct"</match>
-			<match>name="context" value="0/ListEditNull/$ListEditForm.$Form"</match>
+			<match>name="service" value="direct/0/ListEditNull/$ListEditForm.$Form"</match>
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="e"</match>
 		</assert-output-matches>			

@@ -9,8 +9,7 @@
   	
 
 	<request>
-  	 	<parameter name="service" value="page"/>
-  	 	<parameter name="context" value="Two"/>
+  	 	<parameter name="service" value="page/Two"/>
   	  	  	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -24,15 +23,14 @@ Message: No message.
 	
 		<assert-output name="Link">
 <![CDATA[		
-/c7/lb?service=direct&amp;context=0/Two/link
+/c7/lb?service=direct/0/Two/link
 ]]>
 		</assert-output>
  
   	</request>
   
 	<request>
-		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="0/Two/link"/>
+		<parameter name="service" value="direct/0/Two/link"/>
   		
  		<assert-output name="Page Title">
 <![CDATA[		
@@ -46,8 +44,7 @@ Message: Component was clicked.
 	</request> 		
   
 	<request>
-  	 	<parameter name="service" value="reset"/>
-  	 	<parameter name="context" value="Two"/>
+  	 	<parameter name="service" value="reset/Two"/>
   	  	  	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -61,8 +58,7 @@ Message: No message.
 	</request>
 
 	<request>
-		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="0/Two/link"/>
+		<parameter name="service" value="direct/0/Two/link"/>
   		
  		<assert-output name="Page Title">
 <![CDATA[		
@@ -76,13 +72,13 @@ Message: Component was clicked.
 		
 		<assert-output name="invalidScriptLink URL">
 <![CDATA[
-/c7/lb?service=direct&amp;context=0/Two/invalidScriptLink
+/c7/lb?service=direct/0/Two/invalidScriptLink
 ]]>
 		</assert-output>
 		
 		<assert-output name="unknownLanguageLink URL">
 <![CDATA[
-/c7/lb?service=direct&amp;context=0/Two/unknownLanguageLink
+/c7/lb?service=direct/0/Two/unknownLanguageLink
 ]]>
 		</assert-output>	
 				
@@ -91,8 +87,7 @@ Message: Component was clicked.
 	<!--  Trigger a case where the script to execute is invalid. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="0/Two/invalidScriptLink"/>
+		<parameter name="service" value="direct/0/Two/invalidScriptLink"/>
 	
  		<assert-output name="Page Title">
 <![CDATA[		
@@ -108,8 +103,7 @@ Message: Component was clicked.
 	<!-- Trigger a case where the script language is not defined. -->
 
 	<request>
-		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="0/Two/unknownLanguageLink"/>
+		<parameter name="service" value="direct/0/Two/unknownLanguageLink"/>
 	
  		<assert-output name="Page Title">
 <![CDATA[		

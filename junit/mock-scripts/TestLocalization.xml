@@ -50,8 +50,7 @@ Zees ees nawt cheeze!
 			</request>
 
 	<request>
-	  	<parameter name="service" value="page"/>
-	  	<parameter name="context" value="Assets"/>
+	  	<parameter name="service" value="page/Assets"/>
 		
 		<assert-output name="English Home image">
 <![CDATA[		
@@ -65,14 +64,13 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="DirectLink switch URL">
 <![CDATA[		
-href="/mock/app?service=direct&amp;context=0/Assets/switch"
+href="/mock/app?service=direct/0/Assets/switch"
 ]]>
 		</assert-output>	
 	</request>
 	
 	<request locale="fr">
-	  	<parameter name="service" value="page"/>
-	  	<parameter name="context" value="Assets"/>
+	  	<parameter name="service" value="page/Assets"/>
 		
 		<assert-output name="French Home image">
 <![CDATA[		
@@ -86,7 +84,7 @@ href="/mock/app?service=direct&amp;context=0/Assets/switch"
 		
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
-href="/mock/app?service=direct&amp;context=0/Assets/switch"
+href="/mock/app?service=direct/0/Assets/switch"
 ]]>
 		</assert-output>							
 	</request>	
@@ -96,8 +94,7 @@ href="/mock/app?service=direct&amp;context=0/Assets/switch"
 	 	 the locale. -->
 	 	 
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/Assets/switch"/>
+		<parameter name="service" value="direct/0/Assets/switch"/>
 		
 		<!-- Switch sends us back to the Home page, but in French. -->
 		
@@ -109,7 +106,7 @@ Zees ees nawt cheeze!
 
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
-href="/mock/app?service=direct&amp;context=0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello"
+href="/mock/app?service=direct/0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello"
 ]]>
 		</assert-output>			
 	</request>
@@ -118,8 +115,7 @@ href="/mock/app?service=direct&amp;context=0/Home/link&amp;sp=2&amp;sp=d3.5&amp;
 		 provide the French version. -->
 		 		
 	<request>
-	  	<parameter name="service" value="page"/>
-	  	<parameter name="context" value="Assets"/>
+	  	<parameter name="service" value="page/Assets"/>
 		
 		<assert-output name="French Home image">
 <![CDATA[		

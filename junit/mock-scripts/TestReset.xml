@@ -17,8 +17,7 @@
 	<!-- Reset works just like page service. -->
     
     <request>
-    	<parameter name="service" value="reset"/>
-    	<parameter name="context" value="Home"/>
+    	<parameter name="service" value="reset/Home"/>
 
 	  	<assert-output name="English Language Check">
 <![CDATA[
@@ -35,13 +34,12 @@ The start of the JUnit test suite: JUnit Simple Application.
 	     fabrication of service URL for reset service. -->
 	     
   	<request>
-  		<parameter name="service" value="reset"/>
-  		<parameter name="context" value="Two"/>
+  		<parameter name="service" value="reset/Two"/>
   		
 	
 		<assert-output name="Reset Link">
 <![CDATA[		
-<a href="/mock/app?service=reset&amp;context=Two">reset caching</a>
+<a href="/mock/app?service=reset/Two">reset caching</a>
 ]]>
 		</assert-output>
 		  		
@@ -50,8 +48,7 @@ The start of the JUnit test suite: JUnit Simple Application.
 	<!-- Test missing page -->
 	
 	<request>
-		<parameter name="service" value="reset"/>
-		<parameter name="context" value="Qbert"/>
+		<parameter name="service" value="reset/Qbert"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

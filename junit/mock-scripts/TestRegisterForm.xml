@@ -15,8 +15,7 @@
   	</servlet>
   	  	
   	<request>
-  		<parameter name="service" value="page"/>
-  		<parameter name="context" value="Register"/>
+  		<parameter name="service" value="page/Register"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -37,7 +36,6 @@ document.Form0.onsubmit = onsubmit_Form0;
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
 			<match>service</match>
-			<match>context</match>
 			<match>sp</match>
 			<match>Form0</match>
 		</assert-output-matches>
@@ -46,8 +44,7 @@ document.Form0.onsubmit = onsubmit_Form0;
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
-			<match>direct</match>
-			<match>0/Register/form</match>
+			<match>direct/0/Register/form</match>
 			<match>S0</match>
 			<match>inputFirstName,inputLastName,inputSex,inputAgeRange</match>
 		</assert-output-matches>
@@ -111,8 +108,7 @@ document.Form0.onsubmit = onsubmit_Form0;
   	<!-- Provoke an error by "submitting" the form but leaving some fields blank. -->
   	
   	<request>
-  		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="0/Register/form"/>
+  		<parameter name="service" value="direct/0/Register/form"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value=""/>
@@ -175,8 +171,7 @@ document.Form0.inputLastName.select();
 	</request>
 	
 	<request>
-  		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="0/Register/form"/>
+  		<parameter name="service" value="direct/0/Register/form"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value="Lewis Ship"/>

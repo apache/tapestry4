@@ -194,9 +194,20 @@ public class TestTemplateParser extends TestCase
         assertEquals("Text token end index.", endIndex, t.getEndIndex());
     }
 
+    /** @since 2.4 **/
+
+    protected void checkLine(TemplateToken token, int line)
+    {
+        assertEquals("Token line", line, token.getLocation().getLineNumber());
+    }
+
     /** @since 2.0.4 **/
 
-    protected void assertLocalizationToken(TemplateToken token, String key, Map attributes)
+    protected void assertLocalizationToken(
+        TemplateToken token,
+        String key,
+        Map attributes,
+        int line)
     {
         LocalizationToken t = (LocalizationToken) token;
 
@@ -204,18 +215,21 @@ public class TestTemplateParser extends TestCase
         assertEquals("Localization key.", key, t.getKey());
 
         assertEquals("Localization attributes.", attributes, t.getAttributes());
+
+        checkLine(token, line);
     }
 
-    protected void assertOpenToken(TemplateToken token, String id, String tag)
+    protected void assertOpenToken(TemplateToken token, String id, String tag, int line)
     {
-        assertOpenToken(token, id, null, tag);
+        assertOpenToken(token, id, null, tag, line);
     }
 
     protected void assertOpenToken(
         TemplateToken token,
         String id,
         String componentType,
-        String tag)
+        String tag,
+        int line)
     {
         OpenToken t = (OpenToken) token;
 
@@ -223,6 +237,8 @@ public class TestTemplateParser extends TestCase
         assertEquals("Open token id", id, t.getId());
         assertEquals("Open token component type", componentType, t.getComponentType());
         assertEquals("Open token tag", tag, t.getTag());
+
+        checkLine(token, line);
     }
 
     protected void assertTemplateAttributes(TemplateToken token, AttributeType type, Map expected)
@@ -251,9 +267,11 @@ public class TestTemplateParser extends TestCase
         assertEquals(type.getName() + " attributes", expected, actual);
     }
 
-    protected void assertCloseToken(TemplateToken token)
+    protected void assertCloseToken(TemplateToken token, int line)
     {
         assertEquals("Close token type.", TokenType.CLOSE, token.getType());
+
+        checkLine(token, line);
     }
 
     protected void assertTokenCount(TemplateToken[] tokens, int count)
@@ -297,8 +315,8 @@ public class TestTemplateParser extends TestCase
         assertTokenCount(tokens, 4);
 
         assertTextToken(tokens[0], 0, 38);
-        assertOpenToken(tokens[1], "emptyTag", "span");
-        assertCloseToken(tokens[2]);
+        assertOpenToken(tokens[1], "emptyTag", "span", 3);
+        assertCloseToken(tokens[2], 3);
         assertTextToken(tokens[3], 63, 102);
     }
 
@@ -307,10 +325,10 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("SimpleNested.html");
 
         assertTokenCount(tokens, 8);
-        assertOpenToken(tokens[1], "outer", "span");
-        assertOpenToken(tokens[3], "inner", "span");
-        assertCloseToken(tokens[4]);
-        assertCloseToken(tokens[6]);
+        assertOpenToken(tokens[1], "outer", "span", 3);
+        assertOpenToken(tokens[3], "inner", "span", 4);
+        assertCloseToken(tokens[4], 4);
+        assertCloseToken(tokens[6], 5);
     }
 
     public void testMixedNesting() throws TemplateParseException
@@ -318,8 +336,8 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("MixedNesting.html");
 
         assertTokenCount(tokens, 5);
-        assertOpenToken(tokens[1], "row", "span");
-        assertCloseToken(tokens[3]);
+        assertOpenToken(tokens[1], "row", "span", 4);
+        assertCloseToken(tokens[3], 7);
     }
 
     public void testSingleQuotes() throws TemplateParseException
@@ -327,8 +345,8 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("SingleQuotes.html");
 
         assertTokenCount(tokens, 7);
-        assertOpenToken(tokens[1], "first", "span");
-        assertOpenToken(tokens[4], "second", "span");
+        assertOpenToken(tokens[1], "first", "span", 5);
+        assertOpenToken(tokens[4], "second", "span", 7);
     }
 
     public void testComplex() throws TemplateParseException
@@ -339,9 +357,9 @@ public class TestTemplateParser extends TestCase
 
         // Just pick a few highlights out of it.
 
-        assertOpenToken(tokens[1], "ifData", "span");
-        assertOpenToken(tokens[3], "e", "span");
-        assertOpenToken(tokens[5], "row", "tr");
+        assertOpenToken(tokens[1], "ifData", "span", 3);
+        assertOpenToken(tokens[3], "e", "span", 10);
+        assertOpenToken(tokens[5], "row", "tr", 11);
     }
 
     public void testStartWithStaticTag() throws TemplateParseException
@@ -350,7 +368,7 @@ public class TestTemplateParser extends TestCase
 
         assertTokenCount(tokens, 4);
         assertTextToken(tokens[0], 0, 232);
-        assertOpenToken(tokens[1], "justBecause", "span");
+        assertOpenToken(tokens[1], "justBecause", "span", 9);
     }
 
     public void testUnterminatedCommentFailure()
@@ -422,13 +440,13 @@ public class TestTemplateParser extends TestCase
         assertTokenCount(tokens, 10);
         assertTextToken(tokens[0], 0, 119);
         assertTextToken(tokens[1], 188, 268);
-        assertOpenToken(tokens[2], "e", "span");
+        assertOpenToken(tokens[2], "e", "span", 23);
         assertTextToken(tokens[3], 341, 342);
-        assertOpenToken(tokens[4], "row", "tr");
+        assertOpenToken(tokens[4], "row", "tr", 24);
         assertTextToken(tokens[5], 359, 377);
-        assertCloseToken(tokens[6]);
+        assertCloseToken(tokens[6], 26);
         assertTextToken(tokens[7], 383, 383);
-        assertCloseToken(tokens[8]);
+        assertCloseToken(tokens[8], 27);
         assertTextToken(tokens[9], 391, 401);
     }
 
@@ -455,10 +473,10 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("BodyRemove.html", delegate);
 
         assertTokenCount(tokens, 8);
-        assertOpenToken(tokens[1], "form", "form");
-        assertOpenToken(tokens[3], "inputType", "select");
-        assertCloseToken(tokens[4]);
-        assertCloseToken(tokens[6]);
+        assertOpenToken(tokens[1], "form", "form", 9);
+        assertOpenToken(tokens[3], "inputType", "select", 11);
+        assertCloseToken(tokens[4], 15);
+        assertCloseToken(tokens[6], 16);
     }
 
     public void testRemovedComponentFailure()
@@ -482,8 +500,8 @@ public class TestTemplateParser extends TestCase
 
         assertTokenCount(tokens, 4);
         assertTextToken(tokens[0], 108, 165);
-        assertOpenToken(tokens[1], "nested", "span");
-        assertCloseToken(tokens[2]);
+        assertOpenToken(tokens[1], "nested", "span", 9);
+        assertCloseToken(tokens[2], 9);
         assertTextToken(tokens[3], 188, 192);
     }
 
@@ -499,7 +517,7 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("TagAttributes.html");
 
         assertTokenCount(tokens, 5);
-        assertOpenToken(tokens[1], "tag", null, "span");
+        assertOpenToken(tokens[1], "tag", null, "span", 3);
 
         assertTemplateAttributes(
             tokens[1],
@@ -519,7 +537,7 @@ public class TestTemplateParser extends TestCase
 
         assertTokenCount(tokens, 3);
         assertTextToken(tokens[0], 0, 35);
-        assertLocalizationToken(tokens[1], "the.localization.key", null);
+        assertLocalizationToken(tokens[1], "the.localization.key", null, 3);
         assertTextToken(tokens[2], 89, 117);
     }
 
@@ -567,7 +585,7 @@ public class TestTemplateParser extends TestCase
 
         assertTokenCount(tokens, 3);
         assertTextToken(tokens[0], 0, 62);
-        assertLocalizationToken(tokens[1], "empty.localization", null);
+        assertLocalizationToken(tokens[1], "empty.localization", null, 3);
         assertTextToken(tokens[2], 97, 122);
     }
 
@@ -585,7 +603,7 @@ public class TestTemplateParser extends TestCase
 
         Map attributes = buildMap(new String[] { "alpha", "beta", "Fred", "Wilma" });
 
-        assertLocalizationToken(tokens[1], "localization.with.attributes", attributes);
+        assertLocalizationToken(tokens[1], "localization.with.attributes", attributes, 3);
     }
 
     /**
@@ -601,8 +619,8 @@ public class TestTemplateParser extends TestCase
 
         assertTokenCount(tokens, 18);
 
-        assertOpenToken(tokens[1], "$Body", "Body", "body");
-        assertOpenToken(tokens[3], "loop", "Foreach", "tr");
+        assertOpenToken(tokens[1], "$Body", "Body", "body", 4);
+        assertOpenToken(tokens[3], "loop", "Foreach", "tr", 7);
 
         assertTemplateAttributes(
             tokens[3],
@@ -614,21 +632,21 @@ public class TestTemplateParser extends TestCase
             AttributeType.OGNL_EXPRESSION,
             buildMap(new String[] { "source", "items" }));
 
-        assertOpenToken(tokens[5], "$Insert", "Insert", "span");
+        assertOpenToken(tokens[5], "$Insert", "Insert", "span", 10);
 
         assertTemplateAttributes(
             tokens[5],
             AttributeType.OGNL_EXPRESSION,
             buildMap(new String[] { "value", "components.loop.value.name" }));
 
-        assertOpenToken(tokens[8], "$Insert_0", "Insert", "span");
+        assertOpenToken(tokens[8], "$Insert_0", "Insert", "span", 11);
 
         assertTemplateAttributes(
             tokens[8],
             AttributeType.OGNL_EXPRESSION,
             buildMap(new String[] { "value", "components.loop.value.price" }));
 
-        assertOpenToken(tokens[13], "$InspectorButton", "contrib:InspectorButton", "span");
+        assertOpenToken(tokens[13], "$InspectorButton", "contrib:InspectorButton", "span", 15);
     }
 
     /**
@@ -644,7 +662,7 @@ public class TestTemplateParser extends TestCase
 
         assertTokenCount(tokens, 4);
 
-        assertOpenToken(tokens[1], "$Insert", "Insert", "span");
+        assertOpenToken(tokens[1], "$Insert", "Insert", "span", 2);
 
         String expression = "{ \"<&>\", \"Fun!\" }";
 
@@ -666,7 +684,7 @@ public class TestTemplateParser extends TestCase
 
         assertTokenCount(tokens, 4);
 
-        assertOpenToken(tokens[1], "$Image", "Image", "img");
+        assertOpenToken(tokens[1], "$Image", "Image", "img", 3);
 
         assertTemplateAttributes(
             tokens[1],

@@ -73,8 +73,7 @@ Final value: [boy]
 	</request>
 	
 	<request> 
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="Two"/>	  	  	  	  	 	
+		<parameter name="service" value="page/Two"/>	  	  	  	  	 	
  	  	  	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -102,8 +101,7 @@ Final value: [8]
 	</request>	
 	
 	<request> 
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="Two"/>	  	  	  	  	 	
+		<parameter name="service" value="page/Two"/>	  	  	  	  	 	
  	  	  	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -122,8 +120,7 @@ Final value: [8]
 	</request>	
 	
 	<request>
-  	  	<parameter name="service" value="page"/>
-  	  	<parameter name="context" value="Three"/>
+  	  	<parameter name="service" value="page/Three"/>
   	  		  	  	 	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -157,8 +154,7 @@ Page class: \[org\.apache\.tapestry\.junit\.mock\.c9\.Three\$(.*?)\]
 	</request>	
 	
 	<request>
-  	  	<parameter name="service" value="page"/>
-  	  	<parameter name="context" value="Three"/>
+  	  	<parameter name="service" value="page/Three"/>
   	  		  	  	 	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -179,8 +175,7 @@ Final value: [Taxi]
 	     cause an exception. -->
 	     		
 	<request>
-  	  	<parameter name="service" value="page"/>
-  	  	<parameter name="context" value="Four"/>
+  	  	<parameter name="service" value="page/Four"/>
   	  		  	  	 	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -195,8 +190,7 @@ Unable to enhance class org.apache.tapestry.junit.mock.c9.Four because it implem
 	</request>		
 	
 	<request>
-  	  	<parameter name="service" value="page"/>
-  	  	<parameter name="context" value="Five"/>
+  	  	<parameter name="service" value="page/Five"/>
   	  		  	  	 	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -214,8 +208,7 @@ Unable to enhance class org.apache.tapestry.junit.mock.c9.Five because it implem
 		 the actual property type (if the class declares abstract accessor methods). -->
 		 
 	<request> 
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="Six"/>	  	  	  	  	 	
+		<parameter name="service" value="page/Six"/>	  	  	  	  	 	
  	  	  	
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -230,8 +223,7 @@ Unable to enhance class org.apache.tapestry.junit.mock.c9.Six because it contain
 	</request>			
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="Seven"/>
+		<parameter name="service" value="page/Seven"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -256,7 +248,7 @@ value: \[(.*?)\]
 		
 		<assert-output name="Link">
 <![CDATA[
-/c9/app?service=direct&amp;context=0/Seven/$DirectLink		
+/c9/app?service=direct/0/Seven/$DirectLink		
 ]]>
 		</assert-output>
 	</request>	
@@ -264,8 +256,7 @@ value: \[(.*?)\]
 	<!-- Trigger the link and check for the changes in the page, and in persistent storage. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/Seven/$DirectLink"/>
+		<parameter name="service" value="direct/0/Seven/$DirectLink"/>
 		
 		
 		<assert-output name="Page Title">
@@ -291,7 +282,7 @@ value: \[(.*?)\]
 		
 		<assert-output name="Link">
 <![CDATA[
-/c9/app?service=direct&amp;context=1/Seven/$DirectLink		
+/c9/app?service=direct/1/Seven/$DirectLink		
 ]]>
 		</assert-output>	
 		

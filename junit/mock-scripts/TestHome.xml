@@ -21,8 +21,7 @@ If it's not Scottish, it's crap!
 	</request>		
 
 	<request>
-	  	<parameter name="service" value="page"/>
-	  	<parameter name="context" value="Assets"/>
+	  	<parameter name="service" value="page/Assets"/>
 		
 		<assert-output name="Home Link">
 <![CDATA[		

@@ -15,8 +15,7 @@
   	</servlet>      
     
 	<request>
-	  	<parameter name="service" value="page"/>
-	  	<parameter name="context" value="PrivateAssetTemplate"/>
+	  	<parameter name="service" value="page/PrivateAssetTemplate"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[		
@@ -33,8 +32,7 @@ This page's content comes from a private asset
 	</request>
 	
 	<request>
-	  	<parameter name="service" value="page"/>
-	  	<parameter name="context" value="ContextAssetTemplate"/>
+	  	<parameter name="service" value="page/ContextAssetTemplate"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[		

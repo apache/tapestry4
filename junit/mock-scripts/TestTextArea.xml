@@ -32,8 +32,7 @@
 	</request>
 
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/Home/main"/>
+		<parameter name="service" value="direct/0/Home/main"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="One &lt;&gt; zero."/>
 		<parameter name="mode" value="0"/>
@@ -55,8 +54,7 @@ Text:\[\s*One &lt;&gt; zero.\s*\]
 
 
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="1/Home/main"/>
+		<parameter name="service" value="direct/1/Home/main"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Alpha&#010;Beta&#010;Gamma"/>
 		<parameter name="mode" value="0"/>
@@ -76,8 +74,7 @@ Text:\[\s*One &lt;&gt; zero.\s*\]
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="1/Home/main"/>
+		<parameter name="service" value="direct/1/Home/main"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Moe&#010;Larry&#010;Curly"/>
 		<parameter name="mode" value="1"/>
@@ -100,8 +97,7 @@ Text:\[\s+<p>Moe</p><p>Larry</p><p>Curly</p>\s+\]
 	<!-- Test TextArea ignoring request when not in the rewinding form. -->
 	
 	<request>
-		<parameter name="service" value="action"/>
-		<parameter name="context" value="1/Home/1/actionForm"/>
+		<parameter name="service" value="action/1/Home/1/actionForm"/>
 		<parameter name="Form1" value=""/>
 		
 		<assert-output name="Page Title">
@@ -118,8 +114,7 @@ Text:\[\s+<p>Moe</p><p>Larry</p><p>Curly</p>\s+\]
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="1/Home/main"/>
+		<parameter name="service" value="direct/1/Home/main"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="mode" value="1"/>
 		<parameter name="Form0" value="text,mode"/>
@@ -139,8 +134,7 @@ Text:\[\s+\]
 	<!-- Disable the TextArea. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="1/Home/disable"/>
+		<parameter name="service" value="direct/1/Home/disable"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -158,8 +152,7 @@ Text:\[\s+\]
 	<!-- Make sure property not updated when TextArea disabled. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="1/Home/main"/>
+		<parameter name="service" value="direct/1/Home/main"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Peter&#010;Paul&#010;Mary"/>
 		<parameter name="mode" value="1"/>
@@ -178,8 +171,7 @@ Text:\[\s+\]
 	</request>
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="Three"/>
+		<parameter name="service" value="page/Three"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

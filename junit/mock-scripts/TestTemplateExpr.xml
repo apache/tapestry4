@@ -12,8 +12,7 @@
   	</servlet>
        
     <request>
-    	<parameter name="service" value="page"/>
-    	<parameter name="context" value="TemplateExpr"/>
+    	<parameter name="service" value="page/TemplateExpr"/>
  	
 	  	<assert-output name="Valid use of template expression">
 <![CDATA[
@@ -29,8 +28,7 @@ Second example: <span class="styleClass">JUnit Mock Application</span>
 	</request>
 			
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="TemplateExprConflict"/>
+		<parameter name="service" value="page/TemplateExprConflict"/>
 		
 	  	<assert-output name="Page Title">
 <![CDATA[
@@ -45,8 +43,7 @@ An expression for parameter 'value' of component TemplateExprConflict/insertAppl
 	</request>
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="TemplateExprInformal"/>
+		<parameter name="service" value="page/TemplateExprInformal"/>
 		
 	  	<assert-output name="Page Title">
 <![CDATA[
@@ -61,8 +58,7 @@ Component TemplateExprInformal/ifTest allows only formal parameters, binding val
 	</request>	
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="TemplateExprReserved"/>
+		<parameter name="service" value="page/TemplateExprReserved"/>
 		
 	  	<assert-output name="Page Title">
 <![CDATA[

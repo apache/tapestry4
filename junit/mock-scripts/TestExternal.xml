@@ -13,8 +13,7 @@
 
   	<request>
   	  	  	
-  	  <parameter name="service" value="page"/>
-  	  <parameter name="context" value="ServiceTest"/>	  	
+  	  <parameter name="service" value="page/ServiceTest"/>	  	
   	  	  	
   	  <assert-output name="Page Title">
 <![CDATA[	  
@@ -24,7 +23,7 @@
   	  	  	
   	  <assert-output name="ServiceLink with parameters">
 <![CDATA[  	  
-  	  <a href="/junit/mock?service=external&amp;context=ServiceTest&amp;sp=SSopranos&amp;sp=20705&amp;sp=d3.142857142857143">
+  	  <a href="/junit/mock?service=external/ServiceTest&amp;sp=SSopranos&amp;sp=20705&amp;sp=d3.142857142857143">
 ]]>
   	  </assert-output>
   	  	  	
@@ -32,8 +31,7 @@
   </request>
   
   <request>
-  	<parameter name="service" value="external"/>
-  	<parameter name="context" value="ServiceTest"/>
+  	<parameter name="service" value="external/ServiceTest"/>
   	<parameter name="sp">
   		<value>SSopranos</value>
   		<value>20705</value>
@@ -87,8 +85,7 @@
   <!-- Specify a page which doesn't implement the IExternalPage interface. -->
   
   <request>
-  	<parameter name="service" value="external"/>
-  	<parameter name="context" value="lib:Dumper"/>
+  	<parameter name="service" value="external/lib:Dumper"/>
   	  	
   	<assert-output name="Page Title">
 <![CDATA[

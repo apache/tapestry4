@@ -21,7 +21,7 @@
   	  	  	
   	  <assert-output name="DirectLink with parameters">
 <![CDATA[  	  
-  	  <a href="/junit/mock?service=direct&amp;context=0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello">
+  	  <a href="/junit/mock?service=direct/0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello">
 ]]>
   	  </assert-output>
   	  	  	
@@ -70,8 +70,7 @@
   </request>
   
   <request>
-  	<parameter name="service" value="direct"/>
-  	<parameter name="context" value="0/Home/link"/>
+  	<parameter name="service" value="direct/0/Home/link"/>
   	<parameter name="sp">
   		<value>2</value>
   		<value>d3.5</value>
@@ -98,7 +97,7 @@
 	
   	  <assert-output name="PageLink (for library page).">
 <![CDATA[  	  
-  	  <a href="/junit/mock?service=page&amp;context=lib:Dumper">
+  	  <a href="/junit/mock?service=page/lib:Dumper">
 ]]>
   	  </assert-output>	
 	
@@ -111,8 +110,7 @@
   <!-- Click the "refresh" link and check that the persistent state is still there. -->
   
   <request>
-  	<parameter name="service" value="page"/>
-  	<parameter name="context" value="lib:Dumper"/>
+  	<parameter name="service" value="page/lib:Dumper"/>
   	
   	<assert-output-matches name="Cells (after refresh)" subgroup="1">
 <![CDATA[
@@ -147,14 +145,13 @@
 	
   	  <assert-output name="DirectLink with parameters">
 <![CDATA[  	  
-  	  <a href="/junit/mock?service=direct&amp;context=1/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello">
+  	  <a href="/junit/mock?service=direct/1/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello">
 ]]>
   	  </assert-output>
   </request>
 
   <request>
-  	<parameter name="service" value="page"/>
-  	<parameter name="context" value="lib:Properties"/>
+  	<parameter name="service" value="page/lib:Properties"/>
   	
   	<assert-output-matches name="Page properties" subgroup="1">
 <![CDATA[
