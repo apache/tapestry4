@@ -20,11 +20,11 @@ import javax.servlet.ServletException;
 
 import org.apache.hivemind.Defense;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.AbstractService;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.util.ComponentAddress;
 import org.jCharts.Chart;
@@ -39,12 +39,15 @@ import org.jCharts.encoders.JPEGEncoder13;
  * @since 1.0.10
  */
 
-public class ChartService extends AbstractService
+public class ChartService implements IEngineService
 {
     public static final String SERVICE_NAME = "chart";
 
     /** @since 3.1 */
     private RequestExceptionReporter _exceptionReporter;
+
+    /** @since 3.1 */
+    private LinkFactory _linkFactory;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
@@ -55,13 +58,13 @@ public class ChartService extends AbstractService
         Object[] serviceParameters = new Object[]
         { new ComponentAddress(component) };
 
-        return constructLink(cycle, SERVICE_NAME, null, serviceParameters, true);
+        return _linkFactory.constructLink(cycle, SERVICE_NAME, null, serviceParameters, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        Object[] serviceParameters = getParameters(cycle);
+        Object[] serviceParameters = _linkFactory.extractServiceParameters(cycle);
 
         ComponentAddress address = (ComponentAddress) serviceParameters[0];
 
@@ -110,5 +113,11 @@ public class ChartService extends AbstractService
     public void setExceptionReporter(RequestExceptionReporter exceptionReporter)
     {
         _exceptionReporter = exceptionReporter;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }

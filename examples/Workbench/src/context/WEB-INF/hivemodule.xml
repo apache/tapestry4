@@ -33,6 +33,7 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.workbench.WorkbenchHomeService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>  

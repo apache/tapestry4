@@ -20,11 +20,11 @@ import javax.servlet.ServletException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Defense;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
@@ -109,11 +109,14 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @since 2.2
  */
 
-public class ExternalService extends AbstractService
+public class ExternalService implements IEngineService
 {
     /** @since 3.1 */
 
     private ResponseRenderer _responseRenderer;
+
+    /** @since 3.1 */
+    private LinkFactory _linkFactory;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
@@ -126,12 +129,8 @@ public class ExternalService extends AbstractService
         String[] context = new String[]
         { pageName };
 
-        return constructLink(
-                cycle,
-                Tapestry.EXTERNAL_SERVICE,
-                context,
-                esp.getServiceParameters(),
-                true);
+        return _linkFactory.constructLink(cycle, Tapestry.EXTERNAL_SERVICE, context, esp
+                .getServiceParameters(), true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
@@ -139,7 +138,7 @@ public class ExternalService extends AbstractService
     {
         IExternalPage page = null;
 
-        String[] context = getServiceContext(cycle.getRequestContext());
+        String[] context = ServiceUtils.getServiceContext(cycle.getRequestContext());
 
         if (context == null || context.length != 1)
             throw new ApplicationRuntimeException(Tapestry.format(
@@ -159,7 +158,7 @@ public class ExternalService extends AbstractService
                     pageName), ex);
         }
 
-        Object[] parameters = getParameters(cycle);
+        Object[] parameters = _linkFactory.extractServiceParameters(cycle);
 
         cycle.setServiceParameters(parameters);
 
@@ -181,5 +180,11 @@ public class ExternalService extends AbstractService
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }

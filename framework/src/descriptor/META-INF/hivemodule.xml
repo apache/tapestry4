@@ -32,6 +32,7 @@
   <sub-module descriptor="tapestry.services.xml"/>
   <sub-module descriptor="tapestry.ognl.xml"/>
   <sub-module descriptor="tapestry.coerce.xml"/>
+  <sub-module descriptor="tapestry.url.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -65,6 +66,7 @@
         <set-service property="serviceMap" service-id="tapestry.services.ServiceMap"/>
         <set-service property="requestExceptionReporter" service-id="RequestExceptionReporter"/>
         <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
+        <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
       </construct>
     </invoke-factory>
     

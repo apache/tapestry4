@@ -25,6 +25,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
@@ -34,10 +35,13 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @since 1.0.9
  */
 
-public class PageService extends AbstractService
+public class PageService implements IEngineService
 {
     /** @since 3.1 */
     private ResponseRenderer _responseRenderer;
+
+    /** @since 3.1 */
+    private LinkFactory _linkFactory;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
@@ -46,7 +50,7 @@ public class PageService extends AbstractService
         String[] context = new String[]
         { (String) parameter };
 
-        return constructLink(cycle, Tapestry.PAGE_SERVICE, context, null, true);
+        return _linkFactory.constructLink(cycle, Tapestry.PAGE_SERVICE, context, null, true);
 
     }
 
@@ -54,7 +58,7 @@ public class PageService extends AbstractService
             IOException
     {
         RequestContext context = cycle.getRequestContext();
-        String[] serviceContext = getServiceContext(context);
+        String[] serviceContext = ServiceUtils.getServiceContext(context);
 
         if (Tapestry.size(serviceContext) != 1)
             throw new ApplicationRuntimeException(Tapestry.format(
@@ -86,5 +90,11 @@ public class PageService extends AbstractService
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }
