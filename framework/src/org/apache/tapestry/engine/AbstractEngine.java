@@ -121,7 +121,7 @@ import org.apache.tapestry.util.pool.Pool;
  *
  *  Uses a shared instance of
  *  {@link ITemplateSource}, {@link ISpecificationSource},
- *  {@link IScriptSource} and {@link org.apache.tapestry.IComponentStringsSource}
+ *  {@link IScriptSource} and {@link IComponentMessagesSource}
  *  stored as attributes of the  {@link ServletContext}
  *  (they will be shared by all sessions).
  *
@@ -303,7 +303,7 @@ public abstract class AbstractEngine
     protected static final String SCRIPT_SOURCE_NAME = "org.apache.tapestry.ScriptSource";
 
     /**
-     *  The name of the context attribute for the {@link org.apache.tapestry.IComponentStringsSource}
+     *  The name of the context attribute for the {@link IComponentMessagesSource}
      *  instance.  The application's name is appended.
      *
      *  @since 2.0.4
@@ -437,7 +437,7 @@ public abstract class AbstractEngine
     protected static final String POOL_NAME = "org.apache.tapestry.Pool";
 
     /**
-     *  Name of a shared instance of {@link org.apache.tapestry.IComponentClassEnhancer}
+     *  Name of a shared instance of {@link org.apache.tapestry.engine.IComponentClassEnhancer}
      *  stored in the {@link ServletContext}.
      *
      *  @since 3.0
@@ -447,7 +447,7 @@ public abstract class AbstractEngine
     protected static final String ENHANCER_NAME = "org.apache.tapestry.ComponentClassEnhancer";
 
     /**
-     *  A shared instance of {@link org.apache.tapestry.IComponentClassEnhancer}.
+     *  A shared instance of {@link org.apache.tapestry.engine.IComponentClassEnhancer}.
      *
      *  @since 3.0
      *  @see #createComponentClassEnhancer(RequestContext)
@@ -1089,7 +1089,7 @@ public abstract class AbstractEngine
      *  sets the message property of the StaleLink page to the
      *  message provided in the exception,
      *  then invokes
-     *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, RequestCycleException)}
+     *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, ApplicationRuntimeException)}
      *  to render the StaleLink page.
      *
      *  <p>Subclasses may overide this method (without
@@ -1126,7 +1126,7 @@ public abstract class AbstractEngine
      *  Invoked by {@link #service(RequestContext)} if a {@link StaleSessionException}
      *  is thrown by the {@link IEngineService service}.  This implementation
      *  invokes
-     *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, RequestCycleException)}
+     *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, ApplicationRuntimeException)}
      *  to render the StaleSession page.
      *
      *  <p>Subclasses may overide this method (without
@@ -1446,9 +1446,9 @@ public abstract class AbstractEngine
     /**
      *
      *  Invoked from {@link #setupForRequest(RequestContext)} to provide
-     *  a new instance of {@link IComponentStringsSource}.
+     *  a new instance of {@link IComponentMessagesSource}.
      *
-     *  @return an instance of {@link DefaultStringsSource}
+     *  @return an instance of {@link DefaultComponentMessagesSource}
      *  @since 2.0.4
      *
      **/
@@ -1534,10 +1534,10 @@ public abstract class AbstractEngine
 
     /**
      *  Generates a description of the instance.
-     *  Invokes {@link #extendDescription(StringBuffer)}
+     *  Invokes {@link #extendDescription(ToStringBuilder)}
      *  to fill in details about the instance.
      *
-     *  @see #extendDescription(ToStringB)
+     *  @see #extendDescription(ToStringBuilder)
      *
      **/
 
