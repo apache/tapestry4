@@ -76,16 +76,19 @@ with simple additions). Tapestry components are combined together
 </section>
 
 <section>
-  <title>Tapestry 3.1</title>
+  <title>Status</title>
   
 <p>
-Tapestry 3.0.2 is the final bug fix release for Tapestry 3.0.  Current development efforts are focused on Tapestry 3.1,
+This release is Tapestry 3.0.2, the final bug fix release for Tapestry 3.0.
+</p>
+
+<p>Current development efforts are focused on Tapestry 3.1,
 which rebuilds Tapestry on top of the
 <link href="http://jakarta.apache.org/hivemind/">HiveMind</link> microkernel, simplifies code and development,
 and ads a boat load of new features.</p>
 
 <p>
-<a href="current/">
+<a href="http://jakarta.apache.org/tapestry/current/">
 A preview of the Tapestry 3.1 documentation is available</a>.
 </p>
 
