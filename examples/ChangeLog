@@ -1,3 +1,7 @@
+* Feb 6 2001 hship
+
+Slight changes to Makefiles (due to variable name changes in JBE).
+
 * Jan 30 2001 hship
 
 Slight revision of VlibBeans Makefile (TAR variable was renamed to GNUTAR).
