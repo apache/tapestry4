@@ -1,7 +1,7 @@
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2000-2003 The Apache Software Foundation.  All rights
+ * Copyright (c) 2000-2004 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,6 +58,7 @@ package org.apache.tapestry.junit;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.tapestry.junit.engine.TestRequestCycleToString;
 import org.apache.tapestry.junit.enhance.TestEnhancedClassFactory;
 import org.apache.tapestry.junit.enhance.TestMethodSignature;
 import org.apache.tapestry.junit.form.TestListEditMap;
@@ -126,6 +127,7 @@ public class BasicTestSuite extends TestSuite
         suite.addTestSuite(TestRegexpMatcher.class);
         suite.addTestSuite(TestListEditMap.class);
         suite.addTestSuite(TestContentType.class);
+        suite.addTestSuite(TestRequestCycleToString.class);
 
         return suite;
     }

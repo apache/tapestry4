@@ -15,25 +15,14 @@
 
   <todo>
     <actions priority="Release 3.0">
-	<action context="code" dev="open">Decide on final release number for "NextGen"</action>
-	<action context="code" dev="open">Bugzilla or Scarab?</action>
-	<action context="code" dev="open">Get Tapestry building under Gump</action>
-	<action context="code" dev="open">Properly sign the distribution and have it mirrored with the other Jakarta downloads</action>
-	<action context="code" dev="open">Deal with character sets and localization properly</action>
-	<action context="code" dev="open">Handle change of locale correctly, by reloading new   instance of page in proper locale</action>
-	<action context="code" dev="open">Improved User's Guide to replace existing Developer's Guide</action>
+<action context="code" dev="open">Handle change of locale correctly, by reloading new   instance of page in proper locale</action>
+	<action context="code" dev="HS">Improved User's Guide to replace existing Developer's Guide</action>
 	<action context="code" dev="open">Replace the current tutorial with Neil Clayton's Tutorial2</action>
 	<action context="code" dev="open">Reoganize directory structure to more standard format (compatible with Maven)</action>
-	<action context="code" dev="open">Use Forrest, or somesuch, for documentation (possibly, convert User's Guide and friends to alternate format)</action>
 	<action context="code" dev="open">Get Tapestry compiling under Maven, have nightly builds</action>
 	<action context="code" dev="open">Fill out the test suite and code coverage, reach 85% or better</action>
 	<action context="code" dev="open">Fix all the Component Reference pages to use the 3.0 syntax</action>
   	<action context="script" dev="open">Improve the "include script" element to support relative scripts, scripts in context, script in classpath</action>
-  	<action context="script" dev="open">Some kind of "include only once" block</action>
-  	<action context="script" dev="open">Name uniquer</action>
-  	<action context="script" dev="open">New DTD w/Jakarta public/system ids</action>
-  	<action context="script" dev="open">NextGen or NextGen++?</action>
-	<action context="misc" dev="open">Change build environment to NOT compile against LGPL frameworks (J2EE from JBoss)</action>
 	<action context="misc" dev="open">Unit testing stategy for the JSP tags and tagsupport service</action>
 	<action context="misc" dev="open">Allow auto parameters to not be required</action>
     </actions>
@@ -237,8 +226,20 @@ fixed broken links in doc\src\common\TapestryLinks.xml
 </action>
 
 <action type="update" dev="HLS">
-Changed code to no longer invoke StringUtils.isEmpty() / isNonEmpty() (this is because the
+Changed code to no longer invoke <code>StringUtils.isEmpty() / isNonEmpty()</code> (this is because the
 behavior of the method is changing between jakarta-commons 1.0 and 2.0).	
+</action>
+
+<action type="update" dev="HLS">
+Add an implementation of <code>toString()</code> to <code>RequestCycle</code>.
+</action>
+
+<action type="update" dev="HLS">
+Update all copyrights for 2004.	
+</action>
+
+<action type="fix" dev="HLS">
+Add download links.	
 </action>
 
 
