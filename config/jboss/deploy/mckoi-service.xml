@@ -4,18 +4,14 @@
 
 <!-- ===================================================================== -->
 <!--                                                                       -->
-<!--  McKoi Database 0.94h configuration                                    -->
+<!--  McKoi Database 1.00 configuration                                    -->
 <!--                                                                       -->
 <!-- ===================================================================== -->
 
 <!-- This is basically a cut-and-paste of the Solid example service, modified
-     for McKoi DB.  The MBeans are GPL, and are available as
-     mckoidb-0.94h-jmx.jar
-     from
-     http://sourceforge.net/project/showfiles.php?group_id=4754
-     
-     At some near future date, these MBeans will be rolled into the
-     McKoi database distribution.  -->
+     for McKoi DB.  This required McKoi release 1.00, which includes
+     the MBean implementation that allow it to operate within JBoss
+     (previously, a seperate MBean JAR file was needed). -->
       
 
 <server>
@@ -23,7 +19,7 @@
 	<!-- The current working directory is the JBoss/bin directory, so this
 		 relative path works. -->
 		 
-	<mbean code="net.sf.tapestry.mckoi.McKoiDB" name="jboss:service=McKoiDB">
+	<mbean code="net.sf.tapestry.contrib.mckoi.McKoiDB" name="jboss:service=McKoiDB">
   		<attribute name="ConfigPath">../server/tapestry/db/tapestry.conf</attribute>
 	</mbean>
 	  		

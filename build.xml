@@ -116,6 +116,7 @@
 				<include name="*.xml"/>
 				<include name="*.html"/>
 				<include name="LICENSE.*"/>
+				<include name="KEYS"/>
 				<!-- Skip HTML files in web, since those need
 				 a seperate path, to provide filtering. -->
 				<exclude name="Readme.html"/>
@@ -198,9 +199,7 @@
 	<target name="build-dist-tarball"
 		description="Builds the tarball distributions."
 		depends="build-dist-copy">
-		<!-- Pack the directory (relative to ${dist.dir}), into a TAR file.  We go to the extra work
-	      of building a .tar.gz because the distro is smaller than an equivalent .zip file.
-	   -->
+
 		<property name="bin.tar.gz" value="${dist.dir}-bin.tar.gz"/>
 		<property name="src.tar.gz" value="${dist.dir}-src.tar.gz"/>
 		<tar tarfile="${bin.tar.gz}" longfile="gnu" compression="gzip">
@@ -221,6 +220,30 @@
 				<include name="${dist.base}/examples/**"/>
 			</tarfileset>
 		</tar>
+		
+		<property name="bin.zip" value="${dist.dir}-bin.zip"/>
+		<property name="src.zip" value="${dist.dir}-src.zip"/>
+		
+		<zip destfile="${bin.zip}">
+			<zipfileset dir="${dist.root.dir}">
+				<include name="${dist.base}/**"/>
+				<!-- Don't ship the code coverage report; it's huge. -->
+				<exclude name="${dist.base}/framework/**"/>
+				<exclude name="${dist.base}/contrib/**"/>
+				<exclude name="${dist.base}/examples/**"/>
+				<exclude name="${dist.base}/web/doc/clover/**"/>
+			</zipfileset>		  
+		</zip>
+		
+		<zip destfile="${src.zip}">
+			<zipfileset dir="${dist.root.dir}">
+				<!-- Include the sub-projects excluded from the -bin distro. -->
+				<include name="${dist.base}/framework/**"/>
+				<include name="${dist.base}/contrib/**"/>
+				<include name="${dist.base}/examples/**"/>
+			</zipfileset>		
+		</zip>
+		
 		<!-- Create the web distribution (to be put up on the web site).  This *does*
 	     include the code coverage report.  -->
 		<property name="web.tar.gz"
