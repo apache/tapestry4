@@ -38,7 +38,7 @@
     
     <invoke-factory model="threaded">
       <construct class="impl.RequestLocaleManagerImpl">
-        <set-object property="request" value="infrastructure:request"/>
+        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-service property="cookieSource" service-id="CookieSource"/>
       </construct>
     </invoke-factory>
@@ -50,8 +50,8 @@
     
     <invoke-factory>
       <construct class="impl.CookieSourceImpl">
-        <set-object property="request" value="infrastructure:request"/>
-        <set-object property="response" value="infrastructure:response"/>
+        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
+        <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
       </construct>
     </invoke-factory>    
   </service-point>  
@@ -134,7 +134,7 @@
     
     <invoke-factory>
       <construct class="impl.AbsoluteURLBuilderImpl">
-        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="request" value="infrastructure:webRequest"/>
       </construct>
     </invoke-factory>
     

@@ -17,14 +17,10 @@ package org.apache.tapestry.engine;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
@@ -33,6 +29,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 import org.easymock.MockControl;
 
 /**
@@ -53,7 +51,7 @@ public class TestDirectService extends ServiceTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        HttpServletRequest request = newRequest(false, null);
+        WebRequest request = newWebRequest(false, null);
 
         cycle.getPage();
         cyclec.setReturnValue(page);
@@ -98,7 +96,7 @@ public class TestDirectService extends ServiceTestCase
     public void testGetLinkOnSamePageStateful()
     {
         IPage page = newPage("ThePage");
-        HttpServletRequest request = newRequest(false, newSession());
+        WebRequest request = newWebRequest(false, newWebSession());
 
         MockControl cc = newControl(IDirect.class);
         IDirect c = (IDirect) cc.getMock();
@@ -149,7 +147,7 @@ public class TestDirectService extends ServiceTestCase
     {
         IPage page = newPage("ActivePage");
         IPage componentPage = newPage("ComponentPage");
-        HttpServletRequest request = newRequest(false, null);
+        WebRequest request = newWebRequest(false, null);
         MockControl cc = newControl(IDirect.class);
         IDirect c = (IDirect) cc.getMock();
 
@@ -423,8 +421,8 @@ public class TestDirectService extends ServiceTestCase
         d.isStateful();
         dc.setReturnValue(true);
 
-        HttpSession session = newSession(false);
-        HttpServletRequest request = newRequest(session);
+        WebSession session = newWebSession(false);
+        WebRequest request = newWebRequest(session);
 
         MockControl lfc = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) lfc.getMock();
@@ -490,7 +488,7 @@ public class TestDirectService extends ServiceTestCase
         d.isStateful();
         dc.setReturnValue(true);
 
-        HttpServletRequest request = newRequest(null);
+        WebRequest request = newWebRequest(null);
 
         d.getExtendedId();
         dc.setReturnValue("ActivePage/fred.barney");

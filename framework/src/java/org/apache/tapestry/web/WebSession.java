@@ -22,5 +22,17 @@ package org.apache.tapestry.web;
  */
 public interface WebSession extends AttributeHolder
 {
+    /**
+     * Returns a unique string identifier used to identify the session. This value is provided by
+     * the container, and is typically incorporated into URLs, or stored as a HTTP cookie.
+     * 
+     * @see org.apache.tapestry.web.WebResponse#encodeURL(String).
+     */
     public String getId();
+
+    /**
+     * Returns true if the client does not yet know about the session or if the client chooses not
+     * to join the session.
+     */
+    public boolean isNew();
 }

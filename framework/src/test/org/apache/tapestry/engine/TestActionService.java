@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
@@ -32,6 +31,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 import org.easymock.MockControl;
 
 /**
@@ -53,7 +54,7 @@ public class TestActionService extends ServiceTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        HttpServletRequest request = newRequest(false, null);
+        WebRequest request = newWebRequest(false, null);
 
         cycle.getPage();
         cyclec.setReturnValue(page);
@@ -99,7 +100,7 @@ public class TestActionService extends ServiceTestCase
     {
         MockControl componentc = newControl(IComponent.class);
         IComponent component = (IComponent) componentc.getMock();
-        HttpServletRequest request = newRequest(false, newSession());
+        WebRequest request = newWebRequest(false, newWebSession());
 
         IPage activePage = newPage("ActivePage");
         IPage componentPage = newPage("ComponentPage");
@@ -235,8 +236,8 @@ public class TestActionService extends ServiceTestCase
         action.getRequiresSession();
         actionc.setReturnValue(true);
 
-        HttpSession session = newSession(false);
-        HttpServletRequest request = newRequest(session);
+        WebSession session = newWebSession(false);
+        WebRequest request = newWebRequest(session);
 
         cycle.rewindPage("action-id", action);
 
@@ -359,7 +360,7 @@ public class TestActionService extends ServiceTestCase
         action.getRequiresSession();
         actionc.setReturnValue(true);
 
-        HttpServletRequest request = newRequest(null);
+        WebRequest request = newWebRequest(null);
 
         action.getExtendedId();
         actionc.setReturnValue("ActivePage/fred.barney");

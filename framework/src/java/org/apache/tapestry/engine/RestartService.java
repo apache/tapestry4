@@ -91,11 +91,6 @@ public class RestartService implements IEngineService
             }
         }
 
-        // Make isStateful() return false, so that the servlet doesn't
-        // try to store the engine back into the (now invalid) session.
-        // TODO: How to get the EngineManager to *not* try and
-        // store the engine back in the (now invalid) session.
-
         String url = _builder.constructURL(_servletPath);
 
         _response.sendRedirect(url);

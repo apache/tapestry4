@@ -20,11 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 import org.easymock.MockControl;
 
 /**
@@ -61,11 +62,33 @@ public abstract class ServiceTestCase extends HiveMindTestCase
 
         return result;
     }
+    
+    protected WebRequest newWebRequest(WebSession session)
+    {
+        MockControl control = newControl(WebRequest.class);
+        WebRequest result = (WebRequest) control.getMock();
+
+        result.getSession(false);
+        control.setReturnValue(session);
+
+        return result;
+    }
 
     protected HttpServletRequest newRequest(boolean create, HttpSession session)
     {
         MockControl control = newControl(HttpServletRequest.class);
         HttpServletRequest result = (HttpServletRequest) control.getMock();
+
+        result.getSession(create);
+        control.setReturnValue(session);
+
+        return result;
+    }
+
+    protected WebRequest newWebRequest(boolean create, WebSession session)
+    {
+        MockControl control = newControl(WebRequest.class);
+        WebRequest result = (WebRequest) control.getMock();
 
         result.getSession(create);
         control.setReturnValue(session);
@@ -84,9 +107,26 @@ public abstract class ServiceTestCase extends HiveMindTestCase
         return session;
     }
 
+    protected WebSession newWebSession(boolean isNew)
+    {
+        MockControl control = newControl(WebSession.class);
+        WebSession session = (WebSession) control.getMock();
+
+        session.isNew();
+        control.setReturnValue(isNew);
+
+        return session;
+    }
+
+    
     protected HttpSession newSession()
     {
         return (HttpSession) newMock(HttpSession.class);
+    }
+
+    protected WebSession newWebSession()
+    {
+        return (WebSession) newMock(WebSession.class);
     }
 
     protected ILink newLink()

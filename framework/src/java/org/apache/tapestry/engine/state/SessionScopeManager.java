@@ -17,6 +17,9 @@ package org.apache.tapestry.engine.state;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
+
 /**
  * Manager for the 'session' scope; state objects are stored as HttpSession attributes. The
  * HttpSession is created as necessary.
@@ -26,12 +29,15 @@ import javax.servlet.http.HttpSession;
  */
 public class SessionScopeManager implements StateObjectPersistenceManager
 {
-    private HttpServletRequest _request;
+    private WebRequest _request;
 
     private String _applicationId;
 
     private String buildKey(String objectName)
     {
+        // For Portlets, the application id is going to be somewhat redundant, since
+        // the Portlet API keeps portlets seperate anyway.
+
         return "state:" + _applicationId + ":" + objectName;
     }
 
@@ -39,14 +45,14 @@ public class SessionScopeManager implements StateObjectPersistenceManager
      * Returns the session for the current request, creating it if necessary.
      */
 
-    private HttpSession getSession()
+    private WebSession getSession()
     {
-        return _request.getSession();
+        return _request.getSession(true);
     }
 
     public boolean exists(String objectName)
     {
-        HttpSession session = _request.getSession(false);
+        WebSession session = _request.getSession(false);
 
         if (session == null)
             return false;
@@ -57,7 +63,7 @@ public class SessionScopeManager implements StateObjectPersistenceManager
     public Object get(String objectName, StateObjectFactory factory)
     {
         String key = buildKey(objectName);
-        HttpSession session = getSession();
+        WebSession session = getSession();
 
         Object result = session.getAttribute(key);
         if (result == null)
@@ -73,12 +79,9 @@ public class SessionScopeManager implements StateObjectPersistenceManager
     {
         String key = buildKey(objectName);
 
-        HttpSession session = getSession();
+        WebSession session = getSession();
 
-        if (stateObject == null)
-            session.removeAttribute(key);
-        else
-            session.setAttribute(key, stateObject);
+        session.setAttribute(key, stateObject);
     }
 
     public void setApplicationId(String applicationName)
@@ -86,7 +89,7 @@ public class SessionScopeManager implements StateObjectPersistenceManager
         _applicationId = applicationName;
     }
 
-    public void setRequest(HttpServletRequest request)
+    public void setRequest(WebRequest request)
     {
         _request = request;
     }

@@ -34,6 +34,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 
 /**
  * Implementation of the direct service, which encodes the page and component id in the service
@@ -52,7 +54,7 @@ public class DirectService implements IEngineService
     private LinkFactory _linkFactory;
 
     /** @since 3.1 */
-    private HttpServletRequest _request;
+    private WebRequest _request;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
@@ -122,7 +124,7 @@ public class DirectService implements IEngineService
 
         if (activeSession && direct.isStateful())
         {
-            HttpSession session = _request.getSession();
+            WebSession session = _request.getSession(false);
 
             if (session == null || session.isNew())
                 throw new StaleSessionException(EngineMessages.requestStateSession(direct),
@@ -159,7 +161,7 @@ public class DirectService implements IEngineService
     }
 
     /** @since 3.1 */
-    public void setRequest(HttpServletRequest request)
+    public void setRequest(WebRequest request)
     {
         _request = request;
     }
