@@ -42,23 +42,11 @@ public class SurveyEngine extends SimpleEngine
 {
 	private transient SurveyDatabase database;
 
-	protected String getSpecificationAttributeName()
-	{
-		return "Survey.application";
-	}
-	
-	protected String getSpecificationResourceName()
-	{
-		return "/tutorial/survey/Survey.application";
-	}
-	
-	
 	public SurveyDatabase getDatabase()
 	{
 		return database;
 	}
 	
-
 	protected void setupForRequest(RequestContext context)
 	{
 		super.setupForRequest(context);
