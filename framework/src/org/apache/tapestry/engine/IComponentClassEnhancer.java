@@ -92,7 +92,7 @@ public interface IComponentClassEnhancer
 	 *  @param className the name of base class to enhance, as extracted
 	 *  from the specification (or possibly, from a default).
 	 * 
-	 *  @throws ApplicationRuntimeException if the class does not exist, is invalid,
+	 *  @throws org.apache.tapestry.ApplicationRuntimeException if the class does not exist, is invalid,
 	 *  or may not be enhanced.
 	 * 
 	 **/
