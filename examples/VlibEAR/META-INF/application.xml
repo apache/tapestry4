@@ -19,11 +19,4 @@
 		</web>
 	</module>
 	
-	<module>
-		<web>
-			<web-uri>Tutorial.war</web-uri>
-			<context-root>tutorial</context-root>
-		</web>
-	</module>
-	
 </application>

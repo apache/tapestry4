@@ -294,6 +294,7 @@ description="Builds the Tapestry documentation.">
   	<copy todir="${jboss.dir}/deploy">
   		<fileset dir="lib">
   			<include name="Vlib.ear"/>
+  			<include name="Tutorial.war"/>
   		</fileset>
   	</copy>
   </target>
