@@ -4,7 +4,7 @@ import net.sf.tapestry.engine.BaseEngine;
 
 /**
  * 
- *  Engine for the Border tutorial.  Provide the list of page names used
+ *  Engine for the Border tutorial.  Provides the list of page names used
  *  by the {@link Border} component.
  * 
  *  @version $Id$
@@ -14,11 +14,11 @@ import net.sf.tapestry.engine.BaseEngine;
 
 public class BorderEngine extends BaseEngine
 {
-    private static final String[] pageNames = { "Home", "Credo", "Legal" };
+    private static final String[] PAGE_NAMES = { "Home", "Credo", "Legal" };
 
     public String[] getPageNames()
     {
-        return pageNames;
+        return PAGE_NAMES;
     }
 
 }

@@ -18,39 +18,39 @@ import net.sf.tapestry.form.IPropertySelectionModel;
 
 public class Visit implements Serializable
 {
-    private static PortletChannel[] channels =
+    private static PortletChannel[] _channels =
         {
             new PortletChannel(87, "Slashdot Headlines", "Slashdot", "content"),
             new PortletChannel(23, "Stock Quotes", "Stocks", "content"),
             new PortletChannel(373, "Weather", "Weather", "content")};
 
-    private List models;
+    private List _models;
 
     public void removeModel(PortletModel model)
     {
-        if (models != null)
-            models.remove(model);
+        if (_models != null)
+            _models.remove(model);
     }
 
     public Collection getModels()
     {
-        return models;
+        return _models;
     }
 
     public void addModel(int id)
     {
-        for (int i = 0; i < channels.length; i++)
+        for (int i = 0; i < _channels.length; i++)
         {
-            PortletChannel channel = channels[i];
+            PortletChannel channel = _channels[i];
 
             if (channel.getId() == id)
             {
                 PortletModel model = channel.getModel();
 
-                if (models == null)
-                    models = new ArrayList();
+                if (_models == null)
+                    _models = new ArrayList();
 
-                models.add(model);
+                _models.add(model);
 
                 return;
             }
@@ -71,9 +71,9 @@ public class Visit implements Serializable
     {
         PortletSelectionModel model = new PortletSelectionModel();
 
-        for (int i = 0; i < channels.length; i++)
+        for (int i = 0; i < _channels.length; i++)
         {
-            PortletChannel channel = channels[i];
+            PortletChannel channel = _channels[i];
 
             if (!inUse(channel.getId()))
                 model.add(channel);
@@ -84,13 +84,13 @@ public class Visit implements Serializable
 
     private boolean inUse(int id)
     {
-        if (models == null)
+        if (_models == null)
             return false;
 
-        int count = models.size();
+        int count = _models.size();
         for (int i = 0; i < count; i++)
         {
-            PortletModel model = (PortletModel) models.get(i);
+            PortletModel model = (PortletModel) _models.get(i);
 
             if (model.getId() == id)
                 return true;
@@ -108,9 +108,9 @@ public class Visit implements Serializable
 
     public boolean getMaySelectPortlet()
     {
-        if (models == null)
+        if (_models == null)
             return true;
 
-        return models.size() < channels.length;
+        return _models.size() < _channels.length;
     }
 }

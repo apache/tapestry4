@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+
+	
+<page-specification class="tutorial.portal.Weather">
+
+<component id="weekday" type="DirectLink">
+  <binding name="listener" expression="listeners.selectWeekday"/>
+  <binding name="class" expression="weekdayClass"/>
+  <static-binding name="parameters" value="0"/>
+</component>
+
+<component id="weekend" type="DirectLink">
+  <binding name="listener" expression="listeners.selectWeekend"/>
+  <binding name="class" expression="weekendClass"/>
+  <static-binding name="parameters" value="1"/>
+</component>
+	
+</page-specification>

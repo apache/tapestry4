@@ -16,50 +16,62 @@ import net.sf.tapestry.form.IPropertySelectionModel;
 
 public class PortletSelectionModel implements IPropertySelectionModel
 {
-	private List list = new ArrayList();
+	private List _list = new ArrayList();
 
 	private static class Entry
 	{
-		int id;
-		String title;
+		private int _id;
+		private String _title;
 
 		Entry(int id, String title)
 		{
-			this.id = id;
-			this.title = title;
+			_id = id;
+			_title = title;
 		}
+        
+        public int getId()
+        {
+            return _id;
+        }
+
+        public String getTitle()
+        {
+            return _title;
+        }
+
 	}
 
-	public void add(PortletChannel def)
+	public void add(PortletChannel channel)
 	{
-		Entry e = new Entry(def.getId(), def.getTitle());
-		list.add(e);
+		Entry e = new Entry(channel.getId(), channel.getTitle());
+        
+		_list.add(e);
 	}
 
 	public int getOptionCount()
 	{
-		return list.size();
+		return _list.size();
 	}
 
 	public Object getOption(int index)
 	{
-		Entry e = (Entry) list.get(index);
+		Entry e = (Entry) _list.get(index);
 
-		return new Integer(e.id);
+		return new Integer(e.getId());
 	}
 
 	public String getLabel(int index)
 	{
-		Entry e = (Entry) list.get(index);
+		Entry e = (Entry) _list.get(index);
 
-		return e.title;
+		return e.getTitle();
 	}
 
 	public String getValue(int index)
 	{
-		Entry e = (Entry) list.get(index);
+		Entry e = (Entry) _list.get(index);
 
-		return Integer.toString(e.id);
+		return Integer.toString(e.getId());
 	}
 
 	public Object translateValue(String value)

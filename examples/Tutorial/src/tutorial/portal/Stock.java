@@ -2,8 +2,6 @@ package tutorial.portal;
 
 import java.io.Serializable;
 
-import net.sf.tapestry.util.prop.IPublicBean;
-
 /**
  *  Stores information about a single Stock.
  *
@@ -12,11 +10,11 @@ import net.sf.tapestry.util.prop.IPublicBean;
  * 
  **/
 
-public class Stock implements Serializable, IPublicBean
+public class Stock implements Serializable
 {
-    public String tickerId;
-    public double price;
-    public double change;
+    private String _tickerId;
+    private double _price;
+    private double _change;
 
     public Stock()
     {
@@ -24,21 +22,37 @@ public class Stock implements Serializable, IPublicBean
 
     public Stock(String tickerId, double price, double change)
     {
-        this.tickerId = tickerId;
-        this.price = price;
-        this.change = change;
+        _tickerId = tickerId;
+        _price = price;
+        _change = change;
     }
 
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("Stock[");
-        buffer.append(tickerId);
+        buffer.append(_tickerId);
         buffer.append(' ');
-        buffer.append(price);
+        buffer.append(_price);
         buffer.append(' ');
-        buffer.append(change);
+        buffer.append(_change);
         buffer.append(']');
 
         return buffer.toString();
     }
+    
+    public double getChange()
+    {
+        return _change;
+    }
+
+    public double getPrice()
+    {
+        return _price;
+    }
+
+    public String getTickerId()
+    {
+        return _tickerId;
+    }
+
 }
