@@ -52,7 +52,7 @@ An expression for parameter 'value' of component TemplateExprConflict/insertAppl
 		</assert-output>	
 	
 		<assert-output name="Error Message">
-Component TemplateExprInformal/ifTest allows only formal parameters, binding value is not allowed.
+The template for TemplateExprInformal contains an expression for parameter 'informal' of component TemplateExprInformal/block, but TemplateExprInformal/block does not allow informal parameters.
 		</assert-output>	
 		
 	</request>	

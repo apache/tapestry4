@@ -10,8 +10,6 @@
   	<static-binding name="title">TemplateExprInformal</static-binding>
   </component>
   
-   <component id="ifTest" type="Conditional">
-   	<binding name="value" expression="false"/>
-   </component>
+   <component id="block" type="Block"/>
    
 </page-specification>

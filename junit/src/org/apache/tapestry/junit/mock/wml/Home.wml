@@ -39,5 +39,8 @@
             </anchor>
         </p>
     </card>
+    
+    <card jwcid="@Conditional" element="card" id="anotherCard" condition="ognl:true">
+    </card>
 
 </wml>
