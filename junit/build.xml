@@ -85,7 +85,14 @@
 
           <batchtest todir="${classes.dir}" unless="testcase">
               <fileset dir="${classes.dir}"
-                  includes="**/*TapestrySuite.class"
+                  includes="**/Test*.class"
+                  excludes="**/*$$*.class"
+              />
+          </batchtest>
+
+          <batchtest todir="${classes.dir}" if="testcase">
+              <fileset dir="${classes.dir}"
+                  includes="**/${testcase}.class"
               />
           </batchtest>
 
