@@ -3,6 +3,82 @@
 <chapter id="configuration">
 	<title>Configuring Tapestry</title>
 	
+<section id="configuration.requirements">
+	<title>Requirements</title>
+	
+<para>
+Tapestry is designed to operate on a variety of different JVMs and versions of 
+the Java Servlet API. Below you can find the list of supported and 
+tested configurations:
+</para>
+
+<variablelist>
+	<title>Supported Java Versions</title>
+	
+<varlistentry>
+	<term>Java 1.2.2</term>
+	
+	<listitem>
+	<para>
+	Operates correctly. Requires the Xerces parser to be in the classpath 
+	(usually provided by the servlet container).
+	</para>
+	</listitem>
+</varlistentry>
+	
+<varlistentry>
+	<term>Java 1.3.x</term>
+	
+	<listitem>
+	<para>
+	Operates correctly. Requires the Xerces parser to be in the classpath
+	(usually provided by the servlet container).
+	</para>
+	</listitem>
+</varlistentry>
+	
+<varlistentry>
+	<term>Java 1.4.x (recommended)</term>
+	
+	<listitem>
+	<para>
+	Operates correctly.
+	</para>
+	</listitem>
+</varlistentry>
+
+</variablelist>
+
+
+
+<variablelist>
+	<title>Supported Java Servlet API Versions</title>
+	
+<varlistentry>
+	<term>Java Servlet API 2.2</term>
+	
+	<listitem>
+	<para>
+	Operates correctly with minor exceptions related to character encoding 
+	of the requests due to the limitations of the Servlet API version.
+	</para>
+	</listitem>
+</varlistentry>
+	
+<varlistentry>
+	<term>Java Servlet API 2.3 (recommended)</term>
+	
+	<listitem>
+	<para>
+	Operates correctly.
+	</para>
+	</listitem>
+</varlistentry>
+	
+</variablelist>
+
+</section>
+
 <section id="configuration.deployment-descriptor">
 	<title>Web Deployment Descriptor</title>
 	
@@ -630,8 +706,8 @@ As an example, the org.apache.tapestry.template-encoding_ru configuration proper
 the character set used by the Russian templates, such as Home_ru.html. 
 This allows templates for different locales to use different character sets, 
 even though they are in the same application. 
-For example, all Russian templates in the application to use the KOI8-R character set 
-and all Chinese templates to use Big5 at the same time.
+For example, it is possible for all Russian templates in the application to use the KOI8-R 
+character set and all Chinese templates to use Big5 at the same time.
 </para>
 
 <para>
