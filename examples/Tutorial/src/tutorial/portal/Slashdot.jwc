@@ -12,11 +12,8 @@
 <component id="e" type="Foreach">
     <binding name="source" property-path="stories"/>
     <binding name="value" property-path="story"/>
-</component>
-
-<component id="evenOdd" type="Any">
-	<static-binding name="element">tr</static-binding>
-	<binding name="class" property-path="beans.rowClass.next"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.rowClass.next"/>
 </component>
 
 <component id="link" type="Any">

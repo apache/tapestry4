@@ -12,11 +12,8 @@
 <component id="e" type="Foreach">
   <binding name="source" property-path="stocks"/>
   <binding name="value" property-path="stock"/>
-</component>
-
-<component id="evenOdd" type="Any">
-	<static-binding name="element">tr</static-binding>
-	<binding name="class" property-path="beans.rowClass.next"/>
+  <static-binding name="element">tr</static-binding>
+  <binding name="class" property-path="beans.rowClass.next"/>
 </component>
 
 <component id="insertStock" type="Insert">
@@ -34,7 +31,7 @@
 </component>
 
 <component id="showError" type="ShowError">
-  <binding name="error" property-path="error"/>
+  <binding name="message" property-path="error"/>
 </component>
 
 <component id="form" type="Form">

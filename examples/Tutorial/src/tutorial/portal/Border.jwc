@@ -14,8 +14,8 @@
   <component id="insertWrapped" type="InsertWrapped"/>
   <component id="showInspector" type="ShowInspector"/>
 
-<component id="insertPageName" type="Insert">
+  <component id="insertPageName" type="Insert">
 	<binding name="value" property-path="page.name"/>
-</component>
+  </component>
 
  </specification>
