@@ -206,45 +206,47 @@ public abstract class Border extends BaseComponent
         if (visit == null)
             return false;
 
-        return visit.isUserLoggedIn() && visit.getUser().isAdmin();
+        IRequestCycle cycle = getPage().getRequestCycle();
+
+        return visit.isUserLoggedIn() && visit.getUser(cycle).isAdmin();
     }
 
     public void editProfile(IRequestCycle cycle)
     {
-    	activate("EditProfile", cycle);
+        activate("EditProfile", cycle);
     }
 
-	public void viewBorrowedBooks(IRequestCycle cycle)
-	{
-		activate("BorrowedBooks", cycle);
-	}
-	
-	public void viewMyLibrary(IRequestCycle cycle)
-	{
-		activate("MyLibrary", cycle);
-	}
-	
-	private void activate(String pageName, IRequestCycle cycle)
-	{
-		IActivate page = (IActivate)cycle.getPage(pageName);
-		
-		page.validate(cycle);
-		
-		page.activate(cycle);
-	}
+    public void viewBorrowedBooks(IRequestCycle cycle)
+    {
+        activate("BorrowedBooks", cycle);
+    }
 
-	public void login(IRequestCycle cycle)
-	{
-		Visit visit = (Visit)cycle.getEngine().getVisit();
+    public void viewMyLibrary(IRequestCycle cycle)
+    {
+        activate("MyLibrary", cycle);
+    }
 
-		if (visit != null && visit.isUserLoggedIn())
-			return;
-			
-		ICallback callback = new PageCallback(getPage().getPageName());
-		Login loginPage = (Login)cycle.getPage("Login");
-		loginPage.setCallback(callback);
-		cycle.setPage(loginPage);
-	}
+    private void activate(String pageName, IRequestCycle cycle)
+    {
+        IActivate page = (IActivate) cycle.getPage(pageName);
+
+        page.validate(cycle);
+
+        page.activate(cycle);
+    }
+
+    public void login(IRequestCycle cycle)
+    {
+        Visit visit = (Visit) cycle.getEngine().getVisit();
+
+        if (visit != null && visit.isUserLoggedIn())
+            return;
+
+        ICallback callback = new PageCallback(getPage().getPageName());
+        Login loginPage = (Login) cycle.getPage("Login");
+        loginPage.setCallback(callback);
+        cycle.setPage(loginPage);
+    }
 
     public void logout(IRequestCycle cycle)
     {

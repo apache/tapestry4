@@ -124,6 +124,9 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
     private void setupListEditMap()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        Visit visit = (Visit) vengine.getVisit();
+
+        Integer userId = visit.getUserId();
         Person[] users = null;
 
         int i = 0;
@@ -146,7 +149,14 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
         UserListEditMap map = new UserListEditMap();
 
         for (i = 0; i < users.length; i++)
-            map.add(users[i].getId(), users[i]);
+        {
+            Integer id = users[i].getId();
+
+            if (id.equals(userId))
+                continue;
+
+            map.add(id, users[i]);
+        }
 
         setListEditMap(map);
     }
@@ -162,7 +172,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             return;
 
         Visit visit = (Visit) getVisit();
-        VirtualLibraryEngine vengine = visit.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
 
         UserListEditMap map = getListEditMap();
 
@@ -190,7 +200,6 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             {
                 IOperations operations = vengine.getOperations();
 
-                // TODO: collect and use a password!
                 operations.updatePersons(
                     updatedUserIds,
                     resetPasswordUserIds,

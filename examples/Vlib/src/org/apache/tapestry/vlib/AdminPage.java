@@ -84,9 +84,11 @@ public abstract class AdminPage extends Protected implements IMessageProperty
             throw new PageRedirectException(login);
         }
 
-        if (!visit.getUser().isAdmin())
+        if (!visit.getUser(cycle).isAdmin())
         {
-            visit.getEngine().presentError("That function is restricted to adminstrators.", cycle);
+        	VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
+        	
+			vengine.presentError("That function is restricted to adminstrators.", cycle);
 
             throw new PageRedirectException(cycle.getPage());
         }

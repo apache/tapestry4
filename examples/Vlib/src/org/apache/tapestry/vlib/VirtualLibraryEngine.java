@@ -59,7 +59,6 @@ import java.rmi.RemoteException;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
@@ -107,20 +106,6 @@ public class VirtualLibraryEngine extends BaseEngine
     private transient IPropertySelectionModel _personModel;
 
     private transient String _applicationUnavailableMessage;
-
-    /**
-     *  Creates an instance of {@link Visit}.
-     *
-     **/
-
-    public Object createVisit(IRequestCycle cycle)
-    {
-        cycle.getRequestContext().createSession();
-
-        setStateful();
-
-        return new Visit(this);
-    }
 
     /**
      *  Removes the operations bean instance, if accessed this request cycle.
@@ -273,6 +258,11 @@ public class VirtualLibraryEngine extends BaseEngine
     {
         _publisherModel = null;
         _personModel = null;
+
+        Visit visit = (Visit) getVisit();
+
+        if (visit != null)
+            visit.clearCache();
     }
 
     /**

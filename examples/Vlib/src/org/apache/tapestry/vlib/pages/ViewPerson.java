@@ -57,15 +57,12 @@ package org.apache.tapestry.vlib.pages;
 
 import java.rmi.RemoteException;
 
-import javax.ejb.FinderException;
-
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
