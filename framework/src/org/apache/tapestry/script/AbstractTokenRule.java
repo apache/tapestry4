@@ -149,6 +149,11 @@ abstract class AbstractTokenRule extends BaseRule
                         continue;
                     }
 
+					// The '$' was just what it was, not the start of a ${} expression
+					// block, so include it as part of the static text block.
+					
+					blockLength++;
+					
                     state = STATE_START;
                     continue;
 

@@ -640,7 +640,7 @@ public class TestTemplateParser extends TestCase
             AttributeType.OGNL_EXPRESSION,
             buildMap(new String[] { "value", "components.loop.value.name" }));
 
-        assertOpenToken(tokens[8], "$Insert_0", "Insert", "span", 11);
+        assertOpenToken(tokens[8], "$Insert$0", "Insert", "span", 11);
 
         assertTemplateAttributes(
             tokens[8],

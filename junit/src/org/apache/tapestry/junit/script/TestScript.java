@@ -232,8 +232,8 @@ public class TestScript extends TapestryTestCase
     	execute("unique-let.script", symbols);
     	
     	assertSymbol(symbols, "alpha", "Alpha");
-    	assertSymbol(symbols, "beta", "Alpha_0");
-    	assertSymbol(symbols, "gamma", "Alpha_1");
+    	assertSymbol(symbols, "beta", "Alpha$0");
+    	assertSymbol(symbols, "gamma", "Alpha$1");
     }
 
     /**
@@ -433,6 +433,18 @@ public class TestScript extends TapestryTestCase
             checkException(ex, "key");
         }
 
+    }
+    
+    /** @since 3.0 */
+    
+    public void testNameAppend() throws Exception
+    {
+    	Map symbols = new HashMap();
+    	
+    	symbols.put("name", "fred");
+    	execute("name-append.script", symbols);
+    	
+    	assertSymbol(symbols, "output", "fred$suffix");
     }
     
     /**
