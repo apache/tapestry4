@@ -47,6 +47,7 @@
 <!ENTITY IUploadFile '<ulink url="&ApiRoot;/IUploadFile.html"><classname>IUploadFile</classname></ulink>'>
 <!ENTITY PageCleanupListener '<ulink url="&ApiRoot;/event/PageCleanupListener.html"><classname>PageCleanupListener</classname></ulink>'>
 <!ENTITY PageDetachListener '<ulink url="&ApiRoot;/event/PageDetachListener.html"><classname>PageDetachListener</classname></ulink>'>
+<!ENTITY PageRecorder '<ulink url="&ApiRoot;/record/PageRecorder.html"><classname>PageRecorder</classname></ulink>'>
 <!ENTITY PageRedirectException '<ulink url="&ApiRoot;/PageRedirectException.html"><classname>PageRedirectException</classname></ulink>'>
 <!ENTITY PageRenderListener '<ulink url="&ApiRoot;/event/PageRenderListener.html"><classname>PageRenderListener</classname></ulink>'>
 <!ENTITY PropertyHelper '<ulink url="&ApiRoot;/util/prop/PropertyHelper.html"><classname>PropertyHelper</classname></ulink>'>
@@ -60,7 +61,7 @@
 <!ENTITY Ant '<ulink url="http://jakarta.apache.org/ant">Ant</ulink>'>
 <!ENTITY Jetty '<ulink url="http://sf.net/projects/jetty">Jetty</ulink>'>
 <!ENTITY Log4J '<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
+<!ENTITY JBoss '<ulink url="http://www.jboss.org">JBoss</ulink>'>
 
-<!-- Components -->
 
 
