@@ -56,7 +56,6 @@
 package org.apache.tapestry.param;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.ILocation;
 
 /**
