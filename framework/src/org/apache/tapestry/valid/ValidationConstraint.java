@@ -143,11 +143,29 @@ public class ValidationConstraint extends Enum
 
     public static final ValidationConstraint CONSISTENCY = new ValidationConstraint("CONSISTENCY");
 
-    /**
-     *  Protected constructor, which allows new constraints to be created
-     *  as subclasses.
-     * 
-     **/
+	/**
+	 *  Indicates that a URL is not of the correct format
+	 * 
+	 * @since 3.0
+	 */
+	
+	public static final ValidationConstraint URL_FORMAT = new ValidationConstraint("URL_FORMAT");
+
+	/**
+	 *  Indicates that the URL does not use one of the specified protocols
+	 * 
+	 * @since 3.0
+	 */
+
+	public static final ValidationConstraint DISALLOWED_PROTOCOL = new ValidationConstraint("DISALLOWED_PROTOCOL");
+
+
+
+	/**
+	 *  Protected constructor, which allows new constraints to be created
+	 *  as subclasses.
+	 * 
+	 **/
 
     protected ValidationConstraint(String name)
     {
