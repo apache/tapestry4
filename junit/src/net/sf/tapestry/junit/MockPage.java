@@ -58,9 +58,9 @@ import net.sf.tapestry.spec.ComponentSpecification;
 
 public class MockPage implements IPage
 {
-    private IEngine engine;
+    private IEngine _engine;
     private Locale locale;
-    private ComponentSpecification specification;
+    private ComponentSpecification _specification;
 
     public void detach()
     {
@@ -68,7 +68,7 @@ public class MockPage implements IPage
 
     public IEngine getEngine()
     {
-        return engine;
+        return _engine;
     }
 
     public ChangeObserver getChangeObserver()
@@ -163,9 +163,6 @@ public class MockPage implements IPage
     {
     }
 
-    public void addWrapped(IRender element)
-    {
-    }
 
     public Map getAssets()
     {
@@ -241,17 +238,14 @@ public class MockPage implements IPage
 
     public ComponentSpecification getSpecification()
     {
-        return specification;
+        return _specification;
     }
 
     public void setSpecification(ComponentSpecification value)
     {
-        specification = value;
+        _specification = value;
     }
 
-    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-    {
-    }
 
     public void setBinding(String name, IBinding binding)
     {
@@ -276,7 +270,7 @@ public class MockPage implements IPage
 
     public String getString(String key)
     {
-        return engine.getComponentStringsSource().getStrings(this).getString(key);
+        return _engine.getComponentStringsSource().getStrings(this).getString(key);
     }
 
     public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
@@ -285,7 +279,7 @@ public class MockPage implements IPage
 
     public void setEngine(IEngine engine)
     {
-        this.engine = engine;
+        _engine = engine;
     }
 
     public void removePageCleanupListener(PageCleanupListener listener)

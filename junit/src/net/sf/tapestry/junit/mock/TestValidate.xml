@@ -26,6 +26,11 @@ href="/mock/app\?service=direct&amp;context=Guard/link"
 ]]>
 		</assert-output>
 		
+		<assert-output name="Callback">
+<![CDATA[
+Callback: PageCallback\[Protected\]
+]]>		
+		</assert-output>		
   	</request>
   	
   	<!-- Simulate clicking the link, which should send the
@@ -42,6 +47,7 @@ href="/mock/app\?service=direct&amp;context=Guard/link"
 		</assert-output>
 		
 	</request>
+	
 
 	<!-- Now, try the original request again, now that the Guard
 		 page has had its say. -->

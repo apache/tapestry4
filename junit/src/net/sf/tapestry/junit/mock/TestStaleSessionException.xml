@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+
+<!-- Tests stale session exception with a DirectLink. -->
+
+<mock-test>
+    <context name="mock"/>
+  	<servlet name="app" class="net.sf.tapestry.junit.mock.app.MockServlet"/>
+  	
+  	
+  	<!-- Simulate clicking the link, which should send the
+  	     user to the Protected page.  -->
+  	     
+  	<request>
+  		<parameter name="service" value="page"/>
+  		<parameter name="context" value="Stale"/>
+  		
+  		<assert-output name="Title">
+<![CDATA[
+<title>StaleSession Test Page</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="DirectLink URL">
+<![CDATA[
+href="/mock/app\?service=direct&amp;context=Stale/directLink"
+]]>		
+		</assert-output>
+		
+
+		<assert-output name="ActionLink URL">
+<![CDATA[
+href="/mock/app\?service=action&amp;context=Stale/0/actionLink"
+]]>		
+		</assert-output>		
+		
+		<assert-output-matches name="Form Parameter Names" subgroup="1">
+<![CDATA[
+<input type="hidden".*? name="(.*?)".*?/>		
+]]>
+			<match>service</match>
+			<match>context</match>
+			<match>sp</match>
+			<match>Form1</match>
+		</assert-output-matches>
+
+		<assert-output-matches name="Form Parameter Values" subgroup="1">
+<![CDATA[
+<input type="hidden".*? value="(.*?)".*?/>		
+]]>
+			<match>direct</match>
+			<match>Stale/form</match>
+			<match>S1</match>
+			<match>0</match>
+		</assert-output-matches>
+
+				
+	</request>
+	
+	<!-- Now trigger each in turn. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="Stale/directLink"/>
+		
+		<assert-output name="StaleSession (DirectLink)">
+<![CDATA[
+<title>Stale Session</title>
+]]>
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="action"/>
+		<parameter name="context" value="Stale/0/actionLink"/>
+		
+		<assert-output name="StaleSession (ActionLink)">
+<![CDATA[
+<title>Stale Session</title>
+]]>
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="Stale/form"/>
+		<parameter name="sp" value="S1"/>
+		<parameter name="Form1" value="0"/>
+		
+		<assert-output name="StaleSession (Form)">
+<![CDATA[
+<title>Stale Session</title>
+]]>
+		</assert-output>
+	</request>
+	
+					
+		  	
+</mock-test>

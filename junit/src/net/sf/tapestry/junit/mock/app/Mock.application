@@ -15,6 +15,12 @@
 
 	<page name="Protected" specification-path="/net/sf/tapestry/junit/mock/app/Protected.page"/>
 	<page name="Guard" specification-path="/net/sf/tapestry/junit/mock/app/Guard.page"/>
+
+	<page name="ProtectedLink" specification-path="/net/sf/tapestry/junit/mock/app/ProtectedLink.page"/>
+	<page name="ProtectedLinkResult" specification-path="/net/sf/tapestry/junit/mock/app/ProtectedLinkResult.page"/>
+
+	<page name="Stale" specification-path="/net/sf/tapestry/junit/mock/app/Stale.page"/>
+
 		
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	
