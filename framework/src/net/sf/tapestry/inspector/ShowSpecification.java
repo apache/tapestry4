@@ -53,24 +53,22 @@ import net.sf.tapestry.spec.ParameterSpecification;
  *
  **/
 
-public class ShowSpecification
-    extends BaseComponent
-    implements PageRenderListener
+public class ShowSpecification extends BaseComponent implements PageRenderListener
 {
-    private IComponent inspectedComponent;
-    private ComponentSpecification inspectedSpecification;
-    private String parameterName;
-    private String assetName;
-    private List sortedComponents;
-    private IComponent component;
-    private List assetNames;
-    private List formalParameterNames;
-    private List informalParameterNames;
-    private List sortedPropertyNames;
-    private String propertyName;
-    private List beanNames;
-    private String beanName;
-    private BeanSpecification beanSpecification;
+    private IComponent _inspectedComponent;
+    private ComponentSpecification _inspectedSpecification;
+    private String _parameterName;
+    private String _assetName;
+    private List _sortedComponents;
+    private IComponent _component;
+    private List _assetNames;
+    private List _formalParameterNames;
+    private List _informalParameterNames;
+    private List _sortedPropertyNames;
+    private String _propertyName;
+    private List _beanNames;
+    private String _beanName;
+    private BeanSpecification _beanSpecification;
 
     private static class ComponentComparitor implements Comparator
     {
@@ -102,7 +100,7 @@ public class ShowSpecification
 
     protected void finishLoad()
     {
-        page.addPageRenderListener(this);
+        getPage().addPageRenderListener(this);
     }
 
     /**
@@ -116,20 +114,20 @@ public class ShowSpecification
 
     public void pageEndRender(PageEvent event)
     {
-        inspectedComponent = null;
-        inspectedSpecification = null;
-        parameterName = null;
-        assetName = null;
-        sortedComponents = null;
-        component = null;
-        assetNames = null;
-        formalParameterNames = null;
-        informalParameterNames = null;
-        sortedPropertyNames = null;
-        propertyName = null;
-        beanNames = null;
-        beanName = null;
-        beanSpecification = null;
+        _inspectedComponent = null;
+        _inspectedSpecification = null;
+        _parameterName = null;
+        _assetName = null;
+        _sortedComponents = null;
+        _component = null;
+        _assetNames = null;
+        _formalParameterNames = null;
+        _informalParameterNames = null;
+        _sortedPropertyNames = null;
+        _propertyName = null;
+        _beanNames = null;
+        _beanName = null;
+        _beanSpecification = null;
     }
 
     /**
@@ -142,20 +140,20 @@ public class ShowSpecification
     {
         Inspector inspector;
 
-        inspector = (Inspector) page;
+        inspector = (Inspector) getPage();
 
-        inspectedComponent = inspector.getInspectedComponent();
-        inspectedSpecification = inspectedComponent.getSpecification();
+        _inspectedComponent = inspector.getInspectedComponent();
+        _inspectedSpecification = _inspectedComponent.getSpecification();
     }
 
     public IComponent getInspectedComponent()
     {
-        return inspectedComponent;
+        return _inspectedComponent;
     }
 
     public ComponentSpecification getInspectedSpecification()
     {
-        return inspectedSpecification;
+        return _inspectedSpecification;
     }
 
     /**
@@ -165,17 +163,17 @@ public class ShowSpecification
 
     public List getFormalParameterNames()
     {
-        if (formalParameterNames != null)
-            return formalParameterNames;
+        if (_formalParameterNames != null)
+            return _formalParameterNames;
 
-        Collection names = inspectedSpecification.getParameterNames();
+        Collection names = _inspectedSpecification.getParameterNames();
         if (names != null && names.size() > 0)
         {
-            formalParameterNames = new ArrayList(names);
-            Collections.sort(formalParameterNames);
+            _formalParameterNames = new ArrayList(names);
+            Collections.sort(_formalParameterNames);
         }
 
-        return formalParameterNames;
+        return _formalParameterNames;
     }
 
     /**
@@ -187,37 +185,37 @@ public class ShowSpecification
 
     public List getInformalParameterNames()
     {
-        if (informalParameterNames != null)
-            return informalParameterNames;
+        if (_informalParameterNames != null)
+            return _informalParameterNames;
 
-        Collection names = inspectedComponent.getBindingNames();
+        Collection names = _inspectedComponent.getBindingNames();
         if (names != null && names.size() > 0)
         {
-            informalParameterNames = new ArrayList(names);
+            _informalParameterNames = new ArrayList(names);
 
             // Remove the names of any formal parameters.  This leaves
             // just the names of informal parameters (informal parameters
             // are any parameters/bindings that don't match a formal parameter
             // name).
 
-            names = inspectedSpecification.getParameterNames();
+            names = _inspectedSpecification.getParameterNames();
             if (names != null)
-                informalParameterNames.removeAll(names);
+                _informalParameterNames.removeAll(names);
 
-            Collections.sort(informalParameterNames);
+            Collections.sort(_informalParameterNames);
         }
 
-        return informalParameterNames;
+        return _informalParameterNames;
     }
 
     public String getParameterName()
     {
-        return parameterName;
+        return _parameterName;
     }
 
     public void setParameterName(String value)
     {
-        parameterName = value;
+        _parameterName = value;
     }
 
     /**
@@ -228,7 +226,7 @@ public class ShowSpecification
 
     public ParameterSpecification getParameterSpecification()
     {
-        return inspectedSpecification.getParameter(parameterName);
+        return _inspectedSpecification.getParameter(_parameterName);
     }
 
     /**
@@ -239,17 +237,17 @@ public class ShowSpecification
 
     public IBinding getBinding()
     {
-        return inspectedComponent.getBinding(parameterName);
+        return _inspectedComponent.getBinding(_parameterName);
     }
 
     public void setAssetName(String value)
     {
-        assetName = value;
+        _assetName = value;
     }
 
     public String getAssetName()
     {
-        return assetName;
+        return _assetName;
     }
 
     /**
@@ -260,7 +258,7 @@ public class ShowSpecification
 
     public IAsset getAsset()
     {
-        return (IAsset) inspectedComponent.getAssets().get(assetName);
+        return (IAsset) _inspectedComponent.getAssets().get(_assetName);
     }
 
     /**
@@ -271,26 +269,23 @@ public class ShowSpecification
 
     public List getAssetNames()
     {
-        if (assetNames != null)
-            return assetNames;
+        if (_assetNames != null)
+            return _assetNames;
 
-        Map assets = inspectedComponent.getAssets();
+        Map assets = _inspectedComponent.getAssets();
 
-        if (assets != null && assets.size() > 0)
-        {
-            assetNames = new ArrayList(assets.keySet());
-            Collections.sort(assetNames);
-        }
+        _assetNames = new ArrayList(assets.keySet());
+        Collections.sort(_assetNames);
 
-        return assetNames;
+        return _assetNames;
     }
 
     public List getSortedComponents()
     {
-        if (sortedComponents != null)
-            return sortedComponents;
+        if (_sortedComponents != null)
+            return _sortedComponents;
 
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
         IComponent inspectedComponent = inspector.getInspectedComponent();
 
         // Get a Map of the components and simply return null if there
@@ -298,24 +293,21 @@ public class ShowSpecification
 
         Map components = inspectedComponent.getComponents();
 
-        if (components != null && components.size() > 0)
-        {
-            sortedComponents = new ArrayList(components.values());
+        _sortedComponents = new ArrayList(components.values());
 
-            Collections.sort(sortedComponents, new ComponentComparitor());
-        }
+        Collections.sort(_sortedComponents, new ComponentComparitor());
 
-        return sortedComponents;
+        return _sortedComponents;
     }
 
     public void setComponent(IComponent value)
     {
-        component = value;
+        _component = value;
     }
 
     public IComponent getComponent()
     {
-        return component;
+        return _component;
     }
 
     /**
@@ -331,11 +323,11 @@ public class ShowSpecification
         IComponent container;
         ContainedComponent contained;
 
-        container = component.getContainer();
+        container = _component.getContainer();
 
         containerSpecification = container.getSpecification();
 
-        id = component.getId();
+        id = _component.getId();
         contained = containerSpecification.getComponent(id);
 
         return contained.getType();
@@ -350,63 +342,63 @@ public class ShowSpecification
 
     public List getSortedPropertyNames()
     {
-        if (sortedPropertyNames != null)
-            return sortedPropertyNames;
+        if (_sortedPropertyNames != null)
+            return _sortedPropertyNames;
 
-        Collection names = inspectedSpecification.getPropertyNames();
+        Collection names = _inspectedSpecification.getPropertyNames();
         if (names != null && names.size() > 0)
         {
-            sortedPropertyNames = new ArrayList(names);
-            Collections.sort(sortedPropertyNames);
+            _sortedPropertyNames = new ArrayList(names);
+            Collections.sort(_sortedPropertyNames);
         }
 
-        return sortedPropertyNames;
+        return _sortedPropertyNames;
     }
 
     public void setPropertyName(String value)
     {
-        propertyName = value;
+        _propertyName = value;
     }
 
     public String getPropertyName()
     {
-        return propertyName;
+        return _propertyName;
     }
 
     public String getPropertyValue()
     {
-        return inspectedSpecification.getProperty(propertyName);
+        return _inspectedSpecification.getProperty(_propertyName);
     }
 
     public List getBeanNames()
     {
-        if (beanNames != null)
-            return beanNames;
+        if (_beanNames != null)
+            return _beanNames;
 
-        Collection names = inspectedSpecification.getBeanNames();
+        Collection names = _inspectedSpecification.getBeanNames();
 
         if (names != null && names.size() > 0)
         {
-            beanNames = new ArrayList(names);
-            Collections.sort(beanNames);
+            _beanNames = new ArrayList(names);
+            Collections.sort(_beanNames);
         }
 
-        return beanNames;
+        return _beanNames;
     }
 
     public void setBeanName(String value)
     {
-        beanName = value;
-        beanSpecification = inspectedSpecification.getBeanSpecification(beanName);
+        _beanName = value;
+        _beanSpecification = _inspectedSpecification.getBeanSpecification(_beanName);
     }
 
     public String getBeanName()
     {
-        return beanName;
+        return _beanName;
     }
 
     public BeanSpecification getBeanSpecification()
     {
-        return beanSpecification;
+        return _beanSpecification;
     }
 }

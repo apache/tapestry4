@@ -78,8 +78,7 @@ public class Any extends AbstractComponent
             generateAttributes(writer, cycle);
         }
 
-        if (wrappedCount > 0)
-            renderWrapped(writer, cycle);
+        renderWrapped(writer, cycle);
 
         if (!cycle.isRewinding())
         {

@@ -288,7 +288,7 @@ public class Palette extends BaseComponent implements IFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        form = Form.get(page.getRequestCycle());
+        form = Form.get(getPage().getRequestCycle());
 
         if (form == null)
             throw new RequestCycleException("Palette component must be wrapped by a Form.", this);

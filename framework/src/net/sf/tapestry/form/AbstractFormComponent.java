@@ -65,7 +65,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
 
     public IForm getForm()
     {
-        return Form.get(page.getRequestCycle());
+        return Form.get(getPage().getRequestCycle());
     }
 
     abstract public String getName();

@@ -671,7 +671,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     protected void finishLoad()
     {
-        page.addPageDetachListener(this);
+        getPage().addPageDetachListener(this);
     }
 
     public IValidationDelegate getDelegate()

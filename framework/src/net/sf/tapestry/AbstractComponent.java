@@ -64,7 +64,7 @@ public abstract class AbstractComponent implements IComponent
     /**
      *  The specification used to originally build the component.
      *
-     *  @deprecated to be made private in 2.3
+     *  @deprecated To be made private in 2.3.
      * 
      **/
 
@@ -74,7 +74,7 @@ public abstract class AbstractComponent implements IComponent
      *  The page that contains the component, possibly itself (if the component is
      *  in fact, a page).
      *
-     *  @deprecated to be made private in 2.3
+     *  @deprecated To be made private in 2.3.
      * 
      **/
 
@@ -91,6 +91,8 @@ public abstract class AbstractComponent implements IComponent
     /**
      *  The simple id of this component.
      *
+     *  @deprecated To be made private in 2.3.
+     * 
      **/
 
     protected String id;
@@ -101,7 +103,7 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    private String idPath;
+    private String _idPath;
 
     private static final int MAP_SIZE = 5;
 
@@ -112,11 +114,9 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    private Map bindings;
+    private Map _bindings;
 
-    private Map components;
-    private Map safeComponents;
-
+    private Map _components;
     private static final int WRAPPED_INIT_SIZE = 5;
 
     private INamespace _namespace;
@@ -133,6 +133,8 @@ public abstract class AbstractComponent implements IComponent
      *  The number of {@link IRender} objects wrapped by
      *  this component.
      *
+     *  @deprecated To be made private in 2.3.
+     * 
      **/
 
     protected int wrappedCount = 0;
@@ -140,6 +142,8 @@ public abstract class AbstractComponent implements IComponent
     /**
      *  An aray of elements wrapped by this component.
      *
+     *  @deprecated To be made private in 2.3.
+     * 
      **/
 
     protected IRender[] wrapped;
@@ -149,8 +153,7 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    private Map assets;
-    private Map safeAssets;
+    private Map _assets;
 
     /**
      *  A mapping that allows public instance methods to be dressed up
@@ -161,7 +164,7 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    private ListenerMap listeners;
+    private ListenerMap _listeners;
 
     /**
      *  A bean provider; these are lazily created as needed.
@@ -170,7 +173,7 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    private IBeanProvider beans;
+    private IBeanProvider _beans;
 
     /**
      *  Manages setting and clearing parameter properties for the component.
@@ -179,7 +182,7 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    private ParameterManager parameterManager;
+    private ParameterManager _parameterManager;
 
     /**
      *  Provides access to localized Strings for this component.
@@ -188,22 +191,22 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    private IComponentStrings strings;
+    private IComponentStrings _strings;
 
     public void addAsset(String name, IAsset asset)
     {
-        if (assets == null)
-            assets = new HashMap(MAP_SIZE);
+        if (_assets == null)
+            _assets = new HashMap(MAP_SIZE);
 
-        assets.put(name, asset);
+        _assets.put(name, asset);
     }
 
     public void addComponent(IComponent component)
     {
-        if (components == null)
-            components = new HashMap(MAP_SIZE);
+        if (_components == null)
+            _components = new HashMap(MAP_SIZE);
 
-        components.put(component.getId(), component);
+        _components.put(component.getId(), component);
     }
 
     /**
@@ -455,10 +458,10 @@ public abstract class AbstractComponent implements IComponent
     {
         String attribute;
 
-        if (bindings == null)
+        if (_bindings == null)
             return;
 
-        Iterator i = bindings.entrySet().iterator();
+        Iterator i = _bindings.entrySet().iterator();
 
         while (i.hasNext())
         {
@@ -520,10 +523,10 @@ public abstract class AbstractComponent implements IComponent
         if (accessor != null && accessor.isReadWrite() && accessor.getType().equals(IBinding.class))
             return (IBinding) accessor.get(this);
 
-        if (bindings == null)
+        if (_bindings == null)
             return null;
 
-        return (IBinding) bindings.get(name);
+        return (IBinding) _bindings.get(name);
     }
 
     /**
@@ -543,8 +546,8 @@ public abstract class AbstractComponent implements IComponent
     {
         IComponent result = null;
 
-        if (components != null)
-            result = (IComponent) components.get(id);
+        if (_components != null)
+            result = (IComponent) _components.get(id);
 
         if (result == null)
             throw new NoSuchComponentException(id, this);
@@ -602,11 +605,11 @@ public abstract class AbstractComponent implements IComponent
         containerIdPath = _container.getIdPath();
 
         if (containerIdPath == null)
-            idPath = id;
+            _idPath = id;
         else
-            idPath = containerIdPath + "." + id;
+            _idPath = containerIdPath + "." + id;
 
-        return idPath;
+        return _idPath;
     }
 
     public IPage getPage()
@@ -678,10 +681,10 @@ public abstract class AbstractComponent implements IComponent
             return;
         }
 
-        if (bindings == null)
-            bindings = new HashMap(MAP_SIZE);
+        if (_bindings == null)
+            _bindings = new HashMap(MAP_SIZE);
 
-        bindings.put(name, binding);
+        _bindings.put(name, binding);
     }
 
     public String toString()
@@ -701,37 +704,34 @@ public abstract class AbstractComponent implements IComponent
 
     /**
      *  Returns an unmodifiable {@link Map} of components, keyed on component id.
+     *  Never returns null, but may return an empty map.  The returned map is
+     *  immutable.
      *
      **/
 
     public Map getComponents()
     {
-        if (components == null)
+        if (_components == null)
             return EMPTY_MAP;
 
-        if (safeComponents == null)
-            safeComponents = Collections.unmodifiableMap(components);
+        return Collections.unmodifiableMap(_components);
 
-        return safeComponents;
     }
 
     public Map getAssets()
     {
-        if (assets == null)
+        if (_assets == null)
             return EMPTY_MAP;
 
-        if (safeAssets == null)
-            safeAssets = Collections.unmodifiableMap(assets);
-
-        return safeAssets;
+        return Collections.unmodifiableMap(_assets);
     }
 
     public IAsset getAsset(String name)
     {
-        if (assets == null)
+        if (_assets == null)
             return null;
 
-        return (IAsset) assets.get(name);
+        return (IAsset) _assets.get(name);
     }
 
     public Collection getBindingNames()
@@ -746,7 +746,7 @@ public abstract class AbstractComponent implements IComponent
         // If no informal parameters, then it's safe to return
         // just the names of the formal parameters.
 
-        if (bindings == null || bindings.size() == 0)
+        if (_bindings == null || _bindings.size() == 0)
             return contained.getBindingNames();
 
         // The new HTML parser means that sometimes, the informal attributes
@@ -761,7 +761,7 @@ public abstract class AbstractComponent implements IComponent
         // All the informal bindings go into the bindings Map.   Also
         // formal parameters where there isn't a corresponding JavaBeans property.
 
-        result.addAll(bindings.keySet());
+        result.addAll(_bindings.keySet());
 
         return result;
     }
@@ -784,8 +784,8 @@ public abstract class AbstractComponent implements IComponent
         // Add any informal parameters, as well as any formal parameters
         // that don't have a correspoinding JavaBeans property.
 
-        if (bindings != null)
-            result.putAll(bindings);
+        if (_bindings != null)
+            result.putAll(_bindings);
 
         // Now work on the formal parameters
 
@@ -816,10 +816,10 @@ public abstract class AbstractComponent implements IComponent
 
     public ListenerMap getListeners()
     {
-        if (listeners == null)
-            listeners = new ListenerMap(this);
+        if (_listeners == null)
+            _listeners = new ListenerMap(this);
 
-        return listeners;
+        return _listeners;
     }
 
     /**
@@ -832,10 +832,10 @@ public abstract class AbstractComponent implements IComponent
 
     public IBeanProvider getBeans()
     {
-        if (beans == null)
-            beans = new BeanProvider(this);
+        if (_beans == null)
+            _beans = new BeanProvider(this);
 
-        return beans;
+        return _beans;
     }
 
     /**
@@ -892,10 +892,10 @@ public abstract class AbstractComponent implements IComponent
 
     protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
     {
-        if (parameterManager == null)
-            parameterManager = new ParameterManager(this);
+        if (_parameterManager == null)
+            _parameterManager = new ParameterManager(this);
 
-        parameterManager.setParameters();
+        _parameterManager.setParameters();
     }
 
     /**
@@ -926,7 +926,7 @@ public abstract class AbstractComponent implements IComponent
     protected void cleanupAfterRender(IRequestCycle cycle)
     
     {
-        parameterManager.clearParameters();
+        _parameterManager.clearParameters();
     }
 
     /**
@@ -937,10 +937,10 @@ public abstract class AbstractComponent implements IComponent
 
     public String getString(String key)
     {
-        if (strings == null)
-            strings = getPage().getEngine().getComponentStringsSource().getStrings(this);
+        if (_strings == null)
+            _strings = getPage().getEngine().getComponentStringsSource().getStrings(this);
 
-        return strings.getString(key);
+        return _strings.getString(key);
     }
 
     /**

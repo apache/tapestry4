@@ -111,7 +111,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     protected void finishLoad()
     {
-        page.addPageRenderListener(this);
+        getPage().addPageRenderListener(this);
     }
 
     /**
@@ -141,11 +141,11 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     private void buildProperties()
     {
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
 
         _inspectedPage = inspector.getInspectedPage();
 
-        IEngine engine = page.getEngine();
+        IEngine engine = getPage().getEngine();
         IPageRecorder recorder = engine.getPageRecorder(_inspectedPage.getName());
 
         // No page recorder?  No properties.
@@ -211,7 +211,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     public List getExplorePath()
     {
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
 
         String explorePath = inspector.getExplorePath();
         if (explorePath == null)
@@ -236,7 +236,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     private Object getExploredObject()
     {
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
 
         return inspector.getExploredObject();
     }
@@ -277,7 +277,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     public void exploreComponent(IRequestCycle cycle)
     {
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
 
         inspector.setExplorePath(null);
     }
@@ -285,7 +285,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
     public void selectExplorePath(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
 
         String fullPath = (String)parameters[0];
         String[] splitPath = PropertyHelper.splitPropertyPath(fullPath);
@@ -335,7 +335,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         if (explored == null)
             return null;
 
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
         String currentPath = inspector.getExplorePath();
 
         StringBuffer buffer = new StringBuffer();
