@@ -19,7 +19,7 @@ import org.apache.tapestry.util.text.AsciiCharacterTranslator;
 import org.apache.tapestry.util.text.ICharacterMatcher;
 import org.apache.tapestry.util.text.ICharacterTranslator;
 import org.apache.tapestry.util.text.ICharacterTranslatorSource;
-import org.apache.tapestry.util.text.MLCharacterTranslator;
+import org.apache.tapestry.util.text.MarkupCharacterTranslator;
 
 /**
  * The WML implementation of a character translator source.
@@ -50,7 +50,7 @@ public class WMLCharacterTranslatorSource implements ICharacterTranslatorSource
     private static final ICharacterMatcher SAFE_MATCHER = new AsciiCharacterMatcher(SAFE_CHARACTERS);
     private static final ICharacterTranslator ENTITY_TRANSLATOR = new AsciiCharacterTranslator(ENTITIES);
 
-    private static final ICharacterTranslator WML_TRANSLATOR = new MLCharacterTranslator(true, SAFE_MATCHER, ENTITY_TRANSLATOR);
+    private static final ICharacterTranslator WML_TRANSLATOR = new MarkupCharacterTranslator(true, SAFE_MATCHER, ENTITY_TRANSLATOR);
 
 	/**
 	 * @see org.apache.tapestry.util.text.ICharacterTranslatorSource#getDefaultTranslator()
