@@ -50,6 +50,7 @@ SPAN.note
 {
 	font-style: italic;
 }
+
 DIV.right-side-quote  {
 	text-align : left;
 	float : right;
@@ -57,6 +58,16 @@ DIV.right-side-quote  {
 	padding-right : 8px;
 	padding-left : 4px;
 	font-size : large;
+	font-weight : bold;
+}
+
+DIV.callout
+{
+	text-align : center;
+	float : right;
+	width : 200px;
+	padding-right : 8px;
+	padding-left : 4px;
 	font-weight : bold;
 }
 
