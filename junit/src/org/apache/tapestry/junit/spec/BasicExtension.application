@@ -6,7 +6,7 @@
 	
 <application name="Test Basic Extension">
   
-  <extension name="testBean" class="org.apache.tapestry.junit.spec.TestBean">
+  <extension name="testBean" class="org.apache.tapestry.junit.spec.PropertyBean">
   	<configure property-name="booleanProperty" type="boolean">true</configure>
   	<configure property-name="intProperty" type="int">18</configure>
   	<configure property-name="longProperty" type="long">383838</configure>

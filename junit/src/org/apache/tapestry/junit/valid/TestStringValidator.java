@@ -81,14 +81,14 @@ public class TestStringValidator extends TapestryTestCase
     public void testToString()
     {
         String in = "Foo";
-        String out = v.toString(new TestingField("myField"), in);
+        String out = v.toString(new MockField("myField"), in);
 
         assertEquals("Result.", in, out);
     }
 
     public void testToStringNull()
     {
-        String out = v.toString(new TestingField("nullField"), null);
+        String out = v.toString(new MockField("nullField"), null);
 
         assertNull("Null expected.", out);
     }
@@ -99,7 +99,7 @@ public class TestStringValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("requiredField"), "");
+            v.toObject(new MockField("requiredField"), "");
 
             fail("Exception expected.");
         }
@@ -117,7 +117,7 @@ public class TestStringValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("overrideMessage"), "");
+            v.toObject(new MockField("overrideMessage"), "");
         }
         catch (ValidatorException ex)
         {
@@ -129,7 +129,7 @@ public class TestStringValidator extends TapestryTestCase
     {
         v.setRequired(true);
 
-        Object result = v.toObject(new TestingField("requiredField"), "stuff");
+        Object result = v.toObject(new MockField("requiredField"), "stuff");
 
         assertEquals("Result.", "stuff", result);
     }
@@ -140,7 +140,7 @@ public class TestStringValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("minimumLength"), "short");
+            v.toObject(new MockField("minimumLength"), "short");
 
             fail("Exception expected.");
         }
@@ -161,7 +161,7 @@ public class TestStringValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("overrideMessage"), "");
+            v.toObject(new MockField("overrideMessage"), "");
         }
         catch (ValidatorException ex)
         {
@@ -177,7 +177,7 @@ public class TestStringValidator extends TapestryTestCase
 
         String in = "ambidexterous";
 
-        Object out = v.toObject(new TestingField("minimum"), in);
+        Object out = v.toObject(new MockField("minimum"), in);
 
         assertEquals("Result", in, out);
     }
@@ -193,7 +193,7 @@ public class TestStringValidator extends TapestryTestCase
 
         String in = "";
 
-        Object out = v.toObject(new TestingField("minimum"), in);
+        Object out = v.toObject(new MockField("minimum"), in);
 
         assertNull("Result", out);
     }

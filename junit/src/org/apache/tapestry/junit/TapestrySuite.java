@@ -58,7 +58,7 @@ package org.apache.tapestry.junit;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.tapestry.junit.mock.MockTestCase;
+import org.apache.tapestry.junit.mock.TestMocks;
 
 /**
  *  Master suite of Tapestry tests, combining all other test suites.
@@ -75,7 +75,7 @@ public class TapestrySuite extends TestSuite
         TestSuite suite = new TestSuite("Master Tapestry Test Suite");
 
 		suite.addTest(BasicTestSuite.suite());	
-        suite.addTest(MockTestCase.suite());
+        suite.addTest(TestMocks.suite());
 
         return suite;
     }

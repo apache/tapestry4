@@ -53,90 +53,80 @@
  *
  */
 
-package org.apache.tapestry.junit.valid;
+package org.apache.tapestry.junit.script;
 
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.form.AbstractFormComponent;
-import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.html.BasePage;
-
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.IScriptProcessor;
+import org.apache.tapestry.util.IdAllocator;
 
 /**
- *  Used as a stand-in for a real component when testing the 
- *  {@link org.apache.tapestry.valid.IValidator}
- *  implementations.
+ * Used by {@link org.apache.tapestry.junit.script.TestScript}.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 1.0.8
- *
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
  **/
-
-public class TestingField extends AbstractFormComponent implements IFormComponent
+public class MockScriptProcessor implements IScriptProcessor
 {
-	private String _displayName;
-    private IForm _form;
+    private StringBuffer _body;
+    private StringBuffer _initialization;
+    private List _externalScripts;
+    private IdAllocator _idAllocator = new IdAllocator();
 
-    public TestingField(String displayName)
+    public void addBodyScript(String script)
     {
-        this(displayName, new TestingForm());
+        if (_body == null)
+            _body = new StringBuffer();
+
+        _body.append(script);
+    }
+
+	public String getBody()
+	{
+		if (_body == null)
+			return null;
+			
+			return _body.toString();
+	}
+
+    public void addInitializationScript(String script)
+    {
+        if (_initialization == null)
+            _initialization = new StringBuffer();
+
+        _initialization.append(script);
+    }
+
+	public String getInitialization()
+	{
+		if (_initialization == null)return null;
+		
+		return _initialization.toString();
+	}
+
+    public void addExternalScript(IResourceLocation scriptLocation)
+    {
+        if (_externalScripts == null)
+            _externalScripts = new ArrayList();
+
+        _externalScripts.add(scriptLocation);
     }
     
-
-	public TestingField(String displayName, IForm form)
-	{
-		_displayName = displayName;
-        _form = form;
-        
-        IPage page = new BasePage();
-        page.setLocale(Locale.ENGLISH);
-        page.addComponent(this);
-        
-        setPage(page);
-	}
-	
-	public void setForm(IForm form)
-	{
-		_form = form;
-	}
-
-	public String getDisplayName()
-	{
-		return _displayName;
-	}
-
-	public String getName()
-	{
-		return _displayName;
-	}
-
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    public IResourceLocation[] getExternalScripts()
     {
+    	if (_externalScripts == null)return null;
+    	
+    	int count = _externalScripts.size();
+    	
+    	return (IResourceLocation[])_externalScripts.toArray(new IResourceLocation[count]);
     }
 
-    public IForm getForm()
+    public String getUniqueString(String baseValue)
     {
-        return _form;
-    }
-
-    public boolean isDisabled()
-    {
-        return false;
-    }
-
-	public String toString()
-	{
-		return "TestingField[" + _displayName + "]";
-	}
-	
-    public void setName(String name)
-    {
+    	return _idAllocator.allocateId(baseValue);
     }
 
 }

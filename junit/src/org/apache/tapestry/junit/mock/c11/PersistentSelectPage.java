@@ -53,101 +53,42 @@
  *
  */
 
-package org.apache.tapestry.junit.mock;
+package org.apache.tapestry.junit.mock.c11;
 
-import java.io.File;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.apache.tapestry.junit.TapestryTestCase;
 
 /**
- *  Test case for Mock Servlet API tests using the Simple application.
- *
+ *  Makes the three properties persistent.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.2
- * 
+ *  @since 3.0
  **/
 
-public class MockTestCase extends TapestryTestCase
+public class PersistentSelectPage extends SelectPage
 {
-    public static final String SCRIPTS_DIR = "mock-scripts";
-
-    public MockTestCase(String name)
+    public void setAnimal(boolean animal)
     {
-        super(name);
+    	super.setAnimal(animal);
+    	
+        fireObservedChange("animal", animal);
     }
 
-    protected void runTest() throws Throwable
+
+    public void setMineral(boolean mineral)
     {
-        String path = SCRIPTS_DIR + "/" + getName();
-
-        MockTester tester = new MockTester(path);
-
-        tester.execute();
+    	super.setMineral(mineral);
+    	
+    	fireObservedChange("mineral", mineral);
     }
 
-    public static Test suite()
+
+    public void setVegetable(boolean vegetable)
     {
-        TestSuite suite = new TestSuite("Mock Unit Test Suite");
-
-        addScripts(suite);
-
-        // Handy place to perform one-time 
-        deleteDir(".private");
-
-        return suite;
+      	super.setVegetable(vegetable);
+      	
+      	fireObservedChange("vegetable", vegetable);
     }
 
-    private static void addScripts(TestSuite suite)
-    {
-        File scriptsDir = new File(SCRIPTS_DIR);
 
-        String[] names = scriptsDir.list();
-
-        for (int i = 0; i < names.length; i++)
-        {
-            String name = names[i];
-
-            if (name.endsWith(".xml"))
-            {
-                Test test = new MockTestCase(name);
-
-                suite.addTest(test);
-            }
-        }
-    }
-
-    private static void deleteDir(String path)
-    {
-        File file = new File(path);
-
-        if (!file.exists())
-            return;
-
-        deleteRecursive(file);
-    }
-
-    private static void deleteRecursive(File file)
-    {
-        if (file.isFile())
-        {
-            file.delete();
-            return;
-        }
-
-        String[] names = file.list();
-
-        for (int i = 0; i < names.length; i++)
-        {
-            File f = new File(file, names[i]);
-            deleteRecursive(f);
-        }
-
-        file.delete();
-    }
 
 }

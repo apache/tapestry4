@@ -53,42 +53,90 @@
  *
  */
 
-package org.apache.tapestry.junit.mock.c11;
+package org.apache.tapestry.junit.valid;
+
+import java.util.Locale;
+
+import org.apache.tapestry.IForm;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.form.AbstractFormComponent;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.html.BasePage;
 
 
 /**
- *  Makes the three properties persistent.
+ *  Used as a stand-in for a real component when testing the 
+ *  {@link org.apache.tapestry.valid.IValidator}
+ *  implementations.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 3.0
+ *  @since 1.0.8
+ *
  **/
 
-public class TestPersistentSelect extends TestSelect
+public class MockField extends AbstractFormComponent implements IFormComponent
 {
-    public void setAnimal(boolean animal)
+	private String _displayName;
+    private IForm _form;
+
+    public MockField(String displayName)
     {
-    	super.setAnimal(animal);
-    	
-        fireObservedChange("animal", animal);
+        this(displayName, new MockForm());
+    }
+    
+
+	public MockField(String displayName, IForm form)
+	{
+		_displayName = displayName;
+        _form = form;
+        
+        IPage page = new BasePage();
+        page.setLocale(Locale.ENGLISH);
+        page.addComponent(this);
+        
+        setPage(page);
+	}
+	
+	public void setForm(IForm form)
+	{
+		_form = form;
+	}
+
+	public String getDisplayName()
+	{
+		return _displayName;
+	}
+
+	public String getName()
+	{
+		return _displayName;
+	}
+
+
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
     }
 
-
-    public void setMineral(boolean mineral)
+    public IForm getForm()
     {
-    	super.setMineral(mineral);
-    	
-    	fireObservedChange("mineral", mineral);
+        return _form;
     }
 
-
-    public void setVegetable(boolean vegetable)
+    public boolean isDisabled()
     {
-      	super.setVegetable(vegetable);
-      	
-      	fireObservedChange("vegetable", vegetable);
+        return false;
     }
 
-
+	public String toString()
+	{
+		return "MockField[" + _displayName + "]";
+	}
+	
+    public void setName(String name)
+    {
+    }
 
 }

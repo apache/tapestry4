@@ -73,7 +73,7 @@ import org.apache.tapestry.valid.ValidatorException;
 public class TestPatternValidator extends TapestryTestCase
 {
     PatternValidator pv = new PatternValidator();
-    IFormComponent pf = new TestingField("PatternField");
+    IFormComponent pf = new MockField("PatternField");
 
     public TestPatternValidator(String name)
     {

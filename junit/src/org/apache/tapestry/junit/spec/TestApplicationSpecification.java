@@ -83,7 +83,7 @@ public class TestApplicationSpecification extends TapestryTestCase
     {
         IApplicationSpecification spec = parseApp("BasicExtension.application");
 
-        TestBean extension = (TestBean) spec.getExtension("testBean");
+        PropertyBean extension = (PropertyBean) spec.getExtension("testBean");
 
         assertEquals("booleanProperty", true, extension.getBooleanProperty());
         assertEquals("intProperty", 18, extension.getIntProperty());
@@ -99,7 +99,7 @@ public class TestApplicationSpecification extends TapestryTestCase
     {
         IApplicationSpecification spec = parseApp("BasicExtension.application");
 
-        TestBean extension = (TestBean) spec.getExtension("testBean", Object.class);
+        PropertyBean extension = (PropertyBean) spec.getExtension("testBean", Object.class);
 
         assertNotNull(extension);
     }

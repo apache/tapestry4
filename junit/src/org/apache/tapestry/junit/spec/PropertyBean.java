@@ -53,54 +53,73 @@
  *
  */
 
-package org.apache.tapestry.junit;
-
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.Tapestry;
+package org.apache.tapestry.junit.spec;
 
 /**
- * Tests for the methods 
- * {@link org.apache.tapestry.Tapestry#checkMethodInvocation(Object, String, Object)},
- * {@link org.apache.tapestry.Tapestry#addMethodInvocation(Object)} and
- * {@link org.apache.tapestry.Tapestry#clearMethodInvocations()}.
+ *  Bean used to test extensions.
  *
- * @author Howard Lewis Ship
- * @version $Id$
- * @since 3.0
+ *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *
  **/
-public class TapestryCheckMethodInvocation extends TapestryTestCase
+
+public class PropertyBean
 {
-
-    public TapestryCheckMethodInvocation(String name)
+    private boolean _booleanProperty;
+    private int _intProperty;
+    private long _longProperty;
+    private String _stringProperty;
+    private double _doubleProperty;
+    
+    public boolean getBooleanProperty()
     {
-        super(name);
+        return _booleanProperty;
     }
 
-    public void testSuccess()
+    public double getDoubleProperty()
     {
-        Tapestry.clearMethodInvocations();
-        Tapestry.addMethodInvocation("alpha");
-        Tapestry.addMethodInvocation("beta");
-
-        Tapestry.checkMethodInvocation("alpha", "alpha()", this);
-        Tapestry.checkMethodInvocation("beta", "beta()", this);
+        return _doubleProperty;
     }
 
-    public void testFail()
+    public int getIntProperty()
     {
-        Tapestry.clearMethodInvocations();
+        return _intProperty;
+    }
 
-        try
-        {
-            Tapestry.checkMethodInvocation("gamma", "gamma()", this);
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            assertEquals(
-                "Class org.apache.tapestry.junit.TapestryCheckMethodInvocation overrides method 'gamma()' but does not invoke the super-class implementation.",
-                ex.getMessage());
-        }
+    public long getLongProperty()
+    {
+        return _longProperty;
+    }
+
+    public String getStringProperty()
+    {
+        return _stringProperty;
+    }
+
+    public void setBooleanProperty(boolean booleanProperty)
+    {
+        _booleanProperty = booleanProperty;
+    }
+
+    public void setDoubleProperty(double doubleProperty)
+    {
+        _doubleProperty = doubleProperty;
+    }
+
+    public void setIntProperty(int intProperty)
+    {
+        _intProperty = intProperty;
+    }
+
+    public void setLongProperty(long longProperty)
+    {
+        _longProperty = longProperty;
+    }
+
+    public void setStringProperty(String stringProperty)
+    {
+        _stringProperty = stringProperty;
     }
 
 }
