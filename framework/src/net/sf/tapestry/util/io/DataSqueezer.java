@@ -115,6 +115,7 @@ public class DataSqueezer
         new ShortAdaptor().register(this);
         new BooleanAdaptor().register(this);
         new SerializableAdaptor().register(this);
+        new ComponentAddressAdaptor().register(this);
     }
 
     /**
