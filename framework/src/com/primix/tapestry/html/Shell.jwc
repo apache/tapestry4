@@ -2,8 +2,34 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.html.Shell" allow-informal-parameters="no">
-  <parameter name="title" java-type="java.lang.String" required="yes"/>
-  <parameter name="stylesheet" java-type="com.primix.tapestry.IAsset"/>
-  <parameter name="refresh" java-type="java.lang.Integer"/>
-  <parameter name="delegate" java-type="com.primix.tapestry.IRender"/>
+
+  <description>
+  Provides the outer tags in an HTML page: &lt;html&gt;, &lt;head&gt; and &lt;title&gt;.
+  </description>
+
+  <parameter name="title" java-type="java.lang.String" required="yes">
+    <description>
+    The title for the page.
+    </description>
+  </parameter>
+  
+  <parameter name="stylesheet" java-type="com.primix.tapestry.IAsset">
+    <description>
+    If specified, provides an external stylesheet for the page.
+    </description>
+  </parameter>
+  
+  <parameter name="refresh" java-type="java.lang.Integer">
+    <description>
+    If specified, the page will refresh itself after the specified delay (in seconds).
+    </description>
+  </parameter>
+  
+  <parameter name="delegate" java-type="com.primix.tapestry.IRender">
+    <description>
+    If specified, the delegate is allowed to render before the close of the &lt;head&gt;
+    tag (typically used to provide &lt;meta&gt; tags).
+    </description>
+  </parameter>
+  
 </specification>

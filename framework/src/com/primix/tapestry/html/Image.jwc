@@ -2,9 +2,23 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.html.Image" allow-body="no">
-  <parameter name="image" java-type="com.primix.tapestry.IAsset" required="yes"/>
-  <parameter name="border"/>
+
+  <description>
+  Displays an image, deriving the source URL for the image from an asset.
+  </description>
+
+  <parameter name="image" java-type="com.primix.tapestry.IAsset" required="yes">
+    <description>
+    The asset to display.
+    </description>
+  </parameter>
   
-  <parameter name="src"/>
+  <parameter name="border">
+    <description>
+    If given, the number of pixels of border.  The default is 0 pixels.
+    </description>
+  </parameter>
+  
+  <reserved-parameter name="src"/>
   
 </specification>

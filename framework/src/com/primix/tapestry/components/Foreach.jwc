@@ -8,9 +8,34 @@
 	class="com.primix.tapestry.components.Foreach" 
 	allow-informal-parameters="yes">
 	
-  <parameter name="source"/>
-  <parameter name="value"/>
-  <parameter name="index" java-type="int"/>
-  <parameter name="element" java-type="java.lang.String"/>
+  <description>
+  Loops over a collection of source values.  May also emulate an element (like an Any
+  component).
+  </description>
+	
+  <parameter name="source">
+    <description>
+    The source of values, a Java collection or array.
+    </description>
+  </parameter>
+  
+  <parameter name="value">
+    <description>
+    If provided, the on each iteration, the value property is updated.
+    </description>
+  </parameter>
+  
+  <parameter name="index" java-type="int">
+    <description>
+    If provided, then the index of the loop is set on each iteration.
+    </description>
+  </parameter>
+  
+  <parameter name="element" java-type="java.lang.String">
+    <description>
+    If provided, then the Foreach creates an element wrapping its content.
+    Informal parameters become attributes of the element.
+    </description>
+  </parameter>
   
 </specification>

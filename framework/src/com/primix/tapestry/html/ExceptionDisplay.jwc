@@ -5,7 +5,15 @@
 	allow-body="no" 
 	allow-informal-parameters="no">
   
-  <parameter name="exceptions" required="yes"/>
+  <description>
+  Used to present a detail exception description.
+  </description>
+  
+  <parameter name="exceptions" required="yes">
+    <description>
+    An array of ExceptionDescription objects.
+    </description>
+  </parameter>
   
   <component id="e-exception" type="Foreach">
     <inherited-binding name="source" parameter-name="exceptions"/>
