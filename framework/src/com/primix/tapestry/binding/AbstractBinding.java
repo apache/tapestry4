@@ -160,16 +160,6 @@ public abstract class AbstractBinding implements IBinding
 	*
 	*/
 
-	public boolean isReadOnly()
-	{
-		return false;
-	}
-
-	/**
-	*  Default implementation: returns false.
-	*
-	*/
-
 	public boolean isStatic()
 	{
 		return false;

@@ -1,6 +1,7 @@
 package com.primix.tapestry;
 
 import com.primix.tapestry.*;
+import com.primix.tapestry.binding.*;
 
 /*
  * Tapestry Web Application Framework
@@ -31,13 +32,15 @@ import com.primix.tapestry.*;
  */
 
 /**
- *  Thrown when an attempt is made to update through a read-only binding.
+ *  Thrown when an attempt is made to update through a read-only binding (i.e,
+ *  {@link StaticBinding}.
  *
  *  @see IBinding
  *
  * @author Howard Ship
  * @version $Id$
  */
+ 
 public class ReadOnlyBindingException extends BindingException
 {
 	public ReadOnlyBindingException(IBinding binding)

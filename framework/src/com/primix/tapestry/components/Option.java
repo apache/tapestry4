@@ -70,8 +70,7 @@ import com.primix.tapestry.spec.*;
  *	</tr>
  *	</table>
  *
- * <p>The default abbreviation <b>option</b> may be used as the component type.  May not contain
- * a body.
+ * <p>Allows informal parameters, but may not contain a body.
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -84,7 +83,7 @@ public class Option extends AbstractComponent
 	private IBinding labelBinding;
 	private String labelValue;
 
-		private static final String[] reservedNames = { "value" };
+	private static final String[] reservedNames = { "value" };
 
 	public Option(IPage page, IComponent container, String id,
 		ComponentSpecification specification)
@@ -142,7 +141,7 @@ public class Option extends AbstractComponent
 
 		rewinding = select.isRewinding();
 
-		value = cycle.getNextActionId();
+		value = select.getNextOptionId();
 
 		if (rewinding)
 		{

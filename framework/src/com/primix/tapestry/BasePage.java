@@ -5,6 +5,7 @@ import com.primix.tapestry.spec.*;
 import java.util.*;
 import java.io.OutputStream;
 import javax.servlet.http.*;
+import com.primix.foundation.*;
 
 /*
  * Tapestry Web Application Framework
@@ -65,6 +66,13 @@ public class BasePage extends BaseComponent implements IPage
 	protected ILifecycle[] lifecycleComponents;
 
 	protected String name;
+	
+	/**
+	 *  Only valid while the page is actually rendering.
+	 *
+	 */
+	 
+	private IRequestCycle requestCycle;
 	
 	/**
 	*  The locale of the page, initially determined from the application.
@@ -183,25 +191,23 @@ public class BasePage extends BaseComponent implements IPage
 
 	public IComponent getNestedComponent(String path)
 	{
-		StringTokenizer tokenizer;
-		IComponent current = this;
-		String element;
-
+		StringSplitter splitter;
+		IComponent current;
+		String[] elements;
+		int i;
+		
 		if (path == null)
 			return this;
 
-		// StringSplitter is more efficient!
+		splitter = new StringSplitter('.');
+		current = this;
 
-		tokenizer = new StringTokenizer(path, ".");
-
-		while (tokenizer.hasMoreTokens())
+		elements = splitter.splitToArray(path);
+		for (i = 0; i < elements.length; i++)
 		{
-			element = tokenizer.nextToken();
-
-			current = current.getComponent(element);
-
+			current = current.getComponent(elements[i]);
 		}
-
+		
 		return current;
 
 	}
@@ -239,12 +245,16 @@ public class BasePage extends BaseComponent implements IPage
 
 		try
 		{
+			requestCycle = cycle;
+			
             beginResponse(writer, cycle);
             
 			render(writer, cycle);
 		}
 		finally
 		{
+			requestCycle = null;
+			
 			// Open question:  how to handle an exceptions thrown here.
 
 			for (i = 0; i < lifecycleComponentCount; i++)
@@ -313,5 +323,10 @@ public class BasePage extends BaseComponent implements IPage
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
     }
+	
+	public IRequestCycle getRequestCycle()
+	{
+		return requestCycle;
+	}
 }
 

@@ -61,7 +61,7 @@ import com.primix.tapestry.components.*;
  * of any pages and select a new result page.
  *
  * <p>Following the rewind phase is the <em>result</em> phase.  During the render phase,
- * a page is actually renderred and output sent to the client web browser.
+ * a page is actually rendered and output sent to the client web browser.
  *
  *
  * @author Howard Ship
@@ -142,9 +142,13 @@ public interface IRequestCycle
      *  action id.  Returns true only if they match.  Returns false if
      *  there is no target action id (that is, during page rendering).
      *
+	 *  <p>If theres a match on action id, then the component's id path
+	 *  is compared against the target id path.  If there's a mismatch
+	 *  then a {@link StaleLinkException} is thrown.
      */
  
-    public boolean isRewound();
+    public boolean isRewound(IComponent component)
+	throws StaleLinkException;
     
     /**
  	 *  Removes a previously stored attribute, if one with the given name exists.
@@ -172,9 +176,9 @@ public interface IRequestCycle
      *
      */
  
-    public void rewindPage(String targetActionId)
+    public void rewindPage(String targetActionId, String targetIdPath)
         throws RequestCycleException;
-
+	
     /**
      *  Allows a temporary object to be stored in the request cycle,
      *  which allows otherwise unrelated objects to communicate.  This
@@ -204,7 +208,7 @@ public interface IRequestCycle
     public void setPage(String name);
 	
 	/**
-	 *  Invoked just before renderring the response page to get all
+	 *  Invoked just before rendering the response page to get all
 	 *  {@link IPageRecorder page recorders} touched in this request cycle
 	 *  to commit their changes (save them to persistant storage and increment
 	 *  their version numbers).

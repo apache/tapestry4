@@ -135,7 +135,7 @@ public class Action extends AbstractServiceLink
 
 		actionId = cycle.getNextActionId();
 
-		if (cycle.isRewound())
+		if (cycle.isRewound(this))
 		{
 			listener = getListener(cycle);
 

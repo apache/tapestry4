@@ -58,16 +58,6 @@ public class PropertyBinding extends AbstractBinding
 	private PropertyHelper helper;
 
 	/**
-	*  Indicates that the helper must be set up, and the read-only determination
-	*  made.
-	*
-	*  @see #setupHelper()
-	*
-	*/
-
-		private boolean setup = true;
-
-	/**
 	*  The name of the property to bind to.  This may be either a
 	*  simple name, or a nested property name.  A nested property
 	*  name consists of a series of simple names seperated by
@@ -79,16 +69,6 @@ public class PropertyBinding extends AbstractBinding
 	*/
 
 	private String propertyPath;
-
-	/**
-	*  Indicates whether the value is read-only or read-write (we
-	*  don't currently * allow for write-only).  This is determined
-	*  when the helper is setup.
-	*
-	*  @see #setupHelper()
-	*/
-
-	private boolean readOnly;
 
 	/**
 	*  Creates a {@link PropertyBinding} from the root object
@@ -140,7 +120,8 @@ public class PropertyBinding extends AbstractBinding
 	}
 
 	/**
-	 *  Gets the value of the property path, with the assistance of a {@link PropertyHelper}.
+	 *  Gets the value of the property path, with the assistance of a 
+	 *  {@link PropertyHelper}.
 	 *
 	 *  @throws BindingException if an exception is thrown accessing the property.
 	 *
@@ -148,7 +129,7 @@ public class PropertyBinding extends AbstractBinding
 	 
 	public Object getValue()
 	{
-		if (setup)
+		if (helper == null)
 			setupHelper();
 
 		try
@@ -178,17 +159,10 @@ public class PropertyBinding extends AbstractBinding
 	}
 
 	/**
-	*  Currently always returns false.  
-	*  
-	*  <p>This is broken, but checking is non-trivial.
-	*
-	*/
-
-	public boolean isReadOnly()
-	{
-		return false;
-	}
-
+	 *  Returns false.
+	 *
+	 */
+	 
 	public boolean isStatic()
 	{
 		return false;
@@ -209,19 +183,50 @@ public class PropertyBinding extends AbstractBinding
 		setValue(value);
 	}
 
-	protected void setupHelper()
+	private void setupHelper()
 	{
-		setup = false;
-
 		helper = PropertyHelper.forClass(root.getClass());
 	}
 
-	public void setValue(Object value) throws ReadOnlyBindingException
+	/**
+	 *  Updates the property for the binding to the given value.  
+	 *
+	 *  @throws BindingException if the property can't be updated (typically
+	 *  due to an security problem, or a missing mutator method).
+	 */
+	 
+	public void setValue(Object value)
 	{
-		if (setup)
+		if (helper == null)
 			setupHelper();
 
-		helper.set(root, propertyPath, value);
+		try
+		{
+			helper.set(root, propertyPath, value);
+		}
+		catch (Throwable e)
+		{
+			String message = e.getMessage();
+			StringBuffer buffer;
+			
+			buffer = new StringBuffer("Unable to update property ");
+			buffer.append(propertyPath);
+			buffer.append(" of ");
+			buffer.append(root);
+			buffer.append(" to <");
+			buffer.append(value);
+			
+			if (message == null)
+				buffer.append(">.");
+			else
+			{
+				buffer.append(">: ");
+				buffer.append(message);
+			}		
+
+			throw new BindingException(buffer.toString(), this, e);
+		}
+		
 	}
 
 	public String toString()

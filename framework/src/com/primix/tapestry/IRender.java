@@ -44,7 +44,7 @@ package com.primix.tapestry;
 public interface IRender
 {
     /**
-     *  The principal renderring/rewinding method.  This will cause
+     *  The principal rendering/rewinding method.  This will cause
      *  the receiving component to render its top level elements (HTML
      *  text and components).
      *

@@ -94,15 +94,6 @@ public interface IBinding
     public Object getValue();
 
     /**
-     *  Returns true if the Binding is read-only.  The binding may be static, or
-     *  there may be no way to propogate a value back to the source of the binding's value.
-     *
-     *  @see #isStatic()
-     */
- 
-    public boolean isReadOnly();
-
-    /**
      *  Returns true if the value is statically defined.  Static values
      *  are read-only.
      *

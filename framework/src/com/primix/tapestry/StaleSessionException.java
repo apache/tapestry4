@@ -43,6 +43,7 @@ package com.primix.tapestry;
 public class StaleSessionException extends RequestCycleException
 {
 	private transient IPage page;
+	private String pageName;
 
 	public StaleSessionException()
 	{
@@ -53,6 +54,14 @@ public class StaleSessionException extends RequestCycleException
 	{
 		super(message, null, null);
 		this.page = page;
+		
+		if (page != null)
+			pageName = page.getName();	
+	}
+	
+	public String getPageName()
+	{
+		return pageName;
 	}
 
 	/**

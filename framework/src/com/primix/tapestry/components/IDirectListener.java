@@ -48,7 +48,7 @@ public interface IDirectListener
      *  
      *  <p>A direct service URL includes an array of application specific
      *  strings, the context, which define contextual state for the action.
-     *  Note that null values provided to the component when renderring will
+     *  Note that null values provided to the component when rendering will
      *  be converted to empty strings before invoking the listener.
      *
      *  @param component The component which was "triggered".

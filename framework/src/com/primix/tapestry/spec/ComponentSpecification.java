@@ -129,7 +129,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	/**
 	*  Returns true if the component allows informal parameters (parameters
 	*  not formally defined).  Informal parameters are generally used to create
-	*  additional HTML attributes for an HTML tag renderred by the
+	*  additional HTML attributes for an HTML tag rendered by the
 	*  component.  This is often used to specify JavaScript event handlers or the class
 	*  of the component (for Cascarding Style Sheets).
 	*

@@ -66,7 +66,7 @@ public abstract class AbstractServiceLink
 	private static final int MAP_SIZE = 11;
 	private Map attributes;
 	
-	private boolean renderring;
+	private boolean rendering;
 
 	public AbstractServiceLink(IPage page, IComponent container, String name,
 		ComponentSpecification specification)
@@ -149,13 +149,13 @@ public abstract class AbstractServiceLink
 	/**
 	 *  Returns true if the link is enabled, false otherwise.
 	 *
-	 *  @throws RenderOnlyPropertyException if the component is not currently renderring.
+	 *  @throws RenderOnlyPropertyException if the component is not currently rendering.
 	 *
 	 */
 	 
 	public boolean isEnabled()
 	{
-		if (!renderring)
+		if (!rendering)
 			throw new RenderOnlyPropertyException(this, "enabled");
 			
 		return enabled;
@@ -239,7 +239,7 @@ public abstract class AbstractServiceLink
 
 		try
 		{
-			renderring = true;
+			rendering = true;
 			
 			cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -289,7 +289,7 @@ public abstract class AbstractServiceLink
 		}
 		finally
 		{
-			renderring = false;
+			rendering = false;
 		}
 	}
 }

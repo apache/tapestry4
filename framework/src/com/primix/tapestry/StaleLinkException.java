@@ -42,18 +42,65 @@ package com.primix.tapestry;
 public class StaleLinkException extends RequestCycleException
 {
 	private transient IPage page;
+	private String pageName;
+	private String targetIdPath;
+	private String targetActionId;
 
 	public StaleLinkException()
 	{
 		super();
 	}
 
-	public StaleLinkException(String message, IPage page)
+	/**
+	 *  Constructor used when the action id is found, but the target id path
+	 *  did not match the actual id path.
+	 *
+	 */
+	 
+	public StaleLinkException(IComponent component, IRequestCycle cycle,
+		String targetActionId, String targetIdPath)
 	{
-		super(message, null, null);
+		super("Action id " + targetActionId + 
+			" matched component " + component.getIdPath() + 
+			" not " + targetIdPath + ".", component, cycle);
+		
+		page = component.getPage();
+		pageName = page.getName();
+		this.targetActionId = targetActionId;
+		this.targetIdPath = targetIdPath;
+	}
+	
+	/**
+	 *  Constructor used when the target action id is not found.
+	 *
+	 */
+
+	public StaleLinkException(IPage page, IRequestCycle cycle,
+		 String targetActionId, String targetIdPath)
+	{
+		this("Action id " + targetActionId + 
+			" does not match component " + targetIdPath + ".", 
+			page, cycle);
+			
+		this.targetActionId = targetActionId;
+		this.targetIdPath = targetIdPath;
+	}
+	
+	public StaleLinkException(String message, IPage page, IRequestCycle cycle)
+	{
+	
+		super(message, null, cycle);
 		this.page = page;
+		
+		if (page != null)
+			pageName = page.getName();
 	}
 
+	public String getPageName()
+	{
+		return pageName;
+	}
+	
 	/**
 	*  Returns the page referenced by the service URL, if known, or null otherwise.
 	*

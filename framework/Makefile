@@ -16,17 +16,13 @@ PACKAGES = \
 	com.primix.tapestry.record \
 	com.primix.tapestry.spec
 
-RESOURCE_PACKAGES = \
-	com.primix.tapestry.components \
-	com.primix.tapestry.pages
-
 LOCAL_CLASSPATH = \
 	../lib/gnu-regexp.jar \
 	../lib/xerces.jar \
 	../lib/j2ee.jar \
 	../lib/PrimixFoundation.jar
 
-INSTALL_DIR := ../lib
+INSTALL_DIR = ../lib
 
 JAVADOC_DIR = ../javadoc
 

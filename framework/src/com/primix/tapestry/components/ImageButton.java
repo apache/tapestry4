@@ -33,7 +33,15 @@ import java.awt.Point;
  */
 
 /**
- *  Used to create an image button inside a {@link Form}.
+ *  Used to create an image button inside a {@link Form}.  Although it
+ *  is occasionally useful to know the {@link Point} on the image that was clicked
+ *  (i.e., use the image as a kind of image map, which was the original intent
+ *  of the HTML element), it is more commonly used to provide a graphic
+ *  image for the user to click, rather than the rather plain &lt;input type=submit&gt;.
+ *
+ * <p>Typically, the listener for this component will set a flag which
+ * will be used when the containing form's listener is notified.  To use
+ * a simple button with a text label, use the {@link Submit} component.
  *
  * <table border=1>
  * <tr> 
@@ -54,6 +62,23 @@ import java.awt.Point;
  *		<td>The image to show.</td>
  *	</tr>
  *
+ *  <tr>
+ *	  <td>disabled</id>
+ *	  <td>boolean</td>
+ *    <td>R</td>
+ *    <td>no</td>
+ *	  <td>&nbsp;</td>
+ *    <td>If set to true, the button will be disabled (will not respond to
+ *  the mouse).  If an alternate image is defined, it will be displayed (typically
+ *  a greyed-out version of the normal image). </td> </tr>
+ *
+ *  <tr>
+ * 	  <td>disabledImage</td>
+ *	  <td>{@link IAsset}</td>
+ *	  <td>R</td>
+ *	  <td>no</td>
+ *		<td>&nbsp;</td>
+ *	  <td>An alternate image to display if the component is disabled.</td> </tr>
  *
  * <tr>
  *		<td>listener</td>
@@ -80,12 +105,6 @@ import java.awt.Point;
  * <p>Informal parameters are allowed.  A body is not allowed.
  *
  *
- * <P>TBD:
- * <ul>
- * <li>disabled image and enabled property
- * <li>rollover support
- * </ul>
- *
  *  @author Howard Ship
  *  @version $Id$
  */
@@ -95,6 +114,8 @@ public class ImageButton extends AbstractFormComponent
 {
 	private IBinding imageBinding;
 	private IBinding pointBinding;
+	private IBinding disabledBinding;
+	private IBinding disabledImageBinding;
 	
 	private static final String[] reservedNames = 
 		{ "type", "name", "border", "src" };
@@ -125,37 +146,66 @@ public class ImageButton extends AbstractFormComponent
 		return pointBinding;
 	}
 
+	public IBinding getDisabledBinding()
+	{
+		return disabledBinding;
+	}
+	
+	public void setDisabledBinding(IBinding value)
+	{
+		disabledBinding = value;
+	}
+	
+	public IBinding getDisabledImageBinding()
+	{
+		return disabledImageBinding;
+	}
+
+	public void setDisabledImageBinding(IBinding value)
+	{
+		disabledImageBinding = value;
+	}
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		Form form;
 		boolean rewinding;
-		String actionId;
 		String name;
+		String parameterName;
 		String value;
 		int x;
 		int y;
 		RequestContext context;
 		IActionListener listener;
-		IAsset image;
+		IAsset image = null;
 		String imageURL;
+		boolean disabled = false;
 		
 		form = getForm(cycle);
 		
 		rewinding = form.isRewinding();
 		
-		actionId = cycle.getNextActionId();
+		name = "ImageButton" + cycle.getNextActionId();
+		
+		if (disabledBinding != null)
+			disabled = disabledBinding.getBoolean();
 		
 		if (rewinding)
 		{
+			// If disabled, do nothing.
+			
+			if (disabled)
+				return;
+				
 			context = cycle.getRequestContext();
 			
 			// Image clicks get submitted as two request parameters: 
 			// foo.x and foo.y
 			
-			name = actionId + ".x";
+			parameterName = name + ".x";
 				
-			value = context.getParameter(name);
+			value = context.getParameter(parameterName);
 			
 			if (name == null)
 				return;
@@ -164,13 +214,17 @@ public class ImageButton extends AbstractFormComponent
 			{
 				x = Integer.parseInt(value);
 			
-				name = actionId + ".y";
-				value = context.getParameter(name);
+				parameterName = name + ".y";
+				value = context.getParameter(parameterName);
 				
 				y = Integer.parseInt(value);
 				
 				pointBinding.setValue(new Point(x, y));
 			}
+			
+			// That was a lot of work to set the point binding.
+			// In reality, what usually happens is that the ImageButton
+			// exists so that its listener may be invoked.
 			
 			listener = getListener(cycle);
 			
@@ -182,18 +236,26 @@ public class ImageButton extends AbstractFormComponent
 		
 		// Not rewinding, do the real render
 		
+		if (disabled)
+			image = (IAsset)disabledImageBinding.getValue();
+			
+		if (image == null)
+			image = (IAsset)imageBinding.getValue();				
+
+		imageURL = image.buildURL(cycle);
+
 		writer.beginOrphan("input");
 		writer.attribute("type", "image");
-		writer.attribute("name", actionId);
+		writer.attribute("name", name);
 		
+		if (disabled)
+			writer.attribute("disabled");
+			
 		// Netscape places a border unless you tell it otherwise.
 		// IE ignores the border attribute and never shows a border.
 		
 		writer.attribute("border", 0);
-		
-		image = (IAsset)imageBinding.getValue();
-		imageURL = image.buildURL(cycle);
-		
+
 		writer.attribute("src", imageURL);
 
 		generateAttributes(cycle, writer, reservedNames);

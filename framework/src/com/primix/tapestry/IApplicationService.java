@@ -95,23 +95,6 @@ public interface IApplicationService
 
 
     /**
-     *  When the direct service discovers that the page version
-     *  encoded in the URL doesn't match the current page version, it
-     *  doesn't throw a {@link StaleLinkException} the way the action
-     *  service does, instead it records the page version encoded in
-     *  the URL as an {@link IRequestCycle} attribute.
-     *
-     *  <p>Most components that use the immediate service don't care
-     *  if the persistant page state has changed.  For those that do,
-     *  the listener for the component can check for the presence of
-     *  this request cycle attribute and throw the exception
-     *  themselves (or otherwise react to it).
-     */
-	
-    public final static String ENCODED_PAGE_VERSION_ATTRIBUTE_NAME = 
-	"com.primix.tapestry.DirectService.encoded-page-version";
-	
-    /**
      *  Name of a service that allows a new page to be selected.
      *  Associated with a {@link Page} component.
      *
