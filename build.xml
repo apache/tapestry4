@@ -224,19 +224,14 @@ description="Builds the Tapestry documentation.">
 
 </target>
 
+<target name="run-tutorial"
+  description="Runs the Tapestry Tutorial.">
+	
+  <property name="private.dir" value="private"/>
 
-<property name="private.dir" value="private"/>
-
-<!-- All of the run-xxx tasks use configuration that map private assets to
-    the /private URI.  This target deletes and recreates the private directory. -->
-    
-<target name="run-setup" description="Sets up for running the Tutorial or other.">
   <delete dir="${private.dir}" quiet="true"/>
   <mkdir dir="${private.dir}"/>
-</target>
-
-<target name="run-tutorial" depends="run-setup"
-  description="Runs the Tapestry Tutorial.">
+  
   <echo>Running Tapestry Tutorial on port 8080 ...</echo>
   <java classname="org.mortbay.jetty.Server" classpathref="tutorial.classpath"
   	fork="true" maxmemory="128MB">
@@ -254,56 +249,7 @@ description="Builds the Tapestry documentation.">
   </java>
 </target>
 
-<target name="run-intranet" depends="run-setup"
-  description="Runs the Tapestry Intranet (Virtual Library).">
-  <echo>Running Virtual Library on port 80 ...</echo>
-  <java classname="org.mortbay.jetty.Server" classpathref="full.classpath"
-  	fork="true" maxmemory="128MB">
 
-    <arg value="config/jetty-intranet.xml"/>
-
-    <jvmarg value="-showversion"/>
-    
-    <!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
-    
-	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
-	
-      <!-- JNDI Configuration for JBoss -->
-      
-      <sysproperty key="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
-      <sysproperty key="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
-      <sysproperty key="java.naming.provider.url" value="localhost:1099"/>
-
-  </java>
-</target>
-
-<target name="run-extranet" depends="run-setup"
-  description="Runs the Tapestry Extranet (Home Page).">
-  <echo>Running Tapestry Home Page on port 80 ...</echo>
-  <java classname="org.mortbay.jetty.Server" classpathref="full.classpath"
-  	fork="true" maxmemory="128MB">
-
-    <arg value="config/jetty-extranet.xml"/>
-
-    <jvmarg value="-showversion"/>
-
-    <sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
-    <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
-    
-    <!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
-    
-	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
-	
-      <!-- JNDI Configuration for JBoss -->
-      
-      <sysproperty key="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
-      <sysproperty key="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
-      <sysproperty key="java.naming.provider.url" value="localhost:1099"/>
-
-  </java>
-</target>
-
-  
   <target name="configure" description="Configure the JBoss server and setup the Vlib database.">
     <copy todir="${jboss.dir}/lib/ext">
     	<fileset dir="${lib}">
@@ -377,6 +323,10 @@ description="Builds the Tapestry documentation.">
     	           value="org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
     	<sysproperty key="javax.xml.parsers.DocumentBuilderFactory"
     			   value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
+
+      	<sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+      	<sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
+
 	</java>
 	
   </target>
