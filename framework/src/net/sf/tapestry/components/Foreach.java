@@ -47,7 +47,9 @@ import net.sf.tapestry.Tapestry;
  *  <code>components.<i>foreach</i>.value</code>
  *  is set to each successive value from the source,
  *  and the property
- *  {@link #getIndex
+ *  {@link #getIndex() index} is set to each successive index
+ *  into the source (starting with zero).
+ * 
  *  @author Howard Lewis Ship
  *  @version $Id$
  * 

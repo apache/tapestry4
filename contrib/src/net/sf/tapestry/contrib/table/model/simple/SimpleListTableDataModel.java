@@ -46,67 +46,55 @@ import net.sf.tapestry.contrib.table.model.common.ArrayIterator;
  */
 public class SimpleListTableDataModel extends AbstractTableDataModel implements Serializable
 {
-	private List m_arrRows;
+    private List m_arrRows;
 
-	public SimpleListTableDataModel(Object[] arrRows)
-	{
-		this(Arrays.asList(arrRows));
-	}
+    public SimpleListTableDataModel(Object[] arrRows)
+    {
+        this(Arrays.asList(arrRows));
+    }
 
-	public SimpleListTableDataModel(List arrRows)
-	{
-		m_arrRows = arrRows;
-	}
+    public SimpleListTableDataModel(List arrRows)
+    {
+        m_arrRows = arrRows;
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableDataModel#getRowCount()
-	 */
-	public int getRowCount()
-	{
-		return m_arrRows.size();
-	}
+    public int getRowCount()
+    {
+        return m_arrRows.size();
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableDataModel#getRow(int)
-	 */
-	public Object getRow(int nRow)
-	{
-		if (nRow < 0 || nRow >= m_arrRows.size())
-		{
-			// error message
-			return null;
-		}
-		return m_arrRows.get(nRow);
-	}
+    public Object getRow(int nRow)
+    {
+        if (nRow < 0 || nRow >= m_arrRows.size())
+        {
+            // error message
+            return null;
+        }
+        return m_arrRows.get(nRow);
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableDataModel#getRows(int, int)
-	 */
-	public Iterator getRows(int nFrom, int nTo)
-	{
-		return new ArrayIterator(m_arrRows.toArray(), nFrom, nTo);
-	}
+    public Iterator getRows(int nFrom, int nTo)
+    {
+        return new ArrayIterator(m_arrRows.toArray(), nFrom, nTo);
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableDataModel#getRows(int, int)
-	 */
-	public Iterator getRows()
-	{
-		return m_arrRows.iterator();
-	}
+    public Iterator getRows()
+    {
+        return m_arrRows.iterator();
+    }
 
-	/**
-	 * Method addRow.
+    /**
+     * Method addRow.
      * Adds a row object to the model at its end
-	 * @param objRow the row object to add
-	 */
-	public void addRow(Object objRow)
-	{
-		m_arrRows.add(objRow);
+     * @param objRow the row object to add
+     */
+    public void addRow(Object objRow)
+    {
+        m_arrRows.add(objRow);
 
-		CTableDataModelEvent objEvent = new CTableDataModelEvent();
-		fireTableDataModelEvent(objEvent);
-	}
+        CTableDataModelEvent objEvent = new CTableDataModelEvent();
+        fireTableDataModelEvent(objEvent);
+    }
 
     public void addRows(Collection arrRows)
     {
@@ -116,18 +104,18 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
         fireTableDataModelEvent(objEvent);
     }
 
-	/**
-	 * Method removeRow.
+    /**
+     * Method removeRow.
      * Removes a row object from the model
-	 * @param objRow the row object to remove
-	 */
-	public void removeRow(Object objRow)
-	{
-		m_arrRows.remove(objRow);
+     * @param objRow the row object to remove
+     */
+    public void removeRow(Object objRow)
+    {
+        m_arrRows.remove(objRow);
 
-		CTableDataModelEvent objEvent = new CTableDataModelEvent();
-		fireTableDataModelEvent(objEvent);
-	}
+        CTableDataModelEvent objEvent = new CTableDataModelEvent();
+        fireTableDataModelEvent(objEvent);
+    }
 
     public void removeRows(Collection arrRows)
     {

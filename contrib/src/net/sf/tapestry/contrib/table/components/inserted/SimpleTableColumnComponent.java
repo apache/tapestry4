@@ -56,9 +56,6 @@ public class SimpleTableColumnComponent
 		init();
 	}
 
-	/**
-	 * @see net.sf.tapestry.event.PageDetachListener#pageDetached(PageEvent)
-	 */
 	public void pageDetached(PageEvent arg0)
 	{
 		init();
@@ -70,18 +67,12 @@ public class SimpleTableColumnComponent
 		m_objModelSource = null;
 	}
 
-	/**
-	 * @see net.sf.tapestry.AbstractComponent#finishLoad()
-	 */
 	protected void finishLoad()
 	{
 		super.finishLoad();
 		getPage().addPageDetachListener(this);
 	}
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.simple.ISimpleTableColumnRenderer#initializeColumnRenderer(SimpleTableColumn, ITableModel)
-	 */
 	public void initializeColumnRenderer(
 		SimpleTableColumn objColumn,
 		ITableModelSource objSource)

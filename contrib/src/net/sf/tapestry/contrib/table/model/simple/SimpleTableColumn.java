@@ -43,128 +43,102 @@ import net.sf.tapestry.valid.RenderString;
  */
 public abstract class SimpleTableColumn implements ITableColumn, Serializable
 {
-	private String m_strColumnName;
-	private String m_strDisplayName;
-	private boolean m_bSortable;
-	private Comparator m_objComparator;
+    private String m_strColumnName;
+    private String m_strDisplayName;
+    private boolean m_bSortable;
+    private Comparator m_objComparator;
 
-	public SimpleTableColumn(String strColumnName)
-	{
-		this(strColumnName, strColumnName);
-	}
+    public SimpleTableColumn(String strColumnName)
+    {
+        this(strColumnName, strColumnName);
+    }
 
-	public SimpleTableColumn(String strColumnName, boolean bSortable)
-	{
-		this(strColumnName, strColumnName, bSortable);
-	}
+    public SimpleTableColumn(String strColumnName, boolean bSortable)
+    {
+        this(strColumnName, strColumnName, bSortable);
+    }
 
-	public SimpleTableColumn(String strColumnName, String strDisplayName)
-	{
-		this(strColumnName, strDisplayName, false);
-	}
+    public SimpleTableColumn(String strColumnName, String strDisplayName)
+    {
+        this(strColumnName, strDisplayName, false);
+    }
 
-	public SimpleTableColumn(
-		String strColumnName,
-		String strDisplayName,
-		boolean bSortable)
-	{
-		m_strColumnName = strColumnName;
-		m_strDisplayName = strDisplayName;
-		m_bSortable = bSortable;
+    public SimpleTableColumn(String strColumnName, String strDisplayName, boolean bSortable)
+    {
+        m_strColumnName = strColumnName;
+        m_strDisplayName = strDisplayName;
+        m_bSortable = bSortable;
 
-		setComparator(new DefaultComparator());
-	}
+        setComparator(new DefaultComparator());
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getColumnName()
-	 */
-	public String getColumnName()
-	{
-		return m_strColumnName;
-	}
+    public String getColumnName()
+    {
+        return m_strColumnName;
+    }
 
-	public String getDisplayName()
-	{
-		return m_strDisplayName;
-	}
+    public String getDisplayName()
+    {
+        return m_strDisplayName;
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#isSortable()
-	 */
-	public boolean getSortable()
-	{
-		return m_bSortable;
-	}
+    public boolean getSortable()
+    {
+        return m_bSortable;
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getComparator()
-	 */
-	public Comparator getComparator()
-	{
-		return m_objComparator;
-	}
+    public Comparator getComparator()
+    {
+        return m_objComparator;
+    }
 
-	protected void setComparator(Comparator objComparator)
-	{
-		m_objComparator = objComparator;
-	}
+    protected void setComparator(Comparator objComparator)
+    {
+        m_objComparator = objComparator;
+    }
 
-	public Object getColumnValue(Object objRow)
+    public Object getColumnValue(Object objRow)
     {
         return objRow.toString();
     }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getColumnRender(IRequestCycle)
-	 */
-	public IRender getColumnRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource)
-	{
-		// to be implemented
-		//return new RenderString(getDisplayName());
-		INamespace objNamespace = objSource.getNamespace();
-		String strNamespace = objNamespace.getExtendedId();
-		if (strNamespace == null)
-			strNamespace = "";
-		else
-			strNamespace = strNamespace + ":";
+    public IRender getColumnRenderer(IRequestCycle objCycle, ITableModelSource objSource)
+    {
+        // to be implemented
+        //return new RenderString(getDisplayName());
+        INamespace objNamespace = objSource.getNamespace();
+        String strNamespace = objNamespace.getExtendedId();
+        if (strNamespace == null)
+            strNamespace = "";
+        else
+            strNamespace = strNamespace + ":";
 
-		IPage objPage =
-			objCycle.getPage(strNamespace + "SimpleTableColumnPage");
-		ISimpleTableColumnRenderer objRenderer =
-			(ISimpleTableColumnRenderer) objPage.getComponent(
-				"tableColumnComponent");
-		objRenderer.initializeColumnRenderer(this, objSource);
-		return objRenderer;
-	}
+        IPage objPage = objCycle.getPage(strNamespace + "SimpleTableColumnPage");
+        ISimpleTableColumnRenderer objRenderer =
+            (ISimpleTableColumnRenderer) objPage.getComponent("tableColumnComponent");
+        objRenderer.initializeColumnRenderer(this, objSource);
+        return objRenderer;
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getValueRender(IRequestCycle, Object)
-	 */
-	public IRender getValueRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		Object objRow)
-	{
-		return new RenderString(getColumnValue(objRow).toString());
-	}
+    public IRender getValueRenderer(IRequestCycle objCycle, ITableModelSource objSource, Object objRow)
+    {
+        return new RenderString(getColumnValue(objRow).toString());
+    }
 
-	private class DefaultComparator implements Comparator, Serializable
-	{
-		public int compare(Object objRow1, Object objRow2)
-		{
-			Object objValue1 = getColumnValue(objRow1);
-			Object objValue2 = getColumnValue(objRow2);
+    private class DefaultComparator implements Comparator, Serializable
+    {
+        public int compare(Object objRow1, Object objRow2)
+        {
+            Object objValue1 = getColumnValue(objRow1);
+            Object objValue2 = getColumnValue(objRow2);
 
-			if (!(objValue1 instanceof Comparable)
-				|| !(objValue2 instanceof Comparable))
-			{
-				// error
-				return 0;
-			}
+            if (!(objValue1 instanceof Comparable) || !(objValue2 instanceof Comparable))
+            {
+                // error
+                return 0;
+            }
 
-			return ((Comparable) objValue1).compareTo(objValue2);
-		}
-	}
+            return ((Comparable) objValue1).compareTo(objValue2);
+        }
+    }
 }

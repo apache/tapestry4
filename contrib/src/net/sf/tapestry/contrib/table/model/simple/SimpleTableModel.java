@@ -49,181 +49,156 @@ import net.sf.tapestry.contrib.table.model.common.ReverseComparator;
 public class SimpleTableModel implements ITableModel, ITableDataModelListener, Serializable
 {
     private ITableDataModel m_objDataModel;
-	private Object[] m_arrRows;
-	private ITableColumnModel m_objColumnModel;
-	private SimpleTableState m_objState;
+    private Object[] m_arrRows;
+    private ITableColumnModel m_objColumnModel;
+    private SimpleTableState m_objState;
 
-	private SimpleTableSortingState m_objLastSortingState;
+    private SimpleTableSortingState m_objLastSortingState;
 
-	public SimpleTableModel(Object[] arrData, ITableColumn[] arrColumns)
-	{
-		this(
-			new SimpleListTableDataModel(arrData),
-			new SimpleTableColumnModel(arrColumns));
-	}
+    public SimpleTableModel(Object[] arrData, ITableColumn[] arrColumns)
+    {
+        this(new SimpleListTableDataModel(arrData), new SimpleTableColumnModel(arrColumns));
+    }
 
-	public SimpleTableModel(
-		ITableDataModel objDataModel,
-		ITableColumnModel objColumnModel)
-	{
-		this(objDataModel, objColumnModel, new SimpleTableState());
-	}
+    public SimpleTableModel(ITableDataModel objDataModel, ITableColumnModel objColumnModel)
+    {
+        this(objDataModel, objColumnModel, new SimpleTableState());
+    }
 
-	public SimpleTableModel(
-		ITableDataModel objDataModel,
-		ITableColumnModel objColumnModel,
-		SimpleTableState objState)
-	{
+    public SimpleTableModel(ITableDataModel objDataModel, ITableColumnModel objColumnModel, SimpleTableState objState)
+    {
         m_arrRows = null;
-		m_objColumnModel = objColumnModel;
-		m_objState = objState;
-		m_objLastSortingState = new SimpleTableSortingState();
+        m_objColumnModel = objColumnModel;
+        m_objState = objState;
+        m_objLastSortingState = new SimpleTableSortingState();
 
         m_objDataModel = objDataModel;
         m_objDataModel.addTableDataModelListener(this);
-	}
+    }
 
-	public SimpleTableState getState()
-	{
-		return m_objState;
-	}
+    public SimpleTableState getState()
+    {
+        return m_objState;
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getColumnModel()
-	 */
-	public ITableColumnModel getColumnModel()
-	{
-		return m_objColumnModel;
-	}
+    public ITableColumnModel getColumnModel()
+    {
+        return m_objColumnModel;
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getCurrentPageRows()
-	 */
-	public Iterator getCurrentPageRows()
-	{
-		sortRows();
+    public Iterator getCurrentPageRows()
+    {
+        sortRows();
 
-		int nPageSize = getPagingState().getPageSize();
-		int nCurrentPage = getPagingState().getCurrentPage();
+        int nPageSize = getPagingState().getPageSize();
+        int nCurrentPage = getPagingState().getCurrentPage();
 
-		int nFrom = nCurrentPage * nPageSize;
-		int nTo = (nCurrentPage + 1) * nPageSize;
+        int nFrom = nCurrentPage * nPageSize;
+        int nTo = (nCurrentPage + 1) * nPageSize;
 
-		return new ArrayIterator(m_arrRows, nFrom, nTo);
-	}
+        return new ArrayIterator(m_arrRows, nFrom, nTo);
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getPageCount()
-	 */
-	public int getPageCount()
-	{
-		int nRowCount = getRowCount();
-		if (nRowCount == 0)
-			return 1;
-		return (nRowCount - 1) / getPagingState().getPageSize() + 1;
-	}
+    public int getPageCount()
+    {
+        int nRowCount = getRowCount();
+        if (nRowCount == 0)
+            return 1;
+        return (nRowCount - 1) / getPagingState().getPageSize() + 1;
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getPagingState()
-	 */
-	public ITablePagingState getPagingState()
-	{
-		return m_objState.getPagingState();
-	}
+    public ITablePagingState getPagingState()
+    {
+        return m_objState.getPagingState();
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getSortingState()
-	 */
-	public ITableSortingState getSortingState()
-	{
-		return m_objState.getSortingState();
-	}
+    public ITableSortingState getSortingState()
+    {
+        return m_objState.getSortingState();
+    }
 
-	public int getRowCount()
-	{
+    public int getRowCount()
+    {
         updateRows();
-		return m_arrRows.length;
-	}
+        return m_arrRows.length;
+    }
 
-	private void updateRows()
-	{
+    private void updateRows()
+    {
         // If it is not null, then there is no need to extract the data
-        if (m_arrRows != null) 
+        if (m_arrRows != null)
             return;
-            
+
         // Extract the data from the model
         m_objLastSortingState = new SimpleTableSortingState();
 
-		int nRowCount = m_objDataModel.getRowCount();
-		Object[] arrRows = new Object[nRowCount];
+        int nRowCount = m_objDataModel.getRowCount();
+        Object[] arrRows = new Object[nRowCount];
 
-		int i = 0;
-		for (Iterator it = m_objDataModel.getRows(); it.hasNext();)
-			arrRows[i++] = it.next();
+        int i = 0;
+        for (Iterator it = m_objDataModel.getRows(); it.hasNext();)
+            arrRows[i++] = it.next();
 
-		m_arrRows = arrRows;
-	}
+        m_arrRows = arrRows;
+    }
 
-	protected void sortRows()
-	{
+    protected void sortRows()
+    {
         updateRows();
 
-		ITableSortingState objSortingState = getSortingState();
+        ITableSortingState objSortingState = getSortingState();
 
         // see if there is sorting required
-		String strSortColumn = objSortingState.getSortColumn();
-		if (strSortColumn == null)
-			return;
+        String strSortColumn = objSortingState.getSortColumn();
+        if (strSortColumn == null)
+            return;
 
-		boolean bSortOrder = objSortingState.getSortOrder();
+        boolean bSortOrder = objSortingState.getSortOrder();
 
-		// See if the table is already sorted this way. If so, return.
-		if (strSortColumn.equals(m_objLastSortingState.getSortColumn())
-			&& m_objLastSortingState.getSortOrder() == bSortOrder)
-			return;
+        // See if the table is already sorted this way. If so, return.
+        if (strSortColumn.equals(m_objLastSortingState.getSortColumn())
+            && m_objLastSortingState.getSortOrder() == bSortOrder)
+            return;
 
-		ITableColumn objColumn = getColumnModel().getColumn(strSortColumn);
-		if (objColumn == null || !objColumn.getSortable())
-			return;
+        ITableColumn objColumn = getColumnModel().getColumn(strSortColumn);
+        if (objColumn == null || !objColumn.getSortable())
+            return;
 
-		Comparator objCmp = objColumn.getComparator();
-		if (objCmp == null)
-			return;
+        Comparator objCmp = objColumn.getComparator();
+        if (objCmp == null)
+            return;
 
         // Okay, we have everything in place. Sort the rows.
-		if (bSortOrder == ITableSortingState.SORT_DESCENDING)
-			objCmp = new ReverseComparator(objCmp);
+        if (bSortOrder == ITableSortingState.SORT_DESCENDING)
+            objCmp = new ReverseComparator(objCmp);
 
-		Arrays.sort(m_arrRows, objCmp);
+        Arrays.sort(m_arrRows, objCmp);
 
-		m_objLastSortingState.setSortColumn(strSortColumn, bSortOrder);
-	}
+        m_objLastSortingState.setSortColumn(strSortColumn, bSortOrder);
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableDataModelListener#tableDataChanged(CTableDataModelEvent)
-	 */
-	public void tableDataChanged(CTableDataModelEvent objEvent)
-	{
+    public void tableDataChanged(CTableDataModelEvent objEvent)
+    {
         m_arrRows = null;
-	}
+    }
 
-	/**
-	 * Returns the dataModel.
-	 * @return ITableDataModel
-	 */
-	public ITableDataModel getDataModel()
-	{
-		return m_objDataModel;
-	}
+    /**
+     * Returns the dataModel.
+     * @return ITableDataModel
+     */
+    public ITableDataModel getDataModel()
+    {
+        return m_objDataModel;
+    }
 
-	/**
-	 * Sets the dataModel.
-	 * @param dataModel The dataModel to set
-	 */
-	public void setDataModel(ITableDataModel dataModel)
-	{
-		m_objDataModel = dataModel;
+    /**
+     * Sets the dataModel.
+     * @param dataModel The dataModel to set
+     */
+    public void setDataModel(ITableDataModel dataModel)
+    {
+        m_objDataModel = dataModel;
         m_arrRows = null;
-	}
+    }
 
 }

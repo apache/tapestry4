@@ -88,7 +88,7 @@ public interface IEngineService
      *
      *  <p>An array of Object parameters may be included with the
      *  service URL; these will be passed to the 
-     *  {@link IExternalPage#initPage(Object[], IRequestCycle)} method.
+     *  {@link IExternalPage#activateExternalPage(Object[], IRequestCycle)} method.
      *
      **/
 
