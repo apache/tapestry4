@@ -31,7 +31,7 @@ import java.util.Map;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
  *  A looping operator, modeled after the Foreach component.  It takes
@@ -46,37 +46,31 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 class ForeachToken extends AbstractToken
 {
-    private String key;
-    private String propertyPath;
-    private String[] properties;
+    private String _key;
+    private String _propertyPath;
 
     ForeachToken(String key, String propertyPath)
     {
-        this.key = key;
-        this.propertyPath = propertyPath;
+        _key = key;
+        _propertyPath = propertyPath;
     }
 
-    public void write(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
+    public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
     {
-        if (properties == null)
-            properties = PropertyHelper.splitPropertyPath(propertyPath);
-
         Map symbols = session.getSymbols();
-        PropertyHelper helper = PropertyHelper.forInstance(symbols);
 
-        Object rawSource = helper.getPath(symbols, properties);
+        Object rawSource = OgnlUtils.get(_propertyPath, symbols);
 
         Iterator i = Tapestry.coerceToIterator(rawSource);
 
         if (i == null)
             return;
-            
+
         while (i.hasNext())
         {
             Object newValue = i.next();
 
-            symbols.put(key, newValue);
+            symbols.put(_key, newValue);
 
             writeChildren(buffer, session);
         }

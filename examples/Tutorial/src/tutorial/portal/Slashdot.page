@@ -12,27 +12,27 @@
 <component id="content" type="Block"/>
 
 <component id="e" type="Foreach">
-    <binding name="source" property-path="stories"/>
-    <binding name="value" property-path="story"/>
+    <binding name="source" expression="stories"/>
+    <binding name="value" expression="story"/>
     <static-binding name="element">tr</static-binding>
-    <binding name="class" property-path="beans.rowClass.next"/>
+    <binding name="class" expression="beans.rowClass.next"/>
 </component>
 
 <component id="link" type="Any">
     <static-binding name="element">a</static-binding>
-    <binding name="href" property-path="story.URL"/>
+    <binding name="href" expression="story.URL"/>
 </component>
 
 <component id="insertHeadline" type="Insert">
-  <binding name="value" property-path="story.title"/>
+  <binding name="value" expression="story.title"/>
 </component>
 
 <component id="insertAuthor" type="Insert">
-  <binding name="value" property-path="story.author"/>
+  <binding name="value" expression="story.author"/>
 </component>
 
 <component id="insertDate" type="Insert">
-  <binding name="value" property-path="story.date"/>
+  <binding name="value" expression="story.date"/>
 </component>
   
 </page-specification>

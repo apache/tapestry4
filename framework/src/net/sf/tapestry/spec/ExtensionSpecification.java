@@ -37,7 +37,7 @@ import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.BasePropertyHolder;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Defines an "extension", which is much like a helper bean, but 
@@ -113,17 +113,15 @@ public class ExtensionSpecification extends BasePropertyHolder
     {
         if (_configuration.isEmpty())
             return;
-            
-        PropertyHelper helper = PropertyHelper.forInstance(extension);
 
         Iterator i = _configuration.entrySet().iterator();
         while (i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();
 
-            String propertyNane = (String) entry.getKey();
+            String propertyName = (String) entry.getKey();
 
-            helper.set(extension, propertyNane, entry.getValue());
+            OgnlUtils.set(propertyName, extension, entry.getValue());
         }
     }
 
@@ -141,7 +139,7 @@ public class ExtensionSpecification extends BasePropertyHolder
         {
             throw new ApplicationRuntimeException(ex);
         }
-        
+
         return result;
     }
 
@@ -171,7 +169,7 @@ public class ExtensionSpecification extends BasePropertyHolder
      *  only as needed.
      * 
      **/
-    
+
     public boolean isImmediate()
     {
         return _immediate;

@@ -41,8 +41,8 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.Direction;
 import net.sf.tapestry.spec.ParameterSpecification;
-import net.sf.tapestry.util.prop.IPropertyAccessor;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.util.prop.PropertyFinder;
+import net.sf.tapestry.util.prop.PropertyInfo;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -106,7 +106,6 @@ public class ParameterManager
 
         List list = new ArrayList();
         ComponentSpecification spec = component.getSpecification();
-        PropertyHelper helper = PropertyHelper.forInstance(component);
         IResourceResolver resolver = component.getPage().getEngine().getResourceResolver();
 
         Collection names = spec.getParameterNames();
@@ -145,8 +144,9 @@ public class ParameterManager
             // Next,verify that there is a writable property with the same
             // name as the parameter.
 
-            IPropertyAccessor accessor = helper.getAccessor(component, propertyName);
-            if (accessor == null)
+            PropertyInfo propertyInfo = PropertyFinder.getPropertyInfo(component.getClass(), propertyName);
+
+            if (propertyInfo == null)
             {
                 throw new ConnectedParameterException(
                     Tapestry.getString("ParameterManager.no-accessor", component.getExtendedId(), propertyName),
@@ -155,7 +155,7 @@ public class ParameterManager
                     propertyName);
             }
 
-            if (!accessor.isReadWrite())
+            if (!propertyInfo.isReadWrite())
             {
                 throw new ConnectedParameterException(
                     Tapestry.getString(
@@ -169,7 +169,7 @@ public class ParameterManager
 
             // Check if the parameter type matches the property type
 
-            Class propertyType = accessor.getType();
+            Class propertyType = propertyInfo.getType();
             Class parameterType = getType(pspec.getType(), resolver);
 
             if (parameterType == null)

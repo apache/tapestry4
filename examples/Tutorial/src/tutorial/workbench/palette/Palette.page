@@ -9,28 +9,28 @@
   <component id="border" type="Border"/>
   
   <component id="form" type="Form">
-    <binding name="listener" property-path="listeners.formSubmit"/>
+    <binding name="listener" expression="listeners.formSubmit"/>
   </component>
   
   <component id="inputColorSort" type="PropertySelection">
-  	<binding name="value" property-path="sort"/>
-  	<binding name="model" property-path="sortModel"/>
+  	<binding name="value" expression="sort"/>
+  	<binding name="model" expression="sortModel"/>
   </component>
   
   <component id="inputColor" type="contrib:Palette">
-    <binding name="model" property-path="colorModel"/>
-    <binding name="selected" property-path="selectedColors"/>
-    <binding name="sort" property-path="sort"/>
+    <binding name="model" expression="colorModel"/>
+    <binding name="selected" expression="selectedColors"/>
+    <binding name="sort" expression="sort"/>
     <static-binding name="tableClass">palette</static-binding>
   </component>
   
   <component id="update" type="ImageSubmit">
-    <binding name="image" property-path="assets.update"/>
+    <binding name="image" expression="assets.update"/>
   </component>
   
   <component id="continue" type="ImageSubmit">
-  	<binding name="image" property-path="assets.continue"/>
-  	<binding name="listener" property-path="listeners.advance"/>
+  	<binding name="image" expression="assets.continue"/>
+  	<binding name="listener" expression="listeners.advance"/>
   </component>
  
    <context-asset name="continue" path="/images/workbench/Continue.gif"/>

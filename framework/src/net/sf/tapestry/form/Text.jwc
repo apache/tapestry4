@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
-<specification class="net.sf.tapestry.form.Text" allow-body="no">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+<component-specification class="net.sf.tapestry.form.Text" allow-body="no">
 
   <description>
   A multi-line text area.
@@ -17,4 +17,4 @@
   
   <reserved-parameter name="name"/>
   
-</specification>
+</component-specification>

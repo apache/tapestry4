@@ -144,14 +144,6 @@ public class SpecificationParser extends AbstractDocumentParser
 
     private static final String SIMPLE_PROPERTY_NAME_PATTERN = "^[a-zA-Z_]\\w*$";
 
-    /**
-     *  Like simple property name, but also allows dashes in the name.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private static final String MODIFIED_PROPERTY_NAME_PATTERN = "^[a-zA-Z_](\\w|-)*$";
 
     /**
      *  Like modified property name, but allows periods in the name as
@@ -207,33 +199,33 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /**
      *  Perl5 pattern for helper bean names.  
-     *  Letter, followed by letter, number, underscore or dash.
+     *  Letter, followed by letter, number or underscore.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String BEAN_NAME_PATTERN = MODIFIED_PROPERTY_NAME_PATTERN;
+    public static final String BEAN_NAME_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for component ids.  Letter, followed by
-     *  letter, number, underscore or dash. 
+     *  letter, number or underscore.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String COMPONENT_ID_PATTERN = MODIFIED_PROPERTY_NAME_PATTERN;
+    public static final String COMPONENT_ID_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for asset names.  Letter, followed by
-     *  letter, number, underscore or dash. 
+     *  letter, number or underscore.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String ASSET_NAME_PATTERN = MODIFIED_PROPERTY_NAME_PATTERN;
+    public static final String ASSET_NAME_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for service names.  Letter
@@ -247,13 +239,13 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /**
      *  Perl5 pattern for library ids.  Letter followed
-     *  by letter, number, dash or underscore.
+     *  by letter, number or underscore.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String LIBRARY_ID_PATTERN = MODIFIED_PROPERTY_NAME_PATTERN;
+    public static final String LIBRARY_ID_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Per5 pattern for extension names.  Letter followed
@@ -947,6 +939,17 @@ public class SpecificationParser extends AbstractDocumentParser
                 continue;
             }
 
+            // New in 1.3 spec, replacing
+            // <property-value>
+
+            if (isElement(child, "expression-value"))
+            {
+                convertExpressionValue(spec, name, child);
+                continue;
+            }
+            
+            // This is in the 1.2 spec
+            
             if (isElement(child, "property-value"))
             {
                 convertPropertyValue(spec, name, child);
@@ -981,7 +984,13 @@ public class SpecificationParser extends AbstractDocumentParser
         spec.addInitializer(iz);
     }
 
-    /** @since 1.0.5 **/
+    /** 
+     * 
+     *  For backwards compatibility to 1.2 DTD.
+     * 
+     *  @since 1.0.5
+     * 
+     **/
 
     private void convertPropertyValue(BeanSpecification spec, String propertyName, Node node)
     {
@@ -990,6 +999,20 @@ public class SpecificationParser extends AbstractDocumentParser
 
         spec.addInitializer(iz);
     }
+
+    /**
+     *  @since 2.2
+     * 
+     **/
+    
+    private void convertExpressionValue(BeanSpecification spec, String propertyName, Node node)
+    {
+        String expression = getAttribute(node, "expression");
+        IBeanInitializer iz = _factory.createPropertyBeanInitializer(propertyName, expression);
+
+        spec.addInitializer(iz);
+    }
+
 
     /** @since 1.0.5 **/
 
@@ -1052,7 +1075,10 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             if (isElement(child, "binding"))
             {
-                convertBinding(c, child, BindingType.DYNAMIC, "property-path");
+                // property-path in 1.2 DTD is expression in 1.3 DTD.
+                
+                convertBinding(c, child, BindingType.DYNAMIC,
+                _version3 ? "expression" : "property-path");
                 continue;
             }
 

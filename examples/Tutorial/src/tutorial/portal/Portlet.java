@@ -86,7 +86,7 @@ public class Portlet extends BaseComponent
 
     public IAsset getChangeStateFocus()
     {
-        return getAsset(model.isExpanded() ? "minimize-focus" : "maximize-focus");
+        return getAsset(model.isExpanded() ? "minimizeFocus" : "maximizeFocus");
     }
 
     public String getChangeStateLabel()

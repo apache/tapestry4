@@ -83,10 +83,10 @@ public class ViewTabs extends BaseComponent
         buffer = new StringBuffer(view.getEnumerationId());
 
         if (selected)
-            buffer.append("-selected");
+            buffer.append("_selected");
 
         if (focus)
-            buffer.append("-focus");
+            buffer.append("_focus");
 
         key = buffer.toString();
 
@@ -111,7 +111,7 @@ public class ViewTabs extends BaseComponent
 
         inspector = (Inspector) getPage();
         selectedView = inspector.getView();
-        key = selectedView.getEnumerationId() + "-banner";
+        key = selectedView.getEnumerationId() + "_banner";
 
         return (IAsset) getAssets().get(key);
     }

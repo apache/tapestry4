@@ -42,6 +42,9 @@ import java.util.ResourceBundle;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.Decorator;
 import net.sf.tapestry.util.StringSplitter;
+import net.sf.tapestry.util.prop.IPublicBean;
+import net.sf.tapestry.util.prop.PublicBeanPropertyAccessor;
+import ognl.OgnlRuntime;
 
 /**
  *  A placeholder for a number of (static) methods that don't belong elsewhere.
@@ -94,6 +97,10 @@ public final class Tapestry
         {
             localeMap.put(locales[i].toString(), locales[i]);
         }
+    }
+
+    static {
+        OgnlRuntime.setPropertyAccessor(IPublicBean.class, new PublicBeanPropertyAccessor());
     }
 
     /**
@@ -560,27 +567,27 @@ public final class Tapestry
      *  @since 2.2
      * 
      **/
-    
+
     public static int size(Collection c)
     {
         if (c == null)
             return 0;
-            
-         return c.size();
+
+        return c.size();
     }
-    
+
     /**
      *  Returns the length of the array, or 0 if the array is null.
      * 
      *  @since 2.2
      * 
      **/
-    
+
     public static int size(Object[] array)
     {
         if (array == null)
             return 0;
-            
-            return array.length;
+
+        return array.length;
     }
 }

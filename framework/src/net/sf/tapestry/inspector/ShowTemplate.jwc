@@ -6,15 +6,15 @@
 	
 <component-specification class="net.sf.tapestry.inspector.ShowTemplate">
   <component id="ifNoTemplate" type="Conditional">
-    <binding name="condition" property-path="hasTemplate"/>
+    <binding name="condition" expression="hasTemplate"/>
     <field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
   
   <component id="ifTemplate" type="Conditional">
-    <binding name="condition" property-path="hasTemplate"/>
+    <binding name="condition" expression="hasTemplate"/>
   </component>
   
   <component id="insertTemplate" type="Delegator">
-    <binding name="delegate" property-path="templateDelegate"/>
+    <binding name="delegate" expression="templateDelegate"/>
   </component>
 </component-specification>

@@ -7,30 +7,30 @@
 <component-specification class="net.sf.tapestry.inspector.Selector">
 
   <component id="form" type="Form">
-    <binding name="listener" property-path="listeners.formSubmit"/>
+    <binding name="listener" expression="listeners.formSubmit"/>
   </component>
 
   <component id="selectPage" type="PropertySelection">
-    <binding name="value" property-path="page.inspectedPageName"/>
-    <binding name="model" property-path="pageModel"/>
+    <binding name="value" expression="page.inspectedPageName"/>
+    <binding name="model" expression="pageModel"/>
     <field-binding name="submitOnChange" field-name="Boolean.TRUE"/>
   </component>
 
   <component id="page" type="Direct">
-    <binding name="listener" property-path="page.listeners.selectComponent"/>
+    <binding name="listener" expression="page.listeners.selectComponent"/>
   </component>
 
   <component id="e" type="Foreach">
-    <binding name="source" property-path="crumbTrail"/>
+    <binding name="source" expression="crumbTrail"/>
   </component>
 
   <component id="component" type="Direct">
-    <binding name="parameters" property-path="components.e.value.idPath"/>
-    <binding name="listener" property-path="page.listeners.selectComponent"/>
+    <binding name="parameters" expression="components.e.value.idPath"/>
+    <binding name="listener" expression="page.listeners.selectComponent"/>
   </component>
 
   <component id="insertId" type="Insert">
-    <binding name="value" property-path="components.e.value.id"/>
+    <binding name="value" expression="components.e.value.id"/>
   </component>
 
   <component id="wrapped" type="InsertWrapped"/>

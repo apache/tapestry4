@@ -9,19 +9,19 @@
   <component id="border" type="Border"/>
   
   <component id="form" type="Form">
-    <binding name="listener" property-path="listeners.formSubmit"/>
+    <binding name="listener" expression="listeners.formSubmit"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   
   <component id="inputLocale" type="PropertySelection">
-    <binding name="value" property-path="page.engine.locale"/>
-    <binding name="model" property-path="localeModel"/>
+    <binding name="value" expression="page.engine.locale"/>
+    <binding name="model" expression="localeModel"/>
   </component>
   
   <component id="changeButton" type="ImageSubmit">
-    <binding name="image" property-path="assets.change-button"/>
+    <binding name="image" expression="assets.changeButton"/>
   </component>
   
-  <private-asset name="change-button" resource-path="/tutorial/workbench/localization/Change.gif"/>
+  <private-asset name="changeButton" resource-path="/tutorial/workbench/localization/Change.gif"/>
   
 </page-specification>

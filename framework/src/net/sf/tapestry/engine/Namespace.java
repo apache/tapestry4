@@ -55,6 +55,8 @@ public class Namespace implements INamespace
     private String _id;
     private String _extendedId;
     private INamespace _parent;
+    private boolean _frameworkNamespace;
+    private boolean _applicationNamespace;
 
     public Namespace(
         String id,
@@ -66,6 +68,9 @@ public class Namespace implements INamespace
         _parent = parent;
         _specification = specification;
         _specificationSource = specificationSource;
+        
+        _applicationNamespace = (_id == null);
+        _frameworkNamespace = FRAMEWORK_NAMESPACE.equals(_id);
     }
 
     public String toString()
@@ -74,7 +79,7 @@ public class Namespace implements INamespace
         buffer.append(Integer.toHexString(hashCode()));
         buffer.append('[');
 
-        if (_id == null)
+        if (_applicationNamespace)
             buffer.append("<application>");
         else
             buffer.append(getExtendedId());
@@ -113,7 +118,7 @@ public class Namespace implements INamespace
 
     public String getExtendedId()
     {
-        if (_parent == null)
+        if (_applicationNamespace)
             return null;
 
         if (_extendedId == null)
@@ -201,8 +206,13 @@ public class Namespace implements INamespace
 
     private String buildExtendedId()
     {
+        if (_parent == null)
+            return _id;
+            
         String parentId = _parent.getExtendedId();
 
+        // If immediate child of application namespace
+        
         if (parentId == null)
             return _id;
 
@@ -217,7 +227,10 @@ public class Namespace implements INamespace
 
     private String getNamespaceId()
     {
-        if (_parent == null)
+        if (_frameworkNamespace)
+            return Tapestry.getString("Namespace.framework-namespace");
+            
+        if (_applicationNamespace)
             return Tapestry.getString("Namespace.application-namespace");
 
         return Tapestry.getString("Namespace.nested-namespace", getExtendedId());

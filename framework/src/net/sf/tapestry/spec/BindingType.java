@@ -48,7 +48,7 @@ public final class BindingType extends Enum
     public static final BindingType STATIC = new BindingType("STATIC");
 
     /**
-     *  Indicates a standard {@link net.sf.tapestry.binding.PropertyBinding}.
+     *  Indicates a standard {@link net.sf.tapestry.binding.ExpressionBinding}.
      *
      **/
 

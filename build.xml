@@ -26,7 +26,8 @@
 	<pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
 	<pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
 	<pathelement location="${lib.ext.dir}/ejb.jar"/>
-	<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>	
+	<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
+	<pathelement location="${lib.ext.dir}/${ognl.jar}"/>
 	<pathelement location="config"/>
 </path>
 
@@ -324,11 +325,6 @@
 			<path refid="full.classpath"/>
 			<pathelement location="${lib.ext.dir}/mckoidb.jar"/>
 			<pathelement location="${lib.ext.dir}/junit.jar"/>
-			<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
-			<pathelement location="${lib.ext.dir}/${jcommon.jar}"/>
-			<pathelement location="${lib.ext.dir}/${jfreechart.jar}"/>
-		    <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
-		    <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
 		    <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
 		    <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
 		    <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>   
@@ -401,11 +397,13 @@
 			
 			<exclude name="*tapestry*${framework.version}.jar"/>
 			<exclude name="${jakarta-oro.jar}"/>
+			<exclude name="${ognl.jar}"/>
 			
 			<!-- Match and include out-of-date versions -->
 			
 			<include name="*tapestry*.jar"/>
 			<include name="jakarta-oro-*.jar"/>
+			<include name="ognl-*.jar"/>
 		</fileset>
 	</delete>
 		
@@ -414,6 +412,7 @@
 			<include name="*-${framework.version}.jar"/>
 			<include name="ext/mckoidb.jar"/>
 			<include name="ext/${jakarta-oro.jar}"/>
+			<include name="ext/${ognl.jar}"/>
 		</fileset>
 		<fileset dir="${jboss.server.default.dir}/lib">
 		

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification class="net.sf.tapestry.components.Block" allow-informal-parameters="no">
+<component-specification class="net.sf.tapestry.components.Block" allow-informal-parameters="no">
 	<description>
 	A block of dynamic content.  Blocks don't render until an InsertBlock component
 	triggers them.
 	</description>
-</specification>
+</component-specification>

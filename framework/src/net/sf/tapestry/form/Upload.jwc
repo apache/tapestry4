@@ -2,12 +2,12 @@
 
 <!-- $Id$ -->
 
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
 	
-<specification class="net.sf.tapestry.form.Upload" allow-body="no">
+<component-specification class="net.sf.tapestry.form.Upload" allow-body="no">
 
   <description>
   Allows a file to be uploaded as part of a form.
@@ -25,4 +25,4 @@
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>
   
-</specification>
+</component-specification>

@@ -6,29 +6,29 @@
 
 <page-specification class="tutorial.hangman.Guess">
   <component id="insertGuess" type="Insert">
-    <binding name="value" property-path="guessed"/>
+    <binding name="value" expression="guessed"/>
   </component>
   <component id="insertMissed" type="Insert">
-    <binding name="value" property-path="visit.game.missed"/>
+    <binding name="value" expression="visit.game.missed"/>
   </component>
   <component id="insertMaxMisses" type="Insert">
-    <binding name="value" property-path="visit.game.maxMisses"/>
+    <binding name="value" expression="visit.game.maxMisses"/>
   </component>
   <component id="ifError" type="Conditional">
-    <binding name="condition" property-path="error"/>
+    <binding name="condition" expression="error"/>
   </component>
   <component id="insertError" type="Insert">
-    <binding name="value" property-path="error"/>
+    <binding name="value" expression="error"/>
   </component>
   <component id="e" type="Foreach">
-    <binding name="source" property-path="unused"/>
+    <binding name="source" expression="unused"/>
   </component>
   <component id="guess" type="Direct">
-    <binding name="listener" property-path="listeners.makeGuess"/>
-    <binding name="parameters" property-path="components.e.value"/>
+    <binding name="listener" expression="listeners.makeGuess"/>
+    <binding name="parameters" expression="components.e.value"/>
   </component>
   <component id="insertLetter" type="Insert">
-    <binding name="value" property-path="components.e.value"/>
+    <binding name="value" expression="components.e.value"/>
   </component>
   <component id="giveUp" type="Page">
     <static-binding name="page">Failed</static-binding>

@@ -71,6 +71,15 @@ public interface IBeanProvider
 	
 	public Collection getBeanNames();
 	
+    /**
+     *  Returns true if the provider can provide the named bean.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public boolean canProvideBean(String name);
+    
 	/**
 	 *  Returns a resource resolver.
 	 * 

@@ -12,11 +12,11 @@
   	required="yes"/>
   
   <component id="ifError" type="Conditional">
-    <binding name="condition" property-path="bindings.delegate.object.hasErrors"/>
+    <binding name="condition" expression="bindings.delegate.object.hasErrors"/>
   </component>
   
   <component id="insertError"  type="Delegator">
-     <binding name="delegate" property-path="bindings.delegate.object.firstError"/>
+     <binding name="delegate" expression="bindings.delegate.object.firstError"/>
   </component>
   
 </component-specification>

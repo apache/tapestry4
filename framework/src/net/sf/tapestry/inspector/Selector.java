@@ -126,11 +126,11 @@ public class Selector extends BaseComponent
 
         addPageNames(names, source.getFrameworkNamespace());
         addPageNames(names, source.getApplicationNamespace());
-        
+
         List l = new ArrayList(names);
         Collections.sort(l);
-        
-        return (String[])l.toArray(new String[l.size()]);
+
+        return (String[]) l.toArray(new String[l.size()]);
     }
 
     private void addPageNames(Set names, INamespace namespace)

@@ -29,7 +29,7 @@ import java.util.Map;
 
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
  *  A token that writes the value of a property using a property path
@@ -42,12 +42,11 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 class InsertToken implements IScriptToken
 {
-    private String propertyPath;
-    private String[] properties;
+    private String _propertyPath;
 
     InsertToken(String propertyPath)
     {
-        this.propertyPath = propertyPath;
+        _propertyPath = propertyPath;
     }
 
     /**
@@ -56,16 +55,11 @@ class InsertToken implements IScriptToken
      *
      **/
 
-    public void write(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
+    public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
     {
-        if (properties == null)
-            properties = PropertyHelper.splitPropertyPath(propertyPath);
-
         Map symbols = session.getSymbols();
-        PropertyHelper helper = PropertyHelper.forInstance(symbols);
 
-        Object value = helper.getPath(symbols, properties);
+        Object value = OgnlUtils.get(_propertyPath, symbols);
 
         if (value != null)
             buffer.append(value);

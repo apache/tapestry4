@@ -31,7 +31,6 @@ import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IBeanProvider;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**
  *  Initializes a bean with the value of a public static field.
@@ -44,8 +43,8 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public class FieldBeanInitializer extends AbstractBeanInitializer
 {
-    protected String _fieldName;
-    protected Object _fieldValue;
+    private String _fieldName;
+    private Object _fieldValue;
     private boolean _fieldResolved = false;
 
     public FieldBeanInitializer(String propertyName, String fieldName)

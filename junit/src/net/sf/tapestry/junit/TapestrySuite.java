@@ -29,7 +29,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import net.sf.tapestry.junit.parse.SpecificationParserTest;
 import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.prop.PropertyHelperTest;
 import net.sf.tapestry.junit.script.ScriptTest;
 import net.sf.tapestry.junit.spec.TestApplicationSpecification;
 import net.sf.tapestry.junit.spec.TestComponentSpecification;
@@ -52,7 +51,6 @@ public class TapestrySuite extends TestSuite
 		TestSuite suite = new TestSuite();
 
 		suite.addTestSuite(ComponentStringsTest.class);
-		suite.addTestSuite(PropertyHelperTest.class);
 		suite.addTestSuite(TemplateParserTest.class);
 		suite.addTestSuite(SpecificationParserTest.class);
         suite.addTestSuite(TestApplicationSpecification.class);

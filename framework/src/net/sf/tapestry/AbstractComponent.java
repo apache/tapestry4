@@ -34,15 +34,17 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.sf.tapestry.bean.BeanProvider;
-import net.sf.tapestry.bean.BeanProviderHelper;
+import net.sf.tapestry.bean.BeanProviderPropertyAccessor;
 import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.ObservedChangeEvent;
 import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.param.ParameterManager;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
-import net.sf.tapestry.util.prop.IPropertyAccessor;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.util.prop.OgnlUtils;
+import net.sf.tapestry.util.prop.PropertyFinder;
+import net.sf.tapestry.util.prop.PropertyInfo;
+import ognl.OgnlRuntime;
 
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
@@ -58,7 +60,7 @@ public abstract class AbstractComponent implements IComponent
         // Register the BeanProviderHelper to provide access to the
         // beans of a bean provider as named properties.
 
-        PropertyHelper.register(IBeanProvider.class, BeanProviderHelper.class);
+        OgnlRuntime.setPropertyAccessor(IBeanProvider.class, new BeanProviderPropertyAccessor());
     }
 
     /**
@@ -255,7 +257,8 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
+        throws PageLoaderException
     {
         finishLoad();
     }
@@ -514,14 +517,11 @@ public abstract class AbstractComponent implements IComponent
 
     public IBinding getBinding(String name)
     {
-        PropertyHelper helper;
-        IPropertyAccessor accessor;
+        String bindingPropertyName = name + "Binding";
+        PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
 
-        helper = PropertyHelper.forClass(getClass());
-        accessor = helper.getAccessor(this, name + "Binding");
-
-        if (accessor != null && accessor.isReadWrite() && accessor.getType().equals(IBinding.class))
-            return (IBinding) accessor.get(this);
+        if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
+            return (IBinding) OgnlUtils.get(bindingPropertyName, this);
 
         if (_bindings == null)
             return null;
@@ -669,15 +669,13 @@ public abstract class AbstractComponent implements IComponent
 
     public void setBinding(String name, IBinding binding)
     {
-        PropertyHelper helper;
-        IPropertyAccessor accessor;
+        String bindingPropertyName = name + "Binding";
 
-        helper = PropertyHelper.forClass(getClass());
-        accessor = helper.getAccessor(this, name + "Binding");
+        PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
 
-        if (accessor != null && accessor.getType().equals(IBinding.class))
+        if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
         {
-            accessor.set(this, binding);
+            OgnlUtils.set(bindingPropertyName, this, binding);
             return;
         }
 
@@ -999,7 +997,7 @@ public abstract class AbstractComponent implements IComponent
     {
         return formatString(key, new Object[] { argument1, argument2, argument3 });
     }
-    
+
     public INamespace getNamespace()
     {
         return _namespace;

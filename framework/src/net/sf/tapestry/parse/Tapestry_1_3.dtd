@@ -28,6 +28,8 @@ This DTD is backwards compatible with the 1.2 DTD, with the following exceptions
 - added static value type 'long'
 - allow <property> within <bean>, <component>, <extension>, <private-asset>, <context-asset> and <external-asset>
 - add "render" bean lifecycle value
+- rename <binding>'s property-path attribute to expression
+- rename <property-value> to <expression-value>
 -->
 
 <!-- =======================================================
@@ -113,13 +115,12 @@ Binds a parameter of the component to a property of its container.
 
 Attributes:
   name: The name of the component parameter to bind.
-  property-path: The property path, relative to the container, to obtain
-    the parameter value from.
+  expression: The OGNL expression.
 -->
 <!ELEMENT binding EMPTY>
 <!ATTLIST binding
   name CDATA #REQUIRED
-  property-path CDATA #REQUIRED
+  expression CDATA #REQUIRED
 >
 
 <!-- =======================================================
@@ -234,6 +235,20 @@ Attributes:
 <!ELEMENT description (#PCDATA)>
 <!ATTLIST description
   xml:lang NMTOKEN "en"
+>
+<!-- =======================================================
+Element: expression-value
+Appears in: set-parameter
+
+Used to initialize a bean with from an OGNL expression.
+
+Attributes:
+  expression: An OGNL expression.
+-->
+
+<!ELEMENT expression-value EMPTY>
+<!ATTLIST property-value
+  expression CDATA #REQUIRED
 >
 
 <!-- =======================================================
@@ -454,23 +469,6 @@ Attributes:
 >
 
 <!-- =======================================================
-Element: property-value
-Appears in: set-parameter
-
-Used to initialize a bean with a property of its containing
-component.
-
-Attributes:
-  property-path: A JavaBeans property path which provides the
-    value to set.
--->
-
-<!ELEMENT property-value EMPTY>
-<!ATTLIST property-value
-  property-path CDATA #REQUIRED
->
-
-<!-- =======================================================
 Element: reserved-parameter
 Appears in: component-specification
 
@@ -517,7 +515,7 @@ Attributes:
   name: The name of the property to be set.
 -->
 
-<!ELEMENT set-property (static-value | property-value | field-value | string-value)>
+<!ELEMENT set-property (static-value | expression-value | field-value | string-value)>
 <!ATTLIST set-property
   name CDATA #REQUIRED
 >

@@ -7,6 +7,6 @@
 <page-specification class="net.sf.tapestry.html.BasePage">
   <component id="border" type="Border">
     <static-binding name="title">Credo</static-binding>
-    <binding name="pages" property-path="engine.pageNames"/>
+    <binding name="pages" expression="engine.pageNames"/>
   </component>
 </page-specification>

@@ -20,48 +20,48 @@
   <component id="border" type="Border"/>
 
   <component id="showError" type="ShowError">
-     <binding name="delegate" property-path="beans.delegate"/>
+     <binding name="delegate" expression="beans.delegate"/>
   </component>
 
   <component id="form" type="Form">
-    <binding name="listener" property-path="listeners.submit"/>
-    <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="listener" expression="listeners.submit"/>
+    <binding name="delegate" expression="beans.delegate"/>
   </component>
 
   <component id="plotValues" type="Foreach">
-    <binding name="source" property-path="plotValues"/>
-    <binding name="value" property-path="plotValue"/>
+    <binding name="source" expression="plotValues"/>
+    <binding name="value" expression="plotValue"/>
     <static-binding name="element">tr</static-binding>
   </component>
 
   <component id="inputName" type="ValidField">
   	<static-binding name="displayName">Name</static-binding>
-  	<binding name="value" property-path="plotValue.name"/>
+  	<binding name="value" expression="plotValue.name"/>
   	<field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
   </component>
 
   <component id="inputValue" type="ValidField">	
   	<static-binding name="displayName">Value</static-binding>
-  	<binding name="value" property-path="plotValue.value"/>
-  	<binding name="validator" property-path="beans.intValidator"/>
+  	<binding name="value" expression="plotValue.value"/>
+  	<binding name="validator" expression="beans.intValidator"/>
   </component>
   
   <component id="inputMarked" type="Checkbox">
-    <binding name="selected" property-path="markedForDeletion"/>
+    <binding name="selected" expression="markedForDeletion"/>
   </component>
   
   <component id="add" type="Submit">
-  	<binding name="listener" property-path="listeners.add"/>
+  	<binding name="listener" expression="listeners.add"/>
   	<static-binding name="label">Update and Add</static-binding>
   </component>
   
   <component id="delete" type="Submit">	
-  	<binding name="listener" property-path="listeners.delete"/>
+  	<binding name="listener" expression="listeners.delete"/>
   	<static-binding name="label">Delete Selected</static-binding>
   </component>
   
   <component id="chart" type="Image">
-    <binding name="image" property-path="chartImageAsset"/>
+    <binding name="image" expression="chartImageAsset"/>
   </component>
   
 </page-specification>

@@ -26,6 +26,7 @@
 package net.sf.tapestry.engine;
 
 import java.net.URL;
+import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IResourceResolver;
@@ -91,4 +92,16 @@ public class ResourceResolver implements IResourceResolver
                 t);
         }
     }
+    
+    /**
+     *  As defined by {@link ognl.ClassResolver}.
+     * 
+     *  @since 2.2
+     **/
+    
+    public Class classForName(String className, Map context) throws ClassNotFoundException
+    {
+        return findClass(className);
+    }
+
 }
