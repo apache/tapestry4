@@ -32,7 +32,7 @@
     <td><span jwcid="@Insert" value="ognl:book.dateAdded" format="ognl:dateFormat">Dec 24 1966</span>
     </td>
   </tr>
-<span jwcid="@Conditional" condition="ognl:! @org.apache.tapestry.Tapestry@isNull(book.description)">
+<span jwcid="@Conditional" condition="ognl:! @org.apache.commons.lang.StringUtils@isEmpty(book.description)">
   <tr>
     <th>Description</th>
     <td><span jwcid="@InsertText" value="ognl:book.description">
