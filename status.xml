@@ -21,6 +21,18 @@
   </developers>
 
   <votes>
+  	
+  	<vote title="Tapestry 3.0 FINAL" date="Apr 14 2004" dev="HLS">
+  	
+  	<motion>
+  		Despite a last minute flurry of bug fixes, the motion has passed and we'll be releasing the final Tapestry 3.0 release shortly.  I'll be creating tagging and creating the final release shortly. Alas, it looks like Neil Clayton is no longer contributing to the Tapestry project.
+  	</motion>
+  	
+  	<response>HLS, RLS, EH, HK, DS, TSV, MB: +1</response>
+  	<response>GL, NC: +0</response>
+  		
+  	</vote>
+  	
   	<vote title="release 3.0-rc-3" date="Apr 7 2004" dev="HLS">
   		<motion>
   			I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2.
@@ -237,7 +249,7 @@ NextGen) be released as version number 3.0.
 
   <changes>
   	
- 	<release version="3.0" date="unrelease">
+ 	<release version="3.0" date="Apr 18 2004">
  	
  	<action type="fix" dev="HLS" fixes-bug="28345">
  		Workbench/Upload exception when no file specified   	
@@ -249,6 +261,11 @@ NextGen) be released as version number 3.0.
 
  	<action type="fix" dev="DS" fixes-bug="28422">
  		Add element parameter to contrib:Choose   	
+ 	</action>
+ 	
+ 	<action type="fix" dev="HLS" fixes-bug="28454">
+ 		Remove a small optimization that compromised storage of mutable objects
+ 		as persistent page properties.	
  	</action>
 
  	</release>
