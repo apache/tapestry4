@@ -55,33 +55,45 @@ import net.sf.tapestry.valid.IField;
 
 public class TestingField implements IField
 {
-	private String displayName;
-	private Class valueType = String.class;
+	private String _displayName;
+	private Class _valueType;
+    private IForm _form;
 
-	public TestingField(String displayName)
+    public TestingField(String displayName)
+    {
+        this(displayName, new TestingForm());
+    }
+    
+    public TestingField(String displayName, Class type)
+    {
+        this(displayName, new TestingForm(), type);
+    }
+
+	public TestingField(String displayName, IForm form)
 	{
-		this.displayName = displayName;
+	       this(displayName, form, String.class);
 	}
 
-	public TestingField(String displayName, Class type)
+	public TestingField(String displayName, IForm form, Class type)
 	{
-		this.displayName = displayName;
-		this.valueType = type;
+		_displayName = displayName;
+        _form = form;
+		_valueType = type;
 	}
 	
 	public Class getValueType()
 	{
-		return valueType;
+		return _valueType;
 	}
 
 	public String getDisplayName()
 	{
-		return displayName;
+		return _displayName;
 	}
 
 	public String getName()
 	{
-		return displayName;
+		return _displayName;
 	}
 
 	public void addAsset(String name, IAsset asset)
@@ -200,7 +212,7 @@ public class TestingField implements IField
 
 	public IForm getForm()
 	{
-		return null;
+		return _form;
 	}
 
     public String getString(String key)
