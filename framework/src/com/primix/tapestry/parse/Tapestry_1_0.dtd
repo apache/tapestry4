@@ -7,12 +7,14 @@
 <!ELEMENT assets (internal-asset | external-asset | private-asset)+>
 <!ELEMENT buffer-size (#PCDATA)>
 <!ELEMENT binding (name, property-path)>
-<!ELEMENT bindings (binding | static-binding | inherited-binding)+>
+<!ELEMENT bindings (binding | static-binding | inherited-binding | field-binding)+>
 <!ELEMENT class (#PCDATA)>
 <!ELEMENT component (id, type, bindings?, properties?)>
 <!ELEMENT components (component)+>
 <!ELEMENT component-alias (alias, specification-path)>
 <!ELEMENT external-asset (name, URL)>
+<!ELEMENT field-binding (name, field-name)>
+<!ELEMENT field-name (#PCDATA)>
 <!ELEMENT id (#PCDATA)>
 <!ELEMENT inherited-binding (name, parameter-name)>
 <!ELEMENT internal-asset (name, path)>
