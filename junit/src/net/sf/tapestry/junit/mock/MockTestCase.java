@@ -42,6 +42,17 @@ public class MockTestCase extends TapestryTestCase
 
 
     /**
+     *  Tests related to the listener binding (added in 1.4 DTD).
+     * 
+     **/
+    
+    public void testListenerBinding()
+    throws Exception
+    {
+        attempt("TestListenerBinding.xml");
+    }
+
+    /**
      *  Test that default class names for pages and components work.
      * 
      **/

@@ -1,5 +1,7 @@
 package net.sf.tapestry.junit.parse;
 
+import java.util.Map;
+
 import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
@@ -7,6 +9,8 @@ import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
+import net.sf.tapestry.spec.LibrarySpecification;
+import net.sf.tapestry.spec.ListenerBindingSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
@@ -386,5 +390,63 @@ public class SpecificationParserTest extends TapestryTestCase
         assertEquals("flintstone", c.getBinding("fred").getValue());
         assertEquals("rubble", c.getBinding("barney").getValue());
         assertEquals("hudson", c.getBinding("rock").getValue());
+    }
+    
+    /**
+     *  Tests the new (in DTD 1.4) value attribute on a configure element.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public void testConfigureValue() throws  Exception
+    {
+        ILibrarySpecification spec = parseLib("ConfigureValue.library");
+     
+        Map map = (Map)spec.getExtension("map", Map.class);
+        
+        assertEquals("flintstone", map.get("fred"));
+    }
+
+    /**
+     *  Tests the new &lt;listener-binding&gt; element in the 1.4 DTD.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testListenerBinding() throws Exception
+    {
+        ComponentSpecification spec = parsePage("ListenerBinding.page");
+
+        ContainedComponent c = spec.getComponent("c");
+
+        ListenerBindingSpecification lbs = (ListenerBindingSpecification) c.getBinding("listener");
+
+        String expectedScript =
+            buildExpectedScript(
+                new String[] {
+                    "if page.isFormInputValid():",
+                    "  cycle.page = \"Results\"",
+                    "else:",
+                    "  page.message = \"Please fix errors before continuing.\";" });
+
+        assertEquals("jython", lbs.getLanguage());
+        assertEquals(expectedScript, lbs.getScript());
+    }
+
+    private String buildExpectedScript(String[] lines)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        for (int i = 0; i < lines.length; i++)
+        {
+            if (i > 0)
+                buffer.append("\n");
+
+            buffer.append(lines[i]);
+        }
+
+        return buffer.toString();
     }
 }

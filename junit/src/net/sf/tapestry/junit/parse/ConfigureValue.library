@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE library-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+	
+<library-specification>
+
+	<extension name="map" class="java.util.HashMap">
+		<configure property-name="fred" value="flintstone"/>
+	</extension>
+
+</library-specification>
+	
