@@ -1,7 +1,10 @@
 package com.primix.tapestry.script;
 
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
 import java.util.*;
 import java.io.*;
+import org.xml.sax.*;
 
 /*
  * Tapestry Web Application Framework
@@ -33,18 +36,13 @@ import java.io.*;
 
 /**
  *  A class to assist in creating scripts (typically, JavaScript) from a template,
- *  with a set of substitutions.
+ *  with a set of substitutions.  The template is an XML document (see the class
+ *  {@link ScriptParser} for details on how it is implemented.
  *
- *  <p>Scripts are very simple; just ASCII text.  Most of the script is passed through
- *  unchanged.  In the script, there can be substition constructs, a symbol name enclosed
- *  in dollar signs, ex: <code>$<i>name</i>$</code>.
- *
- * <p>When a script is generated, a symbol table (in the form of a {@link Map}) is
- *  passed in, to facilitate symbol subtitutions.
- *
- * <p>If we ever add any more complicated constructs (i.e., conditional and looping
- * operations), it may be time to scrap this and use an XML document, but for the
- * meantime, its lean-and-mean.
+ *  <p>A problem: this class has a dependency on class {@link Body}
+ *  (from package com.primix.tapestry.components), but class {@link Rollover} (from the same
+ *  package) has a dependency on this class.  That is somewhat icky (see
+ *  Java 2 Performance and Idiom Guide for why) and needs to be fixed in some way.
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -52,137 +50,106 @@ import java.io.*;
 
 public class ScriptGenerator
 {
-    private char[] template;
-    private ITemplateToken[] tokens;
+    private ITemplateToken[] bodyTokens;
+    private ITemplateToken[] initTokens; 
+    private String resourcePath;
 
     /**
-     *  Creates generator using the given String as the template.
+     *  Constructs a {@link InputSource} around the {@link InputStream} and
+     *  invokes the standard constructor.
      *
      */
 
-    public ScriptGenerator(String template)
+    public ScriptGenerator(InputStream stream, String resourcePath)
+    throws ScriptParseException
     {
-        this.template = template.toCharArray();
+        this(new InputSource(stream), resourcePath);
     }
 
     /**
-     *  Retains the character array as the template (note that the constructor
-     *  does <em>not</em> make a copy).
+     * Standard constructor, takes an {@link InputSource} which will be parsed,
+     * and the resourcePath (a String used to identify what the InputSource
+     * is parsing, used in any error message).
      *
      */
 
-    public ScriptGenerator(char[] template)
+    public ScriptGenerator(InputSource inputSource, String resourcePath)
+    throws ScriptParseException
     {
-        this.template = template;
+        this.resourcePath = resourcePath;
+
+        parseTemplate(inputSource, resourcePath);
+    }
+
+    private void parseTemplate(InputSource inputSource, String resourcePath)
+    throws ScriptParseException
+    {
+        ScriptParser parser;
+
+        parser = new ScriptParser(inputSource, resourcePath);
+
+        parser.parse();
+
+        bodyTokens = parser.getBodyTokens();
+        initTokens = parser.getInitializationTokens();
     }
 
     /**
-     *  Constructs a script using the contents of the reader as a template.
-     *  The reader is read to the end, but not closed.
+     *  Interacts with the {@link Body} component to generate the Script
+     *  in the proper way.
      *
      */
 
-    public ScriptGenerator(Reader reader)
-    throws IOException
+    public void generateScript(Body body, Map symbols)
     {
-        readTemplate(reader);
+        if (bodyTokens != null)
+            body.addOtherScript(generateScript(bodyTokens, symbols));
+
+        if (initTokens != null)
+            body.addOtherInitialization(generateScript(initTokens, symbols));
     }
 
     /**
-     *  Constructs a script using the contents of the stream as a template.
-     *  The stream is read to the end, but not closed.  Uses an
-     *  {@link InputStreamReader} wrapped by a {@link BufferedReader}.
+     *  Extracts the {@link Body} (via {@link Body#get(IRequestCycle)})
+     *  and invokes {@link #generateScript(Body, Map)}.
      *
      */
 
-    public ScriptGenerator(InputStream stream)
-    throws IOException
+    public void generateScript(IRequestCycle cycle, Map symbols)
     {
-        readTemplate(stream);
-    }
+        Body body;
 
-    private void readTemplate(Reader reader)
-    throws IOException
-    {
-        char[] chunk = new char[1000];
-        int charsRead;
-        StringBuffer buffer = null;
+        body = Body.get(cycle);
 
-        while (true)
-        {
-            charsRead = reader.read(chunk);
-            if (charsRead < 0)
-                break;
+        if (body == null)
+            throw new ApplicationRuntimeException(
+                "GenerateScript requires a Body component.");
 
-            if (buffer == null)
-                buffer = new StringBuffer(charsRead);
-
-            buffer.append(chunk, 0, charsRead);
-        }
-
-        // Now, copy the contents of the buffer
-        // into the template char array.
-                
-        charsRead = buffer.length();
-        template = new char[charsRead];
-
-        buffer.getChars(0, charsRead, template, 0);
-    }
-    
-    private void readTemplate(InputStream stream)
-    throws IOException
-    {
-        InputStreamReader isr = null;
-        BufferedReader reader = null;
-
-        try
-        {
-            isr = new InputStreamReader(stream);
-            reader = new BufferedReader(isr);
-
-            readTemplate(reader);
-        }
-        finally
-        {
-            close(reader);
-            close(isr);
-        }
-
+        generateScript(body, symbols);
     }
 
 
-    /**
-     *  Invoked to generate a script from the template.
-     *  The symbols parameter is a {@link Map} of substitutions.
-     *  Both the keys and values are Strings.
-     *
-     */
-
-    public String generateScript(Map symbols)
-    throws IOException
+    private String generateScript(ITemplateToken[] tokens, Map symbols)
     {
         StringWriter writer = null;
 
-        if (symbols == null)
-            throw new NullPointerException(
-                "ScriptGenerator.generateScript(): symbols parameter may not be null.");
-        
-        if (tokens == null)
-            parseTokens();
-
         try
         {
-            // The final string should be approximately the
-            // same length as the template, if not a little bit
-            // longer.
+            // The trick would be to figure out the best initial size
+            // for the StringWriter.
 
-            writer = new StringWriter(template.length);
+            writer = new StringWriter();
 
             for (int i = 0; i < tokens.length; i++)
                 tokens[i].write(writer, symbols);
 
             return writer.toString();
-        }   
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException(
+                "Unexpected exception processing script " + resourcePath + ".", ex);
+        }
         finally
         {
             close(writer);
@@ -191,151 +158,16 @@ public class ScriptGenerator
 
     private void close(Writer writer)
     {
-        try
+        if (writer != null)
         {
-            if (writer != null)
-                writer.close();
-        }
-        catch (IOException ex)
-        {
-            // Ignore.
-        }
-    }
-
-    private void close(Reader reader)
-    {
-        try
-        {
-            if (reader != null)
-                reader.close();
-        }
-        catch (IOException ex)
-        {
-            // Ignore.
-        }
-    }
-
-    private static final int STATE_NORMAL = 0;
-    private static final int STATE_COLLECT_NAME = 1;
-    private static final int STATE_BACKSLASH = 2;
-
-    private void parseTokens()
-    {
-        int start = 0;
-        int blockLength = 0;
-        int pos = 0;
-        int length = template.length;
-        char ch;
-        int state = STATE_NORMAL;
-        List list = new ArrayList();
-
-        while (pos < length)
-        {
-            ch = template[pos++];
-
-            switch (state)
+            try
             {
-                case STATE_NORMAL:
-
-                    if (ch == '$')
-                    {
-                        if (blockLength > 0)
-                            list.add(buildStaticToken(start, blockLength));
-
-                        // pos is now the first character in the symbol name.
-
-                        start = pos;
-                        blockLength = 0;
-
-                        state = STATE_COLLECT_NAME;
-                        continue;
-                    }
-
-                    if (ch == '\\')
-                    {
-                        // Terminate the current block (before the slash).
-
-                        if (blockLength > 0)
-                            list.add(buildStaticToken(start, blockLength));
-
-                        // Start a new block with the character after
-                        // the backslash.
-
-                        start = pos;
-                        blockLength = 0;
-                        
-                        state = STATE_BACKSLASH;
-                        continue;
-                    }
-
-                    // An ordinary character, add it to the current block.
-                    
-                    blockLength++;
-                    continue;
-
-                case STATE_BACKSLASH:
-
-                    // The character after a backslash is always added to the block,
-                    // without interpretation.
-                    
-                    blockLength++;
-
-                    state = STATE_NORMAL;
-                    continue;
-
-                default:
-                    // STATE_COLLECT_NAME
-
-                    if (ch == '$')
-                    {
-                        // error if start = end
-
-                        list.add(buildSymbolToken(start, blockLength));
-
-                        // Start a new static block just after
-                        // the closing brace (though if that char
-                        // is a '$', a new symbol will start instead).
-
-                        start = pos;
-                        blockLength = 0;
-                        state = STATE_NORMAL;
-                        continue;
-                    }
-
-                    // Non-'$', just collect it.
-                    // TBD:  validate that the character is ok (i..e, alphabetic, numeric,
-                    // etc.).
-
-                    blockLength++;
-                    continue;
+                writer.close();
+            }
+            catch (IOException ex)
+            {
+                // Ignore.
             }
         }
-
-        // Add an improperly terminated substitution as a static block.
-
-        if (state != STATE_NORMAL)
-            list.add(buildStaticToken(start - 1, blockLength + 1));
-        else
-            if (blockLength > 0)
-                list.add(buildStaticToken(start, blockLength));
-
-        length = list.size();
-        tokens = new ITemplateToken[length];
-
-        tokens = (ITemplateToken[])list.toArray(tokens);
-    }
-
-    private ITemplateToken buildStaticToken(int start, int length)
-    {
-        return new StaticToken(template, start, length);
-    }
-
-    private ITemplateToken buildSymbolToken(int start, int length)
-    {
-        String name;
-
-        name = new String(template, start, length);
-
-        return new SymbolToken(name);
     }
 }

@@ -254,21 +254,13 @@ public class Rollover extends AbstractComponent
 	
 		if (dynamic)
         {
-            try
-            {
-                if (focusURL == null)
-                    focusURL = imageURL;
+            if (focusURL == null)
+                focusURL = imageURL;
 
-                if (blurURL == null)
-                    blurURL = imageURL;
+            if (blurURL == null)
+                blurURL = imageURL;
 
-                imageName = writeScript(body, serviceLink, focusURL, blurURL);
-            }
-            catch (IOException ex)
-            {
-                throw new RequestCycleException("Unable to write Rollover script.",
-                    this, cycle, ex);
-            }
+            imageName = writeScript(body, serviceLink, focusURL, blurURL);
 
 		    writer.attribute("name", imageName);
         }
@@ -280,8 +272,9 @@ public class Rollover extends AbstractComponent
 		writer.setCompressed(compressed);
 	}
 
+    private static final String SCRIPT_RESOURCE = "Rollover.script";
+
     private ScriptGenerator getScriptGenerator()
-    throws IOException
     {
         if (generator == null)
         {
@@ -293,9 +286,13 @@ public class Rollover extends AbstractComponent
 
                     try
                     {
-                        stream = getClass().getResourceAsStream("Rollover.script");
+                        stream = getClass().getResourceAsStream(SCRIPT_RESOURCE);
 
-                        generator = new ScriptGenerator(stream);
+                        generator = new ScriptGenerator(stream, SCRIPT_RESOURCE);
+                    }
+                    catch (ScriptParseException ex)
+                    {
+                        throw new ApplicationRuntimeException(ex);
                     }
                     finally
                     {
@@ -325,7 +322,6 @@ public class Rollover extends AbstractComponent
 
     private String writeScript(Body body, IServiceLink link,
         String focusURL, String blurURL)
-        throws IOException
     {
         String uniqueId = body.getUniqueId();
         String imageName = "rollover_" + uniqueId;
@@ -344,22 +340,24 @@ public class Rollover extends AbstractComponent
         symbols.put("imageName",       imageName);
         symbols.put("onMouseOverName", onMouseOverName);
         symbols.put("onMouseOutName",  onMouseOutName);
-        symbols.put("focusImageURL",    body.getInitializedImage(focusImageName));
-        symbols.put("blurImageURL",   body.getInitializedImage(blurImageName));
+        symbols.put("focusImageURL",   body.getInitializedImage(focusImageName));
+        symbols.put("blurImageURL",    body.getInitializedImage(blurImageName));
 
-    	// Add this to the scripting block at the top of the page.
-    	
-    	body.addOtherScript(generator.generateScript(symbols));
+        generator.generateScript(body, symbols);
     	
     	// Add attributes to the link to control mouse over/out.
     	// Because the script is written before the <body> tag,
     	// there won't be any timing issues (such as cause
     	// bug #113893).
-    	
+    
     	link.setAttribute("onMouseOver",
     			"javascript:" + onMouseOverName + "();");
     	link.setAttribute("onMouseOut",
     			"javascript:" + onMouseOutName + "();");
+
+        // I wonder how we could get the ScriptGenerator to do the two things
+        // above?  The advantage would be two less symbols.  Probably
+        // just fantasy -- needless refactoring.
 
         symbols.clear();
 

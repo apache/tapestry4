@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!--DTD for the files used with the ScriptGenerator class and Script component.  This is recognized with the public identifier:
+
+	-//Primix Solutions//Tapestry Script 1.0//EN
+
+A script contains two optional pieces: a body that is inserted into a larger script block 
+-->
+<!ELEMENT script (body?, initialization?)>
+<!ELEMENT body (#PCDATA | insert)*>
+<!ELEMENT initialization (#PCDATA | insert)*>
+<!ELEMENT insert (#PCDATA)>
+<!ATTLIST insert
+	key CDATA #REQUIRED
+>
