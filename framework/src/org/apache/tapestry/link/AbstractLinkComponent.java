@@ -259,6 +259,12 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         return null;
     }
 
+	/**
+	 * Sets the renderer parameter property to its default value
+	 * {@link DefaultLinkRenderer#SHARED_INSTANCE}.
+	 * 
+	 * @since 3.0
+	 */
     protected void finishLoad()
     {
         setRenderer(DefaultLinkRenderer.SHARED_INSTANCE);

@@ -56,75 +56,80 @@
 package org.apache.tapestry;
 
 /**
- *  A set of localized Strings used by a component.
+ * A set of localized strings.  This is somewhat like
+ * a {@link java.util.ResourceBundle}, but with more
+ * flexibility about where the strings come from.  In addition,
+ * it includes methods similar to {@link java.text.MessageFormat}
+ * for formatting the strings.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.0.4
+ * @see org.apache.tapestry.IComponent#getStrings()
+ * @see org.apache.tapestry.engine.IComponentStringsSource
+ * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 2.0.4
  *
- **/
+ */
 
-public interface IComponentStrings
+public interface IStrings
 {
     /**
-     *  Searches for a localized string with the given key.
-     *  If not found, a modified version of the key
-     *  is returned (all upper-case and surrounded by square
-     *  brackets).
+     * Searches for a localized string with the given key.
+     * If not found, a modified version of the key
+     * is returned (all upper-case and surrounded by square
+     * brackets).
      * 
-     **/
+     */
 
     public String getString(String key);
 
     /**
-     *  Searches for a localized string with the given key.
-     *  If not found, then the default value (which should already
-     *  be localized) is returned.  Passing a default of null
-     *  is useful when trying to determine if the strings contains
-     *  a given key.
-     * 
-     **/
+     * Searches for a localized string with the given key.
+     * If not found, then the default value (which should already
+     * be localized) is returned.  Passing a default of null
+     * is useful when trying to determine if the strings contains
+     * a given key.
+     *
+     */
 
     public String getString(String key, String defaultValue);
 
     /**
-     *  Formats a string, using
-     *  {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
-     * 
-     *  @param key the key used to obtain a localized pattern using
-     *  {@link #getString(String)}
-     *  @param arguments passed to the formatter
-     * 
-     *  @since 3.0
-     * 
-     **/
+     * Formats a string, using
+     * {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     *
+     * @param key the key used to obtain a localized pattern using
+     * {@link #getString(String)}
+     * @param arguments passed to the formatter
+     *
+     * @since 3.0
+     *
+     */
 
     public String format(String key, Object[] arguments);
 
     /**
-     *  Convienience method for invoking {@link #format(String, Object[])}.
-     * 
-     *  @since 3.0
-     * 
-     **/
-    
+     * Convienience method for invoking {@link #format(String, Object[])}.
+     * @since 3.0
+     *
+     */
     public String format(String key, Object argument);
 
     /**
-     *  Convienience method for invoking {@link #format(String, Object[])}.
+     * Convienience method for invoking {@link #format(String, Object[])}.
+     *
+     * @since 3.0
      * 
-     *  @since 3.0
-     * 
-     **/
+     */
 
     public String format(String key, Object argument1, Object argument2);
 
     /**
-     *  Convienience method for invoking {@link #format(String, Object[])}.
+     * Convienience method for invoking {@link #format(String, Object[])}.
+     *
+     * @since 3.0
      * 
-     *  @since 3.0
-     * 
-     **/
+     */
 
     public String format(String key, Object argument1, Object argument2, Object argument3);
 }

@@ -67,7 +67,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IComponentStrings;
+import org.apache.tapestry.IStrings;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.MultiKey;
@@ -280,7 +280,7 @@ public class DefaultStringsSource implements IComponentStringsSource
         _cache.clear();
     }
 
-    public IComponentStrings getStrings(IComponent component)
+    public IStrings getStrings(IComponent component)
     {
         return new ComponentStrings(getLocalizedProperties(component));
     }

@@ -238,7 +238,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * 
      **/
 
-    private IComponentStrings _strings;
+    private IStrings _strings;
 
     public void addAsset(String name, IAsset asset)
     {
@@ -973,7 +973,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /** @since 3.0 **/
 
-    public IComponentStrings getStrings()
+    public IStrings getStrings()
     {
         if (_strings == null)
             _strings = getPage().getEngine().getComponentStringsSource().getStrings(this);

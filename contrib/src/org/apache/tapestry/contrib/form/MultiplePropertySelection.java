@@ -154,7 +154,7 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent
 
     public abstract IBinding getSelectedListBinding();
 
-    public void finishLoad()
+    protected void finishLoad()
     {
         setRenderer(DEFAULT_CHECKBOX_RENDERER);
     }

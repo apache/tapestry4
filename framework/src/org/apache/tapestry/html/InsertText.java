@@ -155,6 +155,12 @@ public abstract class InsertText extends AbstractComponent
 
     public abstract String getValue();
 
+	/**
+	 * Sets the mode parameter property to its default,
+	 * {@link InsertTextMode#BREAK}.
+	 * 
+	 * @since 3.0
+	 */
     protected void finishLoad()
     {
         setMode(InsertTextMode.BREAK);
