@@ -132,6 +132,7 @@
 		<fileset dir=".">
 			<include name="*.xml"/>
 			<include name="*.html"/>
+			<include name="LICENSE.*"/>
 			
 			<!-- Skip HTML files in web, since those need
 				 a seperate path, to provide filtering. -->
@@ -148,6 +149,10 @@
 			<exclude name="lib/VlibBeans.jar"/>
 			<exclude name="lib/Vlib.war"/>
 			
+			<!-- This is not needed at runtime. -->
+			
+			<exclude name="lib/ext/junit.jar"/>
+			
 			<!-- Exclude class files left around by IDEs. -->
 			<exclude name="**/*.class"/>
 			 
@@ -161,6 +166,10 @@
 			     environment.  We ship a sample file instead. -->
 			
 			<exclude name="config/build.properties"/>
+			
+			<!-- This is where Eclipse puts classes. -->
+			
+			<exclude name="bin/**"/>
 			 
 			<!-- It isn't a good idea to generate a distribution from a normal working
 			     directory, since the <copy> will include things like backup files created
@@ -226,14 +235,34 @@
 	<!-- Pack the directory (relative to ${dist.dir}), into a TAR file.  We go to the extra work
 	      of building a .tar.gz because the distro is smaller than an equivalent .zip file.
 	   -->
-	<property name="dist.tar.gz" value="${dist.dir}.tar.gz"/>
-	 
-	<tar basedir="${dist.root.dir}" 
-		tarfile="${dist.tar.gz}" 
-		includes="${dist.base}/**"
+	<property name="bin.tar.gz" value="${dist.dir}-bin.tar.gz"/>
+	<property name="doc.tar.gz" value="${dist.dir}-doc.tar.gz"/>
+	
+	<tar tarfile="${bin.tar.gz}" 
 		longfile="gnu"
-		compression="gzip"/>
+		compression="gzip">
+		<tarfileset dir="${dist.root.dir}">
+			<exclude name="${dist.base}/web/**"/>
+			<exclude name="*.gz"/>
+			<include name="**"/>
+		</tarfileset>
+		
+		<!-- These web assets are referrenced from Readme.html -->
+		
+		<tarfileset dir="${dist.root.dir}">
+			<include name="${dist.base}/web/images/*.gif"/>
+			<include name="${dist.base}/web/scripts/*.css"/>
+		</tarfileset>		
+	</tar>
 	 
+	<tar tarfile="${doc.tar.gz}" 
+		longfile="gnu"
+		compression="gzip">
+		<tarfileset dir="${dist.root.dir}">
+			<include name="${dist.base}/web/**"/>
+		</tarfileset>
+	</tar>
+		 
 	<!-- Create the web distribution (to be put up at SourceForge) -->
 	
 	<property name="web.tar.gz" value="${dist.root.dir}/Tapestry-Web-${framework.version}.tar.gz"/>

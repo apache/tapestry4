@@ -64,19 +64,7 @@ examples), others are used at runtime (and must be added to the servlet containe
 			</para>
 		</listitem>
 	</varlistentry>
-	
-	
-	<varlistentry>
-		<term><filename>junit.jar</filename></term>
-		<listitem>
-			<para>
-			The <ulink url="http://www.junit.org/">JUnit</ulink> testing framework, used by the Tapestry unit tests
-			(in the <filename>junit</filename> directory).
-			</para>
-		</listitem>
-	</varlistentry>
-
-	
+		
 	<varlistentry>
 		<term><filename>log4j-<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<listitem>
