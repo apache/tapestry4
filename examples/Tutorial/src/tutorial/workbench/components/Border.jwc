@@ -37,7 +37,7 @@
   <component id="pageLink" type="Direct">
     <binding name="listener" expression="listeners.selectPage"/>
     <binding name="parameters" expression="pageName"/>
-    <field-binding name="stateful" field-name="Boolean.FALSE"/>
+    <binding name="stateful" expression="false"/>
   </component>
  
   <component id="insertPageTitle" type="Insert">

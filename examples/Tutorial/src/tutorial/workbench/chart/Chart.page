@@ -33,7 +33,7 @@
   <component id="inputName" type="ValidField">
   	<static-binding name="displayName">Name</static-binding>
   	<binding name="value" expression="plotValue.name"/>
-  	<field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+  	<binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>
   </component>
 
   <component id="inputValue" type="ValidField">	
