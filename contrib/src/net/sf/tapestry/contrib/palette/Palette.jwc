@@ -47,7 +47,7 @@
   
   <component id="selectButton" type="Any">
     <static-binding name="element">a</static-binding>
-    <binding name="onClick" property-path="symbols.selectOnClickScript"/>
+    <binding name="href" property-path="symbols.selectOnClickScript"/>
   </component>
 
   <component id="selectImage" type="Image">
@@ -57,7 +57,7 @@
   	  
   <component id="deselectButton" type="Any">
     <static-binding name="element">a</static-binding>
-    <binding name="onClick" property-path="symbols.deselectOnClickScript"/>
+    <binding name="href" property-path="symbols.deselectOnClickScript"/>
   </component>
 
   <component id="deselectImage" type="Image">
@@ -71,7 +71,7 @@
   
   <component id="moveUpButton" type="Any">
   	<static-binding name="element">a</static-binding>
-    <binding name="onClick" property-path="symbols.upOnClickScript"/>
+    <binding name="href" property-path="symbols.upOnClickScript"/>
    </component>
 
   <component id="upImage" type="Image">
@@ -81,7 +81,7 @@
   
   <component id="moveDownButton" type="Any">
     <static-binding name="element">a</static-binding>
-    <binding name="onClick" property-path="symbols.downOnClickScript"/>
+    <binding name="href" property-path="symbols.downOnClickScript"/>
   </component>
   
   <component id="downImage" type="Image">

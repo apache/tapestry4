@@ -44,6 +44,7 @@ public class TemplateToken
 {
 	private TokenType type;
 	
+	private String tag;
 	private String id;
 	
 	char[] templateData;
@@ -80,9 +81,10 @@ public class TemplateToken
 	 *
 	 */
 	
-	public TemplateToken(TokenType type)
+	public TemplateToken(TokenType type, String tag)
 	{
 		this.type = type;
+		this.tag = tag;
 	}
 	
 	/**
@@ -90,9 +92,9 @@ public class TemplateToken
 	 *
 	 */
 	
-	public TemplateToken(String id)
+	public TemplateToken(String id, String tag)
 	{
-		this(id, null);
+		this(id, tag, null);
 	}
 	
 	/**
@@ -101,10 +103,11 @@ public class TemplateToken
 	 * @since 1.0.2
 	 */
 	
-	public TemplateToken(String id, Map attributes)
+	public TemplateToken(String id, String tag, Map attributes)
 	{
 		type = TokenType.OPEN;
 		this.id = id;
+		this.tag = tag;
 		this.attributes = attributes;
 	}
 	
@@ -122,6 +125,17 @@ public class TemplateToken
 	public String getId()
 	{
 		return id;
+	}
+	
+	/**
+	 *  Returns the tag (for an OPEN or CLOSE) token.
+	 *
+	 * @since 1.0.2
+	 */
+	
+	public String getTag()
+	{
+		return tag;
 	}
 	
 	public IRender getRender()

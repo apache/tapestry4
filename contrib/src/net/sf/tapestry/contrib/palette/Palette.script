@@ -260,7 +260,7 @@ function palette_transfer_selections(source, target)
    	  {
    	  	  // Can't share options between selects in NN4
    	  	  
-   	  	  var newOption = new Option(option.text, option.value);
+   	  	  var newOption = new Option(option.text, option.value, false, true);
 		  sourceOptions[i] = null;
 		  
           // Always added to end in NN4
@@ -281,6 +281,7 @@ function palette_transfer_selections(source, target)
       i--;
     }
   }
+
 }
 
 function palette_swap_options(options, selectedIndex, targetIndex)
