@@ -294,6 +294,24 @@ public class SpecificationParser extends AbstractDocumentParser
 
         return attributeValue.equals("yes");
     }
+    
+	protected String getDTDVersion(Document document) {
+		
+      String publicId = document.getDoctype().getPublicId();
+          
+      String dtdVersion = null;
+      
+      if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID)) {
+      	
+      	dtdVersion = "1.1";
+      	
+      } else if (publicId.equals(TAPESTRY_DTD_1_2_PUBLIC_ID)) {
+      	
+      	dtdVersion = "1.2";
+      	
+      }
+      return dtdVersion;
+    }    
 
     private ApplicationSpecification convertApplicationSpecification(Document document)
         throws DocumentParseException
@@ -303,6 +321,10 @@ public class SpecificationParser extends AbstractDocumentParser
         ApplicationSpecification specification;
 
         specification = factory.createApplicationSpecification();
+        
+        String dtdVersion = getDTDVersion(document);
+
+		specification.setDTDVersion(dtdVersion); 
 
         root = document.getDocumentElement();
 
@@ -377,6 +399,10 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         ComponentSpecification specification = factory.createComponentSpecification();
         Element root = document.getDocumentElement();
+        
+        String dtdVersion = getDTDVersion(document);
+
+		specification.setDTDVersion(dtdVersion); 
 
         specification.setAllowBody(getBooleanAttribute(root, "allow-body"));
         specification.setAllowInformalParameters(
@@ -444,6 +470,8 @@ public class SpecificationParser extends AbstractDocumentParser
 
         return specification;
     }
+
+    
 
     private void convertParameter(ComponentSpecification specification, Node node)
         throws DocumentParseException

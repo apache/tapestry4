@@ -47,6 +47,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 {
     private String name;
     protected String engineClassName;
+    private String dtdVersion;
 
     /** @since 1.0.9 **/
     private String description;
@@ -590,6 +591,27 @@ public class ApplicationSpecification extends BasePropertyHolder
     protected Map getDefaultServiceMap()
     {
         return Collections.unmodifiableMap(defaultServiceMap);
+    }
+
+    /** @since 2.0.5 **/
+    
+    public String getDTDVersion()
+    {
+        return dtdVersion;
+    }
+
+    /**
+     *  Sets the version number of the DTD from which this specification
+     *  was created, if known.  This method exists as a convienience for
+     *  the Spindle plugin.
+     * 
+     *  @since 2.0.5
+     * 
+     **/
+    
+    public void setDTDVersion(String dtdVersion)
+    {
+        this.dtdVersion = dtdVersion;
     }
 
 }

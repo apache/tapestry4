@@ -68,6 +68,7 @@ public class ComponentSpecification extends BasePropertyHolder
 {
     private String componentClassName;
     protected String specificationResourcePath;
+    private String dtdVersion;
 
     /** @since 1.0.9 **/
     private String description;
@@ -460,6 +461,27 @@ public class ComponentSpecification extends BasePropertyHolder
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    /** @since 2.0.5 **/
+    
+    public String getDTDVersion()
+    {
+        return dtdVersion;
+    }
+
+    /**
+     *  Sets the version number of the DTD from which this specification
+     *  was created, if known.  This method exists as a convienience for
+     *  the Spindle plugin.
+     * 
+     *  @since 2.0.5
+     * 
+     **/
+    
+    public void setDTDVersion(String dtdVersion)
+    {
+        this.dtdVersion = dtdVersion;
     }
 
 }
