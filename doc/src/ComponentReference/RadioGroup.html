@@ -113,13 +113,11 @@
     If true, then all contained Radio components will be disabled as well. 
     </td>
 	</tr>
-	</table><BR>Body: 
-            <STRONG>rendered</STRONG><BR>Informal parameters: 
-            <STRONG>forbidden</STRONG>
-    <br>
-  Reserved 
-            parameters: <EM>none</EM>
-    
+	</table>
+  <BR>
+  Body: <STRONG>rendered</STRONG><BR>
+  Informal parameters: <STRONG>forbidden</STRONG><br>
+  Reserved parameters: <EM>none</EM>    
  </td>
 </tr>
 
@@ -127,8 +125,91 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.</p>
-       
+  This RadioGroup example illustrates an order form where a user can select the 
+  order size. Note how the <tt>OrderPage.detach()</tt> method is used to reset the default 
+  selected Radio button to Medium. 
+  <p/>
+  The title border effect is achieved using the HTML 
+  &lt;fieldset&gt;&lt;legend&gt;..&nbsp;&lt;/legend&gt;..&nbsp;&lt;/fieldset&gt; tags.
+  <p/>
+      
+<table class="examples" cellpadding="4" cellspacing="4">
+ <tr>
+  <td>
+   <fieldset><legend>Order Size</legend>
+    &nbsp;&nbsp;<input type="radio" name="2"/>Small<br>
+    &nbsp;&nbsp;<input type="radio" checked name="2"/>Medium&nbsp;&nbsp;&nbsp;<br>
+    &nbsp;&nbsp;<input type="radio" name="2"/>Large<br>
+   </fieldset>
+  </td>
+ </tr>
+ <tr align="right">
+  <td><input type="submit" value="Order"></td>
+ </tr>
+</table> 
+<pre>  
+&lt;form jwcid="orderForm"&gt;
+&lt;table cellpadding="4" cellspacing="4"&gt;
+ &lt;tr&gt;&lt;td&gt;
+   &lt;fieldset&gt;&lt;legend&gt;Order Size&lt;/legend&gt;
+   &lt;span jwcid="<span class="jwcid">orderSizeRadioGroup</span>"&gt;
+    &lt;input type="radio" jwcid="smallOrderRadio"/&gt; Small &lt;br/&gt;
+    &lt;input type="radio" jwcid="mediumOrderRadio"/&gt; Medium &lt;br/&gt;
+    &lt;input type="radio" jwcid="largeOrderRadio"/&gt; Large &lt;br/&gt;
+   &lt;span/&gt;
+   &lt;/fieldset&gt;
+ &lt;/td&gt;&lt;/tr&gt;
+ &lt;tr align="right"&gt;&lt;td&gt;&lt;input type="submit" value="Order"&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/form&gt;
+
+
+&lt;component id="orderForm" type="<a href="Form.html">RadioGroup</a>"&gt;
+    &lt;binding name="selected" expression='listeners.formSubmit'/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">orderSizeRadioGroup</span>" type="<a href="RadioGroup.html">RadioGroup</a>"&gt;
+    &lt;binding name="selected" expression='orderSize'/&gt;
+&lt;/component&gt;
+
+&lt;component id="smallOrderRadio" type="<a href="Radio.html">Radio</a>"&gt;
+    &lt;binding name="value" expression='@OrderPage@SMALL'/&gt;
+&lt;/component&gt;
+
+&lt;component id="mediumOrderRadio" type="<a href="Radio.html">Radio</a>"&gt;
+    &lt;binding name="value" expression='@OrderPage@MEDIUM'/&gt;
+&lt;/component&gt;
+
+&lt;component id="largeOrderRadio" type="<a href="Radio.html">Radio</a>"&gt;
+    &lt;binding name="value" expression='@OrderPage@LARGE'/&gt;
+&lt;/component&gt;
+
+
+public OrderPage extends BasePage {
+   public final static Integer SMALL = new Integer(1);
+   public final static Integer MEDIUM = new Integer(2);
+   public final static Integer LARGE = new Integer(3);
+   
+   private Integer orderSize = MEDIUM;
+   
+   public void setOrderSize(Integer value) {
+      orderSize = value;
+   }
+
+   public Integer getOrderSize() {
+      return orderSize;
+   }
+   
+   public void detach() {
+      orderSize = MEDIUM;
+      super.detach();
+   }
+
+   public formSubmit(IRequestCycle cycle) {
+      // process order
+   }   
+}   
+</pre>   
 
  </td></tr></table>
 </td></tr>
