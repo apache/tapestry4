@@ -195,6 +195,8 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
 
         try
         {
+            if (encoding != null)
+                upload.setHeaderEncoding(encoding);
             parts = upload.parseRequest(request, _thresholdSize, _maxSize, _repositoryPath);
         }
         catch (FileUploadException ex)
