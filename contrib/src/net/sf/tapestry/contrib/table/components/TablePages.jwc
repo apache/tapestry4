@@ -15,13 +15,13 @@
 		required="no"
 		direction="custom"/>
   
-	<component id="condBack" type="Conditional">
+	<!--component id="condBack" type="Conditional">
 		<binding name="condition" expression="condBack"/>
-	</component>
+	</component-->
   
-	<component id="condFwd" type="Conditional">
+	<!--component id="condFwd" type="Conditional">
 		<binding name="condition" expression="condFwd"/>
-	</component>
+	</component-->
   
 	<component id="condCurrent" type="Conditional">
 		<binding name="condition" expression="condCurrent"/>
@@ -53,21 +53,25 @@
 	<component id="linkFirst" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
 	    <binding name="parameters" expression="firstPageContext"/>
+	    <binding name="disabled" expression="!condBack"/>
 	</component>
 
 	<component id="linkBack" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
 	    <binding name="parameters" expression="backPageContext"/>
+	    <binding name="disabled" expression="!condBack"/>
 	</component>
 
 	<component id="linkFwd" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
 	    <binding name="parameters" expression="fwdPageContext"/>
+	    <binding name="disabled" expression="!condFwd"/>
 	</component>
 	
 	<component id="linkLast" type="DirectLink">
 	    <binding name="listener" expression="listeners.changePage"/>
 	    <binding name="parameters" expression="lastPageContext"/>
+	    <binding name="disabled" expression="!condFwd"/>
 	</component>
 	
 </component-specification>
