@@ -30,6 +30,7 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.util.*;
 import com.primix.tapestry.bean.*;
+import com.primix.tapestry.bean.FieldBeanInitializer;
 import org.w3c.dom.*;
 import java.io.*;
 import java.util.*;
@@ -64,6 +65,7 @@ import com.primix.tapestry.util.xml.*;
  *  <ul>
  *  <li>Adds &lt;description&gt; element
  *  <li>Adds copy-of attribute to &lt;component&gt;
+ *  <li>Support for helper beans
  *  </ul>
  *  </td>
  *  </tr>
@@ -149,7 +151,7 @@ public class SpecificationParser extends AbstractDocumentParser
 	// Identify all the different acceptible values.
 
 	static {
-		booleanMap = new HashMap(13);
+		booleanMap = new HashMap();
 
 		booleanMap.put("true", Boolean.TRUE);
 		booleanMap.put("t", Boolean.TRUE);
@@ -943,7 +945,7 @@ public class SpecificationParser extends AbstractDocumentParser
 	{
 		String name = getAttribute(node, "name");
 
-		// <set-property> contains either <static-value> or <property-value>
+		// <set-property> contains either <static-value>, <field-value> or <property-value>
 
 		for (Node child = node.getFirstChild();
 			child != null;
@@ -955,6 +957,12 @@ public class SpecificationParser extends AbstractDocumentParser
 				continue;
 			}
 
+			if (isElement(child, "field-value"))
+			{
+				convertFieldValue(spec, name, child);
+				continue;
+			}
+			
 			if (isElement(child, "property-value"))
 			{
 				convertPropertyValue(spec, name, child);
@@ -963,6 +971,17 @@ public class SpecificationParser extends AbstractDocumentParser
 		}
 	}
 
+	/** @since 1.0.8 **/
+	
+	private void convertFieldValue(BeanSpecification spec, String propertyName,
+		Node node)
+		{
+			String fieldName = getAttribute(node, "field-name");
+			IBeanInitializer iz = new FieldBeanInitializer(propertyName, fieldName);
+			
+			spec.addInitializer(iz);
+		}
+	
 	/** @since 1.0.5 **/
 
 	private void convertPropertyValue(
