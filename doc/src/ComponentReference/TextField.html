@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+<td colspan=2>
+	<table border="0" cellpadding="4" cellspacing="4" width="100%">
+	<tr>
+	<td align="center">
+	<a accesskey="p" href="Text.html"><img src="common-images/prev.png" alt="Prev"></a>
+	</td>
+	<td align="center">
+	<a accesskey="u" href="index.html"><img src="common-images/up.png" alt="Up"></a>
+	</td>
+	<td align="center">
+	<a accesskey="n" href="Upload.html"><img src="common-images/next.png" alt="Next"></a>
+	</td>
+</table>
+</td>
+</tr>
+
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>TextField</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/TextField.html">
+		 net.sf.tapestry.form.TextField</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+	 <tr>
+	  <td>
+		Input:<input name="textfield" value="Some Text"/>, or:
+	  </td>
+	  <td>
+		 Password:<input type="password" name="password" value="password"/>
+	  </td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Used to implement a textarea form element ( &lt;input type=text&gt; or &lt;input type=password&gt;). 
+	Must be wrapped by a <a href="Form.html">Form</a> component.
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Form.html">Form</a>, 
+	<a href="Text.html">Text</a>
+ </td>
+</tr>
+
+<!-- Parameters -->
+<tr>
+<td colspan="2">
+ <p>Informal parameters are allowed, but the component may not contain a body.
+ <table border=1>
+ <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th>
+    <th>Default</th>
+    <th>Description</th>
+ </tr>
+
+  <tr>
+    <td>value</td>
+    <td>java.lang.String</td>
+    <td>in-out</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The text inside the text field.  The binding is only updated
+			when the the component is not disabled.
+
+			<p>Corresponds to the <code>value</code> HTML attribute.
+ </td>
+	</tr>
+
+  <tr>
+    <td>text</td>
+    <td>java.lang.String</td>
+    <td>in-out</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>Deprecated name for the <code>value</code>
+ parameter.  Existing code should be changed.
+ </td>
+	</tr>
+
+	<tr>
+		<td>hidden</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>If true, then the text field is written as a
+			&lt;input type=password&gt; form element.  </td>  </tr>
+
+  <tr>
+ 		<td>disabled</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>Controls whether the text field is active or not.  If disabled, then
+			any value that comes up when the form is submitted is ignored.
+
+			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
+	</tr>
+
+	<tr>
+		<td>displayWidth</td>
+		<td>integer</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>Controls the display width of the text control in the client browser.  If
+			unspecified or zero, then the width is left to the client browser to
+			determine.
+
+			<p>Corresponds to the <code>size</code> HTML attribute.</td> </tr>
+
+	<tr>
+		<td>maximumLength</td>
+		<td>integer</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>Controls the maximum characters that the text control will accept.  If
+			unspecified or zero, then the value is left to the client browser to
+			determine.
+
+			<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
+
+	</table>
+</td></tr>
+
+<tr>
+<td>
+
+<!-- Real Generated Example -->
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+	 <tr>
+	  <td>
+		Input:<input name="textfield" value="Some Text"/>, or:
+	  </td>
+	  <td>
+		 Password:<input type="password" name="password" value="password"/>
+	  </td>
+	 </tr>
+  </table>
+</td><td/>
+<tr>
+<td colspan=2>
+<pre>
+
+&lt;form jwcid="form"&gt;
+	&lt;table&gt;
+		&lt;tr&gt;
+			&lt;td&gt;
+				Standard Input: &lt;span jwcid="<b>textfield</b>"/&gt;, or:
+			&lt;/td&gt;
+			&lt;td&gt;
+				Password Input: &lt;span jwcid="<b>passwordfield</b>"/&gt;
+			&lt;/td&gt;
+	    &lt;/tr&gt;
+	&lt;/table&gt;
+	&lt;input type="submit" value="Submit"/&gt;
+&lt;/form&gt;	
+
+<hr>
+<!--  .Page specification -->
+&lt;specification class="examples.componentref.TextField" allow-body="yes" allow-informal-parameters="yes" &gt;
+    &lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
+    
+    &lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+    	&lt;binding name="delegate" property-path="beans.validationDelegate"/&gt;
+    	&lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+    &lt;/component&gt;
+    
+    &lt;component id="<b>textfield</b>" type="TextField"&gt;
+    	&lt;binding name="value" property-path="visit.textValue"/&gt;
+    &lt;/component&gt;
+
+    &lt;component id="<b>passwordfield</b>" type="TextField"&gt;
+    	&lt;binding name="value" property-path="visit.textValue"/&gt;
+    	&lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
+    &lt;/component&gt;
+&lt;/specification&gt;
+
+<hr>
+<!-- Java code for example -->
+/**
+ * Simply demonstration of Text component
+ * @author Neil Clayton
+ */
+public class TextField extends BasePage {
+	public void formSubmit(IRequestCycle requestCycle) {
+	}
+}
+
+/**
+ * Simple holder for some text value
+ * @author neil
+ */
+public class Visit {
+	public String getTextValue() {
+		return textValue;
+	}
+
+	public void setTextValue(String textValue) {
+		this.textValue = textValue;
+	}
+
+	private String textValue;
+}
+
+</pre>
+
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
