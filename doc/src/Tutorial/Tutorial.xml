@@ -4,19 +4,6 @@
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
   %TapestryLinks;
-  <!ENTITY Action '<ulink url="&ApiRoot;/link/Action.html"><classname>Action</classname></ulink>'>
-  <!ENTITY Conditional '<ulink url="&ApiRoot;/components/Conditional.html"><classname>Conditional</classname></ulink>'>
-  <!ENTITY Direct '<ulink url="&ApiRoot;/link/Direct.html"><classname>Direct</classname></ulink>'>
-  <!ENTITY Foreach '<ulink url="&ApiRoot;/components/Foreach.html"><classname>Foreach</classname></ulink>'>
-  <!ENTITY Form '<ulink url="&ApiRoot;/form/Form.html"><classname>Form</classname></ulink>'>
-  <!ENTITY Insert '<ulink url="&ApiRoot;/components/Insert.html"><classname>Insert</classname></ulink>'>
-  <!ENTITY ImageSubmit '<ulink url="&ApiRoot;/form/ImageSubmit.html"><classname>ImageSubmit</classname></ulink>'>
-  <!ENTITY Page '<ulink url="&ApiRoot;/link/Page.html"><classname>Page</classname></ulink>'>
-  <!ENTITY PropertySelection '<ulink url="&ApiRoot;/form/PropertySelection.html"><classname>PropertySelection</classname></ulink>'>
-  <!ENTITY Radio '<ulink url="&ApiRoot;/form/Radio.html"><classname>Radio</classname></ulink>'>
-  <!ENTITY RadioGroup '<ulink url="&ApiRoot;/form/RadioGroup.html"><classname>RadioGroup</classname></ulink>'>
-  <!ENTITY Rollover '<ulink url="&ApiRoot;/html/Rollover.html"><classname>Rollover</classname></ulink>'>
-  <!ENTITY TextField '<ulink url="&ApiRoot;/form/TextField.html"><classname>TextField</classname></ulink>'>
 ]>
 <!-- Conventions:
 
@@ -94,35 +81,32 @@ This document expects that you will have extracted the full Tapestry distributio
       </footnote>
     </para>
     <para>
-This will have created a directory <filename class="directory">C:\Tapestry-<replaceable>x.x.x</replaceable>
+This will have created a directory <filename class="directory">C:\Tapestry-<replaceable>x.x</replaceable>
       </filename>
 and, beneath it, several more directories.
 	<footnote>
         <para>
 		The three numbers are the release number.  At the time of this writing, the release
-		was 1.0.3, but this is constantly changing.  Simply adjust the actual pathname to
+		was 2.2, but this is constantly changing.  Simply adjust the actual pathname to
 		reflect the release of Tapestry you downloaded.
 		</para>
       </footnote>
     </para>
     <para>
-The Tapestry Tutorial will be in <filename class="directory">
-C:\Tapestry-<replaceable>x.x.x</replaceable>\examples\Tutorial</filename>.
+The source code for the Tutorial is distributed as a JAR file,
+<filename>src/examples-src.jar</filename>.  A precompiled WAR file,
+<filename>lib/tutorial.war</filename> is included in the distribution.
 </para>
-    <section id="setup.build">
-      <title>Building the Tutorial</title>
-      <para>
-Building the Tutorial is quite easy.  You first need to download and install
-<ulink url="http://jakarta.apache.org/ant/index.html">Ant</ulink>, a standard Java build tool.  Tapestry
-is pre-configured to build and execute using Ant.
+
+
+<para>
+The Tapestry distribution includes an &Ant; build file that allows the
+Tutorial to be directly executed.  Ant release 1.5 is required.
 </para>
-      <para>
-Change to the Tapestry distribution directory,
-<filename class="directory">C:\Tapestry-<replaceable>x.x.x</replaceable>
-        </filename>.
-</para>
-      <para>
-Execute the command <command>ant run-tutorial</command>, which will launch the
+
+<para>
+From the Tapestry root directory,
+execute the command <command>ant -emacs run-tutorial</command>, which will launch the
 Jetty server for the Tutorial.
 </para>
       <para>
@@ -135,12 +119,13 @@ Once Jetty is running, you can access the Tutorials using the URL
         <title>Tutorial Index Page</title>
         <mediaobject>
           <imageobject>
-            <imagedata fileref="images/tutorial-index.jpg" format="JPEG"/>
+            <imagedata fileref="images/tutorial-index.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
-    </section>
+
   </chapter>
+  
   <chapter id="hello">
     <title>Hello World</title>
     <para>

@@ -641,7 +641,7 @@ Private member variables (both instance and static) are named with a leading und
 <note>
 <title>Naming in transition</title>
 <para>
-I've resisted the leading underscore syntax for a long time; the rational behind it
+I've resisted the leading underscore syntax for a long time; the rationale behind it
 is to make it possible, at a glance, to visually seperate instance variables
 from local variables and parameters.  Previously, I've always maintained that
 the problem was methods that were too large; lately I've changed
@@ -652,7 +652,7 @@ a number of naming collisions.
 <para>
 At the time of this writing, 2.1-beta-1, very little of the code used
 the new naming.  Over time, mixed in with other bug fixes, renaming will
-occur (&Eclipse; help with this greatly).  New code will be written to conform.
+occur (&Eclipse; helps with this greatly).  New code will be written to conform.
 </para>
 </note>
 
@@ -660,7 +660,7 @@ occur (&Eclipse; help with this greatly).  New code will be written to conform.
 <para>
 Interfaces in Tapestry are prefixed with the letter 'I' (example: <literal>IRequestCycle</literal>).
 Implementations (often in a different package)
-strip of the 'I' (example: <literal>RequestCycle</literal>).  Interfaces related to JavaBean events 
+strip off the 'I' (example: <literal>RequestCycle</literal>).  Interfaces related to JavaBean events 
 do not start with an 'I' (example: <literal>PageDetachListener</literal>).
 </para>
 
@@ -877,6 +877,15 @@ have a body (that is, wrap other components) is supplied at the end.
 </calloutlist>
 	
 </figure>
+
+
+<para>
+Recently, <ulink url="../ComponentReference/index.html">seperate HTML component documentation</ulink>
+has been created.  It is likely that in the future, this will be the standard location
+for Framework component documentation (and the JavaDoc will have a link to the correct
+component reference page).
+</para>
+
 </section>
 
 <section id="procedures.checkin">

@@ -60,7 +60,44 @@
 <!ENTITY StaleLinkException '<ulink url="&ApiRoot;/StaleLinkException.html"><classname>StaleLinkException</classname></ulink>'>
 <!ENTITY ValidationDelegate '<ulink url="&ApiRoot;/valid/ValidationDelegate.html"><classname>ValidationDelegate</classname></ulink>'>
 
+<!-- Links to Component Reference -->
 
+<!ENTITY ReferenceRoot "../ComponentReference">
+  
+<!ENTITY Action '<ulink url="&ReferenceRoot;/Action.html"><classname>Action</classname></ulink>'>
+<!ENTITY Any '<ulink url="&ReferenceRoot;/Any.html"><classname>Any</classname></ulink>'>
+<!ENTITY Block '<ulink url="&ReferenceRoot;/Block.html"><classname>Block</classname></ulink>'>
+<!ENTITY Checkbox '<ulink url="&ReferenceRoot;/Checkbox.html"><classname>Checkbox</classname></ulink>'>
+<!ENTITY Body '<ulink url="&ReferenceRoot;/Body.html"><classname>Body</classname></ulink>'>
+<!ENTITY Conditional '<ulink url="&ReferenceRoot;/Conditional.html"><classname>Conditional</classname></ulink>'>
+<!ENTITY Direct '<ulink url="&ReferenceRoot;/Direct.html"><classname>Direct</classname></ulink>'>
+<!ENTITY ExceptionDisplay '<ulink url="&ReferenceRoot;/ExceptionDisplay.html"><classname>ExceptionDisplay</classname></ulink>'>
+<!ENTITY Foreach '<ulink url="&ReferenceRoot;/Foreach.html"><classname>Foreach</classname></ulink>'>
+<!ENTITY Form '<ulink url="&ReferenceRoot;/Form.html"><classname>Form</classname></ulink>'>
+<!ENTITY Frame '<link linkend="bultin.Frame.html"><classname>Frame</classname></ulink>'>
+<!ENTITY GenericLink '<ulink url="&ReferenceRoot;/GenericLink.html"><classname>GenericLink</classname></ulink>'>
+<!ENTITY Hidden '<ulink url="&ReferenceRoot;/Hidden.html"><classname>Hidden</classname></ulink>'>
+<!ENTITY ListEdit '<ulink url="&ReferenceRoot;/ListEdit.html"><classname>ListEdit</classname></ulink>'>
+<!ENTITY Image '<ulink url="&ReferenceRoot;/Image.html"><classname>Image</classname></ulink>'>
+<!ENTITY Insert '<ulink url="&ReferenceRoot;/Insert.html"><classname>Insert</classname></ulink>'>
+<!ENTITY InsertBlock '<ulink url="&ReferenceRoot;/InsertBlock.html"><classname>InsertBlock</classname></ulink>'>
+<!ENTITY InsertText '<ulink url="&ReferenceRoot;/InsertText.html"><classname>InsertText</classname></ulink>'>
+<!ENTITY InsertWrapped '<ulink url="&ReferenceRoot;/InsertWrapped.html"><classname>InsertWrapped</classname></ulink>'>
+<!ENTITY Option '<ulink url="&ReferenceRoot;/Option.html"><classname>Option</classname></ulink>'>
+<!ENTITY Page '<ulink url="&ReferenceRoot;/Page.html"><classname>Page</classname></ulink>'>
+<!ENTITY PropertySelection '<ulink url="&ReferenceRoot;/PropertySelection.html"><classname>PropertySelection</classname></ulink>'>
+<!ENTITY Radio '<ulink url="&ReferenceRoot;/Radio.html"><classname>Radio</classname></ulink>'>
+<!ENTITY RadioGroup '<ulink url="&ReferenceRoot;/RadioGroup.html"><classname>RadioGroup</classname></ulink>'>
+<!ENTITY Rollover '<ulink url="&ReferenceRoot;/Rollover.html"><classname>Rollover</classname></ulink>'>
+<!ENTITY Script '<ulink url="&ReferenceRoot;/Script.html"><classname>Script</classname></ulink>'>
+<!ENTITY Select '<ulink url="&ReferenceRoot;/Select.html"><classname>Select</classname></ulink>'>
+<!ENTITY Service '<ulink url="&ReferenceRoot;/Service.html"><classname>Service</classname></ulink>'>
+<!ENTITY ShowInspector '<ulink url="&ReferenceRoot;/ShowInspector.html"><classname>ShowInspector</classname></ulink>'>
+<!ENTITY Text '<ulink url="&ReferenceRoot;/Text.html"><classname>Text</classname></ulink>'>
+<!ENTITY TextField '<ulink url="&ReferenceRoot;/TextField.html"><classname>TextField</classname></ulink>'>
+<!ENTITY Upload '<ulink url="&ReferenceRoot;/Upload.html"><classname>Upload</classname></ulink>'>
+<!ENTITY ValidField '<ulink url="&ReferenceRoot;/ValidField.html"><classname>ValidField</classname></ulink>'>
+  
 <!-- External links -->
 
 <!ENTITY Ant '<ulink url="http://jakarta.apache.org/ant">Ant</ulink>'>
