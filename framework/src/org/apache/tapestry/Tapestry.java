@@ -73,7 +73,7 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 
-import org.apache.tapestry.request.*;
+import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResourceLocation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.util.AdaptorRegistry;
@@ -312,6 +312,31 @@ public final class Tapestry
 
     public static final String TEMPLATE_SOURCE_DELEGATE_EXTENSION_NAME =
         "org.apache.tapestry.template-source-delegate";
+
+    /**
+     *   Key used to obtain an extension from the application specification.  The extension,
+     *   if it exists, implements {@link org.apache.tapestry.request.IRequestDecoder}.
+     * 
+     *   @since 2.2
+     * 
+     **/
+
+    public static final String REQUEST_DECODER_EXTENSION_NAME =
+        "org.apache.tapestry.request-decoder";
+
+    /**
+     *  Name of optional application extension for the multipart decoder
+     *  used by the application.  The extension must implement
+     *  {@link org.apache.tapestry.multipart.IMultipartDecoder}
+     *  (and is generally a configured instance of
+     *  {@link org.apache.tapestry.multipart.DefaultMultipartDecoder}).
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final String MULTIPART_DECODER_EXTENSION_NAME =
+        "org.apache.tapestry.multipart-decoder";
 
     /**
      *  Prevent instantiation.

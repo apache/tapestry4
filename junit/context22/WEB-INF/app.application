@@ -9,5 +9,10 @@
 			  class="org.apache.tapestry.junit.mock.c22.DummySpecDelegate"/>
 	<extension name="org.apache.tapestry.template-source-delegate"
 			  class="org.apache.tapestry.junit.mock.c22.DummyTemplateDelegate"/>
-	
+	<extension name="org.apache.tapestry.multipart-decoder"
+			  class="org.apache.tapestry.multipart.DefaultMultipartDecoder">
+	  <configure property-name="maxSize" type="int" value="200000"/>
+	  <configure property-name="thresholdSize" type="int" value="5000"/>
+	  <configure property-name="repositoryPath" value=".private"/>		
+	</extension>
 </application>

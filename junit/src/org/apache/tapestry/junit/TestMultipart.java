@@ -57,9 +57,14 @@ package org.apache.tapestry.junit;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import org.apache.commons.fileupload.DefaultFileItem;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.multipart.DefaultMultipartDecoder;
 import org.apache.tapestry.multipart.UploadPart;
 import org.apache.tapestry.multipart.ValuePart;
 
@@ -113,11 +118,12 @@ public class TestMultipart extends TapestryTestCase
 
     public void testGetStreamFailure()
     {
-        UploadPart p = new UploadPart("filePath", "contentType", new File("DOES-NOT-EXIST"));
+        UploadPart aPart =
+            UploadPart.newInstance("DOES-NOT-EXIST", "DOES-NOT-EXIST", "DOES-NOT-EXIST", 1, 0);
 
         try
         {
-            p.getStream();
+            aPart.getStream();
 
             unreachable();
         }
@@ -129,22 +135,32 @@ public class TestMultipart extends TapestryTestCase
 
     public void testUnableToCleanup() throws Exception
     {
-        File file = File.createTempFile("unable-to-delete-", ".data");
+        FileItem aFileItem =
+            DefaultFileItem.newInstance(
+                System.getProperty("java.io.tmpdir"),
+                "test.txt",
+                "text/plain",
+                1024,
+                0);
 
-        FileOutputStream out = new FileOutputStream(file);
-        PrintWriter w = new PrintWriter(out);
-
-        w.println("Test Data");
-
-        w.close();
-
-        UploadPart p = new UploadPart("filePath", "contentType", file);
+        UploadPart aPart = new UploadPart(aFileItem);
 
         // Open the stream, and leave it open, so the
         // file can't be deleted.
+        OutputStream anOutStream = aFileItem.getOutputStream();
+        OutputStreamWriter aWriter = new OutputStreamWriter(anOutStream);
 
-        p.getStream();
+        aWriter.write("hello");
 
-        p.cleanup();
+        try
+        {
+            aPart.cleanup();
+
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            checkException(ex, "not deleted");
+        }
     }
 }
