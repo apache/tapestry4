@@ -11,11 +11,16 @@
   <parameter name="displayWidth" type="int" direction="in" />
   <parameter name="maximumLength" type="int" direction="in" />
 
-  <parameter name="value" type="java.lang.Number" required="yes"/>
-  <parameter name="displayName" type="java.lang.String" required="yes"/>
+  <parameter name="value" type="java.lang.Object" direction="auto" required="yes"/>
+  <parameter name="displayName" type="java.lang.String" direction="auto" required="yes"/>
   <parameter name="maximum" type="java.lang.Number"/>
   <parameter name="minimum" type="java.lang.Number"/>
   <parameter name="required"/>
   <parameter name="type" type="java.lang.String" required="yes" direction="in" property-name="typeName" />
+
+  <reserved-parameter name="name"/>
   
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+
 </component-specification>
