@@ -122,7 +122,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     /**
      *  The simple id of this component.
      *
-     *  @deprecated To be made private in 2.3.
      * 
      **/
 

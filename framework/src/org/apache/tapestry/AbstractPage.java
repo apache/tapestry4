@@ -63,9 +63,7 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.event.ChangeObserver;
-import org.apache.tapestry.event.PageCleanupListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
@@ -108,14 +106,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      **/
 
     private Object _visit;
-
-    /**
-     *  The name of this page.  This may be read, but not changed, by
-     *  subclasses.
-     *
-     **/
-
-    private String _name;
 
     /**
      *  The qualified name of the page, which may be prefixed by the
@@ -190,9 +180,9 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void detach()
     {
-    	// Do this first,so that any changes to persistent properties do not
-    	// cause errors.
-    	
+        // Do this first,so that any changes to persistent properties do not
+        // cause errors.
+
         _changeObserver = null;
 
         firePageDetached();
@@ -239,7 +229,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public String getExtendedId()
     {
-        return _name;
+        return _pageName;
     }
 
     /**
@@ -270,11 +260,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
                 Tapestry.getString("AbstractPage.attempt-to-change-locale"));
 
         _locale = value;
-    }
-
-    public String getName()
-    {
-        return _name;
     }
 
     public IComponent getNestedComponent(String path)
@@ -354,14 +339,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         _changeObserver = value;
     }
 
-    public void setName(String value)
-    {
-        if (_name != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractPage.attempt-to-change-name"));
-
-        _name = value;
-    }
     /** @since 2.4 **/
 
     public void setPageName(String pageName)
@@ -400,18 +377,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public void setRequestCycle(IRequestCycle value)
     {
         _requestCycle = value;
-    }
-
-    /**
-     *  Does nothing.
-     * 
-     *  @deprecated With no replacement.
-     *  @see PageCleanupListener
-     *
-     **/
-
-    public void cleanupPage()
-    {
     }
 
     /**
@@ -468,18 +433,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public void addPageRenderListener(PageRenderListener listener)
     {
         addListener(PageRenderListener.class, listener);
-    }
-
-	/**
-	 *  Does nothing.
-	 * 
-	 *  @deprecated With no replacement.
-     *  @see PageCleanupListener
-     * 
-     **/
-	
-    public void addPageCleanupListener(PageCleanupListener listener)
-    {
     }
 
     /**
@@ -563,18 +516,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         }
     }
 
-	/**
-	 *  Does nothing.
-	 * 
-	 *  @deprecated With no replacement.
-     *  @see PageCleanupListener
-     * 
-     **/
-
-    public void removePageCleanupListener(PageCleanupListener listener)
-    {
-    }
-
     /**
      *  @since 2.1-beta-2
      * 
@@ -583,13 +524,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public void removePageDetachListener(PageDetachListener listener)
     {
         removeListener(PageDetachListener.class, listener);
-    }
-
-    /** @since 2.3 **/
-
-    public String getQualifiedName()
-    {
-        return _pageName;
     }
 
     public void removePageRenderListener(PageRenderListener listener)

@@ -123,10 +123,10 @@ public abstract class Radio extends AbstractComponent
         // for the group as a whole; if so this is the default radio and is checked.
 
         if (group.isSelection(getValue()))
-            writer.attribute("checked");
+            writer.attribute("checked", "checked");
 
         if (isDisabled() || group.isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         // The value for the Radio matches the option number (provided by the RadioGroup).
         // When the form is submitted, the RadioGroup will know which option was,

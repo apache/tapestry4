@@ -166,10 +166,10 @@ public abstract class Select extends AbstractFormComponent
             writer.attribute("name", name);
 
             if (isMultiple())
-                writer.attribute("multiple");
+                writer.attribute("multiple", "multiple");
 
             if (isDisabled())
-                writer.attribute("disabled");
+                writer.attribute("disabled", "disabled");
 
             generateAttributes(writer, cycle);
         }

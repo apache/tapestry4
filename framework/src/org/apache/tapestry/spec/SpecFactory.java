@@ -56,9 +56,7 @@
 package org.apache.tapestry.spec;
 
 import org.apache.tapestry.bean.ExpressionBeanInitializer;
-import org.apache.tapestry.bean.FieldBeanInitializer;
 import org.apache.tapestry.bean.IBeanInitializer;
-import org.apache.tapestry.bean.StaticBeanInitializer;
 import org.apache.tapestry.bean.StringBeanInitializer;
 
 /**
@@ -104,17 +102,6 @@ public class SpecFactory
         return new LibrarySpecification();
     }
 
-    /**
-     *  Creates a concrete instance of {@link AssetSpecification}.
-     * 
-     *  @deprecated
-     **/
-
-    public AssetSpecification createAssetSpecification(AssetType type, String path)
-    {
-        return new AssetSpecification(type, path);
-    }
-
 	/**
 	 *  Returns a new instance of {@link AssetSpecification}.
 	 * 
@@ -127,17 +114,6 @@ public class SpecFactory
 		return new AssetSpecification();
 	}
 
-    /**
-     *  Creates a concrete instance of {@link BeanSpecification}.
-     * 
-     *  @deprecated
-     **/
-
-    public BeanSpecification createBeanSpecification(String className, BeanLifecycle lifecycle)
-    {
-        return new BeanSpecification(className, lifecycle);
-    }
-
 	/**
 	 *  Creates a new instance of {@link BeanSpecification}.
 	 * 
@@ -149,18 +125,6 @@ public class SpecFactory
 	{
 		return new BeanSpecification();
 	}
-
-    /**
-     * Creates a concrete instance of {@link BindingSpecification}.
-     * 
-     *  @deprecated
-     * 
-     **/
-
-    public BindingSpecification createBindingSpecification(BindingType type, String value)
-    {
-        return new BindingSpecification(type, value);
-    }
 
 	public BindingSpecification createBindingSpecification()
 	{
@@ -207,32 +171,6 @@ public class SpecFactory
         return new ParameterSpecification();
     }
 
-    /**
-     * Creates a concrete instance of {@link IBeanInitializer}.
-     * <p>
-     * Default implementation returns an instance of {@link PropertyBeanInitializer}.
-     * 
-     *  @deprecated To be removed in 2.3.  Use {@link #createExpressionBeanInitializer(String, String)}.
-     **/
-
-    public IBeanInitializer createPropertyBeanInitializer(String propertyName, String expression)
-    {
-        return new ExpressionBeanInitializer(propertyName, expression);
-    }
-
-    /** 
-     * 
-     *  @deprecated
-     * 
-     *  @since 2.2 
-     * 
-     **/
-
-    public IBeanInitializer createExpressionBeanInitializer(String propertyName, String expression)
-    {
-        return new ExpressionBeanInitializer(propertyName, expression);
-    }
-
 	/**
 	 *  Creates a new instance of {@link ExpressionBeanInitializer}.
 	 * 
@@ -244,43 +182,6 @@ public class SpecFactory
 	{
 		return new ExpressionBeanInitializer();
 	}
-
-    /**
-     * Creates a concrete instance of {@link IBeanInitializer}.
-     * <p>
-     * Default implementation returns an instance of {@link StaticBeanInitializer}.
-     **/
-
-    public IBeanInitializer createStaticBeanInitializer(String propertyName, Object staticValue)
-    {
-        return new StaticBeanInitializer(propertyName, staticValue);
-    }
-
-    /**
-     * Creates a concrete instance of {@link IBeanInitializer}.
-     * <p>
-     * Default implementation returns an instance of {@link FieldBeanInitializer}.
-     **/
-
-    public IBeanInitializer createFieldBeanInitializer(String propertyName, String fieldName)
-    {
-        return new FieldBeanInitializer(propertyName, fieldName);
-    }
-
-    /**
-     *  Creates a concrete instance of {@link IBeanInitializer}.  
-     * 
-     *  <p>
-     *  Default implementation returns an instance of {@link org.apache.tapestry.bean.StringBeanInitializer}.
-     * 
-     *  @since 2.2
-     *  @deprecated
-     **/
-
-    public IBeanInitializer createStringBeanInitializer(String propertyName, String key)
-    {
-        return new StringBeanInitializer(propertyName, key);
-    }
 
 	/**
 	 *  Returns a new instance of {@link StringBeanInitializer}.

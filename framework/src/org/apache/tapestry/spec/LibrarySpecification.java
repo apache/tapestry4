@@ -187,7 +187,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             _pages = new HashMap();
 
         if (_pages.containsKey(name))
-            throw new IllegalArgumentException(Tapestry.getString("LibrarySpecification.duplicate-page-name", name));
+            throw new IllegalArgumentException(
+                Tapestry.getString("LibrarySpecification.duplicate-page-name", name));
 
         _pages.put(name, path);
     }
@@ -214,21 +215,16 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         return (String) get(_components, alias);
     }
 
-    public List getComponentAliases()
-    {
-        return sortedKeys(_components);
-    }
-
     /**
      *  @since 2.4
      * 
      **/
-    
-   public List getComponentTypes()
+
+    public List getComponentTypes()
     {
-        return getComponentAliases();
+        return sortedKeys(_components);
     }
-    
+
     public String getServiceClassName(String name)
     {
         return (String) get(_services, name);
@@ -245,7 +241,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             _services = new HashMap();
 
         if (_services.containsKey(name))
-            throw new IllegalArgumentException(Tapestry.getString("LibrarySpecification.duplicate-service-name", name));
+            throw new IllegalArgumentException(
+                Tapestry.getString("LibrarySpecification.duplicate-service-name", name));
 
         _services.put(name, className);
     }
@@ -394,7 +391,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             ExtensionSpecification spec = getExtensionSpecification(name);
 
             if (spec == null)
-                throw new IllegalArgumentException(Tapestry.getString("LibrarySpecification.no-such-extension", name));
+                throw new IllegalArgumentException(
+                    Tapestry.getString("LibrarySpecification.no-such-extension", name));
 
             result = spec.instantiateExtension(_resolver);
 

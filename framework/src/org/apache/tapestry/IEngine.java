@@ -354,28 +354,6 @@ public interface IEngine
     
     public DataSqueezer getDataSqueezer();
 
-    /** 
-     * 
-     *  @see #setRefreshing(boolean)
-     *  @since 2.2 
-     * 
-     **/
-
-    public boolean isRefreshing();
-
-    /** 
-     *  This method has been deprecated.  It existed as part
-     *  of support for {@link org.apache.tapestry.event.PageCleanupListener} interface,
-     *  which has also been deprecated.
-     *   
-     * 
-     *  @since 2.2
-     *  @deprecated With no replacement.
-     * 
-     **/
-
-    public void setRefreshing(boolean refreshing);
-
     /**
      *  Returns a {@link org.apache.tapestry.IPropertySource} that should be
      *  used to obtain configuration data.  The returned source represents

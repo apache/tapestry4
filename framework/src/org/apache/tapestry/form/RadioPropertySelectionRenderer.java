@@ -117,10 +117,10 @@ public class RadioPropertySelectionRenderer implements IPropertySelectionRendere
         writer.attribute("value", model.getValue(index));
 
         if (component.isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         if (selected)
-            writer.attribute("checked");
+            writer.attribute("checked", "checked");
 
         writer.end(); // <td>
 

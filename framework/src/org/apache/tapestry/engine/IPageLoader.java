@@ -58,6 +58,7 @@ package org.apache.tapestry.engine;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Location;
 
 /**
  * Interface exposed to components as they are loaded by the page loader.
@@ -105,5 +106,6 @@ public interface IPageLoader
         IRequestCycle cycle,
         IComponent container,
         String componentId,
-        String componentType);
+        String componentType,
+        Location location);
 }

@@ -119,17 +119,6 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
     public String getComponentSpecificationPath(String type);
 
     /**
-     *  Returns the simple types ('alias' is an archaic term) of
-     *  all components defined in this library.
-     * 
-     *  @deprecated To be removed after release 2.4, use
-     *  {@link #getComponentTypes()} instead.
-     * 
-     **/
-    
-    public List getComponentAliases();
-
-    /**
      *  Returns the simple types of all components defined in
      *  this library.  Returns a list of strings in sorted order,
      *  or an empty list (but not null).

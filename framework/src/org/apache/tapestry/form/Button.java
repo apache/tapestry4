@@ -93,7 +93,7 @@ public abstract class Button extends AbstractFormComponent
 
         if (isDisabled())
         {
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
         }
 
         String label = getLabel();

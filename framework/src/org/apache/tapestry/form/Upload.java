@@ -98,7 +98,7 @@ public abstract class Upload extends AbstractFormComponent
         writer.attribute("name", name);
 
         if (isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         // Size, width, etc. can be specified as informal parameters
         // (Not making the same mistake here that was made with TextField

@@ -184,15 +184,6 @@ public class RequestContext implements IRender
     private Map _cookieMap;
 
     /**
-     *  Used to contain the parsed, decoded pathInfo.
-     *
-     *  @deprecated To be removed in 2.3.
-     * 
-     **/
-
-    private String[] _pathInfo;
-
-    /**
      *  Used during {@link #write(IMarkupWriter)}.
      * 
      **/
@@ -303,22 +294,6 @@ public class RequestContext implements IRender
             readCookieMap();
 
         _cookieMap.put(cookie.getName(), cookie);
-    }
-
-    private void buildPathInfo()
-    {
-        String raw = _request.getPathInfo();
-
-        if (raw == null)
-        {
-            _pathInfo = new String[] {
-            };
-            return;
-        }
-
-        StringSplitter splitter = new StringSplitter('/');
-
-        _pathInfo = splitter.splitToArray(raw);
     }
 
     private void datePair(IMarkupWriter writer, String name, long value)
@@ -649,44 +624,6 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Returns the pathInfo string at the given index. If the index
-     *  is out of range, this returns null.
-     *
-     *  @deprecated To be removed in 2.3
-     **/
-
-    public String getPathInfo(int index)
-    {
-        if (_pathInfo == null)
-            buildPathInfo();
-
-        try
-        {
-            return _pathInfo[index];
-        }
-        catch (ArrayIndexOutOfBoundsException ex)
-        {
-            return null;
-        }
-
-    }
-
-    /**
-     *  Returns the number of items in the pathInfo.
-     * 
-     *  @deprecated To be removed in 2.3.
-     * 
-     **/
-
-    public int getPathInfoCount()
-    {
-        if (_pathInfo == null)
-            buildPathInfo();
-
-        return _pathInfo.length;
-    }
-
-    /**
      *  Returns the request which initiated the current request cycle.  Note that
      *  the methods {@link #getParameter(String)} and {@link #getParameters(String)}
      *  should be used, rather than obtaining parameters directly from the request
@@ -958,20 +895,6 @@ public class RequestContext implements IRender
         object(writer, "Request");
         writer.begin("table");
         writer.attribute("class", "request-context-object");
-
-        if (_pathInfo == null)
-            buildPathInfo();
-
-        for (int i = 0; i < _pathInfo.length; i++)
-        {
-            if (i == 0)
-            {
-                section(writer, "Path Info");
-                header(writer, "Index", "Value");
-            }
-
-            pair(writer, Integer.toString(i), _pathInfo[i]);
-        }
 
         // Parameters ...
 

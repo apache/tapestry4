@@ -69,16 +69,6 @@ package org.apache.tapestry;
 public interface IMarkupWriter
 {
     /**
-     * Simply prints the attribute name. This is used for
-     * idempotent attributes, such as 'disabled' in an
-     * &lt;input&gt;.
-     *
-     * @throws IllegalStateException if there is no open tag.
-     **/
-
-    public void attribute(String name);
-
-    /**
      * Writes an integer attribute into the currently open tag.
      *
      * @throws IllegalStateException if there is no open tag.

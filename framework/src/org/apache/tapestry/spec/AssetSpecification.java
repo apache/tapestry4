@@ -68,20 +68,6 @@ public class AssetSpecification extends LocatablePropertyHolder
     private AssetType type;
     protected String path;
 
-    /** @since 2.4 **/
-
-    public AssetSpecification()
-    {
-    }
-
-    /** @deprecated **/
-
-    public AssetSpecification(AssetType type, String path)
-    {
-        this.type = type;
-        this.path = path;
-    }
-
     /**
      *  Returns the base path for the asset.  This may be interpreted as a URL, relative URL
      *  or the path to a resource, depending on the type of asset.

@@ -154,7 +154,7 @@ public class ExternalCallback implements ICallback
 
     public ExternalCallback(IExternalPage page, Object[] parameters)
     {
-        _pageName = page.getName();
+        _pageName = page.getPageName();
         _parameters = parameters;
     }
 

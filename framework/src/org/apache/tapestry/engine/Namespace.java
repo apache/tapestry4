@@ -66,6 +66,7 @@ import java.util.Set;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -246,20 +247,6 @@ public class Namespace implements INamespace
         return result;
     }
 
-    public List getComponentAliases()
-    {
-        Set types = new HashSet();
-
-        types.addAll(_components.keySet());
-        types.addAll(_specification.getComponentTypes());
-
-        List result = new ArrayList(types);
-
-        Collections.sort(result);
-
-        return result;
-    }
-
     public String getServiceClassName(String name)
     {
         return _specification.getServiceClassName(name);
@@ -363,12 +350,6 @@ public class Namespace implements INamespace
         return new Namespace(id, this, ls, _specificationSource);
     }
 
-    public boolean containsAlias(String type)
-    {
-        return _components.containsKey(type)
-            || (_specification.getComponentSpecificationPath(type) != null);
-    }
-
     public boolean containsPage(String name)
     {
         return _pages.containsKey(name) || (_specification.getPageSpecificationPath(name) != null);
@@ -418,22 +399,38 @@ public class Namespace implements INamespace
         _components.put(type, specification);
     }
 
-    // On these renamed methods, we simply invoke the old, deprecated method
-    // for code coverage reasons.  In 2.5 we delete the deprecated method
-    // and move its body here.
-
     /** @since 2.4 **/
 
     public boolean containsComponentType(String type)
     {
-        return containsAlias(type);
+        return _components.containsKey(type)
+            || (_specification.getComponentSpecificationPath(type) != null);
     }
 
     /** @since 2.4 **/
 
     public List getComponentTypes()
     {
-        return getComponentAliases();
+        Set types = new HashSet();
+
+        types.addAll(_components.keySet());
+        types.addAll(_specification.getComponentTypes());
+
+        List result = new ArrayList(types);
+
+        Collections.sort(result);
+
+        return result;
+    }
+
+    /** @since 2.4 **/
+
+    public Location getLocation()
+    {
+        if (_specification == null)
+            return null;
+
+        return _specification.getLocation();
     }
 
 }

@@ -87,7 +87,7 @@ public class SelectPropertySelectionRenderer
         writer.attribute("name", component.getName());
 
         if (component.isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         writer.println();
     }
@@ -123,7 +123,7 @@ public class SelectPropertySelectionRenderer
         writer.attribute("value", model.getValue(index));
 
         if (selected)
-            writer.attribute("selected");
+            writer.attribute("selected", "selected");
 
         writer.print(model.getLabel(index));
 

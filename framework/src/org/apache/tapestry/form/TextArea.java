@@ -108,7 +108,7 @@ public abstract class TextArea extends AbstractFormComponent
         writer.attribute("name", name);
 
         if (isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         int rows = getRows();
         int columns = getColumns();

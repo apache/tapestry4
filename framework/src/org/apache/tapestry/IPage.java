@@ -59,7 +59,6 @@ import java.io.OutputStream;
 import java.util.Locale;
 
 import org.apache.tapestry.event.ChangeObserver;
-import org.apache.tapestry.event.PageCleanupListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
 
@@ -129,27 +128,6 @@ public interface IPage extends IComponent
      **/
 
     public void setLocale(Locale value);
-
-    /**
-     *  Returns the simple name of the page within its namespace.
-     *
-     *  @deprecated This method has no use and will be removed after release 2.4.
-     *
-     **/
-
-    public String getName();
-
-    /**
-     *  Returns the fully qualified name of the page, including its
-     *  namespace prefix, if any.
-     * 
-     *  @since 2.3
-     *  @deprecated This method will be removed after release 2.4, use
-     *  {@link #getPageName()} instead.
-     * 
-     **/
-
-    public String getQualifiedName();
 
     /**
      *  Returns the fully qualified name of the page, including its
@@ -245,16 +223,6 @@ public interface IPage extends IComponent
     public void setChangeObserver(ChangeObserver value);
 
     /**
-     *  Sets the simple (unqualified) name for the page.
-     * 
-     *  @deprecated To be removed after 2.4, use {@link #setPageName(String)}
-     *  instead.
-     * 
-     **/
-
-    public void setName(String value);
-
-    /**
      *  Method invoked by the page, action and direct services 
      *  to validate that the
      *  user is allowed to visit the page.
@@ -313,15 +281,6 @@ public interface IPage extends IComponent
     public void setRequestCycle(IRequestCycle cycle);
 
     /**
-     *
-     *  @deprecated With no replacement.
-     *  @see PageCleanupListener
-     * 
-     **/
-
-    public void cleanupPage();
-
-    /**
      *  Returns the visit object for the application; the visit object
      *  contains application-specific information.
      *
@@ -371,22 +330,4 @@ public interface IPage extends IComponent
 
     public void removePageDetachListener(PageDetachListener listener);
 
-    /**
-     *  
-     *  @since 1.0.5
-     *  @deprecated With no replacement.
-     *  @see PageCleanupListener
-     * 
-     **/
-
-    public void addPageCleanupListener(PageCleanupListener listener);
-
-    /**
-     * 
-     *  @since 2.1
-     *  @deprecated With no replacement.
-     *  @see PageCleanupListener
-     **/
-
-    public void removePageCleanupListener(PageCleanupListener listener);
 }

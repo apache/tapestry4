@@ -180,7 +180,7 @@ public class PageSource implements IPageSource
             if (_pageSpecificationResolver == null)
                 _pageSpecificationResolver = new PageSpecificationResolver(cycle);
 
-            _pageSpecificationResolver.resolve(pageName);
+            _pageSpecificationResolver.resolve(cycle, pageName);
 
             // Page loader's are not threadsafe, so we create a new
             // one as needed.  However, they would make an excellent

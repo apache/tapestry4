@@ -117,7 +117,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
         writer.attribute("type", isHidden() ? "password" : "text");
 
         if (isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         writer.attribute("name", name);
 

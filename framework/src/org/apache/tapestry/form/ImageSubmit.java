@@ -167,7 +167,7 @@ public abstract class ImageSubmit extends AbstractFormComponent
         writer.attribute("name", name);
 
         if (disabled)
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         // NN4 places a border unless you tell it otherwise.
         // IE ignores the border attribute and never shows a border.
