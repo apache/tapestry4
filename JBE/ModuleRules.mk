@@ -185,6 +185,7 @@ _PACKAGE_DIRS := \
 ifndef RESOURCE_EXTENSIONS
 RESOURCE_EXTENSIONS := html application jwc script properties
 endif
+
 		
 $(MOD_JAVA_CATALOG) $(MOD_RESOURCE_CATALOG):
 	@$(ECHO) > $(MOD_JAVA_CATALOG)
@@ -204,35 +205,6 @@ endif
 # End of SETUP_CATALOGS block
 
 endif
-
-
-ifdef PACKAGE_RECURSE
-
-# A few rules used with recursion.  Recursion works by re-invoking
-# make in the Module directory, by specifying a value for PACKAGE on
-# the command line (in addition to a target).
-
-# Convert each '.' to a path seperator
-
-PACKAGE_DIR := $(subst $(PERIOD),$(SLASH),$(PACKAGE))
-
-_FINAL_PACKAGE_DIR := $(FINAL_SOURCE_DIR)$(SLASH)$(PACKAGE_DIR)
-
-
-catalog-package:
-	$(call NOTE, Cataloging package $(PACKAGE) ...)
-	@if [ ! -r $(_FINAL_PACKAGE_DIR)/Makefile ] ; \
-	then _mopt=--makefile=$(SYS_MAKEFILE_DIR)/DefaultPackage.mk ; \
-	fi ; \
-	$(MAKE) --directory=$(_FINAL_PACKAGE_DIR) $$_mopt \
-		MOD_BUILD_DIR="$(ABSOLUTE_MOD_BUILD_DIR)" \
-		MOD_PACKAGE_DIR="$(PACKAGE_DIR)" \
-		MOD_SOURCE_DIR_PREFIX="$(FINAL_SOURCE_DIR)$(SLASH)"
-	
-# End of PACKAGE_RECURSE block
-
-endif
-
 
 javadoc:
 ifeq "$(JAVADOC_DIR)" ""
