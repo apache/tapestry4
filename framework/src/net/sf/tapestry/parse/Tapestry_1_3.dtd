@@ -25,6 +25,7 @@ This DTD is backwards compatible with the 1.2 DTD, with the following exceptions
 - added library root element
 - added library element
 - added extension element
+- added static value type 'long'
 
 -->
 
@@ -38,13 +39,13 @@ The default varies, so isn't included here.
 
 
 <!-- =======================================================
-Entity: attribute-flag
+Entity: static-value-type
 
 For entity attributes that take a string but convert it to a real
 type.  Defaults to String.
 
 -->
-<!ENTITY % static-value-type "(boolean|int|double|String) 'String'">
+<!ENTITY % static-value-type "(boolean|int|long|double|String) 'String'">
 
 <!ENTITY % library-content "(description*, property*, (page|component-alias|service|library|extension)*)">
 
@@ -132,7 +133,7 @@ Attributes:
  
 -->
 
-<!ELEMENT configure (PCDATA)>
+<!ELEMENT configure (#PCDATA)>
 <!ATTLIST configure 
   property-name CDATA #REQUIRED
   type %static-value-type;

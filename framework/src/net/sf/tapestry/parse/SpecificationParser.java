@@ -44,6 +44,7 @@ import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.Direction;
+import net.sf.tapestry.spec.ExtensionSpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.spec.SpecFactory;
@@ -214,7 +215,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /**
      *  Perl5 pattern for library ids.  Letter followed
-     *  by letetr, number, dash or underscore.  Expects
+     *  by letter, number, dash or underscore.  Expects
      *  caseless comparison.
      * 
      *  @since 2.2
@@ -222,6 +223,17 @@ public class SpecificationParser extends AbstractDocumentParser
      **/
 
     public static final String LIBRARY_ID_PATTERN = BEAN_NAME_PATTERN;
+
+    /**
+     *  Per5 pattern for extension names.  Letter follwed
+     *  by letter, number, dash or underscore.  Expects
+     *  caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public static final String EXTENSION_NAME_PATTERN = BEAN_NAME_PATTERN;
 
     /**
      *  We can share a single map for all the XML attribute to object conversions,
@@ -279,7 +291,7 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             Object result = _conversionMap.get(value.toLowerCase());
 
-            if (result == null)
+            if (result == null || !(result instanceof Boolean))
                 throw new DocumentParseException(Tapestry.getString("SpecificationParser.fail-convert-boolean", value));
 
             return result;
@@ -297,6 +309,23 @@ public class SpecificationParser extends AbstractDocumentParser
             catch (NumberFormatException ex)
             {
                 throw new DocumentParseException(Tapestry.getString("SpecificationParser.fail-convert-int", value), ex);
+            }
+        }
+    }
+
+    private static class LongConverter implements IConverter
+    {
+        public Object convert(String value) throws DocumentParseException
+        {
+            try
+            {
+                return new Long(value);
+            }
+            catch (NumberFormatException ex)
+            {
+                throw new DocumentParseException(
+                    Tapestry.getString("SpecificationParser.fail-convert-long", value),
+                    ex);
             }
         }
     }
@@ -327,6 +356,10 @@ public class SpecificationParser extends AbstractDocumentParser
     }
 
     // Identify all the different acceptible values.
+    // We continue to sneak by with a single map because
+    // there aren't conflicts;  when we have 'foo' meaning
+    // different things in different places in the DTD, we'll
+    // need two maps.
 
     static {
 
@@ -352,6 +385,7 @@ public class SpecificationParser extends AbstractDocumentParser
         _conversionMap.put("int", new IntConverter());
         _conversionMap.put("double", new DoubleConverter());
         _conversionMap.put("String", new StringConverter());
+        _conversionMap.put("long", new LongConverter());
 
         _conversionMap.put("in", Direction.IN);
         _conversionMap.put("custom", Direction.CUSTOM);
@@ -452,8 +486,10 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    public ApplicationSpecification parseApplicationSpecification(InputStream input, 
-        String resourcePath, IResourceResolver resolver)
+    public ApplicationSpecification parseApplicationSpecification(
+        InputStream input,
+        String resourcePath,
+        IResourceResolver resolver)
         throws DocumentParseException
     {
         Document document;
@@ -481,8 +517,10 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    public LibrarySpecification parseLibrarySpecification(InputStream input, String resourcePath,
-    IResourceResolver resolver)
+    public LibrarySpecification parseLibrarySpecification(
+        InputStream input,
+        String resourcePath,
+        IResourceResolver resolver)
         throws DocumentParseException
     {
         Document document;
@@ -546,7 +584,8 @@ public class SpecificationParser extends AbstractDocumentParser
         return dtdVersion;
     }
 
-    private ApplicationSpecification convertApplicationSpecification(Document document, IResourceResolver resolver) throws DocumentParseException
+    private ApplicationSpecification convertApplicationSpecification(Document document, IResourceResolver resolver)
+        throws DocumentParseException
     {
         ApplicationSpecification specification = _factory.createApplicationSpecification();
 
@@ -562,7 +601,8 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** @since 2.2 **/
 
-    private LibrarySpecification convertLibrarySpecification(Document document, IResourceResolver resolver) throws DocumentParseException
+    private LibrarySpecification convertLibrarySpecification(Document document, IResourceResolver resolver)
+        throws DocumentParseException
     {
         LibrarySpecification specification = _factory.createLibrarySpecification();
 
@@ -578,19 +618,21 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    private void processLibrarySpecification(Document document, LibrarySpecification specification, IResourceResolver resolver)
+    private void processLibrarySpecification(
+        Document document,
+        LibrarySpecification specification,
+        IResourceResolver resolver)
         throws DocumentParseException
     {
-        
-       String dtdVersion = getDTDVersion(document);
+
+        String dtdVersion = getDTDVersion(document);
 
         specification.setDTDVersion(dtdVersion);
 
-        
-    specification.setResourceResolver(resolver);
-    
-    Element root = document.getDocumentElement();
-    
+        specification.setResourceResolver(resolver);
+
+        Element root = document.getDocumentElement();
+
         for (Node node = root.getFirstChild(); node != null; node = node.getNextSibling())
         {
             if (isElement(node, "page"))
@@ -628,7 +670,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 convertLibrary(specification, node);
                 continue;
             }
-            
+
             if (isElement(node, "extension"))
             {
                 convertExtension(specification, node);
@@ -1165,10 +1207,51 @@ public class SpecificationParser extends AbstractDocumentParser
             throw new ApplicationRuntimeException(ex);
         }
     }
-    
-    private void convertExtension(LibrarySpecification specification, Node node)
-    throws DocumentParseException
+
+    /** @since 2.2 **/
+
+    private void convertExtension(LibrarySpecification specification, Node node) throws DocumentParseException
     {
-        
+        String name = getAttribute(node, "name");
+        String className = getAttribute(node, "class");
+
+        validate(name, EXTENSION_NAME_PATTERN, "SpecificationParser.invalid-extension-name");
+
+        ExtensionSpecification exSpec = _factory.createExtensionSpecification();
+
+        exSpec.setClassName(className);
+
+        specification.addExtensionSpecification(name, exSpec);
+
+        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
+        {
+            if (isElement(child, "configure"))
+            {
+                processConfigure(exSpec, child);
+                continue;
+            }
+        }
+    }
+
+    /** @since 2.2 **/
+
+    private void processConfigure(ExtensionSpecification spec, Node node) throws DocumentParseException
+    {
+        String propertyName = getAttribute(node, "property-name");
+        String type = getAttribute(node, "type");
+        String value = getValue(node);
+
+        validate(propertyName, PROPERTY_NAME_PATTERN, "SpecificationParser.invalid-property-name");
+
+        IConverter converter = (IConverter) _conversionMap.get(type);
+
+        if (converter == null)
+            throw new DocumentParseException(
+                Tapestry.getString("SpecificationParser.unknown-static-value-type", type),
+                getResourcePath());
+
+        Object objectValue = converter.convert(value);
+
+        spec.addConfiguration(propertyName, objectValue);
     }
 }
