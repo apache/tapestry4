@@ -22,41 +22,26 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
-
-package net.sf.tapestry.junit;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import net.sf.tapestry.junit.parse.SpecificationParserTest;
-import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.prop.PropertyHelperTest;
-import net.sf.tapestry.junit.utils.TestDataSqueezer;
-import net.sf.tapestry.junit.utils.TestEnum;
-import net.sf.tapestry.junit.valid.ValidSuite;
+package net.sf.tapestry;
 
 /**
- *  Master suite of Tapestry tests, combining all other test suites.
+ *  Defines an object that can provide a component with its
+ *  {@link IComponentStrings}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.0.4
  *
  **/
 
-public class TapestrySuite extends TestSuite
+public interface IComponentStringsSource
 {
-	public static Test suite()
-	{
-		TestSuite suite = new TestSuite();
-
-		suite.addTestSuite(ComponentStringsTest.class);
-		suite.addTestSuite(PropertyHelperTest.class);
-		suite.addTestSuite(TemplateParserTest.class);
-		suite.addTestSuite(SpecificationParserTest.class);
-		suite.addTest(ValidSuite.suite());
-        suite.addTestSuite(TestEnum.class);
-        suite.addTestSuite(TestDataSqueezer.class);
-
-		return suite;
-	}
-
+	public IComponentStrings getStrings(IComponent component);
+	
+	/**
+	 *  Clears all cached information for the source.
+	 * 
+	 **/
+	
+	public void reset();
 }

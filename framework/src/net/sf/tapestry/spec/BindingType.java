@@ -69,6 +69,18 @@ public final class BindingType extends Enum
 
     public static final BindingType FIELD = new BindingType("FIELD");
 
+
+	/**
+	 *  A binding to one of a component's localized strings.
+	 * 
+	 *  @see net.sf.tapestry.IComponent#getString(String)
+	 * 
+	 *  @since 2.0.4
+	 * 
+	 **/
+	
+	public static final BindingType STRING = new BindingType("STRING");
+	
     private BindingType(String name)
     {
         super(name);

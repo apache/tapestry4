@@ -48,6 +48,7 @@ import org.apache.log4j.Category;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
+import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IEngineServiceView;
@@ -81,7 +82,8 @@ import net.sf.tapestry.util.prop.PropertyHelper;
  *  between request cycles.  
  *
  *  Uses a shared instance of
- *  {@link ITemplateSource} and {@link ISpecificationSource}
+ *  {@link ITemplateSource}, {@link ISpecificationSource},
+ *  {@link IScriptSource} and {@link net.sf.tapestry.IComponentStringsSource}
  *  stored as attributes of the  {@link ServletContext} 
  *  (they will be shared by all sessions).
  *
@@ -100,11 +102,11 @@ import net.sf.tapestry.util.prop.PropertyHelper;
  *  which is the class name  to instantiate when a visit object is first needed.  See
  *  {@link #createVisit(IRequestCycle)} for more details.
  *
- * <p>Some of the classes' behavior is controlled by JVM system parameters
+ * <p>Some of the classes' behavior is controlled by JVM system properties
  * (typically only used during development):
  *
  * <table border=1>
- * 	<tr> <th>Parameter</th> <th>Description</th> </tr>
+ * 	<tr> <th>Property</th> <th>Description</th> </tr>
  *  <tr> <td>net.sf.tapestry.enable-reset-service</td>
  *		<td>If true, enabled an additional service, reset, that
  *		allow page, specification and template caches to be cleared on demand.
@@ -193,9 +195,10 @@ public abstract class AbstractEngine
 
     /**
      *  The source for parsed scripts, again, stored in the
-     * {@link ServletContext}.
+     *  {@link ServletContext}.
      *
-     * @since 1.0.2
+     *  @since 1.0.2
+     *
      **/
 
     private transient IScriptSource scriptSource;
@@ -208,7 +211,21 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected static final String SCRIPT_SOURCE_NAME = "net.sf.tapestry.DefaultScriptSource";
+    protected static final String SCRIPT_SOURCE_NAME =
+        "net.sf.tapestry.ScriptSource";
+
+    /**
+     *  The name of the context attribute for the {@link net.sf.tapestry.IComponentStringsSource}
+     *  instance.  The application's name is appended.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+
+    protected static final String STRINGS_SOURCE_NAME =
+        "net.sf.tapestry.StringsSource";
+
+    private transient IComponentStringsSource stringsSource;
 
     private transient Map services;
 
@@ -220,7 +237,8 @@ public abstract class AbstractEngine
      *
      **/
 
-    public static final String VISIT_CLASS_PROPERTY_NAME = "net.sf.tapestry.visit-class";
+    public static final String VISIT_CLASS_PROPERTY_NAME =
+        "net.sf.tapestry.visit-class";
 
     /**
      *  Servlet context attribute name for the default {@link ITemplateSource}
@@ -228,7 +246,8 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected static final String TEMPLATE_SOURCE_NAME = "net.sf.tapestry.TemplateSource";
+    protected static final String TEMPLATE_SOURCE_NAME =
+        "net.sf.tapestry.TemplateSource";
 
     /**
      *  Servlet context attribute name for the default {@link ISpecificationSource}
@@ -236,7 +255,8 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected static final String SPECIFICATION_SOURCE_NAME = "net.sf.tapestry.SpecificationSource";
+    protected static final String SPECIFICATION_SOURCE_NAME =
+        "net.sf.tapestry.SpecificationSource";
 
     /**
      *  Servlet context attribute name for the {@link IPageSource}
@@ -275,7 +295,8 @@ public abstract class AbstractEngine
      *
      **/
 
-    private static boolean disableCaching = Boolean.getBoolean("net.sf.tapestry.disable-caching");
+    private static boolean disableCaching =
+        Boolean.getBoolean("net.sf.tapestry.disable-caching");
 
     private transient IResourceResolver resolver;
 
@@ -322,12 +343,16 @@ public abstract class AbstractEngine
             // Worst case scenario.  The exception page itself is broken, leaving
             // us with no option but to write the cause to the output.
 
-            reportException(Tapestry.getString("AbstractEngine.unable-to-process-client-request"), cause);
+            reportException(
+                Tapestry.getString("AbstractEngine.unable-to-process-client-request"),
+                cause);
 
             // Also, write the exception thrown when redendering the exception
             // page, so that can get fixed as well.
 
-            reportException(Tapestry.getString("AbstractEngine.unable-to-present-exception-page"), ex);
+            reportException(
+                Tapestry.getString("AbstractEngine.unable-to-present-exception-page"),
+                ex);
 
             // And throw the exception.
 
@@ -344,7 +369,8 @@ public abstract class AbstractEngine
     {
         CAT.warn(reportTitle, ex);
 
-        System.err.println("\n\n**********************************************************\n\n");
+        System.err.println(
+            "\n\n**********************************************************\n\n");
 
         System.err.println(reportTitle);
 
@@ -357,7 +383,8 @@ public abstract class AbstractEngine
 
         new ExceptionAnalyzer().reportException(ex, System.err);
 
-        System.err.println("\n**********************************************************\n");
+        System.err.println(
+            "\n**********************************************************\n");
 
     }
 
@@ -437,7 +464,8 @@ public abstract class AbstractEngine
         IEngineService result = (IEngineService) serviceMap.get(name);
 
         if (result == null)
-            throw new ApplicationRuntimeException(Tapestry.getString("AbstractEngine.unknown-service", name));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractEngine.unknown-service", name));
 
         return result;
     }
@@ -492,7 +520,8 @@ public abstract class AbstractEngine
      *  session is stateful (else, it would not have been serialized).
      **/
 
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
+    public void readExternal(ObjectInput in)
+        throws IOException, ClassNotFoundException
     {
         stateful = true;
 
@@ -643,7 +672,8 @@ public abstract class AbstractEngine
      *
      **/
 
-    public boolean service(RequestContext context) throws ServletException, IOException
+    public boolean service(RequestContext context)
+        throws ServletException, IOException
     {
         RequestCycle cycle = null;
         ResponseOutputStream output = null;
@@ -680,7 +710,9 @@ public abstract class AbstractEngine
         }
         catch (Exception ex)
         {
-            reportException(Tapestry.getString("AbstractEngine.unable-to-begin-request"), ex);
+            reportException(
+                Tapestry.getString("AbstractEngine.unable-to-begin-request"),
+                ex);
 
             throw new ServletException(ex.getMessage(), ex);
         }
@@ -691,7 +723,8 @@ public abstract class AbstractEngine
         {
             try
             {
-                String serviceName = context.getParameter(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
+                String serviceName =
+                    context.getParameter(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
 
                 if (Tapestry.isNull(serviceName))
                     serviceName = IEngineService.HOME_SERVICE;
@@ -831,8 +864,11 @@ public abstract class AbstractEngine
 
     /**
      *  Discards all cached pages, component specifications and templates.
+     *  Subclasses who override this implementation should invoke it as
+     *  well.
      *
      *  @since 1.0.1
+     * 
      **/
 
     public void clearCachedData()
@@ -841,6 +877,7 @@ public abstract class AbstractEngine
         specificationSource.reset();
         templateSource.reset();
         scriptSource.reset();
+        stringsSource.reset();
     }
 
     /**
@@ -999,6 +1036,33 @@ public abstract class AbstractEngine
                 servletContext.setAttribute(name, serviceMap);
             }
         }
+
+        if (stringsSource == null)
+        {
+            String name = STRINGS_SOURCE_NAME + "." + applicationName;
+
+            stringsSource = (IComponentStringsSource) servletContext.getAttribute(name);
+
+            if (stringsSource == null)
+            {
+                stringsSource = createComponentStringsSource();
+
+                servletContext.setAttribute(name, stringsSource);
+            }
+        }
+    }
+
+    /**
+     * 
+     *  Creates and returns a new instance of {@link DefaultStringsSource}.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+
+    public IComponentStringsSource createComponentStringsSource()
+    {
+        return new DefaultStringsSource(getResourceResolver());
     }
 
     /**
@@ -1172,7 +1236,9 @@ public abstract class AbstractEngine
             }
             catch (Throwable t)
             {
-                reportException(Tapestry.getString("AbstractEngine.unable-to-cleanup-page", name), t);
+                reportException(
+                    Tapestry.getString("AbstractEngine.unable-to-cleanup-page", name),
+                    t);
             }
         }
     }
@@ -1255,7 +1321,9 @@ public abstract class AbstractEngine
         visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
         if (visitClassName == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractEngine.visit-class-property-not-specified", VISIT_CLASS_PROPERTY_NAME));
+                Tapestry.getString(
+                    "AbstractEngine.visit-class-property-not-specified",
+                    VISIT_CLASS_PROPERTY_NAME));
 
         if (CAT.isDebugEnabled())
             CAT.debug("Creating visit object as instance of " + visitClassName);
@@ -1269,7 +1337,9 @@ public abstract class AbstractEngine
         catch (Throwable t)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractEngine.unable-to-instantiate-visit", visitClassName),
+                Tapestry.getString(
+                    "AbstractEngine.unable-to-instantiate-visit",
+                    visitClassName),
                 t);
         }
 
@@ -1331,7 +1401,8 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected void redirectOut(IRequestCycle cycle, RedirectException ex) throws RequestCycleException
+    protected void redirectOut(IRequestCycle cycle, RedirectException ex)
+        throws RequestCycleException
     {
         String location = ex.getLocation();
 
@@ -1391,14 +1462,21 @@ public abstract class AbstractEngine
 
                 if (!service.getName().equals(name))
                     throw new ApplicationRuntimeException(
-                        Tapestry.getString("AbstractEngine.service-name-mismatch", name, serviceClass, serviceName));
+                        Tapestry.getString(
+                            "AbstractEngine.service-name-mismatch",
+                            name,
+                            serviceClass,
+                            serviceName));
 
                 result.put(serviceName, service);
             }
             catch (InstantiationException ex)
             {
                 String message =
-                    Tapestry.getString("AbstractEngine.unable-to-instantiate-service", name, className);
+                    Tapestry.getString(
+                        "AbstractEngine.unable-to-instantiate-service",
+                        name,
+                        className);
 
                 CAT.error(message, ex);
 
@@ -1407,7 +1485,10 @@ public abstract class AbstractEngine
             catch (IllegalAccessException ex)
             {
                 String message =
-                    Tapestry.getString("AbstractEngine.unable-to-instantiate-service", name, className);
+                    Tapestry.getString(
+                        "AbstractEngine.unable-to-instantiate-service",
+                        name,
+                        className);
 
                 CAT.error(message, ex);
 
@@ -1419,6 +1500,16 @@ public abstract class AbstractEngine
         // We could wrap it in an unmodifiable, but for efficiency we don't.
 
         return result;
-
     }
+
+    /**
+     *  @since 2.0.4
+     * 
+     **/
+
+    public IComponentStringsSource getComponentStringsSource()
+    {
+        return stringsSource;
+    }
+
 }

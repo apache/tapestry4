@@ -49,12 +49,12 @@ import net.sf.tapestry.Tapestry;
  *
  **/
 
-class ResourceResolver implements IResourceResolver
+public class ResourceResolver implements IResourceResolver
 {
     private Class resourceClass;
     private ClassLoader classLoader;
 
-    ResourceResolver(Object hook)
+    public ResourceResolver(Object hook)
     {
         resourceClass = hook.getClass();
         classLoader = resourceClass.getClassLoader();

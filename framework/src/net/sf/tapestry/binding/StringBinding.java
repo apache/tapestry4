@@ -22,41 +22,72 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
+package net.sf.tapestry.binding;
 
-package net.sf.tapestry.junit;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import net.sf.tapestry.junit.parse.SpecificationParserTest;
-import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.prop.PropertyHelperTest;
-import net.sf.tapestry.junit.utils.TestDataSqueezer;
-import net.sf.tapestry.junit.utils.TestEnum;
-import net.sf.tapestry.junit.valid.ValidSuite;
+import net.sf.tapestry.IComponent;
 
 /**
- *  Master suite of Tapestry tests, combining all other test suites.
+ *  A binding that connects directly to a localized string for
+ *  a component.
  *
+ *  @see IComponent#getString(String)
+ * 
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.0.4
  *
  **/
 
-public class TapestrySuite extends TestSuite
+public class StringBinding extends AbstractBinding
 {
-	public static Test suite()
+	private IComponent component;
+	private String key;
+
+	public StringBinding(IComponent component, String key)
 	{
-		TestSuite suite = new TestSuite();
-
-		suite.addTestSuite(ComponentStringsTest.class);
-		suite.addTestSuite(PropertyHelperTest.class);
-		suite.addTestSuite(TemplateParserTest.class);
-		suite.addTestSuite(SpecificationParserTest.class);
-		suite.addTest(ValidSuite.suite());
-        suite.addTestSuite(TestEnum.class);
-        suite.addTestSuite(TestDataSqueezer.class);
-
-		return suite;
+	    this.component = component;
+	    this.key = key;
 	}
+	
+	public IComponent getComponent()
+	{
+	    return component;
+	}
+	
+	public String getKey()
+	{
+	    return key;
+	}
+	
+	/**
+	 *  Accesses the specified localized string.  Never returns null.
+	 *
+	 **/
+	
+    public Object getObject()
+    {
+        return component.getString(key);
+    }
+
+	/**
+	 *  Returns String.class.
+	 * 
+	 **/
+	
+    public Class getType()
+    {
+        return String.class;
+    }
+
+	/**
+	 *  Returns true.  Localized component strings are
+	 *  read-only.
+	 * 
+	 **/
+	
+    public boolean isInvariant()
+    {
+        return true;
+    }
 
 }

@@ -203,4 +203,9 @@ public class TestingField implements IField
 		return null;
 	}
 
+    public String getString(String key)
+    {
+        return null;
+    }
+
 }

@@ -22,41 +22,37 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
-
-package net.sf.tapestry.junit;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import net.sf.tapestry.junit.parse.SpecificationParserTest;
-import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.prop.PropertyHelperTest;
-import net.sf.tapestry.junit.utils.TestDataSqueezer;
-import net.sf.tapestry.junit.utils.TestEnum;
-import net.sf.tapestry.junit.valid.ValidSuite;
+package net.sf.tapestry;
 
 /**
- *  Master suite of Tapestry tests, combining all other test suites.
+ *  A set of localized Strings used by a component.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.0.4
  *
  **/
 
-public class TapestrySuite extends TestSuite
+public interface IComponentStrings
 {
-	public static Test suite()
-	{
-		TestSuite suite = new TestSuite();
-
-		suite.addTestSuite(ComponentStringsTest.class);
-		suite.addTestSuite(PropertyHelperTest.class);
-		suite.addTestSuite(TemplateParserTest.class);
-		suite.addTestSuite(SpecificationParserTest.class);
-		suite.addTest(ValidSuite.suite());
-        suite.addTestSuite(TestEnum.class);
-        suite.addTestSuite(TestDataSqueezer.class);
-
-		return suite;
-	}
-
+    /**
+     *  Searches for a localized string with the given key.
+     *  If not found, a modified version of the key
+     *  is returned (all upper-case and surrounded by square
+     *  brackets).
+     * 
+     **/
+    
+	public String getString(String key);
+	
+	/**
+	 *  Searches for a localized string with the given key.
+	 *  If not found, then the default value (which should already
+	 *  be localized) is returned.  Passing a default of null
+	 *  is useful when trying to determine if the strings contains
+	 *  a given key.
+	 * 
+	 **/
+	
+	public String getString(String key, String defaultValue);    
 }

@@ -64,7 +64,8 @@ public interface IEngineServiceView extends IEngine
     /**
      *  Invoked (typically by the reset service) to clear all cached data known
      *  to the engine.  This includes 
-     *  pages, templates, helper beans, specifications, etc., and
+     *  pages, templates, helper beans, specifications,
+     *  localized strings, etc., and
      *  is used during debugging.
      * 
      **/

@@ -18,6 +18,7 @@ For component specifications the root element is specification.
 This DTD is backwards compatible with the 1.1 DTD, with the following exceptions:
 - Addition of the parameter-name attribute to the parameter element
 - Addition of direction attribute to the parameter element
+- Addition of string-binding element
 
 -->
 <!-- =======================================================
@@ -109,7 +110,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component ((binding | field-binding | inherited-binding | static-binding)*)>
+<!ELEMENT component ((binding | field-binding | inherited-binding | static-binding | string-binding)*)>
 <!ATTLIST component
   id ID #REQUIRED
   type CDATA #IMPLIED
@@ -409,3 +410,21 @@ and String.  Additional types will likely be added in the future.
   type (boolean|int|double|String) "String"
 >
 
+<!-- =======================================================
+Element: string-binding
+Appears in: component
+
+Binds a parameter of the component to a localized string of
+its container.
+
+Attributes:
+  name: The name of the component parameter to bind.
+  key: The key used to access a localized string.
+  
+-->
+
+<!ELEMENT string-binding EMPTY>
+<!ATTLIST string-binding
+  name CDATA #REQUIRED
+  key CDATA #REQUIRED
+>

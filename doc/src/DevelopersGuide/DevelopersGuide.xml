@@ -1583,27 +1583,107 @@ some of the HTML page content to form the HTML template.
     <section id="components.localization">
       <title>Localization</title>
       <para>
-Tapestry has built in support for localization, designed to be easy to use.  
-Tapestry allows multiple versions of HTML templates and assets (described in a later section) 
-to be deployed with the application.
+Tapestry has built in support for localization, designed to be easy to use. This localization support
+is defined in terms of transforming the user interface into a format appropriate the the locale
+of the user.  This transformation primarily takes the form of localized text (translated into the
+end-user's language), but can also affect other aspects of look and feel including colors, images and layout.
 </para>
+
+<para>
+Tapestry has two different methods for supporting localization; developers are free to
+mix and match solutions according to their own preferences.
+</para>
+
       <para>Each client connecting to the application will select a particular <classname>Locale</classname>. 
-When a page for the application is created, the locale is used to select the correct template.  
+When a page for the application is created, the locale is used to select the correct localized
+resources.  
 Locales are defined by the ISO (International Standards Organization).  
 A locale consists of a language code (such as 'en' for English, 'de' for German or 'fr' for French) 
 and a country code (such as 'AU' for Australia, 'BE' for Belguim, or  'GB' for United Kingdom).
 </para>
+
+
+<para>
+A client's initial locale is determined by analyzing HTTP headers provided with the initial request.
+An application may override this default, which records a client-side cookie identifyng the desired locale.
+An example of this is included in the Tapestry Workbench demonstration.
+</para>
+
+<section id="components.localization.strings">
+	<title>Localization with Strings</title>
+	
+<para>
+Each individual component may have a set of <emphasis>localized strings</emphasis>.
+Remember that pages are just a specific kind of component.
+This set is built, much like the properties of a &ResourceBundle;, from one
+or more <literal>.properties</literal> files.  These files are located on the classpath, in the same
+directory as the component specification (the <literal>.jwc</literal> file).
+</para>
+
+<para>
+The search for strings is much the same as with &ResourceBundle;, except
+that only <literal>.properties</literal> files are considered (&ResourceBundle; also looks for classes).
+</para>
+
+<para>
+Example: for a component <filename>/com/skunkworx/skunkapp/Border.jwc</filename> and a locale of
+<literal>fr_BE</literal> would be:
+</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>
+        <filename>/com/skunkworx/skunkapp/Banner_fr_BE.properties</filename>
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        <filename>/com/skunkworx/skunkapp/Banner_fr.properties</filename>
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        <filename>/com/skunkworx/skunkapp/Banner.properties</filename>
+      </para>
+    </listitem>
+  </itemizedlist>
+
+
+<para>
+Searching for individual keys works just as with &ResourceBundle;, the search starts in the most
+specific file (<literal>Banner_fr_BE.properties</literal>) and continues downward if not found.
+</para>
+	
+	
+<para>
+Components can gain access to their container's localized strings
+via the <link linkend="components.spec.binding">&lt;string-binding&gt;</link>
+element in the <link linkend="components.spec">component specification</link>.
+	
+</section>
+
+<section id="components.localization.templates">
+	<title>Localization with Templates</title>
+ 
+<para>
+Tapestry allows multiple versions of HTML templates and assets (described in a 
+<link linkend="components.assets">later section</link>) 
+to be deployed with the application.
+</para>
+
       <para>
 The base template name is derived from the specification name, 
-by changing the '.jwc' extension to '.html.  
+by changing the <literal>jwc</literal> extension to <literal>html</literal>.  
 For example, component <filename>/com/skunkworx/skunkapp/Banner.jwc</filename>
 will have a base template name of  <filename>/com/skunkworx/skunkapp/Banner.html</filename>.
 This resource name is used as the basis of a search that includes the locale.  
 Various suffixes are inserted just before the '.html' extension.
 </para>
+
       <para>
 A French speaking Belgian visitor would provoke the following search:
 </para>
+
       <itemizedlist>
         <listitem>
           <para>
@@ -1621,13 +1701,24 @@ A French speaking Belgian visitor would provoke the following search:
           </para>
         </listitem>
       </itemizedlist>
-      <para>
-The Tapestry framework automatically provides this basic level of support.  
-To this, an application could add custom logic to allow the locale to be selected at 
-runtime, and to store a user's locale preference (in a cookie, or in some form of profile)
-for later visits.
-</para>
-    </section>
+   
+
+<note>
+	<para>
+	This form of localization actually predates the alternate form,
+	using <link linkend="components.localization.strings">localized strings</link>.
+	Localizing the strings seperately from the rest of the HTML template
+	is generally a better and easier way.  Localization of templates
+	will, in the future, be used primarily when changing the layout of the template ...
+	for example, to provide a right-to-left orientation in a Hebrew
+	localization.
+	</para>
+</note>
+
+</section>
+
+</section> <!-- components.localization -->
+
     <section id="components.assets">
       <title>Assets</title>
       <para>
@@ -2151,7 +2242,7 @@ component identified in the containing component's HTML template.
   id="<replaceable>id</replaceable>" <co id="component.spec.component.id"/>
   type="<replaceable>type</replaceable>" <co id="component.spec.component.type"/>
   copy-of="<replaceable>id</replaceable>"&gt; <co id="component.spec.component.copy-of"/>
-  [ &lt;binding|field-binding|inherited-binding|static-binding ...&gt; ... ]
+  [ &lt;binding|field-binding|inherited-binding|static-binding|string-binding ...&gt; ... ]
 &lt;/component&gt;
 </programlisting>
         </figure>
@@ -2231,6 +2322,10 @@ to a property of an object, and may be read, write or read/write.
   name="<replaceable>name</replaceable>"&gt;
   	... <replaceable>value</replaceable> ... <co id="components.spec.binding.static-value"/>
 &lt;/static-binding&gt;
+
+&lt;string-binding
+  name="<replaceable>name</replaceable>
+  key="<replaceable>key</replaceable>/&gt;  <co id="components.spec.binding.string-binding-key"/>
 </programlisting>
         </figure>
         <para>
@@ -2273,6 +2368,12 @@ to a property of an object, and may be read, write or read/write.
 		wraps around its static value, which allows for maximum flexibility.  It does, however,
 		remove all leading and trailing whitespace from the value.
 		</para>
+            </callout>
+            <callout arearefs="components.spec.binding.string-binding-key">
+            <para>
+            Specifies a key in the containing component's
+            <link linkend="components.localization.strings">localized strings</link>.
+            </para>
             </callout>
           </calloutlist>
         </para>
@@ -6903,6 +7004,33 @@ throws RequestCycleException
 </programlisting>
 </informalexample>
 </answer>
+</qandaentry>
+
+
+<qandaentry>
+<question>
+<para>
+How do I duplicate a component several times in the same HTML template?
+</para>
+</question>
+
+<answer>
+<para>
+Simply put: you can't.  Component ids must be unique in the template and
+must match aganst component specification.  Even when two components
+are the same type and have identical bindings, they are still unique
+instances and have instance-specific state ... such as the portion of
+the HTML template they wrap (for components with bodies).
+</para>
+
+<para>
+A useful shortcut is to use
+the <literal>copy-of</literal>
+attribute of the
+<link linkend="components.spec.component">component</link> element.
+</para>
+</answer>
+
 </qandaentry>
       
     </qandaset>

@@ -22,41 +22,46 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
+package net.sf.tapestry.engine;
 
-package net.sf.tapestry.junit;
+import java.util.Properties;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import net.sf.tapestry.junit.parse.SpecificationParserTest;
-import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.prop.PropertyHelperTest;
-import net.sf.tapestry.junit.utils.TestDataSqueezer;
-import net.sf.tapestry.junit.utils.TestEnum;
-import net.sf.tapestry.junit.valid.ValidSuite;
+import net.sf.tapestry.IComponentStrings;
 
 /**
- *  Master suite of Tapestry tests, combining all other test suites.
+ *  Implementation of {@link IComponentStrings}.  This is basically
+ *  a wrapper around an instance of {@link Properties}.  This ensures
+ *  that the properties are, in fact, read-only (which ensures that
+ *  they don't have to be synchronized).
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.0.4
  *
  **/
 
-public class TapestrySuite extends TestSuite
+public class ComponentStrings implements IComponentStrings
 {
-	public static Test suite()
+	private Properties properties;
+	
+	public ComponentStrings(Properties properties)
 	{
-		TestSuite suite = new TestSuite();
-
-		suite.addTestSuite(ComponentStringsTest.class);
-		suite.addTestSuite(PropertyHelperTest.class);
-		suite.addTestSuite(TemplateParserTest.class);
-		suite.addTestSuite(SpecificationParserTest.class);
-		suite.addTest(ValidSuite.suite());
-        suite.addTestSuite(TestEnum.class);
-        suite.addTestSuite(TestDataSqueezer.class);
-
-		return suite;
+	    this.properties = properties;
 	}
+	
+    public String getString(String key, String defaultValue)
+		{
+		    return  properties.getProperty(key, defaultValue);
+    }
+
+    public String getString(String key)
+    {
+		String result = properties.getProperty(key);
+		
+		if (result == null)
+			result = "[" + key.toUpperCase() + "]";
+			
+		return result;
+    }
 
 }

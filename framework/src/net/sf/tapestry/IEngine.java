@@ -271,4 +271,14 @@ public interface IEngine
 
     public boolean isStateful();
 
+
+	/**
+	 *  Returns a shared object that allows components to find
+	 *  their set of localized strings.
+	 * 
+	 *  @since 2.0.4
+	 * 
+	 **/
+	
+	public IComponentStringsSource getComponentStringsSource();
 }
