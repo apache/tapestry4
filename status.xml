@@ -54,7 +54,7 @@
   </todo>
   <changes>
     <release version="3.1-alpha-2" date="unreleased">
-      
+      <action type="update" dev="HLS"> Upgrade to HiveMind 1.1-alpha-2. </action>
     </release>
     <release version="3.1-alpha-1" date="Feb 21 2005">
       <action type="update" dev="HLS"> Remove dependencies on Jakarta digester, collections and beanutils. Add dependency on Jakarta HiveMind. </action>
@@ -64,16 +64,16 @@
       <action type="update" dev="HLS"> Changed to Form to prevent collisions between query parameters supplied by services (in an ILink) and form element ids. </action>
       <action type="update" dev="HLS"> Change Form (and WML Go) to have the direct and action services injected. </action>
       <action type="update" dev="HLS"> Refactoring to move application state object management out of IEngine and generalize it. </action>
-      <action type="update" dev="HLS"> Add &lt;inject-state&gt; element to specifications. </action>
-      <action type="update" dev="HLS"> Add property attribute to &lt;component&gt;, &lt;bean&gt; and &lt;asset&gt; and add enhancement workers to inject these objects as properties. </action>
-      <action type="update" dev="HLS"> Add hivemind: binding prefix. </action>
+      <action type="add" dev="HLS"> Add &lt;inject-state&gt; element to specifications. </action>
+      <action type="add" dev="HLS"> Add property attribute to &lt;component&gt;, &lt;bean&gt; and &lt;asset&gt; and add enhancement workers to inject these objects as properties. </action>
+      <action type="add" dev="HLS"> Add hivemind: binding prefix. </action>
       <action type="update" dev="HLS"> Make the Body component output initializations in a script block at the end of the page (just before the close tag), rather than in a window.onload event handler. </action>
       <action type="update" dev="HLS" fixes-bug="TAPESTRY-262"> Support more boolean values. </action>
       <action type="update" dev="HLS"> Inject Messages into components; this means that all Tapestry page and component classes are abstract. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-242"> Allow namespaces to define localized messages, providing defaults for pages and components within the namespace. </action>
       <action type="update" dev="HLS"> Change handling of initial values for properties to be based on injected logic. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-265" due-to="Michael Frericks"> Fix bad link in UsersGuide/spec.xml. </action>
-      <action type="update" dev="HLS"> Add new ComponentPropertySource service for accessing component meta-data properties. </action>
+      <action type="add" dev="HLS"> Add new ComponentPropertySource service for accessing component meta-data properties. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-165"> Allow control over attribute name for components in templates. </action>
       <action type="update" dev="HLS"> Inject specification into components. </action>
       <action type="update" dev="HLS"> Use enhancement to inject page event registration into components. </action>
