@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>Rollover</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+<script language="JavaScript" type="text/javascript">
+<!--
+var preload = new Array();
+preload[0] = new Image();
+preload[0].src = "images/tapestry-logo.gif";
+preload[1] = new Image();
+preload[1].src = "images/inspector-rollover.gif";
+
+function rollover(image, index)
+{
+  image.src = preload[index].src;
+}
+-->
+</script>
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Rollover</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/html/Rollover.html">net.sf.tapestry.html.Rollover</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>
+     <a href="Rollover.html"
+        onMouseOver="javascript:rollover(document.button, 1);"
+        onMouseOut="javascript:rollover(document.button, 0);">
+      <img name="button" src="images/tapestry-logo.gif"/>
+     </a>    
+    </td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  The Rollover component provides a rollover image button for use with any kind
+  of <a href="../api/net/sf/tapestry/components/IServiceLink.html">link</a>
+  component. A rollover button image changes when the mouse move over it or off 
+  of it. A Rollover is disabled if the link that wraps it is disabled (in which 
+  case it doesn't respond to the mouse). If this dynamic behavior isn't required
+  use the simpler <a href="Image.html">Image</a> component. 
+  <p>
+  The component provides all the necessary JavaScript to swap the image when the 
+  mouse enters and exits the button. However, the Rollover must be wrapped 
+  (ultimately) by a <a href="Body.html">Body</a> component. 
+  <p>
+  This component may NOT wrap around other components or static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Body.html">Body</a>,
+  <a href="GenericLink.html">GenericLink</a>, 
+  <a href="Image.html">Image</a>,
+  <a href="Page.html">Page</a>,
+  <a href="Script.html">Script</a>  
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>image</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>
+    The initial image to show, if the surrounding link component is not 
+    disabled.
+    </td>
+	</tr>
+  <tr>
+    <td>focus</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If provided (and the component is not disabled), then a JavaScript 
+    onMouseOver event handler is added to change the image. An onMouseOut event 
+    handler is also provided, to change the button to either it's base image, 
+    or its blur image. 
+    </td>
+	</tr>
+  <tr>
+    <td>blur</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If provided (and the component is not disabled), then a JavaScript 
+    onMouseOut event handler is added to change the image when the mouse is 
+    moved off of the image.     
+    </td>
+	</tr>
+  <tr>
+    <td>disabled</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    Image used when the Rollover is disabled. A Rollover is disabled when the 
+    <a href="../api/net/sf/tapestry/components/IServiceLink.html">
+    <tt>IServiceLink</tt></a> containing it is disabled. Note the Rollover 
+    component is wrapped by a 
+    <a href="../api/net/sf/tapestry/components/IServiceLink.html">link</a> 
+    component such as the <a href="Page.html">Page</a> component.
+    <p>
+    If no disabled asset is specified, then image asset is used instead. A 
+    disabled Rollover does not respond to the mouse.
+    </td>
+	</tr>
+	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: "name", "src", "border"
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="RadioGroup.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>
+    <td align="right">
+     <a href="Script.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
