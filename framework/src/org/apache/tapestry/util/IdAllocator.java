@@ -80,7 +80,7 @@ public class IdAllocator
 
         NameGenerator(String baseId)
         {
-            _baseId = baseId + "_";
+            _baseId = baseId + "$";
         }
 
         public String nextId()
@@ -108,7 +108,7 @@ public class IdAllocator
         else
             result = g.nextId();
 
-        // Handle the degenerate case, where a base name of the form "foo_0" has been
+        // Handle the degenerate case, where a base name of the form "foo$0" has been
         // requested.  Skip over any duplicates thus formed.
         
         while (_generatorMap.containsKey(result))

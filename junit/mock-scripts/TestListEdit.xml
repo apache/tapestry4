@@ -22,7 +22,7 @@
 ]]>
 			<match>name="service" value="direct/0/ListEdit/form"</match>
 			<match>name="sp" value="S0"</match>
-			<match>name="Form0" value="e,inputColor,inputColor_0,inputColor_1"</match>			
+			<match>name="Form0" value="e,inputColor,inputColor$0,inputColor$1"</match>			
 			<match>name="e" value="SClothing"</match>
 			<match>name="e" value="SEye Color"</match>
 			<match>name="e" value="SFood"</match>
@@ -49,9 +49,9 @@
 			<value>SFood</value>
 		</parameter>
 		<parameter name="inputColor" value="3"/>
-		<parameter name="inputColor_0" value="0"/>
-		<parameter name="inputColor_1" value="2"/>
-		<parameter name="Form0" value="e,inputColor,inputColor_0,inputColor_1"/>
+		<parameter name="inputColor$0" value="0"/>
+		<parameter name="inputColor$1" value="2"/>
+		<parameter name="Form0" value="e,inputColor,inputColor$0,inputColor$1"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -80,9 +80,9 @@
 			<value>SFood</value>
 		</parameter>
 		<parameter name="inputColor" value="3"/>
-		<parameter name="inputColor_0" value="0"/>
-		<parameter name="inputColor_1" value="2"/>
-		<parameter name="Form0" value="e,inputColor,inputColor_0,inputColor_1"/>
+		<parameter name="inputColor$0" value="0"/>
+		<parameter name="inputColor$1" value="2"/>
+		<parameter name="Form0" value="e,inputColor,inputColor$0,inputColor$1"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

@@ -64,7 +64,7 @@ Hidden: [updated-hidden]
 	<!-- Test rewind over TextField, because of action service. -->
 	
 	<request>
-		<parameter name="service" value="action/0/Home/1/$Form_0"/>
+		<parameter name="service" value="action/0/Home/1/$Form$0"/>
 		<parameter name="Form1" value=""/>
 		
 		<assert-output name="Page Title">

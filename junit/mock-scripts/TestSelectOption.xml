@@ -266,7 +266,7 @@ Selections: none.
 	<!-- Submit the second form. -->
 	
 	<request>
-		<parameter name="service" value="action/1/Four/1/$Form_0"/>
+		<parameter name="service" value="action/1/Four/1/$Form$0"/>
 		<parameter name="Form1" value=""/>
 		
 		<assert-output name="Page Title">
