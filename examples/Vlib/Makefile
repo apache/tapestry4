@@ -9,7 +9,7 @@ PACKAGES = \
 	com.primix.vlib.components \
 	com.primix.vlib.jsp
 
-LOCAL_CLASSPATH = \
+PROJ_CLASSPATH = \
 	$(JBOSS_DIR)/client/ejb.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/Tapestry.jar \
@@ -30,7 +30,7 @@ CONTEXT_RESOURCES = index.html jsp
 include $(SYS_MAKEFILE_DIR)/War.mk
 
 EXEC_CLASSPATH = \
-	$(LOCAL_CLASSPATH) \
+	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \

@@ -2,9 +2,9 @@
 
 PACKAGES = com.primix.vlib.ejb
 
-MODULE_NAME = VlibBeans
+PROJECT_NAME = VlibBeans
 
-LOCAL_CLASSPATH = \
+PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/Tapestry.jar 
 
 INSTALL_DIR = ../../lib

@@ -1,5 +1,7 @@
 # $Id$
 
+PROJECT_NAME = Tutorial
+
 PACKAGES = \
 	tutorial.hello \
 	tutorial.simple \
@@ -9,21 +11,19 @@ PACKAGES = \
 	tutorial.hangman \
 	tutorial.locale
 
-LOCAL_CLASSPATH = \
+PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/Tapestry.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/log4j.jar
 
 INSTALL_DIR = ../../lib
 
-MODULE_NAME = Tutorial
-
 CONTEXT_RESOURCES = index.html images
 
 include $(SYS_MAKEFILE_DIR)/War.mk
 
 EXEC_CLASSPATH = \
-	$(LOCAL_CLASSPATH) \
+	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
