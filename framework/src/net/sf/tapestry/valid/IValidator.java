@@ -25,6 +25,10 @@
 
 package net.sf.tapestry.valid;
 
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+
 /**
  *  An object that works with an {@link IField} to format output
  *  (convert object values to strings values) and to process input
@@ -67,5 +71,18 @@ public interface IValidator
      **/
 
     public Object toObject(IField field, String input) throws ValidatorException;
+
+    /**
+     *  Invoked by the field after it finishes rendering its tag (but before
+     *  the tag is closed) to allow the validator to provide a contribution to the
+     *  rendering process.  Validators typically generated client-side JavaScript
+     *  to peform validation.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException;
 
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+	
+<!-- 
+
+  Creates a script for validating that a field is required and/or has a minimum
+  field length.
+  
+  Input symbols:
+     field, form, validator:  As normal for a validation script.
+	 requiredMessage: Message to display if the field is required yet blank.
+	 minimumLengthMessage: Message to display if the field length is too short.
+     
+-->
+	
+<script>
+
+<let key="function">
+validate_${form.name}_${field.name}
+</let>
+
+<body>
+function ${function} ()
+{
+  var field = document.${form.name}.${field.name}; 
+<if property-path="validator.required">
+  if (field.value.length == 0)
+  {
+  	 field.focus();
+  	 field.select();
+     window.alert("${requiredMessage}");
+     return false;
+  }
+</if>
+<if property-path="validator.minimumLength">
+  if (field.value.length &lt; ${validator.minimumLength})
+  {
+  	field.focus();
+  	field.select();
+	window.alert("${minimumLengthMessage}");
+    return false;
+  }
+</if>
+
+  return true;
+}
+</body>
+
+</script>

@@ -25,7 +25,13 @@
 
 package net.sf.tapestry.valid;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
 
 /**
  *  Simple validation of strings, to enforce required, and minimum length
@@ -41,10 +47,9 @@ import java.util.Locale;
 
 public class StringValidator extends BaseValidator
 {
-    private static class StaticStringValidator extends StringValidator
+    private static final class StaticStringValidator extends StringValidator
     {
-        private static final String UNSUPPORTED_MESSAGE =
-            "Changes to property values are not allowed.";
+        private static final String UNSUPPORTED_MESSAGE = "Changes to property values are not allowed.";
 
         private StaticStringValidator(boolean required)
         {
@@ -64,7 +69,14 @@ public class StringValidator extends BaseValidator
         {
             throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
         }
-    }
+        
+        /** @throws UnsupportedOperationException **/
+                
+        public void setClientScriptingEnabled(boolean clientScriptingEnabled)
+        {
+            throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
+        }
+   }
 
     /**
      *  Returns a shared instance of a StringValidator with the required flag set.
@@ -82,7 +94,7 @@ public class StringValidator extends BaseValidator
 
     public static final StringValidator OPTIONAL = new StaticStringValidator(false);
 
-    private int minimumLength;
+    private int _minimumLength;
 
     public StringValidator()
     {
@@ -106,19 +118,16 @@ public class StringValidator extends BaseValidator
         if (checkRequired(field, input))
             return null;
 
-        if (minimumLength > 0 && input.length() < minimumLength)
+        if (_minimumLength > 0 && input.length() < _minimumLength)
         {
             String errorMessage =
                 getString(
                     "field-too-short",
                     field.getPage().getLocale(),
-                    Integer.toString(minimumLength),
+                    Integer.toString(_minimumLength),
                     field.getDisplayName());
 
-            throw new ValidatorException(
-                errorMessage,
-                ValidationConstraint.MINIMUM_WIDTH,
-                input);
+            throw new ValidatorException(errorMessage, ValidationConstraint.MINIMUM_WIDTH, input);
         }
 
         return input;
@@ -126,12 +135,43 @@ public class StringValidator extends BaseValidator
 
     public int getMinimumLength()
     {
-        return minimumLength;
+        return _minimumLength;
     }
 
     public void setMinimumLength(int minimumLength)
     {
-        this.minimumLength = minimumLength;
+        _minimumLength = minimumLength;
+    }
+
+    /** 
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        if (!isClientScriptingEnabled())
+            return;
+
+        if (!(isRequired() || _minimumLength > 0))
+            return;
+
+        Map symbols = new HashMap();
+
+        Locale locale = field.getPage().getLocale();
+        String displayName = field.getDisplayName();
+
+        if (isRequired())
+            symbols.put("requiredMessage", getString("field-is-required", locale, displayName));
+
+        if (_minimumLength > 0)
+            symbols.put(
+                "minimumLengthMessage",
+                getString("field-too-short", locale, Integer.toString(_minimumLength), displayName));
+
+        processValidatorScript("/net/sf/tapestry/valid/StringValidator.script", cycle, field, symbols);
     }
 
 }
