@@ -115,7 +115,7 @@ public class ContextAsset implements IAsset
 		}
 		catch (Exception ex)
 		{
-			throw new ResourceUnavailableException("Could not access internal asset " +
+			throw new ResourceUnavailableException("Could not access context asset " +
 													   assetPath + ".", ex);
 		}
     }
@@ -212,16 +212,8 @@ public class ContextAsset implements IAsset
 			try
 			{
 				URL candidateURL = context.getResource(candidatePath);
-				if (candidateURL != null)
+				if (candidateURL != null && exists(candidateURL))
 				{
-					// The following check is necessary, because some versions
-					// of Tomcat will return a URL for files that don't exist
-					// (contrary to the servlet specification).
-					
-					File candidateFile = new File(candidateURL.getFile());
-					
-					if (!candidateFile.exists())
-						continue;
 					
 					result = new Localization(candidatePath,
 											  cycle.getEngine().getContextPath()
@@ -251,6 +243,46 @@ public class ContextAsset implements IAsset
 				 assetPath + " for locale " + locale + ".");
 		
     }
+
+	/** @since 1.0.6 **/
+	
+	private boolean exists(URL url)
+	{
+		// Because Jetty doesn't unpack JARs, it appears that File.exists() return false.
+		// Meanwhile, Tomcat returns a URL even for files that aren't in the WAR.
+		// The only way to be safe is to open the URL for reading.
+		
+		InputStream in = null;
+		
+		try
+		{
+			in = url.openStream();
+			
+			in.read();
+			
+			in.close();
+			in = null;
+		}
+		catch (IOException ex)
+		{
+			return false;
+		}
+		finally
+		{
+			if (in != null)
+			{
+				try
+				{
+					in.close();
+				}
+				catch (IOException ex)
+				{
+				}
+			}
+		}
+		
+		return true;
+	}
 	
     public String toString()
     {

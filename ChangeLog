@@ -1,3 +1,15 @@
+* Sep 24 2001 hship
+
+framework:
+- Change the test used when searching for localized context assets
+- Record render page and component page in direct service's context if different
+
+tutorial:
+- Change portal add to test #464397
+
+[ #464231 ] Localization broken in Jetty
+[ #464397 ] Direct and InsertBlock
+
 * Sep 23 2001 hship
 
 framework, contrib, tutorial:
