@@ -14,14 +14,8 @@
 		type="int" 
 		required="no"
 		direction="custom"/>
-  
-	<!--component id="condBack" type="Conditional">
-		<binding name="condition" expression="condBack"/>
-	</component-->
-  
-	<!--component id="condFwd" type="Conditional">
-		<binding name="condition" expression="condFwd"/>
-	</component-->
+
+	<component id="wrap" type="Any" inherit-informal-parameters="yes"/>
   
 	<component id="condCurrent" type="Conditional">
 		<binding name="condition" expression="condCurrent"/>
