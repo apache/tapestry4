@@ -46,8 +46,10 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Upload extends AbstractFormComponent
 {
-    private IBinding _fileBinding;
-	private boolean _disabled;
+    /** @since 2.2 **/
+
+    private IUploadFile _file;
+    private boolean _disabled;
     private String _name;
 
     public String getName()
@@ -55,33 +57,15 @@ public class Upload extends AbstractFormComponent
         return _name;
     }
 
-    public void setFileBinding(IBinding value)
-    {
-        _fileBinding = value;
-    }
-
-    public IBinding getFileBinding()
-    {
-        return _fileBinding;
-    }
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         IForm form = getForm(cycle);
- 
-        boolean rewinding = form.isRewinding();
 
         _name = form.getElementId(this);
 
-        if (rewinding)
+        if (form.isRewinding())
         {
-            if (!_disabled)
-            {
-                IUploadFile file = cycle.getRequestContext().getUploadFile(_name);
-
-                _fileBinding.setObject(file);
-            }
+            _file = cycle.getRequestContext().getUploadFile(_name);
 
             return;
         }
@@ -99,7 +83,7 @@ public class Upload extends AbstractFormComponent
         generateAttributes(writer, cycle);
     }
 
-    public boolean getDisabled()
+    public boolean isDisabled()
     {
         return _disabled;
     }
@@ -107,6 +91,16 @@ public class Upload extends AbstractFormComponent
     public void setDisabled(boolean disabled)
     {
         _disabled = disabled;
+    }
+
+    public IUploadFile getFile()
+    {
+        return _file;
+    }
+
+    public void setFile(IUploadFile file)
+    {
+        _file = file;
     }
 
 }

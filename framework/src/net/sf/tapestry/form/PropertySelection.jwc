@@ -11,7 +11,7 @@
   Creates an HTML select to choose a single property from a list of options.
   </description>
   
-  <parameter name="value" required="yes"/>
+  <parameter name="value" required="yes" java-type="java.lang.Object" direction="form"/>
   
   <parameter name="model" 
   	java-type="net.sf.tapestry.form.IPropertySelectionModel" 

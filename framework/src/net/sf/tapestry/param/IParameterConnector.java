@@ -24,6 +24,7 @@
 //
 package net.sf.tapestry.param;
 
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequiredParameterException;
 
 /**
@@ -49,7 +50,7 @@ public interface IParameterConnector
      * 
      **/
     
-	public void setParameter()
+	public void setParameter(IRequestCycle cycle)
 	throws RequiredParameterException;
 	
 	/**
@@ -58,5 +59,5 @@ public interface IParameterConnector
 	 * 
 	 **/
 	
-	public void clearParameter();
+	public void resetParameter(IRequestCycle cycle);
 }

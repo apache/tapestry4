@@ -27,9 +27,10 @@ This DTD is backwards compatible with the 1.2 DTD, with the following exceptions
 - added extension element
 - added static value type 'long'
 - allow <property> within <bean>, <component>, <extension>, <private-asset>, <context-asset> and <external-asset>
-- add "render" bean lifecycle value
+- add "render" to bean lifecycle value
 - rename <binding>'s property-path attribute to expression
 - rename <property-value> to <expression-value>
+- add "form" as parameter direction
 -->
 
 <!-- =======================================================
@@ -429,7 +430,7 @@ Attributes:
   java-type CDATA #IMPLIED
   required %attribute-flag; "no"
   property-name CDATA #IMPLIED
-  direction (in|custom) "custom"
+  direction (in|form|custom) "custom"
 >
 
 <!-- =======================================================

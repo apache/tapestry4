@@ -895,7 +895,7 @@ public abstract class AbstractComponent implements IComponent
         if (_parameterManager == null)
             _parameterManager = new ParameterManager(this);
 
-        _parameterManager.setParameters();
+        _parameterManager.setParameters(cycle);
     }
 
     /**
@@ -926,7 +926,7 @@ public abstract class AbstractComponent implements IComponent
     protected void cleanupAfterRender(IRequestCycle cycle)
     
     {
-        _parameterManager.clearParameters();
+        _parameterManager.resetParameters(cycle);
     }
 
     /**

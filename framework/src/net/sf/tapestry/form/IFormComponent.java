@@ -75,4 +75,14 @@ public interface IFormComponent extends IComponent
      **/
 
     public String getDisplayName();
+    
+    /**
+     *  Returns true if the component is disabled.  This is important when the containing
+     *  form is submitted, since disabled parameters do not update their bindings.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public boolean isDisabled();
 }

@@ -109,5 +109,7 @@
     <stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_NAME" value="JDK 1.4.0"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="jetty.xml"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.mortbay.jetty.Server"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.disable-caching=true -Dnet.sf.tapestry.enable-reset-service=true -Dorg.mortbay.util.FileResource.checkAliases=false  -Djava.naming.factory.initial=org.jnp.interfaces.NamingContextFactory -Djava.naming.factory.url.pkgs=org.jboss.naming:org.jnp.interfaces -Djava.naming.provider.url=localhost:1099"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.disable-caching=true -Dnet.sf.tapestry.enable-reset-service=true -Dorg.mortbay.util.FileResource.checkAliases=false  
+-Dnet.sf.tapestry.vlib.debug-enabled=true
+-Djava.naming.factory.initial=org.jnp.interfaces.NamingContextFactory -Djava.naming.factory.url.pkgs=org.jboss.naming:org.jnp.interfaces -Djava.naming.provider.url=localhost:1099"/>
 </launchConfiguration>

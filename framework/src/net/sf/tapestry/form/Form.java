@@ -452,7 +452,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
                 buffer.append("function ");
                 buffer.append(compositeName);
-                buffer.append("()\n{\n");
+                buffer.append("()\n{");
 
                 List l = (List) value;
                 int count = l.size();
@@ -460,10 +460,14 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
                 {
                     String functionName = (String) l.get(j);
 
-                    buffer.append("  ");
+                    if (!combineWithAnd)
+                        buffer.append("\n  ");
+
+                    if (j == 0 && combineWithAnd)
+                        buffer.append("\n  return ");
 
                     if (j > 0 && combineWithAnd)
-                        buffer.append("&& ");
+                        buffer.append(" && ");
 
                     buffer.append(functionName);
                     buffer.append("()");
@@ -473,11 +477,9 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
                     if (j + 1 == count || !combineWithAnd)
                         buffer.append(';');
-
-                    buffer.append('\n');
                 }
 
-                buffer.append("}\n\n");
+                buffer.append("\n}\n\n");
 
                 finalFunctionName = compositeName;
             }
@@ -565,13 +567,13 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
      *  @since 2.2
      * 
      **/
-    
+
     private void writeHiddenFieldsForParameter(IMarkupWriter writer, Gesture g, String parameterName)
     {
         String[] values = g.getParameterValues(parameterName);
-        
+
         for (int i = 0; i < values.length; i++)
-        {        
+        {
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
             writer.attribute("name", parameterName);

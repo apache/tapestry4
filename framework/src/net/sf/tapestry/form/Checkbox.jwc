@@ -11,9 +11,9 @@
   </description>
   
   <parameter name="selected" 
-  	java-type="java.lang.Boolean"
+  	java-type="boolean"
   	required="yes" 
-  	direction="custom">
+  	direction="form">
     <description>
     The property read and updated by the Checkbox.
     </description>

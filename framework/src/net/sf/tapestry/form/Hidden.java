@@ -144,4 +144,17 @@ public class Hidden extends AbstractFormComponent
         _valueBinding = valueBinding;
     }
 
+    /**
+     * 
+     *  Returns false.  Hidden components are never disabled.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public boolean isDisabled()
+    {
+        return false;
+    }
+
 }

@@ -13,7 +13,7 @@
   Allows a file to be uploaded as part of a form.
   </description>
 
-  <parameter name="file" java-type="net.sf.tapestry.IUploadFile" required="yes">
+  <parameter name="file" java-type="net.sf.tapestry.IUploadFile" required="yes" direction="form">
   	<description>
   	Parameter updated with the information (filename and content) of the file
   	when the form is submitted.

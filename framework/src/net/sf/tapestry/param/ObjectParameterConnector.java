@@ -27,6 +27,7 @@ package net.sf.tapestry.param;
 
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequiredParameterException;
 
 /**
@@ -50,7 +51,7 @@ public class ObjectParameterConnector extends AbstractParameterConnector
     {
         super(component, parameterName, binding);
 
-        this._requiredType = requiredType;
+        _requiredType = requiredType;
     }
 
     /**
@@ -58,14 +59,9 @@ public class ObjectParameterConnector extends AbstractParameterConnector
      * 
      **/
 
-    public void setParameter() throws RequiredParameterException
+    public void setParameter(IRequestCycle cycle) throws RequiredParameterException
     {
-        setPropertyValue(getBindingValue(_requiredType));
+        if (shouldSetPropertyValue(cycle))
+            setPropertyValue(getBindingValue(_requiredType));
     }
-
-    public void clearParameter()
-    {
-        setPropertyValue(null);
-    }
-
 }

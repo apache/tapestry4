@@ -23,11 +23,11 @@
 // Lesser General Public License for more details.
 //
 
-
 package net.sf.tapestry.param;
 
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequiredParameterException;
 
 /**
@@ -42,25 +42,25 @@ import net.sf.tapestry.RequiredParameterException;
 public class DoubleParameterConnector extends AbstractParameterConnector
 {
 
-    protected DoubleParameterConnector(
-        IComponent component,
-        String parameterName,
-        IBinding binding)
+    protected DoubleParameterConnector(IComponent component, String parameterName, IBinding binding)
     {
         super(component, parameterName, binding);
     }
 
-	/**
-	 *  Invokes {@link IBinding#getDouble()} to obtain the value
-	 *  to assign to the property.
-	 * 
-	 **/
-	
-    public void setParameter() throws RequiredParameterException
+    /**
+     *  Invokes {@link IBinding#getDouble()} to obtain the value
+     *  to assign to the property.
+     * 
+     **/
+
+    public void setParameter(IRequestCycle cycle) throws RequiredParameterException
     {
-        double scalar = getBinding().getDouble();
-        
-        setPropertyValue(new Double(scalar));
+        if (shouldSetPropertyValue(cycle))
+        {
+            double scalar = getBinding().getDouble();
+
+            setPropertyValue(new Double(scalar));
+        }
     }
 
 }

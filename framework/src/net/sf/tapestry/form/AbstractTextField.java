@@ -46,16 +46,16 @@ import net.sf.tapestry.RequestCycleException;
 
 public abstract class AbstractTextField extends AbstractFormComponent
 {
-    private int displayWidth;
-    private int maximumLength;
-    private boolean hidden;
-    private boolean disabled;
+    private int _displayWidth;
+    private int _maximumLength;
+    private boolean _hidden;
+    private boolean _disabled;
 
-    private String name;
+    private String _name;
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     /**
@@ -84,13 +84,13 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         // Used whether rewinding or not.
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
         if (rewinding)
         {
-            if (!disabled)
+            if (!_disabled)
             {
-                value = cycle.getRequestContext().getParameter(name);
+                value = cycle.getRequestContext().getParameter(_name);
 
                 updateValue(value);
             }
@@ -100,18 +100,18 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         writer.beginEmpty("input");
 
-        writer.attribute("type", hidden ? "password" : "text");
+        writer.attribute("type", _hidden ? "password" : "text");
 
-        if (disabled)
+        if (_disabled)
             writer.attribute("disabled");
 
-        writer.attribute("name", name);
+        writer.attribute("name", _name);
 
-        if (displayWidth != 0)
-            writer.attribute("size", displayWidth);
+        if (_displayWidth != 0)
+            writer.attribute("size", _displayWidth);
 
-        if (maximumLength != 0)
-            writer.attribute("maxlength", maximumLength);
+        if (_maximumLength != 0)
+            writer.attribute("maxlength", _maximumLength);
 
         value = readValue();
         if (value != null)
@@ -158,42 +158,42 @@ public abstract class AbstractTextField extends AbstractFormComponent
     public boolean getHidden()
     
     {
-        return hidden;
+        return _hidden;
     }
 
     public void setHidden(boolean hidden)
     {
-        this.hidden = hidden;
+        _hidden = hidden;
     }
 
-    public boolean getDisabled()
+    public boolean isDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
     public int getDisplayWidth()
     {
-        return displayWidth;
+        return _displayWidth;
     }
 
     public void setDisplayWidth(int displayWidth)
     {
-        this.displayWidth = displayWidth;
+        _displayWidth = displayWidth;
     }
 
     public int getMaximumLength()
     {
-        return maximumLength;
+        return _maximumLength;
     }
 
     public void setMaximumLength(int maximumLength)
     {
-        this.maximumLength = maximumLength;
+        _maximumLength = maximumLength;
     }
 
 }

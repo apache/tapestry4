@@ -62,11 +62,12 @@ import net.sf.tapestry.Tapestry;
 
 public class PropertySelection extends AbstractFormComponent
 {
+    /** @since 2.2 **/
+    private Object _value;
     private IPropertySelectionRenderer _renderer;
     private IPropertySelectionModel _model;
     private boolean _disabled;
 
-    private IBinding _valueBinding;
     private String _name;
     private boolean _submitOnChange;
 
@@ -88,15 +89,6 @@ public class PropertySelection extends AbstractFormComponent
 
     public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER = new RadioPropertySelectionRenderer();
 
-    public IBinding getValueBinding()
-    {
-        return _valueBinding;
-    }
-
-    public void setValueBinding(IBinding value)
-    {
-        _valueBinding = value;
-    }
 
     /**
      *  Returns the name assigned to this PropertySelection by the {@link Form}
@@ -146,9 +138,7 @@ public class PropertySelection extends AbstractFormComponent
 
             String optionValue = cycle.getRequestContext().getParameter(_name);
 
-            Object newValue = (optionValue == null) ? null : _model.translateValue(optionValue);
-
-            _valueBinding.setObject(newValue);
+          _value = (optionValue == null) ? null : _model.translateValue(optionValue);
 
             return;
         }
@@ -177,7 +167,6 @@ public class PropertySelection extends AbstractFormComponent
         writer.println();
 
         int count = _model.getOptionCount();
-        Object currentValue = _valueBinding.getObject();
         boolean foundSelected = false;
         boolean selected = false;
 
@@ -187,7 +176,7 @@ public class PropertySelection extends AbstractFormComponent
 
             if (!foundSelected)
             {
-                selected = isEqual(option, currentValue);
+                selected = isEqual(option, _value);
                 if (selected)
                     foundSelected = true;
             }
@@ -221,7 +210,7 @@ public class PropertySelection extends AbstractFormComponent
         renderer.beginRender(this, writer, cycle);
 
         int count = _model.getOptionCount();
-        Object currentValue = _valueBinding.getObject();
+
         boolean foundSelected = false;
         boolean selected = false;
 
@@ -231,7 +220,7 @@ public class PropertySelection extends AbstractFormComponent
 
             if (!foundSelected)
             {
-                selected = isEqual(option, currentValue);
+                selected = isEqual(option, _value);
                 if (selected)
                     foundSelected = true;
             }
@@ -301,6 +290,20 @@ public class PropertySelection extends AbstractFormComponent
     public void setSubmitOnChange(boolean submitOnChange)
     {
         _submitOnChange = submitOnChange;
+    }
+
+    /** @since 2.2 **/
+    
+    public Object getValue()
+    {
+        return _value;
+    }
+
+    /** @since 2.2 **/
+    
+    public void setValue(Object value)
+    {
+        _value = value;
     }
 
 }
