@@ -151,7 +151,7 @@ public class TestDateValidator extends TapestryTestCase
         catch (ValidatorException ex)
         {
             assertEquals(
-                "Invalid date format for badDatesIndy.  Format is MM/DD/YYYY.",
+                "Invalid date format for badDatesIndy.  Format is MM/dd/yyyy.",
                 ex.getMessage());
             assertEquals(ValidationConstraint.DATE_FORMAT, ex.getConstraint());
         }
