@@ -32,9 +32,9 @@ public class TestCreator extends HiveMindTestCase
 
         try
         {
-            Creator i = new Creator();
+            Creator c = new Creator();
 
-            i.getInstance(List.class);
+            c.newInstance(List.class);
             unreachable();
         }
         catch (IllegalArgumentException ex)
@@ -48,9 +48,9 @@ public class TestCreator extends HiveMindTestCase
 
     public void testObjectType()
     {
-        Creator i = new Creator();
+        Creator c = new Creator();
 
-        StringSubject s = (StringSubject) i.getInstance(StringSubject.class);
+        StringSubject s = (StringSubject) c.newInstance(StringSubject.class);
 
         s.setTitle("title");
 
@@ -59,9 +59,9 @@ public class TestCreator extends HiveMindTestCase
 
     public void testPrimitiveType()
     {
-        Creator i = new Creator();
+        Creator c = new Creator();
 
-        IntSubject s = (IntSubject) i.getInstance(IntSubject.class);
+        IntSubject s = (IntSubject) c.newInstance(IntSubject.class);
 
         s.setPriority(-1);
 
@@ -70,9 +70,9 @@ public class TestCreator extends HiveMindTestCase
 
     public void testArrayType()
     {
-        Creator i = new Creator();
+        Creator c = new Creator();
 
-        ArraySubject s = (ArraySubject) i.getInstance(ArraySubject.class);
+        ArraySubject s = (ArraySubject) c.newInstance(ArraySubject.class);
 
         int[] counts = new int[]
         { 3, 7, 9 };
@@ -84,9 +84,9 @@ public class TestCreator extends HiveMindTestCase
 
     public void testInherited()
     {
-        Creator i = new Creator();
+        Creator c = new Creator();
 
-        InheritedSubject s = (InheritedSubject) i.getInstance(InheritedSubject.class);
+        InheritedSubject s = (InheritedSubject) c.newInstance(InheritedSubject.class);
 
         s.setFlag(true);
         s.setPriority(5);
@@ -97,9 +97,9 @@ public class TestCreator extends HiveMindTestCase
 
     public void testMethodNameNotOverriden()
     {
-        Creator i = new Creator();
+        Creator c = new Creator();
 
-        BooleanSubject s = (BooleanSubject) i.getInstance(BooleanSubject.class);
+        BooleanSubject s = (BooleanSubject) c.newInstance(BooleanSubject.class);
 
         s.setKnown(true);
 
@@ -108,11 +108,21 @@ public class TestCreator extends HiveMindTestCase
 
     public void testUniqueInstances()
     {
-        Creator i = new Creator();
+        Creator c = new Creator();
 
-        StringSubject s1 = (StringSubject) i.getInstance(StringSubject.class);
-        StringSubject s2 = (StringSubject) i.getInstance(StringSubject.class);
+        StringSubject s1 = (StringSubject) c.newInstance(StringSubject.class);
+        StringSubject s2 = (StringSubject) c.newInstance(StringSubject.class);
 
         assertNotSame(s1, s2);
+    }
+
+    public void testInitializer()
+    {
+        Creator c = new Creator();
+
+        StringSubject ss = (StringSubject) c.newInstance(StringSubject.class, new Object[]
+        { "title", "Hitchhiker's Guide" });
+
+        assertEquals("Hitchhiker's Guide", ss.getTitle());
     }
 }
