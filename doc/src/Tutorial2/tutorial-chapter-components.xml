@@ -1,11 +1,9 @@
 <chapter id="components">
   	<title>Creating Components</title>
-  	<section id="components-intro">
-  		<title>Introduction</title>
   		<para>
   		One of the major features of Tapestry, that makes complex web development easier, is the ability to 
   		create custom components that can be reused across the application (or in fact, in other applications, 
-  		via the use of Libraries)</para>
+  		via the use of Libraries). </para>
   		
   		<para>Components are similar to Pages, in that they can have an HTML template, 
   		a specification and a Java object. However there is a crucial difference - components can expose properties, whereas Pages cannot.
@@ -13,105 +11,291 @@
   		The java object "backing" the component typically derives from AbstractComponent.  AbstractComponent 
   		in turn implements IRender, which simply renders all components that are declared within the component specification.
 		</para>
-  	</section>
+	
+	<para>You will find all code for this example within
+	the 'components' package of the tutorial.</para>
   	
   	<section id="components-example">
   		<title>Building an Example</title>
 		<para>
-		Setting aside the HTML template for the moment, let's look at the component specification. 
-		This will be familiar to you now from previous examples, apart from the property declarations at the top.
-		</para>
-		
-		<para>
 		The sample below is for a tutorial component, called <emphasis>ArrayViewer</emphasis>. 
 		This component can take any Java array, 
 		and render it as an HTML table.  In real applications, the same can be done using alternative components that 
-		exist in the framework. This example exists to show simply how easy it is to build a component.</para>
+		exist in the framework (such as &TableView;). This example exists to show simply how easy it is to build a component.</para>
 		
 		<para>
-		The example also provides for a custom rendered, whose interface extends from IRender.
-		By the end of this example, you should have learnt the basisc of building a component with various properties.
+		By the end of this example, you should have learnt the basics of building a component with various properties.
 		</para>
 		
 		<para>First, we shall define the HTML template:</para>
 		<figure>
 			<title>HTML for example component</title>
 			<programlisting>
-<table border=0 cellspacing=0>
-	<span jwcid="heading"/>
-	<span jwcid="elements">
-	<span jwcid="row"/>
-	</span>
-</table>
+&lt;span jwcid="$content$"&gt;
+	&lt;table border=1 width="95%"&gt;
+		&lt;tr&gt;&lt;td align="center"&gt;
+		
+			&lt;table&gt;
+				&lt;tr&gt;&lt;th&gt;
+					&lt;span jwcid="heading"/&gt;
+				&lt;/th&gt;&lt;/tr&gt;
+			&lt;/table&gt;
+			
+		&lt;/td&gt;&lt;/tr&gt;
+
+		&lt;tr&gt;&lt;td&gt;		
+		
+			&lt;table border=1 width="100%"&gt;
+				&lt;span jwcid="elements"&gt;
+					&lt;tr&gt;
+						&lt;span jwcid="cells"&gt;
+							&lt;td&gt;
+								&lt;span jwcid="cell"/&gt;
+							&lt;/td&gt;
+						&lt;/span&gt;
+					&lt;/tr&gt;
+				&lt;/span&gt;
+			&lt;/table&gt;
+			
+		&lt;/td&gt;&lt;/tr&gt;		
+	&lt;/table&gt;
+&lt;/span&gt;
 			</programlisting>				
 		</figure>
 
-This template defines a table skeleton, where the intention is to enable the rendering of headings and row data to be customized (optionally) by the component user.
+		<para>This template defines a table skeleton, where the intention is to enable the rendering of headings 
+		and row data by the component itself.  Here, we intend to show a single row at the top of the component
+		as a heading <footnote>At this point, we are not going to consider aspects such as custom renderers</footnote>
+		, and then some number of rows (the <varname>
+		elements</varname> component) of data. Each row of data is rendered using another &Foreach; component - <varname>
+		cells</varname>. Finally we output the value of each cell using the <varname>cell</varname>, which you
+		will see below defined as being of type &InsertText;. 
+		</para>
 
-Now for the component specification:
+		<para>You may have noticed the span element with a jwcid of <emphasis>$content$</emphasis>. When reading the 
+		template, Tapestry will ignore anything <emphasis>outside</emphasis> of the &lt;span jwcid="$content$"&gt; element.
+		For example, it is then possible to write a template like this:</para>
 
-<parameter name="source" class="java.util.Collection"
-direction="in"/>
-<parameter name="renderer"
-class="xyz.RowRenderer"
-direction="in"/>
+		<figure>
+			<title>Sample usage of $content$</title>
+			<programlisting>
+&lt;html&gt;
+	&lt;head&gt;&lt;title&gt;Your Component&lt;/title&gt;&lt;/head&gt;
+	&lt;body&gt;			
+		&lt;span jwcid="$content$"&gt;
+			&lt;table border=1 width="95%"&gt;
+			... other stuff here ...
+			&lt;/table&gt;
+		&lt;/span&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+			</programlisting>				
+		</figure>
+		
+		<para>and still have it work properly in Tapestry (that is, without the other elements that exist outside of the content span tag).
+		Now for the component specification:</para>
 
-(OTHER COMPONENTS HERE)
+		<figure>
+			<title>Component Specfication for example component</title>
+			<programlisting>
+&lt;component-specification class="tutorial.components.ArrayViewer" allow-body="no" allow-informal-parameters="yes"&gt;
 
-The <vaname>parameter</varname> declarations define the source data (which is required) and an optional renderer instance.
+    &lt;parameter
+        name="source"
+        java-type="java.lang.Object"
+        direction="in"
+        required="yes"&gt;
+    &lt;/parameter&gt;
+    
+    &lt;parameter
+        name="heading"
+        java-type="java.lang.String"
+        direction="in"
+        required="no"&gt;
+    &lt;/parameter&gt;
 
-The source data is expected to be a Collection of array objects<footnote><p>This example is intentionally simple and does not check to see if each "row" of data</p></footnote>.
+	&lt;component id="elements" type="Foreach"&gt;
+		&lt;inherited-binding name="source" parameter-name="source"/&gt;
+	&lt;/component&gt;	
+	
+	&lt;component id="cells" type="Foreach"&gt;
+		&lt;binding name="source" expression="components.elements.value"/&gt;
+	&lt;/component&gt;
+	
+	&lt;component id="heading" type="InsertText"&gt;
+		&lt;binding name="value" expression="getHeading()"/&gt;
+	&lt;/component&gt;
+	
+	&lt;component id="cell" type="InsertText"&gt;
+		&lt;binding name="value" expression="components.cells.value"/&gt;
+	&lt;/component&gt;
 
-The renderer interface (for the component) is expressive enough that it can be used to both render the heading and row data for the table:
+&lt;/component-specification&gt;
+			</programlisting>				
+		</figure>
 
-public void RowRenderer {
-void setRowData(Object[] row);
-void renderHeading();
-void renderRow();
+		<para>The first thing to note is that this specification is named <filename>ArrayViewer.jwc</filename> and
+		not <filename>ArrayViewer.page</filename>. In Tapestry, all component specifications end with the
+		<filename>.jwc</filename> suffix.</para>
+		
+		<para>At the top, you will see two new parameters <varname>allow-body</varname> and <varname>
+		allow-informal-parameters</varname>. The former controls whether or not Tapestry will allow the
+		component to have a body. If you specify <varname>no</varname> here, then Tapestry will strip
+		any content inserted into the body of the element when the component is rendered. If you specify
+		<varname>yes</varname> then Tapestry will process the body, including any contained comonents</para>
+
+		<para>The <varname>parameter</varname> declarations define the source data (which is required) as well as an 
+		optional <varname>heading</varname> for the generated table. 
+		If a value for <varname>heading </varname> is omitted, the <varname>getHeading()</varname> method will
+		return a default heading value</para>
+
+		<para>The source data is expected to be some kind of collection that a &Foreach; component
+		can handle. This is not a Tapestry requirement. The only reason is that this example uses the 
+		<varname>source</varname> value directly within a &Foreach; component itself. 
+		In this example, we will pass a multi-dimensional array. The example is intentionally simple and 
+		the component does not check to see if each "row" of data has the same width.</para>
+
+		<para>The component code itself can be very simple, since we have bound everything
+		apart from the header text using OGNL expressions.  The <varname>inherited-binding</varname>
+		is used to refer to parameters specified in the parameter specification (top of the file). 
+		This type of binding links the values passed by the user of the component to values
+		used inside the component.</para>
+		
+		<para>Here is the associated Java code for the component:</para>
+
+		<figure>
+			<title>ArrayViewer Java Code</title>
+			<programlisting>
+public class ArrayViewer extends BaseComponent {
+	/**
+	 * Return the bound heading if there is one, else return a static default heading
+	 */
+	public String getHeading() {
+		IBinding binding = (IBinding)getBinding("heading");
+		if(binding.getObject() != null) {
+			return binding.getObject().toString();
+		}
+		return heading;
+	}
+
+	/**
+	 * Sets the heading.
+	 * @param heading The heading to set
+	 */
+	public void setHeading(String heading) {
+		this.heading = heading;
+	}
+
+	/**
+	 * @see net.sf.tapestry.AbstractComponent#cleanupAfterRender(IRequestCycle)
+	 */
+	protected void cleanupAfterRender(IRequestCycle cycle) {
+		source = null;
+		heading = "Array Viewer";
+		super.cleanupAfterRender(cycle);
+	}
+
+	/**
+	 * Returns the source.
+	 * @return Object
+	 */
+	public Object getSource() {
+		return source;
+	}
+
+	/**
+	 * Sets the source.
+	 * @param source The source to set
+	 */
+	public void setSource(Object source) {
+		this.source = source;
+	}
+
+	private String heading = "Array Viewer";
+	private Object source;
 }
+			</programlisting>				
+		</figure>
 
-The ArrayViewer component:
-
-<INSERT COMPONENT CODE HERE>
-
-The Java code for the component contains getters/setters for the parameters, that is, somewhere where the parameter values can be stored. It also provides logic to generate the data model that the RowRenderer implementation will use and of course the code that makes use of the renderer:
-
-// getters and setters for source
-// same for renderer
-// code for model generation
-// call renderer
-// define the data model interface
-// define a default renderer
-// declare instance of default renderer
-
-Finally, we should modify the application specification, to make the component available using a shorter name:
-
-<!!>
-
-As you can see, the implementation is very simple. All the component itself has to do is take the supplied input data, and give it piece by piece to the renderer.  Tapestry takes care of binding the source values, and calling the ArrayViewer components renderComponent method at the right time.
-
-In order to view this component, we need a page to put it on. One is defined here:
-
-<HTML template here>
-<simple spec here, with NO custom renderer>
-<simple java code, to return some static data, at least 5 rows>
-
-Note that in the component specification, we are able to use a shortened name for the new component. This is because in this tutorial, the Appliation specification had added to it a component alias. If this was not the case, the full package path to the component would also have to be specified.
-
-(INSERT SHOT HERE)
-
-
-
+		<para>Tapestry requires that accessors be available for the bindings as they have been implemented here.
+		The <varname>set/getSource()</varname> and <varname>set/getHeading()</varname> are called by Tapestry
+		at the appropriate time. Notice that we have added some code within <varname>getHeading()</varname> to 
+		ensure that if a value for the binding <emphasis>has</emphasis> been set, then this is used.</para>
 		
+		<para>Finally, we add to the application specification, to make the component available using a shorter name:</para>
+		<figure>
+			<title>Modified Application Specification</title>
+			<programlisting>
+&lt;application name="Components Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine"&gt;
+ 	&lt;page name="Home" specification-path="/tutorial/components/Home.page"/&gt;
+	<emphasis role="bold">&lt;component-alias type="ArrayViewer" specification-path="/tutorial/components/ArrayViewer.jwc" /&gt;</emphasis>
+&lt;/application&gt;
+			</programlisting>				
+		</figure>
+	
+		<para>As you can see, the implementation of a component is very simple. Lastly, we show how to use
+		this newly defined component. Here is the HTML, page specification, and associated java code</para>
+
+		<figure>
+			<title>HTML for component usage</title>
+			<programlisting>
+&lt;body&gt;
+
+	&lt;h1&gt;ArrayViewer example&lt;/h1&gt;
+	This pag contains a single instance of ArrayViewer with some sample static data.
+	
+	&lt;hr&gt;
+		&lt;span jwcid="viewer"&gt;Viewer Will Go here&lt;/span&gt;
+	&lt;/hr&gt;
+
+&lt;/body&gt;
+			</programlisting>				
+		</figure>
+
+		<figure>
+			<title>Page specification for component usage</title>
+			<programlisting>
+&lt;page-specification class="tutorial.components.Home"&gt;
+
+	&lt;component id="viewer" type="ArrayViewer"&gt;
+		&lt;static-binding name="heading"&gt;Array Viewer Example!&lt;/static-binding&gt;
+		&lt;binding name="source" expression="getArraySource()"/&gt;
+	&lt;/component&gt;
+
+&lt;/page-specification&gt;
+			</programlisting>				
+		</figure>
+
+		<figure>
+			<title>JavaCode to return the data to display</title>
+			<programlisting>
+/**
+ * Example code for the "creating components" section of the tutorial
+ * @author neil clayton
+ */
+public class Home extends BasePage {
+	public Object[] getArraySource() {
+		return new Object[] {
+			new Object[] { "This is", "a test", "of the array viewer" },
+			new Object[] { "There should be nothing in the next two columns", null, null },
+			new Object[] { new Integer(1234), Boolean.TRUE, this }
+		};
+	}
+}			</programlisting>				
+		</figure>
 		
+		<para>And finally, this is what you should see when running the turorial example:</para>
+		<figure>
+			<title>Simple Component - The result</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/components-result.gif" format="GIF"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
 		
-  	</section>
-  	
-  	<section id="components-events">
-  		<title>Handling Events</title>
-  	</section>
-  	
-  	<section id="components-rendering">
-  		<title>Rendering</title>
+		<para>Note that in the component specification, we are able to use a shortened name for 
+		the new component. This is because in this tutorial, the Appliation specification had added to it a component alias. 
+		If this was not the case, the full package path to the component would also have to be specified.</para>
   	</section>
 </chapter>
