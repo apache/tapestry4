@@ -480,7 +480,7 @@ public class PropertyHelper
 
 		synchronized(accessors)
 		{
-			return (PropertyAccessor)accessors.get(propertyName);
+			return (IPropertyAccessor)accessors.get(propertyName);
 		}
 
 	}
