@@ -357,7 +357,6 @@
 				<!-- Could do a careful analysis of just what we need and copy only that,
 				 but this is good for now.  -->
 				<include name="*.jar"/>
-				<exclude name="bcel.jar"/>
 			</fileset>
 		</copy>
 		<!-- Delete, recreate and copy -->
