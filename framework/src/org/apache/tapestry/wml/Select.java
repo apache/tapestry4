@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
@@ -104,11 +105,11 @@ public abstract class Select extends AbstractComponent
 			writer.attribute("name", getName());
 
             String value = getValue();
-			if (value != null)
+			if (StringUtils.isNotEmpty(value))
 				writer.attribute("value", value);
 
             String title = getTitle();
-			if (title != null)
+			if (StringUtils.isNotEmpty(title))
 				writer.attribute("title", title);
 
 			boolean multiple = isMultiple();
