@@ -18,6 +18,7 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  This component is a container for {@link When} or Otherwise components;
@@ -42,7 +43,20 @@ public abstract class Choose extends AbstractComponent {
 	/**  Renders its wrapped components. */
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
 	{
+		String element = getElement();
+			
+		boolean render = !cycle.isRewinding() && Tapestry.isNonBlank(element);
+			
+		if (render)
+		{
+			writer.begin(element);
+			renderInformalParameters(writer, cycle);
+		}
+
 		renderBody(writer, cycle);
+			
+		if (render)
+			writer.end(element);
 	}
 	
 	protected void cleanupAfterRender(IRequestCycle cycle)
@@ -53,4 +67,6 @@ public abstract class Choose extends AbstractComponent {
 	
 	public abstract boolean isConditionMet();
 	public abstract void setConditionMet(boolean value);
+
+	public abstract String getElement();
 }

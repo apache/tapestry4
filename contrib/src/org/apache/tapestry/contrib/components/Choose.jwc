@@ -19,11 +19,17 @@
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
   
-<component-specification class="org.apache.tapestry.contrib.components.Choose" allow-informal-parameters="no">
+<component-specification class="org.apache.tapestry.contrib.components.Choose">
 
   <description>
   Provides the context for mutually exclusive conditional evaluation.
   </description>
+
+  <parameter name="element" type="java.lang.String" direction="in" required="no">
+  	<description>
+  	The element to emulate.
+  	</description>
+  </parameter>
   
   <property-specification name="conditionMet" type="boolean" initial-value="false"/>
   
