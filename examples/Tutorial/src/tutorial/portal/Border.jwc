@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification
+<component-specification
   class="net.sf.tapestry.BaseComponent"
   allow-informal-parameters="no">
 
@@ -20,4 +20,4 @@
 	<binding name="value" property-path="page.name"/>
   </component>
 
- </specification>
+ </component-specification>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification class="net.sf.tapestry.html.BasePage">
+<page-specification class="net.sf.tapestry.html.BasePage">
   <component id="insertWord" type="Insert">
     <binding name="value" property-path="visit.game.word"/>
   </component>
   <component id="startAgain" type="Page">
     <static-binding name="page">Home</static-binding>
   </component>
-</specification>
+</page-specification>

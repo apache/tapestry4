@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification class="net.sf.tapestry.html.BasePage">
+<page-specification class="net.sf.tapestry.html.BasePage">
   <component id="border" type="Border">
     <static-binding name="title">Home</static-binding>
     <binding name="pages" property-path="engine.pageNames"/>
   </component>
-</specification>
+</page-specification>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
 	
-<specification class="tutorial.portal.Weather">
+<page-specification class="tutorial.portal.Weather">
 
 <component id="content" type="Block"/>
 
@@ -25,4 +25,4 @@
 	<binding name="value" property-path="forecast"/>
 </component>
 	
-</specification>
+</page-specification>
