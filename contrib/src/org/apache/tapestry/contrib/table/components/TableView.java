@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
@@ -162,7 +161,7 @@ public abstract class TableView
      */
     public void reset()
     {
-		initialize();
+        initialize();
         storeSessionState(null);
     }
 
@@ -242,12 +241,15 @@ public abstract class TableView
         ITableDataModel objDataModel = null;
         if (objSourceValue instanceof Object[])
             objDataModel = new SimpleListTableDataModel((Object[]) objSourceValue);
-        else if (objSourceValue instanceof List)
-            objDataModel = new SimpleListTableDataModel((List) objSourceValue);
-        else if (objSourceValue instanceof Collection)
-            objDataModel = new SimpleListTableDataModel((Collection) objSourceValue);
-        else if (objSourceValue instanceof Iterator)
-            objDataModel = new SimpleListTableDataModel((Iterator) objSourceValue);
+        else
+            if (objSourceValue instanceof List)
+                objDataModel = new SimpleListTableDataModel((List) objSourceValue);
+            else
+                if (objSourceValue instanceof Collection)
+                    objDataModel = new SimpleListTableDataModel((Collection) objSourceValue);
+                else
+                    if (objSourceValue instanceof Iterator)
+                        objDataModel = new SimpleListTableDataModel((Iterator) objSourceValue);
 
         if (objDataModel == null)
             throw new ApplicationRuntimeException(
@@ -283,7 +285,7 @@ public abstract class TableView
             // convert to List
             Iterator objColumnsIterator = (Iterator) objColumns;
             List arrColumnsList = new ArrayList();
-            CollectionUtils.addAll(arrColumnsList, objColumnsIterator);
+            addAll(arrColumnsList, objColumnsIterator);
             objColumns = arrColumnsList;
         }
 
@@ -324,6 +326,12 @@ public abstract class TableView
 
         throw new ApplicationRuntimeException(
             TableUtils.format("invalid-table-columns", getExtendedId(), objColumns.getClass()));
+    }
+
+    private void addAll(List arrColumnsList, Iterator objColumnsIterator)
+    {
+        while (objColumnsIterator.hasNext())
+            arrColumnsList.add(objColumnsIterator.next());
     }
 
     /**

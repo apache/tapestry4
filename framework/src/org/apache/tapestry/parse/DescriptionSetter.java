@@ -14,40 +14,27 @@
 
 package org.apache.tapestry.parse;
 
-import org.xml.sax.Attributes;
+import org.apache.hivemind.impl.BaseLocatable;
+import org.apache.hivemind.util.PropertyUtils;
 
 /**
- *  Base implementation of {@link org.apache.tapestry.parse.IDocumentRule}.
+ * Used to hold an object that can be described while parsing the
+ * &lt;description&gt; element.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
-public class BaseDocumentRule implements IDocumentRule
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
+class DescriptionSetter extends BaseLocatable
 {
-	private SpecificationDigester _digester;
-	
-	public SpecificationDigester getDigester()
-	{
-		return _digester;
-	}
-	
-    public void setDigester(SpecificationDigester digester)
-    {
-    	_digester = digester;
-    }
+    private Object _descriptionHolder;
 
-    public void startDocument(String namespace, String name, Attributes attributes) throws Exception
+    DescriptionSetter(Object descriptionHolder)
     {
+        _descriptionHolder = descriptionHolder;
     }
-
-    public void endDocument() throws Exception
+    
+    void apply(String description)
     {
+        PropertyUtils.write(_descriptionHolder, "description", description, getLocation());
     }
-
-    public void finish() throws Exception
-    {
-    }
-
 }

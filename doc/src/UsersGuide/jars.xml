@@ -64,7 +64,7 @@ Tapestry makes use of). The JAR files are in the <filename>lib</filename> folder
 		<listitem>
 		<para>
 		Frameworks needed when compiling the framework and at runtime.  This is
-		several other &Jakarta; frameworks (including &BSF; and &BCEL;), plus
+		several other &Jakarta; frameworks (including &BSF;), plus
 		the &OGNL; and &Javassist; frameworks.
 		</para>
 		</listitem>

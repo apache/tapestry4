@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
@@ -58,9 +57,15 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     public void localesSelected(Locale[] arrLocales)
     {
         Set objLocaleSet = getLocaleSet();
-        CollectionUtils.addAll(objLocaleSet, arrLocales);
+        addAll(objLocaleSet, arrLocales);
         // ensure that the framework knows about the change and the set is persisted
         setLocaleSet(objLocaleSet);
+    }
+
+    private void addAll(Set objLocaleSet, Locale[] arrLocales)
+    {
+        for (int i = 0; i < arrLocales.length; i++)
+            objLocaleSet.add(arrLocales[i]);
     }
 
     public ITableColumn getCurrencyColumn()

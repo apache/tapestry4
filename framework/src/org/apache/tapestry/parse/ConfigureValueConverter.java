@@ -14,24 +14,17 @@
 
 package org.apache.tapestry.parse;
 
-import org.xml.sax.Attributes;
+import org.apache.hivemind.Location;
 
 /**
- *  Sets the publicId
- *  property of the parsed specification.
+ * Defines an interface used to convert a string input value
+ * (obtained from a specification) into a particular type
+ * (that can be assigned as a property).
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
-
-public class SetPublicIdRule extends AbstractSpecificationRule
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
+interface ConfigureValueConverter
 {
-
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
-    {
-        setProperty("publicId", digester.getPublicId());
-    }
-
+    public Object convert(String value, Location location);
 }
