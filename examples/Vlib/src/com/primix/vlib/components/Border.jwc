@@ -137,5 +137,5 @@
   <context-asset name="header-Logout" path="/images/hd_logout.gif"/>
   <context-asset name="header-Register" path="/images/hd_register_noslash.gif"/>
   <context-asset name="header-ViewBook" path="/images/hd_viewbook.gif"/>
-  
+  <context-asset name="header-EditBook" path="/images/hd_editbooks.gif"/>
 </specification>

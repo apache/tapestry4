@@ -70,9 +70,4 @@ run: default $(LOCAL_JNDI_PROPS)
 		$(OTHER_VLIB_OPTS) \
 		org.mortbay.jetty.Server jetty.xml)
 
-run-debug:
-		@$(RECURSE) run OTHER_EXEC_OPTS="-Dcom.primix.vlib.debug-enabled=true"
-
-
-
 
