@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+	
+<script>
+
+<let key="output-missing">
+<foreach key="i" property-path="missing">
+<insert property-path="i"/>
+</foreach>
+</let>
+
+<let key="output-single">
+<foreach key="i" property-path="input.single">
+<insert property-path="i"/>
+</foreach>
+</let>
+
+<let key="output-empty-array">
+<foreach key="i" property-path="input.empty-array">
+<insert property-path="i"/>
+</foreach>
+</let>
+
+<let key="output-array">
+<foreach key="i" property-path="input.array">
+<insert property-path="i"/>
+</foreach>
+</let>
+
+<let key="output-collection">
+<foreach key="k" property-path="input.collection">
+<insert property-path="k"/>
+</foreach>
+</let>
+
+<let key="output-empty-collection">
+<foreach key="z" property-path="input.empty-collection">
+<insert property-path="z"/>
+</foreach>
+</let>
+
+</script>

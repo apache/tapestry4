@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+	
+<script>
+
+<let key="functionName">
+	${component.form.name}_${component.name}
+</let>
+
+<!-- Test a few variations.  -->>
+
+<let key="incomplete1">
+Incomplete: $</let>
+
+<let key="incomplete2">
+Incomplete: ${</let>
+
+<let key="nopath">
+This ${} ends up as literal.
+</let>
+
+</script>

@@ -5916,14 +5916,46 @@ function tapestry_onLoad()  <co id="script.body.onload"/>
       <para>
 Scripting in Tapestry requires some extra thought; in the examples above, the web developer
 specifically knew the URLs of the images to preload and the name of the 
-<sgmltag class="starttag">img</sgmltag> element to be affected.  For Tapestry, those things are not
+<sgmltag class="starttag">img</sgmltag> element to be affected.  
+For Tapestry, those things are not
 known ahead of time; scripting is a matter of plugging in variable content to a template.
 </para>
-      <para>
-Tapestry supports scripting with the Tapestry Script document, another XML document type.  A Tapestry
-script takes as input a number of <emphasis>symbols</emphasis> and uses them to construct 
-the desired JavaScript event handlers, and to provide initializations for them.
+
+     <para>
+Tapestry supports scripting with the Tapestry script document, another XML document type.  
+This script document isn't simply JavaScript, it is a description of
+<emphasis>how to build</emphasis> JavaScript and include it in the correct
+places within the response page.
 </para>
+
+<para>
+The usage of script documents is, of course, completely open ended.  Their most
+common use is to create client-side interactions.  This takes the form
+of <emphasis>event handler methods</emphasis> and <emphasis>initializations</emphasis>.
+The initializations are executed when a page finishs loading, to connect client-side elements
+to JavaScript event handler methods.  These methods are invoked in response to
+user activity, such as clicking a button or submitting a form.
+</para>
+
+<para>
+A Tapestry
+script document takes as input a number of <emphasis>symbols</emphasis> and uses them to construct 
+the desired JavaScript event handlers, and to provide initializations for them.
+Within a script document it is possible to
+<link linkend="script.spec.ant-syntax">insert the value for a symbol</link>, 
+or even the value of
+a property reachable from a symbol.  In this way, each usage of the script is
+customized, producing just exactly the JavaScript required by the components.
+</para>
+
+<para>
+In typical HTML production, the roles are often reversed:  a completely static JavaScript
+code snippet is used, and the HTML producer customizes the names of relevant items
+(such as forms and form elements) to accomidate the script.  In the dynamic world of Tapestry,
+it makes more sense for the script to adapt to the components.
+</para>
+
+
       <section>
         <title>
           <sgmltag class="starttag">script</sgmltag> element</title>
@@ -6071,6 +6103,26 @@ a full property path (operating like a
 element
 in a component specification).
 </para>
+
+<para>
+However, the <sgmltag class="starttag">insert</sgmltag> element is no longer often used.
+Beginning in release 2.2, it is possible to use an alternate syntax (based on &Ant;)
+to specify the value to insert.
+</para>
+
+<figure id="script.spec.ant-syntax">
+	<title>Alternate property insertion syntax</title>
+<programlisting>
+${<replaceable>property-path</replaceable>}
+</programlisting>
+</figure>
+
+<para>
+This Ant-like syntax is much easier to use.  It may even be
+used inside CDATA sections of a Script
+document.
+</para>
+
       </section>
       <section id="script.spec.if">
         <title>
@@ -6194,32 +6246,32 @@ Input symbols:
 --&gt;
 &lt;script&gt;
 &lt;let key="formName"&gt; <co id="script.ex.formName"/>
-  &lt;insert property-path="component.form.name"/&gt;
+  ${component.form.name}
 &lt;/let&gt;
 &lt;let key="selectName"&gt;
-  &lt;insert property-path="component.name"/&gt;
+  ${component.name}
 &lt;/let&gt;
 &lt;let key="formPath"&gt; <co id="script.ex.formPath"/>
-  document.&lt;insert property-path="formName"/&gt;
+  document.${formName}
 &lt;/let&gt;
 &lt;let key="selectPath"&gt;
-  &lt;insert property-path="formPath"/&gt;.&lt;insert property-path="selectName"/&gt;
+  ${formPath}.${selectName}
 &lt;/let&gt;
 &lt;let key="functionName"&gt; <co id="script.ex.functionName"/>
-  onChange_&lt;insert property-path="formName"/&gt;_&lt;insert property-path="selectName"/&gt;
+  onChange_${formName}_${selectName}
 &lt;/let&gt;
 
 &lt;body&gt;
 
-function &lt;insert property-path="functionName"/&gt;()
+function ${functionName}()
 {
-  &lt;insert property-path="formPath"/&gt;.submit();
+  ${formPath}.submit();
 }
 
 &lt;/body&gt;
 
 &lt;initialization&gt;
-&lt;insert property-path="selectPath"/&gt;.onchange = &lt;insert property-path="functionName"/&gt;;
+${selectPath}.onchange = ${functionName};
 &lt;/initialization&gt;
 &lt;/script&gt;
 </programlisting>
@@ -6250,7 +6302,7 @@ function &lt;insert property-path="functionName"/&gt;()
       <para>
 Using the script simply involves declaring it in the component specification and configuring
 its input parameters.  It must also be in the HTML template, before the closing
-<sgmltag class="endtag">jwc</sgmltag> tag of the &Form; component.
+tag of the &Form; component.
 </para>
       <figure>
         <title>SubmitScript usage</title>

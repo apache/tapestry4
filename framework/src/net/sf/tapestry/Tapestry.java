@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -232,7 +233,7 @@ public final class Tapestry
         {
             public Iterator coerce(Object value)
             {
-                return null;
+                return Collections.singleton(value).iterator();
             }
         });
     }
@@ -303,7 +304,7 @@ public final class Tapestry
      *		</tr>
      *	<tr>
      *		<td>{@link Collection}</td>
-     *		<td>True if contains any elements, false otherwise.</td>
+     *		<td>True if contains any elements (non-zero size), false otherwise.</td>
      *		</tr>
      *	<tr>
      *		<td>{@link String}</td>
@@ -311,7 +312,7 @@ public final class Tapestry
      *		</tr>
      *	<tr>
      *		<td>Any array type</td>
-     *		<td>True if contains any elements, false otherwise.</td>
+     *		<td>True if contains any elements (non-zero length), false otherwise.</td>
      *	<tr>
      *</table>
      *
@@ -348,7 +349,7 @@ public final class Tapestry
      * <tr><td>{@link Iterator}</td> <td>Returned as-is.</td>
      * <tr><td>{@link Collection}</td> <td>Iterator returned, or null
      *  if the Collection is empty</td> </tr>
-     * <tr><td>Any other</td> <td>null returned</td> </tr>
+     * <tr><td>Any other</td> <td>{@link Iterator} for singleton collection returned</td> </tr>
      * <tr><td>null</td> <td>null returned</td> </tr>
      * </table>
      *
@@ -553,4 +554,18 @@ public final class Tapestry
 
     }
 
+    /**
+     *  Returns the size of a collection, or zero if the collection is null.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static int size(Collection c)
+    {
+        if (c == null)
+            return 0;
+            
+         return c.size();
+    }
 }

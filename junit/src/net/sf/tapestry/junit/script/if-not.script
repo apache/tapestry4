@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+		
+<script>
+<let key="output-true-string">
+<if-not property-path="input.true-string">
+TRUE-STRING
+</if-not>
+</let>
+
+<let key="output-false-string">
+<if-not property-path="input.false-string">
+FALSE-STRING
+</if-not>
+</let>
+
+<let key="output-null">
+<if-not property-path="missing">
+NULL
+</if-not>
+</let>
+
+<let key="output-boolean-true">
+<if-not property-path="input.boolean-true">
+BOOLEAN-TRUE
+</if-not>
+</let>
+
+<let key="output-boolean-false">
+<if-not property-path="input.boolean-false">
+BOOLEAN-FALSE
+</if-not>
+</let>
+
+<let key="output-collection-nonempty">
+<if-not property-path="input.collection-non-empty">
+COLLECTION-NON-EMPTY
+</if-not>
+</let>
+
+<let key="output-collection-empty">
+<if-not property-path="input.collection-empty">
+COLLECTION-EMPTY
+</if-not>
+</let>
+
+<let key="output-array-nonempty">
+<if-not property-path="input.array-nonempty">
+ARRAY-NON-EMPTY
+</if-not>
+</let>
+
+<let key="output-array-empty">
+<if-not property-path="input.array-empty">
+ARRAY-EMPTY
+</if-not>
+</let>
+
+<let key="output-number-zero">
+<if-not property-path="input.number-zero">
+NUMBER-ZERO
+</if-not>
+</let>
+
+<let key="output-number-nonzero">
+<if-not property-path="input.number-nonzero">
+NUMBER-NON-ZERO
+</if-not>
+</let>
+
+</script>
