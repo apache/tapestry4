@@ -101,10 +101,21 @@
     </p>
 		</td>
 	</tr>
+	<tr>
+		<td>element</td>
+		<td>String</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>If specified and condition is met, then the component acts like an <A href="Any.html">Any</A>, 
+emitting an open and close tag. Informal 
+parameters are applied to the tag. If no element is specified, informal 
+parameters are ignored.</td>
+	</tr>
 	</table>
   <P>
   Body: <STRONG>rendered</STRONG><BR>
-  Informal parameters: <STRONG>forbidden</STRONG><br>
+  Informal parameters: <STRONG>allowed</STRONG><br>
   Reserved parameters: <EM>none</EM>
   </P>    
  </td>
@@ -136,34 +147,18 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 &lt;span jwcid="@<a href="Conditional.html">Conditional</a>" condition="ognl:! manager"&gt; is not a Manager.&lt;/span&gt;
 
 
-public class EnquiryPage extends BasePage {
-    private String fullName;
-    private boolean isManager;
-    private List staffList;
+&lt;property-specification name=&quot;fullName&quot; type=&quot;java.lang.String&quot; persistent=&quot;no&quot;/&gt;<br>&lt;property-specification name=&quot;manager&quot; type=&quot;boolean&quot; persistent=&quot;no&quot;/&gt;<br>&lt;property-specification name=&quot;staffList&quot; type=&quot;java.util.List&quot; persistent=&quot;no&quot;/&gt;<br>
 
-    public String getFullName() { return fullName; }
+public abstract class EnquiryPage extends BasePage {
 
-    public void setFullName(String value) { 
-        fullName = value; 
-    }
+    public abstract String getFullName();
+    public abstract void setFullName(String value);
     
-    public boolean isManager() { return isManager; }
-    
-    public void setManager(boolean value) { 
-        isManager = value; 
-    }
+    public abstract boolean isManager();    
+    public abstract void setManager(boolean value);
 
-    public List getStaffList() { return staffList;  }
-
-    public void setStaffList(List value) { 
-        staffList = value;  
-    }
-
-    protected void initialize() {
-        fullName = null;
-        isManager = false;
-        staffList = null;
-    }
+    public abstract List getStaffList();
+    public abstract void setStaffList(List value);
 }
 </pre>
           </td>

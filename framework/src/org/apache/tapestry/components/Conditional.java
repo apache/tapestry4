@@ -66,7 +66,7 @@ import org.apache.tapestry.IRequestCycle;
  *
  *  [<a href="../../../../../ComponentReference/Conditional.html">Component Reference</a>]
  *
- *  @author Howard Lewis Ship
+ *  @author Howard Lewis Ship, David Solis
  *  @version $Id$
  * 
  **/

@@ -83,8 +83,8 @@
     <td>element</td>
     <td>String</td>
     <td>in</td>
-   	<td>yes</td>
-		<td>&nbsp;</td>
+   	<td>no</td>
+		        <td>HTML tag used to insert this component in its parent's template.</td>
 		<td>The element to be produced.</td>
 	</tr>
 	</table>
@@ -122,11 +122,12 @@
             <pre>&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt; 
 &lt;order-list&gt;
  &lt;span jwcid="@<a href="Foreach.html">Foreach</a>" source="ognl:orderItemList" value=&quot;ognl:orderItem&quot;&gt;
-  &lt;span jwcid="<span class="jwcid">orderItem</span>" element="order-item"&gt; 
- &lt;/span&gt;
+  &lt;order-item jwcid="<span class="jwcid">orderItem</span>"&gt; 
+  &lt;/order-item&gt;
 &lt;/order-list&gt;
 
 
+&lt;property-specification name=&quot;orderItemList&quot; type=&quot;java.util.List&quot; persistent=&quot;no&quot;/&gt;<br>&lt;property-specification name=&quot;orderItem&quot; type=&quot;com.dsconsulting.order.model.OrderItem&quot; persistent=&quot;no&quot;/&gt;<br>
 &lt;component id="<span class="jwcid">orderItem</span>" type="<A href="Any.html">Any</a>"&gt;
     &lt;binding name="id" expression="orderItem.id"/&gt;
     &lt;binding name="order-id" expression="orderItem.orderId"/&gt;
@@ -136,21 +137,13 @@
 &lt;/component&gt;
 
 
-public class OrderItemsXML extends BasePage {
-    private List orderItemList;
+public abstract class OrderItemsXML extends BasePage {
     
-    public List getOrderItemList() { return orderItemList; } 
+    public abstract List getOrderItemList(); 
+    public abstract void setOrderItemList(List value); 
 
-    public OrderItem getOrderItem() { return orderItem; }
-
-    public void setOrderItem(OrderItem value) {
-        orderItem = value;        
-    }
-
-    protected void initialize() {
-        orderItemList = null;
-        orderItem = null;
-    }
+    public abstract OrderItem getOrderItem();
+    public abstract void setOrderItem(OrderItem value);
 }
 
 public class OrderItem {
