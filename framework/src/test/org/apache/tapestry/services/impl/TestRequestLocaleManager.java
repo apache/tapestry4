@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.hivemind.service.ThreadLocale;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.TapestryConstants;
@@ -32,6 +33,22 @@ import org.easymock.MockControl;
  */
 public class TestRequestLocaleManager extends HiveMindTestCase
 {
+    private ThreadLocale newThreadLocale()
+    {
+        return (ThreadLocale) newMock(ThreadLocale.class);
+    }
+
+    private ThreadLocale newThreadLocale(Locale locale)
+    {
+        MockControl control = newControl(ThreadLocale.class);
+        ThreadLocale threadLocale = (ThreadLocale) control.getMock();
+
+        threadLocale.getLocale();
+        control.setReturnValue(locale);
+
+        return threadLocale;
+    }
+
     public void testSuppliedByRequest()
     {
         MockControl sourceControl = newControl(CookieSource.class);
@@ -39,6 +56,8 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         MockControl requestControl = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
+
+        ThreadLocale tl = newThreadLocale();
 
         // Training
 
@@ -48,11 +67,14 @@ public class TestRequestLocaleManager extends HiveMindTestCase
         request.getLocale();
         requestControl.setReturnValue(Locale.JAPANESE);
 
+        tl.setLocale(Locale.JAPANESE);
+
         replayControls();
 
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
         manager.setCookieSource(source);
         manager.setRequest(request);
+        manager.setThreadLocale(tl);
 
         Locale actual = manager.extractLocaleForCurrentRequest();
 
@@ -66,15 +88,20 @@ public class TestRequestLocaleManager extends HiveMindTestCase
         MockControl sourceControl = newControl(CookieSource.class);
         CookieSource source = (CookieSource) sourceControl.getMock();
 
+        ThreadLocale tl = newThreadLocale();
+
         // Training
 
         source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
         sourceControl.setReturnValue(localeName);
 
+        tl.setLocale(expectedLocale);
+
         replayControls();
 
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
         manager.setCookieSource(source);
+        manager.setThreadLocale(tl);
 
         Locale actual = manager.extractLocaleForCurrentRequest();
 
@@ -100,9 +127,10 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
     public void testPersist()
     {
-        CookieSource source = (CookieSource) newMock(CookieSource.class);
-
         Locale locale = Locale.SIMPLIFIED_CHINESE;
+
+        CookieSource source = (CookieSource) newMock(CookieSource.class);
+        ThreadLocale threadLocale = newThreadLocale(locale);
 
         // Training
 
@@ -112,8 +140,9 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         RequestLocaleManagerImpl m = new RequestLocaleManagerImpl();
         m.setCookieSource(source);
+        m.setThreadLocale(threadLocale);
 
-        m.persistLocale(locale);
+        m.persistLocale();
 
         verifyControls();
     }
@@ -126,6 +155,9 @@ public class TestRequestLocaleManager extends HiveMindTestCase
         MockControl requestControl = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
 
+        MockControl tlc = newControl(ThreadLocale.class);
+        ThreadLocale tl = (ThreadLocale) tlc.getMock();
+
         // Training
 
         source.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
@@ -134,19 +166,29 @@ public class TestRequestLocaleManager extends HiveMindTestCase
         request.getLocale();
         requestControl.setReturnValue(Locale.JAPANESE);
 
+        tl.setLocale(Locale.JAPANESE);
+
         replayControls();
 
         RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
         manager.setCookieSource(source);
         manager.setRequest(request);
+        manager.setThreadLocale(tl);
 
         Locale actual = manager.extractLocaleForCurrentRequest();
 
         assertSame(Locale.JAPANESE, actual);
 
+        verifyControls();
+
+        tl.getLocale();
+        tlc.setReturnValue(Locale.JAPANESE);
+
+        replayControls();
+
         // Should do nothing, beacuse it isn't a change.
 
-        manager.persistLocale(Locale.JAPANESE);
+        manager.persistLocale();
 
         verifyControls();
     }

@@ -18,8 +18,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.ApplicationServlet;
+import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.services.RequestLocaleManager;
@@ -37,9 +36,17 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
 {
     private HttpServletRequest _request;
 
+    /**
+     * Extracted at start of request, and used at end of request to see if locale has changed.
+     * Because of this thread-specific state, the service must use the threaded service lifecycle
+     * model.
+     */
+
     private Locale _requestLocale;
 
     private CookieSource _cookieSource;
+
+    private ThreadLocale _threadLocale;
 
     public Locale extractLocaleForCurrentRequest()
     {
@@ -47,12 +54,14 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
 
         _requestLocale = (localeName != null) ? getLocale(localeName) : _request.getLocale();
 
+        _threadLocale.setLocale(_requestLocale);
+
         return _requestLocale;
     }
 
-    public void persistLocale(Locale locale)
+    public void persistLocale()
     {
-        Defense.notNull(locale, "locale");
+        Locale locale = _threadLocale.getLocale();
 
         if (locale.equals(_requestLocale))
             return;
@@ -101,5 +110,10 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
     public void setRequest(HttpServletRequest request)
     {
         _request = request;
+    }
+
+    public void setThreadLocale(ThreadLocale threadLocale)
+    {
+        _threadLocale = threadLocale;
     }
 }

@@ -38,7 +38,7 @@ public class ResponseRendererImpl implements ResponseRenderer
     public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
             throws ServletException, IOException
     {
-        _localeManager.persistLocale(cycle.getEngine().getLocale());
+        _localeManager.persistLocale();
 
         IPage page = cycle.getPage();
 

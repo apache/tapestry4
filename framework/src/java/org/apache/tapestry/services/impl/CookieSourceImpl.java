@@ -56,6 +56,15 @@ public class CookieSourceImpl implements CookieSource
         _response.addCookie(cookie);
     }
 
+    public void removeCookieValue(String name)
+    {
+        Cookie cookie = new Cookie(name, null);
+        cookie.setPath(_request.getContextPath());
+        cookie.setMaxAge(0);
+
+        _response.addCookie(cookie);
+    }
+
     public void setRequest(HttpServletRequest request)
     {
         _request = request;

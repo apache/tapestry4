@@ -43,8 +43,13 @@ public class TestCookieSource extends HiveMindTestCase
         {
             Cookie c = (Cookie) obj;
 
-            return getName().equals(c.getName()) && getValue().equals(c.getValue())
-                    && getPath().equals(c.getPath());
+            return equals(getName(), c.getName()) && equals(getValue(), c.getValue())
+                    && equals(getPath(), c.getPath());
+        }
+
+        private boolean equals(Object value, Object other)
+        {
+            return value == other || (value != null && value.equals(other));
         }
     }
 
@@ -137,6 +142,34 @@ public class TestCookieSource extends HiveMindTestCase
         cs.setResponse(response);
 
         cs.writeCookieValue("foo", "bar");
+
+        verifyControls();
+    }
+
+    public void testRemoveCookie()
+    {
+        MockControl requestControl = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
+
+        HttpServletResponse response = (HttpServletResponse) newMock(HttpServletResponse.class);
+
+        // Training
+
+        request.getContextPath();
+        requestControl.setReturnValue("/context");
+
+        Cookie cookie = new ComparableCookie("foo", null);
+        cookie.setPath("/context");
+
+        response.addCookie(cookie);
+
+        replayControls();
+
+        CookieSourceImpl cs = new CookieSourceImpl();
+        cs.setRequest(request);
+        cs.setResponse(response);
+
+        cs.removeCookieValue("foo");
 
         verifyControls();
     }

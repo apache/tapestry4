@@ -32,10 +32,10 @@ public interface RequestLocaleManager
      */
 
     public Locale extractLocaleForCurrentRequest();
-    
+
     /**
-     * Stores the locale as a cookie for later use.
+     * Stores the thread's locale as a cookie for later use.
      */
-    
-    public void persistLocale(Locale locale);
+
+    public void persistLocale();
 }

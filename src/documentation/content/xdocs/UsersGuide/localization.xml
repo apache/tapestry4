@@ -199,7 +199,8 @@
       <title>Localization of Assets</title>
       
       <p>
-        Coming soon.
+Assets may also be localized.  Classpath and context assets will  automatically search for a
+locale-specific match (this is very similar to how localized templates work).
       </p>
     </section>  <!-- localization.assets -->
     
@@ -238,6 +239,29 @@ format retrieved from the message catalog as key 'billing-info'.
 </p>
       
     </section>
+    
+<section id="localization.changing">
+  <title>Changing the locale</title> 
+  
+<p>
+In order to change the locale, you must obtain the &IEngine; and invoke <code>setLocale()</code> on it.
+This will change the value stored in the engine (which is used when loading new pages), and:
+</p>
+
+<ul>
+  <li>Update the hivemind.ThreadLocale service, allowing localized messages from services to be generated
+    in the correct locale</li>
+  <li>Cause an HTTP Cookie to be added to the request so that future requests from the same client
+    will be in the same locale</li>
+</ul>
+
+<p>
+  Changing the locale <link href="#localization.engine-locale">does not affect any pages loaded
+    in the current request.</link>
+</p>
+ 
+  
+</section>    
     
     <section id="localization.engine-locale">
       <title>Engine locale vs. page locale</title>

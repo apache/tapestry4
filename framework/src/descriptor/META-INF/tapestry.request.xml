@@ -40,6 +40,7 @@
       <construct class="impl.RequestLocaleManagerImpl">
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-service property="cookieSource" service-id="CookieSource"/>
+        <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
       </construct>
     </invoke-factory>
   </service-point>  
