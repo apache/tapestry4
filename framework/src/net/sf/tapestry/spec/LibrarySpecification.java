@@ -325,6 +325,20 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
     }
 
     /**
+     *  Returns true if this library specification has a specification
+     *  for the named extension.
+     * 
+     **/
+    
+    public boolean checkExtension(String name)
+    {
+        if (_extensions == null)
+            return false;
+            
+        return _extensions.containsKey(name);
+    }
+    
+    /**
      *  Returns an instantiated extension.  Extensions are created as needed and
      *  cached for later use.
      * 
@@ -346,7 +360,7 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
 
             if (spec == null)
                 throw new IllegalArgumentException(
-                    Tapestry.getString("LibrarySpecification.no-such-extension", this, name));
+                    Tapestry.getString("LibrarySpecification.no-such-extension", name));
 
             result = spec.instantiateExtension(_resolver);
 

@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import net.sf.tapestry.multipart.MultipartDecoder;
+import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.StringSplitter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -100,8 +101,8 @@ import org.mortbay.util.URI;
 
 public class RequestContext implements IRender
 {
-        /** @since 2.2 **/
-        
+    /** @since 2.2 **/
+
     private static class DefaultRequestDecoder implements IRequestDecoder
     {
 
@@ -113,13 +114,24 @@ public class RequestContext implements IRender
             result.setScheme(request.getScheme());
             result.setServerName(request.getServerName());
             result.setServerPort(request.getServerPort());
-            
+
             return result;
         }
 
     }
 
     private static final Logger LOG = LogManager.getLogger(RequestContext.class);
+
+
+    /**
+     *   Key used to obtain an extension from the application specification.  The extension,
+     *   if it exists, implements {@link IRequestDecoder}.
+     * 
+     *   @since 2.2
+     * 
+     **/
+
+    public static final String REQUEST_DECODER_EXTENSION_NAME = "net.sf.tapestry.request-decoder";
 
     private HttpSession _session;
     private HttpServletRequest _request;
@@ -299,11 +311,13 @@ public class RequestContext implements IRender
         if (_decodedRequest != null)
             return _decodedRequest;
 
-        IRequestDecoder decoder =
-            (IRequestDecoder) _servlet.getApplicationSpecification().getExtension("net.sf.tapestry.request-decoder");
+        IApplicationSpecification spec = _servlet.getApplicationSpecification();
+        IRequestDecoder decoder = null;
 
-        if (decoder == null)
+        if (!spec.checkExtension(REQUEST_DECODER_EXTENSION_NAME))
             decoder = new DefaultRequestDecoder();
+        else
+            decoder = (IRequestDecoder) spec.getExtension(REQUEST_DECODER_EXTENSION_NAME);
 
         _decodedRequest = decoder.decodeRequest(_request);
 
@@ -325,7 +339,6 @@ public class RequestContext implements IRender
         return getDecodedRequest().getScheme();
     }
 
-
     /** 
      * 
      *  Returns the actual server name, possibly decoded from the request.
@@ -335,7 +348,7 @@ public class RequestContext implements IRender
      *  @since 2.2  
      * 
      **/
-    
+
     public String getServerName()
     {
         return getDecodedRequest().getServerName();
@@ -350,7 +363,7 @@ public class RequestContext implements IRender
      *  @since 2.2  
      * 
      **/
-    
+
     public int getServerPort()
     {
         return getDecodedRequest().getServerPort();
@@ -365,7 +378,7 @@ public class RequestContext implements IRender
      *  @since 2.2  
      * 
      **/
-    
+
     public String getRequestURI()
     {
         return getDecodedRequest().getRequestURI();
