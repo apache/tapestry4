@@ -229,6 +229,7 @@
 				     are not stored in CVS and should not be part of the distribution. -->
 				<exclude name="**/Thumbs.db"/>
 				<exclude name="**/pspbrwse.jbf"/>
+        <exclude name="**/classes/"/>        
 			</fileset>
 		</copy>
 		
