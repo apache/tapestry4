@@ -29,6 +29,10 @@ package com.primix.tapestry.form;
 import com.primix.tapestry.*;
 import com.primix.tapestry.html.*;
 
+import com.primix.tapestry.valid.FieldLabel;
+import com.primix.tapestry.valid.IValidationDelegate;
+import com.primix.tapestry.valid.ValidField;
+
 import java.util.*;
 
 // Appease Javadoc
@@ -36,6 +40,8 @@ import java.util.*;
 import javax.servlet.http.HttpSession;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.event.PageDetachListener;
+import com.primix.tapestry.event.PageEvent;
 
 /**
  * Component which contains form element components.  Forms use the
@@ -117,6 +123,16 @@ import com.primix.tapestry.components.*;
  *  </td>
  * </tr>
  *
+ *  <tr>
+ *      <td>delegate</td>
+ *      <td>{@link IValidationDelegate}</td>
+ *      <td>R</td>
+ *      <td>yes</td>
+ *      <td>&nbsp;</td>
+ *      <td>Object used to assist in error tracking and reporting.  A single
+ *  instance is shared by all {@link ValidField} and {@link FieldLabel} in a single form.</td>
+ *  </tr>
+ *
  *	</table>
  *
  * <p>Informal parameters are allowed.
@@ -125,7 +141,8 @@ import com.primix.tapestry.components.*;
  *  @version $Id$
  */
 
-public class Form extends AbstractComponent implements IForm, IDirect
+public class Form extends AbstractComponent 
+implements IForm, IDirect, PageDetachListener
 {
 	private IBinding methodBinding;
 	private String methodValue;
@@ -142,6 +159,9 @@ public class Form extends AbstractComponent implements IForm, IDirect
 	private IBinding directBinding;
 	private boolean staticDirect;
 	private boolean directValue;
+
+	private IValidationDelegate delegate;
+	private IBinding delegateBinding;
 
 	/**
 	 *  Number of element ids allocated.
@@ -221,6 +241,16 @@ public class Form extends AbstractComponent implements IForm, IDirect
 		return listenerBinding;
 	}
 
+	public IBinding getDelegateBinding()
+	{
+		return delegateBinding;
+	}
+
+	public void setDelegateBinding(IBinding value)
+	{
+		delegateBinding = value;
+	}
+	
 	/**
 	 *  Indicates to any wrapped form components that they should respond to the form
 	 *  submission.
@@ -728,4 +758,49 @@ public class Form extends AbstractComponent implements IForm, IDirect
 			getElementId(key);
 		}
 	}
+
+	/**
+	 *  Finds the delegate for for the form.  The delegate binding is only
+	 *  resolved once per request cycle.
+	 * 
+	 **/
+	
+	public IValidationDelegate getDelegate()
+	throws RequestCycleException
+	{
+		if (delegate == null)
+		{
+			if (delegateBinding != null)
+				delegate = (IValidationDelegate)delegateBinding.getObject("delegate",
+					IValidationDelegate.class);
+					
+			if (delegate == null)
+				throw new RequiredParameterException(this, "delegate", delegateBinding);
+		}
+		
+		return delegate;
+	}
+
+	/**
+	 *  Clears the delegate property at the end of the request cycle.
+	 * 
+	 **/
+	
+	public void pageDetached(PageEvent event)
+	{
+		delegate = null;
+	}
+
+
+	/**
+	 *  Adds this Form as a page detach listener, so that the delegate property
+	 *  can be cleared at the end of the request cycle.
+	 * 
+	 **/
+	
+	protected void finishLoad()
+	{
+		page.addPageDetachListener(this);
+	}
+
 }

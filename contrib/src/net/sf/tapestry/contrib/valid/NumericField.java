@@ -112,15 +112,6 @@ import java.math.*;
  *      </td>
  *  </tr>
  *
- *  <tr>
- *      <td>delegate</td>
- *      <td>{@link IValidationDelegate}</td>
- *      <td>R</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>Object used to assist in error reporting.</td>
- *  </tr>
- *
  *	</table>
  *
  *  <p>May not contain a body.  May have informal parameters.

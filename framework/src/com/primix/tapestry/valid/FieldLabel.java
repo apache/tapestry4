@@ -27,6 +27,7 @@
 package com.primix.tapestry.valid;
 
 import com.primix.tapestry.*;
+import com.primix.tapestry.form.Form;
 
 /**
  *  Used to label an {@link IField}.  Because such fields
@@ -34,9 +35,8 @@ import com.primix.tapestry.*;
  *  to hard code the label in a page's HTML template (this also helps
  *  with localization).
 
- *  <p>A FieldLabel
- *  may also have a {@link IValidationDelegate delegate} that
- *  modifies the formatting of the label to match the state of the
+ *  <p>The {@link IValidationDelegate delegate} may
+ *  also modify the formatting of the label to match the state of the
  *  field (i.e., if the field is required or in error).
  *
  *
@@ -59,16 +59,6 @@ import com.primix.tapestry.*;
  *  <td>The field to be labeled.</td>
  * </tr>
  *
- * <tr>
- *   <td>delegate</td>
- *   <td>{@link IValidationDelegate}</td>
- *   <td>R</td>
- *   <td>no</td>
- *   <td>&nbsp;</td>
- *   <td>An optional delegate that may provide additional formatting
- *  for the label.</td>
- *  </tr>
- *
  *  </table>
  *
  * <p>Informal parameters are not allowed.  A body is not allowed.
@@ -80,7 +70,6 @@ import com.primix.tapestry.*;
 public class FieldLabel extends AbstractComponent
 {
 	private IBinding fieldBinding;
-	private IBinding delegateBinding;
 
 	public void setFieldBinding(IBinding value)
 	{
@@ -92,35 +81,23 @@ public class FieldLabel extends AbstractComponent
 		return fieldBinding;
 	}
 
-	public void setDelegateBinding(IBinding value)
-	{
-		delegateBinding = value;
-	}
-
-	public IBinding getDelegateBinding()
-	{
-		return delegateBinding;
-	}
-
 	/**
 	*  Gets the {@link IField} 
-	*  and optional {@link IValidationDelegate delegate},
-	*  then renders the label obtained from the field.
+	*  and {@link IValidationDelegate delegate},
+	*  then renders the label obtained from the field.  Does nothing
+	*  when rewinding.
 	*
 	*/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		IField field;
-		IValidationDelegate delegate = null;
-
 		if (cycle.isRewinding())
 			return;
 
 		try
 		{
-			field =
+			IField field =
 				(IField) fieldBinding.getObject(
 					"field",
 					IField.class);
@@ -128,23 +105,17 @@ public class FieldLabel extends AbstractComponent
 			if (field == null)
 				throw new RequiredParameterException(this, "field", fieldBinding);
 
-			if (delegateBinding != null)
-				delegate =
-					(IValidationDelegate) delegateBinding.getObject(
-						"delegate",
-						IValidationDelegate.class);
 
-			if (delegate != null)
-				delegate.writeLabelPrefix(field, writer, cycle);
+			IValidationDelegate delegate = Form.get(cycle).getDelegate();
+
+			delegate.writeLabelPrefix(field, writer, cycle);
 
 			writer.print(field.getDisplayName());
 
-			if (delegate != null)
-				delegate.writeLabelSuffix(field, writer, cycle);
+			delegate.writeLabelSuffix(field, writer, cycle);
 		}
 		catch (BindingException ex)
-		
-			{
+		{
 			throw new RequestCycleException(this, ex);
 		}
 	}

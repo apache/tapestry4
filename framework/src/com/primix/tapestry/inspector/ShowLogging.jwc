@@ -42,6 +42,7 @@
   
   <component id="newCategoryForm" type="Form">
     <binding name="listener" property-path="listeners.addNewCategory"/>
+    <binding name="delegate" property-path="beans.delegate"/>
     <field-binding name="direct" field-name="Boolean.TRUE"/>
   </component>
   
@@ -55,7 +56,6 @@
   
   <component id="inputNewCategory" type="ValidField">
     <static-binding name="displayName">New Category</static-binding>
-    <binding name="delegate" property-path="beans.delegate"/>
     <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
     <binding name="value" property-path="newCategory"/>
   </component>

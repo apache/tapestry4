@@ -6,7 +6,6 @@
   <parameter name="hidden"/>
   <parameter name="displayWidth" java-type="java.lang.Integer"/>
   <parameter name="maximumLength" java-type="java.lang.Integer"/>
-  <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate" required="yes"/>
   <parameter name="displayName" java-type="java.lang.String" required="yes"/>
   <parameter name="minimumLength" java-type="java.lang.Integer"/>
   <parameter name="required"/>
