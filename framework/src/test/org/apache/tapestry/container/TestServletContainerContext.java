@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.container;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -139,4 +141,45 @@ public class TestServletContainerContext extends BaseContainerTestCase
         verifyControls();
     }
 
+    public void testGetResource() throws Exception
+    {
+        URL url = new URL("http://jakarta.apache.org/tapestry");
+
+        MockControl control = newControl(ServletContext.class);
+        ServletContext context = (ServletContext) control.getMock();
+
+        context.getResource("/tapestry");
+        control.setReturnValue(url);
+
+        replayControls();
+
+        ContainerContext cc = new ServletContainerContext(context);
+
+        assertSame(url, cc.getResource("/tapestry"));
+
+        verifyControls();
+    }
+
+    public void testGetResourceFailure() throws Exception
+    {
+        Throwable t = new MalformedURLException("Like this ever happens.");
+
+        MockControl control = newControl(ServletContext.class);
+        ServletContext context = (ServletContext) control.getMock();
+
+        context.getResource("/tapestry");
+        control.setThrowable(t);
+
+        replayControls();
+     
+        interceptLogging(ServletContainerContext.class.getName());
+        
+        ContainerContext cc = new ServletContainerContext(context);
+
+        assertNull(cc.getResource("/tapestry"));
+
+        verifyControls();
+
+        assertLoggedMessage("Error getting context resource '/tapestry': Like this ever happens.");
+    }
 }

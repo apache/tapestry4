@@ -14,10 +14,14 @@
 
 package org.apache.tapestry.container;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.util.Defense;
 
 /**
@@ -29,6 +33,8 @@ import org.apache.hivemind.util.Defense;
  */
 public class ServletContainerContext implements ContainerContext
 {
+    private static final Log LOG = LogFactory.getLog(ServletContainerContext.class);
+
     private final ServletContext _servletContext;
 
     public ServletContainerContext(ServletContext context)
@@ -55,6 +61,20 @@ public class ServletContainerContext implements ContainerContext
         else
             _servletContext.setAttribute(name, attribute);
 
+    }
+
+    public URL getResource(String path)
+    {
+        try
+        {
+            return _servletContext.getResource(path);
+        }
+        catch (MalformedURLException ex)
+        {
+            LOG.error(ContainerMessages.errorGettingResource(path, ex), ex);
+
+            return null;
+        }
     }
 
     public String getInitParameterValue(String name)
