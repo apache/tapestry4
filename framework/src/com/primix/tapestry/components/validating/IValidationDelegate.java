@@ -3,11 +3,14 @@ package com.primix.tapestry.components.validating;
 import com.primix.tapestry.*;
 
 /**
- *  Interface used to communicate errors from a {@link ValidatingTextField} (or 
- *  similar) component to some application-specific listener.
+ *  Interface used to communicate errors from an {@link IValidatingTextField} 
+ *  component to some application-specific code. In addition,
+ *  controls how fields that are in error are presented (they can be
+ *  marked in various ways by the delegate; the default implementation
+ *  adds to red asterisks to the right of the field).
  *
  *  <p>The interface is designed so that a single instance can be shared
- *  with many instances of {@link ValidatingTextField}.
+ *  with many instances of {@link IValidatingTextField}.
  *
  *  <p>TBD: Add another method so that the delegate can write additional 
  *  attributes into the text field (i.e., to change its color or class).
@@ -27,11 +30,10 @@ public interface IValidationDelegate
      *  <p>Typically, the listener simply arrainges
      *  to present the defaultErrorMessage to the user (as part of the HTML
      *  response).  Finicky listeners may, instead, use the constraint and
-     *  displayName to form their own error message.
+     *  displayName (from the field) to form their own error message.
      *
-     *  @param component the {@link ValidatingTextField} which the update applies to.
+     *  @param field the field to which the update applies to.
      *  @param constraint the {@link ValidationConstraint} which was violated.
-     *  @param displayName a user presentable name/label for the field.
      *  @param defaultErrorMessage a default, localized, error message.
      *
      */
@@ -41,7 +43,7 @@ public interface IValidationDelegate
         String defaultErrorMessage);
 
     /**
-     *  Invoked before the text field is rendered, if the field is in error.
+     *  Invoked before the field is rendered, if the field is in error.
      *
      */
 
@@ -50,14 +52,12 @@ public interface IValidationDelegate
     throws RequestCycleException;
 
     /**
-     *  Invoked after the text field is rendered, if the field is in error.
+     *  Invoked after the field is rendered, if the field is in error.
      *
      */
 
     public void writeErrorSuffix(IValidatingTextField field,
                 IResponseWriter writer, IRequestCycle cycle)
     throws RequestCycleException;
-            
-
 }
 

@@ -3,20 +3,30 @@
 <html>
 <body>
 
-Components and classes that provide specialized, validating text fields.  
+Components and classes that provide specialized, validating text fields.
+The interface {@link com.primix.tapestry.components.validating.IValidatingTextField}
+provides the general outline.
 
 <ul>
 <li>Add new constraints:
 <ul>
 <li>Fields may be required or optional
-<li>For {@link ValidatingTextField}, a minimum length (after whitespace is stripped)
-<li>For {@link IntegerField}, a minimum and maximum value
-<li>For {@link DateField}, a minimum and maximum date
+<li>For {@link com.primix.tapestry.components.validating.ValidatingTextField}, 
+a minimum length (after whitespace is stripped)
+<li>For {@link com.primix.tapestry.components.validating.IntegerField}, 
+a minimum and maximum value
+<li>For {@link com.primix.tapestry.components.validating.DateField}, a minimum and maximum date
 </ul>
-<li>Fields that are in error can be marked with a icon or label.
+<li>Fields that are in error can be marked with an icon or label.
 <li>When rendering, the first field that is either required and null, or in error is identified.
 This identified field is focused and selected (effectively, the cursor jumps right to
 the field).
+</ul>
+
+<p>Since presenting errors to the user is completely specific to the application,
+a second interface, {@link com.primix.tapestry.components.validating.IValidationDelegate}
+provides the bridge between these components and the
+application they are being used in.
 
 @author Howard Ship <a href="mailto:hship@primix.com">hship@primix.com</a>
 

@@ -123,9 +123,7 @@ import java.text.*;
  *
  *	</table>
  *
- *  <p>May contain a body (which is <em>only</em> renderred when there's an error).
- *
- *  <p>May not have informal parameters.
+ *  <p>May not have informal parameters or a body.
  *
  *  @author Howard Ship
  *  @version $Id$
