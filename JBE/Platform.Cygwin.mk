@@ -29,19 +29,25 @@
 # B20 on Windows NT 4.0.
 
 # Here we define a bunch of command line tools used in the rest of the system.
-# Note that it is safe to use the nice, long GNU style options here.  In the other Makefiles,
-# it isn't safe, since we want compatibility with Unix (but not GNU) tools on Solaris.
 
 MV := $(TOOLS_DIR)/mv.exe
 ECHO := $(TOOLS_DIR)/echo.exe
 MKDIRS := $(TOOLS_DIR)/mkdir.exe --parents
 TOUCH := $(TOOLS_DIR)/touch.exe
-RM := $(TOOLS_DIR)/rm.exe --force 
-RMDIRS := $(TOOLS_DIR)/rm.exe --force --recursive
+RM := $(TOOLS_DIR)/rm.exe --force --recursive
+
 CP := $(TOOLS_DIR)/cp.exe
+CP_FORCE_OPT := --force
+CP_PARENTS_OPT := --parents
+
 CAT := $(TOOLS_DIR)/cat.exe
 FIND := $(TOOLS_DIR)/find.exe
+
 TAR := $(TOOLS_DIR)/tar.exe
+TAR_CREATE_OPT := --create
+TAR_EXTRACT_OPT := --extract
+TAR_GZIP_OPT := --gzip
+
 PWD := $(TOOLS_DIR)/pwd.exe
 
 # Provided internally by Cygnus

@@ -79,20 +79,20 @@ ifeq "$(MODULE_NAME)" ""
 	$(error Must define MODULE_NAME in Makefile)
 endif
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
-	@$(CP) -f $(JAR_FILE) $(INSTALL_DIR)
+	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(INSTALL_DIR)
 
 $(WAR_LIB_STAMP_FILE): $(INSTALL_LIBRARIES)
 ifdef INSTALL_LIBRARIES
 	@$(ECHO) "\n*** Copying runtime libraries ... ***\n"
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) -f $? $(WAR_LIB_DIR)
+	@$(CP) $(CP_FORCE_OPT) $? $(WAR_LIB_DIR)
 	@$(TOUCH) $@ 
 endif
 
 $(WAR_WEB_INF_STAMP_FILE): web.xml $(WEB_INF_RESOURCES)
 	@$(ECHO) "\n*** Copying WEB-INF resources ... ***\n"
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) -f $? $(WAR_INF_DIR)
+	@$(CP) $(CP_FORCE_OPT) $? $(WAR_INF_DIR)
 	@$(TOUCH) $@
 
 ifneq "$(CONTEXT_RESOURCES)" ""
@@ -109,7 +109,7 @@ FINAL_CONTEXT_RESOURCES := \
 $(WAR_CONTEXT_STAMP_FILE): $(FINAL_CONTEXT_RESOURCES)
 	@$(ECHO) "\n*** Copying context resources ... ***\n"
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) -f -P $? $(WAR_APP_DIR)
+	@$(CP) $(CP_FORCE_OPT) $(CP_PARENTS_OPT) $? $(WAR_APP_DIR)
 	@$(TOUCH) $@ $(MOD_DIRTY_JAR_STAMP_FILE)
 else
 
