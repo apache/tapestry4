@@ -1,51 +1,70 @@
 <!-- $Id$ -->
+<html>
+<link rel="stylesheet" type="text/css" href="../pages/Exception.css">
 
+<body>
+
+<span jwcid="$content$">
 <p>
 
 <table class="exception-display">
 
-<jwc id="e-exception">
+<span jwcid="e-exception">
 	
-		<tr class="property">
-			<th>Name:</th>
-			<td><jwc id="insertClass"/></td>
+		<tr class="exception-name">
+			<td colspan="2"><span jwcid="insertClass">some.exception.Class</span></td>
 		</tr>
 		
-		<tr class="property">
-			<th>Message:</th>
-			<td><jwc id="insertMessage"/></td>
+		<tr class="exception-message">
+			<td colspan="2"><span jwcid="insertMessage">A message describing the exception.</span></td>
+		</tr>
+		
+		<tr jwcid="e-property">
+			<th><span jwcid="insertPropertyName">Property Name</span>:</th>
+			<td><span jwcid="insertPropertyValue">Property Value</span></td>
 		</tr>
 
-<jwc id="e-property">
-		
-		<tr class="property">
-			<th><jwc id="insertPropertyName"/>:</th>
-			<td><jwc id="insertPropertyValue"/></td>
+		<tr jwcid="$remove$" class="odd">
+			<th>Property Name 2:</th>
+			<td>Property Value 2</td>
 		</tr>
+
+		<tr jwcid="$remove$" class="even">
+			<th>Property Name 3:</th>
+			<td>Property Value 3</td>
+		</tr>
+
+		<tr jwcid="$remove$" class="odd">
+			<th>Property Name 4:</th>
+			<td>Property Value 4</td>
+		</tr>		
 		
-</jwc>	
-	
-<jwc id="ifNotLast">
+<span jwcid="ifNotLast">
 		<tr> <td colspan=2> &nbsp; </td> </tr>
-</jwc>
+</span>
 	
-<jwc id="ifLast">
-		<tr class="property">
-			<th>Trace:</th> <td>&nbsp;</td>
+<span jwcid="ifLast">
+		<tr class="stack-trace-label">
+			<td colspan="2">Stack Trace:</td>
 		</tr>
 
 		<tr class="stack-trace">
 			<td colspan=2>
 				<ul>
-				<jwc id="e-stack">
-					<li><jwc id="insertStackTrace"/>
-				</jwc>
+					<li jwcid="e-stack"><span jwcid="insertStackTrace">foo.bar.baz(Line:xyz)</span></li>
+					<li jwcid="$remove$">foo.bar.baz(Line:xyz)</li>
+					<li jwcid="$remove$">foo.bar.baz(Line:xyz)</li>
+					<li jwcid="$remove$">foo.bar.baz(Line:xyz)</li>					
+					<li jwcid="$remove$">foo.bar.baz(Line:xyz)</li>
 				</ul>
-
-
 			</td>
 		</tr>
-</jwc>
-</jwc>
+</span> <!-- ifLast -->
+</span> <!-- e-exception -->
 
 </table>
+
+</span> <!-- $content$ -->
+
+</body>
+</html>

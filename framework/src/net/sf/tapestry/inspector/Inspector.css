@@ -120,24 +120,24 @@ SPAN.request-context-object  {
 TR.request-context-section TH  {
 	text-align : center;
 	color : White;
-	background-color : "#330066";
+	background-color : Blue;
 }
 
 TR.request-context-header TH  {
 	text-align : center;
 	color : White;
-	background-color : "#330066";
+	background-color : Blue;
 }
 
 TABLE.request-context-object TR.odd TD  {
 	text-align : left;
 	color : Black;
-	background-color : Silver;
+	background-color : #C0C0FF;
 }
 
 TABLE.request-context-object TR.odd TH  {
 	color : Black;
-	background-color : Silver;
+	background-color : #C0C0FF;
 	text-align : right;
 }
 
@@ -158,16 +158,32 @@ TABLE.request-context-object TR  {
 	vertical-align : text-top;
 }
 
-TABLE.exception-display TR.property  {
+TABLE.exception-display TR.even  {
 	top : auto;
 }
 
-TABLE.exception-display TR.property TH  {
+TABLE.exception-displaY TD
+{
+	width: 100%;
+}
+
+TABLE.exception-display TR.even TH  {
 	text-align : right;
 	font-weight : bold;
 }
 
-TABLE.exception-display TR.property TD  {
+TABLE.exception-display TR.odd TD  {
+	text-align : left;
+	background-color : #C0C0FF;
+}
+
+TABLE.exception-display TR.odd TH  {
+	text-align : right;
+	font-weight : bold;
+	background-color : #C0C0FF;	
+}
+
+TABLE.exception-display TR.even TD  {
 	text-align : left;
 }
 
