@@ -19,7 +19,8 @@ import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
-import org.apache.hivemind.util.*;
+import org.apache.hivemind.util.LocalizedNameGenerator;
+import org.apache.hivemind.util.LocalizedResource;
 
 /**
  *  Finds localized resources within the web application context.
@@ -27,10 +28,8 @@ import org.apache.hivemind.util.*;
  *  @see javax.servlet.ServletContext
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
- *
- **/
+ */
 
 public class LocalizedContextResourceFinder
 {

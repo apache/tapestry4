@@ -23,6 +23,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * Tests for {@link org.apache.tapestry.test.Creator}.
  *
  * @author Howard Lewis Ship
+ * @since 3.1
  */
 public class TestCreator extends HiveMindTestCase
 {

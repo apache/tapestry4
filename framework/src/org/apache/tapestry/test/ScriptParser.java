@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.parse.AbstractParser;
 import org.apache.hivemind.parse.ElementParseInfo;

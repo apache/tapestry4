@@ -53,7 +53,7 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
-import org.apache.tapestry.resource.ContextResourceLocation;
+import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IAssetSpecification;
@@ -232,7 +232,7 @@ public class PageLoader implements IPageLoader
         String servletPath = request.getServletPath();
 
         _servletLocation =
-            new ContextResourceLocation(context.getServlet().getServletContext(), servletPath);
+            new ContextResource(context.getServlet().getServletContext(), servletPath);
 
         // Create the mechanisms for walking the component tree when it is complete
         IComponentVisitor verifyRequiredParametersVisitor = new VerifyRequiredParametersVisitor();
@@ -916,7 +916,7 @@ public class PageLoader implements IPageLoader
         }
 
         return new ContextAsset(
-            (ContextResourceLocation) findAsset(assetName,
+            (ContextResource) findAsset(assetName,
                 component,
                 _servletLocation,
                 path,

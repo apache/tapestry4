@@ -22,7 +22,6 @@ import org.apache.tapestry.test.ServletDescriptor;
  * Additional tests for {@link TestScriptDescriptor}.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.1
  */
 public class TestScriptDescriptor extends HiveMindTestCase

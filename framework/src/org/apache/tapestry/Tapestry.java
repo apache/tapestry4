@@ -38,7 +38,7 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.resource.ContextResourceLocation;
+import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.AdaptorRegistry;
 import org.apache.tapestry.util.StringSplitter;
@@ -1148,7 +1148,7 @@ public final class Tapestry
         // Could strip off the servlet name (i.e., "app" in "/app") but
         // there's no need.
 
-        return new ContextResourceLocation(servletContext, servletPath);
+        return new ContextResource(servletContext, servletPath);
     }
 
     /**

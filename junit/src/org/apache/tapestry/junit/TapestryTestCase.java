@@ -41,7 +41,6 @@ import org.apache.tapestry.util.RegexpMatcher;
  *  Base class for Tapestry test cases.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  */
 

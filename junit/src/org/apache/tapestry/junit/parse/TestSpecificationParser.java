@@ -39,7 +39,6 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  *  tests new features for the meantime.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.4
  */
 

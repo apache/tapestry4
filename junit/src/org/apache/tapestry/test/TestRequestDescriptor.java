@@ -25,7 +25,7 @@ import org.apache.tapestry.test.ScriptedTestSession;
  * Tests for {@link org.apache.tapestry.test.RequestDescriptor}.
  *
  * @author Howard Lewis Ship
- * @version $Id$
+ * @since 3.1
  */
 public class TestRequestDescriptor extends HiveMindTestCase
 {
