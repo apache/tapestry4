@@ -151,9 +151,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  @version $Id$
  **/
 
-public class Form
-    extends AbstractComponent
-    implements IForm, IDirect, PageDetachListener
+public class Form extends AbstractComponent implements IForm, IDirect, PageDetachListener
 {
     private String method;
     private IActionListener listener;
@@ -360,13 +358,10 @@ public class Form
         return name;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(
-                Tapestry.getString("Form.forms-may-not-nest"),
-                this);
+            throw new RequestCycleException(Tapestry.getString("Form.forms-may-not-nest"), this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -385,7 +380,7 @@ public class Form
             writer.begin("form");
             writer.attribute("method", (method == null) ? "post" : method);
             writer.attribute("name", name);
-            writer.attribute("action", cycle.encodeURL(g.getServletPath()));
+            writer.attribute("action", g.getBareURL());
 
             generateAttributes(writer, cycle);
             writer.println();
@@ -433,9 +428,7 @@ public class Form
             String actual = cycle.getRequestContext().getParameter(name);
 
             if (actual == null || Integer.parseInt(actual) != elementCount)
-                throw new StaleLinkException(
-                    Tapestry.getString("Form.bad-element-count", getExtendedId()),
-                    getPage());
+                throw new StaleLinkException(Tapestry.getString("Form.bad-element-count", getExtendedId()), getPage());
 
             listener.actionTriggered(this, cycle);
 
@@ -490,8 +483,7 @@ public class Form
         list.add(functionName);
     }
 
-    private void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    private void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         StringBuffer buffer = null;
 
@@ -501,9 +493,7 @@ public class Form
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(
-                Tapestry.getString("Form.needs-body-for-event-handlers"),
-                this);
+            throw new RequestCycleException(Tapestry.getString("Form.needs-body-for-event-handlers"), this);
 
         Iterator i = events.entrySet().iterator();
         while (i.hasNext())
@@ -564,8 +554,7 @@ public class Form
                 finalFunctionName = compositeName;
             }
 
-            body.addOtherInitialization(
-                formPath + "." + propertyName + " = " + finalFunctionName + ";");
+            body.addOtherInitialization(formPath + "." + propertyName + " = " + finalFunctionName + ";");
 
         }
 
@@ -581,8 +570,7 @@ public class Form
      * 
      **/
 
-    public void rewind(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    public void rewind(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         render(writer, cycle);
     }
@@ -602,9 +590,8 @@ public class Form
     }
 
     /**
-     *  Builds the URL for the form, using either the direct or
-     *  action service.  In addition, writes the query parameters
-     *  needed by the service.
+     *  Builds the Gesture for the form, using either the direct or
+     *  action service. 
      *
      *  @since 1.0.3
      *
@@ -622,36 +609,37 @@ public class Form
         IEngine engine = cycle.getEngine();
         IEngineService service = engine.getService(serviceName);
 
+        // A single service parameter is used to store the actionId.
+        
         return service.buildGesture(cycle, this, new String[] { actionId });
     }
 
-    private void writeGestureParameters(
-        IMarkupWriter writer,
-        Gesture g,
-        boolean reserveOnly)
+    private void writeGestureParameters(IMarkupWriter writer, Gesture g, boolean reserveOnly)
     {
-        Iterator i = g.getQueryParameters();
+        String[] parameters = g.getServiceParameters();
+        int count = Tapestry.size(parameters);
 
-        while (i.hasNext())
+        if (count == 0)
+            return;
+
+        if (!reserveOnly)
         {
-            Map.Entry e = (Map.Entry) i.next();
-
-            String key = (String) e.getKey();
-
-            if (!reserveOnly)
+            for (int i = 0; i < count; i++)
             {
+
                 writer.beginEmpty("input");
                 writer.attribute("type", "hidden");
-                writer.attribute("name", key);
-                writer.attribute("value", (String) e.getValue());
+                writer.attribute("name", IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
+                writer.attribute("value", parameters[i]);
                 writer.println();
             }
-
-            // Reserve the name, in case any form component has the
-            // same name.
-
-            getElementId(key);
         }
+
+        // Reserve the name, in case any form component has the
+        // same name.
+
+        getElementId(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
+
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)

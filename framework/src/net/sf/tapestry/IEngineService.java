@@ -128,11 +128,14 @@ public interface IEngineService
 	public static final String RESET_SERVICE = "reset";
 
 	/**
-	*  The query parameter into which each engine service records 
-	*  its information when building a URL.
-	*
-	*  @since 1.0.3
-	*/
+	 *  The query parameter into which each engine service records 
+	 *  its information when building a URL.
+	 *
+	 *  @since 1.0.3
+     *  @deprecated To be removed in 2.3, the service is now encoded
+     *  into the URL as path info.
+     * 
+	 **/
 
 	public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
 
@@ -143,6 +146,8 @@ public interface IEngineService
 	 *  slashes.
 	 *
 	 *  @since 1.0.3
+     *  @deprecated To be removed in 2.3, the service context
+     *  is now encoded into the URL as path info.
 	 *
 	 **/
 
@@ -152,13 +157,15 @@ public interface IEngineService
 	 *  The query parameter for application specific parameters to the
 	 *  service (this is used with the direct service).  Each of these
 	 *  values is encoded with {@link java.net.URLEncoder#encode(String)} before
-	 *  being added to the URL.  Multiple values are seperated with slashes.
+	 *  being added to the URL.  Multiple values are handle by repeatedly
+     *  establishing key/value pairs (this is a change from behavior in 
+     *  2.1 and earlier).
 	 *
 	 *  @since 1.0.3
-	 *
+     * 
 	 **/
 
-	public static final String PARAMETERS_QUERY_PARAMETER_NAME = "parameters";
+	public static final String PARAMETERS_QUERY_PARAMETER_NAME = "sp";
 
 	/**
 	 *  Builds a URL for a service.  This is performed during the

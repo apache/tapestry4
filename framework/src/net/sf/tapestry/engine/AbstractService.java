@@ -26,19 +26,23 @@
 package net.sf.tapestry.engine;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestContext;
-import net.sf.tapestry.util.StringSplitter;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  Abstract base class for implementing engine services.  Instances of services
  *  are shared by many engines and threads, so they must be threadsafe.
+ * 
+ *  <p>
+ *  Note; too much of the URL encoding/decoding stategy is fixed here.
+ *  A future release of Tapestry may extract this strategy, allowing developers
+ *  to choose the method via which URLs are encoded.
+ * 
+ *  @see net.sf.tapestry.engine.AbstractEngine#
  * 
  *
  *  @author Howard Lewis Ship
@@ -49,8 +53,6 @@ import net.sf.tapestry.util.StringSplitter;
 
 public abstract class AbstractService implements IEngineService
 {
-    private static StringSplitter splitter = new StringSplitter('/');
-
     /**
      *  Assembles a URL for the service.
      *
@@ -71,58 +73,7 @@ public abstract class AbstractService implements IEngineService
         String[] parameters,
         boolean stateful)
     {
-        Map map = new HashMap();
-        StringBuffer buffer = null;
-
-        map.put(SERVICE_QUERY_PARAMETER_NAME, serviceName);
-
-        if (serviceContext != null && serviceContext.length > 0)
-        {
-            buffer = new StringBuffer();
-
-            for (int i = 0; i < serviceContext.length; i++)
-            {
-                if (i > 0)
-                    buffer.append('/');
-
-                buffer.append(serviceContext[i]);
-            }
-
-            map.put(CONTEXT_QUERY_PARMETER_NAME, buffer.toString());
-        }
-
-        if (parameters != null && parameters.length != 0)
-        {
-            if (buffer == null)
-                buffer = new StringBuffer();
-            else
-                buffer.setLength(0);
-
-            for (int i = 0; i < parameters.length; i++)
-            {
-                if (i > 0)
-                    buffer.append('/');
-
-                // Note: deprecation warning for compatibility with
-                // Servlet API 2.2
-
-                buffer.append(URLEncoder.encode(parameters[i]));
-            }
-
-            map.put(PARAMETERS_QUERY_PARAMETER_NAME, buffer.toString());
-        }
-
-        return new Gesture(cycle, map, stateful);
-    }
-
-    /**
-     *  Returns a {@link StringSplitter} configured to split on slashes.
-     *
-     **/
-
-    protected StringSplitter getSplitter()
-    {
-        return splitter;
+        return new Gesture(cycle, serviceName, serviceContext, parameters, stateful);
     }
 
     /**
@@ -132,43 +83,26 @@ public abstract class AbstractService implements IEngineService
 
     protected String[] getServiceContext(RequestContext context)
     {
-        String parameter = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
+        int count = context.getPathInfoCount();
 
-        return getSplitter().splitToArray(parameter);
+        // The first element in the path info is the service name, the 
+        // context is all the remaining elements.
+
+        String[] result = new String[count - 1];
+
+        for (int i = 1; i < count; i++)
+            result[i - 1] = context.getPathInfo(i);
+
+        return result;
     }
 
     /**
      *  Returns the service parameters as an array of Strings.
-     *  The strings will have been passed through
-     *  {@link URLDecoder#decode(String)}.
      *
      **/
 
     protected String[] getParameters(RequestContext context)
     {
-        String parameter = context.getParameter(PARAMETERS_QUERY_PARAMETER_NAME);
-
-        if (parameter == null)
-            return null;
-
-        String[] result = getSplitter().splitToArray(parameter);
-
-        // Note: deprecation warning for compatibility with
-        // Servlet API 2.2
-
-        for (int i = 0; i < result.length; i++)
-        {
-            try
-            {
-            	result[i] = URLDecoder.decode(result[i]);
-            }
-            catch (Exception ex)
-            {
-                // Under JDK 1.2.2, URLDecoder may throw
-                // Exception, which we ignore.
-            }
-        }
-
-        return result;
+        return context.getParameters(PARAMETERS_QUERY_PARAMETER_NAME);
     }
 }

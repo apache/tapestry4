@@ -745,8 +745,7 @@ public abstract class AbstractEngine
         {
             try
             {
-                String serviceName =
-                    context.getParameter(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
+                String serviceName = extractServiceName(context);
 
                 if (Tapestry.isNull(serviceName))
                     serviceName = IEngineService.HOME_SERVICE;
@@ -1573,5 +1572,27 @@ public abstract class AbstractEngine
     public DataSqueezer createDataSqueezer()
     {
         return new DataSqueezer();
+    }
+    
+    /**
+     *  Invoked from {@link #service(RequestContext)} to extract, from the URL,
+     *  the name of the service.  The current implementation expects the first
+     *  pathInfo element to be the service name.  At some point in the future,
+     *  the method of constructing and parsing URLs may be abstracted into
+     *  a developer-selected class.
+     * 
+     *  <p>Subclasses may override this method if the application defines
+     *  specific services with unusual URL encoding rules.
+     * 
+     *  <p>This implementation simply extracts the first path info
+     *  element.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    protected String extractServiceName(RequestContext context)
+    {
+        return context.getPathInfo(0);
     }
 }

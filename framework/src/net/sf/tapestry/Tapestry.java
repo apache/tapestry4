@@ -568,4 +568,19 @@ public final class Tapestry
             
          return c.size();
     }
+    
+    /**
+     *  Returns the length of the array, or 0 if the array is null.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static int size(Object[] array)
+    {
+        if (array == null)
+            return 0;
+            
+            return array.length;
+    }
 }
