@@ -45,7 +45,7 @@ include $(SYS_MAKEFILE_DIR)/ModuleRules.mk
 module-initialize:
 	@$(MKDIRS) $(MOD_CLASS_DIR) $(MOD_META_INF_DIR)
 
-jar: initialize
+jar: setup-catalogs
 	@$(RECURSE) POST_SETUP=t inner-jar
 
 # To create a jar, you need to get everything compiled and copied over
