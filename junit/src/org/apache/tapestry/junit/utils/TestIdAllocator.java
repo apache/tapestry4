@@ -82,21 +82,21 @@ public class TestIdAllocator extends TapestryTestCase
         assertEquals("name", a.allocateId("name"));
 
         for (int i = 0; i < 10; i++)
-            assertEquals("name_" + i, a.allocateId("name"));
+            assertEquals("name$" + i, a.allocateId("name"));
     }
 
     public void testDegenerate()
     {
         IdAllocator a = new IdAllocator();
 
-        assertEquals("d_1", a.allocateId("d_1"));
+        assertEquals("d$1", a.allocateId("d$1"));
 
         assertEquals("d", a.allocateId("d"));
-        assertEquals("d_0", a.allocateId("d"));
-        assertEquals("d_2", a.allocateId("d"));
+        assertEquals("d$0", a.allocateId("d"));
+        assertEquals("d$2", a.allocateId("d"));
 
-        assertEquals("d_3", a.allocateId("d"));
-        assertEquals("d_1_0", a.allocateId("d_1"));
+        assertEquals("d$3", a.allocateId("d"));
+        assertEquals("d$1$0", a.allocateId("d$1"));
     }
 
     public void testClear()
