@@ -23,57 +23,60 @@
  * Lesser General Public License for more details.
  *
  */
- package tutorial.workbench.upload;
+package tutorial.workbench.upload;
 
 import com.primix.tapestry.BasePage;
 import com.primix.tapestry.IRequestCycle;
 import com.primix.tapestry.IUploadFile;
 import com.primix.tapestry.RequestCycleException;
 import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.form.IFormComponent;
 import com.primix.tapestry.form.IPropertySelectionModel;
 import com.primix.tapestry.form.StringPropertySelectionModel;
+import com.primix.tapestry.valid.IValidationDelegate;
+import com.primix.tapestry.valid.ValidationConstraint;
 
 public class Upload extends BasePage
 {
 	private static final String[] bytesPerLineOptions =
-		new String[]
-		{
-			"8", "16", "24", "32", "40", "48"
-		};
-			
+		new String[] { "8", "16", "24", "32", "40", "48" };
+
 	private static final String DEFAULT_BPL = "16";
-	
+
 	private String bytesPerLine = DEFAULT_BPL;
 	private boolean showAscii;
 	private IUploadFile file;
 	private IPropertySelectionModel bplModel;
-	private String message;
 
 	public void detach()
 	{
 		bytesPerLine = DEFAULT_BPL;
 		showAscii = false;
 		file = null;
-		message = null;
-		
+
 		super.detach();
 	}
-	
-	public void formSubmit(IRequestCycle cycle)
-	throws RequestCycleException
+
+	public void formSubmit(IRequestCycle cycle) throws RequestCycleException
 	{
 		if (Tapestry.isNull(file.getFileName()))
 		{
-			setMessage("You must specify a file to upload.");
+			IValidationDelegate delegate =
+				(IValidationDelegate) getBeans().getBean("delegate");
+
+			delegate.setFormComponent((IFormComponent) getComponent("inputFile"));
+			delegate.record(
+				"You must specify a file to upload.",
+				ValidationConstraint.REQUIRED,
+				null);
 			return;
 		}
-		
-		Results results = (Results)cycle.getPage("upload.Results");
-		
+
+		Results results = (Results) cycle.getPage("upload.Results");
+
 		results.activate(file, showAscii, Integer.parseInt(bytesPerLine), cycle);
 	}
-	
-	
+
 	public String getBytesPerLine()
 	{
 		return bytesPerLine;
@@ -82,7 +85,7 @@ public class Upload extends BasePage
 	public void setBytesPerLine(String bytesPerLine)
 	{
 		this.bytesPerLine = bytesPerLine;
-		
+
 		fireObservedChange("bytesPerLine", bytesPerLine);
 	}
 
@@ -94,15 +97,15 @@ public class Upload extends BasePage
 	public void setShowAscii(boolean showAscii)
 	{
 		this.showAscii = showAscii;
-		
+
 		fireObservedChange("showAscii", showAscii);
 	}
-	
+
 	public IPropertySelectionModel getBytesPerLineModel()
 	{
 		if (bplModel == null)
 			bplModel = new StringPropertySelectionModel(bytesPerLineOptions);
-			
+
 		return bplModel;
 	}
 
@@ -116,14 +119,9 @@ public class Upload extends BasePage
 		this.file = file;
 	}
 
-	public String getMessage()
-	{
-		return message;
-	}
-
 	public void setMessage(String message)
 	{
-		this.message = message;
+
 	}
 
 }

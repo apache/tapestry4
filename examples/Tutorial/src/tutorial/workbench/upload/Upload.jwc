@@ -5,10 +5,12 @@
 	
 <specification class="tutorial.workbench.upload.Upload">
 
+  <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
+
   <component id="border" type="Border"/>
   
   <component id="showError" type="ShowError">
-  	<binding name="message" property-path="message"/>
+     <binding name="delegate" property-path="beans.delegate"/>
   </component>
   
   <component id="form" type="Form">
