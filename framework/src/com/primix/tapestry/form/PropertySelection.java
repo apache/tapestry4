@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,10 +26,13 @@
 
 package com.primix.tapestry.form;
 
-import com.primix.tapestry.*;
-
-// Appease Javadoc
-import com.primix.tapestry.util.*;
+import com.primix.tapestry.IBinding;
+import com.primix.tapestry.IForm;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResponseWriter;
+import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.RequiredParameterException;
+import com.primix.tapestry.util.Enum;
 
 /**
  *  A component which uses either
@@ -99,14 +102,13 @@ import com.primix.tapestry.util.*;
  *
  *	</table>
  *
- * <p>Informal parameters are allowed, and are applied to the &lt;select&gt; element.
- *  A body is not allowed.
+ * <p>Informal parameters are not allowed,  A body is not allowed.
  *
  *
  *  @version $Id$
  *  @author Howard Ship
  *
- */
+ **/
 
 public class PropertySelection extends AbstractFormComponent
 {
@@ -120,7 +122,7 @@ public class PropertySelection extends AbstractFormComponent
 	/**
 	 *  A shared instance of {@link SelectPropertySelectionRenderer}.
 	 *
-	 */
+	 **/
 
 	public static final IPropertySelectionRenderer DEFAULT_SELECT_RENDERER =
 		new SelectPropertySelectionRenderer();
@@ -128,7 +130,7 @@ public class PropertySelection extends AbstractFormComponent
 	/**
 	 *  A shared instance of {@link RadioPropertySelectionRenderer}.
 	 *
-	 */
+	 **/
 
 	public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER =
 		new RadioPropertySelectionRenderer();
@@ -177,7 +179,7 @@ public class PropertySelection extends AbstractFormComponent
 	 *  Returns the name assigned to this PropertySelection by the {@link Form}
 	 *  that wraps it.
 	 *
-	 */
+	 **/
 
 	public String getName()
 	{
@@ -187,34 +189,11 @@ public class PropertySelection extends AbstractFormComponent
 	/**
 	 *  Returns true if this PropertySelection's disabled parameter yields true.
 	 *  The corresponding HTML control(s) should be disabled.
-	 */
+	 **/
 
 	public boolean isDisabled()
 	{
 		return disabled;
-	}
-
-	/**
-	 *  Returns the default {@link SelectPropertySelectionRenderer} instance.
-	 *  This is a shared instance.
-	 *
-	 *  @deprecated Use {@link #DEFAULT_SELECT_RENDERER} instead.
-	 */
-
-	public IPropertySelectionRenderer getDefaultSelectRenderer()
-	{
-		return DEFAULT_SELECT_RENDERER;
-	}
-
-	/**
-	 *  Returns a shared instance of {@link RadioPropertySelectionRenderer}.
-	 *
-	 * @deprecated Use {@link #DEFAULT_RADIO_RENDERER instead}.
-	 */
-
-	public IPropertySelectionRenderer getDefaultRadioRenderer()
-	{
-		return DEFAULT_RADIO_RENDERER;
 	}
 
 	/**
@@ -223,10 +202,9 @@ public class PropertySelection extends AbstractFormComponent
 	 *  thier labels, and the values to be encoded in the form are provided
 	 *  by the {@link IPropertySelectionModel model}.
 	 *
-	 */
+	 **/
 
-	public void render(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
+	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 		IPropertySelectionRenderer renderer = null;
 		Object newValue;
@@ -249,9 +227,7 @@ public class PropertySelection extends AbstractFormComponent
 			disabled = disabledBinding.getBoolean();
 
 		IPropertySelectionModel model =
-			(IPropertySelectionModel) modelBinding.getObject(
-				"model",
-				IPropertySelectionModel.class);
+			(IPropertySelectionModel) modelBinding.getObject("model", IPropertySelectionModel.class);
 
 		if (model == null)
 			throw new RequiredParameterException(this, "model", modelBinding);
@@ -259,8 +235,7 @@ public class PropertySelection extends AbstractFormComponent
 		name = form.getElementId(this);
 
 		if (rewinding)
-		
-			{
+		{
 			// If disabled, ignore anything that comes up from the client.
 
 			if (disabled)
@@ -285,7 +260,7 @@ public class PropertySelection extends AbstractFormComponent
 					IPropertySelectionRenderer.class);
 
 		if (renderer == null)
-			renderer = getDefaultSelectRenderer();
+			renderer = DEFAULT_SELECT_RENDERER;
 
 		renderer.beginRender(this, writer, cycle);
 
@@ -293,8 +268,7 @@ public class PropertySelection extends AbstractFormComponent
 		currentValue = valueBinding.getObject();
 
 		for (i = 0; i < count; i++)
-		
-			{
+		{
 			option = model.getOption(i);
 
 			if (!foundSelected)
