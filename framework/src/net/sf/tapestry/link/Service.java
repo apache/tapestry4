@@ -27,7 +27,9 @@ package net.sf.tapestry.link;
 
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  A component for creating a link for an arbitrary {@link net.sf.tapestry.IEngineService
@@ -134,7 +136,7 @@ import org.apache.log4j.Category;
 
 public class Service extends GestureLink
 {
-    private static final Category CAT = Category.getInstance(Service.class);
+    private static final Logger LOG = LogManager.getLogger(Service.class);
 
     private String _service;
     private Object _parameters;
@@ -180,7 +182,7 @@ public class Service extends GestureLink
     {
         if (_warning)
         {
-            CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "context", "parameters"));
+            LOG.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "context", "parameters"));
 
             _warning = false;
         }

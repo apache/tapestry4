@@ -1,12 +1,12 @@
 <!-- $Id$ -->
 
-<h1>Log4J Logging Controls</h1>
+<h1>Log4J Logger Controls</h1>
 
 <table border=0>
 <tr valign=top>
 <td>
 
-<form jwcid="priorityForm">
+<form jwcid="levelForm">
 
 <table class="inspector-data">
 
@@ -15,14 +15,14 @@
 	</tr>
 		
 	<tr class="even">
-		<td><em>Root Category</em></td>
+		<td><em>Root Logger</em></td>
 		<td><input type=text jwcid="inputRootLevel"/></td>
 	</tr>
 
 
 	<tr jwcid="e">
-		<td><input type=text jwcid="insertCategoryName"/></td>
-		<td><select jwcid="inputCategoryLevel"/></td>
+		<td><input type=text jwcid="insertLoggerName"/></td>
+		<td><select jwcid="inputLoggerLevel"/></td>
 	</tr>
 
 
@@ -39,7 +39,7 @@
 
 <h1>Create new Category</h1>
 
-<form jwcid="newCategoryForm">
+<form jwcid="newLoggerForm">
 
 <span jwcid="ifError">
 <span class="error"><span jwcid="insertError"/>
@@ -49,13 +49,13 @@
 <table class="inspector-data">
 
 	<tr class="even">
-		<th>New Category:</th>
-		<td><input type=text jwcid="inputNewCategory"/></td>
+		<th>New Logger:</th>
+		<td><input type=text jwcid="inputNewLogger"/></td>
 	</tr>
 
 	<tr class="even">
 		<td></td>
-		<td><input type="submit" value="Add Category">
+		<td><input type="submit" value="Add Logger">
 		</td>
 	</tr>
 

@@ -11,7 +11,7 @@
     <pathelement location="${framework.jar}"/>
     <pathelement location="${lib.ext.dir}/ejb.jar"/>
     <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
-    <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
+    <pathelement location="${lib.ext.dir}/${log4j.jar}"/>
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/junit.jar"/>

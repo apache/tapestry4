@@ -11,7 +11,6 @@
     <classpathentry kind="lib" path="lib/ext/javax.servlet.jar"/>
     <classpathentry kind="lib" path="lib/ext/javax.xml.jaxp.jar"/>
     <classpathentry kind="lib" path="lib/ext/junit.jar"/>
-    <classpathentry kind="lib" path="lib/ext/log4j-core.jar"/>
     <classpathentry kind="lib" path="lib/ext/mckoidb.jar"/>
     <classpathentry kind="lib" path="lib/ext/org.apache.crimson.jar"/>
     <classpathentry kind="lib" path="lib/ext/org.mortbay.jetty.jar"/>
@@ -24,5 +23,6 @@
     <classpathentry kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
     <classpathentry kind="lib" path="lib/ext/jcommon-0.6.4.jar"/>
     <classpathentry kind="lib" path="lib/ext/jfreechart-0.9.2.jar"/>
+    <classpathentry kind="lib" path="lib/ext/log4j-1.2.6.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

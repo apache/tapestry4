@@ -39,7 +39,9 @@ import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IUploadFile;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.StringSplitter;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Decodes the data in a <code>multipart/form-data</code> HTTP request, handling
@@ -64,11 +66,9 @@ import org.apache.log4j.Category;
 
 public class MultipartDecoder
 {
-    private static final Category CAT =
-        Category.getInstance(MultipartDecoder.class);
+    private static final Logger LOG = LogManager.getLogger(MultipartDecoder.class);
 
-    public static final String MULTIPART_FORM_DATA_CONTENT_TYPE =
-        "multipart/form-data";
+    public static final String MULTIPART_FORM_DATA_CONTENT_TYPE = "multipart/form-data";
 
     private static final String QUOTE = "\"";
 
@@ -88,9 +88,7 @@ public class MultipartDecoder
     {
         if (!isMultipartRequest(request))
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
-                    "MultipartDecoder.wrong-content-type",
-                    request.getContentType()));
+                Tapestry.getString("MultipartDecoder.wrong-content-type", request.getContentType()));
 
         decode(request);
     }
@@ -112,7 +110,7 @@ public class MultipartDecoder
 
     private void decode(HttpServletRequest request)
     {
-        boolean debug = CAT.isDebugEnabled();
+        boolean debug = LOG.isDebugEnabled();
 
         String contentType = request.getContentType();
         int pos = contentType.indexOf(BOUNDARY);
@@ -137,11 +135,7 @@ public class MultipartDecoder
         }
         catch (IOException ex)
         {
-            CAT.error(
-                Tapestry.getString(
-                    "MultipartDecoder.io-exception-reading-input",
-                    ex.getMessage()),
-                ex);
+            LOG.error(Tapestry.getString("MultipartDecoder.io-exception-reading-input", ex.getMessage()), ex);
 
             // Cleanup any partial upload files.
 
@@ -156,20 +150,17 @@ public class MultipartDecoder
 
     }
 
-    private void checkForInitialBoundary(LineInput input, String boundary)
-        throws IOException
+    private void checkForInitialBoundary(LineInput input, String boundary) throws IOException
     {
         String line = input.readLine();
 
         if (line.equals(boundary))
             return;
 
-        throw new ApplicationRuntimeException(
-            Tapestry.getString("MultipartDecoder.missing-initial-boundary"));
+        throw new ApplicationRuntimeException(Tapestry.getString("MultipartDecoder.missing-initial-boundary"));
     }
 
-    private boolean readNextPart(LineInput input, byte[] boundary)
-        throws IOException
+    private boolean readNextPart(LineInput input, byte[] boundary) throws IOException
     {
         String disposition = null;
         String contentType = null;
@@ -205,17 +196,14 @@ public class MultipartDecoder
         }
 
         if (disposition == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("MultipartDecoder.missing-content-disposition"));
+            throw new ApplicationRuntimeException(Tapestry.getString("MultipartDecoder.missing-content-disposition"));
 
         Map dispositionMap = explodeDisposition(disposition);
         String name = (String) dispositionMap.get("name");
 
         if (Tapestry.isNull(name))
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
-                    "MultipartDecoder.invalid-content-disposition",
-                    disposition));
+                Tapestry.getString("MultipartDecoder.invalid-content-disposition", disposition));
 
         if (!dispositionMap.containsKey("filename"))
             return readValuePart(input, boundary, name);
@@ -246,9 +234,7 @@ public class MultipartDecoder
 
             if (!(rawValue.startsWith(QUOTE) && rawValue.endsWith(QUOTE)))
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
-                        "MultipartDecoder.invalid-content-disposition",
-                        disposition));
+                    Tapestry.getString("MultipartDecoder.invalid-content-disposition", disposition));
 
             result.put(key, rawValue.substring(1, rawValue.length() - 1));
 
@@ -257,12 +243,7 @@ public class MultipartDecoder
         return result;
     }
 
-    private boolean readFilePart(
-        LineInput input,
-        byte[] boundary,
-        String name,
-        String fileName,
-        String contentType)
+    private boolean readFilePart(LineInput input, byte[] boundary, String name, String fileName, String contentType)
         throws IOException
     {
         UploadOutputStream uploadStream = new UploadOutputStream();
@@ -273,8 +254,8 @@ public class MultipartDecoder
 
         UploadPart p;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Read file part '" + name + "'.");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Read file part '" + name + "'.");
 
         if (file != null)
             p = new UploadPart(fileName, file);
@@ -286,8 +267,7 @@ public class MultipartDecoder
         return last;
     }
 
-    private boolean readValuePart(LineInput input, byte[] boundary, String name)
-        throws IOException
+    private boolean readValuePart(LineInput input, byte[] boundary, String name) throws IOException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -297,8 +277,8 @@ public class MultipartDecoder
 
         String value = baos.toString();
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Read value part '" + name + "' with value: " + value);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Read value part '" + name + "' with value: " + value);
 
         ValuePart p = (ValuePart) partMap.get(name);
 
@@ -326,11 +306,7 @@ public class MultipartDecoder
      * 
      **/
 
-    private boolean readIntoStream(
-        LineInput input,
-        byte[] boundary,
-        OutputStream stream)
-        throws IOException
+    private boolean readIntoStream(LineInput input, byte[] boundary, OutputStream stream) throws IOException
     {
         boolean result = false;
         int c = 0;

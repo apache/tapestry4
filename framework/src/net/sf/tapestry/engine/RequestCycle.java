@@ -32,7 +32,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IComponent;
@@ -68,7 +69,7 @@ import net.sf.tapestry.event.ObservedChangeEvent;
 
 public class RequestCycle implements IRequestCycle, ChangeObserver
 {
-    private static final Category CAT = Category.getInstance(RequestCycle.class);
+    private static final Logger LOG = LogManager.getLogger(RequestCycle.class);
 
     private IPage _page;
     private IEngine _engine;
@@ -372,8 +373,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void removeAttribute(String name)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Removing attribute " + name);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Removing attribute " + name);
 
         if (_attributes == null)
             return;
@@ -596,8 +597,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void setAttribute(String name, Object value)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Set attribute " + name + " to " + value);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Set attribute " + name + " to " + value);
 
         if (_attributes == null)
             _attributes = new HashMap();
@@ -607,16 +608,16 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void setPage(IPage value)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Set page to " + value);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Set page to " + value);
 
         _page = value;
     }
 
     public void setPage(String name)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Set page to " + name);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Set page to " + name);
 
         _page = getPage(name);
     }
@@ -629,8 +630,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void commitPageChanges() throws PageRecorderCommitException
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Committing page changes");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Committing page changes");
 
         if (_loadedRecorders == null || _loadedRecorders.isEmpty())
             return;
@@ -663,8 +664,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         IPage page = event.getComponent().getPage();
         String pageName = page.getName();
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Observed change in page " + pageName + "; creating page recorder.");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Observed change in page " + pageName + "; creating page recorder.");
 
         IPageRecorder recorder = createPageRecorder(pageName);
 
@@ -688,8 +689,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void discardPage(String name)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Discarding page " + name);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Discarding page " + name);
 
         IPageRecorder recorder = _engine.getPageRecorder(name);
 

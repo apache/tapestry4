@@ -43,7 +43,9 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.StringSplitter;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Responsible for copying assets from the classpath to an external directory that
@@ -97,7 +99,7 @@ import org.apache.log4j.Category;
 
 public class AssetExternalizer
 {
-    private static final Category CAT = Category.getInstance(AssetExternalizer.class);
+    private static final Logger LOG = LogManager.getLogger(AssetExternalizer.class);
 
     private IResourceResolver _resolver;
     private File _assetDir;
@@ -128,7 +130,7 @@ public class AssetExternalizer
 
         _assetDir = new File(directory);
 
-        CAT.debug("Initialized with directory " + _assetDir + " mapped to " + _URL);
+        LOG.debug("Initialized with directory " + _assetDir + " mapped to " + _URL);
     }
 
     protected void externalize(String resourcePath) throws IOException
@@ -143,8 +145,8 @@ public class AssetExternalizer
         URL inputURL;
         byte[] buffer;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Externalizing " + resourcePath);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Externalizing " + resourcePath);
 
         file = _assetDir;
 

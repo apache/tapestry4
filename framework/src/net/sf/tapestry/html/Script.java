@@ -41,7 +41,9 @@ import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Works with the {@link Body} component to add a script (and perhaps some initialization) 
@@ -88,7 +90,7 @@ import org.apache.log4j.Category;
 
 public class Script extends AbstractComponent
 {
-    private static final Category CAT = Category.getInstance(Script.class);
+    private static final Logger LOG = LogManager.getLogger(Script.class);
 
     private String _lastScriptPath;
     private String _scriptPath;

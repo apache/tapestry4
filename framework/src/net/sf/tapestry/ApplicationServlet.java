@@ -39,6 +39,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
 import net.sf.tapestry.engine.ResourceResolver;
@@ -95,7 +97,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 abstract public class ApplicationServlet extends HttpServlet
 {
-    private static final Category CAT = Category.getInstance(ApplicationServlet.class);
+    private static final Logger LOG = LogManager.getLogger(ApplicationServlet.class);
 
     /**
      *  Name of the cookie written to the client web browser to
@@ -192,8 +194,8 @@ abstract public class ApplicationServlet extends HttpServlet
 
                     if (forceStore || dirty)
                     {
-                        if (CAT.isDebugEnabled())
-                            CAT.debug("Storing " + engine + " into session as " + _attributeName);
+                        if (LOG.isDebugEnabled())
+                            LOG.debug("Storing " + engine + " into session as " + _attributeName);
 
                         session.setAttribute(_attributeName, engine);
                     }
@@ -204,8 +206,8 @@ abstract public class ApplicationServlet extends HttpServlet
                     // Allow the engine (which has state particular to the client)
                     // to be reclaimed by the garbage collector.
 
-                    if (CAT.isDebugEnabled())
-                        CAT.debug("Session invalidated.");
+                    if (LOG.isDebugEnabled())
+                        LOG.debug("Session invalidated.");
                 }
 
                 return;
@@ -213,7 +215,7 @@ abstract public class ApplicationServlet extends HttpServlet
 
             if (engine.isStateful())
             {
-                CAT.error("Engine " + engine + " is stateful even though there is no session.  Discarding the engine.");
+                LOG.error("Engine " + engine + " is stateful even though there is no session.  Discarding the engine.");
                 return;
             }
 
@@ -222,8 +224,8 @@ abstract public class ApplicationServlet extends HttpServlet
             // instead save it in a pool for later reuse (by this, or another
             // client in the same locale).
 
-            if (CAT.isDebugEnabled())
-                CAT.debug("Returning " + engine + " to pool.");
+            if (LOG.isDebugEnabled())
+                LOG.debug("Returning " + engine + " to pool.");
 
             _enginePool.store(engine.getLocale(), engine);
 
@@ -311,14 +313,14 @@ abstract public class ApplicationServlet extends HttpServlet
             engine = (IEngine) session.getAttribute(_attributeName);
             if (engine != null)
             {
-                if (CAT.isDebugEnabled())
-                    CAT.debug("Retrieved " + engine + " from session " + session.getId() + ".");
+                if (LOG.isDebugEnabled())
+                    LOG.debug("Retrieved " + engine + " from session " + session.getId() + ".");
 
                 return engine;
             }
 
-            if (CAT.isDebugEnabled())
-                CAT.debug("Session exists, but doesn't contain an engine.");
+            if (LOG.isDebugEnabled())
+                LOG.debug("Session exists, but doesn't contain an engine.");
         }
 
         Locale locale = getLocaleFromRequest(context);
@@ -332,8 +334,8 @@ abstract public class ApplicationServlet extends HttpServlet
         }
         else
         {
-            if (CAT.isDebugEnabled())
-                CAT.debug("Using pooled engine " + engine + " (from locale " + locale + ").");
+            if (LOG.isDebugEnabled())
+                LOG.debug("Using pooled engine " + engine + " (from locale " + locale + ").");
         }
 
         return engine;
@@ -409,8 +411,8 @@ abstract public class ApplicationServlet extends HttpServlet
 
         try
         {
-            if (CAT.isDebugEnabled())
-                CAT.debug("Loading application specification from " + path);
+            if (LOG.isDebugEnabled())
+                LOG.debug("Loading application specification from " + path);
 
             return parseApplicationSpecification(stream, path);
         }
@@ -560,15 +562,15 @@ abstract public class ApplicationServlet extends HttpServlet
             if (className == null)
                 throw new ServletException(Tapestry.getString("ApplicationServlet.no-engine-class"));
 
-            if (CAT.isDebugEnabled())
-                CAT.debug("Creating engine from class " + className);
+            if (LOG.isDebugEnabled())
+                LOG.debug("Creating engine from class " + className);
 
             Class engineClass = Class.forName(className, true, classLoader);
 
             IEngine result = (IEngine) engineClass.newInstance();
 
-            if (CAT.isDebugEnabled())
-                CAT.debug("Created engine " + result);
+            if (LOG.isDebugEnabled())
+                LOG.debug("Created engine " + result);
 
             return result;
         }
@@ -592,8 +594,8 @@ abstract public class ApplicationServlet extends HttpServlet
 
     public void writeLocaleCookie(Locale locale, IEngine engine, RequestContext cycle)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Writing locale cookie " + locale);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Writing locale cookie " + locale);
 
         Cookie cookie = new Cookie(LOCALE_COOKIE_NAME, locale.toString());
         cookie.setPath(engine.getServletPath());

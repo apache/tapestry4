@@ -31,7 +31,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
@@ -55,7 +56,7 @@ import net.sf.tapestry.Tapestry;
 
 public class PrivateAsset implements IAsset
 {
-    private static final Category CAT = Category.getInstance(PrivateAsset.class);
+    private static final Logger LOG = LogManager.getLogger(PrivateAsset.class);
 
     private AssetExternalizer externalizer;
 
@@ -157,8 +158,8 @@ public class PrivateAsset implements IAsset
                 return result;
         }
 
-        if (CAT.isDebugEnabled())
-            CAT.debug(
+        if (LOG.isDebugEnabled())
+            LOG.debug(
                 "Searching for localization of private asset "
                     + resourcePath
                     + " in locale "
@@ -218,8 +219,8 @@ public class PrivateAsset implements IAsset
                     localizations.put(locale, candidatePath);
                 }
 
-                if (CAT.isDebugEnabled())
-                    CAT.debug("Found " + candidatePath);
+                if (LOG.isDebugEnabled())
+                    LOG.debug("Found " + candidatePath);
 
                 return candidatePath;
             }

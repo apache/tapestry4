@@ -33,7 +33,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IMarkupWriter;
@@ -66,7 +67,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 public class DefaultSpecificationSource implements ISpecificationSource, IRenderDescription
 {
-    private static final Category CAT = Category.getInstance(DefaultSpecificationSource.class);
+    private static final Logger LOG = LogManager.getLogger(DefaultSpecificationSource.class);
 
     private IResourceResolver _resolver;
     private ApplicationSpecification _specification;
@@ -151,8 +152,8 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     {
         ComponentSpecification result = null;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Parsing component specification " + resourcePath);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Parsing component specification " + resourcePath);
 
         InputStream inputStream = openSpecification(resourcePath);
 
@@ -183,8 +184,8 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     protected LibrarySpecification parseLibrarySpecification(String resourcePath)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Parsing library specification " + resourcePath);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Parsing library specification " + resourcePath);
 
         InputStream inputStream = openSpecification(resourcePath);
 
