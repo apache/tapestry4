@@ -38,8 +38,22 @@
     <default symbol="org.apache.tapestry.exception-page-name" value="Exception"/>
   </contribution>
   
+  
+  <service-point id="RequestExceptionReporter" interface="RequestExceptionReporter">
+    
+    Reports request errors to the console (when reporting using the Exception page fails, or is
+    inappropriate).
+    
+    <invoke-factory>
+      <construct class="RequestExceptionReporterImpl">
+        <set-object property="request" value="infrastructure:request"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
   <contribution configuration-id="tapestry.Infrastructure">
+    <property name="requestExceptionReporter" object="service:RequestExceptionReporter"/>\    
     <property name="exceptionPresenter" object="service:ExceptionPresenter"/>
-  </contribution>
+  </contribution>  
   
 </module>

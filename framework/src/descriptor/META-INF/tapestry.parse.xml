@@ -95,4 +95,9 @@
     
   </service-point>
   
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="templateSource" object="service:TemplateSource"/>
+    <property name="specificationSource" object="service:SpecificationSource"/>    
+  </contribution>
+  
 </module>

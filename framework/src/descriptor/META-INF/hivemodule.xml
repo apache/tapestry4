@@ -123,27 +123,9 @@
   </service-point>
   
   <contribution configuration-id="Infrastructure">
-    <property name="applicationSpecification" object="service-property:tapestry.globals.ApplicationGlobals:specification"/>
-    <property name="applicationPropertySource" object="service:tapestry.props.ApplicationPropertySource"/>
-    <property name="globalPropertySource" object="service:tapestry.props.GlobalPropertySource"/>
     <property name="componentMessagesSource" object="service:ComponentMessagesSource"/>
     <property name="resetEventCoordinator" object="service:ResetEventCoordinator"/>
-    <property name="templateSource" object="service:tapestry.parse.TemplateSource"/>
-    <property name="specificationSource" object="service:tapestry.parse.SpecificationSource"/>
     <property name="objectPool" object="service:GlobalObjectPool"/>
-    <property name="pageSource" object="service:tapestry.page.PageSource"/>
-    <property name="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
-    <property name="scriptSource" object="service:tapestry.script.ScriptSource"/>
-    <property name="serviceMap" object="service:tapestry.services.ServiceMap"/>
-    <property name="requestExceptionReporter" object="service:RequestExceptionReporter"/>
-    <property name="requestCycleFactory" object="service:tapestry.request.RequestCycleFactory"/>
-    <property name="applicationStateManager" object="service:tapestry.state.ApplicationStateManager"/>
-    <property name="request" object="service:tapestry.globals.WebRequest"/>
-    <property name="response" object="service:tapestry.globals.WebResponse"/>
-    <property name="componentPropertySource" object="service:tapestry.props.ComponentPropertySource"/>
-    <property name="applicationId" object="service-property:tapestry.globals.ApplicationGlobals:activatorName"/>
-    <property name="context" object="service:tapestry.globals.WebContext"/>
-    <property name="markupWriterSource" object="service:tapestry.markup.MarkupWriterSource"/>
   </contribution>
   
   <service-point id="ExtensionLookupFactory" interface="org.apache.hivemind.ServiceImplementationFactory">
@@ -227,17 +209,6 @@
   <contribution configuration-id="hivemind.ObjectProviders">
     <provider prefix="infrastructure" service-id="InfrastructureObjectProvider"/>
   </contribution>
-  
-  <service-point id="RequestExceptionReporter" interface="RequestExceptionReporter">
-    Reports request errors to the console (when reporting using the Exception page fails, or is
-    inappropriate).
-    
-    <invoke-factory>
-      <construct class="impl.RequestExceptionReporterImpl">
-        <set-object property="request" value="infrastructure:request"/>
-      </construct>
-    </invoke-factory>
-  </service-point>
   
   <service-point id="DeferredObjectTranslator" interface="org.apache.hivemind.schema.Translator" visibility="private">
     

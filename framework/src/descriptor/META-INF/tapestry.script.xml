@@ -30,5 +30,8 @@
     </invoke-factory>
   </service-point>
   
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="scriptSource" object="service:ScriptSource"/>    
+  </contribution>
 
 </module>

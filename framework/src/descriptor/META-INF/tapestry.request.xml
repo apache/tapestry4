@@ -180,6 +180,7 @@
   
   <contribution configuration-id="tapestry.Infrastructure">
     <property name="responseRenderer" object="service:ResponseRenderer"/>
+    <property name="requestCycleFactory" object="service:RequestCycleFactory"/>
   </contribution>
   
   <service-point id="AbsoluteURLBuilder">

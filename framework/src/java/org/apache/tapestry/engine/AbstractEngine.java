@@ -133,7 +133,7 @@ public abstract class AbstractEngine implements IEngine
     /**
      * Writes a detailed report of the exception to <code>System.err</code>.
      * 
-     * @see org.apache.tapestry.services.RequestExceptionReporter
+     * @see org.apache.tapestry.error.RequestExceptionReporter
      */
 
     public void reportException(String reportTitle, Throwable ex)

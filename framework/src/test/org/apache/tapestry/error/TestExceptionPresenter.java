@@ -20,7 +20,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.error.ExceptionPresenterImpl;
 import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;

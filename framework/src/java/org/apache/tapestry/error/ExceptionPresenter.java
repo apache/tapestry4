@@ -26,6 +26,7 @@ import org.apache.tapestry.IRequestCycle;
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
+ * @see RequestExceptionReporter
  */
 public interface ExceptionPresenter
 {
