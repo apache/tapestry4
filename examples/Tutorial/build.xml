@@ -11,14 +11,17 @@
   <!-- Path of the installed framework jar -->
   <property name="tutorial.war" value="${lib}/Tutorial.war"/>
  
+  <property file="../../framework/src/com/primix/tapestry/Version.properties"/>
+
+
   <path id="project.class.path">
     <pathelement location="${lib}/ejb.jar"/>
     <pathelement location="${lib}/javax.servlet.jar"/>
     <pathelement location="${lib}/log4j-core.jar"/>
     <pathelement location="${lib}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib}/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/com.primix.tapestry.jar"/>
-    <pathelement location="${lib}/net.sf.tapestry.contrib.jar"/>
+    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
+    <pathelement location="${lib}/net.sf.tapestry.contrib_${framework.version}.jar"/>
   </path>
   <target name="init">
     <tstamp/>

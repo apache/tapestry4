@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <project name="Tapestry Framework" default="install">
-  <!-- The version of the framework (CVS release) -->
-  <property name="framework.version" value="1.0.6"/>
+
+ 
   <!-- Directory in which compiled classes are placed -->
   <property name="classes" value="classes"/>
   <!-- Directory that contains library frameworks, and to
@@ -10,10 +10,15 @@
   <property name="lib" value="../lib"/>
   <!-- Directory containing source code and package resources -->
   <property name="src" value="src"/>
+  
+  <property file="${src}/com/primix/tapestry/Version.properties"/>
+  
   <!-- Path of the installed framework jar -->
-  <property name="framework.jar" value="${lib}/com.primix.tapestry.jar"/>
+  <property name="framework.jar" value="${lib}/com.primix.tapestry_${framework.version}.jar"/>
+  
   <!-- Relative path to the Javadoc directory -->
   <property name="javadoc.dir" value="../doc/api"/>
+  
   <path id="project.class.path">
     <pathelement location="${lib}/ejb.jar"/>
     <pathelement location="${lib}/javax.servlet.jar"/>
@@ -22,6 +27,7 @@
     <pathelement location="${lib}/org.apache.crimson.jar"/>
     <pathelement location="${lib}/org.mortbay.jetty.jar"/>
   </path>
+  
   <target name="init">
     <tstamp/>
     <mkdir dir="${classes}"/>

@@ -15,13 +15,14 @@
        to the JBoss installation (2.4.x). -->
        
   <property file="../../config/build.properties"/>
+  <property file="../../framework/src/com/primix/tapestry/Version.properties"/>
   
   <path id="project.class.path">
     <pathelement location="${lib}/javax.servlet.jar"/>
     <pathelement location="${lib}/log4j-core.jar"/>
     <pathelement location="${lib}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib}/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/com.primix.tapestry.jar"/>
+    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
     <pathelement location="${jboss.dir}/lib/jboss-jdbc_ext.jar"/>
     <pathelement location="${jboss.dir}/lib/ext/mail.jar"/>
     <pathelement location="${jboss.dir}/lib/ext/activation.jar"/>

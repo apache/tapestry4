@@ -31,6 +31,7 @@ import com.primix.tapestry.util.*;
 import java.text.MessageFormat;
 import java.util.*;
 import java.io.*;
+import java.io.InputStream;
 
 /**
  *  A placeholder for a number of (static) methods that don't belong elsewhere.
@@ -56,8 +57,7 @@ public final class Tapestry
 	 *
 	 */
 
-	public static final String VERSION = "1.0.9";
-
+	public static final String VERSION = readVersion();
 
 	/**
 	 *  Contains strings loaded from TapestryStrings.properties.
@@ -522,4 +522,35 @@ public final class Tapestry
 		return getString(key, new Object[] { arg1, arg2, arg3 });
 	}
 
+	private static final String UNKNOWN_VERSION = "Unknown";
+	
+	/**
+	 *  Invoked when the class is initialized to read the current version file.
+	 * 
+	 **/
+	
+	private static final String readVersion()
+	{
+		Properties props = new Properties();
+		
+		try
+		{
+			InputStream in = Tapestry.class.getResourceAsStream("Version.properties");
+			
+			if (in == null)
+				return UNKNOWN_VERSION;
+			
+			props.load(in);
+			
+			in.close();
+			
+			return props.getProperty("framework.version", UNKNOWN_VERSION);
+		}
+		catch (IOException ex)
+		{
+			return UNKNOWN_VERSION;
+		}	
+	
+	}
+	
 }

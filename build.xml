@@ -5,20 +5,16 @@
 <project name="Tapestry Module" default="install">
 
 <!-- The framework version occurs in four places:
-Here (used when generating distributions and Javadoc).
-In the class com.primix.tapestry.Tapestry.
-In the Readme.html
 In some of the documentation in the web directory.
 -->
 
-<property name="framework.version" value="1.0.9"/>
+<property file="framework/src/com/primix/tapestry/Version.properties"/>
 
 <property name="lib" value="lib"/>
 
 <property name="javadoc.dir" value="doc/api"/>
 
 <property name="private.dir" value="private"/>
-
 
 <!-- Read the configuration to location the JBoss distribution. -->
 
@@ -38,8 +34,8 @@ In some of the documentation in the web directory.
 <property name="dist.tar.gz" value="${dist.tar}.gz"/>
 
 <path id="tutorial.classpath">
-  <pathelement location="${lib}/com.primix.tapestry.jar"/>
-  <pathelement location="${lib}/net.sf.tapestry.contrib.jar"/>
+  <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
+  <pathelement location="${lib}/net.sf.tapestry.contrib_${framework.version}.jar"/>
   <pathelement location="${lib}/javax.servlet.jar"/>
   <pathelement location="${lib}/log4j-core.jar"/>
   <pathelement location="${lib}/javax.xml.jaxp.jar"/>
@@ -77,8 +73,8 @@ In some of the documentation in the web directory.
     <fileset dir="${lib}">
       <include name="*.war"/>
       <include name="*.ear"/>
-      <include name="com.primix.tapestry.jar"/>
-      <include name="net.sf.tapestry.contrib.jar"/>
+      <include name="com.primix.tapestry_*.jar"/>
+      <include name="net.sf.tapestry.contrib_*.jar"/>
       <include name="VlibBeans.jar"/>  
    </fileset>
   </delete>
@@ -131,14 +127,13 @@ description="Builds the Tapestry documentation.">
    <fileset dir=".">
      <include name="*.xml"/>
      <include name="*.html"/>
+     <exclude name="Readme.html"/>
      <include name="config/**"/>
-     <include name="contrib/**"/>
      <include name="doc/**"/>
      <include name="examples/**"/>
-     <include name="framework/**"/>
-	 <include name="junit/**"/>
+ 	 <include name="junit/**"/>
 	 <include name="lib/*"/>
-     <include name="web/**"/>
+	 <include name="web/**"/>
      <!-- Exclude class files left around by IDEs. -->
      <exclude name="**/*.class"/>
      
@@ -169,7 +164,26 @@ description="Builds the Tapestry documentation.">
    </fileset>
  </copy>
  
- <!-- Pack the directory (relative to ${dist}), into a TAR file. -->
+ <!-- The Readme.html file includes a version number; copy w/ filtering. -->
+ 
+ <copy file="Readme.html" todir="${dist.dir}">
+	<filterset>
+		<filter token="VERSION" value="${framework.version}"/>
+	</filterset>
+ </copy>
+   
+ <!-- Jar up the source code for the frameworks. -->
+ 
+ <mkdir dir="${dist.dir}/src"/>
+ 
+ <jar jarfile="${dist.dir}/src/com.primix.tapestry-src.jar"
+ 	basedir="framework"/>
+ <jar jarfile="${dist.dir}/src/net.sf.tapestry.contrib-src.jar"
+ 	basedir="contrib"/>
+
+ <!-- Pack the directory (relative to ${dist}), into a TAR file.  We go to the extra work
+      of building a .tar.gz because the disto is smaller than an equivalent .zip file.
+   -->
  
  <tar basedir="${dist}" tarfile="${dist.tar}" includes="${dist.base}/**" longfile="gnu"/>
  
@@ -258,10 +272,20 @@ description="Builds the Tapestry documentation.">
 
 
   <target name="configure" description="Configure the JBoss server and setup the Vlib database.">
+    <!-- Delete old version of the framework. -->
+    
+    <delete quiet="true">
+    	<fileset dir="${jboss.dir}/lib/ext">
+	    	<include name="net.sf.tapestry.contrib*.jar"/>
+	    	<include name="com.primix.tapestry*.jar"/>
+	    	<exclude name="*_${framework.version}.jar"/>
+	    </fileset>
+    </delete>
+    
     <copy todir="${jboss.dir}/lib/ext">
     	<fileset dir="${lib}">
-    		<include name="net.sf.tapestry.contrib.jar"/>
-    		<include name="com.primix.tapestry.jar"/>
+    		<include name="net.sf.tapestry.contrib_${framework.version}.jar"/>
+    		<include name="com.primix.tapestry_${framework.version}.jar"/>
     		<include name="mckoidb.jar"/>
     		<include name="org.mortbay.jetty.jar"/>
     		<include name="javax.servlet.jar"/>
