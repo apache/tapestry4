@@ -54,12 +54,15 @@ public class VirtualLibraryApplication extends SimpleApplication
 	 
 	private Handle userHandle;
 	private transient IPerson user;
+	private transient Integer userPK;
 	private transient String fullUserName;
 	
 	private transient IPublisherHome publisherHome;
 	private transient IBookHome bookHome;
 	private transient IPersonHome personHome;
 	private transient IBookQueryHome bookQueryHome;
+	private transient IVlibOperationsHome operationsHome;
+	private transient IVlibOperations operations;
 	
 	private transient Context environment;	
 	
@@ -83,6 +86,28 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return "/com/primix/vlib/Vlib.application";	
 	}
 	
+	/**
+	 *  Removes the operations bean instance, if accessed this request cycle.
+	 *
+	 */
+	 
+	protected void cleanupAfterRequest()
+	{
+		if (operations != null)
+		{
+			try
+			{
+				operations.remove();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		operations = null;
+	}
+	
 	public IPerson getUser()
 	{
 		if (user != null)
@@ -94,6 +119,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 		try
 		{
 			user = (IPerson)userHandle.getEJBObject();
+			userPK = (Integer)user.getPrimaryKey();
 		}
 		catch (RemoteException e)
 		{
@@ -102,6 +128,17 @@ public class VirtualLibraryApplication extends SimpleApplication
 		
 		return user;
 	}
+	
+	public Integer getUserPK()
+	{
+		// If the user is not known, then get it.  Side effect:  sets
+		// the userPK.
+		
+		if (userPK == null)
+			getUser();
+		
+		return userPK;
+	}	
 	
 	public IPersonHome getPersonHome()
 	{
@@ -136,7 +173,48 @@ public class VirtualLibraryApplication extends SimpleApplication
 		
 		return bookQueryHome;
 	}
-			
+
+	public IVlibOperationsHome getOperationsHome()
+	{
+		if (operationsHome == null)
+			operationsHome = (IVlibOperationsHome)findNamedObject("ejb/VlibOperations",
+				IVlibOperationsHome.class);
+		
+		return operationsHome;
+	}
+	
+	/**
+	 *  Returns an instance of the Vlib Operations beans, which is a stateless
+	 *  session bean for performing certain operations.
+	 *
+	 *  <p>The bean is automatically removed at the end of the request cycle.
+	 *
+	 */
+	 				
+	public IVlibOperations getOperations()
+	{
+		IVlibOperationsHome home;
+		
+		if (operations == null)
+		{
+			try
+			{
+				home = getOperationsHome();
+				operations = home.create();
+			}
+			catch (CreateException e)
+			{
+				throw new ApplicationRuntimeException("Error creating operations bean: " + e, e);
+			}
+			catch (RemoteException e)
+			{
+				throw new ApplicationRuntimeException("Remote exception creating operations bean: " + e, e);
+			}
+		}
+		
+		return operations;
+	}
+					
 	public Object findNamedObject(String name, Class expectedClass)
 	{
 		Object raw;
@@ -206,6 +284,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 		try
 		{
 			userHandle = user.getHandle();
+			userPK = (Integer)user.getPrimaryKey();
 		}
 		catch (RemoteException e)
 		{
@@ -239,6 +318,27 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public boolean isUserLoggedIn()
 	{
 		return user != null || userHandle != null;
+	}
+	
+	public boolean isLoggedInUser(Integer primaryKey)
+	{
+		IPerson user;
+		Integer userPK;
+		
+		user = getUser();
+		if (user == null)
+			return false;
+		
+		try
+		{
+			userPK = (Integer)user.getPrimaryKey();
+		}
+		catch (RemoteException e)
+		{
+			throw new ApplicationRuntimeException(e.getMessage(), e);
+		}
+	
+		return userPK.equals(primaryKey);
 	}
 	
 	public IDirectListener getMyBooksListener()

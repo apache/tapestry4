@@ -15,6 +15,46 @@
 			</bindings>
 		</component>
 		<component>
+			<id>ifError</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>error</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertError</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>error</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>ifMessage</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>message</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertMessage</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>message</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>searchForm</id>
 			<type>Form</type>
 			<bindings>

@@ -68,21 +68,19 @@ public interface IBook extends IEntityBean
 	public void incrementLendCount()
 	throws RemoteException;
 
-	public void setOwner(IPerson owner)
+	public void setOwnerPK(Integer value)
 	throws RemoteException;
 
-	public IPerson getOwner()
+	public Integer getOwnerPK()
 	throws RemoteException;
 	
-	public void setHolder(IPerson holder)
+	public void setHolderPK(Integer value)
 	throws RemoteException;
 	
-	public IPerson getHolder()
+	public Integer getHolderPK()
 	throws RemoteException;
 	
-	public void setPublisher(IPublisher value)
+	public void setPublisherPK(Integer value)
 	throws RemoteException;
 	
-	public IPublisher getPublisher()
-	throws RemoteException;	
 }

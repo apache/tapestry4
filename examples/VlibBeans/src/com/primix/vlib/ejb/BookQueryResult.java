@@ -104,9 +104,9 @@ public class BookQueryResult implements Serializable
 		return columns[index];
 	}
 	
-	public Object getPrimaryKey()
+	public Integer getPrimaryKey()
 	{
-		return get(PRIMARY_KEY_COLUMN);
+		return (Integer)get(PRIMARY_KEY_COLUMN);
 	}
 	
 	public String getTitle()
@@ -129,9 +129,9 @@ public class BookQueryResult implements Serializable
 		return ((Integer)get(LEND_COUNT_COLUMN)).intValue();
 	}
 	
-	public Object getOwnerPrimaryKey()
+	public Integer getOwnerPrimaryKey()
 	{
-		return get(OWNER_PK_COLUMN);
+		return (Integer)get(OWNER_PK_COLUMN);
 	}
 	
 	public String getOwnerName()
@@ -139,9 +139,9 @@ public class BookQueryResult implements Serializable
 		return (String)get(OWNER_NAME_COLUMN);
 	}
 	
-	public Object getHolderPrimaryKey()
+	public Integer getHolderPrimaryKey()
 	{
-		return get(HOLDER_PK_COLUMN);
+		return (Integer)get(HOLDER_PK_COLUMN);
 	}
 	
 	public String getHolderName()
@@ -149,9 +149,9 @@ public class BookQueryResult implements Serializable
 		return (String)get(HOLDER_NAME_COLUMN);
 	}
 	
-	public Object getPublisherPrimaryKey()
+	public Integer getPublisherPrimaryKey()
 	{
-		return get(PUBLISHER_PK_COLUMN);
+		return (Integer)get(PUBLISHER_PK_COLUMN);
 	}
 	
 	public String getPublisherName()

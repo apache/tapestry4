@@ -66,15 +66,13 @@ public class BookBean extends AbstractEntityBean
 	public Integer ownerPK;
 	public Integer holderPK;
 	public Integer publisherPK;
-	
-	private IPerson owner;
-	private IPerson holder;
-	private IPublisher publisher;
-	
+		
 	protected String[] getAttributePropertyNames()
 	{
 		return new String[] 
-		{ "title", "description", "ISBN", "lendCount"
+		{
+			"title", "description", "ISBN", "lendCount", 
+			"holderPK", "ownerPK", "publisherPK"
 		};
 	}
 	
@@ -130,119 +128,43 @@ public class BookBean extends AbstractEntityBean
 		dirty = true;
 	}
 	
-	public IPerson getHolder()
+	public Integer getHolderPK()
 	throws RemoteException
 	{
-		if (holder == null)
-			holder = locatePerson(holderPK);
-		
-		return holder;
+		return holderPK;
 	}
 	
-	public void setHolder(IPerson value)
+	public void setHolderPK(Integer value)
 	{
-		holder = value;
-		holderPK = (Integer)getPrimaryKey(holder, "holder");
+		holderPK = value;
 
 		dirty = true;
 	}
 	
-	public IPerson getOwner()
+	public Integer getOwnerPK()
 	throws RemoteException
 	{
-		if (owner == null)
-			owner = locatePerson(ownerPK);
-		
-		return owner;
+		return ownerPK;
 	}
 	
-	public void setOwner(IPerson value)
+	public void setOwnerPK(Integer value)
 	{
-		owner = value;
-		ownerPK = (Integer)getPrimaryKey(owner, "owner");
+		ownerPK = value;
         
 		dirty = true;
 	}	
 	
-	public void setPublisher(IPublisher value)
+	public void setPublisherPK(Integer value)
 	{
-		publisher = value;
-		publisherPK = (Integer)getPrimaryKey(publisher, "publisher");
+		publisherPK = value;
 		
 		dirty = true;
 	}
 	
-	public IPublisher getPublisher()
+	public Integer getPublisherPK()
 	throws RemoteException
 	{
-		if (publisher == null)
-		{
-			try
-			{
-				publisher = getPublisherHome().findByPrimaryKey(publisherPK);
-			}
-			catch (FinderException e)
-			{
-				throw new EJBException("Could not locate Publisher with primary key " +
-				publisherPK + ": " + e);
-			}
-		}
-		
-		return publisher;
-	}
-
-	private transient IPublisherHome publisherHome;
-	
-	private IPublisherHome getPublisherHome()
-	{
-		if (publisherHome != null)
-			return publisherHome;
-		try
-		{
-			publisherHome = (IPublisherHome)getEnvironmentObject("ejb/Publisher",
-					IPublisherHome.class);
-		}
-		catch (Exception e)
-		{
-			throw new EJBException(e);
-		}
-		
-		return publisherHome;
-	}		
-			
-	
-	private transient IPersonHome personHome;
-	
-	private IPersonHome getPersonHome()
-	{
-		if (personHome != null)
-			return personHome;
-			
-		try
-		{
-			personHome = (IPersonHome)getEnvironmentObject("ejb/Person",
-					IPersonHome.class);
-		}
-		catch (Exception e)
-		{
-			throw new EJBException(e);
-		}
-		
-		return personHome;
-	}		
-
-	private IPerson locatePerson(Integer personPK)
-	throws RemoteException
-	{
-		try
-		{
-			return getPersonHome().findByPrimaryKey(personPK);
-		}
-		catch (FinderException e)
-		{
-			throw new EJBException("Could not locate Person with primary key " 
-				+ personPK + ": " + e);
-		}
+		return publisherPK;
 	}
 
 	/**
@@ -254,8 +176,6 @@ public class BookBean extends AbstractEntityBean
 	public void ejbLoad() 
 	{
 		dirty = false;
-		owner = null;
-		holder = null;
 	}
 	
  
@@ -266,24 +186,16 @@ public class BookBean extends AbstractEntityBean
 		
 	// Create methods
 	
-	public Integer ejbCreate(String title, String ISBN, IPublisher publisher, 
-		IPerson person)
+	public Integer ejbCreate(String title, String ISBN, Integer publisherPK, 
+		Integer personPK)
 	throws CreateException, RemoteException
 	{
-		Integer personPK;
-		
 		this.title = title;
 		this.ISBN = ISBN;
 		
-		personPK = (Integer)getPrimaryKey(person, "person");
-		
-		owner = person;
-		holder = person;
 		ownerPK = personPK;
 		holderPK = personPK;
-		
-		this.publisher = publisher;
-		publisherPK = (Integer)getPrimaryKey(publisher, "publisher");
+		this.publisherPK = publisherPK; 
 		
 		// These are given default (unspecified) values.
 		
@@ -296,8 +208,8 @@ public class BookBean extends AbstractEntityBean
 		return null;
 	}
 	
-	public void ejbPostCreate(String title, String ISBN, IPublisher publisher,
-		IPerson person)
+	public void ejbPostCreate(String title, String ISBN, Integer publisherPK,
+		Integer personPK)
 	{
 		// No post create work needed but the method must be implemented
 	}

@@ -47,7 +47,4 @@ public interface IPublisher extends IEntityBean
 
 	public String getName()
 	throws RemoteException;	
-
-	public Collection getBooks()
-	throws RemoteException, FinderException;	
 }

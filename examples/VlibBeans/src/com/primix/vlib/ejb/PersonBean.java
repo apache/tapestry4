@@ -110,42 +110,6 @@ public class PersonBean extends AbstractEntityBean
 		return password;
 	}
 	
-	public Collection getOwnedBooks()
-	throws RemoteException, FinderException
-	{
-		return getBookHome().findByOwner(getSelf());
-	}
-	
-	public Collection getHeldBooks()
-	throws RemoteException, FinderException
-	{
-		return getBookHome().findByHolder(getSelf());
-	}
-	
-	
-	private transient IBookHome bookHome;
-	
-	private IBookHome getBookHome()
-	{
-		if (bookHome != null)
-			return bookHome;
-		
-		try
-		{
-			bookHome = (IBookHome)getEnvironmentObject("ejb/Book", IBookHome.class);
-		}
-		catch (Exception e)
-		{
-			throw new EJBException(e);
-		}
-		
-		return bookHome;
-	}	
-	
-	private IPerson getSelf()
-	{
-		return (IPerson)context.getEJBObject();	
-	}
 	
 	public Integer ejbCreate(String lastName, String firstName, String password)
 	throws CreateException, RemoteException

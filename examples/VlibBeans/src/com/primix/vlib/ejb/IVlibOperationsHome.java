@@ -2,7 +2,8 @@ package com.primix.vlib.ejb;
 
 import javax.ejb.*;
 import java.rmi.*;
-import java.util.*;
+import javax.rmi.*;
+import javax.naming.*;
 
 /*
  * Tapestry Web Application Framework
@@ -33,21 +34,16 @@ import java.util.*;
  */
 
 /**
- *  Home interface for the {@link PersonBean} entity bean.
- *
+ *  Home interface to the {@link VlibOperations} stateless
+ *  session bean.
+ *  
  *  @version $Id$
  *  @author Howard Ship
  *
  */
- 
-public interface IPersonHome extends EJBHome
-{
-	public IPerson create(String lastName, String firstName, String password)
-	throws CreateException, RemoteException;
-	
-	public IPerson findByPrimaryKey(Integer key)
-	throws FinderException, RemoteException;	
 
-	public IPerson findByEmail(String email)
-	throws FinderException, RemoteException;	
+public interface IVlibOperationsHome extends EJBHome
+{
+	public IVlibOperations create()
+	throws CreateException, RemoteException;
 }

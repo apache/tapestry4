@@ -42,18 +42,9 @@ import java.util.*;
  
 public interface IBookHome extends EJBHome
 {
-	public IBook create(String title, String ISBN, IPublisher publisher, IPerson owner)
+	public IBook create(String title, String ISBN, Integer publisherPK, Integer ownerPK)
 		throws CreateException, RemoteException;
 	
 	public IBook findByPrimaryKey(Integer key)
-		throws FinderException, RemoteException;	
-	
-	public Collection findByOwner(IPerson owner)
-		throws FinderException, RemoteException;
-		
-	public Collection findByHolder(IPerson holder)
-		throws FinderException, RemoteException;
-		
-	public Collection findByPublisher(IPublisher publisher)
 		throws FinderException, RemoteException;	
 }	
