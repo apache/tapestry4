@@ -78,6 +78,16 @@ import net.sf.tapestry.Tapestry;
  *  </tr>
  *
  *  <tr>
+ *      <td>DTD</td>
+ *      <td>{@link String}</td>
+ *      <td>in</td>
+ *      <td>no</td>
+ *      <td>-//W3C//DTD HTML 4.0 Transitional//EN</td>
+ *      <td>Used to specify the DOCTYPE of the generate HTML document.  If set to null,
+ * then no DOCTYPE is generated.</td>
+ *  </tr>
+ * 
+ *  <tr>
  *      <td>refresh</td>
  *      <td>int</td>
  *      <td>in</td>
@@ -119,29 +129,31 @@ import net.sf.tapestry.Tapestry;
 
 public class Shell extends AbstractComponent
 {
-    private String title;
-    private IAsset stylesheet;
-    private IRender delegate;
-    private int refresh;
-    
-    private static final String generatorContent =
-        "Tapestry Application Framework, version " + Tapestry.VERSION;
+    private String _title;
+    private IAsset _stylesheet;
+    private IRender _delegate;
+    private int _refresh;
+    private String _DTD = "-//W3C//DTD HTML 4.0 Transitional//EN";
 
+    private static final String generatorContent = "Tapestry Application Framework, version " + Tapestry.VERSION;
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         long startTime = 0;
-  
+
         boolean rewinding = cycle.isRewinding();
 
         if (!rewinding)
         {
             startTime = System.currentTimeMillis();
 
-            writer.printRaw(
-                "<!DOCTYPE HTML PUBLIC " + "\"-//W3C//DTD HTML 4.0 Transitional//EN\">");
-            writer.println();
+            if (!Tapestry.isNull(_DTD))
+            {
+                writer.printRaw("<!DOCTYPE HTML PUBLIC \"");
+                writer.printRaw(_DTD);
+                writer.printRaw("\">");
+                writer.println();
+            }
 
             page = getPage();
 
@@ -162,19 +174,19 @@ public class Shell extends AbstractComponent
 
             writer.begin("title");
 
-            writer.print(title);
+            writer.print(_title);
             writer.end(); // title
             writer.println();
 
-                if (delegate != null)
-                    delegate.render(writer, cycle);
+            if (_delegate != null)
+                _delegate.render(writer, cycle);
 
-            if (stylesheet != null)
+            if (_stylesheet != null)
             {
                 writer.beginEmpty("link");
                 writer.attribute("rel", "stylesheet");
                 writer.attribute("type", "text/css");
-                writer.attribute("href", stylesheet.buildURL(cycle));
+                writer.attribute("href", _stylesheet.buildURL(cycle));
                 writer.println();
             }
 
@@ -199,24 +211,22 @@ public class Shell extends AbstractComponent
 
     }
 
-    private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-         if (refresh <= 0)
+        if (_refresh <= 0)
             return;
 
         // Here comes the tricky part ... have to assemble a complete URL
         // for the current page.
 
         RequestContext context = cycle.getRequestContext();
-        IEngineService pageService =
-            cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
+        IEngineService pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
         String pageName = getPage().getName();
 
         Gesture g = pageService.buildGesture(cycle, null, new String[] { pageName });
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append(refresh);
+        buffer.append(_refresh);
         buffer.append("; URL=");
         buffer.append(g.getAbsoluteURL());
 
@@ -226,45 +236,55 @@ public class Shell extends AbstractComponent
         writer.attribute("http-equiv", "Refresh");
         writer.attribute("content", buffer.toString());
     }
-    
+
     public IRender getDelegate()
     {
-        return delegate;
+        return _delegate;
     }
 
     public void setDelegate(IRender delegate)
     {
-        this.delegate = delegate;
+        this._delegate = delegate;
     }
 
     public int getRefresh()
     {
-        return refresh;
+        return _refresh;
     }
 
     public void setRefresh(int refresh)
     {
-        this.refresh = refresh;
+        this._refresh = refresh;
     }
 
     public IAsset getStylesheet()
     {
-        return stylesheet;
+        return _stylesheet;
     }
 
     public void setStylesheet(IAsset stylesheet)
     {
-        this.stylesheet = stylesheet;
+        this._stylesheet = stylesheet;
     }
 
     public String getTitle()
     {
-        return title;
+        return _title;
     }
 
     public void setTitle(String title)
     {
-        this.title = title;
+        this._title = title;
+    }
+
+    public String getDTD()
+    {
+        return _DTD;
+    }
+
+    public void setDTD(String dTD)
+    {
+        _DTD = dTD;
     }
 
 }

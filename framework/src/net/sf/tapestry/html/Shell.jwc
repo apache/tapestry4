@@ -26,6 +26,14 @@
     If specified, provides an external stylesheet for the page.
     </description>
   </parameter>
+
+  <parameter name="DTD" 
+  	java-type="java.lang.String"
+  	direction="in">
+    <description>
+    Used to specify the DOCTYPE of the response page.
+    </description>
+  </parameter>
   
   <parameter 
   	name="refresh" 
