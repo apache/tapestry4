@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-
 <!-- $Id$ -->
-
 <!-- Special build script used when creating new Tapestry releases. 
 
 	 Copy this file and a copy of build.properties to a temporary directory
@@ -14,45 +12,58 @@
 	 Generates release distributions into the current directory.
 	 
 	 -->
-
 <project name="Tapestry Export" default="build">
-
 	<!-- This can be changed to build a historical release, or
 		 to build a branch release. -->
-		 
 	<property name="tag" value="HEAD"/>
-	
 	<property name="export.dir" value="export"/>
 	<property name="module" value="jakarta-tapestry"/>
 	<property name="work.dir" value="${export.dir}/${module}"/>
 	
 	<property file="build.properties"/>
 	
-	<target name="setup" description="Sets up the directory, gets the files via CVS.">
+	<target name="setup"
+		description="Sets up the directory, gets the files via CVS.">
+		
 		<delete dir="${export.dir}" quiet="true"/>
 		<mkdir dir="${export.dir}"/>
-		<cvs command="-z3 export"
-			tag="${tag}" package="${module}"
-			dest="${export.dir}"  
+		
+		<cvs command="-z3 export" tag="${tag}" package="${module}"
+			dest="${export.dir}"
 			cvsroot=":pserver:anoncvs@cvs.apache.org:/home/cvspublic"/>
 	</target>
 	
-	
 	<target name="build" description="Builds the distribution.">
-		<copy file="build.properties"
-			todir="${work.dir}/config"/>
+
+		<copy file="build.properties" todir="${work.dir}/config"/>
+
 		<copy todir="${work.dir}/ext-dist">
 			<fileset dir="${ext.dist.src.dir}">
 				<include name="*.jar"/>
 				<include name="*.zip"/>
-			</fileset>	
+			</fileset>
 		</copy>
+		
 		<ant inheritAll="false" dir="${work.dir}" target="dist"/>
-		<copy todir=".">
-		  <fileset dir="${work.dir}/dist">
-		    <include name="*.tar.gz"/>
-	        </fileset>
-	      </copy>
+		
+		<property file="${work.dir}/config/Version.properties"/>
+
+		<mkdir dir="${framework.version}"/>
+
+		<copy todir="${framework.version}">
+			<fileset dir="${work.dir}/dist">
+				<include name="*.tar.gz"/>
+				<include name="*.zip"/>
+			</fileset>
+		</copy>
+
+		<echo>Generating checksums ...</echo>
+
+		<checksum>
+			<fileset dir="${framework.version}">
+				<include name="*.tar.gz"/>
+				<include name="*.zip"/>
+			</fileset>
+		</checksum>
 	</target>
-	
 </project>
