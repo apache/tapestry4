@@ -58,6 +58,17 @@ package org.apache.tapestry.enhance;
 import org.apache.bcel.generic.Type;
 import org.apache.tapestry.Location;
 
+/**
+ *  Creates a new property of a particular type in the enhanced subclass.  May optionally
+ *  make the property a persistent property, by injecting an invocation of
+ *  {@link org.apache.tapestry.AbstractComponent#fireObservedChange(String, Object)}
+ *  into the mutator (setter) method.
+ *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
+ *
+ **/
 public class CreatePropertyEnhancer implements IEnhancer
 {
     private String _propertyName;
@@ -89,7 +100,7 @@ public class CreatePropertyEnhancer implements IEnhancer
     {
         String fieldName = "_$" + _propertyName;
 
-  		factory.createField(_propertyType, fieldName);
+        factory.createField(_propertyType, fieldName);
         factory.createAccessor(_propertyType, fieldName, _propertyName, _readMethodName);
         factory.createMutator(_propertyType, fieldName, _propertyName, _persistent);
     }

@@ -416,8 +416,15 @@ public class PageLoader implements IPageLoader
                 _engine.getPropertySource().getPropertyValue(
                     "org.apache.tapestry.default-script-language");
 
+        // Construct the binding.  The first parameter is the compononent
+        // (not the DirectLink or Form, but the page or component containing the link or form).
+
         IBinding binding =
-            new ListenerBinding(component, language, spec.getScript(), spec.getLocation());
+            new ListenerBinding(
+                component.getContainer(),
+                language,
+                spec.getScript(),
+                spec.getLocation());
 
         component.setBinding(bindingName, binding);
     }
@@ -595,6 +602,7 @@ public class PageLoader implements IPageLoader
             className = BaseComponent.class.getName();
 
         Class componentClass = _enhancer.getEnhancedClass(spec, className);
+        String enhancedClassName = componentClass.getName();
 
         try
         {
@@ -604,15 +612,15 @@ public class PageLoader implements IPageLoader
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.class-not-component", className),
+                Tapestry.getString("PageLoader.class-not-component", enhancedClassName),
                 container,
                 spec.getLocation(),
                 ex);
         }
-        catch (Exception ex)
+        catch (Throwable ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.unable-to-instantiate", className),
+                Tapestry.getString("PageLoader.unable-to-instantiate", enhancedClassName),
                 container,
                 spec.getLocation(),
                 ex);
@@ -677,6 +685,7 @@ public class PageLoader implements IPageLoader
         }
 
         Class pageClass = _enhancer.getEnhancedClass(spec, className);
+        String enhancedClassName = pageClass.getName();
 
         try
         {
@@ -692,14 +701,14 @@ public class PageLoader implements IPageLoader
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.class-not-page", className),
+                Tapestry.getString("PageLoader.class-not-page", enhancedClassName),
                 location,
                 ex);
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.unable-to-instantiate", className),
+                Tapestry.getString("PageLoader.unable-to-instantiate", enhancedClassName),
                 location,
                 ex);
         }

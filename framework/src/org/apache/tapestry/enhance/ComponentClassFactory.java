@@ -326,7 +326,7 @@ public class ComponentClassFactory
      * 
      **/
 
-    protected String buildMethodName(String prefix, String propertyName)
+    public String buildMethodName(String prefix, String propertyName)
     {
         StringBuffer result = new StringBuffer(prefix);
 
@@ -479,7 +479,7 @@ public class ComponentClassFactory
         String fieldName,
         String propertyName,
         String readMethodName)
-    {
+    {	
         String methodName =
             readMethodName == null ? buildMethodName("get", propertyName) : readMethodName;
 
@@ -590,7 +590,7 @@ public class ComponentClassFactory
 
             scanForBindingProperty(name, ps);
 
-            scanForParameterProperty(ps);
+            scanForParameterProperty(name, ps);
         }
 
     }
@@ -628,10 +628,18 @@ public class ComponentClassFactory
         addEnhancer(enhancer);
     }
 
-    protected void scanForParameterProperty(ParameterSpecification ps)
+    protected void scanForParameterProperty(String parameterName, ParameterSpecification ps)
     {
-        if (ps.getDirection() == Direction.CUSTOM)
+        Direction direction = ps.getDirection();
+
+        if (direction == Direction.CUSTOM)
             return;
+
+        if (direction == Direction.AUTO)
+        {
+            addAutoParameterEnhancer(parameterName, ps);
+            return;
+        }
 
         String propertyName = ps.getPropertyName();
 
@@ -650,6 +658,36 @@ public class ComponentClassFactory
 
         IEnhancer enhancer =
             new CreatePropertyEnhancer(propertyName, fieldType, readMethodName, false, location);
+
+        addEnhancer(enhancer);
+    }
+
+    protected void addAutoParameterEnhancer(String parameterName, ParameterSpecification ps)
+    {
+        Location location = ps.getLocation();
+        String propertyName = ps.getPropertyName();
+
+        if (!ps.isRequired())
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("ComponentClassFactory.auto-must-be-required", parameterName),
+                location,
+                null);
+
+        Class propertyType = convertPropertyType(ps.getType(), location);
+
+        String readMethodName = checkAccessors(propertyName, propertyType, location);
+
+        Type fieldType = getObjectType(ps.getType());
+
+        IEnhancer enhancer =
+            new CreateAutoParameterEnhancer(
+                this,
+                propertyName,
+                parameterName,
+                fieldType,
+                ps.getType(),
+                readMethodName,
+                location);
 
         addEnhancer(enhancer);
     }
@@ -681,6 +719,11 @@ public class ComponentClassFactory
             LOG.debug("Creating field: " + fieldName);
 
         _classFabricator.addField(fieldType, fieldName);
+    }
+
+    public ClassFabricator getClassFabricator()
+    {
+        return _classFabricator;
     }
 
 }

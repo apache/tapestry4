@@ -197,8 +197,9 @@ public class ParameterManager
             }
 
             ParameterSpecification pspec = spec.getParameter(name);
+            Direction direction = pspec.getDirection();
 
-            if (pspec.getDirection() == Direction.CUSTOM)
+            if (direction != Direction.IN && direction != Direction.FORM)
             {
                 if (debug)
                     LOG.debug("Parameter is " + pspec.getDirection().getName() + ".");

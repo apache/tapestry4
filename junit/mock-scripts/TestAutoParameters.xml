@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c23" root="context23"/>
+
+  	<servlet name="assets" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="boolValue">
+		boolValue: [true]	
+		</assert-output>
+		
+		<assert-output name="intValue">
+		intValue: [-3]	
+		</assert-output>
+		
+		<assert-output name="doubleValue">
+		doubleValue: [10.5]	
+		</assert-output>
+		
+		<assert-output name="stringValue">
+		stringValue: [Pink Floyd]
+		</assert-output>
+		
+		<assert-output name="objectValue">
+		objectValue: [en]	
+		</assert-output>
+		
+		<assert-output name="link">
+		href="/c23/assets?service=direct/0/Home/flicker.update"
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct/0/Home/flicker.update"/>
+		
+		<assert-output name="boolValue">
+		boolValue: [false]	
+		</assert-output>
+		
+		<assert-output name="intValue">
+		intValue: [100]	
+		</assert-output>
+		
+		<assert-output name="doubleValue">
+		doubleValue: [22.7]	
+		</assert-output>
+		
+		<assert-output name="stringValue">
+		stringValue: [Poi Dog Pondering]
+		</assert-output>
+		
+		<assert-output name="objectValue">
+		objectValue: [fr]	
+		</assert-output>
+		
+				 	
+	</request>
+	
+	<!-- Verify that the updates were propagated through to the persistent properties. -->
+	
+	<request>
+				
+		<assert-output name="boolValue">
+		boolValue: [false]	
+		</assert-output>
+		
+		<assert-output name="intValue">
+		intValue: [100]	
+		</assert-output>
+		
+		<assert-output name="doubleValue">
+		doubleValue: [22.7]	
+		</assert-output>
+		
+		<assert-output name="stringValue">
+		stringValue: [Poi Dog Pondering]
+		</assert-output>
+		
+		<assert-output name="objectValue">
+		objectValue: [fr]	
+		</assert-output>
+					 	
+	</request>	
+	
+	<request>
+		<parameter name="service" value="page/Two"/>	
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Message">
+		Parameter 'flag' must be required as it uses direction 'auto'.	
+		</assert-output>
+	</request>
+	
+</mock-test>
