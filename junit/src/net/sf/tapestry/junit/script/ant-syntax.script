@@ -8,7 +8,7 @@
 	${component.form.name}_${component.name}
 </let>
 
-<!-- Test a few variations.  -->>
+<!-- Test a few variations.  -->
 
 <let key="incomplete1">
 Incomplete: $</let>
