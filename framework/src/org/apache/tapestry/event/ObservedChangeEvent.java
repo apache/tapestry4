@@ -74,37 +74,58 @@ public class ObservedChangeEvent extends EventObject
     private String _propertyName;
     private Object _newValue;
 
+	/**
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 */
     public ObservedChangeEvent(IComponent component, String propertyName, char newValue)
     {
         this(component, propertyName, new Character(newValue));
     }
 
+	/**
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 */
     public ObservedChangeEvent(IComponent component, String propertyName, byte newValue)
     {
         this(component, propertyName, new Byte(newValue));
     }
 
+	/**
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 */
     public ObservedChangeEvent(IComponent component, String propertyName, short newValue)
     {
         this(component, propertyName, new Short(newValue));
     }
 
+	/**
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 */
     public ObservedChangeEvent(IComponent component, String propertyName, int newValue)
     {
         this(component, propertyName, new Integer(newValue));
     }
 
+	/**
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 */
     public ObservedChangeEvent(IComponent component, String propertyName, long newValue)
     {
         this(component, propertyName, new Long(newValue));
     }
 
-    public ObservedChangeEvent(IComponent component, String propertyName, double newValue)
+	/**
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 */
+   public ObservedChangeEvent(IComponent component, String propertyName, double newValue)
     {
         this(component, propertyName, new Double(newValue));
     }
 
-    public ObservedChangeEvent(IComponent component, String propertyName, float newValue)
+	/**
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 */
+   public ObservedChangeEvent(IComponent component, String propertyName, float newValue)
     {
         this(component, propertyName, new Float(newValue));
     }
@@ -137,6 +158,9 @@ public class ObservedChangeEvent extends EventObject
         _newValue = newValue;
     }
 
+	/**
+	 * @deprecated To be removed in 3.1. Use {@link #ObservedChangeEvent(IComponent, String, Object) instead.
+	 */
     public ObservedChangeEvent(IComponent component, String propertyName, boolean newValue)
     {
         this(component, propertyName, newValue ? Boolean.TRUE : Boolean.FALSE);
