@@ -10,6 +10,9 @@ import java.rmi.*;
 import javax.rmi.*;
 import java.util.*;
 import com.primix.vlib.pages.*;
+import javax.servlet.*;
+import java.io.*;
+import java.net.*;
 
 /*
  * Tapestry Web Application Framework
@@ -79,6 +82,51 @@ public class VirtualLibraryApplication extends SimpleApplication
 		externalReferences.put("ejb/BookQuery", "com.primix.vlib.BookQuery");
 		externalReferences.put("ejb/Publisher", "com.primix.vlib.Publisher");
 		externalReferences.put("ejb/Operations", "com.primix.vlib.Operations");
+	}
+	
+	/**
+	 *   The name ("external") of a service that exposes books or 
+	 *   persons in such as way that they are bookmarkable.
+	 *
+	 */
+	 
+	public static final String EXTERNAL_SERVICE = "external";
+	
+	/**
+	 *  The external service is used to make the {@link ViewBook} and 
+	 *  {@link PersonPage} pages bookmarkable.  The URL will include the
+	 *  type of bookmark ("book" or "person") and the primary key of the {@link IBook}
+	 *  or {@link IPerson} EJB.
+	 *
+	 */
+	 
+	public class ExternalService implements IApplicationService
+	{
+		public String buildURL(IRequestCycle cycle,
+                       IComponent component,
+                       String[] context)
+		{
+			if (context == null || context.length != 2)
+				throw new ApplicationRuntimeException("external service required two parameters.");
+			
+			// Not sure what's in that primary key parameter (may have spaces, slashes,
+			// or other illegal characters.
+			
+			return getServletPrefix() +
+				"/" + EXTERNAL_SERVICE +
+				"/" + context[0] +
+				"/" + URLEncoder.encode(context[1]);
+		}
+		
+		public void service(IRequestCycle cycle,
+                    ResponseOutputStream output)
+             throws RequestCycleException,
+                    ServletException,
+                    IOException
+        {
+			serviceExternal(cycle, output);
+        }
+		
 	}
 	
 	/**
@@ -502,28 +550,6 @@ public class VirtualLibraryApplication extends SimpleApplication
 	 *
 	 */
 	 
-	public IDirectListener getPersonLinkListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IComponent component, String[] context, 
-						IRequestCycle cycle)
-						throws RequestCycleException
-			{
-				PersonPage page;
-				Integer personPK;
-				
-				page = (PersonPage)cycle.getPage("Person");
-				
-				personPK = new Integer(context[0]);
-				
-				page.setup(personPK);
-				
-				cycle.setPage(page);
-			}
-		};
-	}
-	
 	public IDirectListener getBorrowListener()
 	{
 	    return new IDirectListener()
@@ -572,23 +598,59 @@ public class VirtualLibraryApplication extends SimpleApplication
 		cycle.setPage(home);				
 	}
 	
-	public IDirectListener getViewBookListener()
+
+	
+	public IApplicationService constructService(String name)
 	{
-		return new IDirectListener()
+		if (name.equals("external"))
+			return new ExternalService();
+		
+		return super.constructService(name);
+	}	
+	
+		public void serviceExternal(IRequestCycle cycle, ResponseOutputStream output)
+		throws RequestCycleException, ServletException, IOException
 		{
-			public void directTriggered(IComponent component,
-					String[] context,
-					IRequestCycle cycle) throws RequestCycleException
-			{
-				Integer bookPK;
-				ViewBook page;
+		IMonitor monitor;
+		String pageName;
+		String key;
+		Integer primaryKey;
+		RequestContext context;
+		IExternalPage page;
+		
+		monitor = cycle.getMonitor();
+
+		context = cycle.getRequestContext();
+		pageName = context.getPathInfo(1);
+		key = context.getPathInfo(2);
+		
+		if (monitor != null)
+			monitor.serviceBegin(EXTERNAL_SERVICE, pageName + " " + key);
+
+		primaryKey = new Integer(key);
+		
+		try
+		{
+			page = (IExternalPage)cycle.getPage(pageName);
+		}
+		catch (ClassCastException e)
+		{
+			throw new ApplicationRuntimeException("Page " + pageName + " may not be used with the " +
+			EXTERNAL_SERVICE + " service.");
+		}
+					
+		page.setup(primaryKey, cycle);
 				
-				bookPK = new Integer(context[0]);
-				page = (ViewBook)cycle.getPage("ViewBook");
-				
-				page.setup(bookPK, cycle);
-			}
-		};
+		// We don't invoke page.validate() because the whole point of this
+		// service is to allow unknown (fresh) users to jump right
+		// to the page.
+		
+		// Render the response.
+
+		render(cycle, output);
+
+		if (monitor != null)
+			monitor.serviceEnd(EXTERNAL_SERVICE);
 	}
 	
 }

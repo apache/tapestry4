@@ -47,6 +47,7 @@ import com.primix.foundation.prop.*;
 
 
 public class ViewBook extends BasePage
+implements IExternalPage
 {
 	private Book book;	
 	

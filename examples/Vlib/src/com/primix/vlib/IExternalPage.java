@@ -1,8 +1,6 @@
-package com.primix.vlib.ejb;
+package com.primix.vlib;
 
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
+import com.primix.tapestry.*;
 
 /*
  * Tapestry Web Application Framework
@@ -33,21 +31,15 @@ import java.util.*;
  */
 
 /**
- *  Home interface for the {@link PersonBean} entity bean.
+ *  Defines a page which may be referenced externally, using an Integer primary
+ *  key.
  *
  *  @version $Id$
  *  @author Howard Ship
  *
  */
- 
-public interface IPersonHome extends EJBHome
-{
-	public IPerson create(String lastName, String firstName, String email, String password)
-	throws CreateException, RemoteException;
-	
-	public IPerson findByPrimaryKey(Integer key)
-	throws FinderException, RemoteException;	
 
-	public IPerson findByEmail(String email)
-	throws FinderException, RemoteException;	
+public interface IExternalPage extends IPage
+{
+	public void setup(Integer primaryKey, IRequestCycle cycle);
 }

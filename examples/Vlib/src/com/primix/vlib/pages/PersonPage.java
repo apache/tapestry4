@@ -46,6 +46,7 @@ import java.rmi.*;
 
 
 public class PersonPage extends BasePage
+implements IExternalPage
 {
 	private transient IBookQuery bookQuery;
 	private Handle bookQueryHandle;
@@ -173,13 +174,14 @@ public class PersonPage extends BasePage
 		}
 	}
 	
-	public void setup(Integer personPK)
+	public void setup(Integer personPK, IRequestCycle cycle)
 	{
 		VirtualLibraryApplication app;
 		int count;
 		IPersonHome home;
 		IPerson person;
 		IBookQuery query;
+		Home homePage;
 		
 		app = (VirtualLibraryApplication)application;
 		
@@ -199,13 +201,19 @@ public class PersonPage extends BasePage
 		}
 		catch (FinderException e)
 		{
-			throw new ApplicationRuntimeException(e);
+			homePage = (Home)cycle.getPage("Home");
+			homePage.setError("Person " + personPK + " not found in database.");
+			
+			cycle.setPage(homePage);
+			
+			return;
 		}
 		catch (RemoteException e)
 		{
 			throw new ApplicationRuntimeException(e);
 		}
 		
+		cycle.setPage(this);
 	}
 	
 	public Book[] getMatches()

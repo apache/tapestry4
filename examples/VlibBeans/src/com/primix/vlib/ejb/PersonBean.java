@@ -112,22 +112,22 @@ public class PersonBean extends AbstractEntityBean
 	}
 	
 	
-	public Integer ejbCreate(String lastName, String firstName, String password)
+	public Integer ejbCreate(String lastName, String firstName, String email, String password)
 	throws RemoteException
 	{
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.password = password;
+		this.email = email;
 		
 		this.personId = allocateKey();
-		this.email = null;
 		
 		dirty = true;
 		
 		return null;
 	}
 
-	public void ejbPostCreate(String lastName, String firstName, String password)
+	public void ejbPostCreate(String lastName, String firstName, String email, String password)
 	{
 		// Do nothing
 	}

@@ -51,15 +51,11 @@
 		</component>
 		<component>
 			<id>viewBook</id>
-			<type>Direct</type>
+			<type>Book</type>
 			<bindings>
 				<binding>
-					<name>context</name>
+					<name>primaryKey</name>
 					<property-path>currentMatch.primaryKey</property-path>
-				</binding>
-				<binding>
-					<name>listener</name>
-					<property-path>application.viewBookListener</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -95,14 +91,10 @@
 		</component>
 		<component>
 			<id>showOwner</id>
-			<type>Direct</type>
+			<type>Person</type>
 			<bindings>
 				<binding>
-					<name>listener</name>
-					<property-path>application.personLinkListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
+					<name>primaryKey</name>
 					<property-path>currentMatch.ownerPrimaryKey</property-path>
 				</binding>
 			</bindings>
@@ -129,15 +121,11 @@
 		</component>
 		<component>
 			<id>showHolder</id>
-			<type>Direct</type>
+			<type>Person</type>
 			<bindings>
 				<binding>
-					<name>context</name>
+					<name>primaryKey</name>
 					<property-path>currentMatch.holderPrimaryKey</property-path>
-				</binding>
-				<binding>
-					<name>listener</name>
-					<property-path>application.personLinkListener</property-path>
 				</binding>
 			</bindings>
 		</component>

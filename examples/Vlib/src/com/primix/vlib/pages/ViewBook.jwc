@@ -57,14 +57,10 @@
 		</component>
 		<component>
 			<id>showOwner</id>
-			<type>Direct</type>
+			<type>Person</type>
 			<bindings>
 				<binding>
-					<name>listener</name>
-					<property-path>application.personLinkListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
+					<name>primaryKey</name>
 					<property-path>book.ownerPrimaryKey</property-path>
 				</binding>
 			</bindings>
@@ -101,14 +97,10 @@
 		</component>
 		<component>
 			<id>showHolder</id>
-			<type>Direct</type>
+			<type>Person</type>
 			<bindings>
 				<binding>
-					<name>listener</name>
-					<property-path>application.personLinkListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
+					<name>primaryKey</name>
 					<property-path>book.holderPrimaryKey</property-path>
 				</binding>
 			</bindings>

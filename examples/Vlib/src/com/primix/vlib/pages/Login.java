@@ -6,6 +6,9 @@ import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
 import javax.ejb.*;
+import java.rmi.*;
+import javax.servlet.http.*;
+
 
 /*
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -49,6 +52,16 @@ public class Login extends BasePage
 	private String error;
 	private String targetPage;
 
+	/**
+	 *  The name of a cookie to store on the user's machine that will identify
+	 *  them next time they log in.
+	 *
+	 */
+
+	private static final String COOKIE_NAME = "com.primix.vlib.Login.email";
+
+	private final static int ONE_WEEK = 7 * 24 * 60 * 60;
+	
 	public Login(IApplication application, ComponentSpecification componentSpecification)
 	{
 		super(application, componentSpecification);
@@ -63,16 +76,19 @@ public class Login extends BasePage
 		error = null;
 		targetPage = null;
 	}
-	
+
 	public void setEmail(String value)
 	{
 		email = value;
-		
-		fireObservedChange("email", value);
 	}
 	
 	public String getEmail()
 	{
+		// If not set, see if a value was previously recorded in a Cookie
+		
+		if (email == null)
+			email = getRequestCycle().getRequestContext().getCookieValue(COOKIE_NAME);
+		
 		return email;
 	}
 	
@@ -138,17 +154,7 @@ public class Login extends BasePage
 				return;
 			}
 			
-			app.setUser(person);
-			
-			// After logging in, go to the MyBooks page, unless otherwise
-			// specified.
-			
-			if (targetPage == null)
-				cycle.setPage("MyBooks");
-			else	
-				cycle.setPage(targetPage);
-			
-			app.forgetPage(getName());	
+			loginUser(person, cycle);
 			
 		}
 		catch (FinderException e)
@@ -174,4 +180,45 @@ public class Login extends BasePage
 			}
 		};
 	}
+	
+	public void loginUser(IPerson person, IRequestCycle cycle)
+	{
+		VirtualLibraryApplication app;
+		String email;
+		Cookie cookie;
+				
+		try
+		{
+			email = person.getEmail();
+		}
+		catch (RemoteException e)
+		{
+			throw new ApplicationRuntimeException(e);
+		}
+
+		app = (VirtualLibraryApplication)application;
+		
+		app.setUser(person);
+
+		// After logging in, go to the MyBooks page, unless otherwise
+		// specified.
+
+		if (targetPage == null)
+			cycle.setPage("MyBooks");
+		else	
+			cycle.setPage(targetPage);
+
+		// I've found that failing to set a maximum age and a path means that
+		// the browser (IE 5.0 anyway) quietly drops the cookie.
+		
+		cookie = new Cookie(COOKIE_NAME, email);
+		cookie.setPath(application.getServletPrefix());
+		cookie.setMaxAge(ONE_WEEK);
+		
+		// Record the user's email address in a cookie
+		
+		cycle.getRequestContext().addCookie(cookie);
+
+		app.forgetPage(getName());
+	}	
 }

@@ -139,4 +139,13 @@ public interface IOperations extends EJBObject
 	public Book getBook(Integer primaryKey)
 	throws FinderException, RemoteException;
 	 	
+	/**
+	 *  Attempts to register a new user, first checking that the
+	 *  e-mail and names are unique.
+	 *
+	 */
+	 
+	public IPerson registerNewUser(String firstName, String lastName, 
+									String email, String password)
+	throws RegistrationException, CreateException, RemoteException;
 }
