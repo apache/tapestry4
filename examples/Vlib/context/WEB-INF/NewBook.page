@@ -14,6 +14,8 @@
     <set-property name="required" expression="true"/>
     <set-property name="clientScriptingEnabled" expression="true"/>
   </bean>
+  
+  <bean name="optional" class="org.apache.tapestry.valid.StringValidator" lifecycle="page"/>
     
   <component id="inputTitle" type="ValidField">
     <binding name="value" expression="attributes.title"/>
@@ -30,7 +32,7 @@
   
   <component id="inputPublisherName" type="ValidField">
     <binding name="value" expression="publisherName"/>
-    <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
+    <binding name="validator" expression="beans.optional"/>
     <static-binding name="displayName" value="Publisher"/>
   </component>
     

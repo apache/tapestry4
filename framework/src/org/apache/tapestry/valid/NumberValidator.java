@@ -119,6 +119,11 @@ public class NumberValidator extends BaseValidator
 
     private String _scriptPath = "/org/apache/tapestry/valid/NumberValidator.script";
 
+    private String _invalidNumericFormatMessage;
+    private String _numberTooSmallMessage;
+    private String _numberTooLargeMessage;
+    private String _numberRangeMessage;
+
     private static AdaptorRegistry _numberAdaptors = new AdaptorRegistry();
 
     private static abstract class NumberAdaptor
@@ -273,38 +278,20 @@ public class NumberValidator extends BaseValidator
         }
         catch (NumberFormatException ex)
         {
-            String errorMessage =
-                getString(
-                    "invalid-numeric-format",
-                    field.getPage().getLocale(),
-                    field.getDisplayName());
-
-            throw new ValidatorException(errorMessage, ValidationConstraint.NUMBER_FORMAT);
+            throw new ValidatorException(
+                buildInvalidNumericFormatMessage(field),
+                ValidationConstraint.NUMBER_FORMAT);
         }
 
         if (_minimum != null && adaptor.compare(result, _minimum) < 0)
-        {
-            String errorMessage =
-                getString(
-                    "number-too-small",
-                    field.getPage().getLocale(),
-                    field.getDisplayName(),
-                    _minimum);
-
-            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL);
-        }
+            throw new ValidatorException(
+                buildNumberTooSmallMessage(field),
+                ValidationConstraint.TOO_SMALL);
 
         if (_maximum != null && adaptor.compare(result, _maximum) > 0)
-        {
-            String errorMessage =
-                getString(
-                    "number-too-large",
-                    field.getPage().getLocale(),
-                    field.getDisplayName(),
-                    _maximum);
-
-            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE);
-        }
+            throw new ValidatorException(
+                buildNumberTooLargeMessage(field),
+                ValidationConstraint.TOO_LARGE);
 
         return result;
     }
@@ -374,34 +361,26 @@ public class NumberValidator extends BaseValidator
 
         Map symbols = new HashMap();
 
-        Locale locale = field.getPage().getLocale();
-        String displayName = field.getDisplayName();
-
         if (isRequired())
-            symbols.put("requiredMessage", getString("field-is-required", locale, displayName));
+            symbols.put("requiredMessage", buildRequiredMessage(field));
 
-        symbols.put("formatMessage", getString("invalid-numeric-format", locale, displayName));
+        symbols.put("formatMessage", buildInvalidNumericFormatMessage(field));
 
         if (_minimum != null || _maximum != null)
-        {
-            symbols.put("rangeMessage", buildRangeMessage(displayName, locale));
-        }
+            symbols.put("rangeMessage", buildRangeMessage(field));
 
         processValidatorScript(_scriptPath, cycle, field, symbols);
     }
 
-    private String buildRangeMessage(String displayName, Locale locale)
+    private String buildRangeMessage(IFormComponent field)
     {
         if (_minimum != null && _maximum != null)
-            return getString(
-                "number-range",
-                locale,
-                new Object[] { displayName, _minimum, _maximum });
+            return buildNumberRangeMessage(field);
 
-        if (_minimum != null)
-            return getString("number-too-small", locale, displayName, _minimum);
+        if (_maximum != null)
+            return buildNumberTooLargeMessage(field);
 
-        return getString("number-too-large", locale, displayName, _maximum);
+        return buildNumberTooSmallMessage(field);
     }
 
     /**
@@ -466,6 +445,128 @@ public class NumberValidator extends BaseValidator
     public Class getValueTypeClass()
     {
         return _valueTypeClass;
+    }
+
+    /** @since 3.0 */
+
+    public String getInvalidNumericFormatMessage()
+    {
+        return _invalidNumericFormatMessage;
+    }
+
+    /** @since 3.0 */
+
+    public String getNumberRangeMessage()
+    {
+        return _numberRangeMessage;
+    }
+
+    /** @since 3.0 */
+
+    public String getNumberTooLargeMessage()
+    {
+        return _numberTooLargeMessage;
+    }
+
+    /** @since 3.0 */
+
+    public String getNumberTooSmallMessage()
+    {
+        return _numberTooSmallMessage;
+    }
+
+    /** 
+     * Overrides the <code>invalid-numeric-format</code> bundle key.
+     * Parameter {0} is the display name of the field.
+     * 
+     * @since 3.0
+     */
+
+    public void setInvalidNumericFormatMessage(String string)
+    {
+        _invalidNumericFormatMessage = string;
+    }
+
+    /** @since 3.0 */
+
+    protected String buildInvalidNumericFormatMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(
+                getInvalidNumericFormatMessage(),
+                "invalid-numeric-format",
+                field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName());
+    }
+
+    /** 
+     * Overrides the <code>number-range</code> bundle key.
+     * Parameter [0} is the display name of the field.
+     * Parameter {1} is the minimum value.
+     * Parameter {2} is the maximum value.
+     * 
+     * @since 3.0
+     */
+
+    public void setNumberRangeMessage(String string)
+    {
+        _numberRangeMessage = string;
+    }
+
+    protected String buildNumberRangeMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(_numberRangeMessage, "number-range", field.getPage().getLocale());
+
+        return formatString(pattern, new Object[] { field.getDisplayName(), _minimum, _maximum });
+    }
+
+    /**
+     *  Overrides the <code>number-too-large</code> bundle key.
+     *  Parameter {0} is the display name of the field.
+     *  Parameter {1} is the maximum allowed value.
+     *  
+     *  @since 3.0
+     */
+
+    public void setNumberTooLargeMessage(String string)
+    {
+        _numberTooLargeMessage = string;
+    }
+
+    /** @since 3.0 */
+
+    protected String buildNumberTooLargeMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(_numberTooLargeMessage, "number-too-large", field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName(), _maximum);
+    }
+
+    /**
+     *  Overrides the <code>number-too-small</code> bundle key.
+     *  Parameter {0} is the display name of the field.
+     *  Parameter {1} is the minimum allowed value.
+     * 
+     *  @since 3.0
+     * 
+     */
+
+    public void setNumberTooSmallMessage(String string)
+    {
+        _numberTooSmallMessage = string;
+    }
+
+    /** @since 3.0 */
+
+    protected String buildNumberTooSmallMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(_numberTooSmallMessage, "number-too-small", field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName(), _minimum);
     }
 
 }

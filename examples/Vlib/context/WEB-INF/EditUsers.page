@@ -12,6 +12,9 @@
   <property-specification name="listEditMap" type="org.apache.tapestry.vlib.pages.admin.UserListEditMap"/>
   <property-specification name="password" type="java.lang.String"/>
   
+  <bean name="optional" class="org.apache.tapestry.valid.StringValidator" lifecycle="page"/>
+
+  
   <component id="e" type="ListEdit">
   	<binding name="source" expression="listEditMap.keys"/>
   	<binding name="value" expression="listEditMap.key"/>
@@ -21,7 +24,7 @@
   
   <component id="inputPassword" type="ValidField">
     <binding name="value" expression="password"/>
-    <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
+    <binding name="validator" expression="beans.optional"/>
     <static-binding name="displayName" value="New Password"/>	
   </component>
 

@@ -89,7 +89,11 @@ public class DateValidator extends BaseValidator
     private String _scriptPath = "/org/apache/tapestry/valid/DateValidator.script";
 
     private static DateFormat defaultDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-    private static String defaultDateDisplayFormat = "MM/DD/YYYY";
+    private static final String defaultDateDisplayFormat = "MM/DD/YYYY";
+
+    private String _dateTooEarlyMessage;
+    private String _dateTooLateMessage;
+    private String _invalidDateFormatMessage;
 
     public void setFormat(DateFormat value)
     {
@@ -185,42 +189,21 @@ public class DateValidator extends BaseValidator
         }
 
         if (result == null)
-        {
-            String errorMessage =
-                getString(
-                    "invalid-date-format",
-                    field.getPage().getLocale(),
-                    field.getDisplayName(),
-                    getEffectiveDisplayFormat());
-
-            throw new ValidatorException(errorMessage, ValidationConstraint.DATE_FORMAT);
-        }
+            throw new ValidatorException(
+                buildInvalidDateFormatMessage(field),
+                ValidationConstraint.DATE_FORMAT);
 
         // OK, check that the date is in range.
 
         if (_minimum != null && _minimum.compareTo(result) > 0)
-        {
-            String errorMessage =
-                getString(
-                    "date-too-early",
-                    field.getPage().getLocale(),
-                    field.getDisplayName(),
-                    format.format(_minimum));
-
-            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL);
-        }
+            throw new ValidatorException(
+                buildDateTooEarlyMessage(field, format.format(_minimum)),
+                ValidationConstraint.TOO_SMALL);
 
         if (_maximum != null && _maximum.compareTo(result) < 0)
-        {
-            String errorMessage =
-                getString(
-                    "date-too-late",
-                    field.getPage().getLocale(),
-                    field.getDisplayName(),
-                    format.format(_maximum));
-
-            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE);
-        }
+            throw new ValidatorException(
+                buildDateTooLateMessage(field, format.format(_maximum)),
+                ValidationConstraint.TOO_LARGE);
 
         return result;
 
@@ -262,10 +245,7 @@ public class DateValidator extends BaseValidator
 
         Map symbols = new HashMap();
 
-        Locale locale = field.getPage().getLocale();
-        String displayName = field.getDisplayName();
-
-        symbols.put("requiredMessage", getString("field-is-required", locale, displayName));
+        symbols.put("requiredMessage", buildRequiredMessage(field));
 
         processValidatorScript(_scriptPath, cycle, field, symbols);
     }
@@ -293,6 +273,102 @@ public class DateValidator extends BaseValidator
     public void setScriptPath(String scriptPath)
     {
         _scriptPath = scriptPath;
+    }
+
+    /** @since 3.0 */
+
+    public String getDateTooEarlyMessage()
+    {
+        return _dateTooEarlyMessage;
+    }
+
+    /** @since 3.0 */
+
+    public String getDateTooLateMessage()
+    {
+        return _dateTooLateMessage;
+    }
+
+    /** @since 3.0 */
+
+    public String getInvalidDateFormatMessage()
+    {
+        return _invalidDateFormatMessage;
+    }
+
+    /** @since 3.0 */
+
+    protected String buildInvalidDateFormatMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(
+                _invalidDateFormatMessage,
+                "invalid-date-format",
+                field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName(), getEffectiveDisplayFormat());
+    }
+
+    /** @since 3.0 **/
+
+    protected String buildDateTooEarlyMessage(IFormComponent field, String earliestDate)
+    {
+        String pattern =
+            getPattern(_dateTooEarlyMessage, "date-too-early", field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName(), earliestDate);
+    }
+
+    /** @since 3.0 */
+
+    protected String buildDateTooLateMessage(IFormComponent field, String latestDate)
+    {
+        String pattern =
+            getPattern(_dateTooLateMessage, "date-too-late", field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName(), latestDate);
+    }
+
+    /**
+     *  Overrides the bundle key
+     *  <code>date-too-early</code>.
+     *  Parameter {0} is the display name of the field.
+     *  Parameter {1} is the earliest allowed date.
+     * 
+     *  @since 3.0
+     */
+
+    public void setDateTooEarlyMessage(String string)
+    {
+        _dateTooEarlyMessage = string;
+    }
+
+    /**
+     *  Overrides the bundle key
+     *  <code>date-too-late</code>.
+     *  Parameter {0} is the display name of the field.
+     *  Parameter {1} is the latest allowed date.
+     * 
+     *  @since 3.0
+     */
+
+    public void setDateTooLateMessage(String string)
+    {
+        _dateTooLateMessage = string;
+    }
+
+    /**
+     *  Overrides the bundle key
+     *  <code>invalid-date-format</code>.
+     *  Parameter {0} is the display name of the field.
+     *  Parameter {1} is the allowed format.
+     * 
+     *  @since 3.0
+     */
+
+    public void setInvalidDateFormatMessage(String string)
+    {
+        _invalidDateFormatMessage = string;
     }
 
 }

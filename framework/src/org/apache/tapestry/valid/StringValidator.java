@@ -77,55 +77,9 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class StringValidator extends BaseValidator
 {
-    private static final class StaticStringValidator extends StringValidator
-    {
-        private static final String UNSUPPORTED_MESSAGE =
-            "Changes to property values are not allowed.";
-
-        private StaticStringValidator(boolean required)
-        {
-            super(required);
-        }
-
-        /** @throws UnsupportedOperationException **/
-
-        public void setMinimumLength(int minimumLength)
-        {
-            throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-        }
-
-        /** @throws UnsupportedOperationException **/
-
-        public void setRequired(boolean required)
-        {
-            throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-        }
-
-        /** @throws UnsupportedOperationException **/
-
-        public void setClientScriptingEnabled(boolean clientScriptingEnabled)
-        {
-            throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-        }
-    }
-
-    /**
-     *  Returns a shared instance of a StringValidator with the required flag set.
-     *  The instance is not modifiable.
-     *
-     **/
-
-    public static final StringValidator REQUIRED = new StaticStringValidator(true);
-
-    /**
-     *  Returns a shared instance of a StringValidator with the required flag cleared.
-     *  The instance is not modifiable.
-     *
-     **/
-
-    public static final StringValidator OPTIONAL = new StaticStringValidator(false);
-
     private int _minimumLength;
+
+    private String _minimumLengthMessage;
 
     /** @since 2.2 **/
 
@@ -154,16 +108,9 @@ public class StringValidator extends BaseValidator
             return null;
 
         if (_minimumLength > 0 && input.length() < _minimumLength)
-        {
-            String errorMessage =
-                getString(
-                    "field-too-short",
-                    field.getPage().getLocale(),
-                    Integer.toString(_minimumLength),
-                    field.getDisplayName());
-
-            throw new ValidatorException(errorMessage, ValidationConstraint.MINIMUM_WIDTH);
-        }
+            throw new ValidatorException(
+                buildMinimumLengthMessage(field),
+                ValidationConstraint.MINIMUM_WIDTH);
 
         return input;
     }
@@ -197,20 +144,11 @@ public class StringValidator extends BaseValidator
 
         Map symbols = new HashMap();
 
-        Locale locale = field.getPage().getLocale();
-        String displayName = field.getDisplayName();
-
         if (isRequired())
-            symbols.put("requiredMessage", getString("field-is-required", locale, displayName));
+            symbols.put("requiredMessage", buildRequiredMessage(field));
 
         if (_minimumLength > 0)
-            symbols.put(
-                "minimumLengthMessage",
-                getString(
-                    "field-too-short",
-                    locale,
-                    Integer.toString(_minimumLength),
-                    displayName));
+            symbols.put("minimumLengthMessage", buildMinimumLengthMessage(field));
 
         processValidatorScript(_scriptPath, cycle, field, symbols);
     }
@@ -238,6 +176,35 @@ public class StringValidator extends BaseValidator
     public void setScriptPath(String scriptPath)
     {
         _scriptPath = scriptPath;
+    }
+
+    /** @since 3.0 */
+    public String getMinimumLengthMessage()
+    {
+        return _minimumLengthMessage;
+    }
+
+    /** 
+     * Overrides the <code>field-too-short</code> bundle key.
+     * Parameter {0} is the minimum length.
+     * Parameter {1} is the display name of the field.
+     * 
+     * @since 3.0
+     */
+
+    public void setMinimumLengthMessage(String string)
+    {
+        _minimumLengthMessage = string;
+    }
+
+    /** @since 3.0 */
+
+    protected String buildMinimumLengthMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(_minimumLengthMessage, "field-too-short", field.getPage().getLocale());
+
+        return formatString(pattern, Integer.toString(_minimumLength), field.getDisplayName());
     }
 
 }

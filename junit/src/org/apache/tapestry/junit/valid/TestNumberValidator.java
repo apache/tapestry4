@@ -61,6 +61,7 @@ import java.math.BigInteger;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.valid.NumberValidator;
+import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -150,7 +151,24 @@ public class TestNumberValidator extends TapestryTestCase
         }
         catch (ValidatorException ex)
         {
-            checkException(ex, "testUnderMinimum must not be smaller than 100.");
+            assertEquals("testUnderMinimum must not be smaller than 100.", ex.getMessage());
+            assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
+        }
+    }
+
+    public void testOverrideNumberTooSmallMessage()
+    {
+        v.setMinimum(new Integer(100));
+        v.setNumberTooSmallMessage("Anything under 100 for {0} is worth jack.");
+
+        try
+        {
+            testPassThru("underMinimum", Integer.class, new Integer(50));
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("Anything under 100 for underMinimum is worth jack.", ex.getMessage());
         }
     }
 
@@ -161,13 +179,68 @@ public class TestNumberValidator extends TapestryTestCase
 
         try
         {
-            testPassThru("testUnderMinimum", Integer.class, new Integer(250));
+            testPassThru("overMaximum", Integer.class, new Integer(250));
 
             unreachable();
         }
         catch (ValidatorException ex)
         {
-            checkException(ex, "testUnderMinimum must not be larger than 200.");
+            assertEquals("overMaximum must not be larger than 200.", ex.getMessage());
+            assertEquals(ValidationConstraint.TOO_LARGE, ex.getConstraint());
+        }
+    }
+
+    public void testOverrideNumberTooLargeMessage()
+    {
+        v.setMaximum(new Integer(200));
+        v.setNumberTooLargeMessage("You think I want a value larger than {1} for {0}?");
+
+        try
+        {
+            testPassThru("overMaximum", Integer.class, new Integer(1000));
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(
+                "You think I want a value larger than 200 for overMaximum?",
+                ex.getMessage());
+        }
+    }
+
+    public void testInvalidFormat()
+    {
+        v.setValueTypeClass(Integer.class);
+        IFormComponent field = new TestingField("invalidFormat");
+
+        try
+        {
+            v.toObject(field, "xyz");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("invalidFormat must be a numeric value.", ex.getMessage());
+            assertEquals(ValidationConstraint.NUMBER_FORMAT, ex.getConstraint());
+        }
+    }
+
+    public void testOverrideInvalidNumericFormatMessage()
+    {
+        v.setValueTypeClass(Integer.class);
+        v.setInvalidNumericFormatMessage("Dude, gimme a number for {0}.");
+
+        IFormComponent field = new TestingField("invalidFormat");
+
+        try
+        {
+            v.toObject(field, "xyz");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("Dude, gimme a number for invalidFormat.", ex.getMessage());
+            assertEquals(ValidationConstraint.NUMBER_FORMAT, ex.getConstraint());
         }
     }
 

@@ -138,6 +138,10 @@ public abstract class BaseValidator implements IValidator
 
     private boolean _required;
 
+    /** @since 3.0 */
+
+    private String _requiredMessage;
+
     /** 
      *  @since 2.2
      * 
@@ -170,52 +174,74 @@ public abstract class BaseValidator implements IValidator
     }
 
     /**
-     *  Gets a string from the standard resource bundle.  The string in the bundle
-     *  is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * Gets a pattern, either as the default value, or as a localized key.
+     * If override is null, then the key from the
+     * <code>org.apache.tapestry.valid.ValidationStrings</code>
+     * {@link ResourceBundle} (in the specified locale) is used.
+     * The pattern can then be used with {@link #formatString(String, Object[])}.
      * 
-     *  <p>Why do we not just lump these strings into TapestryStrings.properties?  
-     *  Because TapestryStrings.properties is localized to the server's locale, which is fine
-     *  for the logging, debugging and error messages it contains.  For field validation, whose errors
-     *  are visible to the end user normally, we want to localize to the page and engine's locale.
-     * 
-     *  <p>This will be more useful when we have actual localizations of ValidationStrings.properties.
-     * 
-     *  @since 2.1
-     * 
-     **/
+     * <p>Why do we not just lump these strings into TapestryStrings.properties?  
+     * because TapestryStrings.properties is localized to the server's locale, which is fine
+     * for the logging, debugging and error messages it contains.  For field validation, whose errors
+     * are visible to the end user normally, we want to localize to the page's locale.
+     *  
+     * @param override The override value for the localized string from the bundle.
+     * @param key used to lookup pattern from bundle, if override is null.
+     * @param locale used to get right localization of bundle.
+     * @since 3.0
+     */
 
-    protected String getString(String key, Locale locale, Object[] args)
+    protected String getPattern(String override, String key, Locale locale)
     {
+        if (override != null)
+            return override;
+
         ResourceBundle strings =
             ResourceBundle.getBundle("org.apache.tapestry.valid.ValidationStrings", locale);
 
-        String pattern = strings.getString(key);
+        return strings.getString(key);
+    }
 
+    /**
+     * Gets a string from the standard resource bundle.  The string in the bundle
+     * is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * 
+     * @param localized string the input pattern to be used with 
+     * {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * It may contain replaceable parameters, {0}, {1}, etc.
+     * @param args the arguments used to fill replaceable parameters {0}, {1}, etc.
+     * 
+     * @since 3.0
+     * 
+     **/
+
+    protected String formatString(String pattern, Object[] args)
+    {
         return MessageFormat.format(pattern, args);
     }
 
     /**
-     *  Convienience method for invoking {@link #getString(String, Locale, Object[])}.
+     *  Convienience method for invoking {@link #formatString(String, Locale, Object[])}.
      * 
-     *  @since 2.1
+     *  @since 3.0
      * 
      **/
 
-    protected String getString(String key, Locale locale, Object arg)
+    protected String formatString(String pattern, Object arg)
     {
-        return getString(key, locale, new Object[] { arg });
+        return formatString(pattern, new Object[] { arg });
     }
 
     /**
-     *  Convienience method for invoking {@link #getString(String, Locale, Object[])}.
+     *  Convienience method for invoking {@link #formatString(String, Locale, Object[])}.
      * 
-     *  @since 2.1
+     *  @since 3.0
      * 
      **/
 
-    protected String getString(String key, Locale locale, Object arg1, Object arg2)
+    protected String formatString(String pattern, Object arg1, Object arg2)
     {
-        return getString(key, locale, new Object[] { arg1, arg2 });
+        return formatString(pattern, new Object[] { arg1, arg2 });
     }
 
     /**
@@ -231,10 +257,25 @@ public abstract class BaseValidator implements IValidator
 
         if (_required && isNull)
             throw new ValidatorException(
-                getString("field-is-required", field.getPage().getLocale(), field.getDisplayName()),
+                buildRequiredMessage(field),
                 ValidationConstraint.REQUIRED);
 
         return isNull;
+    }
+
+    /** 
+     * Builds an error message indicating a value for a required
+     * field was not supplied.
+     * 
+     * @since 3.0
+     */
+
+    protected String buildRequiredMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(_requiredMessage, "field-is-required", field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName());
     }
 
     /**
@@ -329,6 +370,23 @@ public abstract class BaseValidator implements IValidator
     public void setClientScriptingEnabled(boolean clientScriptingEnabled)
     {
         _clientScriptingEnabled = clientScriptingEnabled;
+    }
+
+    public String getRequiredMessage()
+    {
+        return _requiredMessage;
+    }
+
+    /**
+     * Overrides the <code>field-is-required</code> bundle key.
+     * Parameter {0} is the display name of the field.
+     * 
+     * @since 3.0
+     */
+
+    public void setRequiredMessage(String string)
+    {
+        _requiredMessage = string;
     }
 
 }
