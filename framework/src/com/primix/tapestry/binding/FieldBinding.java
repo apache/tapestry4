@@ -86,7 +86,7 @@ public class FieldBinding extends AbstractBinding
         return buffer.toString();
     }
 
-    public Object getValue()
+    public Object getObject()
     {
         if (!accessed)
             accessValue();

@@ -67,7 +67,7 @@ import org.apache.log4j.*;
  *  visit object is specified.  To facilitate this, the application specification
  *  may include a property, <code>com.primix.tapestry.visit-class</code>
  *  which is the class name  to instantiate when a visit object is first needed.  See
- *  {@link #createVisit()} for more details.
+ *  {@link #createVisit(IRequestCycle)} for more details.
  *
  * @author Howard Ship
  * @version $Id$

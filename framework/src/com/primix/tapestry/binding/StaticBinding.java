@@ -90,7 +90,7 @@ public class StaticBinding extends AbstractBinding
 		return value;
 	}
 
-	public Object getValue()
+	public Object getObject()
 	{
 		return value;
 	}

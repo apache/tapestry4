@@ -120,17 +120,15 @@ public class Action extends AbstractServiceLink
 
 		try
 		{
-			result = (IActionListener)listenerBinding.getValue();
-
-			if (result == null)
-				throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
+			result = (IActionListener)listenerBinding.getObject("listener", IActionListener.class);
 		}
-		catch (ClassCastException e)
+		catch (BindingException ex)
 		{
-			throw new RequestCycleException(
-				"Parameter listener must be type IActionListener.",
-				this, cycle, e);
+			throw new RequestCycleException(this, cycle, ex);
 		}
+
+		if (result == null)
+			throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
 
 		return result;
 	}

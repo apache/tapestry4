@@ -160,7 +160,7 @@ public class Submit extends AbstractFormComponent
 		tagBinding = value;
 
 		if (value.isStatic())
-			staticTagValue = value.getValue();
+			staticTagValue = value.getObject();
 	}
 
 	public IBinding getTagBinding()
@@ -214,12 +214,12 @@ public class Submit extends AbstractFormComponent
 
 
 			if (tagValue == null)
-				tagValue = tagBinding.getValue();
+				tagValue = tagBinding.getObject();
 
 			if (tagValue == null)
 				throw new RequiredParameterException(this, "tag", tagBinding, cycle);
 
-			selectedBinding.setValue(tagValue);
+			selectedBinding.setObject(tagValue);
 
 			return;
 		}

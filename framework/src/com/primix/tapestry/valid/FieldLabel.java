@@ -82,78 +82,68 @@ import com.primix.tapestry.*;
 public class FieldLabel
 extends AbstractComponent
 {
-    private IBinding fieldBinding;
-    private IBinding delegateBinding;
+	private IBinding fieldBinding;
+	private IBinding delegateBinding;
 
-    public void setFieldBinding(IBinding value)
-    {
-        fieldBinding = value;
-    }
+	public void setFieldBinding(IBinding value)
+	{
+		fieldBinding = value;
+	}
 
-    public IBinding getFieldBinding()
-    {
-        return fieldBinding;
-    }
+	public IBinding getFieldBinding()
+	{
+		return fieldBinding;
+	}
 
-    public void setDelegateBinding(IBinding value)
-    {
-        delegateBinding = value;
-    }
+	public void setDelegateBinding(IBinding value)
+	{
+		delegateBinding = value;
+	}
 
-    public IBinding getDelegateBinding()
-    {
-        return delegateBinding;
-    }
+	public IBinding getDelegateBinding()
+	{
+		return delegateBinding;
+	}
 
-    /**
-     *  Gets the {@link IValidatingTextField} 
-     *  and optional {@link IValidationDelegate delegate},
-     *  then renders the label obtained from the field.
-     *
-     */
+	/**
+	*  Gets the {@link IValidatingTextField} 
+	*  and optional {@link IValidationDelegate delegate},
+	*  then renders the label obtained from the field.
+	*
+	*/
 
-    public void render(IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException
-    {
-        IValidatingTextField field;
-        IValidationDelegate delegate = null;
+	public void render(IResponseWriter writer, IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		IValidatingTextField field;
+		IValidationDelegate delegate = null;
 
-        if (cycle.isRewinding())
-            return;
+		if (cycle.isRewinding())
+			return;
 
-        try
-        {
-            field = (IValidatingTextField)fieldBinding.getValue();
-        }
-        catch (ClassCastException ex)
-        {
-            throw new BindingException
-                ("Parameter field is not type IValidatingTextField.", fieldBinding, ex);
-        }
+		try
+		{
+			field = (IValidatingTextField)fieldBinding.getObject("field",
+				IValidatingTextField.class);
 
-        if (field == null)
-            throw new RequiredParameterException(this, "field", fieldBinding, cycle);
+			if (field == null)
+				throw new RequiredParameterException(this, "field", fieldBinding, cycle);
 
-        if (delegateBinding != null)
-        {
-            try
-            {
-                delegate = (IValidationDelegate)delegateBinding.getValue();
-            }
-            catch (ClassCastException ex)
-            {
-                throw new BindingException
-                    ("Parameter delegate is not type IValidationDelegate.",
-                            delegateBinding, ex);
-            }
-        }
+			if (delegateBinding != null)
+				delegate = (IValidationDelegate)delegateBinding.getObject("delegate",
+					IValidationDelegate.class);
 
-        if (delegate != null)
-            delegate.writeLabelPrefix(field, writer, cycle);
+			if (delegate != null)
+				delegate.writeLabelPrefix(field, writer, cycle);
 
-        writer.print(field.getDisplayName());
+			writer.print(field.getDisplayName());
 
-        if (delegate != null)
-            delegate.writeLabelSuffix(field, writer, cycle);
-    }
+			if (delegate != null)
+				delegate.writeLabelSuffix(field, writer, cycle);
+		}
+		catch (BindingException ex)
+		{
+			throw new RequestCycleException(this, cycle, ex);
+		}
+	}
 }

@@ -96,7 +96,7 @@ public class InsertText extends AbstractComponent
         modeBinding = value;
 
         if (value.isStatic())
-            modeValue = (InsertTextMode)value.getValue();
+            modeValue = (InsertTextMode)value.getObject("mode", InsertTextMode.class);
     }
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
@@ -117,7 +117,7 @@ public class InsertText extends AbstractComponent
             return;
 
         if (mode == null && modeBinding != null)
-            mode = (InsertTextMode)modeBinding.getValue();
+            mode = (InsertTextMode)modeBinding.getObject("mode", InsertTextMode.class);
 
         if (mode == null)
             mode = InsertTextMode.BREAK;

@@ -56,7 +56,7 @@ public abstract class AbstractBinding implements IBinding
 		Object value;
 		Class valueClass;
 
-		value = getValue();
+		value = getObject();
 
 		if (value == null)
 			return false;
@@ -124,7 +124,7 @@ public abstract class AbstractBinding implements IBinding
 	{
 		Object raw;
 
-		raw = getValue();
+		raw = getObject();
 		if (raw == null)
 			throw new NullValueForBindingException(this);
 
@@ -149,7 +149,7 @@ public abstract class AbstractBinding implements IBinding
 	{
 		Object raw;
 
-		raw = getValue();
+		raw = getObject();
 		if (raw == null)
 			throw new NullValueForBindingException(this);
 
@@ -181,7 +181,7 @@ public abstract class AbstractBinding implements IBinding
 	{
 		Object value;
 
-		value = getValue();
+		value = getObject();
 		if (value == null)
 			return null;
 
@@ -234,7 +234,7 @@ public abstract class AbstractBinding implements IBinding
 	*/
 
 
-	public void setValue(Object value)
+	public void setObject(Object value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
@@ -247,6 +247,36 @@ public abstract class AbstractBinding implements IBinding
 	public boolean isStatic()
 	{
 		return true;
+	}
+
+	public Object getObject(String parameterName, Class type)
+	{
+		Object result = getObject();
+		
+		if (result == null)
+			return result;
+			
+		if (type.isAssignableFrom(result.getClass()))
+			return result;
+			
+		StringBuffer buffer = new StringBuffer();
+		
+		buffer.append("Parameter ");
+		buffer.append(parameterName);
+		buffer.append(" (");
+		buffer.append(result);
+		buffer.append(") ");
+		
+		if (type.isInterface())
+			buffer.append(" does not implement interface ");
+		else
+			buffer.append(" is not type ");
+			
+			
+		buffer.append(type.getName());
+		buffer.append('.');
+			
+		throw new BindingException(buffer.toString(), this);				
 	}
 }
 

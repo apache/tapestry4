@@ -155,12 +155,12 @@ public class Hidden extends AbstractFormComponent
 
 		try
 		{
-			listener = (IActionListener)listenerBinding.getValue();
+			listener = (IActionListener)listenerBinding.getObject("listener",
+				IActionListener.class);
 		}
-		catch (ClassCastException e)
+		catch (BindingException ex)
 		{
-			throw new RequestCycleException("Parameter listener is not type IActionListener.",
-				this, cycle, e);
+			throw new RequestCycleException(this, cycle, ex);
 		}
 
 		if (listener != null)

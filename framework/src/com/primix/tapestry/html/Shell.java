@@ -150,7 +150,7 @@ public class Shell extends AbstractComponent
             startTime = System.currentTimeMillis();
 
             if (stylesheetBinding != null)
-                stylesheet = (IAsset)stylesheetBinding.getValue();
+                stylesheet = (IAsset)stylesheetBinding.getObject("stylesheet", IAsset.class);
 
             if (title == null)
                 title = titleBinding.getString();

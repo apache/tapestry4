@@ -115,7 +115,7 @@ public class Radio extends AbstractComponent
 		valueBinding = value;
 
 		if (valueBinding.isStatic())
-			staticValue = valueBinding.getValue();
+			staticValue = valueBinding.getObject();
 	}
 
 	public Object getValue()
@@ -126,7 +126,7 @@ public class Radio extends AbstractComponent
 		if (valueBinding == null)
 			return Boolean.TRUE;
 
-		return valueBinding.getValue();
+		return valueBinding.getObject();
 	}
 
 	/**

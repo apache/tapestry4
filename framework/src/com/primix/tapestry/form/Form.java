@@ -273,21 +273,20 @@ public class Form extends AbstractComponent
                     throw new StaleLinkException(
                         "Incorrect number of elements with Form " + getExtendedId() + ".",
                         getPage(), cycle);
-
-                try
-                {
-                    listener = (IActionListener)listenerBinding.getValue();
-                }
-                catch (ClassCastException e)
-                {
-                    throw new RequestCycleException("Parameter listener is not type IActionListener.",
-                        this, cycle, e);
-                }
-
-                if (listener == null)
-                    throw new RequiredParameterException(this, "listener", listenerBinding,
-                        cycle);
-
+				
+				try
+				{
+                    listener = (IActionListener)listenerBinding.getObject("listener",
+						IActionListener.class);
+				}
+				catch (BindingException ex)
+				{
+				    throw new RequestCycleException(this, cycle, ex);
+				}
+						
+				if (listener == null)
+					throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
+					
                 listener.actionTriggered(this, cycle);
 
                 // Abort the rewind render.

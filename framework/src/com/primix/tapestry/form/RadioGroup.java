@@ -200,7 +200,7 @@ public class RadioGroup extends AbstractFormComponent
 
 	public void updateSelection(Object value)
 	{
-		selectedBinding.setValue(value);
+		selectedBinding.setObject(value);
 	}
 
 	/**
@@ -270,7 +270,7 @@ public class RadioGroup extends AbstractFormComponent
 			// selection is, so that the correct one can mark itself 'checked'.
 
 			if (!rewinding)
-				selection = selectedBinding.getValue();
+				selection = selectedBinding.getObject();
 
 			renderWrapped(writer, cycle);
 		}

@@ -198,7 +198,7 @@ public class ImageSubmit extends AbstractFormComponent
 		tagBinding = value;
 
 		if (value.isStatic())
-			staticTagValue = value.getValue();
+			staticTagValue = value.getObject();
 	}
 
 	public IBinding getTagBinding()
@@ -260,12 +260,12 @@ public class ImageSubmit extends AbstractFormComponent
 			{
 				x = Integer.parseInt(value);
 
-					parameterName = name + ".y";
+				parameterName = name + ".y";
 				value = context.getParameter(parameterName);
 
-					y = Integer.parseInt(value);
+				y = Integer.parseInt(value);
 
-				pointBinding.setValue(new Point(x, y));
+				pointBinding.setObject(new Point(x, y));
 			}
 
 			// Notify the application, by setting the select parameter
@@ -289,21 +289,26 @@ public class ImageSubmit extends AbstractFormComponent
 
 
 			if (tagValue == null)
-				tagValue = tagBinding.getValue();
+				tagValue = tagBinding.getObject();
 
 			if (tagValue == null)
 				throw new RequiredParameterException(this, "tag", tagBinding, cycle);
 
-			selectedBinding.setValue(tagValue);                        
+			selectedBinding.setObject(tagValue);                        
 		}
 
 		// Not rewinding, do the real render
 
 		if (disabled)
-			image = (IAsset)disabledImageBinding.getValue();
+			image = (IAsset)disabledImageBinding.getObject("disabled", IAsset.class);
 
 		if (image == null)
-			image = (IAsset)imageBinding.getValue();                                
+		{
+			image = (IAsset)imageBinding.getObject("image", IAsset.class);
+			
+			if (image == null)
+				throw new RequiredParameterException(this, "image", imageBinding, cycle);
+		}                                
 
 		imageURL = image.buildURL(cycle);
 

@@ -204,7 +204,7 @@ implements ILifecycle, IValidatingTextField
 
 	/**
 	*  Returns the component's delegate, or throws 
-	*  {@link NullValueForBindingException}.
+	*  {@link RequiredParameterException}.
 	*
 	*/
 
@@ -212,7 +212,8 @@ implements ILifecycle, IValidatingTextField
 	{
 		if (delegate == null)
 		{
-			delegate = (IValidationDelegate)delegateBinding.getValue();
+			delegate = (IValidationDelegate)delegateBinding.getObject("delegate",
+				IValidationDelegate.class);
 
 			if (delegate == null)
 				throw new NullValueForBindingException(delegateBinding);

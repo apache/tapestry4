@@ -100,12 +100,11 @@ public class Image extends AbstractComponent
 
 		try
 		{
-			asset = (IAsset)binding.getValue();
+			asset = (IAsset)binding.getObject(name, IAsset.class);
 		}
-		catch (ClassCastException e)
+		catch (BindingException ex)
 		{
-			throw new RequestCycleException("Binding " + name + " is not of type IAsset.",
-				this, cycle, e);
+			throw new RequestCycleException(this, cycle, ex);
 		}
 
 		if (asset == null)
@@ -151,18 +150,17 @@ public class Image extends AbstractComponent
 
 		try
 		{
-			imageAsset = (IAsset)imageBinding.getValue();
+			imageAsset = (IAsset)imageBinding.getObject("image", IAsset.class);
 		}
-		catch (ClassCastException e)
+		catch (BindingException ex)
 		{
-			throw new RequestCycleException("Binding image is not an IAsset.",
-				this, cycle, e);
+			throw new RequestCycleException(this, cycle, ex);
 		}
 
 		if (imageAsset == null)
 			throw new RequiredParameterException(this, "image", imageBinding, cycle);
 
-			imageURL = imageAsset.buildURL(cycle);
+		imageURL = imageAsset.buildURL(cycle);
 
 		if (staticBorder)
 			border = borderValue;

@@ -168,7 +168,7 @@ extends AbstractValidatingTextField
     {
         Date date;
 
-        date = (Date)dateBinding.getValue();
+        date = (Date)dateBinding.getObject("date", Date.class);
         if (date == null)
             return "";
 
@@ -211,7 +211,7 @@ extends AbstractValidatingTextField
                     errorMessage);
             }
 
-            dateBinding.setValue(null);
+            dateBinding.setObject(null);
 
             return;
         }
@@ -253,7 +253,7 @@ extends AbstractValidatingTextField
 
         if (minimumBinding != null)
         {
-            boundary = (Date)minimumBinding.getValue();
+            boundary = (Date)minimumBinding.getObject("minimum", Date.class);
 
             if (boundary != null &&
                 boundary.compareTo(date) > 0)
@@ -271,7 +271,7 @@ extends AbstractValidatingTextField
 
         if (maximumBinding != null)
         {
-            boundary = (Date)maximumBinding.getValue();
+            boundary = (Date)maximumBinding.getObject("maximum", Date.class);
 
             if (boundary != null &&
                 boundary.compareTo(date) < 0)
@@ -289,7 +289,7 @@ extends AbstractValidatingTextField
 
         // OK ... finally, everything is OK.
 
-        dateBinding.setValue(date);
+        dateBinding.setObject(date);
 
     }
 
