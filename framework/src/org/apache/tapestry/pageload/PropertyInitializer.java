@@ -57,7 +57,6 @@ package org.apache.tapestry.pageload;
 
 import ognl.Ognl;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.ILocation;
@@ -113,7 +112,7 @@ public class PropertyInitializer implements PageDetachListener
             // property of the expression.  This may be null, or may be
             // a value set in finishLoad() (via an abstract accessor).
 
-            if (StringUtils.isEmpty(_expression))
+            if (Tapestry.isBlank(_expression))
             {
                 _invariant = true;
                 _value = OgnlUtils.get(_propertyName, _resolver, _component);

@@ -55,11 +55,11 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  The setvar element specifies the variable to set in the current browser context as a side effect of executing a task.
@@ -89,7 +89,7 @@ public abstract class Setvar extends AbstractComponent
             renderInformalParameters(writer, cycle);
 
             String value = readValue();
-            if (StringUtils.isNotEmpty(value))
+            if (Tapestry.isNonBlank(value))
                 writer.attribute("value", value);
             else
                 writer.attribute("value", "");

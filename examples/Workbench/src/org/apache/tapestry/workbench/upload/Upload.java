@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.workbench.upload;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
@@ -97,7 +97,7 @@ public class Upload extends BasePage
 
     public void formSubmit(IRequestCycle cycle)
     {
-        if (StringUtils.isEmpty(file.getFileName()))
+        if (Tapestry.isBlank(file.getFileName()))
         {
             IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
 

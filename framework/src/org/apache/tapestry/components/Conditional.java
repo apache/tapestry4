@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.components;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  A conditional element on a page which will render its wrapped elements
@@ -86,7 +86,7 @@ public abstract class Conditional extends AbstractComponent
 		{
 			String element = getElement();
 			
-			boolean render = !cycle.isRewinding() && StringUtils.isNotEmpty(element);
+			boolean render = !cycle.isRewinding() && Tapestry.isNonBlank(element);
 			
 			if (render)
 			{

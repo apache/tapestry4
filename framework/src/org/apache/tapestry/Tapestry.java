@@ -398,8 +398,7 @@ public final class Tapestry
      * Class name of an {@link ognl.TypeConverter} implementing class
      * to use as a type converter for {@link org.apache.tapestry.binding.ExpressionBinding}
      */
-    public static final String OGNL_TYPE_CONVERTER =
-        "org.apache.tapestry.ognl-type-converter";
+    public static final String OGNL_TYPE_CONVERTER = "org.apache.tapestry.ognl-type-converter";
 
     /**
      *  Prevent instantiation.
@@ -852,7 +851,7 @@ public final class Tapestry
      * <tr><td>{@link Iterator}</td> <td>Returned as-is.</td>
      * <tr><td>{@link Collection}</td> <td>Iterator returned, or null
      *  if the Collection is empty</td> </tr>
-
+    
      * <tr><td>Any other</td> <td>{@link Iterator} for singleton collection returned</td> </tr>
      * <tr><td>null</td> <td>null returned</td> </tr>
      * </table>
@@ -1578,5 +1577,36 @@ public final class Tapestry
             new ObservedChangeEvent(component, propertyName, new Short(newValue));
 
         observer.observeChange(event);
+    }
+
+    /**
+     * Returns true if the input is null or contains only whitespace.
+     * 
+     * <p>
+     * Note: Yes, you'd think we'd use <code>StringUtils</code>, but with
+     * the change in names and behavior between releases, it is smarter
+     * to just implement our own little method!
+     * 
+     * @since 3.0
+     */
+
+    public static boolean isBlank(String input)
+    {
+        if (input == null || input.length() == 0)
+            return true;
+
+        return input.trim().length() == 0;
+    }
+
+    /**
+     * Returns true if the input is not null and not empty (or only whitespace).
+     * 
+     * @since 3.0
+     * 
+     */
+
+    public static boolean isNonBlank(String input)
+    {
+        return !isBlank(input);
     }
 }

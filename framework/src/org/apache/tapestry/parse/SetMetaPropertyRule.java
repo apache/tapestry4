@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.IPropertyHolder;
 import org.apache.tapestry.util.xml.DocumentParseException;
@@ -89,7 +88,7 @@ public class SetMetaPropertyRule extends AbstractSpecificationRule
 
     public void body(String namespace, String name, String text) throws Exception
     {
-        if (StringUtils.isEmpty(text))
+        if (Tapestry.isBlank(text))
             return;
 
         if (_value != null)

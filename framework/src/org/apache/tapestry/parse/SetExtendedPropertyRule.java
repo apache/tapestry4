@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.xml.sax.Attributes;
@@ -101,7 +100,7 @@ public class SetExtendedPropertyRule extends AbstractSpecificationRule
 
     public void body(String namespace, String name, String text) throws Exception
     {
-        if (StringUtils.isEmpty(text))
+        if (Tapestry.isBlank(text))
             return;
 
         if (_valueSet)

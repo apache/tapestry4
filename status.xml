@@ -236,6 +236,11 @@ properties cannot be of complex array types
 fixed broken links in doc\src\common\TapestryLinks.xml
 </action>
 
+<action type="update" dev="HLS">
+Changed code to no longer invoke StringUtils.isEmpty() / isNonEmpty() (this is because the
+behavior of the method is changing between jakarta-commons 1.0 and 2.0).	
+</action>
+
 
 			</release>
 		</changes>

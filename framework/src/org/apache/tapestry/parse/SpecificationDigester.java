@@ -60,7 +60,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.digester.Digester;
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Location;
@@ -296,7 +295,7 @@ public class SpecificationDigester extends Digester
     {
         int count = Tapestry.size(_documentRules);
 
-        String name = StringUtils.isEmpty(localName) ? qName : localName;
+        String name = Tapestry.isBlank(localName) ? qName : localName;
 
         for (int i = 0; i < count; i++)
         {

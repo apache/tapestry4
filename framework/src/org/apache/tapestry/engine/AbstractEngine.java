@@ -81,7 +81,6 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.bsf.BSFManager;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -888,7 +887,7 @@ public abstract class AbstractEngine
                 {
                     serviceName = extractServiceName(context);
 
-                    if (StringUtils.isEmpty(serviceName))
+                    if (Tapestry.isBlank(serviceName))
                         serviceName = Tapestry.HOME_SERVICE;
 
                     // Must have a service to create the request cycle.
@@ -1767,7 +1766,7 @@ public abstract class AbstractEngine
 
         private RedirectAnalyzer(String location)
         {
-            if (StringUtils.isEmpty(location))
+            if (Tapestry.isBlank(location))
             {
                 _location = "";
                 _internal = true;

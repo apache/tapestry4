@@ -63,7 +63,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
@@ -164,7 +163,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
         Properties result = parent;
 
-        if (!StringUtils.isEmpty(language))
+        if (!Tapestry.isBlank(language))
         {
             Locale l = new Locale(language, "");
             MultiKey key = buildKey(baseResourceLocation, l);
@@ -181,7 +180,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
         else
             language = "";
 
-        if (!StringUtils.isEmpty(country))
+        if (Tapestry.isNonBlank(country))
         {
             Locale l = new Locale(language, country);
             MultiKey key = buildKey(baseResourceLocation, l);
@@ -198,7 +197,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
         else
             country = "";
 
-        if (!StringUtils.isEmpty(variant))
+        if (Tapestry.isNonBlank(variant))
         {
             Locale l = new Locale(language, country, variant);
             MultiKey key = buildKey(baseResourceLocation, l);

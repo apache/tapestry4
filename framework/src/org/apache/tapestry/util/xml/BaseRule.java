@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.util.xml;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry.Tapestry;
 import org.xml.sax.Attributes;
 
 /**
@@ -76,7 +76,7 @@ public class BaseRule implements IRule
 		{
 			String attributeName = attributes.getLocalName(i);
         	
-			if (StringUtils.isEmpty(attributeName))
+			if (Tapestry.isBlank(attributeName))
 				attributeName = attributes.getQName(i);
         	
 			if (attributeName.equals(name))

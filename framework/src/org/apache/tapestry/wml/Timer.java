@@ -55,11 +55,11 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  The Timer element declares a card timer, which exposes a means of processing inactivity or idle time.
@@ -87,7 +87,7 @@ public abstract class Timer extends AbstractComponent
             writer.attribute("name", getName());
 
             String value = readValue();
-            if (StringUtils.isNotEmpty(value))
+            if (Tapestry.isNonBlank(value))
                 writer.attribute("value", value);
             else
                 writer.attribute("value", "0");

@@ -57,7 +57,6 @@ package org.apache.tapestry.contrib.form;
 
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
@@ -114,7 +113,7 @@ public abstract class FormConditional extends AbstractFormComponent
         if (condition) {
             String element = getElement();
             
-            boolean render = cycleRewinding && StringUtils.isNotEmpty(element);
+            boolean render = cycleRewinding && Tapestry.isNonBlank(element);
             
             if (render)
             {

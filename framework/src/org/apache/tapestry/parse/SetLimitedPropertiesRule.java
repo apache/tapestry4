@@ -56,7 +56,7 @@
 package org.apache.tapestry.parse;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry.Tapestry;
 import org.xml.sax.Attributes;
 
 /**
@@ -95,7 +95,7 @@ public class SetLimitedPropertiesRule extends AbstractSpecificationRule
         {
             String attributeName = attributes.getLocalName(i);
 
-            if (StringUtils.isEmpty(attributeName))
+            if (Tapestry.isBlank(attributeName))
                 attributeName = attributes.getQName(i);
 
             for (int x = 0; x < _attributeNames.length; x++)
@@ -106,9 +106,9 @@ public class SetLimitedPropertiesRule extends AbstractSpecificationRule
                     String propertyName = _propertyNames[x];
 
                     PropertyUtils.setProperty(top, propertyName, value);
-                    
+
                     // Terminate inner loop when attribute name is found.
-                    
+
                     break;
                 }
             }

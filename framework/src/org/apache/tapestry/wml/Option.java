@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  This component serves as a container for one item that is listed as a choice in a {@link Select}. A {@link Select}
@@ -90,7 +90,7 @@ public abstract class Option extends AbstractComponent {
             writer.begin("option");
 
             String value = getValue();
-            if (StringUtils.isNotEmpty(value))
+            if (Tapestry.isNonBlank(value))
                 writer.attribute("value", value);
 
             renderInformalParameters(writer, cycle);

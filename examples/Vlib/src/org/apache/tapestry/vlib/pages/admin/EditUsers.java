@@ -62,7 +62,6 @@ import java.util.List;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
@@ -184,7 +183,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
         String password = getPassword();
         setPassword(null);
 
-        if (StringUtils.isEmpty(password) && Tapestry.size(resetPasswordUserIds) != 0)
+        if (Tapestry.isBlank(password) && Tapestry.size(resetPasswordUserIds) != 0)
         {
             setErrorField("inputPassword", getMessage("need-password"));
             return;
