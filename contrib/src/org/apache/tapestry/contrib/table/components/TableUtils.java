@@ -188,7 +188,7 @@ public class TableUtils
                     OgnlUtils.get(strColumnExpression, objResolver, objColumnSettingsContainer);
                 if (!(objColumn instanceof ITableColumn))
                     throw new ApplicationRuntimeException(
-                        format("not-a-column", objComponent, strColumnExpression));
+                        format("not-a-column", objComponent.getExtendedId(), strColumnExpression));
 
                 arrColumns.add(objColumn);
                 continue;

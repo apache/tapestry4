@@ -290,6 +290,9 @@ public abstract class TableView
     protected ITableColumnModel getTableColumnModel()
     {
         Object objColumns = getColumns();
+        
+        if (objColumns == null)
+            return null;
 
         if (objColumns instanceof ITableColumnModel)
         {
