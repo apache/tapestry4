@@ -47,9 +47,6 @@ public class TestRestartService extends TapestryTestCase
         request.getSession();
         requestControl.setReturnValue(null);
 
-        request.getServletPath();
-        requestControl.setReturnValue("/app");
-
         builder.constructURL("/app");
         builderControl.setReturnValue("http://myserver/app");
 
@@ -61,6 +58,7 @@ public class TestRestartService extends TapestryTestCase
         s.setBuilder(builder);
         s.setRequest(request);
         s.setResponse(response);
+        s.setServletPath("/app");
 
         s.service(null, null);
 
@@ -86,13 +84,10 @@ public class TestRestartService extends TapestryTestCase
 
         session.invalidate();
 
-        request.getServletPath();
-        requestControl.setReturnValue("/app");
+        builder.constructURL("/tap");
+        builderControl.setReturnValue("http://myserver/tap");
 
-        builder.constructURL("/app");
-        builderControl.setReturnValue("http://myserver/app");
-
-        response.sendRedirect("http://myserver/app");
+        response.sendRedirect("http://myserver/tap");
 
         replayControls();
 
@@ -100,6 +95,7 @@ public class TestRestartService extends TapestryTestCase
         s.setBuilder(builder);
         s.setRequest(request);
         s.setResponse(response);
+        s.setServletPath("/tap");
 
         s.service(null, null);
 
@@ -133,9 +129,6 @@ public class TestRestartService extends TapestryTestCase
 
         log.warn("Exception thrown invalidating HttpSession.", ex);
 
-        request.getServletPath();
-        requestControl.setReturnValue("/app");
-
         builder.constructURL("/app");
         builderControl.setReturnValue("http://myserver/app");
 
@@ -148,6 +141,7 @@ public class TestRestartService extends TapestryTestCase
         s.setRequest(request);
         s.setResponse(response);
         s.setLog(log);
+        s.setServletPath("/app");
 
         s.service(null, null);
 

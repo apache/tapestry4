@@ -295,7 +295,7 @@ currently used in Tapestry:
     Defines the servlet path used when constructing URLs. The default value is <code>/app</code>.   Note that this is just
     the <em>servlet path</em>.  In many cases, the application will be inside a context; Tapestry will automatically prefix this
     value with the correct value for the context.  For example, workbench.war will by default be deployed with a context path of /workbench, and Tapestry will build URLs as
-    /context/app.
+    /workbench/app.
     </td>
     
   </tr>
