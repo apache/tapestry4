@@ -5,7 +5,6 @@ import javax.ejb.*;
 import com.primix.vlib.ejb.*;
 import java.util.*;
 import javax.servlet.*;
-import com.primix.tapestry.ApplicationRuntimeException;
 
 /*
  * Tapestry Web Application Framework
@@ -43,7 +42,7 @@ import com.primix.tapestry.ApplicationRuntimeException;
  *  @author Howard Ship
  */
  
-public class LoginServlet extends GatewayServlet
+public class LoginServlet extends VlibServlet
 {
 	/**
 	 *  Returns an  instance of {@link LoginDelegate}, either one previously
@@ -54,5 +53,10 @@ public class LoginServlet extends GatewayServlet
 	protected IService getDelegate(RequestContext context)
 	{
 		return LoginDelegate.get(context);
+	}
+	
+	public static void writeLink(RequestContext context, HTMLWriter writer)
+	{
+		writeLink(context, writer, "/login", "[Login]");
 	}
 }

@@ -10,7 +10,6 @@ import java.util.*;
 import javax.servlet.*;
 import java.io.*;
 import java.net.*;
-import com.primix.tapestry.ApplicationRuntimeException;
 
 /*
  * Tapestry Web Application Framework
@@ -155,6 +154,7 @@ public class VirtualLibraryApplication implements Serializable
 	 */
 	 
 	public IPerson getUser()
+	throws ServletException
 	{
 		if (user != null)
 			return user;
@@ -168,11 +168,11 @@ public class VirtualLibraryApplication implements Serializable
 		}
 		catch (FinderException e)
 		{
-			throw new ApplicationRuntimeException("Could not locate user.", e);
+			throw new ServletException("Could not locate user.", e);
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException("Could not get user.", e);
+			throw new ServletException("Could not get user.", e);
 		}
 		
 		return user;
@@ -190,6 +190,7 @@ public class VirtualLibraryApplication implements Serializable
 	}	
 	
 	public IPersonHome getPersonHome()
+	throws ServletException
 	{
 		if (personHome == null)
 			personHome = (IPersonHome)findNamedObject("ejb/Person", IPersonHome.class);
@@ -198,6 +199,7 @@ public class VirtualLibraryApplication implements Serializable
 	}
 	
 	public IPublisherHome getPublisherHome()
+	throws ServletException
 	{
 		if (publisherHome == null)
 		  publisherHome = (IPublisherHome)findNamedObject("ejb/Publisher",
@@ -207,6 +209,7 @@ public class VirtualLibraryApplication implements Serializable
 	}
 	
 	public IBookHome getBookHome()
+	throws ServletException
 	{
 		if (bookHome == null)
 			bookHome = (IBookHome)findNamedObject("ejb/Book", IBookHome.class);
@@ -215,6 +218,7 @@ public class VirtualLibraryApplication implements Serializable
 	}
 	
 	public IBookQueryHome getBookQueryHome()
+	throws ServletException
 	{
 		if (bookQueryHome == null)
 			bookQueryHome = (IBookQueryHome)findNamedObject("ejb/BookQuery",
@@ -224,6 +228,7 @@ public class VirtualLibraryApplication implements Serializable
 	}
 
 	public IOperationsHome getOperationsHome()
+	throws ServletException
 	{
 		if (operationsHome == null)
 			operationsHome = (IOperationsHome)findNamedObject("ejb/Operations",
@@ -241,6 +246,7 @@ public class VirtualLibraryApplication implements Serializable
 	 */
 	 				
 	public IOperations getOperations()
+	throws ServletException
 	{
 		IOperationsHome home;
 		
@@ -253,11 +259,11 @@ public class VirtualLibraryApplication implements Serializable
 			}
 			catch (CreateException e)
 			{
-				throw new ApplicationRuntimeException("Error creating operations bean: " + e, e);
+				throw new ServletException("Error creating operations bean: " + e, e);
 			}
 			catch (RemoteException e)
 			{
-				throw new ApplicationRuntimeException("Remote exception creating operations bean: " + e, e);
+				throw new ServletException("Remote exception creating operations bean: " + e, e);
 			}
 		}
 		
@@ -265,6 +271,7 @@ public class VirtualLibraryApplication implements Serializable
 	}
 					
 	public Object findNamedObject(String name, Class expectedClass)
+	throws ServletException
 	{
 		Object raw;
 		Object result;
@@ -281,13 +288,13 @@ public class VirtualLibraryApplication implements Serializable
 		}
 		catch (ClassCastException cce)
 		{
-			throw new ApplicationRuntimeException(
+			throw new ServletException(
 				"Object " + name + " is not type " +
 				expectedClass.getName() + ".", cce);
 		}
 		catch (NamingException e)
 		{
-			throw new ApplicationRuntimeException("Unable to resolve object " + name + ": " +
+			throw new ServletException("Unable to resolve object " + name + ": " +
 			e.toString(), e);
 		}
 		
@@ -295,6 +302,7 @@ public class VirtualLibraryApplication implements Serializable
 	}
 	
 	public Context getEnvironment()
+	throws ServletException
 	{
 		InitialContext initial;
 		
@@ -306,7 +314,7 @@ public class VirtualLibraryApplication implements Serializable
 			}
 			catch (NamingException e)
 			{
-				throw new ApplicationRuntimeException("Unable to acquire initial naming context.", e);
+				throw new ServletException("Unable to acquire initial naming context.", e);
 			}
 			
 			try
@@ -318,7 +326,7 @@ public class VirtualLibraryApplication implements Serializable
 			}
 			catch (NamingException e)
 			{
-				throw new ApplicationRuntimeException(
+				throw new ServletException(
 					"Unable to resolve environment naming context from initial context.", 
 					e);
 			}		
@@ -334,6 +342,7 @@ public class VirtualLibraryApplication implements Serializable
 	 */
 	 	
 	public void setUser(IPerson value)
+	throws ServletException
 	{
 		user = value;
 		userPK = null;		
@@ -348,7 +357,7 @@ public class VirtualLibraryApplication implements Serializable
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException("Could not get primary key for user.", e);
+			throw new ServletException("Could not get primary key for user.", e);
 		}
 	}
 	
@@ -359,6 +368,7 @@ public class VirtualLibraryApplication implements Serializable
 	 */
 	 
 	public String getFullUserName()
+	throws ServletException
 	{
 		if (fullUserName == null)
 		{
@@ -368,7 +378,7 @@ public class VirtualLibraryApplication implements Serializable
 			}
 			catch (RemoteException e)
 			{
-				throw new ApplicationRuntimeException("Could not get user's name: " + e.toString(),
+				throw new ServletException("Could not get user's name: " + e.toString(),
 						e);
 			}		
 		}

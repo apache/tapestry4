@@ -5,7 +5,7 @@ import javax.ejb.*;
 import com.primix.vlib.ejb.*;
 import java.util.*;
 import javax.servlet.*;
-import java.io.*;
+import java.io.IOException;
 
 /*
  * Tapestry Web Application Framework
@@ -35,45 +35,43 @@ import java.io.*;
  *
  */
 
-public abstract class VlibDelegate implements IService, Serializable
-{
-	protected final VirtualLibraryApplication application;
-	
-	/**
-	 *  Creates the VlibDelegate and locates the {@link VirtualLibraryApplication}.
+/**
+ *  Servlet for the {@link HomeDelegate} page.  Should be mapped
+ *  to the URI <code>/home/*</code>.
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ */
+ 
+ public abstract class VlibServlet extends GatewayServlet
+ {
+ 	/**
+	 *  Method invoked by subclasses.  Encodes the URL and build a
+	 *  &lt;a&gt; tag around the URL and the label.
 	 *
 	 */
 	 
-	public VlibDelegate(RequestContext context)
+ 	protected static void writeLink(RequestContext context, HTMLWriter writer,
+			String URL, String label)
 	{
-		application = VirtualLibraryApplication.get(context);
+		boolean compressed;
+		
+		compressed = writer.compress(true);
+		writer.begin("a");
+		writer.attribute("href", context.getResponse().encodeURL(URL));
+		writer.print(label);
+		writer.end();
+		
+		writer.setCompressed(compressed);
 	}
 	
-	public VirtualLibraryApplication getApplication()
+	protected void handleServletException(RequestContext context,
+		IService delegate, ServletException e)
+	throws IOException, ServletException
 	{
-		return application;
+		context.setAttribute("javax.servlet.jsp.jspException", e);
+		
+		context.forward("/jsp/Error.jsp");
 	}
-	
-	
-	/**
-	 *  Sets up the invocation of the JSP (to render output), first
-	 *  setting the <code>page.title</code> and <code>page.subtitle</code>
-	 *  request attributes.  Also, sets the <code>delegate</code>
-	 *  request attribute to this.
-	 *
-	 */
-	 
-	public void forward(String jspName, String pageTitle, String pageSubtitle,
-		RequestContext context)
-	throws ServletException, IOException
-	{
-		context.setAttribute("page.title", pageTitle);
-		
-		if (pageSubtitle != null)
-			context.setAttribute("page.subtitle", pageSubtitle);
-		
-		context.setAttribute("delegate", this);
-		
-		context.forward(jspName);
-	}
-}
+ }
+ 

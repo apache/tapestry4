@@ -1,3 +1,12 @@
+* Sep 15 2000 hship
+
+More work on the JSP Vlib, adding new pages and exception handling, and making
+the servlets responsible for writting links.
+
+* Sep 14 2000 hship
+
+Begin work on the JSP version of the Primix Virtual Library.
+
 * Sep 12 2000 hship
 
 Add the ShowInspector component to the tutorial Border and the Vlib Border.

@@ -1,11 +1,6 @@
 package com.primix.vlib.jsp;
 
 import com.primix.servlet.*;
-import javax.ejb.*;
-import com.primix.vlib.ejb.*;
-import java.util.*;
-import javax.servlet.*;
-import com.primix.tapestry.ApplicationRuntimeException;
 
 /*
  * Tapestry Web Application Framework
@@ -43,7 +38,7 @@ import com.primix.tapestry.ApplicationRuntimeException;
  *  @author Howard Ship
  */
  
-public class MyBooksServlet extends GatewayServlet
+public class MyBooksServlet extends VlibServlet
 {
 	/**
 	 *  Returns an instance of {@link MyBooksDelegate}, either one previously
@@ -54,5 +49,20 @@ public class MyBooksServlet extends GatewayServlet
 	protected IService getDelegate(RequestContext context)
 	{
 		return MyBooksDelegate.get(context);
+	}
+	
+	public static void writeLink(RequestContext context, HTMLWriter writer)
+	{
+		String label = "[My Books]";
+		VirtualLibraryApplication application;
+		
+		application = VirtualLibraryApplication.get(context);
+		if (!application.isUserLoggedIn())
+		{
+			writer.print(label);
+			return;
+		}
+		
+		writeLink(context, writer, "/mybooks", "[My Books]");
 	}
 }

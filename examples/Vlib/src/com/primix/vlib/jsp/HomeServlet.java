@@ -1,11 +1,7 @@
 package com.primix.vlib.jsp;
 
 import com.primix.servlet.*;
-import javax.ejb.*;
 import com.primix.vlib.ejb.*;
-import java.util.*;
-import javax.servlet.*;
-import com.primix.tapestry.ApplicationRuntimeException;
 
 /*
  * Tapestry Web Application Framework
@@ -43,7 +39,7 @@ import com.primix.tapestry.ApplicationRuntimeException;
  *  @author Howard Ship
  */
  
-public class HomeServlet extends GatewayServlet
+public class HomeServlet extends VlibServlet
 {
 	/**
 	 *  Returns an instance of {@link HomeDelegate}, either one previously
@@ -54,5 +50,27 @@ public class HomeServlet extends GatewayServlet
 	protected IService getDelegate(RequestContext context)
 	{
 		return HomeDelegate.get(context);
+	}
+	
+	public static void writeLink(RequestContext context, HTMLWriter writer)
+	{
+		writeLink(context, writer, "/home", "[Home]");
+	}
+	
+	public static void writeBorrowLink(RequestContext context, HTMLWriter writer,
+		Book book)
+	{
+		VirtualLibraryApplication application;
+		String label = "[Borrow]";
+		
+		application = VirtualLibraryApplication.get(context);
+		
+		if (application.isLoggedInUser(book.getHolderPrimaryKey()))
+		{
+			writer.print(label);
+			return;
+		}
+		
+		writeLink(context, writer, "/home/" + book.getPrimaryKey(), label);
 	}
 }

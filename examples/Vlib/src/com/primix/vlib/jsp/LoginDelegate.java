@@ -6,7 +6,6 @@ import com.primix.vlib.ejb.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
-import com.primix.tapestry.ApplicationRuntimeException;
 import java.io.IOException;
 import java.rmi.*;
 import javax.rmi.*;
@@ -81,7 +80,8 @@ public class LoginDelegate extends VlibDelegate
 		
 		return result;	
 	}
-		/**
+
+	/**
 	 *  Name of text field used to enter the user's email.
 	 *
 	 */
@@ -241,7 +241,7 @@ public class LoginDelegate extends VlibDelegate
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ServletException(e);
 		}
 
 		application.setUser(person);

@@ -5,10 +5,10 @@ import javax.ejb.*;
 import com.primix.vlib.ejb.*;
 import java.util.*;
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.rmi.*;
 import javax.rmi.*;
-import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -39,22 +39,19 @@ import java.io.*;
  */
 
 /**
- *  Controller for the Login page.  An instance is stored in the {@link HttpSession},
+ *  Controller for the Book page, used for displaying the attributes
+ *  of a particular book.  An instance is stored in the {@link HttpSession},
  *  and persists until the user succesfully logs in.
  *
  *  @version $Id$
  *  @author Howard Ship
  */
  
-public class MyBooksDelegate extends BookQueryDelegate
-implements ILoginCallback
+public class BookDelegate extends VlibDelegate
 {
+	private transient Book book;
 
-	private transient Book[] books;
-	private transient String error;
-	private transient String message;
-
-	private final static String SESSION_ATTRIBUTE_NAME = "pages.mybooks";
+	private final static String SESSION_ATTRIBUTE_NAME = "pages.book";
 
 	/**
 	 *  Creates the LoginDelegate and stores it as an attribute
@@ -63,7 +60,7 @@ implements ILoginCallback
 	 */
 	 
 
-	public MyBooksDelegate(RequestContext context)
+	public BookDelegate(RequestContext context)
 	{
 		super(context);
 		
@@ -76,92 +73,69 @@ implements ILoginCallback
 	 *
 	 */
 	 
-	public static MyBooksDelegate get(RequestContext context)
+	public static BookDelegate get(RequestContext context)
 	{
-		MyBooksDelegate result;
+		BookDelegate result;
 		
-		result = (MyBooksDelegate)context.getSessionAttribute(SESSION_ATTRIBUTE_NAME);
+		result = (BookDelegate)context.getSessionAttribute(SESSION_ATTRIBUTE_NAME);
 		if (result == null)
-			result = new MyBooksDelegate(context);
+			result = new BookDelegate(context);
 		
 		return result;	
 	}
-	
-	public String getError()
+
+	public void service(RequestContext context)
+	throws IOException, ServletException
 	{
-		return error;
-	}
-	
-	public String getMessage()
-	{
-		return message;
-	}
-	
-	public void setError(String value)
-	{
-		error = value;
-	}
-	
-	public void setMessage(String value)
-	{
-		message = value;
-	}
-	
-	public void service(RequestContext context) throws ServletException, IOException
-	{
-		IBookQuery query;
-		int count;
+		Integer bookPK;
+		IOperations operations;
+		
+		// Get the primary key encoded into the
+		// URL and convert to Integer.
+		
+		bookPK = new Integer(context.getPathInfo(0));
 		
 		try
 		{
-			if (!application.isUserLoggedIn())
-			{
-				LoginDelegate login = LoginDelegate.get(context);
-				login.performLogin(this, context);
-				return;
-			}
+			operations = application.getOperations();
 			
-			// Otherwise, we're logged in.
+			book = operations.getBook(bookPK);
 			
-			query = getOrCreateQuery();
-			
-			count = query.ownerQuery(application.getUserPK());
-			
-			if (count == 0)
-				books = new Book[0];
-			else
-				books = query.get(0, count)	;
-			
-			forward("/jsp/MyBooks.jsp", "My Books", "My Books", context);	
+			forward("/jsp/Book.jsp", "View Book", book.getTitle(), context);
 		}
 		catch (RemoteException e)
 		{
 			throw new ServletException(e);
 		}
+		catch (FinderException e)
+		{
+			throw new ServletException(e);
+		}
 		finally
 		{
-			books = null;
-			message = null;
-			error = null;
+			book = null;
+			
+			application.cleanup();
 		}
 	}
 
-	public void postLogin(RequestContext context) throws IOException, ServletException
-	{
-		service(context);
-	}
-	
-	public Book[] getBooks()
-	{
-		return books;
-	}
-	
 	/**
-	 *  Returns true only if the book's owner is not the same as its holder.
+	 *  Return the {@link Book} to be displayed.
 	 *
 	 */
 	 
-	public boolean getShowHolder(Book book)
+	public Book getBook()
+	{
+		return book;
+	}
+	
+	/**
+	 *  Returns true if the holder of the book is not the borrower, and should
+	 *  be displayed.
+	 *
+	 */
+	 
+	public boolean getShowHolder()
 	{
 		Integer ownerPK;
 		Integer holderPK;
@@ -169,6 +143,6 @@ implements ILoginCallback
 		ownerPK = book.getOwnerPrimaryKey();
 		holderPK = book.getHolderPrimaryKey();
 		
-		return ! ownerPK.equals(holderPK);
+		return !ownerPK.equals(holderPK);
 	}
 }

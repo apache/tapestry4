@@ -5,7 +5,6 @@ import javax.ejb.*;
 import com.primix.vlib.ejb.*;
 import java.util.*;
 import javax.servlet.*;
-import com.primix.tapestry.ApplicationRuntimeException;
 import java.io.IOException;
 import java.rmi.*;
 import javax.rmi.*;
@@ -129,12 +128,26 @@ public class HomeDelegate extends BookQueryDelegate
 			
 			// Default .. .show the Home page.
 			
-			forward("/jsp/Home.jsp", "Primix Virtual Library", null, context);
+			display(context);
+			
 		}
 		finally
 		{
 			application.cleanup();
 		}
+	}
+
+	/**
+	 *  Invoked by the HomeDelegate or other delegates to cause the
+	 *  home page to be displayed.  Often, {@link #setMessage(String)} or
+	 *  {@link #setError(String)} is invoked first.
+	 *
+	 */
+	 
+	public void display(RequestContext context)
+	throws IOException, ServletException
+	{
+		forward("/jsp/Home.jsp", "Primix Virtual Library", null, context);
 	}
 
 	private void search(RequestContext context)
@@ -174,7 +187,7 @@ public class HomeDelegate extends BookQueryDelegate
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ServletException(e);
 		}
 		finally
 		{
@@ -195,6 +208,7 @@ public class HomeDelegate extends BookQueryDelegate
 	 */
 	 
 	public void writePublisherSelect(HTMLWriter writer)
+	throws ServletException
 	{
 		IOperations operations;
 		Publisher[] publishers;
@@ -209,7 +223,7 @@ public class HomeDelegate extends BookQueryDelegate
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ServletException(e);
 		}
 		
 		writer.begin("select");
