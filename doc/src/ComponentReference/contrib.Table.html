@@ -24,9 +24,9 @@ Tbis HTML document provides a base template for Component Reference pages.
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr><!-- Previous component in alphabetical order. -->
-  <td align="left"><A href="???.html"><IMG alt=??? src="common-images/prev.png"></a></td>  
+  <td align="left"><A href="index.html"><IMG alt="Component Index" src="common-images/prev.png"></a></td>  
   <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td><!-- Next component in alphabetical order. -->
-  <td align="right"><A href="???.html"><IMG alt=??? src="common-images/next.png"></a></td>  
+  <td align="right"><A href="index.html"><IMG alt="Component Index" src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -65,7 +65,25 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td colspan="2">
   <b>Description</b>
   <br> 
-  Provides a HTML &lt;table&gt; element. ??? 
+  Provides a HTML &lt;table&gt; element. The Table component is a facade component 
+  in the Table family. Table allows you to present a sortable and pagable table 
+  simply and easily by using only this one component.
+ <p>
+ The Table component allows you to manipulate its appearance by allowing you 
+ to define the 'class' attributes of its internal elements. If you want to change 
+ the structure of the table, however, you can instead build your own using the 
+ lower level components
+ <A HREF="../api/net/sf/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>, 
+ <A HREF="../api/net/sf/tapestry/contrib/table/components/TablePages.html"><CODE>TablePages</CODE></A>, 
+ <A HREF="../api/net/sf/tapestry/contrib/table/components/TableColumns.html"><CODE>TableColumns</CODE></A>, 
+ <A HREF="../api/net/sf/tapestry/contrib/table/components/TableRows.html"><CODE>TableRows</CODE></A>,
+ and 
+ <A HREF="../api/net/sf/tapestry/contrib/table/components/TableValues.html"><CODE>TableValues</CODE></A>.
+ <p>
+ The Table component delegates the handling of the table model and related
+ activities to the <A HREF="../api/net/sf/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>, 
+ and more detailed information about the process can be found in the 
+ documentation of that class.
  </td>
 </tr>
 
@@ -101,7 +119,13 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in/out</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>
+    The TableModel to be used to render the table. This binding is typically used only once at the beginning and then the component stores the model in the session state.
+    <p> 
+    If you want the Table to read the model every time you can use a session state manager such as NullTableSessionStateManager that will force it to get the TableModel from this binding every time. If you do this, however, you will be responsible for saving the state of the table yourself. 
+    <p> 
+    You can also call the reset() method to force the Table to abandon its old model and reload a new one. 
+    </td>
    </tr>
    <tr>
     <td>tableSessionStateManager</td>
@@ -109,7 +133,19 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in/out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>
+      This is the session state manager that will control what part of the table 
+      model will be saved in the session state. It is then used to recreate the 
+      table model from using what was saved in the session. By default, the 
+      <A HREF="../api/net/sf/tapestry/contrib/table/model/common/FullTableSessionStateManager.html"><tt>FullTableSessionStateManager</tt></A>
+      is used, which just saves the entire model into the session.
+      This behaviour may not be appropriate when the data is a lot or it is not
+      <A HREF="http://java.sun.com/products/jdk/1.2/docs/api/java/io/Serializable.html"><CODE>Serializable</CODE></A>.
+      <p> 
+      You can use one of the stock implementations of  
+      <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><CODE>ITableSessionStateManager</CODE></A>
+      to determine the session state behaviour, or you can just define your own.
+    </td>
    </tr>
    <tr>
     <td>tableSessionStoreManager</td>
@@ -117,7 +153,12 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in/out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>
+    Determines how the session state (returned by the session state manager) 
+    will be saved in the session. If this parameter is null, then the state 
+    will be saved as a persistent property. If it is not null, then the methods 
+    of the interface will be used to save and load the state. 
+    </td>
    </tr>
    <tr>
     <td>pagesDisplayed</td>
@@ -125,7 +166,13 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in/out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>
+    Determines the maximum number of pages to be displayed in the page list when 
+    the table has more than one page.
+    <p> 
+    For example, if the table has 20 pages, and 10 is the current page, 
+    pages from 7 to 13 in the page list will be shown if this parameter has a value of 7.     
+    </td>
    </tr>
    <tr>
     <td>arrowUpAsset</td>
@@ -133,7 +180,7 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>The image to use to describe a column sorted in an ascending order.</td>
    </tr>
    <tr>
     <td>arrowDownAsset</td>
@@ -141,7 +188,7 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>The image to use to describe a column sorted in a descending order.</td>
    </tr>
    <tr>
     <td>pagesClass</td>
@@ -149,7 +196,7 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in/out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>The CSS class of the pages.</td>
    </tr>
    <tr>
     <td>columnsClass</td>
@@ -157,7 +204,7 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in/out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>The CSS class of the table columns.</td>
    </tr>
    <tr>
     <td>rowsClass</td>
@@ -165,7 +212,7 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in/out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>The CSS class of the table rows.</td>
    </tr>
    <tr>
     <td>valuesClass</td>
@@ -173,7 +220,7 @@ Tbis HTML document provides a base template for Component Reference pages.
     <td>in/out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>???</td>
+    <td>The CSS class of the table values.</td>
    </tr>
   </table>
   <P>
@@ -189,8 +236,9 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td colspan="2">
   <b>Examples</b>
   <p>
-  This example is under construction.</p>
-      
+  This example is under construction.
+  </p>
+  Please see the example in the Tapestry Workbench. 
 
  </td></tr></table>
 </td></tr>
@@ -198,9 +246,9 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td colspan="3"><hr></td>  
 </tr>
 <tr><!-- Previous component in alphabetical order. -->
- <td align="left"><A href="???.html"><IMG alt=??? src="common-images/prev.png"></a></td>  
+ <td align="left"><A href="index.html"><IMG alt="Component Index" src="common-images/prev.png"></a></td>  
  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td><!-- Next component in alphabetical order. -->
- <td align="right"><A href="???.html"><IMG alt=??? src="common-images/next.png"></a></td>  
+ <td align="right"><A href="index.html"><IMG alt="Component Index" src="common-images/next.png"></a></td>  
 </tr>
 </table>
 
