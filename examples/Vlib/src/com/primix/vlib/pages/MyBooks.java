@@ -117,8 +117,8 @@ extends Protected
     {
 		// Create a new query.
 		
-        Visit visit = (Visit)getVisit();
-		IBookQueryHome home = visit.getBookQueryHome();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		IBookQueryHome home = vengine.getBookQueryHome();
 			
 		try
 		{
@@ -319,8 +319,8 @@ extends Protected
 
     private void returnBook(Integer bookPK)
     {
-        Visit visit = (Visit)getVisit();
-        IOperations operations = visit.getOperations();
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		IOperations operations = vengine.getOperations();
 
         try
         {
@@ -339,6 +339,29 @@ extends Protected
         }
     }
     
+	
+    /**
+     *  Listener used to return a book.
+     *
+     */
+
+    public IDirectListener getAddNewBookListener()
+    {
+        return new IDirectListener()
+        {
+    	    public void directTriggered(IDirect direct, String[] context,
+    			    IRequestCycle cycle)
+    	    {
+				NewBook page = (NewBook)cycle.getPage("NewBook");
+				
+				// Setup defaults for the new book.
+				
+				page.getAttributes().put("lendable", Boolean.TRUE);
+				
+				cycle.setPage(page);
+      	    }
+        };
+    }
 	
  	/**
 	 *  Removes the book query beans.

@@ -26,6 +26,8 @@ include $(SYS_MAKEFILE_DIR)/jBoss.mk
 
 JBOSS_CONF_DIR = $(JBOSS_DIR)/conf/default
 
+INSTALLED_VLIB_PROPERTIES = $(JBOSS_CONF_DIR)/vlib.properties
+
 # At one time there were more libraries, but they are now already packaged in JBoss 2.2.1.
 
 RUNTIME_LIBRARIES := \
@@ -55,18 +57,33 @@ endif
 # Provide a do-nothing command for the setup-db rule (to prevent
 # a "nothing to do" warning).
 
-setup-db:  $(JBOSS_CONF_DIR)/vlib.properties
+setup-db:  $(INSTALLED_VLIB_PROPERTIES)
 	@$(TOUCH) $(SYS_BUILD_DIR)/dummy
 
 # Only install the vlib database if the vlib.properties file doesn't exist.
 # The database is in two parts:  the vlib.properties file, and a directory
 # containg the InstantDB tables, indexes & etc.
 
-$(JBOSS_CONF_DIR)/vlib.properties:
+$(INSTALLED_VLIB_PROPERTIES):
 	$(call NOTE, Installing Primix Vlib database ...)
 	$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
 	$(CAT) jboss/vlib.tar.gz | \
 		($(CD) $(JBOSS_DIR)/db && $(GNUTAR) $(GNUTAR_EXTRACT_OPT) $(GNUTAR_GZIP_OPT))
 
+
+# Command to run the InstantDB example command line tool.  This is used
+# to make simple modifications to the Vlib database.
+
+run-idb:
+	$(call NOTE, Running InstantDB command line tool ...)
+	@$(ECHO) "Use URL: jdbc:idb:$(INSTALLED_VLIB_PROPERTIES)\n"
+	$(call EXEC_JAVA, \
+		$(JBOSS_DIR)/lib/ext/idb.jar \
+		$(JBOSS_DIR)/lib/ext/jta-spec1_0_1.jar \
+		idbexmpl.jar, \
+		org.enhydra.instantdb.commsql)
+	
+
 .PHONY: setup-db configure-jboss
+
 

@@ -91,8 +91,8 @@ public class Matches extends BasePage
 			{
 				// No existing handle, so time to create a new bean.
 				
-                Visit visit = (Visit)getVisit();
-				IBookQueryHome home = visit.getBookQueryHome();
+                VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
+				IBookQueryHome home = vengine.getBookQueryHome();
 				
                 bookQuery = home.create();
 

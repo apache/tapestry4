@@ -9,42 +9,54 @@
 <table border=0 cellpadding=0 cellspacing=4>
 	<tr valign=top>
 		<th><jwc id="labelTitle"/></th>
-		<td><jwc id="inputTitle"/></td>
+		<td colspan=2><jwc id="inputTitle"/></td>
 	</tr>
 
 	<tr valign=top>
 		<th><jwc id="labelAuthor"/></th>
-		<td><jwc id="inputAuthor"/></td>
+		<td colspan=2><jwc id="inputAuthor"/></td>
 
 	<tr valign=top>
 		<th>ISBN</th>
-		<td><jwc id="inputISBN"/></td>
+		<td colspan=2><jwc id="inputISBN"/></td>
 	</tr>
 
 	<tr valign=top>
 		<th rowspan=2><jwc id="labelPublisher"/></th>
-		<td><jwc id="inputPublisher"/> <jwc id="inputPublisherName"/></td>
+		<td colspan=2><jwc id="inputPublisher"/> <jwc id="inputPublisherName"/></td>
 	</tr>
 
 	<tr valign=top>
-		<td>If the publisher is not listed, leave the option blank
+		<td colspan=2>If the publisher is not listed, leave the option blank
 		and type the name of the publisher into the field on the right.
 		</td>
 	</tr>
 
 	<tr valign=top>
 		<th>Description</th>
-		<td><jwc id="inputDescription"/></td>
+		<td colspan=2><jwc id="inputDescription"/></td>
 	</tr>
 
 	<tr valign=top>
 		<th>Borrowed By</th>
-		<td><jwc id="inputHolder"/></td>
+		<td colspan=2><jwc id="inputHolder"/></td>
 	</tr>
 
+	<tr valign=top>
+		<th>Hidden</th>
+		<td><jwc id="inputHidden"/></td>
+		<td>Check to prevent this book from appearing in searches.</td>
+	</tr>
+	
+	<tr valign=top>
+		<th>Lendable</th>
+		<td><jwc id="inputLendable"/></td>
+		<td>Leave checked to allow this book to be borrowed.</td>
+	</tr>
+	
 	<tr>
 		<td></td>
-		<td><input type=submit value="Update"></td>
+		<td colspan=2><input type=submit value="Update">&nbsp;<jwc id="cancel"/></td>
 	</tr>
 </table>
 

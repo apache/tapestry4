@@ -62,4 +62,11 @@
     <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
+  
+  <component id="cancel" type="Submit">
+  	<static-binding name="label">Cancel</static-binding>
+  	<binding name="selected" property-path="cancel"/>
+  	<field-binding name="tag" field-name="Boolean.TRUE"/>
+   </component>
+   
 </specification>

@@ -78,12 +78,14 @@ public class Book implements Serializable
 	public static final int PUBLISHER_NAME_COLUMN = 9;
 	public static final int AUTHOR_COLUMN = 10;
     
+	public static final int HIDDEN_COLUMN = 11;
+	public static final int LENDABLE_COLUMN = 12;
 	/**
 	 *  Number of columns in the result.
 	 *
 	 */
 	 
-	public static final int N_COLUMNS = 11;
+	public static final int N_COLUMNS = 13;
 	
 	private Object[] columns;
 	
@@ -187,4 +189,21 @@ public class Book implements Serializable
     {
         return ! get(HOLDER_PK_COLUMN).equals(get(OWNER_PK_COLUMN));
     }
+	
+	public boolean isHidden()
+	{
+		return getBit(HIDDEN_COLUMN);
+	}
+	
+	public boolean isLendable()
+	{
+		return getBit(LENDABLE_COLUMN);
+	}
+	
+	private boolean getBit(int column)
+	{
+		Boolean b = (Boolean)get(column);
+		
+		return b.booleanValue();
+	}
 }

@@ -170,8 +170,8 @@ implements IErrorProperty
 
 		try
 		{
-            Visit visit = (Visit)getVisit();
-			IPersonHome personHome = visit.getPersonHome();
+			VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+			IPersonHome personHome = vengine.getPersonHome();
 			IPerson person = personHome.findByEmail(email);
 			
 			if (!person.getPassword().equals(password))
@@ -236,6 +236,9 @@ implements IErrorProperty
 			throw new ApplicationRuntimeException(e);
 		}
 
+		// Get the visit object; this will likely force the
+		// creation of the visit object and an HttpSession.
+		
         Visit visit = (Visit)getVisit();
 		visit.setUser(person);
 

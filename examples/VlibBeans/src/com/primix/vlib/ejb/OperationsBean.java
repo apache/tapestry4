@@ -137,7 +137,7 @@ public class OperationsBean implements SessionBean
 	 */
 	 
 	public IBook borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
-	throws FinderException, RemoteException
+	throws FinderException, RemoteException, BorrowException
 	{
 		IBookHome bookHome;
 		IPersonHome personHome;
@@ -148,6 +148,10 @@ public class OperationsBean implements SessionBean
 		personHome = getPersonHome();
 		
 		book = bookHome.findByPrimaryKey(bookPrimaryKey);
+		
+		if (!book.isLendable())
+			throw new BorrowException("Book may not be borrowed.");
+		
 		borrower = personHome.findByPrimaryKey(borrowerPrimaryKey);
 		
 		// findByPrimaryKey() throws an exception if the EJB doesn't exist,
@@ -163,43 +167,12 @@ public class OperationsBean implements SessionBean
 	 *
 	 */
 	 
-	public IBook addBook(Integer ownerPK, String title, String author, String ISBN, String description,
-						 Integer publisherPK)
+	public IBook addBook(Map attributes)
 	throws CreateException, RemoteException
 	{
-		IBookHome bookHome;
-		IPersonHome personHome;
-		IPublisherHome publisherHome;
-		IBook book;
+		IBookHome home = getBookHome();
 		
-		// First, verify that the person and publisher do exist.
-		
-		personHome = getPersonHome();
-		publisherHome = getPublisherHome();
-		bookHome = getBookHome();
-
-		try
-		{
-			personHome.findByPrimaryKey(ownerPK);
-		}
-		catch (FinderException e)
-		{
-			throw new XCreateException("Could not create book; owner not found.", e);
-		}
-		
-		try
-		{
-			publisherHome.findByPrimaryKey(publisherPK);
-		}
-		catch (FinderException e)
-		{
-			throw new XCreateException("Could not create book; publisher not found.", e);
-		}
-
-		book = bookHome.create(title, author, ISBN, publisherPK, ownerPK);
-		book.setDescription(description);
-		
-		return book;
+		return home.create(attributes);
 	}
 
 
@@ -213,32 +186,12 @@ public class OperationsBean implements SessionBean
 	 *
 	 */
 	 
-	public IBook addBook(Integer ownerPK, String title, String author, String ISBN, 
-						 String description, String publisherName)
+	public IBook addBook(Map attributes, String publisherName)
 	throws CreateException, RemoteException
 	{
-		IBookHome bookHome;
-		IPersonHome personHome;
-		IPublisherHome publisherHome;
-		IBook book;
 		IPublisher publisher = null;
-		Integer publisherPK;
-		
-		// First, verify that the person and publisher do exist.
-		
-		personHome = getPersonHome();
-		publisherHome = getPublisherHome();
-		bookHome = getBookHome();
+		IPublisherHome publisherHome = getPublisherHome();
 
-		try
-		{
-			personHome.findByPrimaryKey(ownerPK);
-		}
-		catch (FinderException e)
-		{
-			throw new XCreateException("Could not create book; owner not found.", e);
-		}
-		
 		// Find or create the publisher.
 		
 		try
@@ -253,12 +206,9 @@ public class OperationsBean implements SessionBean
 		if (publisher == null)
 			publisher = publisherHome.create(publisherName);
 			
-		publisherPK = (Integer)publisher.getPrimaryKey();
+		attributes.put("publisherPK", publisher.getPrimaryKey());
 		
-		book = bookHome.create(title, author, ISBN, publisherPK, ownerPK);
-		book.setDescription(description);
-		
-		return book;
+		return addBook(attributes);
 	}
 	
 	/**
@@ -267,58 +217,15 @@ public class OperationsBean implements SessionBean
 	 *  <p>Returns the updated book.
 	 *
 	 *  @param bookPK The primary key of the book to update.
-	 *  @param title The new title, or null to leave the old title unchanged.
-	 *  @param author The new author, of null to leave the old author unchanged.
-	 *  @param ISBN The new ISBN, or null to leave the old ISBN unchanged.
-	 *  @param description The new description, or null to leave the old description
-	 *  unchanged.
-	 *  @param holderPK The primary key of the new holder ({@link IPerson}), or null
-	 *  to leave it unchanged.
-	 *  @param publisherPK The primary key of the {@link IPublisher}, or null
-	 *  to leave it unchanged.
-	 *  @throws FinderException if the book, holder or publisher can't be located.
+	 *  
 	 */
 
-	public IBook updateBook(Integer bookPK, String title, String author, String ISBN, 
-						 	String description, Integer holderPK, Integer publisherPK)
+	public IBook updateBook(Integer bookPK, Map attributes)
 	throws FinderException, RemoteException
 	{
-		IBookHome bookHome;
-		IPersonHome personHome;
-		IPublisherHome publisherHome;
-		IBook book;
-		Map attributes;
-		
-		// First, verify that the person and publisher do exist.
-		
-		personHome = getPersonHome();
-		publisherHome = getPublisherHome();
-		bookHome = getBookHome();
+		IBookHome bookHome = getBookHome();
 
-		
-		personHome.findByPrimaryKey(holderPK);
-		publisherHome.findByPrimaryKey(publisherPK);
-		book = bookHome.findByPrimaryKey(bookPK);
-			
-		attributes = new HashMap(MAP_SIZE);
-		
-		if (title != null)
-			attributes.put("title", title);
-		
-		if (author != null)
-			attributes.put("author", author);
-			
-		if (ISBN != null)
-			attributes.put("ISBN", ISBN);
-			
-		if (description != null)
-			attributes.put("description", description);
-			
-		if (holderPK != null)
-			attributes.put("holderPK", holderPK);
-			
-		if (publisherPK != null)
-			attributes.put("publisherPK", publisherPK);
+		IBook book = bookHome.findByPrimaryKey(bookPK);
 			
 		book.updateEntityAttributes(attributes);
 		
@@ -332,27 +239,18 @@ public class OperationsBean implements SessionBean
 	 *  <p>Returns the updated book.
 	 *
 	 *  @param bookPK The primary key of the book to update.
-	 *  @param title The new title, or null to leave the old title unchanged.
-	 *  @param author The new author, of null to leave the old author unchanged.
-	 *  @param ISBN The new ISBN, or null to leave the old ISBN unchanged.
-	 *  @param description The new description, or null to leave the old description
-	 *  unchanged.
-	 *  @param holderPK The primary key of the new holder ({@link IPerson}), or null
-	 *  to leave it unchanged.
+	 *  @param attributes attributes to change
 	 *  @param publisherName The name of the new publisher.
 	 *  @throws FinderException if the book, holder or publisher can not be located.
 	 *  @throws CreateException if the {@link IPublisher} can not be created.
 	 */
 
-	public IBook updateBook(Integer bookPK, String title, String author, String ISBN, 
-						 	String description, Integer holderPK, String publisherName)
+	public IBook updateBook(Integer bookPK, Map attributes, String publisherName)
 	throws CreateException, FinderException, RemoteException
 	{
-		IPublisherHome publisherHome;
 		IPublisher publisher = null;
-		Integer publisherPK;
 		
-		publisherHome = getPublisherHome();
+		IPublisherHome publisherHome = getPublisherHome();
 		
 		try
 		{
@@ -366,11 +264,11 @@ public class OperationsBean implements SessionBean
 		if (publisher == null)
 			publisher = publisherHome.create(publisherName);
 			
-		publisherPK = (Integer)publisher.getPrimaryKey();
-		
 		// Don't duplicate all that other code!
 		
-		return updateBook(bookPK, title, author, ISBN, description, holderPK, publisherPK);		
+		attributes.put("publisherPK", publisher.getPrimaryKey());
+		
+		return updateBook(bookPK, attributes);		
 	}
 	
 	
@@ -596,10 +494,14 @@ public class OperationsBean implements SessionBean
 		
 		home = getPersonHome();
 		
-		return home.create(lastName.trim(), 
-		        firstName.trim(), 
-		        email.trim(), 
-		        password.trim());
+		Map attributes = new HashMap();
+		
+		attributes.put("lastName", lastName.trim());
+		attributes.put("firstName", firstName.trim());
+		attributes.put("email", email.trim());
+		attributes.put("password", password.trim());
+		
+		return home.create(attributes);
 	}
 
 
@@ -629,6 +531,8 @@ public class OperationsBean implements SessionBean
 		columns[Book.PUBLISHER_PK_COLUMN] = set.getObject(column++);
 		columns[Book.PUBLISHER_NAME_COLUMN] = set.getString(column++);
 		columns[Book.AUTHOR_COLUMN] = set.getString(column++);
+		columns[Book.HIDDEN_COLUMN] = getBoolean(set, column++);
+		columns[Book.LENDABLE_COLUMN] = getBoolean(set, column++);
 		
 		return new Book(columns);
 	}
@@ -654,7 +558,7 @@ public class OperationsBean implements SessionBean
 		"owner.PERSON_ID", "owner.FIRST_NAME", "owner.LAST_NAME",
 		"holder.PERSON_ID", "holder.FIRST_NAME", "holder.LAST_NAME",
 		"publisher.PUBLISHER_ID", "publisher.NAME",
-		"book.AUTHOR"
+		"book.AUTHOR", "book.HIDDEN", "book.LENDABLE"
 	};
 	
 	private static final String[] bookAliasColumns =
@@ -698,8 +602,12 @@ public class OperationsBean implements SessionBean
 		if (trimmed.length() == 0)
 			return;
 		
+		// InstantDB is configure to always do case-insentive matching
+		// for like.
+		
 		assembly.addSep(" AND ");
-		assembly.addParameter("LOWER (" + column + ") LIKE ?",
+		assembly.add(column);
+		assembly.addParameter(" LIKE ?",
 				 "%" + trimmed.toLowerCase() + "%");	
 	}
 	
@@ -841,7 +749,8 @@ public class OperationsBean implements SessionBean
 		
 		result = new StatementAssembly();
 		
-		result.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL");
+		result.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL, ");
+		result.newLine("  VERIFIED, LOCKED_OUT, ADMIN");
 		result.newLine("FROM PERSON");
 		
 		return result;
@@ -863,9 +772,20 @@ public class OperationsBean implements SessionBean
 		columns[Person.FIRST_NAME_COLUMN] = set.getString(column++);
 		columns[Person.LAST_NAME_COLUMN] = set.getString(column++);
 		columns[Person.EMAIL_COLUMN] = set.getString(column++);
+		columns[Person.VERIFIED_COLUMN] = getBoolean(set, column++);
+		columns[Person.LOCKED_OUT_COLUMN] = getBoolean(set, column++);
+		columns[Person.ADMIN_COLUMN] = getBoolean(set, column++);
 		
 		return new Person(columns);
 	}	
+	
+	private Boolean getBoolean(ResultSet set, int index)
+		throws SQLException
+	{
+		int scalar = set.getInt(index);
+		
+		return scalar == 0 ? Boolean.FALSE : Boolean.TRUE;
+	}
 	
 	private void validateUniquePerson(String firstName, String lastName, String email)
 	throws RegistrationException
@@ -906,9 +826,9 @@ public class OperationsBean implements SessionBean
 			assembly.newLine("FROM PERSON");
 			assembly.newLine("WHERE ");
 
-			assembly.addParameter("LOWER  (FIRST_NAME) = ?", trimmedFirstName);
+			assembly.addParameter("LOWER (FIRST_NAME) = ?", trimmedFirstName);
 			assembly.addSep(" AND ");
-			assembly.addParameter("LOWER  (LAST_NAME) = ?", trimmedLastName);
+			assembly.addParameter("LOWER (LAST_NAME) = ?", trimmedLastName);
 			
 			statement = assembly.createStatement(connection);
 			set = statement.executeQuery();

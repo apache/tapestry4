@@ -4,6 +4,8 @@
 <specification class="com.primix.vlib.components.Border" allow-informal-parameters="no">
   <parameter name="title" java-type="java.lang.String"/>
   <parameter name="subtitle" java-type="java.lang.String"/>
+  <parameter name="sticky" java-type="boolean"/>
+  
   <component id="shell" type="Shell">
     <binding name="title" property-path="windowTitle"/>
   </component>
@@ -16,26 +18,30 @@
   </component>
   <component id="myBooks" type="Page">
     <static-binding name="page">MyBooks</static-binding>
-    <binding name="disabled" property-path="page.visit.userLoggedOut"/>
+    <binding name="disabled" property-path="loggedOut"/>
   </component>
   <component id="ifLoggedIn" type="Conditional">
-    <binding name="condition" property-path="page.visit.userLoggedIn"/>
+    <binding name="condition" property-path="loggedIn"/>
   </component>
   <component id="insertUserName" type="Insert">
     <binding name="value" property-path="page.visit.user.naturalName"/>
   </component>
   <component id="ifLoggedOff" type="Conditional">
-    <binding name="condition" property-path="page.visit.userLoggedIn"/>
+    <binding name="condition" property-path="loggedIn"/>
     <field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
-  <component id="login" type="Page">
-    <static-binding name="page">Login</static-binding>
+  
+  <component id="login" type="Direct">
+	<binding name="listener" property-path="loginListener"/>
+	<field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
+  
   <component id="ifShowLogout" type="Conditional">
     <binding name="condition" property-path="showLogout"/>
   </component>
   <component id="logout" type="Page">
     <static-binding name="page">Logout</static-binding>
+	<field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="wrapped" type="InsertWrapped"/>
   <component id="ifShowInspector" type="Conditional">

@@ -59,11 +59,15 @@ public class PersonBean extends AbstractEntityBean
 	public String firstName;
 	public String lastName;
 	public String password;
+	public boolean verified;
+	public boolean lockedOut;
+	public boolean admin;
 	
 	protected String[] getAttributePropertyNames()
 	{
 		return new String[] 
-		{ "firstName", "lastName", "email", "password"
+		{ "firstName", "lastName", "email", "password", 
+				"verified", "lockedOut", "admin"
 		};
 	}
 	
@@ -112,15 +116,53 @@ public class PersonBean extends AbstractEntityBean
 		return password;
 	}
 	
+	public void setVerified(boolean value)
+	{
+		verified = value;
+		
+		dirty = true;
+	}
 	
-	public Integer ejbCreate(String lastName, String firstName, String email, String password)
+	public boolean isVerified()
+	{
+		return verified;
+	}
+	
+	public void setLockedOut(boolean value)
+	{
+		lockedOut = value;
+		
+		dirty = true;
+	}
+	
+	public boolean isLockedOut()
+	{
+		return lockedOut;
+	}
+	
+	public void setAdmin(boolean value)
+	{
+		admin = value;
+		
+		dirty = true;
+	}
+	
+	public boolean isAdmin()
+	{
+		return admin;
+	}
+	
+	public Integer ejbCreate(Map attributes)
 	throws RemoteException
 	{
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.password = password;
-		this.email = email;
+		// Defaults
 		
+		verified = true;
+		lockedOut = false;
+		admin = false;
+			
+		updateEntityAttributes(attributes);
+				
 		this.personId = allocateKey();
 		
 		dirty = true;
@@ -128,7 +170,7 @@ public class PersonBean extends AbstractEntityBean
 		return null;
 	}
 
-	public void ejbPostCreate(String lastName, String firstName, String email, String password)
+	public void ejbPostCreate(Map attributes)
 	{
 		// Do nothing
 	}

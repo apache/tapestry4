@@ -2,215 +2,235 @@
 <!--$Id$-->
 <!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 1.1//EN' 'http://java.sun.com/j2ee/dtds/ejb-jar_1_1.dtd'>
 <ejb-jar>
-	<enterprise-beans>
-		<session>
-			<display-name>KeyAllocator</display-name>
-			<ejb-name>KeyAllocator</ejb-name>
-			<home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
-			<remote>com.primix.vlib.ejb.IKeyAllocator</remote>
-			<ejb-class>com.primix.vlib.ejb.KeyAllocatorBean</ejb-class>
-			<session-type>Stateless</session-type>
-			<transaction-type>Container</transaction-type>
-			<env-entry>
-				<description>The number of keys to allocate in one database transaction</description>
-				<env-entry-name>blockSize</env-entry-name>
-				<env-entry-type>java.lang.Integer</env-entry-type>
-				<env-entry-value>50</env-entry-value>
-			</env-entry>
-			<resource-ref>
-				<description>DataSource connected to the vlib database.</description>
-				<res-ref-name>jdbc/dataSource</res-ref-name>
-				<res-type>javax.sql.DataSource</res-type>
-				<res-auth>Container</res-auth>
-			</resource-ref>
-		</session>
-		<session>
-			<display-name>BookQuery</display-name>
-			<ejb-name>BookQuery</ejb-name>
-			<home>com.primix.vlib.ejb.IBookQueryHome</home>
-			<remote>com.primix.vlib.ejb.IBookQuery</remote>
-			<ejb-class>com.primix.vlib.ejb.BookQueryBean</ejb-class>
-			<session-type>Stateful</session-type>
-			<transaction-type>Container</transaction-type>
-			<resource-ref>
-				<description>DataSource connected to the vlib database.</description>
-				<res-ref-name>jdbc/dataSource</res-ref-name>
-				<res-type>javax.sql.DataSource</res-type>
-				<res-auth>Container</res-auth>
-			</resource-ref>
-		</session>
-		<session>
-			<ejb-name>Operations</ejb-name>
-			<home>com.primix.vlib.ejb.IOperationsHome</home>
-			<remote>com.primix.vlib.ejb.IOperations</remote>
-			<ejb-class>com.primix.vlib.ejb.OperationsBean</ejb-class>
-			<session-type>Stateless</session-type>
-			<transaction-type>Container</transaction-type>
-			<ejb-ref>
-				<ejb-ref-name>ejb/Book</ejb-ref-name>
-				<ejb-ref-type>Entity</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IBookHome</home>
-				<remote>com.primix.vlib.ejb.IBook</remote>
-			</ejb-ref>
-			<ejb-ref>
-				<ejb-ref-name>ejb/Person</ejb-ref-name>
-				<ejb-ref-type>Entity</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IPersonHome</home>
-				<remote>com.primix.vlib.ejb.IPerson</remote>
-			</ejb-ref>
-			<ejb-ref>
-				<ejb-ref-name>ejb/Publisher</ejb-ref-name>
-				<ejb-ref-type>Entity</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IPublisherHome</home>
-				<remote>com.primix.vlib.ejb.IPublisher</remote>
-			</ejb-ref>
-			<resource-ref>
-				<description>DataSource connected to the vlib database.</description>
-				<res-ref-name>jdbc/dataSource</res-ref-name>
-				<res-type>javax.sql.DataSource</res-type>
-				<res-auth>Container</res-auth>
-			</resource-ref>
-		</session>
-		<entity>
-			<display-name>Person</display-name>
-			<ejb-name>Person</ejb-name>
-			<home>com.primix.vlib.ejb.IPersonHome</home>
-			<remote>com.primix.vlib.ejb.IPerson</remote>
-			<ejb-class>com.primix.vlib.ejb.PersonBean</ejb-class>
-			<persistence-type>Container</persistence-type>
-			<prim-key-class>java.lang.Integer</prim-key-class>
-			<reentrant>False</reentrant>
-			<cmp-field>
-				<description>email address; must be unique, used as login identifier</description>
-				<field-name>email</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>secret password</description>
-				<field-name>password</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>first (individual) name</description>
-				<field-name>firstName</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>primary key</description>
-				<field-name>personId</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>last (family) name</description>
-				<field-name>lastName</field-name>
-			</cmp-field>
-			<primkey-field>personId</primkey-field>
-			<ejb-ref>
-				<description/>
-				<ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
-				<ejb-ref-type>Session</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
-				<remote>com.primix.vlib.ejb.IKeyAllocator</remote>
-			</ejb-ref>
-		</entity>
-		<entity>
-			<display-name>Book</display-name>
-			<ejb-name>Book</ejb-name>
-			<home>com.primix.vlib.ejb.IBookHome</home>
-			<remote>com.primix.vlib.ejb.IBook</remote>
-			<ejb-class>com.primix.vlib.ejb.BookBean</ejb-class>
-			<persistence-type>Container</persistence-type>
-			<prim-key-class>java.lang.Integer</prim-key-class>
-			<reentrant>False</reentrant>
-			<cmp-field>
-				<description>Long description of book.</description>
-				<field-name>description</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>Relationship to Publisher entity.</description>
-				<field-name>publisherPK</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>Relationship to Person entity (holder of book).</description>
-				<field-name>holderPK</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>ISBN of book.</description>
-				<field-name>ISBN</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>Primary key.</description>
-				<field-name>bookId</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>Relationship to Person entity (owner of book).</description>
-				<field-name>ownerPK</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>Title of book.</description>
-				<field-name>title</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>Name of book author</description>
-				<field-name>author</field-name>
-			</cmp-field>
-			<primkey-field>bookId</primkey-field>
-			<ejb-ref>
-				<description/>
-				<ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
-				<ejb-ref-type>Session</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
-				<remote>com.primix.vlib.ejb.IKeyAllocator</remote>
-			</ejb-ref>
-		</entity>
-		<entity>
-			<display-name>Publisher</display-name>
-			<ejb-name>Publisher</ejb-name>
-			<home>com.primix.vlib.ejb.IPublisherHome</home>
-			<remote>com.primix.vlib.ejb.IPublisher</remote>
-			<ejb-class>com.primix.vlib.ejb.PublisherBean</ejb-class>
-			<persistence-type>Container</persistence-type>
-			<prim-key-class>java.lang.Integer</prim-key-class>
-			<reentrant>False</reentrant>
-			<cmp-field>
-				<field-name>name</field-name>
-			</cmp-field>
-			<cmp-field>
-				<field-name>publisherId</field-name>
-			</cmp-field>
-			<primkey-field>publisherId</primkey-field>
-			<ejb-ref>
-				<description/>
-				<ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
-				<ejb-ref-type>Session</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
-				<remote>com.primix.vlib.ejb.IKeyAllocator</remote>
-			</ejb-ref>
-		</entity>
-	</enterprise-beans>
-	<assembly-descriptor>
-		<container-transaction>
-			<method>
-				<ejb-name>KeyAllocator</ejb-name>
-				<method-name>*</method-name>
-			</method>
-			<method>
-				<ejb-name>Person</ejb-name>
-				<method-name>*</method-name>
-			</method>
-			<method>
-				<ejb-name>Book</ejb-name>
-				<method-name>*</method-name>
-			</method>
-			<method>
-				<ejb-name>Publisher</ejb-name>
-				<method-name>*</method-name>
-			</method>
-			<method>
-				<ejb-name>BookQuery</ejb-name>
-				<method-name>*</method-name>
-			</method>
-			<method>
-				<ejb-name>Operations</ejb-name>
-				<method-name>*</method-name>
-			</method>
-			<trans-attribute>Required</trans-attribute>
-		</container-transaction>
-	</assembly-descriptor>
+  <enterprise-beans>
+    <session>
+      <display-name>KeyAllocator</display-name>
+      <ejb-name>KeyAllocator</ejb-name>
+      <home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
+      <remote>com.primix.vlib.ejb.IKeyAllocator</remote>
+      <ejb-class>com.primix.vlib.ejb.KeyAllocatorBean</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+      <env-entry>
+        <description>The number of keys to allocate in one database transaction</description>
+        <env-entry-name>blockSize</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>50</env-entry-value>
+      </env-entry>
+      <resource-ref>
+        <description>DataSource connected to the vlib database.</description>
+        <res-ref-name>jdbc/dataSource</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+      </resource-ref>
+    </session>
+    <session>
+      <display-name>BookQuery</display-name>
+      <ejb-name>BookQuery</ejb-name>
+      <home>com.primix.vlib.ejb.IBookQueryHome</home>
+      <remote>com.primix.vlib.ejb.IBookQuery</remote>
+      <ejb-class>com.primix.vlib.ejb.BookQueryBean</ejb-class>
+      <session-type>Stateful</session-type>
+      <transaction-type>Container</transaction-type>
+      <resource-ref>
+        <description>DataSource connected to the vlib database.</description>
+        <res-ref-name>jdbc/dataSource</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+      </resource-ref>
+    </session>
+    <session>
+      <ejb-name>Operations</ejb-name>
+      <home>com.primix.vlib.ejb.IOperationsHome</home>
+      <remote>com.primix.vlib.ejb.IOperations</remote>
+      <ejb-class>com.primix.vlib.ejb.OperationsBean</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+      <ejb-ref>
+        <ejb-ref-name>ejb/Book</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <home>com.primix.vlib.ejb.IBookHome</home>
+        <remote>com.primix.vlib.ejb.IBook</remote>
+      </ejb-ref>
+      <ejb-ref>
+        <ejb-ref-name>ejb/Person</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <home>com.primix.vlib.ejb.IPersonHome</home>
+        <remote>com.primix.vlib.ejb.IPerson</remote>
+      </ejb-ref>
+      <ejb-ref>
+        <ejb-ref-name>ejb/Publisher</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <home>com.primix.vlib.ejb.IPublisherHome</home>
+        <remote>com.primix.vlib.ejb.IPublisher</remote>
+      </ejb-ref>
+      <resource-ref>
+        <description>DataSource connected to the vlib database.</description>
+        <res-ref-name>jdbc/dataSource</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+      </resource-ref>
+    </session>
+    <entity>
+      <display-name>Person</display-name>
+      <ejb-name>Person</ejb-name>
+      <home>com.primix.vlib.ejb.IPersonHome</home>
+      <remote>com.primix.vlib.ejb.IPerson</remote>
+      <ejb-class>com.primix.vlib.ejb.PersonBean</ejb-class>
+      <persistence-type>Container</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>False</reentrant>
+      <cmp-field>
+        <description>email address; must be unique, used as login identifier</description>
+        <field-name>email</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>secret password</description>
+        <field-name>password</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>first (individual) name</description>
+        <field-name>firstName</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>primary key</description>
+        <field-name>personId</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>last (family) name</description>
+        <field-name>lastName</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>If false, user is not verified to use the system (after registering).</description>
+        <field-name>verified</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>If true, the user has been locked out of the system (for misconduct, or excessive invalid passwords).</description>
+        <field-name>lockedOut</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>If true, the user is an administrator, who has priviledged access to adminstrate books and users.</description>
+        <field-name>admin</field-name>
+      </cmp-field>
+      <primkey-field>personId</primkey-field>
+      <ejb-ref>
+        <description/>
+        <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
+        <remote>com.primix.vlib.ejb.IKeyAllocator</remote>
+      </ejb-ref>
+    </entity>
+    <entity>
+      <display-name>Book</display-name>
+      <ejb-name>Book</ejb-name>
+      <home>com.primix.vlib.ejb.IBookHome</home>
+      <remote>com.primix.vlib.ejb.IBook</remote>
+      <ejb-class>com.primix.vlib.ejb.BookBean</ejb-class>
+      <persistence-type>Container</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>False</reentrant>
+      <cmp-field>
+        <description>Long description of book.</description>
+        <field-name>description</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>Relationship to Publisher entity.</description>
+        <field-name>publisherPK</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>Relationship to Person entity (holder of book).</description>
+        <field-name>holderPK</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>ISBN of book.</description>
+        <field-name>ISBN</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>Primary key.</description>
+        <field-name>bookId</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>Relationship to Person entity (owner of book).</description>
+        <field-name>ownerPK</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>Title of book.</description>
+        <field-name>title</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>Name of book author</description>
+        <field-name>author</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>If true, the book is not visible except to the owner.</description>
+        <field-name>hidden</field-name>
+      </cmp-field>
+      <cmp-field>
+        <description>If true (the default), the book may be lent out.</description>
+        <field-name>lendable</field-name>
+      </cmp-field>
+      <primkey-field>bookId</primkey-field>
+      <ejb-ref>
+        <description/>
+        <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
+        <remote>com.primix.vlib.ejb.IKeyAllocator</remote>
+      </ejb-ref>
+    </entity>
+    <entity>
+      <display-name>Publisher</display-name>
+      <ejb-name>Publisher</ejb-name>
+      <home>com.primix.vlib.ejb.IPublisherHome</home>
+      <remote>com.primix.vlib.ejb.IPublisher</remote>
+      <ejb-class>com.primix.vlib.ejb.PublisherBean</ejb-class>
+      <persistence-type>Container</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>False</reentrant>
+      <cmp-field>
+        <field-name>name</field-name>
+      </cmp-field>
+      <cmp-field>
+        <field-name>publisherId</field-name>
+      </cmp-field>
+      <primkey-field>publisherId</primkey-field>
+      <ejb-ref>
+        <description/>
+        <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
+        <remote>com.primix.vlib.ejb.IKeyAllocator</remote>
+      </ejb-ref>
+    </entity>
+  </enterprise-beans>
+  <assembly-descriptor>
+    <container-transaction>
+      <method>
+        <ejb-name>KeyAllocator</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>Person</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>Book</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>Publisher</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>BookQuery</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <method>
+        <ejb-name>Operations</ejb-name>
+        <method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
 </ejb-jar>

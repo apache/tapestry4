@@ -1,3 +1,18 @@
+* Jun 7 2001 hship
+
+VlibBeans:
+- Add Book.hidden, Book.lendable, Person.verified, Person.locked_out and Person.admin to
+  the Vlib database.
+- Ship the InstantDB examples JAR, so we can easily run the command-line tool.
+
+Vlib:
+- Update UI to reflect the changes in the schema.
+- Run in a stateless mode initially.
+- Add the 'sticky' parameter to the Border component.
+- Return to the Matches page after logging in (via the Login link).
+- Rename the Home page to '[Search]' on the navigation bar.
+- Improve the Makefile run target to search the source directory first on the classpath.
+
 * May 31 2001 hship
 
 Vlib:

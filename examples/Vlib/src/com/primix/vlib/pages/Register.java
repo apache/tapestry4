@@ -202,8 +202,8 @@ implements IErrorProperty
 			return;
 		}
 				
-        Visit visit = (Visit)getVisit();
-		bean = visit.getOperations();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		bean = vengine.getOperations();
 		
 		try
 		{

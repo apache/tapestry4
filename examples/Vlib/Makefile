@@ -31,6 +31,7 @@ include $(SYS_MAKEFILE_DIR)/War.mk
 LOCAL_PROPS_DIR := $(SYS_BUILD_DIR_NAME)/props
 
 EXEC_CLASSPATH := \
+	$(FINAL_SOURCE_DIR) \
 	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/javax.xml.jaxp.jar \
 	$(INSTALL_DIR)/org.apache.crimson.jar \
@@ -62,7 +63,7 @@ run: default $(LOCAL_JNDI_PROPS)
 		-showversion \
 		-Dcom.primix.vlib.debug-enabled=true \
 		-Dcom.primix.tapestry.enable-reset-service=true \
-		$(OTHER_EXEC_OPTS) \
+		$(OTHER_VLIB_OPTS) \
 		com.mortbay.Jetty.Server jetty.xml)
 
 run-debug:

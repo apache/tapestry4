@@ -28,6 +28,7 @@
 
 package com.primix.vlib.ejb;
 
+import java.util.*;
 import javax.ejb.*;
 import java.rmi.*;
 import javax.rmi.*;
@@ -53,7 +54,7 @@ public interface IOperations extends EJBObject
 	 */
 	 
 	public IBook borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
-	throws FinderException, RemoteException;
+	throws BorrowException, FinderException, RemoteException;
 
 	/**
 	 *  Adds a book which will be owned and held by the specified owner.
@@ -61,10 +62,8 @@ public interface IOperations extends EJBObject
 	 *  <p>Returns the newly created book.
 	 */
 
-	public IBook addBook(Integer ownerPK, String title, String author, String ISBN, 
-						 String description, Integer publisherPK)
+	public IBook addBook(Map attributes)
 	throws CreateException, RemoteException;
-
 
 
 	/**
@@ -77,8 +76,7 @@ public interface IOperations extends EJBObject
 	 *
 	 */
 	 
-	public IBook addBook(Integer ownerPK, String title, String author, String ISBN,
-						 String description, String publisherName)
+	public IBook addBook(Map attributes, String publisherName)
 	throws CreateException, RemoteException;
 		
 	/**
@@ -87,8 +85,7 @@ public interface IOperations extends EJBObject
 	 *  <p>Returns the updated book.
 	 */
 
-	public IBook updateBook(Integer bookPK, String title, String author, String ISBN, 
-						 	String description, Integer holderPK, Integer publisherPK)
+	public IBook updateBook(Integer bookPK, Map attributes)
 	throws FinderException, RemoteException;
 
 	/**
@@ -97,8 +94,7 @@ public interface IOperations extends EJBObject
 	 *  <p>Returns the updated book.
 	 */
 
-	public IBook updateBook(Integer bookPK, String title, String author, String ISBN, 
-						 	String description, Integer holderPK, String publisherName)
+	public IBook updateBook(Integer bookPK, Map attributes, String publisherName)
 	throws CreateException, FinderException, RemoteException;
 
 

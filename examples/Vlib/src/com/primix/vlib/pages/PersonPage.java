@@ -131,8 +131,8 @@ implements IExternalPage
 		{
 			try
 			{
-                Visit visit = (Visit)getVisit();
-				IBookQueryHome home = visit.getBookQueryHome();
+				VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+ 				IBookQueryHome home = vengine.getBookQueryHome();
 				
 				bookQuery = home.create();
 
@@ -179,8 +179,8 @@ implements IExternalPage
 			int count = query.ownerQuery(personPK);
 			setMatchCount(count);
 			
-            Visit visit = (Visit)getVisit();
-			IPersonHome home = visit.getPersonHome();
+ 			VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+ 			IPersonHome home = vengine.getPersonHome();
 			IPerson person = home.findByPrimaryKey(personPK);
 			
 			setEmail(person.getEmail());

@@ -2,20 +2,26 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.vlib.pages.EditBook">
+
   <component id="border" type="Border">
     <static-binding name="title">Edit Book</static-binding>
   </component>
+  
   <component id="showError" type="ShowError"/>
+  
   <component id="form" type="Form">
     <binding name="listener" property-path="formListener"/>
   </component>
+  
   <component id="syncPrimaryKey" type="Hidden">
     <binding name="value" property-path="bookPrimaryKey"/>
   </component>
+  
   <component id="labelTitle" type="FieldLabel">
     <binding name="field" property-path="components.inputTitle"/>
     <binding name="delegate" property-path="validationDelegate"/>
   </component>
+  
   <component id="inputTitle" type="ValidatingTextField">
     <binding name="text" property-path="attributes.title"/>
     <static-binding name="maximumLength">100</static-binding>
@@ -24,10 +30,12 @@
     <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="required" field-name="Boolean.TRUE"/>
   </component>
+  
   <component id="labelAuthor" type="FieldLabel">
     <binding name="field" property-path="components.inputAuthor"/>
     <binding name="delegate" property-path="validationDelegate"/>
   </component>
+  
   <component id="inputAuthor" type="ValidatingTextField">
     <binding name="text" property-path="attributes.author"/>
     <static-binding name="maximumLength">30</static-binding>
@@ -36,37 +44,59 @@
     <field-binding name="required" field-name="Boolean.TRUE"/>
     <binding name="delegate" property-path="validationDelegate"/>
   </component>
+  
   <component id="inputISBN" type="TextField">
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayWidth">20</static-binding>
     <binding name="text" property-path="attributes.ISBN"/>
   </component>
+  
   <component id="labelPublisher" type="FieldLabel">
     <binding name="field" property-path="components.inputPublisherName"/>
     <binding name="delegate" property-path="validationDelegate"/>
   </component>
+  
   <component id="inputPublisher" type="PropertySelection">
     <binding name="value" property-path="attributes.publisherPK"/>
-    <binding name="model" property-path="visit.publisherModel"/>
+    <binding name="model" property-path="engine.publisherModel"/>
   </component>
+  
   <component id="inputPublisherName" type="ValidatingTextField">
     <static-binding name="maximumLength">40</static-binding>
     <binding name="text" property-path="publisherName"/>
     <static-binding name="displayName">Publisher</static-binding>
     <binding name="delegate" property-path="validationDelegate"/>
   </component>
+  
   <component id="inputDescription" type="Text">
     <binding name="text" property-path="attributes.description"/>
     <static-binding name="columns">60</static-binding>
     <static-binding name="rows">10</static-binding>
   </component>
+  
   <component id="inputHolder" type="PropertySelection">
     <binding name="value" property-path="attributes.holderPK"/>
-    <binding name="model" property-path="visit.personModel"/>
+    <binding name="model" property-path="engine.personModel"/>
   </component>
+  
+  <component id="inputHidden" type="Checkbox">
+  	<binding name="selected" property-path="attributes.hidden"/>
+  </component>
+  
+  <component id="inputLendable" type="Checkbox">
+  	<binding name="selected" property-path="attributes.lendable"/>
+  </component>
+  
   <component id="publisherScript" type="Script">
     <static-binding name="script">/com/primix/vlib/pages/Publisher.script</static-binding>
     <binding name="select" property-path="components.inputPublisher"/>
     <binding name="field" property-path="components.inputPublisherName"/>
   </component>
+  
+  <component id="cancel" type="Submit">
+  	<static-binding name="label">Cancel</static-binding>
+  	<binding name="selected" property-path="cancel"/>
+  	<field-binding name="tag" field-name="Boolean.TRUE"/>
+  </component>
+  
 </specification>

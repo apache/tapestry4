@@ -317,7 +317,12 @@ public class BookQueryBean extends OperationsBean
 				
 		addSubstringSearch(assembly, "book.TITLE", title);
 		addSubstringSearch(assembly, "book.AUTHOR", author);
-				
+		
+		// Hide books that are not visible to the master query.
+		
+		assembly.addSep(" AND ");
+		assembly.add("book.HIDDEN = 0");
+		
 		if (publisherPK != null)
 		{
 			assembly.addSep(" AND ");
@@ -340,7 +345,8 @@ public class BookQueryBean extends OperationsBean
 		assembly = buildBaseBookQuery();
 		
 		assembly.addSep(" AND ");
-		assembly.addParameter(personColumn + "= ?", personPK);
+		assembly.add(personColumn);
+		assembly.addParameter(" = ?", personPK);
 	
 		assembly.newLine("ORDER BY book.TITLE");
 

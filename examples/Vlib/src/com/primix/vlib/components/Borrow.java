@@ -123,7 +123,12 @@ extends BaseComponent
         // not already holding it and aren't the owner.
 
         Book book = getBook();
+		
+		// If the book is not lendable, then disable the link.
 
+		if (!book.isLendable())
+			return false;
+		
         // Otherwise, can only borrow it if not already holding it.
         
         return ! visit.isLoggedInUser(book.getHolderPrimaryKey());
@@ -157,7 +162,7 @@ extends BaseComponent
 		IBook book;
 		home = (Home)cycle.getPage("Home");
 
-		bean = visit.getOperations();				
+		bean = visit.getEngine().getOperations();				
 
 		try
 		{
@@ -165,14 +170,18 @@ extends BaseComponent
 
 			home.setMessage("Borrowed: " + book.getTitle());
 		}
-		catch (FinderException e)
+		catch (BorrowException ex)
+		{
+			home.setError(ex.getMessage());
+		}
+		catch (FinderException ex)
 		{
 			throw new ApplicationRuntimeException(
-				"Unable to find book or user. ", e);
+				"Unable to find book or user. ", ex);
 		}
-		catch (RemoteException e)
+		catch (RemoteException ex)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ApplicationRuntimeException(ex);
 		}
 
 		cycle.setPage(home);				
