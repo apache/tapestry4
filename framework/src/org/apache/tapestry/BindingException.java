@@ -75,17 +75,9 @@ public class BindingException extends ApplicationRuntimeException
 
     public BindingException(String message, IBinding binding, Throwable rootCause)
     {
-        this(message, null, binding, rootCause);
+        this(message, null, null, binding, rootCause);
     }
 
-    public BindingException(
-        String message,
-        Object component,
-        IBinding binding,
-        Throwable rootCause)
-    {
-        this(message, component, null, binding, rootCause);
-    }
 
     public BindingException(
         String message,

@@ -125,6 +125,7 @@ public abstract class InsertText extends AbstractComponent
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("InsertText.conversion-error"),
                 this,
+                null,
                 ex);
         }
         finally
@@ -155,12 +156,12 @@ public abstract class InsertText extends AbstractComponent
 
     public abstract String getValue();
 
-	/**
-	 * Sets the mode parameter property to its default,
-	 * {@link InsertTextMode#BREAK}.
-	 * 
-	 * @since 3.0
-	 */
+    /**
+     * Sets the mode parameter property to its default,
+     * {@link InsertTextMode#BREAK}.
+     * 
+     * @since 3.0
+     */
     protected void finishLoad()
     {
         setMode(InsertTextMode.BREAK);

@@ -132,7 +132,10 @@ public class DirectService extends AbstractService
         return constructLink(cycle, Tapestry.DIRECT_SERVICE, context, parameters, true);
     }
 
-    public void service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public void service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws ServletException, IOException
     {
         IDirect direct;
@@ -146,7 +149,8 @@ public class DirectService extends AbstractService
             count = serviceContext.length;
 
         if (count != 3 && count != 4)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("DirectService.context-parameters"));
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("DirectService.context-parameters"));
 
         boolean complex = count == 4;
 
@@ -181,6 +185,7 @@ public class DirectService extends AbstractService
             throw new ApplicationRuntimeException(
                 Tapestry.format("DirectService.component-wrong-type", component.getExtendedId()),
                 component,
+                null,
                 ex);
         }
 
@@ -193,7 +198,9 @@ public class DirectService extends AbstractService
 
             if (session == null || session.isNew())
                 throw new StaleSessionException(
-                    Tapestry.format("DirectService.stale-session-exception", direct.getExtendedId()),
+                    Tapestry.format(
+                        "DirectService.stale-session-exception",
+                        direct.getExtendedId()),
                     direct.getPage());
         }
 

@@ -515,8 +515,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         }
 
     }
-    
-	/**
+
+    /**
 	 *  Returns an object used to resolve classes.
      *  @since 3.0
 	 *
@@ -577,7 +577,9 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         if (result == null)
             throw new ApplicationRuntimeException(
                 Tapestry.format("no-such-component", this, id),
-                this);
+                this,
+                null,
+                null);
 
         return result;
     }
@@ -1181,8 +1183,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 	{		
 		IResourceResolver resolver = getResourceResolver();
 		OgnlUtils.set(propertyName, resolver, this, value);
-	}
-	
+}	
 	/**
 	 *  Gets a property of a component.
 	 *  @see IComponent 

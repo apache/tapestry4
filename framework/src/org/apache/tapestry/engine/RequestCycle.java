@@ -495,7 +495,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             // But wrap other exceptions in a ApplicationRuntimeException ... this
             // will ensure that some of the context is available.
 
-            throw new ApplicationRuntimeException(ex.getMessage(), page, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), page, null, ex);
         }
         finally
         {
@@ -566,7 +566,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             // But wrap other exceptions in a RequestCycleException ... this
             // will ensure that some of the context is available.
 
-            throw new ApplicationRuntimeException(ex.getMessage(), _page, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), _page, null, ex);
         }
         finally
         {

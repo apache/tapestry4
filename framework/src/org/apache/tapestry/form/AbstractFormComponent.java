@@ -92,7 +92,9 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         if (result == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("AbstractFormComponent.must-be-contained-by-form"),
-                this);
+                this,
+                null,
+                null);
 
         setForm(result);
 

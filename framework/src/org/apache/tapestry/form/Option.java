@@ -86,12 +86,14 @@ public abstract class Option extends AbstractComponent
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-{
+    {
         Select select = Select.get(cycle);
         if (select == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("Option.must-be-contained-by-select"),
-                this);
+                this,
+                null,
+                null);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.

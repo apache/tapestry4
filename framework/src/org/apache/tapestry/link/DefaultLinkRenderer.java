@@ -89,7 +89,9 @@ public class DefaultLinkRenderer implements ILinkRenderer
         if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("AbstractLinkComponent.no-nesting"),
-                linkComponent);
+                linkComponent,
+                null,
+                null);
 
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, linkComponent);
 

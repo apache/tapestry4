@@ -73,55 +73,60 @@ import org.apache.tapestry.components.Conditional;
  **/
 public abstract class When extends Conditional
 {
-	/** Parent of this component. */
-	
-	private Choose _choose;
+    /** Parent of this component. */
 
-	/**
-	 *  Renders its wrapped components only if the condition is true and its parent {@link Choose}
-	 *  allows it. In addition, if element is specified, can emulate that HTML element.
-	 *
-	 **/
+    private Choose _choose;
 
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) 
-	{
-		Choose choose = getChoose();
+    /**
+     *  Renders its wrapped components only if the condition is true and its parent {@link Choose}
+     *  allows it. In addition, if element is specified, can emulate that HTML element.
+     *
+     **/
 
-		if (choose == null)
-			throw new ApplicationRuntimeException(Tapestry.getMessage("When.must-be-contained-by-choose"), this);
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        Choose choose = getChoose();
 
-		
-		if (!choose.isConditionMet() && getCondition())
-		{
-			choose.setConditionMet(true);
-			super.renderComponent(writer, cycle);
-		}
-	}
-	
-	protected boolean evaluateCondition()
-	{
-		return true;
-	}
+        if (choose == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("When.must-be-contained-by-choose"),
+                this,
+                null,
+                null);
 
-	public boolean getInvert()
-	{
-		// This component doesn't require invert parameter.
-		return false;
-	}
-	
-	/**
-	 *  @return Choose
-	 */
-	public Choose getChoose() {
-		return _choose;
-	}
+        if (!choose.isConditionMet() && getCondition())
+        {
+            choose.setConditionMet(true);
+            super.renderComponent(writer, cycle);
+        }
+    }
 
-	/**
-	 *  Sets the choose.
-	 *  @param value The choose to set
-	 */
-	public void setChoose(Choose value) {
-		_choose = value;
-	}
+    protected boolean evaluateCondition()
+    {
+        return true;
+    }
+
+    public boolean getInvert()
+    {
+        // This component doesn't require invert parameter.
+        return false;
+    }
+
+    /**
+     *  @return Choose
+     */
+    public Choose getChoose()
+    {
+        return _choose;
+    }
+
+    /**
+     *  Sets the choose.
+     *  @param value The choose to set
+     */
+    public void setChoose(Choose value)
+    {
+        _choose = value;
+    }
 
 }

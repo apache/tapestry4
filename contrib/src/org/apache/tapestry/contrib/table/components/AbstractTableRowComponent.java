@@ -65,22 +65,23 @@ import org.apache.tapestry.contrib.table.model.ITableRowSource;
  */
 public class AbstractTableRowComponent extends AbstractTableViewComponent
 {
-	public ITableRowSource getTableRowSource()
-	{
-		IRequestCycle objCycle = getPage().getRequestCycle();
+    public ITableRowSource getTableRowSource()
+    {
+        IRequestCycle objCycle = getPage().getRequestCycle();
 
-		Object objSourceObj =
-			objCycle.getAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE);
-		ITableRowSource objSource = (ITableRowSource) objSourceObj;
+        Object objSourceObj = objCycle.getAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE);
+        ITableRowSource objSource = (ITableRowSource) objSourceObj;
 
-		if (objSource == null)
-			throw new ApplicationRuntimeException(
-				"The component "
-					+ getId()
-					+ " must be contained within an ITableRowSource component, such as TableRows",
-				this);
+        if (objSource == null)
+            throw new ApplicationRuntimeException(
+                "The component "
+                    + getId()
+                    + " must be contained within an ITableRowSource component, such as TableRows",
+                this,
+                null,
+                null);
 
-		return objSource;
-	}
+        return objSource;
+    }
 
 }

@@ -134,7 +134,9 @@ public abstract class Border extends BaseComponent
         if (_titleImage == null)
             throw new ApplicationRuntimeException(
                 "Cannot find title image for " + pageName + " or " + _pageType + ".",
-                this);
+                this,
+                null,
+                null);
 
         // Based on the type, select the images to use on this instance of Border
         // in this particular page.

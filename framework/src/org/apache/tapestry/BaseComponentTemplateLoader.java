@@ -235,7 +235,9 @@ public class BaseComponentTemplateLoader
         if (_stackx != 0)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("BaseComponent.unbalance-open-tags"),
-                _loadComponent);
+                _loadComponent,
+                null,
+                null);
 
         checkAllComponentsReferenced();
     }
@@ -316,7 +318,7 @@ public class BaseComponentTemplateLoader
                 _requestCycle,
                 _loadComponent,
                 id,
-                componentType, 
+                componentType,
                 location);
 
         return result;
@@ -368,7 +370,12 @@ public class BaseComponentTemplateLoader
         IComponentSpecification spec = component.getSpecification();
 
         // add a static binding carrying the template tag
-        addStaticBinding(component, spec, ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME, token.getTag(), token.getLocation());
+        addStaticBinding(
+            component,
+            spec,
+            ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME,
+            token.getTag(),
+            token.getLocation());
 
         Map attributes = token.getAttributesMap();
 
@@ -660,6 +667,8 @@ public class BaseComponentTemplateLoader
     {
         return new ApplicationRuntimeException(
             Tapestry.getMessage("BaseComponentTemplateLoader.bodyless-component"),
-            component);
+            component,
+            null,
+            null);
     }
 }

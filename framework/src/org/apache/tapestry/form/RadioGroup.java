@@ -76,7 +76,7 @@ import org.apache.tapestry.Tapestry;
  **/
 
 public abstract class RadioGroup extends AbstractFormComponent
-{  	
+{
     // Cached copy of the value from the selectedBinding
     private Object _selection;
 
@@ -119,11 +119,11 @@ public abstract class RadioGroup extends AbstractFormComponent
      **/
 
     public abstract boolean isDisabled();
-    
+
     public boolean isRewinding()
     {
         if (!_rendering)
-            throw  Tapestry.createRenderOnlyPropertyException(this, "rewinding");
+            throw Tapestry.createRenderOnlyPropertyException(this, "rewinding");
 
         return _rewinding;
     }
@@ -138,7 +138,7 @@ public abstract class RadioGroup extends AbstractFormComponent
     public boolean isSelection(Object value)
     {
         if (!_rendering)
-            throw  Tapestry.createRenderOnlyPropertyException(this, "selection");
+            throw Tapestry.createRenderOnlyPropertyException(this, "selection");
 
         if (_selection == value)
             return true;
@@ -184,7 +184,11 @@ public abstract class RadioGroup extends AbstractFormComponent
         IForm form = getForm(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("RadioGroup.may-not-nest"), this);
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("RadioGroup.may-not-nest"),
+                this,
+                null,
+                null);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.

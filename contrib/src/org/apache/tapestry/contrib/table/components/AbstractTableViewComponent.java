@@ -79,7 +79,9 @@ public class AbstractTableViewComponent extends BaseComponent
                 "The component "
                     + getId()
                     + " must be contained within an ITableModelSource component, such as TableView",
-                this);
+                this,
+                null,
+                null);
 
         return objSource;
     }

@@ -107,13 +107,13 @@ public abstract class Hidden extends AbstractFormComponent
                 }
                 catch (IOException ex)
                 {
-                    throw new ApplicationRuntimeException(this, ex);
+                    throw new ApplicationRuntimeException(ex.getMessage(), this, null, ex);
                 }
             }
             else
                 externalValue = (String) getValueBinding().getObject("value", String.class);
 
-			form.addHiddenValue(name, externalValue);
+            form.addHiddenValue(name, externalValue);
 
             return;
         }
@@ -129,7 +129,7 @@ public abstract class Hidden extends AbstractFormComponent
             }
             catch (IOException ex)
             {
-                throw new ApplicationRuntimeException(this, ex);
+                throw new ApplicationRuntimeException(ex.getMessage(), this, null, ex);
             }
         }
         else
@@ -181,16 +181,16 @@ public abstract class Hidden extends AbstractFormComponent
      **/
 
     public abstract boolean getEncode();
-    
+
     public abstract void setEncode(boolean encode);
 
-	/**
-	 * Sets the encode parameter property to its default, true.
-	 * 
-	 * @since 3.0
-	 */
-	protected void finishLoad()
-	{
-		setEncode(true);
-	}
+    /**
+     * Sets the encode parameter property to its default, true.
+     * 
+     * @since 3.0
+     */
+    protected void finishLoad()
+    {
+        setEncode(true);
+    }
 }

@@ -103,13 +103,13 @@ public abstract class Select extends AbstractFormComponent
     }
 
     public abstract boolean isDisabled();
-    
+
     public abstract boolean isMultiple();
-    
+
     public boolean isRewinding()
     {
         if (!_rendering)
-            throw  Tapestry.createRenderOnlyPropertyException(this, "rewinding");
+            throw Tapestry.createRenderOnlyPropertyException(this, "rewinding");
 
         return _rewinding;
     }
@@ -140,9 +140,13 @@ public abstract class Select extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-		
+
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("Select.may-not-nest"), this);
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("Select.may-not-nest"),
+                this,
+                null,
+                null);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.

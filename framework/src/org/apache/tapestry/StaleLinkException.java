@@ -125,16 +125,7 @@ public class StaleLinkException extends ApplicationRuntimeException
         super(message, component, null, null);
     }
 
-    public StaleLinkException(String message, IPage page)
-    {
 
-        super(message, page, null, null);
-
-        _page = page;
-
-        if (page != null)
-            _pageName = page.getPageName();
-    }
 
     public String getPageName()
     {

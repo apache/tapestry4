@@ -113,7 +113,9 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
                     "ValidField.no-delegate",
                     getExtendedId(),
                     getForm().getExtendedId()),
-                this);
+                this,
+                null,
+                null);
 
         IValidator validator = getValidator();
 
