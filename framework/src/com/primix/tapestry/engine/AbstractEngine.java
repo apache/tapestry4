@@ -927,7 +927,7 @@ public abstract class AbstractEngine
 	*
 	*/
 
-	protected void serviceAction(IRequestCycle cycle, ResponseOutputStream output)
+	private void serviceAction(IRequestCycle cycle, ResponseOutputStream output)
 	throws RequestCycleException, ServletException, IOException
 	{
 		// If the context is new on an action URL, then the session
