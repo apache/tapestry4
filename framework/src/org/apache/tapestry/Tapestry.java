@@ -338,22 +338,33 @@ public final class Tapestry
     public static final String MULTIPART_DECODER_EXTENSION_NAME =
         "org.apache.tapestry.multipart-decoder";
 
-	/**
-	 * Method id used to check that {@link IPage#validate(IRequestCycle)}
-	 * is invoked.
-	 * @see #checkMethodInvocation(Object, String, Object)
-	 * @since 3.0
-	 */
-	
-	public static final String IPAGE_VALIDATE_METHOD_ID = "IPage.validate()";
+    /**
+     * Method id used to check that {@link IPage#validate(IRequestCycle)}
+     * is invoked.
+     * @see #checkMethodInvocation(Object, String, Object)
+     * @since 3.0
+     */
 
-	/**
-	 * Method id used to check that {@link IPage#detach()} is invoked.
-	 * @see #checkMethodInvocation(Object, String, Object)
-	 * @since 3.0
-	 */
-	
-	public static final String IPAGE_DETACH_METHOD_ID = "IPage.detach()";
+    public static final String ABSTRACTPAGE_VALIDATE_METHOD_ID = "AbstractPage.validate()";
+
+    /**
+     * Method id used to check that {@link IPage#detach()} is invoked.
+     * @see #checkMethodInvocation(Object, String, Object)
+     * @since 3.0
+     */
+
+    public static final String ABSTRACTPAGE_DETACH_METHOD_ID = "AbstractPage.detach()";
+
+    /**
+     *  Regular expression defining a simple property name.  Used by several different
+     *  parsers. Simple property names match Java variable names; a leading letter
+     *  (or underscore), followed by letters, numbers and underscores.
+     * 
+     *  @since 3.0
+     * 
+     **/
+
+    public static final String SIMPLE_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z]\\w*$";
 
     /**
      *  Prevent instantiation.
@@ -1275,15 +1286,15 @@ public final class Tapestry
         _invokedMethodIds.set(null);
     }
 
-	/**
-	 * Adds a method invocation to the list of invocations. This is done
-	 * in a super-class implementations.  
-	 * 
-	 * @see #checkMethodInvocation(Object, String, Object)
-	 * @since 3.0
-	 * 
-	 */
-	
+    /**
+     * Adds a method invocation to the list of invocations. This is done
+     * in a super-class implementations.  
+     * 
+     * @see #checkMethodInvocation(Object, String, Object)
+     * @since 3.0
+     * 
+     */
+
     public static void addMethodInvocation(Object methodId)
     {
         List methodIds = (List) _invokedMethodIds.get();
@@ -1313,7 +1324,7 @@ public final class Tapestry
      * 
      * @since 3.0
      */
-    
+
     public static void checkMethodInvocation(Object methodId, String methodName, Object object)
     {
         List methodIds = (List) _invokedMethodIds.get();
