@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,9 +26,15 @@
 
 package com.primix.tapestry.spec;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.util.BasePropertyHolder;
 
 /**
  *  A specification for a component, as read from an XML specification file.
@@ -37,6 +43,7 @@ import java.util.*;
  *  <ul>
  *  <li>An implementing class
  *  <li>An optional template
+ *  <li>An optional description
  * <li>A set of contained components
  * <li>Bindings for the properties of each contained component
  * <li>A set of named assets
@@ -55,19 +62,23 @@ import java.util.*;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ *
+ **/
 
 public class ComponentSpecification extends BasePropertyHolder
 {
 	private String componentClassName;
-	private String specificationResourcePath;
+	protected String specificationResourcePath;
+
+	/** @since 1.0.9 **/
+	private String description;
 
 	/**
 	 *  Keyed on component id, value is {@link ContainedComponent}.
 	 *
-	 */
+	 **/
 
-	private Map components;
+	protected Map components;
 
 	private static final int MAP_SIZE = 7;
 
@@ -76,23 +87,23 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 */
 
-	private Map assets;
+	protected Map assets;
 
 	/**
 	 *  Defines all formal parameters.  Keyed on parameter name, value is
 	 * {@link ParameterSpecification}.
 	 *
-	 */
+	 **/
 
-	private Map parameters;
+	protected Map parameters;
 
 	/**
 	 *  Defines all helper beans.  Keyed on name, value is {@link BeanSpecification}.
 	 *
 	 *  @since 1.0.4
-	 */
+	 **/
 
-	private Map beans;
+	protected Map beans;
 
 	/**
 	 *  The names of all reserved informal parameter names (as lower-case).  This
@@ -101,14 +112,14 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 *   @since 1.0.5
 	 *
-	 */
+	 **/
 
-	private Set reservedParameterNames;
+	protected Set reservedParameterNames;
 
 	/**
 	 *  Is the component allowed to have a body (that is, wrap other elements?).
 	 *
-	 */
+	 **/
 
 	private boolean allowBody = true;
 
@@ -122,7 +133,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	/**
 	 * @throws IllegalArgumentException if the name already exists.
 	 *
-	 */
+	 **/
 
 	public void addAsset(String name, AssetSpecification asset)
 	{
@@ -138,7 +149,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	/**
 	 *  @throws IllegalArgumentException if the id is already defined.
 	 *
-	 */
+	 **/
 
 	public void addComponent(String id, ContainedComponent component)
 	{
@@ -155,7 +166,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *  Adds the parameter.   The name is added as a reserved name.
 	 *
 	 *  @throws IllegalArgumentException if the name already exists.
-	 */
+	 **/
 
 	public void addParameter(String name, ParameterSpecification spec)
 	{
@@ -176,7 +187,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 *  @see #setAllowBody(boolean)
 	 *
-	 */
+	 **/
 
 	public boolean getAllowBody()
 	{
@@ -193,7 +204,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 * <p>The default value is true.
 	 *
 	 *  @see #setAllowInformalParameters(boolean)
-	 */
+	 **/
 
 	public boolean getAllowInformalParameters()
 	{
@@ -205,7 +216,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *  if no such specification exists.
 	 *
 	 *  @see #addAsset(String,AssetSpecification)
-	 */
+	 **/
 
 	public AssetSpecification getAsset(String name)
 	{
@@ -219,7 +230,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *  Returns an unmodifiable <code>Collection</code>
 	 *  of the String names of all assets.
 	 *
-	 */
+	 **/
 
 	public Collection getAssetNames()
 	{
@@ -235,7 +246,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 *  @see #addComponent(String, ContainedComponent)
 	 *
-	 */
+	 **/
 
 	public ContainedComponent getComponent(String id)
 	{
@@ -257,7 +268,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 *  @see #addComponent(String, ContainedComponent)
 	 *
-	 */
+	 **/
 
 	public Collection getComponentIds()
 	{
@@ -273,7 +284,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 *  @see #addParameter(String, ParameterSpecification)
 	 *
-	 */
+	 **/
 
 	public ParameterSpecification getParameter(String name)
 	{
@@ -289,7 +300,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 *  @see #addParameter(String, ParameterSpecification)
 	 *
-	 */
+	 **/
 
 	public Collection getParameterNames()
 	{
@@ -303,7 +314,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *  Returns the String used to identify the resource parsed to form this
 	 *  <code>ComponentSpecification</code>.
 	 *
-	 */
+	 **/
 
 	public String getSpecificationResourcePath()
 	{
@@ -334,7 +345,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *  @since 1.0.4
 	 *
 	 *  @throws IllegalArgumentException if the bean already has a specification.
-	 */
+	 **/
 
 	public void addBeanSpecification(String name, BeanSpecification specification)
 	{
@@ -353,7 +364,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 * @since 1.0.4
 	 *
-	 */
+	 **/
 
 	public BeanSpecification getBeanSpecification(String name)
 	{
@@ -366,7 +377,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	/**
 	 *  Returns an unmodifiable collection of the names of all beans.
 	 *
-	 */
+	 **/
 
 	public Collection getBeanNames()
 	{
@@ -384,7 +395,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 *  @since 1.0.5
 	 *
-	 */
+	 **/
 
 	public void addReservedParameterName(String value)
 	{
@@ -403,7 +414,7 @@ public class ComponentSpecification extends BasePropertyHolder
 	 *
 	 *  @since 1.0.5
 	 *
-	 */
+	 **/
 
 	public boolean isReservedParameterName(String value)
 	{
@@ -429,4 +440,27 @@ public class ComponentSpecification extends BasePropertyHolder
 
 		return buffer.toString();
 	}
+
+	/**
+	 *  Returns the documentation for this component.
+	 * 
+	 *  @since 1.0.9
+	 **/
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 *  Sets the documentation for this component.
+	 * 
+	 *  @since 1.0.9
+	 **/
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
 }

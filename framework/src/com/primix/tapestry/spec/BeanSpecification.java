@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,8 +26,10 @@
 
 package com.primix.tapestry.spec;
 
-import com.primix.tapestry.bean.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.primix.tapestry.bean.IBeanInitializer;
 
 /**
  *  A specification of a helper bean for a component.
@@ -39,15 +41,18 @@ import java.util.*;
 
 public class BeanSpecification
 {
-	private String className;
-	private BeanLifecycle lifecycle;
+	protected String className;
+	protected BeanLifecycle lifecycle;
+
+	/** @since 1.0.9 **/
+	private String description;
 
 	/**
 	 *  A List of {@link IBeanInitializer}.
 	 *
 	 */
 
-	private List initializers;
+	protected List initializers;
 
 	public BeanSpecification(String className, BeanLifecycle lifecycle)
 	{
@@ -110,5 +115,15 @@ public class BeanSpecification
 		buffer.append(']');
 
 		return buffer.toString();
+	}
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	public void setDescription(String desc)
+	{
+		description = desc;
 	}
 }

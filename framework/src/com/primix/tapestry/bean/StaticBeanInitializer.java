@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,8 +26,8 @@
 
 package com.primix.tapestry.bean;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.prop.*;
+import com.primix.tapestry.IBeanProvider;
+import com.primix.tapestry.util.prop.PropertyHelper;
 
 /**
  *  Initializes a bean with a static value.
@@ -35,11 +35,12 @@ import com.primix.tapestry.util.prop.*;
  *  @author Howard Ship
  *  @version $Id$
  *  @since 1.0.5
- */
+ * 
+ **/
 
 public class StaticBeanInitializer extends AbstractBeanInitializer
 {
-	private Object value;
+	protected Object value;
 
 	public StaticBeanInitializer(String propertyName, Object value)
 	{

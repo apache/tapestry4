@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,8 +26,9 @@
 
 package com.primix.tapestry.bean;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.prop.*;
+import com.primix.tapestry.IBeanProvider;
+import com.primix.tapestry.IComponent;
+import com.primix.tapestry.util.prop.PropertyHelper;
 
 /**
  *  Initializes a helper bean property from a property path (relative
@@ -36,11 +37,12 @@ import com.primix.tapestry.util.prop.*;
  *  @author Howard Ship
  *  @version $Id$
  *  @since 1.0.5
- */
+ * 
+ **/
 
 public class PropertyBeanInitializer extends AbstractBeanInitializer
 {
-	private String[] propertyPath;
+	protected String[] propertyPath;
 
 	public PropertyBeanInitializer(String propertyName, String propertyPath)
 	{

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,52 +26,46 @@
 
 package com.primix.tapestry.spec;
 
-import com.primix.tapestry.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeSet;
 
-import com.primix.tapestry.asset.AssetService;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
-import com.primix.tapestry.engine.ActionService;
-import com.primix.tapestry.engine.DirectService;
-import com.primix.tapestry.engine.PageService;
-import com.primix.tapestry.engine.RestartService;
-import com.primix.tapestry.form.*;
-import com.primix.tapestry.link.*;
-import com.primix.tapestry.valid.*;
-import com.primix.tapestry.util.exception.*;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.inspector.*;
+import com.primix.tapestry.IEngineService;
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.util.BasePropertyHolder;
 
 /**
  *  Defines the configuration for a Tapestry application.
  *
  * @author Howard Ship
  * @version $Id$
- */
+ *
+ **/
 
 public class ApplicationSpecification extends BasePropertyHolder
 {
 	private String name;
-	private String engineClassName;
+	protected String engineClassName;
+
+	/** @since 1.0.9 **/
+	private String description;
 
 	private final static int MAP_SIZE = 11;
 
 	// Map of PageSpecification, keyed on String (name of page), specific
 	// to this application.  Will not be null in a running application.
 
-	private Map pageMap;
+	protected Map pageMap;
 
 	// Map of String (full path to component specification), 
 	// keyed on String (component alias), may often be null.
 
-	private Map componentMap;
-
+	protected Map componentMap;
 
 	// Map of String (name of service) to String (Java class name), often null
-	
+
 	private Map serviceMap;
-	
 
 	// The Default component map is shared by all specifications
 
@@ -146,9 +140,8 @@ public class ApplicationSpecification extends BasePropertyHolder
 	// Default page map shared by all applications.
 
 	private static Map defaultPageMap = new HashMap(MAP_SIZE);
-	
-	static
-	{
+
+	static {
 		// Provide defaults for three of the four standard pages.
 		// An application must provide a home page and may override
 		// any of these.
@@ -170,11 +163,10 @@ public class ApplicationSpecification extends BasePropertyHolder
 			"Inspector",
 			new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));
 	}
-	
+
 	private static Map defaultServiceMap = new HashMap(MAP_SIZE);
-	
-	static
-	{
+
+	static {
 		defaultServiceMap.put(
 			IEngineService.HOME_SERVICE,
 			"com.primix.tapestry.engine.HomeService");
@@ -183,17 +175,20 @@ public class ApplicationSpecification extends BasePropertyHolder
 			"com.primix.tapestry.engine.ActionService");
 		defaultServiceMap.put(
 			IEngineService.DIRECT_SERVICE,
-				"com.primix.tapestry.engine.DirectService");
+			"com.primix.tapestry.engine.DirectService");
 		defaultServiceMap.put(
-		IEngineService.PAGE_SERVICE, "com.primix.tapestry.engine.PageService");
+			IEngineService.PAGE_SERVICE,
+			"com.primix.tapestry.engine.PageService");
 		defaultServiceMap.put(
-			IEngineService.RESET_SERVICE, "com.primix.tapestry.engine.ResetService");
+			IEngineService.RESET_SERVICE,
+			"com.primix.tapestry.engine.ResetService");
 		defaultServiceMap.put(
 			IEngineService.RESTART_SERVICE,
 			"com.primix.tapestry.engine.RestartService");
 		defaultServiceMap.put(
-			IEngineService.ASSET_SERVICE,"com.primix.tapestry.asset.AssetService");
-			
+			IEngineService.ASSET_SERVICE,
+			"com.primix.tapestry.asset.AssetService");
+
 	}
 
 	/**
@@ -349,7 +344,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 *
 	 *  </table>
 	 *
-	 */
+	 **/
 
 	public String getComponentAlias(String alias)
 	{
@@ -385,7 +380,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 *  by the application.  The Collection is ordered so
 	 *  that the names are sorted alphabetically.
 	 *
-	 */
+	 **/
 
 	public Collection getPageNames()
 	{
@@ -428,7 +423,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 * </table>
 	 *
 	 *
-	 */
+	 **/
 
 	public PageSpecification getPageSpecification(String name)
 	{
@@ -466,7 +461,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 *  @param logicalName The name used for the page within the application.
 	 *  @param type The component resource path for the page.
 	 *
-	 */
+	 **/
 
 	public void setPageSpecification(String name, PageSpecification spec)
 	{
@@ -493,14 +488,14 @@ public class ApplicationSpecification extends BasePropertyHolder
 	{
 		if (serviceMap == null)
 			serviceMap = new HashMap(MAP_SIZE);
-			
+
 		if (serviceMap.containsKey(name))
 			throw new IllegalArgumentException(
 				Tapestry.getString("ApplicationSpecification.duplicate-service", name));
-				
+
 		serviceMap.put(name, className);
 	}
-	
+
 	/**
 	 *  Returns the Java class to instantiate for a given service name, or null
 	 *  if the service does not exist.
@@ -535,20 +530,20 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 * 
 	 *  @since 1.0.9
 	 **/
-	
+
 	public String getServiceClassName(String serviceName)
 	{
 		String result = null;
-		
+
 		if (serviceMap != null)
-			result = (String)serviceMap.get(serviceName);
-			
-		if (result ==  null)
-			result = (String)defaultServiceMap.get(serviceName);
-			
+			result = (String) serviceMap.get(serviceName);
+
+		if (result == null)
+			result = (String) defaultServiceMap.get(serviceName);
+
 		return result;
 	}
-	
+
 	/**
 	 *  Returns the names of all services (default and specific to the application).
 	 *  The collection returned will order the names alphabetically.
@@ -556,14 +551,14 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 *  @since 1.0.9
 	 * 
 	 **/
-	
+
 	public Collection getServiceNames()
 	{
 		Collection result = new TreeSet(defaultServiceMap.keySet());
-		
+
 		if (serviceMap != null)
 			result.addAll(serviceMap.keySet());
-			
+
 		return result;
 	}
 
@@ -571,4 +566,31 @@ public class ApplicationSpecification extends BasePropertyHolder
 	{
 		return "ApplicationSpecification[" + name + " " + engineClassName + "]";
 	}
+
+	/**
+	 * 
+	 *  Returns the documentation for the application..
+	 * 
+	 *  @since 1.0.9
+	 * 
+	 **/
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 *  
+	 *  Sets the documentation for the application..
+	 * 
+	 *  @since 1.0.9
+	 * 
+	 **/
+
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+
 }
