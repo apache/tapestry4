@@ -52,10 +52,6 @@ class EnhanceMessages
                 ClassFabUtils.getJavaClassName(expectedPropertyType) });
     }
 
-    public static String autoMustBeRequired(String propertyName)
-    {
-        return _formatter.format("auto-must-be-required", propertyName);
-    }
 
     public static String errorAddingProperty(String propertyName, Class componentClass,
             Throwable cause)
