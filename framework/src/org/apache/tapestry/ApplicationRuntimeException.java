@@ -107,7 +107,7 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
         this(message, null, location, rootCause);
     }
 
-    public Throwable getRootCause()
+    public Throwable getCause()
     {
         return _rootCause;
     }
