@@ -58,6 +58,7 @@ import org.apache.tapestry.IPage;
 
 /**
  * @author ceco
+ * @version $Id$
  */
 
 public interface ISessionStoreManager {

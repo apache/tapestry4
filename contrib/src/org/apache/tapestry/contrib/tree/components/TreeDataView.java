@@ -67,7 +67,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * @version $Revision$
+ * @version $Id$
  */
 public class TreeDataView extends BaseComponent implements ITreeRowSource{
     private IBinding m_objTreeViewBinding;
@@ -143,10 +143,6 @@ public class TreeDataView extends BaseComponent implements ITreeRowSource{
         }
     }
 
-    /**
-     * Returns the treeDeep.
-     * @return int
-     */
     public int getTreeDeep() {
         return m_nTreeDeep;
     }
@@ -157,16 +153,10 @@ public class TreeDataView extends BaseComponent implements ITreeRowSource{
 		return getTreeRowObject();
 	}
 
-	/**
-	 * @return
-	 */
 	public TreeRowObject getTreeRowObject() {
 		return m_objTreeRowObject;
 	}
 
-	/**
-	 * @param object
-	 */
 	public void setTreeRowObject(TreeRowObject object) {
 		m_objTreeRowObject = object;
 	}

@@ -58,12 +58,8 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.contrib.tree.components.ITreeComponent;
 
 /**
- * All right reserved.
- * Copyright (c) by Rushmore Digital Ltd.
- * Created on Sep 25, 2002
- *
  * @author ceco
- *
+ * @version $Id$
  */
 public interface ITreeNodeManager {
 	IRender getRenderer(Object objUniqueKey, ITreeComponent objTreeComponent);

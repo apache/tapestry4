@@ -21,9 +21,6 @@ public class NodeRenderFactory implements INodeRenderFactory {
         super();
     }
 
-    /**
-     * @see net.sf.tacos.tree.components.INodeRenderFactory#getRenderByID(Object, ITreeComponent, IRequestCycle)
-     */
     public IRender getRenderByID(Object objUniqueKey,
 								 ITreeModelSource objTreeModelSource,
                                  IRequestCycle objCycle) {
@@ -31,9 +28,6 @@ public class NodeRenderFactory implements INodeRenderFactory {
         return getRender(objValue, objTreeModelSource, objCycle);
     }
 
-    /**
-     * @see net.sf.tacos.tree.components.INodeRenderFactory#getRender(Object, ITreeComponent, IRequestCycle)
-     */
     public IRender getRender(Object objValue,
 							 ITreeModelSource objTreeModelSource,
                              IRequestCycle objCycle) {

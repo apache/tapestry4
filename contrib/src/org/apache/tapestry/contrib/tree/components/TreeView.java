@@ -72,6 +72,9 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.util.ComponentAddress;
 
+/**
+ * @version $Id$
+ */
 public class TreeView extends BaseComponent
     implements PageDetachListener, PageRenderListener, ITreeModelSource {
 
@@ -176,7 +179,7 @@ public class TreeView extends BaseComponent
 
     /**
      * Sets the SessionStoreManagerBinding.
-     * @param SessionStoreManagerBinding The SessionStoreManagerBinding to set
+     * @param sessionStoreManagerBinding The SessionStoreManagerBinding to set
      */
     public void setSessionStoreManagerBinding(IBinding
                                               sessionStoreManagerBinding) {
@@ -246,7 +249,7 @@ public class TreeView extends BaseComponent
     }
 
     /**
-     * @see org.apache.tapestry.contrib.components.ITreeComponent#resetState()
+     * @see ITreeComponent#resetState()
      */
     public void resetState() {
         if (LOG.isDebugEnabled()) {

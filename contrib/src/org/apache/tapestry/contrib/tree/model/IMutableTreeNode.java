@@ -61,11 +61,11 @@ import java.util.Collection;
  * by adding or removing child nodes, or by changing the contents
  * of a user object stored in the node.
  *
- * @see DefaultMutableTreeNode
+ * @see javax.swing.tree.DefaultMutableTreeNode
  * @see javax.swing.JTree
  *
- * @version 1.0 30/07/02
  * @author ceco
+ * @version $Id$
  */
 
 public interface IMutableTreeNode extends ITreeNode

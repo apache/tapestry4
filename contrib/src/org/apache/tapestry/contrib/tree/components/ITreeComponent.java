@@ -59,12 +59,8 @@ import org.apache.tapestry.contrib.tree.model.ITreeRowSource;
 import org.apache.tapestry.util.ComponentAddress;
 
 /**
- * All right reserved.
- * Copyright (c) by Rushmore Digital Ltd.
- * Created on Sep 25, 2002
- *
  * @author ceco
- *
+ * @version $Id$
  */
 public interface ITreeComponent {
 	ComponentAddress getComponentPath();
