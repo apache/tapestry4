@@ -23,9 +23,9 @@ import org.apache.hivemind.Location;
 public interface InjectedValueProvider
 {
     /**
-     * Looks up a value in HiveMind using the locator, as with the HiveMind object translator. The
-     * module will always be the Tapestry module (which means that most service ids or
-     * configurations will have to be fully qualified.
+     * Looks up a value in HiveMind using the object reference (as with HiveMind's built-in object
+     * translator). The module will always be the Tapestry module (which means that most service ids
+     * or configurations will have to be fully qualified.
      * 
      * @param objectReference
      *            the reference to the HiveMind object to obtain, with a leading prefix indicating
