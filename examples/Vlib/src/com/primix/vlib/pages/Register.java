@@ -178,6 +178,7 @@ implements IErrorProperty
 	}
 	
 	private void attemptRegister(IRequestCycle cycle)
+	throws RequestCycleException
 	{
 		IOperations bean;
 		Login login;

@@ -1,3 +1,8 @@
+* Jan 16 2001 hship
+
+Make use of new ICallback classes with Vlib.
+Update examples for changes to IDirectListener interface.
+
 * Jan 10 2001 hship
 
 VlibBeans: Install gnu-regexp.jar and log4j.jar as well as Tapestry.jar.

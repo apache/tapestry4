@@ -133,7 +133,7 @@ extends BaseComponent
 	{
 	    return new IDirectListener()
 	    {
-	        public void directTriggered(IComponent component, String[] context,
+	        public void directTriggered(IDirect direct, String[] context,
 	                IRequestCycle cycle)
 					throws RequestCycleException
 	        {

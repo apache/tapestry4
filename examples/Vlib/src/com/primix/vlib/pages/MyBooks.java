@@ -236,7 +236,7 @@ extends Protected
 	{
 		return new IDirectListener()
 		{
-			public void directTriggered(IComponent component, String[] context,
+			public void directTriggered(IDirect direct, String[] context,
 					IRequestCycle cycle)
 			{
 				EditProfile page;
@@ -259,7 +259,7 @@ extends Protected
 	{
 		return new IDirectListener()
 		{
-			public void directTriggered(IComponent component, String[] context,
+			public void directTriggered(IDirect direct, String[] context,
 					IRequestCycle cycle)
 			{
 				EditBook page;
@@ -282,7 +282,7 @@ extends Protected
 	{
 		return new IDirectListener()
 		{
-			public void directTriggered(IComponent component, String[] context,
+			public void directTriggered(IDirect direct, String[] context,
 					IRequestCycle cycle)
 			{
 				Integer bookPK;
@@ -305,7 +305,7 @@ extends Protected
     {
         return new IDirectListener()
         {
-    	    public void directTriggered(IComponent component, String[] context,
+    	    public void directTriggered(IDirect direct, String[] context,
     			    IRequestCycle cycle)
     	    {
                 Integer bookPK;
