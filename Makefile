@@ -16,7 +16,8 @@ MODULES = \
 	../Tapestry \
 	../Examples/Tutorial \
 	../Examples/VlibBeans \
-	../Examples/Vlib
+	../Examples/Vlib \
+	../Documentation/JBE
 
 JAVADOC_MODULES = \
 	../Tapestry \
@@ -57,9 +58,8 @@ REINVOKE := \
 	@$(RECURSE) reinvoke
 	
 prepare-for-packaging:
-	$(call NOTE, Copying licenses and Readme to root ...)
-	$(TAR) --create LICENSE* *.html ChangeLog images | \
-		($(CD) .. && $(TAR) --extract)
+	$(call NOTE, Copying licenses, etc. to root ...)
+	@$(call COPY_TREE, . , LICENSE* *.html ChangeLog images, ..)
 
 install: 
 	$(REINVOKE) TARGET=install JAVAC_OPT=-g
@@ -98,12 +98,13 @@ SMALL_RELEASE = \
 	$(RELEASE_DIR)/lib/Tapestry.jar \
 	$(RELEASE_DIR)/lib/gnu-regexp.jar
 
-# The medium release adds the JBE and the Tapestry source code.
+# The medium release adds the JBE, JBE documentation
+# and the Tapestry source code.
 	
 MEDIUM_RELEASE = \
 	$(SMALL_RELEASE) \
 	$(RELEASE_DIR)/JBE \
-	$(RELEASE_DIR)/doc/JBE.pdf \
+	$(RELEASE_DIR)/doc/JBE \
 	$(RELEASE_DIR)/Tapestry
 
 # The full release adds all the documentation (in PDF format),
@@ -116,6 +117,7 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/Readme.html \
 	$(RELEASE_DIR)/lib \
 	$(RELEASE_DIR)/doc/*.pdf \
+	$(RELEASE_DIR)/doc/JBE \
 	$(RELEASE_DIR)/doc/api \
 	$(RELEASE_DIR)/Tapestry \
 	$(RELEASE_DIR)/JBE \
@@ -124,11 +126,11 @@ FULL_RELEASE = \
 create-archives: prepare-for-packaging
 	$(call NOTE, Creating full distribution archive ...)
 	@$(RM) -f ..\$(RELEASE_DIR)-*.gz 
-	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-full.tar.gz $(FULL_RELEASE)
+	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-full.tar.gz $(FULL_RELEASE)
 	$(call NOTE, Creating small distribution archive ...)
-	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-small.tar.gz $(SMALL_RELEASE)
+	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-small.tar.gz $(SMALL_RELEASE)
 	$(call NOTE, Creating medium distribution archive ...)
-	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-medium.tar.gz $(MEDIUM_RELEASE)
+	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-medium.tar.gz $(MEDIUM_RELEASE)
 
 
 .PHONY: javadoc create-archives prepare-for-packaging reinvoke
