@@ -6,6 +6,7 @@ import com.primix.foundation.*;
 import java.io.*;
 import java.util.*;
 import java.net.URL;
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -50,6 +51,9 @@ import java.net.URL;
 public class DefaultTemplateSource 
 implements ITemplateSource
 {
+	private static final Category CAT =
+		Category.getInstance(DefaultTemplateSource.class.getName());
+		 
 	private static final int MAP_SIZE = 11;
 
     // Cache of previously retrieved templates.  Key is a multi-key of 
@@ -176,12 +180,16 @@ implements ITemplateSource
         int dotx;
         StringBuffer buffer;
         int rawLength;
-        String candidatePath;
+        String candidatePath = null;
         String language = null;
         String country = null;
         int start = 2;
         ComponentTemplate result = null;
 
+   		if (CAT.isDebugEnabled())
+			CAT.debug("Searching for localized version of template for " + 
+				specificationResourcePath + " in locale " + locale.getDisplayName());
+				
         // Just easier to lock the template cache once, for the duration.
 
         if (templates == null)
@@ -245,7 +253,7 @@ implements ITemplateSource
 
                 result = (ComponentTemplate)templates.get(candidatePath);
                 if (result != null)
-                    return result;
+                    break;
         
                 // Ok, see if it exists.
 
@@ -254,14 +262,12 @@ implements ITemplateSource
                 if (result != null)
                 {
                     templates.put(candidatePath, result);
-                    return result;
+                    break;
                 }
             }
         }
-
-        // Not found, let the caller complain about it.
-
-        return null;
+				
+        return result;
     }
     
     /**
@@ -274,7 +280,6 @@ implements ITemplateSource
 	throws ResourceUnavailableException
 	{
 		char[] templateData;
-		ComponentTemplate result;
 		TemplateToken[] tokens;
 
 		templateData = readTemplate(resourceName);
@@ -290,9 +295,10 @@ implements ITemplateSource
 
 		tokens = parser.parse(templateData);
 
-		result = new ComponentTemplate(templateData, tokens);
-
-		return result;
+		if (CAT.isDebugEnabled())
+			CAT.debug("Parsed " + tokens.length + " tokens from template");
+			
+		return new ComponentTemplate(templateData, tokens);
 	}
 
     /**
@@ -312,6 +318,9 @@ implements ITemplateSource
 		if (url == null)
             return null;
 
+        if (CAT.isDebugEnabled())
+        	CAT.debug("Reading template " + resourceName + " from " + url);
+        	
 		try
 		{
 			stream = url.openStream();

@@ -3,16 +3,31 @@
 <table class="inspector-data">
 
 	<tr class="even">
+		<th>Application Name</th>
+		<td><jwc id="insertApplicationName"/></td>
+	</tr>
+
+	<tr class="odd">
+		<th>Context Path</th>
+		<td><jwc id="insertContextPath"/></td>
+	</tr>
+
+	<tr class="even">
+		<th>Servlet Prefix</th>
+		<td><jwc id="insertServletPrefix"/></td>
+	</tr>
+
+	<tr class="odd">
 		<th>Engine Class</th>
 		<td><jwc id="insertEngineClass"/></td>
 	</tr>
 	
-	<tr class="odd">
+	<tr class="even">
 		<th>Locale</th>
 		<td><jwc id="insertLocale"/></td>
 	</tr>
 
-	<tr class="even">
+	<tr class="odd">
 		<th>Visit</th>
 		<td>
 <jwc id="ifNoVisit">
@@ -27,10 +42,33 @@
 
 </table>
 
+<h1>Operations</h1>
+
+<table class="inspector-data">
+
+	<tr class="even">
+		<td><jwc id="restart"><jwc id="restartButton"/></jwc>
+		</td>
+		<td>Restart the application (in this window).
+		</td>
+	</tr>
+
+	<tr class="odd">
+		<td><jwc id="reset"><jwc id="resetButton"/></jwc>
+		</td>
+		<td>
+		Reset the application, discarding all cached specifications, assets
+		and templates.
+		</td>
+	</tr>
+</table>
 
 <h1>Serialized Engine</h1>
 
-<jwc id="insertByteCount"/> bytes:
+<p>The serialized state of the application engine (this size of this is relevant
+for application servers which supported clustering).
+
+<p><jwc id="insertByteCount"/> bytes:
 <pre><jwc id="insertSerializedEngine"/></pre>
 
 <h1>Request Context</h1>

@@ -38,7 +38,7 @@ import java.util.*;
  *  of "even" and "odd" for the HTML class attribute.  The sequence always
  *  starts with "even".
  *
- *  <p>No formal parameters, but allows informal parameters.  Allows a body
+ *  <p>Allows informal parameters.  Allows a body
  *  (in fact, doesn't make sense without one).
  *
  *  @version $Id$
@@ -50,10 +50,21 @@ public class EvenOdd extends AbstractComponent
 implements ILifecycle
 {
 	private boolean even;
+	private IBinding initialBinding;
 	
 	private String[] reservedNames = 
-	{ "class" 
+	{ "class"
 	};
+	
+	public IBinding getInitialBinding()
+	{
+		return initialBinding;
+	}
+
+	public void setInitialBinding(IBinding value)
+	{
+		initialBinding = value;
+	}
 
 	private String getNextClass()
 	{
@@ -66,9 +77,21 @@ implements ILifecycle
 		return result;
 	}
 	
+	/**
+	 *  Sets the initial value for the component.  The default behavior
+	 *  is for the first line to be "even" and the second to be "odd".
+	 *  If the initial parameter is bound, then it is used to
+	 *  determine the initial value ... true is the normal behavior (even
+	 *  first), false is the alternate behavior (odd first).
+	 *
+	 */
+	 
 	public void prepareForRender(IRequestCycle cycle)
 	{
 		even = true;
+		
+		if (initialBinding != null)
+			even = initialBinding.getBoolean();
 	}
 	
 	public void render(IResponseWriter writer,

@@ -124,7 +124,7 @@ implements Externalizable
 		return result;
 	}
 
-	protected void recordChange(String componentPath, String propertyName, Serializable newValue)
+	protected void recordChange(String componentPath, String propertyName, Object newValue)
 	{
 		ChangeKey key;
 		Object oldValue;
@@ -159,21 +159,15 @@ implements Externalizable
     public void readExternal(ObjectInput in)
     throws IOException, ClassNotFoundException
     {
-        int i;
-        int count;
         String componentPath;
-        String propertyName;
-        Object value;
-        ChangeKey key; 
-
-        count = in.readInt();
+        int count = in.readInt();
 
         if (count == 0)
             return;
 
         changes = new HashMap(MAP_SIZE);
 
-        for (i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             // Read a boolean ... if true, a UTF string follows.
 
@@ -182,8 +176,9 @@ implements Externalizable
             else
                 componentPath = null;
 
-            propertyName = in.readUTF();
-            value = in.readObject();
+            String propertyName = in.readUTF();
+            Object rawValue = in.readObject();
+			Object value = restoreValue(rawValue);
 
             changes.put(new ChangeKey(componentPath, propertyName), value);
         }
@@ -206,10 +201,6 @@ implements Externalizable
     public void writeExternal(ObjectOutput out)
     throws IOException
     {
-        Iterator i;
-        Map.Entry entry;
-        ChangeKey key;
-
         if (changes == null)
         {
             out.writeInt(0);
@@ -217,12 +208,12 @@ implements Externalizable
         }
 
         out.writeInt(changes.size());
-        i = changes.entrySet().iterator();
+        Iterator i = changes.entrySet().iterator();
 
         while (i.hasNext())
         {
-            entry = (Map.Entry)i.next();
-            key = (ChangeKey)entry.getKey();
+            Map.Entry entry = (Map.Entry)i.next();
+            ChangeKey key = (ChangeKey)entry.getKey();
 
             // To avoid writeObject(), we write a boolean
             // indicating whether there's a non-null UTF string
@@ -234,7 +225,7 @@ implements Externalizable
                 out.writeObject(key.componentPath);
 
             out.writeUTF(key.propertyName);
-            out.writeObject(entry.getValue());
+            out.writeObject(persistValue(entry.getValue()));
         }
     }
 }

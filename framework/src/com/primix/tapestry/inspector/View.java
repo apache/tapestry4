@@ -1,6 +1,7 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.foundation.*;
+import com.primix.tapestry.*;
 
 /*
  * Tapestry Web Application Framework
@@ -74,6 +75,13 @@ public class View extends Enum
 
 	public static final View ENGINE = new View("ENGINE");
 
+	/**
+	 *  View for controlling logging of the application as it runs.
+	 *
+	 */
+	 
+	public static final View LOGGING = new View("LOGGING");
+	
 	private View(String enumerationId)
 	{
 		super(enumerationId);

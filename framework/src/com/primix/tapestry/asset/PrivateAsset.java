@@ -4,6 +4,7 @@ import java.net.URL;
 import com.primix.tapestry.*;
 import java.io.*;
 import java.util.*;
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -47,208 +48,215 @@ import java.util.*;
 
 public class PrivateAsset implements IAsset
 {
-    private AssetExternalizer externalizer;
+	private static final Category CAT = 
+		Category.getInstance(PrivateAsset.class.getName());
 
-    private String resourcePath;
+	private AssetExternalizer externalizer;
 
-    private static final int MAP_SIZE = 7;
+	private String resourcePath;
 
-    /**
-    *  Map, keyed on Locale, value is the localized resourcePath (as a String)
-    */
+	private static final int MAP_SIZE = 7;
 
-    private Map localizations;
+	/**
+	*  Map, keyed on Locale, value is the localized resourcePath (as a String)
+	*/
 
-    public PrivateAsset(String resourcePath)
-    {
-        this.resourcePath = resourcePath;
-    }
+	private Map localizations;
 
-    /**
-    *  Gets the localized version of the resource.  Build
-    *  the URL for the resource.  If possible, the application's
-    *  {@link AssetExternalizer} is located, to copy the resource to
-    *  a directory visible to the web server.
-    *
-    */
+	public PrivateAsset(String resourcePath)
+	{
+		this.resourcePath = resourcePath;
+	}
 
-    public String buildURL(IRequestCycle cycle)
-    {
-        String[] parameters;
-        String externalURL;
-        IEngineService service;
-        String URL;
-        String localizedResourcePath;
+	/**
+	*  Gets the localized version of the resource.  Build
+	*  the URL for the resource.  If possible, the application's
+	*  {@link AssetExternalizer} is located, to copy the resource to
+	*  a directory visible to the web server.
+	*
+	*/
 
-        try
-        {
-            localizedResourcePath = findLocalization(cycle);
-        }
-        catch (ResourceUnavailableException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
+	public String buildURL(IRequestCycle cycle)
+	{
+		String[] parameters;
+		String externalURL;
+		IEngineService service;
+		String URL;
+		String localizedResourcePath;
 
-        if (externalizer == null)
-            externalizer = AssetExternalizer.get(cycle);
+		try
+		{
+			localizedResourcePath = findLocalization(cycle);
+		}
+		catch (ResourceUnavailableException ex)
+		{
+			throw new ApplicationRuntimeException(ex);
+		}
 
-        try
-        {
-            externalURL = externalizer.getURL(localizedResourcePath);
-        }
-        catch (ResourceUnavailableException e)
-        {
-            throw new ApplicationRuntimeException(
-                "Could not build URL for private asset " + localizedResourcePath + ".", e);
-        }
+		if (externalizer == null)
+			externalizer = AssetExternalizer.get(cycle);
 
-        if (externalURL != null)
-            return externalURL;
+		try
+		{
+			externalURL = externalizer.getURL(localizedResourcePath);
+		}
+		catch (ResourceUnavailableException e)
+		{
+			throw new ApplicationRuntimeException(
+				"Could not build URL for private asset " + localizedResourcePath + ".", e);
+		}
 
-        // Otherwise, the service is responsible for dynamically retrieving the
-        // resource.	
+		if (externalURL != null)
+			return externalURL;
 
-        parameters = new String[] { localizedResourcePath };
+		// Otherwise, the service is responsible for dynamically retrieving the
+		// resource.	
 
-        service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
+		parameters = new String[] { localizedResourcePath };
 
-        URL = service.buildURL(cycle, null, parameters);
+		service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
 
-        // It would be nice to cache this, but a client without cookies will need
-        // it URL encoded for them, and one without won't, so we can't share
-        // this across clients.
+		URL = service.buildURL(cycle, null, parameters);
 
-        return cycle.encodeURL(URL);
+		// It would be nice to cache this, but a client without cookies will need
+		// it URL encoded for them, and one without won't, so we can't share
+		// this across clients.
 
-    }
+		return cycle.encodeURL(URL);
 
-    public InputStream getResourceAsStream(IRequestCycle cycle)
-    throws ResourceUnavailableException
-    {
-        try
-        {
-            IResourceResolver resolver = cycle.getEngine().getResourceResolver();
+	}
 
-
-            URL url = resolver.getResource(findLocalization(cycle));
-
-            return url.openStream();
-        }
-        catch (Exception ex)
-        {
-            throw new ResourceUnavailableException("Could not access private asset " +
-                resourcePath + ".", ex);
-        }
-    }
-
-    /**
-    *  Poke around until we find the localized version of the asset.
-    *
-    *  <p>A lot of this is cut-and-paste from DefaultTemplateSource.  I haven't
-    * come up with a good, general, efficient way to do this search without
-    * a huge amount of mechanism.
-    *
-    */
-
-    private String findLocalization(IRequestCycle cycle)
-    throws ResourceUnavailableException
-    {
-        Locale locale = cycle.getPage().getLocale();
-        int dotx;
-        StringBuffer buffer;
-        int rawLength;
-        String candidatePath;
-        String language = null;
-        String country = null;
-        int start = 2;
-        String suffix;
-        String result;
-
-        if (localizations == null)
-        {
-            synchronized(this)
-            {
-                if (localizations == null)
-                    localizations = new HashMap(MAP_SIZE);
-            }
-        }
-
-        synchronized(localizations)
-        {
-            result = (String)localizations.get(locale);
-            if (result != null)
-                return result;
-        }
-
-        dotx = resourcePath.lastIndexOf('.');
-        suffix = resourcePath.substring(dotx);
-
-        buffer = new StringBuffer (dotx + 30);
-
-        buffer.append(resourcePath.substring(0, dotx));
-        rawLength = buffer.length();
-
-        country = locale.getCountry();
-        if (country.length() > 0)
-            start--;
-
-        // This assumes that you never have the case where there's
-        // a null language code and a non-null country code.
-
-        language = locale.getLanguage();
-        if (language.length() > 0)
-            start--;
-
-        IResourceResolver resolver = cycle.getEngine().getResourceResolver();
-
-        // On pass #0, we use language code and country code
-        // On pass #1, we use language code
-        // On pass #2, we use neither.
-        // We skip pass #0 or #1 depending on whether the language code
-        // and/or country code is null.
-
-        for (int i = start; i < 3; i++)
-        {
-            buffer.setLength(rawLength);
-
-            if (i < 2)
-            {
-                buffer.append('_');
-                buffer.append(language);
-            }
-
-            if (i == 0)
-            {
-                buffer.append('_');
-                buffer.append(country);
-            }
-
-            buffer.append(suffix);
-
-            candidatePath = buffer.toString();
-
-            if (resolver.getResource(candidatePath) != null)
-            {
-                synchronized(localizations)
-                {
-                    localizations.put(locale, candidatePath);
-                }
-
-                return candidatePath;
-            }
-
-        }
-
-        throw new ResourceUnavailableException
-            ("Could not find private asset " +
-            resourcePath + " for locale " + locale + ".");
-
-    }
+	public InputStream getResourceAsStream(IRequestCycle cycle)
+	throws ResourceUnavailableException
+	{
+		try
+		{
+			IResourceResolver resolver = cycle.getEngine().getResourceResolver();
 
 
-    public String toString()
-    {
-        return "PrivateAsset[" + resourcePath + "]";
-    }
+			URL url = resolver.getResource(findLocalization(cycle));
+
+			return url.openStream();
+		}
+		catch (Exception ex)
+		{
+			throw new ResourceUnavailableException("Could not access private asset " +
+				resourcePath + ".", ex);
+		}
+	}
+
+	/**
+	*  Poke around until we find the localized version of the asset.
+	*
+	*  <p>A lot of this is cut-and-paste from DefaultTemplateSource.  I haven't
+	* come up with a good, general, efficient way to do this search without
+	* a huge amount of mechanism.
+	*
+	*/
+
+	private String findLocalization(IRequestCycle cycle)
+	throws ResourceUnavailableException
+	{
+		Locale locale = cycle.getPage().getLocale();
+		int dotx;
+		StringBuffer buffer;
+		int rawLength;
+		String candidatePath;
+		String language = null;
+		String country = null;
+		int start = 2;
+		String suffix;
+		String result;
+
+		if (localizations == null)
+		{
+			synchronized(this)
+			{
+				if (localizations == null)
+					localizations = new HashMap(MAP_SIZE);
+			}
+		}
+
+		synchronized(localizations)
+		{
+			result = (String)localizations.get(locale);
+			if (result != null)
+				return result;
+		}
+
+
+		dotx = resourcePath.lastIndexOf('.');
+		suffix = resourcePath.substring(dotx);
+
+		buffer = new StringBuffer (dotx + 30);
+
+		buffer.append(resourcePath.substring(0, dotx));
+		rawLength = buffer.length();
+
+		country = locale.getCountry();
+		if (country.length() > 0)
+			start--;
+
+		// This assumes that you never have the case where there's
+		// a null language code and a non-null country code.
+
+		language = locale.getLanguage();
+		if (language.length() > 0)
+			start--;
+
+		IResourceResolver resolver = cycle.getEngine().getResourceResolver();
+
+		// On pass #0, we use language code and country code
+		// On pass #1, we use language code
+		// On pass #2, we use neither.
+		// We skip pass #0 or #1 depending on whether the language code
+		// and/or country code is null.
+
+		for (int i = start; i < 3; i++)
+		{
+			buffer.setLength(rawLength);
+
+			if (i < 2)
+			{
+				buffer.append('_');
+				buffer.append(language);
+			}
+
+			if (i == 0)
+			{
+				buffer.append('_');
+				buffer.append(country);
+			}
+
+			buffer.append(suffix);
+
+			candidatePath = buffer.toString();
+
+			if (resolver.getResource(candidatePath) != null)
+			{
+				synchronized(localizations)
+				{
+					localizations.put(locale, candidatePath);
+				}
+
+				if (CAT.isDebugEnabled())
+					CAT.debug("Found " + candidatePath);
+
+				return candidatePath;
+			}
+
+		}
+
+		throw new ResourceUnavailableException
+			("Could not find private asset " +
+			resourcePath + " for locale " + locale + ".");
+
+	}
+
+
+	public String toString()
+	{
+		return "PrivateAsset[" + resourcePath + "]";
+	}
 }
 

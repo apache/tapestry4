@@ -4,10 +4,11 @@ import java.beans.*;
 import java.lang.reflect.*;
 import java.util.*;
 import com.primix.foundation.DynamicInvocationException;
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -46,6 +47,9 @@ import com.primix.foundation.DynamicInvocationException;
  
 class PropertyAccessor implements IPropertyAccessor
 {
+	private static final Category CAT = 
+		Category.getInstance(PropertyAccessor.class.getName());
+
 	protected PropertyDescriptor pd;
 	private Method accessor;
 	private Method mutator;
@@ -70,6 +74,9 @@ class PropertyAccessor implements IPropertyAccessor
 	{
 		Object result;
 		String propertyName;
+
+		if (CAT.isDebugEnabled())
+			CAT.debug("Getting property " + pd.getName() + " from " + target);
 
 		if (accessor == null)
 		{
@@ -140,6 +147,9 @@ class PropertyAccessor implements IPropertyAccessor
 				propertyName + ".", subject, propertyName);
 		}
 
+		if (CAT.isDebugEnabled())
+			CAT.debug("Setting property " + pd.getName() + " of " + subject + " to " + value);
+
 		// The array is lazily allocated and then held onto for any future work.
 		// This creates a window for multithreading problems.
 
@@ -151,7 +161,7 @@ class PropertyAccessor implements IPropertyAccessor
 		try
 		{
 			mutator.invoke(subject, args);
-		}	
+			}	
 		catch (Exception e)
 		{
 			String message;
@@ -160,7 +170,7 @@ class PropertyAccessor implements IPropertyAccessor
 				subject + ".";
 
 			throw new DynamicInvocationException(message, e);
-		}
+			}
 	}
 }
 

@@ -55,210 +55,237 @@ import javax.ejb.*;
 public abstract class PageRecorder
 implements IPageRecorder, Serializable
 {
-    protected transient boolean dirty = false;
-    protected transient boolean locked = false;
+	protected transient boolean dirty = false;
+	protected transient boolean locked = false;
 
-    /**
-    *  Invoked to persist all changes that have been accumulated.  If the recorder
-    *  saves change incrementally, this should ensure that all changes have been persisted.
-    *
-    *  <p>Subclasses should check the dirty flag.  If the recorder is dirty, changes
-    * should be recorded and the dirty flag cleared.
-    *
-    */
+	/**
+	*  Invoked to persist all changes that have been accumulated.  If the recorder
+	*  saves change incrementally, this should ensure that all changes have been persisted.
+	*
+	*  <p>Subclasses should check the dirty flag.  If the recorder is dirty, changes
+	* should be recorded and the dirty flag cleared.
+	*
+	*/
 
-    public abstract void commit()
-    throws PageRecorderCommitException;
+	public abstract void commit()
+	throws PageRecorderCommitException;
 
-    /**
-    *  Returns a <code>Collection</code> of {@link IPageChange} objects
-    *  identifying changes to the page and its components.
-    *
-    */
+	/**
+	*  Returns a <code>Collection</code> of {@link IPageChange} objects
+	*  identifying changes to the page and its components.
+	*
+	*/
 
-    public abstract Collection getChanges();
+	public abstract Collection getChanges();
 
-    /**
-    *  Returns true if the page has observed a change.
-    *  The dirty flag is cleared by
-    *  {@link #commit()}.
-    *
-    */
+	/**
+	*  Returns true if the page has observed a change.
+	*  The dirty flag is cleared by
+	*  {@link #commit()}.
+	*
+	*/
 
-    public boolean isDirty()
-    {
-        return dirty;
-    }
+	public boolean isDirty()
+	{
+		return dirty;
+	}
 
-    /**
-    *  Returns true if the recorder is locked.  The locked flag
-    *  is set by {@link #commit()}.
-    *
-    */
+	/**
+	*  Returns true if the recorder is locked.  The locked flag
+	*  is set by {@link #commit()}.
+	*
+	*/
 
-    public boolean isLocked()
-    {
-        return locked;
-    }
+	public boolean isLocked()
+	{
+		return locked;
+	}
 
-    public void setLocked(boolean value)
-    {
-        locked = value;
-    }
+	public void setLocked(boolean value)
+	{
+		locked = value;
+	}
 
-    /**
-    *  Observes the change.  The object of the event is expected to
-    *  be an {@link IComponent}.  Ignores the change if not active,
-    *  otherwise, sets invokes {@link #recordChange(String, String,
-    *  Serializable)}.
-    *
-    *  <p>If the property name in the event is null, then the recorder
-    *  is marked dirty (but 
-    *  {@link #recordChange(String, String,
-    *  Serializable)} is not invoked.  This is how a "distant" property changes
-    *  are propogated to the page recorder (a distant property change is a change to
-    *  a property of an object that is itself a property of the page).
-    *
-    *  <p>If the recorder is not active (typically, when a page is
-    *  being rewound), then the event is simply ignored.
-    *
-    */
+	/**
+	*  Observes the change.  The object of the event is expected to
+	*  be an {@link IComponent}.  Ignores the change if not active,
+	*  otherwise, sets invokes {@link #recordChange(String, String,
+	*  Object)}.
+	*
+	*  <p>If the property name in the event is null, then the recorder
+	*  is marked dirty (but 
+	*  {@link #recordChange(String, String,
+	*  Object)} is not invoked.  This is how a "distant" property changes
+	*  are propogated to the page recorder (a distant property change is a change to
+	*  a property of an object that is itself a property of the page).
+	*
+	*  <p>If the recorder is not active (typically, when a page is
+	*  being rewound), then the event is simply ignored.
+	*
+	*/
 
-    public void observeChange(ObservedChangeEvent event)
-    {
-        IComponent component;
-        String propertyName;
-        Serializable newValue;
+	public void observeChange(ObservedChangeEvent event)
+	{
+		IComponent component;
+		String propertyName;
+		Object newValue;
 
-        component = event.getComponent();
-        propertyName = event.getPropertyName();
+		component = event.getComponent();
+		propertyName = event.getPropertyName();
 
-        if (locked)
-            throw new ApplicationRuntimeException(
-                "Page recorder for page " + component.getPage().getName() +
-                " is locked after a commit(), but received a change to " +
-                " property " + propertyName + " of component " +
-                component.getExtendedId() + ".");
+		if (locked)
+			throw new ApplicationRuntimeException(
+				"Page recorder for page " + component.getPage().getName() +
+				" is locked after a commit(), but received a change to " +
+				" property " + propertyName + " of component " +
+				component.getExtendedId() + ".");
 
 
-        if (propertyName == null)
-        {
-            dirty = true;
-            return;
-        }
+		if (propertyName == null)
+		{
+			dirty = true;
+			return;
+		}
 
-        // Record the change, converting EJBObject to
-        // Handle along the way.
+		newValue = event.getNewValue();
 
-        newValue = event.getNewValue();
+		try
+		{
+			recordChange(component.getIdPath(), propertyName, newValue);
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+			throw new ApplicationRuntimeException
+				("Unable to persist property " + propertyName + 
+				" of " + component.getExtendedId() + 
+				" as " + newValue + ".", t);
+		}
+	}
 
-        try
-        {
-            recordChange(component.getIdPath(), propertyName, 
-                persistValue(newValue));
-        }
-        catch (Throwable t)
-        {
-            t.printStackTrace();
-            throw new ApplicationRuntimeException
-                ("Unable to persist property " + propertyName + 
-                " of " + component.getExtendedId() + 
-                " as " + newValue + ".", t);
-        }
-    }
+	/**
+	*  Records a change to a particular component.  Subclasses may
+	*  cache these in memory, or record them externally at this time.
+	*
+	*  <p>This method is responsible for setting the dirty flag if
+	*  the described change is real.
+	*
+	*  @param componentPath the name of the component relative to the
+	*  page which contains it.  May be null if the change was to a
+	*  property of the page itself.
+	*
+	*  @param propertyName the name of the property which changed.
+	*
+	*  @param newValue the new value for the property, which may also
+	*  be null.
+	*
+	*  @see IComponent#getIdPath()
+	*
+	*/
 
-    /**
-    *  Records a change to a particular component.  Subclasses may
-    *  cache these in memory, or record them externally at this time.
-    *
-    *  <p>This method is responsible for setting the dirty flag if
-    *  the described change is real.
-    *
-    *  @param componentPath the name of the component relative to the
-    *  page which contains it.  May be null if the change was to a
-    *  property of the page itself.
-    *
-    *  @param propertyName the name of the property which changed.
-    *
-    *  @param newValue the new value for the property, which may also
-    *  be null.
-    *
-    *  @see IComponent#getIdPath()
-    *
-    */
+	protected abstract void recordChange(String componentPath, String propertyName, 
+		Object newValue);
 
-    protected abstract void recordChange(String componentPath, String propertyName, 
-        Serializable newValue);
+	/**
+	*  Rolls back the page to the currently persisted state.
+	*
+	*/
 
-    /**
-    *  Rolls back the page to the currently persisted state.
-    *
-    */
+	public void rollback(IPage page)
+	{
+		Iterator i;
+		PageChange change;
+		IComponent component;
+		PropertyHelper helper;
 
-    public void rollback(IPage page)
-    {
-        Iterator i;
-        PageChange change;
-        IComponent component;
-        PropertyHelper helper;
+		i = getChanges().iterator();
 
-        i = getChanges().iterator();
+		while (i.hasNext())
+		{
+			change = (PageChange)i.next();
 
-        while (i.hasNext())
-        {
-            change = (PageChange)i.next();
+			component = page.getNestedComponent(change.componentPath);
 
-            component = page.getNestedComponent(change.componentPath);
+			helper = PropertyHelper.forClass(component.getClass());
 
-            helper = PropertyHelper.forClass(component.getClass());
+			try
+			{
+				// Restore the object, converting Handle to EJBObject
+				// along the way.
 
-            try
-            {
-                // Restore the object, converting Handle to EJBObject
-                // along the way.
+				helper.set(component, change.propertyName, change.newValue);
+			}
+			catch (Throwable t)
+			{
+				throw new RollbackException(component, change.propertyName, 
+					change.newValue, t);
+			}
+		}
+	}
 
-                helper.set(component, change.propertyName, restoreValue(change.newValue));
-            }
-            catch (Throwable t)
-            {
-                throw new RollbackException(component, change.propertyName, 
-                    change.newValue, t);
-            }
-        }
-    }
+	/**
+	*  Invoked by subclasses to converts an object into
+	*  a {@link Serializable} value for for persistent storage.
+	*
+	*  <p>This implementation implements a special case
+	*  for converting an {@link EJBObject} into a {@link Handle}
+	*  for storage.
+	*
+	*  @since 0.2.9
+	*/
 
-    /**
-    *  Converts an {@link EJBObject} into its handle for persistent storage.
-    *
-    */
+	protected Serializable persistValue(Object value)
+	throws IOException
+	{
+		if (!(value instanceof EJBObject))
+		{
+			try
+			{
+				return (Serializable)value;
+			}
+			catch (ClassCastException ex)
+			{
+				throw new PageRecorderSerializationException(ex);
+			}
+		}
 
-    private Serializable persistValue(Serializable value)
-    throws RemoteException
-    {
-        if (!(value instanceof EJBObject))
-            return value;
+		try
+		{
+			EJBObject ejb = (EJBObject)value;
 
-        EJBObject ejb = (EJBObject)value;
+			return ejb.getHandle();
+		}
+		catch (RemoteException ex)
+		{
+			throw new PageRecorderSerializationException(ex);
+		}
+	}
 
-        return ejb.getHandle();
-    }
+	/**
+	*  Invoked by subclasses to restore a persisted value to its
+	*  runtime value.  This implementation converts {@link Handle}s, stored
+	*  persistently, back into {@link EJBObject}s.
+	*
+	*  @since 0.2.9
+	*/
 
-    /**
-    *  Converts a {@link Handle}, previously stored by the recorder,
-    *  back into a {@link EJBObject}.
-    *
-    */
+	protected Object restoreValue(Object value)
+	throws IOException
+	{
+		if (!(value instanceof Handle))
+			return value;
 
-    private Object restoreValue(Object value)
-    throws RemoteException
-    {
-        if (!(value instanceof Handle))
-            return value;
+		try
+		{
+			Handle handle = (Handle)value;
 
-        Handle handle = (Handle)value;
-
-        return handle.getEJBObject();
-    }
+			return handle.getEJBObject();
+		}
+		catch (RemoteException ex)
+		{
+			throw new PageRecorderSerializationException(ex);
+		}
+	}
 
 }
 

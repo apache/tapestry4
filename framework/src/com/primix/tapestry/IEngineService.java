@@ -137,8 +137,8 @@ public interface IEngineService
 
     /**
     *  Name ("reset") of a service used to clear cached template
-    *  and specification data and remove all pooled pages, then reset
-    *  the current application.  This is only used when debugging as
+    *  and specification data and remove all pooled pages.
+	*  This is only used when debugging as
     *  a quick way to clear the out cached data, to allow updated
     *  versions of specifications and templates to be loaded (without
     *  stopping and restarting the servlet container).

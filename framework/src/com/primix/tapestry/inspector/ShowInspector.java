@@ -165,7 +165,21 @@ public class ShowInspector extends BaseComponent
 		
 		return getAsset("focus");
 	}	
-		
+	
+	/**
+	 *  Returns the window target (used in the target attribute of the &lt;a&gt; tag).
+	 *
+	 *  <p>We use the creation time of the session as a kind of unique key.
+	 *
+	 *  @since 0.2.9
+	 *
+	 */
+	 
+	public String getWindowTarget()
+	{
+		return "Tapestry Inspector " +
+			getPage().getRequestCycle().getRequestContext().getSession().getCreationTime();
+	}
 
 	/**
 	 *  Gets the listener for the link component.

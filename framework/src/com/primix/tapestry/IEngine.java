@@ -232,4 +232,12 @@ public interface IEngine
     */
 
     public boolean getHasVisit();
+	
+	/**
+	 *  Returns true if the application allows the reset service.
+	 *
+	 *  @since 0.2.9
+	 */
+	 
+	public boolean isResetServiceEnabled();
 }

@@ -29,7 +29,8 @@ LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
-	$(INSTALL_DIR)/ejb.jar
+	$(INSTALL_DIR)/ejb.jar \
+	$(INSTALL_DIR)/log4j.jar
 
 INSTALL_DIR = ../lib
 
@@ -39,7 +40,8 @@ JAVADOC_OPT = \
 	-version -author -splitindex -windowtitle "Tapestry API" \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api \
-	-link http://xml.apache.org/apiDocs
+	-link http://xml.apache.org/apiDocs \
+	-link http://www.log4j.org/log4j/javadoc
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 

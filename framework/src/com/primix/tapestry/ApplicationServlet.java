@@ -6,10 +6,11 @@ import javax.servlet.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.parse.*;
 import com.primix.foundation.exception.*;
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -37,12 +38,11 @@ import com.primix.foundation.exception.*;
 
 
 /**
- * Links a servlet container with a Tapestry application.
- *
- * <p>Subclasses provide the servlet with its {@link IEngine engine}
- * by implementing
- * the abstract methods {@link #createEngine(RequestContext)}
- * and {@link #getApplicationSpecificationPath()}.
+ * Links a servlet container with a Tapestry application.  The servlet has some
+ * responsibilities related to bootstrapping the application (in terms of
+ * logging, reading the {@link ApplicationSpecification specification}, etc.).
+ * It is also responsible for creating or locating the {@link IEngine} and delegating
+ * incoming requests to it.
  *
  * <p>This class is derived from the original class 
  * <code>com.primix.servlet.GatewayServlet</code>
@@ -54,11 +54,12 @@ import com.primix.foundation.exception.*;
  * @author Howard Ship
  */
 
-abstract public class ApplicationServlet extends HttpServlet
+abstract public class ApplicationServlet
+extends HttpServlet
 {
 	private ApplicationSpecification specification;
 	private String attributeName;
-    private ClassLoader classLoader = getClass().getClassLoader();
+	private ClassLoader classLoader = getClass().getClassLoader();
 
 	/**
 	* Handles the GET and POST requests. Performs the following:
@@ -96,7 +97,7 @@ abstract public class ApplicationServlet extends HttpServlet
 		{
 			log("ServletException", ex);
 
-            show(ex);
+			show(ex);
 
 			// Rethrow it.
 
@@ -106,7 +107,7 @@ abstract public class ApplicationServlet extends HttpServlet
 		{
 			log("IOException", ex);
 
-            show(ex);
+			show(ex);
 
 			// Rethrow it.
 
@@ -116,13 +117,13 @@ abstract public class ApplicationServlet extends HttpServlet
 
 	protected void show(Exception ex)
 	{
-	    System.err.println(
-	        "\n\n**********************************************************\n\n");
+		System.err.println(
+			"\n\n**********************************************************\n\n");
 
-	    new ExceptionAnalyzer().reportException(ex, System.err);
+		new ExceptionAnalyzer().reportException(ex, System.err);
 
-	    System.err.println(
-	        "\n**********************************************************\n");
+		System.err.println(
+			"\n**********************************************************\n");
 
 	}
 
@@ -142,7 +143,7 @@ abstract public class ApplicationServlet extends HttpServlet
 	 *  by the {@link #init(ServletConfig)} method.
 	 *
 	 */
-	 
+
 	public ApplicationSpecification getApplicationSpecification()
 	{
 		return specification;
@@ -164,27 +165,27 @@ abstract public class ApplicationServlet extends HttpServlet
 	throws ServletException
 	{
 		IEngine engine;
-		
+
 		engine = (IEngine)context.getSessionAttribute(attributeName);
-		
+
 		if (engine == null)
 		{
 			engine = createEngine(context);
-			
+
 			context.setSessionAttribute(attributeName, engine);
 		}
-		
+
 		return engine;
 	}
-	
+
 	/**
 	 *  Reads the application specification when the servlet is
 	 *  first initialized.  All {@link IEngine engine instances}
 	 *  will have access to the specification via the servlet.
 	 *
 	 */
-	 
-	public void init()
+
+	public void init(ServletConfig config)
 	throws ServletException
 	{
 		String path;
@@ -192,6 +193,10 @@ abstract public class ApplicationServlet extends HttpServlet
 		String resource;
 		InputStream stream;
 		SpecificationParser parser;
+
+		super.init(config);
+				
+		setupLogging();
 
 		path = getApplicationSpecificationPath();
 
@@ -201,8 +206,8 @@ abstract public class ApplicationServlet extends HttpServlet
 		stream = getClass().getResourceAsStream(path);
 
 		if (stream == null)
-		throw new ServletException(
-			"Could not locate application specification " + path + ".");
+			throw new ServletException(
+				"Could not locate application specification " + path + ".");
 
 		parser = new SpecificationParser();
 
@@ -212,7 +217,7 @@ abstract public class ApplicationServlet extends HttpServlet
 		}
 		catch (SpecificationParseException ex)
 		{
-            show(ex);
+			show(ex);
 
 			throw new ServletException(
 				"Unable to read application specification " +
@@ -223,45 +228,75 @@ abstract public class ApplicationServlet extends HttpServlet
 	}
 
 	/**
+	 *  Invoked from {@link #init(ServletConfig)} before the specification is loaded to
+	 *  setup log4j logging.  This implemention is sufficient for testing, but should
+	 *  be overriden from deployed applications.
+	 *
+	 *  <ul>
+	 *  <li>Invokes {@link BasicConfigurator#configure()}
+	 *  <li>Gets the JVM system property <code>com.primix.tapestry.root-logging-priority</code>,
+	 *  and (if non-null), converts it to an {@link Priority} and assigns it to the root
+	 *  {@link Category}.
+	 *  </ul>
+	 *
+	 *  @since 0.2.9
+	 */
+	 
+	protected void setupLogging()
+	throws ServletException
+	{
+		Priority priority = Priority.ERROR;
+		
+		BasicConfigurator.configure();
+		
+		String value = System.getProperty("com.primix.tapestry.root-logging-priority");
+		
+		if (value != null)
+			priority = Priority.toPriority(value, Priority.ERROR);
+			
+		Category.getRoot().setPriority(priority);
+	}
+
+	/**
 	 *  Implemented in subclasses to identify the resource path
 	 *  of the application specification.
 	 *
 	 */
-	 
+
 	abstract protected String getApplicationSpecificationPath();
-	
+
 	/**
-	 *  Invoked by {@link #getEngine(RequestContext)} to create
-	 *  the {@link IEngine} instance specific to the
-	 *  application, if not already in the
-	 *  {@link HttpSession}.
-	 *
-	 *  <p>The {@link IEngine} instance returned is stored into the 
-	 *  {@link HttpSession}.
-     *
-     *  <p>This implementation instantiates a new engine as specified
-     *  by {@link ApplicationSpecification#getEngineClassName()}.
-     *
-	 */
-	 
+	*  Invoked by {@link #getEngine(RequestContext)} to create
+	*  the {@link IEngine} instance specific to the
+	*  application, if not already in the
+	*  {@link HttpSession}.
+	*
+	*  <p>The {@link IEngine} instance returned is stored into the 
+	*  {@link HttpSession}.
+	*
+	*  <p>This implementation instantiates a new engine as specified
+	*  by {@link ApplicationSpecification#getEngineClassName()}.
+	*
+	*/
+
 	protected IEngine createEngine(RequestContext context)
 	throws ServletException
 	{
-        try
-        {
-            String className = specification.getEngineClassName();
+		try
+		{
+			String className = specification.getEngineClassName();
 
-            if (className == null)
-                throw new ServletException("Application specification does not specify an engine class name.");
+			if (className == null)
+				throw new ServletException("Application specification does not specify an engine class name.");
 
-            Class engineClass = Class.forName(className, true, classLoader);
+			Class engineClass = Class.forName(className, true, classLoader);
 
-            return (IEngine)engineClass.newInstance();
-        }
-        catch (Exception ex)
-        {
-            throw new ServletException(ex);
-        }
+			return (IEngine)engineClass.newInstance();
+		}
+		catch (Exception ex)
+		{
+			throw new ServletException(ex);
+		}
 	}
 }
 

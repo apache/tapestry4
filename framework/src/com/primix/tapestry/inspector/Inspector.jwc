@@ -86,6 +86,20 @@
 			<id>showEngine</id>
 			<type>/com/primix/tapestry/inspector/ShowEngine.jwc</type>
 		</component>
+		<component>
+			<id>ifShowLogging</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>viewLogging</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>showLogging</id>
+			<type>/com/primix/tapestry/inspector/ShowLogging.jwc</type>
+		</component>
 	</components>
 	<assets>
 		<private-asset>
