@@ -1,3 +1,7 @@
+* Feb 2 2001 hship
+
+Initial work on alternate targets for DocBook.  Added rtf.
+
 * Jan 31 2001 hship
 
 Fix DocBook.mk to change into the HTML directory when running openjade
