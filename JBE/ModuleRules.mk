@@ -149,10 +149,8 @@ ifneq "$(FINAL_META_RESOURCES)" ""
 endif
 	@$(TOUCH) $@ 
 
-FINAL_JAVADOC_CLASSPATH := $(strip $(LOCAL_CLASSPATH) $(LOCAL_RELATIVE_CLASSPATH) \
-	$(MOD_CLASS_DIR))
-
-JAVADOC_CLASSPATH := $(subst $(SPACE),$(CLASSPATHSEP),$(FINAL_JAVADOC_CLASSPATH))
+JAVADOC_CLASSPATH = \
+	$(shell $(JBE_CANONICALIZE) -classpath $(LOCAL_CLASSPATH) $(MOD_CLASS_DIR))
 
 javadoc:
 ifeq "$(JAVADOC_DIR)" ""
@@ -169,7 +167,15 @@ else
 endif
 endif
 
+# Rule to make sure the JBE Util class is around.  Usually executed just once, the first
+# time the JBE is used.
 
+setup-jbe-util: $(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.class
+
+$(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.class: $(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.java
+	@$(ECHO) "\n*** Compiling JBE Utility ... ***\n";
+	$(CD) $(SYS_MAKEFILE_DIR) ; \
+	$(JAVAC) com/primix/jbe/Util.java
 
 # May be implemented
 
@@ -179,3 +185,4 @@ endif
 .PHONY: clean clean-root clean-packages
 .PHONY: setup-catalogs catalog-package
 .PHONY: compile copy-resources javadoc
+.PHONY: setup-jbe-util

@@ -1,17 +1,16 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0"?>
 <!-- $Id$ -->
-
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.BasePage</class>
-		
-	<component>
-		<id>home</id>
-		<type>Service</type>
-		
-		<static-binding>
-			<name>service</name>
-			<value>home</value>
-		</static-binding>
-	</component>
-		
+<class>com.primix.tapestry.BasePage</class>
+<components>
+<component>
+<id>home</id>
+<type>Service</type>
+<bindings>
+<static-binding>
+<name>service</name>
+<value>home</value>
+</static-binding></bindings>
+</component></components>
 </specification>

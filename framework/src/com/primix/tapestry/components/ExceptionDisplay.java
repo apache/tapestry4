@@ -7,7 +7,6 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import javax.servlet.ServletException;
 import org.xml.sax.SAXException;
-import com.primix.foundation.xml.AssemblerException;
 import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.*;

@@ -50,7 +50,7 @@ EXECUTION_CLASSPATH_OPTION := \
 
 # Initializer, makes sure some directories are there
 
-initialize: jar-initialize local-initialize
+initialize: setup-jbe-util jar-initialize local-initialize
 
 local-initialize: jar-initialize
 

@@ -1,4 +1,6 @@
-package com.primix.tapestry.spec;
+package com.primix.tapestry.parse;
+
+import org.xml.sax.*;
 
 /*
  * Tapestry Web Application Framework
@@ -27,46 +29,56 @@ package com.primix.tapestry.spec;
  * Lesser General Public License for more details.
  *
  */
-
+ 
 /**
- *  Stores a binding specification, which identifies the static value
- *  or nested property name for the binding.  The name of the binding (which
- *  matches a bindable property of the contined component) is implicitly known.
+ *  Exception thrown by {@link SpecificationParser} when there's a problem
+ *  parsing a specification, or when there's a non-schema related error
+ *  in the specification.
  *
- * @author Howard Ship
- * @version $Id$
+ *  @version $Id$
+ *  @author Howard Ship
  */
 
-
-public class BindingSpecification
+public class SpecificationParseException extends Exception
 {
-	private BindingType type;
-	private String value;
-
-	public BindingSpecification(BindingType type, String value)
+	private int lineNumber = 0;
+	private int column = 0;
+	private String resourcePath;
+	private Throwable rootCause;
+	
+	public SpecificationParseException(String message, String resourcePath, 
+									   Locator locator, Throwable rootCause)
 	{
-		this.type = type;
-		this.value = value;
+		super(message);
+		
+		this.resourcePath = resourcePath;
+		
+		if (locator != null)
+		{
+			lineNumber = locator.getLineNumber();
+			column  = locator.getColumnNumber();
+		}
+		
+		this.rootCause = rootCause;
 	}
-
-	public BindingType getType()
+	
+	public int getLineNumber()
 	{
-		return type;
+		return lineNumber;
 	}
-
-	public String getValue()
+	
+	public int getColumn()
 	{
-		return value;
+		return column;
 	}
-
-	public void setType(BindingType value)
+	
+	public String getResourcePath()
 	{
-		type = value;
+		return resourcePath;
 	}
-
-	public void setValue(String value)
+	
+	public Throwable getRootCause()
 	{
-		this.value = value;
+		return rootCause;
 	}
 }
-

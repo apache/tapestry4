@@ -57,7 +57,7 @@ import java.util.*;
  * @version $Id$
  */
 
-public class ComponentSpecification
+public class ComponentSpecification extends BasePropertyHolder
 {
 	private String componentClassName;
 	private String specificationResourcePath;

@@ -4,14 +4,11 @@ import com.primix.tapestry.components.*;
 import com.primix.foundation.prop.PropertyHelper;
 import com.primix.foundation.exception.*;
 import com.primix.tapestry.record.PageRecorder;
-import com.primix.tapestry.parse.ApplicationSpecificationHandler;
 import java.io.*;
-import com.primix.foundation.xml.*;
-import java.io.IOException;
 import javax.servlet.*;
-import com.primix.tapestry.parse.ComponentTemplate;
 import com.primix.tapestry.*;
 import com.primix.tapestry.spec.*;
+import com.primix.tapestry.parse.*;
 import java.util.*;
 import com.primix.tapestry.pageload.*;
 import com.primix.tapestry.asset.*;
@@ -682,12 +679,11 @@ public abstract class AbstractApplication
 	private void locateApplicationSpecification(RequestContext context)
 	throws ResourceUnavailableException
 	{
-		Assembler assembler;
 		ServletContext servletContext;
 		String attributeName;
 		String resource;
 		InputStream stream;
-		IRootElementHandler handler;
+		SpecificationParser parser;
 
 		// Specification is transient, but the application may not have been
 		// serialized/de-serialized.
@@ -714,26 +710,17 @@ public abstract class AbstractApplication
 			throw new ResourceUnavailableException(
 				"Could not locate resource " + resource + ".");
 
-		handler = new ApplicationSpecificationHandler();
-
-		assembler = new Assembler(handler);
+		parser = new SpecificationParser();
 
 		try
 		{
-			specification = (ApplicationSpecification)assembler.parse(stream, resource);
+			specification = parser.parseApplicationSpecification(stream, resource);
 		}
-		catch (AssemblerException e)
+		catch (SpecificationParseException e)
 		{
-			throw new ResourceUnavailableException(
-				"Unable to parse application specification " +
-				resource + ".", e);
-		}
-
-		// Just a sanity check.
-
-		if (specification == null)
-			throw new ResourceUnavailableException("Unable to read application specification " +
-				resource + ".");
+			throw new ResourceUnavailableException("Unable to read application specification.",
+					e);
+		}		
 
 		// Record it into the servlet context for later.  This will help other instances of
 		// the application that need to access the specification and help this instance
