@@ -5,6 +5,10 @@
 	<property file="${root.dir}/config/Version.properties"/>
 	<property file="${root.dir}/config/build.properties"/>
 	<property file="${root.dir}/config/common.properties"/>
+	
+	<property name="config.dir" value="config"/>
+	<property name="build.dir" value=".build"/>
+	
 	<path id="jetty.classpath">
 		<fileset dir="${jetty.dir}">
 			<include name="**/javax.*.jar"/>
@@ -24,7 +28,8 @@
 		<mkdir dir="${classes.dir}"/>
 	</target>
 	<target name="clean">
-		<delete dir="${classes.dir}"/>
+		<delete dir="${classes.dir}" quiet="true"/>
+		<delete dir="${build.dir}" quiet="true"/>
 	</target>
 	<target name="compile" depends="init"
 		description="Compile all classes in the tutorial.">
@@ -35,11 +40,20 @@
 	</target>
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed WAR.">
+		
+		<mkdir dir="${build.dir}"/>
+		
+		<copy file="${config.dir}/web.xml" todir="${build.dir}">
+			<filterset>
+				<filter token="TAPESTRY_JAR" value="${framework.jar}"/>
+			</filterset>
+		</copy>
+		
 		<war warfile="${examples.dir}/${workbench.war}"
-			webxml="context/WEB-INF/web.xml">
-			<fileset dir="context">
-				<exclude name="WEB-INF/web.xml"/>
-			</fileset>
+			webxml="${build.dir}/web.xml">
+			
+			<fileset dir="context"/>
+						
 			<classes dir="${classes.dir}"/>
 			<classes dir="${src.dir}">
 				<exclude name="**/*.java"/>
@@ -63,43 +77,4 @@
 		</war>
 	</target>
 	
-	<target name="run" description="Run the Tutorial application."
-		depends="compile">
-		
-		<property environment="env"/>
-		
-		<java classname="org.mortbay.jetty.Server" fork="true">
-			<classpath>
-				<!-- Favor files in src over copies in classes -->
-				<pathelement location="${src.dir}"/>
-				<pathelement location="${classes.dir}"/>
-				<path refid="compile.classpath"/>
-				<path refid="jetty.classpath"/>
-
-				<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
-
-				<fileset dir="${jetty.dir}">
-					<include name="ext/*.jar"/>
-					<include name="lib/org.mortbay.jetty-jdk1.2.jar"/>
-				</fileset>
-
-				<fileset dir="${root.lib.dir}">
-					<include name="${runtime.dir}/*.jar"/>
-				</fileset>
-				<pathelement location="${root.dir}/config"/>
-			</classpath>
-			<arg value="jetty.xml"/>
-			<!-- Enable debugging on port 20150 -->
-			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
-			<jvmarg
-				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"
-				/>
-			<sysproperty key="java.compiler" value="NONE"/>
-			<sysproperty key="org.apache.tapestry.disable-caching" value="true"/>
-			<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"
-				/>
-			<sysproperty key="org.mortbay.util.FileResource.checkAliases"
-				value="false"/>
-		</java>
-	</target>
 </project>

@@ -87,15 +87,11 @@ public interface IRule
 	 */
 	public void endElement(RuleDirectedParser parser);
 	
-	/**
-	 * Invoked when ignorable whitespace is found.
-	 */
-	
-	public void ignorableWhitespace(RuleDirectedParser parser, char[] ch, int start, int length);
 	
 	/**
-	 * Invoked when real content is found.
+	 * Invoked when real content is found.  The parser is responsible for aggregating
+	 * all content provided by the underlying SAX parser into a single string.
 	 */
 	
-	public void characters(RuleDirectedParser parser, char[] ch, int start, int length);
+	public void content(RuleDirectedParser parser, String content);
 }

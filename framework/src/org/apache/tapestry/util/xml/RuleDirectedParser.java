@@ -135,7 +135,14 @@ public class RuleDirectedParser extends DefaultHandler
     private Map _ruleMap = new HashMap();
 
     /**
-     *  Map of {@link
+     * Used to accumlate content provided by
+     * {@link org.xml.sax.ContentHandler#characters(char[], int, int)}.
+     */
+
+    private StringBuffer _contentBuffer = new StringBuffer();
+
+    /**
+     *  Map of paths to external entities (such as the DTD) keyed on public id.
      */
 
     private Map _entities = new HashMap();
@@ -175,6 +182,8 @@ public class RuleDirectedParser extends DefaultHandler
             _column = -1;
             _location = null;
             _locator = null;
+
+            _contentBuffer.setLength(0);
         }
     }
 
@@ -187,7 +196,6 @@ public class RuleDirectedParser extends DefaultHandler
 
         try
         {
-
             stream = url.openStream();
         }
         catch (IOException ex)
@@ -395,12 +403,12 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Invokes {@link IRule#characters(RuleDirectedParser, char[], int, int)} on the
-     * top rule.
+     * Accumulates the content in a buffer; the concatinated content
+     * is provided to the top rule just before any start or end tag. 
      */
     public void characters(char[] ch, int start, int length) throws SAXException
     {
-        peekRule().characters(this, ch, start, length);
+        _contentBuffer.append(ch, start, length);
     }
 
     /**
@@ -409,6 +417,8 @@ public class RuleDirectedParser extends DefaultHandler
      */
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
+        fireContentRule();
+
         _uri = uri;
         _localName = localName;
         _qName = qName;
@@ -417,12 +427,10 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Invokes {@link IRule#ignorableWhitespace(RuleDirectedParser, char[], int, int)}
-     * on the top rule.
+     * Ignorable content is ignored.
      */
     public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException
     {
-        peekRule().ignorableWhitespace(this, ch, start, length);
     }
 
     /**
@@ -433,6 +441,8 @@ public class RuleDirectedParser extends DefaultHandler
     public void startElement(String uri, String localName, String qName, Attributes attributes)
         throws SAXException
     {
+        fireContentRule();
+
         _uri = uri;
         _localName = localName;
         _qName = qName;
@@ -601,6 +611,15 @@ public class RuleDirectedParser extends DefaultHandler
     public String getUri()
     {
         return _uri;
+    }
+
+    private void fireContentRule()
+    {
+        String content = _contentBuffer.toString();
+        _contentBuffer.setLength(0);
+
+        if (!_ruleStack.isEmpty())
+            peekRule().content(this, content);
     }
 
 }

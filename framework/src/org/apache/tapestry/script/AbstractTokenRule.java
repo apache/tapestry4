@@ -89,13 +89,11 @@ abstract class AbstractTokenRule extends BaseRule
      * {@link InsertToken}s.
      */
 
-    public void characters(RuleDirectedParser parser, char[] ch, int start, int length)
+    public void content(RuleDirectedParser parser, String content)
     {
         IScriptToken token = (IScriptToken) parser.peek();
 
-        String text = new String(ch, start, length);
-
-        addTextTokens(token, text, parser.getLocation());
+        addTextTokens(token, content, parser.getLocation());
     }
 
     private static final int STATE_START = 0;
@@ -149,11 +147,11 @@ abstract class AbstractTokenRule extends BaseRule
                         continue;
                     }
 
-					// The '$' was just what it was, not the start of a ${} expression
-					// block, so include it as part of the static text block.
-					
-					blockLength++;
-					
+                    // The '$' was just what it was, not the start of a ${} expression
+                    // block, so include it as part of the static text block.
+
+                    blockLength++;
+
                     state = STATE_START;
                     continue;
 
@@ -228,6 +226,8 @@ abstract class AbstractTokenRule extends BaseRule
         int blockLength,
         ILocation location)
     {
-        return new StaticToken(text.substring(blockStart, blockStart + blockLength), location);
+        String literal = text.substring(blockStart, blockStart + blockLength);
+
+        return new StaticToken(literal, location);
     }
 }

@@ -32,6 +32,6 @@
   
   <taglib>
   	<taglib-uri>http://jakarta.apache.org/tapestry/tld/tapestry_1_0.tld</taglib-uri>
-  	<taglib-location>/WEB-INF/lib/tapestry-3.0-beta-2.jar</taglib-location>
+  	<taglib-location>/WEB-INF/lib/@TAPESTRY_JAR@</taglib-location>
   </taglib>
 </web-app>
