@@ -39,3 +39,5 @@
 <!ENTITY imageroot					'&projectroot;images/UsersGuide'>
 
 <!ENTITY listener-method			'listener method'>
+
+<!ENTITY configuration-property		'configuration property'>

@@ -31,7 +31,10 @@ for creating leading edge web applications in Java.
 <p>
 Tapestry reconceptualizes web application development 
 in terms of objects, methods and properties
-instead of URLs and query parameters.
+instead of URLs and query parameters. It allows you to build sophisticated, richly interactive, highly scalable
+web applications without any concern for HTTP ... or even the Servlet API!  Tapestry takes over all the tedious 
+and error-prone aspects of web application development, letting you focus on just the parts specific to your
+application.
 </p>
 
 <p>
@@ -47,29 +50,32 @@ traditional GUI, provides the following benefits:
 </p>
 
 <ul>
-<li>Very high level of reuse, within and between projects<br/><em>Everything in Tapestry is a reusable component</em></li>
-<li>Frees developers from writing boring, buggy code<br/><em>Code in terms of objects, methods and properties, not URLs and query parameters</em></li>
-<li>Allows applications' complexity to scale well<br/><em>Framework does all the URL building and message dispatching, transparently</em></li>
-<li>Easy Internationalization/Localization<br/><em>Framework selects localized version of text, templates and images</em></li>
-<li>Extremely robust applications<br/><em>Less code is less bugs<br/>Sophisticated built-in exception reporting<br/><link href="faq.html#lineprecise">Line precise error reporting</link></em></li>
-<li>Easy team integration<br/><em>Graphic designers and Java developers can work together without having to know each other's jobs</em></li>
+<li>Very high level of reuse, within and between projects
+  <p><em>Everything in Tapestry is a reusable component</em></p></li>
+<li>Frees developers from writing boring, buggy code
+  <p><em>Code in terms of objects, methods and properties, not URLs and query parameters</em></p></li>
+<li>Allows applications' complexity to scale well
+  <p><em>Framework does all the URL building and message dispatching, transparently</em></p></li>
+<li>Easy Internationalization/Localization
+  <p><em>Framework selects localized version of text, templates and images</em></p></li>
+  
+<li>Extremely robust applications
+  <p><em>Less code is less bugs<br/>Sophisticated built-in exception reporting<br/><link href="faq.html#lineprecise">Line precise error reporting</link></em></p></li>
+  
+<li>Easy team integration
+  <p><em>Graphic designers and Java developers can work together without having to know each other's jobs</em></p></li>
 </ul>
+
+<p>
+Tapestry has been developed using the guiding principals of <strong>Simplicity</strong>,
+<strong>Consistency</strong>, <strong>Efficiency</strong> and
+<strong>Feedback</strong>. Tapestry is focused on improving developer productivity; the goal of Tapestry is to
+ensure that, when developing your applications, <em>the simplest approach is also the <strong>correct</strong> approach</em>.
+</p>
+
 <p>
 Tapestry is distributed under the terms of the Apache Software License.
 </p>
-
-<p>Tapestry exploits the dynamic nature of the Java language, leveraging 
-the JavaBeans API, as well as servlets and other J2EE technology.
-Tapestry applications are fast, scalable, robust and powerful.
-</p>
-
-<p>
-Tapestry components are a combination of a specification file (in XML),
-an HTML template and a Java class (extending a framework class,
-with simple additions). Tapestry components are combined together
- to form larger components or complete Tapestry pages.
-</p>
-
 
 <section>
 		<title>Tapestry in Print</title>
@@ -81,6 +87,15 @@ with simple additions). Tapestry components are combined together
 is now available from
 <link href="http://www.manning.com/lewisship/index.html">Manning Publications</link>. It is the
 definitive introduction to Tapestry written by Howard Lewis Ship, the creator of Tapestry.
+</p>
+
+<figure src="images/tapestry-german-cover.gif" alt="Tapestry Webanwendungen mit dem Apache Framework"/>
+
+<p>
+<link href="http://entwickler.com/sus/sus_buch/psecom,id,60,nodeid,8,_language,uk.html">Tapestry Webanwendungen mit dem Apache Framework</link> is a fast-paced guide to using
+Tapestry, focusing on combining Tapestry with other open-source frameworks, as well as developing Tapestry applications using
+<link href="http://spindle.sourceforge.net/">Spindle</link>. The book is written in German, and authored by
+Stefan Edlich and Patrick Kunert.
 </p>
 
 <p>Tapestry has also  been described in the print journal 
