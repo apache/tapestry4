@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.tapestry.util.BasePropertyHolder;
+
 /**
  * Defines a contained component.  This includes the information needed to
  * get the contained component's specification, as well as any bindings
@@ -40,7 +42,7 @@ import java.util.Map;
  * 
  **/
 
-public class ContainedComponent
+public class ContainedComponent extends BasePropertyHolder
 {
 	private String type;
 

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.tapestry.bean.IBeanInitializer;
+import net.sf.tapestry.util.BasePropertyHolder;
 
 /**
  *  A specification of a helper bean for a component.
@@ -39,7 +40,7 @@ import net.sf.tapestry.bean.IBeanInitializer;
  * 
  **/
 
-public class BeanSpecification
+public class BeanSpecification extends BasePropertyHolder
 {
     protected String className;
     protected BeanLifecycle lifecycle;

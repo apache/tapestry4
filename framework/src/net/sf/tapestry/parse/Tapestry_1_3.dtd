@@ -26,6 +26,7 @@ This DTD is backwards compatible with the 1.2 DTD, with the following exceptions
 - added library element
 - added extension element
 - added static value type 'long'
+- allow <property> within <bean> and <component>
 
 -->
 
@@ -96,7 +97,7 @@ The bean may have its properties set.  Properties are set on both
 newly instantiated beans, and beans that are retrieved from a pool.
 
 -->
-<!ELEMENT bean (description*, set-property*)>
+<!ELEMENT bean (description*, property*, set-property*)>
 <!ATTLIST bean
   name CDATA #REQUIRED
   class CDATA #REQUIRED
@@ -154,7 +155,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component ((binding | field-binding | inherited-binding | static-binding | string-binding)*)>
+<!ELEMENT component (property*, (binding | field-binding | inherited-binding | static-binding | string-binding)*)>
 <!ATTLIST component
   id ID #REQUIRED
   type CDATA #IMPLIED

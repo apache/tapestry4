@@ -26,6 +26,7 @@
 package net.sf.tapestry.util;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  *  An interface that defines an object that can store named propertys.  The names
@@ -39,12 +40,16 @@ import java.util.Collection;
 public interface IPropertyHolder
 {
     /**
-     *  Returns a Collection of Strings, the names of all
-     *  properties held by the receiver.  May return an empty collection.
+     *  Returns a List of Strings, the names of all
+     *  properties held by the receiver.  May return an empty list.
+     *  The List is sorted alphabetically.  The List may be modified
+     *  without affecting this property holder.
      *
+     *  <p>Prior to release 2.2, this method returned Collection.
+     * 
      **/
 
-    public Collection getPropertyNames();
+    public List getPropertyNames();
 
     /**
      *  Sets a named property.  The new value replaces the existing value, if any.

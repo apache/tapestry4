@@ -26,13 +26,7 @@ package net.sf.tapestry.junit;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IPage;
-import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.engine.DefaultStringsSource;
-import net.sf.tapestry.engine.ResourceResolver;
-import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  *  Tests the class {@link DefaultStringsSource}.
@@ -43,30 +37,12 @@ import net.sf.tapestry.spec.ComponentSpecification;
  *
  **/
 
-public class ComponentStringsTest extends TestCase
+public class ComponentStringsTest extends TapestryTestCase
 {
 
     public ComponentStringsTest(String name)
     {
         super(name);
-    }
-
-    private IPage createPage(String specificationPath, Locale locale)
-    {
-        IResourceResolver resolver = new ResourceResolver(this);
-        IComponentStringsSource source = new DefaultStringsSource(resolver);
-        MockEngine engine = new MockEngine();
-        engine.setComponentStringsSource(source);
-
-        MockPage result = new MockPage();
-        result.setEngine(engine);
-        result.setLocale(locale);
-
-        ComponentSpecification spec = new ComponentSpecification();
-        spec.setSpecificationResourcePath(specificationPath);
-        result.setSpecification(spec);
-
-        return result;
     }
 
     private void check(IPage page, String key, String expected)

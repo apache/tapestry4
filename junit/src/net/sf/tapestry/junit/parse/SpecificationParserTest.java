@@ -25,15 +25,9 @@
 
 package net.sf.tapestry.junit.parse;
 
-import java.io.InputStream;
-import java.util.List;
-
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
-import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.engine.ResourceResolver;
-import net.sf.tapestry.parse.SpecificationParser;
+import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
@@ -55,55 +49,12 @@ import net.sf.tapestry.util.xml.DocumentParseException;
  *
  **/
 
-public class SpecificationParserTest extends TestCase
+public class SpecificationParserTest extends TapestryTestCase
 {
 
     public SpecificationParserTest(String name)
     {
         super(name);
-    }
-
-    private ComponentSpecification parseComponent(String simpleName) throws Exception
-    {
-        SpecificationParser parser = new SpecificationParser();
-
-        InputStream input = getClass().getResourceAsStream(simpleName);
-
-        return parser.parseComponentSpecification(input, simpleName);
-    }
-
-    /** @since 2.2 **/
-
-    private ApplicationSpecification parseApp(String simpleName) throws Exception
-    {
-        SpecificationParser parser = new SpecificationParser();
-
-        InputStream input = getClass().getResourceAsStream(simpleName);
-
-        return parser.parseApplicationSpecification(input, simpleName, new ResourceResolver(this));
-    }
-    
-    /** @since 2.2 **/
-
-    private LibrarySpecification parseLib(String simpleName) throws Exception
-    {
-        SpecificationParser parser = new SpecificationParser();
-
-        InputStream input = getClass().getResourceAsStream(simpleName);
-
-        return parser.parseLibrarySpecification(input, simpleName, new ResourceResolver(this));
-    }
-        
-    private void checkList(String propertyName, String[] expected, List actual)
-    {
-        int count = Tapestry.size(actual);
-        
-        assertEquals(propertyName + " element count", expected.length, count);
-        
-        for (int i = 0; i < count; i++)
-        {
-            assertEquals("propertyName[" + i + "]", expected[i], actual.get(i));
-        }                  
     }
 
     /** 

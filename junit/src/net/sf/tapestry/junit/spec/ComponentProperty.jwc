@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.BaseComponent">
+
+	<component id="barney" type="Dessert">
+		<property name="chocolate">cake</property>
+		<property name="apple">pie</property>
+		<property name="frozen">yogurt</property>
+	</component>
+	
+</component-specification>	

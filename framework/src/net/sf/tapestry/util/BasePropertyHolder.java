@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.util;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -74,14 +76,16 @@ public class BasePropertyHolder implements IPropertyHolder
         properties.remove(name);
     }
 
-    public Collection getPropertyNames()
+    public List getPropertyNames()
     {
         if (properties == null)
             return Collections.EMPTY_LIST;
 
-        // Slightly dangerous, should wraps this as an unmodifiable, perhaps?
-
-        return properties.keySet();
+        List result = new ArrayList(properties.keySet());
+        
+        Collections.sort(result);
+        
+        return result;
     }
 
 }

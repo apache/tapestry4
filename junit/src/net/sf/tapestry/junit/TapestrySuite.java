@@ -32,6 +32,7 @@ import net.sf.tapestry.junit.parse.TemplateParserTest;
 import net.sf.tapestry.junit.prop.PropertyHelperTest;
 import net.sf.tapestry.junit.script.ScriptTest;
 import net.sf.tapestry.junit.spec.TestApplicationSpecification;
+import net.sf.tapestry.junit.spec.TestComponentSpecification;
 import net.sf.tapestry.junit.utils.TestDataSqueezer;
 import net.sf.tapestry.junit.utils.TestEnum;
 import net.sf.tapestry.junit.valid.ValidSuite;
@@ -59,6 +60,7 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(TestEnum.class);
         suite.addTestSuite(TestDataSqueezer.class);
         suite.addTestSuite(ScriptTest.class);
+        suite.addTestSuite(TestComponentSpecification.class);
 
 		return suite;
 	}
