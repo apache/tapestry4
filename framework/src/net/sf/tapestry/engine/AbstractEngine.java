@@ -1418,7 +1418,6 @@ public abstract class AbstractEngine
         if (activePageNames.isEmpty())
             return;
 
-        ISpecificationSource specSource = getSpecificationSource();
         IPageSource source = getPageSource();
 
         // A bit of a hack, used only when cleaning up the engine and any pages
@@ -1439,7 +1438,7 @@ public abstract class AbstractEngine
             return;
         }
 
-        IRequestCycle fakeCycle = new RequestCycle(this, fakeContext, null);
+        IRequestCycle fakeCycle = new RequestCycle(this, fakeContext, new NullMonitor());
 
         Iterator i = activePageNames.iterator();
 
