@@ -112,6 +112,13 @@ problems using Team support inside the Eclipse IDE.
 
 <target name="pdf" depends="docbook-setup,copy-images" if="fop.dir">
 
+   <uptodate property="uptodate.fop"
+     targetfile="${html.output.dir}/${root.filename}.fop">
+     <srcfiles dir=".">
+       <include name="*.xml"/>
+     </srcfiles>
+    </uptodate>
+    
     <antcall target="generate-fo-from-xml"/>
     
     <uptodate property="pdf.uptodate"
@@ -122,7 +129,7 @@ problems using Team support inside the Eclipse IDE.
     
 </target>
 
-<target name="generate-fo-from-xml">
+<target name="generate-fo-from-xml" unless="uptodate.fop">
 	<echo>
 	
 Generating Flow Objects from ${root.filename}.xml ...
@@ -132,6 +139,7 @@ Generating Flow Objects from ${root.filename}.xml ...
     <style destdir="${html.output.dir}"
     	style="${docbook.fop.xsl}"
     	processor="trax" 
+    	force="true"
     	in="${root.filename}.xml"
     	out="${html.output.dir}/${root.filename}.fop">
     	<xmlcatalog refid="docbook.catalog"/>
@@ -170,11 +178,18 @@ Converting Flow Objects to PDF ...
 <target name="html" depends="docbook-setup,copy-images">
     <copy todir="${html.output.dir}" file="../common/Tapestry.css"/>
    
+   <uptodate property="uptodate.html"
+     targetfile="${html.output.dir}/${root.filename}.html">
+     <srcfiles dir=".">
+       <include name="*.xml"/>
+     </srcfiles>
+    </uptodate>
+    
     <antcall target="generate-html-chunked"/>
     
 </target>
 
-<target name="generate-html-chunked">
+<target name="generate-html-chunked" unless="uptodate.html">
     <echo>
     
 Generating HTML from ${root.filename}.xml ...
@@ -183,7 +198,8 @@ Generating HTML from ${root.filename}.xml ...
         
     <style destdir="${html.output.dir}"
     	style="${docbook.chunked.xsl}"
-    	processor="trax" 
+    	processor="trax"
+    	force="true"
     	includes="${root.filename}.xml">
     	<param name="base.dir" expression="${basedir}/${html.output.dir}/"/>
     	<param name="root.filename" expression="${root.filename}"/>
