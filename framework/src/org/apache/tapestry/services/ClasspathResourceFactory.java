@@ -20,8 +20,9 @@ import org.apache.hivemind.util.ClasspathResource;
  * Used to create new instances of {@link org.apache.hivemind.util.ClasspathResource}.
  *
  * @author Howard Lewis Ship
+ * @since 3.1
  */
 public interface ClasspathResourceFactory
 {
-    public ClasspathResource newResource(String path);
+    ClasspathResource newResource(String path);
 }

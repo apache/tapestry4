@@ -20,8 +20,9 @@ import javax.servlet.http.HttpServlet;
  * An object which may perform startup initialization for the servlet.
  *
  * @author Howard Lewis Ship
+ * @since 3.1
  */
 public interface ApplicationInitializer
 {
-    public void initialize(HttpServlet servlet);
+    void initialize(HttpServlet servlet);
 }

@@ -1,9 +1,9 @@
 # This file is used to configure the Tapestry build.
 # Copy it as "build.properties" and fill in the necessary data.
 
-# The absolute path to the directory where external distributions 
-# used in the building process will be downloaded and installed
-base.path=/usr/share/java
+# The absolute path to the directory containing the HiveMind
+# build scripts, i.e., c:/hivemind-1.0/hivebuild
+hivebuild.dir=
 
 # The absolute path to the directory containing the JBoss installation.
 # Required to execute the configure and run-jboss targets.
@@ -22,10 +22,4 @@ jetty.dir=
 # Required to execute the junit target.
 jython.dir=
 
-# Home for xml-forrest, used to build documentation.
-# Available from :pserver:anoncvs@cvs.apache.org:/home/cvspublic as module xml-forrest
-# Build forrest, then set to the shbat directory, i.e.
-# C:/workspace/xml-forrest/build/dist/shbat
-
-forrest.home=
 

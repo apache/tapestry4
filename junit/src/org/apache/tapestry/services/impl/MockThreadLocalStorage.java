@@ -24,6 +24,7 @@ import org.apache.hivemind.service.ThreadLocalStorage;
  * used by unit tests.
  *
  * @author Howard Lewis Ship
+ * @since 3.1
  */
 public class MockThreadLocalStorage implements ThreadLocalStorage
 {

@@ -1,50 +1,42 @@
 <?xml version="1.0"?>
-<project name="Tapestry Framework" default="install">
-	<property name="root.dir" value=".."/>
-	<property file="${root.dir}/config/Version.properties"/>
-	<property file="${root.dir}/config/common.properties"/>
+<project name="Tapestry Framework" default="jar">
+  
+  <property name="module.name" value="tapestry"/>
+  <property name="javadoc.package" value="org.apache.tapestry.*"/>
+  
+  <property name="java.src.dir" value="src"/>
+  <property name="test.src.dir" value="../junit/src"/>
+  <property name="descriptor.src.dir" value="conf"/>
+  <property name="module.javac.deprecation" value="off"/>
+    
+  <property name="root.dir" value=".."/>
 	<property file="${root.dir}/config/build.properties"/>
-	
-	<path id="project.class.path">
-		<fileset dir="${root.lib.dir}">
-			<include name="${ext.dir}/*.jar"/>
-		</fileset>
-		<fileset dir="${root.lib.dir}">
-			<include name="${j2ee.dir}/*.jar"/>
-		</fileset>
-	</path>
-	<target name="init">
-		<mkdir dir="${classes.dir}"/>
-	</target>
-	<target name="clean">
-		<delete dir="${classes.dir}"/>
-	</target>
 
-	<target name="compile" depends="init"
-		description="Compile all classes in the framework.">
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on"
-			target="1.1">
-			<classpath refid="project.class.path"/>
-		</javac>
-	</target>
-	<target name="install" depends="compile"
-		description="Compile all classes and build the installed JAR including all package resources."
-		>
+	<import file="${hivebuild.dir}/jar-module.xml"/>
+	<import file="${hivebuild.dir}/javadoc-report.xml"/>
+	<import file="${hivebuild.dir}/clover-report.xml"/>  
+  
+	<target name="compile">
+    <ibiblio-dependency jar="bsf-2.3.0.jar" group-id="bsf"/>
+    <ibiblio-dependency jar="commons-codec-1.2.jar" group-id="commons-codec"/>
+		<ibiblio-dependency jar="commons-fileupload-1.0.jar" group-id="commons-fileupload"/>    
+    <ibiblio-dependency jar="commons-lang-2.0.jar" group-id="commons-lang"/>
+    <ibiblio-dependency jar="commons-logging-1.0.4.jar" group-id="commons-logging"/>
+    <ibiblio-dependency jar="hivemind-1.0-beta-2.jar" group-id="hivemind"/>
+    <ibiblio-dependency jar="hivemind-lib-1.0-beta-2.jar" group-id="hivemind"/>
+    <ibiblio-dependency jar="oro-2.0.6.jar" group-id="oro"/>
+		<ibiblio-dependency jar="javassist-2.6.jar" group-id="jboss"/>
+		<ibiblio-dependency jar="servletapi-2.3.jar" group-id="servletapi"/>
+    <ibiblio-dependency jar="ognl-2.6.3.jar" group-id="ognl"/>
+    
+		<ibiblio-dependency jar="log4j-1.2.7.jar" group-id="log4j" use="test"/>
+		<ibiblio-dependency jar="easymock-1.1.jar" group-id="easymock" use="test"/>
+    <ibiblio-dependency jar="jdom-b8.jar" group-id="jdom" use="test"/>
+		
+		<default-compile/>
+    
 		<copy file="${root.dir}/config/Version.properties"
-			todir="${classes.dir}/org/apache/tapestry"/>
-		<jar jarfile="${root.lib.dir}/${framework.jar}">
-			<fileset dir="${classes.dir}">
-			</fileset>
-
-			<fileset dir="${src.dir}">
-				<exclude name="**/*.java"/>
-				<exclude name="**/package.html"/>
-			</fileset>
-			
-			<metainf dir="conf/META-INF">
-				<include name="*"/>
-			</metainf>
-		</jar>
-
-	</target>
+			todir="${java.classes.dir}/org/apache/tapestry"/>    
+	</target>	
+  
 </project>

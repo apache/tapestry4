@@ -8,3 +8,4 @@ velocity.log
 *.out
 build
 ${destdir}
+ext-package
