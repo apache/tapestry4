@@ -86,6 +86,18 @@ import javax.servlet.http.*;
  *  </td>
  *  </tr>
  *
+ *  <tr>
+ *		<td>delegate</td>
+ *		<td>{@link IRender}</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>&nbsp;</td>
+ *		<td>If specified, the delegate is invoked just before the
+ * &lt;/head&gt; tag.  This allows the delegate to write additional tags,
+ * often meta tags of various types.
+ *  </td> </tr>
+ *
+ *
  * </table>
  *
  * <p>Informal parameters are not allowed, but a body is (and is virtually required).
@@ -99,6 +111,7 @@ public class Shell extends AbstractComponent
     private IBinding titleBinding;
     private String titleValue;
     private IBinding stylesheetBinding;
+	private IBinding delegateBinding;
 	
     private IBinding refreshBinding;
 	
@@ -133,6 +146,16 @@ public class Shell extends AbstractComponent
     {
 		refreshBinding = value;
     }
+	
+	public IBinding getDelegateBinding()
+	{
+		return delegateBinding;
+	}
+	
+	public void setDelegateBinding(IBinding value)
+	{
+		delegateBinding = value;
+	}
 	
     public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
@@ -195,7 +218,15 @@ public class Shell extends AbstractComponent
 			
 			writeRefresh(writer, cycle);
 			
-			writer.end();  // end
+			if (delegateBinding != null)
+			{
+				IRender delegate = (IRender)delegateBinding.getObject("delegate", IRender.class);
+				
+				if (delegate != null)
+					delegate.render(writer, cycle);
+			}
+			
+			writer.end();  // head
 		}
 		
 		// Render the body, the actual page content
