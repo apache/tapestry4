@@ -1089,10 +1089,314 @@ If you use the auxilliary descriptor files (<filename>jboss.xml</> and/or
 		<section id="docbook">
 			<title>DocBook modules</title>
 
-<para>The DocBook module is the standout of the available modules, because it doesn't compile any Java code 
-at all.  The DocBook module is used to create documentation and manuals, using the DocBook SGML format.</>
+<para>The DocBook module is the standout of the available modules, because it 
+doesn't compile any Java code 
+at all.  The DocBook module is used to create documentation and manuals, 
+using the DocBook SGML format.</>
 
-<para>More details forthcoming ...</para>
+<para>
+DocBook is a standard SGML format for online and print media.  It is widely
+used by publishers, including O'Reilly.  More information on DocBook
+is available at
+http://www.oasis-open.org/docbook/.
+</>
+
+<para>The current implementation of the DocBook module allows documentation
+to be produced as HTML.  PDF output is being developed as well.
+</>
+
+			<section id="docbook.config">
+				<title>Configuring DocBook</>
+
+<para>
+To convert DocBook documents from SGML to other formats, a special tool called 
+<command>OpenJade</> is used.
+<command>OpenJade</> reads the SGML document and combines it with a set of rules from a 
+DSSSL
+	<footnote>
+		<para>
+		Document Semantics and Style Sheet Language.  Quite a mouthful.
+		</>
+	</>
+stylesheet to
+produce the output.  <command>OpenJade</> has been ported to Windows, Cygwin and Solaris.
+Like Tapestry, <command>OpenJade</> is an open source project at SourceForge.  It's
+project page is http://sourceforge.net/projects/openjade.
+</>
+
+<para>
+The Cygwin port of <command>OpenJade</> can be a bit hard to find; a copy of it is available
+at
+ftp://tapestry.sourceforge.net/pub/tapestry/cygwin1.1.4-openjade1.3-sp1.4.tar.gz
+</>
+
+
+<procedure>
+	<title>Installing Cygwin tools</>
+
+	<step>
+		<para>Extract the <command>OpenJade</> distribution.
+		</>
+
+		<para>
+		Under Cygwin, the default directory to extract to
+		is <filename class="directory">C:/cygwin</>.
+		</>
+	</>
+
+	<step>
+		<para>
+		Edit your <filename>config/LocalConfig.mk</> and add two new variables:
+		</>
+
+		<variablelist>
+
+			<varlistentry>
+				<term><varname>OPENJADE_DIR</></>
+				<listitem>
+					<para>The directory into which the <command>OpenJade</>
+					executables were installed.  The default location for this is
+					<filename class="directory">C:/cygwin/usr/local/bin</>.
+					</>
+				</>
+			</>
+
+			<varlistentry>
+				<term><varname>OPENJADE_DSSSL_DIR</></>
+				<listitem>
+					<para>
+					The directory into which the DSSSL stylesheets were
+					installed.  
+					The default location for this is
+					<filename class="directory">C:/cygwin/usr/local/lib/sgml/dtd/dss</>.
+					</>
+				</>
+			</>
+		</>
+
+	</>
+</procedure>
+
+			</section>
+
+			<section id="docbook.using">
+				<title>Using DocBook modules</>
+<para>
+Like the other types of Modules, DocBook modules have, at their core, a Makefile.  This Makefile
+defines the information needed to build the target documents from the DocBook SGML source.
+</>
+
+<para>
+The DocBook module makes use of 
+The Modular DocBook Stylesheets available from http://nwalsh.com/docbook/dsssl/.  This is
+a collection of customizable, modifable DSSSL stylesheets for generating print and online
+content from DocBook SGML files.
+</>
+
+<para>
+Recent versions of the Stylesheets are bundles with the JBE, no seperate download
+is required.
+</>
+
+<variablelist>
+	<title>DocBook module variables</>
+
+	<varlistentry>
+		<term><varname>DOCUMENT_RESOURCES</></>
+		<listitem>
+			<para>The names of one or more files or directories that should be copied with
+			the document.  Typically, these are images referenced by the document.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>FORMATS</></>
+		<listitem>
+			<para>The desired formats to create from the SGML file.  This is
+			a list of supported formats.  At this time, the only allowed
+			format is <literal>html</>.
+			</>
+
+			<para>
+			If not specified, the default value for this is
+			<literal>html</>.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>HTML_INSTALL_DIR</></>
+		<listitem>
+			<para>The directory to install HTML files to.  Overrides
+			<varname>INSTALL_DIR</> if specified.
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>HTML_STYLESHEET</></>
+		<listitem>
+			<para>
+			The DSSSL stylsheet to use when processing the document into HTML.
+			If specified, overrides <varname>STYLESHEET</> and the default HTML stylesheet.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>HTML_VARIABLE_DEFS</></>
+		<listitem>
+			<para>Additional DSSSL variable definitions to be passed to <command>OpenJade</>.
+			The module stylesheets reconfigure thier behavior based on variable
+			definitions.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>INSTALL_DIR</></>
+		<listitem>
+			<para>The directory to install files to (unless <varname>HTML_INSTALL_DIR</>
+			is specified.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>MAIN_DOCUMENT</></>
+		<listitem>
+			<para>The master document file.  Typically, this file uses the SGML entities
+			to assemble the document from smaller pieces.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>OPENJADE_OPT</></>
+		<listitem>
+			<para>Addition command line options to be passed to <command>OpenJade</>.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>OTHER_DOC_FILES</></>
+		<listitem>
+			<para>The names of other files used when constructing the document; these
+			are usually included into the main document using SGML entities.
+			DocBook uses this information to construct dependencies, such that changing
+			any file causes the document to be regenerated.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>STYLESHEET</></>
+		<listitem>
+			<para>
+			The DSSSL stylsheet to use when processing the document.
+			STYLESHEET is optional, if not specified, the default stylesheet (determined from the
+			type of document being generated) is used.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>VARIABLE_DEFS</></>
+		<listitem>
+			<para>Additional stylesheet variables uses with all kinds of documents.</>
+		</>
+	</>
+
+</>
+
+<para>
+When the DocBook module executes, it first runs the main
+document through an SGML parser, to verify that it is formatted correctly.  This will
+identify any syntax problems, such as improper tags or characters.
+</>
+
+<para>
+After that, the <command>OpenJade</> tool is used with a large number of options to generate the final
+output files.
+</>
+
+<para>
+A typical run, building this manual as HTML and installing it:
+</>
+
+<informalexample>
+	<programlisting><![CDATA[C:\Work\Documentation\JBE>make install
+
+*** Copying document resources ... ***
+
+Copying: cyg-action.gif cyg-dir.gif cyg-final.gif cyg-package.gif cyg-proxy.gif
+cyg-root.gif cyg-setup.gif cyg-site.gif proj-layout.gif
+
+*** Validating JBE.sgml ... ***
+
+c:/cygwin/usr/local/bin/onsgmls.exe -c C:/Work/JBE/docbook/dtd/docbook.cat -c C:
+/Work/JBE/docbook/dsssl/docbook/catalog -c c:/cygwin/usr/local/lib/sgml/dtd/dsss
+l/catalog -s JBE.sgml
+
+*** Generating HTML from JBE.sgml ... ***
+
+c:/cygwin/usr/local/bin/openjade.exe -t  sgml-raw    -d C:/Work/JBE/docbook/dsss
+l/docbook/html/docbook.dsl  -V %html-ext%=.html -V use-output-dir -V %output-dir
+%=html -V %root-filename%=JBE -V %shade-verbatim% -V %use-id-as-filename% -c C:/
+Work/JBE/docbook/dtd/docbook.cat -c C:/Work/JBE/docbook/dsssl/docbook/catalog -c
+ c:/cygwin/usr/local/lib/sgml/dtd/dsssl/catalog JBE.sgml
+
+*** Installing HTML documentation to ../../doc/JBE ... ***
+
+
+C:\Work\Documentation\JBE>]]></programlisting></informalexample>
+
+
+
+<variablelist>
+	<title>DocBook module targets</title>
+
+	<varlistentry>
+		<term>clean</>
+		<listitem>
+			<para>Wipes out all derived and temporary files.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>default</>
+		<listitem>
+			<para>Builds each of the targets specified by <varname>FORMATS</>.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>html</>
+		<listitem>
+			<para>Builds HTML output, placing the results into the
+			<filename class=directory>html</> subdirectory.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>install</>
+		<listitem>
+			<para>Installs each of the targets specified by <varname>FORMATS</>.
+			</>
+		</>
+	</>
+	
+	<varlistentry>
+		<term>install-html</>
+		<listitem>
+			<para>Builds the html target, then copies the results to the install directory.
+			</>
+		</>
+	</>
+</>
+
+			</section>
+
 
 		</section>
 
