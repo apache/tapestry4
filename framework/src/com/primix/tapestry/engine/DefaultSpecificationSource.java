@@ -41,6 +41,7 @@ import com.primix.tapestry.IResourceResolver;
 import com.primix.tapestry.IResponseWriter;
 import com.primix.tapestry.ISpecificationSource;
 import com.primix.tapestry.ResourceUnavailableException;
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.parse.SpecificationParser;
 import com.primix.tapestry.spec.ApplicationSpecification;
 import com.primix.tapestry.spec.ComponentSpecification;
@@ -130,7 +131,7 @@ public class DefaultSpecificationSource
 
 				if (resourceName == null)
 					throw new ResourceUnavailableException(
-						"Could not find a component matching alias " + type + ".");
+						Tapestry.getString("DefaultSpecificationSource.no-match-for-alias", type));
 			}
 
 			result = parseSpecification(resourceName);
@@ -161,18 +162,22 @@ public class DefaultSpecificationSource
 		if (URL == null)
 		{
 			throw new ResourceUnavailableException(
-				"Could not locate resource " + resourcePath + " in the classpath.");
+				Tapestry.getString(
+					"DefaultSpecificationSource.unable-to-locate-specification",
+					resourcePath));
 		}
 
 		try
 		{
 			inputStream = URL.openStream();
 		}
-		catch (IOException e)
+		catch (IOException ex)
 		{
 			throw new ResourceUnavailableException(
-				"Could not open specification " + resourcePath + ".",
-				e);
+				Tapestry.getString(
+					"DefaultSpecificationSource.unable-to-open-specification",
+					resourcePath),
+				ex);
 		}
 
 		if (parser == null)
@@ -182,11 +187,13 @@ public class DefaultSpecificationSource
 		{
 			result = parser.parseComponentSpecification(inputStream, resourcePath);
 		}
-		catch (DocumentParseException e)
+		catch (DocumentParseException ex)
 		{
 			throw new ResourceUnavailableException(
-				"Could not parse specification " + resourcePath + ".",
-				e);
+				Tapestry.getString(
+					"DefaultSpecificationSource.unable-to-parse-specification",
+					resourcePath),
+				ex);
 		}
 
 		result.setSpecificationResourcePath(resourcePath);

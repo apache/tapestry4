@@ -158,7 +158,7 @@ public class PageSource implements IPageSource, IRenderDescription
 
 			if (specification == null)
 				throw new ApplicationRuntimeException(
-					"This application does not contain a page named " + pageName + ".");
+					Tapestry.getString("PageLoader.no-such-page", pageName));
 
 			PageLoader loader = retrievePageLoader();
 

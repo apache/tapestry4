@@ -129,7 +129,7 @@ public class ShowInspector extends BaseComponent implements IDirect
 
 		if (body == null)
 			throw new RequestCycleException(
-				"ShowInspector component must be wrapped by a Body component.",
+				Tapestry.getString("ShowInspector.must-be-contained-by-body"),
 				this);
 
 		body.process(scriptSession);

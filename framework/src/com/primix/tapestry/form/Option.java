@@ -29,6 +29,7 @@ package com.primix.tapestry.form;
 import com.primix.tapestry.*;
 
 // Appease Javadoc
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.components.*;
 
 /**
@@ -120,7 +121,7 @@ public class Option extends AbstractComponent
 		select = Select.get(cycle);
 		if (select == null)
 			throw new RequestCycleException(
-				"Option component must be contained within a Select.",
+				Tapestry.getString("Option.must-be-contained-by-select"),
 				this);
 
 		if (selectedBinding == null)

@@ -133,11 +133,10 @@ public class PageLoader implements IPageLoader
 
 			if (formalOnly && !isFormal)
 				throw new PageLoaderException(
-					"Component "
-						+ component.getExtendedId()
-						+ " allows only formal parameters, binding "
-						+ name
-						+ " is not allowed.",
+					Tapestry.getString(
+						"PageLoader.formal-parameters-only",
+						component.getExtendedId(),
+						name),
 					component,
 					null);
 
@@ -172,11 +171,10 @@ public class PageLoader implements IPageLoader
 
 			if (parameterSpec.isRequired() && component.getBinding(name) == null)
 				throw new PageLoaderException(
-					"Required parameter "
-						+ name
-						+ " of component "
-						+ component.getExtendedId()
-						+ " is not bound.",
+					Tapestry.getString(
+						"PageLoader.required-parameter-not-bound",
+						name,
+						component.getExtendedId()),
 					component,
 					null);
 		}
@@ -270,7 +268,9 @@ public class PageLoader implements IPageLoader
 			}
 			catch (ResourceUnavailableException ex)
 			{
-				throw new PageLoaderException("Unable to load component specification.", ex);
+				throw new PageLoaderException(
+					Tapestry.getString("PageLoader.unable-to-load-specification"),
+					ex);
 			}
 
 			// Instantiate the contained component.
@@ -322,26 +322,24 @@ public class PageLoader implements IPageLoader
 			result.setId(id);
 
 		}
-		catch (ClassCastException e)
+		catch (ClassCastException ex)
 		{
 			throw new PageLoaderException(
-				"Class " + className + " does not implement the IComponent interface.",
+				Tapestry.getString("PageLoader.class-not-component", className),
 				container,
-				e);
+				ex);
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
 			throw new PageLoaderException(
-				"Unable to instantiate an instance of class " + className + ".",
+				Tapestry.getString("PageLoader.unable-to-instantiate", className),
 				container,
-				e);
+				ex);
 		}
 
 		if (result instanceof IPage)
 			throw new PageLoaderException(
-				"Component "
-					+ result.getExtendedId()
-					+ " may not implement the IPage interface.",
+				Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
 				result);
 
 		count++;
@@ -379,19 +377,19 @@ public class PageLoader implements IPageLoader
 			result.setName(name);
 			result.setLocale(locale);
 		}
-		catch (ClassCastException e)
+		catch (ClassCastException ex)
 		{
 			throw new PageLoaderException(
-				"Class " + className + " does not implement the IPage interface.",
+				Tapestry.getString("PageLoader.class-not-page", className),
 				name,
-				e);
+				ex);
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
 			throw new PageLoaderException(
-				"Unable to instantiate an instance of class " + className + ".",
+				Tapestry.getString("PageLoader.unable-to-instantiate", className),
 				name,
-				e);
+				ex);
 		}
 
 		return result;

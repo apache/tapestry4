@@ -168,7 +168,9 @@ public class Select extends AbstractFormComponent
 		IForm form = getForm(cycle);
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException("Select components may not be nested.", this);
+			throw new RequestCycleException(
+				Tapestry.getString("Select.may-not-nest"),
+				this);
 
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.

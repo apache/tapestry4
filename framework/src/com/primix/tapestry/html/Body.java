@@ -239,7 +239,7 @@ public class Body extends AbstractComponent
 		String onLoadName;
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException("Body components may not be nested.", this);
+			throw new RequestCycleException(Tapestry.getString("Body.may-not-nest"), this);
 
 		cycle.setAttribute(ATTRIBUTE_NAME, this);
 

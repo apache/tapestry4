@@ -249,7 +249,7 @@ public class Script extends AbstractComponent
 
 		if (body == null)
 			throw new RequestCycleException(
-				"A Script component must be wrapped by a Body component.",
+				Tapestry.getString("Script.must-be-contained-by-body"),
 				this);
 
 		try

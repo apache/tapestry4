@@ -325,7 +325,7 @@ public class ListEdit extends AbstractComponent
 		catch (IOException ex)
 		{
 			throw new RequestCycleException(
-				"Unable to convert " + value + " to an external String in ListEdit component.",
+				Tapestry.getString("ListEdit.unable-to-convert-value", value),
 				this,
 				ex);
 		}
@@ -349,10 +349,7 @@ public class ListEdit extends AbstractComponent
 		catch (IOException ex)
 		{
 			throw new RequestCycleException(
-				"Unable to convert '"
-					+ value
-					+ "' back into an object in "
-					+ "ListEdit component.",
+				Tapestry.getString("ListEdit.unable-to-convert-string", value),
 				this,
 				ex);
 		}
@@ -372,7 +369,7 @@ public class ListEdit extends AbstractComponent
 			return new ArraySource((Object[]) raw);
 
 		throw new RequestCycleException(
-			"Unable to convert " + raw + " to a source for ListEdit component.",
+			Tapestry.getString("ListEdit.unable-to-convert-source", raw),
 			this);
 	}
 }

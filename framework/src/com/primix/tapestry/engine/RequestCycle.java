@@ -52,6 +52,7 @@ import com.primix.tapestry.RenderRewoundException;
 import com.primix.tapestry.RequestContext;
 import com.primix.tapestry.RequestCycleException;
 import com.primix.tapestry.StaleLinkException;
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.event.ChangeObserver;
 import com.primix.tapestry.event.ObservedChangeEvent;
 
@@ -215,7 +216,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 		IPageSource pageSource;
 
 		if (name == null)
-			throw new NullPointerException("Parameter name may not be null in RequestCycle.getPage().");
+			throw new NullPointerException(
+				Tapestry.getString("RequestCycle.invalid-null-name"));
 
 		if (monitor != null)
 			monitor.pageLoadBegin(name);
@@ -231,11 +233,11 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 			{
 				result = pageSource.getPage(engine, name, monitor);
 			}
-			catch (PageLoaderException e)
+			catch (PageLoaderException ex)
 			{
 				throw new ApplicationRuntimeException(
-					"Failed to acquire page " + name + ".",
-					e);
+					Tapestry.getString("RequestCycle.could-not-acquire-page", name),
+					ex);
 			}
 
 			result.setRequestCycle(this);
@@ -391,10 +393,10 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 			page.renderPage(writer, this);
 
 		}
-		catch (RequestCycleException e)
+		catch (RequestCycleException ex)
 		{
 			// RenderExceptions don't need to be wrapped.
-			throw e;
+			throw ex;
 		}
 		catch (ApplicationRuntimeException ex)
 		{
@@ -466,7 +468,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 			// Shouldn't get this far, because the form should
 			// throw the RenderRewoundException.
 
-			throw new StaleLinkException("Failure to rewind " + form + ".", form);
+			throw new StaleLinkException(
+				Tapestry.getString("RequestCycle.form-rewind-failure", form.getExtendedId()),
+				form);
 		}
 		catch (RenderRewoundException ex)
 		{

@@ -26,6 +26,7 @@
 
 package com.primix.tapestry.listener;
 
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.util.prop.*;
 import java.util.*;
 
@@ -100,7 +101,8 @@ public class ListenerMapHelper extends PropertyHelper
 		public void set(Object instance, Object value)
 		
 		{
-			throw new UnsupportedOperationException("Updating through a ListenerMap is not supported.");
+			throw new UnsupportedOperationException(
+				Tapestry.getString("ListenerMapHelper.set-not-supported"));
 		}
 	}
 

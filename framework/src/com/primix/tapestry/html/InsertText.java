@@ -147,7 +147,7 @@ public class InsertText extends AbstractComponent
 		catch (IOException ex)
 		{
 			throw new RequestCycleException(
-				"Error converting text to lines (for InsertText).",
+				Tapestry.getString("InsertText.conversion-error"),
 				this,
 				ex);
 		}

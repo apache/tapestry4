@@ -199,13 +199,13 @@ public class Rollover extends AbstractComponent
 		body = Body.get(cycle);
 		if (body == null)
 			throw new RequestCycleException(
-				"Rollover components must be contained within a Body component.",
+				Tapestry.getString("Rollover.must-be-contained-by-body"),
 				this);
 
 		serviceLink = (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
 		if (serviceLink == null)
 			throw new RequestCycleException(
-				"Rollover components must be contained within an IServiceLink component.",
+				Tapestry.getString("Rollover.must-be-contained-by-link"),
 				this);
 
 		// No body, so we skip it all if not rewinding (assumes no side effects on

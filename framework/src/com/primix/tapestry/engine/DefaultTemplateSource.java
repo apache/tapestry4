@@ -44,6 +44,7 @@ import com.primix.tapestry.IResponseWriter;
 import com.primix.tapestry.ITemplateSource;
 import com.primix.tapestry.NoSuchComponentException;
 import com.primix.tapestry.ResourceUnavailableException;
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.parse.ComponentTemplate;
 import com.primix.tapestry.parse.ITemplateParserDelegate;
 import com.primix.tapestry.parse.TemplateParseException;
@@ -165,19 +166,13 @@ public class DefaultTemplateSource
 
 		if (result == null)
 		{
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("Could not find template for component ");
-			buffer.append(specificationResourcePath);
+			String stringKey =
+				(locale == null)
+					? "DefaultTemplateSource.no-template"
+					: "DefaultTemplateSource.no-template-in-locale";
 
-			if (locale != null)
-			{
-				buffer.append(" in locale ");
-				buffer.append(locale.toString());
-			}
-
-			buffer.append('.');
-
-			throw new ResourceUnavailableException(buffer.toString());
+			throw new ResourceUnavailableException(
+				Tapestry.getString(stringKey, component.getExtendedId(), locale));
 		}
 
 		saveToCache(key, result);
@@ -356,7 +351,9 @@ public class DefaultTemplateSource
 		catch (TemplateParseException ex)
 		{
 			throw new ResourceUnavailableException(
-				"Unable to parse template " + resourceName + ".",
+				Tapestry.getString(
+					"DefaultTemplateSource.unable-to-parse-template",
+					resourceName),
 				ex);
 		}
 
@@ -397,7 +394,9 @@ public class DefaultTemplateSource
 		catch (IOException ex)
 		{
 			throw new ResourceUnavailableException(
-				"Could not read from " + resourceName + ".",
+				Tapestry.getString(
+					"DefaultTemplateSource.unable-to-read-template",
+					resourceName),
 				ex);
 		}
 		finally

@@ -30,6 +30,7 @@ import java.net.URL;
 
 import com.primix.tapestry.ApplicationRuntimeException;
 import com.primix.tapestry.IResourceResolver;
+import com.primix.tapestry.Tapestry;
 
 /**
  *  Used to resolve classes and resources, this class is used to
@@ -87,7 +88,9 @@ class ResourceResolver implements IResourceResolver
 		catch (Throwable t)
 		{
 			throw new ApplicationRuntimeException(
-				"Could not load class " + name + " from " + classLoader + ": " + t.getMessage(),
+				Tapestry.getString(
+					"ResourceResolver.unable-to-load-class",
+					new Object[] { name, classLoader, t.getMessage()}),
 				t);
 		}
 	}

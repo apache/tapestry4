@@ -130,13 +130,13 @@ public class DefaultScriptSource implements IScriptSource
 		catch (DocumentParseException ex)
 		{
 			throw new ResourceUnavailableException(
-				"Unable to parse script " + resourcePath + ".",
+				Tapestry.getString("DefaultScriptParser.unable-to-parse-script", resourcePath),
 				ex);
 		}
 		catch (IOException ex)
 		{
 			throw new ResourceUnavailableException(
-				"Unable to read script " + resourcePath + ".",
+				Tapestry.getString("DefaultScriptParser.unable-to-read-script", resourcePath),
 				ex);
 		}
 		finally

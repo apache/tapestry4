@@ -395,7 +395,9 @@ public class Form extends AbstractComponent implements IForm, IDirect
 		IActionListener listener;
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException("Forms may not be nested.", this);
+			throw new RequestCycleException(
+				Tapestry.getString("Form.forms-may-not-nest"),
+				this);
 
 		cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -472,7 +474,7 @@ public class Form extends AbstractComponent implements IForm, IDirect
 
 				if (actual == null || Integer.parseInt(actual) != elementCount)
 					throw new StaleLinkException(
-						"Incorrect number of elements with Form " + getExtendedId() + ".",
+						Tapestry.getString("Form.bad-element-count", getExtendedId()),
 						getPage());
 
 				try
@@ -573,7 +575,7 @@ public class Form extends AbstractComponent implements IForm, IDirect
 
 		if (body == null)
 			throw new RequestCycleException(
-				"A Form with event handlers must be wrapped by a Body.",
+				Tapestry.getString("Form.needs-body-for-event-handlers"),
 				this);
 
 		Iterator i = events.entrySet().iterator();
