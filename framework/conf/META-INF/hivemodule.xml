@@ -51,6 +51,8 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.InfrastructureImpl">
         <set-service property="applicationPropertySource" service-id="tapestry.props.ApplicationPropertySource"/>
+        <set-service property="componentMessagesSource" service-id="ComponentMessagesSource"/>
+        <set-service property="resetEventCoordinator" service-id="ResetEventCoordinator"/>
       </construct>
     </invoke-factory>
     
@@ -80,6 +82,29 @@
         <set-service property="defaultBuilder" service-id="hivemind.lib.DefaultImplementationBuilder"/>
       </construct>
     </invoke-factory>
+  </service-point>
+  
+  
+  <service-point id="ResetEventCoordinator" interface="org.apache.tapestry.services.ResetEventCoordinator">
+    
+    Coordinator for services that have cached information that should be cleared out (this happens
+    constantly in development, much more rarely in production).
+    
+    <create-instance class="org.apache.tapestry.services.impl.ResetEventCoordinatorImpl"/>
+  </service-point>
+  
+  
+  <service-point id="ComponentMessagesSource" interface="org.apache.tapestry.services.ComponentMessagesSource">
+    
+    Used to provide components (including pages) with access to their own localized messages.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ComponentMessagesSourceImpl">
+        <event-listener service-id="ResetEventCoordinator"/>
+        <set-service property="applicationPropertySource" service-id="tapestry.props.ApplicationPropertySource"/>
+      </construct>
+    </invoke-factory>
+    
   </service-point>
   
 </module>

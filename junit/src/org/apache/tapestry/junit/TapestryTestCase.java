@@ -25,15 +25,18 @@ import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.DefaultComponentMessagesSource;
-import org.apache.tapestry.engine.IComponentMessagesSource;
+import org.apache.tapestry.engine.Namespace;
 import org.apache.tapestry.parse.SpecificationParser;
+import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
+import org.apache.tapestry.spec.LibrarySpecification;
+import org.apache.tapestry.util.DelegatingPropertySource;
 import org.apache.tapestry.util.IPropertyHolder;
 import org.apache.tapestry.util.RegexpMatcher;
 
@@ -57,7 +60,12 @@ public class TapestryTestCase extends HiveMindTestCase
     {
         Resource specResource = new ClasspathResource(_resolver, specificationPath);
 
-        IComponentMessagesSource source = new DefaultComponentMessagesSource();
+        ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
+        
+        // Delegating will act as an empty placeholder
+        
+        source.setApplicationPropertySource(new DelegatingPropertySource());
+        
         MockEngine engine = new MockEngine();
         engine.setComponentStringsSource(source);
 
@@ -69,6 +77,11 @@ public class TapestryTestCase extends HiveMindTestCase
         IComponentSpecification spec = new ComponentSpecification();
         spec.setSpecificationLocation(specResource);
         result.setSpecification(spec);
+
+        ILibrarySpecification ls = new LibrarySpecification();
+        INamespace namespace = new Namespace(null, null, ls, null);
+        result.setNamespace(namespace);
+
 
         return result;
     }
