@@ -74,13 +74,12 @@ public class NameMismatchService implements IEngineService
         return null;
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
         throws ServletException, IOException
     {
-        return false;
     }
 
     public String getName()

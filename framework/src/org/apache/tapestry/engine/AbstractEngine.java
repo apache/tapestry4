@@ -876,13 +876,13 @@ public abstract class AbstractEngine
                 // Invoke the service, which returns true if it may have changed
                 // the state of the engine (most do return true).
 
-                boolean serviceResult = service.service(this, cycle, output);
+               service.service(this, cycle, output);
 
                 // Return true only if the engine is actually dirty.  This cuts down
                 // on the number of times the engine is stored into the
                 // session unceccesarily.
 
-                return serviceResult && _dirty;
+                return _dirty;
             }
             catch (PageRedirectException ex)
             {

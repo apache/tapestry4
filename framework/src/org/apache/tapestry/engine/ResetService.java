@@ -100,7 +100,7 @@ public class ResetService extends AbstractService
         return Tapestry.RESET_SERVICE;
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
@@ -124,8 +124,6 @@ public class ResetService extends AbstractService
         // Render the same page (that contained the reset link).
 
         engine.renderResponse(cycle, output);
-
-        return true;
     }
 
 }

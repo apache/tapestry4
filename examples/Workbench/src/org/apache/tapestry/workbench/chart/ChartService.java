@@ -108,7 +108,7 @@ public class ChartService extends AbstractService
         return constructLink(cycle, SERVICE_NAME, context, null, true);
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
@@ -145,16 +145,16 @@ public class ChartService extends AbstractService
                 "Component " + component.getExtendedId() + " does not implement IChartProvider.",
                 ex);
 
-            return false;
+            return;
         }
         catch (Throwable ex)
         {
             engine.reportException("Error creating JPEG stream.", ex);
 
-            return false;
+            return;
         }
 
-        return false;
+        return;
     }
 
     public String getName()

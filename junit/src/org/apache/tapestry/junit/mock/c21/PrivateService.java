@@ -76,7 +76,7 @@ import org.apache.tapestry.request.ResponseOutputStream;
  **/
 public class PrivateService implements IEngineService
 {
-
+	// Can't be instantiated!
 	private PrivateService()
 	{
 	}
@@ -86,13 +86,12 @@ public class PrivateService implements IEngineService
         return null;
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
         throws ServletException, IOException
     {
-        return false;
     }
 
     public String getName()

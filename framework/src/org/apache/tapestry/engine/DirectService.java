@@ -132,7 +132,7 @@ public class DirectService extends AbstractService
         return constructLink(cycle, Tapestry.DIRECT_SERVICE, context, parameters, true);
     }
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public void service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
         throws ServletException, IOException
     {
         IDirect direct;
@@ -206,8 +206,6 @@ public class DirectService extends AbstractService
         // unless the direct (or its delegate) changes it.
 
         engine.renderResponse(cycle, output);
-
-        return true;
     }
 
     public String getName()

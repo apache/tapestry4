@@ -87,15 +87,13 @@ public class RestartService extends AbstractService
         return constructLink(cycle, Tapestry.RESTART_SERVICE, null, null, true);
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
         throws ServletException, IOException
     {
         engine.restart(cycle);
-
-        return true;
     }
 
     public String getName()

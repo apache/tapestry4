@@ -91,7 +91,7 @@ public class HomeService extends AbstractService
         return constructLink(cycle, Tapestry.HOME_SERVICE, null, null, true);
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
@@ -102,8 +102,6 @@ public class HomeService extends AbstractService
         cycle.activate(home);
 
         engine.renderResponse(cycle, output);
-
-        return true;
     }
 
     public String getName()

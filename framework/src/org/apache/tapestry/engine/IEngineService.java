@@ -102,8 +102,6 @@ public interface IEngineService
      *  responding appropriately, and
      *  rendering a result page.
      *
-     *  <p>The return value indicates whether processing of the request could, in any way,
-     *  change the state of the {@link IEngine engine}.  Generally, this is true.
      *
      *  @see IEngine#service(RequestContext)
      *  @param engine a view of the {@link IEngine} with additional methods needed by services
@@ -112,7 +110,7 @@ public interface IEngineService
      * 
      **/
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
