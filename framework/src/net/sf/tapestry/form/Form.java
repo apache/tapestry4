@@ -605,17 +605,6 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     }
 
     /**
-     *  Adds this Form as a page detach listener, so that the delegate property
-     *  can be cleared at the end of the request cycle.
-     * 
-     **/
-
-    protected void finishLoad()
-    {
-        getPage().addPageDetachListener(this);
-    }
-
-    /**
      *  Converts the allocateIds property into a string, a comma-separated list of ids.
      *  This is included as a hidden field in the form and is used to identify
      *  discrepencies when the form is submitted.

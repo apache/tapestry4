@@ -45,14 +45,6 @@ public class SimpleTableColumnComponent
 		m_objModelSource = null;
 	}
 
-	/**
-	 * @see net.sf.tapestry.AbstractComponent#finishLoad()
-	 */
-	protected void finishLoad()
-	{
-		super.finishLoad();
-		getPage().addPageDetachListener(this);
-	}
 
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.simple.ISimpleTableColumnRenderer#initializeColumnRenderer(SimpleTableColumn, ITableModelSource)
