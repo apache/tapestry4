@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.impl.BaseLocatable;
-import org.apache.hivemind.service.ThreadLocalStorage;
 import org.apache.tapestry.services.ServletInfo;
 
 /**
@@ -30,30 +29,22 @@ import org.apache.tapestry.services.ServletInfo;
  */
 public class ServletInfoImpl extends BaseLocatable implements ServletInfo
 {
-    private ThreadLocalStorage _storage;
-
-    public static final String REQUEST_KEY = "org.apache.tapestry.servlet-request";
-    public static final String RESPONSE_KEY = "org.apache.tapestry.servlet-response";
+    private HttpServletRequest _request;
+    private HttpServletResponse _response;
 
     public void store(HttpServletRequest request, HttpServletResponse response)
     {
-        _storage.put(REQUEST_KEY, request);
-        _storage.put(RESPONSE_KEY, response);
+        _request = request;
+        _response = response;
     }
 
     public HttpServletRequest getRequest()
     {
-        return (HttpServletRequest) _storage.get(REQUEST_KEY);
+        return _request;
     }
 
     public HttpServletResponse getResponse()
     {
-        return (HttpServletResponse) _storage.get(RESPONSE_KEY);
+        return _response;
     }
-
-    public void setStorage(ThreadLocalStorage storage)
-    {
-        _storage = storage;
-    }
-
 }
