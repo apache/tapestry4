@@ -99,7 +99,7 @@ public class SimpleTableSortingState
 
 	/**
 	 * Sets the SortColumn.
-	 * @param SortColumn The SortColumn to set
+	 * @param strSortColumn The SortColumn to set
 	 */
 	public void setSortColumn(String strSortColumn, boolean bSortOrder)
 	{

@@ -307,7 +307,7 @@ public abstract class BaseValidator implements IValidator
      *  @param symbols a set of input symbols needed by the script.  These symbols
      *  are augmented with symbols for the field, form and validator.  symbols may be
      *  null, but will be modified if not null.
-     *  @throws RequestCycleException if there's an error processing the script.
+     *  @throws ApplicationRuntimeException if there's an error processing the script.
      * 
      *  @since 2.2
      * 

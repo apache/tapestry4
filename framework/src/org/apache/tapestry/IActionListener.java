@@ -74,7 +74,7 @@ public interface IActionListener
      *  Method invoked by the component (an {@link org.apache.tapestry.link.ActionLink} or 
      *  {@link org.apache.tapestry.form.Form}, when its URL is triggered.
      *
-     *  @param action The component which was "triggered".
+     *  @param component The component which was "triggered".
      *  @param cycle The request cycle in which the component was triggered.
      *
      **/
