@@ -3,13 +3,11 @@
 	 Simply re-executes its targets in each of its sub-projects. -->
 <project name="Tapestry Documentation" default="install">
 	<target name="clean">
-		<ant dir="Tutorial" target="clean"/>
 		<ant dir="DevelopersGuide" target="clean"/>
 		<ant dir="UsersGuide" target="clean"/>
 		<ant dir="ContributorsGuide" target="clean"/>
 	</target>
 	<target name="install">
-		<ant dir="Tutorial" target="install" inheritAll="false"/>
 		<ant dir="DevelopersGuide" target="install" inheritAll="false"/>
 		<ant dir="ContributorsGuide" target="install" inheritAll="false" />
 		<ant dir="UsersGuide" target="install" inheritAll="false"/>
