@@ -43,47 +43,15 @@ import net.sf.tapestry.Tapestry;
 /**
  *  Inserts formatted text (possibly collected using a {@link net.sf.tapestry.form.Text} 
  *  component.
- *  To maintain the line breaks provided originally, this component will
+ * 
+ *  [<a href="../../../../../ComponentReference/InsertText.html">Component Reference</a>]
+ *
+ *  <p>To maintain the line breaks provided originally, this component will
  *  break the input into individual lines and insert additional
  *  HTML to make each line seperate.
  *
  * <p>This can be down more simply, using the &lt;pre&gt; HTML element, but
  * that usually renders the text in a non-proportional font.
- *
- *
- *  <table border=1>
- *  <tr> <th>Parameter</th> 
- *  <th>Type</th>
- *  <th>Direction</th> 
- *  <th>Required</th> 
- *  <th>Default</th> 
- *  <th>Description</th>
- * </tr>
- * <tr>
- *  <td>value</td> 
- *  <td>{@link String}</td> 
- *  <td>in</td>
- *  <td>no</td> 
- *  <td>&nbsp;</td>
- *  <td>The text to be inserted.  If not provided, no output is written.
- * 
- * <p>This parameter can also be accessed using the deprected name "text".
- * 
- * </td> </tr>
- *
- *  <tr>
- *      <td>mode</td>
- *      <td>{@link InsertTextMode}</td>
- *		<td>in</td>
- *      <td>no</td>
- *      <td>{@link InsertTextMode#BREAK}</td>
- *      <td>Defines how each line will be emitted.
- *      </td>
- *  </tr>
- *
- * </table>
- *
- * <p>Informal parameters are not allowed.  The component must not have a body.
  *
  * @author Howard Lewis Ship
  * @version $Id$
@@ -94,37 +62,36 @@ public class InsertText extends AbstractComponent
 {
     private static final Logger LOG = LogManager.getLogger(InsertText.class);
 
-    private boolean warning = true;
-    private String value;
-    private InsertTextMode mode = InsertTextMode.BREAK;
+    private boolean _warning = true;
+    private String _value;
+    private InsertTextMode _mode = InsertTextMode.BREAK;
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
+        if (_value == null)
+            return;
+
         StringReader reader = null;
         LineNumberReader lineReader = null;
-        int lineNumber = 0;
-        String line;
-
-        if (value == null)
-            return;
 
         try
         {
-            reader = new StringReader(value);
+            reader = new StringReader(_value);
 
             lineReader = new LineNumberReader(reader);
 
+            int lineNumber = 0;
+
             while (true)
             {
-                line = lineReader.readLine();
+                String line = lineReader.readLine();
 
                 // Exit loop at end of file.
 
                 if (line == null)
                     break;
 
-                mode.writeLine(lineNumber, line, writer);
+                _mode.writeLine(lineNumber, line, writer);
 
                 lineNumber++;
             }
@@ -158,25 +125,36 @@ public class InsertText extends AbstractComponent
 
     public InsertTextMode getMode()
     {
-        return mode;
+        return _mode;
     }
 
     public void setMode(InsertTextMode mode)
     {
-        this.mode = mode;
+        _mode = mode;
     }
+
+    /** 
+     * 
+     *  @deprecated To be removed in 2.3.  Use {@link #getValue()}.
+     * 
+     **/
 
     public String getText()
     {
         return getValue();
     }
 
+    /**
+     *  @deprecated To be removed in 2.3.  Use {@link #setValue(String)}.
+     * 
+     **/
+
     public void setText(String text)
     {
-        if (warning)
+        if (_warning)
         {
             LOG.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
-            warning = false;
+            _warning = false;
         }
 
         setValue(text);
@@ -184,12 +162,12 @@ public class InsertText extends AbstractComponent
 
     public String getValue()
     {
-        return value;
+        return _value;
     }
 
     public void setValue(String value)
     {
-        this.value = value;
+        _value = value;
     }
 
 }
