@@ -121,7 +121,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         {
             _simpleName = prefixedName;
 
-            namespace = getSpecificationSource().getApplicationNamespace();
+            namespace = _applicationNamespace;
         }
 
         setNamespace(namespace);
@@ -150,7 +150,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         INamespace namespace = getNamespace();
 
         if (_log.isDebugEnabled())
-            _log.debug("Resolving unknown page '" + _simpleName + "' in " + namespace);
+            _log.debug(ResolverMessages.resolvingPage(_simpleName, namespace));
 
         String expectedName = _simpleName + ".page";
 
@@ -184,6 +184,9 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
 
             Resource templateResource = getContextRoot().getRelativeResource(templateName);
 
+            if (_log.isDebugEnabled())
+                _log.debug(ResolverMessages.checkingResource(templateResource));
+
             if (templateResource.getResourceURL() != null)
             {
                 setupImplicitPage(templateResource);
@@ -195,7 +198,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
             if (_frameworkNamespace.containsPage(_simpleName))
             {
                 if (_log.isDebugEnabled())
-                    _log.debug("Found " + _simpleName + " in framework namespace.");
+                    _log.debug(ResolverMessages.foundFrameworkPage(_simpleName));
 
                 setNamespace(_frameworkNamespace);
 
@@ -222,7 +225,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
     private void setupImplicitPage(Resource resource)
     {
         if (_log.isDebugEnabled())
-            _log.debug("Found HTML template at " + resource);
+            _log.debug(ResolverMessages.foundHTMLTemplate(resource));
 
         // TODO The SpecFactory in Specification parser should be used in some way to
         // create an IComponentSpecification!
@@ -239,7 +242,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
     private boolean found(Resource resource)
     {
         if (_log.isDebugEnabled())
-            _log.debug("Checking: " + resource);
+            _log.debug(ResolverMessages.checkingResource(resource));
 
         if (resource.getResourceURL() == null)
             return false;
@@ -257,8 +260,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         IComponentSpecification specification = getSpecification();
 
         if (_log.isDebugEnabled())
-            _log.debug("Installing page " + _simpleName + " into " + namespace + " as "
-                    + specification);
+            _log.debug(ResolverMessages.installingPage(_simpleName, namespace, specification));
 
         namespace.installPageSpecification(_simpleName, specification);
     }
