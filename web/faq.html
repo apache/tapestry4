@@ -127,8 +127,68 @@ is a Tapestry plugin
 
 		</td>
 	</tr>
+		
+	<tr><td height="10"><IMG src="images/spacer.gif" width=1></td></tr>
+	
+	<tr valign="top">
+		<td><IMG height=12 src="images/dots_leftnav.gif" width=14></td>
+		<td><b>I have to restart my application to pick up changes to specifications and templates, how
+		can I avoid this?</b>
+		
+		<br><br>
+
+Start your servlet container with the JVM system parameter
+<code>net.sf.tapestry.disable-caching</code> set to true, i.e.,
+<code>-Dnet.sf.tapestry.disable-caching=true</code>.
+
+<p>Tapestry will discard cached specifications 
+            and templates after each request. You application will run a bit 
+            slower, but changes to templates and specifications will show up 
+            immediately. This also tests that you are persisting server-side 
+            state correctly.</p>               
+               
+      
+ 
+	           
+
+		</td>
+	</tr>
+	
+	<tr><td height="10"><IMG src="images/spacer.gif" width=1></td></tr>
+	
+	<tr valign="top">
+		<td><IMG height=12 src="images/dots_leftnav.gif" width=14></td>
+		<td><b>I  keep getting <A href="doc/api/net/sf/tapestry/StaleSessionException.html">StaleSessionException</a>s
+		from links and forms.
+		</b>
+		
+		<br><br>
+
+		Tapestry doesn't create a <code>HttpSession</code> until you have server-side state to store.  Most applications
+		don't start to store server-side state until after the Home page.
+		
+		<p>
+		By default, 
+		<A href="doc/ComponentReference/ActionLink.html">ActionLink</a>,
+		<A href="doc/ComponentReference/DirectLink.html">DirectLink</a> and
+		<A href="doc/ComponentReference/Form.html">Form</a> require 
+            that 
+		a session be already created (this is
+		primarily to handle the case where a user walks away from their computer and returns, and the
+		 servlet container has discarded the HttpSession in the meantime).
+		 Set the stateful parameter to false (i.e.,
+		 <code>&lt;binding name="stateful" expression="false"/&gt;</code>) to disable this check.</p>
+		    
+ 
+	           
+
+		</td>
+	</tr>
+	
 	
 
+	
+	
 	</table>
 		</td>
 	</tr>
