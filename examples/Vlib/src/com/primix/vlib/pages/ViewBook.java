@@ -31,6 +31,8 @@ import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
 import javax.ejb.*;
+
+import java.text.DateFormat;
 import java.util.*;
 import java.rmi.*;
 import javax.rmi.*;
@@ -113,4 +115,13 @@ public class ViewBook extends BasePage implements IExternalPage
 		return !ownerPK.equals(holderPK);
 	}
 
+	private DateFormat dateFormat;
+	
+	public DateFormat getDateFormat()
+	{
+		if (dateFormat == null)
+			dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, getLocale());
+			
+		return dateFormat;
+	}
 }
