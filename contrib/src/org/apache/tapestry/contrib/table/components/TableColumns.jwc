@@ -41,6 +41,13 @@
         <description>The image to use to describe a column sorted in a descending order.</description>
     </parameter>
 
+    <parameter name="class"
+        type="java.lang.String"
+        required="no"
+        direction="custom">
+        <description>The CSS class of the table columns</description>
+    </parameter>
+    
 	<component id="iterColumns" type="Foreach">
 		<binding name="source" expression="tableColumnIterator"/>
 		<binding name="value" expression="tableColumn"/>
@@ -48,6 +55,7 @@
   
 	<component id="informal" type="Any" inherit-informal-parameters="yes">
 		<binding name="element" expression="element"/>
+        <binding name="class" expression="columnClass"/>
 	</component>
   
 	<component id="insertColumnRenderer" type="Delegator">

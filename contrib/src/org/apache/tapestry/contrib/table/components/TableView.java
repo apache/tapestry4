@@ -205,6 +205,9 @@ public abstract class TableView
      */
     protected ITableModel generateTableModel(SimpleTableState objState)
     {
+        if (objState == null)
+            objState = new SimpleTableState();
+
         // get the column model. if not possible, return null.
         ITableColumnModel objColumnModel = getTableColumnModel();
         if (objColumnModel == null)
@@ -217,7 +220,7 @@ public abstract class TableView
         // if the source parameter is of type {@link IBasicTableModel}, 
         // create and return an appropriate wrapper
         if (objSourceValue instanceof IBasicTableModel)
-            return new BasicTableModelWrap((IBasicTableModel) objSourceValue, objColumnModel);
+            return new BasicTableModelWrap((IBasicTableModel) objSourceValue, objColumnModel, objState);
 
         // otherwise, the source parameter must contain the data to be displayed
         ITableDataModel objDataModel = null;
@@ -232,9 +235,6 @@ public abstract class TableView
 
         if (objDataModel == null)
             throw new ApplicationRuntimeException(TableUtils.format("invalid-table-source", getExtendedId(), objSourceValue.getClass()));
-
-        if (objState == null)
-            objState = new SimpleTableState();
 
         return new SimpleTableModel(objDataModel, objColumnModel, objState);
     }

@@ -213,7 +213,7 @@ public class AbstractTableColumn implements ITableColumn, Serializable
 	}
 
     /**
-     *  Use the column name to get the column and renderer sources 
+     *  Use the column name to get the column and value renderer sources 
      *  from the provided component.
      *   
      *  @param objSettingsContainer the component from which to get the settings 
