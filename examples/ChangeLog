@@ -1,3 +1,7 @@
+* Jan 24 2001 hship
+
+Set JVM memory options when running jBoss for VlibBeans.
+
 * Jan 23 2001 hship
 
 Optimize VlibBeans for performance testing.

@@ -1,7 +1,5 @@
 # $Id$
 
-JAVA_FILES = *.java
-
 PACKAGES = com.primix.vlib.ejb
 
 MODULE_NAME = VlibBeans
@@ -22,6 +20,8 @@ JAVADOC_OPT = \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
+JBOSS_OPT := -Xms128m -Xmx128m
+
 include $(SYS_MAKEFILE_DIR)/jBoss.mk
 
 JBOSS_CONF_DIR = $(JBOSS_DIR)/conf/default
@@ -39,20 +39,20 @@ ifeq ("$(JBOSS_DIR)","")
 	$(error You must set JBOSS_DIR (in $(SYS_MAKEFILE_DIR)/config/LocalConfig.mk) \
 	before configuring jBoss.)
 endif	
-	@$(ECHO) "\n*** Installing Primix Vlib database ... ***\n"
+	$(call NOTE, Installing Primix Vlib database ...)
 	$(CAT) jboss/vlib.tar.gz | \
 		($(CD) $(JBOSS_DIR)/db && $(TAR) $(TAR_EXTRACT_OPT) $(TAR_GZIP_OPT))
 	$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
-	@$(ECHO) "\n*** Splicing changes to jboss.conf ... ***\n"
+	$(call NOTE, Splicing changes to jboss.conf ...)
 	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.conf,jboss/jboss.conf.splice)
-	@$(ECHO) "\n*** Splicing changes to jboss.jcml ... ***\n"
+	$(call NOTE, Splicing changes to jboss.jcml ...)
 	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.jcml,jboss/jboss.jcml.splice, \
 		-before \</server\>)
-	@$(ECHO) "\n*** Setting up JNDI properties ... ***\n"
+	$(call NOTE, Setting up JNDI properties ...)
 	$(CP) $(CP_FORCE_OPT) jboss/jndi.properties $(JBOSS_CONF_DIR)
-	@$(ECHO) "\n*** Copying runtime libraries ... ***\n"
+	$(call NOTE, Copying runtime libraries ...)
 	$(CP) $(CP_FORCE_OPT) $(RUNTIME_LIBRARIES) $(JBOSS_DIR)/lib/ext
-	@$(ECHO) "\n*** jBoss is ready to run ***\n"
+	$(call NOTE, jBoss is ready to run)
 
 
 
