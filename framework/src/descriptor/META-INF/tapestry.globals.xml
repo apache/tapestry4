@@ -32,18 +32,6 @@
     <create-instance class="impl.RequestGlobalsImpl" model="threaded"/>
   </service-point>
   
-  <service-point id="RequestGlobalsInitializer" interface="ServletRequestServicerFilter">
-    <invoke-factory>
-      <construct class="impl.RequestGlobalsInitializer">
-        <set-service property="requestGlobals" service-id="RequestGlobals"/>
-      </construct>
-    </invoke-factory>
-  </service-point>  
-  
-  <contribution configuration-id="tapestry.request.ServletRequestServicerPipeline">
-    <filter name="RequestGlobalsInitializer" before="*" object="service:RequestGlobalsInitializer"/>
-  </contribution>  
-  
   <service-point id="HttpServletRequest" interface="javax.servlet.http.HttpServletRequest">
     
     Exposes the current thread's HttpServletRequest as a service. The request is actually
