@@ -1,44 +1,48 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.vlib.ejb.impl;
 
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-import javax.sql.*;
-import java.sql.*;
-import javax.naming.*;
-import com.primix.tapestry.util.ejb.*;
-import net.sf.tapestry.vlib.ejb.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 
-import net.sf.tapestry.util.ejb.*;
+import javax.ejb.SessionBean;
+import javax.ejb.SessionContext;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import net.sf.tapestry.util.ejb.XEJBException;
 
 /**
- *  Implementation of the KeyAllocator stateless session bean.
+ *  Implementation of the {@link net.sf.tapestry.vlib.ejb.IKeyAllocator}
+ *  stateless session bean.
  *
  *  <p>We're cheating a little; they KeyAllocator does have
  *  state, it just doesn't get persisted ever.  Since the
@@ -54,280 +58,278 @@ import net.sf.tapestry.util.ejb.*;
  *  be lost.  Big deal.
  *
  *  @version $Id$
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *
- */
+ **/
 
 public class KeyAllocatorBean implements SessionBean
 {
-	private static final String PROPERTY_NAME = "next-key";
+    private static final String PROPERTY_NAME = "next-key";
 
-	private SessionContext context;
+    private SessionContext context;
 
-	/**
-	 *  List of Integer instances; these are keys
-	 *  acquired from the database.
-	 *
-	 */
+    /**
+     *  List of Integer instances; these are keys
+     *  acquired from the database.
+     *
+     **/
 
-	private LinkedList keys;
+    private LinkedList keys;
 
-	/**
-	 *  Number of keys to allocate from the database
-	 *  at a time.  Set from the ENC property "blockSize".
-	 *
-	 */
+    /**
+     *  Number of keys to allocate from the database
+     *  at a time.  Set from the ENC property "blockSize".
+     *
+     **/
 
-	private int blockSize = 0;
+    private int blockSize = 0;
 
-	/**
-	 *  Data source, retrieved from the ENC property 
-	 *  "jdbc/dataSource".
-	 *
-	 */
+    /**
+     *  Data source, retrieved from the ENC property 
+     *  "jdbc/dataSource".
+     *
+     **/
 
-	private DataSource dataSource;
+    private DataSource dataSource;
 
-	/**
-	 *  Activates the bean.  Gets the block size
-	 *  and DataSource from the environment.
-	 *
-	 */
+    /**
+     *  Activates the bean.  Gets the block size
+     *  and DataSource from the environment.
+     *
+     **/
 
-	public void ejbCreate()
-	{
-		Context initial;
-		Context environment;
-		Integer blockSizeProperty;
+    public void ejbCreate()
+    {
+        Context initial;
+        Context environment;
+        Integer blockSizeProperty;
 
-		try
-		{
-			initial = new InitialContext();
-			environment = (Context) initial.lookup("java:comp/env");
-		}
-		catch (NamingException e)
-		{
-			throw new XEJBException("Could not lookup environment.", e);
-		}
+        try
+        {
+            initial = new InitialContext();
+            environment = (Context) initial.lookup("java:comp/env");
+        }
+        catch (NamingException ex)
+        {
+            throw new XEJBException("Could not lookup environment.", ex);
+        }
 
-		try
-		{
-			blockSizeProperty = (Integer) environment.lookup("blockSize");
-		}
-		catch (NamingException e)
-		{
-			throw new XEJBException("Could not lookup blockSize property.", e);
-		}
+        try
+        {
+            blockSizeProperty = (Integer) environment.lookup("blockSize");
+        }
+        catch (NamingException ex)
+        {
+            throw new XEJBException("Could not lookup blockSize property.", ex);
+        }
 
-		blockSize = blockSizeProperty.intValue();
+        blockSize = blockSizeProperty.intValue();
 
-		try
-		{
-			dataSource = (DataSource) environment.lookup("jdbc/dataSource");
-		}
-		catch (NamingException e)
-		{
-			throw new XEJBException("Could not lookup data source.", e);
-		}
+        try
+        {
+            dataSource = (DataSource) environment.lookup("jdbc/dataSource");
+        }
+        catch (NamingException ex)
+        {
+            throw new XEJBException("Could not lookup data source.", ex);
+        }
 
-		if (keys == null)
-			keys = new LinkedList();
-	}
+        if (keys == null)
+            keys = new LinkedList();
+    }
 
-	/**
-	 *  Does nothing, not invoked in stateless session beans.
-	 */
+    /**
+     *  Does nothing, not invoked in stateless session beans.
+     **/
 
-	public void ejbPassivate()
-	{
-	}
+    public void ejbPassivate()
+    {
+    }
 
-	public void setSessionContext(SessionContext value)
-	{
-		context = value;
-	}
+    public void setSessionContext(SessionContext value)
+    {
+        context = value;
+    }
 
-	/**
-	 *  Does nothing, not invoked in stateless session beans.
-	 *
-	 */
+    /**
+     *  Does nothing, not invoked in stateless session beans.
+     *
+     **/
 
-	public void ejbActivate()
-	{
-	}
+    public void ejbActivate()
+    {
+    }
 
-	/**
-	 *  Does nothing.  This is invoked when the bean moves from
-	 *  the method ready pool to the "does not exist" state.
-	 *  The EJB container will lost its reference to the
-	 *  bean, and the garbage collector will take it
-	 *  (including any keys it has cached from the database).
-	 *
-	 */
+    /**
+     *  Does nothing.  This is invoked when the bean moves from
+     *  the method ready pool to the "does not exist" state.
+     *  The EJB container will lost its reference to the
+     *  bean, and the garbage collector will take it
+     *  (including any keys it has cached from the database).
+     *
+     **/
 
-	public void ejbRemove()
-	{
-		// Does nothing.
-	}
+    public void ejbRemove()
+    {
+        // Does nothing.
+    }
 
-	/**
-	 *  Allocates a single key, going to the database
-	 *  only if it has no keys in its internal cache.
-	 *
-	 */
+    /**
+     *  Allocates a single key, going to the database
+     *  only if it has no keys in its internal cache.
+     *
+     **/
 
-	public Integer allocateKey()
-	{
-		if (keys.isEmpty())
-			allocateBlock(1);
+    public Integer allocateKey()
+    {
+        if (keys.isEmpty())
+            allocateBlock(1);
 
-		return (Integer) keys.removeFirst();
-	}
+        return (Integer) keys.removeFirst();
+    }
 
-	/**
-	 *  Allocates a block of keys, going to the database
-	 *  if there are insufficient keys in its internal
-	 *  cache.
-	 *
-	 */
+    /**
+     *  Allocates a block of keys, going to the database
+     *  if there are insufficient keys in its internal
+     *  cache.
+     *
+     **/
 
-	public Integer[] allocateKeys(int count)
-	{
-		Integer[] result;
-		int i;
+    public Integer[] allocateKeys(int count)
+    {
+        Integer[] result;
+        int i;
 
-		if (keys.size() < count)
-			allocateBlock(count);
+        if (keys.size() < count)
+            allocateBlock(count);
 
-		result = new Integer[count];
+        result = new Integer[count];
 
-		for (i = 0; i < count; i++)
-		{
-			result[i] = (Integer) keys.removeFirst();
-		}
+        for (i = 0; i < count; i++)
+        {
+            result[i] = (Integer) keys.removeFirst();
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 *  Allocates a block of keys from the database.
-	 *  Allocates count keys, or the configured block size,
-	 *  whichever is greater.
-	 *
-	 *  <p>It is assumed that this operation takes place
-	 *  within a transaction.
-	 *
-	 */
+    /**
+     *  Allocates a block of keys from the database.
+     *  Allocates count keys, or the configured block size,
+     *  whichever is greater.
+     *
+     *  <p>It is assumed that this operation takes place
+     *  within a transaction.
+     *
+     **/
 
-	protected void allocateBlock(int count)
-	{
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet set = null;
-		int nextKey;
-		int allocationCount;
-		int i;
+    protected void allocateBlock(int count)
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet set = null;
+        int nextKey;
+        int allocationCount;
+        int i;
 
-		allocationCount = Math.max(count, blockSize);
+        allocationCount = Math.max(count, blockSize);
 
-		try
-		{
-			connection = getConnection();
+        try
+        {
+            connection = getConnection();
 
-			statement =
-				connection.prepareStatement("select PROP_VALUE from PROP where NAME = ?");
-			statement.setString(1, PROPERTY_NAME);
+            statement = connection.prepareStatement("select PROP_VALUE from PROP where NAME = ?");
+            statement.setString(1, PROPERTY_NAME);
 
-			set = statement.executeQuery();
+            set = statement.executeQuery();
 
-			// Advance to the first row.
+            // Advance to the first row.
 
-			set.next();
+            set.next();
 
-			nextKey = set.getInt(1);
+            nextKey = set.getInt(1);
 
-			set.close();
-			set = null;
+            set.close();
+            set = null;
 
-			statement.close();
-			statement = null;
+            statement.close();
+            statement = null;
 
-			// Now, take those keys and advance nextKey
+            // Now, take those keys and advance nextKey
 
-			for (i = 0; i < allocationCount; i++)
-				keys.add(new Integer(nextKey++));
+            for (i = 0; i < allocationCount; i++)
+                keys.add(new Integer(nextKey++));
 
-			// Update nextKey back to the database.
+            // Update nextKey back to the database.
 
-			statement =
-				connection.prepareStatement(
-					"update PROP\n" + "set PROP_VALUE = ?\n" + "where NAME	 = ?");
-			statement.setInt(1, nextKey);
-			statement.setString(2, PROPERTY_NAME);
+            statement =
+                connection.prepareStatement("update PROP\n" + "set PROP_VALUE = ?\n" + "where NAME	 = ?");
+            statement.setInt(1, nextKey);
+            statement.setString(2, PROPERTY_NAME);
 
-			statement.executeUpdate();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+            statement.executeUpdate();
+        }
+        catch (SQLException ex)
+        {
+            ex.printStackTrace();
 
-			throw new XEJBException("Unable to allocate keys from the database.", e);
-		}
-		finally
-		{
-			if (set != null)
-			{
-				try
-				{
-					set.close();
-				}
-				catch (SQLException e)
-				{
-				}
-			}
+            throw new XEJBException("Unable to allocate keys from the database.", ex);
+        }
+        finally
+        {
+            if (set != null)
+            {
+                try
+                {
+                    set.close();
+                }
+                catch (SQLException ex)
+                {
+                }
+            }
 
-			if (statement != null)
-			{
-				try
-				{
-					statement.close();
-				}
-				catch (SQLException e)
-				{
-				}
-			}
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                }
+                catch (SQLException ex)
+                {
+                }
+            }
 
-			if (connection != null)
-			{
-				try
-				{
-					connection.close();
-				}
-				catch (SQLException e)
-				{
-				}
-			}
-		}
+            if (connection != null)
+            {
+                try
+                {
+                    connection.close();
+                }
+                catch (SQLException ex)
+                {
+                }
+            }
+        }
 
-	}
+    }
 
-	/**
-	 *  Gets a database connection from the pool.
-	 *
-	 *  @throws EJBException if a {@link SQLException}
-	 *  is thrown.
-	 *
-	 */
+    /**
+     *  Gets a database connection from the pool.
+     *
+     *  @throws EJBException if a {@link SQLException}
+     *  is thrown.
+     *
+     **/
 
-	protected Connection getConnection()
-	{
-		try
-		{
-			return dataSource.getConnection();
-		}
-		catch (SQLException e)
-		{
-			throw new XEJBException("Unable to get database connection from pool.", e);
-		}
-	}
+    protected Connection getConnection()
+    {
+        try
+        {
+            return dataSource.getConnection();
+        }
+        catch (SQLException ex)
+        {
+            throw new XEJBException("Unable to get database connection from pool.", ex);
+        }
+    }
 }

@@ -2,7 +2,6 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-	
 <specification class="tutorial.workbench.localization.Localization">
 
   <component id="border" type="Border"/>

@@ -36,7 +36,7 @@ output symbols:
   downOnClickScript - the script to assign to the down link's onclick attribute
 -->
 
-<include-script resource-path=".net/sf/tapestry/html/PracticalBrowserSniffer.js"/>
+<include-script resource-path="/net/sf/tapestry/html/PracticalBrowserSniffer.js"/>
 <include-script resource-path="/net/sf/tapestry/contrib/palette/PaletteFunctions.js"/>
 
 <!-- baseName - base name from which other names are generated -->

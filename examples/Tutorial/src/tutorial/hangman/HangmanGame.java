@@ -1,41 +1,40 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package tutorial.hangman;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  *
  *  The logic for a game of Hangman.
  *
  *  @version $Id$
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *
- */
+ **/
 
 public class HangmanGame implements Serializable
 {
@@ -52,7 +51,7 @@ public class HangmanGame implements Serializable
 	/**
 	 *  Starts a new game, resetting the number of misses.
 	 *
-	 */
+	 **/
 
 	public void start(String word, int maxMisses)
 	{
@@ -76,7 +75,7 @@ public class HangmanGame implements Serializable
 	/**
 	 *  Returns true when the maximum number of misses has been reached.
 	 *
-	 */
+	 **/
 
 	public boolean getFailed()
 	{
@@ -86,7 +85,7 @@ public class HangmanGame implements Serializable
 	/**
 	 *  Returns true when all letters have been guessed.
 	 *
-	 */
+	 **/
 
 	public boolean getDone()
 	{
@@ -97,7 +96,7 @@ public class HangmanGame implements Serializable
 	 *  Returns an array of characters, each position is either a correctly guessed
 	 *  letter, or an underscore (for an as-yet unguessed letter).
 	 *
-	 */
+	 **/
 
 	public char[] getGuessed()
 	{
@@ -107,7 +106,7 @@ public class HangmanGame implements Serializable
 	/**
 	 *  Returns the word being guessed.
 	 *
-	 */
+	 **/
 
 	public String getWord()
 	{
@@ -122,7 +121,7 @@ public class HangmanGame implements Serializable
 	 *  @throws GameException if the letter doesn't appear
 	 *  in the word.
 	 *
-	 */
+	 **/
 
 	public void guess(char letter) throws GameException
 	{
@@ -152,7 +151,7 @@ public class HangmanGame implements Serializable
 	/**
 	 *  Returns an array of unused letters that may be guessed.
 	 *
-	 */
+	 **/
 
 	public char[] getUnusedLetters()
 	{

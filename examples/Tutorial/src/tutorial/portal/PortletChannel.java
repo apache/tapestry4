@@ -23,40 +23,46 @@
 // Lesser General Public License for more details.
 //
 
-package tutorial.workbench;
-
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
-import net.sf.tapestry.IEngineServiceView;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.ResponseOutputStream;
-import net.sf.tapestry.engine.HomeService;
+package tutorial.portal;
 
 /**
- *  Special version of the home service used to reset the visit tab when re-entering
- *  the Tapestry application from a static HTML page.  
+ *  Defines the content that can be presented in a {@link Portlet}; providing a unique id,
+ *  title, and the page and component path of the
+ *  {@link net.sf.tapestry.components.Block} providing content.
+ *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
- *  @see Redirect
- * 
+ *  @version $Id$ 
+ *
  **/
 
-public class WorkbenchHomeService extends HomeService
+public class PortletChannel
 {
+    private int id;
+    private String title;
+    private String pageName;
+    private String componentPath;
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+    public PortletChannel(int id, String title, String pageName, String componentPath)
     {
-        Visit visit = (Visit) engine.getVisit();
-
-        if (visit != null)
-            visit.setActiveTabName("Home");
-
-        return super.service(engine, cycle, output);
+        this.id = id;
+        this.title = title;
+        this.pageName = pageName;
+        this.componentPath = componentPath;
     }
 
+    public PortletModel getModel()
+    {
+        return new PortletModel(id, title, pageName, componentPath);
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
 }

@@ -3,9 +3,9 @@
 <!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
     "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <application name="Portal Tutorial"
-    engine-class="com.primix.tapestry.engine.SimpleEngine">
+    engine-class="net.sf.tapestry.engine.SimpleEngine">
   
-  <property name="com.primix.tapestry.visit-class">tutorial.portal.Visit</property>
+  <property name="net.sf.tapestry.visit-class">tutorial.portal.Visit</property>
   
   <page name="Home" specification-path="/tutorial/portal/Home.jwc"/>
   

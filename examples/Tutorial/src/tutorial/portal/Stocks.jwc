@@ -7,7 +7,7 @@
 
   <bean name="delegate" class="net.sf.tapestry.valid.ValidationDelegate"/>
     
-<bean name="rowClass" class="net.sf.tapestry.inspector.EvenOdd"/>
+<bean name="rowClass" class="net.sf.tapestry.helper.EvenOdd"/>
 
 <component id="content" type="Block"/>
 

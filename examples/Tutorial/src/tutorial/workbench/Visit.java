@@ -1,32 +1,31 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package tutorial.workbench;
 
-import java.io.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -36,114 +35,114 @@ import java.util.Date;
  *  @version $Id$
  *  @since 1.0.7
  *
- */
+ **/
 
 public class Visit implements Serializable
 {
-	/**
-	 *  The name of the page for which the corresponding tab
-	 *  should be visibly active.
-	 *
-	 */
+    /**
+     *  The name of the page for which the corresponding tab
+     *  should be visibly active.
+     *
+     **/
 
-	private String activeTabName = "Home";
+    private String activeTabName = "Home";
 
-	/**
-	 *  If true, then a detailed report about the request is appended
-	 *  to the bottom of each page.
-	 *
-	 */
+    /**
+     *  If true, then a detailed report about the request is appended
+     *  to the bottom of each page.
+     *
+     **/
 
-	private boolean requestDebug;
+    private boolean requestDebug;
 
-	/**
-	 *  Used by the Fields demo page.
-	 *
-	 */
+    /**
+     *  Used by the Fields demo page.
+     *
+     **/
 
-	private Integer intValue;
-	private Double doubleValue;
-	private BigDecimal bigDecimalValue;
-	private Long longValue;
-	private Date dateValue;
-	private String stringValue;
+    private Integer intValue;
+    private Double doubleValue;
+    private BigDecimal bigDecimalValue;
+    private Long longValue;
+    private Date dateValue;
+    private String stringValue;
 
-	public String getActiveTabName()
-	{
-		return activeTabName;
-	}
+    public String getActiveTabName()
+    {
+        return activeTabName;
+    }
 
-	public void setActiveTabName(String value)
-	{
-		activeTabName = value;
-	}
+    public void setActiveTabName(String value)
+    {
+        activeTabName = value;
+    }
 
-	public void setRequestDebug(boolean value)
-	{
-		requestDebug = value;
-	}
+    public void setRequestDebug(boolean value)
+    {
+        requestDebug = value;
+    }
 
-	public boolean getRequestDebug()
-	{
-		return requestDebug;
-	}
+    public boolean getRequestDebug()
+    {
+        return requestDebug;
+    }
 
-	public void setIntValue(Integer value)
-	{
-		intValue = value;
-	}
+    public void setIntValue(Integer value)
+    {
+        intValue = value;
+    }
 
-	public Integer getIntValue()
-	{
-		return intValue;
-	}
+    public Integer getIntValue()
+    {
+        return intValue;
+    }
 
-	public BigDecimal getBigDecimalValue()
-	{
-		return bigDecimalValue;
-	}
+    public BigDecimal getBigDecimalValue()
+    {
+        return bigDecimalValue;
+    }
 
-	public void setBigDecimalValue(BigDecimal value)
-	{
-		bigDecimalValue = value;
-	}
+    public void setBigDecimalValue(BigDecimal value)
+    {
+        bigDecimalValue = value;
+    }
 
-	public Double getDoubleValue()
-	{
-		return doubleValue;
-	}
+    public Double getDoubleValue()
+    {
+        return doubleValue;
+    }
 
-	public void setDoubleValue(Double value)
-	{
-		doubleValue = value;
-	}
+    public void setDoubleValue(Double value)
+    {
+        doubleValue = value;
+    }
 
-	public Long getLongValue()
-	{
-		return longValue;
-	}
+    public Long getLongValue()
+    {
+        return longValue;
+    }
 
-	public void setLongValue(Long value)
-	{
-		longValue = value;
-	}
+    public void setLongValue(Long value)
+    {
+        longValue = value;
+    }
 
-	public Date getDateValue()
-	{
-		return dateValue;
-	}
+    public Date getDateValue()
+    {
+        return dateValue;
+    }
 
-	public void setDateValue(Date value)
-	{
-		dateValue = value;
-	}
-	public String getStringValue()
-	{
-		return stringValue;
-	}
+    public void setDateValue(Date value)
+    {
+        dateValue = value;
+    }
+    public String getStringValue()
+    {
+        return stringValue;
+    }
 
-	public void setStringValue(String value)
-	{
-		stringValue = value;
-	}
+    public void setStringValue(String value)
+    {
+        stringValue = value;
+    }
 }

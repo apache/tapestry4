@@ -10,7 +10,7 @@
   	<load-on-startup>0</load-on-startup>
   </servlet>
 
-  <!--The single mapping used for the Tapestry application-->
+  <!--The single mapping used for the Virtual Library application-->
 
   <servlet-mapping>
     <servlet-name>vlib</servlet-name>
