@@ -62,7 +62,7 @@ import org.apache.tapestry.IMarkupWriter;
  *  is used during the rewind phase of the request cycle when output
  *  is discarded anyway.
  *
- *  @author Howard Lewis Ship
+ *  @author Howard Lewis Ship, David Solis
  *  @version $Id$
  *  @since 0.2.9
  *
@@ -166,15 +166,31 @@ public class NullWriter implements IMarkupWriter
     {
     }
 
-    public void attribute(String name)
-    {
-    }
-
     public void attribute(String name, int value)
     {
     }
 
     public void attribute(String name, String value)
+    {
+    }
+
+    /**
+     *  @see org.apache.tapestry.IMarkupWriter#attribute(java.lang.String, boolean)
+     *
+     *  @since 2.4
+     **/
+
+    public void attribute(String name, boolean value)
+    {
+    }
+
+    /**
+     *  @see org.apache.tapestry.IMarkupWriter#attributeRaw(java.lang.String, java.lang.String)
+     *
+     *  @since 2.4
+     **/
+
+    public void attributeRaw(String name, String value)
     {
     }
 }

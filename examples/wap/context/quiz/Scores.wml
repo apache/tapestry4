@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+
+<wml>
+    <head>
+        <meta http-equiv="Cache-Control" content="must-revalidate" forua="true"/>
+        <meta http-equiv="Cache-Control" content="no-cache" forua="true"/>
+    </head>
+
+	<!-- High scores are printed into a card -->
+	<card id="main" title="Scores">
+        <p>
+            Points: <p jwcid="@Insert" value="ognl:visit.points"/>
+            <p jwcid="@Conditional" condition="ognl:newHighscore">
+                <p jwcid="@Insert" value="New highscore!"/>
+            </p>
+            <br/>
+            Top <p jwcid="@Insert" value="ognl:highscores.size"/>:<br/>
+            <p jwcid="@Foreach" source="ognl:highscores" value="ognl:highscore">
+                <p jwcid="@Insert" value='ognl:highscore.name + "->" + highscore.score'/><br/>
+            </p>
+        </p>
+        <do type="prev" label="Start again">
+            <go jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@HOME_SERVICE" renderer="ognl:@org.apache.tapestry.wml.GoLinkRenderer@SHARED_INSTANCE" href=""/>
+        </do>
+	</card>
+
+</wml>
+

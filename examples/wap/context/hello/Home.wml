@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <head>
+        <meta http-equiv="Cache-Control" content="must-revalidate" forua="true"/>
+        <meta http-equiv="Cache-Control" content="no-cache" forua="true"/>
+    </head>
+
+    <template>
+        <do type="prev" label="Back">
+            <prev/>
+        </do>
+    </template>
+
+    <card id="Hello" title="Hello">
+        <onevent type="onenterforward">
+            <refresh>
+                <setvar jwcid="@wml:Setvar" name="username" value="ognl:username"/>
+            </refresh>
+        </onevent>
+        <p>
+            What is your name?
+            <input jwcid="userInput@wml:Input" name="username" value="ognl:username"/>
+        </p>
+        <do type="accept" label="Accept">
+            <go jwcid="go@wml:Go" stateful="ognl:false" listener="ognl:listeners.submit">
+                <postfield jwcid="username@wml:Postfield" name="ognl:components.userInput.name" value="ognl:username"/>
+            </go>
+        </do>
+    </card>
+</wml>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<!-- $Id$ -->
+<wml>
+    <card id="main" title="Tapestry Wap Examples">
+        <p>
+            <b>
+                <a href="hello/app">Hello World</a>
+            </b>
+            <br/>
+            <b>
+                <a href="animate/app">Animate</a>
+            </b>
+            <br/>
+            <b>
+                <a href="quiz/app">Quiz</a>
+            </b>
+        </p>
+    </card>
+</wml>

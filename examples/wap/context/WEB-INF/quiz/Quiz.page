@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification class="wap.quiz.Quiz">
+
+    <property-specification name="question" type="java.util.Map" persistent="yes" initial-value="null"/>
+
+    <property-specification name="choice" type="int" persistent="no"/>
+
+</page-specification>

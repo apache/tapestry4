@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification class="wap.quiz.Home">
+
+    <component id="username" type="wml:Postfield">
+        <binding name="value" expression="username"/>
+        <binding name="name" expression="components.userInput.name"/>
+    </component>
+
+    <component id="level" type="wml:SelectionField">
+        <binding name="value" expression="level"/>
+        <binding name="model" expression="@wap.quiz.Home@LEVEL_MODEL"/>
+        <binding name="name" expression="components.selectLevel.name"/>
+    </component>
+
+    <component id="userInput" type="wml:Input">
+        <static-binding name="name">username</static-binding>
+        <binding name="value" expression="username"/>
+    </component>
+
+    <component id="selectLevel" type="wml:PropertySelection">
+        <static-binding name="name">level</static-binding>
+        <binding name="model" expression="@wap.quiz.Home@LEVEL_MODEL"/>
+    </component>
+
+    <component id="go" type="wml:Go">
+        <binding name="stateful" expression="false"/>
+        <binding name="listener" expression="listeners.start"/>
+    </component>
+
+    <context-asset name="logo" path="images/logo.wbmp"/>
+
+    <property-specification name="username" type="java.lang.String" persistent="yes"/>
+    <property-specification name="level" type="java.lang.String" persistent="yes" initial-value='"easy"'/>
+
+</page-specification>

@@ -60,6 +60,10 @@
     <page name="StaleSession" specification-path="pages/StaleSession.page"/>
     <page name="Exception" specification-path="pages/Exception.page"/>
    
+    <page name="WMLException" specification-path="wml/pages/WMLException.page"/>
+    <page name="WMLStaleLink" specification-path="wml/pages/WMLStaleLink.page"/>
+    <page name="WMLStaleSession" specification-path="wml/pages/WMLStaleSession.page"/>
+
     <!-- These may be overriden but generally shouldn't be, except perhaps for the home service. -->
     
     <service name="home" class="org.apache.tapestry.engine.HomeService"/>

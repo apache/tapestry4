@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="mock" root="context51"/>
+
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+        <init-parameter
+            name="org.apache.tapestry.application-specification"
+            value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+    </servlet>
+
+    <request>
+        <parameter name="service" value="page/ContentType"/>
+
+        <assert-output-stream name="Image Content"
+                content-type="text/vnd.wap.wml"
+                path="src/org/apache/tapestry/junit/mock/wml/ContentType.wml"/>
+
+    </request>
+
+</mock-test>
+

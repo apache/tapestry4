@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="mock" root="context51"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+  	</servlet>
+
+    <request>
+        <parameter name="service" value="page/NestedSelect"/>
+
+        <assert-output name="Card">
+            <![CDATA[
+            <card id="Exception" title="Exception">
+            ]]>
+        </assert-output>
+
+        <assert-output name="Exception Name">
+        org.apache.tapestry.ApplicationRuntimeException
+        </assert-output>
+
+        <assert-output name="Exception Messge">
+        Select components may not be nested.
+        </assert-output>
+
+        <assert-output name="Component Id">
+        [NestedSelect/nestedSelect]
+        </assert-output>
+    </request>
+
+    <request>
+        <parameter name="service" value="page/Select"/>
+
+        <assert-output name="Card">
+            <![CDATA[
+            <card id="Select">
+            ]]>
+        </assert-output>
+
+        <assert-output-matches name="Onpick values" subgroup="1">
+            <![CDATA[
+            <option .*?onpick="(.*?)".*?>
+            ]]>
+            <match>#sexcard</match>
+            <match>#incomecard</match>
+            <match>#hobbiescard</match>
+        </assert-output-matches>
+    </request>
+
+    <request>
+
+        <parameter name="service" value="action/0/Select/0/go"/>
+
+        <parameter name="Go0" value="sex,income,hobbies"/>
+        <parameter name="sex" value="Male"/>
+        <parameter name="income" value="Over $100K"/>
+        <parameter name="hobbies" value="Skiing,Book,Traveling"/>
+
+        <assert-output name="Card">
+            <![CDATA[
+            <card title="Result" id="Result">
+            ]]>
+        </assert-output>
+
+        <assert-output-matches name="Result Values" subgroup="1">
+            <![CDATA[
+            <strong>(.*?)</strong>
+            ]]>
+            <match>Male Over $$100K</match>
+            <match>Skiing,Book,Traveling</match>
+        </assert-output-matches>
+
+    </request>
+
+</mock-test>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <card jwcid="@wml:Card" id="Result" title="ognl:title">
+        <p>
+            <strong><b jwcid="@Insert" value="ognl:u">Result 1</b></strong>
+            <strong><b jwcid="@Insert" value="ognl:l">Result 2</b></strong>
+        </p>
+    </card>
+</wml>

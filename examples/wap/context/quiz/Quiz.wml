@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+
+<wml>
+    <head>
+        <meta http-equiv="Cache-Control" content="must-revalidate" forua="true"/>
+        <meta http-equiv="Cache-Control" content="no-cache" forua="true"/>
+    </head>
+
+    <!-- This card displays a question and gives a list of alternative answers -->
+    <card id="main" jwcid="@wml:Card" title='ognl:(questionNumber + 1) + "/" + visit.numberOfQuestions + ", " + visit.level'>
+        <onevent type="onenterforward">
+            <refresh>
+                <setvar jwcid="@wml:Setvar" name="choice" value='ognl:"God".equals(visit.username) ? question.answer : 0'/>
+            </refresh>
+        </onevent>
+        <p> <p jwcid="@Insert" value="ognl:question.question"/>
+            <select jwcid="selection@wml:PropertySelection" name="choice" model="ognl:choiceModel"/>
+            <br/>
+            <anchor title="Ok">Ok
+                <go jwcid="go@wml:Go" listener="ognl:listeners.process" href="">
+                    <postfield jwcid="choice@wml:Postfield" name="ognl:components.selection.name" value="ognl:choice"/>
+                </go>
+            </anchor>
+            <br/>
+            Your points: <p jwcid="@Insert" value="ognl:visit.points"/>
+            <br/>
+            <do type="prev" label="Start again">
+                <go jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@HOME_SERVICE" renderer="ognl:@org.apache.tapestry.wml.GoLinkRenderer@SHARED_INSTANCE" href=""/>
+            </do>
+        </p>
+    </card>
+</wml>
+

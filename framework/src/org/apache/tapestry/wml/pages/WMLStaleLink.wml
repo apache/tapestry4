@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <head>
+        <meta http-equiv="Cache-Control" content="must-revalidate" forua="true"/>
+        <meta http-equiv="Cache-Control" content="no-cache" forua="true"/>
+    </head>
+
+	<card id="StaleLink" title="StaleLink">
+		<p>You have clicked on a <i>stale link</i>.</p>  
+		<p>
+			<b jwcid="@Insert" value="ognl:message">Exception message goes here.</b>
+		</p>
+		<p>
+			This is most likely the result of using your browser's <b>back</b> button, but can also be an application error.
+		</p>
+		<p>
+			You may continue by returning to the application's <b><a jwcid="home">home page</a></b>.
+		</p>				
+	</card>
+</wml>

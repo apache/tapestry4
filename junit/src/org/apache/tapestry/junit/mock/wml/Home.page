@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification class="org.apache.tapestry.junit.mock.wml.Home">
+
+    <context-asset name="image" path="images/image.wbmp"/>
+
+    <property-specification name="u" type="java.lang.String" persistent="yes" initial-value='"newbie"'/>
+    <property-specification name="l" type="java.lang.String" persistent="yes" initial-value='"option_one"'/>
+
+</page-specification>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification class="wap.quiz.Scores">
+
+    <property-specification name="newHighscore" type="boolean" persistent="no" initial-value="false"/>
+    <property-specification name="highscores" type="java.util.List" persistent="no" initial-value="null"/>
+    <property-specification name="highscore" type="java.util.Map" persistent="no"/>
+
+</page-specification>

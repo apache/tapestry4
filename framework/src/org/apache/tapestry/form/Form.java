@@ -101,7 +101,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *  the action service.  The default is the direct service, even though
  *  in earlier releases, only the action service was available.
  *
- *  @author Howard Lewis Ship
+ *  @author Howard Lewis Ship, David Solis
  *  @version $Id$
  **/
 
@@ -332,10 +332,23 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         super.cleanupAfterRender(cycle);
     }
 
+    protected void writeAttributes(IMarkupWriter writer, ILink link)
+    {
+        String method = getMethod();
+
+        writer.begin(getTag());
+        writer.attribute("method", (method == null) ? "post" : method);
+        writer.attribute("name", _name);
+        writer.attribute("action", link.getURL(null, false));
+
+        if (_encodingType != null)
+            writer.attribute("enctype", _encodingType);
+    }
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String actionId = cycle.getNextActionId();
-        _name = "Form" + actionId;
+        _name = getDisplayName() + actionId;
 
         boolean renderForm = !cycle.isRewinding();
         boolean rewound = cycle.isRewound(this);
@@ -364,15 +377,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         if (renderForm)
         {
-            String method = getMethod();
-
-            writer.begin("form");
-            writer.attribute("method", (method == null) ? "post" : method);
-            writer.attribute("name", _name);
-            writer.attribute("action", link.getURL(null, false));
-
-            if (_encodingType != null)
-                writer.attribute("enctype", _encodingType);
+            writeAttributes(writer, link);
 
             generateAttributes(writer, cycle);
             writer.println();
@@ -393,15 +398,11 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             // and rewind (current request cycle), then the list
             // of ids will change as well.
 
-            writer.beginEmpty("input");
-            writer.attribute("type", "hidden");
-            writer.attribute("name", _name);
-            writer.attribute("value", buildAllocatedIdList());
-            writer.println();
+            writeHiddenField(writer, _name, buildAllocatedIdList());
 
             nested.close();
 
-            writer.end("form");
+            writer.end(getTag());
 
             // Write out event handlers collected during the rendering.
 
@@ -483,7 +484,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         list.add(functionName);
     }
 
-    private void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
+    protected void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
     {
         StringBuffer buffer = null;
 
@@ -643,6 +644,20 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
+     *  @since 2.4
+     *
+     **/
+
+    protected void writeHiddenField(IMarkupWriter writer, String name, String value)
+    {
+        writer.beginEmpty(getInputTag());
+        writer.attribute("type", "hidden");
+        writer.attribute("name", name);
+        writer.attribute("value", value);
+        writer.println();
+    }
+
+    /**
      *  @since 2.2
      * 
      **/
@@ -656,11 +671,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         for (int i = 0; i < values.length; i++)
         {
-            writer.beginEmpty("input");
-            writer.attribute("type", "hidden");
-            writer.attribute("name", parameterName);
-            writer.attribute("value", values[i]);
-            writer.println();
+            writeHiddenField(writer, parameterName, values[i]);
         }
     }
 
@@ -759,4 +770,39 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         _encodingType = encodingType;
     }
 
+    /**
+     *  Returns the tag of the form.
+     *
+     *  @since 2.4
+     *
+     **/
+
+    protected String getTag()
+    {
+        return "form";
+    }
+
+    /**
+     * Returns the tag of the input element used by the form.
+     *
+     *  @since 2.4
+     *
+     **/
+
+    protected String getInputTag()
+    {
+        return "input";
+    }
+
+    /**
+     * Returns the name of the element.
+     *
+     *
+     *  @since 2.4
+     **/
+
+    protected String getDisplayName()
+    {
+        return "Form";
+    }
 }

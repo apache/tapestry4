@@ -1,0 +1,11 @@
+How many months does an elephant's pregnancy last?;3;9;13;22;25
+How many teeth can a shark grow in a lifetime?;4;24;240;2400;24000
+How many species of fish are there?;1;20000;50000;200000
+What was the biggest dinosaur?;3;Compsognathus;Mussaurus;Brachiosaurus
+What's a baby elephant called?;3;A cup;A fawn;A calf
+What is the Okapi's only natural enemy?;2;Lion;Leopard;Wolf
+Where does the platypus live?;2;Austria;Australia;Brazil
+What is a tuatara?;1;Reptile;Mammal;Bird;Fish
+In the wild, where do flamingos get their red colour?;2;Red algae;Blue-green algae;Waterlilies
+What's a baby beaver called?;1;A kit;A pup;A bijou
+
