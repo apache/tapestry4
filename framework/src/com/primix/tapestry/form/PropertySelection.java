@@ -37,7 +37,7 @@ import com.primix.tapestry.util.*;
  *  or &lt;input type=radio&gt; to
  *  set a property of some object.  Typically, the values for the object
  *  are defined using an {@link Enum}.  A PropertySelection is dependent on
- *  an {link IPropertySelectionModel} to provide the list of possible values.
+ *  an {@link IPropertySelectionModel} to provide the list of possible values.
  *
  *  <p>Often, this is used to select a particular {@link Enum} to assign to a property; the
  * {@link EnumPropertySelectionModel} class simplifies this.
