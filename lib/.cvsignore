@@ -1,5 +1,3 @@
-com.primix.tapestry*.jar
-Vlib.*
 *.war
-VlibBeans.jar
-net.sf.tapestry.contrib*.jar
+*.jar
+*.ear
