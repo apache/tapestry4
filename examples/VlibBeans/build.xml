@@ -64,7 +64,7 @@
       </fileset>
     </copy>
     <copy todir="${jboss.dir}/lib/ext" file="${lib}/com.primix.tapestry.jar"/>
-    <untar src="jboss/vlib.tar" dest="${jboss.dir}/db"/>
+    <unzip src="jboss/vlib.zip" dest="${jboss.dir}/db"/>
     <echo>
 You must manually edit ${jboss.dir}/conf/default/jboss.jcml.
 The file jboss/jboss.jcml.splice should be inserted at the end
