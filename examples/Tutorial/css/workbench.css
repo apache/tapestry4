@@ -1,9 +1,4 @@
-<!-- $Id$ -->
-
-TABLE.from TH
-{
-	text-align: right;
-}
+/*  $Id$ */
 
 SPAN.label-error
 {
@@ -25,7 +20,7 @@ TABLE.inputError TD.message
 
 TABLE.content
 {
-	background-color: "#ffffcc";
+	background-color: #ffffcc;
   	border-color : Black;
 	border-style : solid;
 	border-width : thin;
@@ -46,7 +41,7 @@ TABLE.tabs TD
 
 BODY
 {
-  background-color: "#808080";
+  background-color: #808080;
   margin: 2;
   font-family : Trebuchet MS, serif;
 }
@@ -61,7 +56,7 @@ TABLE.requestDebug
 	border-bottom-width : 2;
 	border-right-width : 2;
 	border-left-width : 0;
-	background-color: "#839cd1";
+	background-color: #839cd1;
 	padding: 0;
 
 }
@@ -71,7 +66,7 @@ TABLE.requestDebug TR.control
     font-weight: bold;
     font-size: 9pt;
 	color : White;
-	background-color : "#330066";
+	background-color : #330066;
 }
 
 TABLE.requestDebug FORM
@@ -94,13 +89,13 @@ SPAN.request-context-object  {
 TR.request-context-section TH  {
 	text-align : center;
 	color : White;
-	background-color : "#330066";
+	background-color : #330066;
 }
 
 TR.request-context-header TH  {
 	text-align : center;
 	color : White;
-	background-color : "#330066";
+	background-color : #330066;
 }
 
 TABLE.request-context-object TR.odd TD  {
@@ -154,7 +149,7 @@ TABLE.palette TH
   font-size: 9pt;
   font-weight: bold;
   color: white;
-  background-color: "#330066";
+  background-color: #330066;
   text-align: center;
 }
 
