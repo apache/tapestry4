@@ -192,7 +192,7 @@ public class Rollover extends AbstractComponent
         return image;
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         String imageURL = null;

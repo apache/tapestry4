@@ -65,25 +65,15 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Any extends AbstractComponent
 {
-    private IBinding elementBinding;
+    private String element;
 
-    public IBinding getElementBinding()
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        return elementBinding;
-    }
-
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-    {
-        String elementName = null;
-
         if (!cycle.isRewinding())
         {
 
-            elementName = elementBinding.getString();
-            if (elementName == null)
-                throw new RequiredParameterException(this, "element", elementBinding);
-
-            writer.begin(elementName);
+            writer.begin(element);
 
             generateAttributes(writer, cycle);
         }
@@ -93,15 +83,19 @@ public class Any extends AbstractComponent
 
         if (!cycle.isRewinding())
         {
-            writer.end(elementName);
+            writer.end(element);
         }
 
     }
 
-    public void setElementBinding(IBinding value)
+    public String getElement()
     {
-        elementBinding = value;
-
-        // This is not expected to be static because then, what's the point?
+        return element;
     }
+
+    public void setElement(String element)
+    {
+        this.element = element;
+    }
+
 }

@@ -83,7 +83,8 @@ import net.sf.tapestry.RequestCycleException;
 public class Hidden extends AbstractFormComponent
 {
     private IBinding valueBinding;
-    private IBinding listenerBinding;
+    private IActionListener listener;
+
     private String name;
 
     public String getName()
@@ -91,30 +92,9 @@ public class Hidden extends AbstractFormComponent
         return name;
     }
 
-    public IBinding getValueBinding()
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        return valueBinding;
-    }
-
-    public void setValueBinding(IBinding value)
-    {
-        valueBinding = value;
-    }
-
-    public IBinding getListenerBinding()
-    {
-        return listenerBinding;
-    }
-
-    public void setListenerBinding(IBinding value)
-    {
-        listenerBinding = value;
-    }
-
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-    {
-        IActionListener listener;
-
         IForm form = getForm(cycle);
         boolean formRewound = form.isRewinding();
 
@@ -147,19 +127,28 @@ public class Hidden extends AbstractFormComponent
 
         valueBinding.setString(value);
 
-        if (listenerBinding == null)
-            return;
-
-        try
-        {
-            listener = (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
-        }
-        catch (BindingException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
-
         if (listener != null)
             listener.actionTriggered(this, cycle);
     }
+
+    public IActionListener getListener()
+    {
+        return listener;
+    }
+
+    public void setListener(IActionListener listener)
+    {
+        this.listener = listener;
+    }
+
+    public IBinding getValueBinding()
+    {
+        return valueBinding;
+    }
+
+    public void setValueBinding(IBinding valueBinding)
+    {
+        this.valueBinding = valueBinding;
+    }
+
 }

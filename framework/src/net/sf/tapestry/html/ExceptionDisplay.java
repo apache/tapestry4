@@ -67,7 +67,7 @@ public class ExceptionDisplay extends BaseComponent
         return exception;
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         ExceptionDescription[] exceptions =
@@ -77,7 +77,7 @@ public class ExceptionDisplay extends BaseComponent
 
         count = exceptions.length;
 
-        super.render(writer, cycle);
+        super.renderComponent(writer, cycle);
     }
 
     public void setIndex(int value)

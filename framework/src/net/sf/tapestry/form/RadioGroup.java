@@ -220,7 +220,7 @@ public class RadioGroup extends AbstractFormComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         IForm form = getForm(cycle);
 

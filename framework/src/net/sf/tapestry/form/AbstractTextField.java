@@ -46,22 +46,10 @@ import net.sf.tapestry.RequestCycleException;
 
 public abstract class AbstractTextField extends AbstractFormComponent
 {
-    private IBinding displayWidthBinding;
-
-    private boolean staticDisplayWidth;
-    private int displayWidthValue;
-
-    private IBinding maximumLengthBinding;
-
-    private boolean staticMaximumLength;
-    private int maximumLengthValue;
-
-    private IBinding hiddenBinding;
-
-    private boolean staticHidden;
-    private boolean hiddenValue;
-
-    private IBinding disabledBinding;
+    private int displayWidth;
+    private int maximumLength;
+    private boolean hidden;
+    private boolean disabled;
 
     private String name;
 
@@ -70,35 +58,16 @@ public abstract class AbstractTextField extends AbstractFormComponent
         return name;
     }
 
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public IBinding getDisplayWidthBinding()
-    {
-        return displayWidthBinding;
-    }
-
-    public IBinding getHiddenBinding()
-    {
-        return hiddenBinding;
-    }
-
     /**
      *  Renders the form element, or responds when the form containing the element
      *  is submitted (by checking {@link Form#isRewinding()}.
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        IActionListener listener;
         String value;
-        boolean disabled = false;
-        int displayWidth;
-        int maximumLength;
-        boolean hidden = false;
 
         IForm form = getForm(cycle);
 
@@ -117,9 +86,6 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         name = form.getElementId(this);
 
-        if (disabledBinding != null)
-            disabled = disabledBinding.getBoolean();
-
         if (rewinding)
         {
             if (!disabled)
@@ -132,11 +98,6 @@ public abstract class AbstractTextField extends AbstractFormComponent
             return;
         }
 
-        if (staticHidden)
-            hidden = hiddenValue;
-        else if (hiddenBinding != null)
-            hidden = hiddenBinding.getBoolean();
-
         writer.beginEmpty("input");
 
         writer.attribute("type", hidden ? "password" : "text");
@@ -146,25 +107,11 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         writer.attribute("name", name);
 
-        if (displayWidthBinding != null)
-        {
-            if (staticDisplayWidth)
-                displayWidth = displayWidthValue;
-            else
-                displayWidth = displayWidthBinding.getInt();
-
+        if (displayWidth != 0)
             writer.attribute("size", displayWidth);
-        }
 
-        if (maximumLengthBinding != null)
-        {
-            if (staticMaximumLength)
-                maximumLength = maximumLengthValue;
-            else
-                maximumLength = maximumLengthBinding.getInt();
-
+        if (maximumLength != 0)
             writer.attribute("maxlength", maximumLength);
-        }
 
         value = readValue();
         if (value != null)
@@ -175,7 +122,6 @@ public abstract class AbstractTextField extends AbstractFormComponent
         beforeCloseTag(writer, cycle);
 
         writer.closeTag();
-
     }
 
     /**
@@ -209,44 +155,25 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
     abstract protected String readValue() throws RequestCycleException;
 
-    public void setDisabledBinding(IBinding value)
+    public boolean getHidden()
     
     {
-        disabledBinding = value;
+        return hidden;
     }
 
-    public void setDisplayWidthBinding(IBinding value)
+    public void setHidden(boolean hidden)
     {
-        displayWidthBinding = value;
-
-        staticDisplayWidth = value.isStatic();
-
-        if (staticDisplayWidth)
-            displayWidthValue = value.getInt();
+        this.hidden = hidden;
     }
 
-    public void setHiddenBinding(IBinding value)
+    public boolean getDisabled()
     {
-        hiddenBinding = value;
-
-        staticHidden = value.isStatic();
-
-        if (staticHidden)
-            hiddenValue = value.getBoolean();
+        return disabled;
     }
 
-    public void setMaximumLengthBinding(IBinding value)
+    public void setDisabled(boolean disabled)
     {
-        maximumLengthBinding = value;
-
-        staticMaximumLength = value.isStatic();
-
-        if (staticMaximumLength)
-            maximumLengthValue = value.getInt();
+        this.disabled = disabled;
     }
 
-    public IBinding getMaximumLengthBinding()
-    {
-        return maximumLengthBinding;
-    }
 }

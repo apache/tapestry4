@@ -51,9 +51,9 @@ import net.sf.tapestry.RequiredParameterException;
  *  <td>delegate</td>
  *  <td>{@link IRender}</td>
  *  <td>R</td>
- *  <td>yes</td>
+ *  <td>no</td>
  *  <td>&nbsp;</td>
- *  <td>The object which will provide the rendering for the component.</td>
+ *  <td>If specified, the object which will provide the rendering for the component.</td>
  * </tr>
  *
  * </table>
@@ -67,17 +67,7 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Delegator extends AbstractComponent
 {
-    private IBinding delegateBinding;
-
-    public void setDelegateBinding(IBinding value)
-    {
-        delegateBinding = value;
-    }
-
-    public IBinding getDelegateBinding()
-    {
-        return delegateBinding;
-    }
+	private IRender delegate;
 
     /**
      *  Gets its delegate and invokes {@link IRender#render(IMarkupWriter, IRequestCycle)}
@@ -85,22 +75,20 @@ public class Delegator extends AbstractComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        IRender delegate = null;
-
-        try
-        {
-            delegate = (IRender) delegateBinding.getObject("delegate", IRender.class);
-        }
-        catch (BindingException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
-
-        if (delegate == null)
-            throw new RequiredParameterException(this, "delegate", delegateBinding);
-
-        delegate.render(writer, cycle);
+        if (delegate != null)
+        	delegate.render(writer, cycle);
     }
+    
+    public IRender getDelegate()
+    {
+        return delegate;
+    }
+
+    public void setDelegate(IRender delegate)
+    {
+        this.delegate = delegate;
+    }
+
 }

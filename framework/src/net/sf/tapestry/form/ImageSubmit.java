@@ -242,7 +242,7 @@ public class ImageSubmit extends AbstractFormComponent
             staticName = value.getString();
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         String parameterName;
         String value;

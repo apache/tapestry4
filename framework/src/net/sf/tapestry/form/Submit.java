@@ -180,7 +180,7 @@ public class Submit extends AbstractFormComponent
         return tagBinding;
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         String label = null;

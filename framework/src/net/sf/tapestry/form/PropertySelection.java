@@ -202,7 +202,7 @@ public class PropertySelection extends AbstractFormComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         IPropertySelectionRenderer renderer = null;
         Object newValue;

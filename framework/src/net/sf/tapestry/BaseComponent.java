@@ -365,11 +365,12 @@ public class BaseComponent extends AbstractComponent
     }
 
     /**
-     *  Renders the top level components contained by the receiver.
+     *   Renders the top level components contained by the receiver.
      *
+     *   @since 2.0.3
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         if (CAT.isDebugEnabled())
             CAT.debug("Begin render " + getExtendedId());

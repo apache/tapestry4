@@ -165,7 +165,7 @@ public class Select extends AbstractFormComponent
      *  is submitted (by checking {@link IForm#isRewinding()}.
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         boolean multiple;

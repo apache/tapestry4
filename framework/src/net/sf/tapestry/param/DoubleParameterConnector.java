@@ -23,40 +23,44 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.components;
 
-import net.sf.tapestry.AbstractComponent;
+package net.sf.tapestry.param;
+
+import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
 
 /**
- *  Renders the text and components wrapped by a component.
- *
- * <p>Informal parameters are not allowed.  The component may not have a body.
- *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  Connects a parameter to a property of type double.
+ * 
+ *  @author Howard Lewis Ship 
+ *  @version $Id$
+ *  @since 2.0.3
  * 
  **/
 
-public class InsertWrapped extends AbstractComponent
+public class DoubleParameterConnector extends AbstractParameterConnector
 {
-    /**
-     *  Finds this <code>InsertWrapped</code>'s container, and invokes
-     *  {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
-     *  on it.
-     *
-     **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected DoubleParameterConnector(
+        IComponent component,
+        String parameterName,
+        IBinding binding)
     {
-        IComponent container;
-        String containerId;
-
-        container = getContainer();
-
-        container.renderWrapped(writer, cycle);
+        super(component, parameterName, binding);
     }
+
+	/**
+	 *  Invokes {@link IBinding#getDouble()) to obtain the value
+	 *  to assign to the property.
+	 * 
+	 **/
+	
+    public void setParameter() throws RequiredParameterException
+    {
+        double scalar = getBinding().getDouble();
+        
+        setPropertyValue(new Double(scalar));
+    }
+
 }

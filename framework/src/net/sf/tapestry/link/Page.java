@@ -102,15 +102,7 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Page extends GestureLink
 {
-    private IBinding pageBinding;
-    private String pageValue;
-
-    private String[] context;
-
-    public IBinding getPageBinding()
-    {
-        return pageBinding;
-    }
+	private String targetPage;
 
     /**
      *  Returns {@link IEngineService#PAGE_SERVICE}.
@@ -122,14 +114,6 @@ public class Page extends GestureLink
         return IEngineService.PAGE_SERVICE;
     }
 
-    public void setPageBinding(IBinding value)
-    {
-        pageBinding = value;
-
-        if (value.isStatic())
-            pageValue = value.getString();
-    }
-
     /**
      *  Returns a single-element String array; the lone element is the
      *  name of the page, retrieved from the 'page' parameter.
@@ -138,21 +122,18 @@ public class Page extends GestureLink
 
     protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
     {
-        String pageName;
-
-        if (pageValue != null)
-            pageName = pageValue;
-        else
-            pageName = pageBinding.getString();
-
-        if (pageName == null)
-            throw new RequiredParameterException(this, "page", pageBinding);
-
-        if (context == null)
-            context = new String[1];
-
-        context[0] = pageName;
-
-        return context;
+        return new String[] { targetPage };
     }
+
+    public String getTargetPage()
+    {
+        return targetPage;
+    }
+
+
+    public void setTargetPage(String targetPage)
+    {
+        this.targetPage = targetPage;
+    }
+
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC
-	"-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 	
 <specification 
 	class="net.sf.tapestry.components.Foreach" 
@@ -13,25 +13,25 @@
   component).
   </description>
 	
-  <parameter name="source">
+  <parameter name="source" java-type="java.lang.Object" direction="in">
     <description>
     The source of values, a Java collection or array.
     </description>
   </parameter>
   
-  <parameter name="value">
+  <parameter name="value" direction="custom">
     <description>
-    If provided, the on each iteration, the value property is updated.
+    If provided, then on each iteration, the value property is updated.
     </description>
   </parameter>
   
-  <parameter name="index" java-type="int">
+  <parameter name="index" java-type="int" direction="custom">
     <description>
     If provided, then the index of the loop is set on each iteration.
     </description>
   </parameter>
   
-  <parameter name="element" java-type="java.lang.String">
+  <parameter name="element" java-type="java.lang.String" direction="in">
     <description>
     If provided, then the Foreach creates an element wrapping its content.
     Informal parameters become attributes of the element.

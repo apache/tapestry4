@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.form.Hidden" allow-body="no" allow-informal-parameters="no">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
+<specification class="net.sf.tapestry.form.Hidden" 
+	allow-body="no" 
+	allow-informal-parameters="no">
 
   <description>
   Stores a value in a hidden field of the form.
   </description>
   
-  <parameter name="value" required="yes">
+  <parameter name="value" 
+  	required="yes" 
+  	java-type="java.lang.String"
+  	direction="custom">
     <description>
-    The value to save in the form.
+    Value to save in the form.
     </description>
   </parameter>
   
-  <parameter name="listener" java-type="net.sf.tapestry.IActionListener">
+  <parameter name="listener" 
+  	java-type="net.sf.tapestry.IActionListener"
+  	direction="in">
     <description>
-    A listener than is notified after the value is restored.
+    Listener notified after the value is restored.
     </description>
   </parameter>
   

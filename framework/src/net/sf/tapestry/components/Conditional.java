@@ -77,57 +77,39 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Conditional extends AbstractComponent
 {
-    private IBinding condition;
-    private IBinding invert;
-    private boolean staticInvertBinding = false;
-    private boolean staticInvertValue;
-
-    public IBinding getConditionBinding()
-    {
-        return condition;
-    }
-
-    public IBinding getInvertBinding()
-    {
-        return invert;
-    }
-
+	private boolean condition;
+	private boolean invert;
+	
     /**
-     *  Render's its wrapped components only if the condition is true (technically,
+     *  Renders its wrapped components only if the condition is true (technically,
      *  if condition matches invert).
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        boolean conditionValue = false;
-        boolean invertValue = false;
-
-        if (condition != null)
-            conditionValue = condition.getBoolean();
-
-        if (staticInvertBinding)
-            invertValue = staticInvertValue;
-        else if (invert != null)
-            invertValue = invert.getBoolean();
-
-        // Decide whether to render or not.
-
-        if (conditionValue != invertValue)
+      if (condition != invert)
             renderWrapped(writer, cycle);
     }
-
-    public void setConditionBinding(IBinding value)
+    
+    public boolean getCondition()
     {
-        condition = value;
+        return condition;
     }
 
-    public void setInvertBinding(IBinding value)
+    public void setCondition(boolean condition)
     {
-        invert = value;
-
-        staticInvertBinding = invert.isStatic();
-        if (staticInvertBinding)
-            staticInvertValue = invert.getBoolean();
+        this.condition = condition;
     }
+
+    public boolean getInvert()
+    {
+        return invert;
+    }
+
+    public void setInvert(boolean invert)
+    {
+        this.invert = invert;
+    }
+
 }

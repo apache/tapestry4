@@ -37,6 +37,7 @@ import net.sf.tapestry.bean.BeanProviderHelper;
 import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.ObservedChangeEvent;
 import net.sf.tapestry.listener.ListenerMap;
+import net.sf.tapestry.param.ParameterManager;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.util.prop.IPropertyAccessor;
@@ -45,8 +46,9 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ * 
  **/
 
 public abstract class AbstractComponent implements IComponent
@@ -149,18 +151,30 @@ public abstract class AbstractComponent implements IComponent
      *  objects.
      *
      *  @since 1.0.2
+     * 
      **/
 
     private ListenerMap listeners;
 
     /**
-     * A bean provider; these are lazily created as needed.
+     *  A bean provider; these are lazily created as needed.
      *
-     * @since 1.0.4
+     *  @since 1.0.4
+     * 
      **/
 
     private IBeanProvider beans;
 
+
+	/**
+	 *  Manages setting and clearing parameter properties for the component.
+	 * 
+	 *  @since 2.0.3
+	 * 
+	 **/
+	
+	private ParameterManager parameterManager;
+	
     public void addAsset(String name, IAsset asset)
     {
         if (assets == null)
@@ -826,4 +840,83 @@ public abstract class AbstractComponent implements IComponent
     {
     }
 
+	/**
+	 *  The main method used to render the component.  
+	 *  Invokes {@link #prepareForRender(IRequestCycle)}, then
+	 *  {@link #renderComponent(IMarkupWriter, IRequestCycle)}.
+	 *  {@link #cleanupAfterRender(IRequestCycle)} is invoked in a 
+	 *  <code>finally</code> block.
+	 * 	 
+	 *  <p>Subclasses should not override this method; instead they
+	 *  will implement {@link #renderComponent(IMarkupWriter, IRequestCycle)}.
+	 * 
+	 *  @since 2.0.3
+	 * 
+	 **/
+	
+    public final void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        try
+        {
+            prepareForRender(cycle);
+            
+            renderComponent(writer, cycle);
+        }
+        finally
+        {
+            cleanupAfterRender(cycle);
+        }
+    }
+
+	/**
+	 *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
+	 *  to prepare the component to render.  This implementation
+	 *  sets JavaBeans properties from matching bound parameters.
+	 *  Subclasses that override this method must invoke this
+	 *  implementation as well.
+	 * 
+	 *  @since 2.0.3
+	 * 
+	 **/
+	
+	protected void prepareForRender(IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		if (parameterManager == null)
+			parameterManager = new ParameterManager(this);
+			
+		parameterManager.setParameters();   
+	}
+	
+	/**
+	 *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
+	 *  to actually render the component (with any parameter values
+	 *  already set).  This is the method that subclasses must implement.
+	 * 
+	 *  @since 2.0.3
+	 * 
+	 **/
+	
+	protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+	throws RequestCycleException;
+	
+	/**
+	 *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
+	 *  after the component renders, to clear any parameters back to
+	 *  null (or 0, or false).  Primarily, this is used to ensure
+	 *  that the component doesn't hold onto any objects that could
+	 *  otherwise be garbage collected.
+	 * 
+	 *  <p>Subclasses may override this implementation, but must
+	 *  also invoke it.
+	 * 
+	 *  @since 2.0.3
+	 * 
+	 **/
+	
+	protected void cleanupAfterRender(IRequestCycle cycle)
+	{
+	    parameterManager.clearParameters();
+	}
 }

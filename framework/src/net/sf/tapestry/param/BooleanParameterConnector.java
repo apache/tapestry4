@@ -23,40 +23,47 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.components;
 
-import net.sf.tapestry.AbstractComponent;
+package net.sf.tapestry.param;
+
+import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
 
 /**
- *  Renders the text and components wrapped by a component.
- *
- * <p>Informal parameters are not allowed.  The component may not have a body.
- *
- * @author Howard Lewis Ship
- * @version $Id$
+ *   Connector for boolean parameters.
+ * 
+ *   @see IBinding#getBoolean()
+ * 
+ *   @author Howard Lewis Ship
+ *   @version $Id$
+ *   @since 2.0.3
  * 
  **/
 
-public class InsertWrapped extends AbstractComponent
+public class BooleanParameterConnector extends AbstractParameterConnector
 {
-    /**
-     *  Finds this <code>InsertWrapped</code>'s container, and invokes
-     *  {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
-     *  on it.
-     *
-     **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected BooleanParameterConnector(
+        IComponent component,
+        String parameterName,
+        IBinding binding)
     {
-        IComponent container;
-        String containerId;
-
-        container = getContainer();
-
-        container.renderWrapped(writer, cycle);
+        super(component, parameterName, binding);
     }
+
+	/**
+	 *  Invokes {@link IBinding#getBoolean()}, which always
+	 *  returns true or false (there is no concept of a null
+	 *  value).
+	 * 
+	 **/
+	
+    public void setParameter()
+    {
+ 		boolean value = getBinding().getBoolean();
+ 		
+ 		setPropertyValue(value ? Boolean.TRUE : Boolean.FALSE);
+    }
+
 }

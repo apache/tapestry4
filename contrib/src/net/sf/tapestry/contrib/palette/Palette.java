@@ -378,7 +378,7 @@ public class Palette extends BaseComponent implements IFormComponent
         return form;
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         form = Form.get(page.getRequestCycle());
@@ -440,7 +440,7 @@ public class Palette extends BaseComponent implements IFormComponent
 
         try
         {
-            super.render(writer, cycle);
+            super.renderComponent(writer, cycle);
         }
         finally
         {

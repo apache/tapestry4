@@ -106,16 +106,11 @@ public class Borrow extends BaseComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        try
-        {
-            super.render(writer, cycle);
-        }
-        finally
-        {
-            book = null;
-        }
+        book = null;
+
+        super.cleanupAfterRender(cycle);
     }
 
     public boolean isLinkDisabled()

@@ -249,7 +249,7 @@ public class ValidField
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         boolean rendering;
@@ -265,7 +265,7 @@ public class ValidField
         if (rendering)
             delegate.writePrefix(writer, cycle);
 
-        super.render(writer, cycle);
+        super.renderComponent(writer, cycle);
 
         if (rendering)
             delegate.writeSuffix(writer, cycle);
