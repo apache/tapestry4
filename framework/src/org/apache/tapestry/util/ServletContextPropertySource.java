@@ -23,13 +23,13 @@
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
+ * 4. The names "Apache" and "Apache Software Foundation", "Tapestry"
  *    must not be used to endorse or promote products derived from this
  *    software without prior written permission. For written
  *    permission, please contact apache@apache.org.
  *
- * 5. Products derived from this software may not be called "Apache" 
- *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
+ * 5. Products derived from this software may not be called "Apache"
+ *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their
  *    name, without prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,7 +56,7 @@
 package org.apache.tapestry.util;
 
 /**
- *  Implementation of {@link org.apache.tapestry.IPropertySource}
+ *  Implementation of {@link IPropertySource}
  *  that returns values defined as ServletContext initialization parameters
  *  (defined as <code>&lt;init-param&gt;</code> in the
  *  <code>web.xml</code> deployment descriptor.
@@ -65,7 +65,7 @@ package org.apache.tapestry.util;
  *  @version $Id$
  *  @since 2.3
  *
- **/ 
+ **/
 
 import javax.servlet.ServletContext;
 
@@ -82,9 +82,9 @@ public class ServletContextPropertySource implements IPropertySource
 
     /**
      *  Invokes {@link ServletContext#getInitParameter(java.lang.String)}.
-     * 
+     *
      **/
-    
+
     public String getPropertyValue(String propertyName)
     {
         return _context.getInitParameter(propertyName);
