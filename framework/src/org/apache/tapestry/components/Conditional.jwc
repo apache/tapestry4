@@ -24,7 +24,7 @@
   Conditionally emulates an element and its attributes (if element is specified) and/or includes a block of content if a condition is met.
   </description>
   
-  <parameter name="condition" type="boolean" direction="in">
+  <parameter name="condition" type="boolean" direction="in" required="yes">
     <description>
     The condition to evaluate.
     </description>
