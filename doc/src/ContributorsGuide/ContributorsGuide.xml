@@ -483,58 +483,6 @@ For example, the &dollar;Id$ for this document is <literal>$Id$</literal>.
 
 </section>
 
-<section id="standards.copyright">
-	<title>Copyright</title>
-	
-<para>
-All Java files must include the following copyright notice at the top of the file, before
-the <literal>package</literal> statement:
-
-<figure>
-	<title>Copyright Notice</title>
-<programlisting>
-//
-// Tapestry Web Application Framework
-// Copyright (c) <replaceable>Year</replaceable> by Howard Lewis Ship
-//
-// Howard Lewis Ship
-// http://sf.net/projects/tapestry
-// mailto:hship@users.sf.net
-//
-// This library is free software.
-//
-// You may redistribute it and/or modify it under the terms of the GNU
-// Lesser General Public License as published by the Free Software Foundation.
-//
-// Version 2.1 of the license should be included with this distribution in
-// the file LICENSE, as well as License.html. If the license is not
-// included with this distribution, you may find a copy at the FSF web
-// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
-// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied waranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-//
-</programlisting>
-</figure>
-</para>
-
-<para>
-The <replaceable>Year</replaceable> should be a simple year, (example:
-<literal>2002</literal>), or a year range (example: <literal>2000-2002</literal>).
-</para>
-
-<para>
-Do not change the name ('Howard Lewis Ship').  
-By contributing any code or resources to the Tapestry project, you are
-reassigning copyright.  This is the only way to ensure that
-there are no future problems with ownership and licensing.
-</para>
-
-</section>
-
 <section id="standards.typecomment">
 	<title>Type Comment</title>
 	
