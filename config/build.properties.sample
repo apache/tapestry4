@@ -15,6 +15,10 @@ tomcat.dir=
 # Required to execute the run-workbench target.
 jetty.dir=
 
+# The absolute path to the directory containing the Jython installation.
+# Required to execute the junit target.
+jython.dir=
+
 # The absolute path to the JAR containing the J2EE libraries
 # (javax.ejb).
 
@@ -24,3 +28,4 @@ j2ee.jar.path=
 # (javax.servlet).
 
 servlet.jar.path=
+
