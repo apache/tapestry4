@@ -67,7 +67,7 @@
     
     <!-- This needs to be kept up-to-date as we update to later versions of OGNL. -->
     
-    <jar name="lib/ext/ognl-2.5.1.jar"/>
+    <jar name="lib/ext/ognl-2.6.3.jar"/>
     <license name="lib/ext/LICENSE.ognl.txt"/>
   </project>
    
