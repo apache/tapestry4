@@ -295,33 +295,14 @@ public class BasePage extends BaseComponent implements IPage
 	}
 
     /**
-     *  Begins the response by setting {@link HttpServletResponse} headers
-     *  that should ensure the page is not cached.  This implementation
-     *  is a scattershot approach, sending headers that are meaningful
-     *  to various browsers (a smarter approach would be to identify
-     *  the browser and set at most one specific header appropriate
-     *  to the browser).
-     *
-     *  <p><table>
-     *  <tr><th>Header</th> <th>Value</th> </tr>
-     *  <tr><td>Pragma</td> <td>no-cache</td> </tr>
-     *  <tr><td>Cache-Control</td> <td>no-cache</td> </tr>
-     *  <tr><td>Expires</td> <td>0</td> </tr> </table>
+     *  Does nothing.  Subclasses may override.
      *
      */
      
 	public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
     throws RequestCycleException
-    {
-        HttpServletResponse response;
-
-        response = cycle.getRequestContext().getResponse();
-
-        // This is a gamut of options that should convince the
-        // browser not to cache.
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
+    { 
+		// Does nothing.
     }
 	
 	public IRequestCycle getRequestCycle()

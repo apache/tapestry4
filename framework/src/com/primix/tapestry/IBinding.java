@@ -97,8 +97,6 @@ public interface IBinding
      *  Returns true if the value is statically defined.  Static values
      *  are read-only.
      *
-     *  @see #isReadOnly()
-     *
      */
  
     public boolean isStatic();
