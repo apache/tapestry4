@@ -76,8 +76,6 @@ public class ComponentSpecification extends BasePropertyHolder
      **/
 
     protected String specificationResourcePath;
-    private String _dtdVersion;
-
     /** @since 1.0.9 **/
     private String _description;
 
@@ -482,34 +480,6 @@ public class ComponentSpecification extends BasePropertyHolder
     public void setDescription(String description)
     {
         _description = description;
-    }
-
-    /** 
-     * 
-     *  @deprecated To be removed in 2.3.  Use {@link #getPublicId()}.
-     * 
-     *  @since 2.0.5 
-     * 
-     **/
-
-    public String getDTDVersion()
-    {
-        return _dtdVersion;
-    }
-
-    /**
-     *  Sets the version number of the DTD from which this specification
-     *  was created, if known.  This method exists as a convienience for
-     *  the Spindle plugin.
-     * 
-     *  @since 2.0.5
-     *  @deprecated To be removed in 2.3.  Use {@link #setPublicId(String)}.
-     * 
-     **/
-
-    public void setDTDVersion(String dtdVersion)
-    {
-        _dtdVersion = dtdVersion;
     }
 
     /**

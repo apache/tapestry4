@@ -96,18 +96,6 @@ public interface ILibrarySpecification extends IPropertyHolder
 
     public void setDescription(String description);
     
-    public String getDTDVersion();
-    
-    /**
-     *  Sets the version number of the DTD from which this specification
-     *  was created, if known.  This method exists as a convienience for
-     *  the Spindle plugin.
-     * 
-     * 
-     **/
-
-    public void setDTDVersion(String dtdVersion);
-
     /**
      *  Returns a Map of extensions; key is extension name, value is
      *  {@link net.sf.tapestry.spec.ExtensionSpecification}.

@@ -611,22 +611,6 @@ public class SpecificationParser extends AbstractDocumentParser
         return attributeValue.equals("yes");
     }
 
-    protected String getDTDVersion(Document document)
-    {
-        String publicId = document.getDoctype().getPublicId();
-
-        if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID))
-            return "1.1";
-
-        if (publicId.equals(TAPESTRY_DTD_1_2_PUBLIC_ID))
-            return "1.2";
-
-        if (publicId.equals(TAPESTRY_DTD_1_3_PUBLIC_ID))
-            return "1.3";
-
-        return null;
-    }
-
     private IApplicationSpecification convertApplicationSpecification(Document document, IResourceResolver resolver)
         throws DocumentParseException
     {
@@ -667,11 +651,6 @@ public class SpecificationParser extends AbstractDocumentParser
         IResourceResolver resolver)
         throws DocumentParseException
     {
-
-        String dtdVersion = getDTDVersion(document);
-
-        specification.setDTDVersion(dtdVersion);
-
         specification.setPublicId(document.getDoctype().getPublicId());
 
         specification.setResourceResolver(resolver);
@@ -782,9 +761,6 @@ public class SpecificationParser extends AbstractDocumentParser
         ComponentSpecification specification = _factory.createComponentSpecification();
         Element root = document.getDocumentElement();
 
-        String dtdVersion = getDTDVersion(document);
-
-        specification.setDTDVersion(dtdVersion);
         specification.setPublicId(document.getDoctype().getPublicId());
 
         // Only components specify these two attributes.  For pages they either can't be specified
@@ -1253,6 +1229,8 @@ public class SpecificationParser extends AbstractDocumentParser
      *  If not a match, then an error message is generated (using the
      *  errorKey and the input value) and a
      *  {@link DocumentParseException} is thrown.
+     * 
+     *  @since 2.2
      * 
      **/
 
