@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+    <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="config"/>
     <classpathentry kind="src" path="framework/src"/>
     <classpathentry kind="src" path="contrib/src"/>
@@ -8,6 +8,7 @@
     <classpathentry kind="src" path="examples/VlibBeans/src"/>
     <classpathentry kind="src" path="examples/Vlib/src"/>
     <classpathentry kind="src" path="examples/Workbench/src"/>
+    <classpathentry kind="src" path="examples/wap/src"/>
     <classpathentry kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
     <classpathentry kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/client/jboss-j2ee.jar"/>
