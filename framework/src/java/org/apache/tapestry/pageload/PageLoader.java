@@ -70,10 +70,6 @@ public class PageLoader implements IPageLoader
 
     /** @since 3.1 */
 
-    private String _defaultPageClassName;
-
-    /** @since 3.1 */
-
     private String _defaultScriptLanguage;
 
     /** @since 3.1 */
@@ -111,6 +107,10 @@ public class PageLoader implements IPageLoader
 
     private AssetSource _assetSource;
 
+    /** @since 3.1 */
+
+    private PageClassProvider _pageClassProvider;
+
     /**
      * The locale of the application, which is also the locale of the page being loaded.
      */
@@ -141,6 +141,7 @@ public class PageLoader implements IPageLoader
         // Create the mechanisms for walking the component tree when it is
         // complete
         IComponentVisitor verifyRequiredParametersVisitor = new VerifyRequiredParametersVisitor();
+
         _verifyRequiredParametersWalker = new ComponentTreeWalker(new IComponentVisitor[]
         { verifyRequiredParametersVisitor });
 
@@ -500,12 +501,11 @@ public class PageLoader implements IPageLoader
     {
         IPage result = null;
 
-        String pageName = namespace.constructQualifiedName(name);
-        String className = spec.getComponentClassName();
-        Location location = spec.getLocation();
+        PageClassProviderContext context = new PageClassProviderContext(name, spec, namespace);
+        String className = _pageClassProvider.providePageClassName(context);
 
-        if (HiveMind.isBlank(className))
-            className = _defaultPageClassName;
+        String pageName = namespace.constructQualifiedName(name);
+        Location location = spec.getLocation();
 
         ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(
                 spec,
@@ -645,13 +645,6 @@ public class PageLoader implements IPageLoader
 
     /** @since 3.1 */
 
-    public void setDefaultPageClassName(String string)
-    {
-        _defaultPageClassName = string;
-    }
-
-    /** @since 3.1 */
-
     public void setDefaultScriptLanguage(String string)
     {
         _defaultScriptLanguage = string;
@@ -702,5 +695,11 @@ public class PageLoader implements IPageLoader
     public void setManagerFactory(BSFManagerFactory managerFactory)
     {
         _managerFactory = managerFactory;
+    }
+
+    /** @since 3.1 */
+    public void setPageClassProvider(PageClassProvider pageClassProvider)
+    {
+        _pageClassProvider = pageClassProvider;
     }
 }

@@ -41,13 +41,12 @@
         <set-service property="componentTemplateLoader" service-id="ComponentTemplateLoader"/>
         <set-service property="establishDefaultParameterValuesVisitor"
           service-id="EstablishDefaultParameterValuesVisitor"/>
-        <set-object property="defaultPageClassName"
-                       value="app-property:org.apache.tapestry.default-page-class"/>
         <set-object property="defaultScriptLanguage"
                        value="app-property:org.apache.tapestry.default-script-language"/>
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
         <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
         <set-service property="managerFactory" service-id="BSFManagerFactory"/>
+        <set-service property="pageClassProvider" service-id="PageClassProvider"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -135,4 +134,49 @@
     
   </service-point>
   
+  <configuration-point id="PageClassProviderChain" schema-id="hivemind.lib.ChainContribution">
+    
+    Chain of objects implementing PageClassProvider that are used to locate  the page class
+    for a particular page.
+    
+  </configuration-point>
+  
+  <service-point id="PageClassProvider" interface="PageClassProvider">
+    
+    Chain built around thePgaeClassProviderChain configuration point, used to determine
+    the class to instantiate for a particular page (within a namespace).
+    
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="PageClassProviderChain"/>
+    </invoke-factory>
+  </service-point>
+  
+  <contribution configuration-id="PageClassProviderChain">
+    <command id="specification" before="*" object="instance:SpecificationPageClassProvider"/>
+    <command id="namespace-class-search" object="service:NamespaceClassSearchPageClassProvider"/>
+    <command id="namespace-default" object="instance:NamespaceDefaultPageClassProvider" after="namespace-class-search"/>
+    <command id="global-default" object="service:GlobalDefaultPageClassProvider" after="*"/>
+  </contribution>
+  
+  <service-point id="NamespaceClassSearchPageClassProvider" interface="PageClassProvider">
+    
+    Searches for a class with a name matching the page name in the default package
+    (and in packages defined by the namespace's org.apache.tapestry.page-class-packages meta property).
+    
+    <invoke-factory>
+      <construct class="NamespaceClassSearchPageClassProvider"/>
+    </invoke-factory>    
+    
+  </service-point>
+  
+  <service-point id="GlobalDefaultPageClassProvider" interface="PageClassProvider">
+    
+    Final command in the chain; returns a fixed value based on a global property.
+    
+    <invoke-factory>
+      <construct class="GlobalDefaultPageClassProvider">
+        <set-object property="pageClassName" value="global-property:org.apache.tapestry.default-page-class"/>        
+      </construct>
+    </invoke-factory>
+  </service-point>
 </module>

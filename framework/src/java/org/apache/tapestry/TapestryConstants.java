@@ -25,34 +25,44 @@ public class TapestryConstants
      * 
      * @see org.apache.tapestry.engine.HomeService
      */
-    
+
     public static final String HOME_PAGE = "Home";
+
     /**
      * The name ("Exception") of the page used for reporting exceptions.
      * <p>
      * Such a page must have a writable JavaBeans property named 'exception' of type
      * <code>java.lang.Throwable</code>.
      */
-    
+
     public static final String EXCEPTION_PAGE = "Exception";
+
     /**
      * The name ("StaleLink") of the page used for reporting stale links.
      * <p>
      * The page must implement a writeable JavaBeans proeprty named 'message' of type
      * <code>String</code>.
      */
-    
+
     public static final String STALE_LINK_PAGE = "StaleLink";
+
     /**
      * The name ("StaleSession") of the page used for reporting state sessions.
      */
-    
+
     public static final String STALE_SESSION_PAGE = "StaleSession";
+
     /**
      * Name of the cookie written to the client web browser to identify the locale.
      */
-    
+
     public static final String LOCALE_COOKIE_NAME = "org.apache.tapestry.locale";
+
+    /**
+     * Name of the meta data property used as a default for page class names.
+     */
+
+    public static final String PAGE_CLASS_NAME = "org.apache.tapestry.default-page-class";
 
     private TapestryConstants()
     {

@@ -110,6 +110,12 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      */
     public IContainedComponent getComponent(String id);
 
+    /**
+     * Returns the class name to be used when instantiating the component, or null if no class name
+     * was provided in the specification (in which case, a system of defaults will be used to
+     * determine the class name).
+     */
+
     public String getComponentClassName();
 
     /**
@@ -267,24 +273,22 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      */
 
     public List getInjectSpecifications();
-    
+
     /**
      * Adds a {@link org.apache.tapestry.spec.InjectStateSpecification}s.
      * 
      * @since 3.1
      */
-    
+
     public void addInjectStateSpecification(InjectStateSpecification spec);
-    
+
     /**
-     * Returns the list of {@link org.apache.tapestry.spec.InjectStateSpecification}s.  Returns
-     * an empty list if no specifications have been added.
+     * Returns the list of {@link org.apache.tapestry.spec.InjectStateSpecification}s. Returns an
+     * empty list if no specifications have been added.
      * 
      * @since 3.1
-     * 
      */
-    
+
     public List getInjectStateSpecifications();
-    
-    
+
 }
