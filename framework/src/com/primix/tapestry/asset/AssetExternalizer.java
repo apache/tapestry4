@@ -39,12 +39,12 @@ import com.primix.tapestry.spec.ApplicationSpecification;
 
 /**
  *  Responsible for copying assets from the classpath to an external directory that
- *  is visible to the web server.  Lives inside
- *  the {@link ServletContext} as a named parameter.
+ *  is visible to the web server. The externalizer is stored inside
+ *  the {@link ServletContext} as a named attribute.
  *
  *  <p>The externalizer uses the name <code>com.primix.tapestry.AssetExternalizer.<i>application name</i>
  *  </code>.  It configures itself using two additional 
- *  servlet initial parameters:
+ *  context initial parameters:
  *
  *  <table border=1>
  *  <tr> <th>Parameter</th> <th>Description</th> </tr>
@@ -104,12 +104,15 @@ public class AssetExternalizer
 	{
 		HttpServlet servlet;
 		String directory;
+        ServletContext context;
 
 		resolver = cycle.getApplication().getResourceResolver();
 		
 		servlet = cycle.getRequestContext().getServlet();
 
-		directory = servlet.getInitParameter("com.primix.tapestry.asset.dir");
+        context = servlet.getServletContext();
+
+		directory = context.getInitParameter("com.primix.tapestry.asset.dir");
 
 		if (directory == null)
 			return;

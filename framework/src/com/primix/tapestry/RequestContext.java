@@ -764,7 +764,7 @@ public class RequestContext
 	{
 		Object result;
 
-		result = getSession().getValue(name);
+		result = getSession().getAttribute(name);
 
 		return result;
 	}
@@ -876,7 +876,7 @@ public class RequestContext
 
 	public void removeSessionAttribute(String name)
 	{
-		getSession().removeValue(name);
+		getSession().removeAttribute(name);
 	}
 
 	private void section(IResponseWriter writer, String sectionName)
@@ -908,7 +908,7 @@ public class RequestContext
 
 	public void setSessionAttribute(String name, Object value)
 	{
-		getSession().putValue(name, value);
+		getSession().setAttribute(name, value);
 	}
 
 	/**
@@ -926,7 +926,7 @@ public class RequestContext
 		Enumeration e;
 		String name;
 		String value;
-		boolean first = true;
+		boolean first;;
 		Cookie[] cookies;
 		Cookie cookie;
 		ServletConfig config;
@@ -952,20 +952,22 @@ public class RequestContext
 		pair(writer, "maxInactiveInterval", session.getMaxInactiveInterval());
 		pair(writer, "new", session.isNew());
 
-		// In 2.2, getValue...() will be deprecated in favor of
-		// getAttribute...().
+        first = true;
+		e = session.getAttributeNames();
 
-		names = session.getValueNames();
-		for (i = 0; i < names.length; i++)
+		while (e.hasMoreElements())
 		{
 
-			if (i == 0)
+			if (first)
 			{
 				section(writer, "Attributes");
 				header(writer, "Name", "Value");
+                first = false;
 			}
 
-			pair(writer, names[i], session.getValue(names[i]));
+            name = (String)e.nextElement();
+
+			pair(writer, name, session.getAttribute(name));
 		}
 
 		writer.end(); // Session
@@ -1004,6 +1006,7 @@ public class RequestContext
 
 		// Now deal with any headers
 
+        first = true;
 		e = request.getHeaderNames();
 		while (e.hasMoreElements())
 		{
@@ -1023,7 +1026,6 @@ public class RequestContext
 		// Parameters ...
 
 		first = true;
-
 		e = request.getParameterNames();
 		while (e.hasMoreElements())
 		{
@@ -1152,7 +1154,6 @@ public class RequestContext
 		pair(writer, "serverInfo", context.getServerInfo());
 
 		first = true;
-
 		e = context.getAttributeNames();
 		while (e.hasMoreElements())
 		{

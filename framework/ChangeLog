@@ -1,6 +1,9 @@
 * Nov 1 2000 hship
 
 Merge PrimixFoundation into Tapestry.  Keeping them seperate had little value.
+Change EnumPropertySelectionModel to require that the ResourceBundle be passed in
+(since it can't always resolve the bundle, due to classloader issues).
+Switch over to Servlet 2.2 APIs.
 
 * Oct 25 2000 hship
 

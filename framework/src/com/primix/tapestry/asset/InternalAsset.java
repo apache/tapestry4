@@ -71,16 +71,14 @@ public class InternalAsset implements IAsset
 	{
 		if (URL == null)
 		{
-			AbstractApplication application;
+			IApplication application;
 			String contextPath;
 			
-			application = (AbstractApplication)cycle.getApplication();
+			application = cycle.getApplication();
 			
 			contextPath = application.getContextPath();
-			if (contextPath == null)
-				URL = assetPath;
-			else
-				URL = contextPath + "/" + assetPath;
+            
+            URL = contextPath + "/" + assetPath;
 		}
 
 		return URL;
