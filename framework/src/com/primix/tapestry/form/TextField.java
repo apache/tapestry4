@@ -292,6 +292,11 @@ public class TextField extends AbstractFormComponent
 			maximumLengthValue = value.getInt();
 	}
 
+	public IBinding getMaximumLengthBinding()
+	{
+		return maximumLengthBinding;
+	}
+	
 	public void setTextBinding(IBinding value)
 	{
 		textBinding = value;
