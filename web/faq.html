@@ -3,39 +3,7 @@
 <head>
 <title>Tapestry: FAQ</title><link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
 </head>
-<script language="JavaScript">
-<!--
 
-function openWin(url, windowName, width, height)
-{
-	var screenX = Math.floor((screen.width)/2)-Math.floor(width/2);
-	var screenY = Math.floor((screen.height)/2)-Math.floor(height/2)-20;
-
-
-	var features = 
-		"toolbar=no," +
-		"scrollbars=no," +
-		"status=no," +
-		"top=" + screenY  + "," +
-		"left=" + screenX + "," +
-		"screenX=" + screenX + "," +
-		"screenY=" + screenY + "," +
-		"width=" + width + "," +
-		"height=" + height;
-
-	var newWindow = window.open(url, windowName, features);
-	
-	newWindow.focus();
-	return newWindow;
-}
-
-function showLinePrecise()
-{
-	openWin("images/LinePrecise.png", "LinePrecise", 779, 1048);
-}
-
-// -->
-</script>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
@@ -244,7 +212,7 @@ Start your servlet container with the JVM system parameter
 		
 		<p>
 			<div class="callout">
-						<a href="javascript:showLinePrecise()"><img src="images/LinePrecise_thumb.png" alt="Line Precise"/></a>
+						<a target="_blank" href="images/LinePrecise.png"><img src="images/LinePrecise_thumb.png" alt="Line Precise"/></a>
 		<br/>	Tapestry exception report (click for larger image).
 			</div>
 		For example; say you bind a parameter of a component that expects
