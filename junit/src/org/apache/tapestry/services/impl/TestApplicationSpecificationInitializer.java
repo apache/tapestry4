@@ -66,6 +66,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         MockControl configControl = newControl(ServletConfig.class);
         ServletConfig config = (ServletConfig) configControl.getMock();
 
+        trainForServletInit(configControl, config);
+
         config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
         configControl.setReturnValue(appSpecResource.getPath());
 
@@ -96,6 +98,20 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         verifyControls();
     }
 
+    private void trainForServletInit(MockControl configControl, ServletConfig config)
+    {
+        MockControl contextControl = newControl(ServletContext.class);
+        ServletContext context = (ServletContext) contextControl.getMock();
+
+        config.getServletContext();
+        configControl.setReturnValue(context);
+
+        config.getServletName();
+        configControl.setReturnValue("test");
+
+        context.log("test: init");
+    }
+
     public void testInAppContextFolder() throws Exception
     {
         DefaultClassResolver cr = new DefaultClassResolver();
@@ -119,6 +135,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         MockControl configControl = newControl(ServletConfig.class);
         ServletConfig config = (ServletConfig) configControl.getMock();
+
+        trainForServletInit(configControl, config);
 
         config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
         configControl.setReturnValue(null);
@@ -191,6 +209,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         MockControl configControl = newControl(ServletConfig.class);
         ServletConfig config = (ServletConfig) configControl.getMock();
+
+		trainForServletInit(configControl, config);
 
         config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
         configControl.setReturnValue(null);
@@ -287,6 +307,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         MockControl configControl = newControl(ServletConfig.class);
         ServletConfig config = (ServletConfig) configControl.getMock();
 
+		trainForServletInit(configControl, config);
+
         config.getInitParameter(ApplicationSpecificationInitializer.APP_SPEC_PATH_PARAM);
         configControl.setReturnValue(null);
 
@@ -363,10 +385,12 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         configControl.setReturnValue(null);
 
         config.getServletContext();
-        configControl.setReturnValue(context, 2);
+        configControl.setReturnValue(context, 3);
 
         config.getServletName();
-        configControl.setReturnValue("dino");
+        configControl.setReturnValue("dino", 2);
+
+		context.log("dino: init");
 
         context.getResource("/WEB-INF/dino/dino.application");
         contextControl.setReturnValue(getClass().getResource("ParseApp.application"), 2);

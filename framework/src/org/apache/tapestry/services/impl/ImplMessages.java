@@ -38,4 +38,9 @@ final class ImplMessages
     {
         return _formatter.format("no-application-specification", servlet.getServletName());
     }
+
+    public static String errorInstantiatingEngine(Class engineClass, Throwable cause)
+    {
+        return _formatter.format("error-instantiating-engine", engineClass.getName(), cause);
+    }
 }

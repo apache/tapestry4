@@ -149,26 +149,4 @@ public class TapestryTestCase extends HiveMindTestCase
             "Exception " + ex + " does not contain sub-string '" + string + "'.");
     }
 
-	/**
-	 * Tests to see if the provided value matches the regular expression.
-	 * 
-	 * @throws AssertionFailedError if the input does not match
-	 * 
-	 * @since 3.1
-	 */
-    public static void assertRegexp(String regexpPattern, String value)
-    {
-        if (_matcher == null)
-            _matcher = new RegexpMatcher();
-
-        if (_matcher.matches(regexpPattern, value))
-            return;
-
-        throw new AssertionFailedError(
-            "Text \""
-                + value
-                + "\" does not contain regular expression \""
-                + regexpPattern
-                + "\".");
-    }
 }
