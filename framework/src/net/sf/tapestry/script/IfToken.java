@@ -27,6 +27,7 @@ package net.sf.tapestry.script;
 
 import java.util.Map;
 
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
@@ -45,18 +46,20 @@ class IfToken extends AbstractToken
 {
     private boolean _condition;
     private String _expression;
+    private IResourceResolver _resolver;
 
-    IfToken(boolean condition, String expression)
+    IfToken(boolean condition, String expression, IResourceResolver resolver)
     {
         _condition = condition;
         _expression = expression;
+        _resolver = resolver;
     }
 
     private boolean evaluate(ScriptSession session)
     {
         Map symbols = session.getSymbols();
 
-        Object value = OgnlUtils.get(_expression, symbols);
+        Object value = OgnlUtils.get(_expression, _resolver, symbols);
 
         return Tapestry.evaluateBoolean(value);
     }

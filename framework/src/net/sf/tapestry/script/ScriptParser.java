@@ -225,7 +225,7 @@ public class ScriptParser extends AbstractDocumentParser
 
         String expression = getAttribute(node, "expression");
 
-        return new SetToken(key, expression);
+        return new SetToken(key, expression, _resolver);
     }
 
     private IScriptToken buildInputSymbol(Node node) throws DocumentParseException
@@ -359,19 +359,19 @@ public class ScriptParser extends AbstractDocumentParser
 
     /** @since 2.2 **/
 
-    private IScriptToken constructInsert(String propertyPath)
+    private IScriptToken constructInsert(String expression)
     {
         IScriptToken result = null;
 
         if (_insertCache == null)
             _insertCache = new HashMap(MAP_SIZE);
         else
-            result = (IScriptToken) _insertCache.get(propertyPath);
+            result = (IScriptToken) _insertCache.get(expression);
 
         if (result == null)
         {
-            result = new InsertToken(propertyPath);
-            _insertCache.put(propertyPath, result);
+            result = new InsertToken(expression, _resolver);
+            _insertCache.put(expression, result);
         }
 
         return result;
@@ -380,7 +380,7 @@ public class ScriptParser extends AbstractDocumentParser
     private IScriptToken buildIf(boolean condition, Node node) throws DocumentParseException
     {
         String expression = getAttribute(node, _expressionAttribute);
-        IScriptToken result = new IfToken(condition, expression);
+        IScriptToken result = new IfToken(condition, expression, _resolver);
 
         build(result, node);
 
@@ -391,7 +391,7 @@ public class ScriptParser extends AbstractDocumentParser
     {
         String key = getAttribute(node, "key");
         String expression = getAttribute(node, _expressionAttribute);
-        IScriptToken result = new ForeachToken(key, expression);
+        IScriptToken result = new ForeachToken(key, expression, _resolver);
 
         build(result, node);
 

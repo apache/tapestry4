@@ -27,6 +27,7 @@ package net.sf.tapestry.script;
 
 import java.util.Map;
 
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.util.prop.OgnlUtils;
@@ -43,10 +44,12 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 class InsertToken implements IScriptToken
 {
     private String _expression;
+    private IResourceResolver _resolver;
 
-    InsertToken(String expression)
+    InsertToken(String expression, IResourceResolver resolver)
     {
         _expression = expression;
+        _resolver = resolver;
     }
 
     /**
@@ -59,7 +62,7 @@ class InsertToken implements IScriptToken
     {
         Map symbols = session.getSymbols();
 
-        Object value = OgnlUtils.get(_expression, symbols);
+        Object value = OgnlUtils.get(_expression, _resolver, symbols);
 
         if (value != null)
             buffer.append(value);

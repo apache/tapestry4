@@ -37,6 +37,7 @@ import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageRecorder;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.PageRecorderCommitException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.ObservedChangeEvent;
@@ -198,7 +199,13 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 
     public void rollback(IPage page)
     {
-        Iterator i = getChanges().iterator();
+        Collection changes = getChanges();
+        
+        if (changes.isEmpty())
+            return;
+            
+        IResourceResolver resolver = page.getEngine().getResourceResolver();            
+        Iterator i = changes.iterator();
 
         while (i.hasNext())
         {
@@ -209,7 +216,7 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
             try
             {
 
-                OgnlUtils.set(change.propertyName, component, change.newValue);
+                OgnlUtils.set(change.propertyName, resolver, component, change.newValue);
             }
             catch (Throwable t)
             {
