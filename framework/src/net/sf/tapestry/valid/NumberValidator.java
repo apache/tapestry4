@@ -215,7 +215,7 @@ public class NumberValidator extends BaseValidator
         catch (NumberFormatException ex)
         {
             String errorMessage =
-                getString("invalid-numeric-format", field.getDisplayName());
+                getString("invalid-numeric-format", field.getPage().getLocale(), field.getDisplayName());
 
             throw new ValidatorException(
                 errorMessage,
@@ -226,7 +226,7 @@ public class NumberValidator extends BaseValidator
         if (minimum != null && adaptor.compare(result, minimum) < 0)
         {
             String errorMessage =
-                getString("number-too-small", field.getDisplayName(), minimum);
+                getString("number-too-small", field.getPage().getLocale(), field.getDisplayName(), minimum);
 
             throw new ValidatorException(
                 errorMessage,
@@ -237,7 +237,7 @@ public class NumberValidator extends BaseValidator
         if (maximum != null && adaptor.compare(result, maximum) > 0)
         {
             String errorMessage =
-                getString("number-too-large", field.getDisplayName(), maximum);
+                getString("number-too-large", field.getPage().getLocale(), field.getDisplayName(), maximum);
 
             throw new ValidatorException(
                 errorMessage,

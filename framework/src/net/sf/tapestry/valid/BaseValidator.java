@@ -42,12 +42,14 @@ import net.sf.tapestry.Tapestry;
 
 public abstract class BaseValidator implements IValidator
 {
-    private boolean required;
-    private Locale locale;
-    private ResourceBundle strings;
+    private boolean _required;
+
+    /** @deprecated to be removed after 2.1 **/
+
+    private Locale _locale = Locale.getDefault();
 
     /**
-     *  Standard constructor.  Leaves locale as null and required as false.
+     *  Standard constructor.  Leaves locale as system default and required as false.
      * 
      **/
 
@@ -57,49 +59,44 @@ public abstract class BaseValidator implements IValidator
 
     protected BaseValidator(boolean required)
     {
-        this.required = required;
+        this._required = required;
     }
+
+    /** @deprecated to be removed after 2.1 **/
 
     public Locale getLocale()
     {
-        return locale;
+        return _locale;
     }
+
+    /** @deprecated to be removed after 2.1 **/
 
     public void setLocale(Locale locale)
     {
-        this.locale = locale;
+        this._locale = locale;
     }
 
     public boolean isRequired()
     {
-        return required;
+        return _required;
     }
 
     public void setRequired(boolean required)
     {
-        this.required = required;
+        this._required = required;
     }
 
     /**
      *  Gets a string from the standard resource bundle.  The string in the bundle
      *  is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
      * 
+     *  @since 2.1
+     * 
      **/
 
-    protected String getString(String key, Object[] args)
+    protected String getString(String key, Locale locale, Object[] args)
     {
-        if (strings == null)
-        {
-            Locale bundleLocale = locale;
-
-            if (bundleLocale == null)
-                bundleLocale = Locale.getDefault();
-
-            strings =
-                ResourceBundle.getBundle(
-                    "net.sf.tapestry.valid.ValidationStrings",
-                    bundleLocale);
-        }
+        ResourceBundle strings = ResourceBundle.getBundle("net.sf.tapestry.valid.ValidationStrings", locale);
 
         String pattern = strings.getString(key);
 
@@ -107,23 +104,64 @@ public abstract class BaseValidator implements IValidator
     }
 
     /**
-     *  Convienience method for invoking {@link #getString(String, Object[])}.
+     *  Gets a string from the standard resource bundle.  The string in the bundle
+     *  is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * 
+     *  @deprecated use {@link #getString(String, Locale, Object[])}
      * 
      **/
 
-    protected String getString(String key, Object arg)
+    protected String getString(String key, Object[] args)
     {
-        return getString(key, new Object[] { arg });
+        return getString(key, _locale, args);
     }
 
     /**
      *  Convienience method for invoking {@link #getString(String, Object[])}.
      * 
+     *  @deprecated use {@link #getString(String, Locale, Object)}
+     *  
+     **/
+
+    protected String getString(String key, Object arg)
+    {
+        return getString(key, _locale, new Object[] { arg });
+    }
+
+    /**
+     *  Convienience method for invoking {@link #getString(String, Locale, Object[])}.
+     * 
+     *  @since 2.1
+     * 
+     **/
+
+    protected String getString(String key, Locale locale, Object arg)
+    {
+        return getString(key, locale, new Object[] { arg });
+    }
+
+    /**
+     *  Convienience method for invoking {@link #getString(String, Object[])}.
+     * 
+     *  @deprecated use {@link #getString(String, Locale, Object, Object)}
+     * 
      **/
 
     protected String getString(String key, Object arg1, Object arg2)
     {
-        return getString(key, new Object[] { arg1, arg2 });
+        return getString(key, _locale, arg1, arg2);
+    }
+
+    /**
+     *  Convienience method for invoking {@link #getString(String, Locale, Object[])}.
+     * 
+     *  @since 2.1
+     * 
+     **/
+
+    protected String getString(String key, Locale locale, Object arg1, Object arg2)
+    {
+        return getString(key, locale, new Object[] { arg1, arg2 });
     }
 
     /**
@@ -133,14 +171,13 @@ public abstract class BaseValidator implements IValidator
      * 
      **/
 
-    protected boolean checkRequired(IField field, String value)
-        throws ValidatorException
+    protected boolean checkRequired(IField field, String value) throws ValidatorException
     {
         boolean isNull = Tapestry.isNull(value);
 
-        if (required && isNull)
+        if (_required && isNull)
             throw new ValidatorException(
-                getString("field-is-required", field.getDisplayName()),
+                getString("field-is-required", field.getPage().getLocale(), field.getDisplayName()),
                 ValidationConstraint.REQUIRED,
                 null);
 

@@ -51,7 +51,12 @@ public class StringValidator extends BaseValidator
             super(required);
         }
 
-        /** @throws UnsupportedOperationException **/
+        /** 
+         *  @deprecated to be removed in 2.1
+         * 
+         *  @throws UnsupportedOperationException 
+         * 
+         **/
 
         public void setLocale(Locale value)
         {
@@ -118,6 +123,7 @@ public class StringValidator extends BaseValidator
             String errorMessage =
                 getString(
                     "field-too-short",
+                    field.getPage().getLocale(),
                     Integer.toString(minimumLength),
                     field.getDisplayName());
 
