@@ -246,6 +246,10 @@ Add download links.
 Remove unncessary constructor from test case classes.	
 </action>
 
+<action type="update" dev="HLS">
+Changed mock unit tests to redirect System.out and System.err to log files rather than the console.	
+</action>
+
 
 			</release>
 		</changes>

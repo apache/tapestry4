@@ -72,6 +72,8 @@
   	</java>
   </target>
 
+  <!-- To run just a single test case, specify -Dtestcase=name -->
+  
   <target name="junit" depends="compile" description="Run the test suite.">
       <junit printsummary="no"
           errorProperty="test.failed"
