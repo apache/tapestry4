@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -28,31 +28,53 @@
 
 package com.primix.tapestry.util.pool;
 
-import java.util.*; 
+import java.util.*;
 import org.apache.log4j.*;
+import com.primix.tapestry.util.*;
 
 /**
  *  A Pool is used to pool instances of a useful class.  It uses
  *  keys, much like a {@link Map}, to identify a list of pooled objects.
- *  Getting an object from the Pool atomically removes it from the
- *  pool.  It can then be re-added later.
+ *  Retrieving an object from the Pool atomically removes it from the
+ *  pool.  It can then be stored again later.
  *
  *  <p>The implementation of Pool is threadsafe.
  *
- *  <p>TBD:  More info about objects in the pool, culling objects
- *  from the pool, etc.
+ *  <p>Pool implements {@link ICleanable}, with a goal of
+ *  only keeping pooled objects that have been needed within
+ *  a recent time frame.  A generational system is used, where each
+ *  pooled object is assigned a generation count.  {@link #executeCleanup}
+ *  culls objects whose generation count is too old (outside of a
+ *  {@link #getWindow() window}.
  *
  *  @author Howard Ship
  *  @version $Id$
  *
  */
 
-public class Pool
+public class Pool implements ICleanable
 {
-	private static final Category CAT = 
+	private static final Category CAT =
 		Category.getInstance(Pool.class);
 	
 	private static final int MAP_SIZE = 23;
+	
+	/**
+	 *  The generation, used to cull unused pooled items.
+	 *
+	 * @since 1.0.5
+	 */
+	
+	private int generation;
+	
+	/**
+	 *  The generation window, used to identify which
+	 *  items should be culled.
+	 *
+	 * @since 1.0.5
+	 */
+	
+	private int window = 10;
 	
 	/**
 	 *  The number of objects pooled.
@@ -62,12 +84,21 @@ public class Pool
 	private int pooledCount;
 	
 	/**
+	 *  A map of PoolLists, keyed on an arbitrary object.
+	 *
+	 */
+	
+	private Map map;
+	
+	/**
 	 *  Creates a new Pool using the default map size.  Creation of the map is deferred.
+	 *
 	 *
 	 */
 	
 	public Pool()
 	{
+		this(true);
 	}
 	
 	/**
@@ -77,15 +108,66 @@ public class Pool
 	
 	public Pool(int mapSize)
 	{
+		this(mapSize, true);
+	}
+	
+	/**
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public Pool(boolean useSharedJanitor)
+	{
+		if (useSharedJanitor)
+			JanitorThread.getSharedJanitorThread().add(this);
+	}
+	
+	/**
+	 *  Standard constructor.
+	 *
+	 *  @param mapSize initial size of the map.
+	 *  @param useSharedJanitor if true, then the Pool is added to
+	 *  the {@link JanitorThread#getSharedJanitorThread() shared janitor}.
+	 *
+	 *  @since 1.0.5
+	 */
+	
+	public Pool(int mapSize, boolean useSharedJanitor)
+	{
+		this(useSharedJanitor);
+		
 		map = new HashMap(mapSize);
 	}
 	
 	/**
-	 *  A map of PoolLists, keyed on an arbitrary object.
+	 *  Returns the window used to cull pooled objects during a cleanup.
+	 *  The default is 10, which works out to about five minutes with
+	 *  a standard janitor (on a 30 second cycle).
+	 *
+	 *  @since 1.0.5
 	 *
 	 */
 	
-	private Map map;
+	public int getWindow()
+	{
+		return window;
+	}
+	
+	/**
+	 *  Sets the window, or number of generations that an object may stay
+	 *  in the pool before being culled.
+	 *
+	 *  @throws IllegalArgumentException if value is less than 1.
+	 *
+	 */
+	
+	public void setWindow(int value)
+	{
+		if (value < 1)
+			throw new IllegalArgumentException("Pool window may not be less than 1.");
+		
+		window = value;
+	}
 	
 	/**
 	 *  Returns a previously pooled object with the given key, or null if no
@@ -106,17 +188,18 @@ public class Pool
 				list = (PoolList)map.get(key);
 				
 				if (list != null)
-					result = list.retrieve(); 
+					result = list.retrieve();
+				
+				if (result != null)
+					pooledCount--;
+				
 			}
 		}
 		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Retrieved " + result + " from " + key);
 		
-		if (result != null)
-			pooledCount--;
-		
-		return result;	
+		return result;
 	}
 	
 	/**
@@ -141,7 +224,7 @@ public class Pool
 			// Ignore.  The Object wasn't poolable.
 		}
 		
-		if (poolable != null)			
+		if (poolable != null)
 			poolable.resetForPool();
 		
 		if (map == null)
@@ -163,16 +246,10 @@ public class Pool
 				map.put(key, list);
 			}
 			
-			count = list.store(object);
-		
-			// This could probably got outside the synchonized block
-			// without hurting anything.  Someday when we need that
-			// last cycle ...
+			count = list.store(generation, object);
 			
 			pooledCount++;
 		}
-		
-
 		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Stored " + object + " into " + key + " (" + count + " pooled)");
@@ -230,6 +307,61 @@ public class Pool
 		}
 	}
 	
+	public void executeCleanup()
+	{
+		if (map == null)
+			return;
+		
+		if (CAT.isDebugEnabled())
+			CAT.debug("Executing cleanup of " + this);
+		
+		generation++;
+		
+		int oldestGeneration = generation - window;
+		
+		if (oldestGeneration < 0)
+			return;
+		
+		int oldCount = pooledCount;
+		int culledKeys = 0;
+		
+		// During the cleanup, we keep the entire map synchronized
+		// (meaning other threads will block when trying to store
+		// or retrieved pooled objects).  Fortunately, this
+		// should be pretty darn quick!
+		
+		synchronized(map)
+		{
+			int newCount = 0;
+			
+			Iterator i = map.entrySet().iterator();
+			while (i.hasNext())
+			{
+				Map.Entry e = (Map.Entry)i.next();
+				
+				PoolList list = (PoolList)e.getValue();
+				
+				int count = list.cleanup(oldestGeneration);
+				
+				if (count == 0)
+				{
+					i.remove();
+					culledKeys++;
+				}
+				else
+					newCount += count;
+			}
+			
+			pooledCount = newCount;
+		}
+		
+		if (CAT.isDebugEnabled())
+			CAT.debug(
+				"Culled " + (oldCount - pooledCount) +
+					" pooled objects and " +
+					culledKeys + " keys.");
+	}
+	
 	public String toString()
 	{
 		if (map == null)
@@ -237,7 +369,18 @@ public class Pool
 		
 		StringBuffer buffer = new StringBuffer();
 		
-		buffer.append("Pool[");
+		buffer.append("Pool@");
+		buffer.append(Integer.toHexString(hashCode()));
+		
+		buffer.append("[Generation ");
+		buffer.append(generation);
+		
+		if (pooledCount > 0)
+		{
+			buffer.append(", ");
+			buffer.append(pooledCount);
+			buffer.append(" pooled");
+		}
 		
 		synchronized(map)
 		{
@@ -245,11 +388,12 @@ public class Pool
 			while (i.hasNext())
 			{
 				Map.Entry entry = (Map.Entry)i.next();
+				PoolList list = (PoolList)entry.getValue();
 				
-				buffer.append(' ');
+				buffer.append(", ");
 				buffer.append(entry.getKey());
 				buffer.append('=');
-				buffer.append(entry.getValue());
+				buffer.append(list.getPooledCount());
 			}
 		}
 		

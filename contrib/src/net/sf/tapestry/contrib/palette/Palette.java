@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -46,32 +46,32 @@ import java.util.*;
  *  in the client browser, then the user will be unable to make (or change) any selections.
  *
  *  <p><table border=1>
- * <tr> 
+ * <tr>
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
- *    <td>Required</td> 
+ *    <td>Read / Write </td>
+ *    <td>Required</td>
  *    <td>Default</td>
  *    <td>Description</td>
  * </tr>
  *
  *  <tr>
- *	  <td>selected</td>
- *	<td>{@link List}</td>
+ *    <td>selected</td>
+ *  <td>{@link List}</td>
  *  <td>R</td>
  *  <td>yes</td>
- *	<td>&nbsp;</td>
+ *  <td>&nbsp;</td>
  *  <td>A list of selected values.  Possible selections are defined by the model; this
  *  should be a subset of the possible values.  The Set must be writable; when
  *  the form is submitted, the set will be cleared and filled with the
- *  values selected by the user. 
+ *  values selected by the user.
  *
  *  <p>The order may be set by the user, as well, depending on the
  *  sortMode parameter.</td> </tr>
  *
  * <tr>
  * <td>model</td>
- *	<td>{@link IPropertySelectionModel}</td>
+ *  <td>{@link IPropertySelectionModel}</td>
  *  <td>R</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
@@ -80,7 +80,7 @@ import java.util.*;
  *  </td> </tr>
  *
  * <tr>
- *	<td>sort</td> <td>{@link SortMode}</td> <td>R</td>
+ *  <td>sort</td> <td>{@link SortMode}</td> <td>R</td>
  * <td>no</td> <td>{@link SortMode#NONE}</td>
  *  <td>
  *  Controls automatic sorting of the options. </td>
@@ -119,7 +119,7 @@ import java.util.*;
  *  <code>Available</code>. </td> </tr>
  *
  * <tr>
- *	<td>selectImage
+ *  <td>selectImage
  * <br>selectDisabledImage
  * <br>deselectImage
  * <br>deselectDisabledImage
@@ -129,13 +129,10 @@ import java.util.*;
  * <br>downDisabledImage
  *  </td>
  *  <td>{@link IAsset}</td>
- *	<td>R</td>
- *	<td>no</td> <td>&nbsp;</td>
- *  <td>If any of these are provided then they override the default images provided
+ *  <td>R</td>
+ *  <td>no</td> <td>&nbsp;</td>
+ *  <td>If any of these are specified then they override the default images provided
  *  with the component.  This allows the look and feel to be customized relatively easily.
- *  Note that for the first four (selectImage through deselectImage), the images provided
- *  must coordinate with the mirror parameter; that is, if mirror is true, then the images
- *  should have an arrow pointing left for select and right for deselect.  
  *
  *  <p>The most common reason to replace the images is to deal with backgrounds.  The default
  *  images are anti-aliased against a white background.  If a colored or patterned background
@@ -143,7 +140,7 @@ import java.util.*;
  *  support for PNG (which has a true alpha channel), it is necessary to customize the images
  *  to match the background.
  *
- *		</td> </tr>
+ *      </td> </tr>
  *
  * </table>
  *
@@ -153,581 +150,579 @@ import java.util.*;
 
 
 public class Palette
-	extends BaseComponent
-	implements IFormComponent
+    extends BaseComponent
+    implements IFormComponent
 {
-	private static final int DEFAULT_ROWS= 10;
-	private static final int MAP_SIZE = 7;
-	private static final String SKIP_KEY = 
-		"net.sf.tapestry.contrib.palette.SkipBaseFunctions";
-	private static final String DEFAULT_TABLE_CLASS = "tapestry-palette";
-	
-	private IBinding tableClassBinding;
-	private String staticTableClass;
-	
-	private IBinding selectedTitleBlockBinding;
-	private IBinding availableTitleBlockBinding;
-	
-	private IBinding selectedBinding;
-	private IBinding modelBinding;
-	
-	private IBinding rowsBinding;
-	private int staticRows;
-	
-	private IBinding sortBinding;
-	private SortMode staticSort;
-	private SortMode sort;
-	
-	private Block defaultSelectedTitleBlock;
-	private Block defaultAvailableTitleBlock;
-	
-	/**
-	 *  {@link Form} which is currently wrapping the Palette.
-	 *
-	 */
-	
-	private Form form;
-	
-	/**
-	 *  The element name assigned to this usage of the Palette by the Form.
-	 *
-	 */
-	
-	private String name;
-	
-	/**
-	 *  A set of symbols produced by the Palette script.  This is used to
-	 *  provide proper names for some of the HTML elements (&lt;select&gt; and
-	 *  &lt;button&gt; elements, etc.).
-	 *
-	 */
-	
-	private Map symbols;
-	
-	/**
-	 *  Contains the text for the second &lt;select&gt; element, that provides
-	 *  the available elements.
-	 *
-	 */
-	
-	private IResponseWriter availableWriter;
-	
-	/**
-	 *  Contains the text for the first &lt;select&gt; element, that
-	 *  provides the selected elements.
-	 *
-	 */
-	
-	private IResponseWriter selectedWriter;
-	
-	/**
-	 *  A cached copy of the script used with the component.
-	 *
-	 */
-	
-	private IScript script;
-	
-	public void finishLoad(IPageLoader loader, ComponentSpecification spec)
-		throws PageLoaderException
-	{
-		defaultSelectedTitleBlock = (Block)getComponent("defaultSelectedTitleBlock");
-		defaultAvailableTitleBlock = (Block)getComponent("defaultAvailableTitleBlock");
-		
-		super.finishLoad(loader, spec);
-	}
-	
-	
-	public void setTableClassBinding(IBinding value)
-	{
-		tableClassBinding = value;
-		
-		if (value.isStatic())
-			staticTableClass = value.getString();
-	}
-	
-	public IBinding getTableClassBinding()
-	{
-		return tableClassBinding;
-	}
-	
-	public void setSelectedTitleBlockBinding(IBinding value)
-	{
-		selectedTitleBlockBinding = value;
-	}
-	
-	public IBinding getSelectedTitleBlockBinding()
-	{
-		return selectedTitleBlockBinding;
-	}
-	
-	public void setAvailableTitleBlockBinding(IBinding value)
-	{
-		availableTitleBlockBinding = value;
-	}
-	
-	public void setSelectedBinding(IBinding value)
-	{
-		selectedBinding = value;
-	}
-	
-	public IBinding getSelectedBinding()
-	{
-		return selectedBinding;
-	}
-	
-	public void setModelBinding(IBinding value)
-	{
-		modelBinding = value;
-	}
-	
-	public IBinding getModelBinding()
-	{
-		return modelBinding;
-	}
-	
-	public void setRowsBinding(IBinding value)
-	{
-		rowsBinding = value;
-		
-		if (rowsBinding.isStatic())
-			staticRows = value.getInt();
-	}
-	
-	public IBinding getRowsBinding()
-	{
-		return rowsBinding;
-	}
-	
-	public int getRows()
-	{
-		int result = staticRows;
-		
-		if (result == 0 && rowsBinding != null)
-			result = rowsBinding.getInt();
-		
-		if (result == 0)
-			result = DEFAULT_ROWS;
-		
-		return result;
-	}
-	
-	public String getTableClass()
-	{
-		if (staticTableClass != null)
-			return staticTableClass;
-		
-		if (tableClassBinding == null)
-			return DEFAULT_TABLE_CLASS;
-		
-		String result = tableClassBinding.getString();
-		
-		if (result == null)
-			return DEFAULT_TABLE_CLASS;
-		else
-			return result;
-	}
-	
-	public void setSortBinding(IBinding value)
-	{
-		sortBinding = value;
-		
-		if (value.isStatic())
-			staticSort = (SortMode)value.getObject("sort", SortMode.class);
-	}
-	
-	public IBinding getSortBinding()
-	{
-		return sortBinding;
-	}
-	
-	public SortMode getSort()
-	{
-		return sort;
-	}
-	
-	
-	/**
-	 *  Returns the name used for the selected (right column) &lt;select&gt; element.
-	 */
-	
-	public String getName()
-	{
-		return name;
-	}
-	
-	public Form getForm()
-	{
-		return form;
-	}
-	
-	public void render(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		form = Form.get(getPage().getRequestCycle());
-		
-		if (form == null)
-			throw new RequestCycleException("Palette component must be wrapped by a Form.", this);
-		
-		name = form.getElementId(this);
-		
-		if (form.isRewinding())
-		{
-			handleSubmission(cycle);
-			return;
-		}
-		
-		// Don't do any additional work if rewinding 
-		// (some other action or form on the page).
-		
-		if (cycle.isRewinding())
-			return;
-		
-		sort = staticSort;
-		
-		if (sort == null && sortBinding != null)
-			sort = (SortMode)sortBinding.getObject("sort", SortMode.class);
-		
-		if (sort == null)
-			sort = SortMode.NONE;
-		
-		// Lots of work to produce JavaScript and HTML for this sucker.
-		
-		String formName = form.getName();
-		
-		if (symbols == null)
-			symbols = new HashMap(MAP_SIZE);
-		else
-			symbols.clear();
-		
-		symbols.put("formName", formName);
-		symbols.put("name", name);
-		
-		runScript(cycle, symbols);
-		
-		// Output symbol 'formSubmitFunctionName' is the name
-		// of a JavaScript function to execute when the form
-		// is submitted.  This is also key to the operation
-		// of the PropertySelection.
-		
-		form.addEventHandler(FormEventType.SUBMIT, 
-								(String)symbols.get("formSubmitFunctionName"));
-		
-		// Buffer up the HTML for the left and right selects (the selected
-		// items and the available items).
-		
-		bufferSelects(writer);
-		
-		try
-		{
-			super.render(writer, cycle);
-		}
-		finally
-		{
-			availableWriter = null;
-			selectedWriter = null;
-			form = null;
-			sort = null;
-			
-			symbols.clear();
-		}
-	}
-	
-	/**
-	 *  Executes the associated script, which generates all the JavaScript to
-	 *  support this Palette.
-	 *
-	 */
-	
-	private void runScript(IRequestCycle cycle, Map symbols)
-		throws RequestCycleException
-	{
-		ScriptSession session;
-		
-		if (script == null)
-		{
-			IEngine engine = getPage().getEngine();
-			IScriptSource source = engine.getScriptSource();
-			
-			try
-			{
-				script = source.getScript("/net/sf/tapestry/contrib/palette/Palette.script");
-			}
-			catch (ResourceUnavailableException ex)
-			{
-				throw new RequestCycleException(this, ex);
-			}
-		}
-		
-		Body body = Body.get(cycle);
-		if (body == null)
-			throw new RequestCycleException("Palette component must be wrapped by a Body.", this);
-		
-		
-		setImage(symbols, body, cycle, "selectImage", "Select");
-		setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis");
-		setImage(symbols, body, cycle, "deselectImage", "Deselect");
-		setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis");
-		
-		if (cycle.getAttribute(SKIP_KEY) == null)
-			symbols.put("includeBaseFunctions", Boolean.TRUE);
-		
-		if (sort == SortMode.LABEL)
-			symbols.put("sortLabel", Boolean.TRUE);
-		
-		if (sort == SortMode.VALUE)
-			symbols.put("sortValue", Boolean.TRUE);
-		
-		if (sort == SortMode.USER)
-		{
-			symbols.put("sortUser", Boolean.TRUE);
-			setImage(symbols, body, cycle, "upImage", "Up");
-			setImage(symbols, body, cycle, "upDisabledImage", "Up-dis");
-			setImage(symbols, body, cycle, "downImage", "Down");
-			setImage(symbols, body, cycle, "downDisabledImage", "Down-dis");
-		}
-		
-		try
-		{
-			session = script.execute(symbols);
-		}
-		catch (ScriptException ex)
-		{
-			throw new RequestCycleException(this, ex);
-		}
-		
-		body.addOtherScript(session.getBody());
-		body.addOtherInitialization(session.getInitialization());
-		
-		
-		// This marks that the base functions have been emitted, and should not be
-		// emitted again if there's another Palette on the page somewhere.
-		
-		cycle.setAttribute(SKIP_KEY, Boolean.TRUE);
-	}
-	
-	private IAsset getAsset(String symbolName, String assetName)
-	{
-		IAsset result = null;
-		IBinding binding = getBinding(symbolName);
-		
-		if (binding != null)
-			result = (IAsset)binding.getObject(symbolName, IAsset.class);
-		
-		if (result == null)
-			result = getAsset(assetName);	
-		
-		return result;
-	}
-	
-	/**
-	 *  Gets the asset (first looking for a parameter with the symbolName, then
-	 *  using the default asset), extracts its URL, sets it up for 
-	 *  preloading, and assigns the preload reference as a script symbol.
-	 *
-	 */
-	
-	private void setImage(Map symbols, Body body, IRequestCycle cycle, 
-			String symbolName, String assetName)
-	{
-		IAsset asset = getAsset(symbolName, assetName);
-		
-		String URL = asset.buildURL(cycle);
-		String reference = body.getPreloadedImageReference(URL);
-		
-		symbols.put(symbolName, reference);
-	}
-	
-	public Map getSymbols()
-	{
-		return symbols;
-	}
-	
-	private Block getHeaderBlock(boolean selected)
-	{
-		Block result = null;
-		String bindingName = null;
-		IBinding binding = null;
-		
-		if (selected)
-		{
-			bindingName = "selectedTitleBlock";
-			binding = selectedTitleBlockBinding;
-		}
-		else
-		{
-			bindingName = "availableTitleBlock";
-			binding = availableTitleBlockBinding;
-		}
-		
-		if (binding != null)
-			result = (Block)binding.getObject(bindingName, Block.class);
-		
-		if (result == null)
-		{
-			return selected 
-				? defaultSelectedTitleBlock
-				: defaultAvailableTitleBlock;
-		}
-		
-		return result;			
-	}
-	
-	public Block getSelectedHeaderBlock()
-	{
-		return getHeaderBlock(true);
-	}
-	
-	public Block getAvailableHeaderBlock()
-	{
-		return getHeaderBlock(false);
-	}
-	
-	/**
-	 *  Buffers the two &lt;select&gt;s, each in its own nested {@link IResponseWriter}.
-	 *  The idea is to run through the property selection model just once, assigning
-	 *  each item to one or the other &lt;select&gt;.
-	 *
-	 */
-	
-	private void bufferSelects(IResponseWriter writer)
-	{
-		List selected = (List)selectedBinding.getObject("selected", List.class);
-		IPropertySelectionModel model = 
-			(IPropertySelectionModel)modelBinding.getObject("model", IPropertySelectionModel.class);
-		
-		int rows = getRows();
-		
-		// Build a Set around the list of selected items.
-		
-		Set selectedSet = new HashSet(selected);
-		
-		selectedWriter = writer.getNestedWriter();
-		availableWriter = writer.getNestedWriter();
-		
-		selectedWriter.begin("select");
-		selectedWriter.attribute("multiple");
-		selectedWriter.attribute("size", rows);
-		selectedWriter.attribute("name", name);
-		selectedWriter.println();
-		
-		availableWriter.begin("select");
-		availableWriter.attribute("multiple");
-		availableWriter.attribute("size", rows);
-		availableWriter.attribute("name", (String)symbols.get("availableName"));
-		availableWriter.println();
-		
-		// Each value specified in the model will go into either the selected or available
-		// lists.
-		
-		int count = model.getOptionCount();
-		for (int i = 0; i < count; i++)
-		{
-			IResponseWriter w = availableWriter;
-			
-			Object optionValue = model.getOption(i);
-			
-			if (selectedSet.contains(optionValue))
-				w = selectedWriter;
-			
-			w.beginEmpty("option");
-			w.attribute("value", model.getValue(i));
-			w.print(model.getLabel(i));
-			w.println();
-		}
-		
-		// Close the <select> tags
-		
-		selectedWriter.end();
-		availableWriter.end();
-	}
-	
-	/**
-	 *  Renders the available select by closing the nested writer for the available
-	 *  selects.
-	 *
-	 */
-	
-	public IRender getAvailableSelectDelegate()
-	{
-		return new IRender()
-		{
-			public void render(IResponseWriter writer, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				
-				availableWriter.close();
-				availableWriter = null;				
-			}
-		};
-	}
-	
-	/**
-	 *  Like {@link #getAvailableSelectDelegate()}, but for the right, selected, column.
-	 *
-	 */
-	
-	public IRender getSelectedSelectDelegate()
-	{
-		return new IRender()
-		{
-			public void render(IResponseWriter writer, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				selectedWriter.close();
-				selectedWriter = null;
-				
-			}
-		};
-	}
-	
-	private void handleSubmission(IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		List selected = (List)selectedBinding.getObject("selected", List.class);
-		IPropertySelectionModel model = 
-			(IPropertySelectionModel)modelBinding.getObject("model", IPropertySelectionModel.class);
-		
-		// Remove any values currently in the List
-		selected.clear();
-		
-		RequestContext context = cycle.getRequestContext();
-		String[] values = context.getParameterValues(name);
-		
-		if (values == null || values.length == 0)
-			return;
-		
-		for (int i = 0; i < values.length; i++)
-		{
-			String value = values[i];
-			Object option = model.translateValue(value);
-			
-			selected.add(option);
-		}
-	}
-	
-	public boolean isSortUser()
-	{
-		return sort == SortMode.USER;
-	}
-	
-	public IAsset getSelectImage()
-	{
-		return getAsset("selectImage", "Select");
-	}
-	
-	public IAsset getDeselectImage()
-	{
-		return getAsset("deselectImage", "Deselect");
-	}
-	
-	public IAsset getUpImage()
-	{
-		return getAsset("upImage", "Up");
-	}
-	
-	public IAsset getDownImage()
-	{
-		return getAsset("downImage", "Down");
-	}
+    private static final int DEFAULT_ROWS = 10;
+    private static final int MAP_SIZE = 7;
+    private static final String SKIP_KEY =
+        "net.sf.tapestry.contrib.palette.SkipBaseFunctions";
+    private static final String DEFAULT_TABLE_CLASS = "tapestry-palette";
+    
+    private IBinding tableClassBinding;
+    private String staticTableClass;
+    
+    private IBinding selectedTitleBlockBinding;
+    private IBinding availableTitleBlockBinding;
+    
+    private IBinding selectedBinding;
+    private IBinding modelBinding;
+    
+    private IBinding rowsBinding;
+    private int staticRows;
+    
+    private IBinding sortBinding;
+    private SortMode staticSort;
+    private SortMode sort;
+    
+    private Block defaultSelectedTitleBlock;
+    private Block defaultAvailableTitleBlock;
+    
+    /**
+     *  {@link Form} which is currently wrapping the Palette.
+     *
+     */
+    
+    private Form form;
+    
+    /**
+     *  The element name assigned to this usage of the Palette by the Form.
+     *
+     */
+    
+    private String name;
+    
+    /**
+     *  A set of symbols produced by the Palette script.  This is used to
+     *  provide proper names for some of the HTML elements (&lt;select&gt; and
+     *  &lt;button&gt; elements, etc.).
+     *
+     */
+    
+    private Map symbols;
+    
+    /**
+     *  Contains the text for the second &lt;select&gt; element, that provides
+     *  the available elements.
+     *
+     */
+    
+    private IResponseWriter availableWriter;
+    
+    /**
+     *  Contains the text for the first &lt;select&gt; element, that
+     *  provides the selected elements.
+     *
+     */
+    
+    private IResponseWriter selectedWriter;
+    
+    /**
+     *  A cached copy of the script used with the component.
+     *
+     */
+    
+    private IScript script;
+    
+    public void finishLoad(IPageLoader loader, ComponentSpecification spec)
+        throws PageLoaderException
+    {
+        defaultSelectedTitleBlock = (Block)getComponent("defaultSelectedTitleBlock");
+        defaultAvailableTitleBlock = (Block)getComponent("defaultAvailableTitleBlock");
+        
+        super.finishLoad(loader, spec);
+    }
+    
+    
+    public void setTableClassBinding(IBinding value)
+    {
+        tableClassBinding = value;
+        
+        if (value.isStatic())
+            staticTableClass = value.getString();
+    }
+    
+    public IBinding getTableClassBinding()
+    {
+        return tableClassBinding;
+    }
+    
+    public void setSelectedTitleBlockBinding(IBinding value)
+    {
+        selectedTitleBlockBinding = value;
+    }
+    
+    public IBinding getSelectedTitleBlockBinding()
+    {
+        return selectedTitleBlockBinding;
+    }
+    
+    public void setAvailableTitleBlockBinding(IBinding value)
+    {
+        availableTitleBlockBinding = value;
+    }
+    
+    public void setSelectedBinding(IBinding value)
+    {
+        selectedBinding = value;
+    }
+    
+    public IBinding getSelectedBinding()
+    {
+        return selectedBinding;
+    }
+    
+    public void setModelBinding(IBinding value)
+    {
+        modelBinding = value;
+    }
+    
+    public IBinding getModelBinding()
+    {
+        return modelBinding;
+    }
+    
+    public void setRowsBinding(IBinding value)
+    {
+        rowsBinding = value;
+        
+        if (rowsBinding.isStatic())
+            staticRows = value.getInt();
+    }
+    
+    public IBinding getRowsBinding()
+    {
+        return rowsBinding;
+    }
+    
+    public int getRows()
+    {
+        int result = staticRows;
+        
+        if (result == 0 && rowsBinding != null)
+            result = rowsBinding.getInt();
+        
+        if (result == 0)
+            result = DEFAULT_ROWS;
+        
+        return result;
+    }
+    
+    public String getTableClass()
+    {
+        if (staticTableClass != null)
+            return staticTableClass;
+        
+        if (tableClassBinding == null)
+            return DEFAULT_TABLE_CLASS;
+        
+        String result = tableClassBinding.getString();
+        
+        if (result == null)
+            return DEFAULT_TABLE_CLASS;
+        else
+            return result;
+    }
+    
+    public void setSortBinding(IBinding value)
+    {
+        sortBinding = value;
+        
+        if (value.isStatic())
+            staticSort = (SortMode)value.getObject("sort", SortMode.class);
+    }
+    
+    public IBinding getSortBinding()
+    {
+        return sortBinding;
+    }
+    
+    public SortMode getSort()
+    {
+        return sort;
+    }
+    
+    
+    /**
+     *  Returns the name used for the selected (right column) &lt;select&gt; element.
+     */
+    
+    public String getName()
+    {
+        return name;
+    }
+    
+    public Form getForm()
+    {
+        return form;
+    }
+    
+    public void render(IResponseWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        form = Form.get(getPage().getRequestCycle());
+        
+        if (form == null)
+            throw new RequestCycleException("Palette component must be wrapped by a Form.", this);
+        
+        name = form.getElementId(this);
+        
+        if (form.isRewinding())
+        {
+            handleSubmission(cycle);
+            return;
+        }
+        
+        // Don't do any additional work if rewinding
+        // (some other action or form on the page).
+        
+        if (cycle.isRewinding())
+            return;
+        
+        sort = staticSort;
+        
+        if (sort == null && sortBinding != null)
+            sort = (SortMode)sortBinding.getObject("sort", SortMode.class);
+        
+        if (sort == null)
+            sort = SortMode.NONE;
+        
+        // Lots of work to produce JavaScript and HTML for this sucker.
+        
+        String formName = form.getName();
+        
+        if (symbols == null)
+            symbols = new HashMap(MAP_SIZE);
+        else
+            symbols.clear();
+        
+        symbols.put("formName", formName);
+        symbols.put("name", name);
+        
+        runScript(cycle, symbols);
+        
+        // Output symbol 'formSubmitFunctionName' is the name
+        // of a JavaScript function to execute when the form
+        // is submitted.  This is also key to the operation
+        // of the PropertySelection.
+        
+        form.addEventHandler(FormEventType.SUBMIT,
+                                (String)symbols.get("formSubmitFunctionName"));
+        
+        // Buffer up the HTML for the left and right selects (the available
+        // items and the selected items).
+        
+        bufferSelects(writer);
+        
+        try
+        {
+            super.render(writer, cycle);
+        }
+        finally
+        {
+            availableWriter = null;
+            selectedWriter = null;
+            form = null;
+            sort = null;
+            
+            symbols.clear();
+        }
+    }
+    
+    /**
+     *  Executes the associated script, which generates all the JavaScript to
+     *  support this Palette.
+     *
+     */
+    
+    private void runScript(IRequestCycle cycle, Map symbols)
+        throws RequestCycleException
+    {
+        ScriptSession session;
+        
+        if (script == null)
+        {
+            IEngine engine = getPage().getEngine();
+            IScriptSource source = engine.getScriptSource();
+            
+            try
+            {
+                script = source.getScript("/net/sf/tapestry/contrib/palette/Palette.script");
+            }
+            catch (ResourceUnavailableException ex)
+            {
+                throw new RequestCycleException(this, ex);
+            }
+        }
+        
+        Body body = Body.get(cycle);
+        if (body == null)
+            throw new RequestCycleException("Palette component must be wrapped by a Body.", this);
+        
+        
+        setImage(symbols, body, cycle, "selectImage", "Select");
+        setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis");
+        setImage(symbols, body, cycle, "deselectImage", "Deselect");
+        setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis");
+        
+        if (cycle.getAttribute(SKIP_KEY) == null)
+            symbols.put("includeBaseFunctions", Boolean.TRUE);
+        
+        if (sort == SortMode.LABEL)
+            symbols.put("sortLabel", Boolean.TRUE);
+        
+        if (sort == SortMode.VALUE)
+            symbols.put("sortValue", Boolean.TRUE);
+        
+        if (sort == SortMode.USER)
+        {
+            symbols.put("sortUser", Boolean.TRUE);
+            setImage(symbols, body, cycle, "upImage", "Up");
+            setImage(symbols, body, cycle, "upDisabledImage", "Up-dis");
+            setImage(symbols, body, cycle, "downImage", "Down");
+            setImage(symbols, body, cycle, "downDisabledImage", "Down-dis");
+        }
+        
+        try
+        {
+            session = script.execute(symbols);
+        }
+        catch (ScriptException ex)
+        {
+            throw new RequestCycleException(this, ex);
+        }
+        
+        body.addOtherScript(session.getBody());
+        body.addOtherInitialization(session.getInitialization());
+        
+        
+        // This marks that the base functions have been emitted, and should not be
+        // emitted again if there's another Palette on the page somewhere.
+        
+        cycle.setAttribute(SKIP_KEY, Boolean.TRUE);
+    }
+    
+    private IAsset getAsset(String symbolName, String assetName)
+    {
+        IAsset result = null;
+        IBinding binding = getBinding(symbolName);
+        
+        if (binding != null)
+            result = (IAsset)binding.getObject(symbolName, IAsset.class);
+        
+        if (result == null)
+            result = getAsset(assetName);
+        
+        return result;
+    }
+    
+    /**
+     *  Gets the asset (first looking for a parameter with the symbolName, then
+     *  using the default asset), extracts its URL, sets it up for
+     *  preloading, and assigns the preload reference as a script symbol.
+     *
+     */
+    
+    private void setImage(Map symbols, Body body, IRequestCycle cycle,
+            String symbolName, String assetName)
+    {
+        IAsset asset = getAsset(symbolName, assetName);
+        
+        String URL = asset.buildURL(cycle);
+        String reference = body.getPreloadedImageReference(URL);
+        
+        symbols.put(symbolName, reference);
+    }
+    
+    public Map getSymbols()
+    {
+        return symbols;
+    }
+    
+    private Block getHeaderBlock(boolean selected)
+    {
+        Block result = null;
+        String bindingName = null;
+        IBinding binding = null;
+        
+        if (selected)
+        {
+            bindingName = "selectedTitleBlock";
+            binding = selectedTitleBlockBinding;
+        }
+        else
+        {
+            bindingName = "availableTitleBlock";
+            binding = availableTitleBlockBinding;
+        }
+        
+        if (binding != null)
+            result = (Block)binding.getObject(bindingName, Block.class);
+        
+        if (result == null)
+        {
+            return selected
+                ? defaultSelectedTitleBlock
+                : defaultAvailableTitleBlock;
+        }
+        
+        return result;
+    }
+    
+    public Block getSelectedHeaderBlock()
+    {
+        return getHeaderBlock(true);
+    }
+    
+    public Block getAvailableHeaderBlock()
+    {
+        return getHeaderBlock(false);
+    }
+    
+    /**
+     *  Buffers the two &lt;select&gt;s, each in its own nested {@link IResponseWriter}.
+     *  The idea is to run through the property selection model just once, assigning
+     *  each item to one or the other &lt;select&gt;.
+     *
+     */
+    
+    private void bufferSelects(IResponseWriter writer)
+    {
+        List selected = (List)selectedBinding.getObject("selected", List.class);
+        IPropertySelectionModel model =
+            (IPropertySelectionModel)modelBinding.getObject("model", IPropertySelectionModel.class);
+        
+        int rows = getRows();
+        
+        // Build a Set around the list of selected items.
+        
+        Set selectedSet = new HashSet(selected);
+        
+        selectedWriter = writer.getNestedWriter();
+        availableWriter = writer.getNestedWriter();
+        
+        selectedWriter.begin("select");
+        selectedWriter.attribute("multiple");
+        selectedWriter.attribute("size", rows);
+        selectedWriter.attribute("name", name);
+        selectedWriter.println();
+        
+        availableWriter.begin("select");
+        availableWriter.attribute("multiple");
+        availableWriter.attribute("size", rows);
+        availableWriter.attribute("name", (String)symbols.get("availableName"));
+        availableWriter.println();
+        
+        // Each value specified in the model will go into either the selected or available
+        // lists.
+        
+        int count = model.getOptionCount();
+        for (int i = 0; i < count; i++)
+        {
+            IResponseWriter w = availableWriter;
+            
+            Object optionValue = model.getOption(i);
+            
+            if (selectedSet.contains(optionValue))
+                w = selectedWriter;
+            
+            w.beginEmpty("option");
+            w.attribute("value", model.getValue(i));
+            w.print(model.getLabel(i));
+            w.println();
+        }
+        
+        // Close the <select> tags
+        
+        selectedWriter.end();
+        availableWriter.end();
+    }
+    
+    /**
+     *  Renders the available select by closing the nested writer for the available
+     *  selects.
+     *
+     */
+    
+    public IRender getAvailableSelectDelegate()
+    {
+        return new IRender()
+        {
+            public void render(IResponseWriter writer, IRequestCycle cycle)
+                throws RequestCycleException
+            {
+                availableWriter.close();
+                availableWriter = null;
+            }
+        };
+    }
+    
+    /**
+     *  Like {@link #getAvailableSelectDelegate()}, but for the right, selected, column.
+     *
+     */
+    
+    public IRender getSelectedSelectDelegate()
+    {
+        return new IRender()
+        {
+            public void render(IResponseWriter writer, IRequestCycle cycle)
+                throws RequestCycleException
+            {
+                selectedWriter.close();
+                selectedWriter = null;
+            }
+        };
+    }
+    
+    private void handleSubmission(IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        List selected = (List)selectedBinding.getObject("selected", List.class);
+        IPropertySelectionModel model =
+            (IPropertySelectionModel)modelBinding.getObject("model", IPropertySelectionModel.class);
+        
+        // Remove any values currently in the List
+        selected.clear();
+        
+        RequestContext context = cycle.getRequestContext();
+        String[] values = context.getParameterValues(name);
+        
+        if (values == null || values.length == 0)
+            return;
+        
+        for (int i = 0; i < values.length; i++)
+        {
+            String value = values[i];
+            Object option = model.translateValue(value);
+            
+            selected.add(option);
+        }
+    }
+    
+    public boolean isSortUser()
+    {
+        return sort == SortMode.USER;
+    }
+    
+    public IAsset getSelectImage()
+    {
+        return getAsset("selectImage", "Select");
+    }
+    
+    public IAsset getDeselectImage()
+    {
+        return getAsset("deselectImage", "Deselect");
+    }
+    
+    public IAsset getUpImage()
+    {
+        return getAsset("upImage", "Up");
+    }
+    
+    public IAsset getDownImage()
+    {
+        return getAsset("downImage", "Down");
+    }
 }
 
