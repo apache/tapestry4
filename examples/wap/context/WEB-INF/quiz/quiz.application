@@ -8,9 +8,9 @@
 
     <property name="org.apache.tapestry.template-extension" value="wml"/>
 
-    <property name="org.apache.tapestry.global-class" value="wap.quiz.Global"/>
+    <property name="org.apache.tapestry.global-class" value="org.apache.tapestry.wap.quiz.Global"/>
 
-    <property name="org.apache.tapestry.visit-class" value="wap.quiz.Visit"/>
+    <property name="org.apache.tapestry.visit-class" value="org.apache.tapestry.wap.quiz.Visit"/>
 
     <library id="wml" specification-path="/org/apache/tapestry/wml/WML.library"/>
 
