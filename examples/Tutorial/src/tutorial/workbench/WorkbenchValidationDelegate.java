@@ -58,6 +58,7 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.form.IFormComponent;
+import net.sf.tapestry.valid.IValidator;
 import net.sf.tapestry.valid.ValidationDelegate;
 
 /**
@@ -70,13 +71,22 @@ import net.sf.tapestry.valid.ValidationDelegate;
 
 public class WorkbenchValidationDelegate extends ValidationDelegate
 {
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void writeAttributes(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
+        throws RequestCycleException
     {
         if (isInError())
             writer.attribute("class", "field-error");
     }
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle)
+    public void writeSuffix(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
     {
         if (isInError())
         {
@@ -88,7 +98,10 @@ public class WorkbenchValidationDelegate extends ValidationDelegate
         }
     }
 
-    public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+    public void writeLabelPrefix(
+        IFormComponent component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
         throws RequestCycleException
     {
         if (isInError(component))
@@ -98,7 +111,10 @@ public class WorkbenchValidationDelegate extends ValidationDelegate
         }
     }
 
-    public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+    public void writeLabelSuffix(
+        IFormComponent component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
         throws RequestCycleException
     {
         if (isInError(component))

@@ -213,10 +213,7 @@ public interface IValidationDelegate
      *  @since 1.0.9
      **/
 
-    public void record(
-        String message,
-        ValidationConstraint constraint,
-        String invalidInput);
+    public void record(String message, ValidationConstraint constraint, String invalidInput);
 
     /**
      *  Records an error in the current component, or an unassociated error..
@@ -228,10 +225,7 @@ public interface IValidationDelegate
      * 
      **/
 
-    public void record(
-        IRender errorRenderer,
-        ValidationConstraint constraint,
-        String invalidInput);
+    public void record(IRender errorRenderer, ValidationConstraint constraint, String invalidInput);
 
     /**
      *  Invoked before the field is rendered.  If the field is in error,
@@ -240,7 +234,11 @@ public interface IValidationDelegate
      *
      **/
 
-    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle)
+    public void writePrefix(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
         throws RequestCycleException;
 
     /**
@@ -252,7 +250,7 @@ public interface IValidationDelegate
      *  @since 1.0.5
      **/
 
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle)
+    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
         throws RequestCycleException;
 
     /**
@@ -261,7 +259,7 @@ public interface IValidationDelegate
      *
      **/
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle)
+    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
         throws RequestCycleException;
 
     /**

@@ -61,6 +61,7 @@ import java.util.Map;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.form.IFormComponent;
 
 /**
  *  Simple validation of email strings, to enforce required, and minimum length
@@ -77,7 +78,7 @@ import net.sf.tapestry.RequestCycleException;
 public class EmailValidator extends BaseValidator
 {
     private int _minimumLength;
-    
+
     private String _scriptPath = "/net/sf/tapestry/valid/EmailValidator.script";
 
     public EmailValidator()
@@ -89,7 +90,7 @@ public class EmailValidator extends BaseValidator
         super(required);
     }
 
-    public String toString(IField field, Object value)
+    public String toString(IFormComponent field, Object value)
     {
         if (value == null)
             return null;
@@ -97,7 +98,7 @@ public class EmailValidator extends BaseValidator
         return value.toString();
     }
 
-    public Object toObject(IField field, String input) throws ValidatorException
+    public Object toObject(IFormComponent field, String input) throws ValidatorException
     {
         if (checkRequired(field, input))
             return null;
@@ -116,7 +117,7 @@ public class EmailValidator extends BaseValidator
             throw new ValidatorException(errorMessage, ValidationConstraint.MINIMUM_WIDTH, input);
         }
 
-        if (input.length() > 0 && ! isValidEmail(input))
+        if (input.length() > 0 && !isValidEmail(input))
         {
             String errorMessage =
                 getString(
@@ -140,7 +141,10 @@ public class EmailValidator extends BaseValidator
         _minimumLength = minimumLength;
     }
 
-    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderValidatorContribution(
+        IFormComponent field,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
         throws RequestCycleException
     {
         if (!isClientScriptingEnabled())
@@ -157,14 +161,17 @@ public class EmailValidator extends BaseValidator
         if (_minimumLength > 0)
             symbols.put(
                 "minimumLengthMessage",
-                getString("field-too-short", locale, Integer.toString(_minimumLength), displayName));
+                getString(
+                    "field-too-short",
+                    locale,
+                    Integer.toString(_minimumLength),
+                    displayName));
 
-        symbols.put("emailFormatMessage",
-                    getString("invalid-email-format", locale, displayName));
+        symbols.put("emailFormatMessage", getString("invalid-email-format", locale, displayName));
 
         processValidatorScript(_scriptPath, cycle, field, symbols);
     }
-    
+
     public String getScriptPath()
     {
         return _scriptPath;
@@ -177,11 +184,11 @@ public class EmailValidator extends BaseValidator
      *  a more sophisticated pop-up window than <code>window.alert()</code>).
      * 
      **/
-    
+
     public void setScriptPath(String scriptPath)
     {
         _scriptPath = scriptPath;
-    }    
+    }
 
     /**
      *  Return true if the email format is valid.
@@ -189,18 +196,18 @@ public class EmailValidator extends BaseValidator
      *  @param email the email string to validate
      *  @return true if the email format is valid
      */
-        
-    protected boolean isValidEmail(String email) 
+
+    protected boolean isValidEmail(String email)
     {
         int atIndex = email.indexOf('@');
-        
-        if ((atIndex == -1) || (atIndex == 0) || (atIndex == email.length() -1))
+
+        if ((atIndex == -1) || (atIndex == 0) || (atIndex == email.length() - 1))
         {
-            return false;    
+            return false;
         }
         else
         {
-            return true;    
+            return true;
         }
     }
 }

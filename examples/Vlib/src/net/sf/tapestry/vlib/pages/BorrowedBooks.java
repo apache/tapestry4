@@ -57,7 +57,6 @@ package net.sf.tapestry.vlib.pages;
 import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
-import javax.ejb.RemoveException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IMarkupWriter;
@@ -118,7 +117,8 @@ public class BorrowedBooks extends Protected
      *
      **/
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         super.beginResponse(writer, cycle);
 
@@ -199,7 +199,7 @@ public class BorrowedBooks extends Protected
     public void returnBook(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer)parameters[0];
+        Integer bookPK = (Integer) parameters[0];
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         IOperations operations = vengine.getOperations();
@@ -221,27 +221,4 @@ public class BorrowedBooks extends Protected
         }
     }
 
-    /**
-     *  Removes the book query beans.
-     **/
-
-    public void cleanupPage()
-    {
-        try
-        {
-            if (borrowedQuery != null)
-                borrowedQuery.remove();
-
-        }
-        catch (RemoveException e)
-        {
-            throw new ApplicationRuntimeException(e);
-        }
-        catch (RemoteException e)
-        {
-            throw new ApplicationRuntimeException(e);
-        }
-
-        super.cleanupPage();
-    }
 }

@@ -58,7 +58,6 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.components.ILinkComponent;
-import net.sf.tapestry.engine.EngineServiceLink;
 
 /**
  *  Used by various instances of {@link net.sf.tapestry.components.ILinkComponent} to

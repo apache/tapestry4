@@ -72,17 +72,58 @@ public interface IComponentStrings
      *  brackets).
      * 
      **/
+
+    public String getString(String key);
+
+    /**
+     *  Searches for a localized string with the given key.
+     *  If not found, then the default value (which should already
+     *  be localized) is returned.  Passing a default of null
+     *  is useful when trying to determine if the strings contains
+     *  a given key.
+     * 
+     **/
+
+    public String getString(String key, String defaultValue);
+
+    /**
+     *  Formats a string, using
+     *  {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * 
+     *  @param key the key used to obtain a localized pattern using
+     *  {@link #getString(String)}
+     *  @param arguments passed to the formatter
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public String format(String key, Object[] arguments);
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     * 
+     *  @since 2.4
+     * 
+     **/
     
-	public String getString(String key);
-	
-	/**
-	 *  Searches for a localized string with the given key.
-	 *  If not found, then the default value (which should already
-	 *  be localized) is returned.  Passing a default of null
-	 *  is useful when trying to determine if the strings contains
-	 *  a given key.
-	 * 
-	 **/
-	
-	public String getString(String key, String defaultValue);    
+    public String format(String key, Object argument);
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public String format(String key, Object argument1, Object argument2);
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public String format(String key, Object argument1, Object argument2, Object argument3);
 }

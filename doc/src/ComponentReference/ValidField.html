@@ -184,20 +184,7 @@
     form element.
    </td>
   </tr>
-    <tr>
-   <td>type</td>
-   <td>String</td>
-   <td>in</td>
- 	 <td>no</td>
-	 <td>Object</td>
-	 <td>
-The name of a class, to convert input into.
-Required by some validators to identify the type of conversion from
-String (typically, validators that convert a numeric amount). 
-If the class is in package <tt>java.lang</tt>, then the package name can be ommitted.
-Also, the names of Java scalar types are acceptible.
-   </td>
-	</tr>
+
 	<tr>
 	 <td>hidden</td>
 	 <td>boolean</td>
@@ -348,12 +335,14 @@ Also, the names of Java scalar types are acceptible.
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="1"/&gt;
     &lt;set-property name="maximum" expression="auctionDetails.numberLots"/&gt;
+    &lt;set-property name="valueType"&gt;"int"&lt;/set-property&gt;
 &lt;/bean&gt;
 
 &lt;bean name="bidAmountValidator" class="<A href="../api/net/sf/tapestry/valid/NumberValidator.html">net.sf.tapestry.valid.NumberValidator</a>"&gt;
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="auctionDetails.minBid"/&gt;
     &lt;set-property name="maximum" expression="auctionDetails.maxBid"/&gt;
+    &lt;set-property name="valueType"&gt;"float"&lt;/set-property&gt;    
 &lt;/bean&gt;
 
 &lt;bean name="fullNameValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;

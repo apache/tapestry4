@@ -258,7 +258,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.begin("span");
         writer.attribute("class", "localized-string");
 
-        writer.print(component.getString(token.getKey()));
+        writer.print(component.getStrings().getString(token.getKey()));
         writer.end(); // <span>
 
         writer.print("</span>");

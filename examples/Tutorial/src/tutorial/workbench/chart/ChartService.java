@@ -58,12 +58,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.jrefinery.chart.ChartUtilities;
-import com.jrefinery.chart.JFreeChart;
-
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IPage;
@@ -71,8 +65,12 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.engine.AbstractService;
-import net.sf.tapestry.engine.EngineServiceLink;
 import net.sf.tapestry.engine.ILink;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.jrefinery.chart.ChartUtilities;
+import com.jrefinery.chart.JFreeChart;
 
 /**
  *  ServiceLink that works with a {@link JFreeChart} to dynamically render

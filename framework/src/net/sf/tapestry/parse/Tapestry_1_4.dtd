@@ -29,6 +29,7 @@ This DTD is backwards compatible with the 1.3 DTD, with the following exceptions
 - added <listener-binding> element
 - added <property-specification> element
 - renamed java-type to type inside <parameter>
+- allow values to be specified as attributes or wrapped character data in many elements
 -->
 
 <!-- =======================================================
@@ -515,14 +516,16 @@ Attributes:
 Element: set-property
 Appears in: bean
 
-Used to initialize a property of a helper bean.
+Used to initialize a property of a helper bean.  An OGNL expression
+is provided as the expression attribute, or as wrapped
+character data.
 
 Attributes:
   name: The name of the property to be set.
   expression: The OGNL expression that provides a value.
 -->
 
-<!ELEMENT set-property EMPTY>
+<!ELEMENT set-property (#PCDATA)>
 <!ATTLIST set-property
   name CDATA #REQUIRED
   expression CDATA #IMPLIED

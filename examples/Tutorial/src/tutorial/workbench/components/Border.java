@@ -98,7 +98,7 @@ public class Border extends BaseComponent implements PageRenderListener
 
         if (tabOrder == null)
         {
-            String tabOrderValue = getString("tabOrder");
+            String tabOrderValue = getStrings().getString("tabOrder");
 
             StringSplitter splitter = new StringSplitter(' ');
 
@@ -140,7 +140,7 @@ public class Border extends BaseComponent implements PageRenderListener
         // Need to check for synchronization issues, but I think
         // ResourceBundle is safe.
 
-        return getString(pageName);
+        return getStrings().getString(pageName);
     }
 
     public IAsset getLeftTabAsset()

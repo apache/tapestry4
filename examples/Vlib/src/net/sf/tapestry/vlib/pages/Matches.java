@@ -57,7 +57,6 @@ package net.sf.tapestry.vlib.pages;
 import java.rmi.RemoteException;
 
 import javax.ejb.CreateException;
-import javax.ejb.RemoveException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
@@ -217,29 +216,4 @@ public class Matches extends BasePage
         return !currentMatch.isBorrowed();
     }
 
-    /**
-     *  Removes the book query bean, if not null.
-     *
-     **/
-
-    public void cleanupPage()
-    {
-        try
-        {
-            if (bookQuery != null)
-                bookQuery.remove();
-
-            bookQuery = null;
-        }
-        catch (RemoveException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-        catch (RemoteException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-
-        super.cleanupPage();
-    }
 }

@@ -58,6 +58,7 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.form.IFormComponent;
+import net.sf.tapestry.valid.IValidator;
 import net.sf.tapestry.valid.ValidationDelegate;
 
 /**
@@ -72,7 +73,10 @@ import net.sf.tapestry.valid.ValidationDelegate;
 
 public class SimpleValidationDelegate extends ValidationDelegate
 {
-    public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+    public void writeLabelPrefix(
+        IFormComponent component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
     {
         if (isInError(component))
         {
@@ -81,13 +85,21 @@ public class SimpleValidationDelegate extends ValidationDelegate
         }
     }
 
-    public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+    public void writeLabelSuffix(
+        IFormComponent component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
     {
         if (isInError(component))
             writer.end();
     }
 
-    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void writePrefix(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
+        throws RequestCycleException
     {
         if (isInError())
         {
@@ -96,7 +108,11 @@ public class SimpleValidationDelegate extends ValidationDelegate
         }
     }
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle)
+    public void writeSuffix(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
     {
         if (isInError())
             writer.end(); // <span>

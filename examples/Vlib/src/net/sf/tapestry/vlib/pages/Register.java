@@ -61,8 +61,8 @@ import javax.ejb.CreateException;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.html.BasePage;
-import net.sf.tapestry.valid.IField;
 import net.sf.tapestry.valid.IValidationDelegate;
 import net.sf.tapestry.valid.ValidatorException;
 import net.sf.tapestry.vlib.IErrorProperty;
@@ -178,9 +178,7 @@ public class Register extends BasePage implements IErrorProperty
     private void setErrorField(String componentId, String message)
     {
         IValidationDelegate delegate = getValidationDelegate();
-        IField field;
-
-        field = (IField) getComponent(componentId);
+        IFormComponent field = (IFormComponent) getComponent(componentId);
 
         delegate.setFormComponent(field);
         delegate.record(new ValidatorException(message));

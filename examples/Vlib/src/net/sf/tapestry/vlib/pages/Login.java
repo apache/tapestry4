@@ -62,8 +62,8 @@ import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.callback.ICallback;
+import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.html.BasePage;
-import net.sf.tapestry.valid.IField;
 import net.sf.tapestry.valid.IValidationDelegate;
 import net.sf.tapestry.valid.ValidatorException;
 import net.sf.tapestry.vlib.IErrorProperty;
@@ -164,9 +164,7 @@ public class Login extends BasePage implements IErrorProperty
 
     protected void setErrorField(String componentId, String message)
     {
-        IField field;
-
-        field = (IField) getComponent(componentId);
+        IFormComponent field = (IFormComponent) getComponent(componentId);
 
         IValidationDelegate delegate = getValidationDelegate();
         delegate.setFormComponent(field);

@@ -39,4 +39,6 @@
   	</description>
   </parameter>
   	
+  <reserved-parameter name="name"/>
+  
 </component-specification>

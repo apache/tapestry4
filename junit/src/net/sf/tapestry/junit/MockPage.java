@@ -62,6 +62,7 @@ import java.util.Map;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IComponentStrings;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.INamespace;
@@ -364,6 +365,11 @@ public class MockPage implements IPage
     }
 
     public Object getGlobal()
+    {
+        return null;
+    }
+
+    public IComponentStrings getStrings()
     {
         return null;
     }

@@ -329,9 +329,19 @@ public interface IComponent extends IRender
 	 *  if no string is defined for the key
 	 *  @since 2.0.4
 	 * 
+	 *  @deprecated Use {@link #getStrings()} instead.
 	 **/
 	
 	public String getString(String key);
+    
+    /**
+     *  Returns component strings for the component.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public IComponentStrings getStrings();
     
     /**
      *  Returns the {@link INamespace} in which the component was defined

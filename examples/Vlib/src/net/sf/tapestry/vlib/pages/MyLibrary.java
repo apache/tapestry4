@@ -57,9 +57,7 @@ package net.sf.tapestry.vlib.pages;
 import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
-import javax.ejb.RemoveException;
 
-import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
@@ -119,7 +117,8 @@ public class MyLibrary extends Protected
      *
      **/
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         super.beginResponse(writer, cycle);
 
@@ -210,7 +209,7 @@ public class MyLibrary extends Protected
     public void editBook(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer)parameters[0];
+        Integer bookPK = (Integer) parameters[0];
         EditBook page = (EditBook) cycle.getPage("EditBook");
 
         page.beginEdit(bookPK, cycle);
@@ -224,7 +223,7 @@ public class MyLibrary extends Protected
     public void deleteBook(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer)parameters[0];
+        Integer bookPK = (Integer) parameters[0];
 
         ConfirmBookDelete page = (ConfirmBookDelete) cycle.getPage("ConfirmBookDelete");
         page.selectBook(bookPK, cycle);
@@ -257,26 +256,4 @@ public class MyLibrary extends Protected
         }
     }
 
-    /**
-     *  Removes the book query bean.
-     **/
-
-    public void cleanupPage()
-    {
-        try
-        {
-            if (ownedQuery != null)
-                ownedQuery.remove();
-        }
-        catch (RemoveException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-        catch (RemoteException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-
-        super.cleanupPage();
-    }
 }

@@ -57,6 +57,7 @@ package net.sf.tapestry.valid;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.form.IFormComponent;
 
 /**
  *  An object that works with an {@link IField} to format output
@@ -86,7 +87,7 @@ public interface IValidator
      * 
      **/
 
-    public String toString(IField field, Object value);
+    public String toString(IFormComponent field, Object value);
 
     /**
      *  Converts input, submitted by the client, into an object value.
@@ -99,7 +100,7 @@ public interface IValidator
      *  not valid (due to other constraints).
      **/
 
-    public Object toObject(IField field, String input) throws ValidatorException;
+    public Object toObject(IFormComponent field, String input) throws ValidatorException;
 
     /**
      *  Invoked by the field after it finishes rendering its tag (but before
@@ -111,7 +112,10 @@ public interface IValidator
      * 
      **/
 
-    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderValidatorContribution(
+        IFormComponent field,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
         throws RequestCycleException;
 
 }
