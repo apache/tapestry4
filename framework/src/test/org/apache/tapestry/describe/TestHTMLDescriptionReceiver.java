@@ -448,7 +448,9 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
 
         Registry r = RegistryBuilder.constructDefaultRegistry();
-        HTMLDescriber d = (HTMLDescriber) r.getService(HTMLDescriber.class);
+        // The Portlet code, which may be in the classpath under Eclipse, adds a second
+        // implementation.
+        HTMLDescriber d = (HTMLDescriber) r.getService("tapestry.describe.HTMLDescriber", HTMLDescriber.class);
 
         writer.print("Tapestry");
         writer.println();
