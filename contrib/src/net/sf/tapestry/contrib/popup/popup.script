@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE script PUBLIC 
+	"-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+
+<script>
+<!-- 
+
+input symbols:
+
+-->
+
+<body>
+
+function <insert property-path="popupFunctionName"/>(url)
+{
+	var name = '<insert property-path="windowName"/>';
+	var opts= 'height=<insert property-path="windowHeight"/>,width=<insert property-path="windowWidth"/>,top=0,left=0,resizable=yes,scrollbars=yes';
+	
+	aWindow = window.open (url, name, opts, false);
+
+	aWindow.resizeTo(<insert property-path="windowWidth"/>, <insert property-path="windowHeight"/>);
+	aWindow.focus();
+}
+
+</body>
+
+</script>
