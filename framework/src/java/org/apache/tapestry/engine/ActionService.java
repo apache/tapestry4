@@ -27,40 +27,44 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- *  A context-sensitive service related to {@link org.apache.tapestry.form.Form} 
- *  and {@link org.apache.tapestry.link.ActionLink}.  Encodes
- *  the page, component and an action id in the service context.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.9
- *
- **/
+ * A context-sensitive service related to {@link org.apache.tapestry.form.Form}and
+ * {@link org.apache.tapestry.link.ActionLink}. Encodes the page, component and an action id in the
+ * service context.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.9
+ */
 
 public class ActionService extends AbstractService
 {
+    /** @since 3.1 */
+    private ResponseRenderer _responseRenderer;
+
     /**
-     *  Encoded into URL if engine was stateful.
+     * Encoded into URL if engine was stateful.
      * 
-     *  @since 3.0
-     **/
+     * @since 3.0
+     */
 
     private static final String STATEFUL_ON = "1";
 
     /**
-     *  Encoded into URL if engine was not stateful.
+     * Encoded into URL if engine was not stateful.
      * 
-     *  @since 3.0
-     **/
+     * @since 3.0
+     */
 
     private static final String STATEFUL_OFF = "0";
 
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (parameters == null || parameters.length != 1)
-            throw new IllegalArgumentException(
-                Tapestry.format("service-single-parameter", Tapestry.ACTION_SERVICE));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "service-single-parameter",
+                    Tapestry.ACTION_SERVICE));
 
         String stateful = cycle.getEngine().isStateful() ? STATEFUL_ON : STATEFUL_OFF;
         IPage componentPage = component.getPage();
@@ -88,11 +92,8 @@ public class ActionService extends AbstractService
         return constructLink(cycle, Tapestry.ACTION_SERVICE, serviceContext, null, true);
     }
 
-    public void service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
+            IOException
     {
         IAction action = null;
         String componentPageName;
@@ -104,8 +105,8 @@ public class ActionService extends AbstractService
             count = serviceContext.length;
 
         if (count != 4 && count != 5)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("ActionService.context-parameters"));
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("ActionService.context-parameters"));
 
         boolean complex = count == 5;
 
@@ -123,10 +124,10 @@ public class ActionService extends AbstractService
 
         IPage page = cycle.getPage(pageName);
 
-		// Setup the page for the rewind, then do the rewind.
+        // Setup the page for the rewind, then do the rewind.
 
-		cycle.activate(page);
-		
+        cycle.activate(page);
+
         IPage componentPage = cycle.getPage(componentPageName);
         IComponent component = componentPage.getNestedComponent(targetIdPath);
 
@@ -136,11 +137,9 @@ public class ActionService extends AbstractService
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("ActionService.component-wrong-type", component.getExtendedId()),
-                component,
-                null,
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "ActionService.component-wrong-type",
+                    component.getExtendedId()), component, null, ex);
         }
 
         // Only perform the stateful check if the application was stateful
@@ -156,12 +155,12 @@ public class ActionService extends AbstractService
 
         cycle.rewindPage(targetActionId, action);
 
-        // During the rewind, a component may change the page.  This will take
+        // During the rewind, a component may change the page. This will take
         // effect during the second render, which renders the HTML response.
 
-        // Render the response.
+        // Render that response.
 
-        engine.renderResponse(cycle, output);
+        _responseRenderer.renderResponse(cycle, output);
     }
 
     public String getName()
@@ -169,4 +168,9 @@ public class ActionService extends AbstractService
         return Tapestry.ACTION_SERVICE;
     }
 
+    /** @since 3.1 */
+    public void setResponseRenderer(ResponseRenderer responseRenderer)
+    {
+        _responseRenderer = responseRenderer;
+    }
 }

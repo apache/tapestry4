@@ -12,20 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services;
-
-import java.util.Locale;
+package org.apache.tapestry;
 
 /**
- * Used to determine what is the client-specified locale, if any, for the current request.
- * This may be stored in the request as an HTTP Cookie, or may be interpolated from
- * request headers.  Additionally, the "raw" value provided by the client may be
- * filtered down.
- *
- * @author Howard Lewis Ship
+ * Simple utilities for defensive programming.
+ * 
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface LocaleExtractor
+public final class Defense
 {
-	public Locale extractLocaleForCurrentRequest();
+    private Defense()
+    {
+        // Prevent instantiation
+    }
+
+    /**
+     * Check for null parameter when not allowed.
+     * 
+     * @throws NullPointerException
+     *             if parameter is null (the message indicates the name of the parameter).
+     */
+    public static void notNull(Object parameter, String parameterName)
+    {
+        if (parameter == null)
+            throw new NullPointerException(TapestryMessages.paramNotNull(parameterName));
+    }
 }

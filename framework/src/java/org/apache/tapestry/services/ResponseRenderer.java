@@ -14,26 +14,28 @@
 
 package org.apache.tapestry.services;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.request.ResponseOutputStream;
+
 /**
- * Used by other services to obtain cookie values for the current request.
- *
- * @author Howard Lewis Ship
+ * Responsible for rendering the active page as the response.  Works with
+ * the {@link org.apache.tapestry.services.RequestLocaleManager}
+ * to persist any change to the selected locale.
+ * 
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface CookieSource
+public interface ResponseRenderer
 {
-	/**
-	 * Returns the value of the first cookie whose name matches. Returns null
-	 * if no such cookie exists.
-	 */
-	public String readCookieValue(String name);
-    
     /**
-     * Creates or updates a cookie value.  The value is stored permanently
-     * (no timeout, not session based).
-     * 
-     * TODO: add suport for timeouts and session cookies.
+     * Renders the reponse, using the current active page defined by the request cycle.
      */
-    
-    public void writeCookieValue(String name, String value);
+
+    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
+            throws ServletException, IOException;
+
 }

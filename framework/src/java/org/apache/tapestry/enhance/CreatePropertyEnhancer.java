@@ -15,6 +15,7 @@
 package org.apache.tapestry.enhance;
 
 import org.apache.hivemind.service.ClassFab;
+import org.apache.tapestry.Defense;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -42,9 +43,9 @@ public class CreatePropertyEnhancer implements IEnhancer
     public CreatePropertyEnhancer(String propertyName, Class propertyType, String readMethodName,
             boolean persistent)
     {
-        Tapestry.notNull(propertyName, "propertyName");
-        Tapestry.notNull(propertyType, "propertyType");
-        Tapestry.notNull(readMethodName, "readMethodName");
+        Defense.notNull(propertyName, "propertyName");
+        Defense.notNull(propertyType, "propertyType");
+        Defense.notNull(readMethodName, "readMethodName");
 
         _propertyName = propertyName;
         _propertyType = propertyType;

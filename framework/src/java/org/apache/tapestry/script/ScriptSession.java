@@ -19,75 +19,37 @@ import java.util.Map;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScriptProcessor;
-import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- * The result of executing a script, the session is used during the parsing process as well.
- * Following
- * {@link org.apache.tapestry.IScript#execute(org.apache.tapestry.IRequestCycle, org.apache.tapestry.IScriptProcessor, java.util.Map)},
- * the session provides access to output symbols as well as the body and initialization blocks
- * created by the script tokens.
+ * Process object used when executing a {@link org.apache.tapestry.IScript script template}. This
+ * ScriptSession provides support
  * 
- * @author Howard Lewis Ship
- * @since 0.2.9
+ * @author Howard M. Lewis Ship
+ * @since 3.1
  */
-
-public class ScriptSession
+public interface ScriptSession extends IScriptProcessor
 {
-    private IRequestCycle _cycle;
+    /**
+     * Evaluates an OGNL expression, where the root object for the expression is the
+     * {@link #getSymbols() symbols map}.
+     */
+    public Object evaluate(String expression);
 
-    private IScriptProcessor _processor;
+    /**
+     * Returns the resource for the script template.
+     */
 
-    private Resource _scriptLocation;
+    public Resource getScriptTemplateResource();
 
-    private Map _symbols;
+    /**
+     * Returns the symbols (which may be created or updated during the execution of the script
+     * template).
+     */
 
-    /** @since 3.1 */
-    private ExpressionEvaluator _evaluator;
+    public Map getSymbols();
 
-    public ScriptSession(Resource scriptLocation, IRequestCycle cycle, IScriptProcessor processor,
-            ExpressionEvaluator evaluator, Map symbols)
-    {
-        _scriptLocation = scriptLocation;
-        _cycle = cycle;
-        _processor = processor;
-        _symbols = symbols;
-        _evaluator = evaluator;
-    }
-
-    public Object evaluate(String expression)
-    {
-        return _evaluator.read(_symbols, expression);
-    }
-
-    public Resource getScriptPath()
-    {
-        return _scriptLocation;
-    }
-
-    public Map getSymbols()
-    {
-        return _symbols;
-    }
-
-    public IRequestCycle getRequestCycle()
-    {
-        return _cycle;
-    }
-
-    public IScriptProcessor getProcessor()
-    {
-        return _processor;
-    }
-
-    public String toString()
-    {
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append("ScriptSession[");
-        buffer.append(_scriptLocation);
-        buffer.append(']');
-
-        return buffer.toString();
-    }
+    /**
+     * Returns the current request cycle.
+     */
+    public IRequestCycle getRequestCycle();
 }

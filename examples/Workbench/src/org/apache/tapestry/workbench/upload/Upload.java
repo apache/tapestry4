@@ -25,24 +25,25 @@ import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstraint;
 
 /**
- *  Contains a form, including an {@link org.apache.tapestry.form.Upload}
- *  component.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *
- **/
+ * Contains a form, including an {@link org.apache.tapestry.form.Upload}component.
+ * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
 
 public class Upload extends BasePage
 {
-    private static final String[] bytesPerLineOptions =
-        new String[] { "8", "16", "24", "32", "40", "48" };
+    private static final String[] bytesPerLineOptions = new String[]
+    { "8", "16", "24", "32", "40", "48" };
 
     private static final String DEFAULT_BPL = "16";
 
     private String bytesPerLine = DEFAULT_BPL;
+
     private boolean showAscii;
+
     private IUploadFile file;
+
     private IPropertySelectionModel bplModel;
 
     public void detach()
@@ -79,7 +80,7 @@ public class Upload extends BasePage
     {
         this.bytesPerLine = bytesPerLine;
 
-        fireObservedChange("bytesPerLine", bytesPerLine);
+        Tapestry.fireObservedChange(this, "bytesPerLine", bytesPerLine);
     }
 
     public boolean getShowAscii()
@@ -91,7 +92,7 @@ public class Upload extends BasePage
     {
         this.showAscii = showAscii;
 
-        fireObservedChange("showAscii", showAscii);
+        Tapestry.fireObservedChange(this, "showAscii", new Boolean(showAscii));
     }
 
     public IPropertySelectionModel getBytesPerLineModel()

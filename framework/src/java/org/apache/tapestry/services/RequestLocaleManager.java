@@ -14,26 +14,28 @@
 
 package org.apache.tapestry.services;
 
+import java.util.Locale;
+
 /**
- * Used by other services to obtain cookie values for the current request.
- *
+ * Used to determine what is the client-specified locale, if any, for the current request. This may
+ * be stored in the request as an HTTP Cookie, or may be interpolated from request headers.
+ * Additionally, the "raw" value provided by the client may be filtered down.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public interface CookieSource
+public interface RequestLocaleManager
 {
-	/**
-	 * Returns the value of the first cookie whose name matches. Returns null
-	 * if no such cookie exists.
-	 */
-	public String readCookieValue(String name);
+    /**
+     * Determines the locale to use for processing the current request. The value is returned, but
+     * also stored as {@link org.apache.tapestry.services.RequestGlobals#setIncomingLocale(Locale)}.
+     */
+
+    public Locale extractLocaleForCurrentRequest();
     
     /**
-     * Creates or updates a cookie value.  The value is stored permanently
-     * (no timeout, not session based).
-     * 
-     * TODO: add suport for timeouts and session cookies.
+     * Stores the locale as a cookie for later use.
      */
     
-    public void writeCookieValue(String name, String value);
+    public void persistLocale(Locale locale);
 }

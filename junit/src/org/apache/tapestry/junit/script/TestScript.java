@@ -31,6 +31,7 @@ import org.apache.tapestry.junit.MockRequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.script.ScriptSession;
+import org.apache.tapestry.script.ScriptSessionImpl;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.impl.ExpressionCacheImpl;
@@ -41,7 +42,6 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * A collection of tests for Tapestry scripting.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 
@@ -422,7 +422,7 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = execute("simple.script", null);
 
-        ScriptSession session = new ScriptSession(script.getScriptResource(), null, null,
+        ScriptSession session = new ScriptSessionImpl(script.getScriptResource(), null, null,
                 createExpressionEvaluator(), null);
         assertEquals("ScriptSession[" + script.getScriptResource() + "]", session.toString());
     }

@@ -1228,13 +1228,4 @@ public final class Tapestry
     {
         return !isBlank(input);
     }
-
-    /**
-     * Defensive programming: check for null parameter where it is not acceptible.
-     */
-    public static void notNull(Object parameter, String parameterName)
-    {
-        if (parameter == null)
-            throw new NullPointerException(TapestryMessages.paramNotNull(parameterName));
-    }
 }

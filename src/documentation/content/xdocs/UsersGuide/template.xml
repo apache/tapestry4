@@ -1,4 +1,3 @@
-<!-- $Id$ -->
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -121,7 +120,7 @@ The editor will ignore the undefined HTML attributes (such as jwcid).
 <p>
 A larger goal is to support real project teams: The special markup for Tapestry is unobtrusive, even invisible.
 This allows an HTML designer to work on a template without breaking the dynamic portions of it.	This is completely unlike
-JSPs, where the changes to support dynamic output are extremelyobtrusive and result in a file that is meaningless to an HTML
+JSPs, where the changes to support dynamic output are extremely intrusive and result in a file that is meaningless to an HTML
 editor.
 </p>
 

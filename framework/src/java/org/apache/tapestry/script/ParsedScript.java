@@ -50,12 +50,12 @@ public class ParsedScript extends AbstractToken implements IScript
     }
 
     /**
-     * Creates the {@link ScriptSession}and invokes
+     * Creates the {@link ScriptSessionImpl}and invokes
      * {@link org.apache.tapestry.script.AbstractToken#writeChildren(java.lang.StringBuffer, org.apache.tapestry.script.ScriptSession)}.
      */
     public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
     {
-        ScriptSession session = new ScriptSession(_scriptResource, cycle, processor, _evaluator,
+        ScriptSession session = new ScriptSessionImpl(_scriptResource, cycle, processor, _evaluator,
                 symbols);
 
         writeChildren(null, session);

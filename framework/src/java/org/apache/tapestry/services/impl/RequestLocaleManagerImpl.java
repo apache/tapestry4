@@ -14,55 +14,59 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tapestry.ApplicationServlet;
+import org.apache.tapestry.Defense;
 import org.apache.tapestry.services.CookieSource;
-import org.apache.tapestry.services.LocaleExtractor;
+import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
- * Identifies the Locale provided by the client (either in a Tapestry-specific
- * cookie, or interpolated from the HTTP header.
+ * Identifies the Locale provided by the client (either in a Tapestry-specific cookie, or
+ * interpolated from the HTTP header. TODO: Add the ability to "filter down" Locales down to a
+ * predifined set (specified using some form of HiveMInd configuration).
  * 
- * TODO: Add the ability to "filter down" Locales down to a predifined set
- * (specified using some form of HiveMInd configuration).
- *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class LocaleExtractorImpl implements LocaleExtractor
+public class RequestLocaleManagerImpl implements RequestLocaleManager
 {
     private HttpServletRequest _request;
+
+    private Locale _requestLocale;
+
     private CookieSource _cookieSource;
-    private Map _localeMap = Collections.synchronizedMap(new HashMap());
 
     public Locale extractLocaleForCurrentRequest()
     {
-        String localeName = _cookieSource.getCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME);
+        String localeName = _cookieSource.readCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME);
 
-        if (localeName != null)
-            return getLocale(localeName);
+        _requestLocale = (localeName != null) ? getLocale(localeName) : _request.getLocale();
 
-        return _request.getLocale();
+        return _requestLocale;
+    }
+
+    public void persistLocale(Locale locale)
+    {
+        Defense.notNull(locale, "locale");
+
+        if (locale.equals(_requestLocale))
+            return;
+
+        _cookieSource.writeCookieValue(ApplicationServlet.LOCALE_COOKIE_NAME, locale.toString());
     }
 
     private Locale getLocale(String name)
     {
-        Locale result = (Locale) _localeMap.get(name);
+        // There used to be a cache of Locale (keyed on name), but since this service is
+        // threaded, there's no point (short of making it static, which is too ugly for words).
+        // Instead, we should have a LocaleCache service for that purpose. Have to balance
+        // cost of invoking that service vs. the cost of creating new Locale instances all the time.
 
-        if (result == null)
-        {
-            result = constructLocale(name);
-            _localeMap.put(name, result);
-        }
-
-        return result;
+        return constructLocale(name);
     }
 
     private Locale constructLocale(String name)
@@ -72,22 +76,22 @@ public class LocaleExtractorImpl implements LocaleExtractor
 
         switch (terms.length)
         {
-            case 1 :
+            case 1:
                 return new Locale(terms[0], "");
 
-            case 2 :
+            case 2:
                 return new Locale(terms[0], terms[1]);
 
-            case 3 :
+            case 3:
 
                 return new Locale(terms[0], terms[1], terms[2]);
 
-            default :
+            default:
 
                 throw new IllegalArgumentException();
         }
     }
-    
+
     public void setCookieSource(CookieSource source)
     {
         _cookieSource = source;
@@ -97,5 +101,4 @@ public class LocaleExtractorImpl implements LocaleExtractor
     {
         _request = request;
     }
-
 }

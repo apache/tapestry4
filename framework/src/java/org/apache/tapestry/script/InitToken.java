@@ -18,7 +18,7 @@ import org.apache.hivemind.Location;
 
 /**
  *  Generates a String from its child tokens, then applies it
- *  to {@link ScriptSession#setInitialization(String)}.
+ *  to {@link ScriptSessionImpl#setInitialization(String)}.
  *
  *  @author Howard Lewis Ship
  *  @since 0.2.9
@@ -43,7 +43,7 @@ class InitToken extends AbstractToken
 
         writeChildren(buffer, session);
 
-        session.getProcessor().addInitializationScript(buffer.toString());
+        session.addInitializationScript(buffer.toString());
 
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.

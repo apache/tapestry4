@@ -22,27 +22,27 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.AbstractService;
-import org.apache.tapestry.engine.IEngineServiceView;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.RequestExceptionReporter;
 import org.jCharts.Chart;
 import org.jCharts.encoders.JPEGEncoder13;
 
 /**
- *  ServiceLink that works with a {@link Chart} to dynamically render
- *  a chart as a JPEG.  This is a very limited implementation; a full version
- *  would include features such as setting the size of the image, and more flexibility
- *  in defining where the {@link Chart} instance is obtained from.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 1.0.10
+ * ServiceLink that works with a {@link Chart}to dynamically render a chart as a JPEG. This is a
+ * very limited implementation; a full version would include features such as setting the size of
+ * the image, and more flexibility in defining where the {@link Chart}instance is obtained from.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.10
+ */
 
 public class ChartService extends AbstractService
 {
     public static final String SERVICE_NAME = "chart";
+
+    /** @since 3.1 */
+    private RequestExceptionReporter _exceptionReporter;
 
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
@@ -63,11 +63,8 @@ public class ChartService extends AbstractService
         return constructLink(cycle, SERVICE_NAME, context, null, true);
     }
 
-    public void service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output)
+            throws ServletException, IOException
     {
         String context[] = getServiceContext(cycle.getRequestContext());
 
@@ -96,15 +93,14 @@ public class ChartService extends AbstractService
         }
         catch (ClassCastException ex)
         {
-            engine.reportException(
-                "Component " + component.getExtendedId() + " does not implement IChartProvider.",
-                ex);
+            _exceptionReporter.reportRequestException("Component " + component.getExtendedId()
+                    + " does not implement IChartProvider.", ex);
 
             return;
         }
         catch (Throwable ex)
         {
-            engine.reportException("Error creating JPEG stream.", ex);
+            _exceptionReporter.reportRequestException("Error creating JPEG stream.", ex);
 
             return;
         }
@@ -117,4 +113,9 @@ public class ChartService extends AbstractService
         return SERVICE_NAME;
     }
 
+    /** @since 3.1 */
+    public void setExceptionReporter(RequestExceptionReporter exceptionReporter)
+    {
+        _exceptionReporter = exceptionReporter;
+    }
 }

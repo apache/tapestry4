@@ -21,35 +21,30 @@ import javax.servlet.ServletException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.IEngineServiceView;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
- *  Test case for service which can't be instantiated.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
+ * Test case for service which can't be instantiated.
+ * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
+ */
 public class PrivateService implements IEngineService
 {
-	// Can't be instantiated!
-	private PrivateService()
-	{
-	}
+    // Can't be instantiated!
+    private PrivateService()
+    {
+    }
 
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         return null;
     }
 
-    public void service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
+            IOException
     {
     }
 

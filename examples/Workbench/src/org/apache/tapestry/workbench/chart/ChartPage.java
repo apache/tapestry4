@@ -35,19 +35,20 @@ import org.jCharts.properties.PieChart2DProperties;
 import org.jCharts.test.TestDataGenerator;
 
 /**
- *  Demonstrates more complex form handling (including loops and dynamic addition/deletion of
- *  rows) as well as dynamic image generation using JCharts.
+ * Demonstrates more complex form handling (including loops and dynamic addition/deletion of rows)
+ * as well as dynamic image generation using JCharts.
  * 
- *  @author Howard Lewis Ship, Luis Neves
- *  @version $Id$
- *  @since 1.0.10
- * 
- **/
+ * @author Howard Lewis Ship, Luis Neves
+ * @version $Id$
+ * @since 1.0.10
+ */
 
 public class ChartPage extends BasePage implements IChartProvider
 {
     private List _plotValues;
+
     private List _removeValues;
+
     private PlotValue _plotValue;
 
     public void initialize()
@@ -58,10 +59,9 @@ public class ChartPage extends BasePage implements IChartProvider
     }
 
     /**
-     *  Invokes {@link #getPlotValues()}, which ensures that (on the very first request cycle),
-     *  the persistent values property is set <em>before</em> the page recorder is locked.
-     * 
-     **/
+     * Invokes {@link #getPlotValues()}, which ensures that (on the very first request cycle), the
+     * persistent values property is set <em>before</em> the page recorder is locked.
+     */
 
     public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -78,7 +78,7 @@ public class ChartPage extends BasePage implements IChartProvider
             _plotValues.add(new PlotValue("Barney", 15));
             _plotValues.add(new PlotValue("Dino", 7));
 
-            fireObservedChange("plotValues", _plotValues);
+            Tapestry.fireObservedChange(this, "plotValues", _plotValues);
         }
 
         return _plotValues;
@@ -88,7 +88,7 @@ public class ChartPage extends BasePage implements IChartProvider
     {
         _plotValues = plotValues;
 
-        fireObservedChange("plotValues", plotValues);
+        Tapestry.fireObservedChange(this, "plotValues", plotValues);
     }
 
     public PlotValue getPlotValue()
@@ -102,9 +102,8 @@ public class ChartPage extends BasePage implements IChartProvider
     }
 
     /**
-     *  Invoked during the render; always returns false.
-     * 
-     **/
+     * Invoked during the render; always returns false.
+     */
 
     public boolean isMarkedForDeletion()
     {
@@ -112,12 +111,10 @@ public class ChartPage extends BasePage implements IChartProvider
     }
 
     /**
-     *  Invoked by the deleted checkbox (for each plotValue).  If true,
-     *  the the current plotValue is added to the list of plotValues to
-     *  remove (though the actual removing is done inside {@link #delete(IRequestCycle)},
-     *  after the loop.
-     *
-     **/
+     * Invoked by the deleted checkbox (for each plotValue). If true, the the current plotValue is
+     * added to the list of plotValues to remove (though the actual removing is done inside
+     * {@link #delete(IRequestCycle)}, after the loop.
+     */
 
     public void setMarkedForDeletion(boolean value)
     {
@@ -140,18 +137,16 @@ public class ChartPage extends BasePage implements IChartProvider
     }
 
     /**
-     *  Form listener method; does nothing since we want to stay on this page.
-     * 
-     **/
+     * Form listener method; does nothing since we want to stay on this page.
+     */
 
     public void submit(IRequestCycle cycle)
     {
     }
 
     /**
-     *  Listener method for the add button, adds an additional (blank) plot value.
-     * 
-     **/
+     * Listener method for the add button, adds an additional (blank) plot value.
+     */
 
     public void add(IRequestCycle cycle)
     {
@@ -163,11 +158,10 @@ public class ChartPage extends BasePage implements IChartProvider
     }
 
     /**
-     *  Listener method for the remove button, removes any checked plot values.
+     * Listener method for the remove button, removes any checked plot values.
      * 
-     *  @see #setMarkedForDeletion(boolean)
-     * 
-     **/
+     * @see #setMarkedForDeletion(boolean)
+     */
 
     public void delete(IRequestCycle cycle)
     {
@@ -192,11 +186,10 @@ public class ChartPage extends BasePage implements IChartProvider
     }
 
     /**
-     *  This method is invoked by the service (in a seperate request cycle from all the form handling stuff).
-     *  The {@link #getChartImageAsset()} method provides an {@link IAsset} that is handled by the 
-     *  {@link ChartService}, and the asset encodes the identity of this page.
-     * 
-     **/
+     * This method is invoked by the service (in a seperate request cycle from all the form handling
+     * stuff). The {@link #getChartImageAsset()}method provides an {@link IAsset}that is handled
+     * by the {@link ChartService}, and the asset encodes the identity of this page.
+     */
 
     public Chart getChart()
     {
@@ -233,7 +226,7 @@ public class ChartPage extends BasePage implements IChartProvider
         }
 
         Paint[] paints = TestDataGenerator.getRandomPaints(count);
-        
+
         try
         {
             return new PieChartDataSet("Pie Chart", data, labels, paints, properties);

@@ -17,7 +17,7 @@ package org.apache.tapestry;
 import org.apache.hivemind.test.HiveMindTestCase;
 
 /**
- * Test for {@link org.apache.tapestry.Tapestry#notNull(Object, String)}.
+ * Test for {@link org.apache.tapestry.Defense#notNull(Object, String)}.
  *
  * @author Howard Lewis Ship
  * @since 3.1
@@ -26,14 +26,14 @@ public class TestTapestryNotNull extends HiveMindTestCase
 {
     public void testSuccess()
     {
-        Tapestry.notNull("foo", "bar");
+        Defense.notNull("foo", "bar");
     }
 
     public void testFailure()
     {
         try
         {
-            Tapestry.notNull(null, "woops");
+            Defense.notNull(null, "woops");
             unreachable();
         }
         catch (NullPointerException ex)

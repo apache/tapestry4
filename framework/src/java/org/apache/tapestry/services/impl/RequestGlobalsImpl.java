@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,17 +24,17 @@ import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.services.RequestGlobals;
 
 /**
- * Wrapper around {@link org.apache.hivemind.service.ThreadLocalStorage} used
- * to store and retrieve Servlet API info.
- *
+ * Wrapper around {@link org.apache.hivemind.service.ThreadLocalStorage}used to store and retrieve
+ * Servlet API info.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class RequestGlobalsImpl extends BaseLocatable implements RequestGlobals
+public class RequestGlobalsImpl implements RequestGlobals
 {
     private HttpServletRequest _request;
+
     private HttpServletResponse _response;
-    private Resource _applicationRoot;
 
     public void store(HttpServletRequest request, HttpServletResponse response)
     {

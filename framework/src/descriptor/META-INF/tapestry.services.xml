@@ -49,17 +49,93 @@
   </configuration-point>
   
   <contribution configuration-id="FactoryServices">
-    
-    <service object="instance:org.apache.tapestry.engine.HomeService"/>
-    <service object="instance:org.apache.tapestry.engine.ActionService"/>
-    <service object="instance:org.apache.tapestry.engine.DirectService"/>
-    <service object="instance:org.apache.tapestry.engine.PageService"/>
-    <service object="instance:org.apache.tapestry.engine.ResetService"/>
-    <service object="instance:org.apache.tapestry.engine.RestartService"/>
-    <service object="instance:org.apache.tapestry.asset.AssetService"/>
-	  <service object="instance:org.apache.tapestry.engine.ExternalService"/>
-		<service object="instance:org.apache.tapestry.engine.TagSupportService"/>
-    
+    <service object="service:Home"/>
+    <service object="service:Action"/>
+    <service object="service:Direct"/>
+    <service object="service:Page"/>
+    <service object="service:Reset"/>
+    <service object="service:Restart"/>
+    <service object="service:Asset"/>
+	  <service object="service:External"/>
+		<service object="service:TagSupport"/>    
+  </contribution>
+
+  <service-point id="TagSupport" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.engine.TagSupportService"/>
+    </invoke-factory>
+  </service-point>  
+
+  <service-point id="External" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.engine.ExternalService">
+        <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+
+  <service-point id="Asset" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.asset.AssetService">
+        <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
+  <service-point id="Restart" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.engine.RestartService">
+        <set-service property="builder" service-id="tapestry.request.AbsoluteURLBuilder"/>
+        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
+        <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="Home" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.engine.HomeService">
+        <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="Action" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.engine.ActionService">
+        <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="Direct" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.engine.DirectService">
+        <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="Page" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.engine.PageService">
+        <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="Reset" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="org.apache.tapestry.engine.ResetService">
+        <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+        <set-service property="resetEventCoordinator" service-id="tapestry.ResetEventCoordinator"/>
+        <set property="enabled" value="${org.apache.tapestry.enable-reset-service}"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <contribution configuration-id="hivemind.FactoryDefaults">
+    <default symbol="org.apache.tapestry.enable-reset-service" value="false"/>
   </contribution>
   
   <configuration-point id="ApplicationServices" schema-id="EngineServices">

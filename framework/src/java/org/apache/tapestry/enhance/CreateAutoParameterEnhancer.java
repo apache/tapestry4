@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.tapestry.Defense;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -104,10 +105,10 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         Class type,
         String readMethodName)
     {
-        Tapestry.notNull(propertyName, "propertyName");
-        Tapestry.notNull(parameterName, "parameterName");
-        Tapestry.notNull(type, "type");
-        Tapestry.notNull(readMethodName, "readMethodName");
+        Defense.notNull(propertyName, "propertyName");
+        Defense.notNull(parameterName, "parameterName");
+        Defense.notNull(type, "type");
+        Defense.notNull(readMethodName, "readMethodName");
 
         _propertyName = propertyName;
         _parameterName = parameterName;
