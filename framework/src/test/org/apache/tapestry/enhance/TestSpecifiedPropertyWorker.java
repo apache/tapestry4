@@ -20,9 +20,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
@@ -199,12 +198,10 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.getBaseClass();
         opc.setReturnValue(BaseComponent.class);
 
-        Log log = (Log) newMock(Log.class);
-        ErrorHandler errorHandler = (ErrorHandler) newMock(ErrorHandler.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        errorHandler
+        log
                 .error(
-                        log,
                         "Error adding property 'wilma' to class org.apache.tapestry.BaseComponent: Simulated error.",
                         l,
                         ex);
@@ -212,8 +209,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         replayControls();
 
         SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
-        w.setLog(log);
-        w.setErrorHandler(errorHandler);
+        w.setErrorLog(log);
 
         w.performEnhancement(op);
 

@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Defense;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ComponentMessages;

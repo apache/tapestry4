@@ -26,6 +26,7 @@ import ognl.OgnlRuntime;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Defense;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.hivemind.util.PropertyUtils;

@@ -18,7 +18,6 @@ import java.lang.reflect.Constructor;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.services.ComponentConstructor;
 
 /**

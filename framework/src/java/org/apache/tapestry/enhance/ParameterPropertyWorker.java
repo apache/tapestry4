@@ -19,10 +19,11 @@ import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Defense;
 import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.tapestry.Defense;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -36,9 +37,7 @@ import org.apache.tapestry.spec.IPropertySpecification;
  */
 public class ParameterPropertyWorker implements EnhancementWorker
 {
-    private Log _log;
-
-    private ErrorHandler _errorHandler;
+    private ErrorLog _errorLog;
 
     public void performEnhancement(EnhancementOperation op)
     {
@@ -59,10 +58,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
             }
             catch (RuntimeException ex)
             {
-                _errorHandler.error(_log, EnhanceMessages.errorAddingProperty(
-                        ps.getPropertyName(),
-                        op.getBaseClass(),
-                        ex), ps.getLocation(), ex);
+                _errorLog.error(EnhanceMessages.errorAddingProperty(ps.getPropertyName(), op
+                        .getBaseClass(), ex), ps.getLocation(), ex);
             }
         }
     }
@@ -139,7 +136,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
         String propertyName = ps.getPropertyName();
 
         // This restriction will go away shortly ...
-        
+
         if (!ps.isRequired() && ps.getDefaultValue() == null)
             throw new ApplicationRuntimeException(EnhanceMessages.autoMustBeRequired(propertyName),
                     ps.getLocation(), null);
@@ -181,14 +178,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
         { propertyType }, null), b.toString());
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler)
+    public void setErrorLog(ErrorLog errorLog)
     {
-        _errorHandler = errorHandler;
+        _errorLog = errorLog;
     }
-
-    public void setLog(Log log)
-    {
-        _log = log;
-    }
-
 }

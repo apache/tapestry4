@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.engine.IEngineService;
 import org.easymock.MockControl;
@@ -115,10 +116,9 @@ public class TestServiceMap extends HiveMindTestCase
         list.add(first);
         list.add(second);
 
-        Log log = (Log) newMock(Log.class);
-        ErrorHandler eh = (ErrorHandler) newMock(ErrorHandler.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        eh.error(log, ImplMessages.dupeService("duplicate", first), null, null);
+        log.error(ImplMessages.dupeService("duplicate", first), null, null);
 
         replayControls();
 
@@ -126,8 +126,7 @@ public class TestServiceMap extends HiveMindTestCase
 
         m.setFactoryServices(list);
         m.setApplicationServices(Collections.EMPTY_LIST);
-        m.setLog(log);
-        m.setErrorHandler(eh);
+        m.setErrorLog(log);
 
         m.initializeService();
 

@@ -17,9 +17,8 @@ package org.apache.tapestry.enhance;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -33,9 +32,7 @@ import org.apache.tapestry.spec.InjectSpecification;
  */
 public class InjectWorker implements EnhancementWorker
 {
-    private ErrorHandler _errorHandler;
-
-    private Log _log;
+    private ErrorLog _errorLog;
 
     private InjectedValueProvider _provider;
 
@@ -55,8 +52,10 @@ public class InjectWorker implements EnhancementWorker
             }
             catch (Exception ex)
             {
-                _errorHandler.error(_log, EnhanceMessages.errorAddingProperty(is.getName(), op
-                        .getBaseClass(), ex), is.getLocation(), ex);
+                _errorLog.error(EnhanceMessages.errorAddingProperty(
+                        is.getName(),
+                        op.getBaseClass(),
+                        ex), is.getLocation(), ex);
             }
         }
     }
@@ -77,7 +76,8 @@ public class InjectWorker implements EnhancementWorker
         Object injectedValue = _provider.obtainValue(objectReference, is.getLocation());
 
         if (injectedValue == null)
-            throw new ApplicationRuntimeException(EnhanceMessages.locatedValueIsNull(objectReference));
+            throw new ApplicationRuntimeException(EnhanceMessages
+                    .locatedValueIsNull(objectReference));
 
         if (!propertyType.isAssignableFrom(injectedValue.getClass()))
             throw new ApplicationRuntimeException(EnhanceMessages.incompatibleInjectType(
@@ -95,14 +95,9 @@ public class InjectWorker implements EnhancementWorker
                 "return " + fieldName + ";");
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler)
+    public void setErrorLog(ErrorLog errorLog)
     {
-        _errorHandler = errorHandler;
-    }
-
-    public void setLog(Log log)
-    {
-        _log = log;
+        _errorLog = errorLog;
     }
 
     public void setProvider(InjectedValueProvider provider)

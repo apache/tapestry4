@@ -13,8 +13,8 @@
 // limitations under the License.
 
 package org.apache.tapestry.services.impl;
-import org.apache.commons.logging.Log;
-import org.apache.hivemind.ErrorHandler;
+
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.service.ObjectProvider;
@@ -22,25 +22,22 @@ import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.services.Infrastructure;
 
 /**
- * An ObjectProvider that streamlines access to the 
- * central {@link org.apache.tapestry.services.Infrastructure} object.  The locator
- * for this provider is the name of a property of the Infrastructure. 
- *
+ * An ObjectProvider that streamlines access to the central
+ * {@link org.apache.tapestry.services.Infrastructure}object. The locator for this provider is the
+ * name of a property of the Infrastructure.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 
 public class InfrastructureObjectProvider implements ObjectProvider
 {
-    private Log _log;
-    private ErrorHandler _errorHandler;
+    private ErrorLog _errorLog;
+
     private Infrastructure _infrastructure;
 
-    public Object provideObject(
-        Module contributingModule,
-        Class propertyType,
-        String locator,
-        Location location)
+    public Object provideObject(Module contributingModule, Class propertyType, String locator,
+            Location location)
     {
         try
         {
@@ -48,29 +45,23 @@ public class InfrastructureObjectProvider implements ObjectProvider
         }
         catch (Throwable ex)
         {
-            _errorHandler.error(
-                _log,
-                ImplMessages.unableToReadInfrastructureProperty(locator, _infrastructure, ex),
-                location,
-                ex);
+            _errorLog.error(ImplMessages.unableToReadInfrastructureProperty(
+                    locator,
+                    _infrastructure,
+                    ex), location, ex);
 
             return null;
         }
     }
 
-    public void setErrorHandler(ErrorHandler handler)
+    public void setErrorLog(ErrorLog errorLog)
     {
-        _errorHandler = handler;
+        _errorLog = errorLog;
     }
 
     public void setInfrastructure(Infrastructure infrastructure)
     {
         _infrastructure = infrastructure;
-    }
-
-    public void setLog(Log log)
-    {
-        _log = log;
     }
 
 }

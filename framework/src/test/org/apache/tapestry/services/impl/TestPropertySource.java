@@ -18,6 +18,7 @@ import java.util.Collections;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.engine.IPropertySource;
 import org.easymock.MockControl;
@@ -35,8 +36,7 @@ public class TestPropertySource extends HiveMindTestCase
         MockControl sourceControl = newControl(IPropertySource.class);
         IPropertySource source = (IPropertySource) sourceControl.getMock();
 
-        Log log = (Log) newMock(Log.class);
-        ErrorHandler eh = (ErrorHandler) newMock(ErrorHandler.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
         // Training
 
@@ -52,8 +52,7 @@ public class TestPropertySource extends HiveMindTestCase
         PropertySourceImpl ps = new PropertySourceImpl();
 
         ps.setContributions(Collections.singletonList(c));
-        ps.setLog(log);
-        ps.setErrorHandler(eh);
+        ps.setErrorLog(log);
 
         ps.initializeService();
 
@@ -64,16 +63,14 @@ public class TestPropertySource extends HiveMindTestCase
 
     public void testFailure()
     {
-        Log log = (Log) newMock(Log.class);
-        ErrorHandler eh = (ErrorHandler) newMock(ErrorHandler.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
         replayControls();
 
         PropertySourceImpl ps = new PropertySourceImpl();
 
         ps.setContributions(Collections.EMPTY_LIST);
-        ps.setLog(log);
-        ps.setErrorHandler(eh);
+        ps.setErrorLog(log);
 
         ps.initializeService();
 

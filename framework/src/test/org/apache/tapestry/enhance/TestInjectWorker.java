@@ -18,9 +18,8 @@ import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.test.AggregateArgumentsMatcher;
@@ -168,9 +167,8 @@ public class TestInjectWorker extends HiveMindTestCase
         MockControl pc = newControl(InjectedValueProvider.class);
         InjectedValueProvider p = (InjectedValueProvider) pc.getMock();
 
-        Log log = (Log) newMock(Log.class);
-        MockControl ehc = newControl(ErrorHandler.class);
-        ErrorHandler eh = (ErrorHandler) ehc.getMock();
+        MockControl logc = newControl(ErrorLog.class);
+        ErrorLog log = (ErrorLog) logc.getMock();
 
         op.getSpecification();
         opc.setReturnValue(spec);
@@ -186,15 +184,18 @@ public class TestInjectWorker extends HiveMindTestCase
         op.getBaseClass();
         opc.setReturnValue(BaseComponent.class);
 
-        trainForException(ehc, eh, log, "fred", EnhanceMessages
-                .locatedValueIsNull("service:barney"), l);
+        trainForException(
+                logc,
+                log,
+                "fred",
+                EnhanceMessages.locatedValueIsNull("service:barney"),
+                l);
 
         replayControls();
 
         InjectWorker w = new InjectWorker();
         w.setProvider(p);
-        w.setLog(log);
-        w.setErrorHandler(eh);
+        w.setErrorLog(log);
 
         w.performEnhancement(op);
 
@@ -213,9 +214,8 @@ public class TestInjectWorker extends HiveMindTestCase
         MockControl pc = newControl(InjectedValueProvider.class);
         InjectedValueProvider p = (InjectedValueProvider) pc.getMock();
 
-        Log log = (Log) newMock(Log.class);
-        MockControl ehc = newControl(ErrorHandler.class);
-        ErrorHandler eh = (ErrorHandler) ehc.getMock();
+        MockControl logc = newControl(ErrorLog.class);
+        ErrorLog log = (ErrorLog) logc.getMock();
 
         op.getSpecification();
         opc.setReturnValue(spec);
@@ -231,7 +231,7 @@ public class TestInjectWorker extends HiveMindTestCase
         op.getBaseClass();
         opc.setReturnValue(BaseComponent.class);
 
-        trainForException(ehc, eh, log, "fred", EnhanceMessages.incompatibleInjectType(
+        trainForException(logc, log, "fred", EnhanceMessages.incompatibleInjectType(
                 "service:barney",
                 "INJECTED-VALUE",
                 IEngineService.class), l);
@@ -240,15 +240,14 @@ public class TestInjectWorker extends HiveMindTestCase
 
         InjectWorker w = new InjectWorker();
         w.setProvider(p);
-        w.setLog(log);
-        w.setErrorHandler(eh);
+        w.setErrorLog(log);
 
         w.performEnhancement(op);
 
         verifyControls();
     }
 
-    private void trainForException(MockControl ehc, ErrorHandler eh, Log log, String propertyName,
+    private void trainForException(MockControl control, ErrorLog log, String propertyName,
             String innerMessage, Location l)
     {
         ApplicationRuntimeException inner = new ApplicationRuntimeException(innerMessage);
@@ -257,8 +256,8 @@ public class TestInjectWorker extends HiveMindTestCase
                 BaseComponent.class,
                 inner);
 
-        eh.error(log, outerMessage, l, inner);
-        ehc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, null, new TypeMatcher() }));
+        log.error(outerMessage, l, inner);
+        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { null, null, new TypeMatcher() }));
     }
 }

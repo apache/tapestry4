@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.spec;
 
+import org.apache.hivemind.Defense;
 import org.apache.hivemind.impl.BaseLocatable;
-import org.apache.tapestry.Defense;
 
 /**
  * Defines a formal parameter to a component. A <code>IParameterSpecification</code> is contained

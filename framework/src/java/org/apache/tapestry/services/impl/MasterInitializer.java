@@ -19,27 +19,25 @@ import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
-import org.apache.commons.logging.Log;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.order.Orderer;
 import org.apache.tapestry.services.ApplicationInitializer;
 
 /**
- * Uses an orderable list of {@link org.apache.tapestry.services.ApplicationInitializer}s
- * to initialize the application. 
- *
+ * Uses an orderable list of {@link org.apache.tapestry.services.ApplicationInitializer}s to
+ * initialize the application.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class MasterInitializer implements ApplicationInitializer
 {
-    private Log _log;
-    private ErrorHandler _errorHandler;
+    private ErrorLog _errorLog;
     private List _initializers;
 
     public void initializeService()
     {
-        Orderer o = new Orderer(_log, _errorHandler, ImplMessages.initializerContribution());
+        Orderer o = new Orderer(_errorLog, ImplMessages.initializerContribution());
 
         Iterator i = _initializers.iterator();
         while (i.hasNext())
@@ -63,19 +61,14 @@ public class MasterInitializer implements ApplicationInitializer
         }
     }
 
-    public void setErrorHandler(ErrorHandler handler)
-    {
-        _errorHandler = handler;
-    }
-
     public void setInitializers(List list)
     {
         _initializers = list;
     }
 
-    public void setLog(Log log)
-    {
-        _log = log;
-    }
 
+    public void setErrorLog(ErrorLog errorLog)
+    {
+        _errorLog = errorLog;
+    }
 }

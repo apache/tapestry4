@@ -17,29 +17,29 @@ package org.apache.tapestry.services.impl;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.order.Orderer;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.util.DelegatingPropertySource;
 
 /**
- * Orders a list of {@link org.apache.tapestry.services.impl.PropertySourceContribution}s
- * and get property values from them (the first non-null result being returned).
- *
+ * Orders a list of {@link org.apache.tapestry.services.impl.PropertySourceContribution}s and get
+ * property values from them (the first non-null result being returned).
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class PropertySourceImpl implements IPropertySource
 {
     private List _contributions;
+
     private IPropertySource _delegate;
-    private ErrorHandler _errorHandler;
-    private Log _log;
+
+    private ErrorLog _errorLog;
 
     public void initializeService()
     {
-        Orderer orderer = new Orderer(_log, _errorHandler, "property source");
+        Orderer orderer = new Orderer(_errorLog, "property source");
 
         Iterator i = _contributions.iterator();
 
@@ -70,19 +70,14 @@ public class PropertySourceImpl implements IPropertySource
         return _delegate.getPropertyValue(propertyName);
     }
 
+    public void setErrorLog(ErrorLog errorLog)
+    {
+        _errorLog = errorLog;
+    }
+
     public void setContributions(List list)
     {
         _contributions = list;
-    }
-
-    public void setErrorHandler(ErrorHandler handler)
-    {
-        _errorHandler = handler;
-    }
-
-    public void setLog(Log log)
-    {
-        _log = log;
     }
 
 }

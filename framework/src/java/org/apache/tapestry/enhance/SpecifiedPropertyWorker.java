@@ -17,11 +17,11 @@ package org.apache.tapestry.enhance;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.Defense;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.tapestry.Defense;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 
@@ -34,9 +34,7 @@ import org.apache.tapestry.spec.IPropertySpecification;
  */
 public class SpecifiedPropertyWorker implements EnhancementWorker
 {
-    private Log _log;
-
-    private ErrorHandler _errorHandler;
+    private ErrorLog _errorLog;
 
     /**
      * Iterates over the specified properties, creating an enhanced property for each (a field, an
@@ -64,8 +62,10 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
             }
             catch (RuntimeException ex)
             {
-                _errorHandler.error(_log, EnhanceMessages.errorAddingProperty(name, op
-                        .getBaseClass(), ex), ps.getLocation(), ex);
+                _errorLog.error(
+                        EnhanceMessages.errorAddingProperty(name, op.getBaseClass(), ex),
+                        ps.getLocation(),
+                        ex);
             }
         }
     }
@@ -128,13 +128,8 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         op.addMethod(Modifier.PUBLIC, sig, body.toString());
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler)
+    public void setErrorLog(ErrorLog errorLog)
     {
-        _errorHandler = errorHandler;
-    }
-
-    public void setLog(Log log)
-    {
-        _log = log;
+        _errorLog = errorLog;
     }
 }
