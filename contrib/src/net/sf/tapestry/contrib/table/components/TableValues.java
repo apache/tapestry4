@@ -34,62 +34,74 @@ import net.sf.tapestry.contrib.table.model.ITableColumn;
 import net.sf.tapestry.contrib.table.model.ITableColumnModel;
 
 /**
- * @version $Id$
  * @author mindbridge
+ * @version $Id$
  *
  */
-public class TableValues extends BaseComponent {
+public class TableValues extends BaseComponent
+{
 
-    // Bindings    
-    private IBinding m_objTableRowsBinding = null;
-    
-    // Transient
-    private ITableColumn m_objTableColumn;
+	// Bindings    
+	private IBinding m_objTableRowsBinding = null;
 
-    /**
-     * Returns the tableRowsBinding.
-     * @return IBinding
-     */
-    public IBinding getTableRowsBinding() {
-        return m_objTableRowsBinding;
-    }
+	// Transient
+	private ITableColumn m_objTableColumn;
 
-    /**
-     * Sets the tableRowsBinding.
-     * @param tableRowsBinding The tableRowsBinding to set
-     */
-    public void setTableRowsBinding(IBinding tableRowsBinding) {
-        m_objTableRowsBinding = tableRowsBinding;
-    }
+	/**
+	 * Returns the tableRowsBinding.
+	 * @return IBinding
+	 */
+	public IBinding getTableRowsBinding()
+	{
+		return m_objTableRowsBinding;
+	}
 
-    public TableRows getTableRows() {
-        return (TableRows) getTableRowsBinding().getObject();
-    }
+	/**
+	 * Sets the tableRowsBinding.
+	 * @param tableRowsBinding The tableRowsBinding to set
+	 */
+	public void setTableRowsBinding(IBinding tableRowsBinding)
+	{
+		m_objTableRowsBinding = tableRowsBinding;
+	}
 
-    public Iterator getTableColumnIterator() {
-        ITableColumnModel objColumnModel = getTableRows().getTableView().getTableModel().getColumnModel();
-        return objColumnModel.getColumns();
-    }
-    
-    /**
-     * Returns the tableColumn.
-     * @return ITableColumn
-     */
-    public ITableColumn getTableColumn() {
-        return m_objTableColumn;
-    }
+	public TableRows getTableRows()
+	{
+		return (TableRows) getTableRowsBinding().getObject();
+	}
 
-    /**
-     * Sets the tableColumn.
-     * @param tableColumn The tableColumn to set
-     */
-    public void setTableColumn(ITableColumn tableColumn) {
-        m_objTableColumn = tableColumn;
-    }
+	public Iterator getTableColumnIterator()
+	{
+		ITableColumnModel objColumnModel =
+			getTableRows().getTableView().getTableModel().getColumnModel();
+		return objColumnModel.getColumns();
+	}
 
-    public IRender getTableValueRenderer() {
-        Object objRow = getTableRows().getTableRow();
-        return getTableColumn().getValueRenderer(getPage().getRequestCycle(), getTableRows().getTableView(), objRow);
-    }
+	/**
+	 * Returns the tableColumn.
+	 * @return ITableColumn
+	 */
+	public ITableColumn getTableColumn()
+	{
+		return m_objTableColumn;
+	}
+
+	/**
+	 * Sets the tableColumn.
+	 * @param tableColumn The tableColumn to set
+	 */
+	public void setTableColumn(ITableColumn tableColumn)
+	{
+		m_objTableColumn = tableColumn;
+	}
+
+	public IRender getTableValueRenderer()
+	{
+		Object objRow = getTableRows().getTableRow();
+		return getTableColumn().getValueRenderer(
+			getPage().getRequestCycle(),
+			getTableRows().getTableView(),
+			objRow);
+	}
 
 }

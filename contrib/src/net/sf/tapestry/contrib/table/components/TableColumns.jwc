@@ -24,8 +24,8 @@
 		<static-binding name="element">th</static-binding>
 	</component>
   
-	<component id="insertColumnRenderer" type="InsertRenderer">
-		<binding name="renderer" expression="tableColumnRenderer"/>
+	<component id="insertColumnRenderer" type="Delegator">
+		<binding name="delegate" expression="tableColumnRenderer"/>
 	</component>
 
 </component-specification>

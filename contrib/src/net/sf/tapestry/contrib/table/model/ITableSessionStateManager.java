@@ -35,19 +35,20 @@ package net.sf.tapestry.contrib.table.model;
  * @version $Id$
  * @author mindbridge
  */
-public interface ITableSessionStateManager {
+public interface ITableSessionStateManager
+{
 
 	/**
 	 * Method getSessionState extracts the "persistent" portion of the table model
 	 * @param objModel the table model to extract the session state from
 	 * @return Object the session state to be saved between the requests
 	 */
-    Object getSessionState(ITableModel objModel);
+	Object getSessionState(ITableModel objModel);
 
 	/**
 	 * Method recreateTableModel recreates a table model from the saved session state
 	 * @param objState the saved session state
 	 * @return ITableModel the recreated table model
 	 */
-    ITableModel recreateTableModel(Object objState);
+	ITableModel recreateTableModel(Object objState);
 }

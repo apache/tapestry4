@@ -35,10 +35,11 @@ import net.sf.tapestry.IComponent;
  * @version $Id$
  * @author mindbridge
  */
-public interface ITableModelSource extends IComponent {
+public interface ITableModelSource extends IComponent
+{
 	/**
 	 * Method getTableModel.
 	 * @return ITableModel the current table model
 	 */
-    ITableModel getTableModel();
+	ITableModel getTableModel();
 }

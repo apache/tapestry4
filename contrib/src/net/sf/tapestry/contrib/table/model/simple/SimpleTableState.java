@@ -36,26 +36,30 @@ import net.sf.tapestry.contrib.table.model.ITableSortingState;
  * @version $Id$
  * @author mindbridge
  */
-public class SimpleTableState implements Serializable {
-    private ITablePagingState m_objPagingState;
-    private ITableSortingState m_objSortingState;
+public class SimpleTableState implements Serializable
+{
+	private ITablePagingState m_objPagingState;
+	private ITableSortingState m_objSortingState;
 
-    public SimpleTableState()
-    {
-        this(new SimpleTablePagingState(), new SimpleTableSortingState());
-    }
-    
-    public SimpleTableState(ITablePagingState objPagingState, ITableSortingState objSortingState)
-    {
-        m_objPagingState = objPagingState;
-        m_objSortingState = objSortingState;
-    }
-    
+	public SimpleTableState()
+	{
+		this(new SimpleTablePagingState(), new SimpleTableSortingState());
+	}
+
+	public SimpleTableState(
+		ITablePagingState objPagingState,
+		ITableSortingState objSortingState)
+	{
+		m_objPagingState = objPagingState;
+		m_objSortingState = objSortingState;
+	}
+
 	/**
 	 * Returns the pagingState.
 	 * @return ITablePagingState
 	 */
-	public ITablePagingState getPagingState() {
+	public ITablePagingState getPagingState()
+	{
 		return m_objPagingState;
 	}
 
@@ -63,7 +67,8 @@ public class SimpleTableState implements Serializable {
 	 * Returns the sortingState.
 	 * @return ITableSortingState
 	 */
-	public ITableSortingState getSortingState() {
+	public ITableSortingState getSortingState()
+	{
 		return m_objSortingState;
 	}
 

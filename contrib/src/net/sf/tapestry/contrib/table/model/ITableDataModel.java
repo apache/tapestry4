@@ -36,19 +36,20 @@ import java.util.Iterator;
  * @version $Id$
  * @author mindbridge
  */
-public interface ITableDataModel {
+public interface ITableDataModel
+{
 	/**
 	 * Method getRowCount.
 	 * @return int the number of rows in the model
 	 */
-    int getRowCount();
+	int getRowCount();
 
 	/**
 	 * Method getRow.
 	 * @param nRow the requested row index
 	 * @return Object the row with the given index
 	 */
-    Object getRow(int nRow);
+	Object getRow(int nRow);
 
 	/**
 	 * Iterates over a subset of the model
@@ -56,11 +57,11 @@ public interface ITableDataModel {
 	 * @param nTo the final index of the model for iterating (exclusive)
 	 * @return Iterator the iterator for access to the data
 	 */
-    Iterator getRows(int nFrom, int nTo);
+	Iterator getRows(int nFrom, int nTo);
 
 	/**
 	 * Iterates over all of the rows in the model
 	 * @return Iterator the iterator for access to the data
 	 */
-    Iterator getRows();
+	Iterator getRows();
 }

@@ -33,32 +33,33 @@ import java.util.Iterator;
  * @version $Id$
  * @author mindbridge
  */
-public interface ITableModel {
+public interface ITableModel
+{
 	/**
 	 * Method getColumnModel.
 	 * @return ITableColumnModel the column model of the table
 	 */
-    ITableColumnModel getColumnModel();
+	ITableColumnModel getColumnModel();
 
 	/**
 	 * Method getSortingState.
 	 * @return ITableSortingState the sorting state of the table
 	 */
-    ITableSortingState getSortingState();
+	ITableSortingState getSortingState();
 	/**
 	 * Method getPagingState.
 	 * @return ITablePagingState the paging state of the table
 	 */
-    ITablePagingState getPagingState();
-    
+	ITablePagingState getPagingState();
+
 	/**
 	 * Method getPageCount.
 	 * @return int the number of pages this table would have given the current data and paging state
 	 */
-    int getPageCount();
+	int getPageCount();
 	/**
 	 * Method getCurrentPageRows.
 	 * @return Iterator the rows in the current table page given the current data, sorting, and paging state
 	 */
-    Iterator getCurrentPageRows();
+	Iterator getCurrentPageRows();
 }

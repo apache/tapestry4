@@ -30,6 +30,26 @@
 		required="no"
 		direction="custom"/>
   
+	<parameter name="pagesClass" 
+		java-type="java.lang.String" 
+		required="no"
+		direction="custom"/>
+  
+	<parameter name="columnsClass" 
+		java-type="java.lang.String" 
+		required="no"
+		direction="custom"/>
+  
+	<parameter name="rowsClass" 
+		java-type="java.lang.String" 
+		required="no"
+		direction="custom"/>
+  
+	<parameter name="valuesClass" 
+		java-type="java.lang.String" 
+		required="no"
+		direction="custom"/>
+  
 
 	<component id="tableElement" type="InheritInformalAny">
 		<static-binding name="element">table</static-binding>
@@ -46,18 +66,22 @@
 	<component id="tablePages" type="TablePages">
 		<binding name="tableView" expression="components.tableView"/>
 		<inherited-binding name="pagesDisplayed" parameter-name="pagesDisplayed"/>
+		<inherited-binding name="class" parameter-name="pagesClass"/>
 	</component>
 
 	<component id="tableColumns" type="TableColumns">
 		<binding name="tableView" expression="components.tableView"/>
+		<inherited-binding name="class" parameter-name="columnsClass"/>
 	</component>
 
 	<component id="tableRows" type="TableRows">
 		<binding name="tableView" expression="components.tableView"/>
+		<inherited-binding name="class" parameter-name="rowsClass"/>
 	</component>
 
 	<component id="tableValues" type="TableValues">
 		<binding name="tableRows" expression="components.tableRows"/>
+		<inherited-binding name="class" parameter-name="valuesClass"/>
 	</component>
   
 </component-specification>

@@ -26,7 +26,6 @@
 package net.sf.tapestry.contrib.table.model.simple;
 
 import net.sf.tapestry.IRender;
-import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITableModelSource;
 
 /**
@@ -35,6 +34,9 @@ import net.sf.tapestry.contrib.table.model.ITableModelSource;
  * @version $Id$
  * @author mindbridge
  */
-public interface ISimpleTableColumnRenderer extends IRender {
-    void initializeColumnRenderer(SimpleTableColumn objColumn, ITableModelSource objSource);
+public interface ISimpleTableColumnRenderer extends IRender
+{
+	void initializeColumnRenderer(
+		SimpleTableColumn objColumn,
+		ITableModelSource objSource);
 }
