@@ -7,6 +7,8 @@ import java.util.List;
 import javax.ejb.EJBObject;
 import javax.ejb.Handle;
 
+import org.apache.commons.lang.enum.Enum;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.AdaptorRegistry;
@@ -62,6 +64,7 @@ public class DefaultValuePersister implements IValuePersister
      *  beyond the default set.  An {@link net.sf.tapestry.record.ImmutableValueCopier}
      *  instance is registered for
      *  {@link net.sf.tapestry.util.IImmutable},
+     *  {@link Enum},
      *  String, Character, Number, Boolean and Date (even though Date is, technically, mutable)
      * 
      *  <p>
@@ -87,6 +90,7 @@ public class DefaultValuePersister implements IValuePersister
         registerValueCopier(Boolean.class, immutable);
         registerValueCopier(Date.class, immutable);
         registerValueCopier(Handle.class, immutable);
+        registerValueCopier(Enum.class, immutable);
 
         registerValueCopier(List.class, new ListCopier());
         
