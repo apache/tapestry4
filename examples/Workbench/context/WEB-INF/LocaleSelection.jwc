@@ -10,6 +10,7 @@
 	</component>
 	<component id="table" type="contrib:Table">
 		<binding name="tableModel" expression="initialTableModel"/>
+		<binding name="row" expression="currentLocale"/>
 		<static-binding name="rowsClass" value="tableRowsClass"/>
 	</component>
 	<component id="directDelete" type="DirectLink">
