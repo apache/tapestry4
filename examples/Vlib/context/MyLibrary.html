@@ -26,7 +26,7 @@ to the Virtual Library database, so that they may be borrowed by others.
     <th><span jwcid="sortBorrower">Borrowed By</span></th>
     <th>Edit/Delete</th>
   </tr>
-  <tr jwcid="browser@Browser" query="ognl:ownedQuery" value="ognl:currentBook" listener="ognl:listeners.requery">
+  <tr jwcid="browser@Browser" query="ognl:ownedQuery" value="ognl:currentBook" listener="listener:requery">
     <td><span jwcid="@Insert" value="ognl:currentBook.title">DocBook:The Definitive Guide</span>
     </td>
     <td><span jwcid="@Insert" value="ognl:currentBook.author">Walsh &#38; Muellner</span>

@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit.script;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +25,7 @@ import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.junit.MockRequestCycle;
+import org.apache.tapestry.engine.RequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.script.ScriptSession;
@@ -61,8 +60,13 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = read(file);
 
-        
-        script.execute(new MockRequestCycle(), _processor, symbols);
+        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
+
+        replayControls();
+
+        script.execute(cycle, _processor, symbols);
+
+        verifyControls();
 
         return script;
     }
@@ -97,7 +101,7 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = read("unique.script");
 
-        IRequestCycle cycle = new MockRequestCycle();
+        IRequestCycle cycle = new RequestCycle(null, null, null, null, null);
 
         script.execute(cycle, _processor, null);
         script.execute(cycle, _processor, null);

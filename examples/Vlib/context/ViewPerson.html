@@ -33,7 +33,7 @@ has no books available for lending.
     <th><span jwcid="sortBorrower">Borrowed&nbsp;By</span></th>
     <th>Borrow</th>
   </tr>
-  <tr jwcid="browser@Browser" query="ognl:query" value="ognl:currentMatch" listener="ognl:listeners.requery">
+  <tr jwcid="browser@Browser" query="ognl:query" value="ognl:currentMatch" listener="listener:requery">
     <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">DocBook:The Definitive Guide</a>
     </td>
     <td><span jwcid="@Insert" value="ognl:currentMatch.author">Walsh &#38; Muellner</span>

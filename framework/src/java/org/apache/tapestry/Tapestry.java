@@ -57,46 +57,6 @@ import org.apache.tapestry.util.StringSplitter;
 public final class Tapestry
 {
     /**
-     * Name of a request attribute used with the {@link #TAGSUPPORT_SERVICE}service. The attribute
-     * defines the underlying service to for which a URL will be generated.
-     * 
-     * @since 3.0
-     */
-
-    public final static String TAG_SUPPORT_SERVICE_ATTRIBUTE = "org.apache.tapestry.tagsupport.service";
-
-    /**
-     * Name of a request attribute used with the {@link #TAGSUPPORT_SERVICE}service. The attribute
-     * defines the correct servlet path for the Tapestry application (which, for the odd-man-out
-     * TAGSUPPORT_SERVICE may not match HttpServletRequest.getServletPath() because of the use of an
-     * include.
-     * 
-     * @since 3.0
-     */
-
-    public final static String TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE = "org.apache.tapestry.tagsupport.servlet-path";
-
-    /**
-     * Name of a request attribute used with the {@link #TAGSUPPORT_SERVICE}service. The attribute
-     * defines an array of objects to be converted into service parameters (i.e., for use with the
-     * {@link #EXTERNAL_SERVICE}).
-     * 
-     * @since 3.0
-     */
-
-    public final static String TAG_SUPPORT_PARAMETERS_ATTRIBUTE = "org.apache.tapestry.tagsupport.parameters";
-
-    /**
-     * Service used to support rendering of JSP tags. tagsupport is provided with a service and
-     * service parameters via request attributes and creates a URI from the result, which is output
-     * to the response.
-     * 
-     * @since 3.0
-     */
-
-    public static final String TAGSUPPORT_SERVICE = "tagsupport";
-
-    /**
      * The name ("action") of a service that allows behavior to be associated with an
      * {@link IAction}component, such as {@link org.apache.tapestry.link.ActionLink}or
      * {@link org.apache.tapestry.form.Form}.

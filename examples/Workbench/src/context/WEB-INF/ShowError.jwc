@@ -15,13 +15,11 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
-<component-specification 
-  allow-informal-parameters="no" allow-body="no">
+<component-specification allow-informal-parameters="no" allow-body="no">
   
-  <parameter name="delegate" type="org.apache.tapestry.valid.IValidationDelegate" 
-  	required="yes"/>    
+  <parameter name="delegate" required="yes"/>    
   
 </component-specification>

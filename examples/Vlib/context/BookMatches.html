@@ -11,7 +11,7 @@
     <th><span jwcid="sortBorrower">Borrowed&nbsp;By</span></th>
     <th>Borrow</th>
   </tr>
-    <tr jwcid="browser@Browser" query="ognl:bookQuery" value="ognl:currentMatch" listener="ognl:listeners.requery">
+    <tr jwcid="browser@Browser" query="ognl:bookQuery" value="ognl:currentMatch" listener="listener:requery">
       <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">Swing Second Edition</a>
       </td>
       <td><span jwcid="@Insert" value="ognl:currentMatch.author">Robinson and Vorobiev</span>

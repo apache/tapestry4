@@ -2,7 +2,7 @@
 <html jwcid="$content$">
 <body jwcid="@Border">
 <span jwcid="@ShowError"/><span jwcid="@ShowValidationError" delegate="ognl:beans.delegate"/>
-<form jwcid="@Form" listener="ognl:listeners.attemptLogin" delegate="ognl:beans.delegate" stateful="ognl:false">
+<form jwcid="@Form" listener="listener:attemptLogin" delegate="ognl:beans.delegate" stateful="ognl:false">
   <table class="form">
     <tr>
       <th><span jwcid="@FieldLabel" field="ognl:components.inputEmail">Email Address</span>

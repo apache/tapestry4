@@ -12,23 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.workbench.jsp;
+package org.apache.tapestry.binding;
 
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RedirectException;
-import org.apache.tapestry.html.BasePage;
+import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * Used to redirect to the TapestryTags.jsp page.
+ * Base class for building tests for {@link org.apache.tapestry.IBinding}implementations.
  * 
- * @author Howard Lewis Ship
- * @since 3.0
+ * @author Howard M. Lewis Ship
+ * @since 3.1
  */
-
-public class JSP extends BasePage
+public class BindingTestCase extends HiveMindTestCase
 {
-    public void launch(IRequestCycle cycle)
+
+    protected IComponent newComponent()
     {
-        throw new RedirectException("TapestryTags.jsp");
+        return (IComponent) newMock(IComponent.class);
     }
+
+    protected ValueConverter newValueConverter()
+    {
+        return (ValueConverter) newMock(ValueConverter.class);
+    }
+
 }

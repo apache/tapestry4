@@ -57,14 +57,7 @@
     <service object="service:Restart"/>
     <service object="service:Asset"/>
 	  <service object="service:External"/>
-		<service object="service:TagSupport"/>    
   </contribution>
-
-  <service-point id="TagSupport" interface="org.apache.tapestry.engine.IEngineService">
-    <invoke-factory model="primitive">
-      <construct class="org.apache.tapestry.engine.TagSupportService"/>
-    </invoke-factory>
-  </service-point>  
 
   <service-point id="External" interface="org.apache.tapestry.engine.IEngineService">
     <invoke-factory model="primitive">

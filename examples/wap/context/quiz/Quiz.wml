@@ -20,7 +20,7 @@
             <select jwcid="selection@wml:PropertySelection" name="choice" model="ognl:choiceModel"/>
             <br/>
             <anchor title="Ok">Ok
-                <go jwcid="go@wml:Go" listener="ognl:listeners.process" href="">
+                <go jwcid="go@wml:Go" listener="listener:process" href="">
                     <postfield jwcid="choice@wml:Postfield" name="ognl:components.selection.name" value="ognl:choice"/>
                 </go>
             </anchor>

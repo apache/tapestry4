@@ -32,6 +32,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 
@@ -245,7 +246,7 @@ public class MockForm extends BaseLocatable implements IForm
 
     /**
      * @see org.apache.tapestry.IForm#addHiddenValue(java.lang.String, java.lang.String,
-     *      java.lang.String)
+     *         java.lang.String)
      */
     public void addHiddenValue(String name, String id, String value)
     {
@@ -276,10 +277,16 @@ public class MockForm extends BaseLocatable implements IForm
     public void enterActiveState()
     {
     }
-    
+
     /** @since 3.1 */
     public IBeanProvider getBeans()
     {
         return null;
-    }    
+    }
+
+    /** @since 3.1 */
+    public ListenerMap getListeners()
+    {
+        return null;
+    }
 }

@@ -1,7 +1,7 @@
 <html jwcid="@Shell" title="Four">
 <body jwcid="@Body">
 
-<form jwcid="@Form" listener="ognl:listeners.formSubmit">
+<form jwcid="@Form" listener="listener:formSubmit">
 
 	<select jwcid="@Select">
 		<option/>
@@ -13,7 +13,7 @@
 	<input type="submit" value="Go"/>	
 </form>
 
-<form jwcid="@Form" direct="ognl:false " listener="ognl:listeners.secondFormListener "/>
+<form jwcid="@Form" direct="ognl:false " listener="listener:secondFormListener "/>
 
 </body>
 </html>

@@ -21,7 +21,7 @@
 <page-specification class="org.apache.tapestry.workbench.localization.Localization">
 
   <component id="form" type="Form">
-    <binding name="listener" value="ognl:listeners.formSubmit"/>
+    <binding name="listener" value="listener:formSubmit"/>
     <binding name="stateful" value="ognl:false"/>
   </component>
   

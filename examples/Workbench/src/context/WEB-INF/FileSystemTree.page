@@ -15,41 +15,41 @@
    limitations under the License.
 -->
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 
 <page-specification class="org.apache.tapestry.workbench.tree.examples.FileSystemTree">
 
     <component id="currentTime" type="Insert">
-        <binding name="value" expression='currentTime'/>
+        <binding name="value" value="ognl:currentTime"/>
     </component>
 
     <component id="shell" type="Shell">
-        <binding name="stylesheet" expression='assets.stylesheet'/>
-        <static-binding name="title">Home</static-binding>
+        <binding name="stylesheet" value="asset:stylesheet"/>
+        <binding name="title" value="Home"/>
     </component>
 
     <component id="treeData" type="contrib:TreeDataView">
-        <binding name="treeView" expression='components.treeView'/>
-        <binding name="value" expression='value'/>
-        <!--binding name="showRootNode" expression="@java.lang.Boolean@FALSE"/-->
+        <binding name="treeView" value="ognl:components.treeView"/>
+        <binding name="value" value="ognl:value"/>
+        <!--binding name="showRootNode" value="ognl:@java.lang.Boolean@FALSE"/-->
     </component>
 
     <component id="treeNodeView" type="contrib:TreeNodeView">
-        <binding name="makeNodeDirect" expression="true"/>
-        <binding name="nodeRenderFactory" expression='renderFactory'/>
-        <binding name="treeDataView" expression='components.treeData'/>
+        <binding name="makeNodeDirect" value="true"/>
+        <binding name="nodeRenderFactory" value="ognl:renderFactory"/>
+        <binding name="treeDataView" value="ognl:components.treeData"/>
     </component>
 
     <component id="treeView" type="contrib:TreeView">
-        <binding name="sessionStateManager" expression='sessionStateManager'/>
-        <binding name="treeModel" expression='treeModel'/>
-        <binding name="treeStateListener" expression='treeStateListener'/>
+        <binding name="sessionStateManager" value="ognl:sessionStateManager"/>
+        <binding name="treeModel" value="ognl:treeModel"/>
+        <binding name="treeStateListener" value="ognl:treeStateListener"/>
     </component>
 
     <component id="directoryTableView" type="DirectoryTableView">
-        <binding name="selectedFolderSource" expression='selectedFolderSource'/>
+        <binding name="selectedFolderSource" value="ognl:selectedFolderSource"/>
     </component>
 
     <!--component id="showInspector" type="contrib:InspectorButton"/-->

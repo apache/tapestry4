@@ -80,6 +80,30 @@
     
   </service-point>
 
+  <service-point id="ListenerBindingFactory" interface="org.apache.tapestry.services.BindingFactory">
+    
+    Binding factory where the path is the name of a component listener method.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ListenerBindingFactory">
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+      </construct>
+    </invoke-factory>    
+    
+  </service-point>
+
+  <service-point id="ComponentBindingFactory" interface="org.apache.tapestry.services.BindingFactory">
+    
+    Binding factory where the path is the is of a nested component.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ComponentBindingFactory">
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+      </construct>
+    </invoke-factory>    
+    
+  </service-point>
+
   
   <configuration-point id="BindingFactories">
     
@@ -111,6 +135,8 @@
     <binding prefix="literal" service-id="LiteralBindingFactory"/>
     <binding prefix="asset" service-id="AssetBindingFactory"/>
     <binding prefix="bean" service-id="BeanBindingFactory"/>
+    <binding prefix="listener" service-id="ListenerBindingFactory"/>
+    <binding prefix="component" service-id="ComponentBindingFactory"/>
   </contribution>
   
   <service-point id="BindingSource" interface="org.apache.tapestry.services.BindingSource">

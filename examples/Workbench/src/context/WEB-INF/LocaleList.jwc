@@ -15,16 +15,15 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.workbench.table.LocaleList" 
 	allow-body="no" allow-informal-parameters="yes">
 
 	<parameter name="localeSelectionListener" 
 		type="org.apache.tapestry.workbench.table.ILocaleSelectionListener" 
-		required="yes"
-		direction="custom"/>
+		required="yes"/>
 
     <bean name="rowClass" class="org.apache.tapestry.bean.EvenOdd"/>
 
@@ -34,20 +33,20 @@
 		persistent="yes" initial-value="new java.util.HashSet()"/>
 
 	<component id="form" type="Form">
-		<!--binding name="listener" expression="listeners.formSubmit"/-->
+		<!--binding name="listener" value="ognl:listeners.formSubmit"/-->
 	</component>
 
 	<component id="checkbox" type="Checkbox">
-		<binding name="selected" expression="checkboxSelected"/>
+		<binding name="selected" value="ognl:checkboxSelected"/>
 	</component>
 
 	<component id="submitButton" type="Submit">
-		<static-binding name="label" value="Select locales"/>
-		<binding name="listener" expression="listeners.selectLocales"/>
+		<binding name="label" value="Select locales"/>
+		<binding name="listener" value="listener:selectLocales"/>
 	</component>
 
 	<component id="tableView" type="contrib:TableView">
-        <binding name="source" expression="@java.util.Locale@getAvailableLocales()"/>
+        <binding name="source" value="ognl:@java.util.Locale@getAvailableLocales()"/>
         <binding name="columns">
             '* Locale:toString(), Language:displayLanguage, Country:displayCountry, ' +
             'Variant:displayVariant, ISO Language:ISO3Language, ISO Country:ISO3Country'
@@ -57,9 +56,9 @@
 	<component id="tableColumns" type="contrib:TableColumns"/>
 
 	<component id="tableFormRows" type="contrib:TableFormRows">
-		<binding name="row" expression="currentLocale"/>
-        <binding name="convertor" expression="localeConvertor"/>
-		<binding name="class" expression="beans.rowClass.next"/>
+		<binding name="row" value="ognl:currentLocale"/>
+        <binding name="convertor" value="ognl:localeConvertor"/>
+		<binding name="class" value="ognl:beans.rowClass.next"/>
 	</component>
 
 	<component id="tableValues" type="contrib:TableValues"/>

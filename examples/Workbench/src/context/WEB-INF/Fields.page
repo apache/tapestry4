@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <page-specification class="org.apache.tapestry.workbench.fields.Fields">
 
@@ -73,56 +73,56 @@
   </bean>
   
   <component id="inputEnabled" type="Checkbox">
-    <binding name="selected" expression="clientValidationEnabled"/> 
-    <static-binding name="onclick">
+    <binding name="selected" value="ognl:clientValidationEnabled"/> 
+    <binding name="onclick">
     	javascript:this.form.submit();
-    </static-binding>    
+    </binding>    
   </component>
   
   <component id="showError" type="ShowError">
-     <binding name="delegate" expression="beans.delegate"/>
+     <binding name="delegate" value="bean:delegate"/>
   </component>
 
   <component id="inputDate" type="ValidField">
-    <binding name="validator" expression="beans.dateValidator"/>
-    <binding name="value" expression="visit.dateValue"/>
-    <static-binding name="displayName" value="Date Field"/>
+    <binding name="validator" value="bean:dateValidator"/>
+    <binding name="value" value="ognl:visit.dateValue"/>
+    <binding name="displayName" value="Date Field"/>
   </component>
 
   <component id="inputInt" type="ValidField">
-    <binding name="validator" expression="beans.intValidator"/>
-    <binding name="value" expression="visit.intValue"/>
-    <static-binding name="displayName" value="Integer Field"/>
+    <binding name="validator" value="bean:intValidator"/>
+    <binding name="value" value="ognl:visit.intValue"/>
+    <binding name="displayName" value="Integer Field"/>
   </component>
 
   <component id="inputDouble" type="ValidField">
-    <binding name="validator" expression="beans.doubleValidator"/>
-    <binding name="value" expression="visit.doubleValue"/>
-    <static-binding name="displayName" value="Double Field"/>
+    <binding name="validator" value="bean:doubleValidator"/>
+    <binding name="value" value="ognl:visit.doubleValue"/>
+    <binding name="displayName" value="Double Field"/>
   </component>
 
   <component id="inputBigDecimal" type="ValidField">
-   <binding name="value" expression="visit.bigDecimalValue"/>
-    <binding name="validator" expression="beans.bigDecimalValidator"/>
-    <static-binding name="displayName" value="Big Decimal Field"/>
+   <binding name="value" value="ognl:visit.bigDecimalValue"/>
+    <binding name="validator" value="bean:bigDecimalValidator"/>
+    <binding name="displayName" value="Big Decimal Field"/>
   </component>
 
   <component id="inputLong" type="ValidField">
-    <binding name="value" expression="visit.longValue"/>
-    <binding name="validator" expression="beans.longValidator"/>
-    <static-binding name="displayName" value="Long Field"/>
+    <binding name="value" value="ognl:visit.longValue"/>
+    <binding name="validator" value="bean:longValidator"/>
+    <binding name="displayName" value="Long Field"/>
   </component>
 
   <component id="inputString" type="ValidField">
-    <binding name="value" expression="visit.stringValue"/>
-    <binding name="validator" expression="beans.stringValidator"/>
-    <static-binding name="displayName" value="String Field"/>
+    <binding name="value" value="ognl:visit.stringValue"/>
+    <binding name="validator" value="bean:stringValidator"/>
+    <binding name="displayName" value="String Field"/>
   </component>
 
   <component id="inputEmail" type="ValidField">
-    <binding name="value" expression="visit.emailValue"/>
-    <binding name="validator" expression="beans.emailValidator"/>
-    <static-binding name="displayName" value="Email Field"/>
+    <binding name="value" value="ognl:visit.emailValue"/>
+    <binding name="validator" value="bean:emailValidator"/>
+    <binding name="displayName" value="Email Field"/>
   </component>
 
   <context-asset name="continue" path="images/Continue.gif"/>

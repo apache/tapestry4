@@ -11,10 +11,10 @@
             </refresh>
         </onevent>
         <p>
-            <go jwcid="g@wml:Go" listener="ognl:listeners.submit" href="">
+            <go jwcid="g@wml:Go" listener="listener:submit" href="">
                 <postfield jwcid="u@wml:Postfield" value="ognl:u" name="u"/>
             </go>
-            <go jwcid="h@wml:Go" listener="ognl:listeners.submit" direct="ognl:false" href="">
+            <go jwcid="h@wml:Go" listener="listener:submit" direct="ognl:false" href="">
                 <postfield jwcid="v@wml:Postfield" value="ognl:v" name="v"/>
             </go>
         </p>

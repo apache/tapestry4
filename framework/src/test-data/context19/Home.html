@@ -1,7 +1,7 @@
 <html jwcid="@Shell" title="Home">
 <body jwcid="@Body">
 
-<form jwcid="@Form" listener="ognl:listeners.formSubmit">
+<form jwcid="@Form" listener="listener:formSubmit">
 
 <input type="file" jwcid="@Upload" file="ognl:uploadFile" disabled="ognl:uploadDisabled"/>
 	
@@ -9,7 +9,7 @@
 
 <br/>
 
-<a href="#" jwcid="@DirectLink" listener="ognl:listeners.disableUpload">click to disable Upload</a>
+<a href="#" jwcid="@DirectLink" listener="listener:disableUpload">click to disable Upload</a>
 
 </body>
 </html>

@@ -29,9 +29,9 @@ import org.apache.tapestry.coerce.ValueConverter;
  */
 public class AssetBinding extends AbstractBinding
 {
-    private IComponent _component;
+    private final IComponent _component;
 
-    private String _assetName;
+    private final String _assetName;
 
     public AssetBinding(IComponent component, String assetName, String parameterName,
             ValueConverter valueConverter, Location location)
