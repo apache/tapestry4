@@ -336,6 +336,10 @@ Byte value: 0
 Short value: 0		
  		</assert-output>
  		
+ 		 <assert-output name="Int">
+Int value: 0		
+ 		</assert-output>
+ 		 		
  		 <assert-output name="Long">
 Long value: 0		
  		</assert-output>
@@ -385,6 +389,10 @@ Byte value: 27
 Short value: 127
  		</assert-output>
  		
+ 		 <assert-output name="Int">
+Int value: 23		
+ 		</assert-output>
+ 		 		
  		 <assert-output name="Long">
 Long value: 1234567890123		
  		</assert-output>
@@ -420,7 +428,11 @@ Byte value: 27
  		 <assert-output name="Short">
 Short value: 127
  		</assert-output>
- 		
+
+ 		 <assert-output name="Int">
+Int value: 23		
+ 		</assert-output>
+ 		 		
  		 <assert-output name="Long">
 Long value: 1234567890123		
  		</assert-output>

@@ -21,6 +21,7 @@ public class Four extends BasePage
     private float _floatValue;
     private double _doubleValue;
     private char _charValue;
+    private int _intValue;
     
     public void initialize()
     {
@@ -31,6 +32,7 @@ public class Four extends BasePage
       _floatValue = 0;
       _doubleValue = 0;
       _charValue = ' ';
+      _intValue = 0;
     }   
     
     public boolean getBooleanValue()
@@ -114,6 +116,7 @@ public class Four extends BasePage
         setDoubleValue(22. / 7.);
         setShortValue((short)127);
         setByteValue((byte)27);
+        setIntValue(23);
     }
 
     public byte getByteValue()
@@ -126,6 +129,18 @@ public class Four extends BasePage
         _byteValue = byteValue;
         
         fireObservedChange("byteValue", byteValue);
+    }
+
+    public int getIntValue()
+    {
+        return _intValue;
+    }
+
+    public void setIntValue(int intValue)
+    {
+        _intValue = intValue;
+        
+        fireObservedChange("intValue", intValue);
     }
 
 }
