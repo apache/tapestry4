@@ -1,5 +1,4 @@
 <module name="jakarta-tapestry">
-<!-- $Id$ -->
 
   <url href="http://jakarta.apache.org/proposals/tapestry/index.html"/>
   <description>
@@ -12,7 +11,7 @@
   <project name="jakarta-tapestry">
     <package>org.apache.tapestry</package>
 
-    <ant basedir="framework">
+    <ant>
       <property name="framework.version" value="@@DATE@@"/>
       <property name="jetty.dir" reference="home" project="jetty"/>
       
