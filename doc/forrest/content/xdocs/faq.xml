@@ -693,18 +693,14 @@ Start your servlet container with the JVM system parameter
         <title>Other Frameworks</title>
 
         <faq>
-            <question>How do I intergrate Tapestry with Spring?</question>
+            <question>How do I integrate Tapestry with Spring?</question>
 
             <answer>
-
-                <link href="http://www.springframework.org/">Spring</link> is a popular
-		service framework. Colin Sampaleanu
-		has written a
-                <link href="http://www.springframework.org/docs/integration/tapestry.html">integration
-		document</link> on using these two open-source frameworks together.
+	<link href="http://www.springframework.org/">Spring</link> is a popular
+		service framework. There is an 
+                <link href="http://www.springframework.org/docs/reference/view.html#view-tapestry">integration section</link> in Spring Reference Documentation about how to integrate these two open-source frameworks together.
 
             </answer>
-
         </faq>
 
     </part>
