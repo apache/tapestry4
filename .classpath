@@ -9,23 +9,23 @@
     <classpathentry kind="src" path="examples/Vlib/src"/>
     <classpathentry kind="src" path="examples/Workbench/src"/>
     <classpathentry kind="src" path="examples/wap/src"/>
-    <classpathentry kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/client/jboss-j2ee.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/server/all/lib/mail.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
-    <classpathentry kind="lib" path="lib/ext/bsf-2.3.0.jar"/>
-    <classpathentry kind="lib" path="lib/ext/bcel-5.0.jar"/>
-    <classpathentry kind="var" path="JETTY_DIR/lib/javax.servlet.jar"/>
-    <classpathentry kind="var" path="JETTY_DIR/ext/javax.xml.jaxp.jar"/>
-    <classpathentry kind="var" path="JETTY_DIR/ext/crimson.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/bsf-2.3.0.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/bcel-5.0.jar"/>
+    <classpathentry exported="true" kind="var" path="JETTY_DIR/lib/javax.servlet.jar"/>
+    <classpathentry exported="true" kind="var" path="JETTY_DIR/ext/javax.xml.jaxp.jar"/>
+    <classpathentry exported="true" kind="var" path="JETTY_DIR/ext/crimson.jar"/>
     <classpathentry kind="lib" path="ext-dist/jdom-b8.jar"/>
     <classpathentry kind="lib" path="ext-dist/junit.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-beanutils-1.6.1.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-digester-1.4.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/commons-beanutils-1.6.1.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/commons-digester-1.4.jar"/>
     <classpathentry kind="lib" path="examples/Workbench/lib/jCharts-0.6.0.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-collections-2.1.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-fileupload-1.0-beta-1.jar"/>
-    <classpathentry kind="lib" path="lib/ext/ognl-2.4.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/commons-collections-2.1.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/commons-fileupload-1.0-beta-1.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/ext/ognl-2.4.2.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

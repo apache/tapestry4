@@ -59,6 +59,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -885,7 +886,7 @@ public abstract class AbstractEngine
             }
             catch (PageRedirectException ex)
             {
-                redirect(ex.getTargetPageName(), cycle, output, ex);
+                handlePageRedirectException(ex, cycle, output);
             }
             catch (RedirectException ex)
             {
@@ -963,6 +964,76 @@ public abstract class AbstractEngine
         // to the engine.
 
         return _dirty;
+    }
+
+    /**
+     *  Handles {@link PageRedirectException} which involves
+     *  executing {@link IPage#validate(IRequestCycle)} on the target page
+     *  (of the exception), until either a loop is found, or a page
+     *  succesfully validates and can be activated.
+     * 
+     *  <p>This should generally not be overriden in subclasses.
+     * 
+     *  @since 3.0
+     */
+
+    protected void handlePageRedirectException(
+        PageRedirectException ex,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
+        throws IOException, ServletException
+    {
+        List pageNames = new ArrayList();
+
+        String pageName = ex.getTargetPageName();
+
+        while (true)
+        {
+            if (pageNames.contains(pageName))
+            {
+                // Add the offending page to pageNames so it shows in the
+                // list.
+
+                pageNames.add(pageName);
+
+                StringBuffer buffer = new StringBuffer();
+                int count = pageNames.size();
+
+                for (int i = 0; i < count; i++)
+                {
+                    if (i > 0)
+                        buffer.append("; ");
+
+                    buffer.append(pageNames.get(i));
+                }
+
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString("AbstractEngine.validate-cycle", buffer.toString()));
+            }
+
+            // Record that this page has been a target.
+
+            pageNames.add(pageName);
+
+            try
+            {
+                // Attempt to activate the new page.
+
+                cycle.activate(pageName);
+
+                break;
+            }
+            catch (PageRedirectException ex2)
+            {
+                pageName = ex2.getTargetPageName();
+            }
+        }
+
+        // Discard any output from the previous page.
+
+        output.reset();
+
+        renderResponse(cycle, output);
     }
 
     /**
@@ -1917,20 +1988,20 @@ public abstract class AbstractEngine
         if (context.getRequest().getAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE) != null)
             return Tapestry.TAGSUPPORT_SERVICE;
 
-        String serviceData =  context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
-        
-      	if (serviceData == null)
-      		return Tapestry.HOME_SERVICE;
-      	
-      	// The service name is anything before the first slash,
-      	// if there is one.
-      		
-      	int slashx = serviceData.indexOf('/');
-      	
-      	if (slashx < 0)
-      		return serviceData;
-      		
-      	return serviceData.substring(0, slashx);
+        String serviceData = context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
+
+        if (serviceData == null)
+            return Tapestry.HOME_SERVICE;
+
+        // The service name is anything before the first slash,
+        // if there is one.
+
+        int slashx = serviceData.indexOf('/');
+
+        if (slashx < 0)
+            return serviceData;
+
+        return serviceData.substring(0, slashx);
     }
 
     /** @since 2.3 **/
@@ -1940,25 +2011,25 @@ public abstract class AbstractEngine
         return _propertySource;
     }
 
-	/** @since 3.0 **/
+    /** @since 3.0 **/
 
-	protected String getExceptionPageName()
-	{
-		return EXCEPTION_PAGE;
+    protected String getExceptionPageName()
+    {
+        return EXCEPTION_PAGE;
     }
 
-	/** @since 3.0 **/
+    /** @since 3.0 **/
 
-	protected String getStaleLinkPageName()
-	{
-		return STALE_LINK_PAGE;
-	}
+    protected String getStaleLinkPageName()
+    {
+        return STALE_LINK_PAGE;
+    }
 
-	/** @since 3.0 **/
+    /** @since 3.0 **/
 
-	protected String getStaleSessionPageName()
-	{
-		return STALE_SESSION_PAGE;
+    protected String getStaleSessionPageName()
+    {
+        return STALE_SESSION_PAGE;
     }
 
     /**

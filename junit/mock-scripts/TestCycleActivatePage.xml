@@ -28,7 +28,7 @@
 		</assert-output>
 		
 		<assert-output name="Message">
-		A validation cycle during page activation was detected: Five; Six; Five
+		A validate cycle during page activation was detected: Six; Five; Six.
 		</assert-output>
 	</request>
 	
