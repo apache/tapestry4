@@ -26,7 +26,11 @@
 # Lesser General Public License for more details.
 
 # Makefile that defines additional rules for creating WebLogic EJBs.  This
-# was built against WebLogic 5.1.
+# was built for WebLogic 5.1.
+#
+# For WebLogic 6.0, this doesn't appear to be necessary, the server will automatically
+# run ejbc internally as it deploys files.  It may still be possible and desirable
+# to do this during development rather than at deployment. 
 #
 # Works just like a Jar project, except that it then produces a
 # deployable version of the Jar file as well, named $(JAR_NAME)-deploy.$(JAR_EXT)

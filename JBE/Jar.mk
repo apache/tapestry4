@@ -40,14 +40,6 @@ MOD_META_INF_DIR := $(MOD_CLASS_DIR)/META-INF
 
 include $(SYS_MAKEFILE_DIR)/ModuleRules.mk
 
-# Build the final classpath used for execution
-
-FINAL_EXECUTION_CLASSPATH := \
-	$(strip $(EXECUTION_CLASSPATH) . $(MOD_CLASS_DIR))
-
-EXECUTION_CLASSPATH_OPTION := \
-	-classpath "$(subst $(SPACE),$(CLASSPATHSEP),$(FINAL_EXECUTION_CLASSPATH))"
-
 # Initializer, makes sure some directories are there
 
 initialize: setup-jbe-util jar-initialize local-initialize
