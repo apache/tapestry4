@@ -27,8 +27,15 @@ package net.sf.tapestry.valid;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.Decorator;
 
 /**
@@ -43,17 +50,13 @@ import net.sf.tapestry.util.Decorator;
 
 public class NumberValidator extends BaseValidator
 {
-    private boolean zeroIsNull;
-    private Number minimum;
-    private Number maximum;
+    private boolean _zeroIsNull;
+    private Number _minimum;
+    private Number _maximum;
 
-    /**
-     *  Private interface used to handle parsing Strings to different
-     *  numeric types.
-     *
-     **/
+    private static Decorator numberAdaptors = new Decorator();
 
-    private interface NumberAdaptor
+    private static abstract class NumberAdaptor
     {
         /**
          *  Parses a non-empty {@link String} into the correct subclass of
@@ -62,32 +65,22 @@ public class NumberValidator extends BaseValidator
          *  @throws NumberFormatException if the String can not be parsed.
          **/
 
-        public Number parse(String value);
+        abstract public Number parse(String value);
 
-        /**
-         *  Compares two instances of the adapted class (the subclass of
-         *  {@link Number} handled by the adaptor).  Casts the left and
-         *  right parameters to the correct values and invokes
-         *  {@link Comparable#compareTo(Object)}.
-         *
-         **/
-
-        public int compare(Number left, Number right);
-    }
-
-    private static Decorator numberAdaptors = new Decorator();
-
-    private static abstract class AbstractAdaptor implements NumberAdaptor
-    {
         public int compare(Number left, Number right)
         {
             Comparable lc = (Comparable) left;
 
             return lc.compareTo(right);
         }
+
+        public String getClientRegexpExpression()
+        {
+            return "^\\w*((+|-)?\\w*\\d*)\\w*$";
+        }
     }
 
-    private static class ByteAdaptor extends AbstractAdaptor
+    private static class ByteAdaptor extends NumberAdaptor
     {
         public Number parse(String value)
         {
@@ -95,7 +88,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class ShortAdaptor extends AbstractAdaptor
+    private static class ShortAdaptor extends NumberAdaptor
     {
         public Number parse(String value)
         {
@@ -103,7 +96,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class IntAdaptor extends AbstractAdaptor
+    private static class IntAdaptor extends NumberAdaptor
     {
         public Number parse(String value)
         {
@@ -111,7 +104,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class LongAdaptor extends AbstractAdaptor
+    private static class LongAdaptor extends NumberAdaptor
     {
         public Number parse(String value)
         {
@@ -119,15 +112,20 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class FloatAdaptor extends AbstractAdaptor
+    private static class FloatAdaptor extends NumberAdaptor
     {
         public Number parse(String value)
         {
             return new Float(value);
         }
+        
+//        public String getClientRegexpExpression()
+//        {
+//            return "^\\w*((+|-)?\\w*\\d*(\\.\\d*)\\w*$";
+//        }        
     }
 
-    private static class DoubleAdaptor extends AbstractAdaptor
+    private static class DoubleAdaptor extends FloatAdaptor
     {
         public Number parse(String value)
         {
@@ -135,7 +133,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class BigDecimalAdaptor extends AbstractAdaptor
+    private static class BigDecimalAdaptor extends FloatAdaptor
     {
         public Number parse(String value)
         {
@@ -143,7 +141,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class BigIntegerAdaptor extends AbstractAdaptor
+    private static class BigIntegerAdaptor extends NumberAdaptor
     {
         public Number parse(String value)
         {
@@ -181,7 +179,7 @@ public class NumberValidator extends BaseValidator
         if (value == null)
             return null;
 
-        if (zeroIsNull)
+        if (_zeroIsNull)
         {
             Number number = (Number) value;
 
@@ -192,24 +190,29 @@ public class NumberValidator extends BaseValidator
         return value.toString();
     }
 
+    private NumberAdaptor getAdaptor(IField field)
+    {
+        Class valueType = field.getValueType();
+
+        NumberAdaptor result = (NumberAdaptor) numberAdaptors.getAdaptor(valueType);
+
+        if (result == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("NumberValidator.no-adaptor-for-field", field, valueType.getName()));
+
+        return result;
+    }
+
     public Object toObject(IField field, String value) throws ValidatorException
     {
         if (checkRequired(field, value))
             return null;
 
-        Class valueType = field.getValueType();
-
-        NumberAdaptor adaptor = null;
+        NumberAdaptor adaptor = getAdaptor(field);
         Number result = null;
 
         try
         {
-            adaptor = (NumberAdaptor) numberAdaptors.getAdaptor(valueType);
-
-            if (adaptor == null)
-                throw new ApplicationRuntimeException(
-                    "No adaptor to parse String to " + valueType.getName() + ".");
-
             result = adaptor.parse(value);
         }
         catch (NumberFormatException ex)
@@ -217,32 +220,23 @@ public class NumberValidator extends BaseValidator
             String errorMessage =
                 getString("invalid-numeric-format", field.getPage().getLocale(), field.getDisplayName());
 
-            throw new ValidatorException(
-                errorMessage,
-                ValidationConstraint.NUMBER_FORMAT,
-                value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.NUMBER_FORMAT, value);
         }
 
-        if (minimum != null && adaptor.compare(result, minimum) < 0)
+        if (_minimum != null && adaptor.compare(result, _minimum) < 0)
         {
             String errorMessage =
-                getString("number-too-small", field.getPage().getLocale(), field.getDisplayName(), minimum);
+                getString("number-too-small", field.getPage().getLocale(), field.getDisplayName(), _minimum);
 
-            throw new ValidatorException(
-                errorMessage,
-                ValidationConstraint.TOO_SMALL,
-                value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL, value);
         }
 
-        if (maximum != null && adaptor.compare(result, maximum) > 0)
+        if (_maximum != null && adaptor.compare(result, _maximum) > 0)
         {
             String errorMessage =
-                getString("number-too-large", field.getPage().getLocale(), field.getDisplayName(), maximum);
+                getString("number-too-large", field.getPage().getLocale(), field.getDisplayName(), _maximum);
 
-            throw new ValidatorException(
-                errorMessage,
-                ValidationConstraint.TOO_LARGE,
-                value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE, value);
         }
 
         return result;
@@ -250,21 +244,32 @@ public class NumberValidator extends BaseValidator
 
     public Number getMaximum()
     {
-        return maximum;
+        return _maximum;
+    }
+
+    public boolean getHasMaximum()
+    {
+        return _maximum != null;
     }
 
     public void setMaximum(Number maximum)
     {
-        this.maximum = maximum;
+        _maximum = maximum;
     }
+
     public Number getMinimum()
     {
-        return minimum;
+        return _minimum;
+    }
+
+    public boolean getHasMinimum()
+    {
+        return _minimum != null;
     }
 
     public void setMinimum(Number minimum)
     {
-        this.minimum = minimum;
+        _minimum = minimum;
     }
 
     /**
@@ -275,12 +280,61 @@ public class NumberValidator extends BaseValidator
 
     public boolean getZeroIsNull()
     {
-        return zeroIsNull;
+        return _zeroIsNull;
     }
 
     public void setZeroIsNull(boolean zeroIsNull)
     {
-        this.zeroIsNull = zeroIsNull;
+        _zeroIsNull = zeroIsNull;
+    }
+
+    /** 
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        if (!isClientScriptingEnabled())
+            return;
+
+        if (!(isRequired() || _minimum != null || _maximum != null))
+            return;
+
+        Map symbols = new HashMap();
+
+        Locale locale = field.getPage().getLocale();
+        String displayName = field.getDisplayName();
+
+        if (isRequired())
+            symbols.put("requiredMessage", getString("field-is-required", locale, displayName));
+
+        NumberAdaptor adaptor = getAdaptor(field);
+
+        symbols.put("formatExpression", adaptor.getClientRegexpExpression());
+
+        symbols.put("formatMessage", getString("invalid-numeric-format", locale, displayName));
+
+        if (_minimum != null || _maximum != null)
+        {
+
+            symbols.put("rangeMessage", buildRangeMessage(displayName, locale));
+        }
+
+        processValidatorScript("/net/sf/tapestry/valid/NumberValidator.script", cycle, field, symbols);
+    }
+
+    private String buildRangeMessage(String displayName, Locale locale)
+    {
+        if (_minimum != null && _maximum != null)
+            return getString("number-range", locale, new Object[] { displayName, _minimum, _maximum });
+
+        if (_minimum != null)
+            return getString("number-too-small", locale, displayName, _minimum);
+
+        return getString("number-too-large", locale, displayName, _maximum);
     }
 
 }
