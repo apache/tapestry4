@@ -104,7 +104,7 @@ public class DateValidator extends BaseValidator
         return _format;
     }
 
-    private DateFormat getEffectiveFormat()
+    public DateFormat getEffectiveFormat()
     {
         if (_format == null)
             return defaultDateFormat;
@@ -122,7 +122,7 @@ public class DateValidator extends BaseValidator
         _displayFormat = value;
     }
 
-    private String getEffectiveDisplayFormat()
+    public String getEffectiveDisplayFormat()
     {
         if (_displayFormat == null)
         {
