@@ -6,4 +6,9 @@
 
 <page-specification class="tutorial.components.Home">
 
+	<component id="viewer" type="ArrayViewer">
+		<static-binding name="heading">Array Viewer Example!</static-binding>
+		<binding name="source" expression="getArraySource()"/>
+	</component>
+
 </page-specification>

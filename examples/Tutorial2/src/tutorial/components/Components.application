@@ -5,5 +5,6 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
 <application name="Components Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
-  <page name="Home" specification-path="/tutorial/components/Home.page"/>
+ 	<page name="Home" specification-path="/tutorial/components/Home.page"/>
+	<component-alias type="ArrayViewer" specification-path="/tutorial/components/ArrayViewer.jwc" />
 </application>
