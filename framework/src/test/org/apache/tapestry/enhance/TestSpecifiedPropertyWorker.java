@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
@@ -214,5 +215,65 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         w.performEnhancement(op);
 
         verifyControls();
+    }
+
+    public void testTypeUnspecifiedWithNoExistingProperty()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.getPropertyType("wilma");
+        opc.setReturnValue(null);
+
+        replayControls();
+
+        SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
+
+        Class result = w.extractPropertyType(op, "wilma", null);
+
+        assertEquals(Object.class, result);
+
+        verifyControls();
+    }
+
+    public void testTypeUnspecifiedButExistingProperty()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.getPropertyType("fred");
+        opc.setReturnValue(Map.class);
+
+        replayControls();
+
+        SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
+
+        Class result = w.extractPropertyType(op, "fred", null);
+
+        assertEquals(Map.class, result);
+
+        verifyControls();
+    }
+
+    public void testTypeSpecified()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.convertTypeName("int[]");
+        opc.setReturnValue(int[].class);
+
+        op.validateProperty("betty", int[].class);
+
+        replayControls();
+
+        SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
+
+        Class result = w.extractPropertyType(op, "betty", "int[]");
+
+        assertEquals(int[].class, result);
+
+        verifyControls();
+
     }
 }

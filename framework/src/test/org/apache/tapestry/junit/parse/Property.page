@@ -21,9 +21,9 @@
      	
 <page-specification>
 
-<property name="bool" type="boolean"/>
-<property name="persist" persistent="yes"/>
-<property name="init" initial-value="pageName"/>
+  <property name="bool"/>
+  <property name="persist" persistent="yes"/>
+  <property name="init" initial-value="pageName"/>
 
 </page-specification>
 

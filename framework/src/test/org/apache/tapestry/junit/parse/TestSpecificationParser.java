@@ -516,14 +516,14 @@ public class TestSpecificationParser extends TapestryTestCase
         ps = spec.getPropertySpecification("init");
         assertEquals("name", "init", ps.getName());
         assertEquals("persistent", false, ps.isPersistent());
-        assertEquals("type", "java.lang.Object", ps.getType());
+        assertNull("type", ps.getType());
         assertEquals("initialValue", "pageName", ps.getInitialValue());
         checkLine(ps, 26);
 
         ps = spec.getPropertySpecification("persist");
         assertEquals("name", "persist", ps.getName());
         assertEquals("persistent", true, ps.isPersistent());
-        assertEquals("type", "java.lang.Object", ps.getType());
+        assertNull("type", ps.getType());
         assertNull("initialValue", ps.getInitialValue());
         checkLine(ps, 25);
 
@@ -847,10 +847,10 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("rubble", i2.getObjectReference());
         assertNotNull(i2.getLocation());
     }
-    
+
     /**
-     * Test that the new &lt;property&gt; element (was &lt;property-specification&gt;)
-     * works correctly.
+     * Test that the new &lt;property&gt; element (was &lt;property-specification&gt; in release
+     * 3.0) works correctly.
      * 
      * @since 3.1
      */
@@ -865,31 +865,28 @@ public class TestSpecificationParser extends TapestryTestCase
         IPropertySpecification ps = spec.getPropertySpecification("bool");
         assertEquals("name", "bool", ps.getName());
         assertEquals("persistent", false, ps.isPersistent());
-        assertEquals("type", "boolean", ps.getType());
+
+        // In a 3.1 DTD, type is always null.
+        assertNull("type", ps.getType());
         assertNull("initialValue", ps.getInitialValue());
         checkLine(ps, 24);
 
         ps = spec.getPropertySpecification("init");
         assertEquals("name", "init", ps.getName());
         assertEquals("persistent", false, ps.isPersistent());
-        
-        // Note: this will like change to null as the default, to differentiate
-        // explicitly "java.lang.Object" from "no value specified"
-        
-        assertEquals("type", "java.lang.Object", ps.getType());
+
         assertEquals("initialValue", "pageName", ps.getInitialValue());
         checkLine(ps, 26);
 
         ps = spec.getPropertySpecification("persist");
         assertEquals("name", "persist", ps.getName());
         assertEquals("persistent", true, ps.isPersistent());
-        assertEquals("type", "java.lang.Object", ps.getType());
         assertNull("initialValue", ps.getInitialValue());
         checkLine(ps, 25);
 
         ps = spec.getPropertySpecification("unknown");
 
         assertNull("Unknown PropertySpecification", ps);
-    }    
-    
+    }
+
 }

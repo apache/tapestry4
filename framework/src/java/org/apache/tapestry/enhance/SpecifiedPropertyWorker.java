@@ -75,9 +75,8 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         Defense.notNull(ps, "ps");
 
         String propertyName = ps.getName();
-        Class propertyType = op.convertTypeName(ps.getType());
 
-        op.validateProperty(propertyName, propertyType);
+        Class propertyType = extractPropertyType(op, propertyName, ps.getType());
 
         op.claimProperty(propertyName);
 
@@ -91,6 +90,24 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
 
         addAccessor(op, propertyName, propertyType, field);
         addMutator(op, propertyName, propertyType, field, ps.isPersistent());
+    }
+
+    // Package private for testing purposes
+
+    Class extractPropertyType(EnhancementOperation op, String propertyName, String typeName)
+    {
+        if (typeName != null)
+        {
+            Class propertyType = op.convertTypeName(typeName);
+
+            op.validateProperty(propertyName, propertyType);
+
+            return propertyType;
+        }
+
+        Class propertyType = op.getPropertyType(propertyName);
+
+        return propertyType == null ? Object.class : propertyType;
     }
 
     private void addAccessor(EnhancementOperation op, String name, Class type, String field)
