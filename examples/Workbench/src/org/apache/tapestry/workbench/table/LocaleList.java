@@ -76,6 +76,8 @@ public abstract class LocaleList extends BaseComponent
     
     public LocaleList()
     {
+        // define an IPrimaryKeyConvertor that represents
+        // a Locale object as a String and converts it back
         m_objLocaleConvertor = new IPrimaryKeyConvertor()
         {
             public Object getPrimaryKey(Object objValue)

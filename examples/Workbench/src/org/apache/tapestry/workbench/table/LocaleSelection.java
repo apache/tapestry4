@@ -64,8 +64,8 @@ import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.contrib.table.components.Table;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
-import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.simple.ITableColumnEvaluator;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
 
@@ -76,7 +76,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
 public abstract class LocaleSelection extends BaseComponent implements ILocaleSelectionListener
 {
     // immutable
-    private ITableColumnModel m_objTableColumnModel;
     private VerbosityRating m_objVerbosityRating;
 
     // temporary

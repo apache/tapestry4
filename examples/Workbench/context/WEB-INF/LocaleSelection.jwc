@@ -22,10 +22,10 @@
         <binding name="columns">
             <!-- The first column is the representation of the locale returned when invoking toString() on it.
                  Its name will be displayed according to the translation value
-                 of this component with key 'verbosity' (see LocaleSelection.properties) -->
+                 of this component with key 'locale' (see LocaleSelection.properties) -->
             'locale:toString(), ' +
             
-            <!-- The next two columns are returned by the Java code as ITableColumn -->
+            <!-- The next two columns are returned by the Java code as ITableColumn objects -->
             '=currencyColumn, =dateFormatColumn, ' +
             
             <!-- The next column is named 'verbosity' and thus will use the 
