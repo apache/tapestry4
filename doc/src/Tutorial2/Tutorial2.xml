@@ -3,6 +3,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
+  <!ENTITY chapter-one SYSTEM "./tutorial-chapter-one.xml">
   %TapestryLinks;
 ]>
 <!-- Conventions:
@@ -27,28 +28,7 @@
     </copyright>
   </bookinfo>
   
-  <chapter id="intro">
-    <title>Introduction</title>
-    <section id="working-with-tapestry">
-    	<title>Working with Tapestry</title>
-    </section>
-    
-    <section id="integrate-jboss3">
-    	<title>Integration with JBoss 3.0.x</title>
-    </section>
-
-    <section id="integrate-tomcat">
-    	<title>Integration with Tomcat</title>
-    </section>
-
-    <section id="integrate-jetty">
-    	<title>Integration with Jetty</title>
-    </section>
-
-    <section id="integrate-eclipse">
-    	<title>Integration with Eclipse (for development)</title>
-    </section>
-  </chapter>
+  &chapter-one;
   
   <chapter id="getting-started">
   	<title>Getting Started</title>
@@ -163,7 +143,7 @@
   </chapter>
 
 
-  <chapter id="built-inds">
+  <chapter id="built-ins">
   	<title>Using the Built-In Components</title>
   	
   	<section id="builtin-foreach">
@@ -191,6 +171,10 @@
   	</section>
   </chapter>
 
+  <chapter id="localization">
+  	<title>Localization</title>
+  </chapter>
+
   <chapter id="components">
   	<title>Creating Components</title>
   	<section id="components-intro">
@@ -205,10 +189,6 @@
   	<section id="components-rendering">
   		<title>Rendering</title>
   	</section>
-  </chapter>
-
-  <chapter id="localization">
-  	<title>Localization</title>
   </chapter>
 
   <chapter id="common-tasks">
