@@ -222,7 +222,6 @@ public class ListEdit extends AbstractComponent
         int count;
         RequestContext context = null;
         Object value = null;
-        String element = null;
 
         IForm form = Form.get(cycle);
         if (form == null)
