@@ -61,8 +61,12 @@
 
 <!ENTITY Ant '<ulink url="http://jakarta.apache.org/ant">Ant</ulink>'>
 <!ENTITY Jetty '<ulink url="http://sf.net/projects/jetty">Jetty</ulink>'>
-<!ENTITY Log4J '<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
 <!ENTITY JBoss '<ulink url="http://www.jboss.org">JBoss</ulink>'>
+<!ENTITY Log4J '<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
+<!ENTITY Saxon '<ulink url="http://sf.net/projects/saxon">Saxon</ulink>'>
+<!ENTITY TapestryProjectPage '<ulink url="http://sf.net/projects/tapestry">Tapestry Project Page</ulink>'>
+<!ENTITY TapestryHomePage '<ulink url="http://tapestry.sf.net">Tapestry Home Page</ulink>'>
+
 
 
 
