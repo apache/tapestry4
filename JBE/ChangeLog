@@ -1,4 +1,9 @@
-* Api 24 2001 hship
+* Apr 24 2001 hship
+
+Make use of standard Cygwin mounts (/usr/bin), rather than relying on setting of
+TOOLS_DIR.
+
+* Apr 24 2001 hship
 
 Minor improvements to the JBE Splice command.
 
