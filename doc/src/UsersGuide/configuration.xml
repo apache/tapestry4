@@ -1,5 +1,19 @@
 <!-- $Id$ -->
-
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
 <chapter id="configuration">
 	<title>Configuring Tapestry</title>
 	
@@ -89,11 +103,11 @@ servlet; it is rarely necessary to create a subclass.
 
 
 <example>
-	<title>Virtual Library Deployment Descriptor</title>
+	<title>Web Deployment Descriptor</title>
 <programlisting>
 &lt;?xml version="1.0"?&gt;
-&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
- "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd"&gt;
+&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd"&gt;
 &lt;web-app&gt;
   &lt;distributable/&gt; <co id="configuration.web.distributable"/>
   &lt;display-name&gt;My Application&lt;/display-name&gt;
@@ -103,13 +117,21 @@ servlet; it is rarely necessary to create a subclass.
     &lt;load-on-startup&gt;0&lt;/load-on-startup&gt; <co id="configuration.load-on-startup"/>
   &lt;/servlet&gt;
   
-  &lt;!-- The single mapping used for the Virtual Library application --&gt;
-
   &lt;servlet-mapping&gt;
     &lt;servlet-name&gt;myapp&lt;/servlet-name&gt;
     &lt;url-pattern&gt;/app&lt;/url-pattern&gt; <co id="configuration.web.url"/>
   &lt;/servlet-mapping&gt;
   
+  &lt;filter&gt; <co id="configuration.web.filter"/>
+    &lt;filter-name&gt;redirect&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.apache.tapestry.&RedirectFilter;&lt;/filter-class&gt;
+  &lt;/filter&gt;
+	
+  &lt;filter-mapping&gt;
+    &lt;filter-name&gt;redirect&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+  &lt;/filter-mapping&gt;
+
   &lt;session-config&gt;
   	&lt;session-timeout&gt;15&lt;/session-timeout&gt;
   &lt;/session-config&gt;
@@ -174,6 +196,14 @@ rather than when the first application request arrives.
 	you select.
 	</para>
 </callout>
+<callout arearefs="configuration.web.filter">
+<para>
+This filter sends a client redirect to the user when they access the web application context. The filter
+sends a client redirect to the user's browser, directing them to the application servlet. In this way,
+the "public" URL for an application can be <literal>http://myserver/mycontext/</literal> when, in fact,
+the real address is <literal>http://myserver/mycontext/app</literal>.
+</para>	
+</callout>
 </calloutlist>
 
 <para>
@@ -216,7 +246,9 @@ stored under &WEB-INF;.  In fact, Tapestry performs a search to find the specifi
 
 <para>
 If the application specification still can not be found, then an empty, "stand in"
-application specification is used.
+application specification is used. This is perfectly acceptible ... an application specification is typically
+needed only when an application makes use of component libraries, or requires some other kind of customization
+only possible with an application specification.
 </para>
 	
 	
@@ -438,7 +470,7 @@ currently used in Tapestry:
 	
 	<para>
 	This slows down request handling by a noticable amount, but is very
-	useful in devlopment; it means that changes to templates and specifications
+	useful in development; it means that changes to templates and specifications
 	are immediately visible to the application.  It also helps identify
 	any errors in managing persistent page state.
 	</para>
@@ -513,7 +545,26 @@ for extending, changing and overriding its normal behavior.
 	</para>
 	
 	<para>
-	Each application extension must implement an interface particular
+	Your application may have its own set of extensions not related to Tapestry framework extension points.
+	For example, you might have an application extension referenced from multiple pages to perform common
+	operations such as JNDI lookups.	
+	</para>
+	
+	<para>
+	You may access application extensions via the engine's specification property. For example:
+	
+	<informalexample><programlisting>
+&IEngine; engine = getEngine();
+&IApplicationSpecification; specification = engine.getSpecification();
+	
+myExtension myExtension = (MyExtension) specification.getExtension("myExtension");	
+  </programlisting>		
+	</informalexample>	
+	</para>
+	
+	
+	<para>
+	Each application extension used with an framework extension point must implement an interface particular
 	to the extension point.
 	</para>
 	

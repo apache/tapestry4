@@ -1,0 +1,87 @@
+<!-- $Id$ -->
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<appendix id="jars">
+	<title>Tapestry JAR files</title>
+	
+<para>
+The Tapestry distribution includes the Tapestry JARs, plus all the dependencies (other libraries that
+Tapestry makes use of). The JAR files are in the <filename>lib</filename> folder (or in folders beneath it).
+</para>
+	
+	
+<variablelist>
+		
+	<varlistentry>
+		<term>&TapestryFrameworkJar;</term>
+		<listitem>
+			<para>
+			The main Tapestry framework.  This is needed at compile time and runtime.   The framework release number is
+			integrated into the file name.
+			</para>
+		</listitem>
+	</varlistentry>
+	
+	
+	<varlistentry>
+		<term>&TapestryContribJar;</term>
+		<listitem>
+		<para>
+		Contains additional components and tools that are not integral to the framework itself, such
+		as the &Palette;.  Needed at runtime if any such components are used in an application.
+		The framework release number is integrated into the file name.
+		</para>
+		</listitem>
+	</varlistentry>
+			
+	<varlistentry>
+		<term><filename>runtime/<replaceable>*</replaceable>.jar</filename></term>
+		<listitem>
+		<para>
+		Frameworks that are usually needed at runtime (but not at framework build time) and
+		are not always supplied by the servlet container.  This currently
+		is just the &Log4J; framework.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+
+	<varlistentry>
+		<term><filename>ext/<replaceable>*</replaceable>.jar</filename></term>
+		<listitem>
+		<para>
+		Frameworks needed when compiling the framework and at runtime.  This is
+		several other &Jakarta; frameworks (including &BSF; and &BCEL;), plus
+		the &OGNL; and &Javassist; frameworks.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><filename>j2ee/*.jar</filename></term>	
+		<listitem>
+		<para>
+		Contains the J2EE and Servlet APIs. These are needed when building the framework, but
+		are typically provided at runtime by the servlet container or application server.	
+		</para>	
+		</listitem>
+	</varlistentry>
+	
+</variablelist>
+
+
+</appendix>
+  

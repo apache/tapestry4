@@ -1,5 +1,19 @@
 <!-- $Id$ -->
-
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
 <chapter id="template">
 	<title>Page and component templates</title>
 
@@ -47,7 +61,8 @@ searches for the page's HTML template.  Starting with this, it performs the foll
 		</listitem>
 	<listitem>
 		<para>
-		In the web application's context root directory (if the page is an application page, not a page from a library)	
+		In the web application's context root directory (if the page is an application page, not a page from a component
+		library)	
 		</para>	
 	</listitem>
 </itemizedlist>
@@ -110,7 +125,7 @@ The editor will ignore the undefined HTML attributes (such as &jwcid;).
 <para>
 A larger goal is to support real project teams: The special markup for Tapestry is unobtrusive, even invisible.
 This allows an HTML designer to work on a template without breaking the dynamic portions of it.	This is completely unlike
-JSPs, where the changes to support dynamic output are exteremly obtrusive and result in a file that is meaningless to an HTML
+JSPs, where the changes to support dynamic output are extremelyobtrusive and result in a file that is meaningless to an HTML
 editor.
 </para>
 
@@ -296,7 +311,8 @@ the component with new ids.
 		<title>Specifying parameters</title>
 		
 <para>
-Component parameters may always be specified in the specifiction, using the
+Component parameters may always be specified in the page or component 
+specification, using the
 &spec.binding;, &spec.static-binding; and &spec.message-binding; elements. Prior to Tapestry 3.0, that
 was the only way ... but with 3.0, it is possible to specify parameters directly within the
 HTML template.
@@ -329,7 +345,7 @@ to the localized messages stored in the files.
 <para>
 Before Tapestry 3.0, there was a more clear separation of concerns. The template could only have declared
 components (not implicit), and any informal attributes in the template were always static values. The type
-of the component and all its formal parameters were in the specification. The template was very much
+of the component and all its formal parameters were always expressed in the specification. The template was very much
 focused on presentation, and the specification was very much focused on business logic. There were
 always minor exceptions to the rules, but in general, seperation of concerns was very good.
 </para>
@@ -369,8 +385,8 @@ HTML attribute (the list of which expands all the time).
 <sidebar>
 <para>
 If you are used to developing with JSPs and JSP tags, this will be quite a difference. JSP tags have
-the equivalent of	formal parameters, but nothing like informal parameters. Often a relatively
-simply JSP tag must be bloated out with dozens of extra attributes, to support arbitrary
+the equivalent of	formal parameters (they are called "tag attributes"), but nothing like informal parameters. Often a relatively
+simply JSP tag must be bloated  with dozens of extra attributes, to support arbitrary
 HTML attributes.
 </para>	
 </sidebar>
@@ -435,8 +451,9 @@ The overarching goal is to make the Tapestry extensions completely invisible.
 </para>	
 
 <para>
-Tapestry supports a limited number of additional directives that are about component placement, but address
-other concerns of integrating the efforts of HTML developers with the Java developers responsible
+Tapestry supports a limited number of additional directives that are not about component placement, but 
+instead address other concerns about integrating the 
+efforts of HTML developers with the Java developers responsible
 for the running application.
 </para>
 
@@ -484,8 +501,8 @@ would be to make use of the Insert component for each piece of text to be displa
 </para>
 
 <para>
-This snippet will get the <literal>hello</literal> message from the page's catalog of
-messages and insert it into the response.  The text inside the &span;
+This snippet will get the <literal>hello</literal> message from the page's  message catalog  
+and insert it into the response.  The text inside the &span;
 tag is useful for WYSIWYG preview, but will be discarded at runtime in favor of a message string
 from the catalog, such as "Hello", "Hola" or "Bonjour" (depending on the selected locale).
 </para>
@@ -526,8 +543,8 @@ might render as:
 </programlisting>	
 </informalexample>
 
-(In this example, the placeholder text "Invalid Access" was replaced with a much
-longer message acquired from the message catalog.)
+In this example, the placeholder text "Invalid Access" was replaced with a much
+longer message acquired from the message catalog.
 
 </para>
 
@@ -600,7 +617,7 @@ two rows in, to ensure that the layout of the table was correct with more than o
 </para>
 
 <para>
-Tapestry allows a special &jwcid;, <literal>$remove$</literal> for this case. A tag so marked is
+Tapestry allows a special &jwcid;, <literal>$remove$</literal>, for this case. A tag so marked is
 not a component, but is instead eliminated from the 
 template. It is used, as in this case, to mark sections of the template that are just there for WYSIWYG preview.
 </para>
@@ -639,7 +656,8 @@ With this in mind, the template can be rewritten:
 </example>
 
 <para>
-With the <literal>$remove$</literal> blocks in place, the output is as expected, one row for row in the database,
+With the <literal>$remove$</literal> blocks in place, the output is as expected, one row for each
+row read from the database,
 and "Frank Smith" and "Jane Jones" nowhere to be seen.
 </para>
 
@@ -659,15 +677,15 @@ and "Frank Smith" and "Jane Jones" nowhere to be seen.
 	<title><literal>$content$ jwcid</literal></title>
 	
 <para>
-In Tapestry, components can have their own templates. Because of how components integrate thier own templates
-with their bodies (the portion from their container's template), you can do a lot of iteresting things. It is very
+In Tapestry, components can have their own templates. Because of how components integrate their own templates
+with their bodies (the portion from their container's template), you can do a lot ofn iteresting things. It is very
 common for a Tapestry application to have a Border component: a component that produces the &html;,
 &head;, and &body; tags (along with additional tags
 to reference stylesheets), plus some form of navigational control (typically, a nested table and a collection of links and images).
 </para>	
 
 <para>
-Once again, maintaining previewability is a problem.  Consider the following:
+Once again, maintaining the ability to use WYSIWYG preview is a problem.  Consider the following:
 <informalexample>
 <programlisting><![CDATA[
 <html>
@@ -692,7 +710,15 @@ Once again, maintaining previewability is a problem.  Consider the following:
 </para>
 
 <para>
-The template includes the 
+It is quite common for Tapestry applications to have a <emphasis>Border</emphasis>	
+component, a component that is used by pages to provide the
+&html;, &head;, and
+&body; tags, plus common navigational features (menus,
+copyrights, and so forth). In this example, it is presumed that the <literal>border</literal>
+component is a reference to just such as component.
+</para>
+
+<para>
 When this page renders, the page template will provide the &html;, &head; and &body; tags.
 Then when the <literal>border</literal> component renders, it will <emphasis>again</emphasis>
 render those tags (possibly with different attributes, and mixed in to much other stuff).
