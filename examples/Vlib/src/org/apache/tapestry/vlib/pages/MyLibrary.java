@@ -132,7 +132,7 @@ public abstract class MyLibrary
         cycle.setPage(this);
     }
 
-    public void resort(IRequestCycle cycle)
+    public void requery(IRequestCycle cycle)
     {
         runQuery();
     }

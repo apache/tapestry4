@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.vlib;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 import javax.ejb.CreateException;
@@ -66,6 +67,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.request.ResponseOutputStream;
@@ -484,6 +486,19 @@ public class VirtualLibraryEngine extends BaseEngine
         }
 
         return result;
+    }
+
+    protected void handleStaleSessionException(
+        StaleSessionException ex,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
+        throws IOException, ServletException
+    {
+		IMessageProperty home = (IMessageProperty)cycle.getPage("Home");
+		
+		home.setMessage("You have been logged out due to inactivity.");
+		
+		redirect("Home", cycle, output, ex);
     }
 
 }

@@ -11,18 +11,18 @@
     <th><span jwcid="sortBorrower">Borrowed&nbsp;By</span></th>
     <th>Borrow</th>
   </tr>
-    <tr jwcid="browser@Browser" query="ognl:bookQuery" value="ognl:currentMatch">
-      <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">DocBook:The Definitive Guide</a>
+    <tr jwcid="browser@Browser" query="ognl:bookQuery" value="ognl:currentMatch" listener="ognl:listeners.requery">
+      <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">Swing Second Edition</a>
       </td>
-      <td><span jwcid="@Insert" value="ognl:currentMatch.author">Walsh &#38; Muellner</span>
+      <td><span jwcid="@Insert" value="ognl:currentMatch.author">Robinson and Vorobiev</span>
       </td>
-      <td><span jwcid="@Insert" value="ognl:currentMatch.publisherName">O'Reilly</span>
+      <td><span jwcid="@Insert" value="ognl:currentMatch.publisherName">Manning</span>
       </td>
       <td><a jwcid="ownerLink" href="#">Jim Moran</a>
       </td>
-      <td><a jwcid="holderLink" href="#">Howard Ship</a>
+      <td><a jwcid="holderLink" href="#">Howard Lewis Ship</a>
       </td>
-      <td class="icon"><a jwcid="@Borrow" book="ognl:currentMatch" href="#"><img src="images/checkout.png" alt="" border="0" vspace="2"></a>
+      <td class="icon"><a jwcid="@Borrow" book="ognl:currentMatch" href="#"><img src="images/checkout.png" alt="Borrow" border="0" vspace="2"></a>
       </td>
     </tr>
 </table>

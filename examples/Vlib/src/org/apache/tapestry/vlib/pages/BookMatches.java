@@ -104,7 +104,7 @@ public abstract class BookMatches extends BasePage
     {
         setQueryParameters(parameters);
 
-        int count = executeQuery(cycle);
+        int count = executeQuery();
 
         if (count == 0)
         {
@@ -118,25 +118,17 @@ public abstract class BookMatches extends BasePage
         cycle.setPage(this);
     }
 
-    public void resort(IRequestCycle cycle)
+    public void requery(IRequestCycle cycle)
     {
-        int count = executeQuery(cycle);
+        int count = executeQuery();
 
         if (count != _browser.getResultCount())
             _browser.initializeForResultCount(count);
     }
 
-    private int executeQuery(IRequestCycle cycle)
+    private int executeQuery()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        IBookQuery query = getBookQuery();
-
-        if (query == null)
-        {
-            query = vengine.createNewQuery();
-            setBookQuery(query);
-        }
 
         MasterQueryParameters parameters = getQueryParameters();
 
@@ -145,26 +137,23 @@ public abstract class BookMatches extends BasePage
         int i = 0;
         while (true)
         {
-
             try
             {
+                IBookQuery query = getBookQuery();
+
+                if (query == null)
+                {
+                    query = vengine.createNewQuery();
+                    setBookQuery(query);
+                }
+                
                 return query.masterQuery(parameters, ordering);
             }
             catch (RemoteException ex)
             {
-                String message = "Remote exception processing query.";
-
-                vengine.rmiFailure(message, ex, 0);
-
-                if (i++ > 0)
-                {
-                    // This method is invoked from the Home page.  We return
-                    // without changing the response page.
-
-                    IErrorProperty page = (IErrorProperty) cycle.getPage();
-                    page.setError(message);
-                    return 0;
-                }
+                vengine.rmiFailure("Remote exception processing query.", ex, i++);
+                
+                setBookQuery(null);
             }
 
         }

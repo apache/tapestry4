@@ -720,12 +720,34 @@ public class OperationsBean implements SessionBean
         }
 
         count = Tapestry.size(deleted);
-        
+
         if (count > 0)
+        {
+            returnBooksFromDeletedPersons(deleted);
             moveBooksFromDeletedPersons(deleted, adminId);
+        }
 
         for (int i = 0; i < count; i++)
             home.remove(deleted[i]);
+    }
+
+    /**
+     *  Invoked to update all books owned by people about to be deleted, to 
+     *  reassign the books holder back to the owner.
+     * 
+     **/
+
+    private void returnBooksFromDeletedPersons(Integer deletedPersonIds[]) throws RemoveException
+    {
+        StatementAssembly assembly = new StatementAssembly();
+
+        assembly.add("UPDATE BOOK");
+        assembly.newLine("SET HOLDER_ID = OWNER_ID");
+        assembly.newLine("WHERE HOLDER_ID IN (");
+        assembly.addParameterList(deletedPersonIds, ", ");
+        assembly.add(")");
+
+        executeUpdate(assembly);
     }
 
     /**
@@ -745,6 +767,12 @@ public class OperationsBean implements SessionBean
         assembly.addParameterList(deletedPersonIds, ", ");
         assembly.add(")");
 
+        executeUpdate(assembly);
+
+    }
+
+    private void executeUpdate(StatementAssembly assembly) throws XRemoveException
+    {
         Connection connection = null;
         IStatement statement = null;
 
@@ -765,14 +793,13 @@ public class OperationsBean implements SessionBean
         catch (SQLException ex)
         {
             throw new XRemoveException(
-                "Unable to move books from deleted owners: " + ex.getMessage(),
+                "Unable to execute " + assembly + ": " + ex.getMessage(),
                 ex);
         }
         finally
         {
             close(connection, statement, null);
         }
-
     }
 
     /**

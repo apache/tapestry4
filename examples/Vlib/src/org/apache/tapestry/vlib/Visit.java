@@ -75,6 +75,8 @@ import org.apache.tapestry.vlib.ejb.Person;
 
 public class Visit implements Serializable
 {
+	private static final long serialVersionUID = 8589862098677603655L;
+	
     /**
      *  Used to identify the logged in user.
      *
@@ -116,8 +118,8 @@ public class Visit implements Serializable
         if (_userId == null)
             return null;
 
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
-		
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
+
         _user = vengine.readPerson(_userId);
 
         return _user;

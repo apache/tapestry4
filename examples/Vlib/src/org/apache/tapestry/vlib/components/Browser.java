@@ -58,10 +58,14 @@ package org.apache.tapestry.vlib.components;
 import java.rmi.RemoteException;
 
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 
@@ -74,7 +78,7 @@ import org.apache.tapestry.vlib.ejb.IBookQuery;
  *
  **/
 
-public abstract class Browser extends AbstractComponent
+public abstract class Browser extends AbstractComponent implements PageRenderListener
 {
     public abstract IBookQuery getQuery();
 
@@ -105,6 +109,12 @@ public abstract class Browser extends AbstractComponent
     public abstract String getElement();
 
     public abstract void setValue(Object value);
+
+    public abstract IActionListener getListener();
+
+    public abstract Object[] getPageResults();
+
+    public abstract void setPageResults(Object[] pageResults);
 
     /**
      *  Invoked by the container when the query (otherwise accessed via the query
@@ -145,35 +155,6 @@ public abstract class Browser extends AbstractComponent
         return result;
     }
 
-    /**
-     *  Returns a subset of the results from the query corresponding
-     *  to the current page of results.  This may be null if there
-     *  are no results.  All pages but the last have the same
-     *  number of results, the final page may be short a few.
-     *
-     **/
-
-    public Book[] getPageResults()
-    {
-        int resultCount = getResultCount();
-        int currentPage = getCurrentPage();
-
-        int low = (currentPage - 1) * _pageSize;
-        int high = Math.min(currentPage * _pageSize, resultCount) - 1;
-
-        if (low > high)
-            return null;
-
-        try
-        {
-            return getQuery().get(low, high - low + 1);
-        }
-        catch (RemoteException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-    }
-
     public void jump(int page)
     {
         if (page < 2)
@@ -191,15 +172,15 @@ public abstract class Browser extends AbstractComponent
 
         setCurrentPage(page);
     }
-    
+
     public boolean getDisableBack()
     {
-    	return getCurrentPage() <= 1;
+        return getCurrentPage() <= 1;
     }
-    
+
     public boolean getDisableNext()
     {
-		return getCurrentPage() >= getPageCount();
+        return getCurrentPage() >= getPageCount();
     }
 
     public String getRange()
@@ -215,7 +196,7 @@ public abstract class Browser extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        Book[] books = getPageResults();
+        Object[] books = getPageResults();
         int count = Tapestry.size(books);
 
         for (int i = 0; i < count; i++)
@@ -241,6 +222,52 @@ public abstract class Browser extends AbstractComponent
     protected void finishLoad()
     {
         setElement("tr");
+    }
+
+    public void pageBeginRender(PageEvent event)
+    {
+        int resultCount = getResultCount();
+        int currentPage = getCurrentPage();
+
+        int low = (currentPage - 1) * _pageSize;
+        int high = Math.min(currentPage * _pageSize, resultCount) - 1;
+
+        if (low > high)
+            return;
+
+        Book[] pageResults = null;
+        int i = 0;
+
+        while (true)
+        {
+
+            try
+            {
+                pageResults = getQuery().get(low, high - low + 1);
+
+                break;
+            }
+            catch (RemoteException ex)
+            {
+                IPage page = getPage();
+
+                if (i++ == 0)
+                    getListener().actionTriggered(this, page.getRequestCycle());
+                else
+                {
+                    VirtualLibraryEngine vengine = (VirtualLibraryEngine) page.getEngine();
+                    vengine.rmiFailure("Unable to retrieve query results.", ex, i);
+                }
+
+            }
+        }
+
+        setPageResults(pageResults);
+    }
+
+    public void pageEndRender(PageEvent event)
+    {
+        setPageResults(null);
     }
 
 }

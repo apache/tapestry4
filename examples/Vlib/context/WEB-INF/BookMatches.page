@@ -22,25 +22,35 @@
    
   <component id="sortTitle" type="ColumnSorter">
     <binding name="selected" expression="sortColumn"/>
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@TITLE"/>
+    <binding name="sortColumn">
+      @org.apache.tapestry.vlib.ejb.SortColumn@TITLE
+    </binding> 
     <binding name="descending" expression="descending"/>
-    <binding name="listener" expression="listeners.resort"/>
+    <binding name="listener" expression="listeners.requery"/>
   </component> 
   
   <component id="sortAuthor" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@AUTHOR"/>
+    <binding name="sortColumn">
+      @org.apache.tapestry.vlib.ejb.SortColumn@AUTHOR
+    </binding>
   </component>
   
   <component id="sortPublisher" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@PUBLISHER"/>	
+    <binding name="sortColumn">
+    	@org.apache.tapestry.vlib.ejb.SortColumn@PUBLISHER
+    </binding>	
   </component>
   
   <component id="sortOwner" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@OWNER"/>
+    <binding name="sortColumn">
+    	@org.apache.tapestry.vlib.ejb.SortColumn@OWNER
+    </binding>
   </component>
  
   <component id="sortBorrower" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@HOLDER"/>
+    <binding name="sortColumn">
+    	@org.apache.tapestry.vlib.ejb.SortColumn@HOLDER
+    </binding>
   </component>
   
   <component id="ownerLink" type="PersonLink">
