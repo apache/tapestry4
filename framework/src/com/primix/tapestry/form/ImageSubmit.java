@@ -42,9 +42,6 @@ import com.primix.tapestry.html.*;
  *  of the HTML element), it is more commonly used to provide a graphic
  *  image for the user to click, rather than the rather plain &lt;input type=submit&gt;.
  *
- * <p>It is likely that this component's functionality will be rolled into
- * the {@link Submit} component at some point in the near future.
- *
  * <table border=1>
  * <tr> 
  *    <td>Parameter</td>
@@ -63,6 +60,16 @@ import com.primix.tapestry.html.*;
  *		<td>&nbsp;</td>
  *		<td>The image to show.</td>
  *	</tr>
+ *
+ * <tr>
+ *		<td>name</td>
+ *		<td>{@link String}</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>&nbsp;</td>
+ *		<td>The name to use for the form element.  Under Netscape Navigator 4, this
+ * name becomes the tooltip.  The name may be modified (by adding a number to the end)
+ * to ensure that it is unique within the form. </td> </tr>
  *
  *  <tr>
  *	  <td>disabled</id>
@@ -134,6 +141,8 @@ public class ImageSubmit extends AbstractFormComponent
 	private IBinding disabledImageBinding;
 	private IBinding selectedBinding;
 	private IBinding tagBinding;
+	private IBinding nameBinding;
+	private String staticName;
 	private Object staticTagValue;
 	private String name;
 	
@@ -143,7 +152,7 @@ public class ImageSubmit extends AbstractFormComponent
 	}
 	
 	private static final String[] reservedNames = 
-	{ "type", "name", "border", "src" };
+	{ "type", "border", "src" };
 	
 	public void setImageBinding(IBinding value)
 	{
@@ -208,6 +217,19 @@ public class ImageSubmit extends AbstractFormComponent
 		return tagBinding;
 	}
 	
+	public IBinding getNameBinding()
+	{
+		return nameBinding;
+	}
+	
+	public void setNameBinding(IBinding value)
+	{
+		nameBinding = value;
+		
+		if (value.isStatic())
+			staticName = value.getString();
+	}
+	
 	
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
@@ -228,7 +250,20 @@ public class ImageSubmit extends AbstractFormComponent
 		
 		rewinding = form.isRewinding();
 		
-		name = form.getElementId(this);
+		name = null;
+		
+		if (nameBinding != null)
+		{
+			String baseId = staticName;
+			if (baseId == null)
+				baseId = nameBinding.getString();
+			
+			if (baseId != null)
+				name = form.getElementId(baseId);
+		}
+
+		if (name == null)
+			name = form.getElementId(this);
 		
 		if (disabledBinding != null)
 			disabled = disabledBinding.getBoolean();
@@ -321,7 +356,7 @@ public class ImageSubmit extends AbstractFormComponent
 		if (disabled)
 			writer.attribute("disabled");
 		
-		// Netscape places a border unless you tell it otherwise.
+		// NN4 places a border unless you tell it otherwise.
 		// IE ignores the border attribute and never shows a border.
 		
 		writer.attribute("border", 0);

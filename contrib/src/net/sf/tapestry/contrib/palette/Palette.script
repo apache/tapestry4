@@ -114,12 +114,21 @@ output symbols:
 </let>
 
 <let key="selectedPath">
-    <insert property-path="formPath"/>.<insert property-path="name"/>
+  <insert property-path="formPath"/>.<insert property-path="name"/>
+</let>
+
+<let key="selectedChangeFunctionName">
+  onChange_<insert property-path="baseName"/>_selected
 </let>
 
 <let key="availablePath">
-    <insert property-path="formPath"/>.<insert property-path="availableName"/>
+  <insert property-path="formPath"/>.<insert property-path="availableName"/>
 </let>
+
+<let key="availableChangeFunctionName">
+  onChange_<insert property-path="baseName"/>_available
+</let>
+
 
 <let key="upImageName">
   upimage_<insert property-path="baseName"/>
@@ -156,10 +165,8 @@ output symbols:
 <body>
 <if property-path="includeBaseFunctions">
 
-var palette_is_NN4 = 
-<![CDATA[  (navigator.appName == "Netscape" &&
-  parseInt(navigator.appVersion) <= 4);
-]]>
+var palette_is_NN4 = <![CDATA[(navigator.appName == "Netscape" &&
+  parseInt(navigator.appVersion) <= 4);]]>
 
 function palette_clear_selections(element)
 {
@@ -256,28 +263,27 @@ function palette_transfer_selections(source, target)
     
     if (option.selected)
     {
-   	  if (palette_is_NN4)
-   	  {
-   	  	  // Can't share options between selects in NN4
-   	  	  
-   	  	  var newOption = new Option(option.text, option.value, false, true);
-		  sourceOptions[i] = null;
-		  
+       if (palette_is_NN4)
+       {
+           // Can't share options between selects in NN4
+           
+           var newOption = new Option(option.text, option.value, false, true);
+           sourceOptions[i] = null;
+      
           // Always added to end in NN4
-             	  	  
+                     
           targetOptions[targetOptions.length] = newOption;
-   	  }
-   	  else
-   	  {  
+       }
+       else
+       {  
          sourceOptions.remove(i);
          
-        if (targetIndex &lt; 0)
-          targetOptions.add(option);
-        else
-          targetOptions.add(option, targetIndex + offset++);
+         if (targetIndex &lt; 0)
+           targetOptions.add(option);
+         else
+           targetOptions.add(option, targetIndex + offset++);
       }
-      
-
+    
       i--;
     }
   }
@@ -320,7 +326,9 @@ function palette_swap_options(options, selectedIndex, targetIndex)
 </if>
 
 <!-- A variable that is used to track which of the buttons are enabled
-     or disabled. -->
+     or disabled. All of the buttons are disabled until the page finishes
+     loading, at which point the update function will determine which
+     can be used. -->
      
 var <insert property-path="buttons"/> = new Object();
 <insert property-path="selectDisabled"/> = true;
@@ -349,9 +357,9 @@ function <insert property-path="updateFunctionName"/>()
  
   if (document.images)
     <insert property-path="deselectImagePath"/>.src =
-  	  disabled ? <insert property-path="deselectDisabledImage"/>
+      disabled ? <insert property-path="deselectDisabledImage"/>
                : <insert property-path="deselectImage"/>;
-  			 
+         
 <if property-path="sortUser">
 
   var upImage = <insert property-path="upImagePath"/>;
@@ -370,7 +378,7 @@ function <insert property-path="updateFunctionName"/>()
        both buttons disabled. -->
        
   if (disabled)
-  	return;
+    return;
  
   <!-- Search for a second selected item -->
   
@@ -378,7 +386,7 @@ function <insert property-path="updateFunctionName"/>()
   {
     <!-- Found a second selected option, so leave buttons disabled. -->
     if (selected.options[i].selected)
-	  return;
+    return;
   }
   
   <insert property-path="upDisabled"/> = (index == 0);
@@ -398,11 +406,11 @@ function <insert property-path="updateFunctionName"/>()
 function <insert property-path="selectFunctionName"/>()
 {
    if (<insert property-path="selectDisabled"/>)
-  	return;
-  	
+    return;
+    
   var source = <insert property-path="availablePath"/>;
   var target = <insert property-path="selectedPath"/>;
-   	
+     
   palette_transfer_selections(source, target);
   
 <if property-path="sortLabel">
@@ -441,7 +449,6 @@ function <insert property-path="formSubmitFunctionName"/>()
   return true;
 }
 
-
 <if property-path="sortUser">
 function <insert property-path="moveUpFunctionName"/>()
 {
@@ -470,13 +477,25 @@ function <insert property-path="moveDownFunctionName"/>()
 }
 </if>
 
+function <insert property-path="selectedChangeFunctionName"/>()
+{
+  palette_clear_selections(<insert property-path="availablePath"/>);
+  <insert property-path="updateFunctionName"/>();
+}
+
+function <insert property-path="availableChangeFunctionName"/>()
+{
+  palette_clear_selections(<insert property-path="selectedPath"/>);
+  <insert property-path="updateFunctionName"/>();
+}
+
 </body>
 
 <initialization>
 
-<insert property-path="selectedPath"/>.onchange = <insert property-path="updateFunctionName"/>;
+<insert property-path="selectedPath"/>.onchange = <insert property-path="selectedChangeFunctionName"/>;
 <insert property-path="selectedPath"/>.ondblclick = <insert property-path="deselectFunctionName"/>;
-<insert property-path="availablePath"/>.onchange = <insert property-path="updateFunctionName"/>;
+<insert property-path="availablePath"/>.onchange = <insert property-path="availableChangeFunctionName"/>;
 <insert property-path="availablePath"/>.ondblclick = <insert property-path="selectFunctionName"/>;
 
 <insert property-path="updateFunctionName"/>();

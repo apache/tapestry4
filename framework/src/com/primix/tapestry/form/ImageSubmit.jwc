@@ -3,6 +3,7 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.form.ImageSubmit" allow-body="no">
   <parameter name="image" java-type="com.primix.tapestry.IAsset" required="yes"/>
+  <parameter name="name" java-type="java.lang.String"/>
   <parameter name="disabledImage" java-type="com.primix.tapestry.IAsset"/>
   <parameter name="disabled"/>
   <parameter name="point" java-type="java.awt.Point"/>
