@@ -24,6 +24,9 @@
 <!ENTITY appendix-jars SYSTEM "jars.xml">
 <!ENTITY appendix-faq SYSTEM "faq.xml">
 <!ENTITY appendix-spec SYSTEM "spec.xml"> 
+<!ENTITY appendix-script-spec SYSTEM "script-spec.xml">
+
+<!-- Application, page, library, component specification entities  -->
 
 <!ENTITY spec.application '<link linkend="spec.application"><sgmltag class="starttag">application</sgmltag></link>'>
 <!ENTITY spec.bean '<link linkend="spec.bean"><sgmltag class="starttag">bean</sgmltag></link>'>
@@ -52,6 +55,23 @@
 <!ENTITY spec.static-binding '<link linkend="spec.static-binding"><sgmltag class="starttag">static-binding</sgmltag></link>'>
 <!ENTITY spec.string-binding '<link linkend="spec.string-binding"><sgmltag class="starttag">string-binding</sgmltag></link>'>
 
+
+<!-- Script specification entities -->
+
+<!ENTITY script-spec.body '<link linkend="script-spec.body"><sgmltag class="starttag">body</sgmltag></link>'>
+<!ENTITY script-spec.foreach '<link linkend="script-spec.foreach"><sgmltag class="starttag">foreach</sgmltag></link>'>
+<!ENTITY script-spec.if '<link linkend="script-spec.if"><sgmltag class="starttag">if</sgmltag></link>'>
+<!ENTITY script-spec.if-not '<link linkend="script-spec.if-not"><sgmltag class="starttag">if-not</sgmltag></link>'>
+<!ENTITY script-spec.include-script '<link linkend="script-spec.include-script"><sgmltag class="starttag">include-script</sgmltag></link>'>
+<!ENTITY script-spec.initialization '<link linkend="script-spec.initialization"><sgmltag class="starttag">initialization</sgmltag></link>'>
+<!ENTITY script-spec.input-symbol '<link linkend="script-spec.input-symbol"><sgmltag class="starttag">input-symbol</sgmltag></link>'>
+<!ENTITY script-spec.let '<link linkend="script-spec.let"><sgmltag class="starttag">let</sgmltag></link>'>
+<!ENTITY script-spec.script '<link linkend="script-spec.script"><sgmltag class="starttag">script</sgmltag></link>'>
+<!ENTITY script-spec.set '<link linkend="script-spec.set"><sgmltag class="starttag">set</sgmltag></link>'>
+
+<!ENTITY script-spec.full-content '<replaceable>text</replaceable> | &script-spec.foreach; | &script-spec.if; | &script-spec.if-not;'>
+
+
 ]>
 <!-- Conventions:
 
@@ -77,8 +97,6 @@
     </copyright>
   </bookinfo>
   
-
-  
   &chap-intro;
   
   &chap-beans;
@@ -102,8 +120,10 @@
   &chap-inspector; 
     
   &appendix-jars;
-  
-    &appendix-spec;
+    
+  &appendix-spec;
+   
+  &appendix-script-spec;    
     
   <!-- FOP is gagging on something in the FAQ. -->
   
@@ -113,7 +133,7 @@
     <para>
     The FAQ is currently on hiatus due to problems related
     to generating a PDF version of this document.  This should
-    be resolved before Tapestry release 2.2.
+    be resolved before the final release of Tapestry 2.2.
     </para>
     
    </appendix>

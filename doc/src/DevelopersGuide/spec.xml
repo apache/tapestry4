@@ -57,9 +57,9 @@ used in Tapestry.
 <row>
 	<entry>Script</entry>
 	<entry>script</entry>
-	<entry>script</entry>
-	<entry><literal>...</literal></entry>
-	<entry><literal>...</literal></entry>
+	<entry>&script-spec.script;</entry>
+	<entry><literal>-//Howard Lewis Ship//Tapestry Script 1.2//EN</literal></entry>
+	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_2.dtd</literal></entry>
 </row>
 
 </tbody>

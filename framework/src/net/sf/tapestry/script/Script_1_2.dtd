@@ -2,14 +2,14 @@
 <!-- $Id$ -->
 <!--
 
-DTD for the files used with the ScriptGenerator class and Script component.  
+DTD for the files used with the ScriptParser class and Script component.  
 This is recognized with the public identifier:
 
 	-//Howard Lewis Ship//Tapestry Script 1.2//EN
 
 The canonical location for the DTD is:
 
-	http://tapestry.sf.net/dtd/Tapestry_1_2.dtd
+	http://tapestry.sf.net/dtd/Script_1_2.dtd
 
 The root element is always script.
 	
