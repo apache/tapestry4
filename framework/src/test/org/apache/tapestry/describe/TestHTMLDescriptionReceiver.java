@@ -31,12 +31,12 @@ import org.apache.tapestry.IMarkupWriter;
  */
 public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
 {
-    protected DescribableAdapter newAdapter()
+    protected DescribableStrategy newStrategy()
     {
-        return (DescribableAdapter) newMock(DescribableAdapter.class);
+        return (DescribableStrategy) newMock(DescribableStrategy.class);
     }
 
-    public static class NoopAdapterFixture implements DescribableAdapter
+    public static class NoOpStrategy implements DescribableStrategy
     {
         public void describeObject(Object object, DescriptionReceiver receiver)
         {
@@ -98,7 +98,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testSetTitleTwiceFails()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy adapter = newStrategy();
 
         replayControls();
 
@@ -123,7 +123,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testSetSectionBeforeTitleFails()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy adapter = newStrategy();
 
         replayControls();
 
@@ -145,7 +145,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testIntProperty()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy adapter = newStrategy();
 
         trainForTitle(writer, "Object Title");
         trainForSection(writer, "Section");
@@ -165,7 +165,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testPropertiesWithoutSection()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy adapter = newStrategy();
 
         trainForTitle(writer, "Object Title");
         trainForKeyValue(writer, "first", "1");
@@ -197,7 +197,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testFinishWithProperties()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy adapter = newStrategy();
 
         trainForTitle(writer, "Object Title");
         trainForKeyValue(writer, "first", "1");
@@ -224,7 +224,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testFinishNoPropertiesNoTitle()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy adapter = newStrategy();
 
         String object = "Fred";
 
@@ -243,7 +243,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testFinishNoPropertiesWithTitle()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy adapter = newStrategy();
 
         String object = "Fred";
 
@@ -264,7 +264,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testArray()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = new NoopAdapterFixture();
+        DescribableStrategy adapter = new NoOpStrategy();
 
         Object[] array = new Object[]
         { "Fred", "Barney" };
@@ -286,7 +286,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testCollection()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = new NoopAdapterFixture();
+        DescribableStrategy adapter = new NoOpStrategy();
 
         Object[] array = new Object[]
         { "Fred", "Barney" };
@@ -309,11 +309,11 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testArrayNullAndEmpty()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy strategy = newStrategy();
 
         replayControls();
 
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
         dr.title("Array");
         dr.array("null", null);
@@ -325,11 +325,11 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testCollectionNullAndEmpty()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy strategy = newStrategy();
 
         replayControls();
 
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
         dr.title("Collection");
         dr.collection("null", null);
@@ -341,7 +341,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testScalarProperties()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy strategy = newStrategy();
 
         trainForTitle(writer, "Scalars");
         trainForKeyValue(writer, "boolean", "true");
@@ -355,7 +355,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
 
         replayControls();
 
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
         dr.title("Scalars");
         dr.property("boolean", true);
@@ -373,13 +373,13 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testNullRoot()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy strategy = newStrategy();
 
         writer.print(HTMLDescriptionReceiver.NULL_VALUE);
 
         replayControls();
 
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
         dr.describe(null);
 
@@ -389,14 +389,14 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testNullProperty()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy strategy = newStrategy();
 
         trainForTitle(writer, "Null Property");
         trainForKeyValue(writer, "null", HTMLDescriptionReceiver.NULL_VALUE);
 
         replayControls();
 
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
         dr.title("Null Property");
         dr.property("null", null);
@@ -408,7 +408,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testHTMLDescriber()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = new NoopAdapterFixture();
+        DescribableStrategy strategy = new NoOpStrategy();
 
         String object = "Tapestry";
 
@@ -418,7 +418,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         replayControls();
 
         HTMLDescriberImpl d = new HTMLDescriberImpl();
-        d.setAdapter(adapter);
+        d.setStrategy(strategy);
 
         d.describeObject(object, writer);
 
@@ -428,13 +428,13 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
     public void testDescribeAlternate()
     {
         IMarkupWriter writer = newWriter();
-        DescribableAdapter adapter = newAdapter();
+        DescribableStrategy strategy = newStrategy();
 
         Object alternate = new Object();
 
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
 
-        adapter.describeObject(alternate, dr);
+        strategy.describeObject(alternate, dr);
 
         replayControls();
 
@@ -450,7 +450,9 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         Registry r = RegistryBuilder.constructDefaultRegistry();
         // The Portlet code, which may be in the classpath under Eclipse, adds a second
         // implementation.
-        HTMLDescriber d = (HTMLDescriber) r.getService("tapestry.describe.HTMLDescriber", HTMLDescriber.class);
+        HTMLDescriber d = (HTMLDescriber) r.getService(
+                "tapestry.describe.HTMLDescriber",
+                HTMLDescriber.class);
 
         writer.print("Tapestry");
         writer.println();

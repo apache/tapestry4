@@ -21,31 +21,31 @@ import org.apache.tapestry.IRequestCycle;
 /**
  * Tests for {@link org.apache.tapestry.describe.RenderableAdapterFactoryImpl},
  * {@link org.apache.tapestry.describe.RenderBridge}and
- * {@link org.apache.tapestry.describe.DefaultRenderableAdapter}.
+ * {@link org.apache.tapestry.describe.DefaultRenderStrategy}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestRenderableAdapter extends BaseDescribeTestCase
+public class TestRenderStrategy extends BaseDescribeTestCase
 {
-    private RenderableAdapter newAdapter()
+    private RenderStrategy newStrategy()
     {
-        return (RenderableAdapter) newMock(RenderableAdapter.class);
+        return (RenderStrategy) newMock(RenderStrategy.class);
     }
 
     public void testRenderBridge()
     {
         IMarkupWriter writer = newWriter();
-        RenderableAdapter adapter = newAdapter();
+        RenderStrategy strategy = newStrategy();
         IRequestCycle cycle = newCycle();
 
         Object object = new Object();
 
-        adapter.renderObject(object, writer, cycle);
+        strategy.renderObject(object, writer, cycle);
 
         replayControls();
 
-        new RenderBridge(object, adapter).render(writer, cycle);
+        new RenderBridge(object, strategy).render(writer, cycle);
 
         verifyControls();
     }
@@ -53,17 +53,17 @@ public class TestRenderableAdapter extends BaseDescribeTestCase
     public void testRenderableAdapterFactory()
     {
         IMarkupWriter writer = newWriter();
-        RenderableAdapter adapter = newAdapter();
+        RenderStrategy strategy = newStrategy();
         IRequestCycle cycle = newCycle();
 
         Object object = new Object();
 
-        adapter.renderObject(object, writer, cycle);
+        strategy.renderObject(object, writer, cycle);
 
         replayControls();
 
         RenderableAdapterFactoryImpl factory = new RenderableAdapterFactoryImpl();
-        factory.setAdapter(adapter);
+        factory.setStrategy(strategy);
 
         IRender renderable = factory.getRenderableAdaptor(object);
 
@@ -84,10 +84,10 @@ public class TestRenderableAdapter extends BaseDescribeTestCase
 
         replayControls();
 
-        DefaultRenderableAdapter adapter = new DefaultRenderableAdapter();
-        adapter.setDescriber(describer);
+        DefaultRenderStrategy strategy = new DefaultRenderStrategy();
+        strategy.setDescriber(describer);
 
-        adapter.renderObject(object, writer, cycle);
+        strategy.renderObject(object, writer, cycle);
 
         verifyControls();
     }

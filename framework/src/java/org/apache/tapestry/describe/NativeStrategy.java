@@ -14,17 +14,21 @@
 
 package org.apache.tapestry.describe;
 
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-
 /**
- * A HiveMind-style adapter (i.e., shared, with the adapted object as the first method parameter)
- * for rendering an object.
+ * Implementation for objects that natively implement
+ * {@link org.apache.tapestry.describe.Describable}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface RenderableAdapter
+public class NativeStrategy implements DescribableStrategy
 {
-    public void renderObject(Object object, IMarkupWriter writer, IRequestCycle cycle);
+
+    public void describeObject(Object object, DescriptionReceiver receiver)
+    {
+        Describable d = (Describable) object;
+
+        d.describeTo(receiver);
+    }
+
 }

@@ -247,7 +247,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
 
     private void checkAdaptorType(int expectedType, Class numberType)
     {
-        NumberValidator.NumberAdaptor a = NumberValidator.getAdaptor(numberType);
+        NumberValidator.NumberStrategy a = NumberValidator.getStrategy(numberType);
 
         assertEquals(expectedType, a.getNumberType());
     }
@@ -270,7 +270,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
 
     private void checkCompare(Number left, Number right)
     {
-        NumberValidator.NumberAdaptor a = NumberValidator.getAdaptor(left.getClass());
+        NumberValidator.NumberStrategy a = NumberValidator.getStrategy(left.getClass());
 
         assertEquals(0, a.compare(left, right));
     }

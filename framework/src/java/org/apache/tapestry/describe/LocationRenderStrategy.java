@@ -26,12 +26,14 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Adapter for displaying {@link org.apache.hivemind.Location}objects as HTML.
+ * Adapter for displaying {@link org.apache.hivemind.Location}&nbsp;objects as HTML. This may
+ * include showing the content of the {@link org.apache.hivemind.Resource}, with the line indicated
+ * in the Location highlighted.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class LocationRenderableAdapter implements RenderableAdapter
+public class LocationRenderStrategy implements RenderStrategy
 {
     /**
      * Lines before and after the actual location to display.
@@ -79,22 +81,23 @@ public class LocationRenderableAdapter implements RenderableAdapter
                 if (currentLine > lineNumber + RANGE)
                     break;
 
-                if (currentLine < lineNumber - RANGE) continue;
+                if (currentLine < lineNumber - RANGE)
+                    continue;
 
                 writer.begin("tr");
-                
+
                 if (currentLine == lineNumber)
                     writer.attribute("class", "target-line");
-                
+
                 writer.begin("td");
                 writer.attribute("class", "line-number");
                 writer.print(currentLine);
                 writer.end();
-                
+
                 writer.begin("td");
                 writer.print(line);
                 writer.end("tr");
-                writer.println();                
+                writer.println();
             }
 
             reader.close();

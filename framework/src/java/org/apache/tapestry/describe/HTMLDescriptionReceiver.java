@@ -44,24 +44,24 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
 
     private String _section;
 
-    private DescribableAdapter _adapter;
+    private DescribableStrategy _strategy;
 
     private HTMLDescriptionReceiverStyles _styles;
 
-    public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableAdapter adapter)
+    public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableStrategy adapter)
     {
         this(writer, adapter, new HTMLDescriptionReceiverStyles());
     }
 
-    public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableAdapter adapter,
+    public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableStrategy strategy,
             HTMLDescriptionReceiverStyles styles)
     {
         Defense.notNull(writer, "writer");
-        Defense.notNull(adapter, "adapter");
+        Defense.notNull(strategy, "strategy");
         Defense.notNull(styles, "styles");
 
         _writer = writer;
-        _adapter = adapter;
+        _strategy = strategy;
         _styles = styles;
     }
 
@@ -73,14 +73,14 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
             return;
         }
 
-        _adapter.describeObject(object, this);
+        _strategy.describeObject(object, this);
 
         finishUp(object);
     }
 
     public void describeAlternate(Object alternate)
     {
-        _adapter.describeObject(alternate, this);
+        _strategy.describeObject(alternate, this);
     }
 
     void finishUp(Object object)
@@ -198,7 +198,7 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
             return;
         }
 
-        new HTMLDescriptionReceiver(_writer, _adapter, _styles).describe(value);
+        new HTMLDescriptionReceiver(_writer, _strategy, _styles).describe(value);
     }
 
     public void property(String key, boolean value)

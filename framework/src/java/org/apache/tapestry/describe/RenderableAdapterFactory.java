@@ -18,7 +18,8 @@ import org.apache.tapestry.IRender;
 
 /**
  * A source of light-weight objects that can render a particular object. This is a more pure
- * implementation of the GoF Adapter pattern.
+ * implementation of the GoF Adapter pattern, based on wrapping a
+ * {@link org.apache.tapestry.describe.RenderStrategy}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1

@@ -25,12 +25,12 @@ import org.apache.tapestry.IRequestCycle;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.describe.LocationRenderableAdapter}.
+ * Tests for {@link org.apache.tapestry.describe.LocationRenderStrategy}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestLocationRenderableAdapter extends BaseDescribeTestCase
+public class TestLocationRenderStrategy extends BaseDescribeTestCase
 {
     private Resource newResource(URL url)
     {
@@ -96,7 +96,7 @@ public class TestLocationRenderableAdapter extends BaseDescribeTestCase
 
         replayControls();
 
-        new LocationRenderableAdapter().renderObject(l, writer, cycle);
+        new LocationRenderStrategy().renderObject(l, writer, cycle);
 
         verifyControls();
     }
@@ -117,7 +117,7 @@ public class TestLocationRenderableAdapter extends BaseDescribeTestCase
 
         replayControls();
 
-        new LocationRenderableAdapter().renderObject(l, writer, cycle);
+        new LocationRenderStrategy().renderObject(l, writer, cycle);
 
         verifyControls();
     }
@@ -138,7 +138,7 @@ public class TestLocationRenderableAdapter extends BaseDescribeTestCase
 
         replayControls();
 
-        new LocationRenderableAdapter().renderObject(l, writer, cycle);
+        new LocationRenderStrategy().renderObject(l, writer, cycle);
 
         verifyControls();
     }
