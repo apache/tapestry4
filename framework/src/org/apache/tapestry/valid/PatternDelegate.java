@@ -67,11 +67,11 @@ public interface PatternDelegate
     /**
      * Answers the question whether the input string fulfills the pattern string provided.
      * 
-     * @param input The string under test.
      * @param patternString The pattern that the input string is compared against.
+     * @param input The string under test.
      * @return Returns true if the pattern exists in the input string; returns false otherwise.
      */
-    public boolean contains(String input, String patternString);
+    public boolean contains(String patternString, String input);
     
     /**
      * Returns the escaped sequence of characters representing the pattern string provided.
