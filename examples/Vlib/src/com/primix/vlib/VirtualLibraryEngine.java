@@ -126,10 +126,23 @@ extends SimpleEngine
 	{
         Visit visit = (Visit)getVisit();
 
-        visit.cleanupAfterRequest(cycle);
+        if (visit != null)
+			visit.cleanupAfterRequest(cycle);
 
         if (killSession)
-            cycle.getRequestContext().getSession().invalidate();
+		{
+			try
+			{
+	            cycle.getRequestContext().getSession().invalidate();
+			}
+			catch (IllegalStateException ex)
+			{
+				// Ignore.  This can be caused by the browser fetching
+				// private assets after the engine has shutdown (and
+				// invalidated the HttpSession).  It would be nice
+				// if HttpContext implemented an isValid() method.
+			}
+		}
 	}
 	
 	
@@ -212,7 +225,11 @@ extends SimpleEngine
 
     public void logout()
     {
-        setVisit(null);
+		Visit visit = (Visit)getVisit();
+		
+		if (visit != null)
+			visit.setUser(null);
+			
         killSession = true;
     }
 

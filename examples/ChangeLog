@@ -1,3 +1,7 @@
+* Jan 25 2001 hship
+
+Fix some bugs related to the Logout page and invalidting the HttpSession.
+
 * Jan 24 2001 hship
 
 Set JVM memory options when running jBoss for VlibBeans.
