@@ -104,7 +104,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Runs the process of building the component hierarchy for an entire page.
@@ -129,6 +128,7 @@ public class PageLoader implements IPageLoader
     private ISpecificationSource _specificationSource;
     private ComponentSpecificationResolver _componentResolver;
     private List _inheritedBindingQueue = new ArrayList();
+    private List _propertyInitializers = new ArrayList();
     private ComponentTreeWalker _componentTreeWalker;
 
     /**
@@ -810,12 +810,15 @@ public class PageLoader implements IPageLoader
             // Walk through the complete component tree to ensure that required parameters
             // are bound and to set up the default parameter values.
             _componentTreeWalker.walkComponentTree(page);
+            
+            establishDefaultPropertyValues();
         }
         finally
         {
             _locale = null;
             _engine = null;
             _inheritedBindingQueue.clear();
+            _propertyInitializers.clear();
         }
 
         if (LOG.isDebugEnabled())
@@ -843,6 +846,21 @@ public class PageLoader implements IPageLoader
                 (IQueuedInheritedBinding) _inheritedBindingQueue.get(i);
 
             queued.connect();
+        }
+    }
+    
+    private void establishDefaultPropertyValues()
+    {
+        LOG.debug("Setting default property values");
+
+        int count = _propertyInitializers.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            PageDetachListener initializer =
+                (PageDetachListener) _propertyInitializers.get(i);
+
+            initializer.pageDetached(null);
         }
     }
 
@@ -889,44 +907,12 @@ public class PageLoader implements IPageLoader
         {
             String name = (String) names.get(i);
             IPropertySpecification ps = spec.getPropertySpecification(name);
-
             String expression = ps.getInitialValue();
-            Object initialValue = null;
-
-            // If no initial value expression is provided, then read the current
-            // property of the expression.  This may be null, or may be
-            // a value set in finishLoad() (via an abstract accessor).
-
-            try
-            {
-                if (StringUtils.isEmpty(expression))
-                {
-                    initialValue = OgnlUtils.get(name, _resolver, component);
-                }
-                else
-                {
-                    // Evaluate the expression and update the property.
-
-                    initialValue = OgnlUtils.get(expression, _resolver, component);
-
-                    OgnlUtils.set(name, _resolver, component, initialValue);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationRuntimeException(
-                    Tapestry.format(
-                        "PageLoader.unable-to-initialize-property",
-                        name,
-                        component,
-                        ex.getMessage()),
-                    ps.getLocation(),
-                    ex);
-            }
 
             PageDetachListener initializer =
-                new PropertyInitializer(_resolver, component, name, initialValue);
+                new PropertyInitializer(_resolver, component, name, expression, ps.getLocation());
 
+            _propertyInitializers.add(initializer);
             page.addPageDetachListener(initializer);
         }
 

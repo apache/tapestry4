@@ -55,8 +55,14 @@
 
 package org.apache.tapestry.pageload;
 
+import ognl.Ognl;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.util.prop.OgnlUtils;
@@ -77,23 +83,82 @@ public class PropertyInitializer implements PageDetachListener
     private IResourceResolver _resolver;
     private IComponent _component;
     private String _propertyName;
+    private String _expression;
+    private boolean _invariant;
     private Object _value;
+    private ILocation _location;
 
     public PropertyInitializer(
         IResourceResolver resolver,
         IComponent component,
         String propertyName,
-        Object value)
+        String expression,
+        ILocation location)
     {
         _resolver = resolver;
         _component = component;
         _propertyName = propertyName;
-        _value = value;
+        _expression = expression;
+        _location = location;
+        
+        prepareInvariant();
+    }
+
+    public void prepareInvariant()
+    {
+        _invariant = false;
+        try
+        {
+            // If no initial value expression is provided, then read the current
+            // property of the expression.  This may be null, or may be
+            // a value set in finishLoad() (via an abstract accessor).
+
+            if (StringUtils.isEmpty(_expression))
+            {
+                _invariant = true;
+                _value = OgnlUtils.get(_propertyName, _resolver, _component);
+            }
+            else if (Ognl.isConstant(_expression))
+            {
+                // If the expression is a constant, evaluate it and remember the value 
+                _invariant = true;
+                _value = OgnlUtils.get(_expression, _resolver, _component);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.format(
+                    "PageLoader.unable-to-initialize-property",
+                    _propertyName,
+                    _component,
+                    ex.getMessage()),
+                _location,
+                ex);
+        }
     }
 
     public void pageDetached(PageEvent event)
     {
-        OgnlUtils.set(_propertyName, _resolver, _component, _value);
+        try {
+            if (_invariant)
+                OgnlUtils.set(_propertyName, _resolver, _component, _value);
+            else {
+                Object value = OgnlUtils.get(_expression, _resolver, _component);
+                OgnlUtils.set(_propertyName, _resolver, _component, value);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.format(
+                    "PageLoader.unable-to-initialize-property",
+                    _propertyName,
+                    _component,
+                    ex.getMessage()),
+                _location,
+                ex);
+        }
     }
 
 }
