@@ -1,11 +1,7 @@
 package com.primix.vlib.jsp;
 
 import com.primix.servlet.*;
-import javax.ejb.*;
 import com.primix.vlib.ejb.*;
-import java.util.*;
-import javax.servlet.*;
-import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -35,45 +31,32 @@ import java.io.*;
  *
  */
 
-public abstract class VlibDelegate implements IService, Serializable
+/**
+ *  Servlet for the {@link PersonDelegate} page.  Should be mapped
+ *  to the URI <code>/person/*</code>.
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ */
+ 
+public class PersonServlet extends VlibServlet
 {
-	protected final VirtualLibraryApplication application;
-	
 	/**
-	 *  Creates the VlibDelegate and locates the {@link VirtualLibraryApplication}.
+	 *  Returns an instance of {@link PersonDelegate}, either one previously
+	 *  stored in the {@link HttpSession}, or a fresh instance.
 	 *
 	 */
 	 
-	public VlibDelegate(RequestContext context)
+	protected IService getDelegate(RequestContext context)
 	{
-		application = VirtualLibraryApplication.get(context);
+		return HomeDelegate.get(context);
 	}
 	
-	public VirtualLibraryApplication getApplication()
+	public static void writeLink(RequestContext context, HTMLWriter writer,
+		Integer personPrimaryKey, String personName)
 	{
-		return application;
+		writeLink(context, writer, "/person/" + personPrimaryKey, personName);
 	}
 	
-	
-	/**
-	 *  Sets up the invocation of the JSP (to render output), first
-	 *  setting the <code>page.title</code> and <code>page.subtitle</code>
-	 *  request attributes.  Also, sets the <code>delegate</code>
-	 *  request attribute to this.
-	 *
-	 */
-	 
-	public void forward(String jspName, String pageTitle, String pageSubtitle,
-		RequestContext context)
-	throws ServletException, IOException
-	{
-		context.setAttribute("page.title", pageTitle);
-		
-		if (pageSubtitle != null)
-			context.setAttribute("page.subtitle", pageSubtitle);
-		
-		context.setAttribute("delegate", this);
-		
-		context.forward(jspName);
-	}
+
 }

@@ -5,8 +5,6 @@
 <%
 	MyBooksDelegate delegate = MyBooksDelegate.get(context);
 	
-	writer.setCompressed(true);
-	
 	value = delegate.getError();
 	
 	if (value != null)
@@ -55,17 +53,13 @@
 	boolean showHolder = delegate.getShowHolder(book);
 	
 	if (showHolder)
-	{
-		writer.begin("a");
-		writer.attribute("href",
-					response.encodeURL("/person/" + book.getHolderPrimaryKey()));
-		writer.print(book.getHolderName());
-		writer.end();
-	}		
+		PersonServlet.writeLink(context, writer,
+				book.getHolderPrimaryKey(),
+				book.getHolderName());
 %>
 	 </td>
 	 <td><a href="<%= response.encodeURL("/edit/" + book.getPrimaryKey()) %>">[Edit]</a></td>
-	 <td><a href="<%= response.encodeURL("/delete/" + book.getPrimaryKey()) %>"> Delete]</a></td>
+	 <td><a href="<%= response.encodeURL("/delete/" + book.getPrimaryKey()) %>">[Delete]</a></td>
   </tr>
 <%
 	if (i + 1 == books.length)

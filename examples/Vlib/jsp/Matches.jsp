@@ -31,52 +31,26 @@
 		Integer ownerPK = book.getOwnerPrimaryKey();
 		Integer holderPK = book.getHolderPrimaryKey();
 	
-		writer.begin("a");
-		writer.attribute("href", 
-			response.encodeURL("/view/" + book.getPrimaryKey()));
-		writer.print(book.getTitle());
-		writer.end();
-		
-		// Use writer.print() because we don't know what invalid
-		// chars may be in the author, publisher, etc.
-		
-%></td>
+		BookServlet.writeLink(context, writer, book); %>
+		</td>
 		<td><%  writer.print(book.getAuthor()); %></td>
 		<td><%  writer.print(book.getPublisherName()); %></td>
 		<td><%
-		writer.begin("a");
-		writer.attribute("href", response.encodeURL("/person/" + ownerPK));
-		writer.print(book.getOwnerName());
-		writer.end();
+		PersonServlet.writeLink(context, writer, ownerPK,
+				book.getOwnerName());
 %>
 		</td>
 		<td>
 <%
 		if (! ownerPK.equals(holderPK))
-		{
-			writer.begin("a");
-			writer.attribute("href", response.encodeURL("/person/" + holderPK));
-			writer.print(book.getHolderName());
-			writer.end();
-		}
+			PersonServlet.writeLink(context, writer, holderPK, book.getHolderName());
 %>
 		</td>
 		<td>
 <% 
-		boolean enableBorrow = delegate.getEnableBorrow(book);
-	
-		if (enableBorrow)
-		{
-			writer.begin("a");
-			writer.attribute("href", 
-				response.encodeURL("/home/borrow/" + book.getPrimaryKey()));
-			writer.closeTag();
-		}
-%>[ Borrow ]
-<%
-		if (enableBorrow)
-			writer.end();
-%></td>
+		HomeServlet.writeBorrowLink(context, writer, book); 
+%>
+</td>
 	</tr>
 
 <%

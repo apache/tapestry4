@@ -5,7 +5,6 @@ import javax.ejb.*;
 import com.primix.vlib.ejb.*;
 import java.util.*;
 import javax.servlet.*;
-import com.primix.tapestry.ApplicationRuntimeException;
 import java.io.IOException;
 import java.rmi.*;
 import javax.rmi.*;
@@ -68,6 +67,7 @@ public abstract class BookQueryDelegate extends VlibDelegate
 	}
 	
 	public IBookQuery getQuery()
+	throws ServletException
 	{
 		if (query == null)
 			setQueryFromHandle();
@@ -76,6 +76,7 @@ public abstract class BookQueryDelegate extends VlibDelegate
 	}
 
 	private void setQueryFromHandle()
+	throws ServletException
 	{
 		query = null;
 		
@@ -89,7 +90,7 @@ public abstract class BookQueryDelegate extends VlibDelegate
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException (e);
+			throw new ServletException (e);
 		}
 	}
 
@@ -99,6 +100,7 @@ public abstract class BookQueryDelegate extends VlibDelegate
 	 */
 
 	public IBookQuery getOrCreateQuery()
+	throws ServletException
 	{
 		if (query == null)
 			setQueryFromHandle();
@@ -111,6 +113,7 @@ public abstract class BookQueryDelegate extends VlibDelegate
 			
 
 	private void createNewQuery()
+	throws ServletException
 	{
 		IBookQueryHome home;
 		
@@ -122,11 +125,11 @@ public abstract class BookQueryDelegate extends VlibDelegate
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ServletException(e);
 		}
 		catch (CreateException e)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ServletException(e);
 		}
 		
 		try
@@ -135,7 +138,7 @@ public abstract class BookQueryDelegate extends VlibDelegate
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ServletException(e);
 		}
 	}
 

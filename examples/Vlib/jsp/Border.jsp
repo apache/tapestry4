@@ -3,6 +3,7 @@
 <%@ page import="com.primix.servlet.*" %>
 <%@ page import="com.primix.vlib.jsp.*" %>
 <%@ page import="java.util.*" %>
+<%@ page errorPage="/jsp/Error.jsp" %>
 <%
 	RequestContext context = RequestContext.get(request);
 	HTMLWriter writer = new HTMLWriter(out);
@@ -40,26 +41,19 @@
 		</td>
 
 		<td>
-		<a href="<%= response.encodeURL("../home") %>">[Home]</a>
+		<% HomeServlet.writeLink(context, writer); %>
 		</td>
 
 		<td>
 <%
-	if (isLoggedIn)
-	{
-		writer.begin("a");
-		writer.attribute("href", 
-			response.encodeURL("../mybooks"));
-		writer.closeTag();
-	} %>[ My Books ]<%
-if (isLoggedIn)
-{
-	writer.end();
-}
+	MyBooksServlet.writeLink(context, writer);
 %>		</td>
 
 		<td align=center>
 <%
+
+	boolean compressed = writer.compress(true);
+	
 	if (isLoggedIn)
 	{
 		writer.print("Logged in as: ");
@@ -68,11 +62,7 @@ if (isLoggedIn)
 	}
 	else
 	{
-		writer.begin("a");
-		writer.attribute("href",
-			response.encodeURL( "../login"));
-		writer.print("[Login]");
-		writer.end();
+		LoginServlet.writeLink(context, writer);
 	}
 %>
 		<td>
@@ -81,10 +71,12 @@ if (isLoggedIn)
 	{
 		writer.begin("a");
 		writer.attribute("href",
-			response.encodeURL("../logout"));
+			response.encodeURL("/logout"));
 		writer.print("[Logout]");
 		writer.end();
 	}
+	
+	writer.setCompressed(compressed);
 %>		</td>
 	</tr>
 </table>

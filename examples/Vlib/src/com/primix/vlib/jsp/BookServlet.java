@@ -5,7 +5,6 @@ import javax.ejb.*;
 import com.primix.vlib.ejb.*;
 import java.util.*;
 import javax.servlet.*;
-import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -35,45 +34,40 @@ import java.io.*;
  *
  */
 
-public abstract class VlibDelegate implements IService, Serializable
+/**
+ *  Servlet for the {@link BookDelegate} page.  Should be mapped
+ *  to the URI <code>/book/*</code>.
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ */
+ 
+public class BookServlet extends VlibServlet
 {
-	protected final VirtualLibraryApplication application;
-	
 	/**
-	 *  Creates the VlibDelegate and locates the {@link VirtualLibraryApplication}.
+	 *  Returns an instance of {@link HomeDelegate}, either one previously
+	 *  stored in the {@link HttpSession}, or a fresh instance.
 	 *
 	 */
 	 
-	public VlibDelegate(RequestContext context)
+	protected IService getDelegate(RequestContext context)
 	{
-		application = VirtualLibraryApplication.get(context);
+		return BookDelegate.get(context);
 	}
 	
-	public VirtualLibraryApplication getApplication()
+	public static void writeLink(RequestContext context, HTMLWriter writer, Book book)
 	{
-		return application;
-	}
-	
-	
-	/**
-	 *  Sets up the invocation of the JSP (to render output), first
-	 *  setting the <code>page.title</code> and <code>page.subtitle</code>
-	 *  request attributes.  Also, sets the <code>delegate</code>
-	 *  request attribute to this.
-	 *
-	 */
-	 
-	public void forward(String jspName, String pageTitle, String pageSubtitle,
-		RequestContext context)
-	throws ServletException, IOException
-	{
-		context.setAttribute("page.title", pageTitle);
+		String URL;
+		boolean compressed;
 		
-		if (pageSubtitle != null)
-			context.setAttribute("page.subtitle", pageSubtitle);
+		URL = context.getResponse().encodeURL("/book/" + book.getPrimaryKey());
 		
-		context.setAttribute("delegate", this);
+		compressed = writer.compress(true);
+		writer.begin("a");
+		writer.attribute("href", URL);
+		writer.print(book.getTitle());
+		writer.end();
 		
-		context.forward(jspName);
+		writer.setCompressed(compressed);
 	}
 }
