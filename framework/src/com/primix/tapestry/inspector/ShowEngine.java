@@ -176,23 +176,4 @@ implements ILifecycle
         }
     }
 
-	/**
-	*  Returns a delegate that invokes {@link
-	*  RequestContext#write(IResponseWriter)}.
-	*
-	*/
-
-	public IRender getInsertRequestDelegate()
-	{
-		return new IRender()
-		{
-			public void render(IResponseWriter writer, IRequestCycle cycle) 
-			throws RequestCycleException
-			{
-				if (!cycle.isRewinding())
-					cycle.getRequestContext().write(writer);
-			}
-		};
-	}
-
 }
