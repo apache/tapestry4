@@ -9,7 +9,7 @@
 <property file="${root.dir}/config/build.properties"/>
 <property file="${root.dir}/config/common.properties"/>
   
-	<property name="javadoc.dir" value="doc/api"/>
+<property name="javadoc.dir" value="doc/api"/>
 
 <property name="private.dir" value="private"/>
 
@@ -213,6 +213,7 @@
 </target>
 
 <target name="javadoc" description="Generate API documentation for the framework and examples.">
+	<mkdir dir="${javadoc.dir}"/>
 	<javadoc 
 		author="true" 
 		version="true" 
