@@ -94,8 +94,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 abstract public class ApplicationServlet extends HttpServlet
 {
-    private static final Category CAT =
-        Category.getInstance(ApplicationServlet.class);
+    private static final Category CAT = Category.getInstance(ApplicationServlet.class);
 
     /**
      *  Name of the cookie written to the client web browser to
@@ -111,7 +110,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    private Pool enginePool = new Pool();
+    private Pool _enginePool = new Pool();
 
     /**
      *  The application specification, which is read once and kept in memory
@@ -119,7 +118,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    private ApplicationSpecification specification;
+    private ApplicationSpecification _specification;
 
     /**
      * The name under which the {@link IEngine engine} is stored within the
@@ -127,28 +126,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    private String attributeName;
-
-    /**
-     * Gets the class loader for the servlet.  Generally, this class (ApplicationServlet)
-     * is loaded by the system class loader, but the servlet and other classes in the
-     * application are loaded by a child class loader.  Only the child has the full view
-     * of all classes and package resources.
-     *
-     **/
-
-    private ClassLoader classLoader = getClass().getClassLoader();
-
-    /**
-     * If true, then the engine is stored as an attribute of the {@link HttpSession}
-     * after every request.
-     *
-     * @since 0.2.12
-     * 
-     **/
-
-    private static boolean storeEngine =
-        Boolean.getBoolean("net.sf.tapestry.store-engine");
+    private String _attributeName;
 
     /**
      *  Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
@@ -157,8 +135,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         doService(request, response);
     }
@@ -172,9 +149,7 @@ abstract public class ApplicationServlet extends HttpServlet
      * </ul>
      **/
 
-    protected void doService(
-        HttpServletRequest request,
-        HttpServletResponse response)
+    protected void doService(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
     {
         RequestContext context = null;
@@ -192,8 +167,7 @@ abstract public class ApplicationServlet extends HttpServlet
             engine = getEngine(context);
 
             if (engine == null)
-                throw new ServletException(
-                    Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
+                throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
 
             boolean dirty = engine.service(context);
 
@@ -213,15 +187,14 @@ abstract public class ApplicationServlet extends HttpServlet
                 try
                 {
 
-                    boolean forceStore =
-                        engine.isStateful() && (session.getAttribute(attributeName) == null);
+                    boolean forceStore = engine.isStateful() && (session.getAttribute(_attributeName) == null);
 
-                    if (forceStore || (dirty && storeEngine))
+                    if (forceStore || dirty)
                     {
                         if (CAT.isDebugEnabled())
-                            CAT.debug("Storing " + engine + " into session as " + attributeName);
+                            CAT.debug("Storing " + engine + " into session as " + _attributeName);
 
-                        session.setAttribute(attributeName, engine);
+                        session.setAttribute(_attributeName, engine);
                     }
                 }
                 catch (IllegalStateException ex)
@@ -239,10 +212,7 @@ abstract public class ApplicationServlet extends HttpServlet
 
             if (engine.isStateful())
             {
-                CAT.error(
-                    "Engine "
-                        + engine
-                        + " is stateful even though there is no session.  Discarding the engine.");
+                CAT.error("Engine " + engine + " is stateful even though there is no session.  Discarding the engine.");
                 return;
             }
 
@@ -254,7 +224,7 @@ abstract public class ApplicationServlet extends HttpServlet
             if (CAT.isDebugEnabled())
                 CAT.debug("Returning " + engine + " to pool.");
 
-            enginePool.store(engine.getLocale(), engine);
+            _enginePool.store(engine.getLocale(), engine);
 
         }
         catch (ServletException ex)
@@ -287,13 +257,11 @@ abstract public class ApplicationServlet extends HttpServlet
 
     protected void show(Exception ex)
     {
-        System.err.println(
-            "\n\n**********************************************************\n\n");
+        System.err.println("\n\n**********************************************************\n\n");
 
         new ExceptionAnalyzer().reportException(ex, System.err);
 
-        System.err.println(
-            "\n**********************************************************\n");
+        System.err.println("\n**********************************************************\n");
 
     }
 
@@ -303,8 +271,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         doService(request, response);
     }
@@ -317,7 +284,7 @@ abstract public class ApplicationServlet extends HttpServlet
 
     public ApplicationSpecification getApplicationSpecification()
     {
-        return specification;
+        return _specification;
     }
 
     /**
@@ -340,7 +307,7 @@ abstract public class ApplicationServlet extends HttpServlet
 
         if (session != null)
         {
-            engine = (IEngine) session.getAttribute(attributeName);
+            engine = (IEngine) session.getAttribute(_attributeName);
             if (engine != null)
             {
                 if (CAT.isDebugEnabled())
@@ -355,7 +322,7 @@ abstract public class ApplicationServlet extends HttpServlet
 
         Locale locale = getLocaleFromRequest(context);
 
-        engine = (IEngine) enginePool.retrieve(locale);
+        engine = (IEngine) _enginePool.retrieve(locale);
 
         if (engine == null)
         {
@@ -379,8 +346,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    protected Locale getLocaleFromRequest(RequestContext context)
-        throws ServletException
+    protected Locale getLocaleFromRequest(RequestContext context) throws ServletException
     {
         Cookie cookie = context.getCookie(LOCALE_COOKIE_NAME);
 
@@ -399,46 +365,101 @@ abstract public class ApplicationServlet extends HttpServlet
 
     public void init(ServletConfig config) throws ServletException
     {
-        String path;
-        ServletContext servletContext;
-        String resource;
-        InputStream stream;
-        SpecificationParser parser;
-
         super.init(config);
 
         setupLogging();
 
-        path = getApplicationSpecificationPath();
+        _specification = constructApplicationSpecification();
+
+        _attributeName = "net.sf.tapestry.engine." + config.getServletName();
+    }
+
+    /**
+     *  Invoked from {@link #init(ServletConfig)} to read and construct
+     *  the {@link ApplicationSpecification} for this servlet.
+     *  Invokes {@link #getApplicationSpecificationPath()}, opens
+     *  the resource as a stream, then invokes
+     *  {@link #parseApplicationSpecification(InputStream, String)}.
+     * 
+     *  <p>
+     *  This method exists to be overriden in
+     *  applications where the application specification cannot be
+     *  loaded from the classpath.  Alternately, a subclass
+     *  could override this method, invoke this implementation,
+     *  and then add additional data to it (for example, an application
+     *  where some of the pages are defined in an external source
+     *  such as a database).
+     *  
+     *  @since 2.2
+     * 
+     **/
+
+    protected ApplicationSpecification constructApplicationSpecification() throws ServletException
+    {
+        String path = getApplicationSpecificationPath();
 
         // Make sure we locate the specification using our
         // own class loader.
 
-        stream = getClass().getResourceAsStream(path);
+        InputStream stream = getClass().getResourceAsStream(path);
 
         if (stream == null)
-            throw new ServletException(
-                Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
-
-        parser = new SpecificationParser();
+            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
 
         try
         {
             if (CAT.isDebugEnabled())
                 CAT.debug("Loading application specification from " + path);
 
-            specification = parser.parseApplicationSpecification(stream, path);
+            return parseApplicationSpecification(stream, path);
+        }
+        finally
+        {
+            close(stream);
+        }
+    }
+
+    /**
+     *  Invoked from {@link #constructApplicationSpecification()} to
+     *  actually parse the stream (with content provided from the path)
+     *  and convert it into an {@link ApplicationSpecification}.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    protected ApplicationSpecification parseApplicationSpecification(InputStream stream, String path)
+        throws ServletException
+    {
+        try
+        {
+            SpecificationParser parser = new SpecificationParser();
+
+            return parser.parseApplicationSpecification(stream, path);
         }
         catch (DocumentParseException ex)
         {
             show(ex);
 
-            throw new ServletException(
-                Tapestry.getString("ApplicationServlet.could-not-parse-spec", path),
-                ex);
+            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-parse-spec", path), ex);
         }
+    }
 
-        attributeName = "net.sf.tapestry.engine." + specification.getName();
+    /**
+     *  Closes the stream, ignoring any exceptions.
+     * 
+     **/
+
+    protected void close(InputStream stream)
+    {
+        try
+        {
+            stream.close();
+        }
+        catch (IOException ex)
+        {
+            // Ignore it.
+        }
     }
 
     /**
@@ -501,12 +522,17 @@ abstract public class ApplicationServlet extends HttpServlet
     }
 
     /**
-     *  Implemented in subclasses to identify the resource path
-     *  of the application specification.
+     *  Overridden in subclasses to provide a resource path
+     *  to the application specification.  This implementation
+     *  simply throws {@link ServletException}.
      *
      **/
 
-    abstract protected String getApplicationSpecificationPath();
+    protected String getApplicationSpecificationPath() throws ServletException
+    {
+        throw new ServletException(
+            Tapestry.getString("ApplicationServlet.get-app-path-not-overriden", getClass().getName()));
+    }
 
     /**
      *  Invoked by {@link #getEngine(RequestContext)} to create
@@ -524,13 +550,14 @@ abstract public class ApplicationServlet extends HttpServlet
 
     protected IEngine createEngine(RequestContext context) throws ServletException
     {
+        ClassLoader classLoader = getClass().getClassLoader();
+
         try
         {
-            String className = specification.getEngineClassName();
+            String className = _specification.getEngineClassName();
 
             if (className == null)
-                throw new ServletException(
-                    Tapestry.getString("ApplicationServlet.no-engine-class"));
+                throw new ServletException(Tapestry.getString("ApplicationServlet.no-engine-class"));
 
             if (CAT.isDebugEnabled())
                 CAT.debug("Creating engine from class " + className);
@@ -562,10 +589,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *  @since 1.0.1
      **/
 
-    public void writeLocaleCookie(
-        Locale locale,
-        IEngine engine,
-        RequestContext cycle)
+    public void writeLocaleCookie(Locale locale, IEngine engine, RequestContext cycle)
     {
         if (CAT.isDebugEnabled())
             CAT.debug("Writing locale cookie " + locale);
