@@ -26,7 +26,7 @@ import org.apache.hivemind.service.ClassFabUtils;
  * @author Howard Lewis Ship
  * @since 3.1
  */
-class EnhanceMessages extends DefaultComponentClassEnhancer
+class EnhanceMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class,
             "EnhanceStrings");

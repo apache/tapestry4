@@ -264,11 +264,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * works best when there is a one-to-one corespondence between an {@link IComponent}and a HTML
      * element.
      * <p>
-     * Iterates through the bindings for this component. Filters out bindings when the name matches
-     * a formal parameter (as of 1.0.5, informal bindings are weeded out at page load / template
-     * load time, if they match a formal parameter, or a specificied reserved name). For the most
-     * part, all the bindings here are either informal parameter, or formal parameter without a
-     * corresponding JavaBeans property.
+     * Iterates through the bindings for this component. Filters out bindings for formal parameters.
      * <p>
      * For each acceptible key, the value is extracted using {@link IBinding#getObject()}. If the
      * value is null, no attribute is written.
@@ -300,6 +296,9 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
             Map.Entry entry = (Map.Entry) i.next();
             String name = (String) entry.getKey();
 
+            if (isFormalParameter(name))
+                continue;
+
             IBinding binding = (IBinding) entry.getValue();
 
             Object value = binding.getObject();
@@ -322,6 +321,12 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     }
 
+    /** @since 3.1 */
+    private boolean isFormalParameter(String name)
+    {
+        return _specification.getParameter(name) != null;
+    }
+
     /**
      * Returns an object used to resolve classes.
      * 
@@ -335,24 +340,16 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     /**
      * Returns the named binding, or null if it doesn't exist.
      * <p>
-     * This method looks for a JavaBeans property with an appropriate name, of type {@link IBinding}.
-     * The property should be named <code><i>name</i>Binding</code>. If it exists and is both
-     * readable and writable, then it is accessor method is invoked. Components which implement such
-     * methods can access their own binding through their instance variables instead of invoking
-     * this method, a performance optimization.
+     * In Tapestry 3.0, it was possible to force a binding to be stored in a component property by
+     * defining a concrete or abstract property named "nameBinding" of type {@link IBinding}. This
+     * has been removed in release 3.1 and bindings are always stored inside a Map of the component.
      * 
      * @see #setBinding(String,IBinding)
      */
 
     public IBinding getBinding(String name)
     {
-        String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
-
-        if (PropertyUtils.isReadable(this, bindingPropertyName)
-                && PropertyUtils.getPropertyType(this, bindingPropertyName).equals(IBinding.class))
-        {
-            return (IBinding) PropertyUtils.read(this, bindingPropertyName);
-        }
+        Defense.notNull(name, "name");
 
         if (_bindings == null)
             return null;
@@ -489,27 +486,14 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     /**
      * Adds the binding with the given name, replacing any existing binding with that name.
      * <p>
-     * This method checks to see if a matching JavaBeans property (with a name of
-     * <code><i>name</i>Binding</code> and a type of {@link IBinding}) exists. If so, that
-     * property is updated. An optimized component can simply implement accessor and mutator methods
-     * and then access its bindings via its own instance variables, rather than going through {@link
-     * #getBinding(String)}.
-     * <p>
-     * Informal parameters should <em>not</em> be stored in instance variables if {@link
-     * #renderInformalParameters(IMarkupWriter, IRequestCycle)} is to be used. It relies on using
-     * the collection of bindings (to store informal parameters).
+     * 
+     * @see #getBinding(String)
      */
 
     public void setBinding(String name, IBinding binding)
     {
-        String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
-
-        if (PropertyUtils.isWritable(this, bindingPropertyName)
-                && PropertyUtils.getPropertyType(this, bindingPropertyName).equals(IBinding.class))
-        {
-            PropertyUtils.write(this, bindingPropertyName, binding);
-            return;
-        }
+        Defense.notNull(name, "name");
+        Defense.notNull(binding, "binding");
 
         if (_bindings == null)
             _bindings = new HashMap(MAP_SIZE);

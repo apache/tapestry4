@@ -68,7 +68,7 @@ public abstract class Submit extends AbstractFormComponent{
             if (value == null)
                 return;
 
-            IBinding selectedBinding = getSelectedBinding();
+            IBinding selectedBinding = getBinding("selected");
 
             if (selectedBinding != null)
                 selectedBinding.setObject(getTag());
@@ -99,8 +99,6 @@ public abstract class Submit extends AbstractFormComponent{
     }
 
     public abstract String getLabel();
-
-    public abstract IBinding getSelectedBinding();
 
     public abstract boolean isDisabled();
 

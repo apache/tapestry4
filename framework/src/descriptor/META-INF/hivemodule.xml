@@ -58,7 +58,6 @@
         <set-service property="templateSource" service-id="tapestry.parse.TemplateSource"/>
         <set-service property="specificationSource" service-id="tapestry.parse.SpecificationSource"/>
         <set-service property="objectPool" service-id="GlobalObjectPool"/>
-        <set-service property="componentClassEnhancer" service-id="tapestry.enhance.ComponentClassEnhancer"/>
         <set-service property="pageSource" service-id="tapestry.page.PageSource"/>
         <set-service property="dataSqueezer" service-id="tapestry.data.DataSqueezer"/>
         <set-service property="scriptSource" service-id="tapestry.script.ScriptSource"/>

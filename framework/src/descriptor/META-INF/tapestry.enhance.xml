@@ -19,18 +19,81 @@
   
   Services and configurations related to component and page class enhancement.
   
-  <service-point id="ComponentClassEnhancer" interface="org.apache.tapestry.engine.IComponentClassEnhancer">
+  <service-point id="ComponentConstructorFactory" interface="org.apache.tapestry.services.ComponentConstructorFactory">
     
-    Responsible for providing "enhanced" classes; classes that have had additional methods, fields, 
-    constructors and interfaces added to support specified properties and component parameters.
-     
+    Performs enhancements on a component class as directed by the component's specification and the enhancement
+    workers contributed to the tapestry.enhance.EnhancementWorkers configuration point.
+    
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.DefaultComponentClassEnhancer">
-        <set-object property="disableValidation" 
-                       value="app-property:org.apache.tapestry.enhance.disable-abstract-method-validation"/>
+      <construct class="org.apache.tapestry.services.impl.ComponentConstructorFactoryImpl">
         <set-service property="classFactory" service-id="hivemind.ClassFactory"/>
+        <set-configuration property="contributions" configuration-id="EnhancementWorkers"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <set-service property="validator" service-id="EnhancedClassValidator"/>
       </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="EnhancedClassValidator" interface="org.apache.tapestry.enhance.EnhancedClassValidator">
+    
+    Validates that an enhanced class does implement all abstract methods inherited from super-classes.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.EnhancedClassValidatorImpl"/>
+    </invoke-factory>
+  </service-point>
+  
+  <configuration-point id="EnhancementWorkers">
+    
+    Provides the logic for component class enhancements.
+    
+    <schema>
+      <element name="worker">
+        <attribute name="id" required="true" unique="true">
+          A unique id for the worker (used when ordering the workers).
+        </attribute>
+        <attribute name="before">
+          A list of workers who should operate after this worker.
+        </attribute>
+        <attribute name="after">
+          A list of workers who should operate prior to this worker.
+        </attribute>
+        <attribute name="object" translator="object" required="true">
+          An object implementing the EnhancementWorker interface.
+        </attribute>
+        
+        <conversion class="org.apache.tapestry.services.impl.EnhancementWorkerContribution">
+          <map attribute="object" property="worker"/>
+        </conversion>
+      </element>
+    </schema>
+    
+  </configuration-point>
+  
+  <contribution configuration-id="EnhancementWorkers">
+    
+    <worker id="specified-property" object="service:SpecifiedPropertyWorker"/>
+    <worker id="parameter" after="specified-property" object="service:ParameterPropertyWorker"/>
+    <worker id="force-non-abstract" after="*" object="instance:org.apache.tapestry.enhance.ForceNonAbstractWorker"/>
+    
+  </contribution>
+  
+  <service-point id="SpecifiedPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Finds specified properties (from the specification) and constructs the corresponding properties.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.SpecifiedPropertyWorker"/>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="ParameterPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Adds properties for connected parameters.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.ParameterPropertyWorker"/>
     </invoke-factory>
     
   </service-point>

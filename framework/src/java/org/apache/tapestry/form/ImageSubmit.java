@@ -26,25 +26,17 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 
 /**
- *  Used to create an image button inside a {@link Form}.  Although it
- *  is occasionally useful to know the {@link Point} on the image that was clicked
- *  (i.e., use the image as a kind of image map, which was the original intent
- *  of the HTML element), it is more commonly used to provide a graphic
- *  image for the user to click, rather than the rather plain &lt;input type=submit&gt;.
- *
- *  [<a href="../../../../../ComponentReference/ImageSubmit.html">Component Reference</a>]
- *
- *
- *  @author Howard Lewis Ship
- **/
+ * Used to create an image button inside a {@link Form}. Although it is occasionally useful to know
+ * the {@link Point}on the image that was clicked (i.e., use the image as a kind of image map,
+ * which was the original intent of the HTML element), it is more commonly used to provide a graphic
+ * image for the user to click, rather than the rather plain &lt;input type=submit&gt;. [ <a
+ * href="../../../../../ComponentReference/ImageSubmit.html">Component Reference </a>]
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public abstract class ImageSubmit extends AbstractFormComponent
 {
-
-    public abstract IBinding getPointBinding();
-
-    public abstract IBinding getSelectedBinding();
-
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
@@ -53,8 +45,9 @@ public abstract class ImageSubmit extends AbstractFormComponent
 
         String nameOverride = getNameOverride();
 
-        String name =
-            nameOverride == null ? form.getElementId(this) : form.getElementId(this, nameOverride);
+        String name = nameOverride == null ? form.getElementId(this) : form.getElementId(
+                this,
+                nameOverride);
 
         if (rewinding)
         {
@@ -65,7 +58,7 @@ public abstract class ImageSubmit extends AbstractFormComponent
 
             RequestContext context = cycle.getRequestContext();
 
-            // Image clicks get submitted as two request parameters: 
+            // Image clicks get submitted as two request parameters:
             // foo.x and foo.y
 
             String parameterName = name + ".x";
@@ -77,11 +70,11 @@ public abstract class ImageSubmit extends AbstractFormComponent
 
             // The point parameter is not really used, unless the
             // ImageButton is used for its original purpose (as a kind
-            // of image map).  In modern usage, we only care about
+            // of image map). In modern usage, we only care about
             // whether the user clicked on the image (and thus submitted
             // the form), not where in the image the user actually clicked.
 
-            IBinding pointBinding = getPointBinding();
+            IBinding pointBinding = getBinding("point");
 
             if (pointBinding != null)
             {
@@ -98,7 +91,7 @@ public abstract class ImageSubmit extends AbstractFormComponent
             // Notify the application, by setting the select parameter
             // to the tag parameter.
 
-            IBinding selectedBinding = getSelectedBinding();
+            IBinding selectedBinding = getBinding("selected");
 
             if (selectedBinding != null)
                 selectedBinding.setObject(getTag());

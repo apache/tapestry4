@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.enhance;
+package org.apache.tapestry.services;
 
 /**
  * Starting with 3.1, copmonents do not always have a zero-args constructor; the enhanced subclass
@@ -30,4 +30,9 @@ public interface ComponentConstructor
      */
 
     public Object newInstance();
+
+    /**
+     * Returns the class actually instantiated (which may be an enhanced subclass).
+     */
+    public Class getComponentClass();
 }

@@ -28,7 +28,7 @@
 		direction="in" property-name="targetPageName"/>
 		
 	<parameter name="blockId" type="java.lang.String"
-		direction="in" property-name="targetBlockId"/>
+		direction="in" property-name="targetBlockId" default-value="'block'"/>
 		
 	<component id="insertTitle" type="Insert">
 		<inherited-binding name="value" parameter-name="title"/>

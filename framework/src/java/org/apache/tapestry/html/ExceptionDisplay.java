@@ -22,42 +22,31 @@ import org.apache.tapestry.bean.EvenOdd;
 import org.apache.tapestry.util.exception.ExceptionDescription;
 
 /**
- *  Component used to display an already formatted exception.
+ * Component used to display an already formatted exception. [ <a
+ * href="../../../../../ComponentReference/ExceptionDisplay.html">Component Reference </a>]
  * 
- *  [<a href="../../../../../ComponentReference/ExceptionDisplay.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
- * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class ExceptionDisplay extends BaseComponent
 {
-    private IBinding _exceptionsBinding;
     private ExceptionDescription _exception;
+
     private int _count;
+
     private int _index;
+
     private EvenOdd _evenOdd;
 
-    public void setExceptionsBinding(IBinding value)
-    {
-        _exceptionsBinding = value;
-    }
-
-    public IBinding getExceptionsBinding()
-    {
-        return _exceptionsBinding;
-    }
-
     /**
-     *  Each time the current exception is set, as a side effect,
-     *  the evenOdd helper bean is reset to even.
-     * 
-     **/
-    
+     * Each time the current exception is set, as a side effect, the evenOdd helper bean is reset to
+     * even.
+     */
+
     public void setException(ExceptionDescription value)
     {
         _exception = value;
-        
+
         _evenOdd.setEven(true);
     }
 
@@ -68,17 +57,15 @@ public class ExceptionDisplay extends BaseComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        ExceptionDescription[] exceptions =
-            (ExceptionDescription[]) _exceptionsBinding.getObject(
-                "exceptions",
-                ExceptionDescription[].class);
+        ExceptionDescription[] exceptions = (ExceptionDescription[]) getBinding("exceptions")
+                .getObject("exceptions", ExceptionDescription[].class);
 
         _count = exceptions.length;
-        
+
         try
         {
-            _evenOdd = (EvenOdd)getBeans().getBean("evenOdd");
-            
+            _evenOdd = (EvenOdd) getBeans().getBean("evenOdd");
+
             super.renderComponent(writer, cycle);
         }
         finally

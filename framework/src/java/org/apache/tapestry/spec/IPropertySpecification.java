@@ -17,26 +17,31 @@ package org.apache.tapestry.spec;
 import org.apache.hivemind.LocationHolder;
 
 /**
- *  Defines a transient or persistant property of a component or page.  
- *  A {@link org.apache.tapestry.engine.IComponentClassEnhancer} uses this information
- *  to create a subclass with the necessary instance variables and methods.  
- *  
+ * Defines a transient or persistant property of a component or page. A
+ * {@link org.apache.tapestry.enhance.ComponentClassFactory}uses this information to create a
+ * subclass with the necessary instance variables and methods.
+ * 
  * @author glongman@intelligentworks.com
  */
 public interface IPropertySpecification extends LocationHolder
 {
     public abstract String getInitialValue();
+
     public abstract String getName();
+
     public abstract boolean isPersistent();
+
     public abstract String getType();
+
     public abstract void setInitialValue(String initialValue);
+
     /**
-     *  Sets the name of the property.  This should not be changed
-     *  once this IPropertySpecification is added to
-     *  a {@link org.apache.tapestry.spec.IComponentSpecification}.
-     * 
-     **/
+     * Sets the name of the property. This should not be changed once this IPropertySpecification is
+     * added to a {@link org.apache.tapestry.spec.IComponentSpecification}.
+     */
     public abstract void setName(String name);
+
     public abstract void setPersistent(boolean persistant);
+
     public abstract void setType(String type);
 }

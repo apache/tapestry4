@@ -102,7 +102,7 @@ public abstract class FormConditional extends AbstractFormComponent
             condition = convertValue(submittedConditions[0]);
         }
 
-        IBinding conditionValueBinding = getConditionValueBinding();
+        IBinding conditionValueBinding = getBinding("conditionValue");
         if  (conditionValueBinding != null) 
             conditionValueBinding.setBoolean(condition);
         
@@ -159,9 +159,7 @@ public abstract class FormConditional extends AbstractFormComponent
 
     public abstract boolean getCondition();
     public abstract String getElement();
-
-    public abstract IBinding getConditionValueBinding();
-
+    
     public abstract IActionListener getListener();
 
 }

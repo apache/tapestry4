@@ -43,8 +43,6 @@ import org.apache.tapestry.contrib.table.model.ITableRowSource;
  */
 public abstract class TableRows extends AbstractTableViewComponent implements ITableRowSource
 {
-    // Parameters
-    public abstract IBinding getRowBinding();
 
     // Transient
     private Object m_objTableRow = null;
@@ -70,7 +68,7 @@ public abstract class TableRows extends AbstractTableViewComponent implements IT
     {
         m_objTableRow = tableRow;
 
-        IBinding objRowBinding = getRowBinding();
+        IBinding objRowBinding = getBinding("row");
         if (objRowBinding != null)
             objRowBinding.setObject(tableRow);
     }

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
@@ -29,6 +30,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Insert;
+import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 
@@ -59,6 +61,14 @@ public class TestEnhancementOperation extends HiveMindTestCase
     public abstract static class GetClassReferenceFixture
     {
         public abstract Class getClassReference();
+    }
+
+    public static class MissingConstructorFixture
+    {
+        public MissingConstructorFixture(String foo)
+        {
+            //
+        }
     }
 
     public void testClaimedProperty()
@@ -199,7 +209,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         ClassFab fab = (ClassFab) newMock(ClassFab.class);
 
-        cf.newClass(BaseComponent.class.getName() + "$Enhance_97", BaseComponent.class, Thread
+        cf.newClass("$BaseComponent_97", BaseComponent.class, Thread
                 .currentThread().getContextClassLoader());
 
         cfc.setReturnValue(fab);
@@ -231,8 +241,11 @@ public class TestEnhancementOperation extends HiveMindTestCase
         MockControl fabc = newControl(ClassFab.class);
         ClassFab fab = (ClassFab) fabc.getMock();
 
-        cf.newClass(baseClass.getName() + "$Enhance_97", baseClass, Thread.currentThread()
-                .getContextClassLoader());
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+
+        // We force the uid to 97 in setUp()
+
+        cf.newClass("$Insert_97", baseClass, classLoader);
 
         cfc.setReturnValue(fab);
 
@@ -276,7 +289,13 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testGetClassReference() throws Exception
     {
-        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        Location l = fabricateLocation(99);
+        MockControl specControl = newControl(IComponentSpecification.class);
+
+        IComponentSpecification spec = (IComponentSpecification) specControl.getMock();
+
+        spec.getLocation();
+        specControl.setReturnValue(l);
 
         replayControls();
 
@@ -287,6 +306,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         // parameter to inject the class value (Map.class) into each new instance.
 
         String ref = eo.getClassReference(Map.class);
+        String ref2 = eo.getClassReference(Map.class);
 
         eo.addMethod(Modifier.PUBLIC, new MethodSignature(Class.class, "getClassReference", null,
                 null), "return " + ref + ";");
@@ -298,5 +318,63 @@ public class TestEnhancementOperation extends HiveMindTestCase
         assertSame(Map.class, f.getClassReference());
 
         verifyControls();
+
+        assertSame(ref, ref2);
+    }
+
+    /**
+     * Test exception reporting when the base component class does not contain the requisite
+     * no-arguments constructor.
+     */
+
+    public void testMissingConstructor()
+    {
+        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+
+        replayControls();
+
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
+                spec, MissingConstructorFixture.class, new ClassFactoryImpl());
+
+        try
+        {
+            eo.getConstructor();
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Class org.apache.tapestry.enhance.TestEnhancementOperation$MissingConstructorFixture does not define a public, no arguments constructor.",
+                    ex.getMessage());
+        }
+
+        verifyControls();
+    }
+
+    /**
+     * Really a test for {@link org.apache.tapestry.enhance.ComponentConstructorImpl};
+     * {@link #testGetClassReference()}tests the success case, just want to fill in the failure.
+     */
+
+    public void testComponentConstructorFailure()
+    {
+        Location l = fabricateLocation(13);
+
+        ComponentConstructor cc = new ComponentConstructorImpl(BaseComponent.class
+                .getConstructors()[0], new Object[]
+        { "unexpected" }, l);
+
+        try
+        {
+            cc.newInstance();
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertExceptionSubstring(
+                    ex,
+                    "Unable to instantiate instance of class org.apache.tapestry.BaseComponent");
+            assertSame(l, ex.getLocation());
+        }
     }
 }

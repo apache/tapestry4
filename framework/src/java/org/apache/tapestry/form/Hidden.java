@@ -25,13 +25,11 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- *  Implements a hidden field within a {@link Form}.
- *
- *  [<a href="../../../../../ComponentReference/Hidden.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ * Implements a hidden field within a {@link Form}. [ <a
+ * href="../../../../../ComponentReference/Hidden.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Hidden extends AbstractFormComponent
 {
@@ -57,7 +55,7 @@ public abstract class Hidden extends AbstractFormComponent
 
             if (getEncode())
             {
-                Object value = getValueBinding().getObject();
+                Object value = getBinding("value").getObject();
 
                 try
                 {
@@ -69,20 +67,17 @@ public abstract class Hidden extends AbstractFormComponent
                 }
             }
             else
-                externalValue = (String) getValueBinding().getObject("value", String.class);
+                externalValue = (String) getBinding("value").getObject("value", String.class);
 
             String id = getElementId();
             //if we would like to test the IForm.addHiddenValue(name, externalValue) method with
             //Hidden JUnit test the following code must be default. But from the performance issue
-            //I don't use the id parameter clauses.  
-/*			if(id == null || id.length() == 0){
-				form.addHiddenValue(name, externalValue);
-            }else{
-				form.addHiddenValue(name, id, externalValue);
-            }
-*/
-			form.addHiddenValue(name, id, externalValue);
-            
+            //I don't use the id parameter clauses.
+            /*
+             * if(id == null || id.length() == 0){ form.addHiddenValue(name, externalValue); }else{
+             * form.addHiddenValue(name, id, externalValue); }
+             */
+            form.addHiddenValue(name, id, externalValue);
 
             return;
         }
@@ -107,7 +102,7 @@ public abstract class Hidden extends AbstractFormComponent
         // A listener is not always necessary ... it's easy to code
         // the synchronization as a side-effect of the accessor method.
 
-        getValueBinding().setObject(value);
+        getBinding("value").setObject(value);
 
         IActionListener listener = getListener();
 
@@ -115,16 +110,18 @@ public abstract class Hidden extends AbstractFormComponent
             listener.actionTriggered(this, cycle);
     }
 
-	public String getElementId(){
-		String value = null;
-		IBinding idBinding = getIdBinding();
-		if(idBinding != null){
-			value = idBinding.getString();
-		}
-		return value;
-	}
+    public String getElementId()
+    {
+        String value = null;
+        IBinding idBinding = getBinding("id");
+        if (idBinding != null)
+        {
+            value = idBinding.getString();
+        }
+        return value;
+    }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     private DataSqueezer getDataSqueezer()
     {
@@ -133,31 +130,23 @@ public abstract class Hidden extends AbstractFormComponent
 
     public abstract IActionListener getListener();
 
-    public abstract IBinding getValueBinding();
-	public abstract IBinding getIdBinding();
-
     /**
+     * Returns false. Hidden components are never disabled.
      * 
-     *  Returns false.  Hidden components are never disabled.
-     * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public boolean isDisabled()
     {
         return false;
     }
 
-    /** 
+    /**
+     * Returns true if the compent encodes object values using a
+     * {@link org.apache.tapestry.util.io.DataSqueezerImpl}, false if values are always Strings.
      * 
-     *  Returns true if the compent encodes object values using a
-     *  {@link org.apache.tapestry.util.io.DataSqueezerImpl}, false
-     *  if values are always Strings.
-     * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public abstract boolean getEncode();
 

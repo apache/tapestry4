@@ -103,18 +103,4 @@
 					 	
 	</request>	
 	
-	<request>
-		<parameter name="service" value="page/Two"/>	
-		
-		<assert-output name="Title">
-<![CDATA[
-<title>Exception</title>
-]]>	
-		</assert-output>
-		
-		<assert-output name="Message">
-		Parameter 'flag' must be required or have a default value as it uses direction 'auto'.	
-		</assert-output>
-	</request>
-	
 </mock-test>

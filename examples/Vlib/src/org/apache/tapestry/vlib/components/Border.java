@@ -72,8 +72,6 @@ public abstract class Border extends BaseComponent
 
     public abstract String getSubtitle();
 
-    public abstract IBinding getBrowserBinding();
-
     public void finishLoad()
     {
         IPage page = getPage();

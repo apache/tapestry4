@@ -22,16 +22,13 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A special type of form component that is used to contain {@link Radio}
- *  components.  The Radio and {@link Radio} group components work together to
- *  update a property of some other object, much like a more flexible
- *  version of a {@link PropertySelection}.
- *
- *  [<a href="../../../../../ComponentReference/RadioGroup.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ * A special type of form component that is used to contain {@link Radio}components. The Radio and
+ * {@link Radio}group components work together to update a property of some other object, much like
+ * a more flexible version of a {@link PropertySelection}. [ <a
+ * href="../../../../../ComponentReference/RadioGroup.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class RadioGroup extends AbstractFormComponent
 {
@@ -43,15 +40,15 @@ public abstract class RadioGroup extends AbstractFormComponent
     private int _selectedOption;
 
     private boolean _rewinding;
+
     private boolean _rendering;
+
     private int _nextOptionId;
 
     /**
-     *  A <code>RadioGroup</code> places itself into the {@link IRequestCycle} as
-     *  an attribute, so that its wrapped {@link Radio} components can identify thier
-     *  state.
-     *
-     **/
+     * A <code>RadioGroup</code> places itself into the {@link IRequestCycle}as an attribute, so
+     * that its wrapped {@link Radio}components can identify thier state.
+     */
 
     private static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.RadioGroup";
 
@@ -59,8 +56,6 @@ public abstract class RadioGroup extends AbstractFormComponent
     {
         return (RadioGroup) cycle.getAttribute(ATTRIBUTE_NAME);
     }
-
-    public abstract IBinding getSelectedBinding();
 
     public int getNextOptionId()
     {
@@ -71,10 +66,9 @@ public abstract class RadioGroup extends AbstractFormComponent
     }
 
     /**
-     *  Used by {@link Radio} components wrapped by this <code>RadioGroup</code> to see
-     *  if the group as a whole is disabled.
-     *
-     **/
+     * Used by {@link Radio}components wrapped by this <code>RadioGroup</code> to see if the
+     * group as a whole is disabled.
+     */
 
     public abstract boolean isDisabled();
 
@@ -87,11 +81,9 @@ public abstract class RadioGroup extends AbstractFormComponent
     }
 
     /**
-     *  Returns true if the value is equal to the current selection for the
-     *  group.  This is invoked by a {@link Radio} during rendering
-     *  to determine if it should be marked 'checked'.
-     *
-     **/
+     * Returns true if the value is equal to the current selection for the group. This is invoked by
+     * a {@link Radio}during rendering to determine if it should be marked 'checked'.
+     */
 
     public boolean isSelection(Object value)
     {
@@ -108,20 +100,18 @@ public abstract class RadioGroup extends AbstractFormComponent
     }
 
     /**
-    *  Invoked by the {@link Radio} which is selected to update the 
-    *  property bound to the selected parameter.
-    *
-    **/
+     * Invoked by the {@link Radio}which is selected to update the property bound to the selected
+     * parameter.
+     */
 
     public void updateSelection(Object value)
     {
-        getSelectedBinding().setObject(value);
+        getBinding("selected").setObject(value);
     }
 
     /**
-    *  Used by {@link Radio} components when rewinding to see if their value was submitted.
-    *
-    **/
+     * Used by {@link Radio}components when rewinding to see if their value was submitted.
+     */
 
     public boolean isSelected(int option)
     {
@@ -129,24 +119,19 @@ public abstract class RadioGroup extends AbstractFormComponent
     }
 
     /**
-     * Doesn't actual render an HTML element as there is no direct equivalent for
-     * an HTML element.  A <code>RadioGroup</code> component exists to organize the
-     * {@link Radio} components it wraps (directly or indirectly).
-     *
-     * A {@link Radio} can finds its {@link RadioGroup} as a {@link IRequestCycle} attribute.
-     *
-     **/
+     * Doesn't actual render an HTML element as there is no direct equivalent for an HTML element. A
+     * <code>RadioGroup</code> component exists to organize the {@link Radio}components it wraps
+     * (directly or indirectly). A {@link Radio}can finds its {@link RadioGroup}as a
+     * {@link IRequestCycle}attribute.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("RadioGroup.may-not-nest"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("RadioGroup.may-not-nest"),
+                    this, null, null);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
@@ -180,7 +165,7 @@ public abstract class RadioGroup extends AbstractFormComponent
             // selection is, so that the correct one can mark itself 'checked'.
 
             if (!_rewinding)
-                _selection = getSelectedBinding().getObject();
+                _selection = getBinding("selected").getObject();
 
             renderBody(writer, cycle);
         }

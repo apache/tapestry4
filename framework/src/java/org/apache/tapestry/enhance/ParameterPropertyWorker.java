@@ -18,6 +18,7 @@ import java.lang.reflect.Modifier;
 import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
@@ -25,6 +26,7 @@ import org.apache.tapestry.Defense;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
+import org.apache.tapestry.spec.IPropertySpecification;
 
 /**
  * Responsible for creating properties for connected parameters.
@@ -93,7 +95,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
         if (ps.getDirection() == Direction.AUTO)
         {
-            createAutoParameterProperty(op, parameterName, propertyName, propertyType);
+            createAutoParameterProperty(op, parameterName, ps, propertyType);
             return;
         }
 
@@ -132,8 +134,16 @@ public class ParameterPropertyWorker implements EnhancementWorker
     }
 
     private void createAutoParameterProperty(EnhancementOperation op, String parameterName,
-            String propertyName, Class propertyType)
+            IParameterSpecification ps, Class propertyType)
     {
+        String propertyName = ps.getPropertyName();
+
+        // This restriction will go away shortly ...
+        
+        if (!ps.isRequired() && ps.getDefaultValue() == null)
+            throw new ApplicationRuntimeException(EnhanceMessages.autoMustBeRequired(propertyName),
+                    ps.getLocation(), null);
+
         createAutoAccessor(op, parameterName, propertyName, propertyType);
         createAutoMutator(op, parameterName, propertyName, propertyType);
     }

@@ -23,33 +23,26 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  A component for creating a link that is handled using the action service.
+ * A component for creating a link that is handled using the action service. [ <a
+ * href="../../../../../ComponentReference/ActionLink.html">Component Reference </a>]
  * 
- *  [<a href="../../../../../ComponentReference/ActionLink.html">Component Reference</a>]
- *
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class ActionLink extends AbstractLinkComponent implements IAction
 {
     /**
-     *  Returns true if the stateful parameter is bound to
-     *  a true value.  If stateful is not bound, also returns
-     *  the default, true.
-     * 
-     *  <p>Note that this method can be called when the
-     *  component is not rendering, therefore it must
-     *  directly access the {@link IBinding} for the stateful
-     *  parameter.
-     *
-     **/
+     * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
+     * also returns the default, true.
+     * <p>
+     * Note that this method can be called when the component is not rendering, therefore it must
+     * directly access the {@link IBinding}for the stateful parameter.
+     */
 
     public boolean getRequiresSession()
     {
-    	IBinding statefulBinding = getStatefulBinding();
-    	
+        IBinding statefulBinding = getBinding("stateful");
+
         if (statefulBinding == null)
             return true;
 
@@ -67,10 +60,9 @@ public abstract class ActionLink extends AbstractLinkComponent implements IActio
             throw new RenderRewoundException(this);
         }
 
-        return getLink(cycle, Tapestry.ACTION_SERVICE, new Object[] { actionId });
+        return getLink(cycle, Tapestry.ACTION_SERVICE, new Object[]
+        { actionId });
     }
-
-    public abstract IBinding getStatefulBinding();
 
     public abstract IActionListener getListener();
 }

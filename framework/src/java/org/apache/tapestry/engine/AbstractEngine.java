@@ -110,8 +110,7 @@ import com.sun.jndi.ldap.pool.Pool;
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractEngine implements IEngine, Externalizable,
-        HttpSessionBindingListener
+public abstract class AbstractEngine implements IEngine, Externalizable, HttpSessionBindingListener
 {
     private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
 
@@ -440,13 +439,12 @@ public abstract class AbstractEngine implements IEngine, Externalizable,
      * Delegates to
      * {@link org.apache.tapestry.services.ResponseRenderer#renderResponse(IRequestCycle, ResponseOutputStream)}.
      */
-    
+
     public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
             throws ServletException, IOException
     {
         _infrastructure.getResponseRenderer().renderResponse(cycle, output);
     }
-
 
     /**
      * Delegate method for the servlet. Services the request.
@@ -759,22 +757,6 @@ public abstract class AbstractEngine implements IEngine, Externalizable,
      * The global object is retrieved from {@link IEngine#getGlobal()}method.
      * <p>
      * The final path is available via the {@link #getServletPath()}method.
-     * <p>
-     * In addition, this method locates and/or creates the:
-     * <ul>
-     * <li>{@link IComponentClassEnhancer}
-     * <li>{@link Pool}
-     * <li>{@link ITemplateSource}
-     * <li>{@link ISpecificationSource}
-     * <li>{@link IPageSource}
-     * <li>{@link IEngineService}{@link Map}<ll>{@link IScriptSource}
-     * <li>{@link IComponentMessagesSource}
-     * <li>{@link IPropertySource}
-     * </ul>
-     * <p>
-     * This order is important, because some of the later shared objects depend on some of the
-     * earlier shared objects already having been located or created (especially
-     * {@link #getPool() pool}).
      * <p>
      * Subclasses should invoke this implementation first, then perform their own setup.
      */
@@ -1190,11 +1172,9 @@ public abstract class AbstractEngine implements IEngine, Externalizable,
         return _infrastructure.getObjectPool();
     }
 
-    /** @see Infrastructure#getComponentClassEnhancer() */
-
     public IComponentClassEnhancer getComponentClassEnhancer()
     {
-        return _infrastructure.getComponentClassEnhancer();
+        throw new UnsupportedOperationException("getComponentClassEnhancer()");
     }
 
     /**

@@ -25,91 +25,81 @@ import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 
 /**
- *  A component which uses &lt;input type=checkbox&gt; to
- *  set a property of some object.  Typically, the values for the object
- *  are defined using an {@link org.apache.commons.lang.enum.Enum}.  A MultiplePropertySelection is dependent on
- *  an {link IPropertySelectionModel} to provide the list of possible values.
- *
- *  <p>Often, this is used to select one or more {@link org.apache.commons.lang.enum.Enum} to assign to a property; the
- * {@link org.apache.tapestry.form.EnumPropertySelectionModel} class simplifies this.
- * 
- *  <p>The {@link org.apache.tapestry.contrib.palette.Palette} component
- *  is more powerful, but requires client-side JavaScript and 
- *  is not fully cross-browser compatible.
- *
- *  <p>
- *
+ * A component which uses &lt;input type=checkbox&gt; to set a property of some object. Typically,
+ * the values for the object are defined using an {@link org.apache.commons.lang.enum.Enum}. A
+ * MultiplePropertySelection is dependent on an {link IPropertySelectionModel} to provide the list
+ * of possible values.
+ * <p>
+ * Often, this is used to select one or more {@link org.apache.commons.lang.enum.Enum}to assign to
+ * a property; the {@link org.apache.tapestry.form.EnumPropertySelectionModel}class simplifies
+ * this.
+ * <p>
+ * The {@link org.apache.tapestry.contrib.palette.Palette}component is more powerful, but requires
+ * client-side JavaScript and is not fully cross-browser compatible.
+ * <p>
  * <table border=1>
  * <tr>
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td>
- *    <td>Default</td>
- *    <td>Description</td>
+ * <td>Parameter</td>
+ * <td>Type</td>
+ * <td>Direction</td>
+ * <td>Required</td>
+ * <td>Default</td>
+ * <td>Description</td>
  * </tr>
- *
  * <tr>
- *		<td>selectedList</td>
- *		<td>java.util.List</td>
- *		<td>in-out</td>
- *		<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The property to set.  During rendering, this property is read, and sets
- * the default value of the options in the select.
- * When the form is submitted, list is cleared, then has each
- * selected option added to it. </td> </tr>
- *
+ * <td>selectedList</td>
+ * <td>java.util.List</td>
+ * <td>in-out</td>
+ * <td>yes</td>
+ * <td>&nbsp;</td>
+ * <td>The property to set. During rendering, this property is read, and sets the default value of
+ * the options in the select. When the form is submitted, list is cleared, then has each selected
+ * option added to it.</td>
+ * </tr>
  * <tr>
- *		<td>renderer</td>
- *		<td>{@link IMultiplePropertySelectionRenderer}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}</td>
- *		<td>Defines the object used to render this component.  The default
- *  renders a table of checkboxes.</td></tr>
- *
- *  <tr>
- *		<td>model</td>
- *		<td>{@link IPropertySelectionModel}</td>
- *		<td>in</td>
- *		<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The model provides a list of possible labels, and matches those labels
- *  against possible values that can be assigned back to the property.</td> </tr>
- *
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Controls whether the &lt;select&gt; is active or not. A disabled PropertySelection
- * does not update its value parameter.
- *
- *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
- *	</tr>
- *
- *	</table>
- *
- * <p>Informal parameters are not allowed.
- *
- *  @author Sanjay Munjal
- *
- **/
+ * <td>renderer</td>
+ * <td>{@link IMultiplePropertySelectionRenderer}</td>
+ * <td>in</td>
+ * <td>no</td>
+ * <td>shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}</td>
+ * <td>Defines the object used to render this component. The default renders a table of checkboxes.
+ * </td>
+ * </tr>
+ * <tr>
+ * <td>model</td>
+ * <td>{@link IPropertySelectionModel}</td>
+ * <td>in</td>
+ * <td>yes</td>
+ * <td>&nbsp;</td>
+ * <td>The model provides a list of possible labels, and matches those labels against possible
+ * values that can be assigned back to the property.</td>
+ * </tr>
+ * <tr>
+ * <td>disabled</td>
+ * <td>boolean</td>
+ * <td>in</td>
+ * <td>no</td>
+ * <td>false</td>
+ * <td>Controls whether the &lt;select&gt; is active or not. A disabled PropertySelection does not
+ * update its value parameter.
+ * <p>
+ * Corresponds to the <code>disabled</code> HTML attribute.</td>
+ * </tr>
+ * </table>
+ * <p>
+ * Informal parameters are not allowed.
+ * 
+ * @author Sanjay Munjal
+ */
 
 public abstract class MultiplePropertySelection extends AbstractFormComponent
 {
 
     /**
-     *  A shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}.
-     *
-     **/
+     * A shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}.
+     */
 
-    public static final IMultiplePropertySelectionRenderer DEFAULT_CHECKBOX_RENDERER =
-        new CheckBoxMultiplePropertySelectionRenderer();
-
-    public abstract IBinding getSelectedListBinding();
+    public static final IMultiplePropertySelectionRenderer DEFAULT_CHECKBOX_RENDERER = new CheckBoxMultiplePropertySelectionRenderer();
 
     protected void finishLoad()
     {
@@ -117,20 +107,17 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent
     }
 
     /**
-     *  Returns true if the component is disabled (this is relevant to the
-     *  renderer).
-     *
-     **/
+     * Returns true if the component is disabled (this is relevant to the renderer).
+     */
 
     public abstract boolean isDisabled();
 
     /**
-     *  Renders the component, much of which is the responsiblity
-     *  of the {@link IMultiplePropertySelectionRenderer renderer}.  The possible options,
-     *  their labels, and the values to be encoded in the form are provided
-     *  by the {@link IPropertySelectionModel model}.
-     *
-     **/
+     * Renders the component, much of which is the responsiblity of the
+     * {@link IMultiplePropertySelectionRenderer renderer}. The possible options, their labels, and
+     * the values to be encoded in the form are provided by the
+     * {@link IPropertySelectionModel model}.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -140,7 +127,7 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent
 
         String name = form.getElementId(this);
 
-        List selectedList = (List) getSelectedListBinding().getObject("selectedList", List.class);
+        List selectedList = (List) getBinding("selectedList").getObject("selectedList", List.class);
 
         if (selectedList == null)
             throw Tapestry.createRequiredParameterException(this, "selectedList");

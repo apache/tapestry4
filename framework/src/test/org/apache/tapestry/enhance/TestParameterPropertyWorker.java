@@ -16,7 +16,6 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
 import java.util.Collections;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -24,7 +23,10 @@ import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.test.AggregateArgumentsMatcher;
+import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.hivemind.test.TypeMatcher;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -42,17 +44,19 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
     private ParameterSpecification buildParameterSpec(String propertyName, String type,
             Direction direction)
     {
-        return buildParameterSpec(propertyName, type, direction, null);
+        return buildParameterSpec(propertyName, type, direction, true, null, null);
     }
 
     private ParameterSpecification buildParameterSpec(String propertyName, String type,
-            Direction direction, Location location)
+            Direction direction, boolean required, String defaultValue, Location location)
     {
         ParameterSpecification ps = new ParameterSpecification();
 
         ps.setPropertyName(propertyName);
         ps.setType(type);
         ps.setDirection(direction);
+        ps.setRequired(required);
+        ps.setDefaultValue(defaultValue);
         ps.setLocation(location);
 
         return ps;
@@ -211,6 +215,8 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 "wilma",
                 "String",
                 Direction.IN,
+                true,
+                null,
                 l));
 
         MockControl opc = newControl(EnhancementOperation.class);
@@ -235,6 +241,60 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                         "Error adding property 'wilma' to class org.apache.tapestry.BaseComponent: Simulated error.",
                         l,
                         ex);
+
+        replayControls();
+
+        ParameterPropertyWorker w = new ParameterPropertyWorker();
+        w.setLog(log);
+        w.setErrorHandler(errorHandler);
+
+        w.performEnhancement(op);
+
+        verifyControls();
+    }
+
+    public void testAutoMustBeRequired()
+    {
+        Location l = fabricateLocation(207);
+
+        IComponentSpecification spec = buildComponentSpecification("fred", buildParameterSpec(
+                "wilma",
+                "java.lang.String",
+                Direction.AUTO,
+                false,
+                null,
+                l));
+
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.getSpecification();
+        opc.setReturnValue(spec);
+
+        op.convertTypeName("java.lang.String");
+        opc.setReturnValue(String.class);
+
+        op.validateProperty("wilma", String.class);
+
+        op.claimProperty("wilma");
+
+        op.getBaseClass();
+        opc.setReturnValue(BaseComponent.class);
+
+        Log log = (Log) newMock(Log.class);
+        MockControl ehc = newControl(ErrorHandler.class);
+        ErrorHandler errorHandler = (ErrorHandler) ehc.getMock();
+
+        errorHandler
+                .error(
+                        log,
+                        "Error adding property 'wilma' to class org.apache.tapestry.BaseComponent: "
+                                + "Parameter 'wilma' must be required or have a default value as it uses direction 'auto'.",
+                        l,
+                        new ApplicationRuntimeException(""));
+
+        ehc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { null, null, null, new TypeMatcher() }));
 
         replayControls();
 

@@ -17,26 +17,22 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IBinding;
 
 /**
- *  Implements a component that manages an HTML &lt;input type=text&gt; or
- *  &lt;input type=password&gt; form element.
- *
- *  [<a href="../../../../../ComponentReference/TextField.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ * Implements a component that manages an HTML &lt;input type=text&gt; or &lt;input
+ * type=password&gt; form element. [ <a
+ * href="../../../../../ComponentReference/TextField.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class TextField extends AbstractTextField
 {
-    public abstract IBinding getValueBinding();
-
     public String readValue()
     {
-        return (String) getValueBinding().getObject("value", String.class);
+        return (String) getBinding("value").getObject("value", String.class);
     }
 
     public void updateValue(String value)
     {
-        getValueBinding().setString(value);
+        getBinding("value").setString(value);
     }
 }

@@ -12,22 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.c9;
+package org.apache.tapestry.enhance;
 
-import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.spec.IComponentSpecification;
 
-/**
- * More testing for non-abstract accessor methods.
+/** 
  * 
- * @author Howard Lewis Ship
- * @version $Id$
- * @since 3.0
+ * @author Howard M. Lewis Ship
  */
-
-public class Five extends BasePage
+public interface EnhancedClassValidator
 {
-    public String getWord()
-    {
-        return null;
-    }
+    public void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification);
 }

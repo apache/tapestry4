@@ -47,8 +47,6 @@ public abstract class Foreach extends AbstractComponent
     private int _index;
     private boolean _rendering;
 
-    public abstract IBinding getIndexBinding();
-
 
     /**
      *  Gets the source binding and returns an {@link Iterator}
@@ -70,8 +68,6 @@ public abstract class Foreach extends AbstractComponent
  		
         return Tapestry.coerceToIterator(source);
     }
-
-    public abstract IBinding getValueBinding();
 
     /**
      *  Gets the source binding and iterates through
@@ -95,8 +91,8 @@ public abstract class Foreach extends AbstractComponent
             _value = null;
             _index = 0;
             
-            IBinding indexBinding = getIndexBinding();
-            IBinding valueBinding = getValueBinding();
+            IBinding indexBinding = getBinding("index");
+            IBinding valueBinding = getBinding("value");
             String element = getElement();
 
             boolean hasNext = dataSource.hasNext();

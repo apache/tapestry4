@@ -52,6 +52,8 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.BindingSource;
+import org.apache.tapestry.services.ComponentConstructor;
+import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.services.ComponentTemplateLoader;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.TemplateSource;
@@ -74,11 +76,9 @@ import org.apache.tapestry.spec.IPropertySpecification;
 
 public class PageLoader implements IPageLoader
 {
-    private Log _log = LogFactory.getLog(PageLoader.class);
+    private Log _log;
 
     private ClassResolver _classResolver;
-
-    private IComponentClassEnhancer _enhancer;
 
     /** @since 3.1 */
 
@@ -116,9 +116,13 @@ public class PageLoader implements IPageLoader
     private ComponentTreeWalker _establishDefaultParameterValuesWalker;
 
     private ComponentTreeWalker _verifyRequiredParametersWalker;
-    
+
     /** @since 3.1 */
     private ExpressionEvaluator _expressionEvaluator;
+
+    /** @since 3.1 */
+
+    private ComponentConstructorFactory _componentConstructorFactory;
 
     /**
      * The locale of the application, which is also the locale of the page being loaded.
@@ -466,24 +470,19 @@ public class PageLoader implements IPageLoader
         if (Tapestry.isBlank(className))
             className = BaseComponent.class.getName();
 
-        Class componentClass = _enhancer.getEnhancedClass(spec, className);
-        String enhancedClassName = componentClass.getName();
+        ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(
+                spec,
+                className);
 
         try
         {
-            result = (IComponent) componentClass.newInstance();
+            result = (IComponent) cc.newInstance();
 
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages
-                    .classNotComponent(enhancedClassName), container, spec.getLocation(), ex);
-        }
-        catch (Throwable ex)
-        {
-            throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiate(
-                    enhancedClassName,
-                    ex), container, spec.getLocation(), ex);
+            throw new ApplicationRuntimeException(PageloadMessages.classNotComponent(cc
+                    .getComponentClass()), container, spec.getLocation(), ex);
         }
 
         if (result instanceof IPage)
@@ -527,12 +526,13 @@ public class PageLoader implements IPageLoader
         if (Tapestry.isBlank(className))
             className = _defaultPageClassName;
 
-        Class pageClass = _enhancer.getEnhancedClass(spec, className);
-        String enhancedClassName = pageClass.getName();
+        ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(
+                spec,
+                className);
 
         try
         {
-            result = (IPage) pageClass.newInstance();
+            result = (IPage) cc.newInstance();
 
             result.setNamespace(namespace);
             result.setSpecification(spec);
@@ -543,14 +543,8 @@ public class PageLoader implements IPageLoader
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages.classNotPage(enhancedClassName),
-                    location, ex);
-        }
-        catch (Exception ex)
-        {
-            throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiate(
-                    enhancedClassName,
-                    ex), location, ex);
+            throw new ApplicationRuntimeException(PageloadMessages.classNotPage(cc
+                    .getComponentClass()), location, ex);
         }
 
         return result;
@@ -770,13 +764,6 @@ public class PageLoader implements IPageLoader
 
     /** @since 3.1 */
 
-    public void setEnhancer(IComponentClassEnhancer enhancer)
-    {
-        _enhancer = enhancer;
-    }
-
-    /** @since 3.1 */
-
     public void setComponentResolver(ComponentSpecificationResolver resolver)
     {
         _componentResolver = resolver;
@@ -824,10 +811,17 @@ public class PageLoader implements IPageLoader
     {
         _establishDefaultParameterValuesVisitor = establishDefaultParameterValuesVisitor;
     }
-    
+
     /** @since 3.1 */
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
     {
         _expressionEvaluator = expressionEvaluator;
+    }
+
+    /** @since 3.1 */
+    public void setComponentConstructorFactory(
+            ComponentConstructorFactory componentConstructorFactory)
+    {
+        _componentConstructorFactory = componentConstructorFactory;
     }
 }

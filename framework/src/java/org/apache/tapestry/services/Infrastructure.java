@@ -15,7 +15,6 @@
 package org.apache.tapestry.services;
 
 import org.apache.hivemind.ClassResolver;
-import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -75,12 +74,6 @@ public interface Infrastructure
     public ObjectPool getObjectPool();
 
     /**
-     * Returns the factory responsible for creating enhanced classes for pages and components.
-     */
-
-    public IComponentClassEnhancer getComponentClassEnhancer();
-
-    /**
      * Returns the source for pages. The source is a cache of pages, but also can create new
      * instances when needed.
      */
@@ -112,16 +105,16 @@ public interface Infrastructure
      */
 
     public ServiceMap getServiceMap();
-    
+
     /**
      * Service used to report exceptions to the console.
      */
-    
+
     public RequestExceptionReporter getRequestExceptionReporter();
-    
+
     /**
      * Renders the active page as the response.
      */
-    
+
     public ResponseRenderer getResponseRenderer();
 }

@@ -24,33 +24,27 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.Body;
 
 /**
- *  Implements a component that submits its enclosing form via a JavaScript link.
+ * Implements a component that submits its enclosing form via a JavaScript link. [ <a
+ * href="../../../../../ComponentReference/LinkSubmit.html">Component Reference </a>]
  * 
- *  [<a href="../../../../../ComponentReference/LinkSubmit.html">Component Reference</a>]
- *
- *  @author Richard Lewis-Shell
- * 
- **/
+ * @author Richard Lewis-Shell
+ */
 
 public abstract class LinkSubmit extends AbstractFormComponent
 {
     /**
-     *  The name of an {@link org.apache.tapestry.IRequestCycle} attribute in which the
-     *  current submit link is stored.  LinkSubmits do not nest.
-     *
-     **/
+     * The name of an {@link org.apache.tapestry.IRequestCycle}attribute in which the current
+     * submit link is stored. LinkSubmits do not nest.
+     */
 
     public static final String ATTRIBUTE_NAME = "org.apache.tapestry.form.LinkSubmit";
 
     /**
-     * The name of an  {@link org.apache.tapestry.IRequestCycle} attribute in which the
-     * link submit component that generates the javascript function is stored.  The
-     * function is only required once per page (containing a form with a non-disabled
-     * LinkSubmit)
-     * 
-     **/
-    public static final String ATTRIBUTE_FUNCTION_NAME =
-        "org.apache.tapestry.form.LinkSubmit_function";
+     * The name of an {@link org.apache.tapestry.IRequestCycle}attribute in which the link submit
+     * component that generates the javascript function is stored. The function is only required
+     * once per page (containing a form with a non-disabled LinkSubmit)
+     */
+    public static final String ATTRIBUTE_FUNCTION_NAME = "org.apache.tapestry.form.LinkSubmit_function";
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -65,11 +59,8 @@ public abstract class LinkSubmit extends AbstractFormComponent
         IMarkupWriter wrappedWriter;
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("LinkSubmit.may-not-nest"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("LinkSubmit.may-not-nest"),
+                    this, null, null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -80,18 +71,16 @@ public abstract class LinkSubmit extends AbstractFormComponent
             {
                 Body body = Body.get(cycle);
 
-				if (body == null)
-				    throw new ApplicationRuntimeException(
-				        Tapestry.format("must-be-contained-by-body", "LinkSubmit"),
-				        this,
-				        null,
-				        null);
-				        				
+                if (body == null)
+                    throw new ApplicationRuntimeException(Tapestry.format(
+                            "must-be-contained-by-body",
+                            "LinkSubmit"), this, null, null);
+
                 // make sure the submit function is on the page (once)
                 if (cycle.getAttribute(ATTRIBUTE_FUNCTION_NAME) == null)
                 {
-                    body.addBodyScript(
-                        "function submitLink(form, elementId) { form._linkSubmit.value = elementId; if (form.onsubmit == null || form.onsubmit()) form.submit(); }");
+                    body
+                            .addBodyScript("function submitLink(form, elementId) { form._linkSubmit.value = elementId; if (form.onsubmit == null || form.onsubmit()) form.submit(); }");
                     cycle.setAttribute(ATTRIBUTE_FUNCTION_NAME, this);
                 }
 
@@ -108,7 +97,7 @@ public abstract class LinkSubmit extends AbstractFormComponent
             else
             {
                 // How to know which Submit link was actually
-                // clicked?  When submitted, it sets its elementId into a hidden field
+                // clicked? When submitted, it sets its elementId into a hidden field
 
                 String value = cycle.getRequestContext().getParameter("_linkSubmit");
 
@@ -117,7 +106,7 @@ public abstract class LinkSubmit extends AbstractFormComponent
 
                 if (value != null && value.equals(name))
                 {
-                    IBinding selectedBinding = getSelectedBinding();
+                    IBinding selectedBinding = getBinding("selected");
                     if (selectedBinding != null)
                         selectedBinding.setObject(getTag());
                     IActionListener listener = getListener();
@@ -127,9 +116,8 @@ public abstract class LinkSubmit extends AbstractFormComponent
             }
 
             writer.begin("a");
-            writer.attribute(
-                "href",
-                "javascript:submitLink(document." + formName + ",\"" + name + "\");");
+            writer.attribute("href", "javascript:submitLink(document." + formName + ",\"" + name
+                    + "\");");
 
             // Allow the wrapped components a chance to render.
             // Along the way, they may interact with this component
@@ -171,9 +159,4 @@ public abstract class LinkSubmit extends AbstractFormComponent
     public abstract Object getTag();
 
     public abstract void setTag(Object tag);
-
-    public abstract void setSelectedBinding(IBinding value);
-
-    public abstract IBinding getSelectedBinding();
-
 }

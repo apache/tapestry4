@@ -35,7 +35,7 @@
     
     <invoke-factory model="threaded">
       <construct class="org.apache.tapestry.pageload.PageLoader">
-        <set-object property="enhancer" value="infrastructure:componentClassEnhancer"/>
+        <set-service property="componentConstructorFactory" service-id="tapestry.enhance.ComponentConstructorFactory"/>
         <set-service property="componentResolver" service-id="ComponentSpecificationResolver"/>      
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
         <set-service property="componentTemplateLoader" service-id="ComponentTemplateLoader"/>

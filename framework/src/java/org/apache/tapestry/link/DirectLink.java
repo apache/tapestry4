@@ -35,8 +35,6 @@ import org.apache.tapestry.engine.ILink;
 
 public abstract class DirectLink extends AbstractLinkComponent implements IDirect
 {
-
-    public abstract IBinding getStatefulBinding();
     public abstract IActionListener getListener();
 
     /**
@@ -48,7 +46,7 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
 
     public boolean isStateful()
     {
-        IBinding statefulBinding = getStatefulBinding();
+        IBinding statefulBinding = getBinding("stateful");
 
         if (statefulBinding == null)
             return true;

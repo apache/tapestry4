@@ -26,13 +26,12 @@ import org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor;
 
 /**
  * @author mindbridge
- *
  */
 public abstract class LocaleList extends BaseComponent
 {
     // immutable values
-	private IPrimaryKeyConvertor m_objLocaleConvertor;
-    
+    private IPrimaryKeyConvertor m_objLocaleConvertor;
+
     public LocaleList()
     {
         // define an IPrimaryKeyConvertor that represents
@@ -51,41 +50,41 @@ public abstract class LocaleList extends BaseComponent
 
                 String strLanguage = "";
                 if (objTokenizer.hasMoreTokens())
-                    strLanguage = objTokenizer.nextToken(); 
+                    strLanguage = objTokenizer.nextToken();
 
                 String strCountry = "";
                 if (objTokenizer.hasMoreTokens())
-                    strCountry = objTokenizer.nextToken(); 
+                    strCountry = objTokenizer.nextToken();
 
                 String strVariant = "";
                 if (objTokenizer.hasMoreTokens())
                     strVariant = objTokenizer.nextToken();
-                
-                return new Locale(strLanguage, strCountry, strVariant); 
+
+                return new Locale(strLanguage, strCountry, strVariant);
             }
         };
     }
-    
+
     public IPrimaryKeyConvertor getLocaleConvertor()
     {
         return m_objLocaleConvertor;
     }
 
-    public boolean getCheckboxSelected() 
+    public boolean getCheckboxSelected()
     {
         return getSelectedLocales().contains(getCurrentLocale());
     }
-    
-    public void setCheckboxSelected(boolean bSelected) 
+
+    public void setCheckboxSelected(boolean bSelected)
     {
         Locale objLocale = getCurrentLocale();
         Set setSelectedLocales = getSelectedLocales();
-        
+
         if (bSelected)
             setSelectedLocales.add(objLocale);
         else
             setSelectedLocales.remove(objLocale);
-        
+
         // persist value
         setSelectedLocales(setSelectedLocales);
     }
@@ -96,16 +95,14 @@ public abstract class LocaleList extends BaseComponent
         Locale[] arrLocales = new Locale[setSelectedLocales.size()];
         setSelectedLocales.toArray(arrLocales);
 
-        ILocaleSelectionListener objListener = 
-            (ILocaleSelectionListener) getLocaleSelectionListenerBinding().getObject();
+        ILocaleSelectionListener objListener = (ILocaleSelectionListener) getBinding(
+                "localeSelectionListener").getObject();
         objListener.localesSelected(arrLocales);
 
         // clear selection
         setSelectedLocales(new HashSet());
     }
 
-    public abstract IBinding getLocaleSelectionListenerBinding();
-    
     public abstract Locale getCurrentLocale();
 
     public abstract Set getSelectedLocales();
