@@ -32,6 +32,7 @@ The following changes have occured:
   the remainder of the value is interpreted (no prefix meaning a literal, or static, value).
 - <property> renamed to <meta> and <property-specification> renamed to <property>
 - Removed the type attribute from <property>
+- <property> persistent attribute is now called "persist", and is a string, not a boolean
 - Added <inject>
 - Removed the direction and type attributes from <parameter>
 - Consoliated <context-asset>, <private-asset> and <external-asset> into <asset>
@@ -402,8 +403,9 @@ Identifies a transient or persistent property.
 
 Attributes:
   name: The name of the property.
-  persistent: If "yes", the value will be made persistant.  Default
-    is "no".
+  persist: The name of the strategy for persisting the property between requests, 
+   or leave blank for no persistence (that is, a transient property).  
+   "session" is the most common strategy.
   initial-value:  If provided, this is an OGNL expression used
     to initialize the property.  If not specified, the
     body of the element is used as the initial value.
@@ -412,7 +414,7 @@ Attributes:
 <!ELEMENT property (#PCDATA)>
 <!ATTLIST property
 	name CDATA #REQUIRED
-	persistent %attribute-flag; "no"
+	persist CDATA #IMPLIED
 	initial-value CDATA #IMPLIED
 >
 <!-- =======================================================

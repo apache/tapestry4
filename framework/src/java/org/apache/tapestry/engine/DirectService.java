@@ -75,12 +75,14 @@ public class DirectService implements IEngineService
 
         Map parameters = new HashMap();
 
+        boolean stateful = _request.getSession(false) != null;
+
         parameters.put(ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null
                 : componentPage.getPageName());
-        parameters.put(ServiceConstants.SESSION, cycle.getEngine().isStateful() ? "T" : null);
+        parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
 
         return _linkFactory.constructLink(cycle, parameters, true);
@@ -123,7 +125,8 @@ public class DirectService implements IEngineService
             HttpSession session = _request.getSession();
 
             if (session == null || session.isNew())
-                throw new StaleSessionException(EngineMessages.requestStateSession(direct), componentPage);
+                throw new StaleSessionException(EngineMessages.requestStateSession(direct),
+                        componentPage);
         }
 
         Object[] parameters = _linkFactory.extractServiceParameters(cycle);

@@ -23,7 +23,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -31,7 +30,6 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.DataSqueezer;
-import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -79,14 +77,6 @@ public interface IEngine
     public static final String STALE_LINK_PAGE = "StaleLink";
 
     /**
-     * Returns a recorder for a page. Returns null if the page recorder has not been created yet.
-     * 
-     * @see #createPageRecorder(String, IRequestCycle)
-     */
-
-    public IPageRecorder getPageRecorder(String pageName, IRequestCycle cycle);
-
-    /**
      * The name ("StaleSession") of the page used for reporting state sessions.
      */
 
@@ -103,6 +93,9 @@ public interface IEngine
      * <p>
      * Throws an {@link ApplicationRuntimeException}if there are uncommitted changes for the
      * recorder (in the current request cycle).
+     * 
+     * @deprecated. To be removed in 3.2 Do not use.
+     * @see IRequestCycle#forgetPage(String)
      */
 
     public void forgetPage(String name);
@@ -122,14 +115,6 @@ public interface IEngine
     public void setLocale(Locale value);
 
     /**
-     * Creates a new page recorder for the named page.
-     * 
-     * @deprecated To be removed in 3.2.
-     */
-
-    public IPageRecorder createPageRecorder(String pageName, IRequestCycle cycle);
-
-    /**
      * Returns the object used to load a page from its specification.
      * 
      * @deprecated To be removed in 3.2.
@@ -138,12 +123,8 @@ public interface IEngine
     public IPageSource getPageSource();
 
     /**
-     * Gets the named service, or throws an {@linkorg.apache.tapestry.ApplicationRuntimeException}
-     * if the application can't provide the named server.
-     * <p>
-     * The object returned has a short lifecycle (it isn't serialized with the engine). Repeated
-     * calls with the same name are not guarenteed to return the same object, especially in
-     * different request cycles.
+     * Gets the named service, or throws an {@link org.apache.tapestry.ApplicationRuntimeException}
+     * if the engine can't provide the named service.
      */
 
     public IEngineService getService(String name);
@@ -261,6 +242,8 @@ public interface IEngine
      * Returns true if the engine has state and, therefore, should be stored in the HttpSession.
      * This starts as false, but becomes true when the engine requires state (such as when a visit
      * object is created, or when a peristent page property is set).
+     * <p>
+     * NOTE: With the changes to persistent page properties in 3.1, this may no longer be accurate!
      * 
      * @since 1.0.2
      */
@@ -336,10 +319,4 @@ public interface IEngine
      */
 
     public String getOutputEncoding();
-
-    /**
-     * @since 3.1
-     */
-
-    public Infrastructure getInfrastructure();
 }

@@ -16,7 +16,7 @@ package org.apache.tapestry.junit.mock.c11;
 
 import org.apache.tapestry.IRequestCycle;
 
-public class Four extends SelectPage
+public abstract class Four extends SelectPage
 {
     public void secondFormListener(IRequestCycle cycle)
     {

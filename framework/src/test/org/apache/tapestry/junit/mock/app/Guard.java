@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit.mock.app;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.html.BasePage;
 
@@ -27,47 +26,21 @@ import org.apache.tapestry.html.BasePage;
  * @since 2.3
  */
 
-public class Guard extends BasePage
+public abstract class Guard extends BasePage
 {
-    private ICallback _callback;
+    public abstract ICallback getCallback();
 
-    private boolean _visited;
+    public abstract void setCallback(ICallback callback);
 
-    public void detach()
-    {
-        _callback = null;
-        _visited = false;
+    public abstract void setVisited(boolean visited);
 
-        super.detach();
-    }
-
-    public ICallback getCallback()
-    {
-        return _callback;
-    }
-
-    public boolean isVisited()
-    {
-        return _visited;
-    }
-
-    public void setCallback(ICallback callback)
-    {
-        _callback = callback;
-        Tapestry.fireObservedChange(this, "callback", callback);
-    }
-
-    public void setVisited(boolean visited)
-    {
-        _visited = visited;
-        Tapestry.fireObservedChange(this, "visited", new Boolean(visited));
-    }
+    public abstract boolean isVisited();
 
     public void linkClicked(IRequestCycle cycle)
     {
         setVisited(true);
 
-        ICallback callback = _callback;
+        ICallback callback = getCallback();
 
         setCallback(null);
 

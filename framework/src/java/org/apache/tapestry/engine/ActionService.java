@@ -70,13 +70,15 @@ public class ActionService implements IEngineService
 
         Map parameters = new HashMap();
 
+        boolean stateful = _request.getSession(false) != null;
+
         parameters.put(ServiceConstants.SERVICE, Tapestry.ACTION_SERVICE);
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.CONTAINER, activePage == componentPage ? null
                 : componentPage.getPageName());
         parameters.put(ACTION, asp.getActionId());
-        parameters.put(ServiceConstants.SESSION, cycle.getEngine().isStateful() ? "T" : null);
+        parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
 
         return _linkFactory.constructLink(cycle, parameters, true);
     }

@@ -74,6 +74,17 @@ public abstract class ServiceTestCase extends HiveMindTestCase
         return result;
     }
 
+    protected HttpServletRequest newRequest(boolean create, HttpSession session)
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest result = (HttpServletRequest) control.getMock();
+
+        result.getSession(create);
+        control.setReturnValue(session);
+
+        return result;
+    }
+
     protected HttpSession newSession(boolean isNew)
     {
         MockControl control = newControl(HttpSession.class);
@@ -83,6 +94,11 @@ public abstract class ServiceTestCase extends HiveMindTestCase
         control.setReturnValue(isNew);
 
         return session;
+    }
+
+    protected HttpSession newSession()
+    {
+        return (HttpSession) newMock(HttpSession.class);
     }
 
     protected ILink newLink()

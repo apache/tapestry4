@@ -1330,7 +1330,14 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         String name = getValidatedAttribute("name", PROPERTY_NAME_PATTERN, "invalid-property-name");
         String type = getAttribute("type");
-        boolean persistent = getBooleanAttribute("persistent", false);
+
+        String persistence = null;
+
+        if (_DTD_3_1)
+            persistence = getAttribute("persist");
+        else
+            persistence = getBooleanAttribute("persistent", false) ? "session" : null;
+
         String initialValue = getAttribute("initial-value");
 
         IPropertySpecification ps = _factory.createPropertySpecification();
@@ -1339,7 +1346,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (HiveMind.isNonBlank(type))
             ps.setType(type);
 
-        ps.setPersistent(persistent);
+        ps.setPersistence(persistence);
         ps.setInitialValue(initialValue);
 
         IComponentSpecification cs = (IComponentSpecification) peekObject();

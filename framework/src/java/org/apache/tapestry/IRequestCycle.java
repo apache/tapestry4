@@ -14,6 +14,7 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.request.RequestContext;
@@ -209,12 +210,13 @@ public interface IRequestCycle
     public void rewindForm(IForm form, String targetActionId);
 
     /**
-     * Much like {@link IEngine#forgetPage(String)}, but the page stays active and can even record
+     * Much like {@link #forgetPage(String)}, but the page stays active and can even record
      * changes, until the end of the request cycle, at which point it is discarded (and any recorded
      * changes are lost). This is used in certain rare cases where a page has persistent state but
      * is being renderred "for the last time".
      * 
      * @since 2.0.2
+     * @deprecated To be removed in 3.2. Use {@link #forgetPage(String)}.
      */
 
     public void discardPage(String name);
@@ -293,8 +295,16 @@ public interface IRequestCycle
      * 
      * @since 3.1
      */
-    
+
     public String getAbsoluteURL(String partialURL);
-    
-    
+
+    /**
+     * Forgets any stored changes to the specified page. If the page has already been loaded (and
+     * rolled back) then the loaded page instance is not affected; if the page is only loaded
+     * subsequently, the page instance will not see any persisted property changes.
+     * 
+     * @since 3.1
+     */
+
+    public void forgetPage(String name);
 }

@@ -53,6 +53,8 @@ public class TestDirectService extends ServiceTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
+        HttpServletRequest request = newRequest(false, null);
+
         cycle.getPage();
         cyclec.setReturnValue(page);
 
@@ -61,11 +63,6 @@ public class TestDirectService extends ServiceTestCase
 
         c.getIdPath();
         cc.setReturnValue("fred.barney");
-
-        IEngine engine = newEngine(false);
-
-        cycle.getEngine();
-        cyclec.setReturnValue(engine);
 
         Object[] serviceParameters = new Object[0];
 
@@ -91,6 +88,7 @@ public class TestDirectService extends ServiceTestCase
         DirectService ds = new DirectService();
 
         ds.setLinkFactory(lf);
+        ds.setRequest(request);
 
         assertSame(link, ds.getLink(cycle, new DirectServiceParameter(c, serviceParameters)));
 
@@ -100,6 +98,7 @@ public class TestDirectService extends ServiceTestCase
     public void testGetLinkOnSamePageStateful()
     {
         IPage page = newPage("ThePage");
+        HttpServletRequest request = newRequest(false, newSession());
 
         MockControl cc = newControl(IDirect.class);
         IDirect c = (IDirect) cc.getMock();
@@ -115,11 +114,6 @@ public class TestDirectService extends ServiceTestCase
 
         c.getIdPath();
         cc.setReturnValue("fred.barney");
-
-        IEngine engine = newEngine(true);
-
-        cycle.getEngine();
-        cyclec.setReturnValue(engine);
 
         Object[] serviceParameters = new Object[0];
 
@@ -143,8 +137,8 @@ public class TestDirectService extends ServiceTestCase
         replayControls();
 
         DirectService ds = new DirectService();
-
         ds.setLinkFactory(lf);
+        ds.setRequest(request);
 
         assertSame(link, ds.getLink(cycle, new DirectServiceParameter(c, serviceParameters)));
 
@@ -155,7 +149,7 @@ public class TestDirectService extends ServiceTestCase
     {
         IPage page = newPage("ActivePage");
         IPage componentPage = newPage("ComponentPage");
-
+        HttpServletRequest request = newRequest(false, null);
         MockControl cc = newControl(IDirect.class);
         IDirect c = (IDirect) cc.getMock();
 
@@ -170,11 +164,6 @@ public class TestDirectService extends ServiceTestCase
 
         c.getIdPath();
         cc.setReturnValue("fred.barney");
-
-        IEngine engine = newEngine(false);
-
-        cycle.getEngine();
-        cyclec.setReturnValue(engine);
 
         Object[] serviceParameters = new Object[0];
 
@@ -198,8 +187,8 @@ public class TestDirectService extends ServiceTestCase
         replayControls();
 
         DirectService ds = new DirectService();
-
         ds.setLinkFactory(lf);
+        ds.setRequest(request);
 
         assertSame(link, ds.getLink(cycle, new DirectServiceParameter(c, serviceParameters)));
 

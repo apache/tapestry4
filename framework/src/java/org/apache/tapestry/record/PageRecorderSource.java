@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,35 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.c6;
+package org.apache.tapestry.record;
 
-import java.io.Serializable;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.engine.IPageRecorder;
 
-public class StringHolder implements Serializable
+/**
+ * Used to obtain a page recorder instance. Starting in Tapestry 3.0, page recorders are short-lived
+ * and specific to a single request.
+ * 
+ * @author Howard M. Lewis Ship
+ * @since 3.1
+ */
+public interface PageRecorderSource
 {
-    private String _string;
-
-    public StringHolder()
-    {
-    }
-
-    public StringHolder(String string)
-    {
-        setString(string);
-    }
-
-    public String getString()
-    {
-        return _string;
-    }
-
-    public void setString(String string)
-    {
-        _string = string;
-    }
-
-    public String toString()
-    {
-        return "StringHolder[" + _string + "]";
-    }
+    public IPageRecorder createPageRecorder(IPage page);
 }

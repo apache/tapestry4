@@ -53,6 +53,8 @@ public class TestActionService extends ServiceTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
+        HttpServletRequest request = newRequest(false, null);
+
         cycle.getPage();
         cyclec.setReturnValue(page);
 
@@ -70,10 +72,6 @@ public class TestActionService extends ServiceTestCase
         parameters.put(ServiceConstants.PAGE, "ActivePage");
         parameters.put(ServiceConstants.CONTAINER, null);
         parameters.put("action", "action-id");
-
-        cycle.getEngine();
-        cyclec.setReturnValue(newEngine(false));
-
         parameters.put(ServiceConstants.SESSION, null);
 
         ILink link = newLink();
@@ -88,6 +86,7 @@ public class TestActionService extends ServiceTestCase
 
         ActionService as = new ActionService();
         as.setLinkFactory(lf);
+        as.setRequest(request);
 
         ActionServiceParameter p = new ActionServiceParameter(component, "action-id");
 
@@ -100,6 +99,7 @@ public class TestActionService extends ServiceTestCase
     {
         MockControl componentc = newControl(IComponent.class);
         IComponent component = (IComponent) componentc.getMock();
+        HttpServletRequest request = newRequest(false, newSession());
 
         IPage activePage = newPage("ActivePage");
         IPage componentPage = newPage("ComponentPage");
@@ -124,10 +124,6 @@ public class TestActionService extends ServiceTestCase
         parameters.put(ServiceConstants.PAGE, "ActivePage");
         parameters.put(ServiceConstants.CONTAINER, "ComponentPage");
         parameters.put("action", "action-id");
-
-        cycle.getEngine();
-        cyclec.setReturnValue(newEngine(true));
-
         parameters.put(ServiceConstants.SESSION, "T");
 
         ILink link = newLink();
@@ -142,6 +138,7 @@ public class TestActionService extends ServiceTestCase
 
         ActionService as = new ActionService();
         as.setLinkFactory(lf);
+        as.setRequest(request);
 
         ActionServiceParameter p = new ActionServiceParameter(component, "action-id");
 

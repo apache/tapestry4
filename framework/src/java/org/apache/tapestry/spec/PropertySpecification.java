@@ -31,9 +31,9 @@ public class PropertySpecification extends BaseLocatable implements IPropertySpe
 
     private String _type;
 
-    private boolean _persistent;
-
     private String _initialValue;
+
+    private String _persistence;
 
     public String getInitialValue()
     {
@@ -47,7 +47,7 @@ public class PropertySpecification extends BaseLocatable implements IPropertySpe
 
     public boolean isPersistent()
     {
-        return _persistent;
+        return _persistence != null;
     }
 
     /**
@@ -76,14 +76,20 @@ public class PropertySpecification extends BaseLocatable implements IPropertySpe
         _name = name;
     }
 
-    public void setPersistent(boolean persistant)
-    {
-        _persistent = persistant;
-    }
-
     public void setType(String type)
     {
         _type = type;
     }
 
+    /** @since 3.1 */
+    public String getPersistence()
+    {
+        return _persistence;
+    }
+
+    /** @since 3.1 */
+    public void setPersistence(String persistence)
+    {
+        _persistence = persistence;
+    }
 }
