@@ -35,15 +35,18 @@ import java.util.Set;
 
 import org.apache.log4j.Category;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.LibrarySpecification;
+import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -70,6 +73,9 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     private SpecificationParser _parser;
 
+    private INamespace _applicationNamespace;
+    private INamespace _frameworkNamespace;
+
     /**
      *  Contains previously parsed component specifications.
      *
@@ -86,6 +92,24 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     private Map _pageCache = new HashMap();
 
+    /**
+     *  Contains previously parsed library specifications, keyed
+     *  on specification resource path.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private Map _libraryCache = new HashMap();
+
+    /**
+     *  Contains {@link INamespace} instances, keyed on id (which will
+     *  be null for the application specification).
+     * 
+     **/
+
+    private Map _namespaceCache = new HashMap();
+
     public DefaultSpecificationSource(IResourceResolver resolver, ApplicationSpecification specification)
     {
         _resolver = resolver;
@@ -101,6 +125,11 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     {
         _componentCache.clear();
         _pageCache.clear();
+        _libraryCache.clear();
+        _namespaceCache.clear();
+
+        _applicationNamespace = null;
+        _frameworkNamespace = null;
     }
 
     /**
@@ -116,42 +145,21 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      *  @deprecated To be removed in 2.3
      **/
 
-    public ComponentSpecification getSpecification(String type) throws ResourceUnavailableException
+    public ComponentSpecification getSpecification(String type)
     {
         return getComponentSpecification(type);
     }
 
     protected ComponentSpecification parseSpecification(String resourcePath, boolean asPage)
-        throws ResourceUnavailableException
     {
         ComponentSpecification result = null;
-        URL URL;
-        InputStream inputStream;
 
         if (CAT.isDebugEnabled())
             CAT.debug("Parsing component specification " + resourcePath);
 
-        URL = _resolver.getResource(resourcePath);
+        InputStream inputStream = openSpecification(resourcePath);
 
-        if (URL == null)
-        {
-            throw new ResourceUnavailableException(
-                Tapestry.getString("DefaultSpecificationSource.unable-to-locate-specification", resourcePath));
-        }
-
-        try
-        {
-            inputStream = URL.openStream();
-        }
-        catch (IOException ex)
-        {
-            throw new ResourceUnavailableException(
-                Tapestry.getString("DefaultSpecificationSource.unable-to-open-specification", resourcePath),
-                ex);
-        }
-
-        if (_parser == null)
-            _parser = new SpecificationParser();
+        SpecificationParser parser = getParser();
 
         try
         {
@@ -162,14 +170,82 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         }
         catch (DocumentParseException ex)
         {
-            throw new ResourceUnavailableException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("DefaultSpecificationSource.unable-to-parse-specification", resourcePath),
                 ex);
+        }
+        finally
+        {
+            close(inputStream);
         }
 
         result.setSpecificationResourcePath(resourcePath);
 
         return result;
+    }
+
+    protected LibrarySpecification parseLibrarySpecification(String resourcePath)
+    {
+        if (CAT.isDebugEnabled())
+            CAT.debug("Parsing library specification " + resourcePath);
+
+        InputStream inputStream = openSpecification(resourcePath);
+
+        SpecificationParser parser = getParser();
+
+        try
+        {
+            return getParser().parseLibrarySpecification(inputStream, resourcePath);
+        }
+        catch (DocumentParseException ex)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("DefaultSpecificationSource.unable-to-parse-specification", resourcePath),
+                ex);
+        }
+        finally
+        {
+            close(inputStream);
+        }
+    }
+
+    /** @since 2.2 **/
+
+    private InputStream openSpecification(String resourcePath)
+    {
+        URL URL = _resolver.getResource(resourcePath);
+
+        if (URL == null)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("DefaultSpecificationSource.unable-to-locate-specification", resourcePath));
+        }
+
+        try
+        {
+            return URL.openStream();
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("DefaultSpecificationSource.unable-to-open-specification", resourcePath),
+                ex);
+        }
+    }
+
+    /** @since 2.2 **/
+
+    private void close(InputStream stream)
+    {
+        try
+        {
+            if (stream != null)
+                stream.close();
+        }
+        catch (IOException ex)
+        {
+            // Ignore it.
+        }
     }
 
     public String toString()
@@ -238,49 +314,147 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
             writer.end(); // <ul>
     }
 
-    public synchronized ComponentSpecification getComponentSpecification(String type)
-        throws ResourceUnavailableException
+    public synchronized ComponentSpecification getComponentSpecification(String resourcePath)
     {
-        String resourceName;
+        ComponentSpecification result = (ComponentSpecification) _componentCache.get(resourcePath);
 
-        ComponentSpecification result = (ComponentSpecification) _componentCache.get(type);
+    if (result == null)
+    {
+            result = parseSpecification(resourcePath, false);
 
-        if (result == null)
-        {
-            if (type.startsWith("/"))
-                resourceName = type;
-            else
-            {
-                resourceName = _specification.getComponentSpecificationPath(type);
-
-                if (resourceName == null)
-                    throw new ResourceUnavailableException(
-                        Tapestry.getString("DefaultSpecificationSource.no-match-for-alias", type));
-            }
-
-            result = parseSpecification(resourceName, false);
-
-            _componentCache.put(type, result);
-            if (resourceName != type)
-                _componentCache.put(resourceName, result);
+            _componentCache.put(resourcePath, result);
         }
 
         return result;
     }
 
     public synchronized ComponentSpecification getPageSpecification(String resourcePath)
-        throws ResourceUnavailableException
     {
-        ComponentSpecification result = (ComponentSpecification)_pageCache.get(resourcePath);
-        
+        ComponentSpecification result = (ComponentSpecification) _pageCache.get(resourcePath);
+
         if (result == null)
         {
             result = parseSpecification(resourcePath, true);
-            
+
             _pageCache.put(resourcePath, result);
         }
-        
+
         return result;
+    }
+
+    public synchronized LibrarySpecification getLibrarySpecification(String resourcePath)
+    {
+        LibrarySpecification result = (LibrarySpecification) _libraryCache.get(resourcePath);
+
+        if (result == null)
+        {
+            result = parseLibrarySpecification(resourcePath);
+            _libraryCache.put(resourcePath, result);
+        }
+
+        return result;
+    }
+
+    public synchronized INamespace getNamespace(String id)
+    {
+        INamespace result = (INamespace) _namespaceCache.get(id);
+
+        if (result == null)
+        {
+            result = findNamespace(id);
+
+            _namespaceCache.put(id, result);
+        }
+
+        return result;
+    }
+
+    /** @since 2.2 **/
+
+    private synchronized SpecificationParser getParser()
+    {
+        if (_parser == null)
+            _parser = new SpecificationParser();
+
+        return _parser;
+    }
+
+    public synchronized INamespace getApplicationNamespace()
+    {
+        if (_applicationNamespace == null)
+            _applicationNamespace = new Namespace(null, null, _specification, this);
+
+        return _applicationNamespace;
+    }
+
+    public synchronized INamespace getFrameworkNamespace()
+    {
+        if (_frameworkNamespace == null)
+        {
+            LibrarySpecification ls = getLibrarySpecification("/net/sf/tapestry/Framework.library");
+
+            _frameworkNamespace = new Namespace("framework", null, ls, this);
+        }
+
+        return _frameworkNamespace;
+    }
+
+    /** 
+     * 
+     *  Finds or creates the namespace.
+     * 
+     *  @param id the id, or id path, of the namespace.
+     *  @return the namespace,
+     *  @throws ApplicationRuntimeException if the namespace does not exist
+     *  @since 2.2 
+     * 
+     **/
+
+    private INamespace findNamespace(String id)
+    {
+        StringSplitter splitter = new StringSplitter('.');
+
+        String idPath[] = splitter.splitToArray(id);
+
+        INamespace n = getApplicationNamespace();
+
+        for (int i = 0; i < idPath.length; i++)
+        {
+            n = n.getChildNamespace(idPath[i]);
+        }
+
+        return n;
+    }
+
+    public INamespace getNamespaceForPageName(String name)
+    {
+        int colonx = name.indexOf(':');
+
+        if (colonx > 0)
+        {
+            String idPrefix = name.substring(0, colonx);
+            String simpleName = name.substring(colonx + 1);
+
+            INamespace result = getNamespace(idPrefix);
+
+            if (!result.containsPage(simpleName))
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString("DefaultSpecificationSource.no-page-with-name", name));
+
+            return result;
+        }
+
+        INamespace result = getApplicationNamespace();
+
+        if (result.containsPage(name))
+            return result;
+
+        result = getFrameworkNamespace();
+
+        if (result.containsPage(name))
+            return result;
+
+        throw new ApplicationRuntimeException(Tapestry.getString("DefaultSpecificationSource.no-page-with-name", name));
     }
 
 }

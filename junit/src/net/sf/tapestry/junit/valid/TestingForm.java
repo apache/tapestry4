@@ -32,6 +32,7 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRender;
@@ -214,6 +215,15 @@ public class TestingForm implements IForm
     }
 
     public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    {
+    }
+
+    public INamespace getNamespace()
+    {
+        return null;
+    }
+
+    public void setNamespace(INamespace namespace)
     {
     }
 

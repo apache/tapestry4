@@ -41,10 +41,12 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IMonitor;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageRecorder;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.PageRecorderCommitException;
 import net.sf.tapestry.RenderRewoundException;
@@ -203,8 +205,6 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     public IPage getPage(String name)
     {
         IPage result = null;
-        IPageRecorder recorder;
-        IPageSource pageSource;
 
         if (name == null)
             throw new NullPointerException(Tapestry.getString("RequestCycle.invalid-null-name"));
@@ -217,11 +217,13 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         if (result == null)
         {
-            pageSource = _engine.getPageSource();
+            ISpecificationSource specSource = _engine.getSpecificationSource();
+            INamespace namespace = specSource.getNamespaceForPageName(name);
+            IPageSource pageSource = _engine.getPageSource();
 
             try
             {
-                result = pageSource.getPage(_engine, name, _monitor);
+                result = pageSource.getPage(_engine, namespace, name, _monitor);
             }
             catch (PageLoaderException ex)
             {
@@ -237,7 +239,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             // has never emitted any page changes, then it will
             // not have a recorder.
 
-            recorder = getPageRecorder(name);
+            IPageRecorder recorder = getPageRecorder(name);
 
             if (recorder != null)
             {

@@ -41,7 +41,7 @@ public interface IScriptSource
      * 
      **/
 
-    public IScript getScript(String resourcePath) throws ResourceUnavailableException;
+    public IScript getScript(String resourcePath);
 
     /**
      *  Invoked to clear any cached scripts.

@@ -27,16 +27,22 @@ package net.sf.tapestry;
 
 /**
  *  Exception thrown when an {@link IComponent} is unable to render.  Often, there
- *  is an underlying exception.
+ *  is an underlying exception.  This is a checked exception and part
+ *  of the {@link net.sf.tapestry.IRender#render(IMarkupWriter, IRequestCycle)}
+ *  signature so as to enforce uniformity of exception reporting.  Where
+ *  this exception is not usable or appropriate,
+ *  {@link net.sf.tapestry.ApplicationRuntimeException} if typically
+ *  used.
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *
  **/
 
 public class RequestCycleException extends Exception
 {
-	private transient IComponent component;
-	private Throwable rootCause;
+	private transient IComponent _component;
+	private Throwable _rootCause;
 
 	public RequestCycleException()
 	{
@@ -60,9 +66,8 @@ public class RequestCycleException extends Exception
 	{
 		super(message);
 
-		this.component = component;
-
-		this.rootCause = rootCause;
+		_component = component;
+		_rootCause = rootCause;
 	}
 
 	/**
@@ -77,11 +82,11 @@ public class RequestCycleException extends Exception
 
 	public IComponent getComponent()
 	{
-		return component;
+		return _component;
 	}
 
 	public Throwable getRootCause()
 	{
-		return rootCause;
+		return _rootCause;
 	}
 }

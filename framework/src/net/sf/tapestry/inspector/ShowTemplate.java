@@ -38,7 +38,6 @@ import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.TemplateToken;
 import net.sf.tapestry.parse.TokenType;
@@ -93,14 +92,14 @@ public class ShowTemplate extends BaseComponent implements IDirect
         ComponentTemplate template = null;
         String[] context = null;
         IEngineService service = null;
-        IComponent inspectedComponent = ((Inspector) page).getInspectedComponent();
-        ITemplateSource source = page.getEngine().getTemplateSource();
+        IComponent inspectedComponent = ((Inspector) getPage()).getInspectedComponent();
+        ITemplateSource source = getPage().getEngine().getTemplateSource();
 
         try
         {
             template = source.getTemplate(inspectedComponent);
         }
-        catch (ResourceUnavailableException e)
+        catch (Exception ex)
         {
             return;
         }

@@ -37,7 +37,6 @@ import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
@@ -219,10 +218,6 @@ public class Rollover extends AbstractComponent
             {
                 imageName = writeScript(body, serviceLink, focusURL, blurURL);
             }
-            catch (ResourceUnavailableException ex)
-            {
-                throw new RequestCycleException(this, ex);
-            }
             catch (ScriptException ex)
             {
                 throw new RequestCycleException(this, ex);
@@ -237,7 +232,7 @@ public class Rollover extends AbstractComponent
 
     }
 
-    private IScript getParsedScript() throws ResourceUnavailableException
+    private IScript getParsedScript()
     {
         if (parsedScript == null)
         {
@@ -255,7 +250,7 @@ public class Rollover extends AbstractComponent
         IServiceLink link,
         String focusURL,
         String blurURL)
-        throws ResourceUnavailableException, ScriptException
+        throws ScriptException
     {
         String uniqueId = body.getUniqueId();
         String focusImageURL = body.getPreloadedImageReference(focusURL);

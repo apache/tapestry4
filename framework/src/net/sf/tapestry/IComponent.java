@@ -287,4 +287,25 @@ public interface IComponent extends IRender
 	 **/
 	
 	public String getString(String key);
+    
+    /**
+     *  Returns the {@link INamespace} in which the component was defined
+     *  (as an alias).  May return null if the component was loaded with
+     *  an explicit specification path.  Pages will always have a real namespace.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public INamespace getNamespace();
+    
+    /**
+     *  Sets the {@link INamespace} for the component.  The namespace
+     *  should only be set once.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public void setNamespace(INamespace namespace);
 }

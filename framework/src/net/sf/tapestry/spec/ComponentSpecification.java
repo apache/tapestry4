@@ -25,10 +25,12 @@
 
 package net.sf.tapestry.spec;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -67,12 +69,12 @@ import net.sf.tapestry.util.BasePropertyHolder;
 public class ComponentSpecification extends BasePropertyHolder
 {
     private String _componentClassName;
-    
+
     /**
      *  @deprecated To be made private in 2.3.  Use {@link #setSpecificationResourcePath(String)}.
      * 
      **/
-    
+
     protected String specificationResourcePath;
     private String _dtdVersion;
 
@@ -133,7 +135,7 @@ public class ComponentSpecification extends BasePropertyHolder
      **/
 
     private boolean _allowInformalParameters = true;
-    
+
     /**
      *  The XML Public Id used when the page or component specification was read
      *  (if applicable).
@@ -141,16 +143,16 @@ public class ComponentSpecification extends BasePropertyHolder
      *  @since 2.2
      * 
      **/
-    
+
     private String _publicId;
-    
+
     /**
      *  Indicates that the specification is for a page, not a component.
      * 
      * @since 2.2
      * 
      **/
-    
+
     private boolean _pageSpecification;
 
     /**
@@ -162,7 +164,7 @@ public class ComponentSpecification extends BasePropertyHolder
     {
         if (_assets == null)
             _assets = new HashMap();
-            
+
         else if (_assets.containsKey(name))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-asset", this, name));
@@ -179,7 +181,7 @@ public class ComponentSpecification extends BasePropertyHolder
     {
         if (_components == null)
             _components = new HashMap();
-            
+
         else if (_components.containsKey(id))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-component", this, id));
@@ -197,7 +199,7 @@ public class ComponentSpecification extends BasePropertyHolder
     {
         if (_parameters == null)
             _parameters = new HashMap();
-            
+
         else if (_parameters.containsKey(name))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-parameter", this, name));
@@ -253,17 +255,15 @@ public class ComponentSpecification extends BasePropertyHolder
     }
 
     /**
-     *  Returns an unmodifiable <code>Collection</code>
-     *  of the String names of all assets.
+     *  Returns a <code>List</code>
+     *  of the String names of all assets, in alphabetical
+     *  order
      *
      **/
 
-    public Collection getAssetNames()
+    public List getAssetNames()
     {
-        if (_assets == null)
-            return Collections.EMPTY_SET;
-
-        return Collections.unmodifiableCollection(_assets.keySet());
+        return sortedKeys(_assets);
     }
 
     /**
@@ -288,7 +288,7 @@ public class ComponentSpecification extends BasePropertyHolder
     }
 
     /**
-     *  Returns an umodifiable <code>Collection</code>
+     *  Returns an <code>List</code>
      *  of the String names of the {@link ContainedComponent}s
      *  for this component.
      *
@@ -296,12 +296,9 @@ public class ComponentSpecification extends BasePropertyHolder
      *
      **/
 
-    public Collection getComponentIds()
+    public List getComponentIds()
     {
-        if (_components == null)
-            return Collections.EMPTY_SET;
-
-        return Collections.unmodifiableCollection(_components.keySet());
+        return sortedKeys(_components);
     }
 
     /**
@@ -321,19 +318,17 @@ public class ComponentSpecification extends BasePropertyHolder
     }
 
     /**
-     *  Returns an umodifiable <code>Collection</code>
-     *  of String names of all parameters.
+     *  Returns a List of
+     *  of String names of all parameters.  This list
+     *  is in alphabetical order.
      *
      *  @see #addParameter(String, ParameterSpecification)
      *
      **/
 
-    public Collection getParameterNames()
+    public List getParameterNames()
     {
-        if (_parameters == null)
-            return Collections.EMPTY_LIST;
-
-        return Collections.unmodifiableCollection(_parameters.keySet());
+        return sortedKeys(_parameters);
     }
 
     /**
@@ -377,10 +372,9 @@ public class ComponentSpecification extends BasePropertyHolder
     {
         if (_beans == null)
             _beans = new HashMap();
-            
+
         else if (_beans.containsKey(name))
-            throw new IllegalArgumentException(
-                Tapestry.getString("ComponentSpecification.duplicate-bean", this, name));
+            throw new IllegalArgumentException(Tapestry.getString("ComponentSpecification.duplicate-bean", this, name));
 
         _beans.put(name, specification);
     }
@@ -497,7 +491,7 @@ public class ComponentSpecification extends BasePropertyHolder
      *  @since 2.0.5 
      * 
      **/
-    
+
     public String getDTDVersion()
     {
         return _dtdVersion;
@@ -512,7 +506,7 @@ public class ComponentSpecification extends BasePropertyHolder
      *  @deprecated To be removed in 2.3.  Use {@link #setPublicId(String)}.
      * 
      **/
-    
+
     public void setDTDVersion(String dtdVersion)
     {
         _dtdVersion = dtdVersion;
@@ -530,7 +524,6 @@ public class ComponentSpecification extends BasePropertyHolder
      *  @since 2.2
      * 
      **/
-    
 
     public String getPublicId()
     {
@@ -538,7 +531,7 @@ public class ComponentSpecification extends BasePropertyHolder
     }
 
     /** @since 2.2 **/
-    
+
     public void setPublicId(String publicId)
     {
         _publicId = publicId;
@@ -556,17 +549,30 @@ public class ComponentSpecification extends BasePropertyHolder
      *  @since 2.2 
      * 
      **/
-    
+
     public boolean isPageSpecification()
     {
         return _pageSpecification;
     }
 
     /** @since 2.2 **/
-    
+
     public void setPageSpecification(boolean pageSpecification)
     {
         _pageSpecification = pageSpecification;
     }
 
+    /** @since 2.2 **/
+
+    private List sortedKeys(Map input)
+    {
+        if (input == null)
+            return Collections.EMPTY_LIST;
+
+        List result = new ArrayList(input.keySet());
+
+        Collections.sort(result);
+
+        return result;
+    }
 }

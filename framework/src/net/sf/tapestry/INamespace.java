@@ -82,8 +82,8 @@ public interface INamespace
      * 
      *  @param id either a simple name (of a directly contained namespace),
      *  or a dot-seperarated name sequence.
-     *  @returns the child namespace, or null if no such namespace
-     *  exists.
+     *  @returns the child namespace
+     *  @throws ApplicationRuntimeException if not such namespace exist.
      * 
      **/
     
@@ -103,11 +103,21 @@ public interface INamespace
      *  page (defined within the namespace).
      * 
      *  @param name the name of the page
-     *  @return the specification, or null if no such specification exists
+     *  @return the specification
+     *  @throws ApplicationRuntimeException if the page specification
+     *  doesn't exist or can't be loaded
      * 
      **/
     
     public ComponentSpecification getPageSpecification(String name);
+    
+    /**
+     *  Returns true if this namespace contains the specified
+     *  page name.
+     * 
+     **/
+    
+    public boolean containsPage(String name);
     
     /**
      *  Returns a sorted list of page names.  May return an empty
@@ -121,12 +131,21 @@ public interface INamespace
      *  Returns the path for the named component (within the namespace).
      * 
      *  @param alias the component alias
-     *  @return the specification path of the component, or null
-     *  if no such specification exists.
+     *  @return the specification path of the component
+     *  @throws ApplicationRuntimeException if the specification
+     *  doesn't exist or can't be loaded
      * 
      **/
  
    public ComponentSpecification getComponentSpecification(String alias);
+   
+   
+   /**
+    *  Returns true if the namespace contains the indicated alias.
+    * 
+    **/
+   
+   public boolean containsAlias(String alias);
    
    /**
     *  Returns a sorted list of component aliases.  May return 

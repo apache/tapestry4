@@ -36,13 +36,13 @@ import java.util.Map;
 
 import org.apache.log4j.Category;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.NoSuchComponentException;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.ITemplateParserDelegate;
@@ -144,7 +144,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *  <p>Returns null if the template can't be found.
      **/
 
-    public ComponentTemplate getTemplate(IComponent component) throws ResourceUnavailableException
+    public ComponentTemplate getTemplate(IComponent component)
     {
         ComponentSpecification specification = component.getSpecification();
         String specificationResourcePath = specification.getSpecificationResourcePath();
@@ -163,7 +163,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             String stringKey =
                 (locale == null) ? "DefaultTemplateSource.no-template" : "DefaultTemplateSource.no-template-in-locale";
 
-            throw new ResourceUnavailableException(Tapestry.getString(stringKey, component.getExtendedId(), locale));
+            throw new ApplicationRuntimeException(Tapestry.getString(stringKey, component.getExtendedId(), locale));
         }
 
         saveToCache(key, result);
@@ -200,7 +200,6 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         String specificationResourcePath,
         IComponent component,
         Locale locale)
-        throws ResourceUnavailableException
     {
         int dotx;
         StringBuffer buffer;
@@ -292,7 +291,6 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      **/
 
     private ComponentTemplate parseTemplate(String resourceName, IComponent component)
-        throws ResourceUnavailableException
     {
         TemplateToken[] tokens;
 
@@ -315,7 +313,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         }
         catch (TemplateParseException ex)
         {
-            throw new ResourceUnavailableException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("DefaultTemplateSource.unable-to-parse-template", resourceName),
                 ex);
         }
@@ -334,7 +332,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *
      **/
 
-    private char[] readTemplate(String resourceName) throws ResourceUnavailableException
+    private char[] readTemplate(String resourceName)
     {
         URL url;
         InputStream stream = null;
@@ -355,7 +353,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         }
         catch (IOException ex)
         {
-            throw new ResourceUnavailableException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("DefaultTemplateSource.unable-to-read-template", resourceName),
                 ex);
         }

@@ -46,7 +46,6 @@ import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.components.Block;
@@ -287,8 +286,7 @@ public class Palette extends BaseComponent implements IFormComponent
         return form;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         form = Form.get(page.getRequestCycle());
 
@@ -363,14 +361,7 @@ public class Palette extends BaseComponent implements IFormComponent
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            try
-            {
-                script = source.getScript("/net/sf/tapestry/contrib/palette/Palette.script");
-            }
-            catch (ResourceUnavailableException ex)
-            {
-                throw new RequestCycleException(this, ex);
-            }
+            script = source.getScript("/net/sf/tapestry/contrib/palette/Palette.script");
         }
 
         Body body = Body.get(cycle);
@@ -379,7 +370,7 @@ public class Palette extends BaseComponent implements IFormComponent
 
         setImage(body, cycle, "selectImage", selectImage);
         setImage(body, cycle, "selectDisabledImage", selectDisabledImage);
-        setImage(body, cycle, "deselectImage",  deselectImage);
+        setImage(body, cycle, "deselectImage", deselectImage);
         setImage(body, cycle, "deselectDisabledImage", deselectDisabledImage);
 
         if (sort == SortMode.LABEL)
@@ -416,11 +407,7 @@ public class Palette extends BaseComponent implements IFormComponent
      *
      **/
 
-    private void setImage(
-        Body body,
-        IRequestCycle cycle,
-        String symbolName,
-        IAsset asset)
+    private void setImage(Body body, IRequestCycle cycle, String symbolName, IAsset asset)
     {
         String URL = asset.buildURL(cycle);
         String reference = body.getPreloadedImageReference(URL);
@@ -443,7 +430,7 @@ public class Palette extends BaseComponent implements IFormComponent
     private void bufferSelects(IMarkupWriter writer)
     {
         List selected = (List) selectedBinding.getObject("selected", List.class);
- 
+
         // Build a Set around the list of selected items.
 
         Set selectedSet = new HashSet(selected);

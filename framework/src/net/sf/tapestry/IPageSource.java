@@ -46,7 +46,8 @@ public interface IPageSource
 	 *
 	 **/
 
-	public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
+	public IPage getPage(IEngine engine, INamespace namespace, 
+        String pageName, IMonitor monitor)
 		throws PageLoaderException;
 
 	/**

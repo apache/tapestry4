@@ -64,6 +64,8 @@ public abstract class AbstractComponent implements IComponent
     /**
      *  The specification used to originally build the component.
      *
+     *  @deprecated to be made private in 2.3
+     * 
      **/
 
     protected ComponentSpecification specification;
@@ -72,6 +74,8 @@ public abstract class AbstractComponent implements IComponent
      *  The page that contains the component, possibly itself (if the component is
      *  in fact, a page).
      *
+     *  @deprecated to be made private in 2.3
+     * 
      **/
 
     protected IPage page;
@@ -82,7 +86,7 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    private IComponent container;
+    private IComponent _container;
 
     /**
      *  The simple id of this component.
@@ -114,6 +118,8 @@ public abstract class AbstractComponent implements IComponent
     private Map safeComponents;
 
     private static final int WRAPPED_INIT_SIZE = 5;
+
+    private INamespace _namespace;
 
     /**
      *  Used in place of JDK 1.3's Collections.EMPTY_MAP (which is not
@@ -548,15 +554,15 @@ public abstract class AbstractComponent implements IComponent
 
     public IComponent getContainer()
     {
-        return container;
+        return _container;
     }
 
     public void setContainer(IComponent value)
     {
-        if (container != null)
+        if (_container != null)
             throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-container"));
 
-        container = value;
+        _container = value;
     }
 
     /**
@@ -590,10 +596,10 @@ public abstract class AbstractComponent implements IComponent
     {
         String containerIdPath;
 
-        if (container == null)
+        if (_container == null)
             throw new NullPointerException(Tapestry.getString("AbstractComponent.null-container", this));
 
-        containerIdPath = container.getIdPath();
+        containerIdPath = _container.getIdPath();
 
         if (containerIdPath == null)
             idPath = id;
@@ -732,10 +738,10 @@ public abstract class AbstractComponent implements IComponent
     {
         // If no conainer, i.e. a page, then no bindings.
 
-        if (container == null)
+        if (_container == null)
             return null;
 
-        ContainedComponent contained = container.getSpecification().getComponent(id);
+        ContainedComponent contained = _container.getSpecification().getComponent(id);
 
         // If no informal parameters, then it's safe to return
         // just the names of the formal parameters.
@@ -991,4 +997,15 @@ public abstract class AbstractComponent implements IComponent
     {
         return formatString(key, new Object[] { argument1, argument2, argument3 });
     }
+    
+    public INamespace getNamespace()
+    {
+        return _namespace;
+    }
+
+    public void setNamespace(INamespace namespace)
+    {
+        _namespace = namespace;
+    }
+
 }

@@ -33,7 +33,6 @@ import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.ResourceUnavailableException;
 
 /**
  *  An asset used with the {@link ChartService}.  
@@ -64,7 +63,7 @@ public class ChartAsset implements IAsset
         return g.getURL();
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException
+    public InputStream getResourceAsStream(IRequestCycle cycle) 
     {
         return null;
     }

@@ -35,16 +35,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-
-import org.apache.log4j.Category;
-
-import net.sf.tapestry.*;
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.util.*;
 import net.sf.tapestry.util.StringSplitter;
+import org.apache.log4j.Category;
 
 /**
  *  Responsible for copying assets from the classpath to an external directory that
@@ -100,36 +96,36 @@ public class AssetExternalizer
 {
     private static final Category CAT = Category.getInstance(AssetExternalizer.class);
 
-    private IResourceResolver resolver;
-    private File assetDir;
-    private String URL;
+    private IResourceResolver _resolver;
+    private File _assetDir;
+    private String _URL;
 
     /**
      *  A map from resource path (as a String) to final URL (as a String).
      *
      **/
 
-    private Map resources = new HashMap();
+    private Map _resources = new HashMap();
 
     private static final int BUFFER_SIZE = 2048;
 
     protected AssetExternalizer(IRequestCycle cycle)
     {
-        resolver = cycle.getEngine().getResourceResolver();
+        _resolver = cycle.getEngine().getResourceResolver();
 
         String directory = System.getProperty("net.sf.tapestry.asset.dir");
 
         if (directory == null)
             return;
 
-        URL = System.getProperty("net.sf.tapestry.asset.URL");
+        _URL = System.getProperty("net.sf.tapestry.asset.URL");
 
-        if (URL == null)
+        if (_URL == null)
             return;
 
-        assetDir = new File(directory);
+        _assetDir = new File(directory);
 
-        CAT.debug("Initialized with directory " + assetDir + " mapped to " + URL);
+        CAT.debug("Initialized with directory " + _assetDir + " mapped to " + _URL);
     }
 
     protected void externalize(String resourcePath) throws IOException
@@ -147,7 +143,7 @@ public class AssetExternalizer
         if (CAT.isDebugEnabled())
             CAT.debug("Externalizing " + resourcePath);
 
-        file = assetDir;
+        file = _assetDir;
 
         // Resources are always split by the unix seperator, even on Win32.
 
@@ -180,7 +176,7 @@ public class AssetExternalizer
 
         // Get the resource and copy it to the file.
 
-        inputURL = resolver.getResource(resourcePath);
+        inputURL = _resolver.getResource(resourcePath);
         if (inputURL == null)
             throw new IOException(Tapestry.getString("missing-resource", resourcePath));
 
@@ -263,16 +259,16 @@ public class AssetExternalizer
      *
      **/
 
-    public String getURL(String resourcePath) throws ResourceUnavailableException
+    public String getURL(String resourcePath)
     {
         String result;
 
-        if (assetDir == null)
+        if (_assetDir == null)
             return null;
 
-        synchronized (resources)
+        synchronized (_resources)
         {
-            result = (String) resources.get(resourcePath);
+            result = (String) _resources.get(resourcePath);
 
             if (result != null)
                 return result;
@@ -283,14 +279,14 @@ public class AssetExternalizer
             }
             catch (IOException ex)
             {
-                throw new ResourceUnavailableException(
-                    Tapestry.getString("AssetExternalizer.externalize-failure", resourcePath, assetDir),
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString("AssetExternalizer.externalize-failure", resourcePath, _assetDir),
                     ex);
             }
 
-            result = URL + resourcePath;
+            result = _URL + resourcePath;
 
-            resources.put(resourcePath, result);
+            _resources.put(resourcePath, result);
 
             return result;
         }

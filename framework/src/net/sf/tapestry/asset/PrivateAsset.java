@@ -39,7 +39,6 @@ import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
 
 /**
@@ -83,32 +82,12 @@ public class PrivateAsset implements IAsset
 
     public String buildURL(IRequestCycle cycle)
     {
-        String[] parameters;
-        String externalURL;
-        IEngineService service;
-        String URL;
-        String localizedResourcePath;
-
-        try
-        {
-            localizedResourcePath = findLocalization(cycle);
-        }
-        catch (ResourceUnavailableException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
+        String localizedResourcePath = findLocalization(cycle);
 
         if (externalizer == null)
             externalizer = AssetExternalizer.get(cycle);
 
-        try
-        {
-            externalURL = externalizer.getURL(localizedResourcePath);
-        }
-        catch (ResourceUnavailableException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
+        String externalURL = externalizer.getURL(localizedResourcePath);
 
         if (externalURL != null)
             return externalURL;
@@ -116,16 +95,16 @@ public class PrivateAsset implements IAsset
         // Otherwise, the service is responsible for dynamically retrieving the
         // resource.
 
-        parameters = new String[] { localizedResourcePath };
+        String[] parameters = new String[] { localizedResourcePath };
 
-        service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
+        IEngineService service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
 
         Gesture g = service.buildGesture(cycle, null, parameters);
 
         return g.getURL();
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException
+    public InputStream getResourceAsStream(IRequestCycle cycle)
     {
         try
         {
@@ -137,7 +116,7 @@ public class PrivateAsset implements IAsset
         }
         catch (Exception ex)
         {
-            throw new ResourceUnavailableException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("PrivateAsset.resource-missing", resourcePath),
                 ex);
         }
@@ -152,7 +131,7 @@ public class PrivateAsset implements IAsset
      *
      **/
 
-    private String findLocalization(IRequestCycle cycle) throws ResourceUnavailableException
+    private String findLocalization(IRequestCycle cycle)
     {
         Locale locale = cycle.getPage().getLocale();
         int dotx;
@@ -247,7 +226,7 @@ public class PrivateAsset implements IAsset
 
         }
 
-        throw new ResourceUnavailableException(
+        throw new ApplicationRuntimeException(
             Tapestry.getString("PrivateAsset.resource-unavailable", resourcePath, locale));
     }
 

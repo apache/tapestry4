@@ -37,6 +37,7 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IMonitor;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRenderDescription;
@@ -87,12 +88,12 @@ import net.sf.tapestry.util.pool.Pool;
 
 public class PageSource implements IPageSource, IRenderDescription
 {
-    private Map fieldBindings;
+    private Map _fieldBindings;
     private Map staticBindings;
-    private Map externalAssets;
-    private Map contextAssets;
-    private Map privateAssets;
-    private IResourceResolver resolver;
+    private Map _externalAssets;
+    private Map _contextAssets;
+    private Map _privateAssets;
+    private IResourceResolver _resolver;
 
     /**
      *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
@@ -100,18 +101,18 @@ public class PageSource implements IPageSource, IRenderDescription
      *
      **/
 
-    private Pool pool;
+    private Pool _pool;
 
     public PageSource(IResourceResolver resolver)
     {
-        this.resolver = resolver;
+        this._resolver = resolver;
 
-        pool = new Pool();
+        _pool = new Pool();
     }
 
     public IResourceResolver getResourceResolver()
     {
-        return resolver;
+        return _resolver;
     }
 
     /**
@@ -154,10 +155,10 @@ public class PageSource implements IPageSource, IRenderDescription
      
      **/
 
-    public IPage getPage(IEngine engine, String pageName, IMonitor monitor) throws PageLoaderException
+    public IPage getPage(IEngine engine, INamespace namespace, String pageName, IMonitor monitor) throws PageLoaderException
     {
         Object key = buildKey(engine, pageName);
-        IPage result = (IPage) pool.retrieve(key);
+        IPage result = (IPage) _pool.retrieve(key);
 
         if (result == null)
         {
@@ -171,7 +172,7 @@ public class PageSource implements IPageSource, IRenderDescription
 
             PageLoader loader = new PageLoader(this);
 
-            result = loader.loadPage(pageName, engine, specificationPath);
+            result = loader.loadPage(pageName, namespace, engine, specificationPath);
 
             // Alas, the page loader is discarded, we should be pooling those as
             // well.
@@ -200,7 +201,7 @@ public class PageSource implements IPageSource, IRenderDescription
     {
         page.detach();
 
-        pool.store(buildKey(page), page);
+        _pool.store(buildKey(page), page);
     }
 
     /**
@@ -211,13 +212,13 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized void reset()
     {
-        pool.clear();
+        _pool.clear();
 
-        fieldBindings = null;
+        _fieldBindings = null;
         staticBindings = null;
-        externalAssets = null;
-        contextAssets = null;
-        privateAssets = null;
+        _externalAssets = null;
+        _contextAssets = null;
+        _privateAssets = null;
 
     }
 
@@ -230,16 +231,16 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized IBinding getFieldBinding(String fieldName)
     {
-        if (fieldBindings == null)
-            fieldBindings = new HashMap();
+        if (_fieldBindings == null)
+            _fieldBindings = new HashMap();
 
-        IBinding result = (IBinding) fieldBindings.get(fieldName);
+        IBinding result = (IBinding) _fieldBindings.get(fieldName);
 
         if (result == null)
         {
-            result = new FieldBinding(resolver, fieldName);
+            result = new FieldBinding(_resolver, fieldName);
 
-            fieldBindings.put(fieldName, result);
+            _fieldBindings.put(fieldName, result);
         }
 
         return result;
@@ -271,15 +272,15 @@ public class PageSource implements IPageSource, IRenderDescription
     public synchronized IAsset getExternalAsset(String URL)
     {
 
-        if (externalAssets == null)
-            externalAssets = new HashMap();
+        if (_externalAssets == null)
+            _externalAssets = new HashMap();
 
-        IAsset result = (IAsset) externalAssets.get(URL);
+        IAsset result = (IAsset) _externalAssets.get(URL);
 
         if (result == null)
         {
             result = new ExternalAsset(URL);
-            externalAssets.put(URL, result);
+            _externalAssets.put(URL, result);
         }
 
         return result;
@@ -288,15 +289,15 @@ public class PageSource implements IPageSource, IRenderDescription
     public synchronized IAsset getContextAsset(String assetPath)
     {
 
-        if (contextAssets == null)
-            contextAssets = new HashMap();
+        if (_contextAssets == null)
+            _contextAssets = new HashMap();
 
-        IAsset result = (IAsset) contextAssets.get(assetPath);
+        IAsset result = (IAsset) _contextAssets.get(assetPath);
 
         if (result == null)
         {
             result = new ContextAsset(assetPath);
-            contextAssets.put(assetPath, result);
+            _contextAssets.put(assetPath, result);
         }
 
         return result;
@@ -306,15 +307,15 @@ public class PageSource implements IPageSource, IRenderDescription
     public synchronized IAsset getPrivateAsset(String resourcePath)
     {
 
-        if (privateAssets == null)
-            privateAssets = new HashMap();
+        if (_privateAssets == null)
+            _privateAssets = new HashMap();
 
-        IAsset result = (IAsset) privateAssets.get(resourcePath);
+        IAsset result = (IAsset) _privateAssets.get(resourcePath);
 
         if (result == null)
         {
             result = new PrivateAsset(resourcePath);
-            privateAssets.put(resourcePath, result);
+            _privateAssets.put(resourcePath, result);
         }
 
         return result;
@@ -326,17 +327,17 @@ public class PageSource implements IPageSource, IRenderDescription
         buffer.append(Integer.toHexString(hashCode()));
         buffer.append('[');
 
-        if (pool != null)
+        if (_pool != null)
         {
             buffer.append("pool=");
-            buffer.append(pool);
+            buffer.append(_pool);
         }
 
-        extend(buffer, fieldBindings, "field bindings");
+        extend(buffer, _fieldBindings, "field bindings");
         extend(buffer, staticBindings, "static bindings");
-        extend(buffer, externalAssets, "external assets");
-        extend(buffer, contextAssets, "context assets");
-        extend(buffer, privateAssets, "private assets");
+        extend(buffer, _externalAssets, "external assets");
+        extend(buffer, _contextAssets, "context assets");
+        extend(buffer, _privateAssets, "private assets");
 
         int lastChar = buffer.length() - 1;
 
@@ -376,19 +377,19 @@ public class PageSource implements IPageSource, IRenderDescription
         writer.print("PageSource");
         writer.begin("ul");
 
-        if (pool != null)
+        if (_pool != null)
         {
             writer.begin("li");
             writer.print("pool = ");
-            pool.renderDescription(writer);
+            _pool.renderDescription(writer);
             writer.end();
         }
 
-        describe(writer, fieldBindings, "field bindings");
+        describe(writer, _fieldBindings, "field bindings");
         describe(writer, staticBindings, "static bindings");
-        describe(writer, externalAssets, "external assets");
-        describe(writer, contextAssets, "context assets");
-        describe(writer, privateAssets, "private assets");
+        describe(writer, _externalAssets, "external assets");
+        describe(writer, _contextAssets, "context assets");
+        describe(writer, _privateAssets, "private assets");
 
         writer.end(); // <ul>
     }

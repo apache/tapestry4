@@ -26,6 +26,7 @@
 package net.sf.tapestry;
 
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.LibrarySpecification;
 
 /**
  *  Defines access to component specifications.
@@ -38,39 +39,36 @@ import net.sf.tapestry.spec.ComponentSpecification;
  **/
 
 public interface ISpecificationSource
-{
-    
+{    
     /**
      *  Retrieves a component specification, parsing it as necessary.
      *  
-     *  @parameter type a component alias, or a full resource path of a
+     *  @parameter resourcePath a full resource path of a
      *  component specification file.
      * 
-     *  @throws ResourceUnavailableException if the specification doesn't
+     *  @throws ApplicationRuntimeException if the specification doesn't
      *  exist, is unreadable or invalid.
      * 
      *  @since 2.2
      * 
      **/
     
-    public ComponentSpecification getComponentSpecification(String type)
-        throws ResourceUnavailableException;    
+    public ComponentSpecification getComponentSpecification(String resourcePath);  
  
     /**
      *  Retrieves a component specification, parsing it as necessary.
      *  
-     *  @parameter resource path a full resource path of a
-     *  component specification file.
+     *  @parameter resourcePath a full resource path of a
+     *  page specification file.
      * 
-     *  @throws ResourceUnavailableException if the specification doesn't
+     *  @throws ApplicationRuntimeException if the specification doesn't
      *  exist, is unreadable or invalid.
      * 
      *  @since 2.2
      * 
      **/
         
-    public ComponentSpecification getPageSpecification(String resourcePath)
-        throws ResourceUnavailableException; 
+    public ComponentSpecification getPageSpecification(String resourcePath);
             
 	/**
 	 *  Gets a specification from the cache, possibly parsing it at the same time.
@@ -78,7 +76,7 @@ public interface ISpecificationSource
 	 *  <p>The type is used to locate the resource that defines the specification.  In
 	 *  practical terms, this is the XML file which contains the specification.
 	 *
-	 *  @throws ResourceUnavailableException if the specification cannot be located or loaded.
+	 *  @throws ApplicationRuntimeException if the specification cannot be located or loaded.
 	 *
      *  @deprecated To be removed in 2.3.  
      *  Use {@link #getComponentSpecification(String)} or {@link #getPageSpecification(String)}
@@ -86,9 +84,8 @@ public interface ISpecificationSource
      * 
 	 **/
 
-	public ComponentSpecification getSpecification(String type)
-		throws ResourceUnavailableException;
-
+	public ComponentSpecification getSpecification(String type);
+    
 	/**
 	 *  Invoked to have the source clear any internal cache.  This is most often
 	 *  used when debugging an application.
@@ -96,4 +93,65 @@ public interface ISpecificationSource
 	 **/
 
 	public void reset();
+    
+    /**
+     *  Returns a {@link INamespace} for the given id.
+     * 
+     *  @param id the name of the namespace, possibly as a dotted name
+     *  sequence.  Null for the application namespace, "framework"
+     *  for the framework namespace.
+     *  @returns the namespace
+     *  @throws ApplicationRuntimeException if the namespace cannot
+     *  be located.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public INamespace getNamespace(String id);
+    
+    /**
+     *  Returns a {@link LibrarySpecification} with the given path.
+     * 
+     *  @param resourcePath the resource path of the specification
+     *  to return
+     *  @throws ApplicationRuntimeException if the specification
+     *  cannot be read
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public LibrarySpecification getLibrarySpecification(String resourcePath);
+    
+    /**
+     *  Returns the {@link INamespace} for the application.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public INamespace getApplicationNamespace();
+    
+    
+    /**
+     *  Returns the {@link INamespace} for the framework itself.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public INamespace getFrameworkNamespace();
+    
+    /**
+     *  Returns the {@link INamespace} responsible for the given page.
+     *  Checks to see if the name contains a colon and, if so, extracts
+     *  its namespace id.  If not, searches first the application, then the
+     *  framework, for the matching name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public INamespace getNamespaceForPageName(String name);
 }

@@ -40,7 +40,6 @@ import org.apache.log4j.Category;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
 
 /**
@@ -90,21 +89,12 @@ public class ContextAsset implements IAsset
 
     public String buildURL(IRequestCycle cycle)
     {
-        Localization localization;
-
-        try
-        {
-            localization = findLocalization(cycle);
-        }
-        catch (ResourceUnavailableException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-
+        Localization localization = findLocalization(cycle);
+        
         return localization.URL;
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException
+    public InputStream getResourceAsStream(IRequestCycle cycle) 
     {
         ServletContext context;
         URL url;
@@ -120,7 +110,7 @@ public class ContextAsset implements IAsset
         }
         catch (Exception ex)
         {
-            throw new ResourceUnavailableException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("ContextAsset.resource-missing", assetPath),
                 ex);
         }
@@ -135,7 +125,7 @@ public class ContextAsset implements IAsset
      *
      **/
 
-    private Localization findLocalization(IRequestCycle cycle) throws ResourceUnavailableException
+    private Localization findLocalization(IRequestCycle cycle) 
     {
         Locale locale = cycle.getPage().getLocale();
         int dotx;
@@ -237,7 +227,7 @@ public class ContextAsset implements IAsset
 
         }
 
-        throw new ResourceUnavailableException(
+        throw new ApplicationRuntimeException(
             Tapestry.getString("ContextAsset.resource-unavailable", assetPath, locale));
     }
 
