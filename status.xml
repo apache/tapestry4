@@ -21,6 +21,24 @@
   </developers>
 
   <votes>
+  	<vote title="release 3.0-rc-3" date="Apr 7 2004" dev="HLS">
+  		<motion>
+  			I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2.
+
+Assuming that there are no further blocker bugs added in the meantime, I'd like to release rc-3.
+
+A +1 vote indicates that we should release rc-3, unless a new blocker bug is added in the meantime.
+
+Please respond in the next 24 hours (by Wednesday afternoon, EST). Missing responses will be treated
+as a +0.
+  		</motion>	
+  		<response>
+  			HLS, EH, HK, DS: +1
+  		</response>
+  		<response>
+  			NC, RLS, MB, TSV, GL: +0
+  		</response>
+  	</vote>
   	<vote title="release 3.0-rc-2" date="Apr 1 2004" dev="HLS">
   		<motion>
   		3.0-rc-1 has been out for about two weeks now. A couple of notable bugs have been identified and
@@ -220,7 +238,7 @@ NextGen) be released as version number 3.0.
   <changes>
   	
 <!-- Use due-to to give acknowledgement for patches. -->
- <release version="3.0-rc-3" date="unreleased">
+ <release version="3.0-rc-3" date="Apr 7 2004">
  	<action type="update" dev="HLS">
  	Add docs on how to report problems.	
  	</action>
