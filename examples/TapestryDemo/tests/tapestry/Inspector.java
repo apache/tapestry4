@@ -9,7 +9,6 @@ import java.util.*;
 
 
 /*
- * OPENSOURCE-PROJECT-NAME
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
@@ -37,12 +36,11 @@ import java.util.*;
  */
 
 /**
- *  
- *
- *  @author Howard Ship
  *  @version $Id$
+ *  @author Howard Ship
+ *
  */
-
+ 
 
 public class Inspector extends BaseComponent implements ILifecycle
 {
