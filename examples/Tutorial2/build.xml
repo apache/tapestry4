@@ -9,7 +9,6 @@
   <!-- your favorite web container. Ignore otherwise -->
   <property name="deployment.dir" value="./deploy"/>
 
-
   <!-- NO NEED TO CHANGE ANYTHING FROM HERE DOWN -->
 
   <property name="classes.dir" value="./web/WEB-INF/classes"/>
@@ -24,15 +23,17 @@
   <property name="private.dir" value="private"/>
 
   <path id="tutorial.classpath">
-    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
-    <pathelement location="${lib.ext.dir}/${log4j.jar}"/>
-    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+	<pathelement location="${lib.ext.dir}/javax.servlet.jar"/>	
+	<pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
+	<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>	
+	<pathelement location="${lib.ext.dir}/${log4j.jar}"/>
+	<pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+	<pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/${jetty.jar}"/>
-    <pathelement location="${lib.ext.dir}/ejb.jar"/>
-    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
-    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
-    <pathelement location="config"/>
+	<pathelement location="${lib.ext.dir}/ejb.jar"/>
+	<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
+	<pathelement location="${lib.ext.dir}/${ognl.jar}"/>
+	<pathelement location="config"/>
   </path>
 
   <path id="libs">
