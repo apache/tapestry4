@@ -190,32 +190,38 @@ public class ComponentClassFactory
         return _enhancedClass != null && _enhancedClass.hasModifications();
     }
 
-    /**
-     *  Returns true if the {@link PropertyDescriptor} is null, or
-     *  (if non-null), if either accessor method is abstract (or missing).
-     * 
-     **/
-
-    public boolean isAbstract(PropertyDescriptor pd)
-    {
-        if (pd == null)
-            return true;
-
-        return isAbstract(pd.getReadMethod()) || isAbstract(pd.getWriteMethod());
-    }
+	/**
+	 * @return true if pd is not null and both read/write methods are implemented
+	 */
+	public boolean isImplemented(PropertyDescriptor pd)
+	{
+		if (pd == null)
+			return false;
+		
+		return isImplemented(pd.getReadMethod()) && isImplemented(pd.getWriteMethod());
+	}
 
     /**
-     *  Returns true if the method is null, or is abstract.
-     * 
-     **/
-
+     * @return true if m is not null and is abstract.
+     */
     public boolean isAbstract(Method m)
     {
         if (m == null)
-            return true;
+            return false;
 
         return Modifier.isAbstract(m.getModifiers());
     }
+
+	/**
+	 * @return true if m is not null and not abstract  
+	 */
+	public boolean isImplemented(Method m)
+	{
+		if (m == null)
+		    return false;
+		
+		return !Modifier.isAbstract(m.getModifiers()); 
+	}
 
     /**
      *  Given a class name, returns the corresponding class.  In addition,
@@ -317,7 +323,7 @@ public class ComponentClassFactory
         Method write = d.getWriteMethod();
         Method read = d.getReadMethod();
 
-        if (!isAbstract(write))
+        if (isImplemented(write))
             throw new ApplicationRuntimeException(
                 Tapestry.format(
                     "ComponentClassFactory.non-abstract-write",
@@ -326,7 +332,7 @@ public class ComponentClassFactory
                 location,
                 null);
 
-        if (!isAbstract(read))
+        if (isImplemented(read))
             throw new ApplicationRuntimeException(
                 Tapestry.format(
                     "ComponentClassFactory.non-abstract-read",
@@ -342,7 +348,7 @@ public class ComponentClassFactory
     {
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
 
-        return isAbstract(pd);
+        return !isImplemented(pd);
     }
 
     /**
@@ -436,7 +442,17 @@ public class ComponentClassFactory
         String propertyName = parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
 
-        if (!isAbstract(pd))
+		// only enhance custom parameter binding properties if they are declared abstract
+		if (ps.getDirection() == Direction.CUSTOM)
+		{
+		    if (pd == null)
+			    return;
+			
+			if (!(isAbstract(pd.getReadMethod()) || isAbstract(pd.getWriteMethod())))
+			    return;
+		}
+			
+        if (isImplemented(pd))
             return;
 
         // Need to create the property.
@@ -502,7 +518,7 @@ public class ComponentClassFactory
 
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
 
-        if (!isAbstract(pd))
+        if (isImplemented(pd))
         {
             // Make sure the property is at least the right type.
 
