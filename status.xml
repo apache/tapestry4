@@ -266,6 +266,10 @@ NextGen) be released as version number 3.0.
       Provide a public implementation of ITemplateParserDelegate.
     </action>
     
+    <action type="fix" dev="HLS" fixes-bug="30384">
+      Palette does not clear its selected list when no selections are made.
+    </action>
+    
   </release>	
    
  	<release version="3.0" date="Apr 18 2004">
