@@ -12,16 +12,15 @@
   because it stores each element as a hidden field.
   </description>
 	
-  <parameter name="source" required="yes" java-type="java.lang.Object"
-  direction="in"/>
+  <parameter name="source" required="yes" type="java.lang.Object"/>
   
-  <parameter name="listener" java-type="net.sf.tapestry.IActionListener" direction="in"/>
+  <parameter name="listener" type="net.sf.tapestry.IActionListener" direction="in"/>
   
-  <parameter name="value" required="yes" java-type="java.lang.Object"/>
+  <parameter name="value" required="yes" type="java.lang.Object"/>
   
-  <parameter name="index" java-type="int"/>
+  <parameter name="index" type="int"/>
   
-  <parameter name="element" java-type="java.lang.String" direction="in"/>
+  <parameter name="element" type="java.lang.String" direction="in"/>
   
 </component-specification>
 
