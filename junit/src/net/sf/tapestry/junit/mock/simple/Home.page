@@ -16,4 +16,8 @@
 		<binding name="value" expression="engine.specification.name"/>
 	</component>
 	
+	<component id="link" type="PageLink">
+		<static-binding name="page">Two</static-binding>
+	</component>
+	
 </page-specification>	

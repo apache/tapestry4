@@ -20,18 +20,22 @@
   	  	The start of the JUnit test suite: JUnit Simple Application\.
   	  </assert-output>
   	  
-  	  <assert-output-matches name="Page structure">
+  	  <assert-output-matches name="Page structure" subgroup="1">
 <![CDATA[
-  (</?\w+(?=.*)>)
+<(/?\w+)(\s*\w+=".*")*\s*/?>
 ]]>
-		<match>&lt;html&gt;</match>
-		<match>&lt;head&gt;</match>
-		<match>&lt;title&gt;</match>
-		<match>&lt;/title&gt;</match>
-		<match>&lt;/head&gt;</match>
-		<match>&lt;body&gt;</match>
-		<match>&lt;/body&gt;</match>
-		<match>&lt;/html&gt;</match>		
+		<match>html</match>
+		<match>head</match>
+		<match>meta</match>
+		<match>title</match>
+		<match>/title</match>
+		<match>/head</match>
+		<match>body</match>	
+		<match>br</match>	
+		<match>a</match>
+		<match>/a</match>
+		<match>/body</match>
+		<match>/html</match>		
 	  </assert-output-matches>
   	  	  
   	  <assert-output name="Shell title render">
@@ -41,7 +45,40 @@
   	  </assert-output>
   	  
   
+  	 <assert-output name="Link to page Two">
+<![CDATA[
+	<a href="/junit/simple\?service=page&amp;context=Two">to page Two</a>
+]]>
+  	 </assert-output>
+  
   	  <assert name="Session not created" expression="request.session == null"/>
   	  
   	</request>
+  	
+<!-- Request #2 simulates the user clicking the PageLink URL on the Home page. -->
+
+  <request>
+  	<parameter name="service" value="page"/>
+  	<parameter name="context" value="Two"/>	
+  	
+  	<assert-output name="Page Two Title">
+<![CDATA[
+	<title>Page Two</title>
+]]>
+	</assert-output>
+	
+	<assert-output name="Page Two: No message, yet">
+<![CDATA[
+	<body>\s*<p>This page
+]]>
+	</assert-output>
+	
+	<assert-output name="Page Two: DirectLink">
+<![CDATA[
+	DirectLink: <a href="/junit/simple\?service=direct&amp;context=Two/link">click it</a>
+]]>	
+	</assert-output>	
+	
+  </request>	
+  	
 </mock-test>
