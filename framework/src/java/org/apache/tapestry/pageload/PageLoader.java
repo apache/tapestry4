@@ -87,6 +87,14 @@ public class PageLoader implements IPageLoader
 
     private ServletContext _context;
 
+    /** @since 3.1 */
+
+    private String _defaultPageClassName;
+
+    /** @since 3.1 */
+
+    private String _defaultScriptLanguage;
+
     private IEngine _engine;
     private List _inheritedBindingQueue = new ArrayList();
     private List _propertyInitializers = new ArrayList();
@@ -304,12 +312,9 @@ public class PageLoader implements IPageLoader
 
         // If not provided in the page or component specification, then
         // search for a default (factory default is "jython").
-        // TODO: Inject the applicaiton property source
 
         if (Tapestry.isBlank(language))
-            language =
-                _engine.getPropertySource().getPropertyValue(
-                    "org.apache.tapestry.default-script-language");
+            language = _defaultScriptLanguage;
 
         // Construct the binding.  The first parameter is the compononent
         // (not the DirectLink or Form, but the page or component containing the link or form).
@@ -562,20 +567,7 @@ public class PageLoader implements IPageLoader
         Location location = spec.getLocation();
 
         if (Tapestry.isBlank(className))
-        {
-            if (_log.isDebugEnabled())
-                _log.debug(
-                    "Page "
-                        + namespace.constructQualifiedName(name)
-                        + " does not specify a component class.");
-
-            className =
-                _engine.getPropertySource().getPropertyValue(
-                    "org.apache.tapestry.default-page-class");
-
-            if (_log.isDebugEnabled())
-                _log.debug("Defaulting to class " + className);
-        }
+            className = _defaultPageClassName;
 
         Class pageClass = _enhancer.getEnhancedClass(spec, className);
         String enhancedClassName = pageClass.getName();
@@ -859,6 +851,20 @@ public class PageLoader implements IPageLoader
     public void setSpecificationSource(ISpecificationSource source)
     {
         _specificationSource = source;
+    }
+
+    /** @since 3.1 */
+
+    public void setDefaultPageClassName(String string)
+    {
+        _defaultPageClassName = string;
+    }
+
+    /** @since 3.1 */
+
+    public void setDefaultScriptLanguage(String string)
+    {
+        _defaultScriptLanguage = string;
     }
 
 }

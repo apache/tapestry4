@@ -39,6 +39,10 @@
         <set-object property="specificationSource" value="infrastructure:specificationSource"/>
         <set-service property="componentResolver" service-id="ComponentSpecificationResolver"/>
         <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
+        <set-object property="defaultPageClassName"
+                       value="app-property:org.apache.tapestry.default-page-class"/>
+        <set-object property="defaultScriptLanguage"
+                       value="app-property:org.apache.tapestry.default-script-language"/>
       </construct>
     </invoke-factory>
   </service-point>

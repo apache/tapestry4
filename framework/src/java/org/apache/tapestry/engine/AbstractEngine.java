@@ -678,11 +678,6 @@ public abstract class AbstractEngine
 
     public boolean service(RequestContext context) throws ServletException, IOException
     {
-        // TODO: Switch this around sound that we don't downcast ... in fact,
-        // all of the stuff we get from the servlet will be coming out of the
-        // registry soon enough.
-
-        ApplicationServlet servlet = (ApplicationServlet) context.getServlet();
         IRequestCycle cycle = null;
         ResponseOutputStream output = null;
         IMonitor monitor = null;
@@ -700,7 +695,7 @@ public abstract class AbstractEngine
         _localeChanged = false;
 
         if (_resolver == null)
-            _resolver = servlet.getClassResolver();
+            _resolver = _infrastructure.getClassResolver();
 
         try
         {
@@ -1012,7 +1007,7 @@ public abstract class AbstractEngine
 
     public void setLocale(Locale value)
     {
-    	Tapestry.notNull(value, "locale");
+        Tapestry.notNull(value, "locale");
 
         // Because locale changes are expensive (it involves writing a cookie and all that),
         // we're careful not to really change unless there's a true change in value.
