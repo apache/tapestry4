@@ -402,10 +402,14 @@ public class RequestContext implements IRender
 	}
 
 	/**
-	 *  Returns the named parameter from the <code>HttpServletRequest</code>.
+	 *  Returns the named parameter from the {@link HttpServletRequest}.
 	 *
-	 *  <p>Use {@link #getParameterValues(String)} for parameters that may
+	 *  <p>Use {@link #getParameters(String)} for parameters that may
 	 *  invlude multiple values.
+	 * 
+	 *  <p>This is the preferred way to obtain parameter values (rather than
+	 *  obtaining the {@link HttpServletRequest} itself.  For multipart/form
+	 *  requests, this method will still work.
 	 *
 	 */
 
@@ -417,10 +421,12 @@ public class RequestContext implements IRender
 	/**
 	 * For parameters that are, or are possibly, multi-valued, this
 	 * method returns all the values as an array of Strings.
+	 * 
+	 *  @see #getParameter(String)
 	 *
 	 */
 
-	public String[] getParameterValues(String name)
+	public String[] getParameters(String name)
 	{
 		return request.getParameterValues(name);
 	}
@@ -459,6 +465,15 @@ public class RequestContext implements IRender
 		return pathInfo.length;
 	}
 
+	/**
+	 *  Returns the request which initiated the current request cycle.  Note that
+	 *  the methods {@link #getParameter(String)} and {@link #getParameters(String)}
+	 *  should be used, rather than obtaining parameters directly from the request
+	 *  (since the RequestContext handles the differences between normal and multipart/form
+	 *  requests).
+	 * 
+	 **/
+	
 	public HttpServletRequest getRequest()
 	{
 		return request;

@@ -259,7 +259,7 @@ public class Select extends AbstractFormComponent
 
 		context = cycle.getRequestContext();
 
-		parameters = context.getParameterValues(parameterName);
+		parameters = context.getParameters(parameterName);
 
 		if (parameters == null)
 			return null;
