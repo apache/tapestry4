@@ -133,7 +133,7 @@ examples), others are used at runtime (and must be added to the servlet containe
 	
 	
 	<varlistentry>
-		<term><filename>org.mortbay.jetty.jar</filename></term>
+		<term><filename>org.mortbay.jetty-jdk1.2.jar</filename></term>
 		<listitem>
 		<para>
 		The &Jetty; servlet container, used to execute the Tapestry examples, tutorials and demostrations.
