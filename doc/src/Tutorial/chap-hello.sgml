@@ -1,0 +1,204 @@
+<!-- $Id$ -->
+
+<chapter id="hello">
+	<title>Hello World</>
+	
+<para>
+In this first example, we'll create a very simple "Hello World" kind of application.  It won't have 
+any real functionality but it'll demonstrate the simplest possible variation of a number of key 
+aspects of the framework.
+</>
+
+<para>
+We'll define our application, define the lone page of our application, configure everything and 
+launch it.
+</>
+
+<para>
+The code for this section of the tutorial is in the Java package <classname>tutorial.hello</>, i.e., 
+<filename class=directory>C:\Tapestry-<replaceable>x.x.x</>\Examples\Tutorial\tutorial\hello</>.
+</>
+
+	<section id="hello.engine">
+		<title>Application Engine</>
+
+<para>
+As each new client connects to the application, an instance of the application engine is created for 
+them.  The application engine is used to track that client's activity within the application.
+</>
+
+<para>
+The application engine is an instance, or subclass of, the Tapestry class 
+<classname>com.primix.tapestry.engine.SimpleEngine</>.
+</>
+
+<para>
+In these first few examples, we have no additional behavior to add to the provided base class, so 
+we simply use <classname>SimpleEngine</> directly.
+</>
+
+	</section>
+
+	<section id="hello.servlet">
+		<title>Application Servlet</>
+
+<para>
+The application servlet is a "bridge" between the servlet container and the application engine.  Its 
+job is simply to create (on the first request) or locate (on subsequent requests) the application 
+engine.
+</>
+
+<para>
+The application servlet must subclass 
+<classname>com.primix.tapestry.ApplicationServlet</> and 
+implement the method:  <function>getApplicationSpecificationPath()</>.  
+This method provides the 
+path to the application specification file; the servlet reads this file when it is initialized.
+</>
+
+<figure>
+	<title>HelloWorldServlet.java</>
+	<programlisting>package tutorial.hello;
+
+import com.primix.tapestry.*;
+
+public class HelloWorldServlet extends ApplicationServlet
+{
+  protected String getApplicationSpecificationPath()
+  {
+    return "/tutorial/hello/HelloWorld.application";
+  }
+
+}</programlisting></figure>
+
+	</section>
+
+	<section id="hello.appspec">
+		<title>Application Specification</>
+
+<para>
+The application specification is used to describe the application to the Tapestry framework.  It 
+provides the application with a name, an engine class, and a list of pages.
+</>
+
+<para>
+This specification is a file that is located on the Java class path.  In a deployed Tapestry 
+application, the specification lives with the application's class files, in the 
+<filename class=directory>WEB-INF/classes</> directory of a War file.
+</>
+
+
+<figure>
+	<title>HelloWorld.application</>
+	<programlisting><![CDATA[<?xml version="1.0"?>
+<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<application>
+	<name>Hello World Tutorial</name>
+	<engine-class>com.primix.tapestry.engine.SimpleEngine</engine-class>
+	<page>
+		<name>Home</name>
+		<specification-path>/tutorial/hello/Home.jwc</specification-path>
+	</page>
+</application>]]></programlisting></figure>
+
+<para> 
+Our application is very simple; we give the application a name, use the standard engine, and define 
+a single page, named "Home".  In Tapestry, components are specified with the path to their 
+specification file (a file that end with '.jwc').
+</>
+
+<para>
+Page "Home" has a special meaning to Tapestry: when you first launch a Tapestry application, it 
+loads and displays the "Home" page.  All Tapestry applications are required to have such a home 
+page.
+</>
+
+	</section>
+
+	<section id="hello.home-page-spec">
+		<title>Home Page Specification</>
+
+<para>
+The page specification defines the Tapestry component responsible for the page.  In this first 
+example, our component is very simple.
+</>
+
+<figure>
+	<title>Home.jwc</>
+	<programlisting><![CDATA[<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC 
+"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+	
+<specification>
+	<class>com.primix.tapestry.BasePage</class>
+</specification>]]></programlisting></figure>
+ 
+<para>
+This simply says that <classname>Home</> is a kind of page.  We use the supplied Tapestry class 
+<classname>com.primix.tapestry.BasePage</> since we aren't adding any behavior to the page.
+</>
+
+	</section>
+
+	<section id="hello.home-page-template">
+		<title>Home Page Template</>
+
+<para>
+Finally, we get to the content of our application.  This file is also a Java resource; 
+it isn't directly 
+visible to the web server.  It has the same location and name as the component specification, 
+except that it ends in "html".
+</>
+
+<figure>
+	<title>Home.html</>
+	<programlisting><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Hello World</title>
+</head>
+
+<body>
+
+Welcome to your first <b>Tapestry Application</b>.
+
+</body>
+</html>]]></PROGRAMLISTING></figure>
+	</section>
+
+	<section id="hello.run">
+		<title>Run the Application</>
+
+<para>
+You should already be running the Jetty server in a window, and have a browser running the 
+tutorials page.  Select the first option, Hello World, from the list.  You will be presented with the 
+first (and only) page generated by Tapestry for this application:
+</>
+
+<figure>
+	<title>Hello World Application</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/hello-world.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+<para>
+Not much of an application ... there's no interactivity.  It might as well be a static web page, but it's 
+a start.  Remember, there was no JavaServer page here, and no HTML directly visible to the web 
+server.  There was an application consisting of a single component.
+</>
+
+<para>
+In the following chapters, we'll see how to add dynamic content and then true interactivity.
+</>
+
+
+	</section>
+
+
+</chapter>

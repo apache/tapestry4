@@ -1,0 +1,52 @@
+<!-- $Id$ -->
+
+<chapter id="intro">
+	<title>Introduction</>
+	
+<para>
+Tapestry is a new application framework developed at Primix.
+</>
+
+<para>
+Tapestry uses a component object model to represent the pages of a web application.  This is 
+similar to spirit to using the Java Swing component object model to build GUIs.
+</>
+
+<para>
+Just like using a GUI toolkit, there's some preparation and some basic ideas that must be cleared 
+before going to more ambitious things.  Nobody writes a word processor off the top of their head 
+as their first GUI project; nobody should attempt a full-featured e-commerce site as their first 
+attempt using Tapestry.
+</>
+
+<para>
+The goal of Tapestry is to eliminate most of the coding in a web application.  Under Tapestry, 
+nearly all code is directly related to application functionality, with very little "plumbing".  If you 
+have previously developed a web application using Microsoft Active Server Pages, JavaServer 
+Pages or Java Servlets, you may take for granted all the plumbing:  writing servlets, assembling 
+URLs, parsing URLs, managing objects inside the <classname>HttpSession</>, etc.
+</>
+
+<para>
+Tapestry takes care of nearly all of that, for free.  It allows for the development of rich, highly 
+interactive applications.
+</>
+
+<para>
+This tutorial will start with basic concepts, such as the "Hello World" application, and will 
+gradually build up to more sophisticated examples.
+</>
+
+<para>
+The tutorial uses <command>Jetty</>, a freely available servlet engine, which is packaged with 
+the Tapestry 
+distribution.
+</>
+
+<para>
+The format of this tutorial is to describe (visually and with text) an application within the tutorial, 
+then describe how it is constructed, using code excerpts.  The reader is best served by having an 
+IDE open so that they can look at the code in detail, as well as run the applications.
+</>
+
+</chapter>
