@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!--$Id$-->
 <!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<application name="Portal Tutorial" 
-	engine-class="com.primix.tapestry.engine.SimpleEngine">
+    "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application name="Portal Tutorial"
+    engine-class="com.primix.tapestry.engine.SimpleEngine">
   
   <property name="com.primix.tapestry.visit-class">tutorial.portal.Visit</property>
   
@@ -15,10 +15,14 @@
  
   <page name="Weather" specification-path="/tutorial/portal/Weather.jwc"/>
   
+  <page name="Slashdot" specification-path="/tutorial/portal/Slashdot.jwc"/>
+  
   <component-alias type="Border" specification-path="/tutorial/portal/Border.jwc"/>
   
   <component-alias type="ShowError" specification-path="/tutorial/valid/ShowError.jwc"/>
   
   <component-alias type="Portlet" specification-path="/tutorial/portal/Portlet.jwc"/>
+  
+  <component-alias type="EvenOdd" specification-path="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
   
 </application>
