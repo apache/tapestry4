@@ -1,4 +1,4 @@
-package net.sf.tapestry.form;
+package net.sf.tapestry.contrib.form;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
