@@ -21,8 +21,8 @@
     explain the core Tapestry concepts in detail, providing full 
     examples along the way to assist you in learning how the framework is used.
 
-    The remainder of the tutorial provides useful information on advanced topics such as component creation,
-    usage of the component inspector, and the like.
+    The remainder of the tutorial provides useful information on advanced topics including component creation,
+    usage of the component inspector, EJB support, and optimizations.  
   </para>
   
   <para>
@@ -38,21 +38,90 @@
       Pages or Java Servlets, you may take for granted all the plumbing:  writing servlets, assembling 
       URLs, parsing URLs, managing objects inside the &HttpSession;, etc.
     </para>
+    <para>
+      Tapestry takes care of nearly all of that, for free.  It allows for the development of rich, highly 
+      interactive applications.
+    </para>
+    <para>
+      Before you get into the wonders of Tapestry, you will need to setup your development
+      environment such that you are able to both run the provided tutorial applications, 
+      and also such that you are able to 
+      compile and run the code that you develop while moving through this tutorial.
+    </para>
   </section>
-  
-  <section id="integrate-jboss3">
-    <title>Integration with JBoss 3.0.x</title>
-  </section>
-  
-  <section id="integrate-tomcat">
-    <title>Integration with Tomcat</title>
-  </section>
+
+  <section id="environment-setup">
+    <title>Setting up the environment</title>
     
-  <section id="integrate-jetty">
-      <title>Integration with Jetty</title>
+    <para>
+      This document expects that you will have extracted the full Tapestry distribution to your 
+      <filename class="directory">C:</filename> drive
+      <footnote>
+        <para>
+	  If you are using Solaris or another non-Windows operating system, you're expected
+	  to be savvy enough to translate to a sensibly constructed file system.
+	</para>
+      </footnote>
+    </para>
+    <para>
+      This will have created a directory <filename class="directory">C:\Tapestry-<replaceable>x.x</replaceable>
+      </filename>
+      and, beneath it, several more directories.
+      <footnote>
+        <para>
+	  The three numbers are the release number.  At the time of this writing, the release
+	  was 2.2, but this is constantly changing.  Simply adjust the actual pathname to
+	  reflect the release of Tapestry you downloaded.
+	</para>
+      </footnote>
+    </para>
+    <para>
+      The source code for the Tutorial is distributed as a JAR file,
+      <filename>src/examples-src.jar</filename>.  A precompiled WAR file,
+      <filename>lib/tutorial.war</filename> is included in the distribution.
+    </para>
+    
+    
+    <para>
+      The Tapestry distribution includes an &Ant; build file that allows the
+      Tutorial to be directly executed.  Ant release 1.5 is required.
+    </para>
+    
+    <para>
+      From the Tapestry root directory,
+      execute the command <command>ant -emacs run-tutorial</command>, which will launch the
+      Jetty server for the Tutorial.
+    </para>
+    <para>
+      Once Jetty is running, you can access the Tutorials using the URL 
+      <ulink url="http://localhost:8080/tutorial">
+	<filename>http://localhost:8080/tutorial</filename>
+      </ulink>.
+    </para>
+    <figure>
+      <title>Tutorial Index Page</title>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="images/tutorial-index.png" format="PNG"/>
+	</imageobject>
+      </mediaobject>
+    </figure>
+    
+    Tapestry can exist in any Servlet (v2.1 +) compatible container,
+    for example JBoss. If you wish to deploy and run the tutorial in 
+    an alternative environment please see <xref linkend="integration"/>
   </section>
-  
-  <section id="integrate-eclipse">
-    <title>Integration with Eclipse (for development)</title>
+
+  <section id="basic-dev-env">
+    <title>A basic development environment</title>
+    <para>
+      This section details how to setup a development environment suitable
+      for use with this tutorial. It will provide basic &Ant; support, and
+      the ability to test your examples using &Jetty;.
+    </para>
+
+    <para>
+      It is assumed that you have &Ant; 1.5 installed.  
+    </para>
   </section>
 </chapter>
