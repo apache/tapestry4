@@ -91,5 +91,4 @@ public interface ISpecificationSource
      **/
 
     public INamespace getFrameworkNamespace();
-
 }

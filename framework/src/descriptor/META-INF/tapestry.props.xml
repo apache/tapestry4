@@ -20,38 +20,8 @@
   Defines services for locating configuration data that may be stored in the web application
   deployment descriptor, the application specification, or elsewhere.
     
-  <schema id="PropertySources">
-    
-      Used to build a list of IPropertySource instances in a specific
-      consultation order.
-    
-      <element name="source">
-        
-        <attribute name="name" required="true">
-          The name of the contribution, used to control ordering.
-        </attribute>
-        
-        <attribute name="before">
-          List of sources that should process before this source.
-        </attribute>
-        
-        <attribute name="after">
-          List of sources that should process after this source.
-        </attribute>
-        
-        <attribute name="object" translator="object">
-          The object or service that implements the IPropertySource interface.
-        </attribute>
-        
-        <conversion class="org.apache.tapestry.services.impl.PropertySourceContribution">
-          <map property="source" attribute="object"/>
-        </conversion>
-        
-      </element>
-
-  </schema>
   
-  <configuration-point id="GlobalPropertySources" schema-id="PropertySources">
+  <configuration-point id="GlobalPropertySources" schema-id="hivemind.lib.ChainContribution">
     
     Specifies a sequence of property sources used to resolve global application configuration data, which may
     be in web.xml (servlet init parameters or servlet
@@ -64,10 +34,8 @@
     Service point for obtaining configuration data resolved using GlobalPropertySources
     configuration point.
     
-    <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.PropertySourceImpl">
-        <set-configuration property="contributions" configuration-id="GlobalPropertySources"/>
-      </construct>
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="GlobalPropertySources"/>
     </invoke-factory>
     
   </service-point>
@@ -112,13 +80,13 @@
   </service-point>
   
   <contribution configuration-id="GlobalPropertySources">
-    <source name="servlet" object="service:ServletPropertySource"/>
-    <source name="context" object="service:ServletContextPropertySource" after="servlet"/>
-    <source name="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
+    <command id="servlet" object="service:ServletPropertySource"/>
+    <command id="context" object="service:ServletContextPropertySource" after="servlet"/>
+    <command id="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
   </contribution>
   
   
-  <configuration-point id="ApplicationPropertySources" schema-id="PropertySources">
+  <configuration-point id="ApplicationPropertySources" schema-id="hivemind.lib.ChainContribution">
     
     Property sources used by the application, which includes a search of the
     application specification, a delegate of the application specification, the servlet and
@@ -131,20 +99,18 @@
     Service point for obtaining configuration data resolved using ApplicationPropertySources
     configuration point.
     
-    <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.PropertySourceImpl">
-        <set-configuration property="contributions" configuration-id="ApplicationPropertySources"/>
-      </construct>
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="ApplicationPropertySources"/>
     </invoke-factory>
         
   </service-point>
   
   <contribution configuration-id="ApplicationPropertySources">
-    <source name="app-spec" object="service:ApplicationSpecificationPropertySource"/>
-    <source name="servlet" object="service:ServletPropertySource" after="app-spec"/>
-    <source name="context" object="service:ServletContextPropertySource" after="servlet"/>
-    <source name="delegate" object="service:DelegatePropertySource" after="context"/>
-    <source name="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
+    <command id="app-spec" object="service:ApplicationSpecificationPropertySource"/>
+    <command id="servlet" object="service:ServletPropertySource" after="app-spec"/>
+    <command id="context" object="service:ServletContextPropertySource" after="servlet"/>
+    <command id="delegate" object="service:DelegatePropertySource" after="context"/>
+    <command id="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
   </contribution>
   
   <service-point id="ApplicationSpecificationPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
@@ -207,6 +173,9 @@
     <default symbol="org.apache.tapestry.enhance.disable-abstract-method-validation" value="false"/>
     <default symbol="org.apache.tapestry.default-page-class" value="org.apache.tapestry.html.BasePage"/>
   </contribution>    
+  
+  <!-- This may nedd to be converted into an IPropertySource and injected into the ApplicationPropertySources
+       chain. -->
   
   <contribution configuration-id="hivemind.SymbolSources">
     <source name="SystemProperties" before="hivemind.ApplicationDefaults" 
