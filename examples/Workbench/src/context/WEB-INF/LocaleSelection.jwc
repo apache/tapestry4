@@ -78,7 +78,7 @@
 		</binding>
 	</component>
     
-    <property name="localeSet" persistent="yes"  initial-value="ognl:new java.util.HashSet()"/>
+    <property name="localeSet" persist="session"  initial-value="ognl:new java.util.HashSet()"/>
 
     <property name="currentLocale"/>
     
