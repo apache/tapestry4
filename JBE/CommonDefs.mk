@@ -74,5 +74,10 @@ include $(CONFIG_DIR)/SiteConfig.mk
 
 include $(SYS_MAKEFILE_DIR)/Platform.$(SITE_PLATFORM).mk
 
+# Find out the information specific to the JDK.   SITE_JDK was just
+# set by CONFIG_DIR/SiteConfig.mk.
+
+include $(SYS_MAKEFILE_DIR)/JDK.$(SITE_JDK).mk
+
 -include $(CONFIG_DIR)/Common.mk
 
