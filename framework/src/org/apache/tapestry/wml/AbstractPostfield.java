@@ -102,7 +102,7 @@ public abstract class AbstractPostfield extends AbstractFormComponent
     }
 
     /**
-     *  @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     *  @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)

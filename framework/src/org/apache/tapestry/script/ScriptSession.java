@@ -63,7 +63,7 @@ import org.apache.tapestry.IScriptProcessor;
 
 /**
  *  The result of executing a script, the session is used during the parsing
- *  process as well.  Following {@link IScript#execute(Map)}, the session
+ *  process as well.  Following {@link org.apache.tapestry.IScript#execute(org.apache.tapestry.IRequestCycle, org.apache.tapestry.IScriptProcessor, java.util.Map)}, the session
  *  provides access to output symbols as well as the body and initialization
  *  blocks created by the script tokens.
  *

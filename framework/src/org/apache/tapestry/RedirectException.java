@@ -78,11 +78,11 @@ public class RedirectException extends ApplicationRuntimeException
 
 	/** 
 	 *  @param message A message describing why the redirection is taking place.
-	 *  @param location The location to redirect to, may be a relative path (relative
-	 *  to the {@link ServletContext}).
+	 *  @param redirectLocation The location to redirect to, may be a relative path (relative
+	 *  to the {@link javax.servlet.ServletContext}).
 	 *
-	 *  @see HttpServletResponse#sendRedirect(String)
-	 *  @see HttpServletResponse#encodeRedirectURL(String)
+	 *  @see javax.servlet.http.HttpServletResponse#sendRedirect(String)
+	 *  @see javax.servlet.http.HttpServletResponse#encodeRedirectURL(String)
 	 *
 	 **/
 

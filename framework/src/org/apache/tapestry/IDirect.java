@@ -67,7 +67,7 @@ public interface IDirect extends IComponent
 {
     /**
      *  Invoked by the direct service to have the component peform
-     *  the appropriate action.  The {@link DirectLink} component will
+     *  the appropriate action.  The {@link org.apache.tapestry.link.DirectLink} component will
      *  notify its listener.
      *
      **/
@@ -77,7 +77,7 @@ public interface IDirect extends IComponent
     /**
      *  Invoked by the direct service to query the component as to
      *  whether it is stateful.  If stateful and no 
-     *  {@link HttpSession} is active, then a 
+     *  {@link javax.servlet.http.HttpSession} is active, then a
      *  {@link org.apache.tapestry.StaleSessionException} is
      *  thrown by the service.
      * 

@@ -160,8 +160,8 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
     }
 
     /**
-     *  Like {@link #resolve(INamespace, String)}, but used when the type has already
-     *  been parsed into a library id and a simple type.
+     *  Like {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, org.apache.tapestry.ILocation)},
+     *  but used when the type has already been parsed into a library id and a simple type.
      * 
      *  @param cycle current request cycle
      *  @param containerNamespace namespace that may contain

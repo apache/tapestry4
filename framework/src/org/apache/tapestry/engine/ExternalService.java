@@ -92,7 +92,7 @@ import org.apache.tapestry.request.ResponseOutputStream;
  * Object[] { new Integer(5056), new Integer(302) }.
  * <p>
  * Note service parameters (sp) need to be prefixed by valid
- * {@link DataSqueezer} adaptor char. These adaptor chars are automatically provided in 
+ * {@link org.apache.tapestry.util.io.DataSqueezer} adaptor char. These adaptor chars are automatically provided in
  * URL's created by the <tt>buildGesture()</tt> method. However if you hand coded an external 
  * service URL you will need to ensure valid prefix chars are present.
  * <p>

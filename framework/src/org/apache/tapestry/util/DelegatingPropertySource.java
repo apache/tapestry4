@@ -61,7 +61,7 @@ import java.util.List;
 import org.apache.tapestry.engine.IPropertySource;
 
 /**
- *  An implementation of {@link org.apache.tapestry.IPropertySource}
+ *  An implementation of {@link IPropertySource}
  *  that delegates to a list of other implementations.  This makes
  *  it possible to create a search path for property values.
  *

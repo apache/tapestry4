@@ -81,9 +81,9 @@ public interface ISpecificationResolverDelegate
      *  the specification, or null.  The specification, if returned, is not cached by Tapestry
      *  (it is up to the delegate to cache the specification if desired).
      * 
-     *  @parameter cycle used to gain access to framework and Servlet API objects
-     *  @parameter namespace the namespace containing the page
-     *  @parameter simplePageName the name of the page (without any namespace prefix)
+     *  @param cycle used to gain access to framework and Servlet API objects
+     *  @param namespace the namespace containing the page
+     *  @param simplePageName the name of the page (without any namespace prefix)
      * 
      **/
 
@@ -100,9 +100,9 @@ public interface ISpecificationResolverDelegate
      * 
      *  <p>The delegate must be coded in a threadsafe manner.
      * 
-     *  @parameter cycle used to gain access to framework and Servlet API objects
-     *  @parameter namespace the namespace containing the component
-     *  @parameter type the component type (without any namespace prefix)
+     *  @param cycle used to gain access to framework and Servlet API objects
+     *  @param namespace the namespace containing the component
+     *  @param type the component type (without any namespace prefix)
      * 
      **/
 

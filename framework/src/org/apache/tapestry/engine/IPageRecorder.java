@@ -93,7 +93,7 @@ public interface IPageRecorder extends ChangeObserver
      *  Invoked at the end of a request cycle in which the
      *  page recorder is discarded (either implicitly, because
      *  the page recorder has no changes, or explicitly
-     *  because of {@link IEngine#forgetPage(String)} or
+     *  because of {@link org.apache.tapestry.IEngine#forgetPage(String)} or
      *  {@link #markForDiscard()}.
      * 
      *  @since 3.0
@@ -113,7 +113,7 @@ public interface IPageRecorder extends ChangeObserver
     public void commit();
 
     /**
-     *  Returns a {@link Collection} of {@link IPageChange} objects that represent
+     *  Returns a {@link Collection} of {@link org.apache.tapestry.record.IPageChange} objects that represent
      *  the persistant state of the page.
      *
      **/
@@ -148,7 +148,8 @@ public interface IPageRecorder extends ChangeObserver
      *
      *  <p>A page recorder can only rollback changes to properties
      *  which have changed at some point.  This can cause some minor
-     *  problems, addressed by  {@link PageDetachListener#pageDetached(PageEvent)}.
+     *  problems, addressed by
+     *  {@link org.apache.tapestry.event.PageDetachListener#pageDetached(org.apache.tapestry.event.PageEvent)}.
      * 
      **/
 

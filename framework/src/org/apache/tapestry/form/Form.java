@@ -180,7 +180,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *  Indicates to any wrapped form components that they should respond to the form
      *  submission.
      *
-     *  @throws RenderOnlyPropertyException if not rendering.
+     *  @throws ApplicationRuntimeException if not rendering.
      **/
 
     public boolean isRewinding()
@@ -221,7 +221,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *  consists of the component's id, with an index number added to
      *  ensure uniqueness.
      *
-     *  <p>Simply invokes {@link #getElementId(String)} with the component's id.
+     *  <p>Simply invokes {@link #getElementId(org.apache.tapestry.form.IFormComponent, java.lang.String)}
+     *  with the component's id.
      *
      *
      *  @since 1.0.2

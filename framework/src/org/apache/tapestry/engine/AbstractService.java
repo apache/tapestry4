@@ -92,7 +92,7 @@ public abstract class AbstractService implements IEngineService
      *  @param serviceContext context related to the service itself which is added to the URL as-is
      *  @param parameters additional service parameters provided by the component; 
      *  this is application specific information, and is encoded with 
-     *  {@link URLEncoder#encode(String)} before being added
+     *  {@link java.net.URLEncoder#encode(String)} before being added
      *  to the query.
      *  @param stateful if true, the final URL must be encoded with the HttpSession id
      *

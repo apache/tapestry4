@@ -109,7 +109,7 @@ public interface ILinkComponent extends IComponent
     /**
      *  Invoked by the {@link org.apache.tapestry.link.ILinkRenderer} (if
      *  the link is not disabled) to provide a
-     *  {@link org.apache.tapestry.EngineServiceLink} that the renderer can convert
+     *  {@link org.apache.tapestry.engine.EngineServiceLink} that the renderer can convert
      *  into a URL.
      * 
      **/

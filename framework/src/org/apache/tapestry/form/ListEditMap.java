@@ -79,7 +79,7 @@ import org.apache.tapestry.Tapestry;
  *  Usage:
  *  <br>
  *  The page or component should implement {@link org.apache.tapestry.event.PageRenderListener}
- *  and implement {@link org.apache.tapestry.event.PageRenderListener#pageBeginRender(PageEvent)}
+ *  and implement {@link org.apache.tapestry.event.PageRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)}
  *  to initialize the map.
  * 
  *  <p>
@@ -138,7 +138,7 @@ public class ListEditMap
      *  The keys may be obtained, in the order in which they are added,
      *  using {@link #getKeys()}.
      *  This also sets the current key (so that you
-     *  may invoke {@link #setDeleted(boolean), for example).
+     *  may invoke {@link #setDeleted(boolean)}, for example).
      * 
      **/
 

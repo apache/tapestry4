@@ -70,7 +70,7 @@ import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
- *  Displays the book inventory list for a single {@link IPerson}, showing
+ *  Displays the book inventory list for a single {@link org.apache.tapestry.vlib.ejb.IPerson}, showing
  *  what books are owned by the person, who has them borrowed, etc.  If the
  *  user is logged in, then books can be borrowed from this page as well.
  *

@@ -139,7 +139,7 @@ public class ValidationDelegate implements IValidationDelegate
     /**
      *  Returns the {@link IFieldTracking} for the current component, if any.
      *  The {@link IFieldTracking} is usually created in 
-     *  {@link #recordInput(String)} or, failing that,
+     *  {@link #record(String, ValidationConstraint)} or
      *  in {@link #record(IRender, ValidationConstraint)}.
      * 
      *  <p>Components may be rendered multiple times, with multiple names (provided
@@ -284,7 +284,7 @@ public class ValidationDelegate implements IValidationDelegate
 
     /**
      *  Finds or creates the field tracking for the
-     *  {@link #setFormComponent(IFormComponent) current component.
+     *  {@link #setFormComponent(IFormComponent)} current component.
      *  If no current component, an unassociated error is created
      *  and returned.
      * 

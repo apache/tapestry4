@@ -58,7 +58,7 @@ package org.apache.tapestry.util;
 import org.apache.tapestry.engine.IPropertySource;
 
 /**
- *  Implements the {@link org.apache.tapestry.IPropertySource} interface
+ *  Implements the {@link IPropertySource} interface
  *  for instances that implement {@link org.apache.tapestry.util.IPropertyHolder}.
  *
  *  @author Howard Lewis Ship

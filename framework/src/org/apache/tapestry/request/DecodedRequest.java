@@ -63,13 +63,13 @@ package org.apache.tapestry.request;
  *  {@link javax.servlet.http.HttpServletRequest}
  *  wrapper that overode the various methods.  That struck me as causing
  *  more confusion; instead (in the few places it counts), classes will
- *  get the decoded properties from the {@link org.apache.tapestry.RequestContext}.
+ *  get the decoded properties from the {@link RequestContext}.
  *
- *  @see org.apache.tapestry.IRequestDecoder
- *  @see org.apache.tapestry.RequestContext#getScheme()
- *  @see org.apache.tapestry.RequestContext#getServerName()
- *  @see org.apache.tapestry.RequestContext#getServerPort()
- *  @see org.apache.tapestry.RequestContext#getRequestURI()
+ *  @see IRequestDecoder
+ *  @see RequestContext#getScheme()
+ *  @see RequestContext#getServerName()
+ *  @see RequestContext#getServerPort()
+ *  @see RequestContext#getRequestURI()
  * 
  *  @author Howard Lewis Ship
  *  @version DecodedRequest.java,v 1.1 2002/08/20 21:49:58 hship Exp

@@ -1025,7 +1025,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  Convienience method for invoking {@link IMessages#format(String, Object[])}
      * 
      *  @since 2.2
-     *  @deprecated To be removed in 3.1.  Use {@link #format(String, Object) instead.
+     *  @deprecated To be removed in 3.1.  Use {@link #format(String, Object)} instead.
      * 
      **/
 
@@ -1074,7 +1074,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * Convienience method for {@link IMessages#format(String, Object, Object, Object)}.
      * 
      * @since 2.2
-     * @deprecated To be removed in 3.1.  Use {@link #format(String, Object, Object, Object) instead.
+     * @deprecated To be removed in 3.1.  Use {@link #format(String, Object, Object, Object)} instead.
      */
 
     public String formatString(String key, Object argument1, Object argument2, Object argument3)

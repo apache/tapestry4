@@ -98,7 +98,7 @@ public abstract class PageRecorder implements IPageRecorder
 
     /**
      *  Returns a <code>Collection</code> of 
-     *  {@link org.apache.tapestry.IPageChange} objects
+     *  {@link IPageChange} objects
      *  identifying changes to the page and its components.
      *
      **/

@@ -75,7 +75,7 @@ import org.apache.tapestry.vlib.pages.Login;
  *  The standard Border component, which provides the title of the page,
  *  the link to {@link org.apache.tapestry.vlib.pages.MyLibrary}, 
  *  the {@link org.apache.tapestry.vlib.pages.Login} page and the 
- *  {@link org.apache.tapestry.vlib.pages.Logout} page.
+ *  Logout page.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

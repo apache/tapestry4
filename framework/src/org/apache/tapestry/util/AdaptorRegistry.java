@@ -106,7 +106,7 @@ import org.apache.tapestry.Tapestry;
  *  "fixes" this by searching for <code>Object[]</code> as if it was the superclass of
  *  any object array.  This means that the search path for <code>Foo[]</code> is
  *  <code>Foo[]</code>, <code>Object[]</code>, then a couple of interfaces 
- *  {@link java.lang.Cloneable, {@link java.io.Serializable}, etc. that are\
+ *  {@link java.lang.Cloneable}, {@link java.io.Serializable}, etc. that are\
  *  implicitily implemented by arrarys), and then, finally, <code>Object</code>
  * 
  *  <p>

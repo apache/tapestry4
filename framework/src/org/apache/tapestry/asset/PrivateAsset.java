@@ -68,7 +68,7 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 
 /**
- *  An implementation of {@link IAsset} for localizable assets within
+ *  An implementation of {@link org.apache.tapestry.IAsset} for localizable assets within
  *  the JVM's classpath.
  *
  *  <p>The localization code here is largely cut-and-paste from

@@ -92,8 +92,7 @@ public interface IMarkupWriter
      * {@link #begin(String)}
      * and before any other kind of writing (which closes the tag).
      *
-     * <p>The value may be null, in which case this method behaves the same as
-     * {@link #attribute(String)}.
+     * <p>The value may be null.
      *
      * @throws IllegalStateException if there is no open tag.
      **/

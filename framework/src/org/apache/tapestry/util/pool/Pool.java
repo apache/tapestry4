@@ -198,7 +198,7 @@ public class Pool implements ICleanable, IRenderDescription
      *  the {@link JanitorThread#getSharedJanitorThread() shared janitor}.
      *
      *  @since 1.0.5
-     *  @deprecated Use {@link #Pool(boolean) instead.
+     *  @deprecated Use {@link #Pool(boolean)} instead.
      * 
      **/
 

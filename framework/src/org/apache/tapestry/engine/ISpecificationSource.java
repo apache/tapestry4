@@ -75,10 +75,10 @@ public interface ISpecificationSource
     /**
      *  Retrieves a component specification, parsing it as necessary.
      *  
-     *  @param resourceLocation the location where the specification
+     *  @param specificationLocation the location where the specification
      *  may be read from.
      * 
-     *  @throws ApplicationRuntimeException if the specification doesn't
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if the specification doesn't
      *  exist, is unreadable or invalid.
      * 
      *  @since 2.2
@@ -90,10 +90,10 @@ public interface ISpecificationSource
     /**
      *  Retrieves a component specification, parsing it as necessary.
      *  
-     *  @param resourceLocation the location where the specification
+     *  @param specificationLocation the location where the specification
      *  may be read from.
      * 
-     *  @throws ApplicationRuntimeException if the specification doesn't
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if the specification doesn't
      *  exist, is unreadable or invalid.
      * 
      *  @since 2.2
@@ -111,11 +111,11 @@ public interface ISpecificationSource
     public void reset();
 
     /**
-     *  Returns a {@link LibrarySpecification} with the given path.
+     *  Returns a {@link org.apache.tapestry.spec.LibrarySpecification} with the given path.
      * 
-     *  @param resourcePath the resource path of the specification
+     *  @param specificationLocation the resource path of the specification
      *  to return
-     *  @throws ApplicationRuntimeException if the specification
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if the specification
      *  cannot be read
      * 
      *  @since 2.2

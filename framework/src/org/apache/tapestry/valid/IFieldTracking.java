@@ -80,7 +80,7 @@ public interface IFieldTracking
 {
 	/**
 	 *  Returns true if the field is in error (that is,
-	 *  if it has an error message {@link #getRenderer() renderer}.
+	 *  if it has an error message {@link #getErrorRenderer() renderer}.
 	 * 
 	 **/
 	

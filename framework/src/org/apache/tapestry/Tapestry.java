@@ -146,7 +146,8 @@ public final class Tapestry
 
     /**
      *  The name ("action") of a service that allows behavior to be associated with
-     *  an {@link IAction} component, such as {@link ActionLink} or {@link Form}.
+     *  an {@link IAction} component, such as {@link org.apache.tapestry.link.ActionLink} or
+     *  {@link org.apache.tapestry.form.Form}.
      *  
      *  <p>This service is used with actions that are tied to the
      *  dynamic state of the page, and which require a rewind of the page.
@@ -157,14 +158,14 @@ public final class Tapestry
 
     /**
      *  The name ("direct") of a service that allows stateless behavior for an {@link
-     *  DirectLink} component.
+     *  org.apache.tapestry.link.DirectLink} component.
      *
      *  <p>This service rolls back the state of the page but doesn't
      *  rewind the the dynamic state of the page the was the action
      *  service does, which is more efficient but less powerful.
      *
      *  <p>An array of String parameters may be included with the
-     *  service URL; these will be made available to the {@link DirectLink}
+     *  service URL; these will be made available to the {@link org.apache.tapestry.link.DirectLink}
      *  component's listener.
      *
      **/
@@ -173,7 +174,7 @@ public final class Tapestry
 
     /**
      *  The name ("external") of a service that a allows {@link IExternalPage} to be selected.
-     *  Associated with a {@link ExternalLink} component.
+     *  Associated with a {@link org.apache.tapestry.link.ExternalLink} component.
      *
      *  <p>This service enables {@link IExternalPage}s to be accessed via a URL.
      *  External pages may be booked marked using their URL for future reference.
@@ -188,7 +189,7 @@ public final class Tapestry
 
     /**
      *  The name ("page") of a service that allows a new page to be selected.
-     *  Associated with a {@link PageLink} component.
+     *  Associated with a {@link org.apache.tapestry.link.PageLink} component.
      *
      *  <p>The service requires a single parameter:  the name of the target page.
      **/
@@ -1001,7 +1002,7 @@ public final class Tapestry
     }
 
     /**
-     *  Convienience method for invoking {@link #getString(String, Object[])}.
+     *  Convienience method for invoking {@link #format(String, Object[])}.
      * 
      *  @since 3.0
      * 

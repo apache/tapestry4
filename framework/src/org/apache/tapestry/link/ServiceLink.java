@@ -59,7 +59,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  A component for creating a link for an arbitrary {@link org.apache.tapestry.IEngineService
+ *  A component for creating a link for an arbitrary {@link org.apache.tapestry.engine.IEngineService
  *  engine service}.  A ServiceLink component can emulate an {@link ActionLink},
  *  {@link PageLink} or {@link DirectLink} component, but is most often used in
  *  conjunction with an application-specific service.  

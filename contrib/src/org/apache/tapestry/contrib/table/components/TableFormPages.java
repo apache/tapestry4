@@ -164,7 +164,7 @@ public abstract class TableFormPages extends TablePages
 
 
     /**
-     * @return
+     * @return the current page
      */
     public int getCurrentPage()
     {
@@ -174,7 +174,7 @@ public abstract class TableFormPages extends TablePages
     }
 
     /**
-     * @return
+     * @return number of all pages to display
      */
     public int getPageCount()
     {
@@ -184,7 +184,7 @@ public abstract class TableFormPages extends TablePages
     }
 
     /**
-     * @return
+     * @return the first page to display
      */
     public int getStartPage()
     {
@@ -194,7 +194,7 @@ public abstract class TableFormPages extends TablePages
     }
 
     /**
-     * @return
+     * @return the last page to display
      */
     public int getStopPage()
     {

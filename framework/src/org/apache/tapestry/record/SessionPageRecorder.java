@@ -73,7 +73,7 @@ import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
- *  Simple implementation of {@link org.apache.tapestry.IPageRecorder}
+ *  Simple implementation of {@link org.apache.tapestry.engine.IPageRecorder}
  *  that stores page changes as {@link javax.servlet.http.HttpSession} attributes.
  *
  *

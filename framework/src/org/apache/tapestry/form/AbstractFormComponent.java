@@ -81,7 +81,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
      *  form is).  Also, if the form has a delegate, 
      *  then {@link IValidationDelegate#setFormComponent(IFormComponent)} is invoked.
      *
-     *  @throws RequestCycleException if the component is not wrapped by a {@link Form}.
+     *  @throws ApplicationRuntimeException if the component is not wrapped by a {@link Form}.
      *
      **/
 

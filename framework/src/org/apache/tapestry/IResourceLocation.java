@@ -124,7 +124,7 @@ public interface IResourceLocation
     /**
      *  Returns at a relative location to this resource.  
      *  The new resource may or may not exist; this can be determined
-     *  via {@link #getResourceURL(Locale)}.
+     *  via {@link #getResourceURL()}.
      * 
      *  @param name name of new resource, possibly as a relative path, or
      *  as an absolute path (starting with a slash).

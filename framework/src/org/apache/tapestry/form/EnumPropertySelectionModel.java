@@ -95,7 +95,7 @@ public class EnumPropertySelectionModel implements IPropertySelectionModel
      *  <code>com.example.foo.LabelStrings</code> as the resource base name.
      *
      *  <p>Normally (when resourcePrefix is null), the keys used to extract labels
-     *  matches the {@link Enum#getEnumerationId() enumeration id} of the option.  By
+     *  matches the {@link Enum#getName() enumeration id} of the option.  By
      *  convention, the enumeration id matches the name of the static variable.
      *
      *  <p>To avoid naming conflicts when using a single resource bundle for multiple

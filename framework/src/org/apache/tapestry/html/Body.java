@@ -205,7 +205,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
      *
      *  <p>A frequent use is to add an initialization function using
      *  this method, then cause it to be executed using
-     *  {@link #addOtherInitialization(String)}.
+     *  {@link #addInitializationScript(String)}.
      *
      **/
 
@@ -367,7 +367,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
      *  <p>The script is written into a nested markup writer.
      *
      *  <p>If there are any other initializations 
-     *  (see {@link #addOtherInitialization(String)}),
+     *  (see {@link #addInitializationScript(String)}),
      *  then a function to execute them is created.
      **/
 

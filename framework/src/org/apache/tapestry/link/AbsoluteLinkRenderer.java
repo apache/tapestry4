@@ -117,7 +117,7 @@ public class AbsoluteLinkRenderer extends DefaultLinkRenderer
 
     /**
      *  Used to override the server name in the final URL, if specified.  If not specified,
-     *  the port provided by the {@link javax.servlet.ServletRequest#getServerName()) request}
+     *  the port provided by the {@link javax.servlet.ServletRequest#getServerName() request}
      *  is used.
      *
      **/

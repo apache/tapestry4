@@ -73,7 +73,7 @@ import org.apache.tapestry.Tapestry;
  *  <p>If the class specified is for the <code>java.lang</code> package, then the package may be
  *  ommitted.  This allows <code>Boolean.TRUE</code> to be recognized as a valid value.
  *
- *  <p>The {@link org.apache.tapestry.IPageSource} maintains a cache of FieldBindings.  This means that
+ *  <p>The {@link org.apache.tapestry.engine.IPageSource} maintains a cache of FieldBindings.  This means that
  *  each field will be represented by a single binding ... that means that for any field,
  *  the <code>accessValue()</code> method (which obtains the value for the field using
  *  reflection) will only be invoked once.

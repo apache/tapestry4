@@ -67,7 +67,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.resource.ContextResourceLocation;
 
 /**
- *  An asset whose path is relative to the {@link ServletContext} containing
+ *  An asset whose path is relative to the {@link javax.servlet.ServletContext} containing
  *  the application.
  *
  *  @author Howard Lewis Ship

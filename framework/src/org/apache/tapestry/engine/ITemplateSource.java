@@ -75,7 +75,7 @@ import org.apache.tapestry.parse.ComponentTemplate;
 public interface ITemplateSource
 {
     /**
-     *  Name of an {@link IAsset} of a component that provides the template
+     *  Name of an {@link org.apache.tapestry.IAsset} of a component that provides the template
      *  for the asset.  This overrides the default (that the template is in
      *  the same directory as the specification).  This allows
      *  pages or component templates to be located properly, relative to static
@@ -99,10 +99,10 @@ public interface ITemplateSource
      *  Locates the template for the component.
      * 
      *  @param cycle The request cycle loading the template; this is required
-     *  in some cases when the template is loaded from an {@link IAsset}.
+     *  in some cases when the template is loaded from an {@link org.apache.tapestry.IAsset}.
      *  @param component The component for which a template should be loaded.
      *
-     *  @throws ApplicationRuntimeException if the resource cannot be located or loaded.
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if the resource cannot be located or loaded.
      * 
      **/
 

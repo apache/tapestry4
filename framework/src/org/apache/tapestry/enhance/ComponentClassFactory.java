@@ -79,8 +79,7 @@ import org.apache.tapestry.spec.IPropertySpecification;
 
 /**
  *  Contains the logic for analyzing and enhancing a single component class.
- *  Internally, this class makes use of {@link org.apache.tapestry.enhance.ClassFabricator}
- *  and {@link org.apache.tapestry.enhance.MethodFabricator}.
+ *  Internally, this class makes use of {@link IEnhancedClassFactory}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -308,7 +307,7 @@ public class ComponentClassFactory
 
     /**
      *  Invoked by {@link org.apache.tapestry.enhance.DefaultComponentClassEnhancer} to
-     *  create, as a {@link org.apache.bcel.classfile.JavaClass}, an enahanced
+     *  create an enahanced
      *  subclass of the component class.  This means creating a default constructor,
      *  new fields, and new accessor and mutator methods.  Properties are created
      *  for connected parameters, for all formal parameters (the binding property),
@@ -342,7 +341,7 @@ public class ComponentClassFactory
     /**
      *  Invoked by {@link #needsEnhancement()} to find any enhancements
      *  that may be needed.  Should create an {@link org.apache.tapestry.enhance.IEnhancer}
-     *  for each one, and add it to the queue using {@link #addEnhancer(IEnhancer)}.
+     *  for each one, and add it to the queue.
      * 
      **/
 

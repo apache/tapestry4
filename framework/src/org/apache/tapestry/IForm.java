@@ -108,7 +108,7 @@ public interface IForm extends IAction
      *  consists of the component's id, with an index number added to
      *  ensure uniqueness.
      *
-     *  <p>Simply invokes {@link #getElementId(String)} with the component's id.
+     *  <p>Simply invokes {@link #getElementId(IFormComponent, String)} with the component's id.
      *
      *
      *  @since 1.0.5
@@ -174,7 +174,7 @@ public interface IForm extends IAction
      *  form to a particular value.
      * 
      *  @see org.apache.tapestry.form.Upload
-     *  @throws RequestCycleException if the current encoding type is not null
+     *  @throws ApplicationRuntimeException if the current encoding type is not null
      *  and doesn't match the suggested encoding type
      *  @since 3.0
      * 

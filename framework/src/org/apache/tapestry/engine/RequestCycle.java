@@ -441,7 +441,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      * <p>The process is expected to end with a {@link RenderRewoundException}.
      * If the entire page is renderred without this exception being thrown, it means
      * that the target action id was not valid, and a 
-     * {@link RequestCycleException}
+     * {@link ApplicationRuntimeException}
      * is thrown.
      *
      * <p>This clears all attributes.
@@ -518,7 +518,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      * <p>The process is expected to end with a {@link RenderRewoundException}.
      * If the entire page is renderred without this exception being thrown, it means
      * that the target action id was not valid, and a 
-     * {@link RequestCycleException}
+     * {@link ApplicationRuntimeException}
      * is thrown.
      *
      * <p>This clears all attributes.

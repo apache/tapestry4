@@ -65,7 +65,7 @@ import org.xml.sax.SAXParseException;
  *  Exception thrown if there is any kind of error parsing the
  *  an XML document. 
  *
- *  @see AbstractDocumentParser
+ *  @see org.apache.tapestry.parse.SpecificationParser
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
