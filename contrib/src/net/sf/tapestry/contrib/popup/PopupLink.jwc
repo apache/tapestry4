@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component-specification PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<component-specification class="net.sf.tapestry.contrib.popup.PopupLink" allow-body="yes" allow-informal-parameters="yes">
+
+	<parameter name="url" java-type="String" direction="custom" required="yes"/>
+	<parameter name="windowName" java-type="String" direction="custom" required="no"/>
+	<parameter name="windowHeight" java-type="Integer" direction="custom" required="no"/>
+	<parameter name="windowWidth" java-type="Integer" direction="custom" required="no"/>
+
+	<component id="needsToGenerateScript" type="Conditional">
+		<binding name="condition" expression="needsToGenerateScript"/>
+	</component>
+
+	<component id="popoutScript" type="Script">
+		<static-binding name="script">/net/sf/tapestry/contrib/popup/popup.script</static-binding>
+		<binding name="popupFunctionName" expression="popupFunctionName"/>
+		<binding name="windowName" expression="windowName"/>
+		<binding name="windowHeight" expression="windowHeight"/>
+		<binding name="windowWidth" expression="windowWidth"/>
+	</component>
+
+  	<component id="link" type="Any">
+            <static-binding name="element">a</static-binding>
+            <binding name="href" expression="linkHref"/>
+  	</component>
+
+	<component id="wrapped" type="RenderBody"/>
+
+</component-specification>
