@@ -33,7 +33,8 @@ ifneq "$(JAVA_FILES)" ""
 
 catalog-java: $(wildcard $(JAVA_FILES))
 	@for match in $? ; do  \
-		$(ECHO) "$(MOD_PACKAGE_DIR)$(SLASH)$$match" >> $(MOD_JAVA_CATALOG) ; \
+		$(ECHO) "$(MOD_SOURCE_DIR_PREFIX)$(MOD_PACKAGE_DIR)$(SLASH)$$match" \
+			>> $(MOD_JAVA_CATALOG) ; \
 	done
 
 endif
@@ -42,7 +43,8 @@ ifneq "$(RESOURCE_FILES)" ""
 
 catalog-resources: $(wildcard $(RESOURCE_FILES))
 	@for match in $? ; do \
-		$(ECHO) "$(MOD_PACKAGE_DIR)$(SLASH)$$match" >> $(MOD_RESOURCE_CATALOG) ; \
+		$(ECHO) "$(MOD_SOURCE_DIR_PREFIX)$(MOD_PACKAGE_DIR)$(SLASH)$$match" \
+			>> $(MOD_RESOURCE_CATALOG) ; \
 	done
 	
 endif

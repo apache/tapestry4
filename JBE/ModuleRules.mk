@@ -93,12 +93,12 @@ inner-compile: $(MOD_JAVA_STAMP_FILE) $(RMI_STAMP_FILE)
 inner-copy-resources: $(MOD_META_STAMP_FILE) $(RESOURCE_STAMP_FILE)
 	@$(TOUCH) $(DUMMY_FILE)
 
-# The Java Catalog stores the names of the Java files, relative to
-# the SOURCE_DIR.  We need to get the pathname back by prefixing with
-# the SOURCE_DIR.
+# The java catalog has the names of all .java files, including
+# a prefix that identifies the root of the source code tree;
+# since we change to the source code tree root directory,
+# we need to strip off that prefix.
 
-_JAVA_FILES := $(addprefix $(FINAL_SOURCE_DIR)$(SLASH), \
-	$(shell $(CAT) $(MOD_JAVA_CATALOG)))
+_JAVA_FILES := $(shell $(CAT) $(MOD_JAVA_CATALOG))
 
 $(MOD_JAVA_STAMP_FILE): $(_JAVA_FILES)
 ifneq "$(_JAVA_FILES)" ""
@@ -137,20 +137,20 @@ ifneq "$(_RMI_CLASS_NAMES)" ""
 endif
 	@$(TOUCH) $@
 
-# Like the Java files above, the resource files also are relative
-# to the SOURCE_DIR.  We have to be very careful when copying
-# because we need the relative pathnames if the files are
-# to end up in the right place.
+# The catalog file has the path name, including the relative
+# path to the source code root directory.  Like the Java files
+# above, we change to the source code root directory and need
+# to strip a prefix off of the name before it is useful.
 
-_RESOURCE_FILES := $(addprefix $(FINAL_SOURCE_DIR)$(SLASH), \
-	$(shell $(CAT) $(MOD_RESOURCE_CATALOG)))
+_RESOURCE_FILES := $(shell $(CAT) $(MOD_RESOURCE_CATALOG))
 
 $(RESOURCE_STAMP_FILE): $(_RESOURCE_FILES)
 ifneq "$(_RESOURCE_FILES)" ""
 	@$(ECHO) "\n*** Copying package resources ...***\n"
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CD) $(FINAL_SOURCE_DIR) ; \
-	$(CP) --force --parents $? $(ABSOLUTE_CLASS_DIR)
+	$(CP) --force --parents $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?) \
+		 $(ABSOLUTE_CLASS_DIR)
 	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
 	@$(TOUCH) $@
@@ -207,7 +207,8 @@ catalog-package:
 	@$(ECHO) "\n*** Cataloging package $(PACKAGE) ... ***\n"
 	@$(MAKE) -C $(FINAL_SOURCE_DIR)$(SLASH)$(PACKAGE_DIR) \
 		MOD_BUILD_DIR="$(ABSOLUTE_MOD_BUILD_DIR)" \
-		MOD_PACKAGE_DIR="$(PACKAGE_DIR)"
+		MOD_PACKAGE_DIR="$(PACKAGE_DIR)" \
+		MOD_SOURCE_DIR_PREFIX="$(FINAL_SOURCE_DIR)$(SLASH)"
 	
 # End of PACKAGE_RECURSE block
 
