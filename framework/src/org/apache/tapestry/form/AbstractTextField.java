@@ -121,15 +121,6 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         writer.attribute("name", name);
 
-		int displayWidth = getDisplayWidth();
-		int maximumLength = getMaximumLength();
-
-        if (displayWidth != 0)
-            writer.attribute("size", displayWidth);
-
-        if (maximumLength != 0)
-            writer.attribute("maxlength", maximumLength);
-
         value = readValue();
         if (value != null)
             writer.attribute("value", value);
@@ -174,8 +165,4 @@ public abstract class AbstractTextField extends AbstractFormComponent
     public abstract boolean isHidden();
 
     public abstract boolean isDisabled();
-
-    public abstract int getDisplayWidth();
-
-    public abstract int getMaximumLength();
 }

@@ -16,10 +16,6 @@
   
   <parameter name="hidden" type="boolean" direction="in"/>
   
-  <parameter name="displayWidth" type="int" direction="in"/>
-  
-  <parameter name="maximumLength" type="int" direction="in"/>
-  
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
   
