@@ -24,5 +24,24 @@ Value: [100]
 		</assert-output>
 		
 	</request>
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Two"/>
+		
+			
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Two</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Message in a box">
+<![CDATA[
+<td>Tapestry Rules!</td>
+]]>			
+		</assert-output>
+
+	</request>
 		
  </mock-test>
