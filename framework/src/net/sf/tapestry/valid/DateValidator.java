@@ -44,133 +44,130 @@ import java.util.GregorianCalendar;
 
 public class DateValidator extends BaseValidator
 {
-	private DateFormat format;
-	private Date minimum;
-	private Date maximum;
-	private Calendar calendar;
+    private DateFormat format;
+    private Date minimum;
+    private Date maximum;
+    private Calendar calendar;
 
-	private static DateFormat defaultDateFormat =
-		new SimpleDateFormat("MM/dd/yyyy");
+    private static DateFormat defaultDateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-	public void setFormat(DateFormat value)
-	{
-		format = value;
-	}
+    public void setFormat(DateFormat value)
+    {
+        format = value;
+    }
 
-	public DateFormat getFormat()
-	{
-		return format;
-	}
+    public DateFormat getFormat()
+    {
+        return format;
+    }
 
-	private DateFormat getEffectiveFormat()
-	{
-		if (format == null)
-			return defaultDateFormat;
+    private DateFormat getEffectiveFormat()
+    {
+        if (format == null)
+            return defaultDateFormat;
 
-		return format;
-	}
+        return format;
+    }
 
-	public String toString(IField file, Object value)
-	{
-		if (value == null)
-			return null;
+    public String toString(IField file, Object value)
+    {
+        if (value == null)
+            return null;
 
-		Date date = (Date) value;
+        Date date = (Date) value;
 
-		return getEffectiveFormat().format(date);
-	}
+        return getEffectiveFormat().format(date);
+    }
 
-	public Object toObject(IField field, String value)
-		throws ValidatorException
-	{
-		if (checkRequired(field, value))
-			return null;
+    public Object toObject(IField field, String value) throws ValidatorException
+    {
+        if (checkRequired(field, value))
+            return null;
 
-		DateFormat format = getEffectiveFormat();
+        DateFormat format = getEffectiveFormat();
 
-		Date result;
+        Date result;
 
-		try
-		{
-			result = format.parse(value);
+        try
+        {
+            result = format.parse(value);
 
-			if (calendar == null)
-				calendar = new GregorianCalendar();
+            if (calendar == null)
+                calendar = new GregorianCalendar();
 
-			calendar.setTime(result);
+            calendar.setTime(result);
 
-			// SimpleDateFormat allows two-digit dates to be
-			// entered, i.e., 12/24/66 is Dec 24 0066 ... that's
-			// probably not what is really wanted, so treat
-			// it as an invalid date.
+            // SimpleDateFormat allows two-digit dates to be
+            // entered, i.e., 12/24/66 is Dec 24 0066 ... that's
+            // probably not what is really wanted, so treat
+            // it as an invalid date.
 
-			if (calendar.get(Calendar.YEAR) < 1000)
-				result = null;
+            if (calendar.get(Calendar.YEAR) < 1000)
+                result = null;
 
-		}
-		catch (ParseException ex)
-		{
-			// ParseException does not include a useful error message
-			// about what's wrong.
-			result = null;
-		}
+        }
+        catch (ParseException ex)
+        {
+            // ParseException does not include a useful error message
+            // about what's wrong.
+            result = null;
+        }
 
-		if (result == null)
-		{
-			String errorMessage = getString("invalid-date-format", field.getDisplayName());
+        if (result == null)
+        {
+            String errorMessage = getString("invalid-date-format", field.getPage().getLocale(), field.getDisplayName());
 
-			throw new ValidatorException(
-				errorMessage,
-				ValidationConstraint.DATE_FORMAT,
-				value);
-		}
+            throw new ValidatorException(errorMessage, ValidationConstraint.DATE_FORMAT, value);
+        }
 
-		// OK, check that the date is in range.
+        // OK, check that the date is in range.
 
-		if (minimum != null && minimum.compareTo(result) > 0)
-		{
-			String errorMessage =
-				getString("date-too-early", field.getDisplayName(), format.format(minimum));
+        if (minimum != null && minimum.compareTo(result) > 0)
+        {
+            String errorMessage =
+                getString(
+                    "date-too-early",
+                    field.getPage().getLocale(),
+                    field.getDisplayName(),
+                    format.format(minimum));
 
-			throw new ValidatorException(
-				errorMessage,
-				ValidationConstraint.TOO_SMALL,
-				value);
-		}
+            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL, value);
+        }
 
-		if (maximum != null && maximum.compareTo(result) < 0)
-		{
-			String errorMessage =
-				getString("date-too-late", field.getDisplayName(), format.format(maximum));
+        if (maximum != null && maximum.compareTo(result) < 0)
+        {
+            String errorMessage =
+                getString(
+                    "date-too-late",
+                    field.getPage().getLocale(),
+                    field.getDisplayName(),
+                    format.format(maximum));
 
-			throw new ValidatorException(
-				errorMessage,
-				ValidationConstraint.TOO_LARGE,
-				value);
-		}
+            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE, value);
+        }
 
-		return result;
+        return result;
 
-	}
+    }
 
-	public Date getMaximum()
-	{
-		return maximum;
-	}
+    public Date getMaximum()
+    {
+        return maximum;
+    }
 
-	public void setMaximum(Date maximum)
-	{
-		this.maximum = maximum;
-	}
+    public void setMaximum(Date maximum)
+    {
+        this.maximum = maximum;
+    }
 
-	public Date getMinimum()
-	{
-		return minimum;
-	}
+    public Date getMinimum()
+    {
+        return minimum;
+    }
 
-	public void setMinimum(Date minimum)
-	{
-		this.minimum = minimum;
-	}
+    public void setMinimum(Date minimum)
+    {
+        this.minimum = minimum;
+    }
 
 }
