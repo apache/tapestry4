@@ -70,7 +70,7 @@ package org.apache.tapestry.spec;
  *
  **/
 
-public class ListenerBindingSpecification extends BindingSpecification
+public class ListenerBindingSpecification extends BindingSpecification implements IListenerBindingSpecification
 {
     protected String _language;
     

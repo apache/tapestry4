@@ -103,6 +103,7 @@ import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.ListenerBindingSpecification;
@@ -300,7 +301,7 @@ public class PageLoader implements IPageLoader
 
             if (type == BindingType.LISTENER)
             {
-                constructListenerBinding(component, name, (ListenerBindingSpecification) bspec);
+                constructListenerBinding(component, name, (IListenerBindingSpecification) bspec);
                 continue;
             }
 
@@ -404,7 +405,7 @@ public class PageLoader implements IPageLoader
     private void constructListenerBinding(
         IComponent component,
         String bindingName,
-        ListenerBindingSpecification spec)
+        IListenerBindingSpecification spec)
     {
         String language = spec.getLanguage();
 

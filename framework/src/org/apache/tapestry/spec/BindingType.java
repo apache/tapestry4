@@ -108,6 +108,7 @@ public final class BindingType extends Enum
      *  specialized kind of binding that encapsulates a component listener
      *  as a script.  Uses a subclass of {@link BindingSpecification},
      *  {@link ListenerBindingSpecification}.
+     *  {@link IListenerBindingSpecification}.
      * 
      *  @since 2.4
      * 

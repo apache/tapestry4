@@ -67,6 +67,7 @@ import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.ILibrarySpecification;
+import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.ListenerBindingSpecification;
@@ -533,7 +534,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
         checkLine(c, 9);
 
-        ListenerBindingSpecification lbs = (ListenerBindingSpecification) c.getBinding("listener");
+        IListenerBindingSpecification lbs = (ListenerBindingSpecification) c.getBinding("listener");
 
         checkLine(lbs, 10);
 
