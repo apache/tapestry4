@@ -58,6 +58,7 @@ package org.apache.tapestry.vlib;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.vlib.ejb.Person;
 
 /**
@@ -91,18 +92,6 @@ public class Visit implements Serializable
 
     private Timestamp _lastAccess;
 
-    private VirtualLibraryEngine _engine;
-
-    public Visit(VirtualLibraryEngine engine)
-    {
-        _engine = engine;
-    }
-
-    public VirtualLibraryEngine getEngine()
-    {
-        return _engine;
-    }
-
     /**
      *  Returns the time the user last accessed the database, which may
      *  be null if the user hasn't logged in yet.
@@ -119,7 +108,7 @@ public class Visit implements Serializable
      *
      **/
 
-    public Person getUser()
+    public Person getUser(IRequestCycle cycle)
     {
         if (_user != null)
             return _user;
@@ -127,13 +116,15 @@ public class Visit implements Serializable
         if (_userId == null)
             return null;
 
-        _user = _engine.readPerson(_userId);
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
+		
+        _user = vengine.readPerson(_userId);
 
         return _user;
     }
 
     /**
-     *  Returns the primary key of the logged in user, or null if the
+     *  Returns the id of the logged in user, or null if the
      *  user is not logged in.
      *
      **/
@@ -194,17 +185,13 @@ public class Visit implements Serializable
 
     /**
      *  Invoked by pages after they perform an operation that changes the backend
-     *  database in such a way that cached data is no longer valid.  Currently,
-     *  this should be invoked after changing the user's profile, or adding
-     *  a new {@link org.apache.tapestry.vlib.ejb.IPublisher} entity.
+     *  database in such a way that cached data is no longer valid. 
      *
      **/
 
     public void clearCache()
     {
         _user = null;
-
-        _engine.clearCache();
     }
 
 }

@@ -109,7 +109,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
     public void activate(IRequestCycle cycle)
     {
         Visit visit = (Visit) getVisit();
-        VirtualLibraryEngine vengine = visit.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
 
         Integer userId = visit.getUserId();
         Map attributes = null;
@@ -181,7 +181,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
         }
 
         Visit visit = (Visit) getVisit();
-        VirtualLibraryEngine vengine = visit.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
         Integer userId = visit.getUserId();
 
         int i = 0;
@@ -211,9 +211,10 @@ public abstract class EditProfile extends Protected implements PageRenderListene
             }
         }
 
-        visit.clearCache();
+        vengine.clearCache();
 
-        cycle.setPage("MyLibrary");
+        MyLibrary myLibrary = (MyLibrary)cycle.getPage("MyLibrary");
+        myLibrary.activate(cycle);
     }
 
     public void pageBeginRender(PageEvent event)

@@ -69,7 +69,6 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
-import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.IOperations;
 
 /**
@@ -167,8 +166,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
         // OK, do the update.
 
-        Visit visit = (Visit) getVisit();
-        VirtualLibraryEngine vengine = visit.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
         Integer bookId = getBookId();
 
         int i = 0;
@@ -183,7 +181,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
                 else
                 {
                     bean.updateBook(bookId, attributes, publisherName);
-                    visit.clearCache();
+					vengine.clearCache();
                 }
 
                 break;

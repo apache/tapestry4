@@ -111,7 +111,7 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
         Visit visit = (Visit) getVisit();
         Integer userId = visit.getUserId();
-        VirtualLibraryEngine vengine = visit.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
 
         attributes.put("ownerId", userId);
         attributes.put("holderId", userId);
@@ -132,7 +132,7 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
                     // Clear the app's cache of info; in this case, known publishers.
 
-                    visit.clearCache();
+                    vengine.clearCache();
                 }
 
                 break;

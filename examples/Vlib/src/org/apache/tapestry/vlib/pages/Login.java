@@ -101,6 +101,8 @@ public abstract class Login extends BasePage implements IErrorProperty
     public abstract String getEmail();
 
     public abstract String getPassword();
+    
+    public abstract void setPassword(String password);
 
     protected IValidationDelegate getValidationDelegate()
     {
@@ -130,9 +132,19 @@ public abstract class Login extends BasePage implements IErrorProperty
 
     public void attemptLogin(IRequestCycle cycle)
     {
+    	String password = getPassword();
+    	
+    	// Do a little extra work to clear out the password.
+    	
+    	setPassword(null);
+    	IValidationDelegate delegate = getValidationDelegate();
+    	
+    	delegate.setFormComponent((IFormComponent)getComponent("inputPassword"));
+    	delegate.recordFieldInputValue(null);
+    	
         // An error, from a validation field, may already have occured.
 
-        if (getValidationDelegate().getHasErrors() || getError() != null)
+        if (delegate.getHasErrors())
             return;
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
@@ -144,7 +156,7 @@ public abstract class Login extends BasePage implements IErrorProperty
             {
                 IOperations operations = vengine.getOperations();
 
-                Person person = operations.login(getEmail(), getPassword());
+                Person person = operations.login(getEmail(), password);
 
                 loginUser(person, cycle);
 

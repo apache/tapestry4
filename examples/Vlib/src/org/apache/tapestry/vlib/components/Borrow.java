@@ -128,7 +128,7 @@ public abstract class Borrow extends BaseComponent
 
         Visit visit = (Visit) getPage().getVisit();
         Home home = (Home) cycle.getPage("Home");
-        VirtualLibraryEngine vengine = visit.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
 
         int i = 0;
         while (true)
