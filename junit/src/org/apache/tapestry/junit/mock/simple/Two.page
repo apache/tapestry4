@@ -8,6 +8,9 @@
 	
 	<component id="shell" type="Shell">
 		<static-binding name="title" value="Page Two"/>
+		<static-binding name="doctype">
+			math SYSTEM "http://www.w3.org/Math/DTD/mathml1/mathml.dtd"
+		</static-binding>
 	</component>
 	
 	<component id="body" type="Body"/>
