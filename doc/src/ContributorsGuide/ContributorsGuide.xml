@@ -160,12 +160,6 @@ to the JBoss installation and the &Jetty; installation.  A sample file is provid
 </tip>
 </para>
 
-<para>
-Tapestry has some additional, external dependencies on libraries that (due to
-licensing conflicts) are not supplied in the distribution or stored in CVS.
-More details available shortly ....	
-</para>
-
 <section id="building.subprojects">
 	<title>Tapestry Subprojects</title>
 	
@@ -248,15 +242,6 @@ performs builds over all sub-projects.
 		Builds <filename>vlib.ear</filename> from
 		<filename>vlibbeans.jar</filename> and
 		<filename>vlib.war</filename>.
-		</para>
-		</listitem>
-	</varlistentry>
-
-	<varlistentry>
-		<term><filename>doc/src/Tutorial</filename></term>
-		<listitem>
-		<para>
-		Builds the Tapestry Tutorial documentation.
 		</para>
 		</listitem>
 	</varlistentry>
@@ -528,8 +513,9 @@ Copy <filename>clover.jar</filename> to the
 
 <para>
 The Clover report executes from the <filename>junit</filename> directory, using the Ant
-target <literal>clover</literal>.  It runs builds the clover-enhanced version of the framework
-classes, and executs the JUnit test suite twice (with all logging enabled and all logging disabled),
+target <literal>clover</literal>.  It  builds the clover-enhanced version of the framework
+classes, and executes the JUnit test suite twice (with all logging enabled and 
+then with all logging disabled),
 then generates the HTML report into the
 <filename>web/doc/clover</filename> directory.
 </para>
@@ -572,14 +558,13 @@ must come after all <literal>import</literal> statements, and before the start o
 	<title>Type Comment</title>
 <programlisting>
 /**
- *  <replaceable>A useful description of the class or interface, especially covering</replaceable>
- *  <replaceable>how it is used, and what other classes or interfaces it interacts with.</replaceable>
+ * <replaceable>A useful description of the class or interface, especially covering</replaceable>
+ * <replaceable>how it is used, and what other classes or interfaces it interacts with.</replaceable>
  *
- *  @author <replaceable>Your Name</replaceable>
- *  @version &dollar;Id$
- *  @since <replaceable>Version</replaceable>
- *
- **/
+ * @author <replaceable>Your Name</replaceable>
+ * @version &dollar;Id$
+ * @since <replaceable>Version</replaceable>
+ */
 </programlisting>	
 </figure>
 
@@ -656,18 +641,13 @@ copy of a collection, but for efficiency this is not always reasonable.
 </para>
 
 <para>
-And don't forget to make liberal use of JavaDoc links (<literal>@link</literal>) which makes the
-documentation far eaiser to use.
+Also document any cases where a parameter is allowed to be null, or a return value may be null.	
 </para>
 
-<note>
-	<title>Javadoc Formatting</title>
-	<para>
-	The standard for formatting Javadoc comments in Tapestry is to close the comment
-	with <literal>**/</literal>.  You should attempt to follow this, especially
-	when modifying existing code.
-	</para>
-</note>
+<para>
+And don't forget to make liberal use of JavaDoc links (<literal>@link</literal>) which makes the
+documentation far easier to use.
+</para>
 
 </section>
 
@@ -709,7 +689,7 @@ preferences are easy to setup in Eclipse:
 <para>
 Standard Java guidelines are expected to be followed.  
 Class names are capitalized (example: <classname>MyClass</classname>).
-Methodsstart with a lower-case character (example: <literal>myMethod</literal>).
+Methods start with a lower-case character (example: <literal>myMethod</literal>).
 </para>
 
 <para>
@@ -1173,35 +1153,35 @@ have a body (that is, wrap other components) is supplied at the end.
 	<title>Component Documentation Template</title>
 <programlisting>
 /**
- *  <replaceable>Type comment documentation ...</replaceable>
+ * <replaceable>Type comment documentation ...</replaceable>
  *
- *  &lt;p&gt;&lt;table border=1&gt;
- *  &lt;tr&gt;
- *    &lt;th&gt;Parameter&lt;/th&gt;
- *    &lt;th&gt;Type&lt;/th&gt;
- *    &lt;th&gt;Direction&lt;/th&gt;
- *    &lt;th&gt;Required&lt;/th&gt;
- *    &lt;th&gt;Default&lt;/th&gt;
- *    &lt;th&gt;Description&lt;/th&gt;
+ * &lt;p&gt;&lt;table border=1&gt;
+ * &lt;tr&gt;
+ *   &lt;th&gt;Parameter&lt;/th&gt;
+ *   &lt;th&gt;Type&lt;/th&gt;
+ *   &lt;th&gt;Direction&lt;/th&gt;
+ *   &lt;th&gt;Required&lt;/th&gt;
+ *   &lt;th&gt;Default&lt;/th&gt;
+ *   &lt;th&gt;Description&lt;/th&gt;
  *  &lt;/tr&gt;
  *
- *  &lt;tr&gt;
- *    &lt;td&gt;<replaceable>name</replaceable>&lt;/td&gt;
- *    &lt;td&gt;<replaceable>{@link Type}</replaceable>&lt;/td&gt;
- *    &lt;td&gt;<replaceable>in|out|in-out</replaceable>&lt;/td&gt; <co id="procedures.component-doc.direction"/>
- *    &lt;td&gt;<replaceable>yes|no</replaceable>&lt;/td&gt;
- *    &lt;td&gt;<replaceable>Default value</replaceable>&lt;/td&gt; <co id="procedures.component-doc.default"/>
- *    &lt;td&gt;<replaceable>Full description</replaceable>&lt;/td&gt;
- *  &lt;/tr&gt;
+ * &lt;tr&gt;
+ *   &lt;td&gt;<replaceable>name</replaceable>&lt;/td&gt;
+ *   &lt;td&gt;<replaceable>{@link Type}</replaceable>&lt;/td&gt;
+ *   &lt;td&gt;<replaceable>in|out|in-out</replaceable>&lt;/td&gt; <co id="procedures.component-doc.direction"/>
+ *   &lt;td&gt;<replaceable>yes|no</replaceable>&lt;/td&gt;
+ *   &lt;td&gt;<replaceable>Default value</replaceable>&lt;/td&gt; <co id="procedures.component-doc.default"/>
+ *   &lt;td&gt;<replaceable>Full description</replaceable>&lt;/td&gt;
+ * &lt;/tr&gt;
  *
- *  ...
+ * ...
  *
- *  &lt;p&gt;Informal parameters are <replaceable>[not]</replaceable> allowed.  The component
- *  may <replaceable>[not]</replaceable> contain a body.
+ * &lt;p&gt;Informal parameters are <replaceable>[not]</replaceable> allowed.  The component
+ * may <replaceable>[not]</replaceable> contain a body.
  *
- *  ...
+ * ...
  *
- **/
+ */
 </programlisting>
 <calloutlist>
 	<callout arearefs="procedures.component-doc.direction">
@@ -1247,8 +1227,8 @@ new reference pages.
 <para>
 Run JUnit tests before
 doing a checkin.
-You should always have a SourceForge bug or feature request. 
-When checking code in, use the SourceForge request as the checkin comment.
+You should always have a Bugzilla bug or feature request. 
+When checking code in, use the Bugzilla bug id as the checkin comment.
 </para>
 
 <example>
@@ -1307,6 +1287,10 @@ to the contrib library.
 <para>
 All source code stored in the repository must contain the standard Apache copyright and license.  A copy of the
 license, as a comment block, is stored as <filename>support/license.txt</filename>
+</para>
+
+<para>
+Realize that you are assigning copyright to the Apache Software Foundation.	
 </para>
 
 <para>
