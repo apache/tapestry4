@@ -106,28 +106,8 @@
 			any value that comes up when the form is submitted is ignored.
         Corresponds to the "disabled" HTML attribute.</td>
 	 </tr>
-   <tr>
-		<td>columns</td>
-		<td>integer</td>
-		<td>in</td>
-		<td>no</td>
-		<td>&nbsp;</td>
-		<td>The width of the textarea, in characters.  If zero, or unspecified
-		    the value is left to the client browser to determine.
-        Corresponds to the "cols" HTML attribute.
-    </td> 
-   </tr>
-	 <tr>
-		<td>rows</td>
-		<td>integer</td>
-		<td>in</td>
-		<td>no</td>
-		<td>&nbsp;</td>
-		<td>The number of rows in the textarea. If
-			unspecified or zero, then the value is left to the client browser to
-			determine.  Corresponds to the "rows" HTML attribute.
-    </td> 
-   </tr>
+
+
 	</table><BR>Body: 
             <STRONG>removed</STRONG><BR>Informal parameters: 
             <STRONG>allowed</STRONG>
@@ -156,12 +136,12 @@
   </table>
 <p>		
 
-            <pre>
+<pre>
 &lt;table valign="middle"&gt;
 &lt;form jwcid=&quot;@<a href="Form.html">Form</a>&quot; listener="ognl:listeners.formSubmit"&gt;
  &lt;tr&gt;
   &lt;td&gt;Your Comments&lt;/td&gt;
-  &lt;td&gt;&lt;textarea jwcid="<span class="jwcid">@<a href="#">TextArea</a></span>" value="ognl:comments" columns="ognl:columns" rows="ognl:rows"/&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;textarea jwcid="<span class="jwcid">commentsText</span>" rows="5" cols="20"/&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr align="right"&gt;
   &lt;td colspan="2"&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/td&gt;
@@ -173,8 +153,6 @@
 public class CustomerCommentsPage extends BasePage {
     private final static String COMMENTS = "Please enter your comments here"; 
     private String comments = COMMENTS;
-    private final int column = 20;
-    private final int rows = 5;
 
     public void formSubmit(IRequestCycle requestCycle) {
         // Proccess customer comments
@@ -187,17 +165,14 @@ public class CustomerCommentsPage extends BasePage {
         fireObservedChange("comments", value);
     }
 
-    public int getColumns() { return columns; }
-
-    public int getRows() { return rows; }
-
-    protected void initialize() {
+    public void detach() {
         comments = COMMENTS;
+        super.detach();
     }        
 }
 </pre>
-          </td>
-        </tr></table>
+
+ </td></tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

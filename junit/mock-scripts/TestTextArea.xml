@@ -181,7 +181,7 @@ Text:\[\s+\]
 
 		<assert-output name="TextArea">
 <![CDATA[
-<textarea name="$TextArea" rows="10" cols="20" class="magic"></textarea>
+<textarea name="$TextArea" class="magic"></textarea>
 ]]>
 		</assert-output>
 
