@@ -68,6 +68,7 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.vlib.IActivate;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -81,7 +82,7 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public abstract class EditProfile extends Protected implements PageRenderListener
+public abstract class EditProfile extends Protected implements PageRenderListener, IActivate
 {
     public abstract String getPassword1();
 
@@ -105,7 +106,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
      *
      **/
 
-    public void beginEdit(IRequestCycle cycle)
+    public void activate(IRequestCycle cycle)
     {
         Visit visit = (Visit) getVisit();
         VirtualLibraryEngine vengine = visit.getEngine();

@@ -20,10 +20,10 @@ to the Virtual Library database, so that they may be borrowed by others.
 <table class="data">
 
   <tr>
-    <th>Title</th>
-    <th>Author</th>
-    <th>Publisher</th>
-    <th>Borrowed By</th>
+    <th><span jwcid="sortTitle">Title</span></th>
+    <th><span jwcid="sortAuthor">Author</span></th>
+    <th><span jwcid="sortPublisher">Publisher</span></th>
+    <th><span jwcid="sortBorrower">Borrowed By</span></th>
     <th>Edit/Delete</th>
   </tr>
   <tr jwcid="browser@Browser" query="ognl:ownedQuery" value="ognl:currentBook">

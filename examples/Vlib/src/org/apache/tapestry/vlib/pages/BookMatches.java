@@ -63,6 +63,8 @@ import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
+import org.apache.tapestry.vlib.ejb.SortColumn;
+import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
  *  Runs queries and displays matches.
@@ -84,12 +86,60 @@ public abstract class BookMatches extends BasePage
 
     public abstract void setBookQuery(IBookQuery bookQuery);
 
+    public abstract SortColumn getSortColumn();
+
+    public abstract boolean isDescending();
+
+    public abstract void setAuthor(String author);
+
+    public abstract String getAuthor();
+
+    public abstract void setTitle(String title);
+
+    public abstract String getTitle();
+
+    public abstract void setPublisherPK(Integer publisherPK);
+
+    public abstract Integer getPublisherPK();
+
     /**
      *  Invoked by the {@link Home} page to perform a query.
      *
      **/
 
-    public void performQuery(String title, String author, Object publisherPK, IRequestCycle cycle)
+    public void performQuery(String title, String author, Integer publisherPK, IRequestCycle cycle)
+    {
+
+        // Store these values for later, when we need to redo the same query
+        // with different sorting.
+
+        setTitle(title);
+        setAuthor(author);
+        setPublisherPK(publisherPK);
+
+        int count = executeQuery(cycle);
+
+        if (count == 0)
+        {
+            Home home = (Home) cycle.getPage("Home");
+            home.setMessage(getString("no-matches"));
+            cycle.setPage(home);
+            return;
+        }
+
+        _browser.initializeForResultCount(count);
+        cycle.setPage(this);
+    }
+
+    public void resort(IRequestCycle cycle)
+    {
+        int count = executeQuery(cycle);
+
+        if (count != _browser.getResultCount())
+            _browser.initializeForResultCount(count);
+    }
+
+    private int executeQuery(IRequestCycle cycle)
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -101,25 +151,19 @@ public abstract class BookMatches extends BasePage
             setBookQuery(query);
         }
 
+        String title = getTitle();
+        String author = getAuthor();
+        Integer publisherPK = getPublisherPK();
+
+        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
+
         int i = 0;
         while (true)
         {
 
             try
             {
-                int count = query.masterQuery(title, author, publisherPK);
-
-                if (count == 0)
-                {
-                    Home home = (Home) cycle.getPage("Home");
-                    home.setMessage(getString("no-matches"));
-                    cycle.setPage(home);
-                    return;
-                }
-
-                _browser.initializeForResultCount(count);
-
-                break;
+                return query.masterQuery(title, author, publisherPK, ordering);
             }
             catch (RemoteException ex)
             {
@@ -134,12 +178,11 @@ public abstract class BookMatches extends BasePage
 
                     IErrorProperty page = (IErrorProperty) cycle.getPage();
                     page.setError(message);
-                    return;
+                    return 0;
                 }
             }
-        }
 
-        cycle.setPage(this);
+        }
     }
 
 }

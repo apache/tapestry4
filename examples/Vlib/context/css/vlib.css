@@ -47,6 +47,9 @@ TABLE.form TH
   padding-right: 8px;
 }
 
+
+
+
 TABLE.form TD, TABLE.form TH {
   border-width: 1px;
   border-color: #c0c0c0;
@@ -75,12 +78,22 @@ TABLE.data TD.control
   border-style: none;
 }
 
-TABLE.data TR TH
+TABLE.data TH
 {
   font-weight: bold;
   text-align: center;
   background-color: Blue;
   color: White;
+}
+
+TABLE.data TH A
+{
+	color: white;
+}
+
+TABLE.data TH A:hover
+{
+  color: #e6ae19;
 }
 
 

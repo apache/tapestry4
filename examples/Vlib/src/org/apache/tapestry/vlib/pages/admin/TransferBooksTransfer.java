@@ -228,7 +228,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
             {
                 IBookQuery query = vengine.createNewQuery();
 
-                int count = query.ownerQuery(user.getPrimaryKey());
+                int count = query.ownerQuery(user.getPrimaryKey(), null);
 
                 if (count > 0)
                     books = query.get(0, count);

@@ -21,8 +21,9 @@
     <binding name="focus" expression="searchRolloverImage"/>	
   </component>
        
-  <component id="myLibrary" type="PageLink">
-    <static-binding name="page" value="MyLibrary"/>	
+  <component id="myLibrary" type="DirectLink">
+    <binding name="listener" expression="listeners.viewMyLibrary"/>	
+    <binding name="stateful" expression="false"/>
   </component>    
   
   <component id="myLibraryRollover" type="Rollover">
@@ -30,8 +31,8 @@
     <binding name="focus" expression="myLibraryRolloverImage"/>
   </component>
   
-  <component id="borrowedBooks" type="PageLink">
-  	<static-binding name="page" value="BorrowedBooks"/>	
+  <component id="borrowedBooks" type="DirectLink">
+  	<binding name="listener" expression="listeners.viewBorrowedBooks"/>	
   </component>
   
   <component id="borrowedBooksRollover" type="Rollover">
@@ -95,6 +96,7 @@
    
   <component id="logout" type="DirectLink">
     <binding name="listener" expression="listeners.logout"/>
+    <binding name="stateful" expression="false"/>
   </component>
   
   <!-- Since there is no "Logout" page, the images for the Logout
@@ -105,8 +107,9 @@
     <binding name="focus" expression="assets.logout_h"/>	
   </component>
   
-  <component id="login" type="PageLink">
-    <static-binding name="page" value="Login"/>	
+  <component id="login" type="DirectLink">
+    <binding name="listener" expression="listeners.login"/>
+    <binding name="stateful" expression="false"/>
   </component>
   
   <component id="loginRollover" type="Rollover">

@@ -60,8 +60,8 @@ import java.rmi.RemoteException;
 import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.vlib.IActivate;
 import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
@@ -70,23 +70,20 @@ import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.ejb.SortColumn;
+import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
- *  Shows a list of the user's books, allowing books to be editted or
- *  even deleted.
- *
- *  <p>Note that, unlike elsewhere, book titles do not link to the
- *  {@link ViewBook} page.  It seems to me there would be a conflict between
- *  that behavior and the edit behavior; making the book titles not be links
- *  removes the ambiguity over what happens when the book title is clicked
- *  (view vs. edit).
+ *  Shows a list of books the user has borrowed.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
  * 
  **/
 
-public abstract class BorrowedBooks extends Protected implements IMessageProperty
+public abstract class BorrowedBooks
+    extends Protected
+    implements IMessageProperty, IActivate
 {
     private Browser _browser;
 
@@ -94,56 +91,73 @@ public abstract class BorrowedBooks extends Protected implements IMessagePropert
 
     public abstract IBookQuery getBorrowedQuery();
 
+    public abstract SortColumn getSortColumn();
+
+    public abstract boolean isDescending();
+
     public void finishLoad()
     {
         _browser = (Browser) getComponent("browser");
     }
 
-    /**
-     *  A dirty little secret of Tapestry and page recorders:  persistent
-     *  properties must be set before the render (when this method is invoked)
-     *  and can't change during the render.  We force
-     *  the creation of the borrowed books query and re-execute it whenever
-     *  the BorrowedBooks page is rendered.
-     *
-     **/
+	public void activate(IRequestCycle cycle)
+	{
+		runQuery();
+		
+		cycle.setPage(this);
+	}
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+	/**
+	 *  Invoked as listener method after the sortColumn or
+	 *  descending properties are changed.
+	 * 
+	 *  @param cycle
+	 *  @since 2.4
+	 * 
+	 *
+	 **/
+	
+    public void resort(IRequestCycle cycle)
     {
-        super.beginResponse(writer, cycle);
+        runQuery();
+    }
 
+    private void runQuery()
+    {
         Visit visit = (Visit) getVisit();
-        Integer userPK = visit.getUserPK();
-
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        int i = 0;
-        while (true)
-        {
-            try
-            {
-                IBookQuery query = getBorrowedQuery();
-
-                if (query == null)
-                {
-                    query = vengine.createNewQuery();
-                    setBorrowedQuery(query);
-                }
-
-                int count = query.borrowerQuery(userPK);
-
-                if (count != _browser.getResultCount())
-                    _browser.initializeForResultCount(count);
-
-                break;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception finding borrowed books.", ex, i++);
-
-                setBorrowedQuery(null);
-            }
-        }
+         Integer userPK = visit.getUserPK();
+        
+         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        
+         SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
+        
+         int i = 0;
+         while (true)
+         {
+        	 try
+        	 {
+        		 IBookQuery query = getBorrowedQuery();
+        
+        		 if (query == null)
+        		 {
+        			 query = vengine.createNewQuery();
+        			 setBorrowedQuery(query);
+        		 }
+        
+        		 int count = query.borrowerQuery(userPK, ordering);
+        
+        		 if (count != _browser.getResultCount())
+        			 _browser.initializeForResultCount(count);
+        
+        		 break;
+        	 }
+        	 catch (RemoteException ex)
+        	 {
+        		 vengine.rmiFailure("Remote exception finding borrowed books.", ex, i++);
+        
+        		 setBorrowedQuery(null);
+        	 }
+         }
     }
 
     /**
@@ -164,6 +178,8 @@ public abstract class BorrowedBooks extends Protected implements IMessagePropert
             Book book = operations.returnBook(bookPK);
 
             setMessage(formatString("returned-book", book.getTitle()));
+            
+            runQuery();
         }
         catch (FinderException ex)
         {
@@ -175,5 +191,6 @@ public abstract class BorrowedBooks extends Protected implements IMessagePropert
             throw new ApplicationRuntimeException(ex);
         }
     }
+
 
 }

@@ -154,7 +154,7 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
         myLibrary.setMessage(formatString("added-book", attributes.get("title")));
 
-        cycle.setPage(myLibrary);
+		myLibrary.activate(cycle);
     }
 
     public void pageBeginRender(PageEvent event)

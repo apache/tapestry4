@@ -63,10 +63,13 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.callback.ICallback;
+import org.apache.tapestry.callback.PageCallback;
+import org.apache.tapestry.vlib.IActivate;
 import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
-import org.apache.tapestry.vlib.pages.EditProfile;
+import org.apache.tapestry.vlib.pages.Login;
 
 /**
  *  The standard Border component, which provides the title of the page,
@@ -208,10 +211,40 @@ public abstract class Border extends BaseComponent
 
     public void editProfile(IRequestCycle cycle)
     {
-        EditProfile page = (EditProfile) cycle.getPage("EditProfile");
-
-        page.beginEdit(cycle);
+    	activate("EditProfile", cycle);
     }
+
+	public void viewBorrowedBooks(IRequestCycle cycle)
+	{
+		activate("BorrowedBooks", cycle);
+	}
+	
+	public void viewMyLibrary(IRequestCycle cycle)
+	{
+		activate("MyLibrary", cycle);
+	}
+	
+	private void activate(String pageName, IRequestCycle cycle)
+	{
+		IActivate page = (IActivate)cycle.getPage(pageName);
+		
+		page.validate(cycle);
+		
+		page.activate(cycle);
+	}
+
+	public void login(IRequestCycle cycle)
+	{
+		Visit visit = (Visit)cycle.getEngine().getVisit();
+
+		if (visit != null && visit.isUserLoggedIn())
+			return;
+			
+		ICallback callback = new PageCallback(getPage().getPageName());
+		Login loginPage = (Login)cycle.getPage("Login");
+		loginPage.setCallback(callback);
+		cycle.setPage(loginPage);
+	}
 
     public void logout(IRequestCycle cycle)
     {
