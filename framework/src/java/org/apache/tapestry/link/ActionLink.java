@@ -20,6 +20,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.ActionServiceParameter;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -32,7 +33,7 @@ import org.apache.tapestry.engine.ILink;
 public abstract class ActionLink extends AbstractLinkComponent implements IAction
 {
     public abstract boolean isStateful();
-    
+
     /**
      * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
      * also returns the default, true.
@@ -57,8 +58,7 @@ public abstract class ActionLink extends AbstractLinkComponent implements IActio
             throw new RenderRewoundException(this);
         }
 
-        return getLink(cycle, Tapestry.ACTION_SERVICE, new Object[]
-        { actionId });
+        return getLink(cycle, Tapestry.ACTION_SERVICE, new ActionServiceParameter(this, actionId));
     }
 
     public abstract IActionListener getListener();

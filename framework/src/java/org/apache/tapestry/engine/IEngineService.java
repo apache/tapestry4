@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.request.ResponseOutputStream;
 
@@ -37,19 +36,22 @@ public interface IEngineService
     /**
      * Builds a URL for a service. This is performed during the rendering phase of one request cycle
      * and bulds URLs that will invoke activity in a subsequent request cycle.
+     * <p>
+     * <b>This method changed incompatibly between release 3.0 and release 3.1. </b>
+     * </p>
      * 
      * @param cycle
      *            Defines the request cycle being processed.
-     * @param component
-     *            The component requesting the URL. Generally, the service context is established
-     *            from the component.
-     * @param parameters
-     *            Additional parameters specific to the component requesting the EngineServiceLink.
+     * @param parameter
+     *            An object that provide any additional information needed by the service. Each
+     *            service implementation will expect that an object of the proper type be passed in.
+     *            In some cases, a simple String will do; in others, a specific object (possibly
+     *            implementing an interface) will be required.
      * @return The URL for the service. The URL will have to be encoded via
      *         {@link javax.servlet.http.HttpServletResponse#encodeURL(java.lang.String)}.
      */
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters);
+    public ILink getLink(IRequestCycle cycle, Object parameter);
 
     /**
      * Perform the service, interpreting the URL (from the

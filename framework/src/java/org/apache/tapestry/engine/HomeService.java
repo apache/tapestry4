@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -39,12 +38,10 @@ public class HomeService extends AbstractService
     /** @since 3.1 */
     private ResponseRenderer _responseRenderer;
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
-        if (Tapestry.size(parameters) != 0)
-            throw new IllegalArgumentException(Tapestry.format(
-                    "service-no-parameters",
-                    Tapestry.HOME_SERVICE));
+        if (parameter != null)
+            throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
 
         return constructLink(cycle, Tapestry.HOME_SERVICE, null, null, true);
     }

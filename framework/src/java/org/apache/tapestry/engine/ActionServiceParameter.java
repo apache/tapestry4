@@ -12,34 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.c21;
+package org.apache.tapestry.engine;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.request.ResponseOutputStream;
 
-public class NameMismatchService implements IEngineService
+/**
+ * Parameter object used with {@link org.apache.tapestry.engine.ActionService}.
+ * 
+ * @author Howard M. Lewis Ship
+ * @since 3.1
+ */
+public class ActionServiceParameter
 {
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    private IComponent _component;
+
+    private String _actionId;
+
+    public ActionServiceParameter(IComponent component, String actionId)
     {
-        return null;
+        Defense.notNull(component, "component");
+        Defense.notNull(actionId, "actionId");
+
+        _component = component;
+        _actionId = actionId;
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException
+    public String getActionId()
     {
+        return _actionId;
     }
 
-    public String getName()
+    public IComponent getComponent()
     {
-        return "IncorrectName";
+        return _component;
     }
-
 }

@@ -47,19 +47,17 @@ public class ResetService extends AbstractService
     /** @since 3.1 */
 
     private ResetEventCoordinator _resetEventCoordinator;
-    
+
     /** @since 3.1 */
     private boolean _enabled;
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
-        if (Tapestry.size(parameters) != 0)
-            throw new IllegalArgumentException(Tapestry.format(
-                    "service-no-parameters",
-                    Tapestry.RESET_SERVICE));
+        if (parameter != null)
+            throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
 
-        String[] context = new String[1];
-        context[0] = component.getPage().getPageName();
+        String[] context = new String[]
+        { cycle.getPage().getPageName() };
 
         return constructLink(cycle, Tapestry.RESET_SERVICE, context, null, true);
     }
@@ -105,9 +103,9 @@ public class ResetService extends AbstractService
     {
         _resetEventCoordinator = resetEventCoordinator;
     }
-    
+
     /** @since 3.1 */
-    
+
     public void setEnabled(boolean enabled)
     {
         _enabled = enabled;

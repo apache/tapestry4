@@ -18,12 +18,12 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.RequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.easymock.MockControl;
 
 /**
  * Tests {@link org.apache.tapestry.engine.RequestCycle#toString()}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class TestRequestCycleToString extends TapestryTestCase
 {
@@ -62,13 +62,21 @@ public class TestRequestCycleToString extends TapestryTestCase
 
     public void testWithService()
     {
-        IEngineService service = new MockService("test");
+        MockControl servicec = newControl(IEngineService.class);
+        IEngineService service = (IEngineService) servicec.getMock();
+
+        service.getName();
+        servicec.setReturnValue("mock-test");
+
+        replayControls();
 
         IRequestCycle cycle = new RequestCycle(null, null, service, null);
 
         assertEquals(
-                "rewinding=false,service=test,serviceParameters=<null>,attributes=<null>,targetActionId=0,targetComponent=<null>",
+                "rewinding=false,service=mock-test,serviceParameters=<null>,attributes=<null>,targetActionId=0,targetComponent=<null>",
                 toString(cycle));
+
+        verifyControls();
     }
 
     public void testWithAttributes()

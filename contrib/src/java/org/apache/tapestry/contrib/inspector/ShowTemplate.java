@@ -24,6 +24,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.link.DirectLink;
@@ -122,7 +123,8 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
             if (token.getType() == TokenType.OPEN)
             {
-                boolean nextIsClose = (i + 1 < count) && (template.getToken(i + 1).getType() == TokenType.CLOSE);
+                boolean nextIsClose = (i + 1 < count)
+                        && (template.getToken(i + 1).getType() == TokenType.CLOSE);
 
                 write(writer, nextIsClose, (OpenToken) token);
 
@@ -225,19 +227,20 @@ public class ShowTemplate extends BaseComponent implements IDirect
     {
         IComponent component = getInspectedComponent();
         IEngineService service = getPage().getEngine().getService(Tapestry.DIRECT_SERVICE);
-        String[] context = new String[1];
 
         // Each id references a component embedded in the inspected component.
         // Get that component.
 
         String id = token.getId();
         IComponent embedded = component.getComponent(id);
-        context[0] = embedded.getIdPath();
+        Object[] serviceParameters = new Object[]
+        { embedded.getIdPath() };
 
         // Build a URL to select that component, as if by the captive
         // component itself (it's a Direct).
 
-        ILink link = service.getLink(getPage().getRequestCycle(), this, context);
+        DirectServiceParameter dsp = new DirectServiceParameter(this, serviceParameters);
+        ILink link = service.getLink(getPage().getRequestCycle(), dsp);
 
         writer.begin("span");
         writer.attribute("class", "jwc-tag");

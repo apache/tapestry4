@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
@@ -114,21 +115,23 @@ public class ExternalService extends AbstractService
 
     private ResponseRenderer _responseRenderer;
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
-        if (parameters == null || parameters.length == 0)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "service-requires-parameters",
-                    Tapestry.EXTERNAL_SERVICE));
+        Defense.isAssignable(parameter, ExternalServiceParameter.class, "parameter");
 
-        String pageName = (String) parameters[0];
+        ExternalServiceParameter esp = (ExternalServiceParameter) parameter;
+
+        String pageName = esp.getPageName();
+
         String[] context = new String[]
         { pageName };
 
-        Object[] pageParameters = new Object[parameters.length - 1];
-        System.arraycopy(parameters, 1, pageParameters, 0, parameters.length - 1);
-
-        return constructLink(cycle, Tapestry.EXTERNAL_SERVICE, context, pageParameters, true);
+        return constructLink(
+                cycle,
+                Tapestry.EXTERNAL_SERVICE,
+                context,
+                esp.getServiceParameters(),
+                true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,

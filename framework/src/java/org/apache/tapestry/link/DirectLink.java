@@ -20,6 +20,7 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -36,14 +37,18 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
 
     /**
      * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
-     * also returns the default, true. 
+     * also returns the default, true.
      */
 
     public abstract boolean isStateful();
 
     public ILink getLink(IRequestCycle cycle)
     {
-        return getLink(cycle, Tapestry.DIRECT_SERVICE, constructServiceParameters(getParameters()));
+        Object[] serviceParameters = constructServiceParameters(getParameters());
+
+        DirectServiceParameter dsp = new DirectServiceParameter(this, serviceParameters);
+
+        return getLink(cycle, Tapestry.DIRECT_SERVICE, dsp);
     }
 
     /**

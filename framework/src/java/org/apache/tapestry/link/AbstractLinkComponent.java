@@ -32,17 +32,14 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.html.Body;
 
 /**
- *  Base class for
- *  implementations of {@link ILinkComponent}.  Includes a disabled attribute
- *  (that should be bound to a disabled parameter), 
- *  an anchor attribute, and a
- *  renderer attribute (that should be bound to a renderer parameter).  A default,
- *  shared instance of {@link org.apache.tapestry.link.DefaultLinkRenderer} is
- *  used when no specific renderer is provided.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Base class for implementations of {@link ILinkComponent}. Includes a disabled attribute (that
+ * should be bound to a disabled parameter), an anchor attribute, and a renderer attribute (that
+ * should be bound to a renderer parameter). A default, shared instance of
+ * {@link org.apache.tapestry.link.DefaultLinkRenderer}is used when no specific renderer is
+ * provided.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public abstract class AbstractLinkComponent extends AbstractComponent implements ILinkComponent
 {
@@ -51,10 +48,9 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     public abstract boolean isDisabled();
 
     /**
-     *  Adds an event handler (typically, from a wrapped component such
-     *  as a {@link org.apache.tapestry.html.Rollover}).
-     *
-     **/
+     * Adds an event handler (typically, from a wrapped component such as a
+     * {@link org.apache.tapestry.html.Rollover}).
+     */
 
     public void addEventHandler(LinkEventType eventType, String functionName)
     {
@@ -92,10 +88,8 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     }
 
     /**
-     *  Renders the link by delegating to an instance
-     *  of {@link ILinkRenderer}.
-     *
-     **/
+     * Renders the link by delegating to an instance of {@link ILinkRenderer}.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -119,11 +113,8 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("AbstractLinkComponent.events-need-body"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("AbstractLinkComponent.events-need-body"), this, null, null);
 
         Iterator i = _eventHandlers.entrySet().iterator();
 
@@ -137,12 +128,8 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
     }
 
-    protected String writeEventHandler(
-        IMarkupWriter writer,
-        Body body,
-        String name,
-        String attributeName,
-        Object value)
+    protected String writeEventHandler(IMarkupWriter writer, Body body, String name,
+            String attributeName, Object value)
     {
         String wrapperFunctionName;
 
@@ -181,7 +168,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         return name;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public abstract ILinkRenderer getRenderer();
 
@@ -197,19 +184,18 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     }
 
     /**
-     *  Utility method for subclasses; Gets the named service from the engine
-     *  and invokes {@link IEngineService#getLink(IRequestCycle, org.apache.tapestry.IComponent, Object[])}
-     *  on it.
+     * Utility method for subclasses; Gets the named service from the engine and invokes
+     * {@link IEngineService#getLink(IRequestCycle, org.apache.tapestry.IComponent, Object[])}on
+     * it.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
-    protected ILink getLink(IRequestCycle cycle, String serviceName, Object[] serviceParameters)
+    protected ILink getLink(IRequestCycle cycle, String serviceName, Object parameter)
     {
         IEngineService service = cycle.getEngine().getService(serviceName);
 
-        return service.getLink(cycle, this, serviceParameters);
+        return service.getLink(cycle, parameter);
     }
 
     public abstract String getAnchor();

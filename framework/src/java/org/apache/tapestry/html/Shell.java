@@ -174,8 +174,7 @@ public abstract class Shell extends AbstractComponent
         IEngineService pageService = cycle.getEngine().getService(Tapestry.PAGE_SERVICE);
         String pageName = getPage().getPageName();
 
-        ILink link = pageService.getLink(cycle, null, new String[]
-        { pageName });
+        ILink link = pageService.getLink(cycle, pageName);
 
         StringBuffer buffer = new StringBuffer();
         buffer.append(refresh);
