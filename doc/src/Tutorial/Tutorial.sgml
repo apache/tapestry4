@@ -8,6 +8,7 @@
 <!ENTITY chap-errors SYSTEM "chap-errors.sgml">
 <!ENTITY chap-hangman SYSTEM "chap-hangman.sgml">
 <!ENTITY chap-reuse SYSTEM "chap-reuse.sgml">
+<!ENTITY chap-inspector SYSTEM "chap-inspector.sgml">
 
 <!ENTITY jwc-tag "<sgmltag class=starttag>jwc</>">
 
@@ -49,7 +50,6 @@
 	</bookinfo>
 
 <!--
-
 &chap-intro;
 &chap-setup;
 &chap-hello;
@@ -57,8 +57,9 @@
 &chap-interactive;
 &chap-errors;
 &chap-hangman;
+&chap-reuse;
 -->
 
-&chap-reuse;
+&chap-inspector;
 
 </book>
