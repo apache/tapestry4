@@ -82,4 +82,14 @@ public interface IUploadFile
 	 **/
 
 	public InputStream getStream();
+    
+    /**
+     *  Returns the MIME type specified when the file was uploaded.  May return null
+     *  if the content type is not known.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public String getContentType();
 }

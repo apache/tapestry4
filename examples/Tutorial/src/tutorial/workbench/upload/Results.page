@@ -16,6 +16,10 @@
   	<binding name="value" expression="file.fileName"/>
   </component>
   
+  <component id="insertContentType" type="Insert">
+  	<binding name="value" expression="file.contentType"/>
+  </component>
+  
   <component id="insertFileDump" type="Insert">
   	<binding name="value" expression="fileDump"/>
   </component>

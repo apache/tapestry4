@@ -50,20 +50,23 @@ public class UploadPart implements IUploadFile, IPart
 {
     private static final Logger LOG = LogManager.getLogger(UploadPart.class);
 
-    private byte[] content;
-    private File contentFile;
-    private String filePath;
+    private byte[] _content;
+    private File _contentFile;
+    private String _filePath;
+    private String _contentType;
 
-    UploadPart(String filePath, byte[] content)
+    UploadPart(String filePath, String contentType, byte[] content)
     {
-        this.filePath = filePath;
-        this.content = content;
+        _filePath = filePath;
+        _contentType = contentType;
+        _content = content;
     }
 
-    UploadPart(String filePath, File contentFile)
+    UploadPart(String filePath, String contentType, File contentFile)
     {
-        this.filePath = filePath;
-        this.contentFile = contentFile;
+        _filePath = filePath;
+        _contentType = contentType;        
+        _contentFile = contentFile;
     }
 
 	/**
@@ -73,7 +76,7 @@ public class UploadPart implements IUploadFile, IPart
 	
     public String getFilePath()
     {
-        return filePath;
+        return _filePath;
     }
 
 	/**
@@ -91,20 +94,20 @@ public class UploadPart implements IUploadFile, IPart
 
     public InputStream getStream()
     {
-        if (content != null)
-            return new ByteArrayInputStream(content);
+        if (_content != null)
+            return new ByteArrayInputStream(_content);
 
         try
         {
-            return new FileInputStream(contentFile);
+            return new FileInputStream(_contentFile);
         }
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "UploadPart.unable-to-open-content-file",
-                    filePath,
-                    contentFile.getAbsolutePath()),
+                    _filePath,
+                    _contentFile.getAbsolutePath()),
                 ex);
         }
     }
@@ -116,23 +119,23 @@ public class UploadPart implements IUploadFile, IPart
 
     public void cleanup()
     {
-        if (contentFile != null)
+        if (_contentFile != null)
         {
             if (LOG.isDebugEnabled())
-                LOG.debug("Deleting upload file " + contentFile + ".");
+                LOG.debug("Deleting upload file " + _contentFile + ".");
 
-            boolean success = contentFile.delete();
+            boolean success = _contentFile.delete();
 
             if (!success)
                 LOG.warn(
                     Tapestry.getString(
                         "UploadPart.temporary-file-not-deleted",
-                        contentFile.getAbsolutePath()));
+                        _contentFile.getAbsolutePath()));
 
             // In rare cases (when exceptions are thrown while the request
             // is decoded), cleanup() may be called multiple times.
 
-            contentFile = null;
+            _contentFile = null;
         }
 
     }
@@ -146,9 +149,14 @@ public class UploadPart implements IUploadFile, IPart
     
     public String getFileName()
     {
-  		File file = new File(filePath);
+  		File file = new File(_filePath);
   		
   		return file.getName();
+    }
+
+    public String getContentType()
+    {
+        return _contentType;
     }
 
 }
