@@ -1,27 +1,25 @@
-<jwc id="content">
+<span jwcid="content">
 
 <table class="portlet-content">
     <tr> <th>Stock</th> <th>Price</th> <th>Change</th></tr>
-    <jwc id="e">
-        <tr jwcid="evenOdd">
-            <td align=right><jwc id="insertStock"/></td>
-            <td align=right><jwc id="insertValue"/></td>
-            <td align=right><jwc id="insertDelta"/></td>
-        </tr>
-    </jwc>
+     <tr jwcid="e">
+        <td align=right><span jwcid="insertStock">PMIX</span></td>
+        <td align=right><span jwcid="insertValue">0.27</span></td>
+        <td align=right><span jwcid="insertDelta">+ 0.02</span></td>
+     </tr>
 </table>
 
 <hr>
 
-<jwc id="showError"/>
+<span jwcid="showError"/>
 
-<jwc id="form">
+<form jwcid="form">
 
-<jwc id="inputTickerId"/> <input type=submit value="Add">
-</jwc>
+<input jwcid="inputTickerId"/> <input type=submit value="Add">
+</form>
 
 <p>Note: these values are <em>entirely made up</em> for demonstration
 purposes.
 
-</jwc>
+</span>
 
