@@ -819,7 +819,7 @@ public class RequestContext implements IRender
 
             writer.begin("tr");
             writer.attribute("class", getRowClass());
-            writer.begin("td");
+            writer.begin("th");
             writer.print(name);
             writer.end();
             writer.begin("td");

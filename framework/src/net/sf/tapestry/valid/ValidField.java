@@ -150,9 +150,7 @@ import net.sf.tapestry.html.Body;
  *
  **/
 
-public class ValidField
-    extends AbstractTextField
-    implements IField, IFormComponent
+public class ValidField extends AbstractTextField implements IField, IFormComponent
 {
     private IBinding valueBinding;
 
@@ -190,7 +188,7 @@ public class ValidField
      *  is direction custom, allowing it to be resolved even when not renderring.
      * 
      **/
-    
+
     public String getDisplayName()
     {
         // Return the static value, if known.
@@ -203,15 +201,14 @@ public class ValidField
         return displayNameBinding.getString();
     }
 
-
     /**
      *
-     * Renders the component, which involves the {@link IValidationDelegate delegate}.
+     *  Renders the component, which involves the {@link IValidationDelegate delegate}.
      *
-     * <p>During a render, the <em>first</em> field rendered that is either
-     * in error, or required but null gets special treatment.  JavaScript is added
-     * to select that field (such that the cursor jumps right to the field when the
-     * page loads).
+     *  <p>During a render, the <em>first</em> field rendered that is either
+     *  in error, or required but null gets special treatment.  JavaScript is added
+     *  to select that field (such that the cursor jumps right to the field when the
+     *  page loads).
      *
      **/
 
@@ -219,6 +216,11 @@ public class ValidField
         throws RequestCycleException
     {
         IValidationDelegate delegate = getForm().getDelegate();
+
+        if (delegate == null)
+            throw new RequestCycleException(
+                Tapestry.getString("ValidField.no-delegate", getExtendedId(), getForm().getExtendedId()),
+                this);
 
         String displayName = null;
 

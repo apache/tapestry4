@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+		"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+		
 <specification class="net.sf.tapestry.html.ExceptionDisplay" 
 	allow-body="no" 
 	allow-informal-parameters="no">
@@ -15,6 +18,8 @@
     </description>
   </parameter>
   
+  <bean name="evenOdd" class="net.sf.tapestry.bean.EvenOdd"/>
+    
   <component id="e-exception" type="Foreach">
     <inherited-binding name="source" parameter-name="exceptions"/>
     <binding name="value" property-path="exception"/>
@@ -30,6 +35,8 @@
   </component>
   
   <component id="e-property" type="Foreach">
+  	<static-binding name="element">tr</static-binding>
+  	<binding name="class" property-path="beans.evenOdd.next"/>
     <binding name="source" property-path="exception.properties"/>
   </component>
   
@@ -51,6 +58,7 @@
   </component>
   
   <component id="e-stack" type="Foreach">
+    <static-binding name="element">li</static-binding>
     <binding name="source" property-path="exception.stackTrace"/>
   </component>
   

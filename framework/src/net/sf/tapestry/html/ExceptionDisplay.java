@@ -30,6 +30,7 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.bean.EvenOdd;
 import net.sf.tapestry.util.exception.ExceptionDescription;
 
 /**
@@ -46,6 +47,7 @@ public class ExceptionDisplay extends BaseComponent
     private ExceptionDescription exception;
     private int count;
     private int index;
+    private EvenOdd evenOdd;
 
     public void setExceptionsBinding(IBinding value)
     {
@@ -57,9 +59,17 @@ public class ExceptionDisplay extends BaseComponent
         return exceptionsBinding;
     }
 
+    /**
+     *  Each time the current exception is set, as a side effect,
+     *  the evenOdd helper bean is reset to even.
+     * 
+     **/
+    
     public void setException(ExceptionDescription value)
     {
         exception = value;
+        
+        evenOdd.setEven(true);
     }
 
     public ExceptionDescription getException()
@@ -76,8 +86,18 @@ public class ExceptionDisplay extends BaseComponent
                 ExceptionDescription[].class);
 
         count = exceptions.length;
-
-        super.renderComponent(writer, cycle);
+        
+        try
+        {
+            evenOdd = (EvenOdd)getBeans().getBean("evenOdd");
+            
+            super.renderComponent(writer, cycle);
+        }
+        finally
+        {
+            exception = null;
+            evenOdd = null;
+        }
     }
 
     public void setIndex(int value)
