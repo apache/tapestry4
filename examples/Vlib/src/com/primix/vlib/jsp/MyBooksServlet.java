@@ -1,6 +1,7 @@
 package com.primix.vlib.jsp;
 
 import com.primix.servlet.*;
+import com.primix.vlib.ejb.*;
 
 /*
  * Tapestry Web Application Framework
@@ -45,24 +46,36 @@ public class MyBooksServlet extends VlibServlet
 	 *  stored in the {@link HttpSession}, or a fresh instance.
 	 *
 	 */
-	 
+
 	protected IService getDelegate(RequestContext context)
 	{
 		return MyBooksDelegate.get(context);
 	}
-	
+
 	public static void writeLink(RequestContext context, HTMLWriter writer)
 	{
 		String label = "[My Books]";
 		VirtualLibraryApplication application;
-		
+
 		application = VirtualLibraryApplication.get(context);
 		if (!application.isUserLoggedIn())
 		{
 			writer.print(label);
 			return;
 		}
-		
+
 		writeLink(context, writer, "/mybooks", "[My Books]");
+	}
+
+	/**
+	 *  Writes a link used to return a book.
+	 *
+	 */
+	 
+	public static void writeReturnLink(RequestContext context, HTMLWriter writer,
+		Book book)
+	{
+		writeLink(context, writer, "/mybooks/return/" + book.getPrimaryKey(),
+				"[Return]");
 	}
 }

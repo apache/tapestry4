@@ -1,3 +1,7 @@
+* Jan 18 2001 hship
+
+Update portions of the JSP Vlib to match the Tapestry Vlib.
+
 * Jan 16 2001 hship
 
 Make use of new ICallback classes with Vlib.
