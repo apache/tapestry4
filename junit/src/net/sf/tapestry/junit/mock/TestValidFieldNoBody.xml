@@ -3,6 +3,7 @@
 <!-- $Id$ -->
 
 
+
 <mock-test>
     <context name="mock"/>
     
@@ -15,25 +16,19 @@
   	     
   	<request>
   		<parameter name="service" value="page"/>
-  		<parameter name="context" value="Strings"/>
+  		<parameter name="context" value="ValidFieldNoBody"/>
   		
 	
-		<assert-output name="Normal">
+		<!-- Should get an Exception -->
+	
+		<assert-output name="Title">
 <![CDATA[
-Normal: &lt;b&gt;Important Message&lt;/b&gt;
-]]>	
-		</assert-output>
-		  	
-		<assert-output name="Raw">
-<![CDATA[
-Raw: <b>Important Message</b>
-]]>	
+<title>Exception</title>
+]]>		
 		</assert-output>
 	
-		<assert-output name="Span">
-<![CDATA[
-Style: <span class="custom"><b>Important Message</b></span>
-]]>	
+		<assert-output name="Message">
+		A ValidField using client-side validation must be wrapped by a Body component.
 		</assert-output>
 	
 	</request>

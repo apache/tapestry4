@@ -7,7 +7,7 @@
 <page-specification class="net.sf.tapestry.html.BasePage">
 
   <component id="border" type="lib:Border">
-  	<static-binding name="title">StaleSession Test Page</static-binding>
+  	<static-binding name="title">Insert Localized Key Test Page</static-binding>
   </component>
 
 </page-specification>	

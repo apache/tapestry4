@@ -22,6 +22,8 @@
 
 	<page name="Stale" specification-path="/net/sf/tapestry/junit/mock/app/Stale.page"/>
 
+	<page name="ValidFieldNoBody" specification-path="/net/sf/tapestry/junit/mock/app/ValidFieldNoBody.page"/>
+
 		
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	

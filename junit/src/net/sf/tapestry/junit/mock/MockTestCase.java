@@ -159,4 +159,16 @@ public class MockTestCase extends TapestryTestCase
     {
         attempt("/net/sf/tapestry/junit/mock/TestStrings.xml");
     }
+    
+    /**
+     *  Test case for a ValidField with a validator and client-side scripting, but
+     *  no Body.
+     * 
+     **/
+    
+    public void testValidFieldNoBody()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestValidFieldNoBody.xml");
+    }
 }
