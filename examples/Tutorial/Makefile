@@ -34,6 +34,6 @@ run: war
 	$(call NOTE, Running Jetty for Tutorial ...)
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-showversion \
-		-Dcom.primix.tapestry.store-engine=true \
-		-Dcom.primix.tapestry.log-pattern="%c - %m%n" \
+		$(OTHER_TUTORIAL_JAVA_OPT) \
 		com.mortbay.Jetty.Server jetty.xml)
+

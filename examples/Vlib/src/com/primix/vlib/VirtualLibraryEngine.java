@@ -60,7 +60,7 @@ import javax.servlet.http.HttpSession;
  */
 
 public class VirtualLibraryEngine
-extends SimpleEngine
+	extends SimpleEngine
 {
 	public VirtualLibraryEngine()
 	{
@@ -72,13 +72,13 @@ extends SimpleEngine
 	private transient boolean debugEnabled;
 	
     private transient boolean killSession;
-
+	
 	/**
 	 *   The name ("external") of a service that exposes books or 
 	 *   persons in such as way that they are bookmarkable.
 	 *
 	 */
-	 
+	
 	public static final String EXTERNAL_SERVICE = "external";
 	
 	/**
@@ -89,12 +89,12 @@ extends SimpleEngine
 	 *  or {@link IPerson} EJB.
 	 *
 	 */
-	 
+	
 	public class ExternalService implements IEngineService
 	{
 		public String buildURL(IRequestCycle cycle,
-                       IComponent component,
-                       String[] context)
+				IComponent component,
+				String[] context)
 		{
 			if (context == null || context.length != 2)
 				throw new ApplicationRuntimeException("external service required two parameters.");
@@ -108,35 +108,37 @@ extends SimpleEngine
 				"/" + URLEncoder.encode(context[1]);
 		}
 		
-		public void service(IRequestCycle cycle,
-                    ResponseOutputStream output)
-             throws RequestCycleException,
-                    ServletException,
-                    IOException
-        {
+		public boolean service(IRequestCycle cycle,
+				ResponseOutputStream output)
+			throws RequestCycleException,
+			ServletException,
+			IOException
+		{
 			serviceExternal(cycle, output);
-        }
+			
+			return true;
+		}
 		
 	}
 	
 	/**
 	 *  Removes the operations bean instance, if accessed this request cycle.
 	 *
-     *  <p>May invalidate the {@link HttpSession} (see {@link #logout()}).
+	 *  <p>May invalidate the {@link HttpSession} (see {@link #logout()}).
 	 */
-	 
+	
 	protected void cleanupAfterRequest(IRequestCycle cycle)
 	{
-        Visit visit = (Visit)getVisit();
-
-        if (visit != null)
+		Visit visit = (Visit)getVisit();
+		
+		if (visit != null)
 			visit.cleanupAfterRequest(cycle);
-
-        if (killSession)
+		
+		if (killSession)
 		{
 			try
 			{
-	            cycle.getRequestContext().getSession().invalidate();
+				cycle.getRequestContext().getSession().invalidate();
 			}
 			catch (IllegalStateException ex)
 			{
@@ -155,12 +157,12 @@ extends SimpleEngine
 	 * component should set its context to the primary key of the book to borrow.
 	 *
 	 */
-	 	
+	
 	/**
 	 *  Supports construction of the external service.
 	 *
 	 */
-	 
+	
 	protected IEngineService constructService(String name)
 	{
 		if (name.equals("external"))
@@ -173,9 +175,9 @@ extends SimpleEngine
 	 *  Performs the actual servicing of the external service.
 	 *
 	 */
-	 
+	
 	protected void serviceExternal(IRequestCycle cycle, ResponseOutputStream output)
-	throws RequestCycleException, ServletException, IOException
+		throws RequestCycleException, ServletException, IOException
 	{
 		IMonitor monitor;
 		String pageName;
@@ -185,14 +187,14 @@ extends SimpleEngine
 		IExternalPage page;
 		
 		monitor = cycle.getMonitor();
-
+		
 		context = cycle.getRequestContext();
 		pageName = context.getPathInfo(1);
 		key = context.getPathInfo(2);
 		
 		if (monitor != null)
 			monitor.serviceBegin(EXTERNAL_SERVICE, pageName + " " + key);
-
+		
 		primaryKey = new Integer(key);
 		
 		try
@@ -202,40 +204,40 @@ extends SimpleEngine
 		catch (ClassCastException e)
 		{
 			throw new ApplicationRuntimeException("Page " + pageName + 
-				" may not be used with the " +
-				EXTERNAL_SERVICE + " service.");
+						" may not be used with the " +
+						EXTERNAL_SERVICE + " service.");
 		}
-					
+		
 		page.setup(primaryKey, cycle);
-				
+		
 		// We don't invoke page.validate() because the whole point of this
 		// service is to allow unknown (fresh) users to jump right
 		// to the page.
 		
 		// Render the response.
-
+		
 		render(cycle, output);
-
+		
 		if (monitor != null)
 			monitor.serviceEnd(EXTERNAL_SERVICE);
 	}
-
+	
     /**
-     *  Sets the visit property to null, and sets a flag that
-     *  invalidates the {@link HttpSession} at the end of the request cycle.
-     *
-     */
-
+	 *  Sets the visit property to null, and sets a flag that
+	 *  invalidates the {@link HttpSession} at the end of the request cycle.
+	 *
+	 */
+	
     public void logout()
     {
 		Visit visit = (Visit)getVisit();
 		
 		if (visit != null)
 			visit.setUser(null);
-			
-        killSession = true;
+		
+		killSession = true;
     }
-
+	
 	public boolean isDebugEnabled()
 	{
 		return debugEnabled;
