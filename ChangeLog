@@ -1,3 +1,8 @@
+* Jun 7 hship
+
+[431135] Shell refresh problem
+[431137] Defeat client-side page caching
+
 * Jun 1 hship
 
 Fix an IllegalStateException thrown in the ApplicationServlet

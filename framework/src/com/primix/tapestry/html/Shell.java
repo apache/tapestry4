@@ -30,6 +30,7 @@ package com.primix.tapestry.html;
 
 import com.primix.tapestry.*;
 import java.util.*;
+import javax.servlet.http.*;
 
 /**
  *  Component for creating a standard 'shell' for a page, which comprises
@@ -98,164 +99,157 @@ public class Shell extends AbstractComponent
     private IBinding titleBinding;
     private String titleValue;
     private IBinding stylesheetBinding;
-
+	
     private IBinding refreshBinding;
-
+	
     public void setTitleBinding(IBinding value)
     {
-        titleBinding = value;
-        if (value.isStatic())
-            titleValue = value.getString();
+		titleBinding = value;
+		if (value.isStatic())
+			titleValue = value.getString();
     }
-
+	
     public IBinding getTitleBinding()
     {
-        return titleBinding;
+		return titleBinding;
     }
-
+	
     public void setStylesheetBinding(IBinding value)
     {
-        stylesheetBinding = value;
+		stylesheetBinding = value;
     }
-
+	
     public IBinding getStylesheetBinding()
     {
-        return stylesheetBinding;
+		return stylesheetBinding;
     }
-
+	
     public IBinding getRefreshBinding()
     {
-        return refreshBinding;
+		return refreshBinding;
     }
-
+	
     public void setRefreshBinding(IBinding value)
     {
-        refreshBinding = value;
+		refreshBinding = value;
     }
-
+	
     public void render(IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException
+		throws RequestCycleException
     {
-        long startTime = 0;
-        long endTime = 0;
-        String title = titleValue;
-        IAsset stylesheet = null;
-        IPage page;
-        boolean rewinding;
-
-        rewinding = cycle.isRewinding();
-
-        if (!rewinding)
-        {
-            startTime = System.currentTimeMillis();
-
-            if (stylesheetBinding != null)
-                stylesheet = (IAsset)stylesheetBinding.getObject("stylesheet", IAsset.class);
-
-            if (title == null)
-                title = titleBinding.getString();
-
-            writer.printRaw("<!DOCTYPE HTML PUBLIC " +
-                            "\"-//W3C//DTD HTML 4.0 Transitional//EN\">");
+		long startTime = 0;
+		long endTime = 0;
+		String title = titleValue;
+		IAsset stylesheet = null;
+		IPage page;
+		boolean rewinding;
+		
+		rewinding = cycle.isRewinding();
+		
+		if (!rewinding)
+		{
+			startTime = System.currentTimeMillis();
+			
+			if (stylesheetBinding != null)
+				stylesheet = (IAsset)stylesheetBinding.getObject("stylesheet", IAsset.class);
+			
+			if (title == null)
+				title = titleBinding.getString();
+			
+			writer.printRaw("<!DOCTYPE HTML PUBLIC " +
+						"\"-//W3C//DTD HTML 4.0 Transitional//EN\">");
 			writer.println();
-
-            page = getPage();
-
-
-            writer.comment("Application: " + 
-                page.getEngine().getSpecification().getName());
-
-            writer.comment("Page: " + page.getName());
-            writer.comment("Generated: " + new Date());
-
-            writer.begin("html");
+			
+			page = getPage();
+			
+			
+			writer.comment("Application: " + 
+						page.getEngine().getSpecification().getName());
+			
+			writer.comment("Page: " + page.getName());
+			writer.comment("Generated: " + new Date());
+			
+			writer.begin("html");
 			writer.println();
-            writer.begin("head");
+			writer.begin("head");
 			writer.println();
-            writer.begin("title");
-
-            writer.print(title);
-            writer.end();  // title
+			writer.begin("title");
+			
+			writer.print(title);
+			writer.end();  // title
 			writer.println();
-
-            if (stylesheet != null)
-            {
-                writer.beginEmpty("link");
-                writer.attribute("rel", "stylesheet");
-                writer.attribute("type", "text/css");
-                writer.attribute("href", stylesheet.buildURL(cycle));
+			
+			if (stylesheet != null)
+			{
+				writer.beginEmpty("link");
+				writer.attribute("rel", "stylesheet");
+				writer.attribute("type", "text/css");
+				writer.attribute("href", stylesheet.buildURL(cycle));
 				writer.println();
-            }
-
-            writer.beginEmpty("meta");
-            writer.attribute("name", "generator");
-            writer.attribute("content", "Tapestry Web Application Framework");
+			}
+			
+			writer.beginEmpty("meta");
+			writer.attribute("name", "generator");
+			writer.attribute("content", "Tapestry Web Application Framework");
 			writer.println();
-
-            writeRefresh(writer, cycle);
-
-            writer.end();  // end
-        }
-
-        // Render the body, the actual page content
-
-        renderWrapped(writer, cycle);
-
-        if (!rewinding)
-        {
-            writer.end(); // html
+			
+			writeRefresh(writer, cycle);
+			
+			writer.end();  // end
+		}
+		
+		// Render the body, the actual page content
+		
+		renderWrapped(writer, cycle);
+		
+		if (!rewinding)
+		{
+			writer.end(); // html
 			writer.println();
-
-            endTime = System.currentTimeMillis();
-
-            writer.comment("Render time: ~ " + (endTime - startTime) + " ms");
-        }
-
+			
+			endTime = System.currentTimeMillis();
+			
+			writer.comment("Render time: ~ " + (endTime - startTime) + " ms");
+		}
+		
     }
-
+	
     private void writeRefresh(IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException
+		throws RequestCycleException
     {
-        int refresh;
-        StringBuffer buffer;
-        String URI;
-        String URL;
-        RequestContext context;
-        IEngineService pageService;
-        String pageName;
-
-        if (refreshBinding == null)
-            return;
-
-        refresh = refreshBinding.getInt();
-        if (refresh <= 0)
-            return;
-
-
-        // Here comes the tricky part ... have to assemble a complete URL
-        // for the current page!
-
-
-        context = cycle.getRequestContext();
-        pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
-        pageName = getPage().getName();
-
-        URI = pageService.buildURL(cycle, null, new String[] 
-        { pageName 
-        });
-
-        URL = context.getAbsoluteURL(URI);
-
-        buffer = new StringBuffer();
-        buffer.append(refresh);
-        buffer.append("; URL=");
-        buffer.append(URL);
-
-        // Write out the <meta> tag
-
-        writer.beginEmpty("meta");
-        writer.attribute("http-equiv", "Refresh");
-        writer.attribute("content", buffer.toString());
-
+		if (refreshBinding == null)
+			return;
+		
+		int refresh = refreshBinding.getInt();
+		if (refresh <= 0)
+			return;
+		
+		
+		// Here comes the tricky part ... have to assemble a complete URL
+		// for the current page!
+		
+		
+		RequestContext context = cycle.getRequestContext();
+		IEngineService pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
+		String pageName = getPage().getName();
+		
+		String URI = pageService.buildURL(cycle, null, new String[] 
+				{ pageName 
+				});
+		
+		HttpServletResponse response = context.getResponse();
+		String URL = response.encodeURL(context.getAbsoluteURL(URI));
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(refresh);
+		buffer.append("; URL=");
+		buffer.append(URL);
+		
+		// Write out the <meta> tag
+		
+		writer.beginEmpty("meta");
+		writer.attribute("http-equiv", "Refresh");
+		writer.attribute("content", buffer.toString());
+		
     }
 }
