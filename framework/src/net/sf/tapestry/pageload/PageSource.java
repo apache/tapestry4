@@ -48,7 +48,6 @@ import net.sf.tapestry.asset.ExternalAsset;
 import net.sf.tapestry.asset.PrivateAsset;
 import net.sf.tapestry.binding.FieldBinding;
 import net.sf.tapestry.binding.StaticBinding;
-import net.sf.tapestry.spec.PageSpecification;
 import net.sf.tapestry.util.MultiKey;
 import net.sf.tapestry.util.pool.Pool;
 
@@ -165,14 +164,14 @@ public class PageSource implements IPageSource, IRenderDescription
             if (monitor != null)
                 monitor.pageCreateBegin(pageName);
 
-            PageSpecification specification = engine.getSpecification().getPageSpecification(pageName);
+            String specificationPath = engine.getSpecification().getPageSpecificationPath(pageName);
 
-            if (specification == null)
+            if (specificationPath == null)
                 throw new ApplicationRuntimeException(Tapestry.getString("PageLoader.no-such-page", pageName));
 
             PageLoader loader = new PageLoader(this);
 
-            result = loader.loadPage(pageName, engine, specification.getSpecificationPath());
+            result = loader.loadPage(pageName, engine, specificationPath);
 
             // Alas, the page loader is discarded, we should be pooling those as
             // well.

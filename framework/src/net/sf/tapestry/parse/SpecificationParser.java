@@ -43,7 +43,7 @@ import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.Direction;
-import net.sf.tapestry.spec.PageSpecification;
+import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.spec.SpecFactory;
 import net.sf.tapestry.util.IPropertyHolder;
@@ -211,6 +211,17 @@ public class SpecificationParser extends AbstractDocumentParser
 
     public static final String SERVICE_NAME_PATTERN = PAGE_NAME_PATTERN;
 
+    /**
+     *  Perl5 pattern for library ids.  Letter followed
+     *  by letetr, number, dash or underscore.  Expects
+     *  caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static final String LIBRARY_ID_PATTERN = BEAN_NAME_PATTERN;
+    
     /**
      *  We can share a single map for all the XML attribute to object conversions,
      *  since the keys are unique.
@@ -506,57 +517,69 @@ public class SpecificationParser extends AbstractDocumentParser
 
     private ApplicationSpecification convertApplicationSpecification(Document document) throws DocumentParseException
     {
-        Element root;
-        Node node;
-        ApplicationSpecification specification;
+        ApplicationSpecification specification = _factory.createApplicationSpecification();
 
-        specification = _factory.createApplicationSpecification();
-
-        String dtdVersion = getDTDVersion(document);
+       String dtdVersion = getDTDVersion(document);
 
         specification.setDTDVersion(dtdVersion);
 
-        root = document.getDocumentElement();
+        Element root = document.getDocumentElement();
 
         specification.setName(getAttribute(root, "name"));
         specification.setEngineClassName(getAttribute(root, "engine-class"));
 
-        for (node = root.getFirstChild(); node != null; node = node.getNextSibling())
-        {
-            if (isElement(node, "page"))
-            {
-                convertPage(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "component-alias"))
-            {
-                convertComponentAlias(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "property"))
-            {
-                convertProperty(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "service"))
-            {
-                convertService(specification, node);
-                continue;
-            }
-            if (isElement(node, "description"))
-            {
-                specification.setDescription(getValue(node));
-                continue;
-            }
-        }
+        processLibrarySpecification(root, specification);
 
         return specification;
     }
 
-    private void convertPage(ApplicationSpecification specification, Node node) throws DocumentParseException
+    /**
+     *  Processes the embedded elements inside a LibrarySpecification.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private void processLibrarySpecification(Element root, LibrarySpecification specification)
+        throws DocumentParseException
+    {
+ 
+
+
+           for (Node node = root.getFirstChild(); node != null; node = node.getNextSibling())
+            {
+                if (isElement(node, "page"))
+                {
+                    convertPage(specification, node);
+                    continue;
+                }
+        
+                if (isElement(node, "component-alias"))
+                {
+                    convertComponentAlias(specification, node);
+                    continue;
+                }
+        
+                if (isElement(node, "property"))
+                {
+                    convertProperty(specification, node);
+                    continue;
+                }
+        
+                if (isElement(node, "service"))
+                {
+                    convertService(specification, node);
+                    continue;
+                }
+                if (isElement(node, "description"))
+                {
+                    specification.setDescription(getValue(node));
+                    continue;
+                }
+            }
+    }
+
+    private void convertPage(LibrarySpecification specification, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
 
@@ -564,12 +587,10 @@ public class SpecificationParser extends AbstractDocumentParser
 
         String specificationPath = getAttribute(node, "specification-path");
 
-        PageSpecification page = _factory.createPageSpecification(specificationPath);
-
-        specification.setPageSpecification(name, page);
+        specification.setPageSpecificationPath(name, specificationPath);
     }
 
-    private void convertComponentAlias(ApplicationSpecification specification, Node node) throws DocumentParseException
+    private void convertComponentAlias(LibrarySpecification specification, Node node) throws DocumentParseException
     {
         String type = getAttribute(node, "type");
 
@@ -577,7 +598,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
         String path = getAttribute(node, "specification-path");
 
-        specification.setComponentAlias(type, path);
+        specification.setComponentSpecificationPath(type, path);
     }
 
     private void convertProperty(IPropertyHolder holder, Node node)
@@ -982,7 +1003,7 @@ if (!isPage)
      * 
      **/
 
-    private void convertService(ApplicationSpecification spec, Node node) throws DocumentParseException
+    private void convertService(LibrarySpecification spec, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
 
@@ -990,7 +1011,7 @@ if (!isPage)
 
         String className = getAttribute(node, "class");
 
-        spec.addService(name, className);
+        spec.setServiceClassName(name, className);
     }
 
     /**

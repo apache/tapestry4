@@ -251,7 +251,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
                 resourceName = type;
             else
             {
-                resourceName = _specification.getComponentAlias(type);
+                resourceName = _specification.getComponentSpecificationPath(type);
 
                 if (resourceName == null)
                     throw new ResourceUnavailableException(
