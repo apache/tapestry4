@@ -28,6 +28,7 @@
 	<import file="${hivebuild.dir}/jar-module.xml"/>
 	<import file="${hivebuild.dir}/javadoc-report.xml"/>
 	<import file="${hivebuild.dir}/clover-report.xml"/>  
+	<import file="${hivebuild.dir}/hivedoc-report.xml"/>  
   
 	<target name="compile">
     <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"/>
@@ -55,10 +56,11 @@
   <target name="run-reports">
     <javadoc-report/>
     <clover-report/>
+    <hivedoc-report/>    
   </target>
   
   <target name="marshall-documentation">
-    <antcall target="forrest.marshall-documentation"/>
+    <antcall target="forrestdoc.marshall-documentation"/>
     
     <property name="dtd-dir" value="${project.docs.target.dir}/dtd"/>
     <mkdir dir="${dtd-dir}"/>
