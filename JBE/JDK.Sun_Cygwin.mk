@@ -33,12 +33,12 @@
 
 JDK_BIN_DIR := $(JDK_DIR)/bin
 
-JAVAC := $(JDK_BIN_DIR)/javac.exe
-JAVA := $(JDK_BIN_DIR)/java.exe
-JAR := $(JDK_BIN_DIR)/jar.exe
-JAVADOC := $(JDK_BIN_DIR)/javadoc.exe
-RMIC := $(JDK_BIN_DIR)/rmic.exe
-JDB := $(JDK_BIN_DIR)/jdb.exe
+JAVAC := $(JDK_BIN_DIR)/javac
+JAVA := $(JDK_BIN_DIR)/java
+JAR := $(JDK_BIN_DIR)/jar
+JAVADOC := $(JDK_BIN_DIR)/javadoc
+RMIC := $(JDK_BIN_DIR)/rmic
+JDB := $(JDK_BIN_DIR)/jdb
 
 # NT uses a semi-colon to seperate items in the classpath (Unix
 # uses a colon).

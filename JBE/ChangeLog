@@ -1,3 +1,9 @@
+* Jun 12 2001 hship
+
+Add support for JAR/WAR Manifests.
+Change/simplify how Java and resource cataloging takes place.
+Change the $(CP) command to always include the appropriate force option.
+
 * May 2 2001 hship
 
 Default directory for Java source is now 'src' instead of '.'.

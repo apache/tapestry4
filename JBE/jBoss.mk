@@ -72,7 +72,7 @@ inner-deploy: $(DEPLOY_JAR)
 $(DEPLOY_JAR): $(JAR_FILE)
 	$(call NOTE, Deploying $(JAR_FILE) ... )
 	@$(MKDIRS) $(JBOSS_DEPLOY_DIR)
-	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(JBOSS_DEPLOY_DIR)
+	@$(CP) $(JAR_FILE) $(JBOSS_DEPLOY_DIR)
 
 #
 # Convienience for running the EJX deployment tool

@@ -63,7 +63,12 @@ ifeq "$(PROJECT_NAME)" ""
 	$(error Must define PROJECT_NAME in Makefile)
 endif
 	$(call NOTE, Building $(JAR_FILE) ... )
+ifeq "$(MANIFEST)" ""
 	$(JAR) cf $(JAR_FILE) -C $(MOD_CLASS_DIR) .
+else
+	$(JAR) cfm $(JAR_FILE) $(MANIFEST) -C $(MOD_CLASS_DIR) .
+endif
+
 
 # Another rule invoked in the recursive make.
 
@@ -80,7 +85,7 @@ ifeq "$(PROJECT_NAME)" ""
 	$(error Must define PROJECT_NAME in Makefile)
 endif
 	$(call NOTE, Installing $(JAR_FILE) to $(INSTALL_DIR))
-	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(INSTALL_DIR)
+	@$(CP) $(JAR_FILE) $(INSTALL_DIR)
 
 # module-install allows additional installation work to follow the normal
 # install.

@@ -65,7 +65,7 @@ ifeq "$(INSTALL_DIR)" ""
 	$(error Must define INSTALL_DIR in Makefile)
 endif
 	$(call NOTE, Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... )
-	@$(CP) $(CP_FORCE_OPT) $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
+	@$(CP) $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
 
 # Add a dependency to inner-jar that causes the deployable jar file to
 # be created.
@@ -118,6 +118,6 @@ $(DEPLOY_JAR_FILE): $(INTERMEDIATE_JAR)
 	$(JAR) cf $(DEPLOY_JAR_FILE) -C $(DEPLOY_IMAGE_DIR) .
 
 deployable: $(DEPLOY_JAR_FILE)
-	@$(TOUCH) $(MOD_BUILD_DIR)/dummy
+	$(DUMMY_RULE)
 	
 .PHONY: deployable

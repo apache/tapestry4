@@ -42,8 +42,7 @@ MKDIRS := /usr/bin/mkdir --parents
 TOUCH := /usr/bin/touch
 RM := /usr/bin/rm --force --recursive
 
-CP := /usr/bin/cp
-CP_FORCE_OPT := --force
+CP := /usr/bin/cp --force 
 
 CAT := /usr/bin/cat
 FIND := /usr/bin/find

@@ -33,13 +33,13 @@ include $(SYS_MAKEFILE_DIR)/ModuleDefs.mk
 # a wapp (web application) directory that will contain the
 # structure we eventually Jar up as a Web ARchive.
 
-WAR_APP_DIR := $(SYS_BUILD_DIR_NAME)/wapp
+WAR_APP_DIR := $(MOD_BUILD_DIR)/wapp
 WAR_INF_DIR := $(WAR_APP_DIR)/WEB-INF
 MOD_CLASS_DIR := $(WAR_INF_DIR)/classes
 WAR_LIB_DIR := $(WAR_INF_DIR)/lib
-WAR_LIB_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/wapp-libs-stamp
-WAR_WEB_INF_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/wapp-web-inf-stamp
-WAR_CONTEXT_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/wapp-context-stamp
+WAR_LIB_STAMP_FILE := $(MOD_BUILD_DIR)/wapp-libs-stamp
+WAR_WEB_INF_STAMP_FILE := $(MOD_BUILD_DIR)/wapp-web-inf-stamp
+WAR_CONTEXT_STAMP_FILE := $(MOD_BUILD_DIR)/wapp-context-stamp
 MOD_META_INF_DIR := $(WAR_APP_DIR)/META-INF
 
 default: war
@@ -63,9 +63,12 @@ $(MOD_DIRTY_JAR_STAMP_FILE): $(WAR_CONTEXT_STAMP_FILE) $(WAR_LIB_STAMP_FILE) $(W
 $(JAR_FILE): $(MOD_DIRTY_JAR_STAMP_FILE)
 ifeq "$(PROJECT_NAME)" ""
 	$(error Must set PROJECT_NAME in Makefile)
-else
+endif
 	$(call NOTE, Building $(JAR_FILE) ... )
+ifeq "$(MANIFEST)" ""
 	$(JAR) cf $(JAR_FILE) -C $(WAR_APP_DIR) .
+else
+	$(JAR) cfm $(JAR_FILE) $(MANIFEST) -C $(WAR_APP_DIR) .
 endif
 
 inner-install: $(INSTALL_DIR)/$(JAR_FILE)
@@ -79,20 +82,20 @@ ifeq "$(PROJECT_NAME)" ""
 	$(error Must define PROJECT_NAME in Makefile)
 endif
 	$(call NOTE, Installing $(JAR_FILE) to $(INSTALL_DIR))
-	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(INSTALL_DIR)
+	$(CP) $(JAR_FILE) $(INSTALL_DIR)
 
 $(WAR_LIB_STAMP_FILE): $(INSTALL_LIBRARIES)
 ifdef INSTALL_LIBRARIES
 	$(call NOTE, Copying runtime libraries ... )
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) $(CP_FORCE_OPT) $? $(WAR_LIB_DIR)
+	@$(CP) $? $(WAR_LIB_DIR)
 	@$(TOUCH) $@ 
 endif
 
 $(WAR_WEB_INF_STAMP_FILE): web.xml $(WEB_INF_RESOURCES)
 	$(call NOTE, Copying WEB-INF resources ...)
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) $(CP_FORCE_OPT) $? $(WAR_INF_DIR)
+	@$(CP) $? $(WAR_INF_DIR)
 	@$(TOUCH) $@
 
 ifneq "$(CONTEXT_RESOURCES)" ""
