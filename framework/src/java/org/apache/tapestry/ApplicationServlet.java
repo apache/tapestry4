@@ -120,6 +120,8 @@ public class ApplicationServlet extends HttpServlet
     {
         try
         {
+            _registry.setupThread();
+            
             _requestServicer.service(request, response);
         }
         catch (ServletException ex)

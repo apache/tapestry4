@@ -204,6 +204,8 @@ public class TestApplicationPortlet extends HiveMindTestCase
         ActionRequest request = newActionRequest();
         ActionResponse response = newActionResponse();
 
+        registry.setupThread();
+        
         actionRequestServicer.service(request, response);
 
         registry.cleanupThread();
@@ -238,6 +240,8 @@ public class TestApplicationPortlet extends HiveMindTestCase
         RenderRequest request = newRenderRequest();
         RenderResponse response = newRenderResponse();
 
+        registry.setupThread();
+        
         renderRequestServicer.service(request, response);
 
         registry.cleanupThread();

@@ -137,6 +137,8 @@ public class ApplicationPortlet implements Portlet
     {
         try
         {
+            _registry.setupThread();
+
             _actionRequestServicer.service(request, response);
         }
         catch (RuntimeException ex)
@@ -154,6 +156,8 @@ public class ApplicationPortlet implements Portlet
     {
         try
         {
+            _registry.setupThread();
+
             _renderRequestServicer.service(request, response);
         }
         catch (RuntimeException ex)
