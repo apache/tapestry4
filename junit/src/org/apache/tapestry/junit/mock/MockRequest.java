@@ -59,7 +59,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -84,7 +89,7 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     /**
      * HTTP content type header name.
      */
-	private static final String CONTENT_TYPE_HEADER_KEY = "Content-type";
+    private static final String CONTENT_TYPE_HEADER_KEY = "Content-type";
     /**
      *  Map of String[].
      * 
@@ -96,9 +101,9 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
      *  Map of String[]
      * 
      **/
-    
+
     private Map _headers = new HashMap();
-    
+
     private String _method = "GET";
 
     private String _contextPath;
@@ -107,7 +112,6 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     private MockSession _session;
     private String _servletPath;
     private List _cookies = new ArrayList();
-    private String _contentType;
     private String _contentPath;
 
     public MockRequest(MockContext servletContext, String servletPath)
@@ -116,7 +120,7 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
 
         _contextPath = "/" + servletContext.getServletContextName();
         _servletPath = servletPath;
-        
+
         _session = _servletContext.getSession();
     }
 
@@ -126,8 +130,8 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     }
 
     public Cookie[] getCookies()
-    {       
-        return (Cookie[])_cookies.toArray(new Cookie[_cookies.size()]);
+    {
+        return (Cookie[]) _cookies.toArray(new Cookie[_cookies.size()]);
     }
 
     public long getDateHeader(String arg0)
@@ -137,22 +141,22 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
 
     public String getHeader(String key)
     {
-    	String getHeader = null;
-    	
-    	if( key != null)
-    	{
-    		getHeader = (String)_headers.get( key.toLowerCase() );
-    	}
-      return getHeader;
+        String getHeader = null;
+
+        if (key != null)
+        {
+            getHeader = (String) _headers.get(key.toLowerCase());
+        }
+        return getHeader;
     }
 
     public Enumeration getHeaders(String name)
     {
-        String[] headers = (String[])_headers.get(name);
-        
+        String[] headers = (String[]) _headers.get(name);
+
         if (headers == null)
             return Collections.enumeration(Collections.EMPTY_LIST);
-            
+
         return Collections.enumeration(Arrays.asList(headers));
     }
 
@@ -275,20 +279,20 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
 
     public String getContentType()
     {
-    	return this.getHeader( CONTENT_TYPE_HEADER_KEY);
+        return getHeader(CONTENT_TYPE_HEADER_KEY);
     }
-    
+
     public void setContentType(String contentType)
     {
-    	this.setHeader( CONTENT_TYPE_HEADER_KEY, contentType);
+        setHeader(CONTENT_TYPE_HEADER_KEY, contentType);
     }
 
     public ServletInputStream getInputStream() throws IOException
     {
- 		if (_contentPath == null)
- 			return null;
- 			
- 		return new MockServletInputStream(_contentPath);
+        if (_contentPath == null)
+            return null;
+
+        return new MockServletInputStream(_contentPath);
     }
 
     public String getParameter(String name)
@@ -362,7 +366,7 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     {
         return _locale;
     }
-    
+
     public void setLocale(Locale locale)
     {
         _locale = locale;
@@ -406,42 +410,42 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     public void setParameter(String name, String value)
     {
         setParameter(name, new String[] { value });
-    }   
-    
+    }
+
     public void addCookie(Cookie cookie)
     {
         _cookies.add(cookie);
     }
-    
+
     public void addCookies(Cookie[] cookies)
     {
         if (cookies == null)
             return;
-            
+
         for (int i = 0; i < cookies.length; i++)
             addCookie(cookies[i]);
     }
-    
+
     private void setHeader(String key, String value)
     {
-    	if( key != null)
-    	{
-    		_headers.put( key.toLowerCase(), value);
-    	}
+        if (key != null)
+        {
+            _headers.put(key.toLowerCase(), value);
+        }
     }
-    
+
     /**
      *  Delegates this to the {@link org.apache.tapestry.junit.mock.MockSession}, if
      *  it exists.
      * 
      **/
-    
+
     public void simulateFailover()
     {
         if (_session != null)
             _session.simulateFailover();
     }
-    
+
     public String getContentPath()
     {
         return _contentPath;

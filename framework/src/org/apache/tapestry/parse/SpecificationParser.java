@@ -617,7 +617,7 @@ public class SpecificationParser
     public SpecificationParser(IResourceResolver resolver)
     {
         _resolver = resolver;
-        _factory = new SpecFactory();
+        setFactory(new SpecFactory());
     }
 
     /**

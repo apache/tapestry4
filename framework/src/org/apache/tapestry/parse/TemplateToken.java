@@ -56,7 +56,6 @@
 package org.apache.tapestry.parse;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.tapestry.ILocatable;
 import org.apache.tapestry.ILocation;
 
@@ -94,7 +93,7 @@ public abstract class TemplateToken implements ILocatable
 
     public String toString()
     {
-        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE);
+        ToStringBuilder builder = new ToStringBuilder(this);
 
         builder.append("type", _type.getName());
         builder.append("location", _location);

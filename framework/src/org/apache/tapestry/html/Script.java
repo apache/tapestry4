@@ -59,8 +59,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
@@ -85,8 +83,6 @@ import org.apache.tapestry.engine.IScriptSource;
 
 public abstract class Script extends AbstractComponent
 {
-    private static final Log LOG = LogFactory.getLog(Script.class);
-
     private Map _baseSymbols;
 
     /**

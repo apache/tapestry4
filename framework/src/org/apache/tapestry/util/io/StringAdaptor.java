@@ -66,7 +66,6 @@ package org.apache.tapestry.util.io;
 class StringAdaptor implements ISqueezeAdaptor
 {
     private static final String PREFIX = "S";
-    private static final char PREFIX_CH = 'S';
 
     public void register(DataSqueezer squeezer)
     {

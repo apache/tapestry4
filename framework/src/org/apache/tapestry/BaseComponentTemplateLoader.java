@@ -61,7 +61,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.binding.ExpressionBinding;
@@ -166,7 +165,7 @@ public class BaseComponentTemplateLoader
 
         public String toString()
         {
-            ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE);
+            ToStringBuilder builder = new ToStringBuilder(this);
 
             builder.append("component", _component);
             builder.append("key", _key);

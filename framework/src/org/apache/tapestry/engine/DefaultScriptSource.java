@@ -82,8 +82,6 @@ public class DefaultScriptSource implements IScriptSource
 
     private Map _cache = new HashMap();
 
-    private static final int MAP_SIZE = 17;
-
     public DefaultScriptSource(IResourceResolver resolver)
     {
         _resolver = resolver;

@@ -55,8 +55,6 @@
 
 package org.apache.tapestry.resolver;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
@@ -79,8 +77,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 public class AbstractSpecificationResolver
 {
-    private static final Log LOG = LogFactory.getLog(AbstractSpecificationResolver.class);
-
     private ISpecificationSource _specificationSource;
 
     private INamespace _namespace;
@@ -201,7 +197,7 @@ public class AbstractSpecificationResolver
      * 
      **/
 
-    public IComponentSpecification getSpecification() 
+    public IComponentSpecification getSpecification()
     {
         return _specification;
     }

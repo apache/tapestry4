@@ -60,9 +60,9 @@ import java.util.Comparator;
 
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.contrib.table.model.*;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
+import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.valid.RenderString;
 
 /**

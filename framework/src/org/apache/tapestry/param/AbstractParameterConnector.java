@@ -88,15 +88,6 @@ public abstract class AbstractParameterConnector implements IParameterConnector
     private IResourceResolver _resolver;
 
     /**
-     *  Parsed OGNL expression, used to get and set the value.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private Object _expression;
-
-    /**
      *  Creates a connector.  In addition, obtains the current value
      *  of the component property; this value will be used to
      *  restore the component property.

@@ -224,8 +224,6 @@ public class TemplateParser
 
     public static final String SIMPLE_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")$";
 
-    private static final int SIMPLE_ID_PATTERN_ID_GROUP = 1;
-
     /**
      *  Pattern used to recognize implicit components (whose type is defined in
      *  the template).  Subgroup 1 is the id (which may be null) and subgroup 2

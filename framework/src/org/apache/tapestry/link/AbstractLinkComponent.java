@@ -192,10 +192,9 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         }
         else
         {
-            if (name == null)
-                name = body.getUniqueString("Link");
+            String finalName = name == null ? body.getUniqueString("Link") : name;
 
-            wrapperFunctionName = attributeName + "_" + name;
+            wrapperFunctionName = attributeName + "_" + finalName;
 
             StringBuffer buffer = new StringBuffer();
 

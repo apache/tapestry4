@@ -59,8 +59,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -85,8 +83,6 @@ import org.jCharts.encoders.JPEGEncoder13;
 
 public class ChartService extends AbstractService
 {
-    private static final Log LOG = LogFactory.getLog(ChartService.class);
-
     public static final String SERVICE_NAME = "chart";
 
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
