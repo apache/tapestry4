@@ -147,7 +147,7 @@ public abstract class AbstractComponent implements IComponent
 
     /**
      *  A mapping that allows public instance methods to be dressed up
-     *  as {@link IActionListener} or {@link IDirectListener} listener
+     *  as {@link IActionListener} listener
      *  objects.
      *
      *  @since 1.0.2
@@ -797,8 +797,8 @@ public abstract class AbstractComponent implements IComponent
 
     /**
      *  Returns a {@link ListenerMap} for the component.  A {@link ListenerMap} contains a number of
-     *  synthetic read-only properties that implement the {@link IActionListener} and/or {@link IDirectListener}
-     *  interfaces, but in fact, cause public instance methods to be invoked.
+     *  synthetic read-only properties that implement the {@link IActionListener} 
+     *  interface, but in fact, cause public instance methods to be invoked.
      *
      *  @since 1.0.2
      **/

@@ -89,8 +89,10 @@ public class DirectCallback implements ICallback
 
     /**
      *  Locates the {@link IDirect} component that was previously identified
-     *  (and whose page and id path were stored),
-     *  and invokes {@link IDirect#trigger(IRequestCycle, String[])} upon it.
+     *  (and whose page and id path were stored).
+     *  Invokes {@link IRequestCycle#setServiceParameters(String[])} to
+     *  restore the service parameters, then
+     *  invokes {@link IDirect#trigger(IRequestCycle)} on the component.
      *
      **/
 

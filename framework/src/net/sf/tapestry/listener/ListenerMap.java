@@ -167,7 +167,7 @@ public class ListenerMap
     }
 
     /**
-     *  Returns an object that implements {@link IDirectListener} and/or {@link IActionListener}.
+     *  Returns an object that implements {@link IActionListener}.
      *  This involves looking up the method by name and determining which
      *  inner class to create.
      **/
