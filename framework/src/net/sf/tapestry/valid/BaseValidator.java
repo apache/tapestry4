@@ -277,7 +277,9 @@ public abstract class BaseValidator implements IValidator
      *  Returns true if client scripting is enabled.  Some validators are
      *  capable of generating client-side scripting to perform validation
      *  when the form is submitted.  By default, this flag is true and
-     *  subclasses should check it before generating client side script.
+     *  subclasses should check it 
+     *  (in {@link #renderValidatorContribution(IField, IMarkupWriter, IRequestCycle)})
+     *  before generating client side script.
      * 
      *  @since 2.2
      * 
