@@ -54,6 +54,7 @@ ${calendarObject}.create();
 
 ${calendarObject}.onchange = function() {
 	document.${formName}.${name}.value  = ${calendarObject}.formatDate();
+	document.${formName}.${name}.onchange();
 }
 
 </initialization>
