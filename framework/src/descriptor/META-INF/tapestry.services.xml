@@ -74,6 +74,8 @@
         <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
         <set-service property="assetExternalizer" service-id="AssetExternalizer"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
+		<set-object property="servletContext" value="service:tapestry.globals.ServletContext"/>
+		<set-object property="servletResponse" value="service:tapestry.globals.HttpServletResponse"/>
       </construct>
     </invoke-factory>
   </service-point>  

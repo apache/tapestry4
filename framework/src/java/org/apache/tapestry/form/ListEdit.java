@@ -24,7 +24,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
@@ -63,8 +62,7 @@ public abstract class ListEdit extends AbstractFormComponent
         }
         else
         {
-            RequestContext context = cycle.getRequestContext();
-            String[] submittedValues = context.getParameters(name);
+            String[] submittedValues = cycle.getParameters(name);
 
             i = (Iterator) getValueConverter().coerceValue(submittedValues, Iterator.class);
         }

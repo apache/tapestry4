@@ -93,8 +93,7 @@ public abstract class FormConditional extends AbstractFormComponent
         }
         else
         {
-            RequestContext context = cycle.getRequestContext();
-            String submittedCondition = context.getParameter(name);
+            String submittedCondition = cycle.getParameter(name);
             condition = convertValue(submittedCondition);
         }
 

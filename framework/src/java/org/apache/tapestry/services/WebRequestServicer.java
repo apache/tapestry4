@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,19 +16,18 @@ package org.apache.tapestry.services;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
- * An object that can service an HTTP request. This is the bridge from the servlet world
- * into the Tapestry world.
- *
- * @author Howard Lewis Ship
+ * Interface for objects that can handle web requests; few classes implement this, instead they
+ * implement {@link org.apache.tapestry.services.WebRequestServicerFilter}&nbsp;and plug into the
+ * tapestry.request.WebRequestServicerPipeline configuration point.
+ * 
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface RequestServicer
+public interface WebRequestServicer
 {
-    public void service(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException;
+    public void service(WebRequest request, WebResponse response) throws IOException;
 }

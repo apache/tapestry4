@@ -19,38 +19,34 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Implements a component that manages an HTML &lt;input type=checkbox&gt;
- *  form element.
- *
- *  [<a href="../../../../../ComponentReference/Checkbox.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ * Implements a component that manages an HTML &lt;input type=checkbox&gt; form element. [ <a
+ * href="../../../../../ComponentReference/Checkbox.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Checkbox extends AbstractFormComponent
 {
     /**
-     *  Renders the form elements, or responds when the form containing the element
-     *  is submitted (by checking {@link Form#isRewinding()}.
-     *
-     *  <p>In traditional HTML, many checkboxes would have the same name but different values.
-     *  Under Tapestry, it makes more sense to have different names and a fixed value.
-     *  For a checkbox, we only care about whether the name appears as a request parameter.
-     *
-     **/
+     * Renders the form elements, or responds when the form containing the element is submitted (by
+     * checking {@link Form#isRewinding()}.
+     * <p>
+     * In traditional HTML, many checkboxes would have the same name but different values. Under
+     * Tapestry, it makes more sense to have different names and a fixed value. For a checkbox, we
+     * only care about whether the name appears as a request parameter.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-		
+
         // Used whether rewinding or not.
 
         String name = form.getElementId(this);
 
         if (form.isRewinding())
         {
-            String value = cycle.getRequestContext().getParameter(name);
+            String value = cycle.getParameter(name);
 
             setSelected((value != null));
 
@@ -75,11 +71,11 @@ public abstract class Checkbox extends AbstractFormComponent
 
     public abstract boolean isDisabled();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public abstract boolean isSelected();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public abstract void setSelected(boolean selected);
 

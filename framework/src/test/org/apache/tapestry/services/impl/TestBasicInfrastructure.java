@@ -32,7 +32,7 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestGlobals;
-import org.apache.tapestry.services.RequestServicer;
+import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.services.ResetEventCoordinator;
 import org.apache.tapestry.web.ServletWebRequest;
 import org.apache.tapestry.web.ServletWebResponse;
@@ -78,15 +78,9 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
         HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
-        RequestServicer n = (RequestServicer) newMock(RequestServicer.class);
-
-        WebRequest wr = new ServletWebRequest(r);
-        WebResponse wp = new ServletWebResponse(p);
+        ServletRequestServicer n = (ServletRequestServicer) newMock(ServletRequestServicer.class);
 
         rg.store(r, p);
-        rg.store(wr, wp);
-        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { new TypeMatcher(), new TypeMatcher() }));
 
         n.service(r, p);
 

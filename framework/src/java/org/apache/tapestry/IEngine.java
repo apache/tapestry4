@@ -25,7 +25,10 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.WebRequestServicer;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Defines the core, session-persistant object used to run a Tapestry application for a single
@@ -35,16 +38,15 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * application. The engine is a delegate to the {@link ApplicationServlet}via the
  * {@link #service(RequestContext)}method.
  * <p>
- * Starting in release 3.1, the engine is kept around only for compatibility (with release
- * 3.0). It's functions have been moved over into a collection of HiveMind
- * services (or are in the process of doing so). 
+ * Starting in release 3.1, the engine is kept around only for compatibility (with release 3.0).
+ * It's functions have been moved over into a collection of HiveMind services (or are in the process
+ * of doing so).
  * 
  * @deprecated To be removed in 3.2.
- * 
  * @author Howard Lewis Ship
  */
 
-public interface IEngine
+public interface IEngine extends WebRequestServicer
 {
     /**
      * Returns the locale for the engine. This locale is used when selecting templates and assets.
@@ -86,16 +88,6 @@ public interface IEngine
      */
 
     public ISpecificationSource getSpecificationSource();
-
-    /**
-     * Method invoked from the {@link org.apache.tapestry.ApplicationServlet}to perform processing
-     * of the request. In release 3.0, this has become more of a dirty flag, indicating if any state
-     * stored by the engine instance itself has changed.
-     * 
-     * @return true if the state of the engine was, or could have been, changed during processing.
-     */
-
-    public boolean service(RequestContext context) throws ServletException, IOException;
 
     /**
      * Returns an object that can resolve resources and classes.

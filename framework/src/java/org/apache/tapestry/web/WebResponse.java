@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.web;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -29,12 +30,10 @@ public interface WebResponse
      * Returns a output stream to which output should be sent. This method should only be invoked
      * once on a response.
      * 
-     * @param contentType
-     *            the content type
      * @return the output stream, configured for the given type.
      */
 
-    public OutputStream getOutputStream(String contentType);
+    public OutputStream getOutputStream() throws IOException;
 
     /**
      * Encodes a URL, which adds information to the URL needed to ensure that the request triggered
@@ -50,4 +49,6 @@ public interface WebResponse
      */
 
     public void reset();
+
+    public void setContentType(String contentType);
 }

@@ -112,4 +112,17 @@ public interface WebRequest extends AttributeHolder
      */
 
     public String getRequestURI();
+
+    /**
+     * Redirects to the indicated URL. If the URL is local, then a forward occurs. Otherwise, a
+     * client side redirect is returned to the client browser.
+     */
+
+    public void forward(String URL);
+
+    /**
+     * Returns the path of the resource which activated this request (this is the servlet path for a
+     * servlet request).
+     */
+    public String getActivationPath();
 }

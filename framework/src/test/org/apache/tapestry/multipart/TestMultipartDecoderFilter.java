@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.services.RequestServicer;
+import org.apache.tapestry.services.ServletRequestServicer;
 import org.easymock.MockControl;
 
 /**
@@ -32,7 +32,7 @@ import org.easymock.MockControl;
  */
 public class TestMultipartDecoderFilter extends HiveMindTestCase
 {
-    private static class MockServicer implements RequestServicer
+    private static class MockServicer implements ServletRequestServicer
     {
         HttpServletRequest _request;
 

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  *  A special output stream works with a {@link HttpServletResponse}, buffering
@@ -59,7 +60,7 @@ public class ResponseOutputStream extends OutputStream
     private byte[] _buffer;
 
     private String _contentType;
-    private HttpServletResponse _response;
+    private WebResponse _response;
     private OutputStream _out;
 
     private boolean _discard = false;
@@ -69,7 +70,7 @@ public class ResponseOutputStream extends OutputStream
      *
      **/
 
-    public ResponseOutputStream(HttpServletResponse response)
+    public ResponseOutputStream(WebResponse response)
     {
         this(response, DEFAULT_SIZE);
     }
@@ -79,7 +80,7 @@ public class ResponseOutputStream extends OutputStream
      *
      **/
 
-    public ResponseOutputStream(HttpServletResponse response, int maxSize)
+    public ResponseOutputStream(WebResponse response, int maxSize)
     {
         _response = response;
         _maxSize = maxSize;

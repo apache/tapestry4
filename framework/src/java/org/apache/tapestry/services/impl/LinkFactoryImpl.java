@@ -35,6 +35,7 @@ import org.apache.tapestry.engine.ServiceEncodingImpl;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.web.WebRequest;
 
 /**
  * @author Howard M. Lewis Ship
@@ -61,6 +62,8 @@ public class LinkFactoryImpl implements LinkFactory
     private final Object[] EMPTY = new Object[0];
 
     private URLCodec _codec = new URLCodec();
+    
+    private WebRequest _request;
 
     public void initializeService()
     {
@@ -103,7 +106,7 @@ public class LinkFactoryImpl implements LinkFactory
         String fullServletPath = _contextPath + serviceEncoding.getServletPath();
 
         return new EngineServiceLink(cycle, fullServletPath, engine.getOutputEncoding(), _codec,
-                parameters, stateful);
+                _request, parameters, stateful);
     }
 
     public ServiceEncoder[] getServiceEncoders()
@@ -194,5 +197,10 @@ public class LinkFactoryImpl implements LinkFactory
     public void setContextPath(String contextPath)
     {
         _contextPath = contextPath;
+    }
+    
+    public void setRequest(WebRequest request)
+    {
+        _request = request;
     }
 }

@@ -75,7 +75,7 @@ public abstract class Hidden extends AbstractFormComponent
             return;
         }
 
-        String externalValue = cycle.getRequestContext().getParameter(name);
+        String externalValue = cycle.getParameter(name);
         Object value = null;
 
         if (getEncode())

@@ -21,68 +21,60 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.BaseEngine;
 
 /**
- *  Subclass of {@link BaseEngine} used for WML applications to change the
- *  Exception, StaleLink and StaleSession pages.
- *
- *  @author David Solis
- *  @since 3.0
+ * Subclass of {@link BaseEngine}used for WML applications to change the Exception, StaleLink and
+ * StaleSession pages.
  * 
- **/
+ * @author David Solis
+ * @since 3.0
+ */
 
 public class WMLEngine extends BaseEngine
 {
-	protected void activateExceptionPage(
-		IRequestCycle cycle,
-		org.apache.tapestry.request.ResponseOutputStream output,
-		Throwable cause)
-		throws ServletException
-	{
-		super.activateExceptionPage(cycle, output, cause);
-		// Sometimes the exception page isn't enough
+    protected void activateExceptionPage(IRequestCycle cycle,
+            org.apache.tapestry.request.ResponseOutputStream output, Throwable cause)
+    {
+        super.activateExceptionPage(cycle, output, cause);
+        // Sometimes the exception page isn't enough
         reportException(
-            Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"),
-            cause);
-	}
+                Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"),
+                cause);
+    }
 
+    /** @since 3.0 * */
 
-	/** @since 3.0 **/
+    protected String getExceptionPageName()
+    {
+        return EXCEPTION_PAGE;
+    }
 
-	protected String getExceptionPageName()
-	{
-		return EXCEPTION_PAGE;
-	}
-	
-	/** @since 3.0 **/
+    /** @since 3.0 * */
 
-	protected String getStaleLinkPageName()
-	{
-		return STALE_LINK_PAGE;
-	}
+    protected String getStaleLinkPageName()
+    {
+        return STALE_LINK_PAGE;
+    }
 
-	/** @since 3.0 **/
+    /** @since 3.0 * */
 
-	protected String getStaleSessionPageName()
-	{
-		return STALE_SESSION_PAGE;
-	}
+    protected String getStaleSessionPageName()
+    {
+        return STALE_SESSION_PAGE;
+    }
 
-	/**
-	 *  The name of the page used for reporting exceptions.
-	 *  
-	 **/
-	private static final String EXCEPTION_PAGE = "WMLException";
+    /**
+     * The name of the page used for reporting exceptions.
+     */
+    private static final String EXCEPTION_PAGE = "WMLException";
 
-	/**
-	 *  The name of the page used for reporting stale links.
-	 *
-	 * */
+    /**
+     * The name of the page used for reporting stale links.
+     */
 
-	private static final String STALE_LINK_PAGE = "WMLStaleLink";
+    private static final String STALE_LINK_PAGE = "WMLStaleLink";
 
-	/**
-	 *  The name of the page used for reporting state sessions.
-	 *
-	 **/
+    /**
+     * The name of the page used for reporting state sessions.
+     */
 
-	private static final String STALE_SESSION_PAGE = "WMLStaleSession";
+    private static final String STALE_SESSION_PAGE = "WMLStaleSession";
 }

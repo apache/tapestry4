@@ -25,6 +25,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.EngineServiceLink;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.web.WebRequest;
 import org.easymock.MockControl;
 
 /**
@@ -50,8 +51,15 @@ public class TestEngineServiceLink extends TapestryTestCase
     }
 
     /** @since 3.1 */
+    private WebRequest newRequest()
+    {
+        return (WebRequest) newMock(WebRequest.class);
+    }
+
+    /** @since 3.1 */
     public void testGetURLWithParameters()
     {
+        WebRequest request = newRequest();
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle rc = (IRequestCycle) control.getMock();
 
@@ -59,7 +67,7 @@ public class TestEngineServiceLink extends TapestryTestCase
         control.setReturnValue("/context/servlet?service=myservice;encoded");
 
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
-                buildParameters("myservice", null), true);
+                request, buildParameters("myservice", null), true);
 
         replayControls();
 
@@ -75,9 +83,11 @@ public class TestEngineServiceLink extends TapestryTestCase
 
     public void testGetURLWithServiceParameters()
     {
+        WebRequest request = newRequest();
+
         IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
 
-        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec,
+        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("foo", new String[]
                 { "godzilla", "frodo" }), false);
 
@@ -92,11 +102,13 @@ public class TestEngineServiceLink extends TapestryTestCase
 
     public void testGetURLSansParameters()
     {
+        WebRequest request = newRequest();
+
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle rc = (IRequestCycle) control.getMock();
 
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
-                buildParameters("myservice", null), true);
+                request, buildParameters("myservice", null), true);
 
         rc.encodeURL("/context/servlet");
         control.setReturnValue("/context/servlet;encoded");
@@ -112,10 +124,11 @@ public class TestEngineServiceLink extends TapestryTestCase
 
     public void testGetURLWithAnchor()
     {
+        WebRequest request = newRequest();
         IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
 
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
-                buildParameters("myservice", null), false);
+                request, buildParameters("myservice", null), false);
 
         replayControls();
 
@@ -126,10 +139,11 @@ public class TestEngineServiceLink extends TapestryTestCase
 
     public void testGetURLWithAnchorAndParameters() throws Exception
     {
+        WebRequest request = newRequest();
         IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
 
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
-                buildParameters("myservice", null), false);
+                request, buildParameters("myservice", null), false);
 
         replayControls();
 
@@ -143,19 +157,10 @@ public class TestEngineServiceLink extends TapestryTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle rc = (IRequestCycle) control.getMock();
 
-        MockControl contextc = newControl(RequestContext.class);
-        RequestContext context = (RequestContext) contextc.getMock();
+        MockControl requestc = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) requestc.getMock();
 
-        MockControl requestc = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestc.getMock();
-
-        rc.getRequestContext();
-        control.setReturnValue(context);
-
-        context.getRequest();
-        contextc.setReturnValue(request);
-
-        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec,
+        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
 
         request.getScheme();
@@ -179,19 +184,10 @@ public class TestEngineServiceLink extends TapestryTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle rc = (IRequestCycle) control.getMock();
 
-        MockControl contextc = newControl(RequestContext.class);
-        RequestContext context = (RequestContext) contextc.getMock();
+        MockControl requestc = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) requestc.getMock();
 
-        MockControl requestc = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestc.getMock();
-
-        rc.getRequestContext();
-        control.setReturnValue(context);
-
-        context.getRequest();
-        contextc.setReturnValue(request);
-
-        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec,
+        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
 
         replayControls();

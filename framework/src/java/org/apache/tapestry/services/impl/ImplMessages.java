@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -211,5 +212,10 @@ final class ImplMessages
     {
         return _formatter
                 .format("namespace-property-source-description", namespace.getExtendedId());
+    }
+
+    public static String invalidEncoding(String encoding, Throwable cause)
+    {
+        return _formatter.format("invalid-encoding", encoding, cause);
     }
 }

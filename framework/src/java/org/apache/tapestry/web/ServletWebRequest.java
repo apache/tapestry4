@@ -14,12 +14,19 @@
 
 package org.apache.tapestry.web;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.Tapestry;
 
 /**
  * Adapter from {@link javax.servlet.http.HttpServletRequest}&nbsp;to
@@ -32,13 +39,17 @@ public class ServletWebRequest implements WebRequest
 {
     private final HttpServletRequest _servletRequest;
 
+    private final HttpServletResponse _servletResponse;
+
     private WebSession _containerSession;
 
-    public ServletWebRequest(HttpServletRequest request)
+    public ServletWebRequest(HttpServletRequest request, HttpServletResponse response)
     {
         Defense.notNull(request, "request");
+        Defense.notNull(response, "response");
 
         _servletRequest = request;
+        _servletResponse = response;
     }
 
     public List getParameterNames()
@@ -110,5 +121,65 @@ public class ServletWebRequest implements WebRequest
     public String getRequestURI()
     {
         return _servletRequest.getRequestURI();
+    }
+
+    public void forward(String URL)
+    {
+        if (HiveMind.isBlank(URL))
+        {
+            performForward("/");
+            return;
+        }
+
+        boolean internal = !(URL.startsWith("/") || URL.indexOf("://") > 0);
+
+        if (internal)
+            performForward("/" + URL);
+        else
+            sendRedirect(URL);
+    }
+
+    private void sendRedirect(String URL)
+    {
+        String finalURL = _servletResponse.encodeRedirectURL(URL);
+
+        try
+        {
+            _servletResponse.sendRedirect(finalURL);
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException(WebMessages.unableToRedirect(URL, ex), ex);
+        }
+
+    }
+
+    private void performForward(String URL)
+    {
+        RequestDispatcher dispatcher = _servletRequest.getRequestDispatcher(URL);
+
+        if (dispatcher == null)
+            throw new ApplicationRuntimeException(WebMessages.unableToFindDispatcher(URL));
+
+        try
+        {
+            dispatcher.forward(_servletRequest, _servletResponse);
+        }
+        catch (ServletException ex)
+        {
+            throw new ApplicationRuntimeException(WebMessages.unableToForward(URL, ex), ex);
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException(WebMessages.unableToForward(URL, ex), ex);
+        }
+    }
+
+    /**
+     * Returns {@link HttpServletRequest#getServletPath()}.
+     */
+    public String getActivationPath()
+    {
+        return _servletRequest.getServletPath();
     }
 }

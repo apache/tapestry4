@@ -19,23 +19,19 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Base class for implementing various types of text input fields.
- *  This includes {@link TextField} and
- *  {@link org.apache.tapestry.valid.ValidField}.
- *
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.2
+ * Base class for implementing various types of text input fields. This includes {@link TextField}
+ * and {@link org.apache.tapestry.valid.ValidField}.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.2
+ */
 
 public abstract class AbstractTextField extends AbstractFormComponent
 {
     /**
-     *  Renders the form element, or responds when the form containing the element
-     *  is submitted (by checking {@link Form#isRewinding()}.
-     *
-     **/
+     * Renders the form element, or responds when the form containing the element is submitted (by
+     * checking {@link Form#isRewinding()}.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -57,12 +53,12 @@ public abstract class AbstractTextField extends AbstractFormComponent
         // Used whether rewinding or not.
 
         String name = form.getElementId(this);
-		
+
         if (rewinding)
         {
             if (!isDisabled())
             {
-                value = cycle.getRequestContext().getParameter(name);
+                value = cycle.getParameter(name);
 
                 updateValue(value);
             }
@@ -91,11 +87,9 @@ public abstract class AbstractTextField extends AbstractFormComponent
     }
 
     /**
-     *  Invoked from {@link #render(IMarkupWriter, IRequestCycle)}
-     *  just before the tag is closed.  This implementation does nothing,
-     *  subclasses may override.
-     *
-     **/
+     * Invoked from {@link #render(IMarkupWriter, IRequestCycle)}just before the tag is closed.
+     * This implementation does nothing, subclasses may override.
+     */
 
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -103,20 +97,18 @@ public abstract class AbstractTextField extends AbstractFormComponent
     }
 
     /**
-     *  Invoked by {@link #render(IMarkupWriter writer, IRequestCycle cycle)}
-     *  when a value is obtained from the
-     *  {@link javax.servlet.http.HttpServletRequest}.
-     *
-     **/
+     * Invoked by {@link #render(IMarkupWriter writer, IRequestCycle cycle)}when a value is
+     * obtained from the {@link javax.servlet.http.HttpServletRequest}.
+     */
 
     abstract protected void updateValue(String value);
 
     /**
-     *  Invoked by {@link #render(IMarkupWriter writer, IRequestCycle cycle)}
-     *  when rendering a response.
-     *
-     *  @return the current value for the field, as a String, or null.
-     **/
+     * Invoked by {@link #render(IMarkupWriter writer, IRequestCycle cycle)}when rendering a
+     * response.
+     * 
+     * @return the current value for the field, as a String, or null.
+     */
 
     abstract protected String readValue();
 

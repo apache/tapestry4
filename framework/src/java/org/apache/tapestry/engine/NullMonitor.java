@@ -14,21 +14,15 @@
 
 package org.apache.tapestry.engine;
 
-
-
 /**
- *  Null implementation of {@link org.apache.tapestry.engine.IMonitor}.
+ * Null implementation of {@link org.apache.tapestry.engine.IMonitor}.
  * 
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
- **/
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class NullMonitor implements IMonitor
 {
-    public static final NullMonitor SHARED = new NullMonitor();
-
     public void pageCreateBegin(String pageName)
     {
     }

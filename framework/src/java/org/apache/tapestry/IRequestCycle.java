@@ -73,6 +73,7 @@ public interface IRequestCycle
 
     /**
      * Returns the engine which is processing this request cycle.
+     * 
      * @deprecated To be removed in 3.2
      */
 
@@ -105,12 +106,9 @@ public interface IRequestCycle
      * Returns the page with the given name. If the page has been previously loaded in the current
      * request cycle, that page is returned. Otherwise, the engine's page loader is used to load the
      * page.
-     * 
      */
 
     public IPage getPage(String name);
-
-    public RequestContext getRequestContext();
 
     /**
      * Returns true if the context is being used to rewind a prior state of the page. This is only
@@ -308,13 +306,13 @@ public interface IRequestCycle
      */
 
     public void forgetPage(String name);
-    
+
     /**
-     * Returns the central {@link org.apache.tapestry.services.Infrastructure} object
-     * used to manage the processing of the request.
+     * Returns the central {@link org.apache.tapestry.services.Infrastructure}object used to manage
+     * the processing of the request.
      * 
      * @since 3.1
      */
-    
+
     public Infrastructure getInfrastructure();
 }

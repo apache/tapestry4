@@ -49,6 +49,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Basis for building real Tapestry applications. Immediate subclasses provide different strategies
@@ -166,7 +168,7 @@ public abstract class AbstractEngine implements IEngine
      */
 
     protected void activateExceptionPage(IRequestCycle cycle, ResponseOutputStream output,
-            Throwable cause) throws ServletException
+            Throwable cause)
     {
         try
         {
@@ -197,7 +199,7 @@ public abstract class AbstractEngine implements IEngine
 
             // And throw the exception.
 
-            throw new ServletException(ex.getMessage(), ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), ex);
         }
     }
 
@@ -225,37 +227,6 @@ public abstract class AbstractEngine implements IEngine
     public Locale getLocale()
     {
         return _locale;
-    }
-
-    /**
-     * Overriden in subclasses that support monitoring. Should create and return an instance of
-     * {@link IMonitor}that is appropriate for the request cycle described by the
-     * {@link RequestContext}.
-     * <p>
-     * The monitor is used to create a {@link RequestCycle}.
-     * <p>
-     * This implementation uses a {@link IMonitorFactory}to create the monitor instance. The
-     * factory is provided as an application extension. If the application extension does not exist,
-     * {@link DefaultMonitorFactory}is used.
-     * <p>
-     * As of release 3.0, this method should <em>not</em> return null.
-     */
-
-    public IMonitor getMonitor(RequestContext context)
-    {
-        if (_monitorFactory == null)
-        {
-            IApplicationSpecification spec = getSpecification();
-
-            if (spec.checkExtension(Tapestry.MONITOR_FACTORY_EXTENSION_NAME))
-                _monitorFactory = (IMonitorFactory) spec.getExtension(
-                        Tapestry.MONITOR_FACTORY_EXTENSION_NAME,
-                        IMonitorFactory.class);
-            else
-                _monitorFactory = DefaultMonitorFactory.SHARED;
-        }
-
-        return _monitorFactory.createMonitor(context);
     }
 
     /**
@@ -318,7 +289,7 @@ public abstract class AbstractEngine implements IEngine
      * Delegate method for the servlet. Services the request.
      */
 
-    public boolean service(RequestContext context) throws ServletException, IOException
+    public void service(WebRequest request, WebResponse response) throws IOException
     {
         IRequestCycle cycle = null;
         IMonitor monitor = null;
@@ -326,26 +297,27 @@ public abstract class AbstractEngine implements IEngine
         ResponseOutputStream output = null;
 
         if (_infrastructure == null)
-            _infrastructure = (Infrastructure) context.getAttribute(Constants.INFRASTRUCTURE_KEY);
+            _infrastructure = (Infrastructure) request.getAttribute(Constants.INFRASTRUCTURE_KEY);
 
         try
         {
-            setupForRequest(context);
-
-            output = new ResponseOutputStream(context.getResponse());
+            output = new ResponseOutputStream(response);
         }
         catch (Exception ex)
         {
             reportException(Tapestry.getMessage("AbstractEngine.unable-to-begin-request"), ex);
 
-            throw new ServletException(ex.getMessage(), ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), ex);
         }
 
         try
         {
             try
             {
-                cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(this, context);
+                cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(
+                        this,
+                        request,
+                        response);
 
                 monitor = cycle.getMonitor();
                 service = cycle.getService();
@@ -358,12 +330,7 @@ public abstract class AbstractEngine implements IEngine
 
                 service.service(cycle, output);
 
-                // Return true only if the engine is actually dirty. This cuts
-                // down
-                // on the number of times the engine is stored into the
-                // session unceccesarily.
-
-                return false;
+                return;
             }
             catch (PageRedirectException ex)
             {
@@ -441,12 +408,10 @@ public abstract class AbstractEngine implements IEngine
             }
 
         }
-
-        return false;
     }
 
     /**
-     * Handles {@link PageRedirectException}which involves executing
+     * Handles {@link PageRedirectException}&nbsp;which involves executing
      * {@link IPage#validate(IRequestCycle)}on the target page (of the exception), until either a
      * loop is found, or a page succesfully validates and can be activated.
      * <p>
@@ -576,55 +541,6 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Invoked from {@link #service(RequestContext)}to ensure that the engine's instance variables
-     * are setup. This allows the application a chance to restore variables that will not have
-     * survived deserialization. Determines the servlet prefix: this is the base URL used by
-     * {@link IEngineService services}to build URLs. It consists of two parts: the context path and
-     * the servlet path.
-     * <p>
-     * The servlet path is retrieved from {@link HttpServletRequest#getServletPath()}.
-     * <p>
-     * The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
-     * <p>
-     * The global object is retrieved from {@link IEngine#getGlobal()}method.
-     * <p>
-     * The final path is available via the {@link #getServletPath()}method.
-     * <p>
-     * Subclasses should invoke this implementation first, then perform their own setup.
-     */
-
-    protected void setupForRequest(RequestContext context)
-    {
-        HttpServletRequest request = context.getRequest();
-
-        String encoding = request.getCharacterEncoding();
-        if (encoding == null)
-        {
-            encoding = getOutputEncoding();
-            try
-            {
-                request.setCharacterEncoding(encoding);
-            }
-            catch (UnsupportedEncodingException e)
-            {
-                throw new IllegalArgumentException(Tapestry.format("illegal-encoding", encoding));
-            }
-            catch (NoSuchMethodError e)
-            {
-                // Servlet API 2.2 compatibility
-                // Behave okay if the setCharacterEncoding() method is
-                // unavailable
-            }
-            catch (AbstractMethodError e)
-            {
-                // Servlet API 2.2 compatibility
-                // Behave okay if the setCharacterEncoding() method is
-                // unavailable
-            }
-        }
-    }
-
-    /**
      * @see Infrastructure#getClassResolver()
      */
 
@@ -742,9 +658,7 @@ public abstract class AbstractEngine implements IEngine
         if (LOG.isDebugEnabled())
             LOG.debug("Redirecting to: " + location);
 
-        RedirectAnalyzer analyzer = new RedirectAnalyzer(location);
-
-        analyzer.process(cycle);
+        _infrastructure.getRequest().forward(location);
     }
 
     /**

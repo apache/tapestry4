@@ -16,11 +16,11 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <page-specification>
 
-	<property name="org.apache.tapestry.output-encoding" value="UTF-8"/>
+	<meta key="org.apache.tapestry.output-encoding" value="UTF-8"/>
 
 </page-specification>

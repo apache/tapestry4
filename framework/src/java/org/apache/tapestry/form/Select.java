@@ -165,9 +165,7 @@ public abstract class Select extends AbstractFormComponent
 
     private Set buildSelections(IRequestCycle cycle, String parameterName)
     {
-        RequestContext context = cycle.getRequestContext();
-
-        String[] parameters = context.getParameters(parameterName);
+        String[] parameters = cycle.getParameters(parameterName);
 
         if (parameters == null)
             return null;

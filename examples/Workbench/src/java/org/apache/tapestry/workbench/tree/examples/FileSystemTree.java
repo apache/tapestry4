@@ -46,6 +46,13 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
 
     private Object m_objValue;
 
+    /**
+     * Injected
+     * 
+     * @since 3.1
+     */
+    public abstract String getTreeRootDir();
+
     public FileSystemTree()
     {
         super();
@@ -62,8 +69,8 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
     public void initTableModel()
     {
         ITreeNode objParent;
-        String strRootDir = getRequestCycle().getRequestContext().getServlet().getInitParameter(
-                "TreeRootDir");
+        
+        String strRootDir = getTreeRootDir();
 
         System.out.println("strRootDir = " + strRootDir);
 
@@ -130,8 +137,7 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
 
         if (m_objTreeSessionStateManager == null)
         {
-            String strRootDir = getRequestCycle().getRequestContext().getServlet()
-                    .getInitParameter("TreeRootDir");
+            String strRootDir = getTreeRootDir();
             //System.out.println("strRootDir = " + strRootDir);
 
             m_objTreeSessionStateManager = new FileSystemStateManager(strRootDir);

@@ -17,20 +17,20 @@ package org.apache.tapestry.wml;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  The postfield element specifies a field name and value for transmission to an origin server during a URL request.
- *  @see Go
- *
- *  @author David Solis
- *  @since 3.0
- *
- **/
+ * The postfield element specifies a field name and value for transmission to an origin server
+ * during a URL request.
+ * 
+ * @see Go
+ * @author David Solis
+ * @since 3.0
+ */
 
 public abstract class Postfield extends AbstractPostfield
 {
 
     protected void rewind(IRequestCycle cycle)
     {
-        String value = cycle.getRequestContext().getParameter(getName());
+        String value = cycle.getParameter(getName());
         updateValue(value);
     }
 }

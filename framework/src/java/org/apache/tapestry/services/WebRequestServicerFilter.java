@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,26 +14,16 @@
 
 package org.apache.tapestry.services;
 
-import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * A factory for creating instances of {@link org.apache.tapestry.IRequestCycle}for the current
- * request.
+ * Filter interface for {@link org.apache.tapestry.services.WebRequestServicer}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface RequestCycleFactory
+public interface WebRequestServicerFilter
 {
-    /**
-     * Constructs the new instance using the request context. This includes accessing
-     * {@link org.apache.tapestry.engine.ServiceEncoder}s to restore any missing query parameters
-     * (that were encoding into the URL).
-     */
-
-    public IRequestCycle newRequestCycle(IEngine engine, WebRequest request, WebResponse response);
+    public void service(WebRequest request, WebResponse response, WebRequestServicer service);
 }

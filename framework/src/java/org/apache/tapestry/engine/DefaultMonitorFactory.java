@@ -15,23 +15,23 @@
 package org.apache.tapestry.engine;
 
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.web.WebRequest;
 
 /**
- * Implementation of {@link org.apache.tapestry.engine.IMonitorFactory}
- * that returns the {@link org.apache.tapestry.engine.NullMonitor}.
- *
+ * Implementation of {@link org.apache.tapestry.engine.IMonitorFactory}&nbsp;that returns the
+ * {@link org.apache.tapestry.engine.NullMonitor}.
+ * 
  * @author Howard Lewis Ship
  */
 public class DefaultMonitorFactory implements IMonitorFactory
 {
-	public static final IMonitorFactory SHARED = new DefaultMonitorFactory();
-	 
-    /**
-     * Returns {@link NullMonitor#SHARED}.
-     */
-    public IMonitor createMonitor(RequestContext context)
-    {
-        return NullMonitor.SHARED;
-    }
+    private final IMonitor _shared = new NullMonitor();
 
+    /**
+     * Returns a shared instance of {@link NullMonitor}.
+     */
+    public IMonitor createMonitor(WebRequest request)
+    {
+        return _shared;
+    }
 }
