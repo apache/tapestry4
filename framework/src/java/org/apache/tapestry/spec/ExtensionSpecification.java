@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.prop.OgnlUtils;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
  * Defines an "extension", which is much like a helper bean, but is part of a library or application
@@ -44,6 +44,15 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
     protected Map _configuration = new HashMap();
 
     private boolean _immediate;
+
+    /** @since 3.1 */
+    private ExpressionEvaluator _evaluator;
+
+    /** @since 3.1 */
+    public ExtensionSpecification(ExpressionEvaluator evaluator)
+    {
+        _evaluator = evaluator;
+    }
 
     public String getClassName()
     {
@@ -119,9 +128,14 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
             String propertyName = (String) entry.getKey();
             String textValue = (String) entry.getValue();
 
-            // Let OGNL do any conversions.
-
-            OgnlUtils.set(propertyName, extension, textValue);
+            try
+            {
+                _evaluator.write(extension, propertyName, textValue);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationRuntimeException(ex.getMessage(), getLocation(), ex);
+            }
         }
     }
 

@@ -14,42 +14,55 @@
 
 package org.apache.tapestry.bean;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.util.prop.OgnlUtils;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
+ * Initializes a helper bean property from an OGNL expression (relative to the bean's
+ * {@link IComponent}).
  * 
- *  Initializes a helper bean property from an OGNL expression (relative
- *  to the bean's {@link IComponent}).
- *
- *  @author Howard Lewis Ship
- *  @since 2.2
- *
- **/
+ * @author Howard Lewis Ship
+ * @since 2.2
+ */
 
 public class ExpressionBeanInitializer extends AbstractBeanInitializer
 {
     protected String _expression;
 
+    private final ExpressionEvaluator _evaluator;
+
+    public ExpressionBeanInitializer(ExpressionEvaluator evaluator)
+    {
+        _evaluator = evaluator;
+    }
+
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
         IComponent component = provider.getComponent();
-        
-        Object value = OgnlUtils.get(_expression, component);
 
-        setBeanProperty(bean, value);
+        try
+        {
+            Object value = _evaluator.read(component, _expression);
+
+            setBeanProperty(bean, value);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ex.getMessage(), getLocation(), ex);
+        }
     }
 
-	/** @since 3.0 **/
-	
+    /** @since 3.0 * */
+
     public String getExpression()
     {
         return _expression;
     }
 
-	/** @since 3.0 **/
-	
+    /** @since 3.0 * */
+
     public void setExpression(String expression)
     {
         _expression = expression;

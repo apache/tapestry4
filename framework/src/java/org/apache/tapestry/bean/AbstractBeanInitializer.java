@@ -16,8 +16,8 @@ package org.apache.tapestry.bean;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.impl.BaseLocatable;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Base class for initializing a property of a JavaBean.
@@ -47,7 +47,7 @@ abstract public class AbstractBeanInitializer extends BaseLocatable implements I
     {
         try
         {
-            OgnlUtils.set(_propertyName, bean, value);
+            PropertyUtils.write(bean, _propertyName, value);
         }
         catch (ApplicationRuntimeException ex)
         {

@@ -17,6 +17,7 @@ package org.apache.tapestry.spec;
 import org.apache.tapestry.bean.ExpressionBeanInitializer;
 import org.apache.tapestry.bean.IBeanInitializer;
 import org.apache.tapestry.bean.MessageBeanInitializer;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
  *  A Factory used by {@link org.apache.tapestry.parse.SpecificationParser} to create Tapestry
@@ -137,9 +138,9 @@ public class SpecFactory
 	 * 
 	 **/
 	
-	public IBeanInitializer createExpressionBeanInitializer()
+	public IBeanInitializer createExpressionBeanInitializer(ExpressionEvaluator evaluator)
 	{
-		return new ExpressionBeanInitializer();
+		return new ExpressionBeanInitializer(evaluator);
 	}
 
 	/**
@@ -161,9 +162,9 @@ public class SpecFactory
      * 
      **/
 
-    public IExtensionSpecification createExtensionSpecification()
+    public IExtensionSpecification createExtensionSpecification(ExpressionEvaluator evaluator)
     {
-        return new ExtensionSpecification();
+        return new ExtensionSpecification(evaluator);
     }
     
     /**

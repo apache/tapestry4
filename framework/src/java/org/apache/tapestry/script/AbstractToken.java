@@ -19,23 +19,21 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.util.prop.OgnlUtils;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- *  Base class for creating tokens which may contain other tokens.
- *
- *  @author Howard Lewis Ship
- *  @since 0.2.9
+ * Base class for creating tokens which may contain other tokens.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 0.2.9
+ */
 
 abstract class AbstractToken implements IScriptToken
 {
     private List _tokens;
+
     private Location _location;
-    private ClassResolver _resolver;
 
     protected AbstractToken(Location location)
     {
@@ -56,10 +54,9 @@ abstract class AbstractToken implements IScriptToken
     }
 
     /**
-     *  Invokes {@link IScriptToken#write(StringBuffer,ScriptSession)}
-     *  on each child token (if there are any).
-     *
-     **/
+     * Invokes {@link IScriptToken#write(StringBuffer,ScriptSession)}on each child token (if there
+     * are any).
+     */
 
     protected void writeChildren(StringBuffer buffer, ScriptSession session)
     {
@@ -78,15 +75,14 @@ abstract class AbstractToken implements IScriptToken
 
     /**
      * Evaluates the expression against the session's symbols, using
-     * {@link OgnlUtils#get(String, ClassResolver, Object)} and
-     * returns the result.
+     * {@link ExpressionEvaluator#read(Object, String)}and returns the result.
      */
     protected Object evaluate(String expression, ScriptSession session)
     {
 
         try
         {
-            return OgnlUtils.get(expression, session.getSymbols());
+            return session.evaluate(expression);
         }
         catch (Exception ex)
         {

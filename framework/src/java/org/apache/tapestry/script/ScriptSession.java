@@ -19,35 +19,45 @@ import java.util.Map;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScriptProcessor;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- *  The result of executing a script, the session is used during the parsing
- *  process as well.  Following {@link org.apache.tapestry.IScript#execute(org.apache.tapestry.IRequestCycle, org.apache.tapestry.IScriptProcessor, java.util.Map)}, the session
- *  provides access to output symbols as well as the body and initialization
- *  blocks created by the script tokens.
- *
- *  @author Howard Lewis Ship
- *  @since 0.2.9
+ * The result of executing a script, the session is used during the parsing process as well.
+ * Following
+ * {@link org.apache.tapestry.IScript#execute(org.apache.tapestry.IRequestCycle, org.apache.tapestry.IScriptProcessor, java.util.Map)},
+ * the session provides access to output symbols as well as the body and initialization blocks
+ * created by the script tokens.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 0.2.9
+ */
 
 public class ScriptSession
 {
     private IRequestCycle _cycle;
+
     private IScriptProcessor _processor;
+
     private Resource _scriptLocation;
+
     private Map _symbols;
 
-    public ScriptSession(
-        Resource scriptLocation,
-        IRequestCycle cycle,
-        IScriptProcessor processor,
-        Map symbols)
+    /** @since 3.1 */
+    private ExpressionEvaluator _evaluator;
+
+    public ScriptSession(Resource scriptLocation, IRequestCycle cycle, IScriptProcessor processor,
+            ExpressionEvaluator evaluator, Map symbols)
     {
         _scriptLocation = scriptLocation;
         _cycle = cycle;
         _processor = processor;
         _symbols = symbols;
+        _evaluator = evaluator;
+    }
+
+    public Object evaluate(String expression)
+    {
+        return _evaluator.read(_symbols, expression);
     }
 
     public Resource getScriptPath()
@@ -60,10 +70,10 @@ public class ScriptSession
         return _symbols;
     }
 
-	public IRequestCycle getRequestCycle()
-	{
-		return _cycle;
-	}
+    public IRequestCycle getRequestCycle()
+    {
+        return _cycle;
+    }
 
     public IScriptProcessor getProcessor()
     {

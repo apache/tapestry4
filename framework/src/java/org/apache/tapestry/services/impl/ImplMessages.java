@@ -166,4 +166,31 @@ final class ImplMessages
     {
         return _formatter.format("dupe-service", name, HiveMind.getLocationString(existing));
     }
+
+    public static String unableToParseExpression(String expression, Throwable cause)
+    {
+        return _formatter.format("unable-to-parse-expression", expression, cause);
+    }
+
+    public static String parsedExpression()
+    {
+        return _formatter.getMessage("parsed-expression");
+    }
+
+    public static String unableToReadExpression(String expression, Object target, Throwable cause)
+    {
+        return _formatter.format("unable-to-read-expression", expression, target, cause);
+    }
+
+    public static String unableToWriteExpression(String expression, Object target, Object value,
+            Throwable cause)
+    {
+        return _formatter.format("unable-to-write-expression", new Object[]
+        { expression, target, value, cause });
+    }
+
+    public static String isConstantExpressionError(String expression, Exception ex)
+    {
+        return _formatter.format("is-constant-expression-error", expression, ex);
+    }
 }

@@ -30,6 +30,7 @@
   <sub-module descriptor="tapestry.script.xml"/>
   <sub-module descriptor="tapestry.bindings.xml"/>
   <sub-module descriptor="tapestry.services.xml"/>
+  <sub-module descriptor="tapestry.ognl.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   

@@ -30,6 +30,7 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.DataSqueezer;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -377,4 +378,10 @@ public interface IEngine
      **/
     
     public String getOutputEncoding();
+    
+    /**
+     * @since 3.1
+     */
+    
+    public Infrastructure getInfrastructure();
 }

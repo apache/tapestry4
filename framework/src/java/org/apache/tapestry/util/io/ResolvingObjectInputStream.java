@@ -22,15 +22,13 @@ import java.io.ObjectStreamClass;
 import org.apache.hivemind.ClassResolver;
 
 /**
- *  Specialized subclass of {@link java.io.ObjectInputStream}
- *  that knows how to resolve classes with a non-default
- *  class loader (represented by an instance of
- *  {@link org.apache.tapestry.IResourceResolver}).
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
- **/
+ * Specialized subclass of {@link java.io.ObjectInputStream}that knows how to resolve classes with
+ * a non-default class loader (represented by an instance of
+ * {@link org.apache.hivemind.ClassResolver}).
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class ResolvingObjectInputStream extends ObjectInputStream
 {
@@ -44,10 +42,8 @@ public class ResolvingObjectInputStream extends ObjectInputStream
     }
 
     /**
-     *  Overrides the default implementation to
-     *  have the resource resolver find the class.
-     * 
-     **/
+     * Overrides the default implementation to have the resource resolver find the class.
+     */
 
     protected Class resolveClass(ObjectStreamClass v) throws IOException, ClassNotFoundException
     {

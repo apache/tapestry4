@@ -18,12 +18,12 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.event.ObservedChangeEvent;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Tracks changes to components on a page, allowing changes to be persisted across
@@ -195,7 +195,7 @@ public abstract class PageRecorder implements IPageRecorder
 
             try
             {
-                OgnlUtils.set(propertyName, component, storedValue);
+                PropertyUtils.write(component, propertyName, storedValue);
             }
             catch (Throwable t)
             {

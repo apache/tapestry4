@@ -28,7 +28,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
-import org.apache.hivemind.util.PropertyAdaptor;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.bean.BeanProviderPropertyAccessor;
@@ -41,7 +40,6 @@ import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.param.ParameterManager;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  * Abstract base class implementing the {@link IComponent}interface.
@@ -72,6 +70,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         // Register the BeanProviderHelper to provide access to the
         // beans of a bean provider as named properties.
+        // TODO: move this into some kind of HiveMind configuration.
 
         OgnlRuntime.setPropertyAccessor(IBeanProvider.class, new BeanProviderPropertyAccessor());
     }
@@ -960,7 +959,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      */
     public void setProperty(String propertyName, Object value)
     {
-        OgnlUtils.set(propertyName, this, value);
+        PropertyUtils.write(this, propertyName, value);
     }
 
     /**
@@ -971,6 +970,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      */
     public Object getProperty(String propertyName)
     {
-        return OgnlUtils.get(propertyName, this);
+        return PropertyUtils.read(this, propertyName);
     }
 }

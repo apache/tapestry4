@@ -21,8 +21,8 @@
 	<classpathentry kind="lib" path="ext-package/lib/oro-2.0.6.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
-	<classpathentry sourcepath="C:/workspace/jakarta-hivemind/framework/src/java" kind="lib" path="ext-package/lib/hivemind-1.0-rc-2-snapshot.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.0-rc-2-snapshot.jar"/>
+	<classpathentry sourcepath="C:/Work/hivemind-1.0.zip" kind="lib" path="ext-package/lib/hivemind-1.0.jar"/>
+	<classpathentry sourcepath="C:/Work/hivemind-1.0.zip" kind="lib" path="ext-package/lib/hivemind-lib-1.0.jar"/>
 	<classpathentry kind="lib" path="framework/src/descriptor"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

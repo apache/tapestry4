@@ -34,6 +34,9 @@ import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
+import org.apache.tapestry.services.ExpressionCache;
+import org.apache.tapestry.services.impl.ExpressionCacheImpl;
+import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
 
 /**
  * Do tests of bindings.
@@ -324,8 +327,10 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals("Parameter bar (Goodbye) is an instance of java.lang.String, which does not "
-                    + "implement interface org.apache.tapestry.IRequestCycle.", ex.getMessage());
+            assertEquals(
+                    "Parameter bar (Goodbye) is an instance of java.lang.String, which does not "
+                            + "implement interface org.apache.tapestry.IRequestCycle.",
+                    ex.getMessage());
 
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -418,11 +423,20 @@ public class TestBindings extends TapestryTestCase
         }
     }
 
+    private ExpressionBinding newBinding(IComponent root, String expression)
+    {
+        ExpressionCache cache = new ExpressionCacheImpl();
+        ExpressionEvaluatorImpl evaluator = new ExpressionEvaluatorImpl();
+        evaluator.setExpressionCache(cache);
+
+        return new ExpressionBinding(root, expression, null, evaluator, cache);
+    }
+
     public void testExpressionBinding()
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "page", null);
+        ExpressionBinding binding = newBinding(page, "page");
 
         assertEquals("Expression property", "page", binding.getExpression());
         assertEquals("Root property", page, binding.getRoot());
@@ -433,7 +447,7 @@ public class TestBindings extends TapestryTestCase
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "zip flob boff", null);
+        ExpressionBinding binding = newBinding(page, "zip flob boff");
 
         try
         {
@@ -443,7 +457,7 @@ public class TestBindings extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            checkException(ex, "Unable to parse expression 'zip flob boff'");
+            checkException(ex, "Unable to parse OGNL expression 'zip flob boff'");
         }
     }
 
@@ -451,7 +465,7 @@ public class TestBindings extends TapestryTestCase
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "tigris", null);
+        ExpressionBinding binding = newBinding(page, "tigris");
 
         try
         {
@@ -461,7 +475,7 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Unable to resolve expression");
+            checkException(ex, "Unable to read OGNL expression");
             checkException(ex, "tigris");
         }
     }
@@ -470,7 +484,7 @@ public class TestBindings extends TapestryTestCase
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "bindings", null);
+        ExpressionBinding binding = newBinding(page, "bindings");
 
         try
         {
@@ -480,7 +494,7 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Unable to update expression");
+            checkException(ex, "Unable to update OGNL expression");
             checkException(ex, "bindings");
         }
 
@@ -489,7 +503,7 @@ public class TestBindings extends TapestryTestCase
     public void testUpdateBoolean()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "booleanValue", null);
+        ExpressionBinding binding = newBinding(page, "booleanValue");
 
         binding.setBoolean(true);
 
@@ -503,7 +517,7 @@ public class TestBindings extends TapestryTestCase
     public void testUpdateInt()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "intValue", null);
+        ExpressionBinding binding = newBinding(page, "intValue");
 
         binding.setInt(275);
 
@@ -513,7 +527,7 @@ public class TestBindings extends TapestryTestCase
     public void testUpdateDouble()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "doubleValue", null);
+        ExpressionBinding binding = newBinding( page, "doubleValue");
 
         binding.setDouble(3.14);
 
@@ -523,7 +537,7 @@ public class TestBindings extends TapestryTestCase
     public void testUpdateObject()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "objectValue", null);
+        ExpressionBinding binding = newBinding(page, "objectValue");
 
         Object object = new HashMap();
 
@@ -550,7 +564,9 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Inappropriate invocation of getInt() on instance of ListenerBinding.");
+            checkException(
+                    ex,
+                    "Inappropriate invocation of getInt() on instance of ListenerBinding.");
         }
     }
 
@@ -568,7 +584,9 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Inappropriate invocation of getDouble() on instance of ListenerBinding.");
+            checkException(
+                    ex,
+                    "Inappropriate invocation of getDouble() on instance of ListenerBinding.");
         }
     }
 
@@ -591,43 +609,5 @@ public class TestBindings extends TapestryTestCase
 
         assertSame(c, b.getComponent());
         assertEquals("foo", b.getKey());
-    }
-
-    public void testTypeConverter()
-    {
-        BoundPage page = new BoundPage();
-        MockEngine engine = new MockEngine();
-        page.setEngine(engine);
-
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "dateValue", null);
-        Date date = new Date();
-
-        try
-        {
-            // try without a converter first, which should fail
-            binding.setObject(date);
-            fail("Should not be able to call setDateValue(Date)");
-        }
-        catch (BindingException expected)
-        {
-            assertTrue(true);
-        }
-
-        // now test with a custom converter enabled
-        MockApplicationSpecification appSpec = new MockApplicationSpecification();
-        HashMap extensions = new HashMap();
-        extensions.put(Tapestry.OGNL_TYPE_CONVERTER, new MockTypeConverter());
-        appSpec.setExtensions(extensions);
-        engine.setSpecification(appSpec);
-
-        binding.setObject(date);
-        // note - cannot treat java.sql.Timestamp as a Date as the nanos store
-        // the
-        // fractional part of the second, including the millis. JDK 1.3 Javadocs
-        // for Timestamp suggest using nanos/1000000 to find the actual millis.
-        // Otherwise, just using assertEquals(date, page.getDateValue()) fails
-        // under JDK 1.3.
-        assertEquals(date, new Date((page.getDateValue().getTime() / 1000) * 1000 + page.getDateValue().getNanos()
-                / 1000000));
     }
 }

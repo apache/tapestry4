@@ -23,7 +23,10 @@
     Creates bindings where the path is a OGNL expression.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.OGNLBindingFactory"/>
+      <construct class="org.apache.tapestry.services.impl.OGNLBindingFactory">
+        <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
+        <set-service property="expressionCache" service-id="tapestry.ognl.ExpressionCache"/>
+      </construct>
     </invoke-factory>
   </service-point>
 

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.ognl" version="3.1.0">
+
+  Wrappers around the Object Graph Navigation Library.
+  
+  <!-- Currently, a single TypeConverter is allowed, specified as an app extension.  Need to augment that with
+       a configuration point to specify as many as necessary. -->
+
+  <service-point id="ExpressionEvaluator" interface="org.apache.tapestry.services.ExpressionEvaluator">
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ExpressionEvaluatorImpl">
+        <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+
+  <service-point id="ExpressionCache" interface="org.apache.tapestry.services.ExpressionCache">
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ExpressionCacheImpl">
+        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+</module>

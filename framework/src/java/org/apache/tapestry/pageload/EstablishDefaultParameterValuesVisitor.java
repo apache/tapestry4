@@ -17,27 +17,26 @@ package org.apache.tapestry.pageload;
 import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.binding.ExpressionBinding;
+import org.apache.tapestry.services.BindingFactory;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
- *  For all parameters in the examined component that have default values, but are not bound,
- *  automatically add an ExpressionBinding with the default value.
- *   
- *  @author mindbridge
- *  @since 3.0
+ * For all parameters in the examined component that have default values, but are not bound,
+ * automatically add an ExpressionBinding with the default value.
+ * 
+ * @author mindbridge
+ * @since 3.0
  */
 public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 {
-    private ClassResolver _resolver;
+    private BindingFactory _bindingFactory;
 
-    public EstablishDefaultParameterValuesVisitor(ClassResolver resolver)
+    public void setBindingFactory(BindingFactory bindingFactory)
     {
-        _resolver = resolver;
+        _bindingFactory = bindingFactory;
     }
 
     /**
@@ -60,25 +59,21 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 
             // the parameter has a default value, so it must not be required
             if (parameterSpec.isRequired())
-                throw new ApplicationRuntimeException(
-                    PageloadMessages.parameterMustHaveNoDefaultValue(component, name),
-                    component,
-                    parameterSpec.getLocation(),
-                    null);
+                throw new ApplicationRuntimeException(PageloadMessages
+                        .parameterMustHaveNoDefaultValue(component, name), component, parameterSpec
+                        .getLocation(), null);
 
             // if there is no binding for this parameter, bind it to the default value
             if (component.getBinding(name) == null)
             {
-                IBinding binding =
-                    new ExpressionBinding(
-                        _resolver,
+                IBinding binding = _bindingFactory.createBinding(
                         component,
                         defaultValue,
                         parameterSpec.getLocation());
+
                 component.setBinding(name, binding);
             }
 
         }
     }
-
 }
