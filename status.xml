@@ -283,6 +283,10 @@ Fixed NPE in PatternValidator.toString().
 Fix TestMocks to not use JDK 1.4 API.	
 </action>
 
+<action type="update" dev="MB">
+Automatically download external dependencies (such as Forrest and McKoi DB).	
+</action>
+
 			</release>
 		</changes>
 	</status>

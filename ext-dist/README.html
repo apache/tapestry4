@@ -9,8 +9,22 @@
 
 <p>
 This directory contains external distributions that can no longer be included with Tapestry due to
-licensing conflicts.  <b>It starts empty -you must acquire the necessary distributions from the provided links
-and copy them into this directory before attempting to run the examples.</b>
+licensing conflicts.  It starts empty, and the necessary files are downloaded automatically by the Ant
+build scripts.
+</p>
+
+<p>
+You will need to update <code>config/build.properties</code> to tell Ant where
+to put temporary files.  The <b>base.path</b> entry should be the absolute path name. The directory will be created automatically.
+</p>
+
+<p>
+If you are operating behind a firewall, you will need to set three additional properties:
+<ul>
+<li><b>proxy.use</b> should be set to 'on'
+<li><b>proxy.host</b> should be set the name of your local download proxy
+<li><b>proxy.port</b> should be set to the port for your local download proxy
+</ul>
 </p>
 
 <p>
@@ -19,41 +33,6 @@ your Jetty or Tomcat installation (to run the <a href="http://localhost:8080/wor
 or at your JBoss installation (to run the <a href="http://localhost/vlib/app">Virtual Library</a>).
 </p>
 
-
-<table border="1">
-<tr>
-<th>File</th>
-<th>Source</th>
-<th>Description</th>
-</tr>
-
-<tr>
-<td>mckoidb.jar</td>
-<td><a href="http://www.mckoi.com/database/">http://www.mckoi.com/database/</a></td>
-<td>SQL Database used with the Virtual Library, release 1.00</td>
-</tr>
-
-<tr>
-<td>jdom-b8.jar</td>
-<td><a href="http://www.jdom.org/">http://www.jdom.org/</a></td>
-<td>DOM parser necessary to compile and run the Tapestry Unit Tests</td>
-</tr>
-
-<tr>
-<td>junit.jar</td>
-<td><a href="http://www.junit.org/">http://www.junit.org/</a></td>
-<td>JUnit API necessary to compile and run the Tapestry Unit Tests</td>
-</tr>
-
-<tr>
-<td>docbkx412.zip, docbook-xsl-1.62.4.zip</td>
-<td><a href="http://www.docbook.org/">http://www.docbook.org/</a></td>
-<td>DocBook is necessary to build the Tapestry documentation</td>
-</tr>
-
-
-
-</table>
 
 </body>
 </html>

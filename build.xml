@@ -635,6 +635,7 @@
 	</target>
   
 	<target name="downloadgz" unless="exist" depends="setproxy,testexist">
+		<mkdir dir="${base.path}"/>
 		<!-- Download and extract the package -->
 		<get src="${sourcefile}" dest="${base.path}/file.tar.gz" />
 		<gunzip src="${base.path}/file.tar.gz" dest="${base.path}/file.tar"/>
@@ -650,6 +651,7 @@
   
 	<target name="downloadzip" unless="exist" depends="setproxy,testexist">
 		<!-- Download and extract the package -->
+		<mkdir dir="${base.path}"/>
 		<get src="${sourcefile}" dest="${base.path}/file.zip" />
 		<mkdir dir="${destdir}" />
 		<unzip src="${base.path}/file.zip" dest="${destdir}"/>
@@ -682,7 +684,7 @@
 	</target>
 
 	<target name="testexist">
-		<echo message="Testing  for ${dlfile}"/>
+		<echo message="Testing for ${dlfile}"/>
 		<available file="${dlfile}" property="exist"/>
 	</target>
 
