@@ -125,7 +125,13 @@ public class DateValidator extends BaseValidator
     private String getEffectiveDisplayFormat()
     {
         if (_displayFormat == null)
-            return defaultDateDisplayFormat;
+        {
+            DateFormat format = getEffectiveFormat();
+            if (format instanceof SimpleDateFormat /* && format != defaultDateFormat */) 
+                return ((SimpleDateFormat)format).toPattern();
+            else
+                return defaultDateDisplayFormat;
+        }
 
         return _displayFormat;
     }
