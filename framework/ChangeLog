@@ -1,3 +1,7 @@
+* Apr 3 2001 hship
+
+Add @since tags to new methods in AbtractEngine.
+
 * Mar 19 2001 hship
 
 [409751] Action encodes URL wrong
