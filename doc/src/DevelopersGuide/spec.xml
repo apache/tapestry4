@@ -952,9 +952,87 @@ the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
 </section> <!-- spec.inherited-binding -->
 
 <section id="spec.library">
+	<title><sgmltag class="starttag">library</sgmltag> element</title>
+	
+<para>
+Appears in: &spec.application; and &spec.library-specification;
+</para>
+
+<para>
+Establishes that the containing application or library uses components defined in
+another library, and sets the prefix used to reference those components.
+</para>
+
+<figure>
+	<title><sgmltag class="starttag">library</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>id</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The id associated with the library.  Components within the library
+	can be referenced with the component type
+	<literal><replaceable>id</replaceable>:<replaceable>name</replaceable></literal>.
+	</entry>
+</row>
+<row>
+	<entry>specification-path</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The complete resource path for the library specification.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+
+
+
+
 </section> <!-- spec.library -->
 
 <section id="spec.library-specification">
+	<title><sgmltag class="starttag">library-specification</sgmltag> element</title>
+	
+<para>
+<emphasis>root element</emphasis>
+</para>
+
+<para>
+Defines the pages, components, services and libraries used by a library.  Very similar
+to &spec.application;, but without attributes related application name or engine class.
+</para>
+
+<para>
+The 	<sgmltag class="starttag">library-specification</sgmltag>
+element has no attributes.
+</para>
+	
+
+<figure>
+	<title><sgmltag class="starttag">library-specification</sgmltag> Elements</title>
+<literallayout>
+  &spec.description; *, &spec.property; *,
+  (&spec.page; | &spec.component-alias; | &spec.service; | &spec.library; | &spec.extension;) *
+</literallayout>
+</figure>
+
+
 </section> <!-- spec.library-specification -->
 
 <section id="spec.page">
