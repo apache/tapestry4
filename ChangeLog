@@ -1,3 +1,8 @@
+* Jun 13 2001 hship
+
+Fix typo in framework Makefile (caused some package resources not to be copied).
+[432796] Creating visit doesn't create session
+
 * Jun 12 2001 hship
 
 Adjust for changes in JBE (concerning cataloging).
