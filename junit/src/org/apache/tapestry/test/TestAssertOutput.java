@@ -15,7 +15,7 @@
 package org.apache.tapestry.test;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.test.assertions.AssertOutput;
 
 /**
@@ -25,7 +25,7 @@ import org.apache.tapestry.test.assertions.AssertOutput;
  * @author Howard Lewis Ship
  * @version $Id$
  */
-public class TestAssertOutput extends HiveMindTestCase
+public class TestAssertOutput extends TapestryTestCase
 {
     public void testSuccess() throws Exception
     {
@@ -53,8 +53,8 @@ public class TestAssertOutput extends HiveMindTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                "Expected output '<title>Home</title>' not found in response.",
+            assertRegexp(
+                "Expected text \\(\"<title>Home</title>\", at .*?\\) was not found in the response\\.",
                 ex.getMessage());
         }
     }

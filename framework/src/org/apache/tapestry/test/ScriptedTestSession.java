@@ -26,6 +26,7 @@ import org.apache.tapestry.test.mock.MockContext;
 import org.apache.tapestry.test.mock.MockRequest;
 import org.apache.tapestry.test.mock.MockResponse;
 import org.apache.tapestry.test.mock.MockServletConfig;
+import org.apache.tapestry.util.RegexpMatcher;
 
 /**
  * Executes a series of requests and assertions specified by
@@ -40,7 +41,8 @@ public class ScriptedTestSession
     private MockContext _context;
     private MockRequest _request;
     private MockResponse _response;
-
+	private RegexpMatcher _matcher = new RegexpMatcher();
+	
     public ScriptedTestSession(ScriptDescriptor descriptor)
     {
         _scriptDescriptor = descriptor;
@@ -192,6 +194,11 @@ public class ScriptedTestSession
     public MockResponse getResponse()
     {
         return _response;
+    }
+
+    public RegexpMatcher getMatcher()
+    {
+        return _matcher;
     }
 
 }

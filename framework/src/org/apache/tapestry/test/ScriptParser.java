@@ -23,11 +23,14 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.parse.AbstractParser;
 import org.apache.hivemind.parse.ElementParseInfo;
 import org.apache.hivemind.sdl.SDLResourceParser;
 import org.apache.tapestry.test.assertions.AssertOutput;
+import org.apache.tapestry.test.assertions.AssertRegexp;
+import org.apache.tapestry.test.assertions.RegexpMatch;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -35,7 +38,6 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * a sequence of operations and assertions.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class ScriptParser extends AbstractParser
 {
@@ -175,6 +177,8 @@ public class ScriptParser extends AbstractParser
     private static final int STATE_INIT_PARAMETER = 3;
     private static final int STATE_REQUEST = 4;
     private static final int STATE_ASSERT_OUTPUT = 5;
+    private static final int STATE_ASSERT_REGEXP = 6;
+    private static final int STATE_MATCH = 7;
 
     private static final int STATE_NO_CONTENT = 1000;
 
@@ -201,6 +205,10 @@ public class ScriptParser extends AbstractParser
                 beginRequest();
                 break;
 
+            case STATE_ASSERT_REGEXP :
+                beginAssertRegexp();
+                break;
+
             default :
                 unexpectedElement(_elementName);
         }
@@ -215,6 +223,14 @@ public class ScriptParser extends AbstractParser
             case STATE_ASSERT_OUTPUT :
 
                 endAssertOutput();
+                break;
+
+            case STATE_ASSERT_REGEXP :
+                endAssertRegexp();
+                break;
+
+            case STATE_MATCH :
+                endMatch();
                 break;
 
             default :
@@ -296,6 +312,12 @@ public class ScriptParser extends AbstractParser
             return;
         }
 
+        if (_elementName.equals("assert-regexp"))
+        {
+            enterAssertRegexp();
+            return;
+        }
+
         unexpectedElement(_elementName);
     }
 
@@ -311,12 +333,69 @@ public class ScriptParser extends AbstractParser
         push(_elementName, ao, STATE_ASSERT_OUTPUT, false);
     }
 
+    private void enterAssertRegexp()
+    {
+        validateAttributes();
+
+        int subgroup = getIntAttribute("subgroup", 0);
+
+        AssertRegexp ar = new AssertRegexp();
+        ar.setSubgroup(subgroup);
+
+        RequestDescriptor rd = (RequestDescriptor) peekObject();
+
+        rd.addAssertion(ar);
+
+        push(_elementName, ar, STATE_ASSERT_REGEXP, false);
+    }
+
+    private void beginAssertRegexp()
+    {
+        if (_elementName.equals("match"))
+        {
+            enterMatch();
+            return;
+        }
+
+        unexpectedElement(_elementName);
+    }
+
+    private void enterMatch()
+    {
+        validateAttributes();
+
+        RegexpMatch m = new RegexpMatch();
+        AssertRegexp ar = (AssertRegexp) peekObject();
+
+        ar.addMatch(m);
+
+        push(_elementName, m, STATE_MATCH, false);
+    }
+
     private void endAssertOutput()
     {
         String content = peekContent();
         AssertOutput ao = (AssertOutput) peekObject();
 
         ao.setExpectedSubstring(content);
+    }
+
+    private void endAssertRegexp()
+    {
+        String content = peekContent();
+
+        AssertRegexp ar = (AssertRegexp) peekObject();
+
+        ar.setRegexp(content);
+    }
+
+    private void endMatch()
+    {
+        String content = peekContent();
+
+        RegexpMatch m = (RegexpMatch) peekObject();
+
+        m.setExpectedString(content);
     }
 
     protected String peekContent()
@@ -422,7 +501,7 @@ public class ScriptParser extends AbstractParser
 
             if (!epi.isKnown(name))
                 throw new DocumentParseException(
-                    "Unknown attribute: " + name + " at " + getLocation() + ".",
+                    ScriptMessages.unexpectedAttributeInElement(name, _elementName),
                     getLocation(),
                     null);
         }
@@ -435,14 +514,8 @@ public class ScriptParser extends AbstractParser
             String name = (String) i.next();
 
             if (!_attributes.containsKey(name))
-                throw new ApplicationRuntimeException(
-                    "Missing required attribute: "
-                        + name
-                        + " at "
-                        + getElementPath()
-                        + " ("
-                        + getLocation()
-                        + ").",
+                throw new DocumentParseException(
+                    ScriptMessages.missingRequiredAttribute(name, _elementName),
                     getLocation(),
                     null);
         }
@@ -460,5 +533,29 @@ public class ScriptParser extends AbstractParser
         }
 
         return result;
+    }
+
+    private int getIntAttribute(String name, int defaultValue)
+    {
+        String attributeValue = getAttribute(name);
+
+        if (attributeValue == null)
+            return defaultValue;
+
+        try
+        {
+            return Integer.parseInt(attributeValue);
+        }
+        catch (NumberFormatException ex)
+        {
+            throw new ApplicationRuntimeException(
+                ScriptMessages.invalidIntAttribute(
+                    name,
+                    _elementName,
+                    getLocation(),
+                    attributeValue),
+                getLocation(),
+                ex);
+        }
     }
 }

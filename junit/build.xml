@@ -79,12 +79,13 @@
   <macrodef name="run-junit" description="Executes the JUnit test suite with a configured classpath.">
     <attribute name="classpathref"/>
     <attribute name="log4j-configuration" default="log4j.properties"/>
+ 	<attribute name="fork" default="false"/>
  
  	<sequential>
        <junit printsummary="no"
           errorProperty="test.failed"
           failureProperty="test.failed"
-          fork="true">
+          fork="@{fork}">
           <classpath refid="@{classpathref}"/>
           <formatter type="xml"/>
           <formatter type="brief" usefile="false"/>
@@ -123,36 +124,14 @@
           <report format="frames" todir="${classes.dir}"/>
       </junitreport>
   </target>
-
-  <target name="gui" depends="compile" description="Run the JUnit GUI.">
-  	<java fork="true" classname="junit.swingui.TestRunner">
-  		<classpath refid="junit.classpath"/>
-		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
-		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
-  	</java>
-  	
-  </target>
   
-
   <path id="clover.classpath">
     <pathelement location="${clover-classes.dir}"/>
     <pathelement location="${clover.dir}/lib/clover.jar"/>
     <path refid="junit.classpath"/>
   </path>
-    
-  <target name="clover" description="Run the entire Tapestry test suite and construct the Clover report.">
-  	<antcall target="run-clover">
-  		<param name="suite" value="org.apache.tapestry.junit.TapestrySuite"/>
-  	</antcall>
-  </target>
-  
-  <target name="fast-clover" description="Run a subset of the Tapestry test suite (excluding mock unit tests), and construct the Clover report.">
-  	<antcall target="run-clover">
-  		<param name="suite" value="org.apache.tapestry.junit.BasicTestSuite"/>
-  	</antcall>  	
-  </target>
-   
-  <target name="run-clover" depends="compile" description="Run tests and construct the Clover report.">
+      
+  <target name="clover" depends="compile" description="Run tests and construct the Clover report.">
   	<mkdir dir="${clover-classes.dir}"/>
   	<mkdir dir="${clover-db.dir}"/>
   	
@@ -171,7 +150,7 @@
 
 </echo>
     
-    <run-junit classpathref="clover.classpath"/>
+    <run-junit classpathref="clover.classpath" fork="true"/>
   	
     <echo>
     
@@ -179,7 +158,7 @@
 
 </echo>
     
-    <run-junit classpathref="clover.classpath" log4j-configuration="log4j-slow.properties"/>	
+    <run-junit classpathref="clover.classpath" log4j-configuration="log4j-slow.properties" fork="true"/>	
   	
   	<antcall target="clover-report"/>
 </target>

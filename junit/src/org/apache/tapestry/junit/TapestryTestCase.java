@@ -19,11 +19,11 @@ import java.util.List;
 import java.util.Locale;
 
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.Tapestry;
@@ -35,6 +35,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.util.IPropertyHolder;
+import org.apache.tapestry.util.RegexpMatcher;
 
 /**
  *  Base class for Tapestry test cases.
@@ -42,15 +43,16 @@ import org.apache.tapestry.util.IPropertyHolder;
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 2.2
- * 
- **/
+ */
 
-public class TapestryTestCase extends TestCase
+public class TapestryTestCase extends HiveMindTestCase
 {
     protected static final boolean IS_JDK13 =
         System.getProperty("java.specification.version").equals("1.3");
 
     private ClassResolver _resolver = new DefaultClassResolver();
+
+    private static RegexpMatcher _matcher;
 
     protected IPage createPage(String specificationPath, Locale locale)
     {
@@ -103,8 +105,7 @@ public class TapestryTestCase extends TestCase
     {
         String adjustedClassName = "/" + getClass().getName().replace('.', '/') + ".class";
 
-        Resource classResource =
-            new ClasspathResource(_resolver, adjustedClassName);
+        Resource classResource = new ClasspathResource(_resolver, adjustedClassName);
 
         return classResource.getRelativeResource(simpleName);
     }
@@ -118,12 +119,12 @@ public class TapestryTestCase extends TestCase
         return parser.parseLibrarySpecification(location);
     }
 
-    protected void checkList(String propertyName, Object[] expected, Object[] actual)
+    public static void checkList(String propertyName, Object[] expected, Object[] actual)
     {
         checkList(propertyName, expected, Arrays.asList(actual));
     }
 
-    protected void checkList(String propertyName, Object[] expected, List actual)
+    public static void checkList(String propertyName, Object[] expected, List actual)
     {
         int count = Tapestry.size(actual);
 
@@ -135,12 +136,12 @@ public class TapestryTestCase extends TestCase
         }
     }
 
-    protected void checkProperty(IPropertyHolder h, String propertyName, String expectedValue)
+    public static void checkProperty(IPropertyHolder h, String propertyName, String expectedValue)
     {
         assertEquals("Property " + propertyName + ".", expectedValue, h.getProperty(propertyName));
     }
 
-    protected void checkException(Throwable ex, String string)
+    public static void checkException(Throwable ex, String string)
     {
         if (ex.getMessage().indexOf(string) >= 0)
             return;
@@ -149,8 +150,26 @@ public class TapestryTestCase extends TestCase
             "Exception " + ex + " does not contain sub-string '" + string + "'.");
     }
 
-    protected void unreachable()
+	/**
+	 * Tests to see if the provided value matches the regular expression.
+	 * 
+	 * @throws AssertionFailedError if the input does not match
+	 * 
+	 * @since 3.1
+	 */
+    public static void assertRegexp(String regexpPattern, String value)
     {
-        throw new AssertionFailedError("This code should be unreachable.");
+        if (_matcher == null)
+            _matcher = new RegexpMatcher();
+
+        if (_matcher.matches(regexpPattern, value))
+            return;
+
+        throw new AssertionFailedError(
+            "Text \""
+                + value
+                + "\" does not contain regular expression \""
+                + regexpPattern
+                + "\".");
     }
 }

@@ -17,14 +17,12 @@ package org.apache.tapestry.test;
 import java.io.PrintWriter;
 import java.util.List;
 
-import junit.framework.AssertionFailedError;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.test.mock.MockContext;
 import org.apache.tapestry.test.mock.MockRequest;
 import org.apache.tapestry.test.mock.MockResponse;
@@ -34,10 +32,9 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * Tests {@link org.apache.tapestry.test.ScriptParser}.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.1
  */
-public class TestScriptParser extends HiveMindTestCase
+public class TestScriptParser extends TapestryTestCase
 {
     private ClassResolver _resolver = new DefaultClassResolver();
 
@@ -73,7 +70,9 @@ public class TestScriptParser extends HiveMindTestCase
         }
         catch (DocumentParseException ex)
         {
-            checkException(ex, "Missing required attribute: context");
+            checkException(
+                ex,
+                "Required attribute 'context' is not supplied for element test-script.");
         }
     }
 
@@ -86,7 +85,7 @@ public class TestScriptParser extends HiveMindTestCase
         }
         catch (DocumentParseException ex)
         {
-            checkException(ex, "Unknown attribute: cntext");
+            checkException(ex, "Unexpected attribute 'cntext' (in element test-script).");
         }
     }
 
@@ -116,7 +115,6 @@ public class TestScriptParser extends HiveMindTestCase
         {
             checkException(ex, "Servlet descriptor 'default'");
             checkException(ex, "conflicts with prior instance");
-            assertNotNull(ex.getLocation());
         }
     }
 
@@ -190,18 +188,55 @@ public class TestScriptParser extends HiveMindTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                "Expected output '<title>Away</title>' not found in response.",
+            assertRegexp(
+                "Expected text \\(\"<title>Away</title>\", at .*?\\) was not found in the response\\.",
                 ex.getMessage());
             assertNotNull(ex.getLocation());
         }
     }
 
-    private void checkException(Throwable ex, String substring)
+    public void testAssertRegexp() throws Exception
     {
-        if (ex.getMessage().indexOf(substring) < 0)
-            throw new AssertionFailedError(
-                "Exception '" + ex.getMessage() + "' does not contain '" + substring + "'.");
+        ScriptDescriptor sd = parse("AssertRegexp.sdl");
+
+        ScriptedTestSession ss = createSession();
+
+        RequestDescriptor rd = (RequestDescriptor) sd.getRequestDescriptors().get(0);
+
+        try
+        {
+            rd.executeAssertions(ss);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertRegexp(
+                "Expected regular expression \\(\"<body>.*</body>\", at .*?\\) was not found in the response\\.",
+                ex.getMessage());
+            assertNotNull(ex.getLocation());
+        }
+    }
+
+    public void testAssertRegexpMatch() throws Exception
+    {
+        ScriptDescriptor sd = parse("AssertRegexpMatch.sdl");
+
+        ScriptedTestSession ss = createSession();
+
+        RequestDescriptor rd = (RequestDescriptor) sd.getRequestDescriptors().get(0);
+
+        try
+        {
+            rd.executeAssertions(ss);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertRegexp(
+                "Regular expression '<\\(\\.\\*\\?\\)>' \\(at .*?\\) should have generated 4 matches, but generated 2 instead\\.",
+                ex.getMessage());
+            assertNotNull(ex.getLocation());
+        }
     }
 
     /**

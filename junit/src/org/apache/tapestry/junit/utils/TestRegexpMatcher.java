@@ -96,4 +96,38 @@ public class TestRegexpMatcher extends TapestryTestCase
 
         assertEquals(m.getEscapedPatternString("^\\d$"), "\\^\\\\d\\$");
     }
+
+	/** @since 3.1 */
+	
+    public void testGetMatches()
+    {
+        RegexpMatcher m = new RegexpMatcher();
+
+        String[] matches = m.getMatches("\\d+", "57,232 89 147", 0);
+
+        assertListsEqual(new String[] { "57", "232", "89", "147" }, matches);
+    }
+
+	/** @since 3.1 */
+	
+    public void testGetMatchesNoMatch()
+    {
+        RegexpMatcher m = new RegexpMatcher();
+
+        String[] matches = m.getMatches("A(B|C)", "aBCAaBA", 0);
+
+        assertEquals(0, matches.length);
+    }
+
+	/** @since 3.1 */
+	
+    public void testGetMatchesSubgroup()
+    {
+        RegexpMatcher m = new RegexpMatcher();
+
+        String matches[] = m.getMatches("A(B|C|fred)", "AA AC AB Afred AA AC", 1);
+
+        assertListsEqual(new String[] { "C", "B", "fred", "C" }, matches);
+    }
+
 }

@@ -24,7 +24,6 @@ import org.apache.tapestry.spec.IBeanSpecification;
  * parsed.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 class BeanSetPropertySetter extends BaseLocatable
 {
@@ -44,7 +43,7 @@ class BeanSetPropertySetter extends BaseLocatable
 
     void applyExpression(String expression)
     {
-        PropertyUtils.write(_initializer, "expression", expression, getLocation());
+        PropertyUtils.write(_initializer, "expression", expression);
 
         _beanSpecification.setLocation(getLocation());
         _beanSpecification.addInitializer(_initializer);
