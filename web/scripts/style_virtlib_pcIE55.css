@@ -6,6 +6,12 @@ body, table, td, p	{
 a	{
 	color:#ffffff;
 }
+
+CODE
+{
+  font-size: 12;
+}
+
 .clsBold	{
 	font-weight:bold;
 }
@@ -41,10 +47,24 @@ a.clsDataBlue:visited	{
 .clsTopNav:hover	{
 	text-decoration:underline;
 }
-.clsTopNavOn	{
+
+SPAN.clsTopNavOn	{
 	font-weight:bold;
 	color:#e88700;
 }
+
+A.clsTopNavOn
+{
+	font-weight:bold;
+	color:#e88700;
+	text-decoration:none;
+}
+
+A.clsTopNavOn:hover
+{
+  text-decoration:underline;
+}
+
 .clsLeftNavTxt	{
 	color:#ffffff;
 	font-weight:bold;

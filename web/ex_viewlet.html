@@ -3,6 +3,67 @@
 <head>
 <title>Tapestry: Demos</title><link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
 </head>
+
+<script language="javaScript">
+
+function isViewletCompliant()
+{
+     answer=true;
+     version=Math.round(parseFloat(navigator.appVersion) * 1000);
+     if (navigator.appName.substring(0,9) == "Microsoft")
+     {
+          //IE4.0+. Ok on all platforms
+          if(version<4000) answer=false;
+     }
+     if (navigator.appName.substring(0,8) == "Netscape")
+     {
+          //NN5.0+ needed on mac, NN4.06+ on other platforms
+          if ((navigator.appVersion.indexOf("Mac")> 0) && (version<5000))
+          answer=false;
+          else
+          if (version<4060)
+               answer=false;
+     }
+     // Browser Shouldn't support java 1.1 but might have plugin
+     plugins=navigator.plugins;
+     if (answer==false && plugins!=null)
+     {
+          for(i=0;i!=plugins.length;i++)
+          if((plugins[i].name.indexOf("Java Plug-in")>=0) && (plugins[i].name.indexOf("1.0")<0))
+               answer=true;
+     }
+     return answer;
+     //For other browsers we assume it works}function openViewlet(htmlFile,htmlWidth,htmlHeight)
+     {
+          str = 'resizable=0,toolbar=0,menubar=0,';
+          str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+          if(!isViewletCompliant())
+          {
+               open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+          }
+          else
+          {
+               window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+          }
+     }
+}
+
+function openViewlet(htmlFile,htmlWidth,htmlHeight)
+{
+     str = 'resizable=0,toolbar=0,menubar=0,';
+     str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+     if(!isViewletCompliant())
+     {
+          open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+     }
+     else
+     {
+          window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+     }
+}
+</script>
+
+
 <body background="images/bg02.gif" bgcolor="#ffffff" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
@@ -14,11 +75,11 @@
 		<img height="8"  src="images/dot.gif" width="12" border="0">
 		<a class="clsTopNav" href="ex_new.html">What's New</a>
 		<img height="8" src="images/dot.gif" width="12" border="0">
-		<span class="clsTopNavOn">Demo</span>
+		<a class="clsTopNav" href="ex_demo.html">Demo</a>
 		<img height="8" src="images/dot.gif" width="12" border="0">
 		<a class="clsTopNav" href="ex_doc.html">Documentation</a>
 		<img height="8" src="images/dot.gif" width="12" border="0">
-		<a class="clsTopNav" href="ex_viewlet.html">Viewlets</a>
+		<span class="clsTopNavOn">Viewlets</span>
 		<img height="8" src="images/dot.gif" width="12" border="0">
 		<a class="clsTopNav" href="ex_faq.html">FAQ</a>
 		<img height="8" src="images/dot.gif" width="12" border="0">
@@ -35,42 +96,27 @@
 	<tr>
 		<td><img height="44" src="images/ico_t.gif" width="44" align="absMiddle" border="0">&nbsp;<img height="22" alt="" src="images/hd_tapestry.gif" width="100" align="absMiddle" vspace="17" border="0">
 		
-		<br><br>Two demonstrations are available.
-		
+		<br><br>Viewlets are a powerful tool for creating tutorials and demonstrations.  Think of it as
+		an animated slideshow of screen shots that allows you to "follow along" with an invisible
+		instructor.
+
 	<p><table border="0" cellspacing="0" cellpadding="2">
 	<tr valign="top">
 		<td><img src="images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="extranet_vlib.html">Virtual Library</a>
+		<td><a class="clsLeftNav" href="javascript:openViewlet('http://www.viewhow2.com/vf/ikxoapk/5/Tapestry_Vlib_BasicSearch_viewlet.html',839+20,600+90);">
+		Virtual Library - Basic Search</a>
 		
 		<br><br>
 		
-		      A demonstration of a complete J2EE application.  Its goal is to support sharing of
-         books within an organization ... users register the books they have available to
-         lend, and the application tracks who has what borrowed.  It demonstrates how to handle
-         database access (via Entity EJBs), stateless vs. stateful operation, securing pages against
-         unauthorized access and more.
-<p>The Virtual Library is built on top of the <a href="http://www.jboss.org">JBoss</a> application server.
-<p>The source code for the Virtual Library is included in the&nbsp;Tapestry
-         distribution.
+		A quick run through of the very basics of the Virtual Library application, covering the basics
+		of searching.
+		
 		</td>
 	</tr>
 	
 	<tr><td height="10"><img src="images/spacer.gif" width="1"></td></tr>
 	
-
-	<tr valign="top">
-		<td><img src="images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="extranet_tutorial.html">Tapestry Tutorials</a>
-		
-		<br><br>
-		
-		A collection
-         of mini-applications and testbeds that demonstrate different aspects of the framework.
-         You can run these demos live and follow along with the
-         <a href="ex_tutorial.html">Tutorial</a> documentation.
-		</td>
-	</tr>
-	
+</table>
 
 		
 	</td>
@@ -119,6 +165,6 @@
 			</table>
 		</td>
 	</tr>
-</table><!-- ****END FOOTER**** -->
+</table>
 </body>
 </html>
