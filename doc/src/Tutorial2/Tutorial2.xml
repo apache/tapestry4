@@ -7,6 +7,7 @@
   <!ENTITY chapter-two SYSTEM "./tutorial-chapter-two.xml">
   <!ENTITY chapter-three SYSTEM "./tutorial-chapter-three.xml">
   <!ENTITY chapter-three-ex1 SYSTEM "./tutorial-pagelinking.xml">
+  <!ENTITY chapter-five SYSTEM "./tutorial-chapter-five.xml">
   %TapestryLinks;
 ]>
 <!-- Conventions:
@@ -60,42 +61,8 @@
 	  	</section>
   	</section>
   </chapter>
-    
-  <chapter id="forms">
-  	<title>Using Forms</title>
-  	<section id="form-non-validated">
-  		<title>Basic non-validated form</title>
-  	</section>
-  	
-  	<section id="server-side">
-  		<title>Server side validation</title>
-	  	<section id="built-in">
-	  		<title>Built in Components</title>
-	  	</section>
-	  	<section id="contributed-components">
-	  		<title>Contributed Components</title>
-	  	</section>
-	  	<section id="custom-rendering">
-	  		<title>Custom Error Rendering</title>
-	  	</section>
-  	</section>
 
-  	<section id="multi-button">
-  		<title>Multiple Submit Buttons</title>
-  	</section>
-
-  	<section id="action-and-direct">
-  		<title>Action amd Direct Services</title>
-	  	<section id="stale-link-handling">
-	  		<title>Handling Stale Links</title>
-	  	</section>
-  	</section>
-
-  	<section id="client-side">
-  		<title>Client side validation</title>
-  	</section>
-  </chapter>
-
+  &chapter-five;
 
   <chapter id="built-ins">
   	<title>Using the Built-In Components</title>
