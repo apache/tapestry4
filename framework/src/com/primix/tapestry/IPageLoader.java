@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -31,8 +31,7 @@ package com.primix.tapestry;
 import com.primix.tapestry.spec.ComponentSpecification;
 
 /**
- * Interface exposed to components as they are loaded by the page loader.  This
- * seems to be room for future expansion!
+ * Interface exposed to components as they are loaded by the page loader.
  *
  * @see ILifecycle#finishLoad(IPageLoader, ComponentSpecification)
  *
@@ -42,4 +41,21 @@ import com.primix.tapestry.spec.ComponentSpecification;
 
 public interface IPageLoader
 {
+	/**
+	 *  Returns the engine for which this page loader is currently
+	 *  constructing a page.
+	 *
+	 * @since 0.2.12
+	 */
+	
+	public IEngine getEngine();
+	
+	/**
+	 *  A convienience; returns the template source provided by
+	 *  the {@link IEngine engine}.
+	 *
+	 * @since 0.2.12
+	 */
+	
+	public ITemplateSource getTemplateSource();
 }
