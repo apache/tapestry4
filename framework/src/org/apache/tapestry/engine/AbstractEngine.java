@@ -1438,7 +1438,7 @@ public abstract class AbstractEngine
             catch (UnsupportedEncodingException e)
             {
                 throw new IllegalArgumentException(
-                    Tapestry.format("AbstractEngine.illegal-encoding", encoding));
+                    Tapestry.format("illegal-encoding", encoding));
             }
         }
     }

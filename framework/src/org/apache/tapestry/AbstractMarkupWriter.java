@@ -331,7 +331,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
         catch (UnsupportedEncodingException e)
         {
             throw new IllegalArgumentException(
-                Tapestry.format("AbstractMarkupWriter.illegal-encoding", encoding));
+                Tapestry.format("illegal-encoding", encoding));
         }
     }
 
