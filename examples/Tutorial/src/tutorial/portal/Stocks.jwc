@@ -33,7 +33,9 @@
   <binding name="format" property-path="decimalFormat"/>
 </component>
 
-<component id="showError" type="ShowError"/>
+<component id="showError" type="ShowError">
+  <binding name="error" property-path="error"/>
+</component>
 
 <component id="form" type="Form">
   <binding name="listener" property-path="listeners.addStock"/>

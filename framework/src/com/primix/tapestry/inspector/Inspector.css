@@ -1,3 +1,7 @@
+BODY {
+ background-color: #839cd1;
+}
+
 P  {}
 
 H1  {
@@ -10,7 +14,9 @@ H2  {}
 
 H3  {}
 
-A  {}
+A  {
+	color:#ffffff;
+}
 
 A:Visited  {}
 

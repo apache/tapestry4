@@ -31,6 +31,7 @@ package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
 import javax.servlet.http.*;
+import java.util.*;
 
 // Appease Javadoc
 import com.primix.tapestry.html.*;
@@ -51,38 +52,118 @@ import com.primix.tapestry.html.*;
  */
 
 
-public class ShowInspector extends BaseComponent
+public class ShowInspector 
+	extends BaseComponent
+	implements IDirect
 {
-	/**
-	 *  Returns the window target (used in the target attribute of the &lt;a&gt; tag).
-	 *
-	 *  <p>We use the creation time of the session as a kind of unique key.
-	 *
-	 *  @since 0.2.9
-	 *
-	 */
-	
-	public String getWindowTarget()
-	{
-		IRequestCycle cycle = getPage().getRequestCycle();
-		RequestContext context = cycle.getRequestContext();
-		HttpSession session = context.getSession();
-		
-		if (session == null)
-			return "Tapestry Inspector";
-		
-		return "Tapestry Inspector " + session.getCreationTime();
-	}
+	private IScript script;
+	private String movieURL;
+	private Map symbols;
 	
 	/**
 	 *  Gets the listener for the link component.
 	 *
+	 *  @since 1.0.5
 	 */
 	
-	public void showInspector(IRequestCycle cycle)	
+	public void trigger(IRequestCycle cycle, String[] context)
+		throws RequestCycleException
 	{
 		Inspector inspector = (Inspector)cycle.getPage("Inspector");
 		
 		inspector.inspect(getPage().getName(), cycle);
 	}
+	
+	/**
+	 *  Renders the script, then invokes the normal implementation.
+	 *
+	 *  @since 1.0.5
+	 */
+	
+	public void render(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		ScriptSession scriptSession;
+		
+		if (cycle.isRewinding())
+			return;
+		
+		if (script == null)
+		{
+			IEngine engine = page.getEngine();
+			IScriptSource source = engine.getScriptSource();
+		
+			try
+			{
+				script = source.getScript("/com/primix/tapestry/inspector/ShowInspector.script");
+			}
+			catch (ResourceUnavailableException ex)
+			{
+				throw new RequestCycleException(this, ex);
+			}
+		}
+		
+		if (symbols == null)
+			symbols = new HashMap();
+		else
+			symbols.clear();
+		
+
+		IEngineService service = page.getEngine().getService(IEngineService.DIRECT_SERVICE);
+		Gesture g = service.buildGesture(cycle, this, null);
+		
+		symbols.put("URL", g.getFullURL(cycle));
+
+		HttpSession session = cycle.getRequestContext().getSession();
+		
+		if (session == null)
+			symbols.put("windowName", "TapestryInspector");
+		else
+			symbols.put("windowName", "TapestryInspector"  + session.getCreationTime());
+
+		
+		try
+		{			
+			scriptSession = script.execute(symbols);
+		}
+		catch (ScriptException ex)
+		{
+			throw new RequestCycleException(this, ex);
+		}
+		finally
+		{
+			symbols.clear();
+		}
+
+		Body body = Body.get(cycle);
+
+		body.addOtherScript(scriptSession.getBody());
+		body.addOtherInitialization(scriptSession.getInitialization());
+
+		super.render(writer, cycle);
+	}
+
+	/**
+	 *  Returns the URL of the movie, with an additional query parameter of URL,
+	 *  as <code>javascript:ti_raiseInspector();</code>.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public String getMovieURL()
+	{
+		if (movieURL == null)
+		{
+			IAsset movie = getAsset("movie");
+			
+			String baseURL = movie.buildURL(page.getRequestCycle());
+			
+			movieURL = baseURL + "?URL=javascript:ti_raiseInspector();";
+		}
+		
+		return movieURL;
+	}
+
+	
 }

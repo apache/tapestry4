@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<!--
+
+Adds scripting support for the ShowInspector component.
+
+Prefixes all variables and functions with "ti_" (for Tapestry Inspector).
+
+Expects that the Inspector is inside a <div> named "tapestryInspector".
+
+Input symbols:
+ URL - The complete URL needed for to raise the Inspector
+ windowName - The name of the window for the raised Inspector
+ 
+-->
+<script>
+
+
+<body> <![CDATA[
+
+var ti_isNav4 = 
+	(parseInt(navigator.appVersion) >= 4 &&	navigator.appName == "Netscape");
+
+function ti_getObjectHeight(object)
+{
+  if (ti_isNav4)
+    return object.clip.height;
+    
+  return object.clientHeight;
+}
+
+function ti_getObjectWidth(object)
+{
+  if (ti_isNav4)
+    return object.clip.width;
+    
+  return object.clientWidth;
+}
+
+function ti_getInsideWindowWidth()
+{
+  if (ti_isNav4)
+    return window.innerWidth + window.pageXOffset;
+    
+  return document.body.clientWidth + document.body.scrollLeft;
+}
+
+function ti_getInsideWindowHeight()
+{
+  if (ti_isNav4)
+    return window.innerHeight + window.pageYOffset;
+    
+  return document.body.clientHeight + document.body.scrollTop;
+}
+
+
+function ti_shiftTo(object, x, y)
+{
+  if (ti_isNav4)
+  {
+    object.moveTo(x, y);
+    return;
+  }
+  
+  object.pixelLeft = x;
+  object.pixelTop = y;
+}
+
+
+function ti_positionInspector()
+{
+  var object;
+  var content;
+  
+  if (ti_isNav4)
+  {
+    object = document.tapestryInspector;
+    content = object;
+  }
+  else
+  {
+    object = document.all.tapestryInspector.style;
+    content = document.all.tapestryInspector;
+  }
+  
+  var x = ti_getInsideWindowWidth() - ti_getObjectWidth(content) - 3;
+  var y = ti_getInsideWindowHeight() - ti_getObjectHeight(content) - 3;
+  
+  ti_shiftTo(object, x, y);
+  object.visibility = "visible";
+  
+  // Reposition it every quarter second.
+  
+  window.setTimeout("ti_positionInspector()", 250);
+}
+
+]]>
+
+function ti_raiseInspector()
+{
+  var newWindow = window.open(
+  	"<insert property-path="URL"/>",
+  	"<insert property-path="windowName"/>");
+  	// "titlebar,resizable,scrollbars,height=700,height=600");
+  	
+  newWindow.focus();
+}
+
+
+</body>
+
+<initialization>
+
+ti_positionInspector();
+
+</initialization>
+
+</script>
