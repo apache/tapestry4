@@ -72,7 +72,7 @@ public abstract class FormConditional extends AbstractFormComponent
         if (condition) {
             String element = getElement();
             
-            boolean render = cycleRewinding && Tapestry.isNonBlank(element);
+            boolean render = !cycleRewinding && Tapestry.isNonBlank(element);
             
             if (render)
             {
