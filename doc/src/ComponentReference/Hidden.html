@@ -113,16 +113,21 @@
     </td>
 	</tr>
   <tr>
-    <td>datasqueeze</td>
+    <td>encode</td>
     <td>boolean</td>
     <td>in</td>
    	<td>no</td>
 		<td>true</td>
 		<td>
-    If true (default) the 
+    If true (the default) a 
     <a href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer</tt></a>
-    is used to transform the value Object into the HTML value String. Otherwise
-    the value is transformed using the Object <tt>toString()</tt> method.
+    is used to transform the value Object into the HTML value string, and (on submit)
+    to convert the string back into an Object.
+    
+    <p>
+    If false, then the value must be a String.  This is most likely used
+    when the hidden field is used to communicate with client-side logic in JavaScript
+    (which is not able to interpret even Strings encoded by DataSqueezer).
     </td>
 	</tr>
 	</table>
