@@ -236,6 +236,11 @@ NextGen) be released as version number 3.0.
   	Make checks for unimplemented abstract methods optional, to work around a bug
   	in IBM JDK 1.3.1 (used with Websphere 4.x).	
   </action>
+  <action type="fix" dev="HLS" fixes-bug="28235">
+  Allow more primitive types to be used with parameter direction <code>auto</code>
+  (byte, char, short, float and long) in addition to the previously accepted types
+  (boolean, int, double and objects).
+  </action>
  </release> 
   
  <release version="3.0-rc-2" date="Apr 1 2004">

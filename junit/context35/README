@@ -1,0 +1,3 @@
+Bug 28235 CodeGenerationException in case of a component parameter type "long"  
+
+http://issues.apache.org/bugzilla/show_bug.cgi?id=28235
