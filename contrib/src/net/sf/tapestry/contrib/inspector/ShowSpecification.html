@@ -14,10 +14,10 @@
 	
 	<tr class="odd">
 		<th>Java class</th>
-		<td><span jwcid="@Insert" value="[[ inspectedSpecification.componentClassName ]]"/></td>
+		<td><span jwcid="@Insert" value="[[ inspectedComponent.getClass().getName() ]]"/></td>
 	</tr>
 
-<span jwcid="@Conditional" condition="[ [! inspectedSpecification.pageSpecification ]]">
+<span jwcid="@Conditional" condition="[[ ! inspectedSpecification.pageSpecification ]]">
 
 	<tr class="even">
 		<th>Allow informal parameters</th>

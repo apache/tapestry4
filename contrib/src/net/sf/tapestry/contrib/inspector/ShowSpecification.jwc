@@ -33,10 +33,6 @@
     <binding name="class" expression="beans.informalClass.next"/>
   </component>
 
-  <component id="ifAssets" type="Conditional">
-    <binding name="condition" expression="assetNames"/>
-  </component>
-  
   <component id="e_asset" type="Foreach">
     <binding name="source" expression="assetNames"/>
     <binding name="value" expression="assetName"/>
@@ -54,10 +50,6 @@
   <component id="selectComponent" type="DirectLink">
     <binding name="listener" expression="page.listeners.selectComponent"/>
     <binding name="parameters" expression="component.idPath"/>
-  </component>
-
-  <component id="insertComponentType" type="Insert">
-    <binding name="value" expression="componentType"/>
   </component>
 
   <component id="e_property" type="Foreach">
