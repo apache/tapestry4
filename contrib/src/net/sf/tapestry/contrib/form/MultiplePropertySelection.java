@@ -198,19 +198,15 @@ public class MultiplePropertySelection extends AbstractFormComponent
     public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
     {
-		Form form;
-		boolean rewinding;
-		IPropertySelectionModel model = null;
 		IMultiplePropertySelectionRenderer renderer = null;
-		List selectedList;
 		
-		form = getForm(cycle);
-		rewinding = form.isRewinding();
+		IForm form = getForm(cycle);
+		boolean rewinding = form.isRewinding();
 		
 		// Bit of parameter checking
 		disabled = (disabledBinding != null) && disabledBinding.getBoolean();
 		
-		model = (IPropertySelectionModel)modelBinding.getObject(
+		IPropertySelectionModel model = (IPropertySelectionModel)modelBinding.getObject(
 			"model", IPropertySelectionModel.class);
 		
 		if (model == null)
@@ -218,7 +214,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
 		
 		name = form.getElementId(this);
 		
-		selectedList = (List)selectedListBinding.getObject("selectedList", List.class);
+		List selectedList = (List)selectedListBinding.getObject("selectedList", List.class);
 		
 		if (selectedList == null)
 			throw new RequiredParameterException(this, "selectedList", selectedListBinding);

@@ -115,13 +115,10 @@ public class Hidden extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		Form form;
-		boolean formRewound;
-		String value;
 		IActionListener listener;
 		
-		form = getForm(cycle);
-		formRewound = form.isRewinding();
+		IForm form = getForm(cycle);
+		boolean formRewound = form.isRewinding();
 		
 		name = form.getElementId(this);
 		
@@ -135,7 +132,7 @@ public class Hidden extends AbstractFormComponent
 			if (cycle.isRewinding())
 				return;
 			
-			value = valueBinding.getString();
+			String value = valueBinding.getString();
 			
 			writer.beginEmpty("input");
 			writer.attribute("type", "hidden");
@@ -145,7 +142,7 @@ public class Hidden extends AbstractFormComponent
 			return;
 		}
 		
-		value = cycle.getRequestContext().getParameter(name);
+		String value = cycle.getRequestContext().getParameter(name);
 		
 		// A listener is not always necessary ... it's easy to code
 		// the synchronization as a side-effect of the accessor method.

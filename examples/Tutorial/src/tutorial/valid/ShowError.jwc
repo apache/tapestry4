@@ -3,10 +3,15 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.BaseComponent" allow-body="no" allow-informal-parameters="no">
+
+  <parameter name="error" required="yes"/>
+  
   <component id="ifError" type="Conditional">
-    <binding name="condition" property-path="page.error"/>
+    <inherited-binding name="condition" parameter-name="error"/>
   </component>
+  
   <component id="insertError" type="Insert">
-    <binding name="value" property-path="page.error"/>
+    <inherited-binding name="value" parameter-name="error"/>
   </component>
+  
 </specification>

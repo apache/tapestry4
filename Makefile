@@ -33,7 +33,6 @@ include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 MODULES := \
 	framework \
 	contrib \
-	junit \
 	examples/Tutorial \
 	examples/VlibBeans \
 	examples/Vlib \

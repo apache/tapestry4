@@ -91,7 +91,7 @@ public class ShowSpecification
 	 * @since 1.0.5
 	 */
 	
-	protected void registerForEvents()
+	protected void finishLoad()
 	{
 		page.addPageRenderListener(this);
 	}

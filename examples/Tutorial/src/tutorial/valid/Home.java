@@ -44,9 +44,6 @@ import net.sf.tapestry.contrib.palette.*;
 
 public class Home extends BasePage
 {
-	private String error;
-	private IValidationDelegate delegate;
-	
 	public static final int MIN_INT = 5;
 	public static final int MAX_INT = 30;
 	
@@ -62,56 +59,20 @@ public class Home extends BasePage
 	private SortMode sort = SortMode.USER;
 
 	private IPropertySelectionModel sortModel;
-	
-	private class PrivateDelegate extends BaseValidationDelegate
-	{
-		/**
-		 *  Updates the page's error property to the provided error message.
-		 *  Only the first invocation (per request cycle) matters, the others
-		 *  are ignored.
-		 *
-		 */
 		
-		public void invalidField(IValidatingTextField field, 
-				ValidationConstraint contraint,
-				String defaultErrorMessage)
-		{
-			if (error == null)
-				error = defaultErrorMessage;
-		}
-		
-	}
-	
 	public void detach()
 	{
-		error = null;
 		sort = SortMode.USER;
 		
 		super.detach();
 	}
 	
-	
-	public String getError()
-	{
-		return error;
-	}
-	
-	public void setError(String value)
-	{
-		error = value;
-	}
-	
-	public IValidationDelegate getDelegate()
-	{
-		if (delegate == null)
-			delegate = new PrivateDelegate();
-		
-		return delegate;
-	}
-	
+			
 	public void formListener(IRequestCycle cycle)
 	{
-		if (error == null)
+		ValidationDelegate delegate = (ValidationDelegate)getBeans().getBean("validationDelegate");
+		
+		if (delegate.getError() == null)
 			cycle.setPage("Show");
 	}
 	

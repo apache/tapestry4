@@ -46,7 +46,7 @@ public interface IFormComponent
 	 *  of if the containing Form is not currently renderring.
 	 */
 	
-	public Form getForm();
+	public IForm getForm();
 	
 	
 	/**
@@ -54,14 +54,14 @@ public interface IFormComponent
 	 *  during renderring.
 	 *
 	 *  <p>This value is set inside the component's render method and is
-	 *  <em>not</em> cleared.  If the component is inside a {@link Foreach}, the
+	 *  <em>not</em> cleared.  If the component is inside a {@link com.primix.tapestry.components.Foreach}, the
 	 *  value returned is the most recent name generated for the component.
 	 *
 	 *  <p>This property is made available to facilitate writing JavaScript that
 	 *  allows components (in the client web browser) to interact.
 	 *
-	 *  <p>In practice, a {@link com.primix.tapestry.script.Script} component
-	 *  works with the {@link Body} component to get the
+	 *  <p>In practice, a {@link com.primix.tapestry.html.Script} component
+	 *  works with the {@link com.primix.tapestry.html.Body} component to get the
 	 *  JavaScript code inserted and referenced.
 	 *
 	 */	

@@ -368,7 +368,7 @@ public class BaseComponent
 	
 	/**
 	 *  Loads the template for the component, and invokes
-	 *  {@link #registerForEvents()}.  Subclasses must invoke this method first,
+	 *  {@link #finishLoad()}.  Subclasses must invoke this method first,
 	 *  before adding any additional behavior.
 	 *
 	 */
@@ -378,7 +378,7 @@ public class BaseComponent
 	{
 		readTemplate(loader);
 		
-		registerForEvents();
+		finishLoad();
 	}
 }
 

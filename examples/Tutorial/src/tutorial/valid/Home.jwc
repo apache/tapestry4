@@ -2,16 +2,23 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
-  <!ENTITY delegate '<binding name="delegate" property-path="delegate"/>'>
+  <!ENTITY delegate '<binding name="delegate" property-path="beans.validationDelegate"/>'>
   <!ENTITY required '<field-binding name="required" field-name="Boolean.TRUE"/>'>
 ]>
 <specification class="tutorial.valid.Home">
 
+  <bean name="validationDelegate" class="com.primix.tapestry.valid.ValidationDelegate"/>
+
   <component id="border" type="Border"/>
-  <component id="showError" type="ShowError"/>
+  
+  <component id="showError" type="ShowError">
+    <binding name="error" property-path="beans.validationDelegate.error"/>
+  </component>
+  
   <component id="form" type="Form">
     <binding name="listener" property-path="listeners.formListener"/>
   </component>
+  
   <component id="labelString" type="FieldLabel">
     <binding name="field" property-path="components.inputString"/>
     &delegate;

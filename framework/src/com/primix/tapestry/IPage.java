@@ -219,7 +219,8 @@ public interface IPage extends IComponent
 	 *  in particular,
 	 *  it allows a page to remove stateful session EJBs it may be using.
 	 *
-	 *  <p>Invokes {@link ILifecycle#cleanupComponent()} on any lifecycle components.
+	 *  <p>Invokes {@link PageCleanupListener#pageCleanup(PageEvent)} on any listeners.
+	 *
 	 */
 	
 	public void cleanupPage();

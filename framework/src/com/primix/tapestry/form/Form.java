@@ -172,14 +172,7 @@ public class Form
 	 */
 	
 	private Map allocatorMap;
-	
-    /**
-	 *  Attribute name used with the request cycle; allows other components to locate
-	 *  the Form.
-	 *
-	 */
-	
-    private static final String ATTRIBUTE_NAME = "com.primix.tapestry.active.Form";
+
 	
 	/**
 	 *  Class used to allocate ids (used as form element names).
@@ -203,14 +196,16 @@ public class Form
 	}
 	
 	/**
-	 *  Returns the currently active <code>Form</code>, or null if no <code>Form</code> is
-	 *  active.
+	 *  Returns the currently active {@link IForm}, or null if no form is
+	 *  active.  This is a convienience method, the result will be
+	 *  null, or an instance of {@link IForm}, but not necessarily a
+	 *  <code>Form</code>.
 	 *
 	 */
 	
-    public static Form get(IRequestCycle cycle)
+    public static IForm get(IRequestCycle cycle)
     {
-		return (Form)cycle.getAttribute(ATTRIBUTE_NAME);
+		return (IForm)cycle.getAttribute(ATTRIBUTE_NAME);
     }
 	
 	

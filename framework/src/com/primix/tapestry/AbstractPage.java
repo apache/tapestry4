@@ -123,7 +123,7 @@ public abstract class AbstractPage
 	/**
 	 *  Prepares the page to be returned to the pool.
 	 *  <ul>
-	 *	<li>Invokes {@link PageDetachListener#pageDetached()} on all listeners
+	 *	<li>Invokes {@link PageDetachListener#pageDetached(PageEvent)} on all listeners
 	 *	<li>Clears the engine, visit and changeObserver properties
 	 *	</ul>
 	 *

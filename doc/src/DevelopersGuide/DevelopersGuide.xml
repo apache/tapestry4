@@ -21,6 +21,9 @@
 <!ENTITY PageCleanupListener '<ulink url="&ApiRoot;/event/PageCleanupListener.html"><classname>PageCleanupListener</classname></ulink>'>
 <!ENTITY IPoolable '<ulink url="&ApiRoot;/util/pool/IPoolable.html"><classname>IPoolable</classname></ulink>'>
 <!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
+<!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
+<!ENTITY ValidationDelegate '<ulink url="&ApiRoot;/valid/ValidationDelegate.html"><classname>ValidationDelegate</classname></ulink>'>
+<!ENTITY EvenOdd '<ulink url="&ApiRoot;/inspector/EvenOdd.html"><classname>EvenOdd</classname></ulink>'>
 <!-- Classes provided by Sun -->
 <!ENTITY HttpSession "<classname>HttpSession</classname>">
 <!ENTITY HttpServletRequest "<classname>HttpServletRequest</classname>">
@@ -1540,6 +1543,13 @@ during a request.  Helper beans are no exception.  There exists a general helper
 <varname>request</varname> lifecycle may be placed into the pool for subsequent reuse (in the same or different page).  This
 only occurs with helper beans that implement the &IPoolable; interface.
 </para>
+
+<para>
+Tapestry includes a handful of useful helper beans.  &Default; is used to provide default values for optional parameters.
+&ValidationDelegate; cal be used with &ValidatingTextField;, it allows simple handling of validation errors and presentation.
+&EvenOdd; is used by the <link linkend="inspector">Tapestry Inspector</link>; it generates a stream of values alternating between "even" and "odd"; this is combined with cascading stylesheets to make the rows alternate between white and grey backgrounds.
+</para>
+
 </section>
 <section id="components.specification">
 <title>Component Specification</title>
@@ -2742,40 +2752,32 @@ HTML buffered by the &Body; component to be cleanly discarded, allowing for a cl
 presentation of the exception page.
 </para>
 </section>
-
 <section id="pages.events">
 <title>Page Events</title>
-
 <para>
 Each page has a lifecycle; it is created and attached to an engine.  It will render itself.  It is placed in a pool for later reuse.  Later, it comes out of the pool and is attached to a new engine to
 start the process again.
 There are cases where objects, especially the components embedded somewhere within the page,
 need to know about this lifecycle.
 </para>
-
 <para>
 &IPage; can produce a number of events related to its lifecycle.  &PageRenderListener; is a listener interface for determining when the page starts and finishes rendering (this includes rewind renders related to the
 &Action; component).
 </para>
-
 <para>
 The &PageDetachListener; interface is used by objects that wish to know when the page is detached from the
 application, prior to be stored into the page pool (for later reuse).  This is used by any components
 that maintain any independant state, such as &ValidatingTextField;.
 </para>
-
 <para>
 Finally,  the &PageCleanupListener; is implemented by objects that need to know when the
 &HttpSession; is invalidated.
 </para>
-
 <para>
 Components that implement one of these interfaces can also override the method
-<function>registerForEvents()</function> (from &AbstractComponent;) to register themselves with the page.
+<function>finishLoad()</function> (from &AbstractComponent;) to register themselves with the page.
 </para>
-
 </section>
-
 </chapter>
 <chapter id="engine">
 <title>Application Engines and Services</title>
@@ -6248,7 +6250,6 @@ approach was desired, as different objects had different notification requiremen
 For release 1.05, the interface was replaced by a more standard approach; well defined JavaBeans events.
 These are described in the <link linkend="pages.events">Page Events</link> section of this document.
 </para>
-
 </answer>
 </qandaentry>
 </qandaset>

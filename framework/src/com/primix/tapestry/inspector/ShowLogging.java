@@ -63,7 +63,7 @@ public class ShowLogging
 	 *
 	 */
 	
-	protected void registerForEvents()
+	protected void finishLoad()
 	{
 		page.addPageDetachListener(this);
 	}

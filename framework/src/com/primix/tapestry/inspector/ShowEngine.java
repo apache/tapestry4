@@ -58,7 +58,7 @@ public class ShowEngine extends BaseComponent
 	 *
 	 */
 	
-	protected void registerForEvents()
+	protected void finishLoad()
 	{
 		page.addPageDetachListener(this);
 	}

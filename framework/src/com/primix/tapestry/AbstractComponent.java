@@ -95,7 +95,8 @@ public abstract class AbstractComponent implements IComponent
 	private static final int MAP_SIZE = 5;
 	
 	/**
-	 *  A {@link Map} of all bindings; the keys are the names of formal and informal
+	 *  A {@link Map} of all bindings (for which there isn't a corresponding
+	 *  JavaBeans property); the keys are the names of formal and informal
 	 *  parameters.
 	 *
 	 */
@@ -211,18 +212,17 @@ public abstract class AbstractComponent implements IComponent
 	}
 	
 	/**
-	 *  Invokes {@link #registerForEvents()}.  Subclasses may overide as needed, but
-	 *  must invoke this implementation (or {@link #registerForEvents()}.
+	 *  Invokes {@link #finishLoad()}.  Subclasses may overide as needed, but
+	 *  must invoke this implementation (or {@link #finishLoad()}.
 	 *  {@link BaseComponent}
-	 * loads its HTML template.  Many components that implement one of the page
-	 *  event interfaces register with the page here.
+	 * loads its HTML template. 
 	 *
 	 */
 	
 	public void finishLoad(IPageLoader loader, ComponentSpecification specification)
 		throws PageLoaderException
 	{
-		registerForEvents();
+		finishLoad();
 	}
 	
 	protected void fireObservedChange(String propertyName, int newValue)
@@ -741,6 +741,46 @@ public abstract class AbstractComponent implements IComponent
 		return result;
 	}
 	
+	/** 
+	 *
+	 *  Returns a {@link Map} of all bindings for this component.  This implementation
+	 *  is expensive, since it has to merge the disassociated bindings (informal parameters,
+	 *  and parameters without a JavaBeans property) with the associated bindings (formal
+	 *  parameters with a JavaBeans property).
+	 *
+	 * @since 1.0.5
+	 *
+	 **/
+	
+	public Map getBindings()
+	{
+		Map result = new HashMap();
+		
+		// Add any informal parameters, as well as any formal parameters
+		// that don't have a correspoinding JavaBeans property.
+		
+		if (bindings != null)
+			result.putAll(bindings);
+		
+		// Now work on the formal parameters
+		
+		Iterator i = specification.getParameterNames().iterator();
+		while (i.hasNext())
+		{
+			String name = (String)i.next();
+			
+			if (result.containsKey(name))
+				continue;
+			
+			IBinding binding = getBinding(name);
+			
+			if (binding != null)
+				result.put(name, binding);
+		}
+		
+		return result;
+	}
+	
 	/**
 	 *  Returns a {@link ListenerMap} for the component.  A {@link ListenerMap} contains a number of
 	 *  synthetic read-only properties that implement the {@link IActionListener} and/or {@link IDirectListener}
@@ -775,8 +815,9 @@ public abstract class AbstractComponent implements IComponent
 	
 	/**
 	 *  Invoked from {@link #finishLoad(IPageLoader, ComponentSpecification)}
-	 *  so that components that implement a listener interface can
-	 *  register.
+	 *  so that components can easily perform simple operations, such as
+	 *  registering for event notifications.  This is a convienience,
+	 *  providing a much simpler method signature to override.
 	 *
 	 *  <p>This implementation does nothing; subclasses can override
 	 *  as desired.
@@ -785,7 +826,7 @@ public abstract class AbstractComponent implements IComponent
 	 *
 	 */
 	
-	protected void registerForEvents()
+	protected void finishLoad()
 	{
 		// Does nothing
 	}

@@ -164,10 +164,9 @@ public class Select extends AbstractFormComponent
 
 	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
-		Form form;
 		boolean multiple;
 
-		form = getForm(cycle);
+		IForm form = getForm(cycle);
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException(

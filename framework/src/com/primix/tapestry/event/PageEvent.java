@@ -32,8 +32,8 @@ import com.primix.tapestry.*;
 import java.util.*;
 	
 /**
- *  Encapsulates information related to the {@link PageListener}
- *  interface.
+ *  Encapsulates information related to the page listener
+ *  interfaces.
  *
  *  @author Howard Ship
  *  @version $Id$

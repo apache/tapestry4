@@ -230,9 +230,6 @@ public class PropertySelection extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		Form form;
-		boolean rewinding;
-		IPropertySelectionModel model;
 		IPropertySelectionRenderer renderer = null;
 		Object newValue;
 		Object currentValue;
@@ -244,16 +241,16 @@ public class PropertySelection extends AbstractFormComponent
 		int count;
 		boolean radio = false;
 		
-		form = getForm(cycle);
+		IForm form = getForm(cycle);
 		
-		rewinding = form.isRewinding();
+		boolean rewinding = form.isRewinding();
 		
 		if (disabledBinding == null)
 			disabled = false;
 		else
 			disabled = disabledBinding.getBoolean();
 		
-		model = (IPropertySelectionModel)modelBinding.getObject(
+		IPropertySelectionModel model = (IPropertySelectionModel)modelBinding.getObject(
 			"model", IPropertySelectionModel.class);
 		
 		if (model == null)
