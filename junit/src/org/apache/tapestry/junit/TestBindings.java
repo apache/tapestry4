@@ -794,6 +794,11 @@ public class TestBindings extends TapestryTestCase
         engine.setSpecification(appSpec);
 
         binding.setObject(date);
-        assertEquals(date, page.getDateValue());
+        // note - cannot treat java.sql.Timestamp as a Date as the nanos store the
+        // fractional part of the second, including the millis.  JDK 1.3 Javadocs
+        // for Timestamp suggest using nanos/1000000 to find the actual millis.
+        // Otherwise, just using assertEquals(date, page.getDateValue()) fails 
+        // under JDK 1.3.
+        assertEquals(date, new Date(page.getDateValue().getTime() + page.getDateValue().getNanos() / 1000000));
     }
 }
