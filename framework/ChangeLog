@@ -1,3 +1,10 @@
+* Dec 28 2000 hship
+
+Restructure RadioGroup and Radio slightly, to make them work (combined) more like a 
+PropertySelection.
+No longer use j2ee.jar, use a combination of javax.servlet.jar from Jetty's distribution,
+and lib/ext/ejb.jar from the jBoss distribution.
+
 * Dec 27 2000 hship
 
 Change IBinding.getBoolean() to sniff for array types and return true if the length

@@ -10,6 +10,11 @@
 		<allow-informal-parameters>no</allow-informal-parameters>
 		
 		<parameter>
+			<name>selected</name>
+			<required>yes</required>
+		</parameter>
+
+		<parameter>
 			<name>disabled</name>
 		</parameter>
 		

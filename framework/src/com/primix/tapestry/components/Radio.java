@@ -49,16 +49,17 @@ import com.primix.tapestry.*;
  * </tr>
  *
  *
- * <tr>
- *		<td>selected</td>
- *		<td>java.lang.Boolean</td>
- *		<td>R / W </td>
- *		<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>Used to indicate whether the given option is selected.  Only updated
- *    if the {@link Radio} is not disabled.
- *		</td>
- *	</tr>
+ *  <tr>
+ *      <td>value</td>
+ *      <td>{@link Object}</td>
+ *      <td>R</td>
+ *      <td>no</td>
+ *      <td>Boolean.TRUE</td>
+ *      <td>The value is used to determine if the radio button is initially selected
+ * (when rendering) and is the value assigned to the selected parameter when the
+ *  form is submitted, if the HTML radio button is selected.
+ *      </td>
+ *  </tr>
  *
  *  <tr>
  *		<td>disabled</td>
@@ -82,10 +83,11 @@ import com.primix.tapestry.*;
 
 public class Radio extends AbstractComponent
 {
-	private IBinding selectedBinding;
 	private IBinding disabledBinding;
 	private boolean staticDisabled;
 	private boolean disabledValue;
+    private IBinding valueBinding;
+    private Object staticValue;
 
 	private static final String[] reservedNames = { "value", "checked", "type", "name"};
 
@@ -94,23 +96,43 @@ public class Radio extends AbstractComponent
 		return disabledBinding;
 	}
 
-	public IBinding getSelectedBinding()
-	{
-		return selectedBinding;
-	}
+    public void setDisabledBinding(IBinding value)
+    {
+    	disabledBinding = value;
+
+    	staticDisabled = value.isStatic();
+    	if (staticDisabled)
+    		disabledValue = value.getBoolean();
+    }
+
+    public IBinding getValueBinding()
+    {
+        return valueBinding;
+    }
+
+    public void setValueBinding(IBinding value)
+    {
+        valueBinding = value;
+
+        if (valueBinding.isStatic())
+            staticValue = valueBinding.getValue();
+    }
+
+    public Object getValue()
+    {
+        if (staticValue != null)
+            return staticValue;
+
+        if (valueBinding == null)
+            return Boolean.TRUE;
+
+        return valueBinding.getValue();
+    }
 
 	/**
 	*  Renders the form element, or responds when the form containing the element
 	*  is submitted (by checking {@link Form#isRewinding()}.
 	*
-	*  <table border=1>
-	*  <tr>  <th>attribute</th>  <th>value</th> </tr>
-	*  <tr> <td>type</td> <td>radio</td> </tr>
-	*  <tr> <td>name</td> <td>specified by containing {@link RadioGroup}</td> </tr>
-	*  <tr>  <td>value</td>  <td>from {@link IRequestCycle#getNextActionId()}</td> </tr>
-	*  <tr>  <td>checked</td> <td>from <code>selected</code> property</td> </tr>
-	*  </tr>
-	*  </table>
 	*
 	* <p>If the <code>label</code> property is set, it is inserted after the
 	* &lt;input&gt; tag.
@@ -124,7 +146,7 @@ public class Radio extends AbstractComponent
 		boolean disabled = false;
 		IBinding binding;
 		String name;
-		String value;
+		int option;
 		RadioGroup group;
 
 		group = RadioGroup.get(cycle);
@@ -133,14 +155,11 @@ public class Radio extends AbstractComponent
 				"Radio component must be contained within a RadioGroup.",
 				this, cycle);
 
-		if (selectedBinding == null)
-			throw new RequiredParameterException(this, "selected", null, cycle);
-
 		// The group determines rewinding from the form.
 
 		rewinding = group.isRewinding();
 
-		value = group.getNextOptionId();
+		option = group.getNextOptionId();
 
 		if (staticDisabled)
 			disabled = disabledValue;
@@ -149,42 +168,40 @@ public class Radio extends AbstractComponent
 
 		if (rewinding)
 		{
-			if (!disabled)
-				selectedBinding.setBoolean(group.isSelected(value));
-		}
-		else
-		{
-			writer.beginOrphan("input");
+            // If not disabled and this is the selected button within the radio group,
+            // then update set the selection from the group to the value for this
+            // radio button.  This will update the selected parameter of the RadioGroup.
 
-			writer.attribute("type", "radio");
-
-			writer.attribute("name", group.getName());
-
-			if (selectedBinding.getBoolean())
-				writer.attribute("checked");
-
-			if (disabled)
-				writer.attribute("disabled");
-
-			writer.attribute("value", value);
-
-			generateAttributes(cycle, writer, reservedNames);
+			if (!disabled &&
+                group.isSelected(option))
+                group.updateSelection(getValue());
+            return;
 		}
 
+		writer.beginOrphan("input");
+
+		writer.attribute("type", "radio");
+
+		writer.attribute("name", group.getName());
+        
+        // As the group if the value for this Radio matches the selection
+        // for the group as a whole; if so this is the default radio and is checked.
+
+		if (group.isSelection(getValue()))
+			writer.attribute("checked");
+
+		if (disabled)
+			writer.attribute("disabled");
+
+        // The value for the Radio matches the option number (provided by the RadioGroup).
+        // When the form is submitted, the RadioGroup will know which option was,
+        // in fact, selected by the user.
+
+		writer.attribute("value", option);
+
+		generateAttributes(cycle, writer, reservedNames);
+
 	}
 
-	public void setDisabledBinding(IBinding value)
-	{
-		disabledBinding = value;
-
-		staticDisabled = value.isStatic();
-		if (staticDisabled)
-			disabledValue = value.getBoolean();
-	}
-
-	public void setSelectedBinding(IBinding value)
-	{
-		selectedBinding = value;
-	}
 }
 
