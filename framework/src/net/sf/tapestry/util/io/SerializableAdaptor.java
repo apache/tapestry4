@@ -33,35 +33,6 @@ import net.sf.tapestry.Tapestry;
 
 class SerializableAdaptor implements ISqueezeAdaptor
 {
-    /**
-     *  Private class used for resolving classes when reading
-     *  a stream.
-     * 
-     **/
-
-    private static class ResolvingObjectInputStream extends ObjectInputStream
-    {
-        private IResourceResolver _resolver;
-
-        private ResolvingObjectInputStream(IResourceResolver resolver, InputStream input) throws IOException
-        {
-            super(input);
-
-            _resolver = resolver;
-        }
-
-        /**
-         *  Overrides the default implementation to
-         *  have the resource resolver find the class.
-         * 
-         **/
-
-        protected Class resolveClass(ObjectStreamClass v) throws IOException, ClassNotFoundException
-        {
-            return _resolver.findClass(v.getName());
-        }
-    }
-
     private static final String PREFIX = "O";
 
     /**
