@@ -84,7 +84,7 @@ public class Frame extends AbstractComponent
         
         generateAttributes(writer, cycle);
             
-        writer.end();
+        writer.closeTag();
     }
 
 
