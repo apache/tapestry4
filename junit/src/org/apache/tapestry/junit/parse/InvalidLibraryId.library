@@ -14,7 +14,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<!-- $Id$ -->
 <!DOCTYPE library-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
@@ -22,9 +21,6 @@
 <!--  Specification used in a series of tests to check successful parsing of a LibrarySpecification. -->
 	
 <library-specification>
-
-	<service name="service1" class="Service1"/>
-	<service name="service2" class="Service2"/>
 	
 	<page name="FirstPage" specification-path="/FirstPage.page"/>
 	<page name="SecondPage" specification-path="/SecondPage.page"/>

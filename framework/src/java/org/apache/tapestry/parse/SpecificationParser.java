@@ -28,8 +28,9 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.Location;
+import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultErrorHandler;
 import org.apache.hivemind.parse.AbstractParser;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.INamespace;
@@ -145,6 +146,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private final Log _log;
 
+    private final ErrorHandler _errorHandler;
+
     /**
      * Perl5 pattern for page names. Letter followed by letter, number, dash, underscore or period.
      * 
@@ -176,6 +179,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      * period.
      * 
      * @since 2.2
+     * @deprecated As of release 3.1, the &lt;service&gt; element (in 3.0 DTDs) is no longer
+     *             supported.
      */
 
     public static final String SERVICE_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
@@ -225,6 +230,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     /** @since 3.0 */
 
     public static final String TAPESTRY_DTD_3_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 3.0//EN";
+
+    /** @since 3.1 */
+
+    public static final String TAPESTRY_DTD_3_1_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 3.1//EN";
 
     /**
      * The attributes of the current element, as a map (string keyed on string).
@@ -306,17 +315,22 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     /**
      * Create a new instance with resolver and a provided SpecFactory (used by Spindle).
+     * 
+     * @deprecated to be removed in release 3.2
      */
     public SpecificationParser(ClassResolver resolver, SpecFactory factory)
     {
-        this(LogFactory.getLog(SpecificationParser.class), resolver, factory);
+        this(new DefaultErrorHandler(), LogFactory.getLog(SpecificationParser.class), resolver,
+                factory);
     }
 
     /**
      * The full constructor, used within Tapestry.
      */
-    public SpecificationParser(Log log, ClassResolver resolver, SpecFactory factory)
+    public SpecificationParser(ErrorHandler errorHandler, Log log, ClassResolver resolver,
+            SpecFactory factory)
     {
+        _errorHandler = errorHandler;
         _log = log;
         _resolver = resolver;
         _factory = factory;
@@ -600,6 +614,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             enterComponentType();
             return;
         }
+
+        // Holdback from the 3.0 DTD, now ignored.
 
         if (_elementName.equals("service"))
         {
@@ -1220,12 +1236,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterService()
     {
-        String name = getValidatedAttribute("name", SERVICE_NAME_PATTERN, "invalid-service-name");
-        String className = getAttribute("class");
-
-        ILibrarySpecification ls = (ILibrarySpecification) peekObject();
-
-        ls.setServiceClassName(name, className);
+        _errorHandler.error(_log, ParseMessages.serviceElementNotSupported(), getLocation(), null);
 
         push(_elementName, null, STATE_NO_CONTENT);
     }
@@ -1497,6 +1508,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      */
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException
     {
+        if (TAPESTRY_DTD_3_1_PUBLIC_ID.equals(publicId))
+            return getDTDInputSource("Tapestry_3_1.dtd");
+
         if (TAPESTRY_DTD_3_0_PUBLIC_ID.equals(publicId))
             return getDTDInputSource("Tapestry_3_0.dtd");
 

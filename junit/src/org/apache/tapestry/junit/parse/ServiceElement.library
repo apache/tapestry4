@@ -14,12 +14,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<!-- $Id$ -->
-<!DOCTYPE application PUBLIC 
+<!DOCTYPE library-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-
-<application>
-	<service name="private" class="org.apache.tapestry.junit.mock.c21.PrivateService"/>
 	
-</application>
+<library-specification>
+	
+	<service name="ignored" class="foo.bar.Baz"/>
+  
+</library-specification>

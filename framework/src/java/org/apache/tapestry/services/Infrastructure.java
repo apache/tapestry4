@@ -23,31 +23,30 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
- * Tapestry infrastructure ... key services required by the
- * {@link org.apache.tapestry.IEngine} instance.
- *
+ * Tapestry infrastructure ... key services required by the {@link org.apache.tapestry.IEngine}
+ * instance.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public interface Infrastructure
 {
     /**
-     * Returns the {@link org.apache.tapestry.spec.IApplicationSpecification}
-     * for the current application.
+     * Returns the {@link org.apache.tapestry.spec.IApplicationSpecification}for the current
+     * application.
      */
 
     public IApplicationSpecification getApplicationSpecification();
 
     /**
-     * Returns an {@link IPropertySource} configured to search
-     * the application specification, etc.  See 
-     * <code>tapestry.ApplicationPropertySource</code>.
+     * Returns an {@link IPropertySource}configured to search the application specification, etc.
+     * See <code>tapestry.ApplicationPropertySource</code>.
      */
     public IPropertySource getApplicationPropertySource();
 
     /**
-     * Returns the coordinator to be notified of reset events
-     * (which will, in turn, notify other services).
+     * Returns the coordinator to be notified of reset events (which will, in turn, notify other
+     * services).
      */
 
     public ResetEventCoordinator getResetEventCoordinator();
@@ -65,8 +64,7 @@ public interface Infrastructure
     public TemplateSource getTemplateSource();
 
     /**
-     * Returns the source of all application, page, component and library
-     * specifications.
+     * Returns the source of all application, page, component and library specifications.
      */
 
     public ISpecificationSource getSpecificationSource();
@@ -77,36 +75,41 @@ public interface Infrastructure
     public ObjectPool getObjectPool();
 
     /**
-     * Returns the factory responsible for creating enhanced classes
-     * for pages and components.
+     * Returns the factory responsible for creating enhanced classes for pages and components.
      */
 
     public IComponentClassEnhancer getComponentClassEnhancer();
 
     /**
-     * Returns the source for pages. The source is a cache of pages,
-     * but also can create new instances when needed.
+     * Returns the source for pages. The source is a cache of pages, but also can create new
+     * instances when needed.
      */
 
     public IPageSource getPageSource();
 
     /**
-     * Returns the ClassResolver used by the Tapestry HiveMind module, which should
-     * be sufficient for use throughout the application.
+     * Returns the ClassResolver used by the Tapestry HiveMind module, which should be sufficient
+     * for use throughout the application.
      */
 
     public ClassResolver getClassResolver();
-    
+
     /**
-     * The DataSqueezer, used when constructing and decoding values stored
-     * in URLs (as query parameters or hidden form fields).
+     * The DataSqueezer, used when constructing and decoding values stored in URLs (as query
+     * parameters or hidden form fields).
      */
-    
+
     public DataSqueezer getDataSqueezer();
-    
+
     /**
      * The source for read-to-execute versions of Tapestry script templates.
      */
-    
+
     public IScriptSource getScriptSource();
+
+    /**
+     * The object from which engine services are obtained.
+     */
+
+    public ServiceMap getServiceMap();
 }

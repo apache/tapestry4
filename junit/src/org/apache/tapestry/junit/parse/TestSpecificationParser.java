@@ -154,10 +154,7 @@ public class TestSpecificationParser extends TapestryTestCase
     {
         ILibrarySpecification spec = parseLib("ValidLibrary.library");
 
-        checkLine(spec, 24);
-
-        checkList("serviceNames", new String[]
-        { "service1", "service2" }, spec.getServiceNames());
+        checkLine(spec, 23);
 
         checkList("pageNames", new String[]
         { "FirstPage", "SecondPage" }, spec.getPageNames());
@@ -214,28 +211,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test invalid service name.
-     * 
-     * @since 2.2
-     */
-
-    public void testInvalidServiceName() throws Exception
-    {
-        try
-        {
-            parseApp("InvalidServiceName.application");
-
-            unreachable();
-        }
-        catch (DocumentParseException ex)
-        {
-            checkException(ex, "in$valid");
-            checkException(ex, "service");
-        }
-    }
-
-    /**
-     * Test invalid service name.
+     * Test invalid component type ("alias" in older parlance).
      * 
      * @since 2.2
      */
@@ -604,7 +580,7 @@ public class TestSpecificationParser extends TapestryTestCase
         // Note: this is in transition; under 3.0 and earlier, the spec parser was
         // responsible for converting values into object types ... that is now
         // done futher down stream.
-        
+
         assertEquals("-227", es.getConfiguration().get("long"));
         assertEquals("22.7", es.getConfiguration().get("double"));
         assertEquals("true", es.getConfiguration().get("boolean"));
@@ -619,7 +595,6 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("my-value", es.getProperty("my-property"));
     }
 
- 
     /** @since 3.1 */
 
     public void testComponentProperty() throws Exception
@@ -804,5 +779,21 @@ public class TestSpecificationParser extends TapestryTestCase
         {
             checkException(ex, "Unable to copy component missing, which does not exist.");
         }
+    }
+
+    /**
+     * 
+     * Check that &lt;service&gt; elements are ignored properly.
+     * 
+     * @since 3.1
+     */
+
+    public void testServiceElement() throws Exception
+    {
+        interceptLogging("org.apache.tapestry");
+
+        parseLib("ServiceElement.library");
+
+        assertLoggedMessagePattern("The <service> element is no longer supported");        
     }
 }

@@ -25,6 +25,7 @@ import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.ResetEventCoordinator;
+import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
@@ -57,19 +58,21 @@ public class InfrastructureImpl implements Infrastructure
     private ClassResolver _classResolver;
 
     private DataSqueezer _dataSqueezer;
-    
+
     private IScriptSource _scriptSource;
+
+    private ServiceMap _serviceMap;
 
     public IScriptSource getScriptSource()
     {
         return _scriptSource;
     }
-    
+
     public void setScriptSource(IScriptSource scriptSource)
     {
         _scriptSource = scriptSource;
     }
-    
+
     public DataSqueezer getDataSqueezer()
     {
         return _dataSqueezer;
@@ -180,4 +183,13 @@ public class InfrastructureImpl implements Infrastructure
         _classResolver = resolver;
     }
 
+    public ServiceMap getServiceMap()
+    {
+        return _serviceMap;
+    }
+
+    public void setServiceMap(ServiceMap serviceMap)
+    {
+        _serviceMap = serviceMap;
+    }
 }

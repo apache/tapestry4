@@ -177,4 +177,9 @@ class ParseMessages
     {
         return _formatter.format("unknown-public-id", resource, publicId);
     }
+    
+    public static String serviceElementNotSupported()
+    {
+        return _formatter.getMessage("service-element-not-supported");
+    }
 }

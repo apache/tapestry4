@@ -26,6 +26,7 @@
     
     <invoke-factory model="pooled">
       <construct class="org.apache.tapestry.parse.SpecificationParser" autowire-services="false">
+        <error-handler/>
         <log/>
         <class-resolver/>
         <object> instance:org.apache.tapestry.spec.SpecFactory </object>

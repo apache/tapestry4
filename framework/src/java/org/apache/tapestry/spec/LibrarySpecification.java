@@ -29,80 +29,63 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  Specification for a library.  {@link org.apache.tapestry.spec.ApplicationSpecification}
- *  is a specialized kind of library.
- *
- *  @author Howard Lewis Ship
- *  @since 2.2
- *
- **/
+ * Specification for a library. {@link org.apache.tapestry.spec.ApplicationSpecification}is a
+ * specialized kind of library.
+ * 
+ * @author Howard Lewis Ship
+ * @since 2.2
+ */
 
 public class LibrarySpecification extends LocatablePropertyHolder implements ILibrarySpecification
 {
     /**
-     *  Resource resolver (used to instantiate extensions).
-     * 
-     **/
+     * Resource resolver (used to instantiate extensions).
+     */
 
     private ClassResolver _resolver;
 
     /**
-     *  Map of page name to page specification path.
-     * 
-     **/
+     * Map of page name to page specification path.
+     */
 
     private Map _pages;
 
     /**
-     *  Map of component alias to component specification path.
-     * 
-     **/
+     * Map of component alias to component specification path.
+     */
     private Map _components;
 
     /**
-     *  Map of service name to service class name.
-     * 
-     **/
-
-    private Map _services;
-
-    /**
-     *  Map of library id to library specification path.
-     * 
-     **/
+     * Map of library id to library specification path.
+     */
 
     private Map _libraries;
 
     private String _description;
 
     /**
-     *  Map of extension name to {@link IExtensionSpecification}.
-     * 
-     **/
+     * Map of extension name to {@link IExtensionSpecification}.
+     */
 
     private Map _extensions;
 
     /**
-     *  Map of extension name to Object for instantiated extensions.
-     * 
-     **/
+     * Map of extension name to Object for instantiated extensions.
+     */
 
     private Map _instantiatedExtensions;
 
     /**
-     *  The XML Public Id used when the library specification was read
-     *  (if applicable).
+     * The XML Public Id used when the library specification was read (if applicable).
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     private String _publicId;
 
     /**
-     *  The location of the specification.
-     * 
-     **/
+     * The location of the specification.
+     */
 
     private Resource _specificationLocation;
 
@@ -112,12 +95,11 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Sets the specification path for an embedded library.
+     * Sets the specification path for an embedded library.
      * 
-     *  @throws IllegalArgumentException if a library with the given
-     *  id already exists
-     * 
-     **/
+     * @throws IllegalArgumentException
+     *             if a library with the given id already exists
+     */
 
     public void setLibrarySpecificationPath(String id, String path)
     {
@@ -125,8 +107,9 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             _libraries = new HashMap();
 
         if (_libraries.containsKey(id))
-            throw new IllegalArgumentException(
-                Tapestry.format("LibrarySpecification.duplicate-child-namespace-id", id));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "LibrarySpecification.duplicate-child-namespace-id",
+                    id));
 
         _libraries.put(id, path);
     }
@@ -147,8 +130,9 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             _pages = new HashMap();
 
         if (_pages.containsKey(name))
-            throw new IllegalArgumentException(
-                Tapestry.format("LibrarySpecification.duplicate-page-name", name));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "LibrarySpecification.duplicate-page-name",
+                    name));
 
         _pages.put(name, path);
     }
@@ -164,8 +148,9 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             _components = new HashMap();
 
         if (_components.containsKey(alias))
-            throw new IllegalArgumentException(
-                Tapestry.format("LibrarySpecification.duplicate-component-alias", alias));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "LibrarySpecification.duplicate-component-alias",
+                    alias));
 
         _components.put(alias, path);
     }
@@ -176,9 +161,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public List getComponentTypes()
     {
@@ -187,24 +171,17 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     public String getServiceClassName(String name)
     {
-        return (String) get(_services, name);
+        throw new UnsupportedOperationException();
     }
 
     public List getServiceNames()
     {
-        return sortedKeys(_services);
+        return Collections.EMPTY_LIST;
     }
 
     public void setServiceClassName(String name, String className)
     {
-        if (_services == null)
-            _services = new HashMap();
-
-        if (_services.containsKey(name))
-            throw new IllegalArgumentException(
-                Tapestry.format("LibrarySpecification.duplicate-service-name", name));
-
-        _services.put(name, className);
+        throw new UnsupportedOperationException();
     }
 
     private List sortedKeys(Map map)
@@ -228,11 +205,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     * 
-     *  Returns the documentation for this library..
-     * 
-     * 
-     **/
+     * Returns the documentation for this library..
+     */
 
     public String getDescription()
     {
@@ -240,11 +214,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  
-     *  Sets the documentation for this library.
-     * 
-     * 
-     **/
+     * Sets the documentation for this library.
+     */
 
     public void setDescription(String description)
     {
@@ -252,11 +223,10 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns a Map of extensions; key is extension name, value is
-     *  {@link org.apache.tapestry.spec.IExtensionSpecification}.
-     *  May return null.  The returned Map is immutable.
-     * 
-     **/
+     * Returns a Map of extensions; key is extension name, value is
+     * {@link org.apache.tapestry.spec.IExtensionSpecification}. May return null. The returned Map
+     * is immutable.
+     */
 
     public Map getExtensionSpecifications()
     {
@@ -267,11 +237,11 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Adds another extension specification.
+     * Adds another extension specification.
      * 
-     *  @throws IllegalArgumentException if an extension with the given name already exists.
-     * 
-     **/
+     * @throws IllegalArgumentException
+     *             if an extension with the given name already exists.
+     */
 
     public void addExtensionSpecification(String name, IExtensionSpecification extension)
     {
@@ -279,17 +249,18 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             _extensions = new HashMap();
 
         if (_extensions.containsKey(name))
-            throw new IllegalArgumentException(
-                Tapestry.format("LibrarySpecification.duplicate-extension-name", this, name));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "LibrarySpecification.duplicate-extension-name",
+                    this,
+                    name));
 
         _extensions.put(name, extension);
     }
 
     /**
-     *  Returns a sorted List of the names of all extensions.  May return the empty list,
-     *  but won't return null.
-     * 
-     **/
+     * Returns a sorted List of the names of all extensions. May return the empty list, but won't
+     * return null.
+     */
 
     public synchronized List getExtensionNames()
     {
@@ -297,9 +268,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns the named IExtensionSpecification, or null if it doesn't exist.
-     * 
-     **/
+     * Returns the named IExtensionSpecification, or null if it doesn't exist.
+     */
 
     public IExtensionSpecification getExtensionSpecification(String name)
     {
@@ -310,10 +280,8 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns true if this library specification has a specification
-     *  for the named extension.
-     * 
-     **/
+     * Returns true if this library specification has a specification for the named extension.
+     */
 
     public boolean checkExtension(String name)
     {
@@ -324,20 +292,18 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns an instantiated extension.  Extensions are created as needed and
-     *  cached for later use.
+     * Returns an instantiated extension. Extensions are created as needed and cached for later use.
      * 
-     *  @throws IllegalArgumentException if no extension specification exists for the
-     *  given name.
-     * 
-     **/
+     * @throws IllegalArgumentException
+     *             if no extension specification exists for the given name.
+     */
 
     public synchronized Object getExtension(String name)
     {
         return getExtension(name, null);
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public synchronized Object getExtension(String name, Class typeConstraint)
     {
@@ -348,8 +314,9 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         IExtensionSpecification spec = getExtensionSpecification(name);
 
         if (spec == null)
-            throw new IllegalArgumentException(
-                Tapestry.format("LibrarySpecification.no-such-extension", name));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "LibrarySpecification.no-such-extension",
+                    name));
 
         if (result == null)
         {
@@ -366,19 +333,15 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Checks that an extension conforms to the supplied type constraint.
+     * Checks that an extension conforms to the supplied type constraint.
      * 
-     *  @throws IllegalArgumentException if the extension fails the check.
-     * 
-     *  @since 3.0
-     *  
-     **/
+     * @throws IllegalArgumentException
+     *             if the extension fails the check.
+     * @since 3.0
+     */
 
-    protected void applyTypeConstraint(
-        String name,
-        Object extension,
-        Class typeConstraint,
-        Location location)
+    protected void applyTypeConstraint(String name, Object extension, Class typeConstraint,
+            Location location)
     {
         Class extensionClass = extension.getClass();
 
@@ -388,22 +351,20 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         if (typeConstraint.isAssignableFrom(extensionClass))
             return;
 
-        String key =
-            typeConstraint.isInterface()
-                ? "LibrarySpecification.extension-does-not-implement-interface"
+        String key = typeConstraint.isInterface() ? "LibrarySpecification.extension-does-not-implement-interface"
                 : "LibrarySpecification.extension-not-a-subclass";
 
-        throw new ApplicationRuntimeException(
-            Tapestry.format(key, name, extensionClass.getName(), typeConstraint.getName()),
-            location,
-            null);
+        throw new ApplicationRuntimeException(Tapestry.format(
+                key,
+                name,
+                extensionClass.getName(),
+                typeConstraint.getName()), location, null);
     }
 
     /**
-     *  Invoked after the entire specification has been constructed
-     *  to instantiate any extensions marked immediate.
-     * 
-     **/
+     * Invoked after the entire specification has been constructed to instantiate any extensions
+     * marked immediate.
+     */
 
     public synchronized void instantiateImmediateExtensions()
     {
@@ -439,10 +400,10 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns the extensions map.
-     *  @return Map of objects.
+     * Returns the extensions map.
      * 
-     **/
+     * @return Map of objects.
+     */
 
     protected Map getExtensions()
     {
@@ -450,13 +411,13 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Updates the extension map.
-     *  @param extension A Map of extension specification paths
-     *  keyed on extension id.
+     * Updates the extension map.
      * 
-     * <p>The map is retained, not copied.
-     *
-     **/
+     * @param extension
+     *            A Map of extension specification paths keyed on extension id.
+     *            <p>
+     *            The map is retained, not copied.
+     */
 
     protected void setExtensions(Map extension)
     {
@@ -464,10 +425,10 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns the libraries map.
-     *  @return Map of {@link LibrarySpecification}.
+     * Returns the libraries map.
      * 
-     **/
+     * @return Map of {@link LibrarySpecification}.
+     */
 
     protected Map getLibraries()
     {
@@ -475,13 +436,13 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Updates the library map.
-     *  @param libraries A Map of library specification paths 
-     *  keyed on library id.
+     * Updates the library map.
      * 
-     *  <p>The map is retained, not copied.
-     *
-     **/
+     * @param libraries
+     *            A Map of library specification paths keyed on library id.
+     *            <p>
+     *            The map is retained, not copied.
+     */
 
     protected void setLibraries(Map libraries)
     {
@@ -489,10 +450,10 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns the pages map.
-     *  @return Map of {@link IComponentSpecification}.
+     * Returns the pages map.
      * 
-     **/
+     * @return Map of {@link IComponentSpecification}.
+     */
 
     protected Map getPages()
     {
@@ -500,13 +461,13 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Updates the page map.
-     *  @param pages A Map of page specification paths 
-     *  keyed on page id.
+     * Updates the page map.
      * 
-     *  <p>The map is retained, not copied.
-     *
-     **/
+     * @param pages
+     *            A Map of page specification paths keyed on page id.
+     *            <p>
+     *            The map is retained, not copied.
+     */
 
     protected void setPages(Map pages)
     {
@@ -515,36 +476,36 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     /**
      * Returns the services.
-     * @return Map of service class names.
      * 
-     **/
+     * @return Map of service class names.
+     * @deprecated To be removed in release 3.2.
+     */
 
     protected Map getServices()
     {
-        return _services;
+        return Collections.EMPTY_MAP;
     }
 
     /**
-     *  Updates the services map.
-     *  @param services A Map of the fully qualified names of classes 
-     *  which implement
-     *  {@link org.apache.tapestry.engine.IEngineService}
-     *  keyed on service id.
+     * Updates the services map.
      * 
-     *  <p>The map is retained, not copied.
-     *
-     **/
+     * @param services
+     *            A Map of the fully qualified names of classes which implement
+     *            {@link org.apache.tapestry.engine.IEngineService}keyed on service id.
+     *            <p>
+     *            The map is retained, not copied.
+     * @deprecated To be removed in release 3.2.
+     */
 
     protected void setServices(Map services)
     {
-        _services = services;
     }
 
     /**
-     *  Returns the components map.
-     *  @return Map of {@link IContainedComponent}.
+     * Returns the components map.
      * 
-     **/
+     * @return Map of {@link IContainedComponent}.
+     */
 
     protected Map getComponents()
     {
@@ -552,11 +513,12 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Updates the components map.
-     *  @param components A Map of {@link IContainedComponent} keyed on component id.
-     *  The map is retained, not copied.
-     *
-     **/
+     * Updates the components map.
+     * 
+     * @param components
+     *            A Map of {@link IContainedComponent}keyed on component id. The map is retained,
+     *            not copied.
+     */
 
     protected void setComponents(Map components)
     {
@@ -564,16 +526,11 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns the XML Public Id for the library file, or null
-     *  if not applicable.
-     * 
-     *  <p>
-     *  This method exists as a convienience for the Spindle plugin.
-     *  A previous method used an arbitrary version string, the
-     *  public id is more useful and less ambiguous.
-     *  
-     * 
-     **/
+     * Returns the XML Public Id for the library file, or null if not applicable.
+     * <p>
+     * This method exists as a convienience for the Spindle plugin. A previous method used an
+     * arbitrary version string, the public id is more useful and less ambiguous.
+     */
 
     public String getPublicId()
     {
@@ -585,21 +542,21 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         _publicId = publicId;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public Resource getSpecificationLocation()
     {
         return _specificationLocation;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void setSpecificationLocation(Resource specificationLocation)
     {
         _specificationLocation = specificationLocation;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public synchronized String toString()
     {
@@ -612,7 +569,6 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         builder.append("pages", _pages);
         builder.append("publicId", _publicId);
         builder.append("resolver", _resolver);
-        builder.append("services", _services);
         builder.append("specificationLocation", _specificationLocation);
 
         extendDescription(builder);
@@ -621,13 +577,11 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Does nothing, subclasses may override to add additional
-     *  description.
+     * Does nothing, subclasses may override to add additional description.
      * 
-     *  @see #toString()
-     *  @since 3.0
-     * 
-     **/
+     * @see #toString()
+     * @since 3.0
+     */
 
     protected void extendDescription(ToStringBuilder builder)
     {
