@@ -5,8 +5,6 @@
   <!-- Useful snippets -->
   <!ENTITY jwc-tag "<sgmltag class='starttag'>jwc</sgmltag>">
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
-  <!ENTITY TapestryFrameworkJar "<filename>net.sf.tapestry-<replaceable>x.x.x</replaceable>.jar</filename>">
-  <!ENTITY TapestryContribJar "<filename>net.sf.tapestry.contrib-<replaceable>x.x.x</replaceable>.jar</filename>">
   
   %TapestryLinks;
   <!ENTITY Action '<link linkend="builtin.Action"><classname>Action</classname></link>'>
@@ -6482,76 +6480,8 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 </appendix>
   
-<appendix id="building">
-	<title>Building Tapestry</title>
-	
-<para>
-The Tapestry framework and examples can be easily rebuilt using &Ant;. Although the Tapestry
-distribution includes complete source code, the build files for Tapestry only work
-with a workspace sychronized to the Tapestry CVS repository.  Simply unarchiving the source code
-zip files is not enough.  Details on how to setup such
-a workspace are available at the &TapestryProjectPage;.
-</para>
 
 
-<para>
-The &JBoss; distribution is also required for a complete build (some of the example code, as well as the 
-<filename>net.sf.tapestry.contrib.jar</filename> framework has dependencies on &JBoss;).
-</para>
-
-<para>
-In addition, it is necessary to inform the Tapestry build files where the JBoss distribution exists.
-The file <filename>config/build.properties</filename> exists for this purpose.  A sample file is included in the distribution;
-this can be renamed or copied, then editted, filling in the entry for <varname>jboss.dir</varname>.
-</para>
-
-<para>
-Tapestry is currently built and tested against release 2.4.3 of JBoss.
-</para>
-
-<para>
-You must have &Ant; 1.4 or better, as well as a JDK 1.2 or better JDK.
-</para>
-
-<warning>
-<para>
-You'll probably want to run JBoss, in which case you'll need JDK 1.3 or better.  JBoss
-requires JDK 1.3.
-</para>
-</warning>
-
-<para>
-Rebuilding the framework is as easy as executing the command <command>ant clean install</command>.  The
-<varname>clean</varname> target deletes all derived files, including the precompiled libraries included in
-the distribution.  The <varname>install</varname> target recompiles all Java code and builds the library JAR files.
-</para>
-
-<para>
-To generate documentation, you must obtain the &Saxon; distribution, release 6.5.2 or better.  Copy
-the file <filename>saxon.jar</filename> into the Ant <filename>lib</filename> directory.  In addition, update your
-<envar>ANT_OPTS</envar> environment variable
-to add the following two system properties:
-
-	<itemizedlist mark="opencircle">
-          <listitem>
-            <para>
-              -Djavax.xml.parsers.DocumentBuilderFactory=org.apache.crimson.jaxp.DocumentBuilderFactoryImpl
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-           -Djavax.xml.parsers.SAXParserFactory=org.apache.crimson.jaxp.SAXParserFactoryImpl
-            </para>
-          </listitem>
-	</itemizedlist>
-</para>
-
-<para>
-These definitions enables Ant to ignore the XML parser embedded in <filename>saxon.jar</filename>
-and use the default XML parser distributed with Ant.
-</para>
-
-</appendix>
   
   <appendix id="faq">
     <title>Frequently Asked Questions</title>
