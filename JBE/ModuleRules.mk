@@ -62,12 +62,12 @@ ifdef POST_SETUP
 
 # Build the compile-time classpath
 
-_ABSOLUTE_DIRS := $(shell $(JBE_CANONICALIZE) $(MOD_BUILD_DIR) $(MOD_CLASS_DIR))
+_ABSOLUTE_DIRS := $(call JBE_CANONICALIZE,$(MOD_BUILD_DIR) $(MOD_CLASS_DIR))
 
 ABSOLUTE_MOD_BUILD_DIR := $(word 1,$(_ABSOLUTE_DIRS))
 ABSOLUTE_CLASS_DIR := $(word 2,$(_ABSOLUTE_DIRS))
 
-FINAL_CLASSPATH = $(shell $(JBE_CANONICALIZE) -classpath \
+FINAL_CLASSPATH = $(call JBE_CANONICALIZE, -classpath \
 	$(FINAL_SOURCE_DIR) $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
 	
 FINAL_CLASSPATH_OPTION = -classpath "$(FINAL_CLASSPATH)"
@@ -164,7 +164,7 @@ ifdef SETUP_CATALOGS
 inner-setup-catalogs: $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
 	@$(TOUCH) $(DUMMY_FILE)
 	
-ABSOLUTE_MOD_BUILD_DIR := $(shell $(JBE_CANONICALIZE) $(MOD_BUILD_DIR))
+ABSOLUTE_MOD_BUILD_DIR := $(call JBE_CANONICALIZE, $(MOD_BUILD_DIR))
 
 # Rules for rebuilding the catalog by visiting each
 # Package.  Certain types of modules have no Java source (no PACKAGES are defined)
@@ -214,22 +214,18 @@ catalog-package:
 endif
 
 
-JAVADOC_CLASSPATH = \
-	$(shell $(JBE_CANONICALIZE) -classpath \
-		$(MOD_CLASSPATH) $(LOCAL_CLASSPATH) $(MOD_CLASS_DIR))
-
 javadoc:
 ifeq "$(JAVADOC_DIR)" ""
-	@$(ECHO) JBE Error:  must set JAVADOC_DIR in Makefile
+	@$(ECHO) JBE Error: Must set JAVADOC_DIR in Makefile
 else
 ifeq "$(PACKAGES)" ""
 	@$(ECHO) JBE Error: Must define PACKAGES in Makefile
 else
 	@$(ECHO) "\n*** Generating Javadoc ... ***\n"
 	@$(MKDIRS) $(FINAL_JAVADOC_DIR)
-	$(JAVADOC) -d $(FINAL_JAVADOC_DIR) \
-	-sourcepath $(FINAL_SOURCE_DIR)	-classpath "$(JAVADOC_CLASSPATH)" $(JAVADOC_OPT) \
-	$(PACKAGES)
+	$(JAVADOC) -d $(FINAL_JAVADOC_DIR) -sourcepath $(FINAL_SOURCE_DIR) \
+	-classpath "$(call JBE_CANONICALIZE,-classpath $(MOD_CLASSPATH) $(LOCAL_CLASSPATH) $(MOD_CLASS_DIR))" \
+	$(JAVADOC_OPT) $(PACKAGES)
 endif
 endif
 

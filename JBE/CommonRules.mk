@@ -41,11 +41,13 @@ $(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.class: $(SYS_MAKEFILE_DIR)/com/primix/jb
 
 JBE_UTIL = $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
 
-# Command to convert some absolute and/or relative pathnames into
-# a list of well-formatted (for GNU Make) absolute pathnames.  Add -classpath
-# to use the classpath seperator intead of putting the converted names onto
-# seperate lines.
+# Command for accessing the JBE utility.
+# Usage:
+#	$(call JBE_CANONICALIZE,options)
+#
+# Typically, something like
+# $(call JBE_CANONICALIZE,-classpath $(CLASSPATH))
 
-JBE_CANONICALIZE = $(JBE_UTIL) canonicalize
+JBE_CANONICALIZE = $(shell $(JBE_UTIL) canonicalize $(strip $(1)))
 
 .PHONY: setup-jbe-util

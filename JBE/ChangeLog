@@ -1,3 +1,7 @@
+* Dec 11 2000 hship
+
+Make use of the Make $(call) function to simplify/improve the makefiles.
+
 * Nov 20 2000 hship
 
 More changes to the JBE to support Solaris.  Solaris doesn't always use GNU tools, so we
