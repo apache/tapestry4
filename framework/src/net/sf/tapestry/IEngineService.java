@@ -28,6 +28,7 @@ package net.sf.tapestry;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.tapestry.form.Form;
@@ -169,7 +170,7 @@ public interface IEngineService
 	 *  service context is established from the component.
 	 *  @param parameters Additional parameters specific to the
 	 *  component requesting the Gesture.
-	 *  @returns The URL for the service.  The URL will have to be encoded
+	 *  @return The URL for the service.  The URL will have to be encoded
 	 *  via {@link HttpServletResponse#encodeURL(java.lang.String)}.
 	 *
 	 **/
@@ -185,7 +186,7 @@ public interface IEngineService
 	 *  rendering a result page.
 	 *
 	 *  <p>The return value indicates whether processing of the request could, in any way,
-	 * change the state of the {@link IEngine engine}.  Generally, this is true.
+	 *  change the state of the {@link IEngine engine}.  Generally, this is true.
 	 *
 	 *  @see IEngine#service(RequestContext)
 	 *  @param engine a view of the {@link IEngine} with additional methods needed by services
@@ -193,7 +194,7 @@ public interface IEngineService
 	 *  @param output stream to which output should ultimately be directed
 	 **/
 
-	public boolean service(
+ 	public boolean service(
 		IEngineServiceView engine,
 		IRequestCycle cycle,
 		ResponseOutputStream output)

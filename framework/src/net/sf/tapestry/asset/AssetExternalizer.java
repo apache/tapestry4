@@ -213,7 +213,7 @@ public class AssetExternalizer
      *  will have its own externalizer; they are differentiated by the
      *  application name.
      *
-     *  @see ApplicationSpecification#getName()
+     *  @see net.sf.tapestry.spec.ApplicationSpecification#getName()
      *
      **/
 

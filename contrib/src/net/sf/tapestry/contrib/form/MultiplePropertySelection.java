@@ -118,7 +118,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
     private boolean disabled;
 
     /**
-     *  A shared instance of {@link CheckBoxPropertySelectionRenderer}.
+     *  A shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}.
      *
      **/
 
@@ -166,7 +166,8 @@ public class MultiplePropertySelection extends AbstractFormComponent
     }
 
     /**
-     *  Returns the name assigned to this PropertySelection by the {@link Form}
+     *  Returns the name assigned to this PropertySelection by the 
+     *  {@link IForm}
      *  that wraps it.
      *
      **/

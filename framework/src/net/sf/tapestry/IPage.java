@@ -32,6 +32,7 @@ import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.PageCleanupListener;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageRenderListener;
+import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  * A root level component responsible for generating an entire a page
@@ -166,11 +167,7 @@ public interface IPage extends IComponent
 
 	/**
 	 *  Invoked to create a response writer appropriate to the page
-	 *  (i.e., appropriate to the content of the page).  At this time,
-	 *  Tapestry only supports HTML, to an {@link HTMLResponseWriter}
-	 *  will be returned, but future enhancements may support XML, WAP,
-	 *  WML, etc., and thus other implementations of {@link IMarkupWriter}
-	 *  will be returned.
+	 *  (i.e., appropriate to the content of the page).
 	 *
 	 **/
 
@@ -210,7 +207,8 @@ public interface IPage extends IComponent
 	public void setRequestCycle(IRequestCycle cycle);
 
 	/**
-	 *  Invoked when the application terminates (that is, when the {@link HttpSession}
+	 *  Invoked when the application terminates (that is, when the 
+     *  {@link javax.servlet.http.HttpSession}
 	 *  containing the {@link IEngine} is invalidated or times out).  This gives
 	 *  the page a chance to release any additional resources it may have ...
 	 *  in particular,

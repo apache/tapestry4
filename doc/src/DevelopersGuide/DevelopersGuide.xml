@@ -1972,7 +1972,7 @@ application specification may define additional aliases.
 </para>
         <para>
 For example, the component 
-<filename>/com/primix/tapestry/links/Action.jwc</filename>
+<filename>/net/sf/tapestry/links/Action.jwc</filename>
 has a standard alias of &Action;.
 </para>
       </section>
@@ -2269,7 +2269,7 @@ notify the observer of the change, by   invoking the method
 <function>fireObservedChange()</function>, 
 which is 
 implemented by the class 
-<classname>com.primix.tapestry.AbstractComponent</classname>.  This method is 
+<classname>net.sf.tapestry.AbstractComponent</classname>.  This method is 
 overloaded; implementations are provided for every type of scalar value, and for 
 <classname>java.lang.Object</classname>.
 </para>
@@ -3046,7 +3046,7 @@ button on your browser") and uses the home service to create a link back to the
 </para>
       <para>
 The <classname>StaleSession</classname> page is displayed when a
-<classname>com.primix.tapestry.StaleSessionException</classname>
+<classname>net.sf.tapestry.StaleSessionException</classname>
 is thrown.  This exception is thrown when the component
 is configured to be stateful (which is the default)
 and the <classname>HttpSession</classname> doesn't exist, or is 
@@ -3292,7 +3292,7 @@ using a pair of JVM system properties:
         <title>JVM System Properties</title>
         <varlistentry>
           <term>
-            <varname>com.primix.tapestry.asset.dir</varname>
+            <varname>net.sf.tapestry.asset.dir</varname>
           </term>
           <listitem>
             <para>
@@ -3303,7 +3303,7 @@ using a pair of JVM system properties:
         </varlistentry>
         <varlistentry>
           <term>
-            <varname>com.primix.tapestry.asset.URL</varname>
+            <varname>net.sf.tapestry.asset.URL</varname>
           </term>
           <listitem>
             <para>
@@ -3382,7 +3382,7 @@ The application specification begins with an XML header:
             <callout arearefs="engine.appspec.property">
               <para>
  	Applications may have additional properties.  This is most commonly used to
- 	specify the class to instantiate as the visit object (<literal>com.primix.tapestry.visit-class</literal>).
+ 	specify the class to instantiate as the visit object (<literal>net.sf.tapestry.visit-class</literal>).
  	</para>
             </callout>
           </calloutlist>
@@ -5312,7 +5312,7 @@ public void render(IResponseWriter writer, IRequestCycle cycle)
       <para>
 The call to <function>getBinding()</function> is relatively expensive, since 
 it involves rummaging around in a &Map; and then 
-casting the result from <classname>java.lang.Object</classname> to <classname>com.primix.tapestry.IBinding</classname>.  
+casting the result from <classname>java.lang.Object</classname> to <classname>net.sf.tapestry.IBinding</classname>.  
 </para>
       <para>
 Because bindings are typically set once and then read frequently by the component, 
@@ -5988,7 +5988,7 @@ its input parameters.  It must also be in the HTML template, before the closing
         <title>SubmitScript usage</title>
         <programlisting>
 &lt;component id="submitScript" type="Script"&gt;
-  &lt;static-binding name="script"&gt;/com/primix/tapestry/form/SelectSubmit.script&lt;/static-binding&gt;
+  &lt;static-binding name="script"&gt;/net/sf/tapestry/form/SelectSubmit.script&lt;/static-binding&gt;
   &lt;binding name="component" property-path="components.selectPage"/&gt;
 &lt;/component&gt;
 </programlisting>
@@ -6105,7 +6105,7 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 
 	<varlistentry>
-		<term><filename>com.primix.tapestry-<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<term><filename>net.sf.tapestry-<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<listitem>
 			<para>
 			The main Tapestry framework.  This is needed at compile time and runtime.  At runtime, it is most
@@ -6396,7 +6396,7 @@ This section contains a few Q's and A's gleemed from the Tapestry developer mail
    		<answer>
    		<para>
 WebLogic appears to have a bug when deploying WAR files that contain libraries.  If the library name,
-in this case <filename>com.primix.tapestry.<replaceable>x</replaceable>.<replaceable>x</replaceable>.<replaceable>x</replaceable>.jar</filename>
+in this case <filename>net.sf.tapestry.<replaceable>x</replaceable>.<replaceable>x</replaceable>.<replaceable>x</replaceable>.jar</filename>
 contains any periods, WebLogic fails to expand the JAR file into its temporary directory, thus the classes
 really aren't in the classpath.   		
    		</para>

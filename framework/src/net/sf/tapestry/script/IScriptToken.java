@@ -30,8 +30,7 @@ import net.sf.tapestry.ScriptSession;
 
 /**
  *  Defines the responsibilities of a template token used by a
- *  {@link ParsedScript} ... that is, how the token
- *  can assist in generating output.
+ *  {@link net.sf.tapestry.IScript}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

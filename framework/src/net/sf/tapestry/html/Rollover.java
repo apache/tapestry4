@@ -47,7 +47,8 @@ import net.sf.tapestry.components.IServiceLink;
 import net.sf.tapestry.components.ServiceLinkEventType;
 
 /**
- *  Combines an {@link Action} with an &lt;img&gt; and JavaScript code
+ *  Combines a link component (such as {@link net.sf.tapestry.link.Direct}) 
+ *  with an &lt;img&gt; and JavaScript code
  *  to create a rollover effect that works with both Netscape Navigator and 
  *  Internet Explorer.
  *
@@ -113,7 +114,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  *
  * </table>
  *
- * <p>Informal parameters are allowed and are applied to the &lt;img&gt; tag.  A body
+ *  <p>Informal parameters are allowed and are applied to the &lt;img&gt; tag.  A body
  *  is not allowed.
  *
  *

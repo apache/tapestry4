@@ -158,146 +158,146 @@ public class ApplicationSpecification extends BasePropertyHolder
      * 	<tr> <th>Specification</th> <th>Class / Alias</th></tr>
      *  <tr>
      *	 <td>/net/sf/tapestry/link/Action.jwc</td>
-     *	 <td>{@link Action}</td></tr>
-     * <tr>
-     * <td>/net/sf/tapestry/components/Block.jwc </td> 
-     *		<td>{@link Block}</td></tr>
-     * <tr>
-     *		<td>/net/sf/tapestry/form/Checkbox.jwc</td>
-     *		<td>{@link Checkbox}</td>
-     * </tr>
+     *	 <td>{@link net.sf.tapestry.link.Action}</td></tr>
      *
      * <tr>
      *		<td>/net/sf/tapestry/components/Any.jwc</td>
-     *		<td>{@link Any}</td> </tr>
+     *		<td>{@link net.sf.tapestry.components.Any}</td> </tr>
+     * <tr>
+     * <td>/net/sf/tapestry/components/Block.jwc </td> 
+     *      <td>{@link net.sf.tapestry.components.Block}</td></tr>
      *  <tr>
-     *		<td>/net/sf/tapestry/html/Body.jwc</td>
-     *		<td>{@link Body}</td>
+     *      <td>/net/sf/tapestry/html/Body.jwc</td>
+     *      <td>{@link Body}</td>
+     * </tr>
+     * <tr>
+     *      <td>/net/sf/tapestry/form/Checkbox.jwc</td>
+     *      <td>{@link net.sf.tapestry.form.Checkbox}</td>
      * </tr>
      * <tr>
      *   <td>/net/sf/tapestry/component/Conditional.jwc</td>
-     *		<td>{@link Conditional}</td> </tr>
+     *		<td>{@link net.sf.tapestry.components.Conditional}</td> </tr>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/components/Delegator.jwc</td>
-     *		<td>{@link Delegator}</td> </tr>
+     *		<td>{@link net.sf.tapestry.components.Delegator}</td> </tr>
      *  <tr>
      *		<td>/net/sf/tapestry/link/Direct.jwc</td>
-     *		<td>{@link Direct}</td>
+     *		<td>{@link net.sf.tapestry.link.Direct}</td>
      * </tr>
      * <tr>
      *     <td>/net/sf/tapestry/html/ExceptionDisplay.jwc</td>
-     *	 	<td>{@link BaseComponent}</td> </tr>
+     *	 	<td>{@link net.sf.tapestry.BaseComponent}</td> </tr>
      *
      *  <tr>
      *       <td>/net/sf/tapestry/valid/FieldLabel.jwc</td>
-     *       <td>{@link FieldLabel}</td>
+     *       <td>{@link net.sf.tapestry.valid.FieldLabel}</td>
      * </tr>
      *
      * <tr>
      *		<td>/net/sf/tapestry/components/Foreach.jwc</td>
-     *		<td>{@link Foreach}</td> </tr>
+     *		<td>{@link net.sf.tapestry.components.Foreach}</td> </tr>
      * <tr>
      *		<td>/net/sf/tapestry/form/Form.jwc</td>
-     *		<td>{@link Form}</td> </tr>
+     *		<td>{@link net.sf.tapestry.form.Form}</td> </tr>
      * <tr>
      *         <td>/net/sf/tapestry/link/GenericLink.jwc</td>
-     *         <td>{@link GenericLink}</td>
+     *         <td>{@link net.sf.tapestry.link.GenericLink}</td>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/form/Hidden.jwc</td>
-     *		<td>{@link Hidden}</td>
+     *		<td>{@link net.sf.tapestry.form.Hidden}</td>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/html/Image.jwc</td>
-     *		<td>{@link Image}</td>
+     *		<td>{@link net.sf.tapestry.html.Image}</td>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/form/ImageSubmit.jwc</td>
-     *		<td>{@link ImageSubmit}</td>
+     *		<td>{@link net.sf.tapestry.form.ImageSubmit}</td>
      * </tr>
      *  <tr>
      * <td>/net/sf/tapestry/components/Insert.jwc </td> 
-     *		<td>{@link Insert}</td></tr>
+     *		<td>{@link net.sf.tapestry.components.Insert}</td></tr>
      *
      * <tr>
      * <td>/net/sf/tapestry/components/InsertBlock.jwc </td> 
-     *		<td>{@link InsertBlock}</td></tr>
+     *		<td>{@link net.sf.tapestry.components.InsertBlock}</td></tr>
      *
      *   <tr>
      *       <td>/net/sf/tapestry/html/InsertText.jwc</td>
-     *       <td>{@link InsertText}</td>
+     *       <td>{@link net.sf.tapestry.html.InsertText}</td>
      *   </tr>
      *
      *  <tr>
      * <td>/net/sf/tapestry/components/InsertWrapped.jwc</td> 
-     *		<td>{@link InsertWrapped}</td> </tr>
+     *		<td>{@link net.sf.tapestry.components.InsertWrapped}</td> </tr>
      * <tr>
      *		<td>/net/sf/tapestry/form/ListEdit.jwc</td>
-     *		<td>{@link ListEdit}</td>
+     *		<td>{@link net.sf.tapestry.form.ListEdit}</td>
      * </tr>
      *
      * <tr>
      *		<td>/net/sf/tapestry/form/Option.jwc</td>
-     *		<td>{@link Option}</td>
+     *		<td>{@link net.sf.tapestry.form.Option}</td>
      * </tr>
      *  <tr>
      *	 <td>/net/sf/tapestry/link/Page.jwc</td>
-     *	 <td>{@link Page}</td></tr>
+     *	 <td>{@link net.sf.tapestry.link.Page}</td></tr>
      * <tr>
      * <tr>
      *  <td>/net/sf/tapestry/form/PropertySelection.jwc</td>
-     *  <td>{@link PropertySelection}</td> </tr>
+     *  <td>{@link net.sf.tapestry.form.PropertySelection}</td> </tr>
      *
      *		<td>/net/sf/tapestry/form/Radio.jwc</td>
-     *		<td>{@link Radio}</td> </tr>
+     *		<td>{@link net.sf.tapestry.form.Radio}</td> </tr>
      * <tr>
      *		<td>/net/sf/tapestry/form/RadioGroup.jwc</td>
-     *		<td>{@link RadioGroup}</td> </tr>
+     *		<td>{@link net.sf.tapestry.form.RadioGroup}</td> </tr>
      * <tr>
      *		<td>/net/sf/tapestry/html/Rollover.jwc</td>
-     *		<td>{@link Rollover} </td> </tr>
+     *		<td>{@link net.sf.tapestry.html.Rollover} </td> </tr>
      *
      * <tr>
      *       <td>/net/sf/tapestry/html/Script.jwc</td>
-     *       <td>{@link Script}</td>
+     *       <td>{@link net.sf.tapestry.html.Script}</td>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/form/Select.jwc</td>
-     *		<td>{@link Select}</td>
+     *		<td>{@link net.sf.tapestry.form.Select}</td>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/link/Service.jwc</td>
-     *		<td>{@link Service}</td>
+     *		<td>{@link net.sf.tapestry.link.Service}</td>
      * </tr>
      * <tr>
      *       <td>/net/sf/tapestry/html/Shell.jwc</td>
-     *       <td>{@link Shell}</td>
+     *       <td>{@link net.sf.tapestry.html.Shell}</td>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/inspector/ShowInspector.jwc</td>
-     *		<td>{@link ShowInspector}</td>
+     *		<td>{@link net.sf.tapestry.inspector.ShowInspector}</td>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/form/Submit.jwc</td>
-     *		<td>{@link Submit}</td>
+     *		<td>{@link net.sf.tapestry.form.Submit}</td>
      * </tr>
      * <tr>
      *		<td>/net/sf/tapestry/form/Text.jwc</td>
-     *		<td>{@link Text}</td>	</tr>
+     *		<td>{@link net.sf.tapestry.form.Text}</td>	</tr>
      *
      * <tr>
      *		<td>/net/sf/tapestry/form/TextField.jwc</td>
-     *		<td>{@link TextField}</td> </tr>
+     *		<td>{@link net.sf.tapestry.form.TextField}</td> </tr>
      *
      *  <tr>
      * 	<td>/net/sf/tapestry/form/Upload.jwc</td>
-     * 	<td>{@link Upload}</td>
+     * 	<td>{@link net.sf.tapestry.form.Upload}</td>
      *  </tr>
      * 
      *  <tr>
      *       <td>/net/sf/tapestry/valid/ValidField.jwc</td>
-     *       <td>{@link ValidField}</td>
+     *       <td>{@link net.sf.tapestry.valid.ValidField}</td>
      * </tr>
      *
      *  </table>
@@ -376,7 +376,7 @@ public class ApplicationSpecification extends BasePropertyHolder
      *
      *  <tr>
      *  <td>/net/sf/tapestry/inspector/Inspector.jwc</td>
-     *  <td>{@link Inspector}</td>
+     *  <td>{@link net.sf.tapestry.inspector.Inspector}</td>
      *  </tr>
      * </table>
      *
@@ -464,25 +464,25 @@ public class ApplicationSpecification extends BasePropertyHolder
      *  <table border="1">
      * 	<tr> <th>Name</th> <th>Class</th> </tr>
      *  <tr>
-     * 		<td>action</td> <td>{@link ActionService}</td> 
+     * 		<td>action</td> <td>{@link net.sf.tapestry.engine.ActionService}</td> 
      *  </tr>
      *  <tr>
-     * 		<td>asset</td> <td>{@link AssetService} </td>
+     * 		<td>asset</td> <td>{@link net.sf.tapestry.asset.AssetService} </td>
      *  </tr>
      *  <tr>
-     * 		<td>direct</td> <td>{@link DirectService}</td>
+     * 		<td>direct</td> <td>{@link net.sf.tapestry.engine.DirectService}</td>
      *	</tr>
      *  <tr>
-     * 		<td>home</td> <td>{@link HomeService}</td> 
+     * 		<td>home</td> <td>{@link net.sf.tapestry.engine.HomeService}</td> 
      *  </tr>
      *  <tr>
-     * 		<td>page</td> <td>{@link PageService}</td>
+     * 		<td>page</td> <td>{@link net.sf.tapestry.engine.PageService}</td>
      *  </tr>
      *  <tr>
-     * 		<td>reset</td> <td> {@link ResetService} </td>
+     * 		<td>reset</td> <td> {@link net.sf.tapestry.engine.ResetService} </td>
      *  </tr>
      *  <tr>
-     * 		<td>restart</td> <td>{@link RestartService}</td>
+     * 		<td>restart</td> <td>{@link net.sf.tapestry.engine.RestartService}</td>
      *  </tr>
      *  </table>
      * 

@@ -27,6 +27,7 @@ package net.sf.tapestry.vlib.components;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
+import net.sf.tapestry.vlib.pages.PersonPage;
 
 /**
  *  Creates a link to the {@link PersonPage} page using the external service.

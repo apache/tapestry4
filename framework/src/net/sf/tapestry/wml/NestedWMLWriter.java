@@ -31,7 +31,7 @@ import java.io.PrintWriter;
 import net.sf.tapestry.IMarkupWriter;
 
 /**
- *  Subclass of {@link WMLResponseWriter} that is nested.  A nested writer
+ *  Subclass of {@link net.sf.tapestry.wml.WMLWriter} that is nested.  A nested writer
  *  buffers its output, then inserts it into its parent writer when it is
  *  closed.
  *

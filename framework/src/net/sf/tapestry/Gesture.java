@@ -74,7 +74,7 @@ public class Gesture
 
     /**
      *  Returns the {@link Iterator} for the query parameter map's entry set.
-     *  Each value will be {@link Map.Entry}.
+     *  Each value will be {@link Map} entry.
      *
      **/
 

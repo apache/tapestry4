@@ -32,7 +32,8 @@ import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.valid.ValidationDelegate;
 
 /**
- *  Implementation of {@link IValidationDelegate} uses the
+ *  Implementation of {@link net.sf.tapestry.valid.IValidationDelegate} 
+ *  which uses the
  *  correct CSS class when rendering errors.
  *
  *  @author Howard Lewis Ship

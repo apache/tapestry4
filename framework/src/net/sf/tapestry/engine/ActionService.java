@@ -43,7 +43,8 @@ import net.sf.tapestry.StaleSessionException;
 import net.sf.tapestry.Tapestry;
 
 /**
- *  A context-sensitive service related to {@link Form} and {@link Action}.  Encodes
+ *  A context-sensitive service related to {@link net.sf.tapestry.form.Form} 
+ *  and {@link javax.swing.Action}.  Encodes
  *  the page, component and an action id in the service context.
  *
  *  @author Howard Lewis Ship

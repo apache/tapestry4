@@ -203,7 +203,7 @@ public class Login extends BasePage implements IErrorProperty
     }
 
     /**
-     *  Sets up the {@link IPerson} as the logged in user, creates
+     *  Sets up the {@link Person} as the logged in user, creates
      *  a cookie for thier email address (for subsequent logins),
      *  and redirects to the appropriate page ({@link MyLibrary}, or
      *  a specified page).

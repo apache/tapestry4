@@ -62,7 +62,7 @@ public interface IUploadFile
 	 *  that this stream will be valid after the end of the current request cycle,
 	 *  so it should be processed immediately.
 	 * 
-	 *  <p>As of release 1.0.8, this will be a a {@link ByteArrayInputStream},
+	 *  <p>As of release 1.0.8, this will be a a {@link java.io.ByteArrayInputStream},
 	 *  but that, too, may change (a future implementation may upload the stream
 	 *  to a temporary file and return an input stream from that).
 	 * 

@@ -77,7 +77,7 @@ public abstract class GestureLink extends AbstractServiceLink
     }
 
     /**
-     *  Invoked by {@link #getURL()}.
+     *  Invoked by {@link #getURL(IRequestCycle)}.
      *  The default implementation returns null; other
      *  implementations can provide appropriate parameters as needed.
      *  

@@ -190,7 +190,7 @@ path to the application specification file; the servlet reads this file when it 
         <programlisting>
 package tutorial.hello;
 
-import com.primix.tapestry.*;
+import net.sf.tapestry.*;
 
 public class HelloWorldServlet extends ApplicationServlet
 {
@@ -222,7 +222,7 @@ application, the specification lives with the application's class files, in the
   "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <application
   name="Hello World Tutorial"
-  engine-class="com.primix.tapestry.engine.SimpleEngine">
+  engine-class="net.sf.tapestry.engine.SimpleEngine">
   
   <page name="Home" 
     specification-path="/tutorial/hello/Home.jwc"/>
@@ -254,7 +254,7 @@ example, our component is very simple.
   "-//Howard Ship//Tapestry Specification 1.1//EN"
   "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 
-<specification class="com.primix.tapestry.BasePage"/>
+<specification class="net.sf.tapestry.html.BasePage"/>
 ]]></programlisting>
       </figure>
       <para>
@@ -346,8 +346,7 @@ version of the home page.
       <programlisting><![CDATA[
 package tutorial.simple;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
+import net.sf.tapestry.ApplicationServlet;
 
 public class SimpleServlet extends ApplicationServlet
 {
@@ -368,7 +367,7 @@ The application specification is also straight forward:
   "-//Howard Ship//Tapestry Specification 1.1//EN" 
   "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 
-<application name="Simple Tutorial" engine-class="com.primix.tapestry.engine.SimpleEngine">
+<application name="Simple Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
   <page name="Home" specification-path="/tutorial/simple/Home.jwc"/>
 </application>
 ]]></programlisting>
@@ -508,7 +507,7 @@ That just leaves the implementation of the Home page component:
 package tutorial.simple;
 
 import java.util.*;
-import com.primix.tapestry.*;
+import net.sf.tapestry.*;
 
 public class Home extends BasePage
 {
@@ -648,9 +647,9 @@ the visit object.
   "-//Howard Ship//Tapestry Specification 1.1//EN" 
   "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd"&gt;
 
-&lt;application name="Tapestry Hangman" engine-class="com.primix.tapestry.engine.SimpleEngine"&gt; 
+&lt;application name="Tapestry Hangman" engine-class="net.sf.tapestry.engine.SimpleEngine"&gt; 
 
-  &lt;property name="com.primix.tapestry.visit-class"&gt;tutorial.hangman.Visit&lt;/property&gt; <co id="hangman.app.visit"/>
+  &lt;property name="net.sf.tapestry.visit-class"&gt;tutorial.hangman.Visit&lt;/property&gt; <co id="hangman.app.visit"/>
 
   &lt;page name="Home" specification-path="/tutorial/hangman/Home.jwc"/&gt;
 
@@ -1371,7 +1370,7 @@ static, the literal value "Home" (this isn't the best approach if localization i
   "-//Howard Ship//Tapestry Specification 1.1//EN" 
   "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd"&gt;
 
-&lt;specification class="com.primix.tapestry.BasePage"&gt;
+&lt;specification class="net.sf.tapestry.html.BasePage"&gt;
 
   &lt;component id="border" type="Border"&gt;
     &lt;static-binding name="title"&gt;Home&lt;/static-binding&gt;
@@ -1552,7 +1551,7 @@ second (when enabled
           <para>
 		By default, the reset service (used by the reset button) is disabled.  
 		To enable it, set the JVM system property
-		<varname>com.primix.tapestry.enable-reset-service</varname> to true.
+		<varname>net.sf.tapestry.enable-reset-service</varname> to true.
 		The service is disabled since it is too tempting a target for a denial
 		of service attack.
 		</para>
@@ -1597,7 +1596,7 @@ can be individually enabled or disable.
       <para>
 The right side is a small second form, allowing new categories to be created.
 This can be useful to make broad changes in logging levels.  For instance, creating
-a category "com.primix.tapestry" would allow the logging level of all Tapestry classes to be
+a category "net.sf.tapestry" would allow the logging level of all Tapestry classes to be
 set in a single place.
 </para>
     </section>
