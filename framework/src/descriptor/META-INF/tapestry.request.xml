@@ -217,4 +217,21 @@
 		</construct>
 	</invoke-factory>
   </service-point>
+  
+  <service-point id="DisableCachingFilter" interface="WebRequestServicerFilter">
+	
+	Uses the ResetEventCoordinator to reset any cached data at the end of the request.
+	Only used during development, not in production.
+	
+	<invoke-factory>
+		<construct class="impl.DisableCachingFilter">
+			<set-object property="resetEventCoordinator" value="infrastructure:resetEventCoordinator"/>
+		</construct>
+	</invoke-factory>
+  </service-point>
+  
+  <contribution configuration-id="WebRequestServicerPipeline" if="property org.apache.tapestry.disable-caching">
+    <filter name="DisableCachingFilter" object="service:DisableCachingFilter"/>
+  </contribution>
+  
 </module>

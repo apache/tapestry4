@@ -344,4 +344,10 @@ public class InfrastructureImpl implements Infrastructure
     {
         _threadLocale = threadLocale;
     }
+
+    public String getOutputEncoding()
+    {
+        return _applicationPropertySource.getPropertyValue("org.apache.tapestry.output-encoding");
+    }
+
 }
