@@ -99,7 +99,7 @@ public class Pool
 			}
 
 			if (list != null)
-				result = list.get();
+				result = list.retrieve();
 		}
 
 		if (CAT.isDebugEnabled())
@@ -116,6 +116,7 @@ public class Pool
 	public void store(Object key, Object object)
 	{
 		PoolList list;
+		int count;
 
 		if (map == null)
 		{
@@ -136,11 +137,11 @@ public class Pool
 				map.put(key, list);
 			}
 
-			list.add(object);
+			count = list.store(object);
 		}
 		
 		if (CAT.isDebugEnabled())
-			CAT.debug("Stored " + object + " into " + key);
+			CAT.debug("Stored " + object + " into " + key + " (" + count + " pooled)");
 	}
 
 	/**

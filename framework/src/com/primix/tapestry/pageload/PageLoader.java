@@ -49,7 +49,7 @@ public class PageLoader
 {
 	private static final Category CAT = Category.getInstance(PageLoader.class.getName());
 
-		private static final int  MAP_SIZE = 11;
+	private static final int  MAP_SIZE = 11;
 
 	private IEngine engine;
 	private IResourceResolver resolver;
@@ -88,16 +88,9 @@ public class PageLoader
 	*
 	*/
 
-	public PageLoader(PageSource pageSource, IEngine engine)
+	public PageLoader(PageSource pageSource)
 	{
 		this.pageSource = pageSource;
-		this.engine = engine;
-
-		locale = engine.getLocale();
-
-		specificationSource = engine.getSpecificationSource();
-
-		resolver = engine.getResourceResolver();
 	}
 
 	/**
@@ -302,7 +295,7 @@ public class PageLoader
 	}
 
 	/**
-	*  Instantitates a component from its specification. We instantiate 
+	*  Instantiates a component from its specification. We instantiate 
 	* the component object, then set its specification, page, container and id.
 	*
 	*  @see AbstractComponent
@@ -395,13 +388,32 @@ public class PageLoader
 		return result;
 	}
 
-	public IPage loadPage(String name, String type)
+	/**
+	 *  Invoked by the {@link PageSource} to load a specific page.  This
+	 *  method is not reentrant ... the PageSource ensures that
+	 *  any given instance of PageLoader is loading only a single page at a time.
+	 *
+	 *  @param name the name of the page to load
+	 *  @param engine the engine the page is loaded for (this is used
+	 *  to define the locale of the new page, and provide access
+	 *  to the correct specification source, etc.).
+	 *  @param type the page type (the path to its component specification)
+	 *
+	 */
+
+	public IPage loadPage(String name, IEngine engine, String type)
 	throws PageLoaderException
 	{
 		IPage page = null;
 		ComponentSpecification specification;
 
-		count = 0;
+		this.engine = engine;
+
+		locale = engine.getLocale();
+		specificationSource = engine.getSpecificationSource();
+		resolver = engine.getResourceResolver();
+
+			count = 0;
 		depth = 0;
 		maxDepth = 0;
 
@@ -417,10 +429,17 @@ public class PageLoader
 		{
 			throw new PageLoaderException(e.getMessage(), this, name, e);
 		}
+		finally
+		{
+			locale = null;
+			engine = null;
+			specificationSource = null;
+			resolver = null;
+		}
 
 		if (CAT.isInfoEnabled())
 			CAT.info("Loaded page " + page + 
-			" with " + count + " components (maximum depth " + maxDepth + ")");
+				" with " + count + " components (maximum depth " + maxDepth + ")");
 
 		return page;
 	}

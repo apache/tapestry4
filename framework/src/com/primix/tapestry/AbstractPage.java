@@ -6,6 +6,7 @@ import java.util.*;
 import java.io.OutputStream;
 import javax.servlet.http.*;
 import com.primix.foundation.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -48,6 +49,8 @@ public abstract class AbstractPage
 extends BaseComponent 
 implements IPage
 {
+	private static final Category CAT = Category.getInstance(AbstractPage.class.getName());
+	
 	/**
 	*  Object to be notified when a observered property changes.  Observered
 	*  properties are the ones that will be persisted between request cycles.
@@ -247,6 +250,9 @@ implements IPage
 
 	public void attach(IEngine value)
 	{
+		if (engine != null)
+			CAT.error(this + " attach(" + value + "), but engine = " + engine);
+		
 		engine = value;
 	}
 

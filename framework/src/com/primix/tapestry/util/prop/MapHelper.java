@@ -71,11 +71,6 @@ public class MapHelper extends PropertyHelper
 			return ((Map)instance).get(name);
 		}
 
-		public Class getType()
-		{
-			return Object.class;
-		}
-
 		public boolean isReadable()
 		{
 			return true;
@@ -91,6 +86,17 @@ public class MapHelper extends PropertyHelper
 			return true;
 		}
 
+		/**
+		 *  Returns {@link Object}.class, because we never know the
+		 *  type of objects stored in a {@link Map}.
+		 *
+		 */
+		 
+		public Class getType()
+		{
+			return Object.class;
+		}
+		
 		public void set(Object instance, Object value)
 		{
 			((Map)instance).put(name, value);

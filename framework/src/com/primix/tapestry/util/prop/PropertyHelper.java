@@ -128,23 +128,29 @@ public class PropertyHelper
 		int count;
 		PropertyDescriptor[] props;
 
-		try
+		synchronized(this)
 		{
-			info = Introspector.getBeanInfo(beanClass);
+			if (accessors != null)
+				return;
+
+			try
+			{
+				info = Introspector.getBeanInfo(beanClass);
+			}
+			catch (Exception e)
+			{
+				throw new DynamicInvocationException(e);
+			}
+
+			props = info.getPropertyDescriptors();
+			count = props.length;
+
+			accessors = new HashMap(MAP_SIZE);
+
+			for (i = 0; i < count; i++)
+				accessors.put(props[i].getName(),
+					new PropertyAccessor(props[i]));
 		}
-		catch (Exception e)
-		{
-			throw new DynamicInvocationException(e);
-		}
-
-		props = info.getPropertyDescriptors();
-		count = props.length;
-
-		accessors = new HashMap(MAP_SIZE);
-
-		for (i = 0; i < count; i++)
-			accessors.put(props[i].getName(),
-				new PropertyAccessor(props[i]));
 
 	}
 
@@ -465,7 +471,11 @@ public class PropertyHelper
 		if (accessors == null)
 			buildPropertyAccessors();
 
-		return (PropertyAccessor)accessors.get(propertyName);
+		synchronized(accessors)
+		{
+			return (PropertyAccessor)accessors.get(propertyName);
+		}
+
 	}
 
 	public boolean isReadable(Object instance, String propertyName)
