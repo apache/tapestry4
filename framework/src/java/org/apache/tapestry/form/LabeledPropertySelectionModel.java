@@ -95,6 +95,24 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
+     * Returns the underlying IPropertySelectionModel
+     * @return the underlying IPropertySelectionModel
+     */
+    public IPropertySelectionModel getModel()
+    {
+        return _model;
+    }
+    
+    /**
+     * Sets the underlying IPropertySelectionModel
+     * @param model the IPropertySelectionModel to set 
+     */
+    public void setModel(IPropertySelectionModel model)
+    {
+        _model = model;
+    }
+    
+    /**
      * @see org.apache.tapestry.form.IPropertySelectionModel#getOptionCount()
      */
     public int getOptionCount()
