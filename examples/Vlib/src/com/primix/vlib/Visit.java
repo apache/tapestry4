@@ -318,6 +318,17 @@ implements Serializable
 		return userPK != null;
 	}
 	
+	/**
+	 *  Returns true if the user has not been identified (has not
+	 *  logged in).
+	 *
+	 */
+	 
+	public boolean isUserLoggedOut()
+	{
+		return userPK == null;
+	}
+	
 	public boolean isLoggedInUser(Integer primaryKey)
 	{
 		if (userPK == null)

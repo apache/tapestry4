@@ -1,3 +1,7 @@
+* Feb 13 2001 hship
+
+Deal with "enabled" -> "disabled" change in link component parameters.
+
 * Feb 8 2001 hship
 
 Remove code related to response writer compression (which has been removed from

@@ -63,8 +63,8 @@
 					<property-path>pageName</property-path>
 				</binding>
 				<binding>
-					<name>enabled</name>
-					<property-path>enablePageLink</property-path>
+					<name>disabled</name>
+					<property-path>disablePageLink</property-path>
 				</binding>
 			</bindings>
 		</component>

@@ -58,8 +58,8 @@
 					<value>MyBooks</value>
 				</static-binding>
 				<binding>
-					<name>enabled</name>
-					<property-path>page.visit.userLoggedIn</property-path>
+					<name>disabled</name>
+					<property-path>page.visit.userLoggedOut</property-path>
 				</binding>
 			</bindings>
 		</component>
