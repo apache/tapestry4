@@ -36,7 +36,7 @@ Attributes:
   name: A textual name used to uniquely identify the application.
   engine-class:  The Java class to instantiate as the application engine.
 -->
-<!ELEMENT application (description*, property*, page+, component-alias*)>
+<!ELEMENT application (description*, property*, page, (page|component-alias)*)>
 <!ATTLIST application
   name CDATA #REQUIRED
   engine-class CDATA #REQUIRED
