@@ -26,6 +26,7 @@
 package net.sf.tapestry;
 
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 
 /**
@@ -122,7 +123,7 @@ public interface ISpecificationSource
      * 
      **/
     
-    public LibrarySpecification getLibrarySpecification(String resourcePath);
+    public ILibrarySpecification getLibrarySpecification(String resourcePath);
     
     /**
      *  Returns the {@link INamespace} for the application.

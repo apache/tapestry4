@@ -45,6 +45,8 @@ import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.Direction;
 import net.sf.tapestry.spec.ExtensionSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
+import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.spec.SpecFactory;
@@ -513,7 +515,7 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    public ApplicationSpecification parseApplicationSpecification(
+    public IApplicationSpecification parseApplicationSpecification(
         InputStream input,
         String resourcePath,
         IResourceResolver resolver)
@@ -544,7 +546,7 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    public LibrarySpecification parseLibrarySpecification(
+    public ILibrarySpecification parseLibrarySpecification(
         InputStream input,
         String resourcePath,
         IResourceResolver resolver)
@@ -610,10 +612,10 @@ public class SpecificationParser extends AbstractDocumentParser
         return dtdVersion;
     }
 
-    private ApplicationSpecification convertApplicationSpecification(Document document, IResourceResolver resolver)
+    private IApplicationSpecification convertApplicationSpecification(Document document, IResourceResolver resolver)
         throws DocumentParseException
     {
-        ApplicationSpecification specification = _factory.createApplicationSpecification();
+        IApplicationSpecification specification = _factory.createApplicationSpecification();
 
         Element root = document.getDocumentElement();
 
@@ -627,10 +629,10 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** @since 2.2 **/
 
-    private LibrarySpecification convertLibrarySpecification(Document document, IResourceResolver resolver)
+    private ILibrarySpecification convertLibrarySpecification(Document document, IResourceResolver resolver)
         throws DocumentParseException
     {
-        LibrarySpecification specification = _factory.createLibrarySpecification();
+        ILibrarySpecification specification = _factory.createLibrarySpecification();
 
         processLibrarySpecification(document, specification, resolver);
 
@@ -646,7 +648,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     private void processLibrarySpecification(
         Document document,
-        LibrarySpecification specification,
+        ILibrarySpecification specification,
         IResourceResolver resolver)
         throws DocumentParseException
     {
@@ -654,6 +656,8 @@ public class SpecificationParser extends AbstractDocumentParser
         String dtdVersion = getDTDVersion(document);
 
         specification.setDTDVersion(dtdVersion);
+        
+        specification.setPublicId(document.getDoctype().getPublicId());
 
         specification.setResourceResolver(resolver);
 
@@ -673,7 +677,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 continue;
             }
 
-            if (isElement(node, "property"))
+            if (isElement(node, "property")) 
             {
                 convertProperty(specification, node);
                 continue;
@@ -709,7 +713,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /**  @since 2.2 **/
 
-    private void convertLibrary(LibrarySpecification specification, Node node) throws DocumentParseException
+    private void convertLibrary(ILibrarySpecification specification, Node node) throws DocumentParseException
     {
         String id = getAttribute(node, "id");
 
@@ -720,7 +724,7 @@ public class SpecificationParser extends AbstractDocumentParser
         specification.setLibrarySpecificationPath(id, specificationPath);
     }
 
-    private void convertPage(LibrarySpecification specification, Node node) throws DocumentParseException
+    private void convertPage(ILibrarySpecification specification, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
 
@@ -731,7 +735,7 @@ public class SpecificationParser extends AbstractDocumentParser
         specification.setPageSpecificationPath(name, specificationPath);
     }
 
-    private void convertComponentAlias(LibrarySpecification specification, Node node) throws DocumentParseException
+    private void convertComponentAlias(ILibrarySpecification specification, Node node) throws DocumentParseException
     {
         String type = getAttribute(node, "type");
 
@@ -1176,7 +1180,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    private void convertService(LibrarySpecification spec, Node node) throws DocumentParseException
+    private void convertService(ILibrarySpecification spec, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
 
@@ -1269,7 +1273,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** @since 2.2 **/
 
-    private void convertExtension(LibrarySpecification specification, Node node) throws DocumentParseException
+    private void convertExtension(ILibrarySpecification specification, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
         String className = getAttribute(node, "class");

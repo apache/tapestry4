@@ -57,7 +57,7 @@ public class SpecFactory
      * Creates a concrete instance of {@link ApplicationSpecification}.
      **/
 
-    public ApplicationSpecification createApplicationSpecification()
+    public IApplicationSpecification createApplicationSpecification()
     {
         return new ApplicationSpecification();
     }
@@ -70,7 +70,7 @@ public class SpecFactory
      * 
      **/
     
-    public LibrarySpecification createLibrarySpecification()
+    public ILibrarySpecification createLibrarySpecification()
     {
         return new LibrarySpecification();
     }

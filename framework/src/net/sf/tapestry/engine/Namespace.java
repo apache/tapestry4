@@ -34,6 +34,7 @@ import net.sf.tapestry.INamespace;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 
 /**
@@ -49,7 +50,7 @@ import net.sf.tapestry.spec.LibrarySpecification;
 
 public class Namespace implements INamespace
 {
-    private LibrarySpecification _specification;
+    private ILibrarySpecification _specification;
     private ISpecificationSource _specificationSource;
     private String _id;
     private String _extendedId;
@@ -58,7 +59,7 @@ public class Namespace implements INamespace
     public Namespace(
         String id,
         INamespace parent,
-        LibrarySpecification specification,
+        ILibrarySpecification specification,
         ISpecificationSource specificationSource)
     {
         _id = id;
@@ -193,7 +194,7 @@ public class Namespace implements INamespace
         return _specification.getServiceNames();
     }
 
-    public LibrarySpecification getSpecification()
+    public ILibrarySpecification getSpecification()
     {
         return _specification;
     }
@@ -252,7 +253,7 @@ public class Namespace implements INamespace
             throw new ApplicationRuntimeException(
                 Tapestry.getString("Namespace.library-id-not-found", id, getNamespaceId()));
 
-        LibrarySpecification ls = _specificationSource.getLibrarySpecification(path);
+        ILibrarySpecification ls = _specificationSource.getLibrarySpecification(path);
  
         return new Namespace(id, this, ls, _specificationSource);
     }

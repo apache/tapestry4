@@ -77,6 +77,7 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.pageload.PageSource;
 import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.io.DataSqueezer;
 import net.sf.tapestry.util.prop.PropertyHelper;
@@ -188,7 +189,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      **/
 
-    protected transient ApplicationSpecification _specification;
+    protected transient IApplicationSpecification _specification;
 
     /**
      *  The source for template data. The template source is stored
@@ -501,7 +502,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      **/
 
-    public ApplicationSpecification getSpecification()
+    public IApplicationSpecification getSpecification()
     {
         return _specification;
     }
@@ -1114,7 +1115,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     protected ISpecificationSource createSpecificationSource()
     {
-        return new DefaultSpecificationSource(getResourceResolver(), _specification);
+        return new DefaultSpecificationSource(getResourceResolver(), _specification);  
     }
 
     /**

@@ -41,6 +41,7 @@ import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.io.DataSqueezer;
 
 /**
@@ -99,7 +100,7 @@ public class MockEngine implements IEngine
         return null;
     }
 
-    public ApplicationSpecification getSpecification()
+    public IApplicationSpecification getSpecification() 
     {
         return null;
     }

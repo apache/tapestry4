@@ -32,6 +32,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.io.DataSqueezer;
 
 /**
@@ -178,7 +179,7 @@ public interface IEngine
      *
      **/
 
-    public ApplicationSpecification getSpecification();
+    public IApplicationSpecification getSpecification();
 
     /**
      *  Returns the source of all component specifications for the application.  
