@@ -39,10 +39,8 @@ EXEC_CLASSPATH = \
 	$(JBOSS_DIR)/client/jboss-client.jar \
 	$(JDK_DIR)/lib/tools.jar
 
-_EXEC_CLASSPATH := $(strip $(shell $(JBE_CANONICALIZE) -classpath $(EXEC_CLASSPATH)))
-
 run: default
-	$(JAVA) -classpath "$(_EXEC_CLASSPATH)" \
+	$(JAVA) -classpath "$(call JBE_CANONICALIZE,-classpath $(EXEC_CLASSPATH))" \
 	-Dcom.primix.tapestry.enable-reset-service=true \
 	-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
 	com.mortbay.Jetty.Server jetty.xml

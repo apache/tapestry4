@@ -1,3 +1,7 @@
+* Dec 11 2000 hship
+
+Fix Makefiles for the new usage of the JBE_CANONICALIZE macro.
+
 * Nov 22 2000 hship
 
 Update Virtual Library documentation.
