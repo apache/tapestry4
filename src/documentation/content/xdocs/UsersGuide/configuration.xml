@@ -325,40 +325,7 @@ currently used in Tapestry:
   </tr>
   
   <tr>
-    <td>org.apache.tapestry.servlet-path</td>
-    <td>
-    Defines the servlet path used when constructing URLs. The default value is <code>/app</code>.   Note that this is just
-    the <em>servlet path</em>.  In many cases, the application will be inside a context; Tapestry will automatically prefix this
-    value with the correct value for the context.  For example, workbench.war will by default be deployed with a context path of /workbench, and Tapestry will build URLs as
-    /workbench/app.
-    </td>
-    
-  </tr>
-  <tr>
-	<td>org.apache.tapestry.template-extension</td>
-	
-	<td>
-	Overrides the default extension used to locate templates for pages or components.
-	The default extension is "html", this configuration property 
-	allows overrides where appropriate.  For example,
-	an application that produces WML may want to override this to "wml".
-
-	
-	<p>
-	This configuration property does not follow the normal search path rules.  The
-	&spec.meta; must be provided in the &spec.page-specification; or &spec.component-specification;.
-	If no value is found there, the immediate containing &spec.application; or
-	&spec.library-specification; is checked.  If still not found, the default is used.
-	</p>
-	
-	</td>
-  </tr>
-  
-  <tr>
-
-	
-
-	<td>org.apache.tapestry.asset.dir, org.apache.tapestry.asset.URL</td>
+  	<td>org.apache.tapestry.asset.dir, org.apache.tapestry.asset.URL</td>
 	
   <td>
 	These two values are used to handle private assets.  Private assets are assets
@@ -371,25 +338,9 @@ currently used in Tapestry:
 	value should map to the directory specified by the dir value.
 	</p>
   </td>
+  </tr>
   
-  </tr>
-
-
-  <tr>
-	<td>org.apache.tapestry.visit-class</td>
-	
-  <td>
-	The fully qualified class name to instantiate as the 
-	<link href="index.html#intro.engine-service-visit">Visit object</link>.
-	
-	<p>
-	If not specified, an instance of HashMap will be created.
-	</p>
-	
-  </td>
-  </tr>
-
-
+  
   <tr>
 
 	<td>org.apache.tapestry.default-page-class</td>
@@ -405,45 +356,6 @@ currently used in Tapestry:
 </tr>
 
 <tr>
-	<td>org.apache.tapestry.engine-class</td>
-	
-  <td>
-	The fully qualified class name to instantiate as the application engine.
-	This configuration value is only used when the 
-	application specification does not exist, or fails to
-	specify a class.  By default, &BaseEngine; is used if this configuration
-	value is also left unspecified.
-  </td>
-</tr>
-
-<tr>
-	<td>org.apache.tapestry.enhance.disable-abstract-method-validation</td>	
-	
-  <td>
-	Used to trigger a work around for a bug in IBM's JDK 1.3.1. This particular JDK reports <em>all</em> methods
-	of an abstract class as abstract, even if they are, in fact, concrete. This causes spurious errors
-	about unimplemented abstract methods. Specifying true for this property
-	disables checks for unimplemented abstract methods.
-  
-  <warning>
-    Support for this property has been temporarily removed from release 3.1.
-  </warning>
-  </td>
-</tr>
-
-<tr>
-	<td>org.apache.tapestry.global-class</td>
-	
-  <td>
-	The fully qualified class name to instantiate as the engine global
-	property.  The Global object is much like Visit object, 
-	except that it is shared by all instances
-	of the application engine rather than being private to any particular session.
-	If not specified, a synchronized instance of HashMap is used.
-  </td>
-</tr>
-
-<tr>
 	<td>org.apache.tapestry.default-script-language</td>
 	
   <td>
@@ -453,25 +365,6 @@ currently used in Tapestry:
   </td>
 	
 	</tr>
-
-<tr>
-
-	<td>org.apache.tapestry.enable-reset-service</td>
-	
-  <td>
-	If not specified as "true", then the reset service
-	will be non-functional.  The reset service is used to force
-	the running Tapestry application to discard all cached data (including
-	templates, specifications, pooled objects and more).  This must
-	be explicitly enabled, and should only be used in development (in production,
-	it is too easily exploited as a denial of service attack).
-	
-	<p>
-	Unlike most other configuration values, this must be specified
-	as a JVM system property.
-	</p>
-  </td>
-</tr>
 
 <tr>
 	<td>org.apache.tapestry.disable-caching</td>
@@ -496,6 +389,92 @@ currently used in Tapestry:
 </tr>
 
 
+
+
+<tr>
+	<td>org.apache.tapestry.enable-reset-service</td>
+	
+  <td>
+	If not specified as "true", then the reset service
+	will be non-functional.  The reset service is used to force
+	the running Tapestry application to discard all cached data (including
+	templates, specifications, pooled objects and more).  This must
+	be explicitly enabled, and should only be used in development (in production,
+	it is too easily exploited as a denial of service attack).
+	
+	<p>
+	Unlike most other configuration values, this must be specified
+	as a JVM system property.
+	</p>
+  </td>
+</tr>
+
+<tr>
+	<td>org.apache.tapestry.engine-class</td>
+	
+  <td>
+	The fully qualified class name to instantiate as the application engine.
+	This configuration value is only used when the 
+	application specification does not exist, or fails to
+	specify a class.  By default, &BaseEngine; is used if this configuration
+	value is also left unspecified.
+  </td>
+</tr>
+
+
+<tr>
+	<td>org.apache.tapestry.enhance.disable-abstract-method-validation</td>	
+	
+  <td>
+	Used to trigger a work around for a bug in IBM's JDK 1.3.1. This particular JDK reports <em>all</em> methods
+	of an abstract class as abstract, even if they are, in fact, concrete. This causes spurious errors
+	about unimplemented abstract methods. Specifying true for this property
+	disables checks for unimplemented abstract methods.
+  
+  <warning>
+    Support for this property has been temporarily removed from release 3.1.
+  </warning>
+  </td>
+</tr>
+
+
+<tr>
+	<td>org.apache.tapestry.global-class</td>
+	
+  <td>
+	The fully qualified class name to instantiate as the engine global
+	property.  The Global object is much like Visit object, 
+	except that it is shared by all instances
+	of the application engine rather than being private to any particular session.
+	If not specified, a synchronized instance of HashMap is used.
+  </td>
+</tr>
+
+    <tr>
+    <td>org.apache.tapestry.jwcid-attribute-name</td>
+    <td>
+     Controls the attribute  used to recognize the locations of contained components within
+     a <link href="template.html#template.components">component template</link>.  The default is "jwcid".
+    </td>
+  </tr>
+  
+<tr>
+	<td>org.apache.tapestry.messages-encoding</td>
+	
+  <td>
+	Defines the character set used when reading the properties files comprising a
+  page  or component <link href="localization.html#localization.component-catalog">message catalog</link>.
+	The default value is ISO-8859-1. 
+
+	
+	<p>
+	Please see the <link href="localization.html#localization.component-catalog.encoding">message catalog localization discussion</link> 
+  for more information.
+	</p>
+  </td>
+</tr>
+  
+  
 <tr>
 	<td>org.apache.tapestry.output-encoding</td>
 	
@@ -512,22 +491,18 @@ currently used in Tapestry:
   </td>
 
 </tr>
-
-<tr>
-	<td>org.apache.tapestry.messages-encoding</td>
-	
-  <td>
-	Defines the character set used when reading the properties files comprising a
-  page  or component <link href="localization.html#localization.component-catalog">message catalog</link>.
-	The default value is ISO-8859-1. 
-
-	
-	<p>
-	Please see the <link href="localization.html#localization.component-catalog.encoding">message catalog localization discussion</link> 
-  for more information.
-	</p>
-  </td>
-</tr>
+  
+  <tr>
+    <td>org.apache.tapestry.servlet-path</td>
+    <td>
+    Defines the servlet path used when constructing URLs. The default value is <code>/app</code>.   Note that this is just
+    the <em>servlet path</em>.  In many cases, the application will be inside a context; Tapestry will automatically prefix this
+    value with the correct value for the context.  For example, workbench.war will by default be deployed with a context path of /workbench, and Tapestry will build URLs as
+    /workbench/app.
+    </td>
+    
+  </tr>
+  
 
 <tr>
 	<td>org.apache.tapestry.template-encoding</td>
@@ -543,6 +518,63 @@ currently used in Tapestry:
 	</p>
   </td>
 </tr>
+  
+  <tr>
+	<td>org.apache.tapestry.template-extension</td>
+	
+	<td>
+	Overrides the default extension used to locate templates for pages or components.
+	The default extension is "html", this configuration property 
+	allows overrides where appropriate.  For example,
+	an application that produces WML may want to override this to "wml".
+
+	
+	<p>
+	This configuration property does not follow the normal search path rules.  The
+	&spec.meta; must be provided in the &spec.page-specification; or &spec.component-specification;.
+	If no value is found there, the immediate containing &spec.application; or
+	&spec.library-specification; is checked.  If still not found, the default is used.
+	</p>
+	
+	</td>
+  </tr>
+  
+  
+	
+
+
+
+
+  <tr>
+	<td>org.apache.tapestry.visit-class</td>
+	
+  <td>
+	The fully qualified class name to instantiate as the 
+	<link href="index.html#intro.engine-service-visit">Visit object</link>.
+	
+	<p>
+	If not specified, an instance of HashMap will be created.
+	</p>
+	
+  <p>
+   This is something of a holdover from Tapestry 3.0; for Tapestry 3.1, you will likely want to
+   override the default visit &aso; (or simply add your own application state objects).
+  </p>
+  
+  </td>
+  </tr>
+
+
+
+
+
+
+
+
+
+
+
+
 </table>
 </section>  <!-- configuration.properties -->
 

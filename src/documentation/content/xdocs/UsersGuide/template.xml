@@ -187,6 +187,12 @@ as easily use &lt;div&gt; or &lt;fred&gt;, the
 rendered page sent back to the client web browser will be the same.
 </p>
 
+<p>
+The default attribute name is <code>jwcid</code>, but there are occasions when that  is not desirable. The
+org.apache.tapestry.jwcid-attribute-name &configuration-property; allows you to control the  template
+parser's behavior.
+</p>
+
 <section id="templates.components.body">
 		<title>Component bodies</title>
 		

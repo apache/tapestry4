@@ -144,6 +144,7 @@
       <action type="update" dev="HLS"> Change handling of initial values for properties to be based on injected logic. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-265" due-to="Michael Frericks"> Fix bad link in UsersGuide/spec.xml. </action>
       <action type="update" dev="HLS"> Add new ComponentPropertySource service for accessing component meta-data properties. </action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-165"> Allow control over attribute name for components in templates. </action>
     </release>
     <release version="3.0" date="Apr 18 2004">
       <action type="fix" dev="HLS" fixes-bug="28345"> Workbench/Upload exception when no file specified </action>

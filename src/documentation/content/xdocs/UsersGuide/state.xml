@@ -337,8 +337,9 @@ when the page detaches is not defined and is subject to change.
   
 <p>
 What happens when you have objects that are needed by multiple pages?  For that, you need an
-<em>application state object</em>.  ASO's are global objects that can be accessed from any page
-or component in the application [[ Well, soon anyway ]].  Each ASO has a unique name (the two default
+<em>application state object</em>.  ASO's are global objects that can be 
+<link href="#state.aso.access">accessed</link> from any page
+or component in the application.  Each ASO has a unique name (the two default
 ASO's are called "visit" and "global" for historical reasons).  An ASO is created when first referenced by any page.
 ASO's with session scope are stored into the HttpSession at the end of the request (and 
 <link href="#state.stateless">may force the creation of
@@ -377,6 +378,11 @@ If your data object can't be created using a simple constructor, then you can su
 of &lt;create-instance&gt;.  &lt;invoke-factory&gt; allows you to reference and object or service that implements
 the &StateObjectFactory; interface.
 </p>
+
+<note>
+  The two default ASOs, "visit" and "global", are defined in the hivemind.state.FactoryObjects configuration point. Definitions
+  in the ApplicationObjects configuration point override the definitions in FactoryObjects.
+</note>
   
 </section> <!-- state.aso.defining -->
 

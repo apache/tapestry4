@@ -25,22 +25,25 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Default implementation of {@link org.apache.tapestry.parse.ITemplateParserDelegate}.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class DefaultParserDelegate implements ITemplateParserDelegate
 {
     private IComponent _component;
+
     private ComponentSpecificationResolver _resolver;
+
     private IRequestCycle _cycle;
 
-    public DefaultParserDelegate(
-        IComponent component,
-        IRequestCycle cycle,
-        ComponentSpecificationResolver resolver)
+    private String _componentAttributeName;
+
+    public DefaultParserDelegate(IComponent component, String componentAttributeName,
+            IRequestCycle cycle, ComponentSpecificationResolver resolver)
     {
         _component = component;
+        _componentAttributeName = componentAttributeName;
         _resolver = resolver;
         _cycle = cycle;
     }
@@ -69,5 +72,10 @@ public class DefaultParserDelegate implements ITemplateParserDelegate
         IComponentSpecification spec = _resolver.getSpecification();
 
         return spec.getAllowBody();
+    }
+
+    public String getComponentAttributeName()
+    {
+        return _componentAttributeName;
     }
 }
