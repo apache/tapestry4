@@ -117,9 +117,12 @@ public class Insert extends AbstractComponent
 	*  Notes:
 	*  <ul>
 	*  <li>If the cycle is rewinding, then this method does nothing.
-	*  <li>If both the value and the format are null, then this method does nothing
-	*  <li>If the format is non-null, then {@link Format#format(Object)} is invoked,
-	*  even if the value is null
+	*  <li>If both the value is null, then this method does nothing
+	*  <li>If the format is non-null, then {@link Format#format(Object)} is invoked and
+    *  the resulting String is what's inserted.
+    *  <li>The method will use either {@link IResponseWriter#print(String)} or
+    *  {@link IResponseWriter#printRaw(String)}, depending on the value
+    *  of the raw parameter.
 	*  </ul>
 	*
 	*/
@@ -140,13 +143,23 @@ public class Insert extends AbstractComponent
 		if (formatBinding != null)
 			format = (Format)formatBinding.getValue();
 		
-		if (value == null && format == null)
+		if (value == null)
 			return;
 			
 		if (format == null)
 			insert = value.toString();
 		else
-			insert = format.format(value);
+        {
+            try
+            {
+			    insert = format.format(value);
+            }
+            catch (Exception e)
+            {
+                throw new RequestCycleException("Unable to format object " + value + ".",
+                        this, cycle, e);
+            }
+        }
 
         if (staticRawValue)
             raw = rawValue;
