@@ -20,7 +20,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- */
+ **/
 package net.sf.tapestry.link;
 
 import java.util.ArrayList;
@@ -28,268 +28,280 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-
-import net.sf.tapestry.*;
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RenderOnlyPropertyException;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.components.*;
 import net.sf.tapestry.components.IServiceLink;
 import net.sf.tapestry.components.ServiceLinkEventType;
-import net.sf.tapestry.html.*;
 import net.sf.tapestry.html.Body;
 
-public abstract class AbstractServiceLink extends AbstractComponent implements IServiceLink
+/**
+ *  Base class for
+ *  implementations of {@link net.sf.tapestry.components.IServiceLink}.
+ *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *
+ **/
+
+public abstract class AbstractServiceLink
+    extends AbstractComponent
+    implements IServiceLink
 {
-	protected IBinding disabledBinding;
-	protected boolean disabled;
-	protected boolean rendering;
+    protected IBinding disabledBinding;
+    protected boolean disabled;
+    protected boolean rendering;
 
-	protected Body body;
+    protected Body body;
 
-	protected static final int MAP_SIZE = 3;
+    protected static final int MAP_SIZE = 3;
 
-	protected Map eventHandlers;
+    protected Map eventHandlers;
 
-	public IBinding getDisabledBinding()
-	{
-		return disabledBinding;
-	}
+    public IBinding getDisabledBinding()
+    {
+        return disabledBinding;
+    }
 
-	/**
-	 *  Returns true if the link is disabled, false otherwise.  If not otherwise
-	 *  specified, the link will be enabled (and this method will return false).
-	 *
-	 *  @throws RenderOnlyPropertyException if the component is not currently rendering.
-	 *
-	 */
+    /**
+     *  Returns true if the link is disabled, false otherwise.  If not otherwise
+     *  specified, the link will be enabled (and this method will return false).
+     *
+     *  @throws RenderOnlyPropertyException if the component is not currently rendering.
+     *
+     **/
 
-	public boolean isDisabled()
-	{
-		if (!rendering)
-			throw new RenderOnlyPropertyException(this, "disabled");
+    public boolean isDisabled()
+    {
+        if (!rendering)
+            throw new RenderOnlyPropertyException(this, "disabled");
 
-		return disabled;
-	}
+        return disabled;
+    }
 
-	public void setDisabledBinding(IBinding value)
-	{
-		disabledBinding = value;
-	}
+    public void setDisabledBinding(IBinding value)
+    {
+        disabledBinding = value;
+    }
 
-	/**
-	 *  Adds an event handler (typically, from a wrapped component such
-	 *  as a {@link Rollover}).
-	 *
-	 */
+    /**
+     *  Adds an event handler (typically, from a wrapped component such
+     *  as a {@link Rollover}).
+     *
+     **/
 
-	public void addEventHandler(ServiceLinkEventType eventType, String functionName)
-	{
-		Object currentValue;
+    public void addEventHandler(
+        ServiceLinkEventType eventType,
+        String functionName)
+    {
+        Object currentValue;
 
-		if (eventHandlers == null)
-			eventHandlers = new HashMap(MAP_SIZE);
+        if (eventHandlers == null)
+            eventHandlers = new HashMap(MAP_SIZE);
 
-		currentValue = eventHandlers.get(eventType);
+        currentValue = eventHandlers.get(eventType);
 
-		// The first value is added as a String
+        // The first value is added as a String
 
-		if (currentValue == null)
-		{
-			eventHandlers.put(eventType, functionName);
-			return;
-		}
+        if (currentValue == null)
+        {
+            eventHandlers.put(eventType, functionName);
+            return;
+        }
 
-		// When adding the second value, convert to a List
+        // When adding the second value, convert to a List
 
-		if (currentValue instanceof String)
-		{
-			List list = new ArrayList();
-			list.add(currentValue);
-			list.add(functionName);
+        if (currentValue instanceof String)
+        {
+            List list = new ArrayList();
+            list.add(currentValue);
+            list.add(functionName);
 
-			eventHandlers.put(eventType, list);
-			return;
-		}
+            eventHandlers.put(eventType, list);
+            return;
+        }
 
-		// For the third and up, add the new function to the List
+        // For the third and up, add the new function to the List
 
-		List list = (List) currentValue;
-		list.add(functionName);
-	}
+        List list = (List) currentValue;
+        list.add(functionName);
+    }
 
-	/**
-	 *  Renders the link.  This is somewhat complicated, because a
-	 *  nested {@link IMarkupWriter response writer} is used
-	 *  to render the contents of the link, before the link
-	 *  itself actually renders.
-	 *
-	 *  <p>This is to support components such as {@link Rollover}, which
-	 *  must specify some attributes of the service link 
-	 *  as they render in order to
-	 *  create some client-side JavaScript that works.  Thus the
-	 *  service link renders its wrapped components into
-	 *  a temporary buffer, then renders its own HTML.
-	 *
-	 */
+    /**
+     *  Renders the link.  This is somewhat complicated, because a
+     *  nested {@link IMarkupWriter response writer} is used
+     *  to render the contents of the link, before the link
+     *  itself actually renders.
+     *
+     *  <p>This is to support components such as {@link Rollover}, which
+     *  must specify some attributes of the service link 
+     *  as they render in order to
+     *  create some client-side JavaScript that works.  Thus the
+     *  service link renders its wrapped components into
+     *  a temporary buffer, then renders its own HTML.
+     *
+     **/
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-	{
-		IMarkupWriter wrappedWriter;
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        IMarkupWriter wrappedWriter;
 
-		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException(Tapestry.getString("AbstractServiceLink.no-nesting"), this);
+        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
+            throw new RequestCycleException(
+                Tapestry.getString("AbstractServiceLink.no-nesting"),
+                this);
 
-		try
-		{
-			rendering = true;
+        try
+        {
+            rendering = true;
 
-			body = Body.get(cycle);
+            body = Body.get(cycle);
 
-			cycle.setAttribute(ATTRIBUTE_NAME, this);
+            cycle.setAttribute(ATTRIBUTE_NAME, this);
 
-			setup(cycle);
+            setup(cycle);
 
-			boolean disabled = isDisabled();
+            boolean disabled = isDisabled();
 
-			if (!disabled)
-			{
-				writer.begin("a");
-				writer.attribute("href", getURL(cycle));
+            if (!disabled)
+            {
+                writer.begin("a");
+                writer.attribute("href", getURL(cycle));
 
-				// Allow the wrapped components a chance to render.
-				// Along the way, they may interact with this component
-				// and cause the name variable to get set.
+                // Allow the wrapped components a chance to render.
+                // Along the way, they may interact with this component
+                // and cause the name variable to get set.
 
-				wrappedWriter = writer.getNestedWriter();
-			}
-			else
-				wrappedWriter = writer;
+                wrappedWriter = writer.getNestedWriter();
+            }
+            else
+                wrappedWriter = writer;
 
-			renderWrapped(wrappedWriter, cycle);
+            renderWrapped(wrappedWriter, cycle);
 
-			if (!disabled)
-			{
-				// Write any attributes specified by wrapped components.
+            if (!disabled)
+            {
+                // Write any attributes specified by wrapped components.
 
-				writeEventHandlers(writer);
+                writeEventHandlers(writer);
 
-				// Generate additional attributes from informal parameters.
+                // Generate additional attributes from informal parameters.
 
-				generateAttributes(writer, cycle);
+                generateAttributes(writer, cycle);
 
-				// Dump in HTML provided by wrapped components
+                // Dump in HTML provided by wrapped components
 
-				wrappedWriter.close();
+                wrappedWriter.close();
 
-				// Close the <a> tag
+                // Close the <a> tag
 
-				writer.end();
-			}
+                writer.end();
+            }
 
-			cycle.removeAttribute(ATTRIBUTE_NAME);
-		}
-		finally
-		{
-			rendering = false;
-			eventHandlers = null;
-			body = null;
-		}
-	}
+            cycle.removeAttribute(ATTRIBUTE_NAME);
+        }
+        finally
+        {
+            rendering = false;
+            eventHandlers = null;
+            body = null;
+        }
+    }
 
-	protected void writeEventHandlers(IMarkupWriter writer) throws RequestCycleException
-	{
-		String name = null;
+    protected void writeEventHandlers(IMarkupWriter writer)
+        throws RequestCycleException
+    {
+        String name = null;
 
-		if (eventHandlers == null)
-			return;
+        if (eventHandlers == null)
+            return;
 
-		Iterator i = eventHandlers.entrySet().iterator();
+        Iterator i = eventHandlers.entrySet().iterator();
 
-		while (i.hasNext())
-		{
-			Map.Entry entry = (Map.Entry) i.next();
-			ServiceLinkEventType type = (ServiceLinkEventType) entry.getKey();
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+            ServiceLinkEventType type = (ServiceLinkEventType) entry.getKey();
 
-			name = writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
-		}
+            name =
+                writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
+        }
 
-	}
+    }
 
-	protected String writeEventHandler(
-		IMarkupWriter writer,
-		String name,
-		String attributeName,
-		Object value)
-		throws RequestCycleException
-	{
-		String wrapperFunctionName;
+    protected String writeEventHandler(
+        IMarkupWriter writer,
+        String name,
+        String attributeName,
+        Object value)
+        throws RequestCycleException
+    {
+        String wrapperFunctionName;
 
-		if (value instanceof String)
-		{
-			wrapperFunctionName = (String) value;
-		}
-		else
-		{
-			if (body == null)
-				throw new RequestCycleException(
-					Tapestry.getString("AbstractServiceLink.events-need-body"),
-					this,
-					null);
+        if (value instanceof String)
+        {
+            wrapperFunctionName = (String) value;
+        }
+        else
+        {
+            if (body == null)
+                throw new RequestCycleException(
+                    Tapestry.getString("AbstractServiceLink.events-need-body"),
+                    this,
+                    null);
 
-			if (name == null)
-				name = "Link" + body.getUniqueId();
+            if (name == null)
+                name = "Link" + body.getUniqueId();
 
-			wrapperFunctionName = attributeName + "_" + name;
+            wrapperFunctionName = attributeName + "_" + name;
 
-			StringBuffer buffer = new StringBuffer();
+            StringBuffer buffer = new StringBuffer();
 
-			buffer.append("function ");
-			buffer.append(wrapperFunctionName);
-			buffer.append(" ()\n{\n");
+            buffer.append("function ");
+            buffer.append(wrapperFunctionName);
+            buffer.append(" ()\n{\n");
 
-			Iterator i = ((List) value).iterator();
-			while (i.hasNext())
-			{
-				String functionName = (String) i.next();
-				buffer.append("  ");
-				buffer.append(functionName);
-				buffer.append("();\n");
-			}
+            Iterator i = ((List) value).iterator();
+            while (i.hasNext())
+            {
+                String functionName = (String) i.next();
+                buffer.append("  ");
+                buffer.append(functionName);
+                buffer.append("();\n");
+            }
 
-			buffer.append("}\n\n");
+            buffer.append("}\n\n");
 
-			body.addOtherScript(buffer.toString());
-		}
+            body.addOtherScript(buffer.toString());
+        }
 
-		writer.attribute(attributeName, "javascript:" + wrapperFunctionName + "();");
+        writer.attribute(attributeName, "javascript:" + wrapperFunctionName + "();");
 
-		return name;
+        return name;
 
-	}
+    }
 
-	/**
-	*  Invoked from {@link #render(IMarkupWriter, IRequestCycle)}, 
-	*  this is responsible for
-	*  setting the disabled property.
-	*
-	*/
+    /**
+     *  Invoked from {@link #render(IMarkupWriter, IRequestCycle)}, 
+     *  this is responsible for
+     *  setting the disabled property.
+     *
+     **/
 
-	protected void setup(IRequestCycle cycle)
-	{
-		if (disabledBinding == null)
-			disabled = false;
-		else
-			disabled = disabledBinding.getBoolean();
-	}
+    protected void setup(IRequestCycle cycle)
+    {
+        if (disabledBinding == null)
+            disabled = false;
+        else
+            disabled = disabledBinding.getBoolean();
+    }
 
-    
     /**
      * 
      *  Implemented by subclasses to provide the URL for the HTML HREF attribute.
