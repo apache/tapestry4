@@ -278,6 +278,9 @@ NextGen) be released as version number 3.0.
       Shell component should allow informal parameters
     </action>
     
+    <action type="update" dev="HLS">
+      Added a clearErrors() method to IValidationDelegate.
+    </action>
   </release>	
    
  	<release version="3.0" date="Apr 18 2004">

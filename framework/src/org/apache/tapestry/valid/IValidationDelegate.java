@@ -82,9 +82,7 @@ import org.apache.tapestry.form.IFormComponent;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
- *
- **/
+ */
 
 public interface IValidationDelegate
 {
@@ -153,6 +151,21 @@ public interface IValidationDelegate
      **/
 
     public void clear();
+    
+    /**
+     * Clears all errors, but maintains user input. This is useful when a form
+     * has been submitted for a semantic other than "process this data". A common example
+     * of this is a dependent drop down list; selecting an option in one drop down list
+     * forces a submit to repopulate the options in a second, dependent drop down list.
+     * 
+     * <p>
+     * In these cases, the user input provided in the request is maintained, but any
+     * errors should be cleared out (to prevent unwanted error messages and decorations).
+     * 
+     * @since 3.0.1
+     */
+    
+    public void clearErrors();
 
     /**
      *  Records the user's input for the current form component.  Input should
