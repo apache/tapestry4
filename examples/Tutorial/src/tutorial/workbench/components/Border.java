@@ -28,6 +28,8 @@ package tutorial.workbench.components;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
+import com.primix.tapestry.util.StringSplitter;
+import java.util.ResourceBundle;
 import tutorial.workbench.*;
 
 /**
@@ -47,13 +49,35 @@ public class Border extends BaseComponent implements PageRenderListener
 
 	private String pageName;
 	private String activePageName;
+	private boolean currentPageIsActivePage;
 
-	private static final String[] pageTabNames =
-		{ "Home", "Localization", "Fields", "Palette" };
+	private ResourceBundle stringsBundle;
+
+	/**
+	 * Array of page names, read from the Strings file; this is the same
+	 * regardless of localization, so it is static (shared by all).
+	 * 
+	 **/
+
+	private static String[] tabOrder;
 
 	public void finishLoad()
 	{
 		super.finishLoad();
+
+		stringsBundle =
+			ResourceBundle.getBundle(
+				"tutorial.workbench.components.BorderStrings",
+				getPage().getLocale());
+
+		if (tabOrder == null)
+		{
+			String tabOrderValue = stringsBundle.getString("tabOrder");
+
+			StringSplitter splitter = new StringSplitter(' ');
+
+			tabOrder = splitter.splitToArray(tabOrderValue);
+		}
 
 		page.addPageRenderListener(this);
 	}
@@ -79,17 +103,48 @@ public class Border extends BaseComponent implements PageRenderListener
 
 	public String[] getPageTabNames()
 	{
-		return pageTabNames;
+		return tabOrder;
 	}
 
 	public void setPageName(String value)
 	{
 		pageName = value;
+
+		currentPageIsActivePage = pageName.equals(activePageName);
 	}
 
 	public String getPageName()
 	{
 		return pageName;
+	}
+
+	public String getPageTitle()
+	{
+		// Need to check for synchronization issues, but I think
+		// ResourceBundle is safe.
+		
+		return stringsBundle.getString(pageName);
+	}
+
+	public IAsset getLeftTabAsset()
+	{
+		String name = currentPageIsActivePage ? "activeLeft" : "inactiveLeft";
+
+		return getAsset(name);
+	}
+
+	public IAsset getMidTabAsset()
+	{
+		String name = currentPageIsActivePage ? "activeMid" : "inactiveMid";
+
+		return getAsset(name);
+	}
+
+	public IAsset getRightTabAsset()
+	{
+		String name = currentPageIsActivePage ? "activeRight" : "inactiveRight";
+
+		return getAsset(name);
 	}
 
 	public void selectPage(String[] context, IRequestCycle cycle)
@@ -101,30 +156,6 @@ public class Border extends BaseComponent implements PageRenderListener
 		visit.setActiveTabName(newPageName);
 
 		cycle.setPage(newPageName);
-	}
-
-	public IAsset getPageImage()
-	{
-		String suffix;
-
-		if (pageName.equals(activePageName))
-			suffix = "-active";
-		else
-			suffix = "-inactive";
-
-		return getAsset(pageName + suffix);
-	}
-
-	public IAsset getPageFocusImage()
-	{
-		String suffix;
-
-		if (pageName.equals(activePageName))
-			suffix = "-focus";
-		else
-			suffix = "-inactive-focus";
-
-		return getAsset(pageName + suffix);
 	}
 
 	/**

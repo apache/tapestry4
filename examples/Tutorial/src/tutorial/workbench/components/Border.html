@@ -166,15 +166,32 @@ TABLE.form
   font-size: 9pt;
 }
 
+A.nav
+{
+  font-family: Trebuchet MS,sans-serif;
+  text-decoration:none;
+  font-size: 10pt;
+  font-weight: bold;
+  color: black;
+}
+
+A.nav:hover
+{
+  text-decoration:underline;
+}
 
 
 -->
 </style>
 <body jwcid="body">
 
-<table class="tabs" cellspacing=0>
+<table class="tabs" cellspacing=0 border=0>
 <tr>
-<td jwcid="eachPage"><a jwcid="pageLink"><img jwcid="pageRollover"/></a></td>
+<span jwcid="eachPage">
+<td><img jwcid="leftTabImage" width=2 height=20/></td>
+<td jwcid="tabCell" align=middle><a class="nav" jwcid="pageLink"><span jwcid="insertPageTitle">Page Title</span></a></td>
+<td><img jwcid="rightTabImage" width=13 height=20/></td>
+</span>
 </tr>
 </table>
 
