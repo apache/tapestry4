@@ -1,0 +1,29 @@
+<form jwcid="intForm@Form" delegate="ognl:beans.delegate">
+intValue=<span jwcid="@Insert" value="ognl:intValue"/>|
+<input jwcid="intField@Contrib:NumericField" displayName="intValue" type="int" value="ognl:intValue"/>
+</form>
+
+<form jwcid="floatForm@Form" delegate="ognl:beans.delegate">
+floatValue=<span jwcid="@Insert" value="ognl:floatValue"/>|
+<input jwcid="floatField@Contrib:NumericField" displayName="floatValue" type="float" value="ognl:floatValue"/>
+</form>
+
+<form jwcid="bigIntegerForm@Form" delegate="ognl:beans.delegate">
+bigIntegerValue=<span jwcid="@Insert" value="ognl:bigIntegerValue"/>|
+<input jwcid="bigIntegerField@Contrib:NumericField" displayName="bigIntegerValue" type="java.math.BigInteger" value="ognl:bigIntegerValue"/>
+</form>
+
+<form jwcid="bigDecimalForm@Form" delegate="ognl:beans.delegate">
+bigDecimalValue=<span jwcid="@Insert" value="ognl:bigDecimalValue"/>|
+<input jwcid="bigDecimalField@Contrib:NumericField" displayName="bigDecimalValue" type="java.math.BigDecimal" value="ognl:bigDecimalValue"/>
+</form>
+
+<form jwcid="stringForm@Form" delegate="ognl:beans.delegate">
+stringValue=<span jwcid="@Insert" value="ognl:stringValue"/>|
+<input jwcid="stringField@Contrib:ValidatingTextField" displayName="stringValue" text="ognl:stringValue"/>
+</form>
+
+<form jwcid="dateForm@Form" delegate="ognl:beans.delegate">
+dateValue=<span jwcid="@Insert" value="ognl:dateValue" format='ognl:new java.text.SimpleDateFormat("yyyy-MM-dd")'/>|
+<input jwcid="dateField@Contrib:DateField" displayName="dateValue" date="ognl:dateValue"/>
+</form>

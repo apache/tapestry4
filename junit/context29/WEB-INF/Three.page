@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Home.page,v 1.1 2003/06/29 18:23:26 mindbridge Exp $ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<page-specification>
+    <property-specification name="intValue" type="int" initial-value="0"/>
+    <property-specification name="floatValue" type="float" initial-value="0.0"/>
+    <property-specification name="bigIntegerValue" type="java.math.BigInteger"/>
+    <property-specification name="bigDecimalValue" type="java.math.BigDecimal"/>
+    <property-specification name="stringValue" type="java.lang.String"/>
+    <property-specification name="dateValue" type="java.util.Date"/>
+    
+    <bean name="delegate" class="org.apache.tapestry.valid.ValidationDelegate"/>
+    
+</page-specification>

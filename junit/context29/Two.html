@@ -1,0 +1,7 @@
+two
+<form jwcid="@Form" delegate="ognl:beans.delegate" listener="ognl:listeners.submit">
+<input type="text" jwcid="field"/>
+<span jwcid="@Conditional" condition="ognl:flag">
+<span jwcid="@FieldLabel" field="ognl:components.field2"/>: <input type="text" jwcid="field2"/>
+</span>
+</form>
