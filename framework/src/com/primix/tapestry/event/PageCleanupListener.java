@@ -28,6 +28,8 @@ package com.primix.tapestry.event;
 
 import java.util.EventListener;
 
+import com.primix.tapestry.IEngine;
+
 /**
  *  Listener interface for objects that need to know when the engine
  *  containing the page is discarded.  This is typically relevant

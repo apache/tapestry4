@@ -28,9 +28,13 @@ package com.primix.tapestry.form;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.html.*;
+
 import java.util.*;
 
 // Appease Javadoc
+
+import javax.servlet.http.HttpSession;
+
 import com.primix.tapestry.components.*;
 
 /**

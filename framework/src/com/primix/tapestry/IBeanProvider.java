@@ -28,6 +28,8 @@ package com.primix.tapestry;
 
 import java.util.*;
 
+import com.primix.tapestry.spec.ComponentSpecification;
+
 /**
  *  An object that provides a component with access to helper beans.
  *  Helper beans are JavaBeans associated with a page or component

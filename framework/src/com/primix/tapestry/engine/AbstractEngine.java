@@ -74,6 +74,7 @@ import com.primix.tapestry.StaleLinkException;
 import com.primix.tapestry.StaleSessionException;
 import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.asset.AssetService;
+import com.primix.tapestry.asset.ContextAsset;
 import com.primix.tapestry.listener.ListenerMap;
 import com.primix.tapestry.pageload.PageSource;
 import com.primix.tapestry.spec.ApplicationSpecification;

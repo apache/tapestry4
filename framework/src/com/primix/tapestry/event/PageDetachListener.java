@@ -28,6 +28,8 @@ package com.primix.tapestry.event;
 
 import java.util.EventListener;
 
+import com.primix.tapestry.IPage;
+
 /**
  *  An interface for objects that want to know when the end of the
  *  request cycle occurs, so that any resources that should be limited
