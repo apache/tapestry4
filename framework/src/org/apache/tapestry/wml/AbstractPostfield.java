@@ -63,7 +63,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.AbstractFormComponent;
 
-
 /**
  *  A base class for building components that correspond to WML postfield elements.
  *  All such components must be wrapped (directly or indirectly) by
@@ -79,19 +78,23 @@ public abstract class AbstractPostfield extends AbstractFormComponent
 {
 
     /**
-	 *  Returns the {@link org.apache.tapestry.wml.Go} wrapping this component.
-	 *
-	 *  @throws  ApplicationRuntimeException if the component is not wrapped by a
-	 * {@link org.apache.tapestry.wml.Go}.
-	 *
-	 **/
+     *  Returns the {@link org.apache.tapestry.wml.Go} wrapping this component.
+     *
+     *  @throws  ApplicationRuntimeException if the component is not wrapped by a
+     * {@link org.apache.tapestry.wml.Go}.
+     *
+     **/
 
     public IForm getForm(IRequestCycle cycle)
     {
         IForm result = Go.get(cycle);
 
         if (result == null)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("Postfield.must-be-contained-by-go"), this);
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("Postfield.must-be-contained-by-go"),
+                this,
+                null,
+                null);
 
         setForm(result);
 

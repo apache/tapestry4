@@ -316,7 +316,9 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         if (form == null)
             throw new ApplicationRuntimeException(
                 "Palette component must be wrapped by a Form.",
-                this);
+                this,
+                null,
+                null);
 
         setForm(form);
 
@@ -394,7 +396,9 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         if (body == null)
             throw new ApplicationRuntimeException(
                 "Palette component must be wrapped by a Body.",
-                this);
+                this,
+                null,
+                null);
 
         setImage(body, cycle, "selectImage", getSelectImage());
         setImage(body, cycle, "selectDisabledImage", getSelectDisabledImage());

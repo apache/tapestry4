@@ -163,7 +163,9 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         if (body == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("AbstractLinkComponent.events-need-body"),
-                this);
+                this,
+                null,
+                null);
 
         Iterator i = _eventHandlers.entrySet().iterator();
 
@@ -259,12 +261,12 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         return null;
     }
 
-	/**
-	 * Sets the renderer parameter property to its default value
-	 * {@link DefaultLinkRenderer#SHARED_INSTANCE}.
-	 * 
-	 * @since 3.0
-	 */
+    /**
+     * Sets the renderer parameter property to its default value
+     * {@link DefaultLinkRenderer#SHARED_INSTANCE}.
+     * 
+     * @since 3.0
+     */
     protected void finishLoad()
     {
         setRenderer(DefaultLinkRenderer.SHARED_INSTANCE);

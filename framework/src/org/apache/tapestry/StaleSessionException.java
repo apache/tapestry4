@@ -81,7 +81,7 @@ public class StaleSessionException extends ApplicationRuntimeException
 
     public StaleSessionException(String message, IPage page)
     {
-        super(message, page);
+        super(message, page, null, null);
         _page = page;
 
         if (page != null)

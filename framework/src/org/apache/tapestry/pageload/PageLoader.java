@@ -582,6 +582,7 @@ public class PageLoader implements IPageLoader
                     container.getExtendedId(),
                     ex.getMessage()),
                 container,
+                null,
                 ex);
         }
 
@@ -674,7 +675,9 @@ public class PageLoader implements IPageLoader
         if (result instanceof IPage)
             throw new ApplicationRuntimeException(
                 Tapestry.format("PageLoader.page-not-allowed", result.getExtendedId()),
-                result);
+                result,
+                null,
+                null);
 
         result.setNamespace(namespace);
         result.setSpecification(spec);

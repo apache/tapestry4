@@ -1,0 +1,5 @@
+<!-- $Id$ -->
+
+<!-- Just to keep Maven from picking up the maven.xml in the root directory. -->
+	
+<project default="jar"/>

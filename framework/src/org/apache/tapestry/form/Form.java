@@ -319,7 +319,9 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("Form.forms-may-not-nest"),
-                this);
+                this,
+                null,
+                null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
     }
@@ -514,7 +516,9 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         if (body == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("Form.needs-body-for-event-handlers"),
-                this);
+                this,
+                null,
+                null);
 
         StringBuffer buffer = new StringBuffer();
 
@@ -777,7 +781,9 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
                     getExtendedId(),
                     _encodingType,
                     encodingType),
-                this);
+                this,
+                null,
+                null);
 
         _encodingType = encodingType;
     }

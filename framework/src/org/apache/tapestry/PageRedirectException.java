@@ -70,17 +70,12 @@ public class PageRedirectException extends ApplicationRuntimeException
 
     public PageRedirectException(String targetPageName)
     {
-        this(targetPageName, null, targetPageName);
+        this(targetPageName, null, null, targetPageName);
     }
 
     public PageRedirectException(IPage page)
     {
         this(page.getPageName());
-    }
-
-    public PageRedirectException(String message, IComponent component, String targetPageName)
-    {
-        this(message, component, null, targetPageName);
     }
 
     public PageRedirectException(
@@ -92,11 +87,6 @@ public class PageRedirectException extends ApplicationRuntimeException
         super(message, component, null, rootCause);
 
         _targetPageName = targetPageName;
-    }
-
-    public PageRedirectException(String message, String targetPageName)
-    {
-        this(message, null, targetPageName);
     }
 
     public String getTargetPageName()

@@ -334,13 +334,15 @@ public abstract class BaseValidator implements IValidator
 
         IScript script = source.getScript(location);
 
-		Body body = Body.get(cycle);
+        Body body = Body.get(cycle);
 
-		if (body == null)
-			throw new ApplicationRuntimeException(
-				Tapestry.getMessage("ValidField.must-be-contained-by-body"),
-				field);
-				
+        if (body == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("ValidField.must-be-contained-by-body"),
+                field,
+                null,
+                null);
+
         script.execute(cycle, body, finalSymbols);
 
         String functionName = (String) finalSymbols.get(FUNCTION_SYMBOL);

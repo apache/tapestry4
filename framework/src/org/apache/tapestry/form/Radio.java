@@ -94,7 +94,9 @@ public abstract class Radio extends AbstractComponent
         if (group == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("Radio.must-be-contained-by-group"),
-                this);
+                this,
+                null,
+                null);
 
         // The group determines rewinding from the form.
 

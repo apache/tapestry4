@@ -73,11 +73,6 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
     private transient ILocation _location;
     private transient Object _component;
 
-    public ApplicationRuntimeException(Object component, Throwable rootCause)
-    {
-        this(rootCause.getMessage(), component, null, rootCause);
-    }
-
     public ApplicationRuntimeException(Throwable rootCause)
     {
         this(rootCause.getMessage(), rootCause);
@@ -91,16 +86,6 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
     public ApplicationRuntimeException(String message, Throwable rootCause)
     {
         this(message, null, null, rootCause);
-    }
-
-    public ApplicationRuntimeException(String message, IComponent component)
-    {
-        this(message, component, null, null);
-    }
-
-    public ApplicationRuntimeException(String message, Object component, Throwable ex)
-    {
-        this(message, component, null, ex);
     }
 
     public ApplicationRuntimeException(

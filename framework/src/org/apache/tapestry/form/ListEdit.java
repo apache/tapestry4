@@ -173,11 +173,11 @@ public abstract class ListEdit extends AbstractFormComponent
             throw new ApplicationRuntimeException(
                 Tapestry.format("ListEdit.unable-to-convert-value", value),
                 this,
+                null,
                 ex);
         }
 
-
-		form.addHiddenValue(name, externalValue);
+        form.addHiddenValue(name, externalValue);
     }
 
     private Object convertValue(String value)
@@ -191,6 +191,7 @@ public abstract class ListEdit extends AbstractFormComponent
             throw new ApplicationRuntimeException(
                 Tapestry.format("ListEdit.unable-to-convert-string", value),
                 this,
+                null,
                 ex);
         }
     }
@@ -215,7 +216,7 @@ public abstract class ListEdit extends AbstractFormComponent
     public abstract IBinding getIndexBinding();
 
     /** @since 3.0 **/
-    
+
     public boolean isDisabled()
     {
         return false;

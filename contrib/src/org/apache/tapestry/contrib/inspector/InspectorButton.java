@@ -133,14 +133,16 @@ public class InspectorButton extends BaseComponent implements IDirect
 
         symbols.put("URL", link.getURL());
 
-		Body body = Body.get(cycle);
+        Body body = Body.get(cycle);
 
-		 if (body == null)
-			 throw new ApplicationRuntimeException(
-				 Tapestry.getMessage("InspectorButton.must-be-contained-by-body"),
-				 this);
+        if (body == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("InspectorButton.must-be-contained-by-body"),
+                this,
+                null,
+                null);
 
-		script.execute(cycle, body, symbols);
+        script.execute(cycle, body, symbols);
 
         // Now, go render the rest from the template.
 

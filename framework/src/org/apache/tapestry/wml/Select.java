@@ -90,50 +90,55 @@ public abstract class Select extends AbstractComponent
      * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
      **/
 
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-	{
-		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new ApplicationRuntimeException(Tapestry.getMessage("Select.may-not-nest"), this);
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("Select.may-not-nest"),
+                this,
+                null,
+                null);
 
-		cycle.setAttribute(ATTRIBUTE_NAME, this);
+        cycle.setAttribute(ATTRIBUTE_NAME, this);
 
-		boolean render = !cycle.isRewinding();
+        boolean render = !cycle.isRewinding();
 
-		if (render) {
-			writer.begin("select");
+        if (render)
+        {
+            writer.begin("select");
 
-			writer.attribute("name", getName());
+            writer.attribute("name", getName());
 
             String value = getValue();
-			if (StringUtils.isNotEmpty(value))
-				writer.attribute("value", value);
+            if (StringUtils.isNotEmpty(value))
+                writer.attribute("value", value);
 
             String title = getTitle();
-			if (StringUtils.isNotEmpty(title))
-				writer.attribute("title", title);
+            if (StringUtils.isNotEmpty(title))
+                writer.attribute("title", title);
 
-			boolean multiple = isMultiple();
+            boolean multiple = isMultiple();
             if (multiple)
-				writer.attribute("multiple", multiple);
+                writer.attribute("multiple", multiple);
 
-			renderInformalParameters(writer, cycle);
-		}
-	
+            renderInformalParameters(writer, cycle);
+        }
+
         renderBody(writer, cycle);
 
         if (render)
-	    {
+        {
             writer.end();
         }
 
         cycle.removeAttribute(ATTRIBUTE_NAME);
-	}
+    }
 
     public abstract boolean isMultiple();
 
-	public abstract String getName();
+    public abstract String getName();
 
-	public abstract String getValue();
+    public abstract String getValue();
 
-	public abstract String getTitle();
+    public abstract String getTitle();
 }

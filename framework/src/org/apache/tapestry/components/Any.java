@@ -80,7 +80,9 @@ public abstract class Any extends AbstractComponent
         if (element == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("Any.element-not-defined"),
-                this);
+                this,
+                null,
+                null);
 
         if (!cycle.isRewinding())
         {

@@ -228,7 +228,8 @@ public class ParameterManager
                         propertyName),
                     _component,
                     name,
-                    propertyName);
+                    propertyName,
+                    null);
             }
 
             if (!propertyInfo.isReadWrite())
@@ -240,7 +241,8 @@ public class ParameterManager
                         propertyName),
                     _component,
                     name,
-                    propertyName);
+                    propertyName,
+                    null);
             }
 
             // Check if the parameter type matches the property type
@@ -257,7 +259,8 @@ public class ParameterManager
                         _component.getExtendedId()),
                     _component,
                     name,
-                    propertyName);
+                    propertyName,
+                    null);
             }
 
             if (!propertyType.equals(parameterType))
@@ -272,7 +275,8 @@ public class ParameterManager
                             propertyType.toString()}),
                     _component,
                     name,
-                    propertyName);
+                    propertyName,
+                    null);
             }
 
             // Here's where we will sniff it for type, for the moment

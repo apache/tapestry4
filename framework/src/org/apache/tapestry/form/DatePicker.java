@@ -151,7 +151,9 @@ public abstract class DatePicker extends AbstractFormComponent
             if (body == null)
                 throw new ApplicationRuntimeException(
                     Tapestry.format("must-be-contained-by-body", "DatePicker"),
-                    this);
+                    this,
+                    null,
+                    null);
 
             Locale locale = getPage().getLocale();
             DateFormatSymbols dfs = new DateFormatSymbols(locale);

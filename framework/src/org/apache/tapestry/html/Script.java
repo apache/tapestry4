@@ -163,7 +163,7 @@ public abstract class Script extends AbstractComponent
         }
         catch (RuntimeException ex)
         {
-            throw new ApplicationRuntimeException(this, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), this, null, ex);
         }
 
     }
@@ -177,7 +177,9 @@ public abstract class Script extends AbstractComponent
             if (body == null)
                 throw new ApplicationRuntimeException(
                     Tapestry.getMessage("Script.must-be-contained-by-body"),
-                    this);
+                    this,
+                    null,
+                    null);
 
             _symbols = getInputSymbols();
 

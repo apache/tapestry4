@@ -2,7 +2,7 @@
 <project>
   <pomVersion>3</pomVersion>
   <name>Tapestry Web Application Framework</name>
-  <id>tapestry</id>
+  <id>tapestry-main</id>
   <groupId>jakarta-tapestry</groupId>
   <currentVersion>3.0-beta-3</currentVersion>
   <organization>
@@ -147,12 +147,18 @@
       <url>http://jakarta.apache.org/oro/</url>
     </dependency>
     
+    <!--
+    	
+    	Work around Maven beta-10 problems with inherited
+    	dependencies in multiproject.
+    	
     <dependency>
     	<groupId>jboss</groupId>
     	<artifactId>javassist</artifactId>	
     	<version>2.5.1</version>
     </dependency>
-
+		-->
+		
     <dependency>
       <id>bsf</id>
       <version>2.3.0</version>

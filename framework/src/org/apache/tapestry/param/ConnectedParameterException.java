@@ -77,15 +77,6 @@ public class ConnectedParameterException extends ApplicationRuntimeException
         String message,
         Object component,
         String parameterName,
-        String propertyName)
-    {
-        this(message, component, parameterName, propertyName, null);
-    }
-
-    public ConnectedParameterException(
-        String message,
-        Object component,
-        String parameterName,
         String propertyName,
         Throwable rootCause)
     {

@@ -1268,6 +1268,7 @@ public final class Tapestry
         return new BindingException(
             format("required-parameter", parameterName, component.getExtendedId()),
             component,
+            null,
             component.getBinding(parameterName),
             null);
     }
@@ -1280,7 +1281,9 @@ public final class Tapestry
     {
         return new ApplicationRuntimeException(
             format("render-only-property", propertyName, component.getExtendedId()),
-            component);
+            component,
+            null,
+            null);
     }
 
     /**
