@@ -44,14 +44,16 @@ import net.sf.tapestry.html.BasePage;
  */
 public class Home extends BasePage
 {
-
+    // Return the model of the table
 	public ITableModel getTableModel()
 	{
-		// Generate the list of data and use a simple data model
+		// Generate the list of data
 		Locale[] arrLocales = Locale.getAvailableLocales();
-        ITableDataModel objDataModel = new SimpleListTableDataModel(arrLocales);
-
-        // Generate a simple column model that uses OGNL to get the column data
+        
+        // Generate a simple sorting column model that uses OGNL to get the column data.
+        // The columns are defined using pairs of strings.
+        // The first string in the pair is the column name.
+        // The second is an OGNL expression used to obtain the column value.
         ITableColumnModel objColumnModel = 
             new ExpressionTableColumnModel(new String[] {
                 "Locale", "toString()",
@@ -62,7 +64,7 @@ public class Home extends BasePage
                 "ISO Country", "ISO3Country"
             }, true);
 
-		// Create the model and return it
-		return new SimpleTableModel(objDataModel, objColumnModel);
+		// Create the table model and return it
+		return new SimpleTableModel(arrLocales, objColumnModel);
 	}
 }
