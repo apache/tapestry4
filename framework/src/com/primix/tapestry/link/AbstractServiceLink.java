@@ -1,13 +1,11 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2002 by Howard Lewis Ship 
  *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
  * mailto:hship@users.sf.net
- *
+ * 
  * This library is free software.
- *
+ * 
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -18,165 +16,47 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
-
 package com.primix.tapestry.link;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
-import java.util.*;
-import javax.servlet.http.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-/**
- *  Abstract super-class for components that generate some form of
- *  &lt;a&gt; hyperlink using an {@link IEngineService}.
- *  Supplies support for the following parameters:
- *
- *  <ul>
- *  <li>scheme</li>
- *  <li>disabled</li>
- *  <li>anchor</li>
- * </ul>
- *
- * <p>Subclasses usually need only implement {@link #getServiceName(IRequestCycle)}
- * and {@link #getContext(IRequestCycle)}.
- *                       
- * @author Howard Ship
- * @version $Id$
- */
+import com.primix.tapestry.AbstractComponent;
+import com.primix.tapestry.IBinding;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResponseWriter;
+import com.primix.tapestry.RenderOnlyPropertyException;
+import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.components.IServiceLink;
+import com.primix.tapestry.components.ServiceLinkEventType;
+import com.primix.tapestry.html.Body;
 
 public abstract class AbstractServiceLink extends AbstractComponent implements IServiceLink
 {
-	private IBinding disabledBinding;
-	private boolean staticDisabled;
-	private boolean disabledValue;
+	protected IBinding disabledBinding;
+	protected boolean disabled;
+	protected boolean rendering;
 
-	private boolean disabled;
+	protected Body body;
 
-	private IBinding anchorBinding;
-	private String anchorValue;
+	protected static final int MAP_SIZE = 3;
 
-	private IBinding schemeBinding;
-	private String schemeValue;
-
-	private IBinding portBinding;
-	private int portValue;
-
-	private boolean rendering;
-
-	private Body body;
-
-	private static final int MAP_SIZE = 3;
-
-	private Map eventHandlers;
-
-	/**
-	*  Invoked by {@link #render(IResponseWriter, IRequestCycle)} if the
-	*  component is enabled.  The default implementation returns null; other
-	*  implementations can provide appropriate parameters as needed.
-	*  
-	*/
-
-	protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
-	{
-		return null;
-	}
-
-	protected String buildURL(IRequestCycle cycle, String[] context) throws RequestCycleException
-	{
-		String anchor = null;
-		String scheme = null;
-		int port = 0;
-		String URL = null;
-
-		String serviceName = getServiceName(cycle);
-		IEngineService service = cycle.getEngine().getService(serviceName);
-
-		if (service == null)
-			throw new RequestCycleException(
-				Tapestry.getString("AbstractServiceLink.missing-service", serviceName),
-				this);
-
-		Gesture g = service.buildGesture(cycle, this, context);
-
-		// Now, dress up the URL with scheme, server port and anchor,
-		// as necessary.
-
-		if (schemeValue != null)
-			scheme = schemeValue;
-		else if (schemeBinding != null)
-			scheme = schemeBinding.getString();
-
-		if (portValue != 0)
-			port = portValue;
-		else if (portBinding != null)
-			port = portBinding.getInt();
-
-		if (scheme == null && port == 0)
-			URL = g.getURL();
-		else
-			URL = g.getAbsoluteURL(scheme, null, port);
-
-        if (anchorValue != null)
-            anchor = anchorValue;
-        else if (anchorBinding != null)
-            anchor = anchorBinding.getString();
-
-		if (anchor == null)
-			return URL;
-
-		return URL + "#" + anchor;
-	}
-
-	public IBinding getAnchorBinding()
-	{
-		return anchorBinding;
-	}
+	protected Map eventHandlers;
 
 	public IBinding getDisabledBinding()
 	{
 		return disabledBinding;
 	}
-
-	public IBinding getSchemeBinding()
-	{
-		return schemeBinding;
-	}
-
-	public void setSchemeBinding(IBinding value)
-	{
-		schemeBinding = value;
-
-		if (value.isStatic())
-			schemeValue = value.getString();
-	}
-
-	public IBinding getPortBinding()
-	{
-		return portBinding;
-	}
-
-	public void setPortBinding(IBinding value)
-	{
-		portBinding = value;
-
-		if (value.isStatic())
-			portValue = value.getInt();
-	}
-
-	/**
-	*  Returns the service used to build URLs.
-	*
-	*  @see #buildURL(IRequestCycle, String[])
-	*
-	*/
-
-	protected abstract String getServiceName(IRequestCycle cycle);
 
 	/**
 	 *  Returns true if the link is disabled, false otherwise.  If not otherwise
@@ -194,39 +74,9 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
 		return disabled;
 	}
 
-	public void setAnchorBinding(IBinding value)
-	{
-		anchorBinding = value;
-
-		if (value.isStatic())
-			anchorValue = value.getString();
-	}
-
 	public void setDisabledBinding(IBinding value)
 	{
 		disabledBinding = value;
-
-		staticDisabled = value.isStatic();
-
-		if (staticDisabled)
-			disabledValue = value.getBoolean();
-	}
-
-	/**
-	*  Invoked from {@link #render(IResponseWriter, IRequestCycle)}, 
-	*  this is responsible for
-	*  setting the enabled property.
-	*
-	*/
-
-	protected void setup(IRequestCycle cycle)
-	{
-		if (staticDisabled)
-			disabled = disabledValue;
-		else if (disabledBinding == null)
-			disabled = false;
-		else
-			disabled = disabledBinding.getBoolean();
 	}
 
 	/**
@@ -306,11 +156,8 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
 
 			if (!disabled)
 			{
-				String[] context = getContext(cycle);
-				String href = buildURL(cycle, context);
-
 				writer.begin("a");
-				writer.attribute("href", href);
+				writer.attribute("href", getURL(cycle));
 
 				// Allow the wrapped components a chance to render.
 				// Along the way, they may interact with this component
@@ -352,7 +199,7 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
 		}
 	}
 
-	private void writeEventHandlers(IResponseWriter writer) throws RequestCycleException
+	protected void writeEventHandlers(IResponseWriter writer) throws RequestCycleException
 	{
 		String name = null;
 
@@ -371,7 +218,7 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
 
 	}
 
-	private String writeEventHandler(
+	protected String writeEventHandler(
 		IResponseWriter writer,
 		String name,
 		String attributeName,
@@ -422,4 +269,31 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
 		return name;
 
 	}
+
+	/**
+	*  Invoked from {@link #render(IResponseWriter, IRequestCycle)}, 
+	*  this is responsible for
+	*  setting the disabled property.
+	*
+	*/
+
+	protected void setup(IRequestCycle cycle)
+	{
+		if (disabledBinding == null)
+			disabled = false;
+		else
+			disabled = disabledBinding.getBoolean();
+	}
+
+    
+    /**
+     * 
+     *  Implemented by subclasses to provide the URL for the HTML HREF attribute.
+     * 
+     *  @since 2.0.2
+     * 
+     **/
+
+    protected abstract String getURL(IRequestCycle cycle)
+        throws RequestCycleException;
 }

@@ -34,6 +34,7 @@ import java.util.TreeSet;
 
 import com.primix.tapestry.IEngineService;
 import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.link.GenericLink;
 import com.primix.tapestry.util.BasePropertyHolder;
 
 /**
@@ -109,7 +110,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 		defaultComponentMap.put("InsertBlock", "/com/primix/tapestry/components/InsertBlock.jwc");
 		defaultComponentMap.put("ListEdit", "/com/primix/tapestry/form/ListEdit.jwc");
 		defaultComponentMap.put("Upload", "/com/primix/tapestry/form/Upload.jwc");
-
+        defaultComponentMap.put("GenericLink", "/com/primix/tapestry/link/GenericLink.jwc");
 	}
 
 	// Default page map shared by all applications.
@@ -203,6 +204,10 @@ public class ApplicationSpecification extends BasePropertyHolder
 	 * <tr>
 	 *		<td>/com/primix/tapestry/form/Form.jwc</td>
 	 *		<td>{@link Form}</td> </tr>
+     * <tr>
+     *         <td>/com/primix/tapestry/link/GenericLink.jwc</td>
+     *         <td>{@link GenericLink}</td>
+     * </tr>
 	 * <tr>
 	 *		<td>/com/primix/tapestry/form/Hidden.jwc</td>
 	 *		<td>{@link Hidden}</td>

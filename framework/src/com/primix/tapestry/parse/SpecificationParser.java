@@ -783,7 +783,7 @@ public class SpecificationParser extends AbstractDocumentParser
 	{
 		String attributeValue = getAttribute(node, attributeName);
 
-		return attributeValue.equals("yes");
+		return attributeValue != null && attributeValue.equals("yes");
 	}
 
 	private ApplicationSpecification convertApplicationSpecification_2(Document document)

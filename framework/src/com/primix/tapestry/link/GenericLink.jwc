@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.link.GenericLink">
+
+  <description>
+  Creates a link to an application specified URL.
+  </description>
+  
+  <parameter name="href" java-type="java.lang.String" required="yes"/>
+  <parameter name="disabled"/>
+  
+
+</specification>

@@ -119,9 +119,10 @@ import javax.servlet.http.*;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ *
+ **/
 
-public class Direct extends AbstractServiceLink implements IDirect
+public class Direct extends GestureLink implements IDirect
 {
 	private IBinding listenerBinding;
 	private IBinding contextBinding;
@@ -158,7 +159,7 @@ public class Direct extends AbstractServiceLink implements IDirect
 	 *  a true value.  If stateful is not bound, also returns
 	 *  the default, true.
 	 *
-	 */
+	 **/
 
 	public boolean isStateful()
 	{
@@ -173,9 +174,10 @@ public class Direct extends AbstractServiceLink implements IDirect
 
 	/**
 	 *  Returns {@link IEngineService#DIRECT_SERVICE}.
-	 */
+	 *
+     **/
 
-	protected String getServiceName(IRequestCycle cycle)
+	protected String getServiceName()
 	{
 		return IEngineService.DIRECT_SERVICE;
 	}
@@ -190,7 +192,7 @@ public class Direct extends AbstractServiceLink implements IDirect
 	 *  This is used by the {@link Direct} and {@link Service}
 	 *  components.
 	 *
-	 */
+	 **/
 
 	public static String[] getContext(IBinding binding)
 	{
@@ -243,7 +245,7 @@ public class Direct extends AbstractServiceLink implements IDirect
 	 *
 	 *  @throws StaleSessionException if the component is stateful, and
 	 *  the session is new.
-	 */
+	 **/
 
 	public void trigger(IRequestCycle cycle, String[] context)
 		throws RequestCycleException

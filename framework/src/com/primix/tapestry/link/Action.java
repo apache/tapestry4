@@ -101,9 +101,10 @@ import com.primix.tapestry.*;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ *
+ **/
 
-public class Action extends AbstractServiceLink implements IAction
+public class Action extends GestureLink implements IAction
 {
 	private IBinding listenerBinding;
 	private IBinding statefulBinding;
@@ -165,7 +166,7 @@ public class Action extends AbstractServiceLink implements IAction
 	 *  a true value.  If stateful is not bound, also returns
 	 *  the default, true.
 	 *
-	 */
+	 **/
 
 	public boolean getRequiresSession()
 	{
@@ -177,11 +178,12 @@ public class Action extends AbstractServiceLink implements IAction
 
 		return true;
 	}
+    
 	/**
 	 *  Returns {@link IEngineService#ACTION_SERVICE}.
-	 */
+	 **/
 
-	protected String getServiceName(IRequestCycle cycle)
+	protected String getServiceName()
 	{
 		return IEngineService.ACTION_SERVICE;
 	}
