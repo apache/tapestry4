@@ -26,6 +26,7 @@
 package net.sf.tapestry.junit.valid;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 
 import net.sf.tapestry.IAsset;
@@ -39,6 +40,8 @@ import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.form.AbstractFormComponent;
+import net.sf.tapestry.html.BasePage;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.valid.IField;
 
@@ -53,7 +56,7 @@ import net.sf.tapestry.valid.IField;
  *
  **/
 
-public class TestingField implements IField
+public class TestingField extends AbstractFormComponent implements IField
 {
 	private String _displayName;
 	private Class _valueType;
@@ -79,6 +82,12 @@ public class TestingField implements IField
 		_displayName = displayName;
         _form = form;
 		_valueType = type;
+        
+        IPage page = new BasePage();
+        page.setLocale(Locale.ENGLISH);
+        page.addComponent(this);
+        
+        setPage(page);
 	}
 	
 	public Class getValueType()
@@ -96,128 +105,14 @@ public class TestingField implements IField
 		return _displayName;
 	}
 
-	public void addAsset(String name, IAsset asset)
-	{
-	}
 
-	public void addComponent(IComponent component)
-	{
-	}
-
-	public void addWrapped(IRender element)
-	{
-	}
-
-	public Map getAssets()
-	{
-		return null;
-	}
-
-	public IAsset getAsset(String name)
-	{
-		return null;
-	}
-
-	public IBinding getBinding(String name)
-	{
-		return null;
-	}
-
-	public Collection getBindingNames()
-	{
-		return null;
-	}
-
-	public Map getBindings()
-	{
-		return null;
-	}
-
-	public IComponent getComponent(String id)
-	{
-		return null;
-	}
-
-	public IComponent getContainer()
-	{
-		return null;
-	}
-
-	public void setContainer(IComponent value)
-	{
-	}
-
-	public String getExtendedId()
-	{
-		return null;
-	}
-
-	public String getId()
-	{
-		return null;
-	}
-
-	public void setId(String value)
-	{
-	}
-
-	public String getIdPath()
-	{
-		return null;
-	}
-
-	public IPage getPage()
-	{
-		return null;
-	}
-
-	public void setPage(IPage value)
-	{
-	}
-
-	public ComponentSpecification getSpecification()
-	{
-		return null;
-	}
-
-	public void setSpecification(ComponentSpecification value)
-	{
-	}
-
-	public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-	}
-
-	public void setBinding(String name, IBinding binding)
-	{
-	}
-
-	public Map getComponents()
-	{
-		return null;
-	}
-
-	public void finishLoad(
-		IPageLoader loader,
-		ComponentSpecification specification)
-		throws PageLoaderException
-	{
-	}
-
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-	}
-
-	public IForm getForm()
-	{
-		return _form;
-	}
-
-    public String getString(String key)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        return null;
+    }
+
+    public IForm getForm()
+    {
+        return _form;
     }
 
 }
