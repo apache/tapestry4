@@ -25,7 +25,7 @@
   Used to implement an HTML form.
   </description>
 
-  <parameter name="method">
+  <parameter name="method" default-value="post">
     <description>
     The method used by the form when it is submitted, defaults to POST.
     </description>
@@ -44,7 +44,7 @@
     </description>
   </parameter>
   
-  <parameter name="direct">
+  <parameter name="direct" default-value="true">
     <description>
     If true (the default), then the more efficient direct service is used.
     If false, then the action service is used.
@@ -58,5 +58,8 @@
   </parameter>
 
   <reserved-parameter name="action"/>
+  
+  <inject name="directService" object="engine-service:direct"/>
+  <inject name="actionService" object="engine-service:action"/>
 
 </component-specification>
