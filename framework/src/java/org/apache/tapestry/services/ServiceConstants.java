@@ -63,4 +63,12 @@ public class ServiceConstants
      */
 
     public static final String PARAMETER = "sp";
+
+    /**
+     * A list of all the conttants defined by this class.
+     * 
+     * @see org.apache.tapestry.form.Form
+     */
+    public static final String[] RESERVED_IDS =
+    { SERVICE, PAGE, COMPONENT, CONTAINER, SESSION, PARAMETER };
 }

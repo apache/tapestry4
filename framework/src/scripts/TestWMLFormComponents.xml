@@ -92,6 +92,7 @@
             <match>page</match>
             <match>service</match>
             <match>Go1</match>
+            <match>Go1</match>
             <match>v</match>
         </assert-output-matches>
 
@@ -111,6 +112,7 @@
             <match>Rewind</match>
             <match>action</match>
             <match>v</match>
+            <match>action</match>
             <match>$(v)</match>
         </assert-output-matches>
 
@@ -122,7 +124,10 @@
         <parameter name="action" value="1"/>
         <parameter name="component" value="h"/>
 
-        <parameter name="Go1" value="v"/>
+        <parameter name="Go1">
+          <value>v</value>
+          <value>action</value>
+        </parameter>
         <parameter name="v" value="VVV"/>
 
         <assert-output name="Card">

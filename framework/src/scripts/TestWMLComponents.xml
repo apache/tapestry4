@@ -112,6 +112,7 @@
             <match>page</match>
             <match>service</match>
             <match>Go0</match>
+            <match>Go0</match>            
             <match>u</match>
             <match>l</match>
         </assert-output-matches>
@@ -125,6 +126,7 @@
             <match>Home</match>
             <match>action</match>
             <match>u,l</match>
+            <match>action</match>
             <match>$(username)</match>
             <match>$(l)</match>
         </assert-output-matches>
@@ -136,7 +138,10 @@
         <parameter name="page" value="Home"/>
         <parameter name="action" value="0"/>
         <parameter name="component" value="go"/>
-        <parameter name="Go0" value="u,l"/>
+        <parameter name="Go0">
+          <value>u,l</value>
+          <value>action</value>
+        </parameter>
         <parameter name="u" value="newbie"/>
         <parameter name="l" value="0"/>
 
