@@ -64,4 +64,8 @@
 		<alias>PersonLink</alias>
 		<specification-path>/com/primix/vlib/components/PersonLink.jwc</specification-path>
 	</component-alias>
+	<component-alias>
+		<alias>ShowError</alias>
+		<specification-path>/com/primix/vlib/components/ShowError.jwc</specification-path>
+	</component-alias>
 </application>

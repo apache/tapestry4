@@ -1,6 +1,7 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.validating.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -45,7 +46,8 @@ import com.primix.foundation.prop.*;
  */
 
 
-public class EditProfile extends Protected
+public class EditProfile
+extends Protected
 {
 	private Map attributes;	
 	private String password1;
@@ -142,23 +144,20 @@ public class EditProfile extends Protected
 	{
 		VirtualLibraryApplication app;
 		
-		if (isEmpty((String)attributes.get("lastName")))
-		{
-			setError("Last name must be specified.");
-			return;
-		}
-		
-		if (isEmpty((String)attributes.get("email")))
-		{
-			setError("Email must be specified.");
-			return;
-		}
-		
+        // Possibly one of the validating text fields found an error.
+
+        if (getError() != null)
+        {
+            resetPasswords();
+            return;
+        }
+	
 		if (isEmpty(password1) != isEmpty(password2))
 		{
-			setError("Enter the password, then re-enter it to confirm.");
-			password1 = null;
-			password2 = null;
+			setErrorField("inputPassword1", 
+			    "Enter the password, then re-enter it to confirm.");
+
+            resetPasswords();
 			return;
 		}
 		
@@ -166,9 +165,9 @@ public class EditProfile extends Protected
 		{
 			if (!password1.equals(password2))
 			{
-				setError("Enter the same password in both fields.");
-				password1 = null;
-				password2 = null;
+				setErrorField("inputPassword1",
+				    "Enter the same password in both fields.");
+				resetPasswords();
 				return;
 			}
 			
@@ -208,4 +207,18 @@ public class EditProfile extends Protected
 			
 		return false;
 	}	
+
+    private void resetPasswords()
+    {
+        IValidatingTextField field;
+
+        password1 = null;
+        password2 = null;
+
+        field = (IValidatingTextField)getComponent("inputPassword1");
+        field.refresh();
+
+        field = (IValidatingTextField)getComponent("inputPassword2");
+        field.refresh();
+    }
 }

@@ -655,6 +655,8 @@ public class VirtualLibraryApplication extends SimpleApplication
     public void logout()
     {
         user = null;
+        userPK = null;
+        fullUserName = null;
         killSession = true;
     }
 }

@@ -164,30 +164,21 @@ public class NewBook extends Protected
 		IPage page;
 		PropertyHelper helper;
 		
-		// First, make sure all the required fields have values.  This needs to be
-		// improved ... should be a list of errors.
-		
-		if (isEmpty(title))
-		{
-			setError("Must enter a title for the book.");
-			return;
-		}
-		
-		if (isEmpty(author))
-		{
-			setError("Must enter an author.");
-			return;
-		}
-		
+        if (getError() != null)
+            return;
+
+
 		if (publisherPK == null && isEmpty(publisherName))
 		{
-			setError("Must enter a publisher name or select an existing publisher from the list.");
+			setErrorField("inputPublisherName",
+			    "Must enter a publisher name or select an existing publisher from the list.");
 			return;
 		}
 		
 		if (publisherPK != null && !isEmpty(publisherName))
 		{
-			setError("Must either select an existing publisher or enter a new publisher name.");
+			setErrorField("inputPublisherName",
+			    "Must either select an existing publisher or enter a new publisher name.");
 			return;
 		}
 		
@@ -245,9 +236,6 @@ public class NewBook extends Protected
 		if (value == null)
 			return true;
 		
-		if (value.trim().length() == 0)
-			return true;
-			
-		return false;
+		return value.trim().length() == 0;
 	}	
 }

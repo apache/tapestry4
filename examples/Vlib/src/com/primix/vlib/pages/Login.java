@@ -1,6 +1,7 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.validating.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -47,12 +48,15 @@ import javax.servlet.http.*;
  */
 
 
-public class Login extends BasePage
+public class Login 
+extends BasePage
+implements IErrorProperty
 {
 	private String email;
 	private String password;
 	private String error;
 	private String targetPage;
+    private IValidationDelegate validationDelegate;
 
 	/**
 	 *  The name of a cookie to store on the user's machine that will identify
@@ -66,13 +70,21 @@ public class Login extends BasePage
 	
 	public void detachFromApplication()
 	{
-		super.detachFromApplication();
-		
 		email = null;
 		password = null;
 		error = null;
 		targetPage = null;
+
+		super.detachFromApplication();
 	}
+
+    public IValidationDelegate getValidationDelegate()
+    {
+        if (validationDelegate == null)
+            validationDelegate = new SimpleValidationDelegate(this);
+
+        return validationDelegate;
+    }
 
 	public void setEmail(String value)
 	{
@@ -126,6 +138,17 @@ public class Login extends BasePage
 	{
 		return targetPage;
 	}
+
+    protected void setErrorField(String componentId, String message)
+    {
+        IValidatingTextField field;
+
+        field = (IValidatingTextField)getComponent(componentId);
+        field.setError(true);
+
+        if (error == null)
+            error = message;
+    }
 	
 	/**
 	 *  Attempts to login.  If successful, updates the application's user property
@@ -144,6 +167,11 @@ public class Login extends BasePage
 		IPersonHome personHome;
 		IPerson person;
 		
+        // An error, from a validation field, may already have occured.
+
+        if (getError() != null)
+            return;
+
 		try
 		{
 			app = (VirtualLibraryApplication)application;
@@ -153,7 +181,7 @@ public class Login extends BasePage
 			
 			if (!person.getPassword().equals(password))
 			{
-				setError("Invalid password.");
+				setErrorField("inputPassword", "Invalid password.");
 				return;
 			}
 			
@@ -162,7 +190,7 @@ public class Login extends BasePage
 		}
 		catch (FinderException e)
 		{
-			setError("E-mail address not known.");
+			setErrorField("inputEmail", "E-mail address not known.");
 			return;
 		}
 		catch (Throwable t)
@@ -172,6 +200,7 @@ public class Login extends BasePage
 		}
 	}
 	
+
 	/**
 	 *  Invoked when the login form is submitted.
 	 *

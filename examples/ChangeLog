@@ -1,3 +1,8 @@
+* Dec 13 2000 hship
+
+Lots of changes in the Vlib to make use of the new validating text field components.
+Remove lots of unneeded package Makefiles.
+
 * Dec 11 2000 hship
 
 Fix Makefiles for the new usage of the JBE_CANONICALIZE macro.
