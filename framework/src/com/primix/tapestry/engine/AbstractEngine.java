@@ -1346,6 +1346,11 @@ public abstract class AbstractEngine
         return visit;
     }
 
+    public void setVisit(Object value)
+    {
+        visit = value;
+    }
+
     public boolean getHasVisit()
     {
         return visit != null;

@@ -10,7 +10,7 @@ import com.primix.tapestry.spec.ApplicationSpecification;
 import com.primix.tapestry.components.*;
 import java.net.*;
 
-/*
+/*`
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
@@ -60,12 +60,12 @@ public interface IEngine
     *
     */
 
-        public static final String HOME_PAGE = "Home";
+    public static final String HOME_PAGE = "Home";
 
     /**
     *  The name ("Exception") of the page used for reporting exceptions.
     *  
-     *  <p>Such a page must have
+    *  <p>Such a page must have
     *  a writable JavaBeans property named 'exception' of type 
     * <code>java.lang.Throwable</code>.
     *
@@ -97,7 +97,7 @@ public interface IEngine
     *
     */
 
-        public void forgetPage(String name);
+    public void forgetPage(String name);
 
     /**
     *  Returns the locale for the engine.  This locale is used when selecting
@@ -194,7 +194,7 @@ public interface IEngine
     *
     */
 
-        public void service(RequestContext context)
+    public void service(RequestContext context)
     throws ServletException, IOException;
 
     /**
@@ -215,6 +215,14 @@ public interface IEngine
     */
 
     public Object getVisit();
+
+    /**
+    *  Allows the visit object to be removed; typically done when "shutting down"
+    *  a user's session (by setting the visit to null).
+    *
+    */
+
+    public void setVisit(Object value);
 
     /**
     *  Returns true if the engine has a visit object, false if the visit object
