@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE library-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
-	
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
 <!--  Specification used in a series of tests to check successful parsing of a LibrarySpecification. -->
 	
 <library-specification>
@@ -14,8 +14,8 @@
 	<page name="FirstPage" specification-path="/FirstPage.page"/>
 	<page name="SecondPage" specification-path="/SecondPage.page"/>
 	
-	<component-alias type="FirstComponent" specification-path="/FirstComponent.jwc"/>
-	<component-alias type="SecondComponent" specification-path="/SecondComponent.jwc"/>
+	<component-type type="FirstComponent" specification-path="/FirstComponent.jwc"/>
+	<component-type type="SecondComponent" specification-path="/SecondComponent.jwc"/>
 	
 	<library id="lib1" specification-path="/Library1.library"/>
 	<library id="lib2" specification-path="/Library2.library"/>

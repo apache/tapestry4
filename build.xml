@@ -138,8 +138,6 @@
  
 <target name="build-dist-copy"> 	
 
-	<mkdir dir="${dist.dir}"/>
-	 
 	<!-- Copy all the relevant files to the base directory. -->
  
 	<copy todir="${dist.dir}" includeEmptyDirs="false">
@@ -155,17 +153,8 @@
 
 			<include name="web/**"/>
 			<include name="config/**"/>
-			<include name="lib/**"/>
-			
-			<!-- We just ship the EAR built from
-				 these two. -->
-				 
-			<exclude name="lib/VlibBeans.jar"/>
-			<exclude name="lib/Vlib.war"/>
-			
-			<!-- This is not needed at runtime. -->
-			
-			<exclude name="lib/ext/junit.jar"/>
+			<exclude name="lib/*"/>
+			<exclude name="lib/**"/>			
 			
 			<!-- Exclude class files left around by IDEs. -->
 			<exclude name="**/*.class"/>
@@ -209,15 +198,36 @@
 			<filter token="JAVA_VENDOR" value="${java.vendor}"/>
 			<filter token="JAVA_VM_VERSION" value="${java.vm.version}"/>
 			<filter token="COPY_YEARS" value="${copyright.years}"/>
+			<filter token="HOME_PAGE_URL" value="http://jakarta.apache.org/proposals/tapestry"/>
 		</filterset>
+	</copy>
+	
+	<copy todir="${dist.dir}/lib">
+		<fileset dir="${lib.dir}">
+			<exclude name="ext/junit.jar"/>
+			<exclude name="ext/jcommon*.jar"/>
+			<exclude name="ext/jfreechart*.jar"/>
+			<exclude name="Vlib.war"/>
+			<exclude name="VlibBeans.jar"/>	
+		</fileset>	
+	</copy>
+	
+	<copy todir="${dist.dir}">
+		<fileset dir=".">
+			<include name="framework/**"/>
+			<include name="contrib/**"/>
+			<include name="examples/**"/>
+			
+			<!-- These two aren't quite ready for primetime.  -->
+			<exclude name="examples/DevelopmentEnvironment/**"/>
+			<exclude name="examples/Tutorial2/**"/>
+		</fileset>
 	</copy>
 	
 	<property name="web.dir" value="${dist.dir}/web"/>
 	
 	<property name="dtd.dir" value="${web.dir}/dtd"/>
-	
-	<mkdir dir="${dtd.dir}"/>
-	
+		
 	<copy todir="${dtd.dir}" flatten="true">
 		<fileset dir="framework/src">
 			<include name="**/*.dtd"/>
@@ -226,63 +236,48 @@
 	   
 </target>
 
-<target name="build-dist-jars"
-	description="Builds the source JARs."
-	depends="build-dist-copy">	   
-	
-	<!-- Jar up the source code for the frameworks. -->
-	 
-	<property name="dist.src.dir" value="${dist.dir}/src"/>
-	 
-	<mkdir dir="${dist.src.dir}"/>
-	 
-	<jar jarfile="${dist.src.dir}/net.sf.tapestry-src.jar"
-		basedir="framework"/>
-	<jar jarfile="${dist.src.dir}/net.sf.tapestry.contrib-src.jar"
-		basedir="contrib"/>
-	<jar jarfile="${dist.src.dir}/examples-src.jar" basedir="examples"/>
-</target>
 
 <target name="build-dist-tarball"
 	description="Builds the tarball distributions."
-	depends="build-dist-jars">
+	depends="build-dist-copy">
 
 	<!-- Pack the directory (relative to ${dist.dir}), into a TAR file.  We go to the extra work
 	      of building a .tar.gz because the distro is smaller than an equivalent .zip file.
 	   -->
-	<property name="core.tar.gz" value="${dist.dir}-core.tar.gz"/>
-	<property name="doc.tar.gz" value="${dist.dir}-doc.tar.gz"/>
+	<property name="bin.tar.gz" value="${dist.dir}-bin.tar.gz"/>
+	<property name="src.tar.gz" value="${dist.dir}-src.tar.gz"/>
 	
-	<tar tarfile="${core.tar.gz}" 
+	<tar tarfile="${bin.tar.gz}" 
 		longfile="gnu"
 		compression="gzip">
 		<tarfileset dir="${dist.root.dir}">
-			<exclude name="${dist.base}/web/**"/>
-			<exclude name="*.gz"/>
-			<include name="**"/>
-		</tarfileset>
-		
-		<!-- These web assets are referrenced from Readme.html -->
-		
-		<tarfileset dir="${dist.root.dir}">
-			<include name="${dist.base}/web/images/*.gif"/>
-			<include name="${dist.base}/web/scripts/*.css"/>
+			<include name="${dist.base}/**"/>		
+			
+			<!-- Don't ship the code coverage report; it's huge. -->
+			
+			<exclude name="${dist.base}/framework/**"/>
+			<exclude name="${dist.base}/contrib/**"/>
+			<exclude name="${dist.base}/examples/**"/>			
+			<exclude name="${dist.base}/web/doc/clover/**"/>
+					
 		</tarfileset>		
 	</tar>
 	 
-	<tar tarfile="${doc.tar.gz}" 
+	<tar tarfile="${src.tar.gz}" 
 		longfile="gnu"
 		compression="gzip">
 		<tarfileset dir="${dist.root.dir}">
 		
-			<!-- Don't ship the code coverage report; it's huge. -->
+			<!-- Include the sub-projects excluded from the -bin distro. -->
+		
+			<include name="${dist.base}/framework/**"/>
+			<include name="${dist.base}/contrib/**"/>
+			<include name="${dist.base}/examples/**"/>	
 			
-			<exclude name="${dist.base}/web/doc/clover/**"/>
-			<include name="${dist.base}/web/**"/>
 		</tarfileset>
 	</tar>
 		 
-	<!-- Create the web distribution (to be put up at SourceForge).  This *does*
+	<!-- Create the web distribution (to be put up on the web site).  This *does*
 	     include the code coverage report.  -->
 	
 	<property name="web.tar.gz" value="${dist.root.dir}/Tapestry-Web-${framework.version}.tar.gz"/>
@@ -591,12 +586,6 @@
 	
 </target>
 
-<target name="unpack-src" description="Unpacks the source JARS.">
-	<unjar src="src/net.sf.tapestry-src.jar" dest="framework"/>
-	<unjar src="src/net.sf.tapestry.contrib-src.jar" dest="contrib"/>
-	<unjar src="src/examples-src.jar" dest="examples"/>
-</target>
-
 <target name="deploy-tomcat"
 	depends="check-for-tomcat-dir"
 	description="Deploys the tutorial application into Tomcat.">
@@ -604,10 +593,10 @@
 
   <property name="web.lib" value="${tomcat.dir}/webapps/tutorial/WEB-INF/lib"/>
 
-  <copy file="lib/net.sf.tapestry-${framework.version}.jar" todir="${web.lib}"/>
-  <copy file="lib/net.sf.tapestry.contrib-${framework.version}.jar" todir="${web.lib}"/>
+  <copy file="${framework.jar}" todir="${web.lib}"/>
+  <copy file="${contrib.jar}" todir="${web.lib}"/>
   <copy todir="${web.lib}">
-    <fileset dir="lib/ext">
+    <fileset dir="${lib.ext.dir}">
       <include name="${commons-lang.jar}"/>
       <include name="${commons-logging.jar}"/>
       <include name="${jakarta-oro.jar}"/>

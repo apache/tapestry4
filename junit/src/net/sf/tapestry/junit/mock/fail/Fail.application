@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE application PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <application name="JUnit Mock Application -- Failure Testing"
 	engine-class="net.sf.tapestry.engine.SimpleEngine">
@@ -12,6 +12,6 @@
 	<page name="NotComponent"
 		specification-path="/net/sf/tapestry/junit/mock/fail/NotComponent.page"/>
 		
-	<component-alias type="InvalidComponent" specification-path="/net/sf/tapestry/junit/mock/fail/InvalidComponent.jwc"/>
+	<component-type type="InvalidComponent" specification-path="/net/sf/tapestry/junit/mock/fail/InvalidComponent.jwc"/>
 		
 </application>	

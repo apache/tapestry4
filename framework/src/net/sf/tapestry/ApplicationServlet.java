@@ -461,7 +461,7 @@ public class ApplicationServlet extends HttpServlet
 
         _specification = constructApplicationSpecification();
 
-        _attributeName = "net.sf.tapestry.engine." + config.getServletName();
+        _attributeName = "net.sf.tapestry.engine:" + config.getServletName();
     }
 
     /**

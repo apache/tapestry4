@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE component-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-		"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 		
 <component-specification class="net.sf.tapestry.html.ExceptionDisplay" 
 	allow-body="no" 
@@ -35,7 +35,7 @@
   </component>
   
   <component id="eProperty" type="Foreach">
-  	<static-binding name="element">tr</static-binding>
+  	<static-binding name="element" value="tr"/>
   	<binding name="class" expression="beans.evenOdd.next"/>
     <binding name="source" expression="exception.properties"/>
   </component>
@@ -53,12 +53,11 @@
   </component>
   
   <component id="ifNotLast" type="Conditional">
-    <binding name="condition" expression="last"/>
-    <field-binding name="invert" field-name="Boolean.TRUE"/>
+    <binding name="condition" expression="! last"/>
   </component>
   
   <component id="eStack" type="Foreach">
-    <static-binding name="element">li</static-binding>
+    <static-binding name="element" value="li"/>
     <binding name="source" expression="exception.stackTrace"/>
   </component>
   

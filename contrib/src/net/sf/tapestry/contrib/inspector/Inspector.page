@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE page-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <page-specification class="net.sf.tapestry.contrib.inspector.Inspector">
 
@@ -37,6 +37,6 @@
 
   <component id="showEngine" type="inspector:ShowEngine"/>
 
-  <private-asset name="stylesheet" resource-path="/net/sf/tapestry/contrib/inspector/Inspector.css"/>
+  <private-asset name="stylesheet" resource-path="Inspector.css"/>
 
 </page-specification>

@@ -22,15 +22,14 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
-		<td><IMG src="web/images/Tapestry-Banner.png"align=absMiddle border=0>
+		<td><IMG src="web/images/Tapestry-Banner.png" align=absMiddle border=0>
 <p>Tapestry is a component based framework for creating sophisticated web applications.
 It's used with existing application servers, acting as a kind of "super servlet". 
-The <a href="http://tapestry.sf.net">Tapestry Home Page</a> 
-contains much more information about what Tapestry
-is, how to use it and why you can't live without it!
-<p>Tapestry is available as two 
-      distributions, the core distribution includes precompiled JARs, source code and examples.&nbsp; The doc
-distribution contains documentation.
+Tapestry applications are built by configuring and combining components to form pages.  You
+get surprisingly large amounts of robust functionality for
+startingly small amounts of effort and code!
+
+
 <p>The JARs were created on 
 @OS_NAME@ @OS_VERSION@
 using the 
@@ -39,7 +38,9 @@ compiler.
 
 <p>This product includes software developed by the Apache Software Foundation 
 (<a href="http://www.apache.org/">http://www.apache.org/</a>).
-<p><IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#config">Configuration</A><br><IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#doc">Documentation</A><br><IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#jars">Third Party Jars</A><br><br>.....................................................<br><br><a name="config"></a>
+
+
+<br><br>.....................................................<br><br>
 <h2>Configuration</h2>
 
 <p>Tapestry ships with the the Tapestry Tutorial and the Virtual Library demo applications, which are very 
@@ -53,8 +54,9 @@ to the system <tt>PATH</tt>.</li>
 <a href="http://sourceforge.net/projects/jboss">JBoss</a> server:
 			<ul>
 				<li><b>Download <a href="http://prdownloads.sourceforge.net/jboss/jboss-3.0.4.zip?download">JBoss 3.0.4</a></b>.<br>JBoss is an open-source application server, used to run the database and Enterprise JavaBeans in the Virtual Library.
-<p><span class="hyper-em">This auto-configuration requires JBoss 3.0.4 exactly, not a later release.  This only affects these turn-key
-demos, not deployment of actual Tapestry applications.</span></p>
+<p><span class="hyper-em">This auto-configuration requires JBoss 3.0.4 exactly, not a later release.  
+This only affects these turn-key
+demos, not deployment of your own Tapestry applications.</span></p>
 				<li><b>Create the file
 			<code>config/build.properties</code>.<br></b>
 		This file informs 
@@ -95,16 +97,14 @@ JBoss):
 		directory, for example <i>C:/Program Files/Apache Group/Tomcat 4.1</i>.
 		<b>Note:</b> Use only forward slashes in this file name.
 				<li><b>Execute the command:
-			<code>ant deploy-tomcat</code></b><br>This will deploy run tutorial application onto the Tomcat server. If Tomcat is running you 
-		should be able to access the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application, otherwise start Tomcat to access the 
+			<code>ant deploy-tomcat</code></b><br>This will deploy the tutorial application 
+			into the Tomcat server. If Tomcat is running you 
+		should be able to access the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application, 
+		otherwise start Tomcat to access the 
         application.</li>
-			</ul><a name="doc"></a>
+			</ul>
+			
 <h2>Documentation</h2>
-
-Tapestry documentation is distributed seperately from the main binary distribution,
-in the file
-<a href="http://prdownloads.sf.net/tapestry/Tapestry-@VERSION@-doc.tar.gz?download">Tapestry-@VERSION@-doc.tar.gz</a>,
-or is available <a href="http://tapestry.sf.net/doc_frame.html">online</a>.
 
 <p>
 
@@ -205,206 +205,21 @@ or is available <a href="http://tapestry.sf.net/doc_frame.html">online</a>.
 		</td>
 	</tr>	
 		
-	</table>
-<a name="jars"></a>
-<h2>Third party JARs</h2>
-
-Tapestry requires some third party JARs when it is compiled, as well as
-at  runtime. These files are are included in the distribution.
-<p>
-			<table border="0">
-				<tr bgcolor="black">
-					<th><font color="white">JAR file</font>
-					</th>
-					<th><font color="white">Version</font>
-					</th>
-					<th><font color="white">License</font>
-					</th>
-					<th><font color="white">Description</font>
-					</th>
-				</tr>
-				
-			
-				<tr valign="top">
-					<td>bcel-5.0.jar
-					</td>
-					<td>5.0
-					</td>
-					<td>Apache Software License
-						<td>
-						<a href="http://jakarta.apache.org/bcel">Byte Code Engineering Library</a>
-						
-							</td>
-				</tr>
-				
-						
-	<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-												
-				<tr valign="top">
-					<td>bsf-2.0.3.jar
-					</td>
-					<td>2.0.3-rc1
-					</td>
-					<td>Apache Software License
-					</td>
-					<td>Bean Scripting Framework; used by Tapestry to allow event listeners
-	to be written in a scripting language instead of Java.
-					</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>com.mortbay.jetty-jdk1.2.jar
-					</td>
-					<td>4.1.0
-					</td>
-					<td><A href="LICENSE.Jetty.html">Jetty License</A>
-						<td>Jetty HTTP Servlet Server, see 
-						<a href="http://sourceforge.net/projects/jetty">http://sourceforge.net/projects/jetty
-		</a>
-						</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>commons-lang-1.0.jar<br>commons-logging-1.0.2.jar
-					</td>
-					<td>1.0, 1.0.2
-					</td>
-					<td>Apache Software License
-					</td>
-					<td>Support libraries; part of <a href="http://jakarta.apache.org/commons">Jakarta Commons</a>
-					</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>ejb.jar
-					</td>
-					<td>from JBoss 2.2.2
-					</td>
-					<td>LGPL</A>
-						<td>EJB 1.1 , copied from the
-	<a href="http://www.jboss.org">JBoss</a> distribution.
-<p>This library is required to compile Tapestry and 
-      to compile and run the demos and tutorials.</p>
-						</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>jakarta-oro-2.0.6.jar
-					</td>
-					<td>2.0.6
-					</td>
-					<td><A href="LICENSE.jakarta-oro.txt">Apache Software License, Version 1.1</A>
-						<td>Regular expression library
-						</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>javax.servlet.jar
-					</td>
-					<td>2.3
-					</td>
-					<td><A href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</A>
-						<td>Servlet API 2.3 reference implementation, 
-            distributed with Jetty
-						</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>javax.xml.jaxp.jar
-					</td>
-					<td>1.1
-					</td>
-					<td><A href="LICENSE.javax.xml.html">Sun Binary Code License</A>
-					</td>
-					<td>Java API for XML Processing , distributed with Jetty
-					</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>jcommon-0.6.4jar, <br>
-					jfreechart-0.9.2.jar
-					</td>
-					<td>0.6.4, 0.9.2
-					</td>
-					<td><A href="LICENSE.JFreeChart.txt">LGPL</A>
-					</td>
-					<td>Part of <a href="http://www.object-refinery.com/jfreechart/">JFreeChart</a>, used in the Workbench example application.
-					</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>log4j-1.2.6.jar
-					</td>
-					<td>1.2.6
-					</td>
-					<td><A href="LICENSE.log4j.txt">Apache Software License, Version 1.1</A></A>
-						<td>Logging toolkit.  Used indirectly, via commons-logging framework.
-	More information at the <a href="http://jakarta.apache.org/log4j">log4j home page</a>.
-						</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>mckoidb.jar
-					</td>
-					<td>0.92 beta
-					</td>
-					<td>GPL
-					</td>
-					<td><a href="http://mckoi.com/database/">McKoi 
-            SQL Database</a>, Java SQL Database used for the Virtual Library example application.
-					</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>ognl-2.3.0-opt.jar
-					</td>
-					<td>2.3.0
-					</td>
-					<td><A href="LICENSE.ognl.txt">BSD?</A>
-					</td>
-					<td><a href="http://www.ognl.org">Object Graph
-			Navigation Library</a>.
-					</td>
-				</tr>
-				<tr bgcolor="black">
-					<td colspan="5" height="1"><IMG src="web/images/spacer.gif"></td>
-				</tr>
-				<tr valign="top">
-					<td>org.apache.crimson.jar
-					</td>
-					<td>1.1
-					</td>
-					<td><A href="LICENSE.javax.xml.html">Sun Binary Code License</A>
-					</td>
-					<td>Sun XML Parser, Distributed with Jetty
-					</td>
-				</tr>
-			</table>
+	<tr><td height="10" colspan="4"><IMG src="web/images/spacer.gif" width=1></td></tr>
+	
+	<tr valign="top">
+		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
+		<td><A href="web/index.html">Tapestry Web Site</a>
+		
+		<br><br>
+		A <a href="web/index.html">local copy</a> 
+		of the <a href="@HOME_PAGE_URL@">Tapestry Home Page</a> is available
+		well.
+	
 		</td>
-	</tr>
-</table>
+	</tr>	
+		
+	</table>
 
 
 		<br><br>

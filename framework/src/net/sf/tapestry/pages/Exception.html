@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<span jwcid="shell">
+<span jwcid="@Shell" title="Exception" stylesheet="[[ assets.stylesheet ]]">
 <body>
 
 <span class="exception-header">
@@ -9,11 +9,11 @@ An exception has occured.
 
 <p>You may continue by <b><a jwcid="restart">restarting</a></b> the session.
 
-<span jwcid="exceptionDisplay"/>
+<span jwcid="@ExceptionDisplay" exceptions="[[ exceptions ]]"/>
 
 <p>
 
-<span jwcid="showDebug"/>
+<span jwcid="@Delegator" delegate="[[ requestCycle.requestContext ]]"/>
 
 </body>
 </span>

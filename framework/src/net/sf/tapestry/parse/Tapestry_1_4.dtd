@@ -2,14 +2,14 @@
 <!-- $Id: Tapestry_1_3.dtd,v 1.18 2002/09/19 17:25:28 hship Exp $ -->
 <!--
 
-The DTD for Tapestry application, page and component specifications.
+The DTD for Tapestry application, library, page and component specifications.
 Associated with the public identifier:
 
-	-//Howard Lewis Ship//Tapestry Specification 1.4//EN
+	-//Apache Software Foundation//Tapestry Specification 1.4//EN
 	
 The canonical location for the DTD is:
 
-	http://tapestry.sf.net/dtd/Tapestry_1_4.dtd
+	http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd
 
 For application specifications, the root element is application.
 
