@@ -190,7 +190,76 @@ the default search path; this is accomplished by overriding
 &AbstractEngine; method <function>createPropertySource()</function>.
 </para>
 		
+<para>
+The following table lists all the configuration values
+currently used in Tapestry.
 	
+<variablelist>
+	<title>Configuration Values</title>
+	
+<varlistentry>
+	<term>net.sf.tapestry.asset.dir</term>
+	<term>net.sf.tapestry.asset.URL</term>
+	
+	<listitem>
+	<para>
+	These two values are used to handle private assets.  Private assets are assets
+	that are stored on the classpath, and not normally visible to client web browsers.
+	</para>
+	
+	<para>
+	By specifying these two configuration values, Tapestry can export private assets
+	to a directory that is visible to the client web browser.  The <literal>URL</literal>
+	value should map to the directory specified by the <literal>dir</literal> value.
+	</para>
+	</listitem>
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.visit-class</term>
+	
+	<listitem>
+	<para>
+	The class name to instantiate as the 
+	<link linkend="intro.engine-service-visit">Visit object</link>.
+	</para>
+	</listitem>
+</varlistentry>
+
+
+<varlistentry>
+	<term>net.sf.tapestry.default-page-class</term>
+	
+	<listitem>
+	<para>
+	By default, any page that omits the
+	<varname>class</varname> attribute (in its &spec.page-specification;)
+	will be instantiated as &BasePage;.  If this is not desired,
+	the default may be overridden by specifying a fully
+	qualified class name.
+	</para>
+	</listitem>
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.engine-class</term>
+	
+	<listitem>
+	<para>
+	The fully qualified class name to instantiate as the application engine.
+	This configuration value is only used when the 
+	application specification does not exist, or fails to
+	specify a class.  By default, &BaseEngine; is used if this configuration
+	value is also left unspecified.
+	</para>
+	</listitem>
+</varlistentry>
+
+</variablelist>
+</para>
+
 </section>  <!-- configuration.search-path -->
+
+
 
 </chapter>

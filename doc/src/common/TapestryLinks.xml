@@ -27,6 +27,7 @@
 <!ENTITY AbstractPage '<ulink url="&ApiRoot;/AbstractPage.html"><classname>AbstractPage</classname></ulink>'>
 <!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
 <!ENTITY BaseComponent '<ulink url="&ApiRoot;/BaseComponent.html"><classname>BaseComponent</classname></ulink>'>
+<!ENTITY BaseEngine '<ulink url="&ApiRoot;/engine/BaseEngine.html"><classname>BaseEngine</classname></ulink>'>
 <!ENTITY BasePage '<ulink url="&ApiRoot;/html/BasePage.html"><classname>BasePage</classname></ulink>'>
 <!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
 <!ENTITY Enum '<ulink url="&ApiRoot;/util/Enum.html"><classname>Enum</classname></ulink>'>

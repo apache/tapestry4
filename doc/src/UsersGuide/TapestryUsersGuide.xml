@@ -24,13 +24,12 @@
 <!ENTITY spec.binding '<link linkend="spec.binding"><sgmltag class="starttag">binding</sgmltag></link>'>
 <!ENTITY spec.configure '<link linkend="spec.configure"><sgmltag class="starttag">configure</sgmltag></link>'>
 <!ENTITY spec.component '<link linkend="spec.component"><sgmltag class="starttag">component</sgmltag></link>'>
-<!ENTITY spec.component-alias '<link linkend="spec.component-alias"><sgmltag class="starttag">component-alias</sgmltag></link>'>
+<!ENTITY spec.component-type '<link linkend="spec.component-type"><sgmltag class="starttag">component-type</sgmltag></link>'>
 <!ENTITY spec.component-specification '<link linkend="spec.component-specification"><sgmltag class="starttag">component-specification</sgmltag></link>'>
 <!ENTITY spec.context-asset '<link linkend="spec.context-asset"><sgmltag class="starttag">context-asset</sgmltag></link>'>
 <!ENTITY spec.description '<link linkend="spec.description"><sgmltag class="starttag">description</sgmltag></link>'>
 <!ENTITY spec.extension '<link linkend="spec.extension"><sgmltag class="starttag">extension</sgmltag></link>'>
 <!ENTITY spec.external-asset '<link linkend="spec.external-asset"><sgmltag class="starttag">external-asset</sgmltag></link>'>
-<!ENTITY spec.field-binding '<link linkend="spec.field-binding"><sgmltag class="starttag">field-binding</sgmltag></link>'>
 <!ENTITY spec.inherited-binding '<link linkend="spec.inherited-binding"><sgmltag class="starttag">inherited-binding</sgmltag></link>'>
 <!ENTITY spec.library '<link linkend="spec.library"><sgmltag class="starttag">library</sgmltag></link>'>
 <!ENTITY spec.library-specification '<link linkend="spec.library-specification"><sgmltag class="starttag">library-specification</sgmltag></link>'>

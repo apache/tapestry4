@@ -26,32 +26,32 @@ used in Tapestry.
 	<entry>Application</entry>
 	<entry>application</entry>
 	<entry>&spec.application;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.3//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</literal></entry>
+	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.4//EN</literal></entry>
+	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_4.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Page</entry>
 	<entry>page</entry>
 	<entry>&spec.page-specification;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.3//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</literal></entry>
+	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.4//EN</literal></entry>
+	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_4.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Component</entry>
 	<entry>jwc</entry>
 	<entry>&spec.component-specification;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.3//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</literal></entry>
+	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.4//EN</literal></entry>
+	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_4.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Library</entry>
 	<entry>library</entry>
 	<entry>&spec.library-specification;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.3//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</literal></entry>
+	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.4//EN</literal></entry>
+	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_4.dtd</literal></entry>
 </row>
 
 <row>
@@ -102,16 +102,17 @@ It also defines any libraries that are used within the application.
 <row>
 	<entry>name</entry>
 	<entry>string</entry>
-	<entry>yes</entry>
+	<entry>no</entry>
 	<entry/>
 	<entry>User presentable name of application.</entry>
 </row>
 <row>
 	<entry>engine-class</entry>
 	<entry>string</entry>
-	<entry>yes</entry>
+	<entry>no</entry>
 	<entry/>
-	<entry>Name of an implementation of IEngine to instantiate.</entry>
+	<entry>Name of an implementation of &IEngine; to instantiate.  Defaults
+	to &BaseEngine; if not specified.</entry>
 </row>
 </tbody>
 </tgroup>
@@ -123,7 +124,7 @@ It also defines any libraries that are used within the application.
 	<title><sgmltag class="starttag">application</sgmltag> Elements</title>
 <literallayout>
   &spec.description; *, &spec.property; *,
-  (&spec.page; | &spec.component-alias; | &spec.service; | &spec.library; | &spec.extension;) *
+  (&spec.page; | &spec.component-type; | &spec.service; | &spec.library; | &spec.extension;) *
 </literallayout>
 </figure>
 
@@ -444,15 +445,15 @@ containing library or application.
 	<title><sgmltag class="starttag">component</sgmltag> Elements</title>
 <literallayout>
   &spec.property; *,
-  (&spec.binding; | &spec.field-binding; | &spec.inherited-binding; | &spec.static-binding; | &spec.string-binding;) *
+  (&spec.binding; | &spec.inherited-binding; | &spec.static-binding; | &spec.string-binding;) *
 </literallayout>
 </figure>
 
 	
 </section> <!-- spec.component -->
 
-<section id="spec.component-alias">
-	<title><sgmltag class="starttag">component-alias</sgmltag> element</title>
+<section id="spec.component-type">
+	<title><sgmltag class="starttag">component-type</sgmltag> element</title>
 	
 <para>
 Appears in: &spec.application; and 	&spec.library-specification;
@@ -464,7 +465,7 @@ Defines a component type that may latter be used in a &spec.component; element
 </para>
 
 <figure>
-	<title><sgmltag class="starttag">component-alias</sgmltag> Attributes</title>
+	<title><sgmltag class="starttag">component-type</sgmltag> Attributes</title>
 <informaltable>
 <tgroup cols="5">
 <thead>
@@ -497,7 +498,7 @@ Defines a component type that may latter be used in a &spec.component; element
 </informaltable>
 </figure>
 
-</section> <!-- spec.component-alias -->
+</section> <!-- spec.component-type -->
 
 
 <section id="spec.component-specification">
@@ -536,11 +537,11 @@ and elements related to parameters.
 <row>
 	<entry>class</entry>
 	<entry>string</entry>
-	<entry>yes</entry>
+	<entry>no</entry>
 	<entry/>
 	<entry>The Java class to instantiate, which must implement the
-	interface &IComponent;.  Typically, this is
-	&BaseComponent; or a subclass of it.</entry>
+	interface &IComponent;.  If not specified, &BaseComponent; is used.
+	</entry>
 </row>
 <row>
 	<entry>allow-body</entry>
@@ -820,78 +821,6 @@ per</tbody>
 
 </section> <!-- spec.external-asset -->
 
-<section id="spec.field-binding">
-	<title><sgmltag class="starttag">field-binding</sgmltag> element</title>
-
-<para>
-Appears in: &spec.component;
-</para>
-
-<para>
-Binds a parameter of an embedded component to a public static final field.
-</para>
-
-<note>
-<para>
-Although the same result can be accomplished using a &spec.binding;
-element and the OGNL expression
-<literal>@<replaceable>class-name</replaceable>@<replaceable>field-name</replaceable></literal>,
-using a <sgmltag class="starttag">field-binding</sgmltag>
-is more efficient, because Tapestry knows that the value is
-invariant.
-</para>
-</note>
-
-<para>
-The class name must be the qualified class name.  If the package
-is ommitted, <literal>java.lang</literal> is assumed (this makes
-it easier to reference common fields
-such as <literal>Boolean.TRUE</literal>).
-</para>
-
-<para>
-In an instantiated component, bindings can be accessed with
-the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
-</para>
-
-
-<figure>
-	<title><sgmltag class="starttag">field-binding</sgmltag> Attributes</title>
-<informaltable>
-<tgroup cols="5">
-<thead>
-<row>
-  <entry>Name</entry>
-  <entry>Type</entry>
-  <entry>Required ?</entry>
-  <entry>Default Value</entry>
-  <entry>Description</entry>
-</row>
-</thead>
-<tbody>
-<row>
-	<entry>name</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>The name of the parameter to bind.</entry>
-</row>
-<row>
-	<entry>field-name</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>The name of a public static final field, in the form
-	<literal><replaceable>class-name.field-name</replaceable></literal>.
-	</entry>
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-</figure>
-
-
-</section> <!-- spec.field-binding -->
 
 <section id="spec.inherited-binding">
 	<title><sgmltag class="starttag">inherited-binding</sgmltag> element</title>
@@ -1028,7 +957,7 @@ element has no attributes.
 	<title><sgmltag class="starttag">library-specification</sgmltag> Elements</title>
 <literallayout>
   &spec.description; *, &spec.property; *,
-  (&spec.page; | &spec.component-alias; | &spec.service; | &spec.library; | &spec.extension;) *
+  (&spec.page; | &spec.component-type; | &spec.service; | &spec.library; | &spec.extension;) *
 </literallayout>
 </figure>
 
@@ -1077,7 +1006,9 @@ Relates a logical name for the page to the path to the page's specification file
 	<entry>yes</entry>
 	<entry/>
 	<entry>
-	The complete resource path to the page's specification.
+	The path to the page's specification, which may be absolute
+	 (start with a leading slash), or relative to the application or library
+	 specification.
 	</entry>
 </row>
 </tbody>
@@ -1119,11 +1050,12 @@ with attributes and entities related to parameters removed.
 <row>
 	<entry>class</entry>
 	<entry>string</entry>
-	<entry>yes</entry>
+	<entry>no</entry>
 	<entry/>
 	<entry>The Java class to instantiate, which must implement the
 	interface &IPage;.  Typically, this is
-	&BasePage; or a subclass of it.</entry>
+	&BasePage; or a subclass of it.  &BasePage; is the default if not otherwise
+	 specified.</entry>
 </row>
 </tbody>
 </tgroup>
@@ -1330,6 +1262,15 @@ tag wraps around.
 	<entry>yes</entry>
 	<entry/>
 	<entry>The name of the property.</entry>
+</row>
+<row>
+	<entry>value</entry>
+	<entry>string</entry>
+	<entry>no</entry>
+	<entry/>
+	<entry>The value for the property.  If omitted, the value is taken
+	from the character data (the text the tag wraps around).  If specified,
+	the character data is ignored.</entry>
 </row>
 </tbody>
 </tgroup>
@@ -1557,7 +1498,9 @@ Appears in: &spec.component;
 
 <para>
 Binds a parameter of an embedded component to a static value.  The value,
-which is stored as a string, is the wrapped contents
+which is stored as a string, is specified
+as the <literal>value</literal> attribute, or as
+the wrapped contents
 of the <sgmltag class="starttag">static-binding</sgmltag> tag.  Leading
 and trailing whitespace is removed.
 </para>
@@ -1588,6 +1531,15 @@ the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
 	<entry>yes</entry>
 	<entry/>
 	<entry>The name of the parameter to bind.</entry>
+</row>
+<row>
+	<entry>value</entry>
+	<entry>string</entry>
+	<entry>no</entry>
+	<entry/>
+	<entry>The string value to be used.  If omitted, the wrapped character data
+	is used instead (which is more convienient if the value is large, or
+	contains problematic punctuation).</entry>
 </row>
 </tbody>
 </tgroup>

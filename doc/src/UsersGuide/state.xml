@@ -74,9 +74,8 @@ Typically, the Visit class is defined in the application specification.
 	<title>Defining the Visit class</title>
 <programlisting>
 <![CDATA[
-<application name="Tapestry Component Workbench" 
-	engine-class="net.sf.tapestry.engine.SimpleEngine">
-  <property name="net.sf.tapestry.visit-class">tutorial.workbench.Visit</property>
+<application name="Tapestry Component Workbench">
+  <property name="net.sf.tapestry.visit-class" value="tutorial.workbench.Visit"/>
 
   ...
 ]]>
@@ -191,16 +190,27 @@ show how to handle <emphasis>persistant</emphasis> state.
 </para>	
 
 <para>
-Tapestry separates the persistant state of a page from any instance.  In Tapestry, a page may have many properties
+Tapestry separates the persistant state of a page from any instance.  This is very important, because
+from one request cycle to another, a different instance of the page may be used ... even when clustering is
+not used.  Again, Tapestry has many copies of any page in a pool, and pulls one instance out of the pool
+for each request.
+</para>
+
+<para>
+In Tapestry, a page may have many properties
 and may have many components, each with many properties but only a tiny number of all those
 properties needs to persist between request cycles.
+On a later request, the same or different page instance may be used.  With a little
+assistance from the developer, 
+the Tapestry framework can create the illusion that the same page instance is being used in
+a later request.
 </para>
 
 <para>
 For a property to be persistant, all that's necessary is that the accessor method notify
 the framework of changes.  Tapestry will record the changes (using an &IPageRecorder;)
 and, in later request cycles, will restore the property
-using using the recorded value as the page instance is taken out of the page pool.
+using using the recorded value and whichever page instance is taken out of the page pool.
 </para>
 
 <para>
@@ -276,7 +286,7 @@ from the engine (prior to be stored back into the page pool).  This event is gen
 The Java interface &PageDetachListener; is the event listener interface for this purpose.  
 By simply implementing this interface
 , Tapestry will register the component as a listener and ensure that
-it receives even notifications at the right time (this works for the two other
+it receives event notifications at the right time (this works for the two other
 page event interfaces, &PageRenderListener; and &PageCleanupListener; as well; simply
 implement the interface and leave the rest to the framework).
 </para>
