@@ -208,7 +208,7 @@ NextGen) be released as version number 3.0.
   	
 <!-- Use due-to to give acknowledgement for patches. -->
   
- <release version="3.0-rc-1" date="unreleased">
+ <release version="3.0-rc-1" date="Mar 15 2004">
  
 <action type="fix" dev="EH" fixes-bug="27656">
   ValidationDelegate.writeLabelPrefix/Suffix does not have IValidator access
