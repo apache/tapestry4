@@ -15,10 +15,13 @@
 package org.apache.tapestry.form;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
@@ -37,6 +40,7 @@ import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.html.Body;
+import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -125,6 +129,15 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     private List _hiddenValues;
 
     /**
+     * @since 3.1
+     */
+    private Set _standardReservedIds = new HashSet();
+
+    {
+        _standardReservedIds.addAll(Arrays.asList(ServiceConstants.RESERVED_IDS));
+    }
+
+    /**
      * Returns the currently active {@link IForm}, or null if no form is active. This is a
      * convienience method, the result will be null, or an instance of {@link IForm}, but not
      * necessarily a <code>Form</code>.
@@ -206,19 +219,21 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         {
             if (_allocatedIdIndex >= _allocatedIds.size())
             {
-                throw new StaleLinkException(Tapestry.format(
-                        "Form.too-many-ids",
-                        getExtendedId(),
-                        Integer.toString(_allocatedIds.size()),
-                        component.getExtendedId()), this);
+                throw new StaleLinkException(FormMessages.formTooManyIds(
+                        this,
+                        _allocatedIds.size(),
+                        component), this);
             }
 
             String expected = (String) _allocatedIds.get(_allocatedIdIndex);
 
             if (!result.equals(expected))
-                throw new StaleLinkException(Tapestry.format("Form.id-mismatch", new Object[]
-                { getExtendedId(), Integer.toString(_allocatedIdIndex + 1), expected, result,
-                        component.getExtendedId() }), this);
+                throw new StaleLinkException(FormMessages.formIdMismatch(
+                        this,
+                        _allocatedIdIndex,
+                        expected,
+                        result,
+                        component), this);
         }
         else
         {
@@ -258,8 +273,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         super.prepareForRender(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("Form.forms-may-not-nest"),
-                    this, null, null);
+            throw new ApplicationRuntimeException(FormMessages.formsMayNotNest(), this, null, null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
     }
@@ -312,13 +326,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         _allocatedIdIndex = 0;
 
         if (rewound)
-        {
-            String storedIdList = cycle.getRequestContext().getParameter(_name);
-
-            reconstructAllocatedIds(storedIdList);
-        }
-
-        ILink link = getLink(cycle, actionId);
+            reconstructAllocatedIds(cycle);
 
         // When rendering, use a nested writer so that an embedded Upload
         // component can force the encoding type.
@@ -329,19 +337,18 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         if (renderForm)
         {
+            ILink link = getLink(cycle, actionId);
+
             writeAttributes(writer, link);
 
             renderInformalParameters(writer, cycle);
             writer.println();
-        }
 
-        // Write the hidden's, or at least, reserve the query parameters
-        // required by the Gesture.
+            // Write the hidden's, or at least, reserve the query parameters
+            // required by the Gesture.
 
-        writeLinkParameters(writer, link, !renderForm);
+            String extraIds = writeLinkParameters(writer, link, !renderForm);
 
-        if (renderForm)
-        {
             // What's this for? It's part of checking for stale links.
             // We record the list of allocated ids.
             // On rewind, we check that the stored list against which
@@ -351,6 +358,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             // of ids will change as well.
 
             writeHiddenField(writer, _name, buildAllocatedIdList());
+
+            if (HiveMind.isNonBlank(extraIds))
+                writeHiddenField(writer, _name, extraIds);
+
             writeHiddenValues(writer);
 
             nested.close();
@@ -374,11 +385,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             {
                 String nextExpectedId = (String) _allocatedIds.get(_allocatedIdIndex);
 
-                throw new StaleLinkException(Tapestry.format(
-                        "Form.too-few-ids",
-                        getExtendedId(),
-                        Integer.toString(expected - _allocatedIdIndex),
-                        nextExpectedId), this);
+                throw new StaleLinkException(FormMessages.formTooFewIds(this, expected
+                        - _allocatedIdIndex, nextExpectedId), this);
             }
 
             IActionListener listener = getListener();
@@ -443,8 +451,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("Form.needs-body-for-event-handlers"), this, null, null);
+            throw new ApplicationRuntimeException(FormMessages.formNeedsBodyForEventHandlers(),
+                    this, null, null);
 
         StringBuffer buffer = new StringBuffer();
 
@@ -571,10 +579,32 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         return service.getLink(cycle, parameter);
     }
 
-    private void writeLinkParameters(IMarkupWriter writer, ILink link, boolean reserveOnly)
+    /**
+     * Writes parameters provided by the {@link ILink}. These parameters define the information
+     * needed to dispatch the request, plus state information. The names of these parameters must be
+     * reserved so that conflicts don't occur that could disrupt the request processing. For
+     * example, if the id 'page' is not reserved, then a conflict could occur with a component whose
+     * id is 'page'. A certain number of ids are always reserved, and we find any additional ids
+     * beyond that set.
+     * 
+     * @return a list of additional reserved ids (not contained within
+     *         {@link ServiceConstants#RESERVED_IDS}.
+     */
+
+    private String writeLinkParameters(IMarkupWriter writer, ILink link, boolean reserveOnly)
     {
         String[] names = link.getParameterNames();
         int count = Tapestry.size(names);
+
+        StringBuffer extraIds = new StringBuffer();
+        String sep = "";
+
+        // All the reserved ids, which are essential for
+        // dispatching the request, are automatically reserved.
+        // Thus, if you have a component with an id of 'service', its element id
+        // will likely be 'service$0'.
+
+        preallocateReservedIds();
 
         for (int i = 0; i < count; i++)
         {
@@ -582,11 +612,27 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
             // Reserve the name.
 
-            _elementIdAllocator.allocateId(name);
+            if (!_standardReservedIds.contains(name))
+            {
+                _elementIdAllocator.allocateId(name);
+
+                extraIds.append(sep);
+                extraIds.append(name);
+
+                sep = ",";
+            }
 
             if (!reserveOnly)
                 writeHiddenFieldsForParameter(writer, link, name);
         }
+
+        return extraIds.toString();
+    }
+
+    private void preallocateReservedIds()
+    {
+        for (int i = 0; i < ServiceConstants.RESERVED_IDS.length; i++)
+            _elementIdAllocator.allocateId(ServiceConstants.RESERVED_IDS[i]);
     }
 
     /**
@@ -656,24 +702,44 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
+     * Invoked when rewinding a form to re-initialize the _allocatedIds and _elementIdAllocator.
      * Converts a string passed as a parameter (and containing a comma separated list of ids) back
-     * into the allocateIds property.
+     * into the allocateIds property. In addition, return the state of the ID allocater back to
+     * where it was at the start of the render.
      * 
      * @see #buildAllocatedIdList()
      * @since 3.0
      */
 
-    protected void reconstructAllocatedIds(String storedIdList)
+    protected void reconstructAllocatedIds(IRequestCycle cycle)
     {
-        if (HiveMind.isBlank(storedIdList))
-            return;
+        String[] values = cycle.getParameters(_name);
 
         StringSplitter splitter = new StringSplitter(',');
 
-        String[] ids = splitter.splitToArray(storedIdList);
+        String renderList = values[0];
+        if (HiveMind.isNonBlank(renderList))
+        {
 
-        for (int i = 0; i < ids.length; i++)
-            _allocatedIds.add(ids[i]);
+            String[] ids = splitter.splitToArray(values[0]);
+
+            for (int i = 0; i < ids.length; i++)
+                _allocatedIds.add(ids[i]);
+        }
+
+        // Now, reconstruct the the initial state of the
+        // id allocator.
+
+        preallocateReservedIds();
+
+        if (values.length > 1)
+        {
+            String extraReservedIds = values[1];
+            String[] ids = splitter.splitToArray(extraReservedIds);
+
+            for (int i = 0; i < ids.length; i++)
+                _elementIdAllocator.allocateId(ids[i]);
+        }
     }
 
     public abstract IValidationDelegate getDelegate();
@@ -699,9 +765,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     public void setEncodingType(String encodingType)
     {
         if (_encodingType != null && !_encodingType.equals(encodingType))
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "Form.encoding-type-contention",
-                    getExtendedId(),
+            throw new ApplicationRuntimeException(FormMessages.encodingTypeContention(
+                    this,
                     _encodingType,
                     encodingType), this, null, null);
 

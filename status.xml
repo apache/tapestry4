@@ -299,6 +299,10 @@ NextGen) be released as version number 3.0.
     
   </action>
 		
+  <action type="update" dev="HLS">
+    Changed to Form to prevent collisions between query parameters supplied
+    by services (in an ILink) and form element ids.
+  </action>    
 	</release>
 
   	
