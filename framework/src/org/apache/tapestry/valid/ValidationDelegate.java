@@ -262,7 +262,7 @@ public class ValidationDelegate implements IValidationDelegate
         if (_trackingMap == null)
             _trackingMap = new HashMap();
 
-        if (_currentComponent == null)
+        if (_currentComponent == null || _currentComponent.getName() == null)
         {
             result = new FieldTracking();
 
