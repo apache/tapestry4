@@ -15,40 +15,37 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN"
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <component-specification
   class="org.apache.tapestry.workbench.components.Border"
   allow-informal-parameters="no">
 
-   <property-specification name="pageName" type="java.lang.String"/>
-   <property-specification name="activePageName" type="java.lang.String"/>
-
   <component id="tabCell" type="Any">
-  	<static-binding name="element" value="td"/>
-  	<binding name="background" expression="midTabAsset"/>
+  	<binding name="element" value="td"/>
+  	<binding name="background" value="ognl:midTabAsset"/>
   </component>
 
 
   <component id="pageLink" type="DirectLink">
-    <binding name="listener" expression="listeners.selectPage"/>
-    <binding name="parameters" expression="pageName"/>
-    <binding name="stateful" expression="false"/>
+    <binding name="listener" value="ognl:listeners.selectPage"/>
+    <binding name="parameters" value="ognl:pageName"/>
+    <binding name="stateful" value="ognl:false"/>
   </component>
 
   <component id="inputRequestDebug" type="Checkbox">
-    <binding name="selected" expression="page.visit.requestDebug"/>
-    <static-binding name="onclick">
+    <binding name="selected" value="ognl:page.visit.requestDebug"/>
+    <binding name="onclick">
     	javascript:this.form.submit();
-    </static-binding>
+    </binding>
   </component>
 
   <component id="inputDisableInspector" type="Checkbox">
-    <binding name="selected" expression="page.visit.disableInspector"/>
-    <static-binding name="onclick">
+    <binding name="selected" value="ognl:page.visit.disableInspector"/>
+    <binding name="onclick">
     	javascript:this.form.submit();
-    </static-binding>
+    </binding>
   </component>
 
   <context-asset name="activeLeft" path="images/tab-active-left.gif"/>

@@ -397,11 +397,12 @@ your class, inside listener methods.
 </note>
 
 <note>
-Properties defined this way may be either transient or persistent.  It is useful to define
-even transient
-properties using the &spec.property; element because doing so ensures that
-the property will be properly reset at the end of the request (before the page
-is returned to the pool for later reuse).
+Properties defined this way may be either transient or persistent. For transient properties (properties
+which do not persist between requests), it is only necessary to specify the property
+if it has an initial value.  Tapestry scans the component class looking for abstract properties that don't
+match up against component parameters or &spec.property; elements; for each of these unclaimed properties,
+a concrete property is created. The property is a transient property, as if a &spec.property; element <em>did</em>
+exist for it.
 </note>
 	
 <p>

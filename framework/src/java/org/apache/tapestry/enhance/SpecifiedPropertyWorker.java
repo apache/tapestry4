@@ -87,9 +87,14 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         // Release 3.0 would squack a bit about overriding non-abstract methods
         // if they exist. 3.1 is less picky ... it blindly adds new methods, possibly
         // overwriting methods in the base component class.
-
-        addAccessor(op, propertyName, propertyType, field);
+        
+        EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType);
+        
         addMutator(op, propertyName, propertyType, field, ps.isPersistent());
+        
+        // TODO: For properties with no initializer, should use the
+        // same kind of logic as AbstractPropertyWorker (and remove some logic
+        // from PageLoader.
     }
 
     // Package private for testing purposes
@@ -108,15 +113,6 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         Class propertyType = op.getPropertyType(propertyName);
 
         return propertyType == null ? Object.class : propertyType;
-    }
-
-    private void addAccessor(EnhancementOperation op, String name, Class type, String field)
-    {
-        String methodName = op.getAccessorMethodName(name);
-
-        MethodSignature sig = new MethodSignature(type, methodName, null, null);
-
-        op.addMethod(Modifier.PUBLIC, sig, "return " + field + ";");
     }
 
     private void addMutator(EnhancementOperation op, String propertyName, Class propertyType,

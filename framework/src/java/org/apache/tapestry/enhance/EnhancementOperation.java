@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.enhance;
 
+import java.util.List;
+
+import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -38,6 +41,13 @@ public interface EnhancementOperation
      */
 
     public void claimProperty(String propertyName);
+
+    /**
+     * Returns a list of the names of existing properties that are not claimed and which have
+     * abstract accessor methods.
+     */
+
+    public List findUnclaimedAbstractProperties();
 
     /**
      * Adds a field to the enhanced class; the field will be private and use the provided name and
@@ -120,4 +130,22 @@ public interface EnhancementOperation
      */
 
     public Class getPropertyType(String name);
+
+    /**
+     * Allows for a kind of distributed construction of a particular method, within a particular
+     * interface. The {@link BodyBuilder}for a given interface method can be obtained and added to.
+     * When the enhanced class is finialized, the method is added with whatever contents are in its
+     * body.  If the base class implements the method, then the method body will
+     * include an initial call to that implementation.
+     * 
+     * <p>
+     * At this time, this works best for void methods.
+     * 
+     * @param interfaceClass the interface containing the method. If the base class does
+     *  not implement the interface, then the enhanced class will have the interface
+     * added.
+     * @param methodSignature the signature of the method to be added.
+     * @returns The {@link BodyBuilder} for the specified method.
+     */
+    public BodyBuilder getBodyBuilderForMethod(Class interfaceClass, MethodSignature methodSignature);
 }
