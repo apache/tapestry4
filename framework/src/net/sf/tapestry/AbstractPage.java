@@ -368,6 +368,14 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         return _visit;
     }
 
+    /**
+     *  Convienience methods, simply invokes
+     *  {@link IEngine#getGlobal()}.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
     public Object getGlobal()
     {
         return _engine.getGlobal();
