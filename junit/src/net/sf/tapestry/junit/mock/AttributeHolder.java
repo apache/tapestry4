@@ -35,7 +35,12 @@ public class AttributeHolder
 
     public Enumeration getAttributeNames()
     {
-        return Collections.enumeration(_attributes.keySet());
+        return getEnumeration(_attributes);
+    }
+
+    protected Enumeration getEnumeration(Map map)
+    {
+        return Collections.enumeration(map.keySet());
     }
 
     public String[] getAttributeNamesArray()

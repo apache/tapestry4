@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<!--
+
+ MockTest driver.
+ 
+-->
+
+<mock-test>
+  <setup>
+    <context name="junit"/>
+  	<servlet name="simple" class="net.sf.tapestry.junit.mock.simple.SimpleServlet"/>
+  	<request/>
+  </setup>
+
+</mock-test>

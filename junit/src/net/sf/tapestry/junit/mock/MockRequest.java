@@ -24,24 +24,38 @@ import javax.servlet.http.HttpSession;
  * 
  **/
 
-public class MockRequest 
-extends AttributeHolder 
-implements HttpServletRequest
+public class MockRequest extends AttributeHolder implements HttpServletRequest
 {
     /**
      *  Map of String[].
      * 
      **/
-    
+
     private Map _parameters = new HashMap();
+
+    /**
+     *  Map of String[]
+     * 
+     **/
+    
+    private Map _headers = new HashMap();
     
     private String _method = "GET";
-    
-    private String _contextPath = "/context";
-    
+
+    private String _contextPath;
+
     private MockContext _servletContext;
     private MockSession _session;
-    
+    private String _servletPath;
+
+    public MockRequest(MockContext servletContext, String servletPath)
+    {
+        _servletContext = servletContext;
+
+        _contextPath = "/" + servletContext.getServletContextName();
+        _servletPath = servletPath;
+    }
+
     public String getAuthType()
     {
         return null;
@@ -62,14 +76,19 @@ implements HttpServletRequest
         return null;
     }
 
-    public Enumeration getHeaders(String arg0)
+    public Enumeration getHeaders(String name)
     {
-        return null;
+        String[] headers = (String[])_headers.get(name);
+        
+        if (headers == null)
+            return Collections.enumeration(Collections.EMPTY_LIST);
+            
+        return Collections.enumeration(Arrays.asList(headers));
     }
 
     public Enumeration getHeaderNames()
     {
-        return null;
+        return getEnumeration(_headers);
     }
 
     public int getIntHeader(String arg0)
@@ -134,15 +153,15 @@ implements HttpServletRequest
 
     public String getServletPath()
     {
-        return null;
+        return _servletPath;
     }
 
-    public HttpSession getSession(boolean arg0)
+    public HttpSession getSession(boolean create)
     {
-        if (_session == null)
+        if (create && _session == null)
             _session = _servletContext.createSession();
-            
-            return _session;
+
+        return _session;
     }
 
     public HttpSession getSession()
@@ -169,7 +188,6 @@ implements HttpServletRequest
     {
         return false;
     }
-
 
     public String getCharacterEncoding()
     {
@@ -198,11 +216,11 @@ implements HttpServletRequest
     public String getParameter(String name)
     {
         String[] values = getParameterValues(name);
-        
+
         if (values == null || values.length == 0)
             return null;
-            
-            return values[0];
+
+        return values[0];
     }
 
     public Enumeration getParameterNames()
@@ -212,14 +230,14 @@ implements HttpServletRequest
 
     public String[] getParameterValues(String name)
     {
-        return (String[])_parameters.get(name);
+        return (String[]) _parameters.get(name);
     }
 
     /** 
      *  Not part of 2.1 API, not used by Tapestry.
      * 
      **/
-    
+
     public Map getParameterMap()
     {
         return null;
@@ -260,14 +278,16 @@ implements HttpServletRequest
         return null;
     }
 
+    private Locale _locale = Locale.ENGLISH;
+
     public Locale getLocale()
     {
-        return null;
+        return _locale;
     }
 
     public Enumeration getLocales()
     {
-        return null;
+        return Collections.enumeration(Collections.singleton(_locale));
     }
 
     public boolean isSecure()
@@ -299,7 +319,7 @@ implements HttpServletRequest
     {
         _parameters.put(name, values);
     }
-    
+
     public void setParameter(String name, String value)
     {
         setParameter(name, new String[] { value });
