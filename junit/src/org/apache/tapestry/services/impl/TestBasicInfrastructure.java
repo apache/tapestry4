@@ -35,8 +35,10 @@ import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ClasspathResourceFactory;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestGlobals;
 import org.apache.tapestry.services.RequestServicer;
+import org.apache.tapestry.services.ResetEventCoordinator;
 import org.easymock.MockControl;
 
 /**
@@ -44,7 +46,8 @@ import org.easymock.MockControl;
  * <ul>
  * <li>{@link org.apache.tapestry.services.impl.ServletInfoImpl}
  * <li>{@link org.apache.tapestry.services.impl.StoreServletInfoFilter}
- * <li>{@link org.apache.tapestry.services.impl.ApplicationGlobalsImpl}.
+ * <li>{@link org.apache.tapestry.services.impl.ApplicationGlobalsImpl}
+ * <li>{@link org.apache.tapestry.services.impl.InfrastructureObjectProvider}
  * </ul>
  *
  * @author Howard Lewis Ship
@@ -197,7 +200,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         p.setSource(source);
 
         assertEquals("bar", p.provideObject(null, null, "foo", null));
-        
+
         verifyControls();
     }
 
@@ -227,7 +230,30 @@ public class TestBasicInfrastructure extends HiveMindTestCase
             assertEquals("failure", ex.getMessage());
             assertEquals(l, ex.getLocation());
         }
-        
+
+        verifyControls();
+    }
+
+    public void testSuccessfulInfrastructureLookup()
+    {
+        MockControl ifrControl = newControl(Infrastructure.class);
+        Infrastructure ifr = (Infrastructure) ifrControl.getMock();
+
+        ResetEventCoordinator coord = (ResetEventCoordinator) newMock(ResetEventCoordinator.class);
+
+        ifr.getResetEventCoordinator();
+        ifrControl.setReturnValue(coord);
+
+        replayControls();
+
+        InfrastructureObjectProvider p = new InfrastructureObjectProvider();
+
+        p.setInfrastructure(ifr);
+
+        Object actual = p.provideObject(null, null, "resetEventCoordinator", null);
+
+        assertSame(coord, actual);
+
         verifyControls();
     }
 }
