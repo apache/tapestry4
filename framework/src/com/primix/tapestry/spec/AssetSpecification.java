@@ -5,7 +5,7 @@ import com.primix.tapestry.asset.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -48,24 +48,6 @@ public class AssetSpecification
 	{
 		this.type = type;
 		this.path = path;
-	}
-
-	/**
-	*  Builds an instance of {@link IAsset} from the specification.
-	*
-	*/
-
-	public IAsset getAsset()
-	{
-		if (type == AssetType.EXTERNAL)
-			return new ExternalAsset(path);
-
-		if (type == AssetType.PRIVATE)
-			return new PrivateAsset(path);
-
-		// Sanity check:  type == null ?
-
-		return new InternalAsset(path);
 	}
 
 	/**

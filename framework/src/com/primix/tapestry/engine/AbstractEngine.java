@@ -594,13 +594,10 @@ public abstract class AbstractEngine
     }
 
     /**
-    *  A temporary method, until we transition Tapestry to Servlet API 2.2,
-    *  where this information is available from the {@link ServletContext}.
+    * Returns the context path, the prefix to apply to any URLs so that they
+    * are recognizing as belonging to the Servlet 2.2 context.
     *
-    *  <p>This is value is obtained from the servlet init parameter
-    *  <code>com.primix.tapestry.context-path</code>.
-    *
-    *  @see InternalAsset
+    *  @see ContextAsset
     */
 
     public String getContextPath()

@@ -4,7 +4,7 @@ import com.primix.foundation.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -42,36 +42,36 @@ import com.primix.foundation.*;
 
 public final class AssetType extends Enum
 {
-	/**
-	*  An external resource.
-	*
-	*/
+    /**
+    *  An external resource.
+    *
+    */
 
-	public static final AssetType EXTERNAL = new AssetType("EXTERNAL");
+    public static final AssetType EXTERNAL = new AssetType("EXTERNAL");
 
-	/**
-	*  An internal resource visible to the <code>ServletContext</code>.
-	*
-	*/
+    /**
+    *  A resource visible to the {@link javax.servlet.ServletContext}.
+    *
+    */
 
-	public static final AssetType INTERNAL = new AssetType("INTERNAL");
+    public static final AssetType CONTEXT = new AssetType("CONTEXT");
 
-	/**
-	*  An internal resource visible only on the classpath.  Typically,
-	*  a resource package in a JAR file alongside the classes.
-	*
-	*/
+    /**
+    *  An internal resource visible only on the classpath.  Typically,
+    *  a resource package in a WAR or JAR file alongside the classes.
+    *
+    */
 
-	public static final AssetType PRIVATE = new AssetType("PRIVATE");
+    public static final AssetType PRIVATE = new AssetType("PRIVATE");
 
-	private AssetType(String name)
-	{
-		super(name);
-	}
+    private AssetType(String name)
+    {
+        super(name);
+    }
 
-	private Object readResolve()
-	{
-    	return getSingleton();
-	}
+    private Object readResolve()
+    {
+        return getSingleton();
+    }
 }
 

@@ -1,10 +1,11 @@
 package com.primix.tapestry;
 
 import java.io.*;
+import java.util.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -34,9 +35,9 @@ import java.io.*;
  *  Representation of a asset (GIF, JPEG, etc.) that may be owned by a
  *  {@link IComponent}.
  *
- * <p>Assets may be external to the web site, may be an application resource
- * (visible to <code>HttpServletRequest.getResource()</code> or internal to
- * the component (in the classpath, visible to <code>Class.getResource()</code>.
+ * <p>Assets may be completely external (i.e., on some other web site), 
+ * contained by the {@link javax.servlet.ServletContext},  
+ * or stored somewhere in the classpath.
  *
  * <p>In the latter two cases, the resource may be localized.
  *
@@ -48,18 +49,21 @@ import java.io.*;
 public interface IAsset
 {
     /**
-     *  Returns a URL for the asset, ready to be inserted into the output HTML.
-     *
-     */
- 
+    *  Returns a URL for the asset, ready to be inserted into the output HTML.
+    *  If the asset can be localized, the localized version (matching the
+    *  {@link Locale} of the current {@link IPage page}) is returned.
+    *
+    */
+
     public String buildURL(IRequestCycle cycle);
 
     /**
-     *  Accesses the localized version of the resource (if possible) and returns it as
-     *  an input stream.
-     *
-     */
- 
+    *  Accesses the localized version of the resource (if possible) and returns it as
+    *  an input stream.  A version of the resource localized to the
+    *  current {@link IPage page} is returned.
+    *
+    */
+
     public InputStream getResourceAsStream(IRequestCycle cycle)
-	throws ResourceUnavailableException;
+    throws ResourceUnavailableException;
 }

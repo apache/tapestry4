@@ -9,7 +9,7 @@ import com.primix.tapestry.binding.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -46,147 +46,168 @@ import com.primix.tapestry.binding.*;
 public class PageLoader
     implements IPageLoader
 {
-	private IEngine engine;
+    private static final int  MAP_SIZE = 11;
+
+    private IEngine engine;
     private IResourceResolver resolver;
-	private ISpecificationSource specificationSource;
+    private ISpecificationSource specificationSource;
     private PageSource pageSource;
-    
-	/**
-	*  Number of components instantiated, excluding the page itself.
-	*
-	*/
 
-	private int count;
+    // The locale of the application, which is also the locale
+    // of the page being loaded.
 
-	/**
-	*  The recursion depth.  A page with no components is zero.  A component on
-	*  a page is one.
-	*
-	*/
+    private Locale locale;
 
-	private int depth;
+    /**
+    *  Number of components instantiated, excluding the page itself.
+    *
+    */
 
-	/**
-	*  The maximum depth reached while building the page.
-	*
-	*/
+    private int count;
 
-	private int maxDepth;
+    /**
+    *  The recursion depth.  A page with no components is zero.  A component on
+    *  a page is one.
+    *
+    */
 
-	/**
-	*  Constructor.
-	*
-	*/
+    private int depth;
 
-	public PageLoader(PageSource pageSource, IEngine engine)
-	{
+    /**
+    *  The maximum depth reached while building the page.
+    *
+    */
+
+    private int maxDepth;
+
+    /**
+    *  Constructor.
+    *
+    */
+
+    public PageLoader(PageSource pageSource, IEngine engine)
+    {
         this.pageSource = pageSource;
         this.engine = engine;
 
-		specificationSource = engine.getSpecificationSource();
+        locale = engine.getLocale();
+
+        specificationSource = engine.getSpecificationSource();
 
         resolver = engine.getResourceResolver();
-	}
+    }
 
-	/**
-	*  Binds properties of the component as defined by the container's specification.
-	*
-	* <p>This implemenation is very simple, we will need a lot more
-	*  sanity checking and error checking in the final version.
-	*
-	*  @param container The containing component.  For a dynamic 
-	*  binding ({@link PropertyBinding}) the property name
-	*  is evaluated with the container as the root. 
-	*  @param component The contained component being bound.
-	*  @param spec The specification of the contained component.
-	* @param contained The contained component specification (from the container's 
-	* {@link ComponentSpecification}).
-	*
-	*/
+    /**
+    *  Binds properties of the component as defined by the container's specification.
+    *
+    * <p>This implemenation is very simple, we will need a lot more
+    *  sanity checking and error checking in the final version.
+    *
+    *  @param container The containing component.  For a dynamic 
+    *  binding ({@link PropertyBinding}) the property name
+    *  is evaluated with the container as the root. 
+    *  @param component The contained component being bound.
+    *  @param spec The specification of the contained component.
+    * @param contained The contained component specification (from the container's 
+    * {@link ComponentSpecification}).
+    * @param propertyBindings a cache of {@link PropertyBinding}s for the container
+    *
+    */
 
-	protected void bind(IComponent container, IComponent component, ComponentSpecification spec, 
-		ContainedComponent contained)
-	throws PageLoaderException
-	{
-		Iterator i;
-		String name;
-		BindingSpecification bspec;
-		IBinding binding;
-		String bindingValue;
-		BindingType type;
-		boolean checkForFormal;
-		ParameterSpecification parameterSpec;
-
-		checkForFormal = !spec.getAllowInformalParameters();
-
-		i = contained.getBindingNames().iterator();
-		while (i.hasNext())
-		{
-			name = (String)i.next();
-
-			// If not allowing informal parameters, check that each binding matches
-			// a formal parameter.
-
-			if (checkForFormal)
-			{
-				if (spec.getParameter(name) == null)
-					throw new PageLoaderException(
-						"Component " + component.getExtendedId() +
-						" allows only formal parameters, binding " +
-						name + " is not allowed.", 
-						this, component, null);
-			}
-
-			bspec = contained.getBinding(name);
-
-			// The type determines how to interpret the value:
-			// As a simple static String
-			// As a nested property name (relative to the component)
-			// As the name of a binding inherited from the containing component.
-
-			type = bspec.getType();
-			bindingValue = bspec.getValue();
-
-            binding = convert(type, bindingValue, container);
-
-			if (binding != null)
-				component.setBinding(name, binding);
-		}
-
-		// Now, check that all required parameters are bound.
-
-		i = spec.getParameterNames().iterator();
-		while (i.hasNext())
-		{
-			name = (String)i.next();
-
-			parameterSpec = spec.getParameter(name);
-
-			if (parameterSpec.isRequired() &&
-				component.getBinding(name) == null)
-				throw new PageLoaderException(
-					"Required parameter " + name + " of component " 
-					+ component.getExtendedId() +
-					" is not bound.",
-					this, component, null);
-		}
-
-	}
-    
-    private IBinding convert(BindingType type, String bindingValue,
-            IComponent container)
+    private void bind(IComponent container, IComponent component, ComponentSpecification spec, 
+        ContainedComponent contained, Map propertyBindings)
+    throws PageLoaderException
     {
-        // The most common type.
+        Iterator i;
+        String name;
+        BindingSpecification bspec;
+        IBinding binding;
+        String bindingValue;
+        BindingType type;
+        boolean checkForFormal;
+        ParameterSpecification parameterSpec;
+
+        checkForFormal = !spec.getAllowInformalParameters();
+
+        i = contained.getBindingNames().iterator();
+        while (i.hasNext())
+        {
+            name = (String)i.next();
+
+            // If not allowing informal parameters, check that each binding matches
+            // a formal parameter.
+
+            if (checkForFormal)
+            {
+                if (spec.getParameter(name) == null)
+                    throw new PageLoaderException(
+                        "Component " + component.getExtendedId() +
+                        " allows only formal parameters, binding " +
+                        name + " is not allowed.", 
+                        this, component, null);
+            }
+
+            bspec = contained.getBinding(name);
+
+            // The type determines how to interpret the value:
+            // As a simple static String
+            // As a nested property name (relative to the component)
+            // As the name of a binding inherited from the containing component.
+
+            type = bspec.getType();
+            bindingValue = bspec.getValue();
+
+            binding = convert(type, bindingValue, container, propertyBindings);
+
+            if (binding != null)
+                component.setBinding(name, binding);
+        }
+
+        // Now, check that all required parameters are bound.
+
+        i = spec.getParameterNames().iterator();
+        while (i.hasNext())
+        {
+            name = (String)i.next();
+
+            parameterSpec = spec.getParameter(name);
+
+            if (parameterSpec.isRequired() &&
+                component.getBinding(name) == null)
+                throw new PageLoaderException(
+                    "Required parameter " + name + " of component " 
+                    + component.getExtendedId() +
+                    " is not bound.",
+                    this, component, null);
+        }
+
+    }
+
+    private IBinding convert(BindingType type, String bindingValue,
+        IComponent container, Map propertyBindings)
+    {
+        // The most common type.  propertyBindings is a cache of
+        // property bindings for the container, we re-use
+        // the bindings for the same property path.
 
         if (type == BindingType.DYNAMIC)
-    	    return new PropertyBinding(container, bindingValue);
+        {
+            IBinding result = (IBinding)propertyBindings.get(bindingValue);
 
+            if (result == null)
+            {
+                result = new PropertyBinding(container, bindingValue);
+                propertyBindings.put(bindingValue, result);
+            }
+
+            return result;
+        }
 
         // static and field bindings are pooled.  This allows the
         // same instance to be used with many components.
 
         if (type == BindingType.STATIC)
-    	    return pageSource.getStaticBinding(bindingValue);
+            return pageSource.getStaticBinding(bindingValue);
 
         if (type == BindingType.FIELD)
             return pageSource.getFieldBinding(bindingValue);
@@ -194,104 +215,106 @@ public class PageLoader
         // Otherwise, its an inherited binding.  Dig it out of the container.
         // This may return null if the container doesn't have the named binding.
 
-    	return container.getBinding(bindingValue);		
+        return container.getBinding(bindingValue);		
 
     }
 
-	/**
-	*  Sets up a component.  This involves:
-	*  <ul>
-	* <li>Instantiating any contained components.
-	* <li>Add the contained components to the container.
-	* <li>Setting up bindings between container and containees.
-	* <li>Construct the containees recursively.
-	* </ul>
-	*
-	* @param page The page on which the container exists.
-	* @param container The component to be set up.
-	* @param containerSpec The specification for the container.
-	*
-	*/
-
-	protected void constructComponent(IPage page, IComponent container,
-		ComponentSpecification containerSpec)
-	throws PageLoaderException
-	{
-		IComponent component;
-		ContainedComponent contained;
-		ComponentSpecification  spec;
-		String id;
-		Iterator i;
-		String type;
-
-		depth++;
-		if (depth > maxDepth)
-			maxDepth = depth;
-
-		i = containerSpec.getComponentIds().iterator();
-		while (i.hasNext())
-        {		
-			id = (String)i.next();
-
-			// Get the sub-component specification from the
-			// container's specification.
-
-			contained = containerSpec.getComponent(id);
-
-			// Get the component specification for the contained
-			// component.
-
-			try
-			{
-				spec = specificationSource.getSpecification(contained.getType());
-			}
-			catch (ResourceUnavailableException re)
-			{
-				throw new PageLoaderException(re.getMessage(), this, container, re);
-			}
-
-			// Instantiate the contained component.
-
-			component = instantiateComponent(page, container, id, spec);
-
-			// Add it, by name, to the container.
-
-			container.addComponent(component);
-
-			// Bind its parameters.
-
-			bind(container, component, spec, contained);
-
-			// Add the new component to the queue of components to be
-			// set up.
-
-			constructComponent(page, component, spec);
-		}
-
-		if (container instanceof ILifecycle)
-			page.addLifecycleComponent((ILifecycle)container);
-
-		depth--;
-
-	}
-
-	/**
-	*  Instantitates a component from its specification. We instantiate 
-	* the component object, then set its specification, page, container and id.
+    /**
+    *  Sets up a component.  This involves:
+    *  <ul>
+    * <li>Instantiating any contained components.
+    * <li>Add the contained components to the container.
+    * <li>Setting up bindings between container and containees.
+    * <li>Construct the containees recursively.
+    * </ul>
     *
-	*  @see AbstractComponent
-	*/
+    * @param page The page on which the container exists.
+    * @param container The component to be set up.
+    * @param containerSpec The specification for the container.
+    *
+    */
 
-	protected IComponent instantiateComponent(IPage page, IComponent container, 
-		String id, ComponentSpecification spec)
-	throws PageLoaderException
-	{
-    	String className;
-		Class componentClass;
-		IComponent result = null;
+    private void constructComponent(IPage page, IComponent container,
+        ComponentSpecification containerSpec)
+    throws PageLoaderException
+    {
+        IComponent component;
+        ContainedComponent contained;
+        ComponentSpecification  spec;
+        String id;
+        Iterator i;
+        String type;
+        Map propertyBindings = new HashMap(MAP_SIZE);
 
-		className = spec.getComponentClassName();
-		componentClass = resolver.findClass(className);
+        depth++;
+        if (depth > maxDepth)
+            maxDepth = depth;
+
+        i = containerSpec.getComponentIds().iterator();
+        while (i.hasNext())
+        {		
+            id = (String)i.next();
+
+            // Get the sub-component specification from the
+            // container's specification.
+
+            contained = containerSpec.getComponent(id);
+
+            // Get the component specification for the contained
+            // component.
+
+            try
+            {
+                spec = specificationSource.getSpecification(contained.getType());
+            }
+            catch (ResourceUnavailableException re)
+            {
+                throw new PageLoaderException(re.getMessage(), this, container, re);
+            }
+
+            // Instantiate the contained component.
+
+            component = instantiateComponent(page, container, id, spec);
+
+            // Add it, by name, to the container.
+
+            container.addComponent(component);
+
+            // Bind its parameters.
+
+            bind(container, component, spec, contained, propertyBindings);
+
+            // Recursively construct the component
+
+            constructComponent(page, component, spec);
+        }
+
+        addAssets(container, containerSpec); 
+
+        if (container instanceof ILifecycle)
+            page.addLifecycleComponent((ILifecycle)container);
+
+        depth--;
+
+    }
+
+    /**
+    *  Instantitates a component from its specification. We instantiate 
+    * the component object, then set its specification, page, container and id.
+    *
+    *  @see AbstractComponent
+    */
+
+    private IComponent instantiateComponent(IPage page, IComponent container, 
+        String id, ComponentSpecification spec)
+    throws PageLoaderException
+    {
+        String className;
+        Class componentClass;
+        IComponent result = null;
+
+        className = spec.getComponentClassName();
+        componentClass = resolver.findClass(className);
 
         try
         {
@@ -305,10 +328,10 @@ public class PageLoader
         }
         catch (ClassCastException e)
         {
-        	throw new PageLoaderException(
-        		"Class " + className + 
-        		" does not implement the IComponent interface.", 
-        		this, container, e);
+            throw new PageLoaderException(
+                "Class " + className + 
+                " does not implement the IComponent interface.", 
+                this, container, e);
         }
         catch (Exception e)
         {
@@ -317,32 +340,32 @@ public class PageLoader
                 this, container, e);
         }
 
-		count++;
+        count++;
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	*  Instantitates a page from its specification.  
+    /**
+    *  Instantitates a page from its specification.  
     *
     *  
     * We instantiate the page object, then set its specification, 
     * name and locale.
     *
-	* @see IEngine
-	* @see ChangeObserver
-	*/
+    * @see IEngine
+    * @see ChangeObserver
+    */
 
-	protected IPage instantiatePage(String name, ComponentSpecification spec)
-	throws PageLoaderException
-	{
-    	String className;
-		Class pageClass;
-		IPage result = null;
+    private IPage instantiatePage(String name, ComponentSpecification spec)
+    throws PageLoaderException
+    {
+        String className;
+        Class pageClass;
+        IPage result = null;
 
-		className = spec.getComponentClassName();
-        
-		pageClass = resolver.findClass(className);
+        className = spec.getComponentClassName();
+
+            pageClass = resolver.findClass(className);
 
         try
         {
@@ -350,14 +373,14 @@ public class PageLoader
 
             result.setSpecification(spec);
             result.setName(name);
-            result.setLocale(engine.getLocale());
+            result.setLocale(locale);
         }
         catch (ClassCastException e)
         {
-        	throw new PageLoaderException(
-        		"Class " + className + 
-        		" does not implement the IPage interface.", 
-        		this, name, e);
+            throw new PageLoaderException(
+                "Class " + className + 
+                " does not implement the IPage interface.", 
+                this, name, e);
         }
         catch (Exception e)
         {
@@ -367,51 +390,69 @@ public class PageLoader
         }
 
         return result;
-	}
+    }
 
-	public IPage loadPage(String name, String type)
-	throws PageLoaderException
-	{
-		IPage page = null;
-		ComponentSpecification specification;
+    public IPage loadPage(String name, String type)
+    throws PageLoaderException
+    {
+        IPage page = null;
+        ComponentSpecification specification;
 
-		count = 0;
-		depth = 0;
-		maxDepth = 0;
+        count = 0;
+        depth = 0;
+        maxDepth = 0;
 
-		try
-		{			
-			specification = specificationSource.getSpecification(type);
+        try
+        {			
+            specification = specificationSource.getSpecification(type);
 
-			page = instantiatePage(name, specification);
+            page = instantiatePage(name, specification);
 
-			constructComponent(page, page, specification);
-		}
-		catch (ResourceUnavailableException e)
-		{
-			throw new PageLoaderException(e.getMessage(), this, name, e);
-		}
+            constructComponent(page, page, specification);
+        }
+        catch (ResourceUnavailableException e)
+        {
+            throw new PageLoaderException(e.getMessage(), this, name, e);
+        }
 
-		return page;
-	}
+        return page;
+    }
 
-	/**
-	*  Updates this <code>PageLoader</code> to build pages for the specified
-	*  {@link IEngine engine}.  This updates the specificationSource for
-	*  this page loader from the engine.
-	*
-	*  @param engine The {@link IEngine} to load pages for, or null
-	*  to release references to the application and specificationSource.
-	*/
+    private void addAssets(IComponent component, ComponentSpecification specification)
+    {
+        Iterator i = specification.getAssetNames().iterator();
 
-	public void setEngine(IEngine engine)
-	{
-		this.engine = engine;
+        while (i.hasNext())
+        {
+            String name = (String)i.next();
+            AssetSpecification assetSpec = specification.getAsset(name);
+            IAsset asset = convert(assetSpec);
 
-		if (engine == null)
-			specificationSource = null;
-		else
-			specificationSource = engine.getSpecificationSource();
-	}
+            component.addAsset(name, asset);
+        }
+    }
+
+    /**
+    *  Builds an instance of {@link IAsset} from the specification.
+    *
+    */
+
+    private IAsset convert(AssetSpecification spec)
+    {
+        AssetType type = spec.getType();
+        String path = spec.getPath();
+
+    	if (type == AssetType.EXTERNAL)
+    		return pageSource.getExternalAsset(path);
+
+    	if (type == AssetType.PRIVATE)
+    		return pageSource.getPrivateAsset(path);
+
+    	// Could use a sanity check for  type == null,
+        // but instead we assume its a context asset.
+
+    	return pageSource.getContextAsset(path);
+    }
+
 }
 

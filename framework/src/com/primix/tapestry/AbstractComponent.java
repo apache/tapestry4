@@ -7,7 +7,7 @@ import com.primix.tapestry.spec.*;
 import java.util.*;
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -138,6 +138,15 @@ public abstract class AbstractComponent implements IComponent
 	private Map assets;
 	private Map safeAssets;
 	
+
+    public void addAsset(String name, IAsset asset)
+    {
+        if (assets == null)
+            assets = new HashMap(MAP_SIZE);
+
+        assets.put(name, asset);
+    }
+
 	/**
 	*  Used as a set to filter out informal parameters.  The value is
 	*  always Boolean.TRUE (we're testing for existence).  The values
@@ -733,35 +742,6 @@ public abstract class AbstractComponent implements IComponent
 		bindings.put(name, binding);
 	}
 
-	private void setupAssets()
-	{
-		Iterator i;
-		String name;
-		AssetSpecification spec;
-		IAsset asset;
-
-		i = specification.getAssetNames().iterator();
-        
-		while (i.hasNext())
-		{
-			name = (String)i.next();
-            
-			spec = (AssetSpecification)specification.getAsset(name);
-			asset = spec.getAsset();
-
-			if (assets == null)
-				assets = new HashMap(MAP_SIZE);
-
-			assets.put(name, asset);
-		}	
-
-        // If the component has no assets, then create a tiny, empty
-        // HashMap.  Under JDK 1.3, we'd use Collections.EMPTY_MAP.
-		
-	    if (assets == null)
-	        assets = new HashMap(1);		
-	}
-
 	public String toString()
 	{
 		StringBuffer buffer;
@@ -788,7 +768,7 @@ public abstract class AbstractComponent implements IComponent
 		// we're trying for JDK 1.2 compatibility.
 
 		if (components == null)
-			return new HashMap();	
+			return new HashMap(1);	
 		
 		if (safeComponents == null)
 			safeComponents = Collections.unmodifiableMap(components);
@@ -802,7 +782,7 @@ public abstract class AbstractComponent implements IComponent
         // we're trying for JDK 1.2 compatibility.
         
     	if (assets == null)
-        	setupAssets();
+            return new HashMap(1);
             		        
 		if (safeAssets == null)
 			safeAssets = Collections.unmodifiableMap(assets);

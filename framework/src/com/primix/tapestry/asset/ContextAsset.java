@@ -1,8 +1,10 @@
 package com.primix.tapestry.asset;
 
-import java.net.URL;
-import com.primix.tapestry.*;
+import java.net.*;
+import javax.servlet.*;
 import java.io.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.*;
 import java.util.*;
 
 /*
@@ -34,110 +36,86 @@ import java.util.*;
  */
 
 /**
- *  An implementation of {@link IAsset} for localizable assets within
- *  the JVM's classpath.
- *
- *  <p>The localization code here is largely cut-and-paste from 
- *  {@link ContextAsset}.
+ *  Internal asset; one that is visible to the servlet container directly.
+ *  In retrospect, a better name for this would be <code>ContextAsset</code>
+ *  since the path is relative to the {@link ServletContext} containing
+ *  the application.
  *
  *  @author Howard Ship
  *  @version $Id$
  */
 
 
-public class PrivateAsset implements IAsset
+public class ContextAsset implements IAsset
 {
-    private AssetExternalizer externalizer;
+    private static class Localization
+    {
+        String assetPath;
+        String URL;
 
-    private String resourcePath;
+        Localization(String assetPath, String URL)
+        {
+            this.assetPath = assetPath;
+            this.URL = URL;
+        }
+    }
 
     private static final int MAP_SIZE = 7;
 
     /**
-    *  Map, keyed on Locale, value is the localized resourcePath (as a String)
-    */
+     *  Map, keyed on Locale, value is an instance of Localization
+     */
 
     private Map localizations;
+    private String assetPath;
 
-    public PrivateAsset(String resourcePath)
+    public ContextAsset(String assetPath)
     {
-        this.resourcePath = resourcePath;
+        this.assetPath = assetPath;
     }
 
     /**
-    *  Gets the localized version of the resource.  Build
-    *  the URL for the resource.  If possible, the application's
-    *  {@link AssetExternalizer} is located, to copy the resource to
-    *  a directory visible to the web server.
+    *  Generates a URL for the client to retrieve the asset.  The context path
+    *  is prepended to the asset path, which means that assets deployed inside
+    *  web applications will still work (if things are configured properly).
     *
     */
 
     public String buildURL(IRequestCycle cycle)
     {
-        String[] parameters;
-        String externalURL;
-        IEngineService service;
-        String URL;
-        String localizedResourcePath;
-
+        Localization localization;
+        
         try
         {
-            localizedResourcePath = findLocalization(cycle);
+            localization = findLocalization(cycle);
         }
         catch (ResourceUnavailableException ex)
         {
             throw new ApplicationRuntimeException(ex);
         }
 
-        if (externalizer == null)
-            externalizer = AssetExternalizer.get(cycle);
-
-        try
-        {
-            externalURL = externalizer.getURL(localizedResourcePath);
-        }
-        catch (ResourceUnavailableException e)
-        {
-            throw new ApplicationRuntimeException(
-                "Could not build URL for private asset " + localizedResourcePath + ".", e);
-        }
-
-        if (externalURL != null)
-            return externalURL;
-
-        // Otherwise, the service is responsible for dynamically retrieving the
-        // resource.	
-
-        parameters = new String[] { localizedResourcePath };
-
-        service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
-
-        URL = service.buildURL(cycle, null, parameters);
-
-        // It would be nice to cache this, but a client without cookies will need
-        // it URL encoded for them, and one without won't, so we can't share
-        // this across clients.
-
-        return cycle.encodeURL(URL);
-
+        return localization.URL;
     }
 
     public InputStream getResourceAsStream(IRequestCycle cycle)
     throws ResourceUnavailableException
     {
+        ServletContext context;
+        URL url;
+        Localization localization = findLocalization(cycle);
+
+        context = cycle.getRequestContext().getServlet().getServletContext();
+
         try
         {
-            IResourceResolver resolver = cycle.getEngine().getResourceResolver();
-
-
-            URL url = resolver.getResource(findLocalization(cycle));
+            url = context.getResource(localization.assetPath);
 
             return url.openStream();
         }
         catch (Exception ex)
         {
-            throw new ResourceUnavailableException("Could not access private asset " +
-                resourcePath + ".", ex);
+            throw new ResourceUnavailableException("Could not access internal asset " +
+                assetPath + ".", ex);
         }
     }
 
@@ -150,7 +128,7 @@ public class PrivateAsset implements IAsset
     *
     */
 
-    private String findLocalization(IRequestCycle cycle)
+    private Localization findLocalization(IRequestCycle cycle)
     throws ResourceUnavailableException
     {
         Locale locale = cycle.getPage().getLocale();
@@ -162,7 +140,7 @@ public class PrivateAsset implements IAsset
         String country = null;
         int start = 2;
         String suffix;
-        String result;
+        Localization result;
 
         if (localizations == null)
         {
@@ -175,17 +153,17 @@ public class PrivateAsset implements IAsset
 
         synchronized(localizations)
         {
-            result = (String)localizations.get(locale);
+            result = (Localization)localizations.get(locale);
             if (result != null)
                 return result;
         }
 
-        dotx = resourcePath.lastIndexOf('.');
-        suffix = resourcePath.substring(dotx);
+        dotx = assetPath.lastIndexOf('.');
+        suffix = assetPath.substring(dotx);
 
         buffer = new StringBuffer (dotx + 30);
 
-        buffer.append(resourcePath.substring(0, dotx));
+        buffer.append(assetPath.substring(0, dotx));
         rawLength = buffer.length();
 
         country = locale.getCountry();
@@ -199,7 +177,7 @@ public class PrivateAsset implements IAsset
         if (language.length() > 0)
             start--;
 
-        IResourceResolver resolver = cycle.getEngine().getResourceResolver();
+        ServletContext context = cycle.getRequestContext().getServlet().getServletContext();
 
         // On pass #0, we use language code and country code
         // On pass #1, we use language code
@@ -227,28 +205,44 @@ public class PrivateAsset implements IAsset
 
             candidatePath = buffer.toString();
 
-            if (resolver.getResource(candidatePath) != null)
+            try
             {
-                synchronized(localizations)
+                if (context.getResource(candidatePath) != null)
                 {
-                    localizations.put(locale, candidatePath);
-                }
+                    result = new Localization(candidatePath,
+                                cycle.getEngine().getContextPath() + candidatePath);
 
-                return candidatePath;
+                    synchronized(localizations)
+                    {
+                        localizations.put(locale, result);
+                    }
+
+                    return result;
+                }
+            }
+            catch (MalformedURLException ex)
+            {
+                // We just ignore this!
             }
 
         }
 
         throw new ResourceUnavailableException
-            ("Could not find private asset " +
-            resourcePath + " for locale " + locale + ".");
+            ("Could not find internal asset " +
+                assetPath + " for locale " + locale + ".");
 
     }
 
-
     public String toString()
     {
-        return "PrivateAsset[" + resourcePath + "]";
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("ContextAsset[");
+        buffer.append(assetPath);
+
+        buffer.append(']');
+
+        return buffer.toString();
     }
 }
 
