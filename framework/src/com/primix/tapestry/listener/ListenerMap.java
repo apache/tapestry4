@@ -232,11 +232,7 @@ public class ListenerMap
 
 		if (method == null)
 			throw new ApplicationRuntimeException(
-				"Object "
-					+ target
-					+ " does not implement a listener method named '"
-					+ name
-					+ "'.");
+				Tapestry.getString("ListenerMap.object-missing-method", target, name));
 
 		if (method.getParameterTypes().length == 1)
 			return new SyntheticListener(method);
@@ -385,12 +381,9 @@ public class ListenerMap
 		catch (Exception ex)
 		{
 			throw new ApplicationRuntimeException(
-				"Unable to invoke method "
-					+ method.getName()
-					+ " on "
-					+ target
-					+ ": "
-					+ ex.getMessage(),
+				Tapestry.getString(
+					"ListenerMap.unable-to-invoke-method",
+					new Object[] { method.getName(), target, ex.getMessage()}),
 				ex);
 		}
 	}

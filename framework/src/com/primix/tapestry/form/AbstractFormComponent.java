@@ -30,6 +30,7 @@ import com.primix.tapestry.AbstractComponent;
 import com.primix.tapestry.IForm;
 import com.primix.tapestry.IRequestCycle;
 import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.Tapestry;
 
 /**
  *  A base class for building components that correspond to HTML form elements.
@@ -58,7 +59,7 @@ public abstract class AbstractFormComponent
 
 		if (result == null)
 			throw new RequestCycleException(
-				"This component must be contained within a Form.",
+				Tapestry.getString("AbstractFormComponent.must-be-contained-by-form"),
 				this);
 
 		return result;

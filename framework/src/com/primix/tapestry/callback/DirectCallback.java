@@ -26,7 +26,12 @@
 
 package com.primix.tapestry.callback;
 
-import com.primix.tapestry.*;
+import com.primix.tapestry.IComponent;
+import com.primix.tapestry.IDirect;
+import com.primix.tapestry.IPage;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.Tapestry;
 
 /**
  *  Simple callback for re-invoking a {@link IDirect} component trigger..
@@ -103,7 +108,7 @@ public class DirectCallback implements ICallback
 		catch (ClassCastException ex)
 		{
 			throw new RequestCycleException(
-				"Component " + component.getExtendedId() + " is not type IDirect.",
+				Tapestry.getString("DirectCallback.wrong-type", component.getExtendedId()),
 				component,
 				ex);
 		}

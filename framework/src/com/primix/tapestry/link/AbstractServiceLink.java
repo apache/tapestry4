@@ -109,7 +109,7 @@ public abstract class AbstractServiceLink
 
 		if (service == null)
 			throw new RequestCycleException(
-				"No engine service named " + serviceName + ".",
+				Tapestry.getString("AbstractServiceLink.missing-service", serviceName),
 				this);
 
 		// Perform the major work of building the URL.
@@ -346,7 +346,7 @@ public abstract class AbstractServiceLink
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException(
-				"IServiceLink components may not be nested.",
+				Tapestry.getString("AbstractServiceLink.no-nesting"),
 				this);
 
 		try
@@ -449,7 +449,7 @@ public abstract class AbstractServiceLink
 		{
 			if (body == null)
 				throw new RequestCycleException(
-					"A link component with multiple functions for a single event type must be wrapped by a Body.",
+					Tapestry.getString("AbstractServiceLink.events-need-body"),
 					this,
 					null);
 

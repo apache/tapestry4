@@ -147,7 +147,7 @@ public class Radio extends AbstractComponent
 		group = RadioGroup.get(cycle);
 		if (group == null)
 			throw new RequestCycleException(
-				"Radio component must be contained within a RadioGroup.",
+				Tapestry.getString("Radio.must-be-contained-by-group"),
 				this);
 
 		// The group determines rewinding from the form.

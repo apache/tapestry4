@@ -93,7 +93,7 @@ public class ShowEngine extends BaseComponent implements PageDetachListener
 		catch (IOException ex)
 		{
 			throw new ApplicationRuntimeException(
-				"Could not serialize the application engine.",
+				Tapestry.getString("ShowEngine.could-not-serialize"),
 				ex);
 		}
 		finally

@@ -160,12 +160,12 @@ public class Insert extends AbstractComponent
 			{
 				insert = format.format(value);
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
 				throw new RequestCycleException(
-					"Unable to format object " + value + ".",
+					Tapestry.getString("Insert.unable-to-format", value),
 					this,
-					e);
+					ex);
 			}
 		}
 

@@ -30,6 +30,7 @@ import java.io.Serializable;
 import java.util.EventObject;
 
 import com.primix.tapestry.IComponent;
+import com.primix.tapestry.Tapestry;
 
 /**
  * Event which describes a change to a particular {@link IComponent}.
@@ -124,15 +125,11 @@ public class ObservedChangeEvent extends EventObject
 
 		if (propertyName == null)
 			throw new IllegalArgumentException(
-				"Must specify non-null propertyName when creating "
-					+ "ObservedChangeEvent for "
-					+ component
-					+ ".");
+				Tapestry.getString("ObservedChangeEvent.null-property-name", component));
 
 		if (newValue != null && !(newValue instanceof Serializable))
 			throw new IllegalArgumentException(
-				"Must specify a serializable object as the new value of a property "
-					+ "when creating an ObservedChangeEvent.");
+				Tapestry.getString("ObservedChangeEvent.must-be-serializable"));
 
 		this.component = component;
 		this.propertyName = propertyName;

@@ -29,6 +29,7 @@ package com.primix.tapestry.form;
 import com.primix.tapestry.*;
 
 // Appease Javadoc
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.html.*;
 
@@ -226,7 +227,7 @@ public class RadioGroup extends AbstractFormComponent
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException(
-				"RadioGroup components may not be nested.",
+				Tapestry.getString("RadioGroup.may-not-nest"),
 				this);
 
 		// It isn't enough to know whether the cycle in general is rewinding, need to know

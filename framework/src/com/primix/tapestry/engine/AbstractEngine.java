@@ -320,7 +320,8 @@ public abstract class AbstractEngine
 			String[] parameters)
 		{
 			if (parameters == null || parameters.length != 1)
-				throw new IllegalArgumentException("Service action requires one parameter.");
+				throw new IllegalArgumentException(
+					Tapestry.getString("service-single-parameter", ACTION_SERVICE));
 
 			IPage componentPage = component.getPage();
 			IPage responsePage = cycle.getPage();
@@ -372,7 +373,8 @@ public abstract class AbstractEngine
 			String[] parameters)
 		{
 			if (parameters == null || parameters.length != 1)
-				throw new IllegalArgumentException("Service page requires exactly one parameter.");
+				throw new IllegalArgumentException(
+					Tapestry.getString("service-single-parameter", PAGE_SERVICE));
 
 			return assembleGesture(getServletPath(), PAGE_SERVICE, parameters, null);
 		}
@@ -414,7 +416,8 @@ public abstract class AbstractEngine
 			String[] parameters)
 		{
 			if (parameters != null && parameters.length > 0)
-				throw new IllegalArgumentException("Service home requires no parameters.");
+				throw new IllegalArgumentException(
+					Tapestry.getString("service-no-parameters", HOME_SERVICE));
 
 			return assembleGesture(getServletPath(), HOME_SERVICE, null, null);
 		}
@@ -449,7 +452,8 @@ public abstract class AbstractEngine
 			String[] parameters)
 		{
 			if (parameters != null && parameters.length > 0)
-				throw new IllegalArgumentException("Service restart requires no parameters.");
+				throw new IllegalArgumentException(
+					Tapestry.getString("service-no-parameters", RESTART_SERVICE));
 
 			return assembleGesture(getServletPath(), RESTART_SERVICE, null, null);
 		}
@@ -484,7 +488,8 @@ public abstract class AbstractEngine
 			String[] parameters)
 		{
 			if (parameters != null && parameters.length > 0)
-				throw new IllegalArgumentException("Service reset requires no parameters.");
+				throw new IllegalArgumentException(
+					Tapestry.getString("service-no-parameters", RESET_SERVICE));
 
 			serviceContext[0] = component.getPage().getName();
 
@@ -592,12 +597,16 @@ public abstract class AbstractEngine
 			// Worst case scenario.  The exception page itself is broken, leaving
 			// us with no option but to write the cause to the output.
 
-			reportException("Unable to process client request.", cause);
+			reportException(
+				Tapestry.getString("AbstractEngine.unable-to-process-client-request"),
+				cause);
 
 			// Also, write the exception thrown when redendering the exception
 			// page, so that can get fixed as well.
 
-			reportException("Tapestry unable to present exception page.", ex);
+			reportException(
+				Tapestry.getString("AbstractEngine.unable-to-present-exception-page"),
+				ex);
 
 			// And throw the exception.
 
@@ -711,7 +720,7 @@ public abstract class AbstractEngine
 		// from the servlet.
 
 		if (specification == null)
-			buffer.append("<Unknown specification>");
+			buffer.append(Tapestry.getString("AbstractEngine.unknown-specification"));
 		else
 			buffer.append(specification.getName());
 	}
@@ -771,7 +780,7 @@ public abstract class AbstractEngine
 
 		if (result == null)
 			throw new ApplicationRuntimeException(
-				"Engine does not implement a service named " + name + ".");
+				Tapestry.getString("AbstractEngine.unknown-service", name));
 
 		if (services == null)
 			services = new HashMap(MAP_SIZE);
@@ -1027,11 +1036,13 @@ public abstract class AbstractEngine
 
 			output = new ResponseOutputStream(context.getResponse());
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			reportException("Tapestry unable to begin processing request.", e);
+			reportException(
+				Tapestry.getString("AbstractEngine.unable-to-begin-request"),
+				ex);
 
-			throw new ServletException(e.getMessage(), e);
+			throw new ServletException(ex.getMessage(), ex);
 		}
 
 		try
@@ -1198,7 +1209,8 @@ public abstract class AbstractEngine
 			count = serviceContext.length;
 
 		if (count != 3 && count != 4)
-			throw new ApplicationRuntimeException("Service action requires either three or four service context parameters.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("AbstractEngine.action-context-parameters"));
 
 		int i = 0;
 		String pageName = serviceContext[i++];
@@ -1229,11 +1241,9 @@ public abstract class AbstractEngine
 		catch (ClassCastException ex)
 		{
 			throw new RequestCycleException(
-				"Component "
-					+ componentPageName
-					+ "/"
-					+ targetIdPath
-					+ " does not implement the IAction interface.",
+				Tapestry.getString(
+					"AbstractEngine.action-component-wrong-type",
+					component.getExtendedId()),
 				component,
 				ex);
 		}
@@ -1302,7 +1312,8 @@ public abstract class AbstractEngine
 			count = serviceContext.length;
 
 		if (count != 2 && count != 3)
-			throw new ApplicationRuntimeException("Service direct requires two or three service context parameters.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("AbstractEngine.direct-context-parameters"));
 
 		int i = 0;
 		String pageName = serviceContext[i++];
@@ -1345,9 +1356,9 @@ public abstract class AbstractEngine
 		catch (ClassCastException ex)
 		{
 			throw new RequestCycleException(
-				"Component "
-					+ component.getExtendedId()
-					+ " does not implement the IDirect interface.",
+				Tapestry.getString(
+					"AbstractEngine.direct-component-wrong-type",
+					component.getExtendedId()),
 				component,
 				ex);
 		}
@@ -1377,7 +1388,8 @@ public abstract class AbstractEngine
 		RequestContext context = cycle.getRequestContext();
 
 		if (serviceContext == null || serviceContext.length != 1)
-			throw new ApplicationRuntimeException("Service page requires exactly one service context parameter.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("service-single-parameter", IEngineService.PAGE_SERVICE));
 
 		String pageName = serviceContext[0];
 
@@ -1420,14 +1432,15 @@ public abstract class AbstractEngine
 		throws RequestCycleException, ServletException, IOException
 	{
 		if (serviceContext == null || serviceContext.length != 1)
-			throw new ApplicationRuntimeException("Service reset requires exactly one service context parameter.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("service-single-parameter", IEngineService.RESET_SERVICE));
 
 		String pageName = serviceContext[0];
 
 		IMonitor monitor = cycle.getMonitor();
 
 		if (monitor != null)
-			monitor.serviceBegin("reset", pageName);
+			monitor.serviceBegin(IEngineService.RESET_SERVICE, pageName);
 
 		clearCachedData();
 
@@ -1442,7 +1455,7 @@ public abstract class AbstractEngine
 		render(cycle, output);
 
 		if (monitor != null)
-			monitor.serviceEnd("reset");
+			monitor.serviceEnd(IEngineService.RESET_SERVICE);
 	}
 
 	/**
@@ -1736,7 +1749,9 @@ public abstract class AbstractEngine
 			}
 			catch (Throwable t)
 			{
-				reportException("Unable to cleanup page " + name + ".", t);
+				reportException(
+					Tapestry.getString("AbstractEngine.unable-to-cleanup-page", name),
+					t);
 			}
 		}
 	}
@@ -1819,9 +1834,9 @@ public abstract class AbstractEngine
 		visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
 		if (visitClassName == null)
 			throw new ApplicationRuntimeException(
-				"Could not create visit object because property "
-					+ VISIT_CLASS_PROPERTY_NAME
-					+ " was not specified in the application specification.");
+				Tapestry.getString(
+					"AbstractEngine.visit-class-property-not-specified",
+					VISIT_CLASS_PROPERTY_NAME));
 
 		if (CAT.isDebugEnabled())
 			CAT.debug("Creating visit object as instance of " + visitClassName);
@@ -1835,7 +1850,9 @@ public abstract class AbstractEngine
 		catch (Throwable t)
 		{
 			throw new ApplicationRuntimeException(
-				"Unable to instantiate visit object from class " + visitClassName + ".",
+				Tapestry.getString(
+					"AbstractEngine.unable-to-instantiate-visit",
+					visitClassName),
 				t);
 		}
 
@@ -1916,7 +1933,7 @@ public abstract class AbstractEngine
 		catch (IOException ioEx)
 		{
 			throw new RequestCycleException(
-				"Unable to redirect to " + location + ".",
+				Tapestry.getString("AbstractEngine.unable-to-redirect", location),
 				null,
 				ioEx);
 		}

@@ -40,6 +40,7 @@ import com.primix.tapestry.ApplicationRuntimeException;
 import com.primix.tapestry.IEngine;
 import com.primix.tapestry.IPageRecorder;
 import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.record.PageRecorder;
 import com.primix.tapestry.record.SimplePageRecorder;
 
@@ -174,9 +175,7 @@ public class SimpleEngine extends AbstractEngine
 
 		if (recorder.isDirty())
 			throw new ApplicationRuntimeException(
-				"Could not forget changes to page "
-					+ name
-					+ " because the page's recorder has uncommitted changes.");
+				Tapestry.getString("SimpleEngine.recorder-has-uncommited-changes", name));
 
 		recorders.remove(name);
 	}
@@ -213,7 +212,7 @@ public class SimpleEngine extends AbstractEngine
 		{
 			if (recorders.containsKey(pageName))
 				throw new ApplicationRuntimeException(
-					"Could not create a second page recorder for page " + pageName + ".");
+					Tapestry.getString("SimpleEngine.duplicate-page-recorder", pageName));
 		}
 
 		// Here's the key thing that identifies SimpleApplication as simple.
