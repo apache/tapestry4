@@ -888,8 +888,9 @@ public class TemplateParser
         // Check for invisible localizations
 
         String localizationKey = findValueCaselessly(LOCALIZATION_KEY_ATTRIBUTE_NAME, _attributes);
+        String jwcId = findValueCaselessly(JWCID_ATTRIBUTE_NAME, _attributes);
 
-        if (localizationKey != null && tagName.equalsIgnoreCase("span"))
+        if (localizationKey != null && tagName.equalsIgnoreCase("span") && jwcId == null)
         {
             if (_ignoring)
                 templateParseProblem(
@@ -940,8 +941,6 @@ public class TemplateParser
 
             return;
         }
-
-        String jwcId = findValueCaselessly(JWCID_ATTRIBUTE_NAME, _attributes);
 
         if (jwcId != null)
         {
