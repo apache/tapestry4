@@ -4,14 +4,27 @@
 
 <specification class="com.primix.tapestry.valid.ValidField" allow-body="no">
 
+  <description>
+  A text input field that can validate input.
+  </description>
+
   <parameter name="disabled"/>
   <parameter name="hidden"/>
   <parameter name="displayWidth" java-type="java.lang.Integer"/>
   <parameter name="maximumLength" java-type="java.lang.Integer"/>
 
-  <parameter name="validator" java-type="com.primix.tapestry.valid.IValidator" required="yes"/>
+  <parameter name="validator" java-type="com.primix.tapestry.valid.IValidator" required="yes">
+    <description>
+    Converts value to a string and parses strings back into object values.
+    </description>
+  </parameter>
+    
   
-  <parameter name="displayName" java-type="java.lang.String" required="yes"/>
+  <parameter name="displayName" java-type="java.lang.String" required="yes">
+    <description>
+    Name used by FieldLabel and when generating validation error messages.
+    </description>
+  </parameter>
  
   <parameter name="value" required="yes"/>
   

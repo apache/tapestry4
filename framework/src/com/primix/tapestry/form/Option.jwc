@@ -3,6 +3,11 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.form.Option" allow-body="no">
   <parameter name="selected" java-type="java.lang.Boolean" required="yes"/>
+  
+  <description>
+  A single option within a Select.
+  </description>
+  
   <parameter name="label" java-type="java.lang.String"/>
   
   <reserved-parameter name="value"/>

@@ -2,6 +2,11 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.form.Submit" allow-body="no">
+
+  <description>
+  Creates a labeled submit button within a form.
+  </description>
+
   <parameter name="label" java-type="java.lang.String"/>
   <parameter name="disabled"/>
   <parameter name="selected"/>

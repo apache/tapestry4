@@ -2,6 +2,11 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.form.Select">
+
+  <description>
+  Creates an HTML popup populated with a number of options.
+  </description>
+  
   <parameter name="multiple"/>
   <parameter name="disabled"/>
   

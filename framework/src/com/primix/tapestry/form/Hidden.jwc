@@ -2,6 +2,21 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.form.Hidden" allow-body="no" allow-informal-parameters="no">
-  <parameter name="value" required="yes"/>
-  <parameter name="listener" java-type="com.primix.tapestry.IActionListener"/>
+
+  <description>
+  Stores a value in a hidden field of the form.
+  </description>
+  
+  <parameter name="value" required="yes">
+    <description>
+    The value to save in the form.
+    </description>
+  </parameter>
+  
+  <parameter name="listener" java-type="com.primix.tapestry.IActionListener">
+    <description>
+    A listener than is notified after the value is restored.
+    </description>
+  </parameter>
+  
 </specification>
