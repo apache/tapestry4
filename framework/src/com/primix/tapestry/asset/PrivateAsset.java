@@ -36,7 +36,7 @@ import org.apache.log4j.*;
  *  An implementation of {@link IAsset} for localizable assets within
  *  the JVM's classpath.
  *
- *  <p>The localization code here is largely cut-and-paste from 
+ *  <p>The localization code here is largely cut-and-paste from
  *  {@link ContextAsset}.
  *
  *  @author Howard Ship
@@ -60,7 +60,7 @@ public class PrivateAsset implements IAsset
 	private Map localizations;
 
 	public PrivateAsset(String resourcePath)
-	
+
 	{
 		this.resourcePath = resourcePath;
 	}
@@ -106,7 +106,7 @@ public class PrivateAsset implements IAsset
 			return externalURL;
 
 		// Otherwise, the service is responsible for dynamically retrieving the
-		// resource.	
+		// resource.
 
 		parameters = new String[] { localizedResourcePath };
 
@@ -249,7 +249,7 @@ public class PrivateAsset implements IAsset
 		}
 
 		throw new ResourceUnavailableException(
-			Tapestry.getString("PrivateAsset.resource-unavailable", locale));
+			Tapestry.getString("PrivateAsset.resource-unavailable", resourcePath, locale));
 	}
 
 	public String toString()
