@@ -29,6 +29,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.xml.AbstractDocumentParser;
@@ -80,20 +82,39 @@ public class ScriptParser extends AbstractDocumentParser
     private static final int MAP_SIZE = 11;
 
     /**
-     *  A cache of {@link InsertToken}s, keyed on property path.
+     *  A cache of {@link InsertToken}s, keyed on expression.
      *
      **/
 
-    private Map insertCache;
+    private Map _insertCache;
+
+    /** @since 2.2 **/
+
+    private IResourceResolver _resolver;
+
+    /**
+     *  True when parsing a version 1.2 script, which renames attribute
+     *  "property-path" to "expression".
+     * 
+     **/
+
+    private boolean _version_1_2;
+
+    private String _expressionAttribute;
 
     public static final String SCRIPT_DTD_1_0_PUBLIC_ID = "-//Primix Solutions//Tapestry Script 1.0//EN";
 
     public static final String SCRIPT_DTD_1_1_PUBLIC_ID = "-//Howard Ship//Tapestry Script 1.1//EN";
 
-    public ScriptParser()
+    public static final String SCRIPT_DTD_1_2_PUBLIC_ID = "-//Howard Lewis Ship//Tapestry Script 1.2//EN";
+
+    public ScriptParser(IResourceResolver resolver)
     {
+        _resolver = resolver;
+
         register(SCRIPT_DTD_1_0_PUBLIC_ID, "Script_1_0.dtd");
         register(SCRIPT_DTD_1_1_PUBLIC_ID, "Script_1_1.dtd");
+        register(SCRIPT_DTD_1_2_PUBLIC_ID, "Script_1_2.dtd");
     }
 
     /**
@@ -126,10 +147,16 @@ public class ScriptParser extends AbstractDocumentParser
 
         String publicId = document.getDoctype().getPublicId();
 
-        if (!(publicId.equals(SCRIPT_DTD_1_0_PUBLIC_ID) || publicId.equals(SCRIPT_DTD_1_1_PUBLIC_ID)))
+        if (!(publicId.equals(SCRIPT_DTD_1_0_PUBLIC_ID)
+            || publicId.equals(SCRIPT_DTD_1_1_PUBLIC_ID)
+            || publicId.equals(SCRIPT_DTD_1_2_PUBLIC_ID)))
             throw new DocumentParseException(
                 Tapestry.getString("ScriptParser.unknown-public-id", publicId),
                 getResourcePath());
+
+        _version_1_2 = publicId.equals(SCRIPT_DTD_1_2_PUBLIC_ID);
+
+        _expressionAttribute = (_version_1_2 ? "expression" : "property-path");
 
         for (Node child = root.getFirstChild(); child != null; child = child.getNextSibling())
         {
@@ -142,9 +169,21 @@ public class ScriptParser extends AbstractDocumentParser
                 continue;
             }
 
+            if (isElement(child, "set"))
+            {
+                result.addToken(buildSet(child));
+                continue;
+            }
+
             if (isElement(child, "include-script"))
             {
                 result.addToken(buildIncludeScript(child));
+                continue;
+            }
+            
+            if (isElement(child, "input-symbol"))
+            {
+                result.addToken(buildInputSymbol(child));
                 continue;
             }
 
@@ -168,13 +207,58 @@ public class ScriptParser extends AbstractDocumentParser
 
     private IScriptToken buildLet(Node node) throws DocumentParseException
     {
-        Element element = (Element) node;
-        String key = element.getAttribute("key");
+        String key = getAttribute(node, "key");
+
+        validate(key, SIMPLE_PROPERTY_NAME_PATTERN, "ScriptParser.invalid-key");
 
         IScriptToken token = new LetToken(key);
         build(token, node);
 
         return token;
+    }
+
+    public IScriptToken buildSet(Node node) throws DocumentParseException
+    {
+        String key = getAttribute(node, "key");
+
+        validate(key, SIMPLE_PROPERTY_NAME_PATTERN, "ScriptParser.invalid-key");
+
+        String expression = getAttribute(node, "expression");
+
+        return new SetToken(key, expression);
+    }
+
+    private IScriptToken buildInputSymbol(Node node) throws DocumentParseException
+    {
+        String key = getAttribute(node, "key");
+
+        validate(key, SIMPLE_PROPERTY_NAME_PATTERN, "ScriptParser.invalid-key");
+
+        String className = getAttribute(node, "class");
+
+        Class expectedClass = lookupClass(className);
+
+        String required = getAttribute(node, "required");
+
+        return new InputSymbolToken(key, expectedClass, required.equals("yes"));
+    }
+
+    private Class lookupClass(String className) throws DocumentParseException
+    {
+        if (Tapestry.isNull(className))
+            return null;
+
+        try
+        {
+            return _resolver.findClass(className);
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            throw new DocumentParseException(
+                Tapestry.getString("ScriptParser.unable-to-resolve-class", className),
+                getResourcePath(),
+                ex);
+        }
     }
 
     private IScriptToken buildBody(Node node) throws DocumentParseException
@@ -255,19 +339,22 @@ public class ScriptParser extends AbstractDocumentParser
      *  Uses a caching mechanism so
      *  that it creates only one SymbolToken for each key referenced in the
      *  script.
+     * 
+     *  <p>This appears in the 1.0 and 1.1 scripts, but it is
+     *  removed from 1.2.
      *
      **/
 
     private IScriptToken buildInsert(Node node)
     {
-        String propertyPath = getAttribute(node, "property-path");
+        String expression = getAttribute(node, _expressionAttribute);
 
         // Version 1.0 of the DTD called the attribute "key".
 
-        if (propertyPath == null)
-            propertyPath = getAttribute(node, "key");
+        if (expression == null)
+            expression = getAttribute(node, "key");
 
-        return constructInsert(propertyPath);
+        return constructInsert(expression);
     }
 
     /** @since 2.2 **/
@@ -276,15 +363,15 @@ public class ScriptParser extends AbstractDocumentParser
     {
         IScriptToken result = null;
 
-        if (insertCache == null)
-            insertCache = new HashMap(MAP_SIZE);
+        if (_insertCache == null)
+            _insertCache = new HashMap(MAP_SIZE);
         else
-            result = (IScriptToken) insertCache.get(propertyPath);
+            result = (IScriptToken) _insertCache.get(propertyPath);
 
         if (result == null)
         {
             result = new InsertToken(propertyPath);
-            insertCache.put(propertyPath, result);
+            _insertCache.put(propertyPath, result);
         }
 
         return result;
@@ -292,8 +379,8 @@ public class ScriptParser extends AbstractDocumentParser
 
     private IScriptToken buildIf(boolean condition, Node node) throws DocumentParseException
     {
-        String propertyPath = getAttribute(node, "property-path");
-        IScriptToken result = new IfToken(condition, propertyPath);
+        String expression = getAttribute(node, _expressionAttribute);
+        IScriptToken result = new IfToken(condition, expression);
 
         build(result, node);
 
@@ -303,8 +390,8 @@ public class ScriptParser extends AbstractDocumentParser
     private IScriptToken buildForeach(Node node) throws DocumentParseException
     {
         String key = getAttribute(node, "key");
-        String propertyPath = getAttribute(node, "property-path");
-        IScriptToken result = new ForeachToken(key, propertyPath);
+        String expression = getAttribute(node, _expressionAttribute);
+        IScriptToken result = new ForeachToken(key, expression);
 
         build(result, node);
 
@@ -322,7 +409,7 @@ public class ScriptParser extends AbstractDocumentParser
 
     private static final int STATE_START = 0;
     private static final int STATE_DOLLAR = 1;
-    private static final int STATE_COLLECT_PATH = 2;
+    private static final int STATE_COLLECT_EXPRESSION = 2;
 
     /** @since 2.2 **/
 
@@ -332,9 +419,10 @@ public class ScriptParser extends AbstractDocumentParser
         int state = STATE_START;
         int blockStart = 0;
         int blockLength = 0;
-        int propertyStart = -1;
-        int propertyLength = 0;
+        int expressionStart = -1;
+        int expressionLength = 0;
         int i = 0;
+        int braceDepth = 0;
 
         while (i < buffer.length)
         {
@@ -359,11 +447,12 @@ public class ScriptParser extends AbstractDocumentParser
 
                     if (ch == '{')
                     {
-                        state = STATE_COLLECT_PATH;
+                        state = STATE_COLLECT_EXPRESSION;
                         i++;
 
-                        propertyStart = i;
-                        propertyLength = 0;
+                        expressionStart = i;
+                        expressionLength = 0;
+                        braceDepth = 1;
 
                         continue;
                     }
@@ -371,38 +460,54 @@ public class ScriptParser extends AbstractDocumentParser
                     state = STATE_START;
                     continue;
 
-                case STATE_COLLECT_PATH :
+                case STATE_COLLECT_EXPRESSION :
 
-                    if (ch == '}')
+                    if (ch != '}')
                     {
-
-                        // Degenerate case:  the string "${}".
-
-                        if (propertyLength == 0)
-                            blockLength += 3;
-
-                        if (blockLength > 0)
-                            token.addToken(constructStatic(text, blockStart, blockLength));
-
-                        if (propertyLength > 0)
-                        {
-                            String propertyPath = text.substring(propertyStart, propertyStart + propertyLength);
-
-                            token.addToken(constructInsert(propertyPath));
-                        }
+                        if (ch == '{')
+                            braceDepth++;
 
                         i++;
-                        blockStart = i;
-                        blockLength = 0;
-
-                        state = STATE_START;
-
+                        expressionLength++;
                         continue;
                     }
 
+                    braceDepth--;
+
+                    if (braceDepth > 0)
+                    {
+                        i++;
+                        expressionLength++;
+                        continue;
+                    }
+
+                    // Hit the closing brace of an expression.
+
+                    // Degenerate case:  the string "${}".
+
+                    if (expressionLength == 0)
+                        blockLength += 3;
+
+                    if (blockLength > 0)
+                        token.addToken(constructStatic(text, blockStart, blockLength));
+
+                    if (expressionLength > 0)
+                    {
+                        String expression = text.substring(expressionStart, expressionStart + expressionLength);
+
+                        token.addToken(constructInsert(expression));
+                    }
+
                     i++;
-                    propertyLength++;
+                    blockStart = i;
+                    blockLength = 0;
+
+                    // And drop into state start
+
+                    state = STATE_START;
+
                     continue;
+
             }
 
         }
@@ -413,15 +518,15 @@ public class ScriptParser extends AbstractDocumentParser
         if (state == STATE_DOLLAR)
             blockLength++;
 
-        if (state == STATE_COLLECT_PATH)
-            blockLength += propertyLength + 2;
+        if (state == STATE_COLLECT_EXPRESSION)
+            blockLength += expressionLength + 2;
 
         if (blockLength > 0)
             token.addToken(constructStatic(text, blockStart, blockLength));
     }
 
     /** @since 2.2. **/
-    
+
     private IScriptToken constructStatic(String text, int blockStart, int blockLength)
     {
         return new StaticToken(text.substring(blockStart, blockStart + blockLength));

@@ -40,7 +40,7 @@ import net.sf.tapestry.ScriptSession;
 
 class BodyToken extends AbstractToken
 {
-    private int bufferLength = 100;
+    private int _bufferLengthHighwater = 100;
 
     public void write(StringBuffer buffer, ScriptSession session)
         throws ScriptException
@@ -48,7 +48,7 @@ class BodyToken extends AbstractToken
         if (buffer != null)
             throw new IllegalArgumentException();
 
-        buffer = new StringBuffer(bufferLength);
+        buffer = new StringBuffer(_bufferLengthHighwater);
 
         writeChildren(buffer, session);
 
@@ -57,6 +57,6 @@ class BodyToken extends AbstractToken
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.
 
-        bufferLength = Math.max(bufferLength, buffer.length());
+        _bufferLengthHighwater = Math.max(_bufferLengthHighwater, buffer.length());
     }
 }

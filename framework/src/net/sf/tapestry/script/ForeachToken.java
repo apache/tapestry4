@@ -47,19 +47,19 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 class ForeachToken extends AbstractToken
 {
     private String _key;
-    private String _propertyPath;
+    private String _expression;
 
-    ForeachToken(String key, String propertyPath)
+    ForeachToken(String key, String expression)
     {
         _key = key;
-        _propertyPath = propertyPath;
+        _expression = expression;
     }
 
     public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
     {
         Map symbols = session.getSymbols();
 
-        Object rawSource = OgnlUtils.get(_propertyPath, symbols);
+        Object rawSource = OgnlUtils.get(_expression, symbols);
 
         Iterator i = Tapestry.coerceToIterator(rawSource);
 

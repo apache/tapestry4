@@ -42,11 +42,11 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 
 class InsertToken implements IScriptToken
 {
-    private String _propertyPath;
+    private String _expression;
 
-    InsertToken(String propertyPath)
+    InsertToken(String expression)
     {
-        _propertyPath = propertyPath;
+        _expression = expression;
     }
 
     /**
@@ -59,7 +59,7 @@ class InsertToken implements IScriptToken
     {
         Map symbols = session.getSymbols();
 
-        Object value = OgnlUtils.get(_propertyPath, symbols);
+        Object value = OgnlUtils.get(_expression, symbols);
 
         if (value != null)
             buffer.append(value);

@@ -44,19 +44,19 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 class IfToken extends AbstractToken
 {
     private boolean _condition;
-    private String _propertyPath;
+    private String _expression;
 
-    IfToken(boolean condition, String propertyPath)
+    IfToken(boolean condition, String expression)
     {
         _condition = condition;
-        _propertyPath = propertyPath;
+        _expression = expression;
     }
 
     private boolean evaluate(ScriptSession session)
     {
         Map symbols = session.getSymbols();
 
-        Object value = OgnlUtils.get(_propertyPath, symbols);
+        Object value = OgnlUtils.get(_expression, symbols);
 
         return Tapestry.evaluateBoolean(value);
     }

@@ -24,9 +24,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  * ----------------------------------------------------------------------
  */
- 
+
 package net.sf.tapestry.junit.script;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,10 +36,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import net.sf.tapestry.IScript;
+import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
+import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.script.ScriptParser;
+import net.sf.tapestry.util.xml.DocumentParseException;
 
 /**
  *  A collection of tests for Tapestry scripting.
@@ -58,9 +63,9 @@ public class ScriptTest extends TestCase
         super(name);
     }
 
-    private IScript read(String file) throws Exception
+    private IScript read(String file) throws IOException, DocumentParseException
     {
-        ScriptParser parser = new ScriptParser();
+        ScriptParser parser = new ScriptParser(new ResourceResolver(this));
 
         InputStream stream = getClass().getResourceAsStream(file);
 
@@ -71,7 +76,7 @@ public class ScriptTest extends TestCase
         return result;
     }
 
-    private ScriptSession execute(String file, Map symbols) throws Exception
+    private ScriptSession execute(String file, Map symbols) throws ScriptException, DocumentParseException, IOException
     {
         IScript script = read(file);
 
@@ -247,26 +252,128 @@ public class ScriptTest extends TestCase
 
         assertEquals("included scripts", expected, session.getIncludedScripts());
     }
-    
-    public void testAntSyntax()
-    throws Exception
+
+    public void testAntSyntax() throws Exception
     {
         Map form = new HashMap();
-        
+
         form.put("name", "gallahad");
-        
+
         Map component = new HashMap();
         component.put("form", form);
         component.put("name", "lancelot");
-        
+
         Map symbols = new HashMap();
         symbols.put("component", component);
-        
+
         ScriptSession session = execute("ant-syntax.script", symbols);
-        
+
         assertSymbol(symbols, "functionName", "gallahad_lancelot");
         assertSymbol(symbols, "incomplete1", "Incomplete: $");
         assertSymbol(symbols, "incomplete2", "Incomplete: ${");
         assertSymbol(symbols, "nopath", "This ${} ends up as literal.");
+        assertSymbol(symbols, "OGNL", "This is a brace: }.");
+    }
+
+    public void testSet() throws Exception
+    {
+        Map symbols = new HashMap();
+
+        ScriptSession session = execute("set.script", symbols);
+
+        assertSymbol(symbols, "element2", new Character('p'));
+    }
+
+    public void testInvalidKeyLet() throws Exception
+    {
+        try
+        {
+            execute("invalid-key-let.script", new HashMap());
+
+            throw new AssertionFailedError("Exception expected.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "key");
+        }
+    }
+
+    public void testInvalidKeySet() throws Exception
+    {
+        try
+        {
+            execute("invalid-key-Set.script", new HashMap());
+
+            throw new AssertionFailedError("Exception expected.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "key");
+        }
+    }
+
+    private void checkException(Exception ex, String string)
+    {
+        if (ex.getMessage().indexOf(string) >= 0)
+            return;
+
+        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
+    }
+
+    public void testInputSymbolClass() throws Exception
+    {
+        try
+        {
+            Map symbols = new HashMap();
+            symbols.put("input", new Integer(20));
+
+            execute("input-symbol-class.script", symbols);
+
+            throw new AssertionFailedError("Exception expected.");
+        }
+        catch (ScriptException ex)
+        {
+            checkException(ex, "Integer");
+            checkException(ex, "Long");
+        }
+    }
+
+    public void testInputSymbol() throws Exception
+    {
+        Map symbols = new HashMap();
+        symbols.put("input", new Long(20));
+
+        execute("input-symbol.script", symbols);
+
+        assertSymbol(symbols, "success", "Success");
+    }
+
+    public void testInputSymbolRequired() throws Exception
+    {
+                try
+        {
+            execute("input-symbol-required.script", new HashMap());
+
+            throw new AssertionFailedError("Exception expected.");
+        }
+        catch (ScriptException ex)
+        {
+            checkException(ex, "required");
+        }
+    }
+
+    public void testInputSymbolInvalidKey() throws Exception
+    {
+        try
+        {
+            execute("input-symbol-invalid-key.script", new HashMap());
+
+            throw new AssertionFailedError("Exception expected.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "key");
+        }
+
     }
 }

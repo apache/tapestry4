@@ -51,29 +51,29 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 public class DefaultScriptSource implements IScriptSource
 {
-    private IResourceResolver resolver;
+    private IResourceResolver _resolver;
 
-    private Map cache = new HashMap();
+    private Map _cache = new HashMap();
 
     private static final int MAP_SIZE = 17;
 
     public DefaultScriptSource(IResourceResolver resolver)
     {
-        this.resolver = resolver;
+        _resolver = resolver;
     }
 
     public void reset()
     {
-        cache.clear();
+        _cache.clear();
     }
 
     public IScript getScript(String resourcePath) 
     {
         IScript result;
 
-        synchronized (cache)
+        synchronized (_cache)
         {
-            result = (IScript) cache.get(resourcePath);
+            result = (IScript) _cache.get(resourcePath);
         }
 
         if (result != null)
@@ -84,9 +84,9 @@ public class DefaultScriptSource implements IScriptSource
         // There's a small window if reset() is invoked on a very busy system where
         // cache could be null here.
 
-        synchronized (cache)
+        synchronized (_cache)
         {
-            cache.put(resourcePath, result);
+            _cache.put(resourcePath, result);
         }
 
         return result;
@@ -94,12 +94,12 @@ public class DefaultScriptSource implements IScriptSource
 
     private IScript parse(String resourcePath)
     {
-        ScriptParser parser = new ScriptParser();
+        ScriptParser parser = new ScriptParser(_resolver);
         InputStream stream = null;
 
         try
         {
-            URL url = resolver.getResource(resourcePath);
+            URL url = _resolver.getResource(resourcePath);
 
             stream = url.openStream();
 
@@ -134,11 +134,11 @@ public class DefaultScriptSource implements IScriptSource
 
         buffer.append('[');
 
-        if (cache != null)
+        if (_cache != null)
         {
-            synchronized (cache)
+            synchronized (_cache)
             {
-                buffer.append(cache.keySet());
+                buffer.append(_cache.keySet());
             }
 
             buffer.append(", ");
