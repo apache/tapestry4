@@ -21,7 +21,7 @@
 
 	<filelist id="project.modules" 
 		dir="."
-		files="framework/build.xml contrib/build.xml"/>
+		files="framework/build.xml contrib/build.xml examples/Workbench/build.xml"/>
     
 	<import file="${hivebuild.dir}/project.xml"/>
 	<import file="${hivebuild.dir}/license-report.xml"/>    
@@ -32,11 +32,43 @@
     <license-report/>
     <hivedoc-report/>
   </target>
-  
-	<target name="fast-site" depends="copy-documentation-to-composite"
-		description="Generate site documentation from XDocs only, omitting reports.">
-		<reinvoke-ant target="copy-documentation-to-composite"/>
-		<antcall target="run-forrest"/>
-	</target>  
 
+  <path id="jetty.classpath">
+    <fileset dir="${jetty.dir}">
+        <include name="ext/*.jar"/>
+        <include name="lib/*.jar"/>
+    </fileset>
+  </path>
+
+  <available property="available.workbench.war" file="target/workbench.war"/>
+  
+	<target name="run-workbench"
+		description="Runs the Tapestry Workbench using Jetty.">
+    
+    <fail unless="available.workbench.war" message="You must run the 'install' target to build workbench.war first."/>
+    
+    <property name="private.dir" value="${target.dir}/private"/>
+    
+		<delete dir="${private.dir}" quiet="true"/>
+		<mkdir dir="${private.dir}"/>
+		<echo>Running Tapestry Workbench on port 8080 ...</echo>
+		<java classname="org.mortbay.jetty.Server" fork="true" maxmemory="384M">
+			<classpath>
+				<path refid="jetty.classpath"/>
+			</classpath>
+			<arg value="config/jetty-workbench.xml"/>
+			<!-- Enable debugging when running the Workbench -->
+			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+			<jvmarg
+				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"
+				/>
+			<!-- Jetty can get easily confused (under NT) unless this is turned off. -->
+			<sysproperty key="org.mortbay.util.FileResource.checkAliases"
+				value="false"/>
+			<sysproperty key="org.apache.tapestry.asset.dir" value="${private.dir}"
+				/>
+			<sysproperty key="org.apache.tapestry.asset.URL" value="/private"/>
+		</java>
+	</target>
+  
 </project>

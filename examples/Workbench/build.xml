@@ -1,76 +1,54 @@
 <?xml version="1.0"?>
-<!-- $Id$ -->
-<project name="Tapestry Workbench Example" default="install">
-	<property name="root.dir" value="../.."/>
-	<property file="${root.dir}/config/Version.properties"/>
+<!-- 
+   Copyright 2004 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<project name="Tapestry Workbench" default="war">
+  
+  <property name="module.name" value="workbench"/>
+  <property name="javadoc.package" value="org.apache.tapestry.workbench.*"/>
+    
+  <property name="root.dir" value="../.."/>
 	<property file="${root.dir}/config/build.properties"/>
 	<property file="${root.dir}/config/common.properties"/>
-	
-	<property name="config.dir" value="config"/>
-	<property name="build.dir" value=".build"/>
-	
-	<path id="compile.classpath">
-		<fileset dir="${root.lib.dir}">
-			<include name="*.jar"/>
-			<include name="${ext.dir}/*.jar"/>
-			<include name="${j2ee.dir}/*.jar"/>
-		</fileset>
-		<fileset dir="${lib.dir}">
-			<include name="*.jar"/>	
-		</fileset>
-	</path>
-	<target name="init">
-		<mkdir dir="${classes.dir}"/>
-	</target>
-	<target name="clean">
-		<delete dir="${classes.dir}" quiet="true"/>
-		<delete dir="${build.dir}" quiet="true"/>
-	</target>
-	<target name="compile" depends="init"
-		description="Compile all classes in the tutorial.">
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on"
-			target="1.1">
-			<classpath refid="compile.classpath"/>
-		</javac>
-	</target>
-	<target name="install" depends="compile"
-		description="Compile all classes and build the installed WAR.">
-		
-		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${examples.dir}"/>
-		
-		<copy file="${config.dir}/web.xml" todir="${build.dir}">
-			<filterset>
-				<filter token="TAPESTRY_JAR" value="${framework.jar}"/>
-			</filterset>
-		</copy>
-		
-		<war warfile="${examples.dir}/${workbench.war}"
-			webxml="${build.dir}/web.xml">
-			
-			<fileset dir="context"/>
-						
-			<classes dir="${classes.dir}"/>
-			<classes dir="${src.dir}">
-				<exclude name="**/*.java"/>
-				<exclude name="**/package.html"/>
-			</classes>
-			<classes dir="${root.config.dir}">
-			  <include name="log4j.properties"/>
-			</classes>
-			<lib dir="${lib.dir}">
-				<include name="*.jar"/>
-			</lib>
-			<lib dir="${root.lib.dir}">
-				<include name="*.jar"/>
-			</lib>			
-			<lib dir="${root.lib.dir}/${ext.dir}">
-			  <include name="*.jar"/>
-			</lib>
-			<lib dir="${root.lib.dir}/${runtime.dir}">
-			  <include name="*.jar"/>
-			</lib>
-		</war>
-	</target>
-	
+  
+	<import file="${hivebuild.dir}/war-module.xml"/>
+	<import file="${hivebuild.dir}/javadoc-report.xml"/>
+  
+	<target name="compile">
+    <project-dependency artifact="tapestry"            use="run"/>
+    <project-dependency artifact="tapestry-contrib"    use="run"/>
+
+    <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"               use="run"/>
+    <ibiblio-dependency artifact="commons-codec"      version="1.2"                 group="commons-codec"     use="run"/>
+		<ibiblio-dependency artifact="commons-fileupload" version="1.0"                 group="commons-fileupload" use="run"/>        
+    <ibiblio-dependency artifact="commons-lang"       version="2.0"                 group="commons-lang"      use="run"/>
+    <ibiblio-dependency artifact="commons-logging"    version="1.0.4"               group="commons-logging"   use="run"/>
+    
+    <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"          use="run"/>
+    <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"          use="run"/>
+		<ibiblio-dependency artifact="javassist"          version="2.6"                 group="jboss"             use="run"/>
+		<ibiblio-dependency artifact="log4j"              version="1.2.7"               group="log4j"             use="test"/>
+    <ibiblio-dependency artifact="ognl"               version="2.6.3"               group="ognl"              use="run"/>
+    <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"               use="run"/>
+		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
+
+ 
+    <!-- This isn't actually uploaded to Maven yet! -->
+    <ibiblio-dependency artifact="jCharts"            version="0.6.0"               group="krysalis"          use="run"/>
+     
+		<default-compile/> 
+	</target>	
+  
 </project>

@@ -32,7 +32,9 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.impl.ModuleDescriptorProvider;
 import org.apache.hivemind.impl.RegistryBuilder;
+import org.apache.hivemind.impl.XmlModuleDescriptorProvider;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.ApplicationGlobals;
@@ -288,8 +290,8 @@ public class ApplicationServlet extends HttpServlet
      * Invoked from {@link #init(ServletConfig)}to construct the Registry to be used by the
      * application.
      * <p>
-     * This looks in the standard places (on the classpath), but also in the WEB-INF/name
-     * and WEB-INF folders (where name is the name of the servlet).
+     * This looks in the standard places (on the classpath), but also in the WEB-INF/name and
+     * WEB-INF folders (where name is the name of the servlet).
      * 
      * @since 3.1
      */
@@ -297,7 +299,7 @@ public class ApplicationServlet extends HttpServlet
     {
         RegistryBuilder builder = new RegistryBuilder();
 
-        builder.processModules(_resolver);
+        builder.addModuleDescriptorProvider(new XmlModuleDescriptorProvider(_resolver));
 
         String name = config.getServletName();
         ServletContext context = config.getServletContext();
@@ -319,8 +321,10 @@ public class ApplicationServlet extends HttpServlet
     {
         Resource r = new ContextResource(context, path);
 
-        if (r.getResourceURL() != null)
-            builder.processModule(_resolver, r);
+        if (r.getResourceURL() == null)
+            return;
+
+        builder.addModuleDescriptorProvider(new XmlModuleDescriptorProvider(_resolver, r));
     }
 
     /**
