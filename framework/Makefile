@@ -22,8 +22,7 @@ RESOURCE_PACKAGES = \
 
 LOCAL_CLASSPATH = \
 	../lib/gnu-regexp.jar \
-	../lib/jaxp.jar \
-	../lib/parser.jar \
+	../lib/xerces.jar \
 	../lib/j2ee.jar \
 	../lib/PrimixFoundation.jar
 

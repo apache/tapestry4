@@ -1,17 +1,22 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0"?>
 <!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+	
 
 <specification>
 	<class>com.primix.tapestry.components.Conditional</class>
 
-	<allow-informal-parameters>no</allow-informal-parameters>
-	
-	<parameter>
-		<name>condition</name>
-	</parameter>
-	
-	<parameter>
-		<name>invert</name>
-	</parameter>
+	<parameters>
+		<allow-informal-parameters>no</allow-informal-parameters>
+		
+		<parameter>
+			<name>condition</name>
+		</parameter>
+		
+		<parameter>
+			<name>invert</name>
+		</parameter>
+	</parameters>
 	
 </specification>

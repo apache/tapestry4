@@ -40,12 +40,13 @@ package com.primix.tapestry.spec;
 
 public class BindingSpecification
 {
-	private BindingType type = BindingType.STATIC;
+	private BindingType type;
 	private String value;
 
-	public BindingSpecification(BindingType type)
+	public BindingSpecification(BindingType type, String value)
 	{
 		this.type = type;
+		this.value = value;
 	}
 
 	public BindingType getType()

@@ -1,25 +1,29 @@
-<?xml version="1.0" standalone="yes"?>
+<?xml version="1.0"?>
 <!-- $Id$ -->
-
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+	
 <specification>
 	<class>com.primix.tapestry.components.ImageButton</class>
 	
 	<allow-body>no</allow-body>
 	
-	<parameter>
-		<name>image</name>
-		<java-type>com.primix.tapestry.IAsset</java-type>
-		<required>yes</required>
-	</parameter>
-	
-	<parameter>
-		<name>point</name>
-		<java-type>java.awt.Point</java-type>
-	</parameter>
+	<parameters>
+		<parameter>
+			<name>image</name>
+			<java-type>com.primix.tapestry.IAsset</java-type>
+			<required>yes</required>
+		</parameter>
+		
+		<parameter>
+			<name>point</name>
+			<java-type>java.awt.Point</java-type>
+		</parameter>
 
-	<parameter>
-		<name>listener</name>
-		<java-type>com.primix.tapestry.components.IActionListener</java-type>
-	</parameter>
+		<parameter>
+			<name>listener</name>
+			<java-type>com.primix.tapestry.components.IActionListener</java-type>
+		</parameter>
+	</parameters>
 	
 </specification>
