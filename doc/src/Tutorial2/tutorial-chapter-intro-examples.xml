@@ -5,7 +5,7 @@
   	Tapestry. It begins with a discussion on Tapestry binding, which is the process by which you 
   	as a developer link your objects to the components in the HTML page. Moving on, we 
   	create a simple multiple page application using the &PageLink; component, and then show
-  	how to respond to user actions (typically Submit buttons) via the &Action; component.
+  	how to respond to user actions (typically Submit buttons) via the &ActionLink; component.
   	</para>
   	<para>
   	More advanced examples can be found from <xref linkend="forms"/> onwards.
