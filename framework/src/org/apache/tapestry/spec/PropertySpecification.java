@@ -65,7 +65,7 @@ package org.apache.tapestry.spec;
  * 
  **/
 
-public class PropertySpecification extends BaseLocatable
+public class PropertySpecification extends BaseLocatable implements IPropertySpecification
 {
 	private String _name;
 	private String _type = "java.lang.Object";
@@ -99,7 +99,7 @@ public class PropertySpecification extends BaseLocatable
 
 	/**
 	 *  Sets the name of the property.  This should not be changed
-	 *  once this PropertySpecification is added to
+	 *  once this IPropertySpecification is added to
 	 *  a {@link org.apache.tapestry.spec.ComponentSpecification}.
 	 * 
 	 **/

@@ -69,7 +69,7 @@ import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
@@ -206,9 +206,9 @@ public class Namespace implements INamespace
         return _specification.getLibraryIds();
     }
 
-    public ComponentSpecification getPageSpecification(String name)
+    public IComponentSpecification getPageSpecification(String name)
     {
-        ComponentSpecification result = (ComponentSpecification) _pages.get(name);
+        IComponentSpecification result = (IComponentSpecification) _pages.get(name);
 
         if (result == null)
         {
@@ -234,9 +234,9 @@ public class Namespace implements INamespace
         return result;
     }
 
-    public ComponentSpecification getComponentSpecification(String alias)
+    public IComponentSpecification getComponentSpecification(String alias)
     {
-        ComponentSpecification result = (ComponentSpecification) _components.get(alias);
+        IComponentSpecification result = (IComponentSpecification) _components.get(alias);
 
         if (result == null)
         {
@@ -301,7 +301,7 @@ public class Namespace implements INamespace
      * 
      **/
 
-    private ComponentSpecification locatePageSpecification(String name)
+    private IComponentSpecification locatePageSpecification(String name)
     {
         String path = _specification.getPageSpecificationPath(name);
 
@@ -314,7 +314,7 @@ public class Namespace implements INamespace
         return _specificationSource.getPageSpecification(location);
     }
 
-    private ComponentSpecification locateComponentSpecification(String type)
+    private IComponentSpecification locateComponentSpecification(String type)
     {
         String path = _specification.getComponentSpecificationPath(type);
 
@@ -385,7 +385,7 @@ public class Namespace implements INamespace
 
     public synchronized void installPageSpecification(
         String pageName,
-        ComponentSpecification specification)
+        IComponentSpecification specification)
     {
         _pages.put(pageName, specification);
     }
@@ -394,7 +394,7 @@ public class Namespace implements INamespace
 
     public synchronized void installComponentSpecification(
         String type,
-        ComponentSpecification specification)
+        IComponentSpecification specification)
     {
         _components.put(type, specification);
     }

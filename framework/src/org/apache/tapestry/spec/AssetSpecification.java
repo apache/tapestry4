@@ -63,7 +63,7 @@ package org.apache.tapestry.spec;
  *
  **/
 
-public class AssetSpecification extends LocatablePropertyHolder
+public class AssetSpecification extends LocatablePropertyHolder implements IAssetSpecification
 {
     private AssetType type;
     protected String path;

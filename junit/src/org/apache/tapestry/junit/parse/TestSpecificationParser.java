@@ -60,16 +60,16 @@ import java.util.Map;
 import org.apache.tapestry.ILocatable;
 import org.apache.tapestry.bean.StringBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.apache.tapestry.spec.BeanSpecification;
-import org.apache.tapestry.spec.BindingSpecification;
 import org.apache.tapestry.spec.BindingType;
-import org.apache.tapestry.spec.ComponentSpecification;
-import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IBeanSpecification;
+import org.apache.tapestry.spec.IBindingSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.ILibrarySpecification;
+import org.apache.tapestry.spec.IParameterSpecification;
+import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.ListenerBindingSpecification;
-import org.apache.tapestry.spec.ParameterSpecification;
-import org.apache.tapestry.spec.PropertySpecification;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -104,9 +104,9 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testStringBinding() throws Exception
     {
-        ComponentSpecification spec = parseComponent("TestStringBinding.jwc");
+        IComponentSpecification spec = parseComponent("TestStringBinding.jwc");
 
-        BindingSpecification bs = spec.getComponent("hello").getBinding("value");
+        IBindingSpecification bs = spec.getComponent("hello").getBinding("value");
 
         assertEquals("type", BindingType.STRING, bs.getType());
         assertEquals("key", "label.hello", bs.getValue());
@@ -123,9 +123,9 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testValidParameterName() throws Exception
     {
-        ComponentSpecification spec = parseComponent("ValidParameterName.jwc");
+        IComponentSpecification spec = parseComponent("ValidParameterName.jwc");
 
-        ParameterSpecification ps = spec.getParameter("valid");
+        IParameterSpecification ps = spec.getParameter("valid");
 
         assertNotNull("Parameter specification.", ps);
         checkLine(ps, 9);
@@ -411,7 +411,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testNulledComponent() throws Exception
     {
-        ComponentSpecification spec = parseComponent("NulledComponent.jwc");
+        IComponentSpecification spec = parseComponent("NulledComponent.jwc");
 
         assertNull(spec.getComponentClassName());
         checkLine(spec, 7);
@@ -425,7 +425,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testNulledPage() throws Exception
     {
-        ComponentSpecification spec = parsePage("NulledPage.page");
+        IComponentSpecification spec = parsePage("NulledPage.page");
 
         assertNull(spec.getComponentClassName());
         checkLine(spec, 7);
@@ -441,7 +441,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testPropertyValue() throws Exception
     {
-        ComponentSpecification spec = parsePage("PropertyValue.page");
+        IComponentSpecification spec = parsePage("PropertyValue.page");
 
         checkLine(spec, 7);
 
@@ -459,15 +459,15 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testStaticBindingValue() throws Exception
     {
-        ComponentSpecification spec = parsePage("StaticBindingValue.page");
+        IComponentSpecification spec = parsePage("StaticBindingValue.page");
 
         checkLine(spec, 7);
 
-        ContainedComponent c = spec.getComponent("c");
+        IContainedComponent c = spec.getComponent("c");
 
         checkLine(c, 9);
 
-        BindingSpecification b = c.getBinding("fred");
+        IBindingSpecification b = c.getBinding("fred");
         checkLine(b, 10);
 
         assertEquals("flintstone", b.getValue());
@@ -526,10 +526,10 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testListenerBinding() throws Exception
     {
-        ComponentSpecification spec = parsePage("ListenerBinding.page");
+        IComponentSpecification spec = parsePage("ListenerBinding.page");
 
         checkLine(spec, 7);
-        ContainedComponent c = spec.getComponent("c");
+        IContainedComponent c = spec.getComponent("c");
 
         checkLine(c, 9);
 
@@ -569,14 +569,14 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testPropertySpecifications() throws Exception
     {
-        ComponentSpecification spec = parsePage("PropertySpecifications.page");
+        IComponentSpecification spec = parsePage("PropertySpecifications.page");
 
         checkList(
             "propertySpecificationNames",
             new String[] { "bool", "init", "persist" },
             spec.getPropertySpecificationNames());
 
-        PropertySpecification ps = spec.getPropertySpecification("bool");
+        IPropertySpecification ps = spec.getPropertySpecification("bool");
         assertEquals("name", "bool", ps.getName());
         assertEquals("persistent", false, ps.isPersistent());
         assertEquals("type", "boolean", ps.getType());
@@ -640,9 +640,9 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testStringBeanInitializer() throws Exception
     {
-        ComponentSpecification spec = parsePage("StringBeanInitializer.page");
+        IComponentSpecification spec = parsePage("StringBeanInitializer.page");
 
-        BeanSpecification bs = spec.getBeanSpecification("fred");
+        IBeanSpecification bs = spec.getBeanSpecification("fred");
         checkLine(bs, 9);
         StringBeanInitializer i = (StringBeanInitializer) bs.getInitializers().get(0);
 

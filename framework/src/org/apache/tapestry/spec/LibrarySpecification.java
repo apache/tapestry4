@@ -116,7 +116,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     private String _description;
 
     /**
-     *  Map of extension name to {@link ExtensionSpecification}.
+     *  Map of extension name to {@link IExtensionSpecification}.
      * 
      **/
 
@@ -293,7 +293,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     /**
      *  Returns a Map of extensions; key is extension name, value is
-     *  {@link org.apache.tapestry.spec.ExtensionSpecification}.
+     *  {@link org.apache.tapestry.spec.IExtensionSpecification}.
      *  May return null.  The returned Map is immutable.
      * 
      **/
@@ -313,7 +313,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      * 
      **/
 
-    public void addExtensionSpecification(String name, ExtensionSpecification extension)
+    public void addExtensionSpecification(String name, IExtensionSpecification extension)
     {
         if (_extensions == null)
             _extensions = new HashMap();
@@ -337,16 +337,16 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
     }
 
     /**
-     *  Returns the named ExtensionSpecification, or null if it doesn't exist.
+     *  Returns the named IExtensionSpecification, or null if it doesn't exist.
      * 
      **/
 
-    public ExtensionSpecification getExtensionSpecification(String name)
+    public IExtensionSpecification getExtensionSpecification(String name)
     {
         if (_extensions == null)
             return null;
 
-        return (ExtensionSpecification) _extensions.get(name);
+        return (IExtensionSpecification) _extensions.get(name);
     }
 
     /**
@@ -388,7 +388,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
         if (result == null)
         {
-            ExtensionSpecification spec = getExtensionSpecification(name);
+            IExtensionSpecification spec = getExtensionSpecification(name);
 
             if (spec == null)
                 throw new IllegalArgumentException(
@@ -450,7 +450,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         {
             Map.Entry entry = (Map.Entry) i.next();
 
-            ExtensionSpecification spec = (ExtensionSpecification) entry.getValue();
+            IExtensionSpecification spec = (IExtensionSpecification) entry.getValue();
 
             if (!spec.isImmediate())
                 continue;
@@ -524,7 +524,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     /**
      *  Returns the pages map.
-     *  @return Map of {@link ComponentSpecification}.
+     *  @return Map of {@link IComponentSpecification}.
      * 
      **/
 
@@ -576,7 +576,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     /**
      *  Returns the components map.
-     *  @return Map of {@link ContainedComponent}.
+     *  @return Map of {@link IContainedComponent}.
      * 
      **/
 
@@ -587,7 +587,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
     /**
      *  Updates the components map.
-     *  @param components A Map of {@link ContainedComponent} keyed on component id.
+     *  @param components A Map of {@link IContainedComponent} keyed on component id.
      *  The map is retained, not copied.
      *
      **/

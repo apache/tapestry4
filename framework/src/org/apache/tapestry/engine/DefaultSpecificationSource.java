@@ -74,8 +74,9 @@ import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
-import org.apache.tapestry.spec.ComponentSpecification;
+
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
 import org.apache.tapestry.util.IRenderDescription;
@@ -188,11 +189,11 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         _frameworkNamespace = null;
     }
 
-    protected ComponentSpecification parseSpecification(
+    protected IComponentSpecification parseSpecification(
         IResourceLocation resourceLocation,
         boolean asPage)
     {
-        ComponentSpecification result = null;
+        IComponentSpecification result = null;
 
         if (LOG.isDebugEnabled())
             LOG.debug("Parsing component specification " + resourceLocation);
@@ -337,10 +338,10 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      * 
      **/
 
-    public synchronized ComponentSpecification getComponentSpecification(IResourceLocation resourceLocation)
+    public synchronized IComponentSpecification getComponentSpecification(IResourceLocation resourceLocation)
     {
-        ComponentSpecification result =
-            (ComponentSpecification) _componentCache.get(resourceLocation);
+        IComponentSpecification result =
+            (IComponentSpecification) _componentCache.get(resourceLocation);
 
         if (result == null)
         {
@@ -352,9 +353,9 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    public synchronized ComponentSpecification getPageSpecification(IResourceLocation resourceLocation)
+    public synchronized IComponentSpecification getPageSpecification(IResourceLocation resourceLocation)
     {
-        ComponentSpecification result = (ComponentSpecification) _pageCache.get(resourceLocation);
+        IComponentSpecification result = (IComponentSpecification) _pageCache.get(resourceLocation);
 
         if (result == null)
         {

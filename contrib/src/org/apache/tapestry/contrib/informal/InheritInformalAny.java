@@ -64,7 +64,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * 
@@ -99,7 +99,7 @@ public class InheritInformalAny extends AbstractComponent
         if (objParent == null)
             return;
 
-        ComponentSpecification specification = objParent.getSpecification();
+        IComponentSpecification specification = objParent.getSpecification();
         Map bindings = objParent.getBindings();
         if (bindings == null)
             return;

@@ -70,8 +70,10 @@ import org.apache.tapestry.engine.DefaultStringsSource;
 import org.apache.tapestry.engine.IComponentStringsSource;
 import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
+
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.IPropertyHolder;
@@ -109,14 +111,15 @@ public class TapestryTestCase extends TestCase
         result.setEngine(engine);
         result.setLocale(locale);
 
-        ComponentSpecification spec = new ComponentSpecification();
+  		// TODO the SpecFactory in SpecificationParser should be used in some way to create an IComponentSpecification!
+        IComponentSpecification spec = new ComponentSpecification(); 
         spec.setSpecificationLocation(location);
         result.setSpecification(spec);
 
         return result;
     }
 
-    protected ComponentSpecification parseComponent(String simpleName) throws Exception
+    protected IComponentSpecification parseComponent(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
@@ -125,7 +128,7 @@ public class TapestryTestCase extends TestCase
         return parser.parseComponentSpecification(location);
     }
 
-    protected ComponentSpecification parsePage(String simpleName) throws Exception
+    protected IComponentSpecification parsePage(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 

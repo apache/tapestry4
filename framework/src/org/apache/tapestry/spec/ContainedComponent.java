@@ -70,7 +70,7 @@ import java.util.Map;
  * 
  **/
 
-public class ContainedComponent extends LocatablePropertyHolder
+public class ContainedComponent extends LocatablePropertyHolder implements IContainedComponent
 {
 	private String type;
 
@@ -86,12 +86,12 @@ public class ContainedComponent extends LocatablePropertyHolder
 	 *
 	 **/
 
-	public BindingSpecification getBinding(String name)
+	public IBindingSpecification getBinding(String name)
 	{
 		if (bindings == null)
 			return null;
 
-		return (BindingSpecification) bindings.get(name);
+		return (IBindingSpecification) bindings.get(name);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class ContainedComponent extends LocatablePropertyHolder
 		return type;
 	}
 
-	public void setBinding(String name, BindingSpecification spec)
+	public void setBinding(String name, IBindingSpecification spec)
 	{
 		if (bindings == null)
 			bindings = new HashMap(MAP_SIZE);

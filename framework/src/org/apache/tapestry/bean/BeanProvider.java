@@ -66,7 +66,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
@@ -77,8 +76,8 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.spec.BeanLifecycle;
-import org.apache.tapestry.spec.BeanSpecification;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IBeanSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Basic implementation of the {@link IBeanProvider} interface.
@@ -187,7 +186,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         if (bean != null)
             return bean;
 
-        BeanSpecification spec = _component.getSpecification().getBeanSpecification(name);
+        IBeanSpecification spec = _component.getSpecification().getBeanSpecification(name);
 
         if (spec == null)
             throw new ApplicationRuntimeException(
@@ -230,7 +229,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         return bean;
     }
 
-    private Object instantiateBean(String beanName, BeanSpecification spec)
+    private Object instantiateBean(String beanName, IBeanSpecification spec)
     {
         String className = spec.getClassName();
         Object bean = null;
@@ -306,7 +305,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         if (_beans == null)
             return;
 
-        ComponentSpecification spec = null;
+        IComponentSpecification spec = null;
 
         Iterator i = _beans.entrySet().iterator();
         while (i.hasNext())
@@ -317,7 +316,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
             if (spec == null)
                 spec = _component.getSpecification();
 
-            BeanSpecification s = spec.getBeanSpecification(name);
+            IBeanSpecification s = spec.getBeanSpecification(name);
 
             if (s.getLifecycle() == lifecycle)
             {

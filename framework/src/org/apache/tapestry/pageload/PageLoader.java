@@ -97,15 +97,15 @@ import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.resource.ContextResourceLocation;
-import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.AssetType;
-import org.apache.tapestry.spec.BindingSpecification;
 import org.apache.tapestry.spec.BindingType;
-import org.apache.tapestry.spec.ComponentSpecification;
-import org.apache.tapestry.spec.ContainedComponent;
+import org.apache.tapestry.spec.IAssetSpecification;
+import org.apache.tapestry.spec.IBindingSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.spec.IParameterSpecification;
+import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.ListenerBindingSpecification;
-import org.apache.tapestry.spec.ParameterSpecification;
-import org.apache.tapestry.spec.PropertySpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -238,13 +238,13 @@ public class PageLoader implements IPageLoader
      *  @param component The contained component being bound.
      *  @param spec The specification of the contained component.
      *  @param contained The contained component specification (from the container's
-     *  {@link ComponentSpecification}).
+     *  {@link IComponentSpecification}).
      *
      **/
 
-    private void bind(IComponent container, IComponent component, ContainedComponent contained)
+    private void bind(IComponent container, IComponent component, IContainedComponent contained)
     {
-        ComponentSpecification spec = component.getSpecification();
+        IComponentSpecification spec = component.getSpecification();
         boolean formalOnly = !spec.getAllowInformalParameters();
 
         Iterator i = contained.getBindingNames().iterator();
@@ -255,7 +255,7 @@ public class PageLoader implements IPageLoader
 
             boolean isFormal = spec.getParameter(name) != null;
 
-            BindingSpecification bspec = contained.getBinding(name);
+            IBindingSpecification bspec = contained.getBinding(name);
 
             // If not allowing informal parameters, check that each binding matches
             // a formal parameter.
@@ -312,7 +312,7 @@ public class PageLoader implements IPageLoader
     }
 
     /**
-     *  Invoked from {@link #loadPage(String, INamespace, IRequestCycle, ComponentSpecification)}
+     *  Invoked from {@link #loadPage(String, INamespace, IRequestCycle, IComponentSpecification)}
      *  after the entire tree of components in the page has been constructed.  Recursively
      *  checks each component in the tree to ensure that
      *  all of its required parameters are bound.
@@ -323,14 +323,14 @@ public class PageLoader implements IPageLoader
 
     private void verifyRequiredParameters(IComponent component)
     {
-        ComponentSpecification spec = component.getSpecification();
+        IComponentSpecification spec = component.getSpecification();
 
         Iterator i = spec.getParameterNames().iterator();
 
         while (i.hasNext())
         {
             String name = (String) i.next();
-            ParameterSpecification parameterSpec = spec.getParameter(name);
+            IParameterSpecification parameterSpec = spec.getParameter(name);
 
             if (parameterSpec.isRequired() && component.getBinding(name) == null)
                 throw new ApplicationRuntimeException(
@@ -358,14 +358,14 @@ public class PageLoader implements IPageLoader
         }
     }
 
-    private IBinding convert(IComponent container, BindingSpecification spec)
+    private IBinding convert(IComponent container, IBindingSpecification spec)
     {
         BindingType type = spec.getType();
         Location location = spec.getLocation();
         String value = spec.getValue();
 
         // The most common type. 
-
+		// TODO These bindings should be created somehow using the SpecFactory in SpecificationParser
         if (type == BindingType.DYNAMIC)
             return new ExpressionBinding(_resolver, container, value, location);
 
@@ -436,7 +436,7 @@ public class PageLoader implements IPageLoader
      * <li>Add the contained components to the container.
      * <li>Setting up bindings between container and containees.
      * <li>Construct the containees recursively.
-     * <li>Invoking {@link IComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)}
+     * <li>Invoking {@link IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}
      * </ul>
      *
      *  @param cycle the request cycle for which the page is being (initially) constructed
@@ -451,7 +451,7 @@ public class PageLoader implements IPageLoader
         IRequestCycle cycle,
         IPage page,
         IComponent container,
-        ComponentSpecification containerSpec,
+        IComponentSpecification containerSpec,
         INamespace namespace)
     {
         _depth++;
@@ -470,14 +470,14 @@ public class PageLoader implements IPageLoader
                 // Get the sub-component specification from the
                 // container's specification.
 
-                ContainedComponent contained = containerSpec.getComponent(id);
+                IContainedComponent contained = containerSpec.getComponent(id);
 
                 String type = contained.getType();
                 Location location = contained.getLocation();
 
                 _componentResolver.resolve(cycle, namespace, type, location);
 
-                ComponentSpecification componentSpecification =
+                IComponentSpecification componentSpecification =
                     _componentResolver.getSpecification();
                 INamespace componentNamespace = _componentResolver.getNamespace();
 
@@ -496,7 +496,7 @@ public class PageLoader implements IPageLoader
 
                 container.addComponent(component);
 
-                // Set up any bindings in the ContainedComponent specification
+                // Set up any bindings in the IContainedComponent specification
 
                 bind(container, component, contained);
 
@@ -566,7 +566,7 @@ public class PageLoader implements IPageLoader
         _componentResolver.resolve(cycle, container.getNamespace(), componentType, location);
 
         INamespace componentNamespace = _componentResolver.getNamespace();
-        ComponentSpecification spec = _componentResolver.getSpecification();
+        IComponentSpecification spec = _componentResolver.getSpecification();
 
         IComponent result =
             instantiateComponent(page, container, componentId, spec, componentNamespace, location);
@@ -592,7 +592,7 @@ public class PageLoader implements IPageLoader
         IPage page,
         IComponent container,
         String id,
-        ComponentSpecification spec,
+        IComponentSpecification spec,
         INamespace namespace,
         Location location)
     {
@@ -658,7 +658,7 @@ public class PageLoader implements IPageLoader
      *  @see ChangeObserver
      **/
 
-    private IPage instantiatePage(String name, INamespace namespace, ComponentSpecification spec)
+    private IPage instantiatePage(String name, INamespace namespace, IComponentSpecification spec)
     {
         IPage result = null;
 
@@ -738,7 +738,7 @@ public class PageLoader implements IPageLoader
         String name,
         INamespace namespace,
         IRequestCycle cycle,
-        ComponentSpecification specification)
+        IComponentSpecification specification)
     {
         IPage page = null;
 
@@ -796,7 +796,7 @@ public class PageLoader implements IPageLoader
         }
     }
 
-    private void addAssets(IComponent component, ComponentSpecification specification)
+    private void addAssets(IComponent component, IComponentSpecification specification)
     {
         List names = specification.getAssetNames();
 
@@ -810,7 +810,7 @@ public class PageLoader implements IPageLoader
         while (i.hasNext())
         {
             String name = (String) i.next();
-            AssetSpecification assetSpec = specification.getAsset(name);
+            IAssetSpecification assetSpec = specification.getAsset(name);
             IAsset asset = convert(name, component, assetSpec, specLocation);
 
             component.addAsset(name, asset);
@@ -819,10 +819,10 @@ public class PageLoader implements IPageLoader
 
     /**
      *  Invoked from 
-     *  {@link #constructComponent(IRequestCycle, IPage, IComponent, ComponentSpecification, INamespace)}
-     *  after {@link IComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)}
+     *  {@link #constructComponent(IRequestCycle, IPage, IComponent, IComponentSpecification, INamespace)}
+     *  after {@link IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}
      *  is invoked.  This iterates over any
-     *  {@link org.apache.tapestry.spec.PropertySpecification}s for the component,
+     *  {@link org.apache.tapestry.spec.IPropertySpecification}s for the component,
      *  create an initializer for each.
      * 
      **/
@@ -830,7 +830,7 @@ public class PageLoader implements IPageLoader
     private void createPropertyInitializers(
         IPage page,
         IComponent component,
-        ComponentSpecification spec)
+        IComponentSpecification spec)
     {
         List names = spec.getPropertySpecificationNames();
         int count = names.size();
@@ -838,7 +838,7 @@ public class PageLoader implements IPageLoader
         for (int i = 0; i < count; i++)
         {
             String name = (String) names.get(i);
-            PropertySpecification ps = spec.getPropertySpecification(name);
+            IPropertySpecification ps = spec.getPropertySpecification(name);
 
             String expression = ps.getInitialValue();
             Object initialValue = null;
@@ -890,7 +890,7 @@ public class PageLoader implements IPageLoader
     private IAsset convert(
         String assetName,
         IComponent component,
-        AssetSpecification spec,
+        IAssetSpecification spec,
         IResourceLocation specificationLocation)
     {
         AssetType type = spec.getType();

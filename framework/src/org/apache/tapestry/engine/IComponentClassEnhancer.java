@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.engine;
 
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *
@@ -97,5 +97,5 @@ public interface IComponentClassEnhancer
 	 * 
 	 **/
 	
-	public Class getEnhancedClass(ComponentSpecification specification, String className);
+	public Class getEnhancedClass(IComponentSpecification specification, String className);
 }

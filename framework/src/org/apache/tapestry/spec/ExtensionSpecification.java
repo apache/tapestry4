@@ -78,7 +78,7 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  * 
  **/
 
-public class ExtensionSpecification extends LocatablePropertyHolder
+public class ExtensionSpecification extends LocatablePropertyHolder implements IExtensionSpecification
 {
     private static final Log LOG = LogFactory.getLog(ExtensionSpecification.class);
 

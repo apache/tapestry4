@@ -63,7 +63,7 @@ import org.apache.tapestry.Location;
 /**
  * Interface exposed to components as they are loaded by the page loader.
  *
- * @see IComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)
+ * @see IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)
  * 
  * @author Howard Lewis Ship
  * @version $Id$

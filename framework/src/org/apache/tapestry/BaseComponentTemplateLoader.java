@@ -78,7 +78,7 @@ import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Utility class instantiated by {@link org.apache.tapestry.BaseComponent} to
@@ -370,7 +370,7 @@ public class BaseComponentTemplateLoader
         if (attributes == null)
             return;
 
-        ComponentSpecification spec = component.getSpecification();
+        IComponentSpecification spec = component.getSpecification();
 
         Iterator i = attributes.entrySet().iterator();
 
@@ -417,7 +417,7 @@ public class BaseComponentTemplateLoader
 
     private void addExpressionBinding(
         IComponent component,
-        ComponentSpecification spec,
+        IComponentSpecification spec,
         String name,
         String expression,
         Location location)
@@ -492,7 +492,7 @@ public class BaseComponentTemplateLoader
 
     private void addStringBinding(
         IComponent component,
-        ComponentSpecification spec,
+        IComponentSpecification spec,
         String name,
         String localizationKey,
         Location location)
@@ -562,7 +562,7 @@ public class BaseComponentTemplateLoader
 
     private void addStaticBinding(
         IComponent component,
-        ComponentSpecification spec,
+        IComponentSpecification spec,
         String name,
         String staticValue,
         Location location)

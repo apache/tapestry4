@@ -53,78 +53,29 @@
  *
  */
 
-package org.apache.tapestry.parse;
+package org.apache.tapestry.spec;
 
-import java.util.Iterator;
-
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.IBindingSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.util.xml.DocumentParseException;
-import org.xml.sax.Attributes;
+import org.apache.tapestry.ILocatable;
+import org.apache.tapestry.ILocationHolder;
+import org.apache.tapestry.util.IPropertyHolder;
 
 /**
- *  A rule for processing the copy-of attribute
- *  of the &lt;component&gt; element (in a page
- *  or component specification).
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.4
- *
- **/
-
-public class ComponentCopyOfRule extends AbstractSpecificationRule
+ *  Defines an internal, external or private asset.
+ * 
+ * @author glongman@intelligentworks.com
+ * @version $Id$
+ */
+public interface IAssetSpecification extends IPropertyHolder, ILocationHolder, ILocatable
 {
     /**
-     *  Validates that the element has either type or copy-of (not both, not neither).
-     *  Uses the copy-of attribute to find a previously declared component
-     *  and copies its type and bindings into the new component (on top of the stack).
-     * 
+     *  Returns the base path for the asset.  This may be interpreted as a URL, relative URL
+     *  or the path to a resource, depending on the type of asset.
+     *
      **/
-
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
-    {
-        String id = getValue(attributes, "id");
-        String copyOf = getValue(attributes, "copy-of");
-        String type = getValue(attributes, "type");
-
-        if (Tapestry.isNull(copyOf))
-        {
-            if (Tapestry.isNull(type))
-                throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
-                    getResourceLocation());
-
-            return;
-        }
-
-        if (!Tapestry.isNull(type))
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.both-type-and-copy-of", id),
-                getResourceLocation());
-
-        IComponentSpecification spec = (IComponentSpecification) digester.getRoot();
-
-        IContainedComponent source = spec.getComponent(copyOf);
-        if (source == null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unable-to-copy", copyOf),
-                getResourceLocation());
-
-        IContainedComponent target = (IContainedComponent) digester.peek();
-
-        target.setType(source.getType());
-        target.setCopyOf(copyOf);
-
-        Iterator i = source.getBindingNames().iterator();
-        while (i.hasNext())
-        {
-            String bindingName = (String) i.next();
-            IBindingSpecification binding = source.getBinding(bindingName);
-            target.setBinding(bindingName, binding);
-        }
-    }
-
+    public abstract String getPath();
+    public abstract AssetType getType();
+    /** @since 2.4 **/
+    public abstract void setPath(String path);
+    /** @since 2.4 **/
+    public abstract void setType(AssetType type);
 }

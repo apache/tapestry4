@@ -57,18 +57,17 @@ package org.apache.tapestry.resolver;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ISpecificationSource;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- *  Base class for resolving a {@link org.apache.tapestry.spec.ComponentSpecification}
+ *  Base class for resolving a {@link org.apache.tapestry.spec.IComponentSpecification}
  *  for a particular page or component, within a specified 
  *  {@link org.apache.tapestry.INamespace}.  In some cases, a search is necessary.
  *
@@ -86,7 +85,7 @@ public class AbstractSpecificationResolver
 
     private INamespace _namespace;
 
-    private ComponentSpecification _specification;
+    private IComponentSpecification _specification;
 
     private IResourceLocation _applicationRootLocation;
 
@@ -202,7 +201,7 @@ public class AbstractSpecificationResolver
      * 
      **/
 
-    public ComponentSpecification getSpecification()
+    public IComponentSpecification getSpecification() 
     {
         return _specification;
     }
@@ -213,7 +212,7 @@ public class AbstractSpecificationResolver
      * 
      **/
 
-    protected void setSpecification(ComponentSpecification specification)
+    protected void setSpecification(IComponentSpecification specification)
     {
         _specification = specification;
     }

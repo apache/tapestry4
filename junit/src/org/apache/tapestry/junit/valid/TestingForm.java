@@ -72,7 +72,7 @@ import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.spec.BaseLocatable;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
@@ -215,12 +215,12 @@ public class TestingForm extends BaseLocatable implements IForm
     {
     }
 
-    public ComponentSpecification getSpecification()
+    public IComponentSpecification getSpecification()
     {
         return null;
     }
 
-    public void setSpecification(ComponentSpecification value)
+    public void setSpecification(IComponentSpecification value)
     {
     }
 
@@ -237,7 +237,7 @@ public class TestingForm extends BaseLocatable implements IForm
         return null;
     }
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, IComponentSpecification specification)
     {
     }
 

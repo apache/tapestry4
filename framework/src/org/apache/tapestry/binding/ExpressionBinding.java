@@ -59,13 +59,14 @@ import java.util.Map;
 
 import ognl.Ognl;
 import ognl.OgnlException;
+
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.BeanLifecycle;
-import org.apache.tapestry.spec.BeanSpecification;
+import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
@@ -514,7 +515,7 @@ public class ExpressionBinding extends AbstractBinding
         {
             String name = split[start + 1];
 
-            BeanSpecification bs = _root.getSpecification().getBeanSpecification(name);
+            IBeanSpecification bs = _root.getSpecification().getBeanSpecification(name);
 
             if (bs == null || bs.getLifecycle() != BeanLifecycle.PAGE)
                 return;

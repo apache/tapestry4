@@ -55,11 +55,10 @@
 
 package org.apache.tapestry.junit.spec;
 
-import org.apache.tapestry.junit.TapestryTestCase;
-
 import org.apache.tapestry.engine.IMonitor;
-import org.apache.tapestry.spec.ExtensionSpecification;
+import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IExtensionSpecification;
 
 /**
  *  Tests related to {@link org.apache.tapestry.spec.ApplicationSpecification}.
@@ -140,7 +139,7 @@ public class TestApplicationSpecification extends TapestryTestCase
     {
         IApplicationSpecification a = parseApp("ExtensionProperty.application");
 
-        ExtensionSpecification e = a.getExtensionSpecification("testBean");
+        IExtensionSpecification e = a.getExtensionSpecification("testBean");
 
         assertEquals("Property fred.", "flintstone", e.getProperty("fred"));
     }

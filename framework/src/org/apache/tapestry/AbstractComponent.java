@@ -64,6 +64,7 @@ import java.util.List;
 import java.util.Map;
 
 import ognl.OgnlRuntime;
+
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.bean.BeanProviderPropertyAccessor;
 import org.apache.tapestry.engine.IPageLoader;
@@ -74,7 +75,7 @@ import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.param.ParameterManager;
 import org.apache.tapestry.spec.BaseLocatable;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -100,7 +101,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * 
      **/
 
-    private ComponentSpecification _specification;
+    private IComponentSpecification _specification;
 
     /**
      *  The page that contains the component, possibly itself (if the component is
@@ -293,7 +294,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     public void finishLoad(
         IRequestCycle cycle,
         IPageLoader loader,
-        ComponentSpecification specification)
+        IComponentSpecification specification)
     {
         if (this instanceof PageDetachListener)
             _page.addPageDetachListener((PageDetachListener) this);
@@ -614,12 +615,12 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         _page = value;
     }
 
-    public ComponentSpecification getSpecification()
+    public IComponentSpecification getSpecification()
     {
         return _specification;
     }
 
-    public void setSpecification(ComponentSpecification value)
+    public void setSpecification(IComponentSpecification value)
     {
         if (_specification != null)
             throw new ApplicationRuntimeException(
@@ -823,7 +824,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     /**
      * 
      *  Invoked, as a convienience, 
-     *  from {@link #finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)}.
+     *  from {@link #finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}.
      *  This implemenation does nothing.  Subclasses may override without invoking
      *  this implementation.
      * 
