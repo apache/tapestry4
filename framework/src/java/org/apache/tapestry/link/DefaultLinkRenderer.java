@@ -68,6 +68,13 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
             writer.attribute(getUrlAttribute(), constructURL(l, linkComponent.getAnchor(), cycle));
 
+            String target = linkComponent.getTarget();
+            
+            if (target == null)
+            {
+                writer.attribute(getTargetAttribute(), target);
+            }
+            
             beforeBodyRender(writer, cycle, linkComponent);
 
             // Allow the wrapped components a chance to render.
@@ -154,6 +161,11 @@ public class DefaultLinkRenderer implements ILinkRenderer
         return "href";
     }
 
+    protected String getTargetAttribute()
+    {
+        return "target";
+    }
+    
     protected boolean getHasBody()
     {
         return true;
