@@ -35,7 +35,7 @@
   	  	  	
   	  <assert-output name="ServiceLink with parameters">
 <![CDATA[  	  
-  	  <a href="/junit/mock?service=external/ServiceTest&amp;sp=SSopranos&amp;sp=20705&amp;sp=d3.142857142857143">
+  	  <a href="/junit/mock?service=external%2FServiceTest&amp;sp=SSopranos&amp;sp=20705&amp;sp=d3.142857142857143">
 ]]>
   	  </assert-output>
   	  	  	

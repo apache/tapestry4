@@ -16,8 +16,10 @@ package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
 
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Defense;
+import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.EngineServiceLink;
@@ -36,6 +38,8 @@ public class LinkFactoryImpl implements LinkFactory
 
     private final Object[] EMPTY = new Object[0];
 
+    private URLCodec _codec = new URLCodec();
+
     public ILink constructLink(IRequestCycle cycle, String serviceName, String[] context,
             Object[] serviceParameters, boolean stateful)
     {
@@ -44,7 +48,10 @@ public class LinkFactoryImpl implements LinkFactory
 
         String[] squeezed = squeeze(serviceParameters);
 
-        return new EngineServiceLink(cycle, serviceName, context, squeezed, stateful);
+        IEngine engine = cycle.getEngine();
+
+        return new EngineServiceLink(cycle, engine.getServletPath(), engine.getOutputEncoding(),
+                _codec, serviceName, context, squeezed, stateful);
     }
 
     public Object[] extractServiceParameters(IRequestCycle cycle)

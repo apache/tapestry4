@@ -35,7 +35,7 @@ Message: No message.
 	
 		<assert-output name="Link">
 <![CDATA[		
-/c7/lb?service=direct/0/Two/link
+/c7/lb?service=direct%2F0%2FTwo%2Flink
 ]]>
 		</assert-output>
  
@@ -84,13 +84,13 @@ Message: Component was clicked.
 		
 		<assert-output name="invalidScriptLink URL">
 <![CDATA[
-/c7/lb?service=direct/0/Two/invalidScriptLink
+/c7/lb?service=direct%2F0%2FTwo%2FinvalidScriptLink
 ]]>
 		</assert-output>
 		
 		<assert-output name="unknownLanguageLink URL">
 <![CDATA[
-/c7/lb?service=direct/0/Two/unknownLanguageLink
+/c7/lb?service=direct%2F0%2FTwo%2FunknownLanguageLink
 ]]>
 		</assert-output>	
 				

@@ -64,7 +64,7 @@ The start of the JUnit test suite: JUnit Simple Application.
   
   	 <assert-output name="Link to page Two">
 <![CDATA[
-	<a href="/junit/simple?service=page/Two">to page Two</a>
+	<a href="/junit/simple?service=page%2FTwo">to page Two</a>
 ]]>
   	 </assert-output>
   
@@ -99,7 +99,7 @@ The start of the JUnit test suite: JUnit Simple Application.
 	
 	<assert-output name="Page Two: DirectLink">
 <![CDATA[
-	DirectLink: <a href="/junit/simple?service=direct/0/Two/link">click it</a>
+	DirectLink: <a href="/junit/simple?service=direct%2F0%2FTwo%2Flink">click it</a>
 ]]>	
 	</assert-output>	
 

@@ -47,7 +47,7 @@
 		</assert-output>
 		
 		<assert-output name="link">
-		href="/c23/assets?service=direct/0/Home/flicker.update"
+		href="/c23/assets?service=direct%2F0%2FHome%2Fflicker.update"
 		</assert-output>
 	</request>
 	

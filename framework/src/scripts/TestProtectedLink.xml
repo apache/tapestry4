@@ -39,7 +39,7 @@
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app?service=direct/0/ProtectedLink/link&amp;sp=6&amp;sp=13&amp;sp=1999"
+href="/mock/app?service=direct%2F0%2FProtectedLink%2Flink&amp;sp=6&amp;sp=13&amp;sp=1999"
 ]]>
 		</assert-output>
   		
@@ -61,7 +61,7 @@ href="/mock/app?service=direct/0/ProtectedLink/link&amp;sp=6&amp;sp=13&amp;sp=19
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app?service=direct/1/Guard/link"
+href="/mock/app?service=direct%2F1%2FGuard%2Flink"
 ]]>
 		</assert-output>
 		

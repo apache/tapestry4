@@ -45,13 +45,13 @@ Form HAS NOT been triggered.
 		
 		<assert-output name="Direct URL">
 <![CDATA[
-href="/c5/app?service=direct/1/Home/DirectLinkHolder/$DirectLink"
+href="/c5/app?service=direct%2F1%2FHome%2FDirectLinkHolder%2F%24DirectLink"
 ]]>
 		</assert-output>		
 
 		<assert-output name="Action URL">
 <![CDATA[
-href="/c5/app?service=action/1/Home/0/ActionLinkHolder/$ActionLink"
+href="/c5/app?service=action%2F1%2FHome%2F0%2FActionLinkHolder%2F%24ActionLink"
 ]]>
 		</assert-output>
 			

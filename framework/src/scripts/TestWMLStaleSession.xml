@@ -41,14 +41,14 @@
 
         <assert-output name="DirectLink URL">
             <![CDATA[
-            href="/mock/app?service=direct/0/Stale/directLink"
+            href="/mock/app?service=direct%2F0%2FStale%2FdirectLink"
             ]]>
         </assert-output>
 
 
         <assert-output name="ActionLink URL">
             <![CDATA[
-            href="/mock/app?service=action/0/Stale/0/actionLink"
+            href="/mock/app?service=action%2F0%2FStale%2F0%2FactionLink"
             ]]>
         </assert-output>
 

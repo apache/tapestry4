@@ -38,7 +38,7 @@
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app?service=direct/1/Guard/link"
+href="/mock/app?service=direct%2F1%2FGuard%2Flink"
 ]]>
 		</assert-output>
 		

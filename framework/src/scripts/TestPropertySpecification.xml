@@ -216,7 +216,7 @@ value: \[(.*?)\]
 		
 		<assert-output name="Link">
 <![CDATA[
-/c9/app?service=direct/0/Seven/$DirectLink		
+/c9/app?service=direct%2F0%2FSeven%2F%24DirectLink	
 ]]>
 		</assert-output>
 	</request>	
@@ -250,7 +250,7 @@ value: \[(.*?)\]
 		
 		<assert-output name="Link">
 <![CDATA[
-/c9/app?service=direct/1/Seven/$DirectLink		
+/c9/app?service=direct%2F1%2FSeven%2F%24DirectLink		
 ]]>
 		</assert-output>	
 		

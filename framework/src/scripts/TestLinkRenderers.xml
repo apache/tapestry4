@@ -29,14 +29,14 @@
   		
   		<assert-output name="First Link">
 <![CDATA[
-<a href="/c10/app?service=direct/0/Home/first">First</a>
+<a href="/c10/app?service=direct%2F0%2FHome%2Ffirst">First</a>
 ]]>  		
   		</assert-output>
   	
 	
   		<assert-output name="Second Link">
 <![CDATA[
-<a href="http://junit-test/c10/app?service=direct/0/Home/second">Second</a>
+<a href="http://junit-test/c10/app?service=direct%2F0%2FHome%2Fsecond">Second</a>
 ]]>  		
   		</assert-output>	  	  		
   		
@@ -48,7 +48,7 @@
   		
   		<assert-output name="Third Link">
 <![CDATA[
-<a href="https://myserver:8080/c10/app?service=direct/0/Home/third#myanchor">Third</a>
+<a href="https://myserver:8080/c10/app?service=direct%2F0%2FHome%2Fthird#myanchor">Third</a>
 ]]>  		
   		</assert-output>	
   	  
@@ -113,7 +113,7 @@ function onClick_Link ()
 		
 		<assert-output name="Link">
 <![CDATA[
-<a href="/c10/app?service=direct/0/Four/link" onClick="javascript:onClick_Link();">
+<a href="/c10/app?service=direct%2F0%2FFour%2Flink" onClick="javascript:onClick_Link();">
 ]]>	
 		</assert-output>
   		  			

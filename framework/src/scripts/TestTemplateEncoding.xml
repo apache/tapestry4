@@ -38,7 +38,7 @@ Fran&#231;ais
 
 		<assert-output name="External Link">
 <![CDATA[
-<a href="/c28/app?service=external/Two&amp;sp=SFran%C3%A7ais">
+<a href="/c28/app?service=external%2FTwo&amp;sp=SFran%C3%A7ais">
 ]]>
 		</assert-output>
 	</request>

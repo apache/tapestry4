@@ -16,75 +16,96 @@ package org.apache.tapestry.engine;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.codec.net.URLCodec;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 
 /**
- *  A EngineServiceLink represents a possible action within the client web browser;
- *  either clicking a link or submitting a form, which is constructed primarily
- *  from the {@link org.apache.tapestry.IEngine#getServletPath() servlet path},
- *  with some additional query parameters.  A full URL for the EngineServiceLink
- *  can be generated, or the query parameters for the EngineServiceLink can be extracted
- *  (separately from the servlet path).  The latter case is used when submitting
- *  constructing {@link org.apache.tapestry.form.Form forms}.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
+ * A EngineServiceLink represents a possible action within the client web browser; either clicking a
+ * link or submitting a form, which is constructed primarily from the
+ * {@link org.apache.tapestry.IEngine#getServletPath() servlet path}, with some additional query
+ * parameters. A full URL for the EngineServiceLink can be generated, or the query parameters for
+ * the EngineServiceLink can be extracted (separately from the servlet path). The latter case is
+ * used when submitting constructing {@link org.apache.tapestry.form.Form forms}.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class EngineServiceLink implements ILink
 {
     private static final int DEFAULT_HTTP_PORT = 80;
-    private static final URLCodec _urlCodec = new URLCodec();
 
     private IRequestCycle _cycle;
-    private String _service;
-    private String[] _parameters;
+
+    private String _servletPath;
+
+    private URLCodec _codec;
+
+    private String _encoding;
+
     private boolean _stateful;
 
-    /**
-     *  Creates a new EngineServiceLink.  A EngineServiceLink always names a service to be activated
-     *  by the link, has an optional list of service context strings,
-     *  an optional list of service parameter strings and may be stateful
-     *  or stateless.
-     * 
-     *  <p>ServiceLink parameter strings may contain any characters.
-     * 
-     *  <p>ServiceLink context strings must be URL safe, and may not contain
-     *  slash ('/') characters.  Typically, only letters, numbers and simple
-     *  punctuation ('.', '-', '_', ':') is recommended (no checks are currently made,
-     *  however).  Context strings are generally built from page names
-     *  and component ids, which are limited to safe characters.
-     *  
-     *  @param cycle The {@link IRequestCycle} the EngineServiceLink is to be created for.
-     *  @param serviceName The name of the service to be invoked by the EngineServiceLink.
-     *  @param serviceContext an optional array of strings to be provided
-     *  to the service to provide a context for executing the service.  May be null
-     *  or empty.  <b>Note: copied, not retained.</b>
-     *  @param serviceParameters An array of parameters, may be 
-     *  null or empty. <b>Note: retained, not copied.</b>
-     *  @param stateful if true, the service which generated the EngineServiceLink
-     *  is stateful and expects that the final URL will be passed through
-     *  {@link IRequestCycle#encodeURL(String)}.
-     **/
+    private Map _parameters = new HashMap(3);
 
-    public EngineServiceLink(
-        IRequestCycle cycle,
-        String serviceName,
-        String[] serviceContext,
-        String[] serviceParameters,
-        boolean stateful)
+    /**
+     * Creates a new EngineServiceLink. A EngineServiceLink always names a service to be activated
+     * by the link, has an optional list of service context strings, an optional list of service
+     * parameter strings and may be stateful or stateless.
+     * <p>
+     * ServiceLink parameter strings may contain any characters.
+     * <p>
+     * ServiceLink context strings must be URL safe, and may not contain slash ('/') characters.
+     * Typically, only letters, numbers and simple punctuation ('.', '-', '_', ':') is recommended
+     * (no checks are currently made, however). Context strings are generally built from page names
+     * and component ids, which are limited to safe characters.
+     * 
+     * @param cycle
+     *            The {@link IRequestCycle}&nbsp; the EngineServiceLink is to be created for.
+     * @param servletPath
+     * @param codec
+     * @param encoding
+     * @param serviceName
+     *            The name of the service to be invoked by the EngineServiceLink.
+     * @param serviceContext
+     *            an optional array of strings to be provided to the service to provide a context
+     *            for executing the service. May be null or empty. <b>Note: copied, not retained.
+     *            </b>
+     * @param serviceParameters
+     *            An array of parameters, may be null or empty. <b>Note: retained, not copied. </b>
+     * @param stateful
+     *            if true, the service which generated the EngineServiceLink is stateful and expects
+     *            that the final URL will be passed through {@link IRequestCycle#encodeURL(String)}.
+     */
+
+    public EngineServiceLink(IRequestCycle cycle, String servletPath, String encoding,
+            URLCodec codec, String serviceName, String[] serviceContext,
+            String[] serviceParameters, boolean stateful)
     {
+        Defense.notNull(cycle, "cycle");
+        Defense.notNull(servletPath, "servletPath");
+        Defense.notNull(encoding, "encoding");
+        Defense.notNull(codec, "codec");
+        Defense.notNull(serviceName, "serviceName");
+
         _cycle = cycle;
-        _service = constructServiceValue(serviceName, serviceContext);
-        _parameters = serviceParameters;
+        _servletPath = servletPath;
+        _encoding = encoding;
+        _codec = codec;
+
+        _parameters.put(Tapestry.SERVICE_QUERY_PARAMETER_NAME, new String[]
+        { constructServiceValue(serviceName, serviceContext) });
+
+        _parameters.put(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME, serviceParameters);
+
         _stateful = stateful;
     }
 
@@ -122,12 +143,8 @@ public class EngineServiceLink implements ILink
         return getAbsoluteURL(null, null, 0, null, true);
     }
 
-    public String getAbsoluteURL(
-        String scheme,
-        String server,
-        int port,
-        String anchor,
-        boolean includeParameters)
+    public String getAbsoluteURL(String scheme, String server, int port, String anchor,
+            boolean includeParameters)
     {
         StringBuffer buffer = new StringBuffer();
         RequestContext context = _cycle.getRequestContext();
@@ -160,38 +177,10 @@ public class EngineServiceLink implements ILink
 
     private String constructURL(StringBuffer buffer, String anchor, boolean includeParameters)
     {
-        buffer.append(_cycle.getEngine().getServletPath());
+        buffer.append(_servletPath);
 
         if (includeParameters)
-        {
-            buffer.append('?');
-            buffer.append(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
-            buffer.append('=');
-            buffer.append(_service);
-
-            int count = Tapestry.size(_parameters);
-
-            for (int i = 0; i < count; i++)
-            {
-                buffer.append('&');
-
-                buffer.append(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
-                buffer.append('=');
-
-                String encoding = _cycle.getEngine().getOutputEncoding();
-                try
-                {
-                    String encoded = _urlCodec.encode(_parameters[i], encoding);
-                    buffer.append(encoded);
-                }
-                catch (UnsupportedEncodingException e)
-                {
-                    throw new ApplicationRuntimeException(
-                        Tapestry.format("illegal-encoding", encoding),
-                        e);
-                }
-            }
-        }
+            addParameters(buffer);
 
         if (anchor != null)
         {
@@ -207,43 +196,58 @@ public class EngineServiceLink implements ILink
         return result;
     }
 
+    private void addParameters(StringBuffer buffer)
+    {
+        String[] names = getParameterNames();
+
+        String sep = "?";
+
+        for (int i = 0; i < names.length; i++)
+        {
+            String name = names[i];
+            String[] values = getParameterValues(name);
+
+            if (values == null)
+                continue;
+
+            for (int j = 0; j < values.length; j++)
+            {
+                buffer.append(sep);
+                buffer.append(name);
+                buffer.append("=");
+                buffer.append(encode(values[j]));
+
+                sep = "&";
+            }
+
+        }
+    }
+
+    private String encode(String value)
+    {
+        try
+        {
+            return _codec.encode(value, _encoding);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            throw new ApplicationRuntimeException(Tapestry.format("illegal-encoding", _encoding),
+                    ex);
+        }
+    }
+
     public String[] getParameterNames()
     {
-        List list = new ArrayList();
+        List list = new ArrayList(_parameters.keySet());
 
-        list.add(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
-
-        if (Tapestry.size(_parameters) != 0)
-            list.add(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
+        Collections.sort(list);
 
         return (String[]) list.toArray(new String[list.size()]);
     }
 
     public String[] getParameterValues(String name)
     {
-        if (name.equals(Tapestry.SERVICE_QUERY_PARAMETER_NAME))
-        {
-            return new String[] { _service };
-        }
-
-        if (name.equals(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME))
-        {
-            return _parameters;
-        }
-
-        throw new IllegalArgumentException(
-            Tapestry.format("EngineServiceLink.unknown-parameter-name", name));
-    }
-
-    public String toString()
-    {
-        ToStringBuilder builder = new ToStringBuilder(this);
-
-        builder.append("service", _service);
-        builder.append("parameters", _parameters);
-        builder.append("stateful", _stateful);
-
-        return builder.toString();
+        return (String[]) _parameters.get(name);
     }
 
 }

@@ -32,44 +32,44 @@
 	
 		<assert-output name="Internal Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct/0/Home/internal"
+href="/mock/app?service=direct%2F0%2FHome%2Finternal"
 ]]>	
 		</assert-output>	
 		
 		<assert-output name="External Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct/0/Home/external"
+href="/mock/app?service=direct%2F0%2FHome%2Fexternal"
 ]]>	
 		</assert-output>	
 	
 		<assert-output name="Null Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct/0/Home/null"
+href="/mock/app?service=direct%2F0%2FHome%2Fnull"
 ]]>	
 		</assert-output>	
 		
 		<assert-output name="Servlet Exception Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct/0/Home/servletException"
+href="/mock/app?service=direct%2F0%2FHome%2FservletException"
 ]]>	
 		</assert-output>	
 		
 		
 		<assert-output name="Missing Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct/0/Home/missing"
+href="/mock/app?service=direct%2F0%2FHome%2Fmissing"
 ]]>	
 		</assert-output>	
 
 		<assert-output name="Index Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct/0/Home/index"
+href="/mock/app?service=direct%2F0%2FHome%2Findex"
 ]]>	
 		</assert-output>	
 		
 		<assert-output name="Fail External Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct/0/Home/failExternal"
+href="/mock/app?service=direct%2F0%2FHome%2FfailExternal"
 ]]>	
 		</assert-output>	
 				

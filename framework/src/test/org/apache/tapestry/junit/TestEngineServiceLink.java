@@ -14,417 +14,190 @@
 
 package org.apache.tapestry.junit;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.Principal;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.tapestry.ApplicationServlet;
+import org.apache.commons.codec.net.URLCodec;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.EngineServiceLink;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.spec.ApplicationSpecification;
-import org.apache.tapestry.test.mock.MockContext;
-import org.apache.tapestry.test.mock.MockServletConfig;
+import org.easymock.MockControl;
+import org.easymock.classextension.MockClassControl;
 
+/**
+ * Tests for {@link org.apache.tapestry.engine.EngineServiceLink}.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 public class TestEngineServiceLink extends TapestryTestCase
 {
-    private class TestRequest implements HttpServletRequest
+    private URLCodec _urlCodec = new URLCodec();
+
+    private static final String ENCODING = "utf-8";
+
+    /** @since 3.1 */
+    public void testGetURLWithParameters()
     {
-        public String getAuthType()
-        {
-            return null;
-        }
+        MockControl control = newControl(IRequestCycle.class);
+        IRequestCycle rc = (IRequestCycle) control.getMock();
 
-        public String getContextPath()
-        {
-            return null;
-        }
+        rc.encodeURL("/context/servlet?service=myservice");
+        control.setReturnValue("/context/servlet?service=myservice;encoded");
 
-        public Cookie[] getCookies()
-        {
-            return null;
-        }
+        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+                "myservice", null, null, true);
 
-        public long getDateHeader(String arg0)
-        {
-            return 0;
-        }
+        replayControls();
 
-        public String getHeader(String arg0)
-        {
-            return null;
-        }
+        assertEquals("/context/servlet?service=myservice;encoded", l.getURL());
 
-        public Enumeration getHeaderNames()
-        {
-            return null;
-        }
-
-        public Enumeration getHeaders(String arg0)
-        {
-            return null;
-        }
-
-        public int getIntHeader(String arg0)
-        {
-            return 0;
-        }
-
-        public String getMethod()
-        {
-            return null;
-        }
-
-        public String getPathInfo()
-        {
-            return null;
-        }
-
-        public String getPathTranslated()
-        {
-            return null;
-        }
-
-        public String getQueryString()
-        {
-            return null;
-        }
-
-        public String getRemoteUser()
-        {
-            return null;
-        }
-
-        public String getRequestedSessionId()
-        {
-            return null;
-        }
-
-        public String getRequestURI()
-        {
-            return null;
-        }
-
-        public StringBuffer getRequestURL()
-        {
-            return null;
-        }
-
-        public String getServletPath()
-        {
-            return null;
-        }
-
-        public HttpSession getSession()
-        {
-            return null;
-        }
-
-        public HttpSession getSession(boolean arg0)
-        {
-            return null;
-        }
-
-        public Principal getUserPrincipal()
-        {
-            return null;
-        }
-
-        public boolean isRequestedSessionIdFromCookie()
-        {
-            return false;
-        }
-
-        public boolean isRequestedSessionIdFromUrl()
-        {
-            return false;
-        }
-
-        public boolean isRequestedSessionIdFromURL()
-        {
-            return false;
-        }
-
-        public boolean isRequestedSessionIdValid()
-        {
-            return false;
-        }
-
-        public boolean isUserInRole(String arg0)
-        {
-            return false;
-        }
-
-        public Object getAttribute(String arg0)
-        {
-            return null;
-        }
-
-        public Enumeration getAttributeNames()
-        {
-            return null;
-        }
-
-        public String getCharacterEncoding()
-        {
-            return null;
-        }
-
-        public int getContentLength()
-        {
-            return 0;
-        }
-
-        public String getContentType()
-        {
-            return null;
-        }
-
-        public ServletInputStream getInputStream() throws IOException
-        {
-            return null;
-        }
-
-        public Locale getLocale()
-        {
-            return null;
-        }
-
-        public Enumeration getLocales()
-        {
-            return null;
-        }
-
-        public String getParameter(String arg0)
-        {
-            return null;
-        }
-
-        public Map getParameterMap()
-        {
-            return null;
-        }
-
-        public Enumeration getParameterNames()
-        {
-            return null;
-        }
-
-        public String[] getParameterValues(String arg0)
-        {
-            return null;
-        }
-
-        public String getProtocol()
-        {
-            return null;
-        }
-
-        public BufferedReader getReader() throws IOException
-        {
-            return null;
-        }
-
-        public String getRealPath(String arg0)
-        {
-            return null;
-        }
-
-        public String getRemoteAddr()
-        {
-            return null;
-        }
-
-        public String getRemoteHost()
-        {
-            return null;
-        }
-
-        public RequestDispatcher getRequestDispatcher(String arg0)
-        {
-            return null;
-        }
-
-        public String getScheme()
-        {
-            return "http";
-        }
-
-        public String getServerName()
-        {
-            return "testserver";
-        }
-
-        public int getServerPort()
-        {
-            return 80;
-        }
-
-        public boolean isSecure()
-        {
-            return false;
-        }
-
-        public void removeAttribute(String arg0)
-        {
-        }
-
-        public void setAttribute(String arg0, Object arg1)
-        {
-        }
-
-        public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException
-        {
-        }
-
-        public int getRemotePort()
-        {
-            return 0;
-        }
-
-        public String getLocalName()
-        {
-            return null;
-        }
-
-        public String getLocalAddr()
-        {
-            return null;
-        }
-
-        public int getLocalPort()
-        {
-            return 0;
-        }
-
-    }
-
-    private MockRequestCycle create(String servletPath) throws Exception
-    {
-        MockContext servletContext = new MockContext();
-        MockServletConfig config = new MockServletConfig("servlet", servletContext);
-        ApplicationServlet servlet = new ApplicationServlet();
-
-        servlet.init(config);
-
-        MockEngine engine = new MockEngine();
-        engine.setServletPath(servletPath);
-
-        HttpServletRequest request = new TestRequest();
-        RequestContext context = new RequestContext(servlet, request, null,
-                new ApplicationSpecification());
-
-        return new MockRequestCycle(engine, context);
-    }
-
-    public void testGetURL() throws Exception
-    {
-        MockRequestCycle c = create("/context/servlet");
-
-        EngineServiceLink l = new EngineServiceLink(c, "myservice", null, null, true);
-
-        assertEquals("/context/servlet?service=myservice", l.getURL());
-
-        assertEquals("/context/servlet?service=myservice", c.getLastEncodedURL());
-
-        assertEquals("/context/servlet", l.getURL(null, false));
-
-        assertEquals("/context/servlet#anchor", l.getURL("anchor", false));
-
-        assertEquals("/context/servlet?service=myservice#anchor", l.getURL("anchor", true));
-
-        checkList("parameterNames", new String[]
-        { Tapestry.SERVICE_QUERY_PARAMETER_NAME }, l.getParameterNames());
-    }
-
-    public void testGetAbsoluteURL() throws Exception
-    {
-        MockRequestCycle c = create("/context/servlet");
-
-        EngineServiceLink l = new EngineServiceLink(c, "myservice", null, null, true);
-
-        assertEquals("http://testserver/context/servlet?service=myservice", l.getAbsoluteURL());
-
-        assertEquals("http://testserver/context/servlet?service=myservice", c.getLastEncodedURL());
-
-        assertEquals("http://testserver/context/servlet#anchor", l.getAbsoluteURL(
-                null,
-                null,
-                0,
-                "anchor",
-                false));
-
-        assertEquals("http://testserver/context/servlet?service=myservice#anchor", l
-                .getAbsoluteURL(null, null, 0, "anchor", true));
-
-        assertEquals("frob://magic:77/context/servlet?service=myservice", l.getAbsoluteURL(
-                "frob",
-                "magic",
-                77,
-                null,
-                true));
-    }
-
-    public void testContext() throws Exception
-    {
-        MockRequestCycle c = create("/alpha/bravo");
-
-        EngineServiceLink l = new EngineServiceLink(c, "myservice", new String[]
-        { "Alpha", "Bravo", "Tango" }, null, true);
-
-        checkList("parameterNames", new String[]
-        { Tapestry.SERVICE_QUERY_PARAMETER_NAME }, l.getParameterNames());
-
-        checkList("service parameters values", new String[]
-        { "myservice/Alpha/Bravo/Tango" }, l
-                .getParameterValues(Tapestry.SERVICE_QUERY_PARAMETER_NAME));
-
-        assertEquals("/alpha/bravo?service=myservice/Alpha/Bravo/Tango", l.getURL());
-
-    }
-
-    public void testServiceParameters() throws Exception
-    {
-        MockRequestCycle c = create("/alpha/bravo");
-
-        EngineServiceLink l = new EngineServiceLink(c, "myservice", null, new String[]
-        { "One Two", "Three Four" }, true);
-
-        assertEquals("/alpha/bravo?service=myservice&sp=One+Two&sp=Three+Four", l.getURL());
+        verifyControls();
 
         checkList("parameterNames", new String[]
         { Tapestry.SERVICE_QUERY_PARAMETER_NAME, Tapestry.PARAMETERS_QUERY_PARAMETER_NAME }, l
                 .getParameterNames());
 
-        checkList("service parameters values", new String[]
-        { "One Two", "Three Four" }, l.getParameterValues(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME));
     }
 
-    public void testUnknownParameter() throws Exception
+    public void testGetURLWithServiceContext()
     {
-        MockRequestCycle c = create("/context/servlet");
+        IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
 
-        EngineServiceLink l = new EngineServiceLink(c, "myservice", null, null, true);
+        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+                "myservice", new String[]
+                { "alpha", "bravo" }, null, false);
 
-        try
-        {
-            l.getParameterValues("unknown");
+        replayControls();
 
-            unreachable();
-        }
-        catch (IllegalArgumentException ex)
-        {
-        }
+        assertEquals("/context/servlet?service=myservice%2Falpha%2Fbravo", l.getURL());
+
+        verifyControls();
+
+        assertEquals("myservice/alpha/bravo", l
+                .getParameterValues(Tapestry.SERVICE_QUERY_PARAMETER_NAME)[0]);
     }
 
+    public void testGetURLWithServiceParameters()
+    {
+        IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
+
+        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, "foo",
+                null, new String[]
+                { "godzilla", "frodo" }, false);
+
+        replayControls();
+
+        assertEquals("/ctx/app?service=foo&sp=godzilla&sp=frodo", l.getURL());
+
+        verifyControls();
+    }
+
+    /** @since 3.1 */
+
+    public void testGetURLSansParameters()
+    {
+        MockControl control = newControl(IRequestCycle.class);
+        IRequestCycle rc = (IRequestCycle) control.getMock();
+
+        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+                "myservice", null, null, true);
+
+        rc.encodeURL("/context/servlet");
+        control.setReturnValue("/context/servlet;encoded");
+
+        replayControls();
+
+        assertEquals("/context/servlet;encoded", l.getURL(null, false));
+
+        verifyControls();
+    }
+
+    /** @since 3.1 */
+
+    public void testGetURLWithAnchor()
+    {
+        IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
+
+        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+                "myservice", null, null, false);
+
+        replayControls();
+
+        assertEquals("/context/servlet#anchor", l.getURL("anchor", false));
+
+        verifyControls();
+    }
+
+    public void testGetURLWithAnchorAndParameters() throws Exception
+    {
+        IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
+
+        EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
+                "myservice", null, null, false);
+
+        replayControls();
+
+        assertEquals("/context/servlet?service=myservice#anchor", l.getURL("anchor", true));
+
+        verifyControls();
+    }
+
+    public void testGetAbsoluteURL() throws Exception
+    {
+        MockControl control = newControl(IRequestCycle.class);
+        IRequestCycle rc = (IRequestCycle) control.getMock();
+
+        MockControl contextc = MockClassControl.createStrictControl(RequestContext.class);
+        addControl(contextc);
+
+        RequestContext context = (RequestContext) contextc.getMock();
+
+        rc.getRequestContext();
+        control.setReturnValue(context);
+
+        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec,
+                "myservice", null, null, false);
+
+        context.getScheme();
+        contextc.setReturnValue("HTTP");
+
+        context.getServerName();
+        contextc.setReturnValue("TESTSERVER.COM");
+
+        context.getServerPort();
+        contextc.setReturnValue(9187);
+
+        replayControls();
+
+        assertEquals("HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", l.getAbsoluteURL());
+
+        verifyControls();
+    }
+
+    public void testGetAbsoluteURLWithOverrides() throws Exception
+    {
+        MockControl control = newControl(IRequestCycle.class);
+        IRequestCycle rc = (IRequestCycle) control.getMock();
+
+        MockControl contextc = MockClassControl.createStrictControl(RequestContext.class);
+        addControl(contextc);
+
+        RequestContext context = (RequestContext) contextc.getMock();
+
+        rc.getRequestContext();
+        control.setReturnValue(context);
+
+        EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec,
+                "myservice", null, null, false);
+
+        replayControls();
+
+        assertEquals("https://myserver.net:9100/ctx/app?service=myservice", l.getAbsoluteURL(
+                "https",
+                "myserver.net",
+                9100,
+                null,
+                true));
+
+        verifyControls();
+    }
 }

@@ -45,6 +45,8 @@
     
 		<ibiblio-dependency artifact="log4j"              version="1.2.7"               group="log4j"    use="test"/>
 		<ibiblio-dependency artifact="easymock"           version="1.1"                 group="easymock" use="test"/>
+		<ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
+		<ibiblio-dependency artifact="cglib-full"         version="2.0.1"               group="cglib"    use="test"/>
     <ibiblio-dependency artifact="jdom"               version="b8"                  group="jdom"     use="test"/>
     <ibiblio-dependency artifact="jython"             version="2.1"                 group="jython"   use="test"/>
 		
