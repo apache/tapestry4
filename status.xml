@@ -247,7 +247,15 @@ NextGen) be released as version number 3.0.
   </todo>
 
   <changes>
-  
+  <release version="3.0.2" date="Dec ?? 2004">
+    <action type="fix" dev="EH">
+      Fix build settings for JDOM and Jetty.
+    </action>
+    <action type="fix" dev="EH">
+      Upgrade OGNL to 2.6.7.  This should move to 2.7.0 as soon as it is released.
+    </action>
+  </release>
+
   <release version="3.0.1" date="Oct 16 2004">
     
     <action type="update" dev="DS">
