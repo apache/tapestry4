@@ -15,6 +15,10 @@
 		<name>logout</name>
 		<specification-path>/com/primix/vlib/pages/Logout.jwc</specification-path>
 	</page>
+	<page>
+		<name>matches</name>
+		<specification-path>/com/primix/vlib/pages/Matches.jwc</specification-path>
+	</page>
 	<component-alias>
 		<alias>Border</alias>
 		<specification-path>/com/primix/vlib/components/Border.jwc</specification-path>

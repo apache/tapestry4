@@ -24,6 +24,12 @@
       <finder-query><![CDATA[(= name $0)]]></finder-query>
     </finder>
     <finder>
+      <method-name>findAll</method-name>
+      <method-params>
+      </method-params>
+      <finder-query><![CDATA[]]></finder-query>
+    </finder>
+    <finder>
       <method-name>findByPrimaryKey</method-name>
       <method-params>
         <method-param>java.lang.Integer</method-param>
@@ -34,12 +40,6 @@
         <expression-text><![CDATA[@0]]></expression-text>
         <expression-type>java.lang.Integer</expression-type>
       </finder-expression>
-    </finder>
-    <finder>
-      <method-name>findAll</method-name>
-      <method-params>
-      </method-params>
-      <finder-query><![CDATA[]]></finder-query>
     </finder>
   </finder-list>
   <options>

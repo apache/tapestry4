@@ -48,7 +48,6 @@ public class Home extends BasePage
 {
 	private String searchTitle;
 	private Object searchPublisherPK;
-	private IPropertySelectionModel publisherModel;
 	
 	public Home(IApplication application, ComponentSpecification componentSpecification)
 	{
@@ -87,56 +86,6 @@ public class Home extends BasePage
 		fireObservedChange("searchPublisherPK", value);
 	}
 
-	public IPropertySelectionModel getPublisherModel()
-	{
-		if (publisherModel == null)
-			buildPublisherModel();
-		
-		return publisherModel;	
-	}
-	
-	private void buildPublisherModel()
-	{
-		VirtualLibraryApplication app;
-		IPublisherHome home;
-		EntitySelectionModel model;
-		IPublisher publisher;
-		Iterator i;
-		
-		app = (VirtualLibraryApplication)application;
-		model = new EntitySelectionModel();
-		
-		home = app.getPublisherHome();
-		
-		// Add in a default null value, such that the user can
-		// not select a specific Publisher.
-		
-		model.add(null, "");
-		
-		try
-		{
-			i = home.findAll().iterator();
-			
-			while (i.hasNext())
-			{
-				publisher = (IPublisher)PortableRemoteObject.narrow(i.next(), 
-					IPublisher.class);
-				
-				model.add((Integer)(publisher.getPrimaryKey()),
-						  publisher.getName());
-			}
-		}
-		catch (Throwable t)
-		{
-			throw new ApplicationRuntimeException("Unable to build publisher model: " +
-				t.getMessage() + ".", t);
-		}
-		
-		model.sort();
-		
-		publisherModel = model;
-		
-	}
 	
 	public IActionListener getSearchFormListener()
 	{
@@ -144,12 +93,15 @@ public class Home extends BasePage
 		{
 			public void actionTriggered(IComponent component, IRequestCycle cycle)
 			{
-				performSearch(cycle);
+				Matches matches;
+				
+				matches = (Matches)cycle.getPage("matches");
+				
+				matches.performTitleQuery(searchTitle, searchPublisherPK);
+				
+				cycle.setPage(matches);	
 			}
 		};
 	}
 	
-	private void performSearch(IRequestCycle cycle)
-	{
-	}
 }

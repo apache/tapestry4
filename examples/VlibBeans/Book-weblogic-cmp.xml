@@ -19,12 +19,12 @@
       <dbms-column>OWNER_ID</dbms-column>
     </object-link>
     <object-link>
-      <bean-field>publisherPK</bean-field>
-      <dbms-column>PUBLISHER_ID</dbms-column>
-    </object-link>
-    <object-link>
       <bean-field>holderPK</bean-field>
       <dbms-column>HOLDER_ID</dbms-column>
+    </object-link>
+    <object-link>
+      <bean-field>publisherPK</bean-field>
+      <dbms-column>PUBLISHER_ID</dbms-column>
     </object-link>
     <object-link>
       <bean-field>title</bean-field>
@@ -76,14 +76,7 @@
         <expression-type>java.lang.Integer</expression-type>
       </finder-expression>
     </finder>
-    <finder>
-      <method-name>findByTitle</method-name>
-      <method-params>
-        <method-param>java.lang.String</method-param>
-      </method-params>
-      <finder-query><![CDATA[(= title $0)]]></finder-query>
-    </finder>
-    <finder>
+     <finder>
       <method-name>findByPrimaryKey</method-name>
       <method-params>
         <method-param>java.lang.Integer</method-param>

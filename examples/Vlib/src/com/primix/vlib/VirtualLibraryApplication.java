@@ -8,6 +8,7 @@ import javax.ejb.*;
 import com.primix.vlib.ejb.*;
 import java.rmi.*;
 import javax.rmi.*;
+import java.util.*;
 
 /*
  * Tapestry Web Application Framework
@@ -53,8 +54,18 @@ public class VirtualLibraryApplication extends SimpleApplication
 	 
 	private Handle userHandle;
 	private transient IPerson user;
+	private transient String fullUserName;
+	
+	private transient IPublisherHome publisherHome;
+	private transient IBookHome bookHome;
+	private transient IPersonHome personHome;
+	private transient IBookQueryHome bookQueryHome;
 	
 	private transient Context environment;	
+	
+	// Includes a null option for searching without care to Publisher
+	
+	private IPropertySelectionModel publisherSearchModel;
 	
 	public VirtualLibraryApplication(RequestContext context)
 	{
@@ -94,19 +105,38 @@ public class VirtualLibraryApplication extends SimpleApplication
 	
 	public IPersonHome getPersonHome()
 	{
-		return (IPersonHome)findNamedObject("ejb/Person", IPersonHome.class);
+		if (personHome == null)
+			personHome = (IPersonHome)findNamedObject("ejb/Person", IPersonHome.class);
+		
+		return personHome;	
 	}
 	
 	public IPublisherHome getPublisherHome()
 	{
-		return (IPublisherHome)findNamedObject("ejb/Publisher", IPublisherHome.class);
+		if (publisherHome == null)
+		  publisherHome = (IPublisherHome)findNamedObject("ejb/Publisher",
+		  		IPublisherHome.class);
+		
+		return publisherHome;		
 	}
 	
 	public IBookHome getBookHome()
 	{
-		return (IBookHome)findNamedObject("ejb/Book", IBookHome.class);
+		if (bookHome == null)
+			bookHome = (IBookHome)findNamedObject("ejb/Book", IBookHome.class);
+		
+		return bookHome;	
 	}
 	
+	public IBookQueryHome getBookQueryHome()
+	{
+		if (bookQueryHome == null)
+			bookQueryHome = (IBookQueryHome)findNamedObject("ejb/BookQuery",
+				IBookQueryHome.class);
+		
+		return bookQueryHome;
+	}
+			
 	public Object findNamedObject(String name, Class expectedClass)
 	{
 		Object raw;
@@ -167,7 +197,9 @@ public class VirtualLibraryApplication extends SimpleApplication
 	{
 		user = value;
 		
+		fullUserName= null;
 		userHandle = null;
+		
 		if (user == null)
 			return;
 		
@@ -179,6 +211,24 @@ public class VirtualLibraryApplication extends SimpleApplication
 		{
 			throw new ApplicationRuntimeException("Could not get handle for user.", e);
 		}
+	}
+	
+	public String getFullUserName()
+	{
+		if (fullUserName == null)
+		{
+			try
+			{
+				fullUserName = getUser().getNaturalName();
+			}
+			catch (RemoteException e)
+			{
+				throw new ApplicationRuntimeException("Could not get user's name: " + e.toString(),
+						e);
+			}		
+		}
+		
+		return fullUserName;
 	}
 	
 	/**
@@ -208,4 +258,55 @@ public class VirtualLibraryApplication extends SimpleApplication
 			}
 		};
 	}
+	
+	public IPropertySelectionModel getPublisherSearchModel()
+	{
+		if (publisherSearchModel == null)
+			publisherSearchModel = buildPublisherModel(true);
+		
+		return publisherSearchModel;	
+	}
+	
+	private IPropertySelectionModel buildPublisherModel(boolean includeNull)
+	{
+		VirtualLibraryApplication app;
+		IPublisherHome home;
+		EntitySelectionModel model;
+		IPublisher publisher;
+		Iterator i;
+		
+		model = new EntitySelectionModel();
+		
+		home = getPublisherHome();
+		
+		// Add in a default null value, such that the user can
+		// not select a specific Publisher.
+		
+		if (includeNull)
+			model.add(null, "");
+		
+		try
+		{
+			i = home.findAll().iterator();
+			
+			while (i.hasNext())
+			{
+				publisher = (IPublisher)PortableRemoteObject.narrow(i.next(), 
+					IPublisher.class);
+				
+				model.add((Integer)(publisher.getPrimaryKey()),
+						  publisher.getName());
+			}
+		}
+		catch (Throwable t)
+		{
+			throw new ApplicationRuntimeException("Unable to build publisher model: " +
+				t.getMessage() + ".", t);
+		}
+		
+		model.sort();
+		
+		return model;		
+	}
+	
 }
