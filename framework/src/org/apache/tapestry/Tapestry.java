@@ -507,6 +507,11 @@ public final class Tapestry
             if (s.length() == 0)
                 return false;
 
+            // Here probably Boolean.getBoolean(s) should be used,
+            // but we need the opposite check
+            if (s.trim().equalsIgnoreCase("false"))
+                return false;
+
             char[] data = s.toCharArray();
 
             try
