@@ -20,6 +20,16 @@
   </developers>
 
   <votes>
+  
+    <vote title="Nominate Paul Ferraro as committer" date="Aug 24 2004" dev="RLS">
+        <motion>
+            I would like to nominate Paul Ferraro as a Tapestry committer.  Paul has
+            shown a very good understanding of Tapestry, and recently made a large
+            contribution with friendly URLs.  (Paul has indicated he is very interested)
+        </motion>
+        <response>RLS, EH, HK, GL, DS: +1</response>
+        <response>HLS, MB, TS, NC: +0</response>
+    </vote>
   	
   	<vote title="Tapestry 3.0 FINAL" date="Apr 14 2004" dev="HLS">
   	
