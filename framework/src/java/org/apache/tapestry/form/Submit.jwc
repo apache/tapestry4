@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.form.Submit" allow-body="no">
 
@@ -25,18 +25,13 @@
   Creates a labeled submit button within a form.
   </description>
 
-  <parameter name="label" type="java.lang.String" direction="in"/>
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="label"/>
+  <parameter name="disabled"/>
   <parameter name="selected"/>
-  <parameter name="tag" type="java.lang.Object" direction="in"/>
-  <parameter name="listener" 
-  	type="org.apache.tapestry.IActionListener"
-  	direction="in"/>
+  <parameter name="tag"/>
+  <parameter name="listener"/>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
-
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>  
   
 </component-specification>

@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 	
 <component-specification class="org.apache.tapestry.form.Upload" allow-body="no">
@@ -26,19 +26,16 @@
   Allows a file to be uploaded as part of a form.
   </description>
 
-  <parameter name="file" type="org.apache.tapestry.request.IUploadFile" required="yes" direction="form">
+  <parameter name="file" required="yes">
   	<description>
   	Parameter updated with the information (filename and content) of the file
   	when the form is submitted.
   	</description>
   </parameter>
 
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled"/>
  
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>
-  
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
   
 </component-specification>

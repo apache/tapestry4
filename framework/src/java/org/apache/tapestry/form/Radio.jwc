@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.form.Radio" allow-body="no">
 
@@ -25,9 +25,9 @@
   A single possible selection within a RadioGroup.
   </description>
   
-  <parameter name="value" type="java.lang.Object" direction="in"/>
+  <parameter name="value"/>
   
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled"/>
   
   <reserved-parameter name="checked"/>
   <reserved-parameter name="type"/>
