@@ -8,10 +8,11 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import net.sf.tapestry.BaseComponent;
+import net.sf.tapestry.ComponentAddress;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.components.Block;
-import net.sf.tapestry.contrib.table.components.ComponentAddress;
+import net.sf.tapestry.components.BlockRenderer;
 import net.sf.tapestry.contrib.table.model.ITableColumn;
 import net.sf.tapestry.contrib.table.model.ITableColumnModel;
 import net.sf.tapestry.contrib.table.model.ITableModel;
@@ -180,7 +181,7 @@ public class LocaleSelection
 			VerbosityRating objVerbosityRating,
 			ComponentAddress objComponentAddress)
 		{
-			super("Language Verbosity", true);
+			super("Verbosity", true);
 			m_objVerbosityRating = objVerbosityRating;
 			m_objComponentAddress = objComponentAddress;
 		}
