@@ -25,13 +25,6 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
- 
-# Makes sure that the JBE utility classes are compiled and upto date.
-# A stamp file is used to determine whether any of the Java sources have changed; 
-# if so ALL of them are recompiled.
-
-JBE_UTIL_STAMP = $(SYS_MAKEFILE_DIR)/com/primix/jbe/.build_stamp
-
 check-jdk:
 ifeq "$(JAVAC)" ""
 	$(error JAVAC is not defined.  This is usually a configuration error in \
@@ -44,9 +37,16 @@ ifeq "$(JDK_DIR)" ""
 		variable $(JDK_DIR_VAR) in config/LocalConfig.mk)
 endif
 
-setup-jbe-util: check-jdk $(JBE_UTIL_STAMP)
+JBE_CLASS_FILES := \
+	$(patsubst %.java,%.class,$(wildcard $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java))
 
-$(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
+setup-jbe-util: check-jdk $(JBE_CLASS_FILES)
+
+# All the class files are dependant on all the java files.  In other words,
+# if any .class file is missing, or any .java files is changed,
+# everything gets recompiled.
+
+$(JBE_CLASS_FILES): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 	$(call NOTE, Compiling JBE Utility ...)
 	@$(RM) $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.class
 	$(CD) $(SYS_MAKEFILE_DIR) ; \
