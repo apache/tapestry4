@@ -75,6 +75,7 @@ public class PageSource
 {
 	private static final int MAP_SIZE = 11;
     private Map fieldBindings;
+    private Map staticBindings;
     private boolean poolDisabled;
 
     private IResourceResolver resolver;
@@ -281,6 +282,7 @@ public class PageSource
 	{
 		pool = null;
         fieldBindings = null;
+        staticBindings = null;
 	}
 
     /**
@@ -304,6 +306,30 @@ public class PageSource
             result = new FieldBinding(resolver, fieldName);
 
             fieldBindings.put(fieldName, result);
+        }
+
+        return result;
+    }
+
+    /**
+     *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
+     *
+     */
+
+    public synchronized IBinding getStaticBinding(String value)
+    {
+        IBinding result = null;
+
+        if (staticBindings == null)
+            staticBindings = new HashMap(MAP_SIZE);
+        else
+            result = (IBinding)staticBindings.get(value);
+
+        if (result == null)
+        {
+            result = new StaticBinding(value);
+
+            staticBindings.put(value, result);
         }
 
         return result;

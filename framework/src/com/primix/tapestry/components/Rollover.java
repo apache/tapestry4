@@ -247,7 +247,6 @@ public class Rollover extends AbstractComponent
 			onMouseOverName = "onMouseOver_" + uniqueId;
 			onMouseOutName = "onMouseOut_" + uniqueId;
 			onLoadName = "onLoad_" + uniqueId;
-			imageName = "rollover_" + uniqueId;
 
 			focusImageName = "focus_" + uniqueId;
 			blurImageName = "blur_" + uniqueId;
@@ -257,6 +256,8 @@ public class Rollover extends AbstractComponent
 
 			if (dynamic)
 			{
+    			imageName = "rollover_" + uniqueId;
+
 				script = 
 					"\n\n" +
 					"function " + onMouseOverName + "()\n" +
@@ -296,7 +297,9 @@ public class Rollover extends AbstractComponent
 		writer.attribute("src", imageURL);
 
 		writer.attribute("border", 0);
-		writer.attribute("name", imageName);
+	
+		if (dynamic)
+		    writer.attribute("name", imageName);
 
 		generateAttributes(cycle, writer, reservedNames);
 
