@@ -5,8 +5,8 @@
 <wml>
     <card>
         <p>
-            <input jwcid="@wml:Input" name="fname" value="Ronnie"/>
-            <input jwcid="@wml:Input" name="lname" format="ognl:null" emptyok="ognl:false" value="ognl:null"/>
+            <input jwcid="@wml:Input" name="fname" value="Ronnie" title="FName"/>
+            <input jwcid="@wml:Input" name="lname" title='ognl: "LName"' format="ognl:null" emptyok="ognl:false" value="ognl:null"/>
         </p>
     </card>
 
