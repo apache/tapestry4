@@ -243,6 +243,14 @@ public class MockForm extends BaseLocatable implements IForm
     {
 
     }
+    
+    /**
+	 * @see org.apache.tapestry.IForm#addHiddenValue(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public void addHiddenValue(String name, String id, String value) {
+
+	}
+
 
     public String getMessage(String key)
     {
