@@ -41,7 +41,7 @@ ifeq ("$(JBOSS_DIR)","")
 endif	
 	$(call NOTE, Installing Primix Vlib database ...)
 	$(CAT) jboss/vlib.tar.gz | \
-		($(CD) $(JBOSS_DIR)/db && $(TAR) $(TAR_EXTRACT_OPT) $(TAR_GZIP_OPT))
+		($(CD) $(JBOSS_DIR)/db && $(GNUTAR) $(GNUTAR_EXTRACT_OPT) $(GNUTAR_GZIP_OPT))
 	$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
 	$(call NOTE, Splicing changes to jboss.conf ...)
 	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.conf,jboss/jboss.conf.splice)
