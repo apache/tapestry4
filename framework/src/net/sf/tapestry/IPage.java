@@ -35,17 +35,18 @@ import net.sf.tapestry.event.PageRenderListener;
 import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
- * A root level component responsible for generating an entire a page
- * within the application.
+ *  A root level component responsible for generating an entire a page
+ *  within the application.
  *
- * <p>Pages are created dynamically from thier class names (part of the
- * {@link ComponentSpecification}).
+ *  <p>Pages are created dynamically from thier class names (part of the
+ *  {@link ComponentSpecification}).
  *
- * @see IPageSource
- * @see IPageLoader
+ *  @see IPageSource
+ *  @see IPageLoader
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ * 
  **/
 
 public interface IPage extends IComponent

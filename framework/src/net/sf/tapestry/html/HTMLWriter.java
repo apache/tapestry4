@@ -31,20 +31,20 @@ import net.sf.tapestry.AbstractResponseWriter;
 import net.sf.tapestry.IMarkupWriter;
 
 /**
- * This class is used to create HTML output.
+ *  This class is used to create HTML output.
  *
- * <p>The <code>HTMLResponseWriter</code> handles the necessary escaping 
- * of invalid characters.
- * Specifically, the '&lt;', '&gt;' and '&amp;' characters are properly
- * converted to their HTML entities by the <code>print()</code> methods.
- * Similar measures are taken by the {@link #attribute(String, String)} method.
- * Other invalid characters are converted to their numeric entity equivalent.
+ *  <p>The <code>HTMLWriter</code> handles the necessary escaping 
+ *  of invalid characters.
+ *  Specifically, the '&lt;', '&gt;' and '&amp;' characters are properly
+ *  converted to their HTML entities by the <code>print()</code> methods.
+ *  Similar measures are taken by the {@link #attribute(String, String)} method.
+ *  Other invalid characters are converted to their numeric entity equivalent.
  *
- * @version $Id$
- * @author Howard Lewis Ship
+ *  @version $Id$
+ *  @author Howard Lewis Ship
  **/
 
-public class HTMLResponseWriter extends AbstractResponseWriter
+public class HTMLWriter extends AbstractResponseWriter
 {
 
     private static final String[] entities = new String[64];
@@ -67,12 +67,12 @@ public class HTMLResponseWriter extends AbstractResponseWriter
             safe[SAFE_CHARACTERS.charAt(i)] = true;
     }
 
-    public HTMLResponseWriter(String contentType, OutputStream outputStream)
+    public HTMLWriter(String contentType, OutputStream outputStream)
     {
         super(safe, entities, contentType, outputStream);
     }
 
-    protected HTMLResponseWriter(String contentType)
+    protected HTMLWriter(String contentType)
     {
         super(safe, entities, contentType);
     }
@@ -82,7 +82,7 @@ public class HTMLResponseWriter extends AbstractResponseWriter
      * 
      **/
 
-    public HTMLResponseWriter(OutputStream outputStream)
+    public HTMLWriter(OutputStream outputStream)
     {
         this("text/html", outputStream);
     }

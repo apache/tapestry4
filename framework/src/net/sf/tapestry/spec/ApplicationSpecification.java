@@ -78,6 +78,7 @@ public class ApplicationSpecification extends BasePropertyHolder
         defaultComponentMap.put("InsertWrapped", "/net/sf/tapestry/components/InsertWrapped.jwc");
         defaultComponentMap.put("Conditional", "/net/sf/tapestry/components/Conditional.jwc");
         defaultComponentMap.put("Foreach", "/net/sf/tapestry/components/Foreach.jwc");
+        defaultComponentMap.put("Frame", "/net/sf/tapestry/html/Frame.jwc");
         defaultComponentMap.put("ExceptionDisplay", "/net/sf/tapestry/html/ExceptionDisplay.jwc");
         defaultComponentMap.put("Delegator", "/net/sf/tapestry/components/Delegator.jwc");
         defaultComponentMap.put("Form", "/net/sf/tapestry/form/Form.jwc");
@@ -201,6 +202,10 @@ public class ApplicationSpecification extends BasePropertyHolder
      *		<td>/net/sf/tapestry/form/Form.jwc</td>
      *		<td>{@link net.sf.tapestry.form.Form}</td> </tr>
      * <tr>
+     *  <tr>
+     *      <td>/net/sf/tapestry/html/Frame.jwc</td>
+     *      <td?{@link net.sf.tapestry.html.Frame}</td>
+     *  </tr>
      *         <td>/net/sf/tapestry/link/GenericLink.jwc</td>
      *         <td>{@link net.sf.tapestry.link.GenericLink}</td>
      * </tr>
