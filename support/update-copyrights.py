@@ -8,6 +8,8 @@ import sys, os
 from stat import *
 import re
 
+updateCount = 0;
+
 packageRe = re.compile(r'^\s*package\s+');
 
 def walktree(dir, callback):
@@ -116,6 +118,10 @@ and true is returned.
 	
 	os.remove(saveFile)
 	
+	global updateCount
+	
+	updateCount = updateCount + 1
+	
 	return 1
 								
 	
@@ -134,10 +140,18 @@ Reads the file containing the copyright into an array, which is returned.
 			
 			
 if __name__ == '__main__':
-    global copyright
+	global copyright
     
-    copyright = readCopyright(sys.argv[1])
-    walktree(sys.argv[2], visitfile)
+	copyright = readCopyright(sys.argv[1])
+	
+	for dir in sys.argv[2:]:
+		walktree(dir, visitfile)
 
+	print
+
+	if updateCount == 0:
+		print "All files up to date."
+	else:
+		print "Updated %d files." % updateCount
 	
 
