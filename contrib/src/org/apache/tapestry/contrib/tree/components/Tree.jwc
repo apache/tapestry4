@@ -40,18 +40,16 @@
         direction="custom" required="no">
     </parameter>
 
-    <parameter name="closeNodeImage" type="org.apache.tapestry.IAsset"
-               required="no" direction="in"/>
-    <parameter name="openNodeImage" type="org.apache.tapestry.IAsset"
-               required="no" direction="in"/>
-
     <parameter name="showNodeImages" type="boolean" required="no"
                direction="custom"/>
+    
     <parameter name="makeNodeDirect" type="boolean" required="no"
                direction="custom"/>
+    
     <parameter name="nodeRenderFactory"
                type="org.apache.tapestry.contrib.tree.components.INodeRenderFactory"
                required="no" direction="custom"/>
+               
     <parameter name="showRootNode" type="boolean" required="no"
                direction="custom"/>
     
@@ -69,8 +67,6 @@
     </component>
 
     <component id="treeNodeValue" type="TreeNodeView">
-        <inherited-binding name="closeNodeImage" parameter-name="closeNodeImage"/>
-        <inherited-binding name="openNodeImage" parameter-name="openNodeImage"/>
         <inherited-binding name="showNodeImages" parameter-name="showNodeImages"/>
         <inherited-binding name="makeNodeDirect" parameter-name="makeNodeDirect"/>
         <inherited-binding name="nodeRenderFactory" parameter-name="nodeRenderFactory"/>

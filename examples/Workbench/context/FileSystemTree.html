@@ -2,45 +2,44 @@
 
 <span jwcid="@Border">
 <style>
-.tree .selectedNodeViewClass A:visited .fsNodeValue, .tree .selectedNodeViewClass A:active .fsNodeValue, .tree .selectedNodeViewClass A:link .fsNodeValue {
-	color:				white;
-	background-color: 	#3163CE;
-	text-decoration:	none
+.selectedNodeViewClass .fsNodeValue {
+	FONT-SIZE: 12px; COLOR: white; BACKGROUND-COLOR: #3163ce; vertical-align : middle; 
 }
-
-.tree .selectedNodeViewClass A:hover .fsNodeValue{
-	color:				white;
-	background-color: 	#3163CE;
-	text-decoration: 	underline;
+.selectedNodeViewClass A:link {
+	FONT-SIZE: 12px; TEXT-DECORATION: none
 }
-
-tree .selectedNodeViewClass A:link, .tree .selectedNodeViewClass A:visited, .tree .selectedNodeViewClass A:active, .tree .selectedNodeViewClass A:hover  {
-	text-decoration: none;
+.selectedNodeViewClass A:visited {
+	FONT-SIZE: 12px; TEXT-DECORATION: none
 }
-
-
-
-.tree .notSelectedNodeViewClass A:visited .fsNodeValue, .tree .notSelectedNodeViewClass A:active .fsNodeValue, .tree .notSelectedNodeViewClass A:link .fsNodeValue{
-	color:				black;
-	text-decoration:	none
+.selectedNodeViewClass A:active {
+	FONT-SIZE: 12px; TEXT-DECORATION: none
 }
-
-.tree .notSelectedNodeViewClass A:hover .fsNodeValue{
-	color:				black;
-	text-decoration: 	underline;
+.selectedNodeViewClass A:hover {
+	FONT-SIZE: 12px; COLOR: white; TEXT-DECORATION: underline
 }
-
-.tree .notSelectedNodeViewClass A:link, .tree .notSelectedNodeViewClass A:visited, .tree .notSelectedNodeViewClass A:active, .tree .notSelectedNodeViewClass A:hover  {
-	text-decoration: none;
+.notSelectedNodeViewClass .fsNodeValue {
+	FONT-SIZE: 12px; COLOR: black; vertical-align : middle; 
+}
+.notSelectedNodeViewClass A:link {
+	FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+.notSelectedNodeViewClass A:visited {
+	FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+.notSelectedNodeViewClass A:active {
+	FONT-SIZE: 12px; TEXT-DECORATION: none
+}
+.notSelectedNodeViewClass A:hover {
+	FONT-SIZE: 12px; TEXT-DECORATION: underline; COLOR: black;
 }
 
 </style>
     <h1>File System Tree Example</h1>
     <address><a href="mailto:tsvetelin.saykov@rushmore-digital.com">developed by Tsvetelin</a></address>
     <hr>    
-    	<table border="1">
+    	<table border="1" width="100%">
     		<tr>
-    			<td valign="top"><span class="tree" jwcid="treeView">
+    			<td valign="top" width="*"><span class="tree" jwcid="treeView">
 						<span jwcid="treeData">
 							<span jwcid="treeNodeView"/>
 						</span>
