@@ -69,10 +69,12 @@
       <classpath>
       	<!-- Favor files in src over copies in classes -->
       	<pathelement location="${src.dir}"/>
-      	     
+        <pathelement location="${root.dir}/config"/>
+              	     
         <path refid="project.class.path"/>
         <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
-        <pathelement location="${root.dir}/config"/>
+        
+        <pathelement location="${classes.dir}"/>
       </classpath>
       
       <arg value="jetty.xml"/>
