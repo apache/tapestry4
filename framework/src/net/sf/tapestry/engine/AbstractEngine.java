@@ -1694,8 +1694,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  <p>Subclasses may override this method if the application defines
      *  specific services with unusual URL encoding rules.
      * 
-     *  <p>This implementation simply extracts the first path info
-     *  element.
+     *  <p>This implementation simply extracts the value for
+     *  query parameter {@link IEngineService#SERVICE_QUERY_PARAMETER_NAME}.
      * 
      *  @since 2.2
      * 
@@ -1703,6 +1703,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     protected String extractServiceName(RequestContext context)
     {
-        return context.getPathInfo(0);
+        return context.getParameter(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
     }
 }

@@ -1,9 +1,7 @@
 <html>
 <head>
 <title>Redirect Target</title>
-<!-- Relative paths require understanding of the way Tapestry builds
-     URLs ... not a good idea.  A JSP could write a <base> tag.   -->
-<link rel="stylesheet" type="text/css" href="../../../css/workbench.css">
+<link rel="stylesheet" type="text/css" href="css/workbench.css">
 </head>
 <body>
 
@@ -30,21 +28,7 @@ for internal resources (this is the same way an ordinary servlet would
 forward to a JSP to render a response).
 
 <p>
-The only downside of this is that the URL for this "page" is complex, typically
-something like:
-
-<blockquote>
-http://localhost[:8080]/tutorial/workbench/direct/Redirect/internal
-</blockquote>
-
-<p>
-This makes it awkward to create relative paths (at least in static HTML).
-This is less of an issue in a JSP, since it can write a dynamic
-&lt;base&gt; tag (the same way Tapestry does)
-to allow easy relative paths.
-
-<p>
-You may <a href="../../../workbench">return to the Workbench</a>.
+You may <a href="workbench">return to the Workbench</a>.
 
 </td>
 </tr>

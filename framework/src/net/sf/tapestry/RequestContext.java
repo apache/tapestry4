@@ -107,12 +107,19 @@ public class RequestContext implements IRender
     private Map _cookieMap;
 
     /**
-     * Used to contain the parsed, decoded pathInfo.
+     *  Used to contain the parsed, decoded pathInfo.
      *
+     *  @deprecated To be removed in 2.3.
+     * 
      **/
 
     private String[] _pathInfo;
 
+    /**
+     *  Used during {@link #write(IMarkupWriter)}.
+     * 
+     **/
+    
     private boolean _evenRow;
 
     /**
@@ -257,7 +264,10 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Forwards the request to a new resource, typically a JSP.
+     *  Forwards the request to a new resource, typically a JSP.
+     * 
+     *  @deprecated To be removed in 2.3.
+     * 
      **/
 
     public void forward(String path) throws ServletException, IOException
@@ -453,9 +463,10 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Returns the pathInfo string at the given index. If the index
-     * is out of range, this returns null.
+     *  Returns the pathInfo string at the given index. If the index
+     *  is out of range, this returns null.
      *
+     *  @deprecated To be removed in 2.3
      **/
 
     public String getPathInfo(int index)
@@ -475,7 +486,10 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Returns the number of items in the pathInfo.
+     *  Returns the number of items in the pathInfo.
+     * 
+     *  @deprecated To be removed in 2.3.
+     * 
      **/
 
     public int getPathInfoCount()

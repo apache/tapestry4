@@ -129,12 +129,10 @@ public interface IEngineService
 	public static final String RESET_SERVICE = "reset";
 
 	/**
-	 *  The query parameter into which each engine service records 
-	 *  its information when building a URL.
+	 *  Query parameter that identfies the service for the
+     *  request.
 	 *
 	 *  @since 1.0.3
-     *  @deprecated To be removed in 2.3, the service is now encoded
-     *  into the URL as path info.
      * 
 	 **/
 
@@ -144,12 +142,10 @@ public interface IEngineService
 	 *  The query parameter for additional context needed by the
 	 *  service.  This is used to store things like the page name or component id.
 	 *  When there are multiple pieces of data, they are seperated by
-	 *  slashes.
+	 *  slashes.  Not all services use a context.
 	 *
 	 *  @since 1.0.3
-     *  @deprecated To be removed in 2.3, the service context
-     *  is now encoded into the URL as path info.
-	 *
+ 	 *
 	 **/
 
 	public static final String CONTEXT_QUERY_PARMETER_NAME = "context";
@@ -174,7 +170,7 @@ public interface IEngineService
 	 *  invoke activity in a subsequent request cycle.
      * 
      *  <p><b>Through release 2.1, parameters was String[],
-     *  not Object[].  This is an incompatibl change.</b>
+     *  not Object[].  This is an incompatible change.</b>
 	 *
 	 *  @param cycle Defines the request cycle being processed.
 	 *  @param component The component requesting the URL.  Generally, the

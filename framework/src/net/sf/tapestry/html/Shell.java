@@ -172,10 +172,6 @@ public class Shell extends AbstractComponent
             writer.attribute("name", "generator");
             writer.attribute("content", generatorContent);
             writer.println();
-            
-            writer.beginEmpty("base");
-            writer.attribute("href", buildBaseURL(cycle));
-            writer.println();
 
             writer.begin("title");
 
@@ -242,15 +238,6 @@ public class Shell extends AbstractComponent
         writer.attribute("content", buffer.toString());
     }
 
-    /** @since 2.2 **/
-    
-    private String buildBaseURL(IRequestCycle cycle)
-    {
-        RequestContext context = cycle.getRequestContext();
-        
-        return context.getAbsoluteURL(cycle.getEngine().getServletPath());
-    }
-
     public IRender getDelegate()
     {
         return _delegate;
@@ -258,7 +245,7 @@ public class Shell extends AbstractComponent
 
     public void setDelegate(IRender delegate)
     {
-        this._delegate = delegate;
+        _delegate = delegate;
     }
 
     public int getRefresh()
@@ -268,7 +255,7 @@ public class Shell extends AbstractComponent
 
     public void setRefresh(int refresh)
     {
-        this._refresh = refresh;
+        _refresh = refresh;
     }
 
     public IAsset getStylesheet()
@@ -278,7 +265,7 @@ public class Shell extends AbstractComponent
 
     public void setStylesheet(IAsset stylesheet)
     {
-        this._stylesheet = stylesheet;
+        _stylesheet = stylesheet;
     }
 
     public String getTitle()
@@ -288,7 +275,7 @@ public class Shell extends AbstractComponent
 
     public void setTitle(String title)
     {
-        this._title = title;
+        _title = title;
     }
 
     public String getDTD()
@@ -296,9 +283,9 @@ public class Shell extends AbstractComponent
         return _DTD;
     }
 
-    public void setDTD(String dTD)
+    public void setDTD(String DTD)
     {
-        _DTD = dTD;
+        _DTD = DTD;
     }
 
 }
