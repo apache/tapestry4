@@ -28,9 +28,9 @@ public class DocumentParseException extends Exception
         this(message, null, rootCause);
     }
 
-    public DocumentParseException(String message, IResourceLocation resourcePath)
+    public DocumentParseException(String message, IResourceLocation resourceLocation)
     {
-        this(message, resourcePath, null);
+        this(message, resourceLocation, null);
     }
 
     public DocumentParseException(String message, SAXParseException rootCause)
@@ -94,7 +94,7 @@ public class DocumentParseException extends Exception
         return _column;
     }
 
-    public IResourceLocation getResourcePath()
+    public IResourceLocation getResourceLocation()
     {
         return _resourceLocation;
     }

@@ -38,14 +38,14 @@ public class Script extends AbstractComponent
 
     private String _scriptPath;
     private Map _baseSymbols;
-    
+
     /**
      *  A Map of input and output symbols visible to the body of the Script.
      * 
      *  @since 2.2
      * 
      **/
-    
+
     private Map _symbols;
 
     /**
@@ -94,12 +94,11 @@ public class Script extends AbstractComponent
      *
      **/
 
-    private IScript getParsedScript(IRequestCycle cycle) throws RequiredParameterException
+    private IScript getParsedScript(IRequestCycle cycle) throws RequestCycleException
     {
         if (_scriptPath == null)
-            throw new RequiredParameterException(this, "scriptPath",
-            getBinding("scriptPath"));
-            
+            throw new RequiredParameterException(this, "scriptPath", getBinding("scriptPath"));
+
         IEngine engine = cycle.getEngine();
         IScriptSource source = engine.getScriptSource();
 
@@ -109,7 +108,15 @@ public class Script extends AbstractComponent
         IResourceLocation rootLocation = getContainer().getSpecification().getSpecificationLocation();
         IResourceLocation scriptLocation = rootLocation.getRelativeLocation(_scriptPath);
 
-        return source.getScript(scriptLocation);
+        try
+        {
+            return source.getScript(scriptLocation);
+        }
+        catch (RuntimeException ex)
+        {
+            throw new RequestCycleException(this, ex);
+        }
+
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
@@ -124,7 +131,7 @@ public class Script extends AbstractComponent
                 throw new RequestCycleException(Tapestry.getString("Script.must-be-contained-by-body"), this);
 
             _symbols = getInputSymbols();
-            
+
             try
             {
                 session = getParsedScript(cycle).execute(_symbols);
@@ -169,7 +176,7 @@ public class Script extends AbstractComponent
      * 
      *  @since 2.2
      **/
-    
+
     public Map getSymbols()
     {
         return _symbols;
@@ -178,7 +185,7 @@ public class Script extends AbstractComponent
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
         _symbols = null;
-        
+
         super.cleanupAfterRender(cycle);
     }
 

@@ -347,50 +347,63 @@ public class PageLoader implements IPageLoader
         int count = ids.size();
         Map propertyBindings = new HashMap();
 
-        for (int i = 0; i < count; i++)
+        try
         {
-            String id = (String) ids.get(i);
+            for (int i = 0; i < count; i++)
+            {
+                String id = (String) ids.get(i);
 
-            // Get the sub-component specification from the
-            // container's specification.
+                // Get the sub-component specification from the
+                // container's specification.
 
-            ContainedComponent contained = containerSpec.getComponent(id);
+                ContainedComponent contained = containerSpec.getComponent(id);
 
-            String type = contained.getType();
+                String type = contained.getType();
 
-            _componentResolver.resolve(namespace, type);
+                _componentResolver.resolve(namespace, type);
 
-            ComponentSpecification componentSpecification = _componentResolver.getSpecification();
-            INamespace componentNamespace = _componentResolver.getNamespace();
+                ComponentSpecification componentSpecification = _componentResolver.getSpecification();
+                INamespace componentNamespace = _componentResolver.getNamespace();
 
-            // Instantiate the contained component.
+                // Instantiate the contained component.
 
-            IComponent component =
-                instantiateComponent(page, container, id, componentSpecification, componentNamespace);
+                IComponent component =
+                    instantiateComponent(page, container, id, componentSpecification, componentNamespace);
 
-            // Add it, by name, to the container.
+                // Add it, by name, to the container.
 
-            container.addComponent(component);
+                container.addComponent(component);
 
-            // Set up any bindings in the ContainedComponent specification
+                // Set up any bindings in the ContainedComponent specification
 
-            bind(container, component, contained, propertyBindings);
+                bind(container, component, contained, propertyBindings);
 
-            // Now construct the component recusively; it gets its chance
-            // to create its subcomponents and set their bindings.
+                // Now construct the component recusively; it gets its chance
+                // to create its subcomponents and set their bindings.
 
-            constructComponent(cycle, page, component, componentSpecification, componentNamespace);
+                constructComponent(cycle, page, component, componentSpecification, componentNamespace);
+            }
+
+            addAssets(container, containerSpec);
+
+            // Finish the load of the component; most components (which
+            // subclass BaseComponent) load their templates here.
+            // That may cause yet more components to be created, and more
+            // bindings to be set, so we defer some checking until
+            // later.
+
+            container.finishLoad(cycle, this, containerSpec);
         }
-
-        addAssets(container, containerSpec);
-
-        // Finish the load of the component; most components (which
-        // subclass BaseComponent) load their templates here.
-        // That may cause yet more components to be created, and more
-        // bindings to be set, so we defer some checking until
-        // later.
-
-        container.finishLoad(cycle, this, containerSpec);
+        catch (RuntimeException ex)
+        {
+            throw new PageLoaderException(
+                Tapestry.getString(
+                    "PageLoader.unable-to-instantiate-component",
+                    container.getExtendedId(),
+                    ex.getMessage()),
+                container,
+                ex);
+        }
 
         _depth--;
     }
