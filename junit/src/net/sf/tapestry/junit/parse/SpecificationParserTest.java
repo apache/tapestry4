@@ -25,16 +25,22 @@
 package net.sf.tapestry.junit.parse;
 
 import java.io.InputStream;
+import java.util.List;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.xml.DocumentParseException;
+
+
 
 /**
  *  Tests the specification parser (which reads page and component
@@ -46,6 +52,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
  *  @since 2.0.4
  *
  **/
+
 public class SpecificationParserTest extends TestCase
 {
 
@@ -54,7 +61,7 @@ public class SpecificationParserTest extends TestCase
         super(name);
     }
 
-    private ComponentSpecification parse(String simpleName) throws Exception
+    private ComponentSpecification parseComponent(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser();
 
@@ -72,6 +79,29 @@ public class SpecificationParserTest extends TestCase
         InputStream input = getClass().getResourceAsStream(simpleName);
 
         return parser.parseApplicationSpecification(input, simpleName);
+    }
+    
+    /** @since 2.2 **/
+
+    private LibrarySpecification parseLib(String simpleName) throws Exception
+    {
+        SpecificationParser parser = new SpecificationParser();
+
+        InputStream input = getClass().getResourceAsStream(simpleName);
+
+        return parser.parseLibrarySpecification(input, simpleName);
+    }
+        
+    private void checkList(String propertyName, String[] expected, List actual)
+    {
+        int count = Tapestry.size(actual);
+        
+        assertEquals(propertyName + " element count", expected.length, count);
+        
+        for (int i = 0; i < count; i++)
+        {
+            assertEquals("propertyName[" + i + "]", expected[i], actual.get(i));
+        }                  
     }
 
     /** 
@@ -99,7 +129,7 @@ public class SpecificationParserTest extends TestCase
 
     public void testStringBinding() throws Exception
     {
-        ComponentSpecification spec = parse("TestStringBinding.jwc");
+        ComponentSpecification spec = parseComponent("TestStringBinding.jwc");
 
         BindingSpecification bs = spec.getComponent("hello").getBinding("value");
 
@@ -116,7 +146,7 @@ public class SpecificationParserTest extends TestCase
 
     public void testValidParameterName() throws Exception
     {
-        ComponentSpecification spec = parse("ValidParameterName.jwc");
+        ComponentSpecification spec = parseComponent("ValidParameterName.jwc");
 
         ParameterSpecification ps = spec.getParameter("valid");
 
@@ -134,7 +164,7 @@ public class SpecificationParserTest extends TestCase
     {
         try
         {
-            ComponentSpecification spec = parse("InvalidParameterName.jwc");
+            ComponentSpecification spec = parseComponent("InvalidParameterName.jwc");
 
             throw new AssertionFailedError("Should not be able to parse document.");
         }
@@ -156,7 +186,7 @@ public class SpecificationParserTest extends TestCase
     {
         try
         {
-            ComponentSpecification spec = parse("InvalidComponentId.jwc");
+            ComponentSpecification spec = parseComponent("InvalidComponentId.jwc");
 
             throw new AssertionFailedError("Should not be able to parse document.");
         }
@@ -166,6 +196,58 @@ public class SpecificationParserTest extends TestCase
             checkException(ex, "component id");
         }
     }
+
+    /**
+     *  Test invalid library id in a library specification.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void testInvalidLibraryId() throws Exception
+    {
+        try
+        {
+            LibrarySpecification spec = parseLib("InvalidLibraryId.library");
+
+            throw new AssertionFailedError("Should not be able to parse document.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "in.valid");
+            checkException(ex, "library id");
+        }
+    }
+
+    /**
+     *  Parse a valid library.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public void testValidLibrary() throws Exception
+    {
+        LibrarySpecification spec = parseLib("ValidLibrary.library");
+        
+        checkList("serviceNames",
+            new String[] { "service1", "service2" },
+            spec.getServiceNames());
+            
+        checkList("pageNames", 
+            new String[] { "FirstPage", "SecondPage" },
+            spec.getPageNames());
+            
+        checkList("componentAliases",
+            new String[] { "FirstComponent", "SecondComponent" },
+            spec.getComponentAliases());
+            
+        checkList("libraryIds",
+            new String[] { "lib1", "lib2" },
+            spec.getLibraryIds());
+    } 
+    
+    
 
     /**
      *  Test invalid parameter name.
@@ -178,7 +260,7 @@ public class SpecificationParserTest extends TestCase
     {
         try
         {
-            ComponentSpecification spec = parse("InvalidAssetName.jwc");
+            ComponentSpecification spec = parseComponent("InvalidAssetName.jwc");
 
             throw new AssertionFailedError("Should not be able to parse document.");
         }

@@ -219,9 +219,9 @@ public class SpecificationParser extends AbstractDocumentParser
      *  @since 2.2
      * 
      **/
-    
+
     public static final String LIBRARY_ID_PATTERN = BEAN_NAME_PATTERN;
-    
+
     /**
      *  We can share a single map for all the XML attribute to object conversions,
      *  since the keys are unique.
@@ -429,11 +429,11 @@ public class SpecificationParser extends AbstractDocumentParser
             validateRootElement(document, rootElementName, resourcePath);
 
             ComponentSpecification result = convertComponentSpecification(document, true);
-            
+
             result.setAllowBody(true);
             result.setAllowInformalParameters(false);
             result.setPageSpecification(true);
-            
+
             return result;
         }
         finally
@@ -444,7 +444,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /**
      *  Parses an input stream containing an application specification and assembles
-     *  a {@link ApplicationSpecification} from it.
+     *  an {@link ApplicationSpecification} from it.
      *
      *  @throws DocumentParseException if the input stream cannot be fully
      *  parsed or contains invalid data.
@@ -461,6 +461,34 @@ public class SpecificationParser extends AbstractDocumentParser
             document = parse(new InputSource(input), resourcePath, "application");
 
             return convertApplicationSpecification(document);
+        }
+        finally
+        {
+            setResourcePath(null);
+        }
+    }
+
+    /**
+     *  Parses an input stream containing a library specification and assembles
+     *  a {@link LibrarySpecification} from it.
+     *
+     *  @throws DocumentParseException if the input stream cannot be fully
+     *  parsed or contains invalid data.
+     * 
+     *  @since 2.2
+     *
+     **/
+
+    public LibrarySpecification parseLibrarySpecification(InputStream input, String resourcePath)
+        throws DocumentParseException
+    {
+        Document document;
+
+        try
+        {
+            document = parse(new InputSource(input), resourcePath, "library-specification");
+
+            return convertLibrarySpecification(document);
         }
         finally
         {
@@ -519,7 +547,7 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         ApplicationSpecification specification = _factory.createApplicationSpecification();
 
-       String dtdVersion = getDTDVersion(document);
+        String dtdVersion = getDTDVersion(document);
 
         specification.setDTDVersion(dtdVersion);
 
@@ -533,50 +561,85 @@ public class SpecificationParser extends AbstractDocumentParser
         return specification;
     }
 
+    /** @since 2.2 **/
+
+    private LibrarySpecification convertLibrarySpecification(Document document) throws DocumentParseException
+    {
+        LibrarySpecification specification = _factory.createLibrarySpecification();
+
+        String dtdVersion = getDTDVersion(document);
+
+        specification.setDTDVersion(dtdVersion);
+
+        Element root = document.getDocumentElement();
+
+        processLibrarySpecification(root, specification);
+
+        return specification;
+    }
+
     /**
      *  Processes the embedded elements inside a LibrarySpecification.
      * 
      *  @since 2.2
      * 
      **/
-    
+
     private void processLibrarySpecification(Element root, LibrarySpecification specification)
         throws DocumentParseException
     {
- 
 
-
-           for (Node node = root.getFirstChild(); node != null; node = node.getNextSibling())
+        for (Node node = root.getFirstChild(); node != null; node = node.getNextSibling())
+        {
+            if (isElement(node, "page"))
             {
-                if (isElement(node, "page"))
-                {
-                    convertPage(specification, node);
-                    continue;
-                }
-        
-                if (isElement(node, "component-alias"))
-                {
-                    convertComponentAlias(specification, node);
-                    continue;
-                }
-        
-                if (isElement(node, "property"))
-                {
-                    convertProperty(specification, node);
-                    continue;
-                }
-        
-                if (isElement(node, "service"))
-                {
-                    convertService(specification, node);
-                    continue;
-                }
-                if (isElement(node, "description"))
-                {
-                    specification.setDescription(getValue(node));
-                    continue;
-                }
+                convertPage(specification, node);
+                continue;
             }
+
+            if (isElement(node, "component-alias"))
+            {
+                convertComponentAlias(specification, node);
+                continue;
+            }
+
+            if (isElement(node, "property"))
+            {
+                convertProperty(specification, node);
+                continue;
+            }
+
+            if (isElement(node, "service"))
+            {
+                convertService(specification, node);
+                continue;
+            }
+
+            if (isElement(node, "description"))
+            {
+                specification.setDescription(getValue(node));
+                continue;
+            }
+
+            if (isElement(node, "library"))
+            {
+                convertLibrary(specification, node);
+                continue;
+            }
+        }
+    }
+
+    /**  @since 2.2 **/
+
+    private void convertLibrary(LibrarySpecification specification, Node node) throws DocumentParseException
+    {
+        String id = getAttribute(node, "id");
+
+        validate(id, LIBRARY_ID_PATTERN, "SpecificationParser.invalid-library-id");
+
+        String specificationPath = getAttribute(node, "specification-path");
+
+        specification.setLibrarySpecificationPath(id, specificationPath);
     }
 
     private void convertPage(LibrarySpecification specification, Node node) throws DocumentParseException
@@ -609,7 +672,8 @@ public class SpecificationParser extends AbstractDocumentParser
         holder.setProperty(name, value);
     }
 
-    private ComponentSpecification convertComponentSpecification(Document document, boolean isPage) throws DocumentParseException
+    private ComponentSpecification convertComponentSpecification(Document document, boolean isPage)
+        throws DocumentParseException
     {
         ComponentSpecification specification = _factory.createComponentSpecification();
         Element root = document.getDocumentElement();
@@ -619,14 +683,14 @@ public class SpecificationParser extends AbstractDocumentParser
         specification.setDTDVersion(dtdVersion);
         specification.setPublicId(document.getDoctype().getPublicId());
 
-// Only components specify these two attributes.  For pages they either can't be specified
-// (1.3 DTD) or are now ignored (1.1 and 1.2 DTD).
+        // Only components specify these two attributes.  For pages they either can't be specified
+        // (1.3 DTD) or are now ignored (1.1 and 1.2 DTD).
 
-if (!isPage)
-{
-        specification.setAllowBody(getBooleanAttribute(root, "allow-body"));
-        specification.setAllowInformalParameters(getBooleanAttribute(root, "allow-informal-parameters"));
-}
+        if (!isPage)
+        {
+            specification.setAllowBody(getBooleanAttribute(root, "allow-body"));
+            specification.setAllowInformalParameters(getBooleanAttribute(root, "allow-informal-parameters"));
+        }
 
         specification.setComponentClassName(getAttribute(root, "class"));
 
@@ -638,8 +702,7 @@ if (!isPage)
                     throw new DocumentParseException(
                         Tapestry.getString("SpecificationParser.not-allowed-for-page", "parameter"),
                         getResourcePath());
-                        
-                
+
                 convertParameter(specification, node);
                 continue;
             }
@@ -650,7 +713,7 @@ if (!isPage)
                     throw new DocumentParseException(
                         Tapestry.getString("SpecificationParser.not-allowed-for-page", "reserved-parameter"),
                         getResourcePath());
-                                        
+
                 convertReservedParameter(specification, node);
                 continue;
             }
@@ -803,7 +866,7 @@ if (!isPage)
                 convertPropertyValue(spec, name, child);
                 continue;
             }
-            
+
             if (isElement(child, "string-value"))
             {
                 convertStringValue(spec, name, child);
@@ -813,12 +876,12 @@ if (!isPage)
     }
 
     /** @since 2.2 **/
-    
+
     private void convertStringValue(BeanSpecification spec, String propertyName, Node node)
     {
         String key = getAttribute(node, "key");
         IBeanInitializer iz = _factory.createStringBeanInitializer(propertyName, key);
-        
+
         spec.addInitializer(iz);
     }
 
