@@ -43,7 +43,7 @@ copy-resources: setup-catalogs
 
 catalog: initialize
 	@$(RM) --force $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
-	$(RECURSE)  SETUP_CATALOGS=t inner-setup-catalogs
+	@$(RECURSE)  SETUP_CATALOGS=t inner-setup-catalogs
 	
 setup-catalogs: initialize
 	@$(RECURSE) SETUP_CATALOGS=t inner-setup-catalogs
