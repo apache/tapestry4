@@ -1,36 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-
-<specification>
-	<class>com.primix.tapestry.BasePage</class>
-
-	<components>
-
-		<component>
-			<id>insertWord</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>visit.game.word</property-path>
-				</binding>
-			</bindings>
-		</component>
-
-		<component>
-			<id>startAgain</id>
-			<type>Page</type>
-
-			<bindings>
-				<static-binding>
-					<name>page</name>
-					<value>Home</value>
-				</static-binding>
-			</bindings>
-		</component>
-	</components>
-
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.BasePage">
+  <component id="insertWord" type="Insert">
+    <binding name="value" property-path="visit.game.word"/>
+  </component>
+  <component id="startAgain" type="Page">
+    <static-binding name="page">Home</static-binding>
+  </component>
 </specification>
-	

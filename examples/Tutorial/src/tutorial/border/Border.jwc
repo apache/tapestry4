@@ -1,90 +1,27 @@
-<?xml version="1.0"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>tutorial.border.Border</class>
-	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
-		<parameter>
-			<name>title</name>
-			<java-type>java.lang.String</java-type>
-			<required>yes</required>
-		</parameter>
-		<parameter>
-			<name>pages</name>
-			<required>yes</required>
-		</parameter>
-	</parameters>
-	<components>
-		<component>
-			<id>shell</id>
-			<type>Shell</type>
-			<bindings>
-				<binding>
-					<name>title</name>
-					<property-path>page.engine.specification.name</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertPageTitle</id>
-			<type>Insert</type>
-			<bindings>
-				<inherited-binding>
-					<name>value</name>
-					<parameter-name>title</parameter-name>
-				</inherited-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>body</id>
-			<type>Body</type>
-		</component>
-		<component>
-			<id>e</id>
-			<type>Foreach</type>
-			<bindings>
-				<inherited-binding>
-					<name>source</name>
-					<parameter-name>pages</parameter-name>
-				</inherited-binding>
-				<binding>
-					<name>value</name>
-					<property-path>pageName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>link</id>
-			<type>Page</type>
-			<bindings>
-				<binding>
-					<name>page</name>
-					<property-path>pageName</property-path>
-				</binding>
-				<binding>
-					<name>disabled</name>
-					<property-path>disablePageLink</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>pageName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>wrapped</id>
-			<type>InsertWrapped</type>
-		</component>
-		<component>
-			<id>showInspector</id>
-			<type>ShowInspector</type>
-		</component>
-	</components>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="tutorial.border.Border" allow-informal-parameters="no">
+  <parameter name="title" java-type="java.lang.String" required="yes"/>
+  <parameter name="pages" required="yes"/>
+  <component id="shell" type="Shell">
+    <binding name="title" property-path="page.engine.specification.name"/>
+  </component>
+  <component id="insertPageTitle" type="Insert">
+    <inherited-binding name="value" parameter-name="title"/>
+  </component>
+  <component id="body" type="Body"/>
+  <component id="e" type="Foreach">
+    <inherited-binding name="source" parameter-name="pages"/>
+    <binding name="value" property-path="pageName"/>
+  </component>
+  <component id="link" type="Page">
+    <binding name="page" property-path="pageName"/>
+    <binding name="disabled" property-path="disablePageLink"/>
+  </component>
+  <component id="insertName" type="Insert">
+    <binding name="value" property-path="pageName"/>
+  </component>
+  <component id="wrapped" type="InsertWrapped"/>
+  <component id="showInspector" type="ShowInspector"/>
 </specification>

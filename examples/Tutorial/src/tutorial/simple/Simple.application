@@ -1,12 +1,6 @@
-<?xml version="1.0"?>
-<!--$Id$-->
-<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<application>
-	<name>Simple Tutorial</name>
-	<engine-class>com.primix.tapestry.engine.SimpleEngine</engine-class>
-	<page>
-		<name>Home</name>
-		<specification-path>/tutorial/simple/Home.jwc</specification-path>
-	</page>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application name="Simple Tutorial" engine-class="com.primix.tapestry.engine.SimpleEngine">
+  <page name="Home" specification-path="/tutorial/simple/Home.jwc"/>
 </application>

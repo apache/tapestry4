@@ -1,24 +1,9 @@
-<?xml version="1.0"?>
-<!--$Id$-->
-<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<application>
-	<name>Border Tutorial</name>
-	<engine-class>tutorial.border.BorderEngine</engine-class>
-	<page>
-		<name>Home</name>
-		<specification-path>/tutorial/border/Home.jwc</specification-path>
-	</page>
-	<page>
-		<name>Credo</name>
-		<specification-path>/tutorial/border/Credo.jwc</specification-path>
-	</page>
-	<page>
-		<name>Legal</name>
-		<specification-path>/tutorial/border/Legal.jwc</specification-path>
-	</page>
-	<component-alias>
-		<alias>Border</alias>
-		<specification-path>/tutorial/border/Border.jwc</specification-path>
-	</component-alias>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application name="Border Tutorial" engine-class="tutorial.border.BorderEngine">
+  <page name="Home" specification-path="/tutorial/border/Home.jwc"/>
+  <page name="Credo" specification-path="/tutorial/border/Credo.jwc"/>
+  <page name="Legal" specification-path="/tutorial/border/Legal.jwc"/>
+  <component-alias type="Border" specification-path="/tutorial/border/Border.jwc"/>
 </application>

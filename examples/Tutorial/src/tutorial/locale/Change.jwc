@@ -1,49 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--$Id$-->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>tutorial.locale.Change</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-		</component>
-		<component>
-			<id>insertLocaleName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>localeName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>home</id>
-			<type>Page</type>
-			<bindings>
-				<static-binding>
-					<name>page</name>
-					<value>Home</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>chooseAgainImage</id>
-			<type>Image</type>
-			<bindings>
-				<binding>
-					<name>image</name>
-					<property-path>assets.choose-again</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
-	<assets>
-		<context-asset>
-			<name>choose-again</name>
-			<path>/images/locale/ChooseAgain.gif</path>
-		</context-asset>
-	</assets>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="tutorial.locale.Change">
+  <component id="border" type="Border"/>
+  <component id="insertLocaleName" type="Insert">
+    <binding name="value" property-path="localeName"/>
+  </component>
+  <component id="home" type="Page">
+    <static-binding name="page">Home</static-binding>
+  </component>
+  <component id="chooseAgainImage" type="Image">
+    <binding name="image" property-path="assets.choose-again"/>
+  </component>
+  <context-asset name="choose-again" path="/images/locale/ChooseAgain.gif"/>
 </specification>
