@@ -36,26 +36,24 @@
   </target>
     
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
-    <copy todir="${classes.dir}">
-        <fileset dir="${src.dir}">
-	        <include name="**/*.jwc"/>
-	        <include name="**/*.html"/>
-	        <include name="**/*.gif"/>
-	        <include name="**/*.dtd"/>
-	        <include name="**/*.script"/>
-	        <include name="**/*.properties"/>
-	        <include name="**/*.application"/>
-	        <exclude name="**/package.html"/>
-      </fileset>
-    </copy>
-    
     <war warfile="${vlib.war}" webxml="WEB-INF/web.xml">
       <fileset dir=".">
         <include name="*.html"/>
         <include name="images/**"/>
         <include name="scripts/**"/>
      </fileset>
-     <classes dir="${classes.dir}"/>         
+     
+     <classes dir="${classes.dir}"/>
+	 <classes dir="${src.dir}">
+	   <include name="**/*.jwc"/>
+	   <include name="**/*.html"/>
+	   <include name="**/*.gif"/>
+	   <include name="**/*.dtd"/>
+	   <include name="**/*.script"/>
+	   <include name="**/*.properties"/>
+	   <include name="**/*.application"/>
+	   <exclude name="**/package.html"/>
+      </classes>
     </war>
   </target>
 

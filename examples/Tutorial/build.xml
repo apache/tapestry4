@@ -13,6 +13,8 @@
     <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${lib.ext.dir}/jcommon-0.5.6.jar"/>
+    <pathelement location="${lib.ext.dir}/jfreechart-0.7.4.jar"/>
     <pathelement location="${framework.jar}"/>
     <pathelement location="${contrib.jar}"/>
   </path>
@@ -33,8 +35,22 @@
   
   
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
-    <copy todir="${classes.dir}">
-            <fileset dir="${src.dir}">
+     <war warfile="${tutorial.war}" webxml="WEB-INF/web.xml">
+
+      <fileset dir=".">
+        <include name="images/**"/>
+        <include name="*.html"/>
+        <!-- These are left around by Paint Shop Pro -->
+        <exclude name="**/pspbrwse.jbf"/>
+      </fileset>
+
+	  <lib dir="${lib.ext.dir}">
+	   	<include name="jcommon-*.jar"/>
+	   	<include name="jfreechart-*.jar"/>
+	  </lib>
+
+ 	  <classes dir="${classes.dir}"/>
+      <classes dir="${src.dir}">
         <include name="**/*.jwc"/>
         <include name="**/*.html"/>
         <include name="**/*.gif"/>
@@ -42,19 +58,8 @@
         <include name="**/*.script"/>
         <include name="**/*.properties"/>
         <include name="**/*.application"/>
-        <exclude name="**/package.html"/>
-      </fileset>
-    </copy>
-    
-    <war warfile="${tutorial.war}" webxml="WEB-INF/web.xml">
-
-      <fileset dir=".">
-        <include name="images/**"/>
-        <include name="*.html"/>
-        <!-- These are left around by Paint Shop Pro -->
-        <exclude name="**/pspbrwse.jbf"/>
-     </fileset>
-	  <classes dir="${classes.dir}"/>         
+        <exclude name="**/package.html"/>  
+	  </classes>
     </war>
   </target>
 
