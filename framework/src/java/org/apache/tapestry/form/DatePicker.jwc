@@ -28,10 +28,8 @@
   <parameter name="format" required="no"/>
   <parameter name="disabled"/>
   <parameter name="includeWeek"/>
-  <parameter name="icon" default-value="ognl:assets.defaultIcon"/>
-          
-  <asset name="script" path="DatePicker.js"/>
-  
+  <parameter name="icon" default-value="asset:defaultIcon"/>
+
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
   
   <inject property="scriptSource" object="infrastructure:scriptSource"/>
