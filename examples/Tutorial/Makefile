@@ -28,7 +28,7 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
 	$(INSTALL_DIR)/ejb.jar
 
-run: setup-jbe-util
+run: install
 	@$(ECHO) "\n*** Running Jetty for Tutorial ... ***\n"
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \

@@ -1,3 +1,8 @@
+* Jan 4 2001 hship
+
+Modify the tutorial to use the installed copy of the Tutorial.war, to test
+the fix for [127536] Class load error for .wars.
+
 * Jan 3 2001 hship
 
 Update the tutorial to demonstrate localization of context and private assets.
