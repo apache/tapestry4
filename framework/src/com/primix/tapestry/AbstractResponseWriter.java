@@ -61,13 +61,15 @@ import java.util.Stack;
  * @version $Id$
  * @author Howard Ship, David Solis
  * @since 0.2.9
- */
+ *
+ **/
 
 public abstract class AbstractResponseWriter implements IResponseWriter
 {
 	/**
-	* The underlying {@link PrintWriter} that output is sent to.  
-	*/
+	* The underlying {@link PrintWriter} that output is sent to. 
+	*  
+	**/
 
 	protected PrintWriter writer;
 
@@ -78,7 +80,7 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 	* methods are made. It is closed
 	* (the '&gt;' is written) when any other method is invoked.
 	*
-	*/
+	**/
 
 	protected boolean openTag = false;
 
@@ -102,19 +104,6 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 	private char[] buffer;
 
 	private String[] entities;
-
-	/**
-	 *  Implemented in concrete subclasses to provide a mapping from characters
-	 *  to entities.  The offset in the array corresponds to the
-	 *  character, the String is the literal text to insert into the
-	 *  output stream as a replacement.  A value of null (which is prevalent)
-	 *  means no subsititution.  We're using this as a fast-lookup on a single
-	 *  character, otherwise we might use a {@link Map}.
-	 *
-	 */
-
-	abstract protected String[] getEntities();
-
 	private boolean[] safe;
 
 	/**
@@ -125,43 +114,60 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 	 *
 	 */
 
-	abstract protected boolean[] getSafe();
+	private String contentType;
 
-	/**
-	 *  Implemented in concrete subclasses to identify the MIME content type
-	 *  produced by this response writer.
-	 *
-	 */
-
-	abstract public String getContentType();
+	public String getContentType()
+	{
+		return contentType;
+	}
 
 	abstract public IResponseWriter getNestedWriter();
 
 	/**
-	*  Protected constructor, needed by to construct a nested response writer.
-	*
-	*  <p>Invokes {@link #getEntities()} and {@link #getSafe()} to determine the
-	*  necessary translatons for the response writer.
-	*
-	*/
+	 *  General constructor used by subclasses.
+	 * 
+	 *  @param safe an array of flags indicating which characters
+	 *  can be passed directly through with out filtering.  Characters marked
+	 *  unsafe, or outside the range defined by safe, are converted to entities.
+	 *  @param entities a set of prefered entities, unsafe characters with
+	 *  a defined entity use the entity, other characters are converted
+	 *  to numeric entities.
+	 *  @param contentType the type of content produced by the
+	 *  writer.
+	 *  @param outputStream stream to which content will be written.
+	 *
+	 **/
 
-	protected AbstractResponseWriter()
+	protected AbstractResponseWriter(
+		boolean safe[],
+		String[] entities,
+		String contentType,
+		OutputStream stream)
 	{
-		entities = getEntities();
-		safe = getSafe();
+		this(safe, entities, contentType);
+
+		writer = new PrintWriter(stream);
 	}
 
 	/**
-	*  Sends output to the stream.  Internally, an instance of <code>PrintWriter</code>
-	*  is created, which will be closed when the <code>HTMLResponseWriter</code>
-	*  is closed.
-	*
-	*/
+	 *  Special constructor used for nested response writers.
+	 *  The subclass is responsible for creating the writer.
+	 * 
+	 **/
 
-	public AbstractResponseWriter(OutputStream stream)
+	protected AbstractResponseWriter(
+		boolean safe[],
+		String[] entities,
+		String contentType)
 	{
-		this();
-		writer = new PrintWriter(stream);
+		this.entities = entities;
+		this.safe = safe;
+		this.contentType = contentType;
+
+		if (entities == null || safe == null || contentType == null)
+			throw new IllegalArgumentException(
+				Tapestry.getString("AbstractResponseWriter.missing-constructor-parameters"));
+
 	}
 
 	/**
