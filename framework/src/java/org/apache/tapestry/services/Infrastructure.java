@@ -49,13 +49,12 @@ public interface Infrastructure
      * See <code>tapestry.ApplicationPropertySource</code>.
      */
     public IPropertySource getApplicationPropertySource();
-    
+
     /**
-     * Returns an  {@link IPropertySource} configured to search
-     * the servlet, servlet context, and factory defaults.
-     * 
+     * Returns an {@link IPropertySource}configured to search the servlet, servlet context, and
+     * factory defaults.
      */
-    
+
     public IPropertySource getGlobalPropertySource();
 
     /**
@@ -155,36 +154,20 @@ public interface Infrastructure
     public ApplicationStateManager getApplicationStateManager();
 
     /**
-     * Returns the request for the current request cycle.
-     * 
-     * <p>Note: to be removed.
-     */
-
-    public HttpServletRequest getRequest();
-
-    /**
-     * Returns the response for the current request.
-     */
-
-    public HttpServletResponse getResponse();
-    
-    /**
      * Returns the container request for the current request cycle.
-     * 
-     * <p>Note: to be renamed to getRequest().
-     * 
+     * <p>
+     * Note: to be renamed to getRequest().
      */
-    
-    public WebRequest getWebRequest();
-    
+
+    public WebRequest getRequest();
+
     /**
      * Returns the container response for the current request cycle.
-     * 
-     * <p>Note: to be renamed to getResponse().
-     * 
+     * <p>
+     * Note: to be renamed to getResponse().
      */
-    
-    public WebResponse getWebResponse();
+
+    public WebResponse getResponse();
 
     /**
      * Returns the context path, which identifies the application within the application server.
@@ -201,19 +184,17 @@ public interface Infrastructure
      */
 
     public String getApplicationId();
-    
+
     /**
-     * Returns the root context resource, which is the  starting point when looking for
-     * resources within the application.
-     * 
+     * Returns the root context resource, which is the starting point when looking for resources
+     * within the application.
      */
-    
+
     public Resource getContextRoot();
-    
+
     /**
      * Returns an object used to access component meta-data properties.
-     * 
      */
-    
+
     public ComponentPropertySource getComponentPropertySource();
 }

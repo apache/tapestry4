@@ -77,10 +77,8 @@
         <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
         <set-service property="requestCycleFactory" service-id="tapestry.request.RequestCycleFactory"/>
         <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
-        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
-        <set-service property="webRequest" service-id="tapestry.globals.WebRequest"/>
-        <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
-        <set-service property="webResponse" service-id="tapestry.globals.WebResponse"/>
+        <set-service property="request" service-id="tapestry.globals.WebRequest"/>
+        <set-service property="response" service-id="tapestry.globals.WebResponse"/>
         <set-service property="componentPropertySource" service-id="tapestry.props.ComponentPropertySource"/>
         <set-object property="applicationId" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
         <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:webContext"/>
@@ -177,7 +175,7 @@
     
     <invoke-factory>
       <construct class="impl.RequestExceptionReporterImpl">
-        <set-object property="request" value="infrastructure:webRequest"/>
+        <set-object property="request" value="infrastructure:request"/>
       </construct>
     </invoke-factory>
   </service-point>

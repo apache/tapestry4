@@ -102,7 +102,7 @@
     <invoke-factory model="primitive">
       <construct class="ActionService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
-        <set-object property="request" value="infrastructure:webRequest"/>
+        <set-object property="request" value="infrastructure:request"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
@@ -112,7 +112,7 @@
     <invoke-factory model="primitive">
       <construct class="DirectService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
-        <set-object property="request" value="infrastructure:webRequest"/>
+        <set-object property="request" value="infrastructure:request"/>
       </construct>
     </invoke-factory>
   </service-point>
