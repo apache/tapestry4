@@ -31,7 +31,6 @@
     
     <depend project="commons-logging"/>
     <depend project="commons-lang"/>
-    <depend project="jakarta-bcel"/>
     <depend project="jakarta-bsf"/>
     <depend project="jakarta-oro"/>
     <depend project="jakarta-servletapi-4"/>
@@ -41,7 +40,12 @@
     <depend project="commons-digester"/>
     <depend project="commons-lang"/>
     <depend project="jakarta-bsf"/>
+    
+    <!-- These aren't built, yet, by Gump.  We direct Gump to
+    	   use the versions stored in our CVS. -->
+    	   
     <depend project="ognl"/>
+    <depend project="javassist"/>
 
     <!-- contrib -->
     <work nested="framework/classes"/>
@@ -70,6 +74,16 @@
     <jar name="lib/ext/ognl-2.5.1.jar"/>
     <license name="lib/ext/LICENSE.ognl.txt"/>
   </project>
+  
+  <project name="javassist">
+    <package>javassist</package>
+    <url href="http://www.jboss.org/index.html?module=html&op=userdisplay&id=developers/projects/javassist"/>
+    
+    <!-- This needs to be kept up-to-date as we update to later versions of Javassist -->
+    
+    <jar name="lib/ext/javassist.jar"/>
+    <license name="lib/ext/LICENSE.javassist.txt"/>
+  </project>  
   
   <!-- See note above; for the moment, compile against bundled copy of FileUpload. -->
   
