@@ -383,5 +383,56 @@ public class PageSource
 		
 		return result;
 	}
+
+	public String toString()
+	{
+		StringBuffer buffer = new StringBuffer("PageSource@");
+		buffer.append(Integer.toHexString(hashCode()));
+		buffer.append('[');
+		
+		if (pool != null)
+		{
+			buffer.append(pool.getPooledCount());
+			buffer.append(" pooled pages, ");
+			buffer.append(pool.getKeyCount());
+			buffer.append(" keys");
+		}
+		
+		extend(buffer, fieldBindings, "field bindings");
+		extend(buffer, staticBindings, "static bindings");
+		extend(buffer, externalAssets, "external assets");
+		extend(buffer, contextAssets, "context assets");
+		extend(buffer, privateAssets, "private assets");
+		
+		int lastChar = buffer.length() - 1;
+		
+		buffer.append(']');
+		
+		return buffer.toString();
+	}
+	
+	private void extend(StringBuffer buffer, Map map, String label)
+	{
+		if (map == null)
+			return;
+		
+		int count;
+		
+		synchronized(map)
+		{
+			count = map.size();
+		}
+		
+		if (count == 0)
+			return;
+		
+		char ch = buffer.charAt(buffer.length() - 1);
+		if (ch != ' ' && ch != '[')
+			buffer.append(", ");
+		
+		buffer.append(count);
+		buffer.append(" cached ");
+		buffer.append(label);
+	}
 }
 

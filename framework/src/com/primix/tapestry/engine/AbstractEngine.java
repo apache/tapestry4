@@ -105,6 +105,7 @@ public abstract class AbstractEngine
 	private transient String servletPrefix;
 	private transient String clientAddress;
 	private transient String sessionId;
+	private transient boolean stateful;
 	
 	/**
 	 *  An object used to contain application-specific server side state.
@@ -780,11 +781,15 @@ public abstract class AbstractEngine
 	/**
 	 *  Reads the state serialized by {@link #writeExternal(ObjectOutput)}.
 	 *
+	 *  <p>This always set the stateful flag.  By default, a deserialized
+	 *  session is stateful (else, it would not have been serialized).
 	 */
 	
 	public void readExternal(ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
+		stateful = true;
+		
 		String localeName = in.readUTF();
 		locale = Tapestry.getLocale(localeName);
 		
@@ -1750,11 +1755,33 @@ public abstract class AbstractEngine
 		
 		cycle.getRequestContext().createSession();
 		
+		setStateful();
+		
 		return result;
 	}
 	
 	public IScriptSource getScriptSource()
 	{
 		return scriptSource;
+	}
+	
+	public boolean isStateful()
+	{
+		return stateful;
+	}
+	
+	/**
+	 *  Invoked by subclasses to indicate that some state must now be stored
+	 *  in the engine (and that the engine should now be stored in the
+	 *  HttpSession).  The caller is responsible for actually creating
+	 *  the HttpSession (it will have access to the {@link RequestContext}).
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	protected void setStateful()
+	{
+		stateful = true;
 	}
 }

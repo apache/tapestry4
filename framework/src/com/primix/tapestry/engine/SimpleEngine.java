@@ -228,6 +228,8 @@ extends AbstractEngine
 		
 		cycle.getRequestContext().createSession();
 		
+		setStateful();
+		
 		return result;
 	}
 

@@ -177,13 +177,14 @@ abstract public class ApplicationServlet
 			
 			HttpSession session = context.getSession();
 			
-			
 			// When there's an active session, we *may* store it into
 			// the HttpSession and we *will not* store the engine
 			// back into the engine pool.
 			
 			if (session != null)
 			{
+				boolean forceStore = engine.isStateful() &&
+					(session.getAttribute(attributeName) == null);
 				
 				// If the service may have changed the engine and the
 				// special storeEngine flag is on, then re-save the engine
@@ -193,7 +194,7 @@ abstract public class ApplicationServlet
 				try
 				{
 					
-					if ((dirty && storeEngine) || session.isNew())
+					if (forceStore || (dirty && storeEngine))
 					{
 						if (CAT.isDebugEnabled())
 							CAT.debug("Storing " + engine + 
@@ -215,10 +216,21 @@ abstract public class ApplicationServlet
 				return;
 			}
 			
+			if (engine.isStateful())
+			{
+				CAT.error("Engine " + engine + 
+							" is stateful even though there is no session.  Discarding the engine.");
+				return;
+			}
+			
 			// No session; the engine contains no state particular to
 			// the client (except for locale).  Don't throw it away,
 			// instead save it in a pool for later reuse (by this, or another
 			// client in the same locale).
+			
+			
+			if (CAT.isDebugEnabled())
+				CAT.debug("Returning " + engine + " to pool.");
 			
 			enginePool.store(engine.getLocale(), engine);
 			
@@ -302,7 +314,15 @@ abstract public class ApplicationServlet
 		{
 			engine = (IEngine)session.getAttribute(attributeName);
 			if (engine != null)
+			{
+				if (CAT.isDebugEnabled())
+					CAT.debug("Retrieved " + engine + " from session " + session.getId() + ".");
+				
 				return engine;
+			}
+			
+			if (CAT.isDebugEnabled())
+				CAT.debug("Session exists, but doesn't contain an engine.");
 		}
 		
 		Locale locale = getLocaleFromRequest(context);
@@ -313,6 +333,11 @@ abstract public class ApplicationServlet
 		{
 			engine = createEngine(context);
 			engine.setLocale(locale);
+		}
+		else
+		{
+			if (CAT.isDebugEnabled())
+				CAT.debug("Using pooled engine " + engine + " (from locale " + locale + ").");
 		}
 		
 		return engine;
@@ -518,7 +543,7 @@ abstract public class ApplicationServlet
 	 *  to the selected locale is chosen.
 	 *
 	 *  <p>At this time, the cookie is <em>not</em> persistent.  That may
-	 *  change is subsequent releases.
+	 *  change in subsequent releases.
 	 *
 	 *  @since 1.0.1
 	 */
