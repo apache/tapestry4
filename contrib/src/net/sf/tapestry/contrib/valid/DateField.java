@@ -109,15 +109,6 @@ import java.text.*;
  *		<td>The format used to display and parse dates.</td>
  *	</tr>
  *
- *  <tr>
- *      <td>delegate</td>
- *      <td>{@link IValidationDelegate}</td>
- *      <td>R</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>Object used to assist in error reporting.</td>
- *  </tr>
- *
  *  </table>
  *
  *  <p>Informal parameters are allowed.  A body is not allowed.

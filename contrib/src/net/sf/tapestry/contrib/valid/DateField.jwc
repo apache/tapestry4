@@ -5,7 +5,6 @@
 <specification class="net.sf.tapestry.contrib.valid.DateField">
 
   <parameter name="date" java-type="java.util.Date" required="yes"/>
-  <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate" required="yes"/>
   <parameter name="displayName" java-type="java.lang.String" required="yes"/>
   <parameter name="maximum" java-type="java.util.Date"/>
   <parameter name="minimum" java-type="java.util.Date"/>

@@ -124,16 +124,7 @@ import java.text.*;
  * 	Also used by the {@link FieldLabel} component to properly label the field.
  *      </td>
  *  </tr>
- *
- *  <tr>
- *      <td>delegate</td>
- *      <td>{@link IValidationDelegate}</td>
- *      <td>R</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>Object used to assist in error tracking and reporting.  A single
- *  instance is shared by all validating text fields in a single form.</td>
- *  </tr>
+
  *
  *  <tr>
  *      <td>validator</td>
@@ -159,9 +150,6 @@ public class ValidField extends AbstractTextField
 	implements IField, IFormComponent, PageDetachListener
 {
 	private IBinding valueBinding;
-
-	private IValidationDelegate delegate;
-	private IBinding delegateBinding;
 
 	private IBinding displayNameBinding;
 	private String displayNameValue;
@@ -216,38 +204,6 @@ public class ValidField extends AbstractTextField
 		return displayNameBinding.getString();
 	}
 
-	public IBinding getDelegateBinding()
-	{
-		return delegateBinding;
-	}
-
-	public void setDelegateBinding(IBinding value)
-	{
-		delegateBinding = value;
-	}
-
-	/**
-	 *  Returns the component's delegate, or throws
-	 *  {@link NullValueForBindingException}.  The delegate
-	 *  is only resolved <em>once</em> per request cycle.
-	 *
-	 */
-
-	public IValidationDelegate getDelegate()
-	{
-		if (delegate == null)
-		{
-			delegate =
-				(IValidationDelegate) delegateBinding.getObject(
-					"delegate",
-					IValidationDelegate.class);
-
-			if (delegate == null)
-				throw new NullValueForBindingException(delegateBinding);
-		}
-
-		return delegate;
-	}
 
 	/**
 	 *  Return the component's {@link IValidator}, or
@@ -273,14 +229,13 @@ public class ValidField extends AbstractTextField
 
 
 	/**
-	 *  Clear the delegate and validator properties at the end of request cycle.
+	 *  Clear the validator property at the end of request cycle.
 	 *
 	 *  @since 1.0.5
 	 */
 
 	public void pageDetached(PageEvent event)
 	{
-		delegate = null;
 		validator = null;
 	}
 
@@ -299,7 +254,7 @@ public class ValidField extends AbstractTextField
 		throws RequestCycleException
 	{
 		boolean rendering;
-		IValidationDelegate delegate = getDelegate();
+		IValidationDelegate delegate = getForm().getDelegate();
 		IValidator translator = getValidator();
 		
 		String displayName = null;
@@ -339,7 +294,7 @@ public class ValidField extends AbstractTextField
 	protected void beforeCloseTag(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		getDelegate().writeAttributes(writer, cycle);
+		getForm().getDelegate().writeAttributes(writer, cycle);
 	}
 
 	private static final String SELECTED_ATTRIBUTE_NAME =
@@ -383,8 +338,9 @@ public class ValidField extends AbstractTextField
 
 
 	protected String readValue()
+	throws RequestCycleException
 	{
-		IValidationDelegate delegate = getDelegate();
+		IValidationDelegate delegate = getForm().getDelegate();
 		
 		if (delegate.isInError())
 			return delegate.getInvalidInput();
@@ -401,10 +357,11 @@ public class ValidField extends AbstractTextField
 	}
 	
 	protected void updateValue(String value)
+	throws RequestCycleException
 	{
 		IValidator validator = getValidator();
 		Object objectValue = null;
-		IValidationDelegate delegate = getDelegate();
+		IValidationDelegate delegate = getForm().getDelegate();
 		
 		try
 		{

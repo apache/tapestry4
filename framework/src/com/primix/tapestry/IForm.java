@@ -27,6 +27,7 @@
 package com.primix.tapestry;
 
 import com.primix.tapestry.form.*;
+import com.primix.tapestry.valid.IValidationDelegate;
 
 /**
  *  A generic way to access a component which defines an HTML form.  This interface
@@ -117,4 +118,14 @@ public interface IForm extends IAction
 	 */
 
 	public boolean isRewinding();
+	
+	/**
+	 *  Returns the validation delegate for the form.
+	 * 
+	 *  @since 1.0.8
+	 * 
+	 **/
+	
+	public IValidationDelegate getDelegate()
+	throws RequestCycleException;
 }

@@ -200,7 +200,8 @@ public abstract class AbstractTextField extends AbstractFormComponent
 	 *
 	 */
 
-	abstract protected void updateValue(String value);
+	abstract protected void updateValue(String value)
+	throws RequestCycleException;
 
 	/**
 	 *  Invoked by {@link #render(IResponseWriter writer, IRequestCycle cycle)}
@@ -209,7 +210,8 @@ public abstract class AbstractTextField extends AbstractFormComponent
 	 *  @returns the current value for the field, as a String, or null.
 	 */
 
-	abstract protected String readValue();
+	abstract protected String readValue()
+	throws RequestCycleException;
 
 	public void setDisabledBinding(IBinding value)
 	{

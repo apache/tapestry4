@@ -3,5 +3,4 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.valid.FieldLabel" allow-body="no" allow-informal-parameters="no">
   <parameter name="field" java-type="com.primix.tapestry.valid.IValidatingTextField" required="yes"/>
-  <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate"/>
 </specification>

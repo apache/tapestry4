@@ -6,7 +6,8 @@
   <parameter name="listener" java-type="com.primix.tapestry.IActionListener" required="yes"/>
   <parameter name="stateful" java-type="boolean"/>
   <parameter name="direct" java-type="boolean"/>
-  
+  <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate"/>
+
   <reserved-parameter name="action"/>
   
 </specification>
