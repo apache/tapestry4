@@ -292,9 +292,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      * application specification.
      */
     private Object _rootObject;
-    
+
     /** @since 3.1 */
-    
+
     private ValueConverter _valueConverter;
 
     // Identify all the different acceptible values.
@@ -311,6 +311,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         CONVERSION_MAP.put("y", Boolean.TRUE);
         CONVERSION_MAP.put("yes", Boolean.TRUE);
         CONVERSION_MAP.put("on", Boolean.TRUE);
+        CONVERSION_MAP.put("aye", Boolean.TRUE);
 
         CONVERSION_MAP.put("false", Boolean.FALSE);
         CONVERSION_MAP.put("f", Boolean.FALSE);
@@ -318,6 +319,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         CONVERSION_MAP.put("off", Boolean.FALSE);
         CONVERSION_MAP.put("no", Boolean.FALSE);
         CONVERSION_MAP.put("n", Boolean.FALSE);
+        CONVERSION_MAP.put("nay", Boolean.FALSE);
 
         CONVERSION_MAP.put("none", BeanLifecycle.NONE);
         CONVERSION_MAP.put("request", BeanLifecycle.REQUEST);
@@ -975,7 +977,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         ia.setPath(prefix == null ? path : prefix + path);
         ia.setPropertyName(propertyName);
-        
+
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 
         cs.addAsset(name, ia);
@@ -1173,7 +1175,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         boolean immediate = getBooleanAttribute("immediate", false);
         String className = getAttribute("class");
 
-        IExtensionSpecification es = _factory.createExtensionSpecification(_resolver, _valueConverter);
+        IExtensionSpecification es = _factory.createExtensionSpecification(
+                _resolver,
+                _valueConverter);
 
         es.setClassName(className);
         es.setImmediate(immediate);
@@ -1517,7 +1521,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (value == null)
             return defaultValue;
 
-        return value.equals("yes");
+        Boolean b = (Boolean) CONVERSION_MAP.get(value);
+
+        return b.booleanValue();
     }
 
     private Object getConvertedAttribute(String name, Object defaultValue)
@@ -1736,7 +1742,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         _bindingSource = bindingSource;
     }
-    
+
     /** @since 3.1 */
     public void setValueConverter(ValueConverter valueConverter)
     {

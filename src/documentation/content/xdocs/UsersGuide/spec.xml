@@ -140,6 +140,7 @@ it is expected that there will be some runtime warnings).
   <li>The &spec.inject-state; element has been added.</li>
   <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
   <li>Removed the type attribute from the &spec.configure; element.</li>
+  <li>Added many more options for <link href="#spec.boolean-types">boolean attributes</link>.</li>
 </ul>
 
 <p>
@@ -165,6 +166,40 @@ accessor methods.
 </p>
   
 </section>  <!-- spec.property-injection -->
+
+<section id="spec.boolean-types">
+  <title>Boolean type values</title>
+  
+<p>
+Several attributes are type boolean. Tapestry supports a number of common (and one humorous) values
+for booleans.  Values considered true:  
+</p>  
+
+<ul>
+  <li>true</li>
+  <li>yes</li>
+  <li>on</li>
+  <li>1</li>
+  <li>t</li>
+  <li>y</li>
+  <li>aye</li>
+</ul>
+
+<p>
+Values considered false:
+</p>
+
+<ul>
+  <li>false</li>
+  <li>no</li>
+  <li>off</li>
+  <li>0</li>
+  <li>f</li>
+  <li>n</li>
+  <li>nay</li>
+</ul>
+
+</section>
 
 <section id="spec.application">
 	<title>&application; element</title>

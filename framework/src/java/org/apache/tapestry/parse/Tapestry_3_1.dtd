@@ -41,14 +41,14 @@ The following changes have occured:
 - Added <inject-state>
 - Added property attribute to <component>, <bean> and <asset>
 - Removed the type attribute from the <configure> element
+- Add many alternatives to 'yes' and 'no' for boolean attributes.
 -->
 <!-- =======================================================
 Entity: attribute-flag
 
-For entity attributes that take a boolean value, defines 'yes' and 'no'.
-The default varies, so isn't included here.
+For entity attributes that take a boolean value.
 -->
-<!ENTITY % attribute-flag "(yes|no)">
+<!ENTITY % attribute-flag "(yes|no|true|false|on|off|1|0|y|n|t|f|aye|nay)">
 <!ENTITY % library-content "(description?, (meta|page|component-type|service|library|extension)*)">
 <!-- =======================================================
 Element: application
