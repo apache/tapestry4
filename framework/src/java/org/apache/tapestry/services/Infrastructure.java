@@ -204,4 +204,6 @@ public interface Infrastructure
      */
 
     public void setLocale(Locale value);
+
+    public String getOutputEncoding();
 }

@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -217,5 +216,10 @@ final class ImplMessages
     public static String invalidEncoding(String encoding, Throwable cause)
     {
         return _formatter.format("invalid-encoding", encoding, cause);
+    }
+
+    public static String errorResetting(Throwable cause)
+    {
+        return _formatter.format("error-resetting", cause);
     }
 }

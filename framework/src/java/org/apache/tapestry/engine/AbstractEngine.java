@@ -15,7 +15,6 @@
 package org.apache.tapestry.engine;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +23,6 @@ import java.util.Locale;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
@@ -112,24 +110,6 @@ public abstract class AbstractEngine implements IEngine
     private ListenerMap _listeners;
 
     /**
-     * The name of the application property that will be used to determine the encoding to use when
-     * generating the output
-     * 
-     * @since 3.0
-     */
-
-    public static final String OUTPUT_ENCODING_PROPERTY_NAME = "org.apache.tapestry.output-encoding";
-
-    /**
-     * The default encoding that will be used when generating the output. It is used if no output
-     * encoding property has been specified.
-     * 
-     * @since 3.0
-     */
-
-    public static final String DEFAULT_OUTPUT_ENCODING = "UTF-8";
-
-    /**
      * The curent locale for the engine, which may be changed at any time.
      */
 
@@ -141,22 +121,6 @@ public abstract class AbstractEngine implements IEngine
      */
 
     public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
-
-    /**
-     * If true (set from the JVM system parameter <code>org.apache.tapestry.disable-caching</code>)
-     * then the cache of pages, specifications and template will be cleared after each request.
-     */
-
-    private static final boolean _disableCaching = Boolean
-            .getBoolean("org.apache.tapestry.disable-caching");
-
-    /**
-     * The instance of {@link IMonitorFactory}used to create a monitor.
-     * 
-     * @since 3.0
-     */
-
-    private IMonitorFactory _monitorFactory;
 
     /**
      * Sets the Exception page's exception property, then renders the Exception page.
@@ -385,26 +349,11 @@ public abstract class AbstractEngine implements IEngine
                 if (output != null)
                     output.forceFlush();
 
-                cleanupAfterRequest(cycle);
             }
             catch (Exception ex)
             {
                 reportException(Tapestry.getMessage("AbstractEngine.exception-during-cleanup"), ex);
             }
-
-            if (_disableCaching)
-            {
-                try
-                {
-                    _infrastructure.getResetEventCoordinator().fireResetEvent();
-                }
-                catch (Exception ex)
-                {
-                    reportException(Tapestry
-                            .getMessage("AbstractEngine.exception-during-cache-clear"), ex);
-                }
-            }
-
         }
     }
 
@@ -696,40 +645,14 @@ public abstract class AbstractEngine implements IEngine
         return TapestryConstants.STALE_SESSION_PAGE;
     }
 
-    /**
-     * The encoding to be used if none has been defined using the output encoding property. Override
-     * this method to change the default.
-     * 
-     * @return the default output encoding
-     * @since 3.0
-     */
-    protected String getDefaultOutputEncoding()
-    {
-        return DEFAULT_OUTPUT_ENCODING;
-    }
-
-    /**
-     * Returns the encoding to be used to generate the servlet responses and accept the servlet
-     * requests. The encoding is defined using the org.apache.tapestry.output-encoding and is UTF-8
-     * by default
-     * 
-     * @since 3.0
-     * @see org.apache.tapestry.IEngine#getOutputEncoding()
-     */
-    public String getOutputEncoding()
-    {
-        IPropertySource source = getPropertySource();
-
-        String encoding = source.getPropertyValue(OUTPUT_ENCODING_PROPERTY_NAME);
-        if (encoding == null)
-            encoding = getDefaultOutputEncoding();
-
-        return encoding;
-    }
-
     /** @since 3.1 */
     public Infrastructure getInfrastructure()
     {
         return _infrastructure;
+    }
+
+    public String getOutputEncoding()
+    {
+        return _infrastructure.getOutputEncoding();
     }
 }
