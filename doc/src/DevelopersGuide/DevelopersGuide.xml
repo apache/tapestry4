@@ -873,7 +873,7 @@ is the <emphasis>direction</emphasis>, which can be one of the following values:
 		
 		<para>
 		This type must be used for any kind of output parameter, or for an input parameter
-		where the property may be accessed other than during the render of the component.
+		where the property may be accessed other than during the rendering of the component.
 		</para>
 		</listitem>
 	</varlistentry>			
@@ -883,7 +883,7 @@ is the <emphasis>direction</emphasis>, which can be one of the following values:
 	<title>Why aren't output parameters connectable?</title>
 	<para>
 	The problem is the timing of output parameters.  Sometimes a parameter is only an output
-	parameter when a form is submitted (for example, any of the form related components).
+	parameter when the containing form is submitted (for example, any of the form related components).
 	Sometimes a parameter is output many times (for example, &Foreach;) while the component
 	renders.
 	</para>
@@ -919,7 +919,7 @@ binding), then the property is set just once, and never cleared.
 There are times when the parameter name can't be used as the property name.  For example,
 the &Page; component has a <literal>page</literal> parameter, the name of the page to link to.  
 However, all components already have a <literal>page</literal>
-property, the &IPage; that ultimate contains them.  The specification for the &Page; component
+property, the &IPage; that ultimately contains them.  The specification for the &Page; component
 connects the <literal>page</literal> parameter to a property named <literal>targetPage</literal> instead.
 </para>
 
@@ -1108,12 +1108,15 @@ In either case, the names, types or very existence of embedded components is pri
 hidden inside the containing component's "black box".
 </para>
     </section>
+    
+    
     <section id="components.html-template">
       <title>HTML Templates</title>
+      
       <para>Nearly all Tapestry components combine static HTML
 	<footnote>
           <para>
-			The initial relase of Tapestry is specifically oriented around HTML.  Some support for
+			The current releases of Tapestry is specifically oriented around HTML.  Some support for
 			non-HTML languages, such as XML, XHTML or WML is already present
 			and will be expanded in the future.
 		</para>
@@ -1123,10 +1126,25 @@ from a template with additional dynamic content
 Often, a Tapestry component embeds other Tapestry components.  
 These inner components are referenced in the containing component's template.
 </para>
-      <para>
-Templates look like standard HTML files, though they are rarely complete 
-HTML documents; usually they are snippets.  
+
+<para>
+One of the features of Tapestry is <emphasis>invisible instrumentation</emphasis>.  In most
+web application frameworks, converting a static HTML page into a usable template is a destructive process:
+the addition of new tags, directives or even Java code to the template means that it will no
+longer preview properly in a <acronym>WYSIWYG</acronym> editor.
 </para>
+
+<para>
+Tapestry templates are instrumented using a new HTML attribute, <varname>jwcid</varname>, to any existing
+element.  Elements with such attributes are recognized by Tapestry as being dynamic, and driven by
+a Tapestry component, but a <acronym>WYSIWYG</acronym> editor will simply ignore them.  Once a template
+is instrumented, it may be worked on by 
+<link linkend="components.html-production">both the  HTML producer and the Java developer</link>.
+</para>
+
+<section id="components.html-template.jwcid-attribute">
+	<title>Using the <varname>jwcid</varname> attribute</title>
+
       <para>
 Identifying a Tapestry component is accomplished by adding a <varname>jwcid</varname> attribute to a tag.
 </para>
@@ -1134,17 +1152,17 @@ Identifying a Tapestry component is accomplished by adding a <varname>jwcid</var
         <programlisting>
 &lt;<replaceable>any</replaceable> jwcid="<replaceable>component id</replaceable>" ... &gt;  <replaceable>body</replaceable>  &lt;/<replaceable>any</replaceable>&gt;
 </programlisting>
-      </informalexample>
+
       <para>or
 </para>
-      <informalexample>
+
         <programlisting>
 &lt;<replaceable>any</replaceable> jwcid="<replaceable>component id</replaceable>" ... /&gt;
 </programlisting>
       </informalexample>
       <para>
 Most often, the HTML element chosen is <sgmltag class="starttag">span</sgmltag>, though (in fact) Tapestry
-completely ignores the element, except to make sure the open and close tags balance.
+completely ignores the element chosen by the developer, except to make sure the open and close tags balance.
 </para>
       <para>
 The parser used by Tapestry is relatively forgiving about case 
@@ -1152,68 +1170,160 @@ and white space.  Also, the component id (and any other attributes) can be enclo
 double quotes (as above), single quotes, or be left unquoted.
 </para>
       <para>
-When using the <varname>jwcid</varname> attribute, you are free to specify additional
+You are free to specify additional
 attributes.  These attributes will become
 <link linkend="components.informal-parameters">informal parameters</link> for the Tapestry component.
 </para>
-      <para>
-An alternative to using the <varname>jwcid</varname> attribute is to use
-the &jwc-tag; element.  The &jwc-tag; element has two forms:
-</para>
-      <informalexample>
-        <programlisting>
-&lt;jwc id="<replaceable>component id</replaceable>"&gt;  <replaceable>body</replaceable>  &lt;/jwc&gt;
-</programlisting>
-      </informalexample>
-      <para>or
-</para>
-      <informalexample>
-        <programlisting>
-&lt;jwc id="<replaceable>component id</replaceable>"/&gt;
-</programlisting>
-      </informalexample>
-      <note>
-        <para>
-	Through Tapestry release 1.0.1, only the &jwc-tag; tag was supported 
-	in HTML templates.  Support for the <varname>jwcid</varname> attribute
-	in arbitrary elements was
-	added in release 1.0.2.
-	</para>
-      </note>
-      <para>
-When using the &jwc-tag; tag, you may only specify the <varname>id</varname> attribute.  You may
-not specify any additional informal parameters, as you can when using the standard
-notation.
-</para>
-      <para>
-The ability to convert static HTML tags into dynamic tags is really to streamline the 
-<link linkend="components.html-production">integration process</link>,
-the process whereby the efforts of HTML designers are 
-converted into Tapestry components and templates.
-</para>
+
       <para>
 The start and end tags for Tapestry components must balance properly. This includes cases where the
 end tag is normally ommitted, such as <sgmltag class="starttag">input</sgmltag> elements.  Either a closing
 tag must be supplied, or the XML-style syntax for an empty element must be used (that is, 
 a slash just before the end of the tag).
 </para>
+
+</section> <!-- components.html-template.jwcid-attribute -->
+
+<section id="component.html-template.jwc-element">
+	<title>Using the <sgmltag class="starttag">jwc</sgmltag> element</title>
+	
       <para>
-Tapestry divides the contents of the HTML template into two categories:
-<itemizedlist mark="bullet">
-          <listitem>
-            <para>
-		Static HTML and HTML comments, which pass through unchanged.
-		</para>
-          </listitem>
-          <listitem>
-            <para>
-		Tapestry components (tags with the <varname>jwcid</varname> attribute, as well as the &jwc-tag; element).
-		The related tags are removed, and the HTML is supplied by the actual
-		components.
-		</para>
-          </listitem>
-        </itemizedlist>
-      </para>
+An alternative to using the <varname>jwcid</varname> attribute is to use
+the &jwc-tag; element.  In fact, until Tapestry release 1.0.2, this was the only
+way to use templates.
+</para>
+
+<para>
+The &jwc-tag; element has two forms:
+</para>
+
+      <informalexample>
+        <programlisting>
+&lt;jwc id="<replaceable>component id</replaceable>"&gt;  <replaceable>body</replaceable>  &lt;/jwc&gt;
+</programlisting>
+
+      <para>or
+</para>
+
+        <programlisting>
+&lt;jwc id="<replaceable>component id</replaceable>"/&gt;
+</programlisting>
+      </informalexample>
+      
+      <para>
+When using the &jwc-tag; tag, you may only specify the <varname>id</varname> attribute.  You may
+not specify any additional informal parameters, as you can when using the standard
+notation.
+</para>
+
+</section> <!-- component.html-template.jwc-element -->
+
+<section id="component.html-template.localization">
+	<title>Localizing sections of a template</title>
+	
+<para>
+Tapestry includes an additional template feature to assist with localization of a web application.
+By specifying a <sgmltag class="starttag">span</sgmltag> element with a special attribute,
+<varname>key</varname>, Tapestry will replace the entire 	
+<sgmltag class="starttag">span</sgmltag> tag with a
+<link linkend="components.localization.strings">localized string</link> for the component.
+</para>
+
+
+<para>
+This construct takes one of two forms:
+</para>
+
+<informalexample>
+<programlisting>
+&lt;span key="<replaceable>key</replaceable>" ... &gt; ... &lt;/span&gt;
+</programlisting>
+<para>or</para>
+<programlisting>
+&lt;span key="<replaceable>key</replaceable>" ... /&gt;
+</programlisting>
+</informalexample>
+
+<para>
+If only the <varname>key</varname>
+attribute is specified, then the <sgmltag class="starttag">span</sgmltag>
+is simply replaced with the localized string.  However, if any additional attributes
+are specified for the <sgmltag class="starttag">span</sgmltag> tag beyond
+<varname>key</varname>, then
+the <sgmltag class="starttag">span</sgmltag> tag will be part of the rendered HTML, with
+the specified attributes.
+</para>
+
+<para>
+The upshot of this is that sections of the HTML template can be invisibly localized
+simply by wrapping the text to be replaced inside a <sgmltag class="starttag">span</sgmltag>
+tag.  The wrapped text exists, once more, as sample text to be displayed
+in a <acronym>WYSIWYG</acronym> editor.
+</para>
+
+</section> <!-- component.html-template.localization -->
+
+<section id="component.html-template.body">
+	<title>Components with Bodies</title>
+
+<para>
+In Tapestry, individual components may have their own HTML templates.   This is a very powerful
+concept ... it allows powerful and useful components to be created with very little code.  During the rendering
+of a page, Tapestry knits together the templates of the page and all the nested components to create
+the HTML response sent back to the client web browser.
+</para>
+
+
+<informalexample>
+<programlisting>
+Container content <co id="component.html-template.body.container1"/>
+
+&lt;span jwcid="component"&gt; <co id="component.html-template.body.component"/>
+
+  Wrapped content <co id="component.html-template.body.wrapped"/>
+  
+&lt;/span&gt;
+
+More container content <co id="component.html-template.body.container2"/>
+</programlisting>
+</informalexample>
+
+<calloutlist>
+	<callout arearefs="component.html-template.body.container1">
+	<para>
+	This portion of the container content is rendered first.
+	</para>
+	</callout>
+	
+	<callout arearefs="component.html-template.body.component">
+	<para>
+	The component is then rendered.  It will render, possibly using its
+	own template.
+	</para>
+	</callout>
+	
+	<callout arearefs="component.html-template.body.wrapped">
+	<para>
+	The component controls <emphasis>if</emphasis>, <emphasis>when</emphasis> and
+	<emphasis>how often</emphasis> wrapped content from its container
+	is rendered.
+	</para>
+	
+	<para>
+	Wrapped content can be a mix of static HTML and additional components.
+	</para>
+	</callout>
+	
+	<callout arearefs="component.html-template.body.container2">
+	<para>
+	After the component finishes rendering, the remaining content
+	from the container is rendered.
+	</para>
+	</callout>
+</calloutlist>
+
+
+
       <para>
 The body listed above can be either static HTML or other Tapestry 
 components or both.  Elements in the body of a component are 
@@ -1229,208 +1339,19 @@ For example, the &TextField; component creates an
 <sgmltag class="starttag">input type=text</sgmltag>
 form element and it makes no sense for it to contain anything else.  
 Whether a component can have a body (and wrap other elements) is defined in the 
-component's specification.
+<link linkend="components.specification.root">component's specification</link>.
 </para>
       <para>
 Tapestry includes a special component, &InsertWrapped;, 
-which is used to render the body of a component.  
+which is used to render wrapped content from a component's container.  
 It makes it easy to create components that wrap other components.
 </para>
-      <para>
-In many scripting systems, scripting constructs are one-dimensional.... 
-they appear at a certain point on the page and dynamically 
-insert some content into a stream of HTML that eventually 
-ends up on the client web browser.
-</para>
-      <para>
-Tapestry components are more powerful ... they have open and 
-close tags and thus can contain a body.  This body is made up 
-of static HTML from the template and other Tapestry components.  The outer component 
-wraps the inner elements.
-</para>
-      <para>
-An example of this is the <classname>Border</classname> component in the Tapestry Tutorial
-	<footnote>
-          <para>
-			The Border tutorial has changed slightly since this
-			was initially written, but the basic ideas still hold.
-		</para>
-        </footnote>.  
-It shows how a component can wrap the entire content of a page.
-</para>
-      <figure>
-        <title>Border Component</title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="images/Border-Screenshot.jpg" format="JPEG"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-      <para>
-Here, the <varname>border</varname> component provides the application title ("Reusable Component Tutorial",
-in the title bar of the window), the page title (upper left corner) and navigation 
-controls (left side).  The page provides the content in the light gray box in the center. 
-In this example, the page content is simply static HTML but in a real application the 
-content would include other components.
-</para>
-      <para>
-The Home page component has the following HTML template:
-</para>
-      <figure>
-        <title>Home Page HTML Template</title>
-        <programlisting>
-<sgmltag class="starttag">jwc id="border"</sgmltag><![CDATA[
 
-Nothing much doing here on the <b>home</b> page.  Visit one of our other fine 
-pages.
+</section> <!-- component.html-template.body -->
 
-]]><sgmltag class="endtag">jwc</sgmltag>
-        </programlisting>
-      </figure>
-      <para>
-In other words, the <varname>border</varname>
-component gets to produce HTML first.  At some point, the page's content 
-(wrapped inside the <varname>border</varname> component) will be produced.  
-Afterwards, the <varname>border</varname> component will have an opportunity to produce more HTML.
-The <classname>Border</classname> component has a much larger HTML template:
-</para>
-      <figure>
-        <title>Border component HTML template</title>
-        <programlisting><![CDATA[
-<HTML>
-<head>
-<title>Reusable Component Tutorial</title>
-</head>
-<body>
-<table border=0 bgcolor=gray cellspacing=0>
-  <tr valign=top>
-    <td colspan=3 align=left>
-      <font size=5 color="White">]]><emphasis><sgmltag class="starttag">jwc id="insertPageTitle"/</sgmltag></emphasis><![CDATA[</font>
-    </td>
-  </tr>
-  <tr valign=top>
-    <td align=right>
-      <font color=white>
-]]><emphasis><sgmltag class="starttag">jwc id="e"</sgmltag></emphasis><![CDATA[
-        <br>]]><emphasis><![CDATA[<jwc id="link"><jwc id="insertName"></jwc>
-</jwc>]]></emphasis><![CDATA[
-      </font>
-    </td>
-    <td valign=top bgcolor=silver>
-      ]]><emphasis><sgmltag class="starttag">jwc id="wrapped"/</sgmltag></emphasis><![CDATA[
-    </td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan=3>&nbsp;</td>
-  </tr>
-</table>
-</body>
-</HTML>
-]]></programlisting>
-      </figure>
-      <para>
-The <classname>Border</classname> component contains five components:
-
-	<itemizedlist>
-          <listitem>
-            <para>
-              <varname>insertPageTitle</varname>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <varname>e</varname>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <varname>link</varname>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <varname>insertName</varname>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <varname>wrapped</varname>
-            </para>
-          </listitem>
-        </itemizedlist>
-      </para>
-      <para>
-The <varname>e</varname> component wraps some static HTML and the 
-<varname>link</varname> component.  The 
-<varname>link</varname> component wraps the <varname>insertName</varname> component.
-</para>
-      <para>
-When it comes time to render, Tapestry parses the HTML template and breaks 
-them into blocks of static HTML, component starts 
-(the &jwc-tag; tag) and component ends (the <sgmltag class="endtag">jwc</sgmltag> tag).
-</para>
-      <para>
-The framework determines what each component wraps.  
-For components with their own templates, such as <classname>Home</classname> and 
-<classname>Border</classname>, it figures out what the outer elements are, 
-the outermost static HTML and components that aren't wrapped by other components.
-</para>
-      <para>
-This information turns into a data structure:
-</para>
-      <figure>
-        <title>Border Component Construction</title>
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="images/Border-Construction.gif" format="GIF"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-      <para>
-The left side shows how the components are embedded.  
-The <classname>Home</classname> page contains the <varname>border</varname> component.  
-The <varname>border</varname> component contains the other components.
-</para>
-      <para>
-The outermost elements for the <classname>Home</classname> page is 
-a list of one item: the  <varname>border</varname> component.  
-There's no text before or after the <varname>border</varname> component's &jwc-tag; tag, 
-and the remaining text in the template is wrapped by the <varname>border</varname> component.
-</para>
-      <para>
-The <varname>border</varname> component is 
-more complicated; it has several outer elements, 
-representing static HTML text and components.  
-The other components don't have templates, 
-so they don't have outer elements, but some do wrap other components.
-</para>
-      <para>
-When it's time to render, the process starts in the <classname>Home</classname> page, since a page
-is always the outermost component. 
-It iterates through its outer list, which contains a single element: the
-<varname>border</varname> component.  The process then recursively renders the 
-<varname>border</varname> component.  Its outer list is rendered in order.  
-Each component decides where it will render its wrapped elements (if it has any).  
-The <varname>e</varname> component is a &Foreach;; 
-it will render its wrapped elements any number of times.
-</para>
-      <para>
-Eventually, the process reaches the <varname>wrapped</varname> component, 
-which is of type &InsertWrapped;.  
-This is a special component; it jumps up one level to its container (the <varname>border</varname> component)
-and renders the <varname>border</varname>'s wrapped elements ... the text from the <classname>Home</classname>
-page template.
-</para>
-      <para>
-It may seem complicated, but ultimately its very natural from a markup language point of view; 
-the &jwc-tag; tags continue to act like HTML elements, wrapping around and 
-controlling their contents, just exactly like a 
-<sgmltag class="starttag">table</sgmltag>
-wraps its <sgmltag class="starttag">tr</sgmltag>'s or a <sgmltag class="starttag">form</sgmltag> wraps its 
-<sgmltag class="starttag">input</sgmltag>'s.
-</para>
-    </section>
+ 
+    </section> <!-- components.html-template -->
+    
     <section id="components.html-production">
       <title>Tapestry and HTML Production</title>
       <para>
@@ -1454,17 +1375,25 @@ These pages are like snapshots of the HTML produced by the running application.
 </para>
       <para>
         <emphasis>Integration</emphasis> is the process of merging these two views of the application together.
-Primarily, this involves marking up the HTML page with <varname>jwcid</varname> attributes, to indicate
+Primarily, this involves marking up the HTML page with 
+<link linkend="components.html-template.jwcid-attribute"><varname>jwcid</varname> attributes</link>, 
+to indicate
 to Tapestry which portions of the page are dynamic.  In this way, the 
-page can be used as a Tapestry HTML template.
+page can be used as a Tapestry HTML template.  These changes are designed to be invisible to a
+<acronym>WYSIWYG</acronym> HTML editor.
 </para>
+
       <para>
-Tapestry includes a number of features to ease this whole process.
+Tapestry includes a number of additional features to allow the HTML producers to continue
+working on HTML templates, <emphasis>even after</emphasis> their initial efforts have been
+integrated with the Java developer's code.
 </para>
       <section>
         <title>Implicitly removed bodies</title>
         <para>
 In many cases, a component doesn't allow a body, but one may be present in the HTML template.
+As usual, this is declared in
+the <link linkend="components.specification.root">component's specification</link>.
 Tapestry considers that body to be a sample value, that exists to allow the HTML producer
 to verify the layout of the page.  Tapestry edits out the body.
 </para>
@@ -1657,9 +1586,10 @@ specific file (<literal>Banner_fr_BE.properties</literal>) and continues downwar
 	
 <para>
 Components can gain access to their container's localized strings
-via the <link linkend="components.spec.binding">&lt;string-binding&gt;</link>
-element in the <link linkend="components.spec">component specification</link>.
-	
+via the <link linkend="components.spec.bindings">&lt;string-binding&gt;</link>
+element in the <link linkend="components.specification">component specification</link>.
+</para>
+
 </section>
 
 <section id="components.localization.templates">
@@ -1838,7 +1768,7 @@ details.
 </para>
 
 
-      <section>
+      <section id="components.specification.root">
         <title>
           <sgmltag class="starttag">specification</sgmltag> element</title>
         <para>
@@ -1855,8 +1785,8 @@ Component specification files, which use the filename extension <literal>.jwc</l
 ]]>
 
 &lt;specification 
-  allow-body="<replaceable>yes</replaceable>|<replaceable>no</replaceable>" <co id="components.spec.co.allow-body"/>
-  allow-informal-parameters="<replaceable>yes</replaceable>|<replaceable>no</replaceable>" <co id="components.spec.co.informal"/>
+  allow-body="<replaceable>yes|no</replaceable>" <co id="components.spec.co.allow-body"/>
+  allow-informal-parameters="<replaceable>yes|no</replaceable>" <co id="components.spec.co.informal"/>
   class="<replaceable>java-type</replaceable>"&gt; <co id="components.spec.co.java-type"/>
   
   [ &lt;<link linkend="components.spec.description">description</link> ...&gt; ...]
@@ -2324,8 +2254,8 @@ to a property of an object, and may be read, write or read/write.
 &lt;/static-binding&gt;
 
 &lt;string-binding
-  name="<replaceable>name</replaceable>
-  key="<replaceable>key</replaceable>/&gt;  <co id="components.spec.binding.string-binding-key"/>
+  name="<replaceable>name</replaceable>"
+  key="<replaceable>key</replaceable>"/&gt;  <co id="components.spec.binding.string-binding-key"/>
 </programlisting>
         </figure>
         <para>
