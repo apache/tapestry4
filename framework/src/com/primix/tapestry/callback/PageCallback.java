@@ -1,4 +1,6 @@
-package com.primix.tapestry;
+package com.primix.tapestry.callback;
+
+import com.primix.tapestry.*;
 
 /*
  * Tapestry Web Application Framework
@@ -27,35 +29,45 @@ package com.primix.tapestry;
  * Lesser General Public License for more details.
  *
  */
-
+ 
 /**
- * Defines a listener to an {@link IDirect} component, which is a how the
- * application produces behavior when
- * the component is triggered.
+ *  Simple callback for returning to a page.
  *
- * @author Howard Ship
- * @version $Id$
+ *  @version $Id$
+ *  @author Howard Ship
+ *  @since 0.2.9
+ *
  */
 
-
-public interface IDirectListener
+public class PageCallback
+implements ICallback
 {
+	private String pageName;
+	
+	public PageCallback(String pageName)
+	{
+		this.pageName = pageName;
+	}
+	
+	public PageCallback(IPage page)
+	{
+		pageName = page.getName();
+	}
 
+	public String toString()
+	{
+		return "PageCallback[" + pageName + "]";
+	}
+	
 	/**
-	*  Method invoked by the {@link IDirect} component, when its URL
-	*  is triggered.
-	*  
-	*  <p>A direct service URL includes an array of application specific
-	*  strings, the context, which define contextual state for the action.
-	*  Note that null values provided to the component when rendering will
-	*  be converted to empty strings before invoking the listener.
-	*
-	*  @param component The component which was "triggered".
-	*  @param parameters An array of parameters for the action.
-	*  @param cycle The request cycle in which the component was triggered.
-	*/
-
-	public void directTriggered(IDirect component, String[] context,
-		IRequestCycle cycle)
-	throws RequestCycleException;
+	 *  Invokes {@link IRequestCycle#setPage(String)} to identify the previously
+	 *  identified page as the response page.
+	 *
+	 */
+	 
+	public void peformCallback(IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		cycle.setPage(pageName);
+	}
 }

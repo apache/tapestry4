@@ -40,6 +40,7 @@ import java.util.*;
  */
 
 public interface IDirect
+extends IComponent
 {
 	/**
 	*  Invoked by the direct service to have the component peform
