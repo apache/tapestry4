@@ -109,8 +109,6 @@ public abstract class AbstractEngine implements IEngine
      */
     private Infrastructure _infrastructure;
 
-    private boolean _stateful;
-
     private ListenerMap _listeners;
 
     /**

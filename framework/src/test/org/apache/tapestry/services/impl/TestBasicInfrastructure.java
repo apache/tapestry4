@@ -71,30 +71,6 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testRequestGlobalsInitializer() throws Exception
-    {
-        MockControl control = newControl(RequestGlobals.class);
-        RequestGlobals rg = (RequestGlobals) control.getMock();
-
-        HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
-        HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
-        ServletRequestServicer n = (ServletRequestServicer) newMock(ServletRequestServicer.class);
-
-        rg.store(r, p);
-
-        n.service(r, p);
-
-        replayControls();
-
-        RequestGlobalsInitializer rgi = new RequestGlobalsInitializer();
-
-        rgi.setRequestGlobals(rg);
-
-        rgi.service(r, p, n);
-
-        verifyControls();
-    }
-
     public void testClasspathResourceFactory()
     {
         ClassResolver cr = new DefaultClassResolver();

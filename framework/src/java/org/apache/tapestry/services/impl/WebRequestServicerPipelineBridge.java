@@ -46,10 +46,10 @@ public class WebRequestServicerPipelineBridge implements ServletRequestServicer
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException
     {
+        _requestGlobals.store(request, response);
+
         WebRequest webRequest = new ServletWebRequest(request, response);
         WebResponse webResponse = new ServletWebResponse(response);
-
-        _requestGlobals.store(webRequest, webResponse);
 
         try
         {
