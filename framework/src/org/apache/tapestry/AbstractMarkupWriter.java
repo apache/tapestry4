@@ -23,6 +23,8 @@ import java.io.Writer;
 import java.util.Stack;
 
 import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.util.text.ICharacterTranslator;
+import org.apache.tapestry.util.text.ICharacterTranslatorSource;
 
 /**
  * Abstract base class implementing the {@link IMarkupWriter} interface.
@@ -117,9 +119,6 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     private char[] _buffer;
 
-    private String[] _entities;
-    private boolean[] _safe;
-
     /**
      *  Implemented in concrete subclasses to provide an indication of which
      *  characters are 'safe' to insert directly into the response.  The index
@@ -128,6 +127,8 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *
      **/
 
+    private ICharacterTranslator _translator;
+    
     private String _contentType;
 
     /**
@@ -163,21 +164,21 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      **/
 
     protected AbstractMarkupWriter(
-        boolean safe[],
-        String[] entities,
+        ICharacterTranslatorSource translatorSource,
         String contentType,
         String encoding,
         OutputStream stream)
     {
-        if (entities == null || safe == null || contentType == null || encoding == null)
+        if (translatorSource == null || contentType == null || encoding == null)
             throw new IllegalArgumentException(
                 Tapestry.getMessage("AbstractMarkupWriter.missing-constructor-parameters"));
 
-        _entities = entities;
-        _safe = safe;
-
-        _contentType = generateFullContentType(contentType, encoding);
-
+        ContentType contentTypeObject = generateFullContentType(contentType, encoding);
+        _contentType = contentTypeObject.unparse();
+        
+        encoding = contentTypeObject.getParameter("charset");
+        _translator = translatorSource.getTranslator(encoding);
+        
         setOutputStream(stream, encoding);
     }
 
@@ -198,12 +199,11 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      **/
 
     protected AbstractMarkupWriter(
-        boolean safe[],
-        String[] entities,
+    	ICharacterTranslatorSource translatorSource,
         String contentType,
         OutputStream stream)
     {
-        this(safe, entities, contentType);
+        this(translatorSource, contentType);
 
         ContentType contentTypeObject = new ContentType(contentType);
         String encoding = contentTypeObject.getParameter("charset");
@@ -223,12 +223,11 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      **/
 
     protected AbstractMarkupWriter(
-        boolean safe[],
-        String[] entities,
+    	ICharacterTranslatorSource translatorSource,
         String contentType,
         PrintWriter writer)
     {
-        this(safe, entities, contentType);
+        this(translatorSource, contentType);
 
         // When the markup writer is closed, the underlying writer
         // is NOT closed.
@@ -243,15 +242,17 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      * 
      **/
 
-    protected AbstractMarkupWriter(boolean safe[], String[] entities, String contentType)
+    protected AbstractMarkupWriter(ICharacterTranslatorSource translatorSource, String contentType)
     {
-        if (entities == null || safe == null || contentType == null)
+        if (translatorSource == null || contentType == null)
             throw new IllegalArgumentException(
                 Tapestry.getMessage("AbstractMarkupWriter.missing-constructor-parameters"));
 
-        _entities = entities;
-        _safe = safe;
-        _contentType = generateFullContentType(contentType, DEFAULT_ENCODING);
+        ContentType contentTypeObject = generateFullContentType(contentType, DEFAULT_ENCODING);
+        _contentType = contentTypeObject.unparse();
+        
+        String encoding = contentTypeObject.getParameter("charset");
+        _translator = translatorSource.getTranslator(encoding);
     }
 
     /**
@@ -261,12 +262,12 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      * @param encoding The value of the charset parameter of the content type if it is not already present.
      * @return The content type containing a charset parameter, e.g. text/html;charset=utf-8 
      */
-    private String generateFullContentType(String contentType, String encoding)
+    private ContentType generateFullContentType(String contentType, String encoding)
     {
         ContentType contentTypeObject = new ContentType(contentType);
         if (contentTypeObject.getParameter("charset") == null)
             contentTypeObject.setParameter("charset", encoding);
-        return contentTypeObject.unparse();
+        return contentTypeObject;
     }
 
     protected void setWriter(PrintWriter writer)
@@ -649,27 +650,12 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
         if (_openTag)
             closeTag();
 
-        if (value < _safe.length && _safe[value])
-        {
-            _writer.print(value);
-            return;
-        }
-
-        String entity = null;
-
-        if (value < _entities.length)
-            entity = _entities[value];
-
-        if (entity != null)
-        {
-            _writer.print(entity);
-            return;
-        }
-
-        // Not a well-known entity.  Print it's numeric equivalent.  Note:  this omits
-        // the leading '0', but most browsers (IE 5.0) don't seem to mind.  Is this a bug?
-
-        _writer.print("&#" + (int) value + ";");
+        String translation = _translator.translate(value);
+        
+        if (translation == null)
+        	_writer.print(value);
+        else
+        	_writer.print(translation);
     }
 
     /**
@@ -799,15 +785,16 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
         {
             char ch = data[offset + i];
 
-            // Ignore safe characters.  In an attribute, quotes
-            // are not ok and are escaped.
+            // Ignore safe characters.  Outside an attribute, quotes
+            // are ok and are not escaped.
 
-            boolean isSafe = (ch < _safe.length && _safe[ch]);
-
-            if (isAttribute && ch == '"')
-                isSafe = false;
-
-            if (isSafe)
+            String translation;
+            if (ch == '"' && !isAttribute)
+            	translation = null;
+            else
+            	translation = _translator.translate(ch);
+            
+            if (translation == null)
             {
                 safelength++;
                 continue;
@@ -818,19 +805,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
             if (safelength > 0)
                 _writer.write(data, start, safelength);
 
-            String entity = null;
-
-            // Look for a known entity.
-
-            if (ch < _entities.length)
-                entity = _entities[ch];
-
-            // Failing that, emit a numeric entity.
-
-            if (entity == null)
-                entity = "&#" + (int) ch + ";";
-
-            _writer.print(entity);
+            _writer.print(translation);
 
             start = offset + i + 1;
             safelength = 0;

@@ -22,7 +22,7 @@ package org.apache.tapestry.util.text;
  * @version $Id$
  * @since 3.1
  */
-class CompoundMatcher implements ICharacterMatcher
+public class CompoundMatcher implements ICharacterMatcher
 {
     private ICharacterMatcher[] _matchers;
     
