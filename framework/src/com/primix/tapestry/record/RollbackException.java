@@ -42,17 +42,15 @@ public class RollbackException extends ApplicationRuntimeException
 	private String componentId;
 	private String propertyName;
 	private Object newValue;
-	private Throwable rootCause;
 	
 	public RollbackException(IComponent component, String propertyName, Object newValue, Throwable rootCause)
 	{
 		super("Unable to set property " + propertyName + " of component " + component.getExtendedId() + " to " +
-		newValue + ".");
+		newValue + ".", rootCause);
 		
 		this.componentId = component.getExtendedId();
 		this.propertyName = propertyName;
 		this.newValue = newValue;
-		this.rootCause = rootCause;
 	}
 	
 	public String getComponentId()
@@ -70,10 +68,6 @@ public class RollbackException extends ApplicationRuntimeException
 		return newValue;
 	}
 	
-	public Throwable rootCause()
-	{
-		return rootCause;
-	}
 }
 
 

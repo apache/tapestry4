@@ -420,6 +420,12 @@ public class Palette
 		if (body == null)
 			throw new RequestCycleException("Palette component must be wrapped by a Body.", this);
 		
+		
+		setImage(symbols, body, cycle, "selectImage", "Select");
+		setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis");
+		setImage(symbols, body, cycle, "deselectImage", "Deselect");
+		setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis");
+		
 		if (cycle.getAttribute(SKIP_KEY) == null)
 			symbols.put("includeBaseFunctions", Boolean.TRUE);
 		
@@ -429,8 +435,14 @@ public class Palette
 		if (sort == SortMode.VALUE)
 			symbols.put("sortValue", Boolean.TRUE);
 		
-		if (sort == SortMode.USER)	
+		if (sort == SortMode.USER)
+		{
 			symbols.put("sortUser", Boolean.TRUE);
+			setImage(symbols, body, cycle, "upImage", "Up");
+			setImage(symbols, body, cycle, "upDisabledImage", "Up-dis");
+			setImage(symbols, body, cycle, "downImage", "Down");
+			setImage(symbols, body, cycle, "downDisabledImage", "Down-dis");
+		}
 		
 		try
 		{
@@ -449,6 +461,16 @@ public class Palette
 		// emitted again if there's another Palette on the page somewhere.
 		
 		cycle.setAttribute(SKIP_KEY, Boolean.TRUE);
+	}
+	
+	private void setImage(Map symbols, Body body, IRequestCycle cycle, 
+			String symbolName, String assetName)
+	{
+		IAsset asset = getAsset(assetName);
+		String URL = asset.buildURL(cycle);
+		String reference = body.getPreloadedImageReference(URL);
+		
+		symbols.put(symbolName, reference);
 	}
 	
 	public Map getSymbols()

@@ -62,6 +62,10 @@ public class Body extends AbstractComponent
     // Set to true when the script element is first opened.
     private boolean openScript;
 	
+	// Contains text lines related to image initializations
+	
+	private StringBuffer imageInitializations;
+	
 	/**
 	 *  Map of URLs to instances of PreloadedImage.
 	 *
@@ -118,8 +122,6 @@ public class Body extends AbstractComponent
 		if (imageMap == null)
 			imageMap = new HashMap();
 			
-		if (imageMap.isEmpty())
-			addOtherScript("var tapestry_preload = new Array();\n");
 		
 		PreloadedImage preload = (PreloadedImage)imageMap.get(URL);
 		
@@ -128,9 +130,18 @@ public class Body extends AbstractComponent
 			int count = imageMap.size();
 			String varName = "tapestry_preload[" + count + "]";
 			String reference = varName + ".src";
+
+			if (imageInitializations == null)
+				imageInitializations = new StringBuffer();
 			
-			addOtherScript(varName + " = new Image();\n");
-			addOtherScript(reference + " = \"" + URL + "\";\n");
+			imageInitializations.append("  ");
+			imageInitializations.append(varName);
+			imageInitializations.append(" = new Image();\n");
+			imageInitializations.append("  ");
+			imageInitializations.append(reference);
+			imageInitializations.append(" = \"");
+			imageInitializations.append(URL);
+			imageInitializations.append("\";\n");
 			
 			preload = new PreloadedImage(URL, reference);
 			
@@ -238,6 +249,15 @@ public class Body extends AbstractComponent
 			nested = writer.getNestedWriter();
 			
 			renderWrapped(nested, cycle);
+
+			if (imageInitializations != null)
+			{
+				addOtherScript("var tapestry_preload = new Array();\n");
+				addOtherScript("if (document.images)\n");
+				addOtherScript("{\n");
+				addOtherScript(imageInitializations.toString());
+				addOtherScript("}\n");
+			}
 			
 			// Write the script (i.e., just before the <body> tag).
 			// If an onLoad event handler was needed, its name is
@@ -267,6 +287,7 @@ public class Body extends AbstractComponent
 				imageMap.clear();
 			
 			otherInitialization = null;
+			imageInitializations = null;
 			outerWriter = null;
 			openScript = false;
 		}

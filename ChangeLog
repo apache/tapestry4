@@ -1,3 +1,20 @@
+* Jun 25 2001 hship
+
+framework:
+- Change the way the Body component preloads images to work properly with
+  text-only browsers.
+- fix conflict between ApplicationRuntimeException and 
+- RollbackException concerning the rootCause property (duplicated 
+  in RollbackException, which confused ExceptionAnalyzer).
+- Add package.html files to all directories.
+- Other Javadoc related changes.
+
+contrib:
+- Improve the Palette component to use images for the buttons
+
+[ #435331 ] add index binding to Foreach
+[ #436219 ] Back out #431137 
+
 * Jun 21 2001 hship
 
 Improve toString() methods of key classes.

@@ -33,7 +33,7 @@ import java.io.*;
 
 /**
  *  The result of executing a script, the session is used during the parsing
- *  process as well.  Following {@link ParsedScript#execute(Map)}, the session
+ *  process as well.  Following {@link IScript#execute(Map)}, the session
  *  provides access to output symbols as well as the body and initialization
  *  blocks created by the script tokens.
  *
