@@ -55,10 +55,13 @@
 
 package org.apache.tapestry.contrib.popup;
 
-import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 
+import org.apache.commons.codec.net.URLCodec;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.Tapestry;
 
 /**
  * This component provides a popup link to launch a new window using a given
@@ -74,6 +77,7 @@ public class PopupLink extends BaseComponent
 {
 	/** The default popup window name 'popuplink_window'. */
 	public static final String DEFAULT_WINDOW_NAME = "popuplink_window";
+    private static final URLCodec _urlCodec = new URLCodec();
 
 	//	Instance variables
 	private IBinding _hrefBinding;
@@ -116,7 +120,17 @@ public class PopupLink extends BaseComponent
 
 		if (aHrefBinding != null)
 		{
-			return URLEncoder.encode(aHrefBinding.getString());
+            String encoding = getPage().getEngine().getOutputEncoding();
+            try
+            {
+                return _urlCodec.encode(aHrefBinding.getString(), encoding);
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                throw new ApplicationRuntimeException(
+                    Tapestry.format("illegal-encoding", encoding),
+                    e);
+            }
 		}
 
 		return null;
