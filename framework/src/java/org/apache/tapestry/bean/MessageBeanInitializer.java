@@ -34,7 +34,7 @@ public class MessageBeanInitializer extends AbstractBeanInitializer
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
         IComponent component = provider.getComponent();
-        String value = component.getMessage(_key);
+        String value = component.getMessages().getMessage(_key);
         
         setBeanProperty(bean, value);
     }

@@ -15,30 +15,30 @@
    limitations under the License.
 -->
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <page-specification class="org.apache.tapestry.workbench.palette.Palette">
   
   <component id="inputColorSort" type="PropertySelection">
-  	<binding name="value" expression="sort"/>
-  	<binding name="model" expression="sortModel"/>
+  	<binding name="value" value="ognl:sort"/>
+  	<binding name="model" value="ognl:sortModel"/>
   </component>
   
   <component id="inputColor" type="contrib:Palette">
-    <binding name="model" expression="colorModel"/>
-    <binding name="selected" expression="selectedColors"/>
-    <binding name="sort" expression="sort"/>
-    <static-binding name="tableClass" value="palette"/>
+    <binding name="model" value="ognl:colorModel"/>
+    <binding name="selected" value="ognl:selectedColors"/>
+    <binding name="sort" value="ognl:sort"/>
+    <binding name="tableClass" value="palette"/>
   </component>
   
   <component id="update" type="ImageSubmit">
-    <binding name="image" expression="assets.update"/>
+    <binding name="image" value="asset:update"/>
   </component>
   
   <component id="continue" type="ImageSubmit">
-  	<binding name="image" expression="assets.continue"/>
-  	<binding name="listener" expression="listeners.advance"/>
+  	<binding name="image" value="asset:continue"/>
+  	<binding name="listener" value="listener:advance"/>
   </component>
  
    <context-asset name="continue" path="images/Continue.gif"/>

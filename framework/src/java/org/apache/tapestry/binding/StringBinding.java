@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.hivemind.Defense;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.TypeConverter;
@@ -31,15 +32,18 @@ import org.apache.tapestry.coerce.ValueConverter;
 
 public class StringBinding extends AbstractBinding
 {
-    private IComponent _component;
+    private final IComponent _component;
 
-    private String _key;
+    private final String _key;
 
     public StringBinding(IComponent component, String parameterName, String key,
             ValueConverter valueConverter, Location location)
     {
         super(parameterName, valueConverter, location);
 
+        Defense.notNull(component, "component");
+        Defense.notNull(key, "key");
+        
         _component = component;
         _key = key;
     }

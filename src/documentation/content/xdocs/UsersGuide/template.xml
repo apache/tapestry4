@@ -314,36 +314,56 @@ Several additional prefixes are available:
     <th>Prefix</th>
     <th>Description</th>
     <th>Example</th>
+    <th>OGNL Equivalent</th>
   </tr>
   
   <tr>
     <td>asset</td>
     <td>References an asset of the component.</td>
     <td>asset:stylesheet </td>
+    <td>ogn:assets.stylesheet</td>
   </tr>
   
   <tr>
     <td>bean</td>
     <td>References a named bean (defined by a &spec.bean; element).</td>
     <td>bean:validationDelegate</td>
+    <td>ognl:beans.validationDelegate</td>
+  </tr>
+  
+  <tr>
+    <td>component</td>
+    <td>References a nested component with the provided component id.</td>
+    <td>component:form</td>
+    <td>ognl:components.form</td>
+  </tr>
+  
+  <tr>
+    <td>listener</td>
+    <td>The name of a listener method.</td>
+    <td>listener:formSubmit</td>
+    <td>ognl:listeners.formSubmit</td>
   </tr>
   
   <tr>
     <td>literal</td>
     <td>Used to "escape" a binding prefix, marking the suffix as a literal value.</td>
     <td>literal:ognl:not-an-expression</td>
+    <td></td>
   </tr>
   
   <tr>
     <td>message</td>
     <td>References a localized message from the component's message catalog.</td>
     <td>message:page-title</td>
+    <td>ognl:messages.getMessage("page-title")</td>
   </tr>
   
   <tr>
     <td>ognl</td>
     <td>An OGNL expression to be evaluated.</td>
     <td>ognl:engine.visit.admin</td>    
+    <td></td>
   </tr>
   
 </table>

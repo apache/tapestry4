@@ -35,15 +35,15 @@ public abstract class AbstractBinding implements IBinding
 {
     /** @since 3.1 */
 
-    private String _parameterName;
+    private final String _parameterName;
 
     /** @since 3.1 */
 
-    private ValueConverter _valueConverter;
+    private final ValueConverter _valueConverter;
 
     /** @since 3.0 */
 
-    private Location _location;
+    private final Location _location;
 
     /** @since 3.0 */
 

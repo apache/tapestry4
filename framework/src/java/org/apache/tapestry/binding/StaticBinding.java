@@ -28,7 +28,7 @@ import org.apache.tapestry.coerce.ValueConverter;
 
 public class StaticBinding extends AbstractBinding
 {
-    private String _value;
+    private final String _value;
 
     public StaticBinding(String parameterName, String value, ValueConverter valueConverter,
             Location location)

@@ -1,14 +1,14 @@
 <html jwcid="@Shell" title="Home">
 <body jwcid="@Body">
 
-<form jwcid="@Form" listener="ognl:listeners.formSubmit">
+<form jwcid="@Form" listener="listener:formSubmit">
 Hidden: <input jwcid="hidden@Hidden" value="ognl:value" encode="ognl:encode"/>
 <br>
 HiddenWithID: <input jwcid="hiddenWithID@Hidden" value="ognl:valueWithID" id="ognl:hiddenID" encode="ognl:encode"/>
 <br>
 HiddenWithEncoding: <input jwcid="hiddenWithEncoding@Hidden" value="ognl:valueWithEncoding"/>
 <br>
-HiddenBoolean: <input jwcid="hiddenBoolean@Hidden" value="ognl:booleanValue" listener="ognl:listeners.hiddenListener"/>
+HiddenBoolean: <input jwcid="hiddenBoolean@Hidden" value="ognl:booleanValue" listener="listener:hiddenListener"/>
 
 </form>
 

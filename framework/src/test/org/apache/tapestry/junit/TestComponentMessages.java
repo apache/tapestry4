@@ -19,10 +19,27 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.IEngine;
+import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.engine.Namespace;
+import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.junit.mock.c21.NullPropertySource;
+import org.apache.tapestry.services.ComponentMessagesSource;
+import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
+import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.LibrarySpecification;
+import org.easymock.MockControl;
 
 /**
  * Tests the class {@link org.apache.tapestry.engine.DefaultStringsSource}.
+ * <p>
+ * TODO: Add tests realted to messages encoding (which can be specified as meta-data on the
+ * component specification or, ultimately, in the namespace (library specification).
  * 
  * @author Howard Lewis Ship
  * @since 2.0.4
@@ -32,12 +49,62 @@ public class TestComponentMessages extends TapestryTestCase
 {
     private void check(IPage page, String key, String expected)
     {
-        String actual = page.getMessage(key);
+        replayControls();
+
+        String actual = page.getMessages().getMessage(key);
 
         assertEquals("Key " + key, expected, actual);
+
+        verifyControls();
     }
 
-    private static final String MOCK1 = "/org/apache/tapestry/junit/MockPage1.jwc";
+    private static final String MOCK1 = "/org/apache/tapestry/junit/MockPage1.page";
+
+    private IEngine newEngine(ComponentMessagesSource source)
+    {
+        MockControl control = newControl(IEngine.class);
+        IEngine engine = (IEngine) control.getMock();
+
+        engine.getComponentMessagesSource();
+        control.setReturnValue(source);
+
+        return engine;
+    }
+
+    private IComponentSpecification newSpec(String path)
+    {
+        Resource resource = new ClasspathResource(new DefaultClassResolver(), path);
+
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.setSpecificationLocation(resource);
+
+        return spec;
+    }
+
+    private IPage createPage(String location, Locale locale)
+    {
+        BasePage page = new BasePage();
+
+        ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
+
+        source.setApplicationPropertySource(new NullPropertySource());
+
+        IEngine engine = newEngine(source);
+
+        page.attach(engine);
+        page.setPage(page);
+        page.setLocale(locale);
+
+        IComponentSpecification spec = newSpec(location);
+
+        page.setSpecification(spec);
+
+        INamespace namespace = new Namespace(null, null, new LibrarySpecification(), null);
+
+        page.setNamespace(namespace);
+
+        return page;
+    }
 
     public void testOnlyInBase()
     {
@@ -86,7 +153,7 @@ public class TestComponentMessages extends TapestryTestCase
         check(page, "overwritten-in-variant", "VARIANT1_fr_CD_Foo");
     }
 
-    private static final String MOCK2 = "/org/apache/tapestry/junit/MockPage2.jwc";
+    private static final String MOCK2 = "/org/apache/tapestry/junit/MockPage2.page";
 
     /**
      * Tests that the code that locates properties files can deal with the base path (i.e.,
@@ -120,8 +187,12 @@ public class TestComponentMessages extends TapestryTestCase
 
         Date d = c.getTime();
 
+        replayControls();
+
         assertEquals("A formatted date: 12/24/66", page.getMessages()
                 .format("using-date-format", d));
+
+        verifyControls();
     }
 
     public void testDateFormatLocalization()
@@ -134,8 +205,11 @@ public class TestComponentMessages extends TapestryTestCase
 
         // French formatting puts the day before the month.
 
+        replayControls();
+
         assertEquals("A formatted date: 24/12/66", page.getMessages()
                 .format("using-date-format", d));
 
+        verifyControls();
     }
 }

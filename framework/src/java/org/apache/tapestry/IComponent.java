@@ -20,6 +20,7 @@ import java.util.Map;
 import org.apache.hivemind.LocationHolder;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.engine.IPageLoader;
+import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -108,7 +109,7 @@ public interface IComponent extends IRender, LocationHolder
      * container.
      * 
      * @exception ApplicationRuntimeException
-     *                runtime exception thrown if the named component does not exist.
+     *                     runtime exception thrown if the named component does not exist.
      */
 
     public IComponent getComponent(String id);
@@ -225,7 +226,7 @@ public interface IComponent extends IRender, LocationHolder
      * seperated.
      * 
      * @return A Map of components keyed on component id. May return an empty map, but won't return
-     *         null.
+     *            null.
      */
 
     public Map getComponents();
@@ -246,33 +247,6 @@ public interface IComponent extends IRender, LocationHolder
 
     public void finishLoad(IRequestCycle cycle, IPageLoader loader,
             IComponentSpecification specification);
-
-    /**
-     * Returns a localized string message. Each component has an optional set of localized message
-     * strings that are read from properties files.
-     * 
-     * @param key
-     *            the key used to locate the message
-     * @return the localized message for the key, or a placeholder if no message is defined for the
-     *         key.
-     * @since 2.0.4
-     * @deprecated To be removed in 3.1, use {@link #getMessage(String)}.
-     */
-
-    public String getString(String key);
-
-    /**
-     * Returns a localized string message. Each component has an optional set of localized message
-     * strings that are read from properties files.
-     * 
-     * @param key
-     *            the key used to locate the message
-     * @return the localized message for the key, or a placeholder if no message is defined for the
-     *         key.
-     * @since 3.0
-     */
-
-    public String getMessage(String key);
 
     /**
      * Returns component strings for the component.
@@ -302,9 +276,9 @@ public interface IComponent extends IRender, LocationHolder
      * Sets a property of a component.
      * 
      * @param propertyName
-     *            the property name
+     *                 the property name
      * @param value
-     *            the provided value
+     *                 the provided value
      */
     public void setProperty(String propertyName, Object value);
 
@@ -312,7 +286,7 @@ public interface IComponent extends IRender, LocationHolder
      * Gets a property of a component.
      * 
      * @param propertyName
-     *            the property name
+     *                 the property name
      * @return Object the value of property
      */
     public Object getProperty(String propertyName);
@@ -335,12 +309,22 @@ public interface IComponent extends IRender, LocationHolder
      */
 
     public void enterActiveState();
-    
+
     /**
      * Returns a {@link IBeanProvider}&nbsp;from which managed beans can be obtained.
      * 
      * @since 3.1
      */
-    
+
     public IBeanProvider getBeans();
+
+    /**
+     * Returns a {@link ListenerMap}for the component. The map contains a number of synthetic
+     * read-only properties that implement the {@link IActionListener}&nbsp;interface, but in fact,
+     * cause public instance methods to be invoked.
+     * 
+     * @since 3.1
+     */
+
+    public ListenerMap getListeners();
 }

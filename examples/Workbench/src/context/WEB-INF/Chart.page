@@ -36,7 +36,7 @@
   </component>
 
   <component id="form" type="Form">
-    <binding name="listener" value="ognl:listeners.submit"/>
+    <binding name="listener" value="listener:submit"/>
     <binding name="delegate" value="bean:delegate"/>
   </component>
 
@@ -49,13 +49,13 @@
   <component id="inputName" type="ValidField">
   	<binding name="displayName" value="Name"/>
   	<binding name="value" value="ognl:plotValue.name"/>
-  	<binding name="validator" value="ognl:beans.required"/>
+  	<binding name="validator" value="bean:required"/>
   </component>
 
   <component id="inputValue" type="ValidField">	
   	<binding name="displayName" value="Value"/>
   	<binding name="value" value="ognl:plotValue.value"/>
-  	<binding name="validator" value="ognl:beans.intValidator"/>
+  	<binding name="validator" value="bean:intValidator"/>
   	<binding name="type" value="int"/>
   </component>
   
@@ -64,12 +64,12 @@
   </component>
   
   <component id="add" type="Submit">
-  	<binding name="listener" value="ognl:listeners.add"/>
+  	<binding name="listener" value="listener:add"/>
   	<binding name="label" value="Update and Add"/>
   </component>
   
   <component id="delete" type="Submit">	
-  	<binding name="listener" value="ognl:listeners.delete"/>
+  	<binding name="listener" value="listener:delete"/>
   	<binding name="label" value="Delete Selected"/>
   </component>
 

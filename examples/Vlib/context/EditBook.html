@@ -10,7 +10,7 @@
 <span jwcid="@ShowError"/>
 <span jwcid="@ShowValidationError" delegate="ognl:validationDelegate"/>
 
-<form jwcid="@Form" listener="ognl:listeners.formSubmit" delegate="ognl:validationDelegate">
+<form jwcid="@Form" listener="listener:formSubmit" delegate="ognl:validationDelegate">
 <span jwcid="@Hidden" value="ognl:bookId"/>
   <table class="form">
     <tr>

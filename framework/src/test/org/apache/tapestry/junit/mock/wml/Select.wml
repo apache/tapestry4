@@ -15,7 +15,7 @@
             </select>
         </p>
         <do type="accept">
-            <go jwcid="go@wml:Go" listener="ognl:listeners.submit" direct="ognl:false" href="">
+            <go jwcid="go@wml:Go" listener="listener:submit" direct="ognl:false" href="">
                 <postfield jwcid="sex@wml:Postfield" name="sex" value="ognl:sex"/>
                 <postfield jwcid="income@wml:Postfield" name="income" value="ognl:income"/>
                 <postfield jwcid="hobbies@wml:Postfield" name="hobbies" value="ognl:hobbies"/>

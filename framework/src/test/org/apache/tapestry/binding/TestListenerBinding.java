@@ -14,43 +14,36 @@
 
 package org.apache.tapestry.binding;
 
-import org.apache.hivemind.Defense;
-import org.apache.hivemind.Location;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * Binding whose value is a named bean provided by a component.
+ * Tests for {@link org.apache.tapestry.binding.ListenerBinding}, the binding type used for
+ * supplying a listener method as a BSF script.
+ * <p>
+ * TODO: Do more, real testing of the execution of the script. Currently, that is done in one of
+ * the integration tests.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class BeanBinding extends AbstractBinding
+public class TestListenerBinding extends BindingTestCase
 {
-    private final IComponent _component;
+    /** @since 3.0 * */
 
-    private final String _beanName;
-
-    public BeanBinding(IComponent component, String beanName, String parameterName,
-            ValueConverter valueConverter, Location location)
+    public void testListenerBindingObject()
     {
-        super(parameterName, valueConverter, location);
+        ValueConverter vc = newValueConverter();
 
-        Defense.notNull(component, "component");
-        Defense.notNull(beanName, "beanName");
+        IComponent c = newComponent();
 
-        _component = component;
-        _beanName = beanName;
+        replayControls();
+
+        IBinding b = new ListenerBinding(c, "foo", "", "", vc, null);
+
+        assertSame(b, b.getObject());
+
+        verifyControls();
     }
-
-    public Object getComponent()
-    {
-        return _component;
-    }
-
-    public Object getObject()
-    {
-        return _component.getBeans().getBean(_beanName);
-    }
-
 }

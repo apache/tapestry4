@@ -12,45 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.binding;
+package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.Defense;
 import org.apache.hivemind.Location;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.binding.ListenerMethodBinding;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.services.BindingFactory;
 
 /**
- * Binding whose value is a named bean provided by a component.
+ * Factory of {@link org.apache.tapestry.binding.ListenerMethodBinding}, mapped to the "listener:"
+ * prefix.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class BeanBinding extends AbstractBinding
+public class ListenerBindingFactory implements BindingFactory
 {
-    private final IComponent _component;
+    private ValueConverter _valueConverter;
 
-    private final String _beanName;
-
-    public BeanBinding(IComponent component, String beanName, String parameterName,
-            ValueConverter valueConverter, Location location)
+    public IBinding createBinding(IComponent root, String name, String path, Location location)
     {
-        super(parameterName, valueConverter, location);
-
-        Defense.notNull(component, "component");
-        Defense.notNull(beanName, "beanName");
-
-        _component = component;
-        _beanName = beanName;
+        return new ListenerMethodBinding(root, path, name, _valueConverter, location);
     }
 
-    public Object getComponent()
+    public void setValueConverter(ValueConverter valueConverter)
     {
-        return _component;
+        _valueConverter = valueConverter;
     }
-
-    public Object getObject()
-    {
-        return _component.getBeans().getBean(_beanName);
-    }
-
 }

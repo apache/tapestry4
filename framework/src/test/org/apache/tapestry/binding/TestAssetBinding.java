@@ -15,7 +15,6 @@
 package org.apache.tapestry.binding;
 
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
@@ -27,12 +26,8 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestAssetBinding extends HiveMindTestCase
+public class TestAssetBinding extends BindingTestCase
 {
-    private ValueConverter newValueConverter()
-    {
-        return (ValueConverter) newMock(ValueConverter.class);
-    }
 
     public void testGetObject()
     {
@@ -81,7 +76,6 @@ public class TestAssetBinding extends HiveMindTestCase
 
         IBinding b = new AssetBinding(component, "fred", "parameterName", vc, l);
 
-        
         try
         {
             b.getObject();

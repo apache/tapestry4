@@ -2,11 +2,11 @@
 <body jwcid="@Body">
 	
 
-<a jwcid="first@DirectLink" listener="ognl:listeners.link">first (okay)</a>
+<a jwcid="first@DirectLink" listener="listener:link">first (okay)</a>
 
 <br/>
 
-<a jwcid="link@DirectLink" listener="ognl:listeners.link">
+<a jwcid="link@DirectLink" listener="listener:link">
 <span jwcid="@Delegator" delegate="ognl:linkContentRender"/>	
 </a>
 

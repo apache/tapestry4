@@ -19,6 +19,7 @@ import org.apache.bsf.BSFManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Defense;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
@@ -44,17 +45,21 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
     private static final String BSF_POOL_KEY = "org.apache.tapestry.BSFManager";
 
-    private String _language;
+    private final String _language;
 
-    private String _script;
+    private final String _script;
 
-    private IComponent _component;
+    private final IComponent _component;
 
     public ListenerBinding(IComponent component, String parameterName, String language,
             String script, ValueConverter valueConverter, Location location)
     {
         super(parameterName, valueConverter, location);
 
+        Defense.notNull(component, "component");
+        Defense.notNull(language, "language");
+        Defense.notNull(script, "script");
+        
         _component = component;
         _language = language;
         _script = script;

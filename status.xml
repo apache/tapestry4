@@ -275,6 +275,13 @@ NextGen) be released as version number 3.0.
     Significant rework of how Tapestry URLs are formatted.
     
   </action>
+  
+  <action type="update" dev="HLS">
+    
+    Removed support for the Tapestry JSP taglib. This can now be accomplished using
+    service paths recognized by service encoders.
+    
+  </action>
 		
 	</release>
 

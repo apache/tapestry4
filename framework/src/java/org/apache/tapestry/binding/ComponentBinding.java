@@ -20,37 +20,37 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * Binding whose value is a named bean provided by a component.
+ * A binding where the path is the id of a child component.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class BeanBinding extends AbstractBinding
+public class ComponentBinding extends AbstractBinding
 {
     private final IComponent _component;
 
-    private final String _beanName;
+    private final String _componentId;
 
-    public BeanBinding(IComponent component, String beanName, String parameterName,
+    public ComponentBinding(IComponent component, String componentId, String parameterName,
             ValueConverter valueConverter, Location location)
     {
         super(parameterName, valueConverter, location);
 
         Defense.notNull(component, "component");
-        Defense.notNull(beanName, "beanName");
+        Defense.notNull(componentId, "componentId");
 
         _component = component;
-        _beanName = beanName;
+        _componentId = componentId;
+    }
+
+    public Object getObject()
+    {
+        return _component.getComponent(_componentId);
     }
 
     public Object getComponent()
     {
         return _component;
-    }
-
-    public Object getObject()
-    {
-        return _component.getBeans().getBean(_beanName);
     }
 
 }

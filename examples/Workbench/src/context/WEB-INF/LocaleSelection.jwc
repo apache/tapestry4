@@ -15,13 +15,13 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 <component-specification class="org.apache.tapestry.workbench.table.LocaleSelection"
 	allow-body="no" allow-informal-parameters="yes">
 	
     <component id="condTable" type="Conditional">
-		<binding name="condition" expression="localeSet.size > 0"/>
+		<binding name="condition" value="ognl:localeSet.size > 0"/>
 	</component>
 	
     <!-- Define the Table component that will be used. 
@@ -30,10 +30,12 @@
         
         <!-- The source of the data for the table will be the localeSet property
              defined further down in this file -->
-        <binding name="source" expression="localeSet"/>
+        <binding name="source" value="ognl:localeSet"/>
         
         <!-- The columns of the table -->
-        <binding name="columns">
+        <binding name="columns"> 
+            ognl:
+            
             <!-- The first column is the representation of the locale returned when invoking toString() on it.
                  Its name will be displayed according to the translation value
                  of this component with key 'locale' (see LocaleSelection.properties) -->
@@ -54,22 +56,22 @@
 
         <!-- The row object (locale) that is currently being rendered 
              will be stored in the currentLocale property (defined further down) -->
-        <binding name="row" expression="currentLocale"/>
+        <binding name="row" value="ognl:currentLocale"/>
         
         <!-- Each rendered row will be given the CSS class of 'tableRowsClass' -->
-		<static-binding name="rowsClass" value="tableRowsClass"/>
+		<binding name="rowsClass" value="tableRowsClass"/>
         
 	</component>
 	
     <component id="directDelete" type="DirectLink">
-		<binding name="listener" expression="listeners.deleteLocale"/>
-		<binding name="parameters" expression="deleteLocaleContext"/>
+		<binding name="listener" value="listener:deleteLocale"/>
+		<binding name="parameters" value="ognl:deleteLocaleContext"/>
 	</component>
 	
     <component id="verbosity" type="Any">
-		<static-binding name="element" value="td"/>
-		<binding name="style">
-			"background-color:blue; width:"
+		<binding name="element" value="td"/>
+		<binding name="style"> ognl: 
+            "background-color:blue; width:"
 			+ (currentLocaleVerbosity / 2) + "px"
 		</binding>
 	</component>

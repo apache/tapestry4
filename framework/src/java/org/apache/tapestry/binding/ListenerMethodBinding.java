@@ -20,27 +20,25 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * Binding whose value is a named bean provided by a component.
- * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class BeanBinding extends AbstractBinding
+public class ListenerMethodBinding extends AbstractBinding
 {
     private final IComponent _component;
 
-    private final String _beanName;
+    private final String _methodName;
 
-    public BeanBinding(IComponent component, String beanName, String parameterName,
+    public ListenerMethodBinding(IComponent component, String methodName, String parameterName,
             ValueConverter valueConverter, Location location)
     {
         super(parameterName, valueConverter, location);
 
         Defense.notNull(component, "component");
-        Defense.notNull(beanName, "beanName");
+        Defense.notNull(methodName, "methodName");
 
         _component = component;
-        _beanName = beanName;
+        _methodName = methodName;
     }
 
     public Object getComponent()
@@ -50,7 +48,7 @@ public class BeanBinding extends AbstractBinding
 
     public Object getObject()
     {
-        return _component.getBeans().getBean(_beanName);
+        return _component.getListeners().getListener(_methodName);
     }
 
 }

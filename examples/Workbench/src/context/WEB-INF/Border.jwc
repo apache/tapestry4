@@ -29,7 +29,7 @@
 
 
   <component id="pageLink" type="DirectLink">
-    <binding name="listener" value="ognl:listeners.selectPage"/>
+    <binding name="listener" value="listener:selectPage"/>
     <binding name="parameters" value="ognl:pageName"/>
     <binding name="stateful" value="ognl:false"/>
   </component>

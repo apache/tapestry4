@@ -37,7 +37,7 @@ public class ExpressionBinding extends AbstractBinding
      * The root object against which the nested property name is evaluated.
      */
 
-    private IComponent _root;
+    private final IComponent _root;
 
     /**
      * The OGNL expression, as a string.
@@ -46,16 +46,10 @@ public class ExpressionBinding extends AbstractBinding
     private String _expression;
 
     /**
-     * If true, then the binding is invariant, and cachedValue is the ultimate value.
+     * If true, then the binding is invariant.
      */
 
     private boolean _invariant = false;
-
-    /**
-     * Stores the cached value for the binding, if invariant is true.
-     */
-
-    private Object _cachedValue;
 
     /**
      * Parsed OGNL expression.
@@ -64,8 +58,7 @@ public class ExpressionBinding extends AbstractBinding
     private Object _parsedExpression;
 
     /**
-     * Flag set once the binding has initialized. _cachedValue, _invariant and _final value for
-     * _expression are not valid until after initialization.
+     * Flag set to true once the binding has initialized.
      */
 
     private boolean _initialized;
@@ -96,18 +89,8 @@ public class ExpressionBinding extends AbstractBinding
         _cache = cache;
     }
 
-    public String getExpression()
-    {
-        return _expression;
-    }
-
-    public IComponent getRoot()
-    {
-        return _root;
-    }
-
     /**
-     * Gets the value of the property path, with the assistance of a OGNL.
+     * Gets the value of the property path, with the assistance of the {@link ExpressionEvaluator}.
      * 
      * @throws BindingException
      *             if an exception is thrown accessing the property.
@@ -117,13 +100,10 @@ public class ExpressionBinding extends AbstractBinding
     {
         initialize();
 
-        if (_invariant)
-            return _cachedValue;
-
-        return resolveProperty();
+        return resolveExpression();
     }
 
-    private Object resolveProperty()
+    private Object resolveExpression()
     {
         try
         {
@@ -161,25 +141,8 @@ public class ExpressionBinding extends AbstractBinding
         try
         {
             _parsedExpression = _cache.getCompiledExpression(_expression);
-        }
-        catch (Exception ex)
-        {
-            throw new BindingException(ex.getMessage(), this, ex);
-        }
 
-        checkForConstant();
-    }
-
-    private void checkForConstant()
-    {
-        try
-        {
-            if (_evaluator.isConstant(_expression))
-            {
-                _invariant = true;
-
-                _cachedValue = resolveProperty();
-            }
+            _invariant = _evaluator.isConstant(_expression);
         }
         catch (Exception ex)
         {
@@ -231,12 +194,6 @@ public class ExpressionBinding extends AbstractBinding
         {
             buffer.append(' ');
             buffer.append(_expression);
-        }
-
-        if (_invariant)
-        {
-            buffer.append(" cachedValue=");
-            buffer.append(_cachedValue);
         }
 
         buffer.append(']');

@@ -25,7 +25,7 @@
             <input jwcid="userInput@wml:Input" name="username" value="ognl:username"/>
         </p>
         <do type="accept" label="Accept">
-            <go jwcid="go@wml:Go" stateful="ognl:false" listener="ognl:listeners.submit">
+            <go jwcid="go@wml:Go" stateful="ognl:false" listener="listener:submit">
                 <postfield jwcid="username@wml:Postfield" name="ognl:components.userInput.name" value="ognl:username"/>
             </go>
         </do>
