@@ -1,3 +1,10 @@
+* Sep 21 2001 hship
+
+Add a test of the RedirectException to the tutorial.
+
+[ #463539 ] Cookie sniffer fails in RequestContext
+[ #463393 ] Shelll's stylesheet localized w/Tomcat
+
 * Sep 13 2001 hship
 
 framework:

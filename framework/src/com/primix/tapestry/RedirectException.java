@@ -52,7 +52,8 @@ public class RedirectException extends RequestCycleException
 	
 	/** 
 	 *  @param message A message describing why the redirection is taking place.
-	 *  @param location The location to redirect to, may be a relative path.
+	 *  @param location The location to redirect to, may be a relative path (relative
+	 *  to the {@link ServletContext}).
 	 *
 	 *  @see javax.servlet.http.HttpServletResponse#sendRedirect(String)
 	 *  @see javax.servlet.http.HttpServletResponse#encodeRedirectURL(String)

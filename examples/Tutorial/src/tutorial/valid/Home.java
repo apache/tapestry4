@@ -121,4 +121,10 @@ public class Home extends BasePage
 	
 		return sortModel;
 	}
+	
+	public void redirect(IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		throw new RedirectException("redirect-target.html");
+	}
 }

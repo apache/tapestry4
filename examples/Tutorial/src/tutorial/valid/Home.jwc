@@ -90,4 +90,8 @@
     <static-binding name="tableClass">palette</static-binding>
   </component>
   
+  <component id="redirect" type="Direct">
+    <binding name="listener" property-path="listeners.redirect"/>
+  </component>
+  
 </specification>
