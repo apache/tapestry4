@@ -1,0 +1,6 @@
+org.apache.oro.io
+org.apache.oro.text
+org.apache.oro.text.awk
+org.apache.oro.text.perl
+org.apache.oro.text.regex
+org.apache.oro.util
