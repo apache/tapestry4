@@ -1,3 +1,7 @@
+* Nov 6 2000 hship
+
+Add a refresh parameter to the Shell component, which allows for easy automatically refreshing pages.
+
 * Nov 1 2000 hship
 
 Improve exception reporting when an Insert component is unable to format its value.
