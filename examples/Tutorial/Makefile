@@ -24,10 +24,8 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
-	$(INSTALL_DIR)/com.sun.net.ssl.jar \
 	$(INSTALL_DIR)/javax.servlet.jar
 
-#	$(INSTALL_DIR)/org.apache.jasper.jar
 
 _EXEC_CLASSPATH := $(strip $(shell $(JBE_CANONICALIZE) -classpath $(EXEC_CLASSPATH)))
 
