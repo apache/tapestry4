@@ -34,7 +34,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IComponent;
@@ -66,7 +67,7 @@ import net.sf.tapestry.util.MultiKey;
 
 public class DefaultTemplateSource implements ITemplateSource, IRenderDescription
 {
-    private static final Category CAT = Category.getInstance(DefaultTemplateSource.class);
+    private static final Logger LOG = LogManager.getLogger(DefaultTemplateSource.class);
 
     // Cache of previously retrieved templates.  Key is a multi-key of 
     // specification resource path and locale (local may be null), value
@@ -210,8 +211,8 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         int start = 2;
         ComponentTemplate result = null;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug(
+        if (LOG.isDebugEnabled())
+            LOG.debug(
                 "Searching for localized version of template for "
                     + specificationResourcePath
                     + " in locale "
@@ -318,8 +319,8 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
                 ex);
         }
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Parsed " + tokens.length + " tokens from template");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Parsed " + tokens.length + " tokens from template");
 
         _tokenCount += tokens.length;
 
@@ -342,8 +343,8 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         if (url == null)
             return null;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Reading template " + resourceName + " from " + url);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Reading template " + resourceName + " from " + url);
 
         try
         {

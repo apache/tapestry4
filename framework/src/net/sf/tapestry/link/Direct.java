@@ -39,7 +39,9 @@ import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.StaleSessionException;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  A component for creating a link using the direct service; used for actions that
@@ -168,7 +170,7 @@ import org.apache.log4j.Category;
 
 public class Direct extends GestureLink implements IDirect
 {
-    private static final Category CAT = Category.getInstance(Direct.class);
+    private static final Logger LOG = LogManager.getLogger(Direct.class);
 
     private IBinding _listenerBinding;
     private Object _parameters;
@@ -333,7 +335,7 @@ public class Direct extends GestureLink implements IDirect
     {
         if (_warning)
         {
-            CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "context", "parameters"));
+            LOG.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "context", "parameters"));
 
             _warning = false;
         }

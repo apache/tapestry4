@@ -27,7 +27,9 @@ package net.sf.tapestry.form;
 
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Implements a component that manages an HTML &lt;input type=text&gt; or
@@ -124,7 +126,7 @@ import org.apache.log4j.Category;
 
 public class TextField extends AbstractTextField
 {
-    private static final Category CAT = Category.getInstance(TextField.class);
+    private static final Logger LOG = LogManager.getLogger(TextField.class);
 
     private IBinding valueBinding;
 
@@ -159,7 +161,7 @@ public class TextField extends AbstractTextField
     {
         if (warning)
         {
-            CAT.warn(
+            LOG.warn(
                 Tapestry.getString(
                     "deprecated-component-param",
                     getExtendedId(),

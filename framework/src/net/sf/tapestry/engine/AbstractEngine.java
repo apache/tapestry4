@@ -46,7 +46,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
@@ -134,7 +135,7 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public abstract class AbstractEngine implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
 {
-    private static final Category CAT = Category.getInstance(AbstractEngine.class);
+    private static final Logger LOG = LogManager.getLogger(AbstractEngine.class);
 
     /**
      *  @since 2.0.4
@@ -375,7 +376,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public void reportException(String reportTitle, Throwable ex)
     {
-        CAT.warn(reportTitle, ex);
+        LOG.warn(reportTitle, ex);
 
         System.err.println("\n\n**********************************************************\n\n");
 
@@ -577,8 +578,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         boolean discard = true;
         IPage page;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Begin render response.");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Begin render response.");
 
         // If the locale has changed during this request cycle then
         // do the work to propogate the locale change into
@@ -651,8 +652,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             }
             catch (IllegalStateException ex)
             {
-                if (CAT.isDebugEnabled())
-                    CAT.debug("Exception thrown invalidating HttpSession.", ex);
+                if (LOG.isDebugEnabled())
+                    LOG.debug("Exception thrown invalidating HttpSession.", ex);
 
                 // Otherwise, ignore it.
             }
@@ -679,8 +680,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         ResponseOutputStream output = null;
         IMonitor monitor;
 
-        if (CAT.isInfoEnabled())
-            CAT.info("Begin service " + context.getRequest().getRequestURI());
+        if (LOG.isInfoEnabled())
+            LOG.info("Begin service " + context.getRequest().getRequestURI());
 
         if (_specification == null)
             _specification = context.getServlet().getApplicationSpecification();
@@ -768,8 +769,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             output.reset();
 
-            if (CAT.isInfoEnabled())
-                CAT.info("Uncaught exception", ex);
+            if (LOG.isInfoEnabled())
+                LOG.info("Uncaught exception", ex);
 
             activateExceptionPage(cycle, output, ex);
         }
@@ -792,12 +793,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
                 }
                 catch (Exception ex)
                 {
-                    CAT.warn("Exception thrown while clearing caches.", ex);
+                    LOG.warn("Exception thrown while clearing caches.", ex);
                 }
             }
 
-            if (CAT.isInfoEnabled())
-                CAT.info("End service");
+            if (LOG.isInfoEnabled())
+                LOG.info("End service");
 
         }
 
@@ -1214,8 +1215,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     protected void cleanupEngine()
     {
-        if (CAT.isInfoEnabled())
-            CAT.info(this +" cleanupEngine()");
+        if (LOG.isInfoEnabled())
+            LOG.info(this +" cleanupEngine()");
 
         ISpecificationSource specSource = getSpecificationSource();
         IPageSource source = getPageSource();
@@ -1323,8 +1324,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             throw new ApplicationRuntimeException(
                 Tapestry.getString("AbstractEngine.visit-class-property-not-specified", VISIT_CLASS_PROPERTY_NAME));
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Creating visit object as instance of " + visitClassName);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Creating visit object as instance of " + visitClassName);
 
         visitClass = _resolver.findClass(visitClassName);
 
@@ -1502,8 +1503,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     {
         String location = ex.getLocation();
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Redirecting to: " + location);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Redirecting to: " + location);
 
         RedirectAnalyzer analyzer = new RedirectAnalyzer(location);
 
@@ -1520,8 +1521,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     private Map createServiceMap()
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Creating service map.");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Creating service map.");
 
         ISpecificationSource source = getSpecificationSource();
 
@@ -1549,8 +1550,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             String name = (String) entry.getKey();
             String className = (String) entry.getValue();
 
-            if (CAT.isDebugEnabled())
-                CAT.debug("Creating service " + name + " as instance of " + className);
+            if (LOG.isDebugEnabled())
+                LOG.debug("Creating service " + name + " as instance of " + className);
 
             Class serviceClass = resolver.findClass(className);
 
@@ -1572,7 +1573,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             {
                 String message = Tapestry.getString("AbstractEngine.unable-to-instantiate-service", name, className);
 
-                CAT.error(message, ex);
+                LOG.error(message, ex);
 
                 throw new ApplicationRuntimeException(message, ex);
             }
@@ -1580,7 +1581,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             {
                 String message = Tapestry.getString("AbstractEngine.unable-to-instantiate-service", name, className);
 
-                CAT.error(message, ex);
+                LOG.error(message, ex);
 
                 throw new ApplicationRuntimeException(message, ex);
             }

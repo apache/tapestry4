@@ -31,7 +31,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IBeanProvider;
@@ -55,7 +56,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
 
 public class BeanProvider implements IBeanProvider, PageDetachListener
 {
-    private static final Category CAT = Category.getInstance(BeanProvider.class);
+    private static final Logger LOG = LogManager.getLogger(BeanProvider.class);
 
     /**
      *  Indicates whether this instance has been registered with its
@@ -93,8 +94,8 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
         IEngine engine = component.getPage().getEngine();
         resolver = engine.getResourceResolver();
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Created BeanProvider for " + component);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Created BeanProvider for " + component);
 
     }
 
@@ -164,8 +165,8 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
         String className = spec.getClassName();
         Object bean = null;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Instantiating instance of " + className);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Instantiating instance of " + className);
 
         // Do it the hard way!
 
@@ -196,8 +197,8 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
         {
             IBeanInitializer iz = (IBeanInitializer) i.next();
 
-            if (CAT.isDebugEnabled())
-                CAT.debug("Initializing property " + iz.getPropertyName());
+            if (LOG.isDebugEnabled())
+                LOG.debug("Initializing property " + iz.getPropertyName());
 
             iz.setBeanProperty(this, bean);
         }
@@ -239,8 +240,8 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
             {
                 Object bean = e.getValue();
 
-                if (CAT.isDebugEnabled())
-                    CAT.debug("Removing REQUEST bean " + name + ": " + bean);
+                if (LOG.isDebugEnabled())
+                    LOG.debug("Removing REQUEST bean " + name + ": " + bean);
 
                 i.remove();
             }

@@ -40,7 +40,9 @@ import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.MultiKey;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Global object (stored in the servlet context) that accesses
@@ -54,8 +56,7 @@ import org.apache.log4j.Category;
 
 public class DefaultStringsSource implements IComponentStringsSource
 {
-    private static final Category CAT =
-        Category.getInstance(DefaultStringsSource.class);
+    private static final Logger LOG = LogManager.getLogger(DefaultStringsSource.class);
 
     private IResourceResolver resolver;
 
@@ -85,11 +86,9 @@ public class DefaultStringsSource implements IComponentStringsSource
     protected synchronized Properties getLocalizedProperties(IComponent component)
     {
         if (component == null)
-            throw new IllegalArgumentException(
-                Tapestry.getString("invalid-null-parameter", "component"));
+            throw new IllegalArgumentException(Tapestry.getString("invalid-null-parameter", "component"));
 
-        String specificationPath =
-            component.getSpecification().getSpecificationResourcePath();
+        String specificationPath = component.getSpecification().getSpecificationResourcePath();
         Locale locale = component.getPage().getLocale();
 
         // Check to see if already in the cache
@@ -114,9 +113,9 @@ public class DefaultStringsSource implements IComponentStringsSource
 
     private Properties assembleProperties(String path, Locale locale)
     {
-        boolean debug = CAT.isDebugEnabled();
+        boolean debug = LOG.isDebugEnabled();
         if (debug)
-            CAT.debug("Assembling properties for " + path + " " + locale);
+            LOG.debug("Assembling properties for " + path + " " + locale);
 
         int dotx = path.indexOf('.');
         String basePath = path.substring(0, dotx);
@@ -194,10 +193,7 @@ public class DefaultStringsSource implements IComponentStringsSource
         return new MultiKey(new Object[] { path, locale.toString()}, false);
     }
 
-    private Properties readProperties(
-        String basePath,
-        Locale locale,
-        Properties parent)
+    private Properties readProperties(String basePath, Locale locale, Properties parent)
     {
         StringBuffer buffer = new StringBuffer(basePath);
 
@@ -232,19 +228,17 @@ public class DefaultStringsSource implements IComponentStringsSource
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
-                    "ComponentPropertiesStore.unable-to-read-input",
-                    propertiesURL),
+                Tapestry.getString("ComponentPropertiesStore.unable-to-read-input", propertiesURL),
                 ex);
         }
 
         return result;
     }
 
-	/**
-	 *  Clears the cache of read properties files.
-	 * 
-	 **/
+    /**
+     *  Clears the cache of read properties files.
+     * 
+     **/
 
     public void reset()
     {

@@ -30,7 +30,8 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.IBinding;
@@ -91,7 +92,7 @@ import net.sf.tapestry.Tapestry;
 
 public class InsertText extends AbstractComponent
 {
-    private static final Category CAT = Category.getInstance(InsertText.class);
+    private static final Logger LOG = LogManager.getLogger(InsertText.class);
 
     private boolean warning = true;
     private String value;
@@ -174,7 +175,7 @@ public class InsertText extends AbstractComponent
     {
         if (warning)
         {
-            CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
+            LOG.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
             warning = false;
         }
 

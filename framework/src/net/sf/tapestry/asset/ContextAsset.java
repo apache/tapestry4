@@ -35,7 +35,8 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
@@ -52,7 +53,7 @@ import net.sf.tapestry.Tapestry;
 
 public class ContextAsset implements IAsset
 {
-    private static final Category CAT = Category.getInstance(ContextAsset.class.getName());
+    private static final Logger LOG = LogManager.getLogger(ContextAsset.class.getName());
 
     private static class Localization
     {
@@ -151,8 +152,8 @@ public class ContextAsset implements IAsset
                 return result;
         }
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Searching for localization of context resource " + assetPath);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Searching for localization of context resource " + assetPath);
 
         dotx = assetPath.lastIndexOf('.');
         suffix = assetPath.substring(dotx);
@@ -214,8 +215,8 @@ public class ContextAsset implements IAsset
                         localizations.put(locale, result);
                     }
 
-                    if (CAT.isDebugEnabled())
-                        CAT.debug("Found " + assetPath);
+                    if (LOG.isDebugEnabled())
+                        LOG.debug("Found " + assetPath);
 
                     return result;
                 }

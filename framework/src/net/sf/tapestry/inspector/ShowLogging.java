@@ -39,7 +39,9 @@ import net.sf.tapestry.valid.IField;
 import net.sf.tapestry.valid.IValidationDelegate;
 import net.sf.tapestry.valid.ValidationDelegate;
 import net.sf.tapestry.valid.ValidatorException;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Component of the {@link Inspector} page used control log4j logging
@@ -52,11 +54,11 @@ import org.apache.log4j.Category;
 
 public class ShowLogging extends BaseComponent implements PageDetachListener
 {
-    private Category category;
-    private String newCategory;
-    private IValidationDelegate validationDelegate;
-    private IPropertySelectionModel rootPriorityModel;
-    private IPropertySelectionModel priorityModel;
+    private Logger _logger;
+    private String _newLogger;
+    private IValidationDelegate _validationDelegate;
+    private IPropertySelectionModel _rootLevelModel;
+    private IPropertySelectionModel _levelModel;
 
     /**
      *  Registers this component as a {@link PageDetachListener}.
@@ -79,46 +81,46 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 
     public void pageDetached(PageEvent event)
     {
-        category = null;
-        newCategory = null;
+        _logger = null;
+        _newLogger = null;
     }
 
-    public String getNewCategory()
+    public String getNewLogger()
     {
-        return newCategory;
+        return _newLogger;
     }
 
-    public void setNewCategory(String value)
+    public void setNewLogger(String value)
     {
-        newCategory = value;
+        _newLogger = value;
     }
 
-    public void setCategoryName(String value)
+    public void setLoggerName(String value)
     {
-        category = Category.getInstance(value);
+        _logger = LogManager.getLogger(value);
     }
 
-    public Category getCategory()
+    public Logger getLogger()
     {
-        return category;
+        return _logger;
     }
 
     /**
-     *  Returns a sorted list of all known categorys.
+     *  Returns a sorted list of all known loggers.
      *
      **/
 
-    public List getCategoryNames()
+    public List getLoggerNames()
     {
         List result = new ArrayList();
         Enumeration e;
 
-        e = Category.getCurrentCategories();
+        e = LogManager.getCurrentLoggers();
         while (e.hasMoreElements())
         {
-            Category c = (Category) e.nextElement();
+            Logger l = (Logger) e.nextElement();
 
-            result.add(c.getName());
+            result.add(l.getName());
         }
 
         Collections.sort(result);
@@ -126,55 +128,55 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
         return result;
     }
 
-    public Category getRootCategory()
+    public Logger getRootLogger()
     {
-        return Category.getRoot();
+        return LogManager.getRootLogger();
     }
 
     /**
-     *  Returns a {@link IPropertySelectionModel} for {@link org.apache.log4j.Priority}
+     *  Returns a {@link IPropertySelectionModel} for {@link org.apache.log4j.Level}
      *  that does not allow a null value to be selected.
      *
      **/
 
-    public IPropertySelectionModel getRootPriorityModel()
+    public IPropertySelectionModel getRootLevelModel()
     {
-        if (rootPriorityModel == null)
-            rootPriorityModel = new PriorityModel(false);
+        if (_rootLevelModel == null)
+            _rootLevelModel = new PriorityModel(false);
 
-        return rootPriorityModel;
+        return _rootLevelModel;
     }
 
     /**
      *  Returns a {@link IPropertySelectionModel} for 
-     *  {@link org.apache.log4j.Priority}
+     *  {@link org.apache.log4j.Level}
      *  include a null option.
      *
      **/
 
-    public IPropertySelectionModel getPriorityModel()
+    public IPropertySelectionModel getLevelModel()
     {
-        if (priorityModel == null)
-            priorityModel = new PriorityModel();
+        if (_levelModel == null)
+            _levelModel = new PriorityModel();
 
-        return priorityModel;
+        return _levelModel;
     }
 
     public IValidationDelegate getValidationDelegate()
     {
-        if (validationDelegate == null)
-            validationDelegate = new ValidationDelegate();
+        if (_validationDelegate == null)
+            _validationDelegate = new ValidationDelegate();
 
-        return validationDelegate;
+        return _validationDelegate;
     }
 
-    public void priorityChange(IRequestCycle cycle)
+    public void levelChange(IRequestCycle cycle)
     {
         // Do nothing.  This will redisplay the logging page after the
         // priorities are updated.
     }
 
-    public void addNewCategory(IRequestCycle cycle)
+    public void addNewLogger(IRequestCycle cycle)
     {
         // If the validating text field has an error, then go no further.
 
@@ -184,25 +186,25 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
         if (delegate.getHasErrors())
             return;
 
-        if (Category.exists(newCategory) == null)
+        if (LogManager.exists(_newLogger) == null)
         {
             // Force the new category into existence
 
-            Category.getInstance(newCategory);
+            LogManager.getLogger(_newLogger);
             // Clear the field
-            newCategory = null;
+            _newLogger = null;
 
             return;
         }
 
-        IField field = (IField) getComponent("inputNewCategory");
+        IField field = (IField) getComponent("inputNewLogger");
 
         delegate.setFormComponent(field);
         delegate.record(
             new ValidatorException(
-                "Category " + newCategory + " already exists.",
+                "Logger " + _newLogger + " already exists.",
                 null,
-                newCategory));
+                _newLogger));
 
     }
 }
