@@ -11,6 +11,8 @@ problems using Team support inside the Eclipse IDE.
 
 -->
 
+<property file="../../../config/build.properties"/>
+
 <!-- The base name for the DTD distribution (the directory and tar file
      will match). -->
      
@@ -18,16 +20,41 @@ problems using Team support inside the Eclipse IDE.
 
 <!-- Base name for the XSL distribution. -->
 
-<property name="docbook.xsl.base" value="docbook-xsl-1.45"/>
+<property name="docbook.xsl.base" value="docbook-xsl-1.50.0"/>
 
 <property name="docbook.dtd.dir" value="../common/${docbook.dtd.base}"/>
 <property name="docbook.xsl.dir" value="../common/${docbook.xsl.base}"/>
+
+<property name="docbook.chunked.xsl"
+	value="../common/Tapestry-${docbook.xsl.base}-Chunked.xsl"/>
+	
+<property name="docbook.single.xsl"
+	value="../common/Tapestry-${docbook.xsl.base}-Single.xsl"/>
 
 <target name="docbook-setup"
 	description="Make sure the latest distributions of DocBook DTDs and stylesheets are ready.">
 	<available property="docbook.dtd.available" file="${docbook.dtd.dir}" type="dir"/>
 	<available property="docbook.xsl.available" file="${docbook.xsl.dir}" type="dir"/>
 	<antcall target="docbook-setup-inner"/>
+
+	<copy 
+		file="../common/Tapestry.xsl.template" 
+		tofile="${docbook.chunked.xsl}">
+		<filterset>
+			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
+			<filter token="format" value="chunk"/>
+		</filterset>
+	</copy>
+	
+	<copy 
+		file="../common/Tapestry.xsl.template" 
+		tofile="${docbook.single.xsl}">
+		<filterset>
+			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
+			<filter token="format" value="docbook"/>
+		</filterset>
+	</copy>
+	
 </target>
 
 <target name="docbook-setup-inner" depends="docbook-unpack-dtd,docbook-unpack-xsl">
@@ -41,24 +68,58 @@ problems using Team support inside the Eclipse IDE.
 <target name="docbook-unpack-xsl" unless="docbook.xsl.available">
 	<echo>Unpacking DocBook XSL distribution ...</echo>
 	<unzip src="../common/${docbook.xsl.base}.zip" dest="../common"/>
-	<copy 
-		file="../common/Tapestry.xsl.template" 
-		tofile="../common/Tapestry-Chunked.xsl"
-		overwrite="yes">
-		<filterset>
-			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
-			<filter token="format" value="chunk"/>
-		</filterset>
-	</copy>
-	<copy 
-		file="../common/Tapestry.xsl.template" 
-		tofile="../common/Tapestry-Single.xsl"
-		overwrite="yes">
-		<filterset>
-			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
-			<filter token="format" value="docbook"/>
-		</filterset>
-	</copy>	
+	
 </target>
 
+<property name="html.output.dir" value="html"/>
+<property name="images.src.dir" value="images"/>
+<property name="images.dest.dir" value="${html.output.dir}/images"/>
+
+<target name="setup">
+ <mkdir dir="${html.output.dir}"/>
+</target>
+
+<target name="clean">
+  <delete dir="${html.output.dir}"/>
+</target>
+  
+<!-- saxon.dir must be set in build.properties -->
+  
+<path id="saxon.classpath">
+  <pathelement location="${saxon.dir}/saxon.jar"/>
+</path>
+
+<!-- Invoked using antcall, setting the property root.filename -->
+
+<target name="build-html" depends="docbook-setup">
+    <copy todir="${images.dest.dir}" >
+      <fileset dir="${images.src.dir}"/>
+    </copy>
+    <copy todir="${html.output.dir}/standard-images">
+      <fileset dir="${docbook.xsl.dir}/images">
+        <include name="**/*.png"/>
+      </fileset>
+    </copy>
+    <echo>Generating Chunked (Multiple Page) HTML from ${root.filename} ...</echo>
+        
+    <style destdir="${html.output.dir}"
+    	style="${docbook.chunked.xsl}"
+    	processor="trax" 
+    	includes="${root.filename}.xml">
+    	<param name="base.dir" expression="${html.output.dir}/"/>
+    	<param name="root.filename" expression="${root.filename}"/>
+		<param name="use.id.as.filename" expression="1"/>
+    	<classpath refid="saxon.classpath"/>
+    </style>
+    
+    <echo>Generating Printable (Single Page) HTML from ${root.filename} ...</echo>
+        
+    <style destdir="${html.output.dir}"
+    	style="${docbook.single.xsl}"
+    	processor="trax" 
+    	in="${root.filename}.xml"
+    	out="${html.output.dir}/${root.filename}-Single.html">
+    	<classpath refid="saxon.classpath"/>
+    </style>    
+</target>
 
