@@ -58,11 +58,16 @@ import javax.servlet.http.*;
  *  Particularily, it should <b>never</b> hold references to any
  *  {@link IPage} or {@link IComponent} objects.  The entire system is
  *  based upon being able to quickly rebuild the state of any page(s).
- *  It actually breaks down if a page is <em>not</em> recreated on
- *  each request cycle.
  *
  * <p>Where possible, instance variables should be <code>transient</code>.  They
  * can be restored inside {@link #setupForRequest(RequestContext)}.
+ *
+ *  In practice, a subclass (usually {@link SimpleApplication})
+ *  is used without subclassing.  Instead, a 
+ *  visit object is specified.  To facilitate this, the application specification
+ *  may include a property, <code>com.primix.tapestry.visit-class</code>
+ *  which is the class name  to instantiate when a visit object is first needed.  See
+ *  {@link #createVisit()} for more details.
  *
  * @author Howard Ship
  * @version $Id$
@@ -119,6 +124,14 @@ public abstract class AbstractApplication
 	private transient Map services;
 
 	private static final int MAP_SIZE = 7;
+
+	/**
+	 *  The name of the application specification property used to specify the
+	 *  class of the visit object.
+	 *
+	 */
+
+	public static final String VISIT_CLASS_PROPERTY_NAME = "com.primix.tapestry.visit-class";
 
 	/**
 	*  Servlet context attribute name for the default {@link ITemplateSource}
@@ -1396,14 +1409,38 @@ public abstract class AbstractApplication
     }
 
     /**
-     *  Returns null; implemented in subclasses that use a visit object
-     *  to store server-side state.  This is invoked from
-     *  {@link #getVisit()} when the visit property is null.
+     *  Invoked to lazily create a new visit object when it is first
+     *  referenced (by {@link #getVisit()}.  This implementation works
+     *  by looking up the name of the class
+     *  in the application specification.
      *
+     *  <p>Subclasses may want to override this method if some other means
+     *  of instantiating a visit object is required.
      */
 
-    public Object createVisit()
+    protected Object createVisit()
     {
-        return null;
+        String visitClassName;
+        Class visitClass;
+
+        visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
+        if (visitClassName == null)
+            throw new ApplicationRuntimeException(
+            "Could not create visit object because property " +
+            VISIT_CLASS_PROPERTY_NAME + " was not specified in the application specification.");
+
+        visitClass = resolver.findClass(visitClassName);
+
+        try
+        {
+            return visitClass.newInstance();
+        }
+        catch (Throwable t)
+        {
+            throw new ApplicationRuntimeException(
+                "Unable to instantiate visit object from class " +
+                visitClassName + ".", t);
+        }
+
     }
 }
