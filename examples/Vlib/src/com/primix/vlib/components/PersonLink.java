@@ -4,6 +4,9 @@ import com.primix.tapestry.components.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 
+// To appease Javadoc
+import com.primix.vlib.pages.PersonPage;
+
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *

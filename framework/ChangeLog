@@ -1,3 +1,8 @@
+* Apr 24 2001 hship
+
+Cleanup Javadoc warnings by adding extra imports.
+Down to a single warning.  That'll do.
+
 * Apr 18 2001 hship
 
 Fixed synchronization in PropertyHelper.buildPropertyAccessors(), to make it

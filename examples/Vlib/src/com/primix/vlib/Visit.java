@@ -42,7 +42,7 @@ import java.net.*;
  */
 
 /**
- *  The visit object for the {@link VirtualLibraryApplication}.
+ *  The visit object for the {@link VirtualLibraryEngine}.
  *
  *  Primarily, this is used to access the home interfaces and EJB instances, and
  *  to identify who the logged in user is.

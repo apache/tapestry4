@@ -137,9 +137,12 @@ implements ICommand
                 continue;
             }
 
+			// If specified, then the block is written just before the first
+			// line that contains the argument (case insensitive).
+
             if (args[i].equals("-before"))
             {
-                before = args[++i];
+                before = args[++i].trim().toLowerCase();
                 continue;
             }
 
@@ -186,6 +189,7 @@ implements ICommand
 
                     case COPY_PREAMBLE:
 
+
                         String trimmedLine = line.trim();
                         if (spliceStyle.isBegin(trimmedLine))
                         {
@@ -194,8 +198,13 @@ implements ICommand
                             continue;
                         }
 
+						// If a -before value was specified,
+						// check (in a case insenstive manner)
+						// whether it appears on the line.  If so
+						// the insertion spot has been found.w
+
                         if (before != null &&
-                            trimmedLine.equalsIgnoreCase(before))
+                            trimmedLine.toLowerCase().indexOf(before) > 0)
                         {
                             copyBlock(source, temporaryWriter);
                             state = COPY_POSTAMBLE;
@@ -269,7 +278,12 @@ implements ICommand
         }
 
         reader.close();
-
+		
+		// Strangely, this line only seems to be necessary in JDK 1.3.  Note
+		// quite sure what's going on.
+		
+		writer.println();
+		
         spliceStyle.writeEnd(writer);
     }
 

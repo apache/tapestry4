@@ -1,6 +1,0 @@
-<!-- Splice: $Id$ -->
-
-<MLET CODE="org.jboss.jdbc.XADataSourceLoader" ARCHIVE="jboss.jar" CODEBAASE="../../lib/ext/">
-    <ARG TYPE="java.lang.String" VALUE="PrimixVlib">
-    <ARG TYPE="java.lang.String" VALUE="org.jboss.minerva.xa.XADataSourceImpl">
-</MLET>

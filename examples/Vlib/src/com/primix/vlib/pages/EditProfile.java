@@ -11,6 +11,9 @@ import java.rmi.*;
 import javax.rmi.*;
 import com.primix.foundation.prop.*;
 
+// To appease Javadoc
+import com.primix.tapestry.components.html.valid.ValidatingTextField;
+
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -96,7 +99,7 @@ extends Protected
 	 *  Invoked (from {@link MyBooks}) to begin editting the user's
 	 *  profile.  We get the entity attributes from the {@link IPerson},
 	 *  and store them in the attributes page property, ready to provide
-	 *  default values to the {@link TextField} components.
+	 *  default values to the {@link ValidatingTextField} components.
 	 *
 	 */
 	 
@@ -121,7 +124,7 @@ extends Protected
 	/**
 	 *  Invoked when the form is submitted, validates the form and
 	 *  updates the {@link IPerson} for the user, before returning
-	 *  to {@link MyPage}.
+	 *  to {@link MyBooks}.
 	 *
 	 */
 	 

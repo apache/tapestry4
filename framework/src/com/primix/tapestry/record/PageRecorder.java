@@ -8,6 +8,11 @@ import java.io.*;
 import java.rmi.*;
 import javax.ejb.*;
 
+// To appease JavaDoc
+
+import javax.ejb.EJBObject;
+import javax.ejb.Handle;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix

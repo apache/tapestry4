@@ -201,7 +201,7 @@ public class Enum implements Serializable
 	}
 
 	/**
-	  *  Reads the state written by {@link #writeObject(ObjectOutputStream)}.
+	  *  Reads the state written by <code>writeObject</code>.
 	  *
 	  */
 

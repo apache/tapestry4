@@ -10,7 +10,7 @@ PACKAGES := \
 INSTALL_DIR := ../../lib
 
 PROJ_CLASSPATH = \
-	$(JBOSS_DIR)/client/ejb.jar \
+	$(INSTALL_DIR)/ejb.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/com.primix.tapestry.jar \
 	$(INSTALL_DIR)/VlibBeans.jar
@@ -27,6 +27,9 @@ CONTEXT_RESOURCES := index.html
 
 include $(SYS_MAKEFILE_DIR)/War.mk
 
+
+LOCAL_PROPS_DIR := $(SYS_BUILD_DIR_NAME)/props
+
 EXEC_CLASSPATH := \
 	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/javax.xml.jaxp.jar \
@@ -34,10 +37,26 @@ EXEC_CLASSPATH := \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
 	$(INSTALL_DIR)/log4j-core.jar \
-	$(JBOSS_DIR)/conf/default \
-	$(JBOSS_DIR)/client/jboss-client.jar
+	$(JBOSS_DIR)/client/jboss-client.jar \
+	$(JBOSS_DIR)/client/jbosssx-client.jar \
+	$(JBOSS_DIR)/client/jnp-client.jar \
+	$(LOCAL_PROPS_DIR)
+	
+# Previously, we just added $(JBOSS_DIR)/conf/default to the classpath,
+# but that now contains a log4j.properties file that confuses
+# the log4j running inside Jetty.  As a patch, we copy the jndi.properties
+# file locally and add the directory it is copied to to the execution
+# classpath.
 
-run: default
+JBOSS_JNDI_PROPS := $(JBOSS_DIR)/conf/default/jndi.properties
+LOCAL_JNDI_PROPS := $(LOCAL_PROPS_DIR)/jndi.properties
+
+$(LOCAL_JNDI_PROPS): $(JBOSS_JNDI_PROPS)
+	$(call NOTE, Copying jndi.properties ...)
+	$(MKDIRS) $(LOCAL_PROPS_DIR)
+	$(CP) $(JBOSS_JNDI_PROPS) $(LOCAL_JNDI_PROPS)
+	
+run: default $(LOCAL_JNDI_PROPS)
 	$(call NOTE, Running Primix Virtual Library using Jetty ...)
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-showversion \
@@ -45,6 +64,8 @@ run: default
 		$(OTHER_EXEC_OPTS) \
 		com.mortbay.Jetty.Server jetty.xml)
 
+run-debug:
+		@$(RECURSE) run OTHER_EXEC_OPTS="-Dcom.primix.vlib.debug-enabled=true"
 
 
 

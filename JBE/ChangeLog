@@ -1,3 +1,8 @@
+* Api 24 2001 hship
+
+Minor improvements to the JBE Splice command.
+
+
 * Apr 10 2001 hship
 
 Add targets and rules in DocBook.mk to support packaging the HTML for distribution
