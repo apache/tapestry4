@@ -4,15 +4,15 @@
   <name>Tapestry Web Application Framework</name>
   <id>tapestry</id>
   <groupId>jakarta-tapestry</groupId>
-  <currentVersion>3.0-beta-1b</currentVersion>
+  <currentVersion>3.0-beta-2</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
-    <logo>http://jakarta.apache.org/images/jakarta-logo.gif</logo>
+    <logo>${root.path}/images/jakarta-logo-blue.png</logo>
   </organization>
   <inceptionYear>2000</inceptionYear>
   <package>org.apache.tapestry</package>
-  <logo>http://jakarta.apache.org/tapestry/images/Tapestry-Banner.png</logo>
+  <logo>${root.path}/images/tapestry-banner-blue.png</logo>
 
   <shortDescription>Component-oriented web application framework.</shortDescription>
 
@@ -148,9 +148,8 @@
     </dependency>
     
     <dependency>
-      <id>bcel</id>
-      <version>5.0</version>
-      <url>http://jakarta.apache.org/bcel/</url>
+      <id>javassist</id>
+      <version>2.5.1</version>
     </dependency>
 
     <dependency>
@@ -179,11 +178,11 @@
   </dependencies>
 
   <reports>
-    <report>maven-changelog-plugin</report>
+    <!-- report>maven-changelog-plugin</report -->
     <report>maven-tasklist-plugin</report>
 		<report>maven-license-plugin</report>
-		<report>maven-developer-activity-plugin</report>
-		<report>maven-file-activity-plugin</report>
+		<!-- report>maven-developer-activity-plugin</report -->
+		<!-- report>maven-file-activity-plugin</report -->
    </reports>
    
 </project>
