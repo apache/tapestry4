@@ -6,7 +6,7 @@ import com.primix.tapestry.spec.*;
 import java.util.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.binding.*;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -420,7 +420,7 @@ public class PageLoader
 
 		if (CAT.isInfoEnabled())
 			CAT.info("Loaded page " + page + 
-			" with " + count + " component, maximum depth " + maxDepth + ".");
+			" with " + count + " components (maximum depth " + maxDepth + ")");
 
 		return page;
 	}

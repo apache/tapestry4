@@ -6,7 +6,7 @@ import javax.servlet.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.parse.*;
 import com.primix.foundation.exception.*;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework

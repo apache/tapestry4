@@ -1,7 +1,7 @@
 package com.primix.foundation;
 
 import java.util.*;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework

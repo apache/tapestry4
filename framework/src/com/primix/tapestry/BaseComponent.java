@@ -4,7 +4,7 @@ import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.parse.*;
 import java.util.*;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework

@@ -4,7 +4,7 @@ import java.beans.*;
 import java.lang.reflect.*;
 import java.util.*;
 import com.primix.foundation.DynamicInvocationException;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework

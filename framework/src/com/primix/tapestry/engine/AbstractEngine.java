@@ -14,7 +14,7 @@ import com.primix.tapestry.pageload.*;
 import com.primix.tapestry.asset.*;
 import java.net.*;
 import javax.servlet.http.*;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework
