@@ -8,35 +8,45 @@
 	allow-body="yes" allow-informal-parameters="yes">
 	
 	<description>
+        A low level Table component that renders the column headers in the table. 
+        This component must be wrapped by TableView. 
 	</description>
   
 	<parameter name="column" 
 		type="org.apache.tapestry.contrib.table.model.ITableColumn" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The column currently being rendered [out]</description>
+    </parameter>
 
 	<parameter name="element" 
 		type="java.lang.String" 
 		required="no"
 		direction="auto"
-    	default-value="'th'"/>
+    	default-value="'th'">
+        <description>The tag to use to wrap the column headers.</description>
+    </parameter>
 
 	<parameter name="arrowUpAsset" 
 		type="org.apache.tapestry.IAsset" 
 		required="no"
-		direction="in"/>
+		direction="in">
+        <description>The image to use to describe a column sorted in an ascending order.</description>
+    </parameter>
 
 	<parameter name="arrowDownAsset" 
 		type="org.apache.tapestry.IAsset" 
 		required="no"
-		direction="in"/>
+		direction="in">
+        <description>The image to use to describe a column sorted in a descending order.</description>
+    </parameter>
 
 	<component id="iterColumns" type="Foreach">
 		<binding name="source" expression="tableColumnIterator"/>
 		<binding name="value" expression="tableColumn"/>
 	</component>
   
-	<component id="informal" type="InheritInformalAny">
+	<component id="informal" type="Any" inherit-informal-parameters="yes">
 		<binding name="element" expression="element"/>
 	</component>
   

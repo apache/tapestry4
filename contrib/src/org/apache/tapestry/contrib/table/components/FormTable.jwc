@@ -5,11 +5,13 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.table.components.FormTable" 
-	allow-body="no" allow-informal-parameters="yes">
+	allow-body="yes" allow-informal-parameters="yes">
 
     <description>
         The main Table component that is implemented using the lower-level 
         Table components such as TableView and TableRows.
+        The component does not render its body, which makes it a good place
+        to declare Blocks defining the column appearances.
     </description>
     
     <parameter name="tableModel" 
@@ -57,6 +59,27 @@
         </description>
     </parameter>
     
+    <parameter name="columnSettingsContainer"
+        type="org.apache.tapestry.IComponent"
+        required="no"
+        default-value="container">
+        <description>
+            The component where Block and messages are pulled from when using source/columns.
+        </description>
+    </parameter>
+
+    <parameter name="convertor"
+    	type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor"
+    	required="no"
+    	direction="auto"
+    	default-value="null"/>
+        <description>
+        An interface defining how the items iterated upon by this component 
+        will be stored in the form as Hidden values. This interface allows only 
+        the primary key of the items to be stored, rather than the whole item.
+        </description>
+    </parameter>
+
 	<parameter name="pagesDisplayed" 
 		type="int" 
 		required="no">
@@ -88,39 +111,48 @@
 	<parameter name="arrowUpAsset" 
 		type="org.apache.tapestry.IAsset" 
 		required="no"
-		direction="in"/>
+		direction="in">
+        <description>
+            The image to use to describe a column sorted in an ascending order.
+        </description>
+    </parameter>
 
 	<parameter name="arrowDownAsset" 
 		type="org.apache.tapestry.IAsset" 
 		required="no"
-		direction="in"/>
+		direction="in">
+        <description>
+            The image to use to describe a column sorted in a descending order.
+        </description>
+    </parameter>
 
 	<parameter name="pagesClass" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The CSS class of the table pages</description>
+    </parameter>
   
 	<parameter name="columnsClass" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The CSS class of the table columns</description>
+    </parameter>
   
 	<parameter name="rowsClass" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The CSS class of the table rows</description>
+    </parameter>
   
 	<parameter name="valuesClass" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
-
-    <parameter name="convertor"
-    	type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor"
-    	required="no"
-    	direction="auto"
-    	default-value="null"
-    />
+		direction="custom">
+        <description>The CSS class of the table values</description>
+    </parameter>
     
 
 	<component id="tableElement" type="Any" inherit-informal-parameters="yes">
@@ -137,8 +169,8 @@
 		<binding name="columns" expression="formColumns"/>
 		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
 		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
+		<inherited-binding name="columnSettingsContainer" parameter-name="columnSettingsContainer"/>
 		<static-binding name="element">span</static-binding>
-        <binding name="columnSettingsContainer" expression="container"/>
 	</component>
 
 	<component id="tablePages" type="TableFormPages">

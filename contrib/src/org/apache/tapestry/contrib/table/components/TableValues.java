@@ -58,7 +58,9 @@ package org.apache.tapestry.contrib.table.components;
 import java.util.Iterator;
 
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 
@@ -73,50 +75,28 @@ import org.apache.tapestry.contrib.table.model.ITableColumnModel;
  * The column values are rendered using the renderer returned by the 
  * getValueRenderer() method in {@link org.apache.tapestry.contrib.table.model.ITableColumn}.
  * 
- * <p>
- * <table border=1 align="center">
- * <tr>
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction </th>
- *    <th>Required</th>
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>element</td>
- *  <td>String</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>td</td>
- *  <td align="left">The tag to use to wrap the column values in.</td> 
- * </tr>
- *
- * <tr>
- *  <td>column</td>
- *  <td>{@link org.apache.tapestry.contrib.table.model.ITableColumn}</td>
- *  <td>out</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td align="left">The object representing the current column.</td> 
- * </tr>
- *
- * </table> 
+ * <p> 
+ * Please see the Component Reference for details on how to use this component. 
+ * 
+ *  [<a href="../../../../../../../ComponentReference/contrib.TableValues.html">Component Reference</a>]
  * 
  * @author mindbridge
  * @version $Id$
  *
  */
-public class TableValues extends AbstractTableRowComponent
+public abstract class TableValues extends AbstractTableRowComponent
 {
-    // Bindings (custom)
-    private IBinding m_objElementBinding = null;
-    private IBinding m_objColumnBinding = null;
+    // Bindings
+    public abstract IBinding getColumnBinding();
 
 	// Transient
 	private ITableColumn m_objTableColumn;
 
+    /**
+     * Get the list of all table columns to be displayed.
+     * 
+     * @return an iterator of all table columns
+     */
 	public Iterator getTableColumnIterator()
 	{
 		ITableColumnModel objColumnModel =
@@ -124,19 +104,23 @@ public class TableValues extends AbstractTableRowComponent
 		return objColumnModel.getColumns();
 	}
 
-	/**
-	 * Returns the tableColumn.
-	 * @return ITableColumn
-	 */
+    /**
+     * Returns the currently rendered table column. 
+     * You can call this method to obtain the current column.
+     *  
+     * @return ITableColumn the current table column
+     */
 	public ITableColumn getTableColumn()
 	{
 		return m_objTableColumn;
 	}
 
-	/**
-	 * Sets the tableColumn.
-	 * @param tableColumn The tableColumn to set
-	 */
+    /**
+     * Sets the currently rendered table column. 
+     * This method is for internal use only.
+     * 
+     * @param tableColumn The current table column
+     */
 	public void setTableColumn(ITableColumn tableColumn)
 	{
 		m_objTableColumn = tableColumn;
@@ -146,6 +130,11 @@ public class TableValues extends AbstractTableRowComponent
             objColumnBinding.setObject(tableColumn);
 	}
 
+    /**
+     * Returns the renderer to be used to generate the appearance of the current column
+     * 
+     * @return the value renderer of the current column
+     */
 	public IRender getTableValueRenderer()
 	{
 		Object objRow = getTableRowSource().getTableRow();
@@ -156,50 +145,14 @@ public class TableValues extends AbstractTableRowComponent
 	}
 
     /**
-     * Returns the elementBinding.
-     * @return IBinding
+     * @see org.apache.tapestry.BaseComponent#renderComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    public IBinding getElementBinding()
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        return m_objElementBinding;
+        super.renderComponent(writer, cycle);
+
+        // set the current column to null when the component is not active
+        m_objTableColumn = null;
     }
 
-    /**
-     * Sets the elementBinding.
-     * @param elementBinding The elementBinding to set
-     */
-    public void setElementBinding(IBinding elementBinding)
-    {
-        m_objElementBinding = elementBinding;
-    }
-
-    /**
-     * Returns the columnBinding.
-     * @return IBinding
-     */
-    public IBinding getColumnBinding()
-    {
-        return m_objColumnBinding;
-    }
-
-    /**
-     * Sets the columnBinding.
-     * @param columnBinding The columnBinding to set
-     */
-    public void setColumnBinding(IBinding columnBinding)
-    {
-        m_objColumnBinding = columnBinding;
-    }
-
-    /**
-     * Returns the element.
-     * @return String
-     */
-    public String getElement()
-    {
-        IBinding objElementBinding = getElementBinding();
-        if (objElementBinding == null || objElementBinding.getObject() == null)
-            return "td";
-        return objElementBinding.getString();
-    }
 }

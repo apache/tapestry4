@@ -60,7 +60,12 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableRowSource;
 
 /**
+ * The base implementation for a component that is wrapped by 
+ * the TableRows component. Provides a utility method for getting 
+ * a pointer to TableRows. 
+ * 
  * @author mindbridge
+ * @version $Id$
  *
  */
 public class AbstractTableRowComponent extends AbstractTableViewComponent

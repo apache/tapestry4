@@ -79,37 +79,10 @@ import org.apache.tapestry.contrib.table.model.*;
  * You can define columns manually within, or
  * you can use {@link org.apache.tapestry.contrib.table.components.TableValues} 
  * to generate the columns automatically.
+ * <p> 
+ * Please see the Component Reference for details on how to use this component. 
  * 
- * <p>
- * <table border=1 align="center">
- * <tr>
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction </th>
- *    <th>Required</th>
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>row</td>
- *  <td>Object</td>
- *  <td>out</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td align="left">The value object of the current row.</td> 
- * </tr>
- *
- * <tr>
- *  <td>element</td>
- *  <td>String</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>tr</td>
- *  <td align="left">The tag to use to wrap the rows in.</td> 
- * </tr>
- *
- * </table> 
+ *  [<a href="../../../../../../../ComponentReference/contrib.TableFormRows.html">Component Reference</a>]
  * 
  * @author mindbridge
  * @version $Id$
@@ -121,7 +94,12 @@ public abstract class TableFormRows extends TableRows
     public abstract IPrimaryKeyConvertor getConvertorCache();
     public abstract void setConvertorCache(IPrimaryKeyConvertor convertor);
     public abstract Map getConvertedValues();
-    
+
+    /**
+     * Returns the PK convertor cached within the realm of the current request cycle.
+     *  
+     * @return the cached PK convertor
+     */
     public IPrimaryKeyConvertor getCachedConvertor()
     {
         IPrimaryKeyConvertor objConvertor = getConvertorCache();
@@ -133,7 +111,13 @@ public abstract class TableFormRows extends TableRows
         
         return objConvertor;
     }
-    
+
+    /**
+     * Get the list of all table rows to be displayed on this page, converted 
+     * using the PK.convertor.
+     * 
+     * @return an iterator of all converted table rows
+     */    
     public Iterator getConvertedTableRowsIterator()
     {
         final Iterator objTableRowsIterator = getTableRowsIterator(); 
@@ -163,7 +147,13 @@ public abstract class TableFormRows extends TableRows
             }
         };
     }
-    
+
+    /**
+     * Sets the current table row PK and invokes {@link #setTableRow(Object)} as a result.
+     * This method is for internal use only.
+     * 
+     * @param objConvertedTableRow The current converted table row (PK)
+     */
     public void setConvertedTableRow(Object objConvertedTableRow)
     {
         Object objValue = objConvertedTableRow;

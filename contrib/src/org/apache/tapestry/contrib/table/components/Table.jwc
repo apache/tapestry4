@@ -5,11 +5,13 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.table.components.Table" 
-	allow-body="no" allow-informal-parameters="yes">
+	allow-body="yes" allow-informal-parameters="yes">
 
     <description>
         The main Table component that is implemented using the lower-level 
         Table components such as TableView and TableRows.
+        The component does not render its body, which makes it a good place
+        to declare Blocks defining the column appearances.
     </description>
     
     <parameter name="tableModel" 
@@ -66,7 +68,7 @@
         </description>
     </parameter>
 
-	<parameter name="pagesDisplayed"
+	<parameter name="pagesDisplayed" 
 		type="int" 
 		required="no">
         <description>
@@ -97,32 +99,48 @@
 	<parameter name="arrowUpAsset" 
 		type="org.apache.tapestry.IAsset" 
 		required="no"
-		direction="in"/>
+		direction="in">
+        <description>
+            The image to use to describe a column sorted in an ascending order.
+        </description>
+    </parameter>
 
 	<parameter name="arrowDownAsset" 
 		type="org.apache.tapestry.IAsset" 
 		required="no"
-		direction="in"/>
+		direction="in">
+        <description>
+            The image to use to describe a column sorted in a descending order.
+        </description>
+    </parameter>
 
 	<parameter name="pagesClass" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The CSS class of the table pages</description>
+    </parameter>
   
 	<parameter name="columnsClass" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The CSS class of the table columns</description>
+    </parameter>
   
 	<parameter name="rowsClass" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The CSS class of the table rows</description>
+    </parameter>
   
 	<parameter name="valuesClass" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The CSS class of the table values</description>
+    </parameter>
   
 
 	<component id="tableElement" type="Any" inherit-informal-parameters="yes">
@@ -139,6 +157,7 @@
 		<inherited-binding name="source" parameter-name="source"/>
 		<inherited-binding name="columns" parameter-name="columns"/>
 		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
+		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
 		<inherited-binding name="columnSettingsContainer" parameter-name="columnSettingsContainer"/>
 		<static-binding name="element">span</static-binding>
 	</component>

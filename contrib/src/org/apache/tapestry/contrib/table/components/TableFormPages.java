@@ -74,34 +74,10 @@ import org.apache.tapestry.event.PageRenderListener;
  * <p>
  * The component generates a list of pages in the Table centered around the 
  * current one and allows you to navigate to other pages.
+ * <p> 
+ * Please see the Component Reference for details on how to use this component. 
  * 
- * <p>
- * <table border=1 align="center">
- * <tr>
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction </th>
- *    <th>Required</th>
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>pagesDisplayed</td>
- *  <td>int</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>7</td>
- *  <td align="left">Determines the maximum number of pages to be displayed in the page list
- *      when the table has more than one page.
- *      <p>For example, if the table has 20 pages, and 10 is the current page,
- *      pages from 7 to 13 in the page list will be shown if this parameter has 
- *      a value of 7.
- *  </td> 
- * </tr>
- *
- * </table> 
- * 
+ *  [<a href="../../../../../../../ComponentReference/contrib.TableFormPages.html">Component Reference</a>]
  * 
  * @author mindbridge
  * @version $Id$
@@ -204,7 +180,7 @@ public abstract class TableFormPages extends TablePages
     }
 
     /**
-     * @param i
+     * @param i the current page
      */
     public void setCurrentPage(int i)
     {
@@ -212,7 +188,7 @@ public abstract class TableFormPages extends TablePages
     }
 
     /**
-     * @param i
+     * @param i number of all pages to display
      */
     public void setPageCount(int i)
     {
@@ -220,7 +196,7 @@ public abstract class TableFormPages extends TablePages
     }
 
     /**
-     * @param i
+     * @param i the first page to display
      */
     public void setStartPage(int i)
     {
@@ -228,7 +204,7 @@ public abstract class TableFormPages extends TablePages
     }
 
     /**
-     * @param i
+     * @param i the last page to display
      */
     public void setStopPage(int i)
     {

@@ -74,55 +74,10 @@ import org.apache.tapestry.contrib.table.model.ITableColumnModel;
  * a header for each one of them using the renderer provided by the
  * getColumnRender() method in {@link org.apache.tapestry.contrib.table.model.ITableColumn}.
  * The headers are wrapped in 'th' tags by default.
- * 
  * <p>
- * <table border=1 align="center">
- * <tr>
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction </th>
- *    <th>Required</th>
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>element</td>
- *  <td>String</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>th</td>
- *  <td align="left">The tag to use to wrap the column headers.</td> 
- * </tr>
- *
- * <tr>
- *  <td>column</td>
- *  <td>{@link org.apache.tapestry.contrib.table.model.ITableColumn}</td>
- *  <td>out</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td align="left">The object representing the current column.</td> 
- * </tr>
- *
- * <tr>
- *  <td>arrowUpAsset</td>
- *  <td>{@link org.apache.tapestry.IAsset}</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td align="left">The image to use to describe a column sorted in an ascending order.</td> 
- * </tr>
- *
- * <tr>
- *  <td>arrowDownAsset</td>
- *  <td>{@link org.apache.tapestry.IAsset}</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td align="left">The image to use to describe a column sorted in a descending order.</td> 
- * </tr>
- *
- * </table> 
+ * Please see the Component Reference for details on how to use this component. 
+ * 
+ *  [<a href="../../../../../../../ComponentReference/contrib.TableColumns.html">Component Reference</a>]
  * 
  * @author mindbridge
  * @version $Id$
@@ -130,74 +85,87 @@ import org.apache.tapestry.contrib.table.model.ITableColumnModel;
  */
 public abstract class TableColumns extends AbstractTableViewComponent
 {
-    public static final String TABLE_COLUMN_ARROW_UP_ATTRIBUTE = 
+    public static final String TABLE_COLUMN_ARROW_UP_ATTRIBUTE =
         "org.apache.tapestry.contrib.table.components.TableColumns.arrowUp";
 
-    public static final String TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE = 
+    public static final String TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE =
         "org.apache.tapestry.contrib.table.components.TableColumns.arrowDown";
-    
-	// Transient
-	private ITableColumn m_objTableColumn;
 
     // Bindings
     public abstract IBinding getColumnBinding();
-    public abstract String getElement();
     public abstract IAsset getArrowDownAsset();
     public abstract IAsset getArrowUpAsset();
 
+    // Transient
+    private ITableColumn m_objTableColumn = null;
 
-	public Iterator getTableColumnIterator()
-	{
-		ITableColumnModel objColumnModel =
-			getTableModelSource().getTableModel().getColumnModel();
-		return objColumnModel.getColumns();
-	}
+    /**
+     * Returns the currently rendered table column. 
+     * You can call this method to obtain the current column.
+     *  
+     * @return ITableColumn the current table column
+     */
+    public ITableColumn getTableColumn()
+    {
+        return m_objTableColumn;
+    }
 
-	/**
-	 * Returns the tableColumn.
-	 * @return ITableColumn
-	 */
-	public ITableColumn getTableColumn()
-	{
-		return m_objTableColumn;
-	}
-
-	/**
-	 * Sets the tableColumn.
-	 * @param tableColumn The tableColumn to set
-	 */
-	public void setTableColumn(ITableColumn tableColumn)
-	{
-		m_objTableColumn = tableColumn;
+    /**
+     * Sets the currently rendered table column. 
+     * This method is for internal use only.
+     * 
+     * @param tableColumn The current table column
+     */
+    public void setTableColumn(ITableColumn tableColumn)
+    {
+        m_objTableColumn = tableColumn;
 
         IBinding objColumnBinding = getColumnBinding();
         if (objColumnBinding != null)
             objColumnBinding.setObject(tableColumn);
-	}
-
-	public IRender getTableColumnRenderer()
-	{
-		return getTableColumn().getColumnRenderer(
-			getPage().getRequestCycle(),
-			getTableModelSource());
-	}
+    }
 
     /**
-	 * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
-	 */
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-	{
+     * Get the list of all table columns to be displayed.
+     * 
+     * @return an iterator of all table columns
+     */
+    public Iterator getTableColumnIterator()
+    {
+        ITableColumnModel objColumnModel = getTableModelSource().getTableModel().getColumnModel();
+        return objColumnModel.getColumns();
+    }
+
+    /**
+     * Returns the renderer to be used to generate the header of the current column
+     * 
+     * @return the header renderer of the current column
+     */
+    public IRender getTableColumnRenderer()
+    {
+        return getTableColumn().getColumnRenderer(
+            getPage().getRequestCycle(),
+            getTableModelSource());
+    }
+
+    /**
+     * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     */
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
         Object oldValueUp = cycle.getAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
         Object oldValueDown = cycle.getAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
 
         cycle.setAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE, getArrowUpAsset());
         cycle.setAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE, getArrowDownAsset());
 
-		super.renderComponent(writer, cycle);
-        
+        super.renderComponent(writer, cycle);
+
         cycle.setAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE, oldValueUp);
         cycle.setAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE, oldValueDown);
-        
-	}
+
+        // set the current column to null when the component is not active
+        m_objTableColumn = null;
+    }
 
 }
