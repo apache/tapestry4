@@ -247,6 +247,10 @@ NextGen) be released as version number 3.0.
  		Add FormConditional to Component Reference   	
  	</action>
 
+ 	<action type="fix" dev="DS" fixes-bug="28422">
+ 		Add element parameter to contrib:Choose   	
+ 	</action>
+
  	</release>
   	
 <!-- Use due-to to give acknowledgement for patches. -->

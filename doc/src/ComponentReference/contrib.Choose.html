@@ -91,14 +91,30 @@
  <td colspan="2">
   <b>Parameters</b>
 	<br>
-  None
-  <p>
-  Body: <STRONG>rendered<BR></STRONG>
-  Informal parameters: 
-            <STRONG>forbidden</STRONG>
-     <br>
-  Reserved 
-            parameters: <EM>none</EM></p>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+                <th>Name</th>
+                <th>Type</th>
+                <th>Direction</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+              <tr> 
+                <td>element</td>
+                <td>String</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td>If specified, then the component acts like an <a href="Any.html">Any</a>, 
+                  emitting an open and close tag. Informal parameters are applied 
+                  to the tag. If no element is specified, informal parameters 
+                  are ignored.</td>
+              </tr>
+            </table>
+            <p> Body: <STRONG>rendered<BR>
+              </STRONG> Informal parameters: <strong>allowed</strong><br>
+              Reserved parameters: <EM>none</EM></p>
     
  </td>
 </tr>

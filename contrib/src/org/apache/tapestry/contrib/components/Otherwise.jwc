@@ -31,6 +31,8 @@
   	</description>
   </parameter>
 
+  <reserved-parameter name="condition"/>
+
   <property-specification name="condition" type="boolean" initial-value="true"/>
   
 </component-specification>
