@@ -36,7 +36,7 @@
 	<component id="tableColumns" type="contrib:TableColumns"/>
 
 	<component id="tableRows" type="contrib:TableRows">
-		<binding name="value" expression="currentLocale"/>
+		<binding name="row" expression="currentLocale"/>
 		<binding name="class" expression="beans.rowClass.next"/>
 	</component>
 
