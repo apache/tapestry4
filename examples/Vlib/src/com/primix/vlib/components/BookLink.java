@@ -91,8 +91,7 @@ public class BookLink extends BaseComponent
 		return book;
 	}
 
-	public boolean isNew()
-	
+	public boolean isNew()	
 	{
 		IEngine engine = page.getEngine();
 		Visit visit = (Visit) engine.getVisit();
