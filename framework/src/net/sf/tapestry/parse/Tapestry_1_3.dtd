@@ -24,15 +24,29 @@ This DTD is backwards compatible with the 1.2 DTD, with the following exceptions
 - added string-value element
 - added library root element
 - added library element
+- added extension element
 
 -->
 
 <!-- =======================================================
 Entity: attribute-flag
 
-For entity attribute that take a boolean value, defines 'yes' and 'no.
+For entity attributesthat take a boolean value, defines 'yes' and 'no'.
+The default varies, so isn't included here.
 -->
 <!ENTITY % attribute-flag "(yes|no)">
+
+
+<!-- =======================================================
+Entity: attribute-flag
+
+For entity attributes that take a string but convert it to a real
+type.  Defaults to String.
+
+-->
+<!ENTITY % static-value-type "(boolean|int|double|String) 'String'">
+
+<!ENTITY % library-content "(description*, property*, (page|component-alias|service|library|extension)*)">
 
 <!-- =======================================================
 Element: application
@@ -44,7 +58,7 @@ Attributes:
   name: A textual name used to uniquely identify the application.
   engine-class:  The Java class to instantiate as the application engine.
 -->
-<!ELEMENT application (description*, property*, (page|component-alias|service|library)*)>
+<!ELEMENT application %library-content;>
 <!ATTLIST application
   name CDATA #REQUIRED
   engine-class CDATA #REQUIRED
@@ -105,6 +119,25 @@ Attributes:
   property-path CDATA #REQUIRED
 >
 
+<!-- =======================================================
+Element: configure
+Appears in: extension
+
+Configures one JavaBean property of an extension.
+
+Attributes:
+  property-name:  The name of the property to configure.
+  type: Conversion of property value.
+  
+ 
+-->
+
+<!ELEMENT configure (PCDATA)>
+<!ATTLIST configure 
+  property-name CDATA #REQUIRED
+  type %static-value-type;
+>
+  
 <!-- =======================================================
 Element: component
 Contained by: component-specification, page-specification
@@ -198,6 +231,25 @@ Attributes:
 <!ELEMENT description (#PCDATA)>
 <!ATTLIST description
   xml:lang NMTOKEN "en"
+>
+
+<!-- =======================================================
+Element: extension
+Contained by: application, library-specification
+
+Defines an extension, an object that is instantiated and configured
+(like a helper bean) and is then accessible, by name, from the
+containing library (or application).
+
+Attributes:
+  name: Name of the extension.
+  class: Java class to instantiate.
+  
+-->
+<!ELEMENT extension (configure)*>
+<!ATTLIST extension
+  name CDATA #REQUIRED
+  class CDATA #REQUIRED
 >
 
 <!-- =======================================================
@@ -295,7 +347,7 @@ of an application (or another library).  An application can
 be thought of as a specialized kind of library.
 
 -->
-<!ELEMENT library-specification (description*, property*, (page|component-alias|service|library)*)>
+<!ELEMENT library-specification %library-content;>
 <!ATTLIST library-specification
 >
 
@@ -378,11 +430,14 @@ Attributes:
 
 <!-- =======================================================
 Element: property
-Contained by: application, component-specification, page-specification
+Contained by: application, library-specification, component-specification, page-specification
 
 Defines a key/value pair associated with the application or component specification.  Properties
 are used to capture information that doesn't fit into the DTD.  The value for the property is
 the PCDATA wrapped by the property tag (which is trimmed of leading and trailing whitespace).
+
+This should not be confused with several other tags which are used to set JavaBeans properties
+of various objects.
 -->
 <!ELEMENT property (#PCDATA)>
 <!ATTLIST property
@@ -478,7 +533,7 @@ and String.  Additional types will likely be added in the future.
 
 <!ELEMENT static-value (#PCDATA)>
 <!ATTLIST static-value
-  type (boolean|int|double|String) "String"
+  type %static-value-type;
 >
 
 <!-- =======================================================

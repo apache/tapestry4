@@ -31,6 +31,7 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.BindingSpecification;
@@ -78,7 +79,7 @@ public class SpecificationParserTest extends TestCase
 
         InputStream input = getClass().getResourceAsStream(simpleName);
 
-        return parser.parseApplicationSpecification(input, simpleName);
+        return parser.parseApplicationSpecification(input, simpleName, new ResourceResolver(this));
     }
     
     /** @since 2.2 **/
@@ -89,7 +90,7 @@ public class SpecificationParserTest extends TestCase
 
         InputStream input = getClass().getResourceAsStream(simpleName);
 
-        return parser.parseLibrarySpecification(input, simpleName);
+        return parser.parseLibrarySpecification(input, simpleName, new ResourceResolver(this));
     }
         
     private void checkList(String propertyName, String[] expected, List actual)

@@ -41,6 +41,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Category;
 import org.apache.log4j.Priority;
 
+import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.util.StringSplitter;
@@ -435,7 +436,7 @@ abstract public class ApplicationServlet extends HttpServlet
         {
             SpecificationParser parser = new SpecificationParser();
 
-            return parser.parseApplicationSpecification(stream, path);
+            return parser.parseApplicationSpecification(stream, path,  new ResourceResolver(this));
         }
         catch (DocumentParseException ex)
         {

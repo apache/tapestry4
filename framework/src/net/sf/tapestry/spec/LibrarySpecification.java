@@ -25,9 +25,13 @@
 
 package net.sf.tapestry.spec;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import net.sf.tapestry.INamespace;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.BasePropertyHolder;
 
@@ -43,6 +47,13 @@ import net.sf.tapestry.util.BasePropertyHolder;
 
 public class LibrarySpecification extends BasePropertyHolder
 {
+    /**
+     *  Resource resolver (used to instantiate extensions).
+     * 
+     **/
+    
+    private IResourceResolver _resolver;
+    
     /**
      *  Map of page name to page specification path.
      * 
@@ -73,7 +84,21 @@ public class LibrarySpecification extends BasePropertyHolder
     private String _dtdVersion;
 
     private String _description;
-    
+
+    /**
+     *  Map of extension name to {@link ExtensionSpecification}.
+     * 
+     **/
+
+    private Map _extensions;
+
+    /**
+     *  Map of extension name to Object for instantiated extensions.
+     * 
+     **/
+
+    private Map _instantiatedExtensions;
+
     public String getLibrarySpecificationPath(String id)
     {
         return (String) get(_libraries, id);
@@ -93,7 +118,8 @@ public class LibrarySpecification extends BasePropertyHolder
             _libraries = new HashMap();
 
         if (_libraries.containsKey(id))
-            throw new IllegalArgumentException(Tapestry.getString("LibrarySpecification.duplicate-child-namespace-id", id));
+            throw new IllegalArgumentException(
+                Tapestry.getString("LibrarySpecification.duplicate-child-namespace-id", id));
 
         _libraries.put(id, path);
     }
@@ -130,7 +156,8 @@ public class LibrarySpecification extends BasePropertyHolder
             _components = new HashMap();
 
         if (_components.containsKey(alias))
-            throw new IllegalArgumentException(Tapestry.getString("LibrarySpecification.duplicate-component-alias", alias));
+            throw new IllegalArgumentException(
+                Tapestry.getString("LibrarySpecification.duplicate-component-alias", alias));
 
         _components.put(alias, path);
     }
@@ -185,7 +212,7 @@ public class LibrarySpecification extends BasePropertyHolder
 
         return map.get(key);
     }
-  
+
     /**
      * 
      *  Returns the documentation for this library..
@@ -210,7 +237,6 @@ public class LibrarySpecification extends BasePropertyHolder
         _description = description;
     }
 
-    
     public String getDTDVersion()
     {
         return _dtdVersion;
@@ -223,10 +249,110 @@ public class LibrarySpecification extends BasePropertyHolder
      * 
      * 
      **/
-    
+
     public void setDTDVersion(String dtdVersion)
     {
         _dtdVersion = dtdVersion;
-    }    
-   
+    }
+
+    /**
+     *  Returns a Map of extensions; key is extension name, value is
+     *  {@link net.sf.tapestry.spec.ExtensionSpecification}.
+     *  May return null.  The returned Map is immutable.
+     * 
+     **/
+
+    public Map getExtensionSpecifications()
+    {
+        if (_extensions == null)
+            return null;
+
+        return Collections.unmodifiableMap(_extensions);
+    }
+
+    /**
+     *  Adds another extension specification.
+     * 
+     *  @throws IllegalArgumentException if an extension with the given name already exists.
+     * 
+     **/
+
+    public void addExtensionSpecification(String name, ExtensionSpecification extension)
+    {
+        if (_extensions == null)
+            _extensions = new HashMap();
+
+        if (_extensions.containsKey(name))
+            throw new IllegalArgumentException(
+                Tapestry.getString("LibrarySpecification.duplicate-extension-name", this, name));
+
+        _extensions.put(name, extension);
+    }
+
+    /**
+     *  Returns a sorted List of the names of all extensions.  May return the empty list,
+     *  but won't return null.
+     * 
+     **/
+
+    public List getExtensionNames()
+    {
+        return sortedKeys(_instantiatedExtensions);
+    }
+
+    /**
+     *  Returns the named ExtensionSpecification, or null if it doesn't exist.
+     * 
+     **/
+
+    public ExtensionSpecification getExtensionSpecification(String name)
+    {
+        if (_extensions == null)
+            return null;
+
+        return (ExtensionSpecification) _extensions.get(name);
+    }
+
+    /**
+     *  Returns an instantiated extension.  Extensions are created as needed and
+     *  cached for later use.
+     * 
+     *  @throws IllegalArgumentException if no extension specification exists for the
+     *  given name.
+     * 
+     **/
+
+    public synchronized Object getExtension(String name)
+    {
+        if (_instantiatedExtensions == null)
+            _instantiatedExtensions = new HashMap();
+
+        Object result = _instantiatedExtensions.get(name);
+
+        if (result == null)
+        {
+            ExtensionSpecification spec = getExtensionSpecification(name);
+
+            if (spec == null)
+                throw new IllegalArgumentException(
+                    Tapestry.getString("LibrarySpecification.no-such-extension", this, name));
+
+            result = spec.instantiateExtension(_resolver);
+
+            _instantiatedExtensions.put(name, result);
+        }
+
+        return result;
+    }
+    
+    public IResourceResolver getResourceResolver()
+    {
+        return _resolver;
+    }
+
+    public void setResourceResolver(IResourceResolver resolver)
+    {
+        _resolver = resolver;
+    }
+
 }
