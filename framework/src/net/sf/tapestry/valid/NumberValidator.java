@@ -54,6 +54,8 @@ public class NumberValidator extends BaseValidator
     private Number _minimum;
     private Number _maximum;
 
+    private String _scriptPath = "/net/sf/tapestry/valid/NumberValidator.script";
+
     private static Decorator numberAdaptors = new Decorator();
 
     private static abstract class NumberAdaptor
@@ -72,11 +74,6 @@ public class NumberValidator extends BaseValidator
             Comparable lc = (Comparable) left;
 
             return lc.compareTo(right);
-        }
-
-        public String getClientRegexpExpression()
-        {
-            return "^\\w*((+|-)?\\w*\\d*)\\w*$";
         }
     }
 
@@ -117,12 +114,7 @@ public class NumberValidator extends BaseValidator
         public Number parse(String value)
         {
             return new Float(value);
-        }
-        
-//        public String getClientRegexpExpression()
-//        {
-//            return "^\\w*((+|-)?\\w*\\d*(\\.\\d*)\\w*$";
-//        }        
+        }      
     }
 
     private static class DoubleAdaptor extends FloatAdaptor
@@ -313,8 +305,6 @@ public class NumberValidator extends BaseValidator
 
         NumberAdaptor adaptor = getAdaptor(field);
 
-        symbols.put("formatExpression", adaptor.getClientRegexpExpression());
-
         symbols.put("formatMessage", getString("invalid-numeric-format", locale, displayName));
 
         if (_minimum != null || _maximum != null)
@@ -323,7 +313,7 @@ public class NumberValidator extends BaseValidator
             symbols.put("rangeMessage", buildRangeMessage(displayName, locale));
         }
 
-        processValidatorScript("/net/sf/tapestry/valid/NumberValidator.script", cycle, field, symbols);
+        processValidatorScript(_scriptPath, cycle, field, symbols);
     }
 
     private String buildRangeMessage(String displayName, Locale locale)
@@ -335,6 +325,31 @@ public class NumberValidator extends BaseValidator
             return getString("number-too-small", locale, displayName, _minimum);
 
         return getString("number-too-large", locale, displayName, _maximum);
+    }
+
+    /**
+     *  @since 2.2
+     * 
+     **/
+    
+    public String getScriptPath()
+    {
+        return _scriptPath;
+    }
+
+    /**
+     *  Allows a developer to use the existing validation logic with a different client-side
+     *  script.  This is often sufficient to allow application-specific error presentation
+     *  (perhaps by using DHTML to update the content of a &lt;span&gt; tag, or to use
+     *  a more sophisticated pop-up window than <code>window.alert()</code>).
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public void setScriptPath(String scriptPath)
+    {
+        _scriptPath = scriptPath;
     }
 
 }

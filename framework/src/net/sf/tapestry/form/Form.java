@@ -451,36 +451,42 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
                 if (buffer == null)
                     buffer = new StringBuffer(200);
 
-                buffer.append("function ");
+                buffer.append("\nfunction ");
                 buffer.append(compositeName);
                 buffer.append("()\n{");
 
                 List l = (List) value;
                 int count = l.size();
+               
+                
                 for (int j = 0; j < count; j++)
                 {
                     String functionName = (String) l.get(j);
 
-                    if (!combineWithAnd)
-                        buffer.append("\n  ");
+                    if (j > 0)
+                    {
+                        
+                        if (combineWithAnd)
+                            buffer.append(" &&");
+                        else
+                            buffer.append(";");
+                    }
 
-                    if (j == 0 && combineWithAnd)
-                        buffer.append("\n  return ");
+                    buffer.append("\n  ");
 
-                    if (j > 0 && combineWithAnd)
-                        buffer.append(" && ");
-
+                    if (combineWithAnd)
+                    {
+                        if (j == 0)
+                            buffer.append("return ");
+                        else
+                            buffer.append("  ");
+                    }
+    
                     buffer.append(functionName);
                     buffer.append("()");
-
-                    // If combining normally, or on the very last
-                    // name, add a semicolon to end the statement.
-
-                    if (j + 1 == count || !combineWithAnd)
-                        buffer.append(';');
                 }
 
-                buffer.append("\n}\n\n");
+                buffer.append(";\n}\n\n");
 
                 finalFunctionName = compositeName;
             }

@@ -96,6 +96,10 @@ public class StringValidator extends BaseValidator
 
     private int _minimumLength;
 
+    /** @since 2.2 **/
+    
+    private String _scriptPath = "/net/sf/tapestry/valid/StringValidator.script";
+
     public StringValidator()
     {
     }
@@ -171,7 +175,32 @@ public class StringValidator extends BaseValidator
                 "minimumLengthMessage",
                 getString("field-too-short", locale, Integer.toString(_minimumLength), displayName));
 
-        processValidatorScript("/net/sf/tapestry/valid/StringValidator.script", cycle, field, symbols);
+        processValidatorScript(_scriptPath, cycle, field, symbols);
     }
+    
+    /**
+     *  @since 2.2
+     * 
+     **/
+    
+    public String getScriptPath()
+    {
+        return _scriptPath;
+    }
+
+    /**
+     *  Allows a developer to use the existing validation logic with a different client-side
+     *  script.  This is often sufficient to allow application-specific error presentation
+     *  (perhaps by using DHTML to update the content of a &lt;span&gt; tag, or to use
+     *  a more sophisticated pop-up window than <code>window.alert()</code>).
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public void setScriptPath(String scriptPath)
+    {
+        _scriptPath = scriptPath;
+    }    
 
 }
