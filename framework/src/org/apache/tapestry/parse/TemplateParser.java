@@ -938,7 +938,7 @@ public class TemplateParser
             if (jwcId == null)
                 jwcId = _idAllocator.allocateId("$" + simpleType);
 
-            allowBody = _delegate.getAllowBody(libraryId, simpleType);
+            allowBody = _delegate.getAllowBody(libraryId, simpleType, startLocation);
 
         }
         else
@@ -963,7 +963,7 @@ public class TemplateParser
                             jwcId),
                         startLocation);
 
-                allowBody = _delegate.getAllowBody(jwcId);
+                allowBody = _delegate.getAllowBody(jwcId, startLocation);
 
             }
         }

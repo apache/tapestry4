@@ -1206,11 +1206,12 @@ public final class Tapestry
 
     public static ApplicationRuntimeException createNoSuchComponentException(
         IComponent component,
-        String id)
+        String id,
+        Location location)
     {
         return new ApplicationRuntimeException(
             getString("no-such-component", component.getExtendedId(), id),
-            component);
+            component, location, null);
     }
 
     /** @since 2.4 **/

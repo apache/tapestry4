@@ -113,7 +113,6 @@ public abstract class PageRecorder implements IPageRecorder
      **/
 
     public boolean isDirty()
-    
     {
         return _dirty;
     }
@@ -244,7 +243,11 @@ public abstract class PageRecorder implements IPageRecorder
             }
             catch (Throwable t)
             {
-                throw new RollbackException(component, propertyName, storedValue, t);
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString(
+                        "PageRecorder.unable-to-rollback",
+                        new Object[] { propertyName, component, storedValue, t.getMessage()}),
+                    t);
             }
         }
     }
