@@ -1,0 +1,117 @@
+<chapter id="components">
+  	<title>Creating Components</title>
+  	<section id="components-intro">
+  		<title>Introduction</title>
+  		<para>
+  		One of the major features of Tapestry, that makes complex web development easier, is the ability to 
+  		create custom components that can be reused across the application (or in fact, in other applications, 
+  		via the use of Libraries)</para>
+  		
+  		<para>Components are similar to Pages, in that they can have an HTML template, 
+  		a specification and a Java object. However there is a crucial difference - components can expose properties, whereas Pages cannot.
+  		Other than this, components take the same form. They consist of an HTML template (optional), component specification and java object.
+  		The java object "backing" the component typically derives from AbstractComponent.  AbstractComponent 
+  		in turn implements IRender, which simply renders all components that are declared within the component specification.
+		</para>
+  	</section>
+  	
+  	<section id="components-example">
+  		<title>Building an Example</title>
+		<para>
+		Setting aside the HTML template for the moment, let's look at the component specification. 
+		This will be familiar to you now from previous examples, apart from the property declarations at the top.
+		</para>
+		
+		<para>
+		The sample below is for a tutorial component, called <emphasis>ArrayViewer</emphasis>. 
+		This component can take any Java array, 
+		and render it as an HTML table.  In real applications, the same can be done using alternative components that 
+		exist in the framework. This example exists to show simply how easy it is to build a component.</para>
+		
+		<para>
+		The example also provides for a custom rendered, whose interface extends from IRender.
+		By the end of this example, you should have learnt the basisc of building a component with various properties.
+		</para>
+		
+		<para>First, we shall define the HTML template:</para>
+		<figure>
+			<title>HTML for example component</title>
+			<programlisting>
+<table border=0 cellspacing=0>
+	<span jwcid="heading"/>
+	<span jwcid="elements">
+	<span jwcid="row"/>
+	</span>
+</table>
+			</programlisting>				
+		</figure>
+
+This template defines a table skeleton, where the intention is to enable the rendering of headings and row data to be customized (optionally) by the component user.
+
+Now for the component specification:
+
+<parameter name="source" class="java.util.Collection"
+direction="in"/>
+<parameter name="renderer"
+class="xyz.RowRenderer"
+direction="in"/>
+
+(OTHER COMPONENTS HERE)
+
+The <vaname>parameter</varname> declarations define the source data (which is required) and an optional renderer instance.
+
+The source data is expected to be a Collection of array objects<footnote><p>This example is intentionally simple and does not check to see if each "row" of data</p></footnote>.
+
+The renderer interface (for the component) is expressive enough that it can be used to both render the heading and row data for the table:
+
+public void RowRenderer {
+void setRowData(Object[] row);
+void renderHeading();
+void renderRow();
+}
+
+The ArrayViewer component:
+
+<INSERT COMPONENT CODE HERE>
+
+The Java code for the component contains getters/setters for the parameters, that is, somewhere where the parameter values can be stored. It also provides logic to generate the data model that the RowRenderer implementation will use and of course the code that makes use of the renderer:
+
+// getters and setters for source
+// same for renderer
+// code for model generation
+// call renderer
+// define the data model interface
+// define a default renderer
+// declare instance of default renderer
+
+Finally, we should modify the application specification, to make the component available using a shorter name:
+
+<!!>
+
+As you can see, the implementation is very simple. All the component itself has to do is take the supplied input data, and give it piece by piece to the renderer.  Tapestry takes care of binding the source values, and calling the ArrayViewer components renderComponent method at the right time.
+
+In order to view this component, we need a page to put it on. One is defined here:
+
+<HTML template here>
+<simple spec here, with NO custom renderer>
+<simple java code, to return some static data, at least 5 rows>
+
+Note that in the component specification, we are able to use a shortened name for the new component. This is because in this tutorial, the Appliation specification had added to it a component alias. If this was not the case, the full package path to the component would also have to be specified.
+
+(INSERT SHOT HERE)
+
+
+
+		
+		
+		
+  	</section>
+  	
+  	<section id="components-events">
+  		<title>Handling Events</title>
+  	</section>
+  	
+  	<section id="components-rendering">
+  		<title>Rendering</title>
+  	</section>
+</chapter>
