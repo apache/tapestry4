@@ -240,6 +240,9 @@ NextGen) be released as version number 3.0.
   <action type="fix" dev="HLS" fixes-bug="28010">
      ExpressionBinding optimizes expressions incorrectly  	
   </action>
+  <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp">
+     NPE in org.apache.tapestry.form.LinkSubmit.
+  </action>
 
  </release>
   
