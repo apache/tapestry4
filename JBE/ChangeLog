@@ -1,5 +1,10 @@
 * Dec 11 2000 hship
 
+More cleanups and improvements; support some additional user-define pre- and post-
+targets.
+
+* Dec 11 2000 hship
+
 Make use of the Make $(call) function to simplify/improve the makefiles.
 
 * Nov 20 2000 hship

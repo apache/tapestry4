@@ -39,6 +39,11 @@ compile: setup-catalogs
 copy-resources: setup-catalogs
 	@$(RECURSE) POST_SETUP=t inner-copy-resources
 	
+# Optimization rule used by Jar.mk to avoid recusively invoking Make twice.
+
+compile-and-copy-resources: setup-catalogs
+	@$(RECURSE) POST_SETUP=t inner-compile inner-copy-resources
+
 # Rule to force a rebuild of just the catalogs
 
 catalog: initialize
@@ -87,7 +92,7 @@ FINAL_RMIC_OPT = $(strip \
 	$(LOCAL_RMIC_OPT) \
 	$(RMIC_OPT))
 	
-inner-compile: $(MOD_JAVA_STAMP_FILE) $(RMI_STAMP_FILE)
+inner-compile: pre-compile $(MOD_JAVA_STAMP_FILE) $(RMI_STAMP_FILE) post-compile
 	@$(TOUCH) $(DUMMY_FILE)
 	
 inner-copy-resources: $(MOD_META_STAMP_FILE) $(RESOURCE_STAMP_FILE)
@@ -254,3 +259,5 @@ initialize: setup-jbe-util
 .PHONY: compile copy-resources javadoc
 .PHONY: setup-jbe-util
 .PHONY: inner-setup-catalogs
+.PHONY: pre-compile post-compile
+.PHONY: compile-and-copy-resources

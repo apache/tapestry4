@@ -49,22 +49,26 @@ local-initialize: jar-initialize
 jar-initialize:
 	@$(MKDIRS) $(MOD_CLASS_DIR) $(MOD_META_INF_DIR)
 
-# To create a jar, you need to get everything compiled and copy over
+# To create a jar, you need to get everything compiled and copied over
 # all resources
 
-jar: compile copy-resources $(JAR_FILE) local-post-jar
+jar: $(JAR_FILE) local-post-jar post-jar
+
+post-jar: local-post-jar
+
+pre-jar: local-pre-jar
 
 # Build the Jar file by compiling into it everything in the classes
 # directory.
 
-$(MOD_DIRTY_JAR_STAMP_FILE):: compile copy-resources 
+$(MOD_DIRTY_JAR_STAMP_FILE):: compile-and-copy-resources 
 
-$(JAR_FILE):: compile copy-resources local-pre-jar
+$(JAR_FILE):: local-pre-jar pre-jar
 
 # local-pre-jar can perform any final changes to the build directory
 # before it is wrapped up as a Jar file
 
-local-pre-jar: compile copy-resources
+local-pre-jar: $(MOD_DIRTY_JAR_STAMP_FILE)
 
 # local-post-jar may be implemented to perform additional work on
 # the jar file, such as signing it.
@@ -104,9 +108,9 @@ endif
 local-install: jar-install
 
 .PHONY: jar install initialize 
-.PHONY: default
+.PHONY: default post-jar local-post-jar
 
 # Additional rules that can be implemented elsewhere
 
-.PHONY: local-initialize local-pre-jar local-post-jar local-install
+.PHONY: local-initialize local-pre-jar local-post-jar local-install pre-jar
 

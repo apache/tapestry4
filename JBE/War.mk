@@ -58,7 +58,7 @@ war-initialize:
 # all resources.  It's still a Jar file, even though the extension is
 # different.
 
-web-application: compile copy-resources \
+web-application: compile-and-copy-resources \
 	copy-meta-resources copy-context-resources \
 	$(WAR_LIB_STAMP_FILE) local-web-application
 
