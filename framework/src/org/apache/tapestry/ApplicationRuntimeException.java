@@ -57,7 +57,11 @@ package org.apache.tapestry;
 
 /**
  *  General wrapper for any exception (normal or runtime) that may occur during
- *  a request cycle.
+ *  runtime processing for the application.  This is exception is used
+ *  when the intent is to communicate a low-level failure to the user or
+ *  developer; it is not expected to be caught.  The {@link #getRootCause() rootCause}
+ *  property is a <em>nested</em> exception (Tapestry supported this concept
+ *  long before the JDK did).
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -67,12 +71,12 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
 {
     private Throwable _rootCause;
     private transient ILocation _location;
-    private IComponent _component;
+    private transient Object _component;
 
-	public ApplicationRuntimeException(IComponent component, Throwable rootCause)
-	{
-		this(rootCause.getMessage(), component, null, rootCause);
-	}
+    public ApplicationRuntimeException(Object component, Throwable rootCause)
+    {
+        this(rootCause.getMessage(), component, null, rootCause);
+    }
 
     public ApplicationRuntimeException(Throwable rootCause)
     {
@@ -88,20 +92,20 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
     {
         this(message, null, null, rootCause);
     }
-    
+
     public ApplicationRuntimeException(String message, IComponent component)
     {
-    	this(message, component, null, null);
+        this(message, component, null, null);
     }
 
-    public ApplicationRuntimeException(String message, IComponent component, Throwable ex)
+    public ApplicationRuntimeException(String message, Object component, Throwable ex)
     {
-    	this(message, component, null, ex);
+        this(message, component, null, ex);
     }
-    
+
     public ApplicationRuntimeException(
         String message,
-        IComponent component,
+        Object component,
         ILocation location,
         Throwable rootCause)
     {
@@ -128,7 +132,7 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
         return _location;
     }
 
-    public IComponent getComponent()
+    public Object getComponent()
     {
         return _component;
     }

@@ -80,7 +80,7 @@ public class BindingException extends ApplicationRuntimeException
 
     public BindingException(
         String message,
-        IComponent component,
+        Object component,
         IBinding binding,
         Throwable rootCause)
     {
@@ -89,7 +89,7 @@ public class BindingException extends ApplicationRuntimeException
 
     public BindingException(
         String message,
-        IComponent component,
+        Object component,
         ILocation location,
         IBinding binding,
         Throwable rootCause)

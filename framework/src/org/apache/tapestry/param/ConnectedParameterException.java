@@ -71,13 +71,12 @@ import org.apache.tapestry.ILocation;
 
 public class ConnectedParameterException extends ApplicationRuntimeException
 {
-    private transient IComponent _component;
     private String _parameterName;
     private String _propertyName;
 
     public ConnectedParameterException(
         String message,
-        IComponent component,
+        Object component,
         String parameterName,
         String propertyName)
     {
@@ -86,7 +85,7 @@ public class ConnectedParameterException extends ApplicationRuntimeException
 
     public ConnectedParameterException(
         String message,
-        IComponent component,
+        Object component,
         String parameterName,
         String propertyName,
         Throwable rootCause)
@@ -98,7 +97,7 @@ public class ConnectedParameterException extends ApplicationRuntimeException
 
     public ConnectedParameterException(
         String message,
-        IComponent component,
+        Object component,
         String parameterName,
         String propertyName,
         ILocation location,
@@ -106,14 +105,8 @@ public class ConnectedParameterException extends ApplicationRuntimeException
     {
         super(message, location, rootCause);
 
-        _component = component;
         _parameterName = parameterName;
         _propertyName = propertyName;
-    }
-
-    public IComponent getComponent()
-    {
-        return _component;
     }
 
     public String getParameterName()
