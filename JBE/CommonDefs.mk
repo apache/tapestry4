@@ -60,7 +60,7 @@ MOD_RMI_CLASS_CATALOG = $(MOD_BUILD_DIR)/rmi-class-catalog
 # to tame things under Windows.  We don't want or need any builtin
 # rules.
 
-RECURSE := $(MAKE) --unix --no-builtin-rules
+RECURSE := $(MAKE) --unix --no-builtin-rules --no-print-directory
 
 # Find out what out platform is.  Must set a value for SITE_PLATFORM.
 # The LocalConfig can set other things (such as locations of tools,
