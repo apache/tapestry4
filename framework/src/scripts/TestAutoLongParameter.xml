@@ -27,7 +27,7 @@
     </assert-output>	
   	
   	<assert-output name="Link">
-			href="/c35/app?service=direct/0/Home/c.l"
+			href="/c35/app?service=direct%2F0%2FHome%2Fc.l"
   	</assert-output>
   	
   </request>

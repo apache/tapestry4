@@ -40,7 +40,7 @@ Active page names: []
 			
 		<assert-output name="Change Message Link">
 <![CDATA[		
-/c6/app?service=direct/0/Home/$DirectLink		
+/c6/app?service=direct%2F0%2FHome%2F%24DirectLink	
 ]]>
 		</assert-output>				
 		
@@ -130,7 +130,7 @@ Active page names: [Home]
 			
 		<assert-output name="Change Message Link">
 <![CDATA[		
-/c6/app?service=direct/1/Two/$Nested.$DirectLink		
+/c6/app?service=direct%2F1%2FTwo%2F%24Nested.%24DirectLink	
 ]]>
 		</assert-output>				
 
@@ -256,7 +256,7 @@ StringHolder value: []
  		
  		<assert-output name="Create Link">
 <![CDATA[
-/c6/app?service=direct/1/Four/$DirectLink
+/c6/app?service=direct%2F1%2FFour%2F%24DirectLink
 ]]>	
 		</assert-output>
 		

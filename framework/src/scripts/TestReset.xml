@@ -51,7 +51,7 @@ The start of the JUnit test suite: JUnit Simple Application.
 	
 		<assert-output name="Reset Link">
 <![CDATA[		
-<a href="/mock/app?service=reset/Two">reset caching</a>
+<a href="/mock/app?service=reset%2FTwo">reset caching</a>
 ]]>
 		</assert-output>
 		  		

@@ -76,7 +76,7 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="DirectLink switch URL">
 <![CDATA[		
-href="/mock/app?service=direct/0/Assets/switch"
+href="/mock/app?service=direct%2F0%2FAssets%2Fswitch"
 ]]>
 		</assert-output>	
 	</request>
@@ -96,7 +96,7 @@ href="/mock/app?service=direct/0/Assets/switch"
 		
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
-href="/mock/app?service=direct/0/Assets/switch"
+href="/mock/app?service=direct%2F0%2FAssets%2Fswitch"
 ]]>
 		</assert-output>							
 	</request>	
@@ -118,7 +118,7 @@ Zees ees nawt cheeze!
 
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
-href="/mock/app?service=direct/0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=SHello"
+href="/mock/app?service=direct%2F0%2FHome%2Flink&amp;sp=2&amp;sp=d3.5&amp;sp=SHello"
 ]]>
 		</assert-output>			
 	</request>

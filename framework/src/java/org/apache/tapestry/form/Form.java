@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.tapestry.AbstractComponent;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IDirect;
@@ -567,7 +568,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         IEngine engine = cycle.getEngine();
         IEngineService service = engine.getService(serviceName);
-        
+
         return service.getLink(cycle, parameter);
     }
 
@@ -604,7 +605,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         writer.attribute("type", "hidden");
         writer.attribute("name", name);
 
-        if (id != null && id.length() != 0)
+        if (HiveMind.isNonBlank(id))
             writer.attribute("id", id);
 
         writer.attribute("value", value);
@@ -619,6 +620,11 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             String parameterName)
     {
         String[] values = link.getParameterValues(parameterName);
+
+        // In some cases, there are no values, but a space is "reserved" for the provided name.
+
+        if (values == null)
+            return;
 
         for (int i = 0; i < values.length; i++)
         {
