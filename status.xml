@@ -127,7 +127,8 @@
       <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-255"> Patch for bad translation in ValidationStrings_zh_TW.properties </action>
       <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-251"> Patch for bad translation in ValidationStrings_zh_CN.properties </action>
       <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1"> Fixed incorrect test for enabling rendering of element in FormConditional component. </action>
-      <action type="fix" dev="PF" fixes-bug="TAPESTRY-283"> Fixes missing type attribute of script tag in Body component. </action>
+      <action type="fix" dev="PF" due-to="Markus Wiederkehr" fixes-bug="TAPESTRY-283"> Fixes missing type attribute of script tag in Body component. </action>
+      <action type="fix" dev="PF" due-to="Matthew Mead" fixed-bug="TAPESTRY-284"> Fixes improper engine cleanup when client aborts a request. </action>
       <action type="update" dev="PF"> Build scripts are now Java 1.5 friendly. </action>
     </release>
     <release version="3.0.2" date="Feb 14 2005">
