@@ -15,13 +15,18 @@
 		required="no"
 		direction="custom"/>
 
+	<parameter name="element" 
+		java-type="java.lang.String" 
+		required="no"
+		direction="custom"/>
+
 	<component id="iterRows" type="Foreach">
 		<binding name="source" expression="tableRowsIterator"/>
 		<binding name="value" expression="tableRow"/>
 	</component>
   
 	<component id="informal" type="InheritInformalAny">
-		<static-binding name="element">tr</static-binding>
+		<binding name="element" expression="element"/>
 	</component>
   
 	<component id="wrapped" type="RenderBody"/>

@@ -30,6 +30,16 @@
 		required="no"
 		direction="custom"/>
   
+	<parameter name="arrowUpAsset" 
+		java-type="net.sf.tapestry.IAsset" 
+		required="no"
+		direction="in"/>
+
+	<parameter name="arrowDownAsset" 
+		java-type="net.sf.tapestry.IAsset" 
+		required="no"
+		direction="in"/>
+
 	<parameter name="pagesClass" 
 		java-type="java.lang.String" 
 		required="no"

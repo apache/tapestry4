@@ -32,6 +32,40 @@ import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.contrib.table.model.ITableModelSource;
 
 /**
+ * A low level Table component that renders the pages in the table.
+ * This component must be wrapped by {@link net.sf.tapestry.contrib.table.components.TableView}.
+ * <p>
+ * The component generates a list of pages in the Table centered around the 
+ * current one and allows you to navigate to other pages.
+ * 
+ * <p>
+ * <table border=1 align="center">
+ * <tr>
+ *    <th>Parameter</th>
+ *    <th>Type</th>
+ *    <th>Direction </th>
+ *    <th>Required</th>
+ *    <th>Default</th>
+ *    <th>Description</th>
+ * </tr>
+ *
+ * <tr>
+ *  <td>pagesDisplayed</td>
+ *  <td>int</td>
+ *  <td>in</td>
+ *  <td>no</td>
+ *  <td>7</td>
+ *  <td align="left">Determines the maximum number of pages to be displayed in the page list
+ *      when the table has more than one page.
+ *      <p>For example, if the table has 20 pages, and 10 is the current page,
+ *      pages from 7 to 13 in the page list will be shown if this parameter has 
+ *      a value of 7.
+ *  </td> 
+ * </tr>
+ *
+ * </table> 
+ * 
+ * 
  * @author mindbridge
  * @version $Id$
  *

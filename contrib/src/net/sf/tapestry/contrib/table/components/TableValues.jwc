@@ -10,13 +10,18 @@
 	<description>
 	</description>
   
+	<parameter name="element" 
+		java-type="java.lang.String" 
+		required="no"
+		direction="custom"/>
+
 	<component id="iterColumns" type="Foreach">
 		<binding name="source" expression="tableColumnIterator"/>
 		<binding name="value" expression="tableColumn"/>
 	</component>
   
 	<component id="informal" type="InheritInformalAny">
-		<static-binding name="element">td</static-binding>
+		<binding name="element" expression="element"/>
 	</component>
   
 	<component id="insertValueRenderer" type="Delegator">

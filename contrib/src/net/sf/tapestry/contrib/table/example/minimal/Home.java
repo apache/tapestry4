@@ -35,6 +35,13 @@ import net.sf.tapestry.contrib.table.model.ognl.ExpressionTableColumnModel;
 import net.sf.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableColumn;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableModel;
+import net.sf.tapestry.contrib.table.model.sql.ISqlConnectionSource;
+import net.sf.tapestry.contrib.table.model.sql.ISqlTableDataSource;
+import net.sf.tapestry.contrib.table.model.sql.SimpleSqlConnectionSource;
+import net.sf.tapestry.contrib.table.model.sql.SimpleSqlTableDataSource;
+import net.sf.tapestry.contrib.table.model.sql.SqlTableColumn;
+import net.sf.tapestry.contrib.table.model.sql.SqlTableColumnModel;
+import net.sf.tapestry.contrib.table.model.sql.SqlTableModel;
 import net.sf.tapestry.html.BasePage;
 
 /**
@@ -44,9 +51,22 @@ import net.sf.tapestry.html.BasePage;
  */
 public class Home extends BasePage
 {
+    public Home()
+    {
+		try
+		{
+			Class.forName("org.postgresql.Driver");
+		}
+		catch (ClassNotFoundException e)
+		{
+            // can't happen, can it?
+		}
+    }
+    
     // Return the model of the table
 	public ITableModel getTableModel()
 	{
+        /*
 		// Generate the list of data
 		Locale[] arrLocales = Locale.getAvailableLocales();
         
@@ -66,5 +86,25 @@ public class Home extends BasePage
 
 		// Create the table model and return it
 		return new SimpleTableModel(arrLocales, objColumnModel);
+        */
+        
+        ISqlConnectionSource objConnSrc = 
+            new SimpleSqlConnectionSource("jdbc:postgresql://localhost/testdb", "testdb", "testdb");
+            
+        ISqlTableDataSource objDataSrc = 
+            new SimpleSqlTableDataSource(objConnSrc, "test_table");
+            
+        SqlTableColumnModel objColumnModel = 
+            new SqlTableColumnModel(new SqlTableColumn[] {
+                new SqlTableColumn("language", "Language", true),
+                new SqlTableColumn("country", "Country", true),
+                new SqlTableColumn("variant", "Variant", true),
+                new SqlTableColumn("intvalue", "Integer", true),
+                new SqlTableColumn("floatvalue", "Float", true)
+            });
+        
+        ITableModel objTableModel = new SqlTableModel(objDataSrc, objColumnModel);
+        
+        return objTableModel;
 	}
 }

@@ -15,7 +15,7 @@ public class AbstractTableRowComponent extends AbstractTableViewComponent
 		IRequestCycle objCycle = getPage().getRequestCycle();
 
 		Object objSourceObj =
-			objCycle.getAttribute(ITableRowSource.TABLE_ROW_SOURCE_PROPERTY);
+			objCycle.getAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE);
 		ITableRowSource objSource = (ITableRowSource) objSourceObj;
 
 		if (objSource == null)

@@ -56,6 +56,8 @@ public class ResultSetIterator implements Iterator
 	 */
 	public synchronized boolean hasNext()
 	{
+        if (getResultSet() == null) return false;
+        
 		if (!m_bFetched)
 		{
 			m_bFetched = true;

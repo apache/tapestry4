@@ -35,7 +35,7 @@ package net.sf.tapestry.contrib.table.model;
  */
 public interface ITableRowSource
 {
-    final static String TABLE_ROW_SOURCE_PROPERTY = "net.sf.tapestry.contrib.table.model.ITableRowSource";
+    final static String TABLE_ROW_SOURCE_ATTRIBUTE = "net.sf.tapestry.contrib.table.model.ITableRowSource";
 
 	/**
 	 * Method getTableRow

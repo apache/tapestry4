@@ -62,7 +62,7 @@ import net.sf.tapestry.contrib.table.model.ITableModelSource;
  *  <td>yes</td>
  *  <td>&nbsp;</td>
  *  <td align="left">The TableModel to be used to render the table. 
- *      This is typically invoked only once at the beginning and then the 
+ *      This binding is typically used only once at the beginning and then the 
  *      component stores the model in the session state. 
  *      <p>If you want the Table to read the model every time you can use
  *      a session state manager such as 
@@ -123,12 +123,21 @@ import net.sf.tapestry.contrib.table.model.ITableModelSource;
  * </tr>
  *
  * <tr>
- *  <td>pagesClass</td>
- *  <td>String</td>
+ *  <td>arrowUpAsset</td>
+ *  <td>{@link net.sf.tapestry.IAsset}</td>
  *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
- *  <td align="left">The CSS class of the page list.</td> 
+ *  <td align="left">The image to use to describe a column sorted in an ascending order.</td> 
+ * </tr>
+ *
+ * <tr>
+ *  <td>arrowDownAsset</td>
+ *  <td>{@link net.sf.tapestry.IAsset}</td>
+ *  <td>in</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td align="left">The image to use to describe a column sorted in a descending order.</td> 
  * </tr>
  *
  * <tr>
