@@ -11,7 +11,7 @@
      | environment.
    -->
 
-  <mbean code="org.jboss.jetty.JettyService" name="jboss.web:service=JBossWeb">
+  <mbean code="org.jboss.jetty.JettyService" name="jboss.web:service=WebServer">
 
     <!-- ================================================================= -->
     <!-- Your webdefault.xml file - The default settings for every webapp  -->
@@ -36,6 +36,15 @@
     <!-- ================================================================== -->
 
     <attribute name="Java2ClassLoadingCompliance">true</attribute>
+
+    <!-- ================================================================= -->
+    <!-- If you require JAAS authentication, configure the name of the     -->
+    <!-- attribute in which you expect to find the JAAS active subject:    -->
+    <!--                                                                   -->
+    <!-- Commenting out this configuration will disable JAAS support       -->
+    <!-- ================================================================= -->
+
+    <attribute name="SubjectAttributeName">j_subject</attribute>
 
     <!-- ================================================================= -->
     <!-- Configuring Jetty. The XML fragment contained in the              -->
@@ -126,6 +135,7 @@
     </Call>
   </Call>
 
+
        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
        <!-- Add and configure a NIO HTTP listener to port 8888              -->
        <!-- This listener should be used to replace the standard HTTP       -->
@@ -159,96 +169,55 @@
 
        <!-- ======================================================= -->
        <!-- New Distributed Session Manager                         -->
-       <!-- (This will all soon be published via JMX interface too) -->
        <!-- ======================================================= -->
-
-       <Set name="DistributableHttpSessionManagerClass">org.mortbay.j2ee.session.Manager</Set>
-
-      <!-- THESE ARE ALTERNATIVES - uncomment one and it will be used as the default -->
-
-      <!-- this interceptor stack is for an EXTENDED session using JavaGroups -->
-      <!-- you will need the 'all' config -->
-      <Set name="DistributableHttpSessionStoreClass">org.mortbay.j2ee.session.JGStore</Set>
-      <Set name="DistributableHttpSessionInterceptorClasses">
-       <New class="java.util.ArrayList">
-        <Call name="add"><Arg>org.mortbay.j2ee.session.ValidationInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.mortbay.j2ee.session.TypeCheckingInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.mortbay.j2ee.session.BindingInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.mortbay.j2ee.session.MarshallingInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.mortbay.j2ee.session.SynchronizationInterceptor</Arg></Call>
-       </New>
-      </Set>
-     <!--
-     -->
-
-     <!-- this interceptor stack is for an EXTENDED session using a CMP EJB -->
-     <!-- you will need to setup the dds in jbossweb-ejbs.jar, according to your installation -->
-     <!--
-     <Set name="DistributableHttpSessionStoreClass">org.mortbay.j2ee.session.CMPStore</Set>
-      <Set name="DistributableHttpSessionInterceptorClasses">
-       <New class="java.util.ArrayList">
-        <Call name="add"><Arg>org.mortbay.j2ee.session.TransactionInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.jboss.jetty.session.SecurityInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.mortbay.j2ee.session.ValidationInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.mortbay.j2ee.session.TypeCheckingInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.mortbay.j2ee.session.BindingInterceptor</Arg></Call>
-        <Call name="add"><Arg>org.mortbay.j2ee.session.MarshallingInterceptor</Arg></Call>
-       </New>
-      </Set>
-     -->
-
-      <!-- For testing DistributableHttpSessionManager with Watchdog -->
-      <!--
-       <Set name="Distributable">true</Set>
-      -->
-
-       <!-- ====================================== -->
-       <!-- also needed for distributable sessions -->
-       <!-- ====================================== -->
 
        <!--
        These can be set on a per webapp basis in WEB-INF/jetty-web.xml
        -->
 
-       <!--
-       If someone specifies -1 for their maxInactiveInterval - how
-       long should we REALLY leave the session before GC ? a week,
-       a year, ... (in seconds) - a week
-       -->
-       <Set name="HttpSessionActualMaxInactiveInterval">604800</Set>
+      <Set name="DistributableSessionManagerPrototype">
+       <New class="org.mortbay.j2ee.session.Manager">
+        <Set name="scavengerPeriod">600</Set>
+        <!-- NYI
+        <Set name="workerName">node1</Set>
+        -->
+        <Set name="interceptorStack">
+         <Array type="org.mortbay.j2ee.session.StateInterceptor">
+<!--
+          <Item><New class="org.mortbay.j2ee.session.DebugInterceptor"/></Item>
+-->
+          <Item><New class="org.mortbay.j2ee.session.ValidatingInterceptor"/></Item>
+          <Item><New class="org.mortbay.j2ee.session.TypeCheckingInterceptor"/></Item>
+          <Item><New class="org.mortbay.j2ee.session.BindingInterceptor"/></Item>
+          <Item><New class="org.mortbay.j2ee.session.PublishingInterceptor"/></Item>
+          <Item><New class="org.mortbay.j2ee.session.SubscribingInterceptor"/></Item>
+          <Item><New class="org.mortbay.j2ee.session.SynchronizingInterceptor"/></Item>
+         </Array>
+        </Set>
+        <!-- Put this back in for distributable support under 'all' configuration
+        <Set name="store">
+         <New class="org.mortbay.j2ee.session.JGStore">
+          <Set name="actualMaxInactiveInterval">604800</Set>
+          <Set name="scavengerPeriod">3600</Set>
+          <Set name="scavengerExtraTime">900</Set>
+          <Set name="protocolStack">UDP(mcast_addr=228.8.8.8;mcast_port=45566;ip_ttl=32;ucast_recv_buf_size=16000;ucast_send_buf_size=16000;mcast_send_buf_size=32000;mcast_recv_buf_size=64000;loopback=true):PING(timeout=2000;num_initial_members=3):MERGE2(min_interval=5000;max_interval=10000):FD_SOCK:VERIFY_SUSPECT(timeout=1500):pbcast.STABLE(desired_avg_gossip=20000):pbcast.NAKACK(gc_lag=50;retransmit_timeout=300,600,1200,2400,4800;max_xmit_size=8192):UNICAST(timeout=2000):FRAG(frag_size=8192;down_thread=false;up_thread=false):pbcast.GMS(join_timeout=5000;join_retry_timeout=2000;shun=false;print_local_addr=true):pbcast.STATE_TRANSFER</Set>
+          <Set name="subClusterName">DefaultSubCluster</Set>
+          <Set name="retrievalTimeOut">20000</Set>
+          <Set name="distributionTimeOut">5000</Set>
+          <Set name="distributionMode">GET_ALL</Set>
+         </New>
+        </Set>
+        -->
+       </New>
+      </Set>
 
-       <!--
-       How regularly should we GC locally held distributable sessions ?
-       (in seconds)... - every 10 mins
-       -->
-       <Set name="LocalHttpSessionScavengePeriod">600</Set>
-
-       <!--
-       How regularly should we GC distributable sessions with no
-       locally held counterpart (in seconds)? - 1 hour
-       -->
-       <Set name="DistributableHttpSessionScavengePeriod">3600</Set>
-
-       <!--
-       How much older than it's maxInactiveInterval should the
-       distributable counterpart of a session be, before it is
-       GC-ed by the ditributable-scavenger ? This should always be
-       MORE than the local scavenge period, so that a session is
-       GC-ed locally first.(in seconds) - every 15 mins
-       -->
-       <Set name="DistributableHttpSessionScavengeOffset">900</Set>
+      <!-- For testing the Distributable SessionManager with e.g. Watchdog -->
+      <!--
+      <Set name="forceDistributable">true</Set>
+      -->
 
       </Configure>
      </attribute>
-
-    <!-- ================================================================= -->
-    <!-- If you require JAAS authentication, configure the name of the     -->
-    <!-- attribute in which you expect to find the JAAS active subject:    -->
-    <!--                                                                   -->
-    <!-- Commenting out this configuration will disable JAAS support       -->
-    <!-- ================================================================= -->
-
-    <attribute name="SubjectAttributeName">j_subject</attribute>
 
   </mbean>
 

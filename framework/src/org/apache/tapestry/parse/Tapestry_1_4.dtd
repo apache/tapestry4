@@ -465,7 +465,7 @@ Attributes:
     
 -->
 
-<!ELEMENT property-specification EMPTY>
+<!ELEMENT property-specification (#PCDATA)>
 <!ATTLIST property-specification
   name CDATA #REQUIRED
   type CDATA #IMPLIED
