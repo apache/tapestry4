@@ -172,7 +172,7 @@
   <td>Password:</td><td><input type="password" size="12"/></td>
  </tr>
  <tr align="right">
-  <td>&nbsp;</td><td><input type="submit" value="Login"/></td>
+  <td colspan="2"><input type="submit" value="Login"/></td>
  </tr>
 </form>
 </table>
@@ -181,16 +181,16 @@
 &lt;form jwcid="<span class="jwcid">loginForm</span>"&gt;
  &lt;table cellpadding="4"&gt;
   &lt;tr&gt;
-   &lt;td>Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" type="text" size="12"/&gt;&lt;/td&gt;
+   &lt;td>Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td>Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" type="password" size="12"/&gt;&lt;/td&gt;
+   &lt;td>Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr align="right"&gt;
-   &lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
+   &lt;td colspan="2"&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
  &lt;/table&gt;
-&lt;form&gt;
+&lt;/form&gt;
 
 
 &lt;component id="<span class="jwcid">loginForm</span>" type="<a href="Form.html">Form</a>"&gt;
@@ -203,6 +203,7 @@
 
 &lt;component id="passwordTextField" type="<a href="TextField.html">TextField</a>"&gt;
    &lt;binding name="value" property-path="visit.password"/&gt;
+   &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
 

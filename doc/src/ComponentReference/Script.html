@@ -3,25 +3,9 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
-<script language="JavaScript" type="text/javascript">
-<!--
-function setFocus() {
-    if (document.forms[0]) {
-        for (i = 0; i < document.forms[0].elements.length; i++) {
-            if (document.forms[0].elements[i].type != "hidden" &&
-                document.forms[0].elements[i].disabled != true) {
-
-                document.forms[0].elements[i].focus();
-                return;
-            }
-        }
-    }	
-}
-//-->
-</script>
 </head>
 
-<body onload="javascript:setFocus();">
+<body>
 <table border="0" cellpadding="4" cellspacing="4" width="100%">
 <tr>
  <td>
@@ -158,16 +142,42 @@ function setFocus() {
 </table>
 
 <pre>
-&lt;span jwcid="<span class="jwcid">setFocusScript</span>"/&gt; 
+&lt;form jwcid="loginForm"&gt;
+ &lt;table cellpadding="4"&gt;
+  &lt;tr&gt;
+   &lt;td>Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" size="12"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td>Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" size="12"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr align="right"&gt;
+   &lt;td colspan="2"&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/table&gt;
+&lt;/form&gt;
+&lt;span jwcid="<span class="jwcid">formFocusScript</span>"/&gt; 
 
 
-&lt;component id="<span class="jwcid">setFocusScript</span>" type="<a href="Script.html">Script</a>"&gt;
-    &lt;static-binding name="script"&gt;/com/mycorp/scripts/SetFoucs.script&lt;/static-binding&gt;
+&lt;component id="loginForm" type="<a href="Form.html">Form</a>"&gt;
+   &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component id="usernameTextField" type="<a href="TextField.html">TextField</a>"&gt;
+   &lt;binding name="value" property-path="visit.username"/&gt;
+&lt;/component&gt;
+
+&lt;component id="passwordTextField" type="<a href="TextField.html">TextField</a>"&gt;
+   &lt;binding name="value" property-path="visit.password"/&gt;
+   &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">formFocusScript</span>" type="<a href="Script.html">Script</a>"&gt;
+    &lt;static-binding name="script"&gt;/com/mycorp/scripts/FormFocus.script&lt;/static-binding&gt;
 &lt;/component&gt;
 
 
 &lt;!-- Sets the focus to the first form element which is not hidden and not disabled. --&gt; 
-&lt;!-- /com/mycorp/scripts/SetFoucs.script --&gt; 
+&lt;!-- /com/mycorp/scripts/FormFocus.script --&gt; 
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
 	"http://tapestry.sf.net/dtd/Script_1_1.dtd"&gt;
