@@ -387,19 +387,13 @@ implements ILifecycle, IValidatingTextField
 		// then we may have identified the default field (which will
 		// automatically receive focus).
 
-		if (rendering && (error | (isRequired() && isNull(getText()))))
+		if (rendering && (error | (isRequired() && Tapestry.isNull(getText()))))
 			addSelect(cycle);
 
 		// That's OK, but an ideal situation would know about non-validating
 		// text fields, and also be able to put the cursor in the
 		// first field, period (even if there are no required or error fields).
 		// Still, this pretty much rocks!
-	}
-
-	private boolean isNull(String value)
-	{
-		return (value == null ||
-			value.trim().length() == 0);
 	}
 
 	private static final String SELECTED_ATTRIBUTE_NAME = 
@@ -457,24 +451,7 @@ implements ILifecycle, IValidatingTextField
 	{
 	    captive = (TextField)getComponent("captive");
 
-		Collection names = getBindingNames();
-		
-		if (names == null)
-			return;
-			
-		Iterator i = names.iterator();
-		
-		while (i.hasNext())
-		{
-			String name = (String)i.next();
-			
-			if (specification.getParameter(name) == null)
-			{
-				IBinding binding = getBinding(name);
-				
-				captive.setBinding(name, binding);
-			}
-		}
+		Tapestry.copyInformalBindings(this, captive);
 	}
 }
 
