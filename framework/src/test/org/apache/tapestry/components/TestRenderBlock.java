@@ -19,7 +19,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;
-import org.easymock.classextension.MockClassControl;
 
 /**
  * Tests for {@link org.apache.tapestry.components.RenderBlock}component.
@@ -59,8 +58,7 @@ public class TestRenderBlock extends HiveMindTestCase
     {
         Creator c = new Creator();
 
-        MockControl bc = MockClassControl.createStrictControl(Block.class);
-        addControl(bc);
+        MockControl bc = newControl(Block.class);
         Block b = (Block) bc.getMock();
 
         RenderBlock rb = (RenderBlock) c.newInstance(RenderBlock.class, new Object[]
@@ -89,8 +87,7 @@ public class TestRenderBlock extends HiveMindTestCase
     {
         Creator c = new Creator();
 
-        MockControl bc = MockClassControl.createStrictControl(Block.class);
-        addControl(bc);
+        MockControl bc = newControl(Block.class);
         Block b = (Block) bc.getMock();
 
         RenderBlock rb1 = (RenderBlock) c.newInstance(RenderBlock.class, new Object[]

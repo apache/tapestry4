@@ -24,7 +24,6 @@ import org.apache.tapestry.engine.EngineServiceLink;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ServiceConstants;
 import org.easymock.MockControl;
-import org.easymock.classextension.MockClassControl;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.EngineServiceLink}.
@@ -142,9 +141,7 @@ public class TestEngineServiceLink extends TapestryTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle rc = (IRequestCycle) control.getMock();
 
-        MockControl contextc = MockClassControl.createStrictControl(RequestContext.class);
-        addControl(contextc);
-
+        MockControl contextc = newControl(RequestContext.class);
         RequestContext context = (RequestContext) contextc.getMock();
 
         rc.getRequestContext();
@@ -174,9 +171,7 @@ public class TestEngineServiceLink extends TapestryTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle rc = (IRequestCycle) control.getMock();
 
-        MockControl contextc = MockClassControl.createStrictControl(RequestContext.class);
-        addControl(contextc);
-
+        MockControl contextc = newControl(RequestContext.class);
         RequestContext context = (RequestContext) contextc.getMock();
 
         rc.getRequestContext();
