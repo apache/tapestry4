@@ -216,8 +216,8 @@ only possible with an application specification.
 	
 </section>  <!-- configuration.deployment-descriptor -->
 
-<section id="configuration.search-path">
-	<title>Configuration Search Path</title>
+<section id="configuration.app-property-source">
+	<title>Application Property Source</title>
 	
 <p>
 Tapestry occasionally must obtain a value for a configuration property.    These configuration
@@ -255,16 +255,19 @@ the search path for configuration properties is:
 </ul>
 
 <p>
-It is expected that some configurations are not defined at any level; those will
+It is expected that some configuration properties are not defined at any level; those will
 return null.
 </p>
 
 
 <p>
-Applications are free to leverage this lookup mechanism as well.  &IEngine; defines
-a propertySource property (of type &IPropertySource;)
-that can be used to perform such lookups.
+Applications are free to leverage this lookup mechanism as well.
 </p>
+
+<fixme author="HLS">
+  Need to reference the  ApplicationPropertySource, GlobalPropertySource and
+  ComponentPropertySource services here.
+</fixme>
 
 <p>
 Applications may also want to change or augment
@@ -278,6 +281,38 @@ some configuration data could be drawn from a database.
   involve a HiveMind contribution, details to be provided.
 </fixme>
 		
+
+</section>  <!-- configuration.app-property-source -->
+    
+<section id="configuration.global-property-source">
+  <title>Global Property Source</title>
+  
+  <p>
+    In some cases, a slightly different property source is used, the global property source. 
+  </p>
+  
+<ul>
+	<li>
+		As an &init-parameter;
+		for the servlet, in the web application deployment descriptor.
+	</li>
+	<li>
+		As an &init-parameter;
+		for the servlet context, also in the web application deployment descriptor.
+	</li>
+	<li>
+		As a JVM system property.
+	</li>
+	<li>
+		Hard-coded "factory" defaults (for some properties). These are accessed as 
+    &HiveMind; symbols.
+	</li>
+</ul>  
+</section> <!-- configuration.global-property-source -->
+
+<section id="configuration.properties">
+  <title>Configuration Properties</title>
+
 <p>
 The following are all the configuration values
 currently used in Tapestry:
@@ -488,7 +523,7 @@ currently used in Tapestry:
 
 	
 	<p>
-	Please see the <link href="localization.html#localization.XXX">template localization discussion</link> 
+	Please see the <link href="localization.html#localization.component-catalog.encoding">message catalog localization discussion</link> 
   for more information.
 	</p>
   </td>
@@ -503,14 +538,13 @@ currently used in Tapestry:
 
 	
 	<p>
-	Please see the <link href="localization.html#localization.XXX">template localization discussion</link> 
+	Please see the <link href="localization.html#localization.template-encoding">template localization discussion</link> 
   for more information.
 	</p>
   </td>
 </tr>
 </table>
-
-</section>  <!-- configuration.search-path -->
+</section>  <!-- configuration.properties -->
 
 <section id="configuration.extensions">
 	<title>Application extensions</title>

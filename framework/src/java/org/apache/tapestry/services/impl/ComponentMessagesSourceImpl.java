@@ -34,11 +34,11 @@ import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.LocalizedNameGenerator;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.INamespace;
-import org.apache.tapestry.engine.DefaultComponentPropertySource;
 import org.apache.tapestry.engine.DefaultNamespacePropertySource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ComponentMessagesSource;
+import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.util.text.LocalizedProperties;
 
 /**
@@ -68,12 +68,9 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private Map _componentCache = new HashMap();
 
-    private IPropertySource _applicationPropertySource;
+    private IPropertySource _globalPropertySource;
 
-    public void setApplicationPropertySource(IPropertySource source)
-    {
-        _applicationPropertySource = source;
-    }
+    private ComponentPropertySource _componentPropertySource;
 
     /**
      * Returns an instance of {@link Properties}containing the properly localized messages for the
@@ -325,13 +322,16 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private String getComponentMessagesEncoding(IComponent component, Locale locale)
     {
-        IPropertySource source = new DefaultComponentPropertySource(component,
-                _applicationPropertySource, locale);
-
-        String encoding = source.getPropertyValue(MESSAGES_ENCODING_PROPERTY_NAME);
+        String encoding = _componentPropertySource.getLocalizedComponentProperty(
+                component,
+                locale,
+                MESSAGES_ENCODING_PROPERTY_NAME);
 
         if (encoding == null)
-            encoding = source.getPropertyValue(TemplateSourceImpl.TEMPLATE_ENCODING_PROPERTY_NAME);
+            encoding = _componentPropertySource.getLocalizedComponentProperty(
+                    component,
+                    locale,
+                    TemplateSourceImpl.TEMPLATE_ENCODING_PROPERTY_NAME);
 
         return encoding;
     }
@@ -339,9 +339,18 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
     private String getNamespaceMessagesEncoding(INamespace namespace, Locale locale)
     {
         IPropertySource source = new DefaultNamespacePropertySource(namespace,
-                _applicationPropertySource, locale);
+                _globalPropertySource, locale);
 
         return source.getPropertyValue(MESSAGES_ENCODING_PROPERTY_NAME);
     }
 
+    public void setGlobalPropertySource(IPropertySource source)
+    {
+        _globalPropertySource = source;
+    }
+
+    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
+    {
+        _componentPropertySource = componentPropertySource;
+    }
 }

@@ -564,7 +564,7 @@ can more efficiently serve up the asset, as a static resource (that just happens
 </p>
 
 <p>
-This behavior is controlled by a pair of <link href="configuration.html#configuration.search-path">configuration properties</link>:
+This behavior is controlled by a pair of <link href="configuration.html#configuration.properties">configuration properties</link>:
 org.apache.tapestry.asset.dir and org.apache.tapestry.asset.URL.
 
 </p>	

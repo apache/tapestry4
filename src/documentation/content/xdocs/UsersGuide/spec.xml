@@ -161,7 +161,7 @@ the injection is just one piece of the behavior defined using the element.
 <p>
 In all of these cases, Tapestry will create a <em>new property</em> at runtime. That is, it will create the accessor method
 (or methods), the instance variables, and any necessary setup or cleanup code automatically.  As with 
-<link href="state#state.page-properties">persistent page properties</link>, you should at most declare <em>abstract</em>
+<link href="state.html#state.page-properties">persistent page properties</link>, you should at most declare <em>abstract</em>
 accessor methods.
 </p>
   

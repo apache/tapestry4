@@ -47,6 +47,14 @@ public interface Infrastructure
      * See <code>tapestry.ApplicationPropertySource</code>.
      */
     public IPropertySource getApplicationPropertySource();
+    
+    /**
+     * Returns an  {@link IPropertySource} configured to search
+     * the servlet, servlet context, and factory defaults.
+     * 
+     */
+    
+    public IPropertySource getGlobalPropertySource();
 
     /**
      * Returns the coordinator to be notified of reset events (which will, in turn, notify other

@@ -49,7 +49,9 @@
 <!ENTITY listener-method			'listener method'>
 <!ENTITY hivemind-descriptor		'<link href="site:hivemind">HiveMind module deployment descriptor</link>'>
 
-<!ENTITY configuration-property		'<link href="configuration.html#configuration.search-path">configuration property</link>'>
+<!ENTITY configuration-property		'<link href="configuration.html#configuration.properties">configuration property</link>'>
+<!ENTITY app-property-source		'<link href="configuration.html#configuration.app-property-source">application property source</link>'>
+<!ENTITY global-property-source		'<link href="configuration.html#configuration.global-property-source">global property source</link>'>
 <!ENTITY aso						'<link href="state.html#state.aso">application state object</link>'>
 									
 <!ENTITY init-parameter				'&lt;init-parameter&gt;'>

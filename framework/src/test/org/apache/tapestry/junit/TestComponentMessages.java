@@ -25,6 +25,7 @@ import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.engine.Namespace;
@@ -32,6 +33,7 @@ import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.InjectMessagesWorker;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.junit.mock.c21.NullPropertySource;
+import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -39,7 +41,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
 
 /**
- * Tests the class {@link org.apache.tapestry.engine.DefaultStringsSource}.
+ * Tests the class {@link org.apache.tapestry.services.impl.ComponentMessagesSourceImpl}.
  * <p>
  * TODO: Add tests realted to messages encoding (which can be specified as meta-data on the
  * component specification or, ultimately, in the namespace (library specification).
@@ -50,6 +52,21 @@ import org.apache.tapestry.spec.LibrarySpecification;
 
 public class TestComponentMessages extends TapestryTestCase
 {
+    private static class NullComponentPropertySource implements ComponentPropertySource
+    {
+
+        public String getComponentProperty(IComponent component, String propertyName)
+        {
+            return null;
+        }
+
+        public String getLocalizedComponentProperty(IComponent component, Locale locale,
+                String propertyName)
+        {
+            return null;
+        }
+    }
+
     private void check(Messages messages, String key, String expected)
     {
         String actual = messages.getMessage(key);
@@ -108,7 +125,8 @@ public class TestComponentMessages extends TapestryTestCase
     private Messages createMessages(String location, Locale locale)
     {
         ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
-        source.setApplicationPropertySource(new NullPropertySource());
+        source.setGlobalPropertySource(new NullPropertySource());
+        source.setComponentPropertySource(new NullComponentPropertySource());
 
         IComponentSpecification spec = newSpec(location);
 

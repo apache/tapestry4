@@ -28,6 +28,7 @@ import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
 /**
@@ -197,5 +198,11 @@ final class ImplMessages
     public static String templateParameterName(String name)
     {
         return _formatter.format("template-parameter-name", name);
+    }
+
+    public static String componentPropertySourceDescription(IComponentSpecification spec)
+    {
+        return _formatter.format("component-property-source-description", spec
+                .getSpecificationLocation());
     }
 }

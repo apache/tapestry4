@@ -86,6 +86,21 @@
   </contribution>
   
   
+  <service-point id="ComponentPropertySource" interface="org.apache.tapestry.services.ComponentPropertySource">
+    
+    Provides access to component meta-data, with a search path that  includes the component's namespace,
+    and the GlobalPropertySource.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ComponentPropertySourceImpl">
+        <set-service property="chainBuilder" service-id="hivemind.lib.ChainBuilder"/>
+        <set-service property="globalProperties" service-id="GlobalPropertySource"/>
+        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+      </construct>
+      
+    </invoke-factory>
+  </service-point>
+  
   <configuration-point id="ApplicationPropertySources" schema-id="hivemind.lib.ChainContribution">
     
     Property sources used by the application, which includes a search of the
@@ -180,5 +195,6 @@
   <contribution configuration-id="hivemind.SymbolSources">
     <source name="SystemProperties" before="hivemind.ApplicationDefaults" 
       class="org.apache.hivemind.impl.SystemPropertiesSymbolSource"/>
-  </contribution>  
+  </contribution> 
+   
 </module>

@@ -59,6 +59,7 @@
       <construct class="org.apache.tapestry.services.impl.InfrastructureImpl">
         <set-object  property="applicationSpecification" value="service-property:tapestry.globals.ApplicationGlobals:specification"/>
         <set-service property="applicationPropertySource" service-id="tapestry.props.ApplicationPropertySource"/>
+        <set-service property="globalPropertySource" service-id="tapestry.props.GlobalPropertySource"/>
         <set-service property="componentMessagesSource" service-id="ComponentMessagesSource"/>
         <set-service property="resetEventCoordinator" service-id="ResetEventCoordinator"/>
         <set-service property="templateSource" service-id="tapestry.parse.TemplateSource"/>
@@ -140,7 +141,8 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ComponentMessagesSourceImpl">
         <event-listener service-id="ResetEventCoordinator"/>
-        <set-object property="applicationPropertySource" value="infrastructure:applicationPropertySource"/>
+        <set-object property="globalPropertySource" value="infrastructure:globalPropertySource"/>
+        <set-service property="componentPropertySource" service-id="tapestry.props.ComponentPropertySource"/>
       </construct>
     </invoke-factory>
     
