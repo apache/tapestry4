@@ -46,7 +46,6 @@ import java.util.*;
 public class Body extends AbstractComponent
 {
 	private List imageLines;
-	private List otherFunctions;
 	private int uniqueId;
 	private List otherScript;
 
@@ -78,22 +77,6 @@ public class Body extends AbstractComponent
 
 		imageLines.add(variableName + " = new Image()");
 		imageLines.add(variableName + ".src = \"" + URL + '"');
-	}
-
-	/**
-	*  Adds a call to the function (which must have no arguments) to
-	*  perform its initialization.  The function call will be included
-	*  in the <code>onLoad</code> event handler generated for the &lt;BODY&gt;
-	*  element.
-	*
-	*/
-
-	public void addOtherInitialization(String functionName)
-	{
-		if (otherFunctions == null)
-			otherFunctions = new ArrayList();
-
-		otherFunctions.add(functionName);
 	}
 
 	/**
@@ -157,8 +140,8 @@ public class Body extends AbstractComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle) 
 	throws RequestCycleException
 	{
-		String onLoadName;
-
+		IResponseWriter nested;
+		
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException(
 				"Body components may not be nested.",
@@ -167,32 +150,33 @@ public class Body extends AbstractComponent
 		cycle.setAttribute(ATTRIBUTE_NAME, this);
 
 		imageLines = null;
-		otherFunctions = null;
 		uniqueId = 0;
 
 		try
 		{
-			onLoadName = "onLoad_" + getIdPath().replace('.', '_');
+			nested = writer.getNestedWriter();
 
+			renderWrapped(nested, cycle);
+
+			// Write the script (i.e., just before the <body> tag.
+			
+			writeScript(writer);
+			
+			// Start the body tag.
+			
 			writer.begin("body");
-
-			writer.attribute("onLoad", "javascript:" + onLoadName + "();");
-
 			generateAttributes(cycle, writer, reservedNames);
 
-			renderWrapped(writer, cycle);
-
-			// The script gets written at the end of the page, but that's
-			// OK, since it is referenced by an onLoad event handler.
-
-			writeScript(onLoadName, writer);
+			// Close the nested writer, which dumps its buffered content
+			// into its parent.
+			
+			nested.close();
 
 			writer.end(); // <body>
 		}
 		finally
 		{
 			imageLines = null;
-			otherFunctions = null;
 			otherScript = null;
 		}
 
@@ -202,71 +186,52 @@ public class Body extends AbstractComponent
 	*  Writes a script that initializes any images and calls any
 	*  additional JavaScript functions, as set by {@link
 	*  #addImageInitialization(String, String)} and {@link
-	*  #addOtherInitialization(String)}.
+	*  #addOtherScript(String)}.
 	*
-	*  <P>A Body component always writes this script, even if it is
-	*  empty.  That's related to render order; it writes the onLoad
-	*  event handler into the &lt;body&gt; tag before it knows if any
-	*  components will need these services.
+    *  <p>The script is written just before the &lt;body&gt; tag.
 	*/
 
 
-	protected void writeScript(String scriptName, IResponseWriter writer)
+	protected void writeScript(IResponseWriter writer)
 	{
 		StringBuffer buffer;
 		Iterator i;
 		String line;
 		String script;
 
-		buffer = new StringBuffer();
+		// Write no script if there's no tapestry images or
+		// other script initializations.
+		
+		if (imageLines == null && otherScript == null)
+			return;
 
-		buffer.append("\n\n");
+		buffer = new StringBuffer();
 
 		if (imageLines != null)
 			buffer.append("  var tapestry_preload = new Array();\n\n");
 
-		buffer.append("  function ");
-		buffer.append(scriptName);
-		buffer.append(" ()\n" +
-			"  {\n");
-
 		if (imageLines != null)
 		{
-			buffer.append("    if (document.images)\n" +
-				"    {\n");
+			buffer.append("  if (document.images)\n" +
+				"  {\n");
 
 			i = imageLines.iterator();
 			while (i.hasNext())
 			{
 				line = (String)i.next();
 
-				buffer.append("      ");
+				buffer.append("    ");
 				buffer.append(line);
 				buffer.append(";\n");
 			}
 
-			buffer.append("    }\n\n");
+			buffer.append("  }");
 		}
-
-		if (otherFunctions != null)
-		{
-			i = otherFunctions.iterator();
-			while (i.hasNext())
-			{
-				line = (String)i.next();
-
-				buffer.append("    ");
-				buffer.append(line);
-				buffer.append("();\n\n");
-			}
-		}
-
-		buffer.append("\n  }");
 
 		writer.begin("script");
 		writer.attribute("language", "javascript");
 
-		writer.printRaw("<!--\n");
+		writer.printRaw("<!--\n\n");
 
 		// Print out all the stuff related to pre-loading images.
 		
@@ -288,7 +253,7 @@ public class Body extends AbstractComponent
 		}
 
 		// Now, close the HTML comment (used to fake out archaic browsers) and
-		// the <SCRIPT> element.
+		// the <script> element.`
 
 		writer.printRaw("\n\n// -->");
 		
