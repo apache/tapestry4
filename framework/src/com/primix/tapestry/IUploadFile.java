@@ -23,8 +23,8 @@
  * Lesser General Public License for more details.
  *
  */
- 
- package com.primix.tapestry;
+
+package com.primix.tapestry;
 
 import java.io.InputStream;
 
@@ -43,9 +43,9 @@ public interface IUploadFile
 	 *  Returns the name of the file that was uploaded.
 	 * 
 	 **/
-	
+
 	public String getFileName();
-	
+
 	/**
 	 *  Returns true if the uploaded file was truncated.  In the current
 	 *  implementation, truncation does not occur (which can result in uploaded
@@ -55,9 +55,9 @@ public interface IUploadFile
 	 *  a whole host of options targetted at defanging denial of service attacks.
 	 * 
 	 **/
-	
+
 	public boolean isTruncated();
-	
+
 	/**
 	 *  Returns an input stream of the content of the file.  There is no guarantee
 	 *  that this stream will be valid after the end of the current request cycle,
@@ -68,6 +68,6 @@ public interface IUploadFile
 	 *  to a temporary file and return an input stream from that).
 	 * 
 	 **/
-	
+
 	public InputStream getStream();
 }
