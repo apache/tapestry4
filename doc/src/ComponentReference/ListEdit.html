@@ -53,7 +53,7 @@
 	<br>
   A component used to iterate through a list of items within a 
   <A href="Form.html">Form</a>.  The ListEdit is similar to a 
-  <A href="Foreach.html">Foreach</a> but uses <A href="Hidden.html">Hidden</a> 
+  <A href="Foreach.html">Foreach</a> but uses hidden 
   input fields within the &lt;form&gt; to store the items in the list.
   <p>
   An instance of <A href="../api/net/sf/tapestry/util/io/DataSqueezer.html">
@@ -96,7 +96,10 @@
     <td>source</td>
     <td>
 		<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/List.html">
-		<tt>List</tt></a>, 
+		<tt>List</tt></a>, <br>
+	<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Iterator.html">
+		<tt>Iterator</tt></a> or <br>
+		
 		<tt>Object[]</tt>
     </td>
     <td>in</td>
@@ -125,6 +128,9 @@
      The value for each iteration through the list (during render or rewind).
     </td>
 	</tr>
+	
+	
+	
   <tr>
     <td>index</td>
     <td>int</td>
@@ -133,6 +139,29 @@
 		<td>&nbsp;</td>
 		<td>The index (starting at zero) for each iteration through the list.</td>
 	</tr>
+	
+  <tr>
+    <td>listener</td>
+    <td><A href="../api/net/sf/tapestry/IActionListener.html">
+     <tt>IActionListener</tt></a></td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+      A listener that is informed after the value parameter is updated. This 
+    allows the data set operated on by the rest of the 
+    <A href="Form.html">Form</a> components to be synchronized to the value 
+    stored in the hidden field. 
+    <p>
+    A typical use is to encode the primary 
+                  key of an entity as a Hidden; when the form is submitted, the 
+                  Hidden's listener re-reads the corresponding entity from the 
+                  database.</p>
+                    
+    </td>
+	</tr>
+		
+	
   <tr>
     <td>element</td>
     <td>String</td>

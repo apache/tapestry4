@@ -26,6 +26,8 @@
 package net.sf.tapestry.form;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.sf.tapestry.AbstractComponent;
@@ -73,7 +75,7 @@ public class ListEdit extends AbstractComponent
 
         ArraySource(Object[] array)
         {
-            this._array = array;
+            _array = array;
         }
 
         public int getCount()
@@ -93,7 +95,7 @@ public class ListEdit extends AbstractComponent
 
         ListSource(List list)
         {
-            this._list = list;
+            _list = list;
         }
 
         public int getCount()
@@ -126,6 +128,10 @@ public class ListEdit extends AbstractComponent
     private Object _source;
     private String _element;
 
+    /** @since 2.2 **/
+
+    private IActionListener _listener;
+
     public void setValueBinding(IBinding value)
     {
         _valueBinding = value;
@@ -146,8 +152,7 @@ public class ListEdit extends AbstractComponent
         return _indexBinding;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         ISource source = null;
         int count;
@@ -156,9 +161,7 @@ public class ListEdit extends AbstractComponent
 
         IForm form = Form.get(cycle);
         if (form == null)
-            throw new RequestCycleException(
-                Tapestry.getString("must-be-wrapped-by-form", "ListEdit"),
-                this);
+            throw new RequestCycleException(Tapestry.getString("must-be-wrapped-by-form", "ListEdit"), this);
 
         boolean cycleRewinding = cycle.isRewinding();
         boolean formRewinding = form.isRewinding();
@@ -203,6 +206,9 @@ public class ListEdit extends AbstractComponent
 
             _valueBinding.setObject(value);
 
+            if (_listener != null)
+                _listener.actionTriggered(this, cycle);
+
             if (_element != null)
             {
                 writer.begin(_element);
@@ -216,8 +222,7 @@ public class ListEdit extends AbstractComponent
         }
     }
 
-    private void writeValue(IMarkupWriter writer, String name, Object value)
-        throws RequestCycleException
+    private void writeValue(IMarkupWriter writer, String name, Object value) throws RequestCycleException
     {
         String externalValue;
 
@@ -227,10 +232,7 @@ public class ListEdit extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(
-                Tapestry.getString("ListEdit.unable-to-convert-value", value),
-                this,
-                ex);
+            throw new RequestCycleException(Tapestry.getString("ListEdit.unable-to-convert-value", value), this, ex);
         }
 
         writer.beginEmpty("input");
@@ -240,8 +242,7 @@ public class ListEdit extends AbstractComponent
         writer.println();
     }
 
-    private Object extractValue(RequestContext context, String name)
-        throws RequestCycleException
+    private Object extractValue(RequestContext context, String name) throws RequestCycleException
     {
         String value = context.getParameter(name);
 
@@ -251,10 +252,7 @@ public class ListEdit extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(
-                Tapestry.getString("ListEdit.unable-to-convert-string", value),
-                this,
-                ex);
+            throw new RequestCycleException(Tapestry.getString("ListEdit.unable-to-convert-string", value), this, ex);
         }
     }
 
@@ -269,9 +267,17 @@ public class ListEdit extends AbstractComponent
         if (_source.getClass().isArray())
             return new ArraySource((Object[]) _source);
 
-        throw new RequestCycleException(
-            Tapestry.getString("ListEdit.unable-to-convert-source", _source),
-            this);
+        if (_source instanceof Iterator)
+        {
+            Iterator i = (Iterator) _source;
+            List list = new ArrayList();
+            while (i.hasNext())
+                list.add(i.next());
+
+            return new ListSource(list);
+        }
+
+        throw new RequestCycleException(Tapestry.getString("ListEdit.unable-to-convert-source", _source), this);
     }
 
     public String getElement()
@@ -288,15 +294,29 @@ public class ListEdit extends AbstractComponent
     {
         _source = source;
     }
-    
+
     public Object getSource()
     {
         return _source;
     }
-    
+
     private DataSqueezer getDataSqueezer()
     {
         return getPage().getEngine().getDataSqueezer();
+    }
+
+    /** @since 2.2 **/
+
+    public IActionListener getListener()
+    {
+        return _listener;
+    }
+
+    /** @since 2.2 **/
+
+    public void setListener(IActionListener listener)
+    {
+        _listener = listener;
     }
 
 }
