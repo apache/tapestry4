@@ -47,29 +47,32 @@
     
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
     <copy todir="${classes}">
-            <fileset dir="${src}">
-        <include name="**/*.jwc"/>
-        <include name="**/*.html"/>
-        <include name="**/*.gif"/>
-        <include name="**/*.dtd"/>
-        <include name="**/*.script"/>
-        <include name="**/*.properties"/>
-        <include name="**/*.application"/>
-        <exclude name="**/package.html"/>
+        <fileset dir="${src}">
+	        <include name="**/*.jwc"/>
+	        <include name="**/*.html"/>
+	        <include name="**/*.gif"/>
+	        <include name="**/*.dtd"/>
+	        <include name="**/*.script"/>
+	        <include name="**/*.properties"/>
+	        <include name="**/*.application"/>
+	        <exclude name="**/package.html"/>
       </fileset>
     </copy>
-    <war warfile="${vlib.war}" webxml="web.xml">
-
+    
+    <war warfile="${vlib.war}" webxml="WEB-INF/web.xml">
       <fileset dir=".">
         <include name="*.html"/>
         <include name="images/**"/>
         <include name="scripts/**"/>
      </fileset>
-	  <classes dir="${classes}"/>         
+     <classes dir="${classes}"/>         
     </war>
   </target>
 
   <target name="run" description="Run the Vlib application." depends="install">
+    <delete dir="private" quiet="true"/>
+    <mkdir dir="private"/>
+    
     <java classname="org.mortbay.jetty.Server" fork="true">
       <classpath>
 
@@ -104,6 +107,9 @@
        
       <sysproperty key="com.primix.tapestry.disable-caching" value="true"/>
       <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+
+	  <sysproperty key="com.primix.tapestry.asset.dir" value="private"/>
+	  <sysproperty key="com.primix.tapestry.asset.URL" value="/private"/>
 
       <!-- JNDI Configuration for JBoss -->
       
