@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.script;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.BaseRule;
@@ -99,7 +100,7 @@ class InputSymbolRule extends BaseRule
 
     private Class lookupClass(RuleDirectedParser parser, String className)
     {
-        if (Tapestry.isNull(className))
+        if (StringUtils.isEmpty(className))
             return null;
 
         try

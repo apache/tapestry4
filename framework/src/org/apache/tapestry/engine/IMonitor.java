@@ -143,6 +143,10 @@ public interface IMonitor
 	 *  Invoked when a service throws an exception rather than completing normally.
 	 *  Processing of the request may continue with the display of an exception
 	 *  page.
+	 * 
+	 *  <p>
+	 *  serviceException() is always invoked <em>before</em>
+	 * {@link #serviceEnd(String)}.
 	 *
 	 **/
 

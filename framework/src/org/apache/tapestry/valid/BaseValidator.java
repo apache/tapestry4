@@ -61,6 +61,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
@@ -252,7 +253,7 @@ public abstract class BaseValidator implements IValidator
 
     protected boolean checkRequired(IFormComponent field, String value) throws ValidatorException
     {
-        boolean isNull = Tapestry.isNull(value);
+        boolean isNull = StringUtils.isEmpty(value);
 
         if (_required && isNull)
             throw new ValidatorException(

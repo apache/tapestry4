@@ -59,7 +59,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.tapestry.Tapestry;
+import org.apache.commons.lang.StringUtils;
 import org.xml.sax.Attributes;
 
 /**
@@ -74,58 +74,58 @@ import org.xml.sax.Attributes;
  **/
 public class SetLimitedPropertiesRule extends AbstractSpecificationRule
 {
-	private String[] _attributeNames;
-	private String[] _propertyNames;
-	
-	private Map _populateMap = new HashMap();
-	
-	public SetLimitedPropertiesRule(String attributeName, String propertyName)
-	{
-		this(new String[] { attributeName }, new String[] { propertyName });
-	}
-	
-	public SetLimitedPropertiesRule(String[] attributeNames, String[] propertyNames)
-	{
-		_attributeNames = attributeNames;
-		_propertyNames = propertyNames;
-	}
-	
+    private String[] _attributeNames;
+    private String[] _propertyNames;
+
+    private Map _populateMap = new HashMap();
+
+    public SetLimitedPropertiesRule(String attributeName, String propertyName)
+    {
+        this(new String[] { attributeName }, new String[] { propertyName });
+    }
+
+    public SetLimitedPropertiesRule(String[] attributeNames, String[] propertyNames)
+    {
+        _attributeNames = attributeNames;
+        _propertyNames = propertyNames;
+    }
+
     public void begin(String namespace, String name, Attributes attributes) throws Exception
     {
-  		_populateMap.clear();
-  		
-  		int count = attributes.getLength();
-  		
-  		for (int i = 0; i < count; i++)
-  		{
-  			String attributeName = attributes.getLocalName(i);
-  			
-  			if (Tapestry.isNull(attributeName))
-  				attributeName = attributes.getQName(i);
-  				
-  			for (int x = 0; x < _attributeNames.length; x++)
-  			{
-  				if (_attributeNames[x].equals(attributeName))
-  				{
-  					String value = attributes.getValue(i);
-  					String propertyName = _propertyNames[x];
-  					
-  					_populateMap.put(propertyName, value);
-  					
-  					break;
-  				}
-  			}
-  		}
-  		
-  		if (_populateMap.isEmpty())
-  			return;
-  		
-  		Object top = digester.peek();
-  			
-  		BeanUtils.populate(top, _populateMap);
-  		
-  		_populateMap.clear();
-  					
+        _populateMap.clear();
+
+        int count = attributes.getLength();
+
+        for (int i = 0; i < count; i++)
+        {
+            String attributeName = attributes.getLocalName(i);
+
+            if (StringUtils.isEmpty(attributeName))
+                attributeName = attributes.getQName(i);
+
+            for (int x = 0; x < _attributeNames.length; x++)
+            {
+                if (_attributeNames[x].equals(attributeName))
+                {
+                    String value = attributes.getValue(i);
+                    String propertyName = _propertyNames[x];
+
+                    _populateMap.put(propertyName, value);
+
+                    break;
+                }
+            }
+        }
+
+        if (_populateMap.isEmpty())
+            return;
+
+        Object top = digester.peek();
+
+        BeanUtils.populate(top, _populateMap);
+
+        _populateMap.clear();
+
     }
 
 }

@@ -60,10 +60,10 @@ import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.jCharts.Chart;
@@ -266,7 +266,7 @@ public class ChartPage extends BasePage implements IChartProvider
 
             String name = pv.getName();
 
-            if (Tapestry.isNull(name))
+            if (StringUtils.isEmpty(name))
                 name = "<New>";
 
             data[i] = new Double(pv.getValue()).doubleValue();

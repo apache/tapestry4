@@ -61,9 +61,9 @@ import java.util.Map;
 
 import javax.ejb.FinderException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IFormComponent;
@@ -161,14 +161,14 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
 
         Map attributes = getAttributes();
 
-        if (Tapestry.isNull(password1) != Tapestry.isNull(password2))
+        if (StringUtils.isEmpty(password1) != StringUtils.isEmpty(password2))
         {
             setErrorField("inputPassword1", getMessage("enter-password-twice"));
 
             return;
         }
 
-        if (!Tapestry.isNull(password1))
+        if (!StringUtils.isEmpty(password1))
         {
             if (!password1.equals(password2))
             {

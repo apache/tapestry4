@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.workbench.upload;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
@@ -76,89 +76,86 @@ import org.apache.tapestry.valid.ValidationConstraint;
 
 public class Upload extends BasePage
 {
-	private static final String[] bytesPerLineOptions =
-		new String[] { "8", "16", "24", "32", "40", "48" };
+    private static final String[] bytesPerLineOptions =
+        new String[] { "8", "16", "24", "32", "40", "48" };
 
-	private static final String DEFAULT_BPL = "16";
+    private static final String DEFAULT_BPL = "16";
 
-	private String bytesPerLine = DEFAULT_BPL;
-	private boolean showAscii;
-	private IUploadFile file;
-	private IPropertySelectionModel bplModel;
+    private String bytesPerLine = DEFAULT_BPL;
+    private boolean showAscii;
+    private IUploadFile file;
+    private IPropertySelectionModel bplModel;
 
-	public void detach()
-	{
-		bytesPerLine = DEFAULT_BPL;
-		showAscii = false;
-		file = null;
+    public void detach()
+    {
+        bytesPerLine = DEFAULT_BPL;
+        showAscii = false;
+        file = null;
 
-		super.detach();
-	}
+        super.detach();
+    }
 
-	public void formSubmit(IRequestCycle cycle)
-	{
-		if (Tapestry.isNull(file.getFileName()))
-		{
-			IValidationDelegate delegate =
-				(IValidationDelegate) getBeans().getBean("delegate");
+    public void formSubmit(IRequestCycle cycle)
+    {
+        if (StringUtils.isEmpty(file.getFileName()))
+        {
+            IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
 
-			delegate.setFormComponent((IFormComponent) getComponent("inputFile"));
-			delegate.record(
-				"You must specify a file to upload.",
-				ValidationConstraint.REQUIRED);
-			return;
-		}
+            delegate.setFormComponent((IFormComponent) getComponent("inputFile"));
+            delegate.record("You must specify a file to upload.", ValidationConstraint.REQUIRED);
+            return;
+        }
 
-		UploadResults results = (UploadResults) cycle.getPage("UploadResults");
+        UploadResults results = (UploadResults) cycle.getPage("UploadResults");
 
-		results.activate(file, showAscii, Integer.parseInt(bytesPerLine), cycle);
-	}
+        results.activate(file, showAscii, Integer.parseInt(bytesPerLine), cycle);
+    }
 
-	public String getBytesPerLine()
-	{
-		return bytesPerLine;
-	}
+    public String getBytesPerLine()
+    {
+        return bytesPerLine;
+    }
 
-	public void setBytesPerLine(String bytesPerLine)
-	{
-		this.bytesPerLine = bytesPerLine;
+    public void setBytesPerLine(String bytesPerLine)
+    {
+        this.bytesPerLine = bytesPerLine;
 
-		fireObservedChange("bytesPerLine", bytesPerLine);
-	}
+        fireObservedChange("bytesPerLine", bytesPerLine);
+    }
 
-	public boolean getShowAscii()
-	{
-		return showAscii;
-	}
+    public boolean getShowAscii()
+    {
+        return showAscii;
+    }
 
-	public void setShowAscii(boolean showAscii)
-	{
-		this.showAscii = showAscii;
+    public void setShowAscii(boolean showAscii)
+    {
+        this.showAscii = showAscii;
 
-		fireObservedChange("showAscii", showAscii);
-	}
+        fireObservedChange("showAscii", showAscii);
+    }
 
-	public IPropertySelectionModel getBytesPerLineModel()
-	{
-		if (bplModel == null)
-			bplModel = new StringPropertySelectionModel(bytesPerLineOptions);
+    public IPropertySelectionModel getBytesPerLineModel()
+    {
+        if (bplModel == null)
+            bplModel = new StringPropertySelectionModel(bytesPerLineOptions);
 
-		return bplModel;
-	}
+        return bplModel;
+    }
 
-	public IUploadFile getFile()
-	{
-		return file;
-	}
+    public IUploadFile getFile()
+    {
+        return file;
+    }
 
-	public void setFile(IUploadFile file)
-	{
-		this.file = file;
-	}
+    public void setFile(IUploadFile file)
+    {
+        this.file = file;
+    }
 
-	public void setMessage(String message)
-	{
+    public void setMessage(String message)
+    {
 
-	}
+    }
 
 }

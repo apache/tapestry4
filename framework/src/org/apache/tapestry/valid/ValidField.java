@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -206,7 +207,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         Object value = getValue();
         String result = getValidator().toString(this, value);
 
-        if (Tapestry.isNull(result) && getValidator().isRequired())
+        if (StringUtils.isEmpty(result) && getValidator().isRequired())
             addSelect(getPage().getRequestCycle());
 
         return result;

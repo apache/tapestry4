@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.digester.Rule;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ILocationHolder;
@@ -542,7 +543,7 @@ public class SpecificationParser
 
         public void body(String namespace, String name, String text) throws Exception
         {
-            if (Tapestry.isNull(text))
+            if (StringUtils.isEmpty(text))
                 return;
 
             if (_value != null)
@@ -1158,18 +1159,18 @@ public class SpecificationParser
 
         digester.addSetNext(pattern, "addInitializer");
 
-		// It's now set-message-property in the 3.0 DTD
-		
-		pattern = rootElementName + "/bean/set-message-property";
+        // It's now set-message-property in the 3.0 DTD
 
-		digester.addRule(pattern, new CreateStringBeanInitializerRule());
-		digester.addSetLimitedProperties(
-			pattern,
-			new String[] { "name", "key" },
-			new String[] { "propertyName", "key" });
+        pattern = rootElementName + "/bean/set-message-property";
 
-		digester.addSetNext(pattern, "addInitializer");
-		
+        digester.addRule(pattern, new CreateStringBeanInitializerRule());
+        digester.addSetLimitedProperties(
+            pattern,
+            new String[] { "name", "key" },
+            new String[] { "propertyName", "key" });
+
+        digester.addSetNext(pattern, "addInitializer");
+
         // <component>
 
         pattern = rootElementName + "/component";
@@ -1241,15 +1242,15 @@ public class SpecificationParser
         digester.addInitializeProperty(pattern, "type", BindingType.STRING);
         digester.addSetLimitedProperties(pattern, "key", "value");
         digester.addConnectChild(pattern, "setBinding", "name");
-        
-        // Renamed to <message-binding> in the 3.0 DTD
-        
-		pattern = rootElementName + "/component/message-binding";
 
-		digester.addRule(pattern, createBindingSpecificationRule);
-		digester.addInitializeProperty(pattern, "type", BindingType.STRING);
-		digester.addSetLimitedProperties(pattern, "key", "value");
-		digester.addConnectChild(pattern, "setBinding", "name");        
+        // Renamed to <message-binding> in the 3.0 DTD
+
+        pattern = rootElementName + "/component/message-binding";
+
+        digester.addRule(pattern, createBindingSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", BindingType.STRING);
+        digester.addSetLimitedProperties(pattern, "key", "value");
+        digester.addConnectChild(pattern, "setBinding", "name");
 
         // <listener-binding> inside <component>
 

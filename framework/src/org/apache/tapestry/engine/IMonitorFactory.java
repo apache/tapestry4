@@ -53,68 +53,30 @@
  *
  */
 
-package org.apache.tapestry.parse;
+package org.apache.tapestry.engine;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.IPropertyHolder;
-import org.apache.tapestry.util.xml.DocumentParseException;
-import org.xml.sax.Attributes;
+import org.apache.tapestry.request.RequestContext;
 
 /**
- *  Handles the &lt;property&gt; element in Tapestry specifications, which is 
- *  designed to hold meta-data about specifications.
- *  Expects the top object on the stack to be a {@link org.apache.tapestry.util.IPropertyHolder}.
+ * Interface for an object that can create a {@link IMonitor} instance
+ * for a particular {@link org.apache.tapestry.request.RequestContext}.
+ * The engine expects there to be a monitor factory
+ * as application extension
+ * <code>org.apache.tapestry.monitor-factory</code>.  If no such
+ * extension exists, then {@link org.apache.tapestry.engine.DefaultMonitorFactory}
+ * is used instead.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
-
-public class SetMetaPropertyRule extends AbstractSpecificationRule
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
+ */
+public interface IMonitorFactory
 {
-    private String _name;
-    private String _value;
+    /**
+     * Create a new {@link IMonitor} instance.  Alternately, return a shared instance.
+     * This method may be invoked by multiple threads.
+     * 
+     */
 
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
-    {
-        _name = getValue(attributes, "name");
-
-        // First, get the value from the attribute, if present
-
-        _value = getValue(attributes, "value");
-
-    }
-
-    public void body(String namespace, String name, String text) throws Exception
-    {
-        if (StringUtils.isEmpty(text))
-            return;
-
-        if (_value != null)
-        {
-            throw new DocumentParseException(
-                Tapestry.format("SpecificationParser.no-attribute-and-body", "value", name),
-                getResourceLocation());
-        }
-
-        _value = text.trim();
-    }
-
-    public void end(String namespace, String name) throws Exception
-    {
-        if (_value == null)
-            throw new DocumentParseException(
-                Tapestry.format("SpecificationParser.required-extended-attribute", name, "value"),
-                getResourceLocation());
-
-        IPropertyHolder holder = (IPropertyHolder) digester.peek();
-
-        holder.setProperty(_name, _value);
-
-        _name = null;
-        _value = null;
-    }
-
+    public IMonitor createMonitor(RequestContext context);
 }

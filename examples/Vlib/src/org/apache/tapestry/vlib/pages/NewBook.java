@@ -61,8 +61,8 @@ import java.util.Map;
 
 import javax.ejb.CreateException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.vlib.Protected;
@@ -94,13 +94,13 @@ public abstract class NewBook extends Protected implements PageRenderListener
         Integer publisherId = (Integer) attributes.get("publisherId");
         String publisherName = getPublisherName();
 
-        if (publisherId == null && Tapestry.isNull(publisherName))
+        if (publisherId == null && StringUtils.isEmpty(publisherName))
         {
             setErrorField("inputPublisherName", getMessage("need-publisher-name"));
             return;
         }
 
-        if (publisherId != null && !Tapestry.isNull(publisherName))
+        if (publisherId != null && !StringUtils.isEmpty(publisherName))
         {
             setErrorField("inputPublisherName", getMessage("leave-publisher-name-empty"));
             return;

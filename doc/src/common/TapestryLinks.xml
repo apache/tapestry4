@@ -31,6 +31,7 @@
 <!ENTITY BaseEngine '<ulink url="&ApiRoot;/engine/BaseEngine.html"><classname>BaseEngine</classname></ulink>'>
 <!ENTITY BasePage '<ulink url="&ApiRoot;/html/BasePage.html"><classname>BasePage</classname></ulink>'>
 <!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
+<!ENTITY DefaultMonitorFactory '<ulink url="&ApiRoot;/engine/DefaultMonitorFactory.html"><classname>DefaultMonitorFactory</classname></ulink>'>
 <!ENTITY DefaultMultipartDecoder '<ulink url="&ApiRoot;/multipart/DefaultMultipartDecoder.html"><classname>DefaultMultipartDecoder</classname></ulink>'>
 <!ENTITY DefaultValuePersister '<ulink url="&ApiRoot;/record/DefaultValuePersister.html"><classname>DefaultValuePersister</classname></ulink>'>
 <!ENTITY Enum '<ulink url="&ApiRoot;/util/Enum.html"><classname>Enum</classname></ulink>'>
@@ -48,6 +49,7 @@
 <!ENTITY ILifecycle '<classname>ILifecycle</classname>'>
 <!ENTITY IMarkupWriter '<ulink url="&ApiRoot;/IMarkupWriter.html"><classname>IMarkupWriter</classname></ulink>'>
 <!ENTITY IMonitor '<ulink url="&ApiRoot;/engine/IMonitor.html"><classname>IMonitor</classname></ulink>'>
+<!ENTITY IMonitorFactory '<ulink url="&ApiRoot;/engine/IMonitorFactory.html"><classname>IMonitorFactory</classname></ulink>'>
 <!ENTITY IMultipartDecoder '<ulink url="&ApiRoot;/multipart/IMultipartDecoder.html"><classname>IMultipartDecoder</classname></ulink>'>
 <!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
 <!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>

@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.digester.Digester;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Location;
@@ -161,10 +162,10 @@ public class SpecificationDigester extends Digester
     {
         addRule(pattern, new SetLimitedPropertiesRule(attributeNames, propertyNames));
     }
-    
+
     public void addBody(String pattern, String propertyName)
     {
-    	addRule(pattern, new BodyRule(propertyName));
+        addRule(pattern, new BodyRule(propertyName));
     }
 
     /**
@@ -295,7 +296,7 @@ public class SpecificationDigester extends Digester
     {
         int count = Tapestry.size(_documentRules);
 
-        String name = Tapestry.isNull(localName) ? qName : localName;
+        String name = StringUtils.isEmpty(localName) ? qName : localName;
 
         for (int i = 0; i < count; i++)
         {
@@ -312,27 +313,27 @@ public class SpecificationDigester extends Digester
         }
 
     }
-    
+
     /**
      * Invokes {@link #fatalError(SAXParseException)}.
      */
     public void error(SAXParseException exception) throws SAXException
     {
-       fatalError(exception);
+        fatalError(exception);
     }
 
-	/**
-	 * Simply re-throws the exception.  All exceptions when parsing
-	 * documents are fatal.
-	 */
+    /**
+     * Simply re-throws the exception.  All exceptions when parsing
+     * documents are fatal.
+     */
     public void fatalError(SAXParseException exception) throws SAXException
     {
-       throw exception;
+        throw exception;
     }
 
-	/**
-	 * Invokes {@link #fatalError(SAXParseException)}.
-	 */
+    /**
+     * Invokes {@link #fatalError(SAXParseException)}.
+     */
     public void warning(SAXParseException exception) throws SAXException
     {
         fatalError(exception);

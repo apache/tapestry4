@@ -58,6 +58,7 @@ package org.apache.tapestry.html;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
@@ -100,7 +101,7 @@ public abstract class Shell extends AbstractComponent
 
             String DTD = getDTD();
 
-            if (!Tapestry.isNull(DTD))
+            if (!StringUtils.isEmpty(DTD))
             {
                 writer.printRaw("<!DOCTYPE HTML PUBLIC \"");
                 writer.printRaw(DTD);

@@ -57,9 +57,9 @@ package org.apache.tapestry.parse;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.digester.Rule;
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Tapestry;
 import org.xml.sax.Attributes;
 
 /**
@@ -83,7 +83,7 @@ public abstract class AbstractSpecificationRule extends Rule
         {
         	String attributeName = attributes.getLocalName(i);
         	
-        	if (Tapestry.isNull(attributeName))
+        	if (StringUtils.isEmpty(attributeName))
         		attributeName = attributes.getQName(i);
         	
             if (attributeName.equals(name))

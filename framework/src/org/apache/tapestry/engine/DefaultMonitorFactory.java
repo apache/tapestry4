@@ -53,68 +53,27 @@
  *
  */
 
-package org.apache.tapestry.parse;
+package org.apache.tapestry.engine;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.IPropertyHolder;
-import org.apache.tapestry.util.xml.DocumentParseException;
-import org.xml.sax.Attributes;
+import org.apache.tapestry.request.RequestContext;
 
 /**
- *  Handles the &lt;property&gt; element in Tapestry specifications, which is 
- *  designed to hold meta-data about specifications.
- *  Expects the top object on the stack to be a {@link org.apache.tapestry.util.IPropertyHolder}.
+ * Implementation of {@link org.apache.tapestry.engine.IMonitorFactory}
+ * that returns the {@link org.apache.tapestry.engine.NullMonitor}.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
-
-public class SetMetaPropertyRule extends AbstractSpecificationRule
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
+public class DefaultMonitorFactory implements IMonitorFactory
 {
-    private String _name;
-    private String _value;
-
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
+	public static final IMonitorFactory SHARED = new DefaultMonitorFactory();
+	 
+    /**
+     * Returns {@link NullMonitor#SHARED}.
+     */
+    public IMonitor createMonitor(RequestContext context)
     {
-        _name = getValue(attributes, "name");
-
-        // First, get the value from the attribute, if present
-
-        _value = getValue(attributes, "value");
-
-    }
-
-    public void body(String namespace, String name, String text) throws Exception
-    {
-        if (StringUtils.isEmpty(text))
-            return;
-
-        if (_value != null)
-        {
-            throw new DocumentParseException(
-                Tapestry.format("SpecificationParser.no-attribute-and-body", "value", name),
-                getResourceLocation());
-        }
-
-        _value = text.trim();
-    }
-
-    public void end(String namespace, String name) throws Exception
-    {
-        if (_value == null)
-            throw new DocumentParseException(
-                Tapestry.format("SpecificationParser.required-extended-attribute", name, "value"),
-                getResourceLocation());
-
-        IPropertyHolder holder = (IPropertyHolder) digester.peek();
-
-        holder.setProperty(_name, _value);
-
-        _name = null;
-        _value = null;
+        return NullMonitor.SHARED;
     }
 
 }

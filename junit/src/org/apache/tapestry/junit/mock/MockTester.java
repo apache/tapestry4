@@ -73,6 +73,7 @@ import junit.framework.AssertionFailedError;
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -83,7 +84,6 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.ApplicationServlet;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -515,7 +515,7 @@ public class MockTester
             String name = a.getAttributeValue("name");
             String pattern = a.getTextTrim();
 
-            if (Tapestry.isNull(pattern))
+            if (StringUtils.isEmpty(pattern))
                 throw new DocumentParseException("Pattern is null in " + a);
 
             if (outputString == null)
@@ -549,7 +549,7 @@ public class MockTester
             String name = a.getAttributeValue("name");
             String substring = a.getTextTrim();
 
-            if (Tapestry.isNull(substring))
+            if (StringUtils.isEmpty(substring))
                 throw new DocumentParseException("Substring is null in " + a);
 
             if (outputString == null)
@@ -583,7 +583,7 @@ public class MockTester
             String name = a.getAttributeValue("name");
             String substring = a.getTextTrim();
 
-            if (Tapestry.isNull(substring))
+            if (StringUtils.isEmpty(substring))
                 throw new DocumentParseException("Substring is null in " + a);
 
             if (outputString == null)
@@ -701,7 +701,7 @@ public class MockTester
 
         String pattern = element.getTextTrim();
 
-        if (Tapestry.isNull(pattern))
+        if (StringUtils.isEmpty(pattern))
             throw new DocumentParseException("Pattern is null in " + element);
 
         PatternMatcherInput input = new PatternMatcherInput(outputString);

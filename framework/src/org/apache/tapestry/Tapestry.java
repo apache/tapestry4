@@ -103,20 +103,20 @@ public final class Tapestry
     public final static String TAG_SUPPORT_SERVICE_ATTRIBUTE =
         "org.apache.tapestry.tagsupport.service";
 
-	/**
-	 * Name of a request attribute used with the
-	 * {@link #TAGSUPPORT_SERVICE} service.  The attribute
-	 * defines the correct servlet path for the
-	 * Tapestry application (which, for the odd-man-out TAGSUPPORT_SERVICE
-	 * may not match HttpServletRequest.getServletPath() because of
-	 * the use of an include.
-	 * 
-	 * @since 3.0
-	 */
-	
-	public final static String TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE	=
-	"org.apach.tapestry.tagsupport.servlet-path";
-	
+    /**
+     * Name of a request attribute used with the
+     * {@link #TAGSUPPORT_SERVICE} service.  The attribute
+     * defines the correct servlet path for the
+     * Tapestry application (which, for the odd-man-out TAGSUPPORT_SERVICE
+     * may not match HttpServletRequest.getServletPath() because of
+     * the use of an include.
+     * 
+     * @since 3.0
+     */
+
+    public final static String TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE =
+        "org.apach.tapestry.tagsupport.servlet-path";
+
     /**
      *  Name of a request attribute used with the
      *  {@link #TAGSUPPORT_SERVICE} service.  The attribute
@@ -379,6 +379,17 @@ public final class Tapestry
      **/
 
     public static final String SIMPLE_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z]\\w*$";
+
+    /**
+     * Name of an application extension used as a factory for
+     * {@link org.apache.tapestry.engine.IMonitor} instances.  The extension
+     * must implement {@link org.apache.tapestry.engine.IMonitorFactory}.
+     * 
+     * @since 3.0
+     */
+
+    public static final String MONITOR_FACTORY_EXTENSION_NAME =
+        "org.apache.tapestry.monitor-factory";
 
     /**
      *  Prevent instantiation.
@@ -739,23 +750,6 @@ public final class Tapestry
         _iteratorAdaptors.register(long[].class, new LongArrayIteratorAdaptor());
         _iteratorAdaptors.register(float[].class, new FloatArrayIteratorAdaptor());
         _iteratorAdaptors.register(double[].class, new DoubleArrayIteratorAdaptor());
-    }
-
-    /**
-     *  Returns true if the value is null or empty (is the empty string,
-     *  or contains only whitespace).
-     *
-     **/
-
-    public static boolean isNull(String value)
-    {
-        if (value == null)
-            return true;
-
-        if (value.length() == 0)
-            return true;
-
-        return value.trim().length() == 0;
     }
 
     /**
