@@ -164,9 +164,7 @@ public class Borrow
 			try
 			{
 				IOperations bean = vengine.getOperations();				
-				IBook book = bean.borrowBook(bookPK, visit.getUserPK());
-				
-				// TBD:  Make borrowBook() return Book, not IBook
+				Book book = bean.borrowBook(bookPK, visit.getUserPK());
 				
 				home.setMessage("Borrowed: " + book.getTitle());
 				
@@ -174,7 +172,8 @@ public class Borrow
 			}
 			catch (BorrowException ex)
 			{
-				home.setError(ex.getMessage());
+				vengine.presentError(ex.getMessage(), cycle);
+				return;
 			}
 			catch (FinderException ex)
 			{

@@ -175,21 +175,19 @@ public class Login
 		{
 			try
 			{
-				IPersonHome personHome = vengine.getPersonHome();
-				IPerson person = personHome.findByEmail(email);
+				IOperations operations = vengine.getOperations();
 				
-				if (!person.getPassword().equals(password))
-				{
-					setErrorField("inputPassword", "Invalid password.");
-					return;
-				}
-				
+				Person person = operations.login(email, password);
+			
 				loginUser(person, cycle);
 				
 			}
-			catch (FinderException e)
+			catch (LoginException ex)
 			{
-				setErrorField("inputEmail", "E-mail address not known.");
+				String fieldName = 
+						ex.isPasswordError() ? "inputPassword" : "inputEmail";
+				
+				setErrorField(fieldName, ex.getMessage());
 				return;
 			}
 			catch (RemoteException ex)
@@ -225,7 +223,7 @@ public class Login
 	 *
 	 */
 	
-	public void loginUser(IPerson person, IRequestCycle cycle)
+	public void loginUser(Person person, IRequestCycle cycle)
 		throws RequestCycleException, RemoteException
 	{
 		String email;

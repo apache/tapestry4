@@ -33,7 +33,7 @@ import java.rmi.*;
 import java.util.*;
 
 /** 
- *  Remote interface for the {@link PersonBean} entity bean.
+ *  Remote interface for the Person entity bean.
  *
  *  @version $Id$
  *  @author Howard Ship

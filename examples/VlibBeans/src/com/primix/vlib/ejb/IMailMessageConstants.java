@@ -1,9 +1,9 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -28,40 +28,37 @@
 
 package com.primix.vlib.ejb;
 
-import javax.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import javax.naming.*;
-
 /**
- *  Remote interface to the KeyAllocator stateless
- *  session bean.
- *  
- *  @version $Id$
- *  @author Howard Ship
+ *  Provides property names used with a {@link javax.jms.MapMessage} when
+ *  communicating between beans via queues.
  *
+ *  @author Howard Ship
+ *  @version $Id$
  */
 
-public interface IKeyAllocator extends EJBObject
+
+public interface IMailMessageConstants
 {
 	/**
-	 *  Allocates a new key, possibling reserving it from
-	 *  the database.  The value returned is guarenteed to
-	 *  not have been previously returned by any instance.
+	 *  The address to which the mail should be sent.
 	 *
 	 */
-	 
-	public Integer allocateKey()
-		throws RemoteException;
+	
+	public static final String EMAIL_ADDRESS = "emailAddress";
+	
 	
 	/**
-	 * Allocates several keys, as if invoking {@link #allocateKey}
-	 * multiple times.  No guarentees are made that the
-	 * values are sequential or in any order, just that they
-	 * are unique.
+	 *  The subject line for the mail message (should be short).
 	 *
 	 */
-	 	 
-	public Integer[] allocateKeys(int count)
-		throws RemoteException;	
+	
+	public static final String SUBJECT = "subject";
+	
+	/**
+	 *  The content (or body) of the mail message.  Should be simple ASCII (for now).
+	 *
+	 */
+	
+	public static final String CONTENT = "content";
 }
+

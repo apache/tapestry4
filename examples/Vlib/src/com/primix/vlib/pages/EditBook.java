@@ -128,15 +128,22 @@ public class EditBook
 		
 		for (int i = 0; i < 2; i++)
 		{
-			IBook book = getBook();
-			
 			try
 			{
 				// Get the attributes as a source for our input fields.
 				
-				attributes = book.getEntityAttributes();
+				IOperations operations = vengine.getOperations();
+				
+				attributes = operations.getBookAttributes(bookPK);
 				
 				break;
+			}
+			catch (FinderException ex)
+			{
+				// TBD:  Dress this up and send them back to the Search or
+				// MyLibrary page.
+				
+				throw new ApplicationRuntimeException(ex);
 			}
 			catch (RemoteException ex)
 			{
@@ -149,34 +156,7 @@ public class EditBook
 		cycle.setPage(this);	
 	}
 	
-	private IBook getBook()
-	{
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		
-		for (int i = 0; i < 2; i++)
-		{	
-			IBookHome bookHome = vengine.getBookHome();
-			
-			try
-			{
-				return bookHome.findByPrimaryKey(bookPK);
-			}
-			catch (FinderException ex)
-			{
-				throw new ApplicationRuntimeException(ex);
-			}
-			catch (RemoteException ex)
-			{
-				vengine.rmiFailure(
-					"Remote exception reading book " +  bookPK + ".",
-					ex, i > 0);
-			}
-		}
-	
-		// Never, ever reached
-		
-		return null;
-	}
+
 	
 	/**
 	 *  Used to update the book when the form is submitted.

@@ -72,13 +72,9 @@ public class VirtualLibraryEngine
 	
     private transient boolean killSession;
 	
-	
 	// Home interfaces are static, such that they are only
 	// looked up once (JNDI lookup is very expensive).
 	
-	private static IPublisherHome publisherHome;
-	private static IBookHome bookHome;
-	private static IPersonHome personHome;
 	private static IBookQueryHome bookQueryHome;
 	private static IOperationsHome operationsHome;
 	private transient IOperations operations;
@@ -271,30 +267,6 @@ public class VirtualLibraryEngine
 		return debugEnabled;
 	}
 	
-	public IPersonHome getPersonHome()
-	{
-		if (personHome == null)
-			personHome = (IPersonHome)findNamedObject("vlib/Person", IPersonHome.class);
-		
-		return personHome;	
-	}
-	
-	public IPublisherHome getPublisherHome()
-	{
-		if (publisherHome == null)
-			publisherHome = (IPublisherHome)findNamedObject("vlib/Publisher",
-					IPublisherHome.class);
-		
-		return publisherHome;		
-	}
-	
-	public IBookHome getBookHome()
-	{
-		if (bookHome == null)
-			bookHome = (IBookHome)findNamedObject("vlib/Book", IBookHome.class);
-		
-		return bookHome;	
-	}
 	
 	public IBookQueryHome getBookQueryHome()
 	{
@@ -553,6 +525,30 @@ public class VirtualLibraryEngine
 		
 		return result;
 	}
+
+	/**
+	 *  Invoked in various places to present an error message to the user.
+	 *  This sets the error property of either the {@link Home} or
+	 *  {@link MyLibrary} page (the latter only if the user is logged in),
+	 *  and sets the selected page for rendering the response.
+	 *
+	 */
+	
+	public void presentError(String error, IRequestCycle cycle)
+	{
+		String pageName = "Home";
+		// Get, but don't create, the visit.
+		Visit visit = (Visit)getVisit();
+		
+		if (visit != null && visit.isUserLoggedIn())
+			pageName = "MyLibrary";
+		
+		IErrorProperty page = (IErrorProperty)cycle.getPage(pageName);
+		
+		page.setError(error);
+		
+		cycle.setPage(pageName);
+	}
 	
 	/**
 	 *  Invoked after an operation on a home or remote interface
@@ -594,12 +590,9 @@ public class VirtualLibraryEngine
 	
 	private void clearEJBs()
 	{
-		bookHome = null;
 		bookQueryHome = null;
 		operations = null;
 		operationsHome = null;
-		personHome = null;
-		publisherHome = null;
 		rootNamingContext = null;
 	}
 }

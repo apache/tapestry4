@@ -34,7 +34,7 @@ import javax.rmi.*;
 import javax.naming.*;
 
 /**
- *  Home interface to the {@link KeyAllocatorBean} stateless
+ *  Home interface to the {@link IKeyAllocator} stateless
  *  session bean.
  *  
  *  @version $Id$

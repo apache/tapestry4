@@ -11,6 +11,7 @@ INSTALL_DIR := ../../lib
 PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/com.primix.tapestry.jar \
 	$(JBOSS_DIR)/lib/ext/jms.jar \
+	$(JBOSS_DIR)/lib/ext/mail.jar \
 	$(INSTALL_DIR)/log4j-core.jar
 
 META_RESOURCES := *.xml
@@ -57,8 +58,9 @@ endif
 		$(JBOSS_CONF_DIR)/jbossmq.xml, \
 		jboss/jbossmq.xml.splice, \
 		-before "Queue")
-	$(call NOTE, Setting up JNDI properties ...)
-	$(CP) $(CP_FORCE_OPT) jboss/jndi.properties $(JBOSS_CONF_DIR)
+	@$(RM) $(JBOSS_CONF_DIR)/jboss-auto.jcml
+	$(call NOTE, Setting up JNDI and Mail properties ...)
+	$(CP) $(CP_FORCE_OPT) jboss/vlib-mail.properties jboss/jndi.properties $(JBOSS_CONF_DIR)
 	$(call NOTE, Copying runtime libraries ...)
 	$(CP) $(CP_FORCE_OPT) $(RUNTIME_LIBRARIES) $(JBOSS_DIR)/lib/ext
 	$(call NOTE, jBoss is ready to run)
@@ -76,8 +78,8 @@ setup-db:  $(INSTALLED_VLIB_PROPERTIES)
 $(INSTALLED_VLIB_PROPERTIES):
 	$(call NOTE, Installing Primix Vlib database ...)
 	$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
-	$(CAT) jboss/vlib.tar.gz | \
-		($(CD) $(JBOSS_DIR)/db && $(GNUTAR) $(GNUTAR_EXTRACT_OPT) $(GNUTAR_GZIP_OPT))
+	$(GNUTAR) $(GNUTAR_EXTRACT_OPT) $(GNUTAR_GZIP_OPT) \
+	  -f jboss/vlib.tar.gz -C $(JBOSS_DIR)/db
 
 
 # Command to run the InstantDB example command line tool.  This is used
@@ -92,6 +94,9 @@ run-idb:
 		idbexmpl.jar, \
 		org.enhydra.instantdb.commsql)
 	
+snapshot-database:
+	$(GNUTAR) $(GNUTAR_CREATE_OPT) $(GNUTAR_GZIP_OPT) \
+		-f jboss/vlib.tar.gz -C $(JBOSS_DIR)/db vlib
 
 .PHONY: setup-db configure-jboss
 

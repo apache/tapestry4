@@ -33,7 +33,7 @@ import java.rmi.*;
 import java.util.*;
 
 /**
- *  Home interface for the {@link BookBean} entity bean.
+ *  Home interface for the {@link IBook} entity bean.
  *
  *  @author Howard Ship
  *  @version $Id$

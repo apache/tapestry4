@@ -33,7 +33,7 @@ import java.rmi.*;
 import java.util.*;
 
 /**
- *  Home interface for the {@link PersonBean} entity bean.
+ *  Home interface for the {@link IPerson} entity bean.
  *
  *  @version $Id$
  *  @author Howard Ship

@@ -32,15 +32,16 @@ import javax.ejb.*;
 import java.rmi.*;
 
 /**
- *  Home interface for the {@link BookQueryBean} session bean.
+ *  Home interface for the {@link IBookQuery} session bean.
  *
  *  @version $Id$
  *  @author Howard Ship
  *
  */
- 
-public interface IBookQueryHome extends EJBHome
+
+public interface IBookQueryHome 
+	extends EJBHome
 {
 	public IBookQuery create()
-	throws CreateException, RemoteException; 
+		throws CreateException, RemoteException; 
 }

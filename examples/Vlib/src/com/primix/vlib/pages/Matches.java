@@ -158,9 +158,11 @@ public class Matches extends BasePage
 				
 				if (i > 0)
 				{
-					Home home = (Home)cycle.getPage("Home");
-					home.setError(message);
-					cycle.setPage(home);
+					// This method is invoked from the Home page.  We return
+					// without changing the response page.
+					
+					IErrorProperty page = (IErrorProperty)cycle.getPage();
+					page.setError(message);
 					return;
 				}				
 			}

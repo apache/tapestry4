@@ -161,8 +161,9 @@ public class PersonPage extends BasePage
 				
 				browser.initializeForResultCount(count);
 				
-				IPersonHome home = vengine.getPersonHome();
-				IPerson person = home.findByPrimaryKey(personPK);
+				IOperations operations = vengine.getOperations();
+				
+				Person person = operations.getPerson(personPK);
 				
 				setEmail(person.getEmail());
 				setFullName(person.getNaturalName());
@@ -171,11 +172,8 @@ public class PersonPage extends BasePage
 			}
 			catch (FinderException e)
 			{
-				Home homePage = (Home)cycle.getPage("Home");
-				homePage.setError("Person " + personPK + " not found in database.");
-				
-				cycle.setPage(homePage);
-				
+				vengine.presentError(
+						"Person " + personPK + " not found in database.", cycle);
 				return;
 			}
 			catch (RemoteException ex)

@@ -1,3 +1,16 @@
+* Jun 22 2001 hship
+
+VlibBeans:
+- Cleanup Operations bean to not return entity references to the
+  presentation layer.  
+- Finish configuring MailQueue and MailSender beans.
+- Send mail when book is borrowed or returned.
+  
+Vlib:
+- Adjust for changes to Operations bean.
+- Fiddle with styles and such.
+- Add better error reporting capabilities.
+
 * Jun 21 2001 hship
 
 Vlib:

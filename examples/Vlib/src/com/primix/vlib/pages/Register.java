@@ -206,7 +206,7 @@ public class Register
 			try
 			{
 				IOperations bean = vengine.getOperations();				
-				IPerson user = bean.registerNewUser(firstName, lastName, email, password1);
+				Person user = bean.registerNewUser(firstName, lastName, email, password1);
 				
 				// Ask the login page to return us to the proper place, as well
 				// as set a cookie identifying the user for next time.

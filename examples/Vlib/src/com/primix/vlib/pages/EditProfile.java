@@ -118,13 +118,21 @@ public class EditProfile
 		Visit visit = (Visit)getVisit();
 		VirtualLibraryEngine vengine = visit.getEngine();
 		
+		Integer primaryKey = visit.getUserPK();
+		
 		for (int i = 0; i < 2; i++)
 		{
 			try
 			{
-				attributes = visit.getUser().getEntityAttributes();
+				IOperations operations = vengine.getOperations();
+				
+				attributes = operations.getPersonAttributes(primaryKey);
 				
 				break;
+			}
+			catch (FinderException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
 			}
 			catch (RemoteException ex)
 			{
@@ -197,6 +205,7 @@ public class EditProfile
 		
 		Visit visit = (Visit)getVisit();
 		VirtualLibraryEngine vengine = visit.getEngine();
+		Integer primaryKey = visit.getUserPK();
 		
 		for (int i = 0; i < 2; i++)
 		{
@@ -209,9 +218,14 @@ public class EditProfile
 				 *
 				 */
 				
-				visit.getUser().updateEntityAttributes(attributes);
+				IOperations operations = vengine.getOperations();
 				
+				operations.updatePerson(primaryKey, attributes);				
 				break;
+			}
+			catch (FinderException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
 			}
 			catch (RemoteException ex)
 			{

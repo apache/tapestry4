@@ -123,6 +123,12 @@
         <jdbc-type/>
       </cmp-field>
       <cmp-field>
+        <field-name>authorizationCode</field-name>
+        <column-name>AUTH_CODE</column-name>
+        <sql-type>VARCHAR(100)</sql-type>
+        <jdbc-type/>
+      </cmp-field>
+      <cmp-field>
         <field-name>admin</field-name>
         <column-name>ADMIN</column-name>
         <sql-type>BIT</sql-type>

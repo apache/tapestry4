@@ -31,6 +31,8 @@ package com.primix.vlib.ejb.impl;
 import javax.ejb.*;
 import java.rmi.*;
 import javax.jms.*;
+import com.primix.tapestry.util.ejb.*;
+import javax.naming.*;
 
 /**
  *  Abstract base class for implementing message driven beans.
@@ -45,6 +47,13 @@ public abstract class AbstractMessageDrivenBean
 {
 	private MessageDrivenContext context;
 
+	/**
+	 *  Set by {@link #ejbCreate()}, this contains
+	 *  the <code>java:comp/env</code> context.
+	 *
+	 */
+	
+	protected Context environment;
 	
 	public void setMessageDrivenContext(MessageDrivenContext value)
 		throws EJBException
@@ -52,15 +61,25 @@ public abstract class AbstractMessageDrivenBean
 		context = value;
 	}
 	
+	
 	/**
-	 *
-	 *  Does nothing.
+	 *  Sets up the {@link #environment} instance variable.
 	 *
 	 */
 	
 	public void ejbCreate()
 		throws EJBException
+
 	{
+		try
+		{
+			Context initial = new InitialContext();
+			environment = (Context)initial.lookup("java:comp/env");
+		}
+		catch (NamingException ex)
+		{
+			throw new XEJBException("Could not lookup environment.", ex);
+		}
 	}
 	
 	/**
