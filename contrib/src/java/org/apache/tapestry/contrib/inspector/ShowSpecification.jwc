@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- $Id$ -->
+
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd" > 
+  
+<component-specification class="org.apache.tapestry.contrib.inspector.ShowSpecification">
+
+  <bean name="formalClass" class="org.apache.tapestry.bean.EvenOdd"/>           
+  <bean name="informalClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="assetClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="propertyClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="componentClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="beanClass" class="org.apache.tapestry.bean.EvenOdd"/>
+        
+  <component id="e_formal" type="Foreach">
+    <binding name="source" expression="formalParameterNames"/>
+    <binding name="value" expression="parameterName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" expression="beans.formalClass.next"/>
+  </component>
+     
+  
+  <component id="e_informal" type="Foreach"> 
+    <binding name="source" expression="informalParameterNames"/>
+    <binding name="value" expression="parameterName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" expression="beans.informalClass.next"/>
+  </component>
+
+  <component id="e_asset" type="Foreach">
+    <binding name="source" expression="assetNames"/>
+    <binding name="value" expression="assetName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" expression="beans.assetClass.next"/>
+  </component>
+  
+  <component id="e_components" type="Foreach">
+    <binding name="source" expression="sortedComponents"/>
+    <binding name="value" expression="component"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" expression="beans.componentClass.next"/>
+  </component>
+
+  <component id="selectComponent" type="DirectLink">
+    <binding name="listener" expression="page.listeners.selectComponent"/>
+    <binding name="parameters" expression="component.idPath"/>
+  </component>
+
+  <component id="e_property" type="Foreach">
+    <binding name="source" expression="sortedPropertyNames"/>
+    <binding name="value" expression="propertyName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" expression="beans.propertyClass.next"/>
+  </component>
+      
+  <component id="e_bean" type="Foreach">
+  	<binding name="source" expression="beanNames"/>
+  	<binding name="value" expression="beanName"/>
+  	<static-binding name="element">tr</static-binding>
+  	<binding name="class" expression="beans.beanClass.next"/>
+  </component>
+  	
+</component-specification>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- $Id$ -->
+<!DOCTYPE library-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<library-specification>
+
+  <component-type type="InspectorButton" specification-path="inspector/InspectorButton.jwc"/>
+  <page name="Inspector" specification-path="inspector/Inspector.page"/>
+
+  <library id="inspector" specification-path="inspector/Inspector.library"/>
+
+  <component-type type="Choose" specification-path="components/Choose.jwc"/>
+  <component-type type="When" specification-path="components/When.jwc"/>
+  <component-type type="Otherwise" specification-path="components/Otherwise.jwc"/>
+
+  <component-type type="Palette" specification-path="palette/Palette.jwc"/>
+  <component-type type="MultiplePropertySelection" specification-path="form/MultiplePropertySelection.jwc"/>
+  <component-type type="DateField" specification-path="valid/DateField.jwc"/>
+  <component-type type="MaskEdit" specification-path="form/MaskEdit.jwc"/>
+  <component-type type="NumericField" specification-path="valid/NumericField.jwc"/>
+  <component-type type="ValidatingTextField" specification-path="valid/ValidatingTextField.jwc"/>
+  <component-type type="FormConditional" specification-path="form/FormConditional.jwc"/>
+
+  <component-type type="InheritInformalAny" specification-path="informal/InheritInformalAny.jwc"/>
+
+  <component-type type="Table" specification-path="table/components/Table.jwc"/>
+  <component-type type="TableColumns" specification-path="table/components/TableColumns.jwc"/>
+  <component-type type="TablePages" specification-path="table/components/TablePages.jwc"/>
+  <component-type type="TableRows" specification-path="table/components/TableRows.jwc"/>
+  <component-type type="TableValues" specification-path="table/components/TableValues.jwc"/>
+  <component-type type="TableView" specification-path="table/components/TableView.jwc"/>
+  <component-type type="FormTable" specification-path="table/components/FormTable.jwc"/>
+  <component-type type="TableFormRows" specification-path="table/components/TableFormRows.jwc"/>
+  <component-type type="TableFormPages" specification-path="table/components/TableFormPages.jwc"/>
+
+  <page name="SimpleTableColumnPage" specification-path="table/components/inserted/SimpleTableColumnPage.page"/>
+  <component-type type="SimpleTableColumnComponent" specification-path="table/components/inserted/SimpleTableColumnComponent.jwc"/>
+  <component-type type="SimpleTableColumnFormComponent" specification-path="table/components/inserted/SimpleTableColumnFormComponent.jwc"/>
+
+  <component-type type="PopupLink" specification-path="popup/PopupLink.jwc"/>
+
+    <component-type type="Tree"
+        specification-path="/org/apache/tapestry/contrib/tree/components/Tree.jwc"/>
+    <component-type type="TreeDataView"
+        specification-path="/org/apache/tapestry/contrib/tree/components/TreeDataView.jwc"/>
+    <component-type type="TreeNodeView"
+        specification-path="/org/apache/tapestry/contrib/tree/components/TreeNodeView.jwc"/>
+    <component-type type="TreeView"
+        specification-path="/org/apache/tapestry/contrib/tree/components/TreeView.jwc"/>
+    <component-type type="TreeTableDataView"
+        specification-path="/org/apache/tapestry/contrib/tree/components/table/TreeTableDataView.jwc"/>
+    <component-type type="TreeTable"
+        specification-path="/org/apache/tapestry/contrib/tree/components/table/TreeTable.jwc"/>
+    <component-type type="TreeTableNodeViewDelegator"
+        specification-path="/org/apache/tapestry/contrib/tree/components/table/TreeTableNodeViewDelegator.jwc"/>
+    <page name="TreeNodeViewPage" specification-path="/org/apache/tapestry/contrib/tree/components/TreeNodeViewPage.page"/>
+
+    <page name="TreeTableNodeViewPage" specification-path="/org/apache/tapestry/contrib/tree/components/table/TreeTableNodeViewPage.page"/>
+</library-specification>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.table.components.TablePages" 
+	allow-body="no" allow-informal-parameters="yes">
+	
+	<description>
+        A low level Table component that renders the pages in the table. 
+        This component must be wrapped by TableView. 
+	</description>
+  
+	<parameter name="pagesDisplayed" 
+		type="int" 
+		required="no"
+		direction="auto"
+    	default-value="7">
+		<description>
+            Determines the maximum number of pages to be displayed in the page list 
+            when the table has more than one page. 
+        </description>
+    </parameter>
+
+	<component id="informal" type="Any" inherit-informal-parameters="yes"/>
+  
+	<component id="condCurrent" type="Conditional">
+		<binding name="condition" expression="condCurrent"/>
+	</component>
+  
+	<component id="condOther" type="Conditional">
+		<binding name="condition" expression="condCurrent"/>
+		<static-binding name="invert">true</static-binding>
+	</component>
+  
+	<component id="iterPage" type="Foreach">
+		<binding name="source" expression="pageList"/>
+		<binding name="value" expression="displayPage"/>
+	</component>
+
+	<component id="insertCurrentPage" type="Insert">
+	    <binding name="value" expression="displayPage"/>
+	</component>
+
+	<component id="insertOtherPage" type="Insert">
+	    <binding name="value" expression="displayPage"/>
+	</component>
+
+	<component id="linkPage" type="DirectLink">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="parameters" expression="displayPageContext"/>
+	</component>
+
+	<component id="linkFirst" type="DirectLink">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="parameters" expression="firstPageContext"/>
+	    <binding name="disabled" expression="!condBack"/>
+	</component>
+
+	<component id="linkBack" type="DirectLink">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="parameters" expression="backPageContext"/>
+	    <binding name="disabled" expression="!condBack"/>
+	</component>
+
+	<component id="linkFwd" type="DirectLink">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="parameters" expression="fwdPageContext"/>
+	    <binding name="disabled" expression="!condFwd"/>
+	</component>
+	
+	<component id="linkLast" type="DirectLink">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="parameters" expression="lastPageContext"/>
+	    <binding name="disabled" expression="!condFwd"/>
+	</component>
+	
+</component-specification>

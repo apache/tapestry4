@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.form.MaskEdit" allow-informal-parameters="no">
+
+  <parameter name="mask" direction="in" type="java.lang.String" required="yes"/>
+  <parameter name="value" direction="custom" type="java.lang.String" required="yes"/>
+  <parameter name="disabled" direction="in" type="boolean" required="no"/>
+  
+  <component id="maskEdit" type="TextField">
+    <binding name="value" expression="value"/>
+    <binding name="maxlength" expression="mask.length()"/>
+    <binding name="size" expression="mask.length()"/>        
+    <binding name="disabled" expression="disabled"/>
+  </component>
+
+  <component id="maskValue" type="Hidden">
+    <binding name="value" expression="mask"/>
+    <binding name="encode" expression="false"/>
+  </component>
+
+  <component id="maskEditScript" type="Script">
+    <binding name="maskEdit" expression="components.maskEdit"/>
+    <binding name="maskValue" expression="components.maskValue"/>
+    <binding name="script" expression='"MaskEdit.script"'/>
+  </component>
+        
+</component-specification>

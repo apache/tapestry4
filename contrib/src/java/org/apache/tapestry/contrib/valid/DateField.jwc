@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  
+<component-specification class="org.apache.tapestry.contrib.valid.DateField">
+
+  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="hidden" type="boolean" direction="in"/>
+  <parameter name="displayWidth" type="int" direction="in"/>
+  <parameter name="maximumLength" type="int" direction="in"/>
+
+  <parameter name="date" type="java.util.Date" direction="auto" required="yes" />
+  <parameter name="displayName" type="java.lang.String" direction="auto" required="yes" />
+  <parameter name="maximum" type="java.util.Date" />
+  <parameter name="minimum" type="java.util.Date" />
+  <parameter name="required" />
+  <parameter name="format" type="java.text.DateFormat" />
+  <parameter name="displayFormat" type="java.lang.String" />
+    
+  <reserved-parameter name="name"/>
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="value"/>
+  <reserved-parameter name="size"/>
+  <reserved-parameter name="maxlength"/>
+
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+
+</component-specification>

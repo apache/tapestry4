@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.inspector.ShowProperties">
+
+  <bean name="persistPropertyClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  <bean name="propertyClass" class="org.apache.tapestry.bean.EvenOdd"/>
+  
+  <component id="ifNoProperties" type="Conditional">
+    <binding name="condition" expression="!properties"/>
+  </component>
+  
+  <component id="ifHasProperties" type="Conditional">
+    <binding name="condition" expression="properties"/>
+  </component>
+  
+  <component id="e" type="Foreach">
+    <binding name="source" expression="properties"/>
+    <binding name="value" expression="change"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" expression="beans.persistPropertyClass.next"/>
+  </component>
+  
+  <component id="selectComponent" type="DirectLink">
+    <binding name="listener" expression="page.listeners.selectComponent"/>
+    <binding name="parameters" expression="change.componentPath"/>
+    <binding name="disabled" expression="change.componentPath == null"/>
+  </component>
+  
+  <component id="insertPath" type="Insert">
+    <binding name="value" expression="change.componentPath"/>
+  </component>
+  
+  <component id="insertPersistPropertyName" type="Insert">
+    <binding name="value" expression="change.propertyName"/>
+  </component>
+  
+  <component id="insertPersistValueClass" type="Insert">
+    <binding name="value" expression="valueClassName"/>
+  </component>
+  
+  <component id="insertPersistValue" type="Insert">
+    <binding name="value" expression="change.newValue"/>
+  </component>
+  
+</component-specification>

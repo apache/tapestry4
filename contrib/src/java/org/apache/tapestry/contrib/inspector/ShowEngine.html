@@ -1,0 +1,90 @@
+<!-- $Id$ -->
+
+<table class="inspector-data">
+
+	<tr class="heading">
+		<th colspan=2>Engine/Application Properties</th>
+	</tr>
+	
+	<tr class="heading">
+		<th>Name</th> <th>Property</th>
+	</tr>
+	
+	<tr class="even">
+		<th>Tapestry Framework Version</th>
+		<td><span jwcid="insertFrameworkVersion"/></td>
+	</tr>
+	
+	<tr class="odd">
+		<th>Application Name</th>
+		<td><span jwcid="insertApplicationName"/></td>
+	</tr>
+
+	<tr class="even">
+		<th>Context Path</th>
+		<td><span jwcid="insertContextPath"/></td>
+	</tr>
+
+	<tr class="odd">
+		<th>Servlet Path</th>
+		<td><span jwcid="insertServletPath"/></td>
+	</tr>
+
+	<tr class="even">
+		<th>Engine Class</th>
+		<td><span jwcid="insertEngineClass"/></td>
+	</tr>
+	
+	<tr class="odd">
+		<th>Locale</th>
+		<td><span jwcid="insertLocale"/></td>
+	</tr>
+
+	<tr class="even">
+		<th>Visit</th>
+		<td>
+<span jwcid="ifNoVisit">
+<em>none</em>
+</span>
+
+<span jwcid="ifVisit">
+<span jwcid="insertVisit"/>
+</span>
+		</td>
+	</tr>
+
+</table>
+
+<h1>Operations</h1>
+
+<table class="inspector-data">
+
+	<tr class="even">
+		<td><a jwcid="restart" target="_new"><img jwcid="restartButton"/></a>
+		</td>
+		<td>Restart the application (in a new window).
+		</td>
+	</tr>
+
+	<tr class="even">
+		<td><a jwcid="reset"><img jwcid="resetButton"/></a>
+		</td>
+		<td>
+		Reset the application, discarding all cached specifications, assets
+		and templates.
+		</td>
+	</tr>
+</table>
+
+<h1>Serialized Engine</h1>
+
+<p>The serialized state of the application engine (the size of this is relevant
+for application servers which support clustering).
+
+<p><span jwcid="insertByteCount"/> bytes:
+<pre><span jwcid="insertSerializedEngine"/></pre>
+
+<h1>Request Context</h1>
+
+<span jwcid="insertRequest"/>
+
