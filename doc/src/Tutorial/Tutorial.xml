@@ -1685,7 +1685,7 @@ the locale of a running application
 A demonstration of localization is built into the Workbench, under the <acronym>L10N</acronym>
       <footnote>
         <para>
-The "10" refers to the number of letters between 'l' and 'n' in the work 'localization'
+The "10" refers to the number of letters between 'l' and 'n' in the word 'localization'
 </para>
       </footnote> tab.
 The page allows the user to select a new language for the application:

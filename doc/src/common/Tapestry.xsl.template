@@ -14,7 +14,7 @@
 <!-- The common buildfiles ensure that the XSL files are unpacked
      to this relative directory. -->
      
-<xsl:import href="../common/docbook-xsl-1.45/html/chunk.xsl"/>
+<xsl:import href="../common/@docbook.xsl.base@/html/@format@.xsl"/>
 
 <!-- Enable shading of verbatim blocks, such as programlisting. -->
  

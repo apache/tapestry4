@@ -159,3 +159,8 @@ DIV.right-side-quote
     font-size: 14px;
 	font-weight : bold;
 }
+
+SPAN.release
+{
+  font-weight: bold;
+}
