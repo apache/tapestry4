@@ -201,6 +201,13 @@ In our example, when Suzanne is done with the page, its <function>detach()</func
 color property back to blue before releasing it into the pool.  When Nancy hits the page for the 
 first time, the page retrieved from the pool with have the expected blue property.
 </para>
+
+<para>
+In other words, it is the responsibility of the developer to ensure that,
+as a page is returned to the pool, its state is exactly the same
+as a freshly created page.
+</para>
+
       <para>
 In our earlier email address example, the following additional code must be implemented by the 
 page:
@@ -653,9 +660,9 @@ exception page.
 In practice, virtually all Tapestry pages will use a 
 &Body; component wrapping the majority of the page (it takes
 the place of the normal <sgmltag class="starttag">body</sgmltag> element), and a &Body; component 
-buffers the output of all components it wraps.  This buffering is necessary so that the 
+buffers the output of all components in its body.  This buffering is necessary so that the 
 &Body; component can write out various JavaScript handlers before the main body of HTML is written 
-(this is often related to the use of the &Rollover; component).
+(this is often related to the use of the &Rollover; and &Script; components).
 </para>
       <para>
 In any case, whenever a &Body;

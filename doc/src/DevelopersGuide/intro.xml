@@ -357,81 +357,8 @@ all incoming requests flow through a few specific methods of particular classes.
 This makes it easier to add additional security measures that are specific to the application.
 </para>
     </section>
-    <section id="intro.features">
-      <title>Features</title>
-      <para>
-The framework, based on the component object model, provides a significant number of other features, 
-including:
-
-	<itemizedlist>
-          <listitem>
-            <para>Easy localization of applications</para>
-          </listitem>
-          <listitem>
-            <para>Extremely robust error handling and reporting</para>
-          </listitem>
-          <listitem>
-            <para>Highly re-usable components</para>
-          </listitem>
-          <listitem>
-            <para>Automatic persistence of server-side client state between request cycles</para>
-          </listitem>
-          <listitem>
-            <para>Powerful processing of HTML forms</para>
-          </listitem>
-          <listitem>
-            <para>Strong support for load balancing and fail over </para>
-          </listitem>
-          <listitem>
-            <para>Zero code generation
-				<footnote>
-                <para>That is, Tapestry templates and specifications are interpreted as is.
-					Unlike JSPs, they are not translated into Java source code
-					and compiled into Java classes.  This greatly simplifies debugging
-					since no code is generated at runtime.
-					</para>
-              </footnote>
-            </para>
-          </listitem>
-          <listitem>
-            <para>Easy deployment</para>
-          </listitem>
-          <listitem>
-            <para>The <link linkend="inspector">Inspector</link>, 
-            which allows developers to debug a running Tapestry application</para>
-          </listitem>
-        </itemizedlist>
-      </para>
-      <para>
-The point of Tapestry is to free the web application developer from the most tedious tasks.  
-In many cases, the "raw plumbing" of a web application can be completely mechanized by 
-the framework, leaving the developer to deal with more interesting challenges, such 
-as business and presentation logic.
-</para>
-      <para>
-As Tapestry continues to develop, new features will be added.  On the drawing board are:
-
-	<itemizedlist>
-          <listitem>
-            <para>Support for easy cross-browser DHTML</para>
-          </listitem>
-          <listitem>
-            <para>XML / XHTML support</para>
-          </listitem>
-          <listitem>
-            <para>Improved WAP / WML support</para>
-          </listitem>
-          <listitem>
-            <para>A real-time performance "Dashboard"</para>
-          </listitem>
-          <listitem>
-            <para>Journaling / Playback</para>
-          </listitem>
-        </itemizedlist>
-      </para>
-    </section>
-  </chapter>
-  <chapter id="webapp">
+ 
+<section id="intro.web-app">
     <title>Web Applications</title>
     <para>
 Tapestry has a very strong sense of what an application is, derived from an 
@@ -506,4 +433,80 @@ Services are used to generate the URLs used by hyperlinks and form submissions.
 They are also responsible for interpreting the same URLs when they are later 
 triggered from the client web browser.
 </para>
+</section>  <!-- intro.web-app -->
+
+
+   <section id="intro.features">
+      <title>Features</title>
+      <para>
+The framework, based on the component object model, provides a significant number of other features, 
+including:
+
+	<itemizedlist>
+          <listitem>
+            <para>Easy localization of applications</para>
+          </listitem>
+          <listitem>
+            <para>Extremely robust error handling and reporting</para>
+          </listitem>
+          <listitem>
+            <para>Highly re-usable components</para>
+          </listitem>
+          <listitem>
+            <para>Automatic persistence of server-side client state between request cycles</para>
+          </listitem>
+          <listitem>
+            <para>Powerful processing of HTML forms</para>
+          </listitem>
+          <listitem>
+            <para>Strong support for load balancing and fail over </para>
+          </listitem>
+          <listitem>
+            <para>Zero code generation
+				<footnote>
+                <para>That is, Tapestry templates and specifications are interpreted as is.
+					Unlike JSPs, they are not translated into Java source code
+					and compiled into Java classes.  This greatly simplifies debugging
+					since no code is generated at runtime.
+					</para>
+              </footnote>
+            </para>
+          </listitem>
+          <listitem>
+            <para>Easy deployment</para>
+          </listitem>
+          <listitem>
+            <para>The <link linkend="inspector">Inspector</link>, 
+            which allows developers to debug a running Tapestry application</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+      <para>
+The point of Tapestry is to free the web application developer from the most tedious tasks.  
+In many cases, the "raw plumbing" of a web application can be completely mechanized by 
+the framework, leaving the developer to deal with more interesting challenges, such 
+as business and presentation logic.
+</para>
+      <para>
+As Tapestry continues to develop, new features will be added.  On the drawing board are:
+
+	<itemizedlist>
+          <listitem>
+            <para>Support for easy cross-browser DHTML</para>
+          </listitem>
+          <listitem>
+            <para>XML / XHTML support</para>
+          </listitem>
+          <listitem>
+            <para>Improved WAP / WML support</para>
+          </listitem>
+          <listitem>
+            <para>A real-time performance "Dashboard"</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>  <!-- intro.features -->
+
+
+
   </chapter>
