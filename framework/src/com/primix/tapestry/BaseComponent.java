@@ -254,34 +254,51 @@ public class BaseComponent
 	 */
 	
 	private void addStaticBindings(IComponent component, Map attributes, IPageSource pageSource)
-	{
+	{	
 		if (attributes == null || attributes.isEmpty())
 			return;
 		
 		ComponentSpecification spec = component.getSpecification();
 		
-		if (!spec.getAllowInformalParameters())
-			return;
+		boolean rejectInformal = !spec.getAllowInformalParameters();
 		
 		Iterator i = attributes.entrySet().iterator();
-
+		
 		while (i.hasNext())
 		{
 			Map.Entry e = (Map.Entry)i.next();
 			
-			String informalParameterName = (String)e.getKey();
-	
-			// If a formal or informal parameter already exists with that
-			// exact name, then skip it.
+			String name = (String)e.getKey();
 			
-			if (spec.isReservedParameterName(informalParameterName))
-				continue;
+			// If matches a formal parameter name, allow it to be set
+			// unless there's already a binding.
+			
+			boolean isFormal = (spec.getParameter(name) != null);
+			
+			if (isFormal)
+			{
+				if (component.getBinding(name) != null)
+					continue;
+			}
+			else
+			{
+				// Skip informal parameters if the component doesn't allow them.
+				
+				if (rejectInformal)
+					continue;
+				
+				// If the name is reserved (matches a formal parameter
+				// or reserved name, caselessly), then skip it.
+				
+				if (spec.isReservedParameterName(name))
+					continue;
+			}
 			
 			String value = (String)e.getValue();
 			
 			IBinding binding = pageSource.getStaticBinding(value);
 			
-			component.setBinding(informalParameterName, binding);
+			component.setBinding(name, binding);
 		}
 	}
 	

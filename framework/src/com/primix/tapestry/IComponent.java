@@ -267,6 +267,10 @@ public interface IComponent
 	 *  receiving component will also have been constructed
 	 *  before this method is invoked.
 	 *
+	 *  <p>As of release 1.0.6, this method is invoked <em>before</em>
+	 *  bindings are set.  This should not affect anything, as bindings
+	 *  should only be used during renderring.
+	 *
 	 * @since 0.2.12
 	 */
 	
