@@ -56,33 +56,6 @@ public class BasePage extends AbstractPage
 	{
 		return new HTMLResponseWriter(out);
 	}
-
-	/**
-	 *  Writes a number of HTTP headers, to defeat caching in
-	 *  most known browsers.
-	 *
-	 *  <table>
-	 *  <tr>
-	 *	<td>Cache-Control</td> <td>no-cache</td> </tr>
-	 *  <tr> <td>Pragma</td> <td>no-cache</td> </tr>
-	 *  <tr> <td>Expires</td>	<td>0</td> </tr>
-	 *  </tr>
-	 *  </table>
-	 *
-	 *  <p>Subclasses may override this as necessary.  If browser caching
-	 *  is desired, override this method with an empty implementation (that
-	 *  does <em>not</em> invoke this implementation).
-	 */
-	
-	public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
-	throws RequestCycleException
-	{
-		HttpServletResponse response = cycle.getRequestContext().getResponse();
-		
-		response.setHeader("Cache-Control", "no-cache");
-		response.setHeader("Pragma", "no-cache");
-		response.setDateHeader("Expires", 0);
-	}
 }
 
 

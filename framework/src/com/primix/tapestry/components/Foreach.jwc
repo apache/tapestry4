@@ -6,4 +6,6 @@
   <parameter name="value"/>
   <parameter name="first" java-type="java.lang.Boolean"/>
   <parameter name="last" java-type="java.lang.Boolean"/>
+  <parameter name="index" java-type="int"/>
+  
 </specification>

@@ -3,22 +3,21 @@
 <jwc id="table">
   <tr>
   	<th id="selectedTitle"><jwc id="insertSelectedTitleBlock"/></th>
-  	<th class="spacer"></th>
+  	<td class="controls" rowspan=2>
+  	    <jwc id="selectButton"><jwc id="selectImage"/></jwc>
+    <br>
+    <jwc id="deselectButton"><jwc id="deselectImage"/></jwc>
+    <jwc id="ifSortUser">
+    <br>
+    <jwc id="moveUpButton"><jwc id="upImage"/></jwc>
+    <br>
+    <jwc id="moveDownButton"><jwc id="downImage"/></jwc>
+    </jwc>
+    </td>
   	<th id="availableTitle"><jwc id="insertAvailableTitleBlock"/></th>
   </tr>
   <tr>
     <td id="selected"><jwc id="selected"/></td>
-    <td class="controls">
-    <jwc id="selectButton">&lt;&lt;</jwc>
-    <br>
-    <jwc id="deselectButton">&gt;&gt;</jwc>
-    <jwc id="ifSortUser">
-    <br>
-    <jwc id="moveUpButton">^</jwc>
-    <br>
-    <jwc id="moveDownButton">V</jwc>
-    </jwc>
-    </td>
     <td id="available"><jwc id="available"/></td>
   </tr>
 </jwc>

@@ -73,6 +73,18 @@ import com.primix.tapestry.*;
  *  the {@link #getValue() value property}.</td>
  *  </tr>
  *
+ * <tr>
+ *	<td>index</td>
+ * 	<td>int</td>
+ *	<td>W</td>
+ *	<td>no</td>
+ *	<td>&nbsp;</td>
+ *	<td>Used to store the index of the current value within the stream of
+ * elements provided by the source parameter.  The index parameter is
+ * explicitly updated <em>before</em> the value parameter.
+ *
+ *	</td> </tr>
+ *
  *  <tr>
  *   <td>first</td>
  *   <td>java.lang.Boolean</td>
@@ -86,6 +98,9 @@ import com.primix.tapestry.*;
  *
  *  <p>Wrapped component may alternately access this value via the
  *  {@link #isFirst() first property}.
+ *
+ * <p>This parameter may be removed in a future version of Tapestry.
+ *
  *  </td>
  *  </tr>
  *
@@ -100,8 +115,11 @@ import com.primix.tapestry.*;
  *
  *  <p>Allows special handling of the last value.
  *
- * <p>Wrapped component may alternately access this value via the
+ * <p>Wrapped components may alternately access this value via the
  *  {@link #isLast() last property}.
+
+ *
+ * <p>This parameter may be removed in a future version of Tapestry.
  *
  *  </td>
  * </tr>
@@ -121,6 +139,7 @@ public class Foreach extends AbstractComponent
 	private IBinding valueBinding;
 	private IBinding firstBinding;
 	private IBinding lastBinding;
+	private IBinding indexBinding;
 	
 	private Object value;
 	private boolean first;
@@ -218,6 +237,9 @@ public class Foreach extends AbstractComponent
 				if (!hasNext)
 					setLast(true);
 				
+				if (indexBinding != null)
+					indexBinding.setInt(i);
+				
 				if (valueBinding != null)
 					valueBinding.setObject(value);
 				
@@ -266,8 +288,11 @@ public class Foreach extends AbstractComponent
 	 *  is the first value extracted from the
 	 *  source.
 	 *
+	 *  <p>This method may be removed in a future version of Tapestry.
+	 *
 	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
 	 *
+	 *  @deprecated
 	 */
 	
 	public boolean isFirst()
@@ -292,8 +317,10 @@ public class Foreach extends AbstractComponent
 	 *  is the last value extracted from the
 	 *  source.
 	 *
-	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
+	 *  <p>This method may be removed in a future version of Tapestry.
 	 *
+	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
+	 *  @deprecated
 	 */
 	
 	public boolean isLast()

@@ -65,7 +65,7 @@ import org.apache.log4j.*;
  *  <td>R</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
- *  <td>The base set of symbols to be provided to the {@link ParsedScript}.
+ *  <td>The base set of symbols to be provided to the {@link IScript}.
  *  To this is added (in a copy of the {@link Map}) any informal parameters.
  *  </tr>
  *

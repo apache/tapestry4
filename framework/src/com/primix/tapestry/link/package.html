@@ -1,0 +1,26 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+<title>Tapestry: Web Application Framework</title>
+</head>
+<body>
+
+<p>Components for creating links on the page that trigger application behavior
+when clicked.  These links are compatible with HTML and WML (they
+use the basic &lt;a&gt; element).
+
+<p>Each component is related to a different 
+{@link com.primix.tapestry.IEngineService}, except for {@link com.primix.tapestry.Service}
+which is parameterized to use any of the available services ... which is useful with
+applications that define their own services.
+
+<p>Link components have a second function, to provide event handling support to the 
+components they wrap.  This is how a {@link com.primix.tapestry.html.Rollover} component manages
+to include DHTML and JavaScript that preloads the images and changes the displayed image as the
+mouse enters and exits the "hot" area defined by the link.
+
+@author Howard Ship <a href="mailto:hship@primix.com">hship@primix.com</a>
+
+</body>
+</html>

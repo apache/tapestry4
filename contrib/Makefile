@@ -14,6 +14,8 @@ PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/ejb.jar \
 	$(INSTALL_DIR)/log4j-core.jar
 
+RESOURCE_EXTENSIONS := html jwc gif script
+
 INSTALL_DIR = ../lib
 
 JAVADOC_DIR = api

@@ -14,12 +14,29 @@ includeBaseFunctions - if true, then include the base functions; this is true fo
 sortLabel - if true, sort options by label
 sortValue - if true, sort options by value
 sortUser - if create additional controls to allow user to sort manually
-  
+selectImage - reference to the select image
+selectDisabledImage - referece to the disabled select image  
+deselectImage - reference to the deselect image
+deselectDisabledImage - reference to the disbled deselect image
+upImage - reference to the move up image
+upDisabledImage - reference to the disabled move up image
+downImage - reference to the move down image
+downDisabledImage - reference to the disabled move down image
+
+Note: "reference" means the result of Body.getPreloadedImageReference().  The
+up and down images are only needed if sortUser is true.
+
 output symbols:
   formSubmitFunctionName - name of a function to be executed when the form submits
   availableName - the name of the available element
   selectButtonId - the id of the select button
   deselectButtonId - the id of the deselect button
+  selectImageName - the name to use for the select image (inside the select button)
+  deselectImageName - the name to use for the deselect image (inside the deselect button)
+  upButtonId - the id of the move up button
+  upImageName - the name of the up image (inside the up button)
+  downButtonId - the id of the move down button
+  downImageName the id of the move down image (inside the down button)
 -->
 
 <!-- baseName - base name from which other names are generated -->
@@ -56,12 +73,28 @@ output symbols:
   document.all.<insert property-path="selectButtonId"/>
 </let>
 
+<let key="selectImageName">
+  selectimage_<insert property-path="baseName"/>
+</let>
+
+<let key="selectImagePath">
+  document.<insert property-path="selectImageName"/>
+</let>
+
 <let key="deselectButtonId">
   deselect_<insert property-path="baseName"/>
 </let>
 
 <let key="deselectButtonPath">
   document.all.<insert property-path="deselectButtonId"/>
+</let>
+
+<let key="deselectImageName">
+  deselectimage_<insert property-path="baseName"/>
+</let>
+
+<let key="deselectImagePath">
+  document.<insert property-path="deselectImageName"/>
 </let>
 
 <let key="formPath">
@@ -84,12 +117,28 @@ output symbols:
   document.all.<insert property-path="upButtonId"/>
 </let>
 
+<let key="upImageName">
+  upimage_<insert property-path="baseName"/>
+</let>
+
+<let key="upImagePath">
+  document.<insert property-path="upImageName"/>
+</let>
+
 <let key="downButtonId">
   movedown_<insert property-path="baseName"/>
 </let>
 
 <let key="downButtonPath">
   document.all.<insert property-path="downButtonId"/>
+</let>
+
+<let key="downImageName">
+  downimage_<insert property-path="baseName"/>
+</let>
+
+<let key="downImagePath">
+  document.<insert property-path="downImageName"/>
 </let>
 
 <let key="moveUpFunctionName">
@@ -205,42 +254,67 @@ function palette_transfer_selections(source, target)
 
 function <insert property-path="updateFunctionName"/>()
 {
-  <insert property-path="selectButtonPath"/>.disabled =
-    <insert property-path="availablePath"/>.selectedIndex &lt; 0;
-    
+  var disabled = <insert property-path="availablePath"/>.selectedIndex &lt; 0;
+  
+  <insert property-path="selectButtonPath"/>.disabled = disabled;
+  
+  if (document.images)
+    <insert property-path="selectImagePath"/>.src =
+      disabled ? <insert property-path="selectDisabledImage"/>
+               : <insert property-path="selectImage"/>;
 
   var selected = <insert property-path="selectedPath"/>;
   var index = selected.selectedIndex;
 
-  var disabled = index &lt; 0;
+  disabled = index &lt; 0;
   <insert property-path="deselectButtonPath"/>.disabled = disabled;
+  
+  if (document.images)
+    <insert property-path="deselectImagePath"/>.src =
+  	  disabled ? <insert property-path="deselectDisabledImage"/>
+               : <insert property-path="deselectImage"/>;
+  			 
 <if property-path="sortUser">
 
   var upButton = <insert property-path="upButtonPath"/>;
+  var upImage = <insert property-path="upImagePath"/>;
   var downButton = <insert property-path="downButtonPath"/>;
+  var downImage = <insert property-path="downImagePath"/>
   
-  if (disabled)
+  upButton.disabled = true;
+  downButton.disabled = true;
+  if (document.images)
   {
-    upButton.disabled = true;
-    downButton.disabled = true;
-    return;
+    upImage.src = <insert property-path="upDisabledImage"/>;
+    downImage.src = <insert property-path="downDisabledImage"/>;
   }
   
+  <!-- If there's no selection in the "selected" column, then leave
+       both buttons disabled. -->
+       
+  if (disabled)
+  	return;
+ 
   <!-- Search for a second selected item -->
   
   for (var i = index + 1; i &lt; selected.options.length; i++)
   {
-    <!-- Found a second selected option, so disable the buttons. -->
+    <!-- Found a second selected option, so leave buttons disabled. -->
     if (selected.options[i].selected)
-    {
-      upButton.disabled = true;
-      downButton.disabled = true;
-      return;
-    }  
+	  return;
   }
   
   upButton.disabled = (index == 0);
   downButton.disabled = (index == selected.options.length - 1);  
+  
+  if (document.images)
+  {
+    if (!upButton.disabled)
+      upImage.src = <insert property-path="upImage"/>;
+
+    if (!downButton.disabled)
+      downImage.src = <insert property-path="downImage"/>;
+  }
 </if>  
 }
 
