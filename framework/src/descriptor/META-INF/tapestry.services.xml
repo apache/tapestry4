@@ -186,5 +186,9 @@
  <contribution configuration-id="hivemind.ObjectProviders">
     <provider prefix="engine-service" service-id="EngineServiceObjectProvider"/>
  </contribution>
+ 
+ <contribution configuration-id="tapestry.Infrastructure">
+    <property name="serviceMap" object="service:ServiceMap"/>  
+ </contribution>
 
 </module>

@@ -17,7 +17,6 @@ package org.apache.tapestry.error;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**

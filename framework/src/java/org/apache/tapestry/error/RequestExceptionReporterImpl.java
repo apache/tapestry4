@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services.impl;
+package org.apache.tapestry.error;
 
 import org.apache.commons.logging.Log;
-import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;

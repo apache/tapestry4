@@ -103,4 +103,12 @@
  <contribution configuration-id="tapestry.init.ApplicationInitializers">
   <command id="SetupServletApplicationGlobals" object="service:SetupServletApplicationGlobals"/>
  </contribution>  
+ 
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="applicationSpecification" object="service-property:ApplicationGlobals:specification"/>
+    <property name="request" object="service:WebRequest"/>
+    <property name="response" object="service:WebResponse"/>    
+    <property name="applicationId" object="service-property:ApplicationGlobals:activatorName"/>
+    <property name="context" object="service:WebContext"/>    
+  </contribution> 
 </module>

@@ -203,4 +203,8 @@
       </construct>
     </invoke-factory>
   </service-point>
+  
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="applicationStateManager" object="service:ApplicationStateManager"/>    
+  </contribution>
 </module>

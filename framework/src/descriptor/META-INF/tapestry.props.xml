@@ -199,5 +199,11 @@
     <source name="SystemProperties" before="hivemind.ApplicationDefaults" 
       class="org.apache.hivemind.impl.SystemPropertiesSymbolSource"/>
   </contribution> 
+  
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="applicationPropertySource" object="service:ApplicationPropertySource"/>
+    <property name="globalPropertySource" object="service:GlobalPropertySource"/>
+    <property name="componentPropertySource" object="service:ComponentPropertySource"/>
+  </contribution>
    
 </module>
