@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<page-specification class="tutorial.workbench.fields.Forms">
+
+	<component id="border" type="Border"/>
+	  
+	<component id="form" type="Form">
+		<binding name="listener" property-path="listeners.formSubmit"/>
+	</component>
+	
+	<component id="group" type="RadioGroup">
+		<binding name="selected" property-path="favoriteColor"/>
+	</component>
+	
+	<component id="blue" type="Radio">
+		<string-binding name="value" key="blue"/>
+	</component>
+	
+	<component id="green" type="Radio">
+		<string-binding name="value" key="green"/>
+	</component>
+	
+	<component id="red" type="Radio">
+		<string-binding name="value" key="red"/>
+	</component>
+	
+	<component id="ifFavoriteColor" type="Conditional">
+		<binding name="condition" property-path="favoriteColor"/>
+	</component>
+	
+	<component id="insertFavoriteColor" type="Insert">
+		<binding name="value" property-path="favoriteColor"/>
+	</component>
+	
+</page-specification>
+
