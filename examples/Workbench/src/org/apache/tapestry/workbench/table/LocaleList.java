@@ -81,7 +81,7 @@ public abstract class LocaleList extends BaseComponent
             public Object getPrimaryKey(Object objValue)
             {
                 Locale objLocale = (Locale) objValue;
-                return objValue.toString();
+                return objLocale.toString();
             }
 
             public Object getValue(Object objPrimaryKey)
