@@ -16,6 +16,8 @@
     <pathelement location="${framework.jar}"/>
     <pathelement location="${contrib.jar}"/>
     <pathelement location="${vlibbeans.jar}"/>
+    <pathelement location="${lib.ext.dir}/jndi.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.rmi.jar"/>
   </path>
   
   <property name="private.dir" value="private"/>
