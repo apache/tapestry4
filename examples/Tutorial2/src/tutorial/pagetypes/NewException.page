@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Home.page,v 1.6 2002/05/13 14:00:37 scornflake Exp $ -->
+<!DOCTYPE page-specification PUBLIC
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<page-specification class="tutorial.pagetypes.NewException">
+    <component id="errorMessage" type="InsertText">
+        <binding name="value" expression="exception.message"/>
+    </component>
+</page-specification>
