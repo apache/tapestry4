@@ -14,8 +14,7 @@
 
 package org.apache.tapestry.services;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
@@ -197,4 +196,12 @@ public interface Infrastructure
      */
 
     public ComponentPropertySource getComponentPropertySource();
+
+    /**
+     * Invoked when the locale for the current thread is changed.
+     * 
+     * @see org.apache.tapestry.IEngine#setLocale(Locale)
+     */
+
+    public void setLocale(Locale value);
 }

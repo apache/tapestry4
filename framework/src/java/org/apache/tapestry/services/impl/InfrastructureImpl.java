@@ -14,8 +14,11 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.util.Locale;
+
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -47,60 +50,98 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class InfrastructureImpl implements Infrastructure
 {
-    private IApplicationSpecification _applicationSpecification;
+
+    private String _applicationId;
 
     private IPropertySource _applicationPropertySource;
 
-    private IPropertySource _globalPropertySource;
+    private IApplicationSpecification _applicationSpecification;
 
-    private ResetEventCoordinator _resetEventCoordinator;
+    private ApplicationStateManager _applicationStateManager;
+
+    private ClassResolver _classResolver;
 
     private ComponentMessagesSource _componentMessagesSource;
 
-    private TemplateSource _templateSource;
+    private ComponentPropertySource _componentPropertySource;
 
-    private ISpecificationSource _specificationSource;
+    private WebContext _context;
+
+    private DataSqueezer _dataSqueezer;
+
+    private IPropertySource _globalPropertySource;
+
+    private LinkFactory _linkFactory;
 
     private ObjectPool _objectPool;
 
     private IPageSource _pageSource;
 
-    private ClassResolver _classResolver;
+    private WebRequest _request;
 
-    private DataSqueezer _dataSqueezer;
+    private RequestCycleFactory _requestCycleFactory;
+
+    private RequestExceptionReporter _requestExceptionReporter;
+
+    private ResetEventCoordinator _resetEventCoordinator;
+
+    private WebResponse _response;
+
+    private ResponseRenderer _responseRenderer;
 
     private IScriptSource _scriptSource;
 
     private ServiceMap _serviceMap;
 
-    private RequestExceptionReporter _requestExceptionReporter;
+    private ISpecificationSource _specificationSource;
 
-    private ResponseRenderer _responseRenderer;
+    private TemplateSource _templateSource;
 
-    private LinkFactory _linkFactory;
+    private ThreadLocale _threadLocale;
 
-    private RequestCycleFactory _requestCycleFactory;
-
-    private ApplicationStateManager _applicationStateManager;
-
-    private WebContext _context;
-
-    private String _applicationId;
-
-    private ComponentPropertySource _componentPropertySource;
-
-    private WebRequest _request;
-
-    private WebResponse _response;
-
-    public IScriptSource getScriptSource()
+    public String getApplicationId()
     {
-        return _scriptSource;
+        return _applicationId;
     }
 
-    public void setScriptSource(IScriptSource scriptSource)
+    public IPropertySource getApplicationPropertySource()
     {
-        _scriptSource = scriptSource;
+        return _applicationPropertySource;
+    }
+
+    public IApplicationSpecification getApplicationSpecification()
+    {
+        return _applicationSpecification;
+    }
+
+    public ApplicationStateManager getApplicationStateManager()
+    {
+        return _applicationStateManager;
+    }
+
+    public ClassResolver getClassResolver()
+    {
+        return _classResolver;
+    }
+
+    public ComponentMessagesSource getComponentMessagesSource()
+    {
+        return _componentMessagesSource;
+    }
+
+    public ComponentPropertySource getComponentPropertySource()
+    {
+        return _componentPropertySource;
+    }
+
+    public String getContextPath()
+    {
+        return _request.getContextPath();
+    }
+
+    public Resource getContextRoot()
+    {
+        return new WebContextResource(_context, "/");
     }
 
     public DataSqueezer getDataSqueezer()
@@ -109,129 +150,9 @@ public class InfrastructureImpl implements Infrastructure
 
     }
 
-    public void setDataSqueezer(DataSqueezer dataSqueezer)
+    public IPropertySource getGlobalPropertySource()
     {
-        _dataSqueezer = dataSqueezer;
-    }
-
-    public void setApplicationPropertySource(IPropertySource source)
-    {
-        _applicationPropertySource = source;
-    }
-
-    public IPropertySource getApplicationPropertySource()
-    {
-        return _applicationPropertySource;
-    }
-
-    public ComponentMessagesSource getComponentMessagesSource()
-    {
-        return _componentMessagesSource;
-    }
-
-    public ResetEventCoordinator getResetEventCoordinator()
-    {
-        return _resetEventCoordinator;
-    }
-
-    public void setComponentMessagesSource(ComponentMessagesSource source)
-    {
-        _componentMessagesSource = source;
-    }
-
-    public void setResetEventCoordinator(ResetEventCoordinator coordinator)
-    {
-        _resetEventCoordinator = coordinator;
-    }
-
-    public TemplateSource getTemplateSource()
-    {
-        return _templateSource;
-    }
-
-    public void setTemplateSource(TemplateSource source)
-    {
-        _templateSource = source;
-    }
-
-    public ISpecificationSource getSpecificationSource()
-    {
-        return _specificationSource;
-    }
-
-    public void setSpecificationSource(ISpecificationSource source)
-    {
-        _specificationSource = source;
-    }
-
-    public ObjectPool getObjectPool()
-    {
-        return _objectPool;
-    }
-
-    public void setObjectPool(ObjectPool pool)
-    {
-        _objectPool = pool;
-    }
-
-    public IApplicationSpecification getApplicationSpecification()
-    {
-        return _applicationSpecification;
-    }
-
-    public void setApplicationSpecification(IApplicationSpecification specification)
-    {
-        _applicationSpecification = specification;
-    }
-
-    public IPageSource getPageSource()
-    {
-        return _pageSource;
-    }
-
-    public void setPageSource(IPageSource source)
-    {
-        _pageSource = source;
-    }
-
-    public ClassResolver getClassResolver()
-    {
-        return _classResolver;
-    }
-
-    public void setClassResolver(ClassResolver resolver)
-    {
-        _classResolver = resolver;
-    }
-
-    public ServiceMap getServiceMap()
-    {
-        return _serviceMap;
-    }
-
-    public void setServiceMap(ServiceMap serviceMap)
-    {
-        _serviceMap = serviceMap;
-    }
-
-    public RequestExceptionReporter getRequestExceptionReporter()
-    {
-        return _requestExceptionReporter;
-    }
-
-    public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
-    {
-        _requestExceptionReporter = requestExceptionReporter;
-    }
-
-    public ResponseRenderer getResponseRenderer()
-    {
-        return _responseRenderer;
-    }
-
-    public void setResponseRenderer(ResponseRenderer responseRenderer)
-    {
-        _responseRenderer = responseRenderer;
+        return _globalPropertySource;
     }
 
     public LinkFactory getLinkFactory()
@@ -239,74 +160,14 @@ public class InfrastructureImpl implements Infrastructure
         return _linkFactory;
     }
 
-    public void setLinkFactory(LinkFactory linkFactory)
+    public ObjectPool getObjectPool()
     {
-        _linkFactory = linkFactory;
+        return _objectPool;
     }
 
-    public RequestCycleFactory getRequestCycleFactory()
+    public IPageSource getPageSource()
     {
-        return _requestCycleFactory;
-    }
-
-    public void setRequestCycleFactory(RequestCycleFactory requestCycleFactory)
-    {
-        _requestCycleFactory = requestCycleFactory;
-    }
-
-    public ApplicationStateManager getApplicationStateManager()
-    {
-        return _applicationStateManager;
-    }
-
-    public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
-    {
-        _applicationStateManager = applicationStateManager;
-    }
-
-    public String getContextPath()
-    {
-        return _request.getContextPath();
-    }
-
-    public String getApplicationId()
-    {
-        return _applicationId;
-    }
-
-    public void setApplicationId(String applicationId)
-    {
-        _applicationId = applicationId;
-    }
-
-    public void setContext(WebContext context)
-    {
-        _context = context;
-    }
-
-    public Resource getContextRoot()
-    {
-        return new WebContextResource(_context, "/");
-    }
-
-    public IPropertySource getGlobalPropertySource()
-    {
-        return _globalPropertySource;
-    }
-
-    public void setGlobalPropertySource(IPropertySource globalPropertySource)
-    {
-        _globalPropertySource = globalPropertySource;
-    }
-
-    public ComponentPropertySource getComponentPropertySource()
-    {
-        return _componentPropertySource;
-    }
-
-    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
-    {
-        _componentPropertySource = componentPropertySource;
+        return _pageSource;
     }
 
     public WebRequest getRequest()
@@ -314,9 +175,19 @@ public class InfrastructureImpl implements Infrastructure
         return _request;
     }
 
-    public void setRequest(WebRequest request)
+    public RequestCycleFactory getRequestCycleFactory()
     {
-        _request = request;
+        return _requestCycleFactory;
+    }
+
+    public RequestExceptionReporter getRequestExceptionReporter()
+    {
+        return _requestExceptionReporter;
+    }
+
+    public ResetEventCoordinator getResetEventCoordinator()
+    {
+        return _resetEventCoordinator;
     }
 
     public WebResponse getResponse()
@@ -324,8 +195,153 @@ public class InfrastructureImpl implements Infrastructure
         return _response;
     }
 
+    public ResponseRenderer getResponseRenderer()
+    {
+        return _responseRenderer;
+    }
+
+    public IScriptSource getScriptSource()
+    {
+        return _scriptSource;
+    }
+
+    public ServiceMap getServiceMap()
+    {
+        return _serviceMap;
+    }
+
+    public ISpecificationSource getSpecificationSource()
+    {
+        return _specificationSource;
+    }
+
+    public TemplateSource getTemplateSource()
+    {
+        return _templateSource;
+    }
+
+    public void setApplicationId(String applicationId)
+    {
+        _applicationId = applicationId;
+    }
+
+    public void setApplicationPropertySource(IPropertySource source)
+    {
+        _applicationPropertySource = source;
+    }
+
+    public void setApplicationSpecification(IApplicationSpecification specification)
+    {
+        _applicationSpecification = specification;
+    }
+
+    public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
+    {
+        _applicationStateManager = applicationStateManager;
+    }
+
+    public void setClassResolver(ClassResolver resolver)
+    {
+        _classResolver = resolver;
+    }
+
+    public void setComponentMessagesSource(ComponentMessagesSource source)
+    {
+        _componentMessagesSource = source;
+    }
+
+    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
+    {
+        _componentPropertySource = componentPropertySource;
+    }
+
+    public void setContext(WebContext context)
+    {
+        _context = context;
+    }
+
+    public void setDataSqueezer(DataSqueezer dataSqueezer)
+    {
+        _dataSqueezer = dataSqueezer;
+    }
+
+    public void setGlobalPropertySource(IPropertySource globalPropertySource)
+    {
+        _globalPropertySource = globalPropertySource;
+    }
+
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
+    }
+
+    public void setLocale(Locale value)
+    {
+        _threadLocale.setLocale(value);
+    }
+
+    public void setObjectPool(ObjectPool pool)
+    {
+        _objectPool = pool;
+    }
+
+    public void setPageSource(IPageSource source)
+    {
+        _pageSource = source;
+    }
+
+    public void setRequest(WebRequest request)
+    {
+        _request = request;
+    }
+
+    public void setRequestCycleFactory(RequestCycleFactory requestCycleFactory)
+    {
+        _requestCycleFactory = requestCycleFactory;
+    }
+
+    public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
+    {
+        _requestExceptionReporter = requestExceptionReporter;
+    }
+
+    public void setResetEventCoordinator(ResetEventCoordinator coordinator)
+    {
+        _resetEventCoordinator = coordinator;
+    }
+
     public void setResponse(WebResponse response)
     {
         _response = response;
+    }
+
+    public void setResponseRenderer(ResponseRenderer responseRenderer)
+    {
+        _responseRenderer = responseRenderer;
+    }
+
+    public void setScriptSource(IScriptSource scriptSource)
+    {
+        _scriptSource = scriptSource;
+    }
+
+    public void setServiceMap(ServiceMap serviceMap)
+    {
+        _serviceMap = serviceMap;
+    }
+
+    public void setSpecificationSource(ISpecificationSource source)
+    {
+        _specificationSource = source;
+    }
+
+    public void setTemplateSource(TemplateSource source)
+    {
+        _templateSource = source;
+    }
+
+    public void setThreadLocale(ThreadLocale threadLocale)
+    {
+        _threadLocale = threadLocale;
     }
 }

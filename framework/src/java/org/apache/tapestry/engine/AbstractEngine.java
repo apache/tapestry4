@@ -567,14 +567,12 @@ public abstract class AbstractEngine implements IEngine
     {
         Defense.notNull(value, "locale");
 
-        // Because locale changes are expensive (it involves writing a cookie
-        // and all that),
-        // we're careful not to really change unless there's a true change in
-        // value.
+        _locale = value;
 
-        if (!value.equals(_locale))
-            _locale = value;
+        // The locale may be set before the engine is initialized with the Infrastructure.
 
+        if (_infrastructure != null)
+            _infrastructure.setLocale(value);
     }
 
     /**
