@@ -95,7 +95,7 @@ public class BasicTestSuite extends TestSuite
         TestSuite suite = new TestSuite("Basic Tapestry Test Suite");
 
         suite.addTestSuite(TestTapestryFindLocation.class);
-        suite.addTestSuite(TapestryCheckMethodInvocation.class);
+        suite.addTestSuite(TestTapestryCheckMethodInvocation.class);
         suite.addTestSuite(TestStaticLink.class);
         suite.addTestSuite(TestEngineServiceLink.class);
         suite.addTestSuite(TestAdaptorRegistry.class);

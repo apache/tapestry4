@@ -53,73 +53,104 @@
  *
  */
 
-package org.apache.tapestry.junit.spec;
+package org.apache.tapestry.junit.mock.c11;
+
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.html.BasePage;
 
 /**
- *  Bean used to test extensions.
- *
+ *  Used to test the Select and Option elements.
+ * 
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *
+ *  @since 3.0
  **/
 
-public class TestBean
+public class SelectPage extends BasePage
 {
-    private boolean _booleanProperty;
-    private int _intProperty;
-    private long _longProperty;
-    private String _stringProperty;
-    private double _doubleProperty;
-    
-    public boolean getBooleanProperty()
+	private boolean _animal;
+	private boolean _mineral;
+	private boolean _vegetable;
+	
+	public void initialize()
+	{
+		_animal = false;
+		_mineral = false;
+		_vegetable = false;
+	}
+	
+    public boolean isAnimal()
     {
-        return _booleanProperty;
+        return _animal;
     }
 
-    public double getDoubleProperty()
+    public boolean isMineral()
     {
-        return _doubleProperty;
+        return _mineral;
     }
 
-    public int getIntProperty()
+    public boolean isVegetable()
     {
-        return _intProperty;
+        return _vegetable;
     }
 
-    public long getLongProperty()
+    public void setAnimal(boolean animal)
     {
-        return _longProperty;
+        _animal = animal;
     }
 
-    public String getStringProperty()
+    public void setMineral(boolean mineral)
     {
-        return _stringProperty;
+        _mineral = mineral;
     }
 
-    public void setBooleanProperty(boolean booleanProperty)
+    public void setVegetable(boolean vegetable)
     {
-        _booleanProperty = booleanProperty;
+        _vegetable = vegetable;
     }
 
-    public void setDoubleProperty(double doubleProperty)
-    {
-        _doubleProperty = doubleProperty;
-    }
-
-    public void setIntProperty(int intProperty)
-    {
-        _intProperty = intProperty;
-    }
-
-    public void setLongProperty(long longProperty)
-    {
-        _longProperty = longProperty;
-    }
-
-    public void setStringProperty(String stringProperty)
-    {
-        _stringProperty = stringProperty;
-    }
-
+	public void formSubmit(IRequestCycle cycle)
+	{
+		StringBuffer buffer = new StringBuffer("Selections: ");
+		boolean needComma = false;
+		
+		if (_animal)
+		{
+			buffer.append("animal");
+			needComma = true;
+		}
+		
+		if (_vegetable)
+		{
+			if (needComma)
+			buffer.append(", ");
+			
+			buffer.append("vegetable");
+			
+			needComma = true;
+		}
+		
+		if (_mineral)
+		{
+			if (needComma) buffer.append(", ");
+			
+			buffer.append("mineral");
+			
+			needComma = true;
+		}
+			
+			if (!needComma)
+			buffer.append("none");
+			
+		buffer.append(".");
+		
+		Result result = (Result)cycle.getPage("Result");
+		
+		String message = buffer.toString();
+		
+		result.setMessage(message);
+		
+		cycle.activate(result);
+	}
 }

@@ -80,7 +80,7 @@ public class TestEmailValidator extends TapestryTestCase
 
     public void testValidEmail() throws ValidatorException
     {
-        Object result = v.toObject(new TestingField("email"), "foo@bar.com");
+        Object result = v.toObject(new MockField("email"), "foo@bar.com");
         assertEquals("foo@bar.com", result);
     }
 
@@ -88,7 +88,7 @@ public class TestEmailValidator extends TapestryTestCase
     {
         try
         {
-            v.toObject(new TestingField("email"), "fred");
+            v.toObject(new MockField("email"), "fred");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -107,7 +107,7 @@ public class TestEmailValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("email"), "fred");
+            v.toObject(new MockField("email"), "fred");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -124,7 +124,7 @@ public class TestEmailValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("short"), "foo@bar.com");
+            v.toObject(new MockField("short"), "foo@bar.com");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -141,7 +141,7 @@ public class TestEmailValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("short"), "foo@bar.com");
+            v.toObject(new MockField("short"), "foo@bar.com");
             unreachable();
         }
         catch (ValidatorException ex)

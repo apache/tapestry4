@@ -84,16 +84,16 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *
  **/
 
-public class TestingForm extends BaseLocatable implements IForm
+public class MockForm extends BaseLocatable implements IForm
 {
     private String _name;
 
-    public TestingForm()
+    public MockForm()
     {
         this("DefaultFormName");
     }
 
-    public TestingForm(String name)
+    public MockForm(String name)
     {
         _name = name;
     }

@@ -86,7 +86,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 
 public class TestScript extends TapestryTestCase
 {
-    private TestScriptProcessor _processor = new TestScriptProcessor();
+    private MockScriptProcessor _processor = new MockScriptProcessor();
 
     public TestScript(String name)
     {

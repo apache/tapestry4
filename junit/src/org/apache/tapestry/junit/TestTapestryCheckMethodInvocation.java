@@ -53,80 +53,54 @@
  *
  */
 
-package org.apache.tapestry.junit.script;
+package org.apache.tapestry.junit;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IScriptProcessor;
-import org.apache.tapestry.util.IdAllocator;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.Tapestry;
 
 /**
- * Used by {@link org.apache.tapestry.junit.script.TestScript}.
+ * Tests for the methods 
+ * {@link org.apache.tapestry.Tapestry#checkMethodInvocation(Object, String, Object)},
+ * {@link org.apache.tapestry.Tapestry#addMethodInvocation(Object)} and
+ * {@link org.apache.tapestry.Tapestry#clearMethodInvocations()}.
  *
  * @author Howard Lewis Ship
  * @version $Id$
  * @since 3.0
  **/
-public class TestScriptProcessor implements IScriptProcessor
+public class TestTapestryCheckMethodInvocation extends TapestryTestCase
 {
-    private StringBuffer _body;
-    private StringBuffer _initialization;
-    private List _externalScripts;
-    private IdAllocator _idAllocator = new IdAllocator();
 
-    public void addBodyScript(String script)
+    public TestTapestryCheckMethodInvocation(String name)
     {
-        if (_body == null)
-            _body = new StringBuffer();
-
-        _body.append(script);
+        super(name);
     }
 
-	public String getBody()
-	{
-		if (_body == null)
-			return null;
-			
-			return _body.toString();
-	}
-
-    public void addInitializationScript(String script)
+    public void testSuccess()
     {
-        if (_initialization == null)
-            _initialization = new StringBuffer();
+        Tapestry.clearMethodInvocations();
+        Tapestry.addMethodInvocation("alpha");
+        Tapestry.addMethodInvocation("beta");
 
-        _initialization.append(script);
+        Tapestry.checkMethodInvocation("alpha", "alpha()", this);
+        Tapestry.checkMethodInvocation("beta", "beta()", this);
     }
 
-	public String getInitialization()
-	{
-		if (_initialization == null)return null;
-		
-		return _initialization.toString();
-	}
-
-    public void addExternalScript(IResourceLocation scriptLocation)
+    public void testFail()
     {
-        if (_externalScripts == null)
-            _externalScripts = new ArrayList();
+        Tapestry.clearMethodInvocations();
 
-        _externalScripts.add(scriptLocation);
-    }
-    
-    public IResourceLocation[] getExternalScripts()
-    {
-    	if (_externalScripts == null)return null;
-    	
-    	int count = _externalScripts.size();
-    	
-    	return (IResourceLocation[])_externalScripts.toArray(new IResourceLocation[count]);
-    }
-
-    public String getUniqueString(String baseValue)
-    {
-    	return _idAllocator.allocateId(baseValue);
+        try
+        {
+            Tapestry.checkMethodInvocation("gamma", "gamma()", this);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                "Class org.apache.tapestry.junit.TestTapestryCheckMethodInvocation overrides method 'gamma()' but does not invoke the super-class implementation.",
+                ex.getMessage());
+        }
     }
 
 }

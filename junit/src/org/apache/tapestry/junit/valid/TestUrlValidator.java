@@ -83,7 +83,7 @@ public class TestUrlValidator extends TapestryTestCase
 
     public void testValidUrl() throws ValidatorException
     {
-        Object result = v.toObject(new TestingField("url"), "http://www.google.com");
+        Object result = v.toObject(new MockField("url"), "http://www.google.com");
         assertEquals("http://www.google.com", result);
     }
 
@@ -91,7 +91,7 @@ public class TestUrlValidator extends TapestryTestCase
     {
         try
         {
-            v.toObject(new TestingField("url"), "fred");
+            v.toObject(new MockField("url"), "fred");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -110,7 +110,7 @@ public class TestUrlValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("url"), "fred");
+            v.toObject(new MockField("url"), "fred");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -127,7 +127,7 @@ public class TestUrlValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("short"), "http://www.test.com");
+            v.toObject(new MockField("short"), "http://www.test.com");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -144,7 +144,7 @@ public class TestUrlValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("short"), "http://www.test.com");
+            v.toObject(new MockField("short"), "http://www.test.com");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -159,7 +159,7 @@ public class TestUrlValidator extends TapestryTestCase
     		
     		try
     		{
-    				v.toObject(new TestingField("short"), "ftp://ftp.test.com");
+    				v.toObject(new MockField("short"), "ftp://ftp.test.com");
             unreachable();
     		}
     		catch (ValidatorException ex) {

@@ -6,7 +6,7 @@
 	
 <application name="Test Extension Property">
   
-  <extension name="testBean" class="org.apache.tapestry.junit.spec.TestBean">
+  <extension name="testBean" class="org.apache.tapestry.junit.spec.PropertyBean">
 		<property name="fred">flintstone</property>
   </extension>
     

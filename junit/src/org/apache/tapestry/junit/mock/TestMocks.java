@@ -53,104 +53,101 @@
  *
  */
 
-package org.apache.tapestry.junit.mock.c11;
+package org.apache.tapestry.junit.mock;
 
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.html.BasePage;
+import java.io.File;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+import org.apache.tapestry.junit.TapestryTestCase;
 
 /**
- *  Used to test the Select and Option elements.
- * 
+ *  Test case for Mock Servlet API tests using the Simple application.
+ *
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 3.0
+ *  @since 2.2
+ * 
  **/
 
-public class TestSelect extends BasePage
+public class TestMocks extends TapestryTestCase
 {
-	private boolean _animal;
-	private boolean _mineral;
-	private boolean _vegetable;
-	
-	public void initialize()
-	{
-		_animal = false;
-		_mineral = false;
-		_vegetable = false;
-	}
-	
-    public boolean isAnimal()
+    public static final String SCRIPTS_DIR = "mock-scripts";
+
+    public TestMocks(String name)
     {
-        return _animal;
+        super(name);
     }
 
-    public boolean isMineral()
+    protected void runTest() throws Throwable
     {
-        return _mineral;
+        String path = SCRIPTS_DIR + "/" + getName();
+
+        MockTester tester = new MockTester(path);
+
+        tester.execute();
     }
 
-    public boolean isVegetable()
+    public static Test suite()
     {
-        return _vegetable;
+        TestSuite suite = new TestSuite("Mock Unit Test Suite");
+
+        addScripts(suite);
+
+        // Handy place to perform one-time 
+        deleteDir(".private");
+
+        return suite;
     }
 
-    public void setAnimal(boolean animal)
+    private static void addScripts(TestSuite suite)
     {
-        _animal = animal;
+        File scriptsDir = new File(SCRIPTS_DIR);
+
+        String[] names = scriptsDir.list();
+
+        for (int i = 0; i < names.length; i++)
+        {
+            String name = names[i];
+
+            if (name.endsWith(".xml"))
+            {
+                Test test = new TestMocks(name);
+
+                suite.addTest(test);
+            }
+        }
     }
 
-    public void setMineral(boolean mineral)
+    private static void deleteDir(String path)
     {
-        _mineral = mineral;
+        File file = new File(path);
+
+        if (!file.exists())
+            return;
+
+        deleteRecursive(file);
     }
 
-    public void setVegetable(boolean vegetable)
+    private static void deleteRecursive(File file)
     {
-        _vegetable = vegetable;
+        if (file.isFile())
+        {
+            file.delete();
+            return;
+        }
+
+        String[] names = file.list();
+
+        for (int i = 0; i < names.length; i++)
+        {
+            File f = new File(file, names[i]);
+            deleteRecursive(f);
+        }
+
+        file.delete();
     }
 
-	public void formSubmit(IRequestCycle cycle)
-	{
-		StringBuffer buffer = new StringBuffer("Selections: ");
-		boolean needComma = false;
-		
-		if (_animal)
-		{
-			buffer.append("animal");
-			needComma = true;
-		}
-		
-		if (_vegetable)
-		{
-			if (needComma)
-			buffer.append(", ");
-			
-			buffer.append("vegetable");
-			
-			needComma = true;
-		}
-		
-		if (_mineral)
-		{
-			if (needComma) buffer.append(", ");
-			
-			buffer.append("mineral");
-			
-			needComma = true;
-		}
-			
-			if (!needComma)
-			buffer.append("none");
-			
-		buffer.append(".");
-		
-		Result result = (Result)cycle.getPage("Result");
-		
-		String message = buffer.toString();
-		
-		result.setMessage(message);
-		
-		cycle.activate(result);
-	}
 }
