@@ -23,7 +23,7 @@ in the specification) to find the static HTML and embedded
 components it will render.
 </>
 
-	<section id="comp-params">
+	<section id="components.params">
 		<title>Parameters and Bindings</>
 
 <para>
@@ -106,7 +106,7 @@ which is approximately equivalent to <function>getVisit().getUser().getName()</>
 
 	</section>
 
-	<section id="comp-embedded">
+	<section id="components.embedded">
 		<title>Embedded Components</>
 
 <para>
@@ -156,7 +156,7 @@ hidden inside the containing component's "black box".
 
 	</section>
 
-	<section id="comp-html-template">
+	<section id="components.html-template">
 		<title>HTML Templates</>
 
 <para>Nearly all Tapestry components combine static HTML
@@ -428,7 +428,7 @@ wraps its &start-tag;tr&end-tag;'s or a &start-tag;form&end-tag; wraps its
 
 	</section>
 
-	<section id="comp-localization">
+	<section id="components.localization">
 		<title>Localization</>
 
 <para>
@@ -487,7 +487,7 @@ for later visits.
 
 	</section>
 
-	<section id="comp-assets">
+	<section id="components.assets">
 		<title>Assets</>
 
 <para>
@@ -553,7 +553,7 @@ These are addressed later in this document.
 
 	</section>
 
-	<section id="comp-specification">
+	<section id="components.specification">
 		<title>Component Specification</>
 
 <para>

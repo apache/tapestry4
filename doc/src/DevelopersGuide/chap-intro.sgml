@@ -26,7 +26,7 @@ and responding to HTML queries (such as clicking on a link, or submitting a form
 for managing application flow and server-side client state.  
 This allows developers to concentrate on the business and presentation aspects of the application.</>
 
-	<section id="intro-scripting">
+	<section id="intro.scripting">
 		<title>Scripting vs. Components</>
 
 <para>Most leading web application frameworks are based on some form of 
@@ -241,7 +241,7 @@ components and has an elegant way of specifying that behavior dynamically.
 
 	</section>
 
-	<section id="intro-interaction">
+	<section id="intro.interaction">
 		<title>Interaction</>
 
 <para>
@@ -301,7 +301,7 @@ can easily have dozens of servlets.
 
 	</section>
 
-	<section id="intro-security">
+	<section id="intro.security">
 		<title>Security</>
 
 <para>
@@ -346,7 +346,7 @@ This makes it easier to add additional security measures that are specific to th
 
 	</section>
 
-	<section id="intro-features">
+	<section id="intro.features">
 		<title>Features</>
 
 <para>

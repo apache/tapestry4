@@ -1,347 +1,1116 @@
-7
+<!-- $Id$ -->
+<!-- This chapter is a "component manifest": compmani -->
 
-Provided Components
-T
-he Tapestry framework provides a large set of pre-written components to use as a 
-starting point for building applications, or more complicated components.
-This section will provide a brief overview of the available components and their 
-most commonly used parameters.  The Javadoc is the final reference for this 
-information.
-Each of these components is automatically added as an alias in an application 
-specification.
-Action
-Creates an <a> hyperlink in the HTML response.  If the link is triggered, then the 
-Action retrieves its listener, and invokes actionTriggered() on it.
-Parameter
-Description
-listener
-The object notified when the link is triggered.
-enabled
-Controls whether the link is produced, if false, then the link is not created, but 
-the contents are still rendered.
-Any
-Used to make an existing HTML element dynamic.  Informal parameters are used to fill 
-in the attributes of the element.
-Parameter
-Description
-element
-The element to be produced
-Body
-Replaces the <body> tag.  The Body component provides some support for other 
-components, such as the Rollover component.
-Checkbox
-Used to implement a checkbox form element.  Must be wrapped by a Form component.
-Parameter
-Description
-selected
-Indicates whether the checkbox is selected or not.
-disabled
-Controls whether the text field is active or not.
-Conditional
-Makes part of an HTML template conditional.  The body of the Conditional component 
-is only rendered if a specified condition is met.
-Parameter
-Description
-condition
-The condition to be met.
-invert
-If true, then the condition is inverted. This is useful for simulating an else 
-clause.
-DateField
+<chapter id="builtin">
+	<title>Builtin Components</>
+
+<para>
+The Tapestry framework provides a large set of pre-written components to use 
+as a starting point for building applications, or more complicated components.
+</>
+
+<para>
+This section will provide a brief overview of the available components and 
+their most commonly used parameters.  The Javadoc is the final reference for this information.
+</>
+
+<para>
+Each of these components is automatically added as an alias in 
+an application specification.
+</>
+
+	<section id="builtin.Action">
+		<title>Action</>
+
+<para>
+Creates an &start-tag;a&end-tag hyperlink in the HTML response.  
+If the link is triggered, then the <classname>Action</> retrieves its listener, and invokes 
+<function>actionTriggered()</> on it.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>listener</>
+		<listitem>
+			<para>The object notified if and when the link is triggered.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>enabled</>
+		<listitem>
+			<para>Controls whether the link is produced.  If false, the link is not
+			created (but wrapped elements are still rendered).
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Any">
+		<title>Any</>
+
+<para>
+Used to make an existing HTML element dynamic.  Informal 
+parameters are used to fill in the attributes of the element.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>element</>
+		<listitem>
+			<para>The element to be produced.</>
+		</>
+	</>
+</>
+	</section>
+
+	<section id="builtin.Body">
+		<title>Body</>
+
+<para>
+Replaces the &start-tag;body&end-tag tag.  
+The <classname>Body</> component provides some support for other 
+components, such as the <classname>Rollover</> component.
+</>
+
+	</section>
+
+	<section id="builtin.Checkbox">
+		<title>Checkbox</>
+
+<para>
+Used to implement a checkbox form element (&start-tag;input type=checkbox&end-tag;). 
+Must be wrapped by a <classname>Form</> component.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>selected</>
+		<listitem>
+			<para>Indicates whether the checkbox is selected or not.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>disabled</>
+		<listitem>
+			<para>Controls whether the text field is active or not.  This attibute is
+			ignored by Netscape Navigator 4.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Conditional">
+		<title>Conditional</>
+
+<para>
+Makes part of an HTML template conditional.  
+The body of the <classname>Conditional</> component is only rendered if a 
+specified condition is met.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>condition</>
+		<listitem>
+			<para>The condition to be met.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>invert</>
+		<listitem>
+			<para>If true, then the condition is inverted. 
+			This is useful for simulating an else clause.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="component.DateField">
+		<title>DateField</>
+
+<para>
 A kind of validating text field that allows a date to be entered.
-Parameter
-Description
-date
-The date property to be editted.
-delegate
-An IValidationDelegate used to handle validation exceptions.
-maximum
-The lastest acceptible date (optional).
-minimum
-The earliest acceptible date (optional).
-required
-If true, a value must be entered.
+</>
 
-Delegator
-A component which delegates its behavior (that is, the HTML renders) to some other 
-object.  This is occasionally useful when the HTML to render is best generated from 
-pure Java code (or has been provided from some source outside of Tapestry).
-Parameter
-Description
-delegate
-The object which will provide the rendering for the component.
-Direct
-Creates a <a> hyperlink that notifies the component when the link is triggered.  The 
-link includes some context-specific data that is passed on to the component's 
-listener.  This  is used in cases where the Action component can't be used (or is 
-too inefficient).
-Parameter
-Description
-listener
-Specifies an object that is notified when the link is clicked.
-context
-An array of Strings to be encoded into the URL. These parameters will be decoded 
-when the link is triggered.
-enabled
-Controls whether the link is produced. If disabled, the portion of the template the 
-link surrounds is still rendered, but not the link itself.
-ExceptionDisplay
-A component, used on the standard exception page, used to render a detailed list of 
-the exceptions.
-Parameter
-Description
-exceptions
-An array of com.primix.foundation.exception.ExceptionDescription objects
-FieldLabel
-A component, used with a ValidatingTextField (or similar component) that provides 
-the label for the field.  A delegate object may be specified that will change the 
-visual formatting of the label to reflect the state of the field, for instance, to 
-make the label red when the field itself is in error.
-Parameter
-Description
-field
-The validating text field associated with the label.
-delegate
-An optional IValidationDelegate, responsible for the visual look of the label.
+<variablelist>
+	<title>Parameters</>
 
-Foreach
-A component that loops through a set of values, setting a property for each value 
-before rendering its wrapped elements.
-Parameter
-Description
-source
-The source of objects to be iterated.
-value
-Used to update the current value on each iteration.
-Form
-A component that manages an HTML form.  The other form-related components must be 
-wrapped inside the Form.
-Parameter
-Description
-method
-The value to use for the method attribute of the <form> tag.
-listener
-The listener, informed after the wrapped components of the form have had a chance to 
-respond to the request.
-Hidden
-Adds a hidden (<input type=hidden>) field to a Form.  This is often used to 
-synchronize data known when the page containing the Hidden was created.
-Parameter
-Description
-value
-Property to store when the form is renderred and to restore when the form is 
-submitted.
-Image
+	<varlistentry>
+		<term>date</>
+		<listitem>
+			<para>The date property to be editted.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>delegate</>
+		<listitem>
+			<para>An <classname>IValidationDelegate</> used to handle validation exceptions.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>maximum</>
+		<listitem>
+			<para>The lastest acceptible date (optional).</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>minimum</>
+		<listitem>
+			<para>The earliest acceptible date (optional).</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>required</>
+		<listitem>
+			<para>If true, a value must be entered.</>
+		</>
+	</>
+</>
+	</section>
+
+	<section id="builtin.Delegator">
+		<title>Delegator</>
+
+<para>
+A component which delegates its behavior (that is, the HTML rendered) 
+to some other object.  This is occasionally useful when the HTML 
+to render is best generated from pure Java code (or has been provided 
+from some source outside of Tapestry).
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>delegate</>
+		<listitem>
+			<para>The object which will provide the rendering for the component.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Direct">
+		<title>Direct</>
+
+<para>
+Creates a &start-tag;a&end-tag; hyperlink that notifies 
+the component when the link is triggered.  
+The link includes some context-specific data that 
+is passed on to the component's listener.  This  
+is used in cases where the <classname>Action</> component can't be used 
+(or is too inefficient).
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>listener</>
+		<listitem>
+			<para>Specifies an object that is notified when the link is clicked.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>context</>
+		<listitem>
+			<para>An array of Strings to be encoded into the URL. 
+			These parameters will be decoded when the link is triggered.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>enabled</>
+		<listitem>
+			<para>Controls whether the link is produced. If disabled, the 
+			portion of the template the link surrounds is still rendered, but 
+			not the link itself.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.ExceptionDisplay">
+		<title>ExceptionDisplay</>
+
+<para>
+A component, used on the standard exception page, which renders a detailed list of the exceptions.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>exceptions</>
+		<listitem>
+			<para>An array of <classname>com.primix.foundation.exception.ExceptionDescription</>
+			objects.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.FieldLabel">
+		<title>FieldLabel</>
+
+<para>
+A component, used with a ValidatingTextField (or similar component) 
+that provides the label for the field.  A delegate object may be 
+specified that will change the visual formatting of the label to reflect the 
+state of the field, for instance, to make the label red when the field itself is in error.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>field</>
+		<listitem>
+			<para>The validating text field (type <classname>IValidatingTextField</>)
+			associated with the label.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>delegate</>
+		<listitem>
+			<para>An optional <classname>IValidationDelegate</>, responsible for the visual look 
+			of the label.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Foreach">
+		<title>Foreach</>
+
+<para>
+A component that loops through a set of values, setting a property 
+for each value before rendering its wrapped elements.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>source</>
+		<listitem>
+			<para>The source of objects to be iterated, and array or <classname>List</> of objects.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>value</>
+		<listitem>
+			<para>Used to update the current value on each iteration.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Form">
+		<title>Form</>
+
+<para>
+A component that manages an HTML form.  
+The other form-related components must be wrapped inside the <classname>Form</>.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>method</>
+		<listitem>
+			<para>The value to use for the method attribute of the &start-tag;form&end-tag;
+		 	tag.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>listener</>
+		<listitem>
+			<para>The listener, informed after the wrapped components of the form 
+			have had a chance to respond to the request.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Hidden">
+		<title>Hidden</>
+
+<para>
+Adds a hidden (&start-tag;input type=hidden&end-tag;) field to a 
+<classname>Form</>.  This is often used to synchronize 
+data when the form is submitted with values
+known when the page was rendered .
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>value</>
+		<listitem>
+			<para>Property to store when the form is renderred and to 
+			restore when the form is submitted.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Image">
+		<title>Image</>
+
+<para>
 Used to insert a static image.
-Parameter
-Description
-image
-The image to show, specified as an asset.
-ImageSubmit
-An image button inside a Form.  Clicking the button submits the form.	
-Parameter
-Description
-disabled
-If true, the image button will be disabled (not respond to the mouse).
-image
-The image to show, specified as an asset.
-selected
-A property updated if the button is clicked.
-tag
-The value assigned to the selected property if the button is clicked.
-Insert
-Inserts dynamic text into the HTML response.   Invalid characters (such as < and >) 
-are converted into HTML entities (&lt; and &gt;).
-Parameter
-Description
-value
-The value to be inserted, which may be a string or an arbitrary object (that is 
-converted to a string).
-format
-An format (java.text.Format) object used to format the String or object.
-InsertWrapped
-Renders the static HTML and components wrapped by the container of the InsertWrapped 
-component.  Components which have HTML templates and can wrap other elements should 
-include exactly one InsertWrapped component in their template.
-IntegerField
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>image</>
+		<listitem>
+			<para>The image to show, specified as an asset.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.ImageSubmit">
+		<title>ImageSubmit</>
+
+<para>
+An image button inside a <classname>Form</>.  Clicking the button submits the form.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>disabled</>
+		<listitem>
+			<para>If true, the image button will be disabled (not respond to the mouse).</>
+			<para>The disabled attribute is ignored by Netscape Navigator 4.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>image</>
+		<listitem>
+			<para>The default image to display.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>selected</>
+		<listitem>
+			<para>A property updated if the button is clicked.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>tag</>
+		<listitem>
+			<para>The value assigned to the selected property if the button is clicked.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Insert">
+		<title>Insert</>
+
+<para>
+Inserts dynamic text into the HTML response.   Invalid characters (such as &lt; and &gt;) 
+are converted into HTML entities (&amp;lt; and &amp;gt;).
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>value</>
+		<listitem>
+			<para>The value to be inserted, which may be a <classname>String</> or an 
+			arbitrary object (that is converted to a <classname>String</>).
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>format</>
+		<listitem>
+			<para>A format (<classname>java.text.Format</>) object used to format 
+			the <classname>String</> or object.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.InsertWrapped">
+		<title>InsertWrapped</>
+
+<para>
+Renders the static HTML and components wrapped by the container of the 
+<classname>InsertWrapped</> component.  Components 
+which have HTML templates and can wrap other elements should 
+include exactly one <classname>InsertWrapped</> component in their template.
+</>
+
+	</section>
+
+	<section id="builtin.IntegerField">
+		<title>IntegerField</>
+
+<para>
 A type of validating text field that is used to edit an integer property.
-Parameter
-Description
-value
-The property to edit.
-delegate
-An IValidationDelegate that is used to handle validation exceptions.
-required
-If true, a value must be provided by the user.
-minimum
-Optional minimum acceptible value.
-maximum
-Optional maximum acceptible value.
-Option
-Implements a component that manages an HTML <option> form element, and must be 
-wrapped by a Select component.
-Parameter
-Description
-selected
-Used to indicate whether the given option is selected.
-Page
-Creates a link to another page within the application.
-Parameter
-Description
-page
-The name of a page to link to.
-enabled
-Controls whether the link is produced. If disabled, the portion of the template the 
-link surrounds is still rendered, but not the link itself.
-PropertySelection
-Creates either a <select> or a sequence of <input type=radio> controls that 
-ultimately allow a property to be set.  Uses a model to map between Java values that 
-will be assigned, and textual labels that will appear in the HTML response.
-Parameter
-Description
-value
-The property value to edit.
-model
-The model used to enumerate the potential values, and to produce text labels for 
-each value.
-renderer
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>value</>
+		<listitem>
+			<para>The property to edit.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>delegate</>
+		<listitem>
+			<para>An <classname>IValidationDelegate</> that is used to 
+			handle validation exceptions.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>required</>
+		<listitem>
+			<para>If true, a value must be provided by the user.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>minimum</>
+		<listitem>
+			<para>Optional minimum acceptible value.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>maximum</>
+		<listitem>
+			<para>Optional maximum acceptible value.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Option">
+		<title>Option</>
+
+<para>
+Implements a component that manages an HTML
+&start-tag;option&end-tag; form element, and must 
+be wrapped by a <classname>Select</> component.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>selected</>
+		<listitem>
+			<para>Used to indicate whether the given option is selected.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Page">
+		<title>Page</>
+
+<para>
+Creates a hyperlink to another page within the application.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>page</>
+		<listitem>
+			<para>The name of a page to link to.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>enabled</>
+		<listitem>
+			<para>Controls whether the link is produced. If disabled, the portion of 
+			the template the link surrounds is still rendered, but not the link itself.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.PropertySelection">
+		<title>PropertySelection</>
+
+<para>
+Creates form elements that allow a property of an object to be selected.  This may take the form
+of a &start-tag;select&end-tag; or a sequence of &start-tag;input type=radio&end-tag; elements.
+</>
+
+<para>
+Uses a model to map between Java values that will be assigned, and 
+textual labels that will appear in the HTML response.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>value</>
+		<listitem>
+			<para>The property value to edit.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>model</>
+		<listitem>
+			<para>The model used to enumerate the potential values, and 
+			to produce text labels for each value.
+		</>
+	</>
+
+	<varlistentry>
+		<term>renderer</>
+		<listitem>
+			<para>
 An object used to render the property selection; two default implementations are 
-provided (on creates a pop up list, the other a table of radio buttons).
+provided (one creates a pop up list, the other a table of radio buttons).
+			</>
+		</>
+	</>
+</>
 
-Radio
-Implements a component that manages an HTML form element. Such a component must be 
-wrapped (possibly indirectly) inside a RadioGroup component.
-Parameter
-Description
-value
-The value to be assigned through the RadioGroup's selected parameter, if the Radio 
-is selected by the user.
-disabled
-If true, then the Radio is disabled. It will write a disabled attribute into its tag 
-when rendering, and will not update its selected binding.
-RadioGroup
-A container of Radio components, which itself must be within a Form component.  The 
-RadioGroup and Radio components combined provide similar functionality to the 
-PropertySelection component (though with some greater flexibility).
-Parameter
-Description
-selected
-The property to be updated by the RadioGroup based on which Radio button is selected 
-by the user.
+	</section>
 
-Rollover
-Works with any kind of link component, which must wrap it, to provide a rollover 
-image button ... a button where the image changes when the mouse move over it or off 
-of it.  A Rollover is disabled if the link that wraps it is disabled.
-Parameter
-Description
-image
-The (initial) image to show (if not disabled).
-focus
-The image displayed when the mouse moves over the button (unless disabled).
-blur
-The image displayed when the mouse moves off of the button (unless disabled).
-disabled
-The image displayed if the link is itself disabled.
-Script
+	<section id="builtin.Radio">
+		<title>Radio</>
+
+<para>
+A component used to manage an HTML radio form element.
+Such a component must be wrapped (possibly indirectly) inside a 
+<classname>RadioGroup</> component.
+</>
+
+<variablelist>
+	<title>Parameters
+
+	<varlistentry>
+		<term>value</>
+		<listitem>
+			<para>
+				The value to be assigned through the 
+				<classname>RadioGroup</>'s selected parameter, if the 
+				<classname>Radio</> is selected by the user.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>disabled</>
+		<listitem>
+			<para>
+				If true, then the <classname>Radio</> is disabled. It will write a 
+				disabled attribute into its tag when rendering, and will 
+				not update its selected binding.
+			</>
+			<para>
+				The disabled attribute is ignored by Netscape Navigator 4.</>
+		</>
+	</>
+
+</>
+
+	</section>
+
+	<section id="builtin.RadioGroup">
+		<title>RadioGroup</>
+
+<para>
+A container of <classname>Radio</> components, which itself must be 
+within a <classname>Form</> component.  
+The <classname>RadioGroup</> and <classname>Radio</> components 
+combined provide similar functionality to the 
+<classname>PropertySelection</> component (though with some greater flexibility).
+</>
+
+<variablelist>
+	<title>Parameters
+
+	<varlistentry>
+		<term>selected</>
+		<listitem>
+			<para>The property to be updated by the 
+			<classname>RadioGroup</> based on which 
+			<classname>Radio</> button is selected by the user.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Rollover">
+		<title>Rollover</>
+
+<para>
+Works with any kind of link component, which must wrap it, 
+to provide a rollover image button ... a button where the 
+image changes when the mouse move over it or off of it.  
+A <classname>Rollover</> is disabled if the link that wraps it is disabled
+(in which case it doesn't respond to the mouse).
+</>
+
+<para>
+The component provides all the necessary JavaScript to swap the image when the mouse
+enters and exits the button.  However, the <classname>Rollover</> must be wrapped
+(ultimately) by a <classname>Body</> component.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>image</>
+		<listitem>
+			<para>The (initial) image to show (if not disabled).</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>focus</>
+		<listitem>
+			<para>The image displayed when the mouse moves over the 
+			button (unless disabled).</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>blur</>
+		<listitem>
+			<para>The image displayed when the mouse moves off of 
+			the button (unless disabled).</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>disabled</>
+		<listitem>
+			<para>The image displayed if the link is itself disabled.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Script">
+		<title>Script</>
+
+
+<para>
 A component that accesses a script file and adds JavaScript functions and statements 
 to the response page.  The specified script file is read and parsed and 
 substitutions are made before the final scripting code is inserted into the page.
-Parameter
-Description
-script
-The resource path of the script file.
+</>
 
-Select
-A wrapper around Option components, within a Form.
-Parameter
-Description
-multiple
-If true, the component allows multiple selection.
-Service
-A component for creating a link for an arbitrary service that uses no parameters, 
-such as the reset or home service.
-Parameter
-Description
-service
-The name of the service.
-enabled
-Controls whether the link is produced. If disabled, the portion of the template the 
-link surrounds is still rendered, but not the link itself.
-Shell
-Provides the outer "shell" of a page, including the <html>, <head> and <title> tags 
-(but not the <body> tag).
-Parameter
-Description
-title
-Title for the page, placed within a <title> element.
-stylesheet
-Stylesheet to be used on the page.
+<variablelist>
+	<title>Parameters</>
 
-Submit
-Provides a form submit button (<input type=submit>).  This is most useful when the 
-form contains multiple submit buttons and the application needs to know which was 
-actually pressed.
-Parameter
-Description
-disabled
-If true, the submit button will be disabled.
-label
-The label to put on the button.
-selected
-A property updated if the button is the one clicked to submit the form.
-tag
-The value applied to the selected property if the button is the one clicked to 
-submit the form.
+	<varlistentry>
+		<term>script</>
+		<listitem>
+			<para>The resource path of the script file.</>
+		</>
+	</>
+</>
 
-ShowInspector
+	</section>
+
+	<section id="builtin.Select">
+		<title>Select</>
+
+<para>
+A component which creates a &start-tag;select&end-tag form element (it is
+also a wrapper around <classname>Option</> components), within a <classname>Form</>.
+</>
+
+<para>
+It is generally easier to use a <classname>PropertySelection</>, unless multiple selections
+are desired.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>multiple</>
+		<listitem>
+			<para>If true, the component allows multiple selection.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Service">
+		<title>Service</>
+
+<para>
+A component for creating a link for an arbitrary engine service 
+that uses no parameters, such as the reset or home service.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>service</>
+		<listitem>
+			<para>The name of the service.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>enabled</>
+		<listitem>
+			<para>Controls whether the link is produced. If disabled, 
+			the portion of the template the link surrounds is still rendered, 
+			but not the link itself.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Shell">
+		<title>Shell</>
+
+<para>
+Provides the outer "shell" of a page, including the 
+&start-tag;html>&end-tag;, &start-tag;head&end-tag; and &start-tag;title&end-tag; tags 
+(but not the &start-tag;body&end-tag; tag).
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>title</>
+		<listitem>
+			<para>Title for the page, placed within a &start-tag;title&end-tag; element.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>stylesheet</>
+		<listitem>
+			<para>Stylesheet to be used for the page.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.Submit">
+		<title>Submit</>
+
+<para>
+Provides a form submit button (&lt;input type=submit&gt;).  
+This is most useful when the form contains multiple submit buttons and the 
+application needs to know which was actually pressed.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>disabled</>
+		<listitem>
+			<para>If true, the submit button will be 
+			disabled.</>
+			<para>The disabled attribute is ignored by Netscape Navigator 4).
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>label</>
+		<listitem>
+			<para>The label to put on the button.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>selected</>
+		<listitem>
+			<para>A property updated if the button is the one clicked 
+			to submit the form.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>tag</>
+		<listitem>
+			<para>The value applied to the selected property if the button 
+			is the one clicked to submit the form.</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.ShowInspector">
+		<title>ShowInspector</>
+
+<para>
 Adds a link to a page that is used to raise the Tapestry Inspector in a new window.  
-This is generally added to the navigational border of an application.
-Text
-Implements a component that manages an HTML <textarea> form element, within a Form 
-component.
-Parameter
-Description
-text
-The text inside the text area.
-disabled
-Controls whether the textarea is active or not.
-columns
-The width of the textarea, in characters.
-rows
-The number of rows in the textarea.
-TextField
-Implements a component that manages an HTML <input type=text> or <input 
-type=password> form element, within a Form component.
+This is generally added to the navigational border of an application, and is only enabled
+when developing the application (disabled in deployment).
+</>
 
-Parameter
-Description
-text
-The text inside the text field.
-hidden
-If true, then the text field is written as a <input type=password> form element.
-disabled
-Controls whether the text field is active or not.
-displayWidth
-Controls the display width of the text control in the client browser.
-maximumLength
-Controls the maximum number of characters that the text control will accept
-ValidatingTextField
-An improved TextField that can perform simple validations.  The field may be 
-required, and a mimum length may be specified.
-Parameter
-Description
-text
-The text inside the text field.
-hidden
-If true, then the text field is written as a <input type=password> form element.
-disabled
-Controls whether the text field is active or not.
-displayWidth
-Controls the display width of the text control in the client browser.
-required
-If true, a value must be provided by the user.
-delegate
-An IValidationDelegate instance used to handle validation errors.
-minimumLength
-Optional, the minimum number of characters that may be entered.
+	</section>
+
+	<section id="builtin.Text">
+		<title>Text</>
+
+<para>
+Implements a component that manages an HTML &start-tag;textarea&end-tag; form element, 
+within a <classname>Form</> component.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>text</>
+		<listitem>
+			<para>The text inside the text area.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>disabled</>
+		<listitem>
+			<para>
+				Controls whether the <classname>Text</> is active or not.
+			</>
+			<para>The disabled attribute is ignored by 
+				Netscape Navigator 4.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>columns</>
+		<listitem>
+			<para>The width of the &start-tag;textarea&end-tag;, in characters.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>rows</>
+
+		<listitem>
+			<para>The number of rows in the &start-tag;textarea&end-tag;.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.TextField">
+		<title>TextField</>
+
+<para>
+Implements a component that manages an HTML 
+&start-tag;input type=text&end-tag; or 
+&start-tag;input type=password&end-tag; form element, within a 
+<classname>Form</> component.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>text</>
+		<listitem>
+			<para>The text inside the text field.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>hidden</>
+		<listitem>
+			<para>If true, then the text field is written as a 
+			&start-tag;input type=password&end-tag; form element.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>disabled</>
+		<listitem>
+			<para>Controls whether the text field is active or not.  Netscape Navigator 4
+			ignores the disabled attribute.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>displayWidth</>
+		<listitem>
+			<para>Controls the display width of the text control in the client browser.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>maximumLength</>
+		<listitem>
+			<para>Controls the maximum number of characters that the 
+			text control will accept.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+	<section id="builtin.ValidatingTextField">
+		<title>ValidatingTextField</>
+
+<para>
+An improved <classname>TextField</> that can perform simple validations.  
+The field may be required, and a minimum length may be specified.
+</>
+
+
+<variablelist>
+	<title>Parameters
+
+	<varlistentry>
+		<term>text</>
+		<listitem>
+			<para>The text inside the text field.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>hidden</>
+		<listitem>
+			<para>If true, then the text field is written as a 
+			&start-tag;input type=password&end-tag; form element.
+			</>
+		</>
+	</>
+	<varlistentry>
+		<term>delegate</>
+		<listitem>
+			<para>An <classname>IValidationDelegate</> used to handle validation exceptions.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>minimumLength</>
+		<listitem>
+			<para>The minimum number of characters allowed.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>required</>
+		<listitem>
+			<para>If true, a value must be entered.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>disabled</>
+		<listitem>
+			<para>Controls whether the text field is active or not.  Netscape Navigator 4
+			ignores the disabled attribute.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>displayWidth</>
+		<listitem>
+			<para>Controls the display width of the text control in the client browser.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>maximumLength</>
+		<listitem>
+			<para>Controls the maximum number of characters that the 
+			text control will accept.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+</chapter>

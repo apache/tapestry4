@@ -1,0 +1,130 @@
+<!-- $Id$ -->
+
+<chapter id="inspector">
+	<title>The Tapestry Inspector</>
+
+<para>
+Tapestry includes a powerful tool: the Inspector, which reveals the construction 
+of a running Tapestry application. 
+</>
+
+<para>
+The <classname>ShowInspector</> component is used to include a link that 
+launches the Inspector.  This is typically included in the navigational border of an 
+application, so that it is available to the developer from any page.  The 
+Inspector itself is a page that is provided by the framework and available to 
+any Tapestry application.
+</>
+
+	<section id="inspector.spec">
+		<title>Specification View</>
+
+<figure>
+	<title>Inspector - Specification View</>
+
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/Inspector-Spec.jpg" format="jpg">
+		</>
+	</>
+</>
+
+<para>
+The Inspector allows the developer to see how the page is constructed.  
+It reveals the page's specification, a list of embedded components within the page, 
+the page's HTML template and more.
+</para>
+
+<para>
+It is possible to dig down and see the same information for 
+any component within the page.
+</>
+
+	</section>
+
+	<section id="inspector.template">
+		<title>Template View</>
+
+<figure>
+	<title>Inspector - Template View</>
+
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/Inspector-Template.jpg" format="jpg">
+		</>
+	</>
+</>
+
+<para>
+The template view shows the HTML template for the component.  Within the template,
+component references are links that "dig down" into their template (if they have one).
+</>
+	</section>
+
+	<section id="inspector.properties">
+		<title>Properties View</>
+
+<figure>
+	<title>Inspector - Properties View</>
+
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/Inspector-Properties.jpg" format="jpg">
+		</>
+	</>
+</>
+
+<para>
+The properties view shows the persistent properties for the page and any components on the page.
+</>
+
+	</section>
+
+	<section id="inspector.engine">
+		<title>Engine View</>
+
+<figure>
+	<title>Inspector - Engine View</>
+
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/Inspector-Engine.jpg" format="jpg">
+		</>
+	</>
+</>
+
+<para>
+The engine view shows information about the running engine instance, including its name and class.
+</>
+
+<para>
+Not shown in the figure is the serialized state of the application engine (in a hex dump format) and a
+long display of all the request cycle information (the same information produced when an 
+uncaught exception is thrown).
+</>
+
+	</section>
+
+	<section id="inspector.logging">
+		<title>Logging View</>
+
+<figure>
+	<title>Inspector - Logging View</>
+
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/Inspector-Logging.jpg" format="jpg">
+		</>
+	</>
+</>
+
+<para>
+The final tab allows control of the logging behavior of the application.  It allows the logging level
+for any category to be set, and allows new categories to be created.
+</>
+
+	</section>
+
+</chapter>
+
+

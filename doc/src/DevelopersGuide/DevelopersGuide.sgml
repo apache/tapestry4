@@ -6,6 +6,11 @@
 <!ENTITY chap-pages SYSTEM "chap-pages.sgml">
 <!ENTITY chap-engine SYSTEM "chap-engine.sgml">
 <!ENTITY chap-request-cycle SYSTEM "chap-request-cycle.sgml">
+<!ENTITY chap-provided SYSTEM "chap-provided.sgml">
+<!ENTITY chap-apps SYSTEM "chap-apps.sgml">
+<!ENTITY chap-coding SYSTEM "chap-coding.sgml">
+<!ENTITY chap-coding-components SYSTEM "chap-coding-components.sgml">
+<!ENTITY chap-inspector SYSTEM "chap-inspector.sgml">
 
 <!ENTITY jwc-tag "<literal>&lt;jwc&gt;</literal>">
 
@@ -55,5 +60,10 @@
 &chap-pages;
 &chap-engine;
 &chap-request-cycle;
+&chap-provided;
+&chap-apps;
+&chap-coding;
+&chap-coding-components;
+&chap-inspector;
 
 </book>

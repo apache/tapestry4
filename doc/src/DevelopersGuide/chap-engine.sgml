@@ -29,7 +29,7 @@ recorders will be serialized with the application engine (which is stored within
 <classname>HttpSession</>).
 </>
 
-	<section id="engine-servlet">
+	<section id="engine.servlet">
 		<title>Application Servlet</>
 
 <para>
@@ -53,7 +53,7 @@ This includes tasks such as loading JDBC drivers.
 
 	</section>
 
-	<section id="engine-req-pages">
+	<section id="engine.req-pages">
 		<title>Required Pages</>
 
 <para>
@@ -180,7 +180,7 @@ Tapestry application to determine its structure.
 
 	</section>
 
-	<section id="engine-state">
+	<section id="engine.state">
 		<title>Server-Side State</>
 
 <para>
@@ -218,7 +218,7 @@ specification.
 
 	</section>
 
-	<section id="engine-services">
+	<section id="engine.services">
 		<title>Engine Services</>
 
 <para>
@@ -299,7 +299,7 @@ provides the URL and later responds if the URL is triggered.
 
 	</section>
 
-	<section id="engine-logging">
+	<section id="engine.logging">
 		<title>Logging</>
 
 <para>
@@ -331,7 +331,7 @@ section.
 
 	</section>
 
-	<section id="engine-private-assets">
+	<section id="engine.private-assets">
 		<title>Private Assets</>
 
 <para>
@@ -401,7 +401,7 @@ using a pair of servlet context parameter (which are specified in the WAR deploy
 
 	</section>
 
-	<section id="engine-spec">
+	<section id="engine.spec">
 		<title>Application Specification</>
 <para>
 The application specification is used to identify the name of the application, the engine class for 

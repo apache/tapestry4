@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<chapter id="request-cycle">
+<chapter id="cycle">
 	<title>Understanding the Request Cycle</>
 
 <para>
@@ -45,7 +45,7 @@ of URLs are generated and included in the HTML.  The second request cycle
 is triggered by one of those service URLs.
 </>
 
-	<section id="cycle-page">
+	<section id="cycle.page">
 		<title>Page service</>
 
 <para>
@@ -71,7 +71,7 @@ The request cycle for the page service is relatively simple.
 
 	</section>
 
-	<section id="cycle-direct">
+	<section id="cycle.direct">
 		<title>Direct service</>
 
 <para>
@@ -178,7 +178,7 @@ to remove in terms of a primary key, or line number within the order.
 
 		</section>
 
-		<section id="cycle-action">
+		<section id="cycle.action">
 			<title>Action service
 
 <para>
@@ -297,7 +297,7 @@ to create links to a product details page.
 
 	</section>
 
-	<section id="cycle-forms">
+	<section id="cycle.forms">
 		<title>Action service and forms
 
 <para>
