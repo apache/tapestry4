@@ -273,7 +273,7 @@ public class Body extends AbstractComponent
         {
             nested = writer.getNestedWriter();
 
-            renderWrapped(nested, cycle);
+            renderBody(nested, cycle);
 
             // Write the script (i.e., just before the <body> tag).
             // If an onLoad event handler was needed, its name is

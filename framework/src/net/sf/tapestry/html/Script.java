@@ -41,7 +41,6 @@ import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -60,11 +59,17 @@ public class Script extends AbstractComponent
 {
     private static final Logger LOG = LogManager.getLogger(Script.class);
 
-    private String _lastScriptPath;
     private String _scriptPath;
     private Map _baseSymbols;
-
-    private IScript _script;
+    
+    /**
+     *  A Map of input and output symbols visible to the body of the Script.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private Map _symbols;
 
     /**
      *  Constructs the symbols {@link Map}.  This starts with the
@@ -75,18 +80,12 @@ public class Script extends AbstractComponent
      *
      **/
 
-    private Map getSymbols()
+    private Map getInputSymbols()
     {
-        Map result = null;
-        boolean copy = false;
+        Map result = new HashMap();
 
         if (_baseSymbols != null)
-        {
-            result = _baseSymbols;
-
-            // Make a writable copy if there are any informal parameters
-            copy = true;
-        }
+            result.putAll(_baseSymbols);
 
         // Now, iterate through all the binding names (which includes both
         // formal and informal parmeters).  Skip the formal ones and
@@ -106,18 +105,6 @@ public class Script extends AbstractComponent
 
             Object value = binding.getObject();
 
-            if (value == null)
-                continue;
-
-            if (result == null)
-                result = new HashMap();
-            else
-                if (copy)
-                {
-                    result = new HashMap(result);
-                    copy = false;
-                }
-
             result.put(bindingName, value);
         }
 
@@ -132,44 +119,43 @@ public class Script extends AbstractComponent
 
     private IScript getParsedScript(IRequestCycle cycle) throws RequiredParameterException
     {
-        if (_script != null && _scriptPath.equals(_lastScriptPath))
-            return _script;
-
+        if (_scriptPath == null)
+            throw new RequiredParameterException(this, "scriptPath",
+            getBinding("scriptPath"));
+            
         IEngine engine = cycle.getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        // Cache for later
-
-        IScript script = source.getScript(_scriptPath);
-        _lastScriptPath = _scriptPath;
-
-        return script;
+        return source.getScript(_scriptPath);
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         ScriptSession session;
 
-        if (cycle.isRewinding())
-            return;
-
-        Body body = Body.get(cycle);
-
-        if (body == null)
-            throw new RequestCycleException(Tapestry.getString("Script.must-be-contained-by-body"), this);
-
-        try
+        if (!cycle.isRewinding())
         {
-            session = getParsedScript(cycle).execute(getSymbols());
-        }
-        catch (ScriptException ex)
-        {
-            throw new RequestCycleException(this, ex);
+            Body body = Body.get(cycle);
+
+            if (body == null)
+                throw new RequestCycleException(Tapestry.getString("Script.must-be-contained-by-body"), this);
+
+            _symbols = getInputSymbols();
+            
+            try
+            {
+                session = getParsedScript(cycle).execute(_symbols);
+            }
+            catch (ScriptException ex)
+            {
+                throw new RequestCycleException(this, ex);
+            }
+
+            body.process(session);
         }
 
-        body.process(session);
-
-        // This component is not allowed to have a body.
+        // Render the body of the Script;
+        renderBody(writer, cycle);
     }
 
     public String getScriptPath()
@@ -190,6 +176,27 @@ public class Script extends AbstractComponent
     public void setBaseSymbols(Map baseSymbols)
     {
         _baseSymbols = baseSymbols;
+    }
+
+    /**
+     *  Returns the complete set of symbols (input and output)
+     *  from the script execution.  This is visible to the body
+     *  of the Script, but is cleared after the Script
+     *  finishes rendering.
+     * 
+     *  @since 2.2
+     **/
+    
+    public Map getSymbols()
+    {
+        return _symbols;
+    }
+
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        _symbols = null;
+        
+        super.cleanupAfterRender(cycle);
     }
 
 }

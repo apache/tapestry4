@@ -150,7 +150,7 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
         else
             wrappedWriter = writer;
 
-        renderWrapped(wrappedWriter, cycle);
+        renderBody(wrappedWriter, cycle);
 
         if (!disabled)
         {

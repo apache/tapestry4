@@ -317,4 +317,12 @@ public class MockPage implements IPage
     {
     }
 
+    public void addBody(IRender element)
+    {
+    }
+
+    public void renderBody(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    {
+    }
+
 }

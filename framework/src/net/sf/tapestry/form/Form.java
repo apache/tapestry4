@@ -322,7 +322,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         _elementCount = 0;
 
         _rendering = true;
-        renderWrapped(writer, cycle);
+        renderBody(writer, cycle);
 
         if (renderForm)
         {

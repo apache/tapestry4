@@ -211,14 +211,21 @@ public abstract class AbstractComponent implements IComponent
         _components.put(component.getId(), component);
     }
 
+    public void addWrapped(IRender element)
+    {
+        addBody(element);
+    }
+
     /**
-     *  Adds an element (which may be static text or a component) as a wrapped
+     *  Adds an element (which may be static text or a component) as a body
      *  element of this component.  Such elements are rendered
-     *  by {@link #renderWrapped(IMarkupWriter, IRequestCycle)}.
+     *  by {@link #renderBody(IMarkupWriter, IRequestCycle)}.
      *
+     *  @since 2.2
+     * 
      **/
 
-    public void addWrapped(IRender element)
+    public void addBody(IRender element)
     {
         // Should check the specification to see if this component
         // allows body.  Curently, this is checked by the component
@@ -638,12 +645,17 @@ public abstract class AbstractComponent implements IComponent
         specification = value;
     }
 
+    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    {
+        renderBody(writer, cycle);
+    }
+
     /**
      *  Renders all elements wrapped by the receiver.
      *
      **/
 
-    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void renderBody(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         for (int i = 0; i < wrappedCount; i++)
             wrapped[i].render(writer, cycle);

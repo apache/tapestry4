@@ -127,7 +127,7 @@ public class Shell extends AbstractComponent
 
         // Render the body, the actual page content
 
-        renderWrapped(writer, cycle);
+        renderBody(writer, cycle);
 
         if (!rewinding)
         {
