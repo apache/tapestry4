@@ -101,4 +101,20 @@ public interface IPageRecorder extends ChangeObserver
 	 */
 
 	public void setLocked(boolean value);
+    
+    /**
+     *  Invoked to mark the recorder for discarding at the end of the request cycle.
+     * 
+     *  @since 2.0.2
+     * 
+     **/
+    
+    public void markForDiscard();
+    
+    /**
+     *  Returns true if the recorder has been marked for discard.
+     * 
+     **/
+    
+    public boolean isMarkedForDiscard();
 }

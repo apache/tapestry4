@@ -247,4 +247,18 @@ public interface IRequestCycle
 	
 	public void rewindForm(IForm form, String targetActionId)
 		throws RequestCycleException;
+
+
+    /**
+     *  Much like {@link IEngine#forgetPage(String)}, but the page stays active and can even
+     *  record changes, until the end of the request cycle, at which point it is discarded
+     *  (and any recorded changes are lost).
+     *  This is used in certain rare cases where a page has persistent state but is
+     *  being renderred "for the last time".
+     * 
+     *  @since 2.0.2
+     * 
+     **/
+    
+    public void discardPage(String name);
 }
