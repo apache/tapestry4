@@ -1,3 +1,7 @@
+* Apr 26 2001 hship
+
+Make the WebLogic module compress the deployable EJB Jar.
+
 * Apr 24 2001 hship
 
 Make use of standard Cygwin mounts (/usr/bin), rather than relying on setting of
