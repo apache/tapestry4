@@ -1,5 +1,9 @@
 * Jan 10 2001 hship
 
+Update copyrights.
+
+* Jan 10 2001 hship
+
 Slight touch up, adding tool option variables which will make porting to
 non-GNU environments (like Solaris) a bit easier.
 
