@@ -10,6 +10,7 @@ import java.sql.*;
 import com.primix.foundation.jdbc.*;
 import com.primix.foundation.ejb.*;
 
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -57,6 +58,7 @@ public class OperationsBean implements SessionBean
 	private transient IPublisherHome publisherHome;
 		
 	private final static int MAP_SIZE = 7;
+	
 	/**
 	 *  Data source, retrieved from the ENC property 
 	 *  "jdbc/dataSource".
@@ -65,6 +67,13 @@ public class OperationsBean implements SessionBean
 	 
 	private DataSource dataSource;
 	
+	/**
+	 *  Sets up the bean.  Locates the {@link DataSource} for the bean
+	 *  as <code>jdbc/dataSource</code> within the ENC; this data source is
+	 *  later used by {@link #getConnection()}.
+	 *
+	 */
+	 
 	public void ejbCreate()
 	{
 		Context initial;
@@ -362,72 +371,6 @@ public class OperationsBean implements SessionBean
 	}
 	
 	
-	private IBookHome getBookHome()
-	{
-		Object raw;
-		
-		if (bookHome == null)
-		{
-			try
-			{
-				raw = environment.lookup("ejb/Book");
-				
-				bookHome = (IBookHome)PortableRemoteObject.narrow(raw, IBookHome.class);
-			}
-			catch (NamingException e)
-			{
-				throw new XEJBException("Could not lookup Book home interface.", e);
-			}
-		
-		}
-		
-		return bookHome;
-	}
-	
-	private IPersonHome getPersonHome()
-	{
-		Object raw;
-		
-		if (personHome == null)
-		{
-			try
-			{
-				raw = environment.lookup("ejb/Person");
-				
-				personHome = (IPersonHome)PortableRemoteObject.narrow(raw, IPersonHome.class);
-			}
-			catch (NamingException e)
-			{
-				throw new XEJBException("Could not lookup Person home interface.", e);
-			}
-		
-		}
-		
-		return personHome;
-	}
-	
-	private IPublisherHome getPublisherHome()
-	{
-		Object raw;
-		
-		if (publisherHome == null)
-		{
-			try
-			{
-				raw = environment.lookup("ejb/Publisher");
-				
-				publisherHome = (IPublisherHome)PortableRemoteObject.narrow(raw, IPublisherHome.class);
-			}
-			catch (NamingException e)
-			{
-				throw new XEJBException("Could not lookup Publisher home interface.", e);
-			}
-		
-		}
-		
-		return publisherHome;
-	}
-	
 	public Publisher[] getPublishers()
 	{
 		Connection connection = null;
@@ -503,12 +446,7 @@ public class OperationsBean implements SessionBean
 		{
 			connection = getConnection();
 			
-		
-			assembly = new StatementAssembly();
-			
-			assembly.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL");
-			assembly.newLine("FROM PERSON");
-			assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
+			assembly = buildBasePersonQuery();
 		
 			statement = assembly.createStatement(connection);	
 			
@@ -518,14 +456,7 @@ public class OperationsBean implements SessionBean
 			
 			while (set.next())
 			{
-				column = 1;
-				
-				columns[Person.PRIMARY_KEY_COLUMN] = set.getObject(column++);
-				columns[Person.FIRST_NAME_COLUMN] = set.getString(column++);
-				columns[Person.LAST_NAME_COLUMN] = set.getString(column++);
-				columns[Person.EMAIL_COLUMN] = set.getString(column++);
-				
-				list.add(new Person(columns));
+				list.add(convertRowToPerson(set, columns));
 			}
 		}
 		catch (SQLException e)
@@ -544,20 +475,207 @@ public class OperationsBean implements SessionBean
 		return (Person[])list.toArray(result);
 	}
 	
-	
-	private Connection getConnection()
+	public Person getPerson(Integer primaryKey)
+	throws FinderException
 	{
+		Connection connection = null;
+		IStatement statement = null;
+		ResultSet set = null;
+		Object[] columns;
+		Person result = null;
+		StatementAssembly assembly;
+		
 		try
 		{
-			return dataSource.getConnection();
+			connection = getConnection();
+			
+			assembly = buildBasePersonQuery();
+			assembly.addParameter("PERSON_ID = ?", primaryKey);
+			
+			statement = assembly.createStatement(connection);
+			
+			set = statement.executeQuery();
+			
+			if (!set.next())
+				throw new FinderException("Person " + primaryKey + " does not exist.");
+			
+			columns = new Object[Person.N_COLUMNS];
+			result = convertRowToPerson(set, columns);	
+			
 		}
 		catch (SQLException e)
 		{
-			throw new XEJBException("Unable to get database connection from pool.", e);
+			throw new XEJBException("Unable to perform database query.", e);
 		}
+		finally
+		{
+			close(connection, statement, set);
+		}
+		
+		return result;
 	}
 	
-	private void close(Connection connection, IStatement statement, ResultSet resultSet)
+	/**
+	 *  Retrieves a single {@link Book} by its primary key.
+	 *
+	 *  @throws FinderException if the Book does not exist.
+	 *
+	 */
+	 
+	public Book getBook(Integer primaryKey)
+	throws FinderException
+	{
+		Connection connection = null;
+		IStatement statement = null;
+		ResultSet set = null;
+		Object[] columns;
+		Book result = null;
+		StatementAssembly assembly;
+		
+		try
+		{
+			connection = getConnection();
+			
+			assembly = buildBaseBookQuery();
+			assembly.addSep(" AND ");
+			assembly.addParameter("book.BOOK_ID = ?", primaryKey);
+			
+			statement = assembly.createStatement(connection);
+			
+			set = statement.executeQuery();
+			
+			if (!set.next())
+				throw new FinderException("Book " + primaryKey + " does not exist.");
+			
+			columns = new Object[Book.N_COLUMNS];
+			result = convertRowToBook(set, columns);	
+			
+		}
+		catch (SQLException e)
+		{
+			throw new XEJBException("Unable to perform database query.", e);
+		}
+		finally
+		{
+			close(connection, statement, set);
+		}
+		
+		return result;
+	}
+
+
+	/**
+	 *  Translates the next row from the result set into a {@link Book}.
+	 *
+	 *  <p>This works with queries generated by {@link #buildBaseBookQuery()}.
+	 *
+	 */
+	 
+	protected Book convertRowToBook(ResultSet set, Object[] columns)
+	throws SQLException
+	{
+		int column = 1;
+	
+		columns[Book.PRIMARY_KEY_COLUMN] =
+			set.getObject(column++);
+		columns[Book.TITLE_COLUMN] = set.getString(column++);
+		columns[Book.DESCRIPTION_COLUMN] = set.getString(column++);
+		columns[Book.ISBN_COLUMN] = set.getString(column++);
+		columns[Book.LEND_COUNT_COLUMN] = set.getObject(column++);
+		columns[Book.OWNER_PK_COLUMN] = set.getObject(column++);
+		columns[Book.OWNER_NAME_COLUMN] = 
+			buildName(set.getString(column++), set.getString(column++));
+		columns[Book.HOLDER_PK_COLUMN] = set.getObject(column++);
+		columns[Book.HOLDER_NAME_COLUMN] =
+			buildName(set.getString(column++), set.getString(column++));
+		columns[Book.PUBLISHER_PK_COLUMN] = set.getObject(column++);
+		columns[Book.PUBLISHER_NAME_COLUMN] = set.getString(column++);
+		columns[Book.AUTHOR_COLUMN] = set.getString(column++);
+		columns[Book.RATING_COLUMN] = set.getObject(column++);
+		
+		return new Book(columns);
+	}
+
+	private String buildName(String firstName, String lastName)
+	{
+		if (firstName == null)
+			return lastName;
+		
+		return firstName + " " + lastName;
+	}	
+	
+	/**
+	 *  All queries must use this exact set of select columns, so that
+	 *  {@link #convertRow(ResultSet, Object[])} can build
+	 *  the correct {@link Book} from each row.
+	 *
+	 */
+	 	
+	private static final String[] bookSelectColumns =
+	{
+		"book.BOOK_ID", "book.TITLE", "book.DESCRIPTION", "book.ISBN",
+		"book.LEND_COUNT",
+		"owner.PERSON_ID", "owner.FIRST_NAME", "owner.LAST_NAME",
+		"holder.PERSON_ID", "holder.FIRST_NAME", "holder.LAST_NAME",
+		"publisher.PUBLISHER_ID", "publisher.NAME",
+		"book.AUTHOR", "book.RATING"
+	};
+	
+	private static final String[] bookAliasColumns =
+	{
+		"BOOK book", "PERSON owner", "PERSON holder", "PUBLISHER publisher"
+	};
+	
+	private static final String[] bookJoins =
+	{
+		"book.OWNER_ID = owner.PERSON_ID",
+		"book.HOLDER_ID = holder.PERSON_ID",
+		"book.PUBLISHER_ID = publisher.PUBLISHER_ID"
+	};
+
+	protected StatementAssembly buildBaseBookQuery()
+	{
+		StatementAssembly result;
+		
+		result = new StatementAssembly();
+		
+		result.newLine("SELECT ");
+		result.addList(bookSelectColumns, ", ");
+
+		result.newLine("FROM ");
+		result.addList(bookAliasColumns, ", ");
+		
+		result.newLine("WHERE ");
+		result.addList(bookJoins, " AND ");
+		
+		return result;
+	}
+	
+	protected void addSubstringSearch(StatementAssembly assembly, String column, String value)
+	{
+		String trimmed;
+		
+		if (value == null)
+			return;
+			
+		trimmed = value.trim();
+		if (trimmed.length() == 0)
+			return;
+		
+		// The is very Cloudscape dependant
+		
+		assembly.addSep(" AND ");
+		assembly.addParameter(column + ".trim().toLowerCase() LIKE ?",
+				 "%" + trimmed.toLowerCase() + "%");	
+	}
+	
+	/**
+	 *  Closes the resultSet (if not null), then the statement (if not null), 
+	 *  then the Connection (if not null).
+	 *
+	 */
+	 
+	protected void close(Connection connection, IStatement statement, ResultSet resultSet)
 	{
 		if (resultSet != null)
 		{
@@ -598,7 +716,123 @@ public class OperationsBean implements SessionBean
 			}
 		}
 	}
+	
+	private IPersonHome getPersonHome()
+	{
+		Object raw;
+		
+		if (personHome == null)
+		{
+			try
+			{
+				raw = environment.lookup("ejb/Person");
+				
+				personHome = (IPersonHome)PortableRemoteObject.narrow(raw, IPersonHome.class);
+			}
+			catch (NamingException e)
+			{
+				throw new XEJBException("Could not lookup Person home interface.", e);
+			}
+		
+		}
+		
+		return personHome;
+	}
+	
+	private IPublisherHome getPublisherHome()
+	{
+		Object raw;
+		
+		if (publisherHome == null)
+		{
+			try
+			{
+				raw = environment.lookup("ejb/Publisher");
+				
+				publisherHome = (IPublisherHome)PortableRemoteObject.narrow(raw, IPublisherHome.class);
+			}
+			catch (NamingException e)
+			{
+				throw new XEJBException("Could not lookup Publisher home interface.", e);
+			}
+		
+		}
+		
+		return publisherHome;
+	}
 
+	private IBookHome getBookHome()
+	{
+		Object raw;
+		
+		if (bookHome == null)
+		{
+			try
+			{
+				raw = environment.lookup("ejb/Book");
+				
+				bookHome = (IBookHome)PortableRemoteObject.narrow(raw, IBookHome.class);
+			}
+			catch (NamingException e)
+			{
+				throw new XEJBException("Could not lookup Book home interface.", e);
+			}
+		
+		}
+		
+		return bookHome;
+	}
+	
+	
+	/**
+	 *  Gets a new connection from the data source.
+	 *
+	 */
+	 
+	protected Connection getConnection()
+	{
+		try
+		{
+			return dataSource.getConnection();
+		}
+		catch (SQLException e)
+		{
+			throw new XEJBException("Unable to get database connection from pool.", e);
+		}
+	}
+	
+	protected StatementAssembly buildBasePersonQuery()
+	{
+		StatementAssembly result;
+		
+		result = new StatementAssembly();
+		
+		result.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL");
+		result.newLine("FROM PERSON");
+		result.newLine("ORDER BY LAST_NAME, FIRST_NAME");
+		
+		return result;
+	}
+
+	/**
+	 *  Translates the next row from the result set into a {@link Person}.
+	 *
+	 *  <p>This works with queries generated by {@link #buildBasePersonQuery()}.
+	 *
+	 */
+
+	protected Person convertRowToPerson(ResultSet set, Object[] columns)
+	throws SQLException
+	{
+		int column = 1;
+	
+		columns[Person.PRIMARY_KEY_COLUMN] = set.getObject(column++);
+		columns[Person.FIRST_NAME_COLUMN] = set.getString(column++);
+		columns[Person.LAST_NAME_COLUMN] = set.getString(column++);
+		columns[Person.EMAIL_COLUMN] = set.getString(column++);
+		
+		return new Person(columns);
+	}	
 }  
 
 

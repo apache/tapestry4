@@ -1,9 +1,9 @@
-package com.primix.vlib.components;
+package com.primix.vlib;
 
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
-import com.primix.vlib.*;
+import com.primix.vlib.pages.*;
 
 /*
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -33,44 +33,56 @@ import com.primix.vlib.*;
  */
 
 /**
- *  
+ *  Base page used for pages that should be protected by the Login page.
+ *  Also, implements an error property.
  *
  * @author Howard Ship
  * @version $Id$
  */
 
 
-public class Border extends BaseComponent
+public class Protected extends BasePage
 {
-	public Border(IPage page, IComponent container, String id, ComponentSpecification spec) 
+	private String error;
+
+	public Protected(IApplication application, ComponentSpecification componentSpecification)
 	{
-		super(page, container, id, spec);
-	}
-	
- 	public IDirectListener getLogoutListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IComponent component, String[] context,
-					IRequestCycle cycle)
-			{
-				VirtualLibraryApplication app;
-				
-				app = (VirtualLibraryApplication)getPage().getApplication();
-				
-				app.setUser(null);
-				cycle.setPage("Logout");
-			}
-		};
+		super(application, componentSpecification);
 	}
 
-	/**
-	 *  Show the Logout button on all pages except the Logout page itself.
-	 *
-	 */
-	 
-	public boolean getShowLogout()
+	public void detachFromApplication()
 	{
-		return !getPage().getName().equals("Logout");
+		super.detachFromApplication();
+
+		error = null;
+	}
+	
+	public void setError(String value)
+	{
+		error = value;
+	}
+	
+	public String getError()
+	{
+		return error;
+	}
+	
+	public void validate(IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		VirtualLibraryApplication app;
+		Login page;
+		
+		app = (VirtualLibraryApplication)application;
+		
+		if (app.isUserLoggedIn())
+			return;
+		
+		// User not logged in ... redirect through the Login page.
+		
+		page = (Login)cycle.getPage("Login");
+		page.setTargetPage(getName());
+		
+		throw new PageRedirectException("Login");			
 	}
 }

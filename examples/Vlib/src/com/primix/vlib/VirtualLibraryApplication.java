@@ -495,4 +495,100 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return model;	  
 		
 	}
+	
+	/**
+	 *  Used from a couple of pages; allows a link to the user's own inventory.
+	 *  Context should have one element: the primary key of the person.
+	 *
+	 */
+	 
+	public IDirectListener getPersonLinkListener()
+	{
+		return new IDirectListener()
+		{
+			public void directTriggered(IComponent component, String[] context, 
+						IRequestCycle cycle)
+						throws RequestCycleException
+			{
+				PersonPage page;
+				Integer personPK;
+				
+				page = (PersonPage)cycle.getPage("Person");
+				
+				personPK = new Integer(context[0]);
+				
+				page.setup(personPK);
+				
+				cycle.setPage(page);
+			}
+		};
+	}
+	
+	public IDirectListener getBorrowListener()
+	{
+	    return new IDirectListener()
+	    {
+	        public void directTriggered(IComponent component, String[] context,
+	                IRequestCycle cycle)
+					throws RequestCycleException
+	        {
+				Integer bookPK;
+				
+				// The primary key of the book to borrow is encoded in the context.
+				bookPK = new Integer(context[0]);
+				
+				borrowBook(bookPK, cycle);
+	        }
+	    };
+	}
+	
+	private void borrowBook(Integer bookPK, IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		IOperations bean;
+		Home home;
+		Integer borrowerPK;
+		IBook book;
+		home = (Home)cycle.getPage("Home");
+
+		bean = getOperations();				
+
+		try
+		{
+			book = bean.borrowBook(bookPK, userPK);
+
+			home.setMessage("Borrowed: " + book.getTitle());
+		}
+		catch (FinderException e)
+		{
+			throw new ApplicationRuntimeException(
+				"Unable to find book or user. ", e);
+		}
+		catch (RemoteException e)
+		{
+			throw new ApplicationRuntimeException(e);
+		}
+
+		cycle.setPage(home);				
+	}
+	
+	public IDirectListener getViewBookListener()
+	{
+		return new IDirectListener()
+		{
+			public void directTriggered(IComponent component,
+					String[] context,
+					IRequestCycle cycle) throws RequestCycleException
+			{
+				Integer bookPK;
+				ViewBook page;
+				
+				bookPK = new Integer(context[0]);
+				page = (ViewBook)cycle.getPage("ViewBook");
+				
+				page.setup(bookPK, cycle);
+			}
+		};
+	}
+	
 }

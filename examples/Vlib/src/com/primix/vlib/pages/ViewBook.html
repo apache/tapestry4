@@ -1,0 +1,48 @@
+<jwc id="border">
+<!-- $Id$ -->
+
+<table>
+	<tr>
+		<th>Title</th>
+		<td><jwc id="insertTitle"/></td>
+	</tr>
+
+	<tr>
+		<th>Author</th>
+		<td><jwc id="insertAuthor"/></td>
+	</tr>
+
+	<tr>
+		<th>Publisher</th>
+		<td><jwc id="insertPublisherName"/></td>
+	</tr>
+
+	<tr>
+		<th>ISBN</th>
+		<td><jwc id="insertISBN"/></td>
+	</tr>
+
+	<tr>
+		<th>Owner</th>
+		<td><jwc id="showOwner"><jwc id="insertOwnerName"/></jwc></td>
+	</tr>
+
+	<tr>
+		<th>Description</th>
+		<td><pre><jwc id="insertDescription"/></pre></td>
+	</tr>
+
+<jwc id="ifShowHolder">
+	<tr>
+		<th>Borrowed by</th>
+		<td><jwc id="showHolder"><jwc id="insertHolderName"/></jwc></td>
+	</tr>
+</jwc>
+
+	<tr>
+		<td></td>
+		<td><jwc id="borrow">[ Borrow ]</jwc></td>
+	</tr>
+</table>
+
+</jwc>

@@ -58,17 +58,8 @@ import com.primix.foundation.ejb.*;
  *
  */
 
-public class BookQueryBean implements SessionBean
+public class BookQueryBean extends OperationsBean
 {
-	private SessionContext context;
-		
-	/**
-	 *  Data source, retrieved from the ENC property 
-	 *  "jdbc/dataSource".
-	 *
-	 */
-	 
-	private DataSource dataSource;
 	
 	/**
 	 *  Stores the results from the most recent query.
@@ -76,60 +67,7 @@ public class BookQueryBean implements SessionBean
 	 */
 	 
 	private Book[] results;
-	
-	/**
-	 *  Activates the bean.  Gets the DataSource from the environment.
-	 *
-	 */
-	 
-	public void ejbCreate()
-	{
-		Context initial;
-		Context environment;
 		
-		try
-		{
-			initial = new InitialContext();
-			environment = (Context)initial.lookup("java:comp/env");
-		}
-		catch (NamingException e)
-		{
-			throw new XEJBException("Could not lookup environment.", e);
-		}
-			
-		try
-		{
-			dataSource = (DataSource)environment.lookup("jdbc/dataSource");
-		}
-		catch (NamingException e)
-		{
-			throw new XEJBException("Could not lookup data source.", e);
-		}
-
-	}
-	
-	/**
-	 *  Does nothing.
-	 */
-	 
-	public void ejbPassivate()
-	{
-	}
-	
-	public void setSessionContext(SessionContext value)
-	{
-		context = value;
-	}
-	
-	/**
-	 *  Does nothing.
-	 *
-	 */
-	 
-	public void ejbActivate()
-	{
-	}
-	
 	/**
 	 *  Releases any results.
 	 *
@@ -140,27 +78,7 @@ public class BookQueryBean implements SessionBean
 		results = null;
 	}
 
-	
-	/**
-	 *  Gets a database connection from the pool.
-	 *
-	 *  @throws EJBException if a <code>SQLException</code>
-	 *  is thrown.
-	 *
-	 */
-	 
-	private Connection getConnection()
-	{
-		try
-		{
-			return dataSource.getConnection();
-		}
-		catch (SQLException e)
-		{
-			throw new XEJBException("Unable to get database connection from pool.", e);
-		}
-	}
-	
+		
 	// Business methods
 	
 	public int getResultCount()
@@ -326,79 +244,22 @@ public class BookQueryBean implements SessionBean
 	{
 		List list;
 		Object[] columns;
-		int column;
+		Book book;
 		
 		list = new ArrayList();
 		columns = new Object[Book.N_COLUMNS];
 		
 		while (set.next())
 		{
-			// Translate the selected columns into the columns of
-			// the result set (we fold two first name/last name pairs into simple
-			// names).
+			book = convertRowToBook(set, columns);
 			
-			column = 1;
-			
-			columns[Book.PRIMARY_KEY_COLUMN] =
-				set.getObject(column++);
-			columns[Book.TITLE_COLUMN] = set.getString(column++);
-			columns[Book.DESCRIPTION_COLUMN] = set.getString(column++);
-			columns[Book.ISBN_COLUMN] = set.getString(column++);
-			columns[Book.LEND_COUNT_COLUMN] = set.getObject(column++);
-			columns[Book.OWNER_PK_COLUMN] = set.getObject(column++);
-			columns[Book.OWNER_NAME_COLUMN] = 
-				buildName(set.getString(column++), set.getString(column++));
-			columns[Book.HOLDER_PK_COLUMN] = set.getObject(column++);
-			columns[Book.HOLDER_NAME_COLUMN] =
-				buildName(set.getString(column++), set.getString(column++));
-			columns[Book.PUBLISHER_PK_COLUMN] = set.getObject(column++);
-			columns[Book.PUBLISHER_NAME_COLUMN] = set.getString(column++);
-			columns[Book.AUTHOR_COLUMN] = set.getString(column++);
-			columns[Book.RATING_COLUMN] = set.getObject(column++);
-			
-			list.add(new Book(columns));
+			list.add(book);
 		}
 		
 		results = new Book[list.size()];
 		results = (Book[])list.toArray(results);	
 	}
 	
-	private String buildName(String firstName, String lastName)
-	{
-		if (firstName == null)
-			return lastName;
-		
-		return firstName + " " + lastName;
-	}	
-	
-	/**
-	 *  All queries must use this exact set of select columns, so that
-	 *  {@link #processQueryResults(ResultSet)} can build
-	 *  the correct {@link BookQueryResult} from each row.
-	 *
-	 */
-	 	
-	private static final String[] selectColumns =
-	{
-		"book.BOOK_ID", "book.TITLE", "book.DESCRIPTION", "book.ISBN",
-		"book.LEND_COUNT",
-		"owner.PERSON_ID", "owner.FIRST_NAME", "owner.LAST_NAME",
-		"holder.PERSON_ID", "holder.FIRST_NAME", "holder.LAST_NAME",
-		"publisher.PUBLISHER_ID", "publisher.NAME",
-		"book.AUTHOR", "book.RATING"
-	};
-	
-	private static final String[] aliasColumns =
-	{
-		"BOOK book", "PERSON owner", "PERSON holder", "PUBLISHER publisher"
-	};
-	
-	private static final String[] joins =
-	{
-		"book.OWNER_ID = owner.PERSON_ID",
-		"book.HOLDER_ID = holder.PERSON_ID",
-		"book.PUBLISHER_ID = publisher.PUBLISHER_ID"
-	};
 	
 	private IStatement buildMasterQuery(Connection connection,
 		String title, String author, Object publisherPK)
@@ -408,17 +269,8 @@ public class BookQueryBean implements SessionBean
 		int i;
 		IStatement result;
 		
-		assembly = new StatementAssembly();
-		
-		assembly.newLine("SELECT ");
-		assembly.addList(selectColumns, ", ");
-
-		assembly.newLine("FROM ");
-		assembly.addList(aliasColumns, ", ");
-		
-		assembly.newLine("WHERE ");
-		assembly.addList(joins, " AND ");
-		
+		assembly = buildBaseBookQuery();
+				
 		addSubstringSearch(assembly, "book.TITLE", title);
 		addSubstringSearch(assembly, "book.AUTHOR", author);
 				
@@ -435,23 +287,7 @@ public class BookQueryBean implements SessionBean
 		return result;
 	}
 	
-	private void addSubstringSearch(StatementAssembly assembly, String column, String value)
-	{
-		String trimmed;
-		
-		if (value == null)
-			return;
-			
-		trimmed = value.trim();
-		if (trimmed.length() == 0)
-			return;
-		
-		// The is very Cloudscape dependant
-		
-		assembly.addSep(" AND ");
-		assembly.addParameter(column + ".trim().toLowerCase() LIKE ?",
-				 "%" + trimmed.toLowerCase() + "%");	
-	}
+
 	
 	private IStatement buildPersonQuery(Connection connection,
 		String personColumn, Integer personPK)
@@ -462,16 +298,7 @@ public class BookQueryBean implements SessionBean
 		IStatement result;
 		String trimmedTitle;
 		
-		assembly = new StatementAssembly();
-		
-		assembly.newLine("SELECT ");
-		assembly.addList(selectColumns, ", ");
-
-		assembly.newLine("FROM ");
-		assembly.addList(aliasColumns, ", ");
-		
-		assembly.newLine("WHERE ");
-		assembly.addList(joins, " AND ");
+		assembly = buildBaseBookQuery();
 		
 		assembly.addSep(" AND ");
 		assembly.addParameter(personColumn + "= ?", personPK);
@@ -483,45 +310,4 @@ public class BookQueryBean implements SessionBean
 		return result;
 	}
 	
-	private void close(Connection connection, IStatement statement, ResultSet resultSet)
-	{
-		if (resultSet != null)
-		{
-			try
-			{
-				resultSet.close();
-			}
-			catch (SQLException e)
-			{
-				System.out.println("Exception closing result set.");
-				e.printStackTrace();
-			}
-		}
-		
-		if (statement != null)
-		{
-			try
-			{
-				statement.close();
-			}
-			catch (SQLException e)
-			{
-				System.out.println("Exception closing statement.");
-				e.printStackTrace();
-			}
-		}
-		
-		if (connection != null)
-		{
-			try
-			{
-				connection.close();
-			}
-			catch (SQLException e)
-			{
-				System.out.println("Exception closing connection.");
-				e.printStackTrace();
-			}
-		}
-	}
 }  
