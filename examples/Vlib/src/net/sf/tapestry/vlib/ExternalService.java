@@ -36,6 +36,7 @@ import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.engine.AbstractService;
 
 /**
@@ -53,10 +54,11 @@ public class ExternalService extends AbstractService
 {
     public static final String SERVICE_NAME = "external";
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (parameters == null || parameters.length != 2)
-            throw new ApplicationRuntimeException("external service requires two parameters.");
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("service-incorrect-parameter-count", SERVICE_NAME, "two"));
 
         return assembleGesture(cycle, SERVICE_NAME, null, parameters, true);
 
@@ -67,14 +69,14 @@ public class ExternalService extends AbstractService
     {
         IExternalPage page;
 
-        String[] parameters = getParameters(cycle.getRequestContext());
+        Object[] parameters = getParameters(cycle);
 
-        if (parameters == null || parameters.length != 2)
-            throw new ApplicationRuntimeException("external service requires two parameters.");
+        if (Tapestry.size(parameters) != 2)
+            throw new ApplicationRuntimeException(
+            Tapestry.getString("service-incorrect-parameter-count", SERVICE_NAME, "two"));
 
-        String pageName = parameters[0];
-        String key = parameters[1];
-        Integer primaryKey = new Integer(key);
+        String pageName = (String)parameters[0];
+        Integer primaryKey = (Integer)parameters[1];
 
         try
         {

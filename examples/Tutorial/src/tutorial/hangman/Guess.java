@@ -58,10 +58,10 @@ public class Guess extends BasePage
 
     public void makeGuess(IRequestCycle cycle)
     {
-        String[] parameters = cycle.getServiceParameters();
+        Object[] parameters = cycle.getServiceParameters();
+        char letter = ((Character)parameters[0]).charValue();
+        
         HangmanGame game = getGame();
-        String guess = parameters[0];
-        char letter = guess.charAt(0);
 
         try
         {

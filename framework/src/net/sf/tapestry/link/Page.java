@@ -126,7 +126,7 @@ public class Page extends GestureLink
      *
      **/
 
-    protected String[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
+    protected Object[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
     {
         return new String[] { targetPage };
     }

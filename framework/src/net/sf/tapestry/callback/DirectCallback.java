@@ -50,26 +50,26 @@ public class DirectCallback implements ICallback
 
     private static final long serialVersionUID = -8888847655917503471L;
 
-    private String pageName;
-    private String componentIdPath;
-    private String[] parameters;
+    private String _pageName;
+    private String _componentIdPath;
+    private Object[] _parameters;
 
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("DirectCallback[");
 
-        buffer.append(pageName);
+        buffer.append(_pageName);
         buffer.append('/');
-        buffer.append(componentIdPath);
+        buffer.append(_componentIdPath);
 
-        if (parameters != null)
+        if (_parameters != null)
         {
             char sep = ' ';
 
-            for (int i = 0; i < parameters.length; i++)
+            for (int i = 0; i < _parameters.length; i++)
             {
                 buffer.append(sep);
-                buffer.append(parameters[i]);
+                buffer.append(_parameters[i]);
 
                 sep = '/';
             }
@@ -82,16 +82,16 @@ public class DirectCallback implements ICallback
     }
 
     /**
-     *  Creates a new DirectCallback for the component.  The context
+     *  Creates a new DirectCallback for the component.  The parameters
      *  (which may be null) is retained, not copied.
      *
      **/
 
-    public DirectCallback(IDirect component, String[] parameters)
+    public DirectCallback(IDirect component, Object[] parameters)
     {
-        pageName = component.getPage().getName();
-        componentIdPath = component.getIdPath();
-        this.parameters = parameters;
+        _pageName = component.getPage().getName();
+        _componentIdPath = component.getIdPath();
+        _parameters = parameters;
     }
 
     /**
@@ -105,8 +105,8 @@ public class DirectCallback implements ICallback
 
     public void performCallback(IRequestCycle cycle) throws RequestCycleException
     {
-        IPage page = cycle.getPage(pageName);
-        IComponent component = page.getNestedComponent(componentIdPath);
+        IPage page = cycle.getPage(_pageName);
+        IComponent component = page.getNestedComponent(_componentIdPath);
         IDirect direct = null;
 
         try
@@ -121,7 +121,7 @@ public class DirectCallback implements ICallback
                 ex);
         }
 
-        cycle.setServiceParameters(parameters);
+        cycle.setServiceParameters(_parameters);
         direct.trigger(cycle);
     }
 }

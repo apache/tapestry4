@@ -146,8 +146,8 @@ public class Border extends BaseComponent implements PageRenderListener
 
     public void selectPage(IRequestCycle cycle)
     {
-        String[] parameters = cycle.getServiceParameters();
-        String newPageName = parameters[0];
+        Object[] parameters = cycle.getServiceParameters();
+        String newPageName = (String)parameters[0];
 
         Visit visit = (Visit) page.getEngine().getVisit(cycle);
 

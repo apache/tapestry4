@@ -68,15 +68,15 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 {
     private static final Category CAT = Category.getInstance(RequestCycle.class);
 
-    private IPage page;
-    private IEngine engine;
-    private IEngineService service;
+    private IPage _page;
+    private IEngine _engine;
+    private IEngineService _service;
 
-    private RequestContext requestContext;
+    private RequestContext _requestContext;
 
-    private IMonitor monitor;
+    private IMonitor _monitor;
 
-    private HttpServletResponse response;
+    private HttpServletResponse _response;
 
     /**
      *  A mapping of pages loaded during the current request cycle.
@@ -84,7 +84,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      *
      **/
 
-    private Map loadedPages;
+    private Map _loadedPages;
 
     /**
      * A mapping of page recorders for the current request cycle.
@@ -92,19 +92,20 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      *
      **/
 
-    private Map loadedRecorders;
+    private Map _loadedRecorders;
 
-    private boolean rewinding = false;
+    private boolean _rewinding = false;
 
-    private Map attributes;
+    private Map _attributes;
 
-    private int actionId;
-    private int targetActionId;
-    private IComponent targetComponent;
+    private int _actionId;
+    private int _targetActionId;
+    private IComponent _targetComponent;
 
     /** @since 2.0.3 **/
     
-    private String[] serviceParameters;
+    private Object[] _serviceParameters;
+    
     /**
      *  Standard constructor used to render a response page.
      *
@@ -112,9 +113,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public RequestCycle(IEngine engine, RequestContext requestContext, IMonitor monitor)
     {
-        this.engine = engine;
-        this.requestContext = requestContext;
-        this.monitor = monitor;
+        _engine = engine;
+        _requestContext = requestContext;
+        _monitor = monitor;
     }
 
     /**
@@ -125,11 +126,11 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void cleanup()
     {
-        if (loadedPages == null)
+        if (_loadedPages == null)
             return;
 
-        IPageSource source = engine.getPageSource();
-        Iterator i = loadedPages.values().iterator();
+        IPageSource source = _engine.getPageSource();
+        Iterator i = _loadedPages.values().iterator();
 
         while (i.hasNext())
         {
@@ -138,14 +139,14 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             source.releasePage(page);
         }
 
-        loadedPages = null;
-        loadedRecorders = null;
+        _loadedPages = null;
+        _loadedRecorders = null;
 
     }
 
     public IEngineService getService()
     {
-        return service;
+        return _service;
     }
 
     /**
@@ -155,43 +156,43 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void setService(IEngineService value)
     {
-        service = value;
+        _service = value;
     }
 
     public String encodeURL(String URL)
     {
-        if (response == null)
-            response = requestContext.getResponse();
+        if (_response == null)
+            _response = _requestContext.getResponse();
 
-        return response.encodeURL(URL);
+        return _response.encodeURL(URL);
     }
 
     public IEngine getEngine()
     {
-        return engine;
+        return _engine;
     }
 
     public Object getAttribute(String name)
     {
-        if (attributes == null)
+        if (_attributes == null)
             return null;
 
-        return attributes.get(name);
+        return _attributes.get(name);
     }
 
     public IMonitor getMonitor()
     {
-        return monitor;
+        return _monitor;
     }
 
     public String getNextActionId()
     {
-        return Integer.toHexString(++actionId);
+        return Integer.toHexString(++_actionId);
     }
 
     public IPage getPage()
     {
-        return page;
+        return _page;
     }
 
     /**
@@ -208,19 +209,19 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (name == null)
             throw new NullPointerException(Tapestry.getString("RequestCycle.invalid-null-name"));
 
-        if (monitor != null)
-            monitor.pageLoadBegin(name);
+        if (_monitor != null)
+            _monitor.pageLoadBegin(name);
 
-        if (loadedPages != null)
-            result = (IPage) loadedPages.get(name);
+        if (_loadedPages != null)
+            result = (IPage) _loadedPages.get(name);
 
         if (result == null)
         {
-            pageSource = engine.getPageSource();
+            pageSource = _engine.getPageSource();
 
             try
             {
-                result = pageSource.getPage(engine, name, monitor);
+                result = pageSource.getPage(_engine, name, _monitor);
             }
             catch (PageLoaderException ex)
             {
@@ -265,14 +266,14 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
                 result.setChangeObserver(this);
             }
 
-            if (loadedPages == null)
-                loadedPages = new HashMap();
+            if (_loadedPages == null)
+                _loadedPages = new HashMap();
 
-            loadedPages.put(name, result);
+            _loadedPages.put(name, result);
         }
 
-        if (monitor != null)
-            monitor.pageLoadEnd(name);
+        if (_monitor != null)
+            _monitor.pageLoadEnd(name);
 
         return result;
     }
@@ -288,21 +289,21 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     {
         IPageRecorder result = null;
 
-        if (loadedRecorders != null)
-            result = (IPageRecorder) loadedRecorders.get(name);
+        if (_loadedRecorders != null)
+            result = (IPageRecorder) _loadedRecorders.get(name);
 
         if (result != null)
             return result;
 
-        result = engine.getPageRecorder(name);
+        result = _engine.getPageRecorder(name);
 
         if (result == null)
             return null;
 
-        if (loadedRecorders == null)
-            loadedRecorders = new HashMap();
+        if (_loadedRecorders == null)
+            _loadedRecorders = new HashMap();
 
-        loadedRecorders.put(name, result);
+        _loadedRecorders.put(name, result);
 
         return result;
     }
@@ -324,12 +325,12 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         if (result == null)
         {
-            result = engine.createPageRecorder(name, this);
+            result = _engine.createPageRecorder(name, this);
 
-            if (loadedRecorders == null)
-                loadedRecorders = new HashMap();
+            if (_loadedRecorders == null)
+                _loadedRecorders = new HashMap();
 
-            loadedRecorders.put(name, result);
+            _loadedRecorders.put(name, result);
         }
 
         return result;
@@ -337,35 +338,35 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public RequestContext getRequestContext()
     {
-        return requestContext;
+        return _requestContext;
     }
 
     public boolean isRewinding()
     {
-        return rewinding;
+        return _rewinding;
     }
 
     public boolean isRewound(IComponent component) throws StaleLinkException
     {
         // If not rewinding ...
 
-        if (!rewinding)
+        if (!_rewinding)
             return false;
 
-        if (actionId != targetActionId)
+        if (_actionId != _targetActionId)
             return false;
 
         // OK, we're there, is the page is good order?
 
-        if (component == targetComponent)
+        if (component == _targetComponent)
             return true;
 
         // Woops.  Mismatch.
 
         throw new StaleLinkException(
             component,
-            Integer.toHexString(targetActionId),
-            targetComponent.getExtendedId());
+            Integer.toHexString(_targetActionId),
+            _targetComponent.getExtendedId());
     }
 
     public void removeAttribute(String name)
@@ -373,10 +374,10 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (CAT.isDebugEnabled())
             CAT.debug("Removing attribute " + name);
 
-        if (attributes == null)
+        if (_attributes == null)
             return;
 
-        attributes.remove(name);
+        _attributes.remove(name);
     }
 
     /**
@@ -390,24 +391,24 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     {
         String pageName = null;
 
-        if (monitor != null)
+        if (_monitor != null)
         {
-            pageName = page.getName();
-            monitor.pageRenderBegin(pageName);
+            pageName = _page.getName();
+            _monitor.pageRenderBegin(pageName);
         }
 
-        rewinding = false;
-        actionId = -1;
-        targetActionId = 0;
+        _rewinding = false;
+        _actionId = -1;
+        _targetActionId = 0;
 
         // Forget any attributes from a previous render cycle.
 
-        if (attributes != null)
-            attributes.clear();
+        if (_attributes != null)
+            _attributes.clear();
 
         try
         {
-            page.renderPage(writer, this);
+            _page.renderPage(writer, this);
 
         }
         catch (RequestCycleException ex)
@@ -426,16 +427,16 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             // But wrap other exceptions in a RequestCycleException ... this
             // will ensure that some of the context is available.
 
-            throw new RequestCycleException(ex.getMessage(), page, ex);
+            throw new RequestCycleException(ex.getMessage(), _page, ex);
         }
         finally
         {
-            actionId = 0;
-            targetActionId = 0;
+            _actionId = 0;
+            _targetActionId = 0;
         }
 
-        if (monitor != null)
-            monitor.pageRenderEnd(pageName);
+        if (_monitor != null)
+            _monitor.pageRenderEnd(pageName);
 
     }
 
@@ -459,23 +460,23 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         IPage page = form.getPage();
         String pageName = null;
 
-        if (monitor != null)
+        if (_monitor != null)
         {
             pageName = page.getName();
-            monitor.pageRewindBegin(pageName);
+            _monitor.pageRewindBegin(pageName);
         }
 
-        rewinding = true;
+        _rewinding = true;
 
-        if (attributes != null)
-            attributes.clear();
+        if (_attributes != null)
+            _attributes.clear();
 
         // Fake things a little for getNextActionId() / isRewound()
 
-        this.targetActionId = Integer.parseInt(targetActionId, 16);
-        this.actionId = this.targetActionId - 1;
+        _targetActionId = Integer.parseInt(targetActionId, 16);
+        _actionId = _targetActionId - 1;
 
-        this.targetComponent = form;
+        _targetComponent = form;
 
         try
         {
@@ -506,14 +507,14 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         }
         finally
         {
-            rewinding = false;
-            this.actionId = 0;
-            this.targetActionId = 0;
-            this.targetComponent = null;
+            _rewinding = false;
+            _actionId = 0;
+            _targetActionId = 0;
+            _targetComponent = null;
         }
 
-        if (monitor != null)
-            monitor.pageRewindEnd(pageName);
+        if (_monitor != null)
+            _monitor.pageRewindEnd(pageName);
 
     }
 
@@ -536,32 +537,32 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     {
         String pageName = null;
 
-        if (monitor != null)
+        if (_monitor != null)
         {
-            pageName = page.getName();
-            monitor.pageRewindBegin(pageName);
+            pageName = _page.getName();
+            _monitor.pageRewindBegin(pageName);
         }
 
-        rewinding = true;
+        _rewinding = true;
 
-        if (attributes != null)
-            attributes.clear();
+        if (_attributes != null)
+            _attributes.clear();
 
-        actionId = -1;
+        _actionId = -1;
 
         // Parse the action Id as hex since that's whats generated
         // by getNextActionId()
-        this.targetActionId = Integer.parseInt(targetActionId, 16);
-        this.targetComponent = targetComponent;
+        _targetActionId = Integer.parseInt(targetActionId, 16);
+        _targetComponent = targetComponent;
 
         try
         {
-            page.renderPage(NullWriter.getSharedInstance(), this);
+            _page.renderPage(NullWriter.getSharedInstance(), this);
 
             // Shouldn't get this far, because the target component should
             // throw the RenderRewoundException.
 
-            throw new StaleLinkException(page, targetActionId, targetComponent.getExtendedId());
+            throw new StaleLinkException(_page, targetActionId, targetComponent.getExtendedId());
         }
         catch (RenderRewoundException ex)
         {
@@ -577,18 +578,18 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             // But wrap other exceptions in a RequestCycleException ... this
             // will ensure that some of the context is available.
 
-            throw new RequestCycleException(ex.getMessage(), page, ex);
+            throw new RequestCycleException(ex.getMessage(), _page, ex);
         }
         finally
         {
-            rewinding = false;
-            actionId = 0;
-            this.targetActionId = 0;
-            this.targetComponent = null;
+            _rewinding = false;
+            _actionId = 0;
+            _targetActionId = 0;
+            _targetComponent = null;
         }
 
-        if (monitor != null)
-            monitor.pageRewindEnd(pageName);
+        if (_monitor != null)
+            _monitor.pageRewindEnd(pageName);
 
     }
 
@@ -597,10 +598,10 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (CAT.isDebugEnabled())
             CAT.debug("Set attribute " + name + " to " + value);
 
-        if (attributes == null)
-            attributes = new HashMap();
+        if (_attributes == null)
+            _attributes = new HashMap();
 
-        attributes.put(name, value);
+        _attributes.put(name, value);
     }
 
     public void setPage(IPage value)
@@ -608,7 +609,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (CAT.isDebugEnabled())
             CAT.debug("Set page to " + value);
 
-        page = value;
+        _page = value;
     }
 
     public void setPage(String name)
@@ -616,7 +617,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (CAT.isDebugEnabled())
             CAT.debug("Set page to " + name);
 
-        page = getPage(name);
+        _page = getPage(name);
     }
 
     /**
@@ -630,10 +631,10 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (CAT.isDebugEnabled())
             CAT.debug("Committing page changes");
 
-        if (loadedRecorders == null || loadedRecorders.isEmpty())
+        if (_loadedRecorders == null || _loadedRecorders.isEmpty())
             return;
 
-        Iterator i = loadedRecorders.values().iterator();
+        Iterator i = _loadedRecorders.values().iterator();
 
         while (i.hasNext())
         {
@@ -689,16 +690,16 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (CAT.isDebugEnabled())
             CAT.debug("Discarding page " + name);
 
-        IPageRecorder recorder = engine.getPageRecorder(name);
+        IPageRecorder recorder = _engine.getPageRecorder(name);
 
         if (recorder == null)
         {
 
-            page = getPage(name);
+            _page = getPage(name);
 
             recorder = createPageRecorder(name);
 
-            page.setChangeObserver(recorder);
+            _page.setChangeObserver(recorder);
         }
 
         recorder.markForDiscard();
@@ -706,16 +707,16 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     
     /** @since 2.0.3 **/
     
-    public String[] getServiceParameters()
+    public Object[] getServiceParameters()
     {
-        return serviceParameters;
+        return _serviceParameters;
     }
     
     /** @since 2.0.3 **/
     
-    public void setServiceParameters(String[] serviceParameters)
+    public void setServiceParameters(Object[] serviceParameters)
     {
-        this.serviceParameters = serviceParameters;
+        _serviceParameters = serviceParameters;
     }
 
 }

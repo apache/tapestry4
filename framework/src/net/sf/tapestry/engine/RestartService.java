@@ -51,9 +51,9 @@ import net.sf.tapestry.Tapestry;
 public class RestartService extends AbstractService
 {
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
-        if (parameters != null && parameters.length > 0)
+        if (Tapestry.size(parameters) != 0)
             throw new IllegalArgumentException(Tapestry.getString("service-no-parameters", RESTART_SERVICE));
 
         return assembleGesture(cycle, RESTART_SERVICE, null, null, true);

@@ -256,19 +256,26 @@ public interface IRequestCycle
      *  These can later be retrieved (typically, by an application-specific listener method)
      *  by invoking {@link #getServiceParameters()}.
      * 
+     *  <p>Through release 2.1, parameters was of type String[].  This is
+     *  an incompatible change in 2.2.
+     * 
      *  @see IEngineService#DIRECT_SERVICE
      *  @since 2.0.3
      * 
      **/
     
-    public void setServiceParameters(String[] context);
+    public void setServiceParameters(Object[] parameters);
     
     /**
      *  Returns parameters previously stored by {@link #setServiceParameters(String[])}.
+     * 
+     *  <p>
+     *  Through release 2.1, the return type was String[].  This is
+     *  an incompatible change in 2.2.
      * 
      *  @since 2.0.3
      * 
      **/
     
-    public String[] getServiceParameters();
+    public Object[] getServiceParameters();
 }

@@ -25,13 +25,16 @@
 
 package net.sf.tapestry.engine;
 
+import java.io.IOException;
 import java.net.URLDecoder;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.io.DataSqueezer;
 
 /**
  *  Abstract base class for implementing engine services.  Instances of services
@@ -70,20 +73,36 @@ public abstract class AbstractService implements IEngineService
         IRequestCycle cycle,
         String serviceName,
         String[] serviceContext,
-        String[] parameters,
+        Object[] parameters,
         boolean stateful)
     {
-        return new Gesture(cycle, serviceName, serviceContext, parameters, stateful);
+        DataSqueezer squeezer = cycle.getEngine().getDataSqueezer();
+        String[] squeezed = null;
+
+        try
+        {
+            squeezed = squeezer.squeeze(parameters);
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException(ex);
+        }
+
+        return new Gesture(cycle, serviceName, serviceContext, squeezed, stateful);
     }
 
     /**
      *  Returns the service context as an array of Strings.
+     *  Returns null if there are no service context strings.
      *
      **/
 
     protected String[] getServiceContext(RequestContext context)
     {
         int count = context.getPathInfoCount();
+
+        if (count == 1)
+            return null;
 
         // The first element in the path info is the service name, the 
         // context is all the remaining elements.
@@ -101,8 +120,26 @@ public abstract class AbstractService implements IEngineService
      *
      **/
 
-    protected String[] getParameters(RequestContext context)
+    protected Object[] getParameters(IRequestCycle cycle)
     {
-        return context.getParameters(PARAMETERS_QUERY_PARAMETER_NAME);
+        RequestContext context = cycle.getRequestContext();
+        
+        String[] squeezed = 
+            context.getParameters(PARAMETERS_QUERY_PARAMETER_NAME);
+            
+        if (Tapestry.size(squeezed) == 0)
+            return squeezed;
+            
+        try
+        {
+            DataSqueezer squeezer =
+                cycle.getEngine().getDataSqueezer();
+                
+            return squeezer.unsqueeze(squeezed);
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException(ex);
+        }
     }
 }

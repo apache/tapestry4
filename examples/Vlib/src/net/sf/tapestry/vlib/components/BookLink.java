@@ -114,19 +114,17 @@ public class BookLink extends BaseComponent
     }
 
     /**
-     *  The context has two elements.  The first is the page to jump to
-     *  ({@link net.sf.tapestry.vlib.pages.ViewBook}), the second is the primary key of the person.
+     *  Returns a set of service parameters
+     *  appropriate for {@link net.sf.tapestry.vlib.ExternalService}.
+     *  The first parameters is the page to jump to
+     *  ({@link net.sf.tapestry.vlib.pages.ViewBook}), 
+     *  the second is the primary key of the person.
      *
      **/
 
-    public String[] getContext()
+    public Object[] getBookParameters()
     {
-        String[] context = new String[2];
-        context[0] = "ViewBook";
-
-        context[1] = getBook().getPrimaryKey().toString();
-
-        return context;
+        return new Object[] { "ViewBook", getBook().getPrimaryKey()};
     }
 
     public Book getBook()

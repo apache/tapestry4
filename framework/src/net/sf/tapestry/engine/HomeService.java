@@ -55,9 +55,9 @@ import net.sf.tapestry.Tapestry;
 public class HomeService extends AbstractService
 {
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
-        if (parameters != null && parameters.length > 0)
+        if (Tapestry.size(parameters) != 0)
             throw new IllegalArgumentException(Tapestry.getString("service-no-parameters", HOME_SERVICE));
 
         return assembleGesture(cycle, HOME_SERVICE, null, null, true);

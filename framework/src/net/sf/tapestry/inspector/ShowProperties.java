@@ -96,11 +96,11 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         }
     }
 
-    private List properties;
-    private IPageChange change;
-    private IPage inspectedPage;
-    private String errorPropertyName;
-    private ExceptionDescription[] propertyException;
+    private List _properties;
+    private IPageChange _change;
+    private IPage _inspectedPage;
+    private String _errorPropertyName;
+    private ExceptionDescription[] _propertyException;
 
     /**
      *  Registers this component as a {@link PageRenderListener}.
@@ -132,21 +132,21 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     public void pageEndRender(PageEvent event)
     {
-        properties = null;
-        change = null;
-        inspectedPage = null;
-        errorPropertyName = null;
-        propertyException = null;
+        _properties = null;
+        _change = null;
+        _inspectedPage = null;
+        _errorPropertyName = null;
+        _propertyException = null;
     }
 
     private void buildProperties()
     {
         Inspector inspector = (Inspector) page;
 
-        inspectedPage = inspector.getInspectedPage();
+        _inspectedPage = inspector.getInspectedPage();
 
         IEngine engine = page.getEngine();
-        IPageRecorder recorder = engine.getPageRecorder(inspectedPage.getName());
+        IPageRecorder recorder = engine.getPageRecorder(_inspectedPage.getName());
 
         // No page recorder?  No properties.
 
@@ -154,7 +154,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
             return;
 
         if (recorder.getHasChanges())
-            properties = new ArrayList(recorder.getChanges());
+            _properties = new ArrayList(recorder.getChanges());
     }
 
     /**
@@ -166,20 +166,20 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     public List getProperties()
     {
-        if (properties == null)
+        if (_properties == null)
             buildProperties();
 
-        return properties;
+        return _properties;
     }
 
     public void setChange(IPageChange value)
     {
-        change = value;
+        _change = value;
     }
 
     public IPageChange getChange()
     {
-        return change;
+        return _change;
     }
 
     /**
@@ -189,7 +189,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     public boolean getDisableComponentLink()
     {
-        return change.getComponentPath() == null;
+        return _change.getComponentPath() == null;
     }
 
     /**
@@ -201,7 +201,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
     {
         Object value;
 
-        value = change.getNewValue();
+        value = _change.getNewValue();
 
         if (value == null)
             return "<null>";
@@ -284,10 +284,10 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     public void selectExplorePath(IRequestCycle cycle)
     {
-        String[] parameters = cycle.getServiceParameters();
+        Object[] parameters = cycle.getServiceParameters();
         Inspector inspector = (Inspector) page;
 
-        String fullPath = parameters[0];
+        String fullPath = (String)parameters[0];
         String[] splitPath = PropertyHelper.splitPropertyPath(fullPath);
 
         StringBuffer buffer = new StringBuffer();
@@ -306,9 +306,9 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
             }
             catch (Throwable ex)
             {
-                errorPropertyName = name;
+                _errorPropertyName = name;
 
-                propertyException = new ExceptionAnalyzer().analyze(ex);
+                _propertyException = new ExceptionAnalyzer().analyze(ex);
 
                 break;
             }
@@ -369,7 +369,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
                 element.propertyType = convertClassToName(ac.getType());
 
-                element.error = element.propertyName.equals(errorPropertyName);
+                element.error = element.propertyName.equals(_errorPropertyName);
 
                 result.add(element);
             }
@@ -381,11 +381,11 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
     public ExceptionDescription[] getPropertyException()
     {
-        return propertyException;
+        return _propertyException;
     }
 
     public String getErrorPropertyName()
     {
-        return errorPropertyName;
+        return _errorPropertyName;
     }
 }
