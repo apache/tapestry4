@@ -32,11 +32,11 @@
   <section id="working-with-tapestry">
     <title>Working with Tapestry</title>
     <para>
-      The goal of Tapestry is to eliminate most of the unnecessary <footnote>
+      The goal of Tapestry is to eliminate most of the unnecessary <footnote><para>
           Session management, manual validation and other "application plumbing" tasks.  In other words,
           you get to focus on the problem you're trying to solve as opposed to writting a web framework
           every time you go to write a web app or site.
-          </footnote>
+          </para></footnote>
         coding in a web application.  Under Tapestry,
       nearly all code is directly related to application functionality, with very little "plumbing".  If you
       have previously developed a web application using Microsoft Active Server Pages, JavaServer
@@ -63,19 +63,19 @@
     <para>
       This document expects that you will have extracted the full Tapestry distribution to your
       <filename class="directory">C:</filename> drive.
-      <footnote>
+      <footnote> <para>
           If you are using Solaris or another non-Windows operating system, you're expected
           to be savvy enough to translate to a sensibly constructed file system.
-      </footnote>
+      </para></footnote>
 
       This will have created a directory <filename class="directory">C:\Tapestry-<replaceable>x.x</replaceable>
       </filename>
       and, beneath it, several more directories.
-      <footnote>
+      <footnote> <para>
           The three numbers are the release number.  At the time of this writing, the release
-          was 2.2, but this is constantly changing.  Simply adjust the actual pathname to
+          was 2.3, but this is constantly changing.  Simply adjust the actual pathname to
           reflect the release of Tapestry you downloaded.
-      </footnote>
+      </para></footnote>
     </para>
     <para>
       The source code for the Tutorial is distributed as a JAR file,
@@ -92,8 +92,8 @@
     </para>
     <para>
       Once Jetty is running, you can access the Tutorials using the URL
-      <ulink url="http://localhost:8081/tutorial">
-	<filename>http://localhost:8081/tutorial</filename>
+      <ulink url="http://localhost:8080/tutorial">
+	<filename>http://localhost:8080/tutorial</filename>
       </ulink>.
       You should do this now, in order to check that your
       environment is setup correctly so far.
@@ -138,8 +138,8 @@
       <orderedlist>
 	<listitem>The first step is to decide a directory for your example code.
 	  This tutorial uses <filename class="directory">C:\TapestryExample</filename>.
-	  <footnote>As before, it is assumed that if you are using a non-Windows environment,
-	    that you have the knowledge necessary to translate the paths</footnote>
+	  <footnote><para>As before, it is assumed that if you are using a non-Windows environment,
+	    that you have the knowledge necessary to translate the paths</para></footnote>
 	</listitem>
 	<listitem>Extract the contents of the archive <filename>tutorial-environment.zip</filename>
 	  into this new directory.</listitem>
@@ -182,10 +182,10 @@
 	    <ulink url="http://localhost:8081/learn-tapestry">
 	      <filename>http://localhost:8081/learn-tapestry</filename>
 	    </ulink>
-	    <footnote>
+	    <footnote><para>
 	      Note that this is intentionally a
 	      different port number from the tapestry tutorial example itself.
-	      It means you can run both at once if you wish.
+	      It means you can run both at once if you wish.</para>
 	    </footnote>
 	  </para>
 	  <para>

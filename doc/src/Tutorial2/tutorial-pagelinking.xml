@@ -106,6 +106,8 @@ Click &lt;a href="#" jwcid="page2"&gt;here&lt;/a&gt; for the second page!
 Well, here we are! 
 Click &lt;span jwcid="homePage"&gt;here&lt;/span&gt; to go back to the home page.
 
+            &lt;!-- ... other HTML here ... --&gt;
+
 &lt;/body&gt;
 &lt;/html&gt;				
 				</programlisting>
@@ -126,7 +128,10 @@ Click &lt;span jwcid="homePage"&gt;here&lt;/span&gt; to go back to the home page
 	&lt;component id="homePage" type="PageLink"&gt;
 		&lt;static-binding name="page"&gt;Home&lt;/static-binding&gt;
 	&lt;/component&gt;
-&lt;/page-specification&gt;				
+
+    &lt;!-- ... other components below here ... --&gt;
+
+&lt;/page-specification&gt;
 				</programlisting>
 				</figure>
 				</para>				
@@ -155,5 +160,25 @@ Click &lt;span jwcid="homePage"&gt;here&lt;/span&gt; to go back to the home page
 				</programlisting>
 				</figure>				
 				</para>
-  	</section>
+
+          <para>
+              Assuming all went well, you should be able to visit the Home page of the application
+              via
+              <ulink url="http://localhost:8080/tutorial/pagelinking">
+	            <filename>http://localhost:8080/tutorial/pagelinking</filename>
+	          </ulink>, which will look like this:
+          </para>
+		<figure>
+			<title>First page of Linking App</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/pagelinking-home.png" format="PNG"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+          <para>
+              If you have visited the second page of the pagelinking app, and are wondering what the other
+              controls on the page do, then move onto the next section!
+          </para>
+      </section>
 
