@@ -94,6 +94,7 @@ public class MockEngine implements IEngine
 
     private Pool _pool = new Pool();
     private String _servletPath;
+    private IApplicationSpecification applicationSpecification;
 
     public void forgetPage(String name)
     {
@@ -140,7 +141,12 @@ public class MockEngine implements IEngine
 
     public IApplicationSpecification getSpecification()
     {
-        return null;
+        return applicationSpecification;
+    }
+
+    public void setSpecification(IApplicationSpecification appSpec)
+    {
+        this.applicationSpecification = appSpec;
     }
 
     public ISpecificationSource getSpecificationSource()
