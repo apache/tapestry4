@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.engine.IPageSource;
@@ -37,8 +34,8 @@ import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.web.WebContextResource;
 import org.apache.tapestry.web.WebContext;
+import org.apache.tapestry.web.WebContextResource;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
@@ -86,19 +83,15 @@ public class InfrastructureImpl implements Infrastructure
 
     private ApplicationStateManager _applicationStateManager;
 
-    private HttpServletRequest _request;
-
-    private HttpServletResponse _response;
-
     private WebContext _context;
 
     private String _applicationId;
 
     private ComponentPropertySource _componentPropertySource;
 
-    private WebRequest _containerRequest;
+    private WebRequest _request;
 
-    private WebResponse _containerResponse;
+    private WebResponse _response;
 
     public IScriptSource getScriptSource()
     {
@@ -271,26 +264,6 @@ public class InfrastructureImpl implements Infrastructure
         _applicationStateManager = applicationStateManager;
     }
 
-    public HttpServletRequest getRequest()
-    {
-        return _request;
-    }
-
-    public void setRequest(HttpServletRequest request)
-    {
-        _request = request;
-    }
-
-    public HttpServletResponse getResponse()
-    {
-        return _response;
-    }
-
-    public void setResponse(HttpServletResponse response)
-    {
-        _response = response;
-    }
-
     public String getContextPath()
     {
         return _request.getContextPath();
@@ -336,23 +309,23 @@ public class InfrastructureImpl implements Infrastructure
         _componentPropertySource = componentPropertySource;
     }
 
-    public WebRequest getWebRequest()
+    public WebRequest getRequest()
     {
-        return _containerRequest;
+        return _request;
     }
 
-    public void setContainerRequest(WebRequest containerRequest)
+    public void setRequest(WebRequest request)
     {
-        _containerRequest = containerRequest;
+        _request = request;
     }
 
-    public WebResponse getWebResponse()
+    public WebResponse getResponse()
     {
-        return _containerResponse;
+        return _response;
     }
 
-    public void setContainerResponse(WebResponse containerResponse)
+    public void setResponse(WebResponse response)
     {
-        _containerResponse = containerResponse;
+        _response = response;
     }
 }

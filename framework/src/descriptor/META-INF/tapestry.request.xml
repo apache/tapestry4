@@ -134,7 +134,7 @@
     
     <invoke-factory>
       <construct class="impl.AbsoluteURLBuilderImpl">
-        <set-object property="request" value="infrastructure:webRequest"/>
+        <set-object property="request" value="infrastructure:request"/>
       </construct>
     </invoke-factory>
     

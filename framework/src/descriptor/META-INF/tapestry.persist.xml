@@ -51,7 +51,7 @@
     
     <invoke-factory>
       <construct class="SessionPropertyPersistenceStrategy">
-        <set-object property="request" value="infrastructure:webRequest"/>
+        <set-object property="request" value="infrastructure:request"/>
         <set-object property="applicationId" value="infrastructure:applicationId"/>
       </construct>
     </invoke-factory>
