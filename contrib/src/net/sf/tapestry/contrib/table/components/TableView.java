@@ -101,9 +101,7 @@ public class TableView
 	private IBinding m_objTableModelBinding = null;
 	private IBinding m_objTableSessionStateManagerBinding = null;
 	private IBinding m_objTableSessionStoreManagerBinding = null;
-
-	// In bindings
-	private String m_strElement;
+	private IBinding m_objElementBinding = null;
 
 	// Persistent properties
 	private Serializable m_objSessionState;
@@ -128,7 +126,6 @@ public class TableView
 	{
 		m_objSessionState = null;
 		m_objTableModel = null;
-		m_strElement = "table";
 	}
 
 	/**
@@ -306,22 +303,32 @@ public class TableView
 	{
 	}
 
+    /**
+     * Returns the elementBinding.
+     * @return IBinding
+     */
+    public IBinding getElementBinding() {
+        return m_objElementBinding;
+    }
+
+    /**
+     * Sets the elementBinding.
+     * @param elementBinding The elementBinding to set
+     */
+    public void setElementBinding(IBinding elementBinding) {
+        m_objElementBinding = elementBinding;
+    }
+
 	/**
 	 * Returns the element.
 	 * @return String
 	 */
 	public String getElement()
 	{
-		return m_strElement;
-	}
-
-	/**
-	 * Sets the element.
-	 * @param element The element to set
-	 */
-	public void setElement(String element)
-	{
-		m_strElement = element;
+		IBinding objElementBinding = getElementBinding();
+		if (objElementBinding == null || objElementBinding.getObject() == null)
+			return "table";
+		return objElementBinding.getString();
 	}
 
     /**
