@@ -31,5 +31,38 @@ Espa&#241;a
 		</assert-output>
 	</request>
 	
+	
+	<request>
+		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+	  	<parameter name="sp">
+	  		<value>STwo</value>
+	  		<value>Sfr</value>
+	  	</parameter>
+
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+
+		<assert-output name="Charset">
+<![CDATA[
+charset=ISO-8859-1
+]]>
+		</assert-output>
+
+		<assert-output name="Language Name">
+<![CDATA[
+Fran&#231;ais
+]]>
+		</assert-output>
+
+		<assert-output name="External Link">
+<![CDATA[
+<a href="/c28/latin1?service=external/Two&amp;sp=SFran%E7ais">
+]]>
+		</assert-output>
+	</request>
+	
 
 </mock-test>
