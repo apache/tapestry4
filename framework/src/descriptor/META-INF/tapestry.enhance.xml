@@ -95,7 +95,9 @@
     Finds specified properties (from the specification) and constructs the corresponding properties in the enhanced class.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.enhance.SpecifiedPropertyWorker"/>
+      <construct class="org.apache.tapestry.enhance.SpecifiedPropertyWorker">
+        <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
+      </construct>
     </invoke-factory>
   </service-point>
   

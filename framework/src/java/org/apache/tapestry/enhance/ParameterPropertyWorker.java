@@ -15,9 +15,7 @@
 package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
@@ -38,25 +36,6 @@ import org.apache.tapestry.spec.IParameterSpecification;
 public class ParameterPropertyWorker implements EnhancementWorker
 {
     private ErrorLog _errorLog;
-
-    /**
-     * Used to unwrap primitive types inside the accessor method. In each case, the binding is in a
-     * variable named "binding", and {0} will be the actual type of the property. The Map is keyed
-     * on the primtive type.
-     */
-
-    private Map _unwrappers = new HashMap();
-
-    {
-        _unwrappers.put(boolean.class, "toBoolean");
-        _unwrappers.put(byte.class, "toByte");
-        _unwrappers.put(char.class, "toChar");
-        _unwrappers.put(short.class, "toShort");
-        _unwrappers.put(int.class, "toInt");
-        _unwrappers.put(long.class, "toLong");
-        _unwrappers.put(float.class, "toFloat");
-        _unwrappers.put(double.class, "toDouble");
-    }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
@@ -239,21 +218,11 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
         String javaTypeName = ClassFabUtils.getJavaClassName(propertyType);
 
-        builder.add("{0} result = ", javaTypeName);
-
-        String unwrapper = (String) _unwrappers.get(propertyType);
-
-        if (unwrapper == null)
-        {
-            String propertyTypeRef = op.getClassReference(propertyType);
-            builder.addln("({0}) binding.getObject({1});", javaTypeName, propertyTypeRef);
-        }
-        else
-        {
-            String expression = EnhanceUtils.class.getName() + "." + unwrapper + "(binding);";
-
-            builder.addln(expression);
-        }
+        builder.addln("{0} result = {1};", javaTypeName, 
+                EnhanceUtils.createUnwrapExpression(
+                op,
+                "binding",
+                propertyType));
 
         // Values read via the binding are cached during the render of
         // the component, or when the binding is invariant

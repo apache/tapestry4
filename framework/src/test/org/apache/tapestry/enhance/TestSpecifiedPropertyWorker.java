@@ -27,6 +27,10 @@ import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.PropertySpecification;
@@ -42,15 +46,17 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
 {
     private List buildPropertySpecs(String name, String type, boolean persistent)
     {
-        return buildPropertySpecs(name, type, persistent, null);
+        return buildPropertySpecs(name, type, persistent, null, null);
     }
 
-    private List buildPropertySpecs(String name, String type, boolean persistent, Location location)
+    private List buildPropertySpecs(String name, String type, boolean persistent,
+            Location location, String initialValue)
     {
         PropertySpecification ps = new PropertySpecification();
         ps.setName(name);
         ps.setType(type);
         ps.setPersistence(persistent ? "session" : null);
+        ps.setInitialValue(initialValue);
         ps.setLocation(location);
 
         return Collections.singletonList(ps);
@@ -118,9 +124,91 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
         { boolean.class }, null), "{\n  _$fred = $1;\n}\n");
 
+        op.addField("_$fred$default", boolean.class);
+
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE,
+                "_$fred$default = _$fred;");
+
+        op.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                "_$fred = _$fred$default;");
+
         replayControls();
 
         SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
+
+        w.performEnhancement(op, spec);
+
+        verifyControls();
+    }
+
+    public void testAddWithInitialValue() throws Exception
+    {
+        BindingSource bs = (BindingSource) newMock(BindingSource.class);
+        Location l = fabricateLocation(12);
+
+        IComponentSpecification spec = buildComponentSpecification(buildPropertySpecs(
+                "fred",
+                "java.util.List",
+                false,
+                l,
+                "ognl:foo()"));
+
+        InitialValueBindingCreator expectedCreator = new InitialValueBindingCreator(bs,
+                EnhanceMessages.initialValueForProperty("fred"), "ognl:foo()", l);
+
+        // Training
+
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.convertTypeName("java.util.List");
+        opc.setReturnValue(List.class);
+
+        op.validateProperty("fred", List.class);
+        op.claimProperty("fred");
+        op.addField("_$fred", List.class);
+
+        op.getAccessorMethodName("fred");
+        opc.setReturnValue("getFred");
+
+        op.addMethod(
+                Modifier.PUBLIC,
+                new MethodSignature(List.class, "getFred", null, null),
+                "return _$fred;");
+
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
+        { List.class }, null), "{\n  _$fred = $1;\n}\n");
+
+        op.addField(
+                "_$fred$initialValueBindingCreator",
+                InitialValueBindingCreator.class,
+                expectedCreator);
+        op.addField("_$fred$initialValueBinding", IBinding.class);
+        op
+                .extendMethodImplementation(
+                        IComponent.class,
+                        EnhanceUtils.FINISH_LOAD_SIGNATURE,
+                        "_$fred$initialValueBinding = _$fred$initialValueBindingCreator.createBinding(this);\n");
+
+        op.getClassReference(List.class);
+        opc.setReturnValue("_$class$java$util$List");
+
+        String code = "_$fred = (java.util.List) _$fred$initialValueBinding.getObject(_$class$java$util$List);\n";
+
+        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, code);
+        op.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                code);
+
+        replayControls();
+
+        SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
+        w.setBindingSource(bs);
 
         w.performEnhancement(op, spec);
 
@@ -163,6 +251,18 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setBarney", new Class[]
         { String.class }, null), b.toString());
 
+        op.addField("_$barney$default", String.class);
+
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE,
+                "_$barney$default = _$barney;");
+
+        op.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                "_$barney = _$barney$default;");
+
         replayControls();
 
         SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
@@ -176,7 +276,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
     {
         Location l = fabricateLocation(207);
         // Should be "java.lang.Long"
-        List propertySpecs = buildPropertySpecs("wilma", "Long", false, l);
+        List propertySpecs = buildPropertySpecs("wilma", "Long", false, l, null);
         IComponentSpecification spec = buildComponentSpecification(propertySpecs);
 
         MockControl opc = newControl(EnhancementOperation.class);

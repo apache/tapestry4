@@ -25,6 +25,12 @@ import org.apache.hivemind.LocationHolder;
  */
 public interface IPropertySpecification extends LocationHolder
 {
+    /**
+     * Returns the initial value for this property, as a binding reference. May return null if the
+     * property has no initial value. The initial value is from finishLoad() and re-applied in
+     * pageDetached().
+     */
+
     public String getInitialValue();
 
     public String getName();

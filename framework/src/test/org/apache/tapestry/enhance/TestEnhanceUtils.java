@@ -76,6 +76,36 @@ public class TestEnhanceUtils extends HiveMindTestCase
         assertEquals(int[].class, result);
 
         verifyControls();
+    }
+
+    public void testCreateUnwrapForPrimitive()
+    {
+        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+
+        replayControls();
+
+        String result = EnhanceUtils.createUnwrapExpression(op, "mybinding", int.class);
+
+        assertEquals("org.apache.tapestry.enhance.EnhanceUtils.toInt(mybinding)", result);
+
+        verifyControls();
+    }
+
+    public void testCreateUnwrapForObjectType()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.getClassReference(String.class);
+        opc.setReturnValue("_$class$String");
+
+        replayControls();
+
+        String result = EnhanceUtils.createUnwrapExpression(op, "thebinding", String.class);
+
+        assertEquals("(java.lang.String) thebinding.getObject(_$class$String)", result);
+
+        verifyControls();
 
     }
 }

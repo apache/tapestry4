@@ -17,7 +17,6 @@ package org.apache.tapestry.enhance;
 import java.util.List;
 
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * A process object representing enhancements to a component class. The operation is passed to

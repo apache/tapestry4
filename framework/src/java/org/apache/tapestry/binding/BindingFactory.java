@@ -37,7 +37,8 @@ public interface BindingFactory
      * @param path
      *            The path used to get (or update) a value for the path. This may be an OGNL
      *            expression, a message key, a literal value, or otherwise defined by the type of
-     *            binding.
+     *            binding. It is the value of the binding reference with the prefix (used to
+     *            identify the factory) stripped off.
      * @param location
      *            The location of the binding, used to report any errors related to the binding, or
      *            to the component parameter the binding is bound to.

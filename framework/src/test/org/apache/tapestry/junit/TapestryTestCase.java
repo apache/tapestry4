@@ -33,7 +33,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.binding.LiteralBinding;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.coerce.ValueConverterImpl;
 import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -67,10 +66,10 @@ public class TapestryTestCase extends HiveMindTestCase
     private class BindingSourceFixture implements BindingSource
     {
 
-        public IBinding createBinding(IComponent component, String description, String locator,
+        public IBinding createBinding(IComponent component, String description, String reference,
                 Location location)
         {
-            return new LiteralBinding(description, _valueConverter, location, locator);
+            return new LiteralBinding(description, _valueConverter, location, reference);
         }
     }
 
