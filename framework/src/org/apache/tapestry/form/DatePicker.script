@@ -24,8 +24,8 @@
 	calendar_${name}	
 </let>
 
-<let key="buttonName">
-	${name}$toggle	
+<let key="buttonOnclickHandler">
+  javascript:${calendarObject}.toggle(document.${formName}.${name});	
 </let>
 
 <body>
@@ -51,10 +51,6 @@ ${calendarObject}.setMinimalDaysInFirstWeek(${minimalDaysInFirstWeek});
 ${calendarObject}.setIncludeWeek(${includeWeek});
 
 ${calendarObject}.create();
-
-document.${formName}.${buttonName}.onclick = function() {
-	${calendarObject}.toggle(document.${formName}.${name});
-}
 
 ${calendarObject}.onchange = function() {
 	document.${formName}.${name}.value  = ${calendarObject}.formatDate();

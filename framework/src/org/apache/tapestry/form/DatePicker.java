@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -44,7 +45,7 @@ import org.apache.tapestry.html.Body;
  * @version $Id$
  * @since 2.2
  * 
- **/
+ */
 
 public abstract class DatePicker extends AbstractFormComponent
 {
@@ -57,6 +58,8 @@ public abstract class DatePicker extends AbstractFormComponent
     public abstract boolean isDisabled();
 
     public abstract boolean getIncludeWeek();
+
+    public abstract IAsset getIcon();
 
     private IScript _script;
 
@@ -71,6 +74,7 @@ public abstract class DatePicker extends AbstractFormComponent
     private static final String SYM_FORMAT = "format";
     private static final String SYM_INCL_WEEK = "includeWeek";
     private static final String SYM_VALUE = "value";
+    private static final String SYM_BUTTONONCLICKHANDLER = "buttonOnclickHandler";
 
     // Output symbol
 
@@ -98,7 +102,7 @@ public abstract class DatePicker extends AbstractFormComponent
         if (format == null)
             format = "dd MMM yyyy";
 
-        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        SimpleDateFormat formatter = new SimpleDateFormat(format, getPage().getLocale());
 
         boolean disabled = isDisabled();
 
@@ -148,15 +152,24 @@ public abstract class DatePicker extends AbstractFormComponent
                 writer.attribute("disabled", "disabled");
 
             renderInformalParameters(writer, cycle);
+            
+            writer.printRaw("&nbsp;");
 
-            writer.beginEmpty("input");
-            writer.attribute("type", "button");
-            writer.attribute("name", (String) symbols.get(SYM_BUTTONNAME));
+            if (!disabled)
+            {
+                writer.begin("a");
+                writer.attribute("href", (String) symbols.get(SYM_BUTTONONCLICKHANDLER));
+            }
 
-            if (disabled)
-                writer.attribute("disabled", "disabled");
+            IAsset icon = getIcon();
 
-            writer.attribute("value", "V");
+            writer.beginEmpty("img");
+            writer.attribute("src", icon.buildURL(cycle));
+            writer.attribute("border", 0);
+
+            if (!disabled)
+                writer.end(); // <a>
+
         }
 
         if (form.isRewinding())
