@@ -90,6 +90,22 @@ import org.apache.tapestry.util.prop.OgnlUtils;
 
 public abstract class AbstractComponent extends BaseLocatable implements IComponent
 {
+    /**
+     * Used to check that subclasses invoke this implementation of prepareForRender().
+     * @see Tapestry#checkMethodInvocation(Object, String, Object)
+     * @since 3.0
+     */
+    private final static String PREPAREFORRENDER_METHOD_ID = "AbstractComponent.prepareForRender()";
+
+    /**
+     * Used to check that subclasses invoke this implementation of cleanupAfterRender().
+     * @see Tapestry#checkMethodInvocation(Object, String, Object)
+     * @since 3.0
+     */
+
+    private final static String CLEANUPAFTERRENDER_METHOD_ID =
+        "AbstractComponent.cleanupAfterRender()";
+
     static {
         // Register the BeanProviderHelper to provide access to the
         // beans of a bean provider as named properties.
@@ -417,19 +433,18 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
         observer.observeChange(event);
     }
-    
+
     /**
      *  @deprecated To be removed in 3.1.  Use 
      *  {@link #renderInformalParameters(IMarkupWriter, IRequestCycle)}
      *  instead.
      * 
      **/
-    
-	protected void generateAttributes(IMarkupWriter writer, IRequestCycle cycle)
-	{
-		renderInformalParameters(writer, cycle);
-	}
-	
+
+    protected void generateAttributes(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        renderInformalParameters(writer, cycle);
+    }
 
     /**
      *  Converts informal parameters into additional attributes on the
@@ -872,13 +887,24 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         try
         {
+            Tapestry.clearMethodInvocations();
+
             prepareForRender(cycle);
 
-            renderComponent(writer, cycle);
+            Tapestry.checkMethodInvocation(PREPAREFORRENDER_METHOD_ID, "prepareForRender()", this);
+      
+      		renderComponent(writer, cycle);
         }
         finally
         {
+            Tapestry.clearMethodInvocations();
+
             cleanupAfterRender(cycle);
+
+            Tapestry.checkMethodInvocation(
+                CLEANUPAFTERRENDER_METHOD_ID,
+                "cleanupAfterRender()",
+                this);
         }
     }
 
@@ -895,6 +921,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     protected void prepareForRender(IRequestCycle cycle)
     {
+    	Tapestry.addMethodInvocation(PREPAREFORRENDER_METHOD_ID);
+    	
         if (_parameterManager == null)
         {
             // Pages inherit from this class too, but pages (by definition)
@@ -937,6 +965,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
+    	Tapestry.addMethodInvocation(CLEANUPAFTERRENDER_METHOD_ID);
+    	
         if (_parameterManager != null)
             _parameterManager.resetParameters(cycle);
     }
@@ -1052,7 +1082,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         return _bodyCount;
     }
-    
+
     /**
      * Empty implementation of
      * {@link org.apache.tapestry.event.PageRenderListener#pageEndRender(PageEvent)}.
@@ -1063,7 +1093,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * method.
      * @since 3.0
      */
-    
+
     public void pageEndRender(PageEvent event)
     {
     }
