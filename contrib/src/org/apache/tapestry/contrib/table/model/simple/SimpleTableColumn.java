@@ -189,6 +189,19 @@ public class SimpleTableColumn extends AbstractTableColumn
 		m_objEvaluator = evaluator;
 	}
 
+    /**
+     * Sets a comparator that compares the values of this column rather than 
+     * the objects representing the full rows. <br>
+     * This method allows easier use of standard comparators for sorting
+     * the column. It simply wraps the provided comparator with a row-to-column 
+     * convertor and invokes the setComparator() method.
+     * @param comparator The column value comparator
+     */
+    public void setColumnComparator(Comparator comparator)
+    {
+        setComparator(new ColumnComparator(this, comparator));
+    }
+
 	/**
 	 * Extracts the value of the column from the row object
 	 * @param objRow the row object
