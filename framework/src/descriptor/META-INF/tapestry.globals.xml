@@ -54,6 +54,17 @@
     </invoke-factory>
   </service-point>  
   
+  <service-point id="ContainerRequest" interface="org.apache.tapestry.container.ContainerRequest">
+    
+    Exposes the current thread's ContainerRequest as a service.  The request is actually
+    stored in the RequestGlobals service.
+    
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="RequestGlobals" property="containerRequest"/>
+    </invoke-factory>
+  </service-point>
+  
   <service-point id="HttpServletResponse" interface="javax.servlet.http.HttpServletResponse">
     
     Exposes the current thread's HttpServletResponse as a service. The response is actually

@@ -17,6 +17,8 @@ package org.apache.tapestry.services.impl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tapestry.container.ContainerRequest;
+import org.apache.tapestry.container.ContainerResponse;
 import org.apache.tapestry.services.RequestGlobals;
 
 /**
@@ -28,14 +30,23 @@ import org.apache.tapestry.services.RequestGlobals;
  */
 public class RequestGlobalsImpl implements RequestGlobals
 {
+
+    private ContainerRequest _containerRequest;
+
+    private ContainerResponse _containerResponse;
+
     private HttpServletRequest _request;
 
     private HttpServletResponse _response;
 
-    public void store(HttpServletRequest request, HttpServletResponse response)
+    public ContainerRequest getContainerRequest()
     {
-        _request = request;
-        _response = response;
+        return _containerRequest;
+    }
+
+    public ContainerResponse getContainerResponse()
+    {
+        return _containerResponse;
     }
 
     public HttpServletRequest getRequest()
@@ -46,5 +57,17 @@ public class RequestGlobalsImpl implements RequestGlobals
     public HttpServletResponse getResponse()
     {
         return _response;
+    }
+
+    public void store(ContainerRequest request, ContainerResponse response)
+    {
+        _containerRequest = request;
+        _containerResponse = response;
+    }
+
+    public void store(HttpServletRequest request, HttpServletResponse response)
+    {
+        _request = request;
+        _response = response;
     }
 }

@@ -18,20 +18,25 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
+import org.apache.tapestry.container.ContainerContext;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  * Implementation of {@link ApplicationGlobals}.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class ApplicationGlobalsImpl implements ApplicationGlobals
 {
     private HttpServlet _servlet;
+
     private ServletContext _context;
+
     private IApplicationSpecification _specification;
+
+    private ContainerContext _containerContext;
 
     public void store(HttpServlet servlet, IApplicationSpecification applicationSpecification)
     {
@@ -55,14 +60,23 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
         return _context;
     }
 
-	public String getServletName()
-	{
-		return _servlet.getServletName();
-	}
-	
+    public String getServletName()
+    {
+        return _servlet.getServletName();
+    }
+
     public ServletConfig getServletConfig()
     {
         return _servlet.getServletConfig();
     }
 
+    public ContainerContext getContainerContext()
+    {
+        return _containerContext;
+    }
+
+    public void store(ContainerContext context)
+    {
+        _containerContext = context;
+    }
 }

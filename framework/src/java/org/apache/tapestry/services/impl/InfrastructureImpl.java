@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ContextResource;
+import org.apache.tapestry.container.ContainerRequest;
+import org.apache.tapestry.container.ContainerResponse;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -93,6 +95,10 @@ public class InfrastructureImpl implements Infrastructure
     private String _applicationId;
 
     private ComponentPropertySource _componentPropertySource;
+
+    private ContainerRequest _containerRequest;
+
+    private ContainerResponse _containerResponse;
 
     public IScriptSource getScriptSource()
     {
@@ -328,5 +334,25 @@ public class InfrastructureImpl implements Infrastructure
     public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
     {
         _componentPropertySource = componentPropertySource;
+    }
+
+    public ContainerRequest getContainerRequest()
+    {
+        return _containerRequest;
+    }
+
+    public void setContainerRequest(ContainerRequest containerRequest)
+    {
+        _containerRequest = containerRequest;
+    }
+
+    public ContainerResponse getContainerResponse()
+    {
+        return _containerResponse;
+    }
+
+    public void setContainerResponse(ContainerResponse containerResponse)
+    {
+        _containerResponse = containerResponse;
     }
 }
