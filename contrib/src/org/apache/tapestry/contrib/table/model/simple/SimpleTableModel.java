@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.contrib.table.model.simple;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -65,9 +64,8 @@ import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.ITableDataModel;
 import org.apache.tapestry.contrib.table.model.ITableDataModelListener;
-import org.apache.tapestry.contrib.table.model.ITableModel;
-import org.apache.tapestry.contrib.table.model.ITablePagingState;
 import org.apache.tapestry.contrib.table.model.ITableSortingState;
+import org.apache.tapestry.contrib.table.model.common.AbstractTableModel;
 import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
 import org.apache.tapestry.contrib.table.model.common.ReverseComparator;
 
@@ -77,12 +75,11 @@ import org.apache.tapestry.contrib.table.model.common.ReverseComparator;
  * @version $Id$
  * @author mindbridge
  */
-public class SimpleTableModel implements ITableModel, ITableDataModelListener, Serializable
+public class SimpleTableModel extends AbstractTableModel implements ITableDataModelListener
 {
-    private ITableDataModel m_objDataModel;
-    private Object[] m_arrRows;
-    private ITableColumnModel m_objColumnModel;
-    private SimpleTableState m_objState;
+    private ITableDataModel m_objDataModel = null;
+    private Object[] m_arrRows = null;
+    private ITableColumnModel m_objColumnModel = null;
 
     private SimpleTableSortingState m_objLastSortingState;
 
@@ -103,18 +100,13 @@ public class SimpleTableModel implements ITableModel, ITableDataModelListener, S
 
     public SimpleTableModel(ITableDataModel objDataModel, ITableColumnModel objColumnModel, SimpleTableState objState)
     {
+        super(objState);
+        
         m_arrRows = null;
         m_objColumnModel = objColumnModel;
-        m_objState = objState;
         m_objLastSortingState = new SimpleTableSortingState();
 
-        m_objDataModel = objDataModel;
-        m_objDataModel.addTableDataModelListener(this);
-    }
-
-    public SimpleTableState getState()
-    {
-        return m_objState;
+        setDataModel(objDataModel);
     }
 
     public ITableColumnModel getColumnModel()
@@ -135,29 +127,6 @@ public class SimpleTableModel implements ITableModel, ITableDataModelListener, S
         int nTo = (nCurrentPage + 1) * nPageSize;
 
         return new ArrayIterator(m_arrRows, nFrom, nTo);
-    }
-
-    public int getPageCount()
-    {
-        int nRowCount = getRowCount();
-        if (nRowCount == 0)
-            return 1;
-
-        int nPageSize = getPagingState().getPageSize();
-        if (nPageSize <= 0)
-            return 1;
-
-        return (nRowCount - 1) / nPageSize + 1;
-    }
-
-    public ITablePagingState getPagingState()
-    {
-        return m_objState.getPagingState();
-    }
-
-    public ITableSortingState getSortingState()
-    {
-        return m_objState.getSortingState();
     }
 
     public int getRowCount()
@@ -240,7 +209,12 @@ public class SimpleTableModel implements ITableModel, ITableDataModelListener, S
      */
     public void setDataModel(ITableDataModel dataModel)
     {
+        if (m_objDataModel != null)
+            m_objDataModel.removeTableDataModelListener(this);
+            
         m_objDataModel = dataModel;
+        m_objDataModel.addTableDataModelListener(this);
+        
         m_arrRows = null;
     }
 

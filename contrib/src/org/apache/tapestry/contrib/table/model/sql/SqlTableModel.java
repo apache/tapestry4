@@ -55,31 +55,62 @@
 
 package org.apache.tapestry.contrib.table.model.sql;
 
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-import org.apache.tapestry.contrib.table.model.ITableColumnModel;
-import org.apache.tapestry.contrib.table.model.ITableModel;
-import org.apache.tapestry.contrib.table.model.ITablePagingState;
-import org.apache.tapestry.contrib.table.model.ITableSortingState;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.contrib.table.model.ITableColumnModel;
+import org.apache.tapestry.contrib.table.model.common.AbstractTableModel;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 
 /**
- * 
+ * An implementation of ITableModel that obtains its data through SQL queries.
+ * This is a very efficient model, since it uses SQL to perform
+ * the data sorting (through ORDER BY) and obtains only the data
+ * on the current page (through LIMIT/OFFSET). 
+ * <p>
+ * This object is typically created in the following manner:
+ * <pre> 
+ *    ISqlConnectionSource objConnSrc = 
+ *        new SimpleSqlConnectionSource("jdbc:postgresql://localhost/testdb", "testdb", "testdb");
+ *
+ *    ISqlTableDataSource objDataSrc = 
+ *        new SimpleSqlTableDataSource(objConnSrc, "test_table");
+ *
+ *    SqlTableColumnModel objColumnModel = 
+ *        new SqlTableColumnModel(new SqlTableColumn[] {
+ *            new SqlTableColumn("language", "Language", true),
+ *            new SqlTableColumn("country", "Country", true),
+ *            new SqlTableColumn("variant", "Variant", true),
+ *            new SqlTableColumn("intvalue", "Integer", true),
+ *            new SqlTableColumn("floatvalue", "Float", true)
+ *        });
+ *
+ *    ITableModel objTableModel = new SqlTableModel(objDataSrc, objColumnModel);
+ *
+ *    return objTableModel;
+ * </pre> 
+ *  
  * @version $Id$
  * @author mindbridge
  */
-public class SqlTableModel implements ITableModel, Serializable
+public class SqlTableModel extends AbstractTableModel 
 {
 	private static final Log LOG = LogFactory.getLog(SqlTableModel.class);
 
 	private ISqlTableDataSource m_objDataSource;
 	private SqlTableColumnModel m_objColumnModel;
-	private SimpleTableState m_objTableState;
+    
+    {
+        try {
+            Class.forName ( "org.hsqldb.jdbcDriver" );
+        } catch (Exception e) {
+            System.out.println("ERROR: failed to load HSQLDB JDBC driver.");
+            e.printStackTrace();
+        }
+    }
 
 	public SqlTableModel(
 		ISqlTableDataSource objDataSource,
@@ -93,9 +124,9 @@ public class SqlTableModel implements ITableModel, Serializable
 		SqlTableColumnModel objColumnModel,
 		SimpleTableState objState)
 	{
+        super(objState);
 		m_objDataSource = objDataSource;
 		m_objColumnModel = objColumnModel;
-		m_objTableState = objState;
 	}
 
 	/**
@@ -139,53 +170,6 @@ public class SqlTableModel implements ITableModel, Serializable
 	}
 
 	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableModel#getPageCount()
-	 */
-	public int getPageCount()
-	{
-		try
-		{
-			int nPageCount =
-				(m_objDataSource.getRowCount() - 1)
-					/ getPagingState().getPageSize()
-					+ 1;
-			if (nPageCount < 1)
-				nPageCount = 1;
-			return nPageCount;
-		}
-		catch (SQLException e)
-		{
-			LOG.error("Cannot get row count", e);
-			return 1;
-		}
-	}
-
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableModel#getPagingState()
-	 */
-	public ITablePagingState getPagingState()
-	{
-		return getState().getPagingState();
-	}
-
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableModel#getSortingState()
-	 */
-	public ITableSortingState getSortingState()
-	{
-		return getState().getSortingState();
-	}
-
-	/**
-	 * Returns the tableState.
-	 * @return SimpleTableState
-	 */
-	public SimpleTableState getState()
-	{
-		return m_objTableState;
-	}
-
-	/**
 	 * Returns the dataSource.
 	 * @return ISqlTableDataSource
 	 */
@@ -193,5 +177,21 @@ public class SqlTableModel implements ITableModel, Serializable
 	{
 		return m_objDataSource;
 	}
+
+    /**
+     * @see org.apache.tapestry.contrib.table.model.common.AbstractTableModel#getRowCount()
+     */
+    protected int getRowCount()
+    {
+        try
+        {
+            return m_objDataSource.getRowCount();
+        }
+        catch (SQLException e)
+        {
+            LOG.error("Cannot get row count", e);
+            return 1;
+        }
+    }
 
 }

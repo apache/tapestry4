@@ -55,13 +55,14 @@
 
 package org.apache.tapestry.contrib.table.model.ognl;
 
+import ognl.Ognl;
+import ognl.OgnlException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.simple.ITableColumnEvaluator;
 import org.apache.tapestry.util.prop.OgnlUtils;
-import ognl.Ognl;
-import ognl.OgnlException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author mindbridge

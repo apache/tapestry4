@@ -60,11 +60,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.contrib.table.model.ITablePagingState;
 import org.apache.tapestry.contrib.table.model.ITableSortingState;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * 

@@ -56,19 +56,38 @@
 package org.apache.tapestry.contrib.table.components;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.contrib.table.model.IBasicTableModel;
+import org.apache.tapestry.contrib.table.model.ITableColumn;
+import org.apache.tapestry.contrib.table.model.ITableColumnModel;
+import org.apache.tapestry.contrib.table.model.ITableDataModel;
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
 import org.apache.tapestry.contrib.table.model.ITableSessionStoreManager;
-import org.apache.tapestry.contrib.table.model.common.FullTableSessionStateManager;
+import org.apache.tapestry.contrib.table.model.common.BasicTableModelWrap;
+import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
+import org.apache.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableModel;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  * A low level Table component that wraps all other low level Table components.
@@ -199,255 +218,383 @@ import org.apache.tapestry.event.PageRenderListener;
  * @author mindbridge
  * @version $Id$
  */
-public class TableView
-	extends BaseComponent
-	implements PageDetachListener, PageRenderListener, ITableModelSource
+public abstract class TableView
+    extends BaseComponent
+    implements PageDetachListener, PageRenderListener, ITableModelSource
 {
-	private static ITableSessionStateManager DEFAULT_SESSION_STATE_MANAGER =
-		new FullTableSessionStateManager();
+    // Component properties
+    private ITableSessionStateManager m_objDefaultSessionStateManager = null;
 
-	// Custom bindings
-	private IBinding m_objTableModelBinding = null;
-	private IBinding m_objTableSessionStateManagerBinding = null;
-	private IBinding m_objTableSessionStoreManagerBinding = null;
-	private IBinding m_objElementBinding = null;
+    // Persistent properties
+    private Serializable m_objSessionState;
 
-	// Persistent properties
-	private Serializable m_objSessionState;
+    // Transient objects
+    private ITableModel m_objTableModel;
+    private ITableModel m_objCachedTableModelValue;
 
-	// Transient objects
-	private ITableModel m_objTableModel;
+    // enhanced parameter methods
+    public abstract ITableModel getTableModelValue();
+    public abstract Object getSource();
+    public abstract Object getColumns();
+    public abstract ITableSessionStateManager getTableSessionStateManager();
+    public abstract ITableSessionStoreManager getTableSessionStoreManager();
+    public abstract IComponent getColumnSettingsContainer();
 
-	public TableView()
-	{
-		init();
-	}
-
-	/**
-	 * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
-	 */
-	public void pageDetached(PageEvent objEvent)
-	{
-		init();
-	}
-
-	private void init()
-	{
-		m_objSessionState = null;
-		m_objTableModel = null;
-	}
-
-	public void reset()
-	{
-		m_objTableModel = null;
-		storeSessionState(null);
-	}
-
-	/**
-	 * Returns the tableModelBinding.
-	 * @return IBinding
-	 */
-	public IBinding getTableModelBinding()
-	{
-		return m_objTableModelBinding;
-	}
-
-	/**
-	 * Sets the tableModelBinding.
-	 * @param tableModelBinding The tableModelBinding to set
-	 */
-	public void setTableModelBinding(IBinding tableModelBinding)
-	{
-		m_objTableModelBinding = tableModelBinding;
-	}
-
-	/**
-	 * Returns the tableModel.
-	 * @return ITableModel
-	 */
-	public ITableModel getTableModel()
-	{
-		// if null, first try to recreate the model from the session state
-		if (m_objTableModel == null)
-		{
-			Serializable objState = loadSessionState();
-			m_objTableModel =
-				getTableSessionStateManager().recreateTableModel(objState);
-		}
-
-		// if the session state does not help, get the model from the binding
-		if (m_objTableModel == null)
-		{
-			IBinding objBinding = getTableModelBinding();
-			m_objTableModel = (ITableModel) objBinding.getObject();
-		}
-
-		return m_objTableModel;
-	}
+    // enhanced property methods
+    public abstract Serializable getSessionState();
+    public abstract void setSessionState(Serializable sessionState);
 
     /**
-     * @see org.apache.tapestry.contrib.table.model.ITableModelSource#fireObservedStateChange()
+     *  The component constructor. Invokes the component member initializations. 
+     */
+    public TableView()
+    {
+        initialize();
+    }
+
+    /**
+     *  Invokes the component member initializations.
+     *  
+     *  @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
+     */
+    public void pageDetached(PageEvent objEvent)
+    {
+        initialize();
+    }
+
+    /**
+     *  Initialize the component member variables.
+     */
+    private void initialize()
+    {
+        m_objSessionState = null;
+        m_objTableModel = null;
+        m_objCachedTableModelValue = null;
+    }
+
+    /**
+     *  Resets the table by removing any stored table state. 
+     *  This means that the current column to sort on and the current page will be
+     *  forgotten and all data will be reloaded.
+     */
+    public void reset()
+    {
+        m_objTableModel = null;
+        storeSessionState(null);
+    }
+
+    public ITableModel getCachedTableModelValue()
+    {
+        if (m_objCachedTableModelValue == null)
+            m_objCachedTableModelValue = getTableModelValue();
+        return m_objCachedTableModelValue;
+    }
+
+    /**
+     *  Returns the tableModel.
+     * 
+     *  @return ITableModel the table model used by the table components
+     */
+    public ITableModel getTableModel()
+    {
+        // if null, first try to recreate the model from the session state
+        if (m_objTableModel == null)
+        {
+            Serializable objState = loadSessionState();
+            m_objTableModel = getTableSessionStateManager().recreateTableModel(objState);
+        }
+
+        // if the session state does not help, get the model from the binding
+        if (m_objTableModel == null)
+            m_objTableModel = getCachedTableModelValue();
+
+        // if the model from the binding is null, build a model from source and columns
+        if (m_objTableModel == null)
+            m_objTableModel = generateTableModel(null);
+
+        if (m_objTableModel == null)
+            throw new ApplicationRuntimeException(format("missing-table-model", this));
+
+        return m_objTableModel;
+    }
+
+    /**
+     *  Generate a table model using the 'source' and 'columns' parameters.
+     * 
+     *  @return the newly generated table model
+     */
+    protected ITableModel generateTableModel(SimpleTableState objState)
+    {
+        // get the column model. if not possible, return null.
+        ITableColumnModel objColumnModel = getTableColumnModel();
+        if (objColumnModel == null)
+            return null;
+
+        Object objSourceValue = getSource();
+
+        // if the source parameter is of type {@link IBasicTableModel}, 
+        // create and return an appropriate wrapper
+        if (objSourceValue instanceof IBasicTableModel)
+            return new BasicTableModelWrap((IBasicTableModel) objSourceValue, objColumnModel);
+
+        // otherwise, the source parameter must contain the data to be displayed
+        ITableDataModel objDataModel = null;
+        if (objSourceValue instanceof Object[])
+            objDataModel = new SimpleListTableDataModel((Object[]) objSourceValue);
+        else if (objSourceValue instanceof List)
+            objDataModel = new SimpleListTableDataModel((List) objSourceValue);
+        else if (objSourceValue instanceof Collection)
+            objDataModel = new SimpleListTableDataModel((Collection) objSourceValue);
+        else if (objSourceValue instanceof Iterator)
+            objDataModel = new SimpleListTableDataModel((Iterator) objSourceValue);
+
+        if (objDataModel == null)
+            return null;
+
+        if (objState == null)
+            objState = new SimpleTableState();
+
+        return new SimpleTableModel(objDataModel, objColumnModel, objState);
+    }
+
+    /**
+     *  Returns the table column model as specified by the 'columns' binding.
+     *  If the value of the 'columns' binding is of a type different than
+     *  ITableColumnModel, this method makes the appropriate conversion. 
+     * 
+     *  @return The table column model as specified by the 'columns' binding
+     */
+    protected ITableColumnModel getTableColumnModel()
+    {
+        Object objColumns = getColumns();
+
+        if (objColumns instanceof ITableColumnModel)
+        {
+            return (ITableColumnModel) objColumns;
+        }
+
+        if (objColumns instanceof Iterator)
+        {
+            // convert to List
+            Iterator objColumnsIterator = (Iterator) objColumns;
+            List arrColumnsList = new ArrayList();
+            CollectionUtils.addAll(arrColumnsList, objColumnsIterator);
+            objColumns = arrColumnsList;
+        }
+
+        if (objColumns instanceof List)
+        {
+            // validate that the list contains only ITableColumn instances
+            List arrColumnsList = (List) objColumns;
+            int nColumnsNumber = arrColumnsList.size();
+            for (int i = 0; i < nColumnsNumber; i++)
+            {
+                if (!(arrColumnsList.get(i) instanceof ITableColumn))
+                    throw new ApplicationRuntimeException(format("columns-only-please", this));
+            }
+            //objColumns = arrColumnsList.toArray(new ITableColumn[nColumnsNumber]);
+            return new SimpleTableColumnModel(arrColumnsList);
+        }
+
+        if (objColumns instanceof ITableColumn[])
+        {
+            return new SimpleTableColumnModel((ITableColumn[]) objColumns);
+        }
+
+        if (objColumns instanceof String)
+        {
+            return generateTableColumnModel((String) objColumns);
+        }
+
+        //throw new ApplicationRuntimeException("The columns binding must contain a list of ITableColumn objects or a description string");
+        return null;
+    }
+
+    /**
+     *  Generate a table column model out of the description string provided.
+     *  Entries in the description string are separated by commas.
+     *  Each column entry is of the format name, name:expression, 
+     *  or name:displayName:expression.
+     *  An entry prefixed with ! represents a non-sortable column.
+     *  If the whole description string is prefixed with *, it represents
+     *  columns to be included in a Form. 
+     * 
+     *  @param strDesc
+     *  @return
+     */
+    protected ITableColumnModel generateTableColumnModel(String strDesc)
+    {
+        if (strDesc == null)
+            return null;
+
+        IComponent objColumnSettingsContainer = getColumnSettingsContainer();
+        List arrColumns = new ArrayList();
+
+        boolean bFormColumns = false;
+        while (strDesc.startsWith("*"))
+        {
+            strDesc = strDesc.substring(1);
+            bFormColumns = true;
+        }
+
+        StringTokenizer objTokenizer = new StringTokenizer(strDesc, ",");
+        while (objTokenizer.hasMoreTokens())
+        {
+            String strToken = objTokenizer.nextToken().trim();
+
+            if (strToken.startsWith("="))
+            {
+                String strColumnExpression = strToken.substring(1);
+                IResourceResolver objResolver = getPage().getEngine().getResourceResolver();
+
+                Object objColumn =
+                    OgnlUtils.get(strColumnExpression, objResolver, objColumnSettingsContainer);
+                if (!(objColumn instanceof ITableColumn))
+                    throw new ApplicationRuntimeException(
+                        format("not-a-column", this, strColumnExpression));
+
+                arrColumns.add(objColumn);
+                continue;
+            }
+
+            boolean bSortable = true;
+            if (strToken.startsWith("!"))
+            {
+                strToken = strToken.substring(1);
+                bSortable = false;
+            }
+
+            StringTokenizer objColumnTokenizer = new StringTokenizer(strToken, ":");
+
+            String strName = "";
+            if (objColumnTokenizer.hasMoreTokens())
+                strName = objColumnTokenizer.nextToken();
+
+            String strExpression = strName;
+            if (objColumnTokenizer.hasMoreTokens())
+                strExpression = objColumnTokenizer.nextToken();
+
+            String strDisplayName = strName;
+            if (objColumnTokenizer.hasMoreTokens())
+            {
+                strDisplayName = strExpression;
+                strExpression = objColumnTokenizer.nextToken();
+            }
+
+            ExpressionTableColumn objColumn =
+                new ExpressionTableColumn(strName, strDisplayName, strExpression, bSortable);
+            if (bFormColumns)
+                objColumn.setColumnRendererSource(SimpleTableColumn.FORM_COLUMN_RENDERER_SOURCE);
+            if (objColumnSettingsContainer != null)
+                objColumn.loadSettings(objColumnSettingsContainer);
+
+            arrColumns.add(objColumn);
+        }
+
+        return new SimpleTableColumnModel(arrColumns);
+    }
+
+    /**
+     *  The default session state manager to be used in case no such manager
+     *  is provided by the corresponding parameter.
+     * 
+     *  @return the default session state manager
+     */
+    public ITableSessionStateManager getDefaultTableSessionStateManager()
+    {
+        if (m_objDefaultSessionStateManager == null)
+            m_objDefaultSessionStateManager = new TableViewSessionStateManager(this);
+        return m_objDefaultSessionStateManager;
+    }
+
+    /**
+     *  Invoked when there is a modification of the table state and it needs to be saved
+     *  
+     *  @see org.apache.tapestry.contrib.table.model.ITableModelSource#fireObservedStateChange()
      */
     public void fireObservedStateChange()
     {
         saveSessionState();
     }
 
-	/**
-	 * Returns the tableSessionStateManagerBinding.
-	 * @return IBinding
-	 */
-	public IBinding getTableSessionStateManagerBinding()
-	{
-		return m_objTableSessionStateManagerBinding;
-	}
+    /**
+     * @see org.apache.tapestry.event.PageRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)
+     */
+    public void pageBeginRender(PageEvent event)
+    {
+    }
 
-	/**
-	 * Sets the tableSessionStateManagerBinding.
-	 * @param tableSessionStateManagerBinding The tableSessionStateManagerBinding to set
-	 */
-	public void setTableSessionStateManagerBinding(IBinding tableSessionStateManagerBinding)
-	{
-		m_objTableSessionStateManagerBinding = tableSessionStateManagerBinding;
-	}
+    /**
+     *  Ensures that the table state is saved at the end of the rewind phase 
+     *  in case there are modifications for which {@link fireObservedStateChange} 
+     *  has not been invoked.
+     * 
+     *  @see org.apache.tapestry.event.PageRenderListener#pageBeginRender(PageEvent)
+     */
+    public void pageEndRender(PageEvent objEvent)
+    {
+        // ignore if not rewinding
+        if (!objEvent.getRequestCycle().isRewinding())
+            return;
 
-	public ITableSessionStateManager getTableSessionStateManager()
-	{
-		IBinding objBinding = getTableSessionStateManagerBinding();
-		if (objBinding == null || objBinding.getObject() == null)
-			return DEFAULT_SESSION_STATE_MANAGER;
-		return (ITableSessionStateManager) objBinding.getObject();
-	}
+        // Save the session state of the table model
+        // This is the moment after changes and right before committing the session
+        saveSessionState();
+    }
 
-	/**
-	 * Returns the tableSessionStoreManagerBinding.
-	 * @return IBinding
-	 */
-	public IBinding getTableSessionStoreManagerBinding()
-	{
-		return m_objTableSessionStoreManagerBinding;
-	}
-
-	/**
-	 * Sets the tableSessionStoreManagerBinding.
-	 * @param tableSessionStoreManagerBinding The tableSessionStoreManagerBinding to set
-	 */
-	public void setTableSessionStoreManagerBinding(IBinding tableSessionStoreManagerBinding)
-	{
-		m_objTableSessionStoreManagerBinding = tableSessionStoreManagerBinding;
-	}
-
-	public ITableSessionStoreManager getTableSessionStoreManager()
-	{
-		IBinding objBinding = getTableSessionStoreManagerBinding();
-		if (objBinding == null)
-			return null;
-		return (ITableSessionStoreManager) objBinding.getObject();
-	}
-
-	/**
-	 * Returns the sessionState.
-	 * @return Object
-	 */
-	public Serializable getSessionState()
-	{
-		return m_objSessionState;
-	}
-
-	/**
-	 * Sets the sessionState.
-	 * @param sessionState The sessionState to set
-	 */
-	public void setSessionState(Serializable sessionState)
-	{
-		m_objSessionState = sessionState;
-	}
-
-	public void updateSessionState(Serializable sessionState)
-	{
-		setSessionState(sessionState);
-		fireObservedChange("sessionState", sessionState);
-	}
-
-	protected Serializable loadSessionState()
-	{
-		ITableSessionStoreManager objManager = getTableSessionStoreManager();
-		if (objManager != null)
-			return objManager.loadState(getPage().getRequestCycle());
-		return getSessionState();
-	}
-
+    /**
+     *  Saves the table state using the SessionStateManager to determine 
+     *  what to save and the SessionStoreManager to determine where to save it.  
+     *
+     */
     protected void saveSessionState()
     {
         ITableModel objModel = getTableModel();
-        Serializable objState =
-            getTableSessionStateManager().getSessionState(objModel);
+        Serializable objState = getTableSessionStateManager().getSessionState(objModel);
         storeSessionState(objState);
     }
-    
-	protected void storeSessionState(Serializable objState)
-	{
-		ITableSessionStoreManager objManager = getTableSessionStoreManager();
-		if (objManager != null)
-			objManager.saveState(getPage().getRequestCycle(), objState);
-		else
-			updateSessionState(objState);
-	}
-
-	/**
-	 * @see org.apache.tapestry.event.PageRenderListener#pageBeginRender(PageEvent)
-	 */
-	public void pageBeginRender(PageEvent objEvent)
-	{
-		// ignore if rewinding
-		if (objEvent.getRequestCycle().isRewinding())
-			return;
-
-		// Save the session state of the table model
-		// This is the moment after changes and right before committing
-        saveSessionState();
-	}
 
     /**
-     * Returns the elementBinding.
-     * @return IBinding
+     *  Loads the table state using the SessionStoreManager.
+     * 
+     *  @return the stored table state
      */
-    public IBinding getElementBinding() {
-        return m_objElementBinding;
+    protected Serializable loadSessionState()
+    {
+        ITableSessionStoreManager objManager = getTableSessionStoreManager();
+        if (objManager != null)
+            return objManager.loadState(getPage().getRequestCycle());
+        return getSessionState();
     }
 
     /**
-     * Sets the elementBinding.
-     * @param elementBinding The elementBinding to set
+     *  Stores the table state using the SessionStoreManager.
+     * 
+     *  @param objState the table state to store
      */
-    public void setElementBinding(IBinding elementBinding) {
-        m_objElementBinding = elementBinding;
+    protected void storeSessionState(Serializable objState)
+    {
+        ITableSessionStoreManager objManager = getTableSessionStoreManager();
+        if (objManager != null)
+            objManager.saveState(getPage().getRequestCycle(), objState);
+        else
+            setSessionState(objState);
     }
 
-	/**
-	 * Returns the element.
-	 * @return String
-	 */
-	public String getElement()
-	{
-		IBinding objElementBinding = getElementBinding();
-		if (objElementBinding == null || objElementBinding.getObject() == null)
-			return "table";
-		return objElementBinding.getString();
-	}
-
     /**
-	 * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
-	 */
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-	{
+     *  Stores a pointer to this component in the Request Cycle while rendering
+     *  so that wrapped components have access to it.
+     * 
+     *  @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     */
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
         Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, this);
 
-		super.renderComponent(writer, cycle);
+        super.renderComponent(writer, cycle);
 
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, objOldValue);
-	}
-
+    }
 
 }

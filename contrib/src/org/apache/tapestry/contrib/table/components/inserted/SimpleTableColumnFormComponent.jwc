@@ -25,8 +25,7 @@
 	</component>
 	
 	<component id="condNotSorted" type="FormConditional">
-		<binding name="condition" expression="columnSorted"/>
-		<static-binding name="invert">true</static-binding>
+		<binding name="condition" expression="!columnSorted"/>
 	</component>
 	
 	<component id="insertSortedColumn" type="Insert">
