@@ -12,19 +12,19 @@
   Creates an HTML select to choose a single property from a list of options.
   </description>
   
-  <parameter name="value" required="yes" java-type="java.lang.Object" direction="form"/>
+  <parameter name="value" required="yes" type="java.lang.Object" direction="form"/>
   
   <parameter name="model" 
-  	java-type="net.sf.tapestry.form.IPropertySelectionModel" 
+  	type="net.sf.tapestry.form.IPropertySelectionModel" 
   	required="yes"
   	direction="in"/>
   	
   <parameter name="disabled"
-  	java-type="boolean"
+  	type="boolean"
   	direction="in"/>
   	
   <parameter name="renderer" 
-  	java-type="net.sf.tapestry.form.IPropertySelectionRenderer"
+  	type="net.sf.tapestry.form.IPropertySelectionRenderer"
   	direction="in">
   	<description>
 	An alternate rendered for the property selection.
@@ -32,7 +32,7 @@
   </parameter>
   
   <parameter name="submitOnChange"
-  	java-type="boolean"
+  	type="boolean"
   	direction="in">
   	<description>
   	Enables logic to submit containing form when value changes.

@@ -11,17 +11,17 @@
 	</description>
   
 	<parameter name="row" 
-		java-type="Object" 
+		type="Object" 
 		required="no"
 		direction="custom"/>
 
 	<parameter name="value" 
-		java-type="Object" 
+		type="Object" 
 		required="no"
 		direction="custom"/>
 
 	<parameter name="element" 
-		java-type="java.lang.String" 
+		type="java.lang.String" 
 		required="no"
 		direction="custom"/>
 

@@ -14,7 +14,7 @@
   
   <parameter name="value" 
   	required="yes" 
-  	java-type="java.lang.Object"
+  	type="java.lang.Object"
   	direction="custom">
     <description>
     Value to save in the form.
@@ -22,13 +22,13 @@
   </parameter>
   
   <parameter name="listener" 
-  	java-type="net.sf.tapestry.IActionListener"
+  	type="net.sf.tapestry.IActionListener"
   	direction="in">
     <description>
     Listener notified after the value is restored.
     </description>
   </parameter>
   
-  <parameter name="encode" java-type="boolean" direction="in"/>
+  <parameter name="encode" type="boolean" direction="in"/>
   
 </component-specification>

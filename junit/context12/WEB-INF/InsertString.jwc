@@ -7,6 +7,6 @@
 <component-specification class="net.sf.tapestry.junit.mock.c12.InsertString"
 		allow-body="no" allow-informal-parameters="no">
 
-  <parameter name="string" java-type="java.lang.String" direction="in"/>
+  <parameter name="string" type="java.lang.String" direction="in"/>
 		
 </component-specification>

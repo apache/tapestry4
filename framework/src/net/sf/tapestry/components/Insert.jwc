@@ -13,19 +13,19 @@
   </description>
   
   
-  <parameter name="value" java-type="java.lang.Object" direction="in">
+  <parameter name="value" type="java.lang.Object" direction="in">
   	<description>
   	The value to be emitted.  Non-strings are converted to strings.
   	</description>
   </parameter>
   
-  <parameter name="format" java-type="java.text.Format" direction="in">
+  <parameter name="format" type="java.text.Format" direction="in">
   	<description>
   	A Format object used to convert the value to a string.
   	</description>
   </parameter>
   
-  <parameter name="raw" java-type="boolean" direction="in">
+  <parameter name="raw" type="boolean" direction="in">
   	<description>
   	If false (the default), then invalid HTML characters in the value are escaped.  If
   	true, then value is emitted exactly as is.
@@ -33,7 +33,7 @@
   </parameter>
   
   <parameter name="class" 
-  	java-type="java.lang.String"
+  	type="java.lang.String"
   	property-name="styleClass"
   	direction="in">
   	<description>

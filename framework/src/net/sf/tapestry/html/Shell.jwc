@@ -11,7 +11,7 @@
   </description>
 
   <parameter name="title" 
-  	java-type="java.lang.String" 
+  	type="java.lang.String" 
   	required="yes"
   	direction="in">
     <description>
@@ -20,7 +20,7 @@
   </parameter>
   
   <parameter name="stylesheet" 
-  	java-type="net.sf.tapestry.IAsset"
+  	type="net.sf.tapestry.IAsset"
   	direction="in">
     <description>
     If specified, provides an external stylesheet for the page.
@@ -28,7 +28,7 @@
   </parameter>
 
   <parameter name="DTD" 
-  	java-type="java.lang.String"
+  	type="java.lang.String"
   	direction="in">
     <description>
     Used to specify the DOCTYPE of the response page.
@@ -37,7 +37,7 @@
   
   <parameter 
   	name="refresh" 
-  	java-type="int"
+  	type="int"
   	direction="in">
     <description>
     If specified, the page will refresh itself after the specified delay (in seconds).
@@ -46,7 +46,7 @@
   
   <parameter 
   	name="delegate" 
-  	java-type="net.sf.tapestry.IRender"
+  	type="net.sf.tapestry.IRender"
   	direction="in">
     <description>
     If specified, the delegate is allowed to render before the close of the &lt;head&gt;

@@ -6,9 +6,9 @@
 
 <component-specification class="net.sf.tapestry.form.DatePicker" allow-informal-parameters="no">
 
-  <parameter name="value" direction="custom" java-type="java.util.Date" required="yes"/>
-  <parameter name="format" direction="in" java-type="java.lang.String" required="no"/>
-  <parameter name="disabled" direction="in" java-type="boolean" required="no"/>
+  <parameter name="value" direction="custom" type="java.util.Date" required="yes"/>
+  <parameter name="format" direction="in" type="java.lang.String" required="no"/>
+  <parameter name="disabled" direction="in" type="boolean" required="no"/>
   
   <component id="dateTextField" type="TextField">
        	<binding name="value" expression="text"/>

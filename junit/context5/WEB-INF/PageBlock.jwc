@@ -8,12 +8,12 @@
 	allow-body="no" 
 	allow-informal-parameters="no">	
 	
-	<parameter name="title" java-type="java.lang.String" required="yes"/>	
+	<parameter name="title" type="java.lang.String" required="yes"/>	
 	
-	<parameter name="page" java-type="java.lang.String" required="yes"
+	<parameter name="page" type="java.lang.String" required="yes"
 		direction="in" property-name="targetPageName"/>
 		
-	<parameter name="blockId" java-type="java.lang.String"
+	<parameter name="blockId" type="java.lang.String"
 		direction="in" property-name="targetBlockId"/>
 		
 	<component id="insertTitle" type="Insert">

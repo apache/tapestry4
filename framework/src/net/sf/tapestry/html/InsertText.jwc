@@ -13,14 +13,14 @@
   markup to delimit lines.
   </description>
   
-   <parameter name="value" java-type="java.lang.String" direction="in">
+   <parameter name="value" type="java.lang.String" direction="in">
     <description>
   	The text to insert.
     </description>
   </parameter>
 
   <parameter name="mode" 
-  	java-type="net.sf.tapestry.html.InsertTextMode"
+  	type="net.sf.tapestry.html.InsertTextMode"
   	direction="in">
     <description>
     Determines which mode to use: breaks after each line, or wrap each line

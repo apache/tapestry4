@@ -7,6 +7,6 @@
 <component-specification class="net.sf.tapestry.BaseComponent" 
 	allow-informal-parameters="no">
 
-  <parameter name="delegate" java-type="net.sf.tapestry.valid.IValidationDelegate" required="yes"/>
+  <parameter name="delegate" type="net.sf.tapestry.valid.IValidationDelegate" required="yes"/>
   
 </component-specification>

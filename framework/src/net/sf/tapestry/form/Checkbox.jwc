@@ -11,7 +11,7 @@
   </description>
   
   <parameter name="selected" 
-  	java-type="boolean"
+  	type="boolean"
   	required="yes" 
   	direction="form">
     <description>
@@ -19,7 +19,7 @@
     </description>
   </parameter>
   
-  <parameter name="disabled" java-type="boolean" direction="in">
+  <parameter name="disabled" type="boolean" direction="in">
     <description>
     If true, then the checkbox will be disabled and any input from the checkbox
     will be ignored.

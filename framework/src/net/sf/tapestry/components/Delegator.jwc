@@ -12,7 +12,7 @@
   Delegates rendering to an object that implements the IRender interface.
   </description>
 
-  <parameter name="delegate" java-type="net.sf.tapestry.IRender" direction="in">
+  <parameter name="delegate" type="net.sf.tapestry.IRender" direction="in">
     <description>
     The object which will perform the render.
     </description>

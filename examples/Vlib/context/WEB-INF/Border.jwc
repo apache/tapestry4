@@ -8,9 +8,9 @@
 	class="net.sf.tapestry.vlib.components.Border"
 	allow-informal-parameters="no">
 
-  <parameter name="title" java-type="java.lang.String"/>
-  <parameter name="subtitle" java-type="java.lang.String" direction="in"/>
-  <parameter name="simpleTitle" java-type="java.lang.Boolean"/>  
+  <parameter name="title" type="java.lang.String"/>
+  <parameter name="subtitle" type="java.lang.String" direction="in"/>
+  <parameter name="simpleTitle" type="java.lang.Boolean"/>  
             
   <component id="ifImageTitle" type="Conditional">
   	<inherited-binding name="condition" parameter-name="simpleTitle"/>

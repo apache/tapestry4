@@ -10,9 +10,9 @@
   A single possible selection within a RadioGroup.
   </description>
   
-  <parameter name="value" java-type="java.lang.Object" direction="in"/>
+  <parameter name="value" type="java.lang.Object" direction="in"/>
   
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
   
   <reserved-parameter name="checked"/>
   <reserved-parameter name="type"/>

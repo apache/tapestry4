@@ -11,62 +11,62 @@
 	</description>
   
 	<parameter name="tableModel" 
-		java-type="net.sf.tapestry.contrib.table.model.ITableModel" 
+		type="net.sf.tapestry.contrib.table.model.ITableModel" 
 		required="yes"
 		direction="custom"/>
   
 	<parameter name="tableSessionStateManager" 
-		java-type="net.sf.tapestry.contrib.table.model.ITableSessionStateManager" 
+		type="net.sf.tapestry.contrib.table.model.ITableSessionStateManager" 
 		required="no"
 		direction="custom"/>
   
 	<parameter name="tableSessionStoreManager" 
-		java-type="net.sf.tapestry.contrib.table.model.ITableSessionStoreManager" 
+		type="net.sf.tapestry.contrib.table.model.ITableSessionStoreManager" 
 		required="no"
 		direction="custom"/>
   
 	<parameter name="pagesDisplayed" 
-		java-type="int" 
+		type="int" 
 		required="no"
 		direction="custom"/>
   
 	<parameter name="column" 
-		java-type="net.sf.tapestry.contrib.table.model.ITableColumn" 
+		type="net.sf.tapestry.contrib.table.model.ITableColumn" 
 		required="no"
 		direction="custom"/>
 
 	<parameter name="row" 
-		java-type="Object" 
+		type="Object" 
 		required="no"
 		direction="custom"/>
 
 	<parameter name="arrowUpAsset" 
-		java-type="net.sf.tapestry.IAsset" 
+		type="net.sf.tapestry.IAsset" 
 		required="no"
 		direction="in"/>
 
 	<parameter name="arrowDownAsset" 
-		java-type="net.sf.tapestry.IAsset" 
+		type="net.sf.tapestry.IAsset" 
 		required="no"
 		direction="in"/>
 
 	<parameter name="pagesClass" 
-		java-type="java.lang.String" 
+		type="java.lang.String" 
 		required="no"
 		direction="custom"/>
   
 	<parameter name="columnsClass" 
-		java-type="java.lang.String" 
+		type="java.lang.String" 
 		required="no"
 		direction="custom"/>
   
 	<parameter name="rowsClass" 
-		java-type="java.lang.String" 
+		type="java.lang.String" 
 		required="no"
 		direction="custom"/>
   
 	<parameter name="valuesClass" 
-		java-type="java.lang.String" 
+		type="java.lang.String" 
 		required="no"
 		direction="custom"/>
   

@@ -9,13 +9,13 @@
 	allow-body="no" 
 	allow-informal-parameters="no">
   
-  <parameter name="name" java-type="java.lang.String" required="yes" direction="in"/>
+  <parameter name="name" type="java.lang.String" required="yes" direction="in"/>
   
-  <parameter name="primaryKey" java-type="java.lang.Integer" required="yes" direction="in"/>
+  <parameter name="primaryKey" type="java.lang.Integer" required="yes" direction="in"/>
   
-  <parameter name="omit" java-type="boolean" direction="in"/>
+  <parameter name="omit" type="boolean" direction="in"/>
   
-  <parameter name="class" java-type="java.lang.String"/>
+  <parameter name="class" type="java.lang.String"/>
    
   <component id="link" type="ExternalLink">
     <static-binding name="page">ViewPerson</static-binding>

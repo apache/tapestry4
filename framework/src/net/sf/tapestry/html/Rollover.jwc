@@ -12,7 +12,7 @@
   </description>
 
   <parameter name="image" 
-  	java-type="net.sf.tapestry.IAsset" 
+  	type="net.sf.tapestry.IAsset" 
   	required="yes"
   	direction="in">
     <description>
@@ -22,7 +22,7 @@
   </parameter>
   
   <parameter name="focus"
-  	java-type="net.sf.tapestry.IAsset"
+  	type="net.sf.tapestry.IAsset"
   	direction="in">
     <description>
     If specified, provides an image displayed when the cursor is moved
@@ -31,7 +31,7 @@
   </parameter>
   
   <parameter name="blur" 
-  	java-type="net.sf.tapestry.IAsset"
+  	type="net.sf.tapestry.IAsset"
   	direction="in">
     <description>
     If specified, provides an image displayed when the cursor is moved
@@ -40,7 +40,7 @@
   </parameter>
   
   <parameter name="disabled"
-  	java-type="net.sf.tapestry.IAsset"
+  	type="net.sf.tapestry.IAsset"
   	direction="in">
     <description>
     If specified, provides an image displayed when the surrounding

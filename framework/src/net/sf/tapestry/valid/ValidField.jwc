@@ -10,18 +10,18 @@
   A text input field that can validate input.
   </description>
 
-  <parameter name="value" java-type="java.lang.Object" required="yes"/>
+  <parameter name="value" type="java.lang.Object" required="yes"/>
   
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
   
-  <parameter name="hidden" java-type="boolean" direction="in"/>
+  <parameter name="hidden" type="boolean" direction="in"/>
   
-  <parameter name="displayWidth" java-type="int" direction="in"/>
+  <parameter name="displayWidth" type="int" direction="in"/>
   
-  <parameter name="maximumLength" java-type="int" direction="in"/>
+  <parameter name="maximumLength" type="int" direction="in"/>
   
   
-  <parameter name="validator" java-type="net.sf.tapestry.valid.IValidator" required="yes" direction="in">
+  <parameter name="validator" type="net.sf.tapestry.valid.IValidator" required="yes" direction="in">
     <description>
     Converts value to a string and parses strings back into object values.
     </description>
@@ -31,13 +31,13 @@
   <!-- Has to use custom parameter connection, because it is invoked when not
        renderring. -->
        
-  <parameter name="displayName" java-type="java.lang.String" required="yes" direction="custom">
+  <parameter name="displayName" type="java.lang.String" required="yes" direction="custom">
     <description>
     Name used by FieldLabel and when generating validation error messages.
     </description>
   </parameter>
   
-  <parameter name="type" java-type="java.lang.String" required="no" direction="in" property-name="typeName">
+  <parameter name="type" type="java.lang.String" required="no" direction="in" property-name="typeName">
   	<description>
   	Identifies type to convert to when converting strings in request.
   	</description>

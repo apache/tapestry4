@@ -212,13 +212,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public boolean getRequiresSession()
     {
-        // Can't rely on stateful property, since that is only valid
-        // during render ... so we go direct to the binding.
-
-        if (_statefulBinding == null)
-            return true;
-
-        return _statefulBinding.getBoolean();
+		return isStateful();
     }
 
     /**

@@ -8,7 +8,7 @@
 	allow-body="no" 
 	allow-informal-parameters="no">
   
-  <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes" direction="in"/>
+  <parameter name="book" type="net.sf.tapestry.vlib.ejb.Book" required="yes" direction="in"/>
   
   <component id="link" type="ExternalLink">
     <static-binding name="page">ViewBook</static-binding>

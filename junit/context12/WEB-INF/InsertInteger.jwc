@@ -7,6 +7,6 @@
 <component-specification class="net.sf.tapestry.junit.mock.c12.InsertInteger"
 		allow-body="no" allow-informal-parameters="no">
 
-  <parameter name="integer" property-name="intValue" java-type="int" direction="in"/>
+  <parameter name="integer" property-name="intValue" type="int" direction="in"/>
 		
 </component-specification>

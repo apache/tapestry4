@@ -11,7 +11,7 @@
 	</description>
   
 	<parameter name="pagesDisplayed" 
-		java-type="int" 
+		type="int" 
 		required="no"
 		direction="custom"/>
   

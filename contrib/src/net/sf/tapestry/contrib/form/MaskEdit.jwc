@@ -6,9 +6,9 @@
 
 <component-specification class="net.sf.tapestry.contrib.form.MaskEdit" allow-informal-parameters="no">
 
-  <parameter name="mask" direction="in" java-type="java.lang.String" required="yes"/>
-  <parameter name="value" direction="custom" java-type="java.lang.String" required="yes"/>
-  <parameter name="disabled" direction="in" java-type="boolean" required="no"/>
+  <parameter name="mask" direction="in" type="java.lang.String" required="yes"/>
+  <parameter name="value" direction="custom" type="java.lang.String" required="yes"/>
+  <parameter name="disabled" direction="in" type="boolean" required="no"/>
   
   <component id="maskEdit" type="TextField">
     <binding name="value" expression="value"/>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
@@ -10,22 +11,22 @@
 	</description>
   
 	<parameter name="column" 
-		java-type="net.sf.tapestry.contrib.table.model.ITableColumn" 
+		type="net.sf.tapestry.contrib.table.model.ITableColumn" 
 		required="no"
 		direction="custom"/>
 
 	<parameter name="element" 
-		java-type="java.lang.String" 
+		type="java.lang.String" 
 		required="no"
 		direction="custom"/>
 
 	<parameter name="arrowUpAsset" 
-		java-type="net.sf.tapestry.IAsset" 
+		type="net.sf.tapestry.IAsset" 
 		required="no"
 		direction="in"/>
 
 	<parameter name="arrowDownAsset" 
-		java-type="net.sf.tapestry.IAsset" 
+		type="net.sf.tapestry.IAsset" 
 		required="no"
 		direction="in"/>
 

@@ -9,7 +9,7 @@
 	allow-informal-parameters="yes">
 	
   <parameter name="block" 
-  	java-type="net.sf.tapestry.components.Block"
+  	type="net.sf.tapestry.components.Block"
   	direction="in"/>
   	
 </component-specification>
