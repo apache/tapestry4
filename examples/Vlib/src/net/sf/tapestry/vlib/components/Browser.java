@@ -32,7 +32,6 @@ import java.util.List;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IDirectListener;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageEvent;
@@ -56,7 +55,6 @@ public class Browser extends BaseComponent implements PageDetachListener
     private int resultCount;
     private int pageCount;
     private List pageResults;
-    private IDirectListener jumpListener;
 
     /**
      *  Default for the page size; the number of results viewed on each page.
@@ -247,9 +245,11 @@ public class Browser extends BaseComponent implements PageDetachListener
         setCurrentPage(page);
     }
 
-    public void jump(String[] context, IRequestCycle cycle)
+    public void jump(IRequestCycle cycle)
     {
-        int page = Integer.parseInt(context[0]);
+        String[] parameters = cycle.getServiceParameters();
+        
+        int page = Integer.parseInt(parameters[0]);
 
         jump(page);
     }

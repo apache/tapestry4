@@ -44,6 +44,6 @@ public interface IDirect extends IComponent
 	 *
 	 **/
 
-	public void trigger(IRequestCycle cycle, String[] context)
+	public void trigger(IRequestCycle cycle)
 		throws RequestCycleException;
 }

@@ -102,6 +102,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     private int targetActionId;
     private IComponent targetComponent;
 
+    /** @since 2.0.3 **/
+    
+    private String[] serviceParameters;
     /**
      *  Standard constructor used to render a response page.
      *
@@ -700,4 +703,19 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         recorder.markForDiscard();
     }
+    
+    /** @since 2.0.3 **/
+    
+    public String[] getServiceParameters()
+    {
+        return serviceParameters;
+    }
+    
+    /** @since 2.0.3 **/
+    
+    public void setServiceParameters(String[] serviceParameters)
+    {
+        this.serviceParameters = serviceParameters;
+    }
+
 }

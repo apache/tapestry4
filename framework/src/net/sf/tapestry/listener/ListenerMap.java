@@ -37,7 +37,6 @@ import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IDirect;
-import net.sf.tapestry.IDirectListener;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
@@ -96,7 +95,7 @@ public class ListenerMap
      *
      **/
 
-    private class SyntheticListener implements IDirectListener, IActionListener
+    private class SyntheticListener implements IActionListener
     {
         private Method method;
 
@@ -118,15 +117,6 @@ public class ListenerMap
             invoke(cycle);
         }
 
-        public void directTriggered(
-            IDirect component,
-            String[] context,
-            IRequestCycle cycle)
-            throws RequestCycleException
-        {
-            invoke(cycle);
-        }
-
         public String toString()
         {
             StringBuffer buffer = new StringBuffer("SyntheticListener[");
@@ -139,45 +129,6 @@ public class ListenerMap
             return buffer.toString();
         }
 
-    }
-
-    /**
-     *  Class used when the method includes a context (String[]) parameter.  This
-     *  must be a {@link IDirectListener}.
-     *
-     **/
-
-    private class SyntheticContextListener implements IDirectListener
-    {
-        private Method method;
-
-        SyntheticContextListener(Method method)
-        {
-            this.method = method;
-        }
-
-        public void directTriggered(
-            IDirect component,
-            String[] context,
-            IRequestCycle cycle)
-            throws RequestCycleException
-        {
-            Object[] args = new Object[] { context, cycle };
-
-            invokeTargetMethod(target, method, args);
-        }
-
-        public String toString()
-        {
-            StringBuffer buffer = new StringBuffer("SyntheticContextListener[");
-
-            buffer.append(target);
-            buffer.append(' ');
-            buffer.append(method);
-            buffer.append(']');
-
-            return buffer.toString();
-        }
     }
 
     public ListenerMap(Object target)
@@ -237,14 +188,7 @@ public class ListenerMap
             throw new ApplicationRuntimeException(
                 Tapestry.getString("ListenerMap.object-missing-method", target, name));
 
-        // Just has one paramter, IRequestCycle
-
-        if (method.getParameterTypes().length == 1)
-            return new SyntheticListener(method);
-
-        // OK, must have two parameters (IRequestCycle and String[])).
-
-        return new SyntheticContextListener(method);
+           return new SyntheticListener(method);
     }
 
     /**
@@ -307,18 +251,12 @@ public class ListenerMap
 
             Class[] parmTypes = m.getParameterTypes();
 
-            // Must have either 1 or 2 parameters
-
-            if (parmTypes.length < 1 || parmTypes.length > 2)
+            if (parmTypes.length != 1)
                 continue;
 
-            // If two parms, first parm must be String[]
-            if (parmTypes.length == 2 && !parmTypes[0].equals(String[].class))
-                continue;
+            // parm must be IRequestCycle
 
-            // 2nd/last parm must be IRequestCycle
-
-            if (!parmTypes[parmTypes.length - 1].equals(IRequestCycle.class))
+            if (!parmTypes[0].equals(IRequestCycle.class))
                 continue;
 
             Class[] exceptions = m.getExceptionTypes();
@@ -332,7 +270,6 @@ public class ListenerMap
             // Ha!  Passed all tests.
 
             result.put(m.getName(), m);
-
         }
 
         return result;

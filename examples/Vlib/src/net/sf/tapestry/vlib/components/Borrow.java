@@ -140,12 +140,13 @@ public class Borrow extends BaseComponent
         return visit.isLoggedInUser(book.getHolderPrimaryKey());
     }
 
-    public void borrow(String[] context, IRequestCycle cycle) throws RequestCycleException
+    public void borrow(IRequestCycle cycle) throws RequestCycleException
     {
+        String[] parameters = cycle.getServiceParameters();
         Integer bookPK;
 
         // The primary key of the book to borrow is encoded in the context.
-        bookPK = new Integer(context[0]);
+        bookPK = new Integer(parameters[0]);
 
         Visit visit = (Visit) page.getVisit();
         Home home = (Home) cycle.getPage("Home");

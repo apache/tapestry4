@@ -711,10 +711,12 @@ implements IForm, IDirect, PageDetachListener
 	 *
 	 **/
 
-	public void trigger(IRequestCycle cycle, String[] context)
+	public void trigger(IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		cycle.rewindForm(this, context[0]);
+        String[] parameters = cycle.getServiceParameters();
+        
+		cycle.rewindForm(this, parameters[0]);
 	}
 
 	/**

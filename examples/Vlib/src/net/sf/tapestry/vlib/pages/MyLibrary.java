@@ -184,9 +184,10 @@ public class MyLibrary extends Protected
      *
      **/
 
-    public void editBook(String[] context, IRequestCycle cycle)
+    public void editBook(IRequestCycle cycle)
     {
-        Integer bookPK = new Integer(context[0]);
+        String[] parameters = cycle.getServiceParameters();
+        Integer bookPK = new Integer(parameters[0]);
         EditBook page = (EditBook) cycle.getPage("EditBook");
 
         page.beginEdit(bookPK, cycle);
@@ -197,9 +198,10 @@ public class MyLibrary extends Protected
      *
      **/
 
-    public void deleteBook(String[] context, IRequestCycle cycle)
+    public void deleteBook(IRequestCycle cycle)
     {
-        Integer bookPK = new Integer(context[0]);
+        String[] parameters = cycle.getServiceParameters();
+        Integer bookPK = new Integer(parameters[0]);
 
         ConfirmBookDelete page = (ConfirmBookDelete) cycle.getPage("ConfirmBookDelete");
         page.selectBook(bookPK, cycle);

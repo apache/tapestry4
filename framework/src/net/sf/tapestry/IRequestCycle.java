@@ -26,41 +26,42 @@
 package net.sf.tapestry;
 
 /**
- * Controller object that manages a single request cycle.  A request cycle
- * is one 'hit' on the web server.  In the case of a Tapestry application,
- * this will involve:
- * <ul>
- * <li>Responding to the URL by finding an {@link IEngineService} object
- * <li>Determining the result page
- * <li>Renderring the result page
- * <li>Releasing any resources
- * </ul>
+ *  Controller object that manages a single request cycle.  A request cycle
+ *  is one 'hit' on the web server.  In the case of a Tapestry application,
+ *  this will involve:
+ *  <ul>
+ *  <li>Responding to the URL by finding an {@link IEngineService} object
+ *  <li>Determining the result page
+ *  <li>Renderring the result page
+ *  <li>Releasing any resources
+ *  </ul>
  *
- * <p>Mixed in with this is:
- * <ul>
- * <li>Exception handling
- * <li>Loading of pages and templates from resources
- * <li>Tracking changes to page properties, and restoring pages to prior states
- * <li>Pooling of page objects
- * </ul>
+ *  <p>Mixed in with this is:
+ *  <ul>
+ *  <li>Exception handling
+ *  <li>Loading of pages and templates from resources
+ *  <li>Tracking changes to page properties, and restoring pages to prior states
+ *  <li>Pooling of page objects
+ *  </ul>
  *
- * <p>A request cycle is broken up into two phases.   The <em>rewind</em> phase
- * is optional, as it tied to {@link javax.swing.Action} or
- * {@link net.sf.tapestry.form.Form} components.  In the rewind phase,
- * a previous page render is redone (discarding output) until a specific component
- * of the page is reached.  This rewinding ensures that the page
- * is restored to the exact state it had when the URL for the request cycle was
- * generated, taking into account the dynamic nature of the page ({@link net.sf.tapestry.components.Foreach},
- * {@link java.awt.Conditional}, etc.).  Once this component is reached, it can notify
- * its {@link IActionListener}.  The listener has the ability to update the state
- * of any pages and select a new result page.
+ *  <p>A request cycle is broken up into two phases.   The <em>rewind</em> phase
+ *  is optional, as it tied to {@link javax.swing.Action} or
+ *  {@link net.sf.tapestry.form.Form} components.  In the rewind phase,
+ *  a previous page render is redone (discarding output) until a specific component
+ *  of the page is reached.  This rewinding ensures that the page
+ *  is restored to the exact state it had when the URL for the request cycle was
+ *  generated, taking into account the dynamic nature of the page ({@link net.sf.tapestry.components.Foreach},
+ *  {@link java.awt.Conditional}, etc.).  Once this component is reached, it can notify
+ *  its {@link IActionListener}.  The listener has the ability to update the state
+ *  of any pages and select a new result page.
  *
- * <p>Following the rewind phase is the <em>render</em> phase.  During the render phase,
- * a page is actually rendered and output sent to the client web browser.
+ *  <p>Following the rewind phase is the <em>render</em> phase.  During the render phase,
+ *  a page is actually rendered and output sent to the client web browser.
  *
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ * 
  **/
 
 public interface IRequestCycle
@@ -249,4 +250,25 @@ public interface IRequestCycle
      **/
 
     public void discardPage(String name);
+    
+    /**
+     *  Invoked by a {@link IEngineService service} to store an array of application-specific parameters.
+     *  These can later be retrieved (typically, by an application-specific listener method)
+     *  by invoking {@link #getServiceParameters()}.
+     * 
+     *  @see IEngineService#DIRECT_SERVICE
+     *  @since 2.0.3
+     * 
+     **/
+    
+    public void setServiceParameters(String[] context);
+    
+    /**
+     *  Returns parameters previously stored by {@link #setServiceParameters(String[])}.
+     * 
+     *  @since 2.0.3
+     * 
+     **/
+    
+    public String[] getServiceParameters();
 }

@@ -8,11 +8,11 @@
   using the context.
   </description>
 
-  <parameter name="listener" java-type="net.sf.tapestry.IDirectListener" required="yes"/>
+  <parameter name="listener" java-type="net.sf.tapestry.IActionListener" required="yes"/>
   <parameter name="context">
     <description>
-    A object or string, or array of objects and strings, encoded into the URL and
-    provided to the listener.
+    A object or string, or array of objects and strings, encoded into the URL
+    as service parameters.
     </description>
   </parameter>
   
