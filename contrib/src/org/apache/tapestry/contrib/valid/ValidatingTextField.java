@@ -132,70 +132,98 @@ import org.apache.tapestry.valid.ValidField;
 
 public abstract class ValidatingTextField extends ValidField
 {
-	public abstract IBinding getValueBinding();
-	public abstract void setValueBinding(IBinding valueBinding);
-	
-    private IBinding minimumLengthBinding;
-    private IBinding requiredBinding;
+	private IBinding minimumLengthBinding;
+	private IBinding requiredBinding;
+	private IBinding valueBinding;
 
-    /** Returns the valueBinding. **/
+	/* (non-Javadoc)
+	 * @see org.apache.tapestry.valid.ValidField#getValue()
+	 */
+	public Object getValue()
+	{
+		if (getTextBinding() != null)
+		{
+			return getTextBinding().getObject();
+		}
+		return null;
+	}
 
-    public IBinding getTextBinding()
-    {
-        return getValueBinding();
-    }
+	/* (non-Javadoc)
+	 * @see org.apache.tapestry.valid.ValidField#setValue(java.lang.Object)
+	 */
+	public void setValue(Object value)
+	{
+		if(getTextBinding() != null) {
+			getTextBinding().setObject(value);
+		}			
+		// otherwise do nothing, we have nowhere to bind the value to
+	}
 
-    /** Updates valueBinding. **/
+	public IBinding getValueBinding()
+	{
+		return valueBinding;
+	}
 
-    public void setTextBinding(IBinding value)
-    {
-        setValueBinding(value);
-    }
+	public void setValueBinding(IBinding binding)
+	{
+		valueBinding = binding;
+	}
 
-    public IBinding getMinimumLengthBinding()
-    {
-        return minimumLengthBinding;
-    }
+	/** Returns the valueBinding. **/
+	public IBinding getTextBinding()
+	{
+		return getValueBinding();
+	}
 
-    public void setMinimumLengthBinding(IBinding value)
-    {
-        minimumLengthBinding = value;
-    }
+	/** Updates valueBinding. **/
+	public void setTextBinding(IBinding value)
+	{
+		setValueBinding(value);
+	}
 
-    public IBinding getRequiredBinding()
-    {
-        return requiredBinding;
-    }
+	public IBinding getMinimumLengthBinding()
+	{
+		return minimumLengthBinding;
+	}
 
-    public void setRequiredBinding(IBinding requiredBinding)
-    {
-        this.requiredBinding = requiredBinding;
-    }
+	public void setMinimumLengthBinding(IBinding value)
+	{
+		minimumLengthBinding = value;
+	}
 
-    /**
-     * Overrides {@link ValidField#getValidator()} to construct
-     * a validator on the fly.
-     * 
-     **/
+	public IBinding getRequiredBinding()
+	{
+		return requiredBinding;
+	}
 
-    public IValidator getValidator()
-    {
-        StringValidator validator = new StringValidator();
+	public void setRequiredBinding(IBinding requiredBinding)
+	{
+		this.requiredBinding = requiredBinding;
+	}
 
-        if (requiredBinding != null)
-        {
-            boolean required = requiredBinding.getBoolean();
+	/**
+	 * Overrides {@link ValidField#getValidator()} to construct
+	 * a validator on the fly.
+	 * 
+	 **/
+	public IValidator getValidator()
+	{
+		StringValidator validator = new StringValidator();
 
-            validator.setRequired(required);
-        }
+		if (requiredBinding != null)
+		{
+			boolean required = requiredBinding.getBoolean();
 
-        if (minimumLengthBinding != null)
-        {
-            int minimumLength = minimumLengthBinding.getInt();
+			validator.setRequired(required);
+		}
 
-            validator.setMinimumLength(minimumLength);
-        }
+		if (minimumLengthBinding != null)
+		{
+			int minimumLength = minimumLengthBinding.getInt();
 
-        return validator;
-    }
+			validator.setMinimumLength(minimumLength);
+		}
+
+		return validator;
+	}
 }
