@@ -19,7 +19,7 @@
   </component>
   
   <component id="showDebug" type="Delegator">
-    <binding name="delegate" expression="page.requestCycle.requestContext"/>
+    <binding name="delegate" expression="requestCycle.requestContext"/>
   </component>
   
   <private-asset name="stylesheet" resource-path="/net/sf/tapestry/pages/Exception.css"/>

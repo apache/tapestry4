@@ -69,7 +69,7 @@ public class ServiceLink extends GestureLink
 
     protected Object[] getServiceParameters(IRequestCycle cycle)
     {
-        return DirectLink.constructContext(_parameters);
+        return DirectLink.constructServiceParameters(_parameters);
 
     }
 

@@ -100,32 +100,57 @@ public class DirectLink extends GestureLink implements IDirect
 
     protected Object[] getServiceParameters(IRequestCycle cycle)
     {
-        return constructContext(_parameters);
+        return constructServiceParameters(_parameters);
     }
 
     /**
-     *  Converts a binding to a context (an array of Strings).
-     *  This is used by the {@link DirectLink} and {@link ServiceLink}
-     *  components.
-     *
+     *  @deprecated To be removed in 2.3, use 
+     *  {@link #constructServiceParameters(Object)}
+     *  instead.
+     * 
      **/
 
     public static Object[] constructContext(Object contextValue)
     {
-        if (contextValue == null)
+        return constructServiceParameters(contextValue);
+    }
+
+    /**
+     *  Converts a service parameters value to an array
+     *  of objects.  
+     *  This is used by the {@link DirectLink}, {@link ServiceLink}
+     *  and {@link ExternalLink}
+     *  components.
+     *
+     *  @param parameterValue the input value which may be
+     *  <ul>
+     *  <li>null  (returns null)
+     *  <li>An array of Object (returns the array)
+     *  <li>A {@link List} (returns an array of the values in the List})
+     *  <li>A single object (returns the object as a single-element array)
+     *  </ul>
+     * 
+     *  @return An array representation of the input object.
+     * 
+     *  @since 2.2
+     **/
+
+    public static Object[] constructServiceParameters(Object parameterValue)
+    {
+        if (parameterValue == null)
             return null;
 
-        if (contextValue instanceof Object[])
-            return (Object[]) contextValue;
+        if (parameterValue instanceof Object[])
+            return (Object[]) parameterValue;
 
-        if (contextValue instanceof List)
+        if (parameterValue instanceof List)
         {
-            List list = (List) contextValue;
+            List list = (List) parameterValue;
 
             return list.toArray();
         }
 
-        return new Object[] { contextValue };
+        return new Object[] { parameterValue };
     }
 
     /**
@@ -189,14 +214,14 @@ public class DirectLink extends GestureLink implements IDirect
     }
 
     /** @since 2.2 **/
-    
+
     public Object getParameters()
     {
         return _parameters;
     }
 
     /** @since 2.2. **/
-    
+
     public void setParameters(Object context)
     {
         _parameters = context;

@@ -39,11 +39,18 @@ import net.sf.tapestry.util.exception.ExceptionDescription;
 
 public class Exception extends BasePage
 {
-    private ExceptionDescription[] exceptions;
+    private ExceptionDescription[] _exceptions;
+
+    public void detach()
+    {
+        _exceptions = null;
+
+        super.detach();
+    }
 
     public ExceptionDescription[] getExceptions()
     {
-        return exceptions;
+        return _exceptions;
     }
 
     public void setException(Throwable value)
@@ -52,6 +59,7 @@ public class Exception extends BasePage
 
         analyzer = new ExceptionAnalyzer();
 
-        exceptions = analyzer.analyze(value);
+        _exceptions = analyzer.analyze(value);
     }
+
 }

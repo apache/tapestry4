@@ -25,6 +25,7 @@
     <component-alias type="DatePicker" specification-path="/net/sf/tapestry/form/DatePicker.jwc"/>
     <component-alias type="Delegator" specification-path="/net/sf/tapestry/components/Delegator.jwc"/>
     <component-alias type="DirectLink" specification-path="/net/sf/tapestry/link/DirectLink.jwc"/>
+    <component-alias type="ExternalLink" specification-path="/net/sf/tapestry/link/ExternalLink.jwc"/>
     <component-alias type="FieldLabel" specification-path="/net/sf/tapestry/valid/FieldLabel.jwc"/>
     <component-alias type="Foreach" specification-path="/net/sf/tapestry/components/Foreach.jwc"/>
     <component-alias type="Frame" specification-path="/net/sf/tapestry/html/Frame.jwc"/>
