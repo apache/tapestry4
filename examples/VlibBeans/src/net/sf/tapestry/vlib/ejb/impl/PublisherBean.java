@@ -60,7 +60,10 @@ public abstract class PublisherBean extends AbstractEntityBean
 
 	public Integer ejbCreate(String name) throws CreateException, RemoteException
 	{
-		return allocateKey();
+		setPublisherId(allocateKey());
+		setName(name);
+		
+		return null;
 	}
 
 	public void ejbPostCreate(String name)

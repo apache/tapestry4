@@ -113,7 +113,9 @@ public abstract class BookBean extends AbstractEntityBean
  
         updateEntityAttributes(attributes);
 
-        return allocateKey();
+        setBookId(allocateKey());
+        
+        return null;
     }
 
     public void ejbPostCreate(Map attributes)
