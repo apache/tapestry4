@@ -233,7 +233,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
 				return;
 
 			// get all the values
-			String[] optionValues = cycle.getRequestContext().getParameterValues(name);
+			String[] optionValues = cycle.getRequestContext().getParameters(name);
 
 			// Clear the list
 
