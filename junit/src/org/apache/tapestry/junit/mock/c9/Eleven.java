@@ -71,13 +71,12 @@ public abstract class Eleven extends BasePage implements ILocatable
 {
 
     public abstract int getIntValue();
-    public abstract long[] getLongArrayValue();
     public abstract String[] getStringArrayValue();
     
-    public long getNumericValue()
+    public String getStringValue()
     {
         int index = getIntValue();
-        return getLongArrayValue()[index];
+        return getStringArrayValue()[index];
     }
 
 }

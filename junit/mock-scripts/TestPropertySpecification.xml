@@ -383,15 +383,15 @@ value: \[(.*?)\]
 		</assert-output>
 		
 		<assert-output name="Two">
-		two is 2
+		en_US is the US locale
 		</assert-output>	
 
 		<assert-output name="Three">
-		three is 3
+		de_DE is the Germany locale
 		</assert-output>	
 
 		<assert-output name="Five">
-		five is 5
+		it_IT is the Italy locale
 		</assert-output>	
 	</request>	
  </mock-test>
