@@ -56,6 +56,9 @@ public class RestartService implements IEngineService
 
     /** @since 3.1 */
     private LinkFactory _linkFactory;
+    
+    /** @since 3.1 */    
+    private String _servletPath;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
@@ -93,7 +96,7 @@ public class RestartService implements IEngineService
         // TODO: How to get the EngineManager to *not* try and
         // store the engine back in the (now invalid) session.
 
-        String url = _builder.constructURL(_request.getServletPath());
+        String url = _builder.constructURL(_servletPath);
 
         _response.sendRedirect(url);
     }
@@ -131,5 +134,11 @@ public class RestartService implements IEngineService
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+    
+    /** @since 3.1 */
+    public void setServletPath(String servletPath)
+    {
+        _servletPath = servletPath;
     }
 }

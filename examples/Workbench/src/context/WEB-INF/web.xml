@@ -38,7 +38,7 @@
      
   <servlet-mapping>
   	<servlet-name>workbench</servlet-name>
-  	<url-pattern>/app/*</url-pattern>
+  	<url-pattern>/app</url-pattern>
   </servlet-mapping>  
   
   <servlet-mapping>
@@ -49,6 +49,11 @@
   <servlet-mapping>
     <servlet-name>workbench</servlet-name>
     <url-pattern>*.direct</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>workbench</servlet-name>
+    <url-pattern>*.svc</url-pattern>
   </servlet-mapping>
 
   <session-config>

@@ -103,6 +103,37 @@
         
       </element>
       
+      <element name="extension-encoder">
+        
+        An encoder that encodes just the service id, as /service.extension.
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="extension" required="true">
+          The extension used, such as "svc".
+        </attribute>
+        
+        <rules>
+          <create-object class="org.apache.tapestry.services.impl.ServiceEncoderContribution"/>
+          <read-attribute attribute="id" property="id"/>
+          <read-attribute attribute="before" property="before"/>
+          <read-attribute attribute="after" property="after"/>
+          <invoke-parent method="addElement"/>
+          
+          <create-object class="org.apache.tapestry.engine.encoders.ServiceExtensionEncoder"/>
+          <read-attribute attribute="extension" property="extension"/>
+          <invoke-parent method="setEncoder"/>          
+        </rules>
+        
+      </element>      
+      
     </schema>
     
   </configuration-point>

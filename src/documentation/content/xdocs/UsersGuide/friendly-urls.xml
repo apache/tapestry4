@@ -184,6 +184,39 @@
       
     </section>
     
+    <section>
+      <title>extension-encoder</title>
+      
+      <p>
+        The <code>extension-encoder</code> 
+        isused to encode just the <code>service</code> query parameter. The output URL is the service name
+        with a fixed extension (typically, ".svc"), i.e., <code>/home.svc</code> or <code>/restart.svc</code>.
+      </p>
+      
+      <p>In your hivemodule.xml:</p>
+  
+      <source><![CDATA[
+<contribution configuration-id="tapestry.url.ServiceEncoders">
+  <extension-encoder id="extension" extension="svc" after="*"/>
+</contribution>]]></source>        
+   
+      
+      <p>
+        The use of the <code>after</code> attribute ensures that this encoder is always executed after
+        any other encoders. Order is important!
+      </p>
+      
+      <p>
+        For this example, another mapping is required in the web.xml:
+      </p>
+      
+      <source><![CDATA[
+<servlet-mapping>
+  <servlet-name>myapp</servlet-name>
+  <url-pattern>*.svc</url-pattern>
+</servlet-mapping>]]></source>      
+    </section>
+    
   </section>
     
   </body>

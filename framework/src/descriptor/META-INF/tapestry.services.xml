@@ -84,6 +84,7 @@
         <set-service property="builder" service-id="tapestry.request.AbsoluteURLBuilder"/>
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
+        <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
       </construct>
     </invoke-factory>
   </service-point>
