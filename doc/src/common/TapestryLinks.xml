@@ -36,7 +36,7 @@
 <!ENTITY IDirectListener '<ulink url="&ApiRoot;/IDirectListener .html"><classname>IDirectListener</classname></ulink>'>
 <!ENTITY IEngine '<ulink url="&ApiRoot;/IEngine.html"><classname>IEngine</classname></ulink>'>
 <!ENTITY IEngineService '<ulink url="&ApiRoot;/IEngineService.html"><classname>IEngineService</classname></ulink>'>
-<!ENTITY ILifecycle '<ulink url="&ApiRoot;/ILifecycle.html"><classname>ILifecycle</classname></ulink>'>
+<!ENTITY ILifecycle '<classname>ILifecycle</classname>'>
 <!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
 <!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
 <!ENTITY IPropertySelectionModel '<ulink url="&ApiRoot;/form/IPropertySelectionModel.html"><classname>IPropertySelectionModel</classname></ulink>'>

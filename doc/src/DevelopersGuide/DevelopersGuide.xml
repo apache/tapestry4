@@ -7,6 +7,7 @@
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
   %TapestryLinks;
   <!ENTITY Action '<link linkend="builtin.Action"><classname>Action</classname></link>'>
+  <!ENTITY Any '<link linkend="builtin.Any"><classname>Any</classname></link>'>
   <!ENTITY Block '<link linkend="builtin.Block"><classname>Block</classname></link>'>
   <!ENTITY Checkbox '<link linkend="builtin.Checkbox"><classname>Checkbox</classname></link>'>
   <!ENTITY Body '<link linkend="builtin.Body"><classname>Body</classname></link>'>
@@ -15,6 +16,7 @@
   <!ENTITY ExceptionDisplay '<link linkend="builtin.ExceptionDisplay"><classname>ExceptionDisplay</classname></link>'>
   <!ENTITY Foreach '<link linkend="builtin.Foreach"><classname>Foreach</classname></link>'>
   <!ENTITY Form '<link linkend="builtin.Form"><classname>Form</classname></link>'>
+  <!ENTITY GenericLink '<link linkend="builtin.GenericLink"><classname>GenericLink</classname></link>'>
   <!ENTITY Hidden '<link linkend="builtin.Hidden"><classname>Hidden</classname></link>'>
   <!ENTITY ListEdit '<link linkend="builtin.ListEdit"><classname>ListEdit</classname></link>'>
   <!ENTITY Image '<link linkend="builtin.Image"><classname>Image</classname></link>'>
@@ -78,6 +80,14 @@ and responding to HTML queries (such as clicking on a link, or submitting a form
     <para>The Tapestry framework takes on virtually all of the responsibilities 
 for managing application flow and server-side client state.  
 This allows developers to concentrate on the business and presentation aspects of the application.</para>
+
+
+<para>
+Tapestry reconceptualizes web application development
+in terms of objects, methods and properties
+instead of URLs and query parameters.
+</para>
+
     <section id="intro.scripting">
       <title>Scripting vs. Components</title>
       <para>Most leading web application frameworks are based on some form of 
@@ -441,7 +451,8 @@ including:
 				<footnote>
                 <para>That is, Tapestry templates and specifications are interpreted as is.
 					Unlike JSPs, they are not translated into Java source code
-					and compiled into Java classes.
+					and compiled into Java classes.  This greatly simplifies debugging
+					since no code is generated at runtime.
 					</para>
               </footnote>
             </para>
@@ -4155,6 +4166,43 @@ The other form-related components must be wrapped inside the <classname>Form</cl
         
       </variablelist>
     </section>
+    
+    
+        <section id="builtin.GenericLink">
+      <title>GenericLink</title>
+      <para>
+Creates a <sgmltag class="starttag">a</sgmltag> hyperlink for an
+arbitrary URL.  Although this can be accomplished using an &Any; component,
+a GenericLink is more flexible: it can be disabled (like a &Direct; or &Action;)
+and can also wrap around &Rollover; components.  GenericLinks are often used
+with <filename>javascript:</filename> URLs to perform client-side scripting.
+</para>
+      <variablelist>
+        <title>Parameters</title>
+
+        
+		<varlistentry>
+			<term>href</term>
+			<listitem>
+			<para>The URL to trigger when the link is clicked.
+			</para>
+			</listitem>
+		</varlistentry>
+		
+				<varlistentry>
+	<term>disabled</term>
+	  <listitem>
+            <para>Controls whether the link is produced. If true, the 
+			portion of the template the link surrounds is still rendered, but 
+			not the link itself.</para>
+          </listitem>
+        </varlistentry>
+
+        
+      </variablelist>
+    </section>
+    
+    
     <section id="builtin.Hidden">
       <title>Hidden</title>
       <para>
@@ -4928,30 +4976,23 @@ hypothetical visit object that uses EJBs.
 </para>
       <informalexample>
         <programlisting>
-public IActionListener getListener()
+public void exampleListener(IRequestCycle cycle)
 {
-  return new IActionListener()
-  {
-    public void actionTriggered(IComponent component,
-                                IRequestCycle cycle)
-    {
-      Visit visit; <co id="apps.common-logic.ex.visit"/><![CDATA[
-      ]]><replaceable>ISomeHomeInterface</replaceable> home;
-	
-      visit = (Visit)getVisit();
-	
-      home = visit.<replaceable>getSomeHomeInterface</replaceable>();
+  Visit visit; <co id="apps.common-logic.ex.visit"/>
+  <replaceable>ISomeHomeInterface</replaceable> home;
 
-      try
-      {
-      	// etc.
-      }
-      catch (RemoteException ex)
-      {
-        throw new ApplicationRuntimeException(ex);
-      }
-    }
-  };
+  visit = (Visit)getVisit();
+
+  home = visit.<replaceable>getSomeHomeInterface</replaceable>();
+
+  try
+  {
+  	// etc.
+  }
+  catch (RemoteException ex)
+  {
+    throw new ApplicationRuntimeException(ex);
+  }
 }
 </programlisting>
       </informalexample>
@@ -5000,9 +5041,7 @@ the service URL could encode some form of product identifier.
       <para>
 An example of this is in the Virtual Library application.  In 
 order to make certain pages bookmarkable, a new service named 
-"external" was created.  This involved subclassing 
-&SimpleEngine; 
-to provide the new service.
+"external" was created.
 </para>
       <para>
 The external service includes the name of a page and the primary key 
@@ -5070,9 +5109,9 @@ its servlet (the servlet reads the application specification once, when it is fi
       <para>
 This is largely not an issue, since most applications use a provided class, 
 such as &SimpleEngine;.  Subclassing 
-is only necessary when the application requires new engine services, 
-or needs a different method of instantiating the visit object, or
+is only necessary when the application  needs a different method of instantiating the visit object, or
 needs to store additional data (see <link linkend="coding.stateless" endterm="coding.stateless.title"/>).
+In some cases, it is convienient to create a subclass to provide common component listener methods.
 </para>
     </section>
     <section id="coding.visit">
@@ -5295,7 +5334,7 @@ If the methods are found, they are invoked from
       <para> This changes the example to:</para>
       <informalexample>
         <programlisting>
-          <emphasis>private IBinding colorBinding;
+<emphasis>private IBinding colorBinding;
 
 public void setColorBinding(IBinding value)
 {
@@ -6098,6 +6137,17 @@ examples), others are used at runtime (and must be added to the servlet containe
 		</listitem>
 	</varlistentry>
 
+
+	<varlistentry>
+		<term><filename>javax.xml.jaxp.jar</filename></term>
+		<listitem>
+		<para>
+		The Java API for XML Processing.  Needed at runtime to allow Tapestry to locate an XML
+		processor, used to parse application and component specifications.
+		</para>
+		</listitem>
+	</varlistentry>
+	
 	<varlistentry>
 		<term><filename>jcommon-<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<term><filename>jfreechart-<replaceable>x.x.x</replaceable>.jar</filename></term>
@@ -6120,15 +6170,6 @@ examples), others are used at runtime (and must be added to the servlet containe
 		</listitem>
 	</varlistentry>
 
-	<varlistentry>
-		<term><filename>javax.xml.jaxp.jar</filename></term>
-		<listitem>
-		<para>
-		The Java API for XML Processing.  Needed at runtime to allow Tapestry to locate an XML
-		processor, used to parse application and component specifications.
-		</para>
-		</listitem>
-	</varlistentry>
 	
 	<varlistentry>
 		<term><filename>log4j-core.jar</filename></term>
@@ -6238,6 +6279,13 @@ Tapestry is currently built and tested against release 2.4.3 of JBoss.
 You must have &Ant; 1.4 or better, as well as a JDK 1.2 or better JDK.
 </para>
 
+<warning>
+<para>
+You'll probably want to run JBoss, in which case you'll need JDK 1.3 or better.  JBoss
+requires JDK 1.3.
+</para>
+</warning>
+
 <para>
 Rebuilding the framework is as easy as executing the command <command>ant clean install</command>.  The
 <varname>clean</varname> target deletes all derived files, including the precompiled libraries included in
@@ -6317,6 +6365,49 @@ This section contains a few Q's and A's gleemed from the Tapestry developer mail
 		</para>
         </answer>
       </qandaentry>
+      
+      <qandaentry>
+      	<question>
+      		<para>
+      		Is Jetty required to use Tapestry?
+      		</para>
+      	</question>
+      	<answer>
+      	<para>
+      	For a brief period of time, Tapestry used some Jetty specific code
+      	to process file uploads.  This showed up in release 2.0.0 and was fixed (removing all Jetty
+      	dependencies) in release 2.0.1.
+      	</para>
+      	<para>
+      	Tapestry still includes Jetty since it so easy to embed Jetty
+      	and use it for testing and development, but it is not required.  Many users
+      	have had great success using Tomcat or Resin with Tapestry.
+      	</para>
+      	</answer>
+      </qandaentry>
+      
+      <qandaentry>
+      	<question>
+      		<para>
+      		Why do I get NoClassDefFoundError exceptions in my Tapestry application
+      		deployed under WebLogic 6.1?
+      		</para>
+   		</question>
+   		<answer>
+   		<para>
+WebLogic appears to have a bug when deploying WAR files that contain libraries.  If the library name,
+in this case <filename>com.primix.tapestry.<replaceable>x</replaceable>.<replaceable>x</replaceable>.<replaceable>x</replaceable>.jar</filename>
+contains any periods, WebLogic fails to expand the JAR file into its temporary directory, thus the classes
+really aren't in the classpath.   		
+   		</para>
+   		<para>
+   		The solution is to rename the Tapestry JAR file to not have periods in the name.  Simply renaming it to <filename>tapestry.jar</filename>
+   		or <filename>tapestry<replaceable>123</replaceable>.jar</filename>
+   		will do.
+   		</para>
+   		</answer>
+   	</qandaentry>
+      
       <qandaentry>
         <question>
           <para>
@@ -6454,8 +6545,7 @@ For release 1.0.5, the interface was replaced by a more standard approach; well 
 These are described in the <link linkend="pages.events">Page Events</link> section of this document.
 </para>
           <para>
-The &ILifecycle; interface will be completely removed in release 1.1.0.  In the meantime, its deprecated, which
-will generate some warnings in your code if you create classes which implement the interface.
+The &ILifecycle; interface was removed in release 2.0.0.
 </para>
         </answer>
       </qandaentry>
@@ -6499,7 +6589,7 @@ a class loader issue.
           (<classname>ValidatingTextField</classname>,
 		<classname>NumericField</classname> and
 		<classname>DateField</classname>) are now part of the 
-		<filename>net.sf.tapestry.contrib.jar</filename> library.
+		<filename>net.sf.tapestry.contrib-<replaceable>x.x.x</replaceable>.jar</filename> library.
 		</para>
 		
           <para>
@@ -6577,12 +6667,15 @@ a class loader issue.
       	control over to the component, and allows components to easily differentiate between static
       	bindings (whose values will never change), and dynamic bindings.
       	</para>
-      	
-      	<para>
-      	Since most Tapestry developers create pages (which have no parameters) and re-use existing
-      	components, the burden on the average developer is small.  One can still imagine shuffling
-      	things around a bit to hide bindings better ... and that may occur in the future.
-      	</para>
+
+<note>
+<para>
+A revision of how parameters and bindings operate is slated for Tapestry release 2.1.0.
+In most cases, Tapestry will be able to hide the existence of bindings; component
+authors will simply create JavaBeans properties that match the parameter names
+for the component.
+</para>
+</note>
       	
       	</answer>
       </qandaentry>
