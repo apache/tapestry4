@@ -5,23 +5,30 @@
 	 Copy this file and a copy of build.properties to a temporary directory
 	 and execute "ant -emacs setup build" using JDK 1.3.
 	 
+	 *** 
+	 NOTE: JDK 1.3 is not compatible with Forrest, so ignore the above and
+	 used JDK 1.4. 
+	 ***
+	 
 	 Be sure to have a complete build.properties and environment, including
 	 the necessary settings and packages for generating documentation
 	 (i.e., settings for "fop.dir" and "clover.dir").
 	 
-	 Generates release distributions into the current directory.
+	 Generates release distributions into the a sub-directory (name matches
+	 the release version).
 	 
 	 -->
 <project name="Tapestry Export" default="build">
+	<property file="build.properties"/>
+
 	<!-- This can be changed to build a historical release, or
-		 to build a branch release. -->
+		 to build a branch release. An override can appear in build.properties
+		 or on the command line. -->
 	<property name="tag" value="HEAD"/>
 	<property name="export.dir" value="export"/>
 	<property name="module" value="jakarta-tapestry"/>
 	<property name="work.dir" value="${export.dir}/${module}"/>
-	
-	<property file="build.properties"/>
-	
+		
 	<target name="setup"
 		description="Sets up the directory, gets the files via CVS.">
 		
@@ -36,13 +43,6 @@
 	<target name="build" description="Builds the distribution.">
 
 		<copy file="build.properties" todir="${work.dir}/config"/>
-
-		<copy todir="${work.dir}/ext-dist">
-			<fileset dir="${ext.dist.src.dir}">
-				<include name="*.jar"/>
-				<include name="*.zip"/>
-			</fileset>
-		</copy>
 		
 		<ant inheritAll="false" dir="${work.dir}" target="dist"/>
 		
