@@ -5,23 +5,64 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 <component-specification class="org.apache.tapestry.workbench.table.LocaleSelection"
 	allow-body="no" allow-informal-parameters="yes">
-	<component id="condTable" type="Conditional">
-		<binding name="condition" expression="dataModel.rowCount > 0"/>
+	
+    <component id="condTable" type="Conditional">
+		<binding name="condition" expression="localeSet.size > 0"/>
 	</component>
-	<component id="table" type="contrib:Table">
-		<binding name="tableModel" expression="initialTableModel"/>
-		<binding name="row" expression="currentLocale"/>
+	
+    <!-- Define the Table component that will be used. 
+         This example demonstrates various techniques for configuring the component. -->
+    <component id="table" type="contrib:Table">
+        
+        <!-- The source of the data for the table will be the localeSet property
+             defined further down in this file -->
+        <binding name="source" expression="localeSet"/>
+        
+        <!-- The columns of the table -->
+        <binding name="columns">
+            <!-- The first column is the representation of the locale returned when invoking toString() on it.
+                 Its name will be displayed according to the translation value
+                 of this component with key 'verbosity' (see LocaleSelection.properties) -->
+            'locale:toString(), ' +
+            
+            <!-- The next two columns are returned by the Java code as ITableColumn -->
+            '=currencyColumn, =dateFormatColumn, ' +
+            
+            <!-- The next column is named 'verbosity' and thus will use the 
+                 verbosityValueRenderer block in this component to render the row values. 
+                 If no translation key 'verbosity' is found, the column will be displayed as 'Verbosity' -->
+            'verbosity:Verbosity:@org.apache.tapestry.workbench.table.VerbosityRating@calculateVerbosity(#this), ' +
+            
+            <!-- The last column is named 'delete' and is not sortable. Please see the 
+                 deleteValueRenderer block for the definition of how it should look --> 
+            '!delete'
+        </binding>
+
+        <!-- The row object (locale) that is currently being rendered 
+             will be stored in the currentLocale property (defined further down) -->
+        <binding name="row" expression="currentLocale"/>
+        
+        <!-- Each rendered row will be given the CSS class of 'tableRowsClass' -->
 		<static-binding name="rowsClass" value="tableRowsClass"/>
+        
 	</component>
-	<component id="directDelete" type="DirectLink">
+	
+    <component id="directDelete" type="DirectLink">
 		<binding name="listener" expression="listeners.deleteLocale"/>
 		<binding name="parameters" expression="deleteLocaleContext"/>
 	</component>
-	<component id="verbosity" type="Any">
+	
+    <component id="verbosity" type="Any">
 		<static-binding name="element" value="td"/>
 		<binding name="style">
 			"background-color:blue; width:"
-			+ ( currentLocaleVerbosity / 2)
+			+ (currentLocaleVerbosity / 2) + "px"
 		</binding>
 	</component>
+    
+    <property-specification name="localeSet" type="java.util.Set" persistent="yes" 
+    	initial-value="new java.util.HashSet()"/>
+
+    <property-specification name="currentLocale" type="java.util.Locale"/>
+    
 </component-specification>
