@@ -12,11 +12,14 @@
   <parameter name="maximumLength" type="int" direction="in"/>
 
   <parameter name="text" type="java.lang.String" required="yes" direction="custom"/>
-  <parameter name="displayName" type="java.lang.String" required="yes" direction="custom" />
+  <parameter name="displayName" type="java.lang.String" required="yes" direction="auto" />
   <parameter name="minimumLength" type="java.lang.Integer" direction="custom" />
   <parameter name="required" direction="custom" />
  
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
+  
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
 
 </component-specification>
