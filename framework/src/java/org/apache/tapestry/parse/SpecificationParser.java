@@ -29,15 +29,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultErrorHandler;
 import org.apache.hivemind.parse.AbstractParser;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.bean.BindingBeanInitializer;
 import org.apache.tapestry.bean.IBeanInitializer;
+import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.services.ExpressionEvaluator;
-import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -240,7 +242,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private static final int STATE_PROPERTY = 10;
 
-    private static final int STATE_SET_PROPERTY = 5;
+    private static final int STATE_SET = 5;
 
     /** 3.0 DTD only */
     private static final int STATE_STATIC_BINDING = 9;
@@ -280,6 +282,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      */
 
     private final ClassResolver _resolver;
+
+    /** @since 3.1 */
+
+    private BindingSource _bindingSource;
 
     /**
      * The root object parsed: a component or page specification, a library specification, or an
@@ -477,7 +483,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         as.setName(name);
 
-        if (Tapestry.isNonBlank(engineClassName))
+        if (HiveMind.isNonBlank(engineClassName))
             as.setEngineClassName(engineClassName);
 
         _rootObject = as;
@@ -487,15 +493,21 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void beginBean()
     {
+        if (_elementName.equals("set"))
+        {
+            enterSet();
+            return;
+        }
+
         if (_elementName.equals("set-property"))
         {
-            enterSetProperty();
+            enterSetProperty_3_0();
             return;
         }
 
         if (_elementName.equals("set-message-property"))
         {
-            enterSetMessage();
+            enterSetMessage_3_0();
             return;
         }
 
@@ -510,30 +522,29 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void beginComponent()
     {
+        // <binding> has changed between 3.0 and 3.1
+
         if (_elementName.equals("binding"))
         {
             enterBinding();
             return;
         }
 
-        // 3.0 DTD only
         if (_elementName.equals("static-binding"))
         {
-            enterStaticBinding();
+            enterStaticBinding_3_0();
             return;
         }
 
-        // 3.0 DTD only
         if (_elementName.equals("message-binding"))
         {
-            enterMessageBinding();
+            enterMessageBinding_3_0();
             return;
         }
 
-        // 3.0 DTD only
         if (_elementName.equals("inherited-binding"))
         {
-            enterInheritedBinding();
+            enterInheritedBinding_3_0();
             return;
         }
 
@@ -622,7 +633,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         if (_elementName.equals("service"))
         {
-            enterService();
+            enterService_3_0();
             return;
         }
 
@@ -682,21 +693,33 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
+        // <asset> is new in 3.1
+
+        if (_elementName.equals("asset"))
+        {
+            enterAsset();
+            return;
+        }
+
+        // <context-asset>, <external-asset>, and <private-asset>
+        // are all throwbacks to the 3.0 DTD and don't exist
+        // in the 3.1 DTD.
+
         if (_elementName.equals("context-asset"))
         {
-            enterContextAsset();
+            enterContextAsset_3_0();
             return;
         }
 
         if (_elementName.equals("private-asset"))
         {
-            enterPrivateAsset();
+            enterPrivateAsset_3_0();
             return;
         }
 
         if (_elementName.equals("external-asset"))
         {
-            enterExternalAsset();
+            enterExternalAsset_3_0();
             return;
 
         }
@@ -780,7 +803,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 endProperty();
                 break;
 
-            case STATE_SET_PROPERTY:
+            case STATE_SET:
 
                 endSetProperty();
                 break;
@@ -915,9 +938,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         BeanSetPropertySetter bs = (BeanSetPropertySetter) peekObject();
 
-        String finalValue = getExtendedValue(bs.getExpression(), "expression", true);
+        String finalValue = getExtendedValue(bs.getBindingReference(), "expression", true);
 
-        bs.applyExpression(finalValue);
+        bs.applyBindingReference(finalValue);
     }
 
     private void endStaticBinding()
@@ -934,15 +957,14 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         bs.apply(spec);
     }
 
-    private void enterAsset(String pathAttributeName, AssetType type)
+    private void enterAsset(String pathAttributeName, String prefix)
     {
         String name = getValidatedAttribute("name", ASSET_NAME_PATTERN, "invalid-asset-name");
         String path = getAttribute(pathAttributeName);
 
         IAssetSpecification ia = _factory.createAssetSpecification();
 
-        ia.setType(type);
-        ia.setPath(path);
+        ia.setPath(prefix == null ? path : prefix + path);
 
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 
@@ -1037,17 +1059,17 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         // Check that either copy-of or type, but not both
 
-        boolean hasCopyOf = Tapestry.isNonBlank(copyOf);
+        boolean hasCopyOf = HiveMind.isNonBlank(copyOf);
 
         if (hasCopyOf)
         {
-            if (Tapestry.isNonBlank(type))
+            if (HiveMind.isNonBlank(type))
                 throw new DocumentParseException(ParseMessages.bothTypeAndCopyOf(id),
                         getLocation(), null);
         }
         else
         {
-            if (Tapestry.isBlank(type))
+            if (HiveMind.isBlank(type))
                 throw new DocumentParseException(ParseMessages.missingTypeOrCopyOf(id),
                         getLocation(), null);
         }
@@ -1099,9 +1121,21 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, setter, STATE_CONFIGURE, false);
     }
 
-    private void enterContextAsset()
+    private void enterContextAsset_3_0()
     {
-        enterAsset("path", AssetType.CONTEXT);
+        enterAsset("path", "context:");
+    }
+
+    /**
+     * New in the 3.1 DTD. When using the 3.1 DTD, you must explicitly specify prefix if the asset
+     * is not stored in the same domain as the specification file.
+     * 
+     * @since 3.1
+     */
+
+    private void enterAsset()
+    {
+        enterAsset("path", null);
     }
 
     private void enterDescription()
@@ -1131,12 +1165,17 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, es, STATE_EXTENSION);
     }
 
-    private void enterExternalAsset()
+    private void enterExternalAsset_3_0()
     {
-        enterAsset("URL", AssetType.EXTERNAL);
+        // External URLs get no prefix, but will have a scheme (i.e., "http:") that
+        // fulfils much the same purpose.
+
+        enterAsset("URL", null);
     }
 
-    private void enterInheritedBinding()
+    /** A throwback to the 3.0 DTD */
+
+    private void enterInheritedBinding_3_0()
     {
         String name = getAttribute("name");
         String parameterName = getAttribute("parameter-name");
@@ -1180,7 +1219,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, bs, STATE_LISTENER_BINDING, false);
     }
 
-    private void enterMessageBinding()
+    private void enterMessageBinding_3_0()
     {
         String name = getAttribute("name");
         String key = getAttribute("key");
@@ -1255,11 +1294,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, ps, STATE_ALLOW_DESCRIPTION);
     }
 
-    private void enterPrivateAsset()
+    private void enterPrivateAsset_3_0()
     {
-        enterAsset("resource-path", AssetType.PRIVATE);
+        enterAsset("resource-path", "classpath:");
     }
 
+    /** @since 3.1 */
     private void enterMeta()
     {
         String key = getAttribute("key");
@@ -1298,7 +1338,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         IPropertySpecification ps = _factory.createPropertySpecification();
         ps.setName(name);
 
-        if (Tapestry.isNonBlank(type))
+        if (HiveMind.isNonBlank(type))
             ps.setType(type);
 
         ps.setPersistent(persistent);
@@ -1340,23 +1380,22 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, null, STATE_NO_CONTENT);
     }
 
-    private void enterService()
+    private void enterService_3_0()
     {
         _errorHandler.error(_log, ParseMessages.serviceElementNotSupported(), getLocation(), null);
 
         push(_elementName, null, STATE_NO_CONTENT);
     }
 
-    private void enterSetMessage()
+    private void enterSetMessage_3_0()
     {
         String name = getAttribute("name");
         String key = getAttribute("key");
 
-        IBeanInitializer bi = _factory.createMessageBeanInitializer();
+        BindingBeanInitializer bi = _factory.createBindingBeanInitializer(_bindingSource);
 
-        PropertyUtils.write(bi, "propertyName", name);
-        PropertyUtils.write(bi, "key", key);
-
+        bi.setPropertyName(name);
+        bi.setBindingReference("message:" + key);
         bi.setLocation(getLocation());
 
         IBeanSpecification bs = (IBeanSpecification) peekObject();
@@ -1366,21 +1405,35 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, null, STATE_NO_CONTENT);
     }
 
-    private void enterSetProperty()
+    private void enterSet()
+    {
+        String name = getAttribute("name");
+        String reference = getAttribute("value");
+
+        BindingBeanInitializer bi = _factory.createBindingBeanInitializer(_bindingSource);
+
+        bi.setPropertyName(name);
+
+        IBeanSpecification bs = (IBeanSpecification) peekObject();
+
+        push(_elementName, new BeanSetPropertySetter(bs, bi, null, reference), STATE_SET, false);
+    }
+
+    private void enterSetProperty_3_0()
     {
         String name = getAttribute("name");
         String expression = getAttribute("expression");
 
-        IBeanInitializer bi = _factory.createExpressionBeanInitializer(_expressionEvaluator);
+        BindingBeanInitializer bi = _factory.createBindingBeanInitializer(_bindingSource);
 
-        PropertyUtils.write(bi, "propertyName", name);
+        bi.setPropertyName(name);
 
         IBeanSpecification bs = (IBeanSpecification) peekObject();
 
-        push(_elementName, new BeanSetPropertySetter(bs, bi, expression), STATE_SET_PROPERTY, false);
+        push(_elementName, new BeanSetPropertySetter(bs, bi, "ognl:", expression), STATE_SET, false);
     }
 
-    private void enterStaticBinding()
+    private void enterStaticBinding_3_0()
     {
         String name = getAttribute("name");
         String expression = getAttribute("value");
@@ -1439,8 +1492,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         String contentValue = peekContent();
 
-        boolean asAttribute = Tapestry.isNonBlank(attributeValue);
-        boolean asContent = Tapestry.isNonBlank(contentValue);
+        boolean asAttribute = HiveMind.isNonBlank(attributeValue);
+        boolean asContent = HiveMind.isNonBlank(contentValue);
 
         if (asAttribute && asContent)
         {
@@ -1633,5 +1686,11 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
     {
         _expressionEvaluator = expressionEvaluator;
+    }
+
+    /** @since 3.1 */
+    public void setBindingSource(BindingSource bindingSource)
+    {
+        _bindingSource = bindingSource;
     }
 }

@@ -94,8 +94,19 @@ class PageloadMessages
         return _formatter.format("class-not-page", componentClass.getName());
     }
 
-    public static String missingAsset(String name, IComponent component)
+    public static String defaultParameterName(String name)
     {
-        return _formatter.format("missing-asset", name, component.getExtendedId());
+        return _formatter.format("default-parameter-name", name);
     }
+
+    public static String initializerName(String propertyName)
+    {
+        return _formatter.format("initializer-name", propertyName);
+    }
+
+    public static String parameterName(String name)
+    {
+        return _formatter.format("parameter-name", name);
+    }
+
 }

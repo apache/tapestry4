@@ -18,10 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.Locatable;
+import org.apache.tapestry.bean.BindingBeanInitializer;
 import org.apache.tapestry.bean.MessageBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -581,11 +583,48 @@ public class TestSpecificationParser extends TapestryTestCase
 
         IBeanSpecification bs = spec.getBeanSpecification("fred");
         checkLine(bs, 24);
-        MessageBeanInitializer i = (MessageBeanInitializer) bs.getInitializers().get(0);
+        BindingBeanInitializer i = (BindingBeanInitializer) bs.getInitializers().get(0);
 
         assertEquals("barney", i.getPropertyName());
-        assertEquals("rubble", i.getKey());
+        assertEquals("message:rubble", i.getBindingReference());
         checkLine(i, 25);
+    }
+
+    /**
+     * Tests the DTD 3.0 <set-property>element
+     * 
+     * @since 3.1
+     */
+
+    public void testExpressionBeanInitializer() throws Exception
+    {
+        IComponentSpecification spec = parsePage("ExpressionBeanInitializer_3_0.page");
+
+        IBeanSpecification bs = spec.getBeanSpecification("zebean");
+
+        BindingBeanInitializer i = (BindingBeanInitializer) bs.getInitializers().get(0);
+
+        assertEquals("barney", i.getPropertyName());
+        assertEquals("ognl:rubble", i.getBindingReference());
+
+        i = (BindingBeanInitializer) bs.getInitializers().get(1);
+
+        assertEquals("fred", i.getPropertyName());
+        assertEquals("ognl:flintstone", i.getBindingReference());
+    }
+
+    /** @since 3.1 */
+
+    public void testBeanSet() throws Exception
+    {
+        IComponentSpecification spec = parsePage("BeanSet.page");
+        IBeanSpecification bs = spec.getBeanSpecification("target");
+        
+        BindingBeanInitializer i = (BindingBeanInitializer) bs.getInitializers().get(0);
+        
+        assertEquals("literal", i.getPropertyName());
+        assertEquals("literal-string", i.getBindingReference());
+
     }
 
     public void testInheritInformalParameters() throws Exception
@@ -960,4 +999,40 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("ognl:an.expression", ps.getDefaultValue());
     }
 
+    /**
+     * Tests that assets read using the 3.0 DTD are converted properly into paths with the proper
+     * prefix.
+     * 
+     * @since 3.1
+     */
+    public void testAssets_3_0() throws Exception
+    {
+        IComponentSpecification cs = parsePage("Assets_3_0.page");
+
+        IAssetSpecification as = cs.getAsset("mycontext");
+
+        assertEquals("context:path/to/context", as.getPath());
+
+        as = cs.getAsset("myprivate");
+
+        assertEquals("classpath:path/to/private", as.getPath());
+
+        as = cs.getAsset("myexternal");
+
+        assertEquals("http://myexternal/asset", as.getPath());
+
+        assertListsEqual(new String[]
+        { "mycontext", "myexternal", "myprivate" }, cs.getAssetNames());
+    }
+
+    /** @since 3.1 */
+
+    public void testAssets() throws Exception
+    {
+        IComponentSpecification cs = parsePage("Assets.page");
+
+        IAssetSpecification as = cs.getAsset("myasset");
+
+        assertEquals("path/to/asset", as.getPath());
+    }
 }

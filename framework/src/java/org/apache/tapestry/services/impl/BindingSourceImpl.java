@@ -54,7 +54,7 @@ public class BindingSourceImpl implements BindingSource
         }
     }
 
-    public IBinding createBinding(IComponent component, String name, String locator,
+    public IBinding createBinding(IComponent component, String bindingDescription, String locator,
             Location location)
     {
         BindingFactory factory = _literalBindingFactory;
@@ -75,7 +75,7 @@ public class BindingSourceImpl implements BindingSource
             }
         }
 
-        return factory.createBinding(component, name, path, location);
+        return factory.createBinding(component, bindingDescription, path, location);
     }
 
     public void setContributions(List contributions)

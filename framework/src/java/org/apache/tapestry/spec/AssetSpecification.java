@@ -15,45 +15,30 @@
 package org.apache.tapestry.spec;
 
 /**
- *  Defines an internal, external or private asset.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Defines an internal, external or private asset.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class AssetSpecification extends LocatablePropertyHolder implements IAssetSpecification
 {
-    private AssetType type;
     protected String path;
 
     /**
-     *  Returns the base path for the asset.  This may be interpreted as a URL, relative URL
-     *  or the path to a resource, depending on the type of asset.
-     *
-     **/
+     * Returns the base path for the asset. This may be interpreted as a URL, relative URL or the
+     * path to a resource, depending on the type of asset.  Starting with 3.1, this may have
+     * a prefix added to identify the type of resource.
+     */
 
     public String getPath()
     {
         return path;
     }
 
-    public AssetType getType()
-    {
-        return type;
-    }
-
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void setPath(String path)
     {
         this.path = path;
     }
-
-    /** @since 3.0 **/
-
-    public void setType(AssetType type)
-    {
-        this.type = type;
-    }
-
 }

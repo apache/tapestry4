@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.services.DataSqueezer;
-import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
@@ -138,7 +137,7 @@ public class TestDataSqueezer extends TestCase
 
     public void testEnum() throws IOException
     {
-        attempt(AssetType.PRIVATE, "Eorg.apache.tapestry.spec.AssetType@PRIVATE");
+        attempt(BeanLifecycle.PAGE, "Eorg.apache.tapestry.spec.BeanLifecycle@PAGE");
     }
 
     public void testComponentAddress() throws IOException

@@ -286,4 +286,15 @@ public interface IRequestCycle
      * @since 3.1
      */
     public String[] getParameters(String name);
+
+    /**
+     * Converts a partial URL into an absoluate URL. Prefixes the provided URL with servlet context
+     * path (if any), then expands it to a full URL by prepending with the scheme, server and port.
+     * 
+     * @since 3.1
+     */
+    
+    public String getAbsoluteURL(String partialURL);
+    
+    
 }

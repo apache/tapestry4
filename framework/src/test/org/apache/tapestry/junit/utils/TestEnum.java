@@ -20,7 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.apache.tapestry.spec.AssetType;
+import org.apache.tapestry.spec.BeanLifecycle;
 
 /**
  * Tests the ability of an {@link org.apache.tapestry.util.Enum}to be serialized and deserialized
@@ -35,7 +35,7 @@ public class TestEnum extends TapestryTestCase
 
     public void testSerialization() throws Exception
     {
-        AssetType start = AssetType.EXTERNAL;
+        BeanLifecycle start = BeanLifecycle.RENDER;
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -47,7 +47,7 @@ public class TestEnum extends TapestryTestCase
         ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
         ObjectInputStream ois = new ObjectInputStream(bis);
 
-        AssetType result = (AssetType) ois.readObject();
+        BeanLifecycle result = (BeanLifecycle) ois.readObject();
 
         assertEquals(start, result);
         assertSame(start, result);
@@ -55,7 +55,7 @@ public class TestEnum extends TapestryTestCase
 
     public void testToString()
     {
-        assertEquals("AssetType[EXTERNAL]", AssetType.EXTERNAL.toString());
+        assertEquals("BeanLifecycle[RENDER]", BeanLifecycle.RENDER.toString());
     }
 
 }

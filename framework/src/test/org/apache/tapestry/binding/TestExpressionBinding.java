@@ -168,7 +168,7 @@ public class TestExpressionBinding extends BindingTestCase
         MockControl ecc = newControl(ExpressionCache.class);
         ExpressionCache ec = (ExpressionCache) ecc.getMock();
 
-        IComponent component = newComponent();
+        IComponent component = newComponent("Foo/bar.baz");
         Object compiled = new Object();
 
         ValueConverter vc = newValueConverter();
@@ -181,7 +181,7 @@ public class TestExpressionBinding extends BindingTestCase
 
         replayControls();
 
-        ExpressionBinding b = new ExpressionBinding(component, "param", "exp", vc,
+        ExpressionBinding b = new ExpressionBinding(component, "parameter foo", "exp", vc,
                 fabricateLocation(1), ev, ec);
 
         try
@@ -191,7 +191,9 @@ public class TestExpressionBinding extends BindingTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals("Binding value may not be updated.", ex.getMessage());
+            assertEquals(
+                    "Binding for parameter foo (ExpressionBinding[Foo/bar.baz exp]) may not be updated.",
+                    ex.getMessage());
         }
 
         verifyControls();

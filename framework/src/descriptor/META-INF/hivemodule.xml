@@ -34,6 +34,7 @@
   <sub-module descriptor="tapestry.coerce.xml"/>
   <sub-module descriptor="tapestry.url.xml"/>
   <sub-module descriptor="tapestry.monitor.xml"/>
+  <sub-module descriptor="tapestry.asset.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   

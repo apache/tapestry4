@@ -65,9 +65,11 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 
             if (component.getBinding(name) == null)
             {
+                String description = PageloadMessages.defaultParameterName(name);
+
                 IBinding binding = _bindingSource.createBinding(
                         component,
-                        name,
+                        description,
                         defaultValue,
                         parameterSpec.getLocation());
 

@@ -106,4 +106,12 @@
     </schema>
     
   </configuration-point>
+  
+  <service-point id="BaseTagWriter" interface="org.apache.tapestry.IRender">
+    
+    Used by the Shell component to write the &lt;base&gt; tag.
+    
+    <create-instance class="org.apache.tapestry.services.impl.BaseTagWriter"/>
+    
+  </service-point>
 </module>

@@ -26,7 +26,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
@@ -38,9 +37,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.asset.ContextAsset;
-import org.apache.tapestry.asset.ExternalAsset;
-import org.apache.tapestry.asset.PrivateAsset;
+import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -55,7 +52,6 @@ import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.services.ComponentTemplateLoader;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.TemplateSource;
-import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
@@ -125,6 +121,10 @@ public class PageLoader implements IPageLoader
     /** @since 3.1 */
 
     private ValueConverter _valueConverter;
+
+    /** @since 3.1 */
+
+    private AssetSource _assetSource;
 
     /**
      * The locale of the application, which is also the locale of the page being loaded.
@@ -266,18 +266,20 @@ public class PageLoader implements IPageLoader
                 continue;
             }
 
-            IBinding binding = convert(container, name, bspec);
+            String description = PageloadMessages.parameterName(name);
+
+            IBinding binding = convert(container, description, bspec);
 
             component.setBinding(name, binding);
         }
     }
 
-    private IBinding convert(IComponent container, String parameterName, IBindingSpecification spec)
+    private IBinding convert(IComponent container, String description, IBindingSpecification spec)
     {
         Location location = spec.getLocation();
         String locator = spec.getValue();
 
-        return _bindingSource.createBinding(container, parameterName, locator, location);
+        return _bindingSource.createBinding(container, description, locator, location);
     }
 
     /**
@@ -301,7 +303,9 @@ public class PageLoader implements IPageLoader
         // (not the DirectLink or Form, but the page or component containing the
         // link or form).
 
-        IBinding binding = new ListenerBinding(component.getContainer(), parameterName, language,
+        String description = PageloadMessages.parameterName(parameterName);
+
+        IBinding binding = new ListenerBinding(component.getContainer(), description, language,
                 spec.getScript(), _valueConverter, spec.getLocation());
 
         component.setBinding(parameterName, binding);
@@ -649,15 +653,15 @@ public class PageLoader implements IPageLoader
         if (names.isEmpty())
             return;
 
-        Resource specLocation = specification.getSpecificationLocation();
-
         Iterator i = names.iterator();
 
         while (i.hasNext())
         {
             String name = (String) i.next();
+
             IAssetSpecification assetSpec = specification.getAsset(name);
-            IAsset asset = convert(name, component, assetSpec, specLocation);
+
+            IAsset asset = convertAsset(assetSpec);
 
             component.addAsset(name, asset);
         }
@@ -690,9 +694,11 @@ public class PageLoader implements IPageLoader
                 initializer = new PropertyReinitializer(component, name);
             else
             {
+                String description = PageloadMessages.initializerName(name);
+
                 IBinding initialValueBinding = _bindingSource.createBinding(
                         component,
-                        name,
+                        description,
                         initialValue,
                         ps.getLocation());
 
@@ -709,59 +715,13 @@ public class PageLoader implements IPageLoader
      * Builds an instance of {@link IAsset}from the specification.
      */
 
-    private IAsset convert(String assetName, IComponent component, IAssetSpecification spec,
-            Resource specificationLocation)
+    private IAsset convertAsset(IAssetSpecification spec)
     {
-        AssetType type = spec.getType();
+        // AssetType type = spec.getType();
         String path = spec.getPath();
         Location location = spec.getLocation();
 
-        if (type == AssetType.EXTERNAL)
-            return new ExternalAsset(path, location);
-
-        if (type == AssetType.PRIVATE)
-        {
-            Resource baseLocation = specificationLocation;
-
-            // Fudge a special case for private assets with complete paths. The
-            // specificationLocation
-            // can't be used because it is often a ContextResourceLocation,
-            // not a ClasspathResourceLocation.
-
-            if (path.startsWith("/"))
-            {
-                baseLocation = new ClasspathResource(_classResolver, "/");
-                path = path.substring(1);
-            }
-
-            return new PrivateAsset((ClasspathResource) findAsset(
-                    assetName,
-                    component,
-                    baseLocation,
-                    path,
-                    location), location);
-        }
-
-        return new ContextAsset((ContextResource) findAsset(
-                assetName,
-                component,
-                _applicationRoot,
-                path,
-                location), location);
-    }
-
-    private Resource findAsset(String assetName, IComponent component, Resource baseLocation,
-            String path, Location location)
-    {
-        Resource assetLocation = baseLocation.getRelativeResource(path);
-        Resource localizedLocation = assetLocation.getLocalization(_locale);
-
-        if (localizedLocation == null)
-            throw new ApplicationRuntimeException(PageloadMessages.missingAsset(
-                    assetName,
-                    component), component, location, null);
-
-        return localizedLocation;
+        return _assetSource.findAsset(location.getResource(), path, _locale, location);
     }
 
     public TemplateSource getTemplateSource()
@@ -850,5 +810,11 @@ public class PageLoader implements IPageLoader
     public void setValueConverter(ValueConverter valueConverter)
     {
         _valueConverter = valueConverter;
+    }
+
+    /** @since 3.1 */
+    public void setAssetSource(AssetSource assetSource)
+    {
+        _assetSource = assetSource;
     }
 }

@@ -31,10 +31,10 @@ public class BeanBinding extends AbstractBinding
 
     private final String _beanName;
 
-    public BeanBinding(IComponent component, String beanName, String parameterName,
+    public BeanBinding(IComponent component, String beanName, String description,
             ValueConverter valueConverter, Location location)
     {
-        super(parameterName, valueConverter, location);
+        super(description, valueConverter, location);
 
         Defense.notNull(component, "component");
         Defense.notNull(beanName, "beanName");

@@ -17,6 +17,7 @@ package org.apache.tapestry.link;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ExternalServiceParameter;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -31,6 +32,8 @@ import org.apache.tapestry.engine.ILink;
 
 public abstract class ExternalLink extends AbstractLinkComponent
 {
+    public abstract IEngineService getExternalService();
+
     public ILink getLink(IRequestCycle cycle)
     {
         Object[] serviceParameters = DirectLink.constructServiceParameters(getParameters());
@@ -38,7 +41,7 @@ public abstract class ExternalLink extends AbstractLinkComponent
         ExternalServiceParameter esp = new ExternalServiceParameter(getTargetPage(),
                 serviceParameters);
 
-        return getLink(cycle, Tapestry.EXTERNAL_SERVICE, esp);
+        return getExternalService().getLink(cycle, esp);
     }
 
     public abstract Object getParameters();

@@ -17,12 +17,12 @@ package org.apache.tapestry.services.impl;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.binding.StringBinding;
+import org.apache.tapestry.binding.MessageBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.BindingFactory;
 
 /**
- * Constructs instances of {@link org.apache.tapestry.binding.StringBinding}.
+ * Constructs instances of {@link org.apache.tapestry.binding.MessageBinding}.
  * 
  * @author Howard Lewis Ship
  * @since 3.1
@@ -31,10 +31,10 @@ public class MessageBindingFactory implements BindingFactory
 {
     private ValueConverter _valueConverter;
 
-    public IBinding createBinding(IComponent root, String parameterName, String path,
+    public IBinding createBinding(IComponent root, String description, String path,
             Location location)
     {
-        return new StringBinding(root, parameterName, path, _valueConverter, location);
+        return new MessageBinding(root, description, path, _valueConverter, location);
     }
 
     public void setValueConverter(ValueConverter valueConverter)

@@ -14,14 +14,16 @@
 
 package org.apache.tapestry.spec;
 
+import org.apache.tapestry.bean.BindingBeanInitializer;
 import org.apache.tapestry.bean.ExpressionBeanInitializer;
 import org.apache.tapestry.bean.IBeanInitializer;
 import org.apache.tapestry.bean.MessageBeanInitializer;
+import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- * A Factory used by {@link org.apache.tapestry.parse.SpecificationParser}to create Tapestry domain
- * objects.
+ * A Factory used by {@link org.apache.tapestry.parse.SpecificationParser}&nbsp; to create Tapestry
+ * domain objects.
  * <p>
  * The default implementation here creates the expected runtime instances of classes in packages:
  * <ul>
@@ -132,6 +134,12 @@ public class SpecFactory
     public IBeanInitializer createExpressionBeanInitializer(ExpressionEvaluator evaluator)
     {
         return new ExpressionBeanInitializer(evaluator);
+    }
+
+    /** @since 3.1 */
+    public BindingBeanInitializer createBindingBeanInitializer(BindingSource source)
+    {
+        return new BindingBeanInitializer(source);
     }
 
     /**

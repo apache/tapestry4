@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.link.PageLink">
 
@@ -25,29 +25,21 @@
   </description>
   
   <parameter name="page" 
-  	type="java.lang.String" 
   	required="yes" 
-  	property-name="targetPage"
-  	direction="in"/>
+  	property-name="targetPage"/>
   
-  <parameter name="namespace" 
-  	type="org.apache.tapestry.INamespace" 
+  <parameter name="namespace"  
   	required="no" 
-  	property-name="targetNamespace"
-  	direction="in"/>
+  	property-name="targetNamespace"/>
   	  	
-  <parameter name="disabled"
-  	type="boolean"
-  	direction="in"/>
+  <parameter name="disabled"/>
   	  	
-  <parameter name="anchor" 
-  	type="java.lang.String"
-  	direction="in"/>
+  <parameter name="anchor"/>
   	
-  <parameter name="renderer"
-  	type="org.apache.tapestry.link.ILinkRenderer"
-  	direction="in"/>
+  <parameter name="renderer"/>
   
   <reserved-parameter name="href"/>
+  
+  <inject name="pageService" object="engine-service:page"/>
 
 </component-specification>

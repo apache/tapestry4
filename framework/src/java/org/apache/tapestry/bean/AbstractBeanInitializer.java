@@ -20,12 +20,11 @@ import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  Base class for initializing a property of a JavaBean.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.5
+ * Base class for initializing a property of a JavaBean.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.5
+ */
 
 abstract public class AbstractBeanInitializer extends BaseLocatable implements IBeanInitializer
 {
@@ -36,7 +35,7 @@ abstract public class AbstractBeanInitializer extends BaseLocatable implements I
         return _propertyName;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void setPropertyName(String propertyName)
     {
@@ -51,8 +50,7 @@ abstract public class AbstractBeanInitializer extends BaseLocatable implements I
         }
         catch (ApplicationRuntimeException ex)
         {
-            String message =
-                Tapestry.format(
+            String message = Tapestry.format(
                     "AbstractBeanInitializer.unable-to-set-property",
                     _propertyName,
                     bean,

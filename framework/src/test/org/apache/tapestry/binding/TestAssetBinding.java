@@ -50,7 +50,7 @@ public class TestAssetBinding extends BindingTestCase
         assertSame(asset, b.getObject());
 
         assertSame(l, b.getLocation());
-        assertEquals("parameterName", b.getParameterName());
+        assertEquals("parameterName", b.getDescription());
 
         assertSame(component, b.getComponent());
 

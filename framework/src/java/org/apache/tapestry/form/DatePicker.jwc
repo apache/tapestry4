@@ -29,8 +29,8 @@
   <parameter name="includeWeek"/>
   <parameter name="icon" default-value="ognl:assets.defaultIcon"/>
           
-  <private-asset name="script" resource-path="DatePicker.js"/>
+  <asset name="script" path="DatePicker.js"/>
   
-  <private-asset name="defaultIcon" resource-path="DatePickerIcon.png"/>
+  <asset name="defaultIcon" path="DatePickerIcon.png"/>
                 
 </component-specification>

@@ -20,12 +20,18 @@ import java.util.List;
 import junit.framework.AssertionFailedError;
 
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.binding.LiteralBinding;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.parse.SpecificationParser;
+import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.impl.ExpressionCacheImpl;
@@ -49,6 +55,26 @@ public class TapestryTestCase extends HiveMindTestCase
 
     private ClassResolver _resolver = new DefaultClassResolver();
 
+    /** @since 3.1 */
+    private ValueConverter _valueConverter = new ValueConverter()
+    {
+        public Object coerceValue(Object value, Class desiredType)
+        {
+            return value;
+        }
+    };
+
+    /** @since 3.1 */
+    private class BindingSourceFixture implements BindingSource
+    {
+
+        public IBinding createBinding(IComponent component, String description, String locator,
+                Location location)
+        {
+            return new LiteralBinding(description, locator, _valueConverter, location);
+        }
+    }
+
     protected IComponentSpecification parseComponent(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
@@ -61,6 +87,8 @@ public class TapestryTestCase extends HiveMindTestCase
     protected IComponentSpecification parsePage(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
+
+        parser.setBindingSource(new BindingSourceFixture());
 
         Resource location = getSpecificationResourceLocation(simpleName);
 

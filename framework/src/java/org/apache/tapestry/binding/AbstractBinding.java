@@ -14,15 +14,10 @@
 
 package org.apache.tapestry.binding;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.hivemind.Defense;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.coerce.TypeConverter;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
@@ -35,7 +30,7 @@ public abstract class AbstractBinding implements IBinding
 {
     /** @since 3.1 */
 
-    private final String _parameterName;
+    private final String _description;
 
     /** @since 3.1 */
 
@@ -47,12 +42,12 @@ public abstract class AbstractBinding implements IBinding
 
     /** @since 3.0 */
 
-    protected AbstractBinding(String parameterName, ValueConverter valueConverter, Location location)
+    protected AbstractBinding(String description, ValueConverter valueConverter, Location location)
     {
-        Defense.notNull(parameterName, "parameterName");
+        Defense.notNull(description, "description");
         Defense.notNull(valueConverter, "valueConverter");
 
-        _parameterName = parameterName;
+        _description = description;
         _valueConverter = valueConverter;
         _location = location;
     }
@@ -124,8 +119,8 @@ public abstract class AbstractBinding implements IBinding
 
     /** @since 3.1 */
 
-    public String getParameterName()
+    public String getDescription()
     {
-        return _parameterName;
+        return _description;
     }
 }

@@ -295,7 +295,7 @@ public class RequestContext implements IRender
      * @see #getAbsoluteURL(String, String, String, int)
      */
 
-    public String x_getAbsoluteURL(String URI)
+    public String getAbsoluteURL(String URI)
     {
         String scheme = getScheme();
         String server = getServerName();
@@ -345,7 +345,7 @@ public class RequestContext implements IRender
         buffer.append(scheme);
         buffer.append("://");
         buffer.append(server);
-
+        
         if (port > 0)
         {
             buffer.append(':');
@@ -447,10 +447,10 @@ public class RequestContext implements IRender
 
         Enumeration e = _request.getParameterNames();
         List names = new ArrayList();
-        
+
         while (e.hasMoreElements())
             names.add(e.nextElement());
-        
+
         int count = names.size();
 
         String[] result = new String[count];
@@ -1049,6 +1049,17 @@ public class RequestContext implements IRender
     public IApplicationSpecification getApplicationSpecification()
     {
         return _specification;
+    }
+
+    /**
+     * Returns the context path, which is the portion of the URL that identifies the web application
+     * context. This value may be blank (but not null) and does not end in a slash.
+     * 
+     * @since 3.1
+     */
+    public String getContextPath()
+    {
+        return _request.getContextPath();
     }
 
 }

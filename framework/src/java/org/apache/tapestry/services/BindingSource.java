@@ -30,7 +30,7 @@ public interface BindingSource
      * Creates a new binding. The locator is used to identify the <em>type</em> of binding to
      * create as well as configure the binding instance. 
      * The locator is either a literal value (resulting in a
-     * {@link org.apache.tapestry.binding.StaticBinding literal binding}) or consists of prefix and
+     * {@link org.apache.tapestry.binding.LiteralBinding literal binding}) or consists of prefix and
      * a path, i.e., <code>ognl:myProperty</code>.
      * <p>
      * When a prefix exists and is identified, it is used to select the correct
@@ -41,9 +41,9 @@ public interface BindingSource
      * @param component the component for which the binding is created; the component is used
      * as a kind of context for certain types of bindings (for example, the root object when
      * evaluating OGNL expressions).
-     * @param name the name of the parameter to be bound
+     * @param description {@link IBinding#getDescription() description} for the new binding
      * @param locator the binding to be created, possibly including a prefix to define the type
      * @param location location used to report errors in the binding
      */
-    public IBinding createBinding(IComponent component, String name, String locator, Location location);
+    public IBinding createBinding(IComponent component, String description, String locator, Location location);
 }

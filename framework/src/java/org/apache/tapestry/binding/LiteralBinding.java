@@ -19,21 +19,21 @@ import org.apache.tapestry.coerce.ValueConverter;
 
 /**
  * Stores a static (invariant) string as the value.
+ * 
  * <p>
- * Note that the name exists for historical reasons; a better name would be
- * <code>LiteralBinding</code>.
+ * Note: renamed from StaticBinding to LiteralBinding in release 3.1.
  * 
  * @author Howard Lewis Ship
  */
 
-public class StaticBinding extends AbstractBinding
+public class LiteralBinding extends AbstractBinding
 {
     private final String _value;
 
-    public StaticBinding(String parameterName, String value, ValueConverter valueConverter,
+    public LiteralBinding(String description, String value, ValueConverter valueConverter,
             Location location)
     {
-        super(parameterName, valueConverter, location);
+        super(description, valueConverter, location);
 
         _value = value;
     }
