@@ -19,6 +19,7 @@
   <!ENTITY ExceptionDisplay '<link linkend="builtin.ExceptionDisplay"><classname>ExceptionDisplay</classname></link>'>
   <!ENTITY Foreach '<link linkend="builtin.Foreach"><classname>Foreach</classname></link>'>
   <!ENTITY Form '<link linkend="builtin.Form"><classname>Form</classname></link>'>
+  <!ENTITY Frame '<link linkend="bultin.Frame"><classname>Frame</classname></link>'>
   <!ENTITY GenericLink '<link linkend="builtin.GenericLink"><classname>GenericLink</classname></link>'>
   <!ENTITY Hidden '<link linkend="builtin.Hidden"><classname>Hidden</classname></link>'>
   <!ENTITY ListEdit '<link linkend="builtin.ListEdit"><classname>ListEdit</classname></link>'>
@@ -342,13 +343,14 @@ named <varname>item</varname> and that there's a servlet used for making changes
 </para>
       <informalexample>
         <programlisting><![CDATA[
-<tr> <td> ]]><emphasis>&lt;%= item.getProductName() %&gt;</emphasis><![CDATA[</td>
-	 <td> ]]><emphasis>&lt;%= item.getQuantity() %&gt;</emphasis><![CDATA[</td>
-	 <td> 
-]]><emphasis>&lt;%  String URL = response.encodeURL("/servlet/update-cart?action=remove" +
+<tr>
+  <td> ]]><emphasis>&lt;%= item.getProductName() %&gt;</emphasis><![CDATA[ </td>
+  <td> ]]><emphasis>&lt;%= item.getQuantity() %&gt;</emphasis><![CDATA[ </td>
+  <td> ]]><emphasis>&lt;%  String URL = response.encodeURL("/servlet/update-cart?action=remove" +
  			"&amp;item=" + item.getId());
 %&gt;</emphasis><![CDATA[
-<a href="]]><emphasis>&lt;%= URL %&gt;</emphasis><![CDATA[">Remove</a> </td> </tr>]]></programlisting>
+<a href="]]><emphasis>&lt;%= URL %&gt;</emphasis><![CDATA[">Remove</a> </td> 
+</tr>]]></programlisting>
       </informalexample>
       <para>
 This clearly shows that in a JSP application, the designer is responsible for 
@@ -357,10 +359,12 @@ By contrast, Tapestry takes care of nearly all these issues automatically:
 </para>
       <informalexample>
         <programlisting><![CDATA[
-<tr> <td> ]]><sgmltag class="starttag">span jwcid="insertName"/</sgmltag><![CDATA[ </td>
-	 <td> ]]><sgmltag class="starttag">span jwcid="insertQuantity"/</sgmltag>;<![CDATA[ </td>
-	 <td> ]]><sgmltag class="starttag">a jwcid="remove"</sgmltag>Remove<sgmltag class="endtag">a</sgmltag><![CDATA[ </td> </tr>]]></programlisting>
-      </informalexample>
+<tr> 
+     <td> <span jwcid="insertName">Sample Product</span> </td>
+     <td> <span jwcid="insertQuantity">10</span> </td>
+     <td> <a jwcid="remove">Remove</a> </td>
+</tr>]]></programlisting>        
+</informalexample>
       <para>
 Because of the component object model used by Tapestry, the framework knows exactly 
 "where on the page" the <varname>remove</varname> component is.  
@@ -404,19 +408,15 @@ Because the URLs created by Tapestry for processing client interaction
 are more strongly structured than the URLs 
 in traditional solutions, there are fewer weaknesses 
 to exploit.  Improperly formatted URLs result in an exception response 
-being presented to the user.  Tapestry URLs are also harder to spoof, 
-since they are very conversational ... the exact form of the 
-URL is dependent on any or all of the previous interactions between 
-the client and the server in the same session.
+being presented to the user.
 </para>
       <para>
 Where the Java Servlet API suffers is in client identification, 
 since a session identifier is stored on the client either as an 
 HTTP Cookie or encoded into each URL.  Malicious software could acquire 
 such an identifier and "assume" the identity of a user who has recently logged 
-into the application.  Still, because of the conversational nature 
-of the Tapestry URLs it would be difficult for an 
-automated intruder to progress through the application from that point.
+into the application.  Again, this is a common limitation of servlet applications
+in general.
 </para>
       <para>
 Finally, Tapestry applications have a single flow of control:  
@@ -786,7 +786,7 @@ Parameters have a name, a type and may be required or optional.
 </para>
       <para>
 To developers experienced with Java GUIs, it may appear that Tapestry 
-component parameters are the same as JavaBeans properties.  This is not completes true.  
+component parameters are the same as JavaBeans properties.  This is not completely true.  
 JavaBeans properties are set-and-forget; the designer sets a value 
 for the property using a visual editor and the value 
 is saved with the bean until it is used at runtime.
@@ -795,22 +795,38 @@ is saved with the bean until it is used at runtime.
 Parameters define the type of value needed, but not the actual value.  
 This value is provided by a special object called a binding.  
 The binding is a bridge between the component and the parameter value,
-exposing that value to the component as it is needed.
+exposing that value to the component as it is needed.  The reason for all this
+is to allow pages, and the components within them, to be shared by many
+concurrent sessions ... a major facet in Tapestry's strategy
+for maintaining application scalability.
 </para>
-      <para>
-A binding is a source and sink of data.  A component 
-uses a binding to import or export a data value.
+
+<para>
+When a component needs the value of one of its parameters, it must
+obtain the correct binding, an instance of interface &IBinding;,
+and invoke methods on the binding to get the value from the binding.
+Additional methods are used with output parameters to update the binding property.
 </para>
+
+<para>
+In most cases, discussed in the <link linkend="components.connected-params">next section</link>,
+Tapestry can hide the bindings from the developer.  In effect, it automates the process
+of obtaining the binding, obtaining the value from it, and assigning it to a JavaBean
+property of the component.
+</para>
+
       <para>
 There are two types of bindings:  static and dynamic.  
 Static bindings are read-only; the value for the binding is 
 specified in the component specification. 
 </para>
+
       <para>
 Dynamic bindings are more prevalent and useful.  A dynamic 
 binding uses a JavaBeans property name to retrieve the value when needed 
 by the component.  The source of this data is a property of some component.
 </para>
+
       <para>
 In fact, dynamic bindings use
 <link linkend="beans.property-path">property paths</link>, allowing
@@ -819,7 +835,184 @@ a  binding to
 This frees the components from relying totally on the properties of their container, 
 instead they are free to access properties of more distant objects.
 </para>
+
     </section>
+    
+<section id="components.connected-params">    
+	<title>Connected Parameters</title>
+    
+<para>
+In most cases, a developer is not interested in bindings; an easier model for developers is one
+in which Tapestry uses the parameters and bindings to set properties of the component automatically.
+Starting in release 2.1, Tapestry includes this behavior, with some constraints and limitations.
+</para>
+
+<para>
+Part of the <link linkend="components.spec.parameter">specification for a parameter</link>
+is the <emphasis>direction</emphasis>, which can be one of the following values:
+</para>
+
+<variablelist>
+
+	<varlistentry>
+		<term>in</term>
+		<listitem>
+		<para>
+		Input parameter; the value is drawn from the binding (if bound)
+		and applied to the corresponding component property just before rendering the component.
+		</para>
+		</listitem>
+	</varlistentry>
+
+
+	<varlistentry>
+		<term>custom</term>
+		<listitem>
+		<para>
+		Tapestry does not try to connect the parameter with any property; the component
+		is responsible for accessing the binding and retrieving or setting values.
+		</para>
+		
+		<para>
+		This type must be used for any kind of output parameter, or for an input parameter
+		where the property may be accessed other than during the render of the component.
+		</para>
+		</listitem>
+	</varlistentry>			
+</variablelist>
+ 
+<note>
+	<title>Why aren't output parameters connectable?</title>
+	<para>
+	The problem is the timing of output parameters.  Sometimes a parameter is only an output
+	parameter when a form is submitted (for example, any of the form related components).
+	Sometimes a parameter is output many times (for example, &Foreach;) while the component
+	renders.
+	</para>
+	
+	<para>
+	The latter case may always be handled as custom; the former case may be handled
+	in the future.
+	</para>
+</note>
+ 
+<para>
+Defining a parameter as direction <literal>in</literal> causes Tapestry to connect the parameter to the corresponding
+property of the component.  The parameter specification must identify the Java type of the property.
+Properties must be read/write (they must have both
+getter and setter methods).
+</para>
+
+<para>
+Tapestry will set properties from parameters just before rendering the component.  After the component renders, 
+the parameters are
+cleared; they are returned to inital values.  Tapestry reads these initial values just before it sets the
+properties the first time.  This makes it very easy to set defaults for optional parameters: just provide a default value
+for the correspoinding instance variable.
+</para>
+
+<para>
+If the property is connected to an invariant binding (a static or field
+binding), then the property is set just once, and never cleared.
+</para>
+
+
+<para>
+There are times when the parameter name can't be used as the property name.  For example,
+the &Page; component has a <literal>page</literal> parameter, the name of the page to link to.  
+However, all components already have a <literal>page</literal>
+property, the &IPage; that ultimate contains them.  The specification for the &Page; component
+connects the <literal>page</literal> parameter to a property named <literal>targetPage</literal> instead.
+</para>
+
+<para>
+Defining a connected parameter as required means that the parameter must be bound
+<emphasis>and</emphasis> the binding must provide a non-null value.  A runtime exception
+is thrown when a required parameter's binding yields a null value.
+</para>
+
+<para>
+The following examples show how to declare and use a parameter:
+</para>
+
+<example>
+	<title>Connected Parameter - Specification</title>
+<programlisting><![CDATA[
+
+
+<specification ...>
+
+  <parameter name="color" direction="in" java-type="java.awt.Color"/>
+  
+  ...
+]]>
+</programlisting>
+</example>
+
+<example>
+	<title>Connected Parameter - Java Code</title>
+<programlisting><![CDATA[
+
+public class ColorComponent extends AbstractComponent
+{
+  private Color color = Color.RED;
+  
+  public Color getColor()
+  {
+    return color;
+  }
+    
+  public void setColor(Color color)
+  {
+    this.color = color;
+  }
+  
+  protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+  throws RequestCycleException
+  {
+    writer.begin("font");
+    writer.attribute("color", RequestContext.encodeColor(color);
+    
+    renderWrapped(writer, cycle);
+    
+    writer.end();
+  }
+  
+}
+
+
+]]>
+</programlisting>
+</example>
+
+<para>
+In this example, the component writes its content inside a <sgmltag class="starttag">font</sgmltag>
+element, with the HTML color attribute set from the <literal>color</literal> parameter.  &RequestContext;
+includes a static convienience method for converting from a 
+<classname>Color</classname> object to an encoded color
+that will be meaningful to a web browser.
+</para>
+
+<para>
+The parameter is optional and defaults to red if not specified (that is, if the parameter
+is not bound).
+</para>
+
+
+<para>
+At runtime, Tapestry will invoke <function>setColor()</function> first (if the <literal>color</literal>
+parameter is bound).  It will then invoke <function>renderComponent()</function>.  Finally (even if
+<function>renderComponent()</function> throws an exception) it will invoke <function>setColor()</function>
+again, to restore it back to the default value, <literal>Color.RED</literal>.
+</para>
+
+<para>
+This code includes a defect: because the parameter is optional, there is nothing to prevent
+it from being bound to null.
+</para>
+    
+</section>    
+    
     <section id="components.informal-parameters">
       <title>Formal vs. Informal Parameters</title>
       <para>
@@ -1114,19 +1307,19 @@ The <classname>Border</classname> component has a much larger HTML template:
 <table border=0 bgcolor=gray cellspacing=0>
   <tr valign=top>
     <td colspan=3 align=left>
-      <font size=5 color="White">]]><sgmltag class="starttag">jwc id="insertPageTitle"/</sgmltag>;<![CDATA[</font>
+      <font size=5 color="White">]]><emphasis><sgmltag class="starttag">jwc id="insertPageTitle"/</sgmltag></emphasis><![CDATA[</font>
     </td>
   </tr>
   <tr valign=top>
     <td align=right>
       <font color=white>
-]]><sgmltag class="starttag">jwc id="e"</sgmltag>;<![CDATA[
+]]><emphasis><sgmltag class="starttag">jwc id="e"</sgmltag></emphasis><![CDATA[
         <br>]]><emphasis><![CDATA[<jwc id="link"><jwc id="insertName"></jwc>
 </jwc>]]></emphasis><![CDATA[
       </font>
     </td>
     <td valign=top bgcolor=silver>
-      ]]><sgmltag class="starttag">jwc id="wrapped"/</sgmltag>;<![CDATA[
+      ]]><emphasis><sgmltag class="starttag">jwc id="wrapped"/</sgmltag></emphasis><![CDATA[
     </td>
     <td>&nbsp;</td>
   </tr>
@@ -1450,7 +1643,7 @@ these assets are deployed on the same web server as the application,
 or within the same Web Application Archive (WAR).
 </para>
       <para>
-Private assets come from the Java class path and are 
+Private assets come from the Java classpath and are 
 resources not normally visible to the web server.
 </para>
       <para>
@@ -1522,12 +1715,7 @@ state, since a page will be used by multiple sessions and clients.
 The last available lifecycle, <varname>none</varname>, indicates that the bean is not cached at all, and will be created fresh on
 each property access.
 </para>
-      <para>
-In all things, Tapestry attempts to pool and cache objects, to minimize the number of objects created or garbage collected
-during a request.  Helper beans are no exception.  There exists a general helper bean pool.  Helper beans with the
-<varname>request</varname> lifecycle may be placed into the pool for subsequent reuse (in the same or different page).  This
-only occurs with helper beans that implement the &IPoolable; interface.
-</para>
+
       <para>
 Tapestry includes a handful of useful helper beans.  &Default; is used to provide default values for optional parameters.
 &ValidationDelegate; 
@@ -1541,7 +1729,7 @@ used with &ValidField;, it allows simple handling of validation and presentating
       <para>
 The component specification is an XML document.  
 This discussion assumes a passing familiarity with XML documents.   
-The specification is located inside the running Java VMs class path; 
+The specification is located inside the running Java VMs classpath; 
 in a deployed application, it will be a package resource, 
 located (along with the Java class files) in the 
 <filename class="directory">WEB-INF/classes</filename> 
@@ -1552,6 +1740,15 @@ These specifications can be somewhat verbose,
 it is strongly advised that a DTD-aware XML editor be used, 
 rather than hand editting the files.
 </para>
+
+<para>
+This description is for the current revision of the component specification, 1.2.
+Tapestry still supports component specification 1.1 as well, though support
+for the original 1.0 DTD has been removed.  See &SpecificationParser; for more
+details.
+</para>
+
+
       <section>
         <title>
           <sgmltag class="starttag">specification</sgmltag> element</title>
@@ -1564,8 +1761,8 @@ Component specification files, which use the filename extension <literal>.jwc</l
           <programlisting><![CDATA[
 <?xml version="1.0"?>
 <!DOCTYPE specification PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN"
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 ]]>
 
 &lt;specification 
@@ -1607,15 +1804,7 @@ Component specification files, which use the filename extension <literal>.jwc</l
             </callout>
           </calloutlist>
         </para>
-        <note>
-          <title>Versions of the DTD</title>
-          <para>
-	There was an earlier version of the DTD, version 1.0, which is the version
-	used with Tapestry Release 1.0.0.  Version 1.1 is more succinct and readable
-	than version 1.0 and has a few extra features.  Both versions are supported by
-	Tapestry until at least release 1.1.0.
-	</para>
-        </note>
+
         <para>
 As previously described, the specification name is used to find the base 
 HTML template name (by replacing the '.jwc' extension with '.html').  
@@ -1686,6 +1875,8 @@ This element is used to describe formal parameters used by a component.
           <programlisting>
 &lt;parameter
   name="<replaceable>name</replaceable>" <co id="components.spec.parameter.name"/>
+  property-name="<replaceable>property-name</replaceable>" <co id="components.spec.parameter.property-name"/>
+  direction="<replaceable>in</replaceable>|<replaceable>custom</replaceable>" <co id="components.spec.parameter.direction"/>
   java-type="<replaceable>text</replaceable>" <co id="components.spec.parameter.java-type"/>
   required="<replaceable>yes</replaceable>|<replaceable>no</replaceable>"&gt; <co id="components.spec.parameter.required"/>
   [ &lt;<link linkend="components.spec.description">description</link> ... &gt; ...] <co id="components.spec.parameter.description"/>
@@ -1701,15 +1892,47 @@ This element is used to describe formal parameters used by a component.
 		and the underscore.
 		</para>
             </callout>
+            
+            
+            <callout arearefs="components.spec.parameter.property-name">
+            <para>
+            Specifies the name of the JavaBean property of the component
+            to connect the parameter to.  By default, the property name
+            matches the parameter name, but this allows overrides for
+            when the property name can't be used as is.
+            </para>
+            
+            <para>
+            See <link linkend="components.params">Parameters and Bindings</link>
+            for full details about connecting parameters
+            to properties.
+            </para>
+            </callout>
+            
+            <callout arearefs="components.spec.parameter.direction">
+            <para>
+            Used by the framework to connect parameters to JavaBean properties of the component.
+            The default, if not specified, is <literal>custom</literal> meaning that
+            the framework does not connect the parameter to any property.
+            </para>
+            
+            <para>
+            Specifying a value of <literal>in</literal> will cause Tapestry to set the
+            property to the value specified by the parameter just before rendering the component,
+            and reset the parameter (to its default value) just after rendering.
+            </para>
+            
+            </callout>
+            
             <callout arearefs="components.spec.parameter.java-type">
               <para>
-		Identifies the Java class or type that must be provided for the parameter.
-		This is for descriptive purposes only, there is no validation by the framework.
-		Additionally, most components will do their best to cooerce whatever value
-		is given them into a useful type, such as parsing a String into an int.
+		Identifies the Java class or scalar Java type of the property.  This is only
+		required when connecting a parameter to a property; this value specifies the
+		exact type of the property.
+		
 		</para>
               <para>
-		The <varname>java-type</varname> attribute is optional.
+		The <varname>java-type</varname> attribute is optional for non-connected parameters.
 		</para>
             </callout>
             <callout arearefs="components.spec.parameter.required">
@@ -1720,6 +1943,12 @@ This element is used to describe formal parameters used by a component.
               <para>
 		Individual components may do a second check, that the bound parameter provides a non-null value.
 		</para>
+		
+		<para>
+		For connected parameters, Tapestry automatically checks that the parameter is not only bound,
+		but that the binding yields a non-null value for the parameter.
+		</para>
+		
             </callout>
             <callout arearefs="components.spec.parameter.description">
               <para>
@@ -1904,7 +2133,7 @@ component.  The component property, which may be a property path, is evaulated
 when the bean is instantiated.
 </para>
         <figure>
-          <title>Component specifciation: <sgmltag class="starttag">property-value</sgmltag> element</title>
+          <title>Component specification: <sgmltag class="starttag">property-value</sgmltag> element</title>
           <programlisting>
 &lt;property-value property-path="<replaceable>property path</replaceable>"/&gt;
 </programlisting>
@@ -2084,7 +2313,7 @@ Most often, the assets are image files used with an &Image; or
         </figure>
         <para>
 Assets may be stored at some arbitrary URL, may be within the same web application context as the 
-Tapestry application, or may be stored as a resource inside Java VM class path.
+Tapestry application, or may be stored as a resource inside Java VM classpath.
 </para>
         <para>
 In all three cases, the name must be very simple:  
@@ -2107,7 +2336,7 @@ a localized path.
 </para>
         <para>
 For private assets, the resource path must be a resource path within the 
-Java VM class path, as with a specification or HTML template resource path.  
+Java VM classpath, as with a specification or HTML template resource path.  
 This means the asset can be stored in the 
 <filename class="directory">WEB-INF/classes</filename> directory of the application's WAR, 
 or inside some JAR in the classpath.  Like context assets, private assets may be localized.
@@ -2272,7 +2501,7 @@ notify the observer of the change, by   invoking the method
 <function>fireObservedChange()</function>, 
 which is 
 implemented by the class 
-<classname>net.sf.tapestry.AbstractComponent</classname>.  This method is 
+&AbstractComponent;.  This method is 
 overloaded; implementations are provided for every type of scalar value, and for 
 <classname>java.lang.Object</classname>.
 </para>
@@ -2488,7 +2717,7 @@ their instance variables) that they were just before the rendering took place, t
 be the same.  The exact same HTML response would be created.
 </para>
       <para>
-This is similar to the way in which compiling a program for source code results in the same object 
+This is similar to the way in which compiling a program from source code results in the same object 
 code.  Because the inputs are the same, the results will be identical.
 </para>
       <para>
@@ -2534,7 +2763,7 @@ component).
       <note>
         <title>Listener Methods vs. Listener Objects</title>
         <para>
-	Listener methods were introduced in Tapestry 1.0.2.  Prior to that, it was necessary
+	<link linkend="cycle.listeners">Listener methods</link> were introduced in Tapestry 1.0.2.  Prior to that, it was necessary
 	to create a listener object, typically as an inner class, to be notified when
 	the link or form was triggered.  This worked against the basic goal of Tapestry: to 
 	eliminate or simplify coding.  In reality, the listener objects are still there,
@@ -2914,23 +3143,18 @@ the request.
 	no subclass of ApplicationServlet would be necessary.
 	</para>
         <para>
-	This doesn't work for two reasons.  First and foremost is how
+	This doesn't work due to  how
 	class loaders work inside an application server.  Generally, the Tapestry
 	framework will be loaded by the system class loader, and each
 	web application will be loaded by a child class loader.  The child class loader
 	has visibility to all the classes in the WAR file, as well as all the classes
-	on the class path, whereas the system class loader will only have visibility
+	on the classpath, whereas the system class loader will only have visibility
 	to the Tapestry framework classes.
 	</para>
         <para>
 	The servlet instance acts as a "hook" exposing the child class loader; the framework
 	gets the class loader from the servlet instance and uses that
 	to instantiate Java classes for the Tapestry components.
-	</para>
-        <para>
-	A second, and less important reason, is that the subclass is responsible
-	for overriding the <function>setupLogging()</function> method, which will be necessary
-	for any production Tapestry application.
 	</para>
       </note>
       <para>
@@ -3240,9 +3464,8 @@ Tapestry uses the complete class name as the category for each class.
 </para>
       <para>
 The <classname>ApplicationServlet</classname> class includes a method, <function>setupLogging()</function>, 
-to initialize &Log4J;.  The provided 
-implementation is sufficient for testing (see the Javadoc for more information) but serious 
-applications may want to create a more involved logging configuration.
+to help initialize &Log4J;, allowing the default configuration to be overridden using command line
+parameters.
 </para>
       <para>
 The Tapestry Inspector includes a Logging tab that allows the logging configuration to be 
@@ -3331,7 +3554,8 @@ commonly used components.
 </para>
       <note>
         <para>
-	Both the application and component specifications use the same DTD.  As with component 
+	Both the application and component specifications use the same DTD (but
+	with different root elements).  As with component 
 	specifications, there is an older, more verbose version of the DTD which is not described
 	here.
 	</para>
@@ -3347,8 +3571,8 @@ The application specification begins with an XML header:
           <programlisting><![CDATA[
 <?xml version="1.0"?>
 <!DOCTYPE application PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN"
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 ]]>
 
 &lt;application
@@ -3634,11 +3858,11 @@ In reality, listener <emphasis>objects</emphasis> have not gone away.  Instead, 
 whereby a listener object is created automatically when needed.
 Each component includes a property, <varname>listeners</varname>, that is a collection of
 listener objects for the component, synthesized from the available public methods.  The
-listeners objects are properties, with the names corresponding to the method names.
+listener objects are properties, with the names corresponding to the method names.
 </para>
       <tip>
         <para>
-The class <classname>AbstractEngine</classname> (the baseclass for &SimpleEngine;)
+The class <classname>AbstractEngine</classname> (the base class for &SimpleEngine;)
 also implements a listeners property.  This allows you to easily add listener methods
 to your application engine.
 </para>
@@ -3809,7 +4033,7 @@ of the
 <link linkend="cycle.action">action service</link>; this is configurable.  Using the direct service is the
 default behavior unless specified.  A rewind still occurs, it simply starts directly
 with the &Form; component, rather than having to "work down" to it.  This can be
-a big gain if a page contains many forms.
+a performance gain if a page contains many forms.
 </para>
       </note>
       <para>
@@ -4889,7 +5113,7 @@ provided with the framework; it uses in-memory page recorders.
 When the engine is serialized, the page recorders are serialized along with it.
 </para>
       <para>
-The <classname>IPageRecorder</classname> interface doesn't specify anything about how 
+The &IPageRecorder; interface doesn't specify anything about how 
 a page recorder works.  This opens up many possibilities for storage of state, 
 including flat files, databases, stateful EJB session beans, or HTTP Cookies.
 </para>
@@ -5255,12 +5479,12 @@ There are two basic types of components:  those that use an HTML template, and t
 Nearly all of the base components provided with the Tapestry framework don't 
 use templates.  They inherit from the class 
 &AbstractComponent;.  Such 
-components must implement the <function>render()</function> method.
+components must implement the protected <function>renderComponent()</function> method.
 </para>
       <para>
 Components that use templates inherit from a subclass of 
 &AbstractComponent;: 
-&BaseComponent;.  They should leave the <function>render()</function>
+&BaseComponent;.  They should leave the <function>renderComponent()</function>
 method alone.
 </para>
       <para>
@@ -5279,6 +5503,19 @@ kind of "named slot" that can be wired up as
 a source (or sink) of data in a number of ways.  This "wiring up" is 
 actually accomplished using binding objects.
 </para>
+
+<tip>
+	<title>Connected Parameters</title>
+	<para>
+Most components use "in" parameters and can have Tapestry
+<link linkend="components.connected-params">connect the parameters to properties
+of the component</link> automatically.  This discussion
+reveals some inner workings of Tapestry
+that developers most often
+no longer need to be aware of.
+</para>
+</tip>
+
       <para>
 The page loader, the object that converts a component specification into an actual 
 component, is responsible for creating and assigning the bindings.  It uses the method 
@@ -5289,20 +5526,16 @@ component can retrieve the binding by name using <function>getBinding()</functio
 For example, lets create a component that allows the color of 
 a span of text to be specified using a <classname>java.awt.Color</classname> object.  The 
 component has a required parameter named <varname>color</varname>.  The class's 
-<function>render()</function> method is below:
+<function>renderComponent()</function> method is below:
 </para>
       <informalexample>
         <programlisting>
-public void render(IResponseWriter writer, IRequestCycle cycle)
+protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
   throws RequestCycleException
 {
-  IBinding colorBinding;
-  Color color;
-  String encodedColor;
-
-  colorBinding = getBinding("color");
-  color = (Color)colorBinding.getObject("color", Color.class);
-  encodedColor = RequestContext.encodeColor(color);
+  IBinding colorBinding = getBinding("color");
+  Color color = (Color)colorBinding.getObject("color", Color.class);
+  String encodedColor = RequestContext.encodeColor(color);
 
   writer.begin("font");
   writer.attribute("color", encodedColor);
@@ -5324,7 +5557,7 @@ allows for this as an optimization on frequently used components.
 </para>
       <para>
 The <function>setBinding()</function> method in 
-<classname>AbstractComponent</classname> checks to see if there is a read/write 
+&AbstractComponent; checks to see if there is a read/write 
 JavaBeans property named "<replaceable>name</replaceable>Binding" of
 type &IBinding;.  In this example, it 
 would look for the methods <function>getColorBinding()</function> and <function>setColorBinding()</function>.
@@ -5350,14 +5583,11 @@ public IBinding getColorBinding()
 }
 </emphasis>
 
-public void render(IResponseWriter writer, IRequestCycle cycle)
+protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
   throws RequestCycleException
 {
-  Color color;
-  String encodedColor;
-
-  color = (Color)<emphasis>colorBinding</emphasis>.getObject("color", Color.class);
-  encodedColor = RequestContext.encodeColor(color);
+  Color color = (Color)<emphasis>colorBinding</emphasis>.getObject("color", Color.class);
+  String encodedColor = RequestContext.encodeColor(color);
 
   writer.begin("font");
   writer.attribute("color", encodedColor);
@@ -5370,7 +5600,7 @@ public void render(IResponseWriter writer, IRequestCycle cycle)
       <para>
 This is a trade off; slightly more code for slightly better performance.  
 There is also a memory bonus; the 
-&Map; used by &AbstractComponent; will never be created.
+&Map; used by &AbstractComponent; to store the binding will never be created.
 </para>
     </section>
     <section id="coding-components.persistent-state">
@@ -5415,7 +5645,7 @@ Assets come in three flavors:  external, internal and private.
 		relative to the web server containing the Tapestry application.</para>
         </listitem>
         <listitem>
-          <para>A private asset is a file within the class path, 
+          <para>A private asset is a file within the classpath, 
 		that is, packaged with the component in a Java Archive (JAR) file.  
 		Obviously, such assets are not normally visible to the web server.
 		</para>
@@ -5452,7 +5682,7 @@ Under Tapestry, the private assets are distributed with the component
 specification, HTML templates and Java code, within a Java Archive (JAR) 
 file, or within the <filename class="directory">WEB-INF/classes</filename> directory of a 
 Web Application Archive (WAR) file.  The resources are located within the 
-running application's class path.
+running application's classpath.
 </para>
       <para>
 The Tapestry framework takes care of making the private 
@@ -5462,9 +5692,8 @@ one of two ways:
       <itemizedlist>
         <listitem>
           <para>The private assets are copied out of the 
-				class path and to a directory visible to the web server.  
-				This requires some additional configuration of the Tapestry 
-				application's web deployment descriptor.
+				classpath and to a directory visible to the web server.  
+				This requires some additional configuration.
 			</para>
         </listitem>
         <listitem>
@@ -5475,7 +5704,7 @@ one of two ways:
         </listitem>
       </itemizedlist>
       <para>
-Copying assets out of the class path and onto the web 
+Copying assets out of the classpath and onto the web 
 site is the best solution for final deployment, since it allows the assets 
 to be retrieved as static files, an operation 
 most web servers are optimized for.
@@ -5564,17 +5793,19 @@ all be named.  At first glance, it may appear that Tapestry prevents the use of 
 </para>
     <para>
 In fact, Tapestry is structured to enhance this kind of scripting.  This is faciliated by the &Body; component, which replaces
-the <sgmltag class="starttag">body</sgmltag> element of the page.  Virtually all of a page's content will be wrapped by the &Body; component,
-including everything that has need for dynamic scripting.
+the <sgmltag class="starttag">body</sgmltag> element of the page.
+The <link linkend="script.body">next section</link> described the services
+the &Body; component povides to facilitate complex client-side scripting.
 </para>
     <section id="script.body">
       <title>The Body component</title>
       <para>
 The &Body; component provides a number of services to the components it wraps.  It handles preloading of
 images.  It provides the ability to add arbitrary JavaScript to the page, to include an external static
-JavaScript document, or to the
+JavaScript document, or to add JavaScript
+to the
 <sgmltag class="starttag">body</sgmltag> element's onload event handler.  Finally, it provides an easy way 
-to generate unique identifiers needed for things like image names.
+to generate unique identifiers needed for things like image and function names.
 </para>
       <para>
 When the &Body; component renders, it registers itself as an attribute of the &IRequestCycle;.  This
@@ -5730,7 +5961,7 @@ Any number of other scripts may be included.
         <para>
 This element is used to include external, static, JavaScript scripts on the rendered page.
 This is useful to in cases where large parts of the JavaScript do not depend on any dynamic symbols.
-The path is to a resource on the class path, much like
+The path is to a resource on the classpath, much like
 a <link linkend="components.spec.assets">private asset</link>.
 </para>
       </section>
@@ -6650,40 +6881,7 @@ a class loader issue.
       	</answer>
       </qandaentry>
       
-      
-      <qandaentry>
-      	<question>
-      		<para>Why does Tapestry use bindings for component parameters?  Why doesn't it just
-      		set properties of the component?</para>
-      	</question>
-      	
-      	<answer>
-      		<para>
-		For most components, such as &Insert;, it makes sense that the framework could just
-		set a normal JavaBean property of the component instance, before invoking
-		the <function>render()</function> method. 
-      		</para>
-      		
-      	<para>
-      	However, for all the interesting components, such as &Foreach; and the form related components,
-      	parameters are a two-way street.  In these cases, the parameters are updated, by invoking
-      	the various set methods on &IBinding;.  It isn't predictable, from the framework's point of view,
-      	which bindings will update, or <emphasis>when</emphasis>.  The binding mechanism gives complete
-      	control over to the component, and allows components to easily differentiate between static
-      	bindings (whose values will never change), and dynamic bindings.
-      	</para>
-
-<note>
-<para>
-A revision of how parameters and bindings operate is slated for Tapestry release 2.1.0.
-In most cases, Tapestry will be able to hide the existence of bindings; component
-authors will simply create JavaBeans properties that match the parameter names
-for the component.
-</para>
-</note>
-      	
-      	</answer>
-      </qandaentry>
+ 
       
 <qandaentry>
 	<question>
