@@ -61,8 +61,11 @@ import org.xml.sax.Attributes;
 /**
  * Constructs a {@link org.apache.tapestry.script.ForeachToken}
  * from a &lt;foreach&gt; element, which contains full content.
+ * 
+ * <p>As of 3.0, then index attribute has been added to foreach to keep 
+ * track of the current index of the iterating collection.</p>
  *
- * @author Howard Lewis Ship
+ * @author Howard Lewis Ship, Harish Krishnaswamy
  * @version $Id$
  * @since 3.0
  */
@@ -77,12 +80,13 @@ class ForeachRule extends AbstractTokenRule
     public void startElement(RuleDirectedParser parser, Attributes attributes)
     {
         String key = getAttribute(attributes, "key");
+        String index = getAttribute(attributes, "index");
         String expression = getAttribute(attributes, "expression");
 
         if (expression == null)
             expression = getAttribute(attributes, "property-path"); // 1.0, 1.1 DTD
 
-        IScriptToken token = new ForeachToken(key, expression, parser.getLocation());
+        IScriptToken token = new ForeachToken(key, index, expression, parser.getLocation());
 
         addToParent(parser, token);
 
