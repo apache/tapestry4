@@ -57,6 +57,8 @@ public class MockEngine implements IEngine
 {
 	private IComponentStringsSource componentStringsSource;
 
+    private boolean _refreshing;
+
     public void forgetPage(String name)
     {
     }
@@ -168,6 +170,16 @@ public class MockEngine implements IEngine
     public DataSqueezer getDataSqueezer()
     {
         return null;
+    }
+
+    public boolean isRefreshing()
+    {
+        return _refreshing;
+    }
+
+    public void setRefreshing(boolean refreshing)
+    {
+        _refreshing = refreshing;
     }
 
 }

@@ -153,6 +153,17 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private transient boolean _stateful;
     private transient ListenerMap _listeners;
 
+    /**
+     *  Set to true just before the engine is "refreshed" into the 
+     *  HttpSesson, which causes it to ignore {@link #valueUnbound(HttpSessionBindingEvent)}
+     *  events.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private transient boolean _refreshing;
+
     /** @since 2.2 **/
 
     private transient DataSqueezer _dataSqueezer;
@@ -1184,11 +1195,20 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  This occurs when the session times out or is explicitly invalidated
      *  (for example, by the reset or restart services).  Invokes
      *  {@link #cleanupEngine()}.
+     * 
+     *  <p>
+     *  If the refreshing flag is set to true, then the notification is ignored.
+     *  (Some servlet containers invoke valueUnbound(), then valueBound()
+     *  when setAttribute() is invoked for an existing attribute.
      *
      **/
 
     public void valueUnbound(HttpSessionBindingEvent event)
     {
+        if (_refreshing)
+            return;
+            
+            
         // Note: there's a possible latent bug here.  If cleaning up the
         // application requires loading any resources (specifically
         // component specifications) and we need a ResourceResolver and
@@ -1729,6 +1749,20 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             return cycle.getPage(pageName);
 
         return cycle.getPage(INamespace.FRAMEWORK_NAMESPACE + ":" + pageName);
+    }
+
+    /** @since 2.2 **/
+    
+    public boolean isRefreshing()
+    {
+        return _refreshing;
+    }
+    
+    /** @since 2.2 **/
+    
+    public void setRefreshing(boolean refreshing)
+    {
+        _refreshing = refreshing;
     }
 
 }

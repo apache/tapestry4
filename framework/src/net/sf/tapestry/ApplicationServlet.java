@@ -157,7 +157,6 @@ abstract public class ApplicationServlet extends HttpServlet
         throws IOException, ServletException
     {
         RequestContext context = null;
-        IEngine engine;
 
         try
         {
@@ -168,7 +167,7 @@ abstract public class ApplicationServlet extends HttpServlet
 
             // The subclass provides the engine.
 
-            engine = getEngine(context);
+            IEngine engine = getEngine(context);
 
             if (engine == null)
                 throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
@@ -198,7 +197,15 @@ abstract public class ApplicationServlet extends HttpServlet
                         if (LOG.isDebugEnabled())
                             LOG.debug("Storing " + engine + " into session as " + _attributeName);
 
+                        // Some servlet container invoke valueUnbound(), then valueBound()
+                        // when "refreshing" this way, so we tell the engine it is being
+                        // refreshed.
+
+                        engine.setRefreshing(true);
+
                         session.setAttribute(_attributeName, engine);
+
+                        engine.setRefreshing(false);
                     }
                 }
                 catch (IllegalStateException ex)
@@ -210,6 +217,9 @@ abstract public class ApplicationServlet extends HttpServlet
                     if (LOG.isDebugEnabled())
                         LOG.debug("Session invalidated.");
                 }
+
+                // The engine is stateful and stored in a session.  Even if it started
+                // the request cycle in the pool, it doesn't go back.
 
                 return;
             }
@@ -439,7 +449,7 @@ abstract public class ApplicationServlet extends HttpServlet
         {
             SpecificationParser parser = new SpecificationParser();
 
-            return parser.parseApplicationSpecification(stream, path,  new ResourceResolver(this));
+            return parser.parseApplicationSpecification(stream, path, new ResourceResolver(this));
         }
         catch (DocumentParseException ex)
         {
