@@ -138,7 +138,17 @@ at  runtime. These files are are included in the distribution.
 			</td>
 	</tr>
 	
+	
 	<tr valign="top">
+		<td>mckoidb.jar</td>
+		<td><a href="http://mckoi.com/database/">McKoi SQL Database</a></td>
+		<td>0.92 beta</td>
+		<td>GPL</td>
+		<td>Java SQL Database used for the Virtual Library demonstration.
+		</td>
+	</tr>
+	
+	<tr valign="top" bgcolor="silver">
 		<td>org.apache.crimson.jar
 		</td>
 		<td>Sun XML Parser
@@ -196,18 +206,18 @@ reconstruct it using a different, and properly licensed, database.</td></tr>
 </table>
 
 Finally, to use the Virtual Library demo, you must download and install
-the <a href="http://www.jboss.org">JBoss</a> open source application server, release 2.4.1.
+the <a href="http://www.jboss.org">JBoss</a> open source application server, release 2.4.3.
 You must also create the file <code>config/build.properties</code> and edit it
 to identify the
 location of your JBoss installation (a sample properties file is included).  
 JBoss requires a 1.3 JVM.
 
-<p>Configuring JBoss is mostly done automatically.  Change to the 
-<code>examples/VlibBeans</code> directory and execute the command
+<p>Configuring JBoss is mostly done automatically.  
+Execute the command
 <code>ant configure</code>.  Ant will configure JBoss to run the
 Virtual Library application, which includes setting up a starter
-copy of the database.  It will also direct you to perform
-a manual edit of the JBoss configuration file.
+copy of the database.
+
 
 		<br><br>
 		.....................................................
