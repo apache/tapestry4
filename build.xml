@@ -104,14 +104,14 @@ description="Builds the Tapestry documentation.">
 
 <target name="dist" description="Builds the Tapestry distribution from scratch."
   depends="clean-all,install,junit,documentation,javadoc">
-  <!-- Dont want to make build-dist depend on all that so that we can
-  test generating the .tar.gz easier. -->
-  <antcall target="build-dist"/>
+
+   <!-- After building, clean all the subprojects. -->
+   <antcall target="clean"/>
+
+   <antcall target="build-dist"/>
 </target>
 
 <target name="build-dist" description="Builds the Tapestry distribution files.">
- <!-- After building, clean all the subprojects. -->
- <antcall target="clean"/>
  <mkdir dir="${dist}"/>
  
  <!-- Delete and recreate the base directory. -->
@@ -133,14 +133,20 @@ description="Builds the Tapestry documentation.">
      <include name="images/**/*"/>
 	 <include name="junit/**/*"/>
 	 <include name="lib/*"/>
-     <include name="web/*"/>
+     <include name="web/**"/>
      <!-- Exclude class files left around by IDEs. -->
      <exclude name="**/*.class"/>
-     <!-- Exclude the unpacked versions of the DocBook DTD and XSL files,
-     which are unpacked into subdirectories of doc/src/common -->
-     <exclude name="doc/src/common/**"/>
+
+     <!-- Exclude the source for the documentation. Starting with 1.0.7,
+          we only include the output for the documentation, not the
+          source.  This keeps us from duplicating the images as well,
+          which really shrinks the distribution size. -->
+
+     <exclude name="doc/src/**"/>
+
      <!-- Don't include build.properties; that's specific to this build
        environment.  We ship a sample file instead. -->
+
      <exclude name="config/build.properties"/>
      
      <!-- It isn't a good idea to generate a distribution from a normal working
