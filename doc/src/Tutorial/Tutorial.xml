@@ -992,11 +992,10 @@ All of this comes together in the Java code for the Guess page.
 
 public void makeGuess(IRequestCycle cycle)
 {
-    String[] parameters = cycle.getServiceParameters();
+    Object[] parameters = cycle.getServiceParameters();
+	char letter = ((Character)parameters[0]).charValue();
 	HangmanGame game = getGame();
-	String guess = parameters[0];
-	char letter = guess.charAt(0);
-
+	
 	try
 	{
 		game.guess(letter);
