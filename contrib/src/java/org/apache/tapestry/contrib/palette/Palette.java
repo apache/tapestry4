@@ -30,7 +30,9 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.form.Form;
@@ -160,36 +162,42 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * <pre>
  * 
  *  
- *   TABLE.tapestry-palette TH
- *   {
- *     font-size: 9pt;
- *     font-weight: bold;
- *     color: white;
- *     background-color: #330066;
- *     text-align: center;
- *   }
- *  
- *   TD.available-cell SELECT
- *   {
- *     font-weight: normal;
- *     background-color: #FFFFFF;
- *     width: 200px;
- *   }
  *   
- *   TD.selected-cell SELECT
- *   {
- *     font-weight: normal;
- *     background-color: #FFFFFF;
- *     width: 200px;
- *   }
- *   
- *   TABLE.tapestry-palette TD.controls
- *   {
- *     text-align: center;
- *     vertical-align: middle;
- *     width: 60px;
- *   }
  *    
+ *     
+ *      TABLE.tapestry-palette TH
+ *      {
+ *        font-size: 9pt;
+ *        font-weight: bold;
+ *        color: white;
+ *        background-color: #330066;
+ *        text-align: center;
+ *      }
+ *     
+ *      TD.available-cell SELECT
+ *      {
+ *        font-weight: normal;
+ *        background-color: #FFFFFF;
+ *        width: 200px;
+ *      }
+ *      
+ *      TD.selected-cell SELECT
+ *      {
+ *        font-weight: normal;
+ *        background-color: #FFFFFF;
+ *        width: 200px;
+ *      }
+ *      
+ *      TABLE.tapestry-palette TD.controls
+ *      {
+ *        text-align: center;
+ *        vertical-align: middle;
+ *        width: 60px;
+ *      }
+ *       
+ *     
+ *    
+ *   
  *  
  * </pre>
  * 
@@ -324,37 +332,35 @@ public abstract class Palette extends BaseComponent implements IFormComponent
             _script = source.getScript(scriptResource);
         }
 
-        Body body = Body.get(cycle);
-        if (body == null)
-            throw new ApplicationRuntimeException("Palette component must be wrapped by a Body.",
-                    this, null, null);
+        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
-        setImage(body, cycle, "selectImage", getSelectImage());
-        setImage(body, cycle, "selectDisabledImage", getSelectDisabledImage());
-        setImage(body, cycle, "deselectImage", getDeselectImage());
-        setImage(body, cycle, "deselectDisabledImage", getDeselectDisabledImage());
+        setImage(pageRenderSupport, cycle, "selectImage", getSelectImage());
+        setImage(pageRenderSupport, cycle, "selectDisabledImage", getSelectDisabledImage());
+        setImage(pageRenderSupport, cycle, "deselectImage", getDeselectImage());
+        setImage(pageRenderSupport, cycle, "deselectDisabledImage", getDeselectDisabledImage());
 
         if (isSortUser())
         {
-            setImage(body, cycle, "upImage", getUpImage());
-            setImage(body, cycle, "upDisabledImage", getUpDisabledImage());
-            setImage(body, cycle, "downImage", getDownImage());
-            setImage(body, cycle, "downDisabledImage", getDownDisabledImage());
+            setImage(pageRenderSupport, cycle, "upImage", getUpImage());
+            setImage(pageRenderSupport, cycle, "upDisabledImage", getUpDisabledImage());
+            setImage(pageRenderSupport, cycle, "downImage", getDownImage());
+            setImage(pageRenderSupport, cycle, "downDisabledImage", getDownDisabledImage());
         }
 
         _symbols.put("palette", this);
 
-        _script.execute(cycle, body, _symbols);
+        _script.execute(cycle, pageRenderSupport, _symbols);
     }
 
     /**
      * Extracts its asset URL, sets it up for preloading, and assigns the preload reference as a
      * script symbol.
      */
-    private void setImage(Body body, IRequestCycle cycle, String symbolName, IAsset asset)
+    private void setImage(PageRenderSupport pageRenderSupport, IRequestCycle cycle,
+            String symbolName, IAsset asset)
     {
         String URL = asset.buildURL(cycle);
-        String reference = body.getPreloadedImageReference(URL);
+        String reference = pageRenderSupport.getPreloadedImageReference(URL);
 
         _symbols.put(symbolName, reference);
     }

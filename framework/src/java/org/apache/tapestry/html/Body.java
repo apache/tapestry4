@@ -14,21 +14,14 @@
 
 package org.apache.tapestry.html;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.hivemind.util.ClasspathResource;
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScriptProcessor;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.asset.PrivateAsset;
-import org.apache.tapestry.util.IdAllocator;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.util.PageRenderSupportImpl;
 
 /**
  * The body of a Tapestry page. This is used since it allows components on the page access to an
@@ -39,40 +32,9 @@ import org.apache.tapestry.util.IdAllocator;
  * @author Howard Lewis Ship
  */
 
-public abstract class Body extends AbstractComponent implements IScriptProcessor
+public abstract class Body extends AbstractComponent implements PageRenderSupport
 {
-    // Lines that belong inside the onLoad event handler for the <body> tag.
-    private StringBuffer _initializationScript;
-
-    // Any other scripting desired
-
-    private StringBuffer _bodyScript;
-
-    // Contains text lines related to image initializations
-
-    private StringBuffer _imageInitializations;
-
-    /**
-     * Map of URLs to Strings (preloaded image references).
-     */
-
-    private Map _imageMap;
-
-    /**
-     * List of included scripts. Values are Strings.
-     * 
-     * @since 1.0.5
-     */
-
-    private List _externalScripts;
-
-    private IdAllocator _idAllocator;
-
-    private static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.Body";
-
-    /**
-     * Tracks a particular preloaded image.
-     */
+    private PageRenderSupportImpl _pageRenderSupport;
 
     /**
      * Adds to the script an initialization for the named variable as an Image(), to the given URL.
@@ -85,33 +47,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
     public String getPreloadedImageReference(String URL)
     {
-        if (_imageMap == null)
-            _imageMap = new HashMap();
-
-        String reference = (String) _imageMap.get(URL);
-
-        if (reference == null)
-        {
-            int count = _imageMap.size();
-            String varName = "tapestry_preload[" + count + "]";
-            reference = varName + ".src";
-
-            if (_imageInitializations == null)
-                _imageInitializations = new StringBuffer();
-
-            _imageInitializations.append("  ");
-            _imageInitializations.append(varName);
-            _imageInitializations.append(" = new Image();\n");
-            _imageInitializations.append("  ");
-            _imageInitializations.append(reference);
-            _imageInitializations.append(" = \"");
-            _imageInitializations.append(URL);
-            _imageInitializations.append("\";\n");
-
-            _imageMap.put(URL, reference);
-        }
-
-        return reference;
+        return _pageRenderSupport.getPreloadedImageReference(URL);
     }
 
     /**
@@ -122,12 +58,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
     public void addInitializationScript(String script)
     {
-        if (_initializationScript == null)
-            _initializationScript = new StringBuffer(script.length() + 1);
-
-        _initializationScript.append(script);
-        _initializationScript.append('\n');
-
+        _pageRenderSupport.addInitializationScript(script);
     }
 
     /**
@@ -149,10 +80,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
     public void addBodyScript(String script)
     {
-        if (_bodyScript == null)
-            _bodyScript = new StringBuffer(script.length());
-
-        _bodyScript.append(script);
+        _pageRenderSupport.addBodyScript(script);
     }
 
     /**
@@ -165,70 +93,34 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
     public void addExternalScript(Resource scriptLocation)
     {
-        if (_externalScripts == null)
-            _externalScripts = new ArrayList();
-
-        if (_externalScripts.contains(scriptLocation))
-            return;
-
-        // Alas, this won't give a good ILocation for the actual problem.
-
-        if (!(scriptLocation instanceof ClasspathResource))
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "Body.include-classpath-script-only",
-                    scriptLocation), this, null, null);
-
-        // Record the URL so we don't include it twice.
-
-        _externalScripts.add(scriptLocation);
-    }
-
-    /**
-     * Writes &lt;script&gt; elements for all the external scripts.
-     */
-    private void writeExternalScripts(IMarkupWriter writer)
-    {
-        int count = Tapestry.size(_externalScripts);
-        for (int i = 0; i < count; i++)
-        {
-            ClasspathResource scriptLocation = (ClasspathResource) _externalScripts.get(i);
-
-            // This is still very awkward! Should move the code inside PrivateAsset somewhere
-            // else, so that an asset does not have to be created to to build the URL.
-            PrivateAsset asset = new PrivateAsset(scriptLocation, null);
-            String url = asset.buildURL(getPage().getRequestCycle());
-
-            // Note: important to use begin(), not beginEmpty(), because browser don't
-            // interpret <script .../> properly.
-
-            writer.begin("script");
-            writer.attribute("language", "JavaScript");
-            writer.attribute("type", "text/javascript");
-            writer.attribute("src", url);
-            writer.end();
-            writer.println();
-        }
-
+        _pageRenderSupport.addExternalScript(scriptLocation);
     }
 
     /**
      * Retrieves the <code>Body</code> that was stored into the request cycle. This allows
      * components wrapped by the <code>Body</code> to locate it and access the services it
      * provides.
+     * 
+     * @deprecated To be removed in 3.2. Use
+     *             {@link org.apache.tapestry.TapestryUtils#getPageRenderSupport(IRequestCycle)}
+     *             instead.
      */
 
     public static Body get(IRequestCycle cycle)
     {
-        return (Body) cycle.getAttribute(ATTRIBUTE_NAME);
+        return (Body) TapestryUtils.getPageRenderSupport(cycle, null);
+    }
+
+    protected void prepareForRender(IRequestCycle cycle)
+    {
+        super.prepareForRender(cycle);
+
+        _pageRenderSupport = new PageRenderSupportImpl(getAssetService(), getLocation());
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("Body.may-not-nest"), this,
-                    null, null);
-
-        cycle.setAttribute(ATTRIBUTE_NAME, this);
+        TapestryUtils.storeRenderPageSupport(cycle, this);
 
         IMarkupWriter nested = writer.getNestedWriter();
 
@@ -244,7 +136,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
         // Write the page's scripting. This is included scripts
         // and dynamic JavaScript.
 
-        writeScript(writer);
+        _pageRenderSupport.writeBodyScript(writer, cycle);
 
         // Close the nested writer, which dumps its buffered content
         // into its parent.
@@ -256,7 +148,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
         // would create a window.onload event handler, but this is better
         // (it doesn't have to wait for external images to load).
 
-        writeInitializationScript(writer);
+        _pageRenderSupport.writeInitializationScript(writer);
 
         writer.end(); // <body>
     }
@@ -265,99 +157,19 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
     {
         super.cleanupAfterRender(cycle);
 
-        if (_idAllocator != null)
-            _idAllocator.clear();
+        _pageRenderSupport = null;
 
-        if (_imageMap != null)
-            _imageMap.clear();
-
-        if (_externalScripts != null)
-            _externalScripts.clear();
-
-        if (_initializationScript != null)
-            _initializationScript.setLength(0);
-
-        if (_imageInitializations != null)
-            _imageInitializations.setLength(0);
-
-        if (_bodyScript != null)
-            _bodyScript.setLength(0);
-    }
-
-    /**
-     * Writes a single large JavaScript block containing:
-     * <ul>
-     * <li>Any image initializations
-     * <li>Any scripting
-     * <li>Any initializations
-     * </ul>
-     * <p>
-     * The script is written into a nested markup writer.
-     * <p>
-     * If there are any other initializations (see {@link #addOtherInitialization(String)}), then a
-     * function to execute them is created.
-     */
-
-    private void writeScript(IMarkupWriter writer)
-    {
-        if (!Tapestry.isEmpty(_externalScripts))
-            writeExternalScripts(writer);
-
-        if (!(any(_bodyScript) || any(_imageInitializations)))
-            return;
-
-        writer.begin("script");
-        writer.attribute("language", "JavaScript");
-        writer.attribute("type", "text/javascript");
-        writer.printRaw("<!--");
-
-        if (any(_imageInitializations))
-        {
-            writer.printRaw("\n\nvar tapestry_preload = new Array();\n");
-            writer.printRaw("if (document.images)\n");
-            writer.printRaw("{\n");
-            writer.printRaw(_imageInitializations.toString());
-            writer.printRaw("}\n");
-        }
-
-        if (any(_bodyScript))
-        {
-            writer.printRaw("\n\n");
-            writer.printRaw(_bodyScript.toString());
-        }
-
-        writer.printRaw("\n\n// -->");
-        writer.end();
-    }
-
-    /** @since 3.1 */
-    private void writeInitializationScript(IMarkupWriter writer)
-    {
-        if (!any(_initializationScript))
-            return;
-
-        writer.begin("script");
-        writer.attribute("language", "JavaScript");
-        writer.attribute("type", "text/javascript");
-        writer.printRaw("<!--\n");
-
-        writer.printRaw(_initializationScript.toString());
-
-        writer.printRaw("\n// -->");
-        writer.end();
-    }
-
-    private boolean any(StringBuffer buffer)
-    {
-        if (buffer == null)
-            return false;
-
-        return buffer.length() > 0;
+        TapestryUtils.removePageRenderSupport(cycle);
     }
 
     public abstract String getElement();
 
     public abstract void setElement(String element);
+    
+    /** Injected
+     * @since 3.1
+     */
+    public abstract IEngineService getAssetService();
 
     /**
      * Sets the element parameter property to its default, "body".
@@ -373,10 +185,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
     public String getUniqueString(String baseValue)
     {
-        if (_idAllocator == null)
-            _idAllocator = new IdAllocator();
-
-        return _idAllocator.allocateId(baseValue);
+        return _pageRenderSupport.getUniqueString(baseValue);
     }
 
 }

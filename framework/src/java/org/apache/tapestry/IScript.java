@@ -48,7 +48,7 @@ public interface IScript
      * @param symbols Map of input symbols; execution of the script may modify the map,
      * creating new output symbols
      * 
-     * @see org.apache.tapestry.html.Body#get(IRequestCycle)
+     * @see TapestryUtils#getPageRenderSupport(IRequestCycle, Object)
      *
      */
 

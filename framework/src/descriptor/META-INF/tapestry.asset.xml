@@ -74,8 +74,11 @@
     AssetFactory used when the prefix is "classpath:" or the
     base resource is a ClasspathResource.
     
-    <create-instance class="ClasspathAssetFactory"/>
-    
+    <invoke-factory>
+      <construct class="ClasspathAssetFactory">
+        <set-object property="assetService" value="engine-service:asset"/>
+      </construct>
+    </invoke-factory>
   </service-point>
   
   <configuration-point id="AssetFactoryAdapters" schema-id="hivemind.lib.AdapterRegistry"/>

@@ -17,9 +17,8 @@ package org.apache.tapestry;
 import org.apache.hivemind.Resource;
 
 /**
- * Defines methods needed by a {@link org.apache.tapestry.IScript} to
- * execute.
- *
+ * Defines methods needed by a {@link org.apache.tapestry.IScript}to execute.
+ * 
  * @author Howard Lewis Ship
  * @since 3.0
  * @see org.apache.tapestry.html.Body
@@ -27,34 +26,33 @@ import org.apache.hivemind.Resource;
 
 public interface IScriptProcessor
 {
-	/**
-	 * Adds scripting code to the main body.  During the render, multiple scripts may
-	 * render multiple bodies; all are concatinated together to form
-	 * a single block.
-	 */
-	
-	public void addBodyScript(String script);
-	
-	/**
-	 * Adds initialization script.  Initialization script is executed once, when
-	 * the containing page loads.  Effectively, this means that initialization script
-	 * is stored inside the HTML &lt;body&gt; element's <code>onload</code>
-	 * event handler.
-	 */
-	public void addInitializationScript(String script);
-	
-	/**
-	 * Adds an external script.  The processor is expected to ensure
-	 * that external scripts are only loaded a single time per page.
-	 */
-	
-	public void addExternalScript(Resource resource);
-	
-	/**
-	 * Ensures that the given string is unique.  The string
-	 * is either returned unchanged, or a suffix is appended to
-	 * ensure uniqueness.
-	 */
-	
-	public String getUniqueString(String baseValue);
+    /**
+     * Adds scripting code to the main body. During the render, multiple scripts may render multiple
+     * bodies; all are concatinated together to form a single block. The
+     * {@link org.apache.tapestry.html.Body}&nbsp;component will write the body script contents
+     * just inside the <code>&lt;body&gt;</code> tag.
+     */
+
+    public void addBodyScript(String script);
+
+    /**
+     * Adds initialization script. Initialization script is executed once, when the containing page
+     * loads. Initialization script content is written only after all HTML content that could be
+     * referenced from the script (in effect, just before the <code>&lt/body&gt; tag).
+     */
+    public void addInitializationScript(String script);
+
+    /**
+     * Adds an external script. The processor is expected to ensure that external scripts are only
+     * loaded a single time per page.
+     */
+
+    public void addExternalScript(Resource resource);
+
+    /**
+     * Ensures that the given string is unique. The string is either returned unchanged, or a suffix
+     * is appended to ensure uniqueness.
+     */
+
+    public String getUniqueString(String baseValue);
 }

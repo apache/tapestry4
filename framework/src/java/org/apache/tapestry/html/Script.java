@@ -26,40 +26,37 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IScriptSource;
 
 /**
- *  Works with the {@link Body} component to add a script (and perhaps some initialization) 
- *  to the HTML response.
- *
- *  [<a href="../../../../../ComponentReference/Script.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Works with the {@link Body}component to add a script (and perhaps some initialization) to the
+ * HTML response. [ <a href="../../../../../ComponentReference/Script.html">Component Reference
+ * </a>]
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Script extends AbstractComponent
 {
     private Map _baseSymbols;
 
     /**
-     *  A Map of input and output symbols visible to the body of the Script.
+     * A Map of input and output symbols visible to the body of the Script.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     private Map _symbols;
 
     /**
-     *  Constructs the symbols {@link Map}.  This starts with the
-     *  contents of the symbols parameter (if specified) to which is added
-     *  any informal parameters.  If both a symbols parameter and informal
-     *  parameters are bound, then a copy of the symbols parameter's value is made
-     *  (that is, the {@link Map} provided by the symbols parameter is read, but not modified).
-     *
-     **/
+     * Constructs the symbols {@link Map}. This starts with the contents of the symbols parameter
+     * (if specified) to which is added any informal parameters. If both a symbols parameter and
+     * informal parameters are bound, then a copy of the symbols parameter's value is made (that is,
+     * the {@link Map}provided by the symbols parameter is read, but not modified).
+     */
 
     private Map getInputSymbols()
     {
@@ -69,7 +66,7 @@ public abstract class Script extends AbstractComponent
             result.putAll(_baseSymbols);
 
         // Now, iterate through all the binding names (which includes both
-        // formal and informal parmeters).  Skip the formal ones and
+        // formal and informal parmeters). Skip the formal ones and
         // access the informal ones.
 
         Iterator i = getBindingNames().iterator();
@@ -93,10 +90,8 @@ public abstract class Script extends AbstractComponent
     }
 
     /**
-     *  Gets the {@link IScript} for the correct script.
-     *
-     *
-     **/
+     * Gets the {@link IScript}for the correct script.
+     */
 
     private IScript getParsedScript(IRequestCycle cycle)
     {
@@ -111,8 +106,7 @@ public abstract class Script extends AbstractComponent
         // If the script path is relative, it should be relative to the Script component's
         // container (i.e., relative to a page in the application).
 
-        Resource rootLocation =
-            getContainer().getSpecification().getSpecificationLocation();
+        Resource rootLocation = getContainer().getSpecification().getSpecificationLocation();
         Resource scriptLocation = rootLocation.getRelativeResource(scriptPath);
 
         try
@@ -130,18 +124,11 @@ public abstract class Script extends AbstractComponent
     {
         if (!cycle.isRewinding())
         {
-            Body body = Body.get(cycle);
-
-            if (body == null)
-                throw new ApplicationRuntimeException(
-                    Tapestry.getMessage("Script.must-be-contained-by-body"),
-                    this,
-                    null,
-                    null);
+            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
             _symbols = getInputSymbols();
 
-            getParsedScript(cycle).execute(cycle, body, _symbols);
+            getParsedScript(cycle).execute(cycle, pageRenderSupport, _symbols);
         }
 
         // Render the body of the Script;
@@ -161,13 +148,11 @@ public abstract class Script extends AbstractComponent
     }
 
     /**
-     *  Returns the complete set of symbols (input and output)
-     *  from the script execution.  This is visible to the body
-     *  of the Script, but is cleared after the Script
-     *  finishes rendering.
+     * Returns the complete set of symbols (input and output) from the script execution. This is
+     * visible to the body of the Script, but is cleared after the Script finishes rendering.
      * 
-     *  @since 2.2
-     **/
+     * @since 2.2
+     */
 
     public Map getSymbols()
     {

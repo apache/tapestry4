@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
@@ -31,9 +30,9 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IScriptSource;
-import org.apache.tapestry.html.Body;
 
 /**
  * Provides a Form <tt>java.util.Date</tt> field component for selecting dates. [ <a
@@ -123,12 +122,7 @@ public abstract class DatePicker extends AbstractFormComponent
 
         if (!cycle.isRewinding())
         {
-            Body body = Body.get(cycle);
-
-            if (body == null)
-                throw new ApplicationRuntimeException(Tapestry.format(
-                        "must-be-contained-by-body",
-                        "DatePicker"), this, null, null);
+            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
             Locale locale = getPage().getLocale();
             DateFormatSymbols dfs = new DateFormatSymbols(locale);
@@ -151,7 +145,7 @@ public abstract class DatePicker extends AbstractFormComponent
             symbols.put(SYM_FORMNAME, form.getName());
             symbols.put(SYM_VALUE, value);
 
-            _script.execute(cycle, body, symbols);
+            _script.execute(cycle, pageRenderSupport, symbols);
 
             writer.beginEmpty("input");
             writer.attribute("type", "text");

@@ -39,7 +39,7 @@
 		</assert-output>
 	
 		<assert-output name="Message">
-		A ValidField using client-side validation must be enclosed by a Body component.
+    No PageRenderSupport object has been stored into the request cycle. This object is typically provided by a Body component. You should add a Body component to your template.
 		</assert-output>
 	
 	</request>

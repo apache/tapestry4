@@ -33,5 +33,7 @@
   </parameter>
  
   <reserved-parameter name="onload"/>
+  
+  <inject property="assetService" object="engine-service:asset"/>
     
 </component-specification>

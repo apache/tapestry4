@@ -17,10 +17,10 @@ package org.apache.tapestry.asset;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
@@ -37,9 +37,23 @@ import org.apache.tapestry.engine.ILink;
 
 public class PrivateAsset extends AbstractAsset
 {
+    private IEngineService _assetService;
+
+    /**
+     * @deprecated To be removed (someday). Use
+     *             {@link #PrivateAsset(ClasspathResource, IEngineService, Location)}&nbsp;instead.
+     */
     public PrivateAsset(ClasspathResource resourceLocation, Location location)
     {
+        this(resourceLocation, null, location);
+    }
+
+    public PrivateAsset(ClasspathResource resourceLocation, IEngineService assetService,
+            Location location)
+    {
         super(resourceLocation, location);
+
+        _assetService = assetService;
     }
 
     /**
@@ -50,11 +64,16 @@ public class PrivateAsset extends AbstractAsset
 
     public String buildURL(IRequestCycle cycle)
     {
-        IEngineService service = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
+        String path = getResourceLocation().getPath();
 
-       String path = getResourceLocation().getPath();
- 
-        ILink link = service.getLink(cycle, path);
+        // ClasspathAssetFactory will provide the asset service as a constructor
+        // parameter, but there are a few odd uses of PrivateAsset where this
+        // is not handy.
+
+        if (_assetService == null)
+            _assetService = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
+
+        ILink link = _assetService.getLink(cycle, path);
 
         return link.getURL();
     }
