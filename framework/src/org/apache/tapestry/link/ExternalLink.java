@@ -60,13 +60,13 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  A component for creating a link to {@link IExternalPage} using the 
- * {@link ExternalService}.
+ *  A component for creating a link to {@link org.apache.tapestry.IExternalPage} using the
+ * {@link org.apache.tapestry.engine.ExternalService}.
  *
  *  [<a href="../../../../../ComponentReference/ExternalLink.html">Component Reference</a>]
  *
- * @see IExternalPage
- * @see ExternalService
+ * @see org.apache.tapestry.IExternalPage
+ * @see org.apache.tapestry.engine.ExternalService
  *
  * @author Malcolm Edgar
  * @version $Id$

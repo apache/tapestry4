@@ -64,13 +64,13 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
- *  A service, provided by the {@link IEngine}, for its pages and/or components.  
+ *  A service, provided by the {@link org.apache.tapestry.IEngine}, for its pages and/or components.
  *  Services are
  *  responsible for constructing {@link EngineServiceLink}s (an encoding of URLs)
  *  to represent dynamic application behavior, and for
  *  parsing those URLs when a subsequent request involves them.
  *
- *  @see IEngine#getService(String)
+ *  @see org.apache.tapestry.IEngine#getService(String)
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -90,7 +90,7 @@ public interface IEngineService
      *  @param parameters Additional parameters specific to the
      *  component requesting the EngineServiceLink.
      *  @return The URL for the service.  The URL will have to be encoded
-     *  via {@link HttpServletResponse#encodeURL(java.lang.String)}.
+     *  via {@link javax.servlet.http.HttpServletResponse#encodeURL(java.lang.String)}.
      *
      **/
 
@@ -103,8 +103,8 @@ public interface IEngineService
      *  rendering a result page.
      *
      *
-     *  @see IEngine#service(RequestContext)
-     *  @param engine a view of the {@link IEngine} with additional methods needed by services
+     *  @see org.apache.tapestry.IEngine#service(org.apache.tapestry.request.RequestContext)
+     *  @param engine a view of the {@link org.apache.tapestry.IEngine} with additional methods needed by services
      *  @param cycle the incoming request
      *  @param output stream to which output should ultimately be directed
      * 
