@@ -291,4 +291,92 @@
 		[NoForm/orphan]
 		</assert-output>
 	</request>
+	
+<!-- Now some tests to check for handling of null as the current selection of a RadioGroup. -->
+
+	<request>
+			<parameter name="service" value="page/NullSelection"/>
+			
+			<assert-output name="Page Title">
+<![CDATA[<title>NullSelection</title>]]>	
+			</assert-output>
+			
+			<assert-output name="No Choice">
+<![CDATA[<input type="radio" name="group" checked="checked" value="0"/> No Choice]]>				
+			</assert-output>
+			
+			<assert-output name="Tapestry">
+<![CDATA[<input type="radio" name="group" value="1"/> Tapestry]]>				
+			</assert-output>
+
+			<assert-output name="Struts">
+<![CDATA[<input type="radio" name="group" value="2"/> Struts]]>				
+			</assert-output>
+			
+			<assert-output name="WebWork">
+<![CDATA[<input type="radio" name="group" value="3"/> WebWork]]>				
+			</assert-output>
+			
+			<assert-output name="Selection">
+Framework: []
+			</assert-output>
+					
+	</request>
+	
+	<!-- Submit the form. -->
+	
+	<request>
+		<parameter name="service" value="direct/1/NullSelection/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="Form0" value="group"/>
+		<parameter name="group" value="1"/>
+		
+			<assert-output name="No Choice">
+<![CDATA[<input type="radio" name="group" value="0"/> No Choice]]>				
+			</assert-output>
+					
+			<assert-output name="Tapestry">
+<![CDATA[<input type="radio" name="group" checked="checked" value="1"/> Tapestry]]>				
+			</assert-output>
+
+			<assert-output name="Struts">
+<![CDATA[<input type="radio" name="group" value="2"/> Struts]]>				
+			</assert-output>
+			
+			<assert-output name="WebWork">
+<![CDATA[<input type="radio" name="group" value="3"/> WebWork]]>				
+			</assert-output>
+			
+			<assert-output name="Selection">
+Framework: [tapestry]
+			</assert-output>		
+	</request>
+	
+	<!-- Submit the form with *no* selection for group. -->
+	<request>
+	  <parameter name="service" value="direct/1/NullSelection/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="Form0" value="group"/>	
+
+			<assert-output name="No Choice">
+<![CDATA[<input type="radio" name="group" checked="checked" value="0"/> No Choice]]>				
+			</assert-output>
+			
+			<assert-output name="Tapestry">
+<![CDATA[<input type="radio" name="group" value="1"/> Tapestry]]>				
+			</assert-output>
+
+			<assert-output name="Struts">
+<![CDATA[<input type="radio" name="group" value="2"/> Struts]]>				
+			</assert-output>
+			
+			<assert-output name="WebWork">
+<![CDATA[<input type="radio" name="group" value="3"/> WebWork]]>				
+			</assert-output>
+			
+			<assert-output name="Selection">
+Framework: []
+			</assert-output>
+		
+		</request>			
 </mock-test>
