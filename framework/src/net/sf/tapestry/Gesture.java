@@ -25,7 +25,9 @@
 
 package net.sf.tapestry;
 
+import java.util.List;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,7 +57,7 @@ public class Gesture
 
     private IRequestCycle _cycle;
     private String _serviceName;
-    private String[] _serviceContext;
+    private String _serviceContext;
     private String[] _serviceParameters;
     private boolean _stateful;
 
@@ -70,13 +72,14 @@ public class Gesture
      *  <p>Service context strings must be URL safe, and may not contain
      *  slash ('/') characters.  Typically, only letters, numbers and simple
      *  punctuation ('.', '-', '_') is recommended (no checks are currently made,
-     *  however).
+     *  however).  Context strings are generally built from page names
+     *  and component ids, which are limited to safe characters.
      *  
      *  @param cycle The {@link IRequestCycle} the Gesture is to be created for.
      *  @param serviceName The name of the service to be invoked by the Gesture.
      *  @param serviceContext an optional array of strings to be provided
      *  to the service to provide a context for executing the service.  May be null
-     *  or empty.  <b>Note: retained, not copied.</b>
+     *  or empty.  <b>Note: copied, not retained.</b>
      *  @param serviceParameters An array of parameters, may be 
      *  null or empty. <b>Note: retained, not copied.</b>
      *  @param stateful if true, the service which generated the Gesture
@@ -84,15 +87,39 @@ public class Gesture
      *  {@link IRequestCycle#encodeURL(String)}.
      **/
 
-    public Gesture(IRequestCycle cycle, String serviceName, String[] serviceContext, String[] serviceParameters, boolean stateful)
+    public Gesture(
+        IRequestCycle cycle,
+        String serviceName,
+        String[] serviceContext,
+        String[] serviceParameters,
+        boolean stateful)
     {
         _cycle = cycle;
-        _serviceName= serviceName;
-        _serviceContext = serviceContext;
+        _serviceName = serviceName;
+        _serviceContext = constructContext(serviceContext);
         _serviceParameters = serviceParameters;
         _stateful = stateful;
     }
 
+    private String constructContext(String[] serviceContext)
+    {
+        int count = Tapestry.size(serviceContext);
+
+        if (count == 0)
+            return null;
+
+        StringBuffer buffer = new StringBuffer();
+
+        for (int i = 0; i < count; i++)
+        {
+            if (i > 0)
+                buffer.append('/');
+
+            buffer.append(serviceContext[i]);
+        }
+
+        return buffer.toString();
+    }
 
     /**
      *  Returns the URI for the Gesture, exclusing any service parameters.
@@ -109,19 +136,6 @@ public class Gesture
         return constructURL(new StringBuffer(), false);
     }
 
-    /**
-     *  Returns an array of parameters (possibly null) that should be included
-     *  as multiple values of query parameter {@link IEngineService#PARAMETERS_QUERY_PARAMETER_NAME}
-     *  in the request.  This is primarily for the benefit of
-     *  {@link net.sf.tapestry.form.Form}, which encodes these as hidden fields.
-     * 
-     **/
-    
-    public String[] getServiceParameters()
-    {
-        return _serviceParameters;
-    }
-    
     /**
      *  Something of a misnomer; returns the URI, relative to the server's root.
      *  If the Gesture is stateful, then the URI is filtered
@@ -188,46 +202,44 @@ public class Gesture
     {
         buffer.append(_cycle.getEngine().getServletPath());
 
-        buffer.append('/');
-        buffer.append(_serviceName);
-        
-
-        if (_serviceContext != null)
+        if (includeParameters)
         {
-            for (int i = 0; i < _serviceContext.length; i++)
-            {
-                buffer.append('/');
-
-                buffer.append(_serviceContext[i]);
-            }
-        }
-
-        int count = 
-            includeParameters ? Tapestry.size(_serviceParameters) : 0;
-            
-        for (int i = 0; i < count; i++)
-        {
-            if (i == 0)
-                buffer.append('?');
-            else
-                buffer.append('&');
-                
-            buffer.append(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
+            buffer.append('?');
+            buffer.append(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
             buffer.append('=');
-            
-            try
+            buffer.append(_serviceName);
+
+            if (_serviceContext != null)
             {
-                // We use the older, deprecated version of this method, which is compatible
-                // with the JDK 1.2.2.
-                
-                String encoded = URLEncoder.encode(_serviceParameters[i]);
-                
-                buffer.append(encoded);
+                buffer.append('&');
+                buffer.append(IEngineService.CONTEXT_QUERY_PARMETER_NAME);
+                buffer.append('=');
+                buffer.append(_serviceContext);
             }
-            catch (Exception ex)
+
+            int count = Tapestry.size(_serviceParameters);
+
+            for (int i = 0; i < count; i++)
             {
-                // JDK1.2.2 claims this throws Exception.  It doesn't
-                // and we ignore it.
+                buffer.append('&');
+
+                buffer.append(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
+                buffer.append('=');
+
+                try
+                {
+                    // We use the older, deprecated version of this method, which is compatible
+                    // with the JDK 1.2.2.
+
+                    String encoded = URLEncoder.encode(_serviceParameters[i]);
+
+                    buffer.append(encoded);
+                }
+                catch (Exception ex)
+                {
+                    // JDK1.2.2 claims this throws Exception.  It doesn't
+                    // and we ignore it.
+                }
             }
         }
 
@@ -239,6 +251,62 @@ public class Gesture
         return result;
     }
 
+    /**
+     *  Returns the names of any parameters that should be encoded
+     *  into a &lt;form&gt;.  This is used by the
+     *  {@link net.sf.tapestry.form.Form} component.
+     * 
+     *  @see #getParameterValues(String)
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public String[] getParameterNames()
+    {
+        List list = new ArrayList();
+
+        list.add(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
+
+        if (_serviceContext != null)
+            list.add(IEngineService.CONTEXT_QUERY_PARMETER_NAME);
+
+        if (Tapestry.size(_serviceParameters) != 0)
+            list.add(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
+
+        return (String[]) list.toArray(new String[list.size()]);
+    }
+
+    /**
+     *  Returns an array of strings to be encoded into the &lt;form&gt;
+     *  (as hidden form elements). 
+     * 
+     *  @see #getParameterNames()
+     *  @since 2.2
+     * 
+     **/
+
+    public String[] getParameterValues(String name)
+    {
+        if (name.equals(IEngineService.SERVICE_QUERY_PARAMETER_NAME))
+        {
+            return new String[] { _serviceName };
+        }
+        
+        if (name.equals(IEngineService.CONTEXT_QUERY_PARMETER_NAME))
+        {
+            return new String[] { _serviceContext };
+        }
+
+        if (name.equals(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME))
+        {
+            return _serviceParameters;
+        }
+
+        throw new IllegalArgumentException(Tapestry.getString("Gesture.unknown-parameter-name", name));
+
+    }
+
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("Gesture[");
@@ -246,13 +314,15 @@ public class Gesture
         buffer.append(getBareURL());
         buffer.append(' ');
 
-        for (int i = 0; i < Tapestry.size(_serviceParameters); i++)
+        int count = Tapestry.size(_serviceParameters);
+
+        for (int i = 0; i < count; i++)
         {
             if (i == 0)
                 buffer.append(" parameters=");
             else
                 buffer.append(',');
-                
+
             buffer.append(_serviceParameters[i]);
         }
 
@@ -263,4 +333,5 @@ public class Gesture
 
         return buffer.toString();
     }
+
 }

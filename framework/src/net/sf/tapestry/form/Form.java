@@ -586,7 +586,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     {
         Object[] parameters = cycle.getServiceParameters();
 
-        cycle.rewindForm(this, (String)parameters[0]);
+        cycle.rewindForm(this, (String) parameters[0]);
     }
 
     /**
@@ -610,36 +610,46 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         IEngineService service = engine.getService(serviceName);
 
         // A single service parameter is used to store the actionId.
-        
+
         return service.buildGesture(cycle, this, new String[] { actionId });
     }
 
     private void writeGestureParameters(IMarkupWriter writer, Gesture g, boolean reserveOnly)
     {
-        String[] parameters = g.getServiceParameters();
-        int count = Tapestry.size(parameters);
+        String[] names = g.getParameterNames();
+        int count = Tapestry.size(names);
 
-        if (count == 0)
-            return;
-
-        if (!reserveOnly)
+        for (int i = 0; i < count; i++)
         {
-            for (int i = 0; i < count; i++)
-            {
 
-                writer.beginEmpty("input");
-                writer.attribute("type", "hidden");
-                writer.attribute("name", IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
-                writer.attribute("value", parameters[i]);
-                writer.println();
-            }
+            String name = names[i];
+
+            // Reserve the name.
+
+            getElementId(name);
+
+            if (!reserveOnly)
+                writeHiddenFieldsForParameter(writer, g, name);
         }
+    }
 
-        // Reserve the name, in case any form component has the
-        // same name.
-
-        getElementId(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
-
+    /**
+     *  @since 2.2
+     * 
+     **/
+    
+    private void writeHiddenFieldsForParameter(IMarkupWriter writer, Gesture g, String parameterName)
+    {
+        String[] values = g.getParameterValues(parameterName);
+        
+        for (int i = 0; i < values.length; i++)
+        {        
+            writer.beginEmpty("input");
+            writer.attribute("type", "hidden");
+            writer.attribute("name", parameterName);
+            writer.attribute("value", values[i]);
+            writer.println();
+        }
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)

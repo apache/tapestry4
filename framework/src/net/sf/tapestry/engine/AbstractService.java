@@ -34,6 +34,7 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.util.io.DataSqueezer;
 
 /**
@@ -99,20 +100,12 @@ public abstract class AbstractService implements IEngineService
 
     protected String[] getServiceContext(RequestContext context)
     {
-        int count = context.getPathInfoCount();
-
-        if (count == 1)
+        String raw = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
+        
+        if (raw == null)
             return null;
-
-        // The first element in the path info is the service name, the 
-        // context is all the remaining elements.
-
-        String[] result = new String[count - 1];
-
-        for (int i = 1; i < count; i++)
-            result[i - 1] = context.getPathInfo(i);
-
-        return result;
+            
+        return new StringSplitter('/').splitToArray(raw);
     }
 
     /**
