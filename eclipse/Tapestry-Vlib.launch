@@ -108,7 +108,7 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-codec-1.1.1-dev.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-codec-1.2.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
     </listAttribute>
