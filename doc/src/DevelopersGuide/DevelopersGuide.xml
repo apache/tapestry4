@@ -3890,7 +3890,14 @@ If the link is triggered, then the <classname>Action</classname>
 			</para>
           </listitem>
         </varlistentry>
-      </variablelist>
+		<varlistentry>
+			<term>stateful</term>
+			<listitem>
+			<para>If true (the default), then the component requires an active &HttpSession; when triggered.
+			</para>
+			</listitem>
+		</varlistentry>      
+	  </variablelist>
     </section>
     <section id="builtin.Any">
       <title>Any</title>
@@ -4029,6 +4036,15 @@ is used in cases where the &Action; component can't be used
 			not the link itself.</para>
           </listitem>
         </varlistentry>
+        
+		<varlistentry>
+			<term>stateful</term>
+			<listitem>
+			<para>If true (the default), then the component requires an active &HttpSession; when triggered.
+			</para>
+			</listitem>
+		</varlistentry>
+        
       </variablelist>
     </section>
     <section id="builtin.ExceptionDisplay">
@@ -4128,6 +4144,14 @@ The other form-related components must be wrapped inside the <classname>Form</cl
 			</para>
           </listitem>
         </varlistentry>
+
+		<varlistentry>
+			<term>stateful</term>
+			<listitem>
+			<para>If true (the default), then the component requires an active &HttpSession; when triggered.
+			</para>
+			</listitem>
+		</varlistentry>
         
       </variablelist>
     </section>
@@ -6500,6 +6524,38 @@ a class loader issue.
       		it's still an awful lot of coding.
       		</para>
       		
+      	</answer>
+      </qandaentry>
+      
+      
+      <qandaentry>
+      	<question>
+      		<para>Why does Tapestry use bindings for component parameters?  Why doesn't it just
+      		set properties of the component?</para>
+      	</question>
+      	
+      	<answer>
+      		<para>
+		For most components, such as &Insert;, it makes sense that the framework could just
+		set a normal JavaBean property of the component instance, before invoking
+		the <function>render()</function> method. 
+      		</para>
+      		
+      	<para>
+      	However, for all the interesting components, such as &Foreach; and the form related components,
+      	parameters are a two-way street.  In these cases, the parameters are updated, by invoking
+      	the various set methods on &IBinding;.  It isn't predictable, from the framework's point of view,
+      	which bindings will update, or <emphasis>when</emphasis>.  The binding mechanism gives complete
+      	control over to the component, and allows components to easily differentiate between static
+      	bindings (whose values will never change), and dynamic bindings.
+      	</para>
+      	
+      	<para>
+      	Since most Tapestry developers create pages (which have no parameters) and re-use existing
+      	components, the burden on the average developer is small.  One can still imagine shuffling
+      	things around a bit to hide bindings better ... and that may occur in the future.
+      	</para>
+      	
       	</answer>
       </qandaentry>
       
