@@ -7,7 +7,7 @@
 
 	<filelist id="project.modules" 
 		dir="."
-		files="framework/build.xml"/>
+		files="framework/build.xml contrib/build.xml"/>
     
 	<import file="${hivebuild.dir}/project.xml"/>
 	<import file="${hivebuild.dir}/license-report.xml"/>    

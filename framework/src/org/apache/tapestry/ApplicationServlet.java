@@ -96,7 +96,7 @@ public class ApplicationServlet extends HttpServlet
      *
      */
 
-    private static final String LOCALE_COOKIE_NAME = "org.apache.tapestry.locale";
+    public static final String LOCALE_COOKIE_NAME = "org.apache.tapestry.locale";
 
     /**
      *  A {@link Pool} used to store {@link IEngine engine}s that are not currently

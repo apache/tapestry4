@@ -94,6 +94,16 @@
     <create-instance class="org.apache.tapestry.services.impl.ApplicationGlobalsImpl"/>
   </service-point>
   
+  <service-point id="ApplicationSpecification" interface="org.apache.tapestry.spec.IApplicationSpecification">
+    
+    The specification property of ApplicationGlobals as its own service.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="ApplicationGlobals" property="specification"/>
+    </invoke-factory>
+    
+  </service-point>
+  
   <contribution configuration-id="ApplicationInitializers">
     <initializer name="ApplicationSpecificationInitializer" object="service:ApplicationSpecificationInitializer"/>
   </contribution>
@@ -116,6 +126,56 @@
     </invoke-factory>
   </service-point>
   
+  <service-point id="HttpServletRequest" interface="javax.servlet.http.HttpServletRequest">
+    
+    Exposes the current thread's HttpServletRequest as a service. The request is actually
+    stored in the ServletInfo service.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <constuct service-id="ServletInfo" property="request"/>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="LocaleExtractor" interface="org.apache.tapestry.services.LocaleExtractor">
+    
+    Encapsulates the logic for extracting the locale for the current request.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.LocaleExtractorImpl">
+        <set-service property="request" service-id="HttpServletRequest"/>
+        <set-service property="cookieSource" service-id="XXXX"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="EngineManager" interface="org.apache.tapestry.services.EngineManager">
+    Obtains an IEngine implementation for the current request, either from a pool of
+    such engine instance, from a factory, or from the HttpSession.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.EngineManagerImpl">
+        <set-service property="enginePool" service-id="EnginePool"/>
+        <set-service property="request" service-id="HttpServletRequest"/>
+        <set-object property="servletName" object="service-property:ApplicationGlobals:servletName"/>
+        <set-service property="engineFactory" service-id="EngineFactory"/>
+        <set-service property="localeExtractor" service-id="LocaleExtractor"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="EngineFactory" interface="org.apache.tapestry.services.EngineFactory">
+    
+    Responsible for creating new instances of IEngine as needed.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.EngineFactoryImpl">
+        <set-service property="applicationSpecification" service-id="ApplicationSpecification"/>
+        <set property="defaultEngineClassName"
+            value="${org.apache.tapestry.engine-class}"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   
   <service-point id="RequestServicerPipeline" interface="org.apache.tapestry.services.RequestServicer">
     

@@ -46,9 +46,11 @@ public abstract class Two extends BasePage
         InputStream expected = null;
         InputStream actual = null;
 
+        String baseDir = System.getProperty("ROOT_DIR", ".") + "/junit/";
+
         try
         {
-            expected = new FileInputStream(path);
+            expected = new FileInputStream(baseDir + path);
             actual = file.getStream();
 
             int i = 0;

@@ -988,7 +988,7 @@ public final class Tapestry
 
         try
         {
-            InputStream in = Tapestry.class.getResourceAsStream("Version.properties");
+            InputStream in = Tapestry.class.getResourceAsStream("version.properties");
 
             if (in == null)
                 return UNKNOWN_VERSION;
@@ -997,7 +997,7 @@ public final class Tapestry
 
             in.close();
 
-            return props.getProperty("framework.version", UNKNOWN_VERSION);
+            return props.getProperty("project.version", UNKNOWN_VERSION);
         }
         catch (IOException ex)
         {

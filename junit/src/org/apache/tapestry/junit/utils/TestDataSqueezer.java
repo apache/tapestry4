@@ -374,9 +374,8 @@ public class TestDataSqueezer extends TestCase
 
     public void testClassLoader() throws Exception
     {
-
-        File cd = new File(System.getProperty("user.dir"));
-        File dir = new File(cd.getParentFile(), "examples/Workbench/classes");
+        File dir =
+            new File(System.getProperty("PROJECT_ROOT", ".") + "/examples/Workbench/classes");
 
         if (!dir.exists())
         {
@@ -393,7 +392,7 @@ public class TestDataSqueezer extends TestCase
         Object visit = visitClass.newInstance();
 
         ClassLoader visitClassLoader = visit.getClass().getClassLoader();
-        
+
         if (getClass().getClassLoader() == visitClassLoader)
         {
             unable("Unable to setup necessary ClassLoaders for test.");

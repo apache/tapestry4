@@ -29,25 +29,35 @@ import org.apache.tapestry.junit.TapestryTestCase;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
- * 
- **/
+ */
 
 public class TestMocks extends TapestryTestCase
 {
-    public static final String LOGS_DIR = "logs";
+    public static final String LOGS_DIR = "/junit/logs";
 
-    public static final String SCRIPTS_DIR = "mock-scripts";
+    public static final String DEFAULT_PROJECT_DIR = ".";
+
+    public static final String SCRIPTS_DIR = "/junit/mock-scripts";
 
     private PrintStream _savedOut;
     private PrintStream _savedErr;
 
+    private static String _projectDir;
+
+    private static String getProjectDir()
+    {
+        if (_projectDir == null)
+            _projectDir = System.getProperty("PROJECT_ROOT", DEFAULT_PROJECT_DIR);
+
+        return _projectDir;
+    }
+
     protected void runTest() throws Throwable
     {
-        String path = SCRIPTS_DIR + "/" + getName();
+        String path = getProjectDir() + SCRIPTS_DIR + "/" + getName();
 
-        MockTester tester = new MockTester(path);
+        MockTester tester = new MockTester(getProjectDir() + "/junit/", path);
 
         tester.execute();
     }
@@ -59,14 +69,14 @@ public class TestMocks extends TapestryTestCase
         addScripts(suite);
 
         // Handy place to perform one-time 
-        deleteDir(".private");
+        deleteDir(getProjectDir() + "/junit/.private");
 
         return suite;
     }
 
     private static void addScripts(TestSuite suite)
     {
-        File scriptsDir = new File(SCRIPTS_DIR);
+        File scriptsDir = new File(getProjectDir() + SCRIPTS_DIR);
 
         String[] names = scriptsDir.list();
 
@@ -120,7 +130,7 @@ public class TestMocks extends TapestryTestCase
      */
     protected void setUp() throws Exception
     {
-        File outDir = new File(LOGS_DIR);
+        File outDir = new File(getProjectDir() + LOGS_DIR);
 
         if (!outDir.isDirectory())
             outDir.mkdirs();
@@ -157,6 +167,5 @@ public class TestMocks extends TapestryTestCase
 
         System.out.close();
         System.setOut(_savedOut);
-
     }
 }

@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- $Id$ -->
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -40,71 +38,5 @@
 	
 	</request>
 	
-	<!-- Simple contrib.valid component tests -->
-	<!-- test the NumericField field -->
-    <request>
-    	<parameter name="service" value="page/Three"/>
-    	
-		<assert-output>intValue=0|</assert-output>
-		<assert-output>floatValue=0.0|</assert-output>
-		<assert-output>bigIntegerValue=|</assert-output>
-		<assert-output>bigDecimalValue=|</assert-output>
-		<assert-output>stringValue=|</assert-output>
-		<assert-output>dateValue=|</assert-output>
-	</request>
-	
-    <request>
-    	<parameter name="service" value="direct/0/Three/intForm"/>
-    	<parameter name="sp" value="S0"/>
-    	<parameter name="Form0" value="intField"/>
-    	<parameter name="intField" value="1"/>
-
-		<assert-output>intValue=1|</assert-output>
-	</request>
-	
-    <request>
-    	<parameter name="service" value="direct/0/Three/floatForm"/>
-    	<parameter name="sp" value="S0"/>
-    	<parameter name="Form0" value="floatField"/>
-    	<parameter name="floatField" value="1.23"/>
-
-		<assert-output>floatValue=1.23|</assert-output>
-	</request>
-	
-    <request>
-    	<parameter name="service" value="direct/0/Three/bigIntegerForm"/>
-    	<parameter name="sp" value="S0"/>
-    	<parameter name="Form0" value="bigIntegerField"/>
-    	<parameter name="bigIntegerField" value="12345678901234567890"/>
-
-		<assert-output>bigIntegerValue=12345678901234567890|</assert-output>
-	</request>
-	
-    <request>
-    	<parameter name="service" value="direct/0/Three/bigDecimalForm"/>
-    	<parameter name="sp" value="S0"/>
-    	<parameter name="Form0" value="bigDecimalField"/>
-    	<parameter name="bigDecimalField" value="1234567890.1234567890"/>
-
-		<assert-output>bigDecimalValue=1234567890.1234567890|</assert-output>
-	</request>
-	
-    <request>
-    	<parameter name="service" value="direct/0/Three/stringForm"/>
-    	<parameter name="sp" value="S0"/>
-    	<parameter name="Form0" value="stringField"/>
-    	<parameter name="stringField" value="Tapestry Rocks"/>
-
-		<assert-output>stringValue=Tapestry Rocks|</assert-output>
-	</request>
-	
-    <request>
-    	<parameter name="service" value="direct/0/Three/dateForm"/>
-    	<parameter name="sp" value="S0"/>
-    	<parameter name="Form0" value="dateField"/>
-    	<parameter name="dateField" value="3/20/1974"/>
-
-		<assert-output>dateValue=1974-03-20|</assert-output>
-	</request>
 	
 </mock-test>

@@ -9,3 +9,4 @@ velocity.log
 build
 ${destdir}
 ext-package
+cachedir
