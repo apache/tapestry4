@@ -888,7 +888,7 @@ public class TemplateParser
                             new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
 
                         _attributes.put(attributeName, attributeValue);
-                        attributeEndEvent(_cursor - 1);
+                        attributeEndEvent(_cursor);
 
                         // Advance over the quote.
                         advance();
