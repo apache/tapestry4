@@ -306,13 +306,13 @@ public abstract class AbstractValidatingTextField
 	}
 	
 	/**
-	 *  Delegates most renderring to the captive {@link TextField} component.
-	 *  If there's an error, then wrapped elements are also rendered (after
-	 *  the captive TextField).
 	 *
-	 *  <p>If there's an error, but no wrapped elements, then a default
-	 *  indicator <code>&lt;font color="red"&gt;>**&lt;/font&gt;</code>
-	 *  is written.
+	 * Renders the component, which involves the {@link IValidationDelegate delegate}.
+	 *
+	 * <p>During a render, the <em>first</em> field rendered that is either
+	 * in error, or required but null gets special treatment.  JavaScript is added
+	 * to select that field (such that the cursor jumps right to the field when the
+	 * page loads).
 	 *
 	 */
 	

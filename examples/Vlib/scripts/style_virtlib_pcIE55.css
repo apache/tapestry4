@@ -112,5 +112,14 @@ TABLE.tapestry-palette TD.controls
    text-align: center;
 }
 
+.clsInvalidField	
+{
+	color:#993300;
+}
+
+.clsInfoWarning	{
+	font-size:17px;
+	font-weight:bold;
+}
 
 /* Primix-JMoran2001 */

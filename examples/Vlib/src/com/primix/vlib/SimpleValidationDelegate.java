@@ -65,4 +65,27 @@ extends BaseValidationDelegate
     }
 
 
+	public void writeLabelPrefix(IValidatingTextField field, IResponseWriter writer, IRequestCycle cycle)
+	{
+		if (field.getError())
+		{
+			writer.begin("span");
+			writer.attribute("class", "clsInvalidField");
+		}
+	}
+	
+	public void writeLabelSuffix(IValidatingTextField field, IResponseWriter writer, IRequestCycle cycle)
+	{
+		if (field.getError())
+			writer.end();
+	}
+	
+	public void writeErrorSuffix(IValidatingTextField field, IResponseWriter writer, IRequestCycle cycle)
+	{
+		writer.print(" ");
+		writer.begin("span");
+		writer.attribute("class", "clsInvalidField");
+		writer.print("**");
+		writer.end();
+	}
 }

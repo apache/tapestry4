@@ -84,7 +84,7 @@
 	Property paths and JavaBeans property names used <varname>
 -->
 <book>
-<title>Tapestry Developers's Guide</title>
+<title>Tapestry Developer's Guide</title>
 <bookinfo>
 <author>
 <firstname>Howard</firstname>
@@ -1527,13 +1527,11 @@ not into an additional component, but into a simple JavaBean.
 </para>
 <para>
 These additional beans, called helper beans, are defined in the component specification, in the
-<link linkend="components.spec.bean">
-<sgmltag class="starttag">bean</sgmltag> element</link>.
+<link linkend="components.spec.bean"><sgmltag class="starttag">bean</sgmltag> element</link>.
 Each bean has a unique name, a class to instantiate,
 and a lifecycle (which controls how long the component keeps a reference to the bean).  The specification 
 allows properties of the bean to be set as well, using
-the <link linkend="components.spec.set-property">
-<sgmltag class="starttag">set-property</sgmltag> element</link>.  
+the <link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag> element</link>.  
 Helper beans are accessed through the <varname>beans</varname> property of the component.
 </para>
 <para>
@@ -1604,9 +1602,7 @@ Component specification files, which use the filename extension <literal>.jwc</l
   [ &lt;<link linkend="components.spec.property">property</link> ...&gt; ...]
   [ &lt;<link linkend="components.spec.bean">bean</link> ...&gt; ...]
   [ &lt;<link linkend="components.spec.component">component</link> ...&gt; ...]
-  [ &lt;<link linkend="components.spec.assets">
-<replaceable>asset</replaceable>
-</link> ...&gt; ...]
+  [ &lt;<link linkend="components.spec.assets"><replaceable>asset</replaceable></link> ...&gt; ...]
 &lt;/specification&gt;
 </programlisting>
 </figure>
@@ -1715,7 +1711,7 @@ This element is used to describe formal parameters used by a component.
   name="<replaceable>name</replaceable>" <co id="components.spec.parameter.name"/>
   java-class="<replaceable>text</replaceable>" <co id="components.spec.parameter.java-class"/>
   required="<replaceable>yes</replaceable>|<replaceable>no</replaceable>"&gt; <co id="components.spec.parameter.required"/>
-  [ &lt;description ... &gt; ...] <co id="components.spec.parameter.description"/>
+  [ &lt;<link linkend="components.spec.description">description</link> ... &gt; ...] <co id="components.spec.parameter.description"/>
 &lt;/parameter&gt;
 </programlisting>
 </figure>
@@ -1829,9 +1825,7 @@ The default lifecycle is <varname>request</varname>, if not specified.
 </para>
 <para>
 Any number of
-<link linkend="components.spec.set-property">
-<sgmltag class="starttag">set-property</sgmltag>
-</link>
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>
 elements may be specified, to intialize the properties of the bean.
 </para>
 </section>
@@ -1840,8 +1834,7 @@ elements may be specified, to intialize the properties of the bean.
 <sgmltag class="starttag">set-property</sgmltag> element</title>
 <para>
 This element is used to set a property of a helper bean, and
-appears only inside the <link linkend="components.spec.bean">
-<sgmltag class="starttag">bean</sgmltag> element</link>.  Properties are
+appears only inside the <link linkend="components.spec.bean"><sgmltag class="starttag">bean</sgmltag> element</link>.  Properties are
 set just after the bean is instantiated.  For poolable beans, properties
 are set just after the bean is retrieved from the pool.
 </para>
@@ -1860,13 +1853,9 @@ and <sgmltag class="starttag">property-value</sgmltag> element.
 <para>
 The name attribute identifies the property to be changed.  The value is provided
 by a
-<link linkend="components.spec.static-value">
-<sgmltag class="starttag">static-value</sgmltag>
-</link>
+<link linkend="components.spec.static-value"><sgmltag class="starttag">static-value</sgmltag></link>
 or
-<link linkend="components.spec.property-value">
-<sgmltag class="starttag">property-value</sgmltag>
-</link>
+<link linkend="components.spec.property-value"><sgmltag class="starttag">property-value</sgmltag></link>
 element.
 </para>
 </section>
@@ -1875,8 +1864,7 @@ element.
 <sgmltag class="starttag">static-value</sgmltag> element</title>
 <para>
 This element, which apparers only within a
-<link linkend="components.spec.set-property">
-<sgmltag class="starttag">set-property</sgmltag> element</link>
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag> element</link>
 provides a static value with which to set the property.
 </para>
 <figure>
@@ -1899,9 +1887,7 @@ whitespace is removed.
 <sgmltag class="starttag">property-value</sgmltag> element</title>
 <para>
 This element appears inside a
-<link linkend="components.spec.set-property">
-<sgmltag class="starttag">set-property</sgmltag>
-</link> element
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link> element
 to set a property of the bean from a dynamic property of the containing 
 component.  The component property, which may be a property path, is evaulated
 when the bean is instantiated.
@@ -2663,7 +2649,7 @@ process a request that involves that page.
 <title>Page Lifecycle</title>
 <mediaobject>
 <imageobject>
-<imagedata fileref="images/Page-lifecycle.gif" format="GIF"/>
+<imagedata fileref="images/Page-Lifecycle.gif" format="GIF"/>
 </imageobject>
 </mediaobject>
 </figure>
@@ -2828,7 +2814,7 @@ that maintain any independant state, such as &ValidatingTextField;.
 <title>Page Detach Sequence</title>
 <mediaobject>
 <imageobject>
-<imagedata fileref="images/Page-Detach-sequence.gif" format="GIF"/>
+<imagedata fileref="images/Page-Detach-Sequence.gif" format="GIF"/>
 </imageobject>
 </mediaobject>
 </figure>
@@ -3746,7 +3732,7 @@ This sequence assumes that the component is an
 <title>Action Service Sequence</title>
 <mediaobject>
 <imageobject>
-<imagedata fileref="images/Action-Service-sequence.gif" format="GIF"/>
+<imagedata fileref="images/Action-Service-Sequence.gif" format="GIF"/>
 </imageobject>
 </mediaobject>
 </figure>
@@ -5597,8 +5583,9 @@ names for the additional <sgmltag class="starttag">img</sgmltag> elements and wr
 event handlers for the <sgmltag class="starttag">a</sgmltag> elements.
 </para>
 <para>
-Now, envision a running Tapestry application.  With everything so dynamic (especially when you add things like the
-&Foreach; component), it's all but impossible to even know how many links and buttons will be on the page, never what they'll
+Now, envision a running Tapestry application.  With everything so dynamic (especially when you account for things like the
+&Foreach; component), it's all but impossible to even know how many links and buttons will be on the page, never 
+mind what they'll
 all be named.  At first glance, it may appear that Tapestry prevents the use of this kind of scripting.
 </para>
 <para>
@@ -5639,12 +5626,12 @@ HTML response:
 
 ...
 
-function onload_body()  <co id="script.body.onload"/>
+function tapestry_onLoad()  <co id="script.body.onload"/>
 {
 }
 
 // --&gt; &lt;/script&gt;
-&lt;body onload="javascript:onload_body();"&gt; <co id="script.body.tag"/>
+&lt;body onload="javascript:tapestry_onLoad();"&gt; <co id="script.body.tag"/>
 
 ... <co id="script.body.wrapped"/>
 
@@ -5667,7 +5654,7 @@ function onload_body()  <co id="script.body.onload"/>
 </callout>
 <callout arearefs="script.body.onload">
 <para>
-  The onload event handler function is only generated if some component needs some
+  The onload event handler function is only generated if some component requests some
   onload initialization.
   </para>
 </callout>
@@ -6352,6 +6339,9 @@ approach was desired, as different objects had different notification requiremen
 <para>
 For release 1.05, the interface was replaced by a more standard approach; well defined JavaBeans events.
 These are described in the <link linkend="pages.events">Page Events</link> section of this document.
+</para>
+<para>
+The <classname>ILifecycle</classname> interface will be completely removed in release 1.1.0.
 </para>
 </answer>
 </qandaentry>
