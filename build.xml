@@ -97,7 +97,10 @@
 	
 	<target name="documentation" depends="download-ext-doc"
 		description="Builds the Tapestry documentation.">
-		<ant dir="doc/src" target="install" inheritAll="false"/>
+		
+		<ant dir="doc/src" target="install" inheritAll="false">
+		  <property name="ext.dist.dir" location="${ext.dist.dir}"/>
+		</ant>
 		
 		<echo>Building site documentation using Forrest ...</echo>
 		
@@ -106,13 +109,17 @@
 
 	<target name="junit" depends="check-for-jython-dir,download-ext-junit"
 		description="Run the JUnit test suite for Tapestry.">
-		<ant dir="junit" target="run" inheritAll="false"/>
+		<ant dir="junit" target="run" inheritAll="false">
+		  <property name="ext.dist.dir" location="${ext.dist.dir}"/>
+		</ant>		
 	</target>
 	
 	<target name="clover" depends="check-for-clover-dir,check-for-jython-dir"
 		description="Execute the JUnit tests and generate Code Coverage report."
 		>
-		<ant dir="junit" target="clover" inheritAll="false"/>
+		<ant dir="junit" target="clover" inheritAll="false">
+		  <property name="ext.dist.dir" location="${ext.dist.dir}"/>
+		</ant>		
 	</target>
 	
 	<target name="dist"
@@ -651,11 +658,13 @@
 		<antcall target="downloadfile">
 			<param name="sourcefile" value="${docbookxml.loc}"/>
 			<param name="destfile" value="${docbookxml.file}"/>
+			<param name="destdir" value="${ext.dist.dir}"/>
 		</antcall>
 
 		<antcall target="downloadfile">
 			<param name="sourcefile" value="${docbookxsl.loc}"/>
 			<param name="destfile" value="${docbookxsl.file}"/>
+			<param name="destdir" value="${ext.dist.dir}"/>
 		</antcall>
 	</target>
 
