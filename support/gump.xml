@@ -77,7 +77,7 @@
     
     <!-- This needs to be kept up-to-date as we update to later versions of Javassist -->
     
-    <jar name="lib/ext/javassist.jar"/>
+    <jar name="lib/ext/javassist-2.5.1.jar"/>
     <license name="lib/ext/LICENSE.javassist.txt"/>
   </project>  
   
