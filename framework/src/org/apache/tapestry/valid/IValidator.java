@@ -23,13 +23,13 @@
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
+ * 4. The names "Apache" and "Apache Software Foundation", "Tapestry"
  *    must not be used to endorse or promote products derived from this
  *    software without prior written permission. For written
  *    permission, please contact apache@apache.org.
  *
- * 5. Products derived from this software may not be called "Apache" 
- *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
+ * 5. Products derived from this software may not be called "Apache"
+ *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their
  *    name, without prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -75,16 +75,16 @@ public interface IValidator
     /**
      *  All validators must implement a required property.  If true,
      *  the client must supply a non-null value.
-     *  
+     *
      **/
 
     public boolean isRequired();
 
     /**
-     *  Invoked during renderring to convert an object value (which may be null)
+     *  Invoked during rendering to convert an object value (which may be null)
      *  to a String.  It is acceptible to return null.  The string will be the
      *  VALUE attribute of the HTML text field.
-     * 
+     *
      **/
 
     public String toString(IFormComponent field, Object value);
@@ -92,9 +92,9 @@ public interface IValidator
     /**
      *  Converts input, submitted by the client, into an object value.
      *  May return null if the input is null (and the required flag is false).
-     * 
+     *
      *  <p>The input string will already have been trimmed.  It may be null.
-     * 
+     *
      *  @throws ValidatorException if the string cannot be converted into
      *  an object, or the object is
      *  not valid (due to other constraints).
@@ -107,9 +107,9 @@ public interface IValidator
      *  the tag is closed) to allow the validator to provide a contribution to the
      *  rendering process.  Validators typically generated client-side JavaScript
      *  to peform validation.
-     * 
+     *
      *  @since 2.2
-     * 
+     *
      **/
 
     public void renderValidatorContribution(
