@@ -27,6 +27,7 @@
 
   <component id="insertDateAdded" type="Insert">
   	<binding name="value" property-path="book.dateAdded"/>
+  	<binding name="format" property-path="dateFormat"/>
   </component>
 
   <component id="insertDescription" type="Insert">
