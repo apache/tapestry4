@@ -26,6 +26,7 @@
 
 package com.primix.tapestry.util;
 
+import com.primix.tapestry.Tapestry;
 import java.io.*;
 import java.util.*;
 
@@ -136,10 +137,7 @@ public class Enum implements Serializable
 
 		if (identity.containsKey(key))
 			throw new RuntimeException(
-				"com.primix.tapestry.util.Enum.register(): "
-					+ key
-					+ " is already registered.  "
-					+ "The enumerationId property must be unique within the class.");
+				Tapestry.getString("Enum.duplicate-registration", key));
 
 		identity.put(new EnumToken(enum), enum);
 	}
@@ -180,12 +178,7 @@ public class Enum implements Serializable
 
 		if (result == null)
 			throw new RuntimeException(
-				key
-					+ " does not map to a known instance in this JVM.  "
-					+ "This instance of "
-					+ getClass().getName()
-					+ " was serialized in a JVM that defined "
-					+ "a different set of values.");
+				Tapestry.getString("Enum.deserialize-error", key, getClass().getName()));
 
 		return result;
 	}

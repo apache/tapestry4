@@ -32,7 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Class for creating and executing JDBC statements.
+ *  Class for creating and executing JDBC statements.  Allows statements to be assembled
+ *  incrementally (like a {@link StringBuffer}), but also tracks parameters, shielding
+ *  the developer from the difference in between constructing and 
+ *  using a JDBC 
+ *  {@link java.sql.Statement} and JDBC {@link java.sql.PreparedStatement}.
+ * 
+ *  <p>In addition, implements {@link #toString()} in a userful way (you can see the
+ *  SQL and parameters), which is useful when debugging.
  *
  *  @version $Id$
  *  @author Howard Ship

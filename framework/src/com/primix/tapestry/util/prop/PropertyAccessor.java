@@ -29,6 +29,7 @@ package com.primix.tapestry.util.prop;
 import java.beans.*;
 import java.lang.reflect.*;
 import java.util.*;
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.util.DynamicInvocationException;
 import org.apache.log4j.*;
 
@@ -89,7 +90,7 @@ class PropertyAccessor implements IPropertyAccessor
 			propertyName = pd.getName();
 
 			throw new MissingAccessorException(
-				"No accessor method for property " + propertyName + ".",
+				Tapestry.getString("PropertyAccessor.no-accessor", propertyName),
 				target,
 				propertyName);
 		}
@@ -98,14 +99,14 @@ class PropertyAccessor implements IPropertyAccessor
 		{
 			result = accessor.invoke(target, null);
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			String message;
-
-			message =
-				"Could not invoke method " + accessor.getName() + " on " + target + ".";
-
-			throw new DynamicInvocationException(message, e);
+			throw new DynamicInvocationException(
+				Tapestry.getString(
+					"PropertyAccessor.method-invoke-error",
+					accessor.getName(),
+					target),
+				ex);
 		}
 
 		return result;
@@ -146,7 +147,7 @@ class PropertyAccessor implements IPropertyAccessor
 			String propertyName = pd.getName();
 
 			throw new MissingAccessorException(
-				"No mutator method for property " + propertyName + ".",
+				Tapestry.getString("PropertyAccessor.no-mutator", propertyName),
 				subject,
 				propertyName);
 		}
@@ -167,14 +168,14 @@ class PropertyAccessor implements IPropertyAccessor
 		{
 			mutator.invoke(subject, args);
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			String message;
-
-			message =
-				"Could not invoke method " + mutator.getName() + " on " + subject + ".";
-
-			throw new DynamicInvocationException(message, e);
+			throw new DynamicInvocationException(
+				Tapestry.getString(
+					"PropertyAccessor.method-invoke-error",
+					accessor.getName(),
+					subject),
+				ex);
 		}
 	}
 }

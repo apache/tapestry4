@@ -27,6 +27,7 @@
 package com.primix.tapestry.util.prop;
 
 import java.lang.reflect.*;
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.util.*;
 
 /**
@@ -63,13 +64,11 @@ class FieldAccessor implements IPropertyAccessor
 		catch (Exception ex)
 		{
 			throw new DynamicInvocationException(
-				"Unable to set public attribute "
-					+ field.getName()
-					+ " of "
-					+ instance
-					+ " to "
-					+ value
-					+ ".",
+				Tapestry.getString(
+					"FieldAccessor.unable-to-set-field",
+					field.getName(),
+					instance,
+					value),
 				ex);
 		}
 	}
@@ -103,7 +102,10 @@ class FieldAccessor implements IPropertyAccessor
 		catch (Exception ex)
 		{
 			throw new DynamicInvocationException(
-				"Unable to read public attribute " + field.getName() + " of " + instance + ".",
+				Tapestry.getString(
+					"FieldAccessor.unable-to-read-field",
+					field.getName(),
+					instance),
 				ex);
 		}
 	}

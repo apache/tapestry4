@@ -37,6 +37,8 @@ import java.io.Serializable;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import com.primix.tapestry.Tapestry;
+
 /**
  *  The most complicated of the adaptors, this one takes an arbitrary serializable
  *  object, serializes it to binary, and encodes it in a Base64 encoding.
@@ -171,7 +173,8 @@ class SerializableAdaptor implements ISqueezeAdaptor
 		{
 			// The message is the name of the class.
 
-			throw new IOException("Class " + ex.getMessage() + " not found.");
+			throw new IOException(
+				Tapestry.getString("SerializableAdaptor.class-not-found", ex.getMessage()));
 		}
 		finally
 		{
@@ -232,7 +235,9 @@ class SerializableAdaptor implements ISqueezeAdaptor
 			return CH_63;
 
 		throw new IOException(
-			"Cannot convert " + sixBit + " into a modified Base64 character.");
+			Tapestry.getString(
+				"SerializableAdaptor.unable-to-convert",
+				Integer.toString(sixBit)));
 	}
 
 	public static byte[] decode(String string) throws IOException
@@ -287,7 +292,9 @@ class SerializableAdaptor implements ISqueezeAdaptor
 			return 0;
 
 		throw new IOException(
-			"Could not interpret '" + c + "' as a modified Base64 character.");
+			Tapestry.getString(
+				"SerializableAdaptor.unable-to-interpret-char",
+				new String(new char[] { c })));
 	}
 
 }

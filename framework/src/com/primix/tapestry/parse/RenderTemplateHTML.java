@@ -54,8 +54,7 @@ public class RenderTemplateHTML implements IRender
 			|| offset >= templateData.length
 			|| offset + length > templateData.length)
 			throw new IllegalArgumentException(
-				this +" offset and/or length arguments out of range.");
-
+				Tapestry.getString("RenderTemplateHTML.bad-range", this));
 	}
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
@@ -147,7 +146,8 @@ public class RenderTemplateHTML implements IRender
 		}
 		catch (IndexOutOfBoundsException ex)
 		{
-			throw new RuntimeException("Failure trimming: " + this);
+			throw new RuntimeException(
+				Tapestry.getString("RenderTemplateHTML.error-trimming", this));
 		}
 
 		// Ok, this isn't perfect.  I don't want to write into templateData[] even

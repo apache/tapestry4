@@ -26,6 +26,7 @@
 
 package com.primix.tapestry.util.xml;
 
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.util.*;
 import org.w3c.dom.*;
 import java.io.*;
@@ -137,11 +138,10 @@ public abstract class AbstractDocumentParser
 			if (!root.getTagName().equals(rootElementName))
 			{
 				throw new DocumentParseException(
-					"Incorrect document type; expected "
-						+ rootElementName
-						+ " but received "
-						+ root.getTagName()
-						+ ".",
+					Tapestry.getString(
+						"AbstractDocumentParser.incorrect-document-type",
+						rootElementName,
+						root.getTagName()),
 					resourcePath,
 					null);
 			}
@@ -153,28 +153,39 @@ public abstract class AbstractDocumentParser
 			// This constructor captures the line number and column number
 
 			throw new DocumentParseException(
-				"Unable to parse " + resourcePath + ": " + ex.getMessage(),
+				Tapestry.getString(
+					"AbstractDocumentParser.unable-to-parse",
+					resourcePath,
+					ex.getMessage()),
 				resourcePath,
 				ex);
 		}
 		catch (SAXException ex)
 		{
 			throw new DocumentParseException(
-				"Unable to parse " + resourcePath + ": " + ex.getMessage(),
+				Tapestry.getString(
+					"AbstractDocumentParser.unable-to-parse",
+					resourcePath,
+					ex.getMessage()),
 				resourcePath,
 				ex);
 		}
 		catch (IOException ex)
 		{
 			throw new DocumentParseException(
-				"Error reading " + resourcePath + ": " + ex.getMessage(),
+				Tapestry.getString(
+					"AbstractDocumentParser.unable-to-read",
+					resourcePath,
+					ex.getMessage()),
 				resourcePath,
 				ex);
 		}
 		catch (ParserConfigurationException ex)
 		{
 			throw new DocumentParseException(
-				"Unable to construct DocumentBuilder: " + ex.getMessage(),
+				Tapestry.getString(
+					"AbstractDocumentParser.unable-to-construct-builder",
+					ex.getMessage()),
 				ex);
 		}
 		finally
@@ -344,10 +355,10 @@ public abstract class AbstractDocumentParser
 
 			if (fail)
 				throw new DocumentParseException(
-					result
-						+ " is not a valid identifier (in element "
-						+ getNodePath(node.getParentNode())
-						+ ").",
+					Tapestry.getString(
+						"AbstractDocumentParser.invalid-identifier",
+						result,
+						getNodePath(node.getParentNode())),
 					resourcePath,
 					null);
 		}

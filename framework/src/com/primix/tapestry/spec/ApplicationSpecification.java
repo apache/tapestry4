@@ -406,7 +406,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 	{
 		if (defaultComponentMap.containsKey(alias))
 			throw new IllegalArgumentException(
-				"May not redefine component alias " + alias + ".");
+				Tapestry.getString("ApplicationSpecification.duplicate-alias", alias));
 
 		if (componentMap == null)
 			componentMap = new HashMap(MAP_SIZE);
@@ -434,7 +434,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 
 		if (pageMap.containsKey(name))
 			throw new IllegalArgumentException(
-			"Application already contains a page named '" + name + "'.");
+				Tapestry.getString("ApplicationSpecification.duplicate-page", name));
 
 		pageMap.put(name, spec);
 	}

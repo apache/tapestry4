@@ -318,8 +318,7 @@ public class PropertyBinding extends AbstractBinding
 		{
 			throw new BindingException(
 			Tapestry.getString("PropertyBinding.unable-to-update-property",
-			new Object[] {
-				propertyPath, root, value }),
+				propertyPath, root, value),
 			 this, ex);
 		}
 

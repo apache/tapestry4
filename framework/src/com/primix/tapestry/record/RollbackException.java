@@ -48,13 +48,9 @@ public class RollbackException extends ApplicationRuntimeException
 		Throwable rootCause)
 	{
 		super(
-			"Unable to set property "
-				+ propertyName
-				+ " of component "
-				+ component.getExtendedId()
-				+ " to "
-				+ newValue
-				+ ".",
+			Tapestry.getString(
+				"RollbackException.message",
+				propertyName, component.getExtendedId(), newValue),
 			rootCause);
 
 		this.componentId = component.getExtendedId();

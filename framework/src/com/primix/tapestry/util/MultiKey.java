@@ -26,6 +26,7 @@
 
 package com.primix.tapestry.util;
 
+import com.primix.tapestry.Tapestry;
 import java.io.*;
 import java.util.*;
 
@@ -74,10 +75,11 @@ public class MultiKey implements Externalizable
 		super();
 
 		if (keys == null || keys.length == 0)
-			throw new IllegalArgumentException("Must pass in non-empty array of keys.");
+			throw new IllegalArgumentException(Tapestry.getString("MultiKey.null-keys"));
 
 		if (keys[0] == null)
-			throw new IllegalArgumentException("First element of keys may not be null.");
+			throw new IllegalArgumentException(
+				Tapestry.getString("MultiKey.first-element-may-not-be-null"));
 
 		if (makeCopy)
 		{
@@ -106,7 +108,7 @@ public class MultiKey implements Externalizable
 			return false;
 
 		if (keys == null)
-			throw new IllegalStateException("No keys for this MultiKey.");
+			throw new IllegalStateException(Tapestry.getString("MultiKey.no-keys"));
 
 		// Would a hashCode check be worthwhile here?
 
