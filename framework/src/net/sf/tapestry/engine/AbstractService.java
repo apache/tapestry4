@@ -157,7 +157,17 @@ public abstract class AbstractService implements IEngineService
         // Servlet API 2.2
 
         for (int i = 0; i < result.length; i++)
-            result[i] = URLDecoder.decode(result[i]);
+        {
+            try
+            {
+            	result[i] = URLDecoder.decode(result[i]);
+            }
+            catch (Exception ex)
+            {
+                // Under JDK 1.2.2, URLDecoder may throw
+                // Exception, which we ignore.
+            }
+        }
 
         return result;
     }

@@ -47,11 +47,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Category;
-
 import net.sf.tapestry.multipart.MultipartDecoder;
 import net.sf.tapestry.util.StringSplitter;
+import org.apache.log4j.Category;
+import org.mortbay.util.URI;
 
 /**
  * This class encapsulates all the relevant data for one request cycle of an
@@ -146,7 +145,23 @@ public class RequestContext implements IRender
      **/
 
     private static final char HEX[] =
-        { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        {
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F' };
 
     /**
      * Creates a <code>RequestContext</code> from its components.
@@ -231,9 +246,10 @@ public class RequestContext implements IRender
 
                 pathInfo[i] = URLDecoder.decode(pathInfo[i]);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // Ignore
+                // Under JDK 1.2.2, URLDecoder may throw
+                // Exception, which we ignore.
             }
         }
     }
@@ -334,7 +350,11 @@ public class RequestContext implements IRender
      *
      **/
 
-    public String getAbsoluteURL(String URI, String scheme, String server, int port)
+    public String getAbsoluteURL(
+        String URI,
+        String scheme,
+        String server,
+        int port)
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -835,8 +855,14 @@ public class RequestContext implements IRender
         pair(writer, "remoteHost", request.getRemoteHost());
         pair(writer, "remoteUser", request.getRemoteUser());
         pair(writer, "requestedSessionId", request.getRequestedSessionId());
-        pair(writer, "requestedSessionIdFromCookie", request.isRequestedSessionIdFromCookie());
-        pair(writer, "requestedSessionIdFromURL", request.isRequestedSessionIdFromURL());
+        pair(
+            writer,
+            "requestedSessionIdFromCookie",
+            request.isRequestedSessionIdFromCookie());
+        pair(
+            writer,
+            "requestedSessionIdFromURL",
+            request.isRequestedSessionIdFromURL());
         pair(writer, "requestedSessionIdValid", request.isRequestedSessionIdValid());
         pair(writer, "requestURI", request.getRequestURI());
         pair(writer, "scheme", request.getScheme());
@@ -1072,7 +1098,8 @@ public class RequestContext implements IRender
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         write(writer);
     }
