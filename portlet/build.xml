@@ -25,8 +25,9 @@
 	<property file="${root.dir}/config/common.properties"/>
   
 	<import file="${hivebuild.dir}/jar-module.xml"/>
-	<import file="${hivebuild.dir}/javadoc-report.xml"/>
-	<import file="${hivebuild.dir}/clover-report.xml"/>  
+  <import file="${hivebuild.dir}/javadoc-report.xml"/>
+  <import file="${hivebuild.dir}/clover-report.xml"/>  
+  <import file="${hivebuild.dir}/hivedoc-report.xml"/>  
   
 	<target name="compile-dependencies">
     <project-dependency artifact="tapestry"/>
@@ -38,7 +39,7 @@
     <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"/>
     <ibiblio-dependency artifact="commons-lang"       version="${lang.version}"     group="commons-lang"/>
     <ibiblio-dependency artifact="portlet-api"        version="1.0"                 group="portlet-api"/>
-      
+    <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"/>      
     <ibiblio-dependency artifact="easymock"           version="1.1"                 group="easymock" use="test"/>
     <ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
     <ibiblio-dependency artifact="cglib-full"         version="2.0.2"               group="cglib"    use="test"/>
@@ -53,5 +54,11 @@
 		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
     -->
 	</target>	
+  
+  <target name="run-reports">
+    <javadoc-report/>
+    <clover-report/>
+    <hivedoc-report/>    
+  </target>  
   
 </project>
