@@ -72,6 +72,79 @@ public class SimpleApplication extends AbstractApplication
 		super(context, locale);
 	}
 
+    /**
+     *  Restores the object state as written by
+     *  {@link #writeExternal(ObjectOutput)}.
+     *
+     */
+
+    public void readExternal(ObjectInput in)
+    throws IOException, ClassNotFoundException
+    {
+        int i, count;
+        String pageName;
+        SimplePageRecorder recorder;
+
+        super.readExternal(in);
+
+        count = in.readInt();
+
+        if (count == 0)
+            return;
+
+        recorders = new HashMap(MAP_SIZE);
+
+        for (i = 0; i < count; i++)
+        {
+            pageName = (String)in.readObject();
+
+            // Putting a cast here is not super-efficient, but keeps
+            // us sane!
+
+            recorder = (SimplePageRecorder)in.readObject();
+
+            recorders.put(pageName, recorder);
+        }
+    }
+
+    /**
+     *  Invokes the superclass implementation, then
+     *  writes the number of recorders as an int (may be zero).
+     *
+     *  <p>For each recorder, writes
+     *  <ul>
+     *  <li>page name ({@link String})
+     *  <li>page recorder ({@link SimplePageRecorder})
+     *  </ul>
+     *
+     */
+
+    public void writeExternal(ObjectOutput out)
+    throws IOException
+    {
+        Iterator i;
+        Map.Entry entry;
+
+        super.writeExternal(out);
+
+        if (recorders == null)
+        {
+            out.writeInt(0);
+            return;
+        }
+
+        i = recorders.entrySet().iterator();
+
+        while (i.hasNext())
+        {
+            entry = (Map.Entry)i.next();
+
+            out.writeObject(entry.getKey());
+            out.writeObject(entry.getValue());
+        }
+
+    }
+
 	/**
 	*  Removes all page recorders that contain no changes.  Subclasses
 	*  should invoke this implementation in addition to providing

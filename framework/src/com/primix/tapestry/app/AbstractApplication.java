@@ -70,10 +70,17 @@ import javax.servlet.http.*;
 
 
 public abstract class AbstractApplication
-    implements IApplication, Serializable, HttpSessionBindingListener
+    implements IApplication, Externalizable, HttpSessionBindingListener
 {
 	protected transient String contextPath;
 	protected transient String servletPrefix;
+
+    /**
+     *  An object used to contain application-specific server side state.
+     *
+     */
+
+    protected Object visit;
 
 	protected Locale locale;
 
@@ -659,13 +666,34 @@ public abstract class AbstractApplication
 		return templateSource;
 	}
 
-	private void readObject(ObjectInputStream in)
+    /**
+     *  Reads the state serialized by {@link #writeExternal(ObjectOutput)}.
+     *
+     */
+
+	public void readExternal(ObjectInput in)
 	throws IOException, ClassNotFoundException
 	{
-		in.defaultReadObject();
-
-		restoreAfterDeserialization();
+        locale = (Locale)in.readObject();
+        visit = in.readObject();
 	}
+
+    /**
+     *  Writes the following properties:
+     *
+     *  <ul>
+     *  <li>locale ({@link Locale})
+     *  <li>visit
+     *  </ul>
+     *
+     */
+
+    public void writeExternal(ObjectOutput out)
+    throws IOException
+    {
+        out.writeObject(locale);
+        out.writeObject(visit);
+    }
 
 	protected void redirect(String pageName, IRequestCycle cycle, ResponseOutputStream out,
 		RequestCycleException exception)
@@ -771,15 +799,6 @@ public abstract class AbstractApplication
 		context.redirect(url);
 	}
 
-	/**
-	*  Does nothing.  Subclasses may override to provide additional, custom logic to
-	*  restore the application after it is de-serialized.
-	*
-	*/
-
-	protected void restoreAfterDeserialization()
-	{
-	}
 
 	/**
 	*  Delegate method for the servlet.  Services the request.
@@ -1373,4 +1392,37 @@ public abstract class AbstractApplication
 	 */
 	 
 	abstract public Collection getActivePageNames();
+
+
+    /**
+     *  Gets the visit object, invoking {@link #createVisit()} to create
+     *  it lazily if needed.
+     *
+     *
+     */
+
+    public Object getVisit()
+    {
+        if (visit == null)
+            visit = createVisit();
+
+        return visit;
+    }
+
+    public void setVisit(Object value)
+    {
+        visit = value;
+    }
+
+    /**
+     *  Returns null; implemented in subclasses that use a visit object
+     *  to store server-side state.  This is invoked from
+     *  {@link #getVisit()} when the visit property is null.
+     *
+     */
+
+    public Object createVisit()
+    {
+        return null;
+    }
 }

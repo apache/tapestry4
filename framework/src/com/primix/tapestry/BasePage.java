@@ -58,6 +58,15 @@ public class BasePage extends BaseComponent implements IPage
 	protected ChangeObserver changeObserver;
 
 	protected IApplication application;
+
+    /**
+     *  The visit object, if any, for the application.  Set inside
+     *  {@link #joinApplication(IApplication)} and cleared
+     *  by {@link #detachFromApplication()}.
+     *
+     */
+
+    protected Object visit;
 	
 	private static final int LIFECYCLE_INIT_SIZE = 3;
 
@@ -80,32 +89,6 @@ public class BasePage extends BaseComponent implements IPage
 	*/
 
 	protected Locale locale;
-
-    /**
-     *  Standard constructor.
-     *
-     */
-
-    public BasePage()
-    {
-    }
-
-	/**
-	*  Deprecated constructor.  Sets the locale for the page from the applications' locale.
-	*
-    *  @deprecated
-	*/
-
-	public BasePage(IApplication application,
-		ComponentSpecification componentSpecification)
-	{
-		// No page, no container, no name.
-
-		super(null, null, null, componentSpecification);
-
-		this.application = application;
-		this.locale = application.getLocale();
-	}
 
 	public void addLifecycleComponent(ILifecycle component)
 	{
@@ -141,6 +124,7 @@ public class BasePage extends BaseComponent implements IPage
 	public void detachFromApplication()
 	{
 		application = null;
+        visit = null;
 		changeObserver = null;
 
 		for (int i = 0; i < lifecycleComponentCount; i++)
@@ -236,6 +220,9 @@ public class BasePage extends BaseComponent implements IPage
 	*  from the {@link IPageSource} pool partially based on its
 	*  locale matching the application locale, they should match
 	*  anyway.
+    *
+    *  <p>Invokes {@link IApplication#getVisit()} to get the visit for
+    *  the application.
 	*
 	*  <p>Invokes {@link ILifecycle#reset()} on any lifecycle components.
 	*
@@ -244,7 +231,7 @@ public class BasePage extends BaseComponent implements IPage
 	public void joinApplication(IApplication value)
 	{
 		application = value;
-
+        visit = application.getVisit();
 	}
 
 	/**
@@ -305,7 +292,7 @@ public class BasePage extends BaseComponent implements IPage
 	}
 		
 	/**
-	 *  Returns an {@link HTMLResponseWriter}.
+	 *  Returns a new {@link HTMLResponseWriter}.
 	 *
 	 */
 	 
@@ -340,10 +327,19 @@ public class BasePage extends BaseComponent implements IPage
 	 
 	public void cleanupPage()
 	{
-		int i;
-		
-		for (i = 0; i < lifecycleComponentCount; i++)
+		for (int i = 0; i < lifecycleComponentCount; i++)
 			lifecycleComponents[i].cleanupComponent();	
 	}
+
+    /**
+     *  Returns the visit object obtained from the 
+     *  {@link IApplication#getVisit() application}.
+     *
+     */
+
+    public Object getVisit()
+    {
+        return visit;
+    }
 }
 

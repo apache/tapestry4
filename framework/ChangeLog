@@ -1,3 +1,9 @@
+* Dec 11 2000 hship
+
+Split the application into the application object and the visit object.  
+The visit object contains the server side state.
+Remove the old constructors for AbstractComponent and BasePage.
+
 * Nov 29 2000 hship
 
 Update the Inspector to show the size and bytes of the serialized application object.

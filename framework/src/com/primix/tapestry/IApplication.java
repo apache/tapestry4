@@ -1,6 +1,6 @@
 package com.primix.tapestry;
 
-import java.io.IOException;
+import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import com.primix.tapestry.parse.ComponentTemplate;
@@ -204,4 +204,24 @@ public interface IApplication
      */
      
 	public IResourceResolver getResourceResolver();
+
+    /**
+     *  Returns the visit object, an object that represents the client's visit
+     *  to the application.  This is where server-side state is primarily stored.
+     *
+     *  <p>Believe it or not, this is a convienince to the developer!  The application
+     *  implemenations implement {@link Serializable}, so subclassing them involves
+     *  writing <code>readExternal()</code> and <code>writeExternal()</code> if the
+     *  subclass has any additional non-transient instance variables.
+     *
+     *  <p>The visit object merely has to be {@link Serializable} (though an optimization
+     *  is to implement it as {@link Externalizable}) which requires
+     *  virtually no effort on the part of the developer.
+     *
+     *  <p>The implementation should lazily create the visit object as needed
+     *  and return it.
+     *
+     */
+
+    public Object getVisit();
 }

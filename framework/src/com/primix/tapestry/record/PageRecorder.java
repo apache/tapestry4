@@ -4,7 +4,7 @@ import com.primix.foundation.prop.PropertyHelper;
 import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
 import java.util.*;
-import java.io.Serializable;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -41,6 +41,10 @@ import java.io.Serializable;
  *  <p>This is an abstract implementation; specific implementations can choose where
  * and how to persist the data.
  *
+ *  <p>Implements {@link Externalizable} but does not have any state of its own.
+ *  Subclasses must implement <code>readExternal()</code> and
+ *  <code>writeExternal()</code>.
+ *
  * <p>TBD:  Explicit state (set during page render) that <i>prevents</i> property changes
  * by throwing a runtime exception when they occur.
  *
@@ -50,10 +54,10 @@ import java.io.Serializable;
 
 
 public abstract class PageRecorder
-    implements IPageRecorder, Serializable
+    implements IPageRecorder, Externalizable
 {
-	protected boolean active = false;
-	protected boolean dirty = false;
+	protected transient boolean active = false;
+	protected transient boolean dirty = false;
 
 	/**
 	*  Invoked to persist all changes that have been accumulated.  If the recorder
@@ -200,5 +204,6 @@ public abstract class PageRecorder
 	{
 		active = value;
 	}
+
 }
 

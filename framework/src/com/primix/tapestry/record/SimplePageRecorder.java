@@ -3,7 +3,7 @@ package com.primix.tapestry.record;
 import com.primix.tapestry.*;
 import java.util.*;
 import com.primix.foundation.*;
-import java.io.Serializable;
+import java.io.*;
 import com.primix.tapestry.app.SimpleApplication;
 
 /*
@@ -146,5 +146,78 @@ public class SimplePageRecorder extends PageRecorder
 
 		changes.put(key, newValue);
 	}
+
+    /**
+     *  Reads the state stored by {@link #writeExternal(ObjectOutput)}.
+     *
+     */
+
+    public void readExternal(ObjectInput in)
+    throws IOException, ClassNotFoundException
+    {
+        int i;
+        int count;
+        String componentPath;
+        String propertyName;
+        Object value;
+        ChangeKey key; 
+
+        count = in.readInt();
+
+        if (count == 0)
+            return;
+
+        changes = new HashMap(MAP_SIZE);
+
+        for (i = 0; i < count; i++)
+        {
+            componentPath = (String)in.readObject();
+            propertyName = (String)in.readObject();
+            value = in.readObject();
+
+            changes.put(new ChangeKey(componentPath, propertyName), value);
+        }
+
+    }
+
+    /**
+     *  Writes the changes.  Writes the number of changes as an int, which
+     *  may be zero.
+     *
+     *  <p>For each change, writes:
+     *  <ul>
+     *  <li>componentPath ({@link String}, may be null)
+     *  <li>propertyName ({@link String})
+     *  <li>value (may be null)
+     *  </ul>
+     *
+     */
+
+    public void writeExternal(ObjectOutput out)
+    throws IOException
+    {
+        Iterator i;
+        Map.Entry entry;
+        ChangeKey key;
+
+        if (changes == null)
+        {
+            out.writeInt(0);
+            return;
+        }
+
+        out.writeInt(changes.size());
+        i = changes.entrySet().iterator();
+
+        while (i.hasNext())
+        {
+            entry = (Map.Entry)i.next();
+            key = (ChangeKey)entry.getKey();
+
+            out.writeObject(key.componentPath);
+            out.writeObject(key.propertyName);
+            out.writeObject(entry.getValue());
+        }
+    }
 }
 
