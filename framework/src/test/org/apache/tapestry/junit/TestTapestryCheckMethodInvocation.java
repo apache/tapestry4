@@ -24,7 +24,6 @@ import org.apache.tapestry.Tapestry;
  * {@link org.apache.tapestry.Tapestry#clearMethodInvocations()}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 public class TestTapestryCheckMethodInvocation extends TapestryTestCase

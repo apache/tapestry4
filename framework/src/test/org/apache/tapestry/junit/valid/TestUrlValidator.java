@@ -24,7 +24,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * 
  * @author Tsvetelin Saykov
  * @author Jimmy Dyson
- * @version $Id$
  * @since 3.0
  */
 

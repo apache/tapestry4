@@ -18,7 +18,6 @@ package org.apache.tapestry.junit.mock.c10;
  * Another placeholder class; page Two tests the check that ensures that links are not nested.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

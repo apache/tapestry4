@@ -20,7 +20,6 @@ import org.apache.tapestry.Tapestry;
  * Tests for {@link org.apache.tapestry.Tapestry#getClassName(Class)}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 public class TestTapestryGetClassName extends TapestryTestCase

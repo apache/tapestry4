@@ -22,7 +22,6 @@ import org.apache.tapestry.html.BasePage;
  * Part of Mock application, displays the data input on the Register page.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.3
  */
 

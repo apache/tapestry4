@@ -18,7 +18,6 @@ package org.apache.tapestry.junit.spec;
  * Bean used to test extensions.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 
 public class PropertyBean

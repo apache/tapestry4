@@ -21,7 +21,6 @@ import org.apache.tapestry.html.BasePage;
  * {@link org.apache.tapestry.junit.mock.app.ProtectedLink}page.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.3
  */
 

@@ -39,7 +39,6 @@ import org.apache.tapestry.util.io.ISqueezeAdaptor;
  * A series of tests for {@link DataSqueezerImpl}and friends.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 
 public class TestDataSqueezer extends TestCase

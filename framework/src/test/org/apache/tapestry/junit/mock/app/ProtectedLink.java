@@ -25,7 +25,6 @@ import org.apache.tapestry.html.BasePage;
  * {@link org.apache.tapestry.callback.DirectCallback}class.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.3
  */
 

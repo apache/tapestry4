@@ -20,7 +20,6 @@ import org.apache.tapestry.wml.Deck;
  * Used to test {@link org.apache.tapestry.wml.Postfield}components.
  * 
  * @author David Solis
- * @version $Id$
  * @since 3.0
  */
 

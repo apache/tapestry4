@@ -30,7 +30,6 @@ import org.apache.tapestry.html.BasePage;
  * Page for testing the {@link org.apache.tapestry.form.ListEdit}component.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

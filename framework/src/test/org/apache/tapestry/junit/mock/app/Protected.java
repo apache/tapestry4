@@ -26,7 +26,6 @@ import org.apache.tapestry.html.BasePage;
  * been visited before displaying.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.3
  */
 

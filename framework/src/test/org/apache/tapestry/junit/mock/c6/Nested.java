@@ -24,7 +24,6 @@ import org.apache.tapestry.event.PageEvent;
  * More testing of persistent component properties.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

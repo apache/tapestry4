@@ -27,7 +27,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * Test the {@link NumberValidator}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 1.0.8
  */
 

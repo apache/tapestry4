@@ -20,7 +20,6 @@ import org.apache.tapestry.html.BasePage;
  * Part of tests for the TextField component.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 public abstract class Two extends BasePage

@@ -21,7 +21,6 @@ import org.apache.tapestry.html.BasePage;
  * Used to test the Select and Option elements.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

@@ -20,7 +20,6 @@ import java.util.Random;
  * Bean used by {@link org.apache.tapestry.junit.utils.TestPublicBean}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 

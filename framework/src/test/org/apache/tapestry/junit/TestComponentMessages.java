@@ -25,7 +25,6 @@ import org.apache.tapestry.IPage;
  * Tests the class {@link org.apache.tapestry.engine.DefaultStringsSource}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.0.4
  */
 

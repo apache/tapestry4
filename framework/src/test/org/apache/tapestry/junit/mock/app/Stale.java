@@ -22,7 +22,6 @@ import org.apache.tapestry.html.BasePage;
  * Used to test {@link org.apache.tapestry.StaleSessionException}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.3
  */
 

@@ -20,7 +20,6 @@ import org.apache.tapestry.html.BasePage;
  * Displays a message summarizing the results identified by the page.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

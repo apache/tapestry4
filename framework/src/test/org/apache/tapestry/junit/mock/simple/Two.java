@@ -21,7 +21,6 @@ import org.apache.tapestry.html.BasePage;
  * Part of the test suite.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 

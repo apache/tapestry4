@@ -33,7 +33,6 @@ import org.apache.tapestry.util.SystemPropertiesPropertySource;
  * Test case for several classes implementing {@link org.apache.tapestry.IPropertySource}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.3
  */
 

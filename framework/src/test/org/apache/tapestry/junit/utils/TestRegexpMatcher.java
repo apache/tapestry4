@@ -22,7 +22,6 @@ import org.apache.tapestry.util.RegexpMatcher;
  * Simple test case for {@link org.apache.tapestry.util.RegexpMatcher}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 public class TestRegexpMatcher extends TapestryTestCase

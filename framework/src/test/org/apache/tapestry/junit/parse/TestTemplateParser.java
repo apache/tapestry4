@@ -40,7 +40,6 @@ import org.apache.tapestry.parse.TokenType;
  * Tests for the Tapestry HTML template parser.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 
 public class TestTemplateParser extends TestCase
