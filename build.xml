@@ -303,7 +303,6 @@
 		<java classname="org.mortbay.jetty.Server" fork="true" maxmemory="128MB"
 			>
 			<classpath>
-				<path refid="workbench.classpath"/>
 				<path refid="jetty.classpath"/>
 			</classpath>
 			<arg value="config/jetty-workbench.xml"/>
@@ -449,24 +448,9 @@
 	<target name="deploy-tomcat"
 		depends="check-for-tomcat-dir"
 		description="Deploys the Workbench application into Tomcat.">
-		
-		<property name="workbench.deploy.root.dir" value="${tomcat.dir}/webapps/workbench"/>
-		<property name="web.lib"
-			value="${workbench.deploy.root.dir}/WEB-INF/lib"/>
-			
-		<unjar src="${root.lib.dir}/${workbench.war}" dest="${workbench.deploy.root.dir}"/>
+					
+		<copy file="${root.lib.dir}/${workbench.war}" todir="${tomcat.dir}/webapps"/>
 
-		<copy todir="${web.lib}" flatten="true">
-			<fileset dir="${root.lib.dir}">
-				<include name="${framework.jar}"/>
-				<include name="${contrib.jar}"/>
-				<include name="${ext.dir}/*.jar"/>
-				<include name="${runtime.dir}/*.jar"/>
-			</fileset>
-		</copy>
-		
-		<copy file="${config.dir}/log4j.properties"
-			 todir="${workbench.deploy.root.dir}/WEB-INF/classes"/>
 	</target>
 	
 	<target name="check-for-jboss-dir">
