@@ -385,6 +385,7 @@ public class SpecificationParser extends AbstractDocumentParser
         _conversionMap.put("none", BeanLifecycle.NONE);
         _conversionMap.put("request", BeanLifecycle.REQUEST);
         _conversionMap.put("page", BeanLifecycle.PAGE);
+        _conversionMap.put("render", BeanLifecycle.RENDER);
 
         _conversionMap.put("boolean", new BooleanConverter());
         _conversionMap.put("int", new IntConverter());

@@ -62,6 +62,16 @@ public class BeanLifecycle extends Enum
 
 	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
 
+    /**
+     *  The bean is create and reused until the end of the current render,
+     *  at which point it is discarded.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static final BeanLifecycle RENDER = new BeanLifecycle("RENDER");
+    
 	private BeanLifecycle(String name)
 	{
 		super(name);

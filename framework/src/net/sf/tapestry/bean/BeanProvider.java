@@ -42,6 +42,7 @@ import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageEvent;
+import net.sf.tapestry.event.PageRenderListener;
 import net.sf.tapestry.spec.BeanLifecycle;
 import net.sf.tapestry.spec.BeanSpecification;
 import net.sf.tapestry.spec.ComponentSpecification;
@@ -54,7 +55,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
  *  @since 1.0.4
  **/
 
-public class BeanProvider implements IBeanProvider, PageDetachListener
+public class BeanProvider implements IBeanProvider, PageDetachListener, PageRenderListener
 {
     private static final Logger LOG = LogManager.getLogger(BeanProvider.class);
 
@@ -65,34 +66,42 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
      *
      **/
 
-    private boolean registered = false;
+    private boolean _registeredForDetach = false;
+
+    /**
+     *  Indicates whether this instance has been registered as a render
+     *  listener with the page.
+     * 
+     **/
+
+    private boolean _registeredForRender = false;
 
     /**
      *  The component for which beans are being created and tracked.
      *
      **/
 
-    private IComponent component;
+    private IComponent _component;
 
     /**
      *  Used for instantiating classes.
      *
      **/
 
-    private IResourceResolver resolver;
+    private IResourceResolver _resolver;
 
     /**
      *  Map of beans, keyed on name.
      *
      **/
 
-    private Map beans;
+    private Map _beans;
 
     public BeanProvider(IComponent component)
     {
-        this.component = component;
+        this._component = component;
         IEngine engine = component.getPage().getEngine();
-        resolver = engine.getResourceResolver();
+        _resolver = engine.getResourceResolver();
 
         if (LOG.isDebugEnabled())
             LOG.debug("Created BeanProvider for " + component);
@@ -103,7 +112,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 
     public Collection getBeanNames()
     {
-        return component.getSpecification().getBeanNames();
+        return _component.getSpecification().getBeanNames();
     }
 
     /**
@@ -113,24 +122,24 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 
     public IComponent getComponent()
     {
-        return component;
+        return _component;
     }
 
     public Object getBean(String name)
     {
         Object bean = null;
 
-        if (beans != null)
-            bean = beans.get(name);
+        if (_beans != null)
+            bean = _beans.get(name);
 
         if (bean != null)
             return bean;
 
-        BeanSpecification spec = component.getSpecification().getBeanSpecification(name);
+        BeanSpecification spec = _component.getSpecification().getBeanSpecification(name);
 
         if (spec == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("BeanProvider.bean-not-defined", component.getExtendedId(), name));
+                Tapestry.getString("BeanProvider.bean-not-defined", _component.getExtendedId(), name));
 
         bean = instantiateBean(spec);
 
@@ -139,19 +148,25 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
         if (lifecycle == BeanLifecycle.NONE)
             return bean;
 
-        if (beans == null)
-            beans = new HashMap();
+        if (_beans == null)
+            _beans = new HashMap();
 
-        beans.put(name, bean);
+        _beans.put(name, bean);
 
         // The first time in a request that a REQUEST lifecycle bean is created,
         // register with the page to be notified at the end of the
         // request cycle.
 
-        if (lifecycle == BeanLifecycle.REQUEST && !registered)
+        if (lifecycle == BeanLifecycle.REQUEST && !_registeredForDetach)
         {
-            component.getPage().addPageDetachListener(this);
-            registered = true;
+            _component.getPage().addPageDetachListener(this);
+            _registeredForDetach = true;
+        }
+
+        if (lifecycle == BeanLifecycle.RENDER && !_registeredForRender)
+        {
+            _component.getPage().addPageRenderListener(this);
+            _registeredForRender = true;
         }
 
         // No need to register if a PAGE lifecycle bean; those can stick around
@@ -170,7 +185,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 
         // Do it the hard way!
 
-        Class beanClass = resolver.findClass(className);
+        Class beanClass = _resolver.findClass(className);
 
         try
         {
@@ -215,33 +230,40 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 
     public void pageDetached(PageEvent event)
     {
-        ComponentSpecification spec = null;
+        removeBeans(BeanLifecycle.REQUEST);
+    }
 
-        if (beans == null)
+    /**
+     *  Removes any beans with the specified lifecycle.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private void removeBeans(BeanLifecycle lifecycle)
+    {
+        if (_beans == null)
             return;
 
-        Iterator i = beans.entrySet().iterator();
+        ComponentSpecification spec = null;
+
+        Iterator i = _beans.entrySet().iterator();
         while (i.hasNext())
         {
             Map.Entry e = (Map.Entry) i.next();
             String name = (String) e.getKey();
 
             if (spec == null)
-                spec = component.getSpecification();
+                spec = _component.getSpecification();
 
             BeanSpecification s = spec.getBeanSpecification(name);
 
-            // If the bean has the REQUEST lifecycle, then remove
-            // the key and bean from the map of beans.  Beans with
-            // other lifecycles (i.e., page)
-            // will stick around.
-
-            if (s.getLifecycle() == BeanLifecycle.REQUEST)
+            if (s.getLifecycle() == lifecycle)
             {
                 Object bean = e.getValue();
 
                 if (LOG.isDebugEnabled())
-                    LOG.debug("Removing REQUEST bean " + name + ": " + bean);
+                    LOG.debug("Removing " + lifecycle.getEnumerationId() + " bean " + name + ": " + bean);
 
                 i.remove();
             }
@@ -252,6 +274,20 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 
     public IResourceResolver getResourceResolver()
     {
-        return resolver;
+        return _resolver;
     }
+
+    /** @since 2.2 **/
+
+    public void pageBeginRender(PageEvent event)
+    {
+    }
+
+    /** @since 2.2 **/
+
+    public void pageEndRender(PageEvent event)
+    {
+        removeBeans(BeanLifecycle.RENDER);
+    }
+
 }

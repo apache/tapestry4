@@ -515,4 +515,18 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         removeListener(PageRenderListener.class, listener);
     }
 
+    /** @since 2.2 **/
+    
+    public void beginPageRender()
+    {
+        firePageBeginRender();
+    }
+
+    /** @since 2.2 **/
+    
+    public void endPageRender() 
+    {
+        firePageEndRender();
+    }
+
 }
