@@ -66,8 +66,8 @@ package org.apache.tapestry;
 
 public class RenderRewoundException extends ApplicationRuntimeException
 {
-	public RenderRewoundException(IComponent component)
-	{
-		super(null, component, null, null);
-	}
+    public RenderRewoundException(Object component)
+    {
+        super(null, component, null, null);
+    }
 }
