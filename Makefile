@@ -36,7 +36,7 @@ EXTERNAL_JARS = \
 	javax.servlet.jar \
 	org.apache.jasper.jar \
 	ejb.jar \
-	log4.jar
+	log4j.jar
 
 # This reflects my personal build work area structure, where
 # I create a subdirectory and checkout all the files.
