@@ -30,7 +30,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.Tapestry;
 
@@ -79,7 +80,7 @@ import net.sf.tapestry.Tapestry;
 
 public class Decorator
 {
-    private static final Category CAT = Category.getInstance(Decorator.class);
+    private static final Logger LOG = LogManager.getLogger(Decorator.class);
 
     /**
      *  A Map of adaptor objects, keyed on registration Class.
@@ -113,8 +114,8 @@ public class Decorator
             registrations.put(registrationClass, adaptor);
         }
 
-        if (CAT.isInfoEnabled())
-            CAT.info("Registered " + adaptor + " for " + registrationClass.getName());
+        if (LOG.isInfoEnabled())
+            LOG.info("Registered " + adaptor + " for " + registrationClass.getName());
 
         // Can't tell what is and isn't valid in the cache.
         // Also, normally all registrations occur before any adaptors
@@ -137,8 +138,8 @@ public class Decorator
     {
         Object result;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Getting adaptor for class " + subjectClass.getName());
+        if (LOG.isDebugEnabled())
+            LOG.debug("Getting adaptor for class " + subjectClass.getName());
 
         synchronized (cache)
         {
@@ -146,8 +147,8 @@ public class Decorator
 
             if (result != null)
             {
-                if (CAT.isDebugEnabled())
-                    CAT.debug("Found " + result + " in cache");
+                if (LOG.isDebugEnabled())
+                    LOG.debug("Found " + result + " in cache");
 
                 return result;
             }
@@ -162,8 +163,8 @@ public class Decorator
             cache.put(subjectClass, result);
         }
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Found " + result);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Found " + result);
 
         return result;
     }
@@ -202,8 +203,8 @@ public class Decorator
         if (registrations == null)
             throw new IllegalArgumentException("No adaptors have been registered.");
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Searching for adaptor for class " + subjectClass.getName());
+        if (LOG.isDebugEnabled())
+            LOG.debug("Searching for adaptor for class " + subjectClass.getName());
 
         synchronized (registrations)
         {

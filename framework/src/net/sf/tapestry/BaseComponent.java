@@ -31,7 +31,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.TemplateToken;
@@ -43,12 +44,12 @@ import net.sf.tapestry.spec.ComponentSpecification;
  *
  * @author Howard Lewis Ship
  * @version $Id$
+ * 
  **/
 
 public class BaseComponent extends AbstractComponent
 {
-    private static final Category CAT =
-        Category.getInstance(BaseComponent.class);
+    private static final Logger LOG = LogManager.getLogger(BaseComponent.class);
 
     private int _outerCount = 0;
 
@@ -75,8 +76,7 @@ public class BaseComponent extends AbstractComponent
             _attributes = attributes;
         }
 
-        public void render(IMarkupWriter writer, IRequestCycle cycle)
-            throws RequestCycleException
+        public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
         {
             if (cycle.isRewinding())
                 return;
@@ -172,12 +172,11 @@ public class BaseComponent extends AbstractComponent
         Set seenIds = new HashSet();
         IPageSource pageSource = loader.getEngine().getPageSource();
 
-        if (CAT.isDebugEnabled())
-            CAT.debug(this +" reading template");
+        if (LOG.isDebugEnabled())
+            LOG.debug(this +" reading template");
 
-            ITemplateSource source = loader.getTemplateSource();
-            ComponentTemplate componentTemplate = source.getTemplate(this);
-
+        ITemplateSource source = loader.getTemplateSource();
+        ComponentTemplate componentTemplate = source.getTemplate(this);
 
         int count = componentTemplate.getTokenCount();
 
@@ -201,12 +200,7 @@ public class BaseComponent extends AbstractComponent
 
             if (type == TokenType.OPEN)
             {
-                IComponent component =
-                    addStartComponent(
-                        activeComponent,
-                        token,
-                        pageSource,
-                        seenIds);
+                IComponent component = addStartComponent(activeComponent, token, pageSource, seenIds);
 
                 componentStack[stackx++] = activeComponent;
 
@@ -226,10 +220,7 @@ public class BaseComponent extends AbstractComponent
                     // This is now almost impossible to reach, because the
                     // TemplateParser does a great job of checking for most of these cases.
 
-                    throw new PageLoaderException(
-                        Tapestry.getString(
-                            "BaseComponent.unbalanced-close-tags"),
-                        this);
+                    throw new PageLoaderException(Tapestry.getString("BaseComponent.unbalanced-close-tags"), this);
                 }
 
                 continue;
@@ -247,24 +238,19 @@ public class BaseComponent extends AbstractComponent
         // of date, too.
 
         if (stackx != 0)
-            throw new PageLoaderException(
-                Tapestry.getString("BaseComponent.unbalance-open-tags"),
-                this);
+            throw new PageLoaderException(Tapestry.getString("BaseComponent.unbalance-open-tags"), this);
 
         checkAllComponentsReferenced(seenIds);
 
-        if (CAT.isDebugEnabled())
-            CAT.debug(this +" finished reading template");
+        if (LOG.isDebugEnabled())
+            LOG.debug(this +" finished reading template");
     }
 
-   /** @since 2.1-beta-2 **/
+    /** @since 2.1-beta-2 **/
 
-    private void addStringLocalization(
-        IComponent activeComponent,
-        TemplateToken token)
+    private void addStringLocalization(IComponent activeComponent, TemplateToken token)
     {
-        IRender renderer =
-            new LocalizedStringRender(token.getId(), token.getAttributes());
+        IRender renderer = new LocalizedStringRender(token.getId(), token.getAttributes());
 
         if (activeComponent == null)
             addOuter(renderer);
@@ -273,7 +259,7 @@ public class BaseComponent extends AbstractComponent
     }
 
     /** @since 2.1-beta-2 **/
-    
+
     private IComponent addStartComponent(
         IComponent activeComponent,
         TemplateToken token,
@@ -292,10 +278,7 @@ public class BaseComponent extends AbstractComponent
         catch (NoSuchComponentException ex)
         {
             throw new PageLoaderException(
-                Tapestry.getString(
-                    "BaseComponent.undefined-embedded-component",
-                    getExtendedId(),
-                    id),
+                Tapestry.getString("BaseComponent.undefined-embedded-component", getExtendedId(), id),
                 this,
                 ex);
         }
@@ -304,10 +287,7 @@ public class BaseComponent extends AbstractComponent
 
         if (seenIds.contains(id))
             throw new PageLoaderException(
-                Tapestry.getString(
-                    "BaseComponent.multiple-component-references",
-                    getExtendedId(),
-                    id),
+                Tapestry.getString("BaseComponent.multiple-component-references", getExtendedId(), id),
                 this);
 
         seenIds.add(id);
@@ -331,10 +311,9 @@ public class BaseComponent extends AbstractComponent
         return component;
     }
 
-   /** @since 2.1-beta-2 **/
+    /** @since 2.1-beta-2 **/
 
-    private void addText(IComponent activeComponent, TemplateToken token)
-        throws BodylessComponentException
+    private void addText(IComponent activeComponent, TemplateToken token) throws BodylessComponentException
     {
         // Get a render for the token.  This allows the token and the render
         // to be shared across sessions.
@@ -363,10 +342,7 @@ public class BaseComponent extends AbstractComponent
      *
      **/
 
-    private void addStaticBindings(
-        IComponent component,
-        Map attributes,
-        IPageSource pageSource)
+    private void addStaticBindings(IComponent component, Map attributes, IPageSource pageSource)
     {
         if (attributes == null || attributes.isEmpty())
             return;
@@ -415,8 +391,7 @@ public class BaseComponent extends AbstractComponent
         }
     }
 
-    private void checkAllComponentsReferenced(Set seenIds)
-        throws PageLoaderException
+    private void checkAllComponentsReferenced(Set seenIds) throws PageLoaderException
     {
         // First, contruct a modifiable copy of the ids of all expected components
         // (that is, components declared in the specification).
@@ -440,12 +415,9 @@ public class BaseComponent extends AbstractComponent
         int count = ids.size();
 
         String key =
-            (count == 1)
-                ? "BaseComponent.missing-component-spec-single"
-                : "BaseComponent.missing-component-spec-multi";
+            (count == 1) ? "BaseComponent.missing-component-spec-single" : "BaseComponent.missing-component-spec-multi";
 
-        StringBuffer buffer =
-            new StringBuffer(Tapestry.getString(key, getExtendedId()));
+        StringBuffer buffer = new StringBuffer(Tapestry.getString(key, getExtendedId()));
 
         Iterator i = ids.iterator();
         int j = 1;
@@ -479,17 +451,16 @@ public class BaseComponent extends AbstractComponent
      *   @since 2.0.3
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Begin render " + getExtendedId());
+        if (LOG.isDebugEnabled())
+            LOG.debug("Begin render " + getExtendedId());
 
         for (int i = 0; i < _outerCount; i++)
             _outer[i].render(writer, cycle);
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("End render " + getExtendedId());
+        if (LOG.isDebugEnabled())
+            LOG.debug("End render " + getExtendedId());
     }
 
     /**
@@ -500,10 +471,7 @@ public class BaseComponent extends AbstractComponent
      *
      **/
 
-    public void finishLoad(
-        IPageLoader loader,
-        ComponentSpecification specification)
-        throws PageLoaderException
+    public void finishLoad(IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
     {
         readTemplate(loader);
 

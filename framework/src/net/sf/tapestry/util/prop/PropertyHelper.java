@@ -42,7 +42,8 @@ import java.util.Set;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.DynamicInvocationException;
 import net.sf.tapestry.util.StringSplitter;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Streamlines access to all the properties of a given
@@ -82,7 +83,7 @@ import org.apache.log4j.Category;
 
 public class PropertyHelper
 {
-    private static final Category CAT = Category.getInstance(PropertyHelper.class);
+    private static final Logger LOG = LogManager.getLogger(PropertyHelper.class);
 
     /**
      *  Registry of helper classes.  Key is the Class of the bean.  Value
@@ -204,8 +205,8 @@ public class PropertyHelper
         Class[] inheritance;
         Class candidate;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Getting property helper for class " + beanClass.getName());
+        if (LOG.isDebugEnabled())
+            LOG.debug("Getting property helper for class " + beanClass.getName());
 
         if (helpers == null)
             helpers = new HashMap();
@@ -255,8 +256,8 @@ public class PropertyHelper
 
         try
         {
-            if (CAT.isDebugEnabled())
-                CAT.debug(
+            if (LOG.isDebugEnabled())
+                LOG.debug(
                     "Creating new PropertyHelper: "
                         + helperClass.getName()
                         + " for "

@@ -30,7 +30,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IResourceResolver;
@@ -51,7 +52,7 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public class ExtensionSpecification extends BasePropertyHolder
 {
-    private static final Category CAT = Category.getInstance(ExtensionSpecification.class);
+    private static final Logger LOG = LogManager.getLogger(ExtensionSpecification.class);
 
     private String _className;
     private Map _configuration = new HashMap();
@@ -95,7 +96,7 @@ public class ExtensionSpecification extends BasePropertyHolder
 
     public Object instantiateExtension(IResourceResolver resolver)
     {
-        CAT.debug("Instantiating extension class " + _className + ".");
+        LOG.debug("Instantiating extension class " + _className + ".");
 
         Class extensionClass = resolver.findClass(_className);
 

@@ -41,7 +41,8 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.prop.PropertyHelper;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Maps a class to a set of listeners based on the public methods of the class.
@@ -56,7 +57,7 @@ import org.apache.log4j.Category;
 
 public class ListenerMap
 {
-    private static final Category CAT = Category.getInstance(ListenerMap.class);
+    private static final Logger LOG = LogManager.getLogger(ListenerMap.class);
 
     static {
         PropertyHelper.register(ListenerMap.class, ListenerMapHelper.class);
@@ -224,8 +225,8 @@ public class ListenerMap
 
     private static Map buildMethodMap(Class beanClass)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Building method map for class " + beanClass.getName());
+        if (LOG.isDebugEnabled())
+            LOG.debug("Building method map for class " + beanClass.getName());
 
         Map result = new HashMap();
         Method[] methods = beanClass.getMethods();
@@ -288,8 +289,8 @@ public class ListenerMap
         Object[] args)
         throws RequestCycleException
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Invoking listener method " + method + " on " + target);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Invoking listener method " + method + " on " + target);
 
         try
         {

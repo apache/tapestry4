@@ -33,7 +33,8 @@ import net.sf.tapestry.IScript;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.xml.AbstractDocumentParser;
 import net.sf.tapestry.util.xml.DocumentParseException;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -74,7 +75,7 @@ import org.xml.sax.InputSource;
 public class ScriptParser extends AbstractDocumentParser
 {
 
-    private static final Category CAT = Category.getInstance(ScriptParser.class);
+    private static final Logger LOG = LogManager.getLogger(ScriptParser.class);
 
     private static final int MAP_SIZE = 11;
 

@@ -39,7 +39,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.util.ejb.XEJBException;
 
@@ -53,7 +54,7 @@ import net.sf.tapestry.util.ejb.XEJBException;
 
 public class MailSenderBean implements SessionBean
 {
-    private static final Category CAT = Category.getInstance(MailSenderBean.class);
+    private static final Logger LOG = LogManager.getLogger(MailSenderBean.class);
 
     private SessionContext context;
 
@@ -71,8 +72,8 @@ public class MailSenderBean implements SessionBean
 
     public void ejbCreate()
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("ejbCreate()");
+        if (LOG.isDebugEnabled())
+            LOG.debug("ejbCreate()");
 
         try
         {

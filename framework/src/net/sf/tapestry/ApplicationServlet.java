@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
@@ -467,61 +467,37 @@ abstract public class ApplicationServlet extends HttpServlet
 
     /**
      *  Invoked from {@link #init(ServletConfig)} before the specification is loaded to
-     *  setup log4j logging.  This implemention is sufficient for testing, but should
-     *  be overiden in production applications.
+     *  setup log4j logging.  Over time, the usefulness of this method
+     *  has decreased; it is now meant only for testing, to provide an easy
+     *  override of the Log4J root logger level.
      *
-     *  <p>Gets the JVM system property <code>net.sf.tapestry.root-logging-priority</code>,
-     *  and (if non-null), converts it to a {@link Priority} and assigns it to the root
-     *  {@link Category}.
-     *
-     *  <p>For each priority, a check is made for a JVM system property
-     *  <code>net.sf.tapestry.log4j.<em>priority</em></code> (i.e. <code>...log4j.DEBUG</code>).
-     *  The value is a list of categories seperated by semicolons.  Each of these
-     *  categories will be assigned that priority.
+     *  <p>Gets the JVM system property <code>net.sf.tapestry.root-logging-level</code>,
+     *  and (if non-null), converts it to a {@link Level} and assigns it to the root
+     *  {@link Logger}.
      * 
-     *  <p>Prior to Tapestry release 2.0.3, this method would also set the pattern
-     *  for root category appender.  That is better done using a <code>log4j.properties</code>
-     *  file.  This method exists to make it easy to augment or override that
-     *  configuration using command line options.
+     *  <p>Prior to Tapestry release 2.2, individual Category (the then-name
+     *  for Log4J's {@link Logger}) levels could be
+     *  set using additional JVM system properties, but with
+     *  the change in API for Log4J, that is no longer practical.  Again,
+     *  this can be better done using a log4j.properties file.
      *
      *  @since 0.2.9
+     * 
      **/
 
     protected void setupLogging() throws ServletException
     {
-        Priority priority = Priority.ERROR;
+        Level level = Level.ERROR;
 
-        String value = System.getProperty("net.sf.tapestry.root-logging-priority");
+        String value = System.getProperty("net.sf.tapestry.root-logging-level");
 
         if (value != null)
         {
-            priority = Priority.toPriority(value, Priority.ERROR);
+            level = Level.toLevel(value, Level.ERROR);
 
-            Category root = Category.getRoot();
-            root.setPriority(priority);
+            Logger root = LogManager.getRootLogger();
+            root.setLevel(level);
         }
-
-        Priority[] priorities = Priority.getAllPossiblePriorities();
-        StringSplitter splitter = new StringSplitter(';');
-
-        for (int i = 0; i < priorities.length; i++)
-        {
-            priority = priorities[i];
-            String key = "net.sf.tapestry.log4j." + priority.toString();
-            String categoryList = System.getProperty(key);
-
-            if (categoryList != null)
-            {
-                String[] categories = splitter.splitToArray(categoryList);
-
-                for (int j = 0; j < categories.length; j++)
-                {
-                    Category cat = Category.getInstance(categories[j]);
-                    cat.setPriority(priority);
-                }
-            }
-        }
-
     }
 
     /**

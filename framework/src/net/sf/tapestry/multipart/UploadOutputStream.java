@@ -31,7 +31,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
   *  An OutputStream that, when a certain limit is reached,
@@ -45,8 +46,8 @@ import org.apache.log4j.Category;
 
 class UploadOutputStream extends OutputStream
 {
-    private static final Category CAT =
-        Category.getInstance(UploadOutputStream.class);
+    private static final Logger LOG =
+        LogManager.getLogger(UploadOutputStream.class);
 
     public static final int DEFAULT_LIMIT = 2000;
 
@@ -106,8 +107,8 @@ class UploadOutputStream extends OutputStream
         if (count < limit)
             return;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Limit of " + limit + " bytes reached.");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Limit of " + limit + " bytes reached.");
 
         file = File.createTempFile("upload-", ".bin");
 
@@ -117,8 +118,8 @@ class UploadOutputStream extends OutputStream
 
         baos.writeTo(fos);
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Writing upload content to " + file + ".");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Writing upload content to " + file + ".");
 
         baos = null;
         active = fos;

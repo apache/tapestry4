@@ -29,7 +29,8 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.jrefinery.chart.ChartUtilities;
 import com.jrefinery.chart.JFreeChart;
@@ -57,7 +58,7 @@ import net.sf.tapestry.engine.AbstractService;
 
 public class ChartService extends AbstractService
 {
-    private static final Category CAT = Category.getInstance(ChartService.class);
+    private static final Logger LOG = LogManager.getLogger(ChartService.class);
 
     public static final String SERVICE_NAME = "chart";
 
