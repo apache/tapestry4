@@ -46,6 +46,7 @@
 <!ENTITY Image '<link linkend="builtin.InsertWrapped"><classname>Image</classname></link>'>
 <!ENTITY InsertWrapped 
 	'<link linkend="builtin.InsertWrapped"><classname>InsertWrapped</classname></link>'>
+<!ENTITY ListEdit '<link linkend="Builtin.ListEdit"><classname>ListEdit</classname></link>'>
 <!ENTITY Hidden '<link linkend="builtin.Hidden"><classname>Hidden</classname></link>'>
 <!ENTITY Body '<link linkend="builtin.Body"><classname>Body</classname></link>'>
 <!ENTITY Text '<link linkend="builtin.Text"><classname>Text</classname></link>'>

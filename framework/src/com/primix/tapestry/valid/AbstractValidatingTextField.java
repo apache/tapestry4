@@ -49,20 +49,19 @@ import java.text.*;
  *  page is rendered (to allow the user to correct the error)
  *  <li>Because the component is stateful (the value, and the error flag) it should not
  *  be wrapped by a {@link Foreach} component
- *  <li>They are implemented using a {@link TextField} with the id <code>captive</code>
- *  (this is an implementation detail, likely to change)
  *  <li>A body is not allowed
  *  </ul>
+ *
+ *  <p>This class duplicates a lot of code from {@link TextField}.
  *
  *  @author Howard Ship
  *  @version $Id$
  */
 
 public abstract class AbstractValidatingTextField
-extends AbstractComponent
+extends AbstractTextField
 implements ILifecycle, IValidatingTextField, IFormComponent
 {
-	private IFormComponent captive;
 	private IValidationDelegate delegate;
 	private IBinding delegateBinding;
 
@@ -72,6 +71,10 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 	private IBinding displayNameBinding;
 	private String displayNameValue;
 
+	private IBinding requiredBinding;
+	private boolean staticRequired;
+	private boolean requiredValue;
+	
 	/**
 	*  Contains strings used to generate default error messages.
 	*
@@ -79,56 +82,6 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 
 	private ResourceBundle strings;
 
-	private IBinding requiredBinding;
-	private boolean staticRequired;
-	private boolean requiredValue;
-
-	/**
-	*  Return's the captive {@link TextField}'s name property; this faciliates
-	*  client-side scripting involving the component.
-	*
-	*/
-
-	public String getName()
-	{
-		return captive.getName();
-	}
-
-	public Form getForm()
-	{
-		return captive.getForm();
-	}
-	
-	public IBinding getRequiredBinding()
-	{
-		return requiredBinding;
-	}
-
-	public void setRequiredBinding(IBinding value)
-	{
-		requiredBinding = value;
-
-		staticRequired = value.isStatic();
-		if (staticRequired)
-			requiredValue = value.getBoolean();
-	}
-
-	/**
-	*  Indicates if the field is required.  Returns false if the required
-	*  parameter is unbound.
-	*
-	*/
-
-	public boolean isRequired()
-	{
-		if (staticRequired)
-			return requiredValue;
-
-		if (requiredBinding == null)
-			return false;
-
-		return requiredBinding.getBoolean();
-	}
 
 	/**
 	*  Gets and formats a localized string from the 
@@ -229,13 +182,7 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 		return delegate;
 	}
 
-	/**
-	*  Returns the String representation of the value.  Invokes
-	*  {@link #read()} to get that value.
-	*
-	*/
-
-	public String getText()
+	protected String readValue()
 	{
 		if (text == null)
 			text = read();
@@ -245,7 +192,7 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 
 
 	/**
-	*  Invoked by {@link #getText()} to read the underlying data value
+	*  Invoked by {@link #readValue()} to read the underlying data value
 	*  (in a way specific to the subclass implementation) and convert it to
 	*  a String.
 	*
@@ -253,15 +200,7 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 
 	protected abstract String read();
 
-	/**
-	*  Invoked by the {@link TextField}, we start by storing the
-	*  (trimmed) value, and clear the error flag.  We then
-	*  invoke {@link #update(String)} to validate the value and, if acceptible,
-	*  update through the binding.
-	*
-	*/
-
-	public void setText(String value)
+	protected void updateValue(String value)
 	{
 		error = false;
 
@@ -278,7 +217,7 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 	}
 
 	/**
-	*  Invoked from {@link #setText(String)} to validate that the new value
+	*  Invoked from {@link #updateValue(String)} to validate that the new value
 	*  (submitted in the form by the user) conforms to the rules for
 	*  this component.  If not, it should invoke
 	* {@link #notifyDelegate(ValidationConstraint, String)}.
@@ -382,7 +321,7 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 			delegate.writeErrorPrefix(this, writer, cycle);
 		}
 
-		captive.render(writer, cycle);
+		super.render(writer, cycle);
 
 		if (rendering && error)
 			delegate.writeErrorSuffix(this, writer, cycle);
@@ -392,13 +331,15 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 		// then we may have identified the default field (which will
 		// automatically receive focus).
 
-		if (rendering && (error | (isRequired() && Tapestry.isNull(getText()))))
+		if (rendering && 
+			(error | (isRequired() && Tapestry.isNull(readValue()))))
 			addSelect(cycle);
 
 		// That's OK, but an ideal situation would know about non-validating
 		// text fields, and also be able to put the cursor in the
 		// first field, period (even if there are no required or error fields).
 		// Still, this pretty much rocks!
+	
 	}
 
 	private static final String SELECTED_ATTRIBUTE_NAME = 
@@ -434,7 +375,7 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 		form = Form.get(cycle);
 
 		formName = form.getName();
-		textFieldName = captive.getName();
+		textFieldName = getName();
 
 		fullName = "document." + formName + "." + textFieldName;
 
@@ -446,17 +387,35 @@ implements ILifecycle, IValidatingTextField, IFormComponent
 		cycle.setAttribute(SELECTED_ATTRIBUTE_NAME, Boolean.TRUE);
 	}
 
-	/**
-	 *  Applies all informal parameters of the component to the captive
-	 *  {@link TextField}.
+	public IBinding getRequiredBinding()
+	{
+		return requiredBinding;
+	}
+	
+	public void setRequiredBinding(IBinding value)
+	{
+		requiredBinding = value;
+		
+		staticRequired = value.isStatic();
+		if (staticRequired)
+			requiredValue = value.getBoolean();
+	}
+	
+	/** 
+	 *  Returns the value of the required parameter, or false if the parameter
+	 *  is not bound.
 	 *
 	 */
-	 
-	public void finishLoad(IPageLoader loader, ComponentSpecification specification)
+	
+	public boolean isRequired()
 	{
-	    captive = (TextField)getComponent("captive");
-
-		Tapestry.copyInformalBindings(this, captive);
+		if (staticRequired)
+			return requiredValue;
+		
+		if (requiredBinding != null)
+			return requiredBinding.getBoolean();
+		
+		return false;
 	}
 }
 

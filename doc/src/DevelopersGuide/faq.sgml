@@ -192,6 +192,37 @@ This section contains a few Q's and A's gleemed from the
 	</answer>
 </qandaentry>
 
+<qandaentry>
+	<question>
+	<para>
+	I get the StaleSession page when I submit a form on my home page.  Why?
+	</>
+	</question>
+	
+	<answer>
+	<para>
+	Tapestry applications run in a <link linkend="engine.stateless">stateless</> mode initially.  That is, they
+	don't create a &HttpSession;.  This continues until the application has
+	some specific server-side state, at which point the &HttpSession; is created.
+	</>
+	
+	<para>
+	By default, &Form;s (as well as &Action;s) are stateful; they require that
+	an active &HttpSession; exists.  If there isn't an active session, they
+	throw a <classname>StaleSessionException</>.  However, you can bind
+	the <varname>stateful</> parameter of these components to
+	<classname>Boolean.FALSE</> to remove this check.
+	</>
+	
+	<para>
+	They check makes sense once there's server side state; it detects when
+	an &HttpSession; has expired from lack of use.  It's better than seeing
+	an anomolous <classname>NullPointerException</>, which is quite likely
+	when all state is lost.
+	</>
+	</answer>
+</qandaentry>
+	
 </qandaset>
 
 </appendix>

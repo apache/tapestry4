@@ -59,24 +59,11 @@ extends BasePage
     {
         return error;
     }
-
-    public IDirectListener getGuessListener()
-    {
-        return new IDirectListener()
-        {
-            public void directTriggered(IDirect direct,
-                        String[] context, IRequestCycle cycle)
-            throws RequestCycleException
-            {
-                makeGuess(context[0], cycle);
-            }
-        };
-    }
     
-    private void makeGuess(String guess, IRequestCycle cycle)
-    throws RequestCycleException
+    public void makeGuess(String context[], IRequestCycle cycle)
     {
         HangmanGame game = getGame();
+		String guess = context[0];
         char letter = guess.charAt(0);
 
         try

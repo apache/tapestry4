@@ -20,9 +20,9 @@
     <binding name="listener" property-path="listeners.processForm"/>
   </component>
   
-  <component id="e" type="Foreach">
-  	<binding name="source" property-path="publishers"/>
-  	<binding name="value" property-path="publisher"/>
+  <component id="e" type="ListEdit">
+  	<binding name="source" property-path="publisherIds"/>
+  	<binding name="value" property-path="publisherId"/>
   </component>
   
   <component id="inputPublisherName" type="TextField">

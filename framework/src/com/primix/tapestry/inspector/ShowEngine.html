@@ -12,44 +12,44 @@
 	
 	<tr class="even">
 		<th>Tapestry Framework Version</th>
-		<td><jwc id="insertFrameworkVersion"/></td>
+		<td><span jwcid="insertFrameworkVersion"/></td>
 	</tr>
 	
 	<tr class="odd">
 		<th>Application Name</th>
-		<td><jwc id="insertApplicationName"/></td>
+		<td><span jwcid="insertApplicationName"/></td>
 	</tr>
 
 	<tr class="even">
 		<th>Context Path</th>
-		<td><jwc id="insertContextPath"/></td>
+		<td><span jwcid="insertContextPath"/></td>
 	</tr>
 
 	<tr class="odd">
 		<th>Servlet Prefix</th>
-		<td><jwc id="insertServletPrefix"/></td>
+		<td><span jwcid="insertServletPrefix"/></td>
 	</tr>
 
 	<tr class="even">
 		<th>Engine Class</th>
-		<td><jwc id="insertEngineClass"/></td>
+		<td><span jwcid="insertEngineClass"/></td>
 	</tr>
 	
 	<tr class="odd">
 		<th>Locale</th>
-		<td><jwc id="insertLocale"/></td>
+		<td><span jwcid="insertLocale"/></td>
 	</tr>
 
 	<tr class="even">
 		<th>Visit</th>
 		<td>
-<jwc id="ifNoVisit">
+<span jwcid="ifNoVisit">
 <em>none</em>
-</jwc>
+</span>
 
-<jwc id="ifVisit">
-<jwc id="insertVisit"/>
-</jwc>
+<span jwcid="ifVisit">
+<span jwcid="insertVisit"/>
+</span>
 		</td>
 	</tr>
 
@@ -60,14 +60,14 @@
 <table class="inspector-data">
 
 	<tr class="even">
-		<td><jwc id="restart"><jwc id="restartButton"/></jwc>
+		<td><a jwcid="restart"><img jwcid="restartButton"/></a>
 		</td>
 		<td>Restart the application (in this window).
 		</td>
 	</tr>
 
 	<tr class="even">
-		<td><jwc id="reset"><jwc id="resetButton"/></jwc>
+		<td><a jwcid="reset"><img jwcid="resetButton"/></a>
 		</td>
 		<td>
 		Reset the application, discarding all cached specifications, assets
@@ -79,12 +79,12 @@
 <h1>Serialized Engine</h1>
 
 <p>The serialized state of the application engine (the size of this is relevant
-for application servers which supported clustering).
+for application servers which support clustering).
 
-<p><jwc id="insertByteCount"/> bytes:
-<pre><jwc id="insertSerializedEngine"/></pre>
+<p><span jwcid="insertByteCount"/> bytes:
+<pre><span jwcid="insertSerializedEngine"/></pre>
 
 <h1>Request Context</h1>
 
-<jwc id="insertRequest"/>
+<span jwcid="insertRequest"/>
 

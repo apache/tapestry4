@@ -2,7 +2,7 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.form.TextField" allow-body="no">
-  <parameter name="text" java-type="java.lang.String"/>
+  <parameter name="text" java-type="java.lang.String" required="yes"/>
   <parameter name="disabled"/>
   <parameter name="hidden"/>
   <parameter name="displayWidth" java-type="java.lang.Integer"/>

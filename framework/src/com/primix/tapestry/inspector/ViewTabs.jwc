@@ -7,13 +7,11 @@
     <binding name="value" property-path="view"/>
   </component>
   <component id="select" type="Action">
-    <binding name="listener" property-path="selectListener"/>
+    <binding name="listener" property-path="listeners.selectTab"/>
   </component>
   <component id="tab" type="Rollover">
     <binding name="image" property-path="viewImage"/>
     <binding name="focus" property-path="focusImage"/>
-    <static-binding name="width">120</static-binding>
-    <static-binding name="height">19</static-binding>
   </component>
   <component id="banner" type="Image">
     <binding name="image" property-path="bannerImage"/>

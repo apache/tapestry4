@@ -145,6 +145,8 @@ public class ApplicationSpecification
 				"/com/primix/tapestry/components/InsertBlock.jwc");
 		defaultComponentMap.put("NumericField",
 				"/com/primix/tapestry/valid/NumericField.jwc");
+		defaultComponentMap.put("ListEdit",
+				"/com/primix/tapestry/form/ListEdit.jwc");
 		
 	}
 	
@@ -157,7 +159,7 @@ public class ApplicationSpecification
 		// any of these.
 		
 		defaultPageMap.put("StaleLink",
-				new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
+				new PageSpecification( "/com/primix/tapestry/pages/StaleLink.jwc"));
 		defaultPageMap.put("StaleSession",
 				new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
 		defaultPageMap.put("Exception",
@@ -262,6 +264,11 @@ public class ApplicationSpecification
 	 *  <tr>
 	 *       <td>/com/primix/tapestry/valid/IntegerField.jwc</td>
 	 *       <td>{@link IntegerField}</td>
+	 * </tr>
+	 *
+	 * <tr>
+	 *		<td>/com/primix/tapestry/form/ListEdit.jwc</td>
+	 *		<td>{@link ListEdit}</td>
 	 * </tr>
 	 *
 	 * <tr>

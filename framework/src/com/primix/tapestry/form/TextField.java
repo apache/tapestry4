@@ -52,7 +52,7 @@ import com.primix.tapestry.html.*;
  *    <td>text</td>
  *    <td>java.lang.String</td>
  *    <td>R / W</td>
- *   	<td>no</td>
+ *   	<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The text inside the text field.  The binding is only updated
  *			when the the component is not disabled.
@@ -115,192 +115,28 @@ import com.primix.tapestry.html.*;
  */
 
 
-public class TextField extends AbstractFormComponent
+public class TextField extends AbstractTextField
 {
 	private IBinding textBinding;
-
-	private IBinding displayWidthBinding;
-
-	private boolean staticDisplayWidth;
-	private int displayWidthValue;
-
-	private IBinding maximumLengthBinding;
-
-	private boolean staticMaximumLength;
-	private int maximumLengthValue;
-
-	private IBinding hiddenBinding;
-
-	private boolean staticHidden;
-	private boolean hiddenValue;
-
-	private IBinding disabledBinding;
-
-	private String name;
-
-	private static final String[] reservedNames =
-    	{ "type", "size", "maxlength", "value" };
-
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public IBinding getDisabledBinding()
-	{
-		return disabledBinding;
-	}
-
-	public IBinding getDisplayWidthBinding()
-	{
-		return displayWidthBinding;
-	}
-
-	public IBinding getHiddenBinding()
-	{
-		return hiddenBinding;
-	}
 
 	public IBinding getTextBinding()
 	{
 		return textBinding;
 	}
-
-	/**
-	*  Renders the form element, or responds when the form containing the element
-	*  is submitted (by checking {@link Form#isRewinding()}.
-	*
-	**/
-
-	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
-	{
-		boolean rewinding;
-		IActionListener listener;
-		String value;
-		boolean disabled = false;
-		int displayWidth;
-		int maximumLength;
-		boolean hidden = false;
-		Form form;
-
-		form = getForm(cycle);
-
-		// It isn't enough to know whether the cycle in general is rewinding, need to know
-		// specifically if the form which contains this component is rewinding.
-
-		rewinding = form.isRewinding();
-
-		// Used whether rewinding or not.
-
-		name = form.getElementId(this);
-
-		if (disabledBinding != null)
-			disabled = disabledBinding.getBoolean();	
-
-		if (textBinding == null)
-			throw new RequiredParameterException(this, "text", null);		
-
-		if (rewinding)
-		{
-			if (!disabled)
-			{
-				value = cycle.getRequestContext().getParameter(name);
-
-				textBinding.setString(value);
-			}
-
-			return;
-		}
-
-		if (staticHidden)
-			hidden = hiddenValue;
-		else if (hiddenBinding != null)
-			hidden = hiddenBinding.getBoolean();
-
-
-		writer.beginEmpty("input");
-
-		writer.attribute("type", hidden ? "password" : "text");
-
-		if (disabled)
-			writer.attribute("disabled");
-
-		writer.attribute("name", name);
-
-		if (displayWidthBinding != null)
-		{
-			if (staticDisplayWidth)
-				displayWidth = displayWidthValue;
-			else
-				displayWidth = displayWidthBinding.getInt();
-
-			writer.attribute("size", displayWidth);
-		}
-
-		if (maximumLengthBinding != null)
-		{
-			if (staticMaximumLength)
-				maximumLength = maximumLengthValue;
-			else
-				maximumLength = maximumLengthBinding.getInt();
-
-			writer.attribute("maxlength", maximumLength);
-		}
-
-		value = textBinding.getString();
-		if (value != null)
-			writer.attribute("value", value);
-
-		generateAttributes(cycle, writer, reservedNames);
-
-		writer.closeTag();
-	}
-
-	public void setDisabledBinding(IBinding value)
-	{
-		disabledBinding = value;
-	}
-
-	public void setDisplayWidthBinding(IBinding value)
-	{
-		displayWidthBinding = value;
-
-		staticDisplayWidth = value.isStatic();
-
-		if (staticDisplayWidth)
-			displayWidthValue = value.getInt();
-	}
-
-	public void setHiddenBinding(IBinding value)
-	{
-		hiddenBinding = value;
-
-		staticHidden = value.isStatic();
-
-		if (staticHidden)
-			hiddenValue = value.getBoolean();
-	}
-
-	public void setMaximumLengthBinding(IBinding value)
-	{
-		maximumLengthBinding = value;
-
-		staticMaximumLength = value.isStatic();
-
-		if (staticMaximumLength)
-			maximumLengthValue = value.getInt();
-	}
-
-	public IBinding getMaximumLengthBinding()
-	{
-		return maximumLengthBinding;
-	}
 	
 	public void setTextBinding(IBinding value)
 	{
 		textBinding = value;
+	}
+	
+	public String readValue()
+	{
+		return textBinding.getString();
+	}
+	
+	public void updateValue(String value)
+	{
+		textBinding.setString(value);
 	}
 }
 

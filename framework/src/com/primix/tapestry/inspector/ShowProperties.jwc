@@ -15,7 +15,7 @@
   </component>
   <component id="evenOdd" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
   <component id="select" type="Direct">
-    <binding name="listener" property-path="page.selectComponentListener"/>
+    <binding name="listener" property-path="page.listeners.selectComponent"/>
     <binding name="context" property-path="change.componentPath"/>
     <binding name="disabled" property-path="disableComponentLink"/>
   </component>

@@ -51,10 +51,10 @@ public class Inspector extends BasePage
 	
 	private Map blocks;
 	
-
+	
 	public void finishLoad(IPageLoader loader,
-                       ComponentSpecification specification)
-                throws PageLoaderException
+			ComponentSpecification specification)
+		throws PageLoaderException
 	{
 		super.finishLoad(loader, specification);
 		
@@ -72,10 +72,10 @@ public class Inspector extends BasePage
 		view = View.SPECIFICATION;
 		inspectedPageName = null;
 		inspectedIdPath = null;
-
+		
 		super.detach();	
 	}
-
+	
 	public View getView()
 	{
 		return view;
@@ -104,7 +104,7 @@ public class Inspector extends BasePage
 	{
 		return inspectedIdPath;
 	}
-
+	
 	public void setInspectedIdPath(String value)
 	{
 		inspectedIdPath = value;
@@ -112,13 +112,13 @@ public class Inspector extends BasePage
 		fireObservedChange("inspectedIdPath", value);
 	}
 	
-		
+	
 	/**
 	 *  Method invoked by the {@link ShowInspector} component, 
 	 *  to begin inspecting a page.
 	 *
 	 */
-	 
+	
 	public void inspect(String pageName, IRequestCycle cycle)
 	{
 		setInspectedPageName(pageName);
@@ -136,25 +136,19 @@ public class Inspector extends BasePage
 	 *  {@link #setInspectedIdPath(String)}.
 	 *
 	 */
-	 
-	public IDirectListener getSelectComponentListener()
+	
+	public void selectComponent(String[] context, IRequestCycle cycle)
 	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context, IRequestCycle cycle)
-			{
-				String newIdPath;
-				
-				// The up button may generate a null context.
-				
-				if (context == null)
-					newIdPath = null;
-				else
-					newIdPath = context[0];
-						
-				setInspectedIdPath(newIdPath);
-			}
-		};
+		String newIdPath;
+		
+		// The up button may generate a null context.
+		
+		if (context == null)
+			newIdPath = null;
+		else
+			newIdPath = context[0];
+		
+		setInspectedIdPath(newIdPath);
 	}
 	
 	/**
@@ -162,10 +156,10 @@ public class Inspector extends BasePage
 	 *  from the inspectedPageName property.
 	 *
 	 */
-	 
+	
 	public IPage getInspectedPage()
 	{
-        return getRequestCycle().getPage(inspectedPageName);
+		return getRequestCycle().getPage(inspectedPageName);
 	}
 	
 	/**
@@ -173,16 +167,16 @@ public class Inspector extends BasePage
 	 *  from the inspectedPageName and inspectedIdPath properties.
 	 *
 	 */
-	 
+	
 	public IComponent getInspectedComponent()
 	{
 		return getInspectedPage().getNestedComponent(inspectedIdPath);	
 	}
-
+	
     public String getInspectorTitle()
     {
-        return "Tapestry Inspector: " +
-                engine.getSpecification().getName();
+		return "Tapestry Inspector: " +
+			engine.getSpecification().getName();
     }
 	
 	/**

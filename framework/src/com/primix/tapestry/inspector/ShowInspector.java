@@ -49,7 +49,7 @@ import com.primix.tapestry.html.*;
  *  @author Howard Ship
  *
  */
- 
+
 
 public class ShowInspector extends BaseComponent
 {
@@ -61,7 +61,7 @@ public class ShowInspector extends BaseComponent
 	 *  @since 0.2.9
 	 *
 	 */
-	 
+	
 	public String getWindowTarget()
 	{
 		IRequestCycle cycle = getPage().getRequestCycle();
@@ -73,26 +73,16 @@ public class ShowInspector extends BaseComponent
 		
 		return "Tapestry Inspector " + session.getCreationTime();
 	}
-
+	
 	/**
 	 *  Gets the listener for the link component.
 	 *
 	 */
-	 
-	public IDirectListener getListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				Inspector inspector;
-				
-				inspector = (Inspector)cycle.getPage("Inspector");
-				
-				inspector.inspect(getPage().getName(), cycle);
-			}
-		};
-	}
 	
+	public void showInspector(IRequestCycle cycle)	
+	{
+		Inspector inspector = (Inspector)cycle.getPage("Inspector");
+		
+		inspector.inspect(getPage().getName(), cycle);
+	}
 }

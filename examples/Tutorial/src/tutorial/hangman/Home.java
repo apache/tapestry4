@@ -42,7 +42,6 @@ import com.primix.tapestry.*;
 
 public class Home
 extends BasePage
-implements IActionListener
 {
     public static final int EASY = 10;
     public static final int MEDIUM = 5;
@@ -76,13 +75,7 @@ implements IActionListener
         return error;
     }
 
-    public IActionListener getFormListener()
-    {
-        return this;
-    }
-
-    public void actionTriggered(IComponent component, IRequestCycle cycle)
-    throws RequestCycleException
+    public void formSubmit(IRequestCycle cycle)
     {
         if (misses == 0)
         {

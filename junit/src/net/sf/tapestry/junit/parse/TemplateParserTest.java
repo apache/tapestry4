@@ -205,7 +205,7 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("SimpleNested.html");
 		
-		assertTokenCount(tokens, 8);
+		assertTokenCount(tokens, 7);
 		assertOpenToken(tokens[1], "outer");
 		assertOpenToken(tokens[3], "inner");
 		assertCloseToken(tokens[4]);
@@ -237,7 +237,7 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("Complex.html");
 		
-		assertTokenCount(tokens, 19);
+		assertTokenCount(tokens, 17);
 		
 		// Just pick a few highlights out of it.
 		
@@ -321,18 +321,16 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("BasicRemove.html");
 		
-		assertTokenCount(tokens, 11);
+		assertTokenCount(tokens, 9);
 		assertTextToken(tokens[0], 0, 126);
-		assertTextToken(tokens[1], 197, 287);
-		assertTextToken(tokens[2], 345, 346);
-		assertOpenToken(tokens[3], "e");
-		assertTextToken(tokens[4], 359, 361);
-		assertOpenToken(tokens[5], "row");
-		assertTextToken(tokens[6], 378, 398);
+		assertTextToken(tokens[1], 201, 287);
+		assertOpenToken(tokens[2], "e");
+		assertTextToken(tokens[3], 359, 361);
+		assertOpenToken(tokens[4], "row");
+		assertTextToken(tokens[5], 378, 398);
+		assertCloseToken(tokens[6]);
 		assertCloseToken(tokens[7]);
-		assertTextToken(tokens[8], 404, 405);
-		assertCloseToken(tokens[9]);
-		assertTextToken(tokens[10], 412, 425);
+		assertTextToken(tokens[8], 414, 425);
 	}
 	
 	public void testBodyRemove()
@@ -353,12 +351,11 @@ public class TemplateParserTest
 		
 		TemplateToken[] tokens = run("BodyRemove.html", delegate);
 		
-		assertTokenCount(tokens, 8);
+		assertTokenCount(tokens, 7);
 		assertOpenToken(tokens[1], "form");
 		assertOpenToken(tokens[3], "inputType");
 		assertCloseToken(tokens[4]);
-		assertTextToken(tokens[5], 253, 254);
-		assertCloseToken(tokens[6]);		
+		assertCloseToken(tokens[5]);		
 	}
 	
 	public void testRemovedComponentFailure()
@@ -404,7 +401,7 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("TagAttributes.html");
 		
-		assertTokenCount(tokens, 5);
+		assertTokenCount(tokens, 4);
 		assertOpenToken(tokens[1], "tag");
 		
 		Map a = tokens[1].getAttributes();
