@@ -69,10 +69,17 @@ public class TestMocks extends TapestryTestCase
     {
         TestSuite suite = new TestSuite("Mock Unit Test Suite");
 
-        addScripts(suite);
+        if (Boolean.getBoolean("skip-mock-tests"))
+        {
+            System.out.println("*** Skipping Mock Unit Test Suite");
+        }
+        else
+        {
+            addScripts(suite);
 
-        // Handy place to perform one-time
-        deleteDir(getBaseDirectory() + "/target/.private");
+            // Handy place to perform one-time
+            deleteDir(getBaseDirectory() + "/target/.private");
+        }
 
         return suite;
     }
