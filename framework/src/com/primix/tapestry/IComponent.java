@@ -38,17 +38,14 @@ import com.primix.tapestry.components.*;
  * Defines an object which may be used to provide dynamic content on a Tapestry web page.
  *
  * <p>Components are created dynamically from thier class names (part of the
- *  {@link ComponentSpecification}). 
+ *  {@link ComponentSpecification}).
  *
- * <p>The {@link ILifecycle} interface defines additional methods
- * for components that need to perform extra work as they are loaded and before
- * and after rendering.
- *
+*
  * @author Howard Ship
  * @version $Id$
  */
 
-public interface IComponent 
+public interface IComponent
 	extends IRender
 {
 	
@@ -259,9 +256,6 @@ public interface IComponent
 	 *  specified, but any components contained by the
 	 *  receiving component will also have been constructed
 	 *  before this method is invoked.
-	 *
-	 *  <p>This was originally part of the {@link ILifecycle} interface, but was
-	 *  moved here in release 0.2.12.
 	 *
 	 * @since 0.2.12
 	 */

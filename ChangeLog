@@ -1,3 +1,18 @@
+* Aug 26 2001 hship
+
+framework:
+- Remove ILifecycle interface, related methods on IPage and elsewhere
+- Add new event listener methods on IPage (to replace ILifecycle) with
+  finer granularity
+- Convert components from ILifecycle to PageRenderListener, PageDetachListener, etc.
+
+vlib:
+- Convert Browser from ILifecycle to PageDetachListener
+
+documentation:
+- Describe helper beans, and the <bean> and <reserved-parameter>
+  elements of the component specification.
+  
 * Aug 24 2001 hship
 
 framework:

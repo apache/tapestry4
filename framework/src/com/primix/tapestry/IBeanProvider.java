@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -51,13 +51,5 @@ public interface IBeanProvider
 	 */
 	
 	public Object getBean(String name);
-	
-	/**
-	 *  Invoked by the {@link IPage} at the end of the request cycle.
-	 *  The provider should remove any beans that have the "request" lifecycle.
-	 *
-	 */
-	
-	public void removeRequestBeans();
 }
 

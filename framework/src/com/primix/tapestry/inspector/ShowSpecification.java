@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -29,6 +29,7 @@
 
 package com.primix.tapestry.inspector;
 
+import com.primix.tapestry.event.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.spec.*;
 import java.util.*;
@@ -43,8 +44,9 @@ import java.util.*;
  *
  */
 
-public class ShowSpecification extends BaseComponent
-	implements ILifecycle
+public class ShowSpecification
+	extends BaseComponent
+	implements PageRenderListener
 {
 	private IComponent inspectedComponent;
 	private ComponentSpecification inspectedSpecification;
@@ -79,11 +81,31 @@ public class ShowSpecification extends BaseComponent
 			leftId = leftComponent.getId();
 			rightId = rightComponent.getId();
 			
-			return leftId.compareTo(rightId);			
+			return leftId.compareTo(rightId);
 		}
 	}
 	
-	public void cleanupAfterRender(IRequestCycle cycle)
+	/**
+	 *  Registers this component as a {@link PageRenderListener}.
+	 *
+	 * @since 1.0.5
+	 */
+	
+	protected void registerForEvents()
+	{
+		page.addPageRenderListener(this);
+	}
+		
+	/**
+	 *  Clears all cached information about the component and such after
+	 *  each render (including the rewind phase render used to process
+	 *  the tab view).
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public void pageEndRender(PageEvent event)
 	{
 		inspectedComponent = null;
 		inspectedSpecification = null;
@@ -104,9 +126,10 @@ public class ShowSpecification extends BaseComponent
 	/**
 	 *  Gets the inspected component and specification from the {@link Inspector} page.
 	 *
+	 *  @since 1.0.5
 	 */
 	
-	public void prepareForRender(IRequestCycle cycle)
+	public void pageBeginRender(PageEvent event)
 	{
 		Inspector inspector;
 		
@@ -146,7 +169,7 @@ public class ShowSpecification extends BaseComponent
 		return formalParameterNames;
 	}
 	
-	/** 
+	/**
 	 *  Returns a sorted list of informal parameter names.  This is
 	 *  the list of all bindings, with the list of parameter names removed,
 	 *  sorted.
@@ -175,7 +198,7 @@ public class ShowSpecification extends BaseComponent
 			Collections.sort(informalParameterNames);
 		}
 		
-		return informalParameterNames;		
+		return informalParameterNames;
 	}
 	
 	public String getParameterName()
@@ -271,7 +294,7 @@ public class ShowSpecification extends BaseComponent
 		{
 			sortedComponents = new ArrayList(components.values());
 			
-			Collections.sort(sortedComponents, new ComponentComparitor());	
+			Collections.sort(sortedComponents, new ComponentComparitor());
 		}
 		
 		return sortedComponents;

@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -28,13 +28,14 @@
 
 package com.primix.tapestry;
 
-import com.primix.tapestry.event.ChangeObserver;
+import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.*;
 import java.util.*;
 import java.io.OutputStream;
 import javax.servlet.http.*;
 import com.primix.tapestry.util.*;
 import org.apache.log4j.*;
+import javax.swing.event.*;
 
 
 /**
@@ -46,10 +47,10 @@ import org.apache.log4j.*;
  */
 
 public abstract class AbstractPage
-	extends BaseComponent 
+	extends BaseComponent
 	implements IPage
 {
-	private static final Category CAT = 
+	private static final Category CAT =
 		Category.getInstance(AbstractPage.class);
 	
 	/**
@@ -78,12 +79,6 @@ public abstract class AbstractPage
 	
 	private Object visit;
 	
-	private static final int LIFECYCLE_INIT_SIZE = 3;
-	
-	private int lifecycleComponentCount = 0;
-	
-	private ILifecycle[] lifecycleComponents;
-	
 	/**
 	 *  The name of this page.  This may be read, but not changed, by
 	 *  subclasses.
@@ -107,13 +102,14 @@ public abstract class AbstractPage
 	private Locale locale;
 	
 	/**
-	 *  A {@link List} of registered {@link IBeanProvider}s.  These will be
-	 *  notified at the end of the request cycle.
+	 *  A list of listeners for the page.
+	 *  @see PageRenderListener
+	 *  @see PageDetachListener
 	 *
-	 * @since 1.0.4
+	 *  @since 1.0.5
 	 */
 	
-	private List beanProviders;
+	private EventListenerList listenerList;
 	
 	/**
 	 *  Implemented in subclasses to provide a particular kind of
@@ -124,39 +120,11 @@ public abstract class AbstractPage
 	
 	abstract public IResponseWriter getResponseWriter(OutputStream out);
 	
-	public void addLifecycleComponent(ILifecycle component)
-	{
-		if (lifecycleComponents == null)
-		{
-			lifecycleComponents = new ILifecycle[LIFECYCLE_INIT_SIZE];
-			lifecycleComponents[0] = component;
-			
-			lifecycleComponentCount = 1;
-			return;
-		}
-		
-		if (lifecycleComponentCount == lifecycleComponents.length)
-		{
-			ILifecycle[] newList;
-			
-			newList = new ILifecycle[lifecycleComponentCount * 2];
-			
-			System.arraycopy(lifecycleComponents, 0, newList, 0, lifecycleComponentCount);
-			
-			lifecycleComponents = newList;
-		}
-		
-		lifecycleComponents[lifecycleComponentCount++] = component;
-	}
-	
 	/**
 	 *  Prepares the page to be returned to the pool.
 	 *  <ul>
+	 *	<li>Invokes {@link PageDetachListener#pageDetached()} on all listeners
 	 *	<li>Clears the engine, visit and changeObserver properties
-	 *	<li>Invokes {@link ILifecycle#reset()} on all lifecycle components
-	 *	<li>Invokes {@link IBeanProvider#removeRequestBeans()} on
-	 *  any registered bean providers
-	 *	<li>Clears the list of registered bean providers
 	 *	</ul>
 	 *
 	 *  <p>Subclasses may override this method, but must invoke this
@@ -166,26 +134,12 @@ public abstract class AbstractPage
 	
 	public void detach()
 	{
+		firePageDetached();
+		
 		engine = null;
 		visit = null;
 		changeObserver = null;
 		requestCycle = null;
-		
-		for (int i = 0; i < lifecycleComponentCount; i++)
-			lifecycleComponents[i].reset();
-		
-		if (beanProviders != null)
-		{
-			Iterator i = beanProviders.iterator();
-			while (i.hasNext())
-			{
-				IBeanProvider provider = (IBeanProvider)i.next();
-				
-				provider.removeRequestBeans();
-			}
-			
-			beanProviders.clear();
-		}
 	}
 	
 	public IEngine getEngine()
@@ -290,7 +244,13 @@ public abstract class AbstractPage
 	
 	/**
 	 *
-	 *  Invokes lifecycle methods on any components (as necessary).
+	 * <ul>
+	 *  <li>Invokes {@link PageRenderListener#pageBeginRender(PageEvent)}
+	 *  <li>Invokes {@link #beginResponse(IResponseWriter, IRequestCycle)}
+	 *  <li>Invokes {@link IRequestCycle#commitPageChanges()} (if not rewinding)
+	 *  <li>Invokes {@link #render(IResponseWriter, IRequestCycle)}
+	 *  <li>Invokes {@link PageRenderListener#pageEndRender(PageEvent)} (this occurs
+	 *  even if a previous step throws an exception)
 	 *
 	 */
 	
@@ -298,10 +258,9 @@ public abstract class AbstractPage
 		throws RequestCycleException
 	{
 		try
-		{			
-			for (int i = 0; i < lifecycleComponentCount; i++)
-				lifecycleComponents[i].prepareForRender(cycle);
-			
+		{
+			firePageBeginRender();
+						
 			beginResponse(writer, cycle);
 			
 			if (!cycle.isRewinding())
@@ -315,11 +274,8 @@ public abstract class AbstractPage
 		}
 		finally
 		{
-			// Open question:  how to handle any exceptions thrown here.
-			
-			for (int i = 0; i < lifecycleComponentCount; i++)
-				lifecycleComponents[i].cleanupAfterRender(cycle);
-		}		
+			firePageEndRender();
+		}
 	}
 	
 	public void setChangeObserver(ChangeObserver value)
@@ -352,7 +308,7 @@ public abstract class AbstractPage
 	 *
 	 */
 	
-	public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
+	public void beginResponse(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 	}
@@ -368,7 +324,8 @@ public abstract class AbstractPage
 	}
 	
 	/**
-	 *  Invokes {@link ILifecycle#cleanupComponent()} on any lifecycle components.
+	 *  Invokes {@link PageCleanupListener#pageCleanup(PageEvent)} on any
+	 *  listener.
 	 *
 	 *  <p>Subclasses may override, but should invoke this implementation.
 	 *
@@ -376,11 +333,8 @@ public abstract class AbstractPage
 	
 	public void cleanupPage()
 	{
-		for (int i = 0; i < lifecycleComponentCount; i++)
-			lifecycleComponents[i].cleanupComponent();
+		firePageCleanup();
 	}
-	
-	
 	
 	/**
 	 *  Returns the visit object obtained from the engine via
@@ -396,14 +350,129 @@ public abstract class AbstractPage
 		return visit;
 	}
 	
-	/** @since 1.0.4 **/
-	
-	public void registerBeanProvider(IBeanProvider provider)
+	public void addPageDetachListener(PageDetachListener listener)
 	{
-		if (beanProviders == null)
-			beanProviders = new ArrayList();
+		addListener(PageDetachListener.class, listener);
+	}
+	
+	private void addListener(Class listenerClass, EventListener listener)
+	{
+		if (listenerList == null)
+			listenerList = new EventListenerList();
 		
-		beanProviders.add(provider);
+		listenerList.add(listenerClass, listener);
+	}
+	
+	public void addPageRenderListener(PageRenderListener listener)
+	{
+		addListener(PageRenderListener.class, listener);
+	}
+	
+	public void addPageCleanupListener(PageCleanupListener listener)
+	{
+		addListener(PageCleanupListener.class, listener);
+	}
+	
+	/**
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	protected void firePageDetached()
+	{
+		if (listenerList == null)
+			return;
+		
+		PageEvent event = null;
+		Object[] listeners = listenerList.getListenerList();
+		
+		for (int i = 0; i < listeners.length; i += 2)
+		{
+			if (listeners[i] == PageDetachListener.class)
+			{
+				PageDetachListener l = (PageDetachListener)listeners[i+1];
+				
+				if (event == null)
+					event = new PageEvent(this, requestCycle);
+				
+				l.pageDetached(event);
+			}
+		}
+	}
+	
+	/**
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	protected void firePageBeginRender()
+	{
+		if (listenerList == null)
+			return;
+		
+		PageEvent event = null;
+		Object[] listeners = listenerList.getListenerList();
+		
+		for (int i = 0; i < listeners.length; i += 2)
+		{
+			if (listeners[i] == PageRenderListener.class)
+			{
+				PageRenderListener l = (PageRenderListener)listeners[i+1];
+				
+				if (event == null)
+					event = new PageEvent(this, requestCycle);
+				
+				l.pageBeginRender(event);
+			}
+		}
+	}
+	
+	/**
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	protected void firePageEndRender()
+	{
+		if (listenerList == null)
+			return;
+		
+		PageEvent event = null;
+		Object[] listeners = listenerList.getListenerList();
+		
+		for (int i = 0; i < listeners.length; i += 2)
+		{
+			if (listeners[i] == PageRenderListener.class)
+			{
+				PageRenderListener l = (PageRenderListener)listeners[i+1];
+				
+				if (event == null)
+					event = new PageEvent(this, requestCycle);
+				
+				l.pageEndRender(event);
+			}
+		}
+	}
+	protected void firePageCleanup()
+	{
+		if (listenerList == null)
+			return;
+		
+		PageEvent event = null;
+		Object[] listeners = listenerList.getListenerList();
+		
+		for (int i = 0; i < listeners.length; i += 2)
+		{
+			if (listeners[i] == PageCleanupListener.class)
+			{
+				PageCleanupListener l = (PageCleanupListener)listeners[i+1];
+				
+				if (event == null)
+					event = new PageEvent(this, null);
+				
+				l.pageCleanup(event);
+			}
+		}
 	}
 }
 

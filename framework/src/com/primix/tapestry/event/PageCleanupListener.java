@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -26,54 +26,36 @@
  *
  */
 
-package com.primix.tapestry.spec;
+package com.primix.tapestry.event;
 
-import java.io.*;
-import com.primix.tapestry.util.Enum;
-
+import com.primix.tapestry.*;
+import java.util.*;
+	
 /**
- *  An {@link Enum} of the different possible lifecycles for a JavaBean.
+ *  Listener interface for objects that need to know when the engine
+ *  containing the page is discarded.  This is typically relevant
+ *  only to components that have persistent page properties that
+ *  require some kind of cleanup (typically, because they
+ *  are references to EJBs, or something similar).
  *
  *  @author Howard Ship
  *  @version $Id$
- *  @since 1.0.4
+ *  @since 1.0.5
+ *
  */
-
-
-public class BeanLifecycle extends Enum
+	
+public interface PageCleanupListener extends EventListener
 {
 	/**
-	 *  No lifecycle; the bean is created fresh on each reference and not retained.
+	 *  Invoked when the page is notified, by the {@link IEngine}
+	 *  to cleanup; this occurs when the engine is discarded
+	 *  because its {@link javax.servlet.http.HttpSession} was
+	 *  invalidated.  The page is rolled back to its
+	 *  last state and then invokes this method.
 	 *
-	 **/
-	
-	public static final BeanLifecycle NONE = new BeanLifecycle("NONE");
-	
-	/**
-	 * The standard lifecycle; the bean is retained for the
-	 * duration of the request cycle and is discarded at the end of the
-	 * request cycle.
-	 *
+	 *  <p>{@link PageEvent#getRequestCycle()} will return null.
 	 */
 	
-	public static final BeanLifecycle REQUEST = new BeanLifecycle("REQUEST");
-	
-	/**
-	 * The bean is created once and reused for the lifespan of the page
-	 * containing the component.
-	 *
-	 */
-	
-	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
-	
-    private BeanLifecycle(String name)
-    {
-		super(name);
-    }
-    
-    private Object readResolve()
-    {
-    	return getSingleton();
-    }
+	public void pageCleanup(PageEvent event);
 }
 

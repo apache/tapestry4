@@ -223,7 +223,7 @@ public class BaseComponent
 				}
 				catch (IndexOutOfBoundsException e)
 				{
-					// This is now almost impossible to reach, because the 
+					// This is now almost impossible to reach, because the
 					// TemplateParser does a great job of checking for most of these cases.
 					
 					throw new PageLoaderException(
@@ -246,7 +246,7 @@ public class BaseComponent
 			CAT.debug(this + " finished reading template");
 	}
 	
-	/** 
+	/**
 	 * Adds static bindings for any attrributes specified in the HTML
 	 * template, skipping any that are reserved (explicitly, or
 	 * because they match a formal parameter name).
@@ -367,7 +367,8 @@ public class BaseComponent
 	}
 	
 	/**
-	 *  Loads the template for the component.  Subclasses must invoke this method first,
+	 *  Loads the template for the component, and invokes
+	 *  {@link #registerForEvents()}.  Subclasses must invoke this method first,
 	 *  before adding any additional behavior.
 	 *
 	 */
@@ -376,6 +377,8 @@ public class BaseComponent
 		throws PageLoaderException
 	{
 		readTemplate(loader);
+		
+		registerForEvents();
 	}
 }
 

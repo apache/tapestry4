@@ -6,9 +6,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -29,6 +29,7 @@ package com.primix.vlib.components;
 
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.*;
+import com.primix.tapestry.event.*;
 import com.primix.vlib.*;
 import com.primix.vlib.pages.*;
 import com.primix.vlib.ejb.*;
@@ -46,8 +47,8 @@ import java.util.*;
  */
 
 public class Browser
-	extends BaseComponent 
-	implements ILifecycle
+	extends BaseComponent
+	implements PageDetachListener
 {
 	private IBinding queryBinding;
 	private IBookQuery query;
@@ -74,11 +75,24 @@ public class Browser
 	private static int pageSize = DEFAULT_PAGE_SIZE;
 	
 	/**
-	 * Clear out cached values at the end of the request cycle.
+	 *  Register this component as a {@link PageDetachListener}.
+	 *
+	 *  @since 1.0.5
 	 *
 	 */
 	
-	public void reset()
+	protected void registerForEvents()
+	{
+		page.addPageDetachListener(this);
+	}
+	
+	/**
+	 * Clear out cached values at the end of the request cycle.
+	 *
+	 *  @since 1.0.5
+	 */
+	
+	public void pageDetached(PageEvent event)
 	{
 		query = null;
 		resultCount = 0;
