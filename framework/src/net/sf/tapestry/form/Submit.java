@@ -56,6 +56,14 @@ public class Submit extends AbstractFormComponent
     private IActionListener _listener;
     private boolean _disabled;
     private Object _tag;
+    
+    /**
+     *  Can't use a "form" direction parameter, because
+     *  the binding must be updated before
+     *  the listener is invoked.
+     * 
+     **/
+    
     private IBinding _selectedBinding;
 
     private String _name;
@@ -139,7 +147,7 @@ public class Submit extends AbstractFormComponent
         _label = label;
     }
 
-    public boolean getDisabled()
+    public boolean isDisabled()
     {
         return _disabled;
     }

@@ -27,7 +27,7 @@
   	direction="in"/>
   
   <parameter name="selected" java-type="java.util.List" 
-  	required="yes"/>
+  	required="yes" direction="form"/>
   
   <parameter name="sort" 
   	java-type="net.sf.tapestry.contrib.palette.SortMode" 

@@ -9,7 +9,7 @@
   A multi-line text area.
   </description>
   
-  <parameter name="value" java-type="java.lang.String" required="yes"/>
+  <parameter name="value" java-type="java.lang.String" required="yes" direction="form"/>
   
   <parameter name="disabled" java-type="boolean" direction="in"/>
   <parameter name="columns" java-type="int" direction="in"/>

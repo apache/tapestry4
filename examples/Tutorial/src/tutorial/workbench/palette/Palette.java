@@ -45,16 +45,16 @@ import net.sf.tapestry.util.Enum;
 
 public class Palette extends BasePage
 {
-    private List selectedColors;
+    private List _selectedColors;
 
-    private SortMode sort = SortMode.USER;
+    private SortMode _sort = SortMode.USER;
 
-    private IPropertySelectionModel sortModel;
+    private IPropertySelectionModel _sortModel;
 
     public void detach()
     {
-        sort = SortMode.USER;
-        selectedColors = null;
+        _sort = SortMode.USER;
+        _selectedColors = null;
 
         super.detach();
     }
@@ -79,7 +79,7 @@ public class Palette extends BasePage
 
         Results results = (Results) cycle.getPage(getNamespace().getExtendedId() + ":palette.Results");
 
-        results.setSelectedColors(selectedColors);
+        results.setSelectedColors(_selectedColors);
 
         cycle.setPage(results);
     }
@@ -98,36 +98,38 @@ public class Palette extends BasePage
 
     public void setSort(SortMode value)
     {
-        sort = value;
+        _sort = value;
 
         fireObservedChange("sort", value);
     }
 
     public SortMode getSort()
     {
-        return sort;
+        return _sort;
     }
 
     public IPropertySelectionModel getSortModel()
     {
-        if (sortModel == null)
+        if (_sortModel == null)
         {
             ResourceBundle bundle = ResourceBundle.getBundle("tutorial.workbench.palette.SortModeStrings", getLocale());
 
             Enum[] options = new Enum[] { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
 
-            sortModel = new EnumPropertySelectionModel(options, bundle);
+            _sortModel = new EnumPropertySelectionModel(options, bundle);
         }
 
-        return sortModel;
+        return _sortModel;
     }
 
     public List getSelectedColors()
     {
-        if (selectedColors == null)
-            selectedColors = new ArrayList();
+        return _selectedColors;
+    }
 
-        return selectedColors;
+    public void setSelectedColors(List selectedColors)
+    {
+        _selectedColors = selectedColors;
     }
 
 }

@@ -27,7 +27,12 @@ package net.sf.tapestry.param;
 
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequiredParameterException;
+import net.sf.tapestry.form.Form;
+import net.sf.tapestry.form.IFormComponent;
+import net.sf.tapestry.spec.Direction;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.prop.OgnlUtils;
 import ognl.Ognl;
@@ -50,6 +55,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
     private IComponent _component;
     private boolean _required;
     private Object _clearValue;
+    private Direction _direction;
 
     /**
      *  Parsed OGNL expression, used to get and set the value.
@@ -76,9 +82,16 @@ public abstract class AbstractParameterConnector implements IParameterConnector
         ParameterSpecification pspec = _component.getSpecification().getParameter(_parameterName);
         _required = pspec.isRequired();
         _propertyName = pspec.getPropertyName();
+        _direction = pspec.getDirection();
 
+        _clearValue = readCurrentPropertyValue();
+    }
 
-        _clearValue = OgnlUtils.get(_propertyName, _component);
+    /** @since 2.2 **/
+
+    private Object readCurrentPropertyValue()
+    {
+        return OgnlUtils.get(_propertyName, _component);
     }
 
     /**
@@ -95,8 +108,6 @@ public abstract class AbstractParameterConnector implements IParameterConnector
      *  Gets the value of the binding.
      *  @param requiredType if not null, the expected type of the value object.
      * 
-     *  @throws 	RequiredParameterException if the value object is null,
-     *  but the parameter is required.
      * 
      *  @see IBinding#getObject()
      *  @see IBinding#getObject(String, Class)
@@ -110,9 +121,6 @@ public abstract class AbstractParameterConnector implements IParameterConnector
             result = _binding.getObject();
         else
             result = _binding.getObject(_parameterName, requiredType);
-
-        if (result == null && _required)
-            throw new RequiredParameterException(_component, _parameterName, _binding);
 
         return result;
     }
@@ -132,6 +140,9 @@ public abstract class AbstractParameterConnector implements IParameterConnector
         buffer.append(' ');
         buffer.append(_binding);
 
+        buffer.append(' ');
+        buffer.append(_direction.getEnumerationId());
+
         if (_required)
             buffer.append(" required");
 
@@ -141,13 +152,56 @@ public abstract class AbstractParameterConnector implements IParameterConnector
     }
 
     /**
-     *  Restores the property to its default value.
+     *  Restores the property to its default value.  For
+     *  {@link Direction#FORM} parameters, extracts the
+     *  property value and sets the binding form it
+     *  (when appropriate).
      * 
      **/
 
-    public void clearParameter()
+    public void resetParameter(IRequestCycle cycle)
     {
+        if (_direction == Direction.FORM && cycle.isRewinding())
+        {
+            IFormComponent component = (IFormComponent) _component;
+
+            if (!component.isDisabled())
+            {
+                IForm form = Form.get(cycle);
+
+                if (form != null && form.isRewinding())
+                {
+                    Object value = readCurrentPropertyValue();
+
+                    _binding.setObject(value);
+                }
+            }
+        }
+
+        // Either way, clear the value.
+
         setPropertyValue(_clearValue);
+    }
+
+    /**
+     *  Returns true if the connector should update the property value from
+     *  the binding.  For {@link net.sf.tapestry.spec.Direction#IN}, this
+     *  always returns true.  For {@link net.sf.tapestry.spec.Direction#FORM},
+     *  this returns true only if the request cycle and the active form
+     *  are rewinding.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    protected boolean shouldSetPropertyValue(IRequestCycle cycle)
+    {
+        if (_direction == Direction.IN)
+            return true;
+
+        // Must be FORM
+
+        return !cycle.isRewinding();
     }
 
 }

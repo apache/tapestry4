@@ -115,4 +115,9 @@ public class TestingField extends AbstractFormComponent implements IField
         return _form;
     }
 
+    public boolean isDisabled()
+    {
+        return false;
+    }
+
 }

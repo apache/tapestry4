@@ -23,11 +23,11 @@
 // Lesser General Public License for more details.
 //
 
-
 package net.sf.tapestry.param;
 
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequiredParameterException;
 
 /**
@@ -44,26 +44,26 @@ import net.sf.tapestry.RequiredParameterException;
 public class BooleanParameterConnector extends AbstractParameterConnector
 {
 
-    protected BooleanParameterConnector(
-        IComponent component,
-        String parameterName,
-        IBinding binding)
+    protected BooleanParameterConnector(IComponent component, String parameterName, IBinding binding)
     {
         super(component, parameterName, binding);
     }
 
-	/**
-	 *  Invokes {@link IBinding#getBoolean()}, which always
-	 *  returns true or false (there is no concept of a null
-	 *  value).
-	 * 
-	 **/
-	
-    public void setParameter()
+    /**
+     *  Invokes {@link IBinding#getBoolean()}, which always
+     *  returns true or false (there is no concept of a null
+     *  value).
+     * 
+     **/
+
+    public void setParameter(IRequestCycle cycle)
     {
- 		boolean value = getBinding().getBoolean();
- 		
- 		setPropertyValue(value ? Boolean.TRUE : Boolean.FALSE);
+        if (shouldSetPropertyValue(cycle))
+        {
+            boolean value = getBinding().getBoolean();
+
+            setPropertyValue(value ? Boolean.TRUE : Boolean.FALSE);
+        }
     }
 
 }

@@ -54,26 +54,26 @@ import net.sf.tapestry.vlib.ejb.Person;
 
 public class TransferBooks extends AdminPage
 {
-    private Person fromUser;
-    private Person toUser;
-    private boolean selectionsOk;
-    private IPropertySelectionModel userBookModel;
-    private IBookQuery bookQuery;
+    private Person _fromUser;
+    private Person _toUser;
+    private boolean _selectionsOk;
+    private IPropertySelectionModel _userBookModel;
+    private IBookQuery _bookQuery;
 
     /**
      *  {@link List} of Book primary keys ({@link Integer}).
      *
      **/
 
-    private List selectedBooks;
+    private List _selectedBooks;
 
     public void detach()
     {
-        fromUser = null;
-        toUser = null;
-        selectionsOk = false;
-        userBookModel = null;
-        bookQuery = null;
+        _fromUser = null;
+        _toUser = null;
+        _selectionsOk = false;
+        _userBookModel = null;
+        _bookQuery = null;
 
         super.detach();
     }
@@ -82,38 +82,38 @@ public class TransferBooks extends AdminPage
     {
         super.beginResponse(writer, cycle);
 
-        if (selectionsOk)
+        if (_selectionsOk)
             getUserBookModel();
     }
 
     public void setFromUser(Person value)
     {
-        fromUser = value;
+        _fromUser = value;
         fireObservedChange("fromUser", value);
     }
 
     public Person getFromUser()
     {
-        return fromUser;
+        return _fromUser;
     }
 
     public void setToUser(Person value)
     {
-        toUser = value;
+        _toUser = value;
         fireObservedChange("toUser", value);
     }
 
     public Person getToUser()
     {
-        return toUser;
+        return _toUser;
     }
 
     public Integer getFromUserPK()
     {
-        if (fromUser == null)
+        if (_fromUser == null)
             return null;
 
-        return fromUser.getPrimaryKey();
+        return _fromUser.getPrimaryKey();
     }
 
     public void setFromUserPK(Integer value)
@@ -128,48 +128,48 @@ public class TransferBooks extends AdminPage
 
     public Integer getToUserPK()
     {
-        if (toUser == null)
+        if (_toUser == null)
             return null;
 
-        return toUser.getPrimaryKey();
+        return _toUser.getPrimaryKey();
     }
 
     public boolean isSelectionsOk()
     {
-        return selectionsOk;
+        return _selectionsOk;
     }
 
     public void setSelectionsOk(boolean value)
     {
-        selectionsOk = value;
+        _selectionsOk = value;
 
         fireObservedChange("selectionsOk", value);
     }
 
     public void setBookQuery(IBookQuery value)
     {
-        bookQuery = value;
+        _bookQuery = value;
 
         fireObservedChange("bookQuery", value);
     }
 
     public IBookQuery getBookQuery()
     {
-        if (bookQuery == null)
+        if (_bookQuery == null)
         {
             VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
             setBookQuery(vengine.createNewQuery());
         }
 
-        return bookQuery;
+        return _bookQuery;
     }
 
     public void processSelectForm(IRequestCycle cycle)
     {
         setSelectionsOk(false);
 
-        if (fromUser.getPrimaryKey().equals(toUser.getPrimaryKey()))
+        if (_fromUser.getPrimaryKey().equals(_toUser.getPrimaryKey()))
         {
             setError("Please select two different people.");
             return;
@@ -190,8 +190,7 @@ public class TransferBooks extends AdminPage
     {
         setSelectionsOk(false);
 
-        List selectedKeys = getSelectedBooks();
-        int count = selectedKeys.size();
+        int count = _selectedBooks.size();
 
         if (count == 0)
         {
@@ -199,7 +198,7 @@ public class TransferBooks extends AdminPage
             return;
         }
 
-        Integer[] keys = (Integer[]) selectedKeys.toArray(new Integer[count]);
+        Integer[] keys = (Integer[]) _selectedBooks.toArray(new Integer[count]);
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -209,7 +208,7 @@ public class TransferBooks extends AdminPage
             {
                 IOperations operations = vengine.getOperations();
 
-                operations.transferBooks(toUser.getPrimaryKey(), keys);
+                operations.transferBooks(_toUser.getPrimaryKey(), keys);
 
                 break;
             }
@@ -223,23 +222,20 @@ public class TransferBooks extends AdminPage
             }
         }
 
-        setMessage("Transfered " + count + " books to " + toUser.getNaturalName() + ".");
+        setMessage("Transfered " + count + " books to " + _toUser.getNaturalName() + ".");
     }
 
     public List getSelectedBooks()
     {
-        if (selectedBooks == null)
-            selectedBooks = new ArrayList();
-
-        return selectedBooks;
+        return _selectedBooks;
     }
 
     public IPropertySelectionModel getUserBookModel()
     {
-        if (userBookModel == null)
-            userBookModel = buildUserBookModel();
+        if (_userBookModel == null)
+            _userBookModel = buildUserBookModel();
 
-        return userBookModel;
+        return _userBookModel;
     }
 
     private IPropertySelectionModel buildUserBookModel()
@@ -255,7 +251,7 @@ public class TransferBooks extends AdminPage
             {
                 IBookQuery query = getBookQuery();
 
-                int count = query.ownerQuery(fromUser.getPrimaryKey());
+                int count = query.ownerQuery(_fromUser.getPrimaryKey());
 
                 if (count > 0)
                     books = query.get(0, count);
@@ -265,7 +261,7 @@ public class TransferBooks extends AdminPage
             catch (RemoteException ex)
             {
                 vengine.rmiFailure(
-                    "Unable to retrieve books owned by " + fromUser.getNaturalName() + ".",
+                    "Unable to retrieve books owned by " + _fromUser.getNaturalName() + ".",
                     ex,
                     i > 0);
 
@@ -310,4 +306,10 @@ public class TransferBooks extends AdminPage
 
         return result;
     }
+    
+    public void setSelectedBooks(List selectedBooks)
+    {
+        _selectedBooks = selectedBooks;
+    }
+
 }

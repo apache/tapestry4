@@ -44,19 +44,16 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Checkbox extends AbstractFormComponent
 {
-    private boolean disabled;    
-    private IBinding selectedBinding;
+    private boolean _disabled;
 
-    private String name;
+    /**  @since 2.2 **/
+    private boolean _selected;
+
+    private String _name;
 
     public String getName()
     {
-        return name;
-    }
-
-    public IBinding getSelectedBinding()
-    {
-        return selectedBinding;
+        return _name;
     }
 
     /**
@@ -71,67 +68,59 @@ public class Checkbox extends AbstractFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        String value;
-        boolean checked;
-
         IForm form = getForm(cycle);
-
-        // It isn't enough to know whether the cycle in general is rewinding, need to know
-        // specifically if the form which contains this component is rewinding.
-
-        boolean rewinding = form.isRewinding();
 
         // Used whether rewinding or not.
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
-        if (rewinding)
+        if (form.isRewinding())
         {
-            if (!disabled)
-            {
-                value = cycle.getRequestContext().getParameter(name);
+            String value = cycle.getRequestContext().getParameter(_name);
 
-                checked = (value != null);
+            _selected = (value != null);
 
-                selectedBinding.setBoolean(checked);
-            }
-
-        }
-        else
-        {
-            checked = selectedBinding.getBoolean();
-
-            writer.beginEmpty("input");
-            writer.attribute("type", "checkbox");
-
-            writer.attribute("name", name);
-
-            if (disabled)
-                writer.attribute("disabled");
-
-            if (checked)
-                writer.attribute("checked");
-
-            generateAttributes(writer, cycle);
-
-            writer.closeTag();
+            return;
         }
 
+        writer.beginEmpty("input");
+        writer.attribute("type", "checkbox");
+
+        writer.attribute("name", _name);
+
+        if (_disabled)
+            writer.attribute("disabled");
+
+        if (_selected)
+            writer.attribute("checked");
+
+        generateAttributes(writer, cycle);
+
+        writer.closeTag();
     }
 
-    public void setSelectedBinding(IBinding value)
+    public boolean isDisabled()
     {
-        selectedBinding = value;
-    }
-    
-    public boolean getDisabled()
-    {
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
+    }
+
+    /** @since 2.2 **/
+
+    public boolean isSelected()
+    {
+        return _selected;
+    }
+
+    /** @since 2.2 **/
+
+    public void setSelected(boolean selected)
+    {
+        _selected = selected;
     }
 
 }

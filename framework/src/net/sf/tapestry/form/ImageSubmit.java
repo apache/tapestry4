@@ -62,6 +62,14 @@ public class ImageSubmit extends AbstractFormComponent
     private boolean _disabled;
 
     private IBinding _pointBinding;
+    
+    /** 
+     * 
+     *  Can't use a "form" direction parameter, because updates
+     *  the binding before invoking the listener.
+     * 
+     **/
+    
     private IBinding _selectedBinding;
 
     public void setPointBinding(IBinding value)
@@ -170,7 +178,7 @@ public class ImageSubmit extends AbstractFormComponent
         writer.closeTag();
     }
 
-    public boolean getDisabled()
+    public boolean isDisabled()
     {
         return _disabled;
     }

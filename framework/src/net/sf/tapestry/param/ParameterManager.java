@@ -35,6 +35,7 @@ import java.util.Map;
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.Tapestry;
@@ -71,42 +72,60 @@ public class ParameterManager
         scalarTypeMap.put("double", Double.class);
     }
 
-    private IComponent component;
-    private IParameterConnector[] connectors;
+    private IComponent _component;
+    private IParameterConnector[] _connectors;
 
     public ParameterManager(IComponent component)
     {
-        this.component = component;
+        _component = component;
     }
 
-    public void setParameters() throws RequiredParameterException
+    /**
+     *  Invoked just before a component renders.  Converts bindings to values
+     *  that are assigned to connected properties.
+     * 
+     **/
+    
+    public void setParameters(IRequestCycle cycle) throws RequiredParameterException
     {
-        if (connectors == null)
-            setup();
+        if (_connectors == null)
+            setup(cycle);
 
-        for (int i = 0; i < connectors.length; i++)
-            connectors[i].setParameter();
+        for (int i = 0; i < _connectors.length; i++)
+            _connectors[i].setParameter(cycle);
     }
 
-    public void clearParameters()
+    /**
+     *  Invoked just after the component renders.  Returns component properties
+     *  back to initial values (unless the corresponding binding is
+     *  {@link IBinding#isInvariant() invariant}).  In addition, for
+     *  {@link Direction#FORM} parameters, the property is read and the binding
+     *  is set from the property value (if the cycle is rewinding and the current
+     *  form is rewinding).
+     * 
+     **/
+    
+    public void resetParameters(IRequestCycle cycle)
     {
-        if (connectors == null)
+        if (_connectors == null)
             return;
 
-        for (int i = 0; i < connectors.length; i++)
-            connectors[i].clearParameter();
+        for (int i = 0; i < _connectors.length; i++)
+            _connectors[i].resetParameter(cycle);
     }
 
-    private void setup() throws RequiredParameterException
+    private void setup(IRequestCycle cycle) throws RequiredParameterException
     {
         boolean debug = LOG.isDebugEnabled();
 
         if (debug)
-            LOG.debug(component + ": connecting parameters and properties");
+            LOG.debug(_component + ": connecting parameters and properties");
 
         List list = new ArrayList();
-        ComponentSpecification spec = component.getSpecification();
-        IResourceResolver resolver = component.getPage().getEngine().getResourceResolver();
+        ComponentSpecification spec = _component.getSpecification();
+        IResourceResolver resolver = _component.getPage().getEngine().getResourceResolver();
+
+        IParameterConnector disabledConnector = null;
 
         Collection names = spec.getParameterNames();
         Iterator i = names.iterator();
@@ -117,7 +136,7 @@ public class ParameterManager
             if (debug)
                 LOG.debug("Connecting parameter " + name + ".");
 
-            IBinding binding = component.getBinding(name);
+            IBinding binding = _component.getBinding(name);
             if (binding == null)
             {
                 if (debug)
@@ -128,7 +147,7 @@ public class ParameterManager
 
             ParameterSpecification pspec = spec.getParameter(name);
 
-            if (pspec.getDirection() != Direction.IN)
+            if (pspec.getDirection() == Direction.CUSTOM)
             {
                 if (debug)
                     LOG.debug("Parameter is " + pspec.getDirection().getName() + ".");
@@ -144,13 +163,13 @@ public class ParameterManager
             // Next,verify that there is a writable property with the same
             // name as the parameter.
 
-            PropertyInfo propertyInfo = PropertyFinder.getPropertyInfo(component.getClass(), propertyName);
+            PropertyInfo propertyInfo = PropertyFinder.getPropertyInfo(_component.getClass(), propertyName);
 
             if (propertyInfo == null)
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString("ParameterManager.no-accessor", component.getExtendedId(), propertyName),
-                    component,
+                    Tapestry.getString("ParameterManager.no-accessor", _component.getExtendedId(), propertyName),
+                    _component,
                     name,
                     propertyName);
             }
@@ -160,9 +179,9 @@ public class ParameterManager
                 throw new ConnectedParameterException(
                     Tapestry.getString(
                         "ParameterManager.property-not-read-write",
-                        component.getExtendedId(),
+                        _component.getExtendedId(),
                         propertyName),
-                    component,
+                    _component,
                     name,
                     propertyName);
             }
@@ -175,8 +194,8 @@ public class ParameterManager
             if (parameterType == null)
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString("ParameterManager.java-type-not-specified", name, component.getExtendedId()),
-                    component,
+                    Tapestry.getString("ParameterManager.java-type-not-specified", name, _component.getExtendedId()),
+                    _component,
                     name,
                     propertyName);
             }
@@ -188,10 +207,10 @@ public class ParameterManager
                         "ParameterManager.type-mismatch",
                         new String[] {
                             name,
-                            component.getExtendedId(),
+                            _component.getExtendedId(),
                             parameterType.toString(),
                             propertyType.toString()}),
-                    component,
+                    _component,
                     name,
                     propertyName);
             }
@@ -199,7 +218,7 @@ public class ParameterManager
             // Here's where we will sniff it for type, for the moment
             // assume its some form of object (not scalar) type.
 
-            IParameterConnector connector = createConnector(component, name, binding, propertyType, parameterType);
+            IParameterConnector connector = createConnector(_component, name, binding, propertyType, parameterType);
 
             // Static bindings are set here and then forgotten
             // about.  Dynamic bindings are kept for later.
@@ -211,7 +230,7 @@ public class ParameterManager
 
                 try
                 {
-                    connector.setParameter();
+                    connector.setParameter(cycle);
                 }
                 catch (BindingException ex)
                 {
@@ -219,26 +238,37 @@ public class ParameterManager
                         Tapestry.getString(
                             "ParameterManager.static-initialization-failure",
                             propertyName,
-                            component.getExtendedId(),
+                            _component.getExtendedId(),
                             binding.toString()),
-                        component,
+                        _component,
                         name,
                         propertyName,
                         ex);
                 }
+                
+                continue;
             }
-            else
-            {
+            
+            
                 if (debug)
                     LOG.debug("Adding " + connector + ".");
 
+// To properly support forms elements, the disabled parameter
+// must always be processed last.
+
+if (name.equals("disabled"))
+    disabledConnector = connector;
+    else
                 list.add(connector);
-            }
+  
         }
+
+            if (disabledConnector != null)
+                list.add(disabledConnector);
 
         // Convert for List to array
 
-        connectors = (IParameterConnector[]) list.toArray(new IParameterConnector[list.size()]);
+        _connectors = (IParameterConnector[]) list.toArray(new IParameterConnector[list.size()]);
 
     }
 

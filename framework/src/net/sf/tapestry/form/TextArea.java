@@ -46,10 +46,9 @@ import net.sf.tapestry.Tapestry;
 
 public class TextArea extends AbstractFormComponent
 {
-	private int _rows;
-	private int _columns;
-	private boolean _disabled;	
-    private IBinding _valueBinding;
+    private int _rows;
+    private int _columns;
+    private boolean _disabled;
     private String _name;
 
     public String getName()
@@ -57,16 +56,9 @@ public class TextArea extends AbstractFormComponent
         return _name;
     }
 
+    /** @since 2.2 **/
 
-    public IBinding getValueBinding()
-    {
-        return _valueBinding;
-    }
-
-    public void setValueBinding(IBinding value)
-    {
-        _valueBinding = value;
-    }
+    private String _value;
 
     /**
      *  Renders the form element, or responds when the form containing the element
@@ -74,8 +66,7 @@ public class TextArea extends AbstractFormComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
@@ -88,15 +79,9 @@ public class TextArea extends AbstractFormComponent
 
         _name = form.getElementId(this);
 
-
         if (rewinding)
         {
-            if (!_disabled)
-            {
-                String value = cycle.getRequestContext().getParameter(_name);
-
-                _valueBinding.setString(value);
-            }
+            _value = cycle.getRequestContext().getParameter(_name);
 
             return;
         }
@@ -116,9 +101,8 @@ public class TextArea extends AbstractFormComponent
 
         generateAttributes(writer, cycle);
 
-        String value = _valueBinding.getString();
-        if (value != null)
-            writer.print(value);
+        if (_value != null)
+            writer.print(_value);
 
         writer.end();
 
@@ -134,7 +118,7 @@ public class TextArea extends AbstractFormComponent
         _columns = columns;
     }
 
-    public boolean getDisabled()
+    public boolean isDisabled()
     {
         return _disabled;
     }
@@ -152,6 +136,20 @@ public class TextArea extends AbstractFormComponent
     public void setRows(int rows)
     {
         _rows = rows;
+    }
+
+    /** @since 2.2 **/
+
+    public String getValue()
+    {
+        return _value;
+    }
+
+    /** @since 2.2 **/
+
+    public void setValue(String value)
+    {
+        _value = value;
     }
 
 }
