@@ -9,7 +9,7 @@
   <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
   <component-alias type="MultiplePropertySelection" specification-path="/net/sf/tapestry/contrib/form/MultiplePropertySelection.jwc"/>
   <component-alias type="DateField" specification-path="/net/sf/tapestry/contrib/valid/DateField.jwc"/>
-  <component-alias type="MaskEdit" specification-path="/net/sf/tapestry/form/MaskEdit.jwc"/>
+  <component-alias type="MaskEdit" specification-path="/net/sf/tapestry/contrib/form/MaskEdit.jwc"/>
   <component-alias type="NumericField" specification-path="/net/sf/tapestry/contrib/valid/NumericField.jwc"/>
   <component-alias type="ValidatingTextField" specification-path="/net/sf/tapestry/contrib/valid/ValidatingTextField.jwc"/>
 
