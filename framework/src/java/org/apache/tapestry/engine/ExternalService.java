@@ -15,17 +15,21 @@
 package org.apache.tapestry.engine;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Defense;
 import org.apache.tapestry.IExternalPage;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * The external service enables external applications to reference Tapestry pages via a URL. Pages
@@ -124,38 +128,31 @@ public class ExternalService implements IEngineService
 
         ExternalServiceParameter esp = (ExternalServiceParameter) parameter;
 
-        String pageName = esp.getPageName();
+        Map parameters = new HashMap();
+        parameters.put(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
+        parameters.put(ServiceConstants.PAGE, esp.getPageName());
+        parameters.put(ServiceConstants.PARAMETER, esp.getServiceParameters());
 
-        String[] context = new String[]
-        { pageName };
-
-        return _linkFactory.constructLink(cycle, Tapestry.EXTERNAL_SERVICE, context, esp
-                .getServiceParameters(), true);
+        return _linkFactory.constructLink(cycle, parameters, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
+        String pageName = cycle.getParameter(ServiceConstants.PAGE);
+        IPage rawPage = cycle.getPage(pageName);
+
         IExternalPage page = null;
-
-        String[] context = ServiceUtils.getServiceContext(cycle.getRequestContext());
-
-        if (context == null || context.length != 1)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "service-single-context-parameter",
-                    Tapestry.EXTERNAL_SERVICE));
-
-        String pageName = context[0];
 
         try
         {
-            page = (IExternalPage) cycle.getPage(pageName);
+            page = (IExternalPage) rawPage;
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "ExternalService.page-not-compatible",
-                    pageName), ex);
+            throw new ApplicationRuntimeException(EngineMessages.pageNotCompatible(
+                    rawPage,
+                    IExternalPage.class), rawPage, null, ex);
         }
 
         Object[] parameters = _linkFactory.extractServiceParameters(cycle);
@@ -166,7 +163,6 @@ public class ExternalService implements IEngineService
 
         page.activateExternalPage(parameters, cycle);
 
-        // Render the response.
         _responseRenderer.renderResponse(cycle, output);
     }
 

@@ -24,7 +24,8 @@
   	</servlet>      
         
     <request>   
-    	<parameter name="service" value="page/Relative"/>
+    	<parameter name="service" value="page"/>
+      <parameter name="page" value="Relative"/>
     				
 		<assert-output name="Title">
 <![CDATA[

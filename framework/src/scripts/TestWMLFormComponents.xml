@@ -24,7 +24,8 @@
     </servlet>
 
     <request>
-        <parameter name="service" value="page/Input"/>
+        <parameter name="service" value="page"/>
+        <parameter name="page" value="Input"/>
 
         <assert-output name="Input component">
             <![CDATA[
@@ -41,7 +42,8 @@
     </request>
 
     <request>
-        <parameter name="service" value="page/NoGo"/>
+        <parameter name="service" value="page"/>
+        <parameter name="page" value="NoGo"/>
 
         <assert-output name="Card">
             <![CDATA[
@@ -64,7 +66,8 @@
     </request>
 
     <request>
-        <parameter name="service" value="page/Rewind"/>
+        <parameter name="service" value="page"/>
+        <parameter name="page" value="Rewind"/>
 
         <assert-output name="Card">
             <![CDATA[
@@ -76,10 +79,16 @@
             <![CDATA[
             <postfield name="(.*?)".*?/>
             ]]>
+            <match>component</match>
+            <match>page</match>
             <match>service</match>
             <match>sp</match>
             <match>Go0</match>
             <match>u</match>
+            
+            <match>action</match>
+            <match>component</match>
+            <match>page</match>
             <match>service</match>
             <match>Go1</match>
             <match>v</match>
@@ -89,11 +98,17 @@
             <![CDATA[
             <postfield .*?value="(.*?)"/>
             ]]>
-            <match>direct/0/Rewind/g</match>
+            <match>g</match>
+            <match>Rewind</match>            
+            <match>direct</match>
             <match>S0</match>
             <match>u</match>
             <match>$(u)</match>
-            <match>action/0/Rewind/1/h</match>
+            
+            <match>1</match>
+            <match>h</match>
+            <match>Rewind</match>
+            <match>action</match>
             <match>v</match>
             <match>$(v)</match>
         </assert-output-matches>
@@ -101,7 +116,10 @@
     </request>
 
     <request>
-        <parameter name="service" value="action/0/Rewind/1/h"/>
+        <parameter name="service" value="action"/>
+        <parameter name="page" value="Rewind"/>
+        <parameter name="action" value="1"/>
+        <parameter name="component" value="h"/>
 
         <parameter name="Go1" value="v"/>
         <parameter name="v" value="VVV"/>
@@ -123,7 +141,9 @@
     </request>
 
     <request>
-        <parameter name="service" value="direct/0/Rewind/g"/>
+        <parameter name="service" value="direct"/>
+        <parameter name="page" value="Rewind"/>
+        <parameter name="component" value="g"/>
 
         <parameter name="sp" value="S0"/>
         <parameter name="Go0" value="v"/>

@@ -24,7 +24,8 @@
   	</servlet>      
     
     <request>
-    	<parameter name="service" value="page/NotComponent"/>
+    	<parameter name="service" value="page"/>
+      <parameter name="page" value="NotComponent"/>
     	
     	<assert-output name="Page Title">
 <![CDATA[

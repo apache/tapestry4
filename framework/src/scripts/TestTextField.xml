@@ -47,7 +47,9 @@ Hidden: <input type="password" name="hidden" value="hidden"/>
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="normal" value="updated-normal"/>
 		<parameter name="disabled" value="updated-normal"/>
@@ -76,7 +78,10 @@ Hidden: [updated-hidden]
 	<!-- Test rewind over TextField, because of action service. -->
 	
 	<request>
-		<parameter name="service" value="action/0/Home/1/$Form$0"/>
+		<parameter name="service" value="action"/>
+    <parameter name="action" value="1"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form$0"/>
 		<parameter name="Form1" value=""/>
 		
 		<assert-output name="Page Title">
@@ -108,7 +113,8 @@ Hidden: <input type="password" name="hidden" value="hidden"/>
 	<!-- Test a TextField not contained in a Form. -->
 	
 	<request>
-		<parameter name="service" value="page/Three"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Three"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -132,7 +138,8 @@ Hidden: <input type="password" name="hidden" value="hidden"/>
 	<!-- Test that forms may not be nested. -->
 	
 	<request>
-		<parameter name="service" value="page/Four"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Four"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

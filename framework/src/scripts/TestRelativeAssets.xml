@@ -28,7 +28,8 @@
     
  
 	<request>
-	  	<parameter name="service" value="page/RelativeAssets"/>
+	  	<parameter name="service" value="page"/>
+      <parameter name="page" value="RelativeAssets"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -38,7 +39,7 @@
 		
 		<assert-output name="Private Asset">
 <![CDATA[
-/mock/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fimages%2FPrivateAsset.gif			
+/mock/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fimages%2FPrivateAsset.gif&amp;service=asset		
 ]]>
 		</assert-output>
 		

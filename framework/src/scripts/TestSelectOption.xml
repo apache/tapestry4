@@ -37,7 +37,9 @@
 <![CDATA[			
 <input type="hidden" (name="(.*?)" value="(.*?)")/>
 ]]>
-			<match>name="service" value="direct/0/Home/$Form"</match>
+      <match>name="component" value="$Form"</match>
+      <match>name="page" value="Home"</match>
+			<match>name="service" value="direct"</match>
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="$Select"</match>
 		</assert-output-matches>
@@ -62,7 +64,9 @@
 	<!-- Submit the form, and specify nothing. -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form0" value="$Select"/>
 		
@@ -81,7 +85,9 @@ Selections: none.
 	<!-- Select one of the items. -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form0" value="$Select"/>
 		<parameter name="$Select" value="1"/>
@@ -102,7 +108,8 @@ Selections: vegetable.
 	<!-- Go to the page with the persistent multiple options. -->
 	
 	<request>
-		<parameter name="service" value="page/Two"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -120,7 +127,9 @@ Selections: vegetable.
 <![CDATA[			
 <input type="hidden" (name="(.*?)" value="(.*?)")/>
 ]]>
-			<match>name="service" value="direct/0/Two/$Form"</match>
+      <match>name="component" value="$Form"</match>
+      <match>name="page" value="Two"</match>
+			<match>name="service" value="direct"</match>
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="$Select"</match>
 		</assert-output-matches>
@@ -147,7 +156,9 @@ Selections: vegetable.
 	<!-- Select two items. -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Two/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Two"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form0" value="$Select"/>
 		<parameter name="$Select">
@@ -170,7 +181,8 @@ Selections: vegetable, mineral.
 	<!-- Back to the page, see if the tags reflect right values. -->
 	
 	<request>
-		<parameter name="service" value="page/Two"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>
 		
 		
 		<assert-output name="Page Title">
@@ -192,7 +204,8 @@ Selections: vegetable, mineral.
 	<!-- Next up, a page that has a disabled Select. -->
 	
 	<request>
-		<parameter name="service" value="page/Three"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Three"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -213,7 +226,10 @@ Selections: vegetable, mineral.
 
 			<!-- Remember the persistent properties?  Those made the app go stateful. -->
 
-			<match>name="service" value="direct/1/Three/$Form"</match>
+      <match>name="component" value="$Form"</match>
+      <match>name="page" value="Three"</match>
+			<match>name="service" value="direct"</match>
+      <match>name="session" value="T"</match>
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="$Select"</match>
 		</assert-output-matches>
@@ -239,7 +255,10 @@ Selections: vegetable, mineral.
 		 Check that the values are ignored. -->
 		 
 	<request>
-		<parameter name="service" value="direct/1/Three/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="session" value="T"/>
+    <parameter name="page" value="Three"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form0" value="$Select"/>
 		<parameter name="$Select" value="1"/>
@@ -260,7 +279,8 @@ Selections: none.
 		 that the form containing the Select ignores the request property. -->
 		 
 	<request>
-		<parameter name="service" value="page/Four"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Four"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -278,7 +298,11 @@ Selections: none.
 	<!-- Submit the second form. -->
 	
 	<request>
-		<parameter name="service" value="action/1/Four/1/$Form$0"/>
+		<parameter name="service" value="action"/>
+    <parameter name="action" value="1"/>
+    <parameter name="session" value="1"/>
+    <parameter name="page" value="Four"/>
+    <parameter name="component" value="$Form$0"/>
 		<parameter name="Form1" value=""/>
 		
 		<assert-output name="Page Title">
@@ -298,7 +322,8 @@ Second form triggered.
 	<!-- #1 Select not in a Form. -->
 	
 	<request>
-		<parameter name="service" value="page/Five"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Five"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -314,7 +339,8 @@ Second form triggered.
 	<!-- #2 Nested Selects. -->
 	
 	<request>
-		<parameter name="service" value="page/Six"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Six"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -330,7 +356,8 @@ Second form triggered.
 	<!-- #3:  Option not in a Select -->
 	
 	<request>
-		<parameter name="service" value="page/Seven"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Seven"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

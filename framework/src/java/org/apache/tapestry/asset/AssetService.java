@@ -25,16 +25,17 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.engine.ServiceUtils;
 import org.apache.tapestry.link.StaticLink;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.RequestExceptionReporter;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * A service for building URLs to and accessing {@link org.apache.tapestry.IAsset}s. Most of the
@@ -53,6 +54,9 @@ import org.apache.tapestry.services.RequestExceptionReporter;
 
 public class AssetService implements IEngineService
 {
+    /** @since 3.1 */
+    private ClassResolver _classResolver;
+
     /** @since 3.1 */
     private AssetExternalizer _assetExternalizer;
 
@@ -83,6 +87,8 @@ public class AssetService implements IEngineService
 
     private RequestExceptionReporter _exceptionReporter;
 
+    private static final String PATH = "path";
+
     /**
      * Builds a {@link ILink}for a {@link PrivateAsset}.
      * <p>
@@ -101,10 +107,14 @@ public class AssetService implements IEngineService
         if (externalURL != null)
             return new StaticLink(externalURL);
 
+        Map parameters = new HashMap();
+
+        parameters.put(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
+        parameters.put(PATH, path);
+
         // Service is stateless
 
-        return _linkFactory.constructLink(cycle, Tapestry.ASSET_SERVICE, null, new Object[]
-        { path }, false);
+        return _linkFactory.constructLink(cycle, parameters, false);
     }
 
     public String getName()
@@ -135,25 +145,18 @@ public class AssetService implements IEngineService
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        Object[] parameters = _linkFactory.extractServiceParameters(cycle);
+        String path = cycle.getParameter(PATH);
 
-        if (parameters.length != 1)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "service-single-parameter",
-                    Tapestry.ASSET_SERVICE));
-
-        String resourcePath = (String) parameters[0];
-
-        URL resourceURL = cycle.getEngine().getClassResolver().getResource(resourcePath);
+        URL resourceURL = _classResolver.getResource(path);
 
         if (resourceURL == null)
-            throw new ApplicationRuntimeException(Tapestry.format("missing-resource", resourcePath));
+            throw new ApplicationRuntimeException(Tapestry.format("missing-resource", path));
 
         URLConnection resourceConnection = resourceURL.openConnection();
 
         ServletContext servletContext = cycle.getRequestContext().getServlet().getServletContext();
 
-        writeAssetContent(cycle, output, resourcePath, resourceConnection, servletContext);
+        writeAssetContent(cycle, output, path, resourceConnection, servletContext);
     }
 
     /** @since 2.2 * */
@@ -226,5 +229,11 @@ public class AssetService implements IEngineService
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+
+    /** @since 3.1 */
+    public void setClassResolver(ClassResolver classResolver)
+    {
+        _classResolver = classResolver;
     }
 }

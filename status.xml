@@ -269,6 +269,12 @@ NextGen) be released as version number 3.0.
     Remove support for the &lt;service&gt; element in specifications (in favor of
     the tapestry.services.ApplicationServices configuration point).
   </action>
+  
+  <action type="update" dev="HLS">
+    
+    Significant rework of how Tapestry URLs are formatted.
+    
+  </action>
 		
 	</release>
 

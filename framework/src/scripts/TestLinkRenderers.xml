@@ -29,14 +29,14 @@
   		
   		<assert-output name="First Link">
 <![CDATA[
-<a href="/c10/app?service=direct%2F0%2FHome%2Ffirst">First</a>
+<a href="/c10/app?component=first&amp;page=Home&amp;service=direct">First</a>
 ]]>  		
   		</assert-output>
   	
 	
   		<assert-output name="Second Link">
 <![CDATA[
-<a href="http://junit-test/c10/app?service=direct%2F0%2FHome%2Fsecond">Second</a>
+<a href="http://junit-test/c10/app?component=second&amp;page=Home&amp;service=direct">Second</a>
 ]]>  		
   		</assert-output>	  	  		
   		
@@ -48,7 +48,7 @@
   		
   		<assert-output name="Third Link">
 <![CDATA[
-<a href="https://myserver:8080/c10/app?service=direct%2F0%2FHome%2Fthird#myanchor">Third</a>
+<a href="https://myserver:8080/c10/app?component=third&amp;page=Home&amp;service=direct#myanchor">Third</a>
 ]]>  		
   		</assert-output>	
   	  
@@ -60,7 +60,8 @@
   	</request>
   	
   	<request>
-  		<parameter name="service" value="page/Two"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="Two"/>
   			
   		<assert-output name="Page Title">
 <![CDATA[
@@ -77,7 +78,8 @@
   	<!-- Check that ensures links with event handlers are inside a Body. -->
   	
   	<request>
-  		<parameter name="service" value="page/Three"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="Three"/>
   		
   		<assert-output name="Page Title">
 <![CDATA[
@@ -94,7 +96,8 @@
   	<!-- Test same thing on a page with a Body -->
   	
   	<request>
-  		<parameter name="service" value="page/Four"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="Four"/>
   		
   		<assert-output name="Page Title">
 <![CDATA[
@@ -113,7 +116,7 @@ function onClick_Link ()
 		
 		<assert-output name="Link">
 <![CDATA[
-<a href="/c10/app?service=direct%2F0%2FFour%2Flink" onClick="javascript:onClick_Link();">
+<a href="/c10/app?component=link&amp;page=Four&amp;service=direct" onClick="javascript:onClick_Link();">
 ]]>	
 		</assert-output>
   		  			

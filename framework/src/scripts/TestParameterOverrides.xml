@@ -31,8 +31,9 @@ Static over Static: Pablo Picasso
 	   is an error to be checked for. -->
 	   
 	<request>
-	    	<parameter name="service" value="page/Two"/>
-	    	
+	    	<parameter name="service" value="page"/>
+        <parameter name="page" value="Two"/>
+        
 	    	<assert-output name="Page Title">
 <![CDATA[<title>Exception</title>]]>	    		
 	    	</assert-output>

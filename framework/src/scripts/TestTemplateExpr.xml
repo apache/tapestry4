@@ -24,7 +24,8 @@
   	</servlet>
        
     <request>
-    	<parameter name="service" value="page/TemplateExpr"/>
+    	<parameter name="service" value="page"/>
+      <parameter name="page" value="TemplateExpr"/>
  	
 	  	<assert-output name="Valid use of template expression">
 <![CDATA[
@@ -40,7 +41,8 @@ Second example: <span class="styleClass">JUnit Mock Application</span>
 	</request>
 			
 	<request>
-		<parameter name="service" value="page/TemplateExprConflict"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="TemplateExprConflict"/>
 		
 	  	<assert-output name="Page Title">
 <![CDATA[
@@ -55,7 +57,8 @@ A binding for parameter 'value' of component TemplateExprConflict/insertApplicat
 	</request>
 	
 	<request>
-		<parameter name="service" value="page/TemplateExprInformal"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="TemplateExprInformal"/>
 		
 	  	<assert-output name="Page Title">
 <![CDATA[
@@ -70,7 +73,8 @@ The template for TemplateExprInformal contains a binding for parameter 'informal
 	</request>	
 	
 	<request>
-		<parameter name="service" value="page/TemplateExprReserved"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="TemplateExprReserved"/>
 		
 	  	<assert-output name="Page Title">
 <![CDATA[

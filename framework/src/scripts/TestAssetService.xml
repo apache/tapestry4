@@ -32,14 +32,14 @@
 		
 		<assert-output name="Image Tag">
 <![CDATA[
-<img src="/c16/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png" border="0"/>
+<img src="/c16/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png&amp;service=asset" border="0"/>
 ]]>
 		</assert-output>
 	</request>
 	
 	<request>
 		<parameter name="service" value="asset"/>
-		<parameter name="sp" value="/org/apache/tapestry/junit/mock/c16/logo.png"/>
+		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/logo.png"/>
 		
 		<assert-output-stream name="Image Content"
 				content-type="image/png"
@@ -48,7 +48,7 @@
 	
 	<request>
 		<parameter name="service" value="asset"/>
-		<parameter name="sp" value="/org/apache/tapestry/junit/mock/c16/globe.jpg"/>
+		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/globe.jpg"/>
 		
 		<assert-output-stream name="Image Content"
 				content-type="image/jpeg"
@@ -59,7 +59,7 @@
 	
 	<request>
 		<parameter name="service" value="asset"/>
-		<parameter name="sp" value="/org/apache/tapestry/junit/mock/c16/MISSING.gif"/>
+		<parameter name="path" value="/org/apache/tapestry/junit/mock/c16/MISSING.gif"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -71,22 +71,6 @@
 		Could not locate resource /org/apache/tapestry/junit/mock/c16/MISSING.gif.	
 		</assert-output>
 		
-	</request>
-	
-	<!-- Request missing the sp parameter -->
-	
-	<request>
-		<parameter name="service" value="asset"/>
-		
-		<assert-output name="Page Title">
-<![CDATA[
-<title>Exception</title>
-]]>			
-		</assert-output>
-			
-		<assert-output name="Message">
-		Service asset requires exactly one service parameter.	
-		</assert-output>
 	</request>
 	
 </mock-test>

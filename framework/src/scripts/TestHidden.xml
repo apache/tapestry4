@@ -48,7 +48,9 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="hidden" value="updated-1234567890"/>
 		<parameter name="hiddenWithID" value="updated-1234567890-with id"/>

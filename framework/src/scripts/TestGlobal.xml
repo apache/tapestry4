@@ -27,7 +27,8 @@
   	</servlet>
 
     <request>
-          <parameter name="service" value="page/Global"/>
+          <parameter name="service" value="page"/>
+          <parameter name="page" value="Global"/>
 
 
           <assert-output name="Title">
@@ -43,7 +44,8 @@
     </request>
 
     <request>
-          <parameter name="service" value="page/Visit"/>
+          <parameter name="service" value="page"/>
+          <parameter name="page" value="Visit"/>
 
 
         <assert-output name="Page Title">

@@ -28,7 +28,9 @@
 	
 	<!-- can use the above request output to find values for the next request -->
     <request>
-    	<parameter name="service" value="direct/0/Two/$Form"/>
+    	<parameter name="service" value="direct"/>
+      <parameter name="page" value="Two"/>
+      <parameter name="component" value="$Form"/>
     	<parameter name="sp" value="S0"/>
     	<parameter name="Form0" value="field"/>
     	<parameter name="field" value="1"/> <!-- verify the form submission is working -->

@@ -27,7 +27,8 @@
   	
   	     
   	<request>
-  		<parameter name="service" value="page/ValidFieldNoBody"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="ValidFieldNoBody"/>
   		
 	
 		<!-- Should get an Exception -->

@@ -24,7 +24,8 @@
     </servlet>
 
     <request>
-        <parameter name="service" value="page/NestedCard"/>
+        <parameter name="service" value="page"/>
+        <parameter name="page" value="NestedCard"/>
 
         <assert-output name="Card">
             <![CDATA[

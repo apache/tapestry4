@@ -15,8 +15,11 @@
 package org.apache.tapestry.engine;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -27,10 +30,10 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * Implementation of the direct service, which encodes the page and component id in the service
@@ -48,21 +51,8 @@ public class DirectService implements IEngineService
     /** @since 3.1 */
     private LinkFactory _linkFactory;
 
-    /**
-     * Encoded into URL if engine was stateful.
-     * 
-     * @since 3.0
-     */
-
-    private static final String STATEFUL_ON = "1";
-
-    /**
-     * Encoded into URL if engine was not stateful.
-     * 
-     * @since 3.0
-     */
-
-    private static final String STATEFUL_OFF = "0";
+    /** @since 3.1 */
+    private HttpServletRequest _request;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
@@ -71,7 +61,6 @@ public class DirectService implements IEngineService
         DirectServiceParameter dsp = (DirectServiceParameter) parameter;
 
         IComponent component = dsp.getDirect();
-        Object[] serviceParameters = dsp.getServiceParameters();
 
         // New since 1.0.1, we use the component to determine
         // the page, not the cycle. Through the use of tricky
@@ -79,76 +68,41 @@ public class DirectService implements IEngineService
         // that a component from a page different than
         // the response page will render.
         // In 1.0.6, we start to record *both* the render page
-        // and the component page (if different), as the extended
-        // context.
+        // and the component page (if different).
 
-        IPage renderPage = cycle.getPage();
+        IPage activePage = cycle.getPage();
         IPage componentPage = component.getPage();
 
-        boolean complex = renderPage != componentPage;
+        Map parameters = new HashMap();
 
-        String[] context = complex ? new String[4] : new String[3];
+        parameters.put(ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
+        parameters.put(ServiceConstants.PAGE, activePage.getPageName());
+        parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
+        parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null
+                : componentPage.getPageName());
+        parameters.put(ServiceConstants.SESSION, cycle.getEngine().isStateful() ? "T" : null);
+        parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
 
-        int i = 0;
-
-        String stateful = cycle.getEngine().isStateful() ? STATEFUL_ON : STATEFUL_OFF;
-
-        context[i++] = stateful;
-
-        if (complex)
-            context[i++] = renderPage.getPageName();
-
-        context[i++] = componentPage.getPageName();
-        context[i++] = component.getIdPath();
-
-        return _linkFactory.constructLink(
-                cycle,
-                Tapestry.DIRECT_SERVICE,
-                context,
-                serviceParameters,
-                true);
+        return _linkFactory.constructLink(cycle, parameters, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        IDirect direct;
-        int count = 0;
-        String componentPageName;
-        IPage componentPage;
-        RequestContext requestContext = cycle.getRequestContext();
-        String[] serviceContext = ServiceUtils.getServiceContext(requestContext);
+        String componentId = cycle.getParameter(ServiceConstants.COMPONENT);
+        String componentPageName = cycle.getParameter(ServiceConstants.CONTAINER);
+        String activePageName = cycle.getParameter(ServiceConstants.PAGE);
+        boolean activeSession = cycle.getParameter(ServiceConstants.SESSION) != null;
 
-        if (serviceContext != null)
-            count = serviceContext.length;
-
-        if (count != 3 && count != 4)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("DirectService.context-parameters"));
-
-        boolean complex = count == 4;
-
-        int i = 0;
-        String stateful = serviceContext[i++];
-        String pageName = serviceContext[i++];
-
-        if (complex)
-            componentPageName = serviceContext[i++];
-        else
-            componentPageName = pageName;
-
-        String componentPath = serviceContext[i++];
-
-        IPage page = cycle.getPage(pageName);
+        IPage page = cycle.getPage(activePageName);
 
         cycle.activate(page);
 
-        if (complex)
-            componentPage = cycle.getPage(componentPageName);
-        else
-            componentPage = page;
+        IPage componentPage = componentPageName == null ? page : cycle.getPage(componentPageName);
 
-        IComponent component = componentPage.getNestedComponent(componentPath);
+        IComponent component = componentPage.getNestedComponent(componentId);
+
+        IDirect direct = null;
 
         try
         {
@@ -156,31 +110,30 @@ public class DirectService implements IEngineService
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "DirectService.component-wrong-type",
-                    component.getExtendedId()), component, null, ex);
+            throw new ApplicationRuntimeException(EngineMessages.wrongComponentType(
+                    component,
+                    IDirect.class), component, null, ex);
         }
 
-        // Check for a StateSession only the session was stateful when
-        // the Gesture was created.
+        // Check for a StaleSession only when the session was stateful when
+        // the link was created.
 
-        if (stateful.equals(STATEFUL_ON) && direct.isStateful())
+        if (activeSession && direct.isStateful())
         {
-            HttpSession session = cycle.getRequestContext().getSession();
+            HttpSession session = _request.getSession();
 
             if (session == null || session.isNew())
-                throw new StaleSessionException(Tapestry.format(
-                        "DirectService.stale-session-exception",
-                        direct.getExtendedId()), direct.getPage());
+                throw new StaleSessionException(EngineMessages.requestStateSession(direct), componentPage);
         }
 
         Object[] parameters = _linkFactory.extractServiceParameters(cycle);
 
         cycle.setServiceParameters(parameters);
+
         direct.trigger(cycle);
 
-        // Render the response. This will be the response page (the first element in the context)
-        // unless the direct (or its delegate) changes it.
+        // Render the response. This will be the active page
+        // unless the direct component (or its delegate) changes it.
 
         _responseRenderer.renderResponse(cycle, output);
     }
@@ -200,5 +153,11 @@ public class DirectService implements IEngineService
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+
+    /** @since 3.1 */
+    public void setRequest(HttpServletRequest request)
+    {
+        _request = request;
     }
 }

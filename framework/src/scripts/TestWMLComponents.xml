@@ -106,6 +106,9 @@
             <![CDATA[
             <postfield name="(.*?)".*?/>
             ]]>
+            <match>action</match>
+            <match>component</match>
+            <match>page</match>
             <match>service</match>
             <match>Go0</match>
             <match>u</match>
@@ -116,7 +119,10 @@
             <![CDATA[
             <postfield .*?value="(.*?)"/>
             ]]>
-            <match>action/0/Home/0/go</match>
+            <match>0</match>
+            <match>go</match>
+            <match>Home</match>
+            <match>action</match>
             <match>u,l</match>
             <match>$(username)</match>
             <match>$(l)</match>
@@ -125,8 +131,10 @@
     </request>
 
     <request>
-        <parameter name="service" value="action/0/Home/0/go"/>
-
+        <parameter name="service" value="action"/>
+        <parameter name="page" value="Home"/>
+        <parameter name="action" value="0"/>
+        <parameter name="component" value="go"/>
         <parameter name="Go0" value="u,l"/>
         <parameter name="u" value="newbie"/>
         <parameter name="l" value="0"/>

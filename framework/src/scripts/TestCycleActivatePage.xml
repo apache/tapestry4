@@ -20,7 +20,9 @@
   	<servlet name="cycleActivatePage" class="org.apache.tapestry.ApplicationServlet"/>
 
 	<request>
-		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$DirectLink"/>
 
 		<assert-output name="Page Title">
 <![CDATA[
@@ -31,7 +33,9 @@
 	
 	
 	<request>
-		<parameter name="service" value="direct/0/Four/$DirectLink"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Four"/>
+    <parameter name="component" value="$DirectLink"/>    
 		
 		<assert-output name="Title">
 <![CDATA[

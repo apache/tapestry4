@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.lib.util.AdapterRegistry;
@@ -41,6 +42,7 @@ import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResource;
+import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.StringSplitter;
 
@@ -176,9 +178,11 @@ public final class Tapestry
      * Query parameter that identfies the service for the request.
      * 
      * @since 1.0.3
+     * @deprecated To be removed in 3.2. Use
+     *             {@link org.apache.tapestry.services.ServiceConstants#SERVICE}instead.
      */
 
-    public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
+    public static final String SERVICE_QUERY_PARAMETER_NAME = ServiceConstants.SERVICE;
 
     /**
      * The query parameter for application specific parameters to the service (this is used with the
@@ -188,9 +192,11 @@ public final class Tapestry
      * earlier).
      * 
      * @since 1.0.3
+     * @deprecated To be removed in 3.2. Use
+     *             {@link org.apache.tapestry.services.ServiceConstants#PARAMETER}instead.
      */
 
-    public static final String PARAMETERS_QUERY_PARAMETER_NAME = "sp";
+    public static final String PARAMETERS_QUERY_PARAMETER_NAME = ServiceConstants.PARAMETER;
 
     /**
      * Property name used to get the extension used for templates. This may be set in the page or
@@ -816,24 +822,25 @@ public final class Tapestry
      * behavior between releases, it is smarter to just implement our own little method!
      * 
      * @since 3.0
+     * @deprecated To be removed in Tapestry 3.2. Use {@link HiveMind#isBlank(java.lang.String)}
+     *             instead.
      */
 
     public static boolean isBlank(String input)
     {
-        if (input == null || input.length() == 0)
-            return true;
-
-        return input.trim().length() == 0;
+        return HiveMind.isBlank(input);
     }
 
     /**
      * Returns true if the input is not null and not empty (or only whitespace).
      * 
      * @since 3.0
+     * @deprecated To be removed in Tapestry 3.2. Use {@link HiveMind#isNonBlank(java.lang.String)}
+     *             instead.
      */
 
     public static boolean isNonBlank(String input)
     {
-        return !isBlank(input);
+        return HiveMind.isNonBlank(input);
     }
 }

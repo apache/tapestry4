@@ -24,7 +24,8 @@
   	</servlet>
 
     <request>
-        <parameter name="service" value="page/NestedSelect"/>
+        <parameter name="service" value="page"/>
+        <parameter name="page" value="NestedSelect"/>
 
         <assert-output name="Card">
             <![CDATA[
@@ -46,7 +47,8 @@
     </request>
 
     <request>
-        <parameter name="service" value="page/Select"/>
+        <parameter name="service" value="page"/>
+        <parameter name="page" value="Select"/>
 
         <assert-output name="Card">
             <![CDATA[
@@ -66,7 +68,10 @@
 
     <request>
 
-        <parameter name="service" value="action/0/Select/0/go"/>
+        <parameter name="service" value="action"/>
+        <parameter name="action" value="0"/>
+        <parameter name="page" value="Select"/>
+        <parameter name="component" value="go"/>
 
         <parameter name="Go0" value="sex,income,hobbies"/>
         <parameter name="sex" value="Male"/>

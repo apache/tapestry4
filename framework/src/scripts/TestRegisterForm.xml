@@ -27,7 +27,8 @@
   	</servlet>
   	  	
   	<request>
-  		<parameter name="service" value="page/Register"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="Register"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -53,6 +54,8 @@ document.Form0.onsubmit = function ()
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
+      <match>component</match>
+      <match>page</match>
 			<match>service</match>
 			<match>sp</match>
 			<match>Form0</match>
@@ -62,7 +65,9 @@ document.Form0.onsubmit = function ()
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
-			<match>direct/0/Register/form</match>
+      <match>form</match>
+      <match>Register</match>
+			<match>direct</match>
 			<match>S0</match>
 			<match>inputFirstName,inputLastName,inputSex,inputAgeRange</match>
 		</assert-output-matches>
@@ -126,7 +131,9 @@ document.Form0.onsubmit = function ()
   	<!-- Provoke an error by "submitting" the form but leaving some fields blank. -->
   	
   	<request>
-  		<parameter name="service" value="direct/0/Register/form"/>
+      <parameter name="component" value="form"/>
+      <parameter name="page" value="Register"/>
+  		<parameter name="service" value="direct"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value=""/>
@@ -189,7 +196,9 @@ document.Form0.inputLastName.select();
 	</request>
 	
 	<request>
-  		<parameter name="service" value="direct/0/Register/form"/>
+      <parameter name="page" value="Register"/>
+      <parameter name="component" value="form"/>
+  		<parameter name="service" value="direct"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value="Lewis Ship"/>

@@ -61,6 +61,7 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = read(file);
 
+        
         script.execute(new MockRequestCycle(), _processor, symbols);
 
         return script;

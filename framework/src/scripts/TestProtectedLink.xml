@@ -29,7 +29,8 @@
   	<!--  Get a view of the page -->
   	
 	<request>
-  		<parameter name="service" value="page/ProtectedLink"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="ProtectedLink"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -39,14 +40,16 @@
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FProtectedLink%2Flink&amp;sp=6&amp;sp=13&amp;sp=1999"
+href="/mock/app?component=link&amp;page=ProtectedLink&amp;service=direct&amp;sp=6&amp;sp=13&amp;sp=1999"
 ]]>
 		</assert-output>
   		
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct/0/ProtectedLink/link"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="ProtectedLink"/>
+    <parameter name="component" value="link"/>
 		<parameter name="sp">
 			<value>6</value>
 			<value>13</value>
@@ -61,7 +64,7 @@ href="/mock/app?service=direct%2F0%2FProtectedLink%2Flink&amp;sp=6&amp;sp=13&amp
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app?service=direct%2F1%2FGuard%2Flink"
+href="/mock/app?component=link&amp;page=Guard&amp;service=direct&amp;session=T"
 ]]>
 		</assert-output>
 		
@@ -76,8 +79,11 @@ Callback: DirectCallback[ProtectedLink/link 6, 13, 1999]
   	     user to the Protected page.  -->
   	     
   	<request>
-  		<parameter name="service" value="direct/1/Guard/link"/>
-  		
+  		<parameter name="service" value="direct"/>
+      <parameter name="session" value="T"/>
+      <parameter name="page" value="Guard"/>
+      <parameter name="component" value="link"/>
+         
   		<assert-output name="Title">
 <![CDATA[
 <title>ProtectedLink: Result</title>
@@ -99,7 +105,10 @@ Callback: DirectCallback[ProtectedLink/link 6, 13, 1999]
 	 	 page has been visited. -->		  	
 		  	
   	<request>
-		<parameter name="service" value="direct/1/ProtectedLink/link"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="session" value="T"/>
+    <parameter name="page" value="ProtectedLink"/>
+    <parameter name="component" value="link"/>
 		<parameter name="sp">
 			<value>6</value>
 			<value>13</value>

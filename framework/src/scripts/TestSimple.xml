@@ -64,7 +64,7 @@ The start of the JUnit test suite: JUnit Simple Application.
   
   	 <assert-output name="Link to page Two">
 <![CDATA[
-	<a href="/junit/simple?service=page%2FTwo">to page Two</a>
+	<a href="/junit/simple?page=Two&amp;service=page">to page Two</a>
 ]]>
   	 </assert-output>
   
@@ -77,7 +77,8 @@ The start of the JUnit test suite: JUnit Simple Application.
 <!-- Request #2 simulates the user clicking the PageLink URL on the Home page. -->
 
   <request>
-  	<parameter name="service" value="page/Two"/>	
+  	<parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>	
   	
   	<assert-output name="Page Two Title">
 <![CDATA[
@@ -99,7 +100,7 @@ The start of the JUnit test suite: JUnit Simple Application.
 	
 	<assert-output name="Page Two: DirectLink">
 <![CDATA[
-	DirectLink: <a href="/junit/simple?service=direct%2F0%2FTwo%2Flink">click it</a>
+	DirectLink: <a href="/junit/simple?component=link&amp;page=Two&amp;service=direct">click it</a>
 ]]>	
 	</assert-output>	
 
@@ -109,7 +110,9 @@ The start of the JUnit test suite: JUnit Simple Application.
 <!-- Request #3: Simulate clicking the DirectLink. -->
   
   <request>
-  	<parameter name="service" value="direct/0/Two/link"/>	
+  	<parameter name="service" value="direct"/>
+    <parameter name="page" value="Two"/>
+    <parameter name="component" value="link"/>	
   	
 	<assert-regexp name="Third request, message displayed">
 <![CDATA[

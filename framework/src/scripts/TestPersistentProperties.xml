@@ -40,7 +40,7 @@ Active page names: []
 			
 		<assert-output name="Change Message Link">
 <![CDATA[		
-/c6/app?service=direct%2F0%2FHome%2F%24DirectLink	
+/c6/app?component=%24DirectLink&amp;page=Home&amp;service=direct
 ]]>
 		</assert-output>				
 		
@@ -51,7 +51,9 @@ Active page names: []
 	<!-- Now, trigger the link. -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$DirectLink"/>
 		
  		<assert-output name="Page Title">
 <![CDATA[
@@ -112,7 +114,8 @@ Active page names: [Home]
 	<!-- Now try page "Two", with the Nested component. -->
 	
 	<request>
-		<parameter name="service" value="page/Two"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>
 
  		<assert-output name="Page Title">
 <![CDATA[
@@ -130,7 +133,7 @@ Active page names: [Home]
 			
 		<assert-output name="Change Message Link">
 <![CDATA[		
-/c6/app?service=direct%2F1%2FTwo%2F%24Nested.%24DirectLink	
+/c6/app?component=%24Nested.%24DirectLink&amp;page=Two&amp;service=direct&amp;session=T
 ]]>
 		</assert-output>				
 
@@ -139,7 +142,10 @@ Active page names: [Home]
 	<!-- Trigger the link in the nested component. -->
 	
 	<request>
-		<parameter name="service" value="direct/1/Two/$Nested.$DirectLink"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="session" value="T"/>
+    <parameter name="page" value="Two"/>
+    <parameter name="component" value="$Nested.$DirectLink"/>
 		
  		<assert-output name="Page Title">
 <![CDATA[
@@ -168,7 +174,8 @@ Active page names: [Home, Two]
 	<!-- Check that it works on a revisit. -->
 	
 	<request>
-		<parameter name="service" value="page/Two"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>
 		
  		<assert-output name="Page Title">
 <![CDATA[
@@ -188,7 +195,8 @@ Nested Message: Changed
 	<!-- Check that it works after a failover. -->
 	
 	<request failover="true">
-		<parameter name="service" value="page/Two"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>
 		
  		<assert-output name="Page Title">
 <![CDATA[
@@ -210,7 +218,8 @@ Nested Message: Changed
 	     different overloaded types. -->
 	     
 	<request>
-		<parameter name="service" value="page/Four"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Four"/>
 		
  		<assert-output name="Page Title">
 <![CDATA[
@@ -256,7 +265,7 @@ StringHolder value: []
  		
  		<assert-output name="Create Link">
 <![CDATA[
-/c6/app?service=direct%2F1%2FFour%2F%24DirectLink
+/c6/app?component=%24DirectLink&amp;page=Four&amp;service=direct&amp;session=T
 ]]>	
 		</assert-output>
 		
@@ -266,7 +275,10 @@ StringHolder value: []
  	<!-- Trigger the link to create values. -->
  	
  	<request>
- 		<parameter name="service" value="direct/1/Four/$DirectLink"/>
+ 		<parameter name="service" value="direct"/>
+    <parameter name="session" value="T"/>
+    <parameter name="page" value="Four"/>
+    <parameter name="component" value="$DirectLink"/>
  		
  		<assert-output name="Page Title">
 <![CDATA[
@@ -314,7 +326,8 @@ StringHolder value: [StringHolder[Surprise!]]
 	<!-- And return to ensure that values are properly restored. -->
 	
 	<request failover="true">
-		<parameter name="service" value="page/Four"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Four"/>
 		
  		 <assert-output name="Boolean">
 Boolean value: true
