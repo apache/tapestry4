@@ -40,31 +40,37 @@ import com.primix.tapestry.*;
 
 public abstract class AbstractBinding implements IBinding
 {
+    /**
+     *  Cooerces the raw value into a true or false, according to the
+     *  rules set by {@link IBinding#getBoolean()}.
+     *
+     *  <p>The trick is to determine the best order for checks and to perform
+     *  the checks as efficiently as possible.  I honestly don't know if
+     *  instanceof is more efficient than catch ClassCastException.
+     *
+     */
+
 	public boolean getBoolean()
 	{
-		Boolean booleanValue;
 		Object value;
-		Number numberValue;
-		char[] data;
+        Class valueClass;
 
 		value = getValue();
 
 		if (value == null)
 			return false;
 
-		try
-		{
-			booleanValue = (Boolean)value;
+        valueClass = value.getClass();
+    
+        if (valueClass == Boolean.class)
+        {
+			Boolean booleanValue = (Boolean)value;
 			return booleanValue.booleanValue();
-		}
-		catch (ClassCastException e)
-		{
-			// Not Boolean, maybe Number
 		}
 
 		try
 		{
-			numberValue = (Number) value;
+			Number numberValue = (Number) value;
 			return (numberValue.intValue() != 0);
 		}
 		catch (ClassCastException e)
@@ -72,29 +78,34 @@ public abstract class AbstractBinding implements IBinding
 			// Not Number, maybe String
 		}
 
-		try
-		{
-			int i;
-			char ch;
+        if (valueClass == String.class)
+        {
+		    try
+		    {
+			    int i;
+			    char ch;
+			    char[] data = ((String)value).toCharArray();
 
-				data = ((String)value).toCharArray();
+			    for (i = 0;; i++)
+			    {
+				    if (!Character.isWhitespace(data[i]))
+					    return true;
+			    }
+		    }
+		    catch (IndexOutOfBoundsException e)
+		    {
+			    // Hit end-of-string before finding a non-whitespace character
 
-			for (i = 0;; i++)
-			{
-				if (!Character.isWhitespace(data[i]))
-					return true;
-			}
-		}
-		catch (IndexOutOfBoundsException e)
-		{
-			// Hit end-of-string before finding a non-whitespace character
+			    return false;
+		    }
+        }
 
-			return false;
-		}
-		catch (ClassCastException e)
-		{
-			// Not a String.
-		}
+        if (valueClass.isArray())
+        {
+            Object[] array = (Object[])value;
+
+            return array.length > 0;
+        }
 
 		// The value is true because it is not null.
 
