@@ -6,13 +6,7 @@
 <specification class="tutorial.portal.Stocks">
 
   <bean name="delegate" class="com.primix.tapestry.valid.ValidationDelegate"/>
-  
-  <bean name="requiredString" class="com.primix.tapestry.valid.StringTranslator">
-    <set-property name="required">
-    	<field-value field-name="Boolean.TRUE"/>
-    </set-property>
-  </bean>
-  
+    
 <bean name="rowClass" class="com.primix.tapestry.inspector.EvenOdd"/>
 
 <component id="content" type="Block"/>
@@ -47,11 +41,11 @@
   <field-binding name="direct" field-name="Boolean.FALSE"/>
 </component>
 
-<component id="inputTickerId" type="ValidatingTextField">
-  <binding name="text" property-path="tickerId"/>
+<component id="inputTickerId" type="ValidField">
+  <binding name="value" property-path="tickerId"/>
   <static-binding name="displayName">Ticker ID</static-binding>
   <binding name="delegate" property-path="beans.delegate"/>
-  <binding name="translator" property-path="beans.requiredString"/>
+    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
   <static-binding name="displayWidth">4</static-binding>
   <static-binding name="maximumLength">4</static-binding>
   <static-binding name="title">
