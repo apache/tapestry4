@@ -23,10 +23,19 @@
     <static-binding name="tableClass">palette</static-binding>
   </component>
   
-  <component id="continue" type="Submit">
+  <component id="update" type="ImageSubmit">
+    <binding name="selected" property-path="advance"/>
+    <binding name="image" property-path="assets.update"/>
+    <field-binding name="tag" field-name="Boolean.FALSE"/>
+  </component>
+  
+  <component id="continue" type="ImageSubmit">
   	<binding name="selected" property-path="advance"/>
+  	<binding name="image" property-path="assets.continue"/>
   	<field-binding name="tag" field-name="Boolean.TRUE"/>
   </component>
  
+   <context-asset name="continue" path="/images/workbench/Continue.gif"/>
+   <context-asset name="update" path="/images/workbench/Update.gif"/>
   
 </specification>
