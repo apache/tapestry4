@@ -14,7 +14,7 @@ Our Adder application allows the user to sum up a list of numbers.
 </>
 
 <figure>
-	<title>Dynamic Application</>
+	<title>Adder Application</>
 	<mediaobject>
 		<imageobject>
 			<imagedata fileref="images/adder.jpg" format="jpg">
@@ -58,7 +58,7 @@ We'll start with the HTML template for the home page:
 
 <figure>
 	<title>Home.html</>
-	<programlisting><[![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+	<programlisting><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
 	<title>Adder Tutorial</title>
@@ -67,13 +67,13 @@ We'll start with the HTML template for the home page:
 
 <jwc id="ifError">
 <table border=1>
-	<tr>
-		<td bgcolor=red>
-			<span style="font: bolder 14pt; color:white">
-				<jwc id="insertError"/>
-			</span>
-		</td>
-	</tr>
+  <tr>
+    <td bgcolor=red>
+      <span style="font: bolder 14pt; color:white">
+        <jwc id="insertError"/>
+      </span>
+    </td>
+  </tr>
 </table>
 <p>
 </jwc>
@@ -214,41 +214,74 @@ Next we have the specification:
       </bindings>
     </component>
 
-<component>
-<id>insertTotal</id>
-<type>Insert</type>
+    <component>
+      <id>insertTotal</id>
+      <type>Insert</type>
+      <bindings>
+        <binding>
+          <name>value</name>
+          <property-path>total</property-path>
+        </binding>
+      </bindings>
+    </component>
+  </components>
 
-<bindings>
-<binding>
-<name>value</name>
-<property-path>total</property-path>
-</binding>
-</bindings>
-</component>
-</components>
+</specification>]]></programlisting></figure>
 
-</specification>
-  
-We only want to display the error message if there is one, so the ifText is conditional on there 
-being a non-null error message (the Conditional component treats null as false).
-For the form component, all we have to do is supply a listener, an object that is informed when 
+<para>  
+We only want to display the error message if there is one, so the 
+<classname>ifText</> is conditional on there 
+being a non-null error message (the <classname>Conditional</> component treats 
+<literal>null</> as <literal>false</>).
+</>
+
+<para>
+For the <classname>form</> component, all we have to do is supply a 
+<varname>listener</>, an object that is informed when 
 the form is submitted.
-For the textfield component, we provide a text parameter that provides the default value for the 
-<INPUT> element, as well as a place to put the value submitted on the form.  This must be of 
-type java.lang.String, so we need to do a little translation (in our Java class), since internally 
+</>
+
+<para>
+For the <classname>inputNewValue</> component, we provide a <varname>text</> parameter 
+that provides the default value for the 
+<sgmltag class=starttag>input</> element.  The same property is updated with the value
+submitted with the form.
+</>
+
+<para>
+The property must be of type <classname>java.lang.String</>, so we need to do a little 
+translation (in our Java class), since internally 
 we want to store the value as a double.
-For the e component, we supply a binding for the source parameter.  For each item in the source 
-list, it will update its value property, which is later accessed by the Insert component.  The 
-property path components.e.value accomplishes this:  the page has a component property, which 
-is a Map of the components on the page.  e is the id of a component, and a key in the Map. It has 
-a property named value, which is the current item from the source list.
-A Foreach also has a parameter named value.  By creating a binding for this parameter, the 
-Foreach can update a property of the page, or some other component.  This is more commonly 
+</>
+
+<para>
+For the <classname>e</> component, we supply a binding for the <varname>source</> parameter.  
+For each item in the source 
+list, it will update its own <varname>value</> property, which is later accessed by the 
+<classname>insertCurrentValue</> component.  The 
+property path <varname>components.e.value</> accomplishes this:  
+the page has a <varname>components</> property, which 
+is a <classname>Map</> of the components on the page.  
+<varname>e</> is the id of a component, and a key in the <classname>Map</>. It has 
+a property named <varname>value</>, which is the current item from the source list.
+</>
+
+<para>
+A <classname>Foreach</> component also has a parameter named <varname>value</>.  
+By creating a binding for this parameter, the 
+<classname>Foreach</> can update a property of the page, or some other component.  
+This is more commonly 
 used when the items in the list are business objects and the application needs to invoke business 
 methods on them.
+</>
+
+<para>
 Finally, the Java code for the home page puts everything together:
-Home.java
-package tutorial.adder;
+</>
+
+<figure>
+	<title>Home.java</>
+	<programlisting><![CDATA[package tutorial.adder;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
@@ -256,212 +289,360 @@ import java.util.*;
 
 public class Home extends BasePage
 {
-	private List items;
-	private String newValue;
-	private String error;
+  private List items;
+  private String newValue;
+  private String error;
 
-	public List getItems()
-	{
-		return items;
-	}
+  public List getItems()
+  {
+    return items;
+  }
 
-	public void setItems(List value)
-	{
-		items = value;
+  public void setItems(List value)
+  {
+    items = value;
 
-		fireObservedChange("items", value);
-	}
+    fireObservedChange("items", value);
+  }
 
-	public void setNewValue(String value)
-	{
-		newValue = value;
-	}
-	
-	public String getNewValue()
-	{
-		return newValue;
-	}
+  public void setNewValue(String value)
+  {
+    newValue = value;
+  }
 
-	public void detach()
-	{
-		items = null;
-		newValue = null;
-		error = null;
+  public String getNewValue()
+  {
+    return newValue;
+  }
 
-		super.detach();
-	}
+  public void detach()
+  {
+    items = null;
+    newValue = null; 
+    error = null;
 
-	public void addItem(double value)
-	{
-		if (items == null)
-		{
-			items = new ArrayList();
-			fireObservedChange("items", items);
-		}
+    super.detach();
+  }
 
-		items.add(new Double(value));
+  public void addItem(double value)
+  {
+    if (items == null)
+    {
+      items = new ArrayList();
+      fireObservedChange("items", items);
+    }
 
-		fireObservedChange();
-	}
+    items.add(new Double(value));
 
-	public double getTotal()
-	{
-		Iterator i;
-		Double item;
-		double result = 0.0;
+    fireObservedChange();
+  }
 
-		if (items != null)
-		{
-			i = items.iterator();
-			while (i.hasNext())
-			{
-				item = (Double)i.next();
-				result += item.doubleValue();
-			}
-		}
+  public double getTotal()
+  {
+    Iterator i;
+    Double item;
+    double result = 0.0;
 
-		return result;
-	}
+    if (items != null)
+    {
+      i = items.iterator();
+      while (i.hasNext())
+      {
+        item = (Double)i.next();
+        result += item.doubleValue();
+      }
+    }
 
-	public IActionListener getFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, 
-IRequestCycle cycle)
-			{
-				try
-				{
-					double item = Double.parseDouble(newValue);
-					addItem(item);
-					
-					newValue = null;
-				}
-				catch (NumberFormatException e)
-				{
-					error = "Please enter a valid number.";
-				}
-			}
-		};
+    return result;
+  }
 
-	}
+  public IActionListener getFormListener()
+  {
+    return new IActionListener()
+    {
+      public void actionTriggered(IComponent component, 
+                                  IRequestCycle cycle)
+      {
+        try
+        {
+          double item = Double.parseDouble(newValue);
+          addItem(item);
 
-	public String getError()
-	{
-		return error;
-	}
-}
+          newValue = null;
+        }
+        catch (NumberFormatException e)
+        {
+          error = "Please enter a valid number.";
+        }
+      }
+    };
+
+  }
+
+  public String getError()
+  {
+    return error;
+  }
+}]]></programlisting></figure>
  
+<para>
 That may seem like a lot of code for what we're doing, but in reality, very much is going that we 
 don't have to write:
-?	Processing the submitted form
-?	Storing the List of items persistently between request cycles
-?	Encoding and decoding URLs
-?	Very robust exception support
+</>
+
+<itemizedlist>
+	<listitem>
+		<para>
+		Processing the submitted form
+		</>
+	</>
+	<listitem>
+		<para>
+		Storing the List of items persistently between request cycles
+		</>
+	</>
+	<listitem>
+		<para>
+		Encoding and decoding URLs
+		</>
+	</>
+	<listitem>
+		<para>
+		Very robust exception support
+		</>
+	</>
+</>
+
+<para>
 Tapestry components, using JavaBeans properties, take care of moving data to and from the 
 HTML form.  Our application merely has to supply the logic to properly respond when the form 
 is submitted.  In this case, converting the text into a double that can be added to the list.
+</>
+
+<para>
 Because we let Tapestry set the names of our form elements, there's no possibility of mismatched 
 names between the Java code (setting defaults and interpreting the posted request) and the 
 HTML template.
+</>
+
+<para>
 Enter a few values into the text field to see how the application works, adding them together into 
 an ever larger list.
-Adding Interactivity using Listeners
+</>
+
+<section id="interactive.listeners">
+	<title>Adding Interactivity using Listeners</>
+    
+<para>
 To understand the relationship between the home page specification, the home page class and the 
 components used by the home page, it is necessary to understand the JavaBeans properties 
 provided by the home page class.
+</>
+
+<para>
 We implement several JavaBeans properties on this page:
-Property 
-name
-Type
-R / W
-Description
-newItem
-String
-R / W
-Stores the string entered into the form.
-items
-List (of 
-Double)
-R / W
-Items in the list.  Persists between request 
-cycles.
-formListener
-IActionListener
-Read 
-Only
-Informed when form is submitted.
-total
-double
-Read 
-Only
-Total of items; computed on the fly.
+</>
+
+<table>
+	<title>JavaBeans Properties</>
+    <tgroup cols=4>
+    	<thead>
+        	<row>
+	        	<entry>Property name</>
+	            <entry>Type</>
+	            <entry>R / W</>
+	            <entry>Description</>
+            </row>
+         </>
+		<tbody>
+        	<row>            
+				<entry>newItem</>
+                <entry>String</>
+                <entry>R / W</>
+                <entry>Stores the string entered into the form.</>
+             </row>
+
+			<row>
+            	<entry>items</>
+                <entry>List (of Double)</>
+                <entry>R / W</>
+                <entry>Items in the list.  Persists between request cycles.</>
+            </>
+            
+            <row>
+            	<entry>formListener</>
+                <entry>IActionListener</>
+                <entry>Read Only</>
+                <entry>Informed when form is submitted.</>
+            </>
+            
+            <row>
+            	<entry>total</>
+                <entry>double</>
+                <entry>Read Only</>
+                <entry>Total of items; computed on the fly.</>
+            </row>
  
+        </tbody>
+   </tgroup>
+</table>
+
+<para>
 This example demonstrates how to provide interactivity to an application.  For Tapestry, 
 interactivity is defined as a request cycle initiated by a user clicking on a hyperlink or submitting a 
 form.
-In our case, we want to know when the form containing the TextField is submitted so that we can 
-provide application specific behavior -- adding the value enterred in the TextField to the list of 
+</>
+
+<para>
+In our case, we want to know when the form containing the text field is submitted so that we can 
+provide application specific behavior:  adding the value enterred by the user to the list of 
 items.
+</>
+
+<para>
 This is accomplished using a listener, an object that implements the Java interface 
-IActionListener.  This interface defines a single method, actionTriggered().  When the 
-form is submitted, all the components wrapped by the form (in this case, the TextField) are given 
+<classname>IActionListener</>.  
+This interface defines a single method, <function>actionTriggered()</>.  When the 
+form is submitted, all the components wrapped by the form (in this case, the <classname>TextField</>) 
+are given 
 a chance to retrieve their values from the request and update properties of the application (the 
-TextField sets the currentItem property).  The form then gets its listener and invokes the 
-actionTriggered() method.
-In the specification, the listener parameter was bound to the formListener property of the page.  
-The code in the getFormListener() method creates an anonymous inner class and returns it.
+<classname>TextField</> sets the <varname>currentItem</> property).  
+The form then gets its listener and invokes the 
+<function>actionTriggered()</> method.
+</>
+
+<para>
+In the specification, the listener parameter was bound to the <varname>formListener</> 
+property of the page.  
+The code in the <classname>getFormListener()</> method creates an anonymous inner class and 
+returns it.
+</>
+
+<para>
 Inner classes have access to the private fields and methods of the class.  In this case, the inner 
-class invokes the addItem() method to add the currentItem (with a value provided by the 
-TextField component) to the items List.
+class invokes the <function>addItem()</> method to add the <varname>currentItem</>
+(with a value provided by the 
+<classname>TextField</> component) to the items <classname>List</>.
+</>
+
+<para>
 A listener is free to do anything it wants.  It can change the state of the application, or can retrieve 
 other pages (by name) from the request cycle object, and can change properties of those pages.  It 
-can even chose a different page to render, by invoking setPage() on the request cycle.
-Persistant Page State and Page Pooling
-The home page of this application uses a persistant page property, a List that contains 
-java.lang.Doubles, the items in the list.
+can even chose a different page to render, by invoking <function>setPage()</> on the request cycle.
+</>
+
+	</section>
+    
+    <section id="interactive.pooling">
+    	<title>Persistant Page State and Page Pooling</>
+        
+<para>
+The Home page of this application uses a persistant page property, a <classname>List</> that contains 
+<classname>java.lang.Double</>s, the items in the list.
+</>
+
+<para>
 Persistent page state is one of the most important concepts in Tapestry.  Each page in the 
-application (and in fact, even components within the page) has some properties that should 
+application (and in fact, even components within the page) may have some properties that should 
 persist between requests.  This can be values such as the user's name and address, or (in this case) 
 the list of numbers enterred so far.
+</>
+
+<para>
 In traditional JavaServer Pages or servlet applications, a good chunk of code must be written to 
 manage this.  The values must be encoded in cookies, as hidden form fields, as named attributes 
-of the HttpSession, or stored into a server-side flat file or database.  Each servle (or JSP) is 
-directly responsible for managing access to these values … which leads to many half realized, ad-
+of the <classname>HttpSession</>, or stored into a server-side flat file or database.  
+Each servlet (or JSP) is 
+directly responsible for managing access to these values which leads to many half realized, ad-
 hoc solutions and an avalanche of bugs, and even security holes.
+</>
+
+<para>
 With Tapestry, the framework takes care of these persistence issues.  When a persistent property 
-of a page is changed the accessor method also invokes the method fireObservedChange().   
+of a page is changed the accessor method also invokes the method 
+<function>fireObservedChange()</>. 
 This method informs a special object, the page's recorder, about the property and its new value.
-When the page is next used, the value is restored automatically.  This may not seem natural … an 
+</>
+
+<para>
+When the page is next used, the value is restored automatically.  This may not seem natural; an 
 obvious question is:  why wasn't the page in the same state?  Then answer is that that page 
 instance is shared, and may be used by a different client in the interrum.
+</>
+
+<para>
 Within the Tapestry framework, all of these pages, components, specifications and templates are 
 converted into Java objects.  Assembling a page is somewhat expensive:  it involves reading all 
 those specifications and templates , creating and initializating component objects, creating binding 
 objects for the components, and organizing the components into a hierarchy.
+</>
+
+<para>
 Creating a page object for just one request cycle only to discard it is simply unacceptible.  Pages 
 should be kept around as long as they are needed; they should be re-used in subsequent request 
 cycles, both for the same client session, or for other sessions.
+</>
+
+<para>
 The Tapestry framework accomplishes this by pooling instances of page objects; there could 
 concievably be a handful of different instances being shared by thousands of client sessions.  This 
 is a kind of shell game that is important to maintain scalability.
+</>
+
+<para>
 What this means for the developer is some minor extra work.  On each request cycle, a different 
 instance of the page object may be used to handle the request.  This means that data can't simply 
 be stored in the instance variables of the page between request cycles.
-Tapestry seperates the persistent state of a page from the actual page objects.  The state is stored 
+</>
+
+<para>
+Tapestry isolates the persistent state of a page from the actual page objects.  The state is stored 
 seperately, making use of the page recorder objects.  When needed, a page can be created or 
 reclaimed from the page pool and have all of its persistant properties set by the page recorder.  
+</>
+
+<para>
 The developer has three responsibilities when coding a page with persistant state:
-?	The property must be serializable; this includes Java scalar types (boolean, int, double, 
-etc.), Strings, common collection classes (ArrayList, HashMap, etc.) and other classes 
-that implement java.io.Serializable.
-?	When the value of the property changes, the fireObservedChange() method must be 
+</>
+
+<itemizedlist>
+	<listitem>
+    	<para>
+        The property must be serializable; this includes Java scalar types (boolean, int, double, 
+etc.), <classname>String</>s, common collection classes (
+<classname>ArrayList</>, <classname>HashMap</>, etc.) and other classes 
+that implement <classname>java.io.Serializable</>.
+		</>
+     </>
+     <listitem>
+     	<para>
+        	When the value of the property changes, the 
+            <function>fireObservedChange()</> method must be 
 invoked, to inform the page recorder about the change.
-?	When the request cycle ends and the page is returned to the pool, the persistant state 
+		</>
+     </>
+     <listitem>
+     	<para>
+        When the request cycle ends and the page is returned to the pool, the persistant state 
 must be reset to its initial value (as if the page object was newly instantiated).  This is done 
-in the detach() method.
-Dynamic Page State
-This page has a bit of dynamic state; state that changes as the page is being renderred. The value 
-property  of the Foreach component takes on different values from the items List as the page is 
+in the <function>detach()</> method.
+		</>
+       </>
+</>
+	</section>
+    
+    <section id="interactive.dynamic">
+    	<title>Dynamic Page State</>
+        
+<para>
+This page has a bit of dynamic state; state that changes as the page is being renderred. The 
+<varname>value</>
+property  of the <classname>Foreach</> component takes on different values from the <varname>items</>
+<classname>List</> as the page is 
 renderred.  Dynamic state is easier to handle than persistant state; for completeness, it must also 
-be reset in the detach() method.
+be reset in the <function>detach()</> method.
+</>
+
+	</section>
+    
+</chapter>
