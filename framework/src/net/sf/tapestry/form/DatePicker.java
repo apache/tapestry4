@@ -31,8 +31,6 @@ import java.text.SimpleDateFormat;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
 
 /**
  * Provides a Form <tt>java.sql.Date</tt> field component for selecting dates.
@@ -49,11 +47,9 @@ import net.sf.tapestry.RequestCycleException;
 public class DatePicker extends BaseComponent
 {
     private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private static final String FIRST_USE_ATTRIBUTE_KEY = "net.sf.tapestry.DatePicker-first";
 
     private IBinding _valueBinding;
     private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
-    private boolean _firstTime;
 
     public String getFormat()
     {
@@ -133,31 +129,5 @@ public class DatePicker extends BaseComponent
     public void setValueBinding(IBinding value)
     {
         _valueBinding = value;
-    }
-
-    /**
-     *  <tt>isFirstTime</tt> checks if this is the first time
-     *  the component is rendered on the page (this affects the
-     *  client-side JavaScript emitted to support the component; subsequent
-     *  instances of the component share resources created by the
-     *  first instance).
-     *
-     *  @return a <tt>boolean</tt> value
-     * 
-     **/
-
-    public boolean isFirstTime()
-    {
-        return _firstTime;
-    }
-
-    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
-    {
-        _firstTime = (cycle.getAttribute(FIRST_USE_ATTRIBUTE_KEY) == null);
-
-        if (_firstTime)
-            cycle.setAttribute(FIRST_USE_ATTRIBUTE_KEY, Boolean.TRUE);
-
-        super.prepareForRender(cycle);
     }
 }
