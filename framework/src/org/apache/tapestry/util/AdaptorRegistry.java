@@ -151,12 +151,14 @@ public class AdaptorRegistry
     {
         if (registrations.containsKey(registrationClass))
             throw new IllegalArgumentException(
-                Tapestry.getString("AdaptorRegistry.duplicate-registration", registrationClass.getName()));
+                Tapestry.getString(
+                    "AdaptorRegistry.duplicate-registration",
+                    Tapestry.getClassName(registrationClass)));
 
         registrations.put(registrationClass, adaptor);
 
         if (LOG.isInfoEnabled())
-            LOG.info("Registered " + adaptor + " for " + registrationClass.getName());
+            LOG.info("Registered " + adaptor + " for " + Tapestry.getClassName(registrationClass));
 
         // Can't tell what is and isn't valid in the cache.
         // Also, normally all registrations occur before any adaptors
@@ -177,7 +179,7 @@ public class AdaptorRegistry
         Object result;
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Getting adaptor for class " + subjectClass.getName());
+            LOG.debug("Getting adaptor for class " + Tapestry.getClassName(subjectClass));
 
         result = cache.get(subjectClass);
 
@@ -234,7 +236,7 @@ public class AdaptorRegistry
         Object result = null;
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Searching for adaptor for class " + subjectClass.getName());
+            LOG.debug("Searching for adaptor for class " + Tapestry.getClassName(subjectClass));
 
         // Step one: work up through the class inheritance.
 
@@ -301,27 +303,29 @@ public class AdaptorRegistry
         // No match?  That's rare ... and an error.
 
         throw new IllegalArgumentException(
-            Tapestry.getString("AdaptorRegistry.adaptor-not-found", subjectClass.getName()));
+            Tapestry.getString(
+                "AdaptorRegistry.adaptor-not-found",
+                Tapestry.getClassName(subjectClass)));
     }
 
-	/**
-	 *  Returns the superclass of the given class, with a single tweak:  If the 
-	 *  search class is an array class, and the component type is an object class
-	 *  (but not Object), then the simple Object array class is returned.  This reflects
-	 *  the fact that an array of any class may be assignable to <code>Object[]</code>,
-	 *  even though the superclass of an array is always simply <code>Object</code>.
-	 * 
-	 **/
-	
+    /**
+     *  Returns the superclass of the given class, with a single tweak:  If the 
+     *  search class is an array class, and the component type is an object class
+     *  (but not Object), then the simple Object array class is returned.  This reflects
+     *  the fact that an array of any class may be assignable to <code>Object[]</code>,
+     *  even though the superclass of an array is always simply <code>Object</code>.
+     * 
+     **/
+
     private Class getSuperclass(Class searchClass)
     {
-    	if (searchClass.isArray())
-    	{
-    		Class componentType = searchClass.getComponentType();
-    		
-    		if (!componentType.isPrimitive() && componentType != Object.class)
-    			return Object[].class;
-    	}
+        if (searchClass.isArray())
+        {
+            Class componentType = searchClass.getComponentType();
+
+            if (!componentType.isPrimitive() && componentType != Object.class)
+                return Object[].class;
+        }
 
         return searchClass.getSuperclass();
     }
@@ -343,7 +347,7 @@ public class AdaptorRegistry
 
             Class registeredClass = (Class) entry.getKey();
 
-            buffer.append(registeredClass.getName());
+            buffer.append(Tapestry.getClassName(registeredClass));
             buffer.append("=");
             buffer.append(entry.getValue());
 

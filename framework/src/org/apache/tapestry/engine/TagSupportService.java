@@ -56,6 +56,7 @@
 package org.apache.tapestry.engine;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
@@ -133,8 +134,9 @@ public class TagSupportService implements IEngineService
         String URI = link.getURL();
 
         HttpServletResponse response = context.getResponse();
+        PrintWriter servletWriter = response.getWriter();
 
-		IMarkupWriter writer = new HTMLWriter(response.getOutputStream());
+		IMarkupWriter writer = new HTMLWriter(servletWriter);
 		
 		writer.print(URI);
 		

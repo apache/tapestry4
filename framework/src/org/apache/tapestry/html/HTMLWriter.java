@@ -56,6 +56,7 @@
 package org.apache.tapestry.html;
 
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import org.apache.tapestry.AbstractMarkupWriter;
 import org.apache.tapestry.IMarkupWriter;
@@ -96,6 +97,21 @@ public class HTMLWriter extends AbstractMarkupWriter
         for (int i = 0; i < length; i++)
             safe[SAFE_CHARACTERS.charAt(i)] = true;
     }
+
+	/**
+	 *  Creates a new markup writer around the {@link PrintWriter}.
+	 *  The writer will not be closed when the markup writer closes.
+	 *  The content type is currently hard-wired to
+	 *  <code>text/html</code>.
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	public HTMLWriter(PrintWriter writer)
+	{
+		super(safe, entities, "text/html", writer);
+	}
 
     public HTMLWriter(String contentType, OutputStream outputStream)
     {
