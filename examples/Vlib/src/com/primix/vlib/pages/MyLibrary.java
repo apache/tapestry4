@@ -128,35 +128,14 @@ public class MyLibrary
 	
 	public IBookQuery getOwnedQuery()
 	{
-		
 		if (ownedQuery == null)
-			setOwnedQuery(getNewQuery());
+		{
+			VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
+			setOwnedQuery(vengine.createNewQuery());
+		}
 		
 		return ownedQuery;
 	}
-	
-    private IBookQuery getNewQuery()
-    {
-		// Create a new query.
-		
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		IBookQueryHome home = vengine.getBookQueryHome();
-		
-		try
-		{
-			return home.create();
-		}
-		catch (CreateException e)
-		{
-			throw new ApplicationRuntimeException("Could not create BookQuery bean: " + e, e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e.getMessage(), e);
-		}
-		
-	}
-	
 	
 	/**
 	 *  Updates the currentBook dynamic page property.

@@ -101,11 +101,19 @@ public class BookQueryBean extends OperationsBean
 	{
 		Book[] result;
 		
+		if (offset < 0)
+			return null;
+		
+		int finalLength = Math.min(length, results.length - offset);
+		
+		if (finalLength < 0)
+			return null;
+		
 		// Create a new array and copy the requested
 		// results into it.
 		
-		result = new Book[length];
-		System.arraycopy(results, offset, result, 0, length);
+		result = new Book[finalLength];
+		System.arraycopy(results, offset, result, 0, finalLength);
 		
 		return result;
 	}

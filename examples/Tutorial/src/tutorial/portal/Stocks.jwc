@@ -32,6 +32,7 @@
 
 <component id="form" type="Form">
   <binding name="listener" property-path="formListener"/>
+  <field-binding name="direct" field-name="Boolean.FALSE"/>
 </component>
 
 <component id="inputTickerId" type="ValidatingTextField">

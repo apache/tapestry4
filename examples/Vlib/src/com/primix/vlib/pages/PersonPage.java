@@ -28,9 +28,11 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
+import com.primix.vlib.components.*;
 import javax.ejb.*;
 import java.util.*;
 import javax.rmi.*;
@@ -47,23 +49,31 @@ import java.rmi.*;
 
 
 public class PersonPage extends BasePage
-implements IExternalPage
+	implements IExternalPage
 {
-	private IBookQuery bookQuery;
+	private IBookQuery query;
 	private Book currentMatch;
-	private int matchCount;
 	private String email;
 	private String fullName;
 	
+	private Browser browser;
+	
 	public void detach()
 	{
-		bookQuery = null;
+		query = null;
 		currentMatch = null;
-		matchCount = 0;
 		email = null;
 		fullName = null;
-
+		
 		super.detach();
+	}
+	
+	public void finishLoad(IPageLoader loader, ComponentSpecification spec)
+		throws PageLoaderException
+	{
+		super.finishLoad(loader, spec);
+		
+		browser = (Browser)getComponent("browser");
 	}
 	
 	public String getEmail()
@@ -80,12 +90,12 @@ implements IExternalPage
 	 *  Sets the email transient page property.
 	 *
 	 */
-	 
+	
 	public void setEmail(String value)
 	{
 		email = value;
 	}
-		
+	
 	public String getFullName()
 	{
 		return fullName;
@@ -100,68 +110,35 @@ implements IExternalPage
 	{
 		fullName = value;
 	}
+		
 	
-	public int getMatchCount()
-	{
-		return matchCount;
-	}
-	
-	/**
-	 *  Sets the matchCount transient page property.  This is set when
-	 *  the onwer query is run.
-	 *
-	 */
-	 
-	public void setMatchCount(int value)
-	{
-		matchCount = value;
-	}
-	
-
 	/**
 	 *  Gets the {@link IBookQuery} session bean that contains
-	 *  the books owned by the user, restoring it from the
-	 *  handle property, or creating it fresh as needed.
+	 *  the books owned by the user, creating it fresh as needed.
 	 *
 	 */
-	 
-	public IBookQuery getBookQuery()
+	
+	public IBookQuery getQuery()
 	{		
-		if (bookQuery == null)
-		{
-			try
-			{
-				VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
- 				IBookQueryHome home = vengine.getBookQueryHome();
-				
-				bookQuery = home.create();
-
-                fireObservedChange("bookQuery", bookQuery);
-			}
-            catch (CreateException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-			catch (RemoteException ex)
-			{
-				throw new ApplicationRuntimeException(ex);
-			}
+		if (query == null)
+		{	
+			VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+			setQuery(vengine.createNewQuery());
 		}
-
-		return bookQuery;
+		
+		return query;
 	}
 	
 	/**
-	 *  Sets the bookQuery transient page property, which also sets
-	 *  the handle persistent page property.
+	 *  Sets the query persistent page property.
 	 *
 	 */
-	 
-	public void setBookQuery(IBookQuery value)
+	
+	public void setQuery(IBookQuery value)
 	{
-		bookQuery = value;
-
-        fireObservedChange("bookQuery", bookQuery);
+		query = value;
+		
+		fireObservedChange("query", value);
 	}
 	
 	/**
@@ -169,18 +146,19 @@ implements IExternalPage
 	 *  identified person.
 	 *
 	 */
-	 
+	
 	public void setup(Integer personPK, IRequestCycle cycle)
 	{
-		IBookQuery query = getBookQuery();
+		IBookQuery query = getQuery();
 		
 		try
 		{
 			int count = query.ownerQuery(personPK);
-			setMatchCount(count);
+
+			browser.initializeForResultCount(count);
 			
- 			VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
- 			IPersonHome home = vengine.getPersonHome();
+			VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+			IPersonHome home = vengine.getPersonHome();
 			IPerson person = home.findByPrimaryKey(personPK);
 			
 			setEmail(person.getEmail());
@@ -204,24 +182,6 @@ implements IExternalPage
 		cycle.setPage(this);
 	}
 	
-	public Book[] getMatches()
-	{
-		int count;
-		IBookQuery query;
-		
-		try
-		{
-			query = getBookQuery();
-			
-			count = query.getResultCount();
-			
-			return query.get(0, count);
-		}
-		catch (RemoteException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
-		}
-	}
 	
 	public Book getCurrentMatch()
 	{
@@ -233,19 +193,19 @@ implements IExternalPage
 		currentMatch = value;
 	}
 	
-
+	
 	/**
 	 *  Removes the book query bean, if the handle to the bean
 	 *  is non-null.
 	 *
 	 */
-	 
+	
 	public void cleanupPage()
 	{
 		try
 		{
-			if (bookQuery != null)
-			    bookQuery.remove();
+			if (query != null)
+				query.remove();
 		}
 		catch (RemoveException ex)
 		{
@@ -258,5 +218,5 @@ implements IExternalPage
 		
 		super.cleanupPage();
 	}
-    
+	
 }
