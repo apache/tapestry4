@@ -1,5 +1,9 @@
 * Nov 1 2000 hship
 
+Improve exception reporting when an Insert component is unable to format its value.
+
+* Nov 1 2000 hship
+
 Change the reset component to not wipe out the session, simply force a refresh of all HTML templates and
 component specifications.  It now encodes the currency page as well.
 Fix some Javadoc errors.
