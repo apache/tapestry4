@@ -30,6 +30,7 @@ package com.primix.vlib.ejb;
 
 import javax.ejb.*;
 import java.rmi.*;
+import java.sql.Timestamp;
 
 /**
  *  Remote interface for the Book entity bean.
@@ -92,4 +93,9 @@ public interface IBook extends IEntityBean
 	public void setLendable(boolean value)
 		throws RemoteException;
 	
+	public Timestamp getDateAdded()
+		throws RemoteException;
+	
+	public void setDateAdded(Timestamp value)
+		throws RemoteException;
 }

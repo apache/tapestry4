@@ -210,6 +210,8 @@ public class OperationsBean
 		
 		IBook book = home.create(attributes);
 		
+		book.setDateAdded(new Timestamp(System.currentTimeMillis()));
+		
 		return (Integer)book.getPrimaryKey();
 	}
 	
@@ -475,6 +477,7 @@ public class OperationsBean
 	{
 		IPersonHome home = getPersonHome();
 		IPerson person = null;
+		Person result = null;
 		
 		try
 		{
@@ -488,16 +491,24 @@ public class OperationsBean
 		if (!person.getPassword().equals(password))
 			throw new LoginException("Invalid password.", true);
 		
-		// TBD:  Check for locked out
-		
 		try
 		{
-			return getPerson((Integer)person.getPrimaryKey());
+			result = getPerson((Integer)person.getPrimaryKey());
 		}
 		catch (FinderException ex)
 		{
 			throw new LoginException("Could not read person.", false);
 		}
+		
+		if (result.isLockedOut())
+			throw new LoginException("You have been locked out of the Virtual Library.", false);
+		
+		
+		// Set the last access time for any subsequent login.
+		
+		person.setLastAccess(new Timestamp(System.currentTimeMillis()));
+		
+		return result;
 	}
 	
 	public Map getPersonAttributes(Integer primaryKey)
@@ -595,6 +606,7 @@ public class OperationsBean
 		attributes.put("firstName", firstName.trim());
 		attributes.put("email", email.trim());
 		attributes.put("password", password.trim());
+		attributes.put("lastAccess", new Timestamp(System.currentTimeMillis()));
 		
 		IPerson person = home.create(attributes);
 		
@@ -813,6 +825,7 @@ public class OperationsBean
 		columns[Book.AUTHOR_COLUMN] = set.getString(column++);
 		columns[Book.HIDDEN_COLUMN] = getBoolean(set, column++);
 		columns[Book.LENDABLE_COLUMN] = getBoolean(set, column++);
+		columns[Book.DATE_ADDED_COLUMN] = set.getTimestamp(column++);
 		
 		return new Book(columns);
 	}
@@ -838,7 +851,7 @@ public class OperationsBean
 			"owner.PERSON_ID", "owner.FIRST_NAME", "owner.LAST_NAME",
 			"holder.PERSON_ID", "holder.FIRST_NAME", "holder.LAST_NAME",
 			"publisher.PUBLISHER_ID", "publisher.NAME",
-			"book.AUTHOR", "book.HIDDEN", "book.LENDABLE"
+			"book.AUTHOR", "book.HIDDEN", "book.LENDABLE", "book.DATE_ADDED"
 	};
 	
 	private static final String[] bookAliasColumns =
@@ -1030,7 +1043,7 @@ public class OperationsBean
 		result = new StatementAssembly();
 		
 		result.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL, ");
-		result.newLine("  VERIFIED, LOCKED_OUT, ADMIN, AUTH_CODE");
+		result.newLine("  VERIFIED, LOCKED_OUT, ADMIN, AUTH_CODE, LAST_ACCESS");
 		result.newLine("FROM PERSON");
 		
 		return result;
@@ -1056,6 +1069,7 @@ public class OperationsBean
 		columns[Person.LOCKED_OUT_COLUMN] = getBoolean(set, column++);
 		columns[Person.ADMIN_COLUMN] = getBoolean(set, column++);
 		columns[Person.AUTHORIZATION_CODE_COLUMN] =	set.getString(column++);
+		columns[Person.LAST_ACCESS_COLUMN] = set.getTimestamp(column++);
 		
 		return new Person(columns);
 	}	

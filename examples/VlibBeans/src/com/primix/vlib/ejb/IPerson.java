@@ -31,6 +31,7 @@ package com.primix.vlib.ejb;
 import javax.ejb.*;
 import java.rmi.*;
 import java.util.*;
+import java.sql.Timestamp;
 
 /** 
  *  Remote interface for the Person entity bean.
@@ -92,4 +93,10 @@ public interface IPerson extends IEntityBean
 	
 	public String getNaturalName()
 		throws RemoteException;	
+	
+	public void setLastAccess(Timestamp value)
+		throws RemoteException;
+	
+	public Timestamp getLastAccess()
+		throws RemoteException;
 }

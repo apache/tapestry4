@@ -5,17 +5,18 @@
     
 <specification class="tutorial.portal.Slashdot">
 
+<bean name="rowClass" class="com.primix.tapestry.inspector.EvenOdd"/>
+
 <component id="content" type="Block"/>
 
 <component id="e" type="Foreach">
     <binding name="source" property-path="stories"/>
     <binding name="value" property-path="story"/>
-    <binding name="index" property-path="index"/>
 </component>
 
 <component id="evenOdd" type="Any">
 	<static-binding name="element">tr</static-binding>
-	<binding name="class" property-path="rowClass"/>
+	<binding name="class" property-path="beans.rowClass.next"/>
 </component>
 
 <component id="link" type="Any">

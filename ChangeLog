@@ -1,5 +1,15 @@
 * Aug 27 2001 hship
 
+vlibbeans:
+- Implement locked-out functionality
+- Implement Book.dateAdded and Person.lastAccess
+
+vlib:
+- Look and feel improvements
+- Visually identify new books (where Book.dateAdded >= Person.lastAccess, for the logged in user)
+
+* Aug 27 2001 hship
+
 doc:
 - Get the Developer's Guide up-to date with respect to yesterday's
   changes

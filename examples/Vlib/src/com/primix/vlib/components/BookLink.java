@@ -30,6 +30,8 @@ package com.primix.vlib.components;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
+import com.primix.vlib.*;
+import java.sql.Timestamp;
 
 // Appease Javadoc
 import com.primix.vlib.pages.ViewBook;
@@ -64,6 +66,8 @@ public class BookLink extends BaseComponent
     private Book book;
     private String[] context;
 
+	private static final long ONE_WEEK_MILLIS = 1024l * 60l * 60l * 60l * 24l * 7l;
+	
     public IBinding getBookBinding()
     {
         return bookBinding;
@@ -82,6 +86,40 @@ public class BookLink extends BaseComponent
         return book;
     }
 
+	public boolean isNew()
+	{
+		IEngine engine = page.getEngine();
+		Visit visit = (Visit)engine.getVisit();
+		Timestamp lastAccess = null;
+		
+		if (visit != null)
+			lastAccess = visit.getLastAccess();
+		
+		Book book = getBook();
+		Timestamp dateAdded = book.getDateAdded();
+		
+		// Some old records may not contain a value for dateAdded
+		
+		if (dateAdded == null)
+			return false;
+		
+		
+		// If don't know the last access time (because the user
+		// hasn't logged in yet), then show anything newer
+		// than a week.
+		
+		if (lastAccess == null)
+		{
+			long now = System.currentTimeMillis();
+			
+			return (now - dateAdded.getTime()) <= ONE_WEEK_MILLIS;
+		}
+		
+		// Return true if lastAccess is earlier than date added.
+		
+		return lastAccess.compareTo(dateAdded) <= 0;
+	}
+	
     /**
      *  The context has two elements.  The first is the page to jump to
      *  ({@link PersonPage}), the second is the primary key of the person.
