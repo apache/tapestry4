@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id: jetty-tutorial.xml,v 1.8 2002/07/14 02:52:44 hship Exp $ -->
+<!DOCTYPE Configure PUBLIC
+	"-//Mort Bay Consulting//DTD Configure 1.2//EN"
+	"http://jetty.mortbay.org/configure_1_2.dtd">
+<!--
+  This configuration file is used to allow the Tutorial to be run directly from
+  the main distribution directory (i.e., without having to build the frameworks).
+  -->
+<Configure class="org.mortbay.http.HttpServer">
+  <Call name="addListener">
+    <Arg>
+      <New class="org.mortbay.http.SocketListener">
+        <Set name="Port">8081</Set>
+        <Set name="MinThreads">1</Set>
+        <Set name="MaxThreads">10</Set>
+        <Set name="MaxIdleTimeMs">50000</Set>
+      </New>
+    </Arg>
+  </Call>
+  
+  <Call name="addWebApplication">
+     <Arg></Arg>
+       <Arg>
+        <SystemProperty name="jetty.home" default="."/>/webapps/
+    </Arg>
+    <Set name="defaultsDescriptor">
+      <SystemProperty name="jetty.home" 
+       default="."/>/etc/webdefault.xml
+    </Set>
+
+  </Call>
+  
+   <Call name="addContext">
+    <Arg>/private/*</Arg>
+    <Set name="ResourceBase">private</Set>
+    <Set name="ServingResources">TRUE</Set>
+  </Call>
+</Configure>
