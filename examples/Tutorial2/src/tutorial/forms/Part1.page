@@ -16,7 +16,7 @@
 	</component>
 	
 	<component id="dateOfBirth" type="TextField">
-		<binding name="value" expression="visit.dateOfBirth"/>
+		<binding name="value" expression="visit.dateOfBirthAsString"/>
 	</component>
 
 	<component id="favColour" type="TextField">

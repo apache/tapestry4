@@ -55,25 +55,36 @@
 package tutorial.forms;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Used to capture the state of each user within the web application
  * @author Neil Clayton
  */
-public class VisitorState implements Serializable {
+public class VisitorState implements Serializable
+{
 	/**
 	 * Returns the dateOfBirth.
 	 * @return String
 	 */
-	public String getDateOfBirth() {
+	public Date getDateOfBirth()
+	{
 		return dateOfBirth;
+	}
+
+	public String getDateOfBirthAsString()
+	{
+		return DateFormat.getDateInstance().format(dateOfBirth);
 	}
 
 	/**
 	 * Returns the favoriteColour.
 	 * @return String
 	 */
-	public String getFavoriteColour() {
+	public String getFavoriteColour()
+	{
 		return favoriteColour;
 	}
 
@@ -81,7 +92,8 @@ public class VisitorState implements Serializable {
 	 * Returns the name.
 	 * @return String
 	 */
-	public String getUserName() {
+	public String getUserName()
+	{
 		return userName;
 	}
 
@@ -89,7 +101,8 @@ public class VisitorState implements Serializable {
 	 * Sets the dateOfBirth.
 	 * @param dateOfBirth The dateOfBirth to set
 	 */
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth)
+	{
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -97,19 +110,26 @@ public class VisitorState implements Serializable {
 	 * Sets the favoriteColour.
 	 * @param favoriteColour The favoriteColour to set
 	 */
-	public void setFavoriteColour(String favoriteColour) {
+	public void setFavoriteColour(String favoriteColour)
+	{
 		this.favoriteColour = favoriteColour;
+	}
+
+	public void setDateOfBirthAsString(String newDOB) throws ParseException
+	{
+		dateOfBirth = DateFormat.getDateInstance().parse(newDOB);
 	}
 
 	/**
 	 * Sets the name.
 	 * @param name The name to set
 	 */
-	public void setUserName(String name) {
+	public void setUserName(String name)
+	{
 		this.userName = name;
 	}
 
 	private String userName;
-	private String dateOfBirth;
+	private Date dateOfBirth = new Date(0);
 	private String favoriteColour;
 }

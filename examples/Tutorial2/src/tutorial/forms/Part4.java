@@ -65,11 +65,14 @@ import net.sf.tapestry.valid.ValidationDelegate;
  * Example code for the forms part of Tutorial
  * @author Neil Clayton
  */
-public class Part4 extends BasePage {
-	public void enterDetails(IRequestCycle cycle) throws RequestCycleException {
+public class Part4 extends BasePage
+{
+	public void enterDetails(IRequestCycle cycle) throws RequestCycleException
+	{
 		// Submission has been performed. Validate the fields
 		ValidationDelegate delegate = (ValidationDelegate) getBeans().getBean("delegate");
-		if (delegate.getHasErrors()) {
+		if (delegate.getHasErrors())
+		{
 			// there are errors
 			return;
 		}
@@ -80,8 +83,9 @@ public class Part4 extends BasePage {
 	/**
 	 * Returns a set of colours that the user may choose from.
 	 */
-	public static IPropertySelectionModel getColourModel() {
+	public static IPropertySelectionModel getColourModel()
+	{
 		return new StringPropertySelectionModel(
-			new String[] { "Black", "Fiji Blue", "Green", "Red", "Yellow" });
+				new String[]{"Black", "Fiji Blue", "Green", "Red", "Yellow"});
 	}
 }
