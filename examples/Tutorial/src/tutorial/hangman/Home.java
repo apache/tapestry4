@@ -52,12 +52,12 @@ implements IActionListener
     private int misses;
     private String error;
 
-    public void detachFromApplication()
+    public void detach()
     {
         misses = 0;
         error = null;
         
-        super.detachFromApplication();
+        super.detach();
     }
 
     public int getMisses()

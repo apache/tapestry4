@@ -47,12 +47,12 @@ extends BasePage
     private HangmanGame game;
     private String error;
 
-    public void detachFromApplication()
+    public void detach()
     {
         game = null;
         error = null;
 
-        super.detachFromApplication();
+        super.detach();
     }
 
     public String getError()

@@ -40,22 +40,21 @@ import com.primix.vlib.*;
  */
 
 
-public class Logout extends BasePage implements ILifecycle
+public class Logout
+extends BasePage
 {
-	/**
-	 *  Sets the application user to null.
-	 *
-	 */
-	 
-	public void beginResponse(IResponseWriter writer,
-	                          IRequestCycle cycle)
-	                   throws RequestCycleException
-	{
-		VirtualLibraryApplication app;
+    /**
+    *  Sets the application user to null.
+    *
+    */
 
-		app = (VirtualLibraryApplication)application;
+    public void beginResponse(IResponseWriter writer,
+        IRequestCycle cycle)
+    throws RequestCycleException
+    {
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 
-		app.logout();
-	}
-	
+        vengine.logout();
+    }
+
 }

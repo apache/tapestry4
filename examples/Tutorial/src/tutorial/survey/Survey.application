@@ -1,28 +1,23 @@
 <?xml version="1.0"?>
 <!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-
 <application>
 	<name>Survey Tutorial</name>
-	
+	<engine-class>tutorial.survey.SurveyEngine</engine-class>
 	<page>
 		<name>Home</name>
 		<specification-path>/tutorial/survey/Home.jwc</specification-path>
 	</page>
-
 	<page>
 		<name>Survey</name>
 		<specification-path>/tutorial/survey/SurveyPage.jwc</specification-path>
 	</page>
-
 	<page>
 		<name>Results</name>
 		<specification-path>/tutorial/survey/Results.jwc</specification-path>
 	</page>
-
 	<component-alias>
 		<alias>Border</alias>
 		<specification-path>/tutorial/border/Border.jwc</specification-path>
 	</component-alias>
-	
 </application>

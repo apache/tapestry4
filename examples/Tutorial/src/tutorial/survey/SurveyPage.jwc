@@ -14,7 +14,7 @@
 				</static-binding>
 				<binding>
 					<name>pages</name>
-					<property-path>application.pageNames</property-path>
+					<property-path>engine.pageNames</property-path>
 				</binding>
 			</bindings>
 		</component>

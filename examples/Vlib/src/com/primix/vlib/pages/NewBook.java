@@ -47,8 +47,6 @@ import com.primix.foundation.prop.*;
 
 public class NewBook extends Protected
 {
-	private String returnPage;
-	
 	private String title;
 	private String ISBN;
 	private Integer publisherPK;
@@ -56,31 +54,18 @@ public class NewBook extends Protected
 	private String bookDescription;
 	private String author;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
-		
-		returnPage = null;
-		
 		title = null;
 		ISBN = null;
 		publisherPK = null;
 		publisherName = null;
 		bookDescription = null;
 		author = null;
+
+    	super.detach();
 	}
 	
-	public String getReturnPage()
-	{
-		return returnPage;
-	}
-	
-	public void setReturnPage(String value)
-	{
-		returnPage = value;
-		
-		fireObservedChange("returnPage", value);
-	}
 	
 	public String getTitle()
 	{
@@ -157,16 +142,10 @@ public class NewBook extends Protected
 	
 	private void addBook(IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
-		IBook book;
-		IOperations operations;
-		Integer userPK;
-		IPage page;
-		PropertyHelper helper;
-		
+        IBook book;
+        
         if (getError() != null)
             return;
-
 
 		if (publisherPK == null && isEmpty(publisherName))
 		{
@@ -182,10 +161,9 @@ public class NewBook extends Protected
 			return;
 		}
 		
-		app = (VirtualLibraryApplication)application;
-		operations = app.getOperations();
-		
-		userPK = app.getUserPK();
+        Visit visit = (Visit)getVisit();
+		IOperations operations = visit.getOperations();		
+		Integer userPK = visit.getUserPK();
 		
 		try
 		{
@@ -199,7 +177,7 @@ public class NewBook extends Protected
 				
 				// Clear the app's cache of info; in this case, known publishers.
 				
-				app.clearCache();
+				visit.clearCache();
 			}	
 		}
 		catch (CreateException e)
@@ -214,21 +192,11 @@ public class NewBook extends Protected
 		
 		// Success.  First, update the message property of the return page.
 		
-		if (returnPage == null)
-			returnPage = "MyBooks";
-			
-		page = cycle.getPage(returnPage);
+		MyBooks myBooks = (MyBooks)cycle.getPage("MyBooks");
 		
-		helper = PropertyHelper.forClass(page.getClass());
-		helper.set(page, "message", "Added: " + title);
+        myBooks.setMessage("Added: " + title);
 		
-		// Forget about this page, it's done.
-		
-		application.forgetPage(getName());
-		
-		// Return to the appropriate page.
-		
-		cycle.setPage(page);
+		cycle.setPage(myBooks);
 	}
 	
 	private boolean isEmpty(String value)

@@ -1,5 +1,7 @@
 package tutorial.survey;
 
+import com.primix.tapestry.*;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -34,8 +36,6 @@ package tutorial.survey;
  *
  */ 
 
-import com.primix.tapestry.*;
-
 public class SurveyServlet extends ApplicationServlet
 {
 	protected String getApplicationSpecificationPath()
@@ -43,9 +43,5 @@ public class SurveyServlet extends ApplicationServlet
 		return "/tutorial/survey/Survey.application";
 	}
 
-	protected IApplication createApplication(RequestContext context)
-	{
-		return new SurveyApplication(context);
-	}
 }
 

@@ -49,19 +49,17 @@ public class Results extends BasePage
 	{
 		if (surveyDatabase == null)
 		{
-			SurveyApplication surveyApplication;
+            SurveyEngine myengine = (SurveyEngine)engine;
 			
-			surveyApplication = (SurveyApplication)application;
-			
-			surveyDatabase = surveyApplication.getDatabase();
+			surveyDatabase = myengine.getDatabase();
 		}
 		
 		return surveyDatabase;
 	}
 	
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 		
 		surveyDatabase = null;
 		oddRow = false;

@@ -1,4 +1,4 @@
-package tutorial.border;
+package tutorial.survey;
 
 /*
  * Tapestry Web Application Framework
@@ -34,24 +34,58 @@ package tutorial.border;
  *
  */ 
 
-import java.util.*;
 import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
+import com.primix.tapestry.engine.*;
+import javax.servlet.*;
 
-public class BorderApplication extends SimpleApplication
+public class SurveyEngine extends SimpleEngine
 {
-  private static final String[] pageNames =
-    { "Home", "Credo", "Legal" };
-  
-  public BorderApplication(RequestContext context, Locale locale)
-  {
-    super(context, locale);
-  }
+	private transient SurveyDatabase database;
 
-  
-  public String[] getPageNames()
-  {
-    return pageNames;
-  }
-  
+	protected String getSpecificationAttributeName()
+	{
+		return "Survey.application";
+	}
+	
+	protected String getSpecificationResourceName()
+	{
+		return "/tutorial/survey/Survey.application";
+	}
+	
+	
+	public SurveyDatabase getDatabase()
+	{
+		return database;
+	}
+	
+
+	protected void setupForRequest(RequestContext context)
+	{
+		super.setupForRequest(context);
+		
+		if (database == null)
+		{
+			String name = "Survey.database";
+			ServletContext servletContext;
+			
+			servletContext = context.getServlet().getServletContext();
+			
+			database = (SurveyDatabase)servletContext.getAttribute(name);
+			
+			if (database == null)
+			{
+				database = new SurveyDatabase();
+				servletContext.setAttribute(name, database);
+			}
+		}
+	}
+	
+	private static final String[] pageNames = 
+	{ "Home", "Survey", "Results" 
+	};
+	
+	public String[] getPageNames()
+	{
+		return pageNames;
+	}
 }

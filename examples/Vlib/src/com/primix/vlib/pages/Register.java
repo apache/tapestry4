@@ -58,7 +58,7 @@ implements IErrorProperty
 	private String password2;
 	private IValidationDelegate validationDelegate;
 
-	public void detachFromApplication()
+	public void detach()
 	{
 		error = null;
 		firstName = null;
@@ -67,7 +67,7 @@ implements IErrorProperty
 		password1 = null;
 		password2 = null;
 
-    	super.detachFromApplication();
+    	super.detach();
 	}
 	
 	public String getError()
@@ -179,7 +179,6 @@ implements IErrorProperty
 	
 	private void attemptRegister(IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
 		IOperations bean;
 		Login login;
 		IPerson user;
@@ -202,8 +201,8 @@ implements IErrorProperty
 			return;
 		}
 				
-		app = (VirtualLibraryApplication)application;
-		bean = app.getOperations();
+        Visit visit = (Visit)getVisit();
+		bean = visit.getOperations();
 		
 		try
 		{

@@ -253,12 +253,12 @@
 		</component>
 		<component>
 			<id>addNewBook</id>
-			<type>Direct</type>
+			<type>Page</type>
 			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>application.addNewBookListener</property-path>
-				</binding>
+				<static-binding>
+					<name>page</name>
+					<value>NewBook</value>
+				</static-binding>
 			</bindings>
 		</component>
 		<component>

@@ -1,7 +1,6 @@
 package com.primix.vlib;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
 import com.primix.tapestry.components.*;
 import javax.naming.*;
 import javax.ejb.*;
@@ -43,19 +42,19 @@ import java.net.*;
  */
 
 /**
+ *  The visit object for the {@link VirtualLibraryApplication}.
  *
- *  The application class for the Primix Virtual Library.  Primarily,
- *  this is used to access the home interfaces and EJB instances, and
- *  to identify who the logged in user is.  It also provides the external
- *  service, which allows the {@link ViewBook} and {@link PersonPage}
- *  pages to be bookmarked.
+ *  Primarily, this is used to access the home interfaces and EJB instances, and
+ *  to identify who the logged in user is.
  *
- *  @version $Id$
+ *
  *  @author Howard Ship
+ *  @version $Id$
  *
  */
- 
-public class VirtualLibraryApplication extends SimpleApplication
+
+public class Visit
+implements Serializable
 {
 	/**
 	 *  Used to identify the logged in user.
@@ -75,69 +74,9 @@ public class VirtualLibraryApplication extends SimpleApplication
 	
 	private transient Context rootNamingContext;	
 	
-    private transient boolean killSession;
-
 	private transient IPropertySelectionModel publisherModel;
 	private transient IPropertySelectionModel personModel;
-	
-	/**
-	 *   The name ("external") of a service that exposes books or 
-	 *   persons in such as way that they are bookmarkable.
-	 *
-	 */
-	 
-	public static final String EXTERNAL_SERVICE = "external";
-	
-	/**
-	 *  The external service is used to make the {@link ViewBook} and 
-	 *  {@link PersonPage} pages bookmarkable.  The URL will include the
-	 *  page (which must implement the {@link IExternalPage} interface),
-	 *  and the primary key of the {@link IBook}
-	 *  or {@link IPerson} EJB.
-	 *
-	 */
-	 
-	public class ExternalService implements IApplicationService
-	{
-		public String buildURL(IRequestCycle cycle,
-                       IComponent component,
-                       String[] context)
-		{
-			if (context == null || context.length != 2)
-				throw new ApplicationRuntimeException("external service required two parameters.");
-			
-			// Not sure what's in that primary key parameter (may have spaces, slashes,
-			// or other illegal characters.
-			
-			return getServletPrefix() +
-				"/" + EXTERNAL_SERVICE +
-				"/" + context[0] +
-				"/" + URLEncoder.encode(context[1]);
-		}
-		
-		public void service(IRequestCycle cycle,
-                    ResponseOutputStream output)
-             throws RequestCycleException,
-                    ServletException,
-                    IOException
-        {
-			serviceExternal(cycle, output);
-        }
-		
-	}
-	
-	public VirtualLibraryApplication(RequestContext context)
-	{
-		super(context, null);
-	}
-	
-	
-	/**
-	 *  Removes the operations bean instance, if accessed this request cycle.
-	 *
-     *  <p>May invalidate the {@link HttpSession} (see {@link #logout()}).
-	 */
-	 
+
 	protected void cleanupAfterRequest(IRequestCycle cycle)
 	{
 		if (operations != null)
@@ -153,18 +92,15 @@ public class VirtualLibraryApplication extends SimpleApplication
 		}
 		
 		operations = null;
-        
-        // Force a rebuild of the publisher and person models on the next
-        // request cycle that needs them.  This is needed because new
-        // persons and publisher can be added by anyone at anytime.
-        
+	    
+	    // Force a rebuild of the publisher and person models on the next
+	    // request cycle that needs them.  This is needed because new
+	    // persons and publisher can be added by anyone at anytime.
+	    
 		publisherModel = null;
-        personModel = null;
-
-        if (killSession)
-            cycle.getRequestContext().getSession().invalidate();
+	    personModel = null;
 	}
-	
+
 	/**
 	 *  Gets the logged-in user, or null if the user is not logged in.
 	 *
@@ -306,22 +242,22 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return result;
 	}
 	
-    public Context getRootNamingContext()
-    {
-        if (rootNamingContext == null)
-        {
-            try
-            {
-                rootNamingContext = new InitialContext();
-            }
-            catch (NamingException e)
-            {
-                throw new ApplicationRuntimeException("Unable to locate root naming context.", e);
-            }
-        }
+	public Context getRootNamingContext()
+	{
+	    if (rootNamingContext == null)
+	    {
+	        try
+	        {
+	            rootNamingContext = new InitialContext();
+	        }
+	        catch (NamingException e)
+	        {
+	            throw new ApplicationRuntimeException("Unable to locate root naming context.", e);
+	        }
+	    }
 
-        return rootNamingContext;
-    }
+	    return rootNamingContext;
+	}
 
 	/**
 	 *  Changes the logged in user ... this is only invoked from the {@link Login}
@@ -439,33 +375,6 @@ public class VirtualLibraryApplication extends SimpleApplication
 		
 		return model;		
 	}
-	
-	/**
-	 *  Used from pages that want to add a book.
-	 *  Gets the {@link NewBook} page and sets it's returnPage property to point back to
-	 *  the current page.
-	 *
-	 */
-	 
-	public IDirectListener getAddNewBookListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IComponent component, String[] context,
-					IRequestCycle cycle)
-			{
-				NewBook newBookPage;
-				IPage currentPage;
-				
-				currentPage = cycle.getPage();
-				newBookPage = (NewBook)cycle.getPage("NewBook");
-				
-				newBookPage.setReturnPage(currentPage.getName());
-				
-				cycle.setPage(newBookPage);
-			}
-		};
-	}
 
 	/**
 	 *  Invoked by pages after they perform an operation that changes the backend
@@ -482,7 +391,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 		publisherModel = null;
 		personModel = null;
 	}
-	
+
 	/**
 	 *  Returns a model that contains all the known Person's, sorted by last name,
 	 *  then first.  The label for the model matches the user's natural name.
@@ -526,110 +435,5 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return model;	  
 		
 	}
-	
-	/**
-	 *  Used from a couple of pages to actually borrow a book.  The {@link Direct}
-	 * component should set its context to the primary key of the book to borrow.
-	 *
-	 */
-	 	
-	/**
-	 *  Supports construction of the external service.
-	 *
-	 */
-	 
-	protected IApplicationService constructService(String name)
-	{
-		if (name.equals("external"))
-			return new ExternalService();
-		
-		return super.constructService(name);
-	}	
-	
-	/**
-	 *  Performs the actual servicing of the external service.
-	 *
-	 */
-	 
-	protected void serviceExternal(IRequestCycle cycle, ResponseOutputStream output)
-	throws RequestCycleException, ServletException, IOException
-	{
-		IMonitor monitor;
-		String pageName;
-		String key;
-		Integer primaryKey;
-		RequestContext context;
-		IExternalPage page;
-		
-		monitor = cycle.getMonitor();
 
-		context = cycle.getRequestContext();
-		pageName = context.getPathInfo(1);
-		key = context.getPathInfo(2);
-		
-		if (monitor != null)
-			monitor.serviceBegin(EXTERNAL_SERVICE, pageName + " " + key);
-
-		primaryKey = new Integer(key);
-		
-		try
-		{
-			page = (IExternalPage)cycle.getPage(pageName);
-		}
-		catch (ClassCastException e)
-		{
-			throw new ApplicationRuntimeException("Page " + pageName + 
-				" may not be used with the " +
-				EXTERNAL_SERVICE + " service.");
-		}
-					
-		page.setup(primaryKey, cycle);
-				
-		// We don't invoke page.validate() because the whole point of this
-		// service is to allow unknown (fresh) users to jump right
-		// to the page.
-		
-		// Render the response.
-
-		render(cycle, output);
-
-		if (monitor != null)
-			monitor.serviceEnd(EXTERNAL_SERVICE);
-	}
-
-    /**
-     *  Sets the user property to null, and sets a flag that
-     *  invalidates the {@link HttpSession} at the end of the request cycle.
-     *
-     */
-
-    public void logout()
-    {
-        user = null;
-        userPK = null;
-        fullUserName = null;
-        killSession = true;
-    }
-
-    /**
-     *  Writes the userPK property.
-     *
-     */
-
-    public void writeExternal(ObjectOutput out)
-    throws IOException
-    {
-        super.writeExternal(out);
-
-        out.writeObject(userPK);
-    }
-
-    public void readExternal(ObjectInput in)
-    throws IOException, ClassNotFoundException
-    {
-        super.readExternal(in);
-
-        userPK = (Integer)in.readObject();
-    }
-                        
 }

@@ -114,9 +114,9 @@ extends BaseComponent
 
     public boolean isLinkEnabled()
     {
-        VirtualLibraryApplication app = (VirtualLibraryApplication)page.getApplication();
+        Visit visit = (Visit)page.getVisit();
 
-        if (!app.isUserLoggedIn())
+        if (!visit.isUserLoggedIn())
             return false;
 
         // If the user is logged in, they can borrow it if they are
@@ -126,7 +126,7 @@ extends BaseComponent
 
         // Otherwise, can only borrow it if not already holding it.
         
-        return ! app.isLoggedInUser(book.getHolderPrimaryKey());
+        return ! visit.isLoggedInUser(book.getHolderPrimaryKey());
     }
 
 	public IDirectListener getBorrowListener()
@@ -150,18 +150,18 @@ extends BaseComponent
 	private void borrowBook(Integer bookPK, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-        VirtualLibraryApplication app = (VirtualLibraryApplication)page.getApplication();
+        Visit visit = (Visit)page.getVisit();
 		IOperations bean;
 		Home home;
 		Integer borrowerPK;
 		IBook book;
 		home = (Home)cycle.getPage("Home");
 
-		bean = app.getOperations();				
+		bean = visit.getOperations();				
 
 		try
 		{
-			book = bean.borrowBook(bookPK, app.getUserPK());
+			book = bean.borrowBook(bookPK, visit.getUserPK());
 
 			home.setMessage("Borrowed: " + book.getTitle());
 		}

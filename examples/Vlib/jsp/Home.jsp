@@ -47,18 +47,5 @@
 </table>
 </form>
 
-<%
-	// Note:  This block will be replaced by a call to the AddBookServlet,
-	// once that is ready.
-
-	if (isLoggedIn)
-	{
-		VlibServlet.writeNYILink(context, writer, "[Add new Book]");
-	}
-	else
-	{
-		writer.print("[Add new Book]");
-	}
-%>
 <%@ include file="Border-trailer.jsp" %>
 

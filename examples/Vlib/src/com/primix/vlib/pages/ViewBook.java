@@ -50,9 +50,9 @@ implements IExternalPage
 {
 	private Book book;	
 	
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 
 		book = null;
 	}
@@ -64,12 +64,11 @@ implements IExternalPage
 	
 	public void setup(Integer bookPK, IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
 		IOperations bean;
 		Home home;
 		
-		app = (VirtualLibraryApplication)application;
-		bean = app.getOperations();
+        Visit visit = (Visit)getVisit();
+		bean = visit.getOperations();
 		
 		try
 		{
@@ -114,16 +113,15 @@ implements IExternalPage
 	 
 	public boolean getEnableBorrow()
 	{
-		VirtualLibraryApplication app;
 		Integer userPK;
 		Integer holderPK;
 		
-		app = (VirtualLibraryApplication)application;
-		
-		if (!app.isUserLoggedIn())
+        Visit visit = (Visit)getVisit();
+
+		if (!visit.isUserLoggedIn())
 			return false;
 		
-		userPK = app.getUserPK();
+		userPK = visit.getUserPK();
 		holderPK = book.getHolderPrimaryKey();
 		
 		return !userPK.equals(holderPK);

@@ -54,9 +54,9 @@ extends Protected
 	
 	private static final int MAP_SIZE = 11;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 
 		attributes = null;
 		bookPK = null;	
@@ -134,12 +134,11 @@ extends Protected
 	
 	private IBook getBook()
 	{
-		VirtualLibraryApplication app;
+		Visit visit = (Visit)getVisit();
 		IBookHome bookHome;
 		IBook book;
 		
-		app = (VirtualLibraryApplication)application;
-		bookHome = app.getBookHome();
+		bookHome = visit.getBookHome();
 		
 		try
 		{
@@ -184,7 +183,7 @@ extends Protected
 		Integer holderPK;
 		Integer publisherPK;
 		MyBooks page;
-		VirtualLibraryApplication app;
+		Visit visit;
 		IOperations bean;
 		
         // Check for an error from a validation field
@@ -216,8 +215,8 @@ extends Protected
 		
 		// OK, do the update.
 		
-		app = (VirtualLibraryApplication)application;
-		bean = app.getOperations();
+		visit = (Visit)getVisit();
+		bean = visit.getOperations();
 		
 		try
 		{
@@ -227,7 +226,7 @@ extends Protected
 			{
 				bean.updateBook(bookPK, title, author, ISBN, description, holderPK, 
 					publisherName);
-				app.clearCache();
+				visit.clearCache();
 			}		
 		}
 		catch (Throwable t)

@@ -1,5 +1,7 @@
 package tutorial.adder;
 
+import com.primix.tapestry.*;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -34,18 +36,10 @@ package tutorial.adder;
  *
  */ 
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
-
 public class AdderServlet extends ApplicationServlet
 {
 	protected String getApplicationSpecificationPath()
 	{
 		return "/tutorial/adder/Adder.application";
-	}
-
-	protected IApplication createApplication(RequestContext context)
-	{
-		return new SimpleApplication(context, null);
 	}
 }

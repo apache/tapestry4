@@ -4,6 +4,7 @@
 <!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <application>
 	<name>Primix Virtual Library</name>
+	<engine-class>com.primix.vlib.VirtualLibraryEngine</engine-class>
 	<page>
 		<name>Home</name>
 		<specification-path>/com/primix/vlib/pages/Home.jwc</specification-path>
@@ -72,4 +73,14 @@
 		<alias>Borrow</alias>
 		<specification-path>/com/primix/vlib/components/Borrow.jwc</specification-path>
 	</component-alias>
+	<properties>
+		<property>
+			<name/>
+			<value/>
+		</property>
+		<property>
+			<name>com.primix.tapestry.visit-class</name>
+			<value>com.primix.vlib.Visit</value>
+		</property>
+	</properties>
 </application>

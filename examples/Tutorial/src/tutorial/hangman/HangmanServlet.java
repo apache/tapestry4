@@ -1,7 +1,7 @@
 package tutorial.hangman;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
+import com.primix.tapestry.engine.*;
 
 /*
  * Tapestry Web Application Framework
@@ -44,8 +44,4 @@ public class HangmanServlet extends ApplicationServlet
 		return "/tutorial/hangman/Hangman.application";
 	}
 
-	protected IApplication createApplication(RequestContext context)
-	{
-		return new SimpleApplication(context, null);
-	}
 }
