@@ -17,6 +17,6 @@
     <parameter name="model"
         type="org.apache.tapestry.form.IPropertySelectionModel"
         required="yes"
-        direction="in"/>
+        direction="auto"/>
 
 </component-specification>
