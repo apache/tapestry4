@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -62,12 +61,6 @@ import org.apache.tapestry.pageload.PageSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.DelegatingPropertySource;
-import org.apache.tapestry.util.PropertyHolderPropertySource;
-import org.apache.tapestry.util.ResourceBundlePropertySource;
-import org.apache.tapestry.util.ServletContextPropertySource;
-import org.apache.tapestry.util.ServletPropertySource;
-import org.apache.tapestry.util.SystemPropertiesPropertySource;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.pool.Pool;
@@ -2058,17 +2051,6 @@ public abstract class AbstractEngine
     }
 
     /**
-     *  Name of an application extension that can provide configuration properties.
-     *
-     *  @see #createPropertySource(RequestContext)
-     *  @since 2.3
-     *
-     **/
-
-    private static final String EXTENSION_PROPERTY_SOURCE_NAME =
-        "org.apache.tapestry.property-source";
-
-    /**
      *  Creates a shared property source that will be stored into
      *  the servlet context.
      *  Subclasses may override this method to build thier
@@ -2091,35 +2073,7 @@ public abstract class AbstractEngine
 
     protected IPropertySource createPropertySource(RequestContext context)
     {
-        DelegatingPropertySource result = new DelegatingPropertySource();
-
-        ApplicationServlet servlet = context.getServlet();
-        IApplicationSpecification spec = servlet.getApplicationSpecification();
-
-        result.addSource(new PropertyHolderPropertySource(spec));
-        result.addSource(new ServletPropertySource(servlet.getServletConfig()));
-        result.addSource(new ServletContextPropertySource(servlet.getServletContext()));
-
-        if (spec.checkExtension(EXTENSION_PROPERTY_SOURCE_NAME))
-        {
-            IPropertySource source =
-                (IPropertySource) spec.getExtension(
-                    EXTENSION_PROPERTY_SOURCE_NAME,
-                    IPropertySource.class);
-
-            result.addSource(source);
-        }
-
-        result.addSource(SystemPropertiesPropertySource.getInstance());
-
-        // Lastly, add a final source to handle "factory defaults".
-
-        ResourceBundle bundle =
-            ResourceBundle.getBundle("org.apache.tapestry.ConfigurationDefaults");
-
-        result.addSource(new ResourceBundlePropertySource(bundle));
-
-        return result;
+        return new DefaultPropertySource(context);
     }
 
     /**
