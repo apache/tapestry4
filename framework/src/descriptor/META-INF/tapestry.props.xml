@@ -152,7 +152,7 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ApplicationSpecificationPropertySource">
-        <set-service property="specification" service-id="tapestry.globals.ApplicationSpecification"/>
+        <set-object property="specification" value="infrastructure:applicationSpecification"/>
       </construct>
     </invoke-factory>
     

@@ -17,6 +17,7 @@ package org.apache.tapestry.services.impl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.services.RequestGlobals;
 
@@ -31,6 +32,7 @@ public class RequestGlobalsImpl extends BaseLocatable implements RequestGlobals
 {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
+    private Resource _applicationRoot;
 
     public void store(HttpServletRequest request, HttpServletResponse response)
     {

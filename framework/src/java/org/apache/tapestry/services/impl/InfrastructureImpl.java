@@ -15,6 +15,7 @@
 package org.apache.tapestry.services.impl;
 
 import org.apache.tapestry.engine.IComponentClassEnhancer;
+import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
@@ -22,6 +23,7 @@ import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.ResetEventCoordinator;
 import org.apache.tapestry.services.TemplateSource;
+import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  * Allows access to selected HiveMind services.
@@ -31,6 +33,7 @@ import org.apache.tapestry.services.TemplateSource;
  */
 public class InfrastructureImpl implements Infrastructure
 {
+	private IApplicationSpecification _applicationSpecification;
     private IPropertySource _applicationPropertySource;
     private ResetEventCoordinator _resetEventCoordinator;
     private ComponentMessagesSource _componentMessagesSource;
@@ -38,6 +41,7 @@ public class InfrastructureImpl implements Infrastructure
     private ISpecificationSource _specificationSource;
     private ObjectPool _objectPool;
     private IComponentClassEnhancer _componentClassEnhancer;
+    private IPageSource _pageSource;
 
     public void setApplicationPropertySource(IPropertySource source)
     {
@@ -107,6 +111,26 @@ public class InfrastructureImpl implements Infrastructure
     public void setComponentClassEnhancer(IComponentClassEnhancer enhancer)
     {
         _componentClassEnhancer = enhancer;
+    }
+
+    public IApplicationSpecification getApplicationSpecification()
+    {
+        return _applicationSpecification;
+    }
+
+    public void setApplicationSpecification(IApplicationSpecification specification)
+    {
+        _applicationSpecification = specification;
+    }
+
+    public IPageSource getPageSource()
+    {
+        return _pageSource;
+    }
+
+    public void setPageSource(IPageSource source)
+    {
+        _pageSource = source;
     }
 
 }

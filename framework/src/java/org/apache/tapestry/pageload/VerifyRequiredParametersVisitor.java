@@ -18,7 +18,6 @@ import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
@@ -47,10 +46,7 @@ public class VerifyRequiredParametersVisitor implements IComponentVisitor
 
             if (parameterSpec.isRequired() && component.getBinding(name) == null)
                 throw new ApplicationRuntimeException(
-                    Tapestry.format(
-                        "PageLoader.required-parameter-not-bound",
-                        name,
-                        component.getExtendedId()),
+                    PageloadMessages.requiredParameterNotBound(name, component),
                     component,
                     component.getLocation(),
                     null);

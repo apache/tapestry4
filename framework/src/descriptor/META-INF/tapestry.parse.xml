@@ -42,7 +42,7 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.SpecificationSourceImpl">
         <set-service property="parser" service-id="SpecificationParser"/>
-        <set-service property="specification" service-id="tapestry.globals.ApplicationSpecification"/>
+        <set-object property="specification" value="infrastructure:applicationSpecification"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>
     </invoke-factory>
@@ -75,6 +75,7 @@
         <set-service property="delegate" service-id="TemplateSourceDelegate"/>
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
+        <set-service property="componentSpecificationResolver" service-id="tapestry.page.ComponentSpecificationResolver"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>
     </invoke-factory>

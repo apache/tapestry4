@@ -14,13 +14,13 @@
 
 package org.apache.tapestry.pageload;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IMonitor;
+import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.resolver.PageSpecificationResolver;
 import org.apache.tapestry.services.ObjectPool;
@@ -43,26 +43,19 @@ import org.apache.tapestry.util.MultiKey;
  *
  *  @author Howard Lewis Ship
  * 
- **/
+ */
 
 public class PageSource implements IPageSource
 {
-    /**
-     *  Key used to find PageLoader instances in the Pool.
-     * 
-     **/
+    /** set by container */
+    private ClassResolver _classResolver;
 
-    private static final String PAGE_LOADER_POOL_KEY = "org.apache.tapestry.PageLoader";
-
-    /**
-     * Key used to find {@link PageSpecificationResolver} instance
-     * in the pool.
-     */
-
-    private static final String PAGE_SPECIFICATION_RESOLVER_KEY =
-        "org.apache.tapestry.PageSpecificationResolver";
-
-    private ClassResolver _resolver;
+    /** @since 3.1 */
+    private PageSpecificationResolver _pageSpecificationResolver;
+    
+    /** @since 3.1 */
+    
+    private IPageLoader _loader;
 
     /**
      *  The pool of {@link IPage}s.  The key is a {@link MultiKey},
@@ -71,25 +64,19 @@ public class PageSource implements IPageSource
      * 
      *  @see IEngine#getPool()
      *
-     **/
+     */
 
     private ObjectPool _pool;
 
-    public PageSource(IEngine engine)
+    public ClassResolver getClassResolver()
     {
-        _resolver = engine.getClassResolver();
-        _pool = engine.getPool();
-    }
-
-    public ClassResolver getResourceResolver()
-    {
-        return _resolver;
+        return _classResolver;
     }
 
     /**
      *  Builds a key for a named page in the application's current locale.
      *
-     **/
+     */
 
     protected MultiKey buildKey(IEngine engine, String pageName)
     {
@@ -106,7 +93,7 @@ public class PageSource implements IPageSource
      *  Builds a key from an existing page, using the page's name and locale.  This is
      *  used when storing a page into the pool.
      *
-     **/
+     */
 
     protected MultiKey buildKey(IPage page)
     {
@@ -123,7 +110,7 @@ public class PageSource implements IPageSource
      *  Gets the page from a pool, or otherwise loads the page.  This operation
      *  is threadsafe.
      *
-     **/
+     */
 
     public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor)
     {
@@ -135,32 +122,14 @@ public class PageSource implements IPageSource
         {
             monitor.pageCreateBegin(pageName);
 
-            // Resolvers are not threadsafe, so we get one from
-            // the pool or create as needed.
+            _pageSpecificationResolver.resolve(cycle, pageName);
 
-            PageSpecificationResolver pageSpecificationResolver =
-                getPageSpecificationResolver(cycle);
-
-            pageSpecificationResolver.resolve(cycle, pageName);
-
-            // Likewise PageLoader
-
-            PageLoader loader = getPageLoader(cycle);
-
-            try
-            {
-                result =
-                    loader.loadPage(
-                        pageSpecificationResolver.getSimplePageName(),
-                        pageSpecificationResolver.getNamespace(),
-                        cycle,
-                        pageSpecificationResolver.getSpecification());
-            }
-            finally
-            {
-                discardPageLoader(loader);
-                discardPageSpecificationResolver(pageSpecificationResolver);
-            }
+            result =
+                _loader.loadPage(
+                    _pageSpecificationResolver.getSimplePageName(),
+                    _pageSpecificationResolver.getNamespace(),
+                    cycle,
+                    _pageSpecificationResolver.getSpecification());
 
             monitor.pageCreateEnd(pageName);
         }
@@ -176,73 +145,10 @@ public class PageSource implements IPageSource
     }
 
     /**
-     *  Invoked to obtain an instance of 
-     *  {@link PageLoader}.  An instance if aquired from the pool or,
-     *  if none are available, created fresh.
-     * 
-     *  @since 3.0
-     * 
-     **/
-
-    protected PageLoader getPageLoader(IRequestCycle cycle)
-    {
-        PageLoader result = (PageLoader) _pool.get(PAGE_LOADER_POOL_KEY);
-
-        if (result == null)
-            result = new PageLoader(cycle);
-
-        return result;
-    }
-
-    /**
-     *  Invoked once the {@link PageLoader} is not
-     *  longer needed; it is then returned to the pool.
-     * 
-     *  @since 3.0
-     * 
-     **/
-
-    protected void discardPageLoader(PageLoader loader)
-    {
-        _pool.store(PAGE_LOADER_POOL_KEY, loader);
-    }
-
-    /**
-     * Invoked to obtain an instance of {@link PageSpecificationResolver}.
-     * An instance is acquired form the pool or, if none are available,
-     * a new one is instantiated.
-     * 
-     * @since 3.0
-     */
-
-    protected PageSpecificationResolver getPageSpecificationResolver(IRequestCycle cycle)
-    {
-        PageSpecificationResolver result =
-            (PageSpecificationResolver) _pool.get(PAGE_SPECIFICATION_RESOLVER_KEY);
-
-        if (result == null)
-            result = new PageSpecificationResolver(cycle);
-
-        return result;
-    }
-
-    /**
-     * Invoked once the {@link PageSpecificationResolver} is no longer
-     * needed, it is returned to the pool.
-     * 
-     * @since 3.0
-     */
-
-    protected void discardPageSpecificationResolver(PageSpecificationResolver resolver)
-    {
-        _pool.store(PAGE_SPECIFICATION_RESOLVER_KEY, resolver);
-    }
-
-    /**
      *  Returns the page to the appropriate pool.  Invokes
      *  {@link IPage#detach()}.
      *
-     **/
+     */
 
     public void releasePage(IPage page)
     {
@@ -255,25 +161,32 @@ public class PageSource implements IPageSource
         _pool.store(buildKey(page), page);
     }
 
-    /**
-     *  Invoked (during testing primarily) to release the entire pool
-     *  of pages, and the caches of bindings and assets.
-     *  TODO: Probably remove this!
-     */
+    /** @since 3.1 */
 
-    public synchronized void reset()
+    public void setPool(ObjectPool pool)
     {
-        // _pool.clear();
+        _pool = pool;
     }
 
-    public String toString()
+    /** @since 3.1 */
+
+    public void setClassResolver(ClassResolver resolver)
     {
-        ToStringBuilder builder = new ToStringBuilder(this);
+        _classResolver = resolver;
+    }
 
-        builder.append("pool", _pool);
-        builder.append("resolver", _resolver);
+    /** @since 3.1 */
 
-        return builder.toString();
+    public void setPageSpecificationResolver(PageSpecificationResolver resolver)
+    {
+        _pageSpecificationResolver = resolver;
+    }
+
+	/** @since 3.1 */
+	
+    public void setLoader(IPageLoader loader)
+    {
+        _loader = loader;
     }
 
 }
