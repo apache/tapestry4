@@ -4060,7 +4060,7 @@ state of the field, for instance, to make the label red when the field itself is
         <varlistentry>
           <term>field</term>
           <listitem>
-            <para>The validating text field (type &IField;>)
+            <para>The validating text field (type &IField;)
 			associated with the label.</para>
           </listitem>
         </varlistentry>
@@ -6042,11 +6042,12 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 
 	<varlistentry>
-		<term><filename>com.primix.tapestry.jar</filename></term>
+		<term><filename>com.primix.tapestry_<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<listitem>
 			<para>
 			The main Tapestry framework.  This is needed at compile time and runtime.  At runtime, it is most
-			often added to the servlet container's classpath.
+			often added to the servlet container's classpath.  The framework release number is
+			integrated into the file name.
 			</para>
 		</listitem>
 	</varlistentry>
@@ -6115,11 +6116,12 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 
 	<varlistentry>
-		<term><filename>net.sf.tapestry.contrib.jar</filename></term>
+		<term><filename>net.sf.tapestry.contrib_<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<listitem>
 		<para>
 		Contains additional components and tools that are not integral to the framework itself, such
 		as the Palette.  Needed at runtime if any such components are used in an application.
+		The framework release number is integrated into the file name.
 		</para>
 		</listitem>
 	</varlistentry>

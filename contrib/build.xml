@@ -8,8 +8,11 @@
   <property name="lib" value="../lib"/>
   <!-- Directory containing source code and package resources -->
   <property name="src" value="src"/>
+  
+  <property file="../framework/src/com/primix/tapestry/Version.properties"/>
+  
   <!-- Path of the installed framework jar -->
-  <property name="framework.jar" value="${lib}/net.sf.tapestry.contrib.jar"/>
+  <property name="framework.jar" value="${lib}/net.sf.tapestry.contrib_${framework.version}.jar"/>
   <!-- Relative path to the Javadoc directory -->
   <property name="javadoc.dir" value="../doc/api"/>
   
@@ -24,7 +27,7 @@
     <pathelement location="${lib}/log4j-core.jar"/>
     <pathelement location="${lib}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib}/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/com.primix.tapestry.jar"/>
+    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
     <pathelement location="${lib}/mckoidb.jar"/>
     <pathelement location="${jboss.dir}/lib/jmxri.jar"/>
     <pathelement location="${jboss.dir}/lib/ext/jboss.jar"/>

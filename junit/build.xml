@@ -10,9 +10,11 @@
   
   <!-- Directory containing source code and package resources -->
   <property name="src" value="src"/>
+
+  <property file="../framework/src/com/primix/tapestry/Version.properties"/>
  
   <path id="project.class.path">
-    <pathelement location="${lib}/com.primix.tapestry.jar"/>
+    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
     <pathelement location="${lib}/ejb.jar"/>
     <pathelement location="${lib}/javax.servlet.jar"/>
     <pathelement location="${lib}/log4j-core.jar"/>
