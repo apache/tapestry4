@@ -290,7 +290,7 @@ public final class Tapestry
      *		<td>True if contains any non-whitespace characters, false otherwise.</td>
      *		</tr>
      *	<tr>
-     *		<td>Any array type</td>
+     *		<td>Any Object array type</td>
      *		<td>True if contains any elements (non-zero length), false otherwise.</td>
      *	<tr>
      *</table>

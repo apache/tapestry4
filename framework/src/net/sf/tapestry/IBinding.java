@@ -33,6 +33,9 @@ public interface IBinding
      *  <li>Any array type is true if it has a non-zero length
      *  <li>Any other non-null value is true
      *  </ul>
+     * 
+     *  @see Tapestry#evaluateBoolean(Object)
+     * 
      **/
 
     public boolean getBoolean();

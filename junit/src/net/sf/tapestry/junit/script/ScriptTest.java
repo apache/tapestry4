@@ -138,7 +138,7 @@ public class ScriptTest extends TestCase
         input.put("array_empty", new Integer[0]);
         input.put("number_zero", new Long(0));
         input.put("number_nonzero", new Integer(1));
-
+        
         Map symbols = new HashMap();
         symbols.put("input", input);
 
