@@ -90,7 +90,7 @@ public class EnhanceUtils
     }
 
     /**
-     * Returns the corect class for a property to be enhanced into a class. If a type name is
+     * Returns the correct class for a property to be enhanced into a class. If a type name is
      * non-null, then it is converted to a Class. If the class being enhanced defines a property,
      * then the type must be an exact match (this is largely a holdover from Tapestry 3.0, where the
      * type had to be provided in the specification). If the type name is null, then the value

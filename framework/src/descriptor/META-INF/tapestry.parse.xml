@@ -32,7 +32,7 @@
         <class-resolver/>
         <object> instance:org.apache.tapestry.spec.SpecFactory </object>
         
-        <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
       </construct>
     </invoke-factory>

@@ -39,6 +39,8 @@ The following changes have occured:
 - Consolidated <set-property> and <set-message-property> into <set>
 - More flexibility on the order of elements
 - Added <inject-state>
+- Added property attribute to <component>, <bean> and <asset>
+- Removed the type attribute from the <configure> element
 -->
 <!-- =======================================================
 Entity: attribute-flag
@@ -47,14 +49,6 @@ For entity attributes that take a boolean value, defines 'yes' and 'no'.
 The default varies, so isn't included here.
 -->
 <!ENTITY % attribute-flag "(yes|no)">
-<!-- =======================================================
-Entity: static-value-type
-
-For entity attributes that take a string but convert it to a real
-type.  Defaults to String.
-
--->
-<!ENTITY % static-value-type "(boolean|int|long|double|String) 'String'">
 <!ENTITY % library-content "(description?, (meta|page|component-type|service|library|extension)*)">
 <!-- =======================================================
 Element: application
@@ -83,11 +77,14 @@ for a file stored in the web applications' classpath.
 Attributes:
   name: The name of the asset.
   path: The path for the resource, which may be relative or absolute.
+  property: The name of a property that will be created to inject the
+    asset into the component.
 -->
 <!ELEMENT asset (meta*)>
 <!ATTLIST asset
 	name CDATA #REQUIRED
 	path CDATA #REQUIRED
+  property CDATA #IMPLIED
 >
   <!-- =======================================================
 Element: bean
@@ -107,7 +104,9 @@ Attributes:
   	"request" the bean is retained until the end of the request cycle
   	"page" the bean is retained for the lifespan of the page
   	"render" the bean is retained until the end of the current page render
-  	
+  property: if specified, then a read-ony property is created in the component
+    to access the bean.
+    
 Nothing prevents a bean for storing state; however, such state will
 not be associated with any particular session (unlike persistant page
 properties).  Further, because of page pooling, subsequent requests
@@ -126,6 +125,7 @@ newly instantiated beans, and beans that are retrieved from a pool.
 	name CDATA #REQUIRED
 	class CDATA #REQUIRED
 	lifecycle (none | request | page | render) "request"
+  property CDATA #IMPLIED
 >
 <!-- =======================================================
 Element: binding
@@ -154,7 +154,6 @@ Configures one JavaBean property of an extension.
 
 Attributes:
   property-name:  The name of the property to configure.
-  type: Conversion of property value.
   value: The value to be converted and applied.  If not 
     specified, the element's character data is
     used.  
@@ -163,7 +162,6 @@ Attributes:
 <!ELEMENT configure (#PCDATA)>
 <!ATTLIST configure
 	property-name CDATA #REQUIRED
-	type %static-value-type;
 	value CDATA #IMPLIED
 >
 <!-- =======================================================
@@ -178,6 +176,10 @@ Attribute:
     to the component's specification.
   copy-of: The id of a previously defined component; this component will be a copy
     of the other component.
+  inherit-informal-parameters: If yes, then all informal parameters of the containing
+    component are copied into this component.
+  property: Optional property name; the component instance will be injected into this
+    property.
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
@@ -187,6 +189,7 @@ The Tapestry page loader ensures that either type or copy-of is specified, but n
 	type CDATA #IMPLIED
 	copy-of IDREF #IMPLIED
 	inherit-informal-parameters %attribute-flag; "no"
+  property CDATA  #IMPLIED
 >
 <!-- =======================================================
 Element: component-type

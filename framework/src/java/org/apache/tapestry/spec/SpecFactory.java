@@ -14,11 +14,13 @@
 
 package org.apache.tapestry.spec;
 
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.bean.BindingBeanInitializer;
 import org.apache.tapestry.bean.ExpressionBeanInitializer;
 import org.apache.tapestry.bean.IBeanInitializer;
 import org.apache.tapestry.bean.MessageBeanInitializer;
 import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
@@ -159,9 +161,10 @@ public class SpecFactory
      * @since 2.2
      */
 
-    public IExtensionSpecification createExtensionSpecification(ExpressionEvaluator evaluator)
+    public IExtensionSpecification createExtensionSpecification(ClassResolver resolver,
+            ValueConverter valueConverter)
     {
-        return new ExtensionSpecification(evaluator);
+        return new ExtensionSpecification(resolver, valueConverter);
     }
 
     /**

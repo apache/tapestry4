@@ -19,5 +19,5 @@
   "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 <page-specification>
-    <asset name="myasset" path="path/to/asset"/>
+    <asset name="myasset" path="path/to/asset" property="myProperty"/>
 </page-specification>

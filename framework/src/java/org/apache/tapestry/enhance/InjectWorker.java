@@ -36,10 +36,8 @@ public class InjectWorker implements EnhancementWorker
 
     private InjectedValueProvider _provider;
 
-    public void performEnhancement(EnhancementOperation op)
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
-        IComponentSpecification spec = op.getSpecification();
-
         Iterator i = spec.getInjectSpecifications().iterator();
 
         while (i.hasNext())

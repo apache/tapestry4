@@ -75,7 +75,7 @@ public class TestAbstractPropertyWorker extends HiveMindTestCase
 
         replayControls();
 
-        new AbstractPropertyWorker().performEnhancement(op);
+        new AbstractPropertyWorker().performEnhancement(op, null);
 
         verifyControls();
     }
@@ -103,9 +103,6 @@ public class TestAbstractPropertyWorker extends HiveMindTestCase
         op.getBaseClass();
         opc.setReturnValue(BaseComponent.class);
 
-        op.getSpecification();
-        opc.setReturnValue(spec);
-
         spec.getLocation();
         specc.setReturnValue(l);
 
@@ -116,7 +113,7 @@ public class TestAbstractPropertyWorker extends HiveMindTestCase
         AbstractPropertyWorker w = new AbstractPropertyWorker();
         w.setErrorLog(log);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }

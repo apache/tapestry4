@@ -68,7 +68,7 @@ public class Creator
         EnhancementOperationImpl op = new EnhancementOperationImpl(_classResolver,
                 new ComponentSpecification(), inputClass, _classFactory);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, null);
 
         return op.getConstructor();
     }

@@ -33,17 +33,11 @@ import org.apache.tapestry.Tapestry;
  * specialized kind of library.
  * 
  * @author Howard Lewis Ship
- * @since 2.2
+ * @since 2.2bv
  */
 
 public class LibrarySpecification extends LocatablePropertyHolder implements ILibrarySpecification
 {
-    /**
-     * Resource resolver (used to instantiate extensions).
-     */
-
-    private ClassResolver _resolver;
-
     /**
      * Map of page name to page specification path.
      */
@@ -321,7 +315,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         if (result == null)
         {
 
-            result = spec.instantiateExtension(_resolver);
+            result = spec.instantiateExtension();
 
             _instantiatedExtensions.put(name, result);
         }
@@ -387,16 +381,6 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
             getExtension(name);
         }
 
-    }
-
-    public ClassResolver getResourceResolver()
-    {
-        return _resolver;
-    }
-
-    public void setResourceResolver(ClassResolver resolver)
-    {
-        _resolver = resolver;
     }
 
     /**
@@ -567,8 +551,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         builder.append("instantiatedExtensions", _instantiatedExtensions);
         builder.append("libraries", _libraries);
         builder.append("pages", _pages);
-        builder.append("publicId", _publicId);
-        builder.append("resolver", _resolver);
+        builder.append("publicId", _publicId);        
         builder.append("specificationLocation", _specificationLocation);
 
         extendDescription(builder);

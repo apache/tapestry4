@@ -20,25 +20,28 @@ import java.util.List;
 import org.apache.tapestry.bean.IBeanInitializer;
 
 /**
- *  A specification of a helper bean for a component.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.4
+ * A specification of a helper bean for a component.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.4
+ */
 
 public class BeanSpecification extends LocatablePropertyHolder implements IBeanSpecification
 {
     protected String className;
+
     protected BeanLifecycle lifecycle;
 
-    /** @since 1.0.9 **/
+    /** @since 1.0.9 * */
     private String description;
 
+    /** @since 3.1 */
+
+    private String _propertyName;
+
     /**
-     *  A List of {@link IBeanInitializer}.
-     *
-     **/
+     * A List of {@link IBeanInitializer}.
+     */
 
     protected List initializers;
 
@@ -53,9 +56,8 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
     }
 
     /**
-     *  @since 1.0.5
-     *
-     **/
+     * @since 1.0.5
+     */
 
     public void addInitializer(IBeanInitializer initializer)
     {
@@ -66,13 +68,11 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
     }
 
     /**
-     *  Returns the {@link List} of {@link IBeanInitializer}s.  The caller
-     *  should not modify this value!.  May return null if there
-     *  are no initializers.
-     *
-     *  @since 1.0.5
-     *
-     **/
+     * Returns the {@link List}of {@link IBeanInitializer}s. The caller should not modify this
+     * value!. May return null if there are no initializers.
+     * 
+     * @since 1.0.5
+     */
 
     public List getInitializers()
     {
@@ -109,18 +109,29 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
         description = desc;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void setClassName(String className)
     {
         this.className = className;
     }
-    
-    /** @since 3.0 **/
-    
+
+    /** @since 3.0 * */
+
     public void setLifecycle(BeanLifecycle lifecycle)
     {
         this.lifecycle = lifecycle;
     }
 
+    /** @since 3.1 */
+    public String getPropertyName()
+    {
+        return _propertyName;
+    }
+
+    /** @since 3.1 */
+    public void setPropertyName(String propertyName)
+    {
+        _propertyName = propertyName;
+    }
 }

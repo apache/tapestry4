@@ -71,9 +71,9 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
                     specification, baseClass, _classFactory);
 
             // Invoking on the chain is the same as invoking on every
-            // object in the chain (because performEnhancement is type void).
+            // object in the chain (because method performEnhancement() is type void).
 
-            _chain.performEnhancement(eo);
+            _chain.performEnhancement(eo, specification);
 
             result = eo.getConstructor();
 

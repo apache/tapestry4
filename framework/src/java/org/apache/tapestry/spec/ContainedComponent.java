@@ -20,117 +20,121 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Defines a contained component.  This includes the information needed to
- * get the contained component's specification, as well as any bindings
- * for the component.
- *
- * @author Howard Lewis Ship
+ * Defines a contained component. This includes the information needed to get the contained
+ * component's specification, as well as any bindings for the component.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class ContainedComponent extends LocatablePropertyHolder implements IContainedComponent
 {
-	private String type;
+    private String type;
 
-	private String copyOf;
-    
+    private String copyOf;
+
     private boolean inheritInformalParameters;
 
-	protected Map bindings;
+    protected Map bindings;
 
-	private static final int MAP_SIZE = 3;
+    private static final int MAP_SIZE = 3;
 
-	/**
-	 *  Returns the named binding, or null if the binding does not
-	 *  exist.
-	 *
-	 **/
+    /** @since 3.1 */
+    private String _propertyName;
 
-	public IBindingSpecification getBinding(String name)
-	{
-		if (bindings == null)
-			return null;
+    /**
+     * Returns the named binding, or null if the binding does not exist.
+     */
 
-		return (IBindingSpecification) bindings.get(name);
-	}
+    public IBindingSpecification getBinding(String name)
+    {
+        if (bindings == null)
+            return null;
 
-	/**
-	 *  Returns an umodifiable <code>Collection</code>
-	 *  of Strings, each the name of one binding
-	 *  for the component.
-	 *
-	 **/
+        return (IBindingSpecification) bindings.get(name);
+    }
 
-	public Collection getBindingNames()
-	{
-		if (bindings == null)
-			return Collections.EMPTY_LIST;
+    /**
+     * Returns an umodifiable <code>Collection</code> of Strings, each the name of one binding for
+     * the component.
+     */
 
-		return Collections.unmodifiableCollection(bindings.keySet());
-	}
+    public Collection getBindingNames()
+    {
+        if (bindings == null)
+            return Collections.EMPTY_LIST;
 
-	public String getType()
-	{
-		return type;
-	}
+        return Collections.unmodifiableCollection(bindings.keySet());
+    }
 
-	public void setBinding(String name, IBindingSpecification spec)
-	{
-		if (bindings == null)
-			bindings = new HashMap(MAP_SIZE);
+    public String getType()
+    {
+        return type;
+    }
 
-		bindings.put(name, spec);
-	}
+    public void setBinding(String name, IBindingSpecification spec)
+    {
+        if (bindings == null)
+            bindings = new HashMap(MAP_SIZE);
 
-	public void setType(String value)
-	{
-		type = value;
-	}
+        bindings.put(name, spec);
+    }
 
-	/**
-	 * 	Sets the String Id of the component being copied from.
-	 *  For use by IDE tools like Spindle.
-	 * 
-	 *  @since 1.0.9
-	 **/
+    public void setType(String value)
+    {
+        type = value;
+    }
 
-	public void setCopyOf(String id)
-	{
-		copyOf = id;
-	}
-
-	/**
-	 * 	Returns the id of the component being copied from.
-	 *  For use by IDE tools like Spindle.
-	 * 
-	 *  @since 1.0.9
-	 **/
-
-	public String getCopyOf()
-	{
-		return copyOf;
-	}
-
-	/**
-     * Returns whether the contained component will inherit 
-     * the informal parameters of its parent. 
+    /**
+     * Sets the String Id of the component being copied from. For use by IDE tools like Spindle.
      * 
-	 * @since 3.0
-	 **/
-	public boolean getInheritInformalParameters()
-	{
-		return inheritInformalParameters;
-	}
+     * @since 1.0.9
+     */
 
-	/**
-     * Sets whether the contained component will inherit 
-     * the informal parameters of its parent. 
+    public void setCopyOf(String id)
+    {
+        copyOf = id;
+    }
+
+    /**
+     * Returns the id of the component being copied from. For use by IDE tools like Spindle.
+     * 
+     * @since 1.0.9
+     */
+
+    public String getCopyOf()
+    {
+        return copyOf;
+    }
+
+    /**
+     * Returns whether the contained component will inherit the informal parameters of its parent.
      * 
      * @since 3.0
-	 */
-	public void setInheritInformalParameters(boolean value)
-	{
-		inheritInformalParameters = value;
-	}
+     */
+    public boolean getInheritInformalParameters()
+    {
+        return inheritInformalParameters;
+    }
 
+    /**
+     * Sets whether the contained component will inherit the informal parameters of its parent.
+     * 
+     * @since 3.0
+     */
+    public void setInheritInformalParameters(boolean value)
+    {
+        inheritInformalParameters = value;
+    }
+
+    /** @since 3.1 */
+    public String getPropertyName()
+    {
+        return _propertyName;
+    }
+
+    /** @since 3.1 */
+    public void setPropertyName(String propertyName)
+    {
+        _propertyName = propertyName;
+    }
 }

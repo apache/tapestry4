@@ -78,9 +78,6 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
-        op.getSpecification();
-        opc.setReturnValue(spec);
-
         op.convertTypeName("String");
         Throwable ex = new ApplicationRuntimeException("Simulated error.");
         opc.setThrowable(ex);
@@ -101,7 +98,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         ParameterPropertyWorker w = new ParameterPropertyWorker();
         w.setErrorLog(log);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -120,9 +117,6 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         op.getPropertyType("fred");
         opc.setReturnValue(String.class);
@@ -204,7 +198,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -223,9 +217,6 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         op.getPropertyType("fred");
         opc.setReturnValue(String.class);
@@ -307,10 +298,9 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
-
     }
 
     public void testPrimitiveType()

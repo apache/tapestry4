@@ -135,6 +135,7 @@
       <action type="update" dev="HLS"> Change Form (and WML Go) to have the direct and action services injected. </action>
       <action type="update" dev="HLS"> Refactoring to move application state object management out of IEngine and generalize it. </action>
       <action type="update" dev="HLS"> Add &lt;inject-state&gt; element to specifications. </action>
+      <action type="update" dev="HLS"> Add property attribute to &lt;component&gt;, &lt;bean&gt; and &lt;asset&gt; and add enhancement workers to inject these objects as properties. </action>
     </release>
     <release version="3.0" date="Apr 18 2004">
       <action type="fix" dev="HLS" fixes-bug="28345"> Workbench/Upload exception when no file specified </action>

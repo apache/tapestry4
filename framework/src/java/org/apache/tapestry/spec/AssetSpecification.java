@@ -24,10 +24,13 @@ public class AssetSpecification extends LocatablePropertyHolder implements IAsse
 {
     protected String path;
 
+    /** @since 3.1 */
+    private String _propertyName;
+
     /**
      * Returns the base path for the asset. This may be interpreted as a URL, relative URL or the
-     * path to a resource, depending on the type of asset.  Starting with 3.1, this may have
-     * a prefix added to identify the type of resource.
+     * path to a resource, depending on the type of asset. Starting with 3.1, this may have a prefix
+     * added to identify the type of resource.
      */
 
     public String getPath()
@@ -40,5 +43,17 @@ public class AssetSpecification extends LocatablePropertyHolder implements IAsse
     public void setPath(String path)
     {
         this.path = path;
+    }
+
+    /** @since 3.1 */
+    public String getPropertyName()
+    {
+        return _propertyName;
+    }
+
+    /** @since 3.1 */
+    public void setPropertyName(String propertyName)
+    {
+        _propertyName = propertyName;
     }
 }

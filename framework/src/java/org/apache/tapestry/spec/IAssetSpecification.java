@@ -23,7 +23,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * 
  * @author glongman@intelligentworks.com
  */
-public interface IAssetSpecification extends IPropertyHolder, LocationHolder, Locatable
+public interface IAssetSpecification extends IPropertyHolder, LocationHolder, Locatable, PropertyInjectable
 {
     /**
      * Returns the base path for the asset. This may be interpreted as a URL, relative URL or the

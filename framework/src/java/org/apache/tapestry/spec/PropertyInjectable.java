@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.enhance;
-
-import org.apache.tapestry.spec.IComponentSpecification;
+package org.apache.tapestry.spec;
 
 /**
- * A worker that is employed by the {@link org.apache.tapestry.services.ComponentConstructorFactory}
- * to perform some enhancement.
+ * Interface extended by several specification interfaces to indicate that the runtime object
+ * constructed from the specification can be injected into the component class.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface EnhancementWorker
+public interface PropertyInjectable
 {
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec);
+    /**
+     * Returns the name of the property to be created for this component, or null if no property
+     * should be created.
+     */
+    public String getPropertyName();
+
+    public void setPropertyName(String propertyName);
+
 }

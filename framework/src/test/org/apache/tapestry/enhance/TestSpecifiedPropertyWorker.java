@@ -100,9 +100,6 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
-        op.getSpecification();
-        opc.setReturnValue(spec);
-
         op.convertTypeName("boolean");
         opc.setReturnValue(boolean.class);
 
@@ -125,7 +122,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
 
         SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -141,9 +138,6 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
 
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         op.convertTypeName("java.lang.String");
         opc.setReturnValue(String.class);
@@ -173,7 +167,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
 
         SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -187,9 +181,6 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
 
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         op.convertTypeName("Long");
         Throwable ex = new ApplicationRuntimeException("Simulated error.");
@@ -211,7 +202,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         SpecifiedPropertyWorker w = new SpecifiedPropertyWorker();
         w.setErrorLog(log);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }

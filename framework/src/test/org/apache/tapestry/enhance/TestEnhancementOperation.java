@@ -119,7 +119,6 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         replayControls();
 
-        assertSame(spec, eo.getSpecification());
         assertSame(BaseComponent.class, eo.getBaseClass());
 
         verifyControls();

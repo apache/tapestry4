@@ -43,12 +43,8 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
      * mutator.
      */
 
-    public void performEnhancement(EnhancementOperation op)
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
-        Defense.notNull(op, "op");
-
-        IComponentSpecification spec = op.getSpecification();
-
         Iterator i = spec.getPropertySpecificationNames().iterator();
 
         while (i.hasNext())

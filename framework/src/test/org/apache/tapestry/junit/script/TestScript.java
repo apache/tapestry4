@@ -30,6 +30,10 @@ import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.script.ScriptSession;
 import org.apache.tapestry.script.ScriptSessionImpl;
+import org.apache.tapestry.services.ExpressionCache;
+import org.apache.tapestry.services.ExpressionEvaluator;
+import org.apache.tapestry.services.impl.ExpressionCacheImpl;
+import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -42,6 +46,15 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 public class TestScript extends TapestryTestCase
 {
     private MockScriptProcessor _processor = new MockScriptProcessor();
+
+    protected static ExpressionEvaluator createExpressionEvaluator()
+    {
+        ExpressionCache cache = new ExpressionCacheImpl();
+        ExpressionEvaluatorImpl result = new ExpressionEvaluatorImpl();
+        result.setExpressionCache(cache);
+
+        return result;
+    }
 
     private IScript read(String file) throws IOException, DocumentParseException
     {

@@ -95,7 +95,7 @@ A fifth type of specification, the Script specification, is described seperately
 part of an application's behavior is defined by its &HiveMind; module deployment descriptor.
 </note>
 
-<section id="changes">
+<section id="spec.changes">
    <title>Changes between releases 3.0 and 3.1</title>
 
 <p>
@@ -138,6 +138,7 @@ it is expected that there will be some runtime warnings).
     &binding-reference;.</li>
   <li>The 3.1 DTD is more liberal about the order in which elements may be specified than the 3.0 DTD.</li>
   <li>The &spec.inject-state; element has been added.</li>
+  <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
 </ul>
 
 <p>
@@ -145,6 +146,24 @@ More detailed notes on <link href="upgrade.html">upgrading from Tapestry 3.0 to 
 </p>
 
 </section>  <!-- changes -->
+
+<section id="spec.property-injection">
+  <title>Property Injection</title>
+  
+<p>
+Several of the specification elements are concerned with <em>property injection</em>.  For &spec.inject; and &spec.inject-state;,
+the entire element exists to describe a property injection; in others (&spec.component;, &spec.bean; and &spec.asset;),
+the injection is just one piece of the behavior defined using the element.
+</p>
+
+<p>
+In all of these cases, Tapestry will create a <em>new property</em> at runtime. That is, it will create the accessor method
+(or methods), the instance variables, and any necessary setup or cleanup code automatically.  As with 
+<link href="state#state.page-properties">persistent page properties</link>, you should at most declare <em>abstract</em>
+accessor methods.
+</p>
+  
+</section>  <!-- spec.property-injection -->
 
 <section id="spec.application">
 	<title>&application; element</title>
@@ -269,6 +288,16 @@ and not localized.
 	</td>
 </tr>
 
+<tr>
+  <td>property</td>
+  <td>string</td>
+  <td>no</td>
+  <td/>
+  <td>
+    The name of a property into which the asset shoud be injected.
+  </td>
+</tr>
+
 </table>
 
 
@@ -286,7 +315,8 @@ Appears in:
 <p>
 A &bean; is used to add behaviors to a page or component via aggregation.
 Each &bean; defines a named JavaBean that is instantiated on demand.
-Such managed beans are accessed through the OGNL expression beans.<em>name</em>.
+Such managed beans are accessed through the OGNL expression beans.<em>name</em>
+or via the beans: &binding-reference;.
 </p>
 
 <p>
@@ -360,6 +390,17 @@ may be configured nested &spec.set; elements.
 	<td>no</td>
 	<td>request</td>
 	<td>As described above; duration that bean is retained.</td>
+</tr>
+<tr>
+  <td>property</td>
+  <td>string</td>
+  <td>no</td>
+  <td/>
+  <td>
+   If a property name is specified, then the name property will be
+   injected into the component; accessing the property will return the
+   bean. This makes it easier to access beans from Java code. 
+  </td>
 </tr>
 
 
@@ -519,6 +560,16 @@ the OGNL expression components.<em>id</em>.
 	</td>
 </tr>
 
+<tr>
+  <td>property</td>
+  <td>string</td>
+  <td>no</td>
+  <td/>
+  <td>
+  If a name is provided, then a read-only property will be created with the given name that will
+  allow access to the component.
+  </td>
+</tr>
 
 </table>
 

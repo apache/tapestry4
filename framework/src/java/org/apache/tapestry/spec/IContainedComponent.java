@@ -27,7 +27,7 @@ import org.apache.tapestry.util.IPropertyHolder;
 
  * @author glongman@intelligentworks.com
  */
-public interface IContainedComponent extends IPropertyHolder, LocationHolder, Locatable
+public interface IContainedComponent extends IPropertyHolder, LocationHolder, Locatable, PropertyInjectable
 {
     /**
      *  Returns the named binding, or null if the binding does not
@@ -75,4 +75,19 @@ public interface IContainedComponent extends IPropertyHolder, LocationHolder, Lo
      * @since 3.0
      */
     public abstract void setInheritInformalParameters(boolean value);
+    
+    /**
+     * Returns the name of the property to be created for this component,
+     * or null if no property should be created.
+     * 
+     * @since 3.1
+     */
+    public String getPropertyName();
+    
+    /**
+     * 
+     * @since 3.1 
+     */
+    
+    public void setPropertyName(String propertyName);
 }
