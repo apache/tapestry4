@@ -44,7 +44,6 @@
 <!ENTITY spec.property-specification
 									'<link href="spec.html#spec.property-specification">&lt;property-specification&gt;</link>'>
 <!ENTITY spec.reserved-parameter	'<link href="spec.html#spec.reserved-parameter">&lt;reserved-parameter&gt;</link>'>
-<!ENTITY spec.service				'<link href="spec.html#spec.service">&lt;service&gt;</link>'>
 <!ENTITY spec.set-message-property	'<link href="spec.html#spec.set-message-property">&lt;set-message-property&gt;</link>'>
 <!ENTITY spec.set-property			'<link href="spec.html#spec.set-property">&lt;set-property&gt;</link>'>
 <!ENTITY spec.static-binding		'<link href="spec.html#spec.static-binding">&lt;static-binding&gt;</link>'>

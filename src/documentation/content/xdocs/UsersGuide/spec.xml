@@ -45,8 +45,8 @@ used in Tapestry.  In all four cases, the same DOCTYPE is used:
 <source>
 <![CDATA[
 <!DOCTYPE ]]><em>root element</em> <![CDATA[PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 ]]></source>
  
 <p>
@@ -93,6 +93,26 @@ A fifth type of specification, the Script specification, is described seperately
 part of an application's behavior is defined by its &HiveMind; module deployment descriptor.
 </note>
 
+<section id="changes">
+   <title>Changes between releases 3.0 and 3.1</title>
+
+<p>
+The specifications evolve over time, with each release providing an updated DTD allowing access to new features.
+Tapestry 3.1 supports the Tapestry 3.0 DTD (just be sure to use the matching public ID), and in most cases
+existing applications coded against release 3.0 will run unchanged under release 3.1 (though
+it is expected that there will be some runtime warnings).
+</p>
+
+<p> The following features of the release 3.0 DTD are changed for release 3.1: </p>
+
+<ul>
+  <li>The &lt;service&gt; element (inside &spec.application; or &spec.library-specification;) is no longer supported in 
+    release 3.1. 3.0 DTD specifications that use &lt;service&gt; will generate a warning. Use the 
+    &tapestry.services.ApplicationServices; configuration point instead.</li>
+</ul>
+
+</section>  <!-- changes -->
+
 <section id="spec.application">
 	<title>&application; element</title>
 	
@@ -136,7 +156,7 @@ It also defines any libraries that are used within the application.
 <p>&application; Elements:</p>
 <source>
   &spec.description; ?, &spec.property; *,
-  (&spec.page; | &spec.component-type; | &spec.service; | &spec.library; | &spec.extension;) *
+  (&spec.page; | &spec.component-type; |  &spec.library; | &spec.extension;) *
 </source>
 
 </section>  <!-- spec.application -->
@@ -882,7 +902,7 @@ element has no attributes.
 <p>&library-specification; Elements</p>
 <source>
   &spec.description; ?, &spec.property; *,
-  (&spec.page; | &spec.component-type; | &spec.service; | &spec.library; | &spec.extension;) *
+  (&spec.page; | &spec.component-type; | &spec.library; | &spec.extension;) *
 </source>
 
 </section> <!-- spec.library-specification -->
@@ -1476,61 +1496,6 @@ a reserved parameter named "src" (or any variation), and be excluded.
 
 </section> <!-- spec.reserved-parameter -->
 
-<section id="spec.service">
-	<title>&lt;service&gt; element</title>
-
-<p>
-Appears in: &spec.application; and &spec.library-specification;
-</p>
-
-<p>
-Defines an &IEngineService; provided by the application or by a library.
-</p>
-
-<p>
-The framework provides several services (home, direct, action, external, etc.).
-Applications may override these services by defining different
-services with the same names.
-</p>
-
-<p>
-Libraries that provide services should use a qualified name (that is, put
-a package prefix in front of the name) to avoid name collisions.
-</p>
-
-
-<table>
-
-<tr>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Required ?</th>
-  <th>Default Value</th>
-  <th>Description</th>
-</tr>
-
-<tr>
-	<td>name</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The name of the service.</td>
-</tr>
-<tr>
-	<td>class</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The complete class name to instantiate.  The class must have
-	a zero-arguments constructor and implement the interface
-	&IEngineService;
-	</td>
-</tr>
-
-</table>
-
-
-</section> <!-- spec.service -->
 
 <section id="spec.set-message-property">
 	<title>&lt;set-message-property&gt; element</title>

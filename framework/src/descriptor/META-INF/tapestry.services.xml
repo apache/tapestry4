@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.services" version="3.1.0">
+
+  Contains the Tapestry engine services, and the configuration points for creating new
+  ones (or overriding the factory defaults).
+
+  <schema id="EngineServices">
+    
+    <element name="service">
+      
+      <attribute name="object" translator="object" required="true">
+        
+        Engine services are typically, but not definitively, HiveMind services (they
+        can be simple objects as well). The name of each service is obtained
+        from the service itself.
+        
+      </attribute>
+      
+      <rules>
+        <push-attribute attribute="object"/>
+        <invoke-parent method="addElement"/>
+      </rules>
+      
+    </element>
+    
+  </schema>
+
+  <configuration-point id="FactoryServices" schema-id="EngineServices">
+    
+    Configuration point for the factory default services. Each contributed service
+    must have a unique name.
+    
+  </configuration-point>
+  
+  <contribution configuration-id="FactoryServices">
+    
+    <service object="instance:org.apache.tapestry.engine.HomeService"/>
+    <service object="instance:org.apache.tapestry.engine.ActionService"/>
+    <service object="instance:org.apache.tapestry.engine.DirectService"/>
+    <service object="instance:org.apache.tapestry.engine.PageService"/>
+    <service object="instance:org.apache.tapestry.engine.ResetService"/>
+    <service object="instance:org.apache.tapestry.engine.RestartService"/>
+    <service object="instance:org.apache.tapestry.asset.AssetService"/>
+	  <service object="instance:org.apache.tapestry.engine.ExternalService"/>
+		<service object="instance:org.apache.tapestry.engine.TagSupportService"/>
+    
+  </contribution>
+  
+  <configuration-point id="ApplicationServices" schema-id="EngineServices">
+    
+    Configuration point for application services. Each contributed service must 
+    have a unique name, but services contributed here will override services
+    provided in the FactoryServices configuration point.
+    
+  </configuration-point>
+  
+  <service-point id="ServiceMap" interface="org.apache.tapestry.services.ServiceMap">
+    
+    Used to locate a service by name, using the FactoryServices and
+    ApplicationServices configuration points.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ServiceMapImpl">
+        <set-configuration property="factoryServices" configuration-id="FactoryServices"/>
+        <set-configuration property="applicationServices" configuration-id="ApplicationServices"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+
+</module>

@@ -26,6 +26,7 @@ import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IContainedComponent;
 
@@ -154,5 +155,15 @@ final class ImplMessages
     public static String unableToLoadProperties(URL url, Throwable cause)
     {
         return _formatter.format("unable-to-load-properties", url, cause);
+    }
+
+    public static String noSuchService(String name)
+    {
+        return _formatter.format("no-such-service", name);
+    }
+
+    public static String dupeService(String name, IEngineService existing)
+    {
+        return _formatter.format("dupe-service", name, HiveMind.getLocationString(existing));
     }
 }

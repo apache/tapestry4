@@ -78,20 +78,5 @@
     <page name="WMLException" specification-path="wml/pages/WMLException.page"/>
     <page name="WMLStaleLink" specification-path="wml/pages/WMLStaleLink.page"/>
     <page name="WMLStaleSession" specification-path="wml/pages/WMLStaleSession.page"/>
-
-    <!-- These may be overriden but generally shouldn't be, except perhaps for the home service. -->
-    
-    <service name="home" class="org.apache.tapestry.engine.HomeService"/>
-    <service name="action" class="org.apache.tapestry.engine.ActionService"/>
-    <service name="direct" class="org.apache.tapestry.engine.DirectService"/>
-    <service name="page" class="org.apache.tapestry.engine.PageService"/>
-    <service name="reset" class="org.apache.tapestry.engine.ResetService"/>
-    <service name="restart" class="org.apache.tapestry.engine.RestartService"/>
-    <service name="asset" class="org.apache.tapestry.asset.AssetService"/>
-	<service name="external" class="org.apache.tapestry.engine.ExternalService"/>
-	
-	<!-- Used to support the JSP tags. -->
-	
-	<service name="tagsupport" class="org.apache.tapestry.engine.TagSupportService"/>
 	
 </library-specification>

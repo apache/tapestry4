@@ -166,6 +166,10 @@
 <!ENTITY TapestryHomePage
 						'<link href="http://jakarta.apache.org/tapestry/">Tapestry Home Page</link>'>
 
+<!-- HiveMind service and configuration extension points -->
+
+<!ENTITY tapestry.services.ApplicationServices 'tapestry.services.ApplicationServices'>
+
 <!-- Other useful stuff -->
 
 <!ENTITY HowardLewisShipEmail '<link href="mailto:hlship@apache.org">Howard M. Lewis Ship</link>'>

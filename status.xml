@@ -264,6 +264,11 @@ NextGen) be released as version number 3.0.
 		Remove dependencies on Jakarta digester, collections and beanutils. Add dependency
 		on Jakarta HiveMind.	
 	</action>
+  
+  <action type="update" dev="HLS">
+    Remove support for the &lt;service&gt; element in specifications (in favor of
+    the tapestry.services.ApplicationServices configuration point).
+  </action>
 		
 	</release>
 

@@ -29,6 +29,7 @@
   <sub-module descriptor="tapestry.data.xml"/>
   <sub-module descriptor="tapestry.script.xml"/>
   <sub-module descriptor="tapestry.bindings.xml"/>
+  <sub-module descriptor="tapestry.services.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -58,6 +59,7 @@
         <set-service property="pageSource" service-id="tapestry.page.PageSource"/>
         <set-service property="dataSqueezer" service-id="tapestry.data.DataSqueezer"/>
         <set-service property="scriptSource" service-id="tapestry.script.ScriptSource"/>
+        <set-service property="serviceMap" service-id="tapestry.services.ServiceMap"/>
       </construct>
     </invoke-factory>
     

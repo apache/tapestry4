@@ -71,60 +71,53 @@ import org.apache.tapestry.util.io.DataSqueezerImpl;
 import com.sun.jndi.ldap.pool.Pool;
 
 /**
- * Basis for building real Tapestry applications. Immediate subclasses provide
- * different strategies for managing page state and other resources between
- * request cycles.
+ * Basis for building real Tapestry applications. Immediate subclasses provide different strategies
+ * for managing page state and other resources between request cycles.
  * <p>
- * Note: much of this description is <em>in transition</em> as part of
- * Tapestry 3.1. All ad-hoc singletons and such are being replaced with HiveMind
- * services.
+ * Note: much of this description is <em>in transition</em> as part of Tapestry 3.1. All ad-hoc
+ * singletons and such are being replaced with HiveMind services.
  * <p>
- * Uses a shared instance of {@link ITemplateSource},
- * {@link ISpecificationSource},{@link IScriptSource}and
- * {@link IComponentMessagesSource}stored as attributes of the
+ * Uses a shared instance of {@link ITemplateSource},{@link ISpecificationSource},
+ * {@link IScriptSource}and {@link IComponentMessagesSource}stored as attributes of the
  * {@link ServletContext}(they will be shared by all sessions).
  * <p>
- * An engine is designed to be very lightweight. Particularily, it should
- * <b>never </b> hold references to any {@link IPage}or
- * {@link org.apache.tapestry.IComponent}objects. The entire system is based
- * upon being able to quickly rebuild the state of any page(s).
+ * An engine is designed to be very lightweight. Particularily, it should <b>never </b> hold
+ * references to any {@link IPage}or {@link org.apache.tapestry.IComponent}objects. The entire
+ * system is based upon being able to quickly rebuild the state of any page(s).
  * <p>
- * Where possible, instance variables should be transient. They can be restored
- * inside {@link #setupForRequest(RequestContext)}.
+ * Where possible, instance variables should be transient. They can be restored inside
+ * {@link #setupForRequest(RequestContext)}.
  * <p>
- * In practice, a subclass (usually {@link BaseEngine}) is used without
- * subclassing. Instead, a visit object is specified. To facilitate this, the
- * application specification may include a property,
- * <code>org.apache.tapestry.visit-class</code> which is the class name to
- * instantiate when a visit object is first needed. See
- * {@link #createVisit(IRequestCycle)}for more details.
+ * In practice, a subclass (usually {@link BaseEngine}) is used without subclassing. Instead, a
+ * visit object is specified. To facilitate this, the application specification may include a
+ * property, <code>org.apache.tapestry.visit-class</code> which is the class name to instantiate
+ * when a visit object is first needed. See {@link #createVisit(IRequestCycle)}for more details.
  * <p>
- * Some of the classes' behavior is controlled by JVM system properties
- * (typically only used during development): <table border=1>
+ * Some of the classes' behavior is controlled by JVM system properties (typically only used during
+ * development): <table border=1>
  * <tr>
  * <th>Property</th>
  * <th>Description</th>
  * </tr>
  * <tr>
  * <td>org.apache.tapestry.enable-reset-service</td>
- * <td>If true, enabled an additional service, reset, that allow page,
- * specification and template caches to be cleared on demand. See
- * {@link #isResetServiceEnabled()}.</td>
+ * <td>If true, enabled an additional service, reset, that allow page, specification and template
+ * caches to be cleared on demand. See {@link #isResetServiceEnabled()}.</td>
  * </tr>
  * <tr>
  * <td>org.apache.tapestry.disable-caching</td>
- * <td>If true, then the page, specification, template and script caches will
- * be cleared after each request. This slows things down, but ensures that the
- * latest versions of such files are used. Care should be taken that the source
- * directories for the files preceeds any versions of the files available in
- * JARs or WARs.</td>
+ * <td>If true, then the page, specification, template and script caches will be cleared after each
+ * request. This slows things down, but ensures that the latest versions of such files are used.
+ * Care should be taken that the source directories for the files preceeds any versions of the files
+ * available in JARs or WARs.</td>
  * </tr>
  * </table>
  * 
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractEngine implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
+public abstract class AbstractEngine implements IEngine, IEngineServiceView, Externalizable,
+        HttpSessionBindingListener
 {
     private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
 
@@ -160,9 +153,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private Object _visit;
 
     /**
-     * The globally shared application object. Typically, this is created when
-     * first needed, shared between sessions and engines, and stored in the
-     * {@link ServletContext}.
+     * The globally shared application object. Typically, this is created when first needed, shared
+     * between sessions and engines, and stored in the {@link ServletContext}.
      * 
      * @since 2.3
      */
@@ -170,8 +162,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private transient Object _global;
 
     /**
-     * The base name for the servlet context key used to store the
-     * application-defined Global object, if any.
+     * The base name for the servlet context key used to store the application-defined Global
+     * object, if any.
      * 
      * @since 2.3
      */
@@ -179,8 +171,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     public static final String GLOBAL_NAME = "org.apache.tapestry.global";
 
     /**
-     * The name of the application property that will be used to determine the
-     * encoding to use when generating the output
+     * The name of the application property that will be used to determine the encoding to use when
+     * generating the output
      * 
      * @since 3.0
      */
@@ -188,8 +180,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     public static final String OUTPUT_ENCODING_PROPERTY_NAME = "org.apache.tapestry.output-encoding";
 
     /**
-     * The default encoding that will be used when generating the output. It is
-     * used if no output encoding property has been specified.
+     * The default encoding that will be used when generating the output. It is used if no output
+     * encoding property has been specified.
      * 
      * @since 3.0
      */
@@ -203,50 +195,39 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private Locale _locale;
 
     /**
-     * Set by {@link #setLocale(Locale)}when the locale is changed; this allows
-     * the locale cookie to be updated.
+     * Set by {@link #setLocale(Locale)}when the locale is changed; this allows the locale cookie
+     * to be updated.
      */
 
     private boolean _localeChanged;
 
     /**
-     * The name of the application specification property used to specify the
-     * class of the visit object.
+     * The name of the application specification property used to specify the class of the visit
+     * object.
      */
 
     public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
 
     /**
-     * If true (set from JVM system parameter
-     * <code>org.apache.tapestry.enable-reset-service</code>) then the reset
-     * service will be enabled, allowing the cache of pages, specifications and
+     * If true (set from JVM system parameter <code>org.apache.tapestry.enable-reset-service</code>)
+     * then the reset service will be enabled, allowing the cache of pages, specifications and
      * template to be cleared on demand.
      */
 
-    private static final boolean _resetServiceEnabled = Boolean.getBoolean("org.apache.tapestry.enable-reset-service");
+    private static final boolean _resetServiceEnabled = Boolean
+            .getBoolean("org.apache.tapestry.enable-reset-service");
 
     /**
-     * If true (set from the JVM system parameter
-     * <code>org.apache.tapestry.disable-caching</code>) then the cache of
-     * pages, specifications and template will be cleared after each request.
+     * If true (set from the JVM system parameter <code>org.apache.tapestry.disable-caching</code>)
+     * then the cache of pages, specifications and template will be cleared after each request.
      */
 
-    private static final boolean _disableCaching = Boolean.getBoolean("org.apache.tapestry.disable-caching");
+    private static final boolean _disableCaching = Boolean
+            .getBoolean("org.apache.tapestry.disable-caching");
 
     /**
-     * Map from service name to service instance.
-     * 
-     * @since 1.0.9
-     */
-
-    private transient Map _serviceMap;
-
-    protected static final String SERVICE_MAP_NAME = "org.apache.tapestry.ServiceMap";
-
-    /**
-     * Set to true when there is a (potential) change to the internal state of
-     * the engine, set to false when the engine is stored into the
-     * {@link HttpSession}.
+     * Set to true when there is a (potential) change to the internal state of the engine, set to
+     * false when the engine is stored into the {@link HttpSession}.
      * 
      * @since 3.0
      */
@@ -262,15 +243,14 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private transient IMonitorFactory _monitorFactory;
 
     /**
-     * Sets the Exception page's exception property, then renders the Exception
-     * page.
+     * Sets the Exception page's exception property, then renders the Exception page.
      * <p>
-     * If the render throws an exception, then copious output is sent to
-     * <code>System.err</code> and a {@link ServletException}is thrown.
+     * If the render throws an exception, then copious output is sent to <code>System.err</code>
+     * and a {@link ServletException}is thrown.
      */
 
-    protected void activateExceptionPage(IRequestCycle cycle, ResponseOutputStream output, Throwable cause)
-            throws ServletException
+    protected void activateExceptionPage(IRequestCycle cycle, ResponseOutputStream output,
+            Throwable cause) throws ServletException
     {
         try
         {
@@ -288,12 +268,16 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             // Worst case scenario. The exception page itself is broken, leaving
             // us with no option but to write the cause to the output.
 
-            reportException(Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"), cause);
+            reportException(
+                    Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"),
+                    cause);
 
             // Also, write the exception thrown when redendering the exception
             // page, so that can get fixed as well.
 
-            reportException(Tapestry.getMessage("AbstractEngine.unable-to-present-exception-page"), ex);
+            reportException(
+                    Tapestry.getMessage("AbstractEngine.unable-to-present-exception-page"),
+                    ex);
 
             // And throw the exception.
 
@@ -313,8 +297,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         System.err.println(reportTitle);
 
-        System.err.println("\n\n      Session id: " + _sessionId + "\n  Client address: " + _clientAddress
-                + "\n\nExceptions:\n");
+        System.err.println("\n\n      Session id: " + _sessionId + "\n  Client address: "
+                + _clientAddress + "\n\nExceptions:\n");
 
         new ExceptionAnalyzer().reportException(ex, System.err);
 
@@ -323,17 +307,16 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked at the end of the request cycle to release any resources specific
-     * to the request cycle.
+     * Invoked at the end of the request cycle to release any resources specific to the request
+     * cycle.
      */
 
     protected abstract void cleanupAfterRequest(IRequestCycle cycle);
 
     /**
-     * Extends the description of the class generated by {@link #toString()}.
-     * If a subclass adds additional instance variables that should be described
-     * in the instance description, it may overide this method. This
-     * implementation does nothing.
+     * Extends the description of the class generated by {@link #toString()}. If a subclass adds
+     * additional instance variables that should be described in the instance description, it may
+     * overide this method. This implementation does nothing.
      * 
      * @see #toString()
      */
@@ -344,8 +327,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Returns the locale for the engine. This is initially set by the
-     * {@link ApplicationServlet}but may be updated by the application.
+     * Returns the locale for the engine. This is initially set by the {@link ApplicationServlet}
+     * but may be updated by the application.
      */
 
     public Locale getLocale()
@@ -354,16 +337,15 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Overriden in subclasses that support monitoring. Should create and return
-     * an instance of {@link IMonitor}that is appropriate for the request cycle
-     * described by the {@link RequestContext}.
+     * Overriden in subclasses that support monitoring. Should create and return an instance of
+     * {@link IMonitor}that is appropriate for the request cycle described by the
+     * {@link RequestContext}.
      * <p>
      * The monitor is used to create a {@link RequestCycle}.
      * <p>
-     * This implementation uses a {@link IMonitorFactory}to create the monitor
-     * instance. The factory is provided as an application extension. If the
-     * application extension does not exist, {@link DefaultMonitorFactory}is
-     * used.
+     * This implementation uses a {@link IMonitorFactory}to create the monitor instance. The
+     * factory is provided as an application extension. If the application extension does not exist,
+     * {@link DefaultMonitorFactory}is used.
      * <p>
      * As of release 3.0, this method should <em>not</em> return null.
      */
@@ -375,7 +357,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             IApplicationSpecification spec = getSpecification();
 
             if (spec.checkExtension(Tapestry.MONITOR_FACTORY_EXTENSION_NAME))
-                _monitorFactory = (IMonitorFactory) spec.getExtension(Tapestry.MONITOR_FACTORY_EXTENSION_NAME,
+                _monitorFactory = (IMonitorFactory) spec.getExtension(
+                        Tapestry.MONITOR_FACTORY_EXTENSION_NAME,
                         IMonitorFactory.class);
             else
                 _monitorFactory = DefaultMonitorFactory.SHARED;
@@ -384,24 +367,23 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         return _monitorFactory.createMonitor(context);
     }
 
+    /** @see Infrastructure#getPageSource() */
+
     public IPageSource getPageSource()
     {
         return _infrastructure.getPageSource();
     }
 
     /**
-     * Returns a service with the given name. Services are created by the first
-     * call to {@link #setupForRequest(RequestContext)}.
+     * Returns a service with the given name.
+     * 
+     * @see Infrastructure#getServiceMap()
+     * @see org.apache.tapestry.services.ServiceMap
      */
 
     public IEngineService getService(String name)
     {
-        IEngineService result = (IEngineService) _serviceMap.get(name);
-
-        if (result == null)
-            throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.unknown-service", name));
-
-        return result;
+        return _infrastructure.getServiceMap().getService(name);
     }
 
     public String getServletPath()
@@ -410,8 +392,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Returns the context path, the prefix to apply to any URLs so that they
-     * are recognized as belonging to the Servlet 2.2 context.
+     * Returns the context path, the prefix to apply to any URLs so that they are recognized as
+     * belonging to the Servlet 2.2 context.
      * 
      * @see org.apache.tapestry.asset.ContextAsset
      */
@@ -421,25 +403,21 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         return _contextPath;
     }
 
-    /**
-     * Returns the specification, if available, or null otherwise.
-     * <p>
-     * To facilitate deployment across multiple servlet containers, the
-     * application is serializable. However, the reference to the specification
-     * is transient. When an application instance is deserialized, it reconnects
-     * with the application specification by locating it in the
-     * {@link ServletContext}or parsing it fresh.
-     */
+    /** @see Infrastructure#getApplicationSpecification() */
 
     public IApplicationSpecification getSpecification()
     {
         return _infrastructure.getApplicationSpecification();
     }
 
+    /** @see Infrastructure#getSpecificationSource() */
+
     public ISpecificationSource getSpecificationSource()
     {
         return _infrastructure.getSpecificationSource();
     }
+
+    /** @see Infrastructure#getTemplateSource() */
 
     public TemplateSource getTemplateSource()
     {
@@ -449,8 +427,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /**
      * Reads the state serialized by {@link #writeExternal(ObjectOutput)}.
      * <p>
-     * This always set the stateful flag. By default, a deserialized session is
-     * stateful (else, it would not have been serialized).
+     * This always set the stateful flag. By default, a deserialized session is stateful (else, it
+     * would not have been serialized).
      */
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
@@ -478,8 +456,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked, typically, when an exception occurs while servicing the request.
-     * This method resets the output, sets the new page and renders it.
+     * Invoked, typically, when an exception occurs while servicing the request. This method resets
+     * the output, sets the new page and renders it.
      */
 
     protected void redirect(String pageName, IRequestCycle cycle, ResponseOutputStream out,
@@ -496,7 +474,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         renderResponse(cycle, out);
     }
 
-    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output) throws ServletException, IOException
+    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
+            throws ServletException, IOException
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Begin render response.");
@@ -553,11 +532,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invalidates the session, then redirects the client web browser to the
-     * servlet's prefix, starting a new visit.
+     * Invalidates the session, then redirects the client web browser to the servlet's prefix,
+     * starting a new visit.
      * <p>
-     * Subclasses should perform their own restart (if necessary, which is
-     * rarely) before invoking this implementation.
+     * Subclasses should perform their own restart (if necessary, which is rarely) before invoking
+     * this implementation.
      */
 
     public void restart(IRequestCycle cycle) throws IOException
@@ -741,7 +720,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
                 }
                 catch (Exception ex)
                 {
-                    reportException(Tapestry.getMessage("AbstractEngine.exception-during-cache-clear"), ex);
+                    reportException(Tapestry
+                            .getMessage("AbstractEngine.exception-during-cache-clear"), ex);
                 }
             }
 
@@ -755,9 +735,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     /**
      * Handles {@link PageRedirectException}which involves executing
-     * {@link IPage#validate(IRequestCycle)}on the target page (of the
-     * exception), until either a loop is found, or a page succesfully validates
-     * and can be activated.
+     * {@link IPage#validate(IRequestCycle)}on the target page (of the exception), until either a
+     * loop is found, or a page succesfully validates and can be activated.
      * <p>
      * This should generally not be overriden in subclasses.
      * 
@@ -791,8 +770,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
                     buffer.append(pageNames.get(i));
                 }
 
-                throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.validate-cycle", buffer
-                        .toString()));
+                throw new ApplicationRuntimeException(Tapestry.format(
+                        "AbstractEngine.validate-cycle",
+                        buffer.toString()));
             }
 
             // Record that this page has been a target.
@@ -821,42 +801,39 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked from {@link #service(RequestContext)}to create an instance of
-     * {@link IRequestCycle}for the current request. This implementation
-     * creates an returns an instance of {@link RequestCycle}.
+     * Invoked from {@link #service(RequestContext)}to create an instance of {@link IRequestCycle}
+     * for the current request. This implementation creates an returns an instance of
+     * {@link RequestCycle}.
      * 
      * @since 3.0
      */
 
-    protected IRequestCycle createRequestCycle(RequestContext context, IEngineService service, IMonitor monitor)
+    protected IRequestCycle createRequestCycle(RequestContext context, IEngineService service,
+            IMonitor monitor)
     {
         return new RequestCycle(this, context, service, monitor);
     }
 
     /**
-     * Invoked by {@link #service(RequestContext)}if a
-     * {@link StaleLinkException}is thrown by the
-     * {@link IEngineService service}. This implementation sets the message
-     * property of the StaleLink page to the message provided in the exception,
-     * then invokes
+     * Invoked by {@link #service(RequestContext)}if a {@link StaleLinkException}is thrown by the
+     * {@link IEngineService service}. This implementation sets the message property of the
+     * StaleLink page to the message provided in the exception, then invokes
      * {@link #redirect(String, IRequestCycle, ResponseOutputStream, ApplicationRuntimeException)}
      * to render the StaleLink page.
      * <p>
-     * Subclasses may overide this method (without invoking this
-     * implementation). A common practice is to present an error message on the
-     * application's Home page.
+     * Subclasses may overide this method (without invoking this implementation). A common practice
+     * is to present an error message on the application's Home page.
      * <p>
-     * Alternately, the application may provide its own version of the StaleLink
-     * page, overriding the framework's implementation (probably a good idea,
-     * because the default page hints at "application errors" and isn't
-     * localized). The overriding StaleLink implementation must implement a
-     * message property of type String.
+     * Alternately, the application may provide its own version of the StaleLink page, overriding
+     * the framework's implementation (probably a good idea, because the default page hints at
+     * "application errors" and isn't localized). The overriding StaleLink implementation must
+     * implement a message property of type String.
      * 
      * @since 0.2.10
      */
 
-    protected void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle, ResponseOutputStream output)
-            throws IOException, ServletException
+    protected void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle,
+            ResponseOutputStream output) throws IOException, ServletException
     {
         String staleLinkPageName = getStaleLinkPageName();
         IPage page = cycle.getPage(staleLinkPageName);
@@ -867,15 +844,13 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked by {@link #service(RequestContext)}if a
-     * {@link StaleSessionException}is thrown by the
-     * {@link IEngineService service}. This implementation invokes
+     * Invoked by {@link #service(RequestContext)}if a {@link StaleSessionException}is thrown by
+     * the {@link IEngineService service}. This implementation invokes
      * {@link #redirect(String, IRequestCycle, ResponseOutputStream, ApplicationRuntimeException)}
      * to render the StaleSession page.
      * <p>
-     * Subclasses may overide this method (without invoking this
-     * implementation). A common practice is to present an eror message on the
-     * application's Home page.
+     * Subclasses may overide this method (without invoking this implementation). A common practice
+     * is to present an eror message on the application's Home page.
      * 
      * @since 0.2.10
      */
@@ -887,9 +862,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Discards all cached pages, component specifications and templates.
-     * Subclasses who override this method should invoke this implementation as
-     * well.
+     * Discards all cached pages, component specifications and templates. Subclasses who override
+     * this method should invoke this implementation as well.
      * 
      * @since 1.0.1
      */
@@ -921,18 +895,15 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked from {@link #service(RequestContext)}to ensure that the engine's
-     * instance variables are setup. This allows the application a chance to
-     * restore transient variables that will not have survived deserialization.
-     * Determines the servlet prefix: this is the base URL used by
-     * {@link IEngineService services}to build URLs. It consists of two parts:
-     * the context path and the servlet path.
+     * Invoked from {@link #service(RequestContext)}to ensure that the engine's instance variables
+     * are setup. This allows the application a chance to restore transient variables that will not
+     * have survived deserialization. Determines the servlet prefix: this is the base URL used by
+     * {@link IEngineService services}to build URLs. It consists of two parts: the context path and
+     * the servlet path.
      * <p>
-     * The servlet path is retrieved from
-     * {@link HttpServletRequest#getServletPath()}.
+     * The servlet path is retrieved from {@link HttpServletRequest#getServletPath()}.
      * <p>
-     * The context path is retrieved from
-     * {@link HttpServletRequest#getContextPath()}.
+     * The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
      * <p>
      * The global object is retrieved from {@link IEngine#getGlobal()}method.
      * <p>
@@ -950,12 +921,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * <li>{@link IPropertySource}
      * </ul>
      * <p>
-     * This order is important, because some of the later shared objects depend
-     * on some of the earlier shared objects already having been located or
-     * created (especially {@link #getPool() pool}).
+     * This order is important, because some of the later shared objects depend on some of the
+     * earlier shared objects already having been located or created (especially
+     * {@link #getPool() pool}).
      * <p>
-     * Subclasses should invoke this implementation first, then perform their
-     * own setup.
+     * Subclasses should invoke this implementation first, then perform their own setup.
      */
 
     protected void setupForRequest(RequestContext context)
@@ -995,7 +965,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             // tag
             // will inform us.
 
-            String path = (String) request.getAttribute(Tapestry.TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE);
+            String path = (String) request
+                    .getAttribute(Tapestry.TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE);
 
             if (path == null)
                 path = request.getServletPath();
@@ -1009,20 +980,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         }
 
         String servletName = context.getServlet().getServletName();
-
-        if (_serviceMap == null)
-        {
-            String name = SERVICE_MAP_NAME + ":" + servletName;
-
-            _serviceMap = (Map) servletContext.getAttribute(name);
-
-            if (_serviceMap == null)
-            {
-                _serviceMap = createServiceMap();
-
-                servletContext.setAttribute(name, _serviceMap);
-            }
-        }
 
         if (_global == null)
         {
@@ -1066,20 +1023,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked from {@link #setupForRequest(RequestContext)}to provide a new
-     * instance of {@link IComponentMessagesSource}.
-     * 
-     * @return an instance of {@link DefaultComponentMessagesSource}
-     * @since 2.0.4
-     */
-
-    public ComponentMessagesSource createComponentStringsSource(RequestContext context)
-    {
-        return new ComponentMessagesSourceImpl();
-    }
-
-    /**
-     * Returns an object which can find resources and classes.
+     * @see Infrastructure#getClassResolver()
      */
 
     public ClassResolver getClassResolver()
@@ -1088,9 +1032,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Generates a description of the instance. Invokes
-     * {@link #extendDescription(ToStringBuilder)}to fill in details about the
-     * instance.
+     * Generates a description of the instance. Invokes {@link #extendDescription(ToStringBuilder)}
+     * to fill in details about the instance.
      * 
      * @see #extendDescription(ToStringBuilder)
      */
@@ -1119,9 +1062,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Implemented by subclasses to return the names of the active pages (pages
-     * for which recorders exist). May return the empty list, but should not
-     * return null.
+     * Implemented by subclasses to return the names of the active pages (pages for which recorders
+     * exist). May return the empty list, but should not return null.
      */
 
     abstract public Collection getActivePageNames();
@@ -1129,8 +1071,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /**
      * Gets the visit object, if it has been created already.
      * <p>
-     * If the visit is non-null then the {@link #isDirty()}flag is set (because
-     * the engine can't tell what the caller will <i>do </i> with the visit).
+     * If the visit is non-null then the {@link #isDirty()}flag is set (because the engine can't
+     * tell what the caller will <i>do </i> with the visit).
      */
 
     public Object getVisit()
@@ -1142,12 +1084,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Gets the visit object, invoking {@link #createVisit(IRequestCycle)}to
-     * create it lazily if needed. If cycle is null, the visit will not be
-     * lazily created.
+     * Gets the visit object, invoking {@link #createVisit(IRequestCycle)}to create it lazily if
+     * needed. If cycle is null, the visit will not be lazily created.
      * <p>
-     * After creating the visit, but before returning, the {@link HttpSession}
-     * will be created, and {@link #setStateful()}will be invoked.
+     * After creating the visit, but before returning, the {@link HttpSession}will be created, and
+     * {@link #setStateful()}will be invoked.
      * <p>
      * Sets the {@link #isDirty()}flag, if the return value is not null.
      */
@@ -1189,13 +1130,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked to lazily create a new visit object when it is first referenced
-     * (by {@link #getVisit(IRequestCycle)}). This implementation works by
-     * looking up the name of the class to instantiate in the
-     * {@link #getPropertySource() configuration}.
+     * Invoked to lazily create a new visit object when it is first referenced (by
+     * {@link #getVisit(IRequestCycle)}). This implementation works by looking up the name of the
+     * class to instantiate in the {@link #getPropertySource() configuration}.
      * <p>
-     * Subclasses may want to overide this method if some other means of
-     * instantiating a visit object is required.
+     * Subclasses may want to overide this method if some other means of instantiating a visit
+     * object is required.
      */
 
     protected Object createVisit(IRequestCycle cycle)
@@ -1217,7 +1157,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         }
         catch (Throwable t)
         {
-            throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.unable-to-instantiate-visit",
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "AbstractEngine.unable-to-instantiate-visit",
                     visitClassName), t);
         }
 
@@ -1225,13 +1166,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Returns the global object for the application. The global object is
-     * created at the start of the request (
-     * {@link #setupForRequest(RequestContext)}invokes
+     * Returns the global object for the application. The global object is created at the start of
+     * the request ({@link #setupForRequest(RequestContext)}invokes
      * {@link #createGlobal(RequestContext)}if needed), and is stored into the
-     * {@link ServletContext}. All instances of the engine for the application
-     * share the global object; however, the global object is explicitly
-     * <em>not</em> replicated to other servers within a cluster.
+     * {@link ServletContext}. All instances of the engine for the application share the global
+     * object; however, the global object is explicitly <em>not</em> replicated to other servers
+     * within a cluster.
      * 
      * @since 2.3
      */
@@ -1252,10 +1192,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked by subclasses to indicate that some state must now be stored in
-     * the engine (and that the engine should now be stored in the HttpSession).
-     * The caller is responsible for actually creating the HttpSession (it will
-     * have access to the {@link RequestContext}).
+     * Invoked by subclasses to indicate that some state must now be stored in the engine (and that
+     * the engine should now be stored in the HttpSession). The caller is responsible for actually
+     * creating the HttpSession (it will have access to the {@link RequestContext}).
      * 
      * @since 1.0.2
      */
@@ -1279,91 +1218,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         return _listeners;
     }
 
-    private static class RedirectAnalyzer
-    {
-        private boolean _internal;
-
-        private String _location;
-
-        private RedirectAnalyzer(String location)
-        {
-            if (Tapestry.isBlank(location))
-            {
-                _location = "";
-                _internal = true;
-
-                return;
-            }
-
-            _location = location;
-
-            _internal = !(location.startsWith("/") || location.indexOf("://") > 0);
-        }
-
-        public void process(IRequestCycle cycle)
-        {
-            RequestContext context = cycle.getRequestContext();
-
-            if (_internal)
-                forward(context);
-            else
-                redirect(context);
-        }
-
-        private void forward(RequestContext context)
-        {
-            HttpServletRequest request = context.getRequest();
-            HttpServletResponse response = context.getResponse();
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/" + _location);
-
-            if (dispatcher == null)
-                throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.unable-to-find-dispatcher",
-                        _location));
-
-            try
-            {
-                dispatcher.forward(request, response);
-            }
-            catch (ServletException ex)
-            {
-                throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.unable-to-forward", _location),
-                        ex);
-            }
-            catch (IOException ex)
-            {
-                throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.unable-to-forward", _location),
-                        ex);
-            }
-        }
-
-        private void redirect(RequestContext context)
-        {
-            HttpServletResponse response = context.getResponse();
-
-            String finalURL = response.encodeRedirectURL(_location);
-
-            try
-            {
-                response.sendRedirect(finalURL);
-            }
-            catch (IOException ex)
-            {
-                throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.unable-to-redirect", _location),
-                        ex);
-            }
-        }
-
-    }
-
     /**
-     * Invoked when a {@link RedirectException}is thrown during the processing
-     * of a request.
+     * Invoked when a {@link RedirectException}is thrown during the processing of a request.
      * 
      * @throws ApplicationRuntimeException
-     *             if an {@link IOException},{@link ServletException}is
-     *             thrown by the redirect, or if no {@link RequestDispatcher}
-     *             can be found for local resource.
+     *             if an {@link IOException},{@link ServletException}is thrown by the redirect,
+     *             or if no {@link RequestDispatcher}can be found for local resource.
      * @since 2.2
      */
 
@@ -1380,119 +1240,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Creates a Map of all the services available to the application.
-     * <p>
-     * Note: the Map returned is not synchronized, on the theory that returned
-     * map is not further modified and therefore threadsafe.
-     */
-
-    private Map createServiceMap()
-    {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Creating service map.");
-
-        ISpecificationSource source = getSpecificationSource();
-
-        // Build the initial version of the result map,
-        // where each value is the *name* of a class.
-
-        Map result = new HashMap();
-
-        // Do the framework first.
-
-        addServices(source.getFrameworkNamespace(), result);
-
-        // And allow the application to override the framework.
-
-        addServices(source.getApplicationNamespace(), result);
-
-        ClassResolver resolver = getClassResolver();
-
-        Iterator i = result.entrySet().iterator();
-
-        while (i.hasNext())
-        {
-            Map.Entry entry = (Map.Entry) i.next();
-
-            String name = (String) entry.getKey();
-            String className = (String) entry.getValue();
-
-            if (LOG.isDebugEnabled())
-                LOG.debug("Creating service " + name + " as instance of " + className);
-
-            Class serviceClass = resolver.findClass(className);
-
-            try
-            {
-                IEngineService service = (IEngineService) serviceClass.newInstance();
-                String serviceName = service.getName();
-
-                if (!service.getName().equals(name))
-                    throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.service-name-mismatch", name,
-                            className, serviceName));
-
-                // Replace the class name with an instance
-                // of the named class.
-
-                entry.setValue(service);
-            }
-            catch (InstantiationException ex)
-            {
-                String message = Tapestry.format("AbstractEngine.unable-to-instantiate-service", name, className);
-
-                LOG.error(message, ex);
-
-                throw new ApplicationRuntimeException(message, ex);
-            }
-            catch (IllegalAccessException ex)
-            {
-                String message = Tapestry.format("AbstractEngine.unable-to-instantiate-service", name, className);
-
-                LOG.error(message, ex);
-
-                throw new ApplicationRuntimeException(message, ex);
-            }
-        }
-
-        // Result should not be modified after this point, for threadsafety
-        // issues.
-        // We could wrap it in an unmodifiable, but for efficiency we don't.
-
-        return result;
-    }
-
-    /**
-     * Locates all services in the namespace and adds key/value pairs to the map
-     * (name and class name). Then recursively descendends into child namespaces
-     * to collect more service names.
-     * 
-     * @since 2.2
-     */
-
-    private void addServices(INamespace namespace, Map map)
-    {
-        List names = namespace.getServiceNames();
-        int count = names.size();
-
-        for (int i = 0; i < count; i++)
-        {
-            String name = (String) names.get(i);
-
-            map.put(name, namespace.getServiceClassName(name));
-        }
-
-        List namespaceIds = namespace.getChildIds();
-        count = namespaceIds.size();
-
-        for (int i = 0; i < count; i++)
-        {
-            String id = (String) namespaceIds.get(i);
-
-            addServices(namespace.getChildNamespace(id), map);
-        }
-    }
-
-    /**
      * @since 2.0.4
      */
 
@@ -1502,7 +1249,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * @since 2.2
+     * @see Infrastructure#getDataSqueezer()
      */
 
     public DataSqueezer getDataSqueezer()
@@ -1511,18 +1258,16 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked from {@link #service(RequestContext)}to extract, from the URL,
-     * the name of the service. The current implementation expects the first
-     * pathInfo element to be the service name. At some point in the future, the
-     * method of constructing and parsing URLs may be abstracted into a
-     * developer-selected class.
+     * Invoked from {@link #service(RequestContext)}to extract, from the URL, the name of the
+     * service. The current implementation expects the first pathInfo element to be the service
+     * name. At some point in the future, the method of constructing and parsing URLs may be
+     * abstracted into a developer-selected class.
      * <p>
-     * Subclasses may override this method if the application defines specific
-     * services with unusual URL encoding rules.
+     * Subclasses may override this method if the application defines specific services with unusual
+     * URL encoding rules.
      * <p>
      * This implementation simply extracts the value for query parameter
-     * {@link Tapestry#SERVICE_QUERY_PARAMETER_NAME}and extracts the service
-     * name from that.
+     * {@link Tapestry#SERVICE_QUERY_PARAMETER_NAME}and extracts the service name from that.
      * <p>
      * For supporting the JSP tags, this method first checks for attribute
      * {@link Tapestry#TAG_SUPPORT_SERVICE_ATTRIBUTE}. If non-null, then
@@ -1581,11 +1326,10 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Creates the shared Global object. This implementation looks for an
-     * configuration property, <code>org.apache.tapestry.global-class</code>,
-     * and instantiates that class using a no-arguments constructor. If the
-     * property is not defined, a synchronized {@link java.util.HashMap}is
-     * created.
+     * Creates the shared Global object. This implementation looks for an configuration property,
+     * <code>org.apache.tapestry.global-class</code>, and instantiates that class using a
+     * no-arguments constructor. If the property is not defined, a synchronized
+     * {@link java.util.HashMap}is created.
      * 
      * @since 2.3
      */
@@ -1605,19 +1349,20 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format("AbstractEngine.unable-to-instantiate-global",
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "AbstractEngine.unable-to-instantiate-global",
                     className), ex);
         }
     }
 
-    /** @since 3.0 */
+    /** @see Infrastructure#getObjectPool() */
 
     public ObjectPool getPool()
     {
         return _infrastructure.getObjectPool();
     }
 
-    /** @since 3.0 */
+    /** @see Infrastructure#getComponentClassEnhancer() */
 
     public IComponentClassEnhancer getComponentClassEnhancer()
     {
@@ -1625,9 +1370,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Returns true if the engine has (potentially) changed state since the last
-     * time it was stored into the {@link javax.servlet.http.HttpSession}.
-     * Various events set this property to true.
+     * Returns true if the engine has (potentially) changed state since the last time it was stored
+     * into the {@link javax.servlet.http.HttpSession}. Various events set this property to true.
      * 
      * @since 3.0
      */
@@ -1638,8 +1382,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Invoked to set the dirty flag, indicating that the engine should be
-     * stored into the {@link javax.servlet.http.HttpSession}.
+     * Invoked to set the dirty flag, indicating that the engine should be stored into the
+     * {@link javax.servlet.http.HttpSession}.
      * 
      * @since 3.0
      */
@@ -1653,8 +1397,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Clears the dirty flag when a engine is stored into the
-     * {@link HttpSession}.
+     * Clears the dirty flag when a engine is stored into the {@link HttpSession}.
      * 
      * @since 3.0
      */
@@ -1677,8 +1420,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * The encoding to be used if none has been defined using the output
-     * encoding property. Override this method to change the default.
+     * The encoding to be used if none has been defined using the output encoding property. Override
+     * this method to change the default.
      * 
      * @return the default output encoding
      * @since 3.0
@@ -1689,9 +1432,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Returns the encoding to be used to generate the servlet responses and
-     * accept the servlet requests. The encoding is defined using the
-     * org.apache.tapestry.output-encoding and is UTF-8 by default
+     * Returns the encoding to be used to generate the servlet responses and accept the servlet
+     * requests. The encoding is defined using the org.apache.tapestry.output-encoding and is UTF-8
+     * by default
      * 
      * @since 3.0
      * @see org.apache.tapestry.IEngine#getOutputEncoding()
