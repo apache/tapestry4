@@ -262,7 +262,10 @@ public abstract class AbstractBinding implements IBinding
         String key =
             type.isInterface() ? "AbstractBinding.wrong-interface" : "AbstractBinding.wrong-type";
 
-        String message = Tapestry.getString(key, parameterName, result, type.getName());
+        String message =
+            Tapestry.getString(
+                key,
+                new Object[] { parameterName, result, resultClass.getName(), type.getName()});
 
         throw new BindingException(message, this);
     }

@@ -97,8 +97,8 @@ public class TestBindings extends TapestryTestCase
 
         private TestBinding(Object object)
         {
-        	super(null);
-        	
+            super(null);
+
             _object = object;
         }
 
@@ -165,14 +165,22 @@ public class TestBindings extends TapestryTestCase
 
     public void testGetObject()
     {
-        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.STRING_FIELD", null);
+        IBinding binding =
+            new FieldBinding(
+                _resolver,
+                "org.apache.tapestry.junit.TestBindings.STRING_FIELD",
+                null);
 
         assertEquals("Object", STRING_FIELD, binding.getObject());
     }
 
     public void testToString()
     {
-        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.STRING_FIELD", null);
+        IBinding binding =
+            new FieldBinding(
+                _resolver,
+                "org.apache.tapestry.junit.TestBindings.STRING_FIELD",
+                null);
 
         assertEquals(
             "String value (before access)",
@@ -215,7 +223,11 @@ public class TestBindings extends TapestryTestCase
 
     public void testMissingField()
     {
-        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.MISSING_FIELD", null);
+        IBinding binding =
+            new FieldBinding(
+                _resolver,
+                "org.apache.tapestry.junit.TestBindings.MISSING_FIELD",
+                null);
 
         try
         {
@@ -225,7 +237,9 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Field org.apache.tapestry.junit.TestBindings.MISSING_FIELD does not exist.");
+            checkException(
+                ex,
+                "Field org.apache.tapestry.junit.TestBindings.MISSING_FIELD does not exist.");
 
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -235,7 +249,11 @@ public class TestBindings extends TapestryTestCase
 
     public void testInstanceAccess()
     {
-        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.INSTANCE_FIELD", null);
+        IBinding binding =
+            new FieldBinding(
+                _resolver,
+                "org.apache.tapestry.junit.TestBindings.INSTANCE_FIELD",
+                null);
 
         try
         {
@@ -427,7 +445,10 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Parameter foo (Hello) is not type java.lang.Number.");
+            assertEquals(
+                "Parameter foo (Hello) is an instance of java.lang.String, "
+                    + "which does not inherit from java.lang.Number.",
+                ex.getMessage());
 
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -443,7 +464,10 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Parameter bar (Goodbye) does not implement interface org.apache.tapestry.IRequestCycle.");
+            assertEquals(
+                "Parameter bar (Goodbye) is an instance of java.lang.String, which does not "
+                    + "implement interface org.apache.tapestry.IRequestCycle.",
+                ex.getMessage());
 
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -687,7 +711,9 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Inappropriate invocation of getInt() on instance of ListenerBinding.");
+            checkException(
+                ex,
+                "Inappropriate invocation of getInt() on instance of ListenerBinding.");
         }
     }
 
@@ -705,7 +731,9 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(ex, "Inappropriate invocation of getDouble() on instance of ListenerBinding.");
+            checkException(
+                ex,
+                "Inappropriate invocation of getDouble() on instance of ListenerBinding.");
         }
     }
 
@@ -717,16 +745,16 @@ public class TestBindings extends TapestryTestCase
 
         assertSame(b, b.getObject());
     }
-    
+
     /** @since 3.0 **/
-    
+
     public void testStringBinding()
     {
-    	IComponent c = new MockPage();
-    	
-    	StringBinding b = new StringBinding(c, "foo", null);
-    	
-    	assertSame(c, b.getComponent());
-    	assertEquals("foo", b.getKey());
+        IComponent c = new MockPage();
+
+        StringBinding b = new StringBinding(c, "foo", null);
+
+        assertSame(c, b.getComponent());
+        assertEquals("foo", b.getKey());
     }
 }
