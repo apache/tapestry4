@@ -41,6 +41,8 @@ DOCUMENT_RESOURCE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/document-resources
 HTML_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/html
 VALID_PARSE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/valid-parse
 
+HTML_PACKAGE_FILE := $(basename $(MAIN_DOCUMENT)).tar.gz
+
 DISTRO_STAMP_FILE := $(DOCBOOK_DIR)/.distro-stamp
 
 DOCBOOK_DISTROS := \
@@ -85,7 +87,6 @@ $(VALID_PARSE_STAMP_FILE): $(MAIN_DOCUMENT) $(OTHER_DOC_FILES)
 	$(call NOTE, "Validating $(MAIN_DOCUMENT) ...")
 	$(ONSGMLS) $(CATALOG_OPT) -s $(MAIN_DOCUMENT)
 	@$(TOUCH) $@
-
 
 MOD_HTML_VARIABLE_DEFS := \
 	%html-ext%=.html \
@@ -132,7 +133,7 @@ $(HTML_STAMP_FILE): $(DOCUMENT_RESOURCE_STAMP_FILE)  \
 
 clean:
 	$(call  NOTE, "Cleaning ...")
-	@$(RM) $(HTML_DIR) $(SYS_BUILD_DIR_NAME)
+	@$(RM) $(HTML_DIR) $(SYS_BUILD_DIR_NAME) $(HTML_PACKAGE)
 	
 FINAL_HTML_INSTALL_DIR := \
 	$(firstword $(HTML_INSTALL_DIR) $(INSTALL_DIR))
@@ -145,7 +146,11 @@ endif
 	@$(MKDIRS) $(FINAL_HTML_INSTALL_DIR)
 	@$(call COPY_TREE, $(HTML_DIR), . , $(FINAL_HTML_INSTALL_DIR))	
 
+package-html: $(HTML_PACKAGE_FILE)
 
+$(HTML_PACKAGE_FILE): html
+	$(call NOTE, Packaging HTML as $(HTML_PACKAGE_FILE) ...)
+	$(GNUTAR) czf $(HTML_PACKAGE_FILE) --directory=$(HTML_DIR) .
 
 # Rules for dealing with DOCUMENT_RESOURCES, generally images (or directories of images)
 # that should be included with the generated HTML. 
@@ -171,5 +176,6 @@ documentation: $(FINAL_FORMATS)
 
 install: $(addprefix install-,$(FINAL_FORMATS))
 
-.PHONY: default html initialize install-html documentation
+.PHONY: html install-html package-html
+.PHONY: default documentation initialize clean
 .PHONY: install
