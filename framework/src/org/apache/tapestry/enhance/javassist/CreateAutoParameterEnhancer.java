@@ -193,7 +193,7 @@ public class CreateAutoParameterEnhancer implements IEnhancer
 
         try
         {
-            CtMethod method = cf.createAccessor(_type, _propertyName, null);
+            CtMethod method = cf.createAccessor(_type, _propertyName, _readMethodName);
             method.setBody(readMethodBody);
             cf.addMethod(method);
         }
