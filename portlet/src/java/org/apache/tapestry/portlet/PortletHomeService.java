@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.HomeService;
-import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
  * Replacement for the standard home service, used by Portlets. This exists to handle the special
@@ -34,18 +33,18 @@ public class PortletHomeService extends HomeService
 
     private PortletRequestGlobals _requestGlobals;
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         if (_requestGlobals.isRenderRequest())
         {
             String pageName = getPageName();
 
-            _portletRenderer.renderPage(cycle, pageName, output);
+            _portletRenderer.renderPage(cycle, pageName);
 
             return;
         }
 
-        super.service(cycle, output);
+        super.service(cycle);
     }
 
     public void setPortletRenderer(PortletRenderer portletRenderer)

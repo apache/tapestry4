@@ -14,12 +14,17 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Responsible for rendering a response to the client.
@@ -31,47 +36,55 @@ public class ResponseRendererImpl implements ResponseRenderer
 {
     private RequestLocaleManager _localeManager;
 
-    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
+    private MarkupWriterSource _markupWriterSource;
+
+    private WebResponse _webResponse;
+
+    /**
+     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
+     * "charset".
+     */
+
+    public static final String ENCODING_KEY = "charset";
+
+    public void renderResponse(IRequestCycle cycle) throws IOException
     {
         _localeManager.persistLocale();
 
         IPage page = cycle.getPage();
 
-        IMarkupWriter writer = page.getResponseWriter(output);
+        ContentType contentType = page.getResponseContentType();
 
-        output.setContentType(writer.getContentType());
+        String encoding = contentType.getParameter(ENCODING_KEY);
 
-        boolean discard = true;
-
-        try
+        if (encoding == null)
         {
-            cycle.renderPage(writer);
+            encoding = cycle.getEngine().getOutputEncoding();
 
-            discard = false;
+            contentType.setParameter(ENCODING_KEY, encoding);
         }
-        finally
-        {
-            // Closing the writer closes its PrintWriter and a whole stack of
-            // java.io objects,
-            // which tend to stream a lot of output that eventually hits the
-            // ResponseOutputStream. If we are discarding output anyway (due to
-            // an exception
-            // getting thrown during the render), we can save ourselves some
-            // trouble
-            // by ignoring it.
 
-            if (discard)
-                output.setDiscard(true);
+        PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
 
-            writer.close();
+        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
 
-            if (discard)
-                output.setDiscard(false);
-        }
+        cycle.renderPage(writer);
+
+        writer.close();
     }
 
     public void setLocaleManager(RequestLocaleManager localeManager)
     {
         _localeManager = localeManager;
+    }
+
+    public void setMarkupWriterSource(MarkupWriterSource markupWriterSource)
+    {
+        _markupWriterSource = markupWriterSource;
+    }
+
+    public void setWebResponse(WebResponse webResponse)
+    {
+        _webResponse = webResponse;
     }
 }

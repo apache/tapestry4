@@ -42,7 +42,6 @@ import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.listener.ListenerMap;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -128,8 +127,7 @@ public abstract class AbstractEngine implements IEngine
      * and a {@link ServletException}is thrown.
      */
 
-    protected void activateExceptionPage(IRequestCycle cycle, ResponseOutputStream output,
-            Throwable cause)
+    protected void activateExceptionPage(IRequestCycle cycle, Throwable cause)
     {
         try
         {
@@ -139,7 +137,7 @@ public abstract class AbstractEngine implements IEngine
 
             cycle.activate(exceptionPage);
 
-            renderResponse(cycle, output);
+            renderResponse(cycle);
 
         }
         catch (Throwable ex)
@@ -221,28 +219,24 @@ public abstract class AbstractEngine implements IEngine
      * the output, sets the new page and renders it.
      */
 
-    protected void redirect(String pageName, IRequestCycle cycle, ResponseOutputStream out,
-            ApplicationRuntimeException exception) throws IOException, ServletException
+    protected void redirect(String pageName, IRequestCycle cycle,
+            ApplicationRuntimeException exception) throws IOException
     {
-        // Discard any output from the previous page.
-
-        out.reset();
-
         IPage page = cycle.getPage(pageName);
 
         cycle.activate(page);
 
-        renderResponse(cycle, out);
+        renderResponse(cycle);
     }
 
     /**
      * Delegates to
-     * {@link org.apache.tapestry.services.ResponseRenderer#renderResponse(IRequestCycle, ResponseOutputStream)}.
+     * {@link org.apache.tapestry.services.ResponseRenderer#renderResponse(IRequestCycle)}.
      */
 
-    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
+    public void renderResponse(IRequestCycle cycle) throws IOException
     {
-        _infrastructure.getResponseRenderer().renderResponse(cycle, output);
+        _infrastructure.getResponseRenderer().renderResponse(cycle);
     }
 
     /**
@@ -254,23 +248,9 @@ public abstract class AbstractEngine implements IEngine
         IRequestCycle cycle = null;
         IMonitor monitor = null;
         IEngineService service = null;
-        ResponseOutputStream output = null;
 
         if (_infrastructure == null)
             _infrastructure = (Infrastructure) request.getAttribute(Constants.INFRASTRUCTURE_KEY);
-
-        try
-        {
-            // TODO: this would work better if it was obtained from the WebResponse object.
-            
-            output = new ResponseOutputStream(response);
-        }
-        catch (Exception ex)
-        {
-            reportException(Tapestry.getMessage("AbstractEngine.unable-to-begin-request"), ex);
-
-            throw new ApplicationRuntimeException(ex.getMessage(), ex);
-        }
 
         try
         {
@@ -290,13 +270,13 @@ public abstract class AbstractEngine implements IEngine
                 // Invoke the service, which returns true if it may have changed
                 // the state of the engine (most do return true).
 
-                service.service(cycle, output);
+                service.service(cycle);
 
                 return;
             }
             catch (PageRedirectException ex)
             {
-                handlePageRedirectException(ex, cycle, output);
+                handlePageRedirectException(cycle, ex);
             }
             catch (RedirectException ex)
             {
@@ -304,34 +284,25 @@ public abstract class AbstractEngine implements IEngine
             }
             catch (StaleLinkException ex)
             {
-                handleStaleLinkException(ex, cycle, output);
+                handleStaleLinkException(cycle, ex);
             }
             catch (StaleSessionException ex)
             {
-                handleStaleSessionException(ex, cycle, output);
+                handleStaleSessionException(cycle, ex);
             }
         }
         catch (Exception ex)
         {
             monitor.serviceException(ex);
 
-            // Discard any output (if possible). If output has already been sent
-            // to
-            // the client, then things get dicey. Note that this block
-            // gets activated if the StaleLink or StaleSession pages throws
-            // any kind of exception.
-
             // Attempt to switch to the exception page. However, this may itself
-            // fail
-            // for a number of reasons, in which case a ServletException is
+            // fail for a number of reasons, in which case a ApplicationRuntimeException is
             // thrown.
-
-            output.reset();
 
             if (LOG.isDebugEnabled())
                 LOG.debug("Uncaught exception", ex);
 
-            activateExceptionPage(cycle, output, ex);
+            activateExceptionPage(cycle, ex);
         }
         finally
         {
@@ -342,12 +313,6 @@ public abstract class AbstractEngine implements IEngine
             {
                 cycle.cleanup();
                 _infrastructure.getApplicationStateManager().flush();
-
-                // Ensure any buffered output is posted.
-
-                if (output != null)
-                    output.forceFlush();
-
             }
             catch (Exception ex)
             {
@@ -366,12 +331,12 @@ public abstract class AbstractEngine implements IEngine
      * @since 3.0
      */
 
-    protected void handlePageRedirectException(PageRedirectException ex, IRequestCycle cycle,
-            ResponseOutputStream output) throws IOException, ServletException
+    protected void handlePageRedirectException(IRequestCycle cycle, PageRedirectException exception)
+            throws IOException, ServletException
     {
         List pageNames = new ArrayList();
 
-        String pageName = ex.getTargetPageName();
+        String pageName = exception.getTargetPageName();
 
         while (true)
         {
@@ -416,19 +381,15 @@ public abstract class AbstractEngine implements IEngine
             }
         }
 
-        // Discard any output from the previous page.
-
-        output.reset();
-
-        renderResponse(cycle, output);
+        renderResponse(cycle);
     }
 
     /**
      * Invoked by {@link #service(RequestContext)}if a {@link StaleLinkException}is thrown by the
      * {@link IEngineService service}. This implementation sets the message property of the
      * StaleLink page to the message provided in the exception, then invokes
-     * {@link #redirect(String, IRequestCycle, ResponseOutputStream, ApplicationRuntimeException)}
-     * to render the StaleLink page.
+     * {@link #redirect(String, IRequestCycle, ApplicationRuntimeException)}to render the StaleLink
+     * page.
      * <p>
      * Subclasses may overide this method (without invoking this implementation). A common practice
      * is to present an error message on the application's Home page.
@@ -441,22 +402,22 @@ public abstract class AbstractEngine implements IEngine
      * @since 0.2.10
      */
 
-    protected void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle,
-            ResponseOutputStream output) throws IOException, ServletException
+    protected void handleStaleLinkException(IRequestCycle cycle, StaleLinkException exception)
+            throws IOException
     {
         String staleLinkPageName = getStaleLinkPageName();
         IPage page = cycle.getPage(staleLinkPageName);
 
-        page.setProperty("message", ex.getMessage());
+        page.setProperty("message", exception.getMessage());
 
-        redirect(staleLinkPageName, cycle, output, ex);
+        redirect(staleLinkPageName, cycle, exception);
     }
 
     /**
      * Invoked by {@link #service(RequestContext)}if a {@link StaleSessionException}is thrown by
      * the {@link IEngineService service}. This implementation invokes
-     * {@link #redirect(String, IRequestCycle, ResponseOutputStream, ApplicationRuntimeException)}
-     * to render the StaleSession page.
+     * {@link #redirect(String, IRequestCycle, ApplicationRuntimeException)}to render the
+     * StaleSession page.
      * <p>
      * Subclasses may overide this method (without invoking this implementation). A common practice
      * is to present an eror message on the application's Home page.
@@ -464,10 +425,10 @@ public abstract class AbstractEngine implements IEngine
      * @since 0.2.10
      */
 
-    protected void handleStaleSessionException(StaleSessionException ex, IRequestCycle cycle,
-            ResponseOutputStream output) throws IOException, ServletException
+    protected void handleStaleSessionException(IRequestCycle cycle, StaleSessionException exception)
+            throws IOException
     {
-        redirect(getStaleSessionPageName(), cycle, output, ex);
+        redirect(getStaleSessionPageName(), cycle, exception);
     }
 
     /**

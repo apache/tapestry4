@@ -14,16 +14,17 @@
 
 package org.apache.tapestry;
 
-import java.io.OutputStream;
 import java.util.Locale;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ChangeObserver;
+import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
-import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
+import org.apache.tapestry.util.ContentType;
 
 /**
  * A root level component responsible for generating an entire a page within the application.
@@ -112,8 +113,8 @@ public interface IPage extends IComponent
      * <p>
      * This method will notify any {@link PageAttachListener}s.
      * <p>
-     * This method is rarely overriden; to initialize page properties before a render, override
-     * {@link #beginResponse(IMarkupWriter, IRequestCycle)}.
+     * This method is rarely overriden; to initialize page properties before a render, implement the
+     * {@link PageBeginRenderListener}interface.
      */
 
     public void attach(IEngine engine, IRequestCycle cycle);
@@ -124,11 +125,12 @@ public interface IPage extends IComponent
      * <p>
      * The page performs a render using the following steps:
      * <ul>
-     * <li>Invokes {@link PageRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)}
+     * <li>Invokes
+     * {@link PageBeginRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)}
      * <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
      * <li>Invokes {@link IRequestCycle#commitPageChanges()}(if not rewinding)
      * <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
-     * <li>Invokes {@link PageRenderListener#pageEndRender(org.apache.tapestry.event.PageEvent)}
+     * <li>Invokes {@link PageEndRenderListener#pageEndRender(org.apache.tapestry.event.PageEvent)}
      * (this occurs even if a previous step throws an exception).
      * </ul>
      */
@@ -175,11 +177,11 @@ public interface IPage extends IComponent
     public void validate(IRequestCycle cycle);
 
     /**
-     * Invoked to create a response writer appropriate to the page (i.e., appropriate to the content
-     * of the page).
+     * Invoked to obtain the content type to be used for the response. The implementation of this
+     * method is the primary difference between an HTML page and an XML/WML/etc. page.
      */
 
-    public IMarkupWriter getResponseWriter(OutputStream out);
+    public ContentType getResponseContentType();
 
     /**
      * Invoked just before rendering of the page is initiated. This gives the page a chance to

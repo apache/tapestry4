@@ -16,11 +16,15 @@ package org.apache.tapestry.web;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.util.ContentType;
 
 /**
  * Adapts {@link javax.servlet.http.HttpServletResponse}&nbsp;as
@@ -31,7 +35,11 @@ import org.apache.hivemind.util.Defense;
  */
 public class ServletWebResponse implements WebResponse
 {
+    private static final Log LOG = LogFactory.getLog(ServletWebResponse.class);
+
     private final HttpServletResponse _servletResponse;
+
+    private boolean _needsReset;
 
     public ServletWebResponse(HttpServletResponse response)
     {
@@ -40,11 +48,11 @@ public class ServletWebResponse implements WebResponse
         _servletResponse = response;
     }
 
-    public OutputStream getOutputStream(String contentType)
+    public OutputStream getOutputStream(ContentType contentType)
     {
         Defense.notNull(contentType, "contentType");
 
-        _servletResponse.setContentType(contentType);
+        _servletResponse.setContentType(contentType.getMimeType());        
 
         try
         {
@@ -57,6 +65,28 @@ public class ServletWebResponse implements WebResponse
         }
     }
 
+    public PrintWriter getPrintWriter(ContentType contentType) throws IOException
+    {
+        Defense.notNull(contentType, "contentType");
+
+        if (_needsReset)
+            reset();
+
+        _needsReset = true;
+
+        _servletResponse.setContentType(contentType.toString());
+
+        try
+        {
+            return _servletResponse.getWriter();
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException(WebMessages.writerOpenError(contentType, ex),
+                    null, ex);
+        }
+    }
+
     public String encodeURL(String url)
     {
         return _servletResponse.encodeURL(url);
@@ -64,17 +94,14 @@ public class ServletWebResponse implements WebResponse
 
     public void reset()
     {
-        _servletResponse.reset();
-    }
-
-    public OutputStream getOutputStream() throws IOException
-    {
-        return _servletResponse.getOutputStream();
-    }
-
-    public void setContentType(String contentType)
-    {
-        _servletResponse.setContentType(contentType);
+        try
+        {
+            _servletResponse.reset();
+        }
+        catch (IllegalStateException ex)
+        {
+            LOG.error(WebMessages.resetFailed(ex), ex);
+        }
     }
 
     public void setContentLength(int length)

@@ -16,7 +16,6 @@ package org.apache.tapestry.portlet;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.easymock.MockControl;
 
@@ -57,11 +56,10 @@ public class TestPortletHomeService extends HiveMindTestCase
     public void testIsRenderRequest() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        ResponseOutputStream output = new ResponseOutputStream(null);
         PortletRequestGlobals globals = newRequestGlobals(true);
         PortletRenderer renderer = newPortletRenderer();
 
-        renderer.renderPage(cycle, "ZePage", output);
+        renderer.renderPage(cycle, "ZePage");
 
         replayControls();
 
@@ -70,20 +68,19 @@ public class TestPortletHomeService extends HiveMindTestCase
         phs.setPortletRenderer(renderer);
         phs.setRequestGlobals(globals);
 
-        phs.service(cycle, output);
+        phs.service(cycle);
 
         verifyControls();
     }
-    
+
     public void testIsActionRequest() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        ResponseOutputStream output = new ResponseOutputStream(null);
         PortletRequestGlobals globals = newRequestGlobals(false);
         ResponseRenderer renderer = newResponseRenderer();
 
         cycle.activate("ZePage");
-        renderer.renderResponse(cycle, output);
+        renderer.renderResponse(cycle);
 
         replayControls();
 
@@ -92,7 +89,7 @@ public class TestPortletHomeService extends HiveMindTestCase
         phs.setRequestGlobals(globals);
         phs.setPageName("ZePage");
 
-        phs.service(cycle, output);
+        phs.service(cycle);
 
         verifyControls();
     }

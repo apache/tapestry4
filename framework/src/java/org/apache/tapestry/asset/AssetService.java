@@ -17,6 +17,7 @@ package org.apache.tapestry.asset;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -31,10 +32,10 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.link.StaticLink;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebResponse;
 
@@ -43,9 +44,8 @@ import org.apache.tapestry.web.WebResponse;
  * work is deferred to the {@link org.apache.tapestry.IAsset}instance.
  * <p>
  * The retrieval part is directly linked to {@link PrivateAsset}. The service responds to a URL
- * that encodes the path of a resource within the classpath. The
- * {@link #service(IRequestCycle, ResponseOutputStream)}method reads the resource and streams it
- * out.
+ * that encodes the path of a resource within the classpath. The {@link #service(IRequestCycle)}
+ * method reads the resource and streams it out.
  * <p>
  * TBD: Security issues. Should only be able to retrieve a resource that was previously registerred
  * in some way ... otherwise, hackers will be able to suck out the .class files of the application!
@@ -176,7 +176,7 @@ public class AssetService implements IEngineService
      * TBD: Security issues. Hackers can download .class files.
      */
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         String path = cycle.getParameter(PATH);
         String md5 = cycle.getParameter(DIGEST);
@@ -193,7 +193,7 @@ public class AssetService implements IEngineService
 
             URLConnection resourceConnection = resourceURL.openConnection();
 
-            writeAssetContent(cycle, output, path, resourceConnection);
+            writeAssetContent(cycle, path, resourceConnection);
         }
         catch (Throwable ex)
         {
@@ -204,8 +204,8 @@ public class AssetService implements IEngineService
 
     /** @since 2.2 */
 
-    private void writeAssetContent(IRequestCycle cycle, ResponseOutputStream output,
-            String resourcePath, URLConnection resourceConnection) throws IOException
+    private void writeAssetContent(IRequestCycle cycle, String resourcePath,
+            URLConnection resourceConnection) throws IOException
     {
         InputStream input = null;
 
@@ -227,11 +227,7 @@ public class AssetService implements IEngineService
             if (contentType == null || contentType.length() == 0)
                 contentType = getMimeType(resourcePath);
 
-            output.setContentType(contentType);
-
-            // Disable any further buffering inside the ResponseOutputStream
-
-            output.forceFlush();
+            OutputStream output = _response.getOutputStream(new ContentType(contentType));
 
             input = new BufferedInputStream(resourceConnection.getInputStream());
 

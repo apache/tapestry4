@@ -149,13 +149,18 @@ public class TestTemplateParser extends TestCase
         return result;
     }
 
+    // Note: the API of TextToken changed ... from startIndex/endIndex to offset/length.
+    // Rather than change *all* the tests, we'll just adjust here.
+
     protected void assertTextToken(TemplateToken token, int startIndex, int endIndex)
     {
         TextToken t = (TextToken) token;
 
+        int expectedLength = endIndex - startIndex + 1;
+
         assertEquals("Text token type.", TokenType.TEXT, t.getType());
-        assertEquals("Text token start index.", startIndex, t.getStartIndex());
-        assertEquals("Text token end index.", endIndex, t.getEndIndex());
+        assertEquals("Text token start index.", startIndex, t.getOffset());
+        assertEquals("Text token end index.", expectedLength, t.getLength());
     }
 
     /** @since 3.0 * */
@@ -632,16 +637,13 @@ public class TestTemplateParser extends TestCase
     }
 
     /**
-     * Like {@link #testOverrideDefaultAttributeName()}, but
-     * uses a more complicated attribute name (with a XML-style
-     * namespace prefix).
-     * 
+     * Like {@link #testOverrideDefaultAttributeName()}, but uses a more complicated attribute name
+     * (with a XML-style namespace prefix).
      */
-    
+
     public void testNamespaceAttributeName() throws Exception
     {
-        TemplateToken[] tokens = run("NamespaceAttributeName.html", 
-                new ParserDelegate("t:id"));
+        TemplateToken[] tokens = run("NamespaceAttributeName.html", new ParserDelegate("t:id"));
 
         assertTokenCount(tokens, 8);
         assertOpenToken(tokens[1], "outer", "span", 3);

@@ -14,8 +14,10 @@
 
 package org.apache.tapestry.test.mock;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -24,10 +26,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tapestry.util.ContentType;
+
 /**
  * Mock implementation of {@link javax.servlet.http.HttpServletResponse}.
- *
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
@@ -35,14 +38,20 @@ import javax.servlet.http.HttpServletResponse;
 public class MockResponse implements HttpServletResponse
 {
     private MockRequest _request;
+
     private boolean _commited = false;
+
     private ByteArrayOutputStream _outputByteStream;
+
     private ServletOutputStream _outputStream;
+
     private String _outputString;
+
     private List _cookies = new ArrayList();
 
     private String _redirectLocation;
-    private String _contentType;
+
+    private String _contentType = "text/html;charset=utf-8";
 
     private class ServletOutputStreamImpl extends ServletOutputStream
     {
@@ -203,7 +212,12 @@ public class MockResponse implements HttpServletResponse
 
     public PrintWriter getWriter() throws IOException
     {
-        return new PrintWriter(getOutputStream());
+        ContentType ct = new ContentType(_contentType);
+
+        String encoding = ct.getParameter("charset");
+
+        return new PrintWriter(new BufferedWriter(new OutputStreamWriter(getOutputStream(),
+                encoding)));
     }
 
     public void setContentLength(int arg0)
@@ -239,6 +253,7 @@ public class MockResponse implements HttpServletResponse
 
     public void reset()
     {
+        _outputStream = null;
     }
 
     public void setLocale(Locale arg0)
@@ -251,10 +266,9 @@ public class MockResponse implements HttpServletResponse
     }
 
     /**
-     *  Invoked by {@link org.apache.tapestry.junit.mock.MockTester} after
-     *  the test is complete, to close and otherwise finish up.
-     * 
-     **/
+     * Invoked by {@link org.apache.tapestry.junit.mock.MockTester}after the test is complete, to
+     * close and otherwise finish up.
+     */
 
     public void end() throws IOException
     {
@@ -265,9 +279,8 @@ public class MockResponse implements HttpServletResponse
     }
 
     /**
-     *  Converts the binary output stream back into a String.
-     * 
-     **/
+     * Converts the binary output stream back into a String.
+     */
 
     public String getOutputString()
     {

@@ -16,6 +16,9 @@ package org.apache.tapestry.web;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+
+import org.apache.tapestry.util.ContentType;
 
 /**
  * Controls the response to the client, and specifically allows for creating the output stream (or
@@ -33,7 +36,15 @@ public interface WebResponse
      * @return the output stream, configured for the given type.
      */
 
-    public OutputStream getOutputStream() throws IOException;
+    public OutputStream getOutputStream(ContentType contentType) throws IOException;
+
+    /**
+     * Returns a {@link PrintWriter}to which output should be sent. This method should be invoked
+     * once on a response. A second call is expected to be so that an exception page can be
+     * rendered, and the underlying request data is reset.
+     */
+
+    public PrintWriter getPrintWriter(ContentType contentType) throws IOException;
 
     /**
      * Encodes a URL, which adds information to the URL needed to ensure that the request triggered
@@ -49,8 +60,6 @@ public interface WebResponse
      */
 
     public void reset();
-
-    public void setContentType(String contentType);
 
     public void setContentLength(int contentLength);
 }

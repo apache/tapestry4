@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.web;
 
+import java.io.IOException;
+
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.util.ContentType;
 
 /**
  * @author Howard M. Lewis Ship
@@ -25,7 +28,7 @@ class WebMessages
     private static final MessageFormatter _formatter = new MessageFormatter(WebMessages.class,
             "WebStrings");
 
-    public static String streamOpenError(String contentType, Throwable cause)
+    public static String streamOpenError(ContentType contentType, Throwable cause)
     {
         return _formatter.format("stream-open-error", contentType, cause);
     }
@@ -48,5 +51,15 @@ class WebMessages
     public static String unableToRedirect(String url, Throwable cause)
     {
         return _formatter.format("unable-to-redirect", url, cause);
+    }
+
+    public static String writerOpenError(ContentType contentType, Throwable cause)
+    {
+        return _formatter.format("writer-open-error", contentType, cause);
+    }
+
+    public static String resetFailed(Throwable cause)
+    {
+        return _formatter.format("reset-failed", cause);
     }
 }

@@ -14,14 +14,16 @@
 
 package org.apache.tapestry.web;
 
+import java.io.CharArrayWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.web.ServletWebResponse;
+import org.apache.tapestry.util.ContentType;
 import org.easymock.MockControl;
 
 /**
@@ -54,7 +56,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         ServletWebResponse swr = new ServletWebResponse(response);
 
-        assertSame(stream, swr.getOutputStream("foo/bar"));
+        assertSame(stream, swr.getOutputStream(new ContentType("foo/bar")));
 
         verifyControls();
     }
@@ -76,7 +78,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         try
         {
-            swr.getOutputStream("foo/bar");
+            swr.getOutputStream(new ContentType("foo/bar"));
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -86,7 +88,103 @@ public class TestServletWebResponse extends HiveMindTestCase
                     ex.getMessage());
             assertSame(t, ex.getRootCause());
         }
+    }
 
+    public void testGetPrintWriter() throws Exception
+    {
+        PrintWriter writer = new PrintWriter(new CharArrayWriter());
+
+        MockControl control = newControl(HttpServletResponse.class);
+        HttpServletResponse response = (HttpServletResponse) control.getMock();
+
+        response.setContentType("foo/bar");
+        response.getWriter();
+        control.setReturnValue(writer);
+
+        replayControls();
+
+        ServletWebResponse swr = new ServletWebResponse(response);
+
+        assertSame(writer, swr.getPrintWriter(new ContentType("foo/bar")));
+
+        verifyControls();
+    }
+
+    public void testGetSecondPrintWriter() throws Exception
+    {
+        PrintWriter writer1 = new PrintWriter(new CharArrayWriter());
+        PrintWriter writer2 = new PrintWriter(new CharArrayWriter());
+
+        MockControl control = newControl(HttpServletResponse.class);
+        HttpServletResponse response = (HttpServletResponse) control.getMock();
+
+        response.setContentType("foo/bar");
+        response.getWriter();
+        control.setReturnValue(writer1);
+
+        replayControls();
+
+        ServletWebResponse swr = new ServletWebResponse(response);
+
+        assertSame(writer1, swr.getPrintWriter(new ContentType("foo/bar")));
+
+        verifyControls();
+
+        response.reset();
+        response.setContentType("zip/zap");
+        response.getWriter();
+        control.setReturnValue(writer2);
+
+        replayControls();
+
+        assertSame(writer2, swr.getPrintWriter(new ContentType("zip/zap")));
+
+        verifyControls();
+    }
+
+    public void testGetPrintWriterFailure() throws Exception
+    {
+        MockControl control = newControl(HttpServletResponse.class);
+        HttpServletResponse response = (HttpServletResponse) control.getMock();
+
+        Throwable t = new IOException("Simulated failure.");
+
+        response.setContentType("foo/bar");
+        response.getWriter();
+        control.setThrowable(t);
+
+        replayControls();
+
+        ServletWebResponse swr = new ServletWebResponse(response);
+
+        try
+        {
+            swr.getPrintWriter(new ContentType("foo/bar"));
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Error opening response writer for content type foo/bar: Simulated failure.",
+                    ex.getMessage());
+            assertSame(t, ex.getRootCause());
+        }
+    }
+
+    public void testReset()
+    {
+        MockControl control = newControl(HttpServletResponse.class);
+        HttpServletResponse response = (HttpServletResponse) control.getMock();
+
+        response.reset();
+
+        replayControls();
+
+        ServletWebResponse swr = new ServletWebResponse(response);
+
+        swr.reset();
+
+        verifyControls();
     }
 
 }

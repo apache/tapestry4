@@ -17,8 +17,6 @@ package org.apache.tapestry.engine;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IAction;
@@ -27,7 +25,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -185,16 +182,14 @@ public class TestActionService extends ServiceTestCase
 
         ResponseRenderer rr = newResponseRenderer();
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
-        rr.renderResponse(cycle, ros);
+        rr.renderResponse(cycle);
 
         replayControls();
 
         ActionService as = new ActionService();
         as.setResponseRenderer(rr);
 
-        as.service(cycle, ros);
+        as.service(cycle);
 
         verifyControls();
     }
@@ -243,9 +238,7 @@ public class TestActionService extends ServiceTestCase
 
         ResponseRenderer rr = newResponseRenderer();
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
-        rr.renderResponse(cycle, ros);
+        rr.renderResponse(cycle);
 
         replayControls();
 
@@ -253,7 +246,7 @@ public class TestActionService extends ServiceTestCase
         as.setResponseRenderer(rr);
         as.setRequest(request);
 
-        as.service(cycle, ros);
+        as.service(cycle);
 
         verifyControls();
     }
@@ -300,15 +293,13 @@ public class TestActionService extends ServiceTestCase
         component.getLocation();
         componentc.setReturnValue(l);
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         replayControls();
 
         ActionService as = new ActionService();
 
         try
         {
-            as.service(cycle, ros);
+            as.service(cycle);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -373,8 +364,6 @@ public class TestActionService extends ServiceTestCase
         page.getPageName();
         pagec.setReturnValue("ActivePage");
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         replayControls();
 
         ActionService as = new ActionService();
@@ -382,7 +371,7 @@ public class TestActionService extends ServiceTestCase
 
         try
         {
-            as.service(cycle, ros);
+            as.service(cycle);
             unreachable();
         }
         catch (StaleSessionException ex)
@@ -441,16 +430,14 @@ public class TestActionService extends ServiceTestCase
 
         ResponseRenderer rr = newResponseRenderer();
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
-        rr.renderResponse(cycle, ros);
+        rr.renderResponse(cycle);
 
         replayControls();
 
         ActionService as = new ActionService();
         as.setResponseRenderer(rr);
 
-        as.service(cycle, ros);
+        as.service(cycle);
 
         verifyControls();
     }

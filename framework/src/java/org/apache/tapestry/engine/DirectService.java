@@ -26,7 +26,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -86,7 +85,7 @@ public class DirectService implements IEngineService
         return _linkFactory.constructLink(cycle, parameters, true);
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         String componentId = cycle.getParameter(ServiceConstants.COMPONENT);
         String componentPageName = cycle.getParameter(ServiceConstants.CONTAINER);
@@ -135,7 +134,7 @@ public class DirectService implements IEngineService
         // Render the response. This will be the active page
         // unless the direct component (or its delegate) changes it.
 
-        _responseRenderer.renderResponse(cycle, output);
+        _responseRenderer.renderResponse(cycle);
     }
 
     public String getName()

@@ -36,7 +36,6 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * It's functions have been moved over into a collection of HiveMind services (or are in the process
  * of doing so).
  * 
- * @deprecated To be removed in 3.2.
  * @author Howard Lewis Ship
  */
 
@@ -60,7 +59,7 @@ public interface IEngine extends WebRequestServicer
      * Gets the named service, or throws an {@link org.apache.tapestry.ApplicationRuntimeException}
      * if the engine can't provide the named service.
      * 
-     * @deprecated To be removed in 3.2. Engine service can now be injected.
+     * @deprecated To be removed in 3.2. Engine services can now be injected.
      */
 
     public IEngineService getService(String name);
@@ -68,7 +67,7 @@ public interface IEngine extends WebRequestServicer
     /**
      * Returns the application specification that defines the application and its pages.
      * 
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 3.2. This value can be injected.
      */
 
     public IApplicationSpecification getSpecification();
@@ -78,7 +77,7 @@ public interface IEngine extends WebRequestServicer
      * between sessions.
      * 
      * @see org.apache.tapestry.engine.AbstractEngine#createSpecificationSource(RequestContext)
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 3.2. This value can be injected.
      */
 
     public ISpecificationSource getSpecificationSource();
@@ -86,7 +85,7 @@ public interface IEngine extends WebRequestServicer
     /**
      * Returns an object that can resolve resources and classes.
      * 
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 3.2. This value can be injected (into services).
      */
 
     public ClassResolver getClassResolver();
@@ -98,7 +97,7 @@ public interface IEngine extends WebRequestServicer
      * <p>
      * Returns the visit, if it exists, or null if it has not been created.
      * 
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 3.2. Application state objects can now be injected.
      */
 
     public Object getVisit();
@@ -106,7 +105,7 @@ public interface IEngine extends WebRequestServicer
     /**
      * Returns the visit object, creating it if necessary.
      * 
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 3.2. Application state objects can now be injected.
      */
 
     public Object getVisit(IRequestCycle cycle);
@@ -114,6 +113,8 @@ public interface IEngine extends WebRequestServicer
     /**
      * Allows the visit object to be removed; typically done when "shutting down" a user's session
      * (by setting the visit to null).
+     * 
+     * @deprecated To be removed in 3.2. Application state objects can now be injected.
      */
 
     public void setVisit(Object value);
@@ -126,7 +127,7 @@ public interface IEngine extends WebRequestServicer
      * Returns the global object, if it exists, or null if not defined.
      * 
      * @since 2.3
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 3.2. Application state objects can now be injected.
      */
 
     public Object getGlobal();
@@ -136,7 +137,7 @@ public interface IEngine extends WebRequestServicer
      * between all sessions.
      * 
      * @since 1.0.2
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 3.2. This value can now be injected.
      */
 
     public IScriptSource getScriptSource();
@@ -156,14 +157,13 @@ public interface IEngine extends WebRequestServicer
      * 
      * @since 2.3
      * @see org.apache.tapestry.engine.AbstractEngine#createPropertySource(RequestContext)
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 3.2. This value can now be injected.
      */
 
     public IPropertySource getPropertySource();
 
     /**
-     * Returns the encoding to be used to generate the servlet responses and accept the servlet
-     * requests.
+     * Returns the encoding to be used to generate the responses and accept the requests.
      * 
      * @since 3.0
      */

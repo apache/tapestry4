@@ -100,7 +100,7 @@ public class TestPortletServicerBridges extends HiveMindTestCase
         prg.store(request, response);
 
         request.removeAttribute("FOO");
-        response.setContentType("foo/bar");
+        response.reset();
 
         replayControls();
 
@@ -117,7 +117,7 @@ public class TestPortletServicerBridges extends HiveMindTestCase
 
         // Prove that the *correct* wrapper type, RenderWebResponse, has been used.
 
-        wrs._response.setContentType("foo/bar");
+        wrs._response.reset();
 
         verifyControls();
     }

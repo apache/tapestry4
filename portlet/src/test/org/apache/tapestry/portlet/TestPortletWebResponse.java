@@ -16,6 +16,7 @@ package org.apache.tapestry.portlet;
 
 import javax.portlet.PortletResponse;
 
+import org.apache.tapestry.util.ContentType;
 import org.easymock.MockControl;
 
 /**
@@ -41,7 +42,7 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
 
         try
         {
-            pwr.getOutputStream();
+            pwr.getOutputStream(new ContentType("foo/bar"));
             unreachable();
         }
         catch (UnsupportedOperationException ex)
@@ -63,27 +64,6 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
         try
         {
             pwr.reset();
-            unreachable();
-        }
-        catch (UnsupportedOperationException ex)
-        {
-            // Expected.
-        }
-
-        verifyControls();
-    }
-
-    public void testSetContentTypeUnsupported()
-    {
-        PortletResponse response = newResponse();
-
-        replayControls();
-
-        PortletWebResponse pwr = new PortletWebResponse(response);
-
-        try
-        {
-            pwr.setContentType("foo");
             unreachable();
         }
         catch (UnsupportedOperationException ex)

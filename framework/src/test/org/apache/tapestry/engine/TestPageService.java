@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -69,16 +68,14 @@ public class TestPageService extends ServiceTestCase
 
         ResponseRenderer rr = newResponseRenderer();
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
-        rr.renderResponse(cycle, ros);
+        rr.renderResponse(cycle);
 
         replayControls();
 
         PageService ps = new PageService();
         ps.setResponseRenderer(rr);
 
-        ps.service(cycle, ros);
+        ps.service(cycle);
 
         verifyControls();
     }

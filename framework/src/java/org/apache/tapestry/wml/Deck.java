@@ -14,31 +14,25 @@
 
 package org.apache.tapestry.wml;
 
-import java.io.OutputStream;
-
 import org.apache.tapestry.AbstractPage;
-import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.util.ContentType;
 
 /**
- *  Concrete class for WML decks. Most decks
- *  should be able to simply subclass this, adding new properties and
- *  methods.  An unlikely exception would be a deck that was not based
- *  on a template.
- *
- *  @author David Solis
- *  @since 0.2.9
+ * Concrete class for WML decks. Most decks should be able to simply subclass this, adding new
+ * properties and methods. An unlikely exception would be a deck that was not based on a template.
  * 
- **/
+ * @author David Solis
+ * @since 0.2.9
+ */
 
 public abstract class Deck extends AbstractPage
 {
     /**
-     *  Returns a new {@link WMLWriter}.
-     *
-     **/
-    public IMarkupWriter getResponseWriter(OutputStream out)
+     * @return "text/vnd.wap.wml"
+     */
+    public ContentType getResponseContentType()
     {
-        return new WMLWriter(out, getOutputEncoding());
+        return new ContentType("text/vnd.wap.wml");
     }
 
 }

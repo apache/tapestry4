@@ -34,7 +34,6 @@
 <title>Two</title>
 ]]>
 		</assert-output>
-
 		<assert-output name="Language Name">
 Fran&#231;ais
 		</assert-output>

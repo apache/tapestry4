@@ -115,13 +115,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     * Implemented in subclasses to provide a particular kind of response writer (and therefore, a
-     * particular kind of content).
-     */
-
-    abstract public IMarkupWriter getResponseWriter(OutputStream out);
-
-    /**
      * Prepares the page to be returned to the pool.
      * <ul>
      * <li>Clears the changeObserved property
@@ -131,6 +124,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * </ul>
      * <p>
      * Subclasses may override this method, but must invoke this implementation (usually, last).
+     * @see PageDetachListener
      */
 
     public void detach()

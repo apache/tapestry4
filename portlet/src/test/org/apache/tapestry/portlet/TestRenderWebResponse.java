@@ -14,12 +14,9 @@
 
 package org.apache.tapestry.portlet;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
 import javax.portlet.RenderResponse;
 
+import org.apache.tapestry.util.ContentType;
 import org.easymock.MockControl;
 
 /**
@@ -50,38 +47,24 @@ public class TestRenderWebResponse extends BasePortletWebTestCase
         verifyControls();
     }
 
-    public void testSetContentType()
-    {
-        RenderResponse response = newResponse();
-
-        response.setContentType("text/html");
-
-        replayControls();
-
-        RenderWebResponse rwr = new RenderWebResponse(response);
-
-        rwr.setContentType("text/html");
-
-        verifyControls();
-    }
-
     public void testGetOutputStream() throws Exception
     {
         MockControl control = newControl(RenderResponse.class);
         RenderResponse response = (RenderResponse) control.getMock();
-
-        OutputStream stream = new FileOutputStream(File.createTempFile("test", "txt"));
-
-        response.getPortletOutputStream();
-        control.setReturnValue(stream);
-
         replayControls();
 
         RenderWebResponse rwr = new RenderWebResponse(response);
-        assertSame(stream, rwr.getOutputStream());
+
+        try
+        {
+            rwr.getOutputStream(new ContentType("foo/bar"));
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            // Expected.
+        }
 
         verifyControls();
-
-        stream.close();
     }
 }

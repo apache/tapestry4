@@ -23,7 +23,6 @@ import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -100,11 +99,9 @@ public class TestExternalService extends ServiceTestCase
         cycle.activate(page);
         page.activateExternalPage(serviceParameters, cycle);
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         ResponseRenderer rr = (ResponseRenderer) newMock(ResponseRenderer.class);
 
-        rr.renderResponse(cycle, ros);
+        rr.renderResponse(cycle);
 
         replayControls();
 
@@ -112,7 +109,7 @@ public class TestExternalService extends ServiceTestCase
         es.setLinkFactory(lf);
         es.setResponseRenderer(rr);
 
-        es.service(cycle, ros);
+        es.service(cycle);
 
         verifyControls();
     }
@@ -139,15 +136,13 @@ public class TestExternalService extends ServiceTestCase
         page.getLocation();
         pagec.setReturnValue(l);
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         replayControls();
 
         ExternalService es = new ExternalService();
 
         try
         {
-            es.service(cycle, ros);
+            es.service(cycle);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

@@ -19,7 +19,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
  * A service, provided by the {@link org.apache.tapestry.IEngine}, for its pages and/or components.
@@ -57,15 +56,13 @@ public interface IEngineService
      * Perform the service, interpreting the URL (from the
      * {@link javax.servlet.http.HttpServletRequest}) responding appropriately, and rendering a
      * result page.
-     * 
      * @param cycle
      *            the incoming request
-     * @param output
-     *            stream to which output should ultimately be directed
+     * 
      * @see org.apache.tapestry.IEngine#service(org.apache.tapestry.request.RequestContext)
      */
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException;
+    public void service(IRequestCycle cycle) throws IOException;
 
     /**
      * Returns the name of the service.

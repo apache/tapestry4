@@ -14,10 +14,8 @@
 
 package org.apache.tapestry.html;
 
-import java.io.OutputStream;
-
 import org.apache.tapestry.AbstractPage;
-import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.util.ContentType;
 
 /**
  * Base class for HTML pages. Most pages should be able to simply subclass this, adding new
@@ -33,11 +31,11 @@ import org.apache.tapestry.IMarkupWriter;
 public abstract class BasePage extends AbstractPage
 {
     /**
-     * Returns a new {@link HTMLWriter}.
+     * @return "text/html"
      */
 
-    public IMarkupWriter getResponseWriter(OutputStream out)
+    public ContentType getResponseContentType()
     {
-        return new HTMLWriter(out, getOutputEncoding());
+        return new ContentType("text/html");
     }
 }

@@ -24,6 +24,7 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
+import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.DataSqueezer;
@@ -98,6 +99,8 @@ public class InfrastructureImpl implements Infrastructure
     private TemplateSource _templateSource;
 
     private ThreadLocale _threadLocale;
+
+    private MarkupWriterSource _markupWriterSource;
 
     public String getApplicationId()
     {
@@ -350,4 +353,13 @@ public class InfrastructureImpl implements Infrastructure
         return _applicationPropertySource.getPropertyValue("org.apache.tapestry.output-encoding");
     }
 
+    public MarkupWriterSource getMarkupWriterSource()
+    {
+        return _markupWriterSource;
+    }
+
+    public void setMarkupWriterSource(MarkupWriterSource markupWriterSource)
+    {
+        _markupWriterSource = markupWriterSource;
+    }
 }

@@ -42,6 +42,7 @@
   <sub-module descriptor="tapestry.state.xml"/>
   <sub-module descriptor="tapestry.multipart.xml"/>
   <sub-module descriptor="tapestry.describe.xml"/>
+  <sub-module descriptor="tapestry.markup.xml"/>
     
   <service-point id="ClasspathResourceFactory" interface="ClasspathResourceFactory">
   
@@ -85,6 +86,7 @@
         <set-object property="applicationId" value="service-property:tapestry.globals.ApplicationGlobals:activatorName"/>
         <set-service property="context" service-id="tapestry.globals.WebContext"/>
         <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
+        <set-service property="markupWriterSource" service-id="tapestry.markup.MarkupWriterSource"/>
       </construct>
     </invoke-factory>
     

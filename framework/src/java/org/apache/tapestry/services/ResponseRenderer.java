@@ -16,10 +16,7 @@ package org.apache.tapestry.services;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
  * Responsible for rendering the active page as the response. Works with the
@@ -35,6 +32,6 @@ public interface ResponseRenderer
      * Renders the reponse, using the current active page defined by the request cycle.
      */
 
-    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output);
+    public void renderResponse(IRequestCycle cycle) throws IOException;
 
 }
