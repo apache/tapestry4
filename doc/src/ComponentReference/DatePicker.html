@@ -51,7 +51,7 @@
   <b>Description</b>
   <br>
   Provides a form 
-  <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/sql/Date.html">Date</a>
+  <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Date.html">Date</a>
   field component for selecting dates. DatePicker presents a drop down monthly 
   calendar for users to select dates from.
   <p>  
@@ -94,21 +94,16 @@
    <tr>
     <td>value</td>
     <td>
-     <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/sql/Date.html"><tt>java.sql.Date</tt></a>
+     <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Date.html"><tt>java.util.Date</tt></a>
     </td>
     <td>in</td>
     <td>yes</td>
     <td>&nbsp;</td>
     <td>
     The data value.
-    <p>
-    Note the 
-    <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/sql/Date.html"><tt>java.sql.Date</tt></a>
-    class better represents a true calendar date than
-    <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Date.html"><tt>java.util.Date</tt></a>,
-    however internally the data value is stored as a millisecond long time value. 
-    Take care to ensure date time values are 'normalized' before performing any 
-    comparison or equality operations.    
+    <p> 
+    Take care to ensure date time values are 'normalized' before 
+    performing any millisec based comparison or equality operations.    
     </td>
    </tr>
    <tr>
