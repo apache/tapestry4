@@ -2,12 +2,6 @@
 
 <!-- $Id$ -->
 
-<!--
-
- MockTest driver.
- 
--->
-
 <mock-test>
     <context name="junit"/>
 
@@ -78,6 +72,7 @@
 	DirectLink: <a href="/junit/simple\?service=direct&amp;context=Two/link">click it</a>
 ]]>	
 	</assert-output>	
+
 	
   </request>
   

@@ -23,59 +23,66 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.junit.mock;
 
-import net.sf.tapestry.junit.TapestryTestCase;
+package net.sf.tapestry.junit.mock.lib;
+
+import net.sf.tapestry.html.BasePage;
 
 /**
- *  Test case for Mock Servlet API tests using the Simple application.
+ *  Dumps out an array of objects.
  *
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.2
- * 
+ *
  **/
 
-public class MockTestCase extends TapestryTestCase
+public class Dumper extends BasePage
 {
-
-    public MockTestCase(String name)
+    private Object[] _objects;
+    private Object _currentObject;
+    
+    public void detach()
     {
-        super(name);
+        _objects = null;
+        _currentObject = null;
+        
+        super.detach();
+    }
+    
+    public Object[] getObjects()
+    {
+        return _objects;
+    }
+    
+    public void setObjects(Object[] objects)
+    {
+        _objects = objects;
+        
+        fireObservedChange("objects", _objects);
+    }
+    
+    public Object getCurrentObject()
+    {
+        return _currentObject;
     }
 
-    private MockTester attempt(String path)
-    throws Exception
+    public void setCurrentObject(Object currentObject)
     {
-        MockTester tester = new MockTester(path);
-        
-        tester.execute();
-        
-        return tester;
+        _currentObject = currentObject;
     }
 
     /**
-     *  Test basics including the PageLink and DirectLink (w/o parameters).
+     *  Returns the class name of the current object.  OGNL has trouble
+     *  getting properties from Class objects.
      * 
      **/
     
-    public void testSimple()
-    throws Exception
+    public String getClassName()
     {
-        attempt("/net/sf/tapestry/junit/mock/TestSimple.xml");
+        if (_currentObject == null)
+            return "<Null>";
+            
+        return _currentObject.getClass().getName();
     }
-    
-    /**
-     *  Test ability to embed component in a library and reference
-     *  those components.  Also, test RenderBody component.
-     * 
-     **/
-    
-    public void testLibrary()
-    throws Exception
-    {
-        attempt("/net/sf/tapestry/junit/mock/TestLibrary.xml");
-    }
-       
 }

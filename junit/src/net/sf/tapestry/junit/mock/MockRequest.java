@@ -54,6 +54,8 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
 
         _contextPath = "/" + servletContext.getServletContextName();
         _servletPath = servletPath;
+        
+        _session = _servletContext.getSession();
     }
 
     public String getAuthType()
