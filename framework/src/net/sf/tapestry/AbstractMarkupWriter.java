@@ -82,7 +82,20 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      **/
 
     private boolean _openTag = false;
-
+ 
+    /**
+     *  Indicates that the tag was opened with 
+     *  {@link #beginEmpty(String)}, which affects
+     *  how the tag is closed (a slash is added to indicate the
+     *  lack of a body).  This is compatible with HTML, but reflects
+     *  an XML/XHTML leaning.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private boolean _emptyTag = false;
+    
     /**
      * A Stack of Strings used to track the active tag elements. Elements are active
      * until the corresponding close tag is written.  The {@link #push(String)} method
@@ -271,6 +284,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
         _writer.print(name);
 
         _openTag = true;
+        _emptyTag = false;
     }
 
     /**
@@ -289,6 +303,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
         _writer.print(name);
 
         _openTag = true;
+        _emptyTag = true;
     }
 
     /**
@@ -338,17 +353,24 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     }
 
     /**
-     * Closes the most recently opened element by writing the '&gt;' that ends
-     * it. Once this is invoked, the <code>attribute()</code> methods
-     * may not be used until a new element is opened with {@link #begin(String)} or
-     * or {@link #beginEmpty(String)}.
+     *  Closes the most recently opened element by writing the '&gt;' that ends
+     *  it. May write a slash before the '&gt;' if the tag
+     *  was opened by {@link #beginEmpty(String)}.
+     * 
+     *  <p>Once this is invoked, the <code>attribute()</code> methods
+     *  may not be used until a new element is opened with {@link #begin(String)} or
+     *  or {@link #beginEmpty(String)}.
      **/
 
     public void closeTag()
     {
+        if (_emptyTag)
+            _writer.print('/');
+            
         _writer.print('>');
 
         _openTag = false;
+        _emptyTag = false;
     }
 
     /**
