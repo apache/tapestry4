@@ -28,37 +28,49 @@
 # Defines stuff specific to using the JBE with Cygnus and NT.
 
 # Here we define a bunch of command line tools used in the rest of the system.
+# Cygwin creates a kind of "virtual mount" that redirects /usr/bin to the
+# correct directory (generally, c:/cgywin/bin).
 
-MV := $(TOOLS_DIR)/mv.exe
-ECHO := $(TOOLS_DIR)/echo.exe
-MKDIRS := $(TOOLS_DIR)/mkdir.exe --parents
-TOUCH := $(TOOLS_DIR)/touch.exe
-RM := $(TOOLS_DIR)/rm.exe --force --recursive
+MV := /usr/bin/mv.exe
 
-CP := $(TOOLS_DIR)/cp.exe
+# Recent version of echo in cygwin require -e to interpret
+# escape characters in the echo string.
+
+ECHO := /usr/bin/echo.exe -e 
+MKDIRS := /usr/bin/mkdir.exe --parents
+TOUCH := /usr/bin/touch.exe
+RM := /usr/bin/rm.exe --force --recursive
+
+CP := /usr/bin/cp.exe
 CP_FORCE_OPT := --force
 
-CAT := $(TOOLS_DIR)/cat.exe
-FIND := $(TOOLS_DIR)/find.exe
+CAT := /usr/bin/cat.exe
+FIND := /usr/bin/find.exe
 
-GNUTAR := $(TOOLS_DIR)/tar.exe
+GNUTAR := /usr/bin/tar.exe
 GNUTAR_CREATE_OPT := --create
 GNUTAR_EXTRACT_OPT := --extract
 GNUTAR_GZIP_OPT := --gzip
 
-PWD := $(TOOLS_DIR)/pwd.exe
+PWD := /usr/bin/pwd.exe
 
-SED := $(TOOLS_DIR)/sed.exe
+# SED can be used to process a template file
+# and perform various edits and substitutions.
+# This is very handy with WebLogic, since you
+# can easily convert hard-coded pathnames, usernames,
+# and passwords.
+
+SED := /usr/bin/sed.exe
 SED_QUIET_OPT := --quiet
 SED_EXPRESSION_OPT := -e 
 
-CHMOD := $(TOOLS_DIR)/chmod.exe
+CHMOD := /usr/bin/chmod.exe
 
-# Provided internally by Cygnus bourne shell
+# Provided internally by Cygnus shell
 
 CD := cd
 
-# Used with DocBook
+# Used with DocBook.
 
 OPENJADE := $(OPENJADE_DIR)/openjade.exe
 ONSGMLS :=  $(OPENJADE_DIR)/onsgmls.exe

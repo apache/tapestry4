@@ -60,7 +60,8 @@ DEPLOY_JAR := $(JBOSS_DEPLOY_DIR)/$(JAR_FILE)
 # shipped with jBoss is in the classpath.
 
 JBOSS_CLASSPATH := \
-	$(JBOSS_DIR)/lib/crimson.jar
+	$(JBOSS_DIR)/lib/crimson.jar \
+	$(OTHER_JBOSS_CLASSPATH)
 
 deploy: setup-catalogs
 	@$(RECURSE) POST_SETUP=t inner-deploy
