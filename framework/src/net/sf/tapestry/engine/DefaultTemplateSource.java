@@ -265,7 +265,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
         String name = location.getName();
         int dotx = name.lastIndexOf('.');
-        String templateBaseName = name.substring(0, dotx) + ".html";
+        String templateBaseName = name.substring(0, dotx + 1) + getTemplateExtension(component);
 
         ComponentTemplate result =
             findStandardTemplate(cycle, location, component, templateBaseName, locale);
@@ -550,6 +550,31 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         builder.append("templates", _templates.keySet());
 
         return builder.toString();
+    }
+
+	/**
+	 *  Checks for the {@link Tapestry#TEMPLATE_EXTENSION_PROPERTY} in the component's
+	 *  specification, then in the component's namespace's specification.  Returns
+	 *  {@link Tapestry#DEFAULT_TEMPLATE_EXTENSION} if not otherwise overriden.
+	 * 
+	 **/
+	
+    private String getTemplateExtension(IComponent component)
+    {
+        String extension =
+            component.getSpecification().getProperty(Tapestry.TEMPLATE_EXTENSION_PROPERTY);
+
+        if (extension != null)
+            return extension;
+
+        extension =
+            component.getNamespace().getSpecification().getProperty(
+                Tapestry.TEMPLATE_EXTENSION_PROPERTY);
+
+        if (extension != null)
+            return extension;
+
+        return Tapestry.DEFAULT_TEMPLATE_EXTENSION;
     }
 
     /** @since 1.0.6 **/

@@ -95,6 +95,17 @@ public class MockTestCase extends TapestryTestCase
     // in a static suite() method.
 
 
+	/**
+	 *  Tests ability to override default template extension.
+	 * 
+	 **/
+	
+	public void testTemplateExtension()
+	throws Exception
+	{
+		attempt("TestTemplateExtension.xml");
+	}
+
     /**
      *  Tests related to the listener binding (added in 1.4 DTD).
      * 

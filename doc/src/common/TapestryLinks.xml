@@ -7,6 +7,7 @@
 <!-- Classes provided by Sun -->
 
 <!ENTITY Double "<classname>Double</classname>">
+<!ENTITY HashMap "<classname>HashMap</classname>">
 <!ENTITY HttpServletRequest "<classname>HttpServletRequest</classname>">
 <!ENTITY HttpSession "<classname>HttpSession</classname>">
 <!ENTITY Integer "<classname>Integer</classname>">

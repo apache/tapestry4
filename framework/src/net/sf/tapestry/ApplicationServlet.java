@@ -562,7 +562,7 @@ public class ApplicationServlet extends HttpServlet
     }
 
     /**
-     *  Checks for the application specificaiton relative to the specified
+     *  Checks for the application specification relative to the specified
      *  location.
      * 
      *  @since 2.4
@@ -591,7 +591,7 @@ public class ApplicationServlet extends HttpServlet
      *  simple specification is constructed and returned.  This is useful
      *  for minimal applications and prototypes.
      * 
-     *  @since 2.2
+     *  @since 2.4
      * 
      **/
 

@@ -275,6 +275,13 @@ In an instantiated component, bindings can be accessed with
 the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
 </para>
 
+<para>
+If the <literal>expression</literal> attribute is omitted, then
+the body of the element is used.  This is useful when the
+expression is long, or contains problematic characters (such as a mix
+of single and double quotes).
+</para>
+
 
 <figure>
 	<title><sgmltag class="starttag">binding</sgmltag> Attributes</title>
@@ -500,8 +507,9 @@ Defines a component type that may latter be used in a &spec.component; element
 	<entry>string</entry>
 	<entry>yes</entry>
 	<entry/>
-	<entry>The complete resource path to the component's specification (including leading
-	slash and file extension).</entry>
+	<entry>An absolute or relative resource path to the component's specification (including leading
+	slash and file extension).  Relative resources are evaluated relative to
+	 the location of the containing application or library specfication.</entry>
 </row>
 </tbody>
 </tgroup>
@@ -613,6 +621,13 @@ Assets for an instantiated component (or page)
 may be accessed using the OGNL expression <literal>assets.<replaceable>name</replaceable></literal>.
 </para>
 
+<para>
+The path may be either absolute or relative.  Absolute paths start with a leading slash, and are evalulated
+relative to the context root.  Relative paths are evaluated relative to the application root, which
+is typically the same as the context root (the exception being a WAR that contains multiple
+Tapestry applications, within multiple subfolders).
+</para>
+
 <figure>
 	<title><sgmltag class="starttag">context-asset</sgmltag> Attributes</title>
 <informaltable>
@@ -639,8 +654,7 @@ may be accessed using the OGNL expression <literal>assets.<replaceable>name</rep
 	<entry>string</entry>
 	<entry>yes</entry>
 	<entry/>
-	<entry>The path to the asset, assuming a root directory matching the servlet context
-	root directory.  The path should begin with leading forward slash.
+	<entry>The path to the asset.
 	</entry>
 </row>
 </tbody>
@@ -662,7 +676,7 @@ A description may be attached to a many different elements.  Descriptions are us
 by an intelligent IDE to provide help.  The Tapestry Inspector may also display a description.
 </para>
 
-<note>
+<warning>
 <para>
 The DTD supports multiple <sgmltag class="starttag">description</sgmltag> elements, each
 localized to a different language.  In practice, a single description, in English, is typically
@@ -670,7 +684,7 @@ used.  This approach to providing a localized description is likely to change in
 it is probably safest to expect just a single <sgmltag class="starttag">description</sgmltag> tag
 to be allowed in the next revision of the DTD.
 </para>
-</note>
+</warning>
 	
 <para>
 The descriptive text appears inside the <sgmltag class="starttag">description</sgmltag> tags.  Leading
@@ -1281,6 +1295,13 @@ Assets for an instantiated component (or page)
 may be accessed using the OGNL expression <literal>assets.<replaceable>name</replaceable></literal>.
 </para>
 
+<para>
+The resource path may either be complete and absolute, and start with a leading slash,
+or be relative.  Relative paths are evaluated relative to the location of the
+containing specification.
+</para>
+
+
 <figure>
 	<title><sgmltag class="starttag">private-asset</sgmltag> Attributes</title>
 <informaltable>
@@ -1307,7 +1328,7 @@ may be accessed using the OGNL expression <literal>assets.<replaceable>name</rep
 	<entry>string</entry>
 	<entry>yes</entry>
 	<entry/>
-	<entry>The path to the asset on the classpath.  The path should begin with leading forward slash.
+	<entry>The absolute or relative path to the asset on the classpath. 
 	</entry>
 </row>
 </tbody>

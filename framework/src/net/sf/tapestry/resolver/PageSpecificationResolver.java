@@ -125,7 +125,9 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
             if (namespaceId.equals(INamespace.FRAMEWORK_NAMESPACE))
                 namespace = getSpecificationSource().getFrameworkNamespace();
             else
-                namespace = getSpecificationSource().getApplicationNamespace().getChildNamespace(namespaceId);
+                namespace =
+                    getSpecificationSource().getApplicationNamespace().getChildNamespace(
+                        namespaceId);
         }
         else
         {
@@ -148,11 +150,14 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
 
         if (getSpecification() == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Namespace.no-such-page", _simpleName, namespace.getNamespaceId()));
+                Tapestry.getString(
+                    "Namespace.no-such-page",
+                    _simpleName,
+                    namespace.getNamespaceId()));
 
     }
 
-    public  String getSimplePageName()
+    public String getSimplePageName()
     {
         return _simpleName;
     }
@@ -192,11 +197,12 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
         if (found(getApplicationRootLocation().getRelativeLocation(expectedName)))
             return;
 
-        // The wierd one ... where we see if there's an HTML file in the application root location.
+        // The wierd one ... where we see if there's a templatge in the application root location.
 
-        String templateName = _simpleName + ".html";
+        String templateName = _simpleName + "." + getTemplateExtension();
 
-        IResourceLocation templateLocation = getApplicationRootLocation().getRelativeLocation(templateName);
+        IResourceLocation templateLocation =
+            getApplicationRootLocation().getRelativeLocation(templateName);
 
         if (templateLocation.getResourceURL() != null)
         {
@@ -259,9 +265,27 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
         ComponentSpecification specification = getSpecification();
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Installing page " + _simpleName + " into " + namespace + " as " + specification);
+            LOG.debug(
+                "Installing page " + _simpleName + " into " + namespace + " as " + specification);
 
         namespace.installPageSpecification(_simpleName, specification);
     }
 
+    /**
+     *  If the namespace defines the template extension (as property
+     *  {@link Tapestry#TEMPLATE_EXTENSION_PROPERTY}, then that is used, otherwise
+     *  the default is used.
+     * 
+     **/
+
+    private String getTemplateExtension()
+    {
+        String extension =
+            getNamespace().getSpecification().getProperty(Tapestry.TEMPLATE_EXTENSION_PROPERTY);
+
+        if (extension == null)
+            extension = Tapestry.DEFAULT_TEMPLATE_EXTENSION;
+
+        return extension;
+    }
 }
