@@ -44,6 +44,36 @@ The subclass provides the framework with the path to the application specificati
 implementing the method <function>getApplicationSpecificationPath()</>.
 </>
 
+<note>
+	<title>Is a subclass really necessary?</>
+	<para>
+	You would think that the resource path of the
+	application specification could simply be
+	a servlet initialization parameter, in which case
+	no subclass of ApplicationServlet would be necessary.
+	</>
+	<para>
+	This doesn't work for two reasons.  First and foremost is how
+	class loaders work inside an application server.  Generally, the Tapestry
+	framework will be loaded by the system class loader, and each
+	web application will be loaded by a child class loader.  The child class loader
+	has visibility to all the classes in the WAR file, as well as all the classes
+	on the class path, whereas the system class loader will only have visibility
+	to the Tapestry framework classes.
+	</>
+	<para>
+	The servlet instance acts as a "hook" exposing the child class loader; the framework
+	gets the class loader from the servlet instance and uses that
+	to instantiate Java classes for the Tapestry components.
+	</>
+	<para>
+	A second, and less important reason, is that the subclass is responsible
+	for overriding the <function>setupLogging()</> method, which will be necessary
+	for any production Tapestry application.
+	</>
+</>
+
+
 <para>
 The servlet may also perform some static initialization for the application in its 
 <function>init()</> method.  
@@ -210,7 +240,7 @@ Every page implements a <varname>visit</> property that allows access to the vis
 </>
 
 <para>
-When using the <classname>com.primix.tapestry.engine.SimpleEngine engine</>, 
+When using the <classname>com.primix.tapestry.engine.SimpleEngine</> engine, 
 the visit object is 
 created the first time it is referenced.  The class of the visit object is stored in the application 
 specification.
@@ -259,7 +289,7 @@ This is combined with the a <sgmltag class=starttag>component</> declaration in 
 </>
 
 &start-listing;
-&lt;component id="<emphasis>login</>" type="Page">&gt;
+&lt;component id="<emphasis>login</>" type="Page"&gt;
   &lt;static-binding name="page"&gt;Login&lt;/static-binding&gt;
 &lt;/component&gt;
 &end-listing;
@@ -403,77 +433,105 @@ used components within the application.
 </>
 
 <para>
-The application specification is loaded when the application servlet is initialized.
+The application specification is loaded when the application servlet is initialized.  It defines all
+pages within the application (except for the four pages automatically provided by the framework: 
+Exception, Inspector, StaleSession and StaleLink).  It allows component aliases to be defined for
+commonly used components.
+</>
+
+<note>
+	<para>
+	Both the application and component specifications use the same DTD.  As with component 
+	specifications, there is an older, more verbose version of the DTD which is not described
+	here.
+	</>
 </>
 
 		<section>
-			<title>Preamble</>
+			<title><sgmltag class=starttag>application</> element
+			
 
 <para>
 The application specification begins with an XML header:
 </>
 
-&start-listing;<![CDATA[
+<figure>
+	<title>Application specification: <sgmltag class=starttag>specification</> element
+<programlisting>
+<![CDATA[
 <?xml version="1.0"?>
 <!DOCTYPE application PUBLIC 
-      "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+  "-//Howard Ship//Tapestry Specification 1.1//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+]]>
 
-<application>]]>&end-listing;
- 
+&lt;application
+  name="<replaceable>name</>" <co id="engine.appspec.name">
+  engine-class="<replaceable>engine-class</>"&gt; <co id="engine.appspec.engine-class">
+  [ &lt;description ...&gt; ...] <co id="engine.appspec.description">
+  [ &lt;property ...&gt; ...] <co id="engine.appspec.property">
+  [ &lt;page ...&gt; ...] <co id="engine.appspec.page">
+  [ &lt;component-alias ...&gt; ...]
+&lt;/application&gt;
+</programlisting>
+</figure>
+
+<para>
+<calloutlist>
+  <callout arearefs="engine.appspec.name">
+  	<para>
+  	Each Tapestry application should have a unique, descriptive name.  This name is used, in a few places,
+  	to store information in the <classname>HttpSession</> and <classname>ServletContext</>; 
+  	if a single web application (WAR file) contains multiple
+  	Tapestry applications, it is imperative that each has a unique name.
+  	</>
+  </>
+  <callout arearefs="engine.appspec.engine-class">
+  	<para>
+  	Specifies the Java class to instantiate as the application engine.  This occurs on the first request cycle.
+  	</>
+  </>
+  <callout arearefs="engine.appspec.description">
+  	<para>
+  	Applications, like components and parameters, may have a (localized) description.
+  	</>
+  </>
+  <callout arearefs="engine.appspec.property">
+  	<para>
+ 	Applications may have additional properties.  This is most commonly used to
+ 	specify the class to instantiate as the visit object (<literal>com.primix.tapestry.visit-class</>).
+ 	</>
+ </>
+</calloutlist>
+</para>
+
 		</section>
 
 		<section>
-			<title>Application Name</>
+			<title><sgmltag class=starttag>page</> element</>
 
 <para>
-The name of the application is specified.  This name should be unique for all Tapestry 
-applications running within a servlet container.  It may contain letters, numbers, periods, spaces, 
-underscores and dashes.
+The application specification will include one 
+<sgmltag class=starttag>page</> element for each page in the application.
 </>
 
-&start-listing;<![CDATA[<name>]]><replaceable>application name</><![CDATA[</name>]]>&end-listing;
- 
-		</section>
-
-		<section>
-			<title>Engine Class</>
+<figure>
+	<title>Application Specification: <sgmltag class=starttag>page</> element</>
+<programlisting>
+&lt;page
+  name="<replaceable>name</>"
+  specification-path="<replaceable>specification-path</>"/&gt;
+</programlisting>
+</figure>
 
 <para>
-The class name of the engine for the application is specified next:
-</>
-
-&start-listing;&lt;engine-class&gt;<replaceable>class name</>&lt;/engine-class&gt;&end-listing;
- 
-<para>
-Most applications will use the engine <classname>com.primix.tapestry.engine.SimpleEngine</>,
-or a sublcass of <classname>SimpleEngine</> specific to the application.
-</>
-
-		</section>
-
-		<section>
-			<title>Pages</>
-
-<para>
-Each page in the application is now defined, with a logical name:
-</>
-
-&start-listing;<![CDATA[
-<page>
-  <name>]]><replaceable>page name</><![CDATA[</name>
-  <specification-path>]]><replaceable>specification path</><![CDATA[</specification-path>
-</page>]]>&end-listing;
-
-<para> 
-This block is repeated for each page in the application.
-The name of each page must be unique within the application.  It may contain letters, numbers, 
-underscores, periods or dashes.
+Each page in the application must have a unique name.  Names may contain
+letters, numbers, underscores, dashes and periods.
 </>
 
 <para>
-The specification path is the path of the component specification for the page, a resource within 
-the Java class path. For example 
+For each page, the complete path to the page's component specification
+is specified. For example 
 <filename class=directory>/com/skunkworx/skunkapp/Home.jwc</>.
 </>
 
@@ -491,23 +549,21 @@ varying the name of the page's logical name or component.
 		</section>
 
 		<section>
-			<title>Aliases</>
-
+			<title><sgmltag class=starttag>component-alias</> element</>
 
 <para>
-Folllowing the pages, aliases for components may be defined:
+Component aliases are used to provide short names for commonly used components within an application.  All the components
+provided with Tapestry have predefined component aliases, which may not be overriden.
 </>
 
-&start-listing;<![CDATA[
-<component-alias>
-  <alias>]]><replaceable>alias</><![CDATA[</alias>
-  <specification-path>]]><replaceable>specification path</><![CDATA[</specification-path>
-</component-alias>]]>&end-listing;
- 
-<para>
-This is used to create a short, memorable name for a frequently used component.  Aliases have 
-the same format as page names.  This block is repeated for each component alias.
-</>
+<figure>
+	<title>Application Specification: <sgmltag class=starttag>component-alias</> element</>
+<programlisting>
+&lt;component-alias
+  type="<replaceable>type</>"
+  specification-path="<replaceable>specification-path</>"/&gt;
+</programlisting>
+</figure>
 
 <para>
 Component aliases are mostly freeform (letters, numbers and some punctuation are acceptable).  
@@ -517,45 +573,7 @@ same as the page naming guidelines.
 
 		</section>
 
-		<section>
-			<title>Properties</>
-
-<para>
-If needed, any application properties may be defined in a <sgmltag class=starttag>properties</> element.
-</>
-
-&start-listing;<![CDATA[<properties>
-	<property>
-		<name>]]><replaceable>name</><![CDATA[</name>
-		<value>]]><replaceable>value</><![CDATA[</value>
-	</property>
-</properties>]]>&end-listing;
- 
-<para>
-Any number of <sgmltag class=starttag>property</> elements may be included within the 
-<sgmltag class=starttag>properties</> element.  Each 
-one specifies a name/value pairing (both the name and the value are strings).  These properties 
-are used to express additional information about the application that isn't captured in the main 
-DTD.
-</>
-
-<para>
-The most common use for this is to establish the class name of the visit class.  The SimpleEngine 
-uses the property <varname>com.primix.tapestry.visit-class</> for this purpose, the value is the 
-complete class name for the visit object.
-</>
-
-		</section>
-
-		<section>
-			<title>Postamble</>
-
-<para>
-Finally, the specification is completed by closing the application element:
-
-&start-listing;&lt;/application&gt;&end-listing;
-
-		</section>
 
 	</section>
 </chapter>
+

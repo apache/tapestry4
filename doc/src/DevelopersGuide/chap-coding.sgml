@@ -77,8 +77,9 @@ extra serialization work to serialize and restore the necessary EJB handles.
 </>
 
 <para>
-Also remember that persistent page properties that are EJB references are <emphasis>automatically</emphasis>
-converts to handles when stored, and back into references when restored.
+Also remember that persistent page properties that are EJB references are 
+<emphasis>automatically</emphasis>
+converted to handles when stored, and back into references when restored.
 </>
 
 	</section>

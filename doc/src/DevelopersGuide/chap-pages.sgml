@@ -715,7 +715,7 @@ component can write out various JavaScript handlers before the main body of HTML
 
 <para>
 In any case, whenever a <classname>Body</>
-component is used, and exception thrown during the rendering of the page will cause all the 
+component is used, an exception thrown during the rendering of the page will cause all the 
 HTML buffered by the <classname>Body</> component to be cleanly discarded, allowing for a clean 
 presentation of the exception page.
 </>

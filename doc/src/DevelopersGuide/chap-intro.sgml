@@ -196,6 +196,7 @@ describes the configuration of the page and all components on the page; an excer
   &lt;static-binding name="page"&gt;Checkout&lt;/static-binding&gt;
   &lt;binding name="disabled" property-path="visit.cartEmpty"/&gt; <co id="intro.ex2.co.link-disabled">
 &lt;/component&gt;
+
 &lt;component id="checkoutButton" type="Rollover"&gt; <co id="intro.ex2.co.Rollover">
   &lt;binding name="image" property-path="assets.checkout"/&gt;
   &lt;binding name="disabled" property-path="assets.checkout-disabled"/&gt; 
@@ -363,7 +364,8 @@ including:
 			<para>Zero code generation
 				<footnote>
 					<para>That is, Tapestry templates and specifications are interpreted as is.
-					Unlike JSPs, they are not translated into Java classes and compiled.
+					Unlike JSPs, they are not translated into Java source code
+					and compiled into Java classes.
 					</>
 				</>
 			</para>

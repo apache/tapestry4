@@ -132,7 +132,7 @@ would look for the methods <function>getColorBinding()</> and <classname>setColo
 
 <para>
 If the methods are found, they are invoked from 
-<function>getBinding()</> and <function>setBinding()></> instead of updating the 
+<function>getBinding()</> and <function>setBinding()</> instead of updating the 
 <classname>Map</>.
 </>
 
