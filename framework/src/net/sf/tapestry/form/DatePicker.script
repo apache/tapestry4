@@ -27,7 +27,7 @@ function ${popupFunctionName}()
     // See Calendar.js  
     showPopCalendar(document.${formName}.${dateField.name}, 
                     document.${formName}.${dateHidden.name}, 
-                    popCal);        
+                    document.getElementById("popCal"));        
 } 
 function ${hideFunctionName}() 
 {
