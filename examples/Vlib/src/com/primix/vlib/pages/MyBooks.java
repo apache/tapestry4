@@ -45,9 +45,8 @@ import javax.rmi.*;
  */
 
 
-public class MyBooks extends BasePage
+public class MyBooks extends Protected
 {
-	private String error;
 	private String message;
 	
 	private Handle handle;
@@ -64,7 +63,6 @@ public class MyBooks extends BasePage
 	{
 		super.detachFromApplication();
 		
-		error = null;
 		message = null;
 		handle = null;
 		query = null;
@@ -166,16 +164,6 @@ public class MyBooks extends BasePage
 		return currentBook;
 	}
 
-	public void setError(String value)
-	{
-		error = value;
-	}
-	
-	public String getError()
-	{
-		return error;
-	}
-	
 	public void setMessage(String value)
 	{
 		message = value;
@@ -238,17 +226,6 @@ public class MyBooks extends BasePage
 		};
 	}
 
-	public IDirectListener getShowHolderListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IComponent component, String[] context,
-					IRequestCycle cycle)
-			{
-			}
-		};
-	}
-	
 	/**
 	 *  Should the holder be displayed on the page?  Only if the holder is someone
 	 *  else than the owner.  The owner will always be the logged in user (that's

@@ -61,6 +61,7 @@ public class Login extends BasePage
 		email = null;
 		password = null;
 		error = null;
+		targetPage = null;
 	}
 	
 	public void setEmail(String value)
@@ -99,7 +100,7 @@ public class Login extends BasePage
 	{
 		targetPage = value;
 		
-		fireObservedChange(targetPage, value);
+		fireObservedChange("targetPage", value);
 	}
 	
 	public String getTargetPage()

@@ -3,7 +3,7 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.vlib.pages.Matches</class>
+	<class>com.primix.vlib.pages.ViewBook</class>
 	<components>
 		<component>
 			<id>border</id>
@@ -11,65 +11,17 @@
 			<bindings>
 				<static-binding>
 					<name>title</name>
-					<value>Matching Books</value>
+					<value>View Book</value>
 				</static-binding>
 			</bindings>
 		</component>
 		<component>
-			<id>insertMatchCount</id>
+			<id>insertTitle</id>
 			<type>Insert</type>
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>matchCount</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e-match</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>matches</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>currentMatch</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifFirstMatch</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>components.e-match.first</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>viewBook</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>context</name>
-					<property-path>currentMatch.primaryKey</property-path>
-				</binding>
-				<binding>
-					<name>listener</name>
-					<property-path>application.viewBookListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertBookTitle</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentMatch.title</property-path>
+					<property-path>book.title</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -79,7 +31,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>currentMatch.author</property-path>
+					<property-path>book.author</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -89,7 +41,17 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>currentMatch.publisherName</property-path>
+					<property-path>book.publisherName</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertISBN</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>book.ISBN</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -103,7 +65,7 @@
 				</binding>
 				<binding>
 					<name>context</name>
-					<property-path>currentMatch.ownerPrimaryKey</property-path>
+					<property-path>book.ownerPrimaryKey</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -113,7 +75,17 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>currentMatch.ownerName</property-path>
+					<property-path>book.ownerName</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertDescription</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>book.description</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -132,12 +104,12 @@
 			<type>Direct</type>
 			<bindings>
 				<binding>
-					<name>context</name>
-					<property-path>currentMatch.holderPrimaryKey</property-path>
-				</binding>
-				<binding>
 					<name>listener</name>
 					<property-path>application.personLinkListener</property-path>
+				</binding>
+				<binding>
+					<name>context</name>
+					<property-path>book.holderPrimaryKey</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -147,7 +119,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>currentMatch.holderName</property-path>
+					<property-path>book.holderName</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -161,21 +133,11 @@
 				</binding>
 				<binding>
 					<name>context</name>
-					<property-path>currentMatch.primaryKey</property-path>
+					<property-path>book.primaryKey</property-path>
 				</binding>
 				<binding>
 					<name>enabled</name>
 					<property-path>enableBorrow</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifLastMatch</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>components.e-match.last</property-path>
 				</binding>
 			</bindings>
 		</component>

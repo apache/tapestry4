@@ -46,11 +46,9 @@ import com.primix.foundation.prop.*;
  */
 
 
-public class NewBook extends BasePage
+public class NewBook extends Protected
 {
 	private String returnPage;
-	
-	private String error;
 	
 	private String title;
 	private String ISBN;
@@ -69,7 +67,6 @@ public class NewBook extends BasePage
 	{
 		super.detachFromApplication();
 		
-		error = null;
 		returnPage = null;
 		
 		title = null;
@@ -90,16 +87,6 @@ public class NewBook extends BasePage
 		returnPage = value;
 		
 		fireObservedChange("returnPage", value);
-	}
-	
-	public void setError(String value)
-	{
-		error = value;
-	}
-	
-	public String getError()
-	{
-		return error;
 	}
 	
 	public String getTitle()
@@ -243,6 +230,9 @@ public class NewBook extends BasePage
 		
 		// Success.  First, update the message property of the return page.
 		
+		if (returnPage == null)
+			returnPage = "MyBooks";
+			
 		page = cycle.getPage(returnPage);
 		
 		helper = PropertyHelper.forClass(page.getClass());

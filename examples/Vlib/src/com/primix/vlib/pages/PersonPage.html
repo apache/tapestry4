@@ -1,7 +1,18 @@
 <jwc id="border">
 <!-- $Id$ -->
 
-<jwc id="insertMatchCount"/> matches.
+<table>
+	<tr>
+		<th>Name</th>
+		<td><jwc id="insertName"/></td>
+	</tr>
+	<tr>
+		<th>Email</th>
+		<td><jwc id="emailLink"><jwc id="insertEmail"/></jwc></td>
+	</tr>
+</table>
+
+<p><jwc id="insertMatchCount"/> books.
 
 <jwc id="e-match">
 
@@ -11,7 +22,6 @@
 		<th>Title</th>
 		<th>Author</th>
 		<th>Publisher</th>
-		<th>Owner</th>
 		<th>Borrowed By</th>
 	</tr>
 </jwc>
@@ -20,11 +30,10 @@
 		<td><jwc id="viewBook"><jwc id="insertBookTitle"/></jwc></td>
 		<td><jwc id="insertAuthor"/></td>
 		<td><jwc id="insertPublisherName"/></td>
-		<td><jwc id="showOwner"><jwc id="insertOwnerName"/></jwc> </td>
 		<td>
-<jwc id="ifShowHolder">
+		<jwc id="ifShowHolder">
 			<jwc id="showHolder"><jwc id="insertHolderName"/></jwc>
-</jwc>
+		</jwc>
 		</td>
 		<td><jwc id="borrow">[ Borrow ]</jwc></td>
 	</tr>

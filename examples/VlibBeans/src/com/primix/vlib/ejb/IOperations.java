@@ -118,4 +118,25 @@ public interface IOperations extends EJBObject
 	 
 	public Person[] getPersons()
 	throws RemoteException;	
+
+	/**
+	 *  Retrieves a single {@link Person} by its primary key.
+	 *
+	 *  @throws FinderException if the Person does not exist.
+	 *
+	 */
+	 
+	public Person getPerson(Integer primaryKey)
+	throws FinderException, RemoteException;
+	
+	/**
+	 *  Retrieves a single {@link Book} by its primary key.
+	 *
+	 *  @throws FinderException if the Book does not exist.
+	 *
+	 */
+	 
+	public Book getBook(Integer primaryKey)
+	throws FinderException, RemoteException;
+	 	
 }

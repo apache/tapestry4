@@ -45,14 +45,16 @@ import java.rmi.*;
  */
 
 
-public class Matches extends BasePage
+public class PersonPage extends BasePage
 {
 	private transient IBookQuery bookQuery;
 	private Handle bookQueryHandle;
 	private Book currentMatch;
 	private int matchCount;
+	private String email;
+	private String fullName;
 	
-	public Matches(IApplication application, ComponentSpecification componentSpecification)
+	public PersonPage(IApplication application, ComponentSpecification componentSpecification)
 	{
 		super(application, componentSpecification);
 	}
@@ -65,6 +67,36 @@ public class Matches extends BasePage
 		bookQueryHandle = null;
 		currentMatch = null;
 		matchCount = 0;
+		email = null;
+		fullName = null;
+	}
+	
+	public String getEmail()
+	{
+		return email;
+	}
+	
+	public String getEmailURL()
+	{
+		return "mailto:" + email;
+	}
+	
+	public void setEmail(String value)
+	{
+		email = value;
+		fireObservedChange("email", value);
+	}
+		
+	public String getFullName()
+	{
+		return fullName;
+	}
+	
+	public void setFullName(String value)
+	{
+		fullName = value;
+		
+		fireObservedChange("fullName", value);
 	}
 	
 	public int getMatchCount()
@@ -141,22 +173,37 @@ public class Matches extends BasePage
 		}
 	}
 	
-	public void performQuery(String title, String author, Object publisherPK)
+	public void setup(Integer personPK)
 	{
-		IBookQueryHome home;
-		IBookQuery query;
+		VirtualLibraryApplication app;
 		int count;
+		IPersonHome home;
+		IPerson person;
+		IBookQuery query;
+		
+		app = (VirtualLibraryApplication)application;
 		
 		query = getBookQuery();
 		
 		try
 		{
-			count = query.masterQuery(title, author, publisherPK);
+			count = query.ownerQuery(personPK);
 			setMatchCount(count);
+			
+			home = app.getPersonHome();
+			person = home.findByPrimaryKey(personPK);
+			
+			setEmail(person.getEmail());
+			setFullName(person.getNaturalName());
+			
 		}
-		catch (Throwable t)
+		catch (FinderException e)
 		{
-			throw new ApplicationRuntimeException(t);
+			throw new ApplicationRuntimeException(e);
+		}
+		catch (RemoteException e)
+		{
+			throw new ApplicationRuntimeException(e);
 		}
 		
 	}

@@ -38,12 +38,12 @@
 		</component>
 		<component>
 			<id>myBooks</id>
-			<type>Direct</type>
+			<type>Page</type>
 			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>myBooksListener</property-path>
-				</binding>
+				<static-binding>
+					<name>page</name>
+					<value>MyBooks</value>
+				</static-binding>
 				<binding>
 					<name>enabled</name>
 					<property-path>page.application.userLoggedIn</property-path>
@@ -92,6 +92,16 @@
 					<name>page</name>
 					<value>Login</value>
 				</static-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>ifShowLogout</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>showLogout</property-path>
+				</binding>
 			</bindings>
 		</component>
 		<component>

@@ -40,6 +40,14 @@
 		<name>ConfirmBookDelete</name>
 		<specification-path>/com/primix/vlib/pages/ConfirmBookDelete.jwc</specification-path>
 	</page>
+	<page>
+		<name>Person</name>
+		<specification-path>/com/primix/vlib/pages/PersonPage.jwc</specification-path>
+	</page>
+	<page>
+		<name>ViewBook</name>
+		<specification-path>/com/primix/vlib/pages/ViewBook.jwc</specification-path>
+	</page>
 	<component-alias>
 		<alias>Border</alias>
 		<specification-path>/com/primix/vlib/components/Border.jwc</specification-path>
