@@ -6,43 +6,51 @@
 
 <include-script resource-path="/net/sf/tapestry/form/Calendar.js"/>
 
-<body/>
+<body>
+<![CDATA[
+function initialize_calendar()
+{
+	var txt = "";
+	
+	txt += "<table id='popTable' border='0' bgcolor='#cccccc'>";
+	txt += "<TR>";
+	txt += "<td valign='middle' align='center'><input class='r0Small' type='button' name='PrevMonth' value='<' style='height:20;width:20;FONT:16 Fixedsys' onClick='fPrevMonth()'>";
+	txt += "&nbsp;<select id='tbSelMonth' onChange='fUpdateCal(tbSelYear.value, tbSelMonth.value)' onClick='doNuffin()'>";
+	for (i = 0; i < 12; i++) {
+	  txt += "<option value='" + (i+1) + "'>" + monthShortNames[i] + "</option>";
+	}
+	txt += "</SELECT>";
+	txt += "&nbsp;<SELECT id='tbSelYear' onChange='fUpdateCal(tbSelYear.value, tbSelMonth.value)' onClick='doNuffin();'>";
+	for (i = 1990; i < 2015; i++) {
+	  txt += "<OPTION value='"+i+"'>" + i + "</OPTION>";
+	}
+	txt += "</SELECT>";
+	txt += "&nbsp;<input class='r0Small' type='button' name='PrevMonth' value='>' style='height:20;width:20;FONT:16 Fixedsys' onclick='fNextMonth()'>";
+	txt += "</td>";
+	txt += "</TR><TR>";
+	txt += "<td align='center'>";
+	txt += "<DIV style='background-color:teal;'><table width='100%' border='0' cellpadding='2'>";
+	txt += fDrawCal(giYear, giMonth, 19, 12);
+	txt += "</table></DIV>";
+	txt += "</td>";
+	txt += "</TR><TR><TD align='center'>";
+	txt += "<font style='cursor:hand;font:12 Fixedsys' onclick='fSetDate(giYear,giMonth,giDay)' onMouseOver='this.style.color=gcToggle' onMouseOut='this.style.color=0'>Today:&nbsp;&nbsp;" + monthShortNames[giMonth-1] + "&nbsp;" + giDay + ",&nbsp;" + giYear + "</font>";
+	txt += "</TD></TR>";
+	txt += "</TD></TR>";
+	txt += "</TABLE>";
+
+	popCal.innerHTML = txt;
+	
+	tbSelMonth = popCal.getElementsByTagName("select").item(0);
+	tbSelYear = popCal.getElementsByTagName("select").item(1);		
+}
+]]>
+</body>
 
 <initialization>
-<![CDATA[
-var txt = "";
-txt += "<table id='popTable' border='0' bgcolor='#cccccc'>";
-txt += "<TR>";
-txt += "<td valign='middle' align='center'><input class='r0Small' type='button' name='PrevMonth' value='<' style='height:20;width:20;FONT:16 Fixedsys' onClick='fPrevMonth()'>";
-txt += "&nbsp;<select id='tbSelMonth' onChange='fUpdateCal(tbSelYear.value, tbSelMonth.value)' onClick='doNuffin()'>";
-for (i = 0; i < 12; i++) {
-  txt += "<option value='" + (i+1) + "'>" + monthShortNames[i] + "</option>";
-}
-txt += "</SELECT>";
-txt += "&nbsp;<SELECT id='tbSelYear' onChange='fUpdateCal(tbSelYear.value, tbSelMonth.value)' onClick='doNuffin();'>";
-for (i = 1990; i < 2015; i++) {
-  txt += "<OPTION value='"+i+"'>" + i + "</OPTION>";
-}
-txt += "</SELECT>";
-txt += "&nbsp;<input class='r0Small' type='button' name='PrevMonth' value='>' style='height:20;width:20;FONT:16 Fixedsys' onclick='fNextMonth()'>";
-txt += "</td>";
-txt += "</TR><TR>";
-txt += "<td align='center'>";
-txt += "<DIV style='background-color:teal;'><table width='100%' border='0' cellpadding='2'>";
-txt += fDrawCal(giYear, giMonth, 19, 12);
-txt += "</table></DIV>";
-txt += "</td>";
-txt += "</TR><TR><TD align='center'>";
-txt += "<font style='cursor:hand;font:12 Fixedsys' onclick='fSetDate(giYear,giMonth,giDay)' onMouseOver='this.style.color=gcToggle' onMouseOut='this.style.color=0'>Today:&nbsp;&nbsp;" + monthShortNames[giMonth-1] + "&nbsp;" + giDay + ",&nbsp;" + giYear + "</font>";
-txt += "</TD></TR>";
-txt += "</TD></TR>";
-txt += "</TABLE>";
 
-popCal.innerHTML = txt;
+initialize_calendar();
 
-tbSelMonth = popCal.getElementsByTagName("select").item(0);
-tbSelYear = popCal.getElementsByTagName("select").item(1);
-]]>
 </initialization>
 
 </script>
