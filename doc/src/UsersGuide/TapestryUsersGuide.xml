@@ -29,6 +29,7 @@
 <!ENTITY chap-state SYSTEM "state.xml">
 <!ENTITY chap-configuration SYSTEM "configuration.xml">
 
+<!ENTITY appendix-properties SYSTEM "properties.xml">
 <!ENTITY appendix-jars SYSTEM "jars.xml">
 <!ENTITY appendix-spec SYSTEM "spec.xml"> 
 <!ENTITY appendix-script-spec SYSTEM "script-spec.xml">
@@ -131,6 +132,8 @@
   &chap-state;
          
   &chap-configuration;
+  
+  &appendix-properties;
   
   &appendix-jars;
                  
