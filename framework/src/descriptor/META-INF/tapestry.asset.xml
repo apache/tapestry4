@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.asset" version="3.1.0">
+<module id="tapestry.asset" version="3.1.0" package="org.apache.tapestry.asset">
   
   Factories for creating IAsset instances.
   
@@ -32,7 +32,7 @@
         The asset factory for the prefix.
       </attribute>
       
-      <conversion class="org.apache.tapestry.asset.AssetFactoryContribution">
+      <conversion class="AssetFactoryContribution">
         <map attribute="object" property="factory"/>
       </conversion>
     </element>
@@ -47,21 +47,21 @@
     
   </contribution>
   
-  <service-point id="DefaultAssetFactory" interface="org.apache.tapestry.asset.AssetFactory">
+  <service-point id="DefaultAssetFactory" interface="AssetFactory">
     
     AssetFactory used when the prefix on the path is not known.
     
-    <create-instance class="org.apache.tapestry.asset.DefaultAssetFactory"/>
+    <create-instance class="DefaultAssetFactory"/>
     
   </service-point>
   
-  <service-point id="ContextAssetFactory" interface="org.apache.tapestry.asset.AssetFactory">
+  <service-point id="ContextAssetFactory" interface="AssetFactory">
     
     AssetFactory used when the prefix is "context:" or the base
     resource is a ContextResource.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.asset.ContextAssetFactory">
+      <construct class="ContextAssetFactory">
         <set-service property="servletContext" service-id="tapestry.globals.ServletContext"/>
         <set-object property="contextPath" value="infrastructure:contextPath"/>
       </construct>
@@ -69,12 +69,12 @@
     
   </service-point>
   
-  <service-point id="ClasspathAssetFactory" interface="org.apache.tapestry.asset.AssetFactory">
+  <service-point id="ClasspathAssetFactory" interface="AssetFactory">
     
     AssetFactory used when the prefix is "classpath:" or the
     base resource is a ClasspathResource.
     
-    <create-instance class="org.apache.tapestry.asset.ClasspathAssetFactory"/>
+    <create-instance class="ClasspathAssetFactory"/>
     
   </service-point>
   
@@ -89,7 +89,7 @@
             
   </contribution>
   
-  <service-point id="LookupAssetFactory" interface="org.apache.tapestry.asset.AssetFactory">
+  <service-point id="LookupAssetFactory" interface="AssetFactory">
     
     AssetFactory that delegates to another implementation based on
     the type of resource.  Used when the asset path does not contain
@@ -100,13 +100,13 @@
     </invoke-factory>
   </service-point>
   
-  <service-point id="AssetSource" interface="org.apache.tapestry.asset.AssetSource">
+  <service-point id="AssetSource" interface="AssetSource">
     
     The master factory for assets, which identifies the correct
     AssetFactory based on the prefix of the asset path (if any).
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.asset.AssetSourceImpl">
+      <construct class="AssetSourceImpl">
         <set-configuration property="contributions" configuration-id="AssetFactories"/>
         <set-service property="lookupAssetFactory" service-id="LookupAssetFactory"/>
         <set-service property="defaultAssetFactory" service-id="DefaultAssetFactory"/>

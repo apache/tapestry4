@@ -15,53 +15,53 @@
    limitations under the License.
 -->
 
-<module id="tapestry.request" version="3.1.0">
+<module id="tapestry.request" version="3.1.0" package="org.apache.tapestry.services">
   
   Services and configurations for the Tapestry request processing pipeline.
   It is expected that the IEngine interface will eventually "dissolve" into
   a collection of loosely bound services.
   
-  <service-point id="EnginePool" interface="org.apache.tapestry.services.ObjectPool">
+  <service-point id="EnginePool" interface="ObjectPool">
     
     Contains engine instances, keyed on locale, ready for use in the current request.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ObjectPoolImpl">
+      <construct class="impl.ObjectPoolImpl">
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>
     </invoke-factory> 
   </service-point>  
   
-  <service-point id="RequestLocaleManager" interface="org.apache.tapestry.services.RequestLocaleManager">
+  <service-point id="RequestLocaleManager" interface="RequestLocaleManager">
     
     Encapsulates the logic for extracting the locale for the current request.
     
     <invoke-factory model="threaded">
-      <construct class="org.apache.tapestry.services.impl.RequestLocaleManagerImpl">
+      <construct class="impl.RequestLocaleManagerImpl">
         <set-object property="request" value="infrastructure:request"/>
         <set-service property="cookieSource" service-id="CookieSource"/>
       </construct>
     </invoke-factory>
   </service-point>  
   
-  <service-point id="CookieSource" interface="org.apache.tapestry.services.CookieSource">
+  <service-point id="CookieSource" interface="CookieSource">
     
     Allows access to incoming HTTP cookie values for the active (per-thread) request.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.CookieSourceImpl">
+      <construct class="impl.CookieSourceImpl">
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="response" value="infrastructure:response"/>
       </construct>
     </invoke-factory>    
   </service-point>  
   
-  <service-point id="EngineManager" interface="org.apache.tapestry.services.EngineManager">
+  <service-point id="EngineManager" interface="EngineManager">
     Obtains an IEngine implementation for the current request, either from a pool of
     such engine instance, from a factory, or from the HttpSession.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.EngineManagerImpl">
+      <construct class="impl.EngineManagerImpl">
         <set-service property="enginePool" service-id="EnginePool"/>
         <set-service property="engineFactory" service-id="EngineFactory"/>
         <set-service property="localeManager" service-id="RequestLocaleManager"/>
@@ -69,12 +69,12 @@
     </invoke-factory>
   </service-point>  
   
-  <service-point id="EngineFactory" interface="org.apache.tapestry.services.EngineFactory">
+  <service-point id="EngineFactory" interface="EngineFactory">
     
     Responsible for creating new instances of IEngine as needed.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.EngineFactoryImpl">
+      <construct class="impl.EngineFactoryImpl">
         <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
         <set-object property="defaultEngineClassName" value="global-property:org.apache.tapestry.engine-class"/>
       </construct>
@@ -82,23 +82,23 @@
     
   </service-point>  
   
-  <service-point id="RequestServicerPipeline" interface="org.apache.tapestry.services.RequestServicer">
+  <service-point id="RequestServicerPipeline" interface="RequestServicer">
     
     A pipeline for handling each request.
     
     <invoke-factory service-id="hivemind.lib.PipelineFactory">
-      <create-pipeline filter-interface="org.apache.tapestry.services.RequestServicerFilter"
+      <create-pipeline filter-interface="RequestServicerFilter"
         configuration-id="RequestServicerPipeline"/>
     </invoke-factory>    
   </service-point>
   
-  <service-point id="InvokeEngineTerminator" interface="org.apache.tapestry.services.RequestServicer">
+  <service-point id="InvokeEngineTerminator" interface="RequestServicer">
     
     Terminator service for the RequestServicerPipeline. This locates an IEngine instance that
     can take control of the request.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.InvokeEngineTerminator">
+      <construct class="impl.InvokeEngineTerminator">
         <set-service property="engineManager" service-id="EngineManager"/>
         <set-object property="specification" value="service-property:tapestry.globals.ApplicationGlobals:specification"/>
         <set-object property="servlet" value="service-property:tapestry.globals.ApplicationGlobals:servlet"/>
@@ -117,35 +117,35 @@
     <terminator object="service:InvokeEngineTerminator"/>
   </contribution>  
   
-  <service-point id="ResponseRenderer" interface="org.apache.tapestry.services.ResponseRenderer">
+  <service-point id="ResponseRenderer" interface="ResponseRenderer">
     Renders the active page as the response.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ResponseRendererImpl">
+      <construct class="impl.ResponseRendererImpl">
         <set-service property="localeManager" service-id="RequestLocaleManager"/>
       </construct>
     </invoke-factory>
   </service-point>
   
-  <service-point id="AbsoluteURLBuilder" interface="org.apache.tapestry.services.AbsoluteURLBuilder">
+  <service-point id="AbsoluteURLBuilder" interface="AbsoluteURLBuilder">
     
     Uses HttpServletRequest information to build complete URLs, suitable for use when
     sending client-side redirects.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.AbsoluteURLBuilderImpl">
+      <construct class="impl.AbsoluteURLBuilderImpl">
         <set-object property="request" value="infrastructure:request"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
-  <service-point id="RequestCycleFactory" interface="org.apache.tapestry.services.RequestCycleFactory">
+  <service-point id="RequestCycleFactory" interface="RequestCycleFactory">
     
     Creates new IRequestCycle instances.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.RequestCycleFactoryImpl">
+      <construct class="impl.RequestCycleFactoryImpl">
         <set-object property="encoders"
                     value="service-property:tapestry.url.LinkFactory:serviceEncoders"/>
         <set-service property="monitorFactory" service-id="tapestry.monitor.MonitorFactory"/>

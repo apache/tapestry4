@@ -15,16 +15,16 @@
    limitations under the License.
 -->
 
-<module id="tapestry.url" version="3.1.0">
+<module id="tapestry.url" version="3.1.0" package="org.apache.tapestry.services">
 
   Control over constructing and recognizing URLs for Tapestry engine services.
   
-  <service-point id="LinkFactory" interface="org.apache.tapestry.services.LinkFactory">
+  <service-point id="LinkFactory" interface="LinkFactory">
     
     A source of ILinks for engine services.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.LinkFactoryImpl">
+      <construct class="impl.LinkFactoryImpl">
         <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
         <set-configuration property="contributions" configuration-id="ServiceEncoders"/>
         <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
@@ -61,7 +61,7 @@
           The object that implements the ServiceEncoder interface.
         </attribute>
         
-        <conversion class="org.apache.tapestry.services.impl.ServiceEncoderContribution">
+        <conversion class="impl.ServiceEncoderContribution">
           <map attribute="object" property="encoder"/>
         </conversion>
       </element>
@@ -89,7 +89,7 @@
         </attribute>
         
         <rules>
-          <create-object class="org.apache.tapestry.services.impl.ServiceEncoderContribution"/>
+          <create-object class="impl.ServiceEncoderContribution"/>
           <read-attribute attribute="id" property="id"/>
           <read-attribute attribute="before" property="before"/>
           <read-attribute attribute="after" property="after"/>
@@ -121,7 +121,7 @@
         </attribute>
         
         <rules>
-          <create-object class="org.apache.tapestry.services.impl.ServiceEncoderContribution"/>
+          <create-object class="impl.ServiceEncoderContribution"/>
           <read-attribute attribute="id" property="id"/>
           <read-attribute attribute="before" property="before"/>
           <read-attribute attribute="after" property="after"/>
@@ -142,7 +142,7 @@
     
     Used by the Shell component to write the &lt;base&gt; tag.
     
-    <create-instance class="org.apache.tapestry.services.impl.BaseTagWriter"/>
+    <create-instance class="impl.BaseTagWriter"/>
     
   </service-point>
 </module>

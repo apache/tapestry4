@@ -15,25 +15,25 @@
    limitations under the License.
 -->
 
-<module id="tapestry.ognl" version="3.1.0">
+<module id="tapestry.ognl" version="3.1.0" package="org.apache.tapestry.services">
 
   Wrappers around the Object Graph Navigation Library.
   
   <!-- Currently, a single TypeConverter is allowed, specified as an app extension.  Need to augment that with
        a configuration point to specify as many as necessary. -->
 
-  <service-point id="ExpressionEvaluator" interface="org.apache.tapestry.services.ExpressionEvaluator">
+  <service-point id="ExpressionEvaluator" interface="ExpressionEvaluator">
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ExpressionEvaluatorImpl">
+      <construct class="impl.ExpressionEvaluatorImpl">
         <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
         <set-configuration property="contributions" configuration-id="PropertyAccessors"/>
       </construct>
     </invoke-factory>
   </service-point>
 
-  <service-point id="ExpressionCache" interface="org.apache.tapestry.services.ExpressionCache">
+  <service-point id="ExpressionCache" interface="ExpressionCache">
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ExpressionCacheImpl">
+      <construct class="impl.ExpressionCacheImpl">
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>
     </invoke-factory>
@@ -57,7 +57,7 @@
           An object implementing the OGNL PropertyAccessor interface.
         </attribute>
         
-        <conversion class="org.apache.tapestry.services.impl.PropertyAccessorContribution">
+        <conversion class="impl.PropertyAccessorContribution">
           <map attribute="class" property="subjectClass"/>
           <map attribute="object" property="accessor"/>
         </conversion>

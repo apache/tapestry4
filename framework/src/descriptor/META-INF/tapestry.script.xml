@@ -15,14 +15,14 @@
    limitations under the License.
 -->
 
-<module id="tapestry.script" version="3.1.0">
+<module id="tapestry.script" version="3.1.0" package="org.apache.tapestry.engine">
   
   Module focused on client-side Javascript templates.
   
-  <service-point id="ScriptSource" interface="org.apache.tapestry.engine.IScriptSource">
+  <service-point id="ScriptSource" interface="IScriptSource">
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.engine.DefaultScriptSource">
+      <construct class="DefaultScriptSource">
         <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>

@@ -15,11 +15,11 @@
    limitations under the License.
 -->
 
-<module id="tapestry.init" version="3.1.0">
+<module id="tapestry.init" version="3.1.0" package="org.apache.tapestry.services">
 
   Contains all the application initialization logic.  
   
-  <service-point id="MasterInitializer" interface="org.apache.tapestry.services.ApplicationInitializer">
+  <service-point id="MasterInitializer" interface="ApplicationInitializer">
     
     Master startup for the application; invokes an ordered series of other ApplicationInitializer instances contributed to
     the ApplicationInitializers configuration point.
@@ -35,12 +35,12 @@
 
   </configuration-point>
 
-  <service-point id="ApplicationSpecificationInitializer" interface="org.apache.tapestry.services.ApplicationInitializer">
+  <service-point id="ApplicationSpecificationInitializer" interface="ApplicationInitializer">
     
     Locates and parses the application specification and informs the ApplicationGlobals service about it.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ApplicationSpecificationInitializer">
+      <construct class="impl.ApplicationSpecificationInitializer">
         <set-service property="classpathResourceFactory" service-id="tapestry.ClasspathResourceFactory"/>
         <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
         <set-service property="parser" service-id="tapestry.parse.SpecificationParser"/>

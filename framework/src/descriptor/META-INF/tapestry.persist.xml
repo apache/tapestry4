@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.persist" version="3.1.0">
+<module id="tapestry.persist" version="3.1.0" package="org.apache.tapestry.record">
 
   Services for managing page property persistence.
   
@@ -32,7 +32,7 @@
         <attribute name="object" required="true" translator="object">
           The object implementing PropertyPersistenceStrategy.
         </attribute>
-        <conversion class="org.apache.tapestry.record.PropertyPersistenceStrategyContribution">
+        <conversion class="PropertyPersistenceStrategyContribution">
           <map attribute="object" property="strategy"/>
         </conversion>
       </element>
@@ -44,13 +44,13 @@
     <strategy name="session" object="service:SessionPropertyPersistenceStrategy"/>
   </contribution>
   
-  <service-point id="SessionPropertyPersistenceStrategy" interface="org.apache.tapestry.record.PropertyPersistenceStrategy">
+  <service-point id="SessionPropertyPersistenceStrategy" interface="PropertyPersistenceStrategy">
     
     The standard persistence strategy, mapped to the name "session". Simply stores each property as
     an HttpSession attribute.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.record.SessionPropertyPersistenceStrategy">
+      <construct class="SessionPropertyPersistenceStrategy">
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="applicationId" value="infrastructure:applicationId"/>
       </construct>
@@ -58,12 +58,12 @@
     
   </service-point>
   
-  <service-point id="PropertyPersistenceStrategySource" interface="org.apache.tapestry.record.PropertyPersistenceStrategySource">
+  <service-point id="PropertyPersistenceStrategySource" interface="PropertyPersistenceStrategySource">
     
     Used by other services to locate persistence strategies and run certain operations across all strategies.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.record.PropertyPersistenceStrategySourceImpl">
+      <construct class="PropertyPersistenceStrategySourceImpl">
         <set-configuration property="contributions" configuration-id="PersistenceStrategy"/>
       </construct>
     </invoke-factory>

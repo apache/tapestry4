@@ -15,16 +15,16 @@
    limitations under the License.
 -->
 
-<module id="tapestry.bindings" version="3.1.0">
+<module id="tapestry.bindings" version="3.1.0" package="org.apache.tapestry.binding">
   
   Services for creating instance of IBinding.
   
-  <service-point id="OGNLBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="OGNLBindingFactory" interface="BindingFactory">
     
     Creates bindings where the path is a OGNL expression.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.OGNLBindingFactory">
+      <construct class="OGNLBindingFactory">
         <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
         <set-service property="expressionCache" service-id="tapestry.ognl.ExpressionCache"/>
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
@@ -32,24 +32,24 @@
     </invoke-factory>
   </service-point>
 
-  <service-point id="MessageBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="MessageBindingFactory" interface="BindingFactory">
     
     Creates bindings where the path is a localized message key for the component.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.MessageBindingFactory">
+      <construct class="MessageBindingFactory">
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>  
       </construct>
     </invoke-factory>
     
   </service-point>
   
-  <service-point id="LiteralBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="LiteralBindingFactory" interface="BindingFactory">
     
     Creates bindings where the path is the literal (aka static) value.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.LiteralBindingFactory">
+      <construct class="LiteralBindingFactory">
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>  
       </construct>
     </invoke-factory> 
@@ -57,60 +57,60 @@
   </service-point>
   
 
-  <service-point id="AssetBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="AssetBindingFactory" interface="BindingFactory">
     
     Creates bindings where the path is the name of an asset of the component.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.AssetBindingFactory">
+      <construct class="AssetBindingFactory">
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
       </construct>
     </invoke-factory>    
     
   </service-point>
 
-  <service-point id="BeanBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="BeanBindingFactory" interface="BindingFactory">
     
     Creates bindings where the path is the name of a managed bean defined by the component.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.BeanBindingFactory">
+      <construct class="BeanBindingFactory">
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
       </construct>
     </invoke-factory>    
     
   </service-point>
 
-  <service-point id="ListenerBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="ListenerBindingFactory" interface="BindingFactory">
     
     Binding factory where the path is the name of a component listener method.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.ListenerBindingFactory">
+      <construct class="ListenerBindingFactory">
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
       </construct>
     </invoke-factory>    
     
   </service-point>
 
-  <service-point id="ComponentBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="ComponentBindingFactory" interface="BindingFactory">
     
     Binding factory where the path is the is of a nested component.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.ComponentBindingFactory">
+      <construct class="ComponentBindingFactory">
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
       </construct>
     </invoke-factory>    
     
   </service-point>
   
-  <service-point id="StateBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="StateBindingFactory" interface="BindingFactory">
     
     Creates bindings where the path is the name of an asset of the component.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.StateBindingFactory">
+      <construct class="StateBindingFactory">
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
         <set-object property="applicationStateManager" object="infrastructure:applicationStateManager"/> 
       </construct>
@@ -118,12 +118,12 @@
     
   </service-point>  
 
-  <service-point id="HiveMindBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+  <service-point id="HiveMindBindingFactory" interface="BindingFactory">
     
     Creates bindings where the path is a HiveMind object reference.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.binding.HiveMindBindingFactory">
+      <construct class="HiveMindBindingFactory">
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
         <set-service property="injectedValueProvider" service-id="tapestry.InjectedValueProvider"/>
       </construct>
@@ -167,7 +167,7 @@
     <binding prefix="hivemind" service-id="HiveMindBindingFactory"/>
   </contribution>
   
-  <service-point id="BindingSource" interface="org.apache.tapestry.binding.BindingSource">
+  <service-point id="BindingSource" interface="BindingSource">
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.BindingSourceImpl">

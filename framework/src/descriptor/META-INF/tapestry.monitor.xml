@@ -15,18 +15,18 @@
    limitations under the License.
 -->
 
-<module id="tapestry.monitor" version="3.1.0">
+<module id="tapestry.monitor" version="3.1.0" package="org.apache.tapestry.engine">
 
-  <service-point id="DefaultMonitorFactory" interface="org.apache.tapestry.engine.IMonitorFactory">
+  <service-point id="DefaultMonitorFactory" interface="IMonitorFactory">
     
     Default implemenation of IMonitorFactory, which returns a NullMonitor instance (which
     does nothing).
     
-    <create-instance class="org.apache.tapestry.engine.DefaultMonitorFactory"/>
+    <create-instance class="DefaultMonitorFactory"/>
     
   </service-point>
   
-  <service-point id="MonitorFactory" interface="org.apache.tapestry.engine.IMonitorFactory">
+  <service-point id="MonitorFactory" interface="IMonitorFactory">
     
     The actual MonitorFactory for the application, which will be the
     DefaultMonitorFactory unless overridden as the

@@ -15,9 +15,12 @@
    limitations under the License.
 -->
 
-<module id="tapestry" version="3.1.0">
+<module id="tapestry" version="3.1.0" package="org.apache.tapestry.services">
 
   The master module for the Apache Tapestry web application framework.
+
+  <dependency module-id="hivemind" version="1.1.0"/>
+  <dependency module-id="hivemind.lib" version="1.1.0"/>
   
   <sub-module descriptor="tapestry.init.xml"/>
   <sub-module descriptor="tapestry.globals.xml"/>
@@ -38,16 +41,16 @@
   <sub-module descriptor="tapestry.persist.xml"/>
   <sub-module descriptor="tapestry.state.xml"/>
   
-  <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
+  <service-point id="ClasspathResourceFactory" interface="ClasspathResourceFactory">
   
     Constructs new instances of ClasspathResource.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ClasspathResourceFactoryImpl"/>
+      <construct class="impl.ClasspathResourceFactoryImpl"/>
     </invoke-factory>
   </service-point>
    
-  <service-point id="Infrastructure" interface="org.apache.tapestry.services.Infrastructure">
+  <service-point id="Infrastructure" interface="Infrastructure">
     
     A kind of "clearing house" of other services. The Infrastructure is provided to the
     IEngine instance via the InvokeEngineTerminator service (using an HttpServletRequest
@@ -56,7 +59,7 @@
     of this service.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.InfrastructureImpl">
+      <construct class="impl.InfrastructureImpl">
         <set-object  property="applicationSpecification" value="service-property:tapestry.globals.ApplicationGlobals:specification"/>
         <set-service property="applicationPropertySource" service-id="tapestry.props.ApplicationPropertySource"/>
         <set-service property="globalPropertySource" service-id="tapestry.props.GlobalPropertySource"/>
@@ -97,14 +100,14 @@
         <attribute name="extension-name" required="true"/>
         <attribute name="default" translator="object"/>
         
-        <conversion class="org.apache.tapestry.services.impl.ExtensionLookupParameter"/>
+        <conversion class="impl.ExtensionLookupParameter"/>
         
       </element>
       
     </parameters-schema>
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ExtensionLookupFactory">
+      <construct class="impl.ExtensionLookupFactory">
         <set-object property="specification" value="infrastructure:applicationSpecification"/>
         <set-service property="defaultBuilder" service-id="hivemind.lib.DefaultImplementationBuilder"/>
       </construct>
@@ -112,15 +115,15 @@
   </service-point>
   
   
-  <service-point id="ResetEventCoordinator" interface="org.apache.tapestry.services.ResetEventCoordinator">
+  <service-point id="ResetEventCoordinator" interface="ResetEventCoordinator">
     
     Coordinator for services that have cached information that should be cleared out (this happens
     constantly in development, much more rarely in production).
     
-    <create-instance class="org.apache.tapestry.services.impl.ResetEventCoordinatorImpl"/>
+    <create-instance class="impl.ResetEventCoordinatorImpl"/>
   </service-point>
   
-  <service-point id="GlobalObjectPool" interface="org.apache.tapestry.services.ObjectPool">
+  <service-point id="GlobalObjectPool" interface="ObjectPool">
     
     A general purpose object pool used throughout the application. Care should be
     taken to ensure that keys are sufficiently unique.  This service will likely
@@ -128,19 +131,19 @@
     (as necessary).
      
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ObjectPoolImpl">
+      <construct class="impl.ObjectPoolImpl">
         <event-listener service-id="ResetEventCoordinator"/>
       </construct>
     </invoke-factory> 
   </service-point> 
   
   
-  <service-point id="ComponentMessagesSource" interface="org.apache.tapestry.services.ComponentMessagesSource">
+  <service-point id="ComponentMessagesSource" interface="ComponentMessagesSource">
     
     Used to provide components (including pages) with access to their own localized messages.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ComponentMessagesSourceImpl">
+      <construct class="impl.ComponentMessagesSourceImpl">
         <event-listener service-id="ResetEventCoordinator"/>
         <set-object property="componentPropertySource" value="infrastructure:componentPropertySource"/>
       </construct>
@@ -154,7 +157,7 @@
     Infratructure service.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.InfrastructureObjectProvider">
+      <construct class="impl.InfrastructureObjectProvider">
         <set-service property="infrastructure" service-id="Infrastructure"/>
       </construct>
     </invoke-factory>
@@ -166,12 +169,12 @@
     <provider prefix="infrastructure" service-id="InfrastructureObjectProvider"/>
   </contribution>
   
-  <service-point id="RequestExceptionReporter" interface="org.apache.tapestry.services.RequestExceptionReporter">
+  <service-point id="RequestExceptionReporter" interface="RequestExceptionReporter">
     Reports request errors to the console (when reporting using the Exception page fails, or is
     inappropriate).
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.RequestExceptionReporterImpl">
+      <construct class="impl.RequestExceptionReporterImpl">
         <set-object property="request" value="infrastructure:request"/>
       </construct>
     </invoke-factory>
@@ -196,13 +199,13 @@
     Special service factory for the InjectedValueProvider service.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.InjectedValueProviderFactory">
+      <construct class="impl.InjectedValueProviderFactory">
         <set-service property="objectTranslator" service-id="ObjectTranslator"/>
       </construct>
     </invoke-factory>    
   </service-point>
   
-  <service-point id="InjectedValueProvider" interface="org.apache.tapestry.services.InjectedValueProvider">
+  <service-point id="InjectedValueProvider" interface="InjectedValueProvider">
     <invoke-factory service-id="InjectedValueProviderFactory"/>
   </service-point>
   
