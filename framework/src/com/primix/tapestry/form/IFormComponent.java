@@ -63,4 +63,14 @@ public interface IFormComponent extends IComponent
 	 */
 
 	public String getName();
+	
+	/**
+	 *  May be implemented to return a user-presentable, localized name for the component,
+	 *  which is used in labels or error messages.  Most components simply return null.
+	 * 
+	 *  @since 1.0.9
+	 * 
+	 **/
+	
+	public String getDisplayName();
 }

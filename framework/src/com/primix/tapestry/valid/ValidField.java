@@ -261,7 +261,7 @@ public class ValidField extends AbstractTextField
 
 		rendering = !cycle.isRewinding();
 
-		delegate.setField(this);
+		delegate.setFormComponent(this);
 		
 		if (rendering)
 			delegate.writePrefix(writer, cycle);

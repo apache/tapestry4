@@ -71,4 +71,17 @@ public abstract class AbstractFormComponent
 	}
 
 	abstract public String getName();
+	
+	
+	/**
+	 *  Implemented in some subclasses to provide a display name (suitable
+	 *  for presentation to the user as a label or error message).  This implementation
+	 *  return null.
+	 * 
+	 **/
+	
+	public String getDisplayName()
+	{
+		return null;
+	}
 }

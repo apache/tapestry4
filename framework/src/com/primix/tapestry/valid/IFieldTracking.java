@@ -26,9 +26,23 @@
  
 package com.primix.tapestry.valid;
 
+import com.primix.tapestry.IRender;
+import com.primix.tapestry.components.Block;
+import com.primix.tapestry.form.IFormComponent;
+
 /**
- *  Defines the interface for an object that tracks validation errors for
- *  fields.
+ *  Defines the interface for an object that tracks validation errors.  This 
+ *  interface is now poorly named, in that it tracks errors that may <em>not</em>
+ *  be associated with a specific field.
+ * 
+ *  <p>The initial release (1.0.8) stored an error <em>message</em>.  Starting in
+ *  release 1.0.9, this was changed to an error <em>renderrer</em>.  This increases
+ *  the complexity slightly, but allows for much, much greater flexibility in how
+ *  errors are ultimately presented to the user.  For example, you could devote part
+ *  of a template to a {@link Block} that contained a detail error message and links
+ *  to other parts of the application (for example, perhaps a pop-up help message).
+ * 
+ *  <p>However, in most cases, the renderrer will simply be a wrapper 
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -39,20 +53,32 @@ package com.primix.tapestry.valid;
 public interface IFieldTracking
 {
 	/**
-	 * Returns the field component.
+	 *  Returns the field component.  This may return null if the error
+	 *  is not associated with any particular field.
 	 * 
 	 **/
 	
-	public IField getField();
+	public IFormComponent getFormComponent();
 	
 	/**
-	 *  Returns the localized error message recorded for the field.
+	 *  Returns an object that will render the error message.
+	 * 
+	 *  @since 1.0.9
 	 * 
 	 **/
 	
-	public String getErrorMessage();
+	public IRender getRenderer();
 	
-	public void setErrorMessage(String value);
+	/**
+	 *  Sets the error renderrer, the object that will render the error message.
+	 *  Typically, this is just a {@link RenderString}, but it could be a component
+	 *  or virtually anything.
+	 * 
+	 *  @since 1.0.9
+	 * 
+	 **/
+	
+	public void setRenderer(IRender value);
 	
 
 	/**
@@ -68,7 +94,7 @@ public interface IFieldTracking
 	
 	/**
 	 *  Returns the name of the field, that is, the name assigned by the form
-	 *  (this will differ from the field's id when any kind of looping operation
+	 *  (this will differ from the component's id when any kind of looping operation
 	 *  is in effect).
 	 * 
 	 **/

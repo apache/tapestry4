@@ -33,31 +33,17 @@ import com.primix.tapestry.form.*;
  *  Interface for a number of components that act as a normal
  *  {@link TextField} component, but perform extra validation.
  * 
+ * 
+ *  <p>In release 1.0.9, it was changed to extend
+ *  {@link IFormComponent} (not {@link IComponent}) and most of its
+ *  methods were moved there.
+ *  
  *  @author Howard Ship
  *  @version $Id$
- *
  */
 
-public interface IField extends IComponent
+public interface IField extends IFormComponent
 {
-
-	/**
-	 *  Returns the localized display name for the component, suitable for display
-	 *  to a user.
-	 *
-	 */
-
-	public String getDisplayName();
-
-	/**
-	 *  Returns the form name for the component; this is for constructing
-	 *  JavaScript event handlers and such.  This value won't be set until
-	 *  after the component renders.
-	 *
-	 */
-
-	public String getName();
-	
 	/**
 	 *  Returns the type of value, derived from the fields value binding.
 	 * 

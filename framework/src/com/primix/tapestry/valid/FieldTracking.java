@@ -26,6 +26,9 @@
 
 package com.primix.tapestry.valid;
 
+import com.primix.tapestry.IRender;
+import com.primix.tapestry.form.IFormComponent;
+
 /**
  *  Default implementation of {@link IFieldTracking}.
  *
@@ -37,31 +40,35 @@ package com.primix.tapestry.valid;
 
 public class FieldTracking implements IFieldTracking
 {
-	private IField component;
+	private IFormComponent component;
 	private String invalidInput;
-	private String errorMessage;
+	private IRender renderer;
 	private String fieldName;
 	private ValidationConstraint constraint;
 
-	FieldTracking(String fieldName, IField component)
+	FieldTracking()
+	{
+	}
+	
+	FieldTracking(String fieldName, IFormComponent component)
 	{
 		this.fieldName = fieldName;
 		this.component = component;
 	}
 
-	public IField getField()
+	public IFormComponent getFormComponent()
 	{
 		return component;
 	}
 
-	public String getErrorMessage()
+	public IRender getRenderer()
 	{
-		return errorMessage;
+		return renderer;
 	}
 
-	public void setErrorMessage(String value)
+	public void setRenderer(IRender value)
 	{
-		errorMessage = value;
+		renderer = value;
 	}
 
 	public String getInvalidInput()
