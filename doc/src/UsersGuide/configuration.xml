@@ -376,6 +376,41 @@ currently used in Tapestry.
 	</para>
 	</listitem>
 </varlistentry>
+
+
+<varlistentry>
+	<term>org.apache.tapestry.output-encoding</term>
+	
+	<listitem>
+	<para>
+	Defines the character set used by the application to encode its HTTP responses. 
+	This is also the character set that the application assumes that the browser uses 
+	when submitting data unless it is not specified differently in the HTTP request.
+	</para>
+
+	<para>
+	The default for this configuration property is UTF-8. 
+	Normally there is no need to modify this value since UTF-8 allows almost all
+	characters to be correctly encoded and displayed.
+	</para>
+	</listitem>
+</varlistentry>
+
+
+<varlistentry>
+	<term>org.apache.tapestry.template-encoding</term>
+	
+	<listitem>
+	<para>
+	Defines the character set used by the application templates. 
+	The default value is ISO-8859-1. 
+	</para>
+	
+	<para>
+	Please see the &configuration.character-sets; section for more information.
+	</para>
+	</listitem>
+</varlistentry>
 	
 
 </variablelist>
@@ -495,8 +530,106 @@ to store the) and repository directory (where temporary files are stored).
 
 </variablelist>
 
-	
 </section>  <!-- configuration.extensions -->
+
+
+
+<section id="configuration.character-sets">
+	<title>Character Sets</title>
+
+<para>
+Tapestry is designed to make the web application localization easy and 
+offers the ability to define different localized templates for the same component.
+For example, Home.html would be the default template of the Home page, however
+Home_fr.html would be used in all French locales, while Home_zh_CN.html would be used in
+China and Home_zh_TW.html would be used in Taiwan.
+</para>
+
+<para>
+Web developers and designers in different countries tend to use different character sets 
+for the templates they produce. English, German, French templates are typically produced in
+ISO-8859-1, Russian templates often use KOI8-R, and Chinese texts are normally written in Big5.
+Tapestry allows the application to configure the character set used in its templates 
+and makes it possible to use different character sets for templates associated with 
+different components and different locales.
+</para>
+
+<para>
+The character set of a template is defined using the 
+org.apache.tapestry.template-encoding
+configuration property. The search path of this property is slightly different then the
+standard one and allows specific components to use other character sets:
+</para>
+	
+<itemizedlist>
+	<listitem>
+		<para>
+		As a &spec.property; of the &spec.page-specification; or the &spec.component-specification; 
+		(in the page or component specification). 
+		</para>
+		<para>
+		This configuration will apply only to the page or component where it is defined.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As a &spec.property; of the &spec.library-specification; 
+		(in the library specification, if the components are included in a library). 
+		</para>
+		<para>
+		This configuration will apply to all pages and components in the library.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As a &spec.property; of the &spec.application; (in the application specification,
+		if the application uses one).
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As an <sgmltag class="starttag">init-parameter</sgmltag>
+		for the servlet, in the web application deployment descriptor.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As an <sgmltag class="starttag">init-parameter</sgmltag>
+		for the servlet context, also in the web application deployment descriptor.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As a JVM system property.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		The hard-coded default "ISO-8859-1".
+		</para>
+	</listitem>
+</itemizedlist>
+	
+<para>
+Tapestry also makes it possible to define the character set used by the templates specific 
+to a particular locale by appending the locale to the property name above. 
+As an example, the org.apache.tapestry.template-encoding_ru configuration property would define
+the character set used by the Russian templates, such as Home_ru.html. 
+This allows templates for different locales to use different character sets, 
+even though they are in the same application. 
+For example, all Russian templates in the application to use the KOI8-R character set 
+and all Chinese templates to use Big5 at the same time.
+</para>
+
+<para>
+The character sets used by the templates do not reflect in any way on the character set 
+Tapestry uses to encode its response to the browser. 
+That character set is defined by the org.apache.tapestry.output-encoding 
+configuration property.
+</para>
+
+	
+</section>	
 
 
 </chapter>

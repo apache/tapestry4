@@ -16,6 +16,10 @@
 <!ENTITY appendix-spec SYSTEM "spec.xml"> 
 <!ENTITY appendix-script-spec SYSTEM "script-spec.xml">
 
+<!-- Configuration entities -->
+
+<!ENTITY configuration.character-sets '<link linkend="configuration.character-sets">Character Sets</link>'>
+
 <!-- Application, page, library, component specification entities  -->
 
 <!ENTITY spec.application '<link linkend="spec.application"><sgmltag class="starttag">application</sgmltag></link>'>
