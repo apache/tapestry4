@@ -42,7 +42,7 @@
 				<exclude name="**/package.html"/>
 			</fileset>
 			
-			<metainf dir="META-INF">
+			<metainf dir="conf/META-INF">
 				<include name="*"/>
 			</metainf>
 		</jar>

@@ -37,7 +37,7 @@ import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.resource.ContextResourceLocation;
+import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.DelegatingPropertySource;
@@ -517,7 +517,7 @@ public class ApplicationServlet extends HttpServlet
         String servletName = getServletName();
         String expectedName = servletName + ".application";
 
-        Resource webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
+        Resource webInfLocation = new ContextResource(context, "/WEB-INF/");
         Resource webInfAppLocation = webInfLocation.getRelativeResource(servletName + "/");
 
         Resource result = check(webInfAppLocation, expectedName);
@@ -566,7 +566,7 @@ public class ApplicationServlet extends HttpServlet
         ApplicationSpecification result = new ApplicationSpecification();
 
         Resource virtualLocation =
-            new ContextResourceLocation(getServletContext(), "/WEB-INF/");
+            new ContextResource(getServletContext(), "/WEB-INF/");
 
         result.setSpecificationLocation(virtualLocation);
 

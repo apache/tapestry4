@@ -12,7 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// $Id$
-
 // That should be 'context', so it will be an unknown attribute
 test-script (cntext=test-context directory=root)

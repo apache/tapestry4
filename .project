@@ -3,6 +3,7 @@
 	<name>jakarta-tapestry</name>
 	<comment></comment>
 	<projects>
+		<project>jakarta-hivemind</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

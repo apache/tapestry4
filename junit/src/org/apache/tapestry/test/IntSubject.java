@@ -14,7 +14,12 @@
 
 package org.apache.tapestry.test;
 
-
+/**
+ * Used by {@link org.apache.tapestry.test.TestCreator}.
+ *
+ * @author Howard Lewis Ship
+ * @since 3.1
+ */
 public abstract class IntSubject
 {
    public abstract int getPriority();

@@ -21,6 +21,13 @@ import org.apache.hivemind.service.ClassFabUtils;
 /**
  * Container of static methods to format logging and exception messages, used
  * within the org.apache.tapesty.test package (and a few sub-packages).
+ * 
+ * <p>Technically, these are messages for the test package, and this class
+ * should be called TestMessages ... but that's always a bad idea (it makes
+ * the class look like a JUnit test suite).
+ * 
+ * <p>This class is public, not package private, because some related
+ * sub-packages make use of it as well.
  *
  * @author Howard Lewis Ship
  * @since 3.1
@@ -98,17 +105,11 @@ public final class ScriptMessages
 
     public static String unableToIntrospect(Class type, Throwable cause)
     {
-        return _formatter.format(
-            "unable-to-introspect",
-            type.getName(),
-            _formatter.extractMessage(cause));
+        return _formatter.format("unable-to-introspect", type.getName(), cause);
     }
 
     public static String unableToInstantiate(Class abstractClass, Throwable cause)
     {
-        return _formatter.format(
-            "unable-to-instantiate",
-            abstractClass.getName(),
-            _formatter.extractMessage(cause));
+        return _formatter.format("unable-to-instantiate", abstractClass.getName(), cause);
     }
 }

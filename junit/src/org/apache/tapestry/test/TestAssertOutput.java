@@ -23,7 +23,7 @@ import org.apache.tapestry.test.assertions.AssertOutput;
  * assertion.
  *
  * @author Howard Lewis Ship
- * @version $Id$
+ * @since 3.1
  */
 public class TestAssertOutput extends TapestryTestCase
 {

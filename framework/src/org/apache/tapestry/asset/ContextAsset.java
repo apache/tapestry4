@@ -23,7 +23,7 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.resource.ContextResourceLocation;
+import org.apache.tapestry.resource.ContextResource;
 
 /**
  *  An asset whose path is relative to the {@link javax.servlet.ServletContext} containing
@@ -37,7 +37,7 @@ public class ContextAsset extends AbstractAsset implements IAsset
 {
     private String _resolvedURL;
 
-    public ContextAsset(ContextResourceLocation resourceLocation, Location location)
+    public ContextAsset(ContextResource resourceLocation, Location location)
     {
         super(resourceLocation, location);
     }

@@ -30,27 +30,26 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.LocalizedContextResourceFinder;
 
 /**
- *  Implementation of {@link org.apache.tapestry.IResourceLocation}
+ *  Implementation of {@link org.apache.hivemind.Resource}
  *  for resources found within the web application context.
  * 
  *	
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  */
 
-public class ContextResourceLocation extends AbstractResource
+public class ContextResource extends AbstractResource
 {
-    private static final Log LOG = LogFactory.getLog(ContextResourceLocation.class);
+    private static final Log LOG = LogFactory.getLog(ContextResource.class);
 
     private ServletContext _context;
 
-    public ContextResourceLocation(ServletContext context, String path)
+    public ContextResource(ServletContext context, String path)
     {
         this(context, path, null);
     }
 
-    public ContextResourceLocation(ServletContext context, String path, Locale locale)
+    public ContextResource(ServletContext context, String path, Locale locale)
     {
         super(path, locale);
 
@@ -82,7 +81,7 @@ public class ContextResourceLocation extends AbstractResource
         if (path.equals(localizedPath))
             return this;
 
-        return new ContextResourceLocation(_context, localizedPath, pathLocale);
+        return new ContextResource(_context, localizedPath, pathLocale);
     }
 
     public URL getResourceURL()
@@ -117,9 +116,9 @@ public class ContextResourceLocation extends AbstractResource
         return builder.toHashCode();
     }
 
-    protected Resource buildNewResourceLocation(String path)
+    protected Resource newResource(String path)
     {
-        return new ContextResourceLocation(_context, path);
+        return new ContextResource(_context, path);
     }
 
 }

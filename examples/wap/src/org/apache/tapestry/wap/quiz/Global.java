@@ -31,7 +31,7 @@ import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.resource.ContextResourceLocation;
+import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
@@ -210,7 +210,7 @@ public class Global implements Serializable
             ServletContext context = servlet.getServletContext();
             IPropertySource propertySource = cycle.getEngine().getPropertySource();
 
-            Resource webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
+            Resource webInfLocation = new ContextResource(context, "/WEB-INF/");
 
             Resource webInfAppLocation =
                 webInfLocation.getRelativeResource(servlet.getServletName() + "/");
