@@ -26,8 +26,9 @@
 package net.sf.tapestry.contrib.table.components.inserted;
 
 import net.sf.tapestry.BaseComponent;
+import net.sf.tapestry.ComponentAddress;
+import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.contrib.table.components.*;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITableModelSource;
 import net.sf.tapestry.contrib.table.model.ITableSortingState;
@@ -104,20 +105,20 @@ public class SimpleTableColumnComponent
 		return m_objColumn.getDisplayName();
 	}
     
-    public boolean getIsSortedDown()
+    public boolean getIsSorted()
     {
         ITableSortingState objSortingState = getTableModel().getSortingState();
         String strSortColumn = objSortingState.getSortColumn();
-        if (!m_objColumn.getColumnName().equals(strSortColumn)) return false;
-        return objSortingState.getSortOrder() == ITableSortingState.SORT_ASCENDING;
+        return m_objColumn.getColumnName().equals(strSortColumn);
     }
 
-    public boolean getIsSortedUp()
+    public IAsset getSortImage()
     {
         ITableSortingState objSortingState = getTableModel().getSortingState();
-        String strSortColumn = objSortingState.getSortColumn();
-        if (!m_objColumn.getColumnName().equals(strSortColumn)) return false;
-        return objSortingState.getSortOrder() == ITableSortingState.SORT_DESCENDING;
+        if (objSortingState.getSortOrder() == ITableSortingState.SORT_ASCENDING)
+            return getAsset("sortUp");
+        else
+            return getAsset("sortDown");
     }
 
 	public Object[] getColumnSelectedParameters()
