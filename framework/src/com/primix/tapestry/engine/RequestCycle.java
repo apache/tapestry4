@@ -411,7 +411,9 @@ throw e;
 		attributes = null;
 		actionId = -1;
 
-		this.targetActionId = Integer.parseInt(targetActionId);
+		// Parse the action Id as hex since that's whats generated
+		// by getNextActionId()
+		this.targetActionId = Integer.parseInt(targetActionId, 16);
 		this.targetIdPath = targetIdPath;
 
 		try
@@ -430,7 +432,7 @@ throw e;
 		}
 		catch (RequestCycleException ex)
 		{
-			// RequestCycleException don't need to be wrapped.
+			// RequestCycleExceptions don't need to be wrapped.
 			throw ex;
 		}
 		catch (Throwable ex)
