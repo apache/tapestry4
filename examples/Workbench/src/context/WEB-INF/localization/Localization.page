@@ -34,6 +34,6 @@
     <binding name="image" value="asset:changeButton"/>
   </component>
   
-  <context-asset name="changeButton" path="images/Change.gif"/>
+  <asset name="changeButton" path="images/Change.gif"/>
   
 </page-specification>

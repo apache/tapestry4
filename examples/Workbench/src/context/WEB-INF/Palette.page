@@ -41,7 +41,7 @@
   	<binding name="listener" value="listener:advance"/>
   </component>
  
-   <context-asset name="continue" path="images/Continue.gif"/>
-   <context-asset name="update" path="images/Update.gif"/>
+   <asset name="continue" path="images/Continue.gif"/>
+   <asset name="update" path="images/Update.gif"/>
   
 </page-specification>

@@ -45,6 +45,7 @@
 		<match>html</match>
 		<match>head</match>
 		<match>meta</match>
+    <match>base</match>
 		<match>title</match>
 		<match>/title</match>
 		<match>link</match>

@@ -17,6 +17,7 @@
 <!DOCTYPE component-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
+
 <component-specification class="org.apache.tapestry.workbench.table.LocaleSelection"
 	allow-body="no" allow-informal-parameters="yes">
 	
@@ -76,9 +77,8 @@
 		</binding>
 	</component>
     
-    <property-specification name="localeSet" type="java.util.Set" persistent="yes" 
-    	initial-value="new java.util.HashSet()"/>
+    <property name="localeSet" persistent="yes"  initial-value="ognl:new java.util.HashSet()"/>
 
-    <property-specification name="currentLocale" type="java.util.Locale"/>
+    <property name="currentLocale"/>
     
 </component-specification>
