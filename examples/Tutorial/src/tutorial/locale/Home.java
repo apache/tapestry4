@@ -2,6 +2,7 @@ package tutorial.locale;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.html.form.*;
 import java.util.*;
 
 /*

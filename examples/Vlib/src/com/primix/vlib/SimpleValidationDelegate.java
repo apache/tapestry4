@@ -1,7 +1,7 @@
 package com.primix.vlib;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.components.validating.*;
+import com.primix.tapestry.components.html.valid.*;
 
 public class SimpleValidationDelegate
 extends BaseValidationDelegate
