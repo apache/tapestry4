@@ -87,7 +87,7 @@ function detectBrowser()
 	var i = 0;
 	var ua = window.navigator.userAgent.toLowerCase();
 	
-	if (ua.indexOf('safari') {
+	if (ua.indexOf('safari') != -1) {
 	  navigator.family = 'nn4';
 	  navigator.version = 4;
 	  navigator.org = 'netscape';
