@@ -336,15 +336,15 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         log.debug("Could not find an application specification for application servlet wilma.");
 
-        config.getServletContext();
-        configControl.setReturnValue(context);
-
         config.getServletName();
         configControl.setReturnValue("wilma");
 
+        config.getServletContext();
+        configControl.setReturnValue(context);
+
         IApplicationSpecification as = new ApplicationSpecification();
         as.setName("wilma");
-        as.setSpecificationLocation(new ContextResource(context, "/WEB-INF/"));
+        as.setSpecificationLocation(new ContextResource(context, "/WEB-INF/wilma.application"));
 
         MockControl agControl = newControl(ApplicationGlobals.class);
 
