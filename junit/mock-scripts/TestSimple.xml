@@ -36,6 +36,13 @@ The start of the JUnit test suite: JUnit Simple Application.
 		<match>/html</match>		
 	  </assert-output-matches>
   	  	  
+  	  <assert-output name="Shell DOCTYPE render">
+<![CDATA[    	  
+  	  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+]]>  	  
+  	  </assert-output>
+  	  
+ 
   	  <assert-output name="Shell title render">
 <![CDATA[    	  
   	  <title>JUnit Simple Home Page</title>
@@ -66,6 +73,12 @@ The start of the JUnit test suite: JUnit Simple Application.
 ]]>
 	</assert-output>
 	
+	<assert-output name="Page Two Shell DOCTYPE render">
+<![CDATA[    	  
+	<!DOCTYPE math SYSTEM "http://www.w3.org/Math/DTD/mathml1/mathml.dtd">
+]]>  	  
+	</assert-output>
+
 	<assert-regexp name="Page Two: No message, yet">
 <![CDATA[
 	<body>\s*<p>This page
