@@ -5,8 +5,7 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
 <component-specification class="org.apache.tapestry.components.Insert" 
-	allow-body="no" 
-	allow-informal-parameters="no">
+	allow-body="no">
   
   <description>
   Emits a value into the response page.
