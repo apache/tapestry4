@@ -68,6 +68,7 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.vlib.EntitySelectionModel;
+import org.apache.tapestry.vlib.IActivate;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -247,14 +248,21 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
 
     }
 
-    public void validate(IRequestCycle cycle)
+    public void pageValidate(PageEvent event)
     {
-        super.validate(cycle);
+        super.pageValidate(event);
 
         IPropertySelectionModel model = buildBooksModel();
 
         if (model.getOptionCount() == 0)
-            throw new PageRedirectException("MyLibrary");
+        {
+            IRequestCycle cycle = getRequestCycle();
+            IActivate page = (IActivate) cycle.getPage("MyLibrary");
+
+            page.activate(cycle);
+
+            throw new PageRedirectException(page);
+        }
 
         setBooksModel(model);
     }
