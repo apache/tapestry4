@@ -301,7 +301,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *  Called by the {@link IEngine engine} to attach the page
      *  to itself.  Does
      *  <em>not</em> change the locale, but since a page is selected
-     *  from the {@link IPageSource} pool based on its
+     *  from the {@link org.apache.tapestry.engine.IPageSource} pool based on its
      *  locale matching the engine's locale, they should match
      *  anyway.
      *
@@ -437,7 +437,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  @seince 2.1-beta-2
+     *  @since 2.1-beta-2
      * 
      **/
 
