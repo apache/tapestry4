@@ -15,6 +15,7 @@
 package org.apache.tapestry.services;
 
 import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.engine.ISpecificationSource;
 
 /**
  * Tapestry infrastructure ... key services required by the
@@ -50,4 +51,11 @@ public interface Infrastructure
      */
     
     public TemplateSource getTemplateSource();
+    
+    /**
+     * Returns the source of all application, page, component and library
+     * specifications.
+     */
+    
+    public ISpecificationSource getSpecificationSource();
 }

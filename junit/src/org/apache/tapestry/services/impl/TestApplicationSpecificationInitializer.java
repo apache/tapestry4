@@ -27,10 +27,10 @@ import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.parse.ISpecificationParser;
 import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
-import org.apache.tapestry.services.SpecificationParser;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.easymock.AbstractMatcher;
@@ -73,8 +73,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         IApplicationSpecification as = new ApplicationSpecification();
 
-        MockControl parserControl = newControl(SpecificationParser.class);
-        SpecificationParser parser = (SpecificationParser) parserControl.getMock();
+        MockControl parserControl = newControl(ISpecificationParser.class);
+        ISpecificationParser parser = (ISpecificationParser) parserControl.getMock();
 
         i.setParser(parser);
 
@@ -161,8 +161,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         IApplicationSpecification as = new ApplicationSpecification();
 
-        MockControl parserControl = newControl(SpecificationParser.class);
-        SpecificationParser parser = (SpecificationParser) parserControl.getMock();
+        MockControl parserControl = newControl(ISpecificationParser.class);
+        ISpecificationParser parser = (ISpecificationParser) parserControl.getMock();
 
         i.setParser(parser);
 
@@ -239,8 +239,8 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         IApplicationSpecification as = new ApplicationSpecification();
 
-        MockControl parserControl = newControl(SpecificationParser.class);
-        SpecificationParser parser = (SpecificationParser) parserControl.getMock();
+        MockControl parserControl = newControl(ISpecificationParser.class);
+        ISpecificationParser parser = (ISpecificationParser) parserControl.getMock();
 
         i.setParser(parser);
 
@@ -376,7 +376,7 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         HttpServlet servlet = new ServletFixture();
 
-        // Create a non-strick control
+        // Create a non-strict control
         MockControl configControl = MockControl.createControl(ServletConfig.class);
         addControl(configControl);
         ServletConfig config = (ServletConfig) configControl.getMock();

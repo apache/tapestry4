@@ -66,4 +66,9 @@ final class ImplMessages
     {
     	return _formatter.format("unable-to-parse-template", resource);
     }
+    
+    public static String unableToParseSpecification(Resource resource)
+    {
+    	return _formatter.format("unable-to-parse-specification", resource);
+    }
 }

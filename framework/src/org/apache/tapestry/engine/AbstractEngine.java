@@ -231,14 +231,6 @@ public abstract class AbstractEngine
     protected transient IApplicationSpecification _specification;
 
     /**
-     *  The source for component specifications, stored in the
-     *  {@link ServletContext} (like {@link #_templateSource}).
-     *
-     **/
-
-    protected transient ISpecificationSource _specificationSource;
-
-    /**
      *  The source for parsed scripts, again, stored in the
      *  {@link ServletContext}.
      *
@@ -265,15 +257,6 @@ public abstract class AbstractEngine
      **/
 
     public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
-
-    /**
-     *  Servlet context attribute name for the default {@link ISpecificationSource}
-     *  instance.  The application's name is appended.
-     *
-     **/
-
-    protected static final String SPECIFICATION_SOURCE_NAME =
-        "org.apache.tapestry.SpecificationSource";
 
     /**
      *  Servlet context attribute name for the {@link IPageSource}
@@ -590,7 +573,7 @@ public abstract class AbstractEngine
 
     public ISpecificationSource getSpecificationSource()
     {
-        return _specificationSource;
+        return _infrastructure.getSpecificationSource();
     }
 
     public TemplateSource getTemplateSource()
@@ -1085,7 +1068,6 @@ public abstract class AbstractEngine
     	
         _pool.clear();
         _pageSource.reset();
-        _specificationSource.reset();
         _scriptSource.reset();
         _enhancer.reset();
     }
@@ -1226,20 +1208,6 @@ public abstract class AbstractEngine
                 _pool = createPool(context);
 
                 servletContext.setAttribute(name, _pool);
-            }
-        }
-
-        if (_specificationSource == null)
-        {
-            String name = SPECIFICATION_SOURCE_NAME + ":" + servletName;
-
-            _specificationSource = (ISpecificationSource) servletContext.getAttribute(name);
-
-            if (_specificationSource == null)
-            {
-                _specificationSource = createSpecificationSource(context);
-
-                servletContext.setAttribute(name, _specificationSource);
             }
         }
 
@@ -1384,21 +1352,6 @@ public abstract class AbstractEngine
     protected IPageSource createPageSource(RequestContext context)
     {
         return new PageSource(this);
-    }
-
-    /**
-     *  Invoked from {@link #setupForRequest(RequestContext)} to provide
-     *  an instance of {@link ISpecificationSource} that will be stored into
-     *  the {@link ServletContext}.  Subclasses may override this method
-     *  to provide a different implementation.
-     *
-     *  @return an instance of {@link DefaultSpecificationSource}
-     *  @since 1.0.9
-     **/
-
-    protected ISpecificationSource createSpecificationSource(RequestContext context)
-    {
-        return new DefaultSpecificationSource(getClassResolver(), _specification, _pool);
     }
 
     /**

@@ -33,7 +33,7 @@ import org.apache.tapestry.parse.LocalizationToken;
 import org.apache.tapestry.parse.OpenToken;
 import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateParseException;
-import org.apache.tapestry.parse.TemplateParserImpl;
+import org.apache.tapestry.parse.TemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TemplateTokenFactory;
 import org.apache.tapestry.parse.TextToken;
@@ -74,7 +74,7 @@ public class TestTemplateParser extends TestCase
         Resource location)
         throws TemplateParseException
     {
-        TemplateParserImpl parser = new TemplateParserImpl();
+        TemplateParser parser = new TemplateParser();
 
         parser.setFactory(new TemplateTokenFactory());
 
