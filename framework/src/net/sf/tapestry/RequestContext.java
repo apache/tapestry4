@@ -53,38 +53,38 @@ import org.apache.log4j.Category;
 import org.mortbay.util.URI;
 
 /**
- * This class encapsulates all the relevant data for one request cycle of an
- * {@link ApplicationServlet}, that is:
- * <ul>
+ *  This class encapsulates all the relevant data for one request cycle of an
+ *  {@link ApplicationServlet}.  This includes:
+ *  <ul>
  *  	<li>{@link HttpServletRequest}
  *		<li>{@link HttpServletResponse}
  *		<li>{@link HttpSession}
  * 		<li>{@link javax.servlet.http.HttpServlet}
- * </ul>
- * <p>It also provides methods for:
- * <ul>
- * <li>Retrieving the request parameters
- * <li>Getting and setting and removing request attributes
- * <li>Forwarding requests
- * <li>Redirecting requests
- * <li>Getting and setting Cookies
- * <li>Intepreting the request path info
- * <li>Writing an HTML description of the <code>RequestContext</code> (for debugging).
- * </ul>
+ *  </ul>
+ *  <p>It also provides methods for:
+ *  <ul>
+ *  <li>Retrieving the request parameters (even if a file upload is involved)
+ *  <li>Getting, setting and removing request attributes
+ *  <li>Forwarding requests
+ *  <li>Redirecting requests
+ *  <li>Getting and setting Cookies
+ *  <li>Intepreting the request path info
+ *  <li>Writing an HTML description of the <code>RequestContext</code> (for debugging).
+ *  </ul>
  *
  *  <p>This class is not a component, but does implement {@link IRender}.  When asked to render
  *  (perhaps as the delegate of a {@link net.sf.tapestry.components.Delegator} component}
  *  it simply invokes {@link #write(IMarkupWriter)} to display all debugging output.
  *
- * <p>This class is derived from the original class 
- * <code>com.primix.servlet.RequestContext</code>,
- * part of the <b>ServletUtils</b> framework available from
- * <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant 
- * Java Tree</a>.
+ *  <p>This class is derived from the original class 
+ *  <code>com.primix.servlet.RequestContext</code>,
+ *  part of the <b>ServletUtils</b> framework available from
+ *  <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant 
+ *  Java Tree</a>.
  *
  *
- * @version $Id$
- * @author Howard Lewis Ship
+ *  @version $Id$
+ *  @author Howard Lewis Ship
  * 
  **/
 
@@ -92,52 +92,52 @@ public class RequestContext implements IRender
 {
     private static final Category CAT = Category.getInstance(RequestContext.class);
 
-    private HttpSession session;
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-    private ApplicationServlet servlet;
-    private MultipartDecoder decoder;
+    private HttpSession _session;
+    private HttpServletRequest _request;
+    private HttpServletResponse _response;
+    private ApplicationServlet _servlet;
+    private MultipartDecoder _decoder;
 
     /**
      * A mapping of the cookies available in the request.
      *
      **/
 
-    private Map cookieMap;
+    private Map _cookieMap;
 
     /**
      * Used to contain the parsed, decoded pathInfo.
      *
      **/
 
-    private String[] pathInfo;
+    private String[] _pathInfo;
 
-    private boolean evenRow;
+    private boolean _evenRow;
 
     /**
      * Identifies which characters are safe in a URL, and do not need any encoding.
      *
      **/
 
-    private static BitSet safe;
+    private static BitSet _safe;
 
     static {
         int i;
-        safe = new BitSet(256);
+        _safe = new BitSet(256);
 
         for (i = 'a'; i <= 'z'; i++)
-            safe.set(i);
+            _safe.set(i);
 
         for (i = 'A'; i <= 'Z'; i++)
-            safe.set(i);
+            _safe.set(i);
 
         for (i = '0'; i <= '9'; i++)
-            safe.set(i);
+            _safe.set(i);
 
-        safe.set('.');
-        safe.set('-');
-        safe.set('_');
-        safe.set('*');
+        _safe.set('.');
+        _safe.set('-');
+        _safe.set('_');
+        _safe.set('*');
     }
 
     /**
@@ -145,41 +145,22 @@ public class RequestContext implements IRender
      **/
 
     private static final char HEX[] =
-        {
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F' };
+        { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
     /**
      * Creates a <code>RequestContext</code> from its components.
      *
      **/
 
-    public RequestContext(
-        ApplicationServlet servlet,
-        HttpServletRequest request,
-        HttpServletResponse response)
+    public RequestContext(ApplicationServlet servlet, HttpServletRequest request, HttpServletResponse response)
         throws IOException
     {
-        this.servlet = servlet;
-        this.request = request;
-        this.response = response;
+        _servlet = servlet;
+        _request = request;
+        _response = response;
 
         if (MultipartDecoder.isMultipartRequest(request))
-            decoder = new MultipartDecoder(request);
+            _decoder = new MultipartDecoder(request);
     }
 
     /**
@@ -207,51 +188,28 @@ public class RequestContext implements IRender
         if (CAT.isDebugEnabled())
             CAT.debug("Adding cookie " + cookie);
 
-        response.addCookie(cookie);
+        _response.addCookie(cookie);
 
-        if (cookieMap == null)
+        if (_cookieMap == null)
             readCookieMap();
 
-        cookieMap.put(cookie.getName(), cookie);
+        _cookieMap.put(cookie.getName(), cookie);
     }
 
     private void buildPathInfo()
     {
-        String raw;
-        StringSplitter splitter;
-        int i;
-
-        raw = request.getPathInfo();
+        String raw = _request.getPathInfo();
 
         if (raw == null)
         {
-            pathInfo = new String[] {
+            _pathInfo = new String[] {
             };
             return;
         }
 
-        splitter = new StringSplitter('/');
+        StringSplitter splitter = new StringSplitter('/');
 
-        pathInfo = splitter.splitToArray(raw);
-
-        // Decode any URL encoded values (such as bad punctuation,
-        // etc.) in the path info.
-
-        for (i = 0; i < pathInfo.length; i++)
-        {
-            try
-            {
-                // Note: deprecation warning for compatibility with
-                // Servlet API 2.2
-
-                pathInfo[i] = URLDecoder.decode(pathInfo[i]);
-            }
-            catch (Exception ex)
-            {
-                // Under JDK 1.2.2, URLDecoder may throw
-                // Exception, which we ignore.
-            }
-        }
+        _pathInfo = splitter.splitToArray(raw);
     }
 
     private void datePair(IMarkupWriter writer, String name, long value)
@@ -302,9 +260,9 @@ public class RequestContext implements IRender
     {
         RequestDispatcher dispatcher;
 
-        dispatcher = servlet.getServletContext().getRequestDispatcher(path);
+        dispatcher = _servlet.getServletContext().getRequestDispatcher(path);
 
-        dispatcher.forward(request, response);
+        dispatcher.forward(_request, _response);
     }
 
     /**
@@ -321,9 +279,9 @@ public class RequestContext implements IRender
         int port;
         String scheme;
 
-        scheme = request.getScheme();
-        server = request.getServerName();
-        port = request.getServerPort();
+        scheme = _request.getScheme();
+        server = _request.getServerName();
+        port = _request.getServerPort();
 
         // Keep things simple ... port 80 is accepted as the
         // standard port for http so it can be ommitted.
@@ -350,11 +308,7 @@ public class RequestContext implements IRender
      *
      **/
 
-    public String getAbsoluteURL(
-        String URI,
-        String scheme,
-        String server,
-        int port)
+    public String getAbsoluteURL(String URI, String scheme, String server, int port)
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -403,10 +357,10 @@ public class RequestContext implements IRender
 
     public Cookie getCookie(String name)
     {
-        if (cookieMap == null)
+        if (_cookieMap == null)
             readCookieMap();
 
-        return (Cookie) cookieMap.get(name);
+        return (Cookie) _cookieMap.get(name);
     }
 
     /**
@@ -440,10 +394,10 @@ public class RequestContext implements IRender
 
     public String getParameter(String name)
     {
-        if (decoder != null)
-            return decoder.getString(name);
+        if (_decoder != null)
+            return _decoder.getString(name);
 
-        return request.getParameter(name);
+        return _request.getParameter(name);
     }
 
     /**
@@ -458,10 +412,10 @@ public class RequestContext implements IRender
     {
         // Note: this may not be quite how we want it to work; we'll have to see.
 
-        if (decoder != null)
-            return decoder.getStrings(name);
+        if (_decoder != null)
+            return _decoder.getStrings(name);
 
-        return request.getParameterValues(name);
+        return _request.getParameterValues(name);
     }
 
     /**
@@ -475,10 +429,10 @@ public class RequestContext implements IRender
 
     public IUploadFile getUploadFile(String name)
     {
-        if (decoder == null)
+        if (_decoder == null)
             return null;
 
-        return decoder.getUploadFile(name);
+        return _decoder.getUploadFile(name);
     }
 
     /**
@@ -490,8 +444,8 @@ public class RequestContext implements IRender
 
     public void cleanup()
     {
-        if (decoder != null)
-            decoder.cleanup();
+        if (_decoder != null)
+            _decoder.cleanup();
     }
 
     /**
@@ -502,12 +456,12 @@ public class RequestContext implements IRender
 
     public String getPathInfo(int index)
     {
-        if (pathInfo == null)
+        if (_pathInfo == null)
             buildPathInfo();
 
         try
         {
-            return pathInfo[index];
+            return _pathInfo[index];
         }
         catch (ArrayIndexOutOfBoundsException ex)
         {
@@ -522,10 +476,10 @@ public class RequestContext implements IRender
 
     public int getPathInfoCount()
     {
-        if (pathInfo == null)
+        if (_pathInfo == null)
             buildPathInfo();
 
-        return pathInfo.length;
+        return _pathInfo.length;
     }
 
     /**
@@ -539,28 +493,28 @@ public class RequestContext implements IRender
 
     public HttpServletRequest getRequest()
     {
-        return request;
+        return _request;
     }
 
     public HttpServletResponse getResponse()
     {
-        return response;
+        return _response;
     }
 
     private String getRowClass()
     {
         String result;
 
-        result = evenRow ? "even" : "odd";
+        result = _evenRow ? "even" : "odd";
 
-        evenRow = !evenRow;
+        _evenRow = !_evenRow;
 
         return result;
     }
 
     public ApplicationServlet getServlet()
     {
-        return servlet;
+        return _servlet;
     }
 
     /**
@@ -572,10 +526,10 @@ public class RequestContext implements IRender
 
     public HttpSession getSession()
     {
-        if (session == null)
-            session = request.getSession(false);
+        if (_session == null)
+            _session = _request.getSession(false);
 
-        return session;
+        return _session;
     }
 
     /**
@@ -586,15 +540,15 @@ public class RequestContext implements IRender
 
     public HttpSession createSession()
     {
-        if (session == null)
+        if (_session == null)
         {
             if (CAT.isDebugEnabled())
                 CAT.debug("Creating HttpSession");
 
-            session = request.getSession(true);
+            _session = _request.getSession(true);
         }
 
-        return session;
+        return _session;
     }
 
     private void header(IMarkupWriter writer, String valueName, String dataName)
@@ -610,7 +564,7 @@ public class RequestContext implements IRender
         writer.print(dataName);
         writer.end("tr");
 
-        evenRow = true;
+        _evenRow = true;
     }
 
     private void object(IMarkupWriter writer, String objectName)
@@ -681,13 +635,13 @@ public class RequestContext implements IRender
 
     private void readCookieMap()
     {
-        cookieMap = new HashMap();
+        _cookieMap = new HashMap();
 
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = _request.getCookies();
 
         if (cookies != null)
             for (int i = 0; i < cookies.length; i++)
-                cookieMap.put(cookies[i].getName(), cookies[i]);
+                _cookieMap.put(cookies[i].getName(), cookies[i]);
     }
 
     /**
@@ -710,9 +664,9 @@ public class RequestContext implements IRender
 
         absolutePath = getAbsoluteURL(path);
 
-        encodedURL = response.encodeRedirectURL(absolutePath);
+        encodedURL = _response.encodeRedirectURL(absolutePath);
 
-        response.sendRedirect(encodedURL);
+        _response.sendRedirect(encodedURL);
     }
 
     private void section(IMarkupWriter writer, String sectionName)
@@ -800,9 +754,23 @@ public class RequestContext implements IRender
         writer.begin("table");
         writer.attribute("class", "request-context-object");
 
+        if (_pathInfo == null)
+            buildPathInfo();
+
+        for (int i = 0; i < _pathInfo.length; i++)
+        {
+            if (i == 0)
+            {
+                section(writer, "Path Info");
+                header(writer, "Index", "Value");
+            }
+
+            pair(writer, Integer.toString(i), _pathInfo[i]);
+        }
+
         // Parameters ...
 
-        List parameters = getSorted(request.getParameterNames());
+        List parameters = getSorted(_request.getParameterNames());
         int count = parameters.size();
 
         for (int i = 0; i < count; i++)
@@ -815,7 +783,7 @@ public class RequestContext implements IRender
             }
 
             String name = (String) parameters.get(i);
-            String[] values = request.getParameterValues(name);
+            String[] values = _request.getParameterValues(name);
 
             writer.begin("tr");
             writer.attribute("class", getRowClass());
@@ -842,38 +810,32 @@ public class RequestContext implements IRender
         section(writer, "Properties");
         header(writer, "Name", "Value");
 
-        pair(writer, "authType", request.getAuthType());
-        pair(writer, "characterEncoding", request.getCharacterEncoding());
-        pair(writer, "contentLength", request.getContentLength());
-        pair(writer, "contentType", request.getContentType());
-        pair(writer, "method", request.getMethod());
-        pair(writer, "pathInfo", request.getPathInfo());
-        pair(writer, "pathTranslated", request.getPathTranslated());
-        pair(writer, "protocol", request.getProtocol());
-        pair(writer, "queryString", request.getQueryString());
-        pair(writer, "remoteAddr", request.getRemoteAddr());
-        pair(writer, "remoteHost", request.getRemoteHost());
-        pair(writer, "remoteUser", request.getRemoteUser());
-        pair(writer, "requestedSessionId", request.getRequestedSessionId());
-        pair(
-            writer,
-            "requestedSessionIdFromCookie",
-            request.isRequestedSessionIdFromCookie());
-        pair(
-            writer,
-            "requestedSessionIdFromURL",
-            request.isRequestedSessionIdFromURL());
-        pair(writer, "requestedSessionIdValid", request.isRequestedSessionIdValid());
-        pair(writer, "requestURI", request.getRequestURI());
-        pair(writer, "scheme", request.getScheme());
-        pair(writer, "serverName", request.getServerName());
-        pair(writer, "serverPort", request.getServerPort());
-        pair(writer, "contextPath", request.getContextPath());
-        pair(writer, "servletPath", request.getServletPath());
+        pair(writer, "authType", _request.getAuthType());
+        pair(writer, "characterEncoding", _request.getCharacterEncoding());
+        pair(writer, "contentLength", _request.getContentLength());
+        pair(writer, "contentType", _request.getContentType());
+        pair(writer, "method", _request.getMethod());
+        pair(writer, "pathInfo", _request.getPathInfo());
+        pair(writer, "pathTranslated", _request.getPathTranslated());
+        pair(writer, "protocol", _request.getProtocol());
+        pair(writer, "queryString", _request.getQueryString());
+        pair(writer, "remoteAddr", _request.getRemoteAddr());
+        pair(writer, "remoteHost", _request.getRemoteHost());
+        pair(writer, "remoteUser", _request.getRemoteUser());
+        pair(writer, "requestedSessionId", _request.getRequestedSessionId());
+        pair(writer, "requestedSessionIdFromCookie", _request.isRequestedSessionIdFromCookie());
+        pair(writer, "requestedSessionIdFromURL", _request.isRequestedSessionIdFromURL());
+        pair(writer, "requestedSessionIdValid", _request.isRequestedSessionIdValid());
+        pair(writer, "requestURI", _request.getRequestURI());
+        pair(writer, "scheme", _request.getScheme());
+        pair(writer, "serverName", _request.getServerName());
+        pair(writer, "serverPort", _request.getServerPort());
+        pair(writer, "contextPath", _request.getContextPath());
+        pair(writer, "servletPath", _request.getServletPath());
 
         // Now deal with any headers
 
-        List headers = getSorted(request.getHeaderNames());
+        List headers = getSorted(_request.getHeaderNames());
         count = headers.size();
 
         for (int i = 0; i < count; i++)
@@ -885,14 +847,14 @@ public class RequestContext implements IRender
             }
 
             String name = (String) headers.get(i);
-            String value = request.getHeader(name);
+            String value = _request.getHeader(name);
 
             pair(writer, name, value);
         }
 
         // Attributes
 
-        List attributes = getSorted(request.getAttributeNames());
+        List attributes = getSorted(_request.getAttributeNames());
         count = attributes.size();
 
         for (int i = 0; i < count; i++)
@@ -905,26 +867,12 @@ public class RequestContext implements IRender
 
             String name = (String) attributes.get(i);
 
-            pair(writer, name, request.getAttribute(name));
-        }
-
-        if (pathInfo == null)
-            buildPathInfo();
-
-        for (int i = 0; i < pathInfo.length; i++)
-        {
-            if (i == 0)
-            {
-                section(writer, "Path Info");
-                header(writer, "Index", "Value");
-            }
-
-            pair(writer, Integer.toString(i), pathInfo[i]);
+            pair(writer, name, _request.getAttribute(name));
         }
 
         // Cookies ...
 
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = _request.getCookies();
 
         if (cookies != null)
         {
@@ -953,10 +901,10 @@ public class RequestContext implements IRender
         section(writer, "Properties");
         header(writer, "Name", "Value");
 
-        pair(writer, "servlet", servlet);
-        pair(writer, "servletInfo", servlet.getServletInfo());
+        pair(writer, "servlet", _servlet);
+        pair(writer, "servletInfo", _servlet.getServletInfo());
 
-        ServletConfig config = servlet.getServletConfig();
+        ServletConfig config = _servlet.getServletConfig();
 
         List names = getSorted(config.getInitParameterNames());
         count = names.size();
@@ -1098,8 +1046,7 @@ public class RequestContext implements IRender
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         write(writer);
     }

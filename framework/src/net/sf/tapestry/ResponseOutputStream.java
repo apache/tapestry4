@@ -43,7 +43,7 @@ import org.apache.log4j.Category;
  *
  *  <p>This class performs some buffering, but it is not all that
  *  useful because the 
- *  {@link Body} component (which will
+ *  {@link net.sf.tapestry.html.Body} component (which will
  *  be used on virtually all Tapestry pages), buffers its wrapped contents
  *  (that is, evertyhing inside the &lt;body&gt; tag in the generated HTML).
  *

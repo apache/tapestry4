@@ -201,7 +201,7 @@ public abstract class AbstractEngine
 
     /**
      *  The source for component specifications, stored in the
-     *  {@link ServletContext} (like {@link #templateSource}).
+     *  {@link ServletContext} (like {@link #_templateSource}).
      *
      **/
 

@@ -45,7 +45,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
  *  A future release of Tapestry may extract this strategy, allowing developers
  *  to choose the method via which URLs are encoded.
  * 
- *  @see net.sf.tapestry.engine.AbstractEngine#
+ *  @see net.sf.tapestry.engine.AbstractEngine#getService(String)
  * 
  *
  *  @author Howard Lewis Ship

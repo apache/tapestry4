@@ -11,24 +11,24 @@
   <service name="home" class="tutorial.workbench.WorkbenchHomeService"/>
   <service name="chart" class="tutorial.workbench.chart.ChartService"/>
   
-  <page name="Home" specification-path="/tutorial/workbench/Home.jwc"/>
+  <page name="Home" specification-path="/tutorial/workbench/Home.page"/>
     
-  <page name="Localization" specification-path="/tutorial/workbench/localization/Localization.jwc"/>
+  <page name="Localization" specification-path="/tutorial/workbench/localization/Localization.page"/>
   <page name="localization.Change" 
-  	specification-path="/tutorial/workbench/localization/Change.jwc"/>
+  	specification-path="/tutorial/workbench/localization/Change.page"/>
     
-  <page name="Fields" specification-path="/tutorial/workbench/fields/Fields.jwc"/>
-  <page name="fields.Results" specification-path="/tutorial/workbench/fields/Results.jwc"/>
+  <page name="Fields" specification-path="/tutorial/workbench/fields/Fields.page"/>
+  <page name="fields.Results" specification-path="/tutorial/workbench/fields/Results.page"/>
   
-  <page name="Upload" specification-path="/tutorial/workbench/upload/Upload.jwc"/>
-  <page name="upload.Results" specification-path="/tutorial/workbench/upload/Results.jwc"/>
+  <page name="Upload" specification-path="/tutorial/workbench/upload/Upload.page"/>
+  <page name="upload.Results" specification-path="/tutorial/workbench/upload/Results.page"/>
 
-  <page name="Chart" specification-path="/tutorial/workbench/chart/Chart.jwc"/>
+  <page name="Chart" specification-path="/tutorial/workbench/chart/Chart.page"/>
 
-  <page name="Redirect" specification-path="/tutorial/workbench/Redirect.jwc"/>
+  <page name="Redirect" specification-path="/tutorial/workbench/Redirect.page"/>
 
-  <page name="ExceptionTab" specification-path="/tutorial/workbench/ExceptionTab.jwc"/>
-  <page name="ErrorFest" specification-path="/tutorial/workbench/ErrorFest.jwc"/>
+  <page name="ExceptionTab" specification-path="/tutorial/workbench/ExceptionTab.page"/>
+  <page name="ErrorFest" specification-path="/tutorial/workbench/ErrorFest.page"/>
 
   <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
   <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>

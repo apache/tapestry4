@@ -9,13 +9,13 @@
   
   <property name="net.sf.tapestry.visit-class">tutorial.portal.Visit</property>
   
-  <page name="Home" specification-path="/tutorial/portal/Home.jwc"/>
+  <page name="Home" specification-path="/tutorial/portal/Home.page"/>
   
-  <page name="Stocks" specification-path="/tutorial/portal/Stocks.jwc"/>
+  <page name="Stocks" specification-path="/tutorial/portal/Stocks.page"/>
  
-  <page name="Weather" specification-path="/tutorial/portal/Weather.jwc"/>
+  <page name="Weather" specification-path="/tutorial/portal/Weather.page"/>
   
-  <page name="Slashdot" specification-path="/tutorial/portal/Slashdot.jwc"/>
+  <page name="Slashdot" specification-path="/tutorial/portal/Slashdot.page"/>
   
   <component-alias type="Border" specification-path="/tutorial/portal/Border.jwc"/>
   

@@ -82,7 +82,7 @@ public interface INamespace
      * 
      *  @param id either a simple name (of a directly contained namespace),
      *  or a dot-seperarated name sequence.
-     *  @returns the child namespace
+     *  @return the child namespace
      *  @throws ApplicationRuntimeException if not such namespace exist.
      * 
      **/

@@ -134,7 +134,7 @@ public class Visit implements Serializable
     }
 
     /**
-     *  Changes the logged in user ... this is only invoked from the 
+     *  Changes the logged in user. This is only invoked from the 
      *  {@link net.sf.tapestry.vlib.pages.Login} page.
      *
      **/

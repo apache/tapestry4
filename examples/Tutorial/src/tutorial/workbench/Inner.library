@@ -10,8 +10,8 @@
        some of the namespace functionality, we've moved
        some of the normal application to a library. -->
 
-  <page name="Palette" specification-path="/tutorial/workbench/palette/Palette.jwc"/>
-  <page name="palette.Results" specification-path="/tutorial/workbench/palette/Results.jwc"/>
+  <page name="Palette" specification-path="/tutorial/workbench/palette/Palette.page"/>
+  <page name="palette.Results" specification-path="/tutorial/workbench/palette/Results.page"/>
 
   <library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
    

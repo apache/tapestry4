@@ -5,5 +5,5 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 
 <application name="Hello World Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
-  <page name="Home" specification-path="/tutorial/hello/Home.jwc"/>
+  <page name="Home" specification-path="/tutorial/hello/Home.page"/>
 </application>

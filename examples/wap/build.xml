@@ -40,16 +40,9 @@
         <include name="images/**"/>
         <include name="*.html"/>
       </fileset>
-	  <classes dir="${classes.dir}"/>         
-    
+      <classes dir="${classes.dir}"/>
       <classes dir="${src.dir}">
-        <include name="**/*.jwc"/>
-        <include name="**/*.html"/>
-        <include name="**/*.gif"/>
-        <include name="**/*.dtd"/>
-        <include name="**/*.script"/>
-        <include name="**/*.properties"/>
-        <include name="**/*.application"/>
+        <exclude name="**/*.java"/>
         <exclude name="**/package.html"/>
       </classes>
     </war>

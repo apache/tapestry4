@@ -38,7 +38,7 @@
     <binding name="listener" property-path="listeners.processXferForm"/>
   </component>
   
-  <component id="selectBooks" type="Palette">
+  <component id="selectBooks" type="contrib:Palette">
     <binding name="selected" property-path="selectedBooks"/>
     <binding name="model" property-path="userBookModel"/>
     <field-binding name="sort" field-name="net.sf.tapestry.contrib.palette.SortMode.LABEL"/>
