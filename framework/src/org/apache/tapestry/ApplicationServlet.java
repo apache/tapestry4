@@ -31,16 +31,11 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.RequestServicer;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.DelegatingPropertySource;
-import org.apache.tapestry.util.ServletContextPropertySource;
-import org.apache.tapestry.util.ServletPropertySource;
-import org.apache.tapestry.util.SystemPropertiesPropertySource;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 
 /**
@@ -105,16 +100,6 @@ public class ApplicationServlet extends HttpServlet
     private IApplicationSpecification _specification;
 
     /**
-     *  Used to search for configuration properties.
-     * 
-     *  
-     *  @since 3.0
-     * 
-     */
-
-    private IPropertySource _propertySource;
-
-    /**
      *  Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
      *
      *  @since 1.0.6
@@ -140,6 +125,9 @@ public class ApplicationServlet extends HttpServlet
 
     private Registry _registry;
 
+	/**
+	 * @since 3.1
+	 */
     private RequestServicer _requestServicer;
 
     /**
@@ -282,47 +270,7 @@ public class ApplicationServlet extends HttpServlet
         }
     }
 
-    /**
-     *  Searches for a configuration property in:
-     *  <ul>
-     *  <li>The servlet's initial parameters
-     *  <li>The servlet context's initial parameters
-     *  <li>JVM system properties
-     *  </ul>
-     * 
-     *  @see #createPropertySource()
-     *  @since 3.0
-     * 
-     */
 
-    protected String searchConfiguration(String propertyName)
-    {
-        if (_propertySource == null)
-            _propertySource = createPropertySource();
-
-        return _propertySource.getPropertyValue(propertyName);
-    }
-
-    /**
-     *  Creates an instance of {@link IPropertySource} used for
-     *  searching of configuration values.  Subclasses may override
-     *  this method if they want to change the normal locations
-     *  that properties are searched for within.
-     * 
-     *  @since 3.0
-     * 
-     */
-
-    protected IPropertySource createPropertySource()
-    {
-        DelegatingPropertySource result = new DelegatingPropertySource();
-
-        result.addSource(new ServletPropertySource(getServletConfig()));
-        result.addSource(new ServletContextPropertySource(getServletContext()));
-        result.addSource(SystemPropertiesPropertySource.getInstance());
-
-        return result;
-    }
 
     /**
      *  Invoked from the {@link IEngine engine}, just prior to starting to
