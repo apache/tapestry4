@@ -58,7 +58,7 @@ package org.apache.tapestry;
 /**
  *  Exception thrown to force a redirection to an arbitrary location.
  *  This is used when, after processing a request (such as a form
- *  submission or a link being clicked), it is desirous to go
+ *  submission or a link being clicked), it is desirable to go
  *  to some arbitrary new location.
  *
  *  @author Howard Lewis Ship
