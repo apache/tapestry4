@@ -104,6 +104,12 @@ public class DateValidator extends BaseValidator
         return _format;
     }
 
+	/**
+	 * @return the {@link DateFormat} the validator will use, returning the default if no
+	 * other date format is specified via {@link #setFormat(DateFormat)}
+	 * 
+	 * @since 3.0
+	 */
     public DateFormat getEffectiveFormat()
     {
         if (_format == null)
@@ -122,12 +128,19 @@ public class DateValidator extends BaseValidator
         _displayFormat = value;
     }
 
+	/**
+     * @return the display format message the validator will use, returning the default if no
+     * other display format message is specified.  The default is the {@link SimpleDateFormat#toPattern()}
+     * for {@link SimpleDateFormat}s, or "MM/DD/YYYY" for unknown {@link DateFormat} subclasses.
+     * 
+     * @since 3.0
+     */
     public String getEffectiveDisplayFormat()
     {
         if (_displayFormat == null)
         {
             DateFormat format = getEffectiveFormat();
-            if (format instanceof SimpleDateFormat /* && format != defaultDateFormat */) 
+            if (format instanceof SimpleDateFormat) 
                 return ((SimpleDateFormat)format).toPattern();
             else
                 return defaultDateDisplayFormat;
