@@ -79,6 +79,21 @@ public interface IEngineService
 
 	public final static String DIRECT_SERVICE = "direct";
 
+    /**
+     *  The name ("external") of a service that a allows {@link IExternalPage} to be selected.
+     *  Associated with a {@link ExternalLink} component.
+     *
+     *  <p>This service enables {@link IExternalPage}s to be accessed via a URL.
+     *  External pages may be booked marked using their URL for future reference.
+     *
+     *  <p>An array of Object parameters may be included with the
+     *  service URL; these will be passed to the 
+     *  {@link IExternalPage#initPage(Object[], IRequestCycle)} method.
+     *
+     **/
+
+    public final static String EXTERNAL_SERVICE = "external";
+
 	/**
 	 *  The name ("page") of a service that allows a new page to be selected.
 	 *  Associated with a {@link PageLink} component.

@@ -45,11 +45,13 @@ import net.sf.tapestry.IRequestCycle;
 public interface IExternalPage extends IPage
 {
     /**
-     * Setup the external page with the given array of parameters and
-     * request cycle
+     * Initialize the external page with the given array of parameters and
+     * request cycle.
+     * <p>
+     * This method is invoked after {@link IPage#validate(IRequestCycle)}.
      *
      * @param parameters the array of page parameters
      * @param cycle the page's <tt>IRequestCycle</tt>
      */
-    public void setup(Object[] parameters, IRequestCycle cycle);
+    public void initPage(Object[] parameters, IRequestCycle cycle);
 }
