@@ -1015,7 +1015,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
             if (isElement(child, "static-binding"))
             {
-                convertStaticBinding(c, child);
+                convertBinding(c, child, BindingType.STATIC, "value");
                 continue;
             }
 
@@ -1045,6 +1045,13 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String name = getAttribute(node, "name");
         String value = getAttribute(node, attributeName);
+        
+        // In several cases, the 1.4 DTD makes the attribute optional and
+        // allows the value to be to the body of the element.
+        
+        if (value == null)
+        	value = getValue(node);
+        	
         BindingSpecification binding = _factory.createBindingSpecification(type, value);
 
         component.setBinding(name, binding);
@@ -1061,24 +1068,6 @@ public class SpecificationParser extends AbstractDocumentParser
 
         ListenerBindingSpecification binding =
             _factory.createListenerBindingSpecification(language, script);
-
-        component.setBinding(name, binding);
-    }
-
-    private void convertStaticBinding(ContainedComponent component, Node node)
-    {
-        String name = getAttribute(node, "name");
-
-        // Starting in DTD 1.4, the value may be specified as an attribute
-        // or as the PCDATA
-
-        String value = getAttribute(node, "value");
-
-        if (value == null)
-            value = getValue(node);
-
-        BindingSpecification binding =
-            _factory.createBindingSpecification(BindingType.STATIC, value);
 
         component.setBinding(name, binding);
     }
