@@ -1,13 +1,3 @@
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import javax.naming.*;
-import java.util.*;
-import com.primix.foundation.prop.*;
-import com.primix.foundation.ejb.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -45,6 +35,16 @@ import com.primix.foundation.ejb.*;
  *
  */
  
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import javax.rmi.*;
+import javax.naming.*;
+import java.util.*;
+import com.primix.tapestry.util.prop.*;
+import com.primix.tapestry.util.ejb.*;
+
 public abstract class AbstractEntityBean implements EntityBean
 {
 	/**

@@ -1,5 +1,3 @@
-package tutorial.hangman;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -36,6 +34,8 @@ package tutorial.hangman;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.hangman;
 
 public class GameException 
 extends Exception

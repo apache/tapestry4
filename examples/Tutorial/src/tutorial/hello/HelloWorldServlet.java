@@ -1,7 +1,3 @@
-package tutorial.hello;
-
-import com.primix.tapestry.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -35,6 +31,10 @@ import com.primix.tapestry.*;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.hello;
+
+import com.primix.tapestry.*;
 
 public class HelloWorldServlet extends ApplicationServlet
 {

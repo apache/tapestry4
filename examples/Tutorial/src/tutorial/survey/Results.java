@@ -1,10 +1,3 @@
-package tutorial.survey;
-
-import com.primix.tapestry.*;
-import java.util.*;
-import java.text.*;
-import java.awt.Color;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -38,6 +31,13 @@ import java.awt.Color;
  *  @author Howard Ship
  *
  */ 
+ 
+package tutorial.survey;
+
+import com.primix.tapestry.*;
+import java.util.*;
+import java.text.*;
+import java.awt.Color;
 
 public class Results extends BasePage
 {

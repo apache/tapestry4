@@ -1,22 +1,3 @@
-package com.primix.vlib;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.engine.*;
-import com.primix.tapestry.components.*;
-import javax.naming.*;
-import javax.ejb.*;
-import com.primix.vlib.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import java.util.*;
-import com.primix.vlib.pages.*;
-import javax.servlet.*;
-import java.io.*;
-import java.net.*;
-
-// To appease Javadoc
-import javax.servlet.http.HttpSession;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -58,7 +39,26 @@ import javax.servlet.http.HttpSession;
  *  @author Howard Ship
  *
  */
- 
+
+package com.primix.vlib;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.engine.*;
+import com.primix.tapestry.components.*;
+import javax.naming.*;
+import javax.ejb.*;
+import com.primix.vlib.ejb.*;
+import java.rmi.*;
+import javax.rmi.*;
+import java.util.*;
+import com.primix.vlib.pages.*;
+import javax.servlet.*;
+import java.io.*;
+import java.net.*;
+
+// To appease Javadoc
+import javax.servlet.http.HttpSession;
+
 public class VirtualLibraryEngine
 extends SimpleEngine
 {

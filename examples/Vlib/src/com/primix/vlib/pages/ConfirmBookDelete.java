@@ -1,15 +1,3 @@
-package com.primix.vlib.pages;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.ejb.*;
-import com.primix.vlib.*;
-import javax.ejb.*;
-import java.util.*;
-import java.rmi.*;
-import javax.rmi.*;
-import com.primix.foundation.prop.*;
-
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -46,6 +34,17 @@ import com.primix.foundation.prop.*;
  * @version $Id$
  */
 
+package com.primix.vlib.pages;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.ejb.*;
+import com.primix.vlib.*;
+import javax.ejb.*;
+import java.util.*;
+import java.rmi.*;
+import javax.rmi.*;
+import com.primix.tapestry.util.prop.*;
 
 public class ConfirmBookDelete extends BasePage
 {

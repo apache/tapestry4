@@ -1,9 +1,3 @@
-package tutorial.hangman;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -40,6 +34,12 @@ import java.util.*;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.hangman;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import java.util.*;
 
 public class Guess
 extends BasePage

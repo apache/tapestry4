@@ -1,10 +1,3 @@
-package com.primix.vlib.components;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.*;
-import com.primix.vlib.pages.*;
-
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -41,6 +34,12 @@ import com.primix.vlib.pages.*;
  * @version $Id$
  */
 
+package com.primix.vlib.components;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.*;
+import com.primix.vlib.pages.*;
 
 public class Border extends BaseComponent
 {	

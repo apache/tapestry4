@@ -1,5 +1,3 @@
-package tutorial.border;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -33,6 +31,8 @@ package tutorial.border;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.border;
 
 import java.util.*;
 import com.primix.tapestry.*;

@@ -1,14 +1,3 @@
-package com.primix.vlib.pages;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.ejb.*;
-import com.primix.vlib.*;
-import javax.ejb.*;
-import java.util.*;
-import javax.rmi.*;
-import java.rmi.*;
-
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -45,6 +34,17 @@ import java.rmi.*;
  * @version $Id$
  */
 
+
+package com.primix.vlib.pages;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.ejb.*;
+import com.primix.vlib.*;
+import javax.ejb.*;
+import java.util.*;
+import javax.rmi.*;
+import java.rmi.*;
 
 public class PersonPage extends BasePage
 implements IExternalPage

@@ -1,13 +1,3 @@
-package com.primix.vlib.components;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.*;
-import com.primix.vlib.pages.*;
-import com.primix.vlib.ejb.*;
-import java.rmi.*;
-import javax.ejb.*;
-
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -60,6 +50,16 @@ import javax.ejb.*;
  *  @version $Id$
  *
  */
+
+package com.primix.vlib.components;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.*;
+import com.primix.vlib.pages.*;
+import com.primix.vlib.ejb.*;
+import java.rmi.*;
+import javax.ejb.*;
 
 public class Borrow
 extends BaseComponent

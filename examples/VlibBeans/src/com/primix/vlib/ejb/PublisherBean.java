@@ -1,10 +1,3 @@
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-import com.primix.foundation.ejb.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -46,6 +39,13 @@ import com.primix.foundation.ejb.*;
  *
  */
  
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+import com.primix.tapestry.util.ejb.*;
+
 public class PublisherBean extends AbstractEntityBean
 {
 	// Primary Key

@@ -1,16 +1,3 @@
-package com.primix.vlib.pages;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.valid.*;
-import com.primix.tapestry.callback.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.ejb.*;
-import com.primix.vlib.*;
-import javax.ejb.*;
-import java.rmi.*;
-import javax.servlet.http.*;
-
-
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -48,6 +35,17 @@ import javax.servlet.http.*;
  * @version $Id$
  */
 
+package com.primix.vlib.pages;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.valid.*;
+import com.primix.tapestry.callback.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.ejb.*;
+import com.primix.vlib.*;
+import javax.ejb.*;
+import java.rmi.*;
+import javax.servlet.http.*;
 
 public class Login 
 extends BasePage

@@ -60,6 +60,7 @@ run: default $(LOCAL_JNDI_PROPS)
 	$(call NOTE, Running Primix Virtual Library using Jetty ...)
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-showversion \
+		-Dcom.primix.vlib.debug-enabled=true \
 		-Dcom.primix.tapestry.enable-reset-service=true \
 		$(OTHER_EXEC_OPTS) \
 		com.mortbay.Jetty.Server jetty.xml)

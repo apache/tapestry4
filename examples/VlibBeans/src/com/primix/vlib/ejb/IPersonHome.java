@@ -1,9 +1,3 @@
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -40,6 +34,12 @@ import java.util.*;
  *
  */
  
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+
 public interface IPersonHome extends EJBHome
 {
 	public IPerson create(String lastName, String firstName, String email, String password)

@@ -1,5 +1,3 @@
-package tutorial.survey;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -29,18 +27,18 @@ package tutorial.survey;
  */
 
 /**
+ *
+ *  An enumeration of different races.  At least one is just for laughs.
+ *
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
 
-import com.primix.foundation.Enum;
+package tutorial.survey;
 
-/**
- *  An enumeration of different races.
- *
- */
- 
+import com.primix.tapestry.util.Enum;
+
 public class Race extends Enum
 {
 	public static final Race CAUCASIAN = new Race("CAUCASIAN");

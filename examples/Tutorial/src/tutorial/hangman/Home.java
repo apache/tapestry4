@@ -1,8 +1,3 @@
-package tutorial.hangman;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -40,6 +35,10 @@ import com.primix.tapestry.components.*;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.hangman;
+
+import com.primix.tapestry.*;
 
 public class Home
 extends BasePage
