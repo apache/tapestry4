@@ -73,7 +73,7 @@ import com.primix.tapestry.asset.*;
 
 
 public class PageSource 
-    implements IPageSource
+    implements IPageSource,IRenderDescription
 {
 	private Map fieldBindings;
 	private Map staticBindings;
@@ -82,118 +82,118 @@ public class PageSource
 	private Map privateAssets;
 	private IResourceResolver resolver;
 	private static final int MAP_SIZE = 23;
-
+	
 	/**
-	*  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
-	*  built from the application name, the page name, and the page locale.
-	*  It is also used to pool {@link PageLoader}s.
-	*
-	*/
-
+	 *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
+	 *  built from the application name, the page name, and the page locale.
+	 *  It is also used to pool {@link PageLoader}s.
+	 *
+	 */
+	
 	private Pool pool;
-
+	
 	private static final String PAGE_LOADER_KEY = "PageLoader";
-
+	
 	public PageSource(IResourceResolver resolver)
 	{
 		this.resolver = resolver;
-
+		
 		pool = new Pool();
 	}
-
+	
 	public IResourceResolver getResourceResolver()
 	{
 		return resolver;
 	}
-
-
+	
+	
 	/**
-	*  Builds a key for a named page in the application's current locale.
-	*
-	*/
-
+	 *  Builds a key for a named page in the application's current locale.
+	 *
+	 */
+	
 	protected MultiKey buildKey(IEngine engine, String pageName)
 	{
 		Object[] keys;
-
+		
 		keys = new Object[] { pageName,
-                              engine.getLocale() };
-
+				engine.getLocale() };
+		
 		// Don't make a copy, this array is just for the MultiKey.
-
+		
 		return new MultiKey(keys, false);
 	}
-
+	
 	/**
-	*  Builds a key from an existing page, using the page's name and locale.  This is
-	*  used when storing a page into the pool.
-	*
-	*/
-
+	 *  Builds a key from an existing page, using the page's name and locale.  This is
+	 *  used when storing a page into the pool.
+	 *
+	 */
+	
 	protected MultiKey buildKey(IPage page)
 	{
 		Object[] keys;
-
+		
 		keys = new Object[] { page.getName(),
-                              page.getLocale() };
-
+				page.getLocale() };
+		
 		// Don't make a copy, this array is just for the MultiKey.
-
+		
 		return new MultiKey(keys, false);
 	}
-
+	
 	/**
-	*  Gets the page from a pool, or otherwise loads the page.  This operation
-	*  is threadsafe ... it synchronizes on the pool of pages.
-	*
-
-	*/
-
+	 *  Gets the page from a pool, or otherwise loads the page.  This operation
+	 *  is threadsafe ... it synchronizes on the pool of pages.
+	 *
+	 
+	 */
+	
 	public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
-	throws PageLoaderException
+		throws PageLoaderException
 	{
 		Object key = buildKey(engine, pageName);
 		IPage result = (IPage)pool.retrieve(key);
-
+		
 		if (result == null)
 		{
 			if (monitor != null)
 				monitor.pageCreateBegin(pageName);
-
+			
 			PageSpecification specification = 
 				engine.getSpecification().getPageSpecification(pageName);
-
+			
 			if (specification == null)
 				throw new ApplicationRuntimeException(
 					"This application does not contain a page named " + pageName + "."); 
-
+			
 			PageLoader loader = retrievePageLoader();
-
+			
 			result = loader.loadPage(pageName, engine, specification.getSpecificationPath());
-
+			
 			storePageLoader(loader);
-
+			
 			// Alas, the page loader is discarded, we should be pooling those as
 			// well.
-
+			
 			if (monitor != null)
 				monitor.pageCreateEnd(pageName);
 		}
-
+		
 		// Whether its new or reused, it must join the engine.
-
+		
 		result.attach(engine);
-
+		
 		return result;
 	}
-
+	
 	private PageLoader retrievePageLoader()
 	{
 		PageLoader result = (PageLoader)pool.retrieve(PAGE_LOADER_KEY);
 		
 		if (result == null)
 			result = new PageLoader(this);
-
+		
 		return result;	
 	}
 	
@@ -201,31 +201,31 @@ public class PageSource
 	{
 		pool.store(PAGE_LOADER_KEY, loader);
 	}
-
+	
 	/**
-	*  Returns the page to the appropriate pool.
-	*
-	*/
-
+	 *  Returns the page to the appropriate pool.
+	 *
+	 */
+	
 	public void releasePage(IPage page)
 	{
 		page.detach();
-
+		
 		pool.store(buildKey(page), page);
 	}
-
+	
 	/**
-	*  Invoked (during testing primarily) to release the entire pool
-	*  of pages, and the caches of bindings and assets.
-	*
-	*/
-
+	 *  Invoked (during testing primarily) to release the entire pool
+	 *  of pages, and the caches of bindings and assets.
+	 *
+	 */
+	
 	public void reset()
 	{
 		synchronized(this)
 		{
 			pool.clear();
-
+			
 			fieldBindings = null;
 			staticBindings = null;
 			externalAssets = null;
@@ -233,18 +233,18 @@ public class PageSource
 			privateAssets = null;
 		}
 	}
-
+	
 	/**
-	*  Gets a field binding for the named field (the name includes the class name
-	*  and the field).  If no such binding exists, then one is created, otherwise
-	*  the existing binding is returned. 
-	*
-	*/
-
+	 *  Gets a field binding for the named field (the name includes the class name
+	 *  and the field).  If no such binding exists, then one is created, otherwise
+	 *  the existing binding is returned. 
+	 *
+	 */
+	
 	public IBinding getFieldBinding(String fieldName)
 	{
 		IBinding result = null;
-
+		
 		if (fieldBindings == null)
 		{
 			synchronized(this)
@@ -253,31 +253,31 @@ public class PageSource
 					fieldBindings = new HashMap(MAP_SIZE);
 			}	
 		}
-
+		
 		synchronized(fieldBindings)
 		{
 			result = (IBinding)fieldBindings.get(fieldName);
-
+			
 			if (result == null)
 			{
 				result = new FieldBinding(resolver, fieldName);
-
+				
 				fieldBindings.put(fieldName, result);
 			}
 		}
-
+		
 		return result;
 	}
-
+	
 	/**
-	*  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
-	*
-	*/
-
+	 *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
+	 *
+	 */
+	
 	public IBinding getStaticBinding(String value)
 	{
 		IBinding result = null;
-
+		
 		if (staticBindings == null)
 		{
 			synchronized(this)
@@ -290,22 +290,22 @@ public class PageSource
 		synchronized(staticBindings)
 		{
 			result = (IBinding)staticBindings.get(value);
-
+			
 			if (result == null)
 			{
 				result = new StaticBinding(value);
-
+				
 				staticBindings.put(value, result);
 			}
 		}
-
+		
 		return result;
 	}
-
+	
 	public IAsset getExternalAsset(String URL)
 	{
 		IAsset result = null;
-
+		
 		if (externalAssets == null)
 		{
 			synchronized(this)
@@ -318,21 +318,21 @@ public class PageSource
 		synchronized(externalAssets)
 		{
 			result = (IAsset)externalAssets.get(URL);
-
+			
 			if (result == null)
 			{
 				result = new ExternalAsset(URL);
 				externalAssets.put(URL, result);
 			}
 		}
-
+		
 		return result;
 	}
-
+	
 	public IAsset getContextAsset(String assetPath)
 	{
 		IAsset result = null;
-
+		
 		if (contextAssets == null)
 		{
 			synchronized(this)
@@ -345,7 +345,7 @@ public class PageSource
 		synchronized(contextAssets)
 		{
 			result = (IAsset)contextAssets.get(assetPath);
-
+			
 			if (result == null)
 			{
 				result = new ContextAsset(assetPath);
@@ -354,13 +354,13 @@ public class PageSource
 		}
 		
 		return result;
-
+		
 	}
-
+	
 	public IAsset getPrivateAsset(String resourcePath)
 	{
 		IAsset result = null;
-
+		
 		if (privateAssets == null)
 		{
 			synchronized(this)
@@ -373,7 +373,7 @@ public class PageSource
 		synchronized(privateAssets)
 		{
 			result = (IAsset)privateAssets.get(resourcePath);
-
+			
 			if (result == null)
 			{
 				result = new PrivateAsset(resourcePath);
@@ -383,7 +383,7 @@ public class PageSource
 		
 		return result;
 	}
-
+	
 	public String toString()
 	{
 		StringBuffer buffer = new StringBuffer("PageSource@");
@@ -432,5 +432,70 @@ public class PageSource
 		buffer.append(" cached ");
 		buffer.append(label);
 	}
+	
+	/** @since 1.0.6 **/
+	
+	public void renderDescription(IResponseWriter writer)
+	{
+		writer.print("PageSource");
+		writer.begin("ul");
+		
+		if (pool != null)
+		{
+			writer.begin("li");
+			writer.print("pool = ");
+			pool.renderDescription(writer);
+			writer.end();
+		}
+		
+		describe(writer, fieldBindings, "field bindings");
+		describe(writer, staticBindings, "static bindings");
+		describe(writer, externalAssets, "external assets");
+		describe(writer, contextAssets, "context assets");
+		describe(writer, privateAssets, "private assets");
+		
+		writer.end(); // <ul>
+	}
+	
+	/** @since 1.0.6 **/
+	
+	private void describe(IResponseWriter writer, Map map, String label)
+	{
+		if (map == null)
+			return;
+		
+		synchronized(map)
+		{
+			Set entrySet = map.entrySet();
+			int count = entrySet.size();
+			
+			if (count > 0)
+			{
+				writer.begin("li");
+				writer.print(" ");
+				
+				writer.print(count);
+				writer.print(" cached ");
+				writer.print(label);
+				
+				writer.begin("ul");
+				
+				Iterator i = map.entrySet().iterator();
+				
+				while (i.hasNext())
+				{
+					Map.Entry e = (Map.Entry)i.next();
+					
+					writer.begin("li");
+					writer.print(e.getKey().toString());
+					writer.println();
+					writer.end();
+				}
+								
+				writer.end(); // <ul>
+				writer.end(); // <li>
+				
+			}
+		}
+	}	
 }
-

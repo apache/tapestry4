@@ -220,7 +220,7 @@ public class RequestContext
 	{
 		pair(writer, name, new Date(value));
 	}
-		
+	
 	
 	/**
 	 * Encodes a <code>java.awt.Color</code> in the standard HTML
@@ -534,8 +534,30 @@ public class RequestContext
 	
 	private void pair(IResponseWriter writer, String name, Object value)
 	{
-		if (value != null)
-			pair(writer, name, value.toString());
+		if (value == null)
+			return;
+		
+		if (value instanceof IRenderDescription)
+		{
+			IRenderDescription renderValue = (IRenderDescription)value;
+			
+			writer.begin("tr");
+			writer.attribute("class", getRowClass());
+			
+			writer.begin("th");
+			writer.print(name);
+			writer.end();
+			
+			writer.begin("td");
+			
+			renderValue.renderDescription(writer);			
+			
+			writer.end("tr");
+			
+			return;
+		}
+		
+		pair(writer, name, value.toString());
 	}
 	
 	private void pair(IResponseWriter writer, String name, String value)

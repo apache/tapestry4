@@ -1,3 +1,11 @@
+* Sep 11 2001 hship
+
+framework:
+- Add IRenderDescription interface, make some key classes implement it
+- Change RequestContext to notice and use the IRenderDescription interface when displaying
+  classes
+- Bump the framework version up to 1.0.6
+
 * Sep 10 2001 hship
 
 doc:

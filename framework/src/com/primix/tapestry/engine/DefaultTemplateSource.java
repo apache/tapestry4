@@ -50,7 +50,7 @@ import org.apache.log4j.*;
 
 
 public class DefaultTemplateSource 
-implements ITemplateSource
+implements ITemplateSource, IRenderDescription
 {
 	private static final Category CAT =
 		Category.getInstance(DefaultTemplateSource.class);
@@ -474,6 +474,46 @@ implements ITemplateSource
 		buffer.append(']');
 		
 		return buffer.toString();
+	}
+	
+	/** @since 1.0.6 **/
+	
+	public void renderDescription(IResponseWriter writer)
+	{
+		writer.print("DefaultTemplateSource[");
+		
+		if (tokenCount > 0)
+		{
+			writer.print(tokenCount);
+			writer.print(" tokens");
+		}
+		
+		writer.print("]");
+		
+		if (cache == null)
+			return;
+		
+		synchronized(cache)
+		{
+			boolean first = true;
+			Iterator i = cache.keySet().iterator();
+			
+			while (i.hasNext())
+			{
+				if (first)
+				{
+					writer.begin("ul");
+					first = false;
+				}
+				
+				writer.begin("li");
+				writer.print(i.next().toString());
+				writer.end();
+			}
+			
+			if (!first)
+				writer.end(); // <ul>
+		}
 	}
 }
 
