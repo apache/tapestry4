@@ -25,16 +25,15 @@
 
 package net.sf.tapestry.wml;
 
-import java.io.OutputStream;
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
 
-import net.sf.tapestry.AbstractPage;
 import net.sf.tapestry.IMarkupWriter;
 
 /**
- *  Concrete class for WML decks. Most decks
- *  should be able to simply subclass this, adding new properties and
- *  methods.  An unlikely exception would be a deck that was not based
- *  on a template.
+ *  Subclass of {@link WMLResponseWriter} that is nested.  A nested writer
+ *  buffers its output, then inserts it into its parent writer when it is
+ *  closed.
  *
  *  @version $Id$
  *  @author David Solis
@@ -42,11 +41,40 @@ import net.sf.tapestry.IMarkupWriter;
  * 
  **/
 
-public class Deck extends AbstractPage
+public class NestedWMLWriter extends WMLWriter
 {
-    public IMarkupWriter getResponseWriter(OutputStream out)
+    private IMarkupWriter parent;
+    private CharArrayWriter internalBuffer;
+
+    public NestedWMLWriter(IMarkupWriter parent)
     {
-        return new WMLWriter(out);
+        super(parent.getContentType());
+
+        this.parent = parent;
+
+        internalBuffer = new CharArrayWriter();
+
+        writer = new PrintWriter(internalBuffer);
     }
 
+    /**
+     *  Invokes the {@link WMLWriter#close() super-class
+     *  implementation}, then gets the data accumulated in the
+     *  internal buffer and provides it to the containing writer using
+     *  {@link IMarkupWriter#printRaw(char[], int, int)}.
+     *
+     **/
+
+    public void close()
+    {
+        super.close();
+
+        char[] data = internalBuffer.toCharArray();
+
+        parent.printRaw(data, 0, data.length);
+
+        internalBuffer = null;
+        writer = null;
+        parent = null;
+    }
 }

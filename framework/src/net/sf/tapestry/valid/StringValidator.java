@@ -1,30 +1,29 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
- package net.sf.tapestry.valid;
+package net.sf.tapestry.valid;
 
 import java.util.Locale;
 
@@ -38,107 +37,107 @@ import java.util.Locale;
  *  @version $Id$
  *  @since 1.0.8
  *
- */
+ **/
 
 public class StringValidator extends BaseValidator
 {
-	private static class StaticStringValidator extends StringValidator
-	{
-		private static final String UNSUPPORTED_MESSAGE = "Changes to property values are not allowed.";
+    private static class StaticStringValidator extends StringValidator
+    {
+        private static final String UNSUPPORTED_MESSAGE =
+            "Changes to property values are not allowed.";
 
-		private StaticStringValidator(boolean required)
-		{
-			super(required);
-		}
+        private StaticStringValidator(boolean required)
+        {
+            super(required);
+        }
 
-		/** @throws UnsupportedOperationException */
+        /** @throws UnsupportedOperationException **/
 
-		public void setLocale(Locale value)
-		{
-			throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-		}
+        public void setLocale(Locale value)
+        {
+            throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
+        }
 
-		/** @throws UnsupportedOperationException */
+        /** @throws UnsupportedOperationException **/
 
-		public void setMinimumLength(int minimumLength)
-		{
-			throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-		}
+        public void setMinimumLength(int minimumLength)
+        {
+            throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
+        }
 
-		/** @throws UnsupportedOperationException */
+        /** @throws UnsupportedOperationException **/
 
-		public void setRequired(boolean required)
-		{
-			throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-		}
-	}
+        public void setRequired(boolean required)
+        {
+            throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
+        }
+    }
 
-	/**
-	 *  Returns a shared instance of a StringValidator with the required flag set.
-	 *  The instance is not modifiable.
-	 *
-	 **/
+    /**
+     *  Returns a shared instance of a StringValidator with the required flag set.
+     *  The instance is not modifiable.
+     *
+     **/
 
-	public static final StringValidator REQUIRED = new StaticStringValidator(true);
+    public static final StringValidator REQUIRED = new StaticStringValidator(true);
 
-	/**
-	 *  Returns a shared instance of a StringValidator with the required flag cleared.
-	 *  The instance is not modifiable.
-	 *
-	 **/
+    /**
+     *  Returns a shared instance of a StringValidator with the required flag cleared.
+     *  The instance is not modifiable.
+     *
+     **/
 
-	public static final StringValidator OPTIONAL = new StaticStringValidator(false);
+    public static final StringValidator OPTIONAL = new StaticStringValidator(false);
 
-	private int minimumLength;
+    private int minimumLength;
 
-	public StringValidator()
-	{
-	}
+    public StringValidator()
+    {
+    }
 
-	private StringValidator(boolean required)
-	{
-		super(required);
-	}
+    private StringValidator(boolean required)
+    {
+        super(required);
+    }
 
-	public String toString(IField field, Object value)
-	{
-		if (value == null)
-			return null;
+    public String toString(IField field, Object value)
+    {
+        if (value == null)
+            return null;
 
-		return value.toString();
-	}
+        return value.toString();
+    }
 
-	public Object toObject(IField field, String input)
-		throws ValidatorException
-	{
-		if (checkRequired(field, input))
-			return null;
+    public Object toObject(IField field, String input) throws ValidatorException
+    {
+        if (checkRequired(field, input))
+            return null;
 
-		if (minimumLength > 0 && input.length() < minimumLength)
-		{
-			String errorMessage =
-				getString(
-					"field-too-short",
-					Integer.toString(minimumLength),
-					field.getDisplayName());
+        if (minimumLength > 0 && input.length() < minimumLength)
+        {
+            String errorMessage =
+                getString(
+                    "field-too-short",
+                    Integer.toString(minimumLength),
+                    field.getDisplayName());
 
-			throw new ValidatorException(
-				errorMessage,
-				ValidationConstraint.MINIMUM_WIDTH,
-				input);
-		}
+            throw new ValidatorException(
+                errorMessage,
+                ValidationConstraint.MINIMUM_WIDTH,
+                input);
+        }
 
-		return input;
-	}
+        return input;
+    }
 
-	public int getMinimumLength()
-	{
-		return minimumLength;
-	}
+    public int getMinimumLength()
+    {
+        return minimumLength;
+    }
 
-	public void setMinimumLength(int minimumLength)
-	{
-		this.minimumLength = minimumLength;
-	}
+    public void setMinimumLength(int minimumLength)
+    {
+        this.minimumLength = minimumLength;
+    }
 
 }

@@ -1,32 +1,34 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.util.io;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 /**
  *  A kind of super-formatter.  It is sent a stream of binary data and
@@ -36,281 +38,282 @@ import java.io.*;
  * <p>Currently, output is in hex though options to change that may
  * be introduced.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ * 
+ **/
 
 public class BinaryDumpOutputStream extends OutputStream
 {
-	private PrintWriter out;
+    private PrintWriter out;
 
-	private boolean locked = false;
+    private boolean locked = false;
 
-	private boolean showOffset = true;
-	private int bytesPerLine = 16;
-	private int spacingInterval = 4;
-	private char substituteChar = '.';
-	private String offsetSeperator = ": ";
-	private int offset = 0;
-	private int lineCount = 0;
-	private int bytesSinceSpace = 0;
-	private char[] ascii = null;
-	private boolean showAscii = true;
-	private String asciiBegin = "  |";
-	private String asciiEnd = "|";
+    private boolean showOffset = true;
+    private int bytesPerLine = 16;
+    private int spacingInterval = 4;
+    private char substituteChar = '.';
+    private String offsetSeperator = ": ";
+    private int offset = 0;
+    private int lineCount = 0;
+    private int bytesSinceSpace = 0;
+    private char[] ascii = null;
+    private boolean showAscii = true;
+    private String asciiBegin = "  |";
+    private String asciiEnd = "|";
 
-	private static final char[] HEX =
-		{
-			'0',
-			'1',
-			'2',
-			'3',
-			'4',
-			'5',
-			'6',
-			'7',
-			'8',
-			'9',
-			'a',
-			'b',
-			'c',
-			'd',
-			'e',
-			'f' };
+    private static final char[] HEX =
+        {
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f' };
 
-	/**
-	*  Creates a <code>PrintWriter</code> for <code>System.out</code>.
-	*
-	*/
+    /**
+     *  Creates a <code>PrintWriter</code> for <code>System.out</code>.
+     *
+     **/
 
-	public BinaryDumpOutputStream()
-	{
-		this(new PrintWriter(System.out, true));
-	}
+    public BinaryDumpOutputStream()
+    {
+        this(new PrintWriter(System.out, true));
+    }
 
-	public BinaryDumpOutputStream(PrintWriter out)
-	{
-		this.out = out;
-	}
+    public BinaryDumpOutputStream(PrintWriter out)
+    {
+        this.out = out;
+    }
 
-	public BinaryDumpOutputStream(Writer out)
-	{
-		this.out = new PrintWriter(out);
-	}
+    public BinaryDumpOutputStream(Writer out)
+    {
+        this.out = new PrintWriter(out);
+    }
 
-	public void close() throws IOException
-	{
-		if (out != null)
-		{
-			if (lineCount > 0)
-				finishFinalLine();
+    public void close() throws IOException
+    {
+        if (out != null)
+        {
+            if (lineCount > 0)
+                finishFinalLine();
 
-			out.close();
-		}
+            out.close();
+        }
 
-		out = null;
-	}
+        out = null;
+    }
 
-	private void finishFinalLine()
-	{
-		// Since we only finish the final line after at least one byte has
-		// been written to it, we don't need to worry about
-		// the offset.
+    private void finishFinalLine()
+    {
+        // Since we only finish the final line after at least one byte has
+        // been written to it, we don't need to worry about
+        // the offset.
 
-		while (lineCount < bytesPerLine)
-		{
-			// After every <n> bytes, emit a space.
+        while (lineCount < bytesPerLine)
+        {
+            // After every <n> bytes, emit a space.
 
-			if (spacingInterval > 0 && bytesSinceSpace == spacingInterval)
-			{
-				out.print(' ');
-				bytesSinceSpace = 0;
-			}
+            if (spacingInterval > 0 && bytesSinceSpace == spacingInterval)
+            {
+                out.print(' ');
+                bytesSinceSpace = 0;
+            }
 
-			// Two spaces to substitute for the two hex digits.
+            // Two spaces to substitute for the two hex digits.
 
-			out.print("  ");
+            out.print("  ");
 
-			if (showAscii)
-				ascii[lineCount] = ' ';
+            if (showAscii)
+                ascii[lineCount] = ' ';
 
-			lineCount++;
-			bytesSinceSpace++;
-		}
+            lineCount++;
+            bytesSinceSpace++;
+        }
 
-		if (showAscii)
-		{
-			out.print(asciiBegin);
-			out.print(ascii);
-			out.print(asciiEnd);
-		}
+        if (showAscii)
+        {
+            out.print(asciiBegin);
+            out.print(ascii);
+            out.print(asciiEnd);
+        }
 
-		out.println();
-	}
+        out.println();
+    }
 
-	/**
-	*  Forward's the <code>flush()</code> to the <code>PrintWriter</code>.
-	*
-	*/
+    /**
+     *  Forwards the <code>flush()</code> to the <code>PrintWriter</code>.
+     *
+     **/
 
-	public void flush() throws IOException
-	{
-		out.flush();
-	}
+    public void flush() throws IOException
+    {
+        out.flush();
+    }
 
-	public String getAsciiBegin()
-	{
-		return asciiBegin;
-	}
+    public String getAsciiBegin()
+    {
+        return asciiBegin;
+    }
 
-	public String getAsciiEnd()
-	{
-		return asciiEnd;
-	}
+    public String getAsciiEnd()
+    {
+        return asciiEnd;
+    }
 
-	public int getBytesPerLine()
-	{
-		return bytesPerLine;
-	}
+    public int getBytesPerLine()
+    {
+        return bytesPerLine;
+    }
 
-	public String getOffsetSeperator()
-	{
-		return offsetSeperator;
-	}
+    public String getOffsetSeperator()
+    {
+        return offsetSeperator;
+    }
 
-	public boolean getShowAscii()
-	{
-		return showAscii;
-	}
+    public boolean getShowAscii()
+    {
+        return showAscii;
+    }
 
-	public char getSubstituteChar()
-	{
-		return substituteChar;
-	}
+    public char getSubstituteChar()
+    {
+        return substituteChar;
+    }
 
-	public void setAsciiBegin(String value)
-	{
-		if (locked)
-			throw new IllegalStateException();
+    public void setAsciiBegin(String value)
+    {
+        if (locked)
+            throw new IllegalStateException();
 
-		asciiBegin = value;
-	}
+        asciiBegin = value;
+    }
 
-	public void setAsciiEnd(String value)
-	{
-		if (locked)
-			throw new IllegalStateException();
+    public void setAsciiEnd(String value)
+    {
+        if (locked)
+            throw new IllegalStateException();
 
-		asciiEnd = value;
-	}
+        asciiEnd = value;
+    }
 
-	public void setBytesPerLine(int value)
-	{
-		if (locked)
-			throw new IllegalStateException();
+    public void setBytesPerLine(int value)
+    {
+        if (locked)
+            throw new IllegalStateException();
 
-		bytesPerLine = value;
+        bytesPerLine = value;
 
-		ascii = null;
-	}
+        ascii = null;
+    }
 
-	public void setOffsetSeperator(String value)
-	{
-		if (locked)
-			throw new IllegalStateException();
+    public void setOffsetSeperator(String value)
+    {
+        if (locked)
+            throw new IllegalStateException();
 
-		offsetSeperator = value;
-	}
+        offsetSeperator = value;
+    }
 
-	public void setShowAscii(boolean value)
-	{
-		if (locked)
-			throw new IllegalStateException();
+    public void setShowAscii(boolean value)
+    {
+        if (locked)
+            throw new IllegalStateException();
 
-		showAscii = value;
-	}
+        showAscii = value;
+    }
 
-	/**
-	*  Sets the character used in the ASCII dump that substitutes for characters
-	*  outside the range of 32..126.
-	*
-	*/
+    /**
+     *  Sets the character used in the ASCII dump that substitutes for characters
+     *  outside the range of 32..126.
+     *
+     **/
 
-	public void setSubstituteChar(char value)
-	{
-		if (locked)
-			throw new IllegalStateException();
+    public void setSubstituteChar(char value)
+    {
+        if (locked)
+            throw new IllegalStateException();
 
-		substituteChar = value;
-	}
+        substituteChar = value;
+    }
 
-	public void write(int b) throws IOException
-	{
-		char letter;
+    public void write(int b) throws IOException
+    {
+        char letter;
 
-		if (showAscii && ascii == null)
-			ascii = new char[bytesPerLine];
+        if (showAscii && ascii == null)
+            ascii = new char[bytesPerLine];
 
-		// Prevent further customization after output starts being written.
+        // Prevent further customization after output starts being written.
 
-		locked = true;
+        locked = true;
 
-		if (lineCount == bytesPerLine)
-		{
-			if (showAscii)
-			{
-				out.print(asciiBegin);
-				out.print(ascii);
-				out.print(asciiEnd);
-			}
+        if (lineCount == bytesPerLine)
+        {
+            if (showAscii)
+            {
+                out.print(asciiBegin);
+                out.print(ascii);
+                out.print(asciiEnd);
+            }
 
-			out.println();
+            out.println();
 
-			bytesSinceSpace = 0;
-			lineCount = 0;
-			offset += bytesPerLine;
-		}
+            bytesSinceSpace = 0;
+            lineCount = 0;
+            offset += bytesPerLine;
+        }
 
-		if (lineCount == 0 && showOffset)
-		{
-			writeHex(offset, 4);
-			out.print(offsetSeperator);
-		}
+        if (lineCount == 0 && showOffset)
+        {
+            writeHex(offset, 4);
+            out.print(offsetSeperator);
+        }
 
-		// After every <n> bytes, emit a space.
+        // After every <n> bytes, emit a space.
 
-		if (spacingInterval > 0 && bytesSinceSpace == spacingInterval)
-		{
-			out.print(' ');
-			bytesSinceSpace = 0;
-		}
+        if (spacingInterval > 0 && bytesSinceSpace == spacingInterval)
+        {
+            out.print(' ');
+            bytesSinceSpace = 0;
+        }
 
-		writeHex(b, 2);
+        writeHex(b, 2);
 
-		if (showAscii)
-		{
-			if (b < 32 | b > 127)
-				letter = substituteChar;
-			else
-				letter = (char) b;
+        if (showAscii)
+        {
+            if (b < 32 | b > 127)
+                letter = substituteChar;
+            else
+                letter = (char) b;
 
-			ascii[lineCount] = letter;
-		}
+            ascii[lineCount] = letter;
+        }
 
-		lineCount++;
-		bytesSinceSpace++;
-	}
+        lineCount++;
+        bytesSinceSpace++;
+    }
 
-	private void writeHex(int value, int digits)
-	{
-		int i;
-		int nybble;
+    private void writeHex(int value, int digits)
+    {
+        int i;
+        int nybble;
 
-		for (i = 0; i < digits; i++)
-		{
-			nybble = (value >> 4 * (digits - i - 1)) & 0x0f;
+        for (i = 0; i < digits; i++)
+        {
+            nybble = (value >> 4 * (digits - i - 1)) & 0x0f;
 
-			out.print(HEX[nybble]);
-		}
-	}
+            out.print(HEX[nybble]);
+        }
+    }
 }
