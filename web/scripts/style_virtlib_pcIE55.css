@@ -1,166 +1,58 @@
-/* style_virtlib_pcIE55.css */
-body, table, td, p	{
-	font-family:verdana, arial, helvetica, sans-serif;
-	font-size:12px;
+CODE  {
+	font-size : 12;
 }
 
-a	{
-	color:#ffffff;
+/* Top Nav*/
+A.clsTopNav  {
+	font-weight : bold;
+	text-decoration : none;
 }
 
-CODE
-{
-  font-size: 12;
+A.clsTopNav:hover  {
+	text-decoration : underline;
 }
 
-.clsBold	{
-	font-weight:bold;
-}
-.clsDataBlue	{
-	color:#4b5887;
-}
-a.clsDataBlue:link	{
-	color:#4b5887;
-}
-a.clsDataBlue:hover	{
-	color:#4b5887;
-	text-decoration:none;
-}
-a.clsDataBlue:visited	{
-	color:#4b5887;
-}
-.clsDataBlack:link	{
-	color:#000000;
-}
-.clsDataBlack:hover	{
-	color:#000000;
-	text-decoration:none;
-}
-.clsDataBlack:visited	{
-	color:#000000;
-}
-/* Top Nav */
-.clsTopNav {
-	font-weight:bold;
-	color:#4b5887;
-	text-decoration:none;
-}
-.clsTopNav:hover	{
-	text-decoration:underline;
+SPAN.clsTopNavOn  {
+	font-weight : bold;
+	color : #e88700;
 }
 
-SPAN.clsTopNavOn	{
-	font-weight:bold;
-	color:#e88700;
+A.clsTopNavOn  {
+	font-weight : bold;
+	color : #e88700;
+	text-decoration : none;
 }
 
-A.clsTopNavOn
-{
-	font-weight:bold;
-	color:#e88700;
-	text-decoration:none;
+A.clsTopNavOn:hover  {
+	text-decoration : underline;
 }
 
-A.clsTopNavOn:hover
-{
-  text-decoration:underline;
+/* Forms*/
+form  {
+	display : block;
+	margin-top : 1px;
+	margin-bottom : 1px;
 }
 
-.clsLeftNavTxt	{
-	color:#ffffff;
-	font-weight:bold;
-}
-/* Left Nav */
-.clsLeftNav	{
-	font-weight:bold;
-	text-decoration:none;
-}
-.clsLeftNav:hover	{
-	text-decoration:underline;
-}
-/* Forms */
-form	{
-	display:block;
-	margin-top:1px;
-	margin-bottom:1px;
-}
-.inputTextForm	{
-	font-family:courier, monospace;
-}
-.inputSelectForm	{
-	font-family:courier, monospace;
-}
-.inputTextareaForm	{
-	font-family:courier, monospace;
-}
-/* Footer */
-.clsFooterPos	{
-	position:absolute;
-	bottom: 0px;
-}
-.clsFooter	{
-	color:#666666;
-	text-decoration:none;
-}
-.clsFooterLink	{
-	color:#8e9cd1;
-}
-.clsFooterLink:hover	{
-	color:#8e9cd1;
-	text-decoration:none;
-}
-td.clsDataTable	{
-	border-width:1px;
-	border-color:#4b5887;
-	border-style:solid;
-	background:#ffffff;
+PRE  {
+	font-size : 12px;
 }
 
-TABLE.tapestry-palette TH
-{
-  font-weight: bold;
-  color: white;
-  background-color: #4b5887;
-}
-
-TABLE.tapestry-palette SELECT
-{
-  width: 200;
-}
-
-TABLE.tapestry-palette TD.controls
-{
-   text-align: center;
-}
-
-.clsInvalidField	
-{
-	color:#993300;
-}
-
-.clsInfoWarning	{
-	font-size:17px;
-	font-weight:bold;
-}
-
-PRE
-{
-  font-size: 12px;
-}
-
-DIV.right-side-quote
-{
-	text-align: left;
-	float: right;
-	width: 250px;
-	color: white;
-	padding-right: 8px;
-	padding-left: 4px;
-    font-size: 14px;
+DIV.right-side-quote  {
+	text-align : left;
+	float : right;
+	width : 350px;
+	padding-right : 8px;
+	padding-left : 4px;
+	font-size : large;
 	font-weight : bold;
 }
 
-SPAN.release
-{
-  font-weight: bold;
+SPAN.release  {
+	font-weight : bold;
 }
+
+BODY  {
+	font-family : Trebuchet MS, arial, sans-serif;
+}
+
