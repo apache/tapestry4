@@ -5,10 +5,11 @@ import net.sf.tapestry.ComponentAddress;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.contrib.table.components.TableColumns;
+import net.sf.tapestry.contrib.table.model.ITableColumn;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITableModelSource;
+import net.sf.tapestry.contrib.table.model.ITableRendererListener;
 import net.sf.tapestry.contrib.table.model.ITableSortingState;
-import net.sf.tapestry.contrib.table.model.simple.ISimpleTableColumnRenderer;
 import net.sf.tapestry.contrib.table.model.simple.SimpleTableColumn;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageEvent;
@@ -16,14 +17,13 @@ import net.sf.tapestry.event.PageEvent;
 /**
  * @version $Id$
  * @author mindbridge
- *
  */
 public class SimpleTableColumnComponent
 	extends BaseComponent
-	implements ISimpleTableColumnRenderer, PageDetachListener
+	implements ITableRendererListener, PageDetachListener
 {
 	// transient
-	private SimpleTableColumn m_objColumn;
+	private ITableColumn m_objColumn;
 	private ITableModelSource m_objModelSource;
 
 	public SimpleTableColumnComponent()
@@ -54,16 +54,18 @@ public class SimpleTableColumnComponent
 		getPage().addPageDetachListener(this);
 	}
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.simple.ISimpleTableColumnRenderer#initializeColumnRenderer(SimpleTableColumn, ITableModelSource)
-	 */
-	public void initializeColumnRenderer(
-		SimpleTableColumn objColumn,
-		ITableModelSource objSource)
-	{
-		m_objColumn = objColumn;
-		m_objModelSource = objSource;
-	}
+    /**
+     * @see net.sf.tapestry.contrib.table.model.ITableRendererListener#initRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
+     */
+    public void initializeRenderer(
+        IRequestCycle objCycle,
+        ITableModelSource objSource,
+        ITableColumn objColumn,
+        Object objRow)
+    {
+        m_objModelSource = objSource;
+        m_objColumn = objColumn;
+    }
 
 	public ITableModel getTableModel()
 	{
@@ -77,7 +79,11 @@ public class SimpleTableColumnComponent
 
 	public String getDisplayName()
 	{
-		return m_objColumn.getDisplayName();
+        if (m_objColumn instanceof SimpleTableColumn) {
+            SimpleTableColumn objSimpleColumn = (SimpleTableColumn) m_objColumn;
+    		return objSimpleColumn.getDisplayName();
+        }
+        return m_objColumn.getColumnName();
 	}
 
 	public boolean getIsSorted()

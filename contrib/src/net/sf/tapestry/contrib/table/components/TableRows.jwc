@@ -10,6 +10,11 @@
 	<description>
 	</description>
   
+	<parameter name="row" 
+		java-type="Object" 
+		required="no"
+		direction="custom"/>
+
 	<parameter name="value" 
 		java-type="Object" 
 		required="no"

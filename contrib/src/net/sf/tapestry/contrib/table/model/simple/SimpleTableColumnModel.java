@@ -11,7 +11,9 @@ import net.sf.tapestry.contrib.table.model.ITableColumnModel;
 import net.sf.tapestry.contrib.table.model.common.ArrayIterator;
 
 /**
- * A minimal implementation of the ITableColumnModel interface
+ * A minimal implementation of the 
+ * {@link net.sf.tapestry.contrib.table.model.ITableColumnModel} interface
+ * that stores columns as an array.
  * 
  * @version $Id$
  * @author mindbridge
