@@ -20,9 +20,11 @@ public class MockTestCase extends TapestryTestCase
         super(name);
     }
 
-    private MockTester attempt(String path)
+    private MockTester attempt(String name)
     throws Exception
     {
+        String path = "/net/sf/tapestry/junit/mock/" + name;
+        
         MockTester tester = new MockTester(path);
         
         tester.execute();
@@ -38,7 +40,7 @@ public class MockTestCase extends TapestryTestCase
     public void testFailNoHome()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestFailNoHome.xml");
+        attempt("TestFailNoHome.xml");
     }
 
     /**
@@ -49,7 +51,7 @@ public class MockTestCase extends TapestryTestCase
     public void testFailMissingClass()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestFailMissingClass.xml");
+        attempt("TestFailMissingClass.xml");
     }
     
     /**
@@ -61,7 +63,7 @@ public class MockTestCase extends TapestryTestCase
     public void testFailNotPage()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestFailNotPage.xml");
+        attempt("TestFailNotPage.xml");
     } 
     
     /**
@@ -73,7 +75,7 @@ public class MockTestCase extends TapestryTestCase
     public void testFailNotComponent()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestFailNotComponent.xml");
+        attempt("TestFailNotComponent.xml");
     }     
        
     /**
@@ -84,7 +86,7 @@ public class MockTestCase extends TapestryTestCase
     public void testSimple()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestSimple.xml");
+        attempt("TestSimple.xml");
     }
     
     /**
@@ -96,7 +98,7 @@ public class MockTestCase extends TapestryTestCase
     public void testLibrary()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestLibrary.xml");
+        attempt("TestLibrary.xml");
     }
        
     /**
@@ -108,7 +110,7 @@ public class MockTestCase extends TapestryTestCase
     public void testExternal()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestExternal.xml");
+        attempt("TestExternal.xml");
     }       
     
     /**
@@ -120,13 +122,13 @@ public class MockTestCase extends TapestryTestCase
     public void testPage()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestPage.xml");
+        attempt("TestPage.xml");
     }
     
     public void testLocalization()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestLocalization.xml");
+        attempt("TestLocalization.xml");
     }
     
     /**
@@ -137,7 +139,7 @@ public class MockTestCase extends TapestryTestCase
     public void testRegisterForm()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestRegisterForm.xml");
+        attempt("TestRegisterForm.xml");
     }
     
     /**
@@ -152,7 +154,7 @@ public class MockTestCase extends TapestryTestCase
     public void testValidate()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestValidate.xml");
+        attempt("TestValidate.xml");
     }
     
     /**
@@ -166,7 +168,7 @@ public class MockTestCase extends TapestryTestCase
     public void testProtectedLink()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestProtectedLink.xml");
+        attempt("TestProtectedLink.xml");
     }
     
     /**
@@ -178,13 +180,13 @@ public class MockTestCase extends TapestryTestCase
     public void testStaleLinkException()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestStaleSessionException.xml");
+        attempt("TestStaleSessionException.xml");
     }
     
     public void testStrings()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestStrings.xml");
+        attempt("TestStrings.xml");
     }
     
     /**
@@ -196,7 +198,7 @@ public class MockTestCase extends TapestryTestCase
     public void testValidFieldNoBody()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestValidFieldNoBody.xml");
+        attempt("TestValidFieldNoBody.xml");
     }
     
     /**
@@ -208,13 +210,13 @@ public class MockTestCase extends TapestryTestCase
     public void testTemplateExpressions()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestTemplateExpr.xml");
+        attempt("TestTemplateExpr.xml");
     }
     
     public void testImplicitComponents()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestImplicitComponents.xml");
+        attempt("TestImplicitComponents.xml");
     }
     
     /**
@@ -225,7 +227,7 @@ public class MockTestCase extends TapestryTestCase
     public void testHome()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestHome.xml");
+        attempt("TestHome.xml");
     }
     
     /**
@@ -237,6 +239,17 @@ public class MockTestCase extends TapestryTestCase
     public void testAssetTemplates()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestAssetTemplates.xml");
+        attempt("TestAssetTemplates.xml");
+    }
+    
+    /**
+     *  Test case for relative context and private assets.
+     * 
+     **/
+    
+    public void testRelativeAssets()
+    throws Exception
+    {
+        attempt("TestRelativeAssets.xml");
     }
 }

@@ -26,7 +26,7 @@ declared exclusively in the containing component's template (instead of in
 the containing component's specification) using a special
 <code>jwcid</code> syntax:
 <code>@<i>type</i></code> (for anonymous components) or
-<code><i>id</i>:@<i>type</i></code> (for named components).  Implicit components
+<code><i>id</i>@<i>type</i></code> (for named components).  Implicit components
 are especially useful for components that take no parameters, but may also
 make use of template expressions.
 
@@ -34,7 +34,10 @@ make use of template expressions.
 A number of non-backwards compatible changes were made to several
 framework interfaces to support more flexibility on where specifications
 and templates may be located, but these should not affect the overwhelming
-majority of Tapestry users.
+majority of Tapestry users.  In addition, private assets and context assets
+may also be relative.  Private assets are relative to the component which declares
+them, context assets are relative to the application servlet (within the servlet
+context).
 
 <p>
 Moved the Inspector out of the framework and into the contrib library.

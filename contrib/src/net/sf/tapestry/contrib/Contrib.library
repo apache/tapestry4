@@ -6,34 +6,32 @@
 	
 <library-specification>
 
-  <page name="Inspector" specification-path="/net/sf/tapestry/contrib/inspector/Inspector.page"/>
-  <component-alias type="InspectorButton" specification-path="/net/sf/tapestry/contrib/inspector/InspectorButton.jwc"/>
+  <component-alias type="InspectorButton" specification-path="inspector/InspectorButton.jwc"/>
+  <page name="Inspector" specification-path="inspector/Inspector.page"/>
+  <library id="inspector" specification-path="inspector/Inspector.library"/>
 
-  <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
-  <component-alias type="MultiplePropertySelection"
-  	specification-path="/net/sf/tapestry/contrib/form/MultiplePropertySelection.jwc"/>
-  <component-alias type="DateField"
-  	specification-path="/net/sf/tapestry/contrib/valid/DateField.jwc"/>
-  <component-alias type="NumericField"
-  	specification-path="/net/sf/tapestry/contrib/valid/NumericField.jwc"/>
-  <component-alias type="ValidatingTextField"
-  	specification-path="/net/sf/tapestry/contrib/valid/ValidatingTextField.jwc"/>
+  <component-alias type="Palette" specification-path="palette/Palette.jwc"/>
+  
+  <component-alias type="MultiplePropertySelection" specification-path="form/MultiplePropertySelection.jwc"/>
 
-  <component-alias type="InheritInformalAny" specification-path="/net/sf/tapestry/contrib/informal/InheritInformalAny.jwc"/>
-  <component-alias type="InsertRenderer" specification-path="/net/sf/tapestry/contrib/render/InsertRenderer.jwc"/>
+  <component-alias type="DateField" specification-path="valid/DateField.jwc"/>
+  <component-alias type="NumericField" specification-path="valid/NumericField.jwc"/>
+  <component-alias type="ValidatingTextField" specification-path="valid/ValidatingTextField.jwc"/>
 
-  <component-alias type="Table" specification-path="/net/sf/tapestry/contrib/table/components/Table.jwc"/>
-  <component-alias type="TableColumns" specification-path="/net/sf/tapestry/contrib/table/components/TableColumns.jwc"/>
-  <component-alias type="TablePages" specification-path="/net/sf/tapestry/contrib/table/components/TablePages.jwc"/>
-  <component-alias type="TableRows" specification-path="/net/sf/tapestry/contrib/table/components/TableRows.jwc"/>
-  <component-alias type="TableValues" specification-path="/net/sf/tapestry/contrib/table/components/TableValues.jwc"/>
-  <component-alias type="TableView" specification-path="/net/sf/tapestry/contrib/table/components/TableView.jwc"/>
+  <component-alias type="InheritInformalAny" specification-path="informal/InheritInformalAny.jwc"/>
+  <component-alias type="InsertRenderer" specification-path="render/InsertRenderer.jwc"/>
 
-  <page name="SimpleTableColumnPage" specification-path="/net/sf/tapestry/contrib/table/components/inserted/SimpleTableColumnPage.page"/>
-  <component-alias type="SimpleTableColumnComponent" specification-path="/net/sf/tapestry/contrib/table/components/inserted/SimpleTableColumnComponent.jwc"/>
+  <component-alias type="Table" specification-path="table/components/Table.jwc"/>
+  <component-alias type="TableColumns" specification-path="table/components/TableColumns.jwc"/>
+  <component-alias type="TablePages" specification-path="table/components/TablePages.jwc"/>
+  <component-alias type="TableRows" specification-path="table/components/TableRows.jwc"/>
+  <component-alias type="TableValues" specification-path="table/components/TableValues.jwc"/>
+  <component-alias type="TableView" specification-path="table/components/TableView.jwc"/>
 
-  <component-alias type="PopupLink" specification-path="/net/sf/tapestry/contrib/popup/PopupLink.jwc"/>
+  <page name="SimpleTableColumnPage" specification-path="table/components/inserted/SimpleTableColumnPage.page"/>
+  <component-alias type="SimpleTableColumnComponent" specification-path="table/components/inserted/SimpleTableColumnComponent.jwc"/>
 
-  <library id="inspector" specification-path="/net/sf/tapestry/contrib/inspector/Inspector.library"/>
+  <component-alias type="PopupLink" specification-path="popup/PopupLink.jwc"/>
+
 
 </library-specification>

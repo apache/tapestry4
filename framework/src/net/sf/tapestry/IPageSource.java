@@ -77,16 +77,7 @@ public interface IPageSource
      *
      **/
 
-    public IAsset getContextAsset(String assetPath);
-
-    /**
-     *  Gets a cached asset.
-     *
-     *  @since 1.0.2
-     *
-     **/
-
-    public IAsset getPrivateAsset(String resourcePath);
+    public IAsset getAsset(IResourceLocation location);
     
     /**
      * 

@@ -14,9 +14,12 @@ import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 
 /**
  *  The body of a Tapestry page.  This is used since it allows components on the
@@ -389,12 +392,16 @@ public class Body extends AbstractComponent
         IRequestCycle cycle = getPage().getRequestCycle();
         IEngine engine = getPage().getEngine();
         IPageSource source = engine.getPageSource();
-
+        IResourceResolver resolver = engine.getResourceResolver();
+        
         Iterator i = includes.iterator();
         while (i.hasNext())
         {
             String path = (String) i.next();
-            IAsset asset = source.getPrivateAsset(path);
+            
+            IResourceLocation location = new ClasspathResourceLocation(resolver, path);
+            
+            IAsset asset = source.getAsset(location);
             String URL = asset.buildURL(cycle);
 
             includeScript(URL);

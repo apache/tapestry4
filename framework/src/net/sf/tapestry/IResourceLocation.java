@@ -18,6 +18,13 @@ import java.util.Locale;
  *  implement {@link java.lang.Object#hashCode()} and
  *  {@link java.lang.Object#equals(java.lang.Object)}
  *  properly.
+ * 
+ *  <p>
+ *  Resource locations are valid even if the corresponding
+ *  resource <i>doesn't exist</i>.  To verify if a localization
+ *  actually exists, use {@link #getResourceURL()}, which returns
+ *  null if the resource doesn't exist.  {@link #getLocalization(Locale)}
+ *  returns only real resource locations, where the resource exists.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

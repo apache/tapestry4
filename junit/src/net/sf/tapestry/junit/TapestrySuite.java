@@ -31,6 +31,7 @@ public class TapestrySuite extends TestSuite
 		TestSuite suite = new TestSuite();
 
         suite.addTestSuite(TestLocalizedNameGenerator.class);
+        suite.addTestSuite(TestResourceLocation.class);
         suite.addTestSuite(TestPublicBean.class);
         suite.addTestSuite(TestPropertyFinder.class);
         suite.addTestSuite(TestListenerMap.class);

@@ -6,13 +6,13 @@
 	
 <library-specification>
 
-	<component-alias type="Selector" specification-path="/net/sf/tapestry/contrib/inspector/Selector.jwc"/>
-	<component-alias type="ViewTabs" specification-path="/net/sf/tapestry/contrib/inspector/ViewTabs.jwc"/>
-	<component-alias type="ShowSpecification" specification-path="/net/sf/tapestry/contrib/inspector/ShowSpecification.jwc"/>
-	<component-alias type="ShowTemplate" specification-path="/net/sf/tapestry/contrib/inspector/ShowTemplate.jwc"/>
-	<component-alias type="ShowProperties" specification-path="/net/sf/tapestry/contrib/inspector/ShowProperties.jwc"/>
-	<component-alias type="ShowEngine" specification-path="/net/sf/tapestry/contrib/inspector/ShowEngine.jwc"/>
-	<component-alias type="ShowLogging" specification-path="/net/sf/tapestry/contrib/inspector/ShowLogging.jwc"/>
-	<component-alias type="ShowDescription" specification-path="/net/sf/tapestry/contrib/inspector/ShowDescription.jwc"/>	
+	<component-alias type="Selector" specification-path="Selector.jwc"/>
+	<component-alias type="ViewTabs" specification-path="ViewTabs.jwc"/>
+	<component-alias type="ShowSpecification" specification-path="ShowSpecification.jwc"/>
+	<component-alias type="ShowTemplate" specification-path="ShowTemplate.jwc"/>
+	<component-alias type="ShowProperties" specification-path="ShowProperties.jwc"/>
+	<component-alias type="ShowEngine" specification-path="ShowEngine.jwc"/>
+	<component-alias type="ShowLogging" specification-path="ShowLogging.jwc"/>
+	<component-alias type="ShowDescription" specification-path="ShowDescription.jwc"/>	
 	
 </library-specification>

@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
@@ -17,6 +19,7 @@ import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.PageLoaderException;
@@ -66,11 +69,18 @@ import net.sf.tapestry.util.pool.Pool;
 
 public class PageSource implements IPageSource, IRenderDescription
 {
-    private Map _fieldBindings;
-    private Map staticBindings;
-    private Map _externalAssets;
-    private Map _contextAssets;
-    private Map _privateAssets;
+    private Map _fieldBindings = new HashMap();
+    private Map _staticBindings = new HashMap();
+        
+    /**
+     *  Map of {@link IAsset}.  Some entries use a string as a key (for extenal assets).
+     *  The rest use a {@link net.sf.tapestry.IResourceLocation} as a key
+     *  (for private and context assets).
+     * 
+     **/
+    
+    private Map _assets = new HashMap();
+    
     private IResourceResolver _resolver;
 
     private static class PageSpecificationResolver
@@ -126,7 +136,7 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public PageSource(IResourceResolver resolver)
     {
-        this._resolver = resolver;
+        _resolver = resolver;
 
         _pool = new Pool();
     }
@@ -189,7 +199,7 @@ public class PageSource implements IPageSource, IRenderDescription
             PageSpecificationResolver specificationResolver =
                 new PageSpecificationResolver(engine.getSpecificationSource(), pageName);
 
-            PageLoader loader = new PageLoader(this);
+            PageLoader loader = new PageLoader(this, cycle);
 
             result =
                 loader.loadPage(
@@ -235,12 +245,9 @@ public class PageSource implements IPageSource, IRenderDescription
     {
         _pool.clear();
 
-        _fieldBindings = null;
-        staticBindings = null;
-        _externalAssets = null;
-        _contextAssets = null;
-        _privateAssets = null;
-
+        _fieldBindings.clear();
+        _staticBindings.clear();
+        _assets.clear();
     }
 
     /**
@@ -252,9 +259,6 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized IBinding getFieldBinding(String fieldName)
     {
-        if (_fieldBindings == null)
-            _fieldBindings = new HashMap();
-
         IBinding result = (IBinding) _fieldBindings.get(fieldName);
 
         if (result == null)
@@ -274,17 +278,13 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized IBinding getStaticBinding(String value)
     {
-
-        if (staticBindings == null)
-            staticBindings = new HashMap();
-
-        IBinding result = (IBinding) staticBindings.get(value);
+        IBinding result = (IBinding) _staticBindings.get(value);
 
         if (result == null)
         {
             result = new StaticBinding(value);
 
-            staticBindings.put(value, result);
+            _staticBindings.put(value, result);
         }
 
         return result;
@@ -292,77 +292,43 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized IAsset getExternalAsset(String URL)
     {
-
-        if (_externalAssets == null)
-            _externalAssets = new HashMap();
-
-        IAsset result = (IAsset) _externalAssets.get(URL);
+        IAsset result = (IAsset) _assets.get(URL);
 
         if (result == null)
         {
             result = new ExternalAsset(URL);
-            _externalAssets.put(URL, result);
+            _assets.put(URL, result);
         }
 
         return result;
     }
 
-    public synchronized IAsset getContextAsset(String assetPath)
+    public synchronized IAsset getAsset(IResourceLocation location)
     {
-
-        if (_contextAssets == null)
-            _contextAssets = new HashMap();
-
-        IAsset result = (IAsset) _contextAssets.get(assetPath);
+       IAsset result = (IAsset) _assets.get(location);
 
         if (result == null)
         {
-            result = new ContextAsset(assetPath);
-            _contextAssets.put(assetPath, result);
+            result = location.toAsset();
+            
+            _assets.put(location, result);
         }
 
         return result;
 
-    }
-
-    public synchronized IAsset getPrivateAsset(String resourcePath)
-    {
-
-        if (_privateAssets == null)
-            _privateAssets = new HashMap();
-
-        IAsset result = (IAsset) _privateAssets.get(resourcePath);
-
-        if (result == null)
-        {
-            result = new PrivateAsset(resourcePath);
-            _privateAssets.put(resourcePath, result);
-        }
-
-        return result;
     }
 
     public String toString()
     {
-        StringBuffer buffer = new StringBuffer("PageSource@");
-        buffer.append(Integer.toHexString(hashCode()));
-        buffer.append('[');
-
-        if (_pool != null)
-        {
-            buffer.append("pool=");
-            buffer.append(_pool);
-        }
-
-        extend(buffer, _fieldBindings, "field bindings");
-        extend(buffer, staticBindings, "static bindings");
-        extend(buffer, _externalAssets, "external assets");
-        extend(buffer, _contextAssets, "context assets");
-        extend(buffer, _privateAssets, "private assets");
-
-        buffer.append(']');
-
-        return buffer.toString();
+        ToStringBuilder builder = new ToStringBuilder(this);
+        
+        builder.append("pool", _pool);
+        builder.append("assets", _assets);
+        builder.append("fieldBindings", _fieldBindings);
+        builder.append("staticBindings", _staticBindings);
+        builder.append("resolver", _resolver);
+        
+        return builder.toString();
     }
 
     private void extend(StringBuffer buffer, Map map, String label)
@@ -405,10 +371,8 @@ public class PageSource implements IPageSource, IRenderDescription
         }
 
         describe(writer, _fieldBindings, "field bindings");
-        describe(writer, staticBindings, "static bindings");
-        describe(writer, _externalAssets, "external assets");
-        describe(writer, _contextAssets, "context assets");
-        describe(writer, _privateAssets, "private assets");
+        describe(writer, _staticBindings, "static bindings");
+        describe(writer, _assets, "assets");
 
         writer.end(); // <ul>
     }

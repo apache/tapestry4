@@ -1,5 +1,6 @@
 package net.sf.tapestry.engine;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -383,7 +384,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         char[] charBuffer = new char[BUFFER_SIZE];
         StringBuffer buffer = new StringBuffer();
 
-        InputStreamReader reader = new InputStreamReader(stream);
+        InputStreamReader reader = new InputStreamReader(new BufferedInputStream(stream));
 
         try
         {

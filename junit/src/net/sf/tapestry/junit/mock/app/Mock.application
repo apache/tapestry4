@@ -7,38 +7,37 @@
 <application name="JUnit Mock Application"
 	engine-class="net.sf.tapestry.engine.SimpleEngine">
 	
-	<page name="Home" specification-path="/net/sf/tapestry/junit/mock/app/Home.page"/>
-	<page name="ServiceTest" specification-path="/net/sf/tapestry/junit/mock/app/ServiceTest.page"/>
-	<page name="Register" specification-path="/net/sf/tapestry/junit/mock/app/Register.page"/>
-	<page name="RegisterConfirm" specification-path="/net/sf/tapestry/junit/mock/app/RegisterConfirm.page"/>
+	<page name="Home" specification-path="Home.page"/>
+	<page name="ServiceTest" specification-path="ServiceTest.page"/>
+	<page name="Register" specification-path="Register.page"/>
+	<page name="RegisterConfirm" specification-path="RegisterConfirm.page"/>
 
-	<page name="Strings" specification-path="/net/sf/tapestry/junit/mock/app/Strings.page"/>
+	<page name="Strings" specification-path="Strings.page"/>
 
-	<page name="Protected" specification-path="/net/sf/tapestry/junit/mock/app/Protected.page"/>
-	<page name="Guard" specification-path="/net/sf/tapestry/junit/mock/app/Guard.page"/>
+	<page name="Protected" specification-path="Protected.page"/>
+	<page name="Guard" specification-path="Guard.page"/>
 
-	<page name="ProtectedLink" specification-path="/net/sf/tapestry/junit/mock/app/ProtectedLink.page"/>
-	<page name="ProtectedLinkResult" specification-path="/net/sf/tapestry/junit/mock/app/ProtectedLinkResult.page"/>
+	<page name="ProtectedLink" specification-path="ProtectedLink.page"/>
+	<page name="ProtectedLinkResult" specification-path="ProtectedLinkResult.page"/>
 
-	<page name="Stale" specification-path="/net/sf/tapestry/junit/mock/app/Stale.page"/>
+	<page name="Stale" specification-path="Stale.page"/>
 
-	<page name="ValidFieldNoBody" specification-path="/net/sf/tapestry/junit/mock/app/ValidFieldNoBody.page"/>
+	<page name="ValidFieldNoBody" specification-path="ValidFieldNoBody.page"/>
 
-	<page name="TemplateExpr" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExpr.page"/>
-	<page name="TemplateExprConflict" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExprConflict.page"/>
-	<page name="TemplateExprInformal" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExprInformal.page"/>
-	<page name="TemplateExprReserved" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExprReserved.page"/>
+	<page name="TemplateExpr" specification-path="expr/TemplateExpr.page"/>
+	<page name="TemplateExprConflict" specification-path="expr/TemplateExprConflict.page"/>
+	<page name="TemplateExprInformal" specification-path="expr/TemplateExprInformal.page"/>
+	<page name="TemplateExprReserved" specification-path="expr/TemplateExprReserved.page"/>
 		
-	<page name="ImplicitComponents" specification-path="/net/sf/tapestry/junit/mock/app/impl/ImplicitComponents.page"/>
+	<page name="ImplicitComponents" specification-path="impl/ImplicitComponents.page"/>
 		
-	<page name="Assets" specification-path="/net/sf/tapestry/junit/mock/app/Assets.page"/>
+	<page name="Assets" specification-path="Assets.page"/>
 					
-	<page name="PrivateAssetTemplate"
-		specification-path="/net/sf/tapestry/junit/mock/app/PrivateAssetTemplate.page"/>
+	<page name="PrivateAssetTemplate" specification-path="PrivateAssetTemplate.page"/>
 
-	<page name="ContextAssetTemplate"
-		specification-path="/net/sf/tapestry/junit/mock/app/ContextAssetTemplate.page"/>
-
+	<page name="ContextAssetTemplate" specification-path="ContextAssetTemplate.page"/>
+						
+	<page name="RelativeAssets" specification-path="RelativeAssets.page"/>						
 							
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	

@@ -152,18 +152,25 @@ public class TemplateParser
 
     public static final String SIMPLE_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")$";
 
+    private static final int SIMPLE_ID_PATTERN_ID_GROUP = 1;
+
     /**
      *  Pattern used to recognize implicit components (whose type is defined in
-     *  the template).  Subgroup 3 is the id (which may be null) and subgroup 4
+     *  the template).  Subgroup 1 is the id (which may be null) and subgroup 2
      *  is the type (which may be qualified with a library prefix).
-     *  Subgroup 6 is the library id, Subgroup 7 is the simple component type.
+     *  Subgroup 4 is the library id, Subgroup 5 is the simple component type.
      * 
      *  @since 2.4
      * 
      **/
 
     public static final String IMPLICIT_ID_PATTERN =
-        "^((" + PROPERTY_NAME_PATTERN + "):)?@(((" + PROPERTY_NAME_PATTERN + "):)?(" + PROPERTY_NAME_PATTERN + "))$";
+        "^(" + PROPERTY_NAME_PATTERN + ")?@(((" + PROPERTY_NAME_PATTERN + "):)?(" + PROPERTY_NAME_PATTERN + "))$";
+
+    private static final int IMPLICIT_ID_PATTERN_ID_GROUP = 1;
+    private static final int IMPLICIT_ID_PATTERN_TYPE_GROUP = 2;
+    private static final int IMPLICIT_ID_PATTERN_LIBRARY_ID_GROUP = 4;
+    private static final int IMPLICIT_ID_PATTERN_SIMPLE_TYPE_GROUP = 5;
 
     private Pattern _simpleIdPattern;
     private Pattern _implicitIdPattern;
@@ -792,11 +799,11 @@ public class TemplateParser
         {
             MatchResult match = _patternMatcher.getMatch();
 
-            jwcId = match.group(2);
-            type = match.group(3);
+            jwcId = match.group(IMPLICIT_ID_PATTERN_ID_GROUP);
+            type = match.group(IMPLICIT_ID_PATTERN_TYPE_GROUP);
 
-            String libraryId = match.group(5);
-            String simpleType = match.group(6);
+            String libraryId = match.group(IMPLICIT_ID_PATTERN_LIBRARY_ID_GROUP);
+            String simpleType = match.group(IMPLICIT_ID_PATTERN_SIMPLE_TYPE_GROUP);
 
             // If (and this is typical) no actual component id was specified,
             // then generate one on the fly.

@@ -1,5 +1,6 @@
 package net.sf.tapestry.util.xml;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -175,6 +176,11 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
                 throw new DocumentParseException(
                     Tapestry.getString("AbstractDocumentParser.unable-to-open-resource", url, resourceLocation),
                     resourceLocation);
+
+            // Wrapping in a buffered input stream seems to provide a slight
+            // speed improvement.
+            
+            inputStream = new BufferedInputStream(inputStream);
 
             InputSource source = new InputSource(inputStream);
 

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -22,13 +24,16 @@ import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.PageLoaderException;
+import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.binding.ExpressionBinding;
 import net.sf.tapestry.binding.StringBinding;
+import net.sf.tapestry.resource.ContextResourceLocation;
 import net.sf.tapestry.spec.AssetSpecification;
 import net.sf.tapestry.spec.AssetType;
 import net.sf.tapestry.spec.BindingSpecification;
@@ -86,6 +91,13 @@ public class PageLoader implements IPageLoader
 
     private int _maxDepth;
 
+    /**
+     *  Used to figure relative paths for context assets.
+     * 
+     **/
+
+    private IResourceLocation _servletLocation;
+
     private static class QueuedInheritedBinding
     {
         private IComponent _component;
@@ -115,9 +127,21 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    public PageLoader(IPageSource pageSource)
+    public PageLoader(IPageSource pageSource, IRequestCycle cycle)
     {
         _pageSource = pageSource;
+
+        IEngine engine = cycle.getEngine();
+        RequestContext context = cycle.getRequestContext();
+
+        // Need the location of the servlet within the context as the basis
+        // for building relative context asset paths.
+
+        HttpServletRequest request = context.getRequest();
+
+        String servletPath = request.getServletPath();
+
+        _servletLocation = new ContextResourceLocation(context.getServlet().getServletContext(), servletPath);
     }
 
     /**
@@ -573,13 +597,20 @@ public class PageLoader implements IPageLoader
 
     private void addAssets(IComponent component, ComponentSpecification specification)
     {
-        Iterator i = specification.getAssetNames().iterator();
+        List names = specification.getAssetNames();
+
+        if (names.isEmpty())
+            return;
+
+        IResourceLocation specLocation = specification.getSpecificationLocation();
+
+        Iterator i = names.iterator();
 
         while (i.hasNext())
         {
             String name = (String) i.next();
             AssetSpecification assetSpec = specification.getAsset(name);
-            IAsset asset = convert(assetSpec);
+            IAsset asset = convert(assetSpec, specLocation);
 
             component.addAsset(name, asset);
         }
@@ -590,7 +621,7 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    private IAsset convert(AssetSpecification spec)
+    private IAsset convert(AssetSpecification spec, IResourceLocation specificationLocation)
     {
         AssetType type = spec.getType();
         String path = spec.getPath();
@@ -598,13 +629,17 @@ public class PageLoader implements IPageLoader
         if (type == AssetType.EXTERNAL)
             return _pageSource.getExternalAsset(path);
 
+        IResourceLocation baseLocation = null;
+
         if (type == AssetType.PRIVATE)
-            return _pageSource.getPrivateAsset(path);
+            baseLocation = specificationLocation;
+        else
+            baseLocation = _servletLocation;
 
-        // Could use a sanity check for  type == null,
-        // but instead we assume its a context asset.
+        IResourceLocation assetLocation = baseLocation.getRelativeLocation(path);
 
-        return _pageSource.getContextAsset(path);
+        return _pageSource.getAsset(assetLocation);
+
     }
 
     public IEngine getEngine()
