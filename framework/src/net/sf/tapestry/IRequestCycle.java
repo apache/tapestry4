@@ -45,7 +45,7 @@ package net.sf.tapestry;
  *  </ul>
  *
  *  <p>A request cycle is broken up into two phases.   The <em>rewind</em> phase
- *  is optional, as it tied to {@link javax.swing.Action} or
+ *  is optional, as it tied to {@link net.sf.tapestry.link.Action} or
  *  {@link net.sf.tapestry.form.Form} components.  In the rewind phase,
  *  a previous page render is redone (discarding output) until a specific component
  *  of the page is reached.  This rewinding ensures that the page
