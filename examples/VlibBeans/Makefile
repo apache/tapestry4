@@ -26,6 +26,11 @@ include $(SYS_MAKEFILE_DIR)/jBoss.mk
 
 JBOSS_CONF_DIR = $(JBOSS_DIR)/conf/default
 
+RUNTIME_LIBRARIES := \
+	$(INSTALL_DIR)/Tapestry.jar \
+	$(INSTALL_DIR)/gnu-regexp.jar \
+	$(INSTALL_DIR)/log4j.jar
+	
 # Rule to configure the jBoss server for the VlibBeans
 # demo.
 
@@ -35,18 +40,18 @@ ifeq ("$(JBOSS_DIR)","")
 	before configuring jBoss.)
 endif	
 	@$(ECHO) "\n*** Installing Primix Vlib database ... ***\n"
-	@$(CAT) jboss/vlib.tar.gz | \
+	$(CAT) jboss/vlib.tar.gz | \
 		($(CD) $(JBOSS_DIR)/db && $(TAR) $(TAR_EXTRACT_OPT) $(TAR_GZIP_OPT))
-	@$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
+	$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
 	@$(ECHO) "\n*** Splicing changes to jboss.conf ... ***\n"
-	@$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.conf,jboss/jboss.conf.splice)
+	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.conf,jboss/jboss.conf.splice)
 	@$(ECHO) "\n*** Splicing changes to jboss.jcml ... ***\n"
-	@$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.jcml,jboss/jboss.jcml.splice, \
+	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.jcml,jboss/jboss.jcml.splice, \
 		-before \</server\>)
 	@$(ECHO) "\n*** Setting up JNDI properties ... ***\n"
-	@$(CP) $(CP_FORCE_OPT) jboss/jndi.properties $(JBOSS_CONF_DIR)
+	$(CP) $(CP_FORCE_OPT) jboss/jndi.properties $(JBOSS_CONF_DIR)
 	@$(ECHO) "\n*** Copying runtime libraries ... ***\n"
-	@$(CP) $(CP_FORCE_OPT) $(INSTALL_DIR)/Tapestry.jar $(JBOSS_DIR)/lib/ext
+	$(CP) $(CP_FORCE_OPT) $(RUNTIME_LIBRARIES) $(JBOSS_DIR)/lib/ext
 	@$(ECHO) "\n*** jBoss is ready to run ***\n"
 
 

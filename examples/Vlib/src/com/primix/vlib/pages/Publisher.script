@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC 
+	"-//Primix Solutions//Tapestry Script 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Script_1_0.dtd">
+
+<script>
+<!-- symbols:
+	formName - name of form containing the other components
+	selectName  - name of the select within the form
+	fieldName - name of the text field with in the form
+-->
+<body>
+
+function onChange_<insert key="formName"/>_<insert key="selectName"/>()
+{
+	var select = document.<insert key="formName"/>.<insert key="selectName"/>;
+	var field = document.<insert key="formName"/>.<insert key="fieldName"/>;
+	
+	// Index 0 is the null value option, meaning enable the text field
+	
+	if (select.selectedIndex == 0)
+	{
+		field.disabled = false;
+		field.focus();
+		field.select();
+	}
+	else
+	{
+		// disable only works with IE, not NN
+		field.disabled = true;
+		field.blur();
+		field.value = "";
+	}
+}
+
+</body>
+<initialization>
+
+<!-- Navigator is not documented to respond to the onChange event, but this works,
+	 so my documentation must be wrong. -->
+document.<insert key="formName"/>.<insert key="selectName"/>.onchange =
+	onChange_<insert key="formName"/>_<insert key="selectName"/>;
+
+<!-- Disable the text field unless the select is set for index 0 (the null value). -->
+
+if (document.<insert key="formName"/>.<insert key="selectName"/>.selectedIndex != 0)
+	document.<insert key="formName"/>.<insert key="fieldName"/>.disabled = true;
+
+</initialization>
+</script>

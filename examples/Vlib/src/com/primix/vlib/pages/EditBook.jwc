@@ -227,5 +227,27 @@
 				</binding>
 			</bindings>
 		</component>
+		<component>
+			<id>publisherScript</id>
+			<type>Script</type>
+			<bindings>
+				<static-binding>
+					<name>script</name>
+					<value>/com/primix/vlib/pages/Publisher.script</value>
+				</static-binding>
+				<binding>
+					<name>selectName</name>
+					<property-path>components.inputPublisher.name</property-path>
+				</binding>
+				<binding>
+					<name>fieldName</name>
+					<property-path>components.inputPublisherName.name</property-path>
+				</binding>
+				<binding>
+					<name>formName</name>
+					<property-path>components.form.name</property-path>
+				</binding>
+			</bindings>
+		</component>
 	</components>
 </specification>
