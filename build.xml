@@ -56,6 +56,7 @@
 	<ant dir="examples/Vlib" target="clean"/>
 	<ant dir="doc/src/Tutorial" target="clean"/>
 	<ant dir="doc/src/DevelopersGuide" target="clean"/>
+	<ant dir="doc/src/UsersGuide" target="clean"/>
 	<ant dir="doc/src/ContributorsGuide" target="clean"/>
 	<delete dir="${private.dir}" quiet="true"/>
 </target>
@@ -94,6 +95,7 @@
 	<ant dir="doc/src/Tutorial" target="install" inheritAll="false"/>
 	<ant dir="doc/src/DevelopersGuide" target="install" inheritAll="false"/>
 	<ant dir="doc/src/ContributorsGuide" target="install" inheritAll="false"/>
+	<ant dir="doc/src/UsersGuide" target="install" inheritAll="false"/>
 	<ant dir="doc/src/ComponentReference" target="install" inheritAll="false"/>
 </target>
 
