@@ -908,12 +908,9 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 		if (trimmed.length() == 0)
 			return;
 
-		// InstantDB is configured to always do case-insentive matching
-		// for like.
-
-		assembly.addSep(" AND ");
+		assembly.addSep(" AND LOWER(");
 		assembly.add(column);
-		assembly.addParameter(" LIKE ?", "%" + trimmed.toLowerCase() + "%");
+		assembly.addParameter(") LIKE ?", "%" + trimmed.toLowerCase() + "%");
 	}
 
 	/**
