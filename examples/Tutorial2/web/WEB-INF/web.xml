@@ -38,6 +38,12 @@
   	<load-on-startup>0</load-on-startup>
   </servlet>
 
+  <servlet>
+    <servlet-name>components</servlet-name>
+    <servlet-class>tutorial.components.ComponentsServlet</servlet-class>
+  	<load-on-startup>0</load-on-startup>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>hello</servlet-name>
     <url-pattern>/hello</url-pattern>
@@ -56,6 +62,11 @@
   <servlet-mapping>
     <servlet-name>events</servlet-name>
     <url-pattern>/events</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>components</servlet-name>
+    <url-pattern>/components</url-pattern>
   </servlet-mapping>
 
   <session-config>
