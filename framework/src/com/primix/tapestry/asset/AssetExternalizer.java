@@ -103,20 +103,15 @@ public class AssetExternalizer
 	private static final int BUFFER_SIZE = 2048;
 
 	protected AssetExternalizer(IRequestCycle cycle)
-	
 	{
 		resolver = cycle.getEngine().getResourceResolver();
 
-		HttpServlet servlet = cycle.getRequestContext().getServlet();
-
-		ServletContext context = servlet.getServletContext();
-
-		String directory = context.getInitParameter("com.primix.tapestry.asset.dir");
+		String directory = System.getProperty("com.primix.tapestry.asset.dir");
 
 		if (directory == null)
 			return;
 
-		URL = context.getInitParameter("com.primix.tapestry.asset.URL");
+		URL = System.getProperty("com.primix.tapestry.asset.URL");
 
 		if (URL == null)
 			return;
