@@ -243,14 +243,27 @@ with newer versions of the packages).
 		<para>The JBE requires the following packages:
 		</>
 
-		<simplelist>
-			<member>ash</>
-			<member>cygwin</>
-			<member>fileutils</>
-			<member>findutils</>
-			<member>gzip</>
-			<member>make</>
-			<member>sed
+	<itemizedlist mark=opencircle>
+		<listitem>
+			<para>ash</>
+			</>
+		<listitem>
+			<para>cygwin</>
+		</>
+		<listitem>
+			<para>fileutils</>
+		</>
+		<listitem>
+			<para>findutils</>
+		</>
+		<listitem>
+			<para>gzip</>
+		</>
+		<listitem>
+			<para>make</>
+		</>
+		<listitem>
+			<para>sed
 				<footnote>
 					<para>
 						Requiring the <command>sed</> package 
@@ -261,22 +274,29 @@ with newer versions of the packages).
 					</>
 				</>
 			</>
-			<member>sh-utils</>
-			<member>tar</>
-			<member>textutils</>
-		</simplelist>
+		</>
+		<listitem>
+			<para>sh-utils</>
+		</>
+		<listitem>
+			<para>tar</>
+		</>
+		<listitem>
+			<para>textutils</>
+		</>
+	</>
 
 		<para>
 		These downloads total approxmately 3 MB.  In addition, you may want to
 		install the following additional packages:
 		</>
 
-		<simplelist>
-			<member>grep</>
-			<member>groff</>
-			<member>less</>
-			<member>man</>
-		</simplelist>
+		<itemizedlist mark=opencircle>
+			<listitem>			<para>grep</> </>
+			<listitem> <para>groff</></>
+			<listitem><para>less</></>
+			<listitem><para>man</></>
+		</itemizedlist>
 
 		<para>The optional packages allow the use of the man commnand, and add another 2 MB of downloads.</>
 
@@ -483,14 +503,15 @@ RMI compiler.
 
 RESOURCE_FILES = *.properties
 
-include $(SYS_MAKEFILE_DIR)/Package.mk
+include $(SYS_MAKEFILE_DIR)/Package.mk</programlisting></example>
 
-com/example/snood/server/Makefile
-JAVA_FILES = *.java
+<example>
+	<title>com/example/snood/server/Makefile</>
+	<programlisting>JAVA_FILES = *.java
 
 RMI_CLASSES = SnoodImpl
 
-include $(SYS_MAKEFILE_DIR)/Package.mk</>
+include $(SYS_MAKEFILE_DIR)/Package.mk</programlisting>
 	</example>
 
 <para>
@@ -971,7 +992,16 @@ However, the jar rule is changed to not only build the normal JAR, but also buil
 depoyable JAR.  
 It does this by running the WebLogic <command>ejbc</> command, which provides all the 
 WebLogic specific classes needed to deploy (such as stubs and skeletons for EJBs, and 
-a variety of files to support container managed persistence).</>
+a variety of files to support container managed persistence).  In addition, the JAR file
+created by EJBC is compressed
+	<footnote>
+		<para>
+		EJBC does not use compression when building the deployable JAR.  The WebLogic module
+		unpacks the deployable JAR produced by EJBC and then repacks it with compression
+		enabled.  This can result in an 80% reduction in the size of the deployable JAR file.
+		</>
+	</>
+</>
 
 <para>The deployable JAR is called <filename><replaceable>PROJECT_NAME</>-deploy.jar</>.  
 The install rule copies <emphasis>both</> JARs to the <varname>INSTALL_DIR</> directory.</>
@@ -1023,17 +1053,21 @@ This is the directory into which the jBoss distribution was installed.</>
 <para>The following libraries are automatically included in the classpath:
 </>
 
-<simplelist>
-	<member>
+<itemizedlist mark=opencircle>
+	<listitem>
+		<para>
 		<filename><replaceable>JBOSS_DIR</>/lib/ext/ejb.jar</>
+		</>
 	</>
-	<member>
-		<filename><replaceable>JBOSS_DIR</>/lib/ext/jndi.jar</>
+	<listitem>
+		<para><filename><replaceable>JBOSS_DIR</>/lib/ext/jndi.jar</></>
 	</>
-	<member>
-		<filename><replaceable>JBOSS_DIR</>/lib/jdbc2_0-stdext.jar</>
+	<listitem>
+		<para>
+			<filename><replaceable>JBOSS_DIR</>/lib/jdbc2_0-stdext.jar</>
+		</>
 	</>
-</simplelist>
+</itemizedlist>
 
 <para>
 These three libraries provide the basic J2EE functionality.  
@@ -1328,6 +1362,16 @@ is required.
 			The DSSSL stylsheet to use when processing the document.
 			STYLESHEET is optional, if not specified, the default stylesheet (determined from the
 			type of document being generated) is used.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>USE_STANDARD_IMAGES</></>
+		<listitem>
+			<para>
+			If defined, then the standard set of Modular DSSSL images are used for admonitions
+			(notes, warnings, etc.) and callouts.  This only applys to the html format.
 			</>
 		</>
 	</>
