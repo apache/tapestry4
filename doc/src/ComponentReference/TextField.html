@@ -7,8 +7,20 @@
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Text.html"><img src="common-images/prev.png" alt="Text"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="Upload.html"><img src="common-images/next.png" alt="Upload"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -33,8 +45,8 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -141,82 +153,81 @@
   form input field.
 	<p>
 
-<table class="examples" cellspacing="8">
+<table class="examples" cellspacing="8" valign="middle">
  <tr>
-  <td>Input&nbsp;<input name="textfield" value="Some Text"/></td>
-	<td>Password&nbsp;<input type="password" name="password" value="password"/></td>
+  <td>Id</td>
+  <td><input size="8" value="1245"/></td>
+	<td>Password</td>
+  <td><input  size="8" type="password" value="password"/></td>
  </tr>
  <tr>
-  <td colspan="2" align="right"><input type="submit" value="Submit"/></td>
+  <td colspan="4" align="right"><input type="submit" value="Submit"/></td>
  </tr>
 </table>
 
 <pre>
 &lt;form jwcid="form"&gt;
- &lt;table&gt;
+ &lt;table valign="middle"&gt;
   &lt;tr&gt;
-   &lt;td&gt;Standard Input&amp;nbsp;&lt;span jwcid="<span class="jwcid">textfield</span>"/&gt;&lt;/td&gt;
-   &lt;td&gt;Password Input&amp;nbsp;&lt;span jwcid="<span class="jwcid">passwordfield</span>"/&gt;&lt;/td&gt;
+   &lt;td&gt;Id&lt;/td&gt;
+   &lt;td&gt;span jwcid="<span class="jwcid">idField</span>" size="8"/&gt;&lt;/td&gt;
+   &lt;td&gt;Password&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="<span class="jwcid">passwordField</span>" size="8"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td colspan="2" align="right"&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/td&gt;
+   &lt;td colspan="4" align="right"&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
  &lt;/table&gt; 
 &lt;/form&gt;	
 
 
 &lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
     
-&lt;component id="<span class="jwcid">textfield</span>" type="<a href="TextField.html">TextField</a>"&gt;
-    &lt;binding name="value" property-path="visit.textValue"/&gt;
+&lt;component id="<span class="jwcid">idField</span>" type="<a href="TextField.html">TextField</a>"&gt;
+    &lt;binding name="value" expression="visit.id"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">passwordfield</span>" type="<a href="TextField.html">TextField</a>"&gt;
-    &lt;binding name="value" property-path="visit.textValue"/&gt;
+&lt;component id="<span class="jwcid">passwordField</span>" type="<a href="TextField.html">TextField</a>"&gt;
+    &lt;binding name="value" expression="visit.password"/&gt;
     &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
 
-public class TextField extends BasePage {
+public class PasswordPage extends BasePage {
     public void formSubmit(IRequestCycle requestCycle) {
         // Process the form submission.
     }
 }
 
-public class Visit {
-    private String textValue;
+public class Visit implements Serializable {
+    private String id;
+    private String password;
 
-    public String getTextValue() { return textValue; }
+    public String getId() { return id; }
 
-    public void setTextValue(String value) {
-        textValue = value;
+    public void setId(String value) {
+        id = value;
     }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String value) {
+        password = value;
+    }    
 }
 </pre>
- </td>
-</tr>
 
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="Text.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="Upload.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Text.html"><img src="common-images/prev.png" alt="Text"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="Upload.html"><img src="common-images/next.png" alt="Upload"/></a></td>  
 </tr>
 </table>
 

@@ -2,13 +2,25 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>Tapestry Component Reference - Submit</title>
+<title>Submit</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 <body>
 
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="ShowInspector.html"><img src="common-images/prev.png" alt="ShowInspector"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="Text.html"><img src="common-images/next.png" alt="Text"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -23,12 +35,9 @@
   </table>
  </td>
  <td>
-
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
 	 <tr>
-	  <td>
-		<input type = "submit" value="Submit Button"/>
-		</td>
+	  <td><input type="submit" value="Submit"/></td>
 	 </tr>
   </table>
  </td>
@@ -36,22 +45,25 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Used to implement a form submission element, along the lines of &lt;input type=submit value="Button Text"&gt;. 
-	Must be wrapped by a <a href="Form.html">Form</a> component.  
-<p>Allows informal parameters, but may not contain a body.  <p>This component is generally only used when the form has multiple
-  submit buttons, and it is important for the application to know
-  which one was pressed.  You may also want to use
-  <A HREF="ImageSubmit.html"><CODE>ImageSubmit</CODE></A> which accomplishes much the same thing, but uses
-  a graphic image instead.
-   </td>
+  Provides a HTML form submission element &lt;input type="submit"&gt;. 
+	The Submit component must be wrapped by a <a href="Form.html">Form</a>.  
+  <p>
+  This component is generally only used when the form has multiple submit 
+  buttons, and it is important for the application to know which one was 
+  pressed. You may also want to use 
+  <a href="ImageSubmit.html">ImageSubmit</a> which accomplishes much the same 
+  thing, but uses a graphic image instead.
+  <p>
+  This component may NOT wrap around other components or static HTML. 
+ </td>
 </tr>
 
 <tr>
@@ -73,333 +85,265 @@
  </td>
 </tr>
 
-<!-- Parameters -->
 <tr>
-<td colspan="2">
- <table border=1>
- <tr>
-    <th>Parameter</th>
+ <td colspan="2">
+  <b>Parameters</b>
+  <br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+   <tr> 
+    <th>Name</th>
     <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th>
+    <th>Direction</th>
+    <th>Required</th> 
     <th>Default</th>
     <th>Description</th>
- </tr>
-
-  <tr>
+   </tr>
+   <tr>
 		<td>label</td>
-		<td>java.lang.String</td>
+		<td>String</td>
 		<td>in</td>
 		<td>no</td>
 		<td>&nbsp;</td>
 		<td>The label put on the button (this becomes the HTML value attribute).
 		</td>
-	</tr>
-
-  <tr>
+	 </tr>
+   <tr>
 	  <td>disabled</id>
 	  <td>boolean</td>
     <td>in</td>
     <td>no</td>
 	  <td>false</td>
-    <td>If set to true, the button will be disabled (will not respond to
-  the mouse); the browser should provide a "greyed out" appearance.
-  </td> </tr>
-
-  <tr>
-      <td>selected</td>
-      <td>java.lang.Object</td>
-      <td>out</td>
-      <td>no</td>
-      <td>&nbsp;</td>
-      <td>This parameter is bound to a property that is
-    updated when the submit button is clicked by the user.  The property
-  is updated to match the tag parameter.</td>
-  </tr>
-
-  <tr>
-      <td>tag</td>
-      <td>java.lang.Object</td>
-      <td>in</td>
-      <td>no</td>
-      <td>&nbsp;</td>
-      <td>Tag used with the selected parameter to indicate which Submit button
-  on a form was clicked.</td>
-  </tr>
-
-  <tr>
+    <td>
+    If set to true, the button will be disabled (will not respond to
+    the mouse); the browser should provide a "greyed out" appearance.
+    </td> 
+   </tr>
+   <tr>
+    <td>selected</td>
+    <td>Object</td>
+    <td>out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>
+    This parameter is bound to a property that is updated when the submit 
+    button is clicked by the user. The property is updated to match the tag 
+    parameter.
+    </td>
+   </tr>
+   <tr>
+    <td>tag</td>
+    <td>Object</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>
+    Tag used with the selected parameter to indicate which Submit button
+    on a form was clicked.
+    </td>
+   </tr>
+   <tr>
  		<td>listener</td>
- 		<td>IActionListener</td>
+ 		<td>
+     <a href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
+    </td>
  		<td>in</td>
  		<td>no</td>
  		<td>&nbsp;</td>
- 		<td>If specified, the listener is notified.  This notification occurs
-  as the component is rewinded, i.e., prior to the <A HREF="Form.html"><CODE>Form</CODE></A>'s listener.
-  In addition, the selected property (if bound) will be updated <em>before</em>
-  the listener is notified.
+ 		<td>
+    If specified, the listener is notified.  This notification occurs as the 
+    component is rewinded, i.e., prior to the <a href="Form.html">Form</a>'s 
+    listener. In addition, the selected property (if bound) will be updated 
+    <u>before</u> the listener is notified.
  		</td>
    </tr>
-
 	</table>
-</td></tr>
-<tr>
-<td colspan=2>
-
-<tr>
-<td colspan=2>
-
-<h2>Example One</h2>
-The following example shows a standard, simple submit button. 
-This example shows both a form, and a single <a href="Submit.html">Submit</a> component.
-The component is setup to call a method on the page implementation when it is clicked.<br>
-Keep in mind that it is of course possible to bind the label name to a dynamic property (e.g:
-the page, or some property of the visit object). This is not done here, purely for simplicity.
-<p>
-
-<!-- Real Generated Example -->
-  <table valign="middle" bgcolor="#c0c0c0" cellspacing="8">
-	 <tr>
-	  <td>
-		<form method="post" name="Form0" action="/componentref/components">
-		<input type="hidden" name="service" value="direct">
-		<input type="hidden" name="context" value="Submit/form">
-		<input type="hidden" name="sp" value="S0">
-		<input type="submit" name="simplesubmit" value="Submit">
-		<input type="hidden" name="Form0" value="1">
-		</form>
-		</td>
-	 </tr>
-  </table>
-</td>
-</tr>
-
-<tr>
-<td colspan=2>
-<pre>
-<!-- The HTML -->
-&lt;form method="post" name="Form0" action="/componentref/components"&gt;
-	&lt;input type="hidden" name="service" value="direct"&gt;
-	&lt;input type="hidden" name="context" value="Submit/form"&gt;
-	&lt;input type="hidden" name="sp" value="S0"&gt;
-	&lt;input type="submit" name="<b>simplesubmit</b>" value="Submit"&gt;
-	&lt;input type="hidden" name="Form0" value="1"&gt;
-&lt;/form&gt;
-<hr>
-<!--  .Page specification -->
-&lt;specification class="examples.componentref.Submit" allow-body="yes" allow-informal-parameters="yes" &gt;
-    &lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
-    
-    &lt;component id="form" type="Form"&gt;
-    	&lt;binding name="delegate" property-path="beans.validationDelegate"/&gt;
-    	&lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
-    &lt;/component&gt;
-    
-    &lt;component id="<b>simplesubmit</b>" type="Submit"&gt;
-    	&lt;static-binding name="value"&gt;Submit&lt;/static-binding&gt;
-    	&lt;binding name="listener" property-path="listeners.simpleFormSubmit"/&gt;
-    &lt;/component&gt;
-&lt;/specification&gt;
-
-<hr>
-<!-- Java code for example -->
-/**
- * Simply demonstration of form Submit component
- * @author Neil Clayton
- */
-public class Submit extends BasePage {
-	public void formSubmit(IRequestCycle requestCycle) {
-		System.out.println("Standard form submit was called");
-	}
-
-	public void simpleFormSubmit(IRequestCycle requestCycle) {
-		System.out.println("The simple form submit was called");
-	}
-}
-</pre>
+  Informal parameters: allowed<br>
+  Reserved parameters: "name", "type"  
  </td>
 </tr>
 
-<tr>
-<td colspan=2>
-
-<h2>Example Two</h2>
-The following example shows how you can setup a form that allows you to 
-experiment with a Submit button. It simply excercises some standard properties
-of the component. If you have the container (J2EE/Servlet) showing then you
-will be able to see some simple logging when you click the submit buttons,
-showing you that the right handler is being called at the right time.
-
-<!-- Real Generated Example -->
-  <table valign="middle" bgcolor="#c0c0c0" cellspacing="8">
-	 <tr>
-		<td>
-		<form method="post" name="Form0" action="/componentref">
-<input type="hidden" name="service" value="direct">
-<input type="hidden" name="context" value="ComplexSubmit/form">
-<input type="hidden" name="sp" value="S0">
-	<table border=0>
-
-			<tr>
-				<td>
-					Button Name
-				</td>
-				<td>
-<input type="text" name="buttonName" size="35" value="Submit">	</td>
-			</tr>
-			<tr>
-				<td>
-
-					Disabled?
-				</td>
-				<td>
-<input type="checkbox" name="buttonDisabled" checked>	</td>
-			</tr>
-			
-			<tr>
-				<td>Dynamic Submit Button</td>
-				<td><input type="submit" name="complexsubmit" disabled="true" value="Submit"></td>
-			</tr>
-
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Make Changes!"/></td>
-			</tr>
-		</table>
-<input type="hidden" name="Form0" value="3">
-</form>
-		</td>
-	 </tr>
-  </table>
-</td>
-</tr>
-
-<tr>
-<td colspan=2>
-<pre>
-	&lt;form jwcid="<b>form</b>"&gt;
-		&lt;table border=0&gt;
-			&lt;tr&gt;
-				&lt;td&gt;
-					Button Name
-				&lt;/td&gt;
-				&lt;td&gt;
-					&lt;input jwcid="<b>buttonName</b>"/&gt;
-				&lt;/td&gt;
-			&lt;/tr&gt;
-			&lt;tr&gt;
-				&lt;td&gt;
-					Disabled?
-				&lt;/td&gt;
-				&lt;td&gt;
-					&lt;input jwcid="<b>buttonDisabled</b>"/&gt;
-				&lt;/td&gt;
-			&lt;/tr&gt;
-			
-			&lt;tr&gt;
-				&lt;td&gt;Dynamic Submit Button&lt;/td&gt;
-				&lt;td&gt;&lt;input jwcid="<b>complexsubmit</b>"/&gt;&lt;/td&gt;
-			&lt;/tr&gt;
-
-			&lt;tr&gt;
-				&lt;td&gt;&lt;/td&gt;
-				&lt;td&gt;&lt;input type="submit" value="Make Changes!"/&gt;&lt;/td&gt;
-			&lt;/tr&gt;
-		&lt;/table&gt;
-	&lt;/form&gt;	
-
-<hr>
-<!--  .Page specification -->
-&lt;specification class="examples.componentref.ComplexSubmit" allow-body="yes" allow-informal-parameters="yes" &gt;
-	&lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
-    
-	&lt;component id="<b>form</b>" type="Form"&gt;
-		&lt;binding name="delegate" property-path="beans.validationDelegate"/&gt;
-		&lt;binding name="<b>listener</b>" property-path="<b>listeners.formSubmit</b>"/&gt;
-	&lt;/component&gt;
-
-	&lt;component id="<b>complexsubmi</b>t" type="<b>Submit</b>"&gt;
-		&lt;binding name="value" property-path="buttonName"/&gt;
-		&lt;binding name="disabled" property-path="buttonDisabled"/&gt;
-		&lt;binding name="listener" property-path="listeners.complexFormSubmit"/&gt;
-	&lt;/component&gt;
-    
-	&lt;component id="<b>buttonName</b>" type="TextField"&gt;
-		&lt;binding name="value" property-path="buttonName"/&gt;
-		&lt;static-binding name="displayWidth"&gt;35&lt;/static-binding&gt;
-	&lt;/component&gt;
-	
-	&lt;component id="<b>buttonDisabled</b>" type="Checkbox"&gt;
-		&lt;binding name="selected" property-path="buttonDisabled"/&gt;
-	&lt;/component&gt;
-&lt;/specification&gt;
-
-
-<hr>
-<!-- Java code for example -->
-/**
- * Simply demonstration of a more complex form Submit component
- * @author Neil Clayton
- */
-public class ComplexSubmit extends BasePage {
-	private static String BUTTON_NAME = "Submit";
-	
-	public void detach() {
-		buttonName = BUTTON_NAME;
-		buttonDisabled = true;
-		super.detach();
-	}
-
-	public void formSubmit(IRequestCycle requestCycle) {
-		System.out.println("Standard form submit was called");
-	}
-
-	public void complexFormSubmit(IRequestCycle requestCycle) {
-		System.out.println("Complex form submit was called");
-	}
-
-	public String getButtonName() {
-		return buttonName;
-	}
-
-	public void setButtonName(String buttonName) {
-		this.buttonName = buttonName;
-		fireObservedChange("buttonName", buttonName);
-	}
-
-	public boolean getButtonDisabled() {
-		return buttonDisabled;
-	}
-
-	public void setButtonDisabled(boolean buttonDisabled) {
-		this.buttonDisabled = buttonDisabled;
-		fireObservedChange("buttonDisabled", buttonName);
-	}
-
-	private String buttonName = BUTTON_NAME;
-	boolean buttonDisabled = true;
-}
-</pre>
- </td>
-</tr>
 <tr>
  <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="???.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="???.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+  <b>Examples</b>
+  <p>
+  The following example shows a standard, simple submit button. This example 
+  shows both a form, and a single <a href="Submit.html">Submit</a> component.
+  The component is setup to call a method on the page implementation when it is 
+  clicked.
+  <p>
+  Keep in mind that it is of course possible to bind the label name to a dynamic 
+  property (e.g: the page, or some property of the visit object). This is not 
+  done here, purely for simplicity.
+ <p>
+
+<table valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+ <tr>
+	<td><input type="submit" value="Submit"></td>
+ </tr>
+</table>
+
+<pre>
+&lt;form jwcid="form"&gt;
+ &lt;input type="submit" jwcid="<span class="jwcid">simpleSubmit</span>" value="Submit"/&gt;
+&lt;/form&gt;
+
+
+&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
+&lt;/component&gt;
+    
+&lt;component id="<span class="jwcid">simpleSubmit</span>" type="<a href="Submit.html">Submit</a>"&gt;
+    &lt;binding name="listener" expression="listeners.submitButtonClick"/&gt;
+&lt;/component&gt;
+
+
+public class Submit extends BasePage {
+    public void formSubmit(IRequestCycle requestCycle) {
+        System.out.println("The form was submitted");
+    }
+
+    public void submitButtonClick(IRequestCycle requestCycle) {
+        System.out.println("The submit button was clicked");
+    }
+}
+</pre>
+<td>
 </tr>
 
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
 
+<tr>
+ <td colspan="2">
+ The following example shows how you can setup a form that allows you to 
+ experiment with a Submit button. It simply excercises some standard properties
+ of the component. If you have the container (J2EE/Servlet) showing then you
+ will be able to see some simple logging when you click the submit buttons,
+ showing you that the right handler is being called at the right time.
+ <p>
+ 
+<table valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+ <tr>
+	<td>
+	<form method="post" name="Form0" action="/componentref">
+   <input type="hidden" name="service" value="direct">
+   <input type="hidden" name="context" value="ComplexSubmit/form">
+   <input type="hidden" name="sp" value="S0">
+	 <table border=0>
+    <tr>
+ 	   <td>Button Name</td>
+     <td><input type="text" name="buttonName" size="35" value="Submit"></td>
+	  </tr>
+	  <tr>
+     <td>Disabled?</td>
+     <td><input type="checkbox" name="buttonDisabled" checked></td>
+	  </tr>
+    <tr>
+     <td>Dynamic Submit Button</td>
+     <td><input type="submit" name="complexsubmit" disabled="true" value="Submit"></td>
+    </tr>
+    <tr>
+     <td>&nbsp;</td>
+     <td><input type="submit" value="Make Changes!"/></td>
+	  </tr>
+   </table>
+  </form>
+ </td>
+</tr>
+</table>
+
+<pre>
+&lt;form jwcid="form"&gt;
+ &lt;table border="0"&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Button Name&lt;/td&gt;
+   &lt;td&gt;&lt;input jwcid="buttonName"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Disabled?&lt;/td&gt;
+   &lt;td&gt;&lt;input jwcid="buttonDisabled"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Dynamic Submit Button&lt;/td&gt;
+   &lt;td&gt;&lt;input jwcid="<span class="jwcid">complexSubmit</span>"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;&lt;input type="submit" value="Make Changes!"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/table&gt;
+&lt;/form&gt;	
+
+  
+&lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
+    
+&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+    &lt;binding name="delegate" expression="beans.validationDelegate"/&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">complexSubmit</span>" type="<a href="Submit.html">Submit</a>"&gt;
+    &lt;binding name="value" expression="buttonName"/&gt;
+    &lt;binding name="disabled" expression="buttonDisabled"/&gt;
+    &lt;binding name="listener" expression="listeners.complexFormSubmit"/&gt;
+&lt;/component&gt;
+    
+&lt;component id="buttonName" type="<a href="TextField.html">TextField</a>"&gt;
+    &lt;binding name="value" expression="buttonName"/&gt;
+    &lt;static-binding name="displayWidth"&gt;35&lt;/static-binding&gt;
+&lt;/component&gt;
+	
+&lt;component id="buttonDisabled" type="<a href="Checkbox.html">Checkbox</a>"&gt;
+    &lt;binding name="selected" expression="buttonDisabled"/&gt;
+&lt;/component&gt;
+
+
+public class ComplexSubmit extends BasePage {
+    private static String BUTTON_NAME = "Submit";
+    private String buttonName = BUTTON_NAME;
+    boolean buttonDisabled = true;
+
+    public void detach() {
+        buttonName = BUTTON_NAME;
+        buttonDisabled = true;
+        super.detach();
+    }
+
+    public void formSubmit(IRequestCycle requestCycle) {
+        System.out.println("Standard form submit was called");
+    }
+
+    public void complexFormSubmit(IRequestCycle requestCycle) {
+        System.out.println("Complex form submit was called");
+    }
+
+    public String getButtonName() { return buttonName; }
+
+	  public void setButtonName(String value) {
+        buttonName = value;
+        fireObservedChange("buttonName", value);
+    }
+
+    public boolean getButtonDisabled() { return buttonDisabled; }
+
+    public void setButtonDisabled(boolean value) {
+        buttonDisabled = value;
+        fireObservedChange("buttonDisabled", value);
+    }
+}
+</pre>
+
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>  
+</tr>
+<tr>
+ <td align="left"><a href="ShowInspector.html"><img src="common-images/prev.png" alt="ShowInspector"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="Text.html"><img src="common-images/next.png" alt="Text"/></a></td>  
+</tr>
 </table>
 
 </body>

@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>Radio</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="PropertySelection.html"><img src="common-images/prev.png" alt="PropertySelection"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Home"/></a></td>  
+  <td align="right"><a href="RadioGroup.html"><img src="common-images/next.png" alt="RadioGroup"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Radio</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/Radio.html">net.sf.tapestry.form.Radio</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td><input type="radio" name="radio">Radio</input></td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Provides a HTML &lt;input type="radio"&gt; form element. The Radio component 
+  must be wrapped (possibly indirectly) inside a 
+  <a href="RadioGroup.html">RadioGroup</a> component. 
+  <p>
+  Generally the <a href="PropertySelection.html">PropertySelection</a> 
+  component is used in preference to the Radio and RadioGroup, except in special 
+  cases.   
+  <p>
+  This component may NOT wrap around other components or static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Form.html">Form</a>, 
+	<a href="Option.html">Option</a>, 
+	<a href="PropertySelection.html">PropertySelection</a>, 
+  <a href="RadioGroup.html">RadioGroup</a>,
+	<a href="Select.html">Select</a> 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>value</td>
+    <td>Object</td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>
+    The value is used to determine if the radio button is initially selected 
+    (when rendering) and is the value assigned to the selected parameter when 
+    the form is submitted, if the HTML radio button is selected. 
+    </td>
+	</tr>
+  <tr>
+    <td>disabled</td>
+    <td>booleant</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>
+    If true, then the Radio is disabled. It will write a "disabled" attribute 
+    into its tag when rendering, and will not update its selected binding.
+    <p> 
+    A binding may also be disabled if its containing 
+    <a href="RadioGroup.html">RadioGroup</a> is disabled.
+    <p>
+    The "disabled" attribute is ignored by Netscape Navigator 4. 
+    </td>
+	</tr>
+	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: "checked", "name", "type" 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>  
+</tr>
+<tr>
+ <td align="left"><a href="PropertySelection.html"><img src="common-images/prev.png" alt="PropertySelection"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Index"/></a></td>  
+ <td align="right"><a href="RadioGroup.html"><img src="common-images/next.png" alt="RadioGroup"/></a></td>  
+</tr>
+</table>
+
+</body>
+</html>

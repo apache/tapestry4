@@ -7,8 +7,20 @@
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Script.html"><img src="common-images/prev.png" alt="Script"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="Service.html"><img src="common-images/next.png" alt="Service"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -41,8 +53,8 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -87,26 +99,24 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
-
   <tr>
 		<td>multiple</td>
 		<td>boolean</td>
 		<td>in</td>
 		<td>no</td>
 		<td>false</td>
-		<td>If true, the component allows multiple selection.</td> </tr>
-
+		<td>If true, the component allows multiple selection.</td> 
+  </tr>
   <tr>
  		<td>disabled</td>
 		<td>boolean</td>
 		<td>in</td>
 		<td>no</td>
 		<td>false</td>
-		<td>Controls whether the select is active or not.
-
-			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
+		<td>Controls whether the select is active or not. Corresponds to the 
+    "disabled" HTML attribute.
+    </td>
 	</tr>
-
 	</table>
   Informal parameters: allowed<br>
   Reserved parameters: "name"
@@ -124,110 +134,69 @@
 	the <a href="PropertySelection.html">PropertySelection</a>, since it requires less work, and can express similar semantics 
 	with only a single component (instead of three, as will be shown below).
 	<p>
-	<table border=0 valign="middle" bgcolor="#c0c0c0" cellpadding="8">
-	<tr><td>
-		<form method="post" name="Form0" action="/componentref">
-		<input type="hidden" name="service" value="direct">
-		<input type="hidden" name="context" value="Selection/form">
-		<input type="hidden" name="sp" value="S0">
-			Select a colour:
-		<select name="selection" multiple>
-		
-		<option value="0">Green
-		
-		
+
+<table class="examples" cellpadding="4">
+ <tr>
+  <td>Select a color
+	 <select name="selection" multiple>		
+	  <option value="0">Green
 		<option value="1">Blue
-		
-		
 		<option value="2">Red
-		
-		
 		<option value="3">White
-		
-		
 		<option value="4">Purple
-		
-		
 		<option value="5">Dark Black
-		
-		
 		<option value="6">Fiji Blue
-		
-		
-		</select>
-		<input type="hidden" name="Form0" value="1">
-		</form>
-		</td></tr>
-	</table>
- </td>
-</tr>
-</tr>
+	 </select>
+	</td>
+ </tr>
+</table>
 
-<tr>
- <td colspan="2"><hr></td>  
-</tr>
-
-<tr>
- <td colspan="2">
- The HTML template for this example follows. It shows a single Selection 
- component, which contains both a <a href="Foreach.html">Foreach</a> and an <a href="Option.html">Option</a> component.<p>
- <pre>
-&lt;body&gt;
-	&lt;h1&gt;Example of Select and Option HTML element&lt;/h1&gt;
-	&lt;form jwcid="form"&gt;
-		Select a colour:
-		&lt;input jwcid="<b>selection</b>"&gt;
-			&lt;span jwcid="colours"&gt;
-				&lt;option jwcid="<b>colour</b>"/&gt;
-			&lt;/span&gt;
-		&lt;/input&gt;
-	&lt;/form&gt;	
-&lt;/body&gt;
+<pre>
+&lt;form jwcid="form"&gt;
+ Select a color
+ &lt;input jwcid="<span class="jwcid">colorSelect</span>>"&gt;
+  &lt;span jwcid="colorForeach"&gt;
+   &lt;option jwcid="colorOption"/&gt;
+  &lt;/span&gt;
+ &lt;/input&gt;
+&lt;/form&gt;	
 </pre>
  </td>
 </tr>
 
 <tr>
  <td colspan="2">
- 	<hr>
 	 This example uses a pre-existing collection as the source of the <a href="Option.html">Option</a> list. The
 	 <a href="Foreach.html">Foreach</a> is used to iterate through the list, rendering multiple HTML option
-	 elements on the way.<p>
-	The Page specification is defined as:<p>
-	<pre>
-&lt;specification class="examples.componentref.Selection" allow-body="yes" allow-informal-parameters="yes" &gt;
-    &lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
+	 elements on the way.
+   <p>
+<pre>
+&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
+&lt;/component&gt;
     
-    &lt;component id="form" type="Form"&gt;
-    	&lt;binding name="delegate" property-path="beans.validationDelegate"/&gt;
-    	&lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
-    &lt;/component&gt;
-    
-    &lt;component id="colours" type="Foreach"&gt;
-    	&lt;binding name="source" property-path="visit.colours"/&gt;
-    	&lt;binding name="value" property-path="visit.currentColour"/&gt;
-    &lt;/component&gt;
+&lt;component id="colorForeach" type="<a href="Foreach.html">Foreach</a>"&gt;
+    &lt;binding name="source" expression="visit.colorList"/&gt;
+    &lt;binding name="value" expression="visit.currentColor"/&gt;
+&lt;/component&gt;
 
-    &lt;component id="<b>selection</b>" type="<b>Select</b>"&gt;
-    	&lt;field-binding name="multiple" field-name="Boolean.TRUE"/&gt;
-    &lt;/component&gt;
+&lt;component id="<span class="jwcid">colorSelect</span>" type="<a href="Select.html">Select</a>"&gt;
+    &lt;field-binding name="multiple" field-name="Boolean.TRUE"/&gt;
+&lt;/component&gt;
     
-    &lt;component id="<b>colour</b>" type="<a href="Option.html">Option</a>"&gt;
-    	&lt;binding name="selected" property-path="visit.currentColour.selected"/&gt;
-    	&lt;binding name="label" property-path="visit.currentColour.label"/&gt;
-    &lt;/component&gt;
-&lt;/specification&gt;	
+&lt;component id="colorOption" type="<a href="Option.html">Option</a>"&gt;
+    &lt;binding name="selected" expression="visit.currentColor.selected"/&gt;
+    &lt;binding name="label" expression="visit.currentColor.label"/&gt;
+&lt;/component&gt;
 	</pre>
  </td>  
 </tr>
 
-
 <tr>
  <td colspan="2">
- 	<hr>
  	When the form is submitted, Tapestry will take care of setting the 
  	<b>selected</b> attribute on any item that has been selected by
- 	the user. For this example, that means that a Colour object will
+ 	the user. For this example, that means that a Color object will
  	have it's selected property set to true (see below)<p>
  	
  	Which produces the following HTML:<p>
@@ -236,7 +205,7 @@
 &lt;input type="hidden" name="service" value="direct"&gt;
 &lt;input type="hidden" name="context" value="Selection/form"&gt;
 &lt;input type="hidden" name="sp" value="S0"&gt;
-	Select a colour:
+	Select a color:
 &lt;select name="selection" multiple&gt;
 &lt;option value="0"&gt;Green
 &lt;option value="1"&gt;Blue
@@ -254,127 +223,68 @@
 
 <tr>
  <td colspan="2">
- 	<hr>
 	In this example, the page object (the .java file) is not important, since it contains nothing. 
 	The example has purposely tied both the option list, and the currently selected value (the
 	<a href="Foreach.html">Foreach</a> component's <b>value</b> field) to a property of
 	the Visit object.<p>
  	The Visit object is defined as follows: 	
  	<pre>
- /**
- * Contains some state shared by the examples.
- * @author neil
- */
-public class Visit {
-	public Collection getColours() {
-		if(colours == null) {
-			colours = new ArrayList();
-			colours.add(new Colour("Green"));
-			colours.add(new Colour("Blue"));
-			colours.add(new Colour("Red"));
-			colours.add(new Colour("White"));
-			colours.add(new Colour("Purple"));
-			colours.add(new Colour("Dark Black"));
-			colours.add(new Colour("Fiji Blue"));
-		}
-		return colours;
-	}
 
-	/**
-	 * Returns the currentColour.
-	 * @return Colour
-	 */
-	public Colour getCurrentColour() {
-		return currentColour;
-	}
+public class Visit implements Serializable {
+    private transient List colorList;
+    private Color currentColor;
+  
+    public Collection getColorList() {
+        if (colorList == null) {
+            colorList = new ArrayList();
+            colorList.add(new Color("Green"));
+            colorList.add(new Color("Blue"));
+            colorList.add(new Color("Red"));
+            colorList.add(new Color("White"));
+            colorList.add(new Color("Purple"));
+            colorList.add(new Color("Dark Black"));
+            colorList.add(new Color("Fiji Blue"));
+        }
+        return colors;
+    }
 
-	/**
-	 * Sets the currentColour.
-	 * @param currentColour The currentColour to set
-	 */
-	public void setCurrentColour(Colour currentColour) {
-		this.currentColour = currentColour;
-	}
+    public Color getCurrentColor() { return currentColor; }
 
-	private List colours;
-	private Colour currentColour;
+    public void setCurrentColor(Color value) { 
+        currentColor = value;
+    }
 }
 
-	</pre>
-	
-	Finally, the Colour object is shown:
-	<pre>
-/**
- * @author neil
- */
-public class Colour {
-	public Colour(String label) {
-		setLabel(label);
-	}
-	
-	public Colour(String label, boolean selected) {
-		setLabel(label);
-		setSelected(selected);
-	}
+public class Color implements Serializable {
+    private String label;
+    private boolean selected;
 
-	/**
-	 * Returns the isSelected.
-	 * @return boolean
-	 */
-	public boolean getSelected() {
-		return selected;
-	}
+    public Color(String label) {
+        setLabel(label);
+    }
 
-	/**
-	 * Returns the label.
-	 * @return String
-	 */
-	public String getLabel() {
-		return label;
-	}
+    public String getLabel() { return label; }
 
-	/**
-	 * Sets the isSelected.
-	 * @param isSelected The isSelected to set
-	 */
-	public void setSelected(boolean isSelected) {
-		this.selected = isSelected;
-	}
+    public void setLabel(String value) {
+        label = value;
+    }
+    
+    public boolean getSelected() { return selected; }
 
-	/**
-	 * Sets the label.
-	 * @param label The label to set
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setSelected(boolean value) {
+        selected = value;
+    }
+}</pre>
 
-	private String label;
-	private boolean selected;
-}
-	</pre>
-</td>
-</tr>
-
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="Script.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="Service.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Script.html"><img src="common-images/prev.png" alt="Script"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="Service.html"><img src="common-images/next.png" alt="Service"/></a></td>  
 </tr>
 </table>
 
