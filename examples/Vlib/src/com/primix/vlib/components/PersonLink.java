@@ -3,7 +3,7 @@ package com.primix.vlib.components;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
-import com.primix.vlib.*;
+import com.primix.vlib.ejb.*;
 
 /*
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -43,42 +43,77 @@ import com.primix.vlib.*;
  *  <td>primaryKey</td> <td>{@link Integer}</td>
  *  <td>R</td>
  *  <td>yes</td> <td>&nbsp;</td>
- *  <td>The primary key of the {@link IPerson} to be displayed when the link is triggered.</td> </tr>
+ *  <td>The primary key of the {@link IPerson} to create a link to.</td>
+ * </tr>
  *
  * <tr>
- *   <td>enabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
- *   <td>Controls whether the link is produced.  If disabled, the portion of the template
- *  the link surrounds is still rendered, but not the link itself.
- *  </td></tr>
- *
- *
- * <tr>
- *		<td>anchor</td>
- *		<td>java.lang.String</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The name of an anchor or element to link to.  The final URL will have '#'
- *   and the anchor appended to it.
- * </td> </tr>
+ *      <td>name</td>
+ *      <td>{@link String}</td>
+ *      <td>R</td>
+ *      <td>yes</td>
+ *      <td>&nbsp;</td>
+ *      <td>The name of the person to create a link to.
+ *      </td>
+ *  </tr>
  *
  * </table>
  *
- * <p>Informal  parameters are allowed.
+ * <p>Informal parameters are not allowed.  A body is not allowed.
  *
  * @author Howard Ship
  * @version $Id$
  */
 
-public class Person extends ExternalLink
+public class PersonLink extends BaseComponent
 {
-	public Person(IPage page, IComponent container, String id, ComponentSpecification spec)
+    private IBinding primaryKeyBinding;
+    private IBinding nameBinding;
+
+    private String[] context;
+    private Integer primaryKey;
+
+	public PersonLink(IPage page, IComponent container, String id, ComponentSpecification spec)
 	{
 		super(page, container, id, spec);
 	}
 
-	protected String getPageName()
-	{
-		return "Person";
-	}
+    public IBinding getPrimaryKeyBinding()
+    {
+        return primaryKeyBinding;
+    }
+
+    public void setPrimaryKeyBinding(IBinding value)
+    {
+        primaryKeyBinding = value;
+    }
+
+    public IBinding getNameBinding()
+    {
+        return nameBinding;
+    }
+
+    public void setNameBinding(IBinding value)
+    {
+        nameBinding = value;
+    }
+
+     /**
+     *  The context has two elements.  The first is the page to jump to
+     *  ("Person", for {@link PersonPage}), the second is the primary key of the person.
+     *
+     */
+
+    public String[] getContext()
+    {
+        if (context == null)
+        {
+            context = new String[2];
+            context[0] = "Person";
+        }
+
+        context[1] = primaryKeyBinding.getString();
+
+        return context;
+    }
+
 }

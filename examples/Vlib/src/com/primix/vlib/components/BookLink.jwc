@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>com.primix.vlib.components.BookLink</class>
+	<allow-body>no</allow-body>
+	<parameters>
+		<allow-informal-parameters>no</allow-informal-parameters>
+		<parameter>
+			<name>book</name>
+			<java-type>com.primix.vlib.ejb.Book</java-type>
+			<required>yes</required>
+		</parameter>
+	</parameters>
+	<components>
+		<component>
+			<id>link</id>
+			<type>Service</type>
+			<bindings>
+				<static-binding>
+					<name>service</name>
+					<value>external</value>
+				</static-binding>
+				<binding>
+					<name>context</name>
+					<property-path>context</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertBookTitle</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>book.title</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
+</specification>

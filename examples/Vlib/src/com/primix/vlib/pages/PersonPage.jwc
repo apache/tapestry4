@@ -88,22 +88,12 @@
 			</bindings>
 		</component>
 		<component>
-			<id>viewBook</id>
-			<type>Book</type>
+			<id>bookLink</id>
+			<type>BookLink</type>
 			<bindings>
 				<binding>
-					<name>primaryKey</name>
-					<property-path>currentMatch.primaryKey</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertBookTitle</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentMatch.title</property-path>
+					<name>book</name>
+					<property-path>currentMatch</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -138,21 +128,15 @@
 			</bindings>
 		</component>
 		<component>
-			<id>showHolder</id>
-			<type>Person</type>
+			<id>holderLink</id>
+			<type>PersonLink</type>
 			<bindings>
 				<binding>
 					<name>primaryKey</name>
 					<property-path>currentMatch.holderPrimaryKey</property-path>
 				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertHolderName</id>
-			<type>Insert</type>
-			<bindings>
 				<binding>
-					<name>value</name>
+					<name>name</name>
 					<property-path>currentMatch.holderName</property-path>
 				</binding>
 			</bindings>

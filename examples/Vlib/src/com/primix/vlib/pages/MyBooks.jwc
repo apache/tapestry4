@@ -124,21 +124,15 @@
 			</bindings>
 		</component>
 		<component>
-			<id>showHolder</id>
-			<type>Person</type>
+			<id>holderLink</id>
+			<type>PersonLink</type>
 			<bindings>
 				<binding>
 					<name>primaryKey</name>
 					<property-path>currentBook.holderPrimaryKey</property-path>
 				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertHolder</id>
-			<type>Insert</type>
-			<bindings>
 				<binding>
-					<name>value</name>
+					<name>name</name>
 					<property-path>currentBook.holderName</property-path>
 				</binding>
 			</bindings>

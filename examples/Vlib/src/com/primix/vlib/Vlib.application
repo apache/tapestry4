@@ -57,11 +57,11 @@
 		<specification-path>/com/primix/vlib/components/Border.jwc</specification-path>
 	</component-alias>
 	<component-alias>
-		<alias>Book</alias>
-		<specification-path>/com/primix/vlib/components/Book.jwc</specification-path>
+		<alias>BookLink</alias>
+		<specification-path>/com/primix/vlib/components/BookLink.jwc</specification-path>
 	</component-alias>
 	<component-alias>
-		<alias>Person</alias>
-		<specification-path>/com/primix/vlib/components/Person.jwc</specification-path>
+		<alias>PersonLink</alias>
+		<specification-path>/com/primix/vlib/components/PersonLink.jwc</specification-path>
 	</component-alias>
 </application>
