@@ -118,7 +118,8 @@ public class ComponentMessages implements IMessages
     {
         String pattern = getMessage(key);
 
-        MessageFormat messageFormat = new MessageFormat(pattern, _locale);
+        MessageFormat messageFormat = new MessageFormat(pattern);
+        messageFormat.setLocale(_locale);
 
         return messageFormat.format(arguments);
     }

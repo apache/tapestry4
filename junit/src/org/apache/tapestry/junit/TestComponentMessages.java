@@ -165,7 +165,7 @@ public class TestComponentMessages extends TapestryTestCase
 
     public void testDateFormatting()
     {
-        IPage page = createPage(MOCK1, new Locale("en"));
+        IPage page = createPage(MOCK1, Locale.ENGLISH);
 
         Calendar c = new GregorianCalendar(1966, Calendar.DECEMBER, 24);
 
@@ -178,8 +178,8 @@ public class TestComponentMessages extends TapestryTestCase
 
     public void testDateFormatLocalization()
     {
-        IPage page = createPage(MOCK1, new Locale("fr"));
-
+        IPage page = createPage(MOCK1, Locale.FRENCH);
+        
         Calendar c = new GregorianCalendar(1966, Calendar.DECEMBER, 24);
 
         Date d = c.getTime();
