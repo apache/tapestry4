@@ -39,6 +39,7 @@ import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.DelegatingPropertySource;
+import org.apache.tapestry.util.JanitorThread;
 import org.apache.tapestry.util.ServletContextPropertySource;
 import org.apache.tapestry.util.ServletPropertySource;
 import org.apache.tapestry.util.SystemPropertiesPropertySource;
@@ -787,4 +788,20 @@ public class ApplicationServlet extends HttpServlet
         return _resolver;
     }
 
+    /**
+     * Ensures that shared janitor thread is terminated.
+     * @see javax.servlet.Servlet#destroy()
+     * @since 3.0.3
+     */
+    public void destroy()
+    {
+        try
+        {
+            JanitorThread.getSharedJanitorThread().interrupt();
+        }
+        finally
+        {
+            super.destroy();
+        }
+    }
 }
