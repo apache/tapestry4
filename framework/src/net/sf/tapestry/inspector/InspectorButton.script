@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
-	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
 <!--
 
 Adds scripting support for the ShowInspector component.
@@ -17,6 +18,8 @@ Input symbols:
 <script>
 
 <include-script resource-path="/net/sf/tapestry/html/PracticalBrowserSniffer.js"/>
+
+<input-symbol key="URL" class="java.lang.String" required="yes"/>
 
 <body>
 var ti = new Object();
@@ -100,7 +103,7 @@ function ti_positionInspector()
 function ti_raiseInspector()
 {
   var newWindow = window.open(
-  	"<insert property-path="URL"/>",
+  	"${URL}",
   	"TapestryInspector",
   	"titlebar,resizable,scrollbars,width=700,height=600");
   	

@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 
-<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
-	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
 
 <script>
 <!-- 
@@ -20,6 +21,10 @@ onMouseOverName - name of mouse over function
 onMouseOutName - name of mouse out function
 
 -->
+
+<input-symbol key="uniqueId" class="java.lang.String" required="yes"/>
+<input-symbol key="focusImageURL" class="java.lang.String" required="yes"/>
+<input-symbol key="blurImageURL" class="java.lang.String" required="yes"/>
 
 <let key="imageName">
 	rollover_${uniqueId}
