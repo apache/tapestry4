@@ -51,7 +51,8 @@ import net.sf.tapestry.vlib.ejb.Publisher;
  *
  *  The engine for the Virtual Library.  
  *  This exists to implement the external 
- *  service, which allows the {@link ViewBook} and {@link PersonPage}
+ *  service, which allows the {@link net.sf.tapestry.vlib.pages.ViewBook}
+ *  and {@link net.sf.tapestry.vlib.pages.PersonPage}
  *  pages to be bookmarked, and to provide
  *  a way for shutting down the application when the user logs out.
  *
@@ -388,8 +389,10 @@ public class VirtualLibraryEngine extends SimpleEngine
 
     /**
      *  Invoked in various places to present an error message to the user.
-     *  This sets the error property of either the {@link Home} or
-     *  {@link MyLibrary} page (the latter only if the user is logged in),
+     *  This sets the error property of either the 
+     *  {@link net.sf.tapestry.vlib.pages.Home} or
+     *  {@link net.sf.tapestry.vlib.pages.MyLibrary} page 
+     *  (the latter only if the user is logged in),
      *  and sets the selected page for rendering the response.
      *
      **/

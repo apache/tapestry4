@@ -124,7 +124,7 @@ public interface IOperations extends EJBObject
     /**
      *  Attempts to login the user in.
      *
-     *  @returns the user
+     *  @return the user
      *  @throws LoginException if the email address is invalid, the password
      *  is invalid, or the user may not log in for other reasons.
      *
@@ -178,7 +178,7 @@ public interface IOperations extends EJBObject
     /**
      *  Deletes a Book.
      *
-     *  @returns the Book as it was before being deleted.
+     *  @return the Book as it was before being deleted.
      **/
 
     public Book deleteBook(Integer bookPrimaryKey) throws RemoveException, RemoteException;

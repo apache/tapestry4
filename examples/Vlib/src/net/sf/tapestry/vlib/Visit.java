@@ -134,8 +134,8 @@ public class Visit implements Serializable
     }
 
     /**
-     *  Changes the logged in user ... this is only invoked from the {@link Login}
-     *  page.
+     *  Changes the logged in user ... this is only invoked from the 
+     *  {@link net.sf.tapestry.vlib.pages.Login} page.
      *
      **/
 
@@ -186,7 +186,7 @@ public class Visit implements Serializable
      *  Invoked by pages after they perform an operation that changes the backend
      *  database in such a way that cached data is no longer valid.  Currently,
      *  this should be invoked after changing the user's profile, or adding
-     *  a new {@link IPublisher} entity.
+     *  a new {@link net.sf.tapestry.vlib.ejb.IPublisher} entity.
      *
      **/
 

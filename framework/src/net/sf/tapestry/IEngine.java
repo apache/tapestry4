@@ -140,7 +140,8 @@ public interface IEngine
 
     /**
      *  Gets the named service, or throws an {@link
-     *  ApplicationRuntimeException} if the application can't provide
+     *  net.sf.tapestry.ApplicationRuntimeException} 
+     *  if the application can't provide
      *  the named server.
      *
      *  <p>The object returned has a short lifecycle (it isn't
@@ -194,7 +195,8 @@ public interface IEngine
     public ITemplateSource getTemplateSource();
 
     /**
-     *  Method invoked from the {@link ApplicationServlet} to perform processing of the
+     *  Method invoked from the {@link net.sf.tapestry.ApplicationServlet} 
+     *  to perform processing of the
      *  request.  The return value for this method indicates whether the state of the engine
      *  could possibly change during processing; in most cases this is true.  In a few
      *  possible cases, this is false.  The ApplicationServlet sometimes performs extra
