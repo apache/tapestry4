@@ -70,12 +70,19 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     {
         String _name;
         String _value;
+        String _id;
 
         private HiddenValue(String name, String value)
         {
-            _name = name;
-            _value = value;
+			this(name, null, value);
         }
+
+		private HiddenValue(String name, String id, String value)
+		{
+			_name	= name;
+			_id		= id;
+			_value	= value;
+		}
     }
 
     private boolean _rewinding;
@@ -625,12 +632,21 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     protected void writeHiddenField(IMarkupWriter writer, String name, String value)
     {
-        writer.beginEmpty("input");
-        writer.attribute("type", "hidden");
-        writer.attribute("name", name);
-        writer.attribute("value", value);
-        writer.println();
+		writeHiddenField(writer, name, null, value);
     }
+
+	protected void writeHiddenField(IMarkupWriter writer, String name, String id, String value)
+	{
+		writer.beginEmpty("input");
+		writer.attribute("type", "hidden");
+		writer.attribute("name", name);
+
+		if(id != null && id.length() != 0)
+			writer.attribute("id", id);
+		
+		writer.attribute("value", value);
+		writer.println();
+	}
 
     /**
      *  @since 2.2
@@ -775,11 +791,21 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     public void addHiddenValue(String name, String value)
     {
-        if (_hiddenValues == null)
-            _hiddenValues = new ArrayList();
+		if (_hiddenValues == null)
+			_hiddenValues = new ArrayList();
 
-        _hiddenValues.add(new HiddenValue(name, value));
+		_hiddenValues.add(new HiddenValue(name, value));
     }
+
+	/** @since 3.0 */
+
+	public void addHiddenValue(String name, String id, String value)
+	{
+		if (_hiddenValues == null)
+			_hiddenValues = new ArrayList();
+
+		_hiddenValues.add(new HiddenValue(name, id, value));
+	}
 
     /** 
      * Writes hidden values accumulated during the render
@@ -796,7 +822,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         {
             HiddenValue hv = (HiddenValue) _hiddenValues.get(i);
 
-            writeHiddenField(writer, hv._name, hv._value);
+            writeHiddenField(writer, hv._name, hv._id, hv._value);
         }
     }
 }

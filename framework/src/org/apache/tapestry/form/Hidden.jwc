@@ -29,6 +29,15 @@
     </description>
   </parameter>
   
+  <parameter name="id" 
+  	required="no" 
+  	type="java.lang.String"
+  	direction="custom">
+    <description>
+    ID parameter of HTML hidden object.
+    </description>
+  </parameter>
+
   <parameter name="encode" type="boolean" direction="in"/>
 
   <property-specification name="name" type="java.lang.String"/>
