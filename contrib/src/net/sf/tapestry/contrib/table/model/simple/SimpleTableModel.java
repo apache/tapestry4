@@ -60,6 +60,11 @@ public class SimpleTableModel implements ITableModel, ITableDataModelListener, S
         this(new SimpleListTableDataModel(arrData), new SimpleTableColumnModel(arrColumns));
     }
 
+    public SimpleTableModel(Object[] arrData, ITableColumnModel objColumnModel)
+    {
+        this(new SimpleListTableDataModel(arrData), objColumnModel);
+    }
+
     public SimpleTableModel(ITableDataModel objDataModel, ITableColumnModel objColumnModel)
     {
         this(objDataModel, objColumnModel, new SimpleTableState());
