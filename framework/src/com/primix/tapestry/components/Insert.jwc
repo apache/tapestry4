@@ -5,4 +5,9 @@
   <parameter name="value"/>
   <parameter name="format" java-type="java.text.Format"/>
   <parameter name="raw"/>
+  <parameter name="class" java-type="java.lang.String">
+  	<description>
+  	If specified, then any output is wrapped in an HTML span tag with the given CSS class.
+  	</description>
+  </parameter>
 </specification>

@@ -57,11 +57,22 @@ import java.text.Format;
  *      <td>boolean</td>
  *      <td>no</td>
  *      <td>false</td>
- *      <td>If true, then the method {@link IResponseWriter#printRaw(String)} is used
- *  , rather than {@link IResponseWriter#print(String)}.
+ *      <td>If true, then the method {@link IResponseWriter#printRaw(String)} is used,
+ *  		rather than {@link IResponseWriter#print(String)}.
  *      </td>
  *  </tr>
  *
+ *  <tr>
+ * 		<td>class</td>
+ * 		<td>{@link String}</td>
+ * 		<td>no</td>
+ * 		<td>&nbsp;</td>
+ * 		<td>
+ * 	If specified, then the output is wrapped in an HTML &lt;span&gt; tag, using the value
+ *  specified as the CSS class.
+ * 		</td>
+ * 	</tr>
+ * 
  * </table>
  *
  * <p>Informal parameters are not allowed.  The component must not have a body.
@@ -77,6 +88,8 @@ public class Insert extends AbstractComponent
 	private IBinding rawBinding;
 	private boolean staticRawValue;
 	private boolean rawValue;
+	private IBinding classBinding;
+	private String staticClassValue;
 
 	public IBinding getFormatBinding()
 	{
@@ -105,6 +118,14 @@ public class Insert extends AbstractComponent
 
 		if (staticRawValue)
 			rawValue = value.getBoolean();
+	}
+
+	public void setClassBinding(IBinding value)
+	{
+		classBinding = value;
+
+		if (classBinding.isStatic())
+			staticClassValue = classBinding.getString();
 	}
 
 	/**
@@ -136,6 +157,9 @@ public class Insert extends AbstractComponent
 		if (valueBinding != null)
 			value = valueBinding.getObject();
 
+		if (value == null)
+			return;
+
 		if (formatBinding != null)
 		{
 			try
@@ -148,9 +172,6 @@ public class Insert extends AbstractComponent
 				throw new RequestCycleException(this, ex);
 			}
 		}
-
-		if (value == null)
-			return;
 
 		if (format == null)
 			insert = value.toString();
@@ -174,10 +195,24 @@ public class Insert extends AbstractComponent
 		else if (rawBinding != null)
 			raw = rawBinding.getBoolean();
 
+		String classValue = staticClassValue;
+
+		if (classValue == null && classBinding != null)
+			classValue = classBinding.getString();
+
+		if (classValue != null)
+		{
+			writer.begin("span");
+			writer.attribute("class", classValue);
+		}
+
 		if (raw)
 			writer.printRaw(insert);
 		else
 			writer.print(insert);
+
+		if (classValue != null)
+			writer.end(); // <span>
 
 	}
 
