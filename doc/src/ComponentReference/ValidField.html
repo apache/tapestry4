@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>ValidField</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/valid/ValidField.html">
+		 net.sf.tapestry.valid.ValidField</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Age: <input type="text" name="personAge" value=""></td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  ???
+  <p>
+  This component may NOT wrap around other components or static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Form.html">Form</a>, 
+  <a href="Text.html">Text</a>
+  <a href="TextField.html">TextField</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+	
+ <A HREF="Form.html"><CODE>Form</CODE></A> component that creates a text field that
+  allows for validation of user input and conversion between string and object
+  values.  A ValidatingTextField uses an <b>IValidationDelegate</b> to  track errors and an 
+  <b>IValidator</b> to convert between strings and objects
+  (as well as perform validations).  The validation delegate is shared by all validating
+  text fields in a form, the validator may be shared my multiple elements as desired.
+
+ <table border=1 cellpadding="4" cellspacing="4" class="parameters">
+ <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th>
+    <th>Default</th>
+    <th>Description</th>
+ </tr>
+
+  <tr>
+    <td>value</td>
+    <td>java.lang.Object</td>
+    <td>in-out</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The value to be displayed (on render), and updated (when the form is
+  submitted, if the submitted value is valid).  The <b>IValidator</b>
+  converts between
+  object values and Strings.
+  </td>
+	</tr>
+
+	<tr>
+		<td>hidden</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>If true, then the text field is written as a
+			&lt;input type=password&gt; form element.  </td>  </tr>
+
+  <tr>
+ 		<td>disabled</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>Controls whether the text field is active or not.  If disabled, then
+			any value that comes up when the form is submitted is ignored.
+
+			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
+	</tr>
+
+	<tr>
+		<td>displayWidth</td>
+		<td>integer</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>Controls the display width of the text control in the client browser.  If
+			unspecified or zero, then the width is left to the client browser to
+			determine.
+
+		<p>Corresponds to the <code>size</code> HTML attribute.</td> </tr>
+
+	<tr>
+		<td>maximumLength</td>
+		<td>integer</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>Controls the maximum characters that the text control will accept.  If
+			unspecified or zero, then the value is left to the client browser to
+			determine.
+
+		<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
+
+  <tr>
+      <td>displayName</td>
+      <td>String</td>
+      <td>in</td>
+      <td>yes</td>
+      <td>&nbsp;</td>
+      <td>A textual name for the field that is used when formulating error messages.
+ 	Also used by the <A HREF="FieldLabel.html">FieldLabel</A> component to properly label the field.
+      </td>
+  </tr>
+
+
+  <tr>
+      <td>validator</td>
+      <td><b>IValidator</b></td>
+      <td>in</td>
+      <td>yes</td>
+      <td>&nbsp;</td>
+      <td>Object used to convert object values to Strings (for renderring)
+  and to validate and convert Strings into object values (when the form
+  is submitted).</td>
+  </tr>
+
+	</table>
+
+  Informal parameters: allowed<br>
+  Reserved parameters: none
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="???.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="???.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
