@@ -17,6 +17,7 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.LocalizedNameGenerator;
+import net.sf.tapestry.util.LocalizedResourceFinder;
 
 /**
  *  An implementation of {@link IAsset} for localizable assets within
@@ -134,26 +135,21 @@ public class PrivateAsset implements IAsset
         String suffix = _resourcePath.substring(dotx);
 
         IResourceResolver resolver = cycle.getEngine().getResourceResolver();
-        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
 
-        while (generator.more())
-        {
-            String candidatePath = generator.next();
+        LocalizedResourceFinder finder = new LocalizedResourceFinder(resolver);
 
-            if (resolver.getResource(candidatePath) != null)
-            {
-                _localizations.put(locale, candidatePath);
+        String localizedPath = finder.resolve(_resourcePath, locale);
 
-                if (LOG.isDebugEnabled())
-                    LOG.debug("Found " + candidatePath);
+        if (localizedPath == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("PrivateAsset.resource-unavailable", _resourcePath, locale));
 
-                return candidatePath;
-            }
+        _localizations.put(locale, localizedPath);
 
-        }
-
-        throw new ApplicationRuntimeException(
-            Tapestry.getString("PrivateAsset.resource-unavailable", _resourcePath, locale));
+        if (LOG.isDebugEnabled())
+            LOG.debug("Found " + localizedPath);
+            
+        return localizedPath;            
     }
 
     public String toString()
