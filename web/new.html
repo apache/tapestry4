@@ -75,12 +75,22 @@ Components (and even pages) can now implement page listener interfaces
 (<a href="doc/api/net/sf/tapestry/event/PageDetachListener.html">PageDetachListener</a>,
 <a href="doc/api/net/sf/tapestry/event/PageRenderListener.html">PageRenderListener</a> or
 <a href="doc/api/net/sf/tapestry/event/PageCleanupListener.html">PageCleanupListener</a>)
-and <code>finishLoad()</code> will automatically add them as a listener to the corresponding
+and <code>finishLoad()</code> will <i>automatically</i>
+add them as a listener to the corresponding
 page events.
 </li>
 
 <li>
 The entire mechanism used to store persistant page properties has been revised.
+</li>
+
+<li>
+Implemented a number of improvements to
+<a href="doc/api/net/sf/tapestry/util/pool/Pool.html">Pool</a>
+to support greater flexibility in managing objects stored into and discarded
+from the pool.
+</li>
+
 </ul>
 
 <pre>

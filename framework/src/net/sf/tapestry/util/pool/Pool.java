@@ -8,8 +8,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRenderDescription;
+import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.ICleanable;
 import net.sf.tapestry.util.JanitorThread;
 
@@ -27,6 +30,22 @@ import net.sf.tapestry.util.JanitorThread;
  *  pooled object is assigned a generation count.  {@link #executeCleanup}
  *  culls objects whose generation count is too old (outside of a
  *  {@link #getWindow() window}).
+ * 
+ *  <p>
+ *  Objects in the pool can receive two notifications: one notification
+ *  when they are {@link #store(Object, Object) stored} into the pool,
+ *  and one when they are discarded form the pool.
+ * 
+ *  <p>
+ *  Classes that implement {@link net.sf.tapestry.util.pool.IPoolable}
+ *  receive notifications directly, as per the two methods
+ *  of that interface.
+ * 
+ *  <p>
+ *  Alternately, an adaptor for the other classes can be
+ *  registerered (using {@link #registerAdaptor(Class, IPoolableAdaptor)}.
+ *  The adaptor will be invoked to perform the desred cleanup
+ *  of the object instead.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -36,6 +55,8 @@ import net.sf.tapestry.util.JanitorThread;
 public class Pool implements ICleanable, IRenderDescription
 {
     private static final Log LOG = LogFactory.getLog(Pool.class);
+
+    private AdaptorRegistry _adaptors = new AdaptorRegistry();
 
     /**
      *  The generation, used to cull unused pooled items.
@@ -101,6 +122,8 @@ public class Pool implements ICleanable, IRenderDescription
     {
         if (useSharedJanitor)
             JanitorThread.getSharedJanitorThread().add(this);
+
+        registerAdaptors();
     }
 
     /**
@@ -181,34 +204,71 @@ public class Pool implements ICleanable, IRenderDescription
     }
 
     /**
-     *  Stores an object in the pool for later retrieval.  Invokes
-     *  {@link IPoolable#resetForPool()}, if the object
-     *  implements the {@link IPoolable} interface.
+     *  Retrieves an instance of the named class.  If no pooled
+     *  instance is available, a new instance is created
+     *  (using the no arguments constructor).  Objects are
+     *  pooled using their actual class as a key.
+     * 
+     **/
+
+    public Object retrieve(Class objectClass)
+    {
+        Object result = retrieve((Object) objectClass);
+
+        if (result == null)
+        {
+            if (LOG.isDebugEnabled())
+                LOG.debug("No instance of " + objectClass.getName() + " is available, instantiating one.");
+
+            try
+            {
+                result = objectClass.newInstance();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString("Pool.unable-to-instantiate-instance", objectClass.getName()),
+                    ex);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     *  Stores an object using its class as a key.
+     * 
+     *  @see #retrieve(Class)
+     * 
+     **/
+
+    public void store(Object object)
+    {
+        store(object.getClass(), object);
+    }
+
+    /**
+     *  Stores an object in the pool for later retrieval, resetting
+     *  the object for storage within the pool.
      *
      **/
 
     public synchronized void store(Object key, Object object)
     {
-        PoolList list;
-        int count;
-
-        if (object instanceof IPoolable)
-        {
-            ((IPoolable) object).resetForPool();
-        }
+        getAdaptor(object).resetForPool(object);
 
         if (_map == null)
             _map = new HashMap();
 
-        list = (PoolList) _map.get(key);
+        PoolList list = (PoolList) _map.get(key);
 
         if (list == null)
         {
-            list = new PoolList();
+            list = new PoolList(this);
             _map.put(key, list);
         }
 
-        count = list.store(_generation, object);
+        int count = list.store(_generation, object);
 
         _pooledCount++;
 
@@ -224,7 +284,18 @@ public class Pool implements ICleanable, IRenderDescription
     public synchronized void clear()
     {
         if (_map != null)
+        {
+            Iterator i = _map.values().iterator();
+
+            while (i.hasNext())
+            {
+                PoolList list = (PoolList) i.next();
+
+                list.discardAll();
+            }
+
             _map.clear();
+        }
 
         _pooledCount = 0;
 
@@ -363,5 +434,51 @@ public class Pool implements ICleanable, IRenderDescription
                 writer.println();
             }
         }
+    }
+
+    /**
+     *  Invoked from the constructor to register the default set of
+     *  {@link net.sf.tapestry.util.pool.IPoolableAdaptor}.  Subclasses
+     *  may override this to register a different set.
+     * 
+     *  <p>
+     *  Registers:
+     *  <ul>
+     *  <li>{@link NullPoolableAdaptor} for class Object
+     *  <li>{@link DefaultPoolableAdaptor} for interface {@link IPoolable}
+     *  <li>{@link StringBufferAdaptor} for {@link StringBuffer}
+     *  </ul>
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected void registerAdaptors()
+    {
+        registerAdaptor(Object.class, new NullPoolableAdaptor());
+        registerAdaptor(IPoolable.class, new DefaultPoolableAdaptor());
+        registerAdaptor(StringBuffer.class, new StringBufferAdaptor());
+    }
+
+    /**
+     *  Registers an adaptor for a particular class (or interface).
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void registerAdaptor(Class registrationClass, IPoolableAdaptor adaptor)
+    {
+        _adaptors.register(registrationClass, adaptor);
+    }
+
+    /**
+     *  Returns an adaptor appropriate to the object.
+     * 
+     **/
+
+    public IPoolableAdaptor getAdaptor(Object object)
+    {
+        return (IPoolableAdaptor) _adaptors.getAdaptor(object.getClass());
     }
 }
