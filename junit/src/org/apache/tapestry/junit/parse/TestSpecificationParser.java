@@ -416,7 +416,7 @@ public class TestSpecificationParser extends TapestryTestCase
     {
         IComponentSpecification spec = parsePage("PropertyValue.page");
 
-        checkLine(spec, 7);
+        checkLine(spec, 22);
 
         assertEquals("rubble", spec.getProperty("barney"));
         assertEquals("flintstone", spec.getProperty("wilma"));
@@ -434,24 +434,24 @@ public class TestSpecificationParser extends TapestryTestCase
     {
         IComponentSpecification spec = parsePage("StaticBindingValue.page");
 
-        checkLine(spec, 7);
+        checkLine(spec, 22);
 
         IContainedComponent c = spec.getComponent("c");
 
-        checkLine(c, 9);
+        checkLine(c, 24);
 
         IBindingSpecification b = c.getBinding("fred");
-        checkLine(b, 10);
+        checkLine(b, 25);
 
         assertEquals("flintstone", b.getValue());
 
         b = c.getBinding("barney");
-        checkLine(b, 11);
+        checkLine(b, 26);
 
         assertEquals("rubble", b.getValue());
 
         b = c.getBinding("rock");
-        checkLine(b, 12);
+        checkLine(b, 27);
         assertEquals("hudson", b.getValue());
     }
 
@@ -501,14 +501,14 @@ public class TestSpecificationParser extends TapestryTestCase
     {
         IComponentSpecification spec = parsePage("ListenerBinding.page");
 
-        checkLine(spec, 7);
+        checkLine(spec, 22);
         IContainedComponent c = spec.getComponent("c");
 
-        checkLine(c, 9);
+        checkLine(c, 24);
 
         IListenerBindingSpecification lbs = (ListenerBindingSpecification) c.getBinding("listener");
 
-        checkLine(lbs, 10);
+        checkLine(lbs, 25);
 
         String expectedScript =
             buildExpectedScript(
@@ -554,21 +554,21 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("persistent", false, ps.isPersistent());
         assertEquals("type", "boolean", ps.getType());
         assertNull("initialValue", ps.getInitialValue());
-        checkLine(ps, 9);
+        checkLine(ps, 24);
 
         ps = spec.getPropertySpecification("init");
         assertEquals("name", "init", ps.getName());
         assertEquals("persistent", false, ps.isPersistent());
         assertEquals("type", "java.lang.Object", ps.getType());
         assertEquals("initialValue", "pageName", ps.getInitialValue());
-        checkLine(ps, 11);
+        checkLine(ps, 26);
 
         ps = spec.getPropertySpecification("persist");
         assertEquals("name", "persist", ps.getName());
         assertEquals("persistent", true, ps.isPersistent());
         assertEquals("type", "java.lang.Object", ps.getType());
         assertNull("initialValue", ps.getInitialValue());
-        checkLine(ps, 10);
+        checkLine(ps, 25);
 
         ps = spec.getPropertySpecification("unknown");
 
@@ -631,12 +631,12 @@ public class TestSpecificationParser extends TapestryTestCase
         IComponentSpecification spec = parsePage("MessageBeanInitializer.page");
 
         IBeanSpecification bs = spec.getBeanSpecification("fred");
-        checkLine(bs, 9);
+        checkLine(bs, 24);
         MessageBeanInitializer i = (MessageBeanInitializer) bs.getInitializers().get(0);
 
         assertEquals("barney", i.getPropertyName());
         assertEquals("rubble", i.getKey());
-        checkLine(i, 10);
+        checkLine(i, 25);
     }
 
     public void testInheritInformalParameters() throws Exception
