@@ -63,7 +63,7 @@ inner-deploy: $(DEPLOY_JAR)
 	@$(TOUCH) $(DUMMY_FILE)
 
 $(DEPLOY_JAR): $(JAR_FILE)
-	@$(ECHO) "\n*** Deploying $(JAR_FILE) ... ***\n"
+	$(call NOTE, Deploying $(JAR_FILE) ... )
 	@$(MKDIRS) $(JBOSS_DEPLOY_DIR)
 	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(JBOSS_DEPLOY_DIR)
 
@@ -74,12 +74,13 @@ run-ejx:
 	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) -jar ejx.jar 
 
 # 
-# Convienience for running jBoss.
+# Convienience for running jBoss.  Specify JBOSS_OPT in the Makefile
+# to set JVM configuration, such as memory allocation.
 #
 
 run: deploy
-	@$(ECHO) "\n*** Running jBoss ... ***\n"
-	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) -jar run.jar
+	$(call NOTE, Running jBoss ... )
+	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) $(JBOSS_OPT) -jar run.jar
 
 
 .PHONY: deploy inner-deploy run-ejx run

@@ -64,7 +64,7 @@ $(INSTALL_DIR)/$(DEPLOY_JAR_FILE): $(DEPLOY_JAR_FILE)
 ifeq "$(INSTALL_DIR)" ""
 	$(error Must define INSTALL_DIR in Makefile)
 endif
-	@$(ECHO) "\n*** Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... ***\n"
+	$(call NOTE, Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... )
 	@$(CP) $(CP_FORCE_OPT) $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
 
 # Add a dependency to inner-jar that causes the deployable jar file to
@@ -92,7 +92,7 @@ FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
 # build directory
 
 $(DEPLOY_JAR_FILE): $(JAR_FILE) $(filter %.jar %.zip,$(LOCAL_CLASSPATH))
-	@$(ECHO) "\n*** Creating $(DEPLOY_JAR_FILE) ... ***\n"
+	$(call NOTE, Creating $(DEPLOY_JAR_FILE) ...)
 	$(CD) $(MOD_BUILD_DIR) ; \
 	$(call EXEC_JAVA,$(EJBC_CLASSPATH), \
 		weblogic.ejbc $(FINAL_EJBC_OPT) ../$(JAR_FILE) ../$(DEPLOY_JAR_FILE))

@@ -62,7 +62,7 @@ $(JAR_FILE): $(MOD_DIRTY_JAR_STAMP_FILE)
 ifeq "$(MODULE_NAME)" ""
 	$(error Must define MODULE_NAME in Makefile)
 endif
-	@$(ECHO) "\n*** Building $(JAR_FILE) ... ***\n"
+	$(call NOTE, Building $(JAR_FILE) ... )
 	$(JAR) cf $(JAR_FILE) -C $(MOD_CLASS_DIR) .
 
 # Another rule invoked in the recursive make.
@@ -79,7 +79,7 @@ endif
 ifeq "$(MODULE_NAME)" ""
 	$(error Must define MODULE_NAME in Makefile)
 endif
-	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
+	$(call NOTE, Installing $(JAR_FILE) to $(INSTALL_DIR))
 	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(INSTALL_DIR)
 
 # module-install allows additional installation work to follow the normal

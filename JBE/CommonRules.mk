@@ -47,7 +47,7 @@ endif
 setup-jbe-util: check-jdk $(JBE_UTIL_STAMP)
 
 $(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
-	@$(ECHO) "\n*** Compiling JBE Utility ... ***\n";
+	$(call NOTE, Compiling JBE Utility ...)
 	@$(RM) $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.class
 	$(CD) $(SYS_MAKEFILE_DIR) ; \
 	$(JAVAC) com/primix/jbe/*.java
@@ -55,8 +55,10 @@ $(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 
 # Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
 # GNU Make or JAVA is eating the backslashes under NT.
+# Use -classic to defeat HotSpot, which is only for long running Java apps,
+# not for quick little utilities.
 
-JBE_UTIL := $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
+JBE_UTIL := $(JAVA) -classic -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
 
 # Command for accessing the JBE utility.
 # Usage:
@@ -92,5 +94,15 @@ EXEC_JAVA = $(JAVA) -classpath "$(call JBE_CANONICALIZE,-classpath $(1))" $(2)
 #  $(call COPY_TREE,source dirs,target dir)
 
 COPY_TREE = $(TAR) $(TAR_CREATE_OPT) $(1) | ( $(CD) $(2) && $(TAR) $(TAR_EXTRACT_OPT) )
+
+# Command for producing output
+#
+# Usage
+#   $(call NOTE,text)
+#
+# Example
+#  $(call NOTE,About to do something ...)
+
+NOTE = @ $(ECHO) "\n*** $(strip $(1)) ***\n"
 
 .PHONY: setup-jbe-util check-jdk

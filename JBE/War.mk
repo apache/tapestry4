@@ -62,9 +62,9 @@ $(MOD_DIRTY_JAR_STAMP_FILE): $(WAR_CONTEXT_STAMP_FILE) $(WAR_LIB_STAMP_FILE) $(W
 
 $(JAR_FILE): $(MOD_DIRTY_JAR_STAMP_FILE)
 ifeq "$(MODULE_NAME)" ""
-	@$(ECHO) JBE Error:  Must set MODULE_NAME in Makefile
+	$(error Must set MODULE_NAME in Makefile)
 else
-	@$(ECHO) "\n*** Building $(JAR_FILE) ... ***\n"
+	$(call NOTE, Building $(JAR_FILE) ... )
 	$(JAR) cf $(JAR_FILE) -C $(WAR_APP_DIR) .
 endif
 
@@ -78,19 +78,19 @@ endif
 ifeq "$(MODULE_NAME)" ""
 	$(error Must define MODULE_NAME in Makefile)
 endif
-	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
+	$(call NOTE, Installing $(JAR_FILE) to $(INSTALL_DIR))
 	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(INSTALL_DIR)
 
 $(WAR_LIB_STAMP_FILE): $(INSTALL_LIBRARIES)
 ifdef INSTALL_LIBRARIES
-	@$(ECHO) "\n*** Copying runtime libraries ... ***\n"
+	$(call NOTE, Copying runtime libraries ... )
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CP) $(CP_FORCE_OPT) $? $(WAR_LIB_DIR)
 	@$(TOUCH) $@ 
 endif
 
 $(WAR_WEB_INF_STAMP_FILE): web.xml $(WEB_INF_RESOURCES)
-	@$(ECHO) "\n*** Copying WEB-INF resources ... ***\n"
+	$(call NOTE, Copying WEB-INF resources ...)
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CP) $(CP_FORCE_OPT) $? $(WAR_INF_DIR)
 	@$(TOUCH) $@
@@ -107,7 +107,7 @@ FINAL_CONTEXT_RESOURCES := \
 		-print}
 
 $(WAR_CONTEXT_STAMP_FILE): $(FINAL_CONTEXT_RESOURCES)
-	@$(ECHO) "\n*** Copying context resources ... ***\n"
+	$(call NOTE, Copying context resources ...)
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CP) $(CP_FORCE_OPT) $(CP_PARENTS_OPT) $? $(WAR_APP_DIR)
 	@$(TOUCH) $@ $(MOD_DIRTY_JAR_STAMP_FILE)
