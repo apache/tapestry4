@@ -17,6 +17,7 @@
 <project name="Jakarta Tapestry Project" default="install">
 
   <property file="config/build.properties"/>
+  <property file="project.properties"/>
 
 	<filelist id="project.modules" 
 		dir="."
