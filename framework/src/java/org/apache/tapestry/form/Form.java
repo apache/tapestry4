@@ -164,6 +164,22 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
+     * Injected.
+     * 
+     * @since 3.1
+     */
+
+    public abstract IEngineService getDirectService();
+
+    /**
+     * Injected.
+     * 
+     * @since 3.1
+     */
+
+    public abstract IEngineService getActionService();
+
+    /**
      * Returns true if this Form is configured to use the direct service.
      * <p>
      * This is derived from the direct parameter, and defaults to true if not bound.
@@ -556,27 +572,18 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     private ILink getLink(IRequestCycle cycle, String actionId)
     {
-        String serviceName = null;
-        Object parameter = null;
-
         if (isDirect())
         {
-            serviceName = Tapestry.DIRECT_SERVICE;
-            parameter = new DirectServiceParameter(this, new Object[]
+            Object parameter = new DirectServiceParameter(this, new Object[]
             { actionId });
-        }
-        else
-        {
-            // I'd love to pull out support for the action service entirely!
-
-            serviceName = Tapestry.ACTION_SERVICE;
-            parameter = new ActionServiceParameter(this, actionId);
+            return getDirectService().getLink(cycle, parameter);
         }
 
-        IEngine engine = cycle.getEngine();
-        IEngineService service = engine.getService(serviceName);
+        // I'd love to pull out support for the action service entirely!
 
-        return service.getLink(cycle, parameter);
+        Object parameter = new ActionServiceParameter(this, actionId);
+
+        return getActionService().getLink(cycle, parameter);
     }
 
     /**
@@ -746,21 +753,11 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     public abstract void setDelegate(IValidationDelegate delegate);
 
-    public abstract void setDirect(boolean direct);
-
     public abstract IActionListener getListener();
-
-    public abstract void setMethod(String method);
 
     public abstract String getMethod();
 
     public abstract boolean isStateful();
-
-    protected void finishLoad()
-    {
-        setDirect(true);
-        setMethod("post");
-    }
 
     public void setEncodingType(String encodingType)
     {
