@@ -16,8 +16,6 @@ package org.apache.tapestry.junit.mock.c21;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -41,8 +39,7 @@ public class PrivateService implements IEngineService
         return null;
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
     {
     }
 

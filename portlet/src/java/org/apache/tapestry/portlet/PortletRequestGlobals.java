@@ -38,4 +38,10 @@ public interface PortletRequestGlobals
     public RenderRequest getRenderRequest();
 
     public RenderResponse getRenderResponse();
+
+    /**
+     * Returns true if {@link #store(RenderRequest, RenderResponse)}has been invoked, false
+     * otherwise.
+     */
+    public boolean isRenderRequest();
 }

@@ -67,8 +67,7 @@ public class ChartService implements IEngineService
         return _linkFactory.constructLink(cycle, parameters, true);
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
     {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
         String componentId = cycle.getParameter(ServiceConstants.COMPONENT);

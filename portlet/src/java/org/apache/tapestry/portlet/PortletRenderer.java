@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,30 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.c21;
-
-import java.io.IOException;
+package org.apache.tapestry.portlet;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.request.ResponseOutputStream;
 
-public class NameMismatchService implements IEngineService
+/**
+ * Service used to render a page within a portlet.
+ * 
+ * @author Howard M. Lewis Ship
+ * @since 3.1
+ */
+public interface PortletRenderer
 {
-
-    public ILink getLink(IRequestCycle cycle, Object parameter)
-    {
-        return null;
-    }
-
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
-    {
-    }
-
-    public String getName()
-    {
-        return "IncorrectName";
-    }
-
+    public void renderPage(IRequestCycle cycle, String pageName, ResponseOutputStream output);
 }

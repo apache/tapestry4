@@ -42,7 +42,7 @@ public class RenderRequestServicerToWebRequestServicerBridge implements RenderRe
         _portletRequestGlobals.store(request, response);
 
         PortletWebRequest webRequest = new PortletWebRequest(request);
-        PortletWebResponse webResponse = new PortletWebResponse(response);
+        PortletWebResponse webResponse = new RenderWebResponse(response);
 
         try
         {

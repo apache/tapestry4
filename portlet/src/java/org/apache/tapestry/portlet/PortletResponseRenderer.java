@@ -14,10 +14,7 @@
 
 package org.apache.tapestry.portlet;
 
-import java.io.IOException;
-
 import javax.portlet.ActionResponse;
-import javax.servlet.ServletException;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.request.ResponseOutputStream;
@@ -26,7 +23,10 @@ import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * Sets render parameters on the current {@link javax.portlet.ActionResponse}&nbsp;that will invoke
- * the {@link org.apache.tapestry.portlet.RenderService}to render the (currently) active page.
+ * the {@link org.apache.tapestry.portlet.RenderService}to render the (currently) active page. This
+ * reflects the Portlet APIs very clear division between processing an action and rendering a
+ * response; we need to record into the implicit render URL the render service and the name of the
+ * active page.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -36,7 +36,6 @@ public class PortletResponseRenderer implements ResponseRenderer
     private ActionResponse _response;
 
     public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
-            throws ServletException, IOException
     {
         String pageName = cycle.getPage().getPageName();
 

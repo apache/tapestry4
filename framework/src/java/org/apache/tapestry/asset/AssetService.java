@@ -22,8 +22,6 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
@@ -178,8 +176,7 @@ public class AssetService implements IEngineService
      * TBD: Security issues. Hackers can download .class files.
      */
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
     {
         String path = cycle.getParameter(PATH);
         String md5 = cycle.getParameter(DIGEST);

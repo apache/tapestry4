@@ -26,49 +26,48 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- *  A special output stream works with a {@link HttpServletResponse}, buffering
- *  data so as to defer opening the response's output stream.
- *
- *  <p>The buffering is pretty simple because the code
- *  between {@link org.apache.tapestry.IMarkupWriter} and this shows lots of buffering
- *  after the <code>PrintWriter</code> and inside the <code>OutputStreamWriter</code> that
- *  can't be configured.
- *
- *  <p>This class performs some buffering, but it is not all that
- *  useful because the 
- *  {@link org.apache.tapestry.html.Body} component (which will
- *  be used on virtually all Tapestry pages), buffers its wrapped contents
- *  (that is, evertyhing inside the &lt;body&gt; tag in the generated HTML).
- *
- *  @author Howard Lewis Ship
+ * A special output stream works with a {@link HttpServletResponse}, buffering data so as to defer
+ * opening the response's output stream.
+ * <p>
+ * The buffering is pretty simple because the code between {@link org.apache.tapestry.IMarkupWriter}
+ * and this shows lots of buffering after the <code>PrintWriter</code> and inside the
+ * <code>OutputStreamWriter</code> that can't be configured.
+ * <p>
+ * This class performs some buffering, but it is not all that useful because the
+ * {@link org.apache.tapestry.html.Body}component (which will be used on virtually all Tapestry
+ * pages), buffers its wrapped contents (that is, evertyhing inside the &lt;body&gt; tag in the
+ * generated HTML).
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class ResponseOutputStream extends OutputStream
 {
     private static final Log LOG = LogFactory.getLog(ResponseOutputStream.class);
 
     /**
-     *  Default size for the buffer (2000 bytes).
-     *
-     **/
+     * Default size for the buffer (2000 bytes).
+     */
 
     public static final int DEFAULT_SIZE = 2000;
 
     private int _pos;
+
     private int _maxSize;
+
     private byte[] _buffer;
 
     private String _contentType;
+
     private WebResponse _response;
+
     private OutputStream _out;
 
     private boolean _discard = false;
 
     /**
-     *  Creates the stream with the default maximum buffer size.
-     *
-     **/
+     * Creates the stream with the default maximum buffer size.
+     */
 
     public ResponseOutputStream(WebResponse response)
     {
@@ -76,9 +75,8 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  Standard constructor.
-     *
-     **/
+     * Standard constructor.
+     */
 
     public ResponseOutputStream(WebResponse response, int maxSize)
     {
@@ -87,10 +85,9 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  Does nothing.  This is because of chaining of <code>close()</code> from
-     *  {@link org.apache.tapestry.IMarkupWriter#close()} ... see {@link #flush()}.
-     * 
-     **/
+     * Does nothing. This is because of chaining of <code>close()</code> from
+     * {@link org.apache.tapestry.IMarkupWriter#close()}... see {@link #flush()}.
+     */
 
     public void close() throws IOException
     {
@@ -98,17 +95,15 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  Flushes the underlying output stream, if is has been opened.  
-     *
-     *  <p>This method explicitly <em>does not</em> flush the internal buffer ...
-     *  that's because when an {@link org.apache.tapestry.IMarkupWriter} is closed (for instance, because
-     *  an exception is thrown), that <code>close()</code> spawns <code>flush()</code>es
-     *  and <code>close()</code>s throughout the output stream chain, eventually
-     *  reaching this method.
-     *
-     *  @see #forceFlush()
-     *
-     **/
+     * Flushes the underlying output stream, if is has been opened.
+     * <p>
+     * This method explicitly <em>does not</em> flush the internal buffer ... that's because when
+     * an {@link org.apache.tapestry.IMarkupWriter}is closed (for instance, because an exception is
+     * thrown), that <code>close()</code> spawns <code>flush()</code> es and
+     * <code>close()</code> s throughout the output stream chain, eventually reaching this method.
+     * 
+     * @see #forceFlush()
+     */
 
     public void flush() throws IOException
     {
@@ -124,18 +119,17 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  Writes the internal buffer to the output stream, opening it if necessary, then
-     *  flushes the output stream.  Future writes will go directly to the output stream.
-     *
-     **/
+     * Writes the internal buffer to the output stream, opening it if necessary, then flushes the
+     * output stream. Future writes will go directly to the output stream.
+     */
 
     public void forceFlush() throws IOException
     {
         if (_out == null)
         {
 
-            // In certain cases (such as when the Tapestry service sends a redirect),
-            // there is no output to send back (and no content type set).  In this
+            // In certain cases (such as when an engine service sends a redirect),
+            // there is no output to send back (and no content type set). In this
             // case, forceFlush() does nothing.
 
             if (_buffer == null)
@@ -150,7 +144,7 @@ public class ResponseOutputStream extends OutputStream
         }
         catch (SocketException ex)
         {
-            LOG.debug("Socket exception.");
+            LOG.debug("Socket exception: " + ex.toString());
         }
     }
 
@@ -165,14 +159,13 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  Sets the response type to from the contentType property (which
-     *  defaults to "text/html") and gets an output stream
-     *  from the response, then writes the current buffer to it and
-     *  releases the buffer.
-     *
-     *  @throws IOException if the content type has never been set.
-     *
-     **/
+     * Sets the response type to from the contentType property (which defaults to "text/html") and
+     * gets an output stream from the response, then writes the current buffer to it and releases
+     * the buffer.
+     * 
+     * @throws IOException
+     *             if the content type has never been set.
+     */
 
     private void open() throws IOException
     {
@@ -190,12 +183,11 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  Discards all output in the buffer.  This is used after an error to
-     *  restart the output (so that the error may be presented).
-     *
-     *  <p>Clears the discard flag.
-     *
-     **/
+     * Discards all output in the buffer. This is used after an error to restart the output (so that
+     * the error may be presented).
+     * <p>
+     * Clears the discard flag.
+     */
 
     public void reset() throws IOException
     {
@@ -204,11 +196,9 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  Changes the maximum buffer size.  If the new buffer size is smaller
-     *  than the number of
-     *  bytes already in the buffer, the buffer is immediately flushed.
-     *
-     **/
+     * Changes the maximum buffer size. If the new buffer size is smaller than the number of bytes
+     * already in the buffer, the buffer is immediately flushed.
+     */
 
     public void setBufferSize(int value) throws IOException
     {
@@ -227,9 +217,8 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-     *  Indicates whether the stream should ignore all data written to it.
-     *
-     **/
+     * Indicates whether the stream should ignore all data written to it.
+     */
 
     public void setDiscard(boolean value)
     {
@@ -291,7 +280,8 @@ public class ResponseOutputStream extends OutputStream
         // This method is rarely called so this little inefficiency is better than
         // maintaining that ugly buffer expansion code in two places.
 
-        byte[] tiny = new byte[] {(byte) b };
+        byte[] tiny = new byte[]
+        { (byte) b };
 
         write(tiny, 0, 1);
     }

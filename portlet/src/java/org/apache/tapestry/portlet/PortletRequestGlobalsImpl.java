@@ -67,4 +67,9 @@ public class PortletRequestGlobalsImpl implements PortletRequestGlobals
     {
         return _renderResponse;
     }
+
+    public boolean isRenderRequest()
+    {
+        return _renderRequest != null;
+    }
 }

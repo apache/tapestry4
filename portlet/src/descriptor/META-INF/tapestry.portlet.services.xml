@@ -27,7 +27,7 @@
   </configuration-point>
     
   <contribution configuration-id="FactoryServices">
-    <service object="service:tapestry.services.Home"/>
+    <service object="service:Home"/>
     <service object="service:tapestry.services.Action"/>
     <service object="service:tapestry.services.Direct"/>
     <service object="service:tapestry.services.Page"/>
@@ -38,13 +38,35 @@
     <service object="service:Render"/>
   </contribution>    
   
+  <service-point id="PortletRenderer" interface="PortletRenderer">
+    
+    Service used to render a named page.
+    
+    <create-instance class="PortletRendererImpl" model="primitive"/>
+  </service-point>
+  
  <service-point id="Render" interface="org.apache.tapestry.engine.IEngineService">
   
   The single service that should be referenced by a Portlet render request.
   
-  <create-instance class="RenderService" model="primitive"/>
-  
+  <invoke-factory model="primitive">
+    <construct class="RenderService">
+      <set-service property="portletRenderer" service-id="PortletRenderer"/>
+    </construct>
+  </invoke-factory>  
  </service-point>
+ 
+  <service-point id="Home" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory model="primitive">
+      <construct class="PortletHomeService">
+        <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
+        <set-service property="requestGlobals" service-id="tapestry.portlet.PortletRequestGlobals"/>
+        <set-service property="portletRenderer" service-id="PortletRenderer"/>
+        <set-object property="pageName" value="app-property:org.apache.tapestry.portlet.home-page"/>
+      </construct>
+    </invoke-factory>
+  </service-point> 
  
  <service-point id="ResponseRenderer" interface="org.apache.tapestry.services.ResponseRenderer">
   
@@ -77,4 +99,7 @@
   <command id="SetupPortletEngineServices" object="service:SetupPortletEngineServices"/>
  </contribution>
   
+  <contribution configuration-id="hivemind.FactoryDefaults">
+    <default symbol="org.apache.tapestry.portlet.home-page" value="View"/>
+  </contribution>
 </module>

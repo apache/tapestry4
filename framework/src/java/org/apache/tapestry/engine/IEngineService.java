@@ -65,8 +65,7 @@ public interface IEngineService
      * @see org.apache.tapestry.IEngine#service(org.apache.tapestry.request.RequestContext)
      */
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException;
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException;
 
     /**
      * Returns the name of the service.

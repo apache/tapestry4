@@ -16,6 +16,7 @@ package org.apache.tapestry.web;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -184,6 +185,11 @@ public class ServletWebRequest implements WebRequest
         String pathInfo = _servletRequest.getPathInfo();
 
         return pathInfo == null ? servletPath : servletPath + pathInfo;
+    }
+
+    public Locale getLocale()
+    {
+        return _servletRequest.getLocale();
     }
 
     public void describeTo(DescriptionReceiver receiver)

@@ -22,7 +22,7 @@
   on this global information are provided.
   
   <service-point id="ApplicationGlobals" interface="ApplicationGlobals">
-    <create-instance class="impl.ApplicationGlobalsImpl"/>
+    <create-instance class="impl.ApplicationGlobalsImpl" model="primitive"/>
   </service-point>
  
   
@@ -37,7 +37,7 @@
     Exposes the current thread's HttpServletRequest as a service. The request is actually
     stored in the RequestGlobals service.
     
-    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
       <construct service-id="RequestGlobals" property="request"/>
     </invoke-factory>
   </service-point>  
@@ -48,7 +48,7 @@
     stored in the RequestGlobals service.
     
     
-    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
       <construct service-id="RequestGlobals" property="webRequest"/>
     </invoke-factory>
   </service-point>
@@ -58,7 +58,7 @@
     Exposes the current thread's HttpServletResponse as a service. The response is actually
     stored in the RequestGlobals service.
     
-    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
       <construct service-id="RequestGlobals" property="response"/>
     </invoke-factory>
   </service-point>   
@@ -69,7 +69,7 @@
     stored in the RequestGlobals service.
     
     
-    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
       <construct service-id="RequestGlobals" property="webResponse"/>
     </invoke-factory>
   </service-point>  
@@ -79,7 +79,7 @@
     Exposes the global WebContext (a wrapper around the Servlet or Portlet context)
     as a service.
     
-    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
       <construct service-id="ApplicationGlobals" property="webContext"/>
     </invoke-factory>
     

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,35 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services.impl;
+package org.apache.tapestry.portlet;
+
+import java.io.IOException;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.request.ResponseOutputStream;
-import org.apache.tapestry.services.RequestLocaleManager;
-import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- * Responsible for rendering a response to the client.
+ * The guts of rendering a page as a portlet response; used by
+ * {@link org.apache.tapestry.portlet.RenderService}&nbsp;and
+ * {@link org.apache.tapestry.portlet.PortletHomeService}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ResponseRendererImpl implements ResponseRenderer
+public class PortletRendererImpl implements PortletRenderer
 {
-    private RequestLocaleManager _localeManager;
 
-    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
+    public void renderPage(IRequestCycle cycle, String pageName, ResponseOutputStream output)
     {
-        _localeManager.persistLocale();
-
+        cycle.activate(pageName);
+        
         IPage page = cycle.getPage();
 
         IMarkupWriter writer = page.getResponseWriter(output);
 
-        output.setContentType(writer.getContentType());
-
+        String contentType = writer.getContentType();
+        output.setContentType(contentType);
+        
         boolean discard = true;
 
         try
@@ -68,10 +70,8 @@ public class ResponseRendererImpl implements ResponseRenderer
             if (discard)
                 output.setDiscard(false);
         }
+
+        // TODO: Trap errors and do some error reporting here?
     }
 
-    public void setLocaleManager(RequestLocaleManager localeManager)
-    {
-        _localeManager = localeManager;
-    }
 }

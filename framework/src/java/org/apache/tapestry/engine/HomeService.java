@@ -18,12 +18,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
@@ -63,8 +59,7 @@ public class HomeService implements IEngineService
         return _linkFactory.constructLink(cycle, parameters, true);
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
     {
         cycle.activate(_pageName);
 
@@ -87,10 +82,16 @@ public class HomeService implements IEngineService
     {
         _linkFactory = linkFactory;
     }
-    
+
     /** @since 3.1 */
     public void setPageName(String pageName)
     {
         _pageName = pageName;
+    }
+
+    /** @since 3.1 */
+    public String getPageName()
+    {
+        return _pageName;
     }
 }
