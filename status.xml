@@ -15,8 +15,8 @@
 
   <todo>
     <actions priority="Release 3.0">
-	<action context="code" dev="open">Handle change of locale correctly, by reloading new instance of page in proper locale</action>
-	<action context="code" dev="HS">Improved User's Guide to replace existing Developer's Guide</action>
+<action context="code" dev="open">Handle change of locale correctly, by reloading new   instance of page in proper locale</action>
+	<action context="code" dev="HLS">Improved User's Guide to replace existing Developer's Guide</action>
 	<action context="code" dev="open">Replace the current tutorial with Neil Clayton's Tutorial2</action>
 	<action context="code" dev="open">Reoganize directory structure to more standard format (compatible with Maven)</action>
 	<action context="code" dev="open">Get Tapestry compiling under Maven, have nightly builds</action>
@@ -261,6 +261,10 @@ Changed mock unit tests to redirect System.out and System.err to log files rathe
 <action type="update" dev="HLS" due-to="Glen Stampoultzis">
 Improve the documentation for the Palette component, providing a real example of CSS styles
 used with the component.	
+</action>
+
+<action type="fix" dev="HLS" fixes-bug="26416">
+Component parameters with direction 'form' should not allow static bindings.
 </action>
 
 

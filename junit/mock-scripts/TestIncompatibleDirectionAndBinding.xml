@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<!-- Test connecting a static (invariant) binding to a parameter with direction form
+	   (which does not allow invariant bindings). -->
+
+<mock-test>
+   <context name="c30" root="context30"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+    
+    <request>
+    	
+	  	<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+				
+		<assert-output>
+Parameter value of component Home/selectUser is direction form which is incompatible with StaticBinding[selectedUser].
+		</assert-output>
+	
+	</request>
+			
+</mock-test>
+    	
