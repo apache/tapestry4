@@ -59,8 +59,8 @@ import java.util.Iterator;
 /**
  * The interface that defines a suitable data model for a <code>TreeView component</code>. 
  * 
- * @version 1.00 30/7/02
  * @author ceco
+ * @version $Id$
  */
 public interface ITreeDataModel
 {

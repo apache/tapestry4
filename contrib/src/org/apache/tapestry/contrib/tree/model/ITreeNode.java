@@ -58,19 +58,8 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Defines the requirements for an object that can be used as a
- * tree node in a JTree.
- *
- * <p>
- *
- * For further information and examples of using tree nodes,
- * see <a
- href="http://java.sun.com/docs/books/tutorial/uiswing/components/tree.html">How to Use TreeView Nodes</a>
- * in <em>The Java Tutorial.</em>
- *
- * @version 1.19 12/03/01
- * @author Rob Davis
- * @author Scott Violet
+ * @author ceco
+ * @version $Id$
  */
 
 public interface ITreeNode extends Serializable

@@ -57,6 +57,10 @@ package org.apache.tapestry.contrib.tree.model;
 
 import org.apache.tapestry.IComponent;
 
+/**
+ * @author ceco
+ * @version $Id$
+ */
 public interface ITreeModelSource extends IComponent
 {
     final static String TREE_MODEL_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeModelSource";

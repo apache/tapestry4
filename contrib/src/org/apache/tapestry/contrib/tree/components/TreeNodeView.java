@@ -76,6 +76,9 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.util.ComponentAddress;
 
+/**
+ * @version $Id$
+ **/
 public class TreeNodeView extends BaseComponent implements PageDetachListener{
     private static final Log LOG = LogFactory.getLog(TreeNodeView.class);
 
@@ -179,18 +182,11 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
 		}
 		
 	}
-    /**
-     * @see
-     * org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
-     */
+
     public void pageDetached(PageEvent arg0) {
         initialize();
     }
 
-    /**
-     * @see org.apache.tapestry.IComponent#finishLoad(IPageLoader,
-     * ComponentSpecification)
-     */
     public void finishLoad(IRequestCycle objCycle, IPageLoader arg0, ComponentSpecification arg1)
     {
         super.finishLoad(objCycle, arg0, arg1);
@@ -200,10 +196,6 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
         m_objCloseNodeImage = getAsset("_closeNodeImage");
     }
 
-    /**
-     * Returns the nodeOpen.
-     * @return boolean
-     */
     public boolean isNodeOpen() {
         if(m_objNodeState == null){
 			ITreeRowSource objTreeRowSource = getTreeRowSource();

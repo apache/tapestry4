@@ -55,12 +55,8 @@
 package org.apache.tapestry.contrib.tree.model;
 
 /**
- * All right reserved.
- * Copyright (c) by Rushmore Digital Ltd.
- * Created on Sep 26, 2002
- *
  * @author ceco
- *
+ * @version $Id$
  */
 public class TreeStateEvent {
 	public static final int SELECTED_NODE_CHANGED 	= 1;
@@ -70,6 +66,7 @@ public class TreeStateEvent {
 	private int m_nEventType;
 	private transient ITreeStateModel m_objTreeStateModel = null;
 	private transient Object m_objNodeUID = null;
+
 	/**
 	 * Constructor for TreeStateEvent.
 	 */
@@ -87,21 +84,16 @@ public class TreeStateEvent {
 	public int getEventType() {
 		return m_nEventType;
 	}
-	public boolean isEvent(int nEventType){
+
+    public boolean isEvent(int nEventType){
 		return (getEventType() & nEventType) > 0;
 	}
-	/**
-	 * @return
-	 */
+
 	public Object getNodeUID() {
 		return m_objNodeUID;
 	}
 
-	/**
-	 * @return
-	 */
 	public ITreeStateModel getTreeStateModel() {
 		return m_objTreeStateModel;
 	}
-
 }

@@ -57,12 +57,8 @@ package org.apache.tapestry.contrib.tree.model;
 
 
 /**
- * All right reserved.
- * Copyright (c) by Rushmore Digital Ltd.
- * Created on Sep 24, 2002
- *
  * @author ceco
- *
+ * @version $Id$
  */
 public interface ITreeSessionStateManager {
 	Object getSessionState(ITreeModel objModel);
