@@ -66,18 +66,22 @@ compiler.
 		<br><br>
 		
 
+
 <a name="config"></a>
 <h2>Configuration</h2>
 
-<p>Tapestry is built using the
-<a href="http://jakarta.apache.org/ant">Ant</a> build tool, version 1.5 or better.
-You need to download and install Ant before running the Tapestry demonstrations.
+<p>Tapestry ships with the the Tapestry Tutorial and the Virtual Library demo applications, which are very 
+easy to configure and run. To run these Tapestry appliations please ensure:
+<ul>
+<li>JDK 1.3 or newer JVM is installed, and the <tt>JAVA_HOME</tt> environment variable is set.</b> 
+<li><b><a href="http://jakarta.apache.org/ant">Ant</a></b> 1.5 or newer is installed, and is added 
+to the system <tt>PATH</tt>.
+</ul>
 
 <p>
-Configuring and running the Virtual Library demo is very easy:
+To run the Tapestry Tutorial and the Virtual Library applications with the 
+<a href="http://sourceforge.net/projects/jboss">JBoss</a> server:
 <ul>
-<li><b>Download (if needed) a JDK 1.3 or newer JVM.  </b>
-<li><b>Download and configure <a href="http://jakarta.apache.org/ant">Ant</a>.  Tapestry requires Ant 1.5.</b>
 <li><b>Download <b><a href="http://prdownloads.sourceforge.net/jboss/jboss-3.0.0.zip?download">JBoss 3.0.0</a></b>.  </b>
 	JBoss is an open-source application server, used to run the database and Enterprise JavaBeans in the Virtual Library.  
 <em>The Virtual Library can only be 
@@ -92,17 +96,44 @@ Configuring and running the Virtual Library demo is very easy:
 
 <li><b>Execute the command: <code>ant -emacs configure run-jboss</code></b>
 <br>This will copy and configure the necessary files in the JBoss installation directory,
-then run the JBoss server, automatically deploying the Tapestry Tutorials and 
+then run the JBoss server, automatically deploying the Tapestry Tutorial and 
 the Virtual Library demonstration.  (The <code>-emacs</code> option changes the
 Ant output format to be less verbose).
 </ul>
 
-<p>Congratulations, you can now run the 
-<a href="http://localhost/tutorial">Tapestry Tutorials</a>
+<blockquote>
+Congratulations, you can now run the 
+<a href="http://localhost/tutorial">Tapestry Tutorial</a>
 or the
-<a href="http://localhost/vlib/app">Virtual Library</a>.
+<a href="http://localhost/vlib/app">Virtual Library</a> applications.
+</blockquote>
 
-	
+<p>
+
+To run the Tapestry Tutorial application with the 
+<a href="http://sourceforge.net/projects/jetty">Jetty</a> server included in this distribution:
+<ul>
+<li><b>Execute the command: <code>ant run-tutorial</code></b>
+<br>This will run the Jetty server and the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application.
+</ul>
+
+<p>
+To deploy the Tapestry Tutorial application onto an existing 
+<a href="http://jakarta.apache.org/tomcat">Tomcat</a> server:
+<ul>
+<li><b>Create the file <code><i>Tapestry</i>/config/build.properties</code>.</b>
+		This file informs Tapestry where Tomcat as been installed.
+		The directory contains a template file.
+		Set <code>tomcat.dir</code> to the Tomcat installation
+		directory, for example <i>C:/Program Files/Apache Group/Tomcat 4.1</i>.
+		<b>Note:</b> Use only forward slashes in this file name.
+<li><b>Execute the command: <code>ant deploy-tomcat</code></b>
+<br>This will deploy run tutorial application onto the Tomcat server. If Tomcat is running 
+		you should be able to access <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application, otherwise
+    start Tomcat to access the application.    
+</ul>
+
+
 <a name="doc"></a>
 <h2>Documentation</h2>
 
