@@ -69,7 +69,7 @@ import org.apache.tapestry.html.BasePage;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 public abstract class ListEditResults extends BasePage

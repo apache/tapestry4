@@ -106,7 +106,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      *  Key used to get and store {@link SpecificationParser} instances
      *  from the Pool.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -157,7 +157,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      * 
      *  @see IEngine#getPool()
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -392,7 +392,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     protected void discardParser(SpecificationParser parser)
     {

@@ -525,7 +525,7 @@ public class Pool implements ICleanable, IRenderDescription
      *  <li>{@link StringBufferAdaptor} for {@link StringBuffer}
      *  </ul>
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -539,7 +539,7 @@ public class Pool implements ICleanable, IRenderDescription
     /**
      *  Registers an adaptor for a particular class (or interface).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

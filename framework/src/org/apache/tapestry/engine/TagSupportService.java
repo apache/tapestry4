@@ -78,7 +78,7 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *  @see org.apache.tapestry.jsp.URLRetriever
  * 
  **/

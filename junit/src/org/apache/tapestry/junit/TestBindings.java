@@ -671,7 +671,7 @@ public class TestBindings extends TapestryTestCase
     /**
      *  Test error cases for {@link org.apache.tapestry.binding.ListenerBinding}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -691,7 +691,7 @@ public class TestBindings extends TapestryTestCase
         }
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void testListenerBindingDouble()
     {
@@ -709,7 +709,7 @@ public class TestBindings extends TapestryTestCase
         }
     }
 
-    /**  @since 2.4 **/
+    /**  @since 3.0 **/
 
     public void testListenerBindingObject()
     {
@@ -718,7 +718,7 @@ public class TestBindings extends TapestryTestCase
         assertSame(b, b.getObject());
     }
     
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     
     public void testStringBinding()
     {

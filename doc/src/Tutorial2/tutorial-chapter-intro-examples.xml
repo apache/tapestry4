@@ -102,7 +102,7 @@
 					<para>
 					Note that field bindings can also be achieved using an OGNL expression and property binding.
                         The reason that field bindings reman is historic. It is likely that they will be removed
-                        in the 2.4 release, because you can achieve exactly the same thing with an &OGNL;
+                        in the 3.0 release, because you can achieve exactly the same thing with an &OGNL;
                         binding.
 					</para>
                     <figure>

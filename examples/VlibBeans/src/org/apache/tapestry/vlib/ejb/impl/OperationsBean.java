@@ -917,7 +917,7 @@ public class OperationsBean implements SessionBean
      * 
      *  @param assembly to update
      *  @param ordering defines the column to sort on, and the order (ascending or descending)
-     *  @since 2.4
+     *  @since 3.0
      * 
      *
      **/

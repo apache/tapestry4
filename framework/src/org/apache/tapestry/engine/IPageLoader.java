@@ -98,7 +98,7 @@ public interface IPageLoader
      *  specification).
      * 
      *  @see org.apache.tapestry.BaseComponentTemplateLoader
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

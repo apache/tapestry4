@@ -177,7 +177,7 @@ public class TestDataSqueezer extends TestCase
         attempt("So long, sucker!", "SSo long, sucker!");
     }
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 	
 	public void testEnum() throws IOException
 	{

@@ -102,7 +102,7 @@ public class SessionPageRecorder extends PageRecorder
     /**
      *  The session into which changes are recorded.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -111,7 +111,7 @@ public class SessionPageRecorder extends PageRecorder
     /**
      *  The fully qualified name of the page being recorded.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

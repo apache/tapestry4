@@ -107,7 +107,7 @@ public interface IPageSource
 
     /**
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     

@@ -84,14 +84,14 @@ public class AssetSpecification extends LocatablePropertyHolder implements IAsse
         return type;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void setPath(String path)
     {
         this.path = path;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void setType(AssetType type)
     {

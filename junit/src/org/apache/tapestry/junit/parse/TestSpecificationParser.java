@@ -377,7 +377,7 @@ public class TestSpecificationParser extends TapestryTestCase
      *  Test an an application specification can omit
      *  the name and engine-class attributes.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -393,7 +393,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      *  Test new DTD 1.4 syntax for declaring components.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -436,7 +436,7 @@ public class TestSpecificationParser extends TapestryTestCase
      *  Test the value attribute for the property element
      *  (which is new in DTD 1.4).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -454,7 +454,7 @@ public class TestSpecificationParser extends TapestryTestCase
      *  Tests the new (in DTD 1.4) value attribute on static-binding
      *  element.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -502,7 +502,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      *  Tests the new (in DTD 1.4) value attribute on a configure element.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -521,7 +521,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      *  Tests the new &lt;listener-binding&gt; element in the 1.4 DTD.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -566,7 +566,7 @@ public class TestSpecificationParser extends TapestryTestCase
         return buffer.toString();
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void testPropertySpecifications() throws Exception
     {
@@ -603,7 +603,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNull("Unknown PropertySpecification", ps);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void testDuplicatePropertySpecification() throws Exception
     {
@@ -619,7 +619,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void testMissingRequiredExtendedAttribute() throws Exception
     {
@@ -637,7 +637,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void testStringBeanInitializer() throws Exception
     {

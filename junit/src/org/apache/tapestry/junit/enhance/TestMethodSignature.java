@@ -67,7 +67,7 @@ import org.apache.tapestry.junit.TapestryTestCase;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 public class TestMethodSignature extends TapestryTestCase

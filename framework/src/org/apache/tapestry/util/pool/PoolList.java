@@ -75,7 +75,7 @@ package org.apache.tapestry.util.pool;
 
 class PoolList
 {
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     private Pool _pool;
 
@@ -117,7 +117,7 @@ class PoolList
     }
 
     /**
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     
@@ -261,7 +261,7 @@ class PoolList
      *  Much like {@link #cleanup(int)}, but discards all
      *  pooled objects.
      * 
-     *  @since 2.4 
+     *  @since 3.0 
      * 
      **/
 

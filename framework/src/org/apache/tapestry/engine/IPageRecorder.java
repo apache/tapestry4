@@ -83,7 +83,7 @@ public interface IPageRecorder extends ChangeObserver
      *  @param pageName the fully qualified page name
      *  @param cycle the current request cycle
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -96,7 +96,7 @@ public interface IPageRecorder extends ChangeObserver
      *  because of {@link IEngine#forgetPage(String)} or
      *  {@link #markForDiscard()}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

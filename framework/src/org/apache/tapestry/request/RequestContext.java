@@ -212,7 +212,7 @@ public class RequestContext implements IRender
      *
      * 
      *  @see ApplicationServlet#createRequestContext(HttpServletRequest, HttpServletResponse)
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

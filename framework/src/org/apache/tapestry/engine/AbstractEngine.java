@@ -385,7 +385,7 @@ public abstract class AbstractEngine
     /**
      *  A shared instance of {@link IPropertySource}
      *  
-     *  @since 2.4
+     *  @since 3.0
      *  @see #createPropertySource(RequestContext)
      * 
      **/
@@ -406,7 +406,7 @@ public abstract class AbstractEngine
     /**
      *  A shared instance of {@link Pool}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      *  @see #createPool(RequestContext)
      * 
      **/
@@ -419,7 +419,7 @@ public abstract class AbstractEngine
      *  Name of a shared instance of {@link org.apache.tapestry.IComponentClassEnhancer}
      *  stored in the {@link ServletContext}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -428,7 +428,7 @@ public abstract class AbstractEngine
     /**
      *  A shared instance of {@link org.apache.tapestry.IComponentClassEnhancer}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      *  @see #createComponentClassEnhancer(RequestContext)
      * 
      **/
@@ -441,7 +441,7 @@ public abstract class AbstractEngine
      *  to false when the engine is stored into the
      *  {@link HttpSession}.  
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -569,7 +569,7 @@ public abstract class AbstractEngine
      *  <p>Subclasses could create their own instances of {@link IMonitor}, specific
      *  to the individual request or session.
      * 
-     *  <p>As of release 2.4, this method should <em>not</em> return null.
+     *  <p>As of release 3.0, this method should <em>not</em> return null.
      *
      *  <p>TBD:  Lifecycle of the monitor ... should there be a commit?
      *
@@ -970,7 +970,7 @@ public abstract class AbstractEngine
      *  {@link IRequestCycle} for the current request.  This implementation creates
      *  an returns an instance of {@link RequestCycle}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -1940,21 +1940,21 @@ public abstract class AbstractEngine
         return _propertySource;
     }
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 
 	protected String getExceptionPageName()
 	{
 		return EXCEPTION_PAGE;
     }
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 
 	protected String getStaleLinkPageName()
 	{
 		return STALE_LINK_PAGE;
 	}
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 
 	protected String getStaleSessionPageName()
 	{
@@ -1976,7 +1976,7 @@ public abstract class AbstractEngine
      *  The name of an application extension that implements {@link IMonitor}.
      * 
      *  @see #getMonitor(RequestContext)
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -2087,7 +2087,7 @@ public abstract class AbstractEngine
      *  <p>Subclasses may override this
      *  method to configure the Pool differently.
      * 
-     *  @since 2.4 
+     *  @since 3.0 
      * 
      **/
 
@@ -2100,7 +2100,7 @@ public abstract class AbstractEngine
         return result;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public Pool getPool()
     {
@@ -2113,7 +2113,7 @@ public abstract class AbstractEngine
      *  a new instance of {@link DefaultComponentClassEnhancer}.  Subclasses
      *  may override to return a different object.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -2122,7 +2122,7 @@ public abstract class AbstractEngine
         return new DefaultComponentClassEnhancer(_resolver);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public IComponentClassEnhancer getComponentClassEnhancer()
     {
@@ -2135,7 +2135,7 @@ public abstract class AbstractEngine
      *  into the {@link javax.servlet.http.HttpSession}.  Various
      *  events set this property to true.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -2150,7 +2150,7 @@ public abstract class AbstractEngine
      *  {@link javax.servlet.http.HttpSession}.
      * 
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -2168,7 +2168,7 @@ public abstract class AbstractEngine
      *  {@link HttpSession}.
      * 
      * 
-     *  @since 2.4 
+     *  @since 3.0 
      * 
      **/
 
@@ -2182,7 +2182,7 @@ public abstract class AbstractEngine
     /**
      *  Does nothing.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

@@ -74,8 +74,8 @@ public interface IAssetSpecification extends IPropertyHolder, ILocationHolder, I
      **/
     public abstract String getPath();
     public abstract AssetType getType();
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     public abstract void setPath(String path);
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     public abstract void setType(AssetType type);
 }

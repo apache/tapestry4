@@ -67,7 +67,7 @@ import javax.servlet.ServletException;
  *
  *  @author David Solis
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  * 
  **/
 
@@ -87,21 +87,21 @@ public class WMLEngine extends BaseEngine
 	}
 
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 
 	protected String getExceptionPageName()
 	{
 		return EXCEPTION_PAGE;
 	}
 	
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 
 	protected String getStaleLinkPageName()
 	{
 		return STALE_LINK_PAGE;
 	}
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 
 	protected String getStaleSessionPageName()
 	{

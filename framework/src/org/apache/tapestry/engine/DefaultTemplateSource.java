@@ -134,7 +134,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private IResourceLocation _applicationRootLocation;
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     private ITemplateSourceDelegate _delegate;
 

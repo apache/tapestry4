@@ -613,7 +613,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     public abstract void setSelected(List selected);
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public abstract void setControlsWidth(int controlsWidth);
 }

@@ -109,7 +109,7 @@ public abstract class TemplateToken implements ILocatable
      *  to the description.  Subclasses may override this method without invoking
      *  this implementation, which is empty.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

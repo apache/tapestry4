@@ -96,7 +96,7 @@ public final class Tapestry
      *  {@link #TAGSUPPORT_SERVICE} service.  The attribute
      *  defines the underlying service to for which a URL will be generated.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -110,7 +110,7 @@ public final class Tapestry
      *  service parameters (i.e., for use with the
      *  {@link #EXTERNAL_SERVICE}).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -122,7 +122,7 @@ public final class Tapestry
      *  with a service and service parameters via request attributes
      *  and creates a URI from the result, which is output to the response.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -251,7 +251,7 @@ public final class Tapestry
      *  Unlike most properties, value isn't inherited all the way up the chain.
      *  The default template extension is "html".
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -261,7 +261,7 @@ public final class Tapestry
     /**
      *  The default extension for templates, "html".
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -281,7 +281,7 @@ public final class Tapestry
      *  Suffix appended to a parameter name to form the name of a property that stores the
      *  binding for the parameter.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -293,7 +293,7 @@ public final class Tapestry
      *  extension must implement 
      *  {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -306,7 +306,7 @@ public final class Tapestry
      *  The extension must implement
      *  {@link org.apache.tapestry.engine.ITemplateSourceDelegate}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -331,7 +331,7 @@ public final class Tapestry
      *  (and is generally a configured instance of
      *  {@link org.apache.tapestry.multipart.DefaultMultipartDecoder}).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -1032,7 +1032,7 @@ public final class Tapestry
     /**
      *  Returns true if the Map is null or empty.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -1044,7 +1044,7 @@ public final class Tapestry
     /**
      *  Returns true if the Collection is null or empty.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -1127,7 +1127,7 @@ public final class Tapestry
      *  {@link javax.servlet.ServletContext}, based on
      *  the {@link javax.servlet.http.HttpServletRequest#getServletPath() servlet path}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -1193,7 +1193,7 @@ public final class Tapestry
     /**
      *  Creates an exception indicating the binding value is null.
      * 
-     *  @since 2.4 
+     *  @since 3.0 
      * 
      **/
 
@@ -1202,7 +1202,7 @@ public final class Tapestry
         return new BindingException(getString("null-value-for-binding"), binding);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public static ApplicationRuntimeException createNoSuchComponentException(
         IComponent component,
@@ -1214,7 +1214,7 @@ public final class Tapestry
             component, location, null);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public static BindingException createRequiredParameterException(
         IComponent component,
@@ -1227,7 +1227,7 @@ public final class Tapestry
             null);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public static ApplicationRuntimeException createRenderOnlyPropertyException(
         IComponent component,

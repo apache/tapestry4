@@ -95,7 +95,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  @see org.apache.tapestry.IPageSource
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 

@@ -82,7 +82,7 @@ public interface IMarkupWriter
      *
      * @throws IllegalStateException if there is no open tag.
      *
-     * @since 2.4
+     * @since 3.0
      **/
 
     public void attribute(String name, boolean value);
@@ -106,7 +106,7 @@ public interface IMarkupWriter
      * 
      * @throws IllegalStateException if there is no open tag.
      *
-     * @since 2.4
+     * @since 3.0
      **/
 
     public void attributeRaw(String name, String value);

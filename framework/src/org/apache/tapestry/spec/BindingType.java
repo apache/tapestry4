@@ -110,7 +110,7 @@ public final class BindingType extends Enum
      *  {@link ListenerBindingSpecification}.
      *  {@link IListenerBindingSpecification}.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     

@@ -936,7 +936,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
             _parameterManager.resetParameters(cycle);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public IComponentStrings getStrings()
     {

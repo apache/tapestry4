@@ -339,7 +339,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         _changeObserver = value;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void setPageName(String pageName)
     {
@@ -545,7 +545,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         firePageEndRender();
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public String getPageName()
     {

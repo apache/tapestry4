@@ -64,7 +64,7 @@ import org.apache.tapestry.wml.Deck;
  *
  *  @author David Solis
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  * 
  **/
 public class WMLException extends Deck 

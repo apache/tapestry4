@@ -37,7 +37,7 @@ package org.apache.tapestry.spec;
  * 
  * @author glongman@intelligentworks.com
  * @version $Id$
- * @since 2.4
+ * @since 3.0
  */
 public interface IListenerBindingSpecification extends IBindingSpecification
 {

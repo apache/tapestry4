@@ -73,7 +73,7 @@ import org.apache.tapestry.Tapestry;
 
 public abstract class AbstractBinding implements IBinding
 {
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     private Location _location;
 
@@ -95,7 +95,7 @@ public abstract class AbstractBinding implements IBinding
         PRIMITIVE_TYPES.put(double.class, Double.class);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     protected AbstractBinding(Location location)
     {
@@ -272,7 +272,7 @@ public abstract class AbstractBinding implements IBinding
         return PRIMITIVE_TYPES.get(primitiveType).equals(subjectClass);
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     protected BindingException createReadOnlyBindingException(IBinding binding)
     {

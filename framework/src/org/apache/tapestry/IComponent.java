@@ -338,7 +338,7 @@ public interface IComponent extends IRender, ILocationHolder
     /**
      *  Returns component strings for the component.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

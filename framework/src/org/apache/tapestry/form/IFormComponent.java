@@ -100,7 +100,7 @@ public interface IFormComponent extends IComponent
      *  Invoked by {@link IForm#getElementId(IComponent)} when a name is created
      *  for a form component.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     

@@ -63,7 +63,7 @@ import org.apache.tapestry.engine.ILink;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  * 
  **/
 public class StaticLink implements ILink

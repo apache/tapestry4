@@ -62,7 +62,7 @@ package org.apache.tapestry;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.4
+ *  @since 3.0
  *
  **/
 public class Location

@@ -111,7 +111,7 @@ public abstract class BorrowedBooks
 	 *  descending properties are changed.
 	 * 
 	 *  @param cycle
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 *
 	 **/

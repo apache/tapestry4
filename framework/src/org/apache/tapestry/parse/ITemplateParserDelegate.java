@@ -96,7 +96,7 @@ public interface ITemplateParserDelegate
      * 
      *  @throws ApplicationRuntimeException if the specification cannot be found
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

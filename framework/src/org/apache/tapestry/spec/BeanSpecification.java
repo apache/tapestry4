@@ -151,14 +151,14 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
         description = desc;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public void setClassName(String className)
     {
         this.className = className;
     }
     
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     
     public void setLifecycle(BeanLifecycle lifecycle)
     {

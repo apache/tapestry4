@@ -195,7 +195,7 @@ public class TestTemplateParser extends TestCase
         assertEquals("Text token end index.", endIndex, t.getEndIndex());
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     protected void checkLine(TemplateToken token, int line)
     {
@@ -610,7 +610,7 @@ public class TestTemplateParser extends TestCase
     /**
      *  Tests for implicit components (both named and anonymous).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
@@ -653,7 +653,7 @@ public class TestTemplateParser extends TestCase
     /**
      *  Test for encoded characters in an expression.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 

@@ -85,7 +85,7 @@ public class DirectService extends AbstractService
     /**
      *  Encoded into URL if engine was stateful.
      * 
-     *  @since 2.4
+     *  @since 3.0
      **/
 
     private static final String STATEFUL_ON = "1";
@@ -93,7 +93,7 @@ public class DirectService extends AbstractService
     /**
      *  Encoded into URL if engine was not stateful.
      * 
-     *  @since 2.4
+     *  @since 3.0
      **/
 
     private static final String STATEFUL_OFF = "0";

@@ -81,14 +81,14 @@ public class StringBeanInitializer extends AbstractBeanInitializer
         setBeanProperty(provider.getResourceResolver(), bean, value);
     }
     
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     
     public String getKey()
     {
         return _key;
     }
 
-	/** @since 2.4 **/
+	/** @since 3.0 **/
 	
     public void setKey(String key)
     {

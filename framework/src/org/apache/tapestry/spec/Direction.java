@@ -116,7 +116,7 @@ public class Direction extends Enum
 	 *  Causes a synthetic property to be created that automatically
 	 *  references and de-references the underlying binding.
 	 * 
-	 *  @since 2.4
+	 *  @since 3.0
 	 * 
 	 **/
 	

@@ -263,15 +263,15 @@ public interface IComponentSpecification extends IPropertyHolder, ILocationHolde
     public abstract boolean isPageSpecification();
     /** @since 2.2 **/
     public abstract void setPageSpecification(boolean pageSpecification);
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     public abstract IResourceLocation getSpecificationLocation();
-    /** @since 2.4 **/
+    /** @since 3.0 **/
     public abstract void setSpecificationLocation(IResourceLocation specificationLocation);
     /**
      *  Adds a new property specification.  The name of the property must
      *  not already be defined (and must not change after being added).
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     public abstract void addPropertySpecification(IPropertySpecification spec);
@@ -279,7 +279,7 @@ public interface IComponentSpecification extends IPropertyHolder, ILocationHolde
      *  Returns a sorted, immutable list of the names of all 
      *  {@link org.apache.tapestry.spec.IPropertySpecification}s.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
     public abstract List getPropertySpecificationNames();
@@ -287,7 +287,7 @@ public interface IComponentSpecification extends IPropertyHolder, ILocationHolde
      *  Returns the named {@link org.apache.tapestry.spec.IPropertySpecification},
      *  or null  if no such specification exist.
      * 
-     *  @since 2.4
+     *  @since 3.0
      *  @see #addPropertySpecification(IPropertySpecification)
      * 
      **/

@@ -103,7 +103,7 @@ applications can operate without an application specification.
 </para>
 
 <para>
-Prior to release 2.4, application specifications had to be stored on the classpath.  This 
+Prior to release 3.0, application specifications had to be stored on the classpath.  This 
 is maintained for backwards compatibility.  In modern applications, the specification is
 stored under &WEB-INF;.  In fact, Tapestry performs a search to find the specification:
 </para>

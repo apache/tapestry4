@@ -222,7 +222,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         return name;
     }
 
-    /** @since 2.4 **/
+    /** @since 3.0 **/
 
     public abstract ILinkRenderer getRenderer();
 
@@ -242,7 +242,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
      *  and invokes {@link org.apache.tapestry.IEngineService#buildGesture(IRequestCycle, IComponent, Object[])}
      *  on it.
      * 
-     *  @since 2.4
+     *  @since 3.0
      * 
      **/
 
