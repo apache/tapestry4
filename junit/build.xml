@@ -116,9 +116,12 @@
 		<sysproperty key="log4j.configuration" value="log4j-slow.properties"/> 
   	</java>  	
   	
+  	<antcall target="clover-report"/>
+</target>
+
+<target name="clover-report">
   	<mkdir dir="${clover.report.dir}"/>
-  
- 	  	
+  	  	
   	<java
   		classname="com.cortexeb.tools.clover.reporters.html.HtmlReporter"
   		fork="true">
