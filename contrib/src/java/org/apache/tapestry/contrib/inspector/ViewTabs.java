@@ -21,8 +21,6 @@ import org.apache.tapestry.IRequestCycle;
 /**
  *  Component of the {@link Inspector} page used to select the view.
  *
- *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

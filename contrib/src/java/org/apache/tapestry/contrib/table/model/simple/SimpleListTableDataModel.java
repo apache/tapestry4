@@ -29,7 +29,6 @@ import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
  * A minimal list implementation of the 
  * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SimpleListTableDataModel extends AbstractTableDataModel implements Serializable

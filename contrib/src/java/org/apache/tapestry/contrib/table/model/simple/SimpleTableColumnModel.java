@@ -29,7 +29,6 @@ import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
  * {@link org.apache.tapestry.contrib.table.model.ITableColumnModel} interface
  * that stores columns as an array.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SimpleTableColumnModel implements ITableColumnModel, Serializable

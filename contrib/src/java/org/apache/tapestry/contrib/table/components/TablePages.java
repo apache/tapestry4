@@ -30,7 +30,6 @@ import org.apache.tapestry.util.ComponentAddress;
  *  [<a href="../../../../../../../ComponentReference/contrib.TablePages.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  *
  */
 public abstract class TablePages extends AbstractTableViewComponent

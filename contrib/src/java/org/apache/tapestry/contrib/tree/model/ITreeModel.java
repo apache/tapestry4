@@ -16,7 +16,6 @@ package org.apache.tapestry.contrib.tree.model;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public interface ITreeModel {
 	ITreeDataModel getTreeDataModel();

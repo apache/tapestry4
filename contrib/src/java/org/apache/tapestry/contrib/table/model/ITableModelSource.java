@@ -22,7 +22,6 @@ import org.apache.tapestry.IComponent;
  * components wrapped by it, as well as by external renderers,
  * such as those provided by the column implementations
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ITableModelSource extends IComponent

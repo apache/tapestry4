@@ -20,7 +20,6 @@ import java.util.Iterator;
  * A simplified version of the table model that concerns itself only with
  * providing the data on the current page. 
  * 
- * @version $Id$
  * @author mindbridge
  * @since 3.0
  */

@@ -25,7 +25,6 @@ import org.apache.tapestry.IRequestCycle;
  * implementations via aggregation.
  * 
  * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn
- * @version $Id$
  * @author mindbridge
  * @since 2.3
  */

@@ -16,7 +16,6 @@ package org.apache.tapestry.contrib.tree.model;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class TreeRowObject {
     public static final int FIRST_ROW		= 1;

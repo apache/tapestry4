@@ -25,7 +25,6 @@ import org.apache.commons.logging.LogFactory;
 /**
  *  A wrapper around {@link Statement}.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

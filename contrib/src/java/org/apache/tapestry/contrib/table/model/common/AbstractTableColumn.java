@@ -31,7 +31,6 @@ import org.apache.tapestry.valid.RenderString;
  * that allows renderers to be set via aggregation.
  * 
  * @see org.apache.tapestry.contrib.table.model.ITableRendererSource
- * @version $Id$
  * @author mindbridge
  * @since 2.3
  */

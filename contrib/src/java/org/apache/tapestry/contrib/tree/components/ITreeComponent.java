@@ -20,8 +20,7 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * @author ceco
- * @version $Id$
- */
+  */
 public interface ITreeComponent {
 	ComponentAddress getComponentPath();
 	ITreeModelSource getTreeModelSource();

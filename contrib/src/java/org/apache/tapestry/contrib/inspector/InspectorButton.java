@@ -41,7 +41,6 @@ import org.apache.tapestry.html.Body;
  *  the containing page must use a {@link Body} component instead of
  *  a &lt;body&gt; tag.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

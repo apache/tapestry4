@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * @version $Id$
  * @author mindbridge
  */
 public class ArrayIterator implements Iterator

@@ -27,7 +27,6 @@ import org.apache.tapestry.html.BasePage;
  *  The Tapestry Inspector page.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  **/
 
 public abstract class Inspector extends BasePage

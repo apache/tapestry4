@@ -17,7 +17,6 @@ package org.apache.tapestry.contrib.table.model;
 /**
  * An interface defining the management of the table's paging state.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ITablePagingState

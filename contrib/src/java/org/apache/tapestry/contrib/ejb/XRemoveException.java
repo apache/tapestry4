@@ -19,7 +19,6 @@ import javax.ejb.RemoveException;
 /**
  *  Extended version of {@link RemoveException} that includes a root cause.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

@@ -16,10 +16,10 @@ package org.apache.tapestry.contrib.ejb;
 
 import javax.ejb.CreateException;
 
+
 /**
  *  Extended version of {@link CreateException} that includes a root cause.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

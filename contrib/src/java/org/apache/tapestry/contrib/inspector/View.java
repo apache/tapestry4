@@ -19,7 +19,6 @@ import org.apache.commons.lang.enum.Enum;
 /**
  *  Identifies different views for the inspector.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

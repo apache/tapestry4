@@ -18,7 +18,6 @@ import org.apache.tapestry.IComponent;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public interface ITreeModelSource extends IComponent
 {

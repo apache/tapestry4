@@ -206,7 +206,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *  </pre>
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

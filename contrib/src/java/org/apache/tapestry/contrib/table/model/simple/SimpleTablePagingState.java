@@ -22,7 +22,6 @@ import org.apache.tapestry.contrib.table.model.ITablePagingState;
  * A minimal implementation of 
  * {@link org.apache.tapestry.contrib.table.model.ITablePagingState}.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SimpleTablePagingState implements ITablePagingState, Serializable

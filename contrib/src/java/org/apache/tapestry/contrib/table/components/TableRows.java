@@ -39,7 +39,6 @@ import org.apache.tapestry.contrib.table.model.ITableRowSource;
  *  [<a href="../../../../../../../ComponentReference/contrib.TableRows.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  *
  */
 public abstract class TableRows extends AbstractTableViewComponent implements ITableRowSource

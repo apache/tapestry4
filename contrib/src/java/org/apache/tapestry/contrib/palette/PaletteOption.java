@@ -23,7 +23,6 @@ import org.apache.tapestry.IRequestCycle;
  * be sorted into an appropriate order.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class PaletteOption implements IRender
 {

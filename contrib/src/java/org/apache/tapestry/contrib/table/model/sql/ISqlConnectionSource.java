@@ -19,7 +19,6 @@ import java.sql.SQLException;
 
 /**
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ISqlConnectionSource

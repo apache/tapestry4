@@ -22,7 +22,6 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class TreeTableColumn extends SimpleTableColumn {
 

@@ -24,7 +24,6 @@ import org.apache.tapestry.contrib.table.model.ITableModelSource;
  *  [<a href="../../../../../../../ComponentReference/contrib.FormTable.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  *
  */
 public abstract class FormTable extends Table implements ITableModelSource

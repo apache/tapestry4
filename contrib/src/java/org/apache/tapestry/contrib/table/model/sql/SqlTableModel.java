@@ -52,7 +52,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
  *    return objTableModel;
  * </pre> 
  *  
- * @version $Id$
  * @author mindbridge
  */
 public class SqlTableModel extends AbstractTableModel 

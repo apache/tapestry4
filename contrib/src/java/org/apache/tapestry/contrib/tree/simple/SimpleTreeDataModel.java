@@ -24,7 +24,6 @@ import org.apache.tapestry.contrib.tree.model.ITreeNode;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class SimpleTreeDataModel implements ITreeDataModel, Serializable {
 

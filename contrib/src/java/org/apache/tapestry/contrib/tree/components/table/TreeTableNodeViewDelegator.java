@@ -22,7 +22,6 @@ import org.apache.tapestry.contrib.table.model.ITableRendererListener;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class TreeTableNodeViewDelegator extends BaseComponent implements ITableRendererListener{
 

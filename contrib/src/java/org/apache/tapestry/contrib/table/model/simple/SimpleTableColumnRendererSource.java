@@ -30,7 +30,6 @@ import org.apache.tapestry.util.ComponentAddress;
  * This implementation requires that the column passed is of type SimpleTableColumn
  * 
  * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn
- * @version $Id$
  * @author mindbridge
  * @since 2.3
  */

@@ -97,7 +97,6 @@ import org.apache.tapestry.event.PageRenderListener;
  *  [<a href="../../../../../../../ComponentReference/contrib.TableView.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  */
 public abstract class TableView
     extends BaseComponent

@@ -35,7 +35,6 @@ import org.apache.tapestry.util.ComponentAddress;
  * Clicking on the link causes the table to be sorted on that column.
  * Clicking on the link again causes the sorting order to be reversed.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SimpleTableColumnComponent

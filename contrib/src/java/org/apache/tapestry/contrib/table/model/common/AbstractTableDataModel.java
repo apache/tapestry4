@@ -26,7 +26,6 @@ import org.apache.tapestry.contrib.table.model.ITableDataModelListener;
 /**
  * An implementation of the listener support in the ITableDataModel interface
  * 
- * @version $Id$
  * @author mindbridge
  */
 public abstract class AbstractTableDataModel implements ITableDataModel

@@ -25,7 +25,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
  * A base table model that implements the handling of the model state.
  * Used by most standard ITableModel implementations.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public abstract class AbstractTableModel implements ITableModel, Serializable

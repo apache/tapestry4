@@ -22,10 +22,9 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  *  Implementation of {@link IMultiplePropertySelectionRenderer} that
  *  produces a table of checkbox (&lt;input type=checkbox&gt;) elements.
  *
- *  @version $Id$
  *  @author Sanjay Munjal
  *
- **/
+ */
 
 public class CheckBoxMultiplePropertySelectionRenderer
     implements IMultiplePropertySelectionRenderer

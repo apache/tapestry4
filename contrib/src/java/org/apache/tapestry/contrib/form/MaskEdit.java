@@ -56,7 +56,6 @@ import org.apache.tapestry.IBinding;
  * [<a href="../../../../../ComponentReference/MaskEdit.html">Component Reference</a>]
  *
  * @author Malcolm Edgar
- * @version $Id$
  * @since 2.3
  *
  **/

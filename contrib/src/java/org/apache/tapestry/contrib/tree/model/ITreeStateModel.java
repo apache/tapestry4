@@ -18,7 +18,6 @@ import java.util.Set;
 
 /**
  * @author ceco
- * @version $Id$
  */
 
 public interface ITreeStateModel {

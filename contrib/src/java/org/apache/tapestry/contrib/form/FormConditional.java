@@ -39,7 +39,6 @@ import org.apache.tapestry.util.io.DataSqueezer;
  *  [<a href="../../../../../ComponentReference/contrib.FormConditional.html">Component Reference</a>]
  *
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  * 
  **/

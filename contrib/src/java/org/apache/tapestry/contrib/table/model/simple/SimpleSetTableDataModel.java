@@ -26,7 +26,6 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableDataModel;
  * A minimal set implementation of the 
  * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SimpleSetTableDataModel extends AbstractTableDataModel implements Serializable

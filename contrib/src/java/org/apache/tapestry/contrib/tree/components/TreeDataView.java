@@ -26,7 +26,7 @@ import org.apache.tapestry.contrib.tree.model.ITreeRowSource;
 import org.apache.tapestry.contrib.tree.model.TreeRowObject;
 
 /**
- * @version $Id$
+ * @author tsveltin ?
  */
 public class TreeDataView extends BaseComponent implements ITreeRowSource{
     private IBinding m_objTreeViewBinding;

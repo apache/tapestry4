@@ -36,7 +36,6 @@ import java.util.Comparator;
  * <p>
  * objColumn.setComparator(new ColumnComparator(objColumn, objBeanComparator));    
  * 
- * @version $Id$
  * @author mindbridge
  *
  */

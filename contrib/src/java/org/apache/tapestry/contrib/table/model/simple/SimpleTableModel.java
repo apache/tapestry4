@@ -30,8 +30,7 @@ import org.apache.tapestry.contrib.table.model.common.ReverseComparator;
 
 /**
  * A simple generic table model implementation.
- * 
- * @version $Id$
+ *
  * @author mindbridge
  */
 public class SimpleTableModel extends AbstractTableModel implements ITableDataModelListener

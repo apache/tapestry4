@@ -108,7 +108,6 @@ import org.apache.tapestry.valid.ValidField;
  *  <p>Informal parameters are allowed.  A body is not allowed.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  * 
  *  @see ValidField

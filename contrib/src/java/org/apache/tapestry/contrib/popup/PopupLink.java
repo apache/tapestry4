@@ -29,7 +29,6 @@ import org.apache.tapestry.Tapestry;
  *
  *  [<a href="../../../../../../ComponentReference/contrib.PopupLink.html">Component Reference</a>]
  * 
- * @version $Id$ 
  * @author Joe Panico
  */
 public class PopupLink extends BaseComponent

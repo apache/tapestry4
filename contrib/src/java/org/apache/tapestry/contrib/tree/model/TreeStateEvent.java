@@ -16,7 +16,6 @@ package org.apache.tapestry.contrib.tree.model;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class TreeStateEvent {
 	public static final int SELECTED_NODE_CHANGED 	= 1;
