@@ -631,7 +631,7 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 	* are safe: either valid GTML characters or GTML entities (named or numeric).
 	*/
 
-	private void safePrint(char[] data, int offset, int length, boolean isURL)
+	private void safePrint(char[] data, int offset, int length, boolean isAttribute)
 	{
 		int i;
 		int start;
@@ -646,19 +646,13 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 		{
 			ch = data[offset + i];
 
-			// Ignore safe characters.  In an URL, ampersands
-			// are OK but quotes are not.  Outside a URL, ampersands
-			// won't be in safe[], but quotes will.
+			// Ignore safe characters.  In an attribute, quotes
+			// are not ok and are escaped.
 
 			isSafe = (ch < safe.length && safe[ch]);
 
-			if (isURL)
-			{
-				if (ch == '&')
-					isSafe = true;
-				else if (ch == '"')
+			if (isAttribute && ch == '"')
 					isSafe = false;
-			}
 
 			if (isSafe)
 			{
@@ -673,9 +667,13 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 
 			entity = null;
 
+			// Look for a known entity.
+			
 			if (ch < entities.length)
 				entity = entities[ch];
 
+			// Failing that, emit a numeric entity.
+			
 			if (entity == null)
 				entity = "&#" + (int) ch + ";";
 
