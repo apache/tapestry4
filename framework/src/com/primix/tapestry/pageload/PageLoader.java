@@ -176,13 +176,17 @@ public class PageLoader
     private IBinding convert(BindingType type, String bindingValue,
             IComponent container)
     {
+        // The most common type.
+
         if (type == BindingType.DYNAMIC)
     	    return new PropertyBinding(container, bindingValue);
 
-        if (type == BindingType.STATIC)
-    	    return new StaticBinding(bindingValue);
 
-      
+        // static and field bindings are pooled.  This allows the
+        // same instance to be used with many components.
+
+        if (type == BindingType.STATIC)
+    	    return pageSource.getStaticBinding(bindingValue);
 
         if (type == BindingType.FIELD)
             return pageSource.getFieldBinding(bindingValue);
@@ -190,7 +194,7 @@ public class PageLoader
         // Otherwise, its an inherited binding.  Dig it out of the container.
         // This may return null if the container doesn't have the named binding.
 
-    	return  container.getBinding(bindingValue);		
+    	return container.getBinding(bindingValue);		
 
     }
 

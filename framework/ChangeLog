@@ -1,3 +1,9 @@
+* Nov 13 2000 hship
+
+Allow static bindings to be pooled the same as field bindings.
+Make the Rollover component only emit a "name" attribute if it is dynamic 
+(i.e., has both an image and a focus and responds to mouse overs).  It was emitting an empty name attribute.
+
 * Nov 10 2000 hship
 
 Change the behavior of Forms and Form components slightly, such that it is possible
