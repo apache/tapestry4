@@ -171,12 +171,15 @@ public class PropertyBinding extends AbstractBinding
         }
     }
 
+    
     /**
      *  Returns false.
-     *
+     * 
+     *  @since 2.0.3
+     * 
      **/
-
-    public boolean isStatic()
+    
+    public boolean isInvariant()
     {
         return false;
     }

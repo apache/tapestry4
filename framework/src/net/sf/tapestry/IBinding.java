@@ -119,9 +119,23 @@ public interface IBinding
      *  Returns true if the value is statically defined.  Static values
      *  are always read-only.
      *
+     *  @deprecated use {@link #isInvariant()} instead.
      **/
 
     public boolean isStatic();
+
+
+	/**
+	 *  Returns true if the value is invariant (not changing; the
+	 *  same value returned each time).  Static and field bindings
+	 *  are always invariant, and property bindings may be
+	 *  marked invariant (as an optimization).
+	 * 
+	 *  @since 2.0.3
+	 * 
+	 **/
+	
+	public boolean isInvariant();
 
     /**
      *  Constructs a <code>Boolean</code> and invokes {@link #setObject(Object)}.

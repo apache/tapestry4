@@ -167,14 +167,29 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     *  Default implementation: returns true.
-     *
+     *  Default implementation: returns the result
+     *  of {@link #isInvariant()}.
+     * 
+     *  @deprecated use {@link #isInvariant()}
+     * 
      **/
 
     public boolean isStatic()
     {
-        return true;
+        return isInvariant();
     }
+
+	/**
+	 *  Default implementation: returns true.
+	 * 
+	 *  @since 2.0.3
+	 * 
+	 **/
+	
+	public boolean isInvariant()
+	{
+	    return true;
+	}
 
     public Object getObject(String parameterName, Class type)
     {

@@ -30,7 +30,10 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.Enum;
 
 /**
- *  Represents different types of parameters.
+ *  Represents different types of parameters.  Currently only 
+ *  in and custom are supported, but this will likely change
+ *  when Tapestry supports out parameters is some form (that reflects
+ *  form style processing).
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -48,25 +51,6 @@ public class Direction extends Enum
      **/
     
 	public static final Direction IN = new Direction("IN");
-	
-	/**
-	 *  The parameter value is provided to the component before render
-	 *  and is changed by the component during render.  At this time,
-	 *  parameters of this type are treated the same as {@link #CUSTOM}.
-	 * 
-	 **/
-	
-	public static final Direction IN_OUT = new Direction("IN_OUT");
-	
-	/**
-	 *  The parameter value is output only, only the value 
-	 *  after the component renders is important.  At this time,
-	 *  parameters of this type are treated the same as
-	 *  {@link #CUSTOM}.
-	 * 
-	 **/
-	
-	public static final Direction OUT = new Direction("OUT");
 	
 	/**
 	 *  Processing of the parameter is entirely the responsibility
