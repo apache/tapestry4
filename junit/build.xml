@@ -15,7 +15,8 @@
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/junit.jar"/>
-    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>    
+    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/> 
+    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>  
   </path>
 
   <target name="init">
