@@ -1,0 +1,21 @@
+<span jwcid="border">
+
+<p>This page demonstrates that Tapestry can interoperate with traditional web applications.
+The link below redirects out of Tapestry to a static HTML page.
+
+<p>
+Click <a href="#" jwcid="link">this link</a> to demonstrate.
+
+<p>
+
+The code to accomplish this is as simple as:
+
+<pre>
+    public void redirect(IRequestCycle cycle)
+    throws RequestCycleException
+    {
+        throw new RedirectException("redirect-target.html");
+    }
+</pre>
+
+</span>

@@ -39,6 +39,7 @@
 
       <fileset dir=".">
         <include name="images/**"/>
+        <include name="css/**"/>
         <include name="*.html"/>
         <!-- These are left around by Paint Shop Pro -->
         <exclude name="**/pspbrwse.jbf"/>

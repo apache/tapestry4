@@ -12,6 +12,7 @@
 
   <component id="shell" type="Shell">
     <static-binding name="title">Tapestry Workbench</static-binding>
+    <binding name="stylesheet" property-path="assets.stylesheet"/>
   </component>
   
   <component id="body" type="Body"/>
@@ -76,4 +77,6 @@
   <private-asset name="inactiveMid" resource-path="&here;/tab-inactive-mid.gif"/>
   <private-asset name="inactiveRight" resource-path="&here;/tab-inactive-right.gif"/>
 
+  <context-asset name="stylesheet" path="/css/workbench.css"/>
+  
  </specification>
