@@ -181,7 +181,7 @@ public class ExpressionBinding extends AbstractBinding
 
     /**
      *  Gets the value of the property path, with the assistance of a 
-     *  {@link PropertyHelper}.
+     *  OGNL.
      *
      *  @throws BindingException if an exception is thrown accessing the property.
      *

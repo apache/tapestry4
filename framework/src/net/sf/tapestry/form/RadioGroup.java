@@ -39,39 +39,7 @@ import net.sf.tapestry.Tapestry;
  *  update a property of some other object, much like a more flexible
  *  version of a {@link PropertySelection}.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- * <tr>
- *      <td>selected</td>
- *      <td>{@link Object}</td>
- *      <td>in-out</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>Read during rendering to determine which {@link Radio} will be the default.
- *  Updated during rewinding (when the form is submitted) to indicate which radio button
- *  was selected by the user.
- *  </td>
- *
- *  <tr>
- *		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>no</td>
- *		<td>If true, then all contained {@link Radio} components will be
- *		    disabled as well.</td> </tr>
- *
- *	</table>
- *
- * <p>Informal parameters are not allowed.
+ *  [<a href="../../../../../ComponentReference/RadioGroup.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -80,25 +48,25 @@ import net.sf.tapestry.Tapestry;
 
 public class RadioGroup extends AbstractFormComponent
 {
-    private IBinding selectedBinding;
+    private IBinding _selectedBinding;
   
-  	private boolean disabled;
+  	private boolean _disabled;
   	
     // Cached copy of the value from the selectedBinding
-    private Object selection;
+    private Object _selection;
 
     // The value from the HTTP request indicating which
     // Radio was selected by the user.
-    private int selectedOption;
+    private int _selectedOption;
 
     // The HTML field name used for this group (i.e., by all Radio buttons
     // within this group).
 
-    private String name;
+    private String _name;
 
-    private boolean rewinding;
-    private boolean rendering;
-    private int nextOptionId;
+    private boolean _rewinding;
+    private boolean _rendering;
+    private int _nextOptionId;
 
     /**
      *  A <code>RadioGroup</code> places itself into the {@link IRequestCycle} as
@@ -116,26 +84,26 @@ public class RadioGroup extends AbstractFormComponent
 
     public IBinding getSelectedBinding()
     {
-        return selectedBinding;
+        return _selectedBinding;
     }
 
     public void setSelectedBinding(IBinding value)
     {
-        selectedBinding = value;
+        _selectedBinding = value;
     }
 
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     public int getNextOptionId()
     {
-        if (!rendering)
+        if (!_rendering)
             throw new RenderOnlyPropertyException(this, "nextOptionId");
 
-        return nextOptionId++;
+        return _nextOptionId++;
     }
 
     /**
@@ -146,15 +114,15 @@ public class RadioGroup extends AbstractFormComponent
 
     public boolean isDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     public boolean isRewinding()
     {
-        if (!rendering)
+        if (!_rendering)
             throw new RenderOnlyPropertyException(this, "rewinding");
 
-        return rewinding;
+        return _rewinding;
     }
 
     /**
@@ -166,16 +134,16 @@ public class RadioGroup extends AbstractFormComponent
 
     public boolean isSelection(Object value)
     {
-        if (!rendering)
+        if (!_rendering)
             throw new RenderOnlyPropertyException(this, "selection");
 
-        if (selection == value)
+        if (_selection == value)
             return true;
 
-        if (selection == null || value == null)
+        if (_selection == null || value == null)
             return false;
 
-        return selection.equals(value);
+        return _selection.equals(value);
     }
 
     /**
@@ -186,7 +154,7 @@ public class RadioGroup extends AbstractFormComponent
 
     public void updateSelection(Object value)
     {
-        selectedBinding.setObject(value);
+        _selectedBinding.setObject(value);
     }
 
     /**
@@ -196,7 +164,7 @@ public class RadioGroup extends AbstractFormComponent
 
     public boolean isSelected(int option)
     {
-        return selectedOption == option;
+        return _selectedOption == option;
     }
 
     /**
@@ -218,43 +186,43 @@ public class RadioGroup extends AbstractFormComponent
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
 
-        rewinding = form.isRewinding();
+        _rewinding = form.isRewinding();
 
         // Used whether rewinding or not.
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         // When rewinding, find out which (if any) radio was selected by
         // the user.
 
-        if (rewinding)
+        if (_rewinding)
         {
-            String value = cycle.getRequestContext().getParameter(name);
+            String value = cycle.getRequestContext().getParameter(_name);
             if (value == null)
-                selectedOption = -1;
+                _selectedOption = -1;
             else
-                selectedOption = Integer.parseInt(value);
+                _selectedOption = Integer.parseInt(value);
         }
 
         try
         {
-            rendering = true;
-            nextOptionId = 0;
+            _rendering = true;
+            _nextOptionId = 0;
 
             // For rendering, the Radio components need to know what the current
             // selection is, so that the correct one can mark itself 'checked'.
 
-            if (!rewinding)
-                selection = selectedBinding.getObject();
+            if (!_rewinding)
+                _selection = _selectedBinding.getObject();
 
             renderWrapped(writer, cycle);
         }
         finally
         {
-            rendering = false;
-            selection = null;
+            _rendering = false;
+            _selection = null;
         }
 
         cycle.removeAttribute(ATTRIBUTE_NAME);
@@ -262,7 +230,7 @@ public class RadioGroup extends AbstractFormComponent
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
 }

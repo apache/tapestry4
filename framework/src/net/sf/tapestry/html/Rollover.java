@@ -49,70 +49,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  *  to create a rollover effect that works with both Netscape Navigator and 
  *  Internet Explorer.
  *
- *  A <code>Rollover</code> must be contained within a {@link Body} and within
- *  an {@link IServiceLink}.  The JavaScript handlers for dealing with mouse
- *  movement are applied to the &lt;a&gt; created by the {@link net.sf.tapestry.components.IServiceLink}.  For compatibility
- *  with Netscape 4, the handlers are attached using HTML attributes (it would cleaner
- *  and easier to do so using the DOM).
- *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction </td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *    <td>image</td>
- *    <td>{@link IAsset}</td>
- *    <td>in</td>
- *   	<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The (initial) image to show.</td>
- *	</tr>
- *
- * <tr>
- *		<td>focus</td>
- *		<td>{@link IAsset}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>If provided (and the component is not disabled), then a JavaScript <code>onMouseOver</code> event handler
- * is added to change the image.  An <code>onMouseOut</code> event handler is also
- * provided, to change the button to either it's base image, or its blur image. </td> </tr>
- *
- * <tr>
- *		<td>blur</td>
- *		<td>{@link IAsset}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>If provided (and the component is not disabled), then a JavaScript <code>onMouseOut</code> event handler
- *  is added to change the image when the mouse is moved off of the image. </td> </tr>
- *
- * <tr>
- *
- * <tr>
- *		<td>disabled</td>
- *		<td>{@link IAsset}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>Image used when the <code>Rollover</code> is disabled.  A <code>Rollover</code>
- * is disabled when the {@link IServiceLink} containing it is disabled.  If no disabled
- * asset is specified, then image asset is used instead.  
- * A disabled <code>Rollover</code> does not respond to the mouse.
-    </td> </tr>
- *
- * <tr>
- *
- * </table>
- *
- *  <p>Informal parameters are allowed and are applied to the &lt;img&gt; tag.  A body
- *  is not allowed.
+ *  [<a href="../../../../../ComponentReference/Rollover.html">Component Reference</a>]
  *
  *
  *  @author Howard Lewis Ship
@@ -122,12 +59,12 @@ import net.sf.tapestry.components.ServiceLinkEventType;
 
 public class Rollover extends AbstractComponent
 {
-    private IScript parsedScript;
+    private IScript _parsedScript;
 
-    private IAsset image;
-    private IAsset blur;
-    private IAsset focus;
-    private IAsset disabled;
+    private IAsset _image;
+    private IAsset _blur;
+    private IAsset _focus;
+    private IAsset _disabled;
 
     /**
      *  Converts an {@link IAsset} binding into a usable URL.  Returns null
@@ -183,16 +120,16 @@ public class Rollover extends AbstractComponent
 
         if (linkDisabled)
         {
-            imageURL = getAssetURL(disabled, cycle);
+            imageURL = getAssetURL(_disabled, cycle);
 
             if (imageURL == null)
-                imageURL = getAssetURL(image, cycle);
+                imageURL = getAssetURL(_image, cycle);
         }
         else
         {
-            imageURL = getAssetURL(image, cycle);
-            focusURL = getAssetURL(focus, cycle);
-            blurURL = getAssetURL(blur, cycle);
+            imageURL = getAssetURL(_image, cycle);
+            focusURL = getAssetURL(_focus, cycle);
+            blurURL = getAssetURL(_blur, cycle);
 
             dynamic = (focusURL != null) || (blurURL != null);
         }
@@ -234,15 +171,15 @@ public class Rollover extends AbstractComponent
 
     private IScript getParsedScript()
     {
-        if (parsedScript == null)
+        if (_parsedScript == null)
         {
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            parsedScript = source.getScript("/net/sf/tapestry/html/Rollover.script");
+            _parsedScript = source.getScript("/net/sf/tapestry/html/Rollover.script");
         }
 
-        return parsedScript;
+        return _parsedScript;
     }
 
     private String writeScript(
@@ -289,42 +226,42 @@ public class Rollover extends AbstractComponent
 
     public IAsset getBlur()
     {
-        return blur;
+        return _blur;
     }
 
     public void setBlur(IAsset blur)
     {
-        this.blur = blur;
+        _blur = blur;
     }
 
     public IAsset getDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(IAsset disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
     public IAsset getFocus()
     {
-        return focus;
+        return _focus;
     }
 
     public void setFocus(IAsset focus)
     {
-        this.focus = focus;
+        _focus = focus;
     }
 
     public IAsset getImage()
     {
-        return image;
+        return _image;
     }
 
     public void setImage(IAsset image)
     {
-        this.image = image;
+        _image = image;
     }
 
 }
