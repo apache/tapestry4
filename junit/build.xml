@@ -40,11 +40,13 @@
   <target name="run" depends="compile" description="Run the test suite.">
   	<junit printsummary="on" haltonfailure="on">
   	  <classpath>
-  	  	 <path refid="project.class.path"/>
   	  	 <path location="${classes}"/>
   	  	 <!-- Add the src directory back in, since package resources needed by
-  	  	      the tests are there. -->
+  	  	      the tests are there.  Also, ensure that the local copy 
+  	  	      of junit/running/excluded.properties overrides the default
+  	  	      copy in junit.jar -->
   	  	 <path location="${src}"/>
+  	  	 <path refid="project.class.path"/>
   	  </classpath>
 
   	  <test name="net.sf.tapestry.junit.TapestrySuite">

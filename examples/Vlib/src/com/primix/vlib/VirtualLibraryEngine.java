@@ -81,51 +81,8 @@ public class VirtualLibraryEngine extends SimpleEngine
 	private transient IPropertySelectionModel publisherModel;
 	private transient IPropertySelectionModel personModel;
 
-	/**
-	 *   The name ("external") of a service that exposes books or 
-	 *   persons in such as way that they are bookmarkable.
-	 *
-	 */
-
-	public static final String EXTERNAL_SERVICE = "external";
-
-	/**
-	 *  The external service is used to make the {@link ViewBook} and 
-	 *  {@link PersonPage} pages bookmarkable.  The URL will include the
-	 *  page (which must implement the {@link IExternalPage} interface),
-	 *  and the primary key of the {@link IBook}
-	 *  or {@link IPerson} EJB.
-	 *
-	 */
-
-	public class ExternalService extends AbstractService
-	{
-		public Gesture buildGesture(
-			IRequestCycle cycle,
-			IComponent component,
-			String[] parameters)
-		{
-			if (parameters == null || parameters.length != 2)
-				throw new ApplicationRuntimeException("external service requires two parameters.");
-
-			return assembleGesture(getServletPath(), EXTERNAL_SERVICE, null, parameters);
-		}
-
-		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
-			throws RequestCycleException, ServletException, IOException
-		{
-			serviceExternal(cycle, getParameters(cycle.getRequestContext()), output);
-
-			return true;
-		}
-
-		public String getName()
-		{
-			return EXTERNAL_SERVICE;
-		}
-
-	}
-
+	
+	
 	/**
 	 *  Creates an instance of {@link Visit}.
 	 *
@@ -163,79 +120,6 @@ public class VirtualLibraryEngine extends SimpleEngine
 	}
 
 	/**
-	 *  Used from a couple of pages to actually borrow a book.  The {@link Direct}
-	 * component should set its context to the primary key of the book to borrow.
-	 *
-	 */
-
-	/**
-	 *  Supports construction of the external service.
-	 *
-	 */
-
-	protected IEngineService constructService(String name)
-	{
-		if (name.equals("external"))
-			return new ExternalService();
-
-		return super.constructService(name);
-	}
-
-	/**
-	 *  Performs the actual servicing of the external service.
-	 *
-	 */
-
-	protected void serviceExternal(
-		IRequestCycle cycle,
-		String[] parameters,
-		ResponseOutputStream output)
-		throws RequestCycleException, ServletException, IOException
-	{
-		IExternalPage page;
-
-		if (parameters == null || parameters.length != 2)
-			throw new ApplicationRuntimeException("external service requires two parameters.");
-
-		String pageName = parameters[0];
-		String key = parameters[1];
-
-		IMonitor monitor = cycle.getMonitor();
-
-		if (monitor != null)
-			monitor.serviceBegin(EXTERNAL_SERVICE, pageName + " " + key);
-
-		Integer primaryKey = new Integer(key);
-
-		try
-		{
-			page = (IExternalPage) cycle.getPage(pageName);
-		}
-		catch (ClassCastException e)
-		{
-			throw new ApplicationRuntimeException(
-				"Page "
-					+ pageName
-					+ " may not be used with the "
-					+ EXTERNAL_SERVICE
-					+ " service.");
-		}
-
-		page.setup(primaryKey, cycle);
-
-		// We don't invoke page.validate() because the whole point of this
-		// service is to allow unknown (fresh) users to jump right
-		// to the page.
-
-		// Render the response.
-
-		render(cycle, output);
-
-		if (monitor != null)
-			monitor.serviceEnd(EXTERNAL_SERVICE);
-	}
-
-	/**
 	 *  Sets the visit property to null, and sets a flag that
 	 *  invalidates the {@link HttpSession} at the end of the request cycle.
 	 *
@@ -265,8 +149,7 @@ public class VirtualLibraryEngine extends SimpleEngine
 		return bookQueryHome;
 	}
 
-	public IOperationsHome getOperationsHome()
-	
+	public IOperationsHome getOperationsHome()	
 	{
 		if (operationsHome == null)
 			operationsHome =
@@ -283,8 +166,7 @@ public class VirtualLibraryEngine extends SimpleEngine
 	 *
 	 */
 
-	public IOperations getOperations()
-	
+	public IOperations getOperations()	
 	{
 		IOperationsHome home;
 

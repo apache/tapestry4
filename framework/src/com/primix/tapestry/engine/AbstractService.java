@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -33,11 +33,20 @@ import java.util.Map;
 
 import com.primix.tapestry.Gesture;
 import com.primix.tapestry.IEngineService;
+import com.primix.tapestry.IRequestCycle;
 import com.primix.tapestry.RequestContext;
 import com.primix.tapestry.util.StringSplitter;
+import com.primix.tapestry.util.pool.Pool;
 
 /**
- *  Abstract base class for implementing engine services.
+ *  Abstract base class for implementing engine services.  Instances of services
+ *  are shared by many engines and threads, so they must be threadsafe.
+ * 
+ *  <p>For efficiency, this class implements several protected methods for providing
+ *  and discarding common objects.  These make use of a {@link Pool} to store values
+ *  for later re-use.  After invoking <code>discard()</code>, make no further
+ *  changes to the object.  Only invoke <code>discard()</code> on an object
+ *  returned by a <code>provide<i>Type</i>()</code> method.
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -48,26 +57,86 @@ public abstract class AbstractService implements IEngineService
 {
 	private static final int MAP_SIZE = 3;
 
-	protected StringBuffer buffer;
-	private StringSplitter splitter;
+	private Pool helperBeanPool;
+
+	private static StringSplitter splitter = new StringSplitter('/');
 
 	/**
-	 *  Returns a buffer, cleared and ready to go.
-	 *
+	 *  Returns a buffer, cleared and ready to go.  For efficiency, callers should
+	 *  invoke {@link #discard(StringBuffer)} when done with the buffer.
+	 * 
 	 */
 
-	protected StringBuffer getBuffer()
+	protected StringBuffer provideStringBuffer()
 	{
-		if (buffer == null)
-			buffer = new StringBuffer();
-		else
-			buffer.setLength(0);
+		StringBuffer result =
+			(StringBuffer) helperBeanPool.retrieve(StringBuffer.class.getName());
 
-		return buffer;
+		if (result == null)
+			result = new StringBuffer();
+
+		return result;
+	}
+
+	private void discard(Object value)
+	
+	{
+		helperBeanPool.store(value.getClass().getName(), value);
+	}
+
+	protected void discard(StringBuffer buffer)
+	{
+		buffer.setLength(0);
+		discard((Object) buffer);
+	}
+
+	protected String[] provideString(int length)
+	{
+		String key = "java.lang.String[" + length + "]";
+
+		String[] result = (String[]) helperBeanPool.retrieve(key);
+
+		if (result == null)
+			result = new String[length];
+
+		return result;
+	}
+
+	protected void discard(String[] array)
+	{
+		for (int i = 0; i < array.length; i++)
+			array[i] = null;
+
+		String key = "java.lang.String[" + array.length + "]";
+
+		helperBeanPool.store(key, array);
 	}
 
 	/**
-	 *  Assembles a URL.
+	 *  Returns an instance of {@link HashMap}.
+	 * 
+	 **/
+
+	protected Map provideMap()
+	{
+		Map result = (Map) helperBeanPool.retrieve(HashMap.class.getName());
+
+		if (result == null)
+			result = new HashMap();
+
+		return result;
+	}
+
+	protected void discard(Map map)
+	
+	{
+		map.clear();
+
+		discard((Object) map);
+	}
+
+	/**
+	 *  Assembles a URL for the service.
 	 *
 	 *  @param the path for the servlet for this Tapestry application
 	 *  @param serviceName the name of the service
@@ -79,23 +148,18 @@ public abstract class AbstractService implements IEngineService
 	 */
 
 	protected Gesture assembleGesture(
-		String servletPath,
+		IRequestCycle cycle,
 		String serviceName,
 		String[] serviceContext,
 		String[] parameters)
 	{
-		if (buffer == null)
-			buffer = new StringBuffer();
-		else
-			buffer.setLength(0);
-
-		Map map = new HashMap(MAP_SIZE);
+		Map map = provideMap();
 
 		map.put(SERVICE_QUERY_PARAMETER_NAME, serviceName);
 
 		if (serviceContext != null && serviceContext.length > 0)
 		{
-			StringBuffer buffer = getBuffer();
+			StringBuffer buffer = provideStringBuffer();
 
 			for (int i = 0; i < serviceContext.length; i++)
 			{
@@ -106,11 +170,13 @@ public abstract class AbstractService implements IEngineService
 			}
 
 			map.put(CONTEXT_QUERY_PARMETER_NAME, buffer.toString());
+
+			discard(buffer);
 		}
 
 		if (parameters != null && parameters.length != 0)
 		{
-			StringBuffer buffer = getBuffer();
+			StringBuffer buffer = provideStringBuffer();
 
 			for (int i = 0; i < parameters.length; i++)
 			{
@@ -121,9 +187,15 @@ public abstract class AbstractService implements IEngineService
 			}
 
 			map.put(PARAMETERS_QUERY_PARAMETER_NAME, buffer.toString());
+
+			discard(buffer);
 		}
 
-		return new Gesture(servletPath, map);
+		Gesture result = new Gesture(cycle.getEngine().getServletPath(), map);
+
+		discard(map);
+
+		return result;
 	}
 
 	/**
@@ -133,9 +205,6 @@ public abstract class AbstractService implements IEngineService
 
 	protected StringSplitter getSplitter()
 	{
-		if (splitter == null)
-			splitter = new StringSplitter('/');
-
 		return splitter;
 	}
 
@@ -172,4 +241,10 @@ public abstract class AbstractService implements IEngineService
 
 		return result;
 	}
+
+	public void setHelperBeanPool(Pool value)
+	{
+		helperBeanPool = value;
+	}
+
 }

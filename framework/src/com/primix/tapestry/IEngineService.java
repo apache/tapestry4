@@ -31,6 +31,8 @@ import java.io.*;
 
 // Appease Javadoc
 import com.primix.tapestry.link.*;
+import com.primix.tapestry.util.pool.Pool;
+
 import com.primix.tapestry.form.*;
 import com.primix.tapestry.engine.*;
 import javax.servlet.http.*;
@@ -165,10 +167,12 @@ public interface IEngineService
 	 *  invoke activity in a subsequent request cycle.
 	 *
 	 *  @param cycle Defines the request cycle being processed.
-	 *  @param component The component requesting the URL.
+	 *  @param component The component requesting the URL.  Generally, the
+	 *  service context is established from the component.
 	 *  @param parameters Additional parameters specific to the
 	 *  component requesting the Gesture.
-	 *  @returns The URL for the service.  The URL will have need to be encoded.
+	 *  @returns The URL for the service.  The URL will have to be encoded
+	 *  via {@link HttpServletResponse#encodeURL(java.lang.String)}.
 	 *
 	 */
 
@@ -186,10 +190,15 @@ public interface IEngineService
 	 * change the state of the {@link IEngine engine}.  Generally, this is true.
 	 *
 	 *  @see IEngine#service(RequestContext)
-	 *
+	 *  @param engine a view of the {@link IEngine} with additional methods needed by services
+	 *  @param cycle the incoming request
+	 *  @param output stream to which output should ultimately be directed
 	 */
 
-	public boolean service(IRequestCycle cycle, ResponseOutputStream output)
+	public boolean service(
+		IEngineServiceView engine,
+		IRequestCycle cycle,
+		ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException;
 
 	/**
@@ -199,5 +208,14 @@ public interface IEngineService
 	 */
 
 	public String getName();
+	
+	/**
+	 *  Invoked just after the instance is created to inform it of where it's helper bean
+	 *  pool is.
+	 * 
+	 *  @since 1.0.9
+	 **/
+	
+	public void setHelperBeanPool(Pool value);
 
 }

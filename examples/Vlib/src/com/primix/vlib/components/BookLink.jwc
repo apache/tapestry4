@@ -4,7 +4,7 @@
 <specification class="com.primix.vlib.components.BookLink" allow-body="no" allow-informal-parameters="no">
   <parameter name="book" java-type="com.primix.vlib.ejb.Book" required="yes"/>
   <component id="link" type="Service">
-    <field-binding name="service" field-name="com.primix.vlib.VirtualLibraryEngine.EXTERNAL_SERVICE"/>
+    <field-binding name="service" field-name="com.primix.vlib.ExternalService.SERVICE_NAME"/>
     <binding name="context" property-path="context"/>
   </component>
   <component id="insertBookTitle" type="Insert">

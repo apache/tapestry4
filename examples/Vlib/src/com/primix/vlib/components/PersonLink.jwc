@@ -22,7 +22,7 @@
   </component>
   
   <component id="link" type="Service">
-    <static-binding name="service">external</static-binding>
+    <field-binding name="service" field-name="com.primix.vlib.ExternalService.SERVICE_NAME"/>
     <binding name="context" property-path="context"/>
     <inherited-binding name="class" parameter-name="class"/>
   </component>

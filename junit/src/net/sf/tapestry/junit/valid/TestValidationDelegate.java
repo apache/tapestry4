@@ -85,7 +85,7 @@ public class TestValidationDelegate extends TestCase
 		assertEquals("Bad Stuff", t.getInvalidInput());
 		assertEquals(ValidationConstraint.TOO_LARGE, t.getConstraint());
 		
-		assert(d.getHasErrors());
+		assertTrue(d.getHasErrors());
 		assertEquals(errorMessage, d.getFirstError());
 	}
 	

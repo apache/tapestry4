@@ -28,8 +28,14 @@ package com.primix.tapestry.spec;
 
 import com.primix.tapestry.*;
 import java.util.*;
+
+import com.primix.tapestry.asset.AssetService;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.html.*;
+import com.primix.tapestry.engine.ActionService;
+import com.primix.tapestry.engine.DirectService;
+import com.primix.tapestry.engine.PageService;
+import com.primix.tapestry.engine.RestartService;
 import com.primix.tapestry.form.*;
 import com.primix.tapestry.link.*;
 import com.primix.tapestry.valid.*;
@@ -60,6 +66,12 @@ public class ApplicationSpecification extends BasePropertyHolder
 	// keyed on String (component alias), may often be null.
 
 	private Map componentMap;
+
+
+	// Map of String (name of service) to String (Java class name), often null
+	
+	private Map serviceMap;
+	
 
 	// The Default component map is shared by all specifications
 
@@ -134,6 +146,8 @@ public class ApplicationSpecification extends BasePropertyHolder
 	// Default page map shared by all applications.
 
 	private static Map defaultPageMap = new HashMap(MAP_SIZE);
+	
+	static
 	{
 		// Provide defaults for three of the four standard pages.
 		// An application must provide a home page and may override
@@ -155,6 +169,31 @@ public class ApplicationSpecification extends BasePropertyHolder
 		defaultPageMap.put(
 			"Inspector",
 			new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));
+	}
+	
+	private static Map defaultServiceMap = new HashMap(MAP_SIZE);
+	
+	static
+	{
+		defaultServiceMap.put(
+			IEngineService.HOME_SERVICE,
+			"com.primix.tapestry.engine.HomeService");
+		defaultServiceMap.put(
+			IEngineService.ACTION_SERVICE,
+			"com.primix.tapestry.engine.ActionService");
+		defaultServiceMap.put(
+			IEngineService.DIRECT_SERVICE,
+				"com.primix.tapestry.engine.DirectService");
+		defaultServiceMap.put(
+		IEngineService.PAGE_SERVICE, "com.primix.tapestry.engine.PageService");
+		defaultServiceMap.put(
+			IEngineService.RESET_SERVICE, "com.primix.tapestry.engine.ResetService");
+		defaultServiceMap.put(
+			IEngineService.RESTART_SERVICE,
+			"com.primix.tapestry.engine.RestartService");
+		defaultServiceMap.put(
+			IEngineService.ASSET_SERVICE,"com.primix.tapestry.asset.AssetService");
+			
 	}
 
 	/**
@@ -343,7 +382,8 @@ public class ApplicationSpecification extends BasePropertyHolder
 	/**
 	 *  Returns a {@link Collection}
 	 *  of the String names of the pages defined
-	 *  by the application.
+	 *  by the application.  The Collection is ordered so
+	 *  that the names are sorted alphabetically.
 	 *
 	 */
 
@@ -351,7 +391,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 	{
 		Collection result;
 
-		result = new HashSet();
+		result = new TreeSet(defaultPageMap.keySet());
 
 		// Add any pages specific to this application (a running application
 		// will always have at least one page, Home, but we check for null
@@ -359,11 +399,6 @@ public class ApplicationSpecification extends BasePropertyHolder
 
 		if (pageMap != null)
 			result.addAll(pageMap.keySet());
-
-		// Now add any additional pages (such as Inspector) that are provided
-		// by the system.
-
-		result.addAll(defaultPageMap.keySet());
 
 		return result;
 	}
@@ -443,6 +478,93 @@ public class ApplicationSpecification extends BasePropertyHolder
 				Tapestry.getString("ApplicationSpecification.duplicate-page", name));
 
 		pageMap.put(name, spec);
+	}
+
+	/**
+	 *  Adds a new engine service.  May override a default service, but may
+	 *  not duplicate an existing service.
+	 * 
+	 *  @param name the name of the service
+	 *  @param className the JavaBean class that implements the service
+	 *  @since 1.0.9
+	 **/
+
+	public void addService(String name, String className)
+	{
+		if (serviceMap == null)
+			serviceMap = new HashMap(MAP_SIZE);
+			
+		if (serviceMap.containsKey(name))
+			throw new IllegalArgumentException(
+				Tapestry.getString("ApplicationSpecification.duplicate-service", name));
+				
+		serviceMap.put(name, className);
+	}
+	
+	/**
+	 *  Returns the Java class to instantiate for a given service name, or null
+	 *  if the service does not exist.
+	 * 
+	 *  <p>Applications have a number of default services:
+	 * 
+	 *  <p>
+	 *  <table border="1">
+	 * 	<tr> <th>Name</th> <th>Class</th> </tr>
+	 *  <tr>
+	 * 		<td>action</td> <td>{@link ActionService}</td> 
+	 *  </tr>
+	 *  <tr>
+	 * 		<td>asset</td> <td>{@link AssetService} </td>
+	 *  </tr>
+	 *  <tr>
+	 * 		<td>direct</td> <td>{@link DirectService}</td>
+	 *	</tr>
+	 *  <tr>
+	 * 		<td>home</td> <td>{@link HomeService}</td> 
+	 *  </tr>
+	 *  <tr>
+	 * 		<td>page</td> <td>{@link PageService}</td>
+	 *  </tr>
+	 *  <tr>
+	 * 		<td>reset</td> <td> {@link ResetService} </td>
+	 *  </tr>
+	 *  <tr>
+	 * 		<td>restart</td> <td>{@link RestartService}</td>
+	 *  </tr>
+	 *  </table>
+	 * 
+	 *  @since 1.0.9
+	 **/
+	
+	public String getServiceClassName(String serviceName)
+	{
+		String result = null;
+		
+		if (serviceMap != null)
+			result = (String)serviceMap.get(serviceName);
+			
+		if (result ==  null)
+			result = (String)defaultServiceMap.get(serviceName);
+			
+		return result;
+	}
+	
+	/**
+	 *  Returns the names of all services (default and specific to the application).
+	 *  The collection returned will order the names alphabetically.
+	 * 
+	 *  @since 1.0.9
+	 * 
+	 **/
+	
+	public Collection getServiceNames()
+	{
+		Collection result = new TreeSet(defaultServiceMap.keySet());
+		
+		if (serviceMap != null)
+			result.addAll(serviceMap.keySet());
+			
+		return result;
 	}
 
 	public String toString()

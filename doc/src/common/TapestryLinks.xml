@@ -35,6 +35,7 @@
 <!ENTITY IDirect '<ulink url="&ApiRoot;/IDirect.html"><classname>IDirect</classname></ulink>'>
 <!ENTITY IDirectListener '<ulink url="&ApiRoot;/IDirectListener .html"><classname>IDirectListener</classname></ulink>'>
 <!ENTITY IEngine '<ulink url="&ApiRoot;/IEngine.html"><classname>IEngine</classname></ulink>'>
+<!ENTITY IEngineService '<ulink url="&ApiRoot;/IEngineService.html"><classname>IEngineService</classname></ulink>'>
 <!ENTITY ILifecycle '<ulink url="&ApiRoot;/ILifecycle.html"><classname>ILifecycle</classname></ulink>'>
 <!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
 <!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
