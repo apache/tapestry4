@@ -20,7 +20,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -42,7 +42,7 @@ import com.primix.tapestry.spec.ComponentSpecification;
 public interface IPageLoader
 {
 	/**
-	 *  Returns the engine for which this page loader is currently
+	 *  Returns the engine for which this page loader is curently
 	 *  constructing a page.
 	 *
 	 * @since 0.2.12

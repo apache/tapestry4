@@ -55,187 +55,194 @@ import javax.servlet.http.*;
 public interface IEngine
 {
     /**
-    *  The name ("Home") of the default page presented when a user first accesses the
-    *  application.
-    *
-    */
-
+	 *  The name ("Home") of the default page presented when a user first accesses the
+	 *  application.
+	 *
+	 */
+	
     public static final String HOME_PAGE = "Home";
-
+	
     /**
-    *  The name ("Exception") of the page used for reporting exceptions.
-    *  
-    *  <p>Such a page must have
-    *  a writable JavaBeans property named 'exception' of type 
-    * <code>java.lang.Throwable</code>.
-    *
-    */
-
+	 *  The name ("Exception") of the page used for reporting exceptions.
+	 *  
+	 *  <p>Such a page must have
+	 *  a writable JavaBeans property named 'exception' of type 
+	 * <code>java.lang.Throwable</code>.
+	 *
+	 */
+	
     public static final String EXCEPTION_PAGE = "Exception";
-
+	
     /**
-    *  The name ("StaleLink") of the page used for reporting stale links.
-    *
-    */
-
+	 *  The name ("StaleLink") of the page used for reporting stale links.
+	 *
+	 */
+	
     public static final String STALE_LINK_PAGE = "StaleLink";
-
+	
     /**
-    *  The name ("StaleSession") of the page used for reporting state sessions.
-    *
-    */
-
+	 *  The name ("StaleSession") of the page used for reporting state sessions.
+	 *
+	 */
+	
     public static final String STALE_SESSION_PAGE = "StaleSession";
-
+	
     /**
-    *  Forgets changes to the named page by discarding the page recorder for the page.
-    *  This is used when transitioning from one part
-    *  of an application to another.  All property changes for the page are lost.
-    *
-    *  <p>Throws an {@link ApplicationRuntimeException} if there are uncommitted changes
-    *  for the recorder (in the current request cycle).
-    *
-    */
-
+	 *  Forgets changes to the named page by discarding the page recorder for the page.
+	 *  This is used when transitioning from one part
+	 *  of an application to another.  All property changes for the page are lost.
+	 *
+	 *  <p>Throws an {@link ApplicationRuntimeException} if there are uncommitted changes
+	 *  for the recorder (in the current request cycle).
+	 *
+	 */
+	
     public void forgetPage(String name);
-
+	
     /**
-    *  Returns the locale for the engine.  This locale is used when selecting
-    *  templates and assets.  If the local has not been set (is null), then this
-    *  method should return the default locale for the JVM.
-    *
-    */
-
+	 *  Returns the locale for the engine.  This locale is used when selecting
+	 *  templates and assets.  If the local has not been set (is null), then this
+	 *  method should return the default locale for the JVM.
+	 *
+	 */
+	
     public Locale getLocale();
-
+	
     /**
-    *  Changes the engine's locale.  Any subsequently loaded pages will be
-    *  in the new locale (though pages already loaded stay in the old locale).
-    *  Generally, you should render a new page after changing the locale, to
-    *  show that the locale has changed.
-    *
-    */
-
+	 *  Changes the engine's locale.  Any subsequently loaded pages will be
+	 *  in the new locale (though pages already loaded stay in the old locale).
+	 *  Generally, you should render a new page after changing the locale, to
+	 *  show that the locale has changed.
+	 *
+	 */
+	
     public void setLocale(Locale value);
-
+	
     /**
-    *  Returns a recorder for a page.  Returns null if the page record has
-	*  not been created yet.
-    *
-	*  @see #createPageRecorder(String)
-    */
-
+	 *  Returns a recorder for a page.  Returns null if the page record has
+	 *  not been created yet.
+	 *
+	 *  @see #createPageRecorder(String)
+	 */
+	
     public IPageRecorder getPageRecorder(String pageName);
-
+	
 	/**
 	 *  Creates a new page recorder for the named page.
 	 *
 	 */
-	 
+	
 	public IPageRecorder createPageRecorder(String pageName);
 	
     /**
-    *  Returns the object used to load a page from its specification.
-    *
-    */
-
+	 *  Returns the object used to load a page from its specification.
+	 *
+	 */
+	
     public IPageSource getPageSource();
-
+	
     /**
-    *  Gets the named service, or throws an {@link
-    *  ApplicationRuntimeException} if the application can't provide
-    *  the named server.
-    *
-    *  <p>The object returned has a short lifecycle (it isn't
-    *  serialized with the engine).  Repeated calls with the
-    *  same name are not guarenteed to return the same object,
-    *  especially in different request cycles.
-    *
-    */
-
+	 *  Gets the named service, or throws an {@link
+	 *  ApplicationRuntimeException} if the application can't provide
+	 *  the named server.
+	 *
+	 *  <p>The object returned has a short lifecycle (it isn't
+	 *  serialized with the engine).  Repeated calls with the
+	 *  same name are not guarenteed to return the same object,
+	 *  especially in different request cycles.
+	 *
+	 */
+	
     public IEngineService getService(String name);
-
+	
     /**
-    *  Returns the URL prefix that corresponds to the servlet for the application.  
-    *  This is required by instances of {@link IEngineService} that need 
-    *  to construct URLs for the application.  This value will include
-    *  the context path.
-    */
-
+	 *  Returns the URL prefix that corresponds to the servlet for the application.  
+	 *  This is required by instances of {@link IEngineService} that need 
+	 *  to construct URLs for the application.  This value will include
+	 *  the context path.
+	 */
+	
     public String getServletPrefix();
-
+	
     /**
-    *  Returns the context path, a string which is prepended to the names of
-    *  any assets or servlets.  This may be the empty string, but won't be null.
-    *
-    *  <p>This value is obtained from {@link HttpServletRequest#getContextPath()}.
-    */
-
+	 *  Returns the context path, a string which is prepended to the names of
+	 *  any assets or servlets.  This may be the empty string, but won't be null.
+	 *
+	 *  <p>This value is obtained from {@link HttpServletRequest#getContextPath()}.
+	 */
+	
     public String getContextPath();
-
+	
     /**
-    *  Returns the application specification that defines the application
-    *  and its pages.
-    *
-    */
-
+	 *  Returns the application specification that defines the application
+	 *  and its pages.
+	 *
+	 */
+	
     public ApplicationSpecification getSpecification();
-
+	
     /**
-    *  Returns the source of all component specifications for the application.  
-    *  The source is shared between sessions.
-    *
-    */
-
+	 *  Returns the source of all component specifications for the application.  
+	 *  The source is shared between sessions.
+	 *
+	 */
+	
     public ISpecificationSource getSpecificationSource();
-
+	
     /**
-    *  Returns the source for HTML templates.
-    *
-    */
-
+	 *  Returns the source for HTML templates.
+	 *
+	 */
+	
     public ITemplateSource getTemplateSource();
-
+	
     /**
-    *  Method invoked from the {@link ApplicationServlet} to perform processing of the
-    *  request.
-    *
-    */
-
-    public void service(RequestContext context)
-    throws ServletException, IOException;
-
+	 *  Method invoked from the {@link ApplicationServlet} to perform processing of the
+	 *  request.  The return value for this method indicates whether the state of the engine
+	 *  could possibly change during processing; in most cases this is true.  In a few
+	 *  possible cases, this is false.  The ApplicationServlet sometimes performs extra
+	 *  work to ensure that the engine is properly replicated in a clustering environment; if
+	 *  this method returns false, it can skip that extra work.
+	 *
+	 *  @returns true if the state of the engine was, or could have been, changed during
+	 *  processing.
+	 *
+	 */
+	
+    public boolean service(RequestContext context)
+		throws ServletException, IOException;
+	
     /**
-    *  Returns an object that can resolve resources and classes.
-    *
-    */
-
+	 *  Returns an object that can resolve resources and classes.
+	 *
+	 */
+	
     public IResourceResolver getResourceResolver();
-
+	
     /**
-    *  Returns the visit object, an object that represents the client's visit
-    *  to the application.  This is where most server-side state is stored (with
-    *  the exception of persistent page properties).
-    *
-	*  <p>Returns the visit, if it exists, or null if it has not been created.
-    *
-    */
-
+	 *  Returns the visit object, an object that represents the client's visit
+	 *  to the application.  This is where most server-side state is stored (with
+	 *  the exception of persistent page properties).
+	 *
+	 *  <p>Returns the visit, if it exists, or null if it has not been created.
+	 *
+	 */
+	
     public Object getVisit();
-
+	
 	/**
 	 *  Returns the visit object, creating it if necessary.
 	 *
 	 */
-	 
+	
 	public Object getVisit(IRequestCycle cycle);
 	
     /**
-    *  Allows the visit object to be removed; typically done when "shutting down"
-    *  a user's session (by setting the visit to null).
-    *
-    */
-
+	 *  Allows the visit object to be removed; typically done when "shutting down"
+	 *  a user's session (by setting the visit to null).
+	 *
+	 */
+	
     public void setVisit(Object value);
 	
 	/**
@@ -243,6 +250,6 @@ public interface IEngine
 	 *
 	 *  @since 0.2.9
 	 */
-	 
+	
 	public boolean isResetServiceEnabled();
 }
