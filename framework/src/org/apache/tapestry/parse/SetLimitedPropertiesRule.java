@@ -59,6 +59,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.Attributes;
 
@@ -77,8 +78,6 @@ public class SetLimitedPropertiesRule extends AbstractSpecificationRule
     private String[] _attributeNames;
     private String[] _propertyNames;
 
-    private Map _populateMap = new HashMap();
-
     public SetLimitedPropertiesRule(String attributeName, String propertyName)
     {
         this(new String[] { attributeName }, new String[] { propertyName });
@@ -92,7 +91,7 @@ public class SetLimitedPropertiesRule extends AbstractSpecificationRule
 
     public void begin(String namespace, String name, Attributes attributes) throws Exception
     {
-        _populateMap.clear();
+        Object top = digester.peek();
 
         int count = attributes.getLength();
 
@@ -110,22 +109,14 @@ public class SetLimitedPropertiesRule extends AbstractSpecificationRule
                     String value = attributes.getValue(i);
                     String propertyName = _propertyNames[x];
 
-                    _populateMap.put(propertyName, value);
-
+                    PropertyUtils.setProperty(top, propertyName, value);
+                    
+                    // Terminate inner loop when attribute name is found.
+                    
                     break;
                 }
             }
         }
-
-        if (_populateMap.isEmpty())
-            return;
-
-        Object top = digester.peek();
-
-        BeanUtils.populate(top, _populateMap);
-
-        _populateMap.clear();
-
     }
 
 }
