@@ -55,11 +55,6 @@ import javax.servlet.http.*;
  *  (they will be shared by all sessions
  *  and all Tapestry applications).
  *
- *  <p>Conecrete subclasses must implement {@link #getSpecificationAttributeName()}
- * and {@link #getSpecificationResourceName()} to identify where
- * the specification is stored (within the {@link ServletContext}) and
- * loaded from.
- *
  *  <p>An application is designed to be very lightweight.
  *  Particularily, it should <b>never</b> hold references to any
  *  {@link IPage} or {@link IComponent} objects.  The entire system is
@@ -676,33 +671,6 @@ public abstract class AbstractApplication
 		return specification;
 	}
 
-	/**
-	*  Returns the name of the {@link ServletContext} attribute used to store
-	*  the {@link ApplicationSpecification}.
-	*
-	*  <p>The specification, once created, is placed into the {@link ServletContext}
-	*  to be shared by all clients and sessions.  Because a single servlet container
-	*  may be running multiple Tapestry applications, each Tapestry application should
-	*  use a unique name for storing the specification.
-	*
-	*  <p>An example value would be <code>com.skunkworx.spec.Skunkworld</code> for an
-	*  application named 'Skunkworld' produced by skunkworx.com, but as long as the name
-	*  can be reasonably assumed to be unique, alls fair.
-	*
-	*/
-
-	protected abstract String getSpecificationAttributeName();
-
-	/**
-	*  Returns the name of a resource that is used to read the specification.
-	*  This is a value that will be fed directly to <code>Class.getResourceAsStream()</code>.
-	*  
-	*  <p>A typical value would be "/com/skunkworkx/app/Skunkworld.application".
-	*
-	*/
-
-	protected abstract String getSpecificationResourceName();
-
 	public ISpecificationSource getSpecificationSource()
 	{
 		return specificationSource;
@@ -711,59 +679,6 @@ public abstract class AbstractApplication
 	public ITemplateSource getTemplateSource()
 	{
 		return templateSource;
-	}
-
-	private void locateApplicationSpecification(RequestContext context)
-	throws ResourceUnavailableException
-	{
-		ServletContext servletContext;
-		String attributeName;
-		String resource;
-		InputStream stream;
-		SpecificationParser parser;
-
-		// Specification is transient, but the application may not have been
-		// serialized/de-serialized.
-
-		if (specification != null)
-			return;
-
-		servletContext = context.getServlet().getServletContext();
-
-		attributeName = getSpecificationAttributeName();
-
-		specification = (ApplicationSpecification)servletContext.getAttribute(attributeName);
-
-		if (specification != null)
-			return;
-
-		// OK, time to get the resource and parse it up.
-
-		resource = getSpecificationResourceName();
-
-		stream = getClass().getResourceAsStream(resource);
-
-		if (stream == null)
-			throw new ResourceUnavailableException(
-				"Could not locate resource " + resource + ".");
-
-		parser = new SpecificationParser();
-
-		try
-		{
-			specification = parser.parseApplicationSpecification(stream, resource);
-		}
-		catch (SpecificationParseException e)
-		{
-			throw new ResourceUnavailableException("Unable to read application specification.",
-					e);
-		}		
-
-		// Record it into the servlet context for later.  This will help other instances of
-		// the application that need to access the specification and help this instance
-		// if it is serialized and deserialized.
-
-		servletContext.setAttribute(attributeName, specification);
 	}
 
 	private void readObject(ObjectInputStream in)
@@ -901,17 +816,15 @@ public abstract class AbstractApplication
 		ResponseOutputStream output = null;
 		IMonitor monitor;
 
-		try
-		{
-			locateApplicationSpecification(context);
+		if (specification == null)
+			specification = context.getServlet().getApplicationSpecification();
 
-		}
-		catch (ResourceUnavailableException e)
-		{
-			reportException("Tapestry unable to locate application specification.", e);
-
-			throw new ServletException(e.getMessage(), e);
-		}
+		// Build the resolver around the servlet, since that's guarenteed
+		// to be in the application's class loader (which has the broadest
+		// possible view).
+		
+		if (resolver == null)
+			resolver = new ResourceResolver(context.getServlet());
 
 		try
 		{
@@ -1221,8 +1134,6 @@ public abstract class AbstractApplication
 		servletContext.removeAttribute(SPECIFICATION_SOURCE_NAME);
 		servletContext.removeAttribute(PAGE_SOURCE_NAME + "." + specification.getName());
 
-		servletContext.removeAttribute(getSpecificationAttributeName());
-
 		restart(cycle);
 
 		if (monitor != null)
@@ -1354,9 +1265,6 @@ public abstract class AbstractApplication
 	 
     public IResourceResolver getResourceResolver()
     {
-    	if (resolver == null)
-        	resolver = new ResourceResolver(this);
-        
        	return resolver;
     }    
 
@@ -1404,6 +1312,14 @@ public abstract class AbstractApplication
 	 
 	public void valueUnbound(HttpSessionBindingEvent event)
 	{
+		// Note: there's a possible latent bug here.  If cleaning up the
+		// application requires loading any resources (specifically
+		// component specifications) and we need a ResourceResolver and
+		// the application instance is newly deserialized (i.e., was deserialized
+		// so that it could unbound from the HttpSession) ... then 
+		// we may trip over a NullPointerException because the resolver
+		// will be null.  Don't have a great solution for this!
+		
 		cleanupApplication();
 	}
 	
