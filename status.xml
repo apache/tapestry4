@@ -118,6 +118,15 @@
     -->
   </todo>
   <changes>
+    <release version="3.0.3" date="Unreleased">
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread needs explicit termination. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-238"> Fixes bug introduced in 3.0.2 that prevents DatePicker calendar window from closing automatically. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-277"> DatePicker onchange event now only fires when date changes. </action>
+      <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-255"> Patch for bad translation in ValidationStrings_zh_TW.properties </action>
+      <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1"> Fixed incorrect test for enabling rendering of element in FormConditional component </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-283"> Fixes missing type attribute of script tag in Body component. </action>
+    </release>
     <release version="3.0.2" date="Feb 14 2005">
       <action type="fix" dev="EH" fixes-bug="TAPESTRY-214, TAPESTRY-216, TAPESTRY-227"> Fix build settings for JDOM and Jetty. </action>
       <action type="fix" dev="EH"> Upgrade OGNL to 2.6.7. This should move to 2.7.0 as soon as it is released. </action>
