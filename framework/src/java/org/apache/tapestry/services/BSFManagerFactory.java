@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.resource;
+package org.apache.tapestry.services;
 
-import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.bsf.BSFManager;
 
 /**
+ * A factory for {@link org.apache.bsf.BSFManager}instances.
  * 
- *
- * @author Howard Lewis Ship
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-final class ResourceMessages
+public interface BSFManagerFactory
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(ResourceMessages.class, "ResourceStrings");
+    /**
+     * Creates and initializes a BSFManager instance that can be used by this thread.
+     * The BSFManager should be discarded after use.
+     */
 
+    public BSFManager createBSFManager();
 }

@@ -21,15 +21,12 @@ import org.apache.hivemind.impl.LocationImpl;
 import org.xml.sax.SAXParseException;
 
 /**
- *  Exception thrown if there is any kind of error parsing the
- *  an XML document. 
- *
- *  @see org.apache.tapestry.parse.SpecificationParser
- *
- *  @author Howard Lewis Ship
- *  @since 0.2.10
- *
- **/
+ * Exception thrown if there is any kind of error parsing the an XML document.
+ * 
+ * @see org.apache.tapestry.parse.SpecificationParser
+ * @author Howard Lewis Ship
+ * @since 0.2.10
+ */
 
 public class DocumentParseException extends ApplicationRuntimeException
 {
@@ -55,33 +52,20 @@ public class DocumentParseException extends ApplicationRuntimeException
         this(message, location == null ? null : location.getResource(), location, rootCause);
     }
 
-    private DocumentParseException(
-        String message,
-        Resource documentLocation,
-        Location location,
-        Throwable rootCause)
+    private DocumentParseException(String message, Resource documentLocation, Location location,
+            Throwable rootCause)
     {
         super(message, null, location, rootCause);
 
         _documentLocation = documentLocation;
     }
 
-    public DocumentParseException(
-        String message,
-        Resource documentLocation,
-        SAXParseException rootCause)
+    public DocumentParseException(String message, Resource documentLocation,
+            SAXParseException rootCause)
     {
-        this(
-            message,
-            documentLocation,
-            rootCause == null
-                || documentLocation == null
-                    ? null
-                    : new LocationImpl(
-                        documentLocation,
-                        rootCause.getLineNumber(),
-                        rootCause.getColumnNumber()),
-            rootCause);
+        this(message, documentLocation, rootCause == null || documentLocation == null ? null
+                : new LocationImpl(documentLocation, rootCause.getLineNumber(), rootCause
+                        .getColumnNumber()), rootCause);
     }
 
     public DocumentParseException(String message)
@@ -96,7 +80,7 @@ public class DocumentParseException extends ApplicationRuntimeException
 
     public DocumentParseException(SAXParseException rootCause)
     {
-        this(rootCause.getMessage(), (Throwable) rootCause);
+        this(rootCause.getMessage(), rootCause);
     }
 
     public Resource getDocumentLocation()

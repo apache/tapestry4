@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.bean;
 
-import org.apache.hivemind.Defense;
+import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IBinding;

@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -217,7 +218,7 @@ public class ChartPage extends BasePage implements IChartProvider
 
             String name = pv.getName();
 
-            if (Tapestry.isBlank(name))
+            if (HiveMind.isBlank(name))
                 name = "<New>";
 
             data[i] = new Double(pv.getValue()).doubleValue();

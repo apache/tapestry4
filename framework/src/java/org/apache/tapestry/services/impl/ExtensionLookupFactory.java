@@ -14,13 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.List;
-
-import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ServiceImplementationFactory;
 import org.apache.hivemind.ServiceImplementationFactoryParameters;
-import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.lib.DefaultImplementationBuilder;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
@@ -59,7 +55,7 @@ public class ExtensionLookupFactory implements ServiceImplementationFactory
 
             if (p.getDefault() != null)
                 return p.getDefault();
-            
+
             return _defaultBuilder.buildDefaultImplementation(serviceInterface);
         }
         catch (Exception ex)

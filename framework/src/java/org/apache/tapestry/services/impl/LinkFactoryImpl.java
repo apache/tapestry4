@@ -21,9 +21,9 @@ import java.util.Map;
 
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Defense;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.order.Orderer;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;

@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,43 +15,40 @@
 package org.apache.tapestry.wml;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A deck contains a collection of cards. There is a variety of card types, each specifying a different mode of
- *  user interaction.
- *
- *  @author David Solis
- *  @since 3.0
- *
- **/
+ * A deck contains a collection of cards. There is a variety of card types, each specifying a
+ * different mode of user interaction.
+ * 
+ * @author David Solis
+ * @since 3.0
+ */
 
 public abstract class Card extends AbstractComponent
 {
     private static final String ATTRIBUTE_NAME = "org.apache.tapestry.wml.Card";
 
     /**
-     *  @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
-     **/
+     * @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Card.cards-may-not-nest"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Card.cards-may-not-nest"),
+                    this, null, null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         writer.begin("card");
 
         String title = getTitle();
-        if (Tapestry.isNonBlank(title))
+        if (HiveMind.isNonBlank(title))
             writer.attribute("title", title);
 
         renderInformalParameters(writer, cycle);

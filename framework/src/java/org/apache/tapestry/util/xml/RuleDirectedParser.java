@@ -29,6 +29,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.LocationImpl;
@@ -42,22 +43,19 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * A simplified version of {@link org.apache.commons.digester.Digester}.
- * This version is without as many bells and whistles but has some key features needed when parsing
- * a document (rather than a configuration file):
- * <br>
+ * A simplified version of {@link org.apache.commons.digester.Digester}. This version is without as
+ * many bells and whistles but has some key features needed when parsing a document (rather than a
+ * configuration file): <br>
  * <ul>
- *   <li>Notifications for each bit of text</ul>
- *   <li>Tracking of exact location within the document.</li>
+ * <li>Notifications for each bit of text
  * </ul>
- * 
+ * <li>Tracking of exact location within the document.</li>
+ * </ul>
  * <p>
- * Like Digester, there's an object stack and a rule stack.  The rules are much
- * simpler (more coding), in that there's a one-to-one relationship between
- * an element and a rule.
- *
+ * Like Digester, there's an object stack and a rule stack. The rules are much simpler (more
+ * coding), in that there's a one-to-one relationship between an element and a rule.
  * <p>
- *  Based on SAX2.
+ * Based on SAX2.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
@@ -68,27 +66,35 @@ public class RuleDirectedParser extends DefaultHandler
     private static final Log LOG = LogFactory.getLog(RuleDirectedParser.class);
 
     private Resource _documentLocation;
+
     private List _ruleStack = new ArrayList();
+
     private List _objectStack = new ArrayList();
+
     private Object _documentObject;
 
     private Locator _locator;
+
     private int _line = -1;
+
     private int _column = -1;
+
     private Location _location;
 
     private static SAXParserFactory _parserFactory;
+
     private SAXParser _parser;
 
     private RegexpMatcher _matcher;
 
     private String _uri;
+
     private String _localName;
+
     private String _qName;
 
     /**
-     *  Map of {@link IRule} keyed on the local name
-     *  of the element.
+     * Map of {@link IRule}keyed on the local name of the element.
      */
     private Map _ruleMap = new HashMap();
 
@@ -100,7 +106,7 @@ public class RuleDirectedParser extends DefaultHandler
     private StringBuffer _contentBuffer = new StringBuffer();
 
     /**
-     *  Map of paths to external entities (such as the DTD) keyed on public id.
+     * Map of paths to external entities (such as the DTD) keyed on public id.
      */
 
     private Map _entities = new HashMap();
@@ -117,10 +123,9 @@ public class RuleDirectedParser extends DefaultHandler
             URL url = documentLocation.getResourceURL();
 
             if (url == null)
-                throw new DocumentParseException(
-                    Tapestry.format("RuleDrivenParser.resource-missing", documentLocation),
-                    documentLocation,
-                    null);
+                throw new DocumentParseException(Tapestry.format(
+                        "RuleDrivenParser.resource-missing",
+                        documentLocation), documentLocation, null);
 
             return parse(url);
         }
@@ -157,10 +162,9 @@ public class RuleDirectedParser extends DefaultHandler
         }
         catch (IOException ex)
         {
-            throw new DocumentParseException(
-                Tapestry.format("RuleDrivenParser.unable-to-open-resource", url),
-                _documentLocation,
-                ex);
+            throw new DocumentParseException(Tapestry.format(
+                    "RuleDrivenParser.unable-to-open-resource",
+                    url), _documentLocation, ex);
         }
 
         InputSource source = new InputSource(stream);
@@ -173,10 +177,10 @@ public class RuleDirectedParser extends DefaultHandler
         }
         catch (Exception ex)
         {
-            throw new DocumentParseException(
-                Tapestry.format("RuleDrivenParser.parse-error", url, ex.getMessage()),
-                getLocation(),
-                ex);
+            throw new DocumentParseException(Tapestry.format(
+                    "RuleDrivenParser.parse-error",
+                    url,
+                    ex.getMessage()), getLocation(), ex);
         }
 
         if (LOG.isDebugEnabled())
@@ -186,10 +190,8 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Returns an {@link ILocation} representing the
-     * current position within the document (depending
-     * on the parser, this may be accurate to
-     * column number level).
+     * Returns an {@link ILocation}representing the current position within the document (depending
+     * on the parser, this may be accurate to column number level).
      */
 
     public Location getLocation()
@@ -214,9 +216,8 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Pushes an object onto the object stack.  The first object
-     * pushed is the "document object", the root object returned
-     * by the parse.
+     * Pushes an object onto the object stack. The first object pushed is the "document object", the
+     * root object returned by the parse.
      */
     public void push(Object object)
     {
@@ -235,9 +236,8 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Returns an object within the object stack, at depth.
-     * Depth 0 is the top object, depth 1 is the next-to-top object,
-     * etc.
+     * Returns an object within the object stack, at depth. Depth 0 is the top object, depth 1 is
+     * the next-to-top object, etc.
      */
 
     public Object peek(int depth)
@@ -305,18 +305,17 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     *  Registers
-     *  a public id and corresponding input source.  Generally, the source
-     *  is a wrapper around an input stream to a package resource.
-     *
-     *  @param publicId the public identifier to be registerred, generally
-     *  the publicId of a DTD related to the document being parsed
-     *  @param entityPath the resource path of the entity, typically a DTD
-     *  file.  Relative files names are expected to be stored in the same package
-     *  as the class file, otherwise a leading slash is an absolute pathname
-     *  within the classpath.
-     *
-     **/
+     * Registers a public id and corresponding input source. Generally, the source is a wrapper
+     * around an input stream to a package resource.
+     * 
+     * @param publicId
+     *            the public identifier to be registerred, generally the publicId of a DTD related
+     *            to the document being parsed
+     * @param entityPath
+     *            the resource path of the entity, typically a DTD file. Relative files names are
+     *            expected to be stored in the same package as the class file, otherwise a leading
+     *            slash is an absolute pathname within the classpath.
+     */
 
     public void registerEntity(String publicId, String entityPath)
     {
@@ -334,20 +333,17 @@ public class RuleDirectedParser extends DefaultHandler
         IRule rule = (IRule) _ruleMap.get(localName);
 
         if (rule == null)
-            throw new DocumentParseException(
-                Tapestry.format("RuleDrivenParser.no-rule-for-element", localName),
-                getLocation(),
-                null);
+            throw new DocumentParseException(Tapestry.format(
+                    "RuleDrivenParser.no-rule-for-element",
+                    localName), getLocation(), null);
 
         return rule;
     }
 
     /**
-     * Uses the {@link Locator} to track the position
-     * in the document as a {@link ILocation}. This is invoked
-     * once (before the initial element is parsed) and
-     * the Locator is retained and queried as to
-     * the current file location.
+     * Uses the {@link Locator}to track the position in the document as a {@link ILocation}. This
+     * is invoked once (before the initial element is parsed) and the Locator is retained and
+     * queried as to the current file location.
      * 
      * @see #getLocation()
      */
@@ -357,8 +353,8 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Accumulates the content in a buffer; the concatinated content
-     * is provided to the top rule just before any start or end tag. 
+     * Accumulates the content in a buffer; the concatinated content is provided to the top rule
+     * just before any start or end tag.
      */
     public void characters(char[] ch, int start, int length) throws SAXException
     {
@@ -366,8 +362,7 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Pops the top rule off the stack and
-     * invokes {@link IRule#endElementt(RuleDirectedParser)}.
+     * Pops the top rule off the stack and invokes {@link IRule#endElementt(RuleDirectedParser)}.
      */
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
@@ -388,12 +383,11 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Invokes {@link #selectRule(String, Attributes)} to choose a new rule,
-     * which is pushed onto the rule stack, then invokes
-     * {@link IRule#startElement(RuleDirectedParser, Attributes)}.
+     * Invokes {@link #selectRule(String, Attributes)}to choose a new rule, which is pushed onto
+     * the rule stack, then invokes {@link IRule#startElement(RuleDirectedParser, Attributes)}.
      */
     public void startElement(String uri, String localName, String qName, Attributes attributes)
-        throws SAXException
+            throws SAXException
     {
         fireContentRule();
 
@@ -412,12 +406,12 @@ public class RuleDirectedParser extends DefaultHandler
 
     private String extractName(String uri, String localName, String qName)
     {
-        return Tapestry.isBlank(localName) ? qName : localName;
+        return HiveMind.isBlank(localName) ? qName : localName;
     }
 
     /**
-     * Uses {@link javax.xml.parsers.SAXParserFactory} to create a instance
-     * of a validation SAX2 parser.
+     * Uses {@link javax.xml.parsers.SAXParserFactory}to create a instance of a validation SAX2
+     * parser.
      */
     protected synchronized SAXParser constructParser()
     {
@@ -443,10 +437,8 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     * Configures a {@link SAXParserFactory} before
-     * {@link SAXParserFactory#newSAXParser()} is invoked.
-     * The default implementation sets validating to true
-     * and namespaceAware to false,
+     * Configures a {@link SAXParserFactory}before {@link SAXParserFactory#newSAXParser()}is
+     * invoked. The default implementation sets validating to true and namespaceAware to false,
      */
 
     protected void configureParserFactory(SAXParserFactory factory)
@@ -456,7 +448,7 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     *  Throws the exception.
+     * Throws the exception.
      */
     public void error(SAXParseException ex) throws SAXException
     {
@@ -464,7 +456,7 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     *  Throws the exception.
+     * Throws the exception.
      */
     public void fatalError(SAXParseException ex) throws SAXException
     {
@@ -478,7 +470,7 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     *  Throws the exception.
+     * Throws the exception.
      */
     public void warning(SAXParseException ex) throws SAXException
     {
@@ -490,8 +482,8 @@ public class RuleDirectedParser extends DefaultHandler
         String entityPath = null;
 
         if (LOG.isDebugEnabled())
-            LOG.debug(
-                "Attempting to resolve entity; publicId = " + publicId + " systemId = " + systemId);
+            LOG.debug("Attempting to resolve entity; publicId = " + publicId + " systemId = "
+                    + systemId);
 
         if (_entities != null)
             entityPath = (String) _entities.get(publicId);
@@ -515,16 +507,13 @@ public class RuleDirectedParser extends DefaultHandler
     }
 
     /**
-     *  Validates that the input value matches against the specified
-     *  Perl5 pattern.  If valid, the method simply returns.
-     *  If not a match, then an error message is generated (using the
-     *  errorKey and the input value) and a
-     *  {@link InvalidStringException} is thrown.
-     * 
-     **/
+     * Validates that the input value matches against the specified Perl5 pattern. If valid, the
+     * method simply returns. If not a match, then an error message is generated (using the errorKey
+     * and the input value) and a {@link InvalidStringException}is thrown.
+     */
 
     public void validate(String value, String pattern, String errorKey)
-        throws DocumentParseException
+            throws DocumentParseException
     {
         if (_matcher == null)
             _matcher = new RegexpMatcher();
@@ -542,7 +531,9 @@ public class RuleDirectedParser extends DefaultHandler
 
     /**
      * Returns the localName for the current element.
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     * 
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
+     *      java.lang.String, org.xml.sax.Attributes)
      */
     public String getLocalName()
     {
@@ -551,7 +542,9 @@ public class RuleDirectedParser extends DefaultHandler
 
     /**
      * Returns the qualified name for the current element.
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     * 
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
+     *      java.lang.String, org.xml.sax.Attributes)
      */
     public String getQName()
     {
@@ -560,7 +553,9 @@ public class RuleDirectedParser extends DefaultHandler
 
     /**
      * Returns the URI for the current element.
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes) 
+     * 
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
+     *      java.lang.String, org.xml.sax.Attributes)
      */
     public String getUri()
     {

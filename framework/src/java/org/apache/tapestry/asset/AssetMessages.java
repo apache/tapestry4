@@ -16,7 +16,6 @@ package org.apache.tapestry.asset;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
-import org.apache.tapestry.IComponent;
 
 /**
  * @author Howard M. Lewis Ship

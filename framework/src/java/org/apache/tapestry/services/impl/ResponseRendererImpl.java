@@ -15,24 +15,15 @@
 package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
-import java.util.Locale;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.request.ResponseOutputStream;
-import org.apache.tapestry.services.CookieSource;
-import org.apache.tapestry.services.RequestGlobals;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseRenderer;
-
-import sun.net.www.http.HttpClient;
 
 /**
  * Responsible for rendering a response to the client.

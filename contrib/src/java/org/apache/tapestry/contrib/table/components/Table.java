@@ -20,14 +20,12 @@ import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 
 /**
- * The facade component in the Table family. Table allows you to present 
- * a sortable and pagable table simply and easily by using only this one component.
- * Please see the Component Reference for details on how to use this component. 
- * 
- *  [<a href="../../../../../../../ComponentReference/contrib.Table.html">Component Reference</a>]
+ * The facade component in the Table family. Table allows you to present a sortable and pagable
+ * table simply and easily by using only this one component. Please see the Component Reference for
+ * details on how to use this component. [ <a
+ * href="../../../../../../../ComponentReference/contrib.Table.html">Component Reference </a>]
  * 
  * @author mindbridge
- *
  */
 public class Table extends BaseComponent implements ITableModelSource
 {
@@ -40,9 +38,9 @@ public class Table extends BaseComponent implements ITableModelSource
     }
 
     /**
-     * Indicates that the table model has changed and it may need to saved.
-     * This method has to be invoked if modifications are made to the model.
-     *  
+     * Indicates that the table model has changed and it may need to saved. This method has to be
+     * invoked if modifications are made to the model.
+     * 
      * @see org.apache.tapestry.contrib.table.model.ITableModelSource#fireObservedStateChange()
      */
     public void fireObservedStateChange()
@@ -51,8 +49,8 @@ public class Table extends BaseComponent implements ITableModelSource
     }
 
     /**
-     * Resets the state of the component and forces it to load a new
-     * TableModel from the tableModel binding the next time it renders.
+     * Resets the state of the component and forces it to load a new TableModel from the tableModel
+     * binding the next time it renders.
      */
     public void reset()
     {
@@ -60,9 +58,9 @@ public class Table extends BaseComponent implements ITableModelSource
     }
 
     /**
-     * Returns the currently rendered table column. 
-     * You can call this method to obtain the current column.
-     *  
+     * Returns the currently rendered table column. You can call this method to obtain the current
+     * column.
+     * 
      * @return ITableColumn the current table column
      */
     public ITableColumn getTableColumn()
@@ -72,16 +70,15 @@ public class Table extends BaseComponent implements ITableModelSource
         // if the current row is null, then we are most likely rendering TableColumns
         if (objCurrentRow == null)
             return getTableColumnsComponent().getTableColumn();
-        else
-            return getTableValuesComponent().getTableColumn();
+
+        return getTableValuesComponent().getTableColumn();
     }
 
     /**
-     * Returns the currently rendered table row or null 
-     * if the rows are not rendered at the moment.
+     * Returns the currently rendered table row or null if the rows are not rendered at the moment.
      * You can call this method to obtain the current row.
-     *  
-     * @return Object the current table row 
+     * 
+     * @return Object the current table row
      */
     public Object getTableRow()
     {

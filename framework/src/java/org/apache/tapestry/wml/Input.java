@@ -14,11 +14,10 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 
 /**
  * The Input element specifies a text entry object.
@@ -47,11 +46,11 @@ public abstract class Input extends AbstractComponent
             writer.attribute("name", getName());
 
             String title = getTitle();
-            if (Tapestry.isNonBlank(title))
+            if (HiveMind.isNonBlank(title))
                 writer.attribute("title", title);
 
             String format = getFormat();
-            if (Tapestry.isNonBlank(format))
+            if (HiveMind.isNonBlank(format))
                 writer.attribute("format", format);
 
             boolean emptyok = isEmptyok();
@@ -61,7 +60,7 @@ public abstract class Input extends AbstractComponent
             renderInformalParameters(writer, cycle);
 
             String value = getValue();
-            if (Tapestry.isNonBlank(value))
+            if (HiveMind.isNonBlank(value))
                 writer.attribute("value", value);
 
             writer.closeTag();

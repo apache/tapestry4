@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 package org.apache.tapestry.script;
 
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.BaseRule;
 import org.apache.tapestry.util.xml.DocumentParseException;
@@ -22,9 +23,9 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 import org.xml.sax.Attributes;
 
 /**
- * Constructs an {@link org.apache.tapestry.script.InputSymbolToken}
- * from an &lt;input-symbol&gt; element.
- *
+ * Constructs an {@link org.apache.tapestry.script.InputSymbolToken}from an &lt;input-symbol&gt;
+ * element.
+ * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
@@ -48,8 +49,8 @@ class InputSymbolRule extends BaseRule
 
         String required = getAttribute(attributes, "required");
 
-        InputSymbolToken token =
-            new InputSymbolToken(key, expectedClass, required.equals("yes"), parser.getLocation());
+        InputSymbolToken token = new InputSymbolToken(key, expectedClass, required.equals("yes"),
+                parser.getLocation());
 
         IScriptToken parent = (IScriptToken) parser.peek();
         parent.addToken(token);
@@ -57,7 +58,7 @@ class InputSymbolRule extends BaseRule
 
     private Class lookupClass(RuleDirectedParser parser, String className)
     {
-        if (Tapestry.isBlank(className))
+        if (HiveMind.isBlank(className))
             return null;
 
         try
@@ -66,10 +67,9 @@ class InputSymbolRule extends BaseRule
         }
         catch (Exception ex)
         {
-            throw new DocumentParseException(
-                Tapestry.format("ScriptParser.unable-to-resolve-class", className),
-                parser.getLocation(),
-                ex);
+            throw new DocumentParseException(Tapestry.format(
+                    "ScriptParser.unable-to-resolve-class",
+                    className), parser.getLocation(), ex);
         }
     }
 }

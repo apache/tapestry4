@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,15 +22,12 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- *  Simple validation of strings, to enforce required, and minimum length
- *  (maximum length is enforced in the client browser, by setting a maximum input
- *  length on the text field).
- *
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.8
- *
- **/
+ * Simple validation of strings, to enforce required, and minimum length (maximum length is enforced
+ * in the client browser, by setting a maximum input length on the text field).
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.8
+ */
 
 public class StringValidator extends BaseValidator
 {
@@ -38,17 +35,12 @@ public class StringValidator extends BaseValidator
 
     private String _minimumLengthMessage;
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     private String _scriptPath = "/org/apache/tapestry/valid/StringValidator.script";
 
     public StringValidator()
     {
-    }
-
-    private StringValidator(boolean required)
-    {
-        super(required);
     }
 
     public String toString(IFormComponent field, Object value)
@@ -65,9 +57,8 @@ public class StringValidator extends BaseValidator
             return null;
 
         if (_minimumLength > 0 && input.length() < _minimumLength)
-            throw new ValidatorException(
-                buildMinimumLengthMessage(field),
-                ValidationConstraint.MINIMUM_WIDTH);
+            throw new ValidatorException(buildMinimumLengthMessage(field),
+                    ValidationConstraint.MINIMUM_WIDTH);
 
         return input;
     }
@@ -82,16 +73,12 @@ public class StringValidator extends BaseValidator
         _minimumLength = minimumLength;
     }
 
-    /** 
-     * 
-     *  @since 2.2
-     * 
-     **/
+    /**
+     * @since 2.2
+     */
 
-    public void renderValidatorContribution(
-        IFormComponent field,
-        IMarkupWriter writer,
-        IRequestCycle cycle)
+    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
+            IRequestCycle cycle)
     {
         if (!isClientScriptingEnabled())
             return;
@@ -111,9 +98,8 @@ public class StringValidator extends BaseValidator
     }
 
     /**
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public String getScriptPath()
     {
@@ -121,14 +107,13 @@ public class StringValidator extends BaseValidator
     }
 
     /**
-     *  Allows a developer to use the existing validation logic with a different client-side
-     *  script.  This is often sufficient to allow application-specific error presentation
-     *  (perhaps by using DHTML to update the content of a &lt;span&gt; tag, or to use
-     *  a more sophisticated pop-up window than <code>window.alert()</code>).
+     * Allows a developer to use the existing validation logic with a different client-side script.
+     * This is often sufficient to allow application-specific error presentation (perhaps by using
+     * DHTML to update the content of a &lt;span&gt; tag, or to use a more sophisticated pop-up
+     * window than <code>window.alert()</code>).
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void setScriptPath(String scriptPath)
     {
@@ -141,9 +126,8 @@ public class StringValidator extends BaseValidator
         return _minimumLengthMessage;
     }
 
-    /** 
-     * Overrides the <code>field-too-short</code> bundle key.
-     * Parameter {0} is the minimum length.
+    /**
+     * Overrides the <code>field-too-short</code> bundle key. Parameter {0} is the minimum length.
      * Parameter {1} is the display name of the field.
      * 
      * @since 3.0
@@ -158,8 +142,8 @@ public class StringValidator extends BaseValidator
 
     protected String buildMinimumLengthMessage(IFormComponent field)
     {
-        String pattern =
-            getPattern(_minimumLengthMessage, "field-too-short", field.getPage().getLocale());
+        String pattern = getPattern(_minimumLengthMessage, "field-too-short", field.getPage()
+                .getLocale());
 
         return formatString(pattern, Integer.toString(_minimumLength), field.getDisplayName());
     }

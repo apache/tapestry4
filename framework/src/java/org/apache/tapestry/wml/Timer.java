@@ -14,11 +14,10 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 
 /**
  * The Timer element declares a card timer, which exposes a means of processing inactivity or idle
@@ -45,7 +44,7 @@ public abstract class Timer extends AbstractComponent
             writer.attribute("name", getName());
 
             String value = getValue();
-            if (Tapestry.isNonBlank(value))
+            if (HiveMind.isNonBlank(value))
                 writer.attribute("value", value);
             else
                 writer.attribute("value", "0");
@@ -57,8 +56,8 @@ public abstract class Timer extends AbstractComponent
     }
 
     public abstract String getName();
-    
+
     /** @since 3.1 */
-    
+
     public abstract String getValue();
 }

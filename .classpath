@@ -26,9 +26,9 @@
 	<classpathentry kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jCharts-0.6.0.jar"/>
-	<classpathentry sourcepath="C:/workspace/jakarta-hivemind/framework/src/java" kind="lib" path="ext-package/lib/hivemind-1.1-alpha-1.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1-alpha-1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/cglib-full-2.0.1.jar"/>
 	<classpathentry sourcepath="C:/Documents and Settings/Howard/Desktop/easymockclassextension1.1/src.zip" kind="lib" path="ext-package/lib/easymockclassextension-1.1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/hivemind-1.1-alpha-1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1-alpha-1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -15,7 +15,6 @@
 package org.apache.tapestry.script;
 
 import org.apache.hivemind.Location;
-import org.apache.tapestry.Tapestry;
 
 /**
  * A conditional portion of the generated script.

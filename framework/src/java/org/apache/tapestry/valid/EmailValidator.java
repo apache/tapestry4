@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,31 +23,25 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- *  Simple validation of email strings, to enforce required, and minimum length
- *  (maximum length is enforced in the client browser, by setting a maximum input
- *  length on the text field).
- *
- *
- *  @author Malcolm Edgar
- *  @since 2.3
- *
- **/
+ * Simple validation of email strings, to enforce required, and minimum length (maximum length is
+ * enforced in the client browser, by setting a maximum input length on the text field).
+ * 
+ * @author Malcolm Edgar
+ * @since 2.3
+ */
 
 public class EmailValidator extends BaseValidator
 {
     private int _minimumLength;
+
     private String _minimumLengthMessage;
+
     private String _invalidEmailFormatMessage;
 
     private String _scriptPath = "/org/apache/tapestry/valid/EmailValidator.script";
 
     public EmailValidator()
     {
-    }
-
-    private EmailValidator(boolean required)
-    {
-        super(required);
     }
 
     public String toString(IFormComponent field, Object value)
@@ -64,14 +58,12 @@ public class EmailValidator extends BaseValidator
             return null;
 
         if (_minimumLength > 0 && input.length() < _minimumLength)
-            throw new ValidatorException(
-                buildMinimumLengthMessage(field),
-                ValidationConstraint.MINIMUM_WIDTH);
+            throw new ValidatorException(buildMinimumLengthMessage(field),
+                    ValidationConstraint.MINIMUM_WIDTH);
 
         if (!isValidEmail(input))
-            throw new ValidatorException(
-                buildInvalidEmailFormatMessage(field),
-                ValidationConstraint.EMAIL_FORMAT);
+            throw new ValidatorException(buildInvalidEmailFormatMessage(field),
+                    ValidationConstraint.EMAIL_FORMAT);
 
         return input;
     }
@@ -86,10 +78,8 @@ public class EmailValidator extends BaseValidator
         _minimumLength = minimumLength;
     }
 
-    public void renderValidatorContribution(
-        IFormComponent field,
-        IMarkupWriter writer,
-        IRequestCycle cycle)
+    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
+            IRequestCycle cycle)
     {
         if (!isClientScriptingEnabled())
             return;
@@ -118,12 +108,11 @@ public class EmailValidator extends BaseValidator
     }
 
     /**
-     *  Allows a developer to use the existing validation logic with a different client-side
-     *  script.  This is often sufficient to allow application-specific error presentation
-     *  (perhaps by using DHTML to update the content of a &lt;span&gt; tag, or to use
-     *  a more sophisticated pop-up window than <code>window.alert()</code>).
-     * 
-     **/
+     * Allows a developer to use the existing validation logic with a different client-side script.
+     * This is often sufficient to allow application-specific error presentation (perhaps by using
+     * DHTML to update the content of a &lt;span&gt; tag, or to use a more sophisticated pop-up
+     * window than <code>window.alert()</code>).
+     */
 
     public void setScriptPath(String scriptPath)
     {
@@ -131,24 +120,18 @@ public class EmailValidator extends BaseValidator
     }
 
     /**
-     *  Return true if the email format is valid.
+     * Return true if the email format is valid.
      * 
-     *  @param email the email string to validate
-     *  @return true if the email format is valid
+     * @param email
+     *            the email string to validate
+     * @return true if the email format is valid
      */
 
     protected boolean isValidEmail(String email)
     {
         int atIndex = email.indexOf('@');
 
-        if ((atIndex == -1) || (atIndex == 0) || (atIndex == email.length() - 1))
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return !((atIndex <= 0) || (atIndex == email.length() - 1));
     }
 
     /** @since 3.0 */
@@ -166,12 +149,10 @@ public class EmailValidator extends BaseValidator
     }
 
     /**
-     *  Overrides the <code>invalid-email-format</code>
-     *  bundle key.
-     *  Parameter {0} is the display name of the field.
+     * Overrides the <code>invalid-email-format</code> bundle key. Parameter {0} is the display
+     * name of the field.
      * 
-     *  @since 3.0
-     * 
+     * @since 3.0
      */
 
     public void setInvalidEmailFormatMessage(String string)
@@ -180,12 +161,10 @@ public class EmailValidator extends BaseValidator
     }
 
     /**
-     *  Overrides the <code>field-too-short</code> bundle key.
-     *  Parameter {0} is the minimum length.
-     *  Parameter {1} is the display name of the field.
+     * Overrides the <code>field-too-short</code> bundle key. Parameter {0} is the minimum length.
+     * Parameter {1} is the display name of the field.
      * 
-     *  @since 3.0
-     * 
+     * @since 3.0
      */
     public void setMinimumLengthMessage(String string)
     {
@@ -196,8 +175,8 @@ public class EmailValidator extends BaseValidator
 
     protected String buildMinimumLengthMessage(IFormComponent field)
     {
-        String pattern =
-            getPattern(_minimumLengthMessage, "field-too-short", field.getPage().getLocale());
+        String pattern = getPattern(_minimumLengthMessage, "field-too-short", field.getPage()
+                .getLocale());
 
         return formatString(pattern, Integer.toString(_minimumLength), field.getDisplayName());
     }
@@ -206,11 +185,8 @@ public class EmailValidator extends BaseValidator
 
     protected String buildInvalidEmailFormatMessage(IFormComponent field)
     {
-        String pattern =
-            getPattern(
-                _invalidEmailFormatMessage,
-                "invalid-email-format",
-                field.getPage().getLocale());
+        String pattern = getPattern(_invalidEmailFormatMessage, "invalid-email-format", field
+                .getPage().getLocale());
 
         return formatString(pattern, field.getDisplayName());
     }

@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,42 +17,41 @@ package org.apache.tapestry.spec;
 import java.util.Map;
 
 import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.Locatable;
 import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
- *  Defines an "extension", which is much like a helper bean, but 
- *  is part of a library or application specification (and has the same
- *  lifecycle as the application).
+ * Defines an "extension", which is much like a helper bean, but is part of a library or application
+ * specification (and has the same lifecycle as the application).
  * 
  * @author glongman@intelligentworks.com
  */
 public interface IExtensionSpecification extends IPropertyHolder, LocationHolder
 {
     public abstract String getClassName();
+
     public abstract void setClassName(String className);
+
     public abstract void addConfiguration(String propertyName, String value);
+
     /**
-     *  Returns an immutable Map of the configuration; keyed on property name,
-     *  with values as properties to assign.
-     * 
-     **/
+     * Returns an immutable Map of the configuration; keyed on property name, with values as
+     * properties to assign.
+     */
     public abstract Map getConfiguration();
+
     /**
-     *  Invoked to instantiate an instance of the extension and return it.
-     *  It also configures properties of the extension.
-     * 
-     **/
+     * Invoked to instantiate an instance of the extension and return it. It also configures
+     * properties of the extension.
+     */
     public abstract Object instantiateExtension(ClassResolver resolver);
+
     /**
-     *  Returns true if the extensions should be instantiated
-     *  immediately after the containing 
-     *  {@link org.apache.tapestry.spec.LibrarySpecification}
-     *  if parsed.  Non-immediate extensions are instantiated
-     *  only as needed.
-     * 
-     **/
+     * Returns true if the extensions should be instantiated immediately after the containing
+     * {@link org.apache.tapestry.spec.LibrarySpecification}if parsed. Non-immediate extensions are
+     * instantiated only as needed.
+     */
     public abstract boolean isImmediate();
+
     public abstract void setImmediate(boolean immediate);
 }

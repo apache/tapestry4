@@ -15,7 +15,7 @@
 package org.apache.tapestry.pageload;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Defense;
+import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;

@@ -16,8 +16,8 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
 
-import org.apache.hivemind.Defense;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.PageEvent;

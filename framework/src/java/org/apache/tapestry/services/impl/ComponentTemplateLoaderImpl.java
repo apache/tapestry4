@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 package org.apache.tapestry.services.impl;
 
 import org.apache.commons.logging.Log;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
@@ -26,17 +25,15 @@ import org.apache.tapestry.services.ComponentTemplateLoader;
 import org.apache.tapestry.services.TemplateSource;
 
 /**
- * Utility service, <code>tapestry.page.ComponentTemplateLoader</code>,
- * which will process the component's
- * {@link org.apache.tapestry.parse.ComponentTemplate template}, which involves working through the
- * nested structure of the template and hooking the various static template blocks and components
- * together using {@link org.apache.tapestry.IComponent#addBody(IRender)}and
+ * Utility service, <code>tapestry.page.ComponentTemplateLoader</code>, which will process the
+ * component's {@link org.apache.tapestry.parse.ComponentTemplate template}, which involves working
+ * through the nested structure of the template and hooking the various static template blocks and
+ * components together using {@link org.apache.tapestry.IComponent#addBody(IRender)}and
  * {@link org.apache.tapestry.ITemplateComponent#addOuter(IRender)}.
- * 
  * <p>
- * Because this service must be reentrant, it acts as a factory for
- * a {@link org.apache.tapestry.services.impl.ComponentTemplateLoaderLogic} that
- * is created (and discarded) for each component whose template is loaded.
+ * Because this service must be reentrant, it acts as a factory for a
+ * {@link org.apache.tapestry.services.impl.ComponentTemplateLoaderLogic}that is created (and
+ * discarded) for each component whose template is loaded.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
@@ -58,7 +55,8 @@ public class ComponentTemplateLoaderImpl implements ComponentTemplateLoader
     {
         ComponentTemplate template = _templateSource.getTemplate(requestCycle, loadComponent);
 
-        ComponentTemplateLoaderLogic logic = new ComponentTemplateLoaderLogic(_log, _pageLoader, _bindingSource);
+        ComponentTemplateLoaderLogic logic = new ComponentTemplateLoaderLogic(_log, _pageLoader,
+                _bindingSource);
 
         logic.loadTemplate(requestCycle, loadComponent, template);
     }

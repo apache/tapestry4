@@ -22,13 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 
 /**
- * Used by {@link org.apache.tapestry.engine.AbstractEngine} when
- * processing a {@link org.apache.tapestry.RedirectException}.
+ * Used by {@link org.apache.tapestry.engine.AbstractEngine}when processing a
+ * {@link org.apache.tapestry.RedirectException}.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
@@ -41,7 +42,7 @@ class RedirectAnalyzer
 
     public RedirectAnalyzer(String location)
     {
-        if (Tapestry.isBlank(location))
+        if (HiveMind.isBlank(location))
         {
             _location = "";
             _internal = true;

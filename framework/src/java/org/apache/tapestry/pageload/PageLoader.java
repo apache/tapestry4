@@ -23,7 +23,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ContextResource;
@@ -37,7 +37,6 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.ListenerBinding;
@@ -46,11 +45,11 @@ import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
+import org.apache.tapestry.services.BSFManagerFactory;
 import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.services.ComponentTemplateLoader;
-import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IAssetSpecification;
@@ -71,8 +70,6 @@ import org.apache.tapestry.spec.IPropertySpecification;
 public class PageLoader implements IPageLoader
 {
     private Log _log;
-
-    private ClassResolver _classResolver;
 
     /** @since 3.1 */
 
@@ -98,6 +95,10 @@ public class PageLoader implements IPageLoader
 
     private ComponentTemplateLoader _componentTemplateLoader;
 
+    /** @since 3.1 */
+
+    private BSFManagerFactory _managerFactory;
+
     private IEngine _engine;
 
     private List _inheritedBindingQueue = new ArrayList();
@@ -110,9 +111,6 @@ public class PageLoader implements IPageLoader
     private ComponentTreeWalker _establishDefaultParameterValuesWalker;
 
     private ComponentTreeWalker _verifyRequiredParametersWalker;
-
-    /** @since 3.1 */
-    private ExpressionEvaluator _expressionEvaluator;
 
     /** @since 3.1 */
 
@@ -296,7 +294,7 @@ public class PageLoader implements IPageLoader
         // If not provided in the page or component specification, then
         // search for a default (factory default is "jython").
 
-        if (Tapestry.isBlank(language))
+        if (HiveMind.isBlank(language))
             language = _defaultScriptLanguage;
 
         // Construct the binding. The first parameter is the compononent
@@ -306,7 +304,7 @@ public class PageLoader implements IPageLoader
         String description = PageloadMessages.parameterName(parameterName);
 
         IBinding binding = new ListenerBinding(component.getContainer(), description, language,
-                spec.getScript(), _valueConverter, spec.getLocation());
+                spec.getScript(), _managerFactory, _valueConverter, spec.getLocation());
 
         component.setBinding(parameterName, binding);
     }
@@ -474,7 +472,7 @@ public class PageLoader implements IPageLoader
         IComponent result = null;
         String className = spec.getComponentClassName();
 
-        if (Tapestry.isBlank(className))
+        if (HiveMind.isBlank(className))
             className = BaseComponent.class.getName();
 
         ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(
@@ -530,7 +528,7 @@ public class PageLoader implements IPageLoader
         String className = spec.getComponentClassName();
         Location location = spec.getLocation();
 
-        if (Tapestry.isBlank(className))
+        if (HiveMind.isBlank(className))
             className = _defaultPageClassName;
 
         ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(
@@ -731,13 +729,6 @@ public class PageLoader implements IPageLoader
 
     /** @since 3.1 */
 
-    public void setClassResolver(ClassResolver resolver)
-    {
-        _classResolver = resolver;
-    }
-
-    /** @since 3.1 */
-
     public void setLog(Log log)
     {
         _log = log;
@@ -794,12 +785,6 @@ public class PageLoader implements IPageLoader
     }
 
     /** @since 3.1 */
-    public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
-    {
-        _expressionEvaluator = expressionEvaluator;
-    }
-
-    /** @since 3.1 */
     public void setComponentConstructorFactory(
             ComponentConstructorFactory componentConstructorFactory)
     {
@@ -816,5 +801,11 @@ public class PageLoader implements IPageLoader
     public void setAssetSource(AssetSource assetSource)
     {
         _assetSource = assetSource;
+    }
+
+    /** @since 3.1 */
+    public void setManagerFactory(BSFManagerFactory managerFactory)
+    {
+        _managerFactory = managerFactory;
     }
 }

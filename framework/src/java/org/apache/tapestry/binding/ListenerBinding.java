@@ -16,11 +16,9 @@ package org.apache.tapestry.binding;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Defense;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
@@ -28,7 +26,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.services.ObjectPool;
+import org.apache.tapestry.services.BSFManagerFactory;
 
 /**
  * A very specialized binding that can be used as an {@link org.apache.tapestry.IActionListener},
@@ -41,18 +39,19 @@ import org.apache.tapestry.services.ObjectPool;
 
 public class ListenerBinding extends AbstractBinding implements IActionListener
 {
-    private static final Log LOG = LogFactory.getLog(ListenerBinding.class);
-
-    private static final String BSF_POOL_KEY = "org.apache.tapestry.BSFManager";
-
     private final String _language;
 
     private final String _script;
 
     private final IComponent _component;
 
+    /** @since 3.1 */
+
+    private BSFManagerFactory _managerFactory;
+
     public ListenerBinding(IComponent component, String description, String language,
-            String script, ValueConverter valueConverter, Location location)
+            String script, BSFManagerFactory managerFactory, ValueConverter valueConverter,
+            Location location)
     {
         super(description, valueConverter, location);
 
@@ -63,6 +62,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
         _component = component;
         _language = language;
         _script = script;
+        _managerFactory = managerFactory;
     }
 
     /**
@@ -89,11 +89,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
     public void actionTriggered(IComponent component, IRequestCycle cycle)
     {
-        boolean debug = LOG.isDebugEnabled();
-
-        long startTime = debug ? System.currentTimeMillis() : 0;
-
-        BSFManager bsf = obtainBSFManager(cycle);
+        BSFManager bsf = _managerFactory.createBSFManager();
 
         Location location = getLocation();
 
@@ -119,60 +115,6 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
             throw new ApplicationRuntimeException(message, _component, getLocation(), ex);
         }
-        finally
-        {
-            if (LOG.isDebugEnabled())
-                LOG.debug("Cleaning up " + bsf);
-
-            undeclare(bsf, "component");
-            undeclare(bsf, "page");
-            undeclare(bsf, "cycle");
-
-            cycle.getEngine().getPool().store(BSF_POOL_KEY, bsf);
-
-            if (debug)
-            {
-                long endTime = System.currentTimeMillis();
-
-                LOG.debug("Execution of \"" + location + "\" took " + (endTime - startTime)
-                        + " millis");
-            }
-        }
-    }
-
-    private void undeclare(BSFManager bsf, String name)
-    {
-        try
-        {
-            bsf.undeclareBean(name);
-        }
-        catch (BSFException ex)
-        {
-            LOG.warn(Tapestry.format("ListenerBinding.unable-to-undeclare-bean", ex));
-        }
-    }
-
-    /**
-     * TODO: remove the use of the pool; the BSFManager should be injected in, and be a pooled
-     * HiveMind service.
-     */
-    private BSFManager obtainBSFManager(IRequestCycle cycle)
-    {
-        IEngine engine = cycle.getEngine();
-        ObjectPool pool = engine.getPool();
-
-        BSFManager result = (BSFManager) pool.get(BSF_POOL_KEY);
-
-        if (result == null)
-        {
-            LOG.debug("Creating new BSFManager instance.");
-
-            result = new BSFManager();
-
-            result.setClassLoader(engine.getClassResolver().getClassLoader());
-        }
-
-        return result;
     }
 
     /** @since 3.1 */

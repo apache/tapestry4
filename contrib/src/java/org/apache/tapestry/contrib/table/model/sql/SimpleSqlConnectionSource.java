@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,57 +22,54 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * 
  * @author mindbridge
  */
 public class SimpleSqlConnectionSource implements ISqlConnectionSource
 {
-	private static final Log LOG =
-		LogFactory.getLog(SimpleSqlConnectionSource.class);
+    private static final Log LOG = LogFactory.getLog(SimpleSqlConnectionSource.class);
 
-	private String m_strUrl;
-	private String m_strUser;
-	private String m_strPwd;
+    private String m_strUrl;
 
-	public SimpleSqlConnectionSource(String strUrl)
-	{
-		this(strUrl, null, null);
-	}
+    private String m_strUser;
 
-	public SimpleSqlConnectionSource(
-		String strUrl,
-		String strUser,
-		String strPwd)
-	{
-		m_strUrl = strUrl;
-		m_strUser = strUser;
-		m_strPwd = strPwd;
-	}
+    private String m_strPwd;
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.sql.ISqlConnectionSource#obtainConnection()
-	 */
-	public Connection obtainConnection() throws SQLException
-	{
-		if (m_strUser == null)
-			return DriverManager.getConnection(m_strUrl);
-		else
-			return DriverManager.getConnection(m_strUrl, m_strUser, m_strPwd);
-	}
+    public SimpleSqlConnectionSource(String strUrl)
+    {
+        this(strUrl, null, null);
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.sql.ISqlConnectionSource#returnConnection(Connection)
-	 */
-	public void returnConnection(Connection objConnection)
-	{
-		try
-		{
-			objConnection.close();
-		}
-		catch (SQLException e)
-		{
-			LOG.warn("Could not close connection", e);
-		}
-	}
+    public SimpleSqlConnectionSource(String strUrl, String strUser, String strPwd)
+    {
+        m_strUrl = strUrl;
+        m_strUser = strUser;
+        m_strPwd = strPwd;
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.table.model.sql.ISqlConnectionSource#obtainConnection()
+     */
+    public Connection obtainConnection() throws SQLException
+    {
+        if (m_strUser == null)
+            return DriverManager.getConnection(m_strUrl);
+
+        return DriverManager.getConnection(m_strUrl, m_strUser, m_strPwd);
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.table.model.sql.ISqlConnectionSource#returnConnection(Connection)
+     */
+    public void returnConnection(Connection objConnection)
+    {
+        try
+        {
+            objConnection.close();
+        }
+        catch (SQLException e)
+        {
+            LOG.warn("Could not close connection", e);
+        }
+    }
 
 }

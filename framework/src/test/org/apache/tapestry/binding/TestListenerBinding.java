@@ -17,13 +17,14 @@ package org.apache.tapestry.binding;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.services.BSFManagerFactory;
 
 /**
  * Tests for {@link org.apache.tapestry.binding.ListenerBinding}, the binding type used for
  * supplying a listener method as a BSF script.
  * <p>
- * TODO: Do more, real testing of the execution of the script. Currently, that is done in one of
- * the integration tests.
+ * TODO: Do more, real testing of the execution of the script. Currently, that is done in one of the
+ * integration tests.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -38,9 +39,11 @@ public class TestListenerBinding extends BindingTestCase
 
         IComponent c = newComponent();
 
+        BSFManagerFactory mf = (BSFManagerFactory) newMock(BSFManagerFactory.class);
+
         replayControls();
 
-        IBinding b = new ListenerBinding(c, "foo", "", "", vc, null);
+        IBinding b = new ListenerBinding(c, "foo", "", "", mf, vc, null);
 
         assertSame(b, b.getObject());
 
