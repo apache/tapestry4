@@ -80,16 +80,28 @@
 
     <echo>Running you example code on port 8081 ...</echo>
     <java
-	  classname="org.mortbay.jetty.Server"
-	  classpathref="tutorial.classpath"
-	  fork="true"
-	  maxmemory="128MB">
+	  classname="org.mortbay.jetty.Server"	  fork="true"	  maxmemory="128MB">
+
+      <classpath>
+      	<!-- Favor files in src over copies in classes -->
+      	<pathelement location="${src.dir}"/>
+        <pathelement location="./config"/>
+              	     
+        <path refid="tutorial.classpath"/>
+        <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
+        
+        <pathelement location="${classes.dir}"/>
+      </classpath>
 
       <arg value="config/jetty-dev-env.xml"/>
 
       <!-- Enable debugging when running the tutorial -->
       <jvmarg line="-showversion -Xdebug -Xnoagent"/>
       <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
+      <sysproperty key="java.compiler" value="NONE"/>
+      
+      <sysproperty key="net.sf.tapestry.disable-caching" value="true"/>
+      <sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
 
       <!-- Jetty can get easily confused (under NT) unless this is turned off. -->
       <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
