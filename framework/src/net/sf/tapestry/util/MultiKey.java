@@ -1,238 +1,238 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.util;
 
-import net.sf.tapestry.*;
-import net.sf.tapestry.Tapestry;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
-import java.io.*;
-import java.util.*;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  A complex key that may be used as an alternative to nested
  *  {@link Map}s.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ *
+ **/
 
 public class MultiKey implements Externalizable
 {
-	private static final int HASH_CODE_UNSET = -1;
+    private static final int HASH_CODE_UNSET = -1;
 
-	private transient int hashCode = HASH_CODE_UNSET;
+    private transient int hashCode = HASH_CODE_UNSET;
 
-	private Object[] keys;
+    private Object[] keys;
 
-	/**
-	 *  Public no-arguments constructor needed to be compatible with
-	 *  {@link Externalizable}; this leaves the new MultiKey in a
-	 *  non-usable state and shouldn't be used by user code.
-	 *
-	 */
+    /**
+     *  Public no-arguments constructor needed to be compatible with
+     *  {@link Externalizable}; this leaves the new MultiKey in a
+     *  non-usable state and shouldn't be used by user code.
+     *
+     **/
 
-	public MultiKey()
-	{
-	}
+    public MultiKey()
+    {
+    }
 
-	/**
-	*  Builds a <code>MultiKey</code> from an array of keys.  If the array is not
-	*  copied, then it must not be modified.
-	* 
-	*  @param keys The components of the key.
-	*  @param makeCopy If true, a copy of the keys is created.  If false,
-	*  the keys are simple retained by the <code>MultiKey</code>.
-	*
-	*  @throws InvalidArgumentException if keys is null, of if the
-	*  first element of keys is null.
-	*
-	*/
+    /**
+     *  Builds a <code>MultiKey</code> from an array of keys.  If the array is not
+     *  copied, then it must not be modified.
+     * 
+     *  @param keys The components of the key.
+     *  @param makeCopy If true, a copy of the keys is created.  If false,
+     *  the keys are simple retained by the <code>MultiKey</code>.
+     *
+     *  @throws InvalidArgumentException if keys is null, of if the
+     *  first element of keys is null.
+     *
+     **/
 
-	public MultiKey(Object[] keys, boolean makeCopy)
-	{
-		super();
+    public MultiKey(Object[] keys, boolean makeCopy)
+    {
+        super();
 
-		if (keys == null || keys.length == 0)
-			throw new IllegalArgumentException(Tapestry.getString("MultiKey.null-keys"));
+        if (keys == null || keys.length == 0)
+            throw new IllegalArgumentException(Tapestry.getString("MultiKey.null-keys"));
 
-		if (keys[0] == null)
-			throw new IllegalArgumentException(
-				Tapestry.getString("MultiKey.first-element-may-not-be-null"));
+        if (keys[0] == null)
+            throw new IllegalArgumentException(Tapestry.getString("MultiKey.first-element-may-not-be-null"));
 
-		if (makeCopy)
-		{
-			this.keys = new Object[keys.length];
-			System.arraycopy(keys, 0, this.keys, 0, keys.length);
-		}
-		else
-			this.keys = keys;
-	}
+        if (makeCopy)
+        {
+            this.keys = new Object[keys.length];
+            System.arraycopy(keys, 0, this.keys, 0, keys.length);
+        }
+        else
+            this.keys = keys;
+    }
 
-	/**
-	*  Returns true if:
-	*  <ul>
-	*  <li>The other object is a <code>MultiKey</code>
-	*  <li>They have the same number of key elements
-	*  <li>Every element is an exact match or is equal
-	*  </ul>
-	*
-	*/
+    /**
+     *  Returns true if:
+     *  <ul>
+     *  <li>The other object is a <code>MultiKey</code>
+     *  <li>They have the same number of key elements
+     *  <li>Every element is an exact match or is equal
+     *  </ul>
+     *
+     **/
 
-	public boolean equals(Object other)
-	{
-		int i;
+    public boolean equals(Object other)
+    {
+        int i;
 
-		if (other == null)
-			return false;
+        if (other == null)
+            return false;
 
-		if (keys == null)
-			throw new IllegalStateException(Tapestry.getString("MultiKey.no-keys"));
+        if (keys == null)
+            throw new IllegalStateException(Tapestry.getString("MultiKey.no-keys"));
 
-		// Would a hashCode check be worthwhile here?
+        // Would a hashCode check be worthwhile here?
 
-		try
-		{
-			MultiKey otherMulti = (MultiKey) other;
+        try
+        {
+            MultiKey otherMulti = (MultiKey) other;
 
-			if (keys.length != otherMulti.keys.length)
-				return false;
+            if (keys.length != otherMulti.keys.length)
+                return false;
 
-			for (i = 0; i < keys.length; i++)
-			{
-				// On an exact match, continue.  This means that null matches
-				// null.
+            for (i = 0; i < keys.length; i++)
+            {
+                // On an exact match, continue.  This means that null matches
+                // null.
 
-				if (keys[i] == otherMulti.keys[i])
-					continue;
+                if (keys[i] == otherMulti.keys[i])
+                    continue;
 
-				// If either is null, but not both, then
-				// not a match.
+                // If either is null, but not both, then
+                // not a match.
 
-				if (keys[i] == null || otherMulti.keys[i] == null)
-					return false;
+                if (keys[i] == null || otherMulti.keys[i] == null)
+                    return false;
 
-				if (!keys[i].equals(otherMulti.keys[i]))
-					return false;
+                if (!keys[i].equals(otherMulti.keys[i]))
+                    return false;
 
-			}
+            }
 
-			// Every key equal.  A match.
+            // Every key equal.  A match.
 
-			return true;
-		}
-		catch (ClassCastException e)
-		{
-		}
+            return true;
+        }
+        catch (ClassCastException e)
+        {
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	*  Returns the hash code of the receiver, which is computed from all the
-	*  non-null key elements.  This value is computed once and
-	*  then cached, so elements should not change their hash codes 
-	*  once created (note that this
-	*  is the same constraint that would be used if the individual 
-	*  key elements were
-	*  themselves <code>Map</code> keys).
-	*
-	*/
+    /**
+     *  Returns the hash code of the receiver, which is computed from all the
+     *  non-null key elements.  This value is computed once and
+     *  then cached, so elements should not change their hash codes 
+     *  once created (note that this
+     *  is the same constraint that would be used if the individual 
+     *  key elements were
+     *  themselves {@link java.util.Map} keys.
+     * 
+     *
+     **/
 
-	public int hashCode()
-	{
-		if (hashCode == HASH_CODE_UNSET)
-		{
-			hashCode = keys[0].hashCode();
+    public int hashCode()
+    {
+        if (hashCode == HASH_CODE_UNSET)
+        {
+            hashCode = keys[0].hashCode();
 
-			for (int i = 1; i < keys.length; i++)
-			{
-				if (keys[i] != null)
-					hashCode ^= keys[i].hashCode();
-			}
-		}
+            for (int i = 1; i < keys.length; i++)
+            {
+                if (keys[i] != null)
+                    hashCode ^= keys[i].hashCode();
+            }
+        }
 
-		return hashCode;
-	}
+        return hashCode;
+    }
 
-	/**
-	*  Identifies all the keys stored by this <code>MultiKey</code>.
-	*
-	*/
+    /**
+    *  Identifies all the keys stored by this <code>MultiKey</code>.
+    *
+    **/
 
-	public String toString()
-	{
-		StringBuffer buffer;
-		int i;
+    public String toString()
+    {
+        StringBuffer buffer;
+        int i;
 
-		buffer = new StringBuffer("MultiKey[");
+        buffer = new StringBuffer("MultiKey[");
 
-		for (i = 0; i < keys.length; i++)
-		{
-			if (i > 0)
-				buffer.append(", ");
+        for (i = 0; i < keys.length; i++)
+        {
+            if (i > 0)
+                buffer.append(", ");
 
-			if (keys[i] == null)
-				buffer.append("<null>");
-			else
-				buffer.append(keys[i]);
-		}
+            if (keys[i] == null)
+                buffer.append("<null>");
+            else
+                buffer.append(keys[i]);
+        }
 
-		buffer.append(']');
+        buffer.append(']');
 
-		return buffer.toString();
-	}
+        return buffer.toString();
+    }
 
-	/**
-	 *  Writes a count of the keys, then writes each individual key.
-	 *
-	 */
+    /**
+     *  Writes a count of the keys, then writes each individual key.
+     *
+     **/
 
-	public void writeExternal(ObjectOutput out) throws IOException
-	{
-		out.writeInt(keys.length);
+    public void writeExternal(ObjectOutput out) throws IOException
+    {
+        out.writeInt(keys.length);
 
-		for (int i = 0; i < keys.length; i++)
-			out.writeObject(keys[i]);
-	}
+        for (int i = 0; i < keys.length; i++)
+            out.writeObject(keys[i]);
+    }
 
-	/**
-	 *  Reads the state previously written by {@link #writeExternal(ObjectOutput)}.
-	 *
-	 */
+    /**
+     *  Reads the state previously written by {@link #writeExternal(ObjectOutput)}.
+     *
+     **/
 
-	public void readExternal(ObjectInput in)
-		throws IOException, ClassNotFoundException
-	{
-		int count;
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
+    {
+        int count;
 
-		count = in.readInt();
-		keys = new Object[count];
+        count = in.readInt();
+        keys = new Object[count];
 
-		for (int i = 0; i < count; i++)
-			keys[i] = in.readObject();
-	}
+        for (int i = 0; i < count; i++)
+            keys[i] = in.readObject();
+    }
 }
