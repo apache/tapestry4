@@ -20,15 +20,10 @@
   </Call>
   
   <Call name="addWebApplication">
-    <Arg></Arg>
-    <Arg>
-      <SystemProperty name="jetty.home" default="."/>/webapps/
-    </Arg>
-    <Set name="defaultsDescriptor">
-      <SystemProperty name="jetty.home" 
-		      default="."/>/etc/webdefault.xml
-    </Set>
-    
+    <Arg>/learn-tapestry</Arg>
+    <Arg>webapps/learn-tapestry.war</Arg>
+    <Arg>config/webdefault.xml</Arg>
+    <Arg type="boolean">false</Arg>
   </Call>
   
   <Call name="addContext">
