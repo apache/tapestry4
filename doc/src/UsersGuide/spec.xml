@@ -26,32 +26,32 @@ used in Tapestry.
 	<entry>Application</entry>
 	<entry>application</entry>
 	<entry>&spec.application;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.4//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_4.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Specification 1.4//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Page</entry>
 	<entry>page</entry>
 	<entry>&spec.page-specification;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.4//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_4.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Specification 1.4//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Component</entry>
 	<entry>jwc</entry>
 	<entry>&spec.component-specification;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.4//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_4.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Specification 1.4//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Library</entry>
 	<entry>library</entry>
 	<entry>&spec.library-specification;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Specification 1.4//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_4.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Specification 1.4//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd</literal></entry>
 </row>
 
 <row>
@@ -1184,7 +1184,13 @@ Appears in: &spec.component-specification;
 </para>
 
 <para>
-Defines a formal parameter of a component.
+Defines a formal parameter of a component.  Parameters may be connected 
+(<literal>in</literal> or <literal>form</literal>)
+or unconnected (<literal>custom</literal>).  If a parameter is
+connected, but the class does not provide the property (or does, but
+the accessors are abstract), then the framework
+will create and use a subclass that contains the implementation
+of the necessary property.
 </para>
 
 <figure>
@@ -1210,7 +1216,7 @@ Defines a formal parameter of a component.
 	a valid Java identifier.</entry>
 </row>
 <row>
-  <entry>java-type</entry>
+  <entry>type</entry>
   <entry>scalar name, or class name</entry>
   <entry>no</entry>
   <entry/>
@@ -1218,7 +1224,7 @@ Defines a formal parameter of a component.
    the type of the JavaBean property that a connected
    parameter writes and reads.  The property must
     match this exact value, which can be a fully specified class name,
-    or the name of a scalar Java type.
+    or the name of a scalar Java type.  
    </entry>
   </row>
   
@@ -1406,8 +1412,19 @@ cleanup.
 
 <para>
 It is acceptible for a page (or component) to be abstract, and have abstract accessor methods
-matching the names that Tapestry will generated for the subclass.  This can be
+matching the names that Tapestry will generate for the subclass.  This can be
 useful when setting properties of the page (or component) from a listener method.
+</para>
+
+<para>
+A connected parameter specified in a &spec.parameter; element may also cause an enhanced subclass
+to be created.
+</para>
+
+<para>
+An initial value may be specified as either the <literal>initial-value</literal>
+attribute, or as the body of the <sgmltag class="starttag">property-specification</sgmltag> element
+itself.
 </para>
 
 <figure>
@@ -1594,6 +1611,13 @@ on the containing component or page).
 </para>
 
 
+<para>
+The value to be assigned to the bean property can be specified
+using the <literal>expression</literal> attribute, or as
+the content of the <sgmltag class="starttag">set-property</sgmltag> element
+itself.
+</para>
+
 <figure>
 	<title><sgmltag class="starttag">set-property</sgmltag> Attributes</title>
 <informaltable>
@@ -1618,7 +1642,7 @@ on the containing component or page).
 <row>
 	<entry>expression</entry>
 	<entry>string</entry>
-	<entry>yes</entry>
+	<entry>no</entry>
 	<entry/>
 	<entry>The OGNL expression used to set the property.
 	</entry>

@@ -58,7 +58,7 @@ servlet; it is rarely necessary to create a subclass.
 <callout arearefs="configuration.web.servlet-class">
 	<para>
 	The servlet class is nearly always &ApplicationServlet;.  There's rarely
-	a need to create a subclass; Tapestry has many hooks for extending the
+	a need to create a subclass; Tapestry has many other hooks for extending the
 	application.
 	</para>
 </callout>
@@ -66,7 +66,8 @@ servlet; it is rarely necessary to create a subclass.
 	<para>
 	The Virtual Library application stores its specification on the classpath, rather
 	than under &WEB-INF;, so it is necessary to provide the complete
-	path to the specification.
+	path to the specification.  Most applications can omit this
+	<sgmltag class="starttag">init-param</sgmltag>.
 	</para>
 </callout>
 <callout arearefs="configuration.web.url">
@@ -289,13 +290,27 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
+	<term>net.sf.tapestry.global-class</term>
+	
+	<listitem>
+	<para>
+	The fully qualified class name to instantiate as the engine <literal>global</literal>
+	property.  The Global object is much like Visit object, 
+	except that it is shared by all instances
+	of the application engine rather than being private to any particular session.
+	If not specified, a synchronized instance of &HashMap; is used.
+		</para>
+	</listitem>
+</varlistentry>
+
+<varlistentry>
 	<term>net.sf.tapestry.default-script-language</term>
 	
 	<listitem>
 	<para>
 	The name of a &BSF;-supported language, used when a
 	&spec.listener-binding; element does not specify
-	a language.  The "factory default" is "jython".
+	a language.  If not overridden, the default is "jython".
 	</para>
 	</listitem>
 	
@@ -308,7 +323,7 @@ currently used in Tapestry.
 	<listitem>
 	<para>
 	If not specified as "true", then the <literal>reset</literal> service
-	will be non functional.  The reset service is used to force
+	will be non-functional.  The reset service is used to force
 	the running Tapestry application to discard all cached data (including
 	templates, specifications, pooled objects and more).  This must
 	be explicitly enabled, and should only be used in development (in production,
@@ -407,7 +422,7 @@ currently used in Tapestry.
 
 	<listitem>
 	<para>A monitor is informed
-	about key events during each request and it intended to support performance
+	about key events during each request and is intended to support performance
 	monitoring.
 	</para>	
 	</listitem>	
