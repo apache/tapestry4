@@ -1,3 +1,8 @@
+* Mar 2 2001 hship
+
+Make it easier to change the StaleLink, StaleSession and Exception page behavior.
+Improve PropertyHelper documentation.
+
 * Feb 23 2001 hship
 
 Remove the "is rewinding" check from RenderTemplateHTML ... just rely on the use

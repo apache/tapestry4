@@ -375,10 +375,10 @@ public abstract class AbstractEngine
 	}
 
 	/**
-	*  Sets the exception page's exception property, then renders the exception page.
+	*  Sets the Exception page's exception property, then renders the Exception page.
 	*
 	*  <p>If the render throws an exception, then copious output is sent to
-	*  <code>System.err</code>.
+	*  <code>System.err</code> and a {@link ServletException} is thrown.
 	*
 	*/
 
@@ -386,15 +386,11 @@ public abstract class AbstractEngine
 		Throwable cause)
 	throws ServletException
 	{
-		IPage exceptionPage;
-		PropertyHelper helper;
-
-
 		try
 		{
-			exceptionPage = cycle.getPage(EXCEPTION_PAGE);
+			IPage exceptionPage = cycle.getPage(EXCEPTION_PAGE);
 
-			helper = PropertyHelper.forClass(exceptionPage.getClass());
+			PropertyHelper helper = PropertyHelper.forClass(exceptionPage.getClass());
 
 			helper.set(exceptionPage, "exception", cause);
 
@@ -403,7 +399,7 @@ public abstract class AbstractEngine
 			render(cycle, output);	
 
 		}
-		catch (Throwable e)
+		catch (Throwable ex)
 		{
 			// Worst case scenario.  The exception page itself is broken, leaving
 			// us with no option but to write the cause to the output.
@@ -413,11 +409,11 @@ public abstract class AbstractEngine
 			// Also, write the exception thrown when redendering the exception
 			// page, so that can get fixed as well.
 
-			reportException("Tapestry unable to present exception page.",  e);
+			reportException("Tapestry unable to present exception page.",  ex);
 
 			// And throw the exception.
 
-			throw new ServletException(e.getMessage(), e);
+			throw new ServletException(ex.getMessage(), ex);
 		}
 	}
 
@@ -662,6 +658,12 @@ public abstract class AbstractEngine
 		out.writeObject(visit);
 	}
 
+	/**
+	 *  Invoked, typically, when an exception occurs while servicing the request.
+	 *  This method resets the output, sets the new page and renders it.
+	 *
+	 */
+
 	protected void redirect(String pageName, IRequestCycle cycle, ResponseOutputStream out,
 		RequestCycleException exception)
 	throws IOException, RequestCycleException, ServletException
@@ -813,17 +815,17 @@ public abstract class AbstractEngine
 
 					service.service(cycle, output);		
 				}
-				catch (PageRedirectException e)
+				catch (PageRedirectException ex)
 				{
-					redirect(e.getTargetPageName(), cycle, output, e);
+					redirect(ex.getTargetPageName(), cycle, output, ex);
 				}
-				catch (StaleLinkException e)
+				catch (StaleLinkException ex)
 				{
-					redirect(STALE_LINK_PAGE, cycle, output, e);
+					handleStaleLinkException(ex, cycle, output);
 				}
-				catch (StaleSessionException e)
+				catch (StaleSessionException ex)
 				{
-					redirect(STALE_SESSION_PAGE, cycle, output, e);
+					handleStaleSessionException(ex, cycle, output);
 				}
 			}
 			catch (Exception ex)
@@ -832,7 +834,9 @@ public abstract class AbstractEngine
 					monitor.serviceException(ex);
 
 				// Discard any output (if possible).  If output has already been sent to
-				// the client, then things get dicey.
+				// the client, then things get dicey.  Note that this block
+				// gets activated if the StaleLink or StaleSession pages throws
+				// any kind of exception.
 
 				// Attempt to switch to the exception page.  However, this may itself fail
 				// for a number of reasons, in which case a ServletException is thrown.
@@ -860,11 +864,53 @@ public abstract class AbstractEngine
 
 			}
 			}
-		finally
-		{
-			NDC.pop();
+			finally
+			{
+				NDC.pop();
 			}
-    }
+	}
+
+	/**
+	 *  Invoked by {@link #service(RequestContext)} if a {@link StaleLinkException}
+	 *  is thrown by the {@link IEngineService service}.  This implementation
+	 *  invokes 
+	 *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, RequestCycleException)}
+	 *  to render the StaleLink page.
+	 *
+	 *  <p>Subclasses may override this method (without
+	 *  invoking this implementation).  A common practice
+	 *  is to present an error message on the application's
+	 *  Home page.	
+	 *
+	 */
+
+	void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle, 
+		ResponseOutputStream output)
+	throws IOException, ServletException, RequestCycleException
+	{
+		redirect(STALE_LINK_PAGE, cycle, output, ex);
+	}
+
+	/**
+	 *  Invoked by {@link #service(RequestContext)} if a {@link StaleSessionException}
+	 *  is thrown by the {@link IEngineService service}.  This implementation
+	 *  invokes 
+	 *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, RequestCycleException)}
+	 *  to render the StaleSession page.
+	 *
+	 *  <p>Subclasses may override this method (without
+	 *  invoking this implementation).  A common practice
+	 *  is to present an error message on the application's
+	 *  Home page.	
+	 *
+	 */
+
+	void handleStaleSessionException(StaleSessionException ex, IRequestCycle cycle, 
+		ResponseOutputStream output)
+	throws IOException, ServletException, RequestCycleException
+	{
+		redirect(STALE_SESSION_PAGE, cycle, output, ex);
+	}
 
 	/**
 	*  Processes an 'action' URL.
@@ -1422,5 +1468,3 @@ public abstract class AbstractEngine
 
 	}
 }
-
-
