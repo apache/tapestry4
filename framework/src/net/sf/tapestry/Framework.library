@@ -54,10 +54,10 @@
     <component-alias type="Upload" specification-path="/net/sf/tapestry/form/Upload.jwc"/>
     <component-alias type="GenericLink" specification-path="/net/sf/tapestry/link/GenericLink.jwc"/>
     
-    <page name="StaleLink" specification-path="/net/sf/tapestry/pages/StaleLink.jwc"/>
-    <page name="StaleSession" specification-path="/net/sf/tapestry/pages/StaleSession.jwc"/>
-    <page name="Inspector" specification-path="/net/sf/tapestry/inspector/Inspector.jwc"/>
-    <page name="Exception" specification-path="/net/sf/tapestry/pages/Exception.jwc"/>
+    <page name="StaleLink" specification-path="/net/sf/tapestry/pages/StaleLink.page"/>
+    <page name="StaleSession" specification-path="/net/sf/tapestry/pages/StaleSession.page"/>
+    <page name="Inspector" specification-path="/net/sf/tapestry/inspector/Inspector.page"/>
+    <page name="Exception" specification-path="/net/sf/tapestry/pages/Exception.page"/>
    
     <!-- These may be overriden but generally shouldn't be, except perhaps for the home service. -->
     

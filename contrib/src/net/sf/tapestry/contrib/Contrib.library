@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE library-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<library-specification>
+
+  <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
+  <component-alias type="MultiplePropertySelection"
+  	specification-path="/net/sf/tapestry/contrib/form/MultiplePropertySelection.jwc"/>
+
+</library-specification>

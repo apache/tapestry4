@@ -15,7 +15,13 @@
   	required="yes" 
   	property-name="targetPage"
   	direction="in"/>
-  	
+  
+  <parameter name="namespace" 
+  	java-type="net.sf.tapestry.INamespace" 
+  	required="no" 
+  	property-name="targetNamespace"
+  	direction="in"/>
+  	  	
   <parameter name="disabled"
   	java-type="boolean"
   	direction="in"/>

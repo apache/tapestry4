@@ -16,7 +16,7 @@
   	<binding name="model" property-path="sortModel"/>
   </component>
   
-  <component id="inputColor" type="Palette">
+  <component id="inputColor" type="contrib:Palette">
     <binding name="model" property-path="colorModel"/>
     <binding name="selected" property-path="selectedColors"/>
     <binding name="sort" property-path="sort"/>

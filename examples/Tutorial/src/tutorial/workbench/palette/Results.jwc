@@ -22,6 +22,7 @@
   </component>
   
   <component id="back" type="Page">
+    <binding name="namespace" property-path="namespace"/>
   	<static-binding name="page">Palette</static-binding>
   </component>
   

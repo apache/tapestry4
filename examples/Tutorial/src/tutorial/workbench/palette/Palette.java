@@ -73,7 +73,11 @@ public class Palette extends BasePage
 
     public void advance(IRequestCycle cycle)
     {
-        Results results = (Results) cycle.getPage("palette.Results");
+        // Since Palette and palette.Results come from
+        // a library now, we need to make sure
+        // the namespace id is part of the name.
+
+        Results results = (Results) cycle.getPage(getNamespace().getExtendedId() + ":palette.Results");
 
         results.setSelectedColors(selectedColors);
 
@@ -108,8 +112,7 @@ public class Palette extends BasePage
     {
         if (sortModel == null)
         {
-            ResourceBundle bundle =
-                ResourceBundle.getBundle("tutorial.workbench.palette.SortModeStrings", getLocale());
+            ResourceBundle bundle = ResourceBundle.getBundle("tutorial.workbench.palette.SortModeStrings", getLocale());
 
             Enum[] options = new Enum[] { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
 
