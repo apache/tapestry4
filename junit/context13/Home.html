@@ -1,0 +1,32 @@
+<html jwcid="@Shell" title="Home">
+<body jwcid="@Body">
+
+<a href="#" jwcid="internal@DirectLink" listener="[[ listeners.internalRedirect ]]">Internal Redirect</a>
+
+<br/>
+
+<a href="#" jwcid="external@DirectLink" listener="[[ listeners.externalRedirect ]]">External Redirect</a>
+	
+<br/>
+
+<a href="#" jwcid="null@DirectLink" listener="[[ listeners.nullRedirect ]]">Null Redirect</a>
+
+
+<br/>
+
+<a href="#" jwcid="servletException@DirectLink" listener="[[ listeners.servletException ]]">Servlet Exception</a>
+
+<br/>
+
+<a href="#" jwcid="missing@DirectLink" listener="[[ listeners.missing ]]">Missing Resource (IOException)</a>
+
+<br/>
+
+<a href="#" jwcid="index@DirectLink" listener="[[ listeners.index ]]">Directory Index</a>
+
+<br/>
+
+<a href="#" jwcid="failExternal@DirectLink" listener="[[ listeners.failExternal ]]">Fail External Forward</a>
+
+</body>
+</html>

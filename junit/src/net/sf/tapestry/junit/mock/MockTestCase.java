@@ -95,6 +95,28 @@ public class MockTestCase extends TapestryTestCase
     // in a static suite() method?
 
 	/**
+	 *  Test the ListEdit component.
+	 * 
+	 **/
+	
+	public void testListEdit()
+	throws Exception
+	{
+		attempt("TestListEdit.xml");
+	}
+
+	/**
+	 *  Test handling of internal and external redirects.
+	 * 
+	 **/
+	
+	public void testRedirect()
+	throws Exception
+	{
+		attempt("TestRedirect.xml");
+	}
+
+	/**
 	 *  Test ability of the enhancer to create properties for
 	 *  connected parameters.
 	 * 

@@ -357,9 +357,9 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
         return false;
     }
 
-    public RequestDispatcher getRequestDispatcher(String arg0)
+    public RequestDispatcher getRequestDispatcher(String path)
     {
-        return null;
+        return _servletContext.getRequestDispatcher(path);
     }
 
     public String getRealPath(String arg0)
