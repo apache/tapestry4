@@ -20,7 +20,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -102,7 +102,7 @@ public class PageLoader
 	*  Binds properties of the component as defined by the container's specification.
 	*
 	* <p>This implementation is very simple, we will need a lot more
-	*  sanity checking and error checking in the final version.
+	*  sanity checking and eror checking in the final version.
 	*
 	*  @param container The containing component.  For a dynamic
 	*  binding ({@link PropertyBinding}) the property name
@@ -408,7 +408,7 @@ public class PageLoader
 	 *  @param name the name of the page to load
 	 *  @param engine the engine the page is loaded for (this is used
 	 *  to define the locale of the new page, and provide access
-	 *  to the correct specification source, etc.).
+	 *  to the corect specification source, etc.).
 	 *  @param type the page type (the path to its component specification)
 	 *
 	 */

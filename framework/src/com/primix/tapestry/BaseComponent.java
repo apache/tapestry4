@@ -20,7 +20,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -216,7 +216,7 @@ extends AbstractComponent
 				}
 				catch (IndexOutOfBoundsException e)
 				{
-					// Actually, the current template parser is easy enough to confuse
+					// Actually, the curent template parser is easy enough to confuse
 					// that this could happen because the <jwc> tag is poorly formatted.
 
 					throw new PageLoaderException(
@@ -323,4 +323,5 @@ extends AbstractComponent
 		readTemplate(loader);
 	}
 }
+
 

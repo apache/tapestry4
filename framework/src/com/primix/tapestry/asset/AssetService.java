@@ -141,7 +141,7 @@ public class AssetService implements IEngineService
 	*/
 
 
-	public void service(IRequestCycle cycle, ResponseOutputStream output) 
+	public boolean service(IRequestCycle cycle, ResponseOutputStream output) 
 	throws ServletException, IOException, RequestCycleException
 	{
 		byte[] buffer;
@@ -230,6 +230,8 @@ public class AssetService implements IEngineService
 			monitor.serviceEnd("asset");
 
 		// The IEngine is responsible for closing the ResponseOutputStream
+		
+		return false;
 	}
 }
 

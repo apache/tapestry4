@@ -95,7 +95,7 @@ public class DefaultSpecificationSource
 	*  specification).  The former always starts with a slash, the latter
 	*  never does.
 	*
-	*  <p>If an alias (i.e, start with a slash), then the value is passed through
+	*  <p>If an alias (i.e, starts with a slash), then the value is passed through
 	*  {@link ApplicationSpecification#getComponentAlias(String)} to
 	*  get a resource on the classpath that is parsed.
 	*

@@ -20,7 +20,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -126,7 +126,7 @@ public abstract class AbstractComponent implements IComponent
 	protected int wrappedCount = 0;
 	
 	/**
-	 *  An array of elements wrapped by this component.
+	 *  An aray of elements wrapped by this component.
 	 *
 	 */
 	
@@ -180,7 +180,7 @@ public abstract class AbstractComponent implements IComponent
 	public void addWrapped(IRender element)
 	{
 		// Should check the specification to see if this component
-		// allows body.  Currently, this is checked by the component
+		// allows body.  Curently, this is checked by the component
 		// in render(), which is silly.
 		
 		if (wrapped == null)
@@ -248,7 +248,7 @@ public abstract class AbstractComponent implements IComponent
 	}
 	
 	/**
-	 *  Does nothing.  Subclasses may override as needed.
+	 *  Does nothing.  Subclasses may overide as needed.
 	 *
 	 *  @see ILifecycle
 	 *
@@ -259,7 +259,7 @@ public abstract class AbstractComponent implements IComponent
 	}
 	
 	/**
-	 *  Does nothing.  Subclasses may override as needed.  {@link BaseComponent}
+	 *  Does nothing.  Subclasses may overide as needed.  {@link BaseComponent}
 	 * loads its HTML template.
 	 *
 	 *  @see ILifecycle
@@ -433,17 +433,17 @@ public abstract class AbstractComponent implements IComponent
 	
 	/**
 	 *  Converts informal parameters into additional attributes on the
-	 *  currently open tag.
+	 *  curently open tag.
 	 *
 	 *  <p>Invoked from subclasses to allow additional attributes to
 	 *  be specified within a tag (this works best when there is a
-	 *  one-to-one correspondence between an {@link IComponent} and a
+	 *  one-to-one corespondence between an {@link IComponent} and a
 	 *  HTML element.
 	 *
 	 *  <p>Iterates through the bindings for this component.  Filters
 	 *  out bindings when the name matches a formal parameter, or any
-	 *  value provided in the reservedNames array (which may be null).
-	 *  Reserved names correspond to attributes that are or may be
+	 *  value provided in the reservedNames aray (which may be null).
+	 *  Reserved names corespond to attributes that are or may be
 	 *  produced by the component.  Filtering is case-insensitive.
 	 *
 	 *  <p>For each acceptible key, the value is extracted using {@link IBinding#getObject()}.
@@ -661,7 +661,7 @@ public abstract class AbstractComponent implements IComponent
     }
 	
 	/**
-	 *  Does nothing.  Subclasses may override.
+	 *  Does nothing.  Subclasses may overide.
 	 *
 	 *  @see ILifecycle
 	 *
@@ -673,7 +673,7 @@ public abstract class AbstractComponent implements IComponent
 	}
 	
 	/**
-	 *  Does nothing.  Subclasses may override.
+	 *  Does nothing.  Subclasses may overide.
 	 *
 	 *  @see ILifecycle
 	 *
@@ -697,7 +697,7 @@ public abstract class AbstractComponent implements IComponent
 	}
 	
 	/**
-	 *  Does nothing.  Subclasses may override as needed.
+	 *  Does nothing.  Subclasses may overide as needed.
 	 *
 	 *  @see ILifecycle
 	 *

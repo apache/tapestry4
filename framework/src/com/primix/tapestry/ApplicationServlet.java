@@ -20,7 +20,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -58,7 +58,7 @@ import org.apache.log4j.*;
  *
  * <p>The application servlet also has a default implementation of
  * {@link #setupLogging} that configures logging for Log4J.  Subclasses
- * with more sophisticated logging needs will need to override this
+ * with more sophisticated logging needs will need to overide this
  * method.
  *
  * <p>This class is derived from the original class
@@ -87,7 +87,7 @@ abstract public class ApplicationServlet
 	private ApplicationSpecification specification;
 	
 	/**
-	 *  The name under which the {@link IEngine engine} is stored within the
+	 * The name under which the {@link IEngine engine} is stored within the
 	 * {@link HttpSession}.
 	 *
 	 */
@@ -95,7 +95,7 @@ abstract public class ApplicationServlet
 	private String attributeName;
 	
 	/**
-	 *  Gets the class loader for the servlet.  Generally, this class (ApplicationServlet)
+	 * Gets the class loader for the servlet.  Generally, this class (ApplicationServlet)
 	 * is loaded by the system class loader, but the servlet and other classes in the
 	 * application are loaded by a child class loader.  Only the child has the full view
 	 * of all classes and package resources.
@@ -105,13 +105,13 @@ abstract public class ApplicationServlet
 	private ClassLoader classLoader = getClass().getClassLoader();
 	
 	/**
-	 *  If true, then the engine is stored as an attribute of the HttpSession
+	 * If true, then the engine is stored as an attribute of the HttpSession
 	 * after every request.
 	 *
 	 * @since 0.2.12
 	 */
 	
-	private boolean storeEngine =
+	private static boolean storeEngine =
 		Boolean.getBoolean("com.primix.tapestry.store-engine");
 	
 	/**
@@ -144,14 +144,13 @@ abstract public class ApplicationServlet
 				throw new ServletException(
 					"Could not locate an engine to service this request.");
 			
-			engine.service(context);
+			boolean dirty = engine.service(context);
 			
-			// When the always rener
-			
-			if (storeEngine)
+			if (dirty && storeEngine)
 			{
 				if (CAT.isDebugEnabled())
 					CAT.debug("Storing " + engine + " into session as " + attributeName);
+				
 				try
 				{
 					context.setSessionAttribute(attributeName, engine);
@@ -159,6 +158,7 @@ abstract public class ApplicationServlet
 				catch (IllegalStateException ex)
 				{
 					// Ignore, the session been's invalidated.
+					
 					if (CAT.isDebugEnabled())
 						CAT.debug("Session invalidated.");
 				}
@@ -229,7 +229,7 @@ abstract public class ApplicationServlet
 	 *
 	 * <p>If the engine does not need to be stored in the {@link HttpSession}
 	 * (not possible with the framework provided implementations)
-	 * then this method should be overrided as appropriate.
+	 * then this method should be overided as appropriate.
 	 *
 	 */
 	
@@ -306,7 +306,7 @@ abstract public class ApplicationServlet
 	/**
 	 *  Invoked from {@link #init(ServletConfig)} before the specification is loaded to
 	 *  setup log4j logging.  This implemention is sufficient for testing, but should
-	 *  be overriden in production applications.
+	 *  be overiden in production applications.
 	 *
 	 *  <ul>
 	 *  <li>Gets the JVM system property <code>com.primix.tapestry.root-logging-priority</code>,

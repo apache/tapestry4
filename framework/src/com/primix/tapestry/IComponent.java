@@ -20,15 +20,13 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
 
-
 package com.primix.tapestry;
-
 
 import com.primix.tapestry.spec.ComponentSpecification;
 import java.util.*;
@@ -222,7 +220,7 @@ public interface IComponent extends IRender
 	
 	/**
 	 *  Adds a binding to a container.  Should only be called during the page
-	 *  loading process (which is responsible for error checking).
+	 *  loading process (which is responsible for eror checking).
 	 *
 	 *  @see IPageLoader
 	 *
@@ -239,7 +237,7 @@ public interface IComponent extends IRender
 	 *  <p>This is late addition to Tapestry, because it also opens the door
 	 * to abuse, since it is quite possible to break the "black box" aspect of
 	 * a component by interacting directly with components it embeds.  This creates
-	 * ugly interrelationships between components that should be seperated.
+	 * ugly interelationships between components that should be seperated.
 	 *
 	 *  @returns A Map of components keyed on component id, or null if the
 	 *  component contains no other components.
