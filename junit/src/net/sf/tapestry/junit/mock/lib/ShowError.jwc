@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification 
+  class="net.sf.tapestry.BaseComponent"
+  allow-informal-parameters="no" allow-body="no">
+  
+  <parameter name="delegate" java-type="net.sf.tapestry.valid.IValidationDelegate" 
+  	required="yes"/>
+  
+  <component id="ifError" type="Conditional">
+    <binding name="condition" expression="bindings.delegate.object.hasErrors"/>
+  </component>
+  
+  <component id="insertError"  type="Delegator">
+     <binding name="delegate" expression="bindings.delegate.object.firstError"/>
+  </component>
+  
+</component-specification>

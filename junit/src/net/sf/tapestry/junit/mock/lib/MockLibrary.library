@@ -10,5 +10,6 @@
 	
 	<component-alias type="Border" specification-path="/net/sf/tapestry/junit/mock/lib/Border.jwc"/>
 	
+	<component-alias type="ShowError" specification-path="/net/sf/tapestry/junit/mock/lib/ShowError.jwc"/>
 	
 </library-specification>	
