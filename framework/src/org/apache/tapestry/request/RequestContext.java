@@ -1056,7 +1056,7 @@ public class RequestContext implements IRender
 
             String property = properties.getProperty(name);
 
-            if (property.indexOf(pathSeparator) > 0 && name.endsWith(".path"))
+            if (property != null && property.indexOf(pathSeparator) > 0 && name.endsWith(".path"))
             {
                 writer.begin("tr");
                 writer.attribute("class", getRowClass());
