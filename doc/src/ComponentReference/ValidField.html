@@ -80,6 +80,30 @@
     - validates string values and allows a minimum length to be set 
    </li>
   </ul>
+  The ValidField's 
+  <A href="../api/net/sf/tapestry/valid/BaseValidator.html">BaseValidator</a> 
+  classes automatically provide powerful client-side JavaScript field validation 
+  when their parent <a href="Form.html">Form</a> is posted.
+  <p> 
+  Note if a form includes a "Cancel" style submit button, the cancel button will 
+  need to set the form's <tt>onsubmit</tt> event handler to null, so that the 
+  JavaScript field validation is not invoked when the form is submitted. 
+  For example:
+<pre>
+  &lt;input jwcid="okSubmit" type="Submit" value="OK"/&gt;
+  &lt;input jwcid="cancelSubmit" type="Submit" value="Cancel" <b>onclick</b>="form.onsubmit = null;"/&gt;
+</pre>
+  <p>
+  Validator client scripting is enabled by default. To disable the client 
+  scripting explicitly set the "clientScriptingEnabled" property to false in 
+  each validator. For example:
+<pre>
+&lt;bean name="myValidator" class="net.sf.tapestry.valid.StringValidator"&gt;
+    &lt;set-property name="minimumLength" expression="3"/&gt;
+    &lt;set-property name="required" expression="true"/&gt;
+    &lt;set-property name="<b>clientScriptingEnabled</b>" expression="false"/&gt;
+&lt;/bean&gt;
+</pre>
  </td>
 </tr>
 
@@ -307,8 +331,8 @@ Also, the names of Java scalar types are acceptible.
 &lt;/tr&gt;
 &lt;tr&gt;
  &lt;td colspan="2" align="right"&gt;
-  &lt;input jwcid="okSubmit" type="Submit" value="   OK   "&gt;
-  &lt;input jwcid="cancelSubmit" type="Submit" value="Cancel"&gt;
+  &lt;input jwcid="okSubmit" type="Submit" value="   OK   "/&gt;
+  &lt;input jwcid="cancelSubmit" type="Submit" value="Cancel" onclick="form.onsubmit = null;"/&gt;
  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
