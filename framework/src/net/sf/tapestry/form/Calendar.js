@@ -6,65 +6,97 @@
 //****************************************************************************
 
 //****************************************************************************
-// Extensively modified by Paul Geetz
-// Date: August 2002
+// Extensively modified by Paul Geetz and Malcolm Edgar
+// Date: August-Sept 2002
 //****************************************************************************
 
-var gdCtrl = new Object();
+// Global variables
+
+// Date display text field
+var gDateField = new Object();
+
+// Hidden date field
+var gHiddenField;
+
+// Date display format
+var gFormat;
+
+// Popup calendar
+var gVicPopCal = null;
+
+// Current Date
+var gdCurDate = new Date();
+
+var giYear = gdCurDate.getFullYear();
+var giMonth = gdCurDate.getMonth()+1;
+var giDay = gdCurDate.getDate();
+
+var monthShortNames = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+var monthLongNames = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+var dayNames = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday','Friday', 'Saturday');
+
+// Colors
 var gcGray = "#808080";
 var gcToggle = "#ffff00";
 var gcBG = "#cccccc";
 
-var gRetCtrl;
-var gFormat;
-var gdCurDate = new Date();
-var giYear = gdCurDate.getFullYear();
-var giMonth = gdCurDate.getMonth()+1;
-var giDay = gdCurDate.getDate();
-var VicPopCal = null;
-
-//****************************************************************************
-// Param: popCtrl is the widget beyond which you want this calendar to appear;
-//        dateCtrl is the widget into which you want to put the selected date;
-//        popCal is the widget to display the calendar;  
-// i.e.: <input type="text" name="dc" style="text-align:center" readonly>
-// <INPUT type="button" value="V" onclick="fPopCalendar(dc,dc,popCal);return false">
-//****************************************************************************
-function fPopCalendar(popCtrl, dateCtrl, valCtrl, popCal) 
+/**  
+ * This function displays the popup Calendar control.
+ * E.g.
+ * <input type="text" name="dc" style="text-align:center" readonly>
+ * <input type="button" value="V" onclick="showPopCalendar(dc,dc,popCal);return false">
+ *
+ * param dateField is the widget into which you want to put the selected date,
+ * param dateHidden is the date hidden field used to set the initial date
+ * param popCal is the widget to display the calendar
+ **/
+function showPopCalendar(dateField, dateHidden, popCal) 
 {
-  if (VicPopCal) {
-     fHideCalendar();
+  if (gVicPopCal) 
+  {
+     hidePopCalendar();
      return;
   }      
-  VicPopCal = popCal;
-  gdCtrl = dateCtrl;
-  gRetCtrl = valCtrl;
-  gFormat = dateCtrl.format;
+  gDateField = dateField;
+  gHiddenField = dateHidden;
+  gVicPopCal = popCal;
+  
+  gFormat = gDateField.format;
 
-  var d = (gRetCtrl.value == "") ? new Date() : new Date(gRetCtrl.value);
+  var d = new Date();
+  if (gHiddenField.value != "") {
+    d.setTime(gHiddenField.value);
+  }
+
   fSetYearMon(d.getYear(), d.getMonth() + 1);
 
-  var point = fGetXY(popCtrl);
-  with (VicPopCal.style) {
+  var point = fGetXY(gDateField);
+  with (gVicPopCal.style) {
     left = point.x;
-    top  = point.y + popCtrl.offsetHeight + 1;
+    top  = point.y + gDateField.offsetHeight + 1;
     visibility = 'visible';
   }
 
   window.event.cancelBubble = true;
-  document.body.attachEvent("onclick", fHideCalendar);
-  VicPopCal.focus();
+  document.body.attachEvent("onclick", hidePopCalendar);
+  gVicPopCal.focus();
 }
 
-function fHideCalendar() 
+/**
+ * Hide the popup calendar
+ **/
+function hidePopCalendar() 
 {
-  if (VicPopCal) {
-     VicPopCal.style.visibility = "hidden";
-     VicPopCal = null;
-     //document.body.detachEvent("onclick", fHideCalendar);
+  if (gVicPopCal) 
+  {
+     gVicPopCal.style.visibility = "hidden";
+     gVicPopCal = null;
   } 
 }
 
+/**
+ * Set date display the Hide the popup calendar
+ **/
 function fSetDate(iYear, iMonth, iDay)
 {
   var d = new Date();
@@ -72,15 +104,11 @@ function fSetDate(iYear, iMonth, iDay)
   d.setMonth(iMonth - 1);
   d.setDate(iDay);
 
-  gdCtrl.value = formatDate(d);
-  gRetCtrl.value = d.getTime();
+  gDateField.value = formatDate(d);
+  gHiddenField.value = d.getTime();
 
-  fHideCalendar();
+  hidePopCalendar();
 }
-
-var monthShortNames = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-var monthLongNames = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-var dayNames = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday','Friday', 'Saturday');
 
 function pad(number,X) 
 {
@@ -103,7 +131,10 @@ function formatDate(date)
     bits['MM'] = pad(date.getMonth()+1,2);
     bits['MMM'] = monthShortNames[date.getMonth()];
     bits['MMMM'] = monthLongNames[date.getMonth()];
-    bits['yyyy'] = date.getYear();
+    
+    var yearStr = "" + date.getYear();
+    yearStr = (yearStr.length == 2) ? '19' + yearStr: yearStr;
+    bits['yyyy'] = yearStr;
     bits['yy'] = bits['yyyy'].toString().substr(2,2);
 
     var frm = new String(gFormat);
@@ -162,22 +193,31 @@ function Point(iX, iY)
 
 function fBuildCal(iYear, iMonth) 
 {
-  var aMonth=new Array();
-  for(i=1;i<7;i++)
-    aMonth[i]=new Array(i);
+  var aMonth = new Array();
+  for(i = 1; i < 7; i++) 
+  {
+    aMonth[i] = new Array(i);
+  }
 
-  var dCalDate=new Date(iYear, iMonth-1, 1);
-  var iDayOfFirst=dCalDate.getDay();
-  var iDaysInMonth=new Date(iYear, iMonth, 0).getDate();
-  var iOffsetLast=new Date(iYear, iMonth-1, 0).getDate()-iDayOfFirst+1;
+  var dCalDate = new Date(iYear, iMonth-1, 1);
+  var iDayOfFirst = dCalDate.getDay();
+  var iDaysInMonth = new Date(iYear, iMonth, 0).getDate();
+  var iOffsetLast = new Date(iYear, iMonth-1, 0).getDate() - iDayOfFirst + 1;
   var iDate = 1;
   var iNext = 1;
 
-  for (d = 0; d < 7; d++)
-  aMonth[1][d] = (d<iDayOfFirst)?-(iOffsetLast+d):iDate++;
-  for (w = 2; w < 7; w++)
-    for (d = 0; d < 7; d++)
-    aMonth[w][d] = (iDate<=iDaysInMonth)?iDate++:-(iNext++);
+  for (d = 0; d < 7; d++) 
+  {
+    aMonth[1][d] = (d<iDayOfFirst) ? -(iOffsetLast+d) : iDate++;
+  }
+  
+  for (w = 2; w < 7; w++) 
+  {
+    for (d = 0; d < 7; d++) 
+    {
+      aMonth[w][d] = (iDate<=iDaysInMonth) ? iDate++ : -(iNext++);
+    }
+  }
   return aMonth;
 }
 
@@ -211,6 +251,10 @@ function fDrawCal(iYear, iMonth, iCellWidth, iDateTextSize)
   return txt;
 }
 
+/**
+ * Update the calendar. This function is called by month select and year select
+ * onChange event handler.
+ **/
 function fUpdateCal(iYear, iMonth) 
 {
   myMonth = fBuildCal(iYear, iMonth);
@@ -241,9 +285,13 @@ function fUpdateCal(iYear, iMonth)
 function fSetYearMon(iYear, iMon)
 {
   tbSelMonth.options[iMon-1].selected = true;
-  for (i = 0; i < tbSelYear.length; i++)
-  if (tbSelYear.options[i].value == iYear)
-    tbSelYear.options[i].selected = true;
+  for (i = 0; i < tbSelYear.length; i++) 
+  {
+    if (tbSelYear.options[i].value == iYear)
+    {
+      tbSelYear.options[i].selected = true;
+    }
+  }
   fUpdateCal(iYear, iMon);
 }
 

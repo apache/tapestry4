@@ -16,7 +16,7 @@
   </component>
 
   <component id="dateHidden" type="Hidden">
-       	<binding name="value" expression="javaScriptValue"/>
+       	<binding name="value" expression="timeMillis"/>
        	<field-binding name="encode" field-name="Boolean.FALSE"/>
   </component>
 
