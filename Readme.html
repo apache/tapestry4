@@ -194,29 +194,25 @@ You will need to download the Ant optional JAR (which includes additional Ant ta
 it in your Ant <code>lib</code> folder.
 
 
-<p>
-<table align=right width=200>
-<tr><th style="FONT-WEIGHT: bold; COLOR: white; BACKGROUND-COLOR: #4b5887">Where's the Vlib?</th></tr>
-<tr><td bgColor="silver">The Virtual Library was
-implemented using the InstantDB database.  
-Enhydra has changed the licensing for
-it and so it is no longer distributed
-with JBoss.  Work is under way to 
-reconstruct it using a different, and properly licensed, database.</td></tr>
-</table>
 
 Finally, to use the Virtual Library demo, you must download and install
-the <a href="http://www.jboss.org">JBoss</a> open source application server, release 2.4.3.
+the <a href="http://www.jboss.org">JBoss</a> open source application server, 
+release 2.4.3.
 You must also create the file <code>config/build.properties</code> and edit it
 to identify the
 location of your JBoss installation (a sample properties file is included).  
 JBoss requires a 1.3 JVM.
 
-<p>Configuring JBoss is mostly done automatically.  
+<p>Configuring JBoss for the Virtual Library
+is done automatically.  
 Execute the command
 <code>ant configure</code>.  Ant will configure JBoss to run the
 Virtual Library application, which includes setting up a starter
-copy of the database.
+copy of the Virtual Library database (if it does not already exist).
+
+<p>You should then run JBoss by executing <code>ant run-jboss</code>.  This
+will run JBoss in the correct configuration to deploy and run the Virtual Library.
+
 
 
 		<br><br>
