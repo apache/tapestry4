@@ -28,7 +28,7 @@
 	<parameter name="element" 
 		java-type="java.lang.String" 
 		required="no"
-		direction="in"/>
+		direction="custom"/>
   
 	<component id="table" type="InheritInformalAny">
 		<binding name="element" expression="element"/>
