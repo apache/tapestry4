@@ -450,14 +450,6 @@ public abstract class AbstractApplication
 
 	protected void reportException(String reportTitle, Throwable e)
 	{
-		ExceptionAnalyzer analyzer;
-		ExceptionDescription[] descriptions;
-		ExceptionProperty[] properties;
-		String[] stackTrace;
-		int i;
-		int j;
-		String message;
-
 		System.err.println(
 			"\n\n**********************************************************\n\n");
 
@@ -467,39 +459,7 @@ public abstract class AbstractApplication
 			"\n  Client address: " + clientAddress +
 			"\n\nExceptions:\n");
 
-		// Something has gone seriously wrong.  Report it as best you can.
-
-		analyzer = new ExceptionAnalyzer();
-		descriptions = analyzer.analyze(e);
-
-		for (i = 0; i < descriptions.length; i++)
-		{
-			message = descriptions[i].getMessage();
-
-			if (message == null)
-				System.err.println(descriptions[i].getExceptionClassName());
-			else
-				System.err.println(descriptions[i].getExceptionClassName() + ": " +
-					descriptions[i].getMessage());
-
-			properties = descriptions[i].getProperties();
-
-			for (j = 0; j < properties.length; j++)
-				System.err.println("   " + properties[j].getName() + ": " +
-					properties[j].getValue());
-
-			// Just show the stack trace on the deepest exception.
-
-			if (i + 1 == descriptions.length)
-			{
-				stackTrace = descriptions[i].getStackTrace();
-
-				for (j = 0; j < stackTrace.length; j++)
-					System.err.println(stackTrace[j]);
-			}
-			else
-				System.err.println();
-		}
+        new ExceptionAnalyzer().reportException(e, System.err);
 
 		System.err.println(
 			"\n**********************************************************\n");
