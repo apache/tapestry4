@@ -102,13 +102,65 @@ Body: <STRONG>removed</STRONG>
 <tr>
  <td colspan="2">
   <b>Examples</b>
-	<p>
-  This example is under construction. See the 
-            Tutorial Border for an example usage of this component.</p>
+	        <p> This example shows an implementation of the classical Border component, 
+              an application specific component. It is a common practice to use 
+              a Border component to provide common layout to almost all of application 
+              pages. </p>
              
-     
-
- </td></tr></table>
+	        <table width="200" class="examples" cellspacing="0" border="0" align="center">
+              <tr>
+				<td valign="top" style="text-align:justify;">
+<H1 align=center><FONT color=#ff3333>Agnosis</FONT></H1>
+<TABLE align=center border=0>
+	<TR>
+		<TD>
+			<P>
+				<B>A</B>GNOSIS feliz
+				<BR/>
+				<B>G</B>racias al ciego destino
+				<BR/>
+				<B>N</B>ada es constante
+				<BR/>
+				<B>O</B>lvidados por el Hado
+				<BR/>
+				<B>S</B>i Él existe
+				<BR/>
+				<B>I</B>ncomprensible y eterno
+				<BR/>
+				<B>S</B>ilencio 
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<br/>
+	</td>
+			</tr>
+			<tr>
+				<td valign="bottom">
+					<table width="100%" cellspacing="0" border="0">
+						<tr>
+							<td align="center">
+								<a href="http://jakarta.apache.org/tapestry"><img src="images/poweredbyTapestry.gif" width="79" height="33" border="0" alt="Tapestry"></a>
+								<br/>
+								<br/>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+        <br>
+            <pre>&lt;span jwcid=&quot;@Border&quot;&gt;<br>&lt;H1 align=center&gt;&lt;FONT color=#ff3333&gt;Agnosis&lt;/FONT&gt;&lt;/H1&gt;<br>&lt;TABLE align=center border=0&gt;<br>   &lt;TR&gt;<br>      &lt;TD&gt;<br>         &lt;P&gt;<br>            &lt;B&gt;A&lt;/B&gt;GNOSIS feliz<br>            &lt;BR/&gt;<br>            &lt;B&gt;G&lt;/B&gt;racias al ciego destino<br>            &lt;BR/&gt;<br>            &lt;B&gt;N&lt;/B&gt;ada es constante<br>            &lt;BR/&gt;<br>            &lt;B&gt;O&lt;/B&gt;lvidados por el Hado<br>            &lt;BR/&gt;<br>            &lt;B&gt;S&lt;/B&gt;i &Eacute;l existe<br>            &lt;BR/&gt;<br>            &lt;B&gt;I&lt;/B&gt;ncomprensible y eterno<br>            &lt;BR/&gt;<br>            &lt;B&gt;S&lt;/B&gt;ilencio <br>         &lt;/P&gt;<br>      &lt;/TD&gt;<br>   &lt;/TR&gt;<br>&lt;/TABLE&gt;<br>&lt;br/&gt;<br>&lt;/span&gt;</pre>
+            <br>
+            Border.html 
+            <pre>&lt;html jwcid=&quot;@Shell&quot; title=&quot;RenderBody Example&quot;&gt;<br>   &lt;body jwcid=&quot;@Body&quot;&gt;<br>      &lt;table width=&quot;100%&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;<br>         &lt;tr&gt;<br>           &lt;td valign=&quot;top&quot; style=&quot;text-align:justify;&quot;&gt;<br>              &lt;span jwcid=&quot;@<a href="RenderBody.html">RenderBody</a>&quot;&gt;Page content goes here.&lt;/span&gt;<br>           &lt;/td&gt;<br>        &lt;/tr&gt;<br>        &lt;tr&gt;<br>           &lt;td valign=&quot;bottom&quot;&gt;<br>              &lt;table width=&quot;100%&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;<br>                 &lt;tr&gt;<br>                    &lt;td align=&quot;center&quot;&gt;<br>                       &lt;a href=&quot;http://jakarta.apache.org/tapestry&quot;&gt;&lt;img src=&quot;images/poweredbyTapestry.gif&quot; width=&quot;79&quot; height=&quot;33&quot; border=&quot;0&quot; alt=&quot;Tapestry&quot;&gt;&lt;/a&gt;<br>                       &lt;br/&gt;<br>                       &lt;br/&gt;<br>                    &lt;/td&gt;<br>                 &lt;/tr&gt;<br>              &lt;/table&gt;<br>           &lt;/td&gt;<br>        &lt;/tr&gt;<br>     &lt;/table&gt;<br>  &lt;/body&gt;<br>&lt;/html&gt;</pre>
+            <br>
+            Border.jwc 
+            <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br>&lt;!DOCTYPE component-specification<br>    PUBLIC &quot;-//Apache Software Foundation//Tapestry Specification 3.0//EN&quot;<br>    &quot;http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd&quot;&gt;<br>
+&lt;component-specification allow-body=&quot;yes&quot; allow-informal-parameters=&quot;no&quot;&gt;<br>&lt;/component-specification&gt;<br>
+</pre>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  
