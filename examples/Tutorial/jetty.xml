@@ -20,10 +20,12 @@
   
   <!-- By moving web.xml into WEB-INF, the working directory ends up with the
        approximate format of a WAR. -->
-       
+
   <Call name="addWebApplication">
     <Arg>/tutorial</Arg>
-    <Arg>./</Arg>
- </Call>
+    <Arg>.</Arg>
+    <Set name="DefaultsDescriptor">../../config/webdefault.xml</Set>
+  </Call>
+  
   
 </Configure>
