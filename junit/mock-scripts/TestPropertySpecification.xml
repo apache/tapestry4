@@ -394,5 +394,41 @@ value: \[(.*?)\]
 		it_IT is the Italy locale
 		</assert-output>	
 	</request>	
+
+	<request>
+		<parameter name="service" value="page/Twelve"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Twelve</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Two">
+		Variable initial value = 0
+		</assert-output>	
+		
+		<assert-output name="Two">
+		Constant initial value = 5
+		</assert-output>	
+	</request>	
+
+	<request>
+		<parameter name="service" value="page/Twelve"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Twelve</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Two">
+		Variable initial value = 1
+		</assert-output>	
+		
+		<assert-output name="Two">
+		Constant initial value = 5
+		</assert-output>	
+	</request>	
  </mock-test>
  
