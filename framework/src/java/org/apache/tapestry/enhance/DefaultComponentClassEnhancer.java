@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer, R
     private boolean _disableValidation;
     private ClassFactory _classFactory;
 
-    public void resetDidOccur()
+    public void resetEventDidOccur()
     {
         _cachedClasses.clear();
     }

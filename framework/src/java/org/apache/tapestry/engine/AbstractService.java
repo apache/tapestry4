@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.StringSplitter;
-import org.apache.tapestry.util.io.DataSqueezerImpl;
 
 /**
  *  Abstract base class for implementing engine services.  Instances of services

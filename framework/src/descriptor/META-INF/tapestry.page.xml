@@ -37,7 +37,9 @@
       <construct class="org.apache.tapestry.pageload.PageLoader">
         <set-object property="enhancer" value="infrastructure:componentClassEnhancer"/>
         <set-object property="specificationSource" value="infrastructure:specificationSource"/>
-        <set-service property="componentResolver" service-id="ComponentSpecificationResolver"/>
+        <set-service property="componentResolver" service-id="ComponentSpecificationResolver"/>      
+        <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
+        <set-service property="componentTemplateLoader" service-id="ComponentTemplateLoader"/>
         <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
         <set-object property="defaultPageClassName"
                        value="app-property:org.apache.tapestry.default-page-class"/>
@@ -77,6 +79,8 @@
   
   <service-point id="ComponentSpecificationResolver" interface="org.apache.tapestry.resolver.ComponentSpecificationResolver">
     
+    Locates the specification for a component or page.
+    
     <invoke-factory model="threaded">
       <construct class="org.apache.tapestry.resolver.ComponentSpecificationResolverImpl">
         <set-object property="specificationSource" value="infrastructure:specificationSource"/>
@@ -85,6 +89,20 @@
         <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
       </construct>
     </invoke-factory>    
+  </service-point>
+  
+  <service-point id="ComponentTemplateLoader" interface="org.apache.tapestry.services.ComponentTemplateLoader">
+    
+    Locates and loads the template for a component (or page).
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ComponentTemplateLoaderImpl">
+        <set-object property="templateSource" value="infrastructure:templateSource"/>
+        <set-service property="pageLoader" service-id="PageLoader"/>
+        <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
+      </construct>
+    </invoke-factory>
+    
   </service-point>
   
 </module>

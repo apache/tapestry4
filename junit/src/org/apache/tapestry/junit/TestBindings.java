@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,19 +31,16 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.binding.ExpressionBinding;
-import org.apache.tapestry.binding.FieldBinding;
 import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
 
 /**
- *  Do tests of bindings.
- *
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *
- **/
+ * Do tests of bindings.
+ * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
 
 public class TestBindings extends TapestryTestCase
 {
@@ -74,9 +71,13 @@ public class TestBindings extends TapestryTestCase
     public class BoundPage extends MockPage
     {
         private boolean _booleanValue;
+
         private int _intValue;
+
         private double _doubleValue;
+
         private Object _objectValue;
+
         private Timestamp _dateValue;
 
         public boolean getBooleanValue()
@@ -119,122 +120,18 @@ public class TestBindings extends TapestryTestCase
             _objectValue = objectValue;
         }
 
-        public Timestamp getDateValue() {
+        public Timestamp getDateValue()
+        {
             return _dateValue;
         }
 
-        public void setDateValue(Timestamp dateValue) {
+        public void setDateValue(Timestamp dateValue)
+        {
             _dateValue = dateValue;
         }
     }
 
-    public void testGetObject()
-    {
-        IBinding binding =
-            new FieldBinding(
-                _resolver,
-                "org.apache.tapestry.junit.TestBindings.STRING_FIELD",
-                null);
-
-        assertEquals("Object", STRING_FIELD, binding.getObject());
-    }
-
-    public void testToString()
-    {
-        IBinding binding =
-            new FieldBinding(
-                _resolver,
-                "org.apache.tapestry.junit.TestBindings.STRING_FIELD",
-                null);
-
-        assertEquals(
-            "String value (before access)",
-            "FieldBinding[org.apache.tapestry.junit.TestBindings.STRING_FIELD]",
-            binding.toString());
-
-        binding.getObject();
-
-        assertEquals(
-            "String value (after access)",
-            "FieldBinding[org.apache.tapestry.junit.TestBindings.STRING_FIELD (stringField)]",
-            binding.toString());
-    }
-
-    public void testJavaLang()
-    {
-        IBinding binding = new FieldBinding(_resolver, "Boolean.TRUE", null);
-
-        assertEquals("Object", Boolean.TRUE, binding.getObject());
-    }
-
-    public void testMissingClass()
-    {
-        IBinding binding = new FieldBinding(_resolver, "foo.bar.Baz.FIELD", null);
-
-        try
-        {
-
-            binding.getObject();
-
-            throw new AssertionFailedError("Not reachable.");
-        }
-        catch (BindingException ex)
-        {
-            checkException(ex, "Unable to resolve class foo.bar.Baz.");
-
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
-    public void testMissingField()
-    {
-        IBinding binding =
-            new FieldBinding(
-                _resolver,
-                "org.apache.tapestry.junit.TestBindings.MISSING_FIELD",
-                null);
-
-        try
-        {
-            binding.getObject();
-
-            throw new AssertionFailedError("Not reachable.");
-        }
-        catch (BindingException ex)
-        {
-            checkException(
-                ex,
-                "Field org.apache.tapestry.junit.TestBindings.MISSING_FIELD does not exist.");
-
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
     public final String INSTANCE_FIELD = "InstanceField";
-
-    public void testInstanceAccess()
-    {
-        IBinding binding =
-            new FieldBinding(
-                _resolver,
-                "org.apache.tapestry.junit.TestBindings.INSTANCE_FIELD",
-                null);
-
-        try
-        {
-            binding.getObject();
-
-            throw new AssertionFailedError("Not reachable.");
-        }
-        catch (BindingException ex)
-        {
-            checkException(
-                ex,
-                "Field org.apache.tapestry.junit.TestBindings.INSTANCE_FIELD is an instance variable, not a class variable.");
-
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
 
     public void testStaticBindingInt()
     {
@@ -410,10 +307,8 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals(
-                "Parameter foo (Hello) is an instance of java.lang.String, "
-                    + "which does not inherit from java.lang.Number.",
-                ex.getMessage());
+            assertEquals("Parameter foo (Hello) is an instance of java.lang.String, "
+                    + "which does not inherit from java.lang.Number.", ex.getMessage());
 
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -429,10 +324,8 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals(
-                "Parameter bar (Goodbye) is an instance of java.lang.String, which does not "
-                    + "implement interface org.apache.tapestry.IRequestCycle.",
-                ex.getMessage());
+            assertEquals("Parameter bar (Goodbye) is an instance of java.lang.String, which does not "
+                    + "implement interface org.apache.tapestry.IRequestCycle.", ex.getMessage());
 
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -521,24 +414,6 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
-    public void testInvalidFieldName()
-    {
-        IBinding binding = new FieldBinding(_resolver, "Baz", null);
-
-        try
-        {
-            binding.getObject();
-
-            throw new AssertionFailedError("Unreachable");
-        }
-        catch (BindingException ex)
-        {
-            checkException(ex, "Invalid field name: Baz.");
-
             assertEquals("Binding", binding, ex.getBinding());
         }
     }
@@ -658,11 +533,10 @@ public class TestBindings extends TapestryTestCase
     }
 
     /**
-     *  Test error cases for {@link org.apache.tapestry.binding.ListenerBinding}.
+     * Test error cases for {@link org.apache.tapestry.binding.ListenerBinding}.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testListenerBindingInt()
     {
@@ -676,13 +550,11 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(
-                ex,
-                "Inappropriate invocation of getInt() on instance of ListenerBinding.");
+            checkException(ex, "Inappropriate invocation of getInt() on instance of ListenerBinding.");
         }
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void testListenerBindingDouble()
     {
@@ -696,13 +568,11 @@ public class TestBindings extends TapestryTestCase
         }
         catch (BindingException ex)
         {
-            checkException(
-                ex,
-                "Inappropriate invocation of getDouble() on instance of ListenerBinding.");
+            checkException(ex, "Inappropriate invocation of getDouble() on instance of ListenerBinding.");
         }
     }
 
-    /**  @since 3.0 **/
+    /** @since 3.0 * */
 
     public void testListenerBindingObject()
     {
@@ -711,7 +581,7 @@ public class TestBindings extends TapestryTestCase
         assertSame(b, b.getObject());
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void testStringBinding()
     {
@@ -723,7 +593,8 @@ public class TestBindings extends TapestryTestCase
         assertEquals("foo", b.getKey());
     }
 
-    public void testTypeConverter() {
+    public void testTypeConverter()
+    {
         BoundPage page = new BoundPage();
         MockEngine engine = new MockEngine();
         page.setEngine(engine);
@@ -731,12 +602,14 @@ public class TestBindings extends TapestryTestCase
         ExpressionBinding binding = new ExpressionBinding(_resolver, page, "dateValue", null);
         Date date = new Date();
 
-        try {
+        try
+        {
             // try without a converter first, which should fail
             binding.setObject(date);
             fail("Should not be able to call setDateValue(Date)");
         }
-        catch (BindingException expected) {
+        catch (BindingException expected)
+        {
             assertTrue(true);
         }
 
@@ -748,11 +621,13 @@ public class TestBindings extends TapestryTestCase
         engine.setSpecification(appSpec);
 
         binding.setObject(date);
-        // note - cannot treat java.sql.Timestamp as a Date as the nanos store the
-        // fractional part of the second, including the millis.  JDK 1.3 Javadocs
+        // note - cannot treat java.sql.Timestamp as a Date as the nanos store
+        // the
+        // fractional part of the second, including the millis. JDK 1.3 Javadocs
         // for Timestamp suggest using nanos/1000000 to find the actual millis.
-        // Otherwise, just using assertEquals(date, page.getDateValue()) fails 
+        // Otherwise, just using assertEquals(date, page.getDateValue()) fails
         // under JDK 1.3.
-        assertEquals(date, new Date((page.getDateValue().getTime()/1000)*1000 + page.getDateValue().getNanos() / 1000000));
+        assertEquals(date, new Date((page.getDateValue().getTime() / 1000) * 1000 + page.getDateValue().getNanos()
+                / 1000000));
     }
 }

@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,23 +26,22 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.link.DirectLink;
 import org.apache.tapestry.parse.CloseToken;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.LocalizationToken;
 import org.apache.tapestry.parse.OpenToken;
-import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
 import org.apache.tapestry.services.TemplateSource;
 
 /**
- *  Component of the {@link Inspector} page used to display
- *  the ids and types of all embedded components.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Component of the {@link Inspector}page used to display the ids and types of all embedded
+ * components.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class ShowTemplate extends BaseComponent implements IDirect
 {
@@ -71,13 +70,11 @@ public class ShowTemplate extends BaseComponent implements IDirect
     }
 
     /**
-     *  Writes the HTML template for the component.  When &lt;jwc&gt; tags are
-     *  written, the id is made a link (that selects the named component).  We
-     *  use some magic to accomplish this, creating links as if we were a
-     *  {@link DirectLink} component, and attributing those links
-     *  to the captive {@link DirectLink} component embedded here.
-     *
-     **/
+     * Writes the HTML template for the component. When &lt;jwc&gt; tags are written, the id is made
+     * a link (that selects the named component). We use some magic to accomplish this, creating
+     * links as if we were a {@link DirectLink}component, and attributing those links to the
+     * captive {@link DirectLink}component embedded here.
+     */
 
     private void writeTemplate(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -125,8 +122,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
             if (token.getType() == TokenType.OPEN)
             {
-                boolean nextIsClose =
-                    (i + 1 < count) && (template.getToken(i + 1).getType() == TokenType.CLOSE);
+                boolean nextIsClose = (i + 1 < count) && (template.getToken(i + 1).getType() == TokenType.CLOSE);
 
                 write(writer, nextIsClose, (OpenToken) token);
 
@@ -139,10 +135,10 @@ public class ShowTemplate extends BaseComponent implements IDirect
             // That's all the types known at this time.
         }
 
-        writer.end(); // <pre>        
+        writer.end(); // <pre>
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     private IComponent getInspectedComponent()
     {
@@ -151,7 +147,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         return page.getInspectedComponent();
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     private void write(IMarkupWriter writer, TextToken token)
     {
@@ -159,13 +155,13 @@ public class ShowTemplate extends BaseComponent implements IDirect
         int end = token.getEndIndex();
 
         // Print the section of the template ... print() will
-        // escape and invalid characters as HTML entities.  Also,
+        // escape and invalid characters as HTML entities. Also,
         // we show the full stretch of text, not the trimmed version.
 
         writer.print(token.getTemplateData(), start, end - start + 1);
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     private void write(IMarkupWriter writer, CloseToken token)
     {
@@ -179,7 +175,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.end(); // <span>
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     private void write(IMarkupWriter writer, LocalizationToken token)
     {
@@ -223,7 +219,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.end(); // <span>
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     private void write(IMarkupWriter writer, boolean nextIsClose, OpenToken token)
     {
@@ -271,17 +267,13 @@ public class ShowTemplate extends BaseComponent implements IDirect
             while (ii.hasNext())
             {
                 Map.Entry e = (Map.Entry) ii.next();
-                
-                TemplateAttribute attribute = (TemplateAttribute)e.getValue();               
-                
+
+                String value = (String) e.getValue();
+
                 writer.print(' ');
                 writer.print(e.getKey().toString());
                 writer.print("=\"");
-                
-                // TODO: Fix this to output something appropriate for each type
-                // of attribute (literal, expression, string).
-                
-                writer.print(attribute.getValue());
+                writer.print(value);
                 writer.print('"');
             }
         }
@@ -296,9 +288,8 @@ public class ShowTemplate extends BaseComponent implements IDirect
     }
 
     /**
-     *  Invoked when a component id is clicked.
-     *
-     **/
+     * Invoked when a component id is clicked.
+     */
 
     public void trigger(IRequestCycle cycle)
     {
@@ -318,11 +309,10 @@ public class ShowTemplate extends BaseComponent implements IDirect
     }
 
     /**
-     *  Always returns true.
+     * Always returns true.
      * 
-     *  @since 2.3
-     * 
-     **/
+     * @since 2.3
+     */
 
     public boolean isStateful()
     {
