@@ -91,6 +91,7 @@ public class MockEngine implements IEngine
 
     private boolean _refreshing;
     private Pool _pool = new Pool();
+    private String _servletPath;
 
     public void forgetPage(String name)
     {
@@ -127,7 +128,7 @@ public class MockEngine implements IEngine
 
     public String getServletPath()
     {
-        return null;
+        return _servletPath;
     }
 
     public String getContextPath()
@@ -232,6 +233,11 @@ public class MockEngine implements IEngine
     public IComponentClassEnhancer getComponentClassEnhancer()
     {
         return null;
+    }
+
+    public void setServletPath(String servletPath)
+    {
+        _servletPath = servletPath;
     }
 
 }

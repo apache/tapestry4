@@ -24,13 +24,13 @@
   <parameter name="disabled"
   	java-type="boolean"
   	direction="in"/>
-  	
-  <parameter name="scheme" 
+  	  	
+  <parameter name="anchor" 
   	java-type="java.lang.String"
   	direction="in"/>
   	
-  <parameter name="port"
-  	java-type="int"
+  <parameter name="renderer"
+  	java-type="net.sf.tapestry.link.ILinkRenderer"
   	direction="in"/>
   	
   <reserved-parameter name="href"/>

@@ -70,8 +70,8 @@ import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.components.IServiceLink;
-import net.sf.tapestry.components.ServiceLinkEventType;
+import net.sf.tapestry.components.ILinkComponent;
+import net.sf.tapestry.components.LinkEventType;
 
 /**
  *  Combines a link component (such as {@link net.sf.tapestry.link.DirectLink}) 
@@ -110,7 +110,8 @@ public class Rollover extends AbstractComponent
         return asset.buildURL(cycle);
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         // No body, so we skip it all if not rewinding (assumes no side effects on
         // accessors).
@@ -126,12 +127,17 @@ public class Rollover extends AbstractComponent
 
         Body body = Body.get(cycle);
         if (body == null)
-            throw new RequestCycleException(Tapestry.getString("Rollover.must-be-contained-by-body"), this);
+            throw new RequestCycleException(
+                Tapestry.getString("Rollover.must-be-contained-by-body"),
+                this);
 
-        IServiceLink serviceLink = (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
+        ILinkComponent serviceLink =
+            (ILinkComponent) cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
         if (serviceLink == null)
-            throw new RequestCycleException(Tapestry.getString("Rollover.must-be-contained-by-link"), this);
+            throw new RequestCycleException(
+                Tapestry.getString("Rollover.must-be-contained-by-link"),
+                this);
 
         boolean linkDisabled = serviceLink.isDisabled();
 
@@ -193,8 +199,9 @@ public class Rollover extends AbstractComponent
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            IResourceLocation scriptLocation
-             = getSpecification().getSpecificationLocation().getRelativeLocation("Rollover.script");
+            IResourceLocation scriptLocation =
+                getSpecification().getSpecificationLocation().getRelativeLocation(
+                    "Rollover.script");
 
             _parsedScript = source.getScript(scriptLocation);
         }
@@ -202,7 +209,8 @@ public class Rollover extends AbstractComponent
         return _parsedScript;
     }
 
-    private String writeScript(Body body, IServiceLink link, String focusURL, String blurURL) throws ScriptException
+    private String writeScript(Body body, ILinkComponent link, String focusURL, String blurURL)
+        throws ScriptException
     {
         String uniqueId = body.getUniqueId();
         String focusImageURL = body.getPreloadedImageReference(focusURL);
@@ -223,8 +231,12 @@ public class Rollover extends AbstractComponent
         // there won't be any timing issues (such as cause
         // bug #113893).
 
-        link.addEventHandler(ServiceLinkEventType.MOUSE_OVER, (String) symbols.get("onMouseOverName"));
-        link.addEventHandler(ServiceLinkEventType.MOUSE_OUT, (String) symbols.get("onMouseOutName"));
+        link.addEventHandler(
+            LinkEventType.MOUSE_OVER,
+            (String) symbols.get("onMouseOverName"));
+        link.addEventHandler(
+            LinkEventType.MOUSE_OUT,
+            (String) symbols.get("onMouseOutName"));
 
         String imageName = (String) symbols.get("imageName");
 

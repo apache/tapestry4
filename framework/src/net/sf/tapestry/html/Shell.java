@@ -57,7 +57,6 @@ package net.sf.tapestry.html;
 import java.util.Date;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IMarkupWriter;
@@ -66,6 +65,7 @@ import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.ILink;
 
 /**
  *  Component for creating a standard 'shell' for a page, which comprises
@@ -179,12 +179,12 @@ public class Shell extends AbstractComponent
         IEngineService pageService = cycle.getEngine().getService(Tapestry.PAGE_SERVICE);
         String pageName = getPage().getPageName();
 
-        Gesture g = pageService.buildGesture(cycle, null, new String[] { pageName });
+        ILink link = pageService.getLink(cycle, null, new String[] { pageName });
 
         StringBuffer buffer = new StringBuffer();
         buffer.append(_refresh);
         buffer.append("; URL=");
-        buffer.append(g.getAbsoluteURL());
+        buffer.append(link.getAbsoluteURL());
 
         // Write out the <meta> tag
 

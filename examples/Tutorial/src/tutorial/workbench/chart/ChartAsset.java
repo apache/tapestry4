@@ -57,12 +57,13 @@ package tutorial.workbench.chart;
 import java.io.InputStream;
 import java.util.Locale;
 
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.engine.EngineServiceLink;
+import net.sf.tapestry.engine.ILink;
 
 /**
  *  An asset used with the {@link ChartService}.  
@@ -88,9 +89,9 @@ public class ChartAsset implements IAsset
 
     public String buildURL(IRequestCycle cycle)
     {
-        Gesture g = _chartService.buildGesture(cycle, _chartProvider, null);
+        ILink l = _chartService.getLink(cycle, _chartProvider, null);
 
-        return g.getURL();
+        return l.getURL();
     }
 
     public InputStream getResourceAsStream(IRequestCycle cycle) 

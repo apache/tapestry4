@@ -65,7 +65,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IRequestCycle;
@@ -73,6 +72,8 @@ import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.engine.AbstractService;
+import net.sf.tapestry.engine.EngineServiceLink;
+import net.sf.tapestry.engine.ILink;
 
 /**
  *  A service for building URLs to and accessing {@link IAsset}s.
@@ -119,14 +120,14 @@ public class AssetService extends AbstractService
     private static final int BUFFER_SIZE = 10240;
 
     /**
-     *  Builds a {@link Gesture} for a {@link PrivateAsset}.
+     *  Builds a {@link ILink} for a {@link PrivateAsset}.
      *
      *  <p>A single parameter is expected, the resource path of the asset
      *  (which is expected to start with a leading slash).
      *
      **/
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 1)
             throw new ApplicationRuntimeException(
@@ -134,7 +135,7 @@ public class AssetService extends AbstractService
 
         // Service is stateless
 
-        return assembleGesture(cycle, Tapestry.ASSET_SERVICE, null, parameters, false);
+        return constructLink(cycle, Tapestry.ASSET_SERVICE, null, parameters, false);
     }
 
     public String getName()

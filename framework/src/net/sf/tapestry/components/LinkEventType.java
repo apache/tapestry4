@@ -54,49 +54,97 @@
  */
 package net.sf.tapestry.components;
 
-import net.sf.tapestry.IComponent;
+import org.apache.commons.lang.enum.Enum;
 
 /**
- *  A component that renders an HTML &lt;a&gt; element.  It exposes some
- *  properties to the components it wraps.  This is basically to facilitate
- *  the {@link net.sf.tapestry.html.Rollover} component.
+ *  Different types of JavaScript events that an {@link ILinkComponent}
+ *  can provide handlers for.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- * 
+ *  @since 0.2.9
+ *
  **/
 
-public interface IServiceLink extends IComponent
+public class LinkEventType extends Enum
 {
+    private String _attributeName;
+
     /**
-     *  The name of an {@link net.sf.tapestry.IRequestCycle} attribute in which the
-     *  current service link is stored.  ServiceLink links do not nest.
+     *  Type for <code>onMouseOver</code>.  This may also be called "focus".
      *
      **/
 
-    public static final String ATTRIBUTE_NAME = "net.sf.tapestry.active.IServiceLink";
+    public static final LinkEventType MOUSE_OVER = new LinkEventType("MOUSE_OVER", "onMouseOver");
 
     /**
-     *  Returns whether this service link component is enabled or disabled.
-     *
-     *  @since 0.2.9
+     * Type for <code>onMouseOut</code>.  This may also be called "blur".
      *
      **/
 
-    public boolean isDisabled();
+    public static final LinkEventType MOUSE_OUT = new LinkEventType("MOUSE_OUT", "onMouseOut");
 
     /**
-     *  Adds a new event handler.  When the event occurs, the JavaScript function
-     *  specified is executed.  Multiple functions can be specified, in which case
-     *  all of them are executed.
+     * Type for <code>onClick</code>.
      *
-     *  <p>This was created for use by
-     *  {@link net.sf.tapestry.html.Rollover} to set mouse over and mouse out handlers on
-     *  the {@link IServiceLink} that wraps it, but can be used for
-     *  many other things as well.
+     * @since 1.0.1
      *
-     *  @since 0.2.9
      **/
 
-    public void addEventHandler(ServiceLinkEventType eventType, String functionName);
+    public static final LinkEventType CLICK = new LinkEventType("CLICK", "onClick");
+
+    /**
+     * Type for <code>onDblClick</code>.
+     *
+     * @since 1.0.1
+     *
+     **/
+
+    public static final LinkEventType DOUBLE_CLICK =
+        new LinkEventType("DOUBLE_CLICK", "onDblClick");
+
+    /**
+     * Type for <code>onMouseDown</code>.
+     *
+     * @since 1.0.1.
+     *
+     **/
+
+    public static final LinkEventType MOUSE_DOWN = new LinkEventType("MOUSE_DOWN", "onMouseDown");
+
+    /**
+     * Type for <code>onMouseUp</code>.
+     *
+     * @since 1.0.1
+     *
+     **/
+
+    public static final LinkEventType MOUSE_UP = new LinkEventType("MOUSE_UP", "onMouseUp");
+
+    /**
+     *  Constructs a new type of event.  The name should match the
+     *  static final variable (i.e., MOUSE_OVER) and the attributeName
+     *  is the name of the HTML attribute to be managed (i.e., "onMouseOver").
+     *
+     *  <p>This method is protected so that subclasses can be created
+     *  to provide additional managed event types.
+     **/
+
+    protected LinkEventType(String name, String attributeName)
+    {
+        super(name);
+
+        _attributeName = attributeName;
+    }
+
+    /**
+     *  Returns the name of the HTML attribute corresponding to this
+     *  type.
+     *
+     **/
+
+    public String getAttributeName()
+    {
+        return _attributeName;
+    }
 }

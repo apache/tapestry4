@@ -240,6 +240,15 @@ public final class Tapestry
 	public static final String DEFAULT_TEMPLATE_EXTENSION = "html";
 	
     /**
+     *  The name of an {@link net.sf.tapestry.IRequestCycle} attribute in which the
+     *  currently rendering {@link net.sf.tapestry.components.ILinkComponent}
+     *  is stored.  Link components do not nest.
+     *
+     **/
+
+    public static final String LINK_COMPONENT_ATTRIBUTE_NAME = "net.sf.tapestry.active-link-component";
+    	
+    /**
      *  Prevent instantiation.
      *
      **/

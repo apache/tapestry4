@@ -59,7 +59,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IPage;
@@ -85,7 +84,7 @@ import net.sf.tapestry.Tapestry;
 public class ResetService extends AbstractService
 {
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 0)
             throw new IllegalArgumentException(
@@ -94,7 +93,7 @@ public class ResetService extends AbstractService
         String[] context = new String[1];
         context[0] = component.getPage().getPageName();
 
-        return assembleGesture(cycle, Tapestry.RESET_SERVICE, context, null, true);
+        return constructLink(cycle, Tapestry.RESET_SERVICE, context, null, true);
     }
 
     public String getName()

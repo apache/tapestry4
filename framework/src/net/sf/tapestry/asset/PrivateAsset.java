@@ -61,12 +61,12 @@ import java.util.Locale;
 import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.ILink;
 import net.sf.tapestry.util.LocalizedResourceFinder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -129,9 +129,9 @@ public class PrivateAsset implements IAsset
 
         IEngineService service = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
 
-        Gesture g = service.buildGesture(cycle, null, parameters);
+        ILink link = service.getLink(cycle, null, parameters);
 
-        return g.getURL();
+        return link.getURL();
     }
 
     public InputStream getResourceAsStream(IRequestCycle cycle)

@@ -60,7 +60,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IAction;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
@@ -100,7 +99,7 @@ public class ActionService extends AbstractService
 
     private static final String STATEFUL_OFF = "0";
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (parameters == null || parameters.length != 1)
             throw new IllegalArgumentException(
@@ -129,7 +128,7 @@ public class ActionService extends AbstractService
 
         serviceContext[i++] = component.getIdPath();
 
-        return assembleGesture(cycle, Tapestry.ACTION_SERVICE, serviceContext, null, true);
+        return constructLink(cycle, Tapestry.ACTION_SERVICE, serviceContext, null, true);
     }
 
     public boolean service(

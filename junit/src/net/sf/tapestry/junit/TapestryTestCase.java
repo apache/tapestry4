@@ -54,6 +54,8 @@
  */
 package net.sf.tapestry.junit;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -85,7 +87,8 @@ import net.sf.tapestry.util.IPropertyHolder;
 
 public class TapestryTestCase extends TestCase
 {
-    protected static final boolean IS_JDK13 = System.getProperty("java.specification.version").equals("1.3");
+    protected static final boolean IS_JDK13 =
+        System.getProperty("java.specification.version").equals("1.3");
 
     private IResourceResolver _resolver = new DefaultResourceResolver();
 
@@ -144,7 +147,8 @@ public class TapestryTestCase extends TestCase
     {
         String adjustedClassName = "/" + getClass().getName().replace('.', '/') + ".class";
 
-        IResourceLocation classResourceLocation = new ClasspathResourceLocation(_resolver, adjustedClassName);
+        IResourceLocation classResourceLocation =
+            new ClasspathResourceLocation(_resolver, adjustedClassName);
 
         IResourceLocation appSpecLocation = classResourceLocation.getRelativeLocation(simpleName);
         return appSpecLocation;
@@ -157,6 +161,11 @@ public class TapestryTestCase extends TestCase
         IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
         return parser.parseLibrarySpecification(location, _resolver);
+    }
+
+    protected void checkList(String propertyName, String[] expected, String[] actual)
+    {
+        checkList(propertyName, expected, Arrays.asList(actual));
     }
 
     protected void checkList(String propertyName, String[] expected, List actual)
@@ -181,7 +190,8 @@ public class TapestryTestCase extends TestCase
         if (ex.getMessage().indexOf(string) >= 0)
             return;
 
-        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
+        throw new AssertionFailedError(
+            "Exception " + ex + " does not contain sub-string '" + string + "'.");
     }
 
     protected void unreachable()

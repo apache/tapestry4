@@ -64,7 +64,6 @@ import org.apache.commons.logging.LogFactory;
 import com.jrefinery.chart.ChartUtilities;
 import com.jrefinery.chart.JFreeChart;
 
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IPage;
@@ -72,6 +71,8 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.engine.AbstractService;
+import net.sf.tapestry.engine.EngineServiceLink;
+import net.sf.tapestry.engine.ILink;
 
 /**
  *  ServiceLink that works with a {@link JFreeChart} to dynamically render
@@ -91,7 +92,7 @@ public class ChartService extends AbstractService
 
     public static final String SERVICE_NAME = "chart";
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         String[] context;
         String pageName = component.getPage().getPageName();
@@ -107,7 +108,7 @@ public class ChartService extends AbstractService
 
         context[0] = pageName;
 
-        return assembleGesture(cycle, SERVICE_NAME, context, null, true);
+        return constructLink(cycle, SERVICE_NAME, context, null, true);
     }
 
     public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)

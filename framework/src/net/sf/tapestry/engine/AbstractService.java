@@ -57,7 +57,6 @@ package net.sf.tapestry.engine;
 import java.io.IOException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestContext;
@@ -86,19 +85,20 @@ import net.sf.tapestry.util.io.DataSqueezer;
 public abstract class AbstractService implements IEngineService
 {
     /**
-     *  Assembles a URL for the service.
+     *  Constructs a link for the service.
      *
-     *  @param the path for the servlet for this Tapestry application
+     *  @param cycle the request cycle
      *  @param serviceName the name of the service
      *  @param serviceContext context related to the service itself which is added to the URL as-is
-     *  @param otherContext additional context provided by the component; this is application specific
-     *  information, and is encoded with {@link URLEncoder#encode(String)} before being added
+     *  @param parameters additional service parameters provided by the component; 
+     *  this is application specific information, and is encoded with 
+     *  {@link URLEncoder#encode(String)} before being added
      *  to the query.
      *  @param stateful if true, the final URL must be encoded with the HttpSession id
      *
      **/
 
-    protected Gesture assembleGesture(
+    protected ILink constructLink(
         IRequestCycle cycle,
         String serviceName,
         String[] serviceContext,
@@ -117,7 +117,7 @@ public abstract class AbstractService implements IEngineService
             throw new ApplicationRuntimeException(ex);
         }
 
-        return new Gesture(cycle, serviceName, serviceContext, squeezed, stateful);
+        return new EngineServiceLink(cycle, serviceName, serviceContext, squeezed, stateful);
     }
 
     /**
