@@ -12,7 +12,7 @@
   
   <property-specification name="publisher" type="org.apache.tapestry.vlib.ejb.Publisher"/>
   
-  <component id="e" type="ListEdit">
+  <component id="listEdit" type="ListEdit">
   	<binding name="source" expression="listEditMap.keys"/>
   	<binding name="value" expression="listEditMap.key"/>
   	<static-binding name="element" value="tr"/>
