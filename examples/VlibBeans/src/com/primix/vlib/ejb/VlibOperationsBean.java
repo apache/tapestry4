@@ -48,8 +48,9 @@ public class VlibOperationsBean implements SessionBean
 {
 	private SessionContext context;
 	private Context environment;
-	private IBookHome bookHome;
-	private IPersonHome personHome;
+	private transient IBookHome bookHome;
+	private transient IPersonHome personHome;
+	private transient IPublisherHome publisherHome;
 		
 	public void ejbCreate()
 	{
@@ -129,6 +130,106 @@ public class VlibOperationsBean implements SessionBean
 		return book;
 	}
 	
+	
+	public IBook addBook(Integer ownerPK, String title, String ISBN, String description,
+						 Integer publisherPK)
+	throws CreateException, RemoteException
+	{
+		IBookHome bookHome;
+		IPersonHome personHome;
+		IPublisherHome publisherHome;
+		IBook book;
+		
+		// First, verify that the person and publisher do exist.
+		
+		personHome = getPersonHome();
+		publisherHome = getPublisherHome();
+		bookHome = getBookHome();
+
+		try
+		{
+			personHome.findByPrimaryKey(ownerPK);
+		}
+		catch (FinderException e)
+		{
+			throw new CreateException("Could not create book; owner not found: " + e);
+		}
+		
+		try
+		{
+			publisherHome.findByPrimaryKey(publisherPK);
+		}
+		catch (FinderException e)
+		{
+			throw new CreateException("Could not create book; publisher not found: " + e);
+		}
+
+		book = bookHome.create(title, ISBN, publisherPK, ownerPK);
+		book.setDescription(description);
+		
+		return book;
+	}
+
+
+	/**
+	 *  Adds a book, which will be owned and help by the specified owner.
+	 *
+	 * <p>The publisherName may either be the name of a known publisher, or
+	 * a new name.  A new {@link IPublisher} will be created as necessary.
+	 *
+	 * <p>Returns the newly created book.
+	 *
+	 */
+	 
+	public IBook addBook(Integer ownerPK, String title, String ISBN, String description,
+						 String publisherName)
+	throws CreateException, RemoteException
+	{
+		IBookHome bookHome;
+		IPersonHome personHome;
+		IPublisherHome publisherHome;
+		IBook book;
+		IPublisher publisher;
+		Integer publisherPK;
+		
+		// First, verify that the person and publisher do exist.
+		
+		personHome = getPersonHome();
+		publisherHome = getPublisherHome();
+		bookHome = getBookHome();
+
+		try
+		{
+			personHome.findByPrimaryKey(ownerPK);
+		}
+		catch (FinderException e)
+		{
+			throw new CreateException("Could not create book; owner not found: " + e);
+		}
+		
+		// Find or create the publisher.
+		
+		try
+		{
+		publisher = publisherHome.findByName(publisherName);
+		}
+		catch (FinderException e)
+		{
+			throw new CreateException("Could not locate existing publisher: " + e);
+		}
+		
+		if (publisher == null)
+			publisher = publisherHome.create(publisherName);
+			
+		publisherPK = (Integer)publisher.getPrimaryKey();
+		
+		book = bookHome.create(title, ISBN, publisherPK, ownerPK);
+		book.setDescription(description);
+		
+		return book;
+	}
+	
+	
 	private IBookHome getBookHome()
 	{
 		Object raw;
@@ -173,4 +274,25 @@ public class VlibOperationsBean implements SessionBean
 		return personHome;
 	}
 	
+	private IPublisherHome getPublisherHome()
+	{
+		Object raw;
+		
+		if (publisherHome == null)
+		{
+			try
+			{
+				raw = environment.lookup("ejb/Publisher");
+				
+				publisherHome = (IPublisherHome)PortableRemoteObject.narrow(raw, IPublisherHome.class);
+			}
+			catch (NamingException e)
+			{
+				throw new EJBException("Could not lookup Publisher home interface: " + e);
+			}
+		
+		}
+		
+		return publisherHome;
+	}
 }  

@@ -52,9 +52,8 @@ public class VirtualLibraryApplication extends SimpleApplication
 	 *
 	 */
 	 
-	private Handle userHandle;
 	private transient IPerson user;
-	private transient Integer userPK;
+	private Integer userPK;
 	private transient String fullUserName;
 	
 	private transient IPublisherHome publisherHome;
@@ -65,6 +64,28 @@ public class VirtualLibraryApplication extends SimpleApplication
 	private transient IVlibOperations operations;
 	
 	private transient Context environment;	
+	
+	private static final Map externalReferences = new HashMap();
+	
+	static
+	{
+		externalReferences.put("ejb/Person", "com.primix.vlib.Person");
+		externalReferences.put("ejb/Book", "com.primix.vlib.Book");
+		externalReferences.put("ejb/BookQuery", "com.primix.vlib.BookQuery");
+		externalReferences.put("ejb/Publisher", "com.primix.vlib.Publisher");
+		externalReferences.put("ejb/VlibOperations", "com.primix.vlib.VlibOperations");
+	}
+	
+	/**
+	 *  When using a standalone servlet container (such as Servlet Exec Debugger),
+	 *  set all the necessary system properties for locating the JNDI naming
+	 *  context and set an additional property, standalone, so that
+	 *  we know.
+	 *
+	 */
+	 
+	private static final boolean standaloneServletContainer 
+		= Boolean.getBoolean("standalone");
 	
 	// Includes a null option for searching without care to Publisher
 	
@@ -113,17 +134,20 @@ public class VirtualLibraryApplication extends SimpleApplication
 		if (user != null)
 			return user;
 		
-		if (userHandle == null)
+		if (userPK == null)
 			return null;
 			
 		try
 		{
-			user = (IPerson)userHandle.getEJBObject();
-			userPK = (Integer)user.getPrimaryKey();
+			user = getPersonHome().findByPrimaryKey(userPK);
+		}
+		catch (FinderException e)
+		{
+			throw new ApplicationRuntimeException("Could not locate user.", e);
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException("Could not get user from handle.", e);
+			throw new ApplicationRuntimeException("Could not get user.", e);
 		}
 		
 		return user;
@@ -131,12 +155,6 @@ public class VirtualLibraryApplication extends SimpleApplication
 	
 	public Integer getUserPK()
 	{
-		// If the user is not known, then get it.  Side effect:  sets
-		// the userPK.
-		
-		if (userPK == null)
-			getUser();
-		
 		return userPK;
 	}	
 	
@@ -219,10 +237,14 @@ public class VirtualLibraryApplication extends SimpleApplication
 	{
 		Object raw;
 		Object result;
+		String resolvedName = name;
 		
 		try
 		{
-			raw = getEnvironment().lookup(name);
+			if (standaloneServletContainer)
+				resolvedName = (String)externalReferences.get(name);
+		
+			raw = getEnvironment().lookup(resolvedName);
 			
 			result = PortableRemoteObject.narrow(raw, expectedClass);
 		}
@@ -258,7 +280,10 @@ public class VirtualLibraryApplication extends SimpleApplication
 			
 			try
 			{
-				environment = (Context)initial.lookup("java:comp/env");
+				if (standaloneServletContainer)
+					environment = initial;
+				else	
+					environment = (Context)initial.lookup("java:comp/env");
 			}
 			catch (NamingException e)
 			{
@@ -275,20 +300,18 @@ public class VirtualLibraryApplication extends SimpleApplication
 	{
 		user = value;
 		
-		fullUserName= null;
-		userHandle = null;
+		fullUserName = null;
 		
 		if (user == null)
 			return;
 		
 		try
 		{
-			userHandle = user.getHandle();
 			userPK = (Integer)user.getPrimaryKey();
 		}
 		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException("Could not get handle for user.", e);
+			throw new ApplicationRuntimeException("Could not get primary key for user.", e);
 		}
 	}
 	
@@ -317,33 +340,34 @@ public class VirtualLibraryApplication extends SimpleApplication
 	 
 	public boolean isUserLoggedIn()
 	{
-		return user != null || userHandle != null;
+		return getUser() != null;
 	}
 	
 	public boolean isLoggedInUser(Integer primaryKey)
 	{
-		IPerson user;
-		Integer userPK;
-		
-		user = getUser();
-		if (user == null)
+		if (userPK == null)
 			return false;
-		
-		try
-		{
-			userPK = (Integer)user.getPrimaryKey();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e.getMessage(), e);
-		}
-	
+				
 		return userPK.equals(primaryKey);
 	}
 	
+	/**
+	 *  We're using an IDirectListener as an interrum thing before we switch to
+	 *  a bookmarkable service.  All we're doing here is emulating the Page
+	 *  component!
+	 *
+	 */
+	 
 	public IDirectListener getMyBooksListener()
 	{
-		return null;
+		return new IDirectListener()
+		{
+			public void directTriggered(IComponent component, String[] context,
+					IRequestCycle cycle)
+			{
+				cycle.setPage("mybooks");
+			}
+		};
 	}
 	
 	public IDirectListener getLogoutListener()

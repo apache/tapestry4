@@ -186,7 +186,6 @@ public class BookQueryBean implements SessionBean
 	public int titleQuery(String title, Object publisherPK)
 	{
 		IStatement statement = null;
-		ResultSet set = null;
 		Connection connection = null;
 		
 		// Forget any current results.
@@ -206,36 +205,119 @@ public class BookQueryBean implements SessionBean
 				throw new EJBException("Unable to create query statement: " + e);
 			}
 			
-			try
-			{
-				set = statement.executeQuery();
-			}
-			catch (SQLException e)
-			{
-				throw new EJBException("Unable to execute query: " + e);
-			}
+			processQuery(statement);
 			
-			try
-			{
-				processQueryResults(set);
-			}
-			catch (SQLException e)
-			{
-				throw new EJBException("Unable to process query results: " + e);
-			}
-			
-		}
-		catch (RuntimeException e)
-		{
-			e.printStackTrace();
-			throw e;
 		}
 		finally
 		{
-			close(connection, statement, set);
+			close(connection, statement, null);
 		}
 
 		return getResultCount();
+	}
+	
+	/**
+	 *  Queries on books owned by a given person, sorted by title.
+	 *
+	 */
+	 
+	public int ownerQuery(Integer ownerPK)
+	{
+		IStatement statement = null;
+		Connection connection = null;
+		
+		// Forget any current results.
+		
+		results = null;
+
+		try
+		{
+			connection = getConnection();
+
+			try
+			{
+				statement = buildPersonQuery(connection, "owner.PERSON_ID", ownerPK);
+			}
+			catch (SQLException e)
+			{
+				throw new EJBException("Unable to create query statement: " + e);
+			}
+			
+			processQuery(statement);
+			
+		}
+		finally
+		{
+			close(connection, statement, null);
+		}
+
+		return getResultCount();
+	}
+
+	/**
+	 *  Queries on books owned by a given person, sorted by title.
+	 *
+	 */
+	 
+	public int holderQuery(Integer holderPK)
+	{
+		IStatement statement = null;
+		Connection connection = null;
+		
+		// Forget any current results.
+		
+		results = null;
+
+		try
+		{
+			connection = getConnection();
+
+			try
+			{
+				statement = buildPersonQuery(connection, "holder.PERSON_ID", holderPK);
+			}
+			catch (SQLException e)
+			{
+				throw new EJBException("Unable to create query statement: " + e);
+			}
+			
+			processQuery(statement);
+			
+		}
+		finally
+		{
+			close(connection, statement, null);
+		}
+
+		return getResultCount();
+	}
+
+
+	private void processQuery(IStatement statement)
+	{
+		ResultSet set = null;
+		
+		try
+		{
+			set = statement.executeQuery();
+		}
+		catch (SQLException e)
+		{
+			throw new EJBException("Unable to execute query: " + e);
+		}
+		
+		try
+		{
+			processQueryResults(set);
+		}
+		catch (SQLException e)
+		{
+			throw new EJBException("Unable to process query results: " + e);
+		}
+		finally
+		{
+			close(null, null, set);
+		}
 	}
 	
 	private void processQueryResults(ResultSet set)
@@ -359,8 +441,35 @@ public class BookQueryBean implements SessionBean
 
 		result = assembly.createStatement(connection);
 		
-		System.out.println("Built: " + result + 
-		"\nfor title=" + title + " publishPK=" + publisherPK);
+		return result;
+	}
+	
+	private IStatement buildPersonQuery(Connection connection,
+		String personColumn, Integer personPK)
+	throws SQLException
+	{
+		StatementAssembly assembly;
+		int i;
+		IStatement result;
+		String trimmedTitle;
+		
+		assembly = new StatementAssembly();
+		
+		assembly.newLine("SELECT ");
+		assembly.addList(selectColumns, ", ");
+
+		assembly.newLine("FROM ");
+		assembly.addList(aliasColumns, ", ");
+		
+		assembly.newLine("WHERE ");
+		assembly.addList(joins, " AND ");
+		
+		assembly.addSep(" AND ");
+		assembly.addParameter(personColumn + "= ?", personPK);
+	
+		assembly.newLine("ORDER BY book.TITLE");
+
+		result = assembly.createStatement(connection);
 		
 		return result;
 	}
