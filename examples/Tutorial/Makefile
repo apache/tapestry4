@@ -39,7 +39,7 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/org.mortbay.jetty.jar \
 	$(INSTALL_DIR)/ejb.jar
 
-run: war
+run: install
 	$(call NOTE, Running Jetty for Tutorial ...)
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-showversion \
