@@ -32,12 +32,12 @@ import java.util.Locale;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import net.sf.tapestry.DefaultResourceResolver;
 import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.engine.DefaultStringsSource;
-import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.ComponentSpecification;
@@ -57,7 +57,8 @@ import net.sf.tapestry.util.IPropertyHolder;
 
 public class TapestryTestCase extends TestCase
 {
-
+    private IResourceResolver _resolver = new DefaultResourceResolver();
+    
     public TapestryTestCase(String name)
     {
         super(name);
@@ -65,8 +66,7 @@ public class TapestryTestCase extends TestCase
 
     protected IPage createPage(String specificationPath, Locale locale)
     {
-        IResourceResolver resolver = new ResourceResolver(this);
-        IComponentStringsSource source = new DefaultStringsSource(resolver);
+        IComponentStringsSource source = new DefaultStringsSource(_resolver);
         MockEngine engine = new MockEngine();
         engine.setComponentStringsSource(source);
 
@@ -97,7 +97,7 @@ public class TapestryTestCase extends TestCase
 
         InputStream input = getClass().getResourceAsStream(simpleName);
 
-        return parser.parseApplicationSpecification(input, simpleName, new ResourceResolver(this));
+        return parser.parseApplicationSpecification(input, simpleName, _resolver);
     }
     
     protected ILibrarySpecification parseLib(String simpleName) throws Exception
@@ -106,7 +106,7 @@ public class TapestryTestCase extends TestCase
 
         InputStream input = getClass().getResourceAsStream(simpleName);
 
-        return parser.parseLibrarySpecification(input, simpleName, new ResourceResolver(this));
+        return parser.parseLibrarySpecification(input, simpleName, _resolver);
     }
         
 

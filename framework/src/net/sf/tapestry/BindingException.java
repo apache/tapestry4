@@ -29,43 +29,43 @@ package net.sf.tapestry;
  *  A general exception describing an {@link IBinding}
  *  and an {@link IComponent}.
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
  *
  **/
 
 public class BindingException extends RuntimeException
 {
-    private transient IBinding binding;
-    private Throwable rootCause;
+    private transient IBinding _binding;
+    private Throwable _rootCause;
 
     public BindingException(IBinding binding)
     {
-        this.binding = binding;
+        _binding = binding;
     }
 
     public BindingException(String message, IBinding binding)
     {
         super(message);
 
-        this.binding = binding;
+        _binding = binding;
     }
 
     public BindingException(String message, IBinding binding, Throwable rootCause)
     {
         super(message);
 
-        this.binding = binding;
-        this.rootCause = rootCause;
+        _binding = binding;
+        _rootCause = rootCause;
     }
 
     public IBinding getBinding()
     {
-        return binding;
+        return _binding;
     }
 
-    public Throwable getRootCase()
+    public Throwable getRootCause()
     {
-        return rootCause;
+        return _rootCause;
     }
 }

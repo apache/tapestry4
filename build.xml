@@ -381,8 +381,8 @@
 		<!-- Enable debugging when running the tutorial -->
 		
 		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
-		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
-		
+		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=y,server=y,address=20150"/>
+					
 		<!-- Jetty can get easily confused (under NT) unless this is turned off. -->
 		
 		<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
@@ -440,9 +440,6 @@
 	</delete>
 		
 	<copy todir="${tapestry.lib.dir}" flatten="true">
-		<fileset dir="${lib.dir}">
-			<include name="*-${framework.version}.jar"/>
-		</fileset>
 		<fileset dir="${lib.ext.dir}">
 			<include name="mckoidb.jar"/>
 			<include name="${jakarta-oro.jar}"/>
@@ -536,6 +533,12 @@
   			<include name="tutorial.war"/>
   		</fileset>
   	</copy>
+  	
+	<copy todir="${tapestry.lib.dir}" flatten="true">
+		<fileset dir="${lib.dir}">
+			<include name="*-${framework.version}.jar"/>
+		</fileset>
+	</copy>  	
 </target>
   
 <target name="run-jboss"
@@ -562,6 +565,7 @@
 	
 		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
 		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"/>
+
 
 	  	<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
 	  	<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>

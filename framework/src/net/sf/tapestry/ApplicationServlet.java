@@ -27,6 +27,7 @@ package net.sf.tapestry;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Locale;
 
 import javax.servlet.ServletConfig;
@@ -41,7 +42,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
@@ -51,46 +51,56 @@ import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
 /**
- * Links a servlet container with a Tapestry application.  The servlet has some
- * responsibilities related to bootstrapping the application (in terms of
- * logging, reading the {@link ApplicationSpecification specification}, etc.).
- * It is also responsible for creating or locating the {@link IEngine} and delegating
- * incoming requests to it.
+ *  Links a servlet container with a Tapestry application.  The servlet has some
+ *  responsibilities related to bootstrapping the application (in terms of
+ *  logging, reading the {@link ApplicationSpecification specification}, etc.).
+ *  It is also responsible for creating or locating the {@link IEngine} and delegating
+ *  incoming requests to it.
+ * 
+ *  <p>The servlet init parameter
+ *  <code>net.sf.tapestry.specification-path</code>
+ *  should be set to the complete resource path (within the classpath)
+ *  to the application specification, i.e.,
+ *  <code>/com/foo/bar/MyApp.application</code>. 
  *
- * <p>In some servlet containers (notably
- * <a href="www.bea.com"/>WebLogic</a>)
- * it is necessary to invoke {@link HttpSession#setAttribute(String,Object)}
- * in order to force a persistent value to be replicated to the other
- * servers in the cluster.  Tapestry applications usually only have a single
- * persistent value, the {@link IEngine engine}.  For persistence to
- * work in such an environment, the
- * JVM system property <code>net.sf.tapestry.store-engine</code>
- * must be set to <code>true</code>.  This will force the application
- * servlet to restore the engine into the {@link HttpSession} at the
- * end of each request cycle.
- *
- * <p>As of release 1.0.1, it is no longer necessary for a {@link HttpSession}
- * to be created on the first request cycle.  Instead, the HttpSession is created
- * as needed by the {@link IEngine} ... that is, when a visit object is created,
- * or when persistent page state is required.  Otherwise, for sessionless requests,
- * an {@link IEngine} from a {@link Pool} is used.  Additional work must be done
- * so that the {@link IEngine} can change locale <em>without</em> forcing 
- * the creation of a session; this involves the servlet and the engine storing
- * locale information in a {@link Cookie}.
- *
- * <p>This class is derived from the original class
- * <code>com.primix.servlet.GatewayServlet</code>,
- * part of the <b>ServletUtils</b> framework available from
- * <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant
- * Java Tree</a>.
- *
- * @version $Id$
- * @author Howard Lewis Ship
+ *  <p>In some servlet containers (notably
+ *  <a href="www.bea.com"/>WebLogic</a>)
+ *  it is necessary to invoke {@link HttpSession#setAttribute(String,Object)}
+ *  in order to force a persistent value to be replicated to the other
+ *  servers in the cluster.  Tapestry applications usually only have a single
+ *  persistent value, the {@link IEngine engine}.  For persistence to
+ *  work in such an environment, the
+ *  JVM system property <code>net.sf.tapestry.store-engine</code>
+ *  must be set to <code>true</code>.  This will force the application
+ *  servlet to restore the engine into the {@link HttpSession} at the
+ *  end of each request cycle.
+ * 
+ *  <p>As of release 1.0.1, it is no longer necessary for a {@link HttpSession}
+ *  to be created on the first request cycle.  Instead, the HttpSession is created
+ *  as needed by the {@link IEngine} ... that is, when a visit object is created,
+ *  or when persistent page state is required.  Otherwise, for sessionless requests,
+ *  an {@link IEngine} from a {@link Pool} is used.  Additional work must be done
+ *  so that the {@link IEngine} can change locale <em>without</em> forcing 
+ *  the creation of a session; this involves the servlet and the engine storing
+ *  locale information in a {@link Cookie}.
+ * 
+ *  <p>This class is derived from the original class
+ *  <code>com.primix.servlet.GatewayServlet</code>,
+ *  part of the <b>ServletUtils</b> framework available from
+ *  <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant
+ *  Java Tree</a>.
+ * 
+ *  @version $Id$
+ *  @author Howard Lewis Ship
  **/
 
-abstract public class ApplicationServlet extends HttpServlet
+public class ApplicationServlet extends HttpServlet
 {
     private static final Log LOG = LogFactory.getLog(ApplicationServlet.class);
+
+    /** @since 2.3 **/
+    
+    private static final String APP_SPEC_PATH_PARAM = "net.sf.tapestry.application-specification";
 
     /**
      *  Name of the cookie written to the client web browser to
@@ -135,6 +145,13 @@ abstract public class ApplicationServlet extends HttpServlet
     {
         doService(request, response);
     }
+
+    /**
+     *  @since 2.3
+     * 
+     **/
+
+    private IResourceResolver _resolver;
 
     /**
      * Handles the GET and POST requests. Performs the following:
@@ -366,6 +383,10 @@ abstract public class ApplicationServlet extends HttpServlet
      *  Reads the application specification when the servlet is
      *  first initialized.  All {@link IEngine engine instances}
      *  will have access to the specification via the servlet.
+     * 
+     *  @see #getApplicationSpecification()
+     *  @see #constructApplicationSpecification()
+     *  @see #createResourceResolver()
      *
      **/
 
@@ -373,9 +394,30 @@ abstract public class ApplicationServlet extends HttpServlet
     {
         super.init(config);
 
+        _resolver = createResourceResolver();
+
         _specification = constructApplicationSpecification();
 
         _attributeName = "net.sf.tapestry.engine." + config.getServletName();
+    }
+
+    /**
+     *  Invoked from {@link #init(ServletConfig)} to create a resource resolver
+     *  for the servlet (which will utlimately be shared and used through the
+     *  application).
+     * 
+     *  <p>This implementation constructs a {@link DefaultResourceResolver}, subclasses
+     *  may provide a different implementation.
+     * 
+     *  @see #getResourceResolver()
+     *  @since 2.3
+     * 
+     **/
+    
+    protected IResourceResolver createResourceResolver()
+    throws ServletException
+    {
+        return new DefaultResourceResolver();
     }
 
     /**
@@ -402,20 +444,30 @@ abstract public class ApplicationServlet extends HttpServlet
     {
         String path = getApplicationSpecificationPath();
 
-        // Make sure we locate the specification using our
-        // own class loader.
-
-        InputStream stream = getClass().getResourceAsStream(path);
-
-        if (stream == null)
-            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
+        URL specificationURL = _resolver.getResource(path);
+        InputStream stream = null;
 
         try
         {
+            if (specificationURL != null)
+                stream = specificationURL.openStream();
+
+            if (stream == null)
+                throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
+
             if (LOG.isDebugEnabled())
                 LOG.debug("Loading application specification from " + path);
 
-            return parseApplicationSpecification(stream, path);
+            IApplicationSpecification result = parseApplicationSpecification(stream, path);
+
+            stream.close();
+            stream = null;
+
+            return result;
+        }
+        catch (IOException ex)
+        {
+            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-open-spec", path), ex);
         }
         finally
         {
@@ -439,7 +491,7 @@ abstract public class ApplicationServlet extends HttpServlet
         {
             SpecificationParser parser = new SpecificationParser();
 
-            return parser.parseApplicationSpecification(stream, path, new ResourceResolver(this));
+            return parser.parseApplicationSpecification(stream, path, _resolver);
         }
         catch (DocumentParseException ex)
         {
@@ -458,7 +510,8 @@ abstract public class ApplicationServlet extends HttpServlet
     {
         try
         {
-            stream.close();
+            if (stream != null)
+                stream.close();
         }
         catch (IOException ex)
         {
@@ -467,16 +520,21 @@ abstract public class ApplicationServlet extends HttpServlet
     }
 
     /**
-     *  Overridden in subclasses to provide a resource path
-     *  to the application specification.  This implementation
-     *  simply throws {@link ServletException}.
+     *  Reads the servlet init parameter
+     *  <code>net.sf.tapestry.application-specification</code> and
+     *  throws {@link ServletException} if it is null.
      *
      **/
 
     protected String getApplicationSpecificationPath() throws ServletException
     {
-        throw new ServletException(
-            Tapestry.getString("ApplicationServlet.get-app-path-not-overriden", getClass().getName()));
+        String result = getInitParameter("net.sf.tapestry.application-specification");
+
+        if (result == null)
+            throw new ServletException(
+                Tapestry.getString("ApplicationServlet.app-spec-path-not-provided", APP_SPEC_PATH_PARAM));
+
+        return result;
     }
 
     /**
@@ -495,8 +553,6 @@ abstract public class ApplicationServlet extends HttpServlet
 
     protected IEngine createEngine(RequestContext context) throws ServletException
     {
-        ClassLoader classLoader = getClass().getClassLoader();
-
         try
         {
             String className = _specification.getEngineClassName();
@@ -507,7 +563,7 @@ abstract public class ApplicationServlet extends HttpServlet
             if (LOG.isDebugEnabled())
                 LOG.debug("Creating engine from class " + className);
 
-            Class engineClass = Class.forName(className, true, classLoader);
+            Class engineClass = getResourceResolver().findClass(className);
 
             IEngine result = (IEngine) engineClass.newInstance();
 
@@ -544,4 +600,20 @@ abstract public class ApplicationServlet extends HttpServlet
 
         cycle.addCookie(cookie);
     }
+
+    /**
+     *  Returns a resource resolver that can access classes and resources related
+     *  to the current web application context.  Relies on
+     *  {@link java.lang.Thread#getContextClassLoader()}, which is set by
+     *  most modern servlet containers.
+     * 
+     *  @since 2.3
+     *
+     **/
+
+    public IResourceResolver getResourceResolver()
+    {
+        return _resolver;
+    }
+
 }

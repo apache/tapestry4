@@ -31,6 +31,7 @@ import junit.framework.AssertionFailedError;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.BindingException;
+import net.sf.tapestry.DefaultResourceResolver;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IRequestCycle;
@@ -41,7 +42,6 @@ import net.sf.tapestry.binding.AbstractBinding;
 import net.sf.tapestry.binding.ExpressionBinding;
 import net.sf.tapestry.binding.FieldBinding;
 import net.sf.tapestry.binding.StaticBinding;
-import net.sf.tapestry.engine.ResourceResolver;
 
 /**
  *  Do tests of bindings.
@@ -58,7 +58,7 @@ public class BindingsTestCase extends TapestryTestCase
 
     public static final Object NULL_FIELD = null;
     
-    private IResourceResolver _resolver = new ResourceResolver(this);
+    private IResourceResolver _resolver = new DefaultResourceResolver();
 
     private static class TestBinding extends AbstractBinding
     {
@@ -509,7 +509,7 @@ public class BindingsTestCase extends TapestryTestCase
 
     public void testInvalidFieldName()
     {
-        IBinding binding = new FieldBinding(new ResourceResolver(this), "Baz");
+        IBinding binding = new FieldBinding(_resolver, "Baz");
 
         try
         {
