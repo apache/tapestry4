@@ -900,7 +900,7 @@ Tapestry release notes (<filename>web/new.html</filename>).
 
 <para>
 Tapestry has an excellent JUnit test suite, with code coverage
-figures over 70% at the time of this writing (2.4-alpha-2).  It is
+figures over 80% at the time of this writing (2.4-alpha-4).  It is
 <emphasis>required</emphasis> that changes to the framework
 be accompanied by additional JUnit tests (typically, mock tests; see 
 below) to validate the changes.  In addition, there is an ongoing
@@ -933,22 +933,22 @@ requests over HTTP, the requests are driven by an XML script file, which include
 <para>
 Generally, each bit of functionality can be tested using its own mini-application.  
 Create the application as
-<filename>junit/context<replaceable>X</replaceable></filename>.  This is much easier now, using Tapestry 2.4 features
+<filename>junit/context<replaceable>X</replaceable></filename>.  This is much easier now, 
+using Tapestry 2.4 features
 such as dynamic lookup of specifications and implicit components.
 </para>
 
 <para>
-Create a test script in the <filename>org.apache.tapestry.junit.mock</filename> package.  Add a method to
-the <classname>MockTestCase</classname> class.
+The Mock Unit Test Suite is driven by scripts (whose structure is described below).  The suite
+searches the directory <filename>junit/mock-scripts</filename> for files with the ".xml" extension.
+Each of these is expected to be a test script.  The order in which scripts are executed is
+arbitrary; scripts (and JUnit tests in general) should never rely on any order of execution.
 </para>
 
-<programlisting>
-public void test<replaceable>Name</replaceable>()
-throws Exception
-{
-    attempt("Test<replaceable>Name</replaceable>.xml");
-}
-</programlisting>
+<para>
+Test scripts are named <filename>Test<replaceable>Name</replaceable>.xml</filename>.
+</para>
+
 
 <note>
 <para>
@@ -1106,6 +1106,23 @@ element is used to compare the entire response to a static file
 must be specified, as well as a relative path to a file to compare
 against.  The path is relative to the junit directory.  The
 response must match the specified content type and actual content.
+</para>
+
+<programlisting>
+<![CDATA[
+  <assert-exception name="Exception">
+  File foo not found.
+  </assert-exception>
+]]>
+</programlisting>
+
+<para>
+The <sgmltag class="starttag">assert-exception</sgmltag> element
+is used to check when an request fails entirely (is unable to send back a
+response).  This only occurs when the application specification contains invalid
+data (such as an incorrect class for the engine), or when the Exception page
+is unable to execute.  The body of the element is matched against the exception's 
+message property.
 </para>
 
 <note>

@@ -57,6 +57,13 @@ package org.apache.tapestry.junit.mock;
 
 import java.io.File;
 
+import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+
 import org.apache.tapestry.junit.TapestryTestCase;
 
 /**
@@ -71,540 +78,80 @@ import org.apache.tapestry.junit.TapestryTestCase;
 
 public class MockTestCase extends TapestryTestCase
 {
+    public static final String SCRIPTS_DIR = "mock-scripts";
 
     public MockTestCase(String name)
     {
         super(name);
     }
 
-    private MockTester attempt(String name) throws Exception
+    protected void runTest() throws Throwable
     {
-        String path = "/org/apache/tapestry/junit/mock/" + name;
+        String path = SCRIPTS_DIR + "/" + getName();
 
         MockTester tester = new MockTester(path);
 
         tester.execute();
-
-        return tester;
     }
 
-    // Note: JUnit runs tests in order they are defined here.  I typically
-    // add new tests first since they run first that way.  Perhaps at some
-    // point, I will order them differently (though since they all pass,
-    // the order isn't that important).
-
-    // Should also look at JUnit documentation; perhaps there's a way to
-    // implicitly define tests based on the found XML files?  Possibly
-    // in a static suite() method?
-
-	/**
-	 *  Tests {@link org.apache.tapestry.form.TextArea} and
-	 *  {@link org.apache.tapestry.html.InsertText}.
-	 * 
-	 **/
-	
-	public void testTextArea()
-	throws Exception
-	{
-		attempt("TestTextArea.xml");
-	}
-
-	/**
-	 *  Tests for file uploads and the Upload component.
-	 * 
-	 **/
-	
-	public void testUpload()
-	throws Exception
-	{
-		attempt("TestUpload.xml");
-	}
-
-	/**
-	 *  Tests for the Radio and RadioGroup components.
-	 * 
-	 **/
-	
-	public void testRadio()
-	throws Exception
-	{
-		attempt("TestRadio.xml");
-	}
-
-	/**
-	 *  Tests for the TextField component.
-	 * 
-	 **/
-	
-	public void testTextField()
-	throws Exception
-	{
-		attempt("TestTextField.xml");
-	}
-
-	/**
-	 *  Test downloading content via the asset service.
-	 * 
-	 **/
-	
-	public void testAssetService()
-	throws Exception
-	{
-		attempt("TestAssetService.xml");
-	}
-
-	/**
-	 *  Test externalization of private assets.
-	 * 
-	 **/
-	
-	public void testAssets()
-	throws Exception
-	{
-		deleteDir(".private");	
-		
-		// Run the test twice; this catches some coverage related to
-		// files already being externalized.
-		
-		attempt("TestAssets.xml");
-		attempt("TestAssets.xml");		
-	}
-
-	/**
-	 *  Test the ListEdit component.
-	 * 
-	 **/
-	
-	public void testListEdit()
-	throws Exception
-	{
-		attempt("TestListEdit.xml");
-	}
-
-	/**
-	 *  Test handling of internal and external redirects.
-	 * 
-	 **/
-	
-	public void testRedirect()
-	throws Exception
-	{
-		attempt("TestRedirect.xml");
-	}
-
-	/**
-	 *  Test ability of the enhancer to create properties for
-	 *  connected parameters.
-	 * 
-	 **/
-	
-	public void testEnhancedParameterProperties()
-	throws Exception
-	{
-		attempt("TestEnhancedParameterProperties.xml");
-	}
-
-	/**
-	 *  Tests the Select and Option components (and a bit of Form as well).
-	 * 
-	 **/
-	
-	public void testSelectOption()
-	throws Exception
-	{
-		attempt("TestSelectOption.xml");
-	}
-
-	/**
-	 *  Tests related to link renderers.
-	 * 
-	 **/
-	
-	public void testLinkRenderers()
-	throws Exception
-	{
-		attempt("TestLinkRenderers.xml");
-	}
-
-	/**
-	 *  Tests related to specified properties.
-	 * 
-	 **/
-	
-	public void testPropertySpecification()
-	throws Exception
-	{
-		attempt("TestPropertySpecification.xml");
-	}
-
-	/**
-	 *  Tests ability to override default template extension.
-	 * 
-	 **/
-	
-	public void testTemplateExtension()
-	throws Exception
-	{
-		attempt("TestTemplateExtension.xml");
-	}
-
-    /**
-     *  Tests related to the listener binding (added in 1.4 DTD).
-     * 
-     **/
-    
-    public void testListenerBinding()
-    throws Exception
+    public static Test suite()
     {
-        attempt("TestListenerBinding.xml");
+        TestSuite suite = new TestSuite("Mock Unit Test Suite");
+
+        addScripts(suite);
+
+        // Handy place to perform one-time 
+        deleteDir(".private");
+
+        return suite;
     }
 
-    /**
-     *  Test that default class names for pages and components work.
-     * 
-     **/
-    
-    public void testDefaultComponentClass()
-    throws Exception
+    private static void addScripts(TestSuite suite)
     {
-        attempt("TestDefaultComponentClass.xml");
+        File scriptsDir = new File(SCRIPTS_DIR);
+
+        String[] names = scriptsDir.list();
+
+        for (int i = 0; i < names.length; i++)
+        {
+            String name = names[i];
+
+            if (name.endsWith(".xml"))
+            {
+                Test test = new MockTestCase(name);
+
+                suite.addTest(test);
+            }
+        }
     }
-    
-    /**
-     *  Test that the default class for pages can be overridden
-     *  with a configuration parameter.
-     * 
-     **/
-    
-    public void testOverrideDefaultComponentClass()
-    throws Exception
+
+    private static void deleteDir(String path)
     {
-        attempt("TestOverrideDefaultComponentClass.xml");
+        File file = new File(path);
+
+        if (!file.exists())
+            return;
+
+        deleteRecursive(file);
     }
 
-    public void testPersistentProperties()
-    throws Exception
+    private static void deleteRecursive(File file)
     {
-        attempt("TestPersistentProperties.xml");
+        if (file.isFile())
+        {
+            file.delete();
+            return;
+        }
+
+        String[] names = file.list();
+
+        for (int i = 0; i < names.length; i++)
+        {
+            File f = new File(file, names[i]);
+            deleteRecursive(f);
+        }
+
+        file.delete();
     }
 
-    /**
-     *  Test several Stale Link scenarios for the Form component.
-     * 
-     **/
-    
-    public void testStaleForm()
-    throws Exception
-    {
-        attempt("TestStaleForm.xml");
-    }
-
-    /**
-     *  Test Block and InsertBlock, especially w.r.t. links and forms
-     *  inside the Block on foriegn pages.
-     * 
-     **/
-
-    public void testBlock() throws Exception
-    {
-        attempt("TestBlock.xml");
-    }
-
-    /**
-     *  Test behavior when the application specification doesn't exist.
-     * 
-     **/
-
-    public void testMissingAppSpec() throws Exception
-    {
-        attempt("TestMissingAppSpec.xml");
-    }
-
-    /**
-     *   Demonstrates that libraries defined in application specifications
-     *   within the context can still be located in the classpath.
-     * 
-     **/
-
-    public void testLibraryInWebInfApplication() throws Exception
-    {
-        attempt("TestLibraryInWebInfApplication.xml");
-    }
-
-    /**
-     *  Test ability to search for components specifications for 
-     *  component types in the application namespace.
-     * 
-     **/
-
-    public void testSearchComponents() throws Exception
-    {
-        attempt("TestSearchComponents.xml");
-    }
-
-    /**
-     *  Test that relative specification paths in the application specification
-     *  work.
-     * 
-     **/
-
-    public void testRelative() throws Exception
-    {
-        // Note, this needs to be expanded to include relative
-        // paths to components and libraries.
-
-        attempt("TestRelative.xml");
-    }
-
-    /**
-     *  Test the reset service.
-     *
-     **/
-
-    public void testReset() throws Exception
-    {
-        attempt("TestReset.xml");
-    }
-
-    /**
-     *  Test ability to search for page specifications for pages
-     *  in the application namespace.
-     * 
-     **/
-
-    public void testSearchPages() throws Exception
-    {
-        attempt("TestSearchPages.xml");
-    }
-
-    /**
-     *  Test failure for application that doesn't provide a home page.
-     * 
-     **/
-
-    public void testFailNoHome() throws Exception
-    {
-        attempt("TestFailNoHome.xml");
-    }
-
-    /**
-     *  Test when the class specified for a page does not exist.
-     * 
-     **/
-
-    public void testFailMissingClass() throws Exception
-    {
-        attempt("TestFailMissingClass.xml");
-    }
-
-    /**
-     *  Test when the class specified for a page 
-     *  does not implement {@link org.apache.tapestry.IPage}
-     * 
-     **/
-
-    public void testFailNotPage() throws Exception
-    {
-        attempt("TestFailNotPage.xml");
-    }
-
-    /**
-     *  Test when the class specified for a component 
-     *  does not implement {@link org.apache.tapestry.IComponent}
-     * 
-     **/
-
-    public void testFailNotComponent() throws Exception
-    {
-        attempt("TestFailNotComponent.xml");
-    }
-
-    /**
-     *  Test basics including the PageLink and DirectLink (w/o parameters).
-     * 
-     **/
-
-    public void testSimple() throws Exception
-    {
-        attempt("TestSimple.xml");
-    }
-
-    /**
-     *  Test ability to embed component in a library and reference
-     *  those components.  Also, test RenderBody component.
-     * 
-     **/
-
-    public void testLibrary() throws Exception
-    {
-        attempt("TestLibrary.xml");
-    }
-
-    /**
-     *  Test the External service, ServiceLink and a page implementing
-     *  IExternalPage.
-     * 
-     **/
-
-    public void testExternal() throws Exception
-    {
-        attempt("TestExternal.xml");
-    }
-
-    /**
-     * 
-     *  Test some error cases involving the page service.
-     * 
-     **/
-
-    public void testPage() throws Exception
-    {
-        attempt("TestPage.xml");
-    }
-
-    public void testLocalization() throws Exception
-    {
-        attempt("TestLocalization.xml");
-    }
-
-    /**
-     *   Begin testing forms using the Register page.
-     * 
-     **/
-
-    public void testRegisterForm() throws Exception
-    {
-        attempt("TestRegisterForm.xml");
-    }
-
-    /**
-     *  Tests the validate() method, tests handling
-     *  of {@link org.apache.tapestry.PageRedirectException}, and tests
-     *  {@link org.apache.tapestry.callback.PageCallback} along the way.
-     * 
-     *  @since 2.3
-     * 
-     **/
-
-    public void testValidate() throws Exception
-    {
-        attempt("TestValidate.xml");
-    }
-
-    /**
-     *  Tests the use of {@link org.apache.tapestry.callback.DirectCallback}
-     *  to protect a link.
-     * 
-     *  @since 2.3
-     * 
-     **/
-
-    public void testProtectedLink() throws Exception
-    {
-        attempt("TestProtectedLink.xml");
-    }
-
-    /**
-     *  Tests {@link org.apache.tapestry.StaleSessionException} with
-     *  DirectLink (ActionLink and Form to come).
-     * 
-     **/
-
-    public void testStaleSessionException() throws Exception
-    {
-        attempt("TestStaleSessionException.xml");
-    }
-
-    public void testStrings() throws Exception
-    {
-        attempt("TestStrings.xml");
-    }
-
-    /**
-     *  Test case for a ValidField with a validator and client-side scripting, but
-     *  no Body.
-     * 
-     **/
-
-    public void testValidFieldNoBody() throws Exception
-    {
-        attempt("TestValidFieldNoBody.xml");
-    }
-
-    /**
-     *  A series of tests for components where parameters are bound
-     *  to expressions in the template, using the new "[[ expression ]]" syntax.
-     * 
-     **/
-
-    public void testTemplateExpressions() throws Exception
-    {
-        attempt("TestTemplateExpr.xml");
-    }
-
-    public void testImplicitComponents() throws Exception
-    {
-        attempt("TestImplicitComponents.xml");
-    }
-
-    /**
-     *  Perform basic tests of the home service.
-     * 
-     **/
-
-    public void testHome() throws Exception
-    {
-        attempt("TestHome.xml");
-    }
-
-    /**
-     *  Test cases where the page's template comes from
-     *  a $template asset.
-     * 
-     **/
-
-    public void testAssetTemplates() throws Exception
-    {
-        attempt("TestAssetTemplates.xml");
-    }
-
-    /**
-     *  Test case for relative context and private assets.
-     * 
-     **/
-
-    public void testRelativeAssets() throws Exception
-    {
-        attempt("TestRelativeAssets.xml");
-    }
-    
-    private void deleteDir(String path)
-    throws Exception
-    {
-    	File file = new File(path);
-    	
-    	if (!file.exists())
-    		return;
-    		
- 		deleteRecursive(file);
-    }
-    
-    private void deleteRecursive(File file)
-    {
-    	if (file.isFile())
-    	{
-    		file.delete();
-    		return;
-    	}
-    	
-    	String[] names = file.list();
-    	
-    	for (int i = 0; i < names.length; i++)
-    	{
-    		File f = new File(file, names[i]);
-    		deleteRecursive(f);
-    	}
-    	
-    	file.delete();
-    }
 }

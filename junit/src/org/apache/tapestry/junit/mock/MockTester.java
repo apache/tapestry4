@@ -60,7 +60,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,14 +70,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import junit.framework.AssertionFailedError;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ApplicationServlet;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
-import org.apache.tapestry.util.DefaultResourceResolver;
-import org.apache.tapestry.util.xml.DocumentParseException;
 import ognl.Ognl;
 import ognl.OgnlException;
 import org.apache.commons.logging.Log;
@@ -91,6 +82,10 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ApplicationServlet;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.util.xml.DocumentParseException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -121,7 +116,7 @@ public class MockTester
 {
     private static final Log LOG = LogFactory.getLog(MockTester.class);
 
-    private IResourceLocation _resourceLocation;
+    private String _path;
     private Document _document;
     private MockContext _context;
     private String _servletName;
@@ -130,6 +125,7 @@ public class MockTester
     private MockResponse _response;
     private int _requestNumber = 0;
     private Map _ognlContext;
+    private Throwable _exception;
 
     /**
      *  Shared cache of compiled patterns.
@@ -147,12 +143,10 @@ public class MockTester
      * 
      **/
 
-    public MockTester(String resourcePath)
+    public MockTester(String path)
         throws JDOMException, ServletException, DocumentParseException, IOException
     {
-        IResourceResolver resolver = new DefaultResourceResolver();
-
-        _resourceLocation = new ClasspathResourceLocation(resolver, resourcePath);
+        _path = path;
 
         parse();
 
@@ -215,9 +209,22 @@ public class MockTester
 
         setupRequest(request);
 
+        _exception = null;
+
         _response = new MockResponse(_request);
 
-        _servlet.service(_request, _response);
+        try
+        {
+            _servlet.service(_request, _response);
+        }
+        catch (ServletException ex)
+        {
+            _exception = ex;
+        }
+        catch (IOException ex)
+        {
+            _exception = ex;
+        }
 
         _response.end();
 
@@ -228,28 +235,15 @@ public class MockTester
     {
         SAXBuilder builder = new SAXBuilder();
 
-        URL resourceURL = _resourceLocation.getResourceURL();
-
-        InputStream stream = resourceURL.openStream();
-
-        if (stream == null)
-            throw new DocumentParseException(
-                "Mock test script file " + _resourceLocation + " does not exist.",
-                _resourceLocation);
-
-        _document = builder.build(stream);
-
-        stream.close();
+        _document = builder.build(_path);
     }
 
-    private void setup() throws ServletException, DocumentParseException
+    private void setup() throws ServletException
     {
         Element root = _document.getRootElement();
 
         if (!root.getName().equals("mock-test"))
-            throw new DocumentParseException(
-                "Root element must be 'mock-test'.",
-                _resourceLocation);
+            throw new RuntimeException("Root element of " + _path + " must be 'mock-test'.");
 
         setupContext(root);
         setupServlet(root);
@@ -422,6 +416,7 @@ public class MockTester
         executeOutputMatchesAssertions(request);
         executeCookieAssertions(request);
         executeOutputStreamAssertions(request);
+        executeExceptionAssertions(request);
     }
 
     /**
@@ -592,9 +587,8 @@ public class MockTester
         }
         catch (MalformedPatternException ex)
         {
-            throw new DocumentParseException(
-                "Malformed regular expression: " + pattern,
-                _resourceLocation,
+            throw new ApplicationRuntimeException(
+                "Malformed regular expression: " + pattern + " in " + _path + ".",
                 ex);
         }
 
@@ -715,6 +709,41 @@ public class MockTester
                     + i
                     + ").");
         }
+    }
+
+    private void executeExceptionAssertions(Element request)
+    {
+        List l = request.getChildren("assert-exception");
+        int count = l.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element assertion = (Element) l.get(i);
+
+            executeExceptionAssertion(assertion);
+        }
+
+    }
+
+    private void executeExceptionAssertion(Element assertion)
+    {
+        String name = assertion.getAttributeValue("name");
+        String value = assertion.getTextTrim();
+
+        if (_exception == null)
+            throw new AssertionFailedError(buildTestName(name) + " no exception thrown.");
+        String message = _exception.getMessage();
+
+        if (message.indexOf(value) >= 0)
+            return;
+
+        throw new AssertionFailedError(
+            buildTestName(name)
+                + " exception message ("
+                + message
+                + ") does not contain '"
+                + value
+                + "'.");
     }
 
     private void executeCookieAssertions(Element request)

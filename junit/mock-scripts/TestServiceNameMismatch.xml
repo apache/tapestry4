@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c21" root="context21"/>
+
+  	<servlet name="service-name-mismatch" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		
+		<assert-exception name="Result">
+		Class org.apache.tapestry.junit.mock.c21.NameMismatchService is registered as service expected-name but provides service IncorrectName instead. 
+		</assert-exception>
+		
+	</request>
+</mock-test>

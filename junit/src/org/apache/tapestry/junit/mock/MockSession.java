@@ -57,6 +57,8 @@ package org.apache.tapestry.junit.mock;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionContext;
 
 /**
@@ -73,13 +75,13 @@ public class MockSession extends AttributeHolder implements HttpSession
 {
     private MockContext _context;
     private String _id;
-    
+
     public MockSession(MockContext context, String id)
     {
         _context = context;
         _id = id;
     }
-    
+
     public long getCreationTime()
     {
         return 0;
@@ -141,6 +143,19 @@ public class MockSession extends AttributeHolder implements HttpSession
     public boolean isNew()
     {
         return false;
+    }
+
+    public void setAttribute(String name, Object value)
+    {
+        super.setAttribute(name, value);
+
+        if (value instanceof HttpSessionBindingListener)
+        {
+            HttpSessionBindingListener listener = (HttpSessionBindingListener) value;
+            HttpSessionBindingEvent event = new HttpSessionBindingEvent(this, name, value);
+
+            listener.valueBound(event);
+        }
     }
 
 }
