@@ -66,18 +66,27 @@ as updates to the tutorials and manuals represents the
 
 <chapter id="cvs">
 	<title>CVS Access</title>
-	
+
 <para>
+<warning>
+<title>We've Moved to Jakarta</title>
+<para>
+Some of the details are in transition, with the move from SourceForge
+to Jakarta.  The new server location is <literal>cvs.apache.org</literal>,
+the repository path is <literal>/home/cvs</literal> and
+the module is <literal>jakarta-tapestry</literal>.
+</para>
+</warning>
 Tapestry is housed at the &TapestryProjectPage;.  Read-only CVS access is available
 to anyone; to have read-write access you must be registered
 with SourceForge, and then contact the Tapestry administrator
-(<ulink url="mailto:hship@users.sf.net">Howard Lewis Ship</ulink>) to be
+(<ulink url="mailto:hlship@apache.org">Howard Lewis Ship</ulink>) to be
 added to the list of Tapestry developers.
 </para>
 
 <para>
 Using Eclipse, obtaining the source code takes only a few steps.   Tapestry
-compiles using some libraries from &JBoss; 3.0.0, which must be downloaded first.
+compiles using some libraries from &JBoss; 3.0.4, which must be downloaded first.
 </para>
 
 <para>
@@ -148,7 +157,7 @@ development using the excellent open-source IDE, &Eclipse;.
 <para>
 To perform a full build from the command line, you must have
 JDK 1.3 or better installed, as well
-as &JBoss; 3.0.0.
+as &JBoss; 3.0.4.
 </para>
 
 <para>
@@ -426,7 +435,7 @@ to add the following two system properties:
 
 <listitem>
 <para>
-Download &Fop; 0.20.4rc and unpack into a permanent directory.
+Download &Fop; 0.20.4 and unpack into a permanent directory.
 </para>
 </listitem>
 
@@ -456,6 +465,54 @@ directory.
 
 </itemizedlist>
 
+</para>
+
+</section>
+
+<section id="building.clover-setup">
+	<title>Clover Setup</title>
+	
+<para>
+<ulink url="http://www.thecortex.net/clover">Clover</ulink> is a properietary tool
+that gathers code coverage information and generates reports from it.  They
+have kindly donated a license for Clover to the Tapestry project.
+</para>
+
+<para>
+To configure for clover:
+<itemizedlist>
+
+<listitem>
+<para>Extract the Clover distribution, <filename>support/clover.zip</filename>
+to a non-temporary directory.
+</para>
+</listitem>
+
+<listitem>
+<para>
+Modify <filename>config/build.properties</filename> and add an entry
+for <literal>clover.dir</literal>.  As usual, provide the absolute
+pathname to the Clover directory, using only forward slashes.
+</para>
+</listitem>
+
+<listitem>
+<para>
+Copy <filename>clover.jar</filename> to the 
+<filename><replaceable>Ant</replaceable>/lib</filename> directory.
+</para>
+</listitem>
+
+</itemizedlist>
+</para>
+
+
+<para>
+The Clover report executes from the <filename>junit</filename> directory, using the Ant
+target <literal>clover</literal>.  It runs builds the clover-enhanced version of the framework
+classes, and executs the JUnit test suite twice (with all logging enabled and all logging disabled),
+then generates the HTML report into the
+<filename>web/doc/clover</filename> directory.
 </para>
 
 </section>
@@ -570,7 +627,7 @@ provide an <literal>@since</literal> value).
 Collections (from package <literal>java.util</literal>) should be documented to identify
 the type of object stored, and for <classname>Map</classname>
 the type of key.  Example: <literal>List of {@link IRender}</literal>, or
-<literal>{@link Map} of {@link IBinding} keyed on String name</literal>.
+<literal>Map of {@link IBinding} keyed on String name</literal>.
 </para>
 
 <para>
@@ -714,18 +771,19 @@ is currently in major release 2.
 
 
 <para>
-The minor version represents the introduction of new functionality and bug fixes
+The minor version represents a milestone release, encompassing
+the introduction of new functionality and bug fixes
 in a stable manner.  <literal>2.1</literal> or <literal>2.2</literal> would be examples
-of minor releases.
+of milestone releases.
 </para>
 
 <para>
-An incremental release represents a transition from one minor release to the next.
+An incremental release represents a transition from one milestone release to the next.
 Incremental releases are <literal>alpha</literal>, <literal>beta</literal> or
 <literal>rc</literal> (release candidate).
-Typically, after a major release there will
+Typically, after a milestone release there will
 be a series of alpha, then beta, then rc releases, leading up to 
-the next minor release.
+the next milestone release.
 A possible sequence is <literal>2.1</literal>, <literal>2.2-alpha-1</literal>,
 <literal>2.2-beta-1</literal>, <literal>2.2-rc-1</literal>, <literal>2.2</literal>.
 </para>
@@ -811,10 +869,24 @@ Tapestry release notes (<filename>web/new.html</filename>).
 <section id="procedures.junit">
 	<title>JUnit Tests</title>
 	
+
 <para>
-Where possible, create JUnit tests for your code.  At the time of this writing, there isn't a procedure for
-directly testing Tapestry components ... however, you should often be able to test other objects
-related to your components, such as helper beans, models, etc.
+Tapestry has an excellent JUnit test suite, with code coverage
+figures over 70% at the time of this writing (2.4-alpha-2).  It is
+<emphasis>required</emphasis> that changes to the framework
+be accompanied by additional JUnit tests (typically, mock tests; see 
+below) to validate the changes.  In addition, there is an ongoing
+effort to fill in the gaps in the existing suite; the suite should reach
+over 90% code coverage.
+</para>
+
+<para>
+Some of the JUnit tests now require &Jython;.  You must
+download and install Jython 2.1,
+then configure <literal>jython.dir</literal> in <filename>config/build.properties</filename>
+to point to the install directory.  As usual, use an absolute path and forward slashes only.  To run
+the JUnit test suite within Eclipse, you must
+set the <literal>JYTHON_DIR</literal> classpath variable.
 </para>
 
 <para>
@@ -823,10 +895,187 @@ The package name for JUnit tests is <literal>net.sf.tapestry.junit</literal>.
 </para>
 
 <para>
-Work is underway to allow unit testing of components using
-a <emphasis>mock</emphasis> Servlet API, but this will
-not be available until Tapestry release 2.3.
+Less than half of Tapestry is tested using traditional JUnit tests.  The majority of JUnit testing occurs using
+a system of mock unit tests.  Mock testing involves replacing the key classes of the
+Servlet API (<classname>HttpServletRequest</classname>, <classname>HttpSession</classname>, etc.) with
+out own implementations, with extensions that allow for checks and validations.  Instead of processing a series of
+requests over HTTP, the requests are driven by an XML script file, which includes output checks.
 </para>
+
+<para>
+Generally, each bit of functionality can be tested using its own mini-application.  
+Create the application as
+<filename>junit/context<replaceable>X</replaceable></filename>.  This is much easier now, using Tapestry 2.4 features
+such as dynamic lookup of specifications and implicit components.
+</para>
+
+<para>
+Create a test script in the <filename>net.sf.tapestry.junit.mock</filename> package.  Add a method to
+the <classname>MockTestCase</classname> class.
+</para>
+
+<programlisting>
+public void test<replaceable>Name</replaceable>()
+throws Exception
+{
+    attempt("Test<replaceable>Name</replaceable>.xml");
+}
+</programlisting>
+
+<note>
+<para>
+The XML script is not validated, and invalid elements are
+generally ignored.  The class <classname>MockTester</classname>
+performs the test, and its capabilities are in fluxx, with
+new capabilities being added as needed.
+</para>
+</note>
+
+<para>
+A test script consists of an <sgmltag class="starttag">mock-test</sgmltag>
+element.  Within it, the virtual context and servlet are defined.
+</para>
+
+<programlisting>
+<![CDATA[
+<mock-test>
+  <context name="c6" root="context6"/>
+
+  <servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+    <init-parameter name="net.sf.tapestry.engine-class"
+       value="net.sf.tapestry.junit.mock.c6.C6Engine"/>
+  </servlet>
+]]>
+</programlisting>
+
+<para>
+The name for the context becomes the leading term in any
+generated URLs.  Likewise, the servlet name becomes the second
+term.  The above example will generate URLs that reference
+<literal>/c6/app</literal>.  Specifying a <literal>root</literal>
+for a context identifies the root context directory (beneath the top level
+<filename>junit</filename> directory).  In this example, HTML templates
+go in <filename>context6</filename> and specifications
+go in <filename>context6/WEB-INF</filename>.
+</para>
+
+<para>
+Following the <sgmltag class="starttag">servlet</sgmltag>
+and <sgmltag class="starttag">context</sgmltag> elements, a series
+of <sgmltag class="starttag">request</sgmltag> elements.  Each such element
+simulates a request.  A request specifies any query parameters passed as part
+of the request, and contains a number of assertions that test
+either the results, generally in terms of searching for strings
+or regular expressions within the HTML response.
+</para>
+
+<programlisting>
+<![CDATA[
+<request>
+  <parameter name="service" value="direct"/>
+  <parameter name="context" value="0/Home/$DirectLink"/>
+  
+  <assert-output name="Page Title">
+<![CDATA[
+<title>Persistant Page Property</title>
+]]>]]&gt;<![CDATA[
+  </assert-output>
+]]>
+</programlisting>
+
+<warning>
+<para>
+As in the above example, it is very important
+that HTML tags be properly escaped with the XML CDATA construct.
+</para>
+</warning>
+
+<para>
+Adding <literal>failover="true"</literal> to the
+<sgmltag class="starttag">request</sgmltag> simulates a failover.  The contents
+of the &HttpSession; are serialized,
+then deserialized.  This ensures that all the data stored into the 
+&HttpSession; will survive a failover to a new server within
+a cluster.
+</para>
+
+<para>
+All of the assertion elements expect a <literal>name</literal>
+attribute, which is incorporated into any error message
+if the assertion fails (that is, if the expected output
+is not present).
+</para>
+
+
+<para>
+The <sgmltag class="starttag">assert-output</sgmltag> element checks for the
+presence of the contained literal output, contained within the
+element.  Leading and trailing whitespace is trimmed before
+the check is made.
+</para>
+
+<programlisting>
+<![CDATA[
+  <assert name="Session Attribute"
+    expression='request.session.getAttribute("app/Home/message").equals("Changed")'
+  />				
+]]>
+</programlisting>
+
+<para>
+The <sgmltag class="starttag">assert</sgmltag> element checks
+that the provided OGNL expression evaluates to true.
+</para>
+
+<programlisting>
+<![CDATA[
+  <assert-regexp name="Error Message">
+<![CDATA[
+<span class="error">\s*You must enter a value for Last Name\.\s*</span>
+]]>]]&gt;<![CDATA[		
+  </assert-regexp> 
+]]>
+</programlisting>
+
+<para>
+The <sgmltag class="starttag">assert-regexp</sgmltag> looks
+for a regular expression in the result, instead of a simple literal
+string.
+</para>
+
+<programlisting>
+<![CDATA[
+  <assert-output-matches name="Selected Radio" subgroup="1">
+<![CDATA[
+<input type="radio" name="inputSex" checked="checked" value="(.*?)"/>
+]]>]]&gt;<![CDATA[
+    <match>1</match>
+  </assert-output-matches>
+]]>
+</programlisting>
+
+<para>
+The <sgmltag class="starttag">assert-output-matches</sgmltag>
+is the most complicated assertion.  It contains a regular expression
+which is evaluated.  For each match, the subgroup value is extracted,
+and compared to the next <sgmltag class="starttag">match</sgmltag>
+value.  Also, the count of matches (vs. the number of
+<sgmltag class="stattag">match</sgmltag> elements) is checked.
+</para>
+
+
+
+<note>
+<title>Force a failure, then check for correctness</title>
+<para>
+Sometimes the tests themselves have bugs.  A useful technique is
+to purposely break the test to ensure that it is checking for what
+it should check, then fix the test.  For example, adding <literal>XXX</literal>
+into a <sgmltag class="starttag">assert-output</sgmltag>.  Run the test suite
+and expect a failure, then remove the <literal>XXX</literal> and
+re-run the test, which should succeed.
+</para>
+</note>
 
 </section>
 
@@ -847,6 +1096,15 @@ Changes to the framework usually require a change in documentation to the Tapest
 
 <section id="procedures.component-doc">
 	<title>Component Documentation</title>
+	
+<warning>
+<para>
+This section is out of date.  In general, each component should
+include a link to the Component Reference page for the component.
+The Component Reference page has a format and content
+similar to what's listed here.
+</para>
+</warning>
 	
 <para>
 Although there is limited documentation about components in their component specification file, that documentation
@@ -985,14 +1243,52 @@ panel to set this.
 	<title>Creating Examples</title>
 	
 <para>
-In lieu of unit tests, the best way to make sure a new component works (as well as advertise
-its existence) is to update the Tapestry Tutorial to include it; typically the Tapestry Workbench.  
-The Workbench is very easy to extend with new pages, it also has
-the <emphasis>very</emphasis> useful feature for dumping out
-the request context on each request which greatly simplifies debugging links and form components.
+Extending the Workbench application to demonstrate new features or components
+is expected for any significant changes or additions to the framework, or
+to the contrib library.
 </para>
 	
 </section>
+
+<section id="procedures.copyrights">
+	<title>Updating Copyrights</title>
+	
+<para>
+All source code stored in the repository must contain the standard Apache copyright and license.  A copy of the
+license, as a comment block, is stored as <filename>support/license.txt</filename>
+</para>
+
+<para>
+The contents of this file can be pasted in directly before the <literal>package</literal> statement of a Java source file.
+</para>
+
+<para>
+Alternately, a <ulink url="http://www.python.org">Python</ulink> script is provided which
+can locate all Java source files within a directory tree and ensure that the leading comment block
+is correct.  It modifies any source files where the leading comment doesn't match, but does not modify
+any files where the leading comment matches.
+</para>
+
+<para>
+To use the script, change to the <filename>support</filename> directory and execute the command
+<command>python update-copyrights.py copyright.txt <replaceable>directory</replaceable></command>.
+</para>
+
+<para>
+The script is very fast, simply using <literal>..</literal> as the directory works in only a few seconds.
+</para>
+
+<warning>
+<title>Cygwin Python</title>
+<para>
+On my computer (running Windows XP and/or 2000), when using the 
+<ulink url="http://sources.redhat.com/cygwin">Cygwin</ulink>
+version of Python, it is necessary to execute the script
+from the Bash shell, not the standard Windows command line.
+</para>
+</warning>
+
+</section> <!-- procedures.copyrights -->
 
 </chapter>
 
