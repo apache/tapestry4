@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+  "-//Howard Ship//Tapestry Specification 1.1//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+
+<specification class="net.sf.tapestry.vlib.pages.admin.TransferBooks">
+
+  <property name="page-type">admin</property>
+  
+  <component id="border" type="Border">
+    <field-binding name="simpleTitle" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="showMessage" type="ShowMessage"/>
+  <component id="showError" type="ShowError"/>
+  
+  <component id="selectForm" type="Form">
+    <binding name="listener" property-path="listeners.processSelectForm"/>  
+    <field-binding name="direct" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="selectFrom" type="PropertySelection">
+    <binding name="model" property-path="engine.personModel"/>
+    <binding name="value" property-path="fromUserPK"/>
+  </component>
+  
+  <component id="selectTo" type="PropertySelection">
+    <binding name="model" property-path="engine.personModel"/>
+    <binding name="value" property-path="toUserPK"/>
+  </component>
+  
+  <component id="ifSelectionsOk" type="Conditional">
+    <binding name="condition" property-path="selectionsOk"/>
+  </component>
+  
+  <component id="xferForm" type="Form">
+    <binding name="listener" property-path="listeners.processXferForm"/>
+  </component>
+  
+  <component id="selectBooks" type="Palette">
+    <binding name="selected" property-path="selectedBooks"/>
+    <binding name="model" property-path="userBookModel"/>
+    <field-binding name="sort" field-name="net.sf.tapestry.contrib.palette.SortMode.LABEL"/>
+    <binding name="selectImage" property-path="assets.Select"/>
+    <binding name="selectDisabledImage" property-path="assets.SelectOff"/>
+    <binding name="deselectImage" property-path="assets.Deselect"/>
+    <binding name="deselectDisabledImage" property-path="assets.DeselectOff"/>
+    <binding name="selectedTitleBlock" property-path="components.selectedTitleBlock"/>
+    <binding name="availableTitleBlock" property-path="components.availableTitleBlock"/>
+  </component>
+
+  <component id="availableTitleBlock" type="Block"/>
+  
+  <component id="insertFromName" type="Insert">
+  	<binding name="value" property-path="fromUser.naturalName"/>
+  </component>
+  
+  
+  <component id="selectedTitleBlock" type="Block"/>
+
+  <component id="insertToName" type="Insert">
+    <binding name="value" property-path="toUser.naturalName"/>
+  </component>
+  
+	  
+  <context-asset name="Select" path="/images/select_right_bl.gif"/>
+  <context-asset name="SelectOff" path="/images/select_right_bl_off.gif"/>
+  <context-asset name="Deselect" path="/images/deselect_left_bl.gif"/>
+  <context-asset name="DeselectOff" path="/images/deselect_left_bl_off.gif"/>
+  
+</specification>
+

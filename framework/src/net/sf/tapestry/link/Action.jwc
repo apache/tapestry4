@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<specification class="net.sf.tapestry.link.Action">
+
+  <description>
+  Creates a contextual link within the response page.  The page will be rewound to its
+  original state before the listener is invoked.
+  </description>
+  
+  <parameter name="listener" 
+  	java-type="net.sf.tapestry.IActionListener" 
+  	required="yes"
+  	direction="in"/>
+  	
+  <parameter name="disabled"
+  	java-type="boolean"
+  	direction="in"/>
+  	
+  <parameter name="scheme" 
+  	java-type="java.lang.String"
+  	direction="in"/>
+  	
+  <parameter name="port"
+  	java-type="int"
+  	direction="in"/>
+  	
+  <parameter name="anchor" 
+  	java-type="java.lang.String"
+  	direction="in"/>
+  	
+  <parameter name="stateful" java-type="boolean" direction="custom" property-name="stateful"/>	
+  
+  <reserved-parameter name="href"/>
+  
+</specification>

@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="tutorial.workbench.fields.Fields">
+	<bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
+	<bean name="dateValidator" class="net.sf.tapestry.valid.DateValidator">
+		<set-property name="required">
+			<field-value field-name="Boolean.TRUE"/>
+		</set-property>
+	</bean>
+	<bean name="intValidator" class="net.sf.tapestry.valid.NumberValidator">
+		<set-property name="required">
+			<field-value field-name="Boolean.TRUE"/>
+		</set-property>
+		<set-property name="minimum">
+			<field-value field-name="tutorial.workbench.fields.Fields.INT_MIN"/>
+		</set-property>
+		<set-property name="maximum">
+			<field-value field-name="tutorial.workbench.fields.Fields.INT_MAX"/>
+		</set-property>
+	</bean>
+	<bean name="doubleValidator" class="net.sf.tapestry.valid.NumberValidator">
+		<set-property name="required">
+			<field-value field-name="Boolean.TRUE"/>
+		</set-property>
+		<set-property name="minimum">
+			<field-value field-name="tutorial.workbench.fields.Fields.DOUBLE_MIN"/>
+		</set-property>
+		<set-property name="maximum">
+			<field-value field-name="tutorial.workbench.fields.Fields.DOUBLE_MAX"/>
+		</set-property>
+	</bean>
+	<bean name="bigDecimalValidator" class="net.sf.tapestry.valid.NumberValidator">
+		<set-property name="required">
+			<field-value field-name="Boolean.TRUE"/>
+		</set-property>
+		<set-property name="minimum">
+			<field-value field-name="tutorial.workbench.fields.Fields.DECIMAL_MIN"/>
+		</set-property>
+		<set-property name="maximum">
+			<field-value field-name="tutorial.workbench.fields.Fields.DECIMAL_MAX"/>
+		</set-property>
+	</bean>
+	<bean name="longValidator" class="net.sf.tapestry.valid.NumberValidator">
+		<set-property name="required">
+			<field-value field-name="Boolean.TRUE"/>
+		</set-property>
+		<set-property name="minimum">
+			<field-value field-name="tutorial.workbench.fields.Fields.LONG_MIN"/>
+		</set-property>
+		<set-property name="maximum">
+			<field-value field-name="tutorial.workbench.fields.Fields.LONG_MAX"/>
+		</set-property>
+	</bean>
+	<bean name="stringValidator" class="net.sf.tapestry.valid.StringValidator">
+		<set-property name="required">
+			<field-value field-name="Boolean.TRUE"/>
+		</set-property>
+		<set-property name="minimumLength">
+			<field-value field-name="tutorial.workbench.fields.Fields.STRING_MIN_LENGTH"/>
+		</set-property>
+	</bean>
+	<component id="border" type="Border"/>
+	<component id="showError" type="ShowError">
+		<binding name="delegate" property-path="beans.delegate"/>
+	</component>
+	<component id="form" type="Form">
+		<binding name="listener" property-path="listeners.formSubmit"/>
+		<binding name="delegate" property-path="beans.delegate"/>
+	</component>
+	<component id="dateLabel" type="FieldLabel">
+		<binding name="field" property-path="components.inputDate"/>
+	</component>
+	<component id="inputDate" type="ValidField">
+		<binding name="validator" property-path="beans.dateValidator"/>
+		<binding name="value" property-path="visit.dateValue"/>
+		<static-binding name="displayName">Date Field</static-binding>
+	</component>
+	<component id="intLabel" type="FieldLabel">
+		<binding name="field" property-path="components.inputInt"/>
+	</component>
+	<component id="inputInt" type="ValidField">
+		<binding name="validator" property-path="beans.intValidator"/>
+		<binding name="value" property-path="visit.intValue"/>
+		<static-binding name="displayName">Integer Field</static-binding>
+	</component>
+	<component id="doubleLabel" type="FieldLabel">
+		<binding name="field" property-path="components.inputDouble"/>
+	</component>
+	<component id="inputDouble" type="ValidField">
+		<binding name="validator" property-path="beans.doubleValidator"/>
+		<binding name="value" property-path="visit.doubleValue"/>
+		<static-binding name="displayName">Double Field</static-binding>
+	</component>
+	<component id="bigDecimalLabel" type="FieldLabel">
+		<binding name="field" property-path="components.inputBigDecimal"/>
+	</component>
+	<component id="inputBigDecimal" type="ValidField">
+		<binding name="value" property-path="visit.bigDecimalValue"/>
+		<binding name="validator" property-path="beans.bigDecimalValidator"/>
+		<static-binding name="displayName">Big Decimal Field</static-binding>
+	</component>
+	<component id="longLabel" type="FieldLabel">
+		<binding name="field" property-path="components.inputLong"/>
+	</component>
+	<component id="inputLong" type="ValidField">
+		<binding name="value" property-path="visit.longValue"/>
+		<binding name="validator" property-path="beans.longValidator"/>
+		<static-binding name="displayName">Long Field</static-binding>
+	</component>
+	<component id="stringLabel" type="FieldLabel">
+		<binding name="field" property-path="components.inputString"/>
+	</component>
+	<component id="inputString" type="ValidField">
+		<binding name="value" property-path="visit.stringValue"/>
+		<binding name="validator" property-path="beans.stringValidator"/>
+		<static-binding name="displayName">String Field</static-binding>
+	</component>
+	<component id="continue" type="ImageSubmit">
+		<binding name="image" propertypath="assets.continue"/>
+	</component>
+	<context-asset name="continue" path="/images/workbench/Continue.gif"/>
+</specification>

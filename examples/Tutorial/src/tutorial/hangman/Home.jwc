@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+
+<specification class="tutorial.hangman.Home">
+  <component id="form" type="Form">
+    <binding name="listener" property-path="listeners.formSubmit"/>
+    <field-binding name="stateful" field-name="Boolean.FALSE"/>
+  </component>
+  <component id="group" type="RadioGroup">
+    <binding name="selected" property-path="misses"/>
+  </component>
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="error"/>
+  </component>
+  <component id="insertError" type="Insert">
+    <binding name="value" property-path="error"/>
+  </component>
+  <component id="inputEasy" type="Radio">
+    <field-binding name="value" field-name="tutorial.hangman.Home.EASY"/>
+  </component>
+  <component id="inputMedium" type="Radio">
+    <field-binding name="value" field-name="tutorial.hangman.Home.MEDIUM"/>
+  </component>
+  <component id="inputHard" type="Radio">
+    <field-binding name="value" field-name="tutorial.hangman.Home.HARD"/>
+  </component>
+</specification>

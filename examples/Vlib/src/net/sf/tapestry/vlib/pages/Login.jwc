@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.vlib.pages.Login">
+
+  <property name="page-type">login</property>
+
+  <component id="border" type="Border">
+    <static-binding name="title">Login</static-binding>
+  </component>
+  
+  <component id="form" type="Form">
+    <binding name="listener" property-path="listeners.attemptLogin"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+    <field-binding name="stateful" field-name="Boolean.FALSE"/>
+  </component>
+   
+  <component id="showError" type="ShowError"/>
+  
+  <component id="showValidationError" type="ShowValidationError">
+  	<binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  
+  <component id="labelEmail" type="FieldLabel">
+    <binding name="field" property-path="components.inputEmail"/>
+  </component>
+  
+  <component id="inputEmail" type="ValidField">
+    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="maximumLength">60</static-binding>
+    <static-binding name="displayName">Email Address</static-binding>
+    <binding name="value" property-path="email"/>
+    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+  </component>
+  
+  <component id="labelPassword" type="FieldLabel">
+    <binding name="field" property-path="components.inputPassword"/>
+  </component>
+  
+  <component id="inputPassword" type="ValidField">
+    <binding name="value" property-path="password"/>
+    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+    <static-binding name="displayWidth">10</static-binding>
+    <static-binding name="maximumLength">20</static-binding>
+    <static-binding name="displayName">Password</static-binding>
+    <field-binding name="hidden" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="register" type="Page">
+    <static-binding name="page">Register</static-binding>
+  </component>
+
+</specification>

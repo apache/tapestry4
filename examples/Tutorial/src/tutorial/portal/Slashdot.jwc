@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+
+    
+<specification class="tutorial.portal.Slashdot">
+
+<bean name="rowClass" class="net.sf.tapestry.bean.EvenOdd"/>
+
+<component id="content" type="Block"/>
+
+<component id="e" type="Foreach">
+    <binding name="source" property-path="stories"/>
+    <binding name="value" property-path="story"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.rowClass.next"/>
+</component>
+
+<component id="link" type="Any">
+    <static-binding name="element">a</static-binding>
+    <binding name="href" property-path="story.URL"/>
+</component>
+
+<component id="insertHeadline" type="Insert">
+  <binding name="value" property-path="story.title"/>
+</component>
+
+<component id="insertAuthor" type="Insert">
+  <binding name="value" property-path="story.author"/>
+</component>
+
+<component id="insertDate" type="Insert">
+  <binding name="value" property-path="story.date"/>
+</component>
+  
+</specification>

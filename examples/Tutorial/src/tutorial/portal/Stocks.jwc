@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+
+    
+<specification class="tutorial.portal.Stocks">
+
+<bean name="delegate" class="net.sf.tapestry.valid.ValidationDelegate"/>
+    
+<bean name="rowClass" class="net.sf.tapestry.bean.EvenOdd"/>
+
+<component id="content" type="Block"/>
+
+<component id="e" type="Foreach">
+  <binding name="source" property-path="stocks"/>
+  <binding name="value" property-path="stock"/>
+  <static-binding name="element">tr</static-binding>
+  <binding name="class" property-path="beans.rowClass.next"/>
+</component>
+
+<component id="insertStock" type="Insert">
+  <binding name="value" property-path="stock.tickerId"/>
+</component>
+
+<component id="insertValue" type="Insert">
+  <binding name="value" property-path="stock.price"/>
+  <binding name="format" property-path="decimalFormat"/>
+</component>
+
+<component id="insertDelta" type="Insert">
+  <binding name="value" property-path="stock.change"/>
+  <binding name="format" property-path="decimalFormat"/>
+</component>
+
+<component id="showError" type="ShowError">
+  <binding name="delegate" property-path="beans.delegate"/>
+</component>
+
+<component id="form" type="Form">
+  <binding name="listener" property-path="listeners.addStock"/>
+  <field-binding name="direct" field-name="Boolean.FALSE"/>
+  <binding name="delegate" property-path="beans.delegate"/>
+</component>
+
+<component id="inputTickerId" type="ValidField">
+  <binding name="value" property-path="tickerId"/>
+  <static-binding name="displayName">Ticker ID</static-binding>
+  <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+  <static-binding name="displayWidth">4</static-binding>
+  <static-binding name="maximumLength">4</static-binding>
+  <static-binding name="title">
+    For this demo, valid stocks are:
+    PMIX, MSFT, SUN
+  </static-binding>
+</component>
+
+</specification>

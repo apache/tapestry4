@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+
+<specification class="tutorial.workbench.chart.Chart">
+
+  <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
+
+  <bean name="intValidator" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required">
+  		<field-value field-name="Boolean.TRUE"/>
+  	</set-property>
+  	<set-property name="minimum">
+  		<static-value type="int">0</static-value>
+  	</set-property>
+  </bean>
+
+  <component id="border" type="Border"/>
+
+  <component id="showError" type="ShowError">
+     <binding name="delegate" property-path="beans.delegate"/>
+  </component>
+
+  <component id="form" type="Form">
+    <binding name="listener" property-path="listeners.submit"/>
+    <binding name="delegate" property-path="beans.delegate"/>
+  </component>
+
+  <component id="plotValues" type="Foreach">
+    <binding name="source" property-path="plotValues"/>
+    <binding name="value" property-path="plotValue"/>
+    <static-binding name="element">tr</static-binding>
+  </component>
+
+  <component id="inputName" type="ValidField">
+  	<static-binding name="displayName">Name</static-binding>
+  	<binding name="value" property-path="plotValue.name"/>
+  	<field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+  </component>
+
+  <component id="inputValue" type="ValidField">	
+  	<static-binding name="displayName">Value</static-binding>
+  	<binding name="value" property-path="plotValue.value"/>
+  	<binding name="validator" property-path="beans.intValidator"/>
+  </component>
+  
+  <component id="inputMarked" type="Checkbox">
+    <binding name="selected" property-path="markedForDeletion"/>
+  </component>
+  
+  <component id="add" type="Submit">
+  	<binding name="listener" property-path="listeners.add"/>
+  	<static-binding name="label">Update and Add</static-binding>
+  </component>
+  
+  <component id="delete" type="Submit">	
+  	<binding name="listener" property-path="listeners.delete"/>
+  	<static-binding name="label">Delete Selected</static-binding>
+  </component>
+  
+  <component id="chart" type="Image">
+    <binding name="image" property-path="chartImageAsset"/>
+  </component>
+  
+</specification>
+

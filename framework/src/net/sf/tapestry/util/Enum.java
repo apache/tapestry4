@@ -1,0 +1,210 @@
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+
+package net.sf.tapestry.util;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.sf.tapestry.Tapestry;
+
+/**
+ *  Defines properties of enumerated types.  Enumerated types
+ *  are special classes that take the place of C enums.  The class
+ *  typically defines a number of public static constants for the
+ *  elements of the type, and makes its constructors private.
+ *
+ *  <p>The end result is that you can use simple equality checking
+ *  (the == operator) for the type.  Since it is still a first-class
+ *  object, it may also be extended with operations.
+ *
+ *  <p>The problem is serialization.  If you serialize such an object and
+ *  then deserialize it, you get a different object.  Forunately, as of
+ *  JDK 1.2, we can override this and use <code>readResolve()</code>
+ *
+ *  <p>When an Enum is constructed, it is recorded into an identity table
+ *  using a unique enumerationId (the enumerationId must be unique for all instances
+ *  of the same class).  When the Enum is de-serialized, it uses the enumerationId
+ *  to locate the existing singleton instance.
+ *
+ *  <p>It would be nice if this class was {@link java.io.Externalizable}, not {@link Serializable},
+ *  but that requires public no-arguments constructors, which would spoil things.
+ *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ * 
+ **/
+
+public class Enum implements Serializable
+{
+    /**
+     *  @since 2.0.4
+     * 
+     **/
+
+    private static final long serialVersionUID = -2458528582889298111L;
+
+    private transient String enumerationId;
+
+    /**
+     *  Used to resolve tokens back to <code>Enum</code> instances during deserialization.
+     *  The key is a {@link EnumToken} that identifies the class of the the Enum and
+     *  its serialization id.
+     *
+     **/
+
+    private static Map identity = new HashMap(23);
+
+    /**
+     *  Returns a String that identifies the object.  The combination of class name and
+     *  enumerationId should be unique.  The serializationId should be a fixed, 
+     *  constant value set in the constructor.
+     **/
+
+    public String getEnumerationId()
+    {
+        return enumerationId;
+    }
+
+    /**
+     *  Registers the new Enum.  The serializationId must be non-null and unique
+     *  among all instances of Enum for the same class.
+     *
+     **/
+
+    protected Enum(String enumerationId)
+    {
+        if (enumerationId == null)
+            throw new RuntimeException("Must provide non-null enumerationId.");
+
+        this.enumerationId = enumerationId;
+
+        register(this);
+    }
+
+    /**
+     *  Returns the class name (with the package stripped off), and the serializationId,
+     *  seperated by a period.
+     *  For example, "Suit.CLUBS" for org.example.Suit with a serializationId of "CLUBS".
+     *
+     **/
+
+    public String toString()
+    {
+        StringBuffer buffer;
+        String name;
+        int dot;
+
+        name = getClass().getName();
+
+        dot = name.lastIndexOf('.');
+        if (dot > 0)
+            name = name.substring(dot + 1);
+
+        buffer = new StringBuffer();
+        buffer.append(name);
+        buffer.append('[');
+        buffer.append(enumerationId);
+        buffer.append(']');
+
+        return buffer.toString();
+    }
+
+    /**
+     *  Registers the singleton instance for later re-use during deserialization.
+     *
+     **/
+
+    private static synchronized void register(Enum enum)
+    {
+        EnumToken key;
+
+        key = new EnumToken(enum);
+
+        if (identity.containsKey(key))
+            throw new RuntimeException(
+                Tapestry.getString("Enum.duplicate-registration", key));
+
+        identity.put(new EnumToken(enum), enum);
+    }
+
+    /**
+     *  This is a bit of serialization black magic.  The object stream
+     *  produces a temporary Enum instance with the correct class and enumeration id;
+     *  we check the identity table to find the singleton instance for this
+     *  JVM and return it (allowing the temporary instance to
+     *  be reclaimed by the garbage collector).
+     *
+     *
+     **/
+
+    protected final Object readResolve()
+    {
+        Object result;
+        EnumToken key;
+
+        key = new EnumToken(this);
+
+        // Get the previously registered version.
+
+        synchronized (identity)
+        {
+            result = identity.get(key);
+        }
+
+        if (result == null)
+            throw new RuntimeException(
+                Tapestry.getString("Enum.deserialize-error", key, getClass().getName()));
+
+        return result;
+    }
+
+    /**
+     *  Writes the enumerationId (which is marked transient) to the output stream,
+     *  using {@link ObjectOutputStream#writeUTF(String)}, which is more efficient.
+     *
+     **/
+
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
+        out.writeUTF(enumerationId);
+    }
+
+    /**
+      *  Reads the state written by <code>writeObject</code>.
+      *
+      **/
+
+    private void readObject(ObjectInputStream in)
+        throws IOException, ClassNotFoundException
+    {
+        enumerationId = in.readUTF();
+    }
+
+}

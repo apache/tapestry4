@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification class="tutorial.workbench.palette.Palette">
+
+  <component id="border" type="Border"/>
+  
+  <component id="form" type="Form">
+    <binding name="listener" property-path="listeners.formSubmit"/>
+  </component>
+  
+  <component id="inputColorSort" type="PropertySelection">
+  	<binding name="value" property-path="sort"/>
+  	<binding name="model" property-path="sortModel"/>
+  </component>
+  
+  <component id="inputColor" type="Palette">
+    <binding name="model" property-path="colorModel"/>
+    <binding name="selected" property-path="selectedColors"/>
+    <binding name="sort" property-path="sort"/>
+    <static-binding name="tableClass">palette</static-binding>
+  </component>
+  
+  <component id="update" type="ImageSubmit">
+    <binding name="image" property-path="assets.update"/>
+  </component>
+  
+  <component id="continue" type="ImageSubmit">
+  	<binding name="image" property-path="assets.continue"/>
+  	<binding name="listener" property-path="listeners.advance"/>
+  </component>
+ 
+   <context-asset name="continue" path="/images/workbench/Continue.gif"/>
+   <context-asset name="update" path="/images/workbench/Update.gif"/>
+  
+</specification>

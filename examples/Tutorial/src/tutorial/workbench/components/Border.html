@@ -1,0 +1,50 @@
+<html jwcid="shell">
+<body jwcid="body">
+
+<table class="tabs" cellspacing=0 border=0>
+<tr>
+<span jwcid="eachPage">
+<td><img jwcid="leftTabImage" width=2 height=20/></td>
+<td jwcid="tabCell" align=middle><a class="nav" jwcid="pageLink"><span jwcid="insertPageTitle">Page Title</span></a></td>
+<td><img jwcid="rightTabImage" width=13 height=20/></td>
+</span>
+</tr>
+</table>
+
+<table class="content">
+<tr>
+<td>
+
+<span jwcid="insertWrapped">Page content goes here.</span>
+
+</td>
+</tr>
+</table>
+
+<br>
+
+<table class="requestDebug" cellspacing=0>
+  <tr class="control">
+    <td>
+      <form jwcid="form">
+        <input type=checkbox jwcid="inputRequestDebug"/>
+        <span key="prompt.display-request-debug">Display Request Debug Information</span>
+      </form>
+    </td>
+  </tr>
+  <tr class="data">
+    <td>
+      <span jwcid="ifRequestDebug">
+        <span jwcid="displayRequestDebug"/>
+      </span>
+    </td>
+  </tr>
+</table>
+
+<p>
+&copy; 2000-2002 <a href="mailto:hship@users.sf.net">Howard M. Lewis Ship</a>.
+
+<span jwcid="showInspector"/>
+
+</body>
+</html>

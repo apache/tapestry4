@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification
+	class="net.sf.tapestry.inspector.ShowLogging"
+	allow-body="no"
+	allow-informal-parameters="no">
+	
+  <bean name="delegate" class="net.sf.tapestry.inspector.InspectorValidationDelegate"/>
+  
+  <bean name="categoryClass" class="net.sf.tapestry.bean.EvenOdd">
+    <set-property name="even">
+      <static-value type="boolean">false</static-value>
+    </set-property>
+  </bean>
+  
+  <component id="priorityForm" type="Form">
+    <binding name="listener" property-path="listeners.priorityChange"/>
+    <field-binding name="direct" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="inputRootLevel" type="PropertySelection">
+    <binding name="value" property-path="rootCategory.priority"/>
+    <binding name="model" property-path="rootPriorityModel"/>
+  </component>
+  
+  <component id="e" type="ListEdit">
+    <binding name="source" property-path="categoryNames"/>
+    <binding name="value" property-path="categoryName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.categoryClass.next"/>
+  </component>
+  
+  <component id="insertCategoryName" type="Insert">
+    <binding name="value" property-path="category.name"/>
+  </component>
+  
+  <component id="inputCategoryLevel" type="PropertySelection">
+    <binding name="model" property-path="priorityModel"/>
+    <binding name="value" property-path="category.priority"/>
+  </component>
+  
+  <component id="newCategoryForm" type="Form">
+    <binding name="listener" property-path="listeners.addNewCategory"/>
+    <binding name="delegate" property-path="beans.delegate"/>
+    <field-binding name="direct" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="beans.delegate.hasErrors"/>
+  </component>
+  
+  <component id="insertError" type="Delegator">
+    <binding name="delegate" property-path="beans.delegate.firstError"/>
+  </component>
+  
+  <component id="inputNewCategory" type="ValidField">
+    <static-binding name="displayName">New Category</static-binding>
+    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+    <binding name="value" property-path="newCategory"/>
+  </component>
+  
+</specification>

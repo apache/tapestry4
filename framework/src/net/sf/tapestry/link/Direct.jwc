@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<specification class="net.sf.tapestry.link.Direct">
+
+  <description>
+  Creates a non-contextual link.  Non-persistent state can be stored within the link
+  using the context.
+  </description>
+
+  <parameter name="listener" 
+  	java-type="net.sf.tapestry.IActionListener" 
+  	required="yes"
+  	direction="custom"/>
+  	
+  <parameter name="context" java-type="java.lang.Object" direction="in">
+    <description>
+    A object or string, or array of objects and strings, encoded into the URL
+    as service parameters.
+    </description>
+  </parameter>
+  
+  <parameter name="stateful" java-type="boolean" direction="custom"/>
+  
+  <parameter name="disabled"
+  	java-type="boolean"
+  	direction="in"/>
+  	
+  <parameter name="scheme" 
+  	java-type="java.lang.String"
+  	direction="in"/>
+  	
+  <parameter name="port"
+  	java-type="int"
+  	direction="in"/>
+  	
+  <parameter name="anchor" 
+  	java-type="java.lang.String"
+  	direction="in"/>
+  
+  <reserved-parameter name="href"/>
+    
+</specification>

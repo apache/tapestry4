@@ -1,0 +1,136 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+<link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
+</head>
+
+<script language="javaScript">
+
+function isViewletCompliant()
+{
+     answer=true;
+     version=Math.round(parseFloat(navigator.appVersion) * 1000);
+     if (navigator.appName.substring(0,9) == "Microsoft")
+     {
+          //IE4.0+. Ok on all platforms
+          if(version<4000) answer=false;
+     }
+     if (navigator.appName.substring(0,8) == "Netscape")
+     {
+          //NN5.0+ needed on mac, NN4.06+ on other platforms
+          if ((navigator.appVersion.indexOf("Mac")> 0) && (version<5000))
+          answer=false;
+          else
+          if (version<4060)
+               answer=false;
+     }
+     // Browser Shouldn't support java 1.1 but might have plugin
+     plugins=navigator.plugins;
+     if (answer==false && plugins!=null)
+     {
+          for(i=0;i!=plugins.length;i++)
+          if((plugins[i].name.indexOf("Java Plug-in")>=0) && (plugins[i].name.indexOf("1.0")<0))
+               answer=true;
+     }
+     return answer;
+     //For other browsers we assume it works}function openViewlet(htmlFile,htmlWidth,htmlHeight)
+     {
+          str = 'resizable=0,toolbar=0,menubar=0,';
+          str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+          if(!isViewletCompliant())
+          {
+               open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+          }
+          else
+          {
+               window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+          }
+     }
+}
+
+function openViewlet(htmlFile,htmlWidth,htmlHeight)
+{
+     str = 'resizable=0,toolbar=0,menubar=0,';
+     str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+     if(!isViewletCompliant())
+     {
+          open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+     }
+     else
+     {
+          window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+     }
+}
+</script>
+
+
+<body bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+	<tr>
+		<td valign="top" align="left"><img height="44" src="images/ico_t.gif" alt="[Tapestry Logo]" width="44" align="absMiddle" border="0">&nbsp;<img height="22" alt="Tapestry" src="images/hd_tapestry.gif" width="100" align="absMiddle" vspace="17" border="0">
+		
+		<br><br>Viewlets are a powerful tool for creating tutorials and demonstrations.  Think of it as
+		an animated slideshow of screen shots that allows you to "follow along" with an invisible
+		instructor.
+
+	<p><table border="0" cellspacing="0" cellpadding="2">
+	<tr valign="top">
+		<td><img src="images/dots_leftnav.gif" width="14" height="12"></td>
+		<td><a class="clsLeftNav" href="javascript:openViewlet('http://www.viewhow2.com/vf/ikxoapk/5/Tapestry_Vlib_BasicSearch_viewlet.html',839+20,600+90);">
+		Virtual Library - Basic Search</a>
+		
+		<br><br>
+		
+		A quick run through of the very basics of the Virtual Library application, covering the basics
+		of searching.
+		
+		</td>
+	</tr>
+	
+	<tr><td height="10"><img src="images/spacer.gif" width="1"></td></tr>
+	
+</table>
+
+		
+	</td>
+	</tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr bgcolor="#8e9cd1">
+		<td>&nbsp;
+		</td>
+	</tr>
+	<tr bgcolor="#4b5887">
+		<td height="47">
+			<img src="images/spacer.gif">
+		</td>
+	</tr>
+	<tr bgcolor="#333333">
+		<td height="65">
+			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
+				<tr height="65">
+					<td width="654" align="right" valign="bottom" class="clsFooter">&copy;2000-2002 Howard Lewis Ship. All rights reserved.
+					</td>
+					<td width="70">&nbsp;
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#333333">
+		<td>
+			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
+				<tr height="65">
+					<td height="200" width="654">&nbsp;
+					</td>
+					<td width="70">&nbsp;
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

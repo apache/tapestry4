@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.vlib.pages.Home">
+
+  <component id="border" type="Border">
+    <static-binding name="title">Virtual Library</static-binding>
+  </component>
+  
+  <component id="showError" type="ShowError"/>
+  <component id="showMessage" type="ShowMessage"/>
+  <component id="searchForm" type="Form"> 
+    <binding name="listener" property-path="listeners.search"/>
+    <field-binding name="stateful" field-name="Boolean.FALSE"/>
+  </component>
+  <component id="inputTitle" type="TextField">
+    <binding name="value" property-path="searchTitle"/>
+    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="maximumLength">100</static-binding>
+  </component>
+  <component id="inputAuthor" type="TextField">
+    <binding name="value" property-path="searchAuthor"/>
+    <static-binding name="maximumLength">100</static-binding>
+    <static-binding name="displayWidth">30</static-binding>
+  </component>
+  <component id="inputPublisher" type="PropertySelection">
+    <binding name="value" property-path="searchPublisherPK"/>
+    <binding name="model" property-path="engine.publisherModel"/>
+  </component>
+     
+</specification>
