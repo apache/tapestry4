@@ -127,8 +127,10 @@ public class SimpleTableModel implements ITableModel, ITableDataModelListener, S
         sortRows();
 
         int nPageSize = getPagingState().getPageSize();
-        int nCurrentPage = getPagingState().getCurrentPage();
+        if (nPageSize <= 0)
+            return new ArrayIterator(m_arrRows);
 
+        int nCurrentPage = getPagingState().getCurrentPage();
         int nFrom = nCurrentPage * nPageSize;
         int nTo = (nCurrentPage + 1) * nPageSize;
 
@@ -140,7 +142,12 @@ public class SimpleTableModel implements ITableModel, ITableDataModelListener, S
         int nRowCount = getRowCount();
         if (nRowCount == 0)
             return 1;
-        return (nRowCount - 1) / getPagingState().getPageSize() + 1;
+
+        int nPageSize = getPagingState().getPageSize();
+        if (nPageSize <= 0)
+            return 1;
+
+        return (nRowCount - 1) / nPageSize + 1;
     }
 
     public ITablePagingState getPagingState()
