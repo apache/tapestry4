@@ -45,7 +45,7 @@ install: setup-catalogs
 # Rule to force a rebuild of just the catalogs
 
 catalog: initialize
-	@$(RM) $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
+	@$(RM) $(MOD_JAVA_CATALOG) $(MOD_RESOURCE_CATALOG)
 	@$(RECURSE)  SETUP_CATALOGS=t inner-setup-catalogs
 	
 setup-catalogs: initialize
@@ -115,13 +115,13 @@ endif
 _RMI_CLASS_FILES := \
 	$(addprefix $(MOD_CLASS_DIR)$(SLASH), \
 		$(addsuffix .class, \
-			$(subst $(DOT),$(SLASH),$(RMI_CLASS_NAMES))))
+			$(subst $(DOT),$(SLASH),$(RMI_CLASSES))))
 
 # Here's where it gets real tricky; we need to reverse the prior
 # process and get BACK to the class name.
 
 $(RMI_STAMP_FILE): $(_RMI_CLASS_FILES)
-ifneq "$(_RMI_CLASS_NAMES)" ""
+ifneq "$(RMI_CLASSES)" ""
 	$(call NOTE, Compiling RMI stubs and skeletons ...)
 	$(RMIC) $(FINAL_RMIC_OPT) \
 		$(subst $(SLASH),$(DOT), \
