@@ -76,7 +76,7 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
 
     public ApplicationRuntimeException(Throwable rootCause)
     {
-        super(rootCause.getMessage(), rootCause);
+        this(rootCause.getMessage(), rootCause);
     }
 
     public ApplicationRuntimeException(String message)
