@@ -2,7 +2,7 @@
 
   <!-- $Id$ -->
 
-  <url href="http://jakarta.apache.org/proposals/tapestry/index.html"/>
+  <url href="http://jakarta.apache.org/tapestry/index.html"/>
   <description>
   Component-based web application framework organized around insanely
   high levels of resuse.
