@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.html;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
@@ -73,7 +73,7 @@ import org.apache.tapestry.util.IdAllocator;
 
 /**
  *  The body of a Tapestry page.  This is used since it allows components on the
- *  page access to an initialization script (that is written the start, just before
+ *  page access to an initialization script (that is written the start, just inside
  *  the &lt;body&gt; tag).  This is currently used by {@link Rollover} and {@link Script}
  *  components.
  * 
@@ -110,13 +110,13 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
     private Map _imageMap;
 
     /**
-     *  Set of included scripts.  Values are Strings.
+     *  List of included scripts.  Values are Strings.
      *
      *  @since 1.0.5
      *
      **/
 
-    private Set _externalScripts;
+    private List _externalScripts;
 
     private IdAllocator _idAllocator;
 
@@ -231,7 +231,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
     public void addExternalScript(IResourceLocation scriptLocation)
     {
         if (_externalScripts == null)
-            _externalScripts = new HashSet();
+            _externalScripts = new ArrayList();
 
         if (_externalScripts.contains(scriptLocation))
             return;
@@ -243,21 +243,38 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
                 Tapestry.getString("Body.include-classpath-script-only", scriptLocation),
                 this);
 
-        // This is still very awkward!  Should move the code inside PrivateAsset somewhere
-        // else, so that an asset does not have to be created to to build the URL.
-        PrivateAsset asset = new PrivateAsset((ClasspathResourceLocation) scriptLocation, null);
-        String url = asset.buildURL(getPage().getRequestCycle());
-
-        _outerWriter.begin("script");
-        _outerWriter.attribute("language", "JavaScript");
-        _outerWriter.attribute("type", "text/javascript");
-        _outerWriter.attribute("src", url);
-        _outerWriter.end();
-        _outerWriter.println();
-
         // Record the URL so we don't include it twice.
 
         _externalScripts.add(scriptLocation);
+    }
+
+    /**
+     * Writes &lt;script&gt; elements for all the external scripts.
+     */
+    private void writeExternalScripts(IMarkupWriter writer)
+    {
+        int count = Tapestry.size(_externalScripts);
+        for (int i = 0; i < count; i++)
+        {
+            ClasspathResourceLocation scriptLocation =
+                (ClasspathResourceLocation) _externalScripts.get(i);
+
+            // This is still very awkward!  Should move the code inside PrivateAsset somewhere
+            // else, so that an asset does not have to be created to to build the URL.
+            PrivateAsset asset = new PrivateAsset(scriptLocation, null);
+            String url = asset.buildURL(getPage().getRequestCycle());
+
+            // Note: important to use begin(), not beginEmpty(), because browser don't
+            // interpret <script .../> properly.
+
+            writer.begin("script");
+            writer.attribute("language", "JavaScript");
+            writer.attribute("type", "text/javascript");
+            writer.attribute("src", url);
+            writer.end();
+            writer.println();
+        }
+
     }
 
     /**
@@ -275,9 +292,6 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IMarkupWriter nested;
-        String onLoadName;
-
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getString("Body.may-not-nest"), this);
 
@@ -285,23 +299,21 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
         _outerWriter = writer;
 
-        nested = writer.getNestedWriter();
+        IMarkupWriter nested = writer.getNestedWriter();
 
         renderBody(nested, cycle);
-
-        // Write the script (i.e., just before the <body> tag).
-        // If an onLoad event handler was needed, its name is
-        // returned.
-
-        onLoadName = writeScript();
 
         // Start the body tag.
         writer.println();
         writer.begin(getElement());
         renderInformalParameters(writer, cycle);
 
-        if (onLoadName != null)
-            writer.attribute("onLoad", "javascript:" + onLoadName + "();");
+        writer.println();
+
+        // Write the page's scripting.  This is included scripts
+        // and dynamic JavaScript, including initialization.
+
+        writeScript();
 
         // Close the nested writer, which dumps its buffered content
         // into its parent.
@@ -312,10 +324,10 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
     }
 
-	protected void cleanupAfterRender(IRequestCycle cycle)
+    protected void cleanupAfterRender(IRequestCycle cycle)
     {
-    	super.cleanupAfterRender(cycle);
-    	
+        super.cleanupAfterRender(cycle);
+
         if (_idAllocator != null)
             _idAllocator.clear();
 
@@ -335,6 +347,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
             _bodyScript.setLength(0);
 
         _outerWriter = null;
+        _outerWriter = null;
     }
 
     /**
@@ -345,18 +358,20 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
      *  <li>Any initializations
      *  </ul>
      *
-     *  <p>The script is written just before the &lt;body&gt; tag.
+     *  <p>The script is written into a nested markup writer.
      *
      *  <p>If there are any other initializations 
      *  (see {@link #addOtherInitialization(String)}),
-     *  then a function to execute them is created, and its name
-     *  is returned.
+     *  then a function to execute them is created.
      **/
 
-    private String writeScript()
+    private void writeScript()
     {
+        if (!Tapestry.isEmpty(_externalScripts))
+            writeExternalScripts(_outerWriter);
+
         if (!(any(_initializationScript) || any(_bodyScript) || any(_imageInitializations)))
-            return null;
+            return;
 
         _outerWriter.begin("script");
         _outerWriter.attribute("language", "JavaScript");
@@ -377,13 +392,10 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
             _outerWriter.printRaw(_bodyScript.toString());
         }
 
-        String result = null;
-
         if (any(_initializationScript))
         {
-            result = "tapestry_onLoad";
 
-            _outerWriter.printRaw("\n\n" + "function " + result + "()\n" + "{\n");
+            _outerWriter.printRaw("\n\n" + "window.onload = function ()\n" + "{\n");
 
             _outerWriter.printRaw(_initializationScript.toString());
 
@@ -392,8 +404,6 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
         _outerWriter.printRaw("\n\n// -->");
         _outerWriter.end();
-
-        return result;
     }
 
     private boolean any(StringBuffer buffer)
