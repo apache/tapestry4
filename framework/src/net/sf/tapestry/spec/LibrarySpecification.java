@@ -28,6 +28,7 @@ package net.sf.tapestry.spec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,9 +52,9 @@ public class LibrarySpecification extends BasePropertyHolder
      *  Resource resolver (used to instantiate extensions).
      * 
      **/
-    
+
     private IResourceResolver _resolver;
-    
+
     /**
      *  Map of page name to page specification path.
      * 
@@ -344,7 +345,36 @@ public class LibrarySpecification extends BasePropertyHolder
 
         return result;
     }
-    
+
+    /**
+     *  Invoked after the entire specification has been constructed
+     *  to instantiate any extensions marked immediate.
+     * 
+     **/
+
+    public synchronized void instantiateImmediateExtensions()
+    {
+        if (_extensions == null)
+            return;
+
+        Iterator i = _extensions.entrySet().iterator();
+
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+
+            ExtensionSpecification spec = (ExtensionSpecification) entry.getValue();
+
+            if (!spec.isImmediate())
+                continue;
+
+            String name = (String) entry.getKey();
+
+            getExtension(name);
+        }
+
+    }
+
     public IResourceResolver getResourceResolver()
     {
         return _resolver;

@@ -69,4 +69,13 @@ public class TestApplicationSpecification extends TapestryTestCase
         
         assertEquals("Property fred.", "flintstone", e.getProperty("fred"));
     }
+    
+    public void testImmediateExtension() throws Exception
+    {
+        assertEquals("instanceCount", 0, ImmediateExtension.getInstanceCount());
+        
+        ApplicationSpecification a = parseApp("ImmediateExtension.application");
+        
+        assertEquals("instanceCount", 1, ImmediateExtension.getInstanceCount());
+    }
 }
