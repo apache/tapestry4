@@ -156,16 +156,12 @@ public interface Infrastructure
 
     /**
      * Returns the container request for the current request cycle.
-     * <p>
-     * Note: to be renamed to getRequest().
      */
 
     public WebRequest getRequest();
 
     /**
      * Returns the container response for the current request cycle.
-     * <p>
-     * Note: to be renamed to getResponse().
      */
 
     public WebResponse getResponse();
