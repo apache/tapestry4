@@ -8,7 +8,8 @@
 	engine-class="net.sf.tapestry.engine.SimpleEngine">
 	
 	<page name="Home" specification-path="/net/sf/tapestry/junit/mock/app/Home.page"/>
-
+	<page name="ServiceTest" specification-path="/net/sf/tapestry/junit/mock/app/ServiceTest.page"/>
+	
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	
 </application>	

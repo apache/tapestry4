@@ -78,4 +78,15 @@ public class MockTestCase extends TapestryTestCase
         attempt("/net/sf/tapestry/junit/mock/TestLibrary.xml");
     }
        
+    /**
+     *  Test the External service, ServiceLink and a page implementing
+     *  IExternalPage.
+     * 
+     **/
+    
+    public void testExternal()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestService.xml");
+    }       
 }

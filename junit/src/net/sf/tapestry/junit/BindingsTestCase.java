@@ -31,6 +31,7 @@ import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.NullValueForBindingException;
+import net.sf.tapestry.ReadOnlyBindingException;
 import net.sf.tapestry.binding.AbstractBinding;
 import net.sf.tapestry.binding.FieldBinding;
 import net.sf.tapestry.binding.StaticBinding;
@@ -385,6 +386,111 @@ public class BindingsTestCase extends TapestryTestCase
         catch (BindingException ex)
         {
             checkException(ex, "Parameter bar (Goodbye) does not implement interface net.sf.tapestry.IRequestCycle.");
+
+            assertEquals("Binding", binding, ex.getBinding());
+        }
+    }
+
+    public void testGetStringForNull()
+    {
+        IBinding binding = new TestBinding(null);
+
+        assertNull("String", binding.getString());
+    }
+
+    public void testSetBoolean()
+    {
+        IBinding binding = new TestBinding(null);
+
+        try
+        {
+            binding.setBoolean(true);
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (ReadOnlyBindingException ex)
+        {
+            assertEquals("Binding", binding, ex.getBinding());
+        }
+    }
+
+    public void testSetString()
+    {
+        IBinding binding = new TestBinding(null);
+
+        try
+        {
+            binding.setString("Wilma");
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (ReadOnlyBindingException ex)
+        {
+            assertEquals("Binding", binding, ex.getBinding());
+        }
+    }
+
+    public void testSetInt()
+    {
+        IBinding binding = new TestBinding(null);
+
+        try
+        {
+            binding.setInt(98);
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (ReadOnlyBindingException ex)
+        {
+            assertEquals("Binding", binding, ex.getBinding());
+        }
+    }
+
+    public void testSetDouble()
+    {
+        IBinding binding = new TestBinding(null);
+
+        try
+        {
+            binding.setDouble(-1.5);
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (ReadOnlyBindingException ex)
+        {
+            assertEquals("Binding", binding, ex.getBinding());
+        }
+    }
+
+    public void testSetObject()
+    {
+        IBinding binding = new TestBinding(null);
+
+        try
+        {
+            binding.setObject(Boolean.TRUE);
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (ReadOnlyBindingException ex)
+        {
+            assertEquals("Binding", binding, ex.getBinding());
+        }
+    }
+
+    public void testInvalidFieldName()
+    {
+        IBinding binding = new FieldBinding(new ResourceResolver(this), "Baz");
+
+        try
+        {
+            binding.getObject();
+
+            throw new AssertionFailedError("Unreachable");
+        }
+        catch (BindingException ex)
+        {
+            checkException(ex, "Invalid field name: Baz.");
 
             assertEquals("Binding", binding, ex.getBinding());
         }

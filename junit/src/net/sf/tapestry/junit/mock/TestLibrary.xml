@@ -8,6 +8,10 @@
   	<servlet name="mock" class="net.sf.tapestry.junit.mock.app.MockServlet"/>
 
   	<request>
+	  	
+  	  <assert-output name="Page Title">
+  	  Mock App Home Page
+  	  </assert-output>
   	  	  	
   	  <assert-output name="DirectLink with parameters">
 <![CDATA[  	  

@@ -30,8 +30,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+
+import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.spec.AssetType;
+import net.sf.tapestry.spec.Direction;
+import net.sf.tapestry.util.Enum;
 
 /**
  *  Tests the ability of an {@link net.sf.tapestry.util.Enum} 
@@ -42,8 +47,15 @@ import net.sf.tapestry.spec.AssetType;
  * 
  **/
 
-public class TestEnum extends TestCase
+public class TestEnum extends TapestryTestCase
 {
+    private static class BadEnum extends Enum
+    {
+        private BadEnum(String enumerationId)
+        {
+            super(enumerationId);
+        }
+    }
 
     public TestEnum(String name)
     {
@@ -68,5 +80,41 @@ public class TestEnum extends TestCase
 
         assertEquals(start, result);
         assertSame(start, result);
+    }
+
+    public void testToString()
+    {
+        assertEquals("AssetType[EXTERNAL]", AssetType.EXTERNAL.toString());
+        assertEquals("Direction[CUSTOM]", Direction.CUSTOM.toString());
+    }
+
+    public void testNullEnumerationId()
+    {
+        try
+        {
+            new BadEnum(null);
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (RuntimeException ex)
+        {
+            checkException(ex, "Must provide non-null enumerationId.");
+        }
+    }
+
+    public void testDupeEnumerationId()
+    {
+        try
+        {
+            new BadEnum("Frank");
+            new BadEnum("Jeff");
+            new BadEnum("Frank");
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (RuntimeException ex)
+        {
+            checkException(ex, "already registered");
+        }
     }
 }
