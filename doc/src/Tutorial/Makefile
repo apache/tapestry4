@@ -1,15 +1,11 @@
 # $Id$
 
-MAIN_DOCUMENT =	Tutorial.sgml
-
-OTHER_DOC_FILES := *.sgml
-
-HTML_VARIABLE_DEFS := %shade-verbatim% %use-id-as-filename%
+MAIN_DOCUMENT =	Tutorial.xml
 
 HTML_INSTALL_DIR := ../../Tutorial
 
-DOCUMENT_RESOURCES = images
+DOCUMENT_RESOURCES := images
 
-USE_STANDARD_IMAGES = t
+USE_STANDARD_IMAGES := t
 
 include $(SYS_MAKEFILE_DIR)/DocBook.mk

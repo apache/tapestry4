@@ -1,3 +1,10 @@
+* Aug 2 2001 hship
+
+doc:
+- Update JBE documentation to discuss download of Xalan for DocBook module
+- Convert the Tutorial documentation from SGML to XML format
+- Add links from the Tutorial documentation to the corresponding JavaDoc
+
 * Aug 1 2001 hship
 
 contrib:

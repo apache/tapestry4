@@ -2,7 +2,8 @@
 
 MAIN_DOCUMENT =	JBE.xml
 
-HTML_XSLT_OPTS :=
+
+HTML_INSTALL_DIR := ../../JBE
 
 DOCUMENT_RESOURCES := images
 
