@@ -28,7 +28,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncoding;
-import org.apache.tapestry.engine.encoders.ServicePathEncoder;
+import org.apache.tapestry.engine.encoders.PageServiceEncoder;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.easymock.MockControl;
@@ -142,7 +142,7 @@ public class TestLinkFactory extends HiveMindTestCase
 
     public void testActiveEncoder()
     {
-        ServicePathEncoder e = new ServicePathEncoder();
+        PageServiceEncoder e = new PageServiceEncoder();
         e.setServiceName("page");
         e.setExtension("html");
 
@@ -174,7 +174,7 @@ public class TestLinkFactory extends HiveMindTestCase
 
     public void testWithServiceParameters()
     {
-        ServicePathEncoder e = new ServicePathEncoder();
+        PageServiceEncoder e = new PageServiceEncoder();
         e.setServiceName("external");
         e.setExtension("ext");
 

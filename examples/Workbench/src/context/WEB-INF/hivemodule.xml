@@ -23,8 +23,8 @@
   </contribution>
   
   <contribution configuration-id="tapestry.url.ServiceEncoders">
-    <path-encoder id="direct" extension="direct" service="direct"/>
-    <path-encoder id="page" extension="page" service="page"/>
+    <page-service-encoder id="direct" extension="direct" service="direct"/>
+    <page-service-encoder id="page" extension="page" service="page"/>
   </contribution>
   
   <service-point id="Chart" interface="org.apache.tapestry.engine.IEngineService">
