@@ -233,7 +233,7 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
                 catch (UnsupportedEncodingException ex)
                 {
                     throw new ApplicationRuntimeException(
-                        Tapestry.format("DefaultMultipartDecoder.unsupported-encoding", encoding),
+                        Tapestry.format("illegal-encoding", encoding),
                         ex);
                 }
             }

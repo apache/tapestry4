@@ -42,6 +42,7 @@
     	   use the versions stored in our CVS. -->
     	   
     <depend project="ognl"/>
+    <depend project="jakarta-commons-codec"/>
 
     <!-- contrib -->
     <work nested="framework/classes"/>
@@ -77,4 +78,16 @@
     <jar name="examples/Workbench/lib/jCharts-0.6.0.jar"/>
     <license name="examples/Workbench/lib/LICENSE.jCharts.txt"/>
   </project>
+
+  <!-- This is the 10/19/03 dev version of codec. 
+  	   Needs to be updated to a finalized version when it comes out 
+  	   and this project will be removed.
+  -->
+  <project name="jakarta-commons-codec">
+    <package>org.apache.commons.codec</package>
+    <url href="http://jakarta.apache.org/commons/codec/"/>
+    <jar name="lib/ext/commons-codec-1.1.1-dev.jar"/>
+    <license name="lib/ext/LICENSE.commons-codec.txt"/>
+  </project>
+
 </module>

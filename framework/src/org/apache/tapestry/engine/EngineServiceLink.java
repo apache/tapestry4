@@ -55,11 +55,13 @@
 
 package org.apache.tapestry.engine;
 
-import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
@@ -82,6 +84,7 @@ import org.apache.tapestry.request.RequestContext;
 public class EngineServiceLink implements ILink
 {
     private static final int DEFAULT_HTTP_PORT = 80;
+    private static final URLCodec _urlCodec = new URLCodec();
 
     private IRequestCycle _cycle;
     private String _service;
@@ -217,19 +220,17 @@ public class EngineServiceLink implements ILink
                 buffer.append(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
                 buffer.append('=');
 
+                String encoding = _cycle.getEngine().getOutputEncoding();
                 try
                 {
-                    // We use the older, deprecated version of this method, which is compatible
-                    // with the JDK 1.2.2.
-
-                    String encoded = URLEncoder.encode(_parameters[i]);
-
+                    String encoded = _urlCodec.encode(_parameters[i], encoding);
                     buffer.append(encoded);
                 }
-                catch (Exception ex)
+                catch (UnsupportedEncodingException e)
                 {
-                    // JDK1.2.2 claims this throws Exception.  It doesn't
-                    // and we ignore it.
+                    throw new ApplicationRuntimeException(
+                        Tapestry.format("illegal-encoding", encoding),
+                        e);
                 }
             }
         }
