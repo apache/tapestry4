@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><A href="InsertText.html"><IMG alt=InsertText src="common-images/prev.png"></A></td>  
+  <td align="left"><A href="contrib.Choose.html"><IMG alt=contrib:Choose src="common-images/prev.png"></A></td>  
   <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
-  <td align="right"><A href="LinkSubmit.html"><IMG alt=LinkSubmit src="common-images/next.png"></A></td>  
+  <td align="right"><A href="contrib.Otherwise.html"><IMG alt=contrib:Otherwise src="common-images/next.png"></A></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -54,16 +54,10 @@
   Adds a link to a page that is used to raise the 
   <A href="../DevelopersGuide\inspector.html">Tapestry Inspector</A> in a new 
   window. 
-  <p>
-  The Tapestry Inspector enables you at runtime to examine composition of a
-  Tapestry application, inspect persistent page properties, clear
-  <tt>HttpSession</tt>s and Tapestry caches, and 
-            modify Log4J logging 
-  configuration. 
-  <p>
-  Typically, a InspectorButton is wrapped by a 
-            <A href="Conditional.html">Conditional</A> component, configured so that it only is displayed when some form of development mode flag is enabled.
-  <p>
+            <p> The Tapestry Inspector enables you at runtime to examine composition 
+              of a Tapestry application, inspect persistent page properties, clear 
+              <tt>HttpSession</tt>s and Tapestry caches. 
+            <p>
   Pages incorporating a InspectorButton component must also include a 
   <A href="Body.html">Body</A> component.</p>
             <P>Prior to release 2.2, this component was named 
@@ -121,18 +115,31 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.</p>
+  This example is a simple page with the InspectorButton.</p>
       
+<table class="examples" cellpadding="8">
+<tr>
+ <td>
+<h1>Hello world</h1>
+                  <a href="#"><img src="images/inspector-rollover.gif" border="0" name="rollover" align="right"/></a> 
+                </td>
+</tr>
+</table>
 
- </td></tr></table>
+<p>
+Template</p>
+            <pre>&lt;html jwcid=&quot;@Shell&quot; title=&quot;InspectorButton Example&quot;&gt;<br>&lt;head jwcid=&quot;$remove$&quot;&gt;<br> &lt;title&gt;InspectorButton Example&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body jwcid=&quot;@Body&quot;&gt;<br>&lt;h1&gt;Hello world&lt;/h1&gt;<br>&lt;span jwcid=&quot;@contrib:InspectorButton&quot;/&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;
+</pre>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><A href="InsertText.html"><IMG alt=InsertText src="common-images/prev.png"></A></td>  
+ <td align="left"><A href="contrib.Choose.html"><IMG alt=contrib:Choose src="common-images/prev.png"></A></td>  
  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
- <td align="right"><A href="LinkSubmit.html"><IMG alt=LinkSubmit src="common-images/next.png"></A></td>  
+ <td align="right"><A href="contrib.Otherwise.html"><IMG alt=contrib:Otherwise src="common-images/next.png"></A></td>  
 </tr>
 </table>
 
