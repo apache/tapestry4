@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
+
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.0//EN"
  "http://jetty.mortbay.com/configure_1_0.dtd">
+<!--
+  This configuration file is used to allow the Tutorial to be run directly from
+  the main distribution directory (i.e., without having to build the frameworks).
+  -->
 
 <Configure class="com.mortbay.HTTP.HttpServer">
   <Call name="addListener">
@@ -25,7 +30,7 @@
 
   <Call name="addWebApplication">
     <Arg>/tutorial/*</Arg>
-    <Arg>Tutorial.war</Arg>
+    <Arg>lib/Tutorial.war</Arg>
     <Arg/>
   </Call>
 

@@ -1,10 +1,17 @@
 # Master Makefile for the source tree
 # $Id$
 
-distribution: clean install javadoc
-	@$(RECURSE) clean create-archives
+# Important make targets
+#
+#  dist: Builds (from scratch) the entire Tapestry distibution and packages
+#    it as three tar balls
+#
+#  run-tutorial:  Starts up Jetty to serve up the Tapestry tutorial
+#
 
-# The job of this Makefile is to re-invoke make in various subdirectories.
+default:
+	$(error You must specify a make target (run-tutorial or dist))
+
 
 include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 include $(SYS_MAKEFILE_DIR)/CommonRules.mk
@@ -91,6 +98,8 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/images \
 	$(RELEASE_DIR)/Readme.html \
 	$(RELEASE_DIR)/lib \
+	$(RELEASE_DIR)/Makefile \
+	$(RELEASE_DIR)/config \
 	$(RELEASE_DIR)/doc/*.pdf \
 	$(RELEASE_DIR)/doc/DevelopersGuide \
 	$(RELEASE_DIR)/doc/JBE \
@@ -111,5 +120,31 @@ create-archives:
 	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-medium.tar.gz $(MEDIUM_RELEASE)
 
 
-.PHONY: javadoc create-archives reinvoke
-.PHONY: clean install distribution
+dist: clean install javadoc
+	$(call NOTE, Building Tapestry distributions ...)
+	@$(RECURSE) clean create-archives
+
+		
+TUTORIAL_CLASSPATH := \
+	$(LOCAL_LIB_DIR)/Tapestry.jar \
+	$(LOCAL_LIB_DIR)/javax.servlet.jar \
+	$(LOCAL_LIB_DIR)/log4j.jar \
+	$(LOCAL_LIB_DIR)/xerces.jar \
+	$(LOCAL_LIB_DIR)/gnu-regexp.jar \
+	$(LOCAL_LIB_DIR)/com.mortbay.jetty.jar \
+	$(LOCAL_LIB_DIR)/ejb.jar
+
+
+# Quick start for folks who download the full distribution (this Makefile
+# is only included in the full distro).  Allows users to easily and quickly
+# run the tutorial.
+
+run-tutorial: setup-jbe-util
+	$(call NOTE, Running the Tapestry Tutorial on port 8080 ...)
+	$(call EXEC_JAVA, $(TUTORIAL_CLASSPATH), \
+		-showversion \
+		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
+		com.mortbay.Jetty.Server config/jetty-tutorial.xml)
+
+.PHONY: javadoc create-archives reinvoke run-tutorial
+.PHONY: clean install dist default
