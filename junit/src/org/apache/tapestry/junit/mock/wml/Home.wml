@@ -34,7 +34,7 @@
             <anchor title="Start">Start
                 <go jwcid="go@wml:Go" stateful="ognl:false" listener="ognl:listeners.submit" direct="ognl:false">
                     <postfield jwcid="u@wml:Postfield" name="ognl:components.uInput.name" value="ognl:u"/>
-                    <postfield jwcid="l@wml:SelectionField" name="ognl:components.select.name" value="ognl:l"  model="ognl:@org.apache.tapestry.junit.mock.wml.Home@MODEL"/>
+                    <postfield jwcid="l@wml:SelectionField" name="ognl:components.select.name" value="ognl:l"  model="ognl:components.select.model"/>
                 </go>
             </anchor>
         </p>
