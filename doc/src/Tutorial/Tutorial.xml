@@ -156,35 +156,64 @@ In these first few examples, we have no additional behavior to add to the provid
 we simply use &SimpleEngine; directly.
 </para>
     </section>
-    <section id="hello.servlet">
-      <title>Application Servlet</title>
+    <section id="hello.descriptor">
+      <title>Web Deployment Descriptor</title>
       <para>
 The application servlet is a "bridge" between the servlet container and the application engine.  Its 
 job is simply to create (on the first request) or locate (on subsequent requests) the application 
 engine.
 </para>
-      <para>
-The application servlet must subclass 
-&ApplicationServlet; and 
-implement the method:  <function>getApplicationSpecificationPath()</function>.  
-This method provides the 
-path to the application specification file; the servlet reads this file when it is initialized.
+
+
+<para>
+All Tapestry applications use the same servlet class, however its configuration is different.  Part
+of the configuration is to identify the location of the <emphasis>application specification</emphasis>
+which is like a master index of all the pages in the application.
 </para>
+
+<para>
+The tutorial is a rare case; it is a single WAR that contains multiple Tapestry applications.  This
+isn't a problem ... each Tapestry application has its own servlet and has its own configuration.
+The following figure shows the deployment descriptor for the Tapestry Tutorial (but excludes
+the additional sections for the other applications within the WAR).
+</para>
+
       <figure>
-        <title>HelloWorldServlet.java</title>
+        <title>Tutorial Deployment Descriptor (partial)</title>
         <programlisting>
-package tutorial.hello;
+<![CDATA[
+<?xml version="1.0"?>
+<!DOCTYPE web-app PUBLIC 
+  "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+  "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+  <display-name>Tapestry Tutorial</display-name>
+        
+  <servlet>
+    <servlet-name>hello</servlet-name>
+    <servlet-class>net.sf.tapestry.ApplicationServlet</servlet-class>
+    <init-param>
+    	<param-name>net.sf.tapestry.application-specification</param-name>
+    	<param-value>/tutorial/hello/HelloWorld.application</param-value>
+    </init-param>
+  	<load-on-startup>0</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>hello</servlet-name>
+    <url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+  
+  <session-config>
+  	<session-timeout>15</session-timeout>
+  </session-config>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+</web-app>
 
-import net.sf.tapestry.ApplicationServlet;
-
-public class HelloWorldServlet extends &ApplicationServlet;
-{
-  protected String getApplicationSpecificationPath()
-  {
-    return "/tutorial/hello/HelloWorld.application";
-  }
-
-}
+]]>
 </programlisting>
       </figure>
     </section>
@@ -325,28 +354,7 @@ The code for this section of the tutorial is in the package
 <classname>tutorial.simple</classname>.
 </para>
     <para>
-We need to create a new servlet, but its almost identical to our earlier 
-one.  The real action in this section will be the new 
-version of the home page.
-</para>
-    <figure>
-      <title>SimpleServlet.java</title>
-      <programlisting>
-package tutorial.simple;
-
-import net.sf.tapestry.ApplicationServlet;
-
-public class SimpleServlet extends &ApplicationServlet;
-{
-  protected String getApplicationSpecificationPath()
-  {
-    return "/tutorial/simple/Simple.application";
-  }
-}
-</programlisting>
-    </figure>
-    <para>
-The application specification is also straight forward:
+The application specification is almost identical to the Hello World example:
 </para>
     <figure>
       <title>Simple.application</title>

@@ -70,7 +70,7 @@ means that the previous session timed out and was discarded.
 </para>
       <para>
 Each of these components has a <varname>stateful</varname> parameter which may be bound to 
-<classname>Boolean.FALSE</classname>.  When <varname>stateful</varname> is false, the components will accept stateless
+<literal>false</literal>.  When <varname>stateful</varname> is false, the components will accept stateless
 requests.
 </para>
       <para>
