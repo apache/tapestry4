@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>RadioGroup</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>RadioGroup</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/RadioGroup.html">net.sf.tapestry.form.RadioGroup</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>
+     <fieldset><legend>Size</legend>
+      &nbsp;&nbsp;<input type="radio" checked="true" name="1">Regular</input>&nbsp;&nbsp;<br>
+      &nbsp;&nbsp;<input type="radio" name="1">Large</input>&nbsp;&nbsp;<br>
+      &nbsp;&nbsp;<input type="radio" name="1">Super</input>&nbsp;&nbsp;<br>
+     </fieldset>
+    </td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Provides a container group for <a href="Radio.html">Radio</a> components. The 
+  RadioGroup itself must be within a <a href="Form.html">Form</a> component. The 
+  Radio and RadioGroup components work together to update a property of an 
+  object, much like a more flexible version of a 
+  <a href="PropertySelection.html">PropertySelection</a>.
+  <p>
+  This component should wrap around other <a href="Radio.html">Radio</a> 
+  components. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+  <a href="Option.html">Option</a>,
+  <a href="PropertySelection.html">PropertySelection</a>,
+	<a href="Radio.html">Radio</a>, 
+  <a href="Select.html">Select</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>selected</td>
+    <td>Object</td>
+    <td>in-out</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>
+    Read during rendering to determine which Radio will be the default. 
+    Updated during rewinding (when the form is submitted) to indicate which 
+    radio button was selected by the user.      
+    </td>
+	</tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>int</td>
+   	<td>no</td>
+		<td>no</td>
+		<td>
+    If true, then all contained Radio components will be disabled as well. 
+    <p>     
+    </td>
+	</tr>
+	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: none
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction. 
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="Radio.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="Rollover.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
