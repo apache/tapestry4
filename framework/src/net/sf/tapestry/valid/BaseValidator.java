@@ -266,6 +266,9 @@ public abstract class BaseValidator implements IValidator
 
         Body body = Body.get(cycle);
 
+        if (body == null)
+            throw new RequestCycleException(Tapestry.getString("ValidField.must-be-contained-by-body"), field);
+
         body.process(session);
 
         String functionName = (String) finalSymbols.get(FUNCTION_SYMBOL);
