@@ -151,7 +151,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     /**
      *  Reference to the shared {@link org.apache.tapestry.util.pool.Pool}.
      * 
-     *  @see IEngine#getPool()
+     *  @see org.apache.tapestry.IEngine#getPool()
      * 
      *  @since 3.0
      * 
@@ -301,7 +301,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     /**
      *  Gets a component specification.
      * 
-     *  @param resourcePath the complete resource path to the specification.
+     *  @param resourceLocation the complete resource path to the specification.
      *  @throws ApplicationRuntimeException if the specification cannot be obtained.
      * 
      **/
