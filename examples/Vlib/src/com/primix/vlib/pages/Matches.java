@@ -187,6 +187,11 @@ public class Matches extends BasePage
 		currentMatch = value;
 	}
 	
+	public boolean getOmitHolderLink()
+	{
+		return !currentMatch.isBorrowed();
+	}
+	
 	/**
 	 *  Removes the book query bean, if not null.
 	 *

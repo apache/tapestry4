@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="com.primix.vlib.components.PersonLink" allow-body="no" allow-informal-parameters="no">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification 
+	class="com.primix.vlib.components.PersonLink" 
+	allow-body="no" 
+	allow-informal-parameters="no">
+  
   <parameter name="name" java-type="java.lang.String" required="yes"/>
+  
   <parameter name="primaryKey" java-type="java.lang.Integer" required="yes"/>
+  
+  <parameter name="omit"/>
+  
+  <parameter name="class" java-type="java.lang.String"/>
+  
+  <component id="ifShowLink" type="Conditional">
+  	<binding name="condition" property-path="showLink"/>
+  </component>
+  
   <component id="link" type="Service">
     <static-binding name="service">external</static-binding>
     <binding name="context" property-path="context"/>
+    <inherited-binding name="class" parameter-name="class"/>
   </component>
+  
   <component id="insertPersonName" type="Insert">
     <inherited-binding name="value" parameter-name="name"/>
   </component>
+  
+  <component id="ifOmitLink" copy-of="ifShowLink">
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  
 </specification>

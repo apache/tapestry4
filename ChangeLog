@@ -1,3 +1,27 @@
+* Aug 15 2001 hship
+
+framework:
+- Slight change to the rules involving whitespace in an HTML template.
+- Change MapHelper to use a cache of MapAccessor instances.
+- Update the Tapestry DTD to allow the <bean> element, and otherwise
+  add support for helper beans (including pooling of helper beans)
+- Add the IPoolable interface (an optional interface for objects
+  that can be stored in pools).
+
+vlibbeans:
+- Change the default mail configuration.
+
+vlib:
+- Integrate latest HTML and images.
+
+web:
+- Apply the Primix branding to the static portion of the web site.
+
+tutorial:
+- Fix an error in the Stocks porlet of the Portal demo
+
+Prepare for release 1.0.4
+
 * Aug 8 2001 hship
 
 Release 1.0.3

@@ -1,21 +1,35 @@
 /* style_virtlib_pcIE55.css */
-body, td	{
+body, table, td, p	{
 	font-family:verdana, arial, helvetica, sans-serif;
 	font-size:10px;
 }
-
 a	{
 	color:#ffffff;
 }
-
-
 .clsBold	{
 	font-weight:bold;
 }
 .clsDataBlue	{
 	color:#4b5887;
 }
-.clsDataBlack	{
+a.clsDataBlue:link	{
+	color:#4b5887;
+}
+a.clsDataBlue:hover	{
+	color:#4b5887;
+	text-decoration:none;
+}
+a.clsDataBlue:visited	{
+	color:#4b5887;
+}
+.clsDataBlack:link	{
+	color:#000000;
+}
+.clsDataBlack:hover	{
+	color:#000000;
+	text-decoration:none;
+}
+.clsDataBlack:visited	{
 	color:#000000;
 }
 /* Top Nav */
@@ -30,6 +44,10 @@ a	{
 .clsTopNavOn	{
 	font-weight:bold;
 	color:#e88700;
+}
+.clsLeftNavTxt	{
+	color:#ffffff;
+	font-weight:bold;
 }
 /* Left Nav */
 .clsLeftNav	{
@@ -76,20 +94,4 @@ td.clsDataTable	{
 	border-style:solid;
 	background:#ffffff;
 }
-
-td.clsDataTable a:link {
-  color:#000000
-}
-
-TABLE.tapestry-palette SELECT
-{
-  width: 350px;
-  font-weight: bold;
-}
-
-TABLE.tapestry-palette BUTTON
-{
-  width: 60px;
-}
-
 /* Primix-JMoran2001 */

@@ -178,11 +178,11 @@ public class Border extends BaseComponent
 	{
 		Login login = (Login)cycle.getPage("Login");
 		
-		// Special case:  if you login from the Logout page, we don't
-		// want to go back to the Logout page again (that just logs
-		// you back out!).
-		
-		if (!page.getName().equals("Logout"))
+		// If on one of the Login pages (including Logout)
+		// then don't set a callback (this will cause the user
+		// to go to the MyLibrary page).
+	
+		if (getPageType() != LOGIN_PAGE_TYPE)
 			login.setCallback(new PageCallback(page));
 		
 		cycle.setPage(login);
@@ -206,6 +206,16 @@ public class Border extends BaseComponent
 	public boolean isLibraryPage()
 	{
 		return getPageType() == LIBRARY_PAGE_TYPE;
+	}
+	
+	/**
+	 *  Show the slash on library pages that aren't "MyLibrary".
+	 *
+	 */
+	
+	public boolean getShowSlash()
+	{
+		return ! getPage().getName().equals("MyLibrary");
 	}
 	
 	public IAsset getAdminIcon()
@@ -256,7 +266,7 @@ public class Border extends BaseComponent
 	{
 		if (subheader == null)
 		{
-			String name = "header." + getPage().getName();
+			String name = "header-" + getPage().getName();
 			
 			subheader = getAsset(name);
 			

@@ -16,21 +16,18 @@
 
   <component id="showMessage" type="ShowMessage"/>
 
-  <component id="ifShowBorrowedBooks" type="Conditional">
-      <binding name="condition" property-path="components.browser.resultCount"/>
-  </component>
-  
-  <component id="ifNoBorrowedBooks" copy-of="ifShowBorrowedBooks">
-    <field-binding name="invert" field-name="Boolean.TRUE"/>
-  </component>
-  
   <component id="browser" type="Browser">
   	<binding name="query" property-path="borrowedQuery"/>
+  </component>
+  
+  <component id="insertResultCount" type="Insert">
+  	<binding name="value" property-path="components.browser.resultCount"/>
   </component>
   
   <component id="e" type="Foreach">
     <binding name="source" property-path="components.browser.pageResults"/>
     <binding name="value" property-path="currentBook"/>
+    <static-binding name="element">tr</static-binding>
   </component>
   
   <component id="bookLink" type="BookLink">
@@ -48,6 +45,7 @@
   <component id="ownerLink" type="PersonLink">
     <binding name="name" property-path="currentBook.ownerName"/>
     <binding name="primaryKey" property-path="currentBook.ownerPrimaryKey"/>
+    <static-binding name="class">clsDataBlue</static-binding>
   </component>
   
   <component id="return" type="Direct">

@@ -59,6 +59,16 @@ import com.primix.vlib.pages.PersonPage;
  *      </td>
  *  </tr>
  *
+ *  <tr>
+ *		<td>omit</td>
+ *		<td>boolean</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>&nbsp;</td>
+ *		<td>If true, then the link is omitted and replaced with an &amp;nbsp;.
+ *		</td>
+ *	</tr>
+ *
  * </table>
  *
  * <p>Informal parameters are not allowed.  A body is not allowed.
@@ -75,6 +85,10 @@ public class PersonLink extends BaseComponent
     private String[] context;
     private Integer primaryKey;
 
+	private IBinding omitBinding;
+	private boolean staticOmit;
+	private boolean staticOmitValue;
+	
     public IBinding getPrimaryKeyBinding()
     {
         return primaryKeyBinding;
@@ -95,6 +109,32 @@ public class PersonLink extends BaseComponent
         nameBinding = value;
     }
 
+	public IBinding getOmitBinding()
+	{
+		return omitBinding;
+	}
+	
+	public void setOmitBinding(IBinding value)
+	{
+		omitBinding = value;
+		
+		staticOmit = value.isStatic();
+		
+		if (staticOmit)
+			staticOmitValue = value.getBoolean();
+	}
+	
+	public boolean getShowLink()
+	{
+		if (omitBinding == null)
+			return true;
+		
+		if (staticOmit)
+			return ! staticOmitValue;
+		
+		return ! omitBinding.getBoolean();
+	}
+	
      /**
      *  The context has two elements.  The first is the page to jump to
      *  ("Person", for {@link PersonPage}), the second is the primary key of the person.

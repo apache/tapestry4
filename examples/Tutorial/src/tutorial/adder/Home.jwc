@@ -16,6 +16,7 @@
   </component>
   <component id="e" type="Foreach">
     <binding name="source" property-path="items"/>
+    <static-binding name="element">tr</static-binding>
   </component>
   <component id="insertCurrentValue" type="Insert">
     <binding name="value" property-path="components.e.value"/>

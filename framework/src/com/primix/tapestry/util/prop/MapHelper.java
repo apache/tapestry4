@@ -49,7 +49,7 @@ import java.util.*;
  */
 
 public class MapHelper extends PropertyHelper
-{
+{	
 	private static class MapAccessor
 	implements IPropertyAccessor
 	{
@@ -95,9 +95,20 @@ public class MapHelper extends PropertyHelper
 		{
 			((Map)instance).put(name, value);
 		}
+		
+		public String toString()
+		{
+			return "MapHelper.MapAccessor[" + name + "]";
+		}
 	}
 
-
+	/**
+	 *  Map of MapAccessor, keyed on property name.
+	 *
+	 */
+	
+	private static final Map accessorMap = new HashMap();
+	
 	public MapHelper(Class beanClass)
 	{
 		super(beanClass);
@@ -110,7 +121,18 @@ public class MapHelper extends PropertyHelper
 		result = super.getAccessor(instance, name);
 
 		if (result == null)
-			result = new MapAccessor(name);
+		{
+			synchronized(accessorMap)
+			{
+				result = (IPropertyAccessor)accessorMap.get(name);
+				
+				if (result == null)
+				{
+					result = new MapAccessor(name);
+					accessorMap.put(name, result);
+				}
+			}
+		}
 
 		return result;
 	}

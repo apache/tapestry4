@@ -83,11 +83,27 @@ import com.primix.tapestry.*;
  * elements provided by the source parameter.  The index parameter is
  * explicitly updated <em>before</em> the value parameter.
  *
- *	</td> </tr>
+ *	</td> 
+ *  </tr>
+ *
+ *  <tr>
+ *		<td>element</td>
+ *		<td>{@link String}</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>&nbsp;</td>
+ *		<td>If specified, then the component acts like an {@link Any}, emitting an open
+ *		and close tag before and after each iteration. 
+ *		Most often, the element is "tr" when the Foreach is part of an HTML
+ *		table.  Any informal parameters
+ *		are applied to the tag.  If no element is specified, informal parameters
+ *		are ignored.
+ *		</td>
+ * </tr>
  *
  * </table>
  *
- * <p>Informal parameters are not allowed.
+ * <p>Informal parameters are allowed.  A body is allowed (and expected).
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -99,6 +115,8 @@ public class Foreach extends AbstractComponent
 	private IBinding sourceBinding;
 	private IBinding valueBinding;
 	private IBinding indexBinding;
+	private IBinding elementBinding;
+	private String staticElement;
 	
 	private Object value;
 	private boolean rendering;
@@ -117,6 +135,23 @@ public class Foreach extends AbstractComponent
 	public void setIndexBinding(IBinding value)
 	{
 		indexBinding = value;
+	}
+	
+	/** @since 1.0.4 **/
+	
+	public void setElementBinding(IBinding value)
+	{
+		elementBinding = value;
+		
+		if (value.isStatic())
+			staticElement = value.getString();
+	}
+	
+	/** @since 1.0.4 **/
+	
+	public IBinding getElementBinding()
+	{
+		return elementBinding;
 	}
 	
 	/**
@@ -156,13 +191,22 @@ public class Foreach extends AbstractComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle) 
 		throws RequestCycleException
 	{
-		
 		Iterator dataSource = getSourceData();
 		
 		// The dataSource was either not convertable, or was empty.
 		
 		if (dataSource == null)
 			return;		
+		
+		String element = null;
+		
+		if (elementBinding != null && !cycle.isRewinding())
+		{
+			if (staticElement == null)
+				element = (String)elementBinding.getObject("element", String.class);
+			else
+				element = staticElement;
+		}
 		
 		try
 		{
@@ -183,7 +227,16 @@ public class Foreach extends AbstractComponent
 				if (valueBinding != null)
 					valueBinding.setObject(value);
 				
+				if (element != null)
+				{
+					writer.begin(element);
+					generateAttributes(cycle, writer, null);
+				}
+				
 				renderWrapped(writer, cycle);
+				
+				if (element != null)
+					writer.end();
 				
 				i++;
 			}

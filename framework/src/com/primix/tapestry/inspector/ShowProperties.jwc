@@ -2,32 +2,43 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.inspector.ShowProperties">
+
+  <bean name="propertyClass" class="com.primix.tapestry.inspector.EvenOdd"/>
+  
   <component id="ifNoProperties" type="Conditional">
     <binding name="condition" property-path="properties"/>
     <field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
+  
   <component id="ifHasProperties" type="Conditional">
     <binding name="condition" property-path="properties"/>
   </component>
+  
   <component id="e" type="Foreach">
     <binding name="source" property-path="properties"/>
     <binding name="value" property-path="change"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.propertyClass.next"/>
   </component>
-  <component id="evenOdd" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  
   <component id="select" type="Direct">
     <binding name="listener" property-path="page.listeners.selectComponent"/>
     <binding name="context" property-path="change.componentPath"/>
     <binding name="disabled" property-path="disableComponentLink"/>
   </component>
+  
   <component id="insertPath" type="Insert">
     <binding name="value" property-path="change.componentPath"/>
   </component>
+  
   <component id="insertPropertyName" type="Insert">
     <binding name="value" property-path="change.propertyName"/>
   </component>
+  
   <component id="insertValueClass" type="Insert">
     <binding name="value" property-path="valueClassName"/>
   </component>
+  
   <component id="insertValue" type="Insert">
     <binding name="value" property-path="change.newValue"/>
   </component>

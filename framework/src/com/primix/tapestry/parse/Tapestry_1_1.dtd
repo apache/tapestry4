@@ -38,6 +38,37 @@ Attributes:
   engine-class CDATA #REQUIRED
 >
 <!-- =======================================================
+Element: bean
+Appears in: specification
+
+Defines a JavaBean that will be used in some way by the component.  Beans
+are accessible via the components' beans property (which contains a property
+for each bean).  Beans are created as needed, and are discarded based on
+the lifecycle attribute.  Beans are typically used to extend the
+implementation of a component via aggregation.
+
+Attributes:
+  name: the name of the bean
+  class: the Java class to instantiate
+  lifecycle: when the reference to the bean should be discard
+  	"none" no lifecycle, the bean is created and returned, but not stored
+  	"request" the bean is retained until the end of the request cycle
+  	"page" the bean is retained for the lifespan of the page
+  	
+Nothing prevents a bean for storing state; however, such state will
+not be associated with any particular session (unlike persistant page
+properties).  Further, because of page pooling, subsequent requests
+from the same client may be serviced by different instances of a page and
+(therefore) different bean instances.
+
+-->
+<!ELEMENT bean (description*)>
+<!ATTLIST bean
+  name CDATA #REQUIRED
+  class CDATA #REQUIRED
+  lifecycle (none|request|page) "request"
+>
+<!-- =======================================================
 Element: binding
 Appears in: component
 
@@ -108,7 +139,7 @@ Attributes:
 >
 <!-- =======================================================
 Element: description
-Appears in: application parameter specification
+Appears in: application bean parameter specification
 
 Several elements may contain descriptions; these descriptions are 
 optional.  The eventual goal is to provide help in some form of IDE.  
@@ -246,7 +277,8 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT specification (description*, parameter*, property*, component*, (external-asset | context-asset | private-asset)*)>
+<!ELEMENT specification (description*, parameter*, property*, bean*,
+	component*, (external-asset | context-asset | private-asset)*)>
 <!ATTLIST specification
   class CDATA #REQUIRED
   allow-body %attribute-flag; "yes"

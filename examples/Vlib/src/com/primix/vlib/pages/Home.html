@@ -1,27 +1,156 @@
-<jwc id="border">
-<!-- $Id$ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<jwc id="showError"/>
+<html>
+<head>
+	<title>Primix Virtual Library: Search for Books</title>
+<link rel="STYLESHEET" type="text/css" href="../scripts/style_virtlib_pcIE55.css">
+</head>
 
-<jwc id="showMessage"/>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#8e9cd1">
 
-<jwc id="searchForm">
-
-<table width="600" border="0" cellspacing="0" cellpadding="0">
-	<tr class="clsBold">
-		<td width="80" height="30">Title</td>
-		<td width="420">&nbsp;<jwc id="inputTitle"/></td>
-	</tr>
-	<tr class="clsBold">
-		<td height="30">Author</td>
-		<td>&nbsp;<jwc id="inputAuthor"/></td>
-	</tr>
-	<tr class="clsBold">
-		<td height="30">Publisher</td>
-		<td>&nbsp;<jwc id="inputPublisher"/>&nbsp;&nbsp;<input type="image" src="/vlib/images/ico_go.gif" border="0" align="absmiddle"></td>
+<!-- ****BODY WRAPPER**** -->
+<table width="790" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="124" valign="top">
+			<!-- Left Nav -->
+			<table width="124" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="35" colspan="3">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="19" height="22"><img src="../images/dots_leftnav.gif" width="14" height="12" alt="" border="0"></td>
+					<td width="89"><a href="#" class="clsLeftNav">Search</a></td>
+					<td width="1" valign="top" rowspan="5" bgcolor="#4B5887"><img src="../images/vert_ltblue.gif" width="1" height="7" alt="" border="0"></td>
+				</tr>
+				<tr>
+					<td height="22"><img src="../images/spacer.gif" width="14" height="12" alt="" border="0"></td>
+					<td><a href="#" class="clsLeftNav">My Library</a><br>
+					<img src="../images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><a href="#" class="clsLeftNav">Borrowed Books</a><br>
+					<img src="../images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><a href="#" class="clsLeftNav">Add New Book</a><br>
+					<img src="../images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><a href="#" class="clsLeftNav">Edit Profile</a><br>
+					</td>
+				</tr>
+				<tr>
+					<td height="22"><img src="../images/spacer.gif" width="14" height="12" alt="" border="0"></td>
+					<td><a href="#" class="clsLeftNav">Logout</a></td>
+				</tr>
+				<tr>
+					<td height="200"><img src="../images/spacer.gif" width="14" height="1" alt="" border="0"></td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+			<!-- END Left Nav -->
+		</td>
+		<td width="66" align="center" valign="top">
+			<!-- Gutter -->
+				<img src="../images/ico_t.gif" width="44" height="44" border="0" vspace="5">
+			<!-- END Gutter -->
+		</td>
+		<td width="600" valign="top">
+			<!-- Content -->
+				<!-- head -->
+				<img src="../images/hd_primixvirtlib.gif" width="241" height="22" alt="" border="0" vspace="17"><br>
+				<img src="../images/hd_search.gif" width="57" height="18" alt="" border="0">
+				<!-- END head -->
+				<br><br>
+				
+				<span jwcid="$content$">
+				
+				<span jwcid="border">
+				
+				<span jwcid="showError"/>
+				
+				<span jwcid="showMessage"/>
+				
+				
+				<form jwcid="searchForm">	
+					<table width="600" border="0" cellspacing="0" cellpadding="0">
+						<tr class="clsBold">
+							<td width="80" height="30">Title</td>
+							<td width="420">&nbsp;<input jwcid="inputTitle" type="text" name="" size=""/></td>
+						</tr>
+						<tr class="clsBold">
+							<td height="30">Author</td>
+							<td>&nbsp;<input jwcid="inputAuthor" type="text" name="" size=""/></td>
+						</tr>
+						<tr class="clsBold">
+							<td height="30">Publisher</td>
+							<td>&nbsp;<select jwcid="inputPublisher" name="publisher">
+									<option value="#">Choose a Publisher</option>
+									<option value="p1">Publisher 1</option>
+									<option value="p2">Publisher 2</option>
+									<option value="p3">Publisher 3</option>
+									<option value="p4">Publisher 4</option>
+									<option value="#">_______________________</option>
+								</select>&nbsp;&nbsp;<input type="image" src="images/ico_go.gif" border="0" align="absmiddle"></td>
+						</tr>
+					</table>
+				</form>
+				
+				</span>
+				
+				</span>
+				
+			<!-- END Content -->
+		</td>
 	</tr>
 </table>
-	
-</jwc>
+<!-- ****END BODY WRAPPER**** -->
 
-</jwc>
+<!-- ****FOOTER**** -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr bgcolor="#8e9cd1">
+		<td>
+			<table width="737" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="181">&nbsp;</td>
+					<td width="503" valign="bottom">&nbsp;&nbsp;&nbsp;&nbsp;Copyright 2000, 2001 <a href="#">Primix</a> and released under the <a href="#">Lesser GNU Public License.</a></td>
+					<td width="53"><A HREF="http://tapestry.primix.com/vlib/app/direct/Home/border.showInspector.link"></A>
+							<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+							 codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0"
+							 WIDTH=52 HEIGHT=52>
+							 <PARAM NAME=movie VALUE="../images/inspector_gear.swf"> <PARAM NAME=quality VALUE=high> <PARAM NAME=bgcolor VALUE=#FFFFFF> <EMBED src="../images/inspector_gear.swf" quality=high bgcolor=#FFFFFF  WIDTH=52 HEIGHT=52 TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash"></EMBED></OBJECT><br>Inspector</td>
+				</tr>
+				<tr>
+					<td colspan="3">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#4b5887">
+		<td height="47">
+			<table width="500" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="181">&nbsp;</td>
+					<td width="319"><a href="#"><img src="../images/lgo_jetty.gif" width="79" height="31" alt="" border="0"></a>
+						&nbsp;<a href="#"><img src="../images/lgo_srcforge.gif" width="88" height="31" alt="" border="0"></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#333333">
+		<td height="65">
+			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
+				<tr height="65">
+					<td width="654" align="right" valign="bottom" class="clsFooter">&#169;2000 Primix.All rights reserved. <a href="#" class="clsFooterLink">Privacy and Terms of Use</a></td>
+					<td width="70">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#333333">
+		<td>
+			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
+				<tr height="65">
+					<td height="200" width="654">&nbsp;</td>
+					<td width="70">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<!-- ****END FOOTER**** -->
+</body>
+</html>
+

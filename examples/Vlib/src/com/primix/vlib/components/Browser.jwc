@@ -18,6 +18,10 @@
       
   <component id="insertWrapped" type="InsertWrapped"/>
   
+  <component id="ifResults" type="Conditional">
+  	<binding name="condition" property-path="resultCount"/>
+  </component>
+  
   <component id="ifShowPrev" type="Conditional">
     <binding name="condition" property-path="showPreviousLink"/>
   </component>

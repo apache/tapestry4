@@ -2,10 +2,7 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC 
   "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
-  
-<!ENTITY leftnav '<static-binding name="class">clsLeftNav</static-binding>'>  
-]>
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 
 <specification class="com.primix.vlib.components.Border" allow-informal-parameters="no">
 
@@ -17,24 +14,14 @@
     <binding name="stylesheet" property-path="assets.stylesheet"/>
   </component>
   
-  <component id="body" type="Body">
-  	<static-binding name="bgcolor">#ffffff</static-binding>
-  	<binding name="background" property-path="assets.background"/>
-  	<static-binding name="leftmargin">0</static-binding>
-  	<static-binding name="topmargin">0</static-binding>
-  	<static-binding name="marginwidth">0</static-binding>
-    <static-binding name="marginheight">0</static-binding>
-  </component>
+  <component id="body" type="Body"/>
   
   <component id="searchIcon" type="Image">
     <binding name="image" property-path="searchIcon"/>
-    <static-binding name="width">14</static-binding>
-    <static-binding name="height">12</static-binding>
   </component>
   
   <component id="search" type="Service">
     <static-binding name="service">home</static-binding>
-	&leftnav;
   </component>
   
   <component id="myLibraryIcon" copy-of="searchIcon">
@@ -43,7 +30,6 @@
   
   <component id="myLibrary" type="Page">
     <static-binding name="page">MyLibrary</static-binding>
-	&leftnav;
   </component>
   
   <component id="ifAdmin" type="Conditional">
@@ -52,17 +38,14 @@
   
   <component id="xferBooks" type="Page">
     <static-binding name="page">admin.TransferBooks</static-binding>
-	&leftnav;
   </component>
   
   <component id="editPublishers" type="Page">
     <static-binding name="page">admin.EditPublishers</static-binding>
-	&leftnav;
   </component>  
   
    <component id="editUsers" type="Page">
     <static-binding name="page">admin.EditUsers</static-binding>
-	&leftnav;
   </component> 
   
   
@@ -80,17 +63,14 @@
 
   <component id="borrowed" type="Page">
   	<static-binding name="page">BorrowedBooks</static-binding>
-	&leftnav;
   </component>
   
   <component id="addNewBook" type="Direct">
     <binding name="listener" property-path="listeners.addNewBook"/>
-	&leftnav;
   </component>
   
   <component id="editProfile" type="Direct">
     <binding name="listener" property-path="listeners.editProfile"/>
-	&leftnav;
   </component>
   
  <component id="ifLoggedIn2" copy-of="ifLoggedIn"/>
@@ -102,23 +82,25 @@
   <component id="login" type="Direct">
 	<binding name="listener" property-path="listeners.login"/>
 	<field-binding name="stateful" field-name="Boolean.FALSE"/>
-	&leftnav;
   </component>
   
   <component id="logout" type="Page">
     <static-binding name="page">Logout</static-binding>
-	&leftnav;
   </component>
 
   <component id="ifLibraryPage" type="Conditional">
     <binding name="condition" property-path="libraryPage"/>
+  </component>
+  
+  <component id="ifShowSlash" type="Conditional">
+  	<binding name="condition" property-path="showSlash"/>
   </component>
 
   <component id="subheaderImage" type="Image">
     <binding name="image" property-path="subheader"/>
   </component>
   
-  <component id="wrapped" type="InsertWrapped"/>
+  <component id="insertWrapped" type="InsertWrapped"/>
 
   <component id="ifShowInspector" type="Conditional">
     <binding name="condition" property-path="page.engine.debugEnabled"/>
@@ -126,7 +108,6 @@
 
   <component id="showInspector" type="ShowInspector"/>
   
-  <context-asset name="background" path="/images/bg_blue.gif"/>
   <context-asset name="stylesheet" path="/scripts/style_virtlib_pcIE55.css"/>
   <context-asset name="dot" path="/images/dots_leftnav.gif"/>
   <context-asset name="spacer" path="/images/spacer.gif"/>
@@ -134,5 +115,14 @@
   <context-asset name="header-Home" path="/images/hd_searchforbooks.gif"/>
   <context-asset name="header-Matches" path="/images/hd_matchingbooks.gif"/>
   <context-asset name="header-EditBook" path="/images/hd_editbook.gif"/>
+  <context-asset name="header-NewBook" path="/images/hd_addnewbooks.gif"/>
+  <context-asset name="header-BorrowedBooks" path="/images/hd_borrowedbooks.gif"/>
+  <context-asset name="header-ConfirmBookDelete" path="/images/hd_deletebook.gif"/>
+  <context-asset name="header-Person" path="/images/hd_bookinventory.gif"/>
+  <context-asset name="header-EditBook" path="/images/hd_editbooks.gif"/>
+  <context-asset name="header-EditProfile" path="/images/hd_editprofile.gif"/>
+  <context-asset name="header-Login" path="/images/hd_login.gif"/>
+  <context-asset name="header-Logout" path="/images/hd_logout.gif"/>
+  <context-asset name="header-Register" path="/images/hd_register_noslash.gif"/>
   
 </specification>

@@ -25,19 +25,18 @@
     <binding name="name" property-path="book.ownerName"/>
   </component>
 
-  <component id="ifDescription" type="Conditional">
-  	<binding name="condition" property-path="book.description"/>
-  </component>
-
   <component id="insertDescription" type="Insert">
     <binding name="value" property-path="book.description"/>
   </component>
+  
   <component id="ifShowHolder" type="Conditional">
     <binding name="condition" property-path="showHolder"/>
   </component>
+  
   <component id="holderLink" type="PersonLink">
     <binding name="primaryKey" property-path="book.holderPrimaryKey"/>
     <binding name="name" property-path="book.holderName"/>
+    <static-binding name="class">clsDataBlue</static-binding>
   </component>
 
 	<component id="ifNotLendable" type="Conditional">

@@ -435,12 +435,10 @@ public class Form
 				writer.begin("form");
 				writer.attribute("method", method);
 				writer.attribute("name", name);
-				
 				writer.attribute("action", cycle.encodeURL(g.getServletPath()));
 				
 				generateAttributes(cycle, writer, reservedNames);
-				
-				
+				writer.println();				
 			}
 			
 			// Write the hidden's, or at least, reserve the query parameters
@@ -471,6 +469,7 @@ public class Form
 				writer.attribute("type", "hidden");
 				writer.attribute("name", name);
 				writer.attribute("value", elementCount);
+				writer.println();
 				
 				writer.end("form");
 				
@@ -594,7 +593,6 @@ public class Form
 		Iterator i = events.entrySet().iterator();
 		while (i.hasNext())
 		{
-			
 			Map.Entry entry = (Map.Entry)i.next();	
 			FormEventType type = (FormEventType)entry.getKey();
 			Object value = entry.getValue();
@@ -722,10 +720,11 @@ public class Form
 			
 			if (!reserveOnly)
 			{
-				writer.begin("input");
+				writer.beginEmpty("input");
 				writer.attribute("type", "hidden");
 				writer.attribute("name", key);
 				writer.attribute("value", (String)e.getValue());
+				writer.println();
 			}
 			
 			// Reserve the name, in case any form component has the

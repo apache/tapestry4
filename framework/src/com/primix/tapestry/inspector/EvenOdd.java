@@ -29,81 +29,69 @@
 
 package com.primix.tapestry.inspector;
 
-import com.primix.tapestry.*;
-import java.util.*;
+import com.primix.tapestry.util.pool.*;
 
 /**
- *  Used to create &lt;tr;&gt; tags with alternating values
- *  of "even" and "odd" for the HTML class attribute.  The sequence always
- *  starts with "even".
- *
- *  <p>Allows informal parameters.  Allows a body
- *  (in fact, doesn't make sense without one).
+ *  Used to emit a stream of alteranting string values: "even", "odd", etc.  This
+ *  is often used in the Inspector pages to make the class of a &lt;tr&gt; alternate
+ *  for presentation reasons.
  *
  *  @version $Id$
  *  @author Howard Ship
  *
  */
  
-public class EvenOdd extends AbstractComponent
-implements ILifecycle
+public class EvenOdd implements IPoolable
 {
 	private boolean even;
-	private IBinding initialBinding;
 	
-	private String[] reservedNames = 
-	{ "class"
-	};
+	/**
+	 *  Default constructor.  Configure to initially return "even".
+	 *
+	 */
 	
-	public IBinding getInitialBinding()
+	public EvenOdd()
 	{
-		return initialBinding;
+		even = true;
 	}
-
-	public void setInitialBinding(IBinding value)
+	
+	public EvenOdd(boolean initiallyEven)
 	{
-		initialBinding = value;
+		even = initiallyEven;
 	}
-
-	private String getNextClass()
+	
+	/**
+	 *  Returns "even" or "odd".  Whatever it returns on one invocation, it will
+	 *  return the opposite on the next.
+	 *
+	 */
+	
+	public String getNext()
 	{
-		String result;
-		
-		result = even ? "even" : "odd";
+		String result = even ? "even" : "odd";
 		
 		even = !even;
 		
 		return result;
 	}
 	
-	/**
-	 *  Sets the initial value for the component.  The default behavior
-	 *  is for the first line to be "even" and the second to be "odd".
-	 *  If the initial parameter is bound, then it is used to
-	 *  determine the initial value ... true is the normal behavior (even
-	 *  first), false is the alternate behavior (odd first).
-	 *
-	 */
-	 
-	public void prepareForRender(IRequestCycle cycle)
+	public boolean isEven()
 	{
-		even = true;
-		
-		if (initialBinding != null)
-			even = initialBinding.getBoolean();
+		return even;
 	}
 	
-	public void render(IResponseWriter writer,
-                   IRequestCycle cycle)
-    throws RequestCycleException
-    {
-		writer.begin("tr");
-		writer.attribute("class", getNextClass());
-		
-		generateAttributes(cycle, writer, reservedNames);
-		
-		renderWrapped(writer, cycle);
-		
-		writer.end();
-    }
+	public void setEven(boolean value)
+	{
+		even = value;
+	}
+	
+	/**
+	 *  Resets the internal flag such that the next value from {@link #getNext()} will be "even".
+	 *
+	 */
+	
+	public void resetForPool()
+	{
+		even = true;
+	}
 }

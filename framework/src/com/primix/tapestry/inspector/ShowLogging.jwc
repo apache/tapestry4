@@ -6,38 +6,46 @@
     <binding name="listener" property-path="listeners.priorityChange"/>
     <field-binding name="direct" field-name="Boolean.TRUE"/>
   </component>
+  
   <component id="inputRootLevel" type="PropertySelection">
     <binding name="value" property-path="rootCategory.priority"/>
     <binding name="model" property-path="rootPriorityModel"/>
   </component>
+  
   <component id="e" type="ListEdit">
     <binding name="source" property-path="categoryNames"/>
     <binding name="value" property-path="categoryName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="categoryClass.next"/>
   </component>
-  <component id="evenOdd" type="/com/primix/tapestry/inspector/EvenOdd.jwc">
-    <field-binding name="initial" field-name="Boolean.FALSE"/>
-  </component>
+  
   <component id="insertCategoryName" type="Insert">
     <binding name="value" property-path="category.name"/>
   </component>
+  
   <component id="inputCategoryLevel" type="PropertySelection">
     <binding name="model" property-path="priorityModel"/>
     <binding name="value" property-path="category.priority"/>
   </component>
+  
   <component id="newCategoryForm" type="Form">
     <binding name="listener" property-path="listeners.addNewCategory"/>
     <field-binding name="direct" field-name="Boolean.TRUE"/>
   </component>
+  
   <component id="ifError" type="Conditional">
     <binding name="condition" property-path="error"/>
   </component>
+  
   <component id="insertError" type="Insert">
     <binding name="value" property-path="error"/>
   </component>
+  
   <component id="inputNewCategory" type="ValidatingTextField">
     <field-binding name="required" field-name="Boolean.TRUE"/>
     <static-binding name="displayName">New Category</static-binding>
     <binding name="delegate" property-path="validationDelegate"/>
     <binding name="text" property-path="newCategory"/>
   </component>
+  
 </specification>

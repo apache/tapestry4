@@ -1,48 +1,214 @@
-<jwc id="border">
-<!-- $Id$ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<jwc id="showError"/>
+<html>
+<head>
+	<title>Primix Virtual Library: My Library</title>
+<link rel="STYLESHEET" type="text/css" href="../scripts/style_virtlib_pcIE55.css">
+</head>
 
-<jwc id="showMessage"/>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#8e9cd1">
 
-<jwc id="ifNoOwnedBooks">
+<!-- ****BODY WRAPPER**** -->
+<table width="790" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="124" valign="top">
+			<!-- Left Nav -->
+			<table width="124" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="35" colspan="3">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="19" height="22"><img src="images/spacer.gif" width="14" height="12" border="0"></td>
+					<td width="89"><a href="#" class="clsLeftNav">Search</a></td>
+					<td width="1" valign="top" rowspan="5" bgcolor="#4B5887"><img src="images/vert_ltblue.gif" width="1" height="7" border="0"></td>
+				</tr>
+				<tr>
+					<td height="22" valign="top"><img src="images/dots_leftnav.gif" width="14" height="12" border="0"></td>
+					<td><a href="#" class="clsLeftNav">My Library</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a href="#" class="clsLeftNav">Borrowed Books</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a href="#" class="clsLeftNav">Add New Book</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a href="#" class="clsLeftNav">Edit Profile</a><br>
+					</td>
+				</tr>
+				<tr>
+					<td height="22"><img src="images/spacer.gif" width="14" height="12" border="0"></td>
+					<td><a href="#" class="clsLeftNav">Logout</a></td>
+				</tr>
+				<tr>
+					<td height="200"><img src="images/spacer.gif" width="14" height="1" border="0"></td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+			<!-- END Left Nav -->
+		</td>
+		<td width="66" align="center" valign="top">
+			<!-- Gutter -->
+				<img src="images/ico_t.gif" width="44" height="44" border="0" vspace="5">
+			<!-- END Gutter -->
+		</td>
+		<td width="600" valign="top">
+			<!-- Content -->
+				<!-- head -->
+				<img src="images/hd_primixvirtlib.gif" width="241" height="22" border="0" vspace="17"><br>
+				<img src="images/hd_mylibrary.gif" width="84" height="18" border="0">
+				<!-- END head -->
+				<br><br>
+				
+<span jwcid="$content$">
+<span jwcid="border">
 
-<p>You have not yet entered any books into the database.
+<span jwcid="showError"/>
+<span jwcid="showMessage"/>
 
-</jwc>
+<span jwcid="ifNoOwnedBooks">
+<p>You have not yet enterred any of your books.
+</span>
 
-<jwc id="ifShowOwnedBooks">
-<jwc id="browser">
+<span jwcid="ifShowOwnedBooks">
 
-<table>
-  <tr>
-    <th>Title</th>
-	<th>Author</th>
-	<th>Publisher</th>
-	<th>Borrowed By</th>
-	<th></th>
-	<th></th>
-  </tr>
+<span jwcid="browser">
 
-<jwc id="e">
+				<!-- Data Table -->
+					<table width="565" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td><img src="images/spacer.gif" width="185" height="1" border="0"></td>
+							<td><img src="images/spacer.gif" width="125" height="1" border="0"></td>
+							<td><img src="images/spacer.gif" width="105" height="1" border="0"></td>
+							<td><img src="images/spacer.gif" width="85" height="1" border="0"></td>
+							<td><img src="images/spacer.gif" width="65" height="1" border="0"></td>
+						</tr>
+						<tr>
+							<td height="20" colspan="6">
+							<span class="clsBold"><span jwcid="insertResultCount">10</span> Owned Books</span></td>
+						</tr>
+						<tr height="20" class="clsBold">
+							<td>&nbsp;&nbsp;Title</td>
+							<td>&nbsp;&nbsp;Author</td>
+							<td>&nbsp;&nbsp;Publisher</td>
+							<td>&nbsp;&nbsp;Borrowed By</td>
+							<td>&nbsp;&nbsp;Edit/Delete</td>
+						</tr>
+						<tr>
+							<td colspan="6" rowspan="5" valign="top" bgcolor="#4b5887">
+								<table width="100%" border="0" cellspacing="2" cellpadding="2">
+									<tr bgcolor="#ffffff" jwcid="e">
+										<td width="169"><span jwcid="insertTitle">DocBook:The Definitive Guide</span></td>
+										<td width="113"><span jwcid="insertAuthor">Walsh &#38; Muellner</span></td>
+										<td width="93"><span jwcid="insertPublisher">O'Reilly</span></td>
+										<td width="77"><a jwcid="holderLink" href="#">Jim Moran</a></td>
+										<td width="53" bgcolor="#4b5887" align="center">
+										<a jwcid="edit" href="#" style="text-decoration:none; font-size:14px; font-weight:bold;">E</a>&nbsp;<span style="color:#ffffff; font-size:12px; font-weight:bold;">/<span>&nbsp;<a jwcid="delete" href="#"style="text-decoration:none; font-size:14px; font-weight:bold;">D</a></td>
+									</tr>
+									<tr bgcolor="#ffffff" jwcid="$remove$">
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td bgcolor="#4b5887" align="center">
+										<a href="#" style="text-decoration:none; font-size:14px; font-weight:bold;">E</a>&nbsp;<span style="color:#ffffff; font-size:12px; font-weight:bold;">/<span>&nbsp;<a href="#"style="text-decoration:none; font-size:14px; font-weight:bold;">D</a></td>
+									</tr>
+									<tr bgcolor="#ffffff" jwcid="$remove$">
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td bgcolor="#4b5887" align="center">
+										<a href="#" style="text-decoration:none; font-size:14px; font-weight:bold;">E</a>&nbsp;<span style="color:#ffffff; font-size:12px; font-weight:bold;">/<span>&nbsp;<a href="#"style="text-decoration:none; font-size:14px; font-weight:bold;">D</a></td>
+									</tr>
+									<tr bgcolor="#ffffff" jwcid="$remove$">
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td bgcolor="#4b5887" align="center">
+										<a href="#" style="text-decoration:none; font-size:14px; font-weight:bold;">E</a>&nbsp;<span style="color:#ffffff; font-size:12px; font-weight:bold;">/<span>&nbsp;<a href="#"style="text-decoration:none; font-size:14px; font-weight:bold;">D</a></td>
+									</tr>
+									<tr bgcolor="#ffffff" jwcid="$remove$">
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td bgcolor="#4b5887" align="center">
+										<a href="#" style="text-decoration:none; font-size:14px; font-weight:bold;">E</a>&nbsp;<span style="color:#ffffff; font-size:12px; font-weight:bold;">/<span>&nbsp;<a href="#"style="text-decoration:none; font-size:14px; font-weight:bold;">D</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				<!-- END Data Table -->
 
-  <tr>
-     <td><jwc id="insertTitle"/></td>
-	 <td><jwc id="insertAuthor"/></td>
-	 <td><jwc id="insertPublisher"/></td>
-	 <td>
-<jwc id="ifShowHolder">
-	<jwc id="holderLink"/>
-</jwc>
-	 </td>
-	 <td><jwc id="edit">[Edit]</jwc></td>
-	 <td><jwc id="delete">[Delete]</jwc></td>
-  </tr>
+<span jwcid="$remove$">							
+												
+				<br>
+				Showing <!-- JWC Dyna Pop -->1-5<!-- END JWC Dyna Pop --> //  <a href="#"><span class="clsBold">prev</span></a>&nbsp;&nbsp;<a href="#"><span class="clsBold">next</span></a>
 
-</jwc>
+</span>
+</span>
+				
+</span>
 
+</span>
+</span>
+
+				<!-- END Content -->
+		</td>
+	</tr>
 </table>
-</jwc>
-</jwc>
+<!-- ****END BODY WRAPPER**** -->
+<!-- ****FOOTER**** -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr bgcolor="#8e9cd1">
+		<td>
+			<table width="737" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="181">&nbsp;</td>
+					<td width="503" valign="bottom">&nbsp;&nbsp;&nbsp;&nbsp;Copyright 2000, 2001 <a href="#">Primix</a> and released under the <a href="#">Lesser GNU Public License.</a></td>
+					<td width="53"><A HREF="http://tapestry.primix.com/vlib/app/direct/Home/border.showInspector.link"></A>
+							<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+							 codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0"
+							 WIDTH=52 HEIGHT=52>
+							 <PARAM NAME=movie VALUE="images/inspector_gear.swf"> <PARAM NAME=quality VALUE=high> <PARAM NAME=bgcolor VALUE=#FFFFFF> <EMBED src="images/inspector_gear.swf" quality=high bgcolor=#FFFFFF  WIDTH=52 HEIGHT=52 TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash"></EMBED></OBJECT><br>Inspector</td>
+				</tr>
+				<tr>
+					<td colspan="3">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#4b5887">
+		<td height="47">
+			<table width="500" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="181">&nbsp;</td>
+					<td width="319"><a href="#"><img src="images/lgo_jetty.gif" width="79" height="31" border="0"></a>
+						&nbsp;<a href="#"><img src="images/lgo_srcforge.gif" width="88" height="31" border="0"></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#333333">
+		<td height="65">
+			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
+				<tr height="65">
+					<td width="654" align="right" valign="bottom" class="clsFooter">&#169;2000 Primix.All rights reserved. <a href="#" class="clsFooterLink">Privacy and Terms of Use</a></td>
+					<td width="70">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#333333">
+		<td>
+			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
+				<tr height="65">
+					<td height="200" width="654">&nbsp;</td>
+					<td width="70">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<!-- ****END FOOTER**** -->
+</body>
+</html>
 
-</jwc>

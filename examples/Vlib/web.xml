@@ -19,7 +19,7 @@
   <!--The single mapping used for the Tapestry application-->
   <servlet-mapping>
     <servlet-name>vlib</servlet-name>
-    <url-pattern>/app/*</url-pattern>
+    <url-pattern>/app</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

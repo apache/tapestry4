@@ -161,6 +161,11 @@ public class MyLibrary
 		return currentBook;
 	}
 	
+	public boolean getOmitHolderLink()
+	{
+		return !currentBook.isBorrowed();
+	}
+	
 	public void setMessage(String value)
 	{
 		message = value;

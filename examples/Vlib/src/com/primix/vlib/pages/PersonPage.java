@@ -53,17 +53,14 @@ public class PersonPage extends BasePage
 {
 	private IBookQuery query;
 	private Book currentMatch;
-	private String email;
-	private String fullName;
-	
+	private Person person;
 	private Browser browser;
 	
 	public void detach()
 	{
 		query = null;
 		currentMatch = null;
-		email = null;
-		fullName = null;
+		person = null;
 		
 		super.detach();
 	}
@@ -76,39 +73,22 @@ public class PersonPage extends BasePage
 		browser = (Browser)getComponent("browser");
 	}
 	
-	public String getEmail()
+	
+	public void setPerson(Person value)
 	{
-		return email;
+		person = value;
+		
+		fireObservedChange("person", value);
+	}
+	
+	public Person getPerson()
+	{
+		return person;
 	}
 	
 	public String getEmailURL()
 	{
-		return "mailto:" + email;
-	}
-	
-	/**
-	 *  Sets the email transient page property.
-	 *
-	 */
-	
-	public void setEmail(String value)
-	{
-		email = value;
-	}
-	
-	public String getFullName()
-	{
-		return fullName;
-	}
-	
-	/**
-	 *  Sets the fullName transient page property.
-	 *
-	 */
-	
-	public void setFullName(String value)
-	{
-		fullName = value;
+		return "mailto:" + person.getEmail();
 	}
 	
 	
@@ -163,18 +143,14 @@ public class PersonPage extends BasePage
 				
 				IOperations operations = vengine.getOperations();
 				
-				Person person = operations.getPerson(personPK);
-				
-				setEmail(person.getEmail());
-				setFullName(person.getNaturalName());
+				setPerson(operations.getPerson(personPK));
 				
 				break;
 			}
 			catch (FinderException e)
 			{
 				vengine.presentError(
-						"Person " + personPK + " not found in database.", cycle);
-				return;
+					"Person " + personPK + " not found in database.", getRequestCycle());
 			}
 			catch (RemoteException ex)
 			{
@@ -182,13 +158,11 @@ public class PersonPage extends BasePage
 					"Remote exception for owner query.", ex, i > 0);
 				
 				setQuery(null);
-				
 			}
 		}
 		
 		cycle.setPage(this);
 	}
-	
 	
 	public Book getCurrentMatch()
 	{
@@ -200,6 +174,10 @@ public class PersonPage extends BasePage
 		currentMatch = value;
 	}
 	
+	public boolean getOmitHolderLink()
+	{
+		return !currentMatch.isBorrowed();
+	}
 	
 	/**
 	 *  Removes the book query bean, if the handle to the bean
