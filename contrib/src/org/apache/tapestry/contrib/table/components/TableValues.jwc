@@ -8,25 +8,32 @@
 	allow-body="yes" allow-informal-parameters="yes">
 	
 	<description>
+        A low level Table component that generates the columns for the current row in the table. 
+        This component must be wrapped by TableRows. 
 	</description>
   
-	<parameter name="element" 
-		type="java.lang.String" 
-		required="no"
-		direction="custom"/>
-
 	<parameter name="column" 
 		type="org.apache.tapestry.contrib.table.model.ITableColumn" 
 		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The current column being rendered</description>
+    </parameter>
+
+	<parameter name="element" 
+		type="java.lang.String" 
+		required="no"
+		direction="auto"
+    	default-value="'td'">
+        <description>The tag to use to wrap the values in, 'td' by default.</description>
+    </parameter>
 
 	<component id="iterColumns" type="Foreach">
 		<binding name="source" expression="tableColumnIterator"/>
 		<binding name="value" expression="tableColumn"/>
 	</component>
   
-	<component id="informal" type="InheritInformalAny">
-		<binding name="element" expression="element"/>
+	<component id="informal" type="Any" inherit-informal-parameters="yes">
+		<inherited-binding name="element" parameter-name="element"/>
 	</component>
   
 	<component id="insertValueRenderer" type="Delegator">

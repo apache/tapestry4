@@ -8,29 +8,43 @@
 	allow-body="yes" allow-informal-parameters="yes">
 	
 	<description>
+        A version of the TableRows designed for operation in a form. 
+        This is a low level Table component that generates the rows of 
+        the current page in the table. Each row is stored as a hidden value 
+        in the form, which eliminates the chance of a stale link during rewinding. 
+        This component must be wrapped by TableView. 
 	</description>
   
 	<parameter name="row" 
 		type="Object" 
 		required="no"
-		direction="custom"/>
-
-	<parameter name="element" 
-		type="java.lang.String" 
-		required="no"
-		direction="custom"
-		default-value='"tr"'/>
+		direction="custom">
+        <description>The value object of the row currently being rendered.</description>
+    </parameter>
 
     <parameter name="convertor"
     	type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor"
     	required="no"
     	direction="auto"
-    	default-value="null"/>
+    	default-value="null">
+        <description>
+        An interface defining how the items iterated upon by this component 
+        will be stored in the form as Hidden values. This interface allows only 
+        the primary key of the items to be stored, rather than the whole item.
+        </description>
+    </parameter>
     
+	<parameter name="element" 
+		type="java.lang.String" 
+		required="no"
+		default-value='"tr"'>
+        <description>The tag to use to wrap the rows in, 'tr' by default.</description>
+    </parameter>
+
 	<component id="iterRows" type="ListEdit" inherit-informal-parameters="yes">
 		<binding name="source" expression="convertedTableRowsIterator"/>
 		<binding name="value" expression="convertedTableRow"/>
-		<binding name="element" expression="element"/>
+        <inherited-binding name="element" parameter-name="element"/>
 	</component>
 
     <property-specification name="convertedValues" type="java.util.Map" initial-value="new java.util.HashMap()"/>

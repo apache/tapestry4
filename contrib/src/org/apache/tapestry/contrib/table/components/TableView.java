@@ -74,6 +74,7 @@ import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.ITableDataModel;
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
+import org.apache.tapestry.contrib.table.model.ITablePagingState;
 import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
 import org.apache.tapestry.contrib.table.model.ITableSessionStoreManager;
 import org.apache.tapestry.contrib.table.model.common.BasicTableModelWrap;
@@ -132,84 +133,10 @@ import org.apache.tapestry.event.PageRenderListener;
  * </ul>
  * <p>
  * 
- * <table border=1 align="center">
- * <tr>
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction </th>
- *    <th>Required</th>
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>tableModel</td>
- *  <td>{@link org.apache.tapestry.contrib.table.model.ITableModel}</td>
- *  <td>in</td>
- *  <td>yes</td>
- *  <td>&nbsp;</td>
- *  <td align="left">The TableModel to be used to render the table. 
- *      This binding is typically used only once at the beginning and then the 
- *      component stores the model in the session state. 
- *      <p>If you want the Table to read the model every time you can use
- *      a session state manager such as 
- *      {@link org.apache.tapestry.contrib.table.model.common.NullTableSessionStateManager}
- *      that will force it to get the TableModel from this binding every time.
- *      If you do this, however, you will be responsible for saving the state of 
- *      the table yourself.
- *      <p> You can also call the reset() method to force the Table to abandon
- *      its old model and reload a new one.
- *  </td> 
- * </tr>
- *
- * <tr>
- *  <td>tableSessionStateManager</td>
- *  <td>{@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>{@link org.apache.tapestry.contrib.table.model.common.FullTableSessionStateManager}</td>
- *  <td align="left">This is the session state manager that will control what part of the 
- *      table model will be saved in the session state. 
- *      It is then used to recreate the table model from
- *      using what was saved in the session. By default, the 
- *      {@link org.apache.tapestry.contrib.table.model.common.FullTableSessionStateManager}
- *      is used, which just saves the entire model into the session.
- *      This behaviour may not be appropriate when the data is a lot or it is not
- *      {@link java.io.Serializable}.
- *      <p> You can use one of the stock implementations of  
- *      {@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}
- *      to determine the session state behaviour, or you can just define your own.
- *  </td> 
- * </tr>
- *
- * <tr>
- *  <td>tableSessionStoreManager</td>
- *  <td>{@link org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>null</td>
- *  <td align="left">Determines how the session state (returned by the session state manager)
- *      will be saved in the session. If this parameter is null, then the state
- *      will be saved as a persistent property. If it is not null, then the methods
- *      of the interface will be used to save and load the state.
- *  </td> 
- * </tr>
- *
- * <tr>
- *  <td>element</td>
- *  <td>String</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>"table"</td>
- *  <td align="left">The tag that will be used to wrap the inner components.
- *      If no binding is given, the tag that will be generated is 'table'. If you 
- *      would like to place the bounds of the table elsewhere, you can make the
- *      element 'span' or another neutral tag and manually define the table.
- *  </td> 
- * </tr>
- *
- * </table> 
+ * <p> 
+ * Please see the Component Reference for details on how to use this component. 
  * 
+ *  [<a href="../../../../../../../ComponentReference/contrib.TableView.html">Component Reference</a>]
  * 
  * @author mindbridge
  * @version $Id$
@@ -221,9 +148,6 @@ public abstract class TableView
     // Component properties
     private ITableSessionStateManager m_objDefaultSessionStateManager = null;
     private ITableColumnModel m_objColumnModel = null;
-
-    // Persistent properties
-    private Serializable m_objSessionState;
 
     // Transient objects
     private ITableModel m_objTableModel;
@@ -265,7 +189,6 @@ public abstract class TableView
      */
     private void initialize()
     {
-        m_objSessionState = null;
         m_objTableModel = null;
         m_objCachedTableModelValue = null;
     }
@@ -459,28 +382,27 @@ public abstract class TableView
     }
 
     /**
+     *  Ensures that the table state is saved before the render phase begins 
+     *  in case there are modifications for which {@link #fireObservedStateChange()} 
+     *  has not been invoked.
+     * 
      * @see org.apache.tapestry.event.PageRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)
      */
     public void pageBeginRender(PageEvent event)
     {
+        // 'suspenders': save the table model if it has been already loaded.
+        // this means that if a change has been made explicitly in a listener, 
+        // it will be saved. this is the last place before committing the changes 
+        // where a save can occur  
+        if (m_objTableModel != null)
+            saveSessionState();
     }
 
     /**
-     *  Ensures that the table state is saved at the end of the rewind phase 
-     *  in case there are modifications for which {@link #fireObservedStateChange()} 
-     *  has not been invoked.
-     * 
      *  @see org.apache.tapestry.event.PageRenderListener#pageEndRender(PageEvent)
      */
     public void pageEndRender(PageEvent objEvent)
     {
-        // ignore if not rewinding
-        if (!objEvent.getRequestCycle().isRewinding())
-            return;
-
-        // Save the session state of the table model
-        // This is the moment after changes and right before committing the session
-        saveSessionState();
     }
 
     /**
@@ -523,6 +445,30 @@ public abstract class TableView
     }
 
     /**
+     *  Make sure that the values stored in the model are useable and correct.
+     *  The changes made here are not saved.  
+     */
+    protected void validateValues()
+    {
+        ITableModel objModel = getTableModel();
+
+        // make sure current page is within the allowed range
+        ITablePagingState objPagingState = objModel.getPagingState(); 
+        int nCurrentPage = objPagingState.getCurrentPage();
+        int nPageCount = objModel.getPageCount();
+        if (nCurrentPage >= nPageCount) {
+            // the current page is greater than the page count. adjust.
+            nCurrentPage = nPageCount - 1;
+            objPagingState.setCurrentPage(nCurrentPage);
+        }
+        if (nCurrentPage < 0) {
+            // the current page is before the first page. adjust.
+            nCurrentPage = 0;
+            objPagingState.setCurrentPage(nCurrentPage);
+        }
+    }
+
+    /**
      *  Stores a pointer to this component in the Request Cycle while rendering
      *  so that wrapped components have access to it.
      * 
@@ -533,6 +479,7 @@ public abstract class TableView
         Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, this);
 
+        validateValues();
         super.renderComponent(writer, cycle);
 
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, objOldValue);

@@ -74,60 +74,28 @@ import org.apache.tapestry.contrib.table.model.ITableRowSource;
  * you can use {@link org.apache.tapestry.contrib.table.components.TableValues} 
  * to generate the columns automatically.
  * 
- * <p>
- * <table border=1 align="center">
- * <tr>
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction </th>
- *    <th>Required</th>
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>row</td>
- *  <td>Object</td>
- *  <td>out</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td align="left">The value object of the current row.</td> 
- * </tr>
- *
- * <tr>
- *  <td>element</td>
- *  <td>String</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>tr</td>
- *  <td align="left">The tag to use to wrap the rows in.</td> 
- * </tr>
- *
- * </table> 
+ * <p> 
+ * Please see the Component Reference for details on how to use this component. 
+ * 
+ *  [<a href="../../../../../../../ComponentReference/contrib.TableRows.html">Component Reference</a>]
  * 
  * @author mindbridge
  * @version $Id$
  *
  */
-public class TableRows extends AbstractTableViewComponent implements ITableRowSource
+public abstract class TableRows extends AbstractTableViewComponent implements ITableRowSource
 {
-    // Binding
-    private IBinding m_objElementBinding = null;
-    private IBinding m_objRowBinding = null;
-    private IBinding m_objValueBinding = null;
+    // Parameters
+    public abstract IBinding getRowBinding();
 
     // Transient
-    private Object m_objTableRow;
-
-    public Iterator getTableRowsIterator()
-    {
-        ITableModel objTableModel = getTableModelSource().getTableModel();
-        return objTableModel.getCurrentPageRows();
-    }
+    private Object m_objTableRow = null;
 
     /**
-     * Returns the tableRow.
-     * @return Object
+     * Returns the currently rendered table row.
+     * You can call this method to obtain the current row.
+     *  
+     * @return Object the current table row
      */
     public Object getTableRow()
     {
@@ -135,8 +103,10 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
     }
 
     /**
-     * Sets the tableRow.
-     * @param tableRow The tableRow to set
+     * Sets the currently rendered table row. 
+     * This method is for internal use only.
+     * 
+     * @param tableRow The current table row
      */
     public void setTableRow(Object tableRow)
     {
@@ -145,76 +115,17 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
         IBinding objRowBinding = getRowBinding();
         if (objRowBinding != null)
             objRowBinding.setObject(tableRow);
-
-        IBinding objValueBinding = getValueBinding();
-        if (objValueBinding != null)
-            objValueBinding.setObject(tableRow);
     }
 
     /**
-     * Returns the valueBinding.
-     * @return IBinding
+     * Get the list of all table rows to be displayed on this page.
+     * 
+     * @return an iterator of all table rows
      */
-    public IBinding getRowBinding()
+    public Iterator getTableRowsIterator()
     {
-        return m_objRowBinding;
-    }
-
-    /**
-     * Sets the valueBinding.
-     * @param valueBinding The valueBinding to set
-     */
-    public void setRowBinding(IBinding valueBinding)
-    {
-        m_objRowBinding = valueBinding;
-    }
-
-    /**
-     * Returns the valueBinding.
-     * @return IBinding
-     */
-    public IBinding getValueBinding()
-    {
-        return m_objValueBinding;
-    }
-
-    /**
-     * Sets the valueBinding.
-     * @param valueBinding The valueBinding to set
-     */
-    public void setValueBinding(IBinding valueBinding)
-    {
-        m_objValueBinding = valueBinding;
-    }
-
-    /**
-     * Returns the elementBinding.
-     * @return IBinding
-     */
-    public IBinding getElementBinding()
-    {
-        return m_objElementBinding;
-    }
-
-    /**
-     * Sets the elementBinding.
-     * @param elementBinding The elementBinding to set
-     */
-    public void setElementBinding(IBinding elementBinding)
-    {
-        m_objElementBinding = elementBinding;
-    }
-
-    /**
-     * Returns the element.
-     * @return String
-     */
-    public String getElement()
-    {
-        IBinding objElementBinding = getElementBinding();
-        if (objElementBinding == null || objElementBinding.getObject() == null)
-            return "tr";
-        return objElementBinding.getString();
+        ITableModel objTableModel = getTableModelSource().getTableModel();
+        return objTableModel.getCurrentPageRows();
     }
 
     /**
@@ -228,6 +139,9 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
         super.renderComponent(writer, cycle);
 
         cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE, objOldValue);
+
+        // set the current row to null when the component is not active
+        m_objTableRow = null;
     }
 
 }

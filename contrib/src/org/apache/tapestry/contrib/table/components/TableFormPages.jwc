@@ -8,12 +8,21 @@
 	allow-body="no" allow-informal-parameters="yes">
 	
 	<description>
+        A version of TablePages that is designed for operation in a form. 
+        It is a low level Table component that renders the pages in the table. 
+        This component must be wrapped by TableView. 
 	</description>
   
 	<parameter name="pagesDisplayed" 
 		type="int" 
 		required="no"
-		direction="custom"/>
+		direction="auto"
+    	default-value="7">
+		<description>
+            Determines the maximum number of pages to be displayed in the page list 
+            when the table has more than one page. 
+        </description>
+    </parameter>
   
 	<property-specification name="selectedPage" type="int"/>
   

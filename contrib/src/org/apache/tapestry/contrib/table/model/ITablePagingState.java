@@ -78,13 +78,13 @@ public interface ITablePagingState
 	void setPageSize(int nPageSize);
 
 	/**
-	 * Method getCurrentPage.
+	 * Gets the currently selected page. The page number is counted from 0.
 	 * @return int the current active page
 	 */
 	int getCurrentPage();
 
 	/**
-	 * Method setCurrentPage.
+	 * Sets the newly selected page. The page number is counted from 0.
 	 * @param nPage the new active page
 	 */
 	void setCurrentPage(int nPage);

@@ -8,30 +8,32 @@
 	allow-body="yes" allow-informal-parameters="yes">
 	
 	<description>
+        A low level Table component that generates the rows of the current page in the table. 
+        This component must be wrapped by TableView. 
 	</description>
   
 	<parameter name="row" 
 		type="Object" 
 		required="no"
-		direction="custom"/>
-
-	<parameter name="value" 
-		type="Object" 
-		required="no"
-		direction="custom"/>
+		direction="custom">
+        <description>The current row being rendered.</description>
+    </parameter>
 
 	<parameter name="element" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="auto"
+    	default-value="'tr'">
+        <description>The tag to use to wrap the rows in, 'tr' by default.</description>
+    </parameter>
 
 	<component id="iterRows" type="Foreach">
 		<binding name="source" expression="tableRowsIterator"/>
 		<binding name="value" expression="tableRow"/>
 	</component>
   
-	<component id="informal" type="InheritInformalAny">
-		<binding name="element" expression="element"/>
+	<component id="informal" type="Any" inherit-informal-parameters="yes">
+		<inherited-binding name="element" parameter-name="element"/>
 	</component>
   
 	<component id="wrapped" type="RenderBody"/>
