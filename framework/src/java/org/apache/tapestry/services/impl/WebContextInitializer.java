@@ -30,7 +30,7 @@ import org.apache.tapestry.web.WebContext;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ContainerContextInitializer implements ApplicationInitializer
+public class WebContextInitializer implements ApplicationInitializer
 {
     private ApplicationGlobals _globals;
 
@@ -39,7 +39,7 @@ public class ContainerContextInitializer implements ApplicationInitializer
         ServletContext servletContext = servlet.getServletContext();
         WebContext context = new ServletWebContext(servletContext);
 
-        _globals.store(context);
+        _globals.storeContext(context);
     }
 
     public void setGlobals(ApplicationGlobals globals)

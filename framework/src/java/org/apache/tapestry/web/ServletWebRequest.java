@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.describe.DescriptionReceiver;
 
 /**
  * Adapter from {@link javax.servlet.http.HttpServletRequest}&nbsp;to
@@ -183,5 +184,10 @@ public class ServletWebRequest implements WebRequest
         String pathInfo = _servletRequest.getPathInfo();
 
         return pathInfo == null ? servletPath : servletPath + pathInfo;
+    }
+
+    public void describeTo(DescriptionReceiver receiver)
+    {
+        receiver.describeAlternate(_servletRequest);
     }
 }

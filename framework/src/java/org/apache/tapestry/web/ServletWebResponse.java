@@ -76,4 +76,9 @@ public class ServletWebResponse implements WebResponse
     {
         _servletResponse.setContentType(contentType);
     }
+
+    public void setContentLength(int length)
+    {
+        _servletResponse.setContentLength(length);
+    }
 }

@@ -26,6 +26,12 @@ import java.util.Collection;
 public interface DescriptionReceiver
 {
     /**
+     * Invoke to describe another object instead of the current object.
+     */
+
+    public void describeAlternate(Object alternate);
+
+    /**
      * Provides a title for the object; usually the object's class name.
      * 
      * @throws IllegalStateException

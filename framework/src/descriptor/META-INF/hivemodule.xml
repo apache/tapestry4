@@ -82,8 +82,8 @@
         <set-service property="request" service-id="tapestry.globals.WebRequest"/>
         <set-service property="response" service-id="tapestry.globals.WebResponse"/>
         <set-service property="componentPropertySource" service-id="tapestry.props.ComponentPropertySource"/>
-        <set-object property="applicationId" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
-        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:webContext"/>
+        <set-object property="applicationId" value="service-property:tapestry.globals.ApplicationGlobals:activatorName"/>
+        <set-service property="context" service-id="tapestry.globals.WebContext"/>
         <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
       </construct>
     </invoke-factory>

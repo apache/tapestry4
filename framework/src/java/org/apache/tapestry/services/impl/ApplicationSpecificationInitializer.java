@@ -26,6 +26,7 @@ import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.web.HttpServletWebActivator;
 
 /**
  * Locates the application specification and informs the
@@ -61,7 +62,8 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
         else
             spec = _parser.parseApplicationSpecification(specResource);
 
-        _globals.store(servlet, spec);
+        _globals.storeActivator(new HttpServletWebActivator(servlet));
+        _globals.storeSpecification(spec);
     }
 
     private Resource findApplicationSpecification(HttpServlet servlet)
@@ -108,7 +110,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
         ApplicationSpecification result = new ApplicationSpecification();
 
         // Pretend the file exists in the most common expected location.
-        
+
         Resource virtualLocation = new ContextResource(servlet.getServletContext(), "/WEB-INF/"
                 + servletName + ".application");
 

@@ -62,7 +62,7 @@
     
     <invoke-factory>
       <construct class="ContextAssetFactory">
-        <set-service property="servletContext" service-id="tapestry.globals.ServletContext"/>
+        <set-service property="context" service-id="infrastructure:context"/>
         <set-object property="contextPath" value="infrastructure:contextPath"/>
       </construct>
     </invoke-factory>
@@ -117,7 +117,7 @@
 
   <service-point id="ResourceDigestSource" interface="ResourceDigestSource">
     
-    Reads and caches Digest digests of fiel exposed by the AssetService.
+    Reads and caches Digest digests of files exposed by the AssetService.
     
     <invoke-factory>
       <construct class="ResourceDigestSourceImpl"/>

@@ -23,6 +23,7 @@ import javax.portlet.PortletContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.describe.DescriptionReceiver;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebUtils;
 
@@ -87,4 +88,13 @@ public class PortletWebContext implements WebContext
         return _portletContext.getInitParameter(name);
     }
 
+    public String getMimeType(String resourcePath)
+    {
+        return _portletContext.getMimeType(resourcePath);
+    }
+
+    public void describeTo(DescriptionReceiver receiver)
+    {
+        receiver.describeAlternate(_portletContext);
+    }
 }

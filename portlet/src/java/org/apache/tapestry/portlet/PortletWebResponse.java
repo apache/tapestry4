@@ -61,9 +61,13 @@ public class PortletWebResponse implements WebResponse
         unsupported("setContentType");
     }
 
+    public void setContentLength(int contentLength)
+    {
+        unsupported("setContentLength");
+    }
+
     protected final void unsupported(String methodName)
     {
         throw new UnsupportedOperationException(PortletMessages.unsupportedMethod(methodName));
-
     }
 }

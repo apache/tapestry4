@@ -18,7 +18,6 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.bean.EvenOdd;
-import org.apache.tapestry.describe.RenderableAdapterFactory;
 import org.apache.tapestry.util.exception.ExceptionDescription;
 
 /**

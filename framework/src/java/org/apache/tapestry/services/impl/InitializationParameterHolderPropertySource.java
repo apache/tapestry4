@@ -12,40 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.util;
+package org.apache.tapestry.services.impl;
 
-import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 
 import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.web.InitializationParameterHolder;
 
 /**
- *  Implementation of {@link IPropertySource}
- *  that returns values defined as Servlet initialization parameters
- *  (defined as <code>&lt;init-param&gt;</code> in the
- *  <code>web.xml</code> deployment descriptor.
- *
- *  @author Howard Lewis Ship
- *  @since 2.3
- *
- **/ 
-
-public class ServletPropertySource implements IPropertySource
+ * Searches for property values inside objects that implement
+ * {@link org.apache.tapestry.web.InitializationParameterHolder}.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.1
+ */
+public class InitializationParameterHolderPropertySource implements IPropertySource
 {
-    private ServletConfig _config;
-    
-    public ServletPropertySource(ServletConfig config)
-    {
-        _config = config;
-    }   
-    
-    /**
-     *  Invokes {@link ServletConfig#getInitParameter(java.lang.String)}.
-     * 
-     **/
-    
+    private InitializationParameterHolder _holder;
+
     public String getPropertyValue(String propertyName)
     {
-        return _config.getInitParameter(propertyName);
+        return _holder.getInitParameterValue(propertyName);
+    }
+
+    public void setHolder(InitializationParameterHolder holder)
+    {
+        _holder = holder;
     }
 
 }

@@ -19,10 +19,9 @@ import java.net.URL;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.util.ContextResource;
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
@@ -39,9 +38,9 @@ public class ContextAsset extends AbstractAsset implements IAsset
 
     private String _resolvedURL;
 
-    public ContextAsset(String contextPath, ContextResource resourceLocation, Location location)
+    public ContextAsset(String contextPath, Resource resource, Location location)
     {
-        super(resourceLocation, location);
+        super(resource, location);
 
         Defense.notNull(contextPath, "contextPath");
 

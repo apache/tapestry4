@@ -23,10 +23,11 @@ import javax.servlet.ServletContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.describe.Describable;
+import org.apache.tapestry.describe.DescriptionReceiver;
 
 /**
- * Adapts {@link javax.servlet.ServletContext}&nbsp;as
- * {@link org.apache.tapestry.web.WebContext}.
+ * Adapts {@link javax.servlet.ServletContext}&nbsp;as {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -36,6 +37,11 @@ public class ServletWebContext implements WebContext
     private static final Log LOG = LogFactory.getLog(ServletWebContext.class);
 
     private final ServletContext _servletContext;
+
+    public void describeTo(DescriptionReceiver receiver)
+    {
+        receiver.describeAlternate(_servletContext);
+    }
 
     public ServletWebContext(ServletContext context)
     {
@@ -85,5 +91,10 @@ public class ServletWebContext implements WebContext
     public List getInitParameterNames()
     {
         return WebUtils.toSortedList(_servletContext.getInitParameterNames());
+    }
+
+    public String getMimeType(String resourcePath)
+    {
+        return _servletContext.getMimeType(resourcePath);
     }
 }

@@ -81,11 +81,9 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         parser.parseApplicationSpecification(appSpecResource);
         parserControl.setReturnValue(as);
 
-        ApplicationGlobals ag = (ApplicationGlobals) newMock(ApplicationGlobals.class);
+        ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
-
-        ag.store(servlet, as);
 
         replayControls();
 
@@ -94,6 +92,9 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         // The real ApplicationServlet will build a Registry and, indirectly, invoke this.
 
         i.initialize(servlet);
+
+        assertNotNull(ag.getActivator());
+        assertSame(as, ag.getSpecification());
 
         verifyControls();
     }
@@ -169,11 +170,9 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         parser.parseApplicationSpecification(r);
         parserControl.setReturnValue(as);
 
-        ApplicationGlobals ag = (ApplicationGlobals) newMock(ApplicationGlobals.class);
+        ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
-
-        ag.store(servlet, as);
 
         replayControls();
 
@@ -247,11 +246,9 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         parser.parseApplicationSpecification(r);
         parserControl.setReturnValue(as);
 
-        ApplicationGlobals ag = (ApplicationGlobals) newMock(ApplicationGlobals.class);
+        ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
-
-        ag.store(servlet, as);
 
         replayControls();
 
@@ -342,18 +339,9 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         config.getServletContext();
         configControl.setReturnValue(context);
 
-        IApplicationSpecification as = new ApplicationSpecification();
-        as.setName("wilma");
-        as.setSpecificationLocation(new ContextResource(context, "/WEB-INF/wilma.application"));
-
-        MockControl agControl = newControl(ApplicationGlobals.class);
-
-        ApplicationGlobals ag = (ApplicationGlobals) agControl.getMock();
+        ApplicationGlobals ag = new ApplicationGlobalsImpl();
 
         i.setGlobals(ag);
-
-        ag.store(servlet, as);
-        agControl.setMatcher(new SmartApplicationSpecificationMatcher());
 
         replayControls();
 
@@ -364,6 +352,12 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         i.initialize(servlet);
 
         verifyControls();
+
+        IApplicationSpecification as = ag.getSpecification();
+
+        assertEquals("wilma", as.getName());
+        assertEquals(new ContextResource(context, "/WEB-INF/wilma.application"), as
+                .getSpecificationLocation());
     }
 
     /**
@@ -385,7 +379,7 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         configControl.setReturnValue(null);
 
         config.getServletContext();
-        configControl.setReturnValue(context, 3);
+        configControl.setReturnValue(context, 2);
 
         config.getServletName();
         configControl.setReturnValue("dino", 2);

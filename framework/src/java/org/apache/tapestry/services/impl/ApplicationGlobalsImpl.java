@@ -15,11 +15,11 @@
 package org.apache.tapestry.services.impl;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.web.WebActivator;
 import org.apache.tapestry.web.WebContext;
 
 /**
@@ -30,24 +30,25 @@ import org.apache.tapestry.web.WebContext;
  */
 public class ApplicationGlobalsImpl implements ApplicationGlobals
 {
-    private HttpServlet _servlet;
-
-    private ServletContext _context;
+    private WebActivator _activator;
 
     private IApplicationSpecification _specification;
 
     private WebContext _webContext;
 
-    public void store(HttpServlet servlet, IApplicationSpecification applicationSpecification)
+    public void storeActivator(WebActivator activator)
     {
-        _servlet = servlet;
-        _context = servlet.getServletContext();
+        _activator = activator;
+    }
+
+    public void storeSpecification(IApplicationSpecification applicationSpecification)
+    {
         _specification = applicationSpecification;
     }
 
-    public HttpServlet getServlet()
+    public WebActivator getActivator()
     {
-        return _servlet;
+        return _activator;
     }
 
     public IApplicationSpecification getSpecification()
@@ -55,19 +56,9 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
         return _specification;
     }
 
-    public ServletContext getContext()
+    public String getActivatorName()
     {
-        return _context;
-    }
-
-    public String getServletName()
-    {
-        return _servlet.getServletName();
-    }
-
-    public ServletConfig getServletConfig()
-    {
-        return _servlet.getServletConfig();
+        return _activator.getActivatorName();
     }
 
     public WebContext getWebContext()
@@ -75,7 +66,7 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
         return _webContext;
     }
 
-    public void store(WebContext context)
+    public void storeContext(WebContext context)
     {
         _webContext = context;
     }

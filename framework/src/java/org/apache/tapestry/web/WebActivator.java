@@ -14,28 +14,16 @@
 
 package org.apache.tapestry.web;
 
-import java.net.URL;
-
 import org.apache.tapestry.describe.Describable;
 
 /**
- * A representation of a set of servlets (or portlets) packaged together as a web application
- * archive. Attributes stored within the context are global to all 'lets (but not distributed across
- * a server cluster).
+ * A wrapper around a {@link javax.servlet.http.HttpServlet}&nbsp;or {@link *
+ * {@link javax.portlet.Portlet}.
  * 
  * @author Howard M. Lewis Ship
+ * @since 3.1
  */
-public interface WebContext extends AttributeHolder, InitializationParameterHolder, Describable
+public interface WebActivator extends InitializationParameterHolder, Describable
 {
-    /**
-     * Returns a URL to the resource that is mapped to a specified path. The path must begin with a
-     * "/" and is interpreted as relative to the current context root.
-     */
-
-    public URL getResource(String path);
-
-    /**
-     * Returns the MIME type of the specified file, or null if the MIME type is not known.
-     */
-    public String getMimeType(String resourcePath);
+    public String getActivatorName();
 }

@@ -20,6 +20,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.describe.DescriptionReceiver;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
 import org.apache.tapestry.web.WebUtils;
@@ -132,5 +133,10 @@ public class PortletWebRequest implements WebRequest
     protected final void unsupported(String methodName)
     {
         throw new UnsupportedOperationException(PortletMessages.unsupportedMethod(methodName));
+    }
+
+    public void describeTo(DescriptionReceiver receiver)
+    {
+        receiver.describeAlternate(_portletRequest);
     }
 }
