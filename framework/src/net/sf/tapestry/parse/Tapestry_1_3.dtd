@@ -248,7 +248,7 @@ Attributes:
 -->
 
 <!ELEMENT expression-value EMPTY>
-<!ATTLIST property-value
+<!ATTLIST expression-value
   expression CDATA #REQUIRED
 >
 
