@@ -515,6 +515,16 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         }
 
     }
+    
+	/**
+	 *  Returns an object used to resolve classes.
+     *  @since 3.0
+	 *
+	 **/
+    private IResourceResolver getResourceResolver()
+    {
+    	return getPage().getEngine().getResourceResolver();
+    } 
 
     /**
      *  Returns the named binding, or null if it doesn't exist.
@@ -532,7 +542,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         if (_specification.getParameter(name) != null)
         {
-            IResourceResolver resolver = getPage().getEngine().getResourceResolver();
+            IResourceResolver resolver = getResourceResolver();
             String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
 
             return (IBinding) OgnlUtils.get(bindingPropertyName, resolver, this);
@@ -690,7 +700,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         if (_specification.getParameter(name) != null)
         {
             String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
-            IResourceResolver resolver = getPage().getEngine().getResourceResolver();
+            IResourceResolver resolver = getResourceResolver();
             OgnlUtils.set(bindingPropertyName, resolver, this, binding);
             return;
         }
@@ -1161,4 +1171,26 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     public void pageEndRender(PageEvent event)
     {
     }
+
+	/**
+	 *  Sets a property of a component.
+	 *  @see IComponent 
+     *  @since 3.0
+	 */
+	public void setProperty(String propertyName, Object value)
+	{		
+		IResourceResolver resolver = getResourceResolver();
+		OgnlUtils.set(propertyName, resolver, this, value);
+	}
+	
+	/**
+	 *  Gets a property of a component.
+	 *  @see IComponent 
+     *  @since 3.0
+	 */
+	public Object getProperty(String propertyName)
+	{
+		IResourceResolver resolver = getResourceResolver();
+		return OgnlUtils.get(propertyName, resolver, this);
+	}
 }

@@ -290,4 +290,13 @@ public class TestingForm extends BaseLocatable implements IForm
         return null;
     }
 
+	public void setProperty(String propertyName, Object value)
+	{		
+	}
+
+	public Object getProperty(String propertyName)
+	{
+		return null;
+	}
+
 }
