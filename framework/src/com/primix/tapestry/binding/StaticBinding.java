@@ -33,6 +33,8 @@ import com.primix.tapestry.*;
 /**
  * Stores a static (invariant) String as the value.
  *
+ * <p>It may be useful to cache static bindings the way {@link FieldBindings} are cached.
+ *
  * @author Howard Ship
  * @version $Id$
  */

@@ -6,6 +6,7 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.*;
 import java.util.*;
+import com.primix.tapestry.binding.*;
 
 /*
  * Tapestry Web Application Framework
@@ -45,6 +46,9 @@ import java.util.*;
  *  Pages are retrieved from the pool using {@link #getPage(IApplication, String, IMonitor)}
  *  and are later returned to the pool using {@link #releasePage(IPage)}.
  *
+ *  <p>Acts as a cache of {@link FieldBinding}s.  This allows a {@link FieldBinding} to
+ * be created once, and used across all components and pages.
+ *
  * <p>TBD: Pooled pages stay forever.  Need a strategy for cleaning up the pool,
  * tracking which pages have been in the pool the longest, etc.  A mechanism
  * for reporting pool statistics would be useful.
@@ -58,6 +62,21 @@ public class PageSource
     implements IPageSource
 {
 	private static final int MAP_SIZE = 11;
+    private Map fieldBindings;
+
+    private IResourceResolver resolver;
+
+    public PageSource(IResourceResolver resolver)
+    {
+        this.resolver = resolver;
+    }
+
+    public IResourceResolver getResourceResolver()
+    {
+        return resolver;
+    }
+
+
 
 	/**
 	*  The pool of <code>PooledPage</code>s.  The key is a {@link MultiKey},
@@ -163,7 +182,7 @@ public class PageSource
 			// Ok, need to load the page.  Note that we should also pool the page loader, instead
 			// we inneficiently create - use - discard it.
 
-			loader = new PageLoader(application);
+			loader = new PageLoader(this, application);
 
 			specification = application.getSpecification().getPageSpecification(pageName);
 
@@ -177,6 +196,9 @@ public class PageSource
             // always join the application explicitly.
 
             result.joinApplication(application);
+
+            // Alas, the page loader is discarded, we should be pooling those as
+            // well.
 
 			if (monitor != null)
 				monitor.pageCreateEnd(pageName);
@@ -220,13 +242,40 @@ public class PageSource
 
 	/**
 	*  Invoked (during testing primarily) to release the entire pool
-	*  of pages.
+	*  of pages and bindings.
 	*
 	*/
 
 	public void reset()
 	{
 		pool = null;
+        fieldBindings = null;
 	}
+
+    /**
+     *  Gets a field binding for the named field (the name includes the class name
+     *  and the field).  If no such binding exists, then one is created, otherwise
+     *  the existing binding is returned. 
+     *
+     */
+
+    public synchronized IBinding getFieldBinding(String fieldName)
+    {
+        IBinding result = null;
+
+        if (fieldBindings == null)
+            fieldBindings = new HashMap(MAP_SIZE);
+        else
+            result = (IBinding)fieldBindings.get(fieldName);
+ 
+        if (result == null)
+        {
+            result = new FieldBinding(resolver, fieldName);
+
+            fieldBindings.put(fieldName, result);
+        }
+
+        return result;
+    }
 }
 

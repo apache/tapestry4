@@ -140,6 +140,8 @@ public abstract class AbstractApplication
 
 	protected transient PageSource pageSource;
 
+    private transient boolean resetServiceEnabled;
+
 	/**
 	*  The servlet session id, extracted from the initial {@link HttpServletRequest}.
 	*
@@ -547,7 +549,7 @@ public abstract class AbstractApplication
 			return new RestartService();
 
 		if (name.equals(IApplicationService.RESET_SERVICE) && 
-			Boolean.getBoolean("com.primix.tapestry.enable-reset-service"))
+            resetServiceEnabled)
 			return new ResetService();
 	
 		return null;
@@ -992,7 +994,7 @@ public abstract class AbstractApplication
 		IResponseWriter writer;
 		RequestContext context;
 		IComponent component;
-		Direct direct;
+		IDirect direct;
 		String[] parameters = null;
 		IPage page;
 		IMonitor monitor;
@@ -1030,13 +1032,13 @@ public abstract class AbstractApplication
 
 		try
 		{
-			direct = (Direct)component;
+			direct = (IDirect)component;
 		}
 		catch (ClassCastException e)
 		{
 			throw new RequestCycleException(
 				"Component " + pageName + "/" +
-				componentPath + " is not type Direct.",
+				componentPath + " does not implement the IDirect interface.",
 				component, cycle, e);
 		}
 
@@ -1208,6 +1210,11 @@ public abstract class AbstractApplication
 		
 		servletContext = servlet.getServletContext();
 		
+        // servletPrefix is null, so this means either we're doing the
+        // first request in this session, or we're handling a subsequent
+        // request in another JVM (i.e. another server in the cluster).
+        // In any case, we have to do some late (re-)initialization.
+
 		if (servletPrefix == null)
 		{
 			servletPath = context.getRequest().getServletPath();
@@ -1219,6 +1226,9 @@ public abstract class AbstractApplication
 				servletPrefix = servletPath;
 			else
 				servletPrefix = contextPath + servletPath;
+
+		    resetServiceEnabled = 
+		        Boolean.getBoolean("com.primix.tapestry.enable-reset-service");
 		}	
 
 		applicationName = specification.getName();
@@ -1258,7 +1268,7 @@ public abstract class AbstractApplication
 			pageSource = (PageSource)servletContext.getAttribute(name);
 
 			if (pageSource == null)
-				pageSource = new PageSource();
+				pageSource = new PageSource(getResourceResolver());
 
 			servletContext.setAttribute(name, pageSource);
 		}
@@ -1374,6 +1384,16 @@ public abstract class AbstractApplication
 			}
 		}
 	}
+
+    /**
+     *  Returns true if the reset service is currently enabled.
+     *
+     */
+
+    public boolean isResetServiceEnabled()
+    {
+        return resetServiceEnabled;
+    }
 	
 	/**
 	 *  Implemented by subclasses to return the names of the active pages

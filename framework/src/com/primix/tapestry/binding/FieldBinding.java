@@ -1,6 +1,7 @@
 package com.primix.tapestry.binding;
 
 import com.primix.tapestry.*;
+import com.primix.tapestry.pageload.PageSource;
 import java.util.*;
 import java.lang.reflect.*;
 
@@ -36,7 +37,7 @@ import java.lang.reflect.*;
 /**
  *
  *  A type of static {@link IBinding} that gets it value from a public field
- *  (instance variable) of some class or interface.
+ *  (static class variable) of some class or interface.
  *
  *  <p>The binding uses a field name, which consists of a fully qualified class name and
  *  a static field of that class seperated by a dot.  For example: <code>com.foobar.SomeClass.SOME_FIELD</code>.
@@ -44,14 +45,10 @@ import java.lang.reflect.*;
  * <p>If the class specified is for the <code>java.lang</code> package, then the package may be
  * ommitted.  This allows <code>Boolean.TRUE</code> to be recognized as a valid value.
  *
- * <p>An obvious optimization that needs to be done:  All FieldBindings with the same field name are
- * completely equivalent.  However, each occurance of a FieldBinding will need to
- *  resolve its field to a value (the first time it is requested).  This is wasteful
- *  of object instances and of execution time.
- *
- * <p>What is needed is a FieldBinding cache that could dole these things out.  It would have to be
- * specific to the application (since some of the bound fields will belong to
- * application-specific classes).
+ * <p>The {@link PageSource} maintains a cache of FieldBindings.  This means that
+ * each field will be represented by a single binding ... that means that for any field,
+ * the <code>accessValue()</code> method (which obtains the value for the field using
+ *  reflection) will only be invoked once.
  *
  * @author Howard Ship
  * @version $Id$
