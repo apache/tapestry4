@@ -101,8 +101,6 @@ public abstract class BookBean extends AbstractEntityBean
 
     public abstract void setLendable(boolean value);
 
-    public abstract void ejbLoad();
-
     public abstract Timestamp getDateAdded();
     
     public abstract void setDateAdded(Timestamp value);

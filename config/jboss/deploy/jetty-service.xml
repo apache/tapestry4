@@ -29,9 +29,11 @@
     <!-- ================================================================== -->
     <!-- If true, .war files are unpacked to a temporary directory. This    -->
     <!-- is useful with JSPs.                                               -->
+    <!-- Tapestry doesn't use JSPs, but this seems to fix some 			    -->
+    <!-- intermittant class loading anomolies.                              -->
     <!-- ================================================================== -->
 
-    <attribute name="UnpackWars">false</attribute>
+    <attribute name="UnpackWars">true</attribute>
 
     <!-- ================================================================== -->
     <!-- If true, Jetty first delegates loading a class to the webapp's     -->
@@ -109,6 +111,10 @@
            </Call>
           -->
 	
+		 <!-- Private assets are exposed by copying them to the
+		      specifyed directory and building a URI to the
+		      specified virtual folder. -->
+		      
 		 <Call name="addContext">
 		    <Arg>/private/*</Arg>
 		    <Set name="ResourceBase">../server/tapestry/tmp/private</Set>

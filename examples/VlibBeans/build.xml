@@ -14,8 +14,6 @@
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${framework.jar}"/>
-    <pathelement location="${lib.ext.dir}/jndi.jar"/>
-    <pathelement location="${lib.ext.dir}/javax.rmi.jar"/>  
     <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
     <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
     <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
@@ -32,8 +30,12 @@
     <delete dir="${classes.dir}"/>
   </target>
   
-  <target name="compile" depends="init" description="Compile all classes in the JAR.">
-    <javac srcdir="${src.dir}" destdir="${classes.dir}">
+  <target name="compile" depends="init" 
+  	description="Compile all classes in the JAR.">
+    <javac 
+    	srcdir="${src.dir}" 
+    	destdir="${classes.dir}" 
+    	debug="on" target="1.1">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
