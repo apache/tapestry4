@@ -71,4 +71,8 @@
     <service name="asset" class="org.apache.tapestry.asset.AssetService"/>
 	<service name="external" class="org.apache.tapestry.engine.ExternalService"/>
 	
+	<!-- Used to support the JSP tags. -->
+	
+	<service name="tagsupport" class="org.apache.tapestry.engine.TagSupportService"/>
+	
 </library-specification>

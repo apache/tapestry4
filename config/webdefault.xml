@@ -8,6 +8,61 @@
   </description>
  
 
+  <!-- ==================================================================== -->
+  <!-- JSP Servlet                                                          -->
+  <!-- This is the jasper JSP servlet from the jakarta project              -->
+  <!-- The following initParameters are supported:                          -->
+  <!--                                                                      -->
+  <!--   classpath           What class path should I use while compiling   -->
+  <!--                       generated servlets?  [Created dynamically      -->
+  <!--                       based on the current web application]          -->
+  <!--                                                                      -->
+  <!--   classdebuginfo      Should the class file be compiled with         -->
+  <!--                       debugging information?  [false]                -->
+  <!--                                                                      -->
+  <!--   ieClassId           The class-id value to be sent to Internet      -->
+  <!--                       Explorer when using <jsp:plugin> tags.         -->
+  <!--                       [clsid:8AD9C840-044E-11D1-B3E9-00805F499D93]   -->
+  <!--                                                                      -->
+  <!--   jspCompilerPlugin   The fully qualified class name of the JSP      -->
+  <!--                       compiler plug-in to be used.  See below for    -->
+  <!--                       more information.                              -->
+  <!--                       [Use internal JDK compiler]                    -->
+  <!--                                                                      -->
+  <!--   keepgenerated       Should we keep the generated Java source code  -->
+  <!--                       for each page instead of deleting it? [true]   -->
+  <!--                                                                      -->
+  <!--   largefile           Should we store the static content of JSP      -->
+  <!--                       pages in external data files, to reduce the    -->
+  <!--                       size of the generated servlets?  [false]       -->
+  <!--                                                                      -->
+  <!--   logVerbosityLevel   The level of detailed messages to be produced  -->
+  <!--                       by this servlet.  Increasing levels cause the  -->
+  <!--                       generation of more messages.  Valid values are -->
+  <!--                       FATAL, ERROR, WARNING, INFORMATION, and DEBUG. -->
+  <!--                       [WARNING]                                      -->
+  <!--                                                                      -->
+  <!--   mappedfile          Should we generate static content with one     -->
+  <!--                       print statement per input line, to ease        -->
+  <!--                       debugging?  [false]                            -->
+  <!--                                                                      -->
+  <!--   scratchdir          What scratch directory should we use when      -->
+  <!--                       compiling JSP pages?  [default work directory  -->
+  <!--                       for the current web application]               -->
+  <!--                                                                      -->
+  <!-- If you wish to use Jikes to compile JSP pages:                       -->
+  <!-- * Set the "classpath" initialization parameter appropriately         -->
+  <!--   for this web application.                                          -->
+  <!-- * Set the "jspCompilerPlugin" initialization parameter to            -->
+  <!--   "org.apache.jasper.compiler.JikesJavaCompiler".                    -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+  
+  <servlet>
+    <servlet-name>jsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+
   <servlet>
     <servlet-name>Default</servlet-name>
     <servlet-class>org.mortbay.jetty.servlet.Default</servlet-class>
@@ -39,6 +94,11 @@
   <servlet-mapping>
     <servlet-name>Default</servlet-name>
     <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>*.jsp</url-pattern>
   </servlet-mapping>
 
   <!-- ==================================================================== -->

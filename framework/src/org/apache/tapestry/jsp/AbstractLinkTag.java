@@ -53,118 +53,110 @@
  *
  */
 
-package org.apache.tapestry.workbench.components;
+package org.apache.tapestry.jsp;
 
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
-import org.apache.tapestry.util.StringSplitter;
-import org.apache.tapestry.workbench.Visit;
+import java.io.IOException;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+
+import org.apache.tapestry.Tapestry;
 
 /**
- *  Common navigational border for the Workbench tutorial.
- * 
+ *  Abstract super-class of Tapestry JSP tags that produce a hyperlink
+ *  (<code>&lt;a&gt;</code>) tag.  Tags use a
+ *  {@link org.apache.tapestry.jsp.URLRetriever} for the <code>href</code>
+ *  attribute, and may include a 
+ *  <code>class</code> attribute (based on
+ *  the {@link #getStyleClass() styleClass property}.
+ *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 1.0.7
+ *  @since 2.4
  *
  **/
 
-public abstract class Border extends BaseComponent implements PageRenderListener
+public abstract class AbstractLinkTag extends AbstractTapestryTag
 {
+    private String _styleClass;
+
+    public String getStyleClass()
+    {
+        return _styleClass;
+    }
+
+    public void setStyleClass(String styleClass)
+    {
+        _styleClass = styleClass;
+    }
 
     /**
-     * Array of page names, read from the Strings file; this is the same
-     * regardless of localization, so it is static (shared by all).
-     * 
-     **/
+    *  Writes a <code>&lt;/a&gt;</code> tag.
+    * 
+    *  @return {@link javax.servlet.jsp.tagext.Tag#EVAL_PAGE}
+    * 
+    **/
 
-    private static String[] _tabOrder;
-
-    public void pageBeginRender(PageEvent event)
+    public int doEndTag() throws JspException
     {
-        Visit visit = (Visit) getPage().getEngine().getVisit(event.getRequestCycle());
+        JspWriter out = pageContext.getOut();
 
-        setActivePageName(visit.getActiveTabName());
-
-        if (_tabOrder == null)
+        try
         {
-            String tabOrderValue = getStrings().getString("tabOrder");
-
-            StringSplitter splitter = new StringSplitter(' ');
-
-            _tabOrder = splitter.splitToArray(tabOrderValue);
+            out.print("</a>");
         }
-    }
+        catch (IOException ex)
+        {
+            throw new JspException(
+                Tapestry.getString("AbstractLinkTag.io-exception", ex.getMessage()),
+                ex);
+        }
 
-    public void pageEndRender(PageEvent event)
-    {
+        return EVAL_PAGE;
     }
 
     /**
-     *  Returns the logical names of the pages accessible via the
-     *  navigation bar, in appopriate order.
-     *
-     **/
+    *  Writes a <code>&lt;a&gt; tag.  The tag may
+    *  have a <code>class</code> attribute if the
+    *  {@link #getStyleClass() styleClass property}
+    *  is not null.  The <code>href</code>
+    *  attribute is provided via
+    *  a {@link #getURLRetriever() URLRetriever}.
+    * 
+    *  @return {@link javax.servlet.jsp.tagext.Tag#EVAL_BODY_INCLUDE}
+    * 
+    **/
 
-    public String[] getPageTabNames()
+    public int doStartTag() throws JspException
     {
-        return _tabOrder;
-    }
+        JspWriter out = pageContext.getOut();
 
-    public abstract void setPageName(String value);
-    
-    public abstract String getPageName();
+        try
+        {
+            out.print("<a");
 
-	public abstract void setActivePageName(String activePageName);
-	
-	public abstract String getActivePageName();
-	
-	public boolean isActivePage()
-	{
-		return getPageName().equals(getActivePageName());
-	}
+            if (_styleClass != null)
+            {
+                out.print(" class=\"");
+                out.print(_styleClass);
+                out.print('"');
+            }
 
-    public String getPageTitle()
-    {
-        // Need to check for synchronization issues, but I think
-        // ResourceBundle is safe.
+            out.print(" href=\"");
 
-        return getStrings().getString(getPageName());
-    }
+            getURLRetriever().insertURL(getServlet());
 
-    public IAsset getLeftTabAsset()
-    {
-        String name = isActivePage() ? "activeLeft" : "inactiveLeft";
+            // And we're back!  Finish off the tag.
 
-        return getAsset(name);
-    }
+            out.print("\">");
+        }
+        catch (IOException ex)
+        {
+            throw new JspException(
+                Tapestry.getString("AbstractLinkTag.io-exception", ex.getMessage()),
+                ex);
+        }
 
-    public IAsset getMidTabAsset()
-    {
-        String name = isActivePage() ? "activeMid" : "inactiveMid";
-
-        return getAsset(name);
-    }
-
-    public IAsset getRightTabAsset()
-    {
-        String name = isActivePage() ? "activeRight" : "inactiveRight";
-
-        return getAsset(name);
-    }
-
-    public void selectPage(IRequestCycle cycle)
-    {
-        Object[] parameters = cycle.getServiceParameters();
-        String newPageName = (String) parameters[0];
-
-        Visit visit = (Visit) getPage().getEngine().getVisit(cycle);
-
-        visit.setActiveTabName(newPageName);
-
-        cycle.setPage(newPageName);
+        return EVAL_BODY_INCLUDE;
     }
 }

@@ -7,16 +7,9 @@
 <component-specification
   class="org.apache.tapestry.workbench.components.Border"
   allow-informal-parameters="no">
-    
-  <component id="shell" type="Shell">
-  	<binding name="stylesheet" expression="assets.stylesheet"/>
-  	<string-binding name="title" key="window.title"/>
-  </component>
-    
-  <component id="eachPage" type="Foreach">
-    <binding name="source" expression="pageTabNames"/>
-    <binding name="value" expression="pageName"/>
-  </component>
+        
+   <property-specification name="pageName" type="java.lang.String"/>
+   <property-specification name="activePageName" type="java.lang.String"/>
     
   <component id="tabCell" type="Any">
   	<static-binding name="element" value="td"/>
@@ -27,6 +20,7 @@
   <component id="pageLink" type="DirectLink">
     <binding name="listener" expression="listeners.selectPage"/>
     <binding name="parameters" expression="pageName"/>
+    <binding name="stateful" expression="false"/>
   </component>
     
   <component id="inputRequestDebug" type="Checkbox">
