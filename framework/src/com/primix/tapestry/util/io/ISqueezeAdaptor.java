@@ -1,6 +1,6 @@
-package com.primix.foundation;
+package com.primix.foundation.io;
 
-import java.util.*;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -31,43 +31,39 @@ import java.util.*;
  */
 
 /**
- *  An interface that defines an object that can store named propertys.  The names
- *  and the properties are Strings.
+ *  Interface which defines a class used to convert data for a specific
+ *  type into a String format (squeeze it),
+ *  or convert from a String back into a the type (unsqueeze).
  *
- *  @version $Id$
  *  @author Howard Ship
- *
+ *  @version $Id$
  */
- 
-public interface IPropertyHolder
+
+public interface ISqueezeAdaptor
 {
-	/**
-	 *  Returns a Collection of Strings, the names of all
-	 *  properties held by the receiver.  May return an empty collection.
-	 *
-	 */
-	 
-	public Collection getPropertyNames();
-	
-	/**
-	 *  Sets a named property.  The new value replaces the existing value, if any.
-	 *  Setting a property to null is the same as removing the property.
-	 *
-	 */
-	 
-	public void setProperty(String name, String value);
-	
-	/**
-	 *  Removes the named property, if present.
-	 *
-	 */
-	 
-	public void removeProperty(String name);
-	
-	/**
-	 *  Retrieves the named property, or null if the property is not defined.
-	 *
-	 */
-	 
-	public String getProperty(String name);
+    /**
+     *  Converts the data object into a String.
+     *
+     *  @throws IOException if the object can't be converted.
+     */
+
+    public String squeeze(DataSqueezer squeezer, Object data)
+    throws IOException;
+
+    /**
+     *  Converts a String back into an appropriate object.
+     *
+     *  @throws IOException if the String can't be converted.
+     *
+     */
+
+    public Object unsqueeze(DataSqueezer squeezer, String string)
+    throws IOException;
+
+    /**
+     *  Invoked to ask an adaptor to register itself to the squeezer.
+     *
+     */
+
+    public void register(DataSqueezer squeezer);
 }

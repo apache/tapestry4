@@ -96,7 +96,7 @@ public class SimpleApplication extends AbstractApplication
 
         for (i = 0; i < count; i++)
         {
-            pageName = (String)in.readObject();
+            pageName = in.readUTF();
 
             // Putting a cast here is not super-efficient, but keeps
             // us sane!
@@ -133,13 +133,15 @@ public class SimpleApplication extends AbstractApplication
             return;
         }
 
+        out.writeInt(recorders.size());
+
         i = recorders.entrySet().iterator();
 
         while (i.hasNext())
         {
             entry = (Map.Entry)i.next();
 
-            out.writeObject(entry.getKey());
+            out.writeUTF((String)entry.getKey());
             out.writeObject(entry.getValue());
         }
 

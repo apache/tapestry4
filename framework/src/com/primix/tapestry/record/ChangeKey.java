@@ -38,7 +38,7 @@ import java.io.Serializable;
  */
 
 
-public class ChangeKey implements Serializable
+public class ChangeKey
 {
 	String componentPath;
 	String propertyName;

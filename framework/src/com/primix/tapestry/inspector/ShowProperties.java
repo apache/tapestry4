@@ -155,41 +155,36 @@ implements ILifecycle
 
             oos.writeObject(page.getApplication());
 
-            oos.close();
-
             // Extract the application as an array of bytes.
 
             serializedApplication = bos.toByteArray();
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException("Could not serialized the application object.", ex);
+            throw new ApplicationRuntimeException("Could not serialize the application object.", ex);
         }
         finally
         {
-            if (oos != null)
-            {
-                try
-                {
-                    oos.close();
-                }
-                catch (IOException ex)
-                {
-                    // Ignore.
-                }
-            }
+            close(oos);
+            close(bos);
+        }
 
-            if (bos != null)
-            {
-                try
-                {
-                    bos.close();
-                }
-                catch (IOException ex)
-                {
-                    // Ignore.
-                }
-            }
+        // It would be nice to deserialize the application object now, but in
+        // practice, that fails due to class loader problems.
+    }
+
+    private void close(OutputStream stream)
+    {
+        if (stream == null)
+            return;
+
+        try
+        {
+            stream.close();
+        }
+        catch (IOException ex)
+        {
+            // Ignore.
         }
     }
 
@@ -224,6 +219,7 @@ implements ILifecycle
             writer = new CharArrayWriter();
 
             bos = new BinaryDumpOutputStream(writer);
+            bos.setBytesPerLine(32);
 
             bos.write(getSerializedApplication());
             bos.close();

@@ -39,13 +39,25 @@ import java.io.*;
  */
 
 
-public class MultiKey implements Serializable
+public class MultiKey
+implements Externalizable
 {
 	private static final int HASH_CODE_UNSET = -1;
 
 	private transient int hashCode = HASH_CODE_UNSET;
 
 	private Object[] keys;
+    
+    /**
+     *  Public no-arguments constructor needed to be compatible with
+     *  {@link Externalizable}; this leaves the new MultiKey in a
+     *  non-usable state and shouldn't be used by user code.
+     *
+     */
+
+    public MultiKey()
+    {
+    }
     
 	/**
 	*  Builds a <code>MultiKey</code> from an array of keys.  If the array is not
@@ -95,6 +107,9 @@ public class MultiKey implements Serializable
 
 		if (other == null)
 			return false;
+
+        if (keys == null)
+            throw new IllegalStateException("No keys for this MultiKey.");
 
 		// Would a hashCode check be worthwhile here?
 
@@ -146,7 +161,7 @@ public class MultiKey implements Serializable
 	*
 	*/
 
-		public int hashCode()
+	public int hashCode()
 	{
 		if (hashCode == HASH_CODE_UNSET)
 		{
@@ -162,14 +177,7 @@ public class MultiKey implements Serializable
 		return hashCode;
 	}
     	
-	private void readObject(ObjectInputStream in)
-	throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		hashCode = HASH_CODE_UNSET;
-	}
-    
+   
 	/**
 	*  Identifies all the keys stored by this <code>MultiKey</code>.
 	*
@@ -197,5 +205,36 @@ public class MultiKey implements Serializable
 
 		return buffer.toString();
 	}
+
+    /**
+     *  Writes a count of the keys, then writes each individual key.
+     *
+     */
+
+    public void writeExternal(ObjectOutput out)
+    throws IOException
+    {
+        out.writeInt(keys.length);
+
+        for (int i = 0; i < keys.length; i++)
+            out.writeObject(keys[i]);
+    }
+
+    /**
+     *  Reads the state previously written by {@link #writeExternal(ObjectOutput)}.
+     *
+     */
+
+    public void readExternal(ObjectInput in)
+    throws IOException, ClassNotFoundException
+    {
+        int count;
+
+        count = in.readInt();
+        keys = new Object[count];
+
+        for (int i = 0; i < count; i++)
+            keys[i] = in.readObject();
+    }
 }
 
