@@ -62,6 +62,7 @@ import junit.framework.AssertionFailedError;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
@@ -70,6 +71,7 @@ import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.FieldBinding;
 import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.binding.StaticBinding;
+import org.apache.tapestry.binding.StringBinding;
 import org.apache.tapestry.util.DefaultResourceResolver;
 
 /**
@@ -714,5 +716,17 @@ public class TestBindings extends TapestryTestCase
         IBinding b = new ListenerBinding(null, null, null, null);
 
         assertSame(b, b.getObject());
+    }
+    
+    /** @since 2.4 **/
+    
+    public void testStringBinding()
+    {
+    	IComponent c = new MockPage();
+    	
+    	StringBinding b = new StringBinding(c, "foo", null);
+    	
+    	assertSame(c, b.getComponent());
+    	assertEquals("foo", b.getKey());
     }
 }
