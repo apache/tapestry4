@@ -77,21 +77,21 @@ public interface IPage extends IComponent
 	public void setLocale(Locale value);
 
 	/**
-	 *  Returns the simple name of the page within its namespace.
+     *  Returns the fully qualified name of the page, including its
+     *  namespace prefix, if any.
 	 *
 	 **/
 
 	public String getName();
     
     /**
-     *  Returns the fully qualified name of the page, including its
-     *  namespace prefix, if any.
+     *  Returns the simple name of the page within its namespace.
      * 
      *  @since 2.3
      * 
      **/
     
-    public String getQualifiedName();
+    public String getPageName();
 
 	/**
 	 *  Returns a particular component from within the page.  The path is a dotted

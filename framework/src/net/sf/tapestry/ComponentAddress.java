@@ -11,8 +11,7 @@ import java.io.Serializable;
  * accessed via the {@link net.sf.tapestry.IRender} interface. 
  * It allows those components to serialize and
  * pass as a service parameter information about what component they have to 
- * talk to if control returns back to them and they have not been initialized 
- * in another way. 
+ * talk to if control returns back to them. 
  * 
  * <p>This situation often occurs when the component used via IRender contains
  * Direct or Action links.
@@ -24,36 +23,52 @@ import java.io.Serializable;
  */
 public class ComponentAddress implements Serializable
 {
-	private String m_strPageName;
-	private String m_strIdPath;
+	private String _pageName;
+	private String _idPath;
 
 	/**
 	 * Creates a new ComponentAddress object that carries the identification 
 	 * information of the given component (the page name and the ID path).
-	 * @param objComponent the component to get the address of
+	 * @param component the component to get the address of
 	 */
-	public ComponentAddress(IComponent objComponent)
+	public ComponentAddress(IComponent component)
 	{
-		init(objComponent);
+		init(component);
 	}
 
 	/**
 	 * Creates a new ComponentAddress using the given Page Name and ID Path
-	 * @param strPageName the Page Name of the component
-	 * @param strIdPath the ID Path of the component
+	 * @param pageName the name of the page that contains the component
+	 * @param idPath the ID Path of the component
 	 */
-	public ComponentAddress(String strPageName, String strIdPath)
+	public ComponentAddress(String pageName, String idPath)
 	{
-		m_strPageName = strPageName;
-		m_strIdPath = strIdPath;
+		_pageName = pageName;
+		_idPath = idPath;
 	}
 
-	private void init(IComponent objComponent)
+	/**
+	 * Creates a new ComponentAddress using the given Page Name and ID Path
+	 * relative on the provided Namespace
+	 * @param namespace the namespace of the page that contains the component
+	 * @param pageName the name of the page that contains the component
+	 * @param idPath the ID Path of the component
+	 */
+	public ComponentAddress(
+		INamespace namespace,
+		String pageName,
+		String idPath)
 	{
-		IPage objPage = objComponent.getPage();
+        _pageName = namespace.constructQualifiedName(pageName);
+		_idPath = idPath;
+	}
 
-		m_strPageName = objPage.getQualifiedName();
-		m_strIdPath = objComponent.getIdPath();
+	private void init(IComponent component)
+	{
+		IPage objPage = component.getPage();
+
+		_pageName = objPage.getName();
+		_idPath = component.getIdPath();
 	}
 
 	/**
@@ -61,10 +76,10 @@ public class ComponentAddress implements Serializable
 	 * @param objCycle the RequestCycle to use to locate the component
 	 * @return IComponent a component that has been initialized for the given RequestCycle
 	 */
-	public IComponent findComponent(IRequestCycle objCycle)
+	public IComponent findComponent(IRequestCycle cycle)
 	{
-		IPage objPage = objCycle.getPage(m_strPageName);
-		return objPage.getNestedComponent(m_strIdPath);
+		IPage objPage = cycle.getPage(_pageName);
+		return objPage.getNestedComponent(_idPath);
 	}
 	/**
 	 * Returns the idPath of the component.
@@ -72,7 +87,7 @@ public class ComponentAddress implements Serializable
 	 */
 	public String getIdPath()
 	{
-		return m_strIdPath;
+		return _idPath;
 	}
 
 	/**
@@ -81,7 +96,7 @@ public class ComponentAddress implements Serializable
 	 */
 	public String getPageName()
 	{
-		return m_strPageName;
+		return _pageName;
 	}
 
 	/**
@@ -89,7 +104,7 @@ public class ComponentAddress implements Serializable
 	 */
 	public int hashCode()
 	{
-		return m_strPageName.hashCode() * 31 + m_strIdPath.hashCode();
+		return _pageName.hashCode() * 31 + _idPath.hashCode();
 	}
 
 	/**

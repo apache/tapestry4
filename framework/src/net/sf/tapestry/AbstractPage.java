@@ -64,14 +64,14 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private String _name;
 
     /**
-     *  The qualified name of the page, which may be prefixed by the
+     *  The simple name of the page, which must not be prefixed by the
      *  namespace.
      * 
      *  @since 2.3
      * 
      **/
     
-    private String _qualifiedName;
+    private String _pageName;
     
     /**
      *  Set when the page is attached to the engine.
@@ -552,11 +552,18 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     /** @since 2.3 **/
     
-    public String getQualifiedName()
+    public String getPageName()
     {
-        if (_qualifiedName == null)
-            _qualifiedName = getNamespace().constructQualifiedName(_name);
+        if (_pageName == null) {
+            _pageName = _name;
+            
+            // this parsing has to be placed into a separate location
+            // there are private class implementating it in PageLoader and PageSource
+            int separatorIndex = _pageName.lastIndexOf(INamespace.SEPARATOR);
+            if (separatorIndex >= 0)
+                _pageName = _pageName.substring(separatorIndex + 1);
+        }
         
-        return _qualifiedName;
+        return _pageName;
     }
 }
