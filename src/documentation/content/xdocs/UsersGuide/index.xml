@@ -78,7 +78,7 @@ who wish to leverage Tapestry fully.
 </p>
 
 <p>
-Tapestry is currently in release 3.0, and has come a long way in the last couple
+Tapestry is currently in release 3.1, and has come a long way in the last couple
 of years.  Tapestry's focus is still on generating dynamic HTML pages, although there's plenty
 of support for XHTML, WML and other types of markup as well.
 </p>
@@ -285,7 +285,7 @@ Application Development) support in the form of <link href="template.html#templa
 <p>
  Tapestry 3.0 also saw the introduction of <em>line precise error reporting</em>, in which runtime errors are related back
  to relevant lines in the HTML template or specification file.  Further, 3.0 introduced 
- the &spec.property-specification; element, and the <em>bytecode enhancement</em> technology behind it.
+ the &spec.property; element, and the <em>bytecode enhancement</em> technology behind it.
 </p>
 
 <p>

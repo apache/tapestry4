@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
@@ -103,15 +104,18 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         try
         {
-            BeanInfo bi = Introspector.getBeanInfo(_baseClass);
-
-            PropertyDescriptor[] pds = bi.getPropertyDescriptors();
-
-            for (int i = 0; i < pds.length; i++)
+            synchronized (HiveMind.INTROSPECTOR_MUTEX)
             {
-                PropertyDescriptor pd = pds[i];
+                BeanInfo bi = Introspector.getBeanInfo(_baseClass);
 
-                _properties.put(pd.getName(), pd);
+                PropertyDescriptor[] pds = bi.getPropertyDescriptors();
+
+                for (int i = 0; i < pds.length; i++)
+                {
+                    PropertyDescriptor pd = pds[i];
+
+                    _properties.put(pd.getName(), pd);
+                }
             }
         }
         catch (IntrospectionException ex)
@@ -152,6 +156,15 @@ public class EnhancementOperationImpl implements EnhancementOperation
         classFab().addField(name, type);
     }
 
+    public void addField(String name, Class type, Object value)
+    {
+        classFab().addField(name, type);
+
+        int x = addConstructorParameter(type, value);
+
+        constructorBuilder().addln("{0} = ${1};", name, Integer.toString(x));
+    }
+
     public Class convertTypeName(String type)
     {
         Defense.notNull(type, "type");
@@ -166,6 +179,15 @@ public class EnhancementOperationImpl implements EnhancementOperation
         }
 
         return result;
+    }
+
+    public Class getPropertyType(String name)
+    {
+        Defense.notNull(name, "name");
+
+        PropertyDescriptor pd = getPropertyDescriptor(name);
+
+        return pd == null ? null : pd.getPropertyType();
     }
 
     public void validateProperty(String name, Class expectedType)
@@ -233,11 +255,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
     {
         String fieldName = "_class$" + clazz.getName().replace('.', '$');
 
-        addField(fieldName, Class.class);
-
-        int x = addConstructorParameter(Class.class, clazz);
-
-        constructorBuilder().addln("{0} = ${1};", fieldName, Integer.toString(x));
+        addField(fieldName, Class.class, clazz);
 
         _classReferences.put(clazz, fieldName);
 

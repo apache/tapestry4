@@ -101,4 +101,15 @@ class EnhanceMessages
     {
         return _formatter.format("missing-constructor", baseClass.getName());
     }
+
+    public static String locatedValueIsNull(String locator)
+    {
+        return _formatter.format("located-value-is-null", locator);
+    }
+
+    public static String incompatibleInjectType(String locator, Object value, Class propertyType)
+    {
+        return _formatter
+                .format("incompatible-inject-type", locator, value, propertyType.getName());
+    }
 }

@@ -23,8 +23,8 @@
 	<body>
 		<p>Anonymous CVS access is available as:</p>
 		<source><![CDATA[
-:pserver:anoncvs@cvs.apache.org:/home/cvspublic/jakarta-tapestry ]]> </source>
-		<p>In addition, the <link
+:pserver:anoncvs@cvs.apache.org:/home/cvspublic/]]> </source>
+		<p>The module is <code>jakarta-tapestry</code>. In addition, the <link
 			href="http://cvs.apache.org/viewcvs.cgi/jakarta-tapestry/">CVS repository
 			may be browsed online</link>.</p>
 	</body>

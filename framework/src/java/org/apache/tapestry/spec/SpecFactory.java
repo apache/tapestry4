@@ -20,30 +20,26 @@ import org.apache.tapestry.bean.MessageBeanInitializer;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- *  A Factory used by {@link org.apache.tapestry.parse.SpecificationParser} to create Tapestry
- *  domain objects.
+ * A Factory used by {@link org.apache.tapestry.parse.SpecificationParser}to create Tapestry domain
+ * objects.
+ * <p>
+ * The default implementation here creates the expected runtime instances of classes in packages:
+ * <ul>
+ * <li>org.apache.tapestry.spec</li>
+ * <li>org.apache.tapestry.bean</li>
+ * </ul>
+ * <p>
+ * This class is extended by Spindle - the Eclipse Plugin for Tapestry
  * 
- *  <p>
- *  The default implementation here creates the expected runtime
- *  instances of classes in packages:
- *  <ul>
- *  <li>org.apache.tapestry.spec</li>
- *  <li>org.apache.tapestry.bean</li>
- *  </ul>
- * 
- *  <p>
- *  This class is extended by Spindle - the Eclipse Plugin for Tapestry
- * 
- *  @author GWL
- *  @since 1.0.9
- * 
- **/
+ * @author GWL
+ * @since 1.0.9
+ */
 
 public class SpecFactory
 {
     /**
      * Creates a concrete instance of {@link ApplicationSpecification}.
-     **/
+     */
 
     public IApplicationSpecification createApplicationSpecification()
     {
@@ -51,53 +47,49 @@ public class SpecFactory
     }
 
     /**
-     *  Creates an instance of {@link LibrarySpecification}.
+     * Creates an instance of {@link LibrarySpecification}.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public ILibrarySpecification createLibrarySpecification()
     {
         return new LibrarySpecification();
     }
 
-	/**
-	 *  Returns a new instance of {@link IAssetSpecification}.
-	 * 
-	 *  @since 3.0
-	 * 
-	 **/
-	
-	public IAssetSpecification createAssetSpecification()
-	{
-		return new AssetSpecification();
-	}
+    /**
+     * Returns a new instance of {@link IAssetSpecification}.
+     * 
+     * @since 3.0
+     */
 
-	/**
-	 *  Creates a new instance of {@link IBeanSpecification}.
-	 * 
-	 *  @since 3.0
-	 * 
-	 **/
-	
-	public IBeanSpecification createBeanSpecification()
-	{
-		return new BeanSpecification();
-	}
-
-	public IBindingSpecification createBindingSpecification() 
-	{
-		return new BindingSpecification();
-	}
+    public IAssetSpecification createAssetSpecification()
+    {
+        return new AssetSpecification();
+    }
 
     /**
-     *  Creates a new concrete instance of {@link IListenerBindingSpecification} for the
-     *  given language (which is option) and script.
+     * Creates a new instance of {@link IBeanSpecification}.
      * 
-     *  @since 3.0
-     *  
-     **/
+     * @since 3.0
+     */
+
+    public IBeanSpecification createBeanSpecification()
+    {
+        return new BeanSpecification();
+    }
+
+    public IBindingSpecification createBindingSpecification()
+    {
+        return new BindingSpecification();
+    }
+
+    /**
+     * Creates a new concrete instance of {@link IListenerBindingSpecification}for the given
+     * language (which is option) and script.
+     * 
+     * @since 3.0
+     */
 
     public IListenerBindingSpecification createListenerBindingSpecification()
     {
@@ -106,7 +98,7 @@ public class SpecFactory
 
     /**
      * Creates a concrete instance of {@link IComponentSpecification}.
-     **/
+     */
 
     public IComponentSpecification createComponentSpecification()
     {
@@ -115,7 +107,7 @@ public class SpecFactory
 
     /**
      * Creates a concrete instance of {@link IContainedComponent}.
-     **/
+     */
 
     public IContainedComponent createContainedComponent()
     {
@@ -124,58 +116,60 @@ public class SpecFactory
 
     /**
      * Creates a concrete instance of {@link ParameterSpecification}.
-     **/
+     */
 
     public IParameterSpecification createParameterSpecification()
     {
         return new ParameterSpecification();
     }
 
-	/**
-	 *  Creates a new instance of {@link ExpressionBeanInitializer}.
-	 * 
-	 *  @since 3.0
-	 * 
-	 **/
-	
-	public IBeanInitializer createExpressionBeanInitializer(ExpressionEvaluator evaluator)
-	{
-		return new ExpressionBeanInitializer(evaluator);
-	}
+    /**
+     * Creates a new instance of {@link ExpressionBeanInitializer}.
+     * 
+     * @since 3.0
+     */
 
-	/**
-	 *  Returns a new instance of {@link MessageBeanInitializer}.
-	 * 
-	 *  @since 3.0
-	 * 
-	 **/
-	
-	public IBeanInitializer createMessageBeanInitializer()
-	{
-		return new MessageBeanInitializer();
-	}
+    public IBeanInitializer createExpressionBeanInitializer(ExpressionEvaluator evaluator)
+    {
+        return new ExpressionBeanInitializer(evaluator);
+    }
 
     /**
-     *  Creates a concrete instance of {@link org.apache.tapestry.spec.IExtensionSpecification}.
+     * Returns a new instance of {@link MessageBeanInitializer}.
      * 
-     *  @since 2.2
+     * @since 3.0
+     */
+
+    public IBeanInitializer createMessageBeanInitializer()
+    {
+        return new MessageBeanInitializer();
+    }
+
+    /**
+     * Creates a concrete instance of {@link org.apache.tapestry.spec.IExtensionSpecification}.
      * 
-     **/
+     * @since 2.2
+     */
 
     public IExtensionSpecification createExtensionSpecification(ExpressionEvaluator evaluator)
     {
         return new ExtensionSpecification(evaluator);
     }
-    
+
     /**
-     *  Creates a concrete instance of {@link org.apache.tapestry.spec.IPropertySpecification}.
+     * Creates a concrete instance of {@link org.apache.tapestry.spec.IPropertySpecification}.
      * 
-     *  @since 3.0
-     * 
-     **/
-    
+     * @since 3.0
+     */
+
     public IPropertySpecification createPropertySpecification()
     {
-    	return new PropertySpecification();
+        return new PropertySpecification();
+    }
+
+    /** @since 3.1 */
+    public InjectSpecification createInjectSpecification()
+    {
+        return new InjectSpecificationImpl();
     }
 }

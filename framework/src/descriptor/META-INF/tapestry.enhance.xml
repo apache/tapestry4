@@ -73,15 +73,21 @@
   
   <contribution configuration-id="EnhancementWorkers">
     
+    <!-- These can actually run in any order, so we don't specify before or after. -->
+    
     <worker id="specified-property" object="service:SpecifiedPropertyWorker"/>
-    <worker id="parameter" after="specified-property" object="service:ParameterPropertyWorker"/>
+    <worker id="parameter" object="service:ParameterPropertyWorker"/>
+    <worker id="inject" object="service:InjectWorker"/>
+    
+    <!-- This needs to be absolutely last -->
+    
     <worker id="force-non-abstract" after="*" object="instance:org.apache.tapestry.enhance.ForceNonAbstractWorker"/>
     
   </contribution>
   
   <service-point id="SpecifiedPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
     
-    Finds specified properties (from the specification) and constructs the corresponding properties.
+    Finds specified properties (from the specification) and constructs the corresponding properties in the enhanced class.
     
     <invoke-factory>
       <construct class="org.apache.tapestry.enhance.SpecifiedPropertyWorker"/>
@@ -90,10 +96,22 @@
   
   <service-point id="ParameterPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
     
-    Adds properties for connected parameters.
+    Adds properties for connected parameters to the enhanced class.
     
     <invoke-factory>
       <construct class="org.apache.tapestry.enhance.ParameterPropertyWorker"/>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="InjectWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Injects objects obtained from HiveMind into properties of the enhanced class.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectWorker">
+        <set-service property="provider" service-id="tapestry.InjectedValueProvider"/>
+      </construct>
     </invoke-factory>
     
   </service-point>

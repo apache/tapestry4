@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -14,16 +14,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
+	
+<component-specification>
 
-<!DOCTYPE tabs PUBLIC "-//APACHE//DTD Cocoon Documentation Tab V1.0//EN" "http://apache.org/forrest/dtd/tab-cocoon-v10.dtd">
-
-<tabs software="Tapestry"
-  title="Tapestry Project"
-  copyright="Apache Software Foundation"
-  xmlns:xlink="http://www.w3.org/1999/xlink">
-
-  <tab label="Tapestry Project" href="index.html" id="project"/>
-  <tab label="Users Guide" dir="UsersGuide"  id="UsersGuide"/>
-  <tab label="Framework" dir="tapestry" id="tapestry"/>
-
- </tabs>
+  <inject name="fred" object="flintstone"/>
+  <inject name="barney" object="rubble"/>
+  
+</component-specification>

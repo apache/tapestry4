@@ -377,6 +377,10 @@ currently used in Tapestry:
 	of an abstract class as abstract, even if they are, in fact, concrete. This causes spurious errors
 	about unimplemented abstract methods. Specifying true for this property
 	disables checks for unimplemented abstract methods.
+  
+  <warning>
+    Support for this property has been temporarily removed from release 3.1.
+  </warning>
   </td>
 </tr>
 
