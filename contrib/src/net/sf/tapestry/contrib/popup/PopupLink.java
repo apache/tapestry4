@@ -217,15 +217,7 @@ public class PopupLink extends BaseComponent implements PageDetachListener
                      + " componentSpecification: " + specification);
         }
 
-        if (this instanceof PageDetachListener)
-        {
-            getPage().addPageDetachListener((PageDetachListener) this);
-        }
-
-        if (this instanceof PageRenderListener)
-        {
-            getPage().addPageRenderListener((PageRenderListener) this);
-        }
+        getPage().addPageDetachListener(this);
 
         super.finishLoad(cycle, loader, specification);
     }
