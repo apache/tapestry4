@@ -6,7 +6,7 @@
 	
 <specification class="net.sf.tapestry.components.InsertBlock" 
 	allow-body="no" 
-	allow-informal-parameters="no">
+	allow-informal-parameters="yes">
 	
   <parameter name="block" 
   	java-type="net.sf.tapestry.components.Block"

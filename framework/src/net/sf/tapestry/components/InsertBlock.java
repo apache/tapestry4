@@ -26,6 +26,7 @@
 package net.sf.tapestry.components;
 
 import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
@@ -46,6 +47,14 @@ import net.sf.tapestry.RequestCycleException;
  *  via InsertBlock will <em>not</em> be executed.  This specifically
  *  affects the methods of the {@link net.sf.tapestry.event.PageRenderListener} 
  *  interface.
+ * 
+ *  <p>Before rendering its {@link Block}, InsertBlock will set itself as the 
+ *  Block's inserter, and will reset the inserter after the {@link Block} is 
+ *  rendered.  This gives the components contained in the {@link Block} access
+ *  to its inserted environment via the InsertBlock.  In particular this allows
+ *  the contained components to access the informal parameters of the InsertBlock
+ *  which effectively allows parameters to be passed to the components contained
+ *  in a Block.
  *
  * <p>
  * <table border=1>
@@ -69,7 +78,7 @@ import net.sf.tapestry.RequestCycleException;
  *
  *  </table>
  
- * <p>Informal parameters are not allowed.  The component may not have a body.
+ * <p>Informal parameters are allowed.  The component may not have a body.
  *
  * @author Howard Lewis Ship
  * @version $Id$
@@ -82,15 +91,23 @@ public class InsertBlock extends AbstractComponent
 
     /**
      *  If block is not null,
-     *  then {@link net.sf.tapestry.IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
-     *  is invoked on it.
+     *  then the block's inserter is set (to this),
+     * {@link net.sf.tapestry.IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
+     *  is invoked on it, and the Block's inserter is set back to its previous state.
      *
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
          if (block != null)
+         {
+         	// make a copy of the inserter so we don't overwrite completely
+         	IComponent previousInserter = block.getInserter();
+         	block.setInserter(this);
             block.renderWrapped(writer, cycle);
+            // reset the inserter as it was before we changed it
+            block.setInserter(previousInserter);
+         }
     }
     
     public Block getBlock()
