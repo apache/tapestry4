@@ -132,8 +132,16 @@ public class TextField extends AbstractFormComponent
 
 	private IBinding disabledBinding;
 
+    private String name;
+
 	private static final String[] reservedNames =
     	{ "type", "size", "maxlength", "value" };
+
+
+    public String getName()
+    {
+        return name;
+    }
 
 	public IBinding getDisabledBinding()
 	{
@@ -175,7 +183,6 @@ public class TextField extends AbstractFormComponent
 	throws RequestCycleException
 	{
 		boolean rewinding;
-		String name;
 		IActionListener listener;
 		String value;
 		boolean disabled = false;
@@ -213,10 +220,10 @@ public class TextField extends AbstractFormComponent
             return;
 		}
 
-			if (staticHidden)
-				hidden = hiddenValue;
-			else if (hiddenBinding != null)
-				hidden = hiddenBinding.getBoolean();
+		if (staticHidden)
+			hidden = hiddenValue;
+		else if (hiddenBinding != null)
+			hidden = hiddenBinding.getBoolean();
 
 
 		writer.beginOrphan("input");

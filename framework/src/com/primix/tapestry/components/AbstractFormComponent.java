@@ -64,6 +64,27 @@ public abstract class AbstractFormComponent
 
 		return result;
 	}
+
+    /**
+     *  Returns the name of the component, which is automatically generated
+     *  during renderring.
+     *
+     *  <p>This value is set inside the component's render method and is
+     *  <em>not</em> cleared.  If the component is inside a {@link Foreach}, the
+     *  value returned is the most recent name generated for the component.
+     *
+     *  <p>This property is made available to facilitate writing JavaScript that
+     *  allows components (in the client web browser) to interact.  It's just a bit
+     *  of a hack, but is quite necessary.
+     *
+     *  <p>In practice, a {@link Delegator} component is used to transfer renderring
+     *  control to custom Java code that gets the name of the form and the particular 
+     *  components, and works with the {@link Body} component to get the
+     *  JavaScript code inserted and referenced.
+     *
+     */
+
+    abstract public String getName();
 }
 
 

@@ -108,9 +108,6 @@ public class RadioGroup extends AbstractFormComponent
 
     public String getName()
     {
-        if (!rendering)
-            throw new RenderOnlyPropertyException(this, "name");
-
         return name;
     }
 
@@ -208,7 +205,6 @@ public class RadioGroup extends AbstractFormComponent
         {
             rendering = false;
             selections = null;
-            name = null;
         }
 
         cycle.removeAttribute(ATTRIBUTE_NAME);
