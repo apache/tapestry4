@@ -16,7 +16,29 @@
 <ul>
 <li>Package the workbench.war standalone (such that it includes all necessary libraries).</li>
 <li>Fix a case where the taglib would generate the wrong URL (under Tomcat).</li>	
+<li>Changed the underlying library for bytecode enhancement to Javassist</li>
+<li>The 'default-value' attribute has been added to the definition of component parameters.  
+It specifies the value of the parameter if it is not bound.</li>
+<li>The 'auto' parameters no longer need to be required if they have a default-value defined.</li>
+<li>The HTML tag with which a component is inserted in a template is now accessible via the 
+'templateTag' parameter. This parameter is automatically added to each component and has a
+default value of null.</li>
+<li>The <a href="doc/ComponentReference/Any.html">Any</a> component now renders itself 
+with the tag with which it was inserted if 'element' is undefined.</li>
+<li>The character encoding used for a component template can now be defined using the  
+property 'org.apache.tapestry.template-encoding'. The property is localizable, so you can define 
+'org.apache.tapestry.template-encoding_ru' to specify the encoding for all Russian templates, for example.</li>
+<li>The character encoding used to generate the response can now be specified
+using the property 'org.apache.tapestry.output-encoding'. It is UTF-8 by default.</li>
+<li>The <a href="doc/ComponentReference/Shell.html">Shell</a> component now defines an http-equiv tag with the content type of the response.</li>
 </ul>
+
+<pre>
+[ 20954 ] Missing component InsertRenderer in Contrib
+[ 21002 ] CodeGenerationException uses JDK 1.4 API 
+[ 21073 ] "isXXXXX" getter for boolean properties in components missin
+[ 21145 ] array properties and parameters do not work 
+</pre>
 
 <h4>Non-backwards compatible changes:</h4>
 
