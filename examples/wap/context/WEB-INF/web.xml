@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!--$Id$ -->
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+ "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+	<display-name>Tapestry WAP Examples</display-name>
+	<servlet>
+		<servlet-name>hello</servlet-name>
+        <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
+	</servlet>
+
+     <servlet>
+        <servlet-name>animate</servlet-name>
+        <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
+    </servlet>
+
+     <servlet>
+        <servlet-name>quiz</servlet-name>
+        <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
+        <init-param>
+            <param-name>easyquestionsfile</param-name>
+            <param-value>easyquestions.txt</param-value>
+        </init-param>
+         <init-param>
+            <param-name>mediumquestiosfile</param-name>
+            <param-value>mediumquestions.txt</param-value>
+        </init-param>
+        <init-param>
+            <param-name>hardquestionsfile</param-name>
+            <param-value>hardquestions.txt</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/hello/app</url-pattern>
+   </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>animate</servlet-name>
+        <url-pattern>/animate/app</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>quiz</servlet-name>
+        <url-pattern>/quiz/app</url-pattern>
+    </servlet-mapping>
+
+    <mime-mapping>
+        <extension>wml</extension>
+        <mime-type>text/vnd.wap.wml</mime-type>
+    </mime-mapping>
+
+    <mime-mapping>
+        <extension>wmls</extension>
+        <mime-type>text/vnd.wap.wmlscript</mime-type>
+    </mime-mapping>
+
+    <mime-mapping>
+        <extension>wbmp</extension>
+        <mime-type>image/vnd.wap.wbmp</mime-type>
+    </mime-mapping>
+
+	<welcome-file-list>
+        <welcome-file>index.wml</welcome-file>
+	</welcome-file-list>
+</web-app>

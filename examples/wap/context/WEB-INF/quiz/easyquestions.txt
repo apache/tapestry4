@@ -1,0 +1,11 @@
+Spiders can regrow missing legs.;1;true;false
+Elk can't swim.;2;true;false
+African elephants are bigger than Indian.;2;false;true
+Tigers are the biggest cat in the world.;1;true;false
+Where do penguins mainly live?;2;The Arctic;The Antarctic
+Baboons travel mostly alone.;2;true;false
+Moles live in trees.;2;true;false
+Bats use a kind of sonar to find food.;1;true;false
+Some snakes have ear lobes.;2;true;false
+A dolphin sleeps only with half a brain at a time.;1;true;false
+Stingray is a kind of bee.;2;true;false

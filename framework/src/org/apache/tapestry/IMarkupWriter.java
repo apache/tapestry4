@@ -62,7 +62,7 @@ package org.apache.tapestry;
  *  their entity equivalents, '&amp;lt;' and '&amp;gt;') as well as assisting
  *  with nested elements, closing tags, etc.
  *
- *  @author Howard Ship
+ *  @author Howard Ship, David Solis
  *  @version $Id$
  **/
 
@@ -78,6 +78,16 @@ public interface IMarkupWriter
     public void attribute(String name, int value);
 
     /**
+     * Writes a boolean attribute into the currently open tag.
+     *
+     * @throws IllegalStateException if there is no open tag.
+     *
+     * @since 2.4
+     **/
+
+    public void attribute(String name, boolean value);
+
+    /**
      * Writes an attribute into the most recently opened tag. This must be called after
      * {@link #begin(String)}
      * and before any other kind of writing (which closes the tag).
@@ -89,6 +99,17 @@ public interface IMarkupWriter
      **/
 
     public void attribute(String name, String value);
+
+    /**
+     * Similar to {@link #attribute(String, String)} but no escaping of invalid elements
+     * is done for the value.
+     * 
+     * @throws IllegalStateException if there is no open tag.
+     *
+     * @since 2.4
+     **/
+
+    public void attributeRaw(String name, String value);
 
     /**
      * Closes any existing tag then starts a new element. The new element is pushed

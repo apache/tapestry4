@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="mock" root="context51"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+  	</servlet>
+
+    <request>
+        <parameter name="service" value="page/Timer"/>
+
+        <assert-output name="Timer component">
+            <![CDATA[
+            <timer name="timer_one" value="20"/>
+            ]]>
+        </assert-output>
+
+        <assert-output name="Timer component">
+            <![CDATA[
+            <timer name="timer_two" value="0"/>
+            ]]>
+        </assert-output>
+
+    </request>
+
+</mock-test>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <card>
+        <p>
+            <input jwcid="@wml:Input" name="fname" value="Ronnie"/>
+            <input jwcid="@wml:Input" name="lname" format="ognl:null" emptyok="ognl:false" value="ognl:null"/>
+        </p>
+    </card>
+
+</wml>

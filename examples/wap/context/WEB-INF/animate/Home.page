@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification class="org.apache.tapestry.wml.Deck">
+
+    <context-asset name="first" path="images/img1.wbmp"/>
+    <context-asset name="second" path="images/img2.wbmp"/>
+    <context-asset name="third" path="images/img3.wbmp"/>
+    <context-asset name="fourth" path="images/img4.wbmp"/>
+
+</page-specification>

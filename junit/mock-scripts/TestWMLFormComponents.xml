@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="mock" root="context51"/>
+
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+        <init-parameter
+            name="org.apache.tapestry.application-specification"
+            value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+    </servlet>
+
+    <request>
+        <parameter name="service" value="page/Input"/>
+
+        <assert-output name="Input component">
+            <![CDATA[
+            <input type="text" name="fname" value="Ronnie"/>
+            ]]>
+        </assert-output>
+
+        <assert-output name="Input component">
+            <![CDATA[
+            <input type="text" name="lname"/>
+            ]]>
+        </assert-output>
+
+    </request>
+
+    <request>
+        <parameter name="service" value="page/NoGo"/>
+
+        <assert-output name="Card">
+            <![CDATA[
+            <card id="Exception" title="Exception">
+            ]]>
+        </assert-output>
+
+        <assert-output name="Exception Name">
+        org.apache.tapestry.ApplicationRuntimeException
+        </assert-output>
+
+        <assert-output name="Exception Messge">
+        This postfield must be contained within a Go.
+        </assert-output>
+
+        <assert-output name="Component Id">
+        [NoGo/orphan]
+        </assert-output>
+
+    </request>
+
+    <request>
+        <parameter name="service" value="page/Rewind"/>
+
+        <assert-output name="Card">
+            <![CDATA[
+            <card id="Postfield">
+            ]]>
+        </assert-output>
+
+        <assert-output-matches name="Go Parameter Names" subgroup="1">
+            <![CDATA[
+            <postfield name="(.*?)".*?/>
+            ]]>
+            <match>service</match>
+            <match>sp</match>
+            <match>Go0</match>
+            <match>u</match>
+            <match>service</match>
+            <match>Go1</match>
+            <match>v</match>
+        </assert-output-matches>
+
+        <assert-output-matches name="Go Parameter Values" subgroup="1">
+            <![CDATA[
+            <postfield .*?value="(.*?)"/>
+            ]]>
+            <match>direct/0/Rewind/g</match>
+            <match>S0</match>
+            <match>u</match>
+            <match>$(u)</match>
+            <match>action/0/Rewind/1/h</match>
+            <match>v</match>
+            <match>$(v)</match>
+        </assert-output-matches>
+
+    </request>
+
+    <request>
+        <parameter name="service" value="action/0/Rewind/1/h"/>
+
+        <parameter name="Go1" value="v"/>
+        <parameter name="v" value="VVV"/>
+
+        <assert-output name="Card">
+            <![CDATA[
+            <card title="Result" id="Result">
+            ]]>
+        </assert-output>
+
+        <assert-output-matches name="Result Values" subgroup="1">
+            <![CDATA[
+            <strong>(.*?)</strong>
+            ]]>
+            <match>VVV</match>
+            <match>VVV</match>
+        </assert-output-matches>
+
+    </request>
+
+    <request>
+        <parameter name="service" value="direct/0/Rewind/g"/>
+
+        <parameter name="sp" value="S0"/>
+        <parameter name="Go0" value="v"/>
+        <parameter name="u" value="VVV"/>
+
+        <assert-output name="Card">
+            <![CDATA[
+            <card id="StaleLink" title="StaleLink">
+            ]]>
+        </assert-output>
+
+        <assert-output name="Cause">
+        Rewind of form Rewind/g expected allocated id #1 to be 'v', but was 'u' (requested by component Rewind/u).
+        </assert-output>
+
+    </request>
+
+</mock-test>
+

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+
+<wml>
+
+    <card jwcid="@wml:Card" id="Select">
+        <p>
+            Please tell us about:
+            <select jwcid="select@wml:Select" value="ognl:0" title="main">
+                <p jwcid="@wml:GenericLink" anchor="sexcard" renderer="ognl:@org.apache.tapestry.wml.OptionRenderer@SHARED_INSTANCE" href="" value="0"> Your sex: $sex </p>
+                <p jwcid="@wml:GenericLink" anchor="incomecard" renderer="ognl:@org.apache.tapestry.wml.OptionRenderer@SHARED_INSTANCE" href="" value="1"> Your income: $income </p>
+                <option jwcid="@wml:Option" onpick="#hobbiescard" value="2"> Your hobbies </option>
+            </select>
+        </p>
+        <do type="accept">
+            <go jwcid="go@wml:Go" listener="ognl:listeners.submit" direct="ognl:false" href="">
+                <postfield jwcid="sex@wml:Postfield" name="sex" value="ognl:sex"/>
+                <postfield jwcid="income@wml:Postfield" name="income" value="ognl:income"/>
+                <postfield jwcid="hobbies@wml:Postfield" name="hobbies" value="ognl:hobbies"/>
+            </go>
+        </do>
+    </card>
+
+    <!-- sex data entry -->
+
+    <card jwcid="@wml:Card" id="sexcard">
+        <p>
+            What is your sex?
+            <select jwcid="sexSelect@wml:Select" name="ognl:components.sex.varName" title="sex">
+                <option jwcid="@wml:Option" value="ognl:@org.apache.tapestry.junit.mock.wml.Select@MALE_OPTION"> Male </option>
+                <option jwcid="@wml:Option" value="ognl:@org.apache.tapestry.junit.mock.wml.Select@FEMALE_OPTION"> Female </option>
+            </select>
+        </p>
+    </card>
+
+    <!-- income data entry -->
+
+    <card jwcid="@wml:Card" id="incomecard">
+        <p>
+            How much do you make?
+            <select jwcid="incomeSelect@wml:Select" name="ognl:components.income.varName" title="income">
+                <option jwcid="@wml:Option" value="$10-50K"> $$10-25K </option>
+                <option jwcid="@wml:Option" value="$25-50K"> $$25-50K </option>
+                <option jwcid="@wml:Option" value="$50-100K"> $$50-100K </option>
+                <option jwcid="@wml:Option" value="Over $100K"> Over $$100K </option>
+            </select>
+        </p>
+    </card>
+
+    <!-- hobbies data entry -->
+
+    <card jwcid="@wml:Card" id="hobbiescard">
+        <p>
+            Do you have hobbies?
+            <select jwcid="hobbiesSelect@wml:Select" name="ognl:components.hobbies.varName" multiple="true" title="hobbies">
+
+                <optgroup title="Sports">
+                    <option jwcid="@wml:Option" value="Skiing">    Skiing </option>
+                    <option jwcid="@wml:Option" value="Tennis">    Tennis </option>
+                    <option jwcid="@wml:Option" value="Skydiving"> Skydiving </option>
+                </optgroup>
+
+                <optgroup title="Culture">
+                    <option jwcid="@wml:Option" value="Books"> Books </option>
+                    <option jwcid="@wml:Option" value="Plays"> Plays </option>
+                    <option jwcid="@wml:Option" value="Opera"> Opera </option>
+                    <option jwcid="@wml:Option" value="Films"> Films </option>
+                </optgroup>
+
+                <optgroup title="Social Activities">
+                    <option jwcid="@wml:Option" value="Food/Wine"> Food/Wine </option>
+                    <option jwcid="@wml:Option" value="Dancing">   Dancing </option>
+                    <option jwcid="@wml:Option" value="Traveling"> Traveling </option>
+                </optgroup>
+            </select>
+        </p>
+    </card>
+
+    <card jwcid="@wml:Card" id="unreachable">
+        <p>
+            <select>
+                <option jwcid="@wml:Option" value="ognl:null"></option>
+            </select>
+        </p>
+    </card>
+</wml>

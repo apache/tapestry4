@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="mock" root="context51"/>
+
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+        <init-parameter
+            name="org.apache.tapestry.application-specification"
+            value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+    </servlet>
+
+    <request>
+        <parameter name="service" value="page/NestedCard"/>
+
+        <assert-output name="Card">
+            <![CDATA[
+            <card id="Exception" title="Exception">
+            ]]>
+        </assert-output>
+
+        <assert-output name="Exception Name">
+        org.apache.tapestry.ApplicationRuntimeException
+        </assert-output>
+
+        <assert-output name="Exception Messge">
+        Cards may not be nested.
+        </assert-output>
+
+        <assert-output name="Component Id">
+        [NestedCard/nestedCard]
+        </assert-output>
+
+    </request>
+
+</mock-test>
+

@@ -21,6 +21,7 @@
   <path id="compile-tests.classpath">
     <path refid="base.classpath"/>
     <pathelement location="${root.lib.dir}/${framework.jar}"/>    
+    <pathelement location="${root.lib.dir}/${wml.jar}"/>
   </path>
   
   <path id="base.classpath">

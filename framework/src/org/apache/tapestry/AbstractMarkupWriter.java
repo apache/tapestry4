@@ -274,6 +274,28 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     }
 
     /**
+     *  Writes a boolean attribute into the currently open tag.
+     *
+     *  <p>TBD: Validate that name is legal.
+     *
+     *  @throws IllegalStateException if there is no open tag.
+     *
+     *  @since 2.4
+     *
+     **/
+
+    public void attribute(String name, boolean value)
+    {
+        checkTagOpen();
+
+        _writer.print(' ');
+        _writer.print(name);
+        _writer.print("=\"");
+        _writer.print(value);
+        _writer.print('"');
+    }
+
+    /**
      *  Writes an attribute into the most recently opened tag. This must be called after
      *  {@link #begin(String)}
      *  and before any other kind of writing (which closes the tag).
@@ -326,6 +348,34 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
         _writer.print('"');
 
+    }
+
+    /**
+      *  Similar to {@link #attribute(String, String)} but no escaping of invalid elements
+      *  is done for the value.
+      * 
+      *  @throws IllegalStateException if there is no open tag.
+      *
+      *  @since 2.4
+      *
+      **/
+    public void attributeRaw(String name, String value)
+    {
+        if (value == null)
+        {
+            attribute(name, value);
+            return;
+        }
+
+        checkTagOpen();
+
+        _writer.print(' ');
+
+        _writer.print(name);
+
+        _writer.print("=\"");
+        _writer.print(value);
+        _writer.print('"');
     }
 
     /**

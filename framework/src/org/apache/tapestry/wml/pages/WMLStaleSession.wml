@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <head>
+        <meta http-equiv="Cache-Control" content="must-revalidate" forua="true"/>
+        <meta http-equiv="Cache-Control" content="no-cache" forua="true"/>
+    </head>
+
+	<card id="StaleSession" title="StaleSession">
+		<p>Your session has timed out.</p>			
+		<p>Web applications store information about what you are doing on the server.  This information
+		is called the <em>session</em>.</p>
+		
+		<p>Web servers must track many, many sessions.  If you
+		are inactive for a long enough time (usually, a few minutes), this information is discarded to
+		make room for active users.</p>
+		
+		<p>At this point you may <b><a jwcid="restart">restart</a></b> the session to continue.</p>
+	</card>
+</wml>

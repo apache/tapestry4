@@ -67,7 +67,7 @@ import org.apache.tapestry.engine.ILink;
  *  does nothing special.  Can be used as a base class to provide
  *  additional handling.
  *
- *  @author Howard Lewis Ship
+ *  @author Howard Lewis Ship, David Solis
  *  @version $Id$
  *  @since 2.4
  **/
@@ -93,14 +93,20 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, linkComponent);
 
+        boolean hasBody = getHasBody();
+
         boolean disabled = linkComponent.isDisabled();
 
         if (!disabled)
         {
             ILink l = linkComponent.getLink(cycle);
 
-            writer.begin("a");
-            writer.attribute("href", constructURL(l, linkComponent.getAnchor(), cycle));
+            if (hasBody)
+                writer.begin(getElement());
+            else
+                writer.beginEmpty(getElement());
+
+            writer.attribute(getUrlAttribute(), constructURL(l, linkComponent.getAnchor(), cycle));
 
             beforeBodyRender(writer, cycle, linkComponent);
 
@@ -113,7 +119,8 @@ public class DefaultLinkRenderer implements ILinkRenderer
         else
             wrappedWriter = writer;
 
-        linkComponent.renderBody(wrappedWriter, cycle);
+        if (hasBody)
+            linkComponent.renderBody(wrappedWriter, cycle);
 
         if (!disabled)
         {
@@ -121,11 +128,16 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
             linkComponent.renderAdditionalAttributes(writer, cycle);
 
-            wrappedWriter.close();
+            if (hasBody)
+            {
+                wrappedWriter.close();
 
-            // Close the <a> tag
+                // Close the <element> tag
 
-            writer.end();
+                writer.end();
+            }
+            else
+                writer.closeTag();
         }
 
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
@@ -168,5 +180,22 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
     protected void afterBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
     {
+    }
+
+    /** @since 2.4 **/
+
+    protected String getElement()
+    {
+        return "a";
+    }
+
+    protected String getUrlAttribute()
+    {
+        return "href";
+    }
+
+    protected boolean getHasBody()
+    {
+        return true;
     }
 }

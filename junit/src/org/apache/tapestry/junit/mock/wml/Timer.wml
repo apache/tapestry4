@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- $Id -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <card>
+        <p>
+            <timer jwcid="@wml:Timer" name="timer_one" value="ognl:20"/>
+            <timer jwcid="@wml:Timer" name="timer_two" value="ognl:null"/>
+        </p>
+    </card>
+
+</wml>

@@ -463,7 +463,7 @@ public abstract class AbstractEngine
     {
         try
         {
-            IPage exceptionPage = cycle.getPage(EXCEPTION_PAGE);
+            IPage exceptionPage = cycle.getPage(getExceptionPageName());
 
             setProperty(exceptionPage, "exception", cause);
 
@@ -1013,11 +1013,12 @@ public abstract class AbstractEngine
         ResponseOutputStream output)
         throws IOException, ServletException
     {
-        IPage page = cycle.getPage(STALE_LINK_PAGE);
+        String staleLinkPageName = getStaleLinkPageName();
+        IPage page = cycle.getPage(staleLinkPageName);
 
         setProperty(page, "message", ex.getMessage());
 
-        redirect(STALE_LINK_PAGE, cycle, output, ex);
+        redirect(staleLinkPageName, cycle, output, ex);
     }
 
     /**
@@ -1041,7 +1042,7 @@ public abstract class AbstractEngine
         ResponseOutputStream output)
         throws IOException, ServletException
     {
-        redirect(STALE_SESSION_PAGE, cycle, output, ex);
+        redirect(getStaleSessionPageName(), cycle, output, ex);
     }
 
     /**
@@ -1937,6 +1938,27 @@ public abstract class AbstractEngine
     public IPropertySource getPropertySource()
     {
         return _propertySource;
+    }
+
+	/** @since 2.4 **/
+
+	protected String getExceptionPageName()
+	{
+		return EXCEPTION_PAGE;
+    }
+
+	/** @since 2.4 **/
+
+	protected String getStaleLinkPageName()
+	{
+		return STALE_LINK_PAGE;
+	}
+
+	/** @since 2.4 **/
+
+	protected String getStaleSessionPageName()
+	{
+		return STALE_SESSION_PAGE;
     }
 
     /**
