@@ -39,13 +39,13 @@
 <component id="form" type="Form">
   <binding name="listener" property-path="listeners.addStock"/>
   <field-binding name="direct" field-name="Boolean.FALSE"/>
+  <binding name="delegate" property-path="beans.delegate"/>
 </component>
 
 <component id="inputTickerId" type="ValidField">
   <binding name="value" property-path="tickerId"/>
   <static-binding name="displayName">Ticker ID</static-binding>
-  <binding name="delegate" property-path="beans.delegate"/>
-    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
+  <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
   <static-binding name="displayWidth">4</static-binding>
   <static-binding name="maximumLength">4</static-binding>
   <static-binding name="title">

@@ -9,7 +9,7 @@
   
   <component id="showError" type="ShowError"/>
   <component id="showMessage" type="ShowMessage"/>
-  <component id="searchForm" type="Form">
+  <component id="searchForm" type="Form"> 
     <binding name="listener" property-path="listeners.search"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>

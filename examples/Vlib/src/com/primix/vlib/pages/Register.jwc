@@ -17,6 +17,7 @@
   
   <component id="form" type="Form">
     <binding name="listener" property-path="listeners.attemptRegister"/>
+    <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   
@@ -28,26 +29,22 @@
   
   <component id="labelLastName" type="FieldLabel">
     <binding name="field" property-path="components.inputLastName"/>
-    <binding name="delegate" property-path="validationDelegate"/>
-  </component>
+ </component>
   
   <component id="inputLastName" type="ValidField">
     <binding name="value" property-path="lastName"/>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">30</static-binding>
     <static-binding name="displayName">Last Name</static-binding>
-    <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
   </component>
   
   <component id="labelEmail" type="FieldLabel">
     <binding name="field" property-path="components.inputEmail"/>
-    <binding name="delegate" property-path="validationDelegate"/>
   </component>
   
   <component id="inputEmail" type="ValidField">
     <binding name="value" property-path="email"/>
-    <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">60</static-binding>
@@ -56,7 +53,6 @@
   
   <component id="labelPassword1" type="FieldLabel">
     <binding name="field" property-path="components.inputPassword1"/>
-    <binding name="delegate" property-path="validationDelegate"/>
   </component>
   
   <component id="inputPassword1" type="ValidField">
@@ -64,14 +60,12 @@
     <static-binding name="displayWidth">20</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password</static-binding>
-    <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
   
   <component id="labelPassword2" type="FieldLabel">
     <binding name="field" property-path="components.inputPassword2"/>
-    <binding name="delegate" property-path="validationDelegate"/>
   </component>
   
   <component id="inputPassword2" type="ValidField">
@@ -79,7 +73,6 @@
     <static-binding name="displayWidth">20</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password (again)</static-binding>
-    <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
