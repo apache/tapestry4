@@ -274,6 +274,10 @@ NextGen) be released as version number 3.0.
       Allow abstract pages/components even if no specified properties (or other enhancements)
     </action>
     
+    <action type="fix" dev="HLS" fixes-bug="30086">
+      Shell component should allow informal parameters
+    </action>
+    
   </release>	
    
  	<release version="3.0" date="Apr 18 2004">
