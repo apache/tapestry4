@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!-- $Id$ -->
+
+<project name="Component Reference" default="install">
+
+<property name="html.install.dir" value="../../ComponentReference"/>
+
+<!--  For the time being, this project is all "static".  That may change
+  	  in the future.  -->
+
+<target name="install">
+  <mkdir dir="${html.install.dir}"/>
+  <echo>Installing Component Reference documentation ...</echo>
+  <copy todir="${html.install.dir}">
+  	<fileset dir=".">
+  		<include name="*.html"/>
+  		<include name="*.css"/>
+  	</fileset>
+  </copy>
+</target>
+
+</project>
+
+
