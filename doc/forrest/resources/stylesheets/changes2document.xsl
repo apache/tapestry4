@@ -13,20 +13,33 @@
  <xsl:param name="bugtracking-url" select="$bugzilla"/>
 
  <xsl:template match="/">
-  <xsl:apply-templates select="//changes"/>
- </xsl:template>
- 
- <xsl:template match="changes">
-  <document>
+   <document>
    <header>
     <title>History of Changes</title>
    </header>
    <body>
-    <p><link href="changes.rss"><img border="0" src="images/rss.png" alt="RSS"/></link></p>    
-    <xsl:apply-templates/>
-   </body>
+   	
+   <p><link href="changes.rss"><img border="0" src="images/rss.png" alt="RSS"/></link></p>    
+ 
+   <xsl:apply-templates select="status/changes"/>
+   <xsl:apply-templates select="status/votes"/>
+   
+     </body>
   </document>
  </xsl:template>
+
+ 
+ <xsl:template match="changes">
+ 
+ 	<section>
+ 		<title>Recent Changes</title>
+ 		
+ 		<xsl:apply-templates/>
+ 	</section>
+ 	
+ </xsl:template>
+
+
 
  <xsl:template match="release">
   <section id="{@version}">
@@ -42,9 +55,23 @@
    <td>   <icon src="images/{@type}.jpg" alt="{@type}"/> </td>
    <td> <xsl:apply-templates/> </td>
    
-   <td><xsl:value-of select="@dev"/></td>
+   <td><xsl:value-of select="@dev"/>
+   	
+   	<xsl:if test="not(@dev)">
+<!-- This is a lot of work; perhaps we should change the document2html.xslt to
+	   output the space inside otherwise empty TD table cells. In addition, this approach
+	   doesn't gel well with the PDF output ("&nbsp;" appears inside the table cell. -->
+<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
+   	</xsl:if>
+   	
+   	</td>
 
    <td>
+   	
+   <xsl:if test="not((@due-to and @due-to!='') or @fixes-bug)">
+<xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
+   </xsl:if>
+   	
    <xsl:if test="@due-to and @due-to!=''">
     <xsl:text> Thanks to </xsl:text>
     <xsl:choose>
@@ -106,4 +133,51 @@
    </xsl:choose>
  </xsl:template>
 
+ 
+	<xsl:template match="votes">
+	
+		<section>
+			<title>Votes</title>	
+			
+			<table>
+			
+				<xsl:apply-templates/>
+				
+			</table>
+			
+		</section>
+	</xsl:template>
+	
+	<xsl:template match="vote">
+	
+		<tr>
+			
+			<td><xsl:value-of select="@date"/></td>
+		
+			<td>
+				<b><xsl:value-of select="@title"/>:</b>
+				<br/>
+					
+			<xsl:value-of select="motion"/>
+			
+			<ul>
+				<xsl:apply-templates select="response"/>				
+			</ul>
+			
+				
+			</td>
+			
+			<td>
+				<xsl:value-of select="@dev"/>	
+			</td>
+		</tr>
+		
+	</xsl:template>
+	
+	<xsl:template match="response">
+		<li>
+			<xsl:value-of select="."/>	
+		</li>	
+	</xsl:template>
+	
 </xsl:stylesheet>

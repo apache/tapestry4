@@ -41,24 +41,6 @@ specifications, HTML templates and code.
 <link href="site:comp-ref">[HTML]</link>	
 </p>
 </section>
-	
-<section>
-	<title>Tutorial</title>
-
-The best way to begin learning about the Tapestry framework; this document eases the 
-reader into basic Tapestry concepts.
-
-<p>
-		<link href="doc/Tutorial/Tutorial.html">[HTML]</link>
-		<link href="doc/Tutorial/Tutorial.pdf">[PDF]</link>	
-</p>
-				
-<warning label="Out of date">
-This Tutorial is out of date, and work to replace it is 
-currently taking place.
-</warning>
-
-</section>
 
 <section>
 		<title>
