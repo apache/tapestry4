@@ -8,8 +8,8 @@
 
   <parameter name="disabled" java-type="boolean" direction="in"/>
   <parameter name="hidden" java-type="boolean" direction="in"/>
-  <parameter name="displayWidth" java-type="java.lang.Integer" direction="in" />
-  <parameter name="maximumLength" java-type="java.lang.Integer" direction="in" />
+  <parameter name="displayWidth" java-type="int" direction="in" />
+  <parameter name="maximumLength" java-type="int" direction="in" />
 
   <parameter name="value" java-type="java.lang.Number" required="yes"/>
   <parameter name="displayName" java-type="java.lang.String" required="yes"/>
