@@ -2,7 +2,7 @@
 <!-- $Id$ -->
 <!--
 
-The DTD for Tapestry application and component specifications.  
+The DTD for Tapestry application and component specifications.
 Associated with the public identifier:
 
 	-//Howard Ship//Tapestry Specification 1.1//EN
@@ -15,8 +15,9 @@ For application specifications, the root element is application.
 
 For component specifications the root element is specification.
 
-Minor backwords-compatible changes to this DTD will occur during the 1.0.x timeframe.  
-The DTD will be frozen for Tapestry release 1.1.0.
+Minor backwards-compatible changes to this DTD will occur during the 1.0.x timeframe.
+The DTD will be frozen for Tapestry release 1.1.0, at which point, subsequent
+changes will be made against a future 1.2 version of the DTD.
 
 -->
 <!-- =======================================================
@@ -64,8 +65,14 @@ properties).  Further, because of page pooling, subsequent requests
 from the same client may be serviced by different instances of a page and
 (therefore) different bean instances.
 
+Beans that have the "request" lifecycle may be stored into a pool
+for later re-use (in the same or different page).
+
+The bean may have its properties set.  Properties are set on both
+newly instantiated beans, and beans that are retrieved from a pool.
+
 -->
-<!ELEMENT bean (description*)>
+<!ELEMENT bean (description*, set-property*)>
 <!ATTLIST bean
   name CDATA #REQUIRED
   class CDATA #REQUIRED
@@ -79,7 +86,7 @@ Binds a parameter of the component to a property of its container.
 
 Attributes:
   name: The name of the component parameter to bind.
-  property-path: The property path, relative to the container, to obtain 
+  property-path: The property path, relative to the container, to obtain
     the parameter value from.
 -->
 <!ELEMENT binding EMPTY>
@@ -112,7 +119,7 @@ The Tapestry page loader ensures that either type or copy-of is specified, but n
 Element: component-alias
 Contained by: application
 
-Establishes a short logic name for a particular component that is used 
+Establishes a short logic name for a particular component that is used
 within the application.
 
 Attributes:
@@ -128,7 +135,7 @@ Attributes:
 Element: context-asset
 Contained by: specification
 
-An asset located in the same web application context as the running 
+An asset located in the same web application context as the running
 application.
 
 Attributes:
@@ -144,8 +151,8 @@ Attributes:
 Element: description
 Appears in: application bean parameter specification
 
-Several elements may contain descriptions; these descriptions are 
-optional.  The eventual goal is to provide help in some form of IDE.  
+Several elements may contain descriptions; these descriptions are
+optional.  The eventual goal is to provide help in some form of IDE.
 Currently, descriptions are optional and ignored.
 
 Attributes:
@@ -174,12 +181,12 @@ Attributes:
 Element: field-binding
 Appears in: component
 
-Binds a parameter of the component to a public static field of 
+Binds a parameter of the component to a public static field of
 some Java object.
 
 Attributes:
   name: The name of the component parameter to bind.
-  field-name:  The name of the field, of the form [package.]class.field.  
+  field-name:  The name of the field, of the form [package.]class.field.
     The package may be ommitted if it is "java.lang".
 -->
 <!ELEMENT field-binding EMPTY>
@@ -195,7 +202,7 @@ Binds a parameter of the component to a parameter of the container.
 
 Attributes:
   name: The name of the component parameter to bind.
-  parameter-name: The name of the container parameter to bind the 
+  parameter-name: The name of the container parameter to bind the
     component parameter to.
 -->
 <!ELEMENT inherited-binding EMPTY>
@@ -212,7 +219,7 @@ at least one of these, to define the Home page.
 
 Attributes:
   name: A unique name for the application.
-  specification-path:  The resource classpath of the component specification 
+  specification-path:  The resource classpath of the component specification
     for the page.
 -->
 <!ELEMENT page EMPTY>
@@ -228,9 +235,9 @@ Defines a formal parameter for the component.
 
 Attributes:
   name: A unqiue name for the parameter.
-  java-type: The name of a Java class or primitive type expected by the parameter.  
+  java-type: The name of a Java class or primitive type expected by the parameter.
     This is for documentation purposes only, it is not enforced.
-  required: If yes, then the parameter must be bound.  If no (the default), 
+  required: If yes, then the parameter must be bound.  If no (the default),
     then the parameter is optional.
 -->
 <!ELEMENT parameter (description*)>
@@ -266,6 +273,20 @@ the PCDATA wrapped by the property tag (which is trimmed of leading and trailing
 <!ATTLIST property
   name CDATA #REQUIRED
 >
+
+<!-- =======================================================
+Element: property-value
+Appears in: set-parameter
+
+Used to initialize a bean with a property of its containing
+component.
+-->
+
+<!ELEMENT property-value EMPTY>
+<!ATTLIST property-value
+  property-path CDATA #REQUIRED
+>
+
 <!-- =======================================================
 Element: reserved-parameter
 Appears in: specification
@@ -281,11 +302,23 @@ by the component and may not be affected by informal parameters.
   name CDATA #REQUIRED
 >
 <!-- =======================================================
+Element: set-property
+Appears in: bean
+
+Used to initialize a property of a helper bean.
+-->
+
+<!ELEMENT set-property (static-value | property-value)>
+<!ATTLIST set-property
+  name CDATA #REQUIRED
+>
+
+<!-- =======================================================
 Element: specification
 Root element
 
-A component specification.  It's attributes define the Java class to 
-instantiate, whether the component may wrap other elements, and whether 
+A component specification.  It's attributes define the Java class to
+instantiate, whether the component may wrap other elements, and whether
 informal (undeclared) parameters are allowed.
 
 Attributes:
@@ -306,7 +339,7 @@ Element: static-binding
 Appears in: component
 
 Binds a parameter of the component to a static value defined directly
-within this specification. The value is the PCDATA wrapped by the element 
+within this specification. The value is the PCDATA wrapped by the element
 (with leading and trailing whitespace removed).
 
 Attributes:
@@ -317,3 +350,20 @@ Attributes:
 <!ATTLIST static-binding
   name CDATA #REQUIRED
 >
+
+<!-- =======================================================
+Element: static-value
+Appears in: set-parameter
+
+A static value, that will be converted to some known type.
+
+The possible types are limited to a few simple scalar types,
+and String.  Additional types will likely be added in the future.
+
+-->
+
+<!ELEMENT static-value (#PCDATA)>
+<!ATTLIST static-value
+  type (boolean|int|double|String) "String"
+>
+

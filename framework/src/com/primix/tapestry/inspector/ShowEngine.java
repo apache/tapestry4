@@ -47,10 +47,10 @@ import java.util.*;
  */
 
 public class ShowEngine extends BaseComponent
-implements PageDetachListener
+	implements PageDetachListener
 {
 	private byte[] serializedEngine;
-
+	
 	/**
 	 *  Registers with the page as a {@link PageDetachListener}.
 	 *
@@ -62,59 +62,58 @@ implements PageDetachListener
 	{
 		page.addPageDetachListener(this);
 	}
-
+	
 	public void pageDetached(PageEvent event)
 	{
 		serializedEngine = null;
 	}
-
-
+	
+	
 	private byte[] getSerializedEngine()
 	{
 		if (serializedEngine == null)
 			buildSerializedEngine();
-
+		
 		return serializedEngine;
-
 	}
-
+	
 	private void buildSerializedEngine()
 	{
 		ByteArrayOutputStream bos = null;
 		ObjectOutputStream oos = null;
-
-        try
-        {
-            bos = new ByteArrayOutputStream();
+		
+		try
+		{
+			bos = new ByteArrayOutputStream();
 			oos = new ObjectOutputStream(bos);
-
+			
 			// Write the application object to the stream.
-
+			
 			oos.writeObject(page.getEngine());
-
+			
 			// Extract the application as an array of bytes.
-
+			
 			serializedEngine = bos.toByteArray();
-			}
-        catch (IOException ex)
-        {
-            throw new ApplicationRuntimeException("Could not serialize the application engine.", ex);
-			}
-        finally
-        {
-            close(oos);
+		}
+		catch (IOException ex)
+		{
+			throw new ApplicationRuntimeException("Could not serialize the application engine.", ex);
+		}
+		finally
+		{
+			close(oos);
 			close(bos);
-			}
-
-        // It would be nice to deserialize the application object now, but in
-        // practice, that fails due to class loader problems.
+		}
+		
+		// It would be nice to deserialize the application object now, but in
+		// practice, that fails due to class loader problems.
     }
-
+	
 	private void close(OutputStream stream)
 	{
 		if (stream == null)
 			return;
-
+		
 		try
 		{
 			stream.close();
@@ -124,81 +123,81 @@ implements PageDetachListener
 			// Ignore.
 		}
 	}
-
+	
 	public int getEngineByteCount()
 	{
 		return getSerializedEngine().length;
 	}
-
+	
 	public IRender getEngineDumpDelegate()
 	{
 		return new IRender()
 		{
 			public void render(IResponseWriter writer, IRequestCycle cycle)
-			throws RequestCycleException
+				throws RequestCycleException
 			{
 				dumpSerializedEngine(writer);
 			}
 		};
 	}
-
+	
 	private void dumpSerializedEngine(IResponseWriter responseWriter)
 	{
 		CharArrayWriter writer = null;
 		BinaryDumpOutputStream bos = null;
-        
-        try
-        {
-            // Because IReponseWriter doesn't implement the
-            // java.io.Writer interface, we have to buffer this
-            // stuff then pack it in all at once.  Kind of a waste!
-
-            writer = new CharArrayWriter();
-
+		
+		try
+		{
+			// Because IReponseWriter doesn't implement the
+			// java.io.Writer interface, we have to buffer this
+			// stuff then pack it in all at once.  Kind of a waste!
+			
+			writer = new CharArrayWriter();
+			
 			bos = new BinaryDumpOutputStream(writer);
 			bos.setBytesPerLine(32);
-
+			
 			bos.write(getSerializedEngine());
 			bos.close();
-
+			
 			responseWriter.print(writer.toString());
-			}
-        catch (IOException ex)
-        {
-            // Ignore.
-        }
-        finally
-        {
-            if (bos != null)
-            {
-                try
-                {
-                    bos.close();
-					}
-                catch (IOException ex)
-                {
-                    // Ignore.
-                }
-            }
-
-            if (writer != null)
-            {
-                writer.reset();
-				writer.close();
+		}
+		catch (IOException ex)
+		{
+			// Ignore.
+		}
+		finally
+		{
+			if (bos != null)
+			{
+				try
+				{
+					bos.close();
 				}
-        }
+				catch (IOException ex)
+				{
+					// Ignore.
+				}
+			}
+			
+			if (writer != null)
+			{
+				writer.reset();
+				writer.close();
+			}
+		}
     }
-
+	
     /**
-     *  Invokes {@link IEngine#isResetServiceEnabled()} and inverts the result.
-     *
-     */
-     
+	 *  Invokes {@link IEngine#isResetServiceEnabled()} and inverts the result.
+	 *
+	 */
+	
     public boolean isResetServiceDisabled()
     {
-    	IEngine engine = page.getEngine();
-    	
-    	return ! engine.isResetServiceEnabled();
+		IEngine engine = page.getEngine();
+		
+		return ! engine.isResetServiceEnabled();
     }
-
+	
 }

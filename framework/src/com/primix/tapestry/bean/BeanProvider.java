@@ -48,7 +48,7 @@ public class BeanProvider
 	implements IBeanProvider, PageDetachListener
 {
 	private static final Category CAT = Category.getInstance(BeanProvider.class);
-
+	
 	/**
 	 *  Indicates whether this instance has been registered with its
 	 *  page as a PageDetachListener.  Registration only occurs
@@ -96,6 +96,16 @@ public class BeanProvider
 		if (CAT.isDebugEnabled())
 			CAT.debug("Created BeanProvider for " + component);
 		
+	}
+	
+	/**
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public IComponent getComponent()
+	{
+		return component;
 	}
 	
 	public Object getBean(String name)
@@ -156,29 +166,49 @@ public class BeanProvider
 		{
 			if (CAT.isDebugEnabled())
 				CAT.debug("Obtained " + bean + " from pool.");
+		}
+		else
+		{
+			if (CAT.isDebugEnabled())
+				CAT.debug("Instantiating instance of " + className);
+			
+			// Do it the hard way!
+			
+			Class beanClass = resolver.findClass(className);
+			
+			try
+			{
+				bean = beanClass.newInstance();
+			}
+			catch (IllegalAccessException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+			catch (InstantiationException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+		}
 		
+		// OK, have the bean, have to initialize it.
+		
+		List initializers = spec.getInitializers();
+		
+		if (initializers == null)
 			return bean;
-		}
 		
-		if (CAT.isDebugEnabled())
-			CAT.debug("Instantiating instance of " + className);
-		
-		// Do it the hard way!
-		
-		Class beanClass = resolver.findClass(className);
-		
-		try
+		Iterator i = initializers.iterator();
+		while (i.hasNext())
 		{
-			return beanClass.newInstance();
+			IBeanInitializer iz = (IBeanInitializer)i.next();
+			
+			if (CAT.isDebugEnabled())
+				CAT.debug("Initializing property " + iz.getPropertyName());
+			
+			iz.setBeanProperty(this, bean);
 		}
-		catch (IllegalAccessException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
-		}
-		catch (InstantiationException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
-		}
+		
+		return bean;
 	}
 	
 	/**

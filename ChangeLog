@@ -1,6 +1,15 @@
 * Aug 26 2001 hship
 
 framework:
+- Add initial support for configuring properties of helper beans
+- Add <set-property>, <static-value> and <property-value> to the
+  Tapestry 1.1 DTD
+- Change the Inspector's ShowLogging view to use an initialized
+  helper bean
+
+* Aug 26 2001 hship
+
+framework:
 - Remove ILifecycle interface, related methods on IPage and elsewhere
 - Add new event listener methods on IPage (to replace ILifecycle) with
   finer granularity
