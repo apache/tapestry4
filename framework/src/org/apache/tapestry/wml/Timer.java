@@ -91,7 +91,7 @@ public abstract class Timer extends AbstractComponent
             else
                 writer.attribute("value", "0");
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
 
             writer.closeTag();
         }

@@ -85,7 +85,7 @@ public abstract class Setvar extends AbstractComponent
 
             writer.attribute("name", getName());
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
 
             String value = readValue();
             if (value != null)

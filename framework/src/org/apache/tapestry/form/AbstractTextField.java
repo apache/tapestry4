@@ -125,7 +125,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
         if (value != null)
             writer.attribute("value", value);
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         beforeCloseTag(writer, cycle);
 

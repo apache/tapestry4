@@ -158,7 +158,7 @@ public abstract class PropertySelection extends AbstractFormComponent
 
         // Apply informal attributes.
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         writer.println();
 

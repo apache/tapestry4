@@ -14,11 +14,11 @@
 	<property-specification name="targetUserId" type="java.lang.Integer"/>
 
     <component id="selectBooks" type="contrib:Palette">
-      <binding name="sort" expression="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>\
+      <binding name="sort" expression="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
       <binding name="model" expression="booksModel"/>
       <binding name="selected" expression="selectedBooks"/>
       <binding name="selectedTitleBlock" expression="components.selectedTitleBlock"/>
-       <binding name="availableTitleBlock" expression="components.availableTitleBlock"/>
+      <binding name="availableTitleBlock" expression="components.availableTitleBlock"/>
     </component>
     
     <component id="selectTarget" type="PropertySelection">

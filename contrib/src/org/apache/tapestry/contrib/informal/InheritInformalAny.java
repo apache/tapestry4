@@ -144,7 +144,7 @@ public class InheritInformalAny extends AbstractComponent
 
         writer.begin(strElement);
         generateParentAttributes(writer, cycle);
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         renderBody(writer, cycle);
 

@@ -103,7 +103,7 @@ public abstract class Image extends AbstractComponent
 
         writer.attribute("border", getBorder());
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         writer.closeTag();
 

@@ -176,7 +176,7 @@ public abstract class ImageSubmit extends AbstractFormComponent
 
         writer.attribute("src", imageURL);
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         writer.closeTag();
     }

@@ -89,7 +89,7 @@ public abstract class PropertySelection extends AbstractComponent
 
             writer.attribute("name", getName());
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
 
             writer.println();
 

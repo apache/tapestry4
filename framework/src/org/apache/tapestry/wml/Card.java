@@ -88,7 +88,7 @@ public abstract class Card extends AbstractComponent
         if (title != null)
             writer.attribute("title", title);
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         IMarkupWriter nestedWriter = writer.getNestedWriter();
 

@@ -92,7 +92,7 @@ public abstract class Option extends AbstractComponent {
             if (value != null)
                 writer.attribute("value", value);
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
 
             renderBody(writer, cycle);
 

@@ -379,7 +379,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         {
             writeAttributes(writer, link);
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
             writer.println();
         }
 

@@ -171,7 +171,7 @@ public abstract class Select extends AbstractFormComponent
             if (isDisabled())
                 writer.attribute("disabled", "disabled");
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
         }
 
         _rendering = true;

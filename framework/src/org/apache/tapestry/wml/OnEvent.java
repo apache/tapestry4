@@ -87,7 +87,7 @@ public abstract class OnEvent extends AbstractComponent
 
             writer.attribute("type", getType());
 
-            generateAttributes(writer, cycle);
+            renderInformalParameters(writer, cycle);
         }
 
         renderBody(writer, cycle);

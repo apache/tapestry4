@@ -111,7 +111,7 @@ public abstract class Select extends AbstractComponent
             if (multiple)
 				writer.attribute("multiple", multiple);
 
-			generateAttributes(writer, cycle);
+			renderInformalParameters(writer, cycle);
 		}
 	
         renderBody(writer, cycle);

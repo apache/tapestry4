@@ -234,7 +234,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
         // Generate additional attributes from informal parameters.
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
     }
 
     /**

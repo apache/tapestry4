@@ -134,7 +134,7 @@ public abstract class Radio extends AbstractComponent
 
         writer.attribute("value", option);
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
     }
 

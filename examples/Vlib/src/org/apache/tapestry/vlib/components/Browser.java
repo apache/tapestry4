@@ -216,7 +216,7 @@ public abstract class Browser extends AbstractComponent implements PageRenderLis
             if (element != null)
             {
                 writer.begin(element);
-                generateAttributes(writer, cycle);
+                renderInformalParameters(writer, cycle);
             }
 
             renderBody(writer, cycle);

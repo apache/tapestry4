@@ -172,7 +172,7 @@ public abstract class Rollover extends AbstractComponent
             writer.attribute("name", imageName);
         }
 
-        generateAttributes(writer, cycle);
+        renderInformalParameters(writer, cycle);
 
         writer.closeTag();
 
