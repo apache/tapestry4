@@ -53,40 +53,57 @@
  *
  */
 
-package org.apache.tapestry.script;
+package org.apache.tapestry.util.xml;
 
-import org.apache.tapestry.ILocatable;
-
+import org.apache.tapestry.Tapestry;
+import org.xml.sax.Attributes;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
+ * Base implementation of {@link org.apache.tapestry.util.xml.IRule} that
+ * does nothing.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
  **/
-
-public interface IScriptToken extends ILocatable
+public class BaseRule implements IRule
 {
-	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
+	protected String getAttribute(Attributes attributes, String name)
+	{
+		int count = attributes.getLength();
 
-	public void write(StringBuffer buffer, ScriptSession session);
+		for (int i = 0; i < count; i++)
+		{
+			String attributeName = attributes.getLocalName(i);
+        	
+			if (Tapestry.isNull(attributeName))
+				attributeName = attributes.getQName(i);
+        	
+			if (attributeName.equals(name))
+				return attributes.getValue(i);
+		}
 
-	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
+		return null;
+	}
 
-	public void addToken(IScriptToken token);
+    public void startElement(RuleDirectedParser parser, Attributes attributes)
+    {
+
+    }
+
+    public void endElement(RuleDirectedParser parser)
+    {
+
+    }
+
+    public void ignorableWhitespace(RuleDirectedParser parser, char[] ch, int start, int length)
+    {
+
+    }
+
+    public void characters(RuleDirectedParser parser, char[] ch, int start, int length)
+    {
+
+    }
+
 }

@@ -56,7 +56,7 @@
 package org.apache.tapestry.script;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -76,8 +76,10 @@ class InputSymbolToken extends AbstractToken
     private Class _class;
     private boolean _required;
 
-    InputSymbolToken(String key, Class clazz, boolean required)
+    InputSymbolToken(String key, Class clazz, boolean required, ILocation location)
     {
+        super(location);
+
         _key = key;
         _class = clazz;
         _required = required;
@@ -97,7 +99,9 @@ class InputSymbolToken extends AbstractToken
                     "InputSymbolToken.wrong-type",
                     _key,
                     value.getClass().getName(),
-                    _class.getName()));
+                    _class.getName()),
+                getLocation(),
+                null);
     }
 
 }

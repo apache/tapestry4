@@ -99,7 +99,7 @@ public class OgnlUtils
             {
                 result = Ognl.parseExpression(expression);
             }
-            catch (OgnlException ex)
+            catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(
                     Tapestry.getString("OgnlUtils.unable-to-parse-expression", expression),
@@ -142,7 +142,7 @@ public class OgnlUtils
 
             Ognl.setValue(expression, context, target, value);
         }
-        catch (OgnlException ex)
+        catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
                 Tapestry.getString(
@@ -174,7 +174,7 @@ public class OgnlUtils
 
             return Ognl.getValue(expression, context, object);
         }
-        catch (OgnlException ex)
+        catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
                 Tapestry.getString(

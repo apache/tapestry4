@@ -58,8 +58,9 @@ package org.apache.tapestry.script;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
@@ -76,22 +77,22 @@ import org.apache.tapestry.util.prop.OgnlUtils;
 
 class ForeachToken extends AbstractToken
 {
-    private IResourceResolver _resolver;
     private String _key;
     private String _expression;
 
-    ForeachToken(String key, String expression, IResourceResolver resolver)
+    ForeachToken(String key, String expression, ILocation location)
     {
+        super(location);
+
         _key = key;
         _expression = expression;
-        _resolver = resolver;
     }
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
         Map symbols = session.getSymbols();
 
-        Object rawSource = OgnlUtils.get(_expression, _resolver, symbols);
+        Object rawSource = evaluate(_expression, session);
 
         Iterator i = Tapestry.coerceToIterator(rawSource);
 

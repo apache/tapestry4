@@ -55,7 +55,9 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.ILocation;
+import org.apache.tapestry.IResourceLocation;
+
 
 /**
  *  A token for included scripts.
@@ -68,16 +70,23 @@ import org.apache.tapestry.ScriptSession;
 
 class IncludeScriptToken extends AbstractToken
 {
-    private String resourcePath;
+    private String _resourcePath;
 
-    public IncludeScriptToken(String resourcePath)
+    public IncludeScriptToken(String resourcePath, ILocation location)
     {
-        this.resourcePath = resourcePath;
+    	super(location);
+    	
+        _resourcePath = resourcePath;
     }
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
-        session.addIncludedScript(resourcePath);
+    	IResourceLocation baseLocation = session.getScriptPath();
+    	IResourceLocation includeLocation = baseLocation.getRelativeLocation(_resourcePath);
+    	
+    	// TODO: Allow for scripts relative to context resources!
+    	
+    	session.getProcessor().addExternalScript(includeLocation);
     }
 
 }

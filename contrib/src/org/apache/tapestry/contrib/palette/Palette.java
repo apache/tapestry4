@@ -73,7 +73,6 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.engine.IScriptSource;
@@ -346,8 +345,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     private void runScript(IRequestCycle cycle)
     {
-        ScriptSession session;
-
         // Get the script, if not already gotten.  Scripts are re-entrant, so it is
         // safe to share this between instances of Palette.
 
@@ -383,9 +380,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
         _symbols.put("palette", this);
 
-        session = _script.execute(_symbols);
-
-        body.process(session);
+        _script.execute(cycle, body, _symbols);
     }
 
     /**

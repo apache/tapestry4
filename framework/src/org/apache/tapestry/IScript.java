@@ -80,9 +80,16 @@ public interface IScript
     /**
      *  Executes the script, which will read and modify the symbols {@link Map}, and return
      *  a {@link ScriptSession} that can be used to obtain results.
+     * 
+     *  @param cycle the current request cycle
+     *  @param an object that processes the results of the script, typically
+     *  an instance of {@link org.apache.tapestry.html.Body}
+     *  @param symbols Map of input symbols; execution of the script may modify the map,
+     *  creating new output symbols
+     * 
+     *  @see org.apache.tapestry.html.Body#get(IRequestCycle)
      *
      **/
 
-    public ScriptSession execute(Map symbols);
-
+    public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols);
 }

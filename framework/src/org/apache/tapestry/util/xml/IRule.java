@@ -53,40 +53,49 @@
  *
  */
 
-package org.apache.tapestry.script;
+package org.apache.tapestry.util.xml;
 
-import org.apache.tapestry.ILocatable;
-
+import org.xml.sax.Attributes;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
+ * A rule that may be pushed onto the {@link org.apache.tapestry.util.xml.RuleDirectedParser}'s
+ * rule stack.  A rule is associated with an XML element.  It is pushed onto the stack when the
+ * open tag for the rule is encountered.  It is is popped off the stack after the end-tag is
+ * encountered.  It is notified about any text it directly wraps around.
  * 
+ * <p>Rules should be stateless, because a rule instance may appear multiple times in the
+ * rule stack (if elements can be recusively nested).
+ *
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
  **/
 
-public interface IScriptToken extends ILocatable
+public interface IRule
 {
 	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
-
-	public void write(StringBuffer buffer, ScriptSession session);
-
+	 * Invoked just after the rule is pushed onto the rule stack.  Typically, a Rule will
+	 *  use the information to create a new object and push it onto the object stack.
+	 *  If the rule needs to know about the element (rather than the attributes), it
+	 *  may obtain the URI, localName and qName from the parser.
+	 * 
+	 */
+	public void startElement(RuleDirectedParser parser, Attributes attributes);
+	
 	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
-
-	public void addToken(IScriptToken token);
+	 * Invoked just after the rule is popped off the rule stack.
+	 */
+	public void endElement(RuleDirectedParser parser);
+	
+	/**
+	 * Invoked when ignorable whitespace is found.
+	 */
+	
+	public void ignorableWhitespace(RuleDirectedParser parser, char[] ch, int start, int length);
+	
+	/**
+	 * Invoked when real content is found.
+	 */
+	
+	public void characters(RuleDirectedParser parser, char[] ch, int start, int length);
 }

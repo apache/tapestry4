@@ -75,7 +75,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IExtensionSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.SpecFactory;
-import org.apache.tapestry.util.xml.AbstractDocumentParser;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -150,8 +149,7 @@ public class SpecificationParser
      * 
      **/
 
-    public static final String PARAMETER_NAME_PATTERN =
-        AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String PARAMETER_NAME_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern that property names (that can be connected to
@@ -163,8 +161,7 @@ public class SpecificationParser
      * 
      **/
 
-    public static final String PROPERTY_NAME_PATTERN =
-        AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String PROPERTY_NAME_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for page names.  Letter
@@ -186,8 +183,7 @@ public class SpecificationParser
      * 
      **/
 
-    public static final String COMPONENT_ALIAS_PATTERN =
-        AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String COMPONENT_ALIAS_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for helper bean names.  
@@ -197,8 +193,7 @@ public class SpecificationParser
      * 
      **/
 
-    public static final String BEAN_NAME_PATTERN =
-        AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String BEAN_NAME_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for component ids.  Letter, followed by
@@ -208,8 +203,7 @@ public class SpecificationParser
      * 
      **/
 
-    public static final String COMPONENT_ID_PATTERN =
-        AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String COMPONENT_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for asset names.  Letter, followed by
@@ -221,7 +215,7 @@ public class SpecificationParser
      **/
 
     public static final String ASSET_NAME_PATTERN =
-        "(\\$template)|(" + AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN + ")";
+        "(\\$template)|(" + Tapestry.SIMPLE_PROPERTY_NAME_PATTERN + ")";
 
     /**
      *  Perl5 pattern for service names.  Letter
@@ -241,8 +235,7 @@ public class SpecificationParser
      * 
      **/
 
-    public static final String LIBRARY_ID_PATTERN =
-        AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String LIBRARY_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Per5 pattern for extension names.  Letter followed
@@ -405,10 +398,10 @@ public class SpecificationParser
 
         public void begin(String namespace, String name, Attributes attributes) throws Exception
         {
-        	ILocationHolder holder = create();
-        	
-        	holder.setLocation(getLocation());
-        	
+            ILocationHolder holder = create();
+
+            holder.setLocation(getLocation());
+
             digester.push(holder);
         }
 
@@ -1093,9 +1086,9 @@ public class SpecificationParser
         // Remember that digester rule order counts!
 
         result.addSetLimitedProperties(pattern, "name", "propertyName");
-        
+
         // java-type is a holdover from the 1.3 DTD and will eventually be removed.
-        
+
         result.addSetLimitedProperties(
             pattern,
             new String[] { "property-name", "type", "java-type" },

@@ -55,7 +55,8 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.ILocation;
+
 
 /**
  *  Generates a String from its child tokens, then applies it
@@ -71,6 +72,11 @@ class BodyToken extends AbstractToken
 {
     private int _bufferLengthHighwater = 100;
 
+	public BodyToken(ILocation location)
+	{
+		super(location);
+	}
+
     public void write(StringBuffer buffer, ScriptSession session)
     {
         if (buffer != null)
@@ -80,7 +86,7 @@ class BodyToken extends AbstractToken
 
         writeChildren(buffer, session);
 
-        session.setBody(buffer.toString());
+		session.getProcessor().addBodyScript(buffer.toString());
 
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.

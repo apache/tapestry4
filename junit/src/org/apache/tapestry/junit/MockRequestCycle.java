@@ -55,6 +55,9 @@
 
 package org.apache.tapestry.junit;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
@@ -79,6 +82,12 @@ public class MockRequestCycle implements IRequestCycle
     private IEngine _engine;
     private String _lastEncodedURL;
     private RequestContext _context;
+    private Map _attributes = new HashMap();
+
+    public MockRequestCycle()
+    {
+        this(new MockEngine(), null);
+    }
 
     public MockRequestCycle(IEngine engine, RequestContext context)
     {
@@ -93,7 +102,7 @@ public class MockRequestCycle implements IRequestCycle
     public String encodeURL(String URL)
     {
         _lastEncodedURL = URL;
-        
+
         return URL;
     }
 
@@ -104,7 +113,7 @@ public class MockRequestCycle implements IRequestCycle
 
     public Object getAttribute(String name)
     {
-        return null;
+        return _attributes.get(name);
     }
 
     public IMonitor getMonitor()
@@ -144,6 +153,7 @@ public class MockRequestCycle implements IRequestCycle
 
     public void removeAttribute(String name)
     {
+        _attributes.remove(name);
     }
 
     public void renderPage(IMarkupWriter writer)
@@ -156,6 +166,7 @@ public class MockRequestCycle implements IRequestCycle
 
     public void setAttribute(String name, Object value)
     {
+        _attributes.put(name, value);
     }
 
     public void setPage(IPage page)
@@ -197,12 +208,12 @@ public class MockRequestCycle implements IRequestCycle
         return _lastEncodedURL;
     }
 
-	public void activate(String name)
-	{
-	}
+    public void activate(String name)
+    {
+    }
 
-	public void activate(IPage page)
-	{
-	}
+    public void activate(IPage page)
+    {
+    }
 
 }

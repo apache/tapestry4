@@ -19,7 +19,7 @@
 		
 		<assert-output name="Image URL">
 <![CDATA[
-<img src="/private/org/apache/tapestry/contrib/inspector/tapestry-logo.gif" border="0" name="rollover_0"/>
+<img src="/private/org/apache/tapestry/contrib/inspector/tapestry-logo.gif" border="0" name="rollover"/>
 ]]>		
 		</assert-output>
 	</request>
@@ -35,7 +35,7 @@
 		
 		<assert-output name="Image URL">
 <![CDATA[
-<img src="/private/org/apache/tapestry/contrib/inspector/tapestry-logo.gif" border="0" name="rollover_0"/>
+<img src="/private/org/apache/tapestry/contrib/inspector/tapestry-logo.gif" border="0" name="rollover"/>
 ]]>		
 		</assert-output>
 	</request>	

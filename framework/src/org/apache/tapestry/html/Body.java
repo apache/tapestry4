@@ -57,22 +57,19 @@ package org.apache.tapestry.html;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.PrivateAsset;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
+import org.apache.tapestry.util.IdAllocator;
 
 /**
  *  The body of a Tapestry page.  This is used since it allows components on the
@@ -87,14 +84,10 @@ import org.apache.tapestry.resource.ClasspathResourceLocation;
  * 
  **/
 
-public abstract class Body extends AbstractComponent
+public abstract class Body extends AbstractComponent implements IScriptProcessor
 {
-    // Unique id number, used for naming DOM items in the HTML.
-
-    private int _uniqueId;
-
     // Lines that belong inside the onLoad event handler for the <body> tag.
-    private StringBuffer _otherInitialization;
+    private StringBuffer _initializationScript;
 
     // The writer initially passed to render() ... wrapped elements render
     // into a nested response writer.
@@ -103,7 +96,7 @@ public abstract class Body extends AbstractComponent
 
     // Any other scripting desired
 
-    private StringBuffer _otherScript;
+    private StringBuffer _bodyScript;
 
     // Contains text lines related to image initializations
 
@@ -117,13 +110,15 @@ public abstract class Body extends AbstractComponent
     private Map _imageMap;
 
     /**
-     *  Set of included scripts.
+     *  Set of included scripts.  Values are Strings.
      *
      *  @since 1.0.5
      *
      **/
 
-    private Set _includedScripts;
+    private Set _externalScripts;
+
+    private IdAllocator _idAllocator;
 
     private static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.Body";
 
@@ -181,13 +176,13 @@ public abstract class Body extends AbstractComponent
      *
      **/
 
-    public void addOtherInitialization(String script)
+    public void addInitializationScript(String script)
     {
-        if (_otherInitialization == null)
-            _otherInitialization = new StringBuffer(script.length() + 1);
+        if (_initializationScript == null)
+            _initializationScript = new StringBuffer(script.length() + 1);
 
-        _otherInitialization.append(script);
-        _otherInitialization.append('\n');
+        _initializationScript.append(script);
+        _initializationScript.append('\n');
 
     }
 
@@ -214,16 +209,17 @@ public abstract class Body extends AbstractComponent
      *
      **/
 
-    public void addOtherScript(String script)
+    public void addBodyScript(String script)
     {
-        if (_otherScript == null)
-            _otherScript = new StringBuffer(script.length());
+        if (_bodyScript == null)
+            _bodyScript = new StringBuffer(script.length());
 
-        _otherScript.append(script);
+        _bodyScript.append(script);
     }
 
     /**
-     *  Used to include a script from an outside URL.  This adds
+     *  Used to include a script from an outside URL (the scriptLocation
+     *  is a URL, probably obtained from an asset.  This adds
      *  an &lt;script src="..."&gt; tag before the main
      *  &lt;script&gt; tag.  The Body component ensures
      *  that each URL is included only once.
@@ -232,24 +228,36 @@ public abstract class Body extends AbstractComponent
      *
      **/
 
-    public void includeScript(String URL)
+    public void addExternalScript(IResourceLocation scriptLocation)
     {
-        if (_includedScripts == null)
-            _includedScripts = new HashSet();
+        if (_externalScripts == null)
+            _externalScripts = new HashSet();
 
-        if (_includedScripts.contains(URL))
+        if (_externalScripts.contains(scriptLocation))
             return;
+
+        // Alas, this won't give a good ILocation for the actual problem.
+
+        if (!(scriptLocation instanceof ClasspathResourceLocation))
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("Body.include-classpath-script-only", scriptLocation),
+                this);
+
+        // This is still very awkward!  Should move the code inside PrivateAsset somewhere
+        // else, so that an asset does not have to be created to to build the URL.
+        PrivateAsset asset = new PrivateAsset((ClasspathResourceLocation) scriptLocation, null);
+        String url = asset.buildURL(getPage().getRequestCycle());
 
         _outerWriter.begin("script");
         _outerWriter.attribute("language", "JavaScript");
         _outerWriter.attribute("type", "text/javascript");
-        _outerWriter.attribute("src", URL);
+        _outerWriter.attribute("src", url);
         _outerWriter.end();
         _outerWriter.println();
 
         // Record the URL so we don't include it twice.
 
-        _includedScripts.add(URL);
+        _externalScripts.add(scriptLocation);
     }
 
     /**
@@ -265,18 +273,6 @@ public abstract class Body extends AbstractComponent
         return (Body) cycle.getAttribute(ATTRIBUTE_NAME);
     }
 
-    /**
-     *  Returns a String that is unique for the current rendering
-     *  of this Body component.  This unique id is often appended to
-     *  names to form unique ids for elements and JavaScript functions.
-     *
-     **/
-
-    public String getUniqueId()
-    {
-        return Integer.toString(_uniqueId++);
-    }
-
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IMarkupWriter nested;
@@ -287,56 +283,58 @@ public abstract class Body extends AbstractComponent
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
-        _uniqueId = 0;
         _outerWriter = writer;
 
-        try
-        {
-            nested = writer.getNestedWriter();
+        nested = writer.getNestedWriter();
 
-            renderBody(nested, cycle);
+        renderBody(nested, cycle);
 
-            // Write the script (i.e., just before the <body> tag).
-            // If an onLoad event handler was needed, its name is
-            // returned.
+        // Write the script (i.e., just before the <body> tag).
+        // If an onLoad event handler was needed, its name is
+        // returned.
 
-            onLoadName = writeScript();
+        onLoadName = writeScript();
 
-            // Start the body tag.
-            writer.println();
-            writer.begin(getElement());
-            renderInformalParameters(writer, cycle);
+        // Start the body tag.
+        writer.println();
+        writer.begin(getElement());
+        renderInformalParameters(writer, cycle);
 
-            if (onLoadName != null)
-                writer.attribute("onLoad", "javascript:" + onLoadName + "();");
+        if (onLoadName != null)
+            writer.attribute("onLoad", "javascript:" + onLoadName + "();");
 
-            // Close the nested writer, which dumps its buffered content
-            // into its parent.
+        // Close the nested writer, which dumps its buffered content
+        // into its parent.
 
-            nested.close();
+        nested.close();
 
-            writer.end(); // <body>
-        }
-        finally
-        {
-            if (_imageMap != null)
-                _imageMap.clear();
+        writer.end(); // <body>
 
-            if (_includedScripts != null)
-                _includedScripts.clear();
+    }
 
-            if (_otherInitialization != null)
-                _otherInitialization.setLength(0);
+	protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+    	super.cleanupAfterRender(cycle);
+    	
+        if (_idAllocator != null)
+            _idAllocator.clear();
 
-            if (_imageInitializations != null)
-                _imageInitializations.setLength(0);
+        if (_imageMap != null)
+            _imageMap.clear();
 
-            if (_otherScript != null)
-                _otherScript.setLength(0);
+        if (_externalScripts != null)
+            _externalScripts.clear();
 
-            _outerWriter = null;
-        }
+        if (_initializationScript != null)
+            _initializationScript.setLength(0);
 
+        if (_imageInitializations != null)
+            _imageInitializations.setLength(0);
+
+        if (_bodyScript != null)
+            _bodyScript.setLength(0);
+
+        _outerWriter = null;
     }
 
     /**
@@ -357,7 +355,7 @@ public abstract class Body extends AbstractComponent
 
     private String writeScript()
     {
-        if (!(any(_otherInitialization) || any(_otherScript) || any(_imageInitializations)))
+        if (!(any(_initializationScript) || any(_bodyScript) || any(_imageInitializations)))
             return null;
 
         _outerWriter.begin("script");
@@ -373,21 +371,21 @@ public abstract class Body extends AbstractComponent
             _outerWriter.printRaw("}\n");
         }
 
-        if (any(_otherScript))
+        if (any(_bodyScript))
         {
             _outerWriter.printRaw("\n\n");
-            _outerWriter.printRaw(_otherScript.toString());
+            _outerWriter.printRaw(_bodyScript.toString());
         }
 
         String result = null;
 
-        if (any(_otherInitialization))
+        if (any(_initializationScript))
         {
             result = "tapestry_onLoad";
 
             _outerWriter.printRaw("\n\n" + "function " + result + "()\n" + "{\n");
 
-            _outerWriter.printRaw(_otherInitialization.toString());
+            _outerWriter.printRaw(_initializationScript.toString());
 
             _outerWriter.printRaw("}");
         }
@@ -406,53 +404,23 @@ public abstract class Body extends AbstractComponent
         return buffer.length() > 0;
     }
 
-    /**
-     *  Invoked to process the contents of a {@link ScriptSession}.
-     *
-     *  @since 1.0.5
-     *
-     **/
-
-    public void process(ScriptSession session)
-    {
-        String body = session.getBody();
-
-        if (!Tapestry.isNull(body))
-            addOtherScript(body);
-
-        String initialization = session.getInitialization();
-
-        if (!Tapestry.isNull(initialization))
-            addOtherInitialization(initialization);
-
-        List includes = session.getIncludedScripts();
-
-        if (includes == null || includes.size() == 0)
-            return;
-
-        IRequestCycle cycle = getPage().getRequestCycle();
-        IEngine engine = getPage().getEngine();
-		IResourceResolver resolver = engine.getResourceResolver();
-
-        Iterator i = includes.iterator();
-        while (i.hasNext())
-        {
-            String path = (String) i.next();
-
-            IAsset asset = new PrivateAsset(new ClasspathResourceLocation(resolver, path), null);
-            
-            String URL = asset.buildURL(cycle);
-
-            includeScript(URL);
-        }
-    }
-
     public abstract String getElement();
 
     public abstract void setElement(String element);
 
     protected void finishLoad()
     {
-      	setElement("body");
+        setElement("body");
     }
+
+    /** @since 3.0 */
+
+    public String getUniqueString(String baseValue)
+    {
+        if (_idAllocator == null)
+            _idAllocator = new IdAllocator();
+
+        return _idAllocator.allocateId(baseValue);
+    }
+
 }

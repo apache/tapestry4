@@ -36,6 +36,12 @@ to <a href="doc/api/org/apache/tapestry/IPage.html">IPage</a>.</li>
 <li>Added checks that <a href="doc/api/org/apache/tapestry/IPage.html">IPage</a> methods
 <code>validate()</code> and <code>detach</code> are properly overriden by subclasses.</li>
 <li>Changed Form, Hidden and ListEdit so that all hidden fields are written out with the &lt;form&gt; tag.</li>
+<li>Added new features to the script specification, bumping its DTD to 1.3. It is now possible
+to generate page-unique ids from within the script (using the new <code>unique</code> attribute
+on <code>&lt;let&gt;</code>, as well as to
+render a block only once per page render (using <code>&lt;unique&gt;</code>)
+</li>
+<li>Integrated Per Norrman's vastly improved <a href="doc/ComponentReference/DatePicker.html">DatePicker</a> component</li>
 </ul>
 
 <pre>
@@ -46,7 +52,8 @@ to <a href="doc/api/org/apache/tapestry/IPage.html">IPage</a>.</li>
 [ 18607 ] Check for unimplemented abstract methods    
 [ 17904 ] Ongoing LGPL Issues 
 [ 19153 ] Easier way to override validation messages  
-[ 19263 ] Change error message for null parameter  
+[ 19263 ] Change error message for null parameter 
+[ 18880 ] DatePicker broken under Mozilla  
 </pre>
 
 <h3>Release 2.4-alpha-5</h3>

@@ -53,40 +53,47 @@
  *
  */
 
-package org.apache.tapestry.script;
-
-import org.apache.tapestry.ILocatable;
-
+package org.apache.tapestry;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
+ * Defines methods needed by a {@link org.apache.tapestry.IScript} to
+ * execute.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
  **/
 
-public interface IScriptToken extends ILocatable
+public interface IScriptProcessor
 {
 	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
-
-	public void write(StringBuffer buffer, ScriptSession session);
-
+	 *  Adds scripting code to the main body.  During the render, multiple scripts may
+	 *  render multiple bodies; all are concatinated together to form
+	 *  a single block.
+	 */
+	
+	public void addBodyScript(String script);
+	
 	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
-
-	public void addToken(IScriptToken token);
+	 * Adds initialization script.  Initialization script is executed once, when
+	 * the containing page loads.  Effectively, this means that initialization script
+	 * is stored inside the HTML &lt;body&gt; element's <code>onload</code>
+	 * event handler.
+	 */
+	public void addInitializationScript(String script);
+	
+	/**
+	 * Adds an external script.  The processor is expected to ensure
+	 * that external scripts are only loaded a single time per page.
+	 */
+	
+	public void addExternalScript(IResourceLocation location);
+	
+	/**
+	 * Ensures that the given string is unique.  The string
+	 * is either returned unchanged, or a suffix is appended to
+	 * ensure uniqueness.
+	 */
+	
+	public String getUniqueString(String baseValue);
 }

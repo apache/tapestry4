@@ -193,7 +193,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         else
         {
             if (name == null)
-                name = "Link" + body.getUniqueId();
+                name = body.getUniqueString("Link");
 
             wrapperFunctionName = attributeName + "_" + name;
 
@@ -214,7 +214,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
             buffer.append("}\n\n");
 
-            body.addOtherScript(buffer.toString());
+            body.addBodyScript(buffer.toString());
         }
 
         writer.attribute(attributeName, "javascript:" + wrapperFunctionName + "();");

@@ -55,38 +55,64 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocatable;
-
+import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.util.xml.BaseRule;
+import org.apache.tapestry.util.xml.DocumentParseException;
+import org.apache.tapestry.util.xml.RuleDirectedParser;
+import org.xml.sax.Attributes;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
+ * Constructs an {@link org.apache.tapestry.script.InputSymbolToken}
+ * from an &lt;input-symbol&gt; element.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- * 
- **/
-
-public interface IScriptToken extends ILocatable
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
+ */
+class InputSymbolRule extends BaseRule
 {
-	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
+    private IResourceResolver _resolver;
 
-	public void write(StringBuffer buffer, ScriptSession session);
+    public InputSymbolRule(IResourceResolver resolver)
+    {
+        _resolver = resolver;
+    }
 
-	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
+    public void startElement(RuleDirectedParser parser, Attributes attributes)
+    {
+        String key = getAttribute(attributes, "key");
 
-	public void addToken(IScriptToken token);
+        parser.validate(key, Tapestry.SIMPLE_PROPERTY_NAME_PATTERN, "ScriptParser.invalid-key");
+
+        String className = getAttribute(attributes, "class");
+        Class expectedClass = lookupClass(parser, className);
+
+        String required = getAttribute(attributes, "required");
+
+        InputSymbolToken token =
+            new InputSymbolToken(key, expectedClass, required.equals("yes"), parser.getLocation());
+
+        IScriptToken parent = (IScriptToken) parser.peek();
+        parent.addToken(token);
+    }
+
+    private Class lookupClass(RuleDirectedParser parser, String className)
+    {
+        if (Tapestry.isNull(className))
+            return null;
+
+        try
+        {
+            return _resolver.findClass(className);
+        }
+        catch (Exception ex)
+        {
+            throw new DocumentParseException(
+                Tapestry.getString("ScriptParser.unable-to-resolve-class", className),
+                parser.getDocumentLocation(),
+                parser.getLocation(),
+                ex);
+        }
+    }
 }

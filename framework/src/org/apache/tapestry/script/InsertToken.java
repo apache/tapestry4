@@ -57,8 +57,9 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -70,15 +71,15 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *
  **/
 
-class InsertToken implements IScriptToken
+class InsertToken extends AbstractToken
 {
     private String _expression;
-    private IResourceResolver _resolver;
 
-    InsertToken(String expression, IResourceResolver resolver)
+    InsertToken(String expression, ILocation location)
     {
+        super(location);
+
         _expression = expression;
-        _resolver = resolver;
     }
 
     /**
@@ -89,9 +90,7 @@ class InsertToken implements IScriptToken
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
-        Map symbols = session.getSymbols();
-
-        Object value = OgnlUtils.get(_expression, _resolver, symbols);
+        Object value = evaluate(_expression, session);
 
         if (value != null)
             buffer.append(value);

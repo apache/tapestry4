@@ -55,38 +55,71 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocatable;
+import java.util.Map;
 
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.IScriptProcessor;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
+ *  The result of executing a script, the session is used during the parsing
+ *  process as well.  Following {@link IScript#execute(Map)}, the session
+ *  provides access to output symbols as well as the body and initialization
+ *  blocks created by the script tokens.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 0.2.9
  * 
  **/
 
-public interface IScriptToken extends ILocatable
+public class ScriptSession
 {
-	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
+    private IRequestCycle _cycle;
+    private IScriptProcessor _processor;
+    private IResourceLocation _scriptLocation;
+    private Map _symbols;
 
-	public void write(StringBuffer buffer, ScriptSession session);
+    public ScriptSession(
+        IResourceLocation scriptLocation,
+        IRequestCycle cycle,
+        IScriptProcessor processor,
+        Map symbols)
+    {
+        _scriptLocation = scriptLocation;
+        _cycle = cycle;
+        _processor = processor;
+        _symbols = symbols;
+    }
 
-	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
+    public IResourceLocation getScriptPath()
+    {
+        return _scriptLocation;
+    }
 
-	public void addToken(IScriptToken token);
+    public Map getSymbols()
+    {
+        return _symbols;
+    }
+
+	public IRequestCycle getRequestCycle()
+	{
+		return _cycle;
+	}
+
+    public IScriptProcessor getProcessor()
+    {
+        return _processor;
+    }
+
+    public String toString()
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("ScriptSession[");
+        buffer.append(_scriptLocation);
+        buffer.append(']');
+
+        return buffer.toString();
+    }
 }

@@ -66,7 +66,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.components.LinkEventType;
@@ -152,7 +151,7 @@ public abstract class Rollover extends AbstractComponent
 
         if (imageURL == null)
             throw Tapestry.createRequiredParameterException(this, "image");
- 
+
         writer.beginEmpty("img");
 
         writer.attribute("src", imageURL);
@@ -167,7 +166,7 @@ public abstract class Rollover extends AbstractComponent
             if (blurURL == null)
                 blurURL = imageURL;
 
-            imageName = writeScript(body, serviceLink, focusURL, blurURL);
+            imageName = writeScript(cycle, body, serviceLink, focusURL, blurURL);
 
             writer.attribute("name", imageName);
         }
@@ -195,21 +194,24 @@ public abstract class Rollover extends AbstractComponent
         return _parsedScript;
     }
 
-    private String writeScript(Body body, ILinkComponent link, String focusURL, String blurURL)
+    private String writeScript(
+        IRequestCycle cycle,
+        Body body,
+        ILinkComponent link,
+        String focusURL,
+        String blurURL)
     {
-        String uniqueId = body.getUniqueId();
+        String imageName = body.getUniqueString(getId());
         String focusImageURL = body.getPreloadedImageReference(focusURL);
         String blurImageURL = body.getPreloadedImageReference(blurURL);
 
         Map symbols = new HashMap();
 
-        symbols.put("uniqueId", uniqueId);
+        symbols.put("imageName", imageName);
         symbols.put("focusImageURL", focusImageURL);
         symbols.put("blurImageURL", blurImageURL);
 
-        ScriptSession session = getParsedScript().execute(symbols);
-
-        body.process(session);
+        getParsedScript().execute(cycle, body, symbols);
 
         // Add attributes to the link to control mouse over/out.
         // Because the script is written before the <body> tag,
@@ -219,13 +221,7 @@ public abstract class Rollover extends AbstractComponent
         link.addEventHandler(LinkEventType.MOUSE_OVER, (String) symbols.get("onMouseOverName"));
         link.addEventHandler(LinkEventType.MOUSE_OUT, (String) symbols.get("onMouseOutName"));
 
-        String imageName = (String) symbols.get("imageName");
-
-        // Return the value that must be assigned to the 'name' attribute
-        // of the <img> tag.
-
         return imageName;
-
     }
 
     public abstract IAsset getBlur();

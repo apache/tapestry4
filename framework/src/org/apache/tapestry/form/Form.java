@@ -582,13 +582,13 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
                 finalFunctionName = compositeName;
             }
 
-            body.addOtherInitialization(
+            body.addInitializationScript(
                 formPath + "." + propertyName + " = " + finalFunctionName + ";");
 
         }
 
         if (buffer != null)
-            body.addOtherScript(buffer.toString());
+            body.addBodyScript(buffer.toString());
 
     }
 
