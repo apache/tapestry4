@@ -109,14 +109,6 @@ This table is a quick guide to the most common objects and their properties.
 	</td>
 </tr>
 
-<tr>
-	<td>componentClassEnhancer</td>	
-	<td>&IEngine;</td>
-	<td>&IComponentClassEnhancer;</td>
-	<td>
-	Object responsible for dynamic creation of enhanced subclasses of Tapestry pages and components.	
-	</td>
-</tr>
 
 <tr>
 	<td>components</td>	
@@ -127,14 +119,6 @@ This table is a quick guide to the most common objects and their properties.
 	</td>
 </tr>
 
-<tr>
-	<td>contextPath</td>	
-	<td>&IEngine;</td>
-	<td>String</td>
-	<td>
-	The path, if any, for the web application context.	
-	</td>
-</tr>
 
 <tr>
 	<td>changeObserver</td>	
@@ -170,22 +154,7 @@ Object responsible for locating classes and classpath resources.
 	</td>
 </tr>	
 
-<tr>
-	<td>dataSqueezer</td>
-	<td>&IEngine;</td>
-	<td>&DataSqueezer;</td>
-	<td>Object used to encode and decode arbitrary values into a URL while maintaining their type.</td>
-</tr>
 
-<tr>
-	<td>dirty</td>	
-	<td>&AbstractEngine;</td>
-	<td>boolean</td>
-	<td>
-	True if the engine has been (potentially) modified, and should be stored 
-	into the HttpSession.	
-	</td>
-</tr>
 
 <tr>
 	<td>disabled</td>	
@@ -386,14 +355,6 @@ Object responsible for locating classes and classpath resources.
 	</td>
 </tr>
 
-<tr>
-	<td>pool</td>	
-	<td>&IEngine;</td>
-	<td>&Pool;</td>
-	<td>
-	Stores objects that are expensive to create.	
-	</td>
-</tr>
 
 <tr>
   <td>rendering</td>
@@ -414,19 +375,6 @@ Object responsible for locating classes and classpath resources.
 </tr>
 
 <tr>
-	<td>resetServiceEnabled</td>	
-	<td>&IEngine;</td>
-	<td>boolean</td>
-	<td>
-	If true, the reset service is enabled. The reset service is disabled by default.	
-	</td>
-</tr>
-
-
-
-
-
-<tr>
 <td>scriptSource</td>	
 <td>&IEngine;</td>
 <td>&IScriptSource;</td>
@@ -435,14 +383,6 @@ Object that parses and caches script specifications.
 </td>
 </tr>
 
-<tr>
-	<td>servletPath</td>	
-	<td>&IEngine;</td>
-	<td>String</td>
-	<td>
-	The URL path used to reference the application servlet (including the context path, if any).	
-	</td>
-</tr>
 
 <tr>
 	<td>specification</td>	
@@ -470,27 +410,6 @@ Object that parses and caches script specifications.
 	<td>&ISpecificationSource;</td>
 	<td>Object responsible for reading and caching page and component specifications.</td>
 </tr>
-
-<tr>
-<td>stateful</td>	
-<td>&IEngine;</td>
-<td>boolean</td>
-<td>
-If true, then an HttpSession has been created for the client to store server-side state. Initially false.	
-</td>
-</tr>
-
-
-
-<tr>
-	<td>templateSource</td>	
-	<td>&IEngine;</td>
-	<td>&ITemplateSource;</td>
-	<td>
-	Object responsible for reading and caching page and component templates.	
-	</td>
-</tr>
-
 
 <tr>
 		<td>visit</td>
