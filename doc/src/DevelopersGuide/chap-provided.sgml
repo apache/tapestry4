@@ -175,6 +175,15 @@ A kind of validating text field that allows a date to be entered.
 	</>
 
 	<varlistentry>
+	<term>displayName</term>
+	<listitem>
+	<para>
+A name for the the component, used when formulating error messages.
+</>
+</>
+</>
+
+	<varlistentry>
 		<term>delegate</>
 		<listitem>
 			<para>An <classname>IValidationDelegate</> used to handle validation exceptions.
@@ -548,6 +557,15 @@ A type of validating text field that is used to edit an integer property.
 			<para>The property to edit.</>
 		</>
 	</>
+
+	<varlistentry>
+	<term>displayName</term>
+	<listitem>
+	<para>
+A name for the the component, used when formulating error messages.
+</>
+</>
+</>
 
 	<varlistentry>
 		<term>delegate</>
@@ -1098,6 +1116,16 @@ The field may be required, and a minimum length may be specified.
 			</>
 		</>
 	</>
+
+	<varlistentry>
+	<term>displayName</term>
+	<listitem>
+	<para>
+A name for the the component, used when formulating error messages.
+</>
+</>
+</>
+
 	<varlistentry>
 		<term>delegate</>
 		<listitem>
