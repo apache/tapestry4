@@ -9,8 +9,6 @@
   <parameter name="maximumLength" java-type="java.lang.Integer"/>
   
   <reserved-parameter name="type"/>
-  <reserved-parameter name="size"/>
-  <reserved-parameter name="maxlength"/>
   <reserved-parameter name="value"/>
   
 </specification>

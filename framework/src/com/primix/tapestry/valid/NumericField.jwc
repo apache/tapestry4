@@ -18,7 +18,5 @@
   
   
   <reserved-parameter name="type"/>
-  <reserved-parameter name="size"/>
-  <reserved-parameter name="maxlength"/>
    
 </specification>

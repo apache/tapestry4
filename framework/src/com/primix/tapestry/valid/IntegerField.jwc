@@ -10,8 +10,6 @@
   <parameter name="value" java-type="java.lang.Integer" required="yes"/>
   
   <reserved-parameter name="type"/>
-  <reserved-parameter name="size"/>
-  <reserved-parameter name="maxlength"/>
   <reserved-parameter name="value"/>
   
 </specification>

@@ -13,8 +13,6 @@
   <parameter name="text" java-type="java.lang.String" required="yes"/>
   
   <reserved-parameter name="type"/>
-  <reserved-parameter name="size"/>
-  <reserved-parameter name="maxlength"/>
   <reserved-parameter name="value"/>
   <reserved-parameter name="name"/>
 
