@@ -4,10 +4,10 @@
   "http://tapestry.sf.net/dtd/Script_1_1.dtd">
   
 <!--
-
 Input symbols:
-  name: The Button component the script is to be attached to.
-  
+  displayField: the date display form text field
+  name:         the calendar popup button
+  returnField:  the value return Hidden form field
 -->
 <script>
 
@@ -51,20 +51,19 @@ Input symbols:
 </let>
 
 <body>
- function ${functionName}() 
- {
-        fPopCalendar(${displayPath},${displayPath},${returnPath}, popCal);        
- }
- 
- function ${hideFunctionName}() 
- {
+function ${functionName}() 
+{
+       fPopCalendar(${displayPath},${displayPath},${returnPath}, popCal);        
+} 
+function ${hideFunctionName}() 
+{
         fHideCalendar();
- }
+}
 </body>
 
 <initialization>
- ${buttonPath}.attachEvent("onclick", ${functionName});
- ${displayPath}.attachEvent("onclick", ${hideFunctionName});
+${buttonPath}.attachEvent("onclick", ${functionName});
+${displayPath}.attachEvent("onclick", ${hideFunctionName});
 </initialization>
 
 </script>
