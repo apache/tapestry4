@@ -55,12 +55,9 @@ public class ListenerMap
 
     /**
      *  A {@link Map} of relevant {@link Method}s, keyed on method name.
-     *  This is just the public void methods that take either
-     *  a {@link IRequestCycle} or a 
-     *  String[] and a {@link IRequestCycle} as parameters,
-     *  return void, and throw nothing or just {@link RequestCycleException}.
-     *
-     **/
+     *  This is just the public void methods that take an {@link IRequestCycle}
+     *  and throw nothing or just {@link ApplicationRuntimeException}.
+     */
 
     private Map _methodMap;
 
