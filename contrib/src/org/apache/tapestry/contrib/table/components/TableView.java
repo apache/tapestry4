@@ -234,7 +234,7 @@ public abstract class TableView
             m_objTableModel = generateTableModel(null);
 
         if (m_objTableModel == null)
-            throw new ApplicationRuntimeException(TableUtils.format("missing-table-model", this));
+            throw new ApplicationRuntimeException(TableUtils.format("missing-table-model", getExtendedId()));
 
         return m_objTableModel;
     }
@@ -252,6 +252,8 @@ public abstract class TableView
             return null;
 
         Object objSourceValue = getSource();
+        if (objSourceValue == null)
+            return null;
 
         // if the source parameter is of type {@link IBasicTableModel}, 
         // create and return an appropriate wrapper
@@ -270,7 +272,7 @@ public abstract class TableView
             objDataModel = new SimpleListTableDataModel((Iterator) objSourceValue);
 
         if (objDataModel == null)
-            return null;
+            throw new ApplicationRuntimeException(TableUtils.format("invalid-table-source", getExtendedId(), objSourceValue.getClass()));
 
         if (objState == null)
             objState = new SimpleTableState();
@@ -311,7 +313,7 @@ public abstract class TableView
             for (int i = 0; i < nColumnsNumber; i++)
             {
                 if (!(arrColumnsList.get(i) instanceof ITableColumn))
-                    throw new ApplicationRuntimeException(TableUtils.format("columns-only-please", this));
+                    throw new ApplicationRuntimeException(TableUtils.format("columns-only-please", getExtendedId()));
             }
             //objColumns = arrColumnsList.toArray(new ITableColumn[nColumnsNumber]);
             return new SimpleTableColumnModel(arrColumnsList);
@@ -336,8 +338,7 @@ public abstract class TableView
             return generateTableColumnModel(strColumns);
         }
 
-        //throw new ApplicationRuntimeException("The columns binding must contain a list of ITableColumn objects or a description string");
-        return null;
+        throw new ApplicationRuntimeException(TableUtils.format("invalid-table-columns", getExtendedId(), objColumns.getClass()));
     }
 
     /**
