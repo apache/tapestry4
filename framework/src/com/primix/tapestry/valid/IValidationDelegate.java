@@ -27,19 +27,25 @@
 package com.primix.tapestry.valid;
 
 import com.primix.tapestry.*;
+import java.util.List;
+import java.util.Map;
 
 /**
- *  Interface used to communicate errors from an {@link IValidatingTextField} 
+ *  Interface used to communicate errors from an {@link IField} 
  *  component to some application-specific code. In addition,
  *  controls how fields that are in error are presented (they can be
  *  marked in various ways by the delegate; the default implementation
- *  adds to red asterisks to the right of the field).
+ *  adds two red asterisks to the right of the field).
  *
  *  <p>The interface is designed so that a single instance can be shared
- *  with many instances of {@link IValidatingTextField}.
+ *  with many instances of {@link IField}.
  *
- *  <p>TBD: Add another method so that the delegate can write additional 
- *  attributes into the text field (i.e., to change its color or class).
+ *  <p>Starting with release 1.0.8, this interface was extensively revised
+ *  (in a non-backwards compatible way) to move the tracking of errors and
+ *  invalid values (during a request cycle) to the delegate.  It has evolved from
+ *  a largely stateless conduit for error messages into a very stateful tracker
+ *  of field state.
+ *  
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -49,33 +55,78 @@ import com.primix.tapestry.*;
 public interface IValidationDelegate
 {
 	/**
+	 *  Invoked before other methods to configure the delegate for the given field.
+	 * 
+	 *  @since 1.0.8
+	 *
+	 **/
+	
+	public void setField(IField field);
+
+	/**
+	 *  Returns true if the current field is in error (that is, had bad input
+	 *  submitted by the end user).
+	 * 
+	 *  @since 1.0.8
+	 * 
+	 **/
+	
+	public boolean isInError();
+	
+	/**
+	 *  Returns the invalid string submitted by the client.
+	 * 
+	 * @since 1.0.8
+	 * 
+	 **/
+
+	public String getInvalidInput();
+
+
+	/**
+	 *  Returns a {@link List} of {@link IFieldTracking}, in default order
+	 *  (the order in which fields are renderred). A caller should
+	 *  not change the values (the List is immutable).  
+	 *  May return null if no fields are in error.
+	 * 
+	 *  @since 1.0.8
+	 **/
+	
+	public List getFieldTracking();
+
+	/**
+	 *  Resets any tracking information for the current field.  This will
+	 *  clear the field's inError flag, and set its error message and invalid input value
+	 *  to null.
+	 * 
+	 *  @since 1.0.8
+	 * 
+	 **/
+	
+	public void reset();
+
+	/**
 	 *  The error notification method, invoked during the rewind phase
 	 *  (that is, while HTTP parameters are being extracted from the request
 	 *  and assigned to various object properties).  
 	 *
-	 *  <p>Typically, the listener simply arrainges
-	 *  to present the defaultErrorMessage to the user (as part of the HTML
-	 *  response).  Finicky listeners may, instead, use the constraint and
+	 *  <p>Typically, the delegate stores this information directly
+	 *  into a {@link IValidationFieldTracking}.
+	 *  Finicky delegates may, instead, use the constraint and
 	 *  displayName (from the field) to form their own error message.
 	 *
-	 *  @param field the field to which the update applies to.
-	 *  @param constraint the {@link ValidationConstraint} which was violated.
-	 *  @param defaultErrorMessage a default, localized, error message.
-	 *
 	 */
 
-	public void invalidField(
-		IValidatingTextField field,
-		ValidationConstraint constraint,
-		String defaultErrorMessage);
+	public void record(ValidatorException ex);
 
 	/**
-	 *  Invoked before the field is rendered, if the field is in error.
+	 *  Invoked before the field is rendered.  If the field is in error,
+	 *  the delegate may decorate the field in some way (to highlight its
+	 *  error state).
 	 *
 	 */
 
-	public void writeErrorPrefix(
-		IValidatingTextField field,
+	public void writePrefix(
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException;
@@ -90,18 +141,17 @@ public interface IValidationDelegate
 	 */
 
 	public void writeAttributes(
-		IValidatingTextField field,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException;
 
 	/**
-	 *  Invoked after the field is rendered, if the field is in error.
+	 *  Invoked after the field is rendered, so that the
+	 *  delegate may decorate the field (if it is in error).
 	 *
 	 */
 
-	public void writeErrorSuffix(
-		IValidatingTextField field,
+	public void writeSuffix(
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException;
@@ -113,7 +163,7 @@ public interface IValidationDelegate
 	 */
 
 	public void writeLabelPrefix(
-		IValidatingTextField field,
+		IField field,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException;
@@ -125,8 +175,15 @@ public interface IValidationDelegate
 	 */
 
 	public void writeLabelSuffix(
-		IValidatingTextField field,
+		IField field,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException;
+		
+	/**
+	 *   Returns true if any field has errors.
+	 * 
+	 **/
+	
+	public boolean getHasErrors();
 }

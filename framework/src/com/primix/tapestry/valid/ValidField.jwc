@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="com.primix.tapestry.valid.IntegerField">
+
+<specification class="com.primix.tapestry.valid.ValidField" allow-body="no">
+
+  <parameter name="disabled"/>
+  <parameter name="hidden"/>
+  <parameter name="displayWidth" java-type="java.lang.Integer"/>
+  <parameter name="maximumLength" java-type="java.lang.Integer"/>
+
   <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate" required="yes"/>
+  <parameter name="validator" java-type="com.primix.tapestry.valid.IValidator" required="yes"/>
+  
   <parameter name="displayName" java-type="java.lang.String" required="yes"/>
-  <parameter name="maximum" java-type="java.lang.Integer"/>
-  <parameter name="minimum" java-type="java.lang.Integer"/>
-  <parameter name="required"/>
-  <parameter name="value" java-type="java.lang.Integer" required="yes"/>
+ 
+  <parameter name="value" required="yes"/>
   
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
-  
+  <reserved-parameter name="name"/>
+
 </specification>
