@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd" [
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd" [
 
 <!ENTITY here "/tutorial/workbench/components">
 	
 ]>
-<specification
+
+<component-specification
   class="tutorial.workbench.components.Border"
   allow-informal-parameters="no">
 
@@ -81,4 +83,4 @@
 
   <context-asset name="stylesheet" path="/css/workbench.css"/>
   
- </specification>
+ </component-specification>

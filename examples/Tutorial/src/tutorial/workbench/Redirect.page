@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<specification class="tutorial.workbench.Redirect">
+<page-specification class="tutorial.workbench.Redirect">
 
   <component id="border" type="Border"/>
   
@@ -15,4 +16,4 @@
   	<binding name="listener" property-path="listeners.redirectExternal"/>
   </component>
   
-</specification>
+</page-specification>

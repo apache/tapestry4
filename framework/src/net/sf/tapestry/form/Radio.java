@@ -85,8 +85,8 @@ import net.sf.tapestry.Tapestry;
 
 public class Radio extends AbstractComponent
 {
- 	private Object value;
- 	private boolean disabled;
+ 	private Object _value;
+ 	private boolean _disabled;
  	
     /**
      *  Renders the form element, or responds when the form containing the element
@@ -117,8 +117,8 @@ public class Radio extends AbstractComponent
             // then update set the selection from the group to the value for this
             // radio button.  This will update the selected parameter of the RadioGroup.
 
-            if (!disabled && group.isSelected(option))
-                group.updateSelection(value);
+            if (!_disabled && group.isSelected(option))
+                group.updateSelection(_value);
             return;
         }
 
@@ -131,10 +131,10 @@ public class Radio extends AbstractComponent
         // As the group if the value for this Radio matches the selection
         // for the group as a whole; if so this is the default radio and is checked.
 
-        if (group.isSelection(value))
+        if (group.isSelection(_value))
             writer.attribute("checked");
 
-        if (disabled)
+        if (_disabled)
             writer.attribute("disabled");
 
         // The value for the Radio matches the option number (provided by the RadioGroup).
@@ -149,22 +149,22 @@ public class Radio extends AbstractComponent
 
     public boolean getDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
     public Object getValue()
     {
-        return value;
+        return _value;
     }
 
     public void setValue(Object value)
     {
-        this.value = value;
+        _value = value;
     }
 
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<specification class="tutorial.workbench.upload.Upload">
+<page-specification class="tutorial.workbench.upload.Upload">
 
   <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
 
@@ -37,4 +38,4 @@
  
   <context-asset name="continue" path="/images/workbench/Continue.gif"/>
 
-</specification>
+</page-specification>

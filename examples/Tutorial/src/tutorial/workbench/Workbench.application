@@ -30,6 +30,8 @@
   <page name="ExceptionTab" specification-path="/tutorial/workbench/ExceptionTab.page"/>
   <page name="ErrorFest" specification-path="/tutorial/workbench/ErrorFest.page"/>
 
+  <page name="Forms" specification-path="/tutorial/workbench/fields/Forms.page"/>
+
   <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
   <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>
  
