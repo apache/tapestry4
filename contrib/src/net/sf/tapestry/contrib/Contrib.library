@@ -29,4 +29,6 @@
   <page name="SimpleTableColumnPage" specification-path="/net/sf/tapestry/contrib/table/components/inserted/SimpleTableColumnPage.page"/>
   <component-alias type="SimpleTableColumnComponent" specification-path="/net/sf/tapestry/contrib/table/components/inserted/SimpleTableColumnComponent.jwc"/>
 
+  <component-alias type="PopupLink" specification-path="/net/sf/tapestry/contrib/popup/PopupLink.jwc"/>
+
 </library-specification>
