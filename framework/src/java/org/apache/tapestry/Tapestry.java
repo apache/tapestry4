@@ -35,12 +35,13 @@ import javax.servlet.ServletContext;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.lib.util.AdapterRegistry;
+import org.apache.hivemind.lib.util.AdapterRegistryImpl;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.util.AdaptorRegistry;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
@@ -336,13 +337,13 @@ public final class Tapestry
     private static final ThreadLocal _invokedMethodIds = new ThreadLocal();
 
     /**
-     * A {@link org.apache.tapestry.util.AdaptorRegistry}used to coerce arbitrary objects to
+     * A {@link org.apache.hivemind.lib.util.AdapterRegistryImpl}used to coerce arbitrary objects to
      * boolean values.
      * 
      * @see #evaluateBoolean(Object)
      */
 
-    private static final AdaptorRegistry _booleanAdaptors = new AdaptorRegistry();
+    private static final AdapterRegistry _booleanAdaptors = new AdapterRegistryImpl();
 
     private static abstract class BoolAdaptor
     {
@@ -424,10 +425,10 @@ public final class Tapestry
     }
 
     /**
-     * {@link AdaptorRegistry}used to extract an {@link Iterator}from an arbitrary object.
+     * {@link AdapterRegistryImpl}used to extract an {@link Iterator}from an arbitrary object.
      */
 
-    private static AdaptorRegistry _iteratorAdaptors = new AdaptorRegistry();
+    private static AdapterRegistry _iteratorAdaptors = new AdapterRegistryImpl();
 
     private abstract static class IteratorAdaptor
     {
@@ -715,7 +716,7 @@ public final class Tapestry
             return array.length > 0;
         }
 
-        BoolAdaptor adaptor = (BoolAdaptor) _booleanAdaptors.getAdaptor(valueClass);
+        BoolAdaptor adaptor = (BoolAdaptor) _booleanAdaptors.getAdapter(valueClass);
 
         return adaptor.coerce(value);
     }
@@ -754,7 +755,7 @@ public final class Tapestry
         if (value == null)
             return null;
 
-        IteratorAdaptor adaptor = (IteratorAdaptor) _iteratorAdaptors.getAdaptor(value.getClass());
+        IteratorAdaptor adaptor = (IteratorAdaptor) _iteratorAdaptors.getAdapter(value.getClass());
 
         return adaptor.coerce(value);
     }
