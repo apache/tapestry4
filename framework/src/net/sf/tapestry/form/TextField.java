@@ -37,7 +37,7 @@ import org.apache.log4j.Category;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -46,7 +46,7 @@ import org.apache.log4j.Category;
  *  <tr>
  *    <td>text</td>
  *    <td>java.lang.String</td>
- *    <td>R / W</td>
+ *    <td>in-out</td>
  *   	<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The text inside the text field.  The binding is only updated
@@ -58,7 +58,7 @@ import org.apache.log4j.Category;
  *	<tr>
  *		<td>hidden</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>If true, then the text field is written as a
@@ -67,7 +67,7 @@ import org.apache.log4j.Category;
  *  <tr>
  * 		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>Controls whether the text field is active or not.  If disabled, then
@@ -79,7 +79,7 @@ import org.apache.log4j.Category;
  *	<tr>
  *		<td>displayWidth</td>
  *		<td>integer</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>Controls the display width of the text control in the client browser.  If
@@ -91,7 +91,7 @@ import org.apache.log4j.Category;
  *	<tr>
  *		<td>maximumLength</td>
  *		<td>integer</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>Controls the maximum characters that the text control will accept.  If
@@ -112,32 +112,7 @@ import org.apache.log4j.Category;
 
 public class TextField extends AbstractTextField
 {
-    private static final Category CAT = Category.getInstance(TextField.class);
-
     private IBinding valueBinding;
-
-    public IBinding getTextBinding()
-    {
-        return getValueBinding();
-    }
-
-    private boolean warning = true;
-
-    public void setTextBinding(IBinding value)
-    {
-        if (warning)
-        {
-            CAT.warn(
-                Tapestry.getString(
-                    "deprecated-component-param",
-                    getExtendedId(),
-                    "text",
-                    "value"));
-            warning = false;
-        }
-
-        setValueBinding(value);
-    }
 
     public IBinding getValueBinding()
     {

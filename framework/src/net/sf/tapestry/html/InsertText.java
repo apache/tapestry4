@@ -48,19 +48,26 @@ import net.sf.tapestry.Tapestry;
  * that usually renders the text in a non-proportional font.
  *
  *
- * <table border=1>
- * <tr> <th>Parameter</th> <th>Type</th>
- * <th>Read / Write</th> <th>Required</th> <th>Default</th> <th>Description</th>
+ *  <table border=1>
+ *  <tr> <th>Parameter</th> 
+ *  <th>Type</th>
+ *  <th>Direction</th> 
+ *  <th>Required</th> 
+ *  <th>Default</th> 
+ *  <th>Description</th>
  * </tr>
  * <tr>
- *  <td>text</td> <td>{@link String}</td> <td>R</td>
- *  <td>no</td> <td>&nbsp;</td>
+ *  <td>text</td> 
+ *  <td>{@link String}</td> 
+ *  <td>in</td>
+ *  <td>no</td> 
+ *  <td>&nbsp;</td>
  *  <td>The text to be inserted.  If not provided, no output is written</td> </tr>
  *
  *  <tr>
  *      <td>mode</td>
  *      <td>{@link InsertTextMode}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *      <td>no</td>
  *      <td>{@link InsertTextMode#BREAK}</td>
  *      <td>Defines how each line will be emitted.
@@ -78,55 +85,19 @@ import net.sf.tapestry.Tapestry;
 
 public class InsertText extends AbstractComponent
 {
-    private IBinding textBinding;
-    private IBinding modeBinding;
-    private InsertTextMode modeValue;
-
-    public IBinding getTextBinding()
-    {
-        return textBinding;
-    }
-
-    public void setTextBinding(IBinding value)
-    {
-        textBinding = value;
-    }
-
-    public IBinding getModeBinding()
-    {
-        return modeBinding;
-    }
-
-    public void setModeBinding(IBinding value)
-    {
-        modeBinding = value;
-
-        if (value.isStatic())
-            modeValue = (InsertTextMode) value.getObject("mode", InsertTextMode.class);
-    }
+    private String text;
+    private InsertTextMode mode = InsertTextMode.BREAK;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        InsertTextMode mode = modeValue;
-        String text;
         StringReader reader = null;
         LineNumberReader lineReader = null;
         int lineNumber = 0;
         String line;
 
-        if (textBinding == null)
-            return;
-
-        text = textBinding.getString();
         if (text == null)
             return;
-
-        if (mode == null && modeBinding != null)
-            mode = (InsertTextMode) modeBinding.getObject("mode", InsertTextMode.class);
-
-        if (mode == null)
-            mode = InsertTextMode.BREAK;
 
         try
         {
@@ -177,4 +148,25 @@ public class InsertText extends AbstractComponent
         {
         }
     }
+
+    public InsertTextMode getMode()
+    {
+        return mode;
+    }
+
+    public void setMode(InsertTextMode mode)
+    {
+        this.mode = mode;
+    }
+
+    public String getText()
+    {
+        return text;
+    }
+
+    public void setText(String text)
+    {
+        this.text = text;
+    }
+
 }

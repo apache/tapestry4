@@ -42,7 +42,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *    <td>Read / Write </td>
+ *    <td>Direction </td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -51,7 +51,7 @@ import net.sf.tapestry.RequiredParameterException;
  *   <tr>
  *    <td>page</td>
  *    <td>{@link String}</td>
- *    <td>R</td>
+ *    <td>in</td>
  *      <td>yes</td>
  *      <td>&nbsp;</td>
  *      <td>The page to display in the frame.</td>
