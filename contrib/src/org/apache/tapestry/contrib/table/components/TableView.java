@@ -117,6 +117,9 @@ public abstract class TableView
     public abstract Object getSource();
     public abstract Object getColumns();
     public abstract IBinding getColumnsBinding();
+    public abstract IBinding getPageSizeBinding();
+    public abstract String getInitialSortColumn();
+    public abstract boolean getInitialSortOrder();
     public abstract ITableSessionStateManager getTableSessionStateManager();
     public abstract ITableSessionStoreManager getTableSessionStoreManager();
     public abstract IComponent getColumnSettingsContainer();
@@ -193,7 +196,8 @@ public abstract class TableView
             m_objTableModel = generateTableModel(null);
 
         if (m_objTableModel == null)
-            throw new ApplicationRuntimeException(TableUtils.format("missing-table-model", getExtendedId()));
+            throw new ApplicationRuntimeException(
+                TableUtils.format("missing-table-model", getExtendedId()));
 
         return m_objTableModel;
     }
@@ -205,8 +209,17 @@ public abstract class TableView
      */
     protected ITableModel generateTableModel(SimpleTableState objState)
     {
+        // create a new table state if none is passed
         if (objState == null)
+        {
             objState = new SimpleTableState();
+            objState.getSortingState().setSortColumn(getInitialSortColumn(), getInitialSortOrder());
+        }
+
+        // update the page size if set in the parameter
+        IBinding objPageSizeBinding = getPageSizeBinding();
+        if (objPageSizeBinding != null)
+            objState.getPagingState().setPageSize(objPageSizeBinding.getInt());
 
         // get the column model. if not possible, return null.
         ITableColumnModel objColumnModel = getTableColumnModel();
@@ -220,7 +233,10 @@ public abstract class TableView
         // if the source parameter is of type {@link IBasicTableModel}, 
         // create and return an appropriate wrapper
         if (objSourceValue instanceof IBasicTableModel)
-            return new BasicTableModelWrap((IBasicTableModel) objSourceValue, objColumnModel, objState);
+            return new BasicTableModelWrap(
+                (IBasicTableModel) objSourceValue,
+                objColumnModel,
+                objState);
 
         // otherwise, the source parameter must contain the data to be displayed
         ITableDataModel objDataModel = null;
@@ -234,7 +250,11 @@ public abstract class TableView
             objDataModel = new SimpleListTableDataModel((Iterator) objSourceValue);
 
         if (objDataModel == null)
-            throw new ApplicationRuntimeException(TableUtils.format("invalid-table-source", getExtendedId(), objSourceValue.getClass()));
+            throw new ApplicationRuntimeException(
+                TableUtils.format(
+                    "invalid-table-source",
+                    getExtendedId(),
+                    objSourceValue.getClass()));
 
         return new SimpleTableModel(objDataModel, objColumnModel, objState);
     }
@@ -249,7 +269,7 @@ public abstract class TableView
     protected ITableColumnModel getTableColumnModel()
     {
         Object objColumns = getColumns();
-        
+
         if (objColumns == null)
             return null;
 
@@ -275,7 +295,8 @@ public abstract class TableView
             for (int i = 0; i < nColumnsNumber; i++)
             {
                 if (!(arrColumnsList.get(i) instanceof ITableColumn))
-                    throw new ApplicationRuntimeException(TableUtils.format("columns-only-please", getExtendedId()));
+                    throw new ApplicationRuntimeException(
+                        TableUtils.format("columns-only-please", getExtendedId()));
             }
             //objColumns = arrColumnsList.toArray(new ITableColumn[nColumnsNumber]);
             return new SimpleTableColumnModel(arrColumnsList);
@@ -289,7 +310,8 @@ public abstract class TableView
         if (objColumns instanceof String)
         {
             String strColumns = (String) objColumns;
-            if (getColumnsBinding().isInvariant()) {
+            if (getColumnsBinding().isInvariant())
+            {
                 // if the binding is invariant, create the columns only once
                 if (m_objColumnModel == null)
                     m_objColumnModel = generateTableColumnModel(strColumns);
@@ -300,7 +322,8 @@ public abstract class TableView
             return generateTableColumnModel(strColumns);
         }
 
-        throw new ApplicationRuntimeException(TableUtils.format("invalid-table-columns", getExtendedId(), objColumns.getClass()));
+        throw new ApplicationRuntimeException(
+            TableUtils.format("invalid-table-columns", getExtendedId(), objColumns.getClass()));
     }
 
     /**
@@ -416,15 +439,17 @@ public abstract class TableView
         ITableModel objModel = getTableModel();
 
         // make sure current page is within the allowed range
-        ITablePagingState objPagingState = objModel.getPagingState(); 
+        ITablePagingState objPagingState = objModel.getPagingState();
         int nCurrentPage = objPagingState.getCurrentPage();
         int nPageCount = objModel.getPageCount();
-        if (nCurrentPage >= nPageCount) {
+        if (nCurrentPage >= nPageCount)
+        {
             // the current page is greater than the page count. adjust.
             nCurrentPage = nPageCount - 1;
             objPagingState.setCurrentPage(nCurrentPage);
         }
-        if (nCurrentPage < 0) {
+        if (nCurrentPage < 0)
+        {
             // the current page is before the first page. adjust.
             nCurrentPage = 0;
             objPagingState.setCurrentPage(nCurrentPage);

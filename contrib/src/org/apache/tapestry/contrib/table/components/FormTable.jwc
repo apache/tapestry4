@@ -57,6 +57,34 @@
         </description>
     </parameter>
     
+	<parameter name="pageSize" 
+		type="int" 
+		required="no">
+        <description>
+            The number of records displayed per page when source/columns are used.
+            The page size is 10 by default.
+        </description>
+    </parameter>
+  
+	<parameter name="initialSortColumn" 
+		type="java.lang.String" 
+		required="no">
+        <description>
+            The id of the column to initially sort the table by.
+            The column is set to null by default, i.e. there is no sorting.
+        </description>
+    </parameter>
+  
+	<parameter name="initialSortOrder" 
+		type="boolean" 
+		required="no">
+        <description>
+            The order of the initial sorting.
+            Set this parameter to 'false' to sort in an ascending order
+            and to 'true' to sort in a descending one.
+        </description>
+    </parameter>
+  
     <parameter name="tableSessionStateManager" 
         type="org.apache.tapestry.contrib.table.model.ITableSessionStateManager" 
         required="no">
@@ -182,6 +210,9 @@
 		<inherited-binding name="tableModel" parameter-name="tableModel"/>
 		<inherited-binding name="source" parameter-name="source"/>
 		<binding name="columns" expression="formColumns"/>
+		<inherited-binding name="pageSize" parameter-name="pageSize"/>
+		<inherited-binding name="initialSortColumn" parameter-name="initialSortColumn"/>
+		<inherited-binding name="initialSortOrder" parameter-name="initialSortOrder"/>
 		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
 		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
 		<inherited-binding name="columnSettingsContainer" parameter-name="columnSettingsContainer"/>
