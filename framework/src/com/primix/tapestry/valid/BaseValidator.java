@@ -32,7 +32,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- *  Abstract base class for {@link ITranslator}.  Supports a required and locale property.
+ *  Abstract base class for {@link IValidator}.  Supports a required and locale property.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
