@@ -25,15 +25,16 @@
 
 package tutorial.workbench.components;
 
-import java.util.ResourceBundle;
-
 import tutorial.workbench.Visit;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
+import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.event.PageRenderListener;
+import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.StringSplitter;
 
 /**
@@ -56,8 +57,6 @@ public class Border extends BaseComponent implements PageRenderListener
     private String activePageName;
     private boolean currentPageIsActivePage;
 
-    private ResourceBundle stringsBundle;
-
     /**
      * Array of page names, read from the Strings file; this is the same
      * regardless of localization, so it is static (shared by all).
@@ -68,20 +67,6 @@ public class Border extends BaseComponent implements PageRenderListener
 
     public void finishLoad()
     {
-        super.finishLoad();
-
-        stringsBundle =
-            ResourceBundle.getBundle("tutorial.workbench.components.BorderStrings", getPage().getLocale());
-
-        if (tabOrder == null)
-        {
-            String tabOrderValue = stringsBundle.getString("tabOrder");
-
-            StringSplitter splitter = new StringSplitter(' ');
-
-            tabOrder = splitter.splitToArray(tabOrderValue);
-        }
-
         page.addPageRenderListener(this);
     }
 
@@ -90,6 +75,15 @@ public class Border extends BaseComponent implements PageRenderListener
         Visit visit = (Visit) page.getEngine().getVisit(event.getRequestCycle());
 
         activePageName = visit.getActiveTabName();
+
+        if (tabOrder == null)
+        {
+            String tabOrderValue = getString("tabOrder");
+
+            StringSplitter splitter = new StringSplitter(' ');
+
+            tabOrder = splitter.splitToArray(tabOrderValue);
+        }
     }
 
     public void pageEndRender(PageEvent event)
@@ -126,7 +120,7 @@ public class Border extends BaseComponent implements PageRenderListener
         // Need to check for synchronization issues, but I think
         // ResourceBundle is safe.
 
-        return stringsBundle.getString(pageName);
+        return getString(pageName);
     }
 
     public IAsset getLeftTabAsset()
@@ -171,5 +165,6 @@ public class Border extends BaseComponent implements PageRenderListener
     public void formListener(IRequestCycle cycle)
     {
     }
+
 
 }
