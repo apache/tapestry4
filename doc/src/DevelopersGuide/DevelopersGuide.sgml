@@ -1,0 +1,55 @@
+<!doctype book public "-//OASIS//DTD DocBook V4.1//EN" [
+
+<!ENTITY c1 SYSTEM "c1.sgml">
+<!ENTITY c2 SYSTEM "c2.sgml">
+<!ENTITY c3 SYSTEM "c3.sgml">
+<!ENTITY c4 SYSTEM "c4.sgml">
+
+<!ENTITY jwc-tag "<literal>&lt;jwc&gt;</literal>">
+
+<!ENTITY start-jwc "<emphasis>&lt;">
+<!ENTITY end-jwc "&gt;</emphasis>">
+
+<!ENTITY start-listing "<informalexample><programlisting>">
+<!ENTITY end-listing "</programlisting></informalexample>">
+
+<!ENTITY start-tag "<literal>&lt;">
+<!ENTITY end-tag "&gt;</literal>">
+
+]>
+
+<!-- $Id$ -->                                  
+
+<!-- Conventions:
+
+	Component ids are <varname>
+	Java packages and class names are <classname>
+	Tapestry component aliases are <classname>
+
+	In-line code snippets use <function>
+-->
+
+<book>
+	<title>Tapestry Developers's Guide</title>
+	<bookinfo>
+		<author>
+			<firstname>Howard</>
+			<surname>Ship</>
+			<affiliation>
+				<orgname>Primix</orgname>
+			</affiliation>
+		</author>
+		<copyright>
+			<year>2000</year>
+			<year>2001</year>
+			<holder>Primix Solutions</holder>
+		</copyright>
+	</bookinfo>
+<!--
+&c1;
+&c2;
+&c3;
+-->
+&c4;
+
+</book>

@@ -1,0 +1,91 @@
+<!-- $Id$ -->
+
+<chapter>
+	<title>Web Applications</>
+
+<para>
+Tapestry has a very strong sense of what an application is, derived from an 
+XML specification file.  This file identifies and gives names to 
+all the pages in the application, and identifies certain other key classes as well.  
+It also gives a human-readable name to the entire application.
+</>
+
+<para>
+In other systems, there is no application per-se.  There is some kind of  
+'home page' (or servlet), which is the first page seen when a client 
+connects to the web application.  There are many pages, servlets (or equivalent, 
+in other frameworks) and interrelations between them.  There is also some amount 
+of state stored on the server, such as the user name and a shopping 
+cart (in a typical e-commerce application).  The sum total of these 
+elements is the web application.
+</>
+
+<para>
+Tapestry imposes a small set of constraints on the developer, chiefly, that the application 
+be organized in terms of pages and components.  These constraints are 
+intended to be of minimal impact to the developer, imposing an acceptible amount of 
+structure.  They create a common language that can be used between members 
+of a team, and even between the technical and creative groups within a team.
+</>
+
+<para>
+Under Tapestry a page is also very well defined:  It consists of a component 
+specification, a corresponding Java class, an HTML template, and a 
+set of contained components.
+</para>
+
+<para>
+By contrast, when using JavaServer Pages there are one or more servlets, embedded JavaBeans, 
+a JSP file and the Java class created from the JSP file.  There isn't 
+a standard naming scheme or other way of cleanly identifying the 
+various elements.
+</>
+
+<para>
+Interactivity in Tapestry is component based.  If a component is interactive, such as 
+an image button with a hyperlink (<literal>&lt;a&gt;</>), clicking on the link 
+invokes a method on the component.  All interactivity on a 
+page is implemented by components on the page.
+</>
+
+<para>
+JavaServer Pages bases its interactivity on servlets.  Interactive portions of a page must 
+build URLs that reference these servlets.  The servlets use a variety of ad-hoc 
+methods to identify what operation is to take place when a link is clicked.  Since there 
+is no standard for any of this, different developers, even on the same project, 
+may take widely varying approaches to implementing similar constructs.
+</>
+
+<para>
+Because pages are components, they have a well-defined interface, which describes to 
+both the framework and the developer how the page fits into the overall application.
+</>
+
+<para>
+At the core of any Tapestry application are two objects:  the engine and the visit.  
+The engine is created when the first request from a client arrives at the server.  
+The engine is responsible for all the mundane tasks in Tapestry, such as managing the request cycle.  
+It is sort of a dispatcher, that handles the incoming request and runs the 
+process of responding to the request with a new HTML page.
+</>
+
+<para>
+The visit is a second object that contains application-specific data and logic.  
+Its type is completely defined by the application.  
+In an e-commerce application, the visit might store a shopping cart 
+and information about the user (once logged in).
+</>
+
+<para>
+Both the engine and the visit are stored persistently between request cycles, inside the 
+<classname>HttpSession</> object.
+</>
+
+<para>
+The engine also provides services.  Services are the bridge between URLs and components.  
+Services are used to generate the URLs used by hyperlinks and form submissions.  
+They are also responsible for interpreting the same URLs when they are later 
+triggered from the client web browser.
+</>
+
+</chapter>
