@@ -14,33 +14,37 @@
 
 package org.apache.tapestry.parse;
 
-import org.xml.sax.Attributes;
+import org.apache.tapestry.util.IPropertyHolder;
 
 /**
- *  Used to initialize a property of an object on the top of the digester stack.
- *  This should come after the {@link org.apache.commons.digester.ObjectCreateRule}
- *  (or variation) and before and property setting for the object.  Remember
- *  that rules order matters with the digester.
+ * Used to hold a property name and property value, and an
+ * {@link org.apache.tapestry.util.IPropertyHolder}, during parsing.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
 
-public class InitializePropertyRule extends AbstractSpecificationRule
+class PropertyValueSetter
 {
+    private IPropertyHolder _holder;
     private String _propertyName;
-    private Object _value;
+    private String _propertyValue;
 
-    public InitializePropertyRule(String propertyName, Object value)
+    PropertyValueSetter(IPropertyHolder holder, String propertyName, String propertyValue)
     {
+        _holder = holder;
         _propertyName = propertyName;
-        _value = value;
+        _propertyValue = propertyValue;
     }
 
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
+    public void applyValue(String value)
     {
-        setProperty(_propertyName, _value);
+        _holder.setProperty(_propertyName, value);
     }
+
+    public String getPropertyValue()
+    {
+        return _propertyValue;
+    }
+
 }

@@ -248,6 +248,16 @@ NextGen) be released as version number 3.0.
   </todo>
 
   <changes>
+
+	<release version="3.1-alpha-1" date="unreleased">
+	
+	<action type="update" dev="HLS">
+		Remove dependencies on Jakarta digester, collections and beanutils. Add dependency
+		on Jakarta HiveMind.	
+	</action>
+		
+	</release>
+
   	
  	<release version="3.0" date="Apr 18 2004">
  	
