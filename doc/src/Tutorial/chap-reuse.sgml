@@ -101,69 +101,88 @@ Lastly,  each page contains the specific content from its own HTML template.
 
 <figure>
 	<title>Border.html</>
-<programlisting><![CDATA[<jwc id="shell">
-<jwc id="body">
-<table border=0 bgcolor=gray cellspacing=0 cellpadding=4>
-  <tr valign=top>
-    <td colspan=3 align=left>
-      <font size=5 color="White"><jwc id="insertPageTitle"/></font>
-    </td>
-  </tr>
-  <tr valign=top>
-    <td align=right>
-      <font color=white>
-<jwc id="e">
-        <br><jwc id="link"><jwc id="insertName"/></jwc>
-</jwc>
-      </font>
-    </td>
-    <td rowspan=2 valign=top bgcolor=silver>
-      <jwc id="wrapped"/>
-    </td>
-    <td rowspan=2 width=4></td>
-  </tr>
-  <tr>
-	<td><jwc id="showInspector"/></td>
-  </tr>
-  <tr>
-    <td colspan=3 height=4>&nbsp;</td>
-  </tr>
-</table>
-</jwc>
-</jwc>]]></PROGRAMLISTING></figure>
+<programlisting>
+&lt;jwc id="shell"&gt; <co id="reuse.border.shell">
+&lt;jwc id="body"&gt; <co id="reuse.border.body">
+&lt;table border=0 bgcolor=gray cellspacing=0 cellpadding=4&gt;
+  &lt;tr valign=top&gt;
+    &lt;td colspan=3 align=left&gt;
+      &lt;font size=5 color="White"&gt;&lt;jwc id="insertPageTitle"/&gt;&lt;/font&gt; 
+    &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr valign=top&gt;
+    &lt;td align=right&gt;
+      &lt;font color=white&gt;
+&lt;jwc id="e"&gt; <co id="reuse.border.e">
+        &lt;br&gt;&lt;jwc id="link"&gt;&lt;jwc id="insertName"/&gt;&lt;/jwc&gt; <co id="reuse.border.insertName">
+&lt;/jwc&gt;
+      &lt;/font&gt;
+    &lt;/td&gt;
+    &lt;td rowspan=2 valign=top bgcolor=silver&gt;
+      &lt;jwc id="wrapped"/&gt; <co id="reuse.border.wrapped">
+    &lt;/td&gt;
+    &lt;td rowspan=2 width=4&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+	&lt;td&gt;&lt;jwc id="showInspector"/&gt;&lt;/td&gt; <co id="reuse.border.showInspector">
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td colspan=3 height=4&gt;&nbsp;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/jwc&gt;
+&lt;/jwc&gt;
+</PROGRAMLISTING></figure>
 
 <para> 
-The <varname>insertApplicationName</> and <varname>insertPageTitle</>
-components provides the name of the 
-application, and the title of the page within the application.
-</>
-
-<para>
-The <varname>e</>, <varname>link</> and <varname>insertName</>
+<calloutlist>
+	 <callout arearefs="reuse.border.shell">
+	 <para>
+	 The <varname>shell</> component provides the <sgmltag class=starttag>html</> and
+	 <sgmltag class=starttag>head</> elements of the response HTML.
+	 </>
+	 </>
+	 
+	 <callout arearefs="reuse.border.body">
+	 <para>
+	 The <varname>body</> components provides the <sgmltag class=starttag>body</> element.
+	 It also provides support for JavaScript related to &Rollover; buttons, such as
+	 the <varname>showInspector</> component.
+	 </>
+	 </>
+	 
+	 <callout arearefs="reuse.border.e">
+	 <para>
+	 The <varname>e</> component is a &Foreach; configured to work through
+	 a list of page names (provided by the engine).
+	 </>
+	 </>
+	 
+	 <callout arearefs="reuse.border.insertName">
+	 <para>	 
+The <varname>link</> and <varname>insertName</>
 components provide the inter-page navigation links.  
 </>
+</>
 
+
+	<callout arearefs="reuse.border.wrapped">
+<para>
+The <varname>wrapped</> component provides the actual content for the page.  The
+<classname>Border</> component is used on all three pages, but its a different
+instance on each page, wrapping around different content specific to the page.
+</>
+</>
+
+
+	<callout arearefs="reuse.border.showInspector">
 <para>
 The <varname>showInspector</> component provides the button below the 
 page names (the italicized "i" in a 
 circle) and will be explained shortly.  
 </>
-
-<para>
-The <varname>shell</> component provides the outermost portions of the page, 
-the <sgmltag class=starttag>html</> and <sgmltag class=starttag>head</> tags.
 </>
-
-<para>
-The <varname>body</> component is a replacement for the 
-<sgmltag class=starttag>body</> tag; it is required to support automatic 
-rollover buttons (such as the <varname>showInspector</>) and will be used by most 
-pages in a Tapestry application.
-</>
-
-<para>
-Lastly, the <varname>wrapped</> component provides the actual content for the page.
-</>
+</calloutlist>
 
 <para>
 The <classname>Border</> component is designed to be usable in other Tapestry 
@@ -175,131 +194,87 @@ application engine provides the list.
 
 <figure>	
 	<title>Border specification</>
-<programlisting><![CDATA[<?xml version="1.0"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 
-1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>tutorial.border.Border</class>
-	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
-		<parameter>
-			<name>title</name>
-			<java-type>java.lang.String</java-type>
-			<required>yes</required>
-		</parameter>
-		<parameter>
-			<name>pages</name>
-			<required>yes</required>
-		</parameter>
-	</parameters>
-	<components>
-		<component>
-			<id>shell</id>
-			<type>Shell</type>
-			<bindings>
-				<binding>
-					<name>title</name>
-					<property-
-path>page.application.specification.name</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertPageTitle</id>
-			<type>Insert</type>
-			<bindings>
-				<inherited-binding>
-					<name>value</name>
-					<parameter-name>title</parameter-name>
-				</inherited-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>body</id>
-			<type>Body</type>
-		</component>
-		<component>
-			<id>e</id>
-			<type>Foreach</type>
-			<bindings>
-				<inherited-binding>
-					<name>source</name>
-					<parameter-name>pages</parameter-name>
-				</inherited-binding>
-				<binding>
-					<name>value</name>
-					<property-path>pageName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>link</id>
-			<type>Page</type>
-			<bindings>
-				<binding>
-					<name>page</name>
-					<property-path>pageName</property-path>
-				</binding>
-				<binding>
-					<name>disabled</name>
-					<property-path>disablePageLink</property-
-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>pageName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>wrapped</id>
-			<type>InsertWrapped</type>
-		</component>
-		<component>
-			<id>showInspector</id>
-			<type>ShowInspector</type>
-		</component>
-	</components>
-</specification>]]></programlisting></figure>
-
-<para> 
-So, the specification for the <classname>Border</> component must identify the 
-parameters it needs, but also the 
-components it uses and how they are configured.
-</>
+<programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE specification PUBLIC
+  "-//Howard Ship//Tapestry Specification 1.1//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd"&gt;
+  
+&lt;specification class="tutorial.border.Border" allow-informal-parameters="no"&gt;
+  
+  &lt;parameter name="title" java-type="java.lang.String" required="yes"/&gt; <co id="reuse.border.spec.title">
+  
+  &lt;parameter name="pages" required="yes"/&gt; <co id="reuse.border.spec.pages">
+  
+  &lt;component id="shell" type="Shell"&gt;
+    &lt;binding name="title" property-path="page.engine.specification.name"/&gt; <co id="reuse.border.spec.shell-title">
+  &lt;/component&gt;
+  
+  &lt;component id="insertPageTitle" type="Insert"&gt;
+    &lt;inherited-binding name="value" parameter-name="title"/&gt; <co id="reuse.border.spec.insertPageTitle">
+  &lt;/component&gt;
+  
+  &lt;component id="body" type="Body"/&gt;
+  
+  &lt;component id="e" type="Foreach"&gt; <co id="reuse.border.spec.e">
+    &lt;inherited-binding name="source" parameter-name="pages"/&gt;
+    &lt;binding name="value" property-path="pageName"/&gt;
+  &lt;/component&gt;
+  
+  &lt;component id="link" type="Page"&gt; <co id="reuse.border.spec.link">
+    &lt;binding name="page" property-path="pageName"/&gt;
+    &lt;binding name="disabled" property-path="disablePageLink"/&gt;
+  &lt;/component&gt;
+  
+  &lt;component id="insertName" type="Insert"&gt;
+    &lt;binding name="value" property-path="pageName"/&gt;
+  &lt;/component&gt;
+  
+  &lt;component id="wrapped" type="InsertWrapped"/&gt;
+  
+  &lt;component id="showInspector" type="ShowInspector"/&gt; <co id="resuse.border.spec.showInspector">
+&lt;/specification&gt;
+</programlisting>
+</figure>
 
 <para>
-We start by declaring two parameters: <varname>title</> and <varname>pages</>.
-The first is the title that will appear on the 
-page.  The second is the list of page names for the navigation area.  We don't specify a type for 
-<varname>pages</> because we want to allow all the possibilites (
-<classname>List</>, <classname>Iterator</>, Java array) that are acceptible as 
-the source parameter to a <classname>Foreach</>.
+<calloutlist>
+	<callout arearefs="reuse.border.spec.title">
+<para>
+Declares a required parameter for the border, the title that will appear on the 
+page.
 </>
+</>
+
+<callout arearefs="reuse.border.spec.pages">
+<para>
+Declares a parameter to specify the list of page names.  We don't specify a
+particular type because its pretty unbounded; the framework will accept
+&List;, &Iterator; or a Java array.
+</>
+</>
+
+<callout arearefs="reuse.border.spec.shell-title">
 
 <para>
 We then provide the <varname>shell</> component with its <varname>title</> parameter; 
 this will be the window title.  We 
 use the application's name, with is extracted from the application's specification.
 </>
-
-<para>
-Further down we see that the <varname>insertPageTitle</> component 
-inherits the <varname>title</> parameter from its 
-container, the <classname>Border</> component.  
-Whatever binding is provided for the <varname>title</> parameter of the 
-<classname>Border</> will also be used as the <varname>value</> parameter of the 
-<varname>insertPageTitle</> component.  Using these 
-inherited bindings simplifies the process of creating complex components from simple ones.
 </>
 
+<callout arearefs="reuse.border.spec.insertPageTitle">
+<para>
+The <sgmltag class=starttag>inherited-binding</> element allows a component to
+share its parameters.  Here the <classname>Border</>'s <varname>title</>
+is used as the <varname>value</> parameter of the <varname>insertPageTitle</> 
+component (an &Insert;).
+Using these 
+inherited bindings simplifies the process of creating complex components from simple ones.
+</>
+</>
+
+<callout arearefs="reuse.border.spec.e">
 <para>
 Likewise, the <varname>e</> component (a <classname>Foreach</>) 
 needs as its source the list of pages, which it inherits from 
@@ -310,7 +285,9 @@ this is necessary so that the <classname>Border</>
 component can determine which page link to disable (it disables the current page since we're 
 already there).
 </>
+</>
 
+<callout arearefs="reuse.border.spec.link">
 <para>
 The <varname>link</> component creates the link to the other pages.  It has a
 <varname>disabled</> parameter; which, 
@@ -321,10 +298,21 @@ that returns true
 when the <varname>pageName</> instance variable (set by the <varname>e</> component) 
 matches the current page's name.
 </>
+</>
 
+<callout arearefs="resuse.border.spec.showInspector">
 <para>
 The <varname>showInspector</> component creates a rollover button (the "i" lights up when the mouse is 
 moved over it):
+</>
+</>
+</calloutlist>
+</para>
+
+<para> 
+So, the specification for the <classname>Border</> component must identify the 
+parameters it needs, but also the 
+components it uses and how they are configured.
 </>
 
 <figure>
@@ -364,34 +352,21 @@ static, the literal value "Home" (this isn't the best approach if localization i
 
 <figure>
 	<title>Home page specification</>
-	<programlisting><![CDATA[<?xml version="1.0"?>
-<!DOCTYPE specification PUBLIC
-"-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+	<programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE specification PUBLIC
+  "-//Howard Ship//Tapestry Specification 1.1//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd"&gt;
 
-<specification>
-  <class>com.primix.tapestry.BasePage</class>
+&lt;specification class="com.primix.tapestry.BasePage"&gt;
 
-	<components>
-	  <component>
-	    <id>border</id>
-	    <type>Border</type>
+  &lt;component id="border" type="Border"&gt;
+    &lt;static-binding name="title"&gt;Home&lt;/static-binding&gt;
+    &lt;binding name="pages" property-path="engine.pageNames"/&gt;
+  &lt;/component&gt;
 
-		<bindings>
-		    <static-binding>
-		      <name>title</name>
-		      <value>Home</value>
-		    </static-binding>
-
-		    <binding>
-		      <name>pages</name>
-		      <property-path>engine.pageNames</property-path>
-		    </binding>
-		</bindings>
-	  </component>
-	</components>
-
-</specification>]]></programlisting></figure>
+&lt;/specification&gt;
+</programlisting></figure>
 
 <para>  
 The <varname>pages</> property is retrieved from the application engine, 
@@ -400,14 +375,17 @@ which implements a <varname>pageNames</> JavaBeans property:
 
 <figure>
 	<title>BorderEngine.java (excerpt)</>
-	<programlisting><![CDATA[  private static final String[] pageNames =
+	<programlisting><![CDATA[  
+  private static final String[] pageNames =
     { "Home", "Credo", "Legal" };
 
   public String[] getPageNames()
   {
     return pageNames;
-  }]]></PROGramlisting></figure>
- 
+  }
+]]>
+</programlisting>
+</figure>
 
 <para>
 How did Tapestry know that the type 'Border' 
@@ -417,17 +395,16 @@ an alias in the application specification:
 
 <figure>
 	<title>Border.application (excerpt)</>
-	<programlisting><![CDATA[  <component>
-    <alias>Border</alias>
-    <type>/tutorial/border/Border.jwc</type>
-  </component>]]></programlisting></figure>
+	<programlisting>
+  &lt;component-alias type="Border" specification-path="/tutorial/border/Border.jwc"/&gt;
+</programlisting></figure>
 
 <para> 
 Had we failed to do this, we would have had to specify the complete resource path, 
 <filename>/tutorial/border/Border.jwc</>, on each page's specification, instead of the short alias 
-'Border'.  There is no magic about the existing Tapestry component types (<classname>Insert</>, 
-<classname>Foreach</>, <classname>Page</>, 
-etc.) ... they each have an alias pre-registered into every application specification.  These short 
+'Border'.  There is no magic about the existing Tapestry component types 
+(&Insert;, &Foreach;, &Page;, etc. ... they each have an 
+alias pre-registered into every application specification.  These short 
 aliases are simply a convienience.
 </>
 

@@ -97,40 +97,39 @@ the visit object.
 
 <figure>
 	<title>Hangman.application</>
-    <programlisting><![CDATA[<?xml version="1.0"?>
-<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 
-1.0//EN"
-  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<application>
-  <name>Tapestry Hangman</name>
-  <engine-class>com.primix.tapestry.engine.SimpleEngine</engine-class>
-  <page>
-    <name>Home</name>
-    <specification-path>/tutorial/hangman/Home.jwc</specification-path>
-  </page>
-  <page>
-    <name>Guess</name>
-    <specification-path>/tutorial/hangman/Guess.jwc</specification-path>
-  </page>
-  <page>
-    <name>Failed</name>
-    <specification-path>/tutorial/hangman/Failed.jwc</specification-path>
-  </page>
-  <page>
-    <name>Success</name>
-    <specification-path>/tutorial/hangman/Success.jwc</specification-path>
-  </page>
-  <properties>
-    <property>
-      <name>com.primix.tapestry.visit-class</name>
-      <value>tutorial.hangman.Visit</value>
-    </property>
-  </properties>
-</application>]]></programlisting></figure>
+    <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE application PUBLIC
+  "-//Howard Ship//Tapestry Specification 1.1//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd"&gt;
+
+&lt;application name="Tapestry Hangman" engine-class="com.primix.tapestry.engine.SimpleEngine"&gt; 
+
+  &lt;property name="com.primix.tapestry.visit-class"&gt;tutorial.hangman.Visit&lt;/property&gt; <co id="hangman.app.visit">
+
+  &lt;page name="Home" specification-path="/tutorial/hangman/Home.jwc"/&gt;
+
+  &lt;page name="Guess" specification-path="/tutorial/hangman/Guess.jwc"/&gt;
+
+  &lt;page name="Failed" specification-path="/tutorial/hangman/Failed.jwc"/&gt;
+
+  &lt;page name="Success" specification-path="/tutorial/hangman/Success.jwc"/&gt;
+
+&lt;/application&gt;    
+</programlisting></figure>
  
 <para>
-These properties are simple named values associated with the application specification.  When the 
-application engine needs to create the visit object, it creates an instance of the named class.
+<calloutlist>
+  <callout arearefs="hangman.app.visit">
+  <para>
+  This property specifies that the engine should instantiate an instance of
+  <classname>tutorial.hangman.Visit</classname> when a visit object is first required.
+  This is the default way in which the visit object is specified, though if
+  the visit object doesn't have an empty constructor method, the engine method
+  <function>createVisit()</> must be implemented instead.
+  </>
+  </callout>
+</calloutlist>
 </>
 
 <para>
@@ -279,11 +278,11 @@ The interesting part of the Home page HTML template is the form:
  Here, the interesting components are <varname>group</>, 
  <varname>inputEasy</>, <varname>inputMedium</> and <varname>inputHard</>.  
 <varname>group</> is 
-type <classname>RadioGroup</>, a wrapper that must go around the <classname>Radio</>
+type &RadioGroup;, a wrapper that must go around the &Radio;
  components (the other three).  The 
-<classname>RadioGroup</> determines what property of the page is to be read and updated 
+&RadioGroup; determines what property of the page is to be read and updated 
 (its bound to the 
-<varname>misses</> property).  Each <classname>Radio</> button is associated with 
+<varname>misses</> property).  Each &Radio; button is associated with 
 a particular value to be assigned to the 
 property, when that radio button is selected by the user.
 </>
@@ -294,63 +293,46 @@ This comes together in the Home page specification:
 
 <figure>
 	<title>Home.jwc (excerpt)</>
-    <programlisting><![CDATA[<component>
-  <id>group</id>
-  <type>RadioGroup</type>
-  <bindings>
-    <binding>
-      <name>selected</name>
-      <property-path>misses</property-path>
-    </binding>
-  </bindings>
-</component>
-.
-.
-.
-<component>
-  <id>inputEasy</id>
-  <type>Radio</type>
-  <bindings>
-    <field-binding>
-      <name>value</name>
-      <field-name>tutorial.hangman.Home.EASY</field-name>
-    </field-binding>
-  </bindings>
-</component>
+    <programlisting>
+  &lt;component id="group" type="RadioGroup"&gt;
+    &lt;binding name="selected" property-path="misses"/&gt;
+  &lt;/component&gt;
+  
+  &lt;component id="inputEasy" type="Radio"&gt;
+    &lt;field-binding name="value" field-name="tutorial.hangman.Home.EASY"/&gt; <co id="hangman.home.spec.field-binding">
+  &lt;/component&gt;
+  
+  &lt;component id="inputMedium" type="Radio"&gt;
+    &lt;field-binding name="value" field-name="tutorial.hangman.Home.MEDIUM"/&gt;
+  &lt;/component&gt;
+  
+  &lt;component id="inputHard" type="Radio"&gt;
+    &lt;field-binding name="value" field-name="tutorial.hangman.Home.HARD"/&gt;
+  &lt;/component&gt;
 
-<component>
-  <id>inputMedium</id>
-  <type>Radio</type>
-  <bindings>
-    <field-binding>
-      <name>value</name>
-      <field-name>tutorial.hangman.Home.MEDIUM</field-name>
-    </field-binding>
-  </bindings>
-</component>
-
-<component>
-  <id>inputHard</id>
-  <type>Radio</type>
-  <bindings>
-    <field-binding>
-      <name>value</name>
-      <field-name>tutorial.hangman.Home.HARD</field-name>
-    </field-binding>
-  </bindings>
-</component>]]></programlisting></figure>
+</programlisting></figure>
  
 <para>
-The <sgmltag class=starttag>field-binding</> element is very useful in this case; 
-it is similar to a <sgmltag class=starttag>static-binding</> but, instead of 
-supplying the value in place, it uses a reference to a public static field of some class or interface.  
-</>
+<calloutlist>
+  <callout arearefs="hangman.home.spec.field-binding">
+  <para>
+  A <sgmltag class=starttag>field-binding</> is like a
+  <sgmltag class=starttag>static-binding</>, except that
+  the static value is taken from a public static field of
+  some class.  This makes it easy to coordinate behaviors between
+  the specification and the class.
+  </>
 
 <para>
 This is a good thing, since if you decide to make a <varname>HARD</>
 game only allow two mistakes, you can 
 make the change in exactly one place .. your Java code.
 </>
+
+  </callout>
+</calloutlist>
+</>
+
 
 <para>
 So the end result is: when the user clicks the radio button for a Hard game, the static constant 
@@ -419,7 +401,9 @@ out of a maximum of <jwc id="insertMaxMisses"/>.
 </jwc>
 </font>
 
-<p><jwc id="giveUp">Give up?</jwc>]]></programlisting></figure>
+<p><jwc id="giveUp">Give up?</jwc>
+]]>
+</programlisting></figure>
 
 <para> 
 Most of these components should be fairly obvious by now; let's focus on the components that 
@@ -435,46 +419,23 @@ Let's look at the specification for those three components (<varname>e</>,
 
 <figure>
 	<title>Guess.jwc (excerpt)</>
-    <programlisting><![CDATA[<component>
-  <id>e</id>
-  <type>Foreach</type>
-  <bindings>
-    <binding>
-      <name>source</name>
-      <property-path>unused</property-path>
-    </binding>
-  </bindings>
-</component>
+    <programlisting>
+&lt;component id="e" type="Foreach"&gt;
+  &lt;binding name="source" property-path="unused"/&gt;
+&lt;/component&gt;
 
-<component>
-  <id>guess</id>
-  <type>Direct</type>
-  <bindings>
-    <binding>
-      <name>listener</name>
-      <property-path>guessListener</property-path>
-    </binding>
-    <binding>
-      <name>context</name>
-      <property-path>components.e.value</property-path>
-    </binding>
-  </bindings>
-</component>
+&lt;component id="guess" type="Direct"&gt;
+  &lt;binding name="listener" property-path="guessListener"/&gt;
+  &lt;binding name="context" property-path="components.e.value"/&gt;
+&lt;/component&gt;
 
-<component>
-  <id>insertLetter</id>
-  <type>Insert</type>
-
-  <bindings>
-    <binding>
-      <name>value</name>
-      <property-path>components.e.value</property-path>
-    </binding>
-  </bindings>
-</component>]]></programlisting></figure>
+&lt;component id="insertLetter" type="Insert"&gt;
+  &lt;binding name="value" property-path="components.e.value"/&gt;
+&lt;/component&gt;
+</programlisting></figure>
 
 <para> 
-Component <varname>e</> is simply a <classname>Foreach</>, 
+Component <varname>e</> is simply a &Foreach;, 
 the <varname>source</> is the <varname>unused</> property of the page (we'll see in a 
 moment how the page gets this list of unused letters from the game object).
 </>
@@ -482,12 +443,12 @@ moment how the page gets this list of unused letters from the game object).
 <para>
 Component <varname>insertLetter</> inserts the current letter from the list of unused letters.  
 It gets this current letter directly from the <varname>e</> component.  
-On successive iterations, a <classname>Foreach</> component's 
+On successive iterations, a &Foreach; component's 
 <varname>value</> property is the value for the iteration.
 </>
 
 <para>
-Component <varname>guess</> is type <classname>Direct</>, which creates a 
+Component <varname>guess</> is type &Direct;, which creates a 
 hyperlink on the page and notifies its listener 
 when the user clicks the link.  Just knowing that the component was clicked isn't very helpful 
 though;  the application needs to know which letter was actually clicked.
@@ -496,10 +457,10 @@ though;  the application needs to know which letter was actually clicked.
 <para>
 Passing that kind of information along is accomplished by setting the 
 <varname>context</> parameter for the 
-component.  The <varname>context</> parameter is a <classname>String</>, or array of 
-<classname>String</>s, that will be encoded into the 
+component.  The <varname>context</> parameter is a &String;, or array of 
+&String;s, that will be encoded into the 
 URL for the hyperlink.  When the component's listener is notified, it is passed the same 
-<classname>String</>s.
+&String;s.
 </>
 
 <para>
@@ -517,18 +478,19 @@ All of this comes together in the Java code for the Guess page.
 
 <figure>	
 	<title>Guess.java (excerpt)</>
-    <programlisting><![CDATA[public IDirectListener getGuessListener()
+    <programlisting><![CDATA[
+public IDirectListener getGuessListener()
+{
+  return new IDirectListener()
   {
-    return new IDirectListener()
+    public void directTriggered(IDirect direct,
+							  String[] context, IRequestCycle cycle)
+    throws RequestCycleException
     {
-      public void directTriggered(IDirect direct,
-                                  String[] context, IRequestCycle cycle)
-      throws RequestCycleException
-      {
-        makeGuess(context[0], cycle);
-      }
-    };
-  }
+	  makeGuess(context[0], cycle);
+    }
+  };
+}
 
 private void makeGuess(String guess, IRequestCycle cycle)
 throws RequestCycleException
@@ -555,7 +517,8 @@ throws RequestCycleException
   if (game.getDone())
     cycle.setPage("Success");
   }
-}]]></PROGRAMLISTING></FIGURE>
+}
+]]></PROGRAMLISTING></FIGURE>
 
 <para> 
 So the <varname>listener</> for the 
@@ -565,7 +528,7 @@ GameException if the guess is invalid.
 </>
 
 <para>
-The method <function>HangmanGame.getFailed()></> returns 
+The method <function>HangmanGame.getFailed()</> returns 
 <literal>true</> when all the missed guesses are used up, at 
 which point we go to the <varname>Failed</> page to tell the user what the word was.
 </>

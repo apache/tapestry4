@@ -110,13 +110,14 @@ As you may notice, the exception report is extremely complex.  Tapestry displays
 information it can about the exception that was thrown ... it can even break apart nested 
 exceptions and dig down to the deepest one.  It shows the stack trace where the deepest 
 exception was thrown.  It also provides information about the <classname>HttpRequest</>,
-<classname>HttpSession</>, 
+&HttpSession;, 
 <classname>ServletContext</> and Java VM.
 </>
 
 <para>
-Finally, it includes a link that will destroy the current HttpSession and restart the application from 
-scratch.
+Finally, it includes a link that will 
+restart the application from scratch, invaliding the current &HttpSession; and
+creating a new one as necessary.
 </>
 
 	</section>

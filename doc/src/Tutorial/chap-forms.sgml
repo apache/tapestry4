@@ -83,7 +83,8 @@ taker prefers.
 
 <figure>
 	<title>Survey.java</>
-	<programlisting><![CDATA[package tutorial.survey;
+	<programlisting><![CDATA[
+package tutorial.survey;
 
 import java.util.*;
 import com.primix.tapestry.*;
@@ -91,141 +92,141 @@ import java.io.*;
 
 public class Survey implements Serializable, Cloneable
 {
-	private Object primaryKey;
-	private String name;
-	private int age = 0;
-	private Sex sex = Sex.MALE;
-	private Race race = Race.CAUCASIAN;
-	
-	private boolean likesDogs = true;
-	private boolean likesCats;
-	private boolean likesFerrits;
-	private boolean likesTurnips;
-	
-	public Object getPrimaryKey()
-	{
-		return primaryKey;
-	}
-	
-	public void setPrimaryKey(Object value)
-	{
-		primaryKey = value;
-	}
-	
-	public String getName()
-	{
-		return name;
-	}
-	
-	public void setName(String value)
-	{
-		name = value;
-	}
-	
-	public int getAge()
-	{
-		return age;
-	}
-	
-	public void setAge(int value)
-	{
-		age = value;
-	}
- 	
-	public void setSex(Sex value)
-	{
-		sex = value;
-	}
-	
-	public Sex getSex()
-	{
-		return sex;
-	}
-	
-	public void setRace(Race value)
-	{
-		race = value;
-	}
-	
-	public Race getRace()
-	{
-		return race;
-	}
-	
-	public boolean getLikesCats()
-	{
-		return likesCats;
-	}
+  private Object primaryKey;
+  private String name;
+  private int age = 0;
+  private Sex sex = Sex.MALE;
+  private Race race = Race.CAUCASIAN;
+  
+  private boolean likesDogs = true;
+  private boolean likesCats;
+  private boolean likesFerrits;
+  private boolean likesTurnips;
+  
+  public Object getPrimaryKey()
+  {
+    return primaryKey;
+  }
+  
+  public void setPrimaryKey(Object value)
+  {
+    primaryKey = value;
+  }
+  
+  public String getName()
+  {
+    return name;
+  }
+  
+  public void setName(String value)
+  {
+    name = value;
+  }
+  
+  public int getAge()
+  {
+    return age;
+  }
+  
+  public void setAge(int value)
+  {
+    age = value;
+  }
+   
+  public void setSex(Sex value)
+  {
+    sex = value;
+  }
+  
+  public Sex getSex()
+  {
+    return sex;
+  }
+  
+  public void setRace(Race value)
+  {
+    race = value;
+  }
+  
+  public Race getRace()
+  {
+    return race;
+  }
+  
+  public boolean getLikesCats()
+  {
+    return likesCats;
+  }
 
-	public void setLikesCats(boolean value)
-	{
-		likesCats = value;
-	}
-	
-	public boolean getLikesDogs()
-	{
-		return likesDogs;
-	}
-	
-	public void setLikesDogs(boolean value)
-	{
-		likesDogs = value;
-	}
-	
-	public boolean getLikesFerrits()
-	{
-		return likesFerrits;
-	}
-	
-	public void setLikesFerrits(boolean value)
-	{
-		likesFerrits = value;
-	}
-	
-	public boolean getLikesTurnips()
-	{
-		return likesTurnips;
-	}
-	
-	public void setLikesTurnips(boolean value)
-	{
-		likesTurnips = value;
-	}
-	
-	/**
-	 *  Validates that the survey is acceptible; throws an {@link 
+  public void setLikesCats(boolean value)
+  {
+    likesCats = value;
+  }
+  
+  public boolean getLikesDogs()
+  {
+    return likesDogs;
+  }
+  
+  public void setLikesDogs(boolean value)
+  {
+    likesDogs = value;
+  }
+  
+  public boolean getLikesFerrits()
+  {
+    return likesFerrits;
+  }
+  
+  public void setLikesFerrits(boolean value)
+  {
+    likesFerrits = value;
+  }
+  
+  public boolean getLikesTurnips()
+  {
+    return likesTurnips;
+  }
+  
+  public void setLikesTurnips(boolean value)
+  {
+    likesTurnips = value;
+  }
+  
+  /**
+   *  Validates that the survey is acceptible; throws an {@link 
 IllegalArgumentException}
-	 *  if not valid.
-	 *
-	 */
-	 
-	public void validate()
-	throws IllegalArgumentException
-	{
-		if (race == null)
-			throw new IllegalArgumentException("Race must be 
+   *  if not valid.
+   *
+   */
+   
+  public void validate()
+  throws IllegalArgumentException
+  {
+    if (race == null)
+      throw new IllegalArgumentException("Race must be 
 specified.");
-		
-		if (sex == null)
-			throw new IllegalArgumentException("Sex must be 
+    
+    if (sex == null)
+      throw new IllegalArgumentException("Sex must be 
 specified.");
-			
-		if (age < 1)
-			throw new IllegalArgumentException("Age must be at least 
+      
+    if (age < 1)
+      throw new IllegalArgumentException("Age must be at least 
 one.");
-	}	
-	
-	public Object clone()
-	{
-		try
-		{
-			return super.clone(); 
-		}
-		catch (CloneNotSupportedException e)
-		{
-			return null;
-		}
-	}
+  }  
+  
+  public Object clone()
+  {
+    try
+    {
+      return super.clone(); 
+    }
+    catch (CloneNotSupportedException e)
+    {
+      return null;
+    }
+  }
 }]]></programlisting></figure>
 
 <para> 
@@ -239,7 +240,8 @@ pre-defined values are declared by the class (as static final constants of the c
 
 <figure>
 	<title>Race.java</>
-	<programlisting><![CDATA[package tutorial.survey;
+	<programlisting><![CDATA[
+package tutorial.survey;
 
 import com.primix.foundation.Enum;
 
@@ -250,26 +252,26 @@ import com.primix.foundation.Enum;
  
 public class Race extends Enum
 {
-	public static final Race CAUCASIAN = new Race("CAUCASIAN");
-	public static final Race AFRICAN = new Race("AFRICAN");
-	public static final Race ASIAN = new Race("ASIAN");
-	public static final Race INUIT = new Race("INUIT");
-	public static final Race MARTIAN = new Race("MARTIAN");
+  public static final Race CAUCASIAN = new Race("CAUCASIAN");
+  public static final Race AFRICAN = new Race("AFRICAN");
+  public static final Race ASIAN = new Race("ASIAN");
+  public static final Race INUIT = new Race("INUIT");
+  public static final Race MARTIAN = new Race("MARTIAN");
 
-	private Race(String enumerationId)
-	{
-		super(enumerationId);
-	}
+  private Race(String enumerationId)
+  {
+    super(enumerationId);
+  }
 
-	private Object readResolve()
-	{
-		return getSingleton();
-	}
+  private Object readResolve()
+  {
+    return getSingleton();
+  }
 
 }]]></programlisting></figure>
 
 <para> 
-This is better than using <classname>String</> or <classname>int</> constants because 
+This is better than using &String; or <classname>int</> constants because 
 of type safety; the Java compiler will 
 notice if you pass <classname>Race.INUIT</> as a parameter that expects an instance of 
 <classname>Sex </>... if they were both 
@@ -305,35 +307,36 @@ The database is accessed via the <classname>SurveyEngine</> object.
 
 <figure>
 	<title>SurveyEngine.java (excerpt)</>
-	<programlisting<![CDATA[private transient SurveyDatabase database;
+	<programlisting<![CDATA[
 
-	public SurveyDatabase getDatabase()
-	{
-		return database;
-	}
-	
-	protected void setupForRequest(RequestContext context)
-	{
-		super.setupForRequest(context);
-		
-		if (database == null)
-		{
-			String name = "Survey.database";
-			ServletContext servletContext;
-			
-			servletContext = 
-context.getServlet().getServletContext();
-			
-			database = 
-(SurveyDatabase)servletContext.getAttribute(name);
-			
-			if (database == null)
-			{
-				database = new SurveyDatabase();
-				servletContext.setAttribute(name, database);
-			}
-		}
-	}]]></programlisting></figure>
+  private transient SurveyDatabase database;
+
+  public SurveyDatabase getDatabase()
+  {
+    return database;
+  }
+  
+  protected void setupForRequest(RequestContext context)
+  {
+    super.setupForRequest(context);
+    
+    if (database == null)
+    {
+      String name = "Survey.database";
+      ServletContext servletContext;
+      
+      servletContext = context.getServlet().getServletContext();
+      
+      database = (SurveyDatabase)servletContext.getAttribute(name);
+      
+      if (database == null)
+      {
+        database = new SurveyDatabase();
+        servletContext.setAttribute(name, database);
+      }
+    }
+  }
+]]></programlisting></figure>
 
 <para> 
 The <classname>SurveyDatabase</> instance is stored as a 
@@ -486,173 +489,73 @@ All of these concepts come together in the SurveyPage specification:
 
 <figure>
 	<title>SurveyPage.jwc</>
-	<programlisting><![CDATA[<?xml version="1.0"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 
-1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>tutorial.survey.SurveyPage</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-			<bindings>
-				<static-binding>
-					<name>title</name>
-					<value>Survey</value>
-				</static-binding>
-				<binding>
-					<name>pages</name>
-					<property-
-path>application.pageNames</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifError</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertError</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>surveyForm</id>
-			<type>Form</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>formListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputName</id>
-			<type>TextField</type>
-			<bindings>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>30</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumWidth</name>
-					<value>100</value>
-				</static-binding>
-				<binding>
-					<name>text</name>
-					<property-path>survey.name</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputAge</id>
-			<type>TextField</type>
-			<bindings>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>4</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumWidth</name>
-					<value>4</value>
-				</static-binding>
-				<binding>
-					<name>text</name>
-					<property-path>age</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputSex</id>
-			<type>PropertySelection</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>survey.sex</property-path>
-				</binding>
-				<binding>
-					<name>model</name>
-					<property-path>sexModel</property-path>
-				</binding>
-				<binding>
-					<name>renderer</name>
-					<property-
-path>components.inputSex.defaultRadioRenderer</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputRace</id>
-			<type>PropertySelection</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>survey.race</property-path>
-				</binding>
-				<binding>
-					<name>model</name>
-					<property-path>raceModel</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputCats</id>
-			<type>Checkbox</type>
-			<bindings>
-				<binding>
-					<name>selected</name>
-					<property-path>survey.likesCats</property-
-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputDogs</id>
-			<type>Checkbox</type>
-			<bindings>
-				<binding>
-					<name>selected</name>
-					<property-path>survey.likesDogs</property-
-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputFerrits</id>
-			<type>Checkbox</type>
-			<bindings>
-				<binding>
-					<name>selected</name>
-					<property-
-path>survey.likesFerrits</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputTurnips</id>
-			<type>Checkbox</type>
-			<bindings>
-				<binding>
-					<name>selected</name>
-					<property-
-path>survey.likesTurnips</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
-</specification>]]></programlisting></figure>
+	<programlisting><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE specification PUBLIC
+  "-//Howard Ship//Tapestry Specification 1.1//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+
+<specification class="tutorial.survey.SurveyPage">
+
+  <component id="border" type="Border">
+    <static-binding name="title">Survey</static-binding>
+    <binding name="pages" property-path="engine.pageNames"/>
+  </component>
+  
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="error"/>
+  </component>
+  
+  <component id="insertError" type="Insert">
+    <binding name="value" property-path="error"/>
+  </component>
+  
+  <component id="surveyForm" type="Form">
+    <binding name="listener" property-path="formListener"/>
+  </component>
+  
+  <component id="inputName" type="TextField">
+    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="maximumLength">100</static-binding>
+    <binding name="text" property-path="survey.name"/>
+  </component>
+  
+  <component id="inputAge" type="TextField">
+    <static-binding name="displayWidth">4</static-binding>
+    <static-binding name="maximumLength">4</static-binding>
+    <binding name="text" property-path="age"/>
+  </component>
+  
+  <component id="inputSex" type="PropertySelection">
+    <binding name="value" property-path="survey.sex"/>
+    <binding name="model" property-path="sexModel"/>
+    <binding name="renderer" property-path="components.inputSex.defaultRadioRenderer"/>
+  </component>
+  
+  <component id="inputRace" type="PropertySelection">
+    <binding name="value" property-path="survey.race"/>
+    <binding name="model" property-path="raceModel"/>
+  </component>
+  
+  <component id="inputCats" type="Checkbox">
+    <binding name="selected" property-path="survey.likesCats"/>
+  </component>
+  
+  <component id="inputDogs" type="Checkbox">
+    <binding name="selected" property-path="survey.likesDogs"/>
+  </component>
+  
+  <component id="inputFerrits" type="Checkbox">
+    <binding name="selected" property-path="survey.likesFerrits"/>
+  </component>
+  
+  <component id="inputTurnips" type="Checkbox">
+    <binding name="selected" property-path="survey.likesTurnips"/>
+  </component>
+  
+</specification>
+]]>
+</programlisting></figure>
  
 
 <para>
@@ -678,7 +581,8 @@ Finally, the <classname>SurveyPage</> class shows how all the details fit togeth
 
 <figure>
 	<title>SurveyPage.java</>
-	<programlisting><![CDATA[package tutorial.survey;
+	<programlisting><![CDATA[
+package tutorial.survey;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.html.form.*;
@@ -686,145 +590,147 @@ import java.util.*;
 
 public class SurveyPage extends BasePage
 {
-	private Survey survey;
-	private String error;
-	private String age;
-	private IPropertySelectionModel sexModel;
-	private IPropertySelectionModel raceModel;
-	
-	public IPropertySelectionModel getRaceModel()
-	{
-		if (raceModel == null)
-			raceModel = new EnumPropertySelectionModel(
-				new Race[] 
-				{
-					Race.CAUCASIAN, Race.AFRICAN, Race.ASIAN, 
+  private Survey survey;
+  private String error;
+  private String age;
+  private IPropertySelectionModel sexModel;
+  private IPropertySelectionModel raceModel;
+  
+  public IPropertySelectionModel getRaceModel()
+  {
+    if (raceModel == null)
+      raceModel = new EnumPropertySelectionModel(
+        new Race[] 
+        {
+          Race.CAUCASIAN, Race.AFRICAN, Race.ASIAN, 
 Race.INUIT, Race.MARTIAN
-				},  getBundle("tutorial.survey.SurveyStrings"), 
+        },  getBundle("tutorial.survey.SurveyStrings"), 
 "Race");
-				
-		return raceModel;
-	}
-		
-	public IPropertySelectionModel getSexModel()
-	{
-		if (sexModel == null)
-			sexModel = new EnumPropertySelectionModel(
-				new Sex[] 
-				{
-					Sex.MALE, Sex.FEMALE, Sex.TRANSGENDER, 
-Sex.ASEXUAL	
-				},  getBundle("tutorial.survey.SurveyStrings"), 
+        
+    return raceModel;
+  }
+    
+  public IPropertySelectionModel getSexModel()
+  {
+    if (sexModel == null)
+      sexModel = new EnumPropertySelectionModel(
+        new Sex[] 
+        {
+          Sex.MALE, Sex.FEMALE, Sex.TRANSGENDER, 
+Sex.ASEXUAL  
+        },  getBundle("tutorial.survey.SurveyStrings"), 
 "Sex");
-				
-		return sexModel;
-	}	
-	
+        
+    return sexModel;
+  }  
+  
     private ResourceBundle getBundle(String resourceName)
     {
         return ResourceBundle.getBundle(resourceName, getLocale());
     }
-		
-	public IActionListener getFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, 
+    
+  public IActionListener getFormListener()
+  {
+    return new IActionListener()
+    {
+      public void actionTriggered(IComponent component, 
 IRequestCycle cycle)
-			{
-				try
-				{
-					survey.setAge(Integer.parseInt(age));
-					
-					survey.validate();
-				}
-				catch (NumberFormatException e)
-				{
-					// NumberFormatException doesn't provide 
+      {
+        try
+        {
+          survey.setAge(Integer.parseInt(age));
+          
+          survey.validate();
+        }
+        catch (NumberFormatException e)
+        {
+          // NumberFormatException doesn't provide 
 any useful data
-					
-					setError("Value entered for age is not a 
+          
+          setError("Value entered for age is not a 
 number.");
-					return;
-				}
-				catch (Exception e)
-				{
-					setError(e.getMessage());
-					return;
-				}
-				
-				// Survey is OK, add it to the database.
-				
-			
-	((SurveyApplication)getApplication()).getDatabase().addSurvey(survey
+          return;
+        }
+        catch (Exception e)
+        {
+          setError(e.getMessage());
+          return;
+        }
+        
+        // Survey is OK, add it to the database.
+        
+      
+  ((SurveyApplication)getApplication()).getDatabase().addSurvey(survey
 );
-				
-				setSurvey(null);	
-				
-				// Jump to the results page to show the totals.
-				
-				cycle.setPage("Results");
-			}	
-		};
-	}
-		
-	public Survey getSurvey()
-	{
-		if (survey == null)
-			setSurvey(new Survey());
-				
-		return survey;
-	}
-	
-	public void setSurvey(Survey value)
-	{
-		survey = value;
-		fireObservedChange("survey", survey);
-	}
-	
-	public void detach()
-	{
-		super.detach();
-		
-		survey = null;
-		error = null;
-		age = null;
-		
-		// We keep the models, since they are stateless
-	}
-	
-	public void setError(String value)
-	{
-		error = value;
-	}
-	
-	public String getError()
-	{
-		return error;
-	}
-	
-	public String getAge()
-	{
-		int ageValue;
-		
-		if (age == null)
-		{
-			ageValue = getSurvey().getAge();
-			
-			if (ageValue == 0)
-				age = "";
-			else 
-				age = Integer.toString(ageValue);
-		}	
-		
-		return age;	
-	}
-	
-	public void setAge(String value)
-	{
-		age = value;
-	}
-}]]></programlisting></figure> 
+        
+        setSurvey(null);  
+        
+        // Jump to the results page to show the totals.
+        
+        cycle.setPage("Results");
+      }  
+    };
+  }
+    
+  public Survey getSurvey()
+  {
+    if (survey == null)
+      setSurvey(new Survey());
+        
+    return survey;
+  }
+  
+  public void setSurvey(Survey value)
+  {
+    survey = value;
+    fireObservedChange("survey", survey);
+  }
+  
+  public void detach()
+  {
+    super.detach();
+    
+    survey = null;
+    error = null;
+    age = null;
+    
+    // We keep the models, since they are stateless
+  }
+  
+  public void setError(String value)
+  {
+    error = value;
+  }
+  
+  public String getError()
+  {
+    return error;
+  }
+  
+  public String getAge()
+  {
+    int ageValue;
+    
+    if (age == null)
+    {
+      ageValue = getSurvey().getAge();
+      
+      if (ageValue == 0)
+        age = "";
+      else 
+        age = Integer.toString(ageValue);
+    }  
+    
+    return age;  
+  }
+  
+  public void setAge(String value)
+  {
+    age = value;
+  }
+}
+]]>
+</programlisting></figure> 
 
 <para> 
 A few notes.  First, the <varname>raceModel</> and 

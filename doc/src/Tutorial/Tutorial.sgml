@@ -21,8 +21,20 @@
 <!ENTITY start-listing "<informalexample><programlisting>">
 <!ENTITY end-listing "</programlisting></informalexample>">
 
-<!ENTITY HttpSession " <classname>HttpSession</>">
+<!ENTITY HttpSession "<classname>HttpSession</>">
+<!ENTITY String "<classname>String</>">
+<!ENTITY List "<classname>List</>">
+<!ENTITY Iterator "<classname>Iterator</>">
+<!ENTITY Map "<classname>Map</>">
 
+<!ENTITY Direct "<classname>Direct</>">
+<!ENTITY Foreach "<classname>Foreach</>">
+<!ENTITY Form "<classname>Form</>">
+<!ENTITY Insert "<classname>Insert</>">
+<!ENTITY Page "<classname>Page</>">
+<!ENTITY Radio "<classname>Radio</>">
+<!ENTITY RadioGroup "<classname>RadioGroup</>">
+<!ENTITY Rollover "<classname>Rollover</>">
 ]>
 
 <!-- $Id$ -->                                  
