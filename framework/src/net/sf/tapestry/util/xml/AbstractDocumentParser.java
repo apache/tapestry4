@@ -28,7 +28,6 @@ package net.sf.tapestry.util.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -36,28 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.INamespace;
-import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.bean.IBeanInitializer;
-import net.sf.tapestry.spec.ApplicationSpecification;
-import net.sf.tapestry.spec.AssetSpecification;
-import net.sf.tapestry.spec.AssetType;
-import net.sf.tapestry.spec.BeanLifecycle;
-import net.sf.tapestry.spec.BeanSpecification;
-import net.sf.tapestry.spec.BindingSpecification;
-import net.sf.tapestry.spec.BindingType;
-import net.sf.tapestry.spec.ComponentSpecification;
-import net.sf.tapestry.spec.ContainedComponent;
-import net.sf.tapestry.spec.Direction;
-import net.sf.tapestry.spec.ExtensionSpecification;
-import net.sf.tapestry.spec.IApplicationSpecification;
-import net.sf.tapestry.spec.ILibrarySpecification;
-import net.sf.tapestry.spec.LibrarySpecification;
-import net.sf.tapestry.spec.ParameterSpecification;
-import net.sf.tapestry.spec.SpecFactory;
-import net.sf.tapestry.util.IPropertyHolder;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.oro.text.regex.MalformedPatternException;
@@ -535,6 +513,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
         factory.setIgnoringElementContentWhitespace(true);
         factory.setIgnoringComments(true);
         factory.setCoalescing(true);
+        
 
         DocumentBuilder result = factory.newDocumentBuilder();
 
@@ -615,7 +594,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
         if (_matcher.matches(value, compiled))
             return;
 
-        throw new DocumentParseException(Tapestry.getString(errorKey, value), getResourcePath());
+        throw new InvalidStringException(Tapestry.getString(errorKey, value), value, getResourcePath());
     }
 
 
