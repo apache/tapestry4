@@ -55,7 +55,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
 public class TestingForm implements IForm
 {
     private String _name;
-    
+
     public TestingForm()
     {
         this("DefaultFormName");
@@ -205,7 +205,8 @@ public class TestingForm implements IForm
         return null;
     }
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
+        throws PageLoaderException
     {
     }
 

@@ -78,11 +78,8 @@ public class BorrowedBooks extends Protected
         super.detach();
     }
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification)
-        throws PageLoaderException
+    public void finishLoad()
     {
-        super.finishLoad(loader, specification);
-
         browser = (Browser) getComponent("browser");
     }
 

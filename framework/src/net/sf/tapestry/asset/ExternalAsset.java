@@ -27,6 +27,7 @@ package net.sf.tapestry.asset;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Locale;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
@@ -44,11 +45,11 @@ import net.sf.tapestry.Tapestry;
 
 public class ExternalAsset implements IAsset
 {
-    private String URL;
+    private String _URL;
 
     public ExternalAsset(String URL)
     {
-        this.URL = URL;
+        _URL = URL;
     }
 
     /**
@@ -58,16 +59,28 @@ public class ExternalAsset implements IAsset
 
     public String buildURL(IRequestCycle cycle)
     {
-        return URL;
+        return _URL;
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle) 
+    public InputStream getResourceAsStream(IRequestCycle cycle)
+    {
+        return getResourceAsStream(cycle, cycle.getPage().getLocale());
+    }
+
+    /**
+     *  Ignores the locale and attempts to get the stream to the external URL.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public InputStream getResourceAsStream(IRequestCycle cycle, Locale locale)
     {
         URL url;
 
         try
         {
-            url = new URL(URL);
+            url = new URL(_URL);
 
             return url.openStream();
         }
@@ -75,15 +88,13 @@ public class ExternalAsset implements IAsset
         {
             // MalrformedURLException or IOException
 
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("ExternalAsset.resource-missing", URL),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.getString("ExternalAsset.resource-missing", _URL), ex);
         }
 
     }
 
     public String toString()
     {
-        return "ExternalAsset[" + URL + "]";
+        return "ExternalAsset[" + _URL + "]";
     }
 }

@@ -87,13 +87,8 @@ public class Inspector extends BasePage
         super.detach();
     }
 
-    public void finishLoad(
-        IPageLoader loader,
-        ComponentSpecification specification)
-        throws PageLoaderException
+    public void finishLoad()
     {
-        super.finishLoad(loader, specification);
-
         _blocks = new HashMap(MAP_SIZE);
 
         _blocks.put(View.TEMPLATE, getComponent("templateBlock"));
@@ -177,7 +172,7 @@ public class Inspector extends BasePage
     public void inspect(String pageName, IRequestCycle cycle)
     {
         setInspectedPageName(pageName);
-        selectComponent((String)null);
+        selectComponent((String) null);
 
         cycle.setPage(this);
     }
@@ -195,7 +190,7 @@ public class Inspector extends BasePage
     public void selectComponent(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        
+
         String newIdPath;
 
         // The up button may generate a null context.
@@ -203,7 +198,7 @@ public class Inspector extends BasePage
         if (parameters == null)
             newIdPath = null;
         else
-            newIdPath = (String)parameters[0];
+            newIdPath = (String) parameters[0];
 
         selectComponent(newIdPath);
     }

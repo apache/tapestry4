@@ -40,6 +40,7 @@ import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IPageSource;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
@@ -288,6 +289,7 @@ public class PageLoader implements IPageLoader
      * <li>Telling the component its 'ready' (so that it can load its HTML template)
      * </ul>
      *
+     *  @param cycle the request cycle for which the page is being (initially) constructed
      *  @param page The page on which the container exists.
      *  @param container The component to be set up.
      *  @param containerSpec The specification for the container.
@@ -296,6 +298,7 @@ public class PageLoader implements IPageLoader
      **/
 
     private void constructComponent(
+        IRequestCycle cycle,
         IPage page,
         IComponent container,
         ComponentSpecification containerSpec,
@@ -335,12 +338,12 @@ public class PageLoader implements IPageLoader
 
             // Recursively construct the component
 
-            constructComponent(page, component, componentSpecification, componentNamespace);
+            constructComponent(cycle, page, component, componentSpecification, componentNamespace);
         }
 
         addAssets(container, containerSpec);
 
-        container.finishLoad(this, containerSpec);
+        container.finishLoad(cycle, this, containerSpec);
 
         _depth--;
     }
@@ -454,23 +457,24 @@ public class PageLoader implements IPageLoader
      *  @param name the name of the page to load
      *  @param namespace from which the page is to be loaded (used
      *  when resolving components embedded by the page)
-     *  @param engine the engine the page is loaded for (this is used
+     *  @param cycle the request cycle the page is 
+     *  initially loaded for (this is used
      *  to define the locale of the new page, and provide access
      *  to the corect specification source, etc.).
      *  @param specification the specification for the page
      *
      **/
 
-    public IPage loadPage(String name, INamespace namespace, IEngine engine, ComponentSpecification specification)
+    public IPage loadPage(String name, INamespace namespace, IRequestCycle cycle, ComponentSpecification specification)
         throws PageLoaderException
     {
         IPage page = null;
 
-        _engine = engine;
+        _engine = cycle.getEngine();
 
-        _locale = engine.getLocale();
-        _specificationSource = engine.getSpecificationSource();
-        _resolver = engine.getResourceResolver();
+        _locale = _engine.getLocale();
+        _specificationSource = _engine.getSpecificationSource();
+        _resolver = _engine.getResourceResolver();
 
         _count = 0;
         _depth = 0;
@@ -480,9 +484,9 @@ public class PageLoader implements IPageLoader
         {
             page = instantiatePage(name, namespace, specification);
 
-            page.attach(engine);
+            page.attach(_engine);
 
-            constructComponent(page, page, specification, namespace);
+            constructComponent(cycle, page, page, specification, namespace);
 
             setBindings(page);
         }

@@ -34,14 +34,12 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.Tapestry;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  An asset whose path is relative to the {@link ServletContext} containing
@@ -67,18 +65,17 @@ public class ContextAsset implements IAsset
         }
     }
 
-    private static final int MAP_SIZE = 7;
-
     /**
-     *  Map, keyed on Locale, value is an instance of Localization
+     *  Map, keyed on Locale, value is an instance of Localization.
+     * 
      **/
 
-    private Map localizations;
-    private String assetPath;
+    private Map _localizations;
+    private String _assetPath;
 
     public ContextAsset(String assetPath)
     {
-        this.assetPath = assetPath;
+        _assetPath = assetPath;
     }
 
     /**
@@ -91,30 +88,35 @@ public class ContextAsset implements IAsset
     public String buildURL(IRequestCycle cycle)
     {
         Localization localization = findLocalization(cycle);
-        
+
         return localization.URL;
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle) 
+    public InputStream getResourceAsStream(IRequestCycle cycle)
     {
-        ServletContext context;
-        URL url;
-        Localization localization = findLocalization(cycle);
+        return getResourceAsStream(cycle, cycle.getPage().getLocale());
+    }
 
-        context = cycle.getRequestContext().getServlet().getServletContext();
+    public InputStream getResourceAsStream(IRequestCycle cycle, Locale locale)
+    {
+        Localization localization = findLocalization(cycle, locale);
 
         try
         {
-            url = context.getResource(localization.assetPath);
+            ServletContext context = cycle.getRequestContext().getServlet().getServletContext();
+            URL url = context.getResource(localization.assetPath);
 
             return url.openStream();
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("ContextAsset.resource-missing", assetPath),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.getString("ContextAsset.resource-missing", _assetPath), ex);
         }
+    }
+
+    private Localization findLocalization(IRequestCycle cycle)
+    {
+        return findLocalization(cycle, cycle.getPage().getLocale());
     }
 
     /**
@@ -126,55 +128,41 @@ public class ContextAsset implements IAsset
      *
      **/
 
-    private Localization findLocalization(IRequestCycle cycle) 
+    private synchronized Localization findLocalization(IRequestCycle cycle, Locale locale)
     {
-        Locale locale = cycle.getPage().getLocale();
-        int dotx;
-        StringBuffer buffer;
-        int rawLength;
-        String candidatePath;
-        String language = null;
-        String country = null;
-        int start = 2;
-        String suffix;
-        Localization result;
+        if (_localizations == null)
+            _localizations = new HashMap();
 
-        synchronized (this)
-        {
-            if (localizations == null)
-                localizations = new HashMap(MAP_SIZE);
-        }
-
-        synchronized (localizations)
-        {
-            result = (Localization) localizations.get(locale);
-            if (result != null)
-                return result;
-        }
+        Localization result = (Localization) _localizations.get(locale);
+        if (result != null)
+            return result;
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Searching for localization of context resource " + assetPath);
+            LOG.debug("Searching for localization of context resource " + _assetPath);
 
-        dotx = assetPath.lastIndexOf('.');
-        suffix = assetPath.substring(dotx);
+        int dotx = _assetPath.lastIndexOf('.');
+        String suffix = _assetPath.substring(dotx);
 
-        buffer = new StringBuffer(dotx + 30);
+        StringBuffer buffer = new StringBuffer(dotx + 30);
 
-        buffer.append(assetPath.substring(0, dotx));
-        rawLength = buffer.length();
+        buffer.append(_assetPath.substring(0, dotx));
+        int rawLength = buffer.length();
 
-        country = locale.getCountry();
+        int start = 2;
+
+        String country = locale.getCountry();
         if (country.length() > 0)
             start--;
 
         // This assumes that you never have the case where there's
         // a null language code and a non-null country code.
 
-        language = locale.getLanguage();
+        String language = locale.getLanguage();
         if (language.length() > 0)
             start--;
 
         ServletContext context = cycle.getRequestContext().getServlet().getServletContext();
+        String contextPath = cycle.getEngine().getContextPath();
 
         // On pass #0, we use language code and country code
         // On pass #1, we use language code
@@ -200,23 +188,19 @@ public class ContextAsset implements IAsset
 
             buffer.append(suffix);
 
-            candidatePath = buffer.toString();
+            String candidatePath = buffer.toString();
 
             try
             {
                 URL candidateURL = context.getResource(candidatePath);
                 if (candidateURL != null && exists(candidateURL))
                 {
+                    result = new Localization(candidatePath, contextPath + candidatePath);
 
-                    result = new Localization(candidatePath, cycle.getEngine().getContextPath() + candidatePath);
-
-                    synchronized (localizations)
-                    {
-                        localizations.put(locale, result);
-                    }
+                    _localizations.put(locale, result);
 
                     if (LOG.isDebugEnabled())
-                        LOG.debug("Found " + assetPath);
+                        LOG.debug("Found " + _assetPath);
 
                     return result;
                 }
@@ -229,7 +213,7 @@ public class ContextAsset implements IAsset
         }
 
         throw new ApplicationRuntimeException(
-            Tapestry.getString("ContextAsset.resource-unavailable", assetPath, locale));
+            Tapestry.getString("ContextAsset.resource-unavailable", _assetPath, locale));
     }
 
     /** @since 1.0.6 **/
@@ -257,19 +241,25 @@ public class ContextAsset implements IAsset
         }
         finally
         {
-            if (in != null)
-            {
-                try
-                {
-                    in.close();
-                }
-                catch (IOException ex)
-                {
-                }
-            }
+            close(in);
         }
 
         return true;
+    }
+
+    private void close(InputStream stream)
+    {
+        if (stream == null)
+            return;
+
+        try
+        {
+            stream.close();
+        }
+        catch (IOException ex)
+        {
+            // Ignore.
+        }
     }
 
     public String toString()
@@ -277,10 +267,11 @@ public class ContextAsset implements IAsset
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("ContextAsset[");
-        buffer.append(assetPath);
+        buffer.append(_assetPath);
 
         buffer.append(']');
 
         return buffer.toString();
     }
+
 }

@@ -71,10 +71,8 @@ public class PersonPage extends BasePage implements IExternalPage
         super.detach();
     }
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification spec) throws PageLoaderException
+    public void finishLoad()
     {
-        super.finishLoad(loader, spec);
-
         browser = (Browser) getComponent("browser");
     }
 

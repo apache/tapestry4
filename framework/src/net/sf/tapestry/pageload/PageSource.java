@@ -41,6 +41,7 @@ import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IRenderDescription;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.PageLoaderException;
@@ -197,8 +198,9 @@ public class PageSource implements IPageSource, IRenderDescription
      *
      **/
 
-    public IPage getPage(IEngine engine, String pageName, IMonitor monitor) throws PageLoaderException
+    public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor) throws PageLoaderException
     {
+        IEngine engine = cycle.getEngine();
         Object key = buildKey(engine, pageName);
         IPage result = (IPage) _pool.retrieve(key);
 
@@ -216,7 +218,7 @@ public class PageSource implements IPageSource, IRenderDescription
                 loader.loadPage(
                     pageName,
                     specificationResolver.getNamespace(),
-                    engine,
+                    cycle,
                     specificationResolver.getSpecification());
 
              if (monitor != null)

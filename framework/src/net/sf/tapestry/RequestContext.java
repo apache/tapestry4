@@ -160,7 +160,10 @@ public class RequestContext implements IRender
         _request = request;
         _response = response;
 
-        if (MultipartDecoder.isMultipartRequest(request))
+        // All three parameters may be null if created from
+        // AbstractEngine.cleanupEngine().
+        
+        if (_request != null && MultipartDecoder.isMultipartRequest(request))
             _decoder = new MultipartDecoder(request);
     }
 

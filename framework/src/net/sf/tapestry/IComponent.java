@@ -267,12 +267,15 @@ public interface IComponent extends IRender
      *  <p>As of release 1.0.6, this method is invoked <em>before</em>
      *  bindings are set.  This should not affect anything, as bindings
      *  should only be used during renderring.
+     * 
+     *  <p>Release 2.2 added the cycle parameter which is, regretfully, not
+     *  backwards compatible.
      *
-     * @since 0.2.12
+     *  @since 0.2.12
      * 
      **/
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification)
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
         throws PageLoaderException;
 
 	/**

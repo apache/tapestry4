@@ -1115,7 +1115,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     protected ISpecificationSource createSpecificationSource()
     {
-        return new DefaultSpecificationSource(getResourceResolver(), _specification);  
+        return new DefaultSpecificationSource(getResourceResolver(), _specification);
     }
 
     /**
@@ -1219,10 +1219,32 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         if (LOG.isInfoEnabled())
             LOG.info(this +" cleanupEngine()");
 
+        Collection activePageNames = getActivePageNames();
+        if (activePageNames.isEmpty())
+            return;
+
         ISpecificationSource specSource = getSpecificationSource();
         IPageSource source = getPageSource();
 
-        Iterator i = getActivePageNames().iterator();
+        // A bit of a hack, used only when cleaning up the engine and any pages
+        // as the session is invalidated.  We don't really have the stuff we
+        // need to create a context.
+
+        RequestContext fakeContext = null;
+
+        try
+        {
+            fakeContext = new RequestContext(null, null, null);
+        }
+        catch (IOException ex)
+        {
+            reportException(Tapestry.getString("AbstractEngine.unable-to-create-cleanup-context"), ex);
+            return;
+        }
+
+        IRequestCycle fakeCycle = new RequestCycle(this, fakeContext, null);
+
+        Iterator i = activePageNames.iterator();
 
         while (i.hasNext())
         {
@@ -1230,8 +1252,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             try
             {
-                INamespace namespace = specSource.getNamespaceForPageName(name);
-                IPage page = source.getPage(this, name, null);
+               IPage page = source.getPage(fakeCycle, name, null);
                 IPageRecorder recorder = getPageRecorder(name);
 
                 recorder.rollback(page);
@@ -1257,7 +1278,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     /**
      *  Implemented by subclasses to return the names of the active pages
-     *  (pages for which recorders exist).
+     *  (pages for which recorders exist).  May return the empty list,
+     *  but should not return null.
      *
      **/
 

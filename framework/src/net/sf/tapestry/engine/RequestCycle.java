@@ -223,7 +223,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
             try
             {
-                result = pageSource.getPage(_engine, name, _monitor);
+                result = pageSource.getPage(this, name, _monitor);
             }
             catch (PageLoaderException ex)
             {
