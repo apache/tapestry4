@@ -52,6 +52,8 @@
 	<p>
 	Note complex Object's need to properly implement the <tt>Object.equals()</tt> 
 	method if the correct item intial item is to be displayed.  
+  <p>
+  This component may NOT wrap around other components or static HTML. 
  </td>
 </tr>
 
@@ -67,7 +69,7 @@
 
 <tr>
  <td colspan="2">
-  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (informal parameters allowed, and are applied to the &lt;select&gt; tag)
+  <b>Parameters</b>
 	<br>
   <table border="1" cellpadding="4" cellspacing="4"  class="parameters">
   <tr> 
@@ -126,6 +128,8 @@
 		</td>
 	</tr>
 	</table>		
+  Informal parameters: NOT allowed<br>
+  Reserved parameters: none
  </td>
 </tr>
 
@@ -216,6 +220,7 @@ public class GenderPropertySelectionModel implements IPropertySelectionModel {
 </pre>
 	
 <hr>
+<a name="Example2"></a>
 <p>
 Provides list of clothing items for the user to select. When the user selects a 
 cloting item from the list the description, label and price is automatically 

@@ -31,21 +31,29 @@ PRE.programlisting A
 	color:black;
 }
 
-/* Component reference component jwc ids. */
+/* Component Reference */
 
+/* CR Parameters */
+TABLE.PARAMETERS
+{
+}
+
+/* CR Examples */
+TABLE.EXAMPLES
+{
+   background-color : white;
+}
+
+/* CR Examples JWCID */
 SPAN.JWCID
 {
   font-weight: bold;
 }
 
-/* Component reference component types. */
-
+/* CR Examples Type */
 SPAN.TYPE
 {
   font-weight: bold;
 }
 
-TABLE.EXAMPLES
-{
-   background-color : white;
-}
+

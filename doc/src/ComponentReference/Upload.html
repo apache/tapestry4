@@ -42,6 +42,8 @@
   by an instance of IUploadFile.
   <p>
   The form's enctype must be set to "multipart/form-data". 
+  <p>
+  This component may NOT wrap around other components or static HTML. 
  </td>
 </tr>
 
@@ -56,7 +58,7 @@
 
 <tr>
  <td colspan="2">
-  <b>Parameters</b> &nbsp;&nbsp; (informal parameters allowed)
+  <b>Parameters</b>
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
   <tr> 
@@ -84,12 +86,14 @@
 		<td>in</td>
 		<td>no</td>
 		<td>false</td>
-		<td>If true, then (on render) the disabled attribute is written into the 
+		<td>If true, then (on render) the "disabled" attribute is written into the 
     tag (note that Navigator 4 will ignore this) and on submit, the upload will 
     not update its file parameter. 
 		</td>
 	</tr>
 	</table>		
+  Informal parameters: allowed<br>
+  Reserved parameters: "name", "type"
  </td>
 </tr>
 
