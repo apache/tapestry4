@@ -59,27 +59,26 @@
   <b>Parameters</b> &nbsp;&nbsp;&nbsp; 
  <p>Informal parameters are allowed.  The component may not contain a body.
 	<br>
- <table border=1>
- <tr>
-    <th>Parameter</th>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+   <tr>
+    <th>Name</th>
     <th>Type</th>
 	  <th>Direction</th>
     <th>Required</th>
     <th>Default</th>
     <th>Description</th>
- </tr>
-
-  <tr>
+   </tr>
+   <tr>
     <td>value</td>
-    <td>java.lang.String</td>
+    <td>String</td>
     <td>in-out</td>
    	<td>no</td>
 		<td>post</td>
 		<td>The text inside the textarea.  The parameter is only updated
-			when the the Text component is not disabled.</td>
-	</tr>
-
-  <tr>
+			when the the Text component is not disabled.
+    </td>
+	 </tr>
+   <tr>
  		<td>disabled</td>
 		<td>boolean</td>
 		<td>in</td>
@@ -87,11 +86,9 @@
 		<td>false</td>
 		<td>Controls whether the textarea is active or not.  If disabled, then
 			any value that comes up when the form is submitted is ignored.
-
-			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
-	</tr>
-
-	<tr>
+        Corresponds to the 'disabled' HTML attribute.</td>
+	 </tr>
+   <tr>
 		<td>columns</td>
 		<td>integer</td>
 		<td>in</td>
@@ -99,10 +96,9 @@
 		<td>&nbsp;</td>
 		<td>The width of the textarea, in characters.  If zero, or unspecified
 		    the value is left to the client browser to determine.
-
-			<p>Corresponds to the <code>cols</code> HTML attribute.</td> </tr>
-
-	<tr>
+        Corresponds to the 'cols' HTML attribute.</td> 
+   </tr>
+	 <tr>
 		<td>rows</td>
 		<td>integer</td>
 		<td>in</td>
@@ -111,10 +107,9 @@
 		<td>The number of rows in the textarea. If
 			unspecified or zero, then the value is left to the client browser to
 			determine.
-
-			<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
-
- <tr>
+        Corresponds to the 'maxlength' HTML attribute.
+    </td> 
+   </tr>
 	</table>
  </td>
 </tr>
@@ -244,13 +239,28 @@ public class TextArea extends BasePage {
 	private int rows = 5;
 	private String value = "TextArea's intial demonstration value";
 }
-
-
-
-
-
 </pre>
+ </td>
+</tr>
 
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="ShowInspector.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="TextField.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
  </td>
 </tr>
 </table>

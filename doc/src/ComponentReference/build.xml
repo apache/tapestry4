@@ -5,19 +5,35 @@
 <project name="Component Reference" default="install">
 
 <property name="html.install.dir" value="../../ComponentReference"/>
+<property name="images.src.dir" value="images"/>
+<property name="images.dest.dir" value="${html.install.dir}/images"/>
+<property name="common-images.src.dir" value="../common/images"/>
+<property name="common-images.dest.dir" value="${html.install.dir}/common-images"/>
 
 <!--  For the time being, this project is all "static".  That may change
   	  in the future.  -->
 
 <target name="install">
   <mkdir dir="${html.install.dir}"/>
+  <mkdir dir="${common-images.dest.dir}"/>
+  <copy todir="${common-images.dest.dir}">
+   	<fileset dir="${common-images.src.dir}">
+   		<include name="*.png"/>
+   	</fileset>
+  </copy>
+  <mkdir dir="${images.dest.dir}"/>
+  <copy todir="${images.dest.dir}">
+   	<fileset dir="${images.src.dir}">
+   		<include name="*.jpg"/>
+   		<include name="*.png"/>
+   	</fileset>
+  </copy>
+  
   <echo>Installing Component Reference documentation ...</echo>
   <copy todir="${html.install.dir}">
   	<fileset dir=".">
   		<include name="*.html"/>
   		<include name="*.css"/>
-  		<include name="*.png"/>
-  		<include name="*.jpg"/>
   	</fileset>
   </copy>
 </target>
