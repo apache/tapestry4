@@ -81,14 +81,14 @@
       	     
         <pathelement location="../../bin"/>
 
-        <path refid="project.class.path"/>
         <pathelement location="${lib}/org.mortbay.jetty.jar"/>
-        <!-- Pick up the "custom" jndi.properties from the VlibBeans project -->
-        <pathelement location="../VlibBeans/jboss"/>
         <!-- Runtime client libraries -->
         <pathelement location="${jboss.dir}/client/jboss-client.jar"/>
         <pathelement location="${jboss.dir}/client/jbosssx-client.jar"/>
         <pathelement location="${jboss.dir}/client/jnp-client.jar"/>
+        
+         <path refid="project.class.path"/>
+
       </classpath>
 
       <arg value="jetty.xml"/>
@@ -104,6 +104,12 @@
        
       <sysproperty key="com.primix.tapestry.disable-caching" value="true"/>
       <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+
+      <!-- JNDI Configuration for JBoss -->
+      
+      <sysproperty key="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
+      <sysproperty key="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
+      <sysproperty key="java.naming.provider.url" value="localhost:1099"/>
       
    </java>
   </target>
