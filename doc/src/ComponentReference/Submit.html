@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+<td colspan=2>
+	<table border="0" cellpadding="4" cellspacing="4" width="100%">
+	<tr>
+	<td align="center">
+	<a accesskey="p" href="Shell.html"><img src="common-images/prev.png" alt="Prev"></a>
+	</td>
+	<td align="center">
+	<a accesskey="u" href="index.html"><img src="common-images/up.png" alt="Up"></a>
+	</td>
+	<td align="center">
+	<a accesskey="n" href="ShowInspector.html"><img src="common-images/next.png" alt="Next"></a>
+	</td>
+</table>
+</td>
+</tr>
+
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Submit</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/Submit.html">
+		 net.sf.tapestry.form.Submit</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+	 <tr>
+	  <td>
+		<input type = "submit" value="Submit Button"/>
+		</td>
+	 </tr>
+  </table>
+ </td>
+
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Used to implement a form submission element, along the lines of &lt;input type=submit value="Button Text"&gt;. 
+	Must be wrapped by a <a href="Form.html">Form</a> component.  
+<p>Allows informal parameters, but may not contain a body.  <p>This component is generally only used when the form has multiple
+  submit buttons, and it is important for the application to know
+  which one was pressed.  You may also want to use
+  <A HREF="ImageSubmit.html"><CODE>ImageSubmit</CODE></A> which accomplishes much the same thing, but uses
+  a graphic image instead.
+   </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Form.html">Form</a>, 
+	<a href="Checkbox.html">Checkbox</a>, 
+	<a href="Hidden.html">Hidden</a>, 
+	<a href="ImageSubmit.html">ImageSubmit</a>, 
+	<a href="ListEdit.html">ListEdit</a>, 
+	<a href="Option.html">Option</a>, 
+	<a href="Radio.html">Radio</a>, 
+	<a href="RadioGroup.html">RadioGroup</a>, 
+	<a href="Select.html">Select</a>, 
+	<a href="Text.html">Text</a>, 
+	<a href="TextField.html">TextField</a>, 
+	<a href="ValidField.html">ValidField</a>
+ </td>
+</tr>
+
+<!-- Parameters -->
+<tr>
+<td colspan="2">
+</td></tr>
+ <table border=1>
+ <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th>
+    <th>Default</th>
+    <th>Description</th>
+ </tr>
+
+  <tr>
+		<td>label</td>
+		<td>java.lang.String</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>The label put on the button (this becomes the HTML value attribute).
+		</td>
+	</tr>
+
+  <tr>
+	  <td>disabled</id>
+	  <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+	  <td>false</td>
+    <td>If set to true, the button will be disabled (will not respond to
+  the mouse); the browser should provide a "greyed out" appearance.
+  </td> </tr>
+
+  <tr>
+      <td>selected</td>
+      <td>java.lang.Object</td>
+      <td>out</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+      <td>This parameter is bound to a property that is
+    updated when the submit button is clicked by the user.  The property
+  is updated to match the tag parameter.</td>
+  </tr>
+
+  <tr>
+      <td>tag</td>
+      <td>java.lang.Object</td>
+      <td>in</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+      <td>Tag used with the selected parameter to indicate which Submit button
+  on a form was clicked.</td>
+  </tr>
+
+  <tr>
+ 		<td>listener</td>
+ 		<td>IActionListener</td>
+ 		<td>in</td>
+ 		<td>no</td>
+ 		<td>&nbsp;</td>
+ 		<td>If specified, the listener is notified.  This notification occurs
+  as the component is rewinded, i.e., prior to the <A HREF="Form.html"><CODE>Form</CODE></A>'s listener.
+  In addition, the selected property (if bound) will be updated <em>before</em>
+  the listener is notified.
+ 		</td>
+   </tr>
+
+	</table>
+
+<p>
+The following example shows a standard, simple submit button. 
+This example shows both a form, and a single <a href="Submit.html">Submit</a> component.
+The component is setup to call a method on the page implementation when it is clicked.<br>
+Keep in mind that it is of course possible to bind the label name to a dynamic property (e.g:
+the page, or some property of the visit object). This is not done here, purely for simplicity.
+
+<tr>
+<td colspan=2>
+<!-- Real Generated Example -->
+  <table valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+	 <tr>
+	  <td>
+		<input type = "submit" value="Submit Button"/>
+		</td>
+	 </tr>
+  </table>
+</td>
+</tr>
+
+<tr>
+<td colspan=2>
+<pre>
+<!-- The HTML -->
+&lt;form jwcid="form"&gt;
+	&lt;input jwcid="<b>simplesubmit</b>" value="Submit"/&gt;
+&lt;/form&gt;	
+
+<hr>
+<!--  .Page specification -->
+&lt;specification class="examples.componentref.Submit" allow-body="yes" allow-informal-parameters="yes" &gt;
+    &lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
+    
+    &lt;component id="form" type="Form"&gt;
+    	&lt;binding name="delegate" property-path="beans.validationDelegate"/&gt;
+    	&lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+    &lt;/component&gt;
+    
+    &lt;component id="<b>simplesubmit</b>" type="Submit"&gt;
+    	&lt;static-binding name="value"&gt;Submit&lt;/static-binding&gt;
+    	&lt;binding name="listener" property-path="listeners.simpleFormSubmit"/&gt;
+    &lt;/component&gt;
+&lt;/specification&gt;
+
+<hr>
+<!-- Java code for example -->
+/**
+ * Simply demonstration of form Submit component
+ * @author Neil Clayton
+ */
+public class Submit extends BasePage {
+	public void formSubmit(IRequestCycle requestCycle) {
+		System.out.println("Standard form submit was called");
+	}
+
+	public void simpleFormSubmit(IRequestCycle requestCycle) {
+		System.out.println("The simple form submit was called");
+	}
+}
+</pre>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
