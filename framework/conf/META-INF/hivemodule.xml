@@ -177,6 +177,10 @@
     
   </service-point>
   
+  <contribution configuration-id="hivemind.FactoryDefaults">
+    <default key="org.apache.tapestry.engine-class" value="org.apache.tapestry.engine.BaseEngine"/>
+  </contribution>
+  
   <service-point id="RequestServicerPipeline" interface="org.apache.tapestry.services.RequestServicer">
     
     A pipeline for handling each request.
