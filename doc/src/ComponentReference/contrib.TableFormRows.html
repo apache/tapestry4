@@ -17,7 +17,7 @@ Tbis HTML document provides a base template for Component Reference pages.
 <!-- $Id$ --> 
 <html>
 <head>
-<title>contrib:TablePages</title>
+<title>contrib:TableFormRows</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -25,10 +25,10 @@ Tbis HTML document provides a base template for Component Reference pages.
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
   <!-- Previous component in alphabetical order. -->
-  <td align="left"><A href="contrib.TableFormRows.html"><IMG alt="contrib:TableFormRows" src="common-images/prev.png"></a></td>  
+  <td align="left"><a href="contrib.TableFormPages.html"><img alt="contrib:TableFormPages" src="common-images/prev.png"></a></td>  
   <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
   <!-- Next component in alphabetical order. -->
-  <td align="right"><a href="contrib.TableRows.html"><img alt="contrib:TableRows" src="common-images/next.png"></a></td>  
+  <td align="right"><a href="contrib.TablePages.html"><img alt="contrib.TablePages" src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -41,11 +41,11 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td>
   <table>
    <tr>
-    <td><font size="+2"><b>contrib:TablePages</b></font></td>
+    <td><font size="+2"><b>contrib:TableFormRows</b></font></td>
    </tr>
    <tr>
     <td>
-     <A href="../api/org/apache/tapestry/contrib/table/components/TablePages.html">org.apache.tapestry.contrib.table.components.TablePages</a>
+     <A href="../api/org/apache/tapestry/contrib/table/components/TableFormRows.html">org.apache.tapestry.contrib.table.components.TableFormRows</a>
     </td>
    </tr>
   </table>
@@ -53,19 +53,7 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
    <tr>
-    <td>
-		<SPAN><A 
-		href="#">&lt;&lt;</A>&nbsp;<A 
-		href="#">&lt;</A>&nbsp;<A 
-		href="#">7</A>&nbsp;<A 
-		href="#">8</A>&nbsp;<A 
-		href="#">9</A><B>&nbsp;10</B>&nbsp;<A 
-		href="#">11</A>&nbsp;<A 
-		href="#">12</A>&nbsp;<A 
-		href="#">13</A>&nbsp;<A 
-		href="#">&gt;</A>&nbsp;<A 
-		href="#">&gt;&gt;</A></SPAN> 
-	</td>
+    <td>Non Visual Component</td>
    </tr>
   </table>
  </td>
@@ -79,12 +67,18 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td colspan="2">
   <b>Description</b>
   <br> 
- A low level Table component that renders the pages in the table.
+ A version of the <A HREF="contrib.TableRows.html">TableRows</A> designed for operation in a form.
+ This is a low level Table component that generates the rows of the current page in the table.
+ Each row is stored as a hidden value in the form, which eliminates the chance of a stale link during rewinding.
  This component must be wrapped by <A HREF="../api/org/apache/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>.
+ 
  <p>
- The component generates a list of pages in the Table centered around the 
- current one and allows you to navigate to other pages.
-
+ The component iterates over the rows of the current page in the table. 
+ The rows are wrapped in 'tr' tags by default. 
+ You can define columns manually within, or
+ you can use <A HREF="../api/org/apache/tapestry/contrib/table/components/TableValues.html"><CODE>TableValues</CODE></A> 
+ to generate the columns automatically.
+ 
  </td>
 </tr>
 
@@ -94,9 +88,12 @@ Tbis HTML document provides a base template for Component Reference pages.
   <br>
   <A href="contrib.Table.html">Table</a>,
   <A href="contrib.TableColumns.html">TableColumns</a>, 
-  <A href="contrib.TableRows.html">TableRows</a>,
+  <A href="contrib.TablePages.html">TablePages</a>,
+  <A href="contrib.TableRows.html">TableRows</a>
   <A href="contrib.TableValues.html">TableValues</a>,
-  <A href="contrib.TableView.html">TableView</a>
+  <A href="contrib.TableView.html">TableView</a>,
+  <A href="contrib.FormTable.html">FormTable</a>,
+  <A href="contrib.TableFormPages.html">TableFormPages</a>
  </td>
 </tr>
 
@@ -114,19 +111,35 @@ Tbis HTML document provides a base template for Component Reference pages.
     <th>Description</th>
    </tr>
 
-	<tr>
-	  <td>pagesDisplayed</td>
-	  <td>int</td>
-	  <td>in</td>
-	  <td>no</td>
-	  <td>7</td>
-	  <td align="left">Determines the maximum number of pages to be displayed in the page list
-	      when the table has more than one page.
-	      <p>For example, if the table has 20 pages, and 10 is the current page,
-	      pages from 7 to 13 in the page list will be shown if this parameter has 
-	      a value of 7.
-	  </td> 
-	</tr>
+ <tr>
+  <td>row</td>
+  <td>Object</td>
+  <td>out</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The value object of the current row.</td> 
+ </tr>
+
+ <tr>
+  <td>convertor</td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/IPrimaryKeyConvertor.html"><CODE>IPrimaryKeyConvertor</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">An interface defining how the items iterated upon by this component
+      will be stored in the form as Hidden values. 
+      This interface allows only the primary key of the items to be stored, rather than
+      the whole item.</td> 
+ </tr>
+
+ <tr>
+  <td>element</td>
+  <td>String</td>
+  <td>in</td>
+  <td>no</td>
+  <td>tr</td>
+  <td align="left">The tag to use to wrap the rows in.</td> 
+ </tr>
 
   </table>
   <p>
@@ -153,10 +166,10 @@ Tbis HTML document provides a base template for Component Reference pages.
 </tr>
 <tr>
   <!-- Previous component in alphabetical order. -->
-  <td align="left"><A href="contrib.TableColumns.html"><IMG alt="contrib:TableColumns" src="common-images/prev.png"></a></td>  
+  <td align="left"><a href="contrib.TablePages.html"><img alt="contrib:TablePages" src="common-images/prev.png"></a></td>  
   <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
   <!-- Next component in alphabetical order. -->
-  <td align="right"><a href="contrib.TableRows.html"><img alt="contrib:TableRows" src="common-images/next.png"></a></td>  
+  <td align="right"><a href="contrib.TableValues.html"><img alt="contrib.TableValues" src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

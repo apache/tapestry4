@@ -17,7 +17,7 @@ Tbis HTML document provides a base template for Component Reference pages.
 <!-- $Id$ --> 
 <html>
 <head>
-<title>contrib:Table</title>
+<title>contrib:FormTable</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 <STYLE type=text/css>
 .example TD { TEXT-ALIGN: center }
@@ -29,9 +29,9 @@ Tbis HTML document provides a base template for Component Reference pages.
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr><!-- Previous component in alphabetical order. -->
-  <td align="left"><A href="contrib.PopupLink.html"><IMG alt="contrib:PopupLink" src="common-images/prev.png"></a></td>  
+  <td align="left"><A href="contrib.Choose.html"><IMG alt="contrib:Choose" src="common-images/prev.png"></a></td>  
   <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td><!-- Next component in alphabetical order. -->
-  <td align="right"><A href="contrib.TableColumns.html"><IMG alt="contrib:TableColumns" src="common-images/next.png"></a></td>  
+  <td align="right"><A href="contrib.InspectorButton.html"><IMG alt="contrib:InspectorButton" src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -44,11 +44,11 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td>
   <table>
    <tr>
-    <td><font size="+2"><b>contrib:Table</b></font></td>
+    <td><font size="+2"><b>contrib:FormTable</b></font></td>
    </tr>
    <tr>
     <td>
-     <A href="../api/org/apache/tapestry/contrib/table/components/Table.html">org.apache.tapestry.contrib.table.components.Table</a>
+     <A href="../api/org/apache/tapestry/contrib/table/components/FormTable.html">org.apache.tapestry.contrib.table.components.FormTable</a>
     </td>
    </tr>
   </table>
@@ -70,23 +70,37 @@ Tbis HTML document provides a base template for Component Reference pages.
  <td colspan="2">
   <b>Description</b>
   <br> 
-  Provides a HTML &lt;table&gt; element. The Table component is a facade component 
-  in the Table family. Table allows you to present a sortable and pagable table 
-  simply and easily by using only this one component.
+ A version of the <A HREF="contrib.Table.html"><CODE>Table</CODE></A> component
+ designed for use in a form. Like Table, this component allows you to present a sortable and pagable table 
+ simply and easily. It also stores the items it dispays in hidden fields in the form,
+ so that they are identical during the rewind cycle when the form is submitted,
+ and generates links that submit the form, so that any other form information is preserved.
  <p>
- The Table component allows you to manipulate its appearance by allowing you 
+ The differences between FormTable and Table are the following:
+ <ul>
+     <li> It uses TableFormRows instead of TableRows 
+         which stores the rendered items in hidden form fields 
+     <li> It uses TableFormPages instead of TablePages
+         which generates links that submit the form besides changing the page
+     <li> If the columns are defined using a string in the <code>columns</code> parameter,
+         it ensures that the headers of the generated columns contain links that also submit the form.
+ </ul>
+ <p>
+ The FormTable component allows you to manipulate its appearance by allowing you 
  to define the 'class' attributes of its internal elements. If you want to change 
  the structure of the table, however, you can instead build your own using the 
  lower level components
- <A HREF="../api/org/apache/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>, 
- <A HREF="../api/org/apache/tapestry/contrib/table/components/TablePages.html"><CODE>TablePages</CODE></A>, 
- <A HREF="../api/org/apache/tapestry/contrib/table/components/TableColumns.html"><CODE>TableColumns</CODE></A>, 
- <A HREF="../api/org/apache/tapestry/contrib/table/components/TableRows.html"><CODE>TableRows</CODE></A>,
+ <A HREF="contrib.TableView.html"><CODE>TableView</CODE></A>, 
+ <A HREF="contrib.TablePages.html"><CODE>TablePages</CODE></A>, 
+ <A HREF="contrib.TableFormPages.html"><CODE>TableFormPages</CODE></A>, 
+ <A HREF="contrib.TableColumns.html"><CODE>TableColumns</CODE></A>, 
+ <A HREF="contrib.TableRows.html"><CODE>TableRows</CODE></A>,
+ <A HREF="contrib.TableFormRows.html"><CODE>TableFormRows</CODE></A>,
  and 
- <A HREF="../api/org/apache/tapestry/contrib/table/components/TableValues.html"><CODE>TableValues</CODE></A>.
+ <A HREF="contrib.TableValues.html"><CODE>TableValues</CODE></A>.
  <p>
- The Table component delegates the handling of the table model and related
- activities to the <A HREF="../api/org/apache/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>, 
+ The FormTable component delegates the handling of the table model and related
+ activities to the <A HREF="contrib.TableView.html"><CODE>TableView</CODE></A>, 
  and more detailed information about the process can be found in the 
  documentation of that class.
  </td>
@@ -106,8 +120,6 @@ a collection, or an iterator, and the table columns are defined using the
 <code>columns</code> parameter (see further for details). 
 Both of these parameters will be evaluated at every request by default, 
 so changes in the data or the table columns will be displayed immediately.
-<p>
-The example below uses this method.
 <p>
 This is the easiest and most straightforward approach. It has one performance limitation, 
 however - if the table is sorting the data according to a given column, 
@@ -149,8 +161,6 @@ If you define the table columns using the <code>columns</code> parameter, you ca
 provide a list of <A HREF="../api/org/apache/tapestry/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></A>
 objects, each defining a column in the table, or you can define the columns using 
 a string that describes each column. 
-<p>
-Please see the example below as a demonstration of the use of the latter approach.
 <p>
 The string describing the columns must be formatted in the following way:
 <ul>
@@ -312,6 +322,18 @@ Here is an example of the use of a description string to define columns:
  </tr>
 
  <tr>
+  <td>convertor</td>
+  <td><A HREF="../api/org/apache/tapestry/contrib/table/model/IPrimaryKeyConvertor.html"><CODE>IPrimaryKeyConvertor</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">An interface defining how the items iterated upon by this component
+      will be stored in the form as Hidden values. 
+      This interface allows only the primary key of the items to be stored, rather than
+      the whole item.</td> 
+ </tr>
+
+ <tr>
   <td>row</td>
   <td>Object</td>
   <td>out</td>
@@ -415,163 +437,7 @@ Here is an example of the use of a description string to define columns:
   <b>Examples</b>
   <p>
 
-<table class="examples" cellpadding="4" width="700">
-<tr><td>
-
-<SPAN><A 
-href="#">&lt;&lt;</A>&nbsp;<A 
-href="#">&lt;</A>&nbsp;<A 
-href="#">7</A>&nbsp;<A 
-href="#">8</A>&nbsp;<A 
-href="#">9</A><B>&nbsp;10</B>&nbsp;<A 
-href="#">11</A>&nbsp;<A 
-href="#">12</A>&nbsp;<A 
-href="#">13</A>&nbsp;<A 
-href="#">&gt;</A>&nbsp;<A 
-href="#">&gt;&gt;</A></SPAN> 
-
-<TABLE class=example width="90%">
-  <TBODY>
-  <TR>
-    <TD></TD></TR>
-  <TR>
-    <TH>
-      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
-        <TBODY>
-        <TR>
-          <TD><A 
-            href="#">Locale</A> 
-          </TD></TR></TBODY></TABLE></TH>
-    <TH>
-      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
-        <TBODY>
-        <TR>
-          <TD><A 
-            href="#">Language</A> 
-          </TD>
-          <TD>&nbsp;<IMG align=middle border=0 
-            src="images/arrow-up.gif"> </TD></TR></TBODY></TABLE></TH>
-    <TH>
-      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
-        <TBODY>
-        <TR>
-          <TD><A 
-            href="#">Country</A> 
-          </TD></TR></TBODY></TABLE></TH>
-    <TH>
-      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
-        <TBODY>
-        <TR>
-          <TD><A 
-            href="#">Variant</A> 
-          </TD></TR></TBODY></TABLE></TH>
-    <TH>
-      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
-        <TBODY>
-        <TR>
-          <TD><A 
-            href="#">ISO3Language</A> </TD></TR></TBODY></TABLE></TH>
-    <TH>
-      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
-        <TBODY>
-        <TR>
-          <TD><A 
-            href="#">ISO3Country</A> </TD></TR></TBODY></TABLE></TH></TR>
-  <TR>
-    <TD class=tableValues>is </TD>
-    <TD class=tableValues>is </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>isl </TD>
-    <TD class=tableValues><BR></TD></TR>
-  <TR>
-    <TD class=tableValues>is_IS </TD>
-    <TD class=tableValues>is </TD>
-    <TD class=tableValues>IS </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>isl </TD>
-    <TD class=tableValues>ISL </TD></TR>
-  <TR>
-    <TD class=tableValues>it </TD>
-    <TD class=tableValues>it </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>ita </TD>
-    <TD class=tableValues><BR></TD></TR>
-  <TR>
-    <TD class=tableValues>it_CH </TD>
-    <TD class=tableValues>it </TD>
-    <TD class=tableValues>CH </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>ita </TD>
-    <TD class=tableValues>CHE </TD></TR>
-  <TR>
-    <TD class=tableValues>it_IT </TD>
-    <TD class=tableValues>it </TD>
-    <TD class=tableValues>IT </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>ita </TD>
-    <TD class=tableValues>ITA </TD></TR>
-  <TR>
-    <TD class=tableValues>it_IT_EURO </TD>
-    <TD class=tableValues>it </TD>
-    <TD class=tableValues>IT </TD>
-    <TD class=tableValues>EURO </TD>
-    <TD class=tableValues>ita </TD>
-    <TD class=tableValues>ITA </TD></TR>
-  <TR>
-    <TD class=tableValues>iw </TD>
-    <TD class=tableValues>iw </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>heb </TD>
-    <TD class=tableValues><BR></TD></TR>
-  <TR>
-    <TD class=tableValues>iw_IL </TD>
-    <TD class=tableValues>iw </TD>
-    <TD class=tableValues>IL </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>heb </TD>
-    <TD class=tableValues>ISR </TD></TR>
-  <TR>
-    <TD class=tableValues>ja </TD>
-    <TD class=tableValues>ja </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>jpn </TD>
-    <TD class=tableValues><BR></TD></TR>
-  <TR>
-    <TD class=tableValues>ja_JP </TD>
-    <TD class=tableValues>ja </TD>
-    <TD class=tableValues>JP </TD>
-    <TD class=tableValues><BR></TD>
-    <TD class=tableValues>jpn </TD>
-    <TD class=tableValues>JPN </TD></TR></TBODY></TABLE>
-
-</td></tr>
-</table>
-        
-  <p>
-  <br>
-
-<PRE>
-&lt;style&gt; td { text-align: center } &lt;/style&gt;
-&lt;table jwcid="@contrib.Table" width="90%"
-    source="ognl:@java.util.Locale@getAvailableLocales()"
-    columns="Locale:toString(), Language, Country, Variant, ISO3Language, ISO3Country"/&gt;
-</PRE>
-
- </td>
-</tr>
-
- 
-
-<tr>
- <td colspan="2">
-   <b>Further examples</b>
-
-<p>
-You can find additional examples in the Tutorial 
+You can find examples in the Tutorial 
 as part of the Workbench application under the "Table" tab. 
 <P>That page consists of two components -- the <SPAN 
 class=code>LocaleList</SPAN> component and the <SPAN 
