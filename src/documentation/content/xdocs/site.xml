@@ -19,6 +19,7 @@
 [
 <!ENTITY project-report-menu.ent SYSTEM "project-report-menu.ent">
 <!ENTITY tapestry-report-menu.ent SYSTEM "tapestry-report-menu.ent">
+<!ENTITY tapestry-portlet-report-menu.ent SYSTEM "tapestry-portlet-report-menu.ent">
 ]
 >
 
@@ -58,7 +59,7 @@
     
     <tapestry label="Framework" tab="tapestry" href="tapestry/">
       
-      <index href="index.html"/>
+      <index label="Overview" href="index.html"/>
       
       <ComponentReference label="ComponentReference" href="ComponentReference/">
         <ActionLink label="ActionLink" href="ActionLink.html"/>
@@ -109,6 +110,15 @@
       </reports>
       
     </tapestry>
+    
+   <portlet label="Portlet Support" tab="portlet" href="tapestry-portlet/">
+      
+      <index label="Overview" href="index.html"/>
+    
+      <reports label="Reports">
+        &tapestry-portlet-report-menu.ent;
+      </reports>    
+   </portlet>
     
     <project label="Project">
         <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
