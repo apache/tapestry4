@@ -841,7 +841,7 @@ public abstract class AbstractEngine
             try
             {
                 String serviceName;
-                
+
                 try
                 {
                     serviceName = extractServiceName(context);
@@ -1199,11 +1199,11 @@ public abstract class AbstractEngine
         else
             _sessionId = null;
 
- 		// Previously, this used getRemoteHost(), but that requires an
- 		// expensive reverse DNS lookup. Possibly, the host name lookup
- 		// should occur ... but only if there's an actual error message
- 		// to display.
- 		
+        // Previously, this used getRemoteHost(), but that requires an
+        // expensive reverse DNS lookup. Possibly, the host name lookup
+        // should occur ... but only if there's an actual error message
+        // to display.
+
         if (_clientAddress == null)
             _clientAddress = request.getRemoteAddr();
 
@@ -1236,6 +1236,20 @@ public abstract class AbstractEngine
         }
 
         String servletName = context.getServlet().getServletName();
+
+        if (_propertySource == null)
+        {
+            String name = PROPERTY_SOURCE_NAME + ":" + servletName;
+
+            _propertySource = (IPropertySource) servletContext.getAttribute(name);
+
+            if (_propertySource == null)
+            {
+                _propertySource = createPropertySource(context);
+
+                servletContext.setAttribute(name, _propertySource);
+            }
+        }
 
         if (_enhancer == null)
         {
@@ -1363,20 +1377,6 @@ public abstract class AbstractEngine
             }
         }
 
-        if (_propertySource == null)
-        {
-            String name = PROPERTY_SOURCE_NAME + ":" + servletName;
-
-            _propertySource = (IPropertySource) servletContext.getAttribute(name);
-
-            if (_propertySource == null)
-            {
-                _propertySource = createPropertySource(context);
-
-                servletContext.setAttribute(name, _propertySource);
-            }
-        }
-
         if (_global == null)
         {
             String name = GLOBAL_NAME + ":" + servletName;
@@ -1401,8 +1401,7 @@ public abstract class AbstractEngine
             }
             catch (UnsupportedEncodingException e)
             {
-                throw new IllegalArgumentException(
-                    Tapestry.format("illegal-encoding", encoding));
+                throw new IllegalArgumentException(Tapestry.format("illegal-encoding", encoding));
             }
             catch (NoSuchMethodError e)
             {
@@ -2185,17 +2184,27 @@ public abstract class AbstractEngine
 
     /**
      *
-     *  Invoked from {@link #setupForRequest(RequestContext)}.  Creates
-     *  a new instance of {@link DefaultComponentClassEnhancer}.  Subclasses
-     *  may override to return a different object.
+     * Invoked from {@link #setupForRequest(RequestContext)}.  Creates
+     * a new instance of {@link DefaultComponentClassEnhancer}.  Subclasses
+     * may override to return a different object.
+     * 
+     * <p>
+     * Check the property <code>org.apache.tapestry.enhance.disable-abstract-method-validation</code>
+     * and, if true, disables abstract method validation. This is used  in some
+     * errant JDK's (such as IBM's 1.3.1) that incorrectly report concrete methods from
+     * abstract classes as abstract.
      *
-     *  @since 3.0
-     *
-     **/
+     * @since 3.0
+     */
 
     protected IComponentClassEnhancer createComponentClassEnhancer(RequestContext context)
     {
-        return new DefaultComponentClassEnhancer(_resolver);
+        boolean disableValidation =
+            "true".equals(
+                _propertySource.getPropertyValue(
+                    "org.apache.tapestry.enhance.disable-abstract-method-validation"));
+
+        return new DefaultComponentClassEnhancer(_resolver, disableValidation);
     }
 
     /** @since 3.0 **/

@@ -52,12 +52,19 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
     private Map _cachedClasses;
     private IResourceResolver _resolver;
     private IEnhancedClassFactory _factory;
+    private boolean _disableValidation;
 
-    public DefaultComponentClassEnhancer(IResourceResolver resolver)
+    /**
+     * @param resolver resource resolver used to locate classes
+     * @param disableValidation if true, then validation (of unimplemented abstract methods)
+     * is skipped
+     */
+    public DefaultComponentClassEnhancer(IResourceResolver resolver, boolean disableValidation)
     {
         _cachedClasses = Collections.synchronizedMap(new HashMap());
         _resolver = resolver;
         _factory = createEnhancedClassFactory();
+        _disableValidation = disableValidation;
     }
 
     protected IEnhancedClassFactory createEnhancedClassFactory()
@@ -135,7 +142,8 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
             {
                 result = factory.createEnhancedSubclass();
 
-                validateEnhancedClass(result, className, specification);
+                if (!_disableValidation)
+                    validateEnhancedClass(result, className, specification);
             }
         }
         catch (CodeGenerationException e)

@@ -1,0 +1,8 @@
+Test case for bug 28956 IBM JDK 1.3.1 reports methods as abstract causing problems when generating enhanced classes 
+
+http://issues.apache.org/bugzilla/show_bug.cgi?id=28956
+
+Check that we can defeat the logic that checks for unimplemented abstract methods.
+
+This appears necessary when using IBM JDK 1.3.1 which appears to report
+concrete methods of abstract classes as abstract.
