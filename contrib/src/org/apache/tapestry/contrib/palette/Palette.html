@@ -5,41 +5,41 @@
   <tr>
   	<th>
  <span jwcid="@RenderBlock" block="ognl:availableTitleBlock"/>
- <span jwcid="defaultAvailableTitleBlock@Block">Available</span>
+ <span jwcid="defaultAvailableTitleBlock@Block"><span key="title.available"/></span>
 </th>
-  	<td class="controls" rowspan=2>
+  	<td jwcid="@Any" element="td" class="controls" rowspan="2" width="ognl:controlsWidth" align="center" valign="center">
   	    <a jwcid="@Any" 
   	    	element="a" 
   	    	href="ognl:symbols.selectOnClickScript"><img jwcid="@Image"
   	    		image="ognl:selectImage"
   	    		name="ognl:symbols.selectImageName"
-  	    		alt="[Select]"/></a>
-    <br>
+  	    		alt="string:tooltip.select"/></a>
+
     <a jwcid="@Any" element="a"
     	href="ognl:symbols.deselectOnClickScript"><img jwcid="@Image"
     		image="ognl:deselectImage"
     		name="ognl:symbols.deselectImageName"
-    		alt="[Deselect]"/></a>
+    		alt="string:tooltip.deselect"/></a>
     
     <span jwcid="@Conditional" condition="ognl:sortUser">
-    <br/>
+
     <a jwcid="@Any" element="a"
     	href="ognl:symbols.upOnClickScript"><img jwcid="@Image" 
     		image="ognl:upImage"
     		name="ognl:symbols.upImageName"
-    		alt="[Move Up]"/></a>
-    <br/>
+    		alt="string:tooltip.moveup"/></a>
+
     <a jwcid="@Any" element="a"
     	href="ognl:symbols.downOnClickScript"><img jwcid="@Image"
     		image="ognl:downImage"
     		name="ognl:symbols.downImageName"
-    		alt="[Move Down]"/></a>
+    		alt="string:tooltip.movedown"/></a>
     </span>
-    
+
     </td>
   	<th>
  <span jwcid="@RenderBlock" block="ognl:selectedTitleBlock"/>
- <span jwcid="defaultSelectedTitleBlock@Block">Selected</span>
+ <span jwcid="defaultSelectedTitleBlock@Block"><span key="title.selected"/></span>
     </th>
   </tr>
   <tr>
