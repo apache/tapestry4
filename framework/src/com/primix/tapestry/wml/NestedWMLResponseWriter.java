@@ -1,6 +1,7 @@
 package com.primix.tapestry;
 
 import java.io.*;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -30,22 +31,22 @@ import java.io.*;
  */
 
 /**
- *  Subclass of {@link HTMLResponseWriter} that is nested.  A nested writer
+ *  Subclass of {@link WMLResponseWriter} that is nested.  A nested writer
  *  buffers its output, then inserts it into its parent writer when it is
  *  closed.
  *
- *  @author Howard Ship
  *  @version $Id$
+ *  @author David Solis
+ *  @since 0.2.9
  */
 
 
-public class NestedHTMLResponseWriter
-extends HTMLResponseWriter
+public class NestedWMLResponseWriter extends WMLResponseWriter
 {
 	private IResponseWriter parent;
 	private CharArrayWriter internalBuffer;
 
-	public NestedHTMLResponseWriter(IResponseWriter parent)
+	public NestedWMLResponseWriter(IResponseWriter parent)
 	{
 		super();
 
@@ -57,7 +58,7 @@ extends HTMLResponseWriter
 	}
 
 	/**
-	*  Invokes the {@link HTMLResponseWriter#close() super-class
+	*  Invokes the {@link WMLResponseWriter#close() super-class
 	*  implementation}, then gets the data accumulated in the
 	*  internal buffer and provides it to the containing writer using
 	*  {@link IResponseWriter#printRaw(char[], int, int)}.
