@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<specification>
+  <class>com.primix.tapestry.BaseComponent</class>
+  <allow-body>no</allow-body>
+  <parameters>
+    <allow-informal-parameters>no</allow-informal-parameters>
+  </parameters>
+  <components>
+    <component>
+      <id>ifError</id>
+      <type>Conditional</type>
+      <bindings>
+        <binding>
+          <name>condition</name>
+          <property-path>page.error</property-path>
+        </binding>
+      </bindings>
+    </component>
+    <component>
+      <id>insertError</id>
+      <type>Insert</type>
+      <bindings>
+        <binding>
+          <name>value</name>
+          <property-path>page.error</property-path>
+        </binding>
+      </bindings>
+    </component>
+  </components>
+</specification>

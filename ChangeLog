@@ -1,3 +1,8 @@
+* May 17 2001 hship
+
+Create first pass at a general purpose NumericField.
+Create a new tutorial to test NumericField.
+
 * May 16 2001 hship
 
 Release 1.0.0

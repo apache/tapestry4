@@ -9,7 +9,8 @@ PACKAGES = \
 	tutorial.border \
 	tutorial.survey \
 	tutorial.hangman \
-	tutorial.locale
+	tutorial.locale \
+	tutorial.valid
 
 PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/com.primix.tapestry.jar \
