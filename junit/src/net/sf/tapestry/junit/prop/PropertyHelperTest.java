@@ -268,13 +268,14 @@ public class PropertyHelperTest extends TestCase
 	{
 		Map accessors = getAccessors(this);
 
-		assertEquals("Number of accessors for this.", 3, accessors.size());
+		assertEquals("Number of accessors for this.", 4, accessors.size());
 
 		assertNotNull("Accessors contains class.", accessors.get("class"));
 		assertNotNull(
 			"Accessors contains stringProperty.",
 			accessors.get("stringProperty"));
 		assertNotNull("Accessors contains intProperty.", accessors.get("intProperty"));
+		assertNotNull("Accessors contains name.", accessors.get("name"));
 	}
 
 	public void testGetAccessorsPublicBean()

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.primix.tapestry.IAsset;
 import com.primix.tapestry.IBinding;
 import com.primix.tapestry.IComponent;
+import com.primix.tapestry.IForm;
 import com.primix.tapestry.IPage;
 import com.primix.tapestry.IPageLoader;
 import com.primix.tapestry.IRender;
@@ -170,6 +171,11 @@ public class TestingField implements IField
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
+	}
+
+	public IForm getForm()
+	{
+		return null;
 	}
 
 }
