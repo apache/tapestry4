@@ -89,6 +89,17 @@ public interface IComponent extends IRender
  
     public IBinding getBinding(String name);
 
+	/**
+	 *  Returns a {@link Collection} of the names of all bindings (which includes
+	 *  bindings for both formal and informal parameters).
+	 *
+	 *  <P>The return value is unmodifiable, and may be null if the component has
+	 *  no parameters bound.
+	 *
+	 */
+	 
+	public Collection getBindingNames();
+	
     /**
      *  Retrieves an contained component by its id.  
      *  Contained components have unique ids within their container.

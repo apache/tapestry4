@@ -14,7 +14,8 @@ PACKAGES = \
 	com.primix.tapestry.pages \
 	com.primix.tapestry.parse \
 	com.primix.tapestry.record \
-	com.primix.tapestry.spec
+	com.primix.tapestry.spec \
+	com.primix.tapestry.inspector
 
 LOCAL_CLASSPATH = \
 	../lib/gnu-regexp.jar \

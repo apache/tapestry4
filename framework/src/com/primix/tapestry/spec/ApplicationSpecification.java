@@ -5,6 +5,7 @@ import java.util.*;
 import com.primix.tapestry.components.*;
 import com.primix.foundation.exception.*;
 import com.primix.foundation.*;
+import com.primix.tapestry.inspector.ShowInspector;
 
 /*
  * Tapestry Web Application Framework
@@ -108,6 +109,8 @@ public class ApplicationSpecification extends BasePropertyHolder
 			"/com/primix/tapestry/components/Submit.jwc");	
 		componentMap.put("Hidden",
 			"/com/primix/tapestry/components/Hidden.jwc");	
+		componentMap.put("ShowInspector",
+			"/com/primix/tapestry/inspector/ShowInspector.jwc");		
 
 		// Provide defaults for three of the four standard pages.
 		// An application must provide a home page and may override
@@ -119,6 +122,8 @@ public class ApplicationSpecification extends BasePropertyHolder
 			new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
 		pageMap.put("Exception",
 			new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
+		pageMap.put("Inspector",
+			new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc", 0));		
 	}
 
 	/**
@@ -218,6 +223,10 @@ public class ApplicationSpecification extends BasePropertyHolder
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Service.jwc</td>
 	*		<td>{@link Service}</td>
+	* </tr>
+	* <tr>
+	*		<td>/com/primix/tapestry/inspector/ShowInspector.jwc</td>
+	*		<td>{@link ShowInspector}</td>
 	* </tr>
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Submit.jwc</td>

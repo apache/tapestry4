@@ -120,7 +120,7 @@ public class BaseComponent extends AbstractComponent
 	
 		try
 		{
-	    	templateSource = page.getApplication().getTemplateSource();
+	    	templateSource = getPage().getApplication().getTemplateSource();
 
 			componentTemplate = templateSource.getTemplate(this);
 		}

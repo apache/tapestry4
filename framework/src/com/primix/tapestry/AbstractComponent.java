@@ -59,7 +59,7 @@ public abstract class AbstractComponent implements IComponent
 	*
 	*/
 
-	protected ComponentSpecification specification;
+	protected final ComponentSpecification specification;
 
 	/**
 	*  The page that contains the component, possibly itself (if the component is
@@ -67,7 +67,7 @@ public abstract class AbstractComponent implements IComponent
 	*
 	*/
 
-	protected IPage page;
+	protected final IPage page;
 
 	/**
 	*  The component which contains the component.  This will only be
@@ -75,14 +75,14 @@ public abstract class AbstractComponent implements IComponent
 	*
 	*/
 
-	protected IComponent container;
+	private final IComponent container;
 
 	/**
 	*  The simple id of this component.
 	*
 	*/
 
-	protected String id;
+	protected final String id;
 
 	/**
 	*  The fully qualified id of this component.  This is calculated the first time
@@ -94,7 +94,21 @@ public abstract class AbstractComponent implements IComponent
 
 	private static final int MAP_SIZE = 5;
 
+	/**
+	 *  A {@link Map} of all bindings; the keys are the names of formal and informal
+	 *  parameters.
+	 *
+	 */
+	 
 	private Map bindings;
+	
+	/**
+	 *  An unmodifiable {@link Collection} of the names of all bindings (the
+	 *  keys of the bindings map).
+	 *
+	 */
+	 
+	private Collection bindingNames;
 
 	private Map components;
 	private Map safeComponents;
@@ -122,14 +136,8 @@ public abstract class AbstractComponent implements IComponent
 	*/
 
 	private Map assets;
-
-	/**
-	*  An umodifiable version of the assets map.
-	*
-	*/
-
-	private Map unmodAssets;
-
+	private Map safeAssets;
+	
 	/**
 	*  Used as a set to filter out informal parameters.  The value is
 	*  always Boolean.TRUE (we're testing for existence).  The values
@@ -172,7 +180,6 @@ public abstract class AbstractComponent implements IComponent
 		this.specification = specification;
 
 		setupAssets();
-
 	}
 
 	public void addComponent(String name, IComponent component)
@@ -516,22 +523,7 @@ public abstract class AbstractComponent implements IComponent
 
 	}
 
-	public Map getAssets()
-	{
-    	// Note: Collections.EMPTY_MAP not available until JDK 1.3 ... and
-        // we're trying for JDK 1.2 compatibility.
-        
-    	if (assets == null)
-        	return new HashMap();
-            
-        if (unmodAssets == null)
-        	unmodAssets = Collections.unmodifiableMap(assets);
-         
-		// Note that changes to assets will be reflected in unmodAssets;
-		// but unmodAssets can't itself be changed.
-		        
-		return unmodAssets;
-	}
+
 
 	/**
 	*  Returns the named binding, or null if it doesn't exist.
@@ -622,6 +614,9 @@ public abstract class AbstractComponent implements IComponent
 	{
 		String containerIdPath;
 
+		if (container == null)
+			throw new NullPointerException(this + " container is null.");
+			
 		containerIdPath = container.getIdPath();
 
 		if (containerIdPath == null)
@@ -770,18 +765,45 @@ public abstract class AbstractComponent implements IComponent
 	
 	/**
 	 *  Returns an unmodifiable {@link Map} of components, keyed on component id.
-	 *  May return null if this component contains no other components.
 	 *
 	 */
 	 
 	public Map getComponents()
 	{
+		// Note: Collections.EMPTY_MAP not available until JDK 1.3 ... and
+		// we're trying for JDK 1.2 compatibility.
+
 		if (components == null)
-			return null;	
+			return new HashMap();	
 		
 		if (safeComponents == null)
 			safeComponents = Collections.unmodifiableMap(components);
 			
-		return safeComponents;	
+		return safeComponents;
 	}
+	
+	public Map getAssets()
+	{
+    	// Note: Collections.EMPTY_MAP not available until JDK 1.3 ... and
+        // we're trying for JDK 1.2 compatibility.
+        
+    	if (assets == null)
+        	return new HashMap();
+            		        
+		if (safeAssets == null)
+			safeAssets = Collections.unmodifiableMap(assets);
+		
+		return safeAssets;	
+	}
+	
+	public Collection getBindingNames()
+	{
+		if (bindings == null)
+			return null;
+		
+		if (bindingNames == null)
+			bindingNames = Collections.unmodifiableCollection(bindings.keySet());
+		
+		return bindingNames;	
+	}	
 }
