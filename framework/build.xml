@@ -19,11 +19,8 @@
   <property name="module.name" value="tapestry"/>
   <property name="javadoc.package" value="org.apache.tapestry.*"/>
   
-  <property name="java.src.dir" value="src"/>
   <property name="test.src.dir" value="../junit/src"/>
-  <property name="conf.src.dir" value="conf"/>
-  
-  <property name="descriptor.src.dir" value="conf"/>
+
   <property name="module.javac.deprecation" value="off"/>
     
   <property name="root.dir" value=".."/>
@@ -55,5 +52,9 @@
     
 		<copy file="${root.dir}/version.properties" todir="${java.classes.dir}/org/apache/tapestry"/>    
 	</target>	
+  
+  <target name="run-reports">
+    <javadoc-report/>
+  </target>
   
 </project>
