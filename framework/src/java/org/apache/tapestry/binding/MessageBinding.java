@@ -35,8 +35,8 @@ public class MessageBinding extends AbstractBinding
 
     private final String _key;
 
-    public MessageBinding(IComponent component, String description, String key,
-            ValueConverter valueConverter, Location location)
+    protected MessageBinding(String description, ValueConverter valueConverter, Location location,
+            IComponent component, String key)
     {
         super(description, valueConverter, location);
 

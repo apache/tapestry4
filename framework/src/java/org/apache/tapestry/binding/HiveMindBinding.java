@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,41 +16,37 @@ package org.apache.tapestry.binding;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.services.InjectedValueProvider;
 
 /**
- * A binding where the path is the id of a child component.
+ * A binding that accesses a HiveMind object. This is similar to injecting a HiveMind object as a
+ * property and referencing that property.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ComponentBinding extends AbstractBinding
+public class HiveMindBinding extends AbstractBinding
 {
-    private final IComponent _component;
+    private String _objectReference;
 
-    private final String _componentId;
+    private InjectedValueProvider _provider;
 
-    public ComponentBinding(String description, ValueConverter valueConverter, Location location,
-            IComponent component, String componentId)
+    public HiveMindBinding(String description, ValueConverter valueConverter, Location location,
+            String objectReference, InjectedValueProvider provider)
     {
         super(description, valueConverter, location);
 
-        Defense.notNull(component, "component");
-        Defense.notNull(componentId, "componentId");
+        Defense.notNull(objectReference, "objectReference");
+        Defense.notNull(provider, "provider");
 
-        _component = component;
-        _componentId = componentId;
+        _objectReference = objectReference;
+        _provider = provider;
     }
 
     public Object getObject()
     {
-        return _component.getComponent(_componentId);
-    }
-
-    public Object getComponent()
-    {
-        return _component;
+        return _provider.obtainValue(_objectReference, getLocation());
     }
 
 }

@@ -341,6 +341,13 @@ Starting with Tapestry 3.1, several additional prefixes are available:
   </tr>
   
   <tr>
+    <td>hivemind</td>
+    <td>References a HiveMind object, much like &spec.inject;.</td>
+    <td>hivemind:service:app.MyService</td>
+    <td/>
+  </tr>
+  
+  <tr>
     <td>listener</td>
     <td>The name of a listener method.</td>
     <td>listener:formSubmit</td>

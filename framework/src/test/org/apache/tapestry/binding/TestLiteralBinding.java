@@ -37,7 +37,7 @@ public class TestLiteralBinding extends BindingTestCase
 
         replayControls();
 
-        LiteralBinding b = new LiteralBinding("parameter foo", "literal-value", vc, l);
+        LiteralBinding b = new LiteralBinding("parameter foo", vc, l, "literal-value");
 
         assertSame(l, b.getLocation());
         assertEquals("parameter foo", b.getDescription());
@@ -56,7 +56,7 @@ public class TestLiteralBinding extends BindingTestCase
 
         replayControls();
 
-        LiteralBinding b = new LiteralBinding("parameter foo", "literal-value", vc, l);
+        LiteralBinding b = new LiteralBinding("parameter foo", vc, l, "literal-value");
 
         assertEquals("StaticBinding[literal-value]", b.toString());
 
@@ -75,8 +75,8 @@ public class TestLiteralBinding extends BindingTestCase
 
         replayControls();
 
-        LiteralBinding b = new LiteralBinding("parameter foo", "my-literal", vc,
-                fabricateLocation(99));
+        LiteralBinding b = new LiteralBinding("parameter foo", vc, fabricateLocation(99),
+                "my-literal");
 
         assertSame(date, b.getObject(Date.class));
 
@@ -96,7 +96,7 @@ public class TestLiteralBinding extends BindingTestCase
         replayControls();
 
         Location location = fabricateLocation(99);
-        LiteralBinding b = new LiteralBinding("parameter foo", "my-literal", vc, location);
+        LiteralBinding b = new LiteralBinding("parameter foo", vc, location, "my-literal");
 
         try
         {
@@ -121,7 +121,7 @@ public class TestLiteralBinding extends BindingTestCase
 
         replayControls();
 
-        LiteralBinding b = new LiteralBinding("parameter foo", "literal-value", vc, l);
+        LiteralBinding b = new LiteralBinding("parameter foo", vc, l, "literal-value");
 
         try
         {

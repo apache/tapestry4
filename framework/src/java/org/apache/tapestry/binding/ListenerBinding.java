@@ -49,9 +49,9 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
     private BSFManagerFactory _managerFactory;
 
-    public ListenerBinding(IComponent component, String description, String language,
-            String script, BSFManagerFactory managerFactory, ValueConverter valueConverter,
-            Location location)
+    public ListenerBinding(String description, ValueConverter valueConverter, Location location,
+            IComponent component, String language, String script,
+            BSFManagerFactory managerFactory)
     {
         super(description, valueConverter, location);
 

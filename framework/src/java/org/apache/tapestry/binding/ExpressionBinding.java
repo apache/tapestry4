@@ -77,8 +77,8 @@ public class ExpressionBinding extends AbstractBinding
      * Creates a {@link ExpressionBinding}from the root object and an OGNL expression.
      */
 
-    public ExpressionBinding(IComponent root, String description, String expression,
-            ValueConverter valueConverter, Location location, ExpressionEvaluator evaluator,
+    public ExpressionBinding(String description, Location location, ValueConverter valueConverter,
+            IComponent root, String expression, ExpressionEvaluator evaluator,
             ExpressionCache cache)
     {
         super(description, valueConverter, location);

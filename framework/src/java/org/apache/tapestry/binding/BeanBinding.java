@@ -31,8 +31,8 @@ public class BeanBinding extends AbstractBinding
 
     private final String _beanName;
 
-    public BeanBinding(IComponent component, String beanName, String description,
-            ValueConverter valueConverter, Location location)
+    public BeanBinding(String description, ValueConverter valueConverter, Location location,
+            IComponent component, String beanName)
     {
         super(description, valueConverter, location);
 

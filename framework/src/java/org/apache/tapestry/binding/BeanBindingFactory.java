@@ -29,6 +29,6 @@ public class BeanBindingFactory extends AbstractBindingFactory
     public IBinding createBinding(IComponent root, String description, String path,
             Location location)
     {
-        return new BeanBinding(root, path, description, getValueConverter(), location);
+        return new BeanBinding(description, getValueConverter(), location, root, path);
     }
 }

@@ -30,8 +30,8 @@ public class LiteralBinding extends AbstractBinding
 {
     private final String _value;
 
-    public LiteralBinding(String description, String value, ValueConverter valueConverter,
-            Location location)
+    public LiteralBinding(String description, ValueConverter valueConverter, Location location,
+            String value)
     {
         super(description, valueConverter, location);
 

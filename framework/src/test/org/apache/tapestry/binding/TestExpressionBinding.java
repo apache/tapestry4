@@ -61,8 +61,8 @@ public class TestExpressionBinding extends BindingTestCase
 
         replayControls();
 
-        ExpressionBinding b = new ExpressionBinding(component, "param", "exp", vc,
-                fabricateLocation(1), ev, ec);
+        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+                "exp", ev, ec);
 
         assertEquals(true, b.isInvariant());
 
@@ -112,8 +112,8 @@ public class TestExpressionBinding extends BindingTestCase
 
         replayControls();
 
-        ExpressionBinding b = new ExpressionBinding(component, "param", "exp", vc,
-                fabricateLocation(1), ev, ec);
+        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+                "exp", ev, ec);
 
         assertEquals(false, b.isInvariant());
 
@@ -152,8 +152,8 @@ public class TestExpressionBinding extends BindingTestCase
 
         replayControls();
 
-        ExpressionBinding b = new ExpressionBinding(component, "param", "exp", vc,
-                fabricateLocation(1), ev, ec);
+        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+                "exp", ev, ec);
 
         b.setObject(newValue);
 
@@ -181,8 +181,8 @@ public class TestExpressionBinding extends BindingTestCase
 
         replayControls();
 
-        ExpressionBinding b = new ExpressionBinding(component, "parameter foo", "exp", vc,
-                fabricateLocation(1), ev, ec);
+        ExpressionBinding b = new ExpressionBinding("parameter foo", fabricateLocation(1), vc, component,
+                "exp", ev, ec);
 
         try
         {
@@ -227,8 +227,8 @@ public class TestExpressionBinding extends BindingTestCase
 
         replayControls();
 
-        ExpressionBinding b = new ExpressionBinding(component, "param", "exp", vc,
-                fabricateLocation(1), ev, ec);
+        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+                "exp", ev, ec);
 
         try
         {
@@ -262,8 +262,8 @@ public class TestExpressionBinding extends BindingTestCase
 
         replayControls();
 
-        ExpressionBinding b = new ExpressionBinding(component, "param", "exp", vc,
-                fabricateLocation(1), ev, ec);
+        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+                "exp", ev, ec);
 
         try
         {
@@ -305,8 +305,8 @@ public class TestExpressionBinding extends BindingTestCase
 
         replayControls();
 
-        ExpressionBinding b = new ExpressionBinding(component, "param", "exp", vc,
-                fabricateLocation(1), ev, ec);
+        ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
+                "exp", ev, ec);
 
         try
         {

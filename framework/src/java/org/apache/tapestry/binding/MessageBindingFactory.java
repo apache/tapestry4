@@ -30,6 +30,6 @@ public class MessageBindingFactory extends AbstractBindingFactory
     public IBinding createBinding(IComponent root, String description, String path,
             Location location)
     {
-        return new MessageBinding(root, description, path, getValueConverter(), location);
+        return new MessageBinding(description, getValueConverter(), location, root, path);
     }
 }

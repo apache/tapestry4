@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,19 +17,27 @@ package org.apache.tapestry.binding;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.services.InjectedValueProvider;
 
 /**
- * Factory for {@link org.apache.tapestry.binding.ComponentBinding}instances, which are mapped to
- * the "component:" prefix.
+ * Constructs instances of {@link HiveMindBinding}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ComponentBindingFactory extends AbstractBindingFactory
+public class HiveMindBindingFactory extends AbstractBindingFactory
 {
-    public IBinding createBinding(IComponent root, String description, String path,
+    private InjectedValueProvider _injectedValueProvider;
+
+    public IBinding createBinding(IComponent root, String bindingDescription, String path,
             Location location)
     {
-        return new ComponentBinding(description, getValueConverter(), location, root, path);
+        return new HiveMindBinding(bindingDescription, getValueConverter(), location, path,
+                _injectedValueProvider);
+    }
+
+    public void setInjectedValueProvider(InjectedValueProvider provider)
+    {
+        _injectedValueProvider = provider;
     }
 }

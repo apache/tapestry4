@@ -33,8 +33,8 @@ public class AssetBinding extends AbstractBinding
 
     private final String _assetName;
 
-    public AssetBinding(IComponent component, String assetName, String description,
-            ValueConverter valueConverter, Location location)
+    public AssetBinding(String description, ValueConverter valueConverter, Location location,
+            IComponent component, String assetName)
     {
         super(description, valueConverter, location);
 

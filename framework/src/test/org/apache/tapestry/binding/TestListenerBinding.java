@@ -43,7 +43,7 @@ public class TestListenerBinding extends BindingTestCase
 
         replayControls();
 
-        IBinding b = new ListenerBinding(c, "foo", "", "", mf, vc, null);
+        IBinding b = new ListenerBinding("foo", vc, null, c, "", "", mf);
 
         assertSame(b, b.getObject());
 

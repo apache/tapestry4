@@ -45,7 +45,7 @@ public class TestAssetBinding extends BindingTestCase
 
         replayControls();
 
-        AssetBinding b = new AssetBinding(component, "fred", "parameterName", vc, l);
+        AssetBinding b = new AssetBinding("parameterName", vc, l, component, "fred");
 
         assertSame(asset, b.getObject());
 
@@ -74,7 +74,7 @@ public class TestAssetBinding extends BindingTestCase
 
         replayControls();
 
-        IBinding b = new AssetBinding(component, "fred", "parameterName", vc, l);
+        IBinding b = new AssetBinding("parameterName", vc, l, component, "fred");
 
         try
         {
