@@ -10,3 +10,4 @@ build
 ${destdir}
 ext-package
 cachedir
+.clover

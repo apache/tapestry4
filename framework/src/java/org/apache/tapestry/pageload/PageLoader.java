@@ -53,6 +53,7 @@ import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.services.ComponentTemplateLoader;
+import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BindingType;
@@ -78,8 +79,6 @@ public class PageLoader implements IPageLoader
     private ClassResolver _classResolver;
 
     private IComponentClassEnhancer _enhancer;
-
-    private ISpecificationSource _specificationSource;
 
     /** @since 3.1 */
 
@@ -111,9 +110,15 @@ public class PageLoader implements IPageLoader
 
     private List _propertyInitializers = new ArrayList();
 
+    /** @since 3.1 */
+    private IComponentVisitor _establishDefaultParameterValuesVisitor;
+
     private ComponentTreeWalker _establishDefaultParameterValuesWalker;
 
     private ComponentTreeWalker _verifyRequiredParametersWalker;
+    
+    /** @since 3.1 */
+    private ExpressionEvaluator _expressionEvaluator;
 
     /**
      * The locale of the application, which is also the locale of the page being loaded.
@@ -155,10 +160,8 @@ public class PageLoader implements IPageLoader
         _verifyRequiredParametersWalker = new ComponentTreeWalker(new IComponentVisitor[]
         { verifyRequiredParametersVisitor });
 
-        IComponentVisitor establishDefaultParameterValuesVisitor = new EstablishDefaultParameterValuesVisitor(
-                _classResolver);
         _establishDefaultParameterValuesWalker = new ComponentTreeWalker(new IComponentVisitor[]
-        { establishDefaultParameterValuesVisitor });
+        { _establishDefaultParameterValuesVisitor });
     }
 
     /**
@@ -191,11 +194,13 @@ public class PageLoader implements IPageLoader
         {
             if (formalOnly)
                 throw new ApplicationRuntimeException(PageloadMessages
-                        .inheritInformalInvalidComponentFormalOnly(component), component, contained.getLocation(), null);
+                        .inheritInformalInvalidComponentFormalOnly(component), component, contained
+                        .getLocation(), null);
 
             if (containerFormalOnly)
-                throw new ApplicationRuntimeException(PageloadMessages.inheritInformalInvalidContainerFormalOnly(
-                        container, component), component, contained.getLocation(), null);
+                throw new ApplicationRuntimeException(PageloadMessages
+                        .inheritInformalInvalidContainerFormalOnly(container, component),
+                        component, contained.getLocation(), null);
 
             IQueuedInheritedBinding queued = new QueuedInheritInformalBindings(component);
             _inheritedBindingQueue.add(queued);
@@ -216,8 +221,9 @@ public class PageLoader implements IPageLoader
             // a formal parameter.
 
             if (formalOnly && !isFormal)
-                throw new ApplicationRuntimeException(PageloadMessages.formalParametersOnly(component, name),
-                        component, bspec.getLocation(), null);
+                throw new ApplicationRuntimeException(PageloadMessages.formalParametersOnly(
+                        component,
+                        name), component, bspec.getLocation(), null);
 
             // If an informal parameter that conflicts with a reserved name,
             // then
@@ -244,7 +250,8 @@ public class PageLoader implements IPageLoader
 
             if (type == BindingType.INHERITED)
             {
-                QueuedInheritedBinding queued = new QueuedInheritedBinding(component, bspec.getValue(), name);
+                QueuedInheritedBinding queued = new QueuedInheritedBinding(component, bspec
+                        .getValue(), name);
                 _inheritedBindingQueue.add(queued);
                 continue;
             }
@@ -276,7 +283,8 @@ public class PageLoader implements IPageLoader
      * @since 3.0
      */
 
-    private void constructListenerBinding(IComponent component, String bindingName, IListenerBindingSpecification spec)
+    private void constructListenerBinding(IComponent component, String bindingName,
+            IListenerBindingSpecification spec)
     {
         String language = spec.getLanguage();
 
@@ -290,7 +298,8 @@ public class PageLoader implements IPageLoader
         // (not the DirectLink or Form, but the page or component containing the
         // link or form).
 
-        IBinding binding = new ListenerBinding(component.getContainer(), language, spec.getScript(), spec.getLocation());
+        IBinding binding = new ListenerBinding(component.getContainer(), language,
+                spec.getScript(), spec.getLocation());
 
         component.setBinding(bindingName, binding);
     }
@@ -344,13 +353,19 @@ public class PageLoader implements IPageLoader
 
                 _componentResolver.resolve(cycle, namespace, type, location);
 
-                IComponentSpecification componentSpecification = _componentResolver.getSpecification();
+                IComponentSpecification componentSpecification = _componentResolver
+                        .getSpecification();
                 INamespace componentNamespace = _componentResolver.getNamespace();
 
                 // Instantiate the contained component.
 
-                IComponent component = instantiateComponent(page, container, id, componentSpecification,
-                        componentNamespace, location);
+                IComponent component = instantiateComponent(
+                        page,
+                        container,
+                        id,
+                        componentSpecification,
+                        componentNamespace,
+                        location);
 
                 // Add it, by name, to the container.
 
@@ -363,7 +378,12 @@ public class PageLoader implements IPageLoader
                 // Now construct the component recusively; it gets its chance
                 // to create its subcomponents and set their bindings.
 
-                constructComponent(cycle, page, component, componentSpecification, componentNamespace);
+                constructComponent(
+                        cycle,
+                        page,
+                        component,
+                        componentSpecification,
+                        componentNamespace);
             }
 
             addAssets(container, containerSpec);
@@ -387,8 +407,9 @@ public class PageLoader implements IPageLoader
         }
         catch (RuntimeException ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiateComponent(container, ex),
-                    container, null, ex);
+            throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiateComponent(
+                    container,
+                    ex), container, null, ex);
         }
 
         _depth--;
@@ -402,8 +423,8 @@ public class PageLoader implements IPageLoader
      * @since 3.0
      */
 
-    public IComponent createImplicitComponent(IRequestCycle cycle, IComponent container, String componentId,
-            String componentType, Location location)
+    public IComponent createImplicitComponent(IRequestCycle cycle, IComponent container,
+            String componentId, String componentType, Location location)
     {
         IPage page = container.getPage();
 
@@ -412,7 +433,13 @@ public class PageLoader implements IPageLoader
         INamespace componentNamespace = _componentResolver.getNamespace();
         IComponentSpecification spec = _componentResolver.getSpecification();
 
-        IComponent result = instantiateComponent(page, container, componentId, spec, componentNamespace, location);
+        IComponent result = instantiateComponent(
+                page,
+                container,
+                componentId,
+                spec,
+                componentNamespace,
+                location);
 
         container.addComponent(result);
 
@@ -430,8 +457,8 @@ public class PageLoader implements IPageLoader
      * @see AbstractComponent
      */
 
-    private IComponent instantiateComponent(IPage page, IComponent container, String id, IComponentSpecification spec,
-            INamespace namespace, Location location)
+    private IComponent instantiateComponent(IPage page, IComponent container, String id,
+            IComponentSpecification spec, INamespace namespace, Location location)
     {
         IComponent result = null;
         String className = spec.getComponentClassName();
@@ -449,17 +476,19 @@ public class PageLoader implements IPageLoader
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages.classNotComponent(enhancedClassName), container,
-                    spec.getLocation(), ex);
+            throw new ApplicationRuntimeException(PageloadMessages
+                    .classNotComponent(enhancedClassName), container, spec.getLocation(), ex);
         }
         catch (Throwable ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiate(enhancedClassName, ex),
-                    container, spec.getLocation(), ex);
+            throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiate(
+                    enhancedClassName,
+                    ex), container, spec.getLocation(), ex);
         }
 
         if (result instanceof IPage)
-            throw new ApplicationRuntimeException(PageloadMessages.pageNotAllowed(result), result, null, null);
+            throw new ApplicationRuntimeException(PageloadMessages.pageNotAllowed(result), result,
+                    null, null);
 
         result.setNamespace(namespace);
         result.setSpecification(spec);
@@ -514,18 +543,21 @@ public class PageLoader implements IPageLoader
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages.classNotPage(enhancedClassName), location, ex);
+            throw new ApplicationRuntimeException(PageloadMessages.classNotPage(enhancedClassName),
+                    location, ex);
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiate(enhancedClassName, ex),
-                    location, ex);
+            throw new ApplicationRuntimeException(PageloadMessages.unableToInstantiate(
+                    enhancedClassName,
+                    ex), location, ex);
         }
 
         return result;
     }
 
-    public IPage loadPage(String name, INamespace namespace, IRequestCycle cycle, IComponentSpecification specification)
+    public IPage loadPage(String name, INamespace namespace, IRequestCycle cycle,
+            IComponentSpecification specification)
     {
         IPage page = null;
 
@@ -566,13 +598,14 @@ public class PageLoader implements IPageLoader
         }
 
         if (_log.isDebugEnabled())
-            _log.debug("Loaded page " + page + " with " + _count + " components (maximum depth " + _maxDepth + ")");
+            _log.debug("Loaded page " + page + " with " + _count + " components (maximum depth "
+                    + _maxDepth + ")");
 
         return page;
     }
 
     /** @since 3.1 */
-    
+
     public void loadTemplateForComponent(IRequestCycle cycle, ITemplateComponent component)
     {
         _componentTemplateLoader.loadTemplate(cycle, component);
@@ -586,7 +619,8 @@ public class PageLoader implements IPageLoader
 
         for (int i = 0; i < count; i++)
         {
-            IQueuedInheritedBinding queued = (IQueuedInheritedBinding) _inheritedBindingQueue.get(i);
+            IQueuedInheritedBinding queued = (IQueuedInheritedBinding) _inheritedBindingQueue
+                    .get(i);
 
             queued.connect();
         }
@@ -635,7 +669,8 @@ public class PageLoader implements IPageLoader
      * the component, create an initializer for each.
      */
 
-    private void createPropertyInitializers(IPage page, IComponent component, IComponentSpecification spec)
+    private void createPropertyInitializers(IPage page, IComponent component,
+            IComponentSpecification spec)
     {
         List names = spec.getPropertySpecificationNames();
         int count = names.size();
@@ -646,7 +681,8 @@ public class PageLoader implements IPageLoader
             IPropertySpecification ps = spec.getPropertySpecification(name);
             String expression = ps.getInitialValue();
 
-            PageDetachListener initializer = new PropertyInitializer(component, name, expression, ps.getLocation());
+            PageDetachListener initializer = new PropertyInitializer(component, name, expression,
+                    ps.getLocation(), _expressionEvaluator);
 
             _propertyInitializers.add(initializer);
             page.addPageDetachListener(initializer);
@@ -683,23 +719,32 @@ public class PageLoader implements IPageLoader
                 path = path.substring(1);
             }
 
-            return new PrivateAsset((ClasspathResource) findAsset(assetName, component, baseLocation, path, location),
-                    location);
+            return new PrivateAsset((ClasspathResource) findAsset(
+                    assetName,
+                    component,
+                    baseLocation,
+                    path,
+                    location), location);
         }
 
-        return new ContextAsset((ContextResource) findAsset(assetName, component, _applicationRoot, path, location),
-                location);
+        return new ContextAsset((ContextResource) findAsset(
+                assetName,
+                component,
+                _applicationRoot,
+                path,
+                location), location);
     }
 
-    private Resource findAsset(String assetName, IComponent component, Resource baseLocation, String path,
-            Location location)
+    private Resource findAsset(String assetName, IComponent component, Resource baseLocation,
+            String path, Location location)
     {
         Resource assetLocation = baseLocation.getRelativeResource(path);
         Resource localizedLocation = assetLocation.getLocalization(_locale);
 
         if (localizedLocation == null)
-            throw new ApplicationRuntimeException(PageloadMessages.missingAsset(assetName, component), component,
-                    location, null);
+            throw new ApplicationRuntimeException(PageloadMessages.missingAsset(
+                    assetName,
+                    component), component, location, null);
 
         return localizedLocation;
     }
@@ -746,13 +791,6 @@ public class PageLoader implements IPageLoader
 
     /** @since 3.1 */
 
-    public void setSpecificationSource(ISpecificationSource source)
-    {
-        _specificationSource = source;
-    }
-
-    /** @since 3.1 */
-
     public void setDefaultPageClassName(String string)
     {
         _defaultPageClassName = string;
@@ -778,5 +816,18 @@ public class PageLoader implements IPageLoader
     public void setComponentTemplateLoader(ComponentTemplateLoader componentTemplateLoader)
     {
         _componentTemplateLoader = componentTemplateLoader;
+    }
+
+    /** @since 3.1 */
+    public void setEstablishDefaultParameterValuesVisitor(
+            IComponentVisitor establishDefaultParameterValuesVisitor)
+    {
+        _establishDefaultParameterValuesVisitor = establishDefaultParameterValuesVisitor;
+    }
+    
+    /** @since 3.1 */
+    public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
+    {
+        _expressionEvaluator = expressionEvaluator;
     }
 }

@@ -25,29 +25,25 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-import ognl.ClassResolver;
 
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.apache.tapestry.util.io.ISqueezeAdaptor;
-import org.apache.tapestry.util.prop.OgnlClassResolver;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
- *  A series of tests for {@link DataSqueezerImpl} and friends.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *
- **/
+ * A series of tests for {@link DataSqueezerImpl}and friends.
+ * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
 
 public class TestDataSqueezer extends TestCase
 {
-    private ClassResolver _resolver = new OgnlClassResolver();
     private DataSqueezerImpl ds = new DataSqueezerImpl(new DefaultClassResolver());
 
     public TestDataSqueezer(String name)
@@ -85,7 +81,7 @@ public class TestDataSqueezer extends TestCase
     public void testByte() throws IOException
     {
         attempt(new Byte((byte) 0), "b0");
-        attempt(new Byte((byte) - 5), "b-5");
+        attempt(new Byte((byte) -5), "b-5");
         attempt(new Byte((byte) 72), "b72");
     }
 
@@ -120,11 +116,11 @@ public class TestDataSqueezer extends TestCase
     public void testShort() throws IOException
     {
         attempt(new Short((short) 0), "s0");
-        attempt(new Short((short) - 10), "s-10");
+        attempt(new Short((short) -10), "s-10");
         attempt(new Short((short) 57), "s57");
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public void testCharacter() throws IOException
     {
@@ -139,7 +135,7 @@ public class TestDataSqueezer extends TestCase
         attempt("So long, sucker!", "SSo long, sucker!");
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void testEnum() throws IOException
     {
@@ -148,8 +144,8 @@ public class TestDataSqueezer extends TestCase
 
     public void testComponentAddress() throws IOException
     {
-        ComponentAddress objAddress =
-            new ComponentAddress("framework:DirectLink", "component.subcomponent");
+        ComponentAddress objAddress = new ComponentAddress("framework:DirectLink",
+                "component.subcomponent");
         attempt(objAddress, "Aframework:DirectLink/component.subcomponent");
 
         objAddress = new ComponentAddress("framework:DirectLink", null);
@@ -159,13 +155,8 @@ public class TestDataSqueezer extends TestCase
     public void testArray() throws IOException
     {
         Object[] input =
-            {
-                new Short((short) - 82),
-                "Time to encode an array.",
-                new Long(38383833273789l),
-                null,
-                Boolean.TRUE,
-                new Double(22. / 7.)};
+        { new Short((short) -82), "Time to encode an array.", new Long(38383833273789l), null,
+                Boolean.TRUE, new Double(22. / 7.) };
 
         String[] encoded = ds.squeeze(input);
 
@@ -210,9 +201,8 @@ public class TestDataSqueezer extends TestCase
 
         map.put("alpha", Boolean.TRUE);
         map.put("beta", BeanLifecycle.NONE);
-        map.put(
-            "gamma",
-            new BigDecimal("2590742358742358972.234592348957230948578975248972390857490725"));
+        map.put("gamma", new BigDecimal(
+                "2590742358742358972.234592348957230948578975248972390857490725"));
 
         attempt((Serializable) map, ds);
     }
@@ -262,6 +252,7 @@ public class TestDataSqueezer extends TestCase
         private static final String PREFIX = "B";
 
         private static final String TRUE = "BT";
+
         private static final String FALSE = "BF";
 
         public void register(DataSqueezer squeezer)
@@ -292,8 +283,8 @@ public class TestDataSqueezer extends TestCase
 
     public void testCustom() throws IOException
     {
-        DataSqueezer ds =
-            new DataSqueezerImpl(new DefaultClassResolver(), new ISqueezeAdaptor[] { new BHSqueezer()});
+        DataSqueezer ds = new DataSqueezerImpl(new DefaultClassResolver(), new ISqueezeAdaptor[]
+        { new BHSqueezer() });
 
         attempt(new BooleanHolder(true), "BT", ds);
         attempt(new BooleanHolder(false), "BF", ds);
@@ -375,8 +366,7 @@ public class TestDataSqueezer extends TestCase
 
     public void testClassLoader() throws Exception
     {
-        File dir =
-            new File(System.getProperty("PROJECT_ROOT", ".") + "/examples/Workbench/classes");
+        File dir = new File(System.getProperty("PROJECT_ROOT", ".") + "/examples/Workbench/classes");
 
         if (!dir.exists())
         {
@@ -386,7 +376,8 @@ public class TestDataSqueezer extends TestCase
 
         URL tutorialClassesURL = dir.toURL();
 
-        URLClassLoader classLoader = new URLClassLoader(new URL[] { tutorialClassesURL });
+        URLClassLoader classLoader = new URLClassLoader(new URL[]
+        { tutorialClassesURL });
 
         Class visitClass = classLoader.loadClass("org.apache.tapestry.workbench.Visit");
 
@@ -403,12 +394,9 @@ public class TestDataSqueezer extends TestCase
         // System.out.println("This classloader = " + getClass().getClassLoader());
         // System.out.println("Visit classloader = " + visit.getClass().getClassLoader());
 
-        ognl.ClassResolver resolver = new OgnlClassResolver(visitClassLoader);
-        OgnlUtils.setOgnlClassResolver(resolver);
-
         String stringValue = Long.toHexString(System.currentTimeMillis());
 
-        OgnlUtils.set("stringValue", visit, stringValue);
+        PropertyUtils.write(visit, "stringValue", stringValue);
 
         DataSqueezer squeezer = new DataSqueezerImpl(new DefaultClassResolver(visitClassLoader));
 
@@ -421,7 +409,7 @@ public class TestDataSqueezer extends TestCase
         assertNotNull(outVisit);
         assertTrue("Input and output objects not same.", visit != outVisit);
 
-        String outStringValue = (String) OgnlUtils.get("stringValue", outVisit);
+        String outStringValue = (String) PropertyUtils.read(outVisit, "stringValue");
 
         assertEquals("Stored string.", stringValue, outStringValue);
     }

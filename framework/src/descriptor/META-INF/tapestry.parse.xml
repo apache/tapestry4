@@ -30,6 +30,8 @@
         <log/>
         <class-resolver/>
         <object> instance:org.apache.tapestry.spec.SpecFactory </object>
+        
+        <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
       </construct>
     </invoke-factory>
     

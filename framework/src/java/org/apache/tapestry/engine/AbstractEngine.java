@@ -1450,4 +1450,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         return encoding;
     }
 
+    /** @since 3.1 */
+    public Infrastructure getInfrastructure()
+    {
+        return _infrastructure;
+    }
 }

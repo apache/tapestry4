@@ -36,6 +36,7 @@ import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.bean.IBeanInitializer;
+import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BindingType;
@@ -322,6 +323,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         _parserFactory.setValidating(true);
     }
 
+    /** @since 3.1 */
+    
+    private ExpressionEvaluator _expressionEvaluator;
+    
     /**
      * This constructor is a convienience used by some tests.
      */
@@ -1103,7 +1108,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         boolean immediate = getBooleanAttribute("immediate", false);
         String className = getAttribute("class");
 
-        IExtensionSpecification es = _factory.createExtensionSpecification();
+        IExtensionSpecification es = _factory.createExtensionSpecification(_expressionEvaluator);
 
         es.setClassName(className);
         es.setImmediate(immediate);
@@ -1320,7 +1325,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         String name = getAttribute("name");
         String expression = getAttribute("expression");
 
-        IBeanInitializer bi = _factory.createExpressionBeanInitializer();
+        IBeanInitializer bi = _factory.createExpressionBeanInitializer(_expressionEvaluator);
 
         PropertyUtils.write(bi, "propertyName", name);
 
@@ -1576,5 +1581,11 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         throw new DocumentParseException(ParseMessages.unknownPublicId(getResource(), publicId),
                 getResource());
+    }
+    
+    /** @since 3.1 */
+    public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
+    {
+        _expressionEvaluator = expressionEvaluator;
     }
 }

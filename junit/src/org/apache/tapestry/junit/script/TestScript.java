@@ -31,17 +31,19 @@ import org.apache.tapestry.junit.MockRequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.script.ScriptSession;
+import org.apache.tapestry.services.ExpressionCache;
+import org.apache.tapestry.services.ExpressionEvaluator;
+import org.apache.tapestry.services.impl.ExpressionCacheImpl;
+import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- *  A collection of tests for Tapestry scripting.
- *
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.2
- *
- **/
+ * A collection of tests for Tapestry scripting.
+ * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 2.2
+ */
 
 public class TestScript extends TapestryTestCase
 {
@@ -50,7 +52,7 @@ public class TestScript extends TapestryTestCase
     private IScript read(String file) throws IOException, DocumentParseException
     {
         ClassResolver resolver = new DefaultClassResolver();
-        ScriptParser parser = new ScriptParser(resolver);
+        ScriptParser parser = new ScriptParser(resolver, createExpressionEvaluator());
 
         String classAsPath = "/" + getClass().getName().replace('.', '/');
 
@@ -77,9 +79,8 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     *  Simple test where the body and initialization are static.
-     * 
-     **/
+     * Simple test where the body and initialization are static.
+     */
 
     public void testSimple() throws Exception
     {
@@ -92,6 +93,7 @@ public class TestScript extends TapestryTestCase
 
     /**
      * Test the &lt;unique&gt; element, new in the 1.3 DTD
+     * 
      * @since 3.0
      */
 
@@ -108,9 +110,8 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     *  Test omitting body and initialization, ensure they return null.
-     * 
-     **/
+     * Test omitting body and initialization, ensure they return null.
+     */
 
     public void testEmpty() throws Exception
     {
@@ -121,10 +122,9 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     *  Test the ability of the let element to create an output symbol.  Also,
-     *  test the insert element.
-     * 
-     **/
+     * Test the ability of the let element to create an output symbol. Also, test the insert
+     * element.
+     */
 
     public void testLet() throws Exception
     {
@@ -142,10 +142,8 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     *  Tests the if element, using strings, numbers, booleans, nulls, arrays
-     *  and collections.
-     * 
-     **/
+     * Tests the if element, using strings, numbers, booleans, nulls, arrays and collections.
+     */
 
     public void testIf() throws Exception
     {
@@ -157,7 +155,8 @@ public class TestScript extends TapestryTestCase
         input.put("boolean_false", Boolean.FALSE);
         input.put("collection_non_empty", Collections.singletonList(Boolean.TRUE));
         input.put("collection_empty", new ArrayList());
-        input.put("array_nonempty", new String[] { "alpha", "beta" });
+        input.put("array_nonempty", new String[]
+        { "alpha", "beta" });
         input.put("array_empty", new Integer[0]);
         input.put("number_zero", new Long(0));
         input.put("number_nonzero", new Integer(1));
@@ -181,8 +180,8 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     * Test the unique attribute on the &lt;let&gt; element.  New in
-     * the 1.3 DTD
+     * Test the unique attribute on the &lt;let&gt; element. New in the 1.3 DTD
+     * 
      * @since 3.0
      */
     public void testUniqueLet() throws Exception
@@ -197,9 +196,8 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     *  Tests the if-not element.
-     * 
-     **/
+     * Tests the if-not element.
+     */
 
     public void testIfNot() throws Exception
     {
@@ -211,7 +209,8 @@ public class TestScript extends TapestryTestCase
         input.put("booleanFalse", Boolean.FALSE);
         input.put("collectionNonEmpty", Collections.singletonList(Boolean.TRUE));
         input.put("collectionEmpty", new ArrayList());
-        input.put("arrayNonempty", new String[] { "alpha", "beta" });
+        input.put("arrayNonempty", new String[]
+        { "alpha", "beta" });
         input.put("arrayEmpty", new Integer[0]);
         input.put("numberZero", new Long(0));
         input.put("numberNonzero", new Integer(1));
@@ -235,17 +234,18 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     *  Tests a bunch of variations on the foreach element.
-     * 
-     **/
+     * Tests a bunch of variations on the foreach element.
+     */
 
     public void testForeach() throws Exception
     {
         Map input = new HashMap();
         input.put("single", "SINGLE");
         input.put("emptyArray", new String[0]);
-        input.put("array", new String[] { "ALPHA", "BETA", "GAMMA" });
-        input.put("collection", Arrays.asList(new String[] { "MOE", "LARRY", "CURLY" }));
+        input.put("array", new String[]
+        { "ALPHA", "BETA", "GAMMA" });
+        input.put("collection", Arrays.asList(new String[]
+        { "MOE", "LARRY", "CURLY" }));
         input.put("emptyCollection", new ArrayList());
 
         Map symbols = new HashMap();
@@ -267,7 +267,7 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "outputSingleIndex", "SINGLE 0");
         assertSymbol(symbols, "outputArrayIndex", "ALPHA 0\n\nBETA 1\n\nGAMMA 2");
         assertSymbol(symbols, "outputCollectionIndex", "MOE 0\n\nLARRY 1\n\nCURLY 2");
-        
+
         // Test implied key
         assertSymbol(symbols, "outputCollectionIndexOnly", "0\n\n1\n\n2");
     }
@@ -278,16 +278,13 @@ public class TestScript extends TapestryTestCase
 
         Resource scriptLocation = script.getScriptResource();
 
-        Resource[] expected =
-            new Resource[] {
-                scriptLocation.getRelativeResource("first"),
+        Resource[] expected = new Resource[]
+        { scriptLocation.getRelativeResource("first"),
                 scriptLocation.getRelativeResource("second"),
-                scriptLocation.getRelativeResource("third")};
+                scriptLocation.getRelativeResource("third") };
 
-        assertEquals(
-            "included scripts",
-            Arrays.asList(expected),
-            Arrays.asList(_processor.getExternalScripts()));
+        assertEquals("included scripts", Arrays.asList(expected), Arrays.asList(_processor
+                .getExternalScripts()));
     }
 
     public void testAntSyntax() throws Exception
@@ -425,7 +422,8 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = execute("simple.script", null);
 
-        ScriptSession session = new ScriptSession(script.getScriptResource(), null, null, null);
+        ScriptSession session = new ScriptSession(script.getScriptResource(), null, null,
+                createExpressionEvaluator(), null);
         assertEquals("ScriptSession[" + script.getScriptResource() + "]", session.toString());
     }
 }

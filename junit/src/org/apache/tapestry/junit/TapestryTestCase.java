@@ -30,7 +30,11 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.Namespace;
 import org.apache.tapestry.parse.SpecificationParser;
+import org.apache.tapestry.services.ExpressionCache;
+import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
+import org.apache.tapestry.services.impl.ExpressionCacheImpl;
+import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -107,6 +111,8 @@ public class TapestryTestCase extends HiveMindTestCase
     protected IApplicationSpecification parseApp(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
+        
+        parser.setExpressionEvaluator(createExpressionEvaluator());
 
         Resource location = getSpecificationResourceLocation(simpleName);
 
@@ -125,6 +131,8 @@ public class TapestryTestCase extends HiveMindTestCase
     protected ILibrarySpecification parseLib(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
+        
+        parser.setExpressionEvaluator(createExpressionEvaluator());
 
         Resource location = getSpecificationResourceLocation(simpleName);
 
@@ -160,6 +168,15 @@ public class TapestryTestCase extends HiveMindTestCase
 
         throw new AssertionFailedError(
             "Exception " + ex + " does not contain sub-string '" + string + "'.");
+    }
+
+    protected static ExpressionEvaluator createExpressionEvaluator()
+    {
+        ExpressionCache cache = new ExpressionCacheImpl();
+        ExpressionEvaluatorImpl result = new ExpressionEvaluatorImpl();
+        result.setExpressionCache(cache);
+    
+        return result;
     }
 
 }

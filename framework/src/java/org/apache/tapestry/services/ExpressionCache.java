@@ -12,36 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services.impl;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.hivemind.service.ThreadLocalStorage;
+package org.apache.tapestry.services;
 
 /**
- * Simulated version of {@link org.apache.hivemind.service.ThreadLocalStorage}
- * used by unit tests.
- *
- * @author Howard Lewis Ship
+ * Cache of compiled OGNL expressions.
+ * 
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class MockThreadLocalStorage implements ThreadLocalStorage
+public interface ExpressionCache
 {
-    private Map _map = new HashMap();
-
-    public Object get(String key)
-    {
-        return _map.get(key);
-    }
-
-    public void put(String key, Object value)
-    {
-        _map.put(key, value);
-    }
-
-    public void clear()
-    {
-        _map.clear();
-    }
+    /**
+     * Returns the compiled form of the OGNL expression. 
+     * 
+     * @throws org.apache.hivemind.ApplicationRuntimeException if the expression is not valid
+     */
+    public Object getCompiledExpression(String expression);
 }

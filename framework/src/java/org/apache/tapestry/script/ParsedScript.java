@@ -21,24 +21,27 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.IScriptProcessor;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- *  A top level container for a number of {@link IScriptToken script tokens}.
- *
- *  @author Howard Lewis Ship
- *  @since 0.2.9
+ * A top level container for a number of {@link IScriptToken script tokens}.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 0.2.9
+ */
 
 public class ParsedScript extends AbstractToken implements IScript
 {
     private Resource _scriptResource;
 
-    public ParsedScript(Location location)
+    private ExpressionEvaluator _evaluator;
+
+    public ParsedScript(ExpressionEvaluator evaluator, Location location)
     {
- 		super(location);
- 		
- 		_scriptResource = location.getResource();
+        super(location);
+
+        _evaluator = evaluator;
+        _scriptResource = location.getResource();
     }
 
     public Resource getScriptResource()
@@ -46,18 +49,20 @@ public class ParsedScript extends AbstractToken implements IScript
         return _scriptResource;
     }
 
-	/**
-	 * Creates the {@link ScriptSession} and invokes 
-	 * {@link org.apache.tapestry.script.AbstractToken#writeChildren(java.lang.StringBuffer, org.apache.tapestry.script.ScriptSession)}.
-	 */
+    /**
+     * Creates the {@link ScriptSession}and invokes
+     * {@link org.apache.tapestry.script.AbstractToken#writeChildren(java.lang.StringBuffer, org.apache.tapestry.script.ScriptSession)}.
+     */
     public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
     {
-        ScriptSession session = new ScriptSession(_scriptResource, cycle, processor, symbols);
-		writeChildren(null, session);
+        ScriptSession session = new ScriptSession(_scriptResource, cycle, processor, _evaluator,
+                symbols);
+
+        writeChildren(null, session);
     }
-    
-    /** 
-     * Does nothing; never invoked. 
+
+    /**
+     * Does nothing; never invoked.
      */
     public void write(StringBuffer buffer, ScriptSession session)
     {

@@ -24,7 +24,6 @@ import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IParameterSpecification;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  * Standard implementation of {@link IParameterConnector}. Subclasses add in the ability to clear
@@ -50,8 +49,6 @@ public abstract class AbstractParameterConnector implements IParameterConnector
 
     private Direction _direction;
 
-    private ClassResolver _resolver;
-
     /**
      * Creates a connector. In addition, obtains the current value of the component property; this
      * value will be used to restore the component property.
@@ -76,7 +73,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
 
     private Object readCurrentPropertyValue()
     {
-        return OgnlUtils.get(_propertyName, _component);
+        return PropertyUtils.read(_component, _propertyName);
     }
 
     /**

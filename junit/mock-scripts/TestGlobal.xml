@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- $Id$ -->
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -59,16 +57,16 @@
         </assert-output>
 
         <assert-output name="Exception Messge">
-        Unable to resolve expression
+        Unable to read OGNL expression
         </assert-output>
 
         <assert-output name="Inner Exception Name">
         org.apache.hivemind.ApplicationRuntimeException
         </assert-output>
-
-        <assert-output name="Class Name">
-        org.apache.tapestry.junit.mock.xxx.Visit
-        </assert-output>
+        
+        <assert-output name="Inner Exception Name">
+        ognl.OgnlException
+        </assert-output>        
 
     </request>
 

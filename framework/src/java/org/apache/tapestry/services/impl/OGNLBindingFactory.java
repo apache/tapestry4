@@ -20,20 +20,34 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.services.BindingFactory;
+import org.apache.tapestry.services.ExpressionCache;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- * Implementation of {@link org.apache.tapestry.services.BindingFactory} that
- * creates {@link org.apache.tapestry.binding.ExpressionBinding} instances.
+ * Implementation of {@link org.apache.tapestry.services.BindingFactory}that creates
+ * {@link org.apache.tapestry.binding.ExpressionBinding}instances.
  * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class OGNLBindingFactory implements BindingFactory
 {
-    private ClassResolver _classResolver;
+    private ExpressionEvaluator _expressionEvaluator;
+
+    private ExpressionCache _expressionCache;
 
     public IBinding createBinding(IComponent root, String path, Location location)
     {
-        return new ExpressionBinding(_classResolver, root, path, location);
+        return new ExpressionBinding(root, path, location, _expressionEvaluator, _expressionCache);
+    }
+
+    public void setExpressionCache(ExpressionCache expressionCache)
+    {
+        _expressionCache = expressionCache;
+    }
+
+    public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
+    {
+        _expressionEvaluator = expressionEvaluator;
     }
 }

@@ -25,7 +25,6 @@ import org.apache.tapestry.util.IdAllocator;
  * Used by {@link org.apache.tapestry.junit.script.TestScript}.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  **/
 public class MockScriptProcessor implements IScriptProcessor

@@ -36,17 +36,32 @@
     <invoke-factory model="threaded">
       <construct class="org.apache.tapestry.pageload.PageLoader">
         <set-object property="enhancer" value="infrastructure:componentClassEnhancer"/>
-        <set-object property="specificationSource" value="infrastructure:specificationSource"/>
         <set-service property="componentResolver" service-id="ComponentSpecificationResolver"/>      
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
         <set-service property="componentTemplateLoader" service-id="ComponentTemplateLoader"/>
         <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
+        <set-service property="establishDefaultParameterValuesVisitor"
+          service-id="EstablishDefaultParameterValuesVisitor"/>
+        <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
         <set-object property="defaultPageClassName"
                        value="app-property:org.apache.tapestry.default-page-class"/>
         <set-object property="defaultScriptLanguage"
                        value="app-property:org.apache.tapestry.default-script-language"/>
       </construct>
     </invoke-factory>
+  </service-point>
+  
+  <service-point id="EstablishDefaultParameterValuesVisitor" interface="org.apache.tapestry.pageload.IComponentVisitor">
+    
+    Visits all the components of a page, locates unbound parameters, and plugs in a default value (if available)
+    for each. Used by the PageLoader.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.pageload.EstablishDefaultParameterValuesVisitor">
+        <set-service property="bindingFactory" service-id="tapestry.bindings.OGNLBindingFactory"/>
+      </construct>
+    </invoke-factory>
+    
   </service-point>
   
   <service-point id="PagePool" interface="org.apache.tapestry.services.ObjectPool">

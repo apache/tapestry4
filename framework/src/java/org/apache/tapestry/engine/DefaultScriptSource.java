@@ -24,11 +24,12 @@ import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.script.ScriptParser;
+import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- * Provides basic access to scripts available on the classpath. Scripts are
- * cached in memory once parsed.
+ * Provides basic access to scripts available on the classpath. Scripts are cached in memory once
+ * parsed.
  * 
  * @author Howard Lewis Ship
  * @since 1.0.2
@@ -37,6 +38,9 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 public class DefaultScriptSource implements IScriptSource, ResetEventListener
 {
     private ClassResolver _classResolver;
+
+    /** @since 3.1 */
+    private ExpressionEvaluator _expressionEvaluator;
 
     private Map _cache = new HashMap();
 
@@ -61,7 +65,7 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
 
     private IScript parse(Resource resource)
     {
-        ScriptParser parser = new ScriptParser(_classResolver);
+        ScriptParser parser = new ScriptParser(_classResolver, _expressionEvaluator);
 
         try
         {
@@ -69,7 +73,8 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
         }
         catch (DocumentParseException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format("DefaultScriptSource.unable-to-parse-script",
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "DefaultScriptSource.unable-to-parse-script",
                     resource), ex);
         }
     }
@@ -77,5 +82,11 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
     public void setClassResolver(ClassResolver classResolver)
     {
         _classResolver = classResolver;
+    }
+
+    /** @since 3.1 */
+    public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
+    {
+        _expressionEvaluator = expressionEvaluator;
     }
 }
