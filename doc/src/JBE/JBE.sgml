@@ -1028,6 +1028,17 @@ to the list of <varname>META_RESOURCES</> (files copied to the
 			</>
 		</>
 	</>
+	
+	<varlistentry>
+		<term><varname>OTHER_EJBC_CLASSPATH</></>
+		<listitem>
+		<para>
+		Additional classpath entries used when running <command>ejbc</>.
+		These entries are specifically at the <emphasis>front</> of
+		the classpath; they are typically used to include
+		WebLogic service pack JARs.
+		</>
+	</>
 
 </variablelist>
 
