@@ -385,7 +385,7 @@ public class ComponentClassFactory
      * 
      **/
 
-    protected String checkAccessors(String propertyName, Class propertyType)
+    protected String checkAccessors(String propertyName, Class propertyType, Location location)
     {
         PropertyDescriptor d = getPropertyDescriptor(propertyName);
 
@@ -400,7 +400,9 @@ public class ComponentClassFactory
                         _componentClass.getName(),
                         propertyName,
                         d.getPropertyType().getName(),
-                        propertyType.getName()}));
+                        propertyType.getName()}),
+                location,
+                null);
 
         Method m = d.getWriteMethod();
 
@@ -409,7 +411,9 @@ public class ComponentClassFactory
                 Tapestry.getString(
                     "ComponentClassFactory.non-abstract-write",
                     m.getDeclaringClass().getName(),
-                    propertyName));
+                    propertyName),
+                location,
+                null);
 
         m = d.getReadMethod();
 
@@ -418,7 +422,9 @@ public class ComponentClassFactory
                 Tapestry.getString(
                     "ComponentClassFactory.non-abstract-read",
                     m.getDeclaringClass().getName(),
-                    propertyName));
+                    propertyName),
+                location,
+                null);
 
         return m == null ? null : m.getName();
     }
@@ -516,7 +522,7 @@ public class ComponentClassFactory
     {
         Class propertyType = convertPropertyType(type, location);
 
-        String readMethodName = checkAccessors(propertyName, propertyType);
+        String readMethodName = checkAccessors(propertyName, propertyType, location);
 
         String fieldName = "_$" + propertyName;
 
