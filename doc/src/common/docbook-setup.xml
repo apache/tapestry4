@@ -108,7 +108,7 @@ Generating Chunked (Multiple Page) HTML from ${root.filename}.xml ...
     	style="${docbook.chunked.xsl}"
     	processor="trax" 
     	includes="${root.filename}.xml">
-    	<param name="base.dir" expression="${html.output.dir}/"/>
+    	<param name="base.dir" expression="${basedir}/${html.output.dir}/"/>
     	<param name="root.filename" expression="${root.filename}"/>
 		<param name="use.id.as.filename" expression="1"/>
     </style>
