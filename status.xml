@@ -32,91 +32,6 @@
     <!-- Missing in action: -->
     <person name="Neil Clayton" id="NC"/>
   </developers>
-  <votes>
-    <vote title="Tapestry 3.1-alpha-1" date="Feb 15 2005" dev="HLS">
-      <motion>I think it's high time we provide people with a peek at 3.1. The code base has stabilized quite a bit in the last week or two, and although there's a huge amount of work to come, I think the community would benefit from an easy preview of what's coming. This will also be a chance to work through the release checklist I prepared last week.</motion>
-      <response>HLS, EH, HK, PF, RLS, DS, GL, TSV: +1 </response>
-    </vote>
-    <vote title="Tapestry 3.0.2" date="Feb 14 2005" dev="HLS">
-      <motion> I think we should just be done with 3.0.2. All the bugs that are going to get fixed, have been. The next version of OGNL should just drop in, and since its not shipped with the framework anyway, its not a big deal. </motion>
-      <response> HLS, PF, GL, RLS, DS, EH: +1 </response>
-      <response> HK, TSV, MB: +0 </response>
-    </vote>
-    <vote title="Nominate Paul Ferraro as committer" date="Aug 24 2004" dev="RLS">
-      <motion> I would like to nominate Paul Ferraro as a Tapestry committer. Paul has shown a very good understanding of Tapestry, and recently made a large contribution with friendly URLs. (Paul has indicated he is very interested) </motion>
-      <response>RLS, EH, HK, GL, DS: +1</response>
-      <response>HLS, MB, TS, NC: +0</response>
-    </vote>
-    <!-- Vote for 3.0.1 release is missing! -->
-    <vote title="Tapestry 3.0 FINAL" date="Apr 14 2004" dev="HLS">
-      <motion> Despite a last minute flurry of bug fixes, the motion has passed and we'll be releasing the final Tapestry 3.0 release shortly. I'll be creating tagging and creating the final release shortly. Alas, it looks like Neil Clayton is no longer contributing to the Tapestry project. </motion>
-      <response>HLS, RLS, EH, HK, DS, TSV, MB: +1</response>
-      <response>GL, NC: +0</response>
-    </vote>
-    <vote title="release 3.0-rc-3" date="Apr 7 2004" dev="HLS">
-      <motion> I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2. Assuming that there are no further blocker bugs added in the meantime, I'd like to release rc-3. A +1 vote indicates that we should release rc-3, unless a new blocker bug is added in the meantime. Please respond in the next 24 hours (by Wednesday afternoon, EST). Missing responses will be treated as a +0. </motion>
-      <response> HLS, EH, HK, DS: +1 </response>
-      <response> NC, RLS, MB, TSV, GL: +0 </response>
-    </vote>
-    <vote title="release 3.0-rc-2" date="Apr 1 2004" dev="HLS">
-      <motion> 3.0-rc-1 has been out for about two weeks now. A couple of notable bugs have been identified and fixed. I believe we should roll out rc-2 to keep the momentum going. </motion>
-      <response> HLS, DS, EH, HK, TSV, RLS, MB: +1 </response>
-      <response> NC, GL: +0 </response>
-    </vote>
-    <vote title="release 3.0rc1" date="Mar 13 2004" dev="RLS">
-      <motion> Looks like things are pretty much in place for the next release - 3.0 release candidate 1. Let's vote on it to make it official. Release current code as rc1? </motion>
-      <response> RLS, GL, HK, EH, DS, MB, HLS: +1 </response>
-    </vote>
-    <vote title="Can the Tutorial" date="Feb 19 2004" dev="HLS">
-      <motion> I think its pretty obvious by now that no work is going to get done on the Tutorial for 3.0. I think it would be best to remove the Tutorial, perhaps replace it with a link to Kevin Dorff's site until we can actually put something useful together ... even if that is after 3.0 is released. A +1 vote would delete the Tutorial code, the docbook source and links to the old tutorial on the web site. </motion>
-      <response> HLS, EH, DS, GL, MB, HK: +1 </response>
-    </vote>
-    <vote date="Sep 5 2003" title="Release 3.0-beta-3" dev="HLS">
-      <motion> People have been itching for the next release of Tapestry; one where the demos work (woops!) including JavaScript and the Palette. Documentation is still not ready for an rc release, but I think a beta release is a good idea. </motion>
-      <response> HLS, GL, RLS, DS, HK, EH, MB, TS, NC: +1 </response>
-    </vote>
-    <vote date="Sep 3 2003" title="Erik Hatcher as commiter" dev="GL">
-      <motion> I nominate Erik Hatcher. He knows the score in jakarta-land. I think its a great idea. </motion>
-      <response> GL, HLS, MB, DS, RLS: +1 </response>
-      <response> NC: +0 (no vote) </response>
-    </vote>
-    <vote date="Sep 3 2003" title="Tsvetelin Saykov as committer" dev="MB">
-      <motion>I would like to nominate Tsvetelin Saykov as a committer. Tsvetelin has more than an year and a half of Tapestry experience, has worked with many large web projects, and can be very helpful overall for the development of the framework, especially in the area of dynamic pages with layout determined at runtime. (not to mention that he would need CVS access to work on the Tree) </motion>
-      <response> MB, HLS, GL, DS, NC, RLS: +1 </response>
-    </vote>
-    <vote date="Sep 2 2003" title="Harish Krishnaswamy as committer" dev="HLS">
-      <motion> I would like to nominate Harish; he has been very actively and enthusiastically supporting Tapestry in the mailing lists. I think he would be an excellent and valuable asset to the team. And hell, he's relatively local --- I might actually get to meet a Tapestry committer in person! </motion>
-      <response> HLS, GL, DS, MB, RLS: +1 </response>
-      <response> NC: +0 (no vote) </response>
-    </vote>
-    <vote date="Jul 13 2003" title="Release 3.0-beta-2" dev="HLS">
-      <motion> We informally discussed this not too long ago; I think we are at a good point for beta-2. There have been some significant improvements since beta-1a that will largely be invisible to most users (the correct thing for a beta release); at the same time, I think we're all anxious to push forward and get Tapestry 3.0-xxx into wider distribution. Although there are still several outstanding bugs (one or two that are problematic) I think this is a good time to keep momentum going and 
-        release the next beta. A +1 vote will procede with beta-2, tagging the repository and pushing the new releases out to the Apache distribution mirrors. </motion>
-      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
-    </vote>
-    <vote date="Jun 3 2003" title="Release 3.0-beta-1a" dev="RLS">
-      <motion>release 3.0-beta-1a ASAP (containing fixes for JDK 1.3)</motion>
-      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
-    </vote>
-    <vote date="May 30 2003" title="Release 3.0-beta-1" dev="HLS">
-      <motion> Release 3.0-beta-1 as soon as possible. <br/> Release notes will state that the API is now stable, with the exception of IMonitor. </motion>
-      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
-    </vote>
-    <vote date="Apr 17 2003" title="Tapestry NextGen released as 3.0" dev="HLS">
-      <motion> PROPOSAL: the next major release of Tapestry (previously known as 2.4 or NextGen) be released as version number 3.0. </motion>
-      <response> HLS, MB, RLS, GL, DS: +1 </response>
-      <response> NC: +0 (no vote) </response>
-    </vote>
-    <vote date="Mar 7 2003" title="Nominate David Solis as Tapestry Commiter" dev="HLS">
-      <motion>
-        <p>There really didn't seem to be much discussion ... everyone seems to be in favor. Mind Bridge seems very absent of late.</p>
-        <p>Let's put it to a vote. No answer within 24 hours will be treated as a +0.</p>
-        <p>If voted in, David Solis will be invited to become a Tapestry committer; will be granted voting rights and update access to the CVS repository. </p>
-      </motion>
-      <response> HLS, NC, RLS, GL: +1 </response>
-      <response> MB, ME: +0 </response>
-    </vote>
-  </votes>
   <todo>
     <actions priority="Release 3.1">
       <action context="code" dev="open">Handle change of locale correctly, by reloading new instance of page in proper locale</action>
@@ -138,6 +53,9 @@
     -->
   </todo>
   <changes>
+    <release version="3.1-alpha-2" date="unreleased">
+      
+    </release>
     <release version="3.1-alpha-1" date="Feb 21 2005">
       <action type="update" dev="HLS"> Remove dependencies on Jakarta digester, collections and beanutils. Add dependency on Jakarta HiveMind. </action>
       <action type="update" dev="HLS"> Remove support for the &lt;service&gt; element in specifications (in favor of the tapestry.services.ApplicationServices configuration point). </action>
@@ -294,4 +212,89 @@
       <action type="fix" dev="MB" fixes-bug="25611"> Fixed one more place where the encoding needs to be set </action>
     </release>
   </changes>
+  <votes>
+    <vote title="Tapestry 3.1-alpha-1" date="Feb 15 2005" dev="HLS">
+      <motion>I think it's high time we provide people with a peek at 3.1. The code base has stabilized quite a bit in the last week or two, and although there's a huge amount of work to come, I think the community would benefit from an easy preview of what's coming. This will also be a chance to work through the release checklist I prepared last week.</motion>
+      <response>HLS, EH, HK, PF, RLS, DS, GL, TSV: +1 </response>
+    </vote>
+    <vote title="Tapestry 3.0.2" date="Feb 14 2005" dev="HLS">
+      <motion> I think we should just be done with 3.0.2. All the bugs that are going to get fixed, have been. The next version of OGNL should just drop in, and since its not shipped with the framework anyway, its not a big deal. </motion>
+      <response> HLS, PF, GL, RLS, DS, EH: +1 </response>
+      <response> HK, TSV, MB: +0 </response>
+    </vote>
+    <vote title="Nominate Paul Ferraro as committer" date="Aug 24 2004" dev="RLS">
+      <motion> I would like to nominate Paul Ferraro as a Tapestry committer. Paul has shown a very good understanding of Tapestry, and recently made a large contribution with friendly URLs. (Paul has indicated he is very interested) </motion>
+      <response>RLS, EH, HK, GL, DS: +1</response>
+      <response>HLS, MB, TS, NC: +0</response>
+    </vote>
+    <!-- Vote for 3.0.1 release is missing! -->
+    <vote title="Tapestry 3.0 FINAL" date="Apr 14 2004" dev="HLS">
+      <motion> Despite a last minute flurry of bug fixes, the motion has passed and we'll be releasing the final Tapestry 3.0 release shortly. I'll be creating tagging and creating the final release shortly. Alas, it looks like Neil Clayton is no longer contributing to the Tapestry project. </motion>
+      <response>HLS, RLS, EH, HK, DS, TSV, MB: +1</response>
+      <response>GL, NC: +0</response>
+    </vote>
+    <vote title="release 3.0-rc-3" date="Apr 7 2004" dev="HLS">
+      <motion> I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2. Assuming that there are no further blocker bugs added in the meantime, I'd like to release rc-3. A +1 vote indicates that we should release rc-3, unless a new blocker bug is added in the meantime. Please respond in the next 24 hours (by Wednesday afternoon, EST). Missing responses will be treated as a +0. </motion>
+      <response> HLS, EH, HK, DS: +1 </response>
+      <response> NC, RLS, MB, TSV, GL: +0 </response>
+    </vote>
+    <vote title="release 3.0-rc-2" date="Apr 1 2004" dev="HLS">
+      <motion> 3.0-rc-1 has been out for about two weeks now. A couple of notable bugs have been identified and fixed. I believe we should roll out rc-2 to keep the momentum going. </motion>
+      <response> HLS, DS, EH, HK, TSV, RLS, MB: +1 </response>
+      <response> NC, GL: +0 </response>
+    </vote>
+    <vote title="release 3.0rc1" date="Mar 13 2004" dev="RLS">
+      <motion> Looks like things are pretty much in place for the next release - 3.0 release candidate 1. Let's vote on it to make it official. Release current code as rc1? </motion>
+      <response> RLS, GL, HK, EH, DS, MB, HLS: +1 </response>
+    </vote>
+    <vote title="Can the Tutorial" date="Feb 19 2004" dev="HLS">
+      <motion> I think its pretty obvious by now that no work is going to get done on the Tutorial for 3.0. I think it would be best to remove the Tutorial, perhaps replace it with a link to Kevin Dorff's site until we can actually put something useful together ... even if that is after 3.0 is released. A +1 vote would delete the Tutorial code, the docbook source and links to the old tutorial on the web site. </motion>
+      <response> HLS, EH, DS, GL, MB, HK: +1 </response>
+    </vote>
+    <vote date="Sep 5 2003" title="Release 3.0-beta-3" dev="HLS">
+      <motion> People have been itching for the next release of Tapestry; one where the demos work (woops!) including JavaScript and the Palette. Documentation is still not ready for an rc release, but I think a beta release is a good idea. </motion>
+      <response> HLS, GL, RLS, DS, HK, EH, MB, TS, NC: +1 </response>
+    </vote>
+    <vote date="Sep 3 2003" title="Erik Hatcher as commiter" dev="GL">
+      <motion> I nominate Erik Hatcher. He knows the score in jakarta-land. I think its a great idea. </motion>
+      <response> GL, HLS, MB, DS, RLS: +1 </response>
+      <response> NC: +0 (no vote) </response>
+    </vote>
+    <vote date="Sep 3 2003" title="Tsvetelin Saykov as committer" dev="MB">
+      <motion>I would like to nominate Tsvetelin Saykov as a committer. Tsvetelin has more than an year and a half of Tapestry experience, has worked with many large web projects, and can be very helpful overall for the development of the framework, especially in the area of dynamic pages with layout determined at runtime. (not to mention that he would need CVS access to work on the Tree) </motion>
+      <response> MB, HLS, GL, DS, NC, RLS: +1 </response>
+    </vote>
+    <vote date="Sep 2 2003" title="Harish Krishnaswamy as committer" dev="HLS">
+      <motion> I would like to nominate Harish; he has been very actively and enthusiastically supporting Tapestry in the mailing lists. I think he would be an excellent and valuable asset to the team. And hell, he's relatively local --- I might actually get to meet a Tapestry committer in person! </motion>
+      <response> HLS, GL, DS, MB, RLS: +1 </response>
+      <response> NC: +0 (no vote) </response>
+    </vote>
+    <vote date="Jul 13 2003" title="Release 3.0-beta-2" dev="HLS">
+      <motion> We informally discussed this not too long ago; I think we are at a good point for beta-2. There have been some significant improvements since beta-1a that will largely be invisible to most users (the correct thing for a beta release); at the same time, I think we're all anxious to push forward and get Tapestry 3.0-xxx into wider distribution. Although there are still several outstanding bugs (one or two that are problematic) I think this is a good time to keep momentum going and 
+        release the next beta. A +1 vote will procede with beta-2, tagging the repository and pushing the new releases out to the Apache distribution mirrors. </motion>
+      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
+    </vote>
+    <vote date="Jun 3 2003" title="Release 3.0-beta-1a" dev="RLS">
+      <motion>release 3.0-beta-1a ASAP (containing fixes for JDK 1.3)</motion>
+      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
+    </vote>
+    <vote date="May 30 2003" title="Release 3.0-beta-1" dev="HLS">
+      <motion> Release 3.0-beta-1 as soon as possible. <br/> Release notes will state that the API is now stable, with the exception of IMonitor. </motion>
+      <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
+    </vote>
+    <vote date="Apr 17 2003" title="Tapestry NextGen released as 3.0" dev="HLS">
+      <motion> PROPOSAL: the next major release of Tapestry (previously known as 2.4 or NextGen) be released as version number 3.0. </motion>
+      <response> HLS, MB, RLS, GL, DS: +1 </response>
+      <response> NC: +0 (no vote) </response>
+    </vote>
+    <vote date="Mar 7 2003" title="Nominate David Solis as Tapestry Commiter" dev="HLS">
+      <motion>
+        <p>There really didn't seem to be much discussion ... everyone seems to be in favor. Mind Bridge seems very absent of late.</p>
+        <p>Let's put it to a vote. No answer within 24 hours will be treated as a +0.</p>
+        <p>If voted in, David Solis will be invited to become a Tapestry committer; will be granted voting rights and update access to the CVS repository. </p>
+      </motion>
+      <response> HLS, NC, RLS, GL: +1 </response>
+      <response> MB, ME: +0 </response>
+    </vote>
+  </votes>
 </status>
