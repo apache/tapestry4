@@ -44,7 +44,7 @@ public class NullTableSessionStateManager implements ITableSessionStateManager
         new NullTableSessionStateManager();
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#getSessionState(ITableModel)
+	 * @see net.sf.tapestry.contrib.table.model.ITableSessionStateManager#getSessionState(ITableModel)
 	 */
 	public Serializable getSessionState(ITableModel objModel)
 	{
@@ -52,7 +52,7 @@ public class NullTableSessionStateManager implements ITableSessionStateManager
 	}
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#recreateTableModel(Object)
+	 * @see net.sf.tapestry.contrib.table.model.ITableSessionStateManager#recreateTableModel(Serializable)
 	 */
 	public ITableModel recreateTableModel(Serializable objState)
 	{

@@ -51,41 +51,42 @@ import net.sf.tapestry.event.PageRenderListener;
  * This component also handles the saving of the state of the model using an 
  * {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}
  * to determine what part of the model is to be saved and an 
- * {@see  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager}
+ * {@link  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager}
  * to determine how to save it.
  * <p>
- * The first instance of the table model is taken from the tableModel binding.
- * Just before the rendering phase the persistent state of the model is saved in
- * the session. This process occurs in the following sequence:
+ * Upon the beginning of a new request cycle when the table model is first needed,
+ * the model is obtained using the following process:
  * <ul>
- * <li>The persistent state of the model is taken via the 
+ * <li>The persistent state of the table is loaded.
+ * If the tableSessionStoreManager binding has not been bound, the state is loaded 
+ * from a persistent property within the component (it is null at the beginning). 
+ * Otherwise the supplied
+ * {@link  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} is used
+ * to load the persistent state.
+ * <li>The table model is recreated using the 
  * {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager} that
  * could be supplied using the tableSessionStateManager binding 
  * (but has a default value and is therefore not required).
- * <li>If the tableSessionStoreManager binding has not been bound, the persistent
- * state is saved as a persistent page property. Otherwise the supplied
- * {@see  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} is used
- * to save the persistent state. Use of the 
- * {@see  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} 
- * is usually necessary when tables with the same model have to be used across 
- * multiple pages, and hence the state has to be saved in the Visit, rather than
- * a persistent page property.
- * </ul>
- * <p>
- * Upon the beginning of a new request cycle when the table model is needed again,
- * the process is performed in reverse:
- * <ul>
- * <li>If the tableSessionStoreManager binding has not been bound, the persistent
- * state is loaded from the persistent page property. Otherwise the supplied
- * {@see  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} is used
- * to load the persistent state.
- * <li>The table model is recreated using the 
- * {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}.
  * <li>If the {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}
  * returns null, then a table model is taken from the tableModel binding. Thus, if
  * the {@link net.sf.tapestry.contrib.table.model.common.NullTableSessionStateManager}
  * is used, the table model would be taken from the tableModel binding every time.
  * </ul>
+ * Just before the rendering phase the persistent state of the model is saved in
+ * the session. This process occurs in reverse:
+ * <ul>
+ * <li>The persistent state of the model is taken via the 
+ * {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}.
+ * <li>If the tableSessionStoreManager binding has not been bound, the persistent
+ * state is saved as a persistent page property. Otherwise the supplied
+ * {@link  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} is used
+ * to save the persistent state. Use of the 
+ * {@link  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} 
+ * is usually necessary when tables with the same model have to be used across 
+ * multiple pages, and hence the state has to be saved in the Visit, rather than
+ * in a persistent component property.
+ * </ul>
+ * <p>
  * 
  * @author mindbridge
  * @version $Id$
@@ -141,7 +142,7 @@ public class TableView
 	public void reset()
 	{
 		m_objTableModel = null;
-		saveSessionState(null);
+		storeSessionState(null);
 	}
 
 	/**
@@ -185,6 +186,14 @@ public class TableView
 
 		return m_objTableModel;
 	}
+
+    /**
+     * @see net.sf.tapestry.contrib.table.model.ITableModelSource#fireObservedStateChange()
+     */
+    public void fireObservedStateChange()
+    {
+        saveSessionState();
+    }
 
 	/**
 	 * Returns the tableSessionStateManagerBinding.
@@ -270,7 +279,15 @@ public class TableView
 		return getSessionState();
 	}
 
-	protected void saveSessionState(Serializable objState)
+    protected void saveSessionState()
+    {
+        ITableModel objModel = getTableModel();
+        Serializable objState =
+            getTableSessionStateManager().getSessionState(objModel);
+        storeSessionState(objState);
+    }
+    
+	protected void storeSessionState(Serializable objState)
 	{
 		ITableSessionStoreManager objManager = getTableSessionStoreManager();
 		if (objManager != null)
@@ -290,10 +307,7 @@ public class TableView
 
 		// Save the session state of the table model
 		// This is the moment after changes and right before committing
-		ITableModel objModel = getTableModel();
-		Serializable objState =
-			getTableSessionStateManager().getSessionState(objModel);
-		saveSessionState(objState);
+        saveSessionState();
 	}
 
 	/**
@@ -337,11 +351,12 @@ public class TableView
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
+        Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY);
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY, this);
 
 		super.renderComponent(writer, cycle);
 
-        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY, null);
+        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY, objOldValue);
 	}
 
 
