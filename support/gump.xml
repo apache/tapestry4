@@ -15,14 +15,6 @@
 
     <ant>
       <property name="framework.version" value="@@DATE@@"/>
-      <property name="jetty.dir" reference="home" project="jetty"/>
-      
-      <!-- Tapestry uses the J2EE libraries inside the JBoss distro to build.
-      	   Under Gump this isn't relevant. -->
-      	   
-      <property name="jboss.dir"
-                value="jboss-not-available"/>
-      <property name="exists.jboss.dir" value="yes"/>
     </ant>
 
     <!-- framework -->

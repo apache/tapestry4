@@ -15,3 +15,12 @@ tomcat.dir=
 # Required to execute the run-workbench target.
 jetty.dir=
 
+# The absolute path to the JAR containing the J2EE libraries
+# (javax.ejb).
+
+j2ee.jar.path=
+
+# The absolute path to the JAR containing the Java Servlet API
+# (javax.servlet).
+
+servlet.jar.path=

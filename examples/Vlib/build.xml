@@ -17,11 +17,11 @@
 			<include name="${vlibbeans.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<path refid="jetty.classpath"/>
 		<fileset dir="${ext.dist.dir}">
 			<include name="*.jar"/>
 		</fileset>
-		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
+		<pathelement location="${j2ee.jar.path}"/>
+		<pathelement location="${servlet.jar.path}"/>
 	</path>
 	<property name="private.dir" value="private"/>
 	<target name="init">
@@ -47,7 +47,6 @@
 				<exclude name="**/*.jbf"/>
 				<exclude name="WEB-INF/web.xml"/>
 			</fileset>
-			<!-- <webinf dir="context/WEB-INF"/> -->
 			<classes dir="${classes.dir}"/>
 			<!-- Pick up a few non-class resources from source directory.
       	   This includes a few specifications, scripts, and such.  -->

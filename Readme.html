@@ -170,6 +170,22 @@ Tomcat servlet container:
 <a href="http://localhost:8080/workbench">Tapestry Workbench</a> application.
 </blockquote>
 
+<h2>Building from Source</h2>
+
+<p>To build from source, you must set additional properties inside
+<code>config/build.properties</code>:
+<ul>
+<li><code>j2ee.jar.path</code> - the path to the J2EE libraries (notably, javax.ejb).</li>
+<li><code>servlet.jar.path</code> - the path to the Servlet API libraries.</li>
+</ul>
+</p>
+
+<p>
+You may then execute <b><code>ant install</code></b> to compile all the frameworks and examples.
+Building documentation and running the unit tests requires some additional
+setup that is discussed in
+the <A href="web/doc/ContributorsGuide/ContributorsGuide.html">Tapestry Contributor's Guide</A>.
+</p>
 			
 <h2>Documentation</h2>
 

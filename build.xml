@@ -17,6 +17,7 @@
 			<include name="lib/org.mortbay.jetty-jdk1.2.jar"/>
 			<include name="ext/*.jar"/>
 		</fileset>
+		<!-- Needed to support JSP compilation -->
 		<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
 	</path>
 	
@@ -64,8 +65,7 @@
 		</delete>
 		<delete dir="web/doc" quiet="true"/>
 	</target>
-	<target name="install" depends="check-for-jboss-dir,check-for-jetty-dir"
-		description="Builds all frameworks and examples.">
+	<target name="install" description="Builds all frameworks and examples.">
 		<!-- Each project has its own definitions for many properties.
      	 inheritAll="false" ensures that definitions in this buildfile
      	 doesn't override definitions in each project's buildfile. -->
@@ -78,7 +78,7 @@
 		<ant dir="doc/src" target="install" inheritAll="false"/>
 	</target>
 
-	<target name="junit" depends="check-for-jython-dir,check-for-jetty-dir"
+	<target name="junit" depends="check-for-jython-dir"
 		description="Run the JUnit test suite for Tapestry.">
 		<ant dir="junit" target="run" inheritAll="false"/>
 	</target>
@@ -227,6 +227,7 @@
 		<tar basedir="${web.dir}" tarfile="${web.tar.gz}" longfile="gnu"
 			compression="gzip"/>
 	</target>
+	
 	<target name="javadoc"
 		description="Generate API documentation for the framework and examples."
 		>
@@ -264,8 +265,8 @@
 			<classpath>
 				<path refid="vlib.classpath"/>
 				<path refid="ext.dist.classpath"/>
-				<path refid="jetty.classpath"/>
-				<pathelement location="${jboss.server.all.lib.dir}/mail.jar"/>
+				<pathelement location="${servlet.jar.path}"/>
+				<pathelement location="${j2ee.jar.path}"/>
 			</classpath>
 		</javadoc>
 	</target>
