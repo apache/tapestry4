@@ -198,7 +198,7 @@ NextGen) be released as version number 3.0.
 <!-- Use due-to to give acknowledgement for patches. -->
   
  <release version="3.0-rc-1" date="unreleased">
-
+ 
 <action type="fix" dev="DS" fixes-bug="27567">
  	Incorrect example code.
 </action>
@@ -254,6 +254,12 @@ Check for duplication of ids between the HTML template and the specification.
 
 <action type="fix" dev="HLS" fixed-bug="27082">
 Fix some number conversion problems inside NumberValidator.	
+</action>
+
+<action type="update" dev="HLS">
+Dynamically download OGNL and Javassist libraries (in accordance with ASF directives
+about non-ASL code). <b>Unfortunately, this means that we no longer can distribute precompiled
+examples that include those libraries.</b>
 </action>
 
  </release>

@@ -14,9 +14,7 @@
 		<fileset dir="${root.lib.dir}">
             <include name="*.jar"/>
             <include name="${ext.dir}/*.jar"/>
-		</fileset>
-		<fileset dir="${root.lib.dir}">
-			<include name="${servlet.dir}/*.jar"/>
+			<include name="${j2ee.dir}/*.jar"/>
 		</fileset>
 	</path>
 	<target name="init">
@@ -34,6 +32,7 @@
 	</target>
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed WAR.">
+		<mkdir dir="${examples.dir}"/>
 		<war warfile="${examples.dir}/${wap.war}"
 			webxml="context/WEB-INF/web.xml">
 			<fileset dir="context">

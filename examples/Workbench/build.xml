@@ -13,12 +13,10 @@
 		<fileset dir="${root.lib.dir}">
 			<include name="*.jar"/>
 			<include name="${ext.dir}/*.jar"/>
+			<include name="${j2ee.dir}/*.jar"/>
 		</fileset>
 		<fileset dir="${lib.dir}">
 			<include name="*.jar"/>	
-		</fileset>
-		<fileset dir="${root.lib.dir}">
-			<include name="${servlet.dir}/*.jar"/>
 		</fileset>
 	</path>
 	<target name="init">
@@ -39,6 +37,7 @@
 		description="Compile all classes and build the installed WAR.">
 		
 		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${examples.dir}"/>
 		
 		<copy file="${config.dir}/web.xml" todir="${build.dir}">
 			<filterset>
