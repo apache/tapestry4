@@ -118,7 +118,7 @@
 		<static-binding name="displayName">String Field</static-binding>
 	</component>
 	<component id="continue" type="ImageSubmit">
-		<binding name="image" property-path="assets.continue"/>
+		<binding name="image" propertypath="assets.continue"/>
 	</component>
 	<context-asset name="continue" path="/images/workbench/Continue.gif"/>
 </specification>
