@@ -1,5 +1,11 @@
 * Apr 18 2001
 
+Remove last few references to Xerces.
+Fix glitches in distribution makefile.
+Add instructions to makefile on how to roll out a release.
+
+* Apr 18 2001
+
 [417065] Use JAXP instead of Xerces
 Rename the main Jar file from "Tapestry.jar" to "com.primix.tapestry.jar".
 
