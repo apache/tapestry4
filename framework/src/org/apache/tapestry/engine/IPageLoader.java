@@ -18,6 +18,7 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.services.*;
 
 /**
  * Interface exposed to components as they are loaded by the page loader.
@@ -48,7 +49,7 @@ public interface IPageLoader
      * 
      **/
 
-    public ITemplateSource getTemplateSource();
+    public TemplateSource getTemplateSource();
 
     /**
      *  Invoked to create an implicit component (one which is defined in the

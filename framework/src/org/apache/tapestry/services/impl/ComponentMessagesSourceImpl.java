@@ -29,7 +29,6 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ComponentMessages;
 import org.apache.tapestry.engine.DefaultComponentPropertySource;
-import org.apache.tapestry.engine.DefaultTemplateSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ComponentMessagesSource;
@@ -278,7 +277,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
         if (encoding == null)
             encoding =
-                source.getPropertyValue(DefaultTemplateSource.TEMPLATE_ENCODING_PROPERTY_NAME);
+                source.getPropertyValue(TemplateSourceImpl.TEMPLATE_ENCODING_PROPERTY_NAME);
 
         return encoding;
     }

@@ -231,16 +231,6 @@ public abstract class AbstractEngine
     protected transient IApplicationSpecification _specification;
 
     /**
-     *  The source for template data. The template source is stored
-     *  in the {@link ServletContext} as a named attribute.
-     *  After de-serialization, the application can re-connect to
-     *  the template source (or create a new one).
-     *
-     **/
-
-    protected transient ITemplateSource _templateSource;
-
-    /**
      *  The source for component specifications, stored in the
      *  {@link ServletContext} (like {@link #_templateSource}).
      *
@@ -275,14 +265,6 @@ public abstract class AbstractEngine
      **/
 
     public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
-
-    /**
-     *  Servlet context attribute name for the default {@link ITemplateSource}
-     *  instance.  The application's name is appended.
-     *
-     **/
-
-    protected static final String TEMPLATE_SOURCE_NAME = "org.apache.tapestry.TemplateSource";
 
     /**
      *  Servlet context attribute name for the default {@link ISpecificationSource}
@@ -611,9 +593,9 @@ public abstract class AbstractEngine
         return _specificationSource;
     }
 
-    public ITemplateSource getTemplateSource()
+    public TemplateSource getTemplateSource()
     {
-        return _templateSource;
+        return _infrastructure.getTemplateSource();
     }
 
     /**
@@ -1104,7 +1086,6 @@ public abstract class AbstractEngine
         _pool.clear();
         _pageSource.reset();
         _specificationSource.reset();
-        _templateSource.reset();
         _scriptSource.reset();
         _enhancer.reset();
     }
@@ -1245,20 +1226,6 @@ public abstract class AbstractEngine
                 _pool = createPool(context);
 
                 servletContext.setAttribute(name, _pool);
-            }
-        }
-
-        if (_templateSource == null)
-        {
-            String name = TEMPLATE_SOURCE_NAME + ":" + servletName;
-
-            _templateSource = (ITemplateSource) servletContext.getAttribute(name);
-
-            if (_templateSource == null)
-            {
-                _templateSource = createTemplateSource(context);
-
-                servletContext.setAttribute(name, _templateSource);
             }
         }
 
@@ -1445,9 +1412,9 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected ITemplateSource createTemplateSource(RequestContext context)
+    protected TemplateSource createTemplateSource(RequestContext context)
     {
-        return new DefaultTemplateSource();
+        return new TemplateSourceImpl();
     }
 
     /**

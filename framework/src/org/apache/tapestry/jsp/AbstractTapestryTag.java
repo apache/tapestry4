@@ -23,7 +23,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.link.DirectLink;
-import org.apache.tapestry.parse.TemplateParser;
+import org.apache.tapestry.parse.TemplateParserImpl;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -115,10 +115,10 @@ public abstract class AbstractTapestryTag extends TagSupport
         if (_parameters == null)
             return null;
 
-        if (_parameters.startsWith(TemplateParser.OGNL_EXPRESSION_PREFIX))
+        if (_parameters.startsWith(TemplateParserImpl.OGNL_EXPRESSION_PREFIX))
         {
             String expression =
-                _parameters.substring(TemplateParser.OGNL_EXPRESSION_PREFIX.length() + 1);
+                _parameters.substring(TemplateParserImpl.OGNL_EXPRESSION_PREFIX.length() + 1);
 
             return convertExpression(expression);
         }

@@ -23,6 +23,7 @@
   <sub-module descriptor="tapestry.globals.xml"/>
   <sub-module descriptor="tapestry.props.xml"/>
   <sub-module descriptor="tapestry.request.xml"/>
+  <sub-module descriptor="tapestry.parse.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -53,6 +54,7 @@
         <set-service property="applicationPropertySource" service-id="tapestry.props.ApplicationPropertySource"/>
         <set-service property="componentMessagesSource" service-id="ComponentMessagesSource"/>
         <set-service property="resetEventCoordinator" service-id="ResetEventCoordinator"/>
+        <set-service property="templateSource" service-id="tapestry.parse.TemplateSource"/>
       </construct>
     </invoke-factory>
     
@@ -101,7 +103,7 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ComponentMessagesSourceImpl">
         <event-listener service-id="ResetEventCoordinator"/>
-        <set-service property="applicationPropertySource" service-id="tapestry.props.ApplicationPropertySource"/>
+        <set-object property="applicationPropertySource" value="service-property:Infrastructure:applicationPropertySource"/>
       </construct>
     </invoke-factory>
     

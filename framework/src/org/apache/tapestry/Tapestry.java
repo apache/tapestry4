@@ -279,19 +279,6 @@ public final class Tapestry
         "org.apache.tapestry.specification-resolver-delegate";
 
     /**
-     *  Name of application extension used to resolve page and component
-     *  templates that can't be located by the normal means.
-     *  The extension must implement
-     *  {@link org.apache.tapestry.engine.ITemplateSourceDelegate}.
-     *
-     *  @since 3.0
-     *
-     **/
-
-    public static final String TEMPLATE_SOURCE_DELEGATE_EXTENSION_NAME =
-        "org.apache.tapestry.template-source-delegate";
-
-    /**
      *   Key used to obtain an extension from the application specification.  The extension,
      *   if it exists, implements {@link org.apache.tapestry.request.IRequestDecoder}.
      *

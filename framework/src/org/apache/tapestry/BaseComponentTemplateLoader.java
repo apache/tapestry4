@@ -29,7 +29,6 @@ import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.IPageSource;
-import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.CloseToken;
 import org.apache.tapestry.parse.ComponentTemplate;
@@ -39,6 +38,7 @@ import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
+import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
@@ -395,13 +395,13 @@ public class BaseComponentTemplateLoader
         // if the component defines a templateTag parameter and 
         // there is no established binding for that parameter, 
         // add a static binding carrying the template tag  
-        if (spec.getParameter(ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME) != null
-            && component.getBinding(ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME) == null)
+        if (spec.getParameter(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) != null
+            && component.getBinding(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) == null)
         {
             addStaticBinding(
                 component,
                 spec,
-                ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME,
+                TemplateSource.TEMPLATE_TAG_PARAMETER_NAME,
                 token.getTag(),
                 token.getLocation());
         }

@@ -48,11 +48,11 @@ import org.apache.tapestry.binding.StringBinding;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.ISpecificationSource;
-import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.resource.ContextResource;
+import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IAssetSpecification;
@@ -948,7 +948,7 @@ public class PageLoader implements IPageLoader
         return _engine;
     }
 
-    public ITemplateSource getTemplateSource()
+    public TemplateSource getTemplateSource()
     {
         return _engine.getTemplateSource();
     }
