@@ -81,6 +81,7 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.bsf.BSFManager;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -222,18 +223,19 @@ public abstract class AbstractEngine
      *  determine the encoding to use when generating the output
      * 
      *  @since 3.0
-     **/ 
-         
-    public static final String OUTPUT_ENCODING_PROPERTY_NAME = "org.apache.tapestry.output-encoding"; 
+     **/
+
+    public static final String OUTPUT_ENCODING_PROPERTY_NAME =
+        "org.apache.tapestry.output-encoding";
 
     /**
      *  The default encoding that will be used when generating the output. 
      *  It is used if no output encoding property has been specified.
      * 
      *  @since 3.0
-     */ 
-         
-    public static final String DEFAULT_OUTPUT_ENCODING = "UTF-8"; 
+     */
+
+    public static final String DEFAULT_OUTPUT_ENCODING = "UTF-8";
 
     /**
      *  The curent locale for the engine, which may be changed at any time.
@@ -468,6 +470,14 @@ public abstract class AbstractEngine
     private transient boolean _dirty;
 
     /**
+     * The instance of {@link IMonitorFactory} used to create a monitor.
+     * 
+     * @since 3.0
+     */
+
+    private transient IMonitorFactory _monitorFactory;
+
+    /**
      *  Sets the Exception page's exception property, then renders the Exception page.
      *
      *  <p>If the render throws an exception, then copious output is sent to
@@ -576,31 +586,36 @@ public abstract class AbstractEngine
     }
 
     /**
-     *  Overriden in subclasses that support monitoring.  Should create and return
-     *  an instance of {@link IMonitor} that is appropriate for the request cycle described
-     *  by the {@link RequestContext}.
+     * Overriden in subclasses that support monitoring.  Should create and return
+     * an instance of {@link IMonitor} that is appropriate for the request cycle described
+     * by the {@link RequestContext}.
      *
-     *  <p>The monitor is used to create a {@link RequestCycle}.
-     *
-     *  <p>This implementation returns either an application extension named
-     *  <code>org.apache.tapestry.monitor</code>, or
-     *  the shared instance of {@link NullMonitor}.
+     * <p>The monitor is used to create a {@link RequestCycle}.
      * 
-     *  <p>Subclasses could create their own instances of {@link IMonitor}, specific
-     *  to the individual request or session.
+     * <p>This implementation uses a {@link IMonitorFactory}
+     * to create the monitor instance.  The factory
+     * is provided as an application extension.  If the application
+     * extension does not exist, {@link DefaultMonitorFactory} is used.
      * 
-     *  <p>As of release 3.0, this method should <em>not</em> return null.
+     * <p>As of release 3.0, this method should <em>not</em> return null.
      *
-     *  <p>TBD:  Lifecycle of the monitor ... should there be a commit?
      *
-     **/
+     */
 
     public IMonitor getMonitor(RequestContext context)
     {
-        if (_specification.checkExtension(MONITOR_EXTENSION_NAME))
-            return (IMonitor) _specification.getExtension(MONITOR_EXTENSION_NAME, IMonitor.class);
+        if (_monitorFactory == null)
+        {
+            if (_specification.checkExtension(Tapestry.MONITOR_FACTORY_EXTENSION_NAME))
+                _monitorFactory =
+                    (IMonitorFactory) _specification.getExtension(
+                        Tapestry.MONITOR_FACTORY_EXTENSION_NAME,
+                        IMonitorFactory.class);
+            else
+                _monitorFactory = DefaultMonitorFactory.SHARED;
+        }
 
-        return NullMonitor.SHARED;
+        return _monitorFactory.createMonitor(context);
     }
 
     public IPageSource getPageSource()
@@ -870,7 +885,7 @@ public abstract class AbstractEngine
             {
                 String serviceName = extractServiceName(context);
 
-                if (Tapestry.isNull(serviceName))
+                if (StringUtils.isEmpty(serviceName))
                     serviceName = Tapestry.HOME_SERVICE;
 
                 // Must have a service to create the request cycle.
@@ -895,7 +910,7 @@ public abstract class AbstractEngine
                 // Invoke the service, which returns true if it may have changed
                 // the state of the engine (most do return true).
 
-               service.service(this, cycle, output);
+                service.service(this, cycle, output);
 
                 // Return true only if the engine is actually dirty.  This cuts down
                 // on the number of times the engine is stored into the
@@ -978,9 +993,6 @@ public abstract class AbstractEngine
                 LOG.info("End service");
 
         }
-
-        // When in doubt, assume that the request did cause some change
-        // to the engine.
 
         return _dirty;
     }
@@ -1228,6 +1240,10 @@ public abstract class AbstractEngine
         else
             _sessionId = null;
 
+        _clientAddress = request.getRemoteHost();
+        if (_clientAddress == null)
+            _clientAddress = request.getRemoteAddr();
+
         // servletPath is null, so this means either we're doing the
         // first request in this session, or we're handling a subsequent
         // request in another JVM (i.e. another server in the cluster).
@@ -1237,15 +1253,16 @@ public abstract class AbstractEngine
         {
             // Get the path *within* the servlet context
 
-			// In rare cases related to the tagsupport service, getServletPath() is wrong
-			// (its a JSP, which invokes Tapestry as an include, thus muddling what
-			// the real servlet and servlet path is).  In those cases, the JSP tag
-			// will inform us.
-			
-            String path = (String)request.getAttribute(Tapestry.TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE);
-            
-            if (path == null) 
-	            path = request.getServletPath();
+            // In rare cases related to the tagsupport service, getServletPath() is wrong
+            // (its a JSP, which invokes Tapestry as an include, thus muddling what
+            // the real servlet and servlet path is).  In those cases, the JSP tag
+            // will inform us.
+
+            String path =
+                (String) request.getAttribute(Tapestry.TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE);
+
+            if (path == null)
+                path = request.getServletPath();
 
             // Get the context path, which may be the empty string
             // (but won't be null).
@@ -1411,9 +1428,9 @@ public abstract class AbstractEngine
             }
         }
 
-
         String encoding = request.getCharacterEncoding();
-        if (encoding == null) {
+        if (encoding == null)
+        {
             encoding = getOutputEncoding();
             try
             {
@@ -1422,15 +1439,9 @@ public abstract class AbstractEngine
             catch (UnsupportedEncodingException e)
             {
                 throw new IllegalArgumentException(
-                    Tapestry.format("AbstractEngine.illegal-encoding", encoding));            
+                    Tapestry.format("AbstractEngine.illegal-encoding", encoding));
             }
         }
-        
-
-        _clientAddress = request.getRemoteHost();
-        if (_clientAddress == null)
-            _clientAddress = request.getRemoteAddr();
-
     }
 
     /**
@@ -1745,7 +1756,7 @@ public abstract class AbstractEngine
 
         private RedirectAnalyzer(String location)
         {
-            if (Tapestry.isNull(location))
+            if (StringUtils.isEmpty(location))
             {
                 _location = "";
                 _internal = true;
@@ -2086,16 +2097,6 @@ public abstract class AbstractEngine
         "org.apache.tapestry.property-source";
 
     /**
-     *  The name of an application extension that implements {@link IMonitor}.
-     * 
-     *  @see #getMonitor(RequestContext)
-     *  @since 3.0
-     * 
-     **/
-
-    protected static final String MONITOR_EXTENSION_NAME = "org.apache.tapestry.monitor";
-
-    /**
      *  Creates a shared property source that will be stored into
      *  the servlet context.
      *  Subclasses may override this method to build thier
@@ -2303,7 +2304,6 @@ public abstract class AbstractEngine
     {
     }
 
-
     /**
      * 
      *  The encoding to be used if none has been defined using the output encoding property.
@@ -2315,9 +2315,8 @@ public abstract class AbstractEngine
      **/
     protected String getDefaultOutputEncoding()
     {
-        return DEFAULT_OUTPUT_ENCODING; 
+        return DEFAULT_OUTPUT_ENCODING;
     }
-
 
     /**
      * 
@@ -2341,6 +2340,5 @@ public abstract class AbstractEngine
 
         return encoding;
     }
-
 
 }

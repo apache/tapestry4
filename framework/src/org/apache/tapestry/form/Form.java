@@ -61,6 +61,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
@@ -723,7 +724,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     protected void reconstructAllocatedIds(String storedIdList)
     {
-        if (Tapestry.isNull(storedIdList))
+        if (StringUtils.isEmpty(storedIdList))
             return;
 
         StringSplitter splitter = new StringSplitter(',');

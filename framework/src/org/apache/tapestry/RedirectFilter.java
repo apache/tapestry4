@@ -66,6 +66,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -100,7 +101,7 @@ public class RedirectFilter implements Filter
     {
         _redirectPath = config.getInitParameter(REDIRECT_PATH_PARAM);
 
-        if (Tapestry.isNull(_redirectPath))
+        if (StringUtils.isEmpty(_redirectPath))
             _redirectPath = "/app";
 
         if (LOG.isInfoEnabled())
@@ -132,8 +133,8 @@ public class RedirectFilter implements Filter
         // resources have a non-null servletPath.  If JBossWeb 3.0.6, the servletPath is
         // null and the pathInfo indicates the relative location of the resource.
 
-        if ((Tapestry.isNull(servletPath) || servletPath.equals("/"))
-            && (Tapestry.isNull(pathInfo) || pathInfo.equals("/")))
+        if ((StringUtils.isEmpty(servletPath) || servletPath.equals("/"))
+            && (StringUtils.isEmpty(pathInfo) || pathInfo.equals("/")))
         {
             String path = hrequest.getContextPath() + _redirectPath;
 

@@ -62,6 +62,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
@@ -454,7 +455,7 @@ public class PageLoader implements IPageLoader
         // If not provided in the page or component specification, then
         // search for a default (factory default is "jython").
 
-        if (Tapestry.isNull(language))
+        if (StringUtils.isEmpty(language))
             language =
                 _engine.getPropertySource().getPropertyValue(
                     "org.apache.tapestry.default-script-language");
@@ -642,7 +643,7 @@ public class PageLoader implements IPageLoader
         IComponent result = null;
         String className = spec.getComponentClassName();
 
-        if (Tapestry.isNull(className))
+        if (StringUtils.isEmpty(className))
             className = BaseComponent.class.getName();
 
         Class componentClass = _enhancer.getEnhancedClass(spec, className);
@@ -709,7 +710,7 @@ public class PageLoader implements IPageLoader
         String className = spec.getComponentClassName();
         ILocation location = spec.getLocation();
 
-        if (Tapestry.isNull(className))
+        if (StringUtils.isEmpty(className))
         {
             if (LOG.isDebugEnabled())
                 LOG.debug(
@@ -895,7 +896,7 @@ public class PageLoader implements IPageLoader
 
             try
             {
-                if (Tapestry.isNull(expression))
+                if (StringUtils.isEmpty(expression))
                 {
                     initialValue = OgnlUtils.get(name, _resolver, component);
                 }

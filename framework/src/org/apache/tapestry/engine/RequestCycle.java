@@ -454,9 +454,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         IPage page = form.getPage();
         String pageName = page.getPageName();
 
-        _monitor.pageRewindBegin(pageName);
-
         _rewinding = true;
+
+        _monitor.pageRewindBegin(pageName);
 
         if (_attributes != null)
             _attributes.clear();
@@ -499,16 +499,16 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         }
         finally
         {
-            _rewinding = false;
             _actionId = 0;
             _targetActionId = 0;
             _targetComponent = null;
 
             page.endPageRender();
+
+            _monitor.pageRewindEnd(pageName);
+
+            _rewinding = false;
         }
-
-        _monitor.pageRewindEnd(pageName);
-
     }
 
     /**
@@ -529,9 +529,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     {
         String pageName = _page.getPageName();
 
-        _monitor.pageRewindBegin(pageName);
-
         _rewinding = true;
+
+        _monitor.pageRewindBegin(pageName);
 
         if (_attributes != null)
             _attributes.clear();
@@ -570,13 +570,15 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         }
         finally
         {
-            _rewinding = false;
+
             _actionId = 0;
             _targetActionId = 0;
             _targetComponent = null;
-        }
 
-        _monitor.pageRewindEnd(pageName);
+            _monitor.pageRewindEnd(pageName);
+
+            _rewinding = false;
+        }
 
     }
 
@@ -725,7 +727,10 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         page.validate(this);
 
-        Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
+        Tapestry.checkMethodInvocation(
+            Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID,
+            "validate()",
+            page);
 
         setPage(page);
     }

@@ -58,7 +58,7 @@ package org.apache.tapestry.util;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
-import org.apache.tapestry.Tapestry;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *  Used in a wide variety of resource searches.  Generates
@@ -123,14 +123,14 @@ public class LocalizedNameGenerator
             {
                 case LCV :
 
-                    if (Tapestry.isNull(_variant))
+                    if (StringUtils.isEmpty(_variant))
                         continue;
 
                     return;
 
                 case LC :
 
-                    if (Tapestry.isNull(_country))
+                    if (StringUtils.isEmpty(_country))
                         continue;
 
                     return;
@@ -140,14 +140,14 @@ public class LocalizedNameGenerator
                     // If _country is null, then we've already generated this string
                     // as state LCV and we can continue directly to state L
                     
-                    if (Tapestry.isNull(_variant) || Tapestry.isNull(_country))
+                    if (StringUtils.isEmpty(_variant) || StringUtils.isEmpty(_country))
                         continue;
 
                     return;
 
                 case L :
 
-                    if (Tapestry.isNull(_language))
+                    if (StringUtils.isEmpty(_language))
                         continue;
 
                     return;
@@ -245,6 +245,6 @@ public class LocalizedNameGenerator
 
             default :
                 return null;
-        }
+}
     }
 }

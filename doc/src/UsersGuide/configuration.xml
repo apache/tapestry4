@@ -56,6 +56,14 @@ This indicates to the application server that the Tapestry application may be cl
 application servers ignore this element, but future servers may only distribute
 applications within a cluster if this element is present.	
 </para>	
+
+<warning>
+	 <title>JBoss is very literal!</title>
+JBoss 3.0.x appears to be very literal about the <sgmltag class="starttag">distributable</sgmltag>
+element.  If it appears, you had better be deploying into a clustered environment, otherwise
+HttpSession state management simply doesn't work.  
+</warning>
+
 </callout>
 <callout arearefs="configuration.web.servlet-name">
 	<para>
@@ -426,13 +434,22 @@ currently used in Tapestry.
 </varlistentry>	
 
 <varlistentry>
-	<term>org.apache.tapestry.monitor (&IMonitor;)</term>
+	<term>org.apache.tapestry.monitor-factory (&IMonitorFactory;)</term>
 
 	<listitem>
-	<para>A monitor is informed
-	about key events during each request and is intended to support performance
-	monitoring.
+	<para>An object that is used to create &IMonitor; instances.  Monitors
+		are informed about key application events (such as loading a page)
+		during the processing of a request.
 	</para>	
+	
+	<para>
+	The factory may create a new instance for the request, or may simply
+	provide access to a shared instance.	
+	</para>
+	
+	<para>
+	If not specified, a default implementation is used (&DefaultMonitorFactory;).	
+	</para>
 	</listitem>	
 </varlistentry>
 

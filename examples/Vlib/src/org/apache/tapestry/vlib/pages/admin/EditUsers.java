@@ -62,6 +62,7 @@ import java.util.List;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
@@ -175,7 +176,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
         List updatedUsers = map.getValues();
 
-        Person[] updatedUserIds = (Person[]) updatedUsers.toArray(new Person[updatedUsers.size()]);
+        Person[] updates = (Person[]) updatedUsers.toArray(new Person[updatedUsers.size()]);
 
         Integer[] resetPasswordUserIds = toArray(map.getResetPasswordKeys());
         Integer[] deletedUserIds = toArray(map.getDeletedKeys());
@@ -183,7 +184,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
         String password = getPassword();
         setPassword(null);
 
-        if (Tapestry.isNull(password) && Tapestry.size(resetPasswordUserIds) != 0)
+        if (StringUtils.isEmpty(password) && Tapestry.size(resetPasswordUserIds) != 0)
         {
             setErrorField("inputPassword", getMessage("need-password"));
             return;
@@ -199,7 +200,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
                 IOperations operations = vengine.getOperations();
 
                 operations.updatePersons(
-                    updatedUserIds,
+                    updates,
                     resetPasswordUserIds,
                     password,
                     deletedUserIds,
