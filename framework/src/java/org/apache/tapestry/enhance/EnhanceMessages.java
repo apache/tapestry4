@@ -21,24 +21,20 @@ import org.apache.hivemind.service.ClassFabUtils;
 
 /**
  * Messages for this package.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 class EnhanceMessages extends DefaultComponentClassEnhancer
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(EnhanceMessages.class, "EnhanceStrings");
+    private static final MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class,
+            "EnhanceStrings");
 
-    public static String noImplForAbstractMethod(
-        Method method,
-        Class declareClass,
-        String className,
-        Class enhancedClass)
+    public static String noImplForAbstractMethod(Method method, Class declareClass,
+            String className, Class enhancedClass)
     {
-        return _formatter.format(
-            "no-impl-for-abstract-method",
-            new Object[] { method, declareClass.getName(), className, enhancedClass.getName()});
+        return _formatter.format("no-impl-for-abstract-method", new Object[]
+        { method, declareClass.getName(), className, enhancedClass.getName() });
     }
 
     public static String codeGenerationError(String className, Throwable cause)
@@ -56,19 +52,13 @@ class EnhanceMessages extends DefaultComponentClassEnhancer
         return _formatter.format("bad-property-type", type, cause);
     }
 
-    public static String propertyTypeMismatch(
-        Class componentClass,
-        String propertyName,
-        Class actualPropertyType,
-        Class expectedPropertyType)
+    public static String propertyTypeMismatch(Class componentClass, String propertyName,
+            Class actualPropertyType, Class expectedPropertyType)
     {
-        return _formatter.format(
-            "property-type-mismatch",
-            new Object[] {
-                componentClass.getName(),
-                propertyName,
+        return _formatter.format("property-type-mismatch", new Object[]
+        { componentClass.getName(), propertyName,
                 ClassFabUtils.getJavaClassName(actualPropertyType),
-                ClassFabUtils.getJavaClassName(expectedPropertyType)});
+                ClassFabUtils.getJavaClassName(expectedPropertyType) });
     }
 
     public static String nonAbstractWrite(Class declaringClass, String propertyName)
@@ -84,5 +74,15 @@ class EnhanceMessages extends DefaultComponentClassEnhancer
     public static String autoMustBeRequired(String propertyName)
     {
         return _formatter.format("auto-must-be-required", propertyName);
+    }
+
+    public static String errorAddingProperty(String propertyName, Class componentClass,
+            Throwable cause)
+    {
+        return _formatter.format(
+                "error-adding-property",
+                propertyName,
+                componentClass.getName(),
+                cause);
     }
 }

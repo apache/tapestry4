@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC "-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+		
+<script>
+<let key="output_true_string">
+<if expression="input.true_string">
+TRUE-STRING
+</if>
+</let>
+
+<let key="output_false_string">
+<if expression="input.false_string">
+FALSE-STRING
+</if>
+</let>
+
+<let key="output_null">
+<if expression="missing">
+NULL
+</if>
+</let>
+
+<let key="output_boolean_true">
+<if expression="input.boolean_true">
+BOOLEAN-TRUE
+</if>
+</let>
+
+<let key="output_boolean_false">
+<if expression="input.boolean_false">
+BOOLEAN-FALSE
+</if>
+</let>
+
+<let key="output_collection_nonempty">
+<if expression="input.collection_non_empty">
+COLLECTION-NON-EMPTY
+</if>
+</let>
+
+<let key="output_collection_empty">
+<if expression="input.collection_empty">
+COLLECTION-EMPTY
+</if>
+</let>
+
+<let key="output_array_nonempty">
+<if expression="input.array_nonempty">
+ARRAY-NON-EMPTY
+</if>
+</let>
+
+<let key="output_array_empty">
+<if expression="input.array_empty">
+ARRAY-EMPTY
+</if>
+</let>
+
+<let key="output_number_zero">
+<if expression="input.number_zero">
+NUMBER-ZERO
+</if>
+</let>
+
+<let key="output_number_nonzero">
+<if expression="input.number_nonzero">
+NUMBER-NON-ZERO
+</if>
+</let>
+
+</script>

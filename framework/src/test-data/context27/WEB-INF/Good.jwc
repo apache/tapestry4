@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.junit.mock.c27.Good">
+	
+	<parameter name="prefix" type="java.lang.String" direction="auto" default-value='defaultPrefix'/>
+
+	<parameter name="intValue" type="int" direction="auto" default-value="5"/>
+	<parameter name="doubleValue" type="double" direction="in" default-value="3.14"/>
+	<parameter name="objectValue" type="java.util.Locale" direction="in" default-value="defaultLocale"/>
+
+	<parameter name="booleanValue1" type="boolean" direction="auto" default-value="false"/>
+	<parameter name="booleanValue2" type="boolean" direction="auto" default-value="isBooleanValue1()"/>
+
+</component-specification>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- $Id: Rewind.wml,v 1.2 2003/03/25 08:05:15 dsolis Exp $ -->
+   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+   "http://www.wapforum.org/DTD/wml12.dtd">
+<wml>
+    <card id="Postfield">
+        <onevent type="onenterforward">
+            <refresh>
+                <setvar jwcid="@wml:Setvar" name="u" value="UUU"/>
+                <setvar jwcid="@wml:Setvar" name="v" value="VVV"/>
+            </refresh>
+        </onevent>
+        <p>
+            <go jwcid="g@wml:Go" listener="ognl:listeners.submit" href="">
+                <postfield jwcid="u@wml:Postfield" value="ognl:u" name="u"/>
+            </go>
+            <go jwcid="h@wml:Go" listener="ognl:listeners.submit" direct="ognl:false" href="">
+                <postfield jwcid="v@wml:Postfield" value="ognl:v" name="v"/>
+            </go>
+        </p>
+    </card>
+
+</wml>

@@ -1,0 +1,18 @@
+
+
+<span jwcid="block@Block">
+
+<span jwcid="@Conditional" condition="ognl:visit.directLinkTriggered">
+DirectLink HAS been triggered.
+</span>
+
+<span jwcid="@Conditional" condition="ognl:! visit.directLinkTriggered">
+DirectLink HAS NOT been triggered.
+</span>
+
+<p>
+
+<a jwcid="@DirectLink" listener="ognl:visit.listeners.directTrigger">Click to Trigger</a>
+
+
+</span>
