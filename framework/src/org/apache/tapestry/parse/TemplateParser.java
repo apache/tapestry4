@@ -21,16 +21,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.IdAllocator;
 
@@ -119,17 +119,17 @@ public class TemplateParser
     protected static class TemplateTokenFactory
     {
 
-        public OpenToken createOpenToken(String tagName, String jwcId, String type, ILocation location)
+        public OpenToken createOpenToken(String tagName, String jwcId, String type, Location location)
         {
             return new OpenToken(tagName, jwcId, type, location);
         }
 
-        public CloseToken createCloseToken(String tagName, ILocation location)
+        public CloseToken createCloseToken(String tagName, Location location)
         {
             return new CloseToken(tagName, location);
         }
 
-        public TextToken createTextToken(char[] templateData, int blockStart, int end, ILocation templateLocation)
+        public TextToken createTextToken(char[] templateData, int blockStart, int end, Location templateLocation)
         {
             return new TextToken(templateData, blockStart, end, templateLocation);
         }
@@ -139,7 +139,7 @@ public class TemplateParser
             String localizationKey,
             boolean raw,
             Map attributes,
-            ILocation startLocation)
+            Location startLocation)
         {
             return new LocalizationToken(tagName, localizationKey, raw, attributes, startLocation);
         }
@@ -254,7 +254,7 @@ public class TemplateParser
      *
      **/
 
-    private IResourceLocation _resourceLocation;
+    private Resource _resourceLocation;
 
     /**
      *  Shared instance of {@link Location} used by
@@ -262,14 +262,14 @@ public class TemplateParser
      * 
      **/
 
-    private ILocation _templateLocation;
+    private Location _templateLocation;
 
     /**
      *  Location with in the resource for the current line.
      * 
      **/
 
-    private ILocation _currentLocation;
+    private Location _currentLocation;
 
     /**
      *  Local reference to the template data that is to be parsed.
@@ -407,7 +407,7 @@ public class TemplateParser
     public TemplateToken[] parse(
         char[] templateData,
         ITemplateParserDelegate delegate,
-        IResourceLocation resourceLocation)
+        Resource resourceLocation)
         throws TemplateParseException
     {
         TemplateToken[] result = null;
@@ -436,11 +436,11 @@ public class TemplateParser
     protected void beforeParse(
         char[] templateData,
         ITemplateParserDelegate delegate,
-        IResourceLocation resourceLocation)
+        Resource resourceLocation)
     {
         _templateData = templateData;
         _resourceLocation = resourceLocation;
-        _templateLocation = new Location(resourceLocation);
+        _templateLocation = new LocationImpl(resourceLocation);
         _delegate = delegate;
         _ignoring = false;
         _line = 1;
@@ -484,7 +484,7 @@ public class TemplateParser
      * @throws TemplateParseException always thrown in order to terminate the parse.
      */
 
-    protected void templateParseProblem(String message, ILocation location, int line, int cursor)
+    protected void templateParseProblem(String message, Location location, int line, int cursor)
         throws TemplateParseException
     {
         throw new TemplateParseException(message, location);
@@ -617,7 +617,7 @@ public class TemplateParser
             if (_cursor >= length)
                 templateParseProblem(
                     Tapestry.format("TemplateParser.comment-not-ended", Integer.toString(startLine)),
-                    new Location(_resourceLocation, startLine),
+                    new LocationImpl(_resourceLocation, startLine),
                     startLine,
                     _cursor);
 
@@ -665,7 +665,7 @@ public class TemplateParser
         boolean endOfTag = false;
         boolean emptyTag = false;
         int startLine = _line;
-        ILocation startLocation = new Location(_resourceLocation, startLine);
+        Location startLocation = new LocationImpl(_resourceLocation, startLine);
 
         tagBeginEvent(startLine, _cursor);
 
@@ -1022,7 +1022,7 @@ public class TemplateParser
         boolean emptyTag,
         int startLine,
         int cursorStart,
-        ILocation startLocation)
+        Location startLocation)
         throws TemplateParseException
     {
         if (jwcId.equalsIgnoreCase(CONTENT_ID))
@@ -1120,7 +1120,7 @@ public class TemplateParser
         if (_ignoring && ignoreBody)
             templateParseProblem(
                 Tapestry.format("TemplateParser.nested-ignore", tagName, Integer.toString(startLine)),
-                new Location(_resourceLocation, startLine),
+                new LocationImpl(_resourceLocation, startLine),
                 startLine,
                 cursorStart);
 
@@ -1167,14 +1167,14 @@ public class TemplateParser
                     "TemplateParser.content-block-may-not-be-ignored",
                     tagName,
                     Integer.toString(startLine)),
-                new Location(_resourceLocation, startLine),
+                new LocationImpl(_resourceLocation, startLine),
                 startLine,
                 cursorStart);
 
         if (emptyTag)
             templateParseProblem(
                 Tapestry.format("TemplateParser.content-block-may-not-be-empty", tagName, Integer.toString(startLine)),
-                new Location(_resourceLocation, startLine),
+                new LocationImpl(_resourceLocation, startLine),
                 startLine,
                 cursorStart);
 
@@ -1192,7 +1192,7 @@ public class TemplateParser
         advance();
     }
 
-    private void addOpenToken(String tagName, String jwcId, String type, ILocation location)
+    private void addOpenToken(String tagName, String jwcId, String type, Location location)
     {
         OpenToken token = _factory.createOpenToken(tagName, jwcId, type, location);
         _tokens.add(token);
@@ -1274,7 +1274,7 @@ public class TemplateParser
         int length = _templateData.length;
         int startLine = _line;
 
-        ILocation startLocation = getCurrentLocation();
+        Location startLocation = getCurrentLocation();
 
         _cursor += CLOSE_TAG.length;
 
@@ -1580,10 +1580,10 @@ public class TemplateParser
      * 
      **/
 
-    protected ILocation getCurrentLocation()
+    protected Location getCurrentLocation()
     {
         if (_currentLocation == null)
-            _currentLocation = new Location(_resourceLocation, _line);
+            _currentLocation = new LocationImpl(_resourceLocation, _line);
 
         return _currentLocation;
     }

@@ -16,9 +16,9 @@ package org.apache.tapestry.bean;
 
 import java.lang.reflect.Field;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBeanProvider;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -38,15 +38,15 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 
     public synchronized void setBeanProperty(IBeanProvider provider, Object bean)
     {
-        IResourceResolver resolver = provider.getResourceResolver();
+        ClassResolver resolver = provider.getClassResolver();
 
         if (!_fieldResolved)
             resolveField(resolver);
 
-        setBeanProperty(resolver, bean, _fieldValue);
+        setBeanProperty(bean, _fieldValue);
     }
 
-    private void resolveField(IResourceResolver resolver)
+    private void resolveField(ClassResolver resolver)
     {
         if (_fieldResolved)
             return;

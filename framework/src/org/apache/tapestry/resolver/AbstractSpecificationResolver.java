@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.resolver;
 
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -43,11 +43,11 @@ public class AbstractSpecificationResolver implements IPoolable
 
     private IComponentSpecification _specification;
 
-    private IResourceLocation _applicationRootLocation;
+    private Resource _applicationRootLocation;
 
-    private IResourceLocation _webInfLocation;
+    private Resource _webInfLocation;
 
-    private IResourceLocation _webInfAppLocation;
+    private Resource _webInfAppLocation;
 
     private ISpecificationResolverDelegate _delegate;
 
@@ -62,9 +62,9 @@ public class AbstractSpecificationResolver implements IPoolable
         String servletName =
             cycle.getRequestContext().getServlet().getServletConfig().getServletName();
 
-        _webInfLocation = _applicationRootLocation.getRelativeLocation("/WEB-INF/");
+        _webInfLocation = _applicationRootLocation.getRelativeResource("/WEB-INF/");
 
-        _webInfAppLocation = _webInfLocation.getRelativeLocation(servletName + "/");
+        _webInfAppLocation = _webInfLocation.getRelativeResource(servletName + "/");
 
         IApplicationSpecification specification = engine.getSpecification();
 
@@ -96,7 +96,7 @@ public class AbstractSpecificationResolver implements IPoolable
      * 
      **/
 
-    protected IResourceLocation getApplicationRootLocation()
+    protected Resource getApplicationRootLocation()
     {
         return _applicationRootLocation;
     }
@@ -136,7 +136,7 @@ public class AbstractSpecificationResolver implements IPoolable
      * 
      **/
 
-    protected IResourceLocation getWebInfLocation()
+    protected Resource getWebInfLocation()
     {
         return _webInfLocation;
     }
@@ -147,7 +147,7 @@ public class AbstractSpecificationResolver implements IPoolable
      * 
      **/
 
-    protected IResourceLocation getWebInfAppLocation()
+    protected Resource getWebInfAppLocation()
     {
         return _webInfAppLocation;
     }

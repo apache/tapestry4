@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.ILocationHolder;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.util.BasePropertyHolder;
 
 /**
@@ -30,16 +30,16 @@ import org.apache.tapestry.util.BasePropertyHolder;
  *
  **/
 
-public class LocatablePropertyHolder extends BasePropertyHolder implements ILocationHolder
+public class LocatablePropertyHolder extends BasePropertyHolder implements LocationHolder
 {
-	private ILocation _location;
+	private Location _location;
 	
-    public ILocation getLocation()
+    public Location getLocation()
     {
         return _location;
     }
 
-    public void setLocation(ILocation location)
+    public void setLocation(Location location)
     {
         _location = location;
     }

@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;
@@ -226,7 +227,7 @@ public interface IEngine
      *
      **/
 
-    public IResourceResolver getResourceResolver();
+    public ClassResolver getClassResolver();
 
     /**
      *  Returns the visit object, an object that represents the client's visit

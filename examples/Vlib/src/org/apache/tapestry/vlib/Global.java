@@ -21,7 +21,7 @@ import javax.rmi.PortableRemoteObject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.vlib.ejb.IBookQueryHome;
 import org.apache.tapestry.vlib.ejb.IOperationsHome;
 

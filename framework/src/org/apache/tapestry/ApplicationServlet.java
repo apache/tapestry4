@@ -29,15 +29,17 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.resource.ContextResourceLocation;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.DelegatingPropertySource;
 import org.apache.tapestry.util.ServletContextPropertySource;
 import org.apache.tapestry.util.ServletPropertySource;
@@ -163,7 +165,7 @@ public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     /**
      * Handles the GET and POST requests. Performs the following:
@@ -421,7 +423,7 @@ public class ApplicationServlet extends HttpServlet
     {
         super.init(config);
 
-        _resolver = createResourceResolver();
+        _resolver = createClassResolver();
 
         _specification = constructApplicationSpecification();
 
@@ -441,9 +443,9 @@ public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    protected IResourceResolver createResourceResolver() throws ServletException
+    protected ClassResolver createClassResolver() throws ServletException
     {
-        return new DefaultResourceResolver();
+        return new DefaultClassResolver();
     }
 
     /**
@@ -468,7 +470,7 @@ public class ApplicationServlet extends HttpServlet
 
     protected IApplicationSpecification constructApplicationSpecification() throws ServletException
     {
-        IResourceLocation specLocation = getApplicationSpecificationLocation();
+        Resource specLocation = getApplicationSpecificationLocation();
 
         if (specLocation == null)
         {
@@ -504,21 +506,21 @@ public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    protected IResourceLocation getApplicationSpecificationLocation() throws ServletException
+    protected Resource getApplicationSpecificationLocation() throws ServletException
     {
         String path = getApplicationSpecificationPath();
 
         if (path != null)
-            return new ClasspathResourceLocation(_resolver, path);
+            return new ClasspathResource(_resolver, path);
 
         ServletContext context = getServletContext();
         String servletName = getServletName();
         String expectedName = servletName + ".application";
 
-        IResourceLocation webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
-        IResourceLocation webInfAppLocation = webInfLocation.getRelativeLocation(servletName + "/");
+        Resource webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
+        Resource webInfAppLocation = webInfLocation.getRelativeResource(servletName + "/");
 
-        IResourceLocation result = check(webInfAppLocation, expectedName);
+        Resource result = check(webInfAppLocation, expectedName);
         if (result != null)
             return result;
 
@@ -533,9 +535,9 @@ public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    private IResourceLocation check(IResourceLocation location, String name)
+    private Resource check(Resource location, String name)
     {
-        IResourceLocation result = location.getRelativeLocation(name);
+        Resource result = location.getRelativeResource(name);
 
         if (LOG.isDebugEnabled())
             LOG.debug("Checking for existence of " + result);
@@ -563,7 +565,7 @@ public class ApplicationServlet extends HttpServlet
     {
         ApplicationSpecification result = new ApplicationSpecification();
 
-        IResourceLocation virtualLocation =
+        Resource virtualLocation =
             new ContextResourceLocation(getServletContext(), "/WEB-INF/");
 
         result.setSpecificationLocation(virtualLocation);
@@ -583,7 +585,7 @@ public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    protected IApplicationSpecification parseApplicationSpecification(IResourceLocation location)
+    protected IApplicationSpecification parseApplicationSpecification(Resource location)
         throws ServletException
     {
         try
@@ -661,7 +663,7 @@ public class ApplicationServlet extends HttpServlet
             if (LOG.isDebugEnabled())
                 LOG.debug("Creating engine from class " + className);
 
-            Class engineClass = getResourceResolver().findClass(className);
+            Class engineClass = getClassResolver().findClass(className);
 
             IEngine result = (IEngine) engineClass.newInstance();
 
@@ -782,7 +784,7 @@ public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    public IResourceResolver getResourceResolver()
+    public ClassResolver getClassResolver()
     {
         return _resolver;
     }

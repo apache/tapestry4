@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;

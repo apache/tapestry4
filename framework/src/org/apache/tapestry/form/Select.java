@@ -17,7 +17,7 @@ package org.apache.tapestry.form;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;

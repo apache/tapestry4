@@ -19,10 +19,7 @@
 <mock-test>
     <context name="c29" root="context29"/>
 
-  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
-  		<init-parameter name="org.apache.tapestry.application-specification"
-  				value="/org/apache/tapestry/junit/mock/c29/app.application"/>
-  	</servlet>
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
 
 <!--    <request>
     	<parameter name="service" value="page/Two"/>

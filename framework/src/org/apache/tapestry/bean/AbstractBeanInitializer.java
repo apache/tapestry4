@@ -14,10 +14,9 @@
 
 package org.apache.tapestry.bean;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IResourceResolver;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -45,11 +44,11 @@ abstract public class AbstractBeanInitializer extends BaseLocatable implements I
         _propertyName = propertyName;
     }
 
-    protected void setBeanProperty(IResourceResolver resolver, Object bean, Object value)
+    protected void setBeanProperty(Object bean, Object value)
     {
         try
         {
-            OgnlUtils.set(_propertyName, resolver, bean, value);
+            OgnlUtils.set(_propertyName, bean, value);
         }
         catch (ApplicationRuntimeException ex)
         {

@@ -24,6 +24,10 @@ import java.util.Map;
 
 import ognl.OgnlRuntime;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Messages;
+import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.bean.BeanProviderPropertyAccessor;
 import org.apache.tapestry.engine.IPageLoader;
@@ -34,7 +38,6 @@ import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.param.ParameterManager;
-import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
 import org.apache.tapestry.util.prop.PropertyFinder;
@@ -198,7 +201,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * 
      **/
 
-    private IMessages _strings;
+    private Messages _strings;
 
     public void addAsset(String name, IAsset asset)
     {
@@ -454,44 +457,41 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  @since 3.0
      *
      **/
-    private IResourceResolver getResourceResolver()
+    private ClassResolver getClassResolver()
     {
-        return getPage().getEngine().getResourceResolver();
+        return getPage().getEngine().getClassResolver();
     }
 
-	/**
-	 *  Returns the named binding, or null if it doesn't exist.
-	 *
-	 *  <p>This method looks for a JavaBeans property with an
-	 *  appropriate name, of type {@link IBinding}.  The property
-	 *  should be named <code><i>name</i>Binding</code>.  If it exists
-	 *  and is both readable and writable, then it is accessor method
-	 *  is invoked.  Components which implement such methods can
-	 *  access their own binding through their instance variables
-	 *  instead of invoking this method, a performance optimization.
-	 *
-	 *  @see #setBinding(String,IBinding)
-	 *
-	 **/
+    /**
+     *  Returns the named binding, or null if it doesn't exist.
+     *
+     *  <p>This method looks for a JavaBeans property with an
+     *  appropriate name, of type {@link IBinding}.  The property
+     *  should be named <code><i>name</i>Binding</code>.  If it exists
+     *  and is both readable and writable, then it is accessor method
+     *  is invoked.  Components which implement such methods can
+     *  access their own binding through their instance variables
+     *  instead of invoking this method, a performance optimization.
+     *
+     *  @see #setBinding(String,IBinding)
+     *
+     **/
 
-	public IBinding getBinding(String name)
-	{
-		String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
-		PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
+    public IBinding getBinding(String name)
+    {
+        String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
+        PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
 
-		if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
-		{
-			IResourceResolver resolver = getPage().getEngine().getResourceResolver();
+        if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
+        {
+            return (IBinding) OgnlUtils.get(bindingPropertyName, this);
+        }
 
-			return (IBinding) OgnlUtils.get(bindingPropertyName, resolver, this);
-		}
+        if (_bindings == null)
+            return null;
 
-		if (_bindings == null)
-			return null;
-
-		return (IBinding) _bindings.get(name);
-	}
-
+        return (IBinding) _bindings.get(name);
+    }
 
     /**
      *  Return's the page's change observer.  In practical terms, this
@@ -624,43 +624,41 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
             _body[i].render(writer, cycle);
     }
 
-	/**
-	 *  Adds the binding with the given name, replacing any existing binding
-	 *  with that name.
-	 *
-	 *  <p>This method checks to see if a matching JavaBeans property
-	 *  (with a name of <code><i>name</i>Binding</code> and a type of
-	 *  {@link IBinding}) exists.  If so, that property is updated.
-	 *  An optimized component can simply implement accessor and
-	 *  mutator methods and then access its bindings via its own
-	 *  instance variables, rather than going through {@link
-	 *  #getBinding(String)}.
-	 *
-	 *  <p>Informal parameters should <em>not</em> be stored in
-	 *  instance variables if {@link
-	 *  #renderInformalParameters(IMarkupWriter, IRequestCycle)} is to be used.
-	 *  It relies on using the collection of bindings (to store informal parameters).
-	 **/
+    /**
+     *  Adds the binding with the given name, replacing any existing binding
+     *  with that name.
+     *
+     *  <p>This method checks to see if a matching JavaBeans property
+     *  (with a name of <code><i>name</i>Binding</code> and a type of
+     *  {@link IBinding}) exists.  If so, that property is updated.
+     *  An optimized component can simply implement accessor and
+     *  mutator methods and then access its bindings via its own
+     *  instance variables, rather than going through {@link
+     *  #getBinding(String)}.
+     *
+     *  <p>Informal parameters should <em>not</em> be stored in
+     *  instance variables if {@link
+     *  #renderInformalParameters(IMarkupWriter, IRequestCycle)} is to be used.
+     *  It relies on using the collection of bindings (to store informal parameters).
+     **/
 
-	public void setBinding(String name, IBinding binding)
-	{
-		String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
+    public void setBinding(String name, IBinding binding)
+    {
+        String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
 
-		PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
+        PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
 
-		if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
-		{
-			IResourceResolver resolver = getPage().getEngine().getResourceResolver();
-			OgnlUtils.set(bindingPropertyName, resolver, this, binding);
-			return;
-		}
+        if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
+        {
+            OgnlUtils.set(bindingPropertyName, this, binding);
+            return;
+        }
 
-		if (_bindings == null)
-			_bindings = new HashMap(MAP_SIZE);
+        if (_bindings == null)
+            _bindings = new HashMap(MAP_SIZE);
 
-		_bindings.put(name, binding);
-	}
-
+        _bindings.put(name, binding);
+    }
 
     public String toString()
     {
@@ -934,7 +932,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /** @since 3.0 **/
 
-    public IMessages getMessages()
+    public Messages getMessages()
     {
         if (_strings == null)
             _strings = getPage().getEngine().getComponentMessagesSource().getMessages(this);
@@ -1130,8 +1128,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      */
     public void setProperty(String propertyName, Object value)
     {
-        IResourceResolver resolver = getResourceResolver();
-        OgnlUtils.set(propertyName, resolver, this, value);
+        OgnlUtils.set(propertyName, this, value);
     }
     /**
      *  Gets a property of a component.
@@ -1140,7 +1137,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      */
     public Object getProperty(String propertyName)
     {
-        IResourceResolver resolver = getResourceResolver();
-        return OgnlUtils.get(propertyName, resolver, this);
+        return OgnlUtils.get(propertyName, this);
     }
 }

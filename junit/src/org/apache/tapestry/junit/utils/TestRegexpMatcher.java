@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.junit.utils;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.util.RegexpMatcher;
 

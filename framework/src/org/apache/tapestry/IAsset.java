@@ -16,6 +16,9 @@ package org.apache.tapestry;
 
 import java.io.InputStream;
 
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Resource;
+
 /**
  *  Representation of a asset (GIF, JPEG, etc.) that may be owned by a
  *  {@link IComponent}.
@@ -31,7 +34,7 @@ import java.io.InputStream;
  *
  **/
 
-public interface IAsset extends ILocatable
+public interface IAsset extends Locatable
 {
     /**
      *  Returns a URL for the asset, ready to be inserted into the output HTML.
@@ -61,5 +64,5 @@ public interface IAsset extends ILocatable
      * 
      **/
     
-    public IResourceLocation getResourceLocation();
+    public Resource getResourceLocation();
 }

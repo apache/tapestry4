@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -35,7 +35,7 @@ class InputSymbolToken extends AbstractToken
     private Class _class;
     private boolean _required;
 
-    InputSymbolToken(String key, Class clazz, boolean required, ILocation location)
+    InputSymbolToken(String key, Class clazz, boolean required, Location location)
     {
         super(location);
 

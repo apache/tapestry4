@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 
 /**
  *  A token for included scripts.
@@ -31,7 +31,7 @@ class IncludeScriptToken extends AbstractToken
 {
     private String _resourcePath;
 
-    public IncludeScriptToken(String resourcePath, ILocation location)
+    public IncludeScriptToken(String resourcePath, Location location)
     {
         super(location);
 
@@ -40,19 +40,19 @@ class IncludeScriptToken extends AbstractToken
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
-        IResourceLocation includeLocation = null;
+        Resource includeLocation = null;
 
         if (_resourcePath.startsWith("/"))
         {
             includeLocation =
-                new ClasspathResourceLocation(
-                    session.getRequestCycle().getEngine().getResourceResolver(),
+                new ClasspathResource(
+                    session.getRequestCycle().getEngine().getClassResolver(),
                     _resourcePath);
         }
         else
         {
-            IResourceLocation baseLocation = session.getScriptPath();
-            includeLocation = baseLocation.getRelativeLocation(_resourcePath);
+            Resource baseLocation = session.getScriptPath();
+            includeLocation = baseLocation.getRelativeResource(_resourcePath);
         }
 
         // TODO: Allow for scripts relative to context resources!

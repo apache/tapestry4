@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.Location;
 
 /**
  *  Generates a String from its child tokens, then applies it
@@ -30,7 +30,7 @@ class InitToken extends AbstractToken
 {
     private int _bufferLengthHighwater = 100;
 
-    public InitToken(ILocation location)
+    public InitToken(Location location)
     {
         super(location);
     }

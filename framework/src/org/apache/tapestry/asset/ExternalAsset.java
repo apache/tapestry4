@@ -17,8 +17,8 @@ package org.apache.tapestry.asset;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
@@ -35,7 +35,7 @@ public class ExternalAsset extends AbstractAsset
 {
     private String _URL;
 
-    public ExternalAsset(String URL, ILocation location)
+    public ExternalAsset(String URL, Location location)
     {
     	super(null, location);
     	

@@ -17,9 +17,9 @@ package org.apache.tapestry.spec;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tapestry.ILocationHolder;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.LocationHolder;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
@@ -32,7 +32,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  *
  **/
 
-public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
+public interface ILibrarySpecification extends IPropertyHolder, LocationHolder
 {
 
     /**
@@ -192,9 +192,9 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
 
     public void instantiateImmediateExtensions();
 
-    public IResourceResolver getResourceResolver();
+    public ClassResolver getResourceResolver();
 
-    public void setResourceResolver(IResourceResolver resolver);
+    public void setResourceResolver(ClassResolver resolver);
     
     public String getPublicId();
     
@@ -207,9 +207,9 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
      * 
      **/
     
-    public IResourceLocation getSpecificationLocation();
+    public Resource getSpecificationLocation();
     
     /** @since 3.0 **/
     
-    public void setSpecificationLocation(IResourceLocation specificationLocation);    
+    public void setSpecificationLocation(Resource specificationLocation);    
 }

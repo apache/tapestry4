@@ -16,10 +16,10 @@ package org.apache.tapestry.pageload;
 
 import java.util.Iterator;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -35,9 +35,9 @@ import org.apache.tapestry.spec.IParameterSpecification;
  */
 public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 {
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
     
-    public EstablishDefaultParameterValuesVisitor(IResourceResolver resolver)
+    public EstablishDefaultParameterValuesVisitor(ClassResolver resolver)
     {
         _resolver = resolver;
     }

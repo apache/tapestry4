@@ -16,7 +16,7 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.Location;
 
 /**
  *  Allows for the creation of new symbols that can be used in the script
@@ -37,7 +37,7 @@ class LetToken extends AbstractToken
     private boolean _unique;
     private int _bufferLengthHighwater = 20;
 
-    public LetToken(String key, boolean unique, ILocation location)
+    public LetToken(String key, boolean unique, Location location)
     {
         super(location);
 

@@ -25,13 +25,15 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-import org.apache.tapestry.IResourceResolver;
+import ognl.ClassResolver;
+
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.util.ComponentAddress;
-import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.io.ISqueezeAdaptor;
+import org.apache.tapestry.util.prop.OgnlClassResolver;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -44,8 +46,8 @@ import org.apache.tapestry.util.prop.OgnlUtils;
 
 public class TestDataSqueezer extends TestCase
 {
-    private IResourceResolver _resolver = new DefaultResourceResolver();
-    private DataSqueezer s = new DataSqueezer(_resolver);
+    private ClassResolver _resolver = new OgnlClassResolver();
+    private DataSqueezer s = new DataSqueezer(new DefaultClassResolver());
 
     public TestDataSqueezer(String name)
     {
@@ -136,16 +138,17 @@ public class TestDataSqueezer extends TestCase
         attempt("So long, sucker!", "SSo long, sucker!");
     }
 
-	/** @since 3.0 **/
-	
-	public void testEnum() throws IOException
-	{
-		attempt(AssetType.PRIVATE, "Eorg.apache.tapestry.spec.AssetType@PRIVATE");
-	}
+    /** @since 3.0 **/
 
-    public void testComponentAddress() throws IOException 
+    public void testEnum() throws IOException
     {
-        ComponentAddress objAddress = new ComponentAddress("framework:DirectLink", "component.subcomponent");
+        attempt(AssetType.PRIVATE, "Eorg.apache.tapestry.spec.AssetType@PRIVATE");
+    }
+
+    public void testComponentAddress() throws IOException
+    {
+        ComponentAddress objAddress =
+            new ComponentAddress("framework:DirectLink", "component.subcomponent");
         attempt(objAddress, "Aframework:DirectLink/component.subcomponent");
 
         objAddress = new ComponentAddress("framework:DirectLink", null);
@@ -206,7 +209,9 @@ public class TestDataSqueezer extends TestCase
 
         map.put("alpha", Boolean.TRUE);
         map.put("beta", BeanLifecycle.NONE);
-        map.put("gamma", new BigDecimal("2590742358742358972.234592348957230948578975248972390857490725"));
+        map.put(
+            "gamma",
+            new BigDecimal("2590742358742358972.234592348957230948578975248972390857490725"));
 
         attempt((Serializable) map, s);
     }
@@ -286,7 +291,8 @@ public class TestDataSqueezer extends TestCase
 
     public void testCustom() throws IOException
     {
-        DataSqueezer ds = new DataSqueezer(_resolver, new ISqueezeAdaptor[] { new BHSqueezer()});
+        DataSqueezer ds =
+            new DataSqueezer(new DefaultClassResolver(), new ISqueezeAdaptor[] { new BHSqueezer()});
 
         attempt(new BooleanHolder(true), "BT", ds);
         attempt(new BooleanHolder(false), "BF", ds);
@@ -386,7 +392,9 @@ public class TestDataSqueezer extends TestCase
 
         Object visit = visitClass.newInstance();
 
-        if (getClass().getClassLoader() == visit.getClass().getClassLoader())
+        ClassLoader visitClassLoader = visit.getClass().getClassLoader();
+        
+        if (getClass().getClassLoader() == visitClassLoader)
         {
             unable("Unable to setup necessary ClassLoaders for test.");
             return;
@@ -395,13 +403,14 @@ public class TestDataSqueezer extends TestCase
         // System.out.println("This classloader = " + getClass().getClassLoader());
         // System.out.println("Visit classloader = " + visit.getClass().getClassLoader());
 
-        IResourceResolver resolver = new DefaultResourceResolver(visit.getClass().getClassLoader());
+        ognl.ClassResolver resolver = new OgnlClassResolver(visitClassLoader);
+        OgnlUtils.setOgnlClassResolver(resolver);
 
         String stringValue = Long.toHexString(System.currentTimeMillis());
 
-        OgnlUtils.set("stringValue", resolver, visit, stringValue);
+        OgnlUtils.set("stringValue", visit, stringValue);
 
-        DataSqueezer squeezer = new DataSqueezer(resolver);
+        DataSqueezer squeezer = new DataSqueezer(new DefaultClassResolver(visitClassLoader));
 
         String squeezed = squeezer.squeeze(visit);
 
@@ -412,7 +421,7 @@ public class TestDataSqueezer extends TestCase
         assertNotNull(outVisit);
         assertTrue("Input and output objects not same.", visit != outVisit);
 
-        String outStringValue = (String) OgnlUtils.get("stringValue", resolver, outVisit);
+        String outStringValue = (String) OgnlUtils.get("stringValue", outVisit);
 
         assertEquals("Stored string.", stringValue, outStringValue);
     }

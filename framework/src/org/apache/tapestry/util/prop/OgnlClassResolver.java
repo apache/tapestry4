@@ -12,42 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.script;
+package org.apache.tapestry.util.prop;
 
-import org.apache.hivemind.Location;
+import java.util.Map;
 
+import ognl.ClassResolver;
 
 /**
- *  A token for static portions of the template.
+ * Implementation of OGNL's ClassResolver (which is unfortunately, named
+ * the same as HiveMind's ClassResolver).
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *
- **/
-
-class StaticToken extends AbstractToken
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
+public class OgnlClassResolver implements ClassResolver
 {
-    private String _text;
+    private ClassLoader _loader;
 
-    StaticToken(String text, Location location)
+    public OgnlClassResolver()
     {
-    	super(location);
-    	
-        _text = text;
+        this(Thread.currentThread().getContextClassLoader());
     }
 
-    /**
-     *  Writes the text to the writer.
-     *
-     **/
-
-    public void write(StringBuffer buffer, ScriptSession session)
+    public OgnlClassResolver(ClassLoader loader)
     {
-        buffer.append(_text);
+        _loader = loader;
     }
 
-    public void addToken(IScriptToken token)
+    public Class classForName(String name, Map context) throws ClassNotFoundException
     {
-        // Should never be invoked.
+        return Class.forName(name, true, _loader);
     }
+
 }

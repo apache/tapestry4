@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -31,7 +31,7 @@ class IfToken extends AbstractToken
     private boolean _condition;
     private String _expression;
 
-    IfToken(boolean condition, String expression, ILocation location)
+    IfToken(boolean condition, String expression, Location location)
     {
         super(location);
 

@@ -26,10 +26,10 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -60,6 +60,7 @@ public class ComponentClassFactory
      **/
     private static int _uid = 0;
 
+	private ClassResolver _resolver;
     /**
      *  Mapping between a primitive type and its Java VM representation
      *  Used for the encoding of array types
@@ -77,9 +78,6 @@ public class ComponentClassFactory
         _primitiveTypes.put("byte", "B");
     }
 
-
-    private IResourceResolver _resolver;
-
     private IEnhancedClassFactory _enhancedClassFactory;
     private IEnhancedClass _enhancedClass;
     private Map _beanProperties = new HashMap();
@@ -88,7 +86,7 @@ public class ComponentClassFactory
     private JavaClassMapping _classMapping = new JavaClassMapping();
 
     public ComponentClassFactory(
-        IResourceResolver resolver,
+        ClassResolver resolver,
         IComponentSpecification specification,
         Class componentClass,
         IEnhancedClassFactory enhancedClassFactory)
@@ -192,7 +190,7 @@ public class ComponentClassFactory
      * 
      **/
 
-    public Class convertPropertyType(String type, ILocation location)
+    public Class convertPropertyType(String type, Location location)
     {
         Class result = _classMapping.getType(type);
 
@@ -246,7 +244,7 @@ public class ComponentClassFactory
         return javaType.toString();
     }
 
-    protected void checkPropertyType(PropertyDescriptor pd, Class propertyType, ILocation location)
+    protected void checkPropertyType(PropertyDescriptor pd, Class propertyType, Location location)
     {
         if (!pd.getPropertyType().equals(propertyType))
             throw new ApplicationRuntimeException(
@@ -270,7 +268,7 @@ public class ComponentClassFactory
      * 
      **/
 
-    protected String checkAccessors(String propertyName, Class propertyType, ILocation location)
+    protected String checkAccessors(String propertyName, Class propertyType, Location location)
     {
         PropertyDescriptor d = getPropertyDescriptor(propertyName);
 
@@ -438,7 +436,7 @@ public class ComponentClassFactory
         if (!isMissingProperty(propertyName))
             return;
 
-        ILocation location = ps.getLocation();
+        Location location = ps.getLocation();
 
         Class propertyType = convertPropertyType(ps.getType(), location);
 
@@ -449,7 +447,7 @@ public class ComponentClassFactory
 
     protected void addAutoParameterEnhancer(String parameterName, IParameterSpecification ps)
     {
-        ILocation location = ps.getLocation();
+        Location location = ps.getLocation();
         String propertyName = ps.getPropertyName();
 
         if (!ps.isRequired() && ps.getDefaultValue() == null)
@@ -472,7 +470,7 @@ public class ComponentClassFactory
     protected void scanForSpecifiedProperty(IPropertySpecification ps)
     {
         String propertyName = ps.getName();
-        ILocation location = ps.getLocation();
+        Location location = ps.getLocation();
         Class propertyType = convertPropertyType(ps.getType(), location);
 
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);

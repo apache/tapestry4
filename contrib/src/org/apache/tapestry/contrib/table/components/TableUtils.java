@@ -20,9 +20,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
@@ -54,10 +53,14 @@ public class TableUtils
 
     public static String format(String key, Object[] args)
     {
-        if (s_objStrings == null) {
-            synchronized (TableUtils.class) {
+        if (s_objStrings == null)
+        {
+            synchronized (TableUtils.class)
+            {
                 if (s_objStrings == null)
-                    s_objStrings = ResourceBundle.getBundle("org.apache.tapestry.contrib.table.components.TableStrings");
+                    s_objStrings =
+                        ResourceBundle.getBundle(
+                            "org.apache.tapestry.contrib.table.components.TableStrings");
             }
         }
 
@@ -119,7 +122,10 @@ public class TableUtils
      *  @param objColumnSettingsContainer the component containing the column settings
      *  @return a table column model based on the provided parameters
      */
-    public static ITableColumnModel generateTableColumnModel(String strDesc, IComponent objComponent, IComponent objColumnSettingsContainer)
+    public static ITableColumnModel generateTableColumnModel(
+        String strDesc,
+        IComponent objComponent,
+        IComponent objColumnSettingsContainer)
     {
         if (strDesc == null)
             return null;
@@ -141,10 +147,8 @@ public class TableUtils
             if (strToken.startsWith("="))
             {
                 String strColumnExpression = strToken.substring(1);
-                IResourceResolver objResolver = objColumnSettingsContainer.getPage().getEngine().getResourceResolver();
 
-                Object objColumn =
-                    OgnlUtils.get(strColumnExpression, objResolver, objColumnSettingsContainer);
+                Object objColumn = OgnlUtils.get(strColumnExpression, objColumnSettingsContainer);
                 if (!(objColumn instanceof ITableColumn))
                     throw new ApplicationRuntimeException(
                         format("not-a-column", objComponent.getExtendedId(), strColumnExpression));

@@ -15,7 +15,7 @@
 package org.apache.tapestry.parse;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -44,7 +44,7 @@ public class TextToken extends TemplateToken implements IRender
     private int _length;
     private boolean _needsTrim = true;
 
-    public TextToken(char[] templateData, int startIndex, int endIndex, ILocation location)
+    public TextToken(char[] templateData, int startIndex, int endIndex, Location location)
     {
         super(TokenType.TEXT, location);
 

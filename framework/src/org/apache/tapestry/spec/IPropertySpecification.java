@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.tapestry.ILocationHolder;
+import org.apache.hivemind.LocationHolder;
 
 /**
  *  Defines a transient or persistant property of a component or page.  
@@ -24,7 +24,7 @@ import org.apache.tapestry.ILocationHolder;
  * @author glongman@intelligentworks.com
  * @version $Id$
  */
-public interface IPropertySpecification extends ILocationHolder
+public interface IPropertySpecification extends LocationHolder
 {
     public abstract String getInitialValue();
     public abstract String getName();

@@ -19,15 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.PrivateAsset;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.util.IdAllocator;
 
 /**
@@ -187,7 +187,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
      *
      **/
 
-    public void addExternalScript(IResourceLocation scriptLocation)
+    public void addExternalScript(Resource scriptLocation)
     {
         if (_externalScripts == null)
             _externalScripts = new ArrayList();
@@ -197,7 +197,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
         // Alas, this won't give a good ILocation for the actual problem.
 
-        if (!(scriptLocation instanceof ClasspathResourceLocation))
+        if (!(scriptLocation instanceof ClasspathResource))
             throw new ApplicationRuntimeException(
                 Tapestry.format("Body.include-classpath-script-only", scriptLocation),
                 this,
@@ -217,8 +217,8 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
         int count = Tapestry.size(_externalScripts);
         for (int i = 0; i < count; i++)
         {
-            ClasspathResourceLocation scriptLocation =
-                (ClasspathResourceLocation) _externalScripts.get(i);
+            ClasspathResource scriptLocation =
+                (ClasspathResource) _externalScripts.get(i);
 
             // This is still very awkward!  Should move the code inside PrivateAsset somewhere
             // else, so that an asset does not have to be created to to build the URL.
@@ -326,7 +326,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
      *  <p>The script is written into a nested markup writer.
      *
      *  <p>If there are any other initializations 
-     *  (see {@link #addInitializationScript(String)}),
+     *  (see {@link #addOtherInitialization(String)}),
      *  then a function to execute them is created.
      **/
 

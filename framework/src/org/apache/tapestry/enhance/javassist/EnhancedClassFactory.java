@@ -19,7 +19,7 @@ import javassist.CtClass;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
-import org.apache.tapestry.IResourceResolver;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.enhance.CodeGenerationException;
 import org.apache.tapestry.enhance.EnhancedClassLoader;
 import org.apache.tapestry.enhance.IEnhancedClass;
@@ -36,13 +36,13 @@ import org.apache.tapestry.enhance.IEnhancedClassFactory;
  */
 public class EnhancedClassFactory implements IEnhancedClassFactory
 {
-    private IResourceResolver _resourceResolver;
+    private ClassResolver _resourceResolver;
     private EnhancedClassLoader _enhancedClassLoader;
     private ClassPool _classPool;
 
     private ClassMapping _typeMap = null;
 
-    public EnhancedClassFactory(IResourceResolver resourceResolver)
+    public EnhancedClassFactory(ClassResolver resourceResolver)
     {
         _resourceResolver = resourceResolver;
 

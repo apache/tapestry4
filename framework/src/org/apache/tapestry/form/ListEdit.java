@@ -17,7 +17,7 @@ package org.apache.tapestry.form;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;

@@ -43,14 +43,14 @@ import org.apache.bsf.BSFManager;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.StaleLinkException;
@@ -349,7 +349,7 @@ public abstract class AbstractEngine
     private static final boolean _disableCaching =
         Boolean.getBoolean("org.apache.tapestry.disable-caching");
 
-    private transient IResourceResolver _resolver;
+    private transient ClassResolver _resolver;
 
     /**
      *  Constant used to store a {@link org.apache.tapestry.util.IPropertyHolder}
@@ -817,7 +817,7 @@ public abstract class AbstractEngine
         _localeChanged = false;
 
         if (_resolver == null)
-            _resolver = servlet.getResourceResolver();
+            _resolver = servlet.getClassResolver();
 
         try
         {
@@ -1445,7 +1445,7 @@ public abstract class AbstractEngine
 
     protected IScriptSource createScriptSource(RequestContext context)
     {
-        return new DefaultScriptSource(getResourceResolver());
+        return new DefaultScriptSource(getClassResolver());
     }
 
     /**
@@ -1476,7 +1476,7 @@ public abstract class AbstractEngine
 
     protected ISpecificationSource createSpecificationSource(RequestContext context)
     {
-        return new DefaultSpecificationSource(getResourceResolver(), _specification, _pool);
+        return new DefaultSpecificationSource(getClassResolver(), _specification, _pool);
     }
 
     /**
@@ -1500,7 +1500,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    public IResourceResolver getResourceResolver()
+    public ClassResolver getClassResolver()
     {
         return _resolver;
     }
@@ -1851,7 +1851,7 @@ public abstract class AbstractEngine
 
         addServices(source.getApplicationNamespace(), result);
 
-        IResourceResolver resolver = getResourceResolver();
+        ClassResolver resolver = getClassResolver();
 
         Iterator i = result.entrySet().iterator();
 

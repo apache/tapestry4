@@ -119,7 +119,7 @@ Hidden: <input type="password" name="hidden" value="hidden"/>
 		</assert-output>
 		
 		<assert-output name="Exception Name">
-		org.apache.tapestry.ApplicationRuntimeException
+		org.apache.hivemind.ApplicationRuntimeException
 		</assert-output>
 		
 		<assert-output name="Exception Message">
@@ -143,7 +143,7 @@ Hidden: <input type="password" name="hidden" value="hidden"/>
 		</assert-output>	
 		
 		<assert-output name="Exception Name">
-		org.apache.tapestry.ApplicationRuntimeException
+		org.apache.hivemind.ApplicationRuntimeException
 		</assert-output>
 		
 		<assert-output name="Exception Message">

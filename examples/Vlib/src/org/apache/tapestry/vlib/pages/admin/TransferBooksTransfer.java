@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.ejb.FinderException;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageEvent;

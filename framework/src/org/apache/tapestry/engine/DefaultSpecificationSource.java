@@ -19,17 +19,17 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.parse.SpecificationParser;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
@@ -67,7 +67,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     private static final String PARSER_POOL_KEY = "org.apache.tapestry.SpecificationParser";
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
     private IApplicationSpecification _specification;
 
     private INamespace _applicationNamespace;
@@ -119,7 +119,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     private Pool _pool;
 
     public DefaultSpecificationSource(
-        IResourceResolver resolver,
+        ClassResolver resolver,
         IApplicationSpecification specification,
         Pool pool)
     {
@@ -145,7 +145,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     }
 
     protected IComponentSpecification parseSpecification(
-        IResourceLocation resourceLocation,
+        Resource resourceLocation,
         boolean asPage)
     {
         IComponentSpecification result = null;
@@ -178,7 +178,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    protected ILibrarySpecification parseLibrarySpecification(IResourceLocation resourceLocation)
+    protected ILibrarySpecification parseLibrarySpecification(Resource resourceLocation)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Parsing library specification " + resourceLocation);
@@ -260,12 +260,12 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     /**
      *  Gets a component specification.
      * 
-     *  @param resourceLocation the complete resource path to the specification.
+     *  @param resourcePath the complete resource path to the specification.
      *  @throws ApplicationRuntimeException if the specification cannot be obtained.
      * 
      **/
 
-    public synchronized IComponentSpecification getComponentSpecification(IResourceLocation resourceLocation)
+    public synchronized IComponentSpecification getComponentSpecification(Resource resourceLocation)
     {
         IComponentSpecification result =
             (IComponentSpecification) _componentCache.get(resourceLocation);
@@ -280,7 +280,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    public synchronized IComponentSpecification getPageSpecification(IResourceLocation resourceLocation)
+    public synchronized IComponentSpecification getPageSpecification(Resource resourceLocation)
     {
         IComponentSpecification result = (IComponentSpecification) _pageCache.get(resourceLocation);
 
@@ -294,7 +294,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    public synchronized ILibrarySpecification getLibrarySpecification(IResourceLocation resourceLocation)
+    public synchronized ILibrarySpecification getLibrarySpecification(Resource resourceLocation)
     {
         ILibrarySpecification result = (LibrarySpecification) _libraryCache.get(resourceLocation);
 
@@ -338,8 +338,8 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     {
         if (_frameworkNamespace == null)
         {
-            IResourceLocation frameworkLocation =
-                new ClasspathResourceLocation(_resolver, "/org/apache/tapestry/Framework.library");
+            Resource frameworkLocation =
+                new ClasspathResource(_resolver, "/org/apache/tapestry/Framework.library");
 
             ILibrarySpecification ls = getLibrarySpecification(frameworkLocation);
 

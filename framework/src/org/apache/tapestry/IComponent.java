@@ -17,6 +17,8 @@ package org.apache.tapestry;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.hivemind.LocationHolder;
+import org.apache.hivemind.Messages;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -32,7 +34,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * 
  **/
 
-public interface IComponent extends IRender, ILocationHolder
+public interface IComponent extends IRender, LocationHolder
 {
 
     /**
@@ -315,7 +317,7 @@ public interface IComponent extends IRender, ILocationHolder
      * 
      **/
 
-    public IMessages getMessages();
+    public Messages getMessages();
 
     /**
      *  Returns the {@link INamespace} in which the component was defined

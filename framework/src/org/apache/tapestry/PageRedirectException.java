@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+
 /**
  *  Exception thrown by a {@link IComponent component} or {@link org.apache.tapestry.engine.IEngineService}
  *  that wishes to force the application to a particular page.  This is often used

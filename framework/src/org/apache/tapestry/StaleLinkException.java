@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+
 /**
  *  Exception thrown by an {@link org.apache.tapestry.engine.IEngineService} when it discovers that
  *  the an action link was for an out-of-date version of the page.

@@ -19,7 +19,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IAction;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;

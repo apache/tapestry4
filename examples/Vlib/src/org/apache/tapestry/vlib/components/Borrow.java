@@ -18,7 +18,7 @@ import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;

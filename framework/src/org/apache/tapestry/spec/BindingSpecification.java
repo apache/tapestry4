@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.spec;
 
+import org.apache.hivemind.impl.BaseLocatable;
+
 /**
  *  Stores a binding specification, which identifies the static value
  *  or OGNL expression for the binding.  The name of the binding (which

@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.junit.mock.c9;
 
-import org.apache.tapestry.ILocatable;
+import org.apache.hivemind.Locatable;
 import org.apache.tapestry.html.BasePage;
 
 /**
@@ -26,7 +26,7 @@ import org.apache.tapestry.html.BasePage;
  *
  **/
 
-public abstract class Eleven extends BasePage implements ILocatable
+public abstract class Eleven extends BasePage implements Locatable
 {
 
     public abstract int getIntValue();

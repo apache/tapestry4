@@ -14,11 +14,11 @@
 
 package org.apache.tapestry.param;
 
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.spec.Direction;
@@ -44,7 +44,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
     private boolean _required;
     private Object _clearValue;
     private Direction _direction;
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     /**
      *  Creates a connector.  In addition, obtains the current value
@@ -59,8 +59,6 @@ public abstract class AbstractParameterConnector implements IParameterConnector
         _parameterName = parameterName;
         _binding = binding;
 
-        _resolver = component.getPage().getEngine().getResourceResolver();
-
         IParameterSpecification pspec = _component.getSpecification().getParameter(_parameterName);
         _required = pspec.isRequired();
         _propertyName = pspec.getPropertyName();
@@ -73,7 +71,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
 
     private Object readCurrentPropertyValue()
     {
-        return OgnlUtils.get(_propertyName, _resolver, _component);
+        return OgnlUtils.get(_propertyName, _component);
     }
 
     /**
@@ -83,7 +81,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
 
     protected void setPropertyValue(Object value)
     {
-        OgnlUtils.set(_propertyName, _resolver, _component, value);
+        OgnlUtils.set(_propertyName, _component, value);
     }
 
     /**
