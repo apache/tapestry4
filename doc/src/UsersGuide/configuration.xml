@@ -137,13 +137,14 @@ application specification is used.
 <para>
 Tapestry occasionally must obtain a value for a configuration property.    These configuration
 properties are items that are frequently optional, and don't fit into any particular
-specification.  Many are related to the runtime environment, such as ...
+specification.  Many are related to the runtime environment, such as which class to instantiate as the
+Visit object.
 </para>
 
 <para>
 Tapestry
 is very flexible about where values for such properties may be obtained.  In general,
-the search path for properties is:
+the search path for configuration properties is:
 </para>
 
 <itemizedlist>
@@ -351,6 +352,82 @@ currently used in Tapestry.
 
 </section>  <!-- configuration.search-path -->
 
+<section id="configuration.extensions">
+	<title>Application Extensions</title>
+	
+<para>Tapestry is designed for flexibility; this extends beyond simply configuration
+	behavior, and encompasses actually replacing or augmenting behavior.  In some cases,
+	it is necessary to subclass framework classes in order to alter behavior, but in
+	many cases, it is possible to use an application extension.
+	</para>
+	
+<para>
+	Application extensions are JavaBeans declared in the application specification using
+	the &spec.extension; element.  Each extension consists of a name, a Java class
+	to instantiate, and an optional configuration (that is, properties of the
+	bean may be set).  The framework has a finite number of extension points.  If an extension
+	bean with the correct name exists, it will be used at that extension point.
+	</para>
+	
+	<para>
+	Each application extension must implement an interface particular
+	to the extension point.
+	</para>
+	
+<variablelist>
+	<title>Application Extension Points</title>
+	
+<varlistentry>
+	<term>net.sf.tapestry.property-source (&IPropertySource;)</term>
+	<listitem>
+	<para>
+		This extension
+		is fit into the configuration property search path, after the servlet context, but
+		before JVM system properties.  A typical use would be to access some set of configuration
+		properties stored in a database.
+		</para>	
+		</listitem>
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.request-decoder (&IRequestDecoder;)</term>
+	<listitem>
+	<para>
+		A request decoder is used
+		to identify the actual server name, server port, scheme and request URI for the
+		request.  In some configurations, a firewall may invalidate the values provided by
+		the actual &HttpServletRequest; (the values reflect the internal server forwarded
+		to by the firewall, not the actual values used by the external client).  A
+		request decoder knows how to determine the actual values.</para>	
+	</listitem>	
+</varlistentry>	
+
+<varlistentry>
+	<term>net.sf.tapestry.monitor (&IMonitor;)</term>
+
+	<listitem>
+	<para>A monitor is informed
+	about key events during each request and it intended to support performance
+	monitoring.
+	</para>	
+	</listitem>	
+</varlistentry>
+
+<varlistentry>
+	<term>net.sf.tapestry.value-persister (&IValuePersister;)</term>
+
+	<listitem>
+	<para>
+	An object responsible for copying persistent page properties for storage.  If not
+	provided, an instance of &DefaultValuePersister; is used.
+	</para>
+	</listitem>	
+</varlistentry>
+
+</variablelist>
+
+	
+</section>  <!-- configuration.extensions -->
 
 
 </chapter>

@@ -31,6 +31,7 @@
 <!ENTITY BaseEngine '<ulink url="&ApiRoot;/engine/BaseEngine.html"><classname>BaseEngine</classname></ulink>'>
 <!ENTITY BasePage '<ulink url="&ApiRoot;/html/BasePage.html"><classname>BasePage</classname></ulink>'>
 <!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
+<!ENTITY DefaultValuePersister '<ulink url="&ApiRoot;/record/DefaultValuePersister.html"><classname>DefaultValuePersister</classname></ulink>'>
 <!ENTITY Enum '<ulink url="&ApiRoot;/util/Enum.html"><classname>Enum</classname></ulink>'>
 <!ENTITY EnumPropertySelectionModel '<ulink url="&ApiRoot;/form/EnumPropertySelectionModel.html"><classname>EnumPropertySelectionModel</classname></ulink>'>
 <!ENTITY EvenOdd '<ulink url="&ApiRoot;/bean/EvenOdd.html"><classname>EvenOdd</classname></ulink>'>
@@ -45,14 +46,17 @@
 <!ENTITY IEngineService '<ulink url="&ApiRoot;/IEngineService.html"><classname>IEngineService</classname></ulink>'>
 <!ENTITY ILifecycle '<classname>ILifecycle</classname>'>
 <!ENTITY IMarkupWriter '<ulink url="&ApiRoot;/IMarkupWriter.html"><classname>IMarkupWriter</classname></ulink>'>
+<!ENTITY IMonitor '<ulink url="&ApiRoot;/IMonitor.html"><classname>IMonitor</classname></ulink>'>
 <!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
 <!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
 <!ENTITY IPropertySelectionModel '<ulink url="&ApiRoot;/form/IPropertySelectionModel.html"><classname>IPropertySelectionModel</classname></ulink>'>
 <!ENTITY IPropertySource '<ulink url="&ApiRoot;/IPropertySource.html"><classname>IPropertySource</classname></ulink>'>
 <!ENTITY IPoolable '<ulink url="&ApiRoot;/util/pool/IPoolable.html"><classname>IPoolable</classname></ulink>'>
 <!ENTITY IRequestCycle '<ulink url="&ApiRoot;/IRequestCycle.html"><classname>IRequestCycle</classname></ulink>'>
+<!ENTITY IRequestDecoder '<ulink url="&ApiRoot;/IRequestDecoder.html"><classname>IRequestDecoder</classname></ulink>'>
 <!ENTITY IValidator '<ulink url="&ApiRoot;/valid/IValidator.html"><classname>IValidator</classname></ulink>'>
 <!ENTITY IValidationDelegate '<ulink url="&ApiRoot;/valid/IValidationDelegate.html"><classname>IValidationDelegate</classname></ulink>'>
+<!ENTITY IValuePersister '<ulink url="&ApiRoot;/record/IValuePersister.html"><classname>IValuePersister</classname></ulink>'>
 <!ENTITY IField '<ulink url="&ApiRoot;/valid/IField.html"><classname>IField</classname></ulink>'>
 <!ENTITY IUploadFile '<ulink url="&ApiRoot;/IUploadFile.html"><classname>IUploadFile</classname></ulink>'>
 <!ENTITY PageCleanupListener '<ulink url="&ApiRoot;/event/PageCleanupListener.html"><classname>PageCleanupListener</classname></ulink>'>
@@ -111,6 +115,7 @@
 
 <!ENTITY Ant '<ulink url="http://jakarta.apache.org/ant">Ant</ulink>'>
 <!ENTITY BSF '<ulink url="http://jakarta.apache.org/bsf">BSF</ulink>'>
+<!ENTITY BCEL '<ulink url="http://jakarta.apache.org/bcel">BCEL</ulink>'>
 <!ENTITY DocBook '<ulink url="http://docbook.sourceforge.net/">DocBook</ulink>'>
 <!ENTITY Eclipse '<ulink url="http://www.eclipse.org">Eclipse</ulink>'>
 <!ENTITY Fop '<ulink url="http://xml.apache.org/fop">FOP</ulink>'>
@@ -121,7 +126,7 @@
 <!ENTITY Jython '<ulink url="http://www.jython.org">Jython</ulink>'>
 <!ENTITY OGNL '<ulink url="http://www.ognl.org">OGNL</ulink>'>
 <!ENTITY Saxon '<ulink url="http://sf.net/projects/saxon">Saxon</ulink>'>
-<!ENTITY TapestryHomePage '<ulink url="http://tapestry.sf.net">Tapestry Home Page</ulink>'>
+<!ENTITY TapestryHomePage '<ulink url="http://jakarta.apache.org/proposals/tapestry">Tapestry Home Page</ulink>'>
 <!ENTITY TapestryProjectPage '<ulink url="http://sf.net/projects/tapestry">Tapestry Project Page</ulink>'>
 
 <!-- Other useful stuff -->
