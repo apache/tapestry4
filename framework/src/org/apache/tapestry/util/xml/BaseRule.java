@@ -96,12 +96,7 @@ public class BaseRule implements IRule
 
     }
 
-    public void ignorableWhitespace(RuleDirectedParser parser, char[] ch, int start, int length)
-    {
-
-    }
-
-    public void characters(RuleDirectedParser parser, char[] ch, int start, int length)
+    public void content(RuleDirectedParser parser, String content)
     {
 
     }
