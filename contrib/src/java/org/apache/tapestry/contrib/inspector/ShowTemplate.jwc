@@ -32,6 +32,6 @@
     <binding name="delegate" value="ognl:templateDelegate"/>
   </component>
   
-  <inject name="templateSource" value="infrastructure:templateSource"/>
+  <inject property="templateSource" object="infrastructure:templateSource"/>
   
 </component-specification>
