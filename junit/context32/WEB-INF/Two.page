@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- $Id$ -->
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -16,28 +14,16 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<mock-test>
-    <context name="c4" root="context4"/>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 
-  	<servlet name="foo" class="org.apache.tapestry.ApplicationServlet"/>
-       
-    <request>
- 		
- 		<assert-output name="Page Title">
-<![CDATA[
-<title>App Spec in WEB-INF</title>
-]]> 		
- 		</assert-output>
- 		
- 		<assert-output name="Application Name">
-Application name: Application foo in WEB-INF
- 		</assert-output>
- 		
- 		<assert-output name="Engine Class">
-Engine class: org.apache.tapestry.junit.mock.c4.C4Engine
-		</assert-output>
-		
- 	</request>
-			
-</mock-test>
-    	
+<page-specification>
+
+  <component id="insertPageName" type="Insert">
+  	<static-binding name="value" value="SPECIFICATION-VALUE"/>
+  </component>
+  
+
+</page-specification>

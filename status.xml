@@ -240,6 +240,10 @@ DatePicker doesn't use the current Locale in its formatter
 Update DatePicker to use a graphic icon to hide and show the calendar.	
 </action>
 
+<action type="fix" dev="HLS" fixes-bug="20932">
+Check for duplication of ids between the HTML template and the specification.
+</action>
+
  </release>
   	
   

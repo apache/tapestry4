@@ -37,7 +37,9 @@ import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
+import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
 
 /**
  *  Utility class instantiated by {@link org.apache.tapestry.BaseComponent} to
@@ -234,7 +236,11 @@ public class BaseComponentTemplateLoader
         if (componentType == null)
             component = getEmbeddedComponent(id);
         else
+        {
+            checkForDuplicateId(id, token.getLocation());
+
             component = createImplicitComponent(id, componentType, token.getLocation());
+        }
 
         // Make sure the template contains each component only once.
 
@@ -268,6 +274,25 @@ public class BaseComponentTemplateLoader
         _stack[_stackx++] = _activeComponent;
 
         _activeComponent = component;
+    }
+
+    private void checkForDuplicateId(String id, ILocation location)
+    {
+        if (id == null)
+            return;
+
+        IContainedComponent cc = _loadComponent.getSpecification().getComponent(id);
+
+        if (cc != null)
+            throw new ApplicationRuntimeException(
+                Tapestry.format(
+                    "BaseComponentTemplateLoader.dupe-component-id",
+                    id,
+                    location,
+                    cc.getLocation()),
+                _loadComponent,
+                location,
+                null);
     }
 
     private IComponent createImplicitComponent(String id, String componentType, ILocation location)
@@ -374,7 +399,6 @@ public class BaseComponentTemplateLoader
             }
         }
 
-
         // if the component defines a templateTag parameter and 
         // there is no established binding for that parameter, 
         // add a static binding carrying the template tag  
@@ -388,7 +412,7 @@ public class BaseComponentTemplateLoader
                 token.getTag(),
                 token.getLocation());
         }
-        
+
     }
 
     /**
@@ -620,14 +644,15 @@ public class BaseComponentTemplateLoader
         {
             if (j == 1)
                 buffer.append(' ');
-            else if (j == count)
-            {
-                buffer.append(' ');
-                buffer.append(Tapestry.getMessage("BaseComponent.and"));
-                buffer.append(' ');
-            }
             else
-                buffer.append(", ");
+                if (j == count)
+                {
+                    buffer.append(' ');
+                    buffer.append(Tapestry.getMessage("BaseComponent.and"));
+                    buffer.append(' ');
+                }
+                else
+                    buffer.append(", ");
 
             buffer.append(i.next());
 
