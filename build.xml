@@ -207,7 +207,7 @@ description="Builds the Tapestry documentation.">
   <group title="Tapestry Contributions Framework" packages="net.sf.tapestry.*"/>
   <group title="Tapestry Tutorials" packages="tutorial.*"/>
   <group title="Virtual Library" packages="com.primix.vlib:com.primix.vlib.*"/>
-  <group title="JUnit Tests" packages="net.sf.tapestry.junit.*"/>
+  <group title="JUnit Tests" packages="net.sf.tapestry.junit,net.sf.tapestry.junit.*"/>
   
   <sourcepath>
     <pathelement location="framework/src"/>
