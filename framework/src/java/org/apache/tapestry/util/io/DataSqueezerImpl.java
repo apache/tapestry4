@@ -17,9 +17,10 @@ package org.apache.tapestry.util.io;
 import java.io.IOException;
 
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.lib.util.AdapterRegistry;
+import org.apache.hivemind.lib.util.AdapterRegistryImpl;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.DataSqueezer;
-import org.apache.tapestry.util.AdaptorRegistry;
 
 /**
  * A class used to convert arbitrary objects to Strings and back. This has
@@ -51,7 +52,7 @@ public class DataSqueezerImpl implements DataSqueezer
      * AdaptorRegistry cache of adaptors.
      */
 
-    private AdaptorRegistry _adaptors = new AdaptorRegistry();
+    private AdapterRegistry _adaptors = new AdapterRegistryImpl();
 
     /**
      * Resource resolver used to deserialize classes.
@@ -162,7 +163,7 @@ public class DataSqueezerImpl implements DataSqueezer
         if (data == null)
             return NULL_PREFIX;
 
-        adaptor = (ISqueezeAdaptor) _adaptors.getAdaptor(data.getClass());
+        adaptor = (ISqueezeAdaptor) _adaptors.getAdapter(data.getClass());
 
         return adaptor.squeeze(this, data);
     }

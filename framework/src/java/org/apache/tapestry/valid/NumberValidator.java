@@ -22,11 +22,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.lib.util.AdapterRegistry;
+import org.apache.hivemind.lib.util.AdapterRegistryImpl;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.util.AdaptorRegistry;
 
 /**
  *  Simple validation for standard number classes.  This is probably insufficient
@@ -86,7 +87,7 @@ public class NumberValidator extends BaseValidator
     private String _numberTooLargeMessage;
     private String _numberRangeMessage;
 
-    private static AdaptorRegistry _numberAdaptors = new AdaptorRegistry();
+    private static AdapterRegistry _numberAdaptors = new AdapterRegistryImpl();
 
     public final static int NUMBER_TYPE_INTEGER = 0;
 	public final static int NUMBER_TYPE_REAL = 1;
@@ -325,7 +326,7 @@ public class NumberValidator extends BaseValidator
 	 */
     public static NumberAdaptor getAdaptor(Class type)
     {
-        return (NumberAdaptor) _numberAdaptors.getAdaptor(type);
+        return (NumberAdaptor) _numberAdaptors.getAdapter(type);
     }
 
     public Object toObject(IFormComponent field, String value) throws ValidatorException
@@ -672,7 +673,7 @@ public class NumberValidator extends BaseValidator
 
     public boolean isIntegerNumber()
     {
-        NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdaptor(_valueTypeClass);
+        NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdapter(_valueTypeClass);
         if (result == null)
             return false;
 
