@@ -24,11 +24,13 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td>
-	  
-	  	<!-- Added code for Select visual component here -->
-	  	
-	  </td>
+	  <td>Select
+		 <select>
+		  <option>First</option>
+		  <option>Second</option>
+		  <option>Third</option>
+		 </select>
+		</td>
 	 </tr>
   </table>
  </td>
@@ -42,11 +44,14 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Implements a list box selection. The items shown within the selection
-  can be sourced via a <a href="PropertySelection.html">PropertySelection</a> 
-  or from related <a href="Option.html">Option</a> components. <p>
-  In most normal circumstances, the options to be selected are provided
-  via <a href="PropertySelection.html">PropertySelection</a>.
+  Implements a component that manages an HTML &lt;select&gt; form element. The
+  Select component can take the form of a drop down list (default) or a list 
+  selection box if the "multiple" parameter is set to true. The Select component
+  must wrap around <a href="Option.html">Option</a> components within a 
+  <a href="Form.html">Form</a>.
+  <p>
+  Unless multiple selections are required it is generally easier to use the 
+  <a href="PropertySelection.html">PropertySelection</a> component.  
   <p>
   This component may wrap around other components and static HTML.
  </td>
@@ -58,11 +63,10 @@
 	<br>
 	<a href="Form.html">Form</a>, 
   <a href="Option.html">Option</a>, 
+  <a href="PropertySelection.html">PropertySelection</a>,
   <a href="RadioGroup.html">RadioGroup</a>
-  <a href="PropertySelection.html">PropertySelection</a>
  </td>
 </tr>
-
 <tr>
  <td colspan="2">
   <b>Parameters</b>
@@ -76,15 +80,14 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
-
   <tr>
 		<td>multiple</td>
 		<td>boolean</td>
 		<td>in</td>
 		<td>no</td>
 		<td>false</td>
-		<td>If true, the component allows multiple selection.</td> </tr>
-
+		<td>If true, the component allows multiple selection.</td> 
+  </tr>
   <tr>
  		<td>disabled</td>
 		<td>boolean</td>
@@ -92,13 +95,13 @@
 		<td>no</td>
 		<td>false</td>
 		<td>Controls whether the select is active or not.
-
-			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
+	  <p>Corresponds to the "disabled" HTML attribute.
+    </td>
 	</tr>
 
 	</table>
   Informal parameters: allowed<br>
-  Reserved parameters: none
+  Reserved parameters: "name"
  </td>
 </tr>
 

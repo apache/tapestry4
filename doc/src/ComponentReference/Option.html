@@ -25,9 +25,12 @@
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
 	 	<td>
-	 	
-	 	<!-- insert visual component here -->
-	 	
+	   Option
+		 <select>
+		  <option>First</option>
+		  <option>Second</option>
+		  <option>Third</option>
+		 </select>
 		</td>
 	 </tr>
   </table>
@@ -42,9 +45,9 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-Implements an HTML option, typically displayed by a client browser as a radio button group.
-An Option component must be wrapped by a <a href="Select.html">Select</a> component. 
-The wrapping may not necessarily be direct (see example below).
+  Provides a component that manages an HTML &lt;option&gt; form element. The
+  Option component must be wrapped by a <a href="Select.html">Select</a> 
+  component.   
   <p>
   This component may NOT wrap around other components or static HTML. 
  </td>
@@ -55,6 +58,7 @@ The wrapping may not necessarily be direct (see example below).
   <b>See Also</b>
 	<br>
 	<a href="Form.html">Form</a>, 
+	<a href="PropertySelection.html">PropertySelection</a>, 
   <a href="Select.html">Select</a>
  </td>
 </tr>
@@ -64,41 +68,38 @@ The wrapping may not necessarily be direct (see example below).
   <b>Parameters</b>
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+    <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
   <tr>
-    <td>Parameter</td>
-    <td>Type</td>
-	  <td>Read / Write </td>
-    <td>Required</td>
-    <td>Default</td>
-    <td>Description</td>
- </tr>
-
-
- <tr>
 		<td>selected</td>
-		<td>java.lang.Boolean</td>
-		<td>R / W </td>
+		<td>boolean</td>
+		<td>in-out</td>
 		<td>yes</td>
 		<td>&nbsp;</td>
-		<td>Used to indicate whether the given option is selected.
-		</td>
+		<td>Used to indicate whether the given option is selected.</td>
 	</tr>
 
   <tr>
 		<td>label</td>
-		<td>java.lang.String</td>
-		<td>R</td>
+		<td>String</td>
+		<td>in</td>
 		<td>no</td>
 		<td>&nbsp;</td>
-		<td>A string which represents the option that may be selected.  This is optional;
+		<td>A string which represents the option that may be selected. This is optional;
 		any text that follows the &lt;option&gt; tag is considered the label, but this
-      saves the designed from including one more
-      <A HREF="../../../../net/sf/tapestry/components/Insert.html"><CODE>Insert</CODE></A> component.
+    saves the designed from including one more
+    <a HREF="../api/net/sf/tapestry/components/Insert.html"><tt>Insert</tt></a> component.
 		</td>
 	</tr>
 	</table>
   Informal parameters: allowed<br>
-  Reserved parameters: none
+  Reserved parameters: "value"
  </td>
 </tr>
 
