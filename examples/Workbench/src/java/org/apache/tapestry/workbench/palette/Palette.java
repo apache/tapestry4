@@ -96,10 +96,8 @@ public abstract class Palette extends BasePage
     {
         if (_sortModel == null)
         {
-            String packageName = getClass().getPackage().getName();
-
             ResourceBundle bundle = ResourceBundle.getBundle(
-                    packageName + ".SortModeStrings",
+                    "org.apache.tapestry.workbench.palette.SortModeStrings",
                     getLocale());
 
             Enum[] options = new Enum[]

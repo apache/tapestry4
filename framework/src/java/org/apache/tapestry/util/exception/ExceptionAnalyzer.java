@@ -194,7 +194,7 @@ public class ExceptionAnalyzer
             if (stringValue.length() == 0)
                 continue;
 
-            property = new ExceptionProperty(descriptor.getDisplayName(), value.toString());
+            property = new ExceptionProperty(descriptor.getDisplayName(), value);
 
             propertyDescriptions.add(property);
         }

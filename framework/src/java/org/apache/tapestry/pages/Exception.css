@@ -150,3 +150,57 @@ TABLE.exception-display TR.strack-trace-label TD  {
 	text-align : center;
 }
 
+TABLE.location-content
+{
+  border: 1px solid black;
+}
+
+TABLE.location-content TR.target-line TD
+{
+  background-color: yellow;
+}
+
+TABLE.location-content TR
+{
+  padding: 0px;
+  margin: 0px; 
+}
+
+TABLE.location-content TD.line-number
+{
+  width: 1px; // Minimum; will expand to fit line numbers.
+  align: right;
+  border-right: 1px dotted grey;
+}
+
+TABLE.location-content TD
+{
+  font: terminal;
+  padding: 0px;
+  margin: 0px; 
+}
+
+DIV.described-object-title
+{
+  font-size: large;
+  font-weight: bold;
+}
+
+TABLE.described-object
+{
+  border: 1px solid black;
+  width: 100%;
+}
+
+TABLE.described-object TR.section TH
+{
+  color: white;
+  background-color: black;
+  text-align: center;
+}
+
+TABLE.described-object TH
+{
+  text-align: right;
+  width: 1px; // Will stretch to fit.
+}

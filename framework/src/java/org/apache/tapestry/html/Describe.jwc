@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,19 +15,24 @@
    limitations under the License.
 -->
 
-<!DOCTYPE page-specification PUBLIC 
+<!DOCTYPE component-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
-	
-<page-specification class="org.apache.tapestry.pages.Exception">
+		
+<component-specification class="org.apache.tapestry.html.Describe" 
+	allow-body="no" 
+	allow-informal-parameters="no">
   
-  <component id="restart" type="ServiceLink">
-    <binding name="service" value="ognl:@org.apache.tapestry.Tapestry@RESTART_SERVICE"/>
-  </component>
+  <description>
+   Describes an object; breaks apart the object into properties that are formatted
+      as HTML.
+       </description>
   
-  <asset name="stylesheet" path="Exception.css"/>
+  <parameter name="object" required="true">
+      <description>
+          The object to be described.
+      </description>
+  </parameter>
   
-  <inject property="request" object="service:tapestry.globals.HttpServletRequest"/>
-  <inject property="context" object="service:tapestry.globals.ServletContext"/>
-  <inject property="servlet" object="service-property:tapestry.globals.ApplicationGlobals:servlet"/>
-</page-specification>
+  <inject property="describer" object="service:tapestry.describe.HTMLDescriber"/>
+</component-specification>

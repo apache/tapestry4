@@ -39,6 +39,7 @@
     <component-type type="Conditional" specification-path="components/Conditional.jwc"/>
     <component-type type="DatePicker" specification-path="form/DatePicker.jwc"/>
     <component-type type="Delegator" specification-path="components/Delegator.jwc"/>
+	<component-type type="Describe" specification-path="html/Describe.jwc"/>
     <component-type type="DirectLink" specification-path="link/DirectLink.jwc"/>
     <component-type type="ExternalLink" specification-path="link/ExternalLink.jwc"/>
     <component-type type="FieldLabel" specification-path="valid/FieldLabel.jwc"/>

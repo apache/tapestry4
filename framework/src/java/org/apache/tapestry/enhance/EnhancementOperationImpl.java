@@ -126,22 +126,22 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return builder.toString();
     }
 
+    /**
+     * We want to find the properties of the class, but in many cases, the class is abstract. Some
+     * JDK's (Sun) will include public methods from interfaces implemented by the class in the
+     * public declared methods for the class (which is used by the Introspector). Eclipse's built-in
+     * compiler does not appear to (this may have to do with compiler options I've been unable to
+     * track down). The solution is to augment the information provided directly by the Introspector
+     * with additional information compiled by Introspecting the interfaces directly or indirectly
+     * implemented by the class.
+     */
     private void introspectBaseClass()
     {
         try
         {
             synchronized (HiveMind.INTROSPECTOR_MUTEX)
             {
-                BeanInfo bi = Introspector.getBeanInfo(_baseClass);
-
-                PropertyDescriptor[] pds = bi.getPropertyDescriptors();
-
-                for (int i = 0; i < pds.length; i++)
-                {
-                    PropertyDescriptor pd = pds[i];
-
-                    _properties.put(pd.getName(), pd);
-                }
+                addPropertiesDeclaredInBaseClass();
             }
         }
         catch (IntrospectionException ex)
@@ -151,6 +151,56 @@ public class EnhancementOperationImpl implements EnhancementOperation
                     ex), ex);
         }
 
+    }
+
+    private void addPropertiesDeclaredInBaseClass() throws IntrospectionException
+    {
+        Class introspectClass = _baseClass;
+
+        addPropertiesDeclaredInClass(introspectClass);
+
+        List interfaceQueue = new ArrayList();
+
+        while (introspectClass != null)
+        {
+            addInterfacesToQueue(introspectClass, interfaceQueue);
+
+            introspectClass = introspectClass.getSuperclass();
+        }
+
+        while (!interfaceQueue.isEmpty())
+        {
+            Class interfaceClass = (Class) interfaceQueue.remove(0);
+
+            addPropertiesDeclaredInClass(interfaceClass);
+
+            addInterfacesToQueue(interfaceClass, interfaceQueue);
+        }
+    }
+
+    private void addInterfacesToQueue(Class introspectClass, List interfaceQueue)
+    {
+        Class[] interfaces = introspectClass.getInterfaces();
+
+        for (int i = 0; i < interfaces.length; i++)
+            interfaceQueue.add(interfaces[i]);
+    }
+
+    private void addPropertiesDeclaredInClass(Class introspectClass) throws IntrospectionException
+    {
+        BeanInfo bi = Introspector.getBeanInfo(introspectClass);
+
+        PropertyDescriptor[] pds = bi.getPropertyDescriptors();
+
+        for (int i = 0; i < pds.length; i++)
+        {
+            PropertyDescriptor pd = pds[i];
+
+            String name = pd.getName();
+
+            if (!_properties.containsKey(name))
+                _properties.put(name, pd);
+        }
     }
 
     /**

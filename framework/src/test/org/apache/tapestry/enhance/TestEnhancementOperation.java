@@ -35,6 +35,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Insert;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageValidateListener;
+import org.apache.tapestry.link.ServiceLink;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
@@ -740,6 +741,27 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         eo.getConstructor();
+
+        verifyControls();
+    }
+
+    /**
+     * This seems to pass on the command line, but fail inside Eclipse. I think Eclipse's Java
+     * compiler works a little different from Java's ... in this example (TODO: Create test fixture
+     * classes for this test) the getTarget() method doesn't show up as a declared public method
+     * when Eclipse compiles the code, but does when JDK compiles the code.
+     */
+    public void testPropertyInheritedFromInterface()
+    {
+        IComponentSpecification spec = newSpec();
+        ClassFactory cf = newClassFactory(ServiceLink.class);
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                ServiceLink.class, cf);
+
+        assertEquals(String.class, eo.getPropertyType("target"));
 
         verifyControls();
     }

@@ -30,8 +30,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultErrorHandler;
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.hivemind.parse.AbstractParser;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
@@ -61,6 +63,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 import org.apache.tapestry.util.xml.InvalidStringException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * Parses the different types of Tapestry specifications.
@@ -1640,7 +1643,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             URL resourceURL = resource.getResourceURL();
 
             if (resourceURL == null)
-                throw new DocumentParseException(ParseMessages.missingResource(resource), resource);
+                throw new DocumentParseException(ParseMessages.missingResource(resource), resource,
+                        null);
 
             InputStream rawStream = resourceURL.openStream();
             stream = new BufferedInputStream(rawStream);
@@ -1651,6 +1655,15 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             stream = null;
 
             success = true;
+        }
+        catch (SAXParseException ex)
+        {
+            _parser = null;
+
+            Location location = new LocationImpl(resource, ex.getLineNumber(), ex.getColumnNumber());
+
+            throw new DocumentParseException(ParseMessages.errorReadingResource(resource, ex),
+                    location, ex);
         }
         catch (Exception ex)
         {
@@ -1734,7 +1747,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return getDTDInputSource("Tapestry_3_0.dtd");
 
         throw new DocumentParseException(ParseMessages.unknownPublicId(getResource(), publicId),
-                getResource());
+                new LocationImpl(getResource()), null);
     }
 
     /** @since 3.1 */

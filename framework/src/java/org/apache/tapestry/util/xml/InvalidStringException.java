@@ -19,27 +19,15 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 
 /**
- *  Exception thrown if there is any kind of error validating a string
- *  during document parsing
- *
- *  @author Geoffrey Longman
- *  @since 2.2
- *
- **/
+ * Exception thrown if there is any kind of error validating a string during document parsing
+ * 
+ * @author Geoffrey Longman
+ * @since 2.2
+ */
 
 public class InvalidStringException extends DocumentParseException implements Locatable
 {
     private String _invalidString;
-
-    public InvalidStringException(
-        String message,
-        String invalidString,
-        Resource resourceLocation)
-    {
-        super(message, resourceLocation);
-
-        _invalidString = invalidString;
-    }
 
     public InvalidStringException(String message, String invalidString, Location location)
     {
