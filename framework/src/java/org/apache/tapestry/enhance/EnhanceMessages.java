@@ -38,19 +38,9 @@ class EnhanceMessages
         { method, declareClass.getName(), className, enhancedClass.getName() });
     }
 
-    public static String codeGenerationError(String className, Throwable cause)
-    {
-        return _formatter.format("code-generation-error", className, cause);
-    }
-
     public static String unabelToIntrospectClass(Class targetClass, Throwable cause)
     {
         return _formatter.format("unable-to-introspect-class", targetClass.getName(), cause);
-    }
-
-    public static String badPropertyType(String type, Throwable cause)
-    {
-        return _formatter.format("bad-property-type", type, cause);
     }
 
     public static String propertyTypeMismatch(Class componentClass, String propertyName,
@@ -60,16 +50,6 @@ class EnhanceMessages
         { componentClass.getName(), propertyName,
                 ClassFabUtils.getJavaClassName(actualPropertyType),
                 ClassFabUtils.getJavaClassName(expectedPropertyType) });
-    }
-
-    public static String nonAbstractWrite(Class declaringClass, String propertyName)
-    {
-        return _formatter.format("non-abstract-write", declaringClass.getName(), propertyName);
-    }
-
-    public static String nonAbstractRead(Class declaringClass, String propertyName)
-    {
-        return _formatter.format("non-abstract-read", declaringClass.getName(), propertyName);
     }
 
     public static String autoMustBeRequired(String propertyName)
@@ -102,14 +82,14 @@ class EnhanceMessages
         return _formatter.format("missing-constructor", baseClass.getName());
     }
 
-    public static String locatedValueIsNull(String locator)
+    public static String locatedValueIsNull(String objectReference)
     {
-        return _formatter.format("located-value-is-null", locator);
+        return _formatter.format("located-value-is-null", objectReference);
     }
 
     public static String incompatibleInjectType(String locator, Object value, Class propertyType)
     {
-        return _formatter
-                .format("incompatible-inject-type", locator, value, propertyType.getName());
+        return _formatter.format("incompatible-inject-type", locator, value, ClassFabUtils
+                .getJavaClassName(propertyType));
     }
 }

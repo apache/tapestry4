@@ -100,8 +100,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private void introspectBaseClass()
     {
-        // TODO: Need some kind of JVM lock here on Introspection!
-
         try
         {
             synchronized (HiveMind.INTROSPECTOR_MUTEX)
