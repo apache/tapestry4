@@ -20,36 +20,70 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.IdAllocator;
 
 /**
- *  A new implementation of the template parser; this does <em>not</em>
- *  rely on GNU Regexp, and performs a much more complex parsing job.
- *  This parser supports the &lt;jwc id="<i>id</id>"&gt; syntax (standard
- *  through release 1.0.1).    In addition, any HTML tag can become
- *  the equivalent of a &lt;jwc&gt; tag by including a <code>jwcid</code>
- *  attribute.  That latter is referred to as <em>invisible instrumentation</em>,
- *  as the instrumentation is invisible to a WYSIWYG editor.
+ *  Parses Tapestry templates, breaking them into a series of
+ *  {@link net.sf.tapestry.parse.TemplateToken tokens}.
+ *  Although often referred to as an "HTML template", there is no real
+ *  requirement that the template be HTML.  This parser can handle
+ *  any reasonable SGML derived markup (including XML), 
+ *  but specifically works around the ambiguities
+ *  of HTML reasonably.
+ * 
+ *  <p>Dynamic markup in Tapestry attempts to be invisible.
+ *  Components are arbitrary tags containing a <code>jwcid</code> attribute.
+ *  Such components must be well balanced (have a matching close tag, or
+ *  end the tag with "<code>/&gt;</code>".
+ * 
+ *  <p>Generally, the id specified in the template is matched against
+ *  an component defined in the specification.  However, implicit
+ *  components are also possible.  The jwcid attribute uses
+ *  the syntax "<code>@Type</code>" for implicit components.
+ *  Type is the component type, and may include a library id prefix.  Such
+ *  a component is anonymous (but is given a unique id).
+ * 
+ *  <p>
+ *  (The unique ids assigned start with a dollar sign, which is normally
+ *  no allowed for component ids ... this helps to make them stand out
+ *  and assures that they do not conflict with
+ *  user-defined component ids.  These ids tend to propagate
+ *  into URLs and become HTML element names and even JavaScript
+ *  variable names ... the dollar sign is acceptible in these contexts as 
+ *  well).
+ * 
+ *  <p>Implicit component may also be given a name using the syntax
+ *  "<code>componentId:@Type</code>".  Such a component should
+ *  <b>not</b> be defined in the specification, but may still be
+ *  accessed via {@link net.sf.tapestry.IComponent#getComponent(String)}.
+ * 
+ *  <p>
+ *  Both defined and implicit components may have additional attributes
+ *  defined, simply by including them in the template.  They set formal or
+ *  informal parameters of the component to static strings.
+ *  {@link net.sf.tapestry.spec.ComponentSpecification#getAllowInformalParameters()},
+ *  if false, will cause such attributes to be simply ignored.  For defined
+ *  components, conflicting values defined in the template are ignored.
+ * 
+ *  <p>
+ *  Attribute values of the form "<code>[[ <i>expression</i> ]]</code>"
+ *  are dynamic OGNL expressions.  These also set parameters 
  *
  *  <p>The parser removes
  *  the body of some tags (when the corresponding component doesn't
- *  allow a body), identifies more template errors, and allows
+ *  {@link net.sf.tapestry.spec.ComponentSpecification#getAllowBody() allow a body},
+ *  and allows
  *  portions of the template to be completely removed.
  *
- *  <p>The parser does a more thorough lexical analysis of the template,
+ *  <p>The parser does a pretty thorough lexical analysis of the template,
  *  and reports a great number of errors, including improper nesting
  *  of tags.
  *
- *  <p>The parser identifies attributes in dynamic tags (ordinary 
- *  tags with the <code>jwcid</code> attribute) and records them,
- *  where they later become static bindings on the component.
- *
- *  <p>Although the &lt;jwc&gt; tag is still supported (and will always
- *  be), it can now be avoided by using the jwcid attribute on
- *  existing tags, such as &lt;span&gt;.
- * 
- *  Starting in release 2.0.4 is a new option, <em>invisible localization</em>
- *  where the parser recognizes HTML of the form:
+ *  <p>The parser supports <em>invisible localization</em>:
+ *  The parser recognizes HTML of the form:
  *  <code>&lt;span key="<i>value</i>"&gt; ... &lt;/span&gt;</code>
  *  and converts them into a {@link TokenType#LOCALIZATION}
- *  token.
+ *  token.  You may also specifify a <code>raw</code> attribute ... if the value
+ *  is <code>true</code>, then the localized value is 
+ *  sent to the client without filtering, which is appropriate if the
+ *  value has any markup that should not be escaped.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -112,6 +146,8 @@ public class TemplateParser
     /**
      *  Pattern used to recognize ordinary components (defined in the specification).
      * 
+     *  @since NEXT_RELEASE
+     * 
      **/
 
     public static final String SIMPLE_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")$";
@@ -121,6 +157,8 @@ public class TemplateParser
      *  the template).  Subgroup 3 is the id (which may be null) and subgroup 4
      *  is the type (which may be qualified with a library prefix).
      *  Subgroup 6 is the library id, Subgroup 7 is the simple component type.
+     * 
+     *  @since NEXT_RELEASE
      * 
      **/
 
@@ -255,12 +293,12 @@ public class TemplateParser
     /**
      *  Parses the template data into an array of {@link TemplateToken}s.
      *
-     *  <p>The parser is very much not threadsafe, so care should be taken
+     *  <p>The parser is <i>decidedly</i> not threadsafe, so care should be taken
      *  that only a single thread accesses it.
      *
      *  @param templateData the HTML template to parse.  Some tokens will hold
      *  a reference to this array.
-     *  @param delegate delegate object that "knows" about components
+     *  @param delegate  object that "knows" about defined components
      *  @param resourcePath a description of where the template originated from,
      *  used with error messages.
      *
@@ -762,6 +800,11 @@ public class TemplateParser
 
             // If (and this is typical) no actual component id was specified,
             // then generate one on the fly.
+            // The allocated id for anonymous components is
+            // based on the simple (unprefixed) type, but starts
+            // with a leading dollar sign to ensure no conflicts
+            // with user defined component ids (which don't allow dollar signs
+            // in the id).
 
             if (jwcId == null)
                 jwcId = _idAllocator.allocateId("$" + simpleType);
@@ -809,7 +852,6 @@ public class TemplateParser
 
                 allowBody = _delegate.getAllowBody(jwcId);
 
-
             }
         }
 
@@ -826,20 +868,7 @@ public class TemplateParser
                 _resourcePath);
 
         if (!emptyTag)
-        {
-            Tag tag = new Tag(tagName, startLine);
-
-            tag._component = !isRemoveId;
-            tag._removeTag = isRemoveId;
-
-            tag._ignoringBody = ignoreBody;
-
-            _ignoring = tag._ignoringBody;
-
-            tag._mustBalance = true;
-
-            _stack.add(tag);
-        }
+            pushNewTag(tagName, startLine, isRemoveId, ignoreBody);
 
         // End any open block.
 
@@ -856,6 +885,22 @@ public class TemplateParser
         advance();
 
         return;
+    }
+
+    private void pushNewTag(String tagName, int startLine, boolean isRemoveId, boolean ignoreBody)
+    {
+        Tag tag = new Tag(tagName, startLine);
+
+        tag._component = !isRemoveId;
+        tag._removeTag = isRemoveId;
+
+        tag._ignoringBody = ignoreBody;
+
+        _ignoring = tag._ignoringBody;
+
+        tag._mustBalance = true;
+
+        _stack.add(tag);
     }
 
     private void processContentTag(String tagName, int startLine, boolean emptyTag) throws TemplateParseException
@@ -1106,8 +1151,11 @@ public class TemplateParser
     }
 
     /**
-     *  Variation of {@link #filter(Map, String)} when multiple keys
-     *  should be removed.
+     *  Returns a new Map that is a copy of the input Map with some
+     *  key/value pairs removed.  A list of keys is passed in
+     *  and matching keys (caseless comparison) from the input
+     *  Map are excluded from the output map.  May return null
+     *  (rather than return an empty Map).
      * 
      **/
 

@@ -22,7 +22,7 @@ public class RenderBody extends AbstractComponent
 {
     /**
      *  Finds this <code>RenderBody</code>'s container, and invokes
-     *  {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
+     *  {@link IComponent#renderBody(IMarkupWriter, IRequestCycle)}
      *  on it.
      *
      **/

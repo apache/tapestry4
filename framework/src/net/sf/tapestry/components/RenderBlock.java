@@ -45,7 +45,7 @@ public class RenderBlock extends AbstractComponent
     /**
      *  If block is not null,
      *  then the block's inserter is set (to this),
-     * {@link net.sf.tapestry.IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
+     * {@link net.sf.tapestry.IComponent#renderBody(IMarkupWriter, IRequestCycle)}
      *  is invoked on it, and the Block's inserter is set back to its previous state.
      *
      **/
