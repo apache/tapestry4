@@ -241,7 +241,7 @@ public class ComponentClassFactory
 
     /**
      *  Returns true if the {@link PropertyDescriptor} is null, or
-     *  (if non-null), if both accessor methods are abstract.
+     *  (if non-null), if either accessor method is abstract (or missing).
      * 
      **/
 
@@ -250,7 +250,7 @@ public class ComponentClassFactory
         if (pd == null)
             return true;
 
-        return isAbstract(pd.getReadMethod()) && isAbstract(pd.getWriteMethod());
+        return isAbstract(pd.getReadMethod()) || isAbstract(pd.getWriteMethod());
     }
 
     /**
@@ -479,7 +479,7 @@ public class ComponentClassFactory
         String fieldName,
         String propertyName,
         String readMethodName)
-    {	
+    {
         String methodName =
             readMethodName == null ? buildMethodName("get", propertyName) : readMethodName;
 
@@ -697,6 +697,16 @@ public class ComponentClassFactory
         String propertyName = ps.getName();
         Location location = ps.getLocation();
         Class propertyType = convertPropertyType(ps.getType(), location);
+
+        PropertyDescriptor pd = getPropertyDescriptor(propertyName);
+
+        if (!isAbstract(pd))
+        {
+            // Make sure the property is at least the right type.
+
+            checkPropertyType(pd, propertyType, location);
+            return;
+        }
 
         String readMethodName = checkAccessors(propertyName, propertyType, location);
 

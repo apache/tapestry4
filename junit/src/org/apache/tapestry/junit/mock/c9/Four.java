@@ -66,18 +66,14 @@ import org.apache.tapestry.html.BasePage;
  *  @since 2.4
  **/
 
-public class Four extends BasePage
+public abstract class Four extends BasePage
 {
 	private String _word;
 	
-    public String getWord()
-    {
-        return _word;
-    }
+    public abstract String getWord();
 
     public void setWord(String word)
     {
-        _word = word;
+    	_word = word;
     }
-
 }

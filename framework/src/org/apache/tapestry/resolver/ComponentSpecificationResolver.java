@@ -57,11 +57,11 @@ package org.apache.tapestry.resolver;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.ComponentSpecification;
 
@@ -133,7 +133,11 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
      * 
      **/
 
-    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String type)
+    public void resolve(
+        IRequestCycle cycle,
+        INamespace containerNamespace,
+        String type,
+        Location location)
     {
         int colonx = type.indexOf(':');
 
@@ -142,10 +146,10 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
             String libraryId = type.substring(0, colonx);
             String simpleType = type.substring(colonx + 1);
 
-            resolve(cycle, containerNamespace, libraryId, simpleType);
+            resolve(cycle, containerNamespace, libraryId, simpleType, location);
         }
         else
-            resolve(cycle, containerNamespace, null, type);
+            resolve(cycle, containerNamespace, null, type, location);
     }
 
     /**
@@ -158,6 +162,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
      *  @param libraryId the library id within the container namespace, or null
      *  @param type the component specification
      *  to  find as a simple name (without a library prefix)
+     *  @param location of reference to be resolved
      *  @throws ApplicationRuntimeException if the type cannot be resolved
      * 
      **/
@@ -166,7 +171,8 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         IRequestCycle cycle,
         INamespace containerNamespace,
         String libraryId,
-        String type)
+        String type,
+        Location location)
     {
         reset();
         _type = type;
@@ -198,7 +204,9 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
                 Tapestry.getString(
                     "Namespace.no-such-component-type",
                     type,
-                    namespace.getNamespaceId()));
+                    namespace.getNamespaceId()),
+                location,
+                null);
 
         }
     }

@@ -78,6 +78,7 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
@@ -155,21 +156,21 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             return _component.getSpecification().getComponent(componentId) != null;
         }
 
-        public boolean getAllowBody(String componentId)
+        public boolean getAllowBody(String componentId, Location location)
         {
             IComponent embedded = _component.getComponent(componentId);
 
             if (embedded == null)
-                throw Tapestry.createNoSuchComponentException(_component, componentId);
+                throw Tapestry.createNoSuchComponentException(_component, componentId, location);
 
             return embedded.getSpecification().getAllowBody();
         }
 
-        public boolean getAllowBody(String libraryId, String type)
+        public boolean getAllowBody(String libraryId, String type, Location location)
         {
             INamespace namespace = _component.getNamespace();
 
-            _resolver.resolve(_cycle, namespace, libraryId, type);
+            _resolver.resolve(_cycle, namespace, libraryId, type, location);
 
             ComponentSpecification spec = _resolver.getSpecification();
 

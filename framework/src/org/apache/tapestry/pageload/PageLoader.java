@@ -473,8 +473,9 @@ public class PageLoader implements IPageLoader
                 ContainedComponent contained = containerSpec.getComponent(id);
 
                 String type = contained.getType();
+                Location location = contained.getLocation();
 
-                _componentResolver.resolve(cycle, namespace, type);
+                _componentResolver.resolve(cycle, namespace, type, location);
 
                 ComponentSpecification componentSpecification =
                     _componentResolver.getSpecification();
@@ -489,7 +490,7 @@ public class PageLoader implements IPageLoader
                         id,
                         componentSpecification,
                         componentNamespace,
-                        contained.getLocation());
+                        location);
 
                 // Add it, by name, to the container.
 
@@ -562,7 +563,7 @@ public class PageLoader implements IPageLoader
     {
         IPage page = container.getPage();
 
-        _componentResolver.resolve(cycle, container.getNamespace(), componentType);
+        _componentResolver.resolve(cycle, container.getNamespace(), componentType, location);
 
         INamespace componentNamespace = _componentResolver.getNamespace();
         ComponentSpecification spec = _componentResolver.getSpecification();

@@ -93,7 +93,19 @@
     <path refid="junit.classpath"/>
   </path>
     
-  <target name="clover" depends="compile" description="Run tests and construct Clover report.">
+  <target name="clover" description="Run the entire Tapestry test suite and construct the Clover report.">
+  	<antcall target="run-clover">
+  		<param name="suite" value="org.apache.tapestry.junit.TapestrySuite"/>
+  	</antcall>
+  </target>
+  
+  <target name="fast-clover" description="Run a subset of the Tapestry test suite (excluding mock unit tests), and construct the Clover report.">
+  	<antcall target="run-clover">
+  		<param name="suite" value="org.apache.tapestry.junit.BasicTestSuite"/>
+  	</antcall>  	
+  </target>
+   
+  <target name="run-clover" depends="compile" description="Run tests and construct the Clover report.">
   	<mkdir dir="${clover-classes.dir}"/>
   	<mkdir dir="${clover-db.dir}"/>
   	
@@ -104,13 +116,14 @@
       <classpath refid="base.classpath"/>
     </javac>
     
+    <echo>Executing suite ${suite} ...</echo>
     
     <echo>Clover Run #1:  No logging enabled ...</echo>
     
   	<java fork="true" classname="junit.textui.TestRunner"
 		failonerror="true">
   		<classpath refid="clover.classpath"/>
-		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
+		<arg value="${suite}"/>
 		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>
   	
@@ -120,7 +133,7 @@
   	<java fork="true" classname="junit.textui.TestRunner"
 		failonerror="true">
   		<classpath refid="clover.classpath"/>
-		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
+		<arg value="${suite}"/>
 		<sysproperty key="log4j.configuration" value="log4j-slow.properties"/> 
 		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>  	
