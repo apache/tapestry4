@@ -1,0 +1,43 @@
+<!-- $Id$ -->
+<!--
+
+This XML snippet is included into an ant build file.
+
+It includes a rule, docbook-setup, that ensures that the necessary
+DocBook distributions are unpacked and ready to process the XML.
+
+-->
+
+<!-- The base name for the DTD distribution (the directory and tar file
+     will match). -->
+     
+<property name="docbook.dtd.base" value="docbkx412"/>
+
+<!-- Base name for the XSL distribution. -->
+
+<property name="docbook.xsl.base" value="docbook-xsl-1.44"/>
+
+<property name="docbook.dtd.dir" value="../common/${docbook.dtd.base}"/>
+<property name="docbook.xsl.dir" value="../common/${docbook.xsl.base}"/>
+
+<target name="docbook-setup"
+	description="Make sure the latest distributions of DocBook DTDs and stylesheets are ready.">
+	<available property="docbook.dtd.available" file="${docbook.dtd.dir}" type="dir"/>
+	<available property="docbook.xsl.available" file="${docbook.xsl.dir}" type="dir"/>
+	<antcall target="docbook-setup-inner"/>
+</target>
+
+<target name="docbook-setup-inner" depends="docbook-unpack-dtd,docbook-unpack-xsl">
+</target>
+
+<target name="docbook-unpack-dtd" unless="docbook.dtd.available">
+	<echo>Unpacking DocBook DTD distribution ...</echo>
+	<untar src="../common/${docbook.dtd.base}.tar" dest="../common"/>
+</target>
+  	
+<target name="docbook-unpack-xsl" unless="docbook.xsl.available">
+	<echo>Unpacking DocBook XSL distribution ...</echo>
+	<untar src="../common/${docbook.xsl.base}.tar" dest="../common"/>
+</target>
+
+

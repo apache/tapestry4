@@ -1,0 +1,8 @@
+# $Id$
+# This file is used to configure the Tapestry build.
+# Copy it as "build.properties" and fill in the necessary data.
+
+# The absolute path to the directory containing the JBoss installation.
+jboss.dir=
+
+

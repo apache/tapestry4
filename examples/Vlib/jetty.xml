@@ -24,7 +24,7 @@
 
 	<Call name="addWebApplication">
 		<Arg>/vlib/*</Arg>
-		<Arg>Vlib.war</Arg>
+		<Arg>../../lib/Vlib.war</Arg>
 		<Arg>jetty-default-web.xml</Arg>
 	</Call>
 	

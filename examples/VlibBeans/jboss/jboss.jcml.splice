@@ -1,5 +1,7 @@
 <!-- Splice: $Id$ -->
 
+
+<-- Begin Block #1:  This goes just before 
   <mbean 
   	code="org.jboss.jdbc.XADataSourceLoader"
 	name="DefaultDomain:service=XADataSource,name=PrimixVlib">
@@ -14,3 +16,6 @@
     <attribute name="JNDIName">vlib/Mail</attribute>
     <attribute name="ConfigurationFile">vlib-mail.properties</attribute>
   </mbean>
+  
+<mbean code="org.jboss.mq.server.QueueManager" name="JBossMQ:service=Queue,name=Vlib-MailQueue"/>
+

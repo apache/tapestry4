@@ -2,7 +2,7 @@
 <!-- $Id$ -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
-<!ENTITY jwc-tag "<sgmltag class='starttag'>jwc</x>">
+<!ENTITY jwc-tag "<sgmltag class='starttag'>jwc</sgmltag>">
 <!ENTITY start-jwc "<emphasis>&lt;">
 <!ENTITY end-jwc "&gt;</emphasis>">
 <!-- Classes provided by Sun -->
@@ -133,35 +133,22 @@ and, beneath it, several more directories.
 The Tapestry Tutorial will be in <filename class="directory">
 C:\Tapestry-<replaceable>x.x.x</replaceable>\examples\Tutorial</filename>.
 </para>
-<section id="setup.jbe">
-<title>Java Build Environment</title>
-<para>
-In order to execute the tutorial, you must set up the Java Build Environment (JBE), which is 
-also distributed with Tapestry, along with 
-<ulink url="../JBE/JBE.html">complete documentation on setting
-up the JBE</ulink>.
-</para>
-<para>
-The JBE is a set of GNU makefiles for building, packaging and
-executing Java applications.  The JBE is required, since it is used to compile the 
-tutorial as well as execute it.
-</para>
-</section>
+
 <section id="setup.build">
 <title>Building the Tutorial</title>
 <para>
-Building the Tutorial is quite easy (once the JBE is set up).
+Building the Tutorial is quite easy.  You first need to download and install
+<ulink url="http://jakarta.apache.org/ant/index.html">Ant</ulink>, a standard Java build tool.  Tapestry
+is pre-configured to build and execute using Ant.
+</para>
+
+<para>
+Change to the Tapestry distribution directory,
+<filename class="directory">C:\Tapestry-<replaceable>x.x.x</replaceable></filename>.
 </para>
 <para>
-Change to the Tutorial directory,
-<filename class="directory">C:\Tapestry-<replaceable>x.x.x</replaceable>\examples\Tutorial</filename>.
-</para>
-<para>
-Execute the command <command>make war</command>, which will build the
-<filename>Tutorial.war</filename> file start to finish (compiling classes, copying resources and building
-the final archive).
-When its done, you can start up the Jetty server just as easily 
-with the <command>make run</command> command.
+Execute the command <command>ant run-tutorial</command>, which will launch the
+Jetty server for the Tutorial.
 </para>
 <para>
 Once Jetty is running, you can access the Tutorials using the URL 

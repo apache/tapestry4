@@ -1,9 +1,0 @@
-You should create the files SiteConfig.mk and LocalConfig.mk in this directory.
-
-SiteConfig.mk identifes your current platform.
-
-LocalConfig.mk identifies the locations of tools, JDKs and other resources.
-
-Two examples files are included that generally work for Cygnus under NT.
-
-Please consult the JBE manual for more information.
