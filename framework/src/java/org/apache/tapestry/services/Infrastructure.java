@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.services;
 
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
@@ -29,13 +30,13 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  */
 public interface Infrastructure
 {
-	/**
-	 * Returns the {@link org.apache.tapestry.spec.IApplicationSpecification}
-	 * for the current application.
-	 */
-	
-	public IApplicationSpecification getApplicationSpecification();
-	
+    /**
+     * Returns the {@link org.apache.tapestry.spec.IApplicationSpecification}
+     * for the current application.
+     */
+
+    public IApplicationSpecification getApplicationSpecification();
+
     /**
      * Returns an {@link IPropertySource} configured to search
      * the application specification, etc.  See 
@@ -55,36 +56,43 @@ public interface Infrastructure
      */
 
     public ComponentMessagesSource getComponentMessagesSource();
-    
+
     /**
      * Returns component or page template contents.
      */
-    
+
     public TemplateSource getTemplateSource();
-    
+
     /**
      * Returns the source of all application, page, component and library
      * specifications.
      */
-    
+
     public ISpecificationSource getSpecificationSource();
 
-	/**
-	 * Returns a generic, shared ObjectPool instance.
-	 */
+    /**
+     * Returns a generic, shared ObjectPool instance.
+     */
     public ObjectPool getObjectPool();
-    
+
     /**
      * Returns the factory responsible for creating enhanced classes
      * for pages and components.
      */
-    
+
     public IComponentClassEnhancer getComponentClassEnhancer();
-    
+
     /**
      * Returns the source for pages. The source is a cache of pages,
      * but also can create new instances when needed.
      */
-    
+
     public IPageSource getPageSource();
+
+    /**
+     * Returns the ClassResolver used by the Tapestry HiveMind module, which should
+     * be sufficient for use throughout the application.
+     */
+
+    public ClassResolver getClassResolver();
 }
