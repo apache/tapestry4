@@ -56,7 +56,7 @@ $(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 # Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
 # GNU Make or JAVA is eating the backslashes under NT.
 
-JBE_UTIL = $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
+JBE_UTIL := $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
 
 # Command for accessing the JBE utility.
 # Usage:
@@ -69,6 +69,12 @@ JBE_UTIL = $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util
 
 JBE_CANONICALIZE = $(shell $(JBE_UTIL) canonicalize $(strip $(1)))
 
+# Splice command
+# Usage:
+#   $(call JBE_SPLICE,tag,target file,source file[,other options])
+
+JBE_SPLICE = $(JBE_UTIL) splice -tag $(1) -target $(2) -source $(3) $(4)
+ 
 # Command for running a Java command
 # Usage
 #	$(call EXEC_JAVA,classpath,options)

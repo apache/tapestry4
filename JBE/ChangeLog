@@ -1,5 +1,10 @@
 * Dec 22 2000 hship
 
+Reorganize the JBE Utils, add the new splice command (used to automatically
+edit configuration files).
+
+* Dec 22 2000 hship
+
 Reorganize to support multiple JDK releases and vendors.
 
 * Dec 20 2000 hship
