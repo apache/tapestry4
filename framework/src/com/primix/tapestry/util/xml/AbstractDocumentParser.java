@@ -226,17 +226,23 @@ public abstract class AbstractDocumentParser
 			String systemId)
 		throws SAXException, IOException
 	{
+		String entityPath = null;
+		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Attempting to resolve entity; publicId = " +
 						publicId + 
 						" systemId = " + systemId);
 		
-		if (entities == null)
-			return null;
+		if (entities != null)
+			entityPath = (String)entities.get(publicId);
 		
-		String entityPath = (String)entities.get(publicId);
 		if (entityPath == null)
+		{
+			if (CAT.isDebugEnabled())
+				CAT.debug("Entity not found, using " + systemId);
+			
 			return null;
+		}
 		
 		InputStream stream = getClass().getResourceAsStream(entityPath);
 		

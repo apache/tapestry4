@@ -69,7 +69,7 @@ public class InsertBlock extends AbstractComponent
 		blockBinding = value;
 	}
 	
-	private IBinding getBlockBinding()
+	public IBinding getBlockBinding()
 	{
 		return blockBinding;
 	}

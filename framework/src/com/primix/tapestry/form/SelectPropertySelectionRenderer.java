@@ -42,40 +42,6 @@ import com.primix.tapestry.*;
 public class SelectPropertySelectionRenderer
 implements IPropertySelectionRenderer
 {
-	private boolean immediateSubmit;
-
-	public SelectPropertySelectionRenderer()
-	{
-		super();
-	}
-
-	/**
-	 *  This method is deprecated; the behavior can be better
-	 *  achieved by using a {@link com.primix.tapestry.script.Script} component
-	 *  to provide the necessary <code>onChange</code> handler.
-	 *
-	 *  @deprecated
-	 *
-	 */
-	 
-	public SelectPropertySelectionRenderer(boolean immediateSubmit)
-	{
-		this.immediateSubmit = immediateSubmit;
-	}
-
-	/**
-	 *  Returns true if this renderer was created to perform an immediate submit.
-	 *  If so, changing the value of the &lt;select&gt; causes the form containing
-	 *  it to be submitted.
-	 *
-	 *  @deprecated
-	 */
-
-	public boolean getImmediateSubmit()
-	{
-		return immediateSubmit;
-	}
-
 	/**
 	 *  Writes the &lt;select&gt; element.  If the
 	 *  {@link PropertySelection} is {@link PropertySelection#isDisabled() disabled}
@@ -93,11 +59,6 @@ implements IPropertySelectionRenderer
 
 		if (component.isDisabled())
 			writer.attribute("disabled");
-			
-		// We're in the process of removing this immediateSubmit business.
-		
-		if (immediateSubmit)
-			writer.attribute("onChange", "javascript:this.form.submit();");
 		
 		writer.println();	
 	}

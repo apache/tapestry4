@@ -1,86 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
-<!-- $Id$ -->
-<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<application>
-	<name>Primix Virtual Library</name>
-	<engine-class>com.primix.vlib.VirtualLibraryEngine</engine-class>
-	<page>
-		<name>Home</name>
-		<specification-path>/com/primix/vlib/pages/Home.jwc</specification-path>
-	</page>
-	<page>
-		<name>Login</name>
-		<specification-path>/com/primix/vlib/pages/Login.jwc</specification-path>
-	</page>
-	<page>
-		<name>Logout</name>
-		<specification-path>/com/primix/vlib/pages/Logout.jwc</specification-path>
-	</page>
-	<page>
-		<name>Matches</name>
-		<specification-path>/com/primix/vlib/pages/Matches.jwc</specification-path>
-	</page>
-	<page>
-		<name>MyBooks</name>
-		<specification-path>/com/primix/vlib/pages/MyBooks.jwc</specification-path>
-	</page>
-	<page>
-		<name>NewBook</name>
-		<specification-path>/com/primix/vlib/pages/NewBook.jwc</specification-path>
-	</page>
-	<page>
-		<name>EditBook</name>
-		<specification-path>/com/primix/vlib/pages/EditBook.jwc</specification-path>
-	</page>
-	<page>
-		<name>EditProfile</name>
-		<specification-path>/com/primix/vlib/pages/EditProfile.jwc</specification-path>
-	</page>
-	<page>
-		<name>ConfirmBookDelete</name>
-		<specification-path>/com/primix/vlib/pages/ConfirmBookDelete.jwc</specification-path>
-	</page>
-	<page>
-		<name>Person</name>
-		<specification-path>/com/primix/vlib/pages/PersonPage.jwc</specification-path>
-	</page>
-	<page>
-		<name>ViewBook</name>
-		<specification-path>/com/primix/vlib/pages/ViewBook.jwc</specification-path>
-	</page>
-	<page>
-		<name>Register</name>
-		<specification-path>/com/primix/vlib/pages/Register.jwc</specification-path>
-	</page>
-	<component-alias>
-		<alias>Border</alias>
-		<specification-path>/com/primix/vlib/components/Border.jwc</specification-path>
-	</component-alias>
-	<component-alias>
-		<alias>BookLink</alias>
-		<specification-path>/com/primix/vlib/components/BookLink.jwc</specification-path>
-	</component-alias>
-	<component-alias>
-		<alias>PersonLink</alias>
-		<specification-path>/com/primix/vlib/components/PersonLink.jwc</specification-path>
-	</component-alias>
-	<component-alias>
-		<alias>ShowError</alias>
-		<specification-path>/com/primix/vlib/components/ShowError.jwc</specification-path>
-	</component-alias>
-	<component-alias>
-		<alias>ShowMessage</alias>
-		<specification-path>/com/primix/vlib/components/ShowMessage.jwc</specification-path>
-	</component-alias>
-	<component-alias>
-		<alias>Borrow</alias>
-		<specification-path>/com/primix/vlib/components/Borrow.jwc</specification-path>
-	</component-alias>
-	<properties>
-		<property>
-			<name>com.primix.tapestry.visit-class</name>
-			<value>com.primix.vlib.Visit</value>
-		</property>
-	</properties>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC "-//Howard Ship/Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application name="Primix Virtual Library" engine-class="com.primix.vlib.VirtualLibraryEngine">
+  <page name="Home" specification-path="/com/primix/vlib/pages/Home.jwc"/>
+  <page name="Login" specification-path="/com/primix/vlib/pages/Login.jwc"/>
+  <page name="Logout" specification-path="/com/primix/vlib/pages/Logout.jwc"/>
+  <page name="Matches" specification-path="/com/primix/vlib/pages/Matches.jwc"/>
+  <page name="MyBooks" specification-path="/com/primix/vlib/pages/MyBooks.jwc"/>
+  <page name="NewBook" specification-path="/com/primix/vlib/pages/NewBook.jwc"/>
+  <page name="EditBook" specification-path="/com/primix/vlib/pages/EditBook.jwc"/>
+  <page name="EditProfile" specification-path="/com/primix/vlib/pages/EditProfile.jwc"/>
+  <page name="ConfirmBookDelete" specification-path="/com/primix/vlib/pages/ConfirmBookDelete.jwc"/>
+  <page name="Person" specification-path="/com/primix/vlib/pages/PersonPage.jwc"/>
+  <page name="ViewBook" specification-path="/com/primix/vlib/pages/ViewBook.jwc"/>
+  <page name="Register" specification-path="/com/primix/vlib/pages/Register.jwc"/>
+  <component-alias type="Border" specification-path="/com/primix/vlib/components/Border.jwc"/>
+  <component-alias type="BookLink" specification-path="/com/primix/vlib/components/BookLink.jwc"/>
+  <component-alias type="PersonLink" specification-path="/com/primix/vlib/components/PersonLink.jwc"/>
+  <component-alias type="ShowError" specification-path="/com/primix/vlib/components/ShowError.jwc"/>
+  <component-alias type="ShowMessage" specification-path="/com/primix/vlib/components/ShowMessage.jwc"/>
+  <component-alias type="Borrow" specification-path="/com/primix/vlib/components/Borrow.jwc"/>
+  <property name="com.primix.tapestry.visit-class">com.primix.vlib.Visit</property>
 </application>

@@ -1,15 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-  <class>com.primix.tapestry.components.InsertBlock</class>
-  <allow-body>no</allow-body>
-  <parameters>
-    <allow-informal-parameters>no</allow-informal-parameters>
-    <parameter>
-      <name>block</name>
-      <java-type>com.primix.tapestry.components.Block</java-type>
-    </parameter>
-  </parameters>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.components.InsertBlock" allow-body="no" allow-informal-parameters="no">
+  <parameter name="block" java-type="com.primix.tapestry.components.Block"/>
 </specification>

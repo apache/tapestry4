@@ -1,110 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.tapestry.inspector.Inspector</class>
-	<components>
-		<component>
-			<id>shell</id>
-			<type>Shell</type>
-			<bindings>
-				<binding>
-					<name>title</name>
-					<property-path>inspectorTitle</property-path>
-				</binding>
-				<binding>
-					<name>stylesheet</name>
-					<property-path>assets.stylesheet</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>body</id>
-			<type>Body</type>
-		</component>
-		<component>
-			<id>selector</id>
-			<type>/com/primix/tapestry/inspector/Selector.jwc</type>
-		</component>
-		<component>
-			<id>viewTabs</id>
-			<type>/com/primix/tapestry/inspector/ViewTabs.jwc</type>
-		</component>
-		<component>
-			<id>ifShowSpecification</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>viewSpecification</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showSpecification</id>
-			<type>/com/primix/tapestry/inspector/ShowSpecification.jwc</type>
-		</component>
-		<component>
-			<id>ifShowTemplate</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>viewTemplate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showTemplate</id>
-			<type>/com/primix/tapestry/inspector/ShowTemplate.jwc</type>
-		</component>
-		<component>
-			<id>ifShowProperties</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>viewProperties</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showProperties</id>
-			<type>/com/primix/tapestry/inspector/ShowProperties.jwc</type>
-		</component>
-		<component>
-			<id>ifShowEngine</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>viewEngine</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showEngine</id>
-			<type>/com/primix/tapestry/inspector/ShowEngine.jwc</type>
-		</component>
-		<component>
-			<id>ifShowLogging</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>viewLogging</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showLogging</id>
-			<type>/com/primix/tapestry/inspector/ShowLogging.jwc</type>
-		</component>
-	</components>
-	<assets>
-		<private-asset>
-			<name>stylesheet</name>
-			<resource-path>/com/primix/tapestry/inspector/Inspector.css</resource-path>
-		</private-asset>
-	</assets>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.inspector.Inspector">
+  <component id="shell" type="Shell">
+    <binding name="title" property-path="inspectorTitle"/>
+    <binding name="stylesheet" property-path="assets.stylesheet"/>
+  </component>
+  <component id="body" type="Body"/>
+  <component id="selector" type="/com/primix/tapestry/inspector/Selector.jwc"/>
+  <component id="viewTabs" type="/com/primix/tapestry/inspector/ViewTabs.jwc"/>
+  <component id="insertBlockForView" type="InsertBlock">
+    <binding name="block" property-path="blockForView"/>
+  </component>
+  <component id="specificationBlock" type="Block"/>
+  <component id="showSpecification" type="/com/primix/tapestry/inspector/ShowSpecification.jwc"/>
+  <component id="templateBlock" type="Block"/>
+  <component id="showTemplate" type="/com/primix/tapestry/inspector/ShowTemplate.jwc"/>
+  <component id="propertiesBlock" type="Block"/>
+  <component id="showProperties" type="/com/primix/tapestry/inspector/ShowProperties.jwc"/>
+  <component id="engineBlock" type="Block"/>
+  <component id="showEngine" type="/com/primix/tapestry/inspector/ShowEngine.jwc"/>
+  <component id="loggingBlock" type="Block"/>
+  <component id="showLogging" type="/com/primix/tapestry/inspector/ShowLogging.jwc"/>
+  <private-asset name="stylesheet" resource-path="/com/primix/tapestry/inspector/Inspector.css"/>
 </specification>

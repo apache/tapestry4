@@ -118,98 +118,107 @@ public class PropertySelection extends AbstractFormComponent
 	private IBinding rendererBinding;
 	private String name;
 	private boolean disabled;
-
-	private static IPropertySelectionRenderer defaultSelectRenderer;
-	private static IPropertySelectionRenderer defaultRadioRenderer;
-
+	
+	/**
+	 *  A shared instance of {@link SelectPropertySelectionRenderer}.
+	 *
+	 */
+	
+	public static final IPropertySelectionRenderer 
+		DEFAULT_SELECT_RENDERER = new SelectPropertySelectionRenderer();
+	
+	/**
+	 *  A shared instance of {@link RadioPropertySelectionRenderer}.
+	 *
+	 */
+	
+	public static final IPropertySelectionRenderer 
+		DEFAULT_RADIO_RENDERER = new RadioPropertySelectionRenderer();
+	
 	public IBinding getValueBinding()
 	{
 		return valueBinding;
 	}
-
+	
 	public void setValueBinding(IBinding value)
 	{
 		valueBinding = value;
 	}
-
+	
 	public IBinding getModelBinding()
 	{
 		return modelBinding;
 	}
-
+	
 	public void setModelBinding(IBinding value)
 	{
 		modelBinding = value;
 	}
-
+	
 	public IBinding getDisabledBinding()
 	{
 		return disabledBinding;
 	}
-
+	
 	public void setDisabledBinding(IBinding value)
 	{
 		disabledBinding = value;
 	}
-
+	
 	public void setRendererBinding(IBinding value)
 	{
 		rendererBinding = value;
 	}
-
+	
 	public IBinding getRendererBinding()
 	{
 		return rendererBinding;
 	}
-
+	
 	/**
 	 *  Returns the name assigned to this PropertySelection by the {@link Form}
 	 *  that wraps it.
 	 *
 	 */
-
+	
 	public String getName()
 	{
 		return name;
 	}
-
+	
 	/**
 	 *  Returns true if this PropertySelection's disabled parameter yields true.
 	 *  The corresponding HTML control(s) should be disabled.
 	 */
-
+	
 	public boolean isDisabled()
 	{
 		return disabled;
 	}
-
+	
 	/**
 	 *  Returns the default {@link SelectPropertySelectionRenderer} instance.
 	 *  This is a shared instance.
 	 *
+	 *  @deprecated Use {@link #DEFAULT_SELECT_RENDERER} instead.
 	 */
-
+	
 	public IPropertySelectionRenderer getDefaultSelectRenderer()
 	{
-		if (defaultSelectRenderer == null)
-			defaultSelectRenderer = new SelectPropertySelectionRenderer();
-
-		return defaultSelectRenderer;	
+		return DEFAULT_SELECT_RENDERER;	
 	}
-
+	
 	/**
 	 *  Returns a shared instance of {@link RadioPropertySelectionRenderer}.
 	 *
+	 * @deprecated Use {@link #DEFAULT_RADIO_RENDERER instead}.
 	 */
-
+	
 	public IPropertySelectionRenderer getDefaultRadioRenderer()
 	{
-		if (defaultRadioRenderer == null)
-			defaultRadioRenderer = new RadioPropertySelectionRenderer();
-
-		return defaultRadioRenderer;
+		return DEFAULT_RADIO_RENDERER;
 	}
-
+	
 	/**
 	 *  Renders the component, much of which is the responsiblity
 	 *  of the {@link IPropertySelectionRenderer renderer}.  The possible options,
@@ -217,9 +226,9 @@ public class PropertySelection extends AbstractFormComponent
 	 *  by the {@link IPropertySelectionModel model}.
 	 *
 	 */
-
-		public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+	
+	public void render(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
 	{
 		Form form;
 		boolean rewinding;
@@ -234,92 +243,92 @@ public class PropertySelection extends AbstractFormComponent
 		boolean foundSelected = false;
 		int count;
 		boolean radio = false;
-
-			form = getForm(cycle);
-
-			rewinding = form.isRewinding();
-
+		
+		form = getForm(cycle);
+		
+		rewinding = form.isRewinding();
+		
 		if (disabledBinding == null)
 			disabled = false;
 		else
 			disabled = disabledBinding.getBoolean();
-
-			model = (IPropertySelectionModel)modelBinding.getObject(
-				"model", IPropertySelectionModel.class);
-			
+		
+		model = (IPropertySelectionModel)modelBinding.getObject(
+			"model", IPropertySelectionModel.class);
+		
 		if (model == null)
 			throw new RequiredParameterException(this, "model", modelBinding);
-
+		
 		name = form.getNextElementId("PropertySelection");
-
+		
 		if (rewinding)
 		{
 			// If disabled, ignore anything that comes up from the client.
-
+			
 			if (disabled)
 				return;		
-
-				optionValue = cycle.getRequestContext().getParameter(name);
-
+			
+			optionValue = cycle.getRequestContext().getParameter(name);
+			
 			if (optionValue == null)
 				newValue = null;
 			else
 				newValue = model.translateValue(optionValue);
-
+			
 			valueBinding.setObject(newValue);
-
+			
 			return;	
 		}
-
+		
 		if (rendererBinding != null)
 			renderer = (IPropertySelectionRenderer)rendererBinding.getObject(
 				"renderer", IPropertySelectionRenderer.class);
-
+		
 		if (renderer == null)
 			renderer = getDefaultSelectRenderer();
-
+		
 		renderer.beginRender(this, writer, cycle);
-
+		
 		count = model.getOptionCount();
 		currentValue = valueBinding.getObject();
-
+		
 		for (i = 0; i < count; i++)
 		{
 			option = model.getOption(i);
-
+			
 			if (!foundSelected)
 			{
 				selected = isEqual(option, currentValue);
 				if (selected)
 					foundSelected = true;
 			}		
-
+			
 			renderer.renderOption(this, writer, cycle, model, option, i, selected);
-
+			
 			selected = false;			
 		}
-
+		
 		// A PropertySelection doesn't allow a body, so no need to worry about
 		// wrapped components.
-
+		
 		renderer.endRender(this, writer, cycle);
 	}
-
+	
 	private boolean isEqual(Object left, Object right)
 	{
 		// Both null, or same object, then are equal
-
+		
 		if (left == right)
 			return true;
-
+		
 		// If one is null, the other isn't, then not equal.
-
+		
 		if (left == null || right == null)
 			return false;
-
+		
 		// Both non-null; use standard comparison.
-
+		
 		return left.equals(right);	
 	}
 }
- 
+

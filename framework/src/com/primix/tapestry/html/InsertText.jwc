@@ -1,19 +1,7 @@
-<?xml version="1.0"?>
-<!-- $Id$-->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.tapestry.html.InsertText</class>
-	<allow-body>no</allow-body>
-	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
-		<parameter>
-			<name>text</name>
-			<java-type>java.lang.String</java-type>
-		</parameter>
-		<parameter>
-			<name>mode</name>
-			<java-type>com.primix.tapestry.components.html.InsertTextMode</java-type>
-		</parameter>
-	</parameters>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.html.InsertText" allow-body="no" allow-informal-parameters="no">
+  <parameter name="text" java-type="java.lang.String"/>
+  <parameter name="mode" java-type="com.primix.tapestry.html.InsertTextMode"/>
 </specification>

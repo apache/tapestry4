@@ -1,28 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-  <class>com.primix.tapestry.form.TextField</class>
-  <allow-body>no</allow-body>
-  <parameters>
-    <parameter>
-      <name>text</name>
-      <java-type>java.lang.String</java-type>
-    </parameter>
-    <parameter>
-      <name>disabled</name>
-    </parameter>
-    <parameter>
-      <name>hidden</name>
-    </parameter>
-    <parameter>
-      <name>displayWidth</name>
-      <java-type>java.lang.Integer</java-type>
-    </parameter>
-    <parameter>
-      <name>maximumLength</name>
-      <java-type>java.lang.Integer</java-type>
-    </parameter>
-  </parameters>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.form.TextField" allow-body="no">
+  <parameter name="text" java-type="java.lang.String"/>
+  <parameter name="disabled"/>
+  <parameter name="hidden"/>
+  <parameter name="displayWidth" java-type="java.lang.Integer"/>
+  <parameter name="maximumLength" java-type="java.lang.Integer"/>
 </specification>

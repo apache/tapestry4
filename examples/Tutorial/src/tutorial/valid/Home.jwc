@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
+
+<!ENTITY delegate '<binding name="delegate" property-path="delegate"/>'>
+]>
+
 <specification class="tutorial.valid.Home">
   <component id="border" type="Border"/>
   <component id="showError" type="ShowError"/>
@@ -10,7 +14,7 @@
   </component>
   <component id="labelString" type="FieldLabel">
     <binding name="field" property-path="components.inputString"/>
-    <binding name="delegate" property-path="delegate"/>
+    &delegate;
   </component>
   <component id="inputString" type="ValidatingTextField">
     <field-binding name="required" field-name="Boolean.TRUE"/>

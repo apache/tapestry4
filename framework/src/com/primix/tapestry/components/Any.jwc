@@ -1,17 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-	
-<specification>
-	<class>com.primix.tapestry.components.Any</class>
-	
-	<parameters>
-		<parameter>
-			<name>element</name>
-			<java-type>java.lang.String</java-type>
-			<required>yes</required>
-		</parameter>
-	</parameters>
-	
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.components.Any">
+  <parameter name="element" java-type="java.lang.String" required="yes"/>
 </specification>

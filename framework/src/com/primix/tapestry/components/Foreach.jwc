@@ -1,32 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-	
-<specification>
-	<class>com.primix.tapestry.components.Foreach</class>	
-	
-	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
-		
-		<parameter>
-			<name>source</name>
-		</parameter>
-		
-		<parameter>
-			<name>value</name>
-			<required>no</required>
-		</parameter>
-		
-		<parameter>
-			<name>first</name>
-			<java-type>java.lang.Boolean</java-type>
-		</parameter>
-		
-		<parameter>
-			<name>last</name>
-			<java-type>java.lang.Boolean</java-type>
-		</parameter>
-	</parameters>
-	
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.components.Foreach" allow-informal-parameters="no">
+  <parameter name="source"/>
+  <parameter name="value"/>
+  <parameter name="first" java-type="java.lang.Boolean"/>
+  <parameter name="last" java-type="java.lang.Boolean"/>
 </specification>

@@ -317,6 +317,12 @@ extends AbstractComponent
 			CAT.debug("End render " + getExtendedId());
 	}
 
+	/**
+	 *  Loads the template for the component.  Subclasses must invoke this method first,
+	 *  before adding any additional behavior.
+	 *
+	 */
+	
 	public void finishLoad(IPageLoader loader, ComponentSpecification specification)
 		throws PageLoaderException
 	{

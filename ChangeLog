@@ -1,3 +1,19 @@
+* May 21 2001 hship
+
+Revise the Tapestry Inspector to use Blocks instead of Conditionals to handle tabbing
+to different views.
+Finish support for the Tapestry Specification 1.1 DTD.
+Convert all existing components and pages to the 1.1 DTD.
+Add an XSL style sheet for converting from the 1.0 to the 1.1 DTD.
+Add a new script, /com/primix/tapestry/form/SelectSubmit.script, to handle making a select
+automatically submit the form it is contained within.
+Removed the deprecated immediateSubmit property (and related constructors) from 
+the SelectPropertySelectionRenderer class.
+Minor Javadoc corrections and fixes.
+Convert some of the examples to use the 1.1 DTD.
+[405469] Streamline Tapestry DTD
+[407175] Reusable component specifications
+
 * May 17 2001 hship
 
 Create first pass at a general purpose NumericField.

@@ -1197,10 +1197,9 @@ public abstract class AbstractEngine
 	 *  {@link IEngineService services} to build URLs.  It consists
 	 *  of two parts:  the context path and the servlet path.
 	 *
-	 * <p>If the parameter is not specified, then no context prefix is used,
-	 * which is appropriate for Servlet API 2.1 containers.
-	 *
 	 * <p>The servlet path is retrieved from {@link HttpServletRequest#getServletPath()}.
+	 *
+	 * <p>The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
 	 *
 	 * <p>The final path is available via the {@link #getServletPrefix()} method.
 	 *
