@@ -37,13 +37,11 @@
 			todir="${classes.dir}/org/apache/tapestry"/>
 		<jar jarfile="${root.lib.dir}/${framework.jar}">
 			<fileset dir="${classes.dir}">
-                                <exclude name="**/wml/**"/>
 			</fileset>
 
 			<fileset dir="${src.dir}">
 				<exclude name="**/*.java"/>
 				<exclude name="**/package.html"/>
-                                <exclude name="**/wml/**"/>
 			</fileset>
 			
 			<!-- Yes, this is odd.  Until I figure out how to get the framework TLD visible
@@ -56,16 +54,6 @@
 			</metainf>
 		</jar>
 
-		<jar jarfile="${root.lib.dir}/${wml.jar}">
-			<fileset dir="${classes.dir}">
-				<include name="**/wml/**"/>
-			</fileset>
-			<fileset dir="${src.dir}">
-				<exclude name="**/*.java"/>
-				<exclude name="**/package.html"/>
-				<include name="**/wml/**"/>
-			</fileset>
-		</jar>
 
 	</target>
 </project>
