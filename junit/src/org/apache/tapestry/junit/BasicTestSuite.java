@@ -125,6 +125,7 @@ public class BasicTestSuite extends TestSuite
         suite.addTestSuite(TestTapestryGetClassName.class);
         suite.addTestSuite(TestRegexpMatcher.class);
         suite.addTestSuite(TestListEditMap.class);
+        suite.addTestSuite(TestContentType.class);
 
         return suite;
     }
