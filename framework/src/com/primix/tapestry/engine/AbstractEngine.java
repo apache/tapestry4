@@ -882,6 +882,7 @@ public abstract class AbstractEngine
 	 *  is to present an error message on the application's
 	 *  Home page.	
 	 *
+	 *  @since 0.2.10
 	 */
 
 	protected void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle, 
@@ -903,6 +904,7 @@ public abstract class AbstractEngine
 	 *  is to present an error message on the application's
 	 *  Home page.	
 	 *
+	 *  @since 0.2.10
 	 */
 
 	protected void handleStaleSessionException(StaleSessionException ex, IRequestCycle cycle, 

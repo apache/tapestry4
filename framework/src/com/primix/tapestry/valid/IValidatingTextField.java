@@ -51,9 +51,10 @@ public interface IValidatingTextField extends IComponent
     public boolean isRequired();
 
     /**
-     *  Forces the component to re-read through its text binding.  Normally
-     *  this only occurs once per request cycle.  This clears the text property,
-     *  but not the error property.
+     *  Forces the component to re-read through its value binding (whose
+	 *  name and type is dependant on the implementation).  Normally
+     *  this only occurs once per request cycle.  This does not clear 
+	 *  the error property.
      *
      */
 
