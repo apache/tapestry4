@@ -43,9 +43,9 @@ to rebuild the JARs on different platforms and different compilers (JDK 1.2 and 
 
 
 <P>
-<IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#doc">Documentation</A>
-<br>
 <IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#config">Configuration</A>
+<br>
+<IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#doc">Documentation</A>
 <br>
 <IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#jars">Third Party Jars</A>
 
@@ -55,6 +55,47 @@ to rebuild the JARs on different platforms and different compilers (JDK 1.2 and 
 		.....................................................
 		<br><br>
 		
+
+<a name="config"></a>
+<h2>Configuration</h2>
+
+<p>Tapestry is built using the
+<a href="http://jakarta.apache.org/ant">Ant</a> build tool, version 1.4 or better.
+You need to download and install Ant before running the Tapestry demonstrations.
+You will need to download the Ant optional JAR (which includes additional Ant tasks) and place
+it in your Ant <code>lib</code> folder.
+
+
+<p>
+Configuring and running the Virtual Library demo is very easy:
+<ul>
+<li>Download (if needed) a JDK 1.3 or newer JVM.  
+<li>Download and configure <a href="http://jakarta.apache.org/ant">Ant</a>.
+<li>Download <a href="http://www.jboss.org/binary.jsp">JBoss 2.4.3</a>.  JBoss is an open-source
+application server, used to run the database and Enterprise JavaBeans in the Virtual Library.  
+<em>The Virtual Library can only be 
+        auto-configured using the JBoss 2.4.3 distribution.</EM>
+It is not necessary to download the JBoss-Jetty combination; the Tapestry distribution includes
+Jetty and the other necessary files.
+<li>Create the file <code><i>Tapestry</i>/config/build.properties</code>. This file informs 
+        Tapestry where JBoss as been installed.
+		The directory contains a template file.
+		Set <code>jboss.dir</code> to the JBoss installation
+		directory, for example <i>C:\JBoss-2.4.3</i>.
+<li>Execute the command: <code>ant configure</code><br>
+This will copy and configure the necessary files in the JBoss installation directory.
+<li>Execute the command: <code>ant -emacs run-jboss</code>
+<br>This will run the JBoss server, automatically deploying the Tapestry home page and 
+the Virtual Library demonstration.  (The <code>-emacs</code> option changes the
+Ant output format to be less verbose).
+</ul>
+
+<p>Congradulations!  You are now running not only the Virtual Library, but the complete
+Tapestry home page.  You can access is with
+the URL 
+<a href="http://localhost/">http://localhost/</a>.
+
+
 		
 <a name="doc"></a>
 <h2>Documentation</h2>
@@ -76,38 +117,6 @@ to rebuild the JARs on different platforms and different compilers (JDK 1.2 and 
 
 </ul>
 
-<a name="config"></a>
-<h2>Configuration</h2>
-
-<p>Tapestry is built using the
-<a href="http://jakarta.apache.org/ant">Ant</a> build tool, version 1.4 or better.
-You need to download and install Ant before running the Tapestry demonstrations.
-You will need to download the Ant optional JAR (which includes additional Ant tasks) and place
-it in your Ant <code>lib</code> folder.
-
-
-
-Finally, to use the Virtual Library demo, you must download and install
-the <a href="http://www.jboss.org">JBoss</a> open source application server, 
-release 2.4.3.
-You must also create the file <code>config/build.properties</code> and edit it
-to identify the
-location of your JBoss installation (a sample properties file is included).  
-JBoss requires a 1.3 JVM.
-
-<p>Configuring JBoss for the Virtual Library
-is done automatically.  
-Execute the command
-<code>ant configure</code>.  Ant will configure JBoss to run the
-Virtual Library application, which includes setting up a starter
-copy of the Virtual Library database (if it does not already exist).
-
-<p>You should then run JBoss by executing <code>ant run-jboss</code>.  This
-will run JBoss in the correct configuration to deploy and run 
-local copies of Tapestry home page,
-documentation, tutorials and Virtual Library.  You can access these with
-the URL 
-<a href="http://localhost/">http://localhost/</a>.
 
 <a name="jars"></a>
 <h2>Third party JARs</h2>
