@@ -76,27 +76,33 @@ public class ConfirmBookDelete extends BasePage
 	 * (bookPrimaryKey and bookTitle) and invoked {@link IRequestCycle#setPage(IPage)}.
 	 *
 	 */
-	 
+	
 	public void selectBook(Integer bookPK, IRequestCycle cycle)
 	{
 		this.bookPK = bookPK;
 		
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		
-		IBookHome home = vengine.getBookHome();
-		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			IBook book = home.findByPrimaryKey(bookPK);
-			bookTitle = book.getTitle();
-		}
-		catch (FinderException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
+			IBookHome home = vengine.getBookHome();
+			
+			try
+			{
+				IBook book = home.findByPrimaryKey(bookPK);
+				bookTitle = book.getTitle();
+				
+				break;
+			}
+			catch (FinderException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception reading read book #" + bookPK + ".", ex, i > 0);
+			}
 		}
 		
 		cycle.setPage(this);
@@ -107,7 +113,7 @@ public class ConfirmBookDelete extends BasePage
 	 *  Hooked up to the yes component, this actually deletes the book.
 	 *
 	 */
-	 
+	
 	public IDirectListener getDeleteBookListener()
 	{
 		return new IDirectListener()
@@ -126,19 +132,27 @@ public class ConfirmBookDelete extends BasePage
 	private void deleteBook(Integer bookPK, IRequestCycle cycle)
 	{
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		IBookHome home = vengine.getBookHome();
 		
-		try
+		
+		for (int i = 0; i < 2; i++)
 		{
-			home.remove(bookPK);
-		}
-		catch (RemoveException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
+			IBookHome home = vengine.getBookHome();
+			
+			try
+			{
+				home.remove(bookPK);
+				break;
+			}
+			catch (RemoveException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception deleting book #" + bookPK + ".",
+					ex, i > 0);
+			}
 		}
 		
 		cycle.setPage("MyLibrary");		

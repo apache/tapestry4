@@ -104,10 +104,10 @@ implements IErrorProperty
 		
 		// User not logged in ... redirect through the Login page.
 		
-		Login loginPage = (Login)cycle.getPage("Login");
+		Login login = (Login)cycle.getPage("Login");
 		
-		loginPage.setCallback(new PageCallback(this));
+		login.setCallback(new PageCallback(this));
 		
-		throw new PageRedirectException("Login");			
+		throw new PageRedirectException(login);			
 	}
 }

@@ -2,9 +2,12 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.vlib.pages.Home">
+
   <component id="border" type="Border">
     <static-binding name="title">Primix Virtual Library</static-binding>
+    <binding name="subheader" property-path="assets.subheader"/>
   </component>
+  
   <component id="showError" type="ShowError"/>
   <component id="showMessage" type="ShowMessage"/>
   <component id="searchForm" type="Form">
@@ -25,4 +28,7 @@
     <binding name="value" property-path="searchPublisherPK"/>
     <binding name="model" property-path="engine.publisherModel"/>
   </component>
+  
+  <context-asset name="subheader" path="/images/hd_searchforbooks.gif"/>
+   
 </specification>

@@ -115,7 +115,7 @@ public class Home
 	}
 
 	/**
-	 *  Invokes {@link Matches#performQuery(String,String,Object)}.
+	 *  Invokes {@link Matches#performQuery(String,String,Object,IRequestCycle)}.
 	 *
 	 */
 	
@@ -129,9 +129,7 @@ public class Home
 				
 				matches = (Matches)cycle.getPage("Matches");
 				
-				matches.performQuery(searchTitle, searchAuthor, searchPublisherPK);
-				
-				cycle.setPage(matches);	
+				matches.performQuery(searchTitle, searchAuthor, searchPublisherPK, cycle);
 			}
 		};
 	}

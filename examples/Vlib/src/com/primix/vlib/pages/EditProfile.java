@@ -48,7 +48,7 @@ import com.primix.tapestry.valid.ValidatingTextField;
  */
 
 public class EditProfile
-extends Protected
+	extends Protected
 {
 	private Map attributes;	
 	private String password1;
@@ -66,7 +66,7 @@ extends Protected
 		
 		super.detach();	
 	}
-		
+	
 	public String getPassword1()
 	{
 		return password1;
@@ -76,7 +76,7 @@ extends Protected
 	{
 		password1 = value;
 	}
-
+	
 	public String getPassword2()
 	{
 		return password2;
@@ -86,7 +86,7 @@ extends Protected
 	{
 		password2 = value;
 	}
-		
+	
 	public boolean getCancel()
 	{
 		return cancel;
@@ -101,7 +101,7 @@ extends Protected
 	{
 		if (attributes == null)
 			attributes = new HashMap(MAP_SIZE);
-			
+		
 		return attributes;
 	}	
 	
@@ -112,18 +112,24 @@ extends Protected
 	 *  default values to the {@link ValidatingTextField} components.
 	 *
 	 */
-	 
+	
 	public void beginEdit(IRequestCycle cycle)
 	{
-        Visit visit = (Visit)getVisit();
+		Visit visit = (Visit)getVisit();
+		VirtualLibraryEngine vengine = visit.getEngine();
 		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			attributes = visit.getUser().getEntityAttributes();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
+			try
+			{
+				attributes = visit.getUser().getEntityAttributes();
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure("Remote exception reading user.", ex, i > 0);
+			}
 		}
 		
 		attributes.remove("password");
@@ -137,7 +143,7 @@ extends Protected
 	 *  to {@link MyLibrary}.
 	 *
 	 */
-	 
+	
 	public IActionListener getFormListener()
 	{
 		return new IActionListener()
@@ -160,19 +166,19 @@ extends Protected
 		}
 		
 		// Possibly one of the validating text fields found an error.
-
-        if (getError() != null)
-        {
-            resetPasswords();
-            return;
-        }
-	
+		
+		if (getError() != null)
+		{
+			resetPasswords();
+			return;
+		}
+		
 		if (Tapestry.isNull(password1) != Tapestry.isNull(password2))
 		{
 			setErrorField("inputPassword1", 
-			    "Enter the password, then re-enter it to confirm.");
-
-            resetPasswords();
+					"Enter the password, then re-enter it to confirm.");
+			
+			resetPasswords();
 			return;
 		}
 		
@@ -181,7 +187,7 @@ extends Protected
 			if (!password1.equals(password2))
 			{
 				setErrorField("inputPassword1",
-				    "Enter the same password in both fields.");
+						"Enter the same password in both fields.");
 				resetPasswords();
 				return;
 			}
@@ -189,22 +195,30 @@ extends Protected
 			attributes.put("password", password1);
 		}
 		
-        Visit visit = (Visit)getVisit();
-        		
-		try
+		Visit visit = (Visit)getVisit();
+		VirtualLibraryEngine vengine = visit.getEngine();
+		
+		for (int i = 0; i < 2; i++)
 		{
-			/**
-			 *  Note:  this allows the user to change thier e-mail
-			 *  such that it conflicts with another user!  Need yet-another
-			 *  IOperations method to perform the update!
-			 *
-			 */
-			 
-			visit.getUser().updateEntityAttributes(attributes);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
+			try
+			{
+				/**
+				 *  Note:  this allows the user to change thier e-mail
+				 *  such that it conflicts with another user!  Need yet-another
+				 *  IOperations method to perform the update!
+				 *
+				 */
+				
+				visit.getUser().updateEntityAttributes(attributes);
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception updating user attributes.",
+					ex, i > 0);
+			}
 		}
 		
 		visit.clearCache();
@@ -214,15 +228,15 @@ extends Protected
 	
     private void resetPasswords()
     {
-        IValidatingTextField field;
-
-        password1 = null;
-        password2 = null;
-
-        field = (IValidatingTextField)getComponent("inputPassword1");
-        field.refresh();
-
-        field = (IValidatingTextField)getComponent("inputPassword2");
-        field.refresh();
+		IValidatingTextField field;
+		
+		password1 = null;
+		password2 = null;
+		
+		field = (IValidatingTextField)getComponent("inputPassword1");
+		field.refresh();
+		
+		field = (IValidatingTextField)getComponent("inputPassword2");
+		field.refresh();
     }
 }

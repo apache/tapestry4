@@ -52,7 +52,8 @@ import java.sql.Connection;
  *
  */
 
-public class OperationsBean implements SessionBean
+public class OperationsBean 
+	implements SessionBean, IMailMessageConstants
 {
 	private SessionContext context;
 	private transient Context environment;
@@ -914,7 +915,7 @@ public class OperationsBean implements SessionBean
 			
 			QueueConnection connection = factory.createQueueConnection();
 			
-			mailQueueSession = connection.createQueueSession(true, Session.AUTO_ACKNOWLEDGE);
+			mailQueueSession = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
 		}
 		
 		return mailQueueSession;
@@ -944,11 +945,10 @@ public class OperationsBean implements SessionBean
 			
 			QueueSession session = getMailQueueSession();
 			
-			MailMessage message = new MailMessage(emailAddress, subject, content);
-			
-			ObjectMessage queueMessage = session.createObjectMessage(message);
-
-			System.out.println("Sending message: " + queueMessage + " via " + sender);
+			MapMessage queueMessage = session.createMapMessage();
+			queueMessage.setString("email", emailAddress);
+			queueMessage.setString("subject", subject);
+			queueMessage.setString("content", content);
 			
 			sender.send(queueMessage, DeliveryMode.PERSISTENT, MAIL_QUEUE_PRIORITY, 0);
 		}

@@ -54,7 +54,6 @@ public class Browser
 	private int currentPage;
 	private int resultCount;
 	private int pageCount;
-	private int jumpPage;
 	private List pageResults;
 	private IDirectListener jumpListener;
 	
@@ -85,7 +84,6 @@ public class Browser
 		resultCount = 0;
 		currentPage = 0;
 		pageCount = 0;
-		jumpPage = 0;
 		
 		if (pageResults != null)
 			pageResults.clear();

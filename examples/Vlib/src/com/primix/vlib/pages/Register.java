@@ -47,8 +47,8 @@ import javax.rmi.*;
 
 
 public class Register
-extends BasePage
-implements IErrorProperty
+	extends BasePage
+	implements IErrorProperty
 {
 	private String error;
 	private String firstName;
@@ -57,7 +57,7 @@ implements IErrorProperty
 	private String password1;
 	private String password2;
 	private IValidationDelegate validationDelegate;
-
+	
 	public void detach()
 	{
 		error = null;
@@ -66,8 +66,8 @@ implements IErrorProperty
 		email = null;
 		password1 = null;
 		password2 = null;
-
-    	super.detach();
+		
+		super.detach();
 	}
 	
 	public String getError()
@@ -133,44 +133,44 @@ implements IErrorProperty
 	public IValidationDelegate getValidationDelegate()
 	{
 	    if (validationDelegate == null)
-	        validationDelegate = new SimpleValidationDelegate(this);
-
+			validationDelegate = new SimpleValidationDelegate(this);
+		
 	    return validationDelegate;
 	}
-
+	
     private void setErrorField(String componentId, String message)
     {
-        IValidatingTextField field;
-
-        field = (IValidatingTextField)getComponent(componentId);
-        field.setError(true);
-
-        if (error == null)
-            error = message;
-
-        resetPasswords();
+		IValidatingTextField field;
+		
+		field = (IValidatingTextField)getComponent(componentId);
+		field.setError(true);
+		
+		if (error == null)
+			error = message;
+		
+		resetPasswords();
     }
-
+	
     private void resetPasswords()
     {
-        IValidatingTextField field;
- 
-        password1 = null;
-        password2 = null;
-
-        field = (IValidatingTextField)getComponent("inputPassword1");
-        field.refresh();
-
-        field = (IValidatingTextField)getComponent("inputPassword2");
-        field.refresh();
+		IValidatingTextField field;
+		
+		password1 = null;
+		password2 = null;
+		
+		field = (IValidatingTextField)getComponent("inputPassword1");
+		field.refresh();
+		
+		field = (IValidatingTextField)getComponent("inputPassword2");
+		field.refresh();
     }
-
+	
 	public IActionListener getFormListener()
 	{
 		return new IActionListener()
 		{
 			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			throws RequestCycleException
+				throws RequestCycleException
 			{
 				attemptRegister(cycle);
 			}
@@ -178,55 +178,58 @@ implements IErrorProperty
 	}
 	
 	private void attemptRegister(IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
-		IOperations bean;
-		Login login;
-		IPerson user;
+		// Check for errors from the validating text fields
 		
-        // Check for errors from the validating text fields
-
 		if (error != null)
-        {
-            resetPasswords();
-            return;
-        }
-
-        // Note: we know password1 and password2 are not null
-        // because they are required fields.
-
+		{
+			resetPasswords();
+			return;
+		}
+		
+		// Note: we know password1 and password2 are not null
+		// because they are required fields.
+		
 		if (!password1.equals(password2))
 		{
 			setErrorField("inputPassword1",
-			    "Enter the same password twice.");
+					"Enter the same password twice.");
 			return;
 		}
+		
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		Login login = (Login)cycle.getPage("Login");
+		
+		for (int i = 0; i < 2; i++)
+		{
+			try
+			{
+				IOperations bean = vengine.getOperations();				
+				IPerson user = bean.registerNewUser(firstName, lastName, email, password1);
 				
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		bean = vengine.getOperations();
-		
-		try
-		{
-			user = bean.registerNewUser(firstName, lastName, email, password1);
-		}
-		catch (RegistrationException e)
-		{
-			setError(e.getMessage());
-			return;
-		}
-		catch (CreateException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-		
-		// Ask the login page to return is to the proper place.
-		
-		login = (Login)cycle.getPage("Login");
-		login.loginUser(user, cycle);
+				// Ask the login page to return us to the proper place, as well
+				// as set a cookie identifying the user for next time.
+				
+				login.loginUser(user, cycle);
+				
+				break;				
+			}
+			catch (RegistrationException ex)
+			{
+				setError(ex.getMessage());
+				return;
+			}
+			catch (CreateException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception registering new user.",
+					ex, i > 0);
+			}
+		}	
 	}
-		
 }

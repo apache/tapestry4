@@ -1,39 +1,46 @@
 <jwc id="border">
 <!-- $Id$ -->
 
-<jwc id="insertMatchCount"/> matching books.
-
 <jwc id="browser">
 
-<jwc id="ifMatches">
-<table>
+<table width="600" border="0" cellspacing="0" cellpadding="0" class="clsResultsTable">
 	<tr>
-		<th>Title</th>
-		<th>Author</th>
-		<th>Publisher</th>
-		<th>Owner</th>
-		<th>Borrowed By</th>
+		<td height="20" colspan="6">
+		<span class="clsBold"><jwc id="insertMatchCount"/> Matches Found</span></td>
 	</tr>
-
-<jwc id="e-match">
-
+	<tr height="20" class="clsBold">
+		<td>&nbsp;&nbsp;Title</td>
+		<td>&nbsp;&nbsp;Author</td>
+		<td>&nbsp;&nbsp;Publisher</td>
+		<td>&nbsp;&nbsp;Owner</td>
+		<td>&nbsp;&nbsp;Borrowed By</td>
+		<td>&nbsp;&nbsp;borrow</td>
+	</tr>
 	<tr>
-		<td><jwc id="bookLink"/></td>
-		<td><jwc id="insertAuthor"/></td>
-		<td><jwc id="insertPublisherName"/></td>
-		<td><jwc id="ownerLink"/></td>
-		<td>
+		<td height="1" bgcolor="#4b5887"><img src="/vlib/images/spacer.gif" width="150" height="1" alt="" border="0"></td>
+		<td bgcolor="#4b5887"><img src="/vlib/images/spacer.gif" width="100" height="1" alt="" border="0"></td>
+		<td bgcolor="#4b5887"><img src="/vlib/images/spacer.gif" width="100" height="1" alt="" border="0"></td>
+		<td bgcolor="#4b5887"><img src="/vlib/images/spacer.gif" width="100" height="1" alt="" border="0"></td>
+		<td bgcolor="#4b5887"><img src="/vlib/images/spacer.gif" width="100" height="1" alt="" border="0"></td>
+		<td><img src="/vlib/images/spacer.gif" width="50" height="1" alt="" border="0"></td>
+	</tr>
+<jwc id="e">
+	<tr height="20">
+		<td class="clsDataTable" style="border-left-width:2px;"><jwc id="bookLink"/></td>
+		<td class="clsDataTable"><jwc id="insertAuthor"/></td>
+		<td class="clsDataTable"><jwc id="insertPublisherName"/></td>
+		<td class="clsDataTable"><jwc id="ownerLink"/></td>
+		<td class="clsDataTable" style="border-right-width:2px;">
 <jwc id="ifShowHolder">
 			<jwc id="holderLink"/>
 </jwc>
+<jwc id="ifSkipHolder">&nbsp;</jwc>
 		</td>
-		<td><jwc id="borrow"/></td>
+		<td align="center"><jwc id="borrow"/></td>
 	</tr>
-
 </jwc>
 
-</table>
-</jwc>
+</table> 
 
 </jwc>
 

@@ -28,6 +28,7 @@
 
 package com.primix.vlib.ejb.impl;
 
+import com.primix.vlib.ejb.*;
 import javax.ejb.*;
 import java.rmi.*;
 import javax.jms.*;
@@ -44,13 +45,18 @@ import org.apache.log4j.*;
 
 public class MailQueueBean 
 	extends AbstractMessageDrivenBean
+	implements IMailMessageConstants
 {
 	private static final Category CAT = 
 		Category.getInstance(MailQueueBean.class);
 	
+	/**
+	 *  Logs the message receipt; more to come soon.
+	 *
+	 */
 	public void onMessage(Message message)
 	{
-		System.err.println("Received message: " + message);	
+
 	}
 }
 

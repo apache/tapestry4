@@ -67,7 +67,6 @@ public class ViewBook extends BasePage
 		
 		for (int i = 0; i < 2; i++)
 		{
-			
 			IOperations bean = vengine.getOperations();
 			
 			try

@@ -2,10 +2,16 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.vlib.pages.Register">
+
+  <property name="page-type">login</property>
+  
   <component id="border" type="Border">
     <static-binding name="title">Register</static-binding>
+    <binding name="subheader" property-path="assets.subheader"/>
   </component>
+
   <component id="showError" type="ShowError"/>
+
   <component id="form" type="Form">
     <binding name="listener" property-path="formListener"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
@@ -65,4 +71,7 @@
     <field-binding name="required" field-name="Boolean.TRUE"/>
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
+  
+  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
+
 </specification>

@@ -103,7 +103,7 @@ public class NewBook extends Protected
 	private void addBook(IRequestCycle cycle)
 	{
 		IBook book = null;	
-	
+		
 		if (cancel)
 		{
 			cycle.setPage("MyLibrary");
@@ -133,33 +133,40 @@ public class NewBook extends Protected
 		
 		Visit visit = (Visit)getVisit();
 		Integer userPK = visit.getUserPK();
-		
-		IOperations operations = visit.getEngine().getOperations();		
+		VirtualLibraryEngine vengine = visit.getEngine();
 		
 		attributes.put("ownerPK", userPK);
 		attributes.put("holderPK", userPK);
 		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			if (publisherPK != null)
-				book = operations.addBook(attributes);
-			else
+			try
 			{
-				book = operations.addBook(attributes, publisherName);
 				
-				// Clear the app's cache of info; in this case, known publishers.
+				IOperations operations = vengine.getOperations();		
+
+				if (publisherPK != null)
+					book = operations.addBook(attributes);
+				else
+				{
+					book = operations.addBook(attributes, publisherName);
+					
+					// Clear the app's cache of info; in this case, known publishers.
+					
+					visit.clearCache();
+				}	
 				
-				visit.clearCache();
-			}	
-		}
-		catch (CreateException e)
-		{
-			setError("Error adding book: " + e.getMessage());
-			return;
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e.getMessage(), e);
+				break;
+			}
+			catch (CreateException ex)
+			{
+				setError("Error adding book: " + ex.getMessage());
+				return;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure("Remote exception adding new book.", ex, i > 0);
+			}
 		}
 		
 		// Success.  First, update the message property of the return page.

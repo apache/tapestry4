@@ -28,6 +28,7 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -59,38 +60,51 @@ public class Matches extends BasePage
 		super.detach();
 	}
 	
-
+	public void finishLoad(IPageLoader loader,
+			ComponentSpecification specification)
+		throws PageLoaderException
+	{
+		super.finishLoad(loader, specification);
+		
+		browser = (Browser)getComponent("browser");
+	}
+	
 	/**
 	 *  Gets the {@link IBookQuery} session bean for the query, creating
-     *  it fresh if necessary.
+	 *  it fresh if necessary.
 	 *
 	 */
-	 
+	
 	public IBookQuery getBookQuery()
 	{
 		if (bookQuery == null)
 		{
-			try
+			// No existing handle, so time to create a new bean.
+			
+			VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
+			
+			for (int i = 0; i < 2; i++)
 			{
-				// No existing handle, so time to create a new bean.
-				
-                VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
-				IBookQueryHome home = vengine.getBookQueryHome();
-				
-                bookQuery = home.create();
-
-				fireObservedChange("bookQuery", bookQuery);
+				try
+				{
+					IBookQueryHome home = vengine.getBookQueryHome();
+					
+					setBookQuery(home.create());
+					
+					break;
+				}
+				catch (CreateException ex)
+				{
+					throw new ApplicationRuntimeException(ex);
+				}
+				catch (RemoteException ex)
+				{
+					vengine.rmiFailure(
+						"Remote exception creating BookQuery.", ex, i > 0);
+				}
 			}
-		    catch (CreateException ex)
-		    {
-			    throw new ApplicationRuntimeException(ex);
-		    }
-		    catch (RemoteException ex)
-		    {
-			    throw new ApplicationRuntimeException(ex);
-		    }
 		}
-
+		
 		return bookQuery;
 	}
 	
@@ -98,68 +112,90 @@ public class Matches extends BasePage
 	 *  Sets the persistent bookQuery property.
 	 *
 	 */
-	 
+	
 	public void setBookQuery(IBookQuery value)
 	{
 		bookQuery = value;
 		
-        fireObservedChange("bookQuery", value);
+		fireObservedChange("bookQuery", value);
 	}
 	
 	/**
 	 *  Invoked by the {@link Home} page to perform a query.
 	 *
 	 */
-	 
-	public void performQuery(String title, String author, Object publisherPK)
+	
+	public void performQuery(String title, String author, Object publisherPK, IRequestCycle cycle)
 	{
-		IBookQueryHome home;
-		IBookQuery query;
-		int count;
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		
-		query = getBookQuery();
-		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			count = query.masterQuery(title, author, publisherPK);
-		}
-		catch (RemoteException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
+			
+			IBookQuery query = getBookQuery();
+			
+			try
+			{
+				int count = query.masterQuery(title, author, publisherPK);
+				
+				if (count == 0)
+				{
+					Home home = (Home)cycle.getPage("Home");
+					home.setMessage("No matches for your query.");
+					cycle.setPage(home);
+					return;
+				}
+				
+				browser.initializeForResultCount(count);
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				String message = "Remote exception processing query.";
+				
+				vengine.rmiFailure(message, ex, false);
+				
+				if (i > 0)
+				{
+					Home home = (Home)cycle.getPage("Home");
+					home.setError(message);
+					cycle.setPage(home);
+					return;
+				}				
+			}
 		}
 		
-		if (browser == null)
-			browser = (Browser)getComponent("browser");
+		cycle.setPage(this);
 		
-		browser.initializeForResultCount(count);	
 	}
 	
 	public Book getCurrentMatch()
 	{
 		return currentMatch;
 	}
-
+	
 	/**
 	 *  Updates the dynamic currentMatch property.
 	 *
 	 */
-	 	
+	
 	public void setCurrentMatch(Book value)
 	{
 		currentMatch = value;
 	}
-		
- 	/**
+	
+	/**
 	 *  Removes the book query bean, if not null.
 	 *
 	 */
-	 
- 	public void cleanupPage()
- 	{
+	
+	public void cleanupPage()
+	{
 		try
 		{
 			if (bookQuery != null)
-			    bookQuery.remove();
+				bookQuery.remove();
 			
 			bookQuery = null;
 		}
@@ -173,5 +209,5 @@ public class Matches extends BasePage
 		}
 		
 		super.cleanupPage();
- 	}
+	}
 }

@@ -1,45 +1,140 @@
 <jwc id="shell">
 <jwc id="body">
 
-<table border=0 cellspacing=0 cellpadding=4>
-	<tr valign=top>
-		<td width=200><h2><jwc id="insertPageTitle"/></h2>
-		</td>
 
-		<td>
-		<jwc id="home">[Search]</jwc>
-		</td>
+<!-- ****BODY WRAPPER**** -->
 
-		<td>
-		<jwc id="myLibrary">[My Library]</jwc>
-		</td>
+<table width="790" border="0" cellspacing="0" cellpadding="0">
 
-		<td align=center>
-		<jwc id="ifLoggedIn">
-		Logged in as: <br><jwc id="insertUserName"/>
-		</jwc>
-		<jwc id="ifLoggedOff">
-		<jwc id="login">[Login]</jwc>
-		</jwc>
-		</td>
+	<!-- Added by HS to compensate for the removal of the "white" navigation bar -->
+	
+<tr colspan="*" height=20> <td>&nbsp;</td></tr>
 
-		<td>
-		<jwc id="ifShowLogout">
-		<jwc id="logout">[Logout]</jwc>
-		</jwc>
+	<tr>
+		<td width="124" valign="top">
+			<!-- Left Nav -->
+			<table width="124" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="35" colspan="3">&nbsp;</td>
+				</tr>
+				<tr>
+				<!-- HS:  Need to add stuff to show the dots for the right option ... -->
+				
+					<td width="19" height="22"><jwc id="searchIcon"/></td>
+					<td width="89"><jwc id="search">Search</jwc></td>
+					<td width="1" valign="top" rowspan="5" bgcolor="#4B5887"><img src="/vlib/images/vert_ltblue.gif" width="1" height="7" alt="" border="0"></td>
+				</tr>
+				<tr>
+					<td valign="top" height="22"><jwc id="myLibraryIcon"/></td>
+					<td><jwc id="myLibrary">My Library</jwc>
+					
+					<jwc id="ifLoggedIn">
+					<br>
+					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="borrowed">Borrowed Books</jwc><br>
+					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="addNewBook">Add New Book</jwc><br>
+					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="editProfile">Edit Profile</jwc><br>
+					</jwc>
+					</td>					
+				</tr>
+				<tr>
+					<td height="22"><jwc id="loginIcon"/></td>
+					<td>
+					
+					<jwc id="ifLoggedIn2">
+					<jwc id="logout">Logout</jwc>
+					</jwc>
+					
+					<jwc id="ifNotLoggedIn">
+					<jwc id="login">Login</jwc>
+					</jwc>
+					
+					</td>
+				</tr>
+				<tr>
+					<td height="200"><img src="/vlib/images/spacer.gif" width="14" height="1" alt="" border="0"></td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+			<!-- END Left Nav -->
+		</td>
+		<td width="66" align="center" valign="top">
+			<!-- Gutter -->
+				<img src="/vlib/images/ico_t.gif" width="44" height="44" border="0" vspace="5">
+			<!-- END Gutter -->
+		</td>
+		<td width="600" valign="top">
+			<!-- Content -->
+				<!-- head -->
+				<img src="/vlib/images/hd_primixvirtlib.gif" width="241" height="22" alt="" border="0" vspace="17"><br>
+<jwc id="ifLibraryPage"><img 
+src="/vlib/images/hd_mybooks.gif" 
+width="97" height="16" alt="" border="0"></jwc><jwc id="subheaderImage"/>
+				
+				<!-- END head -->
+				<br><br>
+				
+<jwc id="wrapped"/>
+				
+			<!-- END Content -->
 		</td>
 	</tr>
 </table>
+<!-- ****END BODY WRAPPER**** -->
 
-<jwc id="wrapped"/>
-
-<hr>
-Copyright 2000, 2001 <a href="http://www.primix.com">Primix</a> and released under the 
-<a target="gnu-copyleft" href="http://www.gnu.org/copyleft/lesser.html">Lesser GNU Public License</a>.
-
-<jwc id="ifShowInspector">
+<!-- ****FOOTER**** -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr bgcolor="#8e9cd1">
+		<td>
+			<table width="737" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="181">&nbsp;</td>
+					<td width="503" valign="bottom">&nbsp;&nbsp;&nbsp;&nbsp;Copyright 2000, 2001 <a href="http://www.primix.com">Primix</a> and released under the <a 
+					target="gnu-copyleft" href="http://www.gnu.org/copyleft/lesser.html">Lesser GNU Public License.</a></td>
+					<td width="53"><jwc id="ifShowInspector">
 	<jwc id="showInspector"/>
-</jwc>
+</jwc></td>
+</tr>
+				<tr>
+					<td colspan="3">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#4b5887">
+		<td height="47">
+			<table width="500" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="181">&nbsp;</td>
+					<td width="319"><a href="http://sf.net/projects/jetty"><img src="/vlib/images/lgo_jetty.gif" width="79" height="31" alt="" border="0"></a>
+						&nbsp;<a href="http://sf.net/projects/tapestry"><img src="/vlib/images/lgo_srcforge.gif" width="88" height="31" alt="" border="0"></a>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#333333">
+		<td height="65">
+			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
+				<tr height="65">
+					<td width="654" align="right" valign="bottom" class="clsFooter">&#169;2000 Primix.All rights reserved. <a href="#" class="clsFooterLink">Privacy and Terms of Use</a></td>
+					<td width="70">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="#333333">
+		<td>
+			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
+				<tr height="65">
+					<td height="200" width="654">&nbsp;</td>
+					<td width="70">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<!-- ****END FOOTER**** -->
 
 </jwc>
 </jwc>
+

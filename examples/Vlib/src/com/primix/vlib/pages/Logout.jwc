@@ -2,7 +2,14 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.vlib.pages.Logout">
+
+  <property name="page-type">login</property>
+  
   <component id="border" type="Border">
     <static-binding name="title">Goodbye</static-binding>
-  </component>
+    <binding name="subheader" property-path="assets.subheader"/>
+    </component>
+  
+  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
+   
 </specification>

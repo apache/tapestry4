@@ -2,9 +2,14 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.vlib.pages.ConfirmBookDelete">
+ 
+  <property name="page-type">library</property>
+   
   <component id="border" type="Border">
     <static-binding name="title">Delete Book</static-binding>
+    <binding name="subheader" property-path="assets.subheader"/>
   </component>
+  
   <component id="insertBookTitle" type="Insert">
     <binding name="value" property-path="bookTitle"/>
   </component>
@@ -15,4 +20,7 @@
   <component id="no" type="Page">
     <static-binding name="page">MyBooks</static-binding>
   </component>
+  
+  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
+
 </specification>

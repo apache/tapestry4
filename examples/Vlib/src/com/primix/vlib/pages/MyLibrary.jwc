@@ -6,9 +6,12 @@
 
 <specification class="com.primix.vlib.pages.MyLibrary">
 
+  <property name="page-type">library</property>
+  
   <component id="border" type="Border">
     <static-binding name="title">My Library</static-binding>
     <static-binding name="subtitle">My Library</static-binding>
+    <binding name="subheader" property-path="assets.subheader"/>
   </component>
 
   <component id="showError" type="ShowError"/>
@@ -62,17 +65,9 @@
     <binding name="listener" property-path="deleteListener"/>
     <binding name="context" property-path="currentBook.primaryKey"/>
   </component>
+ 
+ <!-- Temporary -->
     
-  <component id="borrowed" type="Page">
-  	<static-binding name="page">BorrowedBooks</static-binding>
-  </component>
-  
-  <component id="addNewBook" type="Direct">
-    <binding name="listener" property-path="addNewBookListener"/>
-  </component>
-  
-  <component id="editProfile" type="Direct">
-    <binding name="listener" property-path="editProfileListener"/>
-  </component>
+  <context-asset name="subheader" path="/images/hd_searchforbooks.gif"/>
   
 </specification>
