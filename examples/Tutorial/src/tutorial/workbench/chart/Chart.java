@@ -83,7 +83,9 @@ public class Chart extends BasePage implements IChartProvider
 		{
 			setPlotValues(new ArrayList());
 			
-			plotValues.add(new PlotValue("<New>", 0));
+			plotValues.add(new PlotValue("Fred", 10));
+			plotValues.add(new PlotValue("Barney", 15));
+			plotValues.add(new PlotValue("Dino", 7));
 		}
 		
 		return plotValues;
