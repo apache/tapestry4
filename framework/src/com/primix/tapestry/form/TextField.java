@@ -131,7 +131,7 @@ public class TextField extends AbstractTextField
 	{
 		if (warning)
 		{
-			CAT.error(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
+			CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
 			warning = false;
 		}
 		
