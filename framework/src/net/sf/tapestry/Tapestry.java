@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.Decorator;
@@ -589,5 +590,75 @@ public final class Tapestry
             return 0;
 
         return array.length;
+    }
+    
+    /**
+     *  Converts a {@link Map} to an even-sized array of key/value
+     *  pairs.  This may be useful when using a Map as service parameters
+     *  (with {@link net.sf.tapestry.link.DirectLink}.  Assuming the keys
+     *  and values are simple objects (String, Boolean, Integer, etc.), then
+     *  the representation as an array will encode more efficiently
+     *  (via {@link net.sf.tapestry.util.io.DataSqueezer} than
+     *  serializing the Map and its contents.
+     * 
+     *  @return the array of keys and values, or null if the input
+     *  Map is null or empty
+     * 
+     *  @since 2.2
+     **/
+    
+    public static Object[] convertMapToArray(Map map)
+    {
+        if (map == null || map.isEmpty())
+            return null;
+            
+        Set entries = map.entrySet();
+        
+        Object[] result = new Object[2 * entries.size()];
+        int x = 0;
+        
+        Iterator i = entries.iterator();
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry)i.next();
+            
+            result[x++] = entry.getKey();
+            result[x++] = entry.getValue();
+        }
+        
+        return result;
+    }
+    
+    /**
+     *  Converts an even-sized array of objects back 
+     *  into a {@link Map}.
+     * 
+     *  @see #convertMapToArray(Map)
+     *  @return a Map, or null if the array is null or empty
+     *  @since 2.2
+     * 
+     **/
+    
+    public static Map convertArrayToMap(Object[] array)
+    {
+        if (array == null || array.length == 0)
+            return null;
+            
+         if (array.length % 2 != 0)
+         throw new IllegalArgumentException(
+         getString("Tapestry.even-sized-array"));
+         
+         Map result = new HashMap();
+         
+         int x = 0;
+         while (x < array.length)
+         {
+            Object key = array[x++];
+            Object value = array[x++];
+            
+            result.put(key, value);
+         }
+         
+         return result;    
     }
 }
