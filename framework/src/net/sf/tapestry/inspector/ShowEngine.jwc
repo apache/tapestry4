@@ -53,7 +53,7 @@
   
   <component id="reset" type="ServiceLink">
     <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESET_SERVICE"/>
-    <binding name="disabled" expression="! engine.resetServiceEnabled"/>
+    <binding name="disabled" expression="! page.engine.resetServiceEnabled"/>
   </component>
   
   <component id="resetButton" type="Rollover">

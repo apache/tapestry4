@@ -29,7 +29,7 @@ This DTD is backwards compatible with the 1.2 DTD, with the following exceptions
 - allow <property> within <bean>, <component>, <extension>, <private-asset>, <context-asset> and <external-asset>
 - add "render" to bean lifecycle value
 - rename <binding>'s property-path attribute to expression
-- rename <property-value> to <expression-value>
+- simplify set-property to use OGNL expressions
 - add "form" as parameter direction
 -->
 
@@ -101,7 +101,7 @@ The bean may have its properties set.  Properties are set on both
 newly instantiated beans, and beans that are retrieved from a pool.
 
 -->
-<!ELEMENT bean (description*, property*, set-property*)>
+<!ELEMENT bean (description*, property*, set-property*, set-string-property*)>
 <!ATTLIST bean
   name CDATA #REQUIRED
   class CDATA #REQUIRED
@@ -237,20 +237,6 @@ Attributes:
 <!ATTLIST description
   xml:lang NMTOKEN "en"
 >
-<!-- =======================================================
-Element: expression-value
-Appears in: set-parameter
-
-Used to initialize a bean with from an OGNL expression.
-
-Attributes:
-  expression: An OGNL expression.
--->
-
-<!ELEMENT expression-value EMPTY>
-<!ATTLIST expression-value
-  expression CDATA #REQUIRED
->
 
 <!-- =======================================================
 Element: extension
@@ -304,22 +290,6 @@ Attributes:
 <!ELEMENT field-binding EMPTY>
 <!ATTLIST field-binding
   name CDATA #REQUIRED
-  field-name CDATA #REQUIRED
->
-
-<!-- =======================================================
-Element: field-value
-Appears in: set-property
-
-Allows a helper bean property to be set to the value of
-a static field.
-
-Attributes:
-  field-name: The name of the field, as with field-binding.
-  
--->
-<!ELEMENT field-value EMPTY>
-<!ATTLIST field-value
   field-name CDATA #REQUIRED
 >
 
@@ -514,12 +484,33 @@ Used to initialize a property of a helper bean.
 
 Attributes:
   name: The name of the property to be set.
+  expression: The OGNL expression that provides a value.
 -->
 
-<!ELEMENT set-property (static-value | expression-value | field-value | string-value)>
+<!ELEMENT set-property EMPTY>
 <!ATTLIST set-property
   name CDATA #REQUIRED
+  expression CDATA #REQUIRED
 >
+
+
+<!-- =======================================================
+Element: set-string-property
+Appears in: bean
+
+A localized string.
+
+Attributes:
+  key:  Sets a property of a string from a localized string.
+
+-->
+
+<!ELEMENT set-string-property EMPTY>
+<!ATTLIST set-string-property
+  name CDATA #REQUIRED
+  key CDATA #REQUIRED
+>
+
 
 <!-- =======================================================
 Element: static-binding
@@ -536,25 +527,6 @@ Attributes:
 <!ELEMENT static-binding (#PCDATA)>
 <!ATTLIST static-binding
   name CDATA #REQUIRED
->
-
-<!-- =======================================================
-Element: static-value
-Appears in: set-parameter
-
-A static value, that will be converted to some known type.
-
-The possible types are limited to a few simple scalar types,
-and String.  Additional types will likely be added in the future.
-
-Attributes:
-  type: The type conversion to apply to the value.
-
--->
-
-<!ELEMENT static-value (#PCDATA)>
-<!ATTLIST static-value
-  type %static-value-type;
 >
 
 <!-- =======================================================
@@ -576,18 +548,3 @@ Attributes:
   key CDATA #REQUIRED
 >
 
-<!-- =======================================================
-Element: string-value
-Appears in: set-parameter
-
-A localized string.
-
-Attributes:
-  key:  The key used to extract a localized string from the component.
-
--->
-
-<!ELEMENT string-value EMPTY>
-<!ATTLIST string-value
-  key CDATA #REQUIRED
->
