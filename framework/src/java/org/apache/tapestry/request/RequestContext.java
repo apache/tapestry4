@@ -83,23 +83,6 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 
 public class RequestContext implements IRender
 {
-    /** @since 2.2 * */
-
-    private static class DefaultRequestDecoder implements IRequestDecoder
-    {
-        public DecodedRequest decodeRequest(HttpServletRequest request)
-        {
-            DecodedRequest result = new DecodedRequest();
-
-            result.setRequestURI(request.getRequestURI());
-            result.setScheme(request.getScheme());
-            result.setServerName(request.getServerName());
-            result.setServerPort(request.getServerPort());
-
-            return result;
-        }
-    }
-
     private static final Log LOG = LogFactory.getLog(RequestContext.class);
 
     private HttpSession _session;
@@ -110,10 +93,8 @@ public class RequestContext implements IRender
 
     private HttpServlet _servlet;
 
-    private DecodedRequest _decodedRequest;
-
     private IMultipartDecoder _decoder;
-
+    
     private boolean _decoded;
 
     private IApplicationSpecification _specification;
@@ -214,78 +195,8 @@ public class RequestContext implements IRender
         pair(writer, name, new Date(value));
     }
 
-    /** @since 2.2 * */
 
-    private DecodedRequest getDecodedRequest()
-    {
-        if (_decodedRequest != null)
-            return _decodedRequest;
 
-        IRequestDecoder decoder = null;
-
-        if (!_specification.checkExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME))
-            decoder = new DefaultRequestDecoder();
-        else
-            decoder = (IRequestDecoder) _specification.getExtension(
-                    Tapestry.REQUEST_DECODER_EXTENSION_NAME,
-                    IRequestDecoder.class);
-
-        _decodedRequest = decoder.decodeRequest(_request);
-
-        return _decodedRequest;
-    }
-
-    /**
-     * Returns the actual scheme, possibly decoded from the request.
-     * 
-     * @see IRequestDecoder
-     * @see javax.servlet.ServletRequest#getScheme()
-     * @since 2.2
-     */
-
-    public String getScheme()
-    {
-        return getDecodedRequest().getScheme();
-    }
-
-    /**
-     * Returns the actual server name, possibly decoded from the request.
-     * 
-     * @see IRequestDecoder
-     * @see javax.servlet.ServletRequest#getServerName()
-     * @since 2.2
-     */
-
-    public String getServerName()
-    {
-        return getDecodedRequest().getServerName();
-    }
-
-    /**
-     * Returns the actual server port, possibly decoded from the request.
-     * 
-     * @see IRequestDecoder
-     * @see javax.servlet.ServletRequest#getServerPort()
-     * @since 2.2
-     */
-
-    public int getServerPort()
-    {
-        return getDecodedRequest().getServerPort();
-    }
-
-    /**
-     * Returns the actual request URI, possibly decoded from the request.
-     * 
-     * @see IRequestDecoder
-     * @see HttpServletRequest#getRequestURI()
-     * @since 2.2
-     */
-
-    public String getRequestURI()
-    {
-        return getDecodedRequest().getRequestURI();
-    }
 
     /**
      * Builds an absolute URL from the given URI, using the {@link HttpServletRequest}as the source
@@ -296,9 +207,9 @@ public class RequestContext implements IRender
 
     public String getAbsoluteURL(String URI)
     {
-        String scheme = getScheme();
-        String server = getServerName();
-        int port = getServerPort();
+        String scheme = _request.getScheme();
+        String server = _request.getServerName();
+        int port = _request.getServerPort();
 
         // Keep things simple ... port 80 is accepted as the
         // standard port for http so it can be ommitted.

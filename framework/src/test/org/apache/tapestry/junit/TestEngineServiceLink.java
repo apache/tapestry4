@@ -17,6 +17,8 @@ package org.apache.tapestry.junit;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -144,20 +146,26 @@ public class TestEngineServiceLink extends TapestryTestCase
         MockControl contextc = newControl(RequestContext.class);
         RequestContext context = (RequestContext) contextc.getMock();
 
+        MockControl requestc = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) requestc.getMock();
+
         rc.getRequestContext();
         control.setReturnValue(context);
+
+        context.getRequest();
+        contextc.setReturnValue(request);
 
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec,
                 buildParameters("myservice", null), false);
 
-        context.getScheme();
-        contextc.setReturnValue("HTTP");
+        request.getScheme();
+        requestc.setReturnValue("HTTP");
 
-        context.getServerName();
-        contextc.setReturnValue("TESTSERVER.COM");
+        request.getServerName();
+        requestc.setReturnValue("TESTSERVER.COM");
 
-        context.getServerPort();
-        contextc.setReturnValue(9187);
+        request.getServerPort();
+        requestc.setReturnValue(9187);
 
         replayControls();
 
@@ -174,8 +182,14 @@ public class TestEngineServiceLink extends TapestryTestCase
         MockControl contextc = newControl(RequestContext.class);
         RequestContext context = (RequestContext) contextc.getMock();
 
+        MockControl requestc = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) requestc.getMock();
+
         rc.getRequestContext();
         control.setReturnValue(context);
+
+        context.getRequest();
+        contextc.setReturnValue(request);
 
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec,
                 buildParameters("myservice", null), false);

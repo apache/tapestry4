@@ -28,16 +28,11 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.StringSplitter;
@@ -604,25 +599,6 @@ public final class Tapestry
         }
 
         return result;
-    }
-
-    /**
-     * Returns the application root location, which is in the {@link javax.servlet.ServletContext},
-     * based on the {@link javax.servlet.http.HttpServletRequest#getServletPath() servlet path}.
-     * 
-     * @since 3.0
-     */
-
-    public static Resource getApplicationRootLocation(IRequestCycle cycle)
-    {
-        RequestContext context = cycle.getRequestContext();
-        ServletContext servletContext = context.getServlet().getServletContext();
-        String servletPath = context.getRequest().getServletPath();
-
-        // Could strip off the servlet name (i.e., "app" in "/app") but
-        // there's no need.
-
-        return new ContextResource(servletContext, servletPath);
     }
 
     /**

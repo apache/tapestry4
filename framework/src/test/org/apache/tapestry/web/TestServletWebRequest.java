@@ -265,4 +265,21 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         verifyControls();
     }
+
+    public void testGetRequestURI()
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        request.getRequestURI();
+        control.setReturnValue("/foo/bar");
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request);
+
+        assertEquals("/foo/bar", wr.getRequestURI());
+
+        verifyControls();
+    }
 }

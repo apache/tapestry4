@@ -114,8 +114,25 @@
   </configuration-point>
   
   <contribution configuration-id="RequestServicerPipeline">
+    <filter name="DecodedRequestInjector" object="service:DecodedRequestInjector"/>
     <terminator object="service:InvokeEngineTerminator"/>
   </contribution>  
+  
+  <service-point id="DecodedRequestInjector" interface="RequestServicerFilter">
+    
+    Filter contributed into the RequestServicerPipeline whose responsibility is
+    to provide a modified HttpServletRequest that reflects the results of
+    an IRequestDecoder (provided as the org.apache.tapestry.request-decoder
+    application extension).  If the extension exists, then a different HttpServletRequest
+    is substituted.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.request.DecodedRequestInjector">
+        <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   
   <service-point id="ResponseRenderer" interface="ResponseRenderer">
     Renders the active page as the response.
