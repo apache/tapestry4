@@ -132,6 +132,16 @@ import org.apache.tapestry.valid.ValidField;
  *      <td>A textual name for the field that is used when formulating error messages.
  *      </td>
  *  </tr>
+ * 
+ *  <tr>
+ *      <td>type</td>
+ *      <td>String</td>
+ *      <td>R</td>
+ *      <td>yes</td>
+ *      <td>&nbsp;</td>
+ *      <td>The class name used to convert the value entered.  See {@link NumberValidator#setValueType(String)}
+ *      </td>
+ *  </tr>
  *
  *	</table>
  *
@@ -148,9 +158,10 @@ public abstract class NumericField extends ValidField
 {
     private IBinding minimumBinding;
     private IBinding maximumBinding;
-    private IBinding requiredBinding;
+	private IBinding requiredBinding;
+	private IBinding typeBinding;
 
-    public IBinding getMinimumBinding()
+	public IBinding getMinimumBinding()
     {
         return minimumBinding;
     }
@@ -170,15 +181,25 @@ public abstract class NumericField extends ValidField
         maximumBinding = value;
     }
 
-    public IBinding getRequiredBinding()
-    {
-        return requiredBinding;
-    }
+	public IBinding getRequiredBinding()
+	{
+		return requiredBinding;
+	}
 
-    public void setRequiredBinding(IBinding requiredBinding)
-    {
-        this.requiredBinding = requiredBinding;
-    }
+	public void setRequiredBinding(IBinding requiredBinding)
+	{
+		this.requiredBinding = requiredBinding;
+	}
+
+	public IBinding getTypeBinding()
+	{
+		return typeBinding;
+	}
+
+	public void setTypeBinding(IBinding typeNameBinding)
+	{
+		this.typeBinding = typeNameBinding;
+	}
 
     /**
      * Overrides {@link ValidField#getValidator()} to construct
@@ -207,6 +228,11 @@ public abstract class NumericField extends ValidField
             validator.setRequired(required);
         }
 
+        if (typeBinding != null)
+        {
+        	validator.setValueType(typeBinding.getString());
+        }
+        
         return validator;
     }
 
