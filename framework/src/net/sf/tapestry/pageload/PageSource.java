@@ -155,8 +155,7 @@ public class PageSource implements IPageSource, IRenderDescription
      
      **/
 
-    public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
-        throws PageLoaderException
+    public IPage getPage(IEngine engine, String pageName, IMonitor monitor) throws PageLoaderException
     {
         Object key = buildKey(engine, pageName);
         IPage result = (IPage) pool.retrieve(key);
@@ -166,17 +165,14 @@ public class PageSource implements IPageSource, IRenderDescription
             if (monitor != null)
                 monitor.pageCreateBegin(pageName);
 
-            PageSpecification specification =
-                engine.getSpecification().getPageSpecification(pageName);
+            PageSpecification specification = engine.getSpecification().getPageSpecification(pageName);
 
             if (specification == null)
-                throw new ApplicationRuntimeException(
-                    Tapestry.getString("PageLoader.no-such-page", pageName));
+                throw new ApplicationRuntimeException(Tapestry.getString("PageLoader.no-such-page", pageName));
 
             PageLoader loader = new PageLoader(this);
 
-            result =
-                loader.loadPage(pageName, engine, specification.getSpecificationPath());
+            result = loader.loadPage(pageName, engine, specification.getSpecificationPath());
 
             // Alas, the page loader is discarded, we should be pooling those as
             // well.
@@ -184,10 +180,13 @@ public class PageSource implements IPageSource, IRenderDescription
             if (monitor != null)
                 monitor.pageCreateEnd(pageName);
         }
+        else
+        {
+            // The page loader attaches the engine, but a page from
+            // the pool needs to be explicitly attached.
 
-        // Whether its new or reused, it must join the engine.
-
-        result.attach(engine);
+            result.attach(engine);
+        }
 
         return result;
     }

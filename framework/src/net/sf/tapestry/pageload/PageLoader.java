@@ -429,6 +429,7 @@ public class PageLoader implements IPageLoader
      *  Invoked by the {@link PageSource} to load a specific page.  This
      *  method is not reentrant ... the PageSource ensures that
      *  any given instance of PageLoader is loading only a single page at a time.
+     *  The page is immediately attached to the {@link IEngine engine}.
      *
      *  @param name the name of the page to load
      *  @param engine the engine the page is loaded for (this is used
@@ -459,6 +460,8 @@ public class PageLoader implements IPageLoader
             specification = specificationSource.getSpecification(type);
 
             page = instantiatePage(name, specification);
+            
+            page.attach(engine);
 
             constructComponent(page, page, specification);
 
