@@ -39,16 +39,10 @@
 				<exclude name="**/package.html"/>
 			</fileset>
 			
-			<!-- Yes, this is odd.  Until I figure out how to get the framework TLD visible
-				 to Jetty while debugging, the best place for the TLD is in the
-				 Workbench's WEB-INF.  Don't want to duplicate it, so we just
-				 reach out and grab it, to include in the Tapestry framework.  -->
-				 
-			<metainf dir="../examples/Workbench/context/WEB-INF">
-				<include name="*.tld"/>
+			<metainf dir="META-INF">
+				<include name="*"/>
 			</metainf>
 		</jar>
-
 
 	</target>
 </project>
