@@ -185,7 +185,10 @@ public interface IValidationDelegate
      * recorder.
      * 
      * @param errorRenderer
-     *            object that will render the error message (@see RenderString}
+     *            object that will render the error message (@see RenderString}. The object should
+     *            implement a reasonable <code>toString()</code> as well, to allow the error
+     *            message to be rendered using an Insert component, or used where full markup is not
+     *            allowed.
      * @param constraint
      *            the constraint that was violated, or null if not known
      */

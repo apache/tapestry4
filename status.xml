@@ -281,7 +281,9 @@ NextGen) be released as version number 3.0.
     <action type="fix" dev="HLS" due-to="Dominik Kreutz" fixes-bug="TAPESTRY-167">
       [PATCH] ValidationStrings_de.properties
     </action>
-      
+    <action type="fix" dev="HLS" fixes-bug="TAPESTRY-258">
+      Have RenderString implement useful toString().
+    </action>  
   </release>
 
   <release version="3.0.1" date="Oct 16 2004">
