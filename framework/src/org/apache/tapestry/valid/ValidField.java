@@ -170,7 +170,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
      *
      **/
 
-    private void addSelect(IRequestCycle cycle)
+    protected void addSelect(IRequestCycle cycle)
     {
         // If some other field has taken the honors, then let it.
 
