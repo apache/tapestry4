@@ -256,10 +256,7 @@ public abstract class AbstractEngine implements IEngine
         {
             try
             {
-                cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(
-                        this,
-                        request,
-                        response);
+                cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(this);
 
                 monitor = cycle.getMonitor();
                 service = cycle.getService();

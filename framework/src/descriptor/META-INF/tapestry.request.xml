@@ -203,6 +203,8 @@
         <set-service property="strategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>       
         <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
 		    <set-service property="absoluteURLBuilder" service-id="AbsoluteURLBuilder"/>
+        <set-service property="servletRequest" service-id="tapestry.globals.HttpServletRequest"/>
+        <set-service property="servletResponse" service-id="tapestry.globals.HttpServletResponse"/>
       </construct>
     </invoke-factory>
     

@@ -34,5 +34,5 @@ public interface RequestCycleFactory
      * (that were encoding into the URL).
      */
 
-    public IRequestCycle newRequestCycle(IEngine engine, WebRequest request, WebResponse response);
+    public IRequestCycle newRequestCycle(IEngine engine);
 }

@@ -34,4 +34,10 @@ final class TapestryMessages
     {
         return _formatter.format("component-is-locked", component.getExtendedId());
     }
+
+    public static String servletInit(String name, long elapsedToRegistry, long elapsedOverall)
+    {
+        return _formatter.format("servlet-init", name, new Long(elapsedToRegistry), new Long(
+                elapsedOverall));
+    }
 }

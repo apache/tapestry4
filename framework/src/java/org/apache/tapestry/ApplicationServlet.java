@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.Resource;
@@ -73,6 +75,8 @@ import com.sun.jndi.ldap.pool.Pool;
 
 public class ApplicationServlet extends HttpServlet
 {
+    private static final Log LOG = LogFactory.getLog(ApplicationServlet.class);
+
     /**
      * Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
      * 
@@ -174,6 +178,11 @@ public class ApplicationServlet extends HttpServlet
 
     public void init(ServletConfig config) throws ServletException
     {
+        String name = config.getServletName();
+
+        long startTime = System.currentTimeMillis();
+        long elapsedToRegistry = 0;
+
         super.init(config);
 
         _resolver = createClassResolver();
@@ -183,6 +192,8 @@ public class ApplicationServlet extends HttpServlet
 
             _registry = constructRegistry(config);
 
+            elapsedToRegistry = System.currentTimeMillis() - startTime;
+
             initializeApplication();
         }
         catch (Exception ex)
@@ -191,6 +202,10 @@ public class ApplicationServlet extends HttpServlet
 
             throw new ServletException(TapestryMessages.servletInitFailure(ex), ex);
         }
+
+        long elapsedOverall = System.currentTimeMillis() - startTime;
+
+        LOG.info(TapestryMessages.servletInit(name, elapsedToRegistry, elapsedOverall));
     }
 
     /**
