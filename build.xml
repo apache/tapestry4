@@ -283,4 +283,20 @@ description="Builds the Tapestry documentation.">
   </java>
 </target>
 
+  
+  <target name="configure" description="Configure the JBoss server and setup the Vlib database.">
+    <copy todir="${jboss.dir}/lib/ext">
+    	<fileset dir="${lib}">
+    		<include name="net.sf.tapestry.contrib.jar"/>
+    		<include name="com.primix.tapestry.jar"/>
+    		<include name="mckoidb.jar"/>
+    	</fileset>
+    </copy>
+    <echo>
+You must manually edit ${jboss.dir}/conf/default/jboss.jcml.
+The file config/vlib.jcml should be inserted at the end
+of the file.
+    </echo>
+  </target>
+  
 </project>

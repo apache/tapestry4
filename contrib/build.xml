@@ -12,14 +12,25 @@
   <property name="framework.jar" value="${lib}/net.sf.tapestry.contrib.jar"/>
   <!-- Relative path to the Javadoc directory -->
   <property name="javadoc.dir" value="../doc/api"/>
+  
+  <!-- Read the configuration file to get the absolute path
+       to the JBoss installation (2.4.x). -->
+       
+  <property file="../config/build.properties"/>
+  
+  
   <path id="project.class.path">
-    <pathelement location="${lib}/ejb.jar"/>
     <pathelement location="${lib}/javax.servlet.jar"/>
     <pathelement location="${lib}/log4j-core.jar"/>
     <pathelement location="${lib}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib}/org.apache.crimson.jar"/>
     <pathelement location="${lib}/com.primix.tapestry.jar"/>
+    <pathelement location="${lib}/mckoidb.jar"/>
+    <pathelement location="${jboss.dir}/lib/jmxri.jar"/>
+    <pathelement location="${jboss.dir}/lib/ext/jboss.jar"/>
+    <pathelement location="${jboss.dir}/lib/ext/jboss-j2ee.jar"/>
   </path>
+  
   <target name="init">
     <tstamp/>
     <mkdir dir="${classes}"/>

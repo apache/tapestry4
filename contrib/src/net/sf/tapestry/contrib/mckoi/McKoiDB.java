@@ -65,6 +65,8 @@ implements McKoiDBMBean
 
 	public void setRootPath(String path)
 	{
+		log.debug("Root path set to: " + path);
+		
 		rootPath = path;
 	}
 
@@ -75,6 +77,8 @@ implements McKoiDBMBean
 
 	public void setConfigPath(String path)
 	{
+		log.debug("Config path set to: " + path);
+		
 		configPath = path;
 	}
 
