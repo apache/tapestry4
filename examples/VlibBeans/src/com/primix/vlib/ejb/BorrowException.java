@@ -28,23 +28,20 @@
 
 package com.primix.vlib.ejb;
 
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-
 /**
- *  Home interface for the {@link BookBean} entity bean.
+ *  Throws when a book may not be borrowed.
  *
- *  @author Howard Ship
- *  @version $Id$
+ *  @see IOperations#borrowBook(Integer,Integer)
  *
+ * @version $Id$
+ * @author Howard Ship
  */
- 
-public interface IBookHome extends EJBHome
+
+public class BorrowException 
+	extends Exception
 {
-	public IBook create(Map attributes)
-		throws CreateException, RemoteException;
-	
-	public IBook findByPrimaryKey(Integer key)
-		throws FinderException, RemoteException;	
-}	
+	public BorrowException(String message)
+	{
+		super(message);
+	}
+}

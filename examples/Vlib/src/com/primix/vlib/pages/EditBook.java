@@ -44,28 +44,30 @@ import javax.rmi.*;
  */
 
 public class EditBook 
-extends Protected
+	extends Protected
 {
 	private Integer bookPK;	
 	private Map attributes;	
 	private String publisherName;
+	private boolean cancel;
 	
 	private static final int MAP_SIZE = 11;
 	
 	public void detach()
 	{
-		super.detach();
-
 		attributes = null;
 		bookPK = null;	
 		publisherName = null;	
-	}
+		cancel = false;
 		
+		super.detach();
+	}
+	
 	public Map getAttributes()
 	{
 		if (attributes == null)
 			attributes = new HashMap(MAP_SIZE);
-			
+		
 		return attributes;
 	}	
 	
@@ -79,23 +81,33 @@ extends Protected
 		publisherName = value;
 	}
 	
+	public boolean getCancel()
+	{
+		return cancel;
+	}
+	
+	public void setCancel(boolean value)
+	{
+		cancel = value;
+	}
+	
 	/**
 	 *  Gets the book's primary key as a String.
 	 *
 	 */
-	 
+	
 	public String getBookPrimaryKey()
 	{
 		return bookPK.toString();
 	}
-
+	
 	/**
 	 *  Updates the book's primary key value (converting from String to Integer).
 	 *  This allows a Hidden component in the form to synchronize the book being
 	 *  editted ... which fixes the Browser Back Button problem.
 	 *
 	 */
-	 
+	
 	public void setBookPrimaryKey(String value)
 	{
 		bookPK = new Integer(value);
@@ -107,7 +119,7 @@ extends Protected
 	 *  the request cycle to render this page,
 	 *
 	 */
-	 
+	
 	public void beginEdit(Integer bookPK, IRequestCycle cycle)
 	{
 		IBook book;
@@ -132,15 +144,13 @@ extends Protected
 	
 	private IBook getBook()
 	{
-		Visit visit = (Visit)getVisit();
-		IBookHome bookHome;
-		IBook book;
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		
-		bookHome = visit.getBookHome();
+		IBookHome bookHome = vengine.getBookHome();
 		
 		try
 		{
-			book = bookHome.findByPrimaryKey(bookPK);
+			return bookHome.findByPrimaryKey(bookPK);
 		}
 		catch (FinderException e)
 		{
@@ -151,14 +161,13 @@ extends Protected
 			throw new ApplicationRuntimeException(e);
 		}
 		
-		return book;
 	}
 	
 	/**
 	 *  Used to update the book when the form is submitted.
 	 *
 	 */
-	 
+	
 	public IActionListener getFormListener()
 	{
 		return new IActionListener()
@@ -174,56 +183,46 @@ extends Protected
 	
 	private void updateBook(IRequestCycle cycle)
 	{
-		String title;
-		String author;
-		String ISBN;
-		String description;
-		Integer holderPK;
-		Integer publisherPK;
-		MyBooks page;
-		Visit visit;
-		IOperations bean;
-		
-        // Check for an error from a validation field
-
-        if (getError() != null)
-            return;
-
-		title = (String)attributes.get("title");
-		author = (String)attributes.get("author");
-		ISBN = (String)attributes.get("ISBN");
-		description = (String)attributes.get("description");
-		
-		holderPK = (Integer)attributes.get("holderPK");
-		publisherPK = (Integer)attributes.get("publisherPK");
-		
-		if (publisherPK == null && isEmpty(publisherName))
+		if (cancel)
 		{
-			setErrorField("inputPublisherName",
-			    "Must provide a publisher name if the publisher option is empty.");
+			cycle.setPage("MyBooks");
 			return;
 		}
 		
-		if (publisherPK != null && !isEmpty(publisherName))
+		// Check for an error from a validation field
+		
+		if (getError() != null)
+			return;
+		
+		Integer publisherPK = (Integer)attributes.get("publisherPK");
+		
+		if (publisherPK == null && Tapestry.isNull(publisherName))
 		{
 			setErrorField("inputPublisherName",
-			    "Must leave the publisher name blank if selecting a publisher from the list.");
+					"Must provide a publisher name if the publisher option is empty.");
+			return;
+		}
+		
+		if (publisherPK != null && !Tapestry.isNull(publisherName))
+		{
+			setErrorField("inputPublisherName",
+					"Must leave the publisher name blank if selecting a publisher from the list.");
 			return;
 		}
 		
 		// OK, do the update.
 		
-		visit = (Visit)getVisit();
-		bean = visit.getOperations();
+		Visit visit = (Visit)getVisit();
+		
+		IOperations bean = visit.getEngine().getOperations();
 		
 		try
 		{
 			if (publisherPK != null)
-				bean.updateBook(bookPK, title, author, ISBN, description, holderPK, publisherPK);
+				bean.updateBook(bookPK, attributes);
 			else
 			{
-				bean.updateBook(bookPK, title, author, ISBN, description, holderPK, 
-					publisherName);
+				bean.updateBook(bookPK, attributes, publisherName);
 				visit.clearCache();
 			}		
 		}
@@ -232,16 +231,11 @@ extends Protected
 			throw new ApplicationRuntimeException(t);
 		}
 		
-		page = (MyBooks)cycle.getPage("MyBooks");
+		
+		MyBooks page = (MyBooks)cycle.getPage("MyBooks");
 		page.setMessage("Updated book.");
+		
 		cycle.setPage(page);
 	}
 	
-	private boolean isEmpty(String value)
-	{
-		if (value == null)
-			return true;
-		
-		return value.trim().length() == 0;
-	}	
 }

@@ -9,6 +9,7 @@
   <component id="showMessage" type="ShowMessage"/>
   <component id="searchForm" type="Form">
     <binding name="listener" property-path="searchFormListener"/>
+    <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="inputTitle" type="TextField">
     <binding name="text" property-path="searchTitle"/>
@@ -22,6 +23,6 @@
   </component>
   <component id="inputPublisher" type="PropertySelection">
     <binding name="value" property-path="searchPublisherPK"/>
-    <binding name="model" property-path="visit.publisherModel"/>
+    <binding name="model" property-path="engine.publisherModel"/>
   </component>
 </specification>

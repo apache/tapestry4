@@ -29,6 +29,7 @@ package com.primix.vlib.components;
 
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.*;
+import com.primix.tapestry.callback.*;
 import com.primix.vlib.*;
 import com.primix.vlib.pages.*;
 
@@ -47,7 +48,8 @@ public class Border extends BaseComponent
 
     private IBinding titleBinding;
     private IBinding subtitleBinding;
-
+	private IBinding stickyBinding;
+	
     public void setTitleBinding(IBinding value)
     {
         titleBinding = value;
@@ -68,6 +70,34 @@ public class Border extends BaseComponent
         return subtitleBinding;
     }
 
+	public IBinding getStickyBinding()
+	{
+		return stickyBinding;
+	}
+	
+	public void setStickyBinding(IBinding value)
+	{
+		stickyBinding = value;
+	}
+	
+	
+	public boolean isLoggedOut()
+	{
+		return ! isLoggedIn();
+	}
+	
+	public boolean isLoggedIn()
+	{
+		// Get the visit, if it exists, without creating it.
+		
+		Visit visit = (Visit)page.getEngine().getVisit();
+		
+		if (visit == null)
+			return false;
+		
+		return visit.isUserLoggedIn();
+	}
+	
 	/**
 	 *  Show the Logout button on all pages except the Logout page itself.
 	 *
@@ -90,5 +120,34 @@ public class Border extends BaseComponent
         else
             return WINDOW_TITLE + ": " + subtitle;
     }
+	
+	public IDirectListener getLoginListener()
+	{
+		return new IDirectListener()
+		{
+			public void directTriggered(IDirect component, String[] context, IRequestCycle cycle)
+			throws RequestCycleException
+			{
+				login(cycle);
+			}
+		};
+	}
+	
+	private void login(IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		Login login = (Login)cycle.getPage("Login");
+		
+		if (stickyBinding != null)
+			if (stickyBinding.getBoolean())
+			{
+				// Setup the login page to return to this page (whatever it is)
+				// after the login.
+				
+				login.setCallback(new PageCallback(page));
+			}
+		
+		cycle.setPage(login);
+	}
 
-}
+}	

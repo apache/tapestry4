@@ -53,16 +53,18 @@ extends Protected
 	private Map attributes;	
 	private String password1;
 	private String password2;
+	private boolean cancel;
 	
 	private static final int MAP_SIZE = 11;
 	
 	public void detach()
 	{
-		super.detach();
-
 		attributes = null;
 		password1 = null;
 		password2 = null;
+		cancel = false;
+		
+		super.detach();	
 	}
 		
 	public String getPassword1()
@@ -85,6 +87,16 @@ extends Protected
 		password2 = value;
 	}
 		
+	public boolean getCancel()
+	{
+		return cancel;
+	}
+	
+	public void setCancel(boolean value)
+	{
+		cancel = value;
+	}
+	
 	public Map getAttributes()
 	{
 		if (attributes == null)
@@ -141,7 +153,13 @@ extends Protected
 	
 	private void updateProfile(IRequestCycle cycle)
 	{
-        // Possibly one of the validating text fields found an error.
+		if (cancel)
+		{
+			cycle.setPage("MyBooks");
+			return;
+		}
+		
+		// Possibly one of the validating text fields found an error.
 
         if (getError() != null)
         {
@@ -149,7 +167,7 @@ extends Protected
             return;
         }
 	
-		if (isEmpty(password1) != isEmpty(password2))
+		if (Tapestry.isNull(password1) != Tapestry.isNull(password2))
 		{
 			setErrorField("inputPassword1", 
 			    "Enter the password, then re-enter it to confirm.");
@@ -158,7 +176,7 @@ extends Protected
 			return;
 		}
 		
-		if (!isEmpty(password1))
+		if (!Tapestry.isNull(password1))
 		{
 			if (!password1.equals(password2))
 			{
@@ -194,17 +212,6 @@ extends Protected
 		cycle.setPage("MyBooks");
 	}
 	
-	private boolean isEmpty(String value)
-	{
-		if (value == null)
-			return true;
-		
-		if (value.trim().length() == 0)
-			return true;
-			
-		return false;
-	}	
-
     private void resetPasswords()
     {
         IValidatingTextField field;

@@ -43,7 +43,9 @@ import javax.rmi.*;
  * @version $Id$
  */
 
-public class Home extends BasePage
+public class Home 
+	extends BasePage
+	implements IErrorProperty
 {
 	private String searchTitle;
 	private Object searchPublisherPK;
@@ -53,13 +55,13 @@ public class Home extends BasePage
 	
 	public void detach()
 	{
-		super.detach();
-		
 		searchTitle = null;
 		searchPublisherPK = null;
 		error = null;
 		message = null;
 		searchAuthor = null;
+		
+		super.detach();
 	}
 	
 	public String getSearchTitle()
@@ -70,8 +72,6 @@ public class Home extends BasePage
 	public void setSearchTitle(String value)
 	{
 		searchTitle = value;
-		
-		fireObservedChange("searchTitle", value);
 	}
 	
 	public String getSearchAuthor()
@@ -82,7 +82,6 @@ public class Home extends BasePage
 	public void setSearchAuthor(String value)
 	{
 		searchAuthor = value;
-		fireObservedChange("searchAuthor", value);
 	}
 
 	public Object getSearchPublisherPK()
@@ -93,8 +92,6 @@ public class Home extends BasePage
 	public void setSearchPublisherPK(Object value)
 	{
 		searchPublisherPK = value;
-		
-		fireObservedChange("searchPublisherPK", value);
 	}
 
 	public void setError(String value)

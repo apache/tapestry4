@@ -79,17 +79,15 @@ public class ConfirmBookDelete extends BasePage
 	 
 	public void selectBook(Integer bookPK, IRequestCycle cycle)
 	{
-		Visit visit = (Visit)getVisit();
-		IBookHome home;
-		IBook book;
-		
 		this.bookPK = bookPK;
 		
-		home = visit.getBookHome();
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		
+		IBookHome home = vengine.getBookHome();
 		
 		try
 		{
-			book = home.findByPrimaryKey(bookPK);
+			IBook book = home.findByPrimaryKey(bookPK);
 			bookTitle = book.getTitle();
 		}
 		catch (FinderException e)
@@ -127,10 +125,8 @@ public class ConfirmBookDelete extends BasePage
 	
 	private void deleteBook(Integer bookPK, IRequestCycle cycle)
 	{
-		Visit visit = (Visit)getVisit();
-		IBookHome home;
-		
-		home = visit.getBookHome();
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		IBookHome home = vengine.getBookHome();
 		
 		try
 		{

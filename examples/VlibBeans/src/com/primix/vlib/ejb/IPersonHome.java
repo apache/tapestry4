@@ -42,7 +42,7 @@ import java.util.*;
  
 public interface IPersonHome extends EJBHome
 {
-	public IPerson create(String lastName, String firstName, String email, String password)
+	public IPerson create(Map attributes)
 	throws CreateException, RemoteException;
 	
 	public IPerson findByPrimaryKey(Integer key)

@@ -65,45 +65,18 @@ implements Serializable
 	private Integer userPK;
 	private transient String fullUserName;
 	
-	// Home interfaces are static, such that they are only
-	// looked up once (JNDI lookup is very expensive).
+	private VirtualLibraryEngine engine;
 	
-	private static IPublisherHome publisherHome;
-	private static IBookHome bookHome;
-	private static IPersonHome personHome;
-	private static IBookQueryHome bookQueryHome;
-	private static IOperationsHome operationsHome;
-	private transient IOperations operations;
-	
-	private static Context rootNamingContext;	
-	
-	private transient IPropertySelectionModel publisherModel;
-	private transient IPropertySelectionModel personModel;
-
-	protected void cleanupAfterRequest(IRequestCycle cycle)
+	public Visit(VirtualLibraryEngine engine)
 	{
-		if (operations != null)
-		{
-			try
-			{
-				operations.remove();
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		
-		operations = null;
-	    
-	    // Force a rebuild of the publisher and person models on the next
-	    // request cycle that needs them.  This is needed because new
-	    // persons and publisher can be added by anyone at anytime.
-	    
-		publisherModel = null;
-	    personModel = null;
+		this.engine = engine;
 	}
-
+	
+	public VirtualLibraryEngine getEngine()
+	{
+		return engine;
+	}
+	
 	/**
 	 *  Gets the logged-in user, or null if the user is not logged in.
 	 *
@@ -119,7 +92,7 @@ implements Serializable
 			
 		try
 		{
-			user = getPersonHome().findByPrimaryKey(userPK);
+			user = engine.getPersonHome().findByPrimaryKey(userPK);
 		}
 		catch (FinderException e)
 		{
@@ -144,123 +117,7 @@ implements Serializable
 		return userPK;
 	}	
 	
-	public IPersonHome getPersonHome()
-	{
-		if (personHome == null)
-			personHome = (IPersonHome)findNamedObject("vlib/Person", IPersonHome.class);
-		
-		return personHome;	
-	}
 	
-	public IPublisherHome getPublisherHome()
-	{
-		if (publisherHome == null)
-		  publisherHome = (IPublisherHome)findNamedObject("vlib/Publisher",
-		  		IPublisherHome.class);
-		
-		return publisherHome;		
-	}
-	
-	public IBookHome getBookHome()
-	{
-		if (bookHome == null)
-			bookHome = (IBookHome)findNamedObject("vlib/Book", IBookHome.class);
-		
-		return bookHome;	
-	}
-	
-	public IBookQueryHome getBookQueryHome()
-	{
-		if (bookQueryHome == null)
-			bookQueryHome = (IBookQueryHome)findNamedObject("vlib/BookQuery",
-				IBookQueryHome.class);
-		
-		return bookQueryHome;
-	}
-
-	public IOperationsHome getOperationsHome()
-	{
-		if (operationsHome == null)
-			operationsHome = (IOperationsHome)findNamedObject("vlib/Operations",
-				IOperationsHome.class);
-		
-		return operationsHome;
-	}
-	
-	/**
-	 *  Returns an instance of the Vlib Operations beans, which is a stateless
-	 *  session bean for performing certain operations.
-	 *
-	 *  <p>The bean is automatically removed at the end of the request cycle.
-	 *
-	 */
-	 				
-	public IOperations getOperations()
-	{
-		IOperationsHome home;
-		
-		if (operations == null)
-		{
-			try
-			{
-				home = getOperationsHome();
-				operations = home.create();
-			}
-			catch (CreateException e)
-			{
-				throw new ApplicationRuntimeException("Error creating operations bean: " + e, e);
-			}
-			catch (RemoteException e)
-			{
-				throw new ApplicationRuntimeException("Remote exception creating operations bean: " + e, e);
-			}
-		}
-		
-		return operations;
-	}
-					
-	public Object findNamedObject(String name, Class expectedClass)
-	{
-		Object raw;
-		Object result;
-		
-		try
-		{
-			raw = getRootNamingContext().lookup(name);
-			
-			result = PortableRemoteObject.narrow(raw, expectedClass);
-		}
-		catch (ClassCastException cce)
-		{
-			throw new ApplicationRuntimeException(
-				"Object " + name + " is not type " +
-				expectedClass.getName() + ".", cce);
-		}
-		catch (NamingException e)
-		{
-			throw new ApplicationRuntimeException("Unable to resolve object " + name + ": " +
-			e.toString(), e);
-		}
-		
-		return result;
-	}
-	
-	public Context getRootNamingContext()
-	{
-	    if (rootNamingContext == null)
-	    {
-	        try
-	        {
-	            rootNamingContext = new InitialContext();
-	        }
-	        catch (NamingException e)
-	        {
-	            throw new ApplicationRuntimeException("Unable to locate root naming context.", e);
-	        }
-	    }
-
-	    return rootNamingContext;
-	}
 
 	/**
 	 *  Changes the logged in user ... this is only invoked from the {@link Login}
@@ -341,54 +198,6 @@ implements Serializable
 	}
 	
 		
-	/**
-	 *  Builds a model for entering in a publisher name, including an intial
-	 *  blank option.  Problem:  thie model is held for a long while, so it won't
-	 *  reflect publishers added by this user or others.  Solution:  coming; perhaps
-	 *  we'll age-out the model after a few minutes.
-	 *
-	 */
-	 
-	public IPropertySelectionModel getPublisherModel()
-	{
-		if (publisherModel == null)
-			publisherModel = buildPublisherModel();
-		
-		return publisherModel;	
-	}
-	
-	private IPropertySelectionModel buildPublisherModel()
-	{
-		IOperations bean;
-		Publisher[] publishers;
-		EntitySelectionModel model;
-		int i;
-		
-		model = new EntitySelectionModel();
-		
-		// Add in a default null value, such that the user can
-		// not select a specific Publisher.
-		
-		model.add(null, "");
-
-		bean = getOperations();
-		
-		try
-		{
-			publishers = bean.getPublishers();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e.getMessage(), e);
-		}
-		
-		// Add in the actual publishers.  They are sorted by name.
-		
-		for (i = 0; i < publishers.length; i++)
-			model.add(publishers[i].getPrimaryKey(), publishers[i].getName());
-		
-		return model;		
-	}
 
 	/**
 	 *  Invoked by pages after they perform an operation that changes the backend
@@ -402,51 +211,8 @@ implements Serializable
 	{
 		user = null;
 		fullUserName = null;
-		publisherModel = null;
-		personModel = null;
-	}
-
-	/**
-	 *  Returns a model that contains all the known Person's, sorted by last name,
-	 *  then first.  The label for the model matches the user's natural name.
-	 *
-	 */
-	 
-	public IPropertySelectionModel getPersonModel()
-	{
-		if (personModel == null)
-			personModel = buildPersonModel();
 		
-		return personModel;	
-	}
-	
-	private IPropertySelectionModel buildPersonModel()
-	{
-		EntitySelectionModel model;
-		IOperations bean;
-		Person[] persons;
-		int i;
-		
-		bean = getOperations();
-		
-		try
-		{
-			persons = bean.getPersons();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-		
-		model = new EntitySelectionModel();
-		
-		// On this one, we don't include a null option.
-		
-		for (i = 0; i < persons.length; i++)
-			model.add(persons[i].getPrimaryKey(),
-					  persons[i].getNaturalName());
-				
-		return model;	  
+		engine.clearCache();
 		
 	}
 

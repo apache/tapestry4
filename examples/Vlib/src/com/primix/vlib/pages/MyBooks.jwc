@@ -69,8 +69,8 @@
   <component id="ifShowBorrowedBooksTrailer" type="Conditional">
     <binding name="condition" property-path="borrowedBooks"/>
   </component>
-  <component id="addNewBook" type="Page">
-    <static-binding name="page">NewBook</static-binding>
+  <component id="addNewBook" type="Direct">
+    <binding name="listener" property-path="addNewBookListener"/>
   </component>
   <component id="editProfile" type="Direct">
     <binding name="listener" property-path="editProfileListener"/>

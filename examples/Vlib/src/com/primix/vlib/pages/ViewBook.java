@@ -63,11 +63,8 @@ implements IExternalPage
 	
 	public void setup(Integer bookPK, IRequestCycle cycle)
 	{
-		IOperations bean;
-		Home home;
-		
-        Visit visit = (Visit)getVisit();
-		bean = visit.getOperations();
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		IOperations bean = vengine.getOperations();
 		
 		try
 		{
@@ -75,7 +72,7 @@ implements IExternalPage
 		}
 		catch (FinderException e)
 		{
-			home = (Home)cycle.getPage("Home");
+			Home home = (Home)cycle.getPage("Home");
 			home.setError("Book not found in database.");
 			
 			cycle.setPage(home);

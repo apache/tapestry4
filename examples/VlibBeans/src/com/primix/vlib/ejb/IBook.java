@@ -38,46 +38,58 @@ import java.rmi.*;
  *  @author Howard Ship
  *
  */
- 
+
 public interface IBook extends IEntityBean
 {
 	public void setAuthor(String value)
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public String getAuthor()
-	throws RemoteException;	
-
+		throws RemoteException;	
+	
 	public void setTitle(String value)
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public String getTitle()
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public void setDescription(String value)
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public String getDescription()
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public void setISBN(String value)
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public String getISBN()
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public void setOwnerPK(Integer value)
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public Integer getOwnerPK()
-	throws RemoteException;
+		throws RemoteException;
 	
 	public void setHolderPK(Integer value)
-	throws RemoteException;
+		throws RemoteException;
 	
 	public Integer getHolderPK()
-	throws RemoteException;
+		throws RemoteException;
 	
 	public void setPublisherPK(Integer value)
-	throws RemoteException;
+		throws RemoteException;
+	
+	public boolean isHidden()
+		throws RemoteException;
+	
+	public void setHidden(boolean value)
+		throws RemoteException;
+	
+	public boolean isLendable()
+		throws RemoteException;
+	
+	public void setLendable(boolean value)
+		throws RemoteException;
 	
 }

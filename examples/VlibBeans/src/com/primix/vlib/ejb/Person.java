@@ -46,8 +46,11 @@ public class Person implements Serializable
 	public static final int FIRST_NAME_COLUMN = 1;
 	public static final int LAST_NAME_COLUMN = 2;
 	public static final int EMAIL_COLUMN = 3;
+	public static final int VERIFIED_COLUMN = 4;
+	public static final int LOCKED_OUT_COLUMN = 5;
+	public static final int ADMIN_COLUMN = 6;
 	
-	public static final int N_COLUMNS = 4;
+	public static final int N_COLUMNS = 7;
 	
 	public Person(Object[] columns)
 	{
@@ -105,5 +108,27 @@ public class Person implements Serializable
 		buffer.append(']');
 		
 		return buffer.toString();
+	}
+	
+	public boolean isAdmin()
+	{
+		return getBit(ADMIN_COLUMN);
+	}
+	
+	public boolean isLockedOut()
+	{
+		return getBit(LOCKED_OUT_COLUMN);
+	}
+	
+	public boolean isVerified()
+	{
+		return getBit(VERIFIED_COLUMN);
+	}
+	
+	private boolean getBit(int column)
+	{
+		Boolean b = (Boolean)columns[column];
+		
+		return b.booleanValue();
 	}
 }

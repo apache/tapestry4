@@ -2,9 +2,12 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.vlib.pages.Matches">
+
   <component id="border" type="Border">
     <static-binding name="title">Matching Books</static-binding>
+    <field-binding name="sticky" field-name="Boolean.TRUE"/>
   </component>
+  
   <component id="insertMatchCount" type="Insert">
     <binding name="value" property-path="matchCount"/>
   </component>

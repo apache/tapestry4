@@ -30,6 +30,7 @@ package com.primix.vlib.ejb;
 
 import javax.ejb.*;
 import java.rmi.*;
+import java.util.*;
 
 /**
  *  Implementation of the Book entity.
@@ -68,13 +69,16 @@ public class BookBean extends AbstractEntityBean
 	public Integer holderPK;
 	public Integer publisherPK;
 		
+	public boolean hidden;
+	public boolean lendable;
+	
 	protected String[] getAttributePropertyNames()
 	{
 		return new String[] 
 		{
 			"title", "description", "ISBN",  
 			"holderPK", "ownerPK", "publisherPK",
-			"author",
+			"author", "hidden", "lendable"
 		};
 	}
 	
@@ -163,12 +167,30 @@ public class BookBean extends AbstractEntityBean
 		return publisherPK;
 	}
 
-	/**
-	 *  Nulls-out the owner and holder properties; the Owner and Holder
-	 *  will be determined in the accessor.
-	 *
-	 */
-	 
+	public boolean isHidden()
+	{
+		return hidden;
+	}
+	
+	public void setHidden(boolean value)
+	{
+		hidden = value;
+		
+		dirty = true;
+	}
+	
+	public boolean isLendable()
+	{
+		return lendable;
+	}
+	
+	public void setLendable(boolean value)
+	{
+		lendable = value;
+		
+		dirty = true;
+	}
+	
 	public void ejbLoad() 
 	{
 		dirty = false;
@@ -182,34 +204,29 @@ public class BookBean extends AbstractEntityBean
 		
 	// Create methods
 	
-	public Integer ejbCreate(String title, String author, String ISBN, Integer publisherPK, 
-		Integer personPK)
+	public Integer ejbCreate(Map attributes)
 	throws RemoteException
 	{
-		this.title = title;
-		this.ISBN = ISBN;
-		this.author = author;
-		
-		ownerPK = personPK;
-		holderPK = personPK;
-		this.publisherPK = publisherPK; 
-		
-		// These are given default (unspecified) values.
-		
-		bookId = allocateKey();
+		hidden = false;
+		lendable = true;
 		description = null;
-		
+
 		// Rating really isn't implemented yet.
 		
 		rating = 0;
+
+		// Update all the attributes specified in the attributes map.
+		
+		updateEntityAttributes(attributes);
+		
+		bookId = allocateKey();
 		
 		dirty = true;
 		
 		return null;
 	}
 	
-	public void ejbPostCreate(String title, String author, String ISBN, Integer publisherPK,
-		Integer personPK)
+	public void ejbPostCreate(Map attributes)
 	{
 		// No post create work needed but the method must be implemented
 	}

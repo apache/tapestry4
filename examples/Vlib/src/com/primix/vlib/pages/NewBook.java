@@ -46,54 +46,25 @@ import javax.rmi.*;
 
 public class NewBook extends Protected
 {
-	private String title;
-	private String ISBN;
-	private Integer publisherPK;
+	private Map attributes;
 	private String publisherName;
-	private String bookDescription;
-	private String author;
+	private boolean cancel;
 	
 	public void detach()
 	{
-		title = null;
-		ISBN = null;
-		publisherPK = null;
+		attributes = null;
 		publisherName = null;
-		bookDescription = null;
-		author = null;
-
-    	super.detach();
+		cancel = false;
+		
+		super.detach();
 	}
 	
-	
-	public String getTitle()
+	public Map getAttributes()
 	{
-		return title;
-	}
-	
-	public void setTitle(String value)
-	{
-		title = value;
-	}
-	
-	public String getISBN()
-	{
-		return ISBN;
-	}
-	
-	public void setISBN(String value)
-	{
-		ISBN = value;
-	}
-	
-	public Integer getPublisherPrimaryKey()
-	{
-		return publisherPK;
-	}
-	
-	public void setPublisherPrimaryKey(Integer value)
-	{
-		publisherPK = value;
+		if (attributes == null)
+			attributes = new HashMap();
+		
+		return attributes;
 	}
 	
 	public String getPublisherName()
@@ -106,24 +77,14 @@ public class NewBook extends Protected
 		publisherName = value;
 	}
 	
-	public String getBookDescription()
+	public void setCancel(boolean value)
 	{
-		return bookDescription;
+		cancel = value;
 	}
 	
-	public void setBookDescription(String value)
+	public boolean getCancel()
 	{
-		bookDescription = value;
-	}
-	
-	public void setAuthor(String value)
-	{
-		author = value;
-	}
-	
-	public String getAuthor()
-	{
-		return author;
+		return cancel;
 	}
 	
 	public IActionListener getFormListener()
@@ -141,38 +102,50 @@ public class NewBook extends Protected
 	
 	private void addBook(IRequestCycle cycle)
 	{
-        IBook book;
-        
-        if (getError() != null)
-            return;
-
-		if (publisherPK == null && isEmpty(publisherName))
+		IBook book = null;	
+	
+		if (cancel)
 		{
-			setErrorField("inputPublisherName",
-			    "Must enter a publisher name or select an existing publisher from the list.");
+			cycle.setPage("MyBooks");
 			return;
 		}
 		
-		if (publisherPK != null && !isEmpty(publisherName))
+		if (getError() != null)
+			return;
+		
+		Map attributes = getAttributes();
+		
+		Integer publisherPK = (Integer)attributes.get("publisherPK");
+		
+		if (publisherPK == null && Tapestry.isNull(publisherName))
 		{
 			setErrorField("inputPublisherName",
-			    "Must either select an existing publisher or enter a new publisher name.");
+					"Must enter a publisher name or select an existing publisher from the list.");
 			return;
 		}
 		
-        Visit visit = (Visit)getVisit();
-		IOperations operations = visit.getOperations();		
+		if (publisherPK != null && ! Tapestry.isNull(publisherName))
+		{
+			setErrorField("inputPublisherName",
+					"Must either select an existing publisher or enter a new publisher name.");
+			return;
+		}
+		
+		Visit visit = (Visit)getVisit();
 		Integer userPK = visit.getUserPK();
+		
+		IOperations operations = visit.getEngine().getOperations();		
+		
+		attributes.put("ownerPK", userPK);
+		attributes.put("holderPK", userPK);
 		
 		try
 		{
 			if (publisherPK != null)
-				book = operations.addBook(userPK, title, author, ISBN, 
-										bookDescription, publisherPK);
+				book = operations.addBook(attributes);
 			else
 			{
-				book = operations.addBook(userPK, title, author, ISBN,
-										bookDescription, publisherName);
+				book = operations.addBook(attributes, publisherName);
 				
 				// Clear the app's cache of info; in this case, known publishers.
 				
@@ -193,16 +166,9 @@ public class NewBook extends Protected
 		
 		MyBooks myBooks = (MyBooks)cycle.getPage("MyBooks");
 		
-        myBooks.setMessage("Added: " + title);
+		myBooks.setMessage("Added: " + attributes.get("title"));
 		
 		cycle.setPage(myBooks);
 	}
 	
-	private boolean isEmpty(String value)
-	{
-		if (value == null)
-			return true;
-		
-		return value.trim().length() == 0;
-	}	
 }
