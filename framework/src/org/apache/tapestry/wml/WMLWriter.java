@@ -18,6 +18,7 @@ import java.io.OutputStream;
 
 import org.apache.tapestry.AbstractMarkupWriter;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.util.text.ICharacterTranslatorSource;
 
 /**
  *  This class is used to create WML output.
@@ -43,27 +44,9 @@ import org.apache.tapestry.IMarkupWriter;
 
 public class WMLWriter extends AbstractMarkupWriter
 {
-
-    private static final String[] entities = new String[64];
-    private static final boolean[] safe = new boolean[128];
-    private static final String SAFE_CHARACTERS =
-        "01234567890"
-            + "abcdefghijklmnopqrstuvwxyz"
-            + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            + "\t\n\r !\"#%'()*+,-./:;=?@[\\]^_`{|}~";
-
-    static {
-        entities['"'] = "&quot;";
-        entities['<'] = "&lt;";
-        entities['>'] = "&gt;";
-        entities['&'] = "&amp;";
-        entities['$'] = "$$";
-
-        int length = SAFE_CHARACTERS.length();
-        for (int i = 0; i < length; i++)
-            safe[SAFE_CHARACTERS.charAt(i)] = true;
-    }
-
+    private static final ICharacterTranslatorSource TRANSLATOR_SOURCE = 
+    	new WMLCharacterTranslatorSource();
+    
     /**
      *  Creates a response writer for content type "text/vnd.wap.wml".
      * 
@@ -88,7 +71,7 @@ public class WMLWriter extends AbstractMarkupWriter
 
     public WMLWriter(String contentType, OutputStream stream)
     {
-        super(safe, entities, contentType, stream);
+        super(TRANSLATOR_SOURCE, contentType, stream);
     }
 
     /**
@@ -101,12 +84,12 @@ public class WMLWriter extends AbstractMarkupWriter
      **/
     public WMLWriter(String mimeType, String encoding, OutputStream stream)
     {
-        super(safe, entities, mimeType, encoding, stream);
+        super(TRANSLATOR_SOURCE, mimeType, encoding, stream);
     }
 
     protected WMLWriter(String contentType)
     {
-        super(safe, entities, contentType);
+        super(TRANSLATOR_SOURCE, contentType);
     }
 
     public IMarkupWriter getNestedWriter()

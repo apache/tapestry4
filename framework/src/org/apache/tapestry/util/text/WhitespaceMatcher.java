@@ -21,7 +21,7 @@ package org.apache.tapestry.util.text;
  * @version $Id$
  * @since 3.1
  */
-class WhitespaceMatcher implements ICharacterMatcher 
+public class WhitespaceMatcher implements ICharacterMatcher 
 {
     private boolean _matchEndLines;
     

@@ -21,7 +21,7 @@ package org.apache.tapestry.util.text;
  * @version $Id$
  * @since 3.1
  */
-class AsciiCharacterMatcher implements ICharacterMatcher 
+public class AsciiCharacterMatcher implements ICharacterMatcher 
 {
     private boolean[] _charMap;
     

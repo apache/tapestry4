@@ -15,19 +15,21 @@
 package org.apache.tapestry.util.text;
 
 /**
- * An interface for determining whether a character matches a particular rule.
+ * An interface for translating a character into a string.
  * 
  * @author mb
  * @version $Id$
  * @since 3.1
  */
-public interface ICharacterMatcher 
+public interface ICharacterTranslator 
 {
-    /**
-     * Determine whether the given character matches the implemented rule
-     * 
-     * @param ch the character to be matched
-     * @return true if the character matches the rule
-     */
-    boolean matches(char ch);
+	/**
+	 * Translates the provided character into a string 
+	 * 
+	 * @param ch the character to be translated
+	 * @return null if the character is not to be translated,
+	 * an empty string if the character is to be ignored, 
+	 * or another string to represent the character translation
+	 */
+	String translate(char ch);
 }

@@ -19,6 +19,8 @@ import java.io.PrintWriter;
 
 import org.apache.tapestry.AbstractMarkupWriter;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.util.text.DefaultCharacterTranslatorSource;
+import org.apache.tapestry.util.text.ICharacterTranslatorSource;
 
 /**
  *  This class is used to create HTML output.
@@ -36,27 +38,9 @@ import org.apache.tapestry.IMarkupWriter;
 
 public class HTMLWriter extends AbstractMarkupWriter
 {
-
-    private static final String[] entities = new String[64];
-    private static final boolean[] safe = new boolean[128];
-
-    private static final String SAFE_CHARACTERS =
-        "01234567890"
-            + "abcdefghijklmnopqrstuvwxyz"
-            + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            + "\t\n\r !\"#$%'()*+,-./:;=?@[\\]^_`{|}~";
-
-    static {
-        entities['"'] = "&quot;";
-        entities['<'] = "&lt;";
-        entities['>'] = "&gt;";
-        entities['&'] = "&amp;";
-
-        int length = SAFE_CHARACTERS.length();
-        for (int i = 0; i < length; i++)
-            safe[SAFE_CHARACTERS.charAt(i)] = true;
-    }
-
+	private static final ICharacterTranslatorSource TRANSLATOR_SOURCE = 
+		new DefaultCharacterTranslatorSource();
+	
 	/**
 	 *  Creates a new markup writer around the {@link PrintWriter}.
 	 *  The writer will not be closed when the markup writer closes.
@@ -69,22 +53,22 @@ public class HTMLWriter extends AbstractMarkupWriter
 	
 	public HTMLWriter(PrintWriter writer)
 	{
-		super(safe, entities, "text/html", writer);
+		super(TRANSLATOR_SOURCE, "text/html", writer);
 	}
 
     public HTMLWriter(String contentType, OutputStream outputStream)
     {
-        super(safe, entities, contentType, outputStream);
+        super(TRANSLATOR_SOURCE, contentType, outputStream);
     }
 
     public HTMLWriter(String contentType, String encoding, OutputStream outputStream)
     {
-        super(safe, entities, contentType, encoding, outputStream);
+        super(TRANSLATOR_SOURCE, contentType, encoding, outputStream);
     }
 
     protected HTMLWriter(String contentType)
     {
-        super(safe, entities, contentType);
+        super(TRANSLATOR_SOURCE, contentType);
     }
 
     /**
