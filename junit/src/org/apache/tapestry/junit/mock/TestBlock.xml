@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c5" root="context5"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.visit-class"
+  			value="org.apache.tapestry.junit.mock.c5.Visit"/>
+  	</servlet>
+       
+    <request>
+ 		
+		<assert-output name="Title">
+<![CDATA[
+<title>Home</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Direct Status">
+DirectLink HAS NOT been triggered.		
+		</assert-output>		
+		
+		<assert-output name="Action Status">
+ActionLink HAS NOT been triggered.
+		</assert-output>		
+		
+		<assert-output name="Form Status">
+Form HAS NOT been triggered.
+		</assert-output>		
+		
+		<assert-output name="Direct URL">
+<![CDATA[
+href="/c5/app?service=direct&amp;context=1/Home/DirectLinkHolder/$DirectLink"
+]]>
+		</assert-output>		
+
+		<assert-output name="Action URL">
+<![CDATA[
+href="/c5/app?service=action&amp;context=1/Home/0/ActionLinkHolder/$ActionLink"
+]]>
+		</assert-output>
+			
+		<assert-output name="Form Context">
+<![CDATA[
+<input type="hidden" name="context" value="1/Home/FormHolder/$Form"/>
+]]>
+		</assert-output>					
+
+ 	</request>
+ 	
+ 	<request>
+ 		<parameter name="service" value="direct"/>
+ 		<parameter name="context" value="1/Home/DirectLinkHolder/$DirectLink"/>
+ 		
+ 		<assert-output name="Updated Direct Status">
+DirectLink HAS been triggered.
+		</assert-output>
+		
+	</request> 
+	
+	<request>
+		<parameter name="service" value="action"/>
+		<parameter name="context" value="1/Home/0/ActionLinkHolder/$ActionLink"/>
+		
+		<assert-output name="Updated Action Status">
+ActionLink HAS been triggered.
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="1/Home/FormHolder/$Form"/>
+		<parameter name="sp" value="S1"/>
+		<parameter name="$Submit" value="Trigger"/>
+		<parameter name="Form1" value="$Submit"/>
+		
+		<assert-output name="Form Status">
+Form HAS been triggered.
+		</assert-output>
+		
+	</request>				
+			
+</mock-test>
+    	

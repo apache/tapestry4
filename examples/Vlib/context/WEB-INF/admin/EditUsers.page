@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<page-specification class="org.apache.tapestry.vlib.pages.admin.EditUsers">
+
+  <property name="page-type">admin</property>
+  
+  <component id="border" type="Border">
+    <static-binding name="title">Edit Users</static-binding>
+     <binding name="simpleTitle" expression="true"/>
+  </component>
+  
+  <component id="showMessage" type="ShowMessage"/>
+  
+  <component id="form" type="Form">
+  	<binding name="listener" expression="listeners.updateUsers"/>
+  </component>
+  
+  <component id="e" type="ListEdit">
+  	<binding name="source" expression="userKeys"/>
+  	<binding name="value" expression="userKey"/>
+  </component>
+  
+  <component id="insertUser" type="Insert">
+  	<binding name="value" expression="user.naturalName"/>
+  </component>
+  
+  <component id="insertEmail" type="Insert">
+  	<binding name="value" expression="user.email"/>
+  </component>
+  
+  <component id="inputAdmin" type="Checkbox">
+  	<binding name="selected" expression="user.admin"/>
+  </component>
+  
+  <component id="inputLockedOut" type="Checkbox">
+  	<binding name="selected" expression="user.lockedOut"/>
+  </component>
+  
+  <component id="inputResetPassword" type="Checkbox">
+  	<binding name="selected" expression="resetPassword"/>
+  </component>
+  
+  <component id="inputDelete" type="Checkbox">
+  	<binding name="selected" expression="deleteUser"/>
+  </component>
+
+</page-specification>

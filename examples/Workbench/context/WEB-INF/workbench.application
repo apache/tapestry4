@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<application name="Tapestry Component Workbench">
+  <property name="org.apache.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
+  
+  <extension name="org.apache.tapestry.request-decoder" class="org.apache.tapestry.workbench.RequestDecoder"/>
+  
+  <service name="home" class="org.apache.tapestry.workbench.WorkbenchHomeService"/>
+  <service name="chart" class="org.apache.tapestry.workbench.chart.ChartService"/>
+         
+  <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
+  
+</application>

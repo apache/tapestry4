@@ -1,0 +1,24 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ -->
+<html>
+<head>
+<title>Tapestry: Web Application Framework</title>
+</head>
+<body>
+
+<p>Provides implementations of callbacks, objects that encapsulate a server request that is deferred,
+typically to allow a user to login or otherwise authenticate before proceeding with
+some other activity.
+
+<p>In practice, an implementation of {@link org.apache.tapestry.IPage#validate(IRequestCycle)} or
+{@link org.apache.tapestry.IActionListener} will create a callback, and assign it as a
+persistent page property of an application-specific login page.  After the login completes, it 
+can use the callback to return the user to the functionality that was deferred.
+
+<p>Another example use would be to collect billing and shipping information as part of
+an e-commerce site's checkout wizard.
+
+@author Howard Lewis Ship <a href="mailto:hlship@apache.org">hlship@apache.org</a>
+
+</body>
+</html>

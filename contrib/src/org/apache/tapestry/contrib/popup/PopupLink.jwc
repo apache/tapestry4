@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.popup.PopupLink" allow-body="yes" allow-informal-parameters="yes">
+
+	<parameter name="href" type="String" direction="custom" required="yes"/>
+	<parameter name="windowName" type="String" direction="custom" required="no"/>
+	<parameter name="features" type="String" direction="custom" required="no"/>
+
+	<component id="popoutScript" type="Script">
+		<binding name="script" expression='"popup.script"'/>
+		<binding name="popupFunctionName" expression="popupFunctionName"/>
+        <binding name="url" expression="href"/>
+		<binding name="windowName" expression="windowName"/>
+        <binding name="features" expression="features"/>
+	</component>
+
+  	<component id="link" type="Any">
+        <binding name="element" expression='"a"'/>
+        <binding name="href" expression='"javascript:" + popupFunctionName + "();"'/>
+  	</component>
+
+	<component id="wrapped" type="RenderBody"/>
+
+</component-specification>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+	
+<script>
+<input-symbol key="input" class="java.lang.Number"/>
+
+<let key="success">
+Success
+</let>
+
+</script>	

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"Tapestry_1_2.dtd">
+	
+<application name="Tapestry Component Workbench" engine-class="foo.bar.Baz"/>

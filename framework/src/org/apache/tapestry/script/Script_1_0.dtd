@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Script_1_0.dtd,v 1.3 2002/05/02 17:52:39 hship Exp $ -->
+<!--DTD for the files used with the ScriptGenerator class and Script component.  This is recognized with the public identifier:
+
+	-//Primix Solutions//Tapestry Script 1.0//EN
+
+-->
+
+<!--
+
+Element: script
+
+Root element.
+
+-->
+
+<!ELEMENT script (let*, body?, initialization?)>
+
+<!--
+
+Element: let
+Contained by: script
+
+Used to create a new symbol.
+
+-->
+
+<!ELEMENT let (#PCDATA | insert)*>
+<!ATTLIST let
+	key CDATA #REQUIRED
+>
+
+<!--
+
+Element: body
+Contained by: script
+
+Allows a mix of text and insert elements.  This text is added to
+the large scripting block just before the <body> tag.
+-->
+
+<!ELEMENT body (#PCDATA | insert)*>
+
+<!--
+Element: initialization
+Contained by: script
+
+Text in this block is added to the event handler for the <body>
+tag's onLoad event.
+-->
+
+<!ELEMENT initialization (#PCDATA | insert)*>
+
+<!--
+Element: insert
+Contained by: body, initialization
+
+Allows an arbitrary symbol to be inserted.
+-->
+
+<!ELEMENT insert (#PCDATA)>
+<!ATTLIST insert
+	key CDATA #REQUIRED
+>

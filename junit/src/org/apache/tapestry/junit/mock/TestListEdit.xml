@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c14" root="context14"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="ListEdit"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>ListEdit</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Hidden Fields" subgroup="1">
+<![CDATA[
+<input type="hidden" (name="(.*?)" value="(.*?)")/>
+]]>
+			<match>name="service" value="direct"</match>
+			<match>name="context" value="0/ListEdit/form"</match>
+			<match>name="sp" value="S0"</match>
+			<match>name="Form0" value="e,inputColor,inputColor_0,inputColor_1"</match>			
+			<match>name="e" value="Clothing"</match>
+			<match>name="e" value="Eye Color"</match>
+			<match>name="e" value="SFood"</match>
+		</assert-output-matches>
+
+	
+		<assert-output-matches name="Selected Options">
+<![CDATA[
+<option value=".*?" selected="selected">.*?</option>
+]]>
+			<match><![CDATA[ <option value="4" selected="selected">Black</option> ]]></match>
+			<match><![CDATA[ <option value="2" selected="selected">Blue</option> ]]></match>
+			<match><![CDATA[ <option value="0" selected="selected">Red</option> ]]></match>
+				
+		</assert-output-matches>
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct"/>	
+		<parameter name="context" value="0/ListEdit/form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="e">
+			<value>Clothing</value>
+			<value>Eye Color</value>
+			<value>SFood</value>
+		</parameter>
+		<parameter name="inputColor" value="3"/>
+		<parameter name="inputColor_0" value="0"/>
+		<parameter name="inputColor_1" value="2"/>
+		<parameter name="Form0" value="e,inputColor,inputColor_0,inputColor_1"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>ListEdit Results</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Selected Colors" subgroup="1">
+<![CDATA[
+<td>(.*?)</td>
+]]>
+			<match>Yellow</match>
+			<match>Red</match>
+			<match>Blue</match>
+		</assert-output-matches>
+	</request>	
+	
+	<!-- Hack the submission so that one of the values passed up can't be unsqueezed. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>	
+		<parameter name="context" value="0/ListEdit/form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="e">
+			<value>3Clothing</value>
+			<value>Eye Color</value>
+			<value>SFood</value>
+		</parameter>
+		<parameter name="inputColor" value="3"/>
+		<parameter name="inputColor_0" value="0"/>
+		<parameter name="inputColor_1" value="2"/>
+		<parameter name="Form0" value="e,inputColor,inputColor_0,inputColor_1"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Exception">
+		org.apache.tapestry.RequestCycleException
+		</assert-output>
+		
+		<assert-output name="Outer Message">
+		For input string: "3Clothing"	
+		</assert-output>
+		
+		<assert-output name="Inner Exception">
+		java.lang.NumberFormatException			
+		</assert-output>
+
+	</request>		
+	
+	<!-- Test the index and listener parameters, and using an array
+		 as the source. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="ListEditArray"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>ListEdit Array</title>
+]]>				
+		</assert-output>
+		
+		<assert-output-matches name="Hidden Fields" subgroup="1">
+<![CDATA[
+<input type="hidden" (name="(.*?)" value="(.*?)")/>
+]]>
+			<match>name="service" value="direct"</match>
+			<match>name="context" value="0/ListEditArray/$ListEditForm.$Form"</match>
+			<match>name="sp" value="S0"</match>
+			<match>name="Form0" value="e"</match>			
+			<match>name="e" value="SFred"</match>
+			<match>name="e" value="Dino"</match>
+			<match>name="e" value="Wilma"</match>
+		</assert-output-matches>			
+	</request>
+	
+	<!-- Test where the ListEdit gets a null source. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="ListEditNull"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>ListEdit Null</title>
+]]>				
+		</assert-output>
+		
+		<assert-output-matches name="Hidden Fields" subgroup="1">
+<![CDATA[
+<input type="hidden" (name="(.*?)" value="(.*?)")/>
+]]>
+			<match>name="service" value="direct"</match>
+			<match>name="context" value="0/ListEditNull/$ListEditForm.$Form"</match>
+			<match>name="sp" value="S0"</match>
+			<match>name="Form0" value="e"</match>
+		</assert-output-matches>			
+	</request>	
+</mock-test>

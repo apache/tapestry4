@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<component-specification 
+	class="org.apache.tapestry.BaseComponent" 
+	allow-informal-parameters="no">
+	
+  <parameter name="title" type="java.lang.String" required="yes"/>
+	
+  <component id="shell" type="Shell">
+    <inherited-binding name="title" parameter-name="title"/>
+    <binding name="stylesheet" expression="assets.style"/>
+  </component>
+  
+  <component id="body" type="Body"/>
+  
+  <component id="renderBody" type="RenderBody"/>
+  
+  <component id="inspectorButton" type="contrib:InspectorButton"/>
+
+  <private-asset name="style" resource-path="/org/apache/tapestry/junit/mock/lib/style.css"/>
+  
+</component-specification>	

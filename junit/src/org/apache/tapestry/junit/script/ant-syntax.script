@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+	
+<script>
+
+<let key="functionName">
+	${component.form.name}_${component.name}
+</let>
+
+<!-- Test a few variations.  -->
+
+<let key="incomplete1">
+Incomplete: $</let>
+
+<let key="incomplete2">
+Incomplete: ${</let>
+
+<let key="nopath">
+This ${} ends up as literal.
+</let>
+
+<let key="OGNL">
+This is a brace: ${"{Hello}".toCharArray()[6]}.
+</let>
+
+</script>

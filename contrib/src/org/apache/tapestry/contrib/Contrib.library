@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE library-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<library-specification>
+
+  <component-type type="InspectorButton" specification-path="inspector/InspectorButton.jwc"/>
+  <page name="Inspector" specification-path="inspector/Inspector.page"/>
+
+  <library id="inspector" specification-path="inspector/Inspector.library"/>
+
+  <component-type type="Palette" specification-path="palette/Palette.jwc"/>
+  <component-type type="MultiplePropertySelection" specification-path="form/MultiplePropertySelection.jwc"/>
+  <component-type type="DateField" specification-path="valid/DateField.jwc"/>
+  <component-type type="MaskEdit" specification-path="form/MaskEdit.jwc"/>
+  <component-type type="NumericField" specification-path="valid/NumericField.jwc"/>
+  <component-type type="ValidatingTextField" specification-path="valid/ValidatingTextField.jwc"/>
+
+  <component-type type="InheritInformalAny" specification-path="informal/InheritInformalAny.jwc"/>
+  <component-type type="InsertRenderer" specification-path="render/InsertRenderer.jwc"/>
+
+  <component-type type="Table" specification-path="table/components/Table.jwc"/>
+  <component-type type="TableColumns" specification-path="table/components/TableColumns.jwc"/>
+  <component-type type="TablePages" specification-path="table/components/TablePages.jwc"/>
+  <component-type type="TableRows" specification-path="table/components/TableRows.jwc"/>
+  <component-type type="TableValues" specification-path="table/components/TableValues.jwc"/>
+  <component-type type="TableView" specification-path="table/components/TableView.jwc"/>
+
+  <page name="SimpleTableColumnPage" specification-path="table/components/inserted/SimpleTableColumnPage.page"/>
+  <component-type type="SimpleTableColumnComponent" specification-path="table/components/inserted/SimpleTableColumnComponent.jwc"/>
+
+  <component-type type="PopupLink" specification-path="popup/PopupLink.jwc"/>
+
+</library-specification>

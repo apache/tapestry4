@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<component-specification class="org.apache.tapestry.BaseComponent">
+
+  <private-asset name="private" resource-path="/foo/Bar.gif">
+  	<property name="hugh">grant</property>
+  </private-asset>
+  
+  <external-asset name="external" URL="http://foo.com/images/Bar.gif">
+  	<property name="joan">rivers</property>
+  </external-asset>
+  
+  <context-asset name="context" path="/images/Bar.gif">
+  	<property name="john" value="cusak"/>
+  </context-asset>
+	
+</component-specification>	

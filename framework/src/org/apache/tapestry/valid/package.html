@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<body>
+
+Components and classes that provide specialized, validating text fields.
+The component {@link org.apache.tapestry.valid.ValidField}
+does most of the work, and is paired with an implementation of
+{@link org.apache.tapestry.valid.IValidator} (often as a helper bean)
+which provides the rules of translation (between object value and string) and validation.
+
+<p>
+Fields can all be set as required or not; most IValidator implementations add additional
+validations, such as fitting the input value between a minimum and maximum value.
+
+
+<p>Fields can also have a {@link org.apache.tapestry.valid.FieldLabel} that reflects the state (normal or error)
+of the field.
+
+@author Howard Lewis Ship <a href="mailto:hlship@apache.org">hlship@apache.org</a>
+
+</body>
+</html>

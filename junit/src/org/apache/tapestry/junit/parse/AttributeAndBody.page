@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+     	
+<page-specification>
+
+	<component id="c" type="Insert">
+		<static-binding name="fred" value="error">flintstone</static-binding>
+	</component>
+	
+</page-specification>
+

@@ -1,0 +1,20 @@
+<!-- $Id$ -->
+
+<table border=0 cellpadding=0 cellspacing=2>
+	<tr>
+		<td>
+<span jwcid="@Foreach" source="ognl:views" value="ognl:view">
+			<a jwcid="select@ActionLink" listener="ognl:listeners.selectTab"><img 
+				jwcid="@Rollover" image="ognl:viewImage" focus="ognl:focusImage"
+				width="120" height="19"/></a>
+</span>
+		</td>
+	</tr>
+	<tr>
+		<td><img jwcid="@Image" image="ognl:bannerImage"/></td>
+	</tr>
+	<tr>
+		<td><span jwcid="@RenderBody"/></td>
+	</tr>
+</table>
+

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<component-specification class="org.apache.tapestry.html.BasePage">
+
+  <component id="border" type="Border"/>
+  
+  <private-asset name="validName" resource-path="/foo/bar/Baz.gif"/>
+  <private-asset name="in.valid" resource-path="/foo/bar/Fugo.gif"/>
+  
+</component-specification>

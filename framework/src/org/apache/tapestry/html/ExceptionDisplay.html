@@ -1,0 +1,71 @@
+<!-- $Id$ -->
+<html>
+<link rel="stylesheet" type="text/css" href="../pages/Exception.css">
+
+<body>
+
+<span jwcid="$content$">
+<p>
+
+<table class="exception-display">
+
+<span jwcid="eException">
+	
+		<tr class="exception-name">
+			<td colspan="2"><span jwcid="insertClass">some.exception.Class</span></td>
+		</tr>
+		
+		<tr class="exception-message">
+			<td colspan="2"><span jwcid="insertMessage">A message describing the exception.</span></td>
+		</tr>
+		
+		<tr jwcid="eProperty">
+			<th><span jwcid="insertPropertyName">Property Name</span>:</th>
+			<td><span jwcid="insertPropertyValue">Property Value</span></td>
+		</tr>
+
+		<tr jwcid="$remove$" class="odd">
+			<th>Property Name 2:</th>
+			<td>Property Value 2</td>
+		</tr>
+
+		<tr jwcid="$remove$" class="even">
+			<th>Property Name 3:</th>
+			<td>Property Value 3</td>
+		</tr>
+
+		<tr jwcid="$remove$" class="odd">
+			<th>Property Name 4:</th>
+			<td>Property Value 4</td>
+		</tr>		
+		
+<span jwcid="ifNotLast">
+		<tr> <td colspan=2> &nbsp; </td> </tr>
+</span>
+	
+<span jwcid="ifLast">
+		<tr class="stack-trace-label">
+			<td colspan="2">Stack Trace:</td>
+		</tr>
+
+		<tr class="stack-trace">
+			<td colspan=2>
+				<ul>
+					<li jwcid="eStack"><span jwcid="insertStackTrace">foo.bar.baz(Line:xyz)</span>
+					</li>
+					<li jwcid="$remove$">foo.bar.baz(Line:xyz)</li>
+					<li jwcid="$remove$">foo.bar.baz(Line:xyz)</li>
+					<li jwcid="$remove$">foo.bar.baz(Line:xyz)</li>					
+					<li jwcid="$remove$">foo.bar.baz(Line:xyz)</li>
+				</ul>
+			</td>
+		</tr>
+</span> <!-- ifLast -->
+</span> <!-- e-exception -->
+
+</table>
+
+</span> <!-- $content$ -->
+
+</body>
+</html>

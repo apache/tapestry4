@@ -1,0 +1,50 @@
+<!-- $Id$ -->
+
+<span jwcid="$content$">
+<table jwcid="@Any" element="table" class="ognl:tableClass">
+  <tr>
+  	<th>
+ <span jwcid="@RenderBlock" block="ognl:availableTitleBlock"/>
+ <span jwcid="defaultAvailableTitleBlock@Block">Available</span>
+</th>
+  	<td class="controls" rowspan=2>
+  	    <a jwcid="@Any" 
+  	    	element="a" 
+  	    	href="ognl:symbols.selectOnClickScript"><img jwcid="@Image"
+  	    		image="ognl:selectImage"
+  	    		name="ognl:symbols.selectImageName"
+  	    		alt="[Select]"/></a>
+    <br>
+    <a jwcid="@Any" element="a"
+    	href="ognl:symbols.deselectOnClickScript"><img jwcid="@Image"
+    		image="ognl:deselectImage"
+    		name="ognl:symbols.deselectImageName"
+    		alt="[Deselect]"/></a>
+    
+    <span jwcid="@Conditional" condition="ognl:sortUser">
+    <br/>
+    <a jwcid="@Any" element="a"
+    	href="ognl:symbols.upOnClickScript"><img jwcid="@Image" 
+    		image="ognl:upImage"
+    		name="ognl:symbols.upImageName"
+    		alt="[Move Up]"/></a>
+    <br/>
+    <a jwcid="@Any" element="a"
+    	href="ognl:symbols.downOnClickScript"><img jwcid="@Image"
+    		image="ognl:downImage"
+    		name="ognl:symbols.downImageName"
+    		alt="[Move Down]"/></a>
+    </span>
+    
+    </td>
+  	<th>
+ <span jwcid="@RenderBlock" block="ognl:selectedTitleBlock"/>
+ <span jwcid="defaultSelectedTitleBlock@Block">Selected</span>
+    </th>
+  </tr>
+  <tr>
+    <td><select jwcid="@Delegator" delegate="ognl:availableSelectDelegate"/></td>
+    <td><select jwcid="@Delegator" delegate="ognl:selectedSelectDelegate"/></td>
+  </tr>
+</table>
+</span>

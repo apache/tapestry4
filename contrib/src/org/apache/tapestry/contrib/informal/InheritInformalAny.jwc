@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.informal.InheritInformalAny" allow-body="yes" allow-informal-parameters="yes">
+    <parameter name="element" type="java.lang.String" required="yes" direction="custom"/>
+</component-specification>

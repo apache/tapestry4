@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC 
+	"-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+
+<script>
+
+<body>
+function ${popupFunctionName}()
+{
+	aWindow = window.open('${url}', '${windowName}', '${features}', false);
+	aWindow.focus();
+}
+</body>
+
+</script>

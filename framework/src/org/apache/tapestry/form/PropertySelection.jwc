@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<component-specification class="org.apache.tapestry.form.PropertySelection" 
+	allow-body="no" 
+	allow-informal-parameters="yes">
+  
+  <description>
+  Creates an HTML select to choose a single property from a list of options.
+  </description>
+  
+  <parameter name="value" required="yes" type="java.lang.Object" direction="form"/>
+  
+  <parameter name="model" 
+  	type="org.apache.tapestry.form.IPropertySelectionModel" 
+  	required="yes"
+  	direction="in"/>
+  	
+  <parameter name="disabled"
+  	type="boolean"
+  	direction="in"/>
+  	
+  <parameter name="renderer" 
+  	type="org.apache.tapestry.form.IPropertySelectionRenderer"
+  	direction="in">
+  	<description>
+	An alternate rendered for the property selection.
+  	</description>
+  </parameter>
+  
+  <parameter name="submitOnChange"
+  	type="boolean"
+  	direction="in">
+  	<description>
+  	Enables logic to submit containing form when value changes.
+  	</description>
+  </parameter>
+  	
+  <reserved-parameter name="name"/>
+  
+</component-specification>

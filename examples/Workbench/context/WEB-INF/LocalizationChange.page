@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<page-specification class="org.apache.tapestry.workbench.localization.LocalizationChange">
+
+  <component id="insertLocaleName" type="Insert">
+    <binding name="value" expression="localeName"/>
+  </component>
+  
+  <component id="back" type="PageLink">
+    <static-binding name="page">Localization</static-binding>
+  </component>
+  
+  <component id="chooseAgainImage" type="Rollover">
+    <binding name="image" expression="assets.back"/>
+    <binding name="focus" expression="assets.backFocus"/>
+  </component>
+  
+  <context-asset name="back" path="images/Back.gif"/>
+  <context-asset name="backFocus" path="images/Back-focus.gif"/>
+  
+</page-specification>

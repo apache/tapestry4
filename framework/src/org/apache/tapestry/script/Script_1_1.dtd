@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Script_1_1.dtd,v 1.3 2002/05/02 17:52:39 hship Exp $ -->
+<!--
+
+DTD for the files used with the ScriptGenerator class and Script component.  
+This is recognized with the public identifier:
+
+	-//Howard Ship//Tapestry Script 1.1//EN
+
+The canonical location for the DTD is:
+
+	http://tapestry.sf.net/dtd/Tapestry_1_1.dtd
+
+The root element is always script.
+	
+-->
+<!-- =======================================================
+
+Entity: full-content
+
+Identifies the contents of most of the other elements.
+
+-->
+<!ENTITY % full-content "(#PCDATA | foreach | insert | if | if-not)*">
+<!-- =======================================================
+
+Element: body
+Contained by: script
+
+Allows a mix of text and insert elements.  This text is added to
+the large scripting block just before the <body> tag.
+-->
+<!ELEMENT body %full-content;>
+<!-- =======================================================
+
+Element: foreach
+Appears in: %full-content;
+
+Iterates over a list of items; this is modeled after the
+Foreach component.  No iteration occurs if the value
+from the property path is null.
+
+Attributes:
+  key: Defines the symbol into which each succesive value is stored.
+  property-path: The source of values.
+-->
+<!ELEMENT foreach %full-content;>
+<!ATTLIST foreach
+  key CDATA #REQUIRED
+  property-path CDATA #REQUIRED
+>
+
+<!-- =======================================================
+Element: include-script
+Contained by: script
+
+Inserts a reference to an external, static, JavaScript file.
+
+Attributes:
+  resource-path: The path to the script within the classpath.
+-->
+<!ELEMENT include-script EMPTY>
+<!ATTLIST include-script
+  resource-path CDATA #REQUIRED
+>
+
+<!-- =======================================================
+
+Element: if
+Appears in: %full-content;
+
+Creates a conditional portion of the script; The body of the element 
+is only included if the property-path evaulates to true.
+
+-->
+<!ELEMENT if %full-content;>
+<!ATTLIST if
+  property-path CDATA #REQUIRED
+>
+<!-- =======================================================
+
+Element: if-not
+Appears in: %full-content;
+
+Creates a conditional portion of the script; The body of the element 
+is only included if the property-path evaulates to false.
+
+-->
+<!ELEMENT if-not %full-content;>
+<!ATTLIST if-not
+  property-path CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: initialization
+Contained by: script
+
+Text in this block is added to the event handler for the <body>
+tag's onLoad event.
+-->
+<!ELEMENT initialization %full-content;>
+<!-- =======================================================
+Element: insert
+Contained by: body, initialization
+
+Allows an arbitrary symbol to be inserted.
+
+Attributes:
+  property-path: The path to the value to insert.
+-->
+<!ELEMENT insert EMPTY>
+<!ATTLIST insert
+  property-path CDATA #REQUIRED
+>
+
+<!-- =======================================================
+
+Element: let
+Contained by: script
+
+Used to create a new symbol.
+
+-->
+<!ELEMENT let %full-content;>
+<!ATTLIST let
+  key CDATA #REQUIRED
+>
+<!-- =======================================================
+
+Element: script
+
+Root element.
+
+Allows zero or more let elements (to establish new symbols),
+followed by a body and/or initialization element.
+
+-->
+<!ELEMENT script (include-script*, let*, body?, initialization?)>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.inspector.ShowTemplate">
+  <component id="ifNoTemplate" type="Conditional">
+    <binding name="condition" expression="! hasTemplate"/>
+  </component>
+  
+  <component id="ifTemplate" type="Conditional">
+    <binding name="condition" expression="hasTemplate"/>
+  </component>
+  
+  <component id="insertTemplate" type="Delegator">
+    <binding name="delegate" expression="templateDelegate"/>
+  </component>
+</component-specification>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<page-specification>
+
+  <component id="border" type="lib:Border">
+  	<static-binding name="title">TemplateExprConflict</static-binding>
+  </component>
+  
+  <component id="insertApplicationName" type="Insert">
+  	<!-- Conflict: specified here and as an expression in the template -->
+  	<static-binding name="value">Application Title</static-binding>
+  </component>
+   
+</page-specification>

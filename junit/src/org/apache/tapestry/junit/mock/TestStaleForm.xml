@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<!-- Performs some tests to simulate a StaleLink scenario when submitting a form.  -->
+
+<mock-test>
+    <context name="mock"/>
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>
+  	  	
+  	<!-- Just for sanity's sake, duplicate some of the checks from TestRegisterForm.xml -->
+  	  	
+  	<request>
+  		<parameter name="service" value="page"/>
+  		<parameter name="context" value="Register"/>
+  		
+  		<assert-output name="Title">
+<![CDATA[
+		<title>Register</title>
+]]>  		
+ 		</assert-output> 			
+ 			
+		<assert-output-matches name="Hidden Fields - Names" subgroup="1">
+<![CDATA[
+<input type="hidden" name="(.*?)" value="(.*?)"/>
+]]>
+			<match>service</match>
+			<match>context</match>
+			<match>sp</match>
+			<match>Form0</match>
+		</assert-output-matches>
+				
+		<assert-output-matches name="Hidden Fields - Values" subgroup="2">
+<![CDATA[
+<input type="hidden" name="(.*?)" value="(.*?)"/>
+]]>
+			<match>direct</match>
+			<match>0/Register/form</match>
+			<match>S0</match>
+			<match>inputFirstName,inputLastName,inputSex,inputAgeRange</match>
+		</assert-output-matches>
+			 	
+  	</request>
+  	
+  	<!-- Provoke an error by "submitting" the form but gimicking things
+  	     as if there was another field when the form rendered.. -->
+  	
+  	<request>
+  		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Register/form"/>
+  		<parameter name="sp" value="S0"/>
+  		<parameter name="inputFirstName" value="Suzy"/>
+  		<parameter name="inputLastName" value="Munchkin"/>
+  		<parameter name="inputFavoriteColor" value="2"/>
+  		<parameter name="inputSex" value="1"/>
+  		<parameter name="inputAgeRange" value="1"/>
+  		<parameter name="Form0" value="inputFirstName,inputLastName,inputFavoriteColor,inputSex,inputAgeRange"/>
+  		
+    		
+  		<assert-output name="Title">
+<![CDATA[
+		<title>Stale Link</title>
+]]>  		
+ 		</assert-output>
+ 				
+		<assert-output name="Mismatch Error Message">
+Rewind of form Register/form expected allocated id #3 to be 'inputFavoriteColor', but was 'inputSex' (requested by component Register/inputSex).	
+ 		</assert-output> 				
+
+  	</request>	
+  	
+  	<!-- This time, we pretend that inputAgeRange didn't render but was submitted. -->
+  	
+    <request>
+  		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Register/form"/>
+  		<parameter name="sp" value="S0"/>
+  		<parameter name="inputFirstName" value="Suzy"/>
+  		<parameter name="inputLastName" value="Munchkin"/>
+  		<parameter name="inputSex" value="1"/>
+  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex"/>
+  		    		
+  		<assert-output name="Title">
+<![CDATA[
+		<title>Stale Link</title>
+]]>  		
+ 		</assert-output>
+ 				
+		<assert-output name="Too Many Error Message">
+Rewind of form Register/form expected only 3 form elements, but an additional id was requested by component Register/inputAgeRange.		
+ 		</assert-output> 				
+
+  	</request>	
+  	
+    <request>
+  		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Register/form"/>
+  		<parameter name="sp" value="S0"/>
+  		<parameter name="inputFirstName" value="Suzy"/>
+  		<parameter name="inputLastName" value="Munchkin"/>
+  		<parameter name="inputSex" value="1"/>
+  		<parameter name="inputAgeRange" value="1"/>
+  		<parameter name="inputFavoriteColor" value="2"/>  		
+  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex,inputAgeRange,inputFavoriteColor"/>
+  		
+    		
+  		<assert-output name="Title">
+<![CDATA[
+		<title>Stale Link</title>
+]]>  		
+ 		</assert-output>
+ 				
+		<assert-output name="Too Few Error Message">
+Rewind of form Register/form expected 1 more form elements, starting with id 'inputFavoriteColor'.		
+ 		</assert-output> 				
+
+  	</request>		
+</mock-test>	

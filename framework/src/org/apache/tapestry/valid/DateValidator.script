@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+	
+<!-- 
+
+  Creates a script for validating that a date field is required.  Eventually,
+  this will also do client-side input validation.
+  
+  Input symbols:
+     field, form, validator:  As normal for a validation script.
+	 requiredMessage: Message to display if the field is required yet blank.
+     
+-->
+	
+<script>
+
+<include-script resource-path="/org/apache/tapestry/valid/Validator.js"/>
+
+<input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes"/>
+<input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
+<input-symbol key="validator" class="org.apache.tapestry.valid.DateValidator" required="yes"/>
+<input-symbol key="requiredMessage" class="java.lang.String"/>
+
+<let key="function">
+validate_${form.name}_${field.name}
+</let>
+
+<body>
+function ${function}()
+{
+  var field = document.${form.name}.${field.name}; 
+
+  if (field.value.length == 0)
+     return validator_invalid_field(field, "${requiredMessage}");
+
+  return true;
+}
+</body>
+
+</script>

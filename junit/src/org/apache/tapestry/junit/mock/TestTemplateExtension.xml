@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c8" root="context8"/>
+
+  	<servlet name="ext" class="org.apache.tapestry.ApplicationServlet"/>
+  	
+
+	<request>
+  	  	  	
+		<assert-output name="Home Page Content">		
+This is the Home page, with template Home.thtml.
+		</assert-output>
+		
+	</request>
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Two"/>
+		
+		<assert-output name="Page Two Content">		
+This is the Two page, with template Two.phtml.
+		</assert-output>
+	</request>  	  
+		  	
+
+ </mock-test>

@@ -1,0 +1,42 @@
+<html>
+<!-- $Id$ -->
+<head>
+<title>PopupLink Help</title>
+</head>
+
+<body>
+<font face="helvetica">
+<b>Help Page</b>
+<hr/>
+This static Help page is accessed via the 
+<tt><font color="blue">contrib:PopupLink</font></tt> component.
+<p/>
+HTML file
+<blockquote>
+<pre>
+&lt;a jwcid="helpLink"&gt;PopupLink Help&lt;/a&gt;
+</pre>
+</blockquote>
+<p/>
+Page file
+<blockquote>
+<pre>
+&lt;component id="helpLink" type="contrib:PopupLink"&gt;
+   &lt;binding name="url" expression='"popuplink-help.html"'/&gt;
+   &lt;binding name="height" expression="400"/&gt;
+   &lt;binding name="width" expression="850"/&gt;
+   &lt;binding name="features" expression='"top=200,left=100,resizable=yes,scrollbars=yes"'/&gt;
+&lt;/component&gt;
+</pre>
+</blockquote>
+<font>
+<table width="100%">
+<tr>
+<td align="right">
+<input type="button" value=" Close " onclick="javascript:window.close();"/>
+&nbsp;&nbsp;&nbsp;
+</td>
+</tr>
+<table>
+</body>
+</html>

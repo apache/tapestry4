@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE library-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<!--  Specification used in a series of tests to check successful parsing of a LibrarySpecification. -->
+	
+<library-specification>
+
+	<service name="service1" class="Service1"/>
+	<service name="service2" class="Service2"/>
+	
+	<page name="FirstPage" specification-path="/FirstPage.page"/>
+	<page name="SecondPage" specification-path="/SecondPage.page"/>
+	
+	<component-type type="FirstComponent" specification-path="/FirstComponent.jwc"/>
+	<component-type type="SecondComponent" specification-path="/SecondComponent.jwc"/>
+	
+	<library id="lib1" specification-path="/Library1.library"/>
+	<library id="lib2" specification-path="/Library2.library"/>
+
+</library-specification>
