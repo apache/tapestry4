@@ -40,6 +40,8 @@ import org.apache.tapestry.util.IdAllocator;
  * reasonable SGML derived markup (including XML), but specifically works around the ambiguities of
  * HTML reasonably.
  * <p>
+ * Deployed as the tapestry.parse.TemplateParser service, using the threaded model.
+ * <p>
  * Dynamic markup in Tapestry attempts to be invisible. Components are arbitrary tags containing a
  * <code>jwcid</code> attribute. Such components must be well balanced (have a matching close tag,
  * or end the tag with "<code>/&gt;</code>".
@@ -89,22 +91,6 @@ import org.apache.tapestry.util.IdAllocator;
 public class TemplateParser implements ITemplateParser
 {
     /**
-     * Attribute value prefix indicating that the attribute is an OGNL expression.
-     * 
-     * @since 3.0
-     */
-
-    public static final String OGNL_EXPRESSION_PREFIX = "ognl:";
-
-    /**
-     * Attribute value prefix indicating that the attribute is a localization key.
-     * 
-     * @since 3.0
-     */
-
-    public static final String LOCALIZATION_KEY_PREFIX = "message:";
-
-    /**
      * A "magic" component id that causes the tag with the id and its entire body to be ignored
      * during parsing.
      */
@@ -139,12 +125,12 @@ public class TemplateParser implements ITemplateParser
     public static final String RAW_ATTRIBUTE_NAME = "raw";
 
     /**
-     * Attribute used to identify components.
+     * Attribute name used to identify components.
      * 
-     * @since 2.3
+     * @since 3.1
      */
 
-    public static final String JWCID_ATTRIBUTE_NAME = "jwcid";
+    private String _componentAttributeName;
 
     private static final String PROPERTY_NAME_PATTERN = "_?[a-zA-Z]\\w*";
 
@@ -165,8 +151,8 @@ public class TemplateParser implements ITemplateParser
      * @since 3.0
      */
 
-    public static final String IMPLICIT_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")?@(((" + PROPERTY_NAME_PATTERN
-            + "):)?(" + PROPERTY_NAME_PATTERN + "))$";
+    public static final String IMPLICIT_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")?@((("
+            + PROPERTY_NAME_PATTERN + "):)?(" + PROPERTY_NAME_PATTERN + "))$";
 
     private static final int IMPLICIT_ID_PATTERN_ID_GROUP = 1;
 
@@ -329,8 +315,8 @@ public class TemplateParser implements ITemplateParser
      *            a description of where the template originated from, used with error messages.
      */
 
-    public TemplateToken[] parse(char[] templateData, ITemplateParserDelegate delegate, Resource resourceLocation)
-            throws TemplateParseException
+    public TemplateToken[] parse(char[] templateData, ITemplateParserDelegate delegate,
+            Resource resourceLocation) throws TemplateParseException
     {
         try
         {
@@ -350,7 +336,8 @@ public class TemplateParser implements ITemplateParser
      * perform default initialization of the parser.
      */
 
-    protected void beforeParse(char[] templateData, ITemplateParserDelegate delegate, Resource resourceLocation)
+    protected void beforeParse(char[] templateData, ITemplateParserDelegate delegate,
+            Resource resourceLocation)
     {
         _templateData = templateData;
         _resourceLocation = resourceLocation;
@@ -358,6 +345,7 @@ public class TemplateParser implements ITemplateParser
         _delegate = delegate;
         _ignoring = false;
         _line = 1;
+        _componentAttributeName = delegate.getComponentAttributeName();
     }
 
     /**
@@ -529,8 +517,8 @@ public class TemplateParser implements ITemplateParser
         while (true)
         {
             if (_cursor >= length)
-                templateParseProblem(ParseMessages.commentNotEnded(startLine), new LocationImpl(_resourceLocation,
-                        startLine), startLine, _cursor);
+                templateParseProblem(ParseMessages.commentNotEnded(startLine), new LocationImpl(
+                        _resourceLocation, startLine), startLine, _cursor);
 
             if (lookahead(COMMENT_END))
                 break;
@@ -556,7 +544,11 @@ public class TemplateParser implements ITemplateParser
             // This seems odd, shouldn't the location be the current location? I guess
             // no errors are ever reported for a text token.
 
-            TemplateToken token = _factory.createTextToken(_templateData, _blockStart, end, _templateLocation);
+            TemplateToken token = _factory.createTextToken(
+                    _templateData,
+                    _blockStart,
+                    end,
+                    _templateLocation);
 
             _tokens.add(token);
         }
@@ -620,8 +612,8 @@ public class TemplateParser implements ITemplateParser
         {
             if (_cursor >= length)
             {
-                String message = (tagName == null) ? ParseMessages.unclosedUnknownTag(startLine) : ParseMessages
-                        .unclosedTag(tagName, startLine);
+                String message = (tagName == null) ? ParseMessages.unclosedUnknownTag(startLine)
+                        : ParseMessages.unclosedTag(tagName, startLine);
 
                 templateParseProblem(message, startLocation, startLine, cursorStart);
             }
@@ -630,165 +622,170 @@ public class TemplateParser implements ITemplateParser
 
             switch (state)
             {
-            case WAIT_FOR_ATTRIBUTE_NAME:
+                case WAIT_FOR_ATTRIBUTE_NAME:
 
-                // Ignore whitespace before the next attribute name, while
-                // looking for the end of the current tag.
+                    // Ignore whitespace before the next attribute name, while
+                    // looking for the end of the current tag.
 
-                if (ch == '/')
-                {
-                    emptyTag = true;
+                    if (ch == '/')
+                    {
+                        emptyTag = true;
+                        advance();
+                        break;
+                    }
+
+                    if (ch == '>')
+                    {
+                        endOfTag = true;
+                        break;
+                    }
+
+                    if (Character.isWhitespace(ch))
+                    {
+                        advance();
+                        break;
+                    }
+
+                    // Found non-whitespace, assume its the attribute name.
+                    // Note: could use a check here for non-alpha.
+
+                    attributeNameStart = _cursor;
+                    state = COLLECT_ATTRIBUTE_NAME;
                     advance();
                     break;
-                }
 
-                if (ch == '>')
-                {
-                    endOfTag = true;
-                    break;
-                }
+                case COLLECT_ATTRIBUTE_NAME:
 
-                if (Character.isWhitespace(ch))
-                {
+                    // Looking for end of attribute name.
+
+                    if (ch == '=' || ch == '/' || ch == '>' || Character.isWhitespace(ch))
+                    {
+                        attributeName = new String(_templateData, attributeNameStart, _cursor
+                                - attributeNameStart);
+
+                        state = ADVANCE_PAST_EQUALS;
+                        break;
+                    }
+
+                    // Part of the attribute name
+
                     advance();
                     break;
-                }
 
-                // Found non-whitespace, assume its the attribute name.
-                // Note: could use a check here for non-alpha.
+                case ADVANCE_PAST_EQUALS:
 
-                attributeNameStart = _cursor;
-                state = COLLECT_ATTRIBUTE_NAME;
-                advance();
-                break;
+                    // Looking for the '=' sign. May hit the end of the tag, or (for bare
+                    // attributes),
+                    // the next attribute name.
 
-            case COLLECT_ATTRIBUTE_NAME:
+                    if (ch == '/' || ch == '>')
+                    {
+                        // A bare attribute, which is not interesting to
+                        // us.
 
-                // Looking for end of attribute name.
+                        state = WAIT_FOR_ATTRIBUTE_NAME;
+                        break;
+                    }
 
-                if (ch == '=' || ch == '/' || ch == '>' || Character.isWhitespace(ch))
-                {
-                    attributeName = new String(_templateData, attributeNameStart, _cursor - attributeNameStart);
+                    if (Character.isWhitespace(ch))
+                    {
+                        advance();
+                        break;
+                    }
 
-                    state = ADVANCE_PAST_EQUALS;
-                    break;
-                }
+                    if (ch == '=')
+                    {
+                        state = WAIT_FOR_ATTRIBUTE_VALUE;
+                        quoteChar = 0;
+                        attributeValueStart = -1;
+                        advance();
+                        break;
+                    }
 
-                // Part of the attribute name
-
-                advance();
-                break;
-
-            case ADVANCE_PAST_EQUALS:
-
-                // Looking for the '=' sign. May hit the end of the tag, or (for bare attributes),
-                // the next attribute name.
-
-                if (ch == '/' || ch == '>')
-                {
-                    // A bare attribute, which is not interesting to
-                    // us.
+                    // Otherwise, an HTML style "bare" attribute (such as <select multiple>).
+                    // We aren't interested in those (we're just looking for the id or jwcid
+                    // attribute).
 
                     state = WAIT_FOR_ATTRIBUTE_NAME;
                     break;
-                }
 
-                if (Character.isWhitespace(ch))
-                {
-                    advance();
-                    break;
-                }
+                case WAIT_FOR_ATTRIBUTE_VALUE:
 
-                if (ch == '=')
-                {
-                    state = WAIT_FOR_ATTRIBUTE_VALUE;
-                    quoteChar = 0;
-                    attributeValueStart = -1;
-                    advance();
-                    break;
-                }
+                    if (ch == '/' || ch == '>')
+                        templateParseProblem(ParseMessages.missingAttributeValue(
+                                tagName,
+                                _line,
+                                attributeName), getCurrentLocation(), _line, _cursor);
 
-                // Otherwise, an HTML style "bare" attribute (such as <select multiple>).
-                // We aren't interested in those (we're just looking for the id or jwcid attribute).
+                    // Ignore whitespace between '=' and the attribute value. Also, look
+                    // for initial quote.
 
-                state = WAIT_FOR_ATTRIBUTE_NAME;
-                break;
+                    if (Character.isWhitespace(ch))
+                    {
+                        advance();
+                        break;
+                    }
 
-            case WAIT_FOR_ATTRIBUTE_VALUE:
+                    if (ch == '\'' || ch == '"')
+                    {
+                        quoteChar = ch;
 
-                if (ch == '/' || ch == '>')
-                    templateParseProblem(ParseMessages.missingAttributeValue(tagName, _line, attributeName),
-                            getCurrentLocation(), _line, _cursor);
+                        state = COLLECT_QUOTED_VALUE;
+                        advance();
+                        attributeValueStart = _cursor;
+                        attributeBeginEvent(attributeName, _line, attributeValueStart);
+                        break;
+                    }
 
-                // Ignore whitespace between '=' and the attribute value. Also, look
-                // for initial quote.
+                    // Not whitespace or quote, must be start of unquoted attribute.
 
-                if (Character.isWhitespace(ch))
-                {
-                    advance();
-                    break;
-                }
-
-                if (ch == '\'' || ch == '"')
-                {
-                    quoteChar = ch;
-
-                    state = COLLECT_QUOTED_VALUE;
-                    advance();
+                    state = COLLECT_UNQUOTED_VALUE;
                     attributeValueStart = _cursor;
                     attributeBeginEvent(attributeName, _line, attributeValueStart);
                     break;
-                }
 
-                // Not whitespace or quote, must be start of unquoted attribute.
+                case COLLECT_QUOTED_VALUE:
 
-                state = COLLECT_UNQUOTED_VALUE;
-                attributeValueStart = _cursor;
-                attributeBeginEvent(attributeName, _line, attributeValueStart);
-                break;
+                    // Start collecting the quoted attribute value. Stop at the matching quote
+                    // character,
+                    // unless bare, in which case, stop at the next whitespace.
 
-            case COLLECT_QUOTED_VALUE:
+                    if (ch == quoteChar)
+                    {
+                        String attributeValue = new String(_templateData, attributeValueStart,
+                                _cursor - attributeValueStart);
 
-                // Start collecting the quoted attribute value. Stop at the matching quote
-                // character,
-                // unless bare, in which case, stop at the next whitespace.
+                        _attributes.put(attributeName, attributeValue);
+                        attributeEndEvent(_cursor);
 
-                if (ch == quoteChar)
-                {
-                    String attributeValue = new String(_templateData, attributeValueStart, _cursor
-                            - attributeValueStart);
+                        // Advance over the quote.
+                        advance();
+                        state = WAIT_FOR_ATTRIBUTE_NAME;
+                        break;
+                    }
 
-                    _attributes.put(attributeName, attributeValue);
-                    attributeEndEvent(_cursor);
-
-                    // Advance over the quote.
                     advance();
-                    state = WAIT_FOR_ATTRIBUTE_NAME;
                     break;
-                }
 
-                advance();
-                break;
+                case COLLECT_UNQUOTED_VALUE:
 
-            case COLLECT_UNQUOTED_VALUE:
+                    // An unquoted attribute value ends with whitespace
+                    // or the end of the enclosing tag.
 
-                // An unquoted attribute value ends with whitespace
-                // or the end of the enclosing tag.
+                    if (ch == '/' || ch == '>' || Character.isWhitespace(ch))
+                    {
+                        String attributeValue = new String(_templateData, attributeValueStart,
+                                _cursor - attributeValueStart);
 
-                if (ch == '/' || ch == '>' || Character.isWhitespace(ch))
-                {
-                    String attributeValue = new String(_templateData, attributeValueStart, _cursor
-                            - attributeValueStart);
+                        _attributes.put(attributeName, attributeValue);
+                        attributeEndEvent(_cursor);
 
-                    _attributes.put(attributeName, attributeValue);
-                    attributeEndEvent(_cursor);
+                        state = WAIT_FOR_ATTRIBUTE_NAME;
+                        break;
+                    }
 
-                    state = WAIT_FOR_ATTRIBUTE_NAME;
+                    advance();
                     break;
-                }
-
-                advance();
-                break;
             }
         }
 
@@ -797,13 +794,16 @@ public class TemplateParser implements ITemplateParser
         // Check for invisible localizations
 
         String localizationKey = findValueCaselessly(LOCALIZATION_KEY_ATTRIBUTE_NAME, _attributes);
-        String jwcId = findValueCaselessly(JWCID_ATTRIBUTE_NAME, _attributes);
+        String jwcId = findValueCaselessly(_componentAttributeName, _attributes);
 
         if (localizationKey != null && tagName.equalsIgnoreCase("span") && jwcId == null)
         {
             if (_ignoring)
-                templateParseProblem(ParseMessages.componentMayNotBeIgnored(tagName, startLine), startLocation,
-                        startLine, cursorStart);
+                templateParseProblem(
+                        ParseMessages.componentMayNotBeIgnored(tagName, startLine),
+                        startLocation,
+                        startLine,
+                        cursorStart);
 
             // If the tag isn't empty, then create a Tag instance to ignore the
             // body of the tag.
@@ -839,7 +839,11 @@ public class TemplateParser implements ITemplateParser
             Map attributes = filter(_attributes, new String[]
             { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
 
-            TemplateToken token = _factory.createLocalizationToken(tagName, localizationKey, raw, attributes,
+            TemplateToken token = _factory.createLocalizationToken(
+                    tagName,
+                    localizationKey,
+                    raw,
+                    attributes,
                     startLocation);
 
             _tokens.add(token);
@@ -906,14 +910,13 @@ public class TemplateParser implements ITemplateParser
      * Notify that the end of the current attribute value has been detected.
      * <p>
      * Default implementation does nothing.
-
      */
     protected void attributeEndEvent(int cursorPosition)
     {
     }
 
-    private void processComponentStart(String tagName, String jwcId, boolean emptyTag, int startLine, int cursorStart,
-            Location startLocation) throws TemplateParseException
+    private void processComponentStart(String tagName, String jwcId, boolean emptyTag,
+            int startLine, int cursorStart, Location startLocation) throws TemplateParseException
     {
         if (jwcId.equalsIgnoreCase(CONTENT_ID))
         {
@@ -925,7 +928,10 @@ public class TemplateParser implements ITemplateParser
         boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
 
         if (_ignoring && !isRemoveId)
-            templateParseProblem(ParseMessages.componentMayNotBeIgnored(tagName, startLine), startLocation, startLine,
+            templateParseProblem(
+                    ParseMessages.componentMayNotBeIgnored(tagName, startLine),
+                    startLocation,
+                    startLine,
                     cursorStart);
 
         String type = null;
@@ -968,12 +974,18 @@ public class TemplateParser implements ITemplateParser
             if (!isRemoveId)
             {
                 if (!_patternMatcher.matches(jwcId, _simpleIdPattern))
-                    templateParseProblem(ParseMessages.componentIdInvalid(tagName, startLine, jwcId), startLocation,
-                            startLine, cursorStart);
+                    templateParseProblem(
+                            ParseMessages.componentIdInvalid(tagName, startLine, jwcId),
+                            startLocation,
+                            startLine,
+                            cursorStart);
 
                 if (!_delegate.getKnownComponent(jwcId))
-                    templateParseProblem(ParseMessages.unknownComponentId(tagName, startLine, jwcId), startLocation,
-                            startLine, cursorStart);
+                    templateParseProblem(
+                            ParseMessages.unknownComponentId(tagName, startLine, jwcId),
+                            startLocation,
+                            startLine,
+                            cursorStart);
 
                 try
                 {
@@ -994,8 +1006,8 @@ public class TemplateParser implements ITemplateParser
         boolean ignoreBody = !emptyTag && (isRemoveId || !allowBody);
 
         if (_ignoring && ignoreBody)
-            templateParseProblem(ParseMessages.nestedIgnore(tagName, startLine), new LocationImpl(_resourceLocation,
-                    startLine), startLine, cursorStart);
+            templateParseProblem(ParseMessages.nestedIgnore(tagName, startLine), new LocationImpl(
+                    _resourceLocation, startLine), startLine, cursorStart);
 
         if (!emptyTag)
             pushNewTag(tagName, startLine, isRemoveId, ignoreBody);
@@ -1035,12 +1047,18 @@ public class TemplateParser implements ITemplateParser
             throws TemplateParseException
     {
         if (_ignoring)
-            templateParseProblem(ParseMessages.contentBlockMayNotBeIgnored(tagName, startLine), new LocationImpl(
-                    _resourceLocation, startLine), startLine, cursorStart);
+            templateParseProblem(
+                    ParseMessages.contentBlockMayNotBeIgnored(tagName, startLine),
+                    new LocationImpl(_resourceLocation, startLine),
+                    startLine,
+                    cursorStart);
 
         if (emptyTag)
-            templateParseProblem(ParseMessages.contentBlockMayNotBeEmpty(tagName, startLine), new LocationImpl(
-                    _resourceLocation, startLine), startLine, cursorStart);
+            templateParseProblem(
+                    ParseMessages.contentBlockMayNotBeEmpty(tagName, startLine),
+                    new LocationImpl(_resourceLocation, startLine),
+                    startLine,
+                    cursorStart);
 
         _tokens.clear();
         _blockStart = -1;
@@ -1071,7 +1089,7 @@ public class TemplateParser implements ITemplateParser
 
             String key = (String) entry.getKey();
 
-            if (key.equalsIgnoreCase(JWCID_ATTRIBUTE_NAME))
+            if (key.equalsIgnoreCase(_componentAttributeName))
                 continue;
 
             String value = (String) entry.getValue();
@@ -1081,8 +1099,7 @@ public class TemplateParser implements ITemplateParser
     }
 
     /**
-     * Adds the attribute to the token (identifying prefixes and whatnot is
-     * now done downstream).
+     * Adds the attribute to the token (identifying prefixes and whatnot is now done downstream).
      * 
      * @since 3.0
      */
@@ -1121,7 +1138,11 @@ public class TemplateParser implements ITemplateParser
         while (true)
         {
             if (_cursor >= length)
-                templateParseProblem(ParseMessages.incompleteCloseTag(startLine), startLocation, startLine, cursorStart);
+                templateParseProblem(
+                        ParseMessages.incompleteCloseTag(startLine),
+                        startLocation,
+                        startLine,
+                        cursorStart);
 
             char ch = _templateData[_cursor];
 
@@ -1144,15 +1165,20 @@ public class TemplateParser implements ITemplateParser
                 break;
 
             if (tag._mustBalance)
-                templateParseProblem(ParseMessages
-                        .improperlyNestedCloseTag(tagName, startLine, tag._tagName, tag._line), startLocation,
-                        startLine, cursorStart);
+                templateParseProblem(ParseMessages.improperlyNestedCloseTag(
+                        tagName,
+                        startLine,
+                        tag._tagName,
+                        tag._line), startLocation, startLine, cursorStart);
 
             stackPos--;
         }
 
         if (stackPos < 0)
-            templateParseProblem(ParseMessages.unmatchedCloseTag(tagName, startLine), startLocation, startLine,
+            templateParseProblem(
+                    ParseMessages.unmatchedCloseTag(tagName, startLine),
+                    startLocation,
+                    startLine,
                     cursorStart);
 
         // Special case for the content tag

@@ -17,46 +17,47 @@ package org.apache.tapestry.parse;
 import org.apache.hivemind.Location;
 
 /**
- *  Provides a {@link TemplateParser} with additional information about
- *  dynamic components.
- *
- *  @author Howard Lewis Ship
+ * Provides a {@link TemplateParser}with additional information about dynamic components.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public interface ITemplateParserDelegate
 {
     /**
-     *  Returns true if the component id is valid, false if the
-     *  component id is not recognized.
-     *
-     **/
+     * Returns true if the component id is valid, false if the component id is not recognized.
+     */
 
     public boolean getKnownComponent(String componentId);
 
     /**
-     *  Returns true if the specified component allows a body, false
-     *  otherwise.  The parser uses this information to determine
-     *  if it should ignore the body of a tag.
-     *
-     *  @throws org.apache.tapestry.ApplicationRuntimeException if no such component exists
+     * Returns true if the specified component allows a body, false otherwise. The parser uses this
+     * information to determine if it should ignore the body of a tag.
      * 
-     **/
+     * @throws org.apache.tapestry.ApplicationRuntimeException
+     *             if no such component exists
+     */
 
     public boolean getAllowBody(String componentId, Location location);
 
     /**
-     *  Used with implicit components to determine if the component
-     *  allows a body or not.
+     * Used with implicit components to determine if the component allows a body or not.
      * 
-     *  @param libraryId the specified library id, possibly null
-     *  @param type the component type
-     * 
-     *  @throws org.apache.tapestry.ApplicationRuntimeException if the specification cannot be found
-     * 
-     *  @since 3.0
-     * 
-     **/
+     * @param libraryId
+     *            the specified library id, possibly null
+     * @param type
+     *            the component type
+     * @throws org.apache.tapestry.ApplicationRuntimeException
+     *             if the specification cannot be found
+     * @since 3.0
+     */
 
     public boolean getAllowBody(String libraryId, String type, Location location);
+
+    /**
+     * Returns the name of the attribute used to indicate a component. The default is "jwcid", but
+     * this can be overriden in a number of ways.
+     */
+
+    public String getComponentAttributeName();
 }

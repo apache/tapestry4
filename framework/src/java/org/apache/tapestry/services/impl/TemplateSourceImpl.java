@@ -326,8 +326,12 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
     private synchronized ComponentTemplate constructTemplateInstance(IRequestCycle cycle,
             char[] templateData, Resource resource, IComponent component)
     {
-        ITemplateParserDelegate delegate = new DefaultParserDelegate(component, cycle,
-                _componentSpecificationResolver);
+        String componentAttributeName = _componentPropertySource.getComponentProperty(
+                component,
+                "org.apache.tapestry.jwcid-attribute-name");
+
+        ITemplateParserDelegate delegate = new DefaultParserDelegate(component,
+                componentAttributeName, cycle, _componentSpecificationResolver);
 
         TemplateToken[] tokens;
 

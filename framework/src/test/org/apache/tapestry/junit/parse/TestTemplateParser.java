@@ -46,6 +46,18 @@ public class TestTemplateParser extends TestCase
 {
     private static class ParserDelegate implements ITemplateParserDelegate
     {
+        private final String _componentAttributeName;
+
+        public ParserDelegate()
+        {
+            this("jwcid");
+        }
+
+        public ParserDelegate(String componentAttributeName)
+        {
+            _componentAttributeName = componentAttributeName;
+        }
+
         public boolean getKnownComponent(String componentId)
         {
             return true;
@@ -61,6 +73,10 @@ public class TestTemplateParser extends TestCase
             return true;
         }
 
+        public String getComponentAttributeName()
+        {
+            return _componentAttributeName;
+        }
     }
 
     protected TemplateToken[] run(char[] templateData, ITemplateParserDelegate delegate,
@@ -346,6 +362,11 @@ public class TestTemplateParser extends TestCase
             {
                 return true;
             }
+
+            public String getComponentAttributeName()
+            {
+                return "jwcid";
+            }
         };
 
         runFailure(
@@ -388,6 +409,11 @@ public class TestTemplateParser extends TestCase
             public boolean getAllowBody(String libraryId, String type, Location location)
             {
                 return true;
+            }
+
+            public String getComponentAttributeName()
+            {
+                return "jwcid";
             }
         };
 
@@ -588,4 +614,39 @@ public class TestTemplateParser extends TestCase
 
     }
 
+    /**
+     * Test ability to use a different attribute name than the default ("jwcid").
+     * 
+     * @since 3.1
+     */
+
+    public void testOverrideDefaultAttributeName() throws Exception
+    {
+        TemplateToken[] tokens = run("OverrideDefaultAttributeName.html", new ParserDelegate("id"));
+
+        assertTokenCount(tokens, 8);
+        assertOpenToken(tokens[1], "outer", "span", 3);
+        assertOpenToken(tokens[3], "inner", "span", 4);
+        assertCloseToken(tokens[4], 4);
+        assertCloseToken(tokens[6], 5);
+    }
+
+    /**
+     * Like {@link #testOverrideDefaultAttributeName()}, but
+     * uses a more complicated attribute name (with a XML-style
+     * namespace prefix).
+     * 
+     */
+    
+    public void testNamespaceAttributeName() throws Exception
+    {
+        TemplateToken[] tokens = run("NamespaceAttributeName.html", 
+                new ParserDelegate("t:id"));
+
+        assertTokenCount(tokens, 8);
+        assertOpenToken(tokens[1], "outer", "span", 3);
+        assertOpenToken(tokens[3], "inner", "span", 4);
+        assertCloseToken(tokens[4], 4);
+        assertCloseToken(tokens[6], 5);
+    }
 }
