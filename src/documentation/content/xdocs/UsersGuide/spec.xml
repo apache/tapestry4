@@ -139,6 +139,7 @@ it is expected that there will be some runtime warnings).
   <li>The 3.1 DTD is more liberal about the order in which elements may be specified than the 3.0 DTD.</li>
   <li>The &spec.inject-state; element has been added.</li>
   <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
+  <li>Removed the type attribute from the &spec.configure; element.</li>
 </ul>
 
 <p>
@@ -763,13 +764,7 @@ to the property.
 	<td/>
 	<td>The name of the extension property to configure.</td>
 </tr>
-<tr>
-	<td>type</td>
-	<td>boolean|int|long|double|String</td>
-	<td>no</td>
-	<td>String</td>
-	<td>The conversion to apply to the value.</td>
-</tr>
+
 <tr>
 	<td>value</td>
 	<td/>
