@@ -20,7 +20,6 @@ import java.util.Collections;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
@@ -42,9 +41,6 @@ public class TestAbstractPropertyWorker extends HiveMindTestCase
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
-        BodyBuilder finishLoadBody = new BodyBuilder();
-        BodyBuilder pageDetachedBody = new BodyBuilder();
-
         op.findUnclaimedAbstractProperties();
         opc.setReturnValue(Collections.singletonList("fred"));
 
@@ -65,20 +61,21 @@ public class TestAbstractPropertyWorker extends HiveMindTestCase
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
         { String.class }, null), "_$fred = $1;");
 
-        op.getBodyBuilderForMethod(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE);
-        opc.setReturnValue(finishLoadBody);
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE,
+                "_$fred$defaultValue = _$fred;");
 
-        op.getBodyBuilderForMethod(PageDetachListener.class, EnhanceUtils.PAGE_DETACHED_SIGNATURE);
-        opc.setReturnValue(pageDetachedBody);
+        op.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                "_$fred = _$fred$defaultValue;");
 
         op.claimProperty("fred");
 
         replayControls();
 
         new AbstractPropertyWorker().performEnhancement(op);
-
-        assertEquals("_$fred$defaultValue = _$fred;\n", finishLoadBody.toString());
-        assertEquals("_$fred = _$fred$defaultValue;\n", pageDetachedBody.toString());
 
         verifyControls();
     }

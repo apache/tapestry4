@@ -12,26 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.binding;
+package org.apache.tapestry.spec;
 
-import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.hivemind.impl.BaseLocatable;
 
 /**
  * @author Howard M. Lewis Ship
+ * @since 3.1
  */
-public abstract class AbstractBindingFactory implements BindingFactory
+public class InjectStateSpecificationImpl extends BaseLocatable implements InjectStateSpecification
 {
+    private String _property;
 
-    private ValueConverter _valueConverter;
+    private String _objectName;
 
-    public ValueConverter getValueConverter()
+    public String getProperty()
     {
-        return _valueConverter;
+        return _property;
     }
 
-    public void setValueConverter(ValueConverter valueConverter)
+    public void setProperty(String property)
     {
-        _valueConverter = valueConverter;
+        _property = property;
+    }
+
+    public String getObjectName()
+    {
+        return _objectName;
+    }
+
+    public void setObjectName(String objectName)
+    {
+        _objectName = objectName;
     }
 
 }

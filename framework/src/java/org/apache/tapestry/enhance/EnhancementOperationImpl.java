@@ -433,20 +433,20 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return "$" + baseName.substring(dotx + 1) + "_" + _uid++;
     }
 
-    public BodyBuilder getBodyBuilderForMethod(Class interfaceClass, MethodSignature methodSignature)
+    public void extendMethodImplementation  (Class interfaceClass, MethodSignature methodSignature, String code)
     {
         addInterfaceIfNeeded(interfaceClass);
 
-        BodyBuilder result = (BodyBuilder) _incompleteMethods.get(methodSignature);
+        BodyBuilder builder = (BodyBuilder) _incompleteMethods.get(methodSignature);
 
-        if (result == null)
+        if (builder == null)
         {
-            result = createIncompleteMethod(methodSignature);
+            builder = createIncompleteMethod(methodSignature);
 
-            _incompleteMethods.put(methodSignature, result);
+            _incompleteMethods.put(methodSignature, builder);
         }
 
-        return result;
+        builder.addln(code);
     }
 
     private void addInterfaceIfNeeded(Class interfaceClass)

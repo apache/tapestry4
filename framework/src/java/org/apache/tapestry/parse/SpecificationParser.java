@@ -52,6 +52,7 @@ import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+import org.apache.tapestry.spec.InjectStateSpecification;
 import org.apache.tapestry.spec.SpecFactory;
 import org.apache.tapestry.util.IPropertyHolder;
 import org.apache.tapestry.util.RegexpMatcher;
@@ -688,6 +689,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (_elementName.equals("inject"))
         {
             enterInject();
+            return;
+        }
+        
+        if (_elementName.equals("inject-state"))
+        {
+            enterInjectState();
             return;
         }
 
@@ -1374,6 +1381,22 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         push(_elementName, spec, STATE_NO_CONTENT);
     }
+    
+    private void enterInjectState()
+    {
+        String property = getValidatedAttribute("property", PROPERTY_NAME_PATTERN, "invalid-property-name");
+        String objectName = getAttribute("object");
+
+        InjectStateSpecification spec = _factory.createInjectStateSpecification();
+
+        spec.setProperty(property);
+        spec.setObjectName(objectName);
+        IComponentSpecification cs = (IComponentSpecification) peekObject();
+
+        cs.addInjectStateSpecification(spec);
+
+        push(_elementName, spec, STATE_NO_CONTENT);
+    }    
 
     private void enterReservedParameter()
     {

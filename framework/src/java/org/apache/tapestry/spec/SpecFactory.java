@@ -180,4 +180,10 @@ public class SpecFactory
     {
         return new InjectSpecificationImpl();
     }
+
+    /** @since 3.1 */
+    public InjectStateSpecification createInjectStateSpecification()
+    {
+        return new InjectStateSpecificationImpl();
+    }
 }

@@ -33,6 +33,7 @@ import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+import org.apache.tapestry.spec.InjectStateSpecification;
 import org.apache.tapestry.spec.ListenerBindingSpecification;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
@@ -1033,5 +1034,21 @@ public class TestSpecificationParser extends TapestryTestCase
         IAssetSpecification as = cs.getAsset("myasset");
 
         assertEquals("path/to/asset", as.getPath());
+    }
+    
+    /** @since 3.1 */
+    
+    public void testInjectState() throws Exception
+    {
+        IComponentSpecification cs = parsePage("InjectState.page");
+        
+        List l = cs.getInjectStateSpecifications();
+        
+        assertEquals(1,l.size());
+        
+        InjectStateSpecification s = (InjectStateSpecification)l.get(0);
+        
+        assertEquals("fred", s.getProperty());
+        assertEquals("barney", s.getObjectName());
     }
 }

@@ -38,6 +38,7 @@ The following changes have occured:
 - Consoliated <context-asset>, <private-asset> and <external-asset> into <asset>
 - Consolidated <set-property> and <set-message-property> into <set>
 - More flexibility on the order of elements
+- Added <inject-state>
 -->
 <!-- =======================================================
 Entity: attribute-flag
@@ -218,7 +219,7 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT component-specification (description?, (parameter | reserved-parameter | meta | bean | component | asset | property | inject)*)>
+<!ELEMENT component-specification (description?, (parameter | reserved-parameter | meta | bean | component | asset | property | inject | inject-state)*)>
 <!ATTLIST component-specification
 	class CDATA #IMPLIED
 	allow-body %attribute-flag; "yes"
@@ -270,7 +271,24 @@ Attributes:
   property CDATA #REQUIRED
   object CDATA #REQUIRED
 >
+<!-- =======================================================
+Element: inject-state
+Contained by: component-specification, page-specification
 
+Defines a new property mapped to an application state object.
+Reading the property will return the current value of the state
+object, and updating the property will change the value of the state
+object.
+
+Attributes:
+  property The name of the property.
+  object: The name of the application state object.
+-->
+<!ELEMENT inject-state EMPTY>
+<!ATTLIST inject-state
+  property CDATA #REQUIRED
+  object CDATA #REQUIRED
+>
 <!-- =======================================================
 Element: library
 Appears in: application-specification, library-specification
@@ -369,7 +387,7 @@ a body, and never allow parameters (formal or otherwise).
 Attributes:
   class: The Java class to instantiate for the component.
 -->
-<!ELEMENT page-specification (description?,  (meta| bean | component | asset | property | inject)*)>
+<!ELEMENT page-specification (description?,  (meta| bean | component | asset | property | inject | inject-state)*)>
 <!ATTLIST page-specification
 	class CDATA #IMPLIED
 >

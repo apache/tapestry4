@@ -352,7 +352,7 @@ of flexibility on how ASOs get created. The Visit and Global still exist in 3.1,
 </note>
 
 <section id="state.aso.defining">
-  <title>Defining new ASOs</title>
+  <title>Defining new Application State Objects</title>
   
 <p>
 To create a new ASO, you must update your &hivemind-descriptor; and add a contribution to the
@@ -380,6 +380,37 @@ the &StateObjectFactory; interface.
   
 </section> <!-- state.aso.defining -->
 
+<section id="state.aso.access">
+  <title>Accessing Application State Objects</title>
+  
+<p>
+Tapestry provides an &spec.inject-state; element to support access to the application state objects. This
+element can be used in any page or component specification to create a new property.  Reading the property
+will obtain the corresponding state object (which will be created if necessary).  The property may be updated,
+which will store a new application state object, overwriting the automatically created one.  
+</p>  
+
+<p>
+For example:
+</p>
+
+<source><![CDATA[
+<inject-state name="registration" object="registration-data"/>
+]]></source>
+
+<p>
+This will create a <code>registration</code> property, which can be wired to components.  Your class may define
+accessors for this property, in which case you should be sure that the application state object is assignable.
+</p>
+  
+<p>
+The &IPage; interface defines two read-only properties: <code>visit</code> and <code>global</code>. These are both
+type Object. This is a holdover from Tapestry 3.0, which only supported these two application
+state objects.
+</p>
+  
+</section>  <!-- state.aso.access -->
+
   
 </section>  <!-- state.aso -->
 
@@ -394,7 +425,7 @@ In fact, the framework controls <em>when</em> the session is first created.
 
 <p>
 This is important and powerful, because an application that runs, even just initially, without
-a session consumes far less resources that a stateful application.  This is even more important
+a session consumes far less resources than a stateful application.  This is even more important
 in a clustered environment with multiple servers; any data stored into the HttpSession will
 have to be replicated to other servers in the cluster, which can be expensive in terms of resources (CPU time,
 network bandwidth, and so forth).  Using
@@ -403,7 +434,7 @@ in a web application.
 </p>
 
 <p>
-Tapestry defers creation of the HttpSession until one of two things happens:  When a session-scoped ASO is
+Tapestry defers creation of the HttpSession until one of two things happens:  When a session-scoped &aso; is
 first created, or when the first persistent page property is recorded.  At this point,
 Tapestry will create the HttpSession to hold the object or property.
 </p>
@@ -418,7 +449,7 @@ speed the initial display of the application, since no processing time will be u
 
 <p>
 The <code>state:</code> &binding-reference; combined with the &Conditional; component makes it easy for you to skip
-portions of a page if a particular ASO does not already exist; this allows you to avoid accidentally force its
+portions of a page if a particular ASO does not already exist; this allows you to avoid accidentally forcing its
 creation on first reference.
 </p>
 

@@ -267,4 +267,24 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      */
 
     public List getInjectSpecifications();
+    
+    /**
+     * Adds a {@link org.apache.tapestry.spec.InjectStateSpecification}s.
+     * 
+     * @since 3.1
+     */
+    
+    public void addInjectStateSpecification(InjectStateSpecification spec);
+    
+    /**
+     * Returns the list of {@link org.apache.tapestry.spec.InjectStateSpecification}s.  Returns
+     * an empty list if no specifications have been added.
+     * 
+     * @since 3.1
+     * 
+     */
+    
+    public List getInjectStateSpecifications();
+    
+    
 }
