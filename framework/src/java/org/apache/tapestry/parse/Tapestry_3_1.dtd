@@ -31,6 +31,7 @@ The following changes have occured:
   There is now just <binding>, whose value attribute contains a prefix to interpret how
   the remainder of the value is interpreted (no prefix meaning a literal, or static, value).
 - <property> renamed to <meta> and <property-specification> renamed to <property>
+- Removed the type attribute from <property>
 - Added <inject>
 
 -->
@@ -346,6 +347,28 @@ Attributes:
 	language CDATA #IMPLIED
 >
 <!-- =======================================================
+Element: meta
+Contained by: (many other elements)
+
+Defines a key/value pair associated with the application or component specification.  Properties
+are used to capture information that doesn't fit into the DTD.  The value for the property is
+either the value attribute, or the PCDATA wrapped by the property tag 
+(which is trimmed of leading and trailing whitespace).
+
+This should not be confused with several other tags which are used to set JavaBeans properties
+of various objects.  The <property> tag exists to allow meta-data to be stored in the specification.
+
+Attributes:
+  key: The name of the property to set.
+  value: If specified, is the value of the property, otherwise, the PCDATA is used.
+  
+-->
+<!ELEMENT meta (#PCDATA)>
+<!ATTLIST meta
+	key CDATA #REQUIRED
+	value CDATA #IMPLIED
+>
+<!-- =======================================================
 Element: page-specification
 Root element
 
@@ -403,28 +426,6 @@ Attributes:
 	resource-path CDATA #REQUIRED
 >
 <!-- =======================================================
-Element: meta
-Contained by: (many other elements)
-
-Defines a key/value pair associated with the application or component specification.  Properties
-are used to capture information that doesn't fit into the DTD.  The value for the property is
-either the value attribute, or the PCDATA wrapped by the property tag 
-(which is trimmed of leading and trailing whitespace).
-
-This should not be confused with several other tags which are used to set JavaBeans properties
-of various objects.  The <property> tag exists to allow meta-data to be stored in the specification.
-
-Attributes:
-  key: The name of the property to set.
-  value: If specified, is the value of the property, otherwise, the PCDATA is used.
-  
--->
-<!ELEMENT meta (#PCDATA)>
-<!ATTLIST meta
-	key CDATA #REQUIRED
-	value CDATA #IMPLIED
->
-<!-- =======================================================
 Element: property
 Appears in: page-specification, component-specification
 
@@ -432,9 +433,6 @@ Identifies a transient or persistent property.
 
 Attributes:
   name: The name of the property.
-  type: The type of the value, either the name of a scalar type,
-    or the fully qualified name of a class.  If omitted,
-    java.lang.Object is used.
   persistent: If "yes", the value will be made persistant.  Default
     is "no".
   initial-value:  If provided, this is an OGNL expression used
@@ -445,7 +443,6 @@ Attributes:
 <!ELEMENT property (#PCDATA)>
 <!ATTLIST property
 	name CDATA #REQUIRED
-	type CDATA #IMPLIED
 	persistent %attribute-flag; "no"
 	initial-value CDATA #IMPLIED
 >

@@ -437,7 +437,7 @@ in the page's specification:
   <property
     name="itemsPerPage"
     persistent="yes"
-    type="int" initial-value="10"/>
+    initial-value="10"/>
 
 </page-specification>
 ]]>
@@ -450,28 +450,19 @@ is also valid to just implement one of the two accessors.  The enhanced subclass
 always include both a getter and a setter.
 </p>
 
-<warning>
+<note>
 In Tapestry 3.0, many users were frustrated that they had to specify the type of property
 in both the Java code and in the page specification. This is a violation of the
 <link href="http://c2.com/cgi/wiki?DontRepeatYourself">Dont Repeat Yourself</link> principal -- requiring
-coordination is just an inviation for the two sides to get out of synchronization.  In Tapestry 3.1, it
-is likely that <em>any</em> abstract property in the Java code will become a transient property, even when
-there's no corresponding &spec.property; element. The &spec.property; element will
-be used to mark a property as persistent (the type will still not have to be defined), to provide an initial value,
-or specify a property that isn't referenced from Java code (and even here, type will be optional and default to Object).
-</warning>
+coordination is just an inviation for the two sides to get out of synchronization. Starting with Tapestry 3.1,
+there is no type attribute on the &spec.property; element; instead Tapestry matches the type to the
+property type of any existing accessor methods, and simply uses Object when there are no accessor methods.  In
+this example, the persistent itemsPerPage property will be type int, because of the abstract accessor methods.
+</note>
 
 <p>
-This exact same technique can be used with components as well as pages.
-</p>
-
-<p>
-A last note about initialization.  After Tapestry invokes the <code>finishLoad()</code>
-method, it processes the initial value provided in the specification.  If 
-the initial-value attribute is ommitted or blank, no change takes place.
-Tapestry then takes a snapshot of the property value, which it retains 
-and uses at the end of each request cycle
-to reset the property back to its "pristine" state.
+This exact same technique can be used with components as well as pages, the component specification also supports
+the &spec.property; element.
 </p>
 
 <p>
@@ -586,7 +577,7 @@ public class MyPage extends &BasePage;
   {
     _itemsPerPage = itemsPerPage;
     
-    Tapestry.fireObservedChange(this, "itemsPerPage", itemsPerPage);
+    Tapestry.fireObservedChange(this, "itemsPerPage", new Integer(itemsPerPage));
   }
   
   protected void initialize()
@@ -731,6 +722,12 @@ just happens on its own.  Ideally, at least the first, or <code>Home</code> page
 organized in such a way that the Visit object is not created, and no persistent state is stored).  This will help
 speed the initial display of the application, since no processing time will be used in creating the HttpSession.
 </p>	
+
+<note>
+There are plans for Tapestry 3.1 to allow some persistent state to be stored as HTTP cookies or in hidden form fields (and as query parameters
+inside URLs). In these cases, a web application would be "stateful" without necessarily using an HttpSession. What remains to be seen
+is whether this will be practical.
+</note>
 	
 </section> <!-- state.stateless -->
 

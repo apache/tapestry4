@@ -17,22 +17,24 @@ package org.apache.tapestry.spec;
 import org.apache.hivemind.impl.BaseLocatable;
 
 /**
- *  Defines a transient or persistant property of a component or page.  
- *  A {@link org.apache.tapestry.engine.IComponentClassEnhancer} uses this information
- *  to create a subclass with the necessary instance variables and methods.  
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
+ * Defines a transient or persistant property of a component or page. A
+ * {@link org.apache.tapestry.engine.IComponentClassEnhancer}uses this information to create a
+ * subclass with the necessary instance variables and methods.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class PropertySpecification extends BaseLocatable implements IPropertySpecification
 {
-	private String _name;
-	private String _type = "java.lang.Object";
-	private boolean _persistent;
-	private String _initialValue;
-	
+    private String _name;
+
+    private String _type;
+
+    private boolean _persistent;
+
+    private String _initialValue;
+
     public String getInitialValue()
     {
         return _initialValue;
@@ -48,6 +50,12 @@ public class PropertySpecification extends BaseLocatable implements IPropertySpe
         return _persistent;
     }
 
+    /**
+     * The type of property to create, or null if no type was specified. The value is the name of a
+     * primitive type, a fully qualified class name, or an array name for either. Type is only
+     * specified for 3.0 DTDs, in 3.1 the only behavior is for the new property to match the type
+     * defined by an abstract accessor, or to be java.lang.Object.
+     */
     public String getType()
     {
         return _type;
@@ -58,13 +66,11 @@ public class PropertySpecification extends BaseLocatable implements IPropertySpe
         _initialValue = initialValue;
     }
 
-	/**
-	 *  Sets the name of the property.  This should not be changed
-	 *  once this IPropertySpecification is added to
-	 *  a {@link org.apache.tapestry.spec.ComponentSpecification}.
-	 * 
-	 **/
-	
+    /**
+     * Sets the name of the property. This should not be changed once this IPropertySpecification is
+     * added to a {@link org.apache.tapestry.spec.ComponentSpecification}.
+     */
+
     public void setName(String name)
     {
         _name = name;
