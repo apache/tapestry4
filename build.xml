@@ -134,6 +134,13 @@
 			<include name="web/**"/>
 			<include name="config/**"/>
 			<include name="lib/**"/>
+			
+			<!-- We just ship the EAR built from
+				 these two. -->
+				 
+			<exclude name="lib/VlibBeans.jar"/>
+			<exclude name="lib/Vlib.war"/>
+			
 			<!-- Exclude class files left around by IDEs. -->
 			<exclude name="**/*.class"/>
 			 
@@ -278,8 +285,6 @@
 		    <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
 		    <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>   
 		    <pathelement location="${jboss.server.all.lib.dir}/mail.jar"/> 
-			<pathelement location="${lib.ext.dir}/jndi.jar"/>
-			<pathelement location="${lib.ext.dir}/javax.rmi.jar"/>
 		</classpath>		
 	</javadoc>
 </target>
@@ -380,8 +385,12 @@
 		<fileset dir="${jboss.server.default.dir}/deploy">
 			<include name="*.jar"/>
 			<include name="jmx-ejb-connector-server.sar"/>
-			<include name="jmx-html-adaptor.sar"/>	<!-- This will be going soon! -->
+			<include name="jmx-html-adaptor.sar"/>
 			<include name="jmx-rmi-adaptor.sar"/>
+			<include name="jboss-local-jdbc.rar"/>
+			<include name="jboss-xa.rar"/>
+			<include name="jca-service.xml"/>
+			<include name="properties-service.xml"/>
 		</fileset>
 	</copy>
 

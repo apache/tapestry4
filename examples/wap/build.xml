@@ -27,7 +27,7 @@
   </target>
 
   <target name="compile" depends="init" description="Compile all classes in the framework.">
-    <javac srcdir="${src.dir}" destdir="${classes.dir}">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" target="1.1">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
