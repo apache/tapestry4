@@ -3,9 +3,25 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+<script language="JavaScript" type="text/javascript">
+<!--
+function setFocus() {
+    if (document.forms[0]) {
+        for (i = 0; i < document.forms[0].elements.length; i++) {
+            if (document.forms[0].elements[i].type != "hidden" &&
+                document.forms[0].elements[i].disabled != true) {
+
+                document.forms[0].elements[i].focus();
+                return;
+            }
+        }
+    }	
+}
+//-->
+</script>
 </head>
 
-<body>
+<body onload="javascript:setFocus();">
 <table border="0" cellpadding="4" cellspacing="4" width="100%">
 <tr>
  <td>
@@ -114,12 +130,17 @@
   <b>Examples</b>
 	<p>
   See the <a href="PropertySelection.html#Example2">PropertySelection</a> 
-  example use of SelectSubmit script to submit a form when a user 
-  selects a drop down list item.
+  example use of SelectSubmit script to submit a <a href="Form.html">form</a> 
+  when a user selects a drop down list item.
 	<p>  
   In this example a Script is used set the focus to the first text field of the 
-  login form. Note how <b>&lt;![CDATA[</b> .. <b>]]&gt;</b> is used to wrap
-  the Javascript code in the Script file to prevent XML parsing errors.   
+  login form. In the script file <b>&lt;![CDATA[</b> .. <b>]]&gt;</b> tags are 
+  used to wrap the Javascript code to prevent '<tt>&lt;</tt>' and 
+  '<tt>&amp;&amp;</tt>' character XML parsing errors. 
+	<p>
+  Note Tapestry will not perform property substitutions in CDATA blocks when 
+  using the <tt>&lt;property-path&gt;</tt> style syntax, instead use the 
+  <tt>${property-path}</tt> syntax.
 	<p>
 
 <table class="examples" cellpadding="4">
@@ -183,13 +204,13 @@ function setFocus() {
   <table width="100%">
    <tr>
     <td align="left">
-     <a href="???.html"><img src="common-images/prev.png" alt="Previous"/></a>
+     <a href="Rollover.html"><img src="common-images/prev.png" alt="Previous"/></a>
     </td>  
     <td align="center">
      <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
     </td>  
     <td align="right">
-     <a href="???.html"><img src="common-images/next.png" alt="Next"/></a>
+     <a href="Select.html"><img src="common-images/next.png" alt="Next"/></a>
     </td>  
    <tr>
   </table>

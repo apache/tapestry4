@@ -24,6 +24,7 @@
   <mkdir dir="${images.dest.dir}"/>
   <copy todir="${images.dest.dir}">
    	<fileset dir="${images.src.dir}">
+   		<include name="*.gif"/>
    		<include name="*.jpg"/>
    		<include name="*.png"/>
    	</fileset>
