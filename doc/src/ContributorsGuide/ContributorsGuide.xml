@@ -148,7 +148,7 @@ development using the excellent open-source IDE, &Eclipse;.
 
 <para>
 To perform a full build from the command line, you must have
-JDK 1.2.2 or better installed, as well
+JDK 1.3 or better installed, as well
 as &JBoss; 3.0.0.
 </para>
 
