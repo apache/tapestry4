@@ -116,16 +116,16 @@ We'll start with the HTML template for the home page:
  
 
 <para>
-Again, Tapestry takes care of most of the details.  The <classname>form</> component will turn into an HTML 
+Again, Tapestry takes care of most of the details.  The <varname>form</> component will turn into an HTML 
 <sgmltag class=starttag>form</> element, and the correct URL is automatically generated.  
-The <classname>inputNewValue</> component 
+The <varname>inputNewValue</> component 
 will become an <sgmltag class=starttag>input type=text</>, 
 with the necessary smarts to collect the value 
 submitted by the user and provide it to the page.
 </>
 
 <para>
-The <classname>e</> component is type <classname>Foreach</>, 
+The <varname>e</> component is type <classname>Foreach</>, 
 used for running through a list of elements (supplied as a <classname>List</>, 
 <classname>Iterator</> or an array of Java objects).   
 We've already see the <classname>Insert</> component.
@@ -230,19 +230,19 @@ Next we have the specification:
 
 <para>  
 We only want to display the error message if there is one, so the 
-<classname>ifText</> is conditional on there 
+<varname>ifText</> is conditional on there 
 being a non-null error message (the <classname>Conditional</> component treats 
 <literal>null</> as <literal>false</>).
 </>
 
 <para>
-For the <classname>form</> component, all we have to do is supply a 
+For the <varname>form</> component, all we have to do is supply a 
 <varname>listener</>, an object that is informed when 
 the form is submitted.
 </>
 
 <para>
-For the <classname>inputNewValue</> component, we provide a <varname>text</> parameter 
+For the <varname>inputNewValue</> component, we provide a <varname>text</> parameter 
 that provides the default value for the 
 <sgmltag class=starttag>input</> element.  The same property is updated with the value
 submitted with the form.
@@ -255,10 +255,10 @@ we want to store the value as a double.
 </>
 
 <para>
-For the <classname>e</> component, we supply a binding for the <varname>source</> parameter.  
+For the <varname>e</> component, we supply a binding for the <varname>source</> parameter.  
 For each item in the source 
 list, it will update its own <varname>value</> property, which is later accessed by the 
-<classname>insertCurrentValue</> component.  The 
+<varname>insertCurrentValue</> component.  The 
 property path <varname>components.e.value</> accomplishes this:  
 the page has a <varname>components</> property, which 
 is a <classname>Map</> of the components on the page.  
@@ -514,7 +514,7 @@ The form then gets its listener and invokes the
 <para>
 In the specification, the listener parameter was bound to the <varname>formListener</> 
 property of the page.  
-The code in the <classname>getFormListener()</> method creates an anonymous inner class and 
+The code in the <function>getFormListener()</> method creates an anonymous inner class and 
 returns it.
 </>
 

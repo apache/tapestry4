@@ -5,6 +5,8 @@
 <!ENTITY chap-hello SYSTEM "chap-hello.sgml">
 <!ENTITY chap-dynamic SYSTEM "chap-dynamic.sgml">
 <!ENTITY chap-interactive SYSTEM "chap-interactive.sgml">
+<!ENTITY chap-errors SYSTEM "chap-errors.sgml">
+<!ENTITY chap-hangman SYSTEM "chap-hangman.sgml">
 
 <!ENTITY jwc-tag "<sgmltag class=starttag>jwc</>">
 
@@ -50,5 +52,7 @@
 &chap-hello;
 &chap-dynamic;
 &chap-interactive;
+&chap-errors;
+&chap-hangman;
 
 </book>

@@ -1,0 +1,123 @@
+<!-- $Id$ -->
+
+<chapter id="errors">
+	<title>Tapestry Run Time Errors</>
+    
+<para>
+0ne of the benefits to developing using Tapestry is its robust exception handling support.
+We'll demonstrate these by creating invalid URLs.
+</>
+
+<section id="errors.stale-session">
+	<title>Stale Sessions</>
+    
+<para>
+As we just demonstrated, Tapestry is quite careful about conversational state.  What happens if all 
+the conversation state is lost?
+</>
+
+<para>
+Start up adder application then enter a few numbers.  Go back to the window executing Jetty and 
+stop it, then restart it.
+</>
+
+<para>
+Now, try to add an additional number to the list.
+</>
+
+<figure>
+	<title>Session Timeout Page</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/timeout.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+<para>
+Because Tapestry can't find any information about your session, it assumes the session timed out 
+and was discarded, and so presents the default error page for this situation.
+</>
+
+<para>
+Remember that most Tapestry URLs are very conversational, they only make sense as the most 
+recent request in a series of requests exchanged between the client and the server.
+</>
+
+<para>
+This means that many pages in a Tapestry application can't be bookmarked; the URL that would 
+be stored in the client's web browser is not meaningful.  Creating bookmarkable pages is a subject 
+of a later tutorial.
+</>
+
+	</section>
+    
+    <section id="errors.exception-handling">
+		<title>Exception Handling</>
+        
+<para>
+Tapestry handles exceptions that are thrown during the processing of any request.
+Exceptions are caught when they occur and result in the generation of a page with 
+all the details.  Of course, in your own application, such exceptions will never occur, or will be 
+caught and handled by your own code.
+</>
+
+<para>
+Still, it's nice that Tapestry can assist when debugging during development, when uncaught 
+exceptions may in fact be thrown.
+</>
+
+<para>
+To demonstrate what Tapestry does for exceptions, we need to do a little bit of sneaky work.
+</>
+
+<para>
+First, start up the adder application and enter a few numbers:
+</>
+
+<figure>
+	<title>Adder application before error</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/adder-error-before.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+<para> 
+Now, edit the URL in the Address field, and change the word "action" to "acion" (i.e, remove the 
+letter 't') and hit return.
+</>
+
+<figure>
+	<title>Error in Adder application</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/adder-error-after.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+<para> 
+Tapestry has discovered that the URL was invalid ... in this case that the word "action" was 
+changed to "acion".  Since Tapestry normally produces all the URLs it must later interpret, it 
+doesn't make an effort to pretty this up (as it does with stale links and sessions), instead it throws 
+an exception which is caught and displayed.
+</>
+
+<para>
+As you may notice, the exception report is extremely complex.  Tapestry displays all the 
+information it can about the exception that was thrown ... it can even break apart nested 
+exceptions and dig down to the deepest one.  It shows the stack trace where the deepest 
+exception was thrown.  It also provides information about the <classname>HttpRequest</>,
+<classname>HttpSession</>, 
+<classname>ServletContext</> and Java VM.
+</>
+
+<para>
+Finally, it includes a link that will destroy the current HttpSession and restart the application from 
+scratch.
+</>
+
+	</section>
+</chapter>
