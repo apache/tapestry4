@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJBObject;
 import javax.ejb.Handle;
@@ -69,6 +70,9 @@ public class DefaultValuePersister implements IValuePersister
      *  An instance of {@link ListCopier} is registered for {@link java.util.List}.
      * 
      *  <p>
+     *  An instance of {@link MapCopier} is registered for {@link java.util.Map}.
+     * 
+     *  <p>
      *  An instance of {@link EJBCopier} for {@link EJBObject}, and {@link EJBWrapperCopier}
      *  for {@link EJBWrapper}.
      * 
@@ -94,8 +98,14 @@ public class DefaultValuePersister implements IValuePersister
         registerValueCopier(Enum.class, immutable);
 
         registerValueCopier(List.class, new ListCopier());
+        registerValueCopier(Map.class, new MapCopier());
+        
+        // EJBCopier copies an EJBObject as an EJBWrapper
         
         registerValueCopier(EJBObject.class, new EJBCopier());
+        
+        // EJBWrapperCopier restores an EJBWrapper to an EJBObject
+        
         registerValueCopier(EJBWrapper.class, new EJBWrapperCopier());
         
         registerValueCopier(Object[].class, new ArrayCopier());
