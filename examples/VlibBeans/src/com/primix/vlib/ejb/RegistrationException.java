@@ -1,5 +1,3 @@
-package com.primix.vlib.ejb;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -36,6 +34,8 @@ package com.primix.vlib.ejb;
  *  @version $Id$
  *  @author Howard Ship
  */
+
+package com.primix.vlib.ejb;
 
 public class RegistrationException extends Exception
 {

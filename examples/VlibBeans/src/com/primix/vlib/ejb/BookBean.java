@@ -1,8 +1,3 @@
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -44,6 +39,11 @@ import java.rmi.*;
  *
  */
  
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+
 public class BookBean extends AbstractEntityBean
 {
 	// All must be public for access by container

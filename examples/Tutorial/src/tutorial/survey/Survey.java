@@ -1,5 +1,3 @@
-package tutorial.survey;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -33,6 +31,8 @@ package tutorial.survey;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.survey;
 
 import java.util.*;
 import com.primix.tapestry.*;

@@ -1,5 +1,3 @@
-package tutorial.survey;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -34,9 +32,10 @@ package tutorial.survey;
  *
  */ 
 
+package tutorial.survey;
+
 import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.form.*;
+import com.primix.tapestry.form.*;
 import java.util.*;
 
 public class SurveyPage extends BasePage

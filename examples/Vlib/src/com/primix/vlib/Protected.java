@@ -1,11 +1,3 @@
- package com.primix.vlib;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.valid.*;
-import com.primix.tapestry.callback.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.pages.*;
-
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -42,6 +34,14 @@ import com.primix.vlib.pages.*;
  * @version $Id$
  */
 
+
+package com.primix.vlib;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.valid.*;
+import com.primix.tapestry.callback.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.pages.*;
 
 public class Protected
 extends BasePage

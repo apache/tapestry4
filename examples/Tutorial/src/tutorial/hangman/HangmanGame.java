@@ -1,7 +1,3 @@
-package tutorial.hangman;
-
-import java.io.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -38,6 +34,10 @@ import java.io.*;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.hangman;
+
+import java.io.*;
 
 public class HangmanGame
 implements Serializable

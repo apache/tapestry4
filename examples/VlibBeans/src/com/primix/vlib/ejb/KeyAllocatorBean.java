@@ -1,13 +1,3 @@
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-import javax.sql.*;
-import java.sql.*;
-import javax.naming.*;
-import com.primix.foundation.ejb.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -56,6 +46,16 @@ import com.primix.foundation.ejb.*;
  *  @author Howard Ship
  *
  */
+
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+import javax.sql.*;
+import java.sql.*;
+import javax.naming.*;
+import com.primix.tapestry.util.ejb.*;
 
 public class KeyAllocatorBean implements SessionBean
 {

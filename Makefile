@@ -28,11 +28,10 @@ default:
 include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 
-# The names of the different modules to invoke make in. Order is important, frameworks
-# should come first.
+# The names of the different modules to invoke make in, order is important.
 
 MODULES := \
-	src \
+	framework \
 	examples/Tutorial \
 	examples/VlibBeans \
 	examples/Vlib \
@@ -41,7 +40,7 @@ MODULES := \
 	doc/src/Tutorial
 
 JAVADOC_MODULES := \
-	src \
+	framework \
 	examples/VlibBeans \
 	examples/Vlib
 
@@ -96,7 +95,7 @@ MEDIUM_RELEASE := \
 	$(SMALL_RELEASE) \
 	$(RELEASE_DIR)/JBE \
 	$(RELEASE_DIR)/doc/JBE \
-	$(RELEASE_DIR)/src
+	$(RELEASE_DIR)/framework
 
 # The full release adds all the documentation and documentation source,
 # plus all the examples, and bundles JAXP, Crimson, Jetty and etc.
@@ -115,7 +114,7 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/doc/Tutorial \
 	$(RELEASE_DIR)/doc/api \
 	$(RELEASE_DIR)/doc/src \
-	$(RELEASE_DIR)/src \
+	$(RELEASE_DIR)/framework \
 	$(RELEASE_DIR)/JBE \
 	$(RELEASE_DIR)/examples
 	

@@ -1,10 +1,3 @@
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import javax.naming.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -41,6 +34,13 @@ import javax.naming.*;
  *  @author Howard Ship
  *
  */
+
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import javax.rmi.*;
+import javax.naming.*;
 
 public interface IKeyAllocator extends EJBObject
 {

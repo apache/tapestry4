@@ -1,18 +1,3 @@
-package com.primix.vlib;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.html.form.*;
-import javax.naming.*;
-import javax.ejb.*;
-import com.primix.vlib.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import java.util.*;
-import com.primix.vlib.pages.*;
-import javax.servlet.*;
-import java.io.*;
-import java.net.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -53,6 +38,21 @@ import java.net.*;
  *
  */
 
+package com.primix.vlib;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
+import javax.naming.*;
+import javax.ejb.*;
+import com.primix.vlib.ejb.*;
+import java.rmi.*;
+import javax.rmi.*;
+import java.util.*;
+import com.primix.vlib.pages.*;
+import javax.servlet.*;
+import java.io.*;
+import java.net.*;
+
 public class Visit
 implements Serializable
 {
@@ -65,14 +65,17 @@ implements Serializable
 	private Integer userPK;
 	private transient String fullUserName;
 	
-	private transient IPublisherHome publisherHome;
-	private transient IBookHome bookHome;
-	private transient IPersonHome personHome;
-	private transient IBookQueryHome bookQueryHome;
-	private transient IOperationsHome operationsHome;
+	// Home interfaces are static, such that they are only
+	// looked up once (JNDI lookup is very expensive).
+	
+	private static IPublisherHome publisherHome;
+	private static IBookHome bookHome;
+	private static IPersonHome personHome;
+	private static IBookQueryHome bookQueryHome;
+	private static IOperationsHome operationsHome;
 	private transient IOperations operations;
 	
-	private transient Context rootNamingContext;	
+	private static Context rootNamingContext;	
 	
 	private transient IPropertySelectionModel publisherModel;
 	private transient IPropertySelectionModel personModel;

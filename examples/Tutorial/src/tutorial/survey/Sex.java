@@ -1,7 +1,3 @@
-package tutorial.survey;
-
-import com.primix.foundation.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -40,6 +36,10 @@ import com.primix.foundation.*;
  *
  */
  
+package tutorial.survey;
+
+import com.primix.tapestry.util.*;
+
 public class Sex extends Enum
 {
 	public static final Sex MALE = new Sex("MALE");

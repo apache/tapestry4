@@ -1,10 +1,3 @@
-package tutorial.locale;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.form.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2001 by Howard Ship and Primix Solutions
@@ -39,6 +32,13 @@ import java.util.*;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.locale;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
+import java.util.*;
+
 
 public class LocaleModel
 implements IPropertySelectionModel

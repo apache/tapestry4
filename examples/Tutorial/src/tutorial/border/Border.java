@@ -1,5 +1,3 @@
-package tutorial.border;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -34,9 +32,10 @@ package tutorial.border;
  *
  */ 
 
+package tutorial.border;
+
 import java.util.*;
 import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
 
 public class Border extends BaseComponent
 {

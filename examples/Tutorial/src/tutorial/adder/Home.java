@@ -1,5 +1,3 @@
-package tutorial.adder;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -34,8 +32,9 @@ package tutorial.adder;
  *
  */ 
 
+package tutorial.adder;
+
 import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
 import java.util.*;
 
 public class Home extends BasePage

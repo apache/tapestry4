@@ -1,7 +1,3 @@
-package tutorial.locale;
-
-import com.primix.tapestry.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2001 by Howard Ship and Primix Solutions
@@ -35,6 +31,10 @@ import com.primix.tapestry.*;
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.locale;
+
+import com.primix.tapestry.*;
 
 public class LocaleServlet
 extends ApplicationServlet

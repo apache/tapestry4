@@ -1,14 +1,3 @@
-package com.primix.vlib.pages;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.ejb.*;
-import com.primix.vlib.*;
-import javax.ejb.*;
-import java.util.*;
-import java.rmi.*;
-import javax.rmi.*;
-
 /*
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -50,6 +39,17 @@ import javax.rmi.*;
  * @version $Id$
  */
 
+
+package com.primix.vlib.pages;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.ejb.*;
+import com.primix.vlib.*;
+import javax.ejb.*;
+import java.util.*;
+import java.rmi.*;
+import javax.rmi.*;
 
 public class MyBooks
 extends Protected

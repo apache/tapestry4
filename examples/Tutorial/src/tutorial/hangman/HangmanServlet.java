@@ -1,8 +1,3 @@
-package tutorial.hangman;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.engine.*;
-import javax.servlet.*;
 
 /*
  * Tapestry Web Application Framework
@@ -32,11 +27,16 @@ import javax.servlet.*;
  *
  */
 
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
+
+package tutorial.hangman;
+
+import com.primix.tapestry.*;
 
 public class HangmanServlet extends ApplicationServlet
 {
