@@ -58,7 +58,7 @@ package org.apache.tapestry.junit;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.tapestry.junit.enhance.TestClassFabricator;
+import org.apache.tapestry.junit.enhance.TestEnhancedClassFactory;
 import org.apache.tapestry.junit.enhance.TestMethodSignature;
 import org.apache.tapestry.junit.form.TestListEditMap;
 import org.apache.tapestry.junit.parse.TestLocation;
@@ -120,7 +120,7 @@ public class BasicTestSuite extends TestSuite
         suite.addTestSuite(TestBindings.class);
         suite.addTestSuite(TestPropertySource.class);
         suite.addTestSuite(TestComponent.class);
-        suite.addTestSuite(TestClassFabricator.class);
+        suite.addTestSuite(TestEnhancedClassFactory.class);
         suite.addTestSuite(TestMethodSignature.class);
         suite.addTestSuite(TestTapestryGetClassName.class);
         suite.addTestSuite(TestRegexpMatcher.class);
