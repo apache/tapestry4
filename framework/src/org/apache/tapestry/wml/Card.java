@@ -55,7 +55,11 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.tapestry.*;
+import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  A deck contains a collection of cards. There is a variety of card types, each specifying a different mode of

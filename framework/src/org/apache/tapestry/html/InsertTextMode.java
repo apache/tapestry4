@@ -56,7 +56,6 @@
 package org.apache.tapestry.html;
 
 import org.apache.commons.lang.enum.Enum;
-
 import org.apache.tapestry.IMarkupWriter;
 
 /**

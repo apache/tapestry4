@@ -55,10 +55,9 @@
 
 package org.apache.tapestry.enhance;
 
+import org.apache.bcel.classfile.JavaClass;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
-
-import org.apache.bcel.classfile.JavaClass;
 
 /**
  *  A class loader that can be used to create new classes 

@@ -56,7 +56,6 @@
 package org.apache.tapestry.engine;
 
 import org.apache.bsf.BSFManager;
-
 import org.apache.tapestry.util.pool.IPoolableAdaptor;
 
 /**

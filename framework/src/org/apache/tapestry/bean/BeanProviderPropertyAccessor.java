@@ -57,9 +57,10 @@ package org.apache.tapestry.bean;
 
 import java.util.Map;
 
-import org.apache.tapestry.IBeanProvider;
 import ognl.ObjectPropertyAccessor;
 import ognl.OgnlException;
+
+import org.apache.tapestry.IBeanProvider;
 
 /**
  *  Adapts a {@link org.apache.tapestry.IBeanProvider} to

@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.wml;
 
+import java.io.OutputStream;
+
 import org.apache.tapestry.AbstractMarkupWriter;
 import org.apache.tapestry.IMarkupWriter;
-
-import java.io.OutputStream;
 
 /**
  *  This class is used to create WML output.

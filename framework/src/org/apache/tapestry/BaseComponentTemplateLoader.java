@@ -309,14 +309,14 @@ public class BaseComponentTemplateLoader
         _activeComponent = component;
     }
 
-    private IComponent createImplicitComponent(String id, String componentType, Location location)
+    private IComponent createImplicitComponent(String id, String componentType, ILocation location)
     {
         IComponent result =
             _pageLoader.createImplicitComponent(
                 _requestCycle,
                 _loadComponent,
                 id,
-                componentType,
+                componentType, 
                 location);
 
         return result;
@@ -420,7 +420,7 @@ public class BaseComponentTemplateLoader
         IComponentSpecification spec,
         String name,
         String expression,
-        Location location)
+        ILocation location)
     {
 
         // If matches a formal parameter name, allow it to be set
@@ -495,7 +495,7 @@ public class BaseComponentTemplateLoader
         IComponentSpecification spec,
         String name,
         String localizationKey,
-        Location location)
+        ILocation location)
     {
         // If matches a formal parameter name, allow it to be set
         // unless there's already a binding.
@@ -565,7 +565,7 @@ public class BaseComponentTemplateLoader
         IComponentSpecification spec,
         String name,
         String staticValue,
-        Location location)
+        ILocation location)
     {
 
         if (component.getBinding(name) != null)

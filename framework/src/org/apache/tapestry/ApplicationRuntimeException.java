@@ -66,7 +66,7 @@ package org.apache.tapestry;
 public class ApplicationRuntimeException extends RuntimeException implements ILocatable
 {
     private Throwable _rootCause;
-    private transient Location _location;
+    private transient ILocation _location;
     private IComponent _component;
 
 	public ApplicationRuntimeException(IComponent component, Throwable rootCause)
@@ -102,7 +102,7 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
     public ApplicationRuntimeException(
         String message,
         IComponent component,
-        Location location,
+        ILocation location,
         Throwable rootCause)
     {
         super(message);
@@ -113,7 +113,7 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
         _location = Tapestry.findLocation(new Object[] { location, rootCause, component });
     }
 
-    public ApplicationRuntimeException(String message, Location location, Throwable rootCause)
+    public ApplicationRuntimeException(String message, ILocation location, Throwable rootCause)
     {
         this(message, null, location, rootCause);
     }
@@ -123,7 +123,7 @@ public class ApplicationRuntimeException extends RuntimeException implements ILo
         return _rootCause;
     }
 
-    public Location getLocation()
+    public ILocation getLocation()
     {
         return _location;
     }

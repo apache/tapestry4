@@ -57,7 +57,7 @@ package org.apache.tapestry;
 
 /**
  *  Interface for classes that may be linked to a specific
- *  {@link org.apache.tapestry.LocationTag location}.  This
+ *  {@link org.apache.tapestry.ILocation location}.  This
  *  is primarily used when reporting errors.
  *
  *  @author Howard Lewis Ship
@@ -69,10 +69,10 @@ package org.apache.tapestry;
 public interface ILocatable
 {
 	/**
-	 *  Returns the {@link org.apache.tapestry.Location location} from which
+	 *  Returns the {@link org.apache.tapestry.ILocation location} from which
 	 *  this object orginates, or null if not known.
 	 * 
 	 **/
 	
-	public Location getLocation();
+	public ILocation getLocation();
 }

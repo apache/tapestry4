@@ -58,14 +58,14 @@ package org.apache.tapestry;
 
 
 /**
- *  Implementation of the {@link org.apache.tapestry.ILocationTag} interface.
+ *  Implementation of the {@link org.apache.tapestry.ILocation} interface.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 3.0
  *
  **/
-public class Location
+public class Location implements ILocation
 {
     private IResourceLocation _resourceLocation;
     private int _lineNumber = -1;

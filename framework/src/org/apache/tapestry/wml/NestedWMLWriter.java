@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.tapestry.IMarkupWriter;
-
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
+
+import org.apache.tapestry.IMarkupWriter;
 
 /**
  *  Subclass of {@link org.apache.tapestry.wml.WMLWriter} that is nested.  A nested writer

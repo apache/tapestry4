@@ -55,11 +55,11 @@
 
 package org.apache.tapestry.wml;
 
+import javax.servlet.ServletException;
+
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.BaseEngine;
-
-import javax.servlet.ServletException;
 
 /**
  *  Subclass of {@link BaseEngine} used for WML applications to change the

@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.spec;
 
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.ILocationHolder;
-import org.apache.tapestry.Location;
 
 /**
  *  Base class for classes which implement
@@ -71,14 +71,14 @@ import org.apache.tapestry.Location;
 
 public class BaseLocatable implements ILocationHolder
 {
-	private Location _location;
+	private ILocation _location;
 	
-    public void setLocation(Location location)
+    public void setLocation(ILocation location)
     {
     	_location = location;
     }
 
-    public Location getLocation()
+    public ILocation getLocation()
     {
         return _location;
     }

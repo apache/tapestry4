@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.wml;
 
+import java.io.OutputStream;
+
 import org.apache.tapestry.AbstractPage;
 import org.apache.tapestry.IMarkupWriter;
-
-import java.io.OutputStream;
 
 /**
  *  Concrete class for WML decks. Most decks

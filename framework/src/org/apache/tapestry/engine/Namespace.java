@@ -64,9 +64,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -425,7 +425,7 @@ public class Namespace implements INamespace
 
     /** @since 3.0 **/
 
-    public Location getLocation()
+    public ILocation getLocation()
     {
         if (_specification == null)
             return null;

@@ -59,9 +59,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -84,7 +84,7 @@ public class PrivateAsset extends AbstractAsset
 
     private AssetExternalizer _externalizer;
 
-    public PrivateAsset(ClasspathResourceLocation resourceLocation, Location location)
+    public PrivateAsset(ClasspathResourceLocation resourceLocation, ILocation location)
     {
         super(resourceLocation, location);
     }

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.binding;
 
-import org.apache.tapestry.Location;
+import org.apache.tapestry.ILocation;
 
 /**
  * Stores a static (invariant) String as the value.
@@ -75,7 +75,7 @@ public class StaticBinding extends AbstractBinding
     private boolean _parsedDouble;
     private double _doubleValue;
 
-    public StaticBinding(String value, Location location)
+    public StaticBinding(String value, ILocation location)
     {
     	super(location);
     	

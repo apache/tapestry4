@@ -58,12 +58,12 @@ package org.apache.tapestry.util.prop;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.Tapestry;
-
 import ognl.ClassResolver;
 import ognl.Ognl;
 import ognl.OgnlException;
+
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  Utilities wrappers around <a href="http://www.ognl.org">OGNL</a>.

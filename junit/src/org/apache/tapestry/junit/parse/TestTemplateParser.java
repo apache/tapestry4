@@ -64,8 +64,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.LocalizationToken;
@@ -96,12 +96,12 @@ public class TestTemplateParser extends TestCase
             return true;
         }
 
-        public boolean getAllowBody(String componentId, Location location)
+        public boolean getAllowBody(String componentId, ILocation location)
         {
             return true;
         }
 
-        public boolean getAllowBody(String libraryId, String type, Location location)
+        public boolean getAllowBody(String libraryId, String type, ILocation location)
         {
             return true;
         }
@@ -417,12 +417,12 @@ public class TestTemplateParser extends TestCase
                 return !componentId.equals("row");
             }
 
-            public boolean getAllowBody(String componentId, Location location)
+            public boolean getAllowBody(String componentId, ILocation location)
             {
                 return true;
             }
 
-            public boolean getAllowBody(String libraryId, String type, Location location)
+            public boolean getAllowBody(String libraryId, String type, ILocation location)
             {
                 return true;
             }
@@ -460,12 +460,12 @@ public class TestTemplateParser extends TestCase
                 return true;
             }
 
-            public boolean getAllowBody(String id, Location location)
+            public boolean getAllowBody(String id, ILocation location)
             {
                 return id.equals("form");
             }
 
-            public boolean getAllowBody(String libraryId, String type, Location location)
+            public boolean getAllowBody(String libraryId, String type, ILocation location)
             {
                 return true;
             }

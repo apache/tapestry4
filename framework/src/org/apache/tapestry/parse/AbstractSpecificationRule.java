@@ -57,7 +57,7 @@ package org.apache.tapestry.parse;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.digester.Rule;
-import org.apache.tapestry.*;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.xml.sax.Attributes;
@@ -105,7 +105,7 @@ public abstract class AbstractSpecificationRule extends Rule
      * 
      **/
 
-    protected Location getLocation()
+    protected ILocation getLocation()
     {
         SpecificationDigester locatableDigester = (SpecificationDigester) digester;
 

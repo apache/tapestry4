@@ -55,12 +55,12 @@
 
 package org.apache.tapestry.parse;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  *  Represents static text in the template that may be passed through
@@ -85,7 +85,7 @@ public class TextToken extends TemplateToken implements IRender
     private int _length;
     private boolean _needsTrim = true;
 
-    public TextToken(char[] templateData, int startIndex, int endIndex, Location location)
+    public TextToken(char[] templateData, int startIndex, int endIndex, ILocation location)
     {
         super(TokenType.TEXT, location);
 

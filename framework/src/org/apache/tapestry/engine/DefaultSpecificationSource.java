@@ -74,7 +74,6 @@ import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
-
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;

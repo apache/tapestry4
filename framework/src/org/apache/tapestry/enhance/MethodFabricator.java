@@ -58,7 +58,6 @@ package org.apache.tapestry.enhance;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tapestry.Tapestry;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.BranchInstruction;
 import org.apache.bcel.generic.ClassGen;
@@ -70,6 +69,7 @@ import org.apache.bcel.generic.LocalVariableGen;
 import org.apache.bcel.generic.MethodGen;
 import org.apache.bcel.generic.ObjectType;
 import org.apache.bcel.generic.Type;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  Wrapper around {@link org.apache.bcel.generic.MethodGen} used to

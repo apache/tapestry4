@@ -60,11 +60,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.CharacterData;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
@@ -72,6 +67,10 @@ import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.AbstractDocumentParser;
 import org.apache.tapestry.util.xml.DocumentParseException;
+import org.w3c.dom.CharacterData;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  *  Parses a Tapestry Script, an XML file defined by the public identifier

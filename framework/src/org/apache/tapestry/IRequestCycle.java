@@ -55,8 +55,9 @@
 
 package org.apache.tapestry;
 
-import org.apache.tapestry.engine.*;
-import org.apache.tapestry.request.*;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.engine.IMonitor;
+import org.apache.tapestry.request.RequestContext;
 
 /**
  *  Controller object that manages a single request cycle.  A request cycle

@@ -57,8 +57,8 @@ package org.apache.tapestry.asset;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
 
 /**
  *  Base class for {@link org.apache.tapestry.IAsset} implementations.  Provides
@@ -73,15 +73,15 @@ import org.apache.tapestry.Location;
 public abstract class AbstractAsset implements IAsset
 {
 	private IResourceLocation _resourceLocation;
-    private Location _location;
+    private ILocation _location;
 
-    protected AbstractAsset(IResourceLocation resourceLocation, Location location)
+    protected AbstractAsset(IResourceLocation resourceLocation, ILocation location)
     {
     	_resourceLocation = resourceLocation;
         _location = location;
     }
 
-    public Location getLocation()
+    public ILocation getLocation()
     {
         return _location;
     }

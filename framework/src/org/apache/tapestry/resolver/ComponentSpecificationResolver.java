@@ -58,10 +58,10 @@ package org.apache.tapestry.resolver;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -137,7 +137,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         IRequestCycle cycle,
         INamespace containerNamespace,
         String type,
-        Location location)
+        ILocation location)
     {
         int colonx = type.indexOf(':');
 
@@ -172,7 +172,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         INamespace containerNamespace,
         String libraryId,
         String type,
-        Location location)
+        ILocation location)
     {
         reset();
         _type = type;

@@ -69,5 +69,5 @@ package org.apache.tapestry;
 
 public interface ILocationHolder extends ILocatable
 {
-    public void setLocation(Location location);
+    public void setLocation(ILocation location);
 }
