@@ -1,6 +1,7 @@
 package com.primix.vlib;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.validating.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.pages.*;
 
@@ -34,16 +35,19 @@ import com.primix.vlib.pages.*;
 /**
  *  Base page used for pages that should be protected by the {@link Login} page.
  *  If the user is not logged in, they are redirected to the Login page first.
- *  Also, implements an error property.
+ *  Also, implements an error property and a validationDelegate.
  *
  * @author Howard Ship
  * @version $Id$
  */
 
 
-public class Protected extends BasePage
+public class Protected
+extends BasePage
+implements IErrorProperty
 {
 	private String error;
+    private IValidationDelegate validationDelegate;
 
 	public void detachFromApplication()
 	{
@@ -52,6 +56,14 @@ public class Protected extends BasePage
 		error = null;
 	}
 	
+    public IValidationDelegate getValidationDelegate()
+    {
+        if (validationDelegate == null)
+            validationDelegate = new SimpleValidationDelegate(this);
+
+        return validationDelegate;
+    }
+
 	public void setError(String value)
 	{
 		error = value;
@@ -60,6 +72,17 @@ public class Protected extends BasePage
 	public String getError()
 	{
 		return error;
+	}
+
+	protected void setErrorField(String componentId, String message)
+	{
+	    IValidatingTextField field;
+
+	    field = (IValidatingTextField)getComponent(componentId);
+	    field.setError(true);
+
+        if (error == null)
+            error = message;
 	}
 	
 	/**

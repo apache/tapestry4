@@ -45,7 +45,8 @@ import com.primix.foundation.prop.*;
  */
 
 
-public class EditBook extends Protected
+public class EditBook 
+extends Protected
 {
 	private Integer bookPK;	
 	private Map attributes;	
@@ -186,6 +187,11 @@ public class EditBook extends Protected
 		VirtualLibraryApplication app;
 		IOperations bean;
 		
+        // Check for an error from a validation field
+
+        if (getError() != null)
+            return;
+
 		title = (String)attributes.get("title");
 		author = (String)attributes.get("author");
 		ISBN = (String)attributes.get("ISBN");
@@ -194,27 +200,17 @@ public class EditBook extends Protected
 		holderPK = (Integer)attributes.get("holderPK");
 		publisherPK = (Integer)attributes.get("publisherPK");
 		
-		if (isEmpty(title))
-		{
-			setError("Must include a value for title.");
-			return;
-		}
-		
-		if (isEmpty(author))
-		{
-			setError("Must include a value for author.");
-			return;
-		}
-		
 		if (publisherPK == null && isEmpty(publisherName))
 		{
-			setError("Must provide a publisher name if the publisher option is empty.");
+			setErrorField("inputPublisherName",
+			    "Must provide a publisher name if the publisher option is empty.");
 			return;
 		}
 		
 		if (publisherPK != null && !isEmpty(publisherName))
 		{
-			setError("Must leave the publisher name blank if selecting a publisher from the list.");
+			setErrorField("inputPublisherName",
+			    "Must leave the publisher name blank if selecting a publisher from the list.");
 			return;
 		}
 		
@@ -249,9 +245,6 @@ public class EditBook extends Protected
 		if (value == null)
 			return true;
 		
-		if (value.trim().length() == 0)
-			return true;
-			
-		return false;
+		return value.trim().length() == 0;
 	}	
 }

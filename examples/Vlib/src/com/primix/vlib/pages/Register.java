@@ -1,6 +1,7 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.validating.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -45,7 +46,9 @@ import javax.rmi.*;
  */
 
 
-public class Register extends BasePage
+public class Register
+extends BasePage
+implements IErrorProperty
 {
 	private String error;
 	private String firstName;
@@ -53,17 +56,18 @@ public class Register extends BasePage
 	private String email;
 	private String password1;
 	private String password2;
-	
+	private IValidationDelegate validationDelegate;
+
 	public void detachFromApplication()
 	{
-		super.detachFromApplication();
-
 		error = null;
 		firstName = null;
 		lastName = null;
 		email = null;
 		password1 = null;
 		password2 = null;
+
+    	super.detachFromApplication();
 	}
 	
 	public String getError()
@@ -126,6 +130,41 @@ public class Register extends BasePage
 		password2 = value;
 	}
 	
+	public IValidationDelegate getValidationDelegate()
+	{
+	    if (validationDelegate == null)
+	        validationDelegate = new SimpleValidationDelegate(this);
+
+	    return validationDelegate;
+	}
+
+    private void setErrorField(String componentId, String message)
+    {
+        IValidatingTextField field;
+
+        field = (IValidatingTextField)getComponent(componentId);
+        field.setError(true);
+
+        if (error == null)
+            error = message;
+
+        resetPasswords();
+    }
+
+    private void resetPasswords()
+    {
+        IValidatingTextField field;
+ 
+        password1 = null;
+        password2 = null;
+
+        field = (IValidatingTextField)getComponent("inputPassword1");
+        field.refresh();
+
+        field = (IValidatingTextField)getComponent("inputPassword2");
+        field.refresh();
+    }
+
 	public IActionListener getFormListener()
 	{
 		return new IActionListener()
@@ -145,32 +184,24 @@ public class Register extends BasePage
 		Login login;
 		IPerson user;
 		
-		if (!isEqual(password1, password2))
+        // Check for errors from the validating text fields
+
+		if (error != null)
+        {
+            resetPasswords();
+            return;
+        }
+
+        // Note: we know password1 and password2 are not null
+        // because they are required fields.
+
+		if (!password1.equals(password2))
 		{
-			setError("Enter the same password twice.");
-			password1 = null;
-			password2 = null;
+			setErrorField("inputPassword1",
+			    "Enter the same password twice.");
 			return;
 		}
-		
-		if (isEmpty(password1))
-		{
-			setError("You must enter a password.");
-			return;
-		}
-		
-		if (isEmpty(lastName))
-		{
-			setError("You must enter a last name.");
-			return;
-		}
-		
-		if (isEmpty(email))
-		{
-			setError("You must enter an email address.");
-			return;
-		}
-		
+				
 		app = (VirtualLibraryApplication)application;
 		bean = app.getOperations();
 		
@@ -197,23 +228,5 @@ public class Register extends BasePage
 		login = (Login)cycle.getPage("Login");
 		login.loginUser(user, cycle);
 	}
-	
-	private boolean isEqual(String value1, String value2)
-	{
-		if (value1 == value2)
-			return true;
 		
-		if (value1 == null || value2 == null)
-			return false;
-			
-		return value1.equals(value2);
-	}
-	
-	private boolean isEmpty(String value)
-	{
-		if (value == null)
-			return true;
-		
-		return isEqual(value, "");
-	}	
 }

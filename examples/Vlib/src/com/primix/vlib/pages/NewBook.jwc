@@ -15,24 +15,8 @@
 			</bindings>
 		</component>
 		<component>
-			<id>ifError</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertError</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
+			<id>showError</id>
+			<type>ShowError</type>
 		</component>
 		<component>
 			<id>form</id>
@@ -46,7 +30,7 @@
 		</component>
 		<component>
 			<id>inputTitle</id>
-			<type>TextField</type>
+			<type>ValidatingTextField</type>
 			<bindings>
 				<binding>
 					<name>text</name>
@@ -60,12 +44,36 @@
 					<name>displayWidth</name>
 					<value>50</value>
 				</static-binding>
+				<static-binding>
+					<name>displayName</name>
+					<value>Title</value>
+				</static-binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+				<field-binding>
+					<name>required</name>
+					<field-name>Boolean.TRUE</field-name>
+				</field-binding>
 			</bindings>
 		</component>
 		<component>
 			<id>inputAuthor</id>
-			<type>TextField</type>
+			<type>ValidatingTextField</type>
 			<bindings>
+				<binding>
+					<name>text</name>
+					<property-path>author</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+				<field-binding>
+					<name>required</name>
+					<field-name>Boolean.TRUE</field-name>
+				</field-binding>
 				<static-binding>
 					<name>maximumLength</name>
 					<value>30</value>
@@ -74,10 +82,10 @@
 					<name>displayWidth</name>
 					<value>30</value>
 				</static-binding>
-				<binding>
-					<name>text</name>
-					<property-path>author</property-path>
-				</binding>
+				<static-binding>
+					<name>displayName</name>
+					<value>Author</value>
+				</static-binding>
 			</bindings>
 		</component>
 		<component>
@@ -114,7 +122,7 @@
 		</component>
 		<component>
 			<id>inputPublisherName</id>
-			<type>TextField</type>
+			<type>ValidatingTextField</type>
 			<bindings>
 				<static-binding>
 					<name>maximumLength</name>
@@ -124,6 +132,14 @@
 					<name>text</name>
 					<property-path>publisherName</property-path>
 				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+				<static-binding>
+					<name>displayName</name>
+					<value>Publisher Name</value>
+				</static-binding>
 			</bindings>
 		</component>
 		<component>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
@@ -16,24 +15,8 @@
 			</bindings>
 		</component>
 		<component>
-			<id>ifError</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertError</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
+			<id>showError</id>
+			<type>ShowError</type>
 		</component>
 		<component>
 			<id>form</id>
@@ -65,8 +48,12 @@
 		</component>
 		<component>
 			<id>inputLastName</id>
-			<type>TextField</type>
+			<type>ValidatingTextField</type>
 			<bindings>
+				<binding>
+					<name>text</name>
+					<property-path>attributes.lastName</property-path>
+				</binding>
 				<static-binding>
 					<name>displayWidth</name>
 					<value>30</value>
@@ -75,16 +62,28 @@
 					<name>maximumLength</name>
 					<value>30</value>
 				</static-binding>
+				<static-binding>
+					<name>displayName</name>
+					<value>Last Name</value>
+				</static-binding>
+				<field-binding>
+					<name>required</name>
+					<field-name>Boolean.TRUE</field-name>
+				</field-binding>
 				<binding>
-					<name>text</name>
-					<property-path>attributes.lastName</property-path>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
 				</binding>
 			</bindings>
 		</component>
 		<component>
 			<id>inputEmail</id>
-			<type>TextField</type>
+			<type>ValidatingTextField</type>
 			<bindings>
+				<binding>
+					<name>text</name>
+					<property-path>attributes.email</property-path>
+				</binding>
 				<static-binding>
 					<name>displayWidth</name>
 					<value>30</value>
@@ -93,38 +92,28 @@
 					<name>maximumLength</name>
 					<value>60</value>
 				</static-binding>
+				<static-binding>
+					<name>displayName</name>
+					<value>E-Mail</value>
+				</static-binding>
+				<field-binding>
+					<name>required</name>
+					<field-name>Boolean.TRUE</field-name>
+				</field-binding>
 				<binding>
-					<name>text</name>
-					<property-path>attributes.email</property-path>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
 				</binding>
 			</bindings>
 		</component>
 		<component>
 			<id>inputPassword1</id>
-			<type>TextField</type>
+			<type>ValidatingTextField</type>
 			<bindings>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>20</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>20</value>
-				</static-binding>
-				<static-binding>
-					<name>hidden</name>
-					<value>true</value>
-				</static-binding>
 				<binding>
 					<name>text</name>
 					<property-path>password1</property-path>
 				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputPassword2</id>
-			<type>TextField</type>
-			<bindings>
 				<static-binding>
 					<name>displayWidth</name>
 					<value>20</value>
@@ -134,13 +123,47 @@
 					<value>20</value>
 				</static-binding>
 				<static-binding>
-					<name>hidden</name>
-					<value>true</value>
+					<name>displayName</name>
+					<value>Password</value>
 				</static-binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+				<field-binding>
+					<name>hidden</name>
+					<field-name>Boolean.TRUE</field-name>
+				</field-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputPassword2</id>
+			<type>ValidatingTextField</type>
+			<bindings>
 				<binding>
 					<name>text</name>
 					<property-path>password2</property-path>
 				</binding>
+				<static-binding>
+					<name>displayWidth</name>
+					<value>20</value>
+				</static-binding>
+				<static-binding>
+					<name>maximumLength</name>
+					<value>20</value>
+				</static-binding>
+				<static-binding>
+					<name>displayName</name>
+					<value>Password (again)</value>
+				</static-binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+				<field-binding>
+					<name>hidden</name>
+					<field-name>Boolean.TRUE</field-name>
+				</field-binding>
 			</bindings>
 		</component>
 	</components>
