@@ -29,6 +29,7 @@ import net.sf.tapestry.bean.FieldBeanInitializer;
 import net.sf.tapestry.bean.IBeanInitializer;
 import net.sf.tapestry.bean.PropertyBeanInitializer;
 import net.sf.tapestry.bean.StaticBeanInitializer;
+import net.sf.tapestry.bean.StringBeanInitializer;
 
 /**
  *  A Factory used by {@link net.sf.tapestry.parse.SpecificationParser} to create Tapestry
@@ -166,4 +167,18 @@ public class SpecFactory
         return new FieldBeanInitializer(propertyName, fieldName);
     }
 
+    /**
+     *  Creates a concrete instance of {@link IBeanInitializer}.  
+     * 
+     *  <p>
+     *  Default implementation returns an instance of {@link net.sf.tapestry.bean.StringBeanInitializer}.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public IBeanInitializer createStringBeanInitializer(String propertyName, String key)
+    {
+        return new StringBeanInitializer(propertyName, key);
+    }
 }

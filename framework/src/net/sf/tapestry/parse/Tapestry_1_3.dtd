@@ -406,7 +406,7 @@ Appears in: bean
 Used to initialize a property of a helper bean.
 -->
 
-<!ELEMENT set-property (static-value | property-value | field-value)>
+<!ELEMENT set-property (static-value | property-value | field-value | string-value)>
 <!ATTLIST set-property
   name CDATA #REQUIRED
 >
@@ -460,5 +460,18 @@ Attributes:
 <!ELEMENT string-binding EMPTY>
 <!ATTLIST string-binding
   name CDATA #REQUIRED
+  key CDATA #REQUIRED
+>
+
+<!-- =======================================================
+Element: static-value
+Appears in: set-parameter
+
+A localized string.
+
+-->
+
+<!ELEMENT string-value EMPTY>
+<!ATTLIST string-value
   key CDATA #REQUIRED
 >

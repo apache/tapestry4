@@ -44,41 +44,39 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public class FieldBeanInitializer extends AbstractBeanInitializer
 {
-    protected String fieldName;
-    protected Object fieldValue;
-    private boolean fieldResolved = false;
+    protected String _fieldName;
+    protected Object _fieldValue;
+    private boolean _fieldResolved = false;
 
     public FieldBeanInitializer(String propertyName, String fieldName)
     {
         super(propertyName);
 
-        this.fieldName = fieldName;
+        _fieldName = fieldName;
     }
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
-        if (!fieldResolved)
+        if (!_fieldResolved)
             resolveField(provider.getResourceResolver());
 
-        PropertyHelper helper = PropertyHelper.forInstance(bean);
-
-        helper.set(bean, propertyName, fieldValue);
+        setBeanProperty(bean, _fieldValue);
     }
 
     private synchronized void resolveField(IResourceResolver resolver)
     {
-        if (fieldResolved)
+        if (_fieldResolved)
             return;
 
         // This is all copied out of of FieldBinding!!
 
-        int dotx = fieldName.lastIndexOf('.');
+        int dotx = _fieldName.lastIndexOf('.');
 
         if (dotx < 0)
-            throw new ApplicationRuntimeException(Tapestry.getString("invalid-field-name", fieldName));
+            throw new ApplicationRuntimeException(Tapestry.getString("invalid-field-name", _fieldName));
 
-        String className = fieldName.substring(0, dotx);
-        String simpleFieldName = fieldName.substring(dotx + 1);
+        String className = _fieldName.substring(0, dotx);
+        String simpleFieldName = _fieldName.substring(dotx + 1);
 
         // Simple class names are assumed to be in the java.lang package.
 
@@ -104,7 +102,7 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
         }
         catch (NoSuchFieldException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.getString("field-not-defined", fieldName), ex);
+            throw new ApplicationRuntimeException(Tapestry.getString("field-not-defined", _fieldName), ex);
         }
 
         // Get the value of the field.  null means look for it as a static
@@ -112,18 +110,18 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 
         try
         {
-            fieldValue = field.get(null);
+            _fieldValue = field.get(null);
         }
         catch (IllegalAccessException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.getString("illegal-field-access", fieldName), ex);
+            throw new ApplicationRuntimeException(Tapestry.getString("illegal-field-access", _fieldName), ex);
         }
         catch (NullPointerException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.getString("field-is-instance", fieldName), ex);
+            throw new ApplicationRuntimeException(Tapestry.getString("field-is-instance", _fieldName), ex);
         }
 
-        fieldResolved = true;
+        _fieldResolved = true;
     }
 
 }
