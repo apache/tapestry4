@@ -118,5 +118,25 @@
 			<name>TEMPLATE-banner</name>
 			<resource-path>/com/primix/tapestry/inspector/Template_NBanner.gif</resource-path>
 		</private-asset>
+		<private-asset>
+			<name>PROPERTIES</name>
+			<resource-path>/com/primix/tapestry/inspector/Properties_Np1.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>PROPERTIES-selected</name>
+			<resource-path>/com/primix/tapestry/inspector/Properties_Hp3.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>PROPERTIES-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Properties_NRp2.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>PROPERTIES-selected-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Properties_HRp4.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>PROPERTIES-banner</name>
+			<resource-path>/com/primix/tapestry/inspector/Properties_NBanner.gif</resource-path>
+		</private-asset>
 	</assets>
 </specification>

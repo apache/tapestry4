@@ -282,8 +282,8 @@ public class Body extends AbstractComponent
 			{
 				script = (String)i.next();
 				
-				writer.print("\n\n");
-				writer.print(script);
+				writer.printRaw("\n\n");
+				writer.printRaw(script);
 			}
 		}
 

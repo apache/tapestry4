@@ -52,17 +52,18 @@ public interface IServiceLink extends IComponent
 	"com.primix.tapestry.components.IServiceLink";
 
     /**
-     *  Adds an attribute and value to the service link.  This is
-     *  typically used to add Javascript event handlers to the link.
-     *
-     */
- 
-    public void addAttribute(String name, String value);
-
-    /**
      *  Returns whether this service link component is enabled or disabled.
      *
      */
  
     public boolean isEnabled();
+	
+	/**
+	 *  Returns the name assigned to the service link by the containing {@link Body}
+	 *  component.
+	 *
+	 */
+
+	public String getName(IRequestCycle cycle)
+	throws RequestCycleException;
 }

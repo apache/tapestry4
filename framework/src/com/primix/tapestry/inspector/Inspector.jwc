@@ -90,6 +90,20 @@
 			<id>showTemplate</id>
 			<type>/com/primix/tapestry/inspector/ShowTemplate.jwc</type>
 		</component>
+		<component>
+			<id>ifShowProperties</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>viewProperties</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>showProperties</id>
+			<type>/com/primix/tapestry/inspector/ShowProperties.jwc</type>
+		</component>
 	</components>
 	<assets>
 		<private-asset>

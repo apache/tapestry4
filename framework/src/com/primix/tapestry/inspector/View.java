@@ -40,10 +40,41 @@ import com.primix.foundation.*;
  
 public class View extends Enum
 {
+	/**
+	 *  View that displays the basic specification information, plus
+	 *  formal and informal parameters (and related bindings), and 
+	 *  assets.
+	 *
+	 */
+	 
 	public static final View SPECIFICATION = new View("SPECIFICATION");
+	
+	/**
+	 *  View that displays any embedded components of the currently
+	 *  inspected component, with type.
+	 *
+	 */
+	 
 	public static final View COMPONENTS = new View("COMPONENTS");
+	
+	/**
+	 *  View that displays the HTML template for the component, if one
+	 *  exists.
+	 *
+	 */
+	 
 	public static final View TEMPLATE = new View("TEMPLATE");
 
+
+	/**
+	 *  View that shows the persistent properties of the page containing
+	 *  the component.
+	 *
+	 */
+	 
+	 
+	public static final View PROPERTIES = new View("PROPERTIES");
+	 
 	private View(String enumerationId)
 	{
 		super(enumerationId);

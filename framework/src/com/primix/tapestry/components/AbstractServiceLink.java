@@ -65,23 +65,13 @@ public abstract class AbstractServiceLink
 	private IBinding anchorBinding;
 	private String anchorValue;
 
-	private static final int MAP_SIZE = 11;
-	private Map attributes;
-	
 	private boolean rendering;
+	private String name;
 
 	public AbstractServiceLink(IPage page, IComponent container, String name,
 		ComponentSpecification specification)
 	{
 		super(page, container, name, specification);
-	}
-
-	public void addAttribute(String name, String value)
-	{
-		if (attributes == null)
-			attributes = new HashMap(MAP_SIZE);
-
-		attributes.put(name, value);
 	}
 
 	/**
@@ -184,7 +174,7 @@ public abstract class AbstractServiceLink
 	/**
 	*  Invoked from {@link #render(IResponseWriter, IRequestCycle)}, 
 	*  this is responsible for
-	*  setting the enabled property and clearing attributes.
+	*  setting the enabled property.
 	*
 	*/
 
@@ -198,33 +188,54 @@ public abstract class AbstractServiceLink
 			enabled = true;
 		else
 			enabled = enabledBinding.getBoolean();
-
-			attributes = null;
 	}
 
-	private void writeAttributes(IResponseWriter writer)
+	/**
+	 *  Returns the name of the link, which is set by the containing {@link Body}.
+	 *  This is used by wrapped components, such as {@link Rollover}, to make
+	 *  references to the link.  A name is not assigned to this component
+	 *  until this method is invoked.
+	 *
+	 *  <p>The name is used to supply an <code>name</id> HTML attribute during
+	 *  rendering.
+	 *
+	 */
+	 
+	public String getName(IRequestCycle cycle)
+	throws RequestCycleException
 	{
-		Iterator i;
-		String name;
-		String value;
-        Map.Entry entry;
-
-		if (attributes != null)
-		{
-			i = attributes.entrySet().iterator();
-
-			while (i.hasNext())
-			{
-            	entry = (Map.Entry)i.next();
-                
-				name = (String)entry.getKey();
-                value = (String)entry.getValue();
-                
-				writer.attribute(name, value);
-			}
-		}
+		Body body;
+		
+		if (name != null)
+			return name;
+		
+		body = Body.get(cycle);
+		if (body == null)
+			throw new RequestCycleException(
+			"May not invoke getName(String) unless " +
+			"the service link component is wrapped by a Body component.",
+			this, cycle);
+			
+		name = "link_" + body.getUniqueId();
+		
+		return name;
 	}
 
+	/**
+	 *  Renders the link.  This is somewhat complicated, because a
+	 *  nested {@link IResponseWriter response writer} is used
+	 *  to render the contents of the link, before the link
+	 *  itself actually renders.
+	 *
+	 *  <p>This is to support components such as {@link Rollover}, which
+	 *  must specify some attributes of the service link (indirectly,
+	 *  via {@link #getName(IRequestCycle)}) as they render in order to
+	 *  create some client-side JavaScript that works.  Thus the
+	 *  service link renders its wrapped components into
+	 *  a temporary buffer, then renders its own HTML.
+	 *
+	 */
+	 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
@@ -242,6 +253,7 @@ public abstract class AbstractServiceLink
 		try
 		{
 			rendering = true;
+			name = null;
 			
 			cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -258,6 +270,10 @@ public abstract class AbstractServiceLink
 				href = buildURL(cycle, context);
 				writer.attribute("href", href);
 
+				// Allow the wrapped components a chance to render.
+				// Along the way, they may interact with this component
+				// and cause the name variable to get set.
+				
 				compressed = writer.compress(true);
 				wrappedWriter = writer.getNestedWriter();
 				wrappedWriter.setCompressed(true);
@@ -269,10 +285,15 @@ public abstract class AbstractServiceLink
 
 			if (enabled)
 			{
-				// Write any attributes specified by wrapped components (i.e., Rollover).
-
-				writeAttributes(writer);
-
+				// Write the name.  This is used with Rollover and JavaScript
+				// to find the link and set its event handlers ... it has
+				// the unwanted side-effect of making the links into
+				// anchors (i.e., link targets).  Just put it down
+				// to cross-browser madness.
+				
+				if (name != null)
+					writer.attribute("name", name);
+					
 				// Generate additional attributes from informal parameters.
 
 				generateAttributes(cycle, writer, reservedNames);
@@ -292,6 +313,7 @@ public abstract class AbstractServiceLink
 		finally
 		{
 			rendering = false;
+			name = null;
 		}
 	}
 }

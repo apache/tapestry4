@@ -200,6 +200,7 @@ public class Rollover extends AbstractComponent
 		boolean enabled;
 		String imageName = null;
 		String script;
+		String serviceLinkName;
 
 		body = Body.get(cycle);
 		if (body == null)
@@ -244,6 +245,7 @@ public class Rollover extends AbstractComponent
 
 		if (dynamic)
 		{
+			serviceLinkName = serviceLink.getName(cycle);
 			uniqueId = body.getUniqueId();
 
 			if (focusURL == null)
@@ -265,6 +267,8 @@ public class Rollover extends AbstractComponent
 
 			if (dynamic)
 			{
+				setupRolloverFunction(body, cycle);
+			
 				script = 
 					"  function " + onMouseOverName + "()\n" +
 					"  {\n" +
@@ -281,20 +285,15 @@ public class Rollover extends AbstractComponent
 					body.getInitializedImage(blurImageName) + 
 					";\n" +
 					"  }";
-
+					
 				body.addOtherScript(script);
+				
+				body.addOtherScript(
+				"  setupTapestryRollover('" + serviceLinkName + "', " +
+					onMouseOverName + ", " + onMouseOutName + ");");
+				
 			}
 		}
-
-		if (enabled)
-		{
-
-			serviceLink.addAttribute("onMouseOver",
-				"javascript:" + onMouseOverName + "();");
-
-			serviceLink.addAttribute("onMouseOut",
-				"javascript:" + onMouseOutName + "();");
-		}				
 
 		writer.beginOrphan("img");
 
@@ -310,6 +309,43 @@ public class Rollover extends AbstractComponent
 		writer.closeTag();
 
 		writer.setCompressed(compressed);
+	}
+
+	private void setupRolloverFunction(Body body, IRequestCycle cycle)
+	{
+		String name = "com.primix.tapestry.component.Rollover.function-tag";
+		String script;
+		
+		if (cycle.getAttribute(name) != null)
+			return;
+		
+		
+		// Note: most of this is support for Netscape Navigator;
+		// under Internet Explorer, we could simplify most of this
+		// down to "document.all." + linkName.
+		
+		// Cross-browser madness.  IE supports 'id' and 'name' properties,
+		// but NN only supports 'name'.
+		
+		script = 
+			"  function setupTapestryRollover(linkName, mouseOverHandler, mouseOutHandler)\n" +
+			"  {\n" +
+//			"    window.alert('setupTapestryRollover(' + linkName + ')');\n" +
+			"    for (var i = document.links.length - 1; i >= 0; i--)\n" +
+			"    {\n" +
+			"      if (linkName == document.links[i].name)\n" +
+			"      {\n" +
+			"        document.links[i].onmouseover = mouseOverHandler;\n" +
+			"        document.links[i].onmouseout = mouseOutHandler;\n" +
+			"        return;\n" +
+			"      }\n" +
+			"    }\n" +
+			"    window.alert('setupTapestryRollover: Link ' + linkName + ' not found.');\n" +
+			"  }\n";
+			
+		body.addOtherScript(script);
+		
+		cycle.setAttribute(name, Boolean.TRUE);			
 	}
 
 	public void setBlurBinding(IBinding newBlur)

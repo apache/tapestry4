@@ -82,8 +82,6 @@ public class Inspector extends BasePage
 		inspectedPageName = value;
 		
 		fireObservedChange("inspectedPageName", value);
-		
-		setView(View.SPECIFICATION);
 	}
 	
 	public String getInspectedIdPath()
@@ -113,8 +111,14 @@ public class Inspector extends BasePage
 		return view == View.TEMPLATE;
 	}
 	
+	public boolean isViewProperties()
+	{
+		return view == View.PROPERTIES;
+	}
+	
 	/**
-	 *  Method invoked by service (?) to begin inspecting a page.
+	 *  Method invoked by the {@link ShowInspector} component, 
+	 *  to begin inspecting a page.
 	 *
 	 */
 	 
@@ -130,7 +134,8 @@ public class Inspector extends BasePage
 	 *  Listener for the component selection, which allows a particular component.  
 	 *  
 	 *  <p>The context is a single string,
-	 *  the id path of the component to be selected.  This invokes
+	 *  the id path of the component to be selected (or null to inspect
+	 *  the page itself).  This invokes
 	 *  {@link #setInspectedIdPath(String)}.
 	 *
 	 */
