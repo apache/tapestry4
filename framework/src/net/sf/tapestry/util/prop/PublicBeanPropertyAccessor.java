@@ -50,7 +50,7 @@ public class PublicBeanPropertyAccessor extends ObjectPropertyAccessor
      * 
      **/
 
-    private Map _cache;
+    private Map _cache = new HashMap();
 
     private synchronized Field findField(Class beanClass, String fieldName)
     {
