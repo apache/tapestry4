@@ -40,8 +40,8 @@ import com.primix.tapestry.*;
  
 public class BindingException extends RuntimeException
 {
-
 	private transient IBinding binding;
+	private Throwable rootCause;
 
 	public BindingException(IBinding binding)
 	{
@@ -55,8 +55,21 @@ public class BindingException extends RuntimeException
 		this.binding = binding;
 	}
 
+	public BindingException(String message, IBinding binding, Throwable rootCause)
+	{
+		super(message);
+
+		this.binding = binding;
+		this.rootCause = rootCause;
+	}
+
 	public IBinding getBinding()
 	{
 		return binding;
+	}
+	
+	public Throwable getRootCase()
+	{
+		return rootCause;
 	}
 }

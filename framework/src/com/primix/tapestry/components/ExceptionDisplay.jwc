@@ -77,7 +77,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>components.e-property.name</property-path>
+					<property-path>components.e-property.value.name</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -89,7 +89,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>components.e-property.value</property-path>
+					<property-path>components.e-property.value.value</property-path>
 				</binding>
 			</bindings>
 		</component>
