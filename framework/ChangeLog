@@ -1,3 +1,8 @@
+* Jan 19 2001 hship
+
+Change some method signatures in IEngine and AbstractEngine such that engine has
+access to the IRequestCycle when it creates a visit object.
+
 * Jan 18 2001 hship
 
 Make the session ID the NDC (nested diagnostic context, used with log4j).
