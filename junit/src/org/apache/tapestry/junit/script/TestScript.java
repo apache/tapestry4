@@ -313,6 +313,9 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "outputSingleIndex", "SINGLE 0");
         assertSymbol(symbols, "outputArrayIndex", "ALPHA 0\n\nBETA 1\n\nGAMMA 2");
         assertSymbol(symbols, "outputCollectionIndex", "MOE 0\n\nLARRY 1\n\nCURLY 2");
+        
+        // Test implied key
+        assertSymbol(symbols, "outputCollectionIndexOnly", "0\n\n1\n\n2");
     }
 
     public void testIncludeScript() throws Exception
