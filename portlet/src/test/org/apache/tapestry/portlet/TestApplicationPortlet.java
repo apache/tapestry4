@@ -18,6 +18,8 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -56,8 +58,13 @@ public class TestApplicationPortlet extends HiveMindTestCase
         return (ActionRequestServicer) newMock(ActionRequestServicer.class);
     }
 
+    private RenderRequestServicer newRenderRequestServicer()
+    {
+        return (RenderRequestServicer) newMock(RenderRequestServicer.class);
+    }
+
     private Registry newRegistry(PortletApplicationInitializer initializer,
-            ActionRequestServicer actionRequestServicer)
+            ActionRequestServicer actionRequestServicer, RenderRequestServicer renderRequestServicer)
     {
         MockControl control = newControl(Registry.class);
         Registry registry = (Registry) control.getMock();
@@ -69,6 +76,9 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
         registry.getService("tapestry.portlet.ActionRequestServicer", ActionRequestServicer.class);
         control.setReturnValue(actionRequestServicer);
+
+        registry.getService("tapestry.portlet.RenderRequestServicer", RenderRequestServicer.class);
+        control.setReturnValue(renderRequestServicer);
 
         return registry;
     }
@@ -86,6 +96,16 @@ public class TestApplicationPortlet extends HiveMindTestCase
     private ActionResponse newActionResponse()
     {
         return (ActionResponse) newMock(ActionResponse.class);
+    }
+
+    private RenderRequest newRenderRequest()
+    {
+        return (RenderRequest) newMock(RenderRequest.class);
+    }
+
+    private RenderResponse newRenderResponse()
+    {
+        return (RenderResponse) newMock(RenderResponse.class);
     }
 
     public void testParseOptionalDescriptors() throws Exception
@@ -112,10 +132,10 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
         context.getResource("/WEB-INF/hivemodule.xml");
         contextc.setReturnValue(getClass().getResource("hivemodule.xml"), 2);
-        
+
         context.getResource("/WEB-INF/myportlet/myportlet.application");
         contextc.setReturnValue(null);
-        
+
         context.getResource("/WEB-INF/myportlet.application");
         contextc.setReturnValue(null);
 
@@ -127,6 +147,7 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
         assertNotNull(ap._registry);
         assertNotNull(ap._actionRequestServicer);
+        assertNotNull(ap._renderRequestServicer);
 
         assertEquals("parsed", ap._registry.expandSymbols("${module-portlet}", null));
         assertEquals("parsed", ap._registry.expandSymbols("${module-plain}", null));
@@ -136,7 +157,9 @@ public class TestApplicationPortlet extends HiveMindTestCase
     {
         PortletApplicationInitializer initializer = newInitializer();
         ActionRequestServicer actionRequestServicer = newActionRequestServicer();
-        Registry registry = newRegistry(initializer, actionRequestServicer);
+        RenderRequestServicer renderRequestServicer = newRenderRequestServicer();
+
+        Registry registry = newRegistry(initializer, actionRequestServicer, renderRequestServicer);
         PortletConfig config = newConfig();
 
         initializer.initialize(config);
@@ -162,7 +185,10 @@ public class TestApplicationPortlet extends HiveMindTestCase
     {
         PortletApplicationInitializer initializer = newInitializer();
         ActionRequestServicer actionRequestServicer = newActionRequestServicer();
-        Registry registry = newRegistry(initializer, actionRequestServicer);
+        RenderRequestServicer renderRequestServicer = newRenderRequestServicer();
+
+        Registry registry = newRegistry(initializer, actionRequestServicer, renderRequestServicer);
+
         PortletConfig config = newConfig();
 
         initializer.initialize(config);
@@ -185,6 +211,40 @@ public class TestApplicationPortlet extends HiveMindTestCase
         replayControls();
 
         portlet.processAction(request, response);
+
+        verifyControls();
+    }
+
+    public void testProcessRender() throws Exception
+    {
+        PortletApplicationInitializer initializer = newInitializer();
+        ActionRequestServicer actionRequestServicer = newActionRequestServicer();
+        RenderRequestServicer renderRequestServicer = newRenderRequestServicer();
+
+        Registry registry = newRegistry(initializer, actionRequestServicer, renderRequestServicer);
+
+        PortletConfig config = newConfig();
+
+        initializer.initialize(config);
+
+        replayControls();
+
+        ApplicationPortletFixture portlet = new ApplicationPortletFixture(registry);
+
+        portlet.init(config);
+
+        verifyControls();
+
+        RenderRequest request = newRenderRequest();
+        RenderResponse response = newRenderResponse();
+
+        renderRequestServicer.service(request, response);
+
+        registry.cleanupThread();
+
+        replayControls();
+
+        portlet.render(request, response);
 
         verifyControls();
     }

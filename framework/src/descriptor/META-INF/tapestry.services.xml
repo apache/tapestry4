@@ -162,8 +162,7 @@
       <construct class="org.apache.tapestry.services.impl.ServiceMapImpl">
         <set-object property="factoryServices" 
           value="service-property:tapestry.globals.ApplicationGlobals:factoryServices"/>
-        <set-object property="applicationServices" 
-          value="service-property:tapestry.globals.ApplicationGlobals:applicationServices"/>
+        <set-configuration property="applicationServices"  configuration-id="ApplicationServices"/>
       </construct>
     </invoke-factory>
     
@@ -188,14 +187,14 @@
  <service-point id="SetupServletEngineServices" interface="org.apache.tapestry.services.ApplicationInitializer">
   
   Contributed into the tapestry.init.ApplicationInitializers configuration point
-  to install the servlet-specific application and framework services into the
-  tapestry.globals.ApplicationGlobals services.
+  to install the servlet-specific framework services into the
+  tapestry.globals.ApplicationGlobals service.
   
   <invoke-factory model="primitive">
     <construct class="SetupServletEngineServices">
       <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
+      <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
       <set-configuration property="factoryServices" configuration-id="FactoryServices"/>
-      <set-configuration property="applicationServices" configuration-id="ApplicationServices"/>
     </construct>
   </invoke-factory>
  </service-point>

@@ -21,9 +21,9 @@ import org.apache.tapestry.web.WebActivator;
 import org.apache.tapestry.web.WebContext;
 
 /**
- * A "global" holder for the servlet, servlet context and application specification.
- * <p>
- * Note: the servlet API portions of this will likely move to a seperate service.
+ * A "global" holder for various services and configurations. In many cases, these values end up as
+ * properties of the {@link org.apache.tapestry.services.Infrastructure}. The servlet and portlet
+ * implementations differentiate themselves by storing different values into these properties.
  * 
  * @author Howard Lewis Ship
  * @since 3.1
@@ -59,16 +59,14 @@ public interface ApplicationGlobals
     public String getActivatorName();
 
     /**
-     * Stores the two sets of engine service definitions. Application services override factory
+     * Stores the default set of engine service definitions. Application services override factory
      * services with the same {@link org.apache.tapestry.engine.IEngineService#getName()name}.
      * 
      * @param factoryServices
      *            List of {@link org.apache.tapestry.engine.IEngineService}.
-     * @param applicationServices
-     *            List of {@link org.apache.tapestry.engine.IEngineService}.
      */
 
-    public void storeServices(List factoryServices, List applicationServices);
+    public void storeFactoryServices(List factoryServices);
 
     /**
      * Returns the factory default services as a List of
@@ -78,9 +76,10 @@ public interface ApplicationGlobals
     public List getFactoryServices();
 
     /**
-     * Returns the application services (and overrides) as a List of
-     * {@link org.apache.tapestry.engine.IEngineService}.
+     * Stores the {@link org.apache.tapestry.services.ResponseRenderer}.
      */
 
-    public List getApplicationServices();
+    public void storeResponseRenderer(ResponseRenderer renderer);
+
+    public ResponseRenderer getResponseRenderer();
 }

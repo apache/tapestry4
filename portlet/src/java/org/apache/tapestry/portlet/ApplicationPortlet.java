@@ -50,6 +50,8 @@ public class ApplicationPortlet implements Portlet
 
     ActionRequestServicer _actionRequestServicer;
 
+    RenderRequestServicer _renderRequestServicer;
+
     public void destroy()
     {
         try
@@ -60,6 +62,7 @@ public class ApplicationPortlet implements Portlet
         {
             _registry = null;
             _actionRequestServicer = null;
+            _renderRequestServicer = null;
         }
     }
 
@@ -77,6 +80,10 @@ public class ApplicationPortlet implements Portlet
         _actionRequestServicer = (ActionRequestServicer) _registry.getService(
                 "tapestry.portlet.ActionRequestServicer",
                 ActionRequestServicer.class);
+
+        _renderRequestServicer = (RenderRequestServicer) _registry.getService(
+                "tapestry.portlet.RenderRequestServicer",
+                RenderRequestServicer.class);
     }
 
     /**
@@ -132,6 +139,10 @@ public class ApplicationPortlet implements Portlet
         {
             _actionRequestServicer.service(request, response);
         }
+        catch (RuntimeException ex)
+        {
+            throw new PortletException(ex);
+        }
         finally
         {
             _registry.cleanupThread();
@@ -141,5 +152,17 @@ public class ApplicationPortlet implements Portlet
     public void render(RenderRequest request, RenderResponse response) throws PortletException,
             IOException
     {
+        try
+        {
+            _renderRequestServicer.service(request, response);
+        }
+        catch (RuntimeException ex)
+        {
+            throw new PortletException(ex);
+        }
+        finally
+        {
+            _registry.cleanupThread();
+        }
     }
 }

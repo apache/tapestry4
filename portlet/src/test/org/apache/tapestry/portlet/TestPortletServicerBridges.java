@@ -19,6 +19,8 @@ import java.io.IOException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.apache.hivemind.test.AggregateArgumentsMatcher;
 import org.apache.hivemind.test.ArgumentMatcher;
@@ -30,12 +32,13 @@ import org.apache.tapestry.web.WebResponse;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link TestActionPortletToWebRequestServicerPipelineBridge}.
+ * Tests for {@link ActionRequestServicerToWebRequestServicerBridge}&nbsp;and
+ * {@link org.apache.tapestry.portlet.RenderRequestServicerToWebRequestServicerBridge}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestActionPortletToWebRequestServicerPipelineBridge extends HiveMindTestCase
+public class TestPortletServicerBridges extends HiveMindTestCase
 {
     private class WebRequestServicerFixture implements WebRequestServicer
     {
@@ -51,7 +54,7 @@ public class TestActionPortletToWebRequestServicerPipelineBridge extends HiveMin
 
     }
 
-    public void testSuccess() throws Exception
+    public void testActionBridgeSuccess() throws Exception
     {
         ActionRequest request = (ActionRequest) newMock(ActionRequest.class);
 
@@ -69,7 +72,7 @@ public class TestActionPortletToWebRequestServicerPipelineBridge extends HiveMin
 
         replayControls();
 
-        ActionPortletToWebRequestServicerPipelineBridge bridge = new ActionPortletToWebRequestServicerPipelineBridge();
+        ActionRequestServicerToWebRequestServicerBridge bridge = new ActionRequestServicerToWebRequestServicerBridge();
         bridge.setPortletRequestGlobals(prg);
         bridge.setWebRequestServicer(wrs);
 
@@ -84,7 +87,40 @@ public class TestActionPortletToWebRequestServicerPipelineBridge extends HiveMin
         verifyControls();
     }
 
-    public void testFailure() throws Exception
+    public void testRenderBridgeSuccess() throws Exception
+    {
+        RenderRequest request = (RenderRequest) newMock(RenderRequest.class);
+
+        MockControl responsec = newControl(RenderResponse.class);
+        RenderResponse response = (RenderResponse) responsec.getMock();
+
+        PortletRequestGlobals prg = (PortletRequestGlobals) newMock(PortletRequestGlobals.class);
+        WebRequestServicerFixture wrs = new WebRequestServicerFixture();
+
+        prg.store(request, response);
+
+        request.removeAttribute("FOO");
+        response.encodeURL("FOO");
+        responsec.setReturnValue(null);
+
+        replayControls();
+
+        RenderRequestServicerToWebRequestServicerBridge bridge = new RenderRequestServicerToWebRequestServicerBridge();
+        bridge.setPortletRequestGlobals(prg);
+        bridge.setWebRequestServicer(wrs);
+
+        bridge.service(request, response);
+
+        // Test that the WebXXX wrappers createde by the bridge and passed to the WebRequestServicer
+        // encapsulate the RenderRequest and RenderResponse
+
+        wrs._request.setAttribute("FOO", null);
+        wrs._response.encodeURL("FOO");
+
+        verifyControls();
+    }
+
+    public void testActionBridgeFailure() throws Exception
     {
         ActionRequest request = (ActionRequest) newMock(ActionRequest.class);
         ActionResponse response = (ActionResponse) newMock(ActionResponse.class);
@@ -103,7 +139,49 @@ public class TestActionPortletToWebRequestServicerPipelineBridge extends HiveMin
 
         replayControls();
 
-        ActionPortletToWebRequestServicerPipelineBridge bridge = new ActionPortletToWebRequestServicerPipelineBridge();
+        ActionRequestServicerToWebRequestServicerBridge bridge = new ActionRequestServicerToWebRequestServicerBridge();
+        bridge.setPortletRequestGlobals(prg);
+        bridge.setWebRequestServicer(servicer);
+
+        try
+        {
+
+            bridge.service(request, response);
+            unreachable();
+        }
+        catch (PortletException ex)
+        {
+            // PortletException doesn't seem to copy the
+            // message?
+            // assertEquals("Failure.", ex.getMessage());
+            // Note: implemented by PortletException, not tied
+            // to JDK 1.4
+            assertSame(t, ex.getCause());
+        }
+
+        verifyControls();
+    }
+
+    public void testRenderBridgeFailure() throws Exception
+    {
+        RenderRequest request = (RenderRequest) newMock(RenderRequest.class);
+        RenderResponse response = (RenderResponse) newMock(RenderResponse.class);
+        PortletRequestGlobals prg = (PortletRequestGlobals) newMock(PortletRequestGlobals.class);
+
+        MockControl control = newControl(WebRequestServicer.class);
+        WebRequestServicer servicer = (WebRequestServicer) control.getMock();
+
+        Throwable t = new RuntimeException("Failure.");
+
+        prg.store(request, response);
+        servicer.service(new PortletWebRequest(request), new PortletWebResponse(response));
+        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { new TypeMatcher(), new TypeMatcher() }));
+        control.setThrowable(t);
+
+        replayControls();
+
+        RenderRequestServicerToWebRequestServicerBridge bridge = new RenderRequestServicerToWebRequestServicerBridge();
         bridge.setPortletRequestGlobals(prg);
         bridge.setWebRequestServicer(servicer);
 

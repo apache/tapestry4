@@ -17,6 +17,7 @@ package org.apache.tapestry.services.impl;
 import java.util.List;
 
 import org.apache.tapestry.services.ApplicationGlobals;
+import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebActivator;
 import org.apache.tapestry.web.WebContext;
@@ -37,7 +38,7 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
 
     private List _factoryServices;
 
-    private List _applicationServices;
+    private ResponseRenderer _responseRenderer;
 
     public void storeActivator(WebActivator activator)
     {
@@ -74,19 +75,23 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
         _webContext = context;
     }
 
-    public void storeServices(List factoryServices, List applicationServices)
+    public void storeFactoryServices(List factoryServices)
     {
-      _factoryServices = factoryServices;
-      _applicationServices = applicationServices;
-    }
-    
-    public List getApplicationServices()
-    {
-        return _applicationServices;
+        _factoryServices = factoryServices;
     }
 
     public List getFactoryServices()
     {
         return _factoryServices;
+    }
+
+    public ResponseRenderer getResponseRenderer()
+    {
+        return _responseRenderer;
+    }
+
+    public void storeResponseRenderer(ResponseRenderer responseRenderer)
+    {
+        _responseRenderer = responseRenderer;
     }
 }

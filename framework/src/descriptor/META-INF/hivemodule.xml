@@ -75,7 +75,7 @@
         <set-service property="scriptSource" service-id="tapestry.script.ScriptSource"/>
         <set-service property="serviceMap" service-id="tapestry.services.ServiceMap"/>
         <set-service property="requestExceptionReporter" service-id="RequestExceptionReporter"/>
-        <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
+        <set-object property="responseRenderer" value="service-property:tapestry.globals.ApplicationGlobals:responseRenderer"/>
         <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
         <set-service property="requestCycleFactory" service-id="tapestry.request.RequestCycleFactory"/>
         <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
