@@ -5,9 +5,7 @@ import com.primix.foundation.prop.PropertyHelper;
 import com.primix.foundation.exception.*;
 import com.primix.tapestry.record.PageRecorder;
 import java.io.*;
-import java.io.IOException;
 import javax.servlet.*;
-import com.primix.tapestry.parse.ComponentTemplate;
 import com.primix.tapestry.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.parse.*;
@@ -714,13 +712,15 @@ public abstract class AbstractApplication
 
 		parser = new SpecificationParser();
 
-		specification = parser.parseApplicationSpecification(stream, resource);
-
-		// Just a sanity check.
-
-		if (specification == null)
-			throw new ResourceUnavailableException("Unable to read application specification " +
-				resource + ".");
+		try
+		{
+			specification = parser.parseApplicationSpecification(stream, resource);
+		}
+		catch (SpecificationParseException e)
+		{
+			throw new ResourceUnavailableException("Unable to read application specification.",
+					e);
+		}		
 
 		// Record it into the servlet context for later.  This will help other instances of
 		// the application that need to access the specification and help this instance

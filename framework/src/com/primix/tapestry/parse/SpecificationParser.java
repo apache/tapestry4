@@ -52,25 +52,60 @@ public class SpecificationParser
 implements ErrorHandler, EntityResolver
 {
 	private DOMParser parser;
+	private String resourcePath;
+
+	private StringBuffer buffer;
+	
+	static private final Map booleanMap;
+	
+	// Identify all the different acceptible values.
+	
+	static
+	{
+		booleanMap = new HashMap(13);
+		
+		booleanMap.put("true", Boolean.TRUE);
+		booleanMap.put("t", Boolean.TRUE);
+		booleanMap.put("1", Boolean.TRUE);
+		booleanMap.put("y", Boolean.TRUE);
+		booleanMap.put("yes", Boolean.TRUE);
+		booleanMap.put("on", Boolean.TRUE);
+		
+		booleanMap.put("false", Boolean.FALSE);
+		booleanMap.put("f", Boolean.FALSE);
+		booleanMap.put("0", Boolean.FALSE);
+		booleanMap.put("off", Boolean.FALSE);
+		booleanMap.put("no", Boolean.FALSE);
+		booleanMap.put("n", Boolean.FALSE);
+	}
 	
 	/**
 	 *  Parses an input stream containing a component specification and assembles
 	 *  a {@link ComponentSpecification} from it.
 	 *
-	 *  @throws ResourceUnavailableException if the input stream cannot be fully
+	 *  @throws SpecificationParseException if the input stream cannot be fully
 	 *  parsed or contains invalid data.
 	 *
 	 */
 	 
 	public ComponentSpecification parseComponentSpecification(InputStream input, 
 		String resourcePath)
-	throws ResourceUnavailableException
+	throws SpecificationParseException
 	{
 		Document document;
 
-		document = parse(input, resourcePath, "specification");
+		this.resourcePath = resourcePath;
 		
-		return convertComponentSpecification(document);
+		try
+		{
+			document = parse(input, "specification");
+			
+			return convertComponentSpecification(document);
+		}
+		finally
+		{
+			this.resourcePath = null;
+		}
 	}
 	
 	/**
@@ -84,21 +119,32 @@ implements ErrorHandler, EntityResolver
 	
 	public ApplicationSpecification parseApplicationSpecification(InputStream input,
 		String resourcePath)
-	throws ResourceUnavailableException
+	throws SpecificationParseException
 	{
 		Document document;
 		
-		document = parse(input, resourcePath, "application");
+		this.resourcePath = resourcePath;
 		
-		return convertApplicationSpecification(document);
+		try
+		{
+			document = parse(input, "application");
+			
+			return convertApplicationSpecification(document);
+		}
+		finally
+		{
+			this.resourcePath = null;
+		}
 	}
 	
-	private Document parse(InputStream input, String resourcePath, String rootElementName)
-	throws ResourceUnavailableException
+	private Document parse(InputStream input, String rootElementName)
+	throws SpecificationParseException
 	{
 		InputSource source;
 		Document document;
 		Element root;
+		boolean error = false;
+		
 		try
 		{
 			if (parser == null)
@@ -117,6 +163,10 @@ implements ErrorHandler, EntityResolver
 				
 				parser.setFeature("http://apache.org/xml/features/dom/include-ignorable-whitespace", 
 					false);
+			
+				// We always traverse the entire tree.
+				
+				parser.setFeature("http://apache.org/xml/features/dom/defer-node-expansion", false);		
 			}
 			
 			source = new InputSource(input);
@@ -128,46 +178,61 @@ implements ErrorHandler, EntityResolver
 			root = document.getDocumentElement();
 			if (!root.getTagName().equals(rootElementName))
 			{
-				throw new ResourceUnavailableException(
-					"Error in " + resourcePath + ": " +
+				throw new SpecificationParseException(
 					"Incorrect document type; expected " + rootElementName + 
-					" but received " + root.getTagName() + ".");
+					" but received " + root.getTagName() + ".", resourcePath,
+					null, null);
 			}
 			
 			return document;
 		}
 		catch (SAXException se)
 		{
-			parser = null;
+			error = true;
 			
-			throw new ResourceUnavailableException("Unable to parse " + resourcePath + ".", se);
+			throw new SpecificationParseException("Unable to parse " + resourcePath + ".", 
+				resourcePath, parser.getLocator(), se);
 		}
 		catch (IOException ioe)
 		{
-			parser = null;
+			error = true;
 			
-			throw new ResourceUnavailableException("Error reading " + resourcePath + ".", ioe);
+			throw new SpecificationParseException("Error reading " + resourcePath + ".",
+			resourcePath, parser.getLocator(), ioe);
 		}
+		finally
+		{
+			if (error)
+				parser = null;	
+			else
+			{
+				try
+				{
+					parser.reset();	
+				}
+				catch (Exception e)
+				{
+					parser = null;
+				}
+			}
+		}	
 	}
 	
 	public void warning(SAXParseException exception)
-             throws SAXException
+    throws SAXException
 	{
-		parser = null; 
 		throw exception;
 	}
 	
 	public void error(SAXParseException exception)
-    		throws SAXException
+   	throws SAXException
 	{
-		parser = null;
 		throw exception;
 	}
 	
 	public void fatalError(SAXParseException exception)
-                throws SAXException
+	throws SAXException
 	{
-		parser = null;
 		throw exception;
 	}
 		
@@ -199,6 +264,7 @@ implements ErrorHandler, EntityResolver
 	}
 								 
 	private ComponentSpecification convertComponentSpecification(Document document)
+	throws SpecificationParseException
 	{
 		Element root;
 		Node node;
@@ -252,6 +318,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private ApplicationSpecification convertApplicationSpecification(Document document)
+	throws SpecificationParseException
 	{
 		Element root;
 		Node node;
@@ -292,6 +359,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private void convertPage(ApplicationSpecification specification, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		String name = null;
@@ -330,6 +398,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private void convertComponentAlias(ApplicationSpecification specification, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		String alias = null;
@@ -353,6 +422,7 @@ implements ErrorHandler, EntityResolver
 		specification.setComponentAlias(alias, path);
 		
 	}
+	
 	/**
 	*  Sets the buffer size for the page.  This is expressed as a
 	*  string.  The string specifies the size of the buffer, either
@@ -361,10 +431,11 @@ implements ErrorHandler, EntityResolver
 	*  The exact value accepted is defined by the regular expression:
 	*  [0-9]+ *(k|K)
 	*
-	*  @throws IllegalArgumentException if the string is not formatted acceptibly
+	*  @throws SpecificationParseException if the string is not formatted acceptibly
 	*/
 
 	private void convertBufferSize(PageSpecification page, Node node)
+	throws SpecificationParseException
 	{
 		int bytes = 0;
 		char[] digits;
@@ -441,14 +512,17 @@ implements ErrorHandler, EntityResolver
 
 
 		if (invalid)
-			throw new IllegalArgumentException("Invalid buffer size specification: '" +
-				value + "'.");
+			throw new SpecificationParseException(
+				"Invalid buffer size specification: '" +
+				value + "'.", 
+				resourcePath, parser.getLocator(), null);
 
 		page.setBufferSize(bytes);
 	}
 
 	
 	private void convertParameters(ComponentSpecification specification, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		
@@ -469,6 +543,7 @@ implements ErrorHandler, EntityResolver
 	}
 
 	private void convertParameter(ComponentSpecification specification, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		String name = null;
@@ -502,6 +577,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private void convertComponents(ComponentSpecification specification, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		
@@ -516,6 +592,7 @@ implements ErrorHandler, EntityResolver
 	}
 
 	private void convertComponent(ComponentSpecification specification, Node node)
+	throws SpecificationParseException
 	{
 		ContainedComponent contained;
 		Node child;
@@ -554,6 +631,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private void convertBindings(ContainedComponent contained, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		
@@ -581,6 +659,7 @@ implements ErrorHandler, EntityResolver
 	
 	private void convertBinding(ContainedComponent contained, Node node,
 		BindingType type, String innerElementName)
+	throws SpecificationParseException
 	{
 		Node child;
 		String name = null;
@@ -605,6 +684,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private void convertAssets(ComponentSpecification specification, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		
@@ -632,6 +712,7 @@ implements ErrorHandler, EntityResolver
 
 	private void convertAsset(ComponentSpecification specification, Node node,
 				AssetType type, String innerElementName)
+	throws SpecificationParseException
 	{
 		Node child;
 		String name = null;
@@ -656,6 +737,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private void convertProperties(IPropertyHolder holder, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		
@@ -670,6 +752,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private void convertProperty(IPropertyHolder holder, Node node)
+	throws SpecificationParseException
 	{
 		Node child;
 		String name = null;
@@ -694,6 +777,7 @@ implements ErrorHandler, EntityResolver
 	}
 	
 	private boolean isElement(Node node, String elementName)
+	throws SpecificationParseException
 	{
 		if (node.getNodeType() != Node.ELEMENT_NODE)
 			return false;
@@ -702,11 +786,14 @@ implements ErrorHandler, EntityResolver
 		
 		Element element = (Element)node;
 		
+		// Note:  Using Xerces 1.0.3 and deferred DOM loading
+		// (which is explicitly turned off), this sometimes
+		// throws a NullPointerException.
+		
 		return element.getTagName().equals(elementName);
+	
 	}	
 
-	private StringBuffer buffer;
-	
 	/**
 	 *  Returns the value of an {@link Element} node.  That is, all the {@link Text}
 	 *  nodes appended together.
@@ -737,28 +824,9 @@ implements ErrorHandler, EntityResolver
 		return result;
 	}
 	
-	static private final Map booleanMap;
-	
-	static
-	{
-		booleanMap = new HashMap(13);
-		
-		booleanMap.put("true", Boolean.TRUE);
-		booleanMap.put("t", Boolean.TRUE);
-		booleanMap.put("1", Boolean.TRUE);
-		booleanMap.put("y", Boolean.TRUE);
-		booleanMap.put("yes", Boolean.TRUE);
-		booleanMap.put("on", Boolean.TRUE);
-		
-		booleanMap.put("false", Boolean.FALSE);
-		booleanMap.put("f", Boolean.FALSE);
-		booleanMap.put("0", Boolean.FALSE);
-		booleanMap.put("off", Boolean.FALSE);
-		booleanMap.put("no", Boolean.FALSE);
-		booleanMap.put("n", Boolean.FALSE);
-	}
 		
 	private boolean getBooleanValue(Node node)
+	throws SpecificationParseException
 	{
 		String key;
 		Boolean value;
@@ -768,9 +836,49 @@ implements ErrorHandler, EntityResolver
 		value = (Boolean)booleanMap.get(key);
 		
 		if (value == null)
-			throw new RuntimeException(key + " can't be converted to boolean.");
+			throw new SpecificationParseException(
+				key + " can't be converted to boolean (in element " +
+				getNodePath(node.getParentNode()) + ").",
+				resourcePath, null, null);
 		
 		return value.booleanValue();
-	}	
+	}
+	
+	private String getNodePath(Node node)
+	{
+		String[] path;
+		int count = 0;
+		int i;
+		boolean first = true;
+		String result;
+		
+		path = new String[20];
+		while (node != null)
+		{
+			path[count++] = node.getNodeName();
+			node = node.getParentNode();
+		}
+		
+		if (buffer == null)
+			buffer = new StringBuffer();
+		else
+			buffer.setLength(0);
+			
+		for (i = count - 1; i >= 0; i--)
+		{
+			if (first)
+				first = false;
+			else
+				buffer.append('.');
+				
+			buffer.append(path[i]);
+		}
+		
+		result = buffer.toString();
+		
+		buffer.setLength(0);
+		
+		return result;
+	}		
 		
 }

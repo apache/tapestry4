@@ -156,7 +156,15 @@ public class DefaultSpecificationSource
 		if (parser == null)
 			parser = new SpecificationParser();
 
-		result = parser.parseComponentSpecification(inputStream, resourcePath);
+		try
+		{
+			result = parser.parseComponentSpecification(inputStream, resourcePath);
+		}
+		catch (SpecificationParseException e)
+		{
+			throw new ResourceUnavailableException("Could not parse specification " +
+				resourcePath + ".", e);
+		}
 
 		result.setSpecificationResourcePath(resourcePath);
 
