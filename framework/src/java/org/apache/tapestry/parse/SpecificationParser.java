@@ -235,7 +235,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private static final int STATE_PAGE_SPECIFICATION_INITIAL = 1001;
 
-    private static final int STATE_PROPERTY = 3;
+    private static final int STATE_META = 3;
 
     private static final int STATE_PROPERTY_SPECIFICATION = 10;
 
@@ -397,7 +397,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
             case STATE_ALLOW_PROPERTY:
 
-                beginAllowProperty();
+                allowMetaData();
                 break;
 
             case STATE_BEAN:
@@ -443,15 +443,23 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * Special state for a number of elements that can support the nested &lt;property&gt;
-     * (meta-data) element.
+     * Special state for a number of elements that can support the nested &lt;meta&gt; meta data
+     * element (&lt;property&gt; in 3.0 DTD).
      */
 
-    private void beginAllowProperty()
+    private void allowMetaData()
     {
-        if (_elementName.equals("property"))
+        if (_DTD_3_1)
         {
-            enterProperty();
+            if (_elementName.equals("meta"))
+            {
+                enterMeta();
+                return;
+            }
+        }
+        else if (_elementName.equals("property"))
+        {
+            enterProperty_3_0();
             return;
         }
 
@@ -497,13 +505,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        if (_elementName.equals("property"))
-        {
-            enterProperty();
-            return;
-        }
-
-        unexpectedElement(_elementName);
+        allowMetaData();
     }
 
     private void beginComponent()
@@ -541,13 +543,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        if (_elementName.equals("property"))
-        {
-            enterProperty();
-            return;
-        }
-
-        unexpectedElement(_elementName);
+        allowMetaData();
     }
 
     private void beginComponentSpecification()
@@ -593,19 +589,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void beginExtension()
     {
-        if (_elementName.equals("property"))
-        {
-            enterProperty();
-            return;
-        }
-
         if (_elementName.equals("configure"))
         {
             enterConfigure();
             return;
         }
 
-        unexpectedElement(_elementName);
+        allowMetaData();
     }
 
     private void beginLibrarySpecification()
@@ -613,12 +603,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (_elementName.equals("description"))
         {
             enterDescription();
-            return;
-        }
-
-        if (_elementName.equals("property"))
-        {
-            enterProperty();
             return;
         }
 
@@ -654,7 +638,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        unexpectedElement(_elementName);
+        allowMetaData();
     }
 
     private void beginLibrarySpecificationInitial()
@@ -707,19 +691,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         }
 
-        if (_elementName.equals("property"))
-        {
-            enterProperty();
-            return;
-        }
-
         if (_elementName.equals("description"))
         {
             enterDescription();
             return;
         }
 
-        unexpectedElement(_elementName);
+        allowMetaData();
     }
 
     private void beginPageSpecificationInitial()
@@ -787,7 +765,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 endDescription();
                 break;
 
-            case STATE_PROPERTY:
+            case STATE_META:
 
                 endProperty();
                 break;
@@ -1255,7 +1233,19 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         enterAsset("resource-path", AssetType.PRIVATE);
     }
 
-    private void enterProperty()
+    private void enterMeta()
+    {
+        String key = getAttribute("key");
+        String value = getAttribute("value");
+
+        // Value may be null, in which case the value is set from the element content
+
+        IPropertyHolder ph = (IPropertyHolder) peekObject();
+
+        push(_elementName, new PropertyValueSetter(ph, key, value), STATE_META, false);
+    }
+
+    private void enterProperty_3_0()
     {
         String name = getAttribute("name");
         String value = getAttribute("value");
@@ -1264,7 +1254,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         IPropertyHolder ph = (IPropertyHolder) peekObject();
 
-        push(_elementName, new PropertyValueSetter(ph, name, value), STATE_PROPERTY, false);
+        push(_elementName, new PropertyValueSetter(ph, name, value), STATE_META, false);
     }
 
     private void enterPropertySpecification()

@@ -34,11 +34,11 @@
 <!ENTITY spec.library				'<link href="spec.html#spec.library">&lt;library&gt;</link>'>
 <!ENTITY spec.library-specification	'<link href="spec.html#spec.library-specification">&lt;library-specification&gt;</link>'>
 <!ENTITY spec.listener-binding		'<link href="spec.html#spec.listener-binding">&lt;listener-binding&gt;</link>'>
+<!ENTITY spec.meta					'<link href="spec.html#spec.meta">&lt;meta&gt;</link>'>
 <!ENTITY spec.page					'<link href="spec.html#spec.page">&lt;page&gt;</link>'>
 <!ENTITY spec.page-specification	'<link href="spec.html#spec.page-specification">&lt;page-specification&gt;</link>'>
 <!ENTITY spec.parameter				'<link href="spec.html#spec.parameter">&lt;parameter&gt;</link>'>
 <!ENTITY spec.private-asset			'<link href="spec.html#spec.private-asset">&lt;private-asset&gt;</link>'>
-<!ENTITY spec.property				'<link href="spec.html#spec.property">&lt;property&gt;</link>'>
 <!ENTITY spec.property-specification
 									'<link href="spec.html#spec.property-specification">&lt;property-specification&gt;</link>'>
 <!ENTITY spec.reserved-parameter	'<link href="spec.html#spec.reserved-parameter">&lt;reserved-parameter&gt;</link>'>

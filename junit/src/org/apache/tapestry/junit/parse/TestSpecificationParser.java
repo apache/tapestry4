@@ -815,4 +815,13 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertLoggedMessagePattern("The <service> element is no longer supported");
     }
+    
+    /** @since 3.1 */
+    public void testMeta() throws Exception
+    {
+        ILibrarySpecification spec = parseLib("Meta.library");
+        
+        assertEquals("bar", spec.getProperty("foo"));
+        assertEquals("long value", spec.getProperty("long"));
+    }
 }

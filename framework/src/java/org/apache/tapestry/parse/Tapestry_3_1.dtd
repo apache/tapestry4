@@ -30,6 +30,7 @@ The following changes have occured:
 - The <static-binding>, <inherited-binding> and <message-binding> elements have been removed.
   There is now just <binding>, whose value attribute contains a prefix to interpret how
   the remainder of the value is interpreted (no prefix meaning a literal, or static, value).
+- <property> renamed to <meta> and <property-specification> renamed to <property>
 
 -->
 <!-- =======================================================
@@ -47,7 +48,7 @@ type.  Defaults to String.
 
 -->
 <!ENTITY % static-value-type "(boolean|int|long|double|String) 'String'">
-<!ENTITY % library-content "(description?, property*, (page|component-type|service|library|extension)*)">
+<!ENTITY % library-content "(description?, meta*, (page|component-type|service|library|extension)*)">
 <!-- =======================================================
 Element: application
 Root element
@@ -95,7 +96,7 @@ The bean may have its properties set.  Properties are set on both
 newly instantiated beans, and beans that are retrieved from a pool.
 
 -->
-<!ELEMENT bean (description?, property*, (set-property | set-message-property)*)>
+<!ELEMENT bean (description?, meta*, (set-property | set-message-property)*)>
 <!ATTLIST bean
 	name CDATA #REQUIRED
 	class CDATA #REQUIRED
@@ -155,7 +156,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component (property*, (binding | listener-binding)*)>
+<!ELEMENT component (meta*, (binding | listener-binding)*)>
 <!ATTLIST component
 	id ID #REQUIRED
 	type CDATA #IMPLIED
@@ -193,7 +194,7 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT component-specification (description?, parameter*, reserved-parameter*, property*, (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
+<!ELEMENT component-specification (description?, parameter*, reserved-parameter*, meta*, (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
 <!ATTLIST component-specification
 	class CDATA #IMPLIED
 	allow-body %attribute-flag; "yes"
@@ -210,7 +211,7 @@ Attributes:
   name: The name of the asset.
   path: The path, relative to the web application context, of the resource.
 -->
-<!ELEMENT context-asset (property*)>
+<!ELEMENT context-asset (meta*)>
 <!ATTLIST context-asset
 	name CDATA #REQUIRED
 	path CDATA #REQUIRED
@@ -239,7 +240,7 @@ Attributes:
   immediate: If true, the extension is instantiated early instead of as-needed.
   
 -->
-<!ELEMENT extension (property*, configure*)>
+<!ELEMENT extension (meta*, configure*)>
 <!ATTLIST extension
 	name CDATA #REQUIRED
 	class CDATA #REQUIRED
@@ -255,7 +256,7 @@ Attributes:
   name: The name of the asset.
   URL: The URL used to reference the asset.
 -->
-<!ELEMENT external-asset (property*)>
+<!ELEMENT external-asset (meta*)>
 <!ATTLIST external-asset
 	name CDATA #REQUIRED
 	URL CDATA #REQUIRED
@@ -336,7 +337,7 @@ a body, and never allow parameters (formal or otherwise).
 Attributes:
   class: The Java class to instantiate for the component.
 -->
-<!ELEMENT page-specification (description?, property*, (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
+<!ELEMENT page-specification (description?, meta*, (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
 <!ATTLIST page-specification
 	class CDATA #IMPLIED
 >
@@ -377,30 +378,31 @@ Attributes:
   name: The name of the asset.
   resource-path: The complete pathname of the resource.
 -->
-<!ELEMENT private-asset (property*)>
+<!ELEMENT private-asset (meta*)>
 <!ATTLIST private-asset
 	name CDATA #REQUIRED
 	resource-path CDATA #REQUIRED
 >
 <!-- =======================================================
-Element: property
+Element: meta
 Contained by: (many other elements)
 
 Defines a key/value pair associated with the application or component specification.  Properties
 are used to capture information that doesn't fit into the DTD.  The value for the property is
-the PCDATA wrapped by the property tag (which is trimmed of leading and trailing whitespace).
+either the value attribute, or the PCDATA wrapped by the property tag 
+(which is trimmed of leading and trailing whitespace).
 
 This should not be confused with several other tags which are used to set JavaBeans properties
 of various objects.  The <property> tag exists to allow meta-data to be stored in the specification.
 
 Attributes:
-  name: The name of the property to set.
+  key: The name of the property to set.
   value: If specified, is the value of the property, otherwise, the PCDATA is used.
   
 -->
-<!ELEMENT property (#PCDATA)>
-<!ATTLIST property
-	name CDATA #REQUIRED
+<!ELEMENT meta (#PCDATA)>
+<!ATTLIST meta
+	key CDATA #REQUIRED
 	value CDATA #IMPLIED
 >
 <!-- =======================================================

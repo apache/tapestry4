@@ -118,6 +118,7 @@ it is expected that there will be some runtime warnings).
     the &spec.binding; element and the ognl: and message: prefixes, respectively.</li>
   <li>The &lt;inherited-binding&gt; element has been removed; parameters of parent components may be
     accessed as properties.</li>
+  <li>The &lt;property&gt; element (in 3.0) has been renamed to &spec.meta;.</li>
 </ul>
 
 </section>  <!-- changes -->
@@ -164,7 +165,7 @@ It also defines any libraries that are used within the application.
 
 <p>&application; Elements:</p>
 <source>
-  &spec.description; ?, &spec.property; *,
+  &spec.description; ?, &spec.meta; *,
   (&spec.page; | &spec.component-type; |  &spec.library; | &spec.extension;) *
 </source>
 
@@ -263,7 +264,7 @@ may be configured using the &spec.set-property; and &spec.set-message-property; 
 
 <p>&bean; Elements:</p>
 <source>
-  &spec.description; ?, &spec.property; *,
+  &spec.description; ?, &spec.meta; *,
   (&spec.set-property; | &spec.set-message-property;) *
 </source>
 
@@ -437,7 +438,7 @@ containing library or application.
 	
 <p>&component; Elements</p>
 <source>
-  &spec.property; *,
+  &spec.meta; *,
   (&spec.binding; | &spec.listener-binding;) *
 </source>
 
@@ -522,7 +523,7 @@ and elements related to parameters.
 
 <p>&component-specification; Elements</p>
 <source>
-  &spec.description; ?, &spec.parameter; *, &spec.reserved-parameter; *, &spec.property; *,
+  &spec.description; ?, &spec.parameter; *, &spec.reserved-parameter; *, &spec.meta; *,
   (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset; | &spec.property-specification;)*
 </source>
 
@@ -765,7 +766,7 @@ a global service to the application.
 
 <p>&lt;extension&gt; Elements</p>
 <source>
-  &spec.property; *, &spec.configure; *
+  &spec.meta; *, &spec.configure; *
 </source>
 
 
@@ -884,7 +885,7 @@ element has no attributes.
 
 <p>&library-specification; Elements</p>
 <source>
-  &spec.description; ?, &spec.property; *,
+  &spec.description; ?, &spec.meta; *,
   (&spec.page; | &spec.component-type; | &spec.library; | &spec.extension;) *
 </source>
 
@@ -964,6 +965,53 @@ may be obtained.
 
 
 </section> <!-- spec.listener-binding -->
+
+
+<section id="spec.meta">
+	<title>&lt;meta&gt; element</title>
+	
+<p>
+Appears in: <em>many</em>
+</p>
+
+<p>
+The &lt;meta&gt; element is used to store meta-data
+about some other element (it is contained within).  Tapestry ignores this meta-data.
+Any number of key/value pairs may be stored.  The value is provided with
+the value attribute, or the 
+character data for the &lt;meta&gt; element.
+</p>
+
+<table>
+
+<tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Required ?</th>
+  <th>Default Value</th>
+  <th>Description</th>
+</tr>
+
+<tr>
+	<td>key</td>
+	<td>string</td>
+	<td>yes</td>
+	<td/>
+	<td>The name of the property.</td>
+</tr>
+<tr>
+	<td>value</td>
+	<td>string</td>
+	<td>no</td>
+	<td/>
+	<td>The value for the property.  If omitted, the value is taken
+	from the character data (the text the tag wraps around).  If specified,
+	the character data is ignored.</td>
+</tr>
+
+</table>
+
+</section> <!-- spec.meta -->
 
 
 <section id="spec.page">
@@ -1057,7 +1105,7 @@ with attributes and entities related to parameters removed.
 
 <p>&lt;page-specification&gt; Elements</p>
 <source>
-  &spec.description; ?, &spec.property; *,
+  &spec.description; ?, &spec.meta; *,
   (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset; | &spec.property-specification;)*
 </source>
 
@@ -1249,53 +1297,6 @@ containing specification.
 
 
 </section> <!-- spec.private-asset -->
-
-<section id="spec.property">
-	<title>&lt;property&gt; element</title>
-	
-<p>
-Appears in: <em>many</em>
-</p>
-
-<p>
-The &lt;property&gt; element is used to store meta-data
-about some other element (it is contained within).  Tapestry ignores this meta-data
-Any number of name/value pairs may be stored.  The value is provided with
-the value attribute, or the 
-character data for the &lt;property&gt; element.
-</p>
-
-<table>
-
-<tr>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Required ?</th>
-  <th>Default Value</th>
-  <th>Description</th>
-</tr>
-
-<tr>
-	<td>name</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The name of the property.</td>
-</tr>
-<tr>
-	<td>value</td>
-	<td>string</td>
-	<td>no</td>
-	<td/>
-	<td>The value for the property.  If omitted, the value is taken
-	from the character data (the text the tag wraps around).  If specified,
-	the character data is ignored.</td>
-</tr>
-
-</table>
-
-</section> <!-- spec.property -->
-
 
 <section id="spec.property-specification">
 	<title>&lt;property-specification&gt; element</title>
