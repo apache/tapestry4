@@ -3,12 +3,12 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
-  <!ENTITY chapter-one SYSTEM "./tutorial-chapter-one.xml">
-  <!ENTITY chapter-two SYSTEM "./tutorial-chapter-two.xml">
-  <!ENTITY chapter-three SYSTEM "./tutorial-chapter-three.xml">
+  <!ENTITY chapter-intro SYSTEM "./tutorial-chapter-intro.xml">
+  <!ENTITY chapter-gettingstarted SYSTEM "./tutorial-chapter-gettingstarted.xml">
+  <!ENTITY chapter-intro-examples SYSTEM "./tutorial-chapter-intro-examples.xml">
   <!ENTITY chapter-three-ex1 SYSTEM "./tutorial-pagelinking.xml">
-  <!ENTITY chapter-five SYSTEM "./tutorial-chapter-five.xml">
-  <!ENTITY chapter-six SYSTEM "./tutorial-chapter-six.xml">
+  <!ENTITY chapter-forms SYSTEM "./tutorial-chapter-forms.xml">
+  <!ENTITY chapter-builtins SYSTEM "./tutorial-chapter-builtins.xml">
   <!ENTITY chapter-components SYSTEM "./tutorial-chapter-components.xml">
   %TapestryLinks;
 ]>
@@ -34,9 +34,9 @@
     </copyright>
   </bookinfo>
 
-	&chapter-one;
-	&chapter-two;
-	&chapter-three;
+	&chapter-intro;
+	&chapter-gettingstarted;
+	&chapter-intro-examples;
 
   <chapter id="pages">
   	<title>Pages</title>
@@ -64,8 +64,8 @@
   	</section>
   </chapter>
 
-  &chapter-five;
-  &chapter-six;
+  &chapter-forms;
+  &chapter-builtins;
 
   <chapter id="assets">
   	<title>Assets</title>
