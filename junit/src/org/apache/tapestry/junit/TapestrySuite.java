@@ -59,6 +59,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.tapestry.junit.enhance.TestClassFabricator;
+import org.apache.tapestry.junit.form.TestListEditMap;
 import org.apache.tapestry.junit.mock.MockTestCase;
 import org.apache.tapestry.junit.parse.TestLocation;
 import org.apache.tapestry.junit.parse.TestSpecificationParser;
@@ -88,36 +89,9 @@ public class TapestrySuite extends TestSuite
 {
     public static Test suite()
     {
-        TestSuite suite = new TestSuite();
+        TestSuite suite = new TestSuite("Master Tapestry Test Suite");
 
-		suite.addTestSuite(TestTapestryFindLocation.class);
-		suite.addTestSuite(TestStaticLink.class);
-		suite.addTestSuite(TestEngineServiceLink.class);
-        suite.addTestSuite(TestAdaptorRegistry.class);
-        suite.addTestSuite(TestTapestryCoerceToIterator.class);
-        suite.addTestSuite(TestPool.class);
-        suite.addTestSuite(TestLocalizedNameGenerator.class);
-        suite.addTestSuite(TestResourceLocation.class);
-        suite.addTestSuite(TestPropertyFinder.class);
-        suite.addTestSuite(TestListenerMap.class);
-        suite.addTestSuite(TestIdAllocator.class);
-        suite.addTestSuite(TestComponentStrings.class);
-        suite.addTestSuite(TestTemplateParser.class);
-        suite.addTestSuite(TestLocation.class);
-        suite.addTestSuite(TestSpecificationParser.class);
-        suite.addTestSuite(TestApplicationSpecification.class);
-        suite.addTest(ValidSuite.suite());
-        suite.addTestSuite(TestMultipart.class);
-        suite.addTestSuite(TestEnum.class);
-        suite.addTestSuite(TestDataSqueezer.class);
-        suite.addTestSuite(TestScript.class);
-        suite.addTestSuite(TestComponentSpecification.class);
-        suite.addTestSuite(TestBindings.class);
-        suite.addTestSuite(TestPropertySource.class);
-        suite.addTestSuite(TestComponent.class);
-        suite.addTestSuite(TestClassFabricator.class);
-        suite.addTestSuite(TestTapestryGetClassName.class);
-        suite.addTestSuite(TestRegexpMatcher.class);
+		suite.addTest(BasicTestSuite.suite());	
         suite.addTest(MockTestCase.suite());
 
         return suite;

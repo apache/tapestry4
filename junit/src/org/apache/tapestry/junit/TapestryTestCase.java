@@ -163,12 +163,12 @@ public class TapestryTestCase extends TestCase
         return parser.parseLibrarySpecification(location);
     }
 
-    protected void checkList(String propertyName, String[] expected, String[] actual)
+    protected void checkList(String propertyName, Object[] expected, Object[] actual)
     {
         checkList(propertyName, expected, Arrays.asList(actual));
     }
 
-    protected void checkList(String propertyName, String[] expected, List actual)
+    protected void checkList(String propertyName, Object[] expected, List actual)
     {
         int count = Tapestry.size(actual);
 
