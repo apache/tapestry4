@@ -72,7 +72,7 @@
     <static-binding name="displayName">Publisher</static-binding>
   </component>
   
-  <component id="inputDescription" type="Text">
+  <component id="inputDescription" type="TextArea">
     <binding name="value" expression="attributes.description"/>
     <static-binding name="columns">35</static-binding>
     <static-binding name="rows">8</static-binding>

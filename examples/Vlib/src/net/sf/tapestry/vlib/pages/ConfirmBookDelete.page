@@ -16,12 +16,12 @@
     <binding name="value" expression="bookTitle"/>
   </component>
   
-  <component id="yes" type="Direct">
+  <component id="yes" type="DirectLink">
     <binding name="listener" expression="listeners.deleteBook"/>
     <binding name="parameters" expression="bookPrimaryKey"/>
   </component>
   
-  <component id="no" type="Page">
+  <component id="no" type="PageLink">
     <static-binding name="page">MyLibrary</static-binding>
   </component>
   

@@ -49,7 +49,7 @@
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
   
-  <component id="register" type="Page">
+  <component id="register" type="PageLink">
     <static-binding name="page">Register</static-binding>
   </component>
 

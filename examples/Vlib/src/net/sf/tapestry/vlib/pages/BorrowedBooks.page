@@ -58,7 +58,7 @@
     <static-binding name="class">clsDataBlue</static-binding>
   </component>
   
-  <component id="return" type="Direct">
+  <component id="return" type="DirectLink">
     <binding name="parameters" expression="currentBook.primaryKey"/>
     <binding name="listener" expression="listeners.returnBook"/>
   </component>
