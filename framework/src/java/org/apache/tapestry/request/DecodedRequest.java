@@ -14,49 +14,77 @@
 
 package org.apache.tapestry.request;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
- *  Contains properties of an {@link javax.servlet.http.HttpServletRequest}
- *  that have been extracted from the request (or otherwise determined).
+ * Contains properties of an {@link javax.servlet.http.HttpServletRequest}that have been extracted
+ * from the request (or otherwise determined). An instance of this is created by an
+ * {@link org.apache.tapestry.request.IRequestDecoder}. The decoder must set the serverName and
+ * requestURI properties, and should set the scheme and server port properties.
  * 
- *  <p>An alternative idea would have been to create a new 
- *  {@link javax.servlet.http.HttpServletRequest}
- *  wrapper that overode the various methods.  That struck me as causing
- *  more confusion; instead (in the few places it counts), classes will
- *  get the decoded properties from the {@link RequestContext}.
- *
- *  @see IRequestDecoder
- *  @see RequestContext#getScheme()
- *  @see RequestContext#getServerName()
- *  @see RequestContext#getServerPort()
- *  @see RequestContext#getRequestURI()
- * 
- *  @author Howard Lewis Ship
- *  @version DecodedRequest.java,v 1.1 2002/08/20 21:49:58 hship Exp
- *  @since 2.2
- * 
- **/
+ * @see IRequestDecoder
+ * @author Howard Lewis Ship
+ * @since 2.2
+ */
 
 public class DecodedRequest
 {
-    private String _scheme;
+    private String _scheme = "http";
+
     private String _serverName;
+
     private String _requestURI;
-    private int _serverPort;
+
+    private int _serverPort = 80;
+
+    public DecodedRequest()
+    {
+    }
+
+    /**
+     * Initializes default values for the properties from the request provided.
+     * 
+     * @since 3.1
+     */
+
+    public DecodedRequest(HttpServletRequest request)
+    {
+        _scheme = request.getScheme();
+        _serverName = request.getServerName();
+        _requestURI = request.getRequestURI();
+        _serverPort = request.getServerPort();
+    }
+
+    /**
+     * Default value is 80.
+     */
 
     public int getServerPort()
     {
         return _serverPort;
     }
 
+    /**
+     * Default value is 'http'.
+     */
+
     public String getScheme()
     {
         return _scheme;
     }
 
+    /**
+     * No default, a value must be set by the decoder.
+     */
+
     public String getServerName()
     {
         return _serverName;
     }
+
+    /**
+     * No default, a value must be set by the decoder.
+     */
 
     public String getRequestURI()
     {
@@ -82,4 +110,5 @@ public class DecodedRequest
     {
         _requestURI = URI;
     }
+
 }

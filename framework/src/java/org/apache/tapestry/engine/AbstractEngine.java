@@ -350,7 +350,8 @@ public abstract class AbstractEngine implements IEngine
                 monitor = cycle.getMonitor();
                 service = cycle.getService();
 
-                monitor.serviceBegin(service.getName(), context.getRequestURI());
+                monitor.serviceBegin(service.getName(), _infrastructure.getRequest()
+                        .getRequestURI());
 
                 // Invoke the service, which returns true if it may have changed
                 // the state of the engine (most do return true).

@@ -17,6 +17,8 @@ package org.apache.tapestry.engine;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
@@ -108,20 +110,21 @@ public class EngineServiceLink implements ILink
     {
         StringBuffer buffer = new StringBuffer();
         RequestContext context = _cycle.getRequestContext();
+        HttpServletRequest request = context.getRequest();
 
         if (scheme == null)
-            scheme = context.getScheme();
+            scheme = request.getScheme();
 
         buffer.append(scheme);
         buffer.append("://");
 
         if (server == null)
-            server = context.getServerName();
+            server = request.getServerName();
 
         buffer.append(server);
 
         if (port == 0)
-            port = context.getServerPort();
+            port = request.getServerPort();
 
         if (!(scheme.equals("http") && port == DEFAULT_HTTP_PORT))
         {

@@ -105,4 +105,11 @@ public interface WebRequest extends AttributeHolder
      */
 
     public int getServerPort();
+
+    /**
+     * Returns the path portion of the request which triggered this request. Query parameters,
+     * scheme, server and port are omitted.
+     */
+
+    public String getRequestURI();
 }

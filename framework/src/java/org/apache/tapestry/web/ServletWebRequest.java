@@ -106,4 +106,9 @@ public class ServletWebRequest implements WebRequest
     {
         return _servletRequest.getServerPort();
     }
+
+    public String getRequestURI()
+    {
+        return _servletRequest.getRequestURI();
+    }
 }
