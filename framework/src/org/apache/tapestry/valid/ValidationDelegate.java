@@ -62,6 +62,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -432,7 +433,13 @@ public class ValidationDelegate implements IValidationDelegate
         if (_trackingMap == null)
             return false;
 
-        String formName = component.getForm().getName();
+        IForm form = component.getForm();
+        // if there is no form, the component cannot have been rewound or rendered into a form yet
+        // so assume it cannot have errors.
+        if (form == null)
+            return false;
+        
+        String formName = form.getName();
         Map formMap = (Map) _trackingMap.get(formName);
 
         if (formMap == null)
