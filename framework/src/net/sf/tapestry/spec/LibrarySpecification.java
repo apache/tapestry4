@@ -82,8 +82,6 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
 
     private Map _libraries;
 
-    private String _dtdVersion;
-
     private String _description;
 
     /**
@@ -246,24 +244,6 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
     public void setDescription(String description)
     {
         _description = description;
-    }
-
-    public String getDTDVersion()
-    {
-        return _dtdVersion;
-    }
-
-    /**
-     *  Sets the version number of the DTD from which this specification
-     *  was created, if known.  This method exists as a convienience for
-     *  the Spindle plugin.
-     * 
-     * 
-     **/
-
-    public void setDTDVersion(String dtdVersion)
-    {
-        _dtdVersion = dtdVersion;
     }
 
     /**
