@@ -25,34 +25,35 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
-# Defines stuff specific to using the JBE with Cygnus and NT.
+# Defines stuff specific to using the JBE with Cygwin on various Microsoft
+# Win32 OSes (NT and 2000, primarily).
 
 # Here we define a bunch of command line tools used in the rest of the system.
 # Cygwin creates a kind of "virtual mount" that redirects /usr/bin to the
 # correct directory (generally, c:/cgywin/bin).
 
-MV := /usr/bin/mv.exe
+MV := /usr/bin/mv
 
 # Recent version of echo in cygwin require -e to interpret
 # escape characters in the echo string.
 
-ECHO := /usr/bin/echo.exe -e 
-MKDIRS := /usr/bin/mkdir.exe --parents
-TOUCH := /usr/bin/touch.exe
-RM := /usr/bin/rm.exe --force --recursive
+ECHO := /usr/bin/echo -e 
+MKDIRS := /usr/bin/mkdir --parents
+TOUCH := /usr/bin/touch
+RM := /usr/bin/rm --force --recursive
 
-CP := /usr/bin/cp.exe
+CP := /usr/bin/cp
 CP_FORCE_OPT := --force
 
-CAT := /usr/bin/cat.exe
-FIND := /usr/bin/find.exe
+CAT := /usr/bin/cat
+FIND := /usr/bin/find
 
-GNUTAR := /usr/bin/tar.exe
+GNUTAR := /usr/bin/tar
 GNUTAR_CREATE_OPT := --create
 GNUTAR_EXTRACT_OPT := --extract
 GNUTAR_GZIP_OPT := --gzip
 
-PWD := /usr/bin/pwd.exe
+PWD := /usr/bin/pwd
 
 # SED can be used to process a template file
 # and perform various edits and substitutions.
@@ -60,11 +61,11 @@ PWD := /usr/bin/pwd.exe
 # can easily convert hard-coded pathnames, usernames,
 # and passwords.
 
-SED := /usr/bin/sed.exe
+SED := /usr/bin/sed
 SED_QUIET_OPT := --quiet
 SED_EXPRESSION_OPT := -e 
 
-CHMOD := /usr/bin/chmod.exe
+CHMOD := /usr/bin/chmod
 
 # Provided internally by Cygnus shell
 
@@ -72,8 +73,8 @@ CD := cd
 
 # Used with DocBook.
 
-OPENJADE := $(OPENJADE_DIR)/openjade.exe
-ONSGMLS :=  $(OPENJADE_DIR)/onsgmls.exe
+OPENJADE := $(OPENJADE_DIR)/openjade
+ONSGMLS :=  $(OPENJADE_DIR)/onsgmls
 
 
 

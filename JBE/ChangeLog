@@ -1,3 +1,9 @@
+* May 2 2001 hship
+
+Default directory for Java source is now 'src' instead of '.'.
+Improve the code that rebuilds the JBE tools.
+Strip '.exe' from tools names on Cygwin (not necessary, Cygwin finds the right file for us).
+
 * Apr 26 2001 hship
 
 Make the WebLogic module compress the deployable EJB Jar.
