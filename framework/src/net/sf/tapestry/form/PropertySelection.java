@@ -241,8 +241,8 @@ public class PropertySelection extends AbstractFormComponent
         if (_disabled)
             writer.attribute("disabled");
 
-if (_submitOnChange)
-    writer.attribute("onchange", "javascript:this.form.submit();");
+        if (_submitOnChange)
+            writer.attribute("onchange", "javascript:this.form.submit();");
 
         // Apply informal attributes.
 
@@ -364,14 +364,14 @@ if (_submitOnChange)
     }
 
     /** @since 2.2 **/
-    
+
     public boolean getSubmitOnChange()
     {
         return _submitOnChange;
     }
 
     /** @since 2.2 **/
-    
+
     public void setSubmitOnChange(boolean submitOnChange)
     {
         _submitOnChange = submitOnChange;
