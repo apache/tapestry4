@@ -61,7 +61,7 @@ public interface IComponent extends IRender
      *
      */
  
-    public void addComponent(String name, IComponent component);
+    public void addComponent(IComponent component);
 
     /**
      *  Adds a new renderable element to the receiver.  The element may be either

@@ -256,7 +256,7 @@ public class PageLoader
 
 			// Add it, by name, to the container.
 
-			container.addComponent(id, component);
+			container.addComponent(component);
 
 			// Bind its parameters.
 

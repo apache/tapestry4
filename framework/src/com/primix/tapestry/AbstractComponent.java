@@ -151,35 +151,20 @@ public abstract class AbstractComponent implements IComponent
 
 	private static Map maskedAttributesStorage;
 
-	/**
-	*  Deprecated constructor..
-	*
-	*  <p>This constructor also initializes the assets for the
-	*  component from the specification.
-	*
-	* @param page The page to which the new component belongs.  This
-	* may only be null when creating a new page.
-	*
-	* @param container The container of the new component.  This will
-	* only be null when creating a page.
-	*
-	* @param name The name of the component within its container
-	* component.
-	*
-	* @param specification The ComponentSpecification for the
-	* component.
-	*
-    * @deprecated
-	*/
-
-
-	public void addComponent(String name, IComponent component)
+	public void addComponent(IComponent component)
 	{
 		if (components == null)
 			components = new HashMap(MAP_SIZE);
 
-		components.put(name, component);	
+		components.put(component.getId(), component);	
 	}
+
+    /**
+     *  Adds an element (which may be static text or a component) as a wrapped
+     *  element of this component.  Such elements are rendered
+     *  by {@link #renderWrapped(IResponseWriter, IRequestCycle)}.
+     *
+     */
 
 	public void addWrapped(IRender element)
 	{
@@ -475,23 +460,25 @@ public abstract class AbstractComponent implements IComponent
 		Object value;
 		String attribute;
 		IAsset asset;
+        Map.Entry entry;
 
 		if (bindings == null)
 			return;
 
-		i = bindings.keySet().iterator();
+		i = bindings.entrySet().iterator();
 
 		while (i.hasNext())
 		{
 			if (maskedAttributes == null)
 				buildMaskedAttributes(reservedNames);
 
-			key = (String)i.next();
+            entry = (Map.Entry)i.next();
+			key = (String)entry.getKey();
 
 			if (maskedAttributes.contains(key.toLowerCase()))
 				continue;
 
-			binding = (IBinding)bindings.get(key);
+			binding = (IBinding)entry.getValue();
 
 			value = binding.getValue();
 			if (value == null)
@@ -692,9 +679,7 @@ public abstract class AbstractComponent implements IComponent
 	public void renderWrapped(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		int i;
-
-		for (i = 0; i < wrappedCount; i++)
+		for (int i = 0; i < wrappedCount; i++)
 			wrapped[i].render(writer, cycle);
 	}
 
