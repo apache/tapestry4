@@ -35,19 +35,22 @@ import net.sf.tapestry.contrib.table.model.ITableSessionStateManager;
  * @version $Id$
  * @author mindbridge
  */
-public class FullTableSessionStateManager implements ITableSessionStateManager {
+public class FullTableSessionStateManager implements ITableSessionStateManager
+{
 
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#getSessionState(ITableModel)
 	 */
-	public Object getSessionState(ITableModel objModel) {
+	public Object getSessionState(ITableModel objModel)
+	{
 		return objModel;
 	}
 
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#recreateTableModel(Object)
 	 */
-	public ITableModel recreateTableModel(Object objState) {
+	public ITableModel recreateTableModel(Object objState)
+	{
 		return (ITableModel) objState;
 	}
 

@@ -27,11 +27,8 @@ package net.sf.tapestry.contrib.table.components;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.contrib.table.model.*;
 import net.sf.tapestry.contrib.table.model.ITableModel;
+import net.sf.tapestry.contrib.table.model.ITableModelSource;
 import net.sf.tapestry.contrib.table.model.ITableSessionStateManager;
 import net.sf.tapestry.contrib.table.model.ITableSessionStoreManager;
 import net.sf.tapestry.contrib.table.model.common.FullTableSessionStateManager;
@@ -40,66 +37,72 @@ import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.event.PageRenderListener;
 
 /**
- * @version $Id$
  * @author mindbridge
- *
+ * @version $Id$
  */
-public class TableView extends BaseComponent 
-    implements PageDetachListener, PageRenderListener, ITableModelSource
+public class TableView
+	extends BaseComponent
+	implements PageDetachListener, PageRenderListener, ITableModelSource
 {
-    private static ITableSessionStateManager DEFAULT_SESSION_STATE_MANAGER = 
-        new FullTableSessionStateManager();
+	private static ITableSessionStateManager DEFAULT_SESSION_STATE_MANAGER =
+		new FullTableSessionStateManager();
 
-    // Custom bindings
-    private IBinding m_objTableModelBinding = null;
-    private IBinding m_objTableSessionStateManagerBinding = null;
-    private IBinding m_objTableSessionStoreManagerBinding = null;
+	// Custom bindings
+	private IBinding m_objTableModelBinding = null;
+	private IBinding m_objTableSessionStateManagerBinding = null;
+	private IBinding m_objTableSessionStoreManagerBinding = null;
 
-    // In bindings
-    private String m_strElement;
+	// In bindings
+	private String m_strElement;
 
-    // Persistent properties
-    private Object m_objSessionState;    
-    
-    // Transient objects
-    private ITableModel m_objTableModel;
+	// Persistent properties
+	private Object m_objSessionState;
 
-    public TableView() {
-        init();
-    }
-    
-    /**
-     * @see net.sf.tapestry.event.PageDetachListener#pageDetached(PageEvent)
-     */
-    public void pageDetached(PageEvent objEvent) {
-        init();
-    }
+	// Transient objects
+	private ITableModel m_objTableModel;
 
-    private void init() {
-        m_objSessionState = null;
-        m_objTableModel = null;
-        m_strElement = "table";
-    }
-
-    /**
-	 * @see net.sf.tapestry.AbstractComponent#finishLoad()
-	 */
-	protected void finishLoad() {
-		super.finishLoad();
-        getPage().addPageDetachListener(this);
-        getPage().addPageRenderListener(this);
+	public TableView()
+	{
+		init();
 	}
 
-    public void reset() {
-        m_objTableModel = null;
-        saveSessionState(null);
-    }
+	/**
+	 * @see net.sf.tapestry.event.PageDetachListener#pageDetached(PageEvent)
+	 */
+	public void pageDetached(PageEvent objEvent)
+	{
+		init();
+	}
+
+	private void init()
+	{
+		m_objSessionState = null;
+		m_objTableModel = null;
+		m_strElement = "table";
+	}
+
+	/**
+	 * @see net.sf.tapestry.AbstractComponent#finishLoad()
+	 */
+	protected void finishLoad()
+	{
+		super.finishLoad();
+		getPage().addPageDetachListener(this);
+		getPage().addPageRenderListener(this);
+	}
+
+	public void reset()
+	{
+		m_objTableModel = null;
+		saveSessionState(null);
+	}
 
 	/**
 	 * Returns the tableModelBinding.
 	 * @return IBinding
 	 */
-	public IBinding getTableModelBinding() {
+	public IBinding getTableModelBinding()
+	{
 		return m_objTableModelBinding;
 	}
 
@@ -107,35 +110,41 @@ public class TableView extends BaseComponent
 	 * Sets the tableModelBinding.
 	 * @param tableModelBinding The tableModelBinding to set
 	 */
-	public void setTableModelBinding(IBinding tableModelBinding) {
+	public void setTableModelBinding(IBinding tableModelBinding)
+	{
 		m_objTableModelBinding = tableModelBinding;
 	}
 
-    /**
-     * Returns the tableModel.
-     * @return ITableModel
-     */
-    public ITableModel getTableModel() {
-        // if null, first try to recreate the model from the session state
-        if (m_objTableModel == null) {
-            Object objState = loadSessionState();
-            m_objTableModel = getTableSessionStateManager().recreateTableModel(objState);
-        }
+	/**
+	 * Returns the tableModel.
+	 * @return ITableModel
+	 */
+	public ITableModel getTableModel()
+	{
+		// if null, first try to recreate the model from the session state
+		if (m_objTableModel == null)
+		{
+			Object objState = loadSessionState();
+			m_objTableModel =
+				getTableSessionStateManager().recreateTableModel(objState);
+		}
 
-        // if the session state does not help, get the model from the binding
-        if (m_objTableModel == null) {
-            IBinding objBinding = getTableModelBinding();
-            m_objTableModel = (ITableModel) objBinding.getObject();
-        }
+		// if the session state does not help, get the model from the binding
+		if (m_objTableModel == null)
+		{
+			IBinding objBinding = getTableModelBinding();
+			m_objTableModel = (ITableModel) objBinding.getObject();
+		}
 
-        return m_objTableModel;
-    }
+		return m_objTableModel;
+	}
 
 	/**
 	 * Returns the tableSessionStateManagerBinding.
 	 * @return IBinding
 	 */
-	public IBinding getTableSessionStateManagerBinding() {
+	public IBinding getTableSessionStateManagerBinding()
+	{
 		return m_objTableSessionStateManagerBinding;
 	}
 
@@ -143,22 +152,25 @@ public class TableView extends BaseComponent
 	 * Sets the tableSessionStateManagerBinding.
 	 * @param tableSessionStateManagerBinding The tableSessionStateManagerBinding to set
 	 */
-	public void setTableSessionStateManagerBinding(IBinding tableSessionStateManagerBinding) {
+	public void setTableSessionStateManagerBinding(IBinding tableSessionStateManagerBinding)
+	{
 		m_objTableSessionStateManagerBinding = tableSessionStateManagerBinding;
 	}
 
-    public ITableSessionStateManager getTableSessionStateManager() {
-        IBinding objBinding = getTableSessionStateManagerBinding();
-        if (objBinding == null || objBinding.getObject() == null)
-            return DEFAULT_SESSION_STATE_MANAGER;
-        return (ITableSessionStateManager) objBinding.getObject();
-    }
+	public ITableSessionStateManager getTableSessionStateManager()
+	{
+		IBinding objBinding = getTableSessionStateManagerBinding();
+		if (objBinding == null || objBinding.getObject() == null)
+			return DEFAULT_SESSION_STATE_MANAGER;
+		return (ITableSessionStateManager) objBinding.getObject();
+	}
 
 	/**
 	 * Returns the tableSessionStoreManagerBinding.
 	 * @return IBinding
 	 */
-	public IBinding getTableSessionStoreManagerBinding() {
+	public IBinding getTableSessionStoreManagerBinding()
+	{
 		return m_objTableSessionStoreManagerBinding;
 	}
 
@@ -166,21 +178,25 @@ public class TableView extends BaseComponent
 	 * Sets the tableSessionStoreManagerBinding.
 	 * @param tableSessionStoreManagerBinding The tableSessionStoreManagerBinding to set
 	 */
-	public void setTableSessionStoreManagerBinding(IBinding tableSessionStoreManagerBinding) {
+	public void setTableSessionStoreManagerBinding(IBinding tableSessionStoreManagerBinding)
+	{
 		m_objTableSessionStoreManagerBinding = tableSessionStoreManagerBinding;
 	}
 
-    public ITableSessionStoreManager getTableSessionStoreManager() {
-        IBinding objBinding = getTableSessionStoreManagerBinding();
-        if (objBinding == null) return null;
-        return (ITableSessionStoreManager) objBinding.getObject();
-    }
-    
+	public ITableSessionStoreManager getTableSessionStoreManager()
+	{
+		IBinding objBinding = getTableSessionStoreManagerBinding();
+		if (objBinding == null)
+			return null;
+		return (ITableSessionStoreManager) objBinding.getObject();
+	}
+
 	/**
 	 * Returns the sessionState.
 	 * @return Object
 	 */
-	public Object getSessionState() {
+	public Object getSessionState()
+	{
 		return m_objSessionState;
 	}
 
@@ -188,57 +204,64 @@ public class TableView extends BaseComponent
 	 * Sets the sessionState.
 	 * @param sessionState The sessionState to set
 	 */
-	public void setSessionState(Object sessionState) {
+	public void setSessionState(Object sessionState)
+	{
 		m_objSessionState = sessionState;
 	}
-    
-    public void updateSessionState(Object sessionState) {
-        setSessionState(sessionState);
-        fireObservedChange("sessionState", sessionState);
-    }
 
-    protected Object loadSessionState() {
-        ITableSessionStoreManager objManager = getTableSessionStoreManager();
-        if (objManager != null)
-            return objManager.loadState(getPage().getRequestCycle());
-        return getSessionState();
-    }
+	public void updateSessionState(Object sessionState)
+	{
+		setSessionState(sessionState);
+		fireObservedChange("sessionState", sessionState);
+	}
 
-    protected void saveSessionState(Object objState) {
-        ITableSessionStoreManager objManager = getTableSessionStoreManager();
-        if (objManager != null)
-            objManager.saveState(getPage().getRequestCycle(), objState);
-        else
-            updateSessionState(objState);
-    }
-    
-    
-    
+	protected Object loadSessionState()
+	{
+		ITableSessionStoreManager objManager = getTableSessionStoreManager();
+		if (objManager != null)
+			return objManager.loadState(getPage().getRequestCycle());
+		return getSessionState();
+	}
+
+	protected void saveSessionState(Object objState)
+	{
+		ITableSessionStoreManager objManager = getTableSessionStoreManager();
+		if (objManager != null)
+			objManager.saveState(getPage().getRequestCycle(), objState);
+		else
+			updateSessionState(objState);
+	}
+
 	/**
 	 * @see net.sf.tapestry.event.PageRenderListener#pageBeginRender(PageEvent)
 	 */
-	public void pageBeginRender(PageEvent objEvent) {
-        // ignore if rewinding
-        if (objEvent.getRequestCycle().isRewinding()) return;
-        
-        // Save the session state of the table model
-        // This is the moment after changes and right before committing
-        ITableModel objModel = getTableModel();
-        Object objState = getTableSessionStateManager().getSessionState(objModel);
-        saveSessionState(objState);
+	public void pageBeginRender(PageEvent objEvent)
+	{
+		// ignore if rewinding
+		if (objEvent.getRequestCycle().isRewinding())
+			return;
+
+		// Save the session state of the table model
+		// This is the moment after changes and right before committing
+		ITableModel objModel = getTableModel();
+		Object objState =
+			getTableSessionStateManager().getSessionState(objModel);
+		saveSessionState(objState);
 	}
 
 	/**
 	 * @see net.sf.tapestry.event.PageRenderListener#pageEndRender(PageEvent)
 	 */
-	public void pageEndRender(PageEvent objEvent) {
+	public void pageEndRender(PageEvent objEvent)
+	{
 	}
 
 	/**
 	 * Returns the element.
 	 * @return String
 	 */
-	public String getElement() {
+	public String getElement()
+	{
 		return m_strElement;
 	}
 
@@ -246,7 +269,8 @@ public class TableView extends BaseComponent
 	 * Sets the element.
 	 * @param element The element to set
 	 */
-	public void setElement(String element) {
+	public void setElement(String element)
+	{
 		m_strElement = element;
 	}
 

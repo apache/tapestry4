@@ -32,48 +32,54 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 
 /**
- * @version $Id$
  * @author mindbridge
+ * @version $Id$
  *
  */
-public class TableRows extends BaseComponent {
+public class TableRows extends BaseComponent
+{
 
-    // Bindings    
-    private IBinding m_objTableViewBinding = null;
-    
-    // Transient
-    private Object m_objTableRow;
+	// Bindings    
+	private IBinding m_objTableViewBinding = null;
 
-    /**
-     * Returns the tableViewBinding.
-     * @return IBinding
-     */
-    public IBinding getTableViewBinding() {
-        return m_objTableViewBinding;
-    }
+	// Transient
+	private Object m_objTableRow;
 
-    /**
-     * Sets the tableViewBinding.
-     * @param tableViewBinding The tableViewBinding to set
-     */
-    public void setTableViewBinding(IBinding tableViewBinding) {
-        m_objTableViewBinding = tableViewBinding;
-    }
+	/**
+	 * Returns the tableViewBinding.
+	 * @return IBinding
+	 */
+	public IBinding getTableViewBinding()
+	{
+		return m_objTableViewBinding;
+	}
 
-    public TableView getTableView() {
-        return (TableView) getTableViewBinding().getObject();
-    }
+	/**
+	 * Sets the tableViewBinding.
+	 * @param tableViewBinding The tableViewBinding to set
+	 */
+	public void setTableViewBinding(IBinding tableViewBinding)
+	{
+		m_objTableViewBinding = tableViewBinding;
+	}
 
-    public Iterator getTableRowsIterator() {
-        ITableModel objTableModel = getTableView().getTableModel();
-        return objTableModel.getCurrentPageRows();
-    }
-    
+	public TableView getTableView()
+	{
+		return (TableView) getTableViewBinding().getObject();
+	}
+
+	public Iterator getTableRowsIterator()
+	{
+		ITableModel objTableModel = getTableView().getTableModel();
+		return objTableModel.getCurrentPageRows();
+	}
+
 	/**
 	 * Returns the tableRow.
 	 * @return Object
 	 */
-	public Object getTableRow() {
+	public Object getTableRow()
+	{
 		return m_objTableRow;
 	}
 
@@ -81,7 +87,8 @@ public class TableRows extends BaseComponent {
 	 * Sets the tableRow.
 	 * @param tableRow The tableRow to set
 	 */
-	public void setTableRow(Object tableRow) {
+	public void setTableRow(Object tableRow)
+	{
 		m_objTableRow = tableRow;
 	}
 

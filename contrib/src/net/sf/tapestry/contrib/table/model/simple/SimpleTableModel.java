@@ -45,125 +45,141 @@ import net.sf.tapestry.contrib.table.model.common.ReverseComparator;
  * @version $Id$
  * @author mindbridge
  */
-public class SimpleTableModel implements ITableModel, Serializable 
+public class SimpleTableModel implements ITableModel, Serializable
 {
-    private Object[] m_arrRows;
-    private ITableColumnModel m_objColumnModel;
-    private SimpleTableState m_objState;
+	private Object[] m_arrRows;
+	private ITableColumnModel m_objColumnModel;
+	private SimpleTableState m_objState;
 
-    private SimpleTableSortingState m_objLastSortingState;
+	private SimpleTableSortingState m_objLastSortingState;
 
+	public SimpleTableModel(Object[] arrData, ITableColumn[] arrColumns)
+	{
+		this(
+			new SimpleTableDataModel(arrData),
+			new SimpleTableColumnModel(arrColumns));
+	}
 
-    public SimpleTableModel(Object[] arrData, ITableColumn[] arrColumns)
-    {
-        this(new SimpleTableDataModel(arrData), new SimpleTableColumnModel(arrColumns));
-    }
+	public SimpleTableModel(
+		ITableDataModel objDataModel,
+		ITableColumnModel objColumnModel)
+	{
+		this(objDataModel, objColumnModel, new SimpleTableState());
+	}
 
-    public SimpleTableModel(ITableDataModel objDataModel, ITableColumnModel objColumnModel)
-    {
-        this(objDataModel, objColumnModel, new SimpleTableState());
-    }
+	public SimpleTableModel(
+		ITableDataModel objDataModel,
+		ITableColumnModel objColumnModel,
+		SimpleTableState objState)
+	{
+		extractRows(objDataModel);
+		m_objColumnModel = objColumnModel;
+		m_objState = objState;
+		m_objLastSortingState = new SimpleTableSortingState();
+	}
 
-    public SimpleTableModel(ITableDataModel objDataModel, ITableColumnModel objColumnModel, SimpleTableState objState)
-    {
-        extractRows(objDataModel);
-        m_objColumnModel = objColumnModel;
-        m_objState = objState;
-        m_objLastSortingState = new SimpleTableSortingState();
-    }
-
-    public SimpleTableState getState() {
-        return m_objState;
-    }
+	public SimpleTableState getState()
+	{
+		return m_objState;
+	}
 
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getColumnModel()
 	 */
-	public ITableColumnModel getColumnModel() {
+	public ITableColumnModel getColumnModel()
+	{
 		return m_objColumnModel;
 	}
 
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getCurrentPageRows()
 	 */
-	public Iterator getCurrentPageRows() {
-        sortRows();
-        
-        int nPageSize = getPagingState().getPageSize();
-        int nCurrentPage = getPagingState().getCurrentPage();
+	public Iterator getCurrentPageRows()
+	{
+		sortRows();
 
-        int nFrom = nCurrentPage * nPageSize;
-        int nTo = (nCurrentPage + 1) * nPageSize;
-        
+		int nPageSize = getPagingState().getPageSize();
+		int nCurrentPage = getPagingState().getCurrentPage();
+
+		int nFrom = nCurrentPage * nPageSize;
+		int nTo = (nCurrentPage + 1) * nPageSize;
+
 		return new ArrayIterator(m_arrRows, nFrom, nTo);
 	}
 
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getPageCount()
 	 */
-	public int getPageCount() {
-        int nRowCount = getRowCount();
-        if (nRowCount == 0) return 1;
+	public int getPageCount()
+	{
+		int nRowCount = getRowCount();
+		if (nRowCount == 0)
+			return 1;
 		return (nRowCount - 1) / getPagingState().getPageSize() + 1;
 	}
 
-    /**
-     * @see net.sf.tapestry.contrib.table.model.ITableModel#getPagingState()
-     */
-    public ITablePagingState getPagingState() {
-        return m_objState.getPagingState();
-    }
+	/**
+	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getPagingState()
+	 */
+	public ITablePagingState getPagingState()
+	{
+		return m_objState.getPagingState();
+	}
 
-    /**
-     * @see net.sf.tapestry.contrib.table.model.ITableModel#getSortingState()
-     */
-    public ITableSortingState getSortingState() {
-        return m_objState.getSortingState();
-    }
+	/**
+	 * @see net.sf.tapestry.contrib.table.model.ITableModel#getSortingState()
+	 */
+	public ITableSortingState getSortingState()
+	{
+		return m_objState.getSortingState();
+	}
 
-    public int getRowCount()
-    {
-        return m_arrRows.length;
-    }
+	public int getRowCount()
+	{
+		return m_arrRows.length;
+	}
 
-    private void extractRows(ITableDataModel objDataModel)
-    {
-        int nRowCount = objDataModel.getRowCount();
-        Object[] arrRows = new Object[nRowCount];
+	private void extractRows(ITableDataModel objDataModel)
+	{
+		int nRowCount = objDataModel.getRowCount();
+		Object[] arrRows = new Object[nRowCount];
 
-        int i = 0;
-        for (Iterator it = objDataModel.getRows(0, nRowCount); it.hasNext();)
-            arrRows[i++] = it.next();
-            
-        m_arrRows = arrRows;
-    }
+		int i = 0;
+		for (Iterator it = objDataModel.getRows(0, nRowCount); it.hasNext();)
+			arrRows[i++] = it.next();
 
-    protected void sortRows()
-    {
-        ITableSortingState objSortingState = getSortingState();
-        
-        String strSortColumn = objSortingState.getSortColumn();
-        if (strSortColumn == null) return;
+		m_arrRows = arrRows;
+	}
 
-        boolean bSortOrder = objSortingState.getSortOrder();
+	protected void sortRows()
+	{
+		ITableSortingState objSortingState = getSortingState();
 
-        // See if the table is already sorted this way. If so, return.
-        if (strSortColumn.equals(m_objLastSortingState.getSortColumn()) &&
-            m_objLastSortingState.getSortOrder() == bSortOrder)
-            return;
-        
-        ITableColumn objColumn = getColumnModel().getColumn(strSortColumn);
-        if (objColumn == null || !objColumn.getSortable()) return;
+		String strSortColumn = objSortingState.getSortColumn();
+		if (strSortColumn == null)
+			return;
 
-        Comparator objCmp = objColumn.getComparator();
-        if (objCmp == null) return;
-        
-        if (bSortOrder == ITableSortingState.SORT_DESCENDING)
-            objCmp = new ReverseComparator(objCmp);
-            
-        Arrays.sort(m_arrRows, objCmp);
-        
-        m_objLastSortingState.setSortColumn(strSortColumn, bSortOrder);
-    }
+		boolean bSortOrder = objSortingState.getSortOrder();
+
+		// See if the table is already sorted this way. If so, return.
+		if (strSortColumn.equals(m_objLastSortingState.getSortColumn())
+			&& m_objLastSortingState.getSortOrder() == bSortOrder)
+			return;
+
+		ITableColumn objColumn = getColumnModel().getColumn(strSortColumn);
+		if (objColumn == null || !objColumn.getSortable())
+			return;
+
+		Comparator objCmp = objColumn.getComparator();
+		if (objCmp == null)
+			return;
+
+		if (bSortOrder == ITableSortingState.SORT_DESCENDING)
+			objCmp = new ReverseComparator(objCmp);
+
+		Arrays.sort(m_arrRows, objCmp);
+
+		m_objLastSortingState.setSortColumn(strSortColumn, bSortOrder);
+	}
 
 }

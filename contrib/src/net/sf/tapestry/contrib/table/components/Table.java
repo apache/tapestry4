@@ -28,8 +28,8 @@ package net.sf.tapestry.contrib.table.components;
 import net.sf.tapestry.BaseComponent;
 
 /**
- * @version $Id$
  * @author mindbridge
+ * @version $Id$
  *
  */
 public class Table extends BaseComponent {

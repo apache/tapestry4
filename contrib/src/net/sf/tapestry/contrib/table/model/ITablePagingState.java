@@ -31,30 +31,31 @@ package net.sf.tapestry.contrib.table.model;
  * @version $Id$
  * @author mindbridge
  */
-public interface ITablePagingState {
+public interface ITablePagingState
+{
 	/**
 	 * Method getPageSize provides the size of a page in a number of records.
-     * This value may be meaningless if the model uses a different method for pagination.
+	 * This value may be meaningless if the model uses a different method for pagination.
 	 * @return int the current page size
 	 */
-    int getPageSize();
+	int getPageSize();
 
 	/**
 	 * Method setPageSize updates the size of a page in a number of records.
-     * This value may be meaningless if the model uses a different method for pagination.
+	 * This value may be meaningless if the model uses a different method for pagination.
 	 * @param nPageSize the new page size
 	 */
-    void setPageSize(int nPageSize);
+	void setPageSize(int nPageSize);
 
 	/**
 	 * Method getCurrentPage.
 	 * @return int the current active page
 	 */
-    int getCurrentPage();
+	int getCurrentPage();
 
 	/**
 	 * Method setCurrentPage.
 	 * @param nPage the new active page
 	 */
-    void setCurrentPage(int nPage);
+	void setCurrentPage(int nPage);
 }

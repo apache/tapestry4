@@ -24,8 +24,8 @@
 		<static-binding name="element">td</static-binding>
 	</component>
   
-	<component id="insertValueRenderer" type="InsertRenderer">
-		<binding name="renderer" expression="tableValueRenderer"/>
+	<component id="insertValueRenderer" type="Delegator">
+		<binding name="delegate" expression="tableValueRenderer"/>
 	</component>
   
 </component-specification>

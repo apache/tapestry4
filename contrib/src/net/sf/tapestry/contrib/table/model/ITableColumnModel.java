@@ -33,23 +33,24 @@ import java.util.Iterator;
  * @version $Id$
  * @author mindbridge
  */
-public interface ITableColumnModel {
+public interface ITableColumnModel
+{
 	/**
 	 * Method getColumnCount.
 	 * @return int the number of columns in the model
 	 */
-    int getColumnCount();
-    
+	int getColumnCount();
+
 	/**
 	 * Method getColumn.
 	 * @param strName the name of the requested column
 	 * @return ITableColumn the column with the given name. null if no such column exists.
 	 */
-    ITableColumn getColumn(String strName);
+	ITableColumn getColumn(String strName);
 
 	/**
 	 * Method getColumns.
 	 * @return Iterator an iterator of all columns in the model
 	 */
-    Iterator getColumns();
+	Iterator getColumns();
 }
