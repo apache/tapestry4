@@ -120,12 +120,14 @@
   <changes>
     <release version="3.0.3" date="Unreleased">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
-      <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread needs explicit termination. </action>
-      <action type="fix" dev="PF" fixes-bug="TAPESTRY-238"> Fixes bug introduced in 3.0.2 that prevents DatePicker calendar window from closing automatically. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread now terminates explicitly when servlet is destroyed.  Interruption properly terminates thread during sweep operation. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-238"> Fixed bug preventing DatePicker calendar window from closing automatically if onchange event handler is not specified. </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-277"> DatePicker onchange event now only fires when date changes. </action>
       <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-255"> Patch for bad translation in ValidationStrings_zh_TW.properties </action>
+      <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-251"> Patch for bad translation in ValidationStrings_zh_CN.properties </action>
       <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1"> Fixed incorrect test for enabling rendering of element in FormConditional component </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-283"> Fixes missing type attribute of script tag in Body component. </action>
+      <action type="update" dev="PF"> Build scripts are now Java 1.5 friendly. </action>
     </release>
     <release version="3.0.2" date="Feb 14 2005">
       <action type="fix" dev="EH" fixes-bug="TAPESTRY-214, TAPESTRY-216, TAPESTRY-227"> Fix build settings for JDOM and Jetty. </action>
