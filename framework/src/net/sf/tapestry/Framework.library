@@ -19,8 +19,10 @@
     <component-alias type="Any" specification-path="/net/sf/tapestry/components/Any.jwc"/>
     <component-alias type="Block" specification-path="/net/sf/tapestry/components/Block.jwc"/>
     <component-alias type="Body" specification-path="/net/sf/tapestry/html/Body.jwc"/>
+    <component-alias type="Button" specification-path="/net/sf/tapestry/form/Button.jwc"/>
     <component-alias type="Checkbox" specification-path="/net/sf/tapestry/form/Checkbox.jwc"/>
     <component-alias type="Conditional" specification-path="/net/sf/tapestry/components/Conditional.jwc"/>
+    <component-alias type="DateEdit" specification-path="/net/sf/tapestry/form/DateEdit.jwc"/>
     <component-alias type="Delegator" specification-path="/net/sf/tapestry/components/Delegator.jwc"/>
     <component-alias type="DirectLink" specification-path="/net/sf/tapestry/link/DirectLink.jwc"/>
     <component-alias type="FieldLabel" specification-path="/net/sf/tapestry/valid/FieldLabel.jwc"/>

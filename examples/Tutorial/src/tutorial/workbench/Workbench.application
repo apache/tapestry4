@@ -34,6 +34,8 @@
 
   <page name="Forms" specification-path="/tutorial/workbench/fields/Forms.page"/>
 
+  <page name="Dates" specification-path="/tutorial/workbench/fields/Dates.page"/>
+
   <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
   <component-alias type="ShowError" specification-path="/tutorial/workbench/components/ShowError.jwc"/>
  

@@ -48,6 +48,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
 
 public class Hidden extends AbstractFormComponent
 {
+    private IBinding _datasqueezeBinding;
     private IBinding _valueBinding;
     private IActionListener _listener;
     private String _name;
@@ -63,6 +64,11 @@ public class Hidden extends AbstractFormComponent
         boolean formRewound = form.isRewinding();
 
         _name = form.getElementId(this);
+        
+        Boolean datasqueeze = (Boolean) _datasqueezeBinding.getObject();
+        if (datasqueeze == null) {
+            datasqueeze = Boolean.TRUE;
+        } 
 
         // If the form containing the Hidden isn't rewound, then render.
 
@@ -78,13 +84,20 @@ public class Hidden extends AbstractFormComponent
 
             String externalValue = null;
 
-            try
+            if (datasqueeze.equals(Boolean.TRUE)) 
             {
-                externalValue = getDataSqueezer().squeeze(value);
+                try
+                {
+                    externalValue = getDataSqueezer().squeeze(value);
+                }
+                catch (IOException ex)
+                {
+                    throw new RequestCycleException(this, ex);
+                }
             }
-            catch (IOException ex)
+            else 
             {
-                throw new RequestCycleException(this, ex);
+                externalValue = value.toString();
             }
 
             writer.beginEmpty("input");
@@ -98,13 +111,20 @@ public class Hidden extends AbstractFormComponent
         String externalValue = cycle.getRequestContext().getParameter(_name);
         Object value = null;
 
-        try
+        if (datasqueeze.equals(Boolean.TRUE)) 
         {
-            value = getDataSqueezer().unsqueeze(externalValue);
+            try
+            {
+                value = getDataSqueezer().unsqueeze(externalValue);
+            }
+            catch (IOException ex)
+            {
+                throw new RequestCycleException(this, ex);
+            }
         }
-        catch (IOException ex)
+        else
         {
-            throw new RequestCycleException(this, ex);
+            value = externalValue;    
         }
 
         // A listener is not always necessary ... it's easy to code
@@ -144,6 +164,16 @@ public class Hidden extends AbstractFormComponent
         _valueBinding = valueBinding;
     }
 
+    public IBinding getDatasqueezeBinding()
+    {
+        return _datasqueezeBinding;
+    }
+
+    public void setDatasqueezeBinding(IBinding datasqueezeBinding)
+    {
+        _datasqueezeBinding = datasqueezeBinding;
+    }
+
     /**
      * 
      *  Returns false.  Hidden components are never disabled.
@@ -156,5 +186,5 @@ public class Hidden extends AbstractFormComponent
     {
         return false;
     }
-
+    
 }

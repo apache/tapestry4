@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<component-specification class="net.sf.tapestry.form.Button" allow-body="no">
+
+  <description>
+  Creates a labeled button within a form.
+  </description>
+
+  <parameter name="label" java-type="java.lang.String" direction="in"/>
+  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="selected"/>
+  <parameter name="tag" java-type="java.lang.Object" direction="in"/>
+  <parameter name="listener" 
+  	java-type="net.sf.tapestry.IActionListener"
+  	direction="in"/>
+  
+  <reserved-parameter name="name"/>
+  <reserved-parameter name="type"/>
+
+</component-specification>
