@@ -56,15 +56,14 @@ package org.apache.tapestry.contrib.tree.components;
 
 import java.util.Iterator;
 
-import org.apache.tapestry.contrib.tree.model.TreeRowObject;
-import org.apache.tapestry.contrib.tree.model.ITreeDataModel;
-import org.apache.tapestry.contrib.tree.model.ITreeModel;
-import org.apache.tapestry.contrib.tree.model.ITreeRowSource;
-
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.contrib.tree.model.ITreeDataModel;
+import org.apache.tapestry.contrib.tree.model.ITreeModel;
+import org.apache.tapestry.contrib.tree.model.ITreeRowSource;
+import org.apache.tapestry.contrib.tree.model.TreeRowObject;
 
 /**
  * @version $Id$

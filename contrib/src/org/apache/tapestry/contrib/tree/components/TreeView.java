@@ -54,19 +54,18 @@
  */
 package org.apache.tapestry.contrib.tree.components;
 
-import org.apache.tapestry.contrib.tree.model.ISessionStoreManager;
-import org.apache.tapestry.contrib.tree.model.ITreeModel;
-import org.apache.tapestry.contrib.tree.model.ITreeModelSource;
-import org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager;
-import org.apache.tapestry.contrib.tree.model.ITreeStateListener;
-import org.apache.tapestry.contrib.tree.simple.FullTreeSessionStateManager;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.contrib.tree.model.ISessionStoreManager;
+import org.apache.tapestry.contrib.tree.model.ITreeModel;
+import org.apache.tapestry.contrib.tree.model.ITreeModelSource;
+import org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager;
+import org.apache.tapestry.contrib.tree.model.ITreeStateListener;
+import org.apache.tapestry.contrib.tree.simple.FullTreeSessionStateManager;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;

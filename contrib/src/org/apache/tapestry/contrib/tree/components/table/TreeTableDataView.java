@@ -57,6 +57,10 @@ package org.apache.tapestry.contrib.tree.components.table;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
@@ -64,18 +68,13 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableSessionStateManager;
-import org.apache.tapestry.contrib.tree.model.TreeRowObject;
 import org.apache.tapestry.contrib.tree.model.ITreeDataModel;
 import org.apache.tapestry.contrib.tree.model.ITreeModel;
 import org.apache.tapestry.contrib.tree.model.ITreeModelSource;
 import org.apache.tapestry.contrib.tree.model.ITreeRowSource;
+import org.apache.tapestry.contrib.tree.model.TreeRowObject;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
-
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
 
 /**
  * @version $Id$
