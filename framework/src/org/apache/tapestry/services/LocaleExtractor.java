@@ -12,17 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services.impl;
+package org.apache.tapestry.services;
 
-import javax.servlet.http.HttpServlet;
+import java.util.Locale;
 
 /**
- * Used by a number of tests that require a servlet (that stands in for the real application
- * servlet).
+ * Used to determine what is the client-specified locale, if any, for the current request.
+ * This may be stored in the request as an HTTP Cookie, or may be interpolated from
+ * request headers.  Additionally, the "raw" value provided by the client may be
+ * filtered down.
  *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class ServletFixture extends HttpServlet
+public interface LocaleExtractor
 {
+	public Locale extractLocaleForCurrentRequest();
 }

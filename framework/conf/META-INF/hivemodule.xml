@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry" version="3.1.0">
+
+  The master module for the Tapestry web application framework.
+  
+  <service-point id="MasterInitializer" interface="org.apache.tapestry.services.ApplicationInitializer">
+    
+    Master startup for the application; invokes an ordered series of other ApplicationInitializer instances contributed to
+    the ApplicationInitializers configuration point.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.MasterInitializer">
+        <set-configuration property="initializers" configuration-id="ApplicationInitializers"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+
+  <configuration-point id="ApplicationInitializers">
+  
+    An orderable list of ApplicationInitializer services.
+    
+    <schema>
+      <element name="initializer">
+        <attribute name="name" required="true">
+          A unique id used when ordering the initializers.
+        </attribute>
+      
+        <attribute name="before" translator="id-list">
+          A comma-seperated list of the names of initializers that should execute after this initializer.
+        </attribute>
+      
+        <attribute name="after" translator="id-list">
+          A comma-seperated list of the names of initializers that should execute before this initializer.
+        </attribute>
+        
+        <attribute name="object" required="true" translator="object">
+          The object which implements the ApplicationInitializer interface.
+        </attribute>
+        
+        <conversion class="org.apache.tapestry.services.impl.InitializerContribution">
+          <map attribute="object" property="initializer"/>
+        </conversion>
+      </element>
+    </schema>
+  </configuration-point>
+
+  <service-point id="ApplicationSpecificationInitializer" interface="org.apache.tapestry.services.ApplicationInitializer">
+    
+    Locates and parses the application specification and informs the ApplicationGlobals service about it.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ApplicationSpecificationInitializer">
+        <set-service property="classpathResourceFactory" service-id="ClasspathResourceFactory"/>
+        <set-service property="globals" service-id="ApplicationGlobals"/>
+        <set-service property="parser" service-id="SpecificationParser"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
+  
+    Constructs new instances of ClasspathResource.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ClasspathResourceFactoryImpl"/>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="SpecificationParser" interface="org.apache.tapestry.services.SpecificationParser">
+    <invoke-factory model="pooled">
+      <construct class="org.apache.tapestry.services.impl.SpecificationParserImpl"/>
+    </invoke-factory>
+    
+    <interceptor service-id="hivemind.LoggingInterceptor"/>
+  </service-point>
+  
+  <service-point id="ApplicationGlobals" interface="org.apache.tapestry.services.ApplicationGlobals">
+    <create-instance class="org.apache.tapestry.services.impl.ApplicationGlobalsImpl"/>
+  </service-point>
+  
+  <contribution configuration-id="ApplicationInitializers">
+    <initializer name="ApplicationSpecificationInitializer" object="service:ApplicationSpecificationInitializer"/>
+  </contribution>
+  
+  <service-point id="EnginePool" interface="org.apache.tapestry.services.ObjectPool">
+    <create-instance class="org.apache.tapestry.services.impl.ObjectPool"/>
+  </service-point>
+  
+  <service-point id="ServletInfo" interface="org.apache.tapestry.services.ServletInfo">
+    Stores the request and response for the current thread.
+    
+    <create-instance class="org.apache.tapestry.services.impl.ServletInfoImpl" model="threaded"/>
+  </service-point>
+  
+  <service-point id="ServletInfoInitializer" interface="org.apache.tapestry.services.RequestServicerFilter">
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ServletInfoInitializer">
+        <set-service property="servletInfo" service-id="ServletInfo"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  
+  <service-point id="RequestServicerPipeline" interface="org.apache.tapestry.services.RequestServicer">
+    
+    A pipeline for handling each request.
+    
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
+      <create-pipeline filter-interface="org.apache.tapestry.services.RequestServicerFilter"
+        configuration-id="RequestServicerPipeline"/>
+    </invoke-factory>    
+  </service-point>
+  
+  <configuration-point id="RequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+    
+    A pipeline for processing an incoming request.
+  </configuration-point>
+  
+  <contribution configuration-id="RequestServicerPipeline">
+    <filter name="ServletInfoInitializer" before="*" object="service:ServletInfoInitializer"/>
+  </contribution>
+</module>

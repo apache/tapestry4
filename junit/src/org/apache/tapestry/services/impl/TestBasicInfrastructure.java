@@ -151,4 +151,29 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         assertEquals(expected, f.newResource(path));
     }
+
+    public void testServletInfoInitializer() throws Exception
+    {
+        HttpServletRequest request = (HttpServletRequest) newMock(HttpServletRequest.class);
+        HttpServletResponse response = (HttpServletResponse) newMock(HttpServletResponse.class);
+        ServletInfo servletInfo = (ServletInfo) newMock(ServletInfo.class);
+
+        ServletInfoInitializer sii = new ServletInfoInitializer();
+
+        RequestServicer rs = (RequestServicer) newMock(RequestServicer.class);
+
+        sii.setServletInfo(servletInfo);
+
+        // Training
+
+        servletInfo.store(request, response);
+
+        rs.service(request, response);
+
+        replayControls();
+
+        sii.service(request, response, rs);
+
+        verifyControls();
+    }
 }

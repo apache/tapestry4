@@ -17,29 +17,32 @@ package org.apache.tapestry.test;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.parse.AbstractParser;
 import org.apache.hivemind.parse.ElementParseInfo;
-import org.apache.hivemind.sdl.SDLResourceParser;
 import org.apache.tapestry.test.assertions.AssertOutput;
 import org.apache.tapestry.test.assertions.AssertRegexp;
 import org.apache.tapestry.test.assertions.RegexpMatch;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- * Parses Tapestry test scripts; SDL files that define an execution environment and
+ * Parses Tapestry test scripts; XML files that define an execution environment and
  * a sequence of operations and assertions.
  *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class ScriptParser extends AbstractParser
+public class IntegrationTestScriptParser extends AbstractParser
 {
     private ScriptDescriptor _scriptDescriptor;
     private Map _attributes;
@@ -50,7 +53,7 @@ public class ScriptParser extends AbstractParser
      */
     private final Map _elementParseInfo = new HashMap();
 
-    public ScriptParser()
+    public IntegrationTestScriptParser()
     {
         initializeFromPropertiesFile();
     }
@@ -147,7 +150,17 @@ public class ScriptParser extends AbstractParser
     {
         try
         {
-            new SDLResourceParser().parseResource(getResource(), this);
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+
+            SAXParser parser = factory.newSAXParser();
+
+            Resource resource = getResource();
+
+            URL url = resource.getResourceURL();
+
+            InputStream is = url.openStream();
+
+            parser.parse(is, this);
         }
         catch (Exception ex)
         {

@@ -29,7 +29,7 @@ import org.apache.tapestry.test.mock.MockResponse;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- * Tests {@link org.apache.tapestry.test.ScriptParser}.
+ * Tests {@link org.apache.tapestry.test.IntegrationTestScriptParser}.
  *
  * @author Howard Lewis Ship
  * @since 3.1
@@ -45,7 +45,7 @@ public class TestScriptParser extends TapestryTestCase
 
         Resource fileResource = baseResource.getRelativeResource(file);
 
-        return new ScriptParser().parse(fileResource);
+        return new IntegrationTestScriptParser().parse(fileResource);
     }
 
     /**
@@ -54,7 +54,7 @@ public class TestScriptParser extends TapestryTestCase
      */
     public void testEmpty() throws Exception
     {
-        ScriptDescriptor sd = parse("Empty.sdl");
+        ScriptDescriptor sd = parse("Empty.xml");
 
         assertNotNull(sd.getLocation());
         assertEquals("test-context", sd.getContextName());
@@ -65,7 +65,7 @@ public class TestScriptParser extends TapestryTestCase
     {
         try
         {
-            parse("EmptyMissingAttribute.sdl");
+            parse("EmptyMissingAttribute.xml");
             unreachable();
         }
         catch (DocumentParseException ex)
@@ -80,7 +80,7 @@ public class TestScriptParser extends TapestryTestCase
     {
         try
         {
-            parse("EmptyUnknownAttribute.sdl");
+            parse("EmptyUnknownAttribute.xml");
             unreachable();
         }
         catch (DocumentParseException ex)
@@ -91,7 +91,7 @@ public class TestScriptParser extends TapestryTestCase
 
     public void testServlet() throws Exception
     {
-        ScriptDescriptor sd = parse("Servlet.sdl");
+        ScriptDescriptor sd = parse("Servlet.xml");
 
         ServletDescriptor d = sd.getServletDescriptor("default");
         assertEquals("default", d.getName());
@@ -108,7 +108,7 @@ public class TestScriptParser extends TapestryTestCase
     {
         try
         {
-            parse("ServletDuplicateName.sdl");
+            parse("ServletDuplicateName.xml");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -120,7 +120,7 @@ public class TestScriptParser extends TapestryTestCase
 
     public void testInitParameter() throws Exception
     {
-        ScriptDescriptor sd = parse("InitParameter.sdl");
+        ScriptDescriptor sd = parse("InitParameter.xml");
 
         ServletDescriptor s1 = sd.getServletDescriptor("default");
 
@@ -135,7 +135,7 @@ public class TestScriptParser extends TapestryTestCase
 
     public void testRequest() throws Exception
     {
-        ScriptDescriptor sd = parse("Request.sdl");
+        ScriptDescriptor sd = parse("Request.xml");
 
         List l = sd.getRequestDescriptors();
 
@@ -154,7 +154,7 @@ public class TestScriptParser extends TapestryTestCase
 
     public void testRequestParameters() throws Exception
     {
-        ScriptDescriptor sd = parse("RequestParameters.sdl");
+        ScriptDescriptor sd = parse("RequestParameters.xml");
 
         List l = sd.getRequestDescriptors();
 
@@ -175,7 +175,7 @@ public class TestScriptParser extends TapestryTestCase
 
     public void testAssertOutput() throws Exception
     {
-        ScriptDescriptor sd = parse("AssertOutput.sdl");
+        ScriptDescriptor sd = parse("AssertOutput.xml");
 
         ScriptedTestSession ss = createSession();
 
@@ -197,7 +197,7 @@ public class TestScriptParser extends TapestryTestCase
 
     public void testAssertRegexp() throws Exception
     {
-        ScriptDescriptor sd = parse("AssertRegexp.sdl");
+        ScriptDescriptor sd = parse("AssertRegexp.xml");
 
         ScriptedTestSession ss = createSession();
 
@@ -219,7 +219,7 @@ public class TestScriptParser extends TapestryTestCase
 
     public void testAssertRegexpMatch() throws Exception
     {
-        ScriptDescriptor sd = parse("AssertRegexpMatch.sdl");
+        ScriptDescriptor sd = parse("AssertRegexpMatch.xml");
 
         ScriptedTestSession ss = createSession();
 
