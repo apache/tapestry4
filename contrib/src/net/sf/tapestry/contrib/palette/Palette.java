@@ -261,13 +261,13 @@ public class Palette extends BaseComponent implements IFormComponent
         availableTitleBlock = (Block) getComponent("defaultAvailableTitleBlock");
 
         selectImage = getAsset("Select");
-        selectDisabledImage = getAsset("Select-dis");
+        selectDisabledImage = getAsset("SelectDisabled");
         deselectImage = getAsset("Deselect");
-        deselectDisabledImage = getAsset("Deselect-dis");
+        deselectDisabledImage = getAsset("DeselectDisabled");
         upImage = getAsset("Up");
-        upDisabledImage = getAsset("Up-dis");
+        upDisabledImage = getAsset("UpDisabled");
         downImage = getAsset("Down");
-        downDisabledImage = getAsset("Down-dis");
+        downDisabledImage = getAsset("DownDisabled");
     }
 
     /**

@@ -118,8 +118,8 @@ public interface IBinding
 	/**
 	 *  Returns true if the value is invariant (not changing; the
 	 *  same value returned each time).  Static and field bindings
-	 *  are always invariant, and property bindings may be
-	 *  marked invariant (as an optimization).
+	 *  are always invariant, and {@link net.sf.tapestry.binding.ExpressionBinding}s
+     *  may be marked invariant (as an optimization).
 	 * 
 	 *  @since 2.0.3
 	 * 

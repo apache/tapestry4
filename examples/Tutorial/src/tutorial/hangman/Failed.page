@@ -6,7 +6,7 @@
 
 <page-specification class="net.sf.tapestry.html.BasePage">
   <component id="insertWord" type="Insert">
-    <binding name="value" property-path="visit.game.word"/>
+    <binding name="value" expression="visit.game.word"/>
   </component>
   <component id="startAgain" type="Page">
     <static-binding name="page">Home</static-binding>

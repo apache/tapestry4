@@ -30,6 +30,8 @@ package net.sf.tapestry.util.prop;
  *  instance variables as if they were JavaBeans properties.  This saves
  *  developers the effort of implementing accessor methods for
  *  objects that exist purely to store data.
+ * 
+ *  @see net.sf.tapestry.util.prop.PublicBeanPropertyAccessor
  *
  *  @version $Id$
  *  @author Howard Lewis Ship

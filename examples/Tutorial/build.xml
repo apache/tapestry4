@@ -15,7 +15,8 @@
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/${jcommon.jar}"/>
     <pathelement location="${lib.ext.dir}/${jfreechart.jar}"/>
-    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>    
+    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
+    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
     <pathelement location="${framework.jar}"/>
     <pathelement location="${contrib.jar}"/>    
   </path>

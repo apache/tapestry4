@@ -25,7 +25,11 @@
 
 package net.sf.tapestry.bean;
 
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.prop.OgnlUtils;
+import ognl.Ognl;
+import ognl.OgnlException;
 
 /**
  *  Base class for initializing a property of a JavaBean.
@@ -38,22 +42,20 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 abstract public class AbstractBeanInitializer implements IBeanInitializer
 {
-    protected String _propertyName;
+    private String _propertyName;
 
     public AbstractBeanInitializer(String propertyName)
     {
-        this._propertyName = propertyName;
+        _propertyName = propertyName;
     }
 
     public String getPropertyName()
     {
         return _propertyName;
     }
-    
+
     protected void setBeanProperty(Object bean, Object value)
     {
-        PropertyHelper helper = PropertyHelper.forInstance(bean);
-        
-        helper.set(bean, _propertyName, value);
+        OgnlUtils.set(_propertyName, bean, value);
     }
 }

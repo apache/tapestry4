@@ -46,6 +46,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
+import ognl.Ognl;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -80,7 +81,7 @@ import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.io.DataSqueezer;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Basis for building real Tapestry applications.  Immediate subclasses
@@ -341,11 +342,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     {
         try
         {
-            IPage exceptionPage = cycle.getPage(EXCEPTION_PAGE);
+            IPage exceptionPage = findOverridablePage(cycle, EXCEPTION_PAGE);
 
-            PropertyHelper helper = PropertyHelper.forClass(exceptionPage.getClass());
-
-            helper.set(exceptionPage, "exception", cause);
+            Ognl.setValue(OgnlUtils.getParsedExpression("exception"), exceptionPage, cause);
 
             cycle.setPage(exceptionPage);
 
@@ -567,7 +566,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         out.reset();
 
-        cycle.setPage(pageName);
+        IPage page = findOverridablePage(cycle, pageName);
+
+        cycle.setPage(page);
 
         renderResponse(cycle, out);
     }
@@ -1252,7 +1253,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             try
             {
-               IPage page = source.getPage(fakeCycle, name, null);
+                IPage page = source.getPage(fakeCycle, name, null);
                 IPageRecorder recorder = getPageRecorder(name);
 
                 recorder.rollback(page);
@@ -1705,4 +1706,29 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     {
         return context.getParameter(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
     }
+
+    /**
+     *  Finds a page that may be defined by the application or,
+     *  failing that, in the framework.  This is invoked by
+     *  several methods that need to find a page such as
+     *  StaleLink or Exception.
+     * 
+     *  @param cycle The active request cycle.
+     *  @param pageName The "bare" name of a page (no namespace prefix).
+     * 
+     *  @since 2.2
+     **/
+
+    protected IPage findOverridablePage(IRequestCycle cycle, String pageName)
+    {
+        // The thought here is that the name is a bare name.
+        // We first search for it in the application namespace and,
+        // failing that, we assume its in the framework namespace.
+
+        if (_specification.getPageSpecificationPath(pageName) != null)
+            return cycle.getPage(pageName);
+
+        return cycle.getPage(INamespace.FRAMEWORK_NAMESPACE + ":" + pageName);
+    }
+
 }

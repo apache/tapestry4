@@ -39,9 +39,11 @@ import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
 import net.sf.tapestry.util.ejb.XEJBException;
-import net.sf.tapestry.util.prop.PropertyHelper;
 import net.sf.tapestry.vlib.ejb.IKeyAllocator;
 import net.sf.tapestry.vlib.ejb.IKeyAllocatorHome;
+import ognl.Ognl;
+import ognl.OgnlException;
+import ognl.OgnlRuntime;
 
 /**
  *  Provides basic support for the entity context, empty or minimal
@@ -59,12 +61,11 @@ public abstract class AbstractEntityBean implements EntityBean
      *
      **/
 
-    protected EntityContext context;
+    private EntityContext _context;
 
-    private transient String[] attributePropertyNames;
-    private transient PropertyHelper helper;
+    private transient String[] _attributePropertyNames;
 
-    private transient IKeyAllocatorHome keyAllocatorHome;
+    private transient IKeyAllocatorHome _keyAllocatorHome;
 
     /**
      *  The environment naming context, which is configured for this bean
@@ -76,12 +77,12 @@ public abstract class AbstractEntityBean implements EntityBean
 
     public void setEntityContext(EntityContext context)
     {
-        this.context = context;
+        _context = context;
     }
 
     public void unsetEntityContext()
     {
-        context = null;
+        _context = null;
     }
 
     /**
@@ -89,8 +90,7 @@ public abstract class AbstractEntityBean implements EntityBean
      *
      **/
 
-    protected Object getEnvironmentObject(String name, Class objectClass)
-        throws RemoteException, NamingException
+    protected Object getEnvironmentObject(String name, Class objectClass) throws RemoteException, NamingException
     {
         Object raw;
         Object result;
@@ -110,8 +110,7 @@ public abstract class AbstractEntityBean implements EntityBean
         }
         catch (ClassCastException e)
         {
-            throw new RemoteException(
-                "Could not narrow " + raw + " (" + name + ") to class " + objectClass + ".");
+            throw new RemoteException("Could not narrow " + raw + " (" + name + ") to class " + objectClass + ".");
         }
 
         return result;
@@ -177,7 +176,7 @@ public abstract class AbstractEntityBean implements EntityBean
         IKeyAllocator allocator;
         Object raw;
 
-        if (keyAllocatorHome == null)
+        if (_keyAllocatorHome == null)
         {
             try
             {
@@ -185,7 +184,7 @@ public abstract class AbstractEntityBean implements EntityBean
                 environment = (Context) initial.lookup("java:comp/env");
 
                 raw = environment.lookup("ejb/KeyAllocator");
-                keyAllocatorHome = (IKeyAllocatorHome) PortableRemoteObject.narrow(raw, IKeyAllocatorHome.class);
+                _keyAllocatorHome = (IKeyAllocatorHome) PortableRemoteObject.narrow(raw, IKeyAllocatorHome.class);
             }
             catch (NamingException e)
             {
@@ -198,11 +197,11 @@ public abstract class AbstractEntityBean implements EntityBean
 
         try
         {
-            allocator = keyAllocatorHome.create();
+            allocator = _keyAllocatorHome.create();
         }
         catch (CreateException e)
         {
-            throw new RemoteException("Unable to create a KeyAllocator from " + keyAllocatorHome + ".", e);
+            throw new RemoteException("Unable to create a KeyAllocator from " + _keyAllocatorHome + ".", e);
         }
 
         // Finally, invoke the method that gets a key.
@@ -231,25 +230,24 @@ public abstract class AbstractEntityBean implements EntityBean
 
     public Map getEntityAttributes()
     {
-        Map result;
-        int i;
-        String key;
-        Object value;
+        Map result = new HashMap();
 
-        result = new HashMap();
+        if (_attributePropertyNames == null)
+            _attributePropertyNames = getAttributePropertyNames();
 
-        if (attributePropertyNames == null)
-            attributePropertyNames = getAttributePropertyNames();
-
-        if (helper == null)
-            helper = PropertyHelper.forClass(getClass());
-
-        for (i = 0; i < attributePropertyNames.length; i++)
+        for (int i = 0; i < _attributePropertyNames.length; i++)
         {
-            key = attributePropertyNames[i];
+            String key = _attributePropertyNames[i];
 
-            value = helper.get(this, key);
-            result.put(key, value);
+            try
+            {
+                Object value = Ognl.getValue(key, this);
+
+                result.put(key, value);
+            }
+            catch (OgnlException ex)
+            {
+            }
         }
 
         return result;
@@ -268,28 +266,38 @@ public abstract class AbstractEntityBean implements EntityBean
 
     public void updateEntityAttributes(Map update)
     {
-        int i;
-        String key;
-        Object value;
+        if (_attributePropertyNames == null)
+            _attributePropertyNames = getAttributePropertyNames();
 
-        if (attributePropertyNames == null)
-            attributePropertyNames = getAttributePropertyNames();
-
-        if (helper == null)
-            helper = PropertyHelper.forClass(getClass());
-
-        for (i = 0; i < attributePropertyNames.length; i++)
+        for (int i = 0; i < _attributePropertyNames.length; i++)
         {
-            key = attributePropertyNames[i];
+            String key = _attributePropertyNames[i];
 
             if (update.containsKey(key))
             {
-                value = update.get(key);
+                Object value = update.get(key);
 
-                helper.set(this, key, value);
+                try
+                {
+                    Ognl.setValue(key, this, value);
+                }
+                catch (OgnlException ex)
+                {
+                }
+
             }
 
         }
 
+    }
+
+    protected void setContext(EntityContext context)
+    {
+        this._context = context;
+    }
+
+    protected EntityContext geEntityContext()
+    {
+        return _context;
     }
 }

@@ -40,7 +40,7 @@ import net.sf.tapestry.IPageRecorder;
 import net.sf.tapestry.PageRecorderCommitException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.ObservedChangeEvent;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Tracks changes to components on a page, allowing changes to be persisted across
@@ -164,11 +164,7 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
         {
             t.printStackTrace();
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
-                    "PageRecorder.unable-to-persist",
-                    propertyName,
-                    component.getExtendedId(),
-                    newValue),
+                Tapestry.getString("PageRecorder.unable-to-persist", propertyName, component.getExtendedId(), newValue),
                 t);
         }
     }
@@ -193,10 +189,7 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
      *
      **/
 
-    protected abstract void recordChange(
-        String componentPath,
-        String propertyName,
-        Object newValue);
+    protected abstract void recordChange(String componentPath, String propertyName, Object newValue);
 
     /**
      *  Rolls back the page to the currently persisted state.
@@ -205,27 +198,18 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 
     public void rollback(IPage page)
     {
-        Iterator i;
-        PageChange change;
-        IComponent component;
-        PropertyHelper helper;
-
-        i = getChanges().iterator();
+        Iterator i = getChanges().iterator();
 
         while (i.hasNext())
         {
-            change = (PageChange) i.next();
+            PageChange change = (PageChange) i.next();
 
-            component = page.getNestedComponent(change.componentPath);
-
-            helper = PropertyHelper.forClass(component.getClass());
+            IComponent component = page.getNestedComponent(change.componentPath);
 
             try
             {
-                // Restore the object, converting Handle to EJBObject
-                // along the way.
 
-                helper.set(component, change.propertyName, change.newValue);
+                OgnlUtils.set(change.propertyName, component, change.newValue);
             }
             catch (Throwable t)
             {

@@ -9,11 +9,11 @@
   <component id="border" type="Border"/>
   
   <component id="internal" type="Direct">
-  	<binding name="listener" property-path="listeners.redirectInternal"/>
+  	<binding name="listener" expression="listeners.redirectInternal"/>
   </component>
   
   <component id="external" type="Direct">
-  	<binding name="listener" property-path="listeners.redirectExternal"/>
+  	<binding name="listener" expression="listeners.redirectExternal"/>
   </component>
   
 </page-specification>

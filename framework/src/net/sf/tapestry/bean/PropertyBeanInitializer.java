@@ -25,37 +25,40 @@
 
 package net.sf.tapestry.bean;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IBeanProvider;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.prop.OgnlUtils;
+import ognl.Ognl;
+import ognl.OgnlException;
 
 /**
- *  Initializes a helper bean property from a property path (relative
+ *  Initializes a helper bean property from an OGNL expression (relative
  *  to the bean's {@link IComponent}).
- *
+ * 
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 1.0.5
+ *  @deprecated To be removed in 2.3.  Use {@link ExpressionBeanInitializer}.
  * 
  **/
 
 public class PropertyBeanInitializer extends AbstractBeanInitializer
 {
-    protected String[] _propertyPath;
+    private String _expression;
 
-    public PropertyBeanInitializer(String propertyName, String propertyPath)
+    public PropertyBeanInitializer(String propertyName, String expression)
     {
         super(propertyName);
 
-        _propertyPath = PropertyHelper.splitPropertyPath(propertyPath);
+        _expression = expression;
     }
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
         IComponent component = provider.getComponent();
-        PropertyHelper helper = PropertyHelper.forInstance(component);
-
-        Object value = helper.getPath(component, _propertyPath);
+        Object value = OgnlUtils.get(_expression, component);
 
         setBeanProperty(bean, value);
     }

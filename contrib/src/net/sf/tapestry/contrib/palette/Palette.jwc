@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<specification class="net.sf.tapestry.contrib.palette.Palette" 
+<component-specification class="net.sf.tapestry.contrib.palette.Palette" 
 	allow-body="no" allow-informal-parameters="no">
 	
   <description>
@@ -55,80 +55,80 @@
   
   <component id="table" type="Any">
     <static-binding name="element">table</static-binding>
-    <binding name="class" property-path="tableClass"/>
+    <binding name="class" expression="tableClass"/>
   </component>
   
   <component id="insertAvailableTitle" type="InsertBlock">
-    <binding name="block" property-path="availableTitleBlock"/>
+    <binding name="block" expression="availableTitleBlock"/>
   </component>
     
   <component id="defaultAvailableTitleBlock" type="Block"/>
   
   <component id="insertSelectedTitle" type="InsertBlock">
-    <binding name="block" property-path="selectedTitleBlock"/>
+    <binding name="block" expression="selectedTitleBlock"/>
   </component>
 
   <component id="defaultSelectedTitleBlock" type="Block"/>
     
   <component id="availableSelect" type="Delegator">
-    <binding name="delegate" property-path="availableSelectDelegate"/>
+    <binding name="delegate" expression="availableSelectDelegate"/>
   </component>
   
   <component id="selectedSelect" type="Delegator">
-    <binding name="delegate" property-path="selectedSelectDelegate"/>
+    <binding name="delegate" expression="selectedSelectDelegate"/>
   </component>
   
   <component id="selectButton" type="Any">
     <static-binding name="element">a</static-binding>
-    <binding name="href" property-path="symbols.selectOnClickScript"/>
+    <binding name="href" expression="symbols.selectOnClickScript"/>
   </component>
 
   <component id="selectImage" type="Image">
-  	<binding name="image" property-path="selectImage"/>
-  	<binding name="name" property-path="symbols.selectImageName"/>
+  	<binding name="image" expression="selectImage"/>
+  	<binding name="name" expression="symbols.selectImageName"/>
   </component>
   	  
   <component id="deselectButton" type="Any">
     <static-binding name="element">a</static-binding>
-    <binding name="href" property-path="symbols.deselectOnClickScript"/>
+    <binding name="href" expression="symbols.deselectOnClickScript"/>
   </component>
 
   <component id="deselectImage" type="Image">
-  	<binding name="image" property-path="deselectImage"/>
-  	<binding name="name" property-path="symbols.deselectImageName"/>
+  	<binding name="image" expression="deselectImage"/>
+  	<binding name="name" expression="symbols.deselectImageName"/>
   </component>
     
   <component id="ifSortUser" type="Conditional">
-    <binding name="condition" property-path="sortUser"/>
+    <binding name="condition" expression="sortUser"/>
   </component>
   
   <component id="moveUpButton" type="Any">
   	<static-binding name="element">a</static-binding>
-    <binding name="href" property-path="symbols.upOnClickScript"/>
+    <binding name="href" expression="symbols.upOnClickScript"/>
    </component>
 
   <component id="upImage" type="Image">
-    <binding name="image" property-path="upImage"/>
-    <binding name="name" property-path="symbols.upImageName"/>
+    <binding name="image" expression="upImage"/>
+    <binding name="name" expression="symbols.upImageName"/>
    </component>
   
   <component id="moveDownButton" type="Any">
     <static-binding name="element">a</static-binding>
-    <binding name="href" property-path="symbols.downOnClickScript"/>
+    <binding name="href" expression="symbols.downOnClickScript"/>
   </component>
   
   <component id="downImage" type="Image">
-    <binding name="image" property-path="downImage"/>
-    <binding name="name" property-path="symbols.downImageName"/>
+    <binding name="image" expression="downImage"/>
+    <binding name="name" expression="symbols.downImageName"/>
   </component>
 
   <private-asset name="Select" resource-path="/net/sf/tapestry/contrib/palette/select_right.gif"/>
-  <private-asset name="Select-dis" resource-path="/net/sf/tapestry/contrib/palette/select_right_off.gif"/>
+  <private-asset name="SelectDisabled" resource-path="/net/sf/tapestry/contrib/palette/select_right_off.gif"/>
   <private-asset name="Deselect" resource-path="/net/sf/tapestry/contrib/palette/deselect_left.gif"/>
-  <private-asset name="Deselect-dis" resource-path="/net/sf/tapestry/contrib/palette/deselect_left_off.gif"/>
+  <private-asset name="DeselectDisabled" resource-path="/net/sf/tapestry/contrib/palette/deselect_left_off.gif"/>
   <private-asset name="Up" resource-path="/net/sf/tapestry/contrib/palette/move_up.gif"/>
-  <private-asset name="Up-dis" resource-path="/net/sf/tapestry/contrib/palette/move_up_off.gif"/>
+  <private-asset name="UpDisabled" resource-path="/net/sf/tapestry/contrib/palette/move_up_off.gif"/>
   <private-asset name="Down" resource-path="/net/sf/tapestry/contrib/palette/move_down.gif"/>
-  <private-asset name="Down-dis" resource-path="/net/sf/tapestry/contrib/palette/move_down_off.gif"/>
+  <private-asset name="DownDisabled" resource-path="/net/sf/tapestry/contrib/palette/move_down_off.gif"/>
   
-</specification>
+</component-specification>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
-<specification class="net.sf.tapestry.link.GenericLink">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+<component-specification class="net.sf.tapestry.link.GenericLink">
 
   <description>
   Creates a link to an application specified URL.
@@ -13,4 +13,4 @@
 
   <parameter name="disabled" java-type="boolean" direction="in"/>
   
-</specification>
+</component-specification>

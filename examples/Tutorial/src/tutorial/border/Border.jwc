@@ -8,7 +8,7 @@
   <parameter name="title" java-type="java.lang.String" required="yes"/>
   <parameter name="pages" required="yes"/>
   <component id="shell" type="Shell">
-    <binding name="title" property-path="page.engine.specification.name"/>
+    <binding name="title" expression="page.engine.specification.name"/>
   </component>
   <component id="insertPageTitle" type="Insert">
     <inherited-binding name="value" parameter-name="title"/>
@@ -16,14 +16,14 @@
   <component id="body" type="Body"/>
   <component id="e" type="Foreach">
     <inherited-binding name="source" parameter-name="pages"/>
-    <binding name="value" property-path="pageName"/>
+    <binding name="value" expression="pageName"/>
   </component>
   <component id="link" type="Page">
-    <binding name="page" property-path="pageName"/>
-    <binding name="disabled" property-path="disablePageLink"/>
+    <binding name="page" expression="pageName"/>
+    <binding name="disabled" expression="disablePageLink"/>
   </component>
   <component id="insertName" type="Insert">
-    <binding name="value" property-path="pageName"/>
+    <binding name="value" expression="pageName"/>
   </component>
   <component id="wrapped" type="InsertWrapped"/>
   <component id="showInspector" type="ShowInspector"/>

@@ -27,6 +27,8 @@ package net.sf.tapestry;
 
 import java.net.URL;
 
+import ognl.ClassResolver;
+
 /**
  * An object which is used to resolve classes and class-path resources.
  * This is needed because, in an application server, different class loaders
@@ -37,28 +39,30 @@ import java.net.URL;
  * framework's class loader.  To resolve this, we need a 'hook', an instance
  * that provides access to the application's class loader.
  * 
- *
+ * <p>To more easily support OGNL, this interface now extends
+ *  {@link ognl.ClassResolver}.
+ * 
  * @author Howard Lewis Ship
  * @version $Id$
  **/
 
-public interface IResourceResolver
+public interface IResourceResolver extends ClassResolver
 {
-	/**
-	 *  Forwarded, unchanged, to the class loader.  Returns null if the
-	 *  resource is not found.
-	 *
-	 **/
+    /**
+     *  Forwarded, unchanged, to the class loader.  Returns null if the
+     *  resource is not found.
+     *
+     **/
 
-	public URL getResource(String name);
+    public URL getResource(String name);
 
-	/**
-	 *  Forwarded, to the the method
-	 *  <code>Class.forName(String, boolean, ClassLoader)</code>, using
-	 *  the application's class loader.
-	 *
-	 *  Throws an {@link ApplicationRuntimeException} on any error.
-	 **/
+    /**
+     *  Forwarded, to the the method
+     *  <code>Class.forName(String, boolean, ClassLoader)</code>, using
+     *  the application's class loader.
+     *
+     *  Throws an {@link ApplicationRuntimeException} on any error.
+     **/
 
-	public Class findClass(String name);
+    public Class findClass(String name);
 }

@@ -10,19 +10,19 @@
 <component id="content" type="Block"/>
 
 <component id="weekday" type="Direct">
-  <binding name="listener" property-path="listeners.selectWeekday"/>
-  <binding name="class" property-path="weekdayClass"/>
+  <binding name="listener" expression="listeners.selectWeekday"/>
+  <binding name="class" expression="weekdayClass"/>
   <static-binding name="parameters">0</static-binding>
 </component>
 
 <component id="weekend" type="Direct">
-  <binding name="listener" property-path="listeners.selectWeekend"/>
-  <binding name="class" property-path="weekendClass"/>
+  <binding name="listener" expression="listeners.selectWeekend"/>
+  <binding name="class" expression="weekendClass"/>
   <static-binding name="parameters">1</static-binding>
 </component>
 
 <component id="insertForecast" type="Insert">
-	<binding name="value" property-path="forecast"/>
+	<binding name="value" expression="forecast"/>
 </component>
 	
 </page-specification>

@@ -13,17 +13,34 @@
 
 <h3>Release 2.2-beta-1</h3>
 
+<p>Tapestry has now replaced its simple
+property path support with the far 
+more powerful <a href="http://www.ognl.org">Object Graph
+Navigation Library</a> expressions.  This promises to greatly extend
+the expressiveness of the specifications and further reduce
+the need for Java code.  The <code>property-path</code>
+attribute of the <code>&lt;binding&gt;</code> element has been renamed
+to <code>expression</code> (this only affects the latest, 1.3, version
+of the DTD).
+
+<p>There are some small costs to using OGNL; the largest being
+a restriction in bean names, component ids and asset names.  All
+of these must now be valid Java identifiers, and so cannot contain the 
+dash ('-') character, which was previously permitted.  This affects all
+specifications, including older versions.
+
+<p>Malcolm Edgar has lead the push to provide an excellent
+<a href="doc/ComponentReference">Tapestry Component Reference</a>.
+
+<p>
 You can now control the exact location of a component template by 
 declaring an asset named <code>$template</code> (which is not normally
 a legal asset name, due to the dollar sign).  If such an asset exists,
 then it is used as the template.
 
 <p>
-In addition, the documentation has been brought (largely) upto date
+In addition, the documentation has been brought (largely) up to date
 with the significant changes so far in release 2.2.
-
-<p>Malcolm Edgar has provided an excellent
-<a href="doc/ComponentReference">Component Reference</a>.
 
 <pre>
 [ 582421 ] Way to specify template location
@@ -34,6 +51,7 @@ with the significant changes so far in release 2.2.
 [ 598371 ] Radio and RadioGroup broken
 [ 599608 ] App startup exception
 [ 599663 ] Disallow spec path a comp. type
+[ 601018 ] Use OGNL instead of home brew
 </pre>
 
 

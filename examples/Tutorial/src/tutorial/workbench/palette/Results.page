@@ -10,29 +10,29 @@
   
   <component id="loop" type="Foreach">
   	<static-binding name="element">li</static-binding>
-  	<binding name="source" property-path="selectedColors"/>
+  	<binding name="source" expression="selectedColors"/>
   </component>
   
   <component id="insertColor" type="Insert">
-  	<binding name="value" property-path="components.loop.value"/>
+  	<binding name="value" expression="components.loop.value"/>
   </component>
   
   <component id="ifNone" type="Conditional">
-  	<binding name="condition" property-path="selectedColors"/>
+  	<binding name="condition" expression="selectedColors"/>
   	<field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
   
   <component id="back" type="Page">
-    <binding name="namespace" property-path="namespace"/>
+    <binding name="namespace" expression="namespace"/>
   	<static-binding name="page">Palette</static-binding>
   </component>
   
   <component id="backRollover" type="Rollover">
-    <binding name="image" property-path="assets.back"/>
-    <binding name="focus" property-path="assets.back-focus"/>
+    <binding name="image" expression="assets.back"/>
+    <binding name="focus" expression="assets.backFocus"/>
   </component>
   
   <context-asset name="back" path="/images/workbench/Back.gif"/>
-  <context-asset name="back-focus" path="/images/workbench/Back-focus.gif"/>
+  <context-asset name="backFocus" path="/images/workbench/Back-focus.gif"/>
   
 </page-specification>

@@ -76,76 +76,76 @@
   <component id="border" type="Border"/>
 
   <component id="showError" type="ShowError">
-     <binding name="delegate" property-path="beans.delegate"/>
+     <binding name="delegate" expression="beans.delegate"/>
   </component>
 
   <component id="form" type="Form">
-    <binding name="listener" property-path="listeners.formSubmit"/>
-    <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="listener" expression="listeners.formSubmit"/>
+    <binding name="delegate" expression="beans.delegate"/>
   </component>
 
   <component id="dateLabel" type="FieldLabel">
-    <binding name="field" property-path="components.inputDate"/>
+    <binding name="field" expression="components.inputDate"/>
   </component>
 
   <component id="inputDate" type="ValidField">
-    <binding name="validator" property-path="beans.dateValidator"/>
-    <binding name="value" property-path="visit.dateValue"/>
+    <binding name="validator" expression="beans.dateValidator"/>
+    <binding name="value" expression="visit.dateValue"/>
     <static-binding name="displayName">Date Field</static-binding>
   </component>
 
   <component id="intLabel" type="FieldLabel">
-    <binding name="field" property-path="components.inputInt"/>
+    <binding name="field" expression="components.inputInt"/>
   </component>
 
   <component id="inputInt" type="ValidField">
-    <binding name="validator" property-path="beans.intValidator"/>
-    <binding name="value" property-path="visit.intValue"/>
+    <binding name="validator" expression="beans.intValidator"/>
+    <binding name="value" expression="visit.intValue"/>
     <static-binding name="displayName">Integer Field</static-binding>
   </component>
 
   <component id="doubleLabel" type="FieldLabel">
-    <binding name="field" property-path="components.inputDouble"/>
+    <binding name="field" expression="components.inputDouble"/>
   </component>
 
   <component id="inputDouble" type="ValidField">
-    <binding name="validator" property-path="beans.doubleValidator"/>
-    <binding name="value" property-path="visit.doubleValue"/>
+    <binding name="validator" expression="beans.doubleValidator"/>
+    <binding name="value" expression="visit.doubleValue"/>
     <static-binding name="displayName">Double Field</static-binding>
   </component>
 
   <component id="bigDecimalLabel" type="FieldLabel">
-    <binding name="field" property-path="components.inputBigDecimal"/>
+    <binding name="field" expression="components.inputBigDecimal"/>
   </component>
 
   <component id="inputBigDecimal" type="ValidField">
-   <binding name="value" property-path="visit.bigDecimalValue"/>
-    <binding name="validator" property-path="beans.bigDecimalValidator"/>
+   <binding name="value" expression="visit.bigDecimalValue"/>
+    <binding name="validator" expression="beans.bigDecimalValidator"/>
     <static-binding name="displayName">Big Decimal Field</static-binding>
   </component>
 
   <component id="longLabel" type="FieldLabel">
-    <binding name="field" property-path="components.inputLong"/>
+    <binding name="field" expression="components.inputLong"/>
   </component>
 
   <component id="inputLong" type="ValidField">
-    <binding name="value" property-path="visit.longValue"/>
-    <binding name="validator" property-path="beans.longValidator"/>
+    <binding name="value" expression="visit.longValue"/>
+    <binding name="validator" expression="beans.longValidator"/>
     <static-binding name="displayName">Long Field</static-binding>
   </component>
 
   <component id="stringLabel" type="FieldLabel">
-    <binding name="field" property-path="components.inputString"/>
+    <binding name="field" expression="components.inputString"/>
    </component>
 
   <component id="inputString" type="ValidField">
-    <binding name="value" property-path="visit.stringValue"/>
-    <binding name="validator" property-path="beans.stringValidator"/>
+    <binding name="value" expression="visit.stringValue"/>
+    <binding name="validator" expression="beans.stringValidator"/>
     <static-binding name="displayName">String Field</static-binding>
   </component>
 
   <component id="continue" type="ImageSubmit">
- 	<binding name="image" property-path="assets.continue"/>
+ 	<binding name="image" expression="assets.continue"/>
   </component>
 
   <context-asset name="continue" path="/images/workbench/Continue.gif"/>

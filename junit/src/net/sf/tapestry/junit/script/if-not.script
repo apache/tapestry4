@@ -3,68 +3,68 @@
 	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
 		
 <script>
-<let key="output-true-string">
-<if-not property-path="input.true-string">
+<let key="outputTrueString">
+<if-not property-path="input.trueString">
 TRUE-STRING
 </if-not>
 </let>
 
-<let key="output-false-string">
-<if-not property-path="input.false-string">
+<let key="outputFalseString">
+<if-not property-path="input.falseString">
 FALSE-STRING
 </if-not>
 </let>
 
-<let key="output-null">
+<let key="outputNull">
 <if-not property-path="missing">
 NULL
 </if-not>
 </let>
 
-<let key="output-boolean-true">
-<if-not property-path="input.boolean-true">
+<let key="outputBooleanTrue">
+<if-not property-path="input.booleanTrue">
 BOOLEAN-TRUE
 </if-not>
 </let>
 
-<let key="output-boolean-false">
-<if-not property-path="input.boolean-false">
+<let key="outputBooleanFalse">
+<if-not property-path="input.booleanFalse">
 BOOLEAN-FALSE
 </if-not>
 </let>
 
-<let key="output-collection-nonempty">
-<if-not property-path="input.collection-non-empty">
+<let key="outputCollectionNonempty">
+<if-not property-path="input.collectionNonEmpty">
 COLLECTION-NON-EMPTY
 </if-not>
 </let>
 
-<let key="output-collection-empty">
-<if-not property-path="input.collection-empty">
+<let key="outputCollectionEmpty">
+<if-not property-path="input.collectionEmpty">
 COLLECTION-EMPTY
 </if-not>
 </let>
 
-<let key="output-array-nonempty">
-<if-not property-path="input.array-nonempty">
+<let key="outputArrayNonempty">
+<if-not property-path="input.arrayNonempty">
 ARRAY-NON-EMPTY
 </if-not>
 </let>
 
-<let key="output-array-empty">
-<if-not property-path="input.array-empty">
+<let key="outputArrayEmpty">
+<if-not property-path="input.arrayEmpty">
 ARRAY-EMPTY
 </if-not>
 </let>
 
-<let key="output-number-zero">
-<if-not property-path="input.number-zero">
+<let key="outputNumberZero">
+<if-not property-path="input.numberZero">
 NUMBER-ZERO
 </if-not>
 </let>
 
-<let key="output-number-nonzero">
-<if-not property-path="input.number-nonzero">
+<let key="outputNumberNonzero">
+<if-not property-path="input.numberNonzero">
 NUMBER-NON-ZERO
 </if-not>
 </let>

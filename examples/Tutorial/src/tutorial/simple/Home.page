@@ -6,7 +6,7 @@
 <page-specification class="tutorial.simple.Home">
   
   <component id="insertDate" type="Insert">
-    <binding name="value" property-path="currentDate"/>
+    <binding name="value" expression="currentDate"/>
   </component>
   
   <component id="refresh" type="Page">

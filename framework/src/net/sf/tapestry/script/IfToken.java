@@ -30,7 +30,7 @@ import java.util.Map;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
  *  A conditional portion of the generated script.
@@ -43,34 +43,27 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 class IfToken extends AbstractToken
 {
-    private boolean condition;
-    private String propertyPath;
-    private String[] properties;
+    private boolean _condition;
+    private String _propertyPath;
 
     IfToken(boolean condition, String propertyPath)
     {
-        this.condition = condition;
-        this.propertyPath = propertyPath;
+        _condition = condition;
+        _propertyPath = propertyPath;
     }
 
     private boolean evaluate(ScriptSession session)
     {
-        if (properties == null)
-            properties = PropertyHelper.splitPropertyPath(propertyPath);
-
         Map symbols = session.getSymbols();
 
-        PropertyHelper helper = PropertyHelper.forInstance(symbols);
-
-        Object value = helper.getPath(symbols, properties);
+        Object value = OgnlUtils.get(_propertyPath, symbols);
 
         return Tapestry.evaluateBoolean(value);
     }
 
-    public void write(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
+    public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
     {
-        if (evaluate(session) == condition)
+        if (evaluate(session) == _condition)
             writeChildren(buffer, session);
     }
 }

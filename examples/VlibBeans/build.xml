@@ -20,6 +20,7 @@
     <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
     <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>   
     <pathelement location="${jboss.server.all.lib.dir}/mail.jar"/> 
+    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
   </path>
     
   <target name="init">

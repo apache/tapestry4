@@ -75,6 +75,20 @@ public class ShowEngine extends BaseComponent implements PageDetachListener
         serializedEngine = null;
     }
 
+
+    /**
+     *  Workaround for OGNL limitation --- OGNL can't dereference
+     *  past class instances.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public String getEngineClassName()
+    {
+        return getPage().getEngine().getClass().getName();
+    }
+        
     private byte[] getSerializedEngine()
     {
         if (serializedEngine == null)

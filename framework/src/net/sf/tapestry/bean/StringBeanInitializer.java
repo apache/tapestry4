@@ -27,7 +27,6 @@ package net.sf.tapestry.bean;
 
 import net.sf.tapestry.IBeanProvider;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**
  *  A bean initializer that uses a localized string from the containing
@@ -41,7 +40,7 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public class StringBeanInitializer extends AbstractBeanInitializer
 {
-    protected String _key;
+    private String _key;
 
     public StringBeanInitializer(String propertyName, String key)
     {

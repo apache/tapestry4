@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
-<specification class="net.sf.tapestry.link.Direct">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+<component-specification class="net.sf.tapestry.link.Direct">
 
   <description>
   Creates a non-contextual link.  Non-persistent state can be stored within the link
@@ -48,4 +48,4 @@
   
   <reserved-parameter name="href"/>
     
-</specification>
+</component-specification>

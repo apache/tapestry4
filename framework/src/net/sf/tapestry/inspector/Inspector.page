@@ -7,8 +7,8 @@
 <page-specification class="net.sf.tapestry.inspector.Inspector">
 
   <component id="shell" type="Shell">
-    <binding name="title" property-path="inspectorTitle"/>
-    <binding name="stylesheet" property-path="assets.stylesheet"/>
+    <binding name="title" expression="inspectorTitle"/>
+    <binding name="stylesheet" expression="assets.stylesheet"/>
   </component>
 
   <component id="body" type="Body"/>
@@ -18,7 +18,7 @@
   <component id="viewTabs" type="inspector:ViewTabs"/>
 
   <component id="insertBlockForView" type="InsertBlock">
-    <binding name="block" property-path="blockForView"/>
+    <binding name="block" expression="blockForView"/>
   </component>
 
   <component id="specificationBlock" type="Block"/>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-		"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+		"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 		
-<specification class="net.sf.tapestry.html.ExceptionDisplay" 
+<component-specification class="net.sf.tapestry.html.ExceptionDisplay" 
 	allow-body="no" 
 	allow-informal-parameters="no">
   
@@ -20,50 +20,50 @@
   
   <bean name="evenOdd" class="net.sf.tapestry.bean.EvenOdd"/>
     
-  <component id="e-exception" type="Foreach">
+  <component id="eException" type="Foreach">
     <inherited-binding name="source" parameter-name="exceptions"/>
-    <binding name="value" property-path="exception"/>
-    <binding name="index" property-path="index"/>
+    <binding name="value" expression="exception"/>
+    <binding name="index" expression="index"/>
   </component>
   
   <component id="insertClass" type="Insert">
-    <binding name="value" property-path="exception.exceptionClassName"/>
+    <binding name="value" expression="exception.exceptionClassName"/>
   </component>
   
   <component id="insertMessage" type="Insert">
-    <binding name="value" property-path="exception.message"/>
+    <binding name="value" expression="exception.message"/>
   </component>
   
-  <component id="e-property" type="Foreach">
+  <component id="eProperty" type="Foreach">
   	<static-binding name="element">tr</static-binding>
-  	<binding name="class" property-path="beans.evenOdd.next"/>
-    <binding name="source" property-path="exception.properties"/>
+  	<binding name="class" expression="beans.evenOdd.next"/>
+    <binding name="source" expression="exception.properties"/>
   </component>
   
   <component id="insertPropertyName" type="Insert">
-    <binding name="value" property-path="components.e-property.value.name"/>
+    <binding name="value" expression="components.eProperty.value.name"/>
   </component>
   
   <component id="insertPropertyValue" type="Insert">
-    <binding name="value" property-path="components.e-property.value.value"/>
+    <binding name="value" expression="components.eProperty.value.value"/>
   </component>
   
   <component id="ifLast" type="Conditional">
-    <binding name="condition" property-path="last"/>
+    <binding name="condition" expression="last"/>
   </component>
   
   <component id="ifNotLast" type="Conditional">
-    <binding name="condition" property-path="last"/>
+    <binding name="condition" expression="last"/>
     <field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
   
-  <component id="e-stack" type="Foreach">
+  <component id="eStack" type="Foreach">
     <static-binding name="element">li</static-binding>
-    <binding name="source" property-path="exception.stackTrace"/>
+    <binding name="source" expression="exception.stackTrace"/>
   </component>
   
   <component id="insertStackTrace" type="Insert">
-    <binding name="value" property-path="components.e-stack.value"/>
+    <binding name="value" expression="components.eStack.value"/>
   </component>
   
-</specification>
+</component-specification>

@@ -25,6 +25,7 @@
 
 package net.sf.tapestry.spec;
 
+import net.sf.tapestry.bean.ExpressionBeanInitializer;
 import net.sf.tapestry.bean.FieldBeanInitializer;
 import net.sf.tapestry.bean.IBeanInitializer;
 import net.sf.tapestry.bean.PropertyBeanInitializer;
@@ -133,11 +134,20 @@ public class SpecFactory
      * Creates a concrete instance of {@link IBeanInitializer}.
      * <p>
      * Default implementation returns an instance of {@link PropertyBeanInitializer}.
+     * 
+     *  @deprecated To be removed in 2.3.  Use {@link #createExpressionBeanInitializer(String, String)}.
      **/
 
-    public IBeanInitializer createPropertyBeanInitializer(String propertyName, String propertyPath)
+    public IBeanInitializer createPropertyBeanInitializer(String propertyName, String expression)
     {
-        return new PropertyBeanInitializer(propertyName, propertyPath);
+        return new ExpressionBeanInitializer(propertyName, expression);
+    }
+
+    /** @since 2.2 **/
+    
+    public IBeanInitializer createExpressionBeanInitializer(String propertyName, String expression)
+    {
+        return new ExpressionBeanInitializer(propertyName, expression);
     }
 
     /**

@@ -26,10 +26,13 @@
 package net.sf.tapestry.bean;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -97,6 +100,15 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
 
     private Map _beans;
 
+    /**
+     *  Set of bean names provided by this provider.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private Set _beanNames;
+
     public BeanProvider(IComponent component)
     {
         this._component = component;
@@ -112,7 +124,17 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
 
     public Collection getBeanNames()
     {
-        return _component.getSpecification().getBeanNames();
+        if (_beanNames == null)
+        {
+            Collection c = _component.getSpecification().getBeanNames();
+            
+            if (c == null || c.isEmpty())
+                _beanNames = Collections.EMPTY_SET;
+            else
+                _beanNames = Collections.unmodifiableSet(new HashSet(c));
+        }
+        
+        return _beanNames;
     }
 
     /**
@@ -288,6 +310,13 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
     public void pageEndRender(PageEvent event)
     {
         removeBeans(BeanLifecycle.RENDER);
+    }
+
+    /** @since 2.2 **/
+    
+    public boolean canProvideBean(String name)
+    {
+        return getBeanNames().contains(name);
     }
 
 }

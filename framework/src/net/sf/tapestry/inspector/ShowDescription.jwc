@@ -16,7 +16,7 @@
 	</component>
 	
 	<component id="descriptionImage" type="Image">
-	  <binding name="image" property-path="assets.info"/>
+	  <binding name="image" expression="assets.info"/>
 	  <inherited-binding name="alt" parameter-name="description"/>
 	</component>
 	

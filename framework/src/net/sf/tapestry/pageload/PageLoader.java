@@ -46,7 +46,7 @@ import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.binding.PropertyBinding;
+import net.sf.tapestry.binding.ExpressionBinding;
 import net.sf.tapestry.binding.StringBinding;
 import net.sf.tapestry.spec.AssetSpecification;
 import net.sf.tapestry.spec.AssetType;
@@ -175,13 +175,13 @@ public class PageLoader implements IPageLoader
      *  sanity checking and eror checking in the final version.
      *
      *  @param container The containing component.  For a dynamic
-     *  binding ({@link PropertyBinding}) the property name
+     *  binding ({@link ExpressionBinding}) the property name
      *  is evaluated with the container as the root.
      *  @param component The contained component being bound.
      *  @param spec The specification of the contained component.
      *  @param contained The contained component specification (from the container's
      *  {@link ComponentSpecification}).
-     *  @param propertyBindings a cache of {@link PropertyBinding}s for the container
+     *  @param propertyBindings a cache of {@link ExpressionBinding}s for the container
      *
      **/
 
@@ -257,7 +257,7 @@ public class PageLoader implements IPageLoader
 
             if (result == null)
             {
-                result = new PropertyBinding(container, bindingValue);
+                result = new ExpressionBinding(_resolver, container, bindingValue);
                 propertyBindings.put(bindingValue, result);
             }
 

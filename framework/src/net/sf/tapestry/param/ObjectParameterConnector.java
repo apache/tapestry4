@@ -28,8 +28,6 @@ package net.sf.tapestry.param;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.RequiredParameterException;
-import net.sf.tapestry.util.prop.PropertyHelper;
-import sun.security.action.GetPropertyAction;
 
 /**
  *  Implements {@link IParameterConnector} for object parameters.
@@ -42,7 +40,7 @@ import sun.security.action.GetPropertyAction;
 
 public class ObjectParameterConnector extends AbstractParameterConnector
 {
-    private Class requiredType;
+    private Class _requiredType;
 
     protected ObjectParameterConnector(
         IComponent component,
@@ -52,7 +50,7 @@ public class ObjectParameterConnector extends AbstractParameterConnector
     {
         super(component, parameterName, binding);
 
-        this.requiredType = requiredType;
+        this._requiredType = requiredType;
     }
 
     /**
@@ -62,7 +60,7 @@ public class ObjectParameterConnector extends AbstractParameterConnector
 
     public void setParameter() throws RequiredParameterException
     {
-        setPropertyValue(getBindingValue(requiredType));
+        setPropertyValue(getBindingValue(_requiredType));
     }
 
     public void clearParameter()

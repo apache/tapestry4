@@ -122,7 +122,7 @@ public class ScriptTest extends TestCase
     {
         String inputSymbol = Long.toHexString(System.currentTimeMillis());
         Map symbols = new HashMap();
-        symbols.put("input-symbol", inputSymbol);
+        symbols.put("inputSymbol", inputSymbol);
 
         ScriptSession session = execute("let.script", symbols);
 
@@ -130,7 +130,7 @@ public class ScriptTest extends TestCase
 
         String outputSymbol = "output: " + inputSymbol;
 
-        assertEquals("Output symbol", outputSymbol, symbols.get("output-symbol"));
+        assertEquals("Output symbol", outputSymbol, symbols.get("outputSymbol"));
 
         assertSame("Session symbols", symbols, session.getSymbols());
     }
@@ -145,33 +145,33 @@ public class ScriptTest extends TestCase
     {
         Map input = new HashMap();
 
-        input.put("true-string", "anything");
-        input.put("false-string", " ");
-        input.put("boolean-true", Boolean.TRUE);
-        input.put("boolean-false", Boolean.FALSE);
-        input.put("collection-non-empty", Collections.singletonList(Boolean.TRUE));
-        input.put("collection-empty", new ArrayList());
-        input.put("array-nonempty", new String[] { "alpha", "beta" });
-        input.put("array-empty", new Integer[0]);
-        input.put("number-zero", new Long(0));
-        input.put("number-nonzero", new Integer(1));
+        input.put("true_string", "anything");
+        input.put("false_string", " ");
+        input.put("boolean_true", Boolean.TRUE);
+        input.put("boolean_false", Boolean.FALSE);
+        input.put("collection_non_empty", Collections.singletonList(Boolean.TRUE));
+        input.put("collection_empty", new ArrayList());
+        input.put("array_nonempty", new String[] { "alpha", "beta" });
+        input.put("array_empty", new Integer[0]);
+        input.put("number_zero", new Long(0));
+        input.put("number_nonzero", new Integer(1));
 
         Map symbols = new HashMap();
         symbols.put("input", input);
 
         ScriptSession session = execute("if.script", symbols);
 
-        assertSymbol(symbols, "output-true-string", "TRUE-STRING");
-        assertSymbol(symbols, "output-false-string", "");
-        assertSymbol(symbols, "output-null", "");
-        assertSymbol(symbols, "output-boolean-true", "BOOLEAN-TRUE");
-        assertSymbol(symbols, "output-boolean-false", "");
-        assertSymbol(symbols, "output-collection-nonempty", "COLLECTION-NON-EMPTY");
-        assertSymbol(symbols, "output-collection-empty", "");
-        assertSymbol(symbols, "output-array-nonempty", "ARRAY-NON-EMPTY");
-        assertSymbol(symbols, "output-array-empty", "");
-        assertSymbol(symbols, "output-number-zero", "");
-        assertSymbol(symbols, "output-number-nonzero", "NUMBER-NON-ZERO");
+        assertSymbol(symbols, "output_true_string", "TRUE-STRING");
+        assertSymbol(symbols, "output_false_string", "");
+        assertSymbol(symbols, "output_null", "");
+        assertSymbol(symbols, "output_boolean_true", "BOOLEAN-TRUE");
+        assertSymbol(symbols, "output_boolean_false", "");
+        assertSymbol(symbols, "output_collection_nonempty", "COLLECTION-NON-EMPTY");
+        assertSymbol(symbols, "output_collection_empty", "");
+        assertSymbol(symbols, "output_array_nonempty", "ARRAY-NON-EMPTY");
+        assertSymbol(symbols, "output_array_empty", "");
+        assertSymbol(symbols, "output_number_zero", "");
+        assertSymbol(symbols, "output_number_nonzero", "NUMBER-NON-ZERO");
     }
 
     /**
@@ -183,33 +183,33 @@ public class ScriptTest extends TestCase
     {
         Map input = new HashMap();
 
-        input.put("true-string", "anything");
-        input.put("false-string", " ");
-        input.put("boolean-true", Boolean.TRUE);
-        input.put("boolean-false", Boolean.FALSE);
-        input.put("collection-non-empty", Collections.singletonList(Boolean.TRUE));
-        input.put("collection-empty", new ArrayList());
-        input.put("array-nonempty", new String[] { "alpha", "beta" });
-        input.put("array-empty", new Integer[0]);
-        input.put("number-zero", new Long(0));
-        input.put("number-nonzero", new Integer(1));
+        input.put("trueString", "anything");
+        input.put("falseString", " ");
+        input.put("booleanTrue", Boolean.TRUE);
+        input.put("booleanFalse", Boolean.FALSE);
+        input.put("collectionNonEmpty", Collections.singletonList(Boolean.TRUE));
+        input.put("collectionEmpty", new ArrayList());
+        input.put("arrayNonempty", new String[] { "alpha", "beta" });
+        input.put("arrayEmpty", new Integer[0]);
+        input.put("numberZero", new Long(0));
+        input.put("numberNonzero", new Integer(1));
 
         Map symbols = new HashMap();
         symbols.put("input", input);
 
         ScriptSession session = execute("if-not.script", symbols);
 
-        assertSymbol(symbols, "output-true-string", "");
-        assertSymbol(symbols, "output-false-string", "FALSE-STRING");
-        assertSymbol(symbols, "output-null", "NULL");
-        assertSymbol(symbols, "output-boolean-true", "");
-        assertSymbol(symbols, "output-boolean-false", "BOOLEAN-FALSE");
-        assertSymbol(symbols, "output-collection-nonempty", "");
-        assertSymbol(symbols, "output-collection-empty", "COLLECTION-EMPTY");
-        assertSymbol(symbols, "output-array-nonempty", "");
-        assertSymbol(symbols, "output-array-empty", "ARRAY-EMPTY");
-        assertSymbol(symbols, "output-number-zero", "NUMBER-ZERO");
-        assertSymbol(symbols, "output-number-nonzero", "");
+        assertSymbol(symbols, "outputTrueString", "");
+        assertSymbol(symbols, "outputFalseString", "FALSE-STRING");
+        assertSymbol(symbols, "outputNull", "NULL");
+        assertSymbol(symbols, "outputBooleanTrue", "");
+        assertSymbol(symbols, "outputBooleanFalse", "BOOLEAN-FALSE");
+        assertSymbol(symbols, "outputCollectionNonempty", "");
+        assertSymbol(symbols, "outputCollectionEmpty", "COLLECTION-EMPTY");
+        assertSymbol(symbols, "outputArrayNonempty", "");
+        assertSymbol(symbols, "outputArrayEmpty", "ARRAY-EMPTY");
+        assertSymbol(symbols, "outputNumberZero", "NUMBER-ZERO");
+        assertSymbol(symbols, "outputNumberNonzero", "");
     }
 
     /**
@@ -221,22 +221,22 @@ public class ScriptTest extends TestCase
     {
         Map input = new HashMap();
         input.put("single", "SINGLE");
-        input.put("empty-array", new String[0]);
+        input.put("emptyArray", new String[0]);
         input.put("array", new String[] { "ALPHA", "BETA", "GAMMA" });
         input.put("collection", Arrays.asList(new String[] { "MOE", "LARRY", "CURLY" }));
-        input.put("empty-collection", new ArrayList());
+        input.put("emptyCollection", new ArrayList());
 
         Map symbols = new HashMap();
         symbols.put("input", input);
 
         ScriptSession session = execute("foreach.script", symbols);
 
-        assertSymbol(symbols, "output-missing", "");
-        assertSymbol(symbols, "output-empty-array", "");
-        assertSymbol(symbols, "output-empty-collection", "");
-        assertSymbol(symbols, "output-single", "SINGLE");
-        assertSymbol(symbols, "output-array", "ALPHA\n\nBETA\n\nGAMMA");
-        assertSymbol(symbols, "output-collection", "MOE\n\nLARRY\n\nCURLY");
+        assertSymbol(symbols, "outputMissing", "");
+        assertSymbol(symbols, "outputEmptyArray", "");
+        assertSymbol(symbols, "outputEmptyCollection", "");
+        assertSymbol(symbols, "outputSingle", "SINGLE");
+        assertSymbol(symbols, "outputArray", "ALPHA\n\nBETA\n\nGAMMA");
+        assertSymbol(symbols, "outputCollection", "MOE\n\nLARRY\n\nCURLY");
     }
 
     public void testIncludeScript() throws Exception

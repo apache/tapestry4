@@ -17,7 +17,7 @@
   <component id="showInspector" type="ShowInspector"/>
 
   <component id="insertPageName" type="Insert">
-	<binding name="value" property-path="page.name"/>
+	<binding name="value" expression="page.name"/>
   </component>
 
  </component-specification>

@@ -19,8 +19,8 @@ window.
     </component>
 
     <component id="rollover" type="Rollover">
-    	<binding name="image" property-path="assets.logo"/>
-    	<binding name="focus" property-path="assets.inspector"/>
+    	<binding name="image" expression="assets.logo"/>
+    	<binding name="focus" expression="assets.inspector"/>
     </component>
 
     <private-asset name="logo" resource-path="/net/sf/tapestry/inspector/tapestry-logo.gif"/>

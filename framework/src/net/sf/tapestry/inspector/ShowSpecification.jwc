@@ -19,163 +19,163 @@
   <bean name="beanClass" class="&EvenOdd;"/>
 
   <component id="insertSpecificationPath" type="Insert">
-    <binding name="value" property-path="inspectedSpecification.specificationResourcePath"/>
+    <binding name="value" expression="inspectedSpecification.specificationResourcePath"/>
   </component>
   
   <component id="showComponentDescription" type="ShowDescription">
-    <binding name="description" property-path="inspectedSpecification.description"/>
+    <binding name="description" expression="inspectedSpecification.description"/>
   </component>
   
   <component id="insertJavaClass" type="Insert">
-    <binding name="value" property-path="inspectedComponent.class.name"/>
+    <binding name="value" expression="inspectedSpecification.componentClassName"/>
   </component>
   
   <component id="ifNotPage" type="Conditional">
-  	<binding name="condition" property-path="inspectedSpecification.pageSpecification"/>
+  	<binding name="condition" expression="inspectedSpecification.pageSpecification"/>
   	<field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>  
   
   <component id="insertAllowInformal" type="Insert">
-    <binding name="value" property-path="inspectedSpecification.allowInformalParameters"/>
+    <binding name="value" expression="inspectedSpecification.allowInformalParameters"/>
   </component>
   
   <component id="insertAllowBody" type="Insert">
-    <binding name="value" property-path="inspectedSpecification.allowBody"/>
+    <binding name="value" expression="inspectedSpecification.allowBody"/>
   </component>
   
   <component id="ifFormalParameters" type="Conditional">
-    <binding name="condition" property-path="formalParameterNames"/>
+    <binding name="condition" expression="formalParameterNames"/>
   </component>
   
-  <component id="e-formal" type="Foreach">
-    <binding name="source" property-path="formalParameterNames"/>
-    <binding name="value" property-path="parameterName"/>
+  <component id="e_formal" type="Foreach">
+    <binding name="source" expression="formalParameterNames"/>
+    <binding name="value" expression="parameterName"/>
     <static-binding name="element">tr</static-binding>
-    <binding name="class" property-path="beans.formalClass.next"/>
+    <binding name="class" expression="beans.formalClass.next"/>
   </component>
   
   <component id="insertFormalName" type="Insert">
-    <binding name="value" property-path="parameterName"/>
+    <binding name="value" expression="parameterName"/>
   </component>
 
   <component id="showParameterDescription" type="ShowDescription">
-    <binding name="description" property-path="parameterSpecification.description"/>
+    <binding name="description" expression="parameterSpecification.description"/>
   </component>
   
   <component id="insertFormalRequired" type="Insert">
-    <binding name="value" property-path="parameterSpecification.required"/>
+    <binding name="value" expression="parameterSpecification.required"/>
   </component>
   
   <component id="insertFormalType" type="Insert">
-    <binding name="value" property-path="parameterSpecification.type"/>
+    <binding name="value" expression="parameterSpecification.type"/>
   </component>
   
   <component id="insertFormalBinding" type="Insert">
-    <binding name="value" property-path="binding"/>
+    <binding name="value" expression="binding"/>
   </component>
   
   <component id="ifInformalParameters" type="Conditional">
-    <binding name="condition" property-path="informalParameterNames"/>
+    <binding name="condition" expression="informalParameterNames"/>
   </component>
   
-  <component id="e-informal" type="Foreach">
-    <binding name="source" property-path="informalParameterNames"/>
-    <binding name="value" property-path="parameterName"/>
+  <component id="e_informal" type="Foreach">
+    <binding name="source" expression="informalParameterNames"/>
+    <binding name="value" expression="parameterName"/>
     <static-binding name="element">tr</static-binding>
-    <binding name="class" property-path="beans.informalClass.next"/>
+    <binding name="class" expression="beans.informalClass.next"/>
   </component>
 
   <component id="insertInformalName" type="Insert">
-    <binding name="value" property-path="parameterName"/>
+    <binding name="value" expression="parameterName"/>
   </component>
   
   <component id="insertInformalBinding" type="Insert">
-    <binding name="value" property-path="binding"/>
+    <binding name="value" expression="binding"/>
   </component>
   
   <component id="ifAssets" type="Conditional">
-    <binding name="condition" property-path="assetNames"/>
+    <binding name="condition" expression="assetNames"/>
   </component>
   
-  <component id="e-asset" type="Foreach">
-    <binding name="source" property-path="assetNames"/>
-    <binding name="value" property-path="assetName"/>
+  <component id="e_asset" type="Foreach">
+    <binding name="source" expression="assetNames"/>
+    <binding name="value" expression="assetName"/>
     <static-binding name="element">tr</static-binding>
-    <binding name="class" property-path="beans.assetClass.next"/>
+    <binding name="class" expression="beans.assetClass.next"/>
   </component>
   
   <component id="insertAssetName" type="Insert">
-    <binding name="value" property-path="assetName"/>
+    <binding name="value" expression="assetName"/>
   </component>
   
   <component id="insertAssetValue" type="Insert">
-    <binding name="value" property-path="asset"/>
+    <binding name="value" expression="asset"/>
   </component>
 
   <component id="ifComponents" type="Conditional">
-    <binding name="condition" property-path="sortedComponents"/>
+    <binding name="condition" expression="sortedComponents"/>
   </component>
 
-  <component id="e-components" type="Foreach">
-    <binding name="source" property-path="sortedComponents"/>
-    <binding name="value" property-path="component"/>
+  <component id="e_components" type="Foreach">
+    <binding name="source" expression="sortedComponents"/>
+    <binding name="value" expression="component"/>
     <static-binding name="element">tr</static-binding>
-    <binding name="class" property-path="beans.componentClass.next"/>
+    <binding name="class" expression="beans.componentClass.next"/>
   </component>
 
   <component id="selectComponent" type="Direct">
-    <binding name="listener" property-path="page.listeners.selectComponent"/>
-    <binding name="parameters" property-path="component.idPath"/>
+    <binding name="listener" expression="page.listeners.selectComponent"/>
+    <binding name="parameters" expression="component.idPath"/>
   </component>
 
   <component id="insertComponentId" type="Insert">
-    <binding name="value" property-path="component.id"/>
+    <binding name="value" expression="component.id"/>
   </component>
 
   <component id="insertComponentType" type="Insert">
-    <binding name="value" property-path="componentType"/>
+    <binding name="value" expression="componentType"/>
   </component>
 
   <component id="ifProperties" type="Conditional">
-    <binding name="condition" property-path="sortedPropertyNames"/>
+    <binding name="condition" expression="sortedPropertyNames"/>
   </component>
 
-  <component id="e-property" type="Foreach">
-    <binding name="source" property-path="sortedPropertyNames"/>
-    <binding name="value" property-path="propertyName"/>
+  <component id="e_property" type="Foreach">
+    <binding name="source" expression="sortedPropertyNames"/>
+    <binding name="value" expression="propertyName"/>
     <static-binding name="element">tr</static-binding>
-    <binding name="class" property-path="beans.propertyClass.next"/>
+    <binding name="class" expression="beans.propertyClass.next"/>
   </component>
   
   <component id="insertPropertyName" type="Insert">
-    <binding name="value" property-path="propertyName"/>
+    <binding name="value" expression="propertyName"/>
   </component>
   
   <component id="insertPropertyValue" type="Insert">
-    <binding name="value" property-path="propertyValue"/>
+    <binding name="value" expression="propertyValue"/>
   </component>
   
   <component id="ifBeans" type="Conditional">
-  	<binding name="condition" property-path="beanNames"/>
+  	<binding name="condition" expression="beanNames"/>
   </component>
   
-  <component id="e-bean" type="Foreach">
-  	<binding name="source" property-path="beanNames"/>
-  	<binding name="value" property-path="beanName"/>
+  <component id="e_bean" type="Foreach">
+  	<binding name="source" expression="beanNames"/>
+  	<binding name="value" expression="beanName"/>
   	<static-binding name="element">tr</static-binding>
-  	<binding name="class" property-path="beans.beanClass.next"/>
+  	<binding name="class" expression="beans.beanClass.next"/>
   </component>
   
   <component id="insertBeanName" type="Insert">
-  	<binding name="value" property-path="beanName"/>
+  	<binding name="value" expression="beanName"/>
   </component>
   
   <component id="insertBeanClass" type="Insert">
-  	<binding name="value" property-path="beanSpecification.className"/>
+  	<binding name="value" expression="beanSpecification.className"/>
   </component>
   
   <component id="insertBeanLifecycle" type="Insert">
-  	<binding name="value" property-path="beanSpecification.lifecycle.enumerationId"/>
+  	<binding name="value" expression="beanSpecification.lifecycle.enumerationId"/>
   </component>
   	
 </component-specification>

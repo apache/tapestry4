@@ -30,6 +30,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ import net.sf.tapestry.IDirect;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.util.prop.PropertyHelper;
+import ognl.OgnlRuntime;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -60,10 +61,10 @@ public class ListenerMap
     private static final Logger LOG = LogManager.getLogger(ListenerMap.class);
 
     static {
-        PropertyHelper.register(ListenerMap.class, ListenerMapHelper.class);
+        OgnlRuntime.setPropertyAccessor(ListenerMap.class, new ListenerMapPropertyAccessor());
     }
 
-    private Object target;
+    private Object _target;
 
     /**
      *  A {@link Map} of relevant {@link Method}s, keyed on method name.
@@ -74,14 +75,14 @@ public class ListenerMap
      *
      **/
 
-    private Map methodMap;
+    private Map _methodMap;
 
     /**
      * A {@link Map} of cached listener instances, keyed on method name
      *
      **/
 
-    private Map listenerCache = new HashMap();
+    private Map _listenerCache = new HashMap();
 
     /**
      * A {@link Map}, keyed on Class, of {@link Map} ... the method map
@@ -89,7 +90,7 @@ public class ListenerMap
      *
      **/
 
-    private static Map classMap = new HashMap();
+    private static Map _classMap = new HashMap();
 
     /**
      *  Implements both listener interfaces.
@@ -98,22 +99,21 @@ public class ListenerMap
 
     private class SyntheticListener implements IActionListener
     {
-        private Method method;
+        private Method _method;
 
         SyntheticListener(Method method)
         {
-            this.method = method;
+            _method = method;
         }
 
         private void invoke(IRequestCycle cycle) throws RequestCycleException
         {
             Object[] args = new Object[] { cycle };
 
-            invokeTargetMethod(target, method, args);
+            invokeTargetMethod(_target, _method, args);
         }
 
-        public void actionTriggered(IComponent component, IRequestCycle cycle)
-            throws RequestCycleException
+        public void actionTriggered(IComponent component, IRequestCycle cycle) throws RequestCycleException
         {
             invoke(cycle);
         }
@@ -122,9 +122,9 @@ public class ListenerMap
         {
             StringBuffer buffer = new StringBuffer("SyntheticListener[");
 
-            buffer.append(target);
+            buffer.append(_target);
             buffer.append(' ');
-            buffer.append(method);
+            buffer.append(_method);
             buffer.append(']');
 
             return buffer.toString();
@@ -134,7 +134,7 @@ public class ListenerMap
 
     public ListenerMap(Object target)
     {
-        this.target = target;
+        _target = target;
     }
 
     /**
@@ -145,23 +145,17 @@ public class ListenerMap
      * @throws ApplicationRuntimeException if the listener can not be created.
      **/
 
-    public Object getListener(String name)
+    public synchronized Object getListener(String name)
     {
         Object listener = null;
 
-        synchronized (listenerCache)
-        {
-            listener = listenerCache.get(name);
-        }
+        listener = _listenerCache.get(name);
 
         if (listener == null)
         {
             listener = createListener(name);
 
-            synchronized (listenerCache)
-            {
-                listenerCache.put(name, listener);
-            }
+            _listenerCache.put(name, listener);
         }
 
         return listener;
@@ -173,23 +167,18 @@ public class ListenerMap
      *  inner class to create.
      **/
 
-    private Object createListener(String name)
+    private synchronized Object createListener(String name)
     {
-        Method method;
-
-        if (methodMap == null)
+        if (_methodMap == null)
             getMethodMap();
 
-        synchronized (methodMap)
-        {
-            method = (Method) methodMap.get(name);
-        }
+        Method method = (Method) _methodMap.get(name);
 
         if (method == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ListenerMap.object-missing-method", target, name));
+                Tapestry.getString("ListenerMap.object-missing-method", _target, name));
 
-           return new SyntheticListener(method);
+        return new SyntheticListener(method);
     }
 
     /**
@@ -198,29 +187,26 @@ public class ListenerMap
      *
      **/
 
-    private Map getMethodMap()
+    private synchronized Map getMethodMap()
     {
-        if (methodMap != null)
-            return methodMap;
+        if (_methodMap != null)
+            return _methodMap;
 
-        Class beanClass = target.getClass();
+        Class beanClass = _target.getClass();
 
-        synchronized (classMap)
+        synchronized (_classMap)
         {
-            methodMap = (Map) classMap.get(beanClass);
-        }
+            _methodMap = (Map) _classMap.get(beanClass);
 
-        if (methodMap == null)
-        {
-            methodMap = buildMethodMap(beanClass);
-
-            synchronized (classMap)
+            if (_methodMap == null)
             {
-                classMap.put(beanClass, methodMap);
+                _methodMap = buildMethodMap(beanClass);
+
+                _classMap.put(beanClass, _methodMap);
             }
         }
 
-        return methodMap;
+        return _methodMap;
     }
 
     private static Map buildMethodMap(Class beanClass)
@@ -264,8 +250,7 @@ public class ListenerMap
             if (exceptions.length > 1)
                 continue;
 
-            if (exceptions.length == 1
-                && !exceptions[0].equals(RequestCycleException.class))
+            if (exceptions.length == 1 && !exceptions[0].equals(RequestCycleException.class))
                 continue;
 
             // Ha!  Passed all tests.
@@ -283,11 +268,7 @@ public class ListenerMap
      *
      **/
 
-    private static void invokeTargetMethod(
-        Object target,
-        Method method,
-        Object[] args)
-        throws RequestCycleException
+    private static void invokeTargetMethod(Object target, Method method, Object[] args) throws RequestCycleException
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Invoking listener method " + method + " on " + target);
@@ -323,35 +304,39 @@ public class ListenerMap
             // the inner exception here (if its a runtime exception).
 
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
-                    "ListenerMap.unable-to-invoke-method",
-                    method.getName(),
-                    target,
-                    ex.getMessage()),
+                Tapestry.getString("ListenerMap.unable-to-invoke-method", method.getName(), target, ex.getMessage()),
                 ex);
         }
     }
 
     /** 
-     *  Returns a collection of the names of the listeners implemented by the target class.
-     *  Returns a copy of the key set for the method map.
+     *  Returns an unmodifiable collection of the 
+     *  names of the listeners implemented by the target class.
      *
      *  @since 1.0.6
      *
      **/
 
-    public Collection getListenerNames()
+    public synchronized Collection getListenerNames()
     {
-        Map methods = getMethodMap();
+         return Collections.unmodifiableCollection(getMethodMap().keySet());
+    }
 
-        synchronized (methods)
-        {
-            return new ArrayList(methods.keySet());
-        }
+    /**
+     *  Returns true if this ListenerMap can provide a listener
+     *  with the given name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public synchronized boolean canProvideListener(String name)
+    {
+         return getMethodMap().containsKey(name);
     }
 
     public String toString()
     {
-        return "ListenerMap[" + target + "]";
+        return "ListenerMap[" + _target + "]";
     }
 }

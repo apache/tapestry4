@@ -26,7 +26,6 @@
 package net.sf.tapestry.bean;
 
 import net.sf.tapestry.IBeanProvider;
-import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**
  *  Initializes a bean with a static value.
@@ -39,19 +38,17 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public class StaticBeanInitializer extends AbstractBeanInitializer
 {
-    protected Object _value;
+    private Object _value;
 
     public StaticBeanInitializer(String propertyName, Object value)
     {
         super(propertyName);
 
-        this._value = value;
+        _value = value;
     }
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
-        PropertyHelper helper = PropertyHelper.forInstance(bean);
-
-        helper.set(bean, _propertyName, _value);
+        setBeanProperty(bean, _value);
     }
 }

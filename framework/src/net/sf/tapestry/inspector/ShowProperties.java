@@ -37,18 +37,14 @@ import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageChange;
 import net.sf.tapestry.IPageRecorder;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.event.PageRenderListener;
-import net.sf.tapestry.util.exception.ExceptionAnalyzer;
-import net.sf.tapestry.util.exception.ExceptionDescription;
-import net.sf.tapestry.util.prop.IPropertyAccessor;
 import net.sf.tapestry.util.prop.IPublicBean;
-import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**
  *  Component of the {@link Inspector} page used to display
- *  the persisent properties of the page as well as the
- *  properties explorer.
+ *  the persisent properties of the page.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
@@ -57,23 +53,6 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public class ShowProperties extends BaseComponent implements PageRenderListener
 {
-    /**
-     *  Stores elements in the explorePath.
-     *
-     *  @since 1.0.6
-     **/
-
-    public static class ExplorePathElement implements IPublicBean
-    {
-        public ExplorePathElement(String path, String propertyName)
-        {
-            this.path = path;
-            this.propertyName = propertyName;
-        }
-
-        public String path;
-        public String propertyName;
-    }
 
     public static class AccessorElement implements IPublicBean, Comparable
     {
@@ -99,8 +78,6 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
     private List _properties;
     private IPageChange _change;
     private IPage _inspectedPage;
-    private String _errorPropertyName;
-    private ExceptionDescription[] _propertyException;
 
     /**
      *  Registers this component as a {@link PageRenderListener}.
@@ -135,8 +112,6 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         _properties = null;
         _change = null;
         _inspectedPage = null;
-        _errorPropertyName = null;
-        _propertyException = null;
     }
 
     private void buildProperties()
@@ -151,8 +126,11 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         // No page recorder?  No properties.
 
         if (recorder == null)
+        {
+            _properties = Collections.EMPTY_LIST;
             return;
-
+        }
+        
         if (recorder.getHasChanges())
             _properties = new ArrayList(recorder.getChanges());
     }
@@ -209,54 +187,6 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         return convertClassToName(value.getClass());
     }
 
-    public List getExplorePath()
-    {
-        Inspector inspector = (Inspector) getPage();
-
-        String explorePath = inspector.getExplorePath();
-        if (explorePath == null)
-            return null;
-
-        String[] propertyName = PropertyHelper.splitPropertyPath(explorePath);
-        List result = new ArrayList(propertyName.length);
-        StringBuffer buffer = new StringBuffer(explorePath.length());
-
-        for (int i = 0; i < propertyName.length; i++)
-        {
-            if (i > 0)
-                buffer.append(PropertyHelper.PATH_SEPERATOR);
-
-            buffer.append(propertyName[i]);
-
-            result.add(new ExplorePathElement(buffer.toString(), propertyName[i]));
-        }
-
-        return result;
-    }
-
-    private Object getExploredObject()
-    {
-        Inspector inspector = (Inspector) getPage();
-
-        return inspector.getExploredObject();
-    }
-
-    /**
-     *  Gets the class name of the explored object.  This does some minor
-     *  translation to be more useful with array types.
-     *
-     **/
-
-    public String getExploredClassName()
-    {
-        Object explored = getExploredObject();
-
-        if (explored == null)
-            return "<Null>";
-
-        return convertClassToName(explored.getClass());
-    }
-
     private String convertClassToName(Class cl)
     {
         // TODO: This only handles one-dimensional arrays
@@ -268,124 +198,4 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         return cl.getName();
     }
 
-    public String getExploredValue()
-    {
-        Object explored = getExploredObject();
-
-        return (explored == null) ? "<null>" : explored.toString();
-    }
-
-    public void exploreComponent(IRequestCycle cycle)
-    {
-        Inspector inspector = (Inspector) getPage();
-
-        inspector.setExplorePath(null);
-    }
-
-    public void selectExplorePath(IRequestCycle cycle)
-    {
-        Object[] parameters = cycle.getServiceParameters();
-        Inspector inspector = (Inspector) getPage();
-
-        String fullPath = (String)parameters[0];
-        String[] splitPath = PropertyHelper.splitPropertyPath(fullPath);
-
-        StringBuffer buffer = new StringBuffer();
-
-        Object focus = inspector.getInspectedComponent();
-
-        for (int i = 0; i < splitPath.length; i++)
-        {
-            String name = splitPath[i];
-
-            PropertyHelper helper = PropertyHelper.forInstance(focus);
-
-            try
-            {
-                focus = helper.get(focus, name);
-            }
-            catch (Throwable ex)
-            {
-                _errorPropertyName = name;
-
-                _propertyException = new ExceptionAnalyzer().analyze(ex);
-
-                break;
-            }
-
-            if (i > 0)
-                buffer.append(PropertyHelper.PATH_SEPERATOR);
-
-            buffer.append(name);
-        }
-
-        // Inform the page about the object we've explored.
-
-        inspector.setExplorePath(buffer.toString());
-    }
-
-    /**
-     *  Returns a List of AccessorElement.
-     *
-     **/
-
-    public List getAccessors()
-    {
-        Object explored = getExploredObject();
-        if (explored == null)
-            return null;
-
-        Inspector inspector = (Inspector) getPage();
-        String currentPath = inspector.getExplorePath();
-
-        StringBuffer buffer = new StringBuffer();
-
-        if (currentPath != null)
-        {
-            buffer.append(currentPath);
-            buffer.append(PropertyHelper.PATH_SEPERATOR);
-        }
-
-        int baseLength = buffer.length();
-
-        List result = new ArrayList();
-        PropertyHelper helper = PropertyHelper.forInstance(explored);
-
-        Collection accessors = helper.getAccessors(explored);
-
-        Iterator i = accessors.iterator();
-        while (i.hasNext())
-        {
-            IPropertyAccessor ac = (IPropertyAccessor) i.next();
-
-            if (ac.isReadable())
-            {
-                AccessorElement element = new AccessorElement();
-                element.propertyName = ac.getName();
-
-                buffer.setLength(baseLength);
-                buffer.append(element.propertyName);
-                element.propertyPath = buffer.toString();
-
-                element.propertyType = convertClassToName(ac.getType());
-
-                element.error = element.propertyName.equals(_errorPropertyName);
-
-                result.add(element);
-            }
-        }
-
-        Collections.sort(result);
-        return result;
-    }
-
-    public ExceptionDescription[] getPropertyException()
-    {
-        return _propertyException;
-    }
-
-    public String getErrorPropertyName()
-    {
-        return _errorPropertyName;
-    }
 }

@@ -9,15 +9,15 @@
   <component id="border" type="Border"/>
   
   <component id="insertFilePath" type="Insert">
-  	<binding name="value" property-path="file.filePath"/>
+  	<binding name="value" expression="file.filePath"/>
   </component>
   
   <component id="insertFileName" type="Insert">
-  	<binding name="value" property-path="file.fileName"/>
+  	<binding name="value" expression="file.fileName"/>
   </component>
   
   <component id="insertFileDump" type="Insert">
-  	<binding name="value" property-path="fileDump"/>
+  	<binding name="value" expression="fileDump"/>
   </component>
   
   <component id="back" type="Page">
@@ -25,11 +25,11 @@
   </component>
   
   <component id="backRollover" type="Rollover">
-    <binding name="image" property-path="assets.back"/>
-    <binding name="focus" property-path="assets.back-focus"/>
+    <binding name="image" expression="assets.back"/>
+    <binding name="focus" expression="assets.backFocus"/>
   </component>
   
   <context-asset name="back" path="/images/workbench/Back.gif"/>
-  <context-asset name="back-focus" path="/images/workbench/Back-focus.gif"/>
+  <context-asset name="backFocus" path="/images/workbench/Back-focus.gif"/>
   
 </page-specification>

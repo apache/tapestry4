@@ -18,47 +18,47 @@
   </bean>
   
   <component id="levelForm" type="Form">
-    <binding name="listener" property-path="listeners.levelChange"/>
+    <binding name="listener" expression="listeners.levelChange"/>
   </component>
   
   <component id="inputRootLevel" type="PropertySelection">
-    <binding name="value" property-path="rootLogger.level"/>
-    <binding name="model" property-path="rootLevelModel"/>
+    <binding name="value" expression="rootLogger.level"/>
+    <binding name="model" expression="rootLevelModel"/>
   </component>
   
   <component id="e" type="ListEdit">
-    <binding name="source" property-path="loggerNames"/>
-    <binding name="value" property-path="loggerName"/>
+    <binding name="source" expression="loggerNames"/>
+    <binding name="value" expression="loggerName"/>
     <static-binding name="element">tr</static-binding>
-    <binding name="class" property-path="beans.levelClass.next"/>
+    <binding name="class" expression="beans.levelClass.next"/>
   </component>
   
   <component id="insertLoggerName" type="Insert">
-    <binding name="value" property-path="logger.name"/>
+    <binding name="value" expression="logger.name"/>
   </component>
   
   <component id="inputLoggerLevel" type="PropertySelection">
-    <binding name="model" property-path="levelModel"/>
-    <binding name="value" property-path="logger.level"/>
+    <binding name="model" expression="levelModel"/>
+    <binding name="value" expression="logger.level"/>
   </component>
   
   <component id="newLoggerForm" type="Form">
-    <binding name="listener" property-path="listeners.addNewLogger"/>
-    <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="listener" expression="listeners.addNewLogger"/>
+    <binding name="delegate" expression="beans.delegate"/>
   </component>
   
   <component id="ifError" type="Conditional">
-    <binding name="condition" property-path="beans.delegate.hasErrors"/>
+    <binding name="condition" expression="beans.delegate.hasErrors"/>
   </component>
   
   <component id="insertError" type="Delegator">
-    <binding name="delegate" property-path="beans.delegate.firstError"/>
+    <binding name="delegate" expression="beans.delegate.firstError"/>
   </component>
   
   <component id="inputNewLogger" type="ValidField">
     <static-binding name="displayName">New Logger</static-binding>
     <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
-    <binding name="value" property-path="newLogger"/>
+    <binding name="value" expression="newLogger"/>
   </component>
   
 </component-specification>
