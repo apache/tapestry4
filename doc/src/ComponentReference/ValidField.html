@@ -116,14 +116,14 @@
 	 <td>
    The value to be displayed (on render), and updated (when the form is
    submitted, if the submitted value is valid). The
-   <a href="../api/net/sf/tapestry/valid/IValidator/html"><tt>IValidator</tt></a>
+   <a href="../api/net/sf/tapestry/valid/IValidator.html"><tt>IValidator</tt></a>
    converts between object values and Strings.
    </td>
 	</tr>
   <tr>
    <td>validator</td>
    <td>
-    <A href="../api/net/sf/tapestry/valid/IValidator/html"><tt>IValidator</tt></a>
+    <A href="../api/net/sf/tapestry/valid/IValidator.html"><tt>IValidator</tt></a>
    </td>
    <td>in</td>
    <td>yes</td>
@@ -219,12 +219,10 @@ Also, the names of Java scalar types are acceptible.
    </td> 
   </tr>
 	</table>
-            <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
-            <STRONG>allowed</STRONG>
-    <br>
-  Reserved 
-            parameters: "name", "type", "value" </P>
-      
+  <p>Body: <strong>removed</strong><br>
+  Informal parameters:<strong>allowed</strong><br>
+  Reserved parameters: "name", "type", "value" 
+  </p>      
  </td>
 </tr>
 
@@ -232,64 +230,302 @@ Also, the names of Java scalar types are acceptible.
  <td colspan="2">
   <b>Examples</b>
   <p>
-  Provides a date validation field.
+  The ValidField is used in this example to provide an auction bidding page. A
+  custom
+  <a href="../api/net/sf/tapestry/valid/ValidationDelegate.html"><tt>ValidationDelegate</tt></a>
+  is used to render the invalid fiels as yellow. A custom ShowError component 
+  is also used to display the first error message if any fields have errors. 
+	<p>
+  For a more extensive example see the 
+  <a href="..\Tutorial\workbench.html">Tapestry Workbench</a>. The Fields 
+  example in the Workbench also illustrates how to use the 
+  <a href="FieldLabel.html">FieldLabel</a> component to high light invalid 
+  fields.
 	<p>
 
-<table class="examples" cellpadding="8">
-<tr valign="center">
- <td><b>Enquiry date</b></td> 
- <td><input style="BACKGROUND: yellow" name="example4" value="11/37/2002"></td>
+<form>
+<table class="examples" cellpadding="2">
+<tr>
+ <td colspan="2"><font color="navy" size="+2"><i><b>Regal Auctions Bid Page</b></i></font></td>
+</tr>
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+<tr>
+ <td colspan="2"><font color="red">Bid Amount must be greater than 10.0</font></td>
+</tr>
+<tr>
+ <td>Lot Number</td><td><input type="text" size="4" maxlength="4" value="23"/></td>
+</tr>
+<tr>
+ <td>Bid Amount</td><td><input type="text" size="7" maxlength="7" value="9.99" style="background:yellow"/></td>
+</tr>
+<tr>
+ <td>Full Name</td><td><input type="text" size="25" maxlength="30" value="Peter McHolder"/></td>
+</tr>
+<tr>
+ <td>Email</td><td><input type="text" size="25" maxlength="30" value="pmcholder2@hotmail.com"/></td>
+</tr>
+<tr>
+ <td>Telphone</td><td><input type="text" size="25" maxlength="12" style="background:yellow"/></td>
+</tr>
+<tr>
+ <td colspan="2" align="right">
+  <input type="Submit" value="   OK   ">
+  <input type="Submit" value="Cancel">
+ </td>
 </tr>
 </table>
+</form>
 
 <pre>
 &lt;form jwcid="form"&gt;
- &lt;table&gt;
-  &lt;tr&gt;								
-   &lt;td&gt;&lt;span jwcid="dateLabel"/&gt;&lt;/td&gt;
-   &lt;td&gt;&lt;input jwcid="<span class="jwcid">dateField</span>" displayName="Enquiry Date"/&gt;&lt;/td&gt;
-  &lt;/tr&gt;
- &lt;/table&gt;
+&lt;table class="examples" cellpadding="2"&gt;
+&lt;tr&gt;
+ &lt;td colspan="2"&gt;&lt;span class="title"&gt;Regal Auctions Bid Page&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+ &lt;td colspan="2"&gt;&lt;hr&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+ &lt;td colspan="2"&gt;&lt;span jwcid="showError"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+ &lt;td&gt;Lot Number&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">lotNoField</span>" type="text"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+ &lt;td&gt;Bid Amount&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">bidAmountField</span>" type="text"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+ &lt;td&lt;Full Name&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">fullNameField</span>" type="text"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+ &lt;td&gt;Email&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">emailField</span>" type="text"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+ &lt;td&gt;Telphone&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">telephoneField</span>" type="text"/&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+ &lt;td colspan="2" align="right"&gt;
+  &lt;input jwcid="okSubmit" type="Submit" value="   OK   "&gt;
+  &lt;input jwcid="cancelSubmit" type="Submit" value="Cancel"&gt;
+ &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
 &lt;/form&gt;
 
 
-&lt;bean name="validationDelegate" class="<A href="../api/net/sf/tapestry/valid/ValidationDelegate.html">net.sf.tapestry.valid.ValidationDelegate</a>"/&gt;
-    
-&lt;bean name="dateValidator" class="<A href="../api/net/sf/tapestry/valid/DateValidator.html">net.sf.tapestry.valid.DateValidator</a>"&gt;
+&lt;bean name="delegate" class="com.mycorp.FormValidationDelegate"/&gt;
+
+&lt;bean name="lotNoValidator" class="<A href="../api/net/sf/tapestry/valid/NumberValidator.html">net.sf.tapestry.valid.NumberValidator</a>"&gt;
     &lt;set-property name="required"&gt;
         &lt;field-value field-name="Boolean.TRUE"/&gt;
     &lt;/set-property&gt;
+    &lt;set-property name="minimum"&gt;
+        &lt;static-value type="int"&gt;1&lt;/static-value&gt;
+    &lt;/set-property>
+    &lt;set-property name="maximum"&gt;
+        &lt;property-value expression="auctionDetails.numberLots"/&gt;
+    &lt;/set-property&gt;
+&lt;/bean&gt;
+
+&lt;bean name="bidAmountValidator" class="<A href="../api/net/sf/tapestry/valid/NumberValidator.html">net.sf.tapestry.valid.NumberValidator</a>"&gt;
+    &lt;set-property name="required"&gt;
+        &lt;field-value field-name="Boolean.TRUE"/&gt;
+    &lt;/set-property&gt;
+    &lt;set-property name="minimum"&gt;
+        &lt;property-value expression="auctionDetails.minBid"/&gt;
+    &lt;/set-property>
+    &lt;set-property name="maximum"&gt;
+        &lt;property-value expression="auctionDetails.maxBid"/&gt;
+    &lt;/set-property&gt;
+&lt;/bean&gt;
+
+&lt;bean name="fullNameValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
+    &lt;set-property name="required"&gt;
+        &lt;field-value field-name="Boolean.TRUE"/&gt;
+    &lt;/set-property&gt;
+    &lt;set-property name="minimum"&gt;
+        &lt;static-value type="float"&gt;3&lt;/static-value&gt;
+    &lt;/set-property>
+&lt;/bean&gt;
+
+&lt;bean name="emailValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
+    &lt;set-property name="required"&gt;
+        &lt;field-value field-name="Boolean.TRUE"/&gt;
+    &lt;/set-property&gt;
+    &lt;set-property name="minimum"&gt;
+        &lt;static-value type="float"&gt;12&lt;/static-value&gt;
+    &lt;/set-property>
+&lt;/bean&gt;
+
+&lt;bean name="telephoneValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
+    &lt;set-property name="required"&gt;
+        &lt;field-value field-name="Boolean.TRUE"/&gt;
+    &lt;/set-property&gt;
+    &lt;set-property name="minimum"&gt;
+        &lt;static-value type="float"&gt;11&lt;/static-value&gt;
+    &lt;/set-property>
 &lt;/bean&gt;
 
 &lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-    &lt;binding name="delegate" expression="beans.validationDelegate"/&gt;
-&lt;/component&gt;
-    
-&lt;component id="dateLabel" type="<A href="FieldLabel.html">FieldLabel</a>"&gt;
-    &lt;binding name="field" expression="components.dateField"/&gt;
+    &lt;binding name="delegate" expression="beans.delegate"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">dateField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
-    &lt;binding name="value" expression="visit.enquiryDate"/&gt;
-    &lt;binding name="validator" expression="beans.dateValidator"/&gt;
+&lt;component id="showError" type="ShowError"&gt;
+    &lt;binding name="delegate" expression="beans.delegate"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">lotNoField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
+    &lt;binding name="value" expression="lotBid.lotNo"/&gt;
+    &lt;binding name="validator" expression="beans.lotNoValidator"/&gt;
+    &lt;static-binding name="displayName"&gt;Lot Number&lt;/static-binding&gt;
+    &lt;static-binding name="displayWidth"&gt;4&lt;/static-binding&gt;
+    &lt;static-binding name="maximumLength"&gt;4&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">bidAmountField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
+    &lt;binding name="value" expression="lotBid.bidAmount"/&gt;
+    &lt;binding name="validator" expression="beans.bidAmountNoValidator"/&gt;
+    &lt;static-binding name="displayName"&gt;Bid Amount&lt;/static-binding&gt;
+    &lt;static-binding name="displayWidth"&gt;7&lt;/static-binding&gt;
+    &lt;static-binding name="maximumLength"&gt;7&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">fullNameField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
+    &lt;binding name="value" expression="lotBid.bidderName"/&gt;
+    &lt;binding name="validator" expression="beans.fullNameValidator"/&gt;
+    &lt;static-binding name="displayName"&gt;Full Name&lt;/static-binding&gt;
+    &lt;static-binding name="displayWidth"&gt;25&lt;/static-binding&gt;
+    &lt;static-binding name="maximumLength"&gt;30&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">emailField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
+    &lt;binding name="value" expression="lotBid.bidderEmail"/&gt;
+    &lt;binding name="validator" expression="beans.emailValidator"/&gt;
+    &lt;static-binding name="displayName"&gt;Email&lt;/static-binding&gt;
+    &lt;static-binding name="displayWidth"&gt;25&lt;/static-binding&gt;
+    &lt;static-binding name="maximumLength"&gt;30&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">telephoneField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
+    &lt;binding name="value" expression="lotBid.bidderTelephone"/&gt;
+    &lt;binding name="validator" expression="beans.telephoneValidator"/&gt;
+    &lt;static-binding name="displayName"&gt;Telephone&lt;/static-binding&gt;
+    &lt;static-binding name="displayWidth"&gt;25&lt;/static-binding&gt;
+    &lt;static-binding name="maximumLength"&gt;30&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component id="okSubmit" type="<A href="Submit.html">Submit</a>"&gt;
+    &lt;binding name="listener" expression="listeners.okSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component id="cancelSubmit" type="<A href="Submit.html">Submit</a>"&gt;
+    &lt;binding name="listener" expression="listeners.cancelSubmit"/&gt;
 &lt;/component&gt;
 
 
-public class EnquiryPage extends BasePage {
-    public void formSubmit(IRequestCycle cycle) {
-        // Process enquiry date
+public class LotBidPage extends BasePage {
+    private LotBid lotBid = new LotBid();
+    private ActionDetails actionDetails;
+
+    public LotBid getLotBid() { return lotBid; }
+
+    public void setLotBid(LotBid value) {
+        lotBid = value;
+        fireObservedChange("lotBid", value);
     }
+
+    public AuctionDetails getAuctionDetails() { return auctionDetails; }
+
+    public void setAuctionDetails(AuctionDetails value) {
+        auctionDetails = value;
+        fireObservedChange("auctionDetails", value);
+    }
+
+    public void detach() {
+        lotBid = new LotBid();
+        actionDetails = null;
+        super.detach();        
+    }
+
+    public void okSubmit(IRequestCycle cycle) {
+        ValidationDelegate delegate = (ValidationDelegate) 
+            getBeans().getBean("delegate");
+
+        // If no errors process the bid, otherwise stay on this page and 
+        // let the fields show their errors.
+        if (!delegate.getHasErrors())
+            // Save the lot bid to the database.
+            ..
+            
+            // Go to the confirmation page.
+            cycle.setPage("BidConfirmPage");
+        }
+    }
+    
+    public void cancelSubmit(IRequestCycle cycle) {
+        cycle.setPage("AuctionListPage");
+    }
+
+    public void formSubmit(IRequestCycle cycle) { }        
 }
 
-public class Visit implements Serializable {
-    private Date enquiryDate = new Date();
+public class LotBid implements Serializable {
+    private int lotNo;
+    private float bidAmount;
+    private String bidderName;
+    private String bidderEmail;
+    private String bidderTelephone;
 
-    public Date getEnquiryDate() { return enquiryDate; }
-
-    public void setEnquiryDate(Date value) {
-        enquiryDate = value;
+    public int getLotNo() { return lotNo; }
+    
+    public void setLotNo(int value) {
+        lotNo = value;
     }
+
+    public float getBidAmount() { return bidAmount; }
+    
+    public void setBidAmount(float value) {
+        bidAmount = value;
+    }
+                  
+    public float getBidderName() { return bidderName; }
+    
+    public void setBidderName(String value) {
+        bidderName = value;
+    }
+    
+    public float getBidderEmail() { return bidderEmail; }
+    
+    public void setBidderEmail(String value) {
+        bidderEmail = value;
+    }
+    
+    public float getBidderTelephone() { return bidderTelephone; }
+    
+    public void setBidderTelephone(String value) {
+        bidderTelephone = value;
+    }    
+}
+
+public class AuctionDetails implements Serializable {
+    private int numberLots;
+    private float minBid;
+    private float maxBid;
+    
+    public AuctionDetails(int numberLots, float minBid, float maxBid) {
+        this.numberLots = numberLots;
+        this.minBid = minBid;
+        this.maxBid = maxBid;
+    }
+    
+    public int getNumberLots() { return numberLots; }
+    
+    public float getMinBid() { return minBid; }
+
+    public float getMaxBid() { return maxBid; }    
 }
 </pre>
 
