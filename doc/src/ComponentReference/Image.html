@@ -22,10 +22,9 @@
   </table>
  </td>
  <td>
-  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+  <table align="right" valign="middle" cellpadding="8">
 	 <tr>
-	  <td>Visual Component</input>
-		</td>
+	  <td><img src="poweredby.png" alt="Image Component"/></td>
 	 </tr>
   </table>
  </td>
@@ -91,9 +90,52 @@
 <tr>
  <td colspan="2">
   <b>Examples</b>
+
+	<p>
+Inserts the static context path based image. This example uses a 
+&lt;context-asset&gt; to reference the image. 
+	<p>
+
+<table class="examples" cellpadding="8" valign="middle">
+<tr>
+ <td>
+  <a href="http://tapestry.sourceforge.net/">
+   <img src="poweredby.png" alt="View Tapestry Home"/>
+  </a>
+ </td>  
+ <td>
+  <font color="navy" size="+2"><b><i>Powered by Tapestry</i></b></font>
+ </td>
+</tr>
+</table>
+
+<pre>
+&lt;table cellpadding="8" valign="middle"&gt;
+&lt;tr&gt;
+ &lt;td&gt;
+  &lt;a href="http://tapestry.sourceforge.net/"&gt;
+   &lt;img jwcid="<span class="jwcid">poweredbyImage</span>" alt="View Tapestry Home"/&gt;
+  &lt;/a&gt;
+ &lt;/td&gt;  
+ &lt;td&gt;
+  &lt;font color="navy" size="+2"&gt;&lt;b&gt;&lt;i&gt;Powered by Tapestry&lt;/i&gt;&lt;/b&gt;&lt;/font&gt;
+ &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+
+&lt;component id="<span class="jwcid">poweredbyImage</span>" type="<a href="Image.html">Image</a>"&gt;
+    &lt;binding name="image" property-path="assets.imageAsset"/&gt;
+&lt;/component&gt;
+
+&lt;context-asset name="imageAsset" path="/images/poweredby.png"/&gt;
+</pre>
+  
+  <hr>
   
 	<p>
-Inserts the dynamic image obtained from the pages <tt>NewsItem</tt> property. 
+Inserts the dynamic image obtained from the page's <tt>NewsItem</tt> property. 
+This example uses the ExternalAsset to reference the image's URL. 
 	<p>
 
 <table class="examples" cellpadding="8">
@@ -108,7 +150,7 @@ Inserts the dynamic image obtained from the pages <tt>NewsItem</tt> property.
   Date : 4 January 2002 
  </td>
  <td>
-  <img src="elvis.jpg" alt="Elvis super helitanker refueling at Glenbrook"/>
+  <img src="elvis.jpg" alt="Elvis super helitanker save 14 firefighters lives"/>
  </td>
 </tr>
 </table>
