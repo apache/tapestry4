@@ -61,11 +61,11 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *
 	 */
 	 
-	protected boolean dirty;
+	protected transient boolean dirty;
 	
-	private String[] attributePropertyNames;
+	private transient String[] attributePropertyNames;
 	private static final int MAP_SIZE = 11;
-	private PropertyHelper helper;
+	private transient PropertyHelper helper;
 	
 	private transient IKeyAllocatorHome keyAllocatorHome;
 
@@ -75,7 +75,7 @@ public abstract class AbstractEntityBean implements EntityBean
 	 *
 	 */
 	 
-	private Context environment;
+	private transient Context environment;
 	
 	public void setEntityContext(EntityContext context)
 	{

@@ -46,6 +46,7 @@ run: default
 		-Xms128M -Xmx128M -showversion \
 		-Dcom.primix.tapestry.enable-reset-service=true \
 		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
+		$(OTHER_EXEC_OPTS) \
 		com.mortbay.Jetty.Server jetty.xml)
 
 

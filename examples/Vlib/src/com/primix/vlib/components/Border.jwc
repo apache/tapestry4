@@ -132,6 +132,16 @@
 			<type>InsertWrapped</type>
 		</component>
 		<component>
+			<id>ifShowInspector</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>page.engine.debugEnabled</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>showInspector</id>
 			<type>ShowInspector</type>
 		</component>
