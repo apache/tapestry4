@@ -10,6 +10,14 @@ import net.sf.tapestry.util.IPropertyHolder;
 /**
  *  Organizes different libraries of Tapestry pages, components
  *  and services into "frameworks", used to disambiguate names.
+ * 
+ *  <p>
+ *  Tapestry release 2.4 includes dynamic discovery of pages and components; an application
+ *  or library may contain a page or component that won't be "known" until the name
+ *  is resolved (because it involves searching for a particular named file).
+ * 
+ *  @see net.sf.tapestry.resolver.PageSpecificationResolver
+ *  @see net.sf.tapestry.resolver.ComponentSpecificationResolver
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -165,11 +173,7 @@ public interface INamespace
     public boolean containsComponentType(String type);
 
     /**
-     *  Returns a sorted list of component aliases.  May return 
-     *  an empty list, but won't return null.  The return list
-     *  is immutable.
-     * 
-     *  <p>Is this method even needed?
+     *  Deprecated name for {@link #getComponentTypes()}.
      * 
      *  @deprecated use {@link #getComponentTypes()} instead.
      * 
@@ -178,11 +182,14 @@ public interface INamespace
     public List getComponentAliases();
 
     /**
-     *  Returns a sorted list of component aliases.  May return 
+     *  Returns a sorted list of component types.  May return 
      *  an empty list, but won't return null.  The return list
-     *  is immutable.
+     *  is immutable.  Represents just the known component types
+     *  (additional types may be discoverred dynamically).
      * 
      *  <p>Is this method even needed?
+     * 
+     *  @since 2.4
      * 
      **/
 

@@ -166,6 +166,16 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
         return sortedKeys(_components);
     }
 
+    /**
+     *  @since 2.4
+     * 
+     **/
+    
+   public List getComponentTypes()
+    {
+        return getComponentAliases();
+    }
+    
     public String getServiceClassName(String name)
     {
         return (String) get(_services, name);
