@@ -5,21 +5,20 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
   
 <component-specification 
-	class="org.apache.tapestry.vlib.components.PersonLink" 
 	allow-body="no" 
 	allow-informal-parameters="no">
   
-  <parameter name="name" type="java.lang.String" required="yes" direction="in"/>
+  <parameter name="name" type="java.lang.String" required="yes"/>
   
-  <parameter name="primaryKey" type="java.lang.Integer" required="yes" direction="in"/>
+  <parameter name="primaryKey" type="java.lang.Integer" required="yes"/>
   
   <parameter name="omit" type="boolean" direction="in"/>
   
   <parameter name="class" type="java.lang.String"/>
    
   <component id="link" type="ExternalLink">
-    <static-binding name="page">ViewPerson</static-binding>
-    <binding name="parameters" expression="primaryKey"/>
+    <static-binding name="page" value="ViewPerson"/>
+    <inherited-binding name="parameters" parameter-name="primaryKey"/>
     <inherited-binding name="class" parameter-name="class"/>
   </component>
   

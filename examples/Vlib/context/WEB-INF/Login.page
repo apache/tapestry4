@@ -8,48 +8,28 @@
 
   <property name="page-type">login</property>
 
+  <property-specification name="email" type="java.lang.String"/>
+  <property-specification name="password" type="java.lang.String"/>
+  <property-specification name="error" type="java.lang.String"/>
+  <property-specification name="callback" type="org.apache.tapestry.callback.ICallback" persistent="yes"/>
+  
+  <bean name="delegate" class="org.apache.tapestry.vlib.SimpleValidationDelegate"/>
+
   <bean name="validator" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
   	<set-property name="required" expression="true"/>
   	<set-property name="clientScriptingEnabled" expression="true"/>
   </bean>
 
-  <component id="border" type="Border">
-    <static-binding name="title">Login</static-binding>
-  </component>
-  
-  <component id="form" type="Form">
-    <binding name="listener" expression="listeners.attemptLogin"/>
-    <binding name="delegate" expression="validationDelegate"/>
-  </component>
-   
-  <component id="showError" type="ShowError"/>
-  
-  <component id="showValidationError" type="ShowValidationError">
-  	<binding name="delegate" expression="validationDelegate"/>
-  </component>
-  
-  <component id="labelEmail" type="FieldLabel">
-    <binding name="field" expression="components.inputEmail"/>
-  </component>
-  
   <component id="inputEmail" type="ValidField">
-    <binding name="displayWidth" expression="30"/>
-    <binding name="maximumLength" expression="60"/>
-    <static-binding name="displayName">Email Address</static-binding>
+    <static-binding name="displayName" value="Email Address"/>
     <binding name="value" expression="email"/>
     <binding name="validator" expression="beans.validator"/>
-  </component>
-  
-  <component id="labelPassword" type="FieldLabel">
-    <binding name="field" expression="components.inputPassword"/>
   </component>
   
   <component id="inputPassword" type="ValidField">
     <binding name="value" expression="password"/>
     <binding name="validator" expression="beans.validator"/>
-    <binding name="displayWidth" expression="10"/>
-    <binding name="maximumLength" expression="20"/>
-    <static-binding name="displayName">Password</static-binding>
+    <static-binding name="displayName" value="Password"/>
     <binding name="hidden" expression="true"/>
   </component>
   

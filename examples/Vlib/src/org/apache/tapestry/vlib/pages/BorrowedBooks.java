@@ -60,8 +60,10 @@ import java.rmi.RemoteException;
 import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -85,27 +87,17 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public class BorrowedBooks extends Protected
+public abstract class BorrowedBooks extends Protected implements IMessageProperty
 {
-    private String message;
-    private IBookQuery borrowedQuery;
+    private Browser _browser;
 
-    private Book currentBook;
+    public abstract void setBorrowedQuery(IBookQuery value);
 
-    private Browser browser;
-
-    public void detach()
-    {
-        message = null;
-        borrowedQuery = null;
-        currentBook = null;
-
-        super.detach();
-    }
+    public abstract IBookQuery getBorrowedQuery();
 
     public void finishLoad()
     {
-        browser = (Browser) getComponent("browser");
+        _browser = (Browser) getComponent("browser");
     }
 
     /**
@@ -131,10 +123,17 @@ public class BorrowedBooks extends Protected
             try
             {
                 IBookQuery query = getBorrowedQuery();
+
+                if (query == null)
+                {
+                    query = vengine.createNewQuery();
+                    setBorrowedQuery(query);
+                }
+
                 int count = query.borrowerQuery(userPK);
 
-                if (count != browser.getResultCount())
-                    browser.initializeForResultCount(count);
+                if (count != _browser.getResultCount())
+                    _browser.initializeForResultCount(count);
 
                 break;
             }
@@ -147,49 +146,6 @@ public class BorrowedBooks extends Protected
         }
     }
 
-    public void setBorrowedQuery(IBookQuery value)
-    {
-        borrowedQuery = value;
-
-        fireObservedChange("borrowedQuery", value);
-    }
-
-    public IBookQuery getBorrowedQuery()
-    {
-        if (borrowedQuery == null)
-        {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-            setBorrowedQuery(vengine.createNewQuery());
-        }
-
-        return borrowedQuery;
-    }
-
-    /**
-     *  Updates the currentBook dynamic page property.
-     *
-     **/
-
-    public void setCurrentBook(Book value)
-    {
-        currentBook = value;
-    }
-
-    public Book getCurrentBook()
-    {
-        return currentBook;
-    }
-
-    public void setMessage(String value)
-    {
-        message = value;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
     /**
      *  Listener used to return a book.
      *
@@ -197,6 +153,7 @@ public class BorrowedBooks extends Protected
 
     public void returnBook(IRequestCycle cycle)
     {
+        IComponentStrings strings = getStrings();
         Object[] parameters = cycle.getServiceParameters();
         Integer bookPK = (Integer) parameters[0];
 
@@ -207,11 +164,11 @@ public class BorrowedBooks extends Protected
         {
             Book book = operations.returnBook(bookPK);
 
-            setMessage("Returned book: " + book.getTitle());
+            setMessage(strings.format("returned-book", book.getTitle()));
         }
         catch (FinderException ex)
         {
-            setError("Could not return book: " + ex.getMessage());
+            setError(strings.format("unable-to-return-book", ex.getMessage()));
             return;
         }
         catch (RemoteException ex)

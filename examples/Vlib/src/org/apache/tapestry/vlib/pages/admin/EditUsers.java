@@ -56,18 +56,18 @@
 package org.apache.tapestry.vlib.pages.admin;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -86,67 +86,42 @@ import org.apache.tapestry.vlib.ejb.Person;
  * 
  **/
 
-public class EditUsers extends AdminPage
+public abstract class EditUsers extends AdminPage implements PageRenderListener
 {
-    private Person[] users;
+    public abstract UserListEditMap getListEditMap();
 
-    /**
-     *  Map of users, keyed on Person primaryKey.
-     *
-     **/
+    public abstract void setListEditMap(UserListEditMap listEditMap);
 
-    private Map userMap;
+    public abstract void setUser(Person person);
 
-    /**
-     *  The PK of the current user being editted.
-     *
-     **/
-
-    private Integer userKey;
-
-    /**
-     *  The Person corresponding to userKey.
-     *
-     **/
-
-    private Person user;
-
-    /**
-     *  List of Person PKs of users to have passwords reset.
-     *
-     **/
-
-    private List resetPassword;
-
-    /**
-     *  List of Person PKs, of users to be removed.
-     *
-     **/
-
-    private List deleteUser;
-
-    public void detach()
+    public void synchronizeUser(IRequestCycle cycle)
     {
-        users = null;
-        userMap = null;
-        userKey = null;
-        user = null;
-        resetPassword = null;
-        deleteUser = null;
+        UserListEditMap map = getListEditMap();
 
-        super.detach();
+        Person user = (Person) map.getValue();
+
+        if (user == null)
+        {
+            setError("The data submitted in the form is out of date.  Please try again.");
+            throw new PageRedirectException(this);
+        }
+
+        setUser(user);
     }
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+    public void pageBeginRender(PageEvent event)
     {
-        super.beginResponse(writer, cycle);
-
         readUsers();
+    }
+
+    public void pageEndRender(PageEvent event)
+    {
     }
 
     private void readUsers()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        Person[] users = null;
 
         for (int i = 0; i < 2; i++)
         {
@@ -164,85 +139,14 @@ public class EditUsers extends AdminPage
             }
         }
 
-        userMap = new HashMap();
+        UserListEditMap map = new UserListEditMap();
 
         for (int i = 0; i < users.length; i++)
-            userMap.put(users[i].getPrimaryKey(), users[i]);
-    }
-
-    /**
-     *  Returns the primary keys of all the Persons, in a sort order (by last name, then first name).
-     *
-     **/
-
-    public Integer[] getUserKeys()
-    {
-        Integer[] result = new Integer[users.length];
-
-        for (int i = 0; i < users.length; i++)
-            result[i] = users[i].getPrimaryKey();
-
-        return result;
-    }
-
-    /**
-     *  Sets the user property from the primary key (value parameter).
-     *
-     **/
-
-    public void setUserKey(Integer value)
-    {
-        userKey = value;
-
-        if (users == null)
-            readUsers();
-
-        user = (Person) userMap.get(userKey);
-
-        // Latent bug:  what if the user was deleted between the time the form was rendered and 
-        // now?  user will be null, which will trip up some of the components.
-    }
-
-    public Person getUser()
-    {
-        return user;
-    }
-
-    public boolean getResetPassword()
-    {
-        return false;
-    }
-
-    public void setResetPassword(boolean value)
-    {
-        if (value)
         {
-            if (resetPassword == null)
-                resetPassword = new ArrayList();
-
-            resetPassword.add(userKey);
+            map.add(users[i].getPrimaryKey(), users[i]);
         }
-    }
 
-    public boolean getDeleteUser()
-    {
-        return false;
-    }
-
-    public void setDeleteUser(boolean value)
-    {
-        if (value)
-        {
-            if (deleteUser == null)
-                deleteUser = new ArrayList();
-
-            deleteUser.add(userKey);
-
-            // Remove the user from the userMap ... this will prevent it from
-            // being included in the update list.
-
-            userMap.remove(userKey);
-        }
+        setListEditMap(map);
     }
 
     /**
@@ -258,14 +162,14 @@ public class EditUsers extends AdminPage
         Visit visit = (Visit) getVisit();
         VirtualLibraryEngine vengine = visit.getEngine();
 
-        // Collection of non-deleted persons.
+        UserListEditMap map = getListEditMap();
 
-        Collection updatedPersons = userMap.values();
+        List updatedUsers = map.getValues();
 
-        Person[] updated = (Person[]) updatedPersons.toArray(new Person[updatedPersons.size()]);
+        Person[] updated = (Person[]) updatedUsers.toArray(new Person[updatedUsers.size()]);
 
-        Integer[] resetPasswordArray = toArray(resetPassword);
-        Integer[] deleted = toArray(deleteUser);
+        Integer[] resetPasswordArray = toArray(map.getResetPasswordKeys());
+        Integer[] deleted = toArray(map.getDeletedKeys());
 
         Integer adminPK = visit.getUserPK();
 
@@ -295,19 +199,15 @@ public class EditUsers extends AdminPage
 
         setMessage("Users updated.");
 
-        users = null;
-        userMap = null;
-
     }
 
-    private Integer[] toArray(List list)
+    private Integer[] toArray(Collection c)
     {
-        if (list == null)
+        int count = Tapestry.size(c);
+
+        if (count == 0)
             return null;
 
-        if (list.size() == 0)
-            return null;
-
-        return (Integer[]) list.toArray(new Integer[list.size()]);
+        return (Integer[]) c.toArray(new Integer[count]);
     }
 }

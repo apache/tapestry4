@@ -11,7 +11,7 @@
   <parameter name="book" type="org.apache.tapestry.vlib.ejb.Book" required="yes" direction="in"/>
   
   <component id="link" type="ExternalLink">
-    <static-binding name="page">ViewBook</static-binding>
+    <static-binding name="page" value="ViewBook"/>
     <binding name="parameters" expression="book.primaryKey"/>
   </component>
    

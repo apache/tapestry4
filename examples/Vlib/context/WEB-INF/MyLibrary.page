@@ -7,55 +7,23 @@
 <page-specification class="org.apache.tapestry.vlib.pages.MyLibrary">
 
   <property name="page-type">library</property>
+ 
+  <property-specification name="message" type="java.lang.String"/>
+  <property-specification name="error" type="java.lang.String"/>
+  <property-specification name="currentBook" type="org.apache.tapestry.vlib.ejb.Book"/>
+  <property-specification name="ownedQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
   
-  <component id="border" type="Border">
-    <static-binding name="title">My Library</static-binding>
-    <static-binding name="subtitle">My Library</static-binding>
-  </component>
-
-  <component id="showError" type="ShowError"/>
-
-  <component id="showMessage" type="ShowMessage"/>
-
-  <component id="ifShowOwnedBooks" type="Conditional">
-    <binding name="condition" expression="components.browser.resultCount"/>
-  </component>
-
-  <component id="ifNoOwnedBooks" copy-of="ifShowOwnedBooks">
-   <binding name="condition" expression="components.browser.resultCount == 0"/>
-  </component>
-  
-  <component id="browser" type="Browser">
-  	<binding name="query" expression="ownedQuery"/>
-  </component>
-  
-  <component id="insertResultCount" type="Insert">
-  	<binding name="value" expression="components.browser.resultCount"/>
-  </component>
-  
+ 
   <component id="e" type="Foreach">
     <binding name="source" expression="components.browser.pageResults"/>
     <binding name="value" expression="currentBook"/>
-    <static-binding name="element">tr</static-binding>
-  </component>
-
-  <component id="insertTitle" type="Insert">
-    <binding name="value" expression="currentBook.title"/>
-  </component>
-
-  <component id="insertAuthor" type="Insert">
-    <binding name="value" expression="currentBook.author"/>
-  </component>
-
-  <component id="insertPublisher" type="Insert">
-    <binding name="value" expression="currentBook.publisherName"/>
+    <static-binding name="element" value="tr"/>
   </component>
 
   <component id="holderLink" type="PersonLink">
     <binding name="primaryKey" expression="currentBook.holderPrimaryKey"/>
     <binding name="name" expression="currentBook.holderName"/>
-    <binding name="omit" expression="omitHolderLink"/>
-    <static-binding name="class">clsDataBlue</static-binding>
+    <binding name="omit" expression="! currentBook.borrowed"/>
   </component>
 
   <component id="edit" type="DirectLink">

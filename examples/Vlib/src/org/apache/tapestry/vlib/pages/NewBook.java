@@ -61,8 +61,11 @@ import java.util.Map;
 
 import javax.ejb.CreateException;
 
+import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -76,56 +79,32 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public class NewBook extends Protected
+public abstract class NewBook extends Protected implements PageRenderListener
 {
-    private Map attributes;
-    private String publisherName;
 
-    public void detach()
-    {
-        attributes = null;
-        publisherName = null;
+    public abstract Map getAttributes();
 
-        super.detach();
-    }
+    public abstract void setAttributes(Map attributes);
 
-    public Map getAttributes()
-    {
-        if (attributes == null)
-            attributes = new HashMap();
-
-        return attributes;
-    }
-
-    public String getPublisherName()
-    {
-        return publisherName;
-    }
-
-    public void setPublisherName(String value)
-    {
-        publisherName = value;
-    }
+    public abstract String getPublisherName();
 
     public void addBook(IRequestCycle cycle)
     {
+        IComponentStrings strings = getStrings();
         Map attributes = getAttributes();
 
         Integer publisherPK = (Integer) attributes.get("publisherPK");
+        String publisherName = getPublisherName();
 
         if (publisherPK == null && Tapestry.isNull(publisherName))
         {
-            setErrorField(
-                "inputPublisherName",
-                "Must enter a publisher name or select an existing publisher from the list.");
+            setErrorField("inputPublisherName", strings.getString("need-publisher-name"));
             return;
         }
 
         if (publisherPK != null && !Tapestry.isNull(publisherName))
         {
-            setErrorField(
-                "inputPublisherName",
-                "Must either select an existing publisher or enter a new publisher name.");
+            setErrorField("inputPublisherName", strings.getString("leave-publisher-name-empty"));
             return;
         }
 
@@ -174,9 +153,27 @@ public class NewBook extends Protected
 
         MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
 
-        myLibrary.setMessage("Added: " + attributes.get("title"));
+        myLibrary.setMessage(strings.format("added-book", attributes.get("title")));
 
         cycle.setPage(myLibrary);
+    }
+
+    public void pageBeginRender(PageEvent event)
+    {
+        if (getAttributes() == null)
+        {
+            Map attributes = new HashMap();
+
+            // Setup defaults for the new book.
+
+            attributes.put("lendable", Boolean.TRUE);
+
+            setAttributes(attributes);
+        }
+    }
+
+    public void pageEndRender(PageEvent event)
+    {
     }
 
 }

@@ -7,20 +7,16 @@
 <page-specification class="org.apache.tapestry.vlib.pages.BorrowedBooks">
 
   <property name="page-type">library</property>
-
   
-  <component id="browser" type="Browser">
-  	<binding name="query" expression="borrowedQuery"/>
-  </component>
-  
-  <component id="insertResultCount" type="Insert">
-  	<binding name="value" expression="components.browser.resultCount"/>
-  </component>
+  <property-specification name="error" type="java.lang.String"/>
+  <property-specification name="message" type="java.lang.String"/>
+  <property-specification name="currentBook" type="org.apache.tapestry.vlib.ejb.Book"/>
+  <property-specification name="borrowedQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
   
   <component id="e" type="Foreach">
     <binding name="source" expression="components.browser.pageResults"/>
     <binding name="value" expression="currentBook"/>
-    <static-binding name="element">tr</static-binding>
+    <static-binding name="element" value="tr"/>
   </component>  
-    
+     
 </page-specification>

@@ -8,7 +8,11 @@
 	allow-informal-parameters="no" 
 	class="org.apache.tapestry.vlib.components.Browser">
 
-  <parameter name="query" required="yes" type="org.apache.tapestry.vlib.IBookQuery"/>
+  <parameter name="query" required="yes" type="org.apache.tapestry.vlib.ejb.IBookQuery" direction="in"/>
+  
+  <property-specification name="resultCount" type="int" persistent="yes"/>
+  <property-specification name="currentPage" type="int" persistent="yes"/>
+  <property-specification name="pageCount" type="int" persistent="yes"/>
  
 </component-specification>
 

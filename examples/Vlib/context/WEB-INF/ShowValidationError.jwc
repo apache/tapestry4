@@ -7,6 +7,6 @@
 <component-specification class="org.apache.tapestry.BaseComponent" 
 	allow-informal-parameters="no">
 
-  <parameter name="delegate" type="org.apache.tapestry.valid.IValidationDelegate" required="yes"/>
+  <parameter name="delegate" type="org.apache.tapestry.valid.IValidationDelegate" required="yes" direction="in"/>
   
 </component-specification>

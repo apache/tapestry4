@@ -73,28 +73,10 @@ import org.apache.tapestry.vlib.IErrorProperty;
  *
  **/
 
-public class ApplicationUnavailable extends Exception
+public abstract class ApplicationUnavailable extends Exception
 implements IErrorProperty
 {
-    private String _error;
-    
-    public void detach()
-    {
-        _error = null;
-        
-        super.detach();
-    }
-    
-    public String getError()
-    {
-        return _error;
-    }
-
-    public void setError(String value)
-    {
-        _error = value;
-    }
-
+	
     public void activate(String message, Throwable ex)
     {
         setError(message);

@@ -1,55 +1,48 @@
-<span jwcid="border" title="Transfer Books">
 <!-- $Id$ -->
+<html jwcid="$content$">
+<body jwcid="@Border" title="Transfer Books" simpleTitle="ognl:true">
+<span jwcid="@ShowMessage"/>
 
-<span jwcid="showMessage"/>
-
-<span jwcid="showError"/>
-
-<p>Select a source and target user.
-
-<form jwcid="selectForm">
-
-<table>
-	<tr>
-		<th>Move from:</th>
-		<td><select jwcid="selectFrom"/></td>
-	</tr>
-	<tr>
-		<th>Move to:</th>
-		<td><select jwcid="selectTo"/></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td><input type="submit" value="Select"></td>
-	</tr>
-</table>
-
+<span jwcid="@ShowError"/>
+<p>Select a source and target user.</p>
+<form jwcid="@Form" listener="ognl:listeners.processSelectForm">
+  <table>
+    <tr>
+      <th>Move from:
+      </th>
+      <td>
+        <select jwcid="from@PropertySelection" value="ognl:fromUserPK" model="ognl:engine.personModel"/>
+      </td>
+    </tr>
+    <tr>
+      <th>Move to:
+      </th>
+      <td>
+        <select jwcid="to@PropertySelection" value="ognl:toUserPK" model="ognl:engine.personModel"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      </td>
+      <td><input type="submit" value="Select">
+      </td>
+    </tr>
+  </table>
 </form>
-
-<span jwcid="ifSelectionsOk">
-
+<span jwcid="@Conditional" condition="ognl:selectionsOk">
 <p>Select available books and move them to the "Selected" column
-on the right.
-
-<form jwcid="xferForm">
-
+on the right.</p>
+<form jwcid="@Form" listener="ognl:listeners.processXferForm">
 <span jwcid="selectBooks"/>
+<br/><input type="submit" value="Transfer"/><span jwcid="availableTitleBlock@Block">
 
-<br><input type="submit" value="Transfer">
-
-<span jwcid="availableTitleBlock">
-
-Books owned by <span jwcid="insertFromName"/>
+Books owned by <span jwcid="@Insert" value="ognl:fromUser.naturalName">Jim Source</span>
 </span>
 
-<span jwcid="selectedTitleBlock">
-Books to transfer to <span jwcid="insertToName"/>
+<span jwcid="selectedTitleBlock@Block">
+Books to transfer to <span jwcid="@Insert" value="ognl:toUser.naturalName">Sally Target</span>
 </span>
-
-
 </form>
-
 </span>
-
-</span>
-
+</body>
+</html>

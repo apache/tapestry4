@@ -6,6 +6,8 @@
 	
 <page-specification class="org.apache.tapestry.vlib.pages.ApplicationUnavailable">
 
+  <property-specification name="error" type="java.lang.String"/>
+
   <context-asset name="stylesheet" path="/scripts/style_virtlib_pcIE55.css"/>
   
 </page-specification>

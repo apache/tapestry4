@@ -77,28 +77,11 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public class ConfirmBookDelete extends BasePage
+public abstract class ConfirmBookDelete extends BasePage
 {
-    private String bookTitle;
-    private Integer bookPK;
-
-    public void detach()
-    {
-        super.detach();
-
-        bookTitle = null;
-        bookPK = null;
-    }
-
-    public String getBookTitle()
-    {
-        return bookTitle;
-    }
-
-    public Integer getBookPrimaryKey()
-    {
-        return bookPK;
-    }
+    public abstract void setBookPrimaryKey(Integer key);
+    
+    public abstract void setBookTitle(String title);
 
     /** 
      * Invoked (by {@link MyLibrary}) to select a book to be
@@ -109,7 +92,7 @@ public class ConfirmBookDelete extends BasePage
 
     public void selectBook(Integer bookPK, IRequestCycle cycle)
     {
-        this.bookPK = bookPK;
+        setBookPrimaryKey(bookPK);
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -120,7 +103,7 @@ public class ConfirmBookDelete extends BasePage
                 IOperations operations = vengine.getOperations();
                 Book book = operations.getBook(bookPK);
 
-                bookTitle = book.getTitle();
+                setBookTitle(book.getTitle());
 
                 break;
             }
@@ -130,7 +113,10 @@ public class ConfirmBookDelete extends BasePage
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception reading read book #" + bookPK + ".", ex, i > 0);
+                vengine.rmiFailure(
+                    "Remote exception reading read book #" + bookPK + ".",
+                    ex,
+                    i > 0);
             }
         }
 
@@ -145,7 +131,7 @@ public class ConfirmBookDelete extends BasePage
     public void deleteBook(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK =(Integer)parameters[0];
+        Integer bookPK = (Integer) parameters[0];
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Book book = null;
@@ -172,7 +158,7 @@ public class ConfirmBookDelete extends BasePage
 
         MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
 
-        myLibrary.setMessage("Deleted book: " + book.getTitle());
+        myLibrary.setMessage(getStrings().format("book-deleted", book.getTitle()));
 
         cycle.setPage(myLibrary);
     }

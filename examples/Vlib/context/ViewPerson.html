@@ -1,0 +1,110 @@
+<!-- $Id$ -->
+<html jwcid="$content$">
+<body jwcid="@Border" title="Book Inventory" subtitle="ognl:person.naturalName">
+<table width="400" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="80" height="30" class="clsBold">User
+    </td>
+    <td width="420"><span jwcid="@Insert" value="ognl:person.naturalName">Jim Moran</span>
+    </td>
+  </tr>
+  <tr>
+    <td height="30" class="clsBold">E-Mail
+    </td>
+    <td><a jwcid="mailLink" href="#"><span jwcid="@Insert" value="ognl:person.email">foo@bar.com</span></a>
+    </td>
+  </tr>
+</table>
+<span jwcid="@Conditional" condition="ognl:components.browser.resultCount  == 0">
+Owns no books.
+</span>
+
+<span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
+
+<span jwcid="browser@Browser" query="ognl:query">
+				 
+<table border="0" cellspacing="2" cellpadding="1">
+  <tr>
+    <td height="20" colspan="6"><span class="clsBold"><span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span> Books Owned</span>
+    </td>
+  </tr>
+  <tr height="20" class="clsBold">
+    <td>&nbsp;&nbsp;Title
+    </td>
+    <td>&nbsp;&nbsp;Author
+    </td>
+    <td>&nbsp;&nbsp;Publisher
+    </td>
+    <td>&nbsp;&nbsp;Borrowed&nbsp;By
+    </td>
+    <td>&nbsp;&nbsp;Borrow
+    </td>
+  </tr>
+  <tr jwcid="e" bgcolor="#ffffff">
+    <td><a href="#" class="clsDataBlue" jwcid="@BookLink" book="ognl:currentMatch">DocBook:The Definitive Guide</a>
+    </td>
+    <td><span jwcid="@Insert" value="ognl:currentMatch.author">Walsh &#38; Muellner</span>
+    </td>
+    <td><span jwcid="@Insert" value="ognl:currentMatch.publisherName">O'Reilly</span>
+    </td>
+    <td><a jwcid="holderLink" class="clsDataBlue" href="#">Jim Moran</a>
+    </td>
+    <td width="43" bgcolor="#4b5887" align="center"><a jwcid="@Borrow" book="ognl:currentMatch" href="#"><img src="images/icon_borrow.gif" width="21" height="16" border="0" vspace="2"></a>
+    </td>
+  </tr>
+  <tr bgcolor="#ffffff" jwcid="$remove$">
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td bgcolor="#4b5887" align="center"><a href="#"><img src="images/icon_borrow.gif" width="21" height="16" border="0" vspace="2"></a>
+    </td>
+  </tr>
+  <tr bgcolor="#ffffff" jwcid="$remove$">
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td bgcolor="#4b5887" align="center"><a href="#"><img src="images/icon_borrow.gif" width="21" height="16" border="0" vspace="2"></a>
+    </td>
+  </tr>
+  <tr bgcolor="#ffffff" jwcid="$remove$">
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td bgcolor="#4b5887" align="center"><a href="#"><img src="images/icon_borrow.gif" width="21" height="16" border="0" vspace="2"></a>
+    </td>
+  </tr>
+  <tr bgcolor="#ffffff" jwcid="$remove$">
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td>&nbsp;
+    </td>
+    <td bgcolor="#4b5887" align="center"><a href="#"><img src="images/icon_borrow.gif" width="21" height="16" border="0" vspace="2"></a>
+    </td>
+  </tr>
+</table>
+
+
+</span>
+
+</span>
+</body>
+</html>

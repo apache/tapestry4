@@ -85,14 +85,8 @@ import org.apache.tapestry.vlib.ejb.Person;
  * 
  **/
 
-public class Login extends BasePage implements IErrorProperty
+public abstract class Login extends BasePage implements IErrorProperty
 {
-    private String email;
-    private String password;
-    private String error;
-    private ICallback callback;
-    private IValidationDelegate validationDelegate;
-
     /**
      *  The name of a cookie to store on the user's machine that will identify
      *  them next time they log in.
@@ -103,63 +97,15 @@ public class Login extends BasePage implements IErrorProperty
 
     private final static int ONE_WEEK = 7 * 24 * 60 * 60;
 
-    public void detach()
+    public abstract void setEmail(String value);
+
+    public abstract String getEmail();
+
+    public abstract String getPassword();
+
+    protected IValidationDelegate getValidationDelegate()
     {
-        email = null;
-        password = null;
-        error = null;
-        callback = null;
-
-        super.detach();
-    }
-
-    public IValidationDelegate getValidationDelegate()
-    {
-        if (validationDelegate == null)
-            validationDelegate = new SimpleValidationDelegate();
-
-        return validationDelegate;
-    }
-
-    public void setEmail(String value)
-    {
-        email = value;
-    }
-
-    /**
-     *  Gets the email address.  If not previously set, it is retrieve from
-     *  the cookie (thus forming the default).
-     *
-     **/
-
-    public String getEmail()
-    {
-        // If not set, see if a value was previously recorded in a Cookie
-
-        if (email == null)
-            email = getRequestCycle().getRequestContext().getCookieValue(COOKIE_NAME);
-
-        return email;
-    }
-
-    public void setPassword(String value)
-    {
-        password = value;
-    }
-
-    public String getPassword()
-    {
-        return password;
-    }
-
-    public void setError(String value)
-    {
-        error = value;
-    }
-
-    public String getError()
-    {
-        return error;
+        return (IValidationDelegate) getBeans().getBean("delegate");
     }
 
     protected void setErrorField(String componentId, String message)
@@ -171,23 +117,12 @@ public class Login extends BasePage implements IErrorProperty
         delegate.record(new ValidatorException(message));
     }
 
-    public void setCallback(ICallback value)
-    {
-        callback = value;
+    public abstract void setCallback(ICallback value);
 
-        fireObservedChange("callback", value);
-    }
-
-    public ICallback getCallback()
-    {
-        return callback;
-    }
+    public abstract ICallback getCallback();
 
     /**
-     *  Attempts to login.  If successful, updates the application's user property
-     *  and redirects to the target page (or the home page if no target page is specified).
-     *
-     *  <p>Clears the target page property.
+     *  Attempts to login. 
      *
      *  <p>If the user name is not known, or the password is invalid, then an error
      *  message is displayed.
@@ -198,7 +133,7 @@ public class Login extends BasePage implements IErrorProperty
     {
         // An error, from a validation field, may already have occured.
 
-        if (getValidationDelegate().getHasErrors() || error != null)
+        if (getValidationDelegate().getHasErrors() || getError() != null)
             return;
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
@@ -209,7 +144,7 @@ public class Login extends BasePage implements IErrorProperty
             {
                 IOperations operations = vengine.getOperations();
 
-                Person person = operations.login(email, password);
+                Person person = operations.login(getEmail(), getPassword());
 
                 loginUser(person, cycle);
 
@@ -238,8 +173,7 @@ public class Login extends BasePage implements IErrorProperty
      *
      **/
 
-    public void loginUser(Person person, IRequestCycle cycle)
-        throws RemoteException
+    public void loginUser(Person person, IRequestCycle cycle) throws RemoteException
     {
         String email = person.getEmail();
 
@@ -251,6 +185,8 @@ public class Login extends BasePage implements IErrorProperty
 
         // After logging in, go to the MyLibrary page, unless otherwise
         // specified.
+
+        ICallback callback = getCallback();
 
         if (callback == null)
             cycle.setPage("MyLibrary");
@@ -271,4 +207,13 @@ public class Login extends BasePage implements IErrorProperty
 
         engine.forgetPage(getPageName());
     }
+
+    protected void prepareForRender(IRequestCycle cycle)
+    {
+        super.prepareForRender(cycle);
+
+        if (getEmail() == null)
+            setEmail(getRequestCycle().getRequestContext().getCookieValue(COOKIE_NAME));
+    }
+
 }

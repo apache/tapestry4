@@ -67,13 +67,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.request.ResponseOutputStream;
-
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IBookQueryHome;
 import org.apache.tapestry.vlib.ejb.IOperations;
@@ -101,7 +99,8 @@ public class VirtualLibraryEngine extends BaseEngine
 {
     public static final Log LOG = LogFactory.getLog(VirtualLibraryEngine.class);
 
-    private static final boolean DEBUG_ENABLED = Boolean.getBoolean("org.apache.tapestry.vlib.debug-enabled");
+    private static final boolean DEBUG_ENABLED =
+        Boolean.getBoolean("org.apache.tapestry.vlib.debug-enabled");
 
     private transient boolean _killSession;
 
@@ -118,7 +117,7 @@ public class VirtualLibraryEngine extends BaseEngine
     private transient IPropertySelectionModel _personModel;
 
     private transient String _applicationUnavailableMessage;
-    
+
     /**
      *  Creates an instance of {@link Visit}.
      *
@@ -142,7 +141,7 @@ public class VirtualLibraryEngine extends BaseEngine
     protected void cleanupAfterRequest(IRequestCycle cycle)
     {
         clearCache();
-        
+
         _applicationUnavailableMessage = null;
 
         if (_killSession)
@@ -185,7 +184,8 @@ public class VirtualLibraryEngine extends BaseEngine
     public IBookQueryHome getBookQueryHome()
     {
         if (_bookQueryHome == null)
-            _bookQueryHome = (IBookQueryHome) findNamedObject("vlib/BookQuery", IBookQueryHome.class);
+            _bookQueryHome =
+                (IBookQueryHome) findNamedObject("vlib/BookQuery", IBookQueryHome.class);
 
         return _bookQueryHome;
     }
@@ -193,7 +193,8 @@ public class VirtualLibraryEngine extends BaseEngine
     public IOperationsHome getOperationsHome()
     {
         if (_operationsHome == null)
-            _operationsHome = (IOperationsHome) findNamedObject("vlib/Operations", IOperationsHome.class);
+            _operationsHome =
+                (IOperationsHome) findNamedObject("vlib/Operations", IOperationsHome.class);
 
         return _operationsHome;
     }
@@ -482,7 +483,7 @@ public class VirtualLibraryEngine extends BaseEngine
     private void punt(String message, Throwable ex)
     {
         _applicationUnavailableMessage = message;
-        
+
         throw new ApplicationRuntimeException(message, ex);
     }
 
@@ -518,20 +519,24 @@ public class VirtualLibraryEngine extends BaseEngine
      * 
      **/
 
-    protected void activateExceptionPage(IRequestCycle cycle, ResponseOutputStream output, Throwable cause)
+    protected void activateExceptionPage(
+        IRequestCycle cycle,
+        ResponseOutputStream output,
+        Throwable cause)
         throws ServletException
     {
         try
         {
             logout();
 
-            ApplicationUnavailable page = (ApplicationUnavailable) cycle.getPage("ApplicationUnavailable");
+            ApplicationUnavailable page =
+                (ApplicationUnavailable) cycle.getPage("ApplicationUnavailable");
 
             String message = _applicationUnavailableMessage;
-            
+
             if (message == null)
                 message = cause.getMessage();
-                
+
             if (message == null)
                 message = cause.getClass().getName();
 

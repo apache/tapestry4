@@ -8,44 +8,16 @@
 
   <property name="page-type">admin</property>
   
-  <component id="border" type="Border">
-    <static-binding name="title">Edit Users</static-binding>
-     <binding name="simpleTitle" expression="true"/>
-  </component>
-  
-  <component id="showMessage" type="ShowMessage"/>
-  
-  <component id="form" type="Form">
-  	<binding name="listener" expression="listeners.updateUsers"/>
-  </component>
+  <property-specification name="message" type="java.lang.String"/>
+  <property-specification name="error" type="java.lang.String"/>
+  <property-specification name="user" type="org.apache.tapestry.vlib.ejb.Person"/>
+  <property-specification name="listEditMap" type="org.apache.tapestry.vlib.pages.admin.UserListEditMap"/>
   
   <component id="e" type="ListEdit">
-  	<binding name="source" expression="userKeys"/>
-  	<binding name="value" expression="userKey"/>
-  </component>
-  
-  <component id="insertUser" type="Insert">
-  	<binding name="value" expression="user.naturalName"/>
-  </component>
-  
-  <component id="insertEmail" type="Insert">
-  	<binding name="value" expression="user.email"/>
-  </component>
-  
-  <component id="inputAdmin" type="Checkbox">
-  	<binding name="selected" expression="user.admin"/>
-  </component>
-  
-  <component id="inputLockedOut" type="Checkbox">
-  	<binding name="selected" expression="user.lockedOut"/>
-  </component>
-  
-  <component id="inputResetPassword" type="Checkbox">
-  	<binding name="selected" expression="resetPassword"/>
-  </component>
-  
-  <component id="inputDelete" type="Checkbox">
-  	<binding name="selected" expression="deleteUser"/>
+  	<binding name="source" expression="listEditMap.keys"/>
+  	<binding name="value" expression="listEditMap.key"/>
+  	<binding name="listener" expression="listeners.synchronizeUser"/>
+  	<static-binding name="element" value="tr"/>
   </component>
 
 </page-specification>
