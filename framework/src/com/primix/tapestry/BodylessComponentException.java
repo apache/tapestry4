@@ -38,6 +38,6 @@ public class BodylessComponentException extends PageLoaderException
 {
 	public BodylessComponentException(IComponent component)
 	{
-		super("This component may not wrap other elements.", component);
+		super(Tapestry.getString("BodylessComponentException.message"), component);
 	}
 }

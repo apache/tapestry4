@@ -162,17 +162,12 @@ public class PropertyBinding extends AbstractBinding
 			else
 				return helper.getPath(root, splitPropertyPath);
 		}
-		catch (Throwable e)
+		catch (Throwable ex)
 		{
-			StringBuffer buffer;
-
-			buffer = new StringBuffer("Unable to resolve property ");
-			buffer.append(propertyPath);
-			buffer.append(" of ");
-			buffer.append(root);
-			buffer.append(".");
-
-			throw new BindingException(buffer.toString(), this, e);
+			throw new BindingException(
+			Tapestry.getString("PropertyBinding.unable-to-resolve-property",
+			propertyPath, root),
+			this, ex);
 		}
 	}
 
@@ -319,20 +314,13 @@ public class PropertyBinding extends AbstractBinding
 			else
 				helper.setPath(root, splitPropertyPath, value);
 		}
-		catch (Throwable e)
+		catch (Throwable ex)
 		{
-			StringBuffer buffer;
-
-			buffer = new StringBuffer("Unable to update property ");
-			buffer.append(propertyPath);
-			buffer.append(" of ");
-			buffer.append(root);
-			buffer.append(" to ");
-			buffer.append(value);
-
-			buffer.append('.');
-
-			throw new BindingException(buffer.toString(), this, e);
+			throw new BindingException(
+			Tapestry.getString("PropertyBinding.unable-to-update-property",
+			new Object[] {
+				propertyPath, root, value }),
+			 this, ex);
 		}
 
 	}
@@ -360,7 +348,8 @@ public class PropertyBinding extends AbstractBinding
 		catch (Throwable ex)
 		{
 			throw new BindingException(
-				"Unable to get type of property " + propertyPath + " of " + root + ".",
+				Tapestry.getString("PropertyBinding.unable-to-resolve-type",
+					propertyPath, root),
 				this,
 				ex);
 		}

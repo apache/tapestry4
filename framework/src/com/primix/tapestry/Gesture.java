@@ -26,7 +26,9 @@
 
 package com.primix.tapestry;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *  A Gesture represents a possible action within the client web browser;

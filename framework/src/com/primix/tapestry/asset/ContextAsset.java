@@ -114,7 +114,7 @@ public class ContextAsset implements IAsset
 		catch (Exception ex)
 		{
 			throw new ResourceUnavailableException(
-				"Could not access context asset " + assetPath + ".",
+				Tapestry.getString("ContextAsset.resource-missing", assetPath),
 				ex);
 		}
 	}
@@ -239,8 +239,8 @@ public class ContextAsset implements IAsset
 		}
 
 		throw new ResourceUnavailableException(
-			"Could not find context asset " + assetPath + " for locale " + locale + ".");
-
+			Tapestry.getString("ContextAsset.resource-unavailable",
+				assetPath, locale));
 	}
 
 	/** @since 1.0.6 **/

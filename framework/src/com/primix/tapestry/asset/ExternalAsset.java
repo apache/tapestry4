@@ -68,13 +68,13 @@ public class ExternalAsset implements IAsset
 
 			return url.openStream();
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
 			// MalrformedURLException or IOException
 
 			throw new ResourceUnavailableException(
-				"Could not access external asset " + URL + ".",
-				e);
+				Tapestry.getString("ExternalAsset.resource-missing", URL),
+				ex);
 		}
 
 	}

@@ -26,11 +26,18 @@
 
 package com.primix.tapestry;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Category;
+
+import com.primix.tapestry.parse.ComponentTemplate;
+import com.primix.tapestry.parse.TemplateToken;
+import com.primix.tapestry.parse.TokenType;
 import com.primix.tapestry.spec.ComponentSpecification;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.parse.*;
-import java.util.*;
-import org.apache.log4j.*;
 
 /**
  * Base implementation for most components that use an HTML template.
@@ -108,7 +115,10 @@ public class BaseComponent extends AbstractComponent
 		}
 		catch (ResourceUnavailableException ex)
 		{
-			throw new PageLoaderException("Unable to obtain template.", this, ex);
+			throw new PageLoaderException(
+				Tapestry.getString("BaseComponent.unable-to-obtain-template"),
+				this,
+				ex);
 		}
 
 		int count = componentTemplate.getTokenCount();
@@ -165,11 +175,10 @@ public class BaseComponent extends AbstractComponent
 				catch (NoSuchComponentException ex)
 				{
 					throw new PageLoaderException(
-						"Template for component "
-							+ getExtendedId()
-							+ " references undefined embedded component "
-							+ id
-							+ ".",
+						Tapestry.getString(
+							"BaseComponent.undefined-embedded-component",
+							getExtendedId(),
+							id),
 						this,
 						ex);
 				}
@@ -178,11 +187,10 @@ public class BaseComponent extends AbstractComponent
 
 				if (seenIds.contains(id))
 					throw new PageLoaderException(
-						"Template for component "
-							+ getExtendedId()
-							+ " contains multiple references to embedded component "
-							+ id
-							+ ".",
+						Tapestry.getString(
+							"BaseComponent.multiple-component-references",
+							getExtendedId(),
+							id),
 						this);
 
 				seenIds.add(id);
@@ -229,7 +237,7 @@ public class BaseComponent extends AbstractComponent
 					// TemplateParser does a great job of checking for most of these cases.
 
 					throw new PageLoaderException(
-						"More </jwc> tags than <jwc> tags in template.",
+						Tapestry.getString("BaseComponent.unbalanced-close-tags"),
 						this);
 				}
 			}
@@ -239,7 +247,9 @@ public class BaseComponent extends AbstractComponent
 		// of date, too.
 
 		if (stackx != 0)
-			throw new PageLoaderException("Not all <jwc> tags closed in template.", this);
+			throw new PageLoaderException(
+				Tapestry.getString("BaseComponent.unbalance-open-tags"),
+				this);
 
 		checkAllComponentsReferenced(seenIds);
 
@@ -309,17 +319,12 @@ public class BaseComponent extends AbstractComponent
 	private void checkAllComponentsReferenced(Set seenIds)
 		throws PageLoaderException
 	{
-		Set ids;
-		StringBuffer buffer;
-		int count;
-		int j = 0;
-		Iterator i;
-		Map components;
+		Set ids = null;
 
 		// First, contruct a modifiable copy of the ids of all expected components
 		// (that is, components declared in the specification).
 
-		components = getComponents();
+		Map components = getComponents();
 
 		// Occasionally, a component will have a template but no embedded components.
 
@@ -340,27 +345,35 @@ public class BaseComponent extends AbstractComponent
 		ids = new HashSet(ids);
 		ids.removeAll(seenIds);
 
-		count = ids.size();
+		int count = ids.size();
 
-		buffer = new StringBuffer("Template for component ");
-		buffer.append(getExtendedId());
-		buffer.append(" does not reference embedded component");
-		if (count > 0)
-			buffer.append('s');
+		String key =
+			(count == 1)
+				? "BaseComponent.missing-component-spec-single"
+				: "BaseComponent.missing-component-spec-multi";
 
-		i = ids.iterator();
+		StringBuffer buffer =
+			new StringBuffer(Tapestry.getString(key, getExtendedId()));
+
+		Iterator i = ids.iterator();
+		int j = 1;
+
 		while (i.hasNext())
 		{
-			j++;
-
 			if (j == 1)
-				buffer.append(": ");
+				buffer.append(' ');
 			else if (j == count)
-				buffer.append(" and ");
+			{
+				buffer.append(' ');
+				buffer.append(Tapestry.getString("BaseComponent.and"));
+				buffer.append(' ');
+			}
 			else
 				buffer.append(", ");
 
 			buffer.append(i.next());
+
+			j++;
 		}
 
 		buffer.append('.');

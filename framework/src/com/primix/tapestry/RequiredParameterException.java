@@ -46,11 +46,10 @@ public class RequiredParameterException extends RequestCycleException
 		IBinding binding)
 	{
 		super(
-			"No binding or value for parameter "
-				+ parameterName
-				+ " in component "
-				+ component.getExtendedId()
-				+ ".",
+			Tapestry.getString(
+				"RequiredParameterException.message",
+				parameterName,
+				component.getExtendedId()),
 			component);
 
 		this.parameterName = parameterName;

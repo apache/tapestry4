@@ -129,11 +129,8 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 
 		if (spec == null)
 			throw new ApplicationRuntimeException(
-				"Component "
-					+ component.getExtendedId()
-					+ " does not define a bean named "
-					+ name
-					+ ".");
+			Tapestry.getString("BeanProvider.bean-not-defined",
+			component.getExtendedId(), name));
 
 		bean = instantiateBean(spec);
 

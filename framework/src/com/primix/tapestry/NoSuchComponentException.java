@@ -42,11 +42,10 @@ public class NoSuchComponentException extends RuntimeException
 	public NoSuchComponentException(String componentId, IComponent container)
 	{
 		super(
-			"Component "
-				+ container.getExtendedId()
-				+ " does not contain a component '"
-				+ componentId
-				+ "'.");
+			Tapestry.getString(
+				"NoSuchComponentException.message",
+				container.getExtendedId(),
+				componentId));
 
 		this.componentId = componentId;
 		this.container = container;
