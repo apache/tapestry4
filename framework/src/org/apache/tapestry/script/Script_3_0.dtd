@@ -51,7 +51,7 @@ Attributes:
 -->
 <!ELEMENT foreach %full-content;>
 <!ATTLIST foreach
-  key CDATA #REQUIRED
+  key CDATA #IMPLIED
   index CDATA #IMPLIED
   expression CDATA #REQUIRED
 >
