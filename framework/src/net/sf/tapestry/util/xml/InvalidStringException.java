@@ -54,6 +54,8 @@
  */
 package net.sf.tapestry.util.xml;
 
+import net.sf.tapestry.IResourceLocation;
+
 /**
  *  Exception thrown if there is any kind of error validating a string
  *  during document parsing
@@ -65,20 +67,24 @@ package net.sf.tapestry.util.xml;
  *  @since 2.2
  *
  **/
-public class InvalidStringException extends DocumentParseException {
 
-  private String invalidString;
+public class InvalidStringException extends DocumentParseException
+{
+    private String _invalidString;
 
-  public InvalidStringException(String message, String invalidString, String resourcePath) 
-  {
-    super(message, resourcePath);
-    this.invalidString = invalidString;
-  }
+    public InvalidStringException(
+        String message,
+        String invalidString,
+        IResourceLocation resourceLocation)
+    {
+        super(message, resourceLocation);
 
- 
-  public String getInvalidString() 
-  {
-    return invalidString;
-  }
+        _invalidString = invalidString;
+    }
+
+    public String getInvalidString()
+    {
+        return _invalidString;
+    }
 
 }

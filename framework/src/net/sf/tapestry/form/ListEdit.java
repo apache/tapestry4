@@ -193,8 +193,7 @@ public class ListEdit extends AbstractComponent
             throw new RequestCycleException(Tapestry.getString("must-be-wrapped-by-form", "ListEdit"), this);
 
         boolean cycleRewinding = cycle.isRewinding();
-        boolean formRewinding = form.isRewinding();
-
+    
         // If the cycle is rewinding, but not this particular form,
         // then do nothing (don't even render the body).
 

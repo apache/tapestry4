@@ -63,7 +63,6 @@ import javax.swing.event.EventListenerList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.PageCleanupListener;
 import net.sf.tapestry.event.PageDetachListener;
@@ -118,15 +117,15 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private String _name;
 
     /**
-     *  The simple name of the page, which must not be prefixed by the
+     *  The qualified name of the page, which may be prefixed by the
      *  namespace.
      * 
      *  @since 2.3
      * 
      **/
-    
+
     private String _pageName;
-    
+
     /**
      *  Set when the page is attached to the engine.
      *
@@ -159,7 +158,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *  @since 2.2
      * 
      **/
-    
+
     public AbstractPage()
     {
         initialize();
@@ -192,13 +191,13 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         firePageDetached();
 
         initialize();
-        
+
         _engine = null;
         _visit = null;
         _changeObserver = null;
         _requestCycle = null;
     }
-    
+
     /**
      *  Method invoked from the constructor, and from
      *  {@link #detach()} to (re-)initialize properties
@@ -211,7 +210,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *  @since 2.2
      * 
      **/
-    
+
     protected void initialize()
     {
         // Does nothing.
@@ -261,7 +260,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public void setLocale(Locale value)
     {
         if (_locale != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("AbstractPage.attempt-to-change-locale"));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractPage.attempt-to-change-locale"));
 
         _locale = value;
     }
@@ -360,11 +360,21 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public void setName(String value)
     {
         if (_name != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("AbstractPage.attempt-to-change-name"));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractPage.attempt-to-change-name"));
 
         _name = value;
     }
+    /** @since 2.4 **/
 
+    public void setPageName(String pageName)
+    {
+        if (_pageName != null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractPage.attempt-to-change-name"));
+
+        _pageName = pageName;
+    }
     /**
      *  By default, pages are not protected and this method does nothing.
      *
@@ -381,7 +391,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *
      **/
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
     }
 
@@ -429,7 +440,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *  @since 2.3
      * 
      **/
-    
+
     public Object getGlobal()
     {
         return _engine.getGlobal();
@@ -447,16 +458,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
         _listenerList.add(listenerClass, listener);
     }
-    
+
     /**
      *  @seince 2.1-beta-2
      * 
      **/
-    
+
     private void removeListener(Class listenerClass, EventListener listener)
     {
         if (_listenerList != null)
-            _listenerList.remove(listenerClass, listener);       
+            _listenerList.remove(listenerClass, listener);
     }
 
     public void addPageRenderListener(PageRenderListener listener)
@@ -570,67 +581,57 @@ public abstract class AbstractPage extends BaseComponent implements IPage
             }
         }
     }
-    
+
     /**
      *  @since 2.1-beta-2
      * 
      **/
-    
+
     public void removePageCleanupListener(PageCleanupListener listener)
     {
         removeListener(PageCleanupListener.class, listener);
     }
 
-     
     /**
      *  @since 2.1-beta-2
      * 
      **/
-    
-   public void removePageDetachListener(PageDetachListener listener)
+
+    public void removePageDetachListener(PageDetachListener listener)
     {
         removeListener(PageDetachListener.class, listener);
     }
 
-    
-    /**
-     *  @since 2.1-beta-2
-     * 
-     **/
-    
+    /** @since 2.3 **/
+
+    public String getQualifiedName()
+    {
+        return _pageName;
+    }
+
     public void removePageRenderListener(PageRenderListener listener)
     {
         removeListener(PageRenderListener.class, listener);
     }
 
     /** @since 2.2 **/
-    
+
     public void beginPageRender()
     {
         firePageBeginRender();
     }
 
     /** @since 2.2 **/
-    
-    public void endPageRender() 
+
+    public void endPageRender()
     {
         firePageEndRender();
     }
 
-    /** @since 2.3 **/
-    
+    /** @since 2.4 **/
+
     public String getPageName()
     {
-        if (_pageName == null) {
-            _pageName = _name;
-            
-            // this parsing has to be placed into a separate location
-            // there are private class implementating it in PageLoader and PageSource
-            int separatorIndex = _pageName.lastIndexOf(INamespace.SEPARATOR);
-            if (separatorIndex >= 0)
-                _pageName = _pageName.substring(separatorIndex + 1);
-        }
-        
         return _pageName;
     }
 }

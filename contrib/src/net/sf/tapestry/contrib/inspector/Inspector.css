@@ -1,0 +1,201 @@
+H1  {
+	font-size: 12pt;
+	font-weight: bold;
+
+}
+
+H2  {}
+
+H3  {}
+
+A  {
+	color:#ffffff;
+}
+
+A:Visited  {}
+
+A:Active  {}
+
+A:Hover  {}
+
+SPAN.error
+{
+		color: Red;
+		font-weight: bold;
+	background-color : "#330066"		
+}
+
+BODY  {
+	font-family: "Trebuchet MS", sans-serif;
+	 background-color: #839cd1;
+}
+
+
+TABLE.inspector-data TR.odd TD  {
+	text-align : left;
+	color : Black;
+	background-color : Silver;
+}
+
+
+TABLE.inspector-data TR.even TH
+{
+	text-align : right;
+	font-weight: bold;
+}
+
+TABLE.inspector-data TR.odd TH
+{
+	text-align: right;
+	color : Black;
+	background-color : Silver;
+	font-weight: bold;
+}
+
+TABLE.inspector-data TR.even TD  {
+	text-align : left;
+}
+
+TABLE.inspector-data,
+TABLE.selector
+{
+	font-size: 9pt;
+}
+
+TABLE.selector TD.page-link
+{
+	font-style: italic;
+}
+
+TABLE.selector TD
+{
+	verticle-align: center;
+}
+
+TABLE.inspector-data TR.heading TH,
+TABLE.template TH
+{
+	text-align: center;
+	color : White;
+	background-color : "#330066";
+	font-weight: bold;
+}
+
+TABLE.template TD
+{
+	background-color: Silver;
+	font-size: small;
+}
+
+SPAN.message
+{
+	color : Silver
+	font-size: large;
+}
+
+SPAN.jwc-tag
+{
+	font-weight: bold;
+}
+
+SPAN.jwc-id, SPAN.localized-string
+{
+	font-style: italic;
+}
+
+
+
+TABLE.request-context-border  {
+	border-width : 1;
+	border-color : Black;
+	font-size: 9pt;
+}
+
+SPAN.request-context-object  {
+	font-weight : bold;
+	text-align : left;
+	font-size: 12pt;
+}
+
+TR.request-context-section TH  {
+	text-align : center;
+	color : White;
+	background-color : Blue;
+}
+
+TR.request-context-header TH  {
+	text-align : center;
+	color : White;
+	background-color : Blue;
+}
+
+TABLE.request-context-object TR.odd TD  {
+	text-align : left;
+	color : Black;
+	background-color : Silver;
+}
+
+TABLE.request-context-object TR.odd TH  {
+	color : Black;
+	background-color : Silver;
+	text-align : right;
+}
+
+TABLE.request-context-object TR.even TD  {
+	text-align : left;
+}
+
+TABLE.request-context-object TR.even TH  {
+	text-align : right;
+}
+
+TABLE.request-context-object  {
+	width : 100%;
+	font-size: 9pt;
+}
+
+TABLE.request-context-object TR  {
+	vertical-align : text-top;
+}
+
+TABLE.exception-display TR.even  {
+	top : auto;
+}
+
+TABLE.exception-displaY TD
+{
+	width: 100%;
+}
+
+TABLE.exception-display TR.even TH  {
+	text-align : right;
+	font-weight : bold;
+}
+
+TABLE.exception-display TR.odd TD  {
+	text-align : left;
+	background-color : Silver;
+}
+
+TABLE.exception-display TR.odd TH  {
+	text-align : right;
+	font-weight : bold;
+	background-color : Silver;	
+}
+
+TABLE.exception-display TR.even TD  {
+	text-align : left;
+}
+
+TABLE.exception-display TR.stack-trace  {
+	font-size : small;
+	font-family : sans-serif;
+	text-align : left;
+}
+
+UL 
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 20px;
+}

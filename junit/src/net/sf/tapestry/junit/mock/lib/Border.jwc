@@ -19,7 +19,7 @@
   
   <component id="renderBody" type="RenderBody"/>
   
-  <component id="inspectorButton" type="InspectorButton"/>
+  <component id="inspectorButton" type="contrib:InspectorButton"/>
 
   <private-asset name="style" resource-path="/net/sf/tapestry/junit/mock/lib/style.css"/>
   

@@ -113,7 +113,7 @@ public interface IForm extends IAction
      * 
      **/
 
-    public String getElementId(IComponent component);
+    public String getElementId(IComponent component) throws RequestCycleException;
 
     /**
      *  Constructs a unique identifier from the base id.  If possible, the
@@ -123,12 +123,17 @@ public interface IForm extends IAction
      *  <p>This method is provided simply so that some components
      *  ({@link net.sf.tapestry.form.ImageSubmit}) have more specific control over
      *  their names.
+     * 
+     *  @throws StaleLinkException if, when the form itself is rewinding, the
+     *  element id allocated does not match the expected id (as allocated when the form rendered).
+     *  This indicates that the state of the application has changed between the time the
+     *  form renderred and the time it was submitted.
      *
      *  @since 1.0.5
      *
      **/
 
-    public String getElementId(String baseId);
+    public String getElementId(IComponent component, String baseId) throws RequestCycleException;
 
     /**
      * Returns the name of the form.

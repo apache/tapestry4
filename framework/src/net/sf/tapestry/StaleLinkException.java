@@ -68,10 +68,10 @@ package net.sf.tapestry;
 
 public class StaleLinkException extends RequestCycleException
 {
-    private transient IPage page;
-    private String pageName;
-    private String targetIdPath;
-    private String targetActionId;
+    private transient IPage _page;
+    private String _pageName;
+    private String _targetIdPath;
+    private String _targetActionId;
 
     public StaleLinkException()
     {
@@ -92,10 +92,11 @@ public class StaleLinkException extends RequestCycleException
                 new String[] { targetActionId, component.getIdPath(), targetIdPath }),
             component);
 
-        page = component.getPage();
-        pageName = page.getName();
-        this.targetActionId = targetActionId;
-        this.targetIdPath = targetIdPath;
+        _page = component.getPage();
+        _pageName = _page.getPageName();
+        
+        _targetActionId = targetActionId;
+        _targetIdPath = targetIdPath;
     }
 
     /**
@@ -109,8 +110,8 @@ public class StaleLinkException extends RequestCycleException
             Tapestry.getString("StaleLinkException.component-mismatch", targetActionId, targetIdPath),
             page);
 
-        this.targetActionId = targetActionId;
-        this.targetIdPath = targetIdPath;
+        _targetActionId = targetActionId;
+        _targetIdPath = targetIdPath;
     }
 
     public StaleLinkException(String message, IComponent component)
@@ -122,15 +123,15 @@ public class StaleLinkException extends RequestCycleException
     {
 
         super(message, null);
-        this.page = page;
+        _page = page;
 
         if (page != null)
-            pageName = page.getName();
+            _pageName = page.getPageName();
     }
 
     public String getPageName()
     {
-        return pageName;
+        return _pageName;
     }
 
     /**
@@ -141,6 +142,6 @@ public class StaleLinkException extends RequestCycleException
 
     public IPage getPage()
     {
-        return page;
+        return _page;
     }
 }

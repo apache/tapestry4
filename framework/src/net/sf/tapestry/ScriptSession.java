@@ -72,10 +72,10 @@ import java.util.Map;
 
 public class ScriptSession
 {
-    private String scriptPath;
-    private Map symbols;
-    private String body;
-    private String initialization;
+    private IResourceLocation _scriptLocation;
+    private Map _symbols;
+    private String _body;
+    private String _initialization;
 
     /**
      *  List of included scripts.
@@ -84,22 +84,22 @@ public class ScriptSession
      *
      **/
 
-    private List includes;
+    private List _includes;
 
-    public ScriptSession(String scriptPath, Map symbols)
+    public ScriptSession(IResourceLocation scriptPath, Map symbols)
     {
-        this.scriptPath = scriptPath;
-        this.symbols = symbols;
+        _scriptLocation = scriptPath;
+        _symbols = symbols;
     }
 
-    public String getScriptPath()
+    public IResourceLocation getScriptPath()
     {
-        return scriptPath;
+        return _scriptLocation;
     }
 
     public Map getSymbols()
     {
-        return symbols;
+        return _symbols;
     }
 
     /**
@@ -113,35 +113,35 @@ public class ScriptSession
 
     public List getIncludedScripts()
     {
-        return includes;
+        return _includes;
     }
 
     public void addIncludedScript(String resourcePath)
     {
-        if (includes == null)
-            includes = new ArrayList();
+        if (_includes == null)
+            _includes = new ArrayList();
 
-        includes.add(resourcePath);
+        _includes.add(resourcePath);
     }
 
     public void setBody(String value)
     {
-        body = value;
+        _body = value;
     }
 
     public String getBody()
     {
-        return body;
+        return _body;
     }
 
     public String getInitialization()
     {
-        return initialization;
+        return _initialization;
     }
 
     public void setInitialization(String value)
     {
-        initialization = value;
+        _initialization = value;
     }
 
     public String toString()
@@ -149,7 +149,7 @@ public class ScriptSession
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("ScriptSession[");
-        buffer.append(scriptPath);
+        buffer.append(_scriptLocation);
         buffer.append(']');
 
         return buffer.toString();

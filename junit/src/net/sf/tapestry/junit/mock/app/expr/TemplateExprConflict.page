@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.html.BasePage">
+
+  <component id="border" type="lib:Border">
+  	<static-binding name="title">TemplateExprConflict</static-binding>
+  </component>
+  
+  <component id="insertApplicationName" type="Insert">
+  	<!-- Conflict: specified here and as an expression in the template -->
+  	<static-binding name="value">Application Title</static-binding>
+  </component>
+   
+</page-specification>

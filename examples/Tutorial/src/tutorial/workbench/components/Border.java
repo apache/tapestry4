@@ -54,14 +54,13 @@
  */
 package tutorial.workbench.components;
 
-import tutorial.workbench.Visit;
-
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.event.PageRenderListener;
 import net.sf.tapestry.util.StringSplitter;
+import tutorial.workbench.Visit;
 
 /**
  *  Common navigational border for the Workbench tutorial.
@@ -90,11 +89,6 @@ public class Border extends BaseComponent implements PageRenderListener
      **/
 
     private static String[] tabOrder;
-
-    public void finishLoad()
-    {
-        getPage().addPageRenderListener(this);
-    }
 
     public void pageBeginRender(PageEvent event)
     {
@@ -173,7 +167,7 @@ public class Border extends BaseComponent implements PageRenderListener
     public void selectPage(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        String newPageName = (String)parameters[0];
+        String newPageName = (String) parameters[0];
 
         Visit visit = (Visit) getPage().getEngine().getVisit(cycle);
 

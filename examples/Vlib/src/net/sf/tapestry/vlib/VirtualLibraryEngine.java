@@ -70,7 +70,7 @@ import org.apache.commons.logging.LogFactory;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.ResponseOutputStream;
-import net.sf.tapestry.engine.SimpleEngine;
+import net.sf.tapestry.engine.BaseEngine;
 import net.sf.tapestry.form.IPropertySelectionModel;
 import net.sf.tapestry.vlib.ejb.IBookQuery;
 import net.sf.tapestry.vlib.ejb.IBookQueryHome;
@@ -95,7 +95,7 @@ import net.sf.tapestry.vlib.pages.ApplicationUnavailable;
  *
  **/
 
-public class VirtualLibraryEngine extends SimpleEngine
+public class VirtualLibraryEngine extends BaseEngine
 {
     public static final Log LOG = LogFactory.getLog(VirtualLibraryEngine.class);
 

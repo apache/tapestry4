@@ -1,0 +1,59 @@
+<html jwcid="shell">
+<body jwcid="@Body">
+
+<table class="tabs" cellspacing="0" border="0">
+<tr>
+<span jwcid="eachPage">
+<td><img jwcid="@Image" image="[[ leftTabAsset ]]" width="2" height="20"/></td>
+<td jwcid="tabCell" align="middle"><a class="nav" jwcid="pageLink"><span jwcid="@Insert" value="[[ pageTitle ]]">Page Title</span></a></td>
+<td><img jwcid="@Image" image="[[ rightTabAsset ]]" width="13" height="20"/></td>
+</span>
+</tr>
+</table>
+
+<table class="content">
+<tr>
+<td>
+
+<span jwcid="@RenderBody">Page content goes here.</span>
+
+</td>
+</tr>
+</table>
+
+<br>
+
+      <form jwcid="@Form">
+      
+<table class="requestDebug" cellspacing="0">
+  <tr class="control">
+    <td>
+
+        <input type="checkbox" jwcid="inputRequestDebug"/>
+        <span key="prompt.display-request-debug">Display Request Debug Information</span>
+  
+    </td>
+    
+    <td align="right">
+    <input type="checkbox" jwcid="inputDisableInspector"/> Disable Inspector
+    </td>
+    
+  </tr>
+  <tr class="data">
+    <td colspan="2">
+      <span jwcid="@Conditional" condition="[[ page.visit.requestDebug ]]">
+        <span jwcid="@Delegator" delegate="[[ page.requestCycle.requestContext ]]"/>
+      </span>
+    </td>
+  </tr>
+</table>
+
+    </form>
+    
+<p>
+&copy; 2000-2003 <a href="mailto:hship@users.sf.net">Howard M. Lewis Ship</a>.
+
+<span jwcid="@contrib:InspectorButton" disabled="[[ page.visit.disableInspector ]]"/>
+
+</body>
+</html>

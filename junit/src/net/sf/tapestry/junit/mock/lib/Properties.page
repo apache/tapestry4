@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE page-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
 	
-<page-specification class="net.sf.tapestry.html.BasePage">
-
-	<component id="insertName" type="Insert">
-		<binding name="value" expression="name"/>
-	</component>
-	
-	<component id="insertPageName" type="Insert">
-		<binding name="value" expression="pageName"/>
-	</component>
-	
-</page-specification>	
+<page-specification/>

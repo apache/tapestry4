@@ -64,7 +64,6 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 
@@ -90,9 +89,11 @@ public class Shell extends AbstractComponent
     private int _refresh;
     private String _DTD = "-//W3C//DTD HTML 4.0 Transitional//EN";
 
-    private static final String generatorContent = "Tapestry Application Framework, version " + Tapestry.VERSION;
+    private static final String generatorContent =
+        "Tapestry Application Framework, version " + Tapestry.VERSION;
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         long startTime = 0;
 
@@ -114,7 +115,7 @@ public class Shell extends AbstractComponent
 
             writer.comment("Application: " + page.getEngine().getSpecification().getName());
 
-            writer.comment("Page: " + page.getName());
+            writer.comment("Page: " + page.getPageName());
             writer.comment("Generated: " + new Date());
 
             writer.begin("html");
@@ -166,7 +167,8 @@ public class Shell extends AbstractComponent
 
     }
 
-    private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         if (_refresh <= 0)
             return;
@@ -174,9 +176,8 @@ public class Shell extends AbstractComponent
         // Here comes the tricky part ... have to assemble a complete URL
         // for the current page.
 
-        RequestContext context = cycle.getRequestContext();
         IEngineService pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
-        String pageName = getPage().getName();
+        String pageName = getPage().getPageName();
 
         Gesture g = pageService.buildGesture(cycle, null, new String[] { pageName });
 

@@ -91,9 +91,8 @@ import net.sf.tapestry.html.Body;
 public class ValidField extends AbstractTextField implements IField, IFormComponent
 {
     private static final Map TYPES = new HashMap();
-    
-    static
-    {
+
+    static {
         TYPES.put("boolean", boolean.class);
         TYPES.put("Boolean", Boolean.class);
         TYPES.put("java.lang.Boolean", Boolean.class);
@@ -121,19 +120,19 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
         TYPES.put("java.math.BigInteger", BigInteger.class);
         TYPES.put("java.math.BigDecimal", BigDecimal.class);
     }
-        
+
     private IBinding _valueBinding;
 
     // Can't be an "in" parameter, because FieldLabel may request it when the
     // ValidField is not renderring.
-    
+
     private IBinding _displayNameBinding;
     private String _displayNameValue;
 
     private IValidator _validator;
 
     /** @since 2.2 **/
-    
+
     private String _typeName;
     private Class _valueType;
 
@@ -197,10 +196,11 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
 
         if (delegate == null)
             throw new RequestCycleException(
-                Tapestry.getString("ValidField.no-delegate", getExtendedId(), getForm().getExtendedId()),
+                Tapestry.getString(
+                    "ValidField.no-delegate",
+                    getExtendedId(),
+                    getForm().getExtendedId()),
                 this);
-
-        String displayName = null;
 
         boolean rendering = !cycle.isRewinding();
 
@@ -238,7 +238,7 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
         throws RequestCycleException
     {
         getValidator().renderValidatorContribution(this, writer, cycle);
-        
+
         getForm().getDelegate().writeAttributes(writer, cycle);
     }
 
@@ -327,14 +327,14 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
     }
 
     /** @since 2.2. **/
-    
+
     public String getTypeName()
     {
         return _typeName;
     }
-    
+
     /** @since 2.2 **/
-    
+
     public void setTypeName(String typeName)
     {
         _typeName = typeName;
@@ -344,31 +344,30 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
     {
         if (_valueType == null)
             _valueType = resolveType();
-        
+
         return _valueType;
     }
 
     private Class resolveType()
     {
         if (_typeName == null)
-        throw new NullPointerException(
-        Tapestry.getString("ValidField.no-type", this));
-        
+            throw new NullPointerException(Tapestry.getString("ValidField.no-type", this));
+
         synchronized (TYPES)
         {
-            Class result = (Class)TYPES.get(_typeName);
-            
+            Class result = (Class) TYPES.get(_typeName);
+
             if (result != null)
                 return result;
         }
-        
+
         return getPage().getEngine().getResourceResolver().findClass(_typeName);
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
         _valueType = null;
-        
+
         super.cleanupAfterRender(cycle);
     }
 

@@ -59,33 +59,49 @@ package net.sf.tapestry.parse;
  *
  *  @author Howard Ship
  *  @version $Id$
+ * 
  **/
 
 public class TemplateParseException extends Exception
 {
-	private String resourcePath;
-	private int line = -1;
+    private String _resourcePath;
+    private int _line = -1;
+    private Throwable _rootCause;
 
-	public TemplateParseException(String message)
-	{
-		this(message, -1, null);
-	}
+    public TemplateParseException(String message)
+    {
+        this(message, -1, null);
+    }
 
-	public TemplateParseException(String message, int line, String resourcePath)
-	{
-		super(message);
+    public TemplateParseException(String message, int line, String resourcePath)
+    {
+        this(message, line, resourcePath, null);
+    }
 
-		this.line = line;
-		this.resourcePath = resourcePath;
-	}
+    public TemplateParseException(String message, int line, String resourcePath, Throwable rootCause)
+    {
+        super(message);
 
-	public int getLine()
-	{
-		return line;
-	}
+        _line = line;
+        _resourcePath = resourcePath;
 
-	public String getResourcePath()
-	{
-		return resourcePath;
-	}
+        _rootCause = rootCause;
+
+    }
+
+    public int getLine()
+    {
+        return _line;
+    }
+
+    public String getResourcePath()
+    {
+        return _resourcePath;
+    }
+
+    public Throwable getRootCause()
+    {
+        return _rootCause;
+    }
+
 }

@@ -73,45 +73,43 @@ public class Home extends BasePage
     public static final int MEDIUM = 5;
     public static final int HARD = 3;
 
-    private int misses;
-    private String error;
+    private int _misses;
+    private String _error;
 
-    public void detach()
+    public void initialize()
     {
-        misses = 0;
-        error = null;
-
-        super.detach();
+        _misses = 0;
+        _error = null;
     }
 
     public int getMisses()
     {
-        return misses;
+        return _misses;
     }
 
-    public void setMisses(int value)
+    public void setMisses(int misses)
     {
-        misses = value;
+        _misses = misses;
 
-        fireObservedChange("misses", value);
+        fireObservedChange("misses", misses);
     }
 
     public String getError()
     {
-        return error;
+        return _error;
     }
 
     public void formSubmit(IRequestCycle cycle)
     {
-        if (misses == 0)
+        if (_misses == 0)
         {
-            error = "Please select a game difficulty.";
+            _error = "Please select a game difficulty.";
             return;
         }
 
         Visit visit = (Visit) getVisit();
 
-        visit.start(misses);
+        visit.start(_misses);
 
         cycle.setPage("Guess");
     }

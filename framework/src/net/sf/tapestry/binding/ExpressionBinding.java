@@ -399,7 +399,7 @@ public class ExpressionBinding extends AbstractBinding
                 return true;
             }
         }
-        catch (OgnlException ex)
+        catch (Exception ex)
         {
             throw new BindingException(
                 Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),

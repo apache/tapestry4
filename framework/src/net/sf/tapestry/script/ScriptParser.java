@@ -54,16 +54,8 @@
  */
 package net.sf.tapestry.script;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.IScript;
-import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.util.xml.AbstractDocumentParser;
-import net.sf.tapestry.util.xml.DocumentParseException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,7 +63,14 @@ import org.w3c.dom.CharacterData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
+
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IResourceLocation;
+import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.IScript;
+import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.xml.AbstractDocumentParser;
+import net.sf.tapestry.util.xml.DocumentParseException;
 
 /**
  *  Parses a Tapestry Script, an XML file defined by the public identifier
@@ -153,26 +152,23 @@ public class ScriptParser extends AbstractDocumentParser
      *
      **/
 
-    public IScript parse(InputStream stream, String resourcePath) throws DocumentParseException
+    public IScript parse(IResourceLocation resourceLocation) throws DocumentParseException
     {
-        InputSource source = new InputSource(stream);
-
         try
         {
-            Document document = parse(source, resourcePath, "script");
+            Document document = parse(resourceLocation, "script");
 
             return build(document);
-
         }
         finally
         {
-            setResourcePath(null);
+            setResourceLocation(null);
         }
     }
 
     private IScript build(Document document) throws DocumentParseException
     {
-        ParsedScript result = new ParsedScript(getResourcePath());
+        ParsedScript result = new ParsedScript(getResourceLocation());
         Element root = document.getDocumentElement();
 
         String publicId = document.getDoctype().getPublicId();
@@ -182,7 +178,7 @@ public class ScriptParser extends AbstractDocumentParser
             || publicId.equals(SCRIPT_DTD_1_2_PUBLIC_ID)))
             throw new DocumentParseException(
                 Tapestry.getString("ScriptParser.unknown-public-id", publicId),
-                getResourcePath());
+                getResourceLocation());
 
         _version_1_2 = publicId.equals(SCRIPT_DTD_1_2_PUBLIC_ID);
 
@@ -286,7 +282,7 @@ public class ScriptParser extends AbstractDocumentParser
         {
             throw new DocumentParseException(
                 Tapestry.getString("ScriptParser.unable-to-resolve-class", className),
-                getResourcePath(),
+                getResourceLocation(),
                 ex);
         }
     }

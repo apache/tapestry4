@@ -249,16 +249,12 @@ public class DataSqueezer
 
     public Object unsqueeze(String string) throws IOException
     {
-        char ch;
-        int offset;
         ISqueezeAdaptor adaptor = null;
 
         if (string.equals(NULL_PREFIX))
             return null;
 
-        ch = string.charAt(0);
-
-        offset = string.charAt(0) - FIRST_ADAPTOR_OFFSET;
+        int offset = string.charAt(0) - FIRST_ADAPTOR_OFFSET;
 
         if (offset >= 0 && offset < _adaptorByPrefix.length)
             adaptor = _adaptorByPrefix[offset];

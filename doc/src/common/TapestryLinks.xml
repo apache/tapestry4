@@ -23,8 +23,11 @@
 <!ENTITY ApiRoot "../api/net/sf/tapestry">
 
 <!ENTITY AbstractComponent '<ulink url="&ApiRoot;/AbstractComponent.html"><classname>AbstractComponent</classname></ulink>'>
+<!ENTITY AbstractEngine '<ulink url="&ApiRoot;/engine/AbstractEngine.html"><classname>AbstractEngine</classname></ulink>'>
+<!ENTITY AbstractPage '<ulink url="&ApiRoot;/AbstractPage.html"><classname>AbstractPage</classname></ulink>'>
 <!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
 <!ENTITY BaseComponent '<ulink url="&ApiRoot;/BaseComponent.html"><classname>BaseComponent</classname></ulink>'>
+<!ENTITY BaseEngine '<ulink url="&ApiRoot;/engine/BaseEngine.html"><classname>BaseEngine</classname></ulink>'>
 <!ENTITY BasePage '<ulink url="&ApiRoot;/html/BasePage.html"><classname>BasePage</classname></ulink>'>
 <!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
 <!ENTITY Enum '<ulink url="&ApiRoot;/util/Enum.html"><classname>Enum</classname></ulink>'>
@@ -44,6 +47,7 @@
 <!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
 <!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
 <!ENTITY IPropertySelectionModel '<ulink url="&ApiRoot;/form/IPropertySelectionModel.html"><classname>IPropertySelectionModel</classname></ulink>'>
+<!ENTITY IPropertySource '<ulink url="&ApiRoot;/IPropertySource.html"><classname>IPropertySource</classname></ulink>'>
 <!ENTITY IPoolable '<ulink url="&ApiRoot;/util/pool/IPoolable.html"><classname>IPoolable</classname></ulink>'>
 <!ENTITY IRequestCycle '<ulink url="&ApiRoot;/IRequestCycle.html"><classname>IRequestCycle</classname></ulink>'>
 <!ENTITY IValidator '<ulink url="&ApiRoot;/valid/IValidator.html"><classname>IValidator</classname></ulink>'>
@@ -105,6 +109,7 @@
 <!-- External links -->
 
 <!ENTITY Ant '<ulink url="http://jakarta.apache.org/ant">Ant</ulink>'>
+<!ENTITY BSF '<ulink url="http://jakarta.apache.org/bsf">BSF</ulink>'>
 <!ENTITY DocBook '<ulink url="http://docbook.sourceforge.net/">DocBook</ulink>'>
 <!ENTITY Eclipse '<ulink url="http://www.eclipse.org">Eclipse</ulink>'>
 <!ENTITY Fop '<ulink url="http://xml.apache.org/fop">FOP</ulink>'>
@@ -112,6 +117,7 @@
 <!ENTITY JBoss '<ulink url="http://www.jboss.org">JBoss</ulink>'>
 <!ENTITY Jetty '<ulink url="http://sf.net/projects/jetty">Jetty</ulink>'>
 <!ENTITY JUnit '<ulink url="http://www.junit.org">JUnit</ulink>'>
+<!ENTITY Jython '<ulink url="http://www.jython.org">Jython</ulink>'>
 <!ENTITY OGNL '<ulink url="http://www.ognl.org">OGNL</ulink>'>
 <!ENTITY Saxon '<ulink url="http://sf.net/projects/saxon">Saxon</ulink>'>
 <!ENTITY TapestryHomePage '<ulink url="http://tapestry.sf.net">Tapestry Home Page</ulink>'>

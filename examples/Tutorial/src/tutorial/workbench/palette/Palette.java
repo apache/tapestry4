@@ -63,7 +63,6 @@ import net.sf.tapestry.form.EnumPropertySelectionModel;
 import net.sf.tapestry.form.IPropertySelectionModel;
 import net.sf.tapestry.form.StringPropertySelectionModel;
 import net.sf.tapestry.html.BasePage;
-
 import org.apache.commons.lang.enum.Enum;
 
 /**
@@ -80,12 +79,10 @@ public class Palette extends BasePage
 
     private IPropertySelectionModel _sortModel;
 
-    public void detach()
+    public void initialize()
     {
         _sort = SortMode.USER;
         _selectedColors = null;
-
-        super.detach();
     }
 
     public void formSubmit(IRequestCycle cycle)
@@ -106,7 +103,7 @@ public class Palette extends BasePage
         // a library now, we need to make sure
         // the namespace id is part of the name.
 
-        Results results = (Results) cycle.getPage(getNamespace().constructQualifiedName("palette.Results"));
+        PaletteResults results = (PaletteResults) cycle.getPage("PaletteResults");
 
         results.setSelectedColors(_selectedColors);
 
@@ -141,9 +138,11 @@ public class Palette extends BasePage
     {
         if (_sortModel == null)
         {
-            ResourceBundle bundle = ResourceBundle.getBundle("tutorial.workbench.palette.SortModeStrings", getLocale());
+            ResourceBundle bundle =
+                ResourceBundle.getBundle("tutorial.workbench.palette.SortModeStrings", getLocale());
 
-            Enum[] options = new Enum[] { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
+            Enum[] options =
+                new Enum[] { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
 
             _sortModel = new EnumPropertySelectionModel(options, bundle);
         }

@@ -16,7 +16,7 @@
 
 	<mbean code="net.sf.tapestry.contrib.mckoi.McKoiDB" name="jboss:service=McKoiDB">
   		<attribute name="RootPath">../server/tapestry/db</attribute>
-  		<attribute name="ConfigPath">../server/tapestry/db/vlib.conf</attribute>
+  		<attribute name="ConfigPath">../server/tapestry/db/tapestry.conf</attribute>
 	</mbean>
 	  		
 
@@ -86,8 +86,9 @@
      user/pw.  In case someone does that, I'm leaving the container-managed-security 
      attribute in.  -->
     <!-- <attribute name="SecurityDomainJndiName">SolidDbRealm</attribute>-->
-
-    <depends optional-attribute-name="JaasSecurityManagerService">jboss.security:name=JaasSecurityManager</depends>
+    
+    <depends optional-attribute-name="JaasSecurityManagerService">jboss.security:service=JaasSecurityManager</depends>
+    
 
     <attribute name="TransactionManager">java:/TransactionManager</attribute>
     <!--make the rar deploy! hack till better deployment-->

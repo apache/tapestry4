@@ -29,7 +29,6 @@
   <component id="form" type="Form">
   	<binding name="listener" expression="listeners.formSubmit"/>
   	<binding name="delegate" expression="beans.delegate"/>
-  	<binding name="stateful" expression="false"/>
   </component>
   
   <component id="labelFirstName" type="FieldLabel">

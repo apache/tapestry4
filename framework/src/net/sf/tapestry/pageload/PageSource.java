@@ -55,29 +55,24 @@
 package net.sf.tapestry.pageload;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
-import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IMonitor;
-import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageSource;
-import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.PageLoaderException;
-import net.sf.tapestry.asset.ContextAsset;
 import net.sf.tapestry.asset.ExternalAsset;
-import net.sf.tapestry.asset.PrivateAsset;
 import net.sf.tapestry.binding.FieldBinding;
 import net.sf.tapestry.binding.StaticBinding;
-import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.resolver.*;
 import net.sf.tapestry.util.MultiKey;
 import net.sf.tapestry.util.pool.Pool;
 
@@ -115,71 +110,55 @@ import net.sf.tapestry.util.pool.Pool;
  * 
  **/
 
-public class PageSource implements IPageSource, IRenderDescription
+public class PageSource implements IPageSource
 {
-    private Map _fieldBindings;
-    private Map staticBindings;
-    private Map _externalAssets;
-    private Map _contextAssets;
-    private Map _privateAssets;
+    /**
+     *  Key used to find PageLoader instances in the Pool.
+     * 
+     **/
+
+    private static final String PAGE_LOADER_POOL_KEY = "net.sf.tapestry.PageLoader";
+
+    private Map _fieldBindings = new HashMap();
+    private Map _staticBindings = new HashMap();
+
+    /**
+     *  Map of {@link IAsset}.  Some entries use a string as a key (for extenal assets).
+     *  The rest use a {@link net.sf.tapestry.IResourceLocation} as a key
+     *  (for private and context assets).
+     * 
+     **/
+
+    private Map _assets = new HashMap();
+
     private IResourceResolver _resolver;
-
-    private static class PageSpecificationResolver
-    {
-        private String _simplePageName;
-        private INamespace _namespace;
-
-        private PageSpecificationResolver(ISpecificationSource source, String pageName)
-        {
-            int colonx = pageName.indexOf(':');
-
-            if (colonx > 0)
-            {
-                _simplePageName = pageName.substring(colonx + 1);
-                String namespaceId = pageName.substring(0, colonx);
-
-
-                if (namespaceId.equals(INamespace.FRAMEWORK_NAMESPACE))
-                    _namespace = source.getFrameworkNamespace();
-                else
-                    _namespace = source.getApplicationNamespace().getChildNamespace(namespaceId);
-            }
-            else
-            {
-                _simplePageName = pageName;
-
-                _namespace = source.getApplicationNamespace();
-
-                if (!_namespace.containsPage(_simplePageName))
-                    _namespace = source.getFrameworkNamespace();
-
-            }
-        }
-
-        public INamespace getNamespace()
-        {
-            return _namespace;
-        }
-
-        public ComponentSpecification getSpecification()
-        {
-            return _namespace.getPageSpecification(_simplePageName);
-        }
-    }
 
     /**
      *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
-     *  built from the page name and the page locale.
+     *  built from the page name and the page locale.  This is a reference
+     *  to a shared pool.
+     * 
+     *  @see IEngine#getPool()
      *
      **/
 
     private Pool _pool;
 
-    public PageSource(IResourceResolver resolver)
-    {
-        this._resolver = resolver;
+    /**
+     *  Used to resolve page names to a namespace, a simple name, and a page specification.
+     * 
+     *  @since 2.4
+     * 
+     **/
 
-        _pool = new Pool();
+    private PageSpecificationResolver _pageSpecificationResolver;
+
+    public PageSource(IEngine engine)
+    {
+        _resolver = engine.getResourceResolver();
+        ;
+
+        _pool = engine.getPool();
     }
 
     public IResourceResolver getResourceResolver()
@@ -213,7 +192,7 @@ public class PageSource implements IPageSource, IRenderDescription
     {
         Object[] keys;
 
-        keys = new Object[] { page.getName(), page.getLocale()};
+        keys = new Object[] { page.getPageName(), page.getLocale()};
 
         // Don't make a copy, this array is just for the MultiKey.
 
@@ -234,23 +213,34 @@ public class PageSource implements IPageSource, IRenderDescription
 
         if (result == null)
         {
-            if (monitor != null)
-                monitor.pageCreateBegin(pageName);
+            monitor.pageCreateBegin(pageName);
 
-            PageSpecificationResolver specificationResolver =
-                new PageSpecificationResolver(engine.getSpecificationSource(), pageName);
+            if (_pageSpecificationResolver == null)
+                _pageSpecificationResolver = new PageSpecificationResolver(cycle);
 
-            PageLoader loader = new PageLoader(this);
+            _pageSpecificationResolver.resolve(pageName);
 
-            result =
-                loader.loadPage(
-                    pageName,
-                    specificationResolver.getNamespace(),
-                    cycle,
-                    specificationResolver.getSpecification());
+            // Page loader's are not threadsafe, so we create a new
+            // one as needed.  However, they would make an excellent
+            // candidate for pooling.
 
-             if (monitor != null)
-                monitor.pageCreateEnd(pageName);
+            PageLoader loader = getPageLoader(cycle);
+
+            try
+            {
+                result =
+                    loader.loadPage(
+                        _pageSpecificationResolver.getSimplePageName(),
+                        _pageSpecificationResolver.getNamespace(),
+                        cycle,
+                        _pageSpecificationResolver.getSpecification());
+            }
+            finally
+            {
+                discardPageLoader(loader);
+            }
+
+            monitor.pageCreateEnd(pageName);
         }
         else
         {
@@ -261,6 +251,38 @@ public class PageSource implements IPageSource, IRenderDescription
         }
 
         return result;
+    }
+
+    /**
+     *  Invoked to obtain an instance of 
+     *  {@link PageLoader}.  An instance if aquired from the pool or,
+     *  if none are available, created fresh.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected PageLoader getPageLoader(IRequestCycle cycle)
+    {
+        PageLoader result = (PageLoader) _pool.retrieve(PAGE_LOADER_POOL_KEY);
+
+        if (result == null)
+            result = new PageLoader(this, cycle);
+
+        return result;
+    }
+
+    /**
+     *  Invoked once the {@link PageLoader} is not
+     *  longer needed; it is then returned to the pool.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected void discardPageLoader(PageLoader loader)
+    {
+        _pool.store(PAGE_LOADER_POOL_KEY, loader);
     }
 
     /**
@@ -284,14 +306,9 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized void reset()
     {
-        _pool.clear();
-
-        _fieldBindings = null;
-        staticBindings = null;
-        _externalAssets = null;
-        _contextAssets = null;
-        _privateAssets = null;
-
+        _fieldBindings.clear();
+        _staticBindings.clear();
+        _assets.clear();
     }
 
     /**
@@ -303,9 +320,6 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized IBinding getFieldBinding(String fieldName)
     {
-        if (_fieldBindings == null)
-            _fieldBindings = new HashMap();
-
         IBinding result = (IBinding) _fieldBindings.get(fieldName);
 
         if (result == null)
@@ -325,17 +339,13 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized IBinding getStaticBinding(String value)
     {
-
-        if (staticBindings == null)
-            staticBindings = new HashMap();
-
-        IBinding result = (IBinding) staticBindings.get(value);
+        IBinding result = (IBinding) _staticBindings.get(value);
 
         if (result == null)
         {
             result = new StaticBinding(value);
 
-            staticBindings.put(value, result);
+            _staticBindings.put(value, result);
         }
 
         return result;
@@ -343,79 +353,43 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized IAsset getExternalAsset(String URL)
     {
-
-        if (_externalAssets == null)
-            _externalAssets = new HashMap();
-
-        IAsset result = (IAsset) _externalAssets.get(URL);
+        IAsset result = (IAsset) _assets.get(URL);
 
         if (result == null)
         {
             result = new ExternalAsset(URL);
-            _externalAssets.put(URL, result);
+            _assets.put(URL, result);
         }
 
         return result;
     }
 
-    public synchronized IAsset getContextAsset(String assetPath)
+    public synchronized IAsset getAsset(IResourceLocation location)
     {
-
-        if (_contextAssets == null)
-            _contextAssets = new HashMap();
-
-        IAsset result = (IAsset) _contextAssets.get(assetPath);
+        IAsset result = (IAsset) _assets.get(location);
 
         if (result == null)
         {
-            result = new ContextAsset(assetPath);
-            _contextAssets.put(assetPath, result);
+            result = location.toAsset();
+
+            _assets.put(location, result);
         }
 
         return result;
 
-    }
-
-    public synchronized IAsset getPrivateAsset(String resourcePath)
-    {
-
-        if (_privateAssets == null)
-            _privateAssets = new HashMap();
-
-        IAsset result = (IAsset) _privateAssets.get(resourcePath);
-
-        if (result == null)
-        {
-            result = new PrivateAsset(resourcePath);
-            _privateAssets.put(resourcePath, result);
-        }
-
-        return result;
     }
 
     public String toString()
     {
-        StringBuffer buffer = new StringBuffer("PageSource@");
-        buffer.append(Integer.toHexString(hashCode()));
-        buffer.append('[');
+        ToStringBuilder builder = new ToStringBuilder(this);
 
-        if (_pool != null)
-        {
-            buffer.append("pool=");
-            buffer.append(_pool);
-        }
+        builder.append("pool", _pool);
+        builder.append("assets", _assets);
+        builder.append("fieldBindings", _fieldBindings);
+        builder.append("staticBindings", _staticBindings);
+        builder.append("resolver", _resolver);
 
-        extend(buffer, _fieldBindings, "field bindings");
-        extend(buffer, staticBindings, "static bindings");
-        extend(buffer, _externalAssets, "external assets");
-        extend(buffer, _contextAssets, "context assets");
-        extend(buffer, _privateAssets, "private assets");
-
-        int lastChar = buffer.length() - 1;
-
-        buffer.append(']');
-
-        return buffer.toString();
+        return builder.toString();
     }
 
     private void extend(StringBuffer buffer, Map map, String label)
@@ -442,69 +416,4 @@ public class PageSource implements IPageSource, IRenderDescription
         buffer.append(label);
     }
 
-    /** @since 1.0.6 **/
-
-    public void renderDescription(IMarkupWriter writer)
-    {
-        writer.print("PageSource");
-        writer.begin("ul");
-
-        if (_pool != null)
-        {
-            writer.begin("li");
-            writer.print("pool = ");
-            _pool.renderDescription(writer);
-            writer.end();
-        }
-
-        describe(writer, _fieldBindings, "field bindings");
-        describe(writer, staticBindings, "static bindings");
-        describe(writer, _externalAssets, "external assets");
-        describe(writer, _contextAssets, "context assets");
-        describe(writer, _privateAssets, "private assets");
-
-        writer.end(); // <ul>
-    }
-
-    /** @since 1.0.6 **/
-
-    private void describe(IMarkupWriter writer, Map map, String label)
-    {
-        if (map == null)
-            return;
-
-        synchronized (map)
-        {
-            Set entrySet = map.entrySet();
-            int count = entrySet.size();
-
-            if (count > 0)
-            {
-                writer.begin("li");
-                writer.print(" ");
-
-                writer.print(count);
-                writer.print(" cached ");
-                writer.print(label);
-
-                writer.begin("ul");
-
-                Iterator i = map.entrySet().iterator();
-
-                while (i.hasNext())
-                {
-                    Map.Entry e = (Map.Entry) i.next();
-
-                    writer.begin("li");
-                    writer.print(e.getKey().toString());
-                    writer.println();
-                    writer.end();
-                }
-
-                writer.end(); // <ul>
-                writer.end(); // <li>
-
-            }
-        }
-    }
 }

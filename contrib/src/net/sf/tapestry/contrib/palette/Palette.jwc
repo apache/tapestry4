@@ -58,13 +58,13 @@
     <binding name="class" expression="tableClass"/>
   </component>
   
-  <component id="insertAvailableTitle" type="InsertBlock">
+  <component id="insertAvailableTitle" type="RenderBlock">
     <binding name="block" expression="availableTitleBlock"/>
   </component>
     
   <component id="defaultAvailableTitleBlock" type="Block"/>
   
-  <component id="insertSelectedTitle" type="InsertBlock">
+  <component id="insertSelectedTitle" type="RenderBlock">
     <binding name="block" expression="selectedTitleBlock"/>
   </component>
 

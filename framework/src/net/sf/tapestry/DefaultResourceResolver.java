@@ -158,4 +158,11 @@ public class DefaultResourceResolver implements IResourceResolver
         return findClass(name);
     }
 
+    /** @since 2.4 **/
+    
+    public ClassLoader getClassLoader()
+    {
+        return _loader;
+    }
+
 }

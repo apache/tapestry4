@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+     	
+<page-specification>
+
+	<component id="c" type="Insert">
+		<static-binding name="fred">flintstone</static-binding>
+		<static-binding name="barney" value="rubble"/>
+		<static-binding name="rock" value="hudson">Ignored.</static-binding>
+	</component>
+	
+</page-specification>
+

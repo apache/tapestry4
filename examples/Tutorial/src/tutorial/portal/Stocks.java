@@ -54,7 +54,6 @@
  */
 package tutorial.portal;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,17 +80,17 @@ public class Stocks extends BasePage
      *
      **/
 
-    private static Stock[] stockBase =
+    private static Stock[] _stockBase =
         {
             new Stock("DJIA", 11005.37, -117.05),
             new Stock("NASDAQ", 2251.03, -30.99),
             new Stock("NYSE", 647.13, -5.85)};
 
-    private static Stock[] otherStocks = { new Stock("PMIX", 12.73, 1.01), // Wishful thinking
+    private static Stock[] _otherStocks = { new Stock("PMIX", 12.73, 1.01), // Wishful thinking
         new Stock("MSFT", 70.91, -0.81), new Stock("SUN", 41.32, .2)};
 
-    private String tickerId;
-    private Stock stock;
+    private String _tickerId;
+    private Stock _stock;
 
     /**
      *  The composite list of stocks, by combining stockBase with
@@ -99,39 +98,37 @@ public class Stocks extends BasePage
      *
      **/
 
-    private List stocks;
+    private List _stocks;
 
     /**
-     *  The list of stocks for this user.
+     *  The list of stocks for this user, which is stored persistently.
      *
      **/
 
-    private List userStocks;
+    private List _userStocks;
 
-    public void detach()
+    public void initialize()
     {
-        tickerId = null;
-        stock = null;
-        stocks = null;
-        userStocks = null;
-
-        super.detach();
+        _tickerId = null;
+        _stock = null;
+        _stocks = null;
+        _userStocks = null;
     }
 
     public List getStocks()
     {
-        if (stocks == null)
+        if (_stocks == null)
         {
-            stocks = new ArrayList();
+            _stocks = new ArrayList();
 
-            for (int i = 0; i < stockBase.length; i++)
-                stocks.add(stockBase[i]);
+            for (int i = 0; i < _stockBase.length; i++)
+                _stocks.add(_stockBase[i]);
 
-            if (userStocks != null)
-                stocks.addAll(userStocks);
+            if (_userStocks != null)
+                _stocks.addAll(_userStocks);
         }
 
-        return stocks;
+        return _stocks;
     }
 
     private void setErrorField(IValidationDelegate delegate, String id, String message)
@@ -149,31 +146,41 @@ public class Stocks extends BasePage
         if (delegate.getHasErrors())
             return;
 
-        String newId = tickerId.toUpperCase();
+        String newId = _tickerId.toUpperCase();
         List existingStocks = getStocks();
         int count = existingStocks.size();
+
         for (int i = 0; i < count; i++)
         {
             Stock s = (Stock) existingStocks.get(i);
-            if (s.tickerId.equals(newId))
+            if (s.getTickerId().equals(newId))
             {
                 setErrorField(delegate, "inputTickerId", "Already in list.");
                 return;
             }
         }
 
-        for (int i = 0; i < otherStocks.length; i++)
+        for (int i = 0; i < _otherStocks.length; i++)
         {
-            if (otherStocks[i].tickerId.equals(newId))
+            if (_otherStocks[i].getTickerId().equals(newId))
             {
-                stocks = null;
+
+                List userStocks = getUserStocks();
 
                 if (userStocks == null)
-                    setUserStocks(new ArrayList());
+                    userStocks = new ArrayList();
 
-                userStocks.add(otherStocks[i]);
+                userStocks.add(_otherStocks[i]);
 
-                tickerId = null;
+                // Don't set a persistant property until its final value
+                // is determined; then don't change it.
+
+                setUserStocks(userStocks);
+
+                // Force a recompute of the stock list, on redisplay
+
+                _stocks = null;
+                _tickerId = null;
 
                 return;
             }
@@ -187,37 +194,32 @@ public class Stocks extends BasePage
 
     public void setStock(Stock value)
     {
-        stock = value;
+        _stock = value;
     }
 
     public Stock getStock()
     {
-        return stock;
-    }
-
-    public DecimalFormat getDecimalFormat()
-    {
-        return null;
+        return _stock;
     }
 
     public void setTickerId(String value)
     {
-        tickerId = value;
+        _tickerId = value;
     }
 
     public String getTickerId()
     {
-        return tickerId;
+        return _tickerId;
     }
 
     public List getUserStocks()
     {
-        return userStocks;
+        return _userStocks;
     }
 
     public void setUserStocks(List value)
     {
-        userStocks = value;
+        _userStocks = value;
 
         fireObservedChange("userStocks", value);
     }

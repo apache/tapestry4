@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+
+<page-specification>
+
+  <component id="backRollover" type="Rollover">
+    <binding name="image" expression="assets.back"/>
+    <binding name="focus" expression="assets.backFocus"/>
+  </component>
+
+  <context-asset name="back" path="images/Back.gif"/>
+  <context-asset name="backFocus" path="images/Back-focus.gif"/>
+
+</page-specification>
+
+
+

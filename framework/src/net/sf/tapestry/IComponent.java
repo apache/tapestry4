@@ -335,8 +335,7 @@ public interface IComponent extends IRender
     
     /**
      *  Returns the {@link INamespace} in which the component was defined
-     *  (as an alias).  May return null if the component was loaded with
-     *  an explicit specification path.  Pages will always have a real namespace.
+     *  (as an alias).  
      * 
      *  @since 2.2
      * 

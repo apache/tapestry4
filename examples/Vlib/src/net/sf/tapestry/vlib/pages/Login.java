@@ -271,6 +271,6 @@ public class Login extends BasePage implements IErrorProperty
 
         cycle.getRequestContext().addCookie(cookie);
 
-        engine.forgetPage(getName());
+        engine.forgetPage(getPageName());
     }
 }

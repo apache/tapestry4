@@ -33,6 +33,7 @@
 	<pathelement location="${lib.ext.dir}/ejb.jar"/>
 	<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
 	<pathelement location="${lib.ext.dir}/${ognl.jar}"/>
+    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>	
 	<pathelement location="config"/>
   </path>
 

@@ -78,6 +78,8 @@ public interface IAsset
      *  Returns a URL for the asset, ready to be inserted into the output HTML.
      *  If the asset can be localized, the localized version (matching the
      *  {@link java.util.Locale} of the current {@link IPage page}) is returned.
+     * 
+     *  @throws ApplicationRuntimeException if the asset does not exist.
      *
      **/
 
@@ -87,6 +89,9 @@ public interface IAsset
      *  Accesses the localized version of the resource (if possible) and returns it as
      *  an input stream.  A version of the resource localized to the
      *  current {@link IPage page} is returned.
+     * 
+     *  @throws ApplicationRuntimeException if the asset does not exist, or
+     *  can't be read.
      *
      **/
 
@@ -95,6 +100,9 @@ public interface IAsset
     /**
      *  Accesses the localized version of the resource (if possible) and
      *  returns it as an input stream.
+     * 
+     *  @throws ApplicationRuntimeException if the asset does not exist, or
+     *  can't be read.
      * 
      *  @since 2.2
      * 

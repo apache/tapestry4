@@ -74,74 +74,256 @@ public class MockTestCase extends TapestryTestCase
         super(name);
     }
 
-    private MockTester attempt(String path)
+    private MockTester attempt(String name) throws Exception
+    {
+        String path = "/net/sf/tapestry/junit/mock/" + name;
+
+        MockTester tester = new MockTester(path);
+
+        tester.execute();
+
+        return tester;
+    }
+
+    // Note: JUnit runs tests in order they are defined here.  I typically
+    // add new tests first since they run first that way.  Perhaps at some
+    // point, I will order them differently (though since they all pass,
+    // the order isn't that important).
+
+    // Should also look at JUnit documentation; perhaps there's a way to
+    // implicitly define tests based on the found XML files?  Possibly
+    // in a static suite() method.
+
+
+    /**
+     *  Tests related to the listener binding (added in 1.4 DTD).
+     * 
+     **/
+    
+    public void testListenerBinding()
     throws Exception
     {
-        MockTester tester = new MockTester(path);
-        
-        tester.execute();
-        
-        return tester;
+        attempt("TestListenerBinding.xml");
+    }
+
+    /**
+     *  Test that default class names for pages and components work.
+     * 
+     **/
+    
+    public void testDefaultComponentClass()
+    throws Exception
+    {
+        attempt("TestDefaultComponentClass.xml");
+    }
+    
+    /**
+     *  Test that the default class for pages can be overridden
+     *  with a configuration parameter.
+     * 
+     **/
+    
+    public void testOverrideDefaultComponentClass()
+    throws Exception
+    {
+        attempt("TestOverrideDefaultComponentClass.xml");
+    }
+
+    public void testPersistentProperties()
+    throws Exception
+    {
+        attempt("TestPersistentProperties.xml");
+    }
+
+    /**
+     *  Test several Stale Link scenarios for the Form component.
+     * 
+     **/
+    
+    public void testStaleForm()
+    throws Exception
+    {
+        attempt("TestStaleForm.xml");
+    }
+
+    /**
+     *  Test Block and InsertBlock, especially w.r.t. links and forms
+     *  inside the Block on foriegn pages.
+     * 
+     **/
+
+    public void testBlock() throws Exception
+    {
+        attempt("TestBlock.xml");
+    }
+
+    /**
+     *  Test behavior when the application specification doesn't exist.
+     * 
+     **/
+
+    public void testMissingAppSpec() throws Exception
+    {
+        attempt("TestMissingAppSpec.xml");
+    }
+
+    /**
+     *   Demonstrates that libraries defined in application specifications
+     *   within the context can still be located in the classpath.
+     * 
+     **/
+
+    public void testLibraryInWebInfApplication() throws Exception
+    {
+        attempt("TestLibraryInWebInfApplication.xml");
+    }
+
+    /**
+     *  Test ability to search for components specifications for 
+     *  component types in the application namespace.
+     * 
+     **/
+
+    public void testSearchComponents() throws Exception
+    {
+        attempt("TestSearchComponents.xml");
+    }
+
+    /**
+     *  Test that relative specification paths in the application specification
+     *  work.
+     * 
+     **/
+
+    public void testRelative() throws Exception
+    {
+        // Note, this needs to be expanded to include relative
+        // paths to components and libraries.
+
+        attempt("TestRelative.xml");
+    }
+
+    /**
+     *  Test the reset service.
+     *
+     **/
+
+    public void testReset() throws Exception
+    {
+        attempt("TestReset.xml");
+    }
+
+    /**
+     *  Test ability to search for page specifications for pages
+     *  in the application namespace.
+     * 
+     **/
+
+    public void testSearchPages() throws Exception
+    {
+        attempt("TestSearchPages.xml");
+    }
+
+    /**
+     *  Test failure for application that doesn't provide a home page.
+     * 
+     **/
+
+    public void testFailNoHome() throws Exception
+    {
+        attempt("TestFailNoHome.xml");
+    }
+
+    /**
+     *  Test when the class specified for a page does not exist.
+     * 
+     **/
+
+    public void testFailMissingClass() throws Exception
+    {
+        attempt("TestFailMissingClass.xml");
+    }
+
+    /**
+     *  Test when the class specified for a page 
+     *  does not implement {@link net.sf.tapestry.IPage}
+     * 
+     **/
+
+    public void testFailNotPage() throws Exception
+    {
+        attempt("TestFailNotPage.xml");
+    }
+
+    /**
+     *  Test when the class specified for a component 
+     *  does not implement {@link net.sf.tapestry.IComponent}
+     * 
+     **/
+
+    public void testFailNotComponent() throws Exception
+    {
+        attempt("TestFailNotComponent.xml");
     }
 
     /**
      *  Test basics including the PageLink and DirectLink (w/o parameters).
      * 
      **/
-    
-    public void testSimple()
-    throws Exception
+
+    public void testSimple() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestSimple.xml");
+        attempt("TestSimple.xml");
     }
-    
+
     /**
      *  Test ability to embed component in a library and reference
      *  those components.  Also, test RenderBody component.
      * 
      **/
-    
-    public void testLibrary()
-    throws Exception
+
+    public void testLibrary() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestLibrary.xml");
+        attempt("TestLibrary.xml");
     }
-       
+
     /**
      *  Test the External service, ServiceLink and a page implementing
      *  IExternalPage.
      * 
      **/
-    
-    public void testExternal()
-    throws Exception
+
+    public void testExternal() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestExternal.xml");
-    }       
-    
+        attempt("TestExternal.xml");
+    }
+
     /**
      * 
      *  Test some error cases involving the page service.
      * 
      **/
-    
-    public void testPage()
-    throws Exception
+
+    public void testPage() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestPage.xml");
+        attempt("TestPage.xml");
     }
-    
+
+    public void testLocalization() throws Exception
+    {
+        attempt("TestLocalization.xml");
+    }
+
     /**
      *   Begin testing forms using the Register page.
      * 
      **/
-    
-    public void testRegisterForm()
-    throws Exception
+
+    public void testRegisterForm() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestRegisterForm.xml");
+        attempt("TestRegisterForm.xml");
     }
-    
+
     /**
      *  Tests the validate() method, tests handling
      *  of {@link net.sf.tapestry.PageRedirectException}, and tests
@@ -150,13 +332,12 @@ public class MockTestCase extends TapestryTestCase
      *  @since 2.3
      * 
      **/
-    
-    public void testValidate()
-    throws Exception
+
+    public void testValidate() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestValidate.xml");
+        attempt("TestValidate.xml");
     }
-    
+
     /**
      *  Tests the use of {@link net.sf.tapestry.callback.DirectCallback}
      *  to protect a link.
@@ -164,40 +345,83 @@ public class MockTestCase extends TapestryTestCase
      *  @since 2.3
      * 
      **/
-    
-    public void testProtectedLink()
-    throws Exception
+
+    public void testProtectedLink() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestProtectedLink.xml");
+        attempt("TestProtectedLink.xml");
     }
-    
+
     /**
-     *  Tests {@link net.sf.tapestry.StaleLinkException} with
+     *  Tests {@link net.sf.tapestry.StaleSessionException} with
      *  DirectLink (ActionLink and Form to come).
      * 
      **/
-    
-    public void testStaleLinkException()
-    throws Exception
+
+    public void testStaleSessionException() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestStaleSessionException.xml");
+        attempt("TestStaleSessionException.xml");
     }
-    
-    public void testStrings()
-    throws Exception
+
+    public void testStrings() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestStrings.xml");
+        attempt("TestStrings.xml");
     }
-    
+
     /**
      *  Test case for a ValidField with a validator and client-side scripting, but
      *  no Body.
      * 
      **/
-    
-    public void testValidFieldNoBody()
-    throws Exception
+
+    public void testValidFieldNoBody() throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestValidFieldNoBody.xml");
+        attempt("TestValidFieldNoBody.xml");
+    }
+
+    /**
+     *  A series of tests for components where parameters are bound
+     *  to expressions in the template, using the new "[[ expression ]]" syntax.
+     * 
+     **/
+
+    public void testTemplateExpressions() throws Exception
+    {
+        attempt("TestTemplateExpr.xml");
+    }
+
+    public void testImplicitComponents() throws Exception
+    {
+        attempt("TestImplicitComponents.xml");
+    }
+
+    /**
+     *  Perform basic tests of the home service.
+     * 
+     **/
+
+    public void testHome() throws Exception
+    {
+        attempt("TestHome.xml");
+    }
+
+    /**
+     *  Test cases where the page's template comes from
+     *  a $template asset.
+     * 
+     **/
+
+    public void testAssetTemplates() throws Exception
+    {
+        attempt("TestAssetTemplates.xml");
+    }
+
+    /**
+     *  Test case for relative context and private assets.
+     * 
+     **/
+
+    public void testRelativeAssets() throws Exception
+    {
+        attempt("TestRelativeAssets.xml");
     }
 }

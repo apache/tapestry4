@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+     	
+<page-specification>
+
+  <component id="c" type="DirectLink">
+  	<listener-binding name="listener" language="jython">
+if page.isFormInputValid():
+  cycle.page = "Results"
+else:
+  page.message = "Please fix errors before continuing.";  
+	</listener-binding>
+  </component>
+  	  	
+</page-specification>
+

@@ -54,6 +54,8 @@
  */
 package net.sf.tapestry.junit.mock;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -78,7 +80,14 @@ import javax.servlet.ServletException;
 public class MockContext extends AttributeHolder implements ServletContext, IInitParameterHolder
 {
     private MockSession _session;
-
+    
+    /**
+     *  Directory, relative to the current directory (i.e., System property user.dir)
+     *  that is the context root.
+     * 
+     **/
+    
+    private String _rootDirectory = "context";
     private String _servletContextName = "test";
     private Map _initParameters = new HashMap();
 
@@ -109,12 +118,46 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
 
     public URL getResource(String path) throws MalformedURLException
     {
-        return null;
+        if (path == null || ! path.startsWith("/"))
+        throw new MalformedURLException("Not a valid context path.");
+        
+        StringBuffer buffer = new StringBuffer();
+        
+        buffer.append(System.getProperty("user.dir"));
+        buffer.append("/");       
+        buffer.append(_rootDirectory);
+        
+        // Path has a leading slash
+        
+        buffer.append(path);
+                    
+        File file = new File(buffer.toString());
+        
+        if (file.exists())
+            return file.toURL();
+            
+        return null;                                     
     }
 
     public InputStream getResourceAsStream(String path)
     {
-        return null;
+        try
+        {
+            URL url = getResource(path);
+            
+            if (url == null)
+                return null;
+                
+            return url.openStream();
+        }
+        catch (MalformedURLException ex)
+        {
+            return null;
+        }
+        catch (IOException ex)
+        {
+            return null;
+        }
     }
 
     public RequestDispatcher getRequestDispatcher(String path)
@@ -206,6 +249,16 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
     public void setServletContextName(String servletContextName)
     {
         _servletContextName = servletContextName;
+    }
+
+    public String getRootDirectory()
+    {
+        return _rootDirectory;
+    }
+
+    public void setRootDirectory(String rootDirectory)
+    {
+        _rootDirectory = rootDirectory;
     }
 
 }

@@ -60,23 +60,23 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-
-import ognl.OgnlRuntime;
 
 import net.sf.tapestry.bean.BeanProvider;
 import net.sf.tapestry.bean.BeanProviderPropertyAccessor;
 import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.ObservedChangeEvent;
+import net.sf.tapestry.event.PageCleanupListener;
+import net.sf.tapestry.event.PageDetachListener;
+import net.sf.tapestry.event.PageRenderListener;
 import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.param.ParameterManager;
 import net.sf.tapestry.spec.ComponentSpecification;
-import net.sf.tapestry.spec.ContainedComponent;
-import net.sf.tapestry.util.prop.IPublicBean;
 import net.sf.tapestry.util.prop.OgnlUtils;
 import net.sf.tapestry.util.prop.PropertyFinder;
 import net.sf.tapestry.util.prop.PropertyInfo;
-import net.sf.tapestry.util.prop.PublicBeanPropertyAccessor;
+import ognl.OgnlRuntime;
 
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
@@ -93,10 +93,6 @@ public abstract class AbstractComponent implements IComponent
         // beans of a bean provider as named properties.
 
         OgnlRuntime.setPropertyAccessor(IBeanProvider.class, new BeanProviderPropertyAccessor());
-        
-        // Same with IPublicBean.
-        
-        OgnlRuntime.setPropertyAccessor(IPublicBean.class, new PublicBeanPropertyAccessor());        
     }
 
     /**
@@ -284,6 +280,12 @@ public abstract class AbstractComponent implements IComponent
     }
 
     /**
+     *  Registers this component as a listener of the page if it
+     *  implements {@link net.sf.tapestry.event.PageDetachListener},
+     *  {@link net.sf.tapestry.event.PageRenderListener} or 
+     *  {@link net.sf.tapestry.event.PageCleanupListener}.
+     * 
+     *  <p>
      *  Invokes {@link #finishLoad()}.  Subclasses may overide as needed, but
      *  must invoke this implementation.
      *  {@link BaseComponent}
@@ -294,165 +296,122 @@ public abstract class AbstractComponent implements IComponent
     public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
         throws PageLoaderException
     {
+        if (this instanceof PageDetachListener)
+            _page.addPageDetachListener((PageDetachListener) this);
+
+        if (this instanceof PageRenderListener)
+            _page.addPageRenderListener((PageRenderListener) this);
+
+        if (this instanceof PageCleanupListener)
+            _page.addPageCleanupListener((PageCleanupListener) this);
+
         finishLoad();
     }
 
     protected void fireObservedChange(String propertyName, int newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
 
     protected void fireObservedChange(String propertyName, Object newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
 
     protected void fireObservedChange(String propertyName, boolean newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
 
     protected void fireObservedChange(String propertyName, double newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
 
     protected void fireObservedChange(String propertyName, float newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
 
     protected void fireObservedChange(String propertyName, long newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
 
     protected void fireObservedChange(String propertyName, char newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
 
     protected void fireObservedChange(String propertyName, byte newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
 
     protected void fireObservedChange(String propertyName, short newValue)
     {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
+        ChangeObserver observer = getChangeObserver();
 
         if (observer == null)
             return;
 
-        event = new ObservedChangeEvent(this, propertyName, newValue);
-
-        observer.observeChange(event);
-    }
-
-    /**
-     *  Fires a change event for no single property; the receiver should
-     *  note that the page containing the component is 'dirty' even if
-     *  no property appears to have changed.  This is useful in situations
-     *  when a property is a mutable object (such as a Collection) and the
-     *  state of the property value is changing, even though the property
-     *  is not.
-     *
-     **/
-
-    protected void fireObservedChange()
-    {
-        ChangeObserver observer;
-        ObservedChangeEvent event;
-
-        observer = getChangeObserver();
-
-        if (observer == null)
-            return;
-
-        event = new ObservedChangeEvent(this);
+        ObservedChangeEvent event = new ObservedChangeEvent(this, propertyName, newValue);
 
         observer.observeChange(event);
     }
@@ -557,7 +516,7 @@ public abstract class AbstractComponent implements IComponent
         if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
         {
             IResourceResolver resolver = getPage().getEngine().getResourceResolver();
-            
+
             return (IBinding) OgnlUtils.get(bindingPropertyName, resolver, this);
         }
 
@@ -618,8 +577,8 @@ public abstract class AbstractComponent implements IComponent
     {
         if (_page == null)
             return null;
-            
-        return _page.getName() + "/" + getIdPath();
+
+        return _page.getPageName() + "/" + getIdPath();
     }
 
     public String getId()
@@ -781,27 +740,31 @@ public abstract class AbstractComponent implements IComponent
         if (_container == null)
             return null;
 
-        ContainedComponent contained = _container.getSpecification().getComponent(_id);
-
-        // If no informal parameters, then it's safe to return
-        // just the names of the formal parameters.
-
-        if (_bindings == null || _bindings.size() == 0)
-            return contained.getBindingNames();
-
-        // The new HTML parser means that sometimes, the informal attributes
-        // come from the HTML template and aren't known in the contained component
-        // specification.  The only thing to do is to build up a set of
-        // informal bindings.  A degenerate case:  an informal binding that has
-        // setXXXBinding and getXXXBinding methods --- that makes the
-        // informal parameter invisible to this method (and thus, to the Inspector).
-
-        HashSet result = new HashSet(contained.getBindingNames());
+        HashSet result = new HashSet();
 
         // All the informal bindings go into the bindings Map.   Also
         // formal parameters where there isn't a corresponding JavaBeans property.
 
-        result.addAll(_bindings.keySet());
+        if (_bindings != null)
+            result.addAll(_bindings.keySet());
+
+        // Now, iterate over the formal parameters and add the formal parameters
+        // that have a binding.
+        
+        List names = _specification.getParameterNames();
+
+        int count = names.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            String name = (String) names.get(i);
+
+            if (result.contains(name))
+                continue;
+
+            if (getBinding(name) != null)
+                result.add(name);
+        }
 
         return result;
     }
@@ -1073,7 +1036,7 @@ public abstract class AbstractComponent implements IComponent
      *  @see #getBody()
      * 
      **/
-    
+
     public int getBodyCount()
     {
         return _bodyCount;

@@ -60,13 +60,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.ObjectStreamClass;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 
 /**
@@ -87,35 +85,6 @@ import net.sf.tapestry.Tapestry;
 
 class SerializableAdaptor implements ISqueezeAdaptor
 {
-    /**
-     *  Private class used for resolving classes when reading
-     *  a stream.
-     * 
-     **/
-
-    private static class ResolvingObjectInputStream extends ObjectInputStream
-    {
-        private IResourceResolver _resolver;
-
-        private ResolvingObjectInputStream(IResourceResolver resolver, InputStream input) throws IOException
-        {
-            super(input);
-
-            _resolver = resolver;
-        }
-
-        /**
-         *  Overrides the default implementation to
-         *  have the resource resolver find the class.
-         * 
-         **/
-
-        protected Class resolveClass(ObjectStreamClass v) throws IOException, ClassNotFoundException
-        {
-            return _resolver.findClass(v.getName());
-        }
-    }
-
     private static final String PREFIX = "O";
 
     /**
@@ -231,7 +200,8 @@ class SerializableAdaptor implements ISqueezeAdaptor
         {
             // The message is the name of the class.
 
-            throw new IOException(Tapestry.getString("SerializableAdaptor.class-not-found", ex.getMessage()));
+            throw new IOException(
+                Tapestry.getString("SerializableAdaptor.class-not-found", ex.getMessage()));
         }
         finally
         {
@@ -289,7 +259,8 @@ class SerializableAdaptor implements ISqueezeAdaptor
         if (sixBit == 63)
             return CH_63;
 
-        throw new IOException(Tapestry.getString("SerializableAdaptor.unable-to-convert", Integer.toString(sixBit)));
+        throw new IOException(
+            Tapestry.getString("SerializableAdaptor.unable-to-convert", Integer.toString(sixBit)));
     }
 
     public static byte[] decode(String string) throws IOException
@@ -344,7 +315,9 @@ class SerializableAdaptor implements ISqueezeAdaptor
             return 0;
 
         throw new IOException(
-            Tapestry.getString("SerializableAdaptor.unable-to-interpret-char", new String(new char[] { c })));
+            Tapestry.getString(
+                "SerializableAdaptor.unable-to-interpret-char",
+                new String(new char[] { c })));
     }
 
 }

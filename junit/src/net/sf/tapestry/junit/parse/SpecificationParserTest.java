@@ -54,17 +54,18 @@
  */
 package net.sf.tapestry.junit.parse;
 
-import junit.framework.AssertionFailedError;
+import java.util.Map;
+
 import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
+import net.sf.tapestry.spec.ListenerBindingSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.xml.DocumentParseException;
-
-
 
 /**
  *  Tests the specification parser (which reads page and component
@@ -85,25 +86,8 @@ public class SpecificationParserTest extends TapestryTestCase
         super(name);
     }
 
-    /** 
-     * 
-     *  Asserts that the exception message contains the
-     *  indicated substring.
-     * 
-     *  @since 2.2 
-     * 
-     **/
-
-    private void checkException(DocumentParseException ex, String string)
-    {
-        if (ex.getMessage().indexOf(string) >= 0)
-            return;
-
-        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
-    }
-
     /**
-     *  Tests that the parser can handle a 1.2 specification
+     *  Tests that the parser can handle a specification
      *  that includes a &lt;string-binding&gt; element.
      * 
      **/
@@ -145,9 +129,9 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ComponentSpecification spec = parseComponent("InvalidParameterName.jwc");
+            parseComponent("InvalidParameterName.jwc");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -167,9 +151,9 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ComponentSpecification spec = parseComponent("InvalidComponentId.jwc");
+            parseComponent("InvalidComponentId.jwc");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -189,9 +173,9 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ILibrarySpecification spec = parseLib("InvalidLibraryId.library");
+            parseLib("InvalidLibraryId.library");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -206,29 +190,22 @@ public class SpecificationParserTest extends TapestryTestCase
      *  @since 2.2
      * 
      **/
-    
+
     public void testValidLibrary() throws Exception
     {
         ILibrarySpecification spec = parseLib("ValidLibrary.library");
-        
-        checkList("serviceNames",
-            new String[] { "service1", "service2" },
-            spec.getServiceNames());
-            
-        checkList("pageNames", 
-            new String[] { "FirstPage", "SecondPage" },
-            spec.getPageNames());
-            
-        checkList("componentAliases",
+
+        checkList("serviceNames", new String[] { "service1", "service2" }, spec.getServiceNames());
+
+        checkList("pageNames", new String[] { "FirstPage", "SecondPage" }, spec.getPageNames());
+
+        checkList(
+            "componentAliases",
             new String[] { "FirstComponent", "SecondComponent" },
             spec.getComponentAliases());
-            
-        checkList("libraryIds",
-            new String[] { "lib1", "lib2" },
-            spec.getLibraryIds());
-    } 
-    
-    
+
+        checkList("libraryIds", new String[] { "lib1", "lib2" }, spec.getLibraryIds());
+    }
 
     /**
      *  Test invalid parameter name.
@@ -241,9 +218,9 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ComponentSpecification spec = parseComponent("InvalidAssetName.jwc");
+            parseComponent("InvalidAssetName.jwc");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -263,10 +240,9 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            IApplicationSpecification spec = parseApp("InvalidPageName.application");
+            parseApp("InvalidPageName.application");
 
-            throw new AssertionFailedError("Should not be able to parse document.");
-
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -274,23 +250,21 @@ public class SpecificationParserTest extends TapestryTestCase
             checkException(ex, "page name");
         }
     }
-        
+
     /**
      *  Test invalid service name.
      * 
      *  @since 2.2
      * 
      **/
-    
-    public void testInvalidServiceName()
-    throws Exception
+
+    public void testInvalidServiceName() throws Exception
     {
         try
         {
-            IApplicationSpecification spec = 
-                parseApp("InvalidServiceName.application");
-                
-             throw new AssertionFailedError("Should not be able to parse document.");
+            parseApp("InvalidServiceName.application");
+
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -298,53 +272,237 @@ public class SpecificationParserTest extends TapestryTestCase
             checkException(ex, "service");
         }
     }
-        
+
     /**
      *  Test invalid service name.
      * 
      *  @since 2.2
      * 
      **/
-    
-    public void testInvalidComponentAlias()
-    throws Exception
+
+    public void testInvalidComponentAlias() throws Exception
     {
         try
         {
-            IApplicationSpecification spec =  
-                parseApp("InvalidComponentAlias.application");
-                
-             throw new AssertionFailedError("Should not be able to parse document.");
+            parseApp("InvalidComponentAlias.application");
+
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
             checkException(ex, "Invalid$Component");
             checkException(ex, "alias");
         }
-    }   
-    
+    }
+
     /**
      *  Test invalid extension name.
      * 
      *  @since 2.2
      * 
      **/
-    
-    public void testInvalidExtensionName()
-    throws Exception
+
+    public void testInvalidExtensionName() throws Exception
     {
         try
         {
-            IApplicationSpecification spec = 
-                parseApp("InvalidExtensionName.application");
-                
-             throw new AssertionFailedError("Should not be able to parse document.");
+            parseApp("InvalidExtensionName.application");
+
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
             checkException(ex, "Invalid$Extension");
             checkException(ex, "extension name");
         }
-    }      
-              
+    }
+
+    /** 
+     *  Test case where the document does not have a DOCTYPE
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void testMissingDoctype() throws Exception
+    {
+        try
+        {
+            parseApp("MissingDoctype.application");
+
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "Valid documents must have a <!DOCTYPE");
+        }
+    }
+
+    /**
+     *  Test case where the public id of the document is not known.
+     * 
+     **/
+
+    public void testInvalidPublicId() throws Exception
+    {
+        try
+        {
+            parseApp("InvalidPublicId.application");
+
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "has an unexpected public id");
+        }
+    }
+
+    /**
+     *  Test an an application specification can omit
+     *  the name and engine-class attributes.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testNulledApplication() throws Exception
+    {
+        IApplicationSpecification spec = parseApp("NulledApplication.application");
+
+        assertNull(spec.getEngineClassName());
+        assertNull(spec.getName());
+    }
+
+    /**
+     *  Test new DTD 1.4 syntax for declaring components.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testComponentType() throws Exception
+    {
+        IApplicationSpecification spec = parseApp("ComponentType.application");
+
+        assertEquals("/path/Fred.jwc", spec.getComponentSpecificationPath("Fred"));
+    }
+
+    /**
+     *  Test omitting the class name from a component specification
+     *  (new, in DTD 1.4).
+     * 
+     **/
+
+    public void testNulledComponent() throws Exception
+    {
+        ComponentSpecification spec = parseComponent("NulledComponent.jwc");
+
+        assertNull(spec.getComponentClassName());
+    }
+
+    /**
+     *  Test omitting the class name from a component specification
+     *  (new, in DTD 1.4).
+     * 
+     **/
+
+    public void testNulledPage() throws Exception
+    {
+        ComponentSpecification spec = parsePage("NulledPage.page");
+
+        assertNull(spec.getComponentClassName());
+    }
+
+    /**
+     *  Test the value attribute for the property element
+     *  (which is new in DTD 1.4).
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testPropertyValue() throws Exception
+    {
+        ComponentSpecification spec = parsePage("PropertyValue.page");
+
+        assertEquals("rubble", spec.getProperty("barney"));
+        assertEquals("flintstone", spec.getProperty("wilma"));
+    }
+
+    /**
+     *  Tests the new (in DTD 1.4) value attribute on static-binding
+     *  element.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testStaticBindingValue() throws Exception
+    {
+        ComponentSpecification spec = parsePage("StaticBindingValue.page");
+
+        ContainedComponent c = spec.getComponent("c");
+
+        assertEquals("flintstone", c.getBinding("fred").getValue());
+        assertEquals("rubble", c.getBinding("barney").getValue());
+        assertEquals("hudson", c.getBinding("rock").getValue());
+    }
+
+    /**
+     *  Tests the new (in DTD 1.4) value attribute on a configure element.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testConfigureValue() throws Exception
+    {
+        ILibrarySpecification spec = parseLib("ConfigureValue.library");
+
+        Map map = (Map) spec.getExtension("map", Map.class);
+
+        assertEquals("flintstone", map.get("fred"));
+    }
+
+    /**
+     *  Tests the new &lt;listener-binding&gt; element in the 1.4 DTD.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void testListenerBinding() throws Exception
+    {
+        ComponentSpecification spec = parsePage("ListenerBinding.page");
+
+        ContainedComponent c = spec.getComponent("c");
+
+        ListenerBindingSpecification lbs = (ListenerBindingSpecification) c.getBinding("listener");
+
+        String expectedScript =
+            buildExpectedScript(
+                new String[] {
+                    "if page.isFormInputValid():",
+                    "  cycle.page = \"Results\"",
+                    "else:",
+                    "  page.message = \"Please fix errors before continuing.\";" });
+
+        assertEquals("jython", lbs.getLanguage());
+        assertEquals(expectedScript, lbs.getScript());
+    }
+
+    private String buildExpectedScript(String[] lines)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        for (int i = 0; i < lines.length; i++)
+        {
+            if (i > 0)
+                buffer.append("\n");
+
+            buffer.append(lines[i]);
+        }
+
+        return buffer.toString();
+    }
 }

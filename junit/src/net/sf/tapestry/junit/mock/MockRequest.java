@@ -101,6 +101,7 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     private MockContext _servletContext;
     private MockSession _session;
     private String _servletPath;
+    private List _cookies = new ArrayList();
 
     public MockRequest(MockContext servletContext, String servletPath)
     {
@@ -118,8 +119,8 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     }
 
     public Cookie[] getCookies()
-    {
-        return null;
+    {       
+        return (Cookie[])_cookies.toArray(new Cookie[_cookies.size()]);
     }
 
     public long getDateHeader(String arg0)
@@ -340,6 +341,11 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     {
         return _locale;
     }
+    
+    public void setLocale(Locale locale)
+    {
+        _locale = locale;
+    }
 
     public Enumeration getLocales()
     {
@@ -379,6 +385,31 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     public void setParameter(String name, String value)
     {
         setParameter(name, new String[] { value });
+    }   
+    
+    public void addCookie(Cookie cookie)
+    {
+        _cookies.add(cookie);
     }
-
+    
+    public void addCookies(Cookie[] cookies)
+    {
+        if (cookies == null)
+            return;
+            
+        for (int i = 0; i < cookies.length; i++)
+            addCookie(cookies[i]);
+    }
+    
+    /**
+     *  Delegates this to the {@link net.sf.tapestry.junit.mock.MockSession}, if
+     *  it exists.
+     * 
+     **/
+    
+    public void simulateFailover()
+    {
+        if (_session != null)
+            _session.simulateFailover();
+    }
 }

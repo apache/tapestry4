@@ -84,28 +84,47 @@ import net.sf.tapestry.Tapestry;
 
 public class ActionService extends AbstractService
 {
+    /**
+     *  Encoded into URL if engine was stateful.
+     * 
+     *  @since 2.4
+     **/
+
+    private static final String STATEFUL_ON = "1";
+
+    /**
+     *  Encoded into URL if engine was not stateful.
+     * 
+     *  @since 2.4
+     **/
+
+    private static final String STATEFUL_OFF = "0";
+
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (parameters == null || parameters.length != 1)
             throw new IllegalArgumentException(Tapestry.getString("service-single-parameter", ACTION_SERVICE));
 
+        String stateful = cycle.getEngine().isStateful() ? STATEFUL_ON : STATEFUL_OFF;
         IPage componentPage = component.getPage();
         IPage responsePage = cycle.getPage();
-        int length = (componentPage == responsePage) ? 3 : 4;
 
-        String[] serviceContext = new String[length];
+        boolean complex = (componentPage != responsePage);
+
+        String[] serviceContext = new String[complex ? 5 : 4];
 
         int i = 0;
 
-        serviceContext[i++] = responsePage.getName();
-        serviceContext[i++] = (String)parameters[0];
+        serviceContext[i++] = stateful;
+        serviceContext[i++] = responsePage.getPageName();
+        serviceContext[i++] = (String) parameters[0];
 
         // Because of Block/InsertBlock, the component may not be on
         // the same page as the response page and we need to make
         // allowances for this.
 
-        if (componentPage != responsePage)
-            serviceContext[i++] = componentPage.getName();
+        if (complex)
+            serviceContext[i++] = componentPage.getPageName();
 
         serviceContext[i++] = component.getIdPath();
 
@@ -124,18 +143,20 @@ public class ActionService extends AbstractService
         if (serviceContext != null)
             count = serviceContext.length;
 
-        if (count != 3 && count != 4)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractEngine.action-context-parameters"));
+        if (count != 4 && count != 5)
+            throw new ApplicationRuntimeException(Tapestry.getString("ActionService.context-parameters"));
+
+        boolean complex = count == 5;
 
         int i = 0;
+        String stateful = serviceContext[i++];
         String pageName = serviceContext[i++];
         String targetActionId = serviceContext[i++];
 
-        if (count == 3)
-            componentPageName = pageName;
-        else
+        if (complex)
             componentPageName = serviceContext[i++];
+        else
+            componentPageName = pageName;
 
         String targetIdPath = serviceContext[i++];
 
@@ -151,12 +172,15 @@ public class ActionService extends AbstractService
         catch (ClassCastException ex)
         {
             throw new RequestCycleException(
-                Tapestry.getString("AbstractEngine.action-component-wrong-type", component.getExtendedId()),
+                Tapestry.getString("ActionService.component-wrong-type", component.getExtendedId()),
                 component,
                 ex);
         }
 
-        if (action.getRequiresSession())
+        // Only perform the stateful check if the application was stateful
+        // when the URL was rendered.
+
+        if (stateful.equals(STATEFUL_ON) && action.getRequiresSession())
         {
             HttpSession session = cycle.getRequestContext().getSession();
 

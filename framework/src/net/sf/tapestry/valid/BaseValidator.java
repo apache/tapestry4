@@ -64,6 +64,7 @@ import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.RequestCycleException;
@@ -72,6 +73,7 @@ import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.form.FormEventType;
 import net.sf.tapestry.html.Body;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 
 /**
  *  Abstract base class for {@link IValidator}.  Supports a required and locale property.
@@ -280,7 +282,9 @@ public abstract class BaseValidator implements IValidator
         finalSymbols.put(FORM_SYMBOL, form);
         finalSymbols.put(VALIDATOR_SYMBOL, this);
 
-        IScript script = source.getScript(scriptPath);
+        IResourceLocation location = new ClasspathResourceLocation(engine.getResourceResolver(), scriptPath);
+
+        IScript script = source.getScript(location);
 
         ScriptSession session;
 

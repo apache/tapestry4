@@ -84,7 +84,7 @@ public class StaleSessionException extends RequestCycleException
         _page = page;
 
         if (page != null)
-            _pageName = page.getName();
+            _pageName = page.getPageName();
     }
 
     public String getPageName()

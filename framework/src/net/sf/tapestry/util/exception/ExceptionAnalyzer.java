@@ -164,9 +164,7 @@ public class ExceptionAnalyzer
         PropertyDescriptor descriptor;
         Throwable next = null;
         int i;
-        String name;
         Object value;
-        Class type;
         Method method;
         ExceptionProperty[] properties;
         ExceptionDescription description;
@@ -196,10 +194,6 @@ public class ExceptionAnalyzer
         for (i = 0; i < descriptors.length; i++)
         {
             descriptor = descriptors[i];
-
-            name = descriptor.getName();
-
-            type = descriptor.getPropertyType();
 
             method = descriptor.getReadMethod();
             if (method == null)

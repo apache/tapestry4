@@ -56,15 +56,13 @@ package net.sf.tapestry.util.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Tapestry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -85,6 +83,10 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IResourceLocation;
+import net.sf.tapestry.Tapestry;
+
 /**
  *  A wrapper around {@link DocumentBuilder} (itself a wrapper around
  *  some XML parser), this class provides error handling and entity
@@ -101,7 +103,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
     private static final Log LOG = LogFactory.getLog(AbstractDocumentParser.class);
 
     private DocumentBuilder _builder;
-    private String _resourcePath;
+    private IResourceLocation _resourceLocation;
 
     /**
      *  Map used to resolve public identifiers to corresponding InputSource.
@@ -109,7 +111,6 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
      **/
 
     private Map _entities;
-
 
     /** 
      * 
@@ -122,8 +123,6 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
 
     protected PatternCompiler _patternCompiler;
 
-
-
     /** 
      * 
      *  Matcher used to match patterns against input strings.
@@ -133,8 +132,6 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
      **/
 
     protected PatternMatcher _matcher;
-
-
 
     /** 
      * 
@@ -156,7 +153,6 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
      **/
 
     public static final String SIMPLE_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z]\\w*$";
-
 
     /**
      *  Invoked by subclasses (usually inside thier constructor) to register
@@ -183,22 +179,21 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
         _entities.put(publicId, entityPath);
     }
 
-    public String getResourcePath()
+    public IResourceLocation getResourceLocation()
     {
-        return _resourcePath;
+        return _resourceLocation;
     }
 
-    public void setResourcePath(String value)
+    public void setResourceLocation(IResourceLocation value)
     {
-        _resourcePath = null;
+        _resourceLocation = null;
     }
 
     /** 
-     * Invoked by subclasses to parse a document.  Obtains (or re-uses) a
+     *  Invoked by subclasses to parse a document.  Obtains (or re-uses) a
      *  {@link DocumentBuilder} and parses the document from the {@link InputSource}.
      *
-     *  @param source source from which to read the document
-     *  @param resourcePath a description of the source, used in errors
+     *  @param resourceLocation location from which parsing occurs
      *  @param rootElementName the expected root element of the {@link Document}, or
      *  null if the rootElementName isn't known before parsing
      *
@@ -207,31 +202,50 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
      *`
      **/
 
-    protected Document parse(InputSource source, String resourcePath, String rootElementName)
-        throws DocumentParseException
+    protected Document parse(IResourceLocation resourceLocation, String rootElementName) throws DocumentParseException
     {
         boolean error = true;
 
+        _resourceLocation = resourceLocation;
+
         if (LOG.isDebugEnabled())
-            LOG.debug(
-                "Parsing "
-                    + source
-                    + " ("
-                    + resourcePath
-                    + ") for element "
-                    + (rootElementName != null ? rootElementName : "Unknown"));
+            LOG.debug("Parsing " + resourceLocation + " for element " + rootElementName);
+
+        URL url = _resourceLocation.getResourceURL();
+
+        if (url == null)
+            throw new DocumentParseException(
+                Tapestry.getString("AbstractDocumentParser.missing-resource", resourceLocation),
+                resourceLocation);
 
         try
         {
+
+            InputSource source = new InputSource(url.toExternalForm());
+
             if (_builder == null)
                 _builder = constructBuilder();
 
             Document document = _builder.parse(source);
 
+            if (getRequireValidatingParser())
+            {
+                // The document parsed and validated, so it must
+                // have a <!DOCTYPE>
+
+                String publicId = document.getDoctype().getPublicId();
+
+                // Ensure its a known type.
+
+                if (!_entities.containsKey(publicId))
+                    throw new DocumentParseException(
+                        Tapestry.getString("AbstractDocumentParser.unknown-public-id", resourceLocation, publicId),
+                        resourceLocation);
+            }
+
             error = false;
 
-            if (rootElementName != null)
-                validateRootElement(document, rootElementName, resourcePath);
+            validateRootElement(document, rootElementName);
 
             return document;
         }
@@ -240,22 +254,22 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
             // This constructor captures the line number and column number
 
             throw new DocumentParseException(
-                Tapestry.getString("AbstractDocumentParser.unable-to-parse", resourcePath, ex.getMessage()),
-                resourcePath,
+                Tapestry.getString("AbstractDocumentParser.unable-to-parse", resourceLocation, ex.getMessage()),
+                resourceLocation,
                 ex);
         }
         catch (SAXException ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString("AbstractDocumentParser.unable-to-parse", resourcePath, ex.getMessage()),
-                resourcePath,
+                Tapestry.getString("AbstractDocumentParser.unable-to-parse", resourceLocation, ex.getMessage()),
+                resourceLocation,
                 ex);
         }
         catch (IOException ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString("AbstractDocumentParser.unable-to-read", resourcePath, ex.getMessage()),
-                resourcePath,
+                Tapestry.getString("AbstractDocumentParser.unable-to-read", resourceLocation, ex.getMessage()),
+                resourceLocation,
                 ex);
         }
         catch (ParserConfigurationException ex)
@@ -287,8 +301,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
      * 
      **/
 
-    protected void validateRootElement(Document document, String rootElementName, String resourcePath)
-        throws DocumentParseException
+    protected void validateRootElement(Document document, String rootElementName) throws DocumentParseException
     {
 
         Element root = document.getDocumentElement();
@@ -299,8 +312,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
                     "AbstractDocumentParser.incorrect-document-type",
                     rootElementName,
                     root.getTagName()),
-                resourcePath,
-                null);
+                _resourceLocation);
         }
     }
 
@@ -452,7 +464,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
                         "AbstractDocumentParser.invalid-identifier",
                         result,
                         getNodePath(node.getParentNode())),
-                    _resourcePath,
+                    _resourceLocation,
                     null);
         }
 
@@ -543,7 +555,6 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
         factory.setIgnoringElementContentWhitespace(true);
         factory.setIgnoringComments(true);
         factory.setCoalescing(true);
-        
 
         DocumentBuilder result = factory.newDocumentBuilder();
 
@@ -624,10 +635,8 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
         if (_matcher.matches(value, compiled))
             return;
 
-        throw new InvalidStringException(Tapestry.getString(errorKey, value), value, getResourcePath());
+        throw new InvalidStringException(Tapestry.getString(errorKey, value), value, getResourceLocation());
     }
-
-
 
     /** 
      * 
@@ -651,7 +660,5 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
             throw new ApplicationRuntimeException(ex);
         }
     }
-
-
 
 }
