@@ -27,7 +27,7 @@
 		</assert-output>
 	
 		<assert-output name="Message">
-		A ValidField using client-side validation must be wrapped by a Body component.
+		A ValidField using client-side validation must be enclosed by a Body component.
 		</assert-output>
 	
 	</request>

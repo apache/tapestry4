@@ -95,8 +95,12 @@ Message: Component was clicked.
 ]]>
 		</assert-output>
 		
-		<assert-output name="Invalid Script Error Message">
-		Unable to execute listener script "context:/WEB-INF/Two.page, line 18": exception from Jython
+		<assert-output name="Invalid Script Error Message part 1">
+		Unable to execute listener script "context:/WEB-INF/Two.page, line 18
+		</assert-output>		
+
+		<assert-output name="Invalid Script Error Message part 2">
+		exception from Jython
 		</assert-output>		
 	</request>
 
@@ -111,8 +115,12 @@ Message: Component was clicked.
 ]]>
 		</assert-output>
 		
-		<assert-output name="Unknown Language Error Message">
-			Unable to execute listener script "context:/WEB-INF/Two.page, line 28": unsupported language: DoesNotExist
+		<assert-output name="Unknown Language Error Message part 1">
+			Unable to execute listener script "context:/WEB-INF/Two.page, line 28
+		</assert-output>		
+
+		<assert-output name="Unknown Language Error Message part 2">
+			unsupported language: DoesNotExist
 		</assert-output>		
 	</request>
 			  

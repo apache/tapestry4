@@ -366,7 +366,9 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (DocumentParseException ex)
         {
-            checkException(ex, "Valid documents must have a <!DOCTYPE declaration.");
+            // XML parsers tend to generate different exception messages, 
+            // so make the condition as unspecific as possible
+            checkException(ex, "DOCTYPE");
         }
     }
 
