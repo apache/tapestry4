@@ -7,6 +7,9 @@ import net.sf.tapestry.contrib.table.model.ITableModelSource;
 /**
  * The facade component in the Table family. Table allows you to present 
  * a sortable and pagable table simply and easily by using only this one component.
+ * 
+ *  [<a href="../../../../../../../ComponentReference/contrib.Table.html">Component Reference</a>]
+ * 
  * <p>
  * The Table component allows you to manipulate its appearance by allowing you 
  * to define the 'class' attributes of its internal elements. 
@@ -84,6 +87,24 @@ import net.sf.tapestry.contrib.table.model.ITableModelSource;
  * </tr>
  *
  * <tr>
+ *  <td>row</td>
+ *  <td>Object</td>
+ *  <td>out</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td align="left">The value object of the current row.</td> 
+ * </tr>
+ *
+ * <tr>
+ *  <td>column</td>
+ *  <td>{@link net.sf.tapestry.contrib.table.model.ITableColumn}</td>
+ *  <td>out</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td align="left">The object representing the current column.</td> 
+ * </tr>
+ *
+ * <tr>
  *  <td>pagesDisplayed</td>
  *  <td>int</td>
  *  <td>in</td>
@@ -113,6 +134,15 @@ import net.sf.tapestry.contrib.table.model.ITableModelSource;
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td align="left">The image to use to describe a column sorted in a descending order.</td> 
+ * </tr>
+ *
+ * <tr>
+ *  <td>pagesClass</td>
+ *  <td>String</td>
+ *  <td>in</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td align="left">The CSS class of the table pages.</td> 
  * </tr>
  *
  * <tr>

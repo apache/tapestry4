@@ -37,21 +37,21 @@ import net.sf.tapestry.event.PageEvent;
  * </tr>
  *
  * <tr>
- *  <td>column</td>
- *  <td>{@link net.sf.tapestry.contrib.table.model.ITableColumn}</td>
- *  <td>out</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td align="left">The object representing the current column.</td> 
- * </tr>
- *
- * <tr>
  *  <td>element</td>
  *  <td>String</td>
  *  <td>in</td>
  *  <td>no</td>
  *  <td>th</td>
  *  <td align="left">The tag to use to wrap the column headers.</td> 
+ * </tr>
+ *
+ * <tr>
+ *  <td>column</td>
+ *  <td>{@link net.sf.tapestry.contrib.table.model.ITableColumn}</td>
+ *  <td>out</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td align="left">The object representing the current column.</td> 
  * </tr>
  *
  * <tr>
